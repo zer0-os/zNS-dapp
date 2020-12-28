@@ -1,7 +1,6 @@
 import { AbiCoder } from "@ethersproject/abi";
 import { keccak256 } from "@ethersproject/keccak256";
 import { BigNumber } from "@ethersproject/bignumber";
-// import { toUtf8Bytes } from '@ethersproject/strings'
 const coder = new AbiCoder();
 
 function getDomainId(_domain: string): string {

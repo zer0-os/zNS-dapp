@@ -2,11 +2,10 @@ import { Provider, Web3Provider } from "@ethersproject/providers";
 import { Signer } from "@ethersproject/abstract-signer";
 import { Registrar__factory, Registrar } from "../types";
 import { useWeb3React } from "@web3-react/core";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import addresses from "./addresses";
 import { Maybe } from "true-myth";
 import { chainIdToNetworkType } from "./network";
-const { Just, Nothing } = Maybe;
 
 export interface ContractAddresses {
   registrar: string;

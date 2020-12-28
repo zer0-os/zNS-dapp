@@ -1,20 +1,13 @@
 import {
   ApolloQueryResult,
-  DocumentNode,
   gql,
-  OperationVariables,
-  QueryHookOptions,
-  QueryResult,
-  TypedDocumentNode,
   useLazyQuery,
   useQuery,
 } from "@apollo/client";
 import { Web3Provider } from "@ethersproject/providers";
-import { Query, queryByRole } from "@testing-library/react";
 import { useWeb3React } from "@web3-react/core";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Maybe } from "true-myth";
-import { useZnsContracts } from "./contracts";
 import { getDomainId } from "./domains";
 
 interface Domain {

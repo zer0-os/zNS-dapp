@@ -1,6 +1,6 @@
+import React, { FC, useCallback, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
-import React, { FC, useCallback, useState } from "react";
 import { useZnsContracts } from "../lib/contracts";
 import { useDomainCache } from "../lib/useDomainCache";
 
@@ -16,7 +16,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { domain, refetchDomain } = getDomain(_domain);
   const [input, setInput] = useState<string>();
   const onChange = (ev: any) => {
-    console.log("wtf", ev.target.value, input);
     setInput(ev.target.value);
   };
   // TODO: form validation!
@@ -32,7 +31,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         )
         .then((txr) => txr.wait(1))
         .then(() => {
-          console.log("confirmed!");
           refetchDomain();
         });
   }, [contracts, account, input]);
