@@ -16,7 +16,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Maybe } from "true-myth";
 import { useZnsContracts } from "./contracts";
 import { getDomainId } from "./domains";
-const { Just, Nothing } = Maybe;
 
 interface Domain {
   id: string;
@@ -64,7 +63,7 @@ const controlledDomainsQuery = gql`
 `;
 
 type RefetchQuery<T> = (
-  variables: Partial<Record<string, any>>
+  variables?: Partial<Record<string, any>>
 ) => Promise<ApolloQueryResult<T>>;
 
 function useDomain(id: string) {
@@ -78,9 +77,9 @@ function useDomain(id: string) {
       console.error(error);
     }
     if (data) {
-      return new Just(data.domain);
+      return Maybe.of(data.domain);
     }
-    return new Nothing();
+    return Maybe.nothing()
   }, [data]);
 
   return { domain: _domain, refetchDomain: refetch };
@@ -123,9 +122,9 @@ function useControlledDomains(): {
       console.error(error);
     }
     if (data) {
-      return new Just(data.domains);
+      return Maybe.of(data.domains);
     }
-    return new Nothing();
+    return Maybe.nothing()
   }, [data]);
   useEffect(() => {
     if (refetch) {

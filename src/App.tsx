@@ -5,7 +5,7 @@ import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import Wallet from "./components/wallet";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
-import Domains from "./components/domains";
+import Subdomains from "./components/subdomains";
 import { DomainCacheProvider } from "./lib/useDomainCache";
 
 const client = new ApolloClient({
@@ -38,7 +38,7 @@ function App() {
     <>
       <button onClick={onClick}>{connect ? "Close" : "Connect wallet"}</button>
       {connect && <Wallet />}
-      <Domains />
+      <Subdomains domain={"_root"} />
     </>
   );
 }
