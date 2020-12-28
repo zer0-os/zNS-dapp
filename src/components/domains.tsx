@@ -4,18 +4,18 @@ import { useDomainCache } from "../lib/useDomainCache";
 const Domains: FC<{}> = () => {
   const { getDomain, state } = useDomainCache();
   const { domain, refetchDomain } = getDomain("_root");
-  if (!state || !state.domains || !state.domains["_root"])
+  if (domain.isNothing())
     return <p>Loading</p>;
   return (
     <>
-      <p>Domain: {state.domains["_root"].domain}</p>
+      <p>Domain: {domain.value.domain}</p>
       <p>
         Children:
-        {state.domains["_root"].children.map((child) => (
+        {domain.value.children.map((child) => (
           <p>{child}</p>
         ))}
       </p>
-      <p>Owner:{state.domains["_root"].owner}</p>
+      <p>Owner:{domain.value.owner}</p>
     </>
   );
 };
