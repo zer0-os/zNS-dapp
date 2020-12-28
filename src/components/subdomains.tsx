@@ -12,12 +12,13 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
-  const { getDomain, state } = useDomainCache();
-  const { domain, refetchDomain } = getDomain(_domain);
+  const { useDomain } = useDomainCache();
+  const { domain, refetchDomain } = useDomain(_domain);
   const [input, setInput] = useState<string>();
   const onChange = (ev: any) => {
     setInput(ev.target.value);
   };
+
   // TODO: form validation!
   const onClick = useCallback(() => {
     if (input && account)
@@ -34,7 +35,9 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           refetchDomain();
         });
   }, [contracts, account, input]);
+
   if (domain.isNothing()) return <p>Loading</p>;
+  
   return (
     <>
       {account && account.toLowerCase() == domain.value.owner.toLowerCase() && (

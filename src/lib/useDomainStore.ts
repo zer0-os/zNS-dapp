@@ -26,11 +26,6 @@ interface DomainData {
   domain: Domain;
 }
 
-interface DomainState {
-  domains: { [id: string]: Domain };
-  controlled: Domain[];
-}
-
 const domainQuery = gql`
   query Domain($id: ID!) {
     domain(id: $id) {
@@ -78,24 +73,6 @@ function useDomain(id: string) {
   return { domain: _domain, refetchDomain: refetch };
 }
 
-function createUseDomain(
-  setState: (domain: Maybe<Domain>) => void
-): (
-  domain: string
-) => {
-  domain: Maybe<Domain>;
-  refetchDomain: RefetchQuery<DomainData>;
-} {
-  return (domain: string) => {
-    const { domain: _domain, refetchDomain } = useDomain(
-      domain === "_root" ? "0" : getDomainId(domain)
-    );
-    useEffect(() => setState(_domain), [_domain]);
-
-    return { domain: _domain, refetchDomain };
-  };
-}
-
 function useControlledDomains(): {
   controlled: Maybe<Domain[]>;
   refetchControlled: RefetchQuery<ControlledDomainsData>;
@@ -119,6 +96,7 @@ function useControlledDomains(): {
     }
     return Maybe.nothing()
   }, [data]);
+
   useEffect(() => {
     if (refetch) {
       refetch({ variables: { owner: account } });
@@ -130,25 +108,9 @@ function useControlledDomains(): {
 }
 
 const useDomainStore = () => {
-  const [state, setState] = useState<DomainState>({
-    domains: {},
-    controlled: [],
-  });
-  const getDomain = createUseDomain(
-    useCallback(
-      (domain: Maybe<Domain>) => {
-        if (domain.isJust()) {
-          const _domain = domain.unsafelyUnwrap();
-          const domains = { ...state.domains, [_domain.domain]: _domain };
-          setState({ ...state, domains });
-        }
-      },
-      [state, setState]
-    )
-  );
   const controlled = useControlledDomains();
 
-  return { getDomain, ...controlled, state };
+  return { useDomain, ...controlled };
 };
 
 export { useDomainStore };
