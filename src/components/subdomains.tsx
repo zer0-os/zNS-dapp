@@ -21,9 +21,9 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
 
   // TODO: form validation!
   const onClick = useCallback(() => {
-    if (input && account)
+    if (input && account && contracts.isJust())
       contracts
-        .unsafelyUnwrap()
+        .value
         .registrar.createDomain(
           _domain === "_root" ? input : _domain + "." + input,
           account,
