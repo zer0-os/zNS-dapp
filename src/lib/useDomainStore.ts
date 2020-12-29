@@ -54,12 +54,14 @@ type RefetchQuery<T> = (
   variables?: Partial<Record<string, any>>
 ) => Promise<ApolloQueryResult<T>>;
 
-function useDomain(id: string) {
+function useDomain(domain: string) {
+  const id = domain === '_root' ? '0' : getDomainId(domain)
   const { error, data, refetch } = useQuery<DomainData>(domainQuery, {
     variables: { id },
   });
 
   const _domain: Maybe<Domain> = useMemo(() => {
+    console.log('wtf?', data)
     if (error) {
       // TODO: maybe throw?
       console.error(error);
