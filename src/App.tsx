@@ -7,7 +7,7 @@ import Wallet from "./components/wallet";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import Subdomains from "./components/subdomains";
 import { DomainCacheProvider } from "./lib/useDomainCache";
-import Transfer from "./components/transferDomains";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const client = new ApolloClient({
   uri: "http://localhost:8000/subgraphs/name/zer0-os/ZNS-subgraph",
@@ -36,11 +36,19 @@ function App() {
     setConnect(!connect);
   };
   return (
-    <>
-      <button onClick={onClick}>{connect ? "Close" : "Connect wallet"}</button>
-      {connect && <Wallet />}
-      <Subdomains domain={"_root"} />
-    </>
+    <Router>
+      <Route
+        render={({ location, match }) => (
+          <Switch location={location}>
+            <button onClick={onClick}>
+              {connect ? "Close" : "Connect wallet"}
+            </button>
+            {connect && <Wallet />}
+            <Subdomains domain={"_root"} />
+          </Switch>
+        )}
+      />
+    </Router>
   );
 }
 
