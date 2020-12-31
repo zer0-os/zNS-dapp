@@ -46,7 +46,11 @@ function App() {
               <Route path="/:id">
                 {console.log(location)}
                 <Subdomains
-                  domain={location.pathname.substring(1).replace(/\//, ".")}
+                  //regex: removes trailing /, then replaces / with .
+                  domain={location.pathname
+                    .substring(1)
+                    .replace(/\/+$/, "")
+                    .replace(/\//, ".")}
                 />
               </Route>
               <Route path="/">
