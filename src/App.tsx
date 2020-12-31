@@ -36,19 +36,27 @@ function App() {
     setConnect(!connect);
   };
   return (
-    <Router>
-      <Route
-        render={({ location, match }) => (
-          <Switch location={location}>
-            <button onClick={onClick}>
-              {connect ? "Close" : "Connect wallet"}
-            </button>
-            {connect && <Wallet />}
-            <Subdomains domain={"_root"} />
-          </Switch>
-        )}
-      />
-    </Router>
+    <>
+      <button onClick={onClick}>{connect ? "Close" : "Connect wallet"}</button>
+      {connect && <Wallet />}
+      <Router>
+        <Route
+          render={({ location, match }) => (
+            <Switch>
+              <Route path="/:id">
+                {console.log(location)}
+                <Subdomains
+                  domain={location.pathname.substring(1).replace(/\//, ".")}
+                />
+              </Route>
+              <Route path="/">
+                <Subdomains domain={"_root"} />
+              </Route>
+            </Switch>
+          )}
+        />
+      </Router>
+    </>
   );
 }
 
