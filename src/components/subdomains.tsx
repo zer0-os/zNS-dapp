@@ -1,10 +1,10 @@
-import React, { Children, FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Form, Field } from 'react-final-form';
-import { Link } from 'react-router-dom';
 import { composeValidator } from '../lib/validation/form-validation';
 import { subdomainValidator } from '../lib/validation/validators';
+import { Form, Field } from 'react-final-form';
+import { Link } from 'react-router-dom';
 import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
 
