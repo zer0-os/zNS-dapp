@@ -19,14 +19,13 @@ const Owned: FC = () => {
       <div>Domains Owned by {account}:</div>
       {controlled.value.map((control) => {
         return (
-          <div>
+          <div key={control.domain}>
             <Link
               to={"/" + control.domain.replace(/\./, "/")}
-              key={control.domain}
+              //   key={control.domain}
             >
               {control.domain}
             </Link>
-            {console.log(control.domain)}
           </div>
         );
       })}

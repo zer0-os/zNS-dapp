@@ -45,7 +45,6 @@ function App() {
           render={({ location, match }) => (
             <Switch>
               <Route path="/:id">
-                {console.log(location)}
                 <Subdomains
                   //regex: removes trailing /, then replaces / with .
                   domain={location.pathname
