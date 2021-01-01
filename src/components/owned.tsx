@@ -6,10 +6,6 @@ import { useDomainCache } from "../lib/useDomainCache";
 import { Form, Field } from "react-final-form";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-// interface OwnedProps {
-//   domain: string;
-// }
-
 const Owned: FC = () => {
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
