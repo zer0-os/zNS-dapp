@@ -73,10 +73,8 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
       <div>
         Children:
         {domain.value.children.map((child) => (
-          <div>
-            <Link to={'/' + child.replace(/\./, '/')} key={child}>
-              {child}
-            </Link>
+          <div key={child}>
+            <Link to={"/" + child.replace(/\./, "/")}>{child}</Link>
           </div>
         ))}
       </div>
