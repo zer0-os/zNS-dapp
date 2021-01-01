@@ -1,9 +1,11 @@
 import React, { Children, FC, useCallback, useState } from "react";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
+import { Form, Field } from "react-final-form";
+import { composeValidator } from "../lib/validation/form-validation";
+import { subdomainValidator } from "../lib/validation/validators";
 import { useZnsContracts } from "../lib/contracts";
 import { useDomainCache } from "../lib/useDomainCache";
-import { Form, Field } from "react-final-form";
 interface SubdomainsProps {
   domain: string;
 }
@@ -23,27 +25,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     setInput(ev.target.value);
   };
 
-  const required = (v: string) => {
-    if (!v || v === "") {
-      return "required please pass in a domain";
-    }
-
-    return undefined;
-  };
-  const forbidenName = (v: string) => {
-    if (v === "_root" || "ROOT" || "*root") {
-      return "forbiden name please try again";
-    }
-
-    return undefined;
-  };
-
-  const pattern = (v: string) => {
-    if (v != v.toLowerCase()) {
-      return "all domains must be lower case";
-    }
-    return undefined;
-  };
   // TODO: form validation!
   const _onClick = useCallback(() => {
     if (input && account && contracts.isJust())
@@ -69,17 +50,22 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         <form onSubmit={handleSubmit}>
           <Field
             name="subdomain"
-            validate={composeValidators(required, pattern, forbidenName)}
+            validate={composeValidator({
+              ref: (ref: string) => undefined,
+              subdomain: subdomainValidator,
+            })}
           >
-            {({ input, meta }) => (
-              <div>
-                <button type="submit" onClick={_onClick} disabled={invalid}>
-                  Create subdomain
-                </button>
-                <input onChange={onChange} placeholder="create subdomain" />
-                {meta.error && meta.touched && <span>{meta.error}</span>}
-              </div>
-            )}
+            {({ input, meta }) => {
+              return (
+                <div>
+                  <button type="submit" onClick={_onClick} disabled={invalid}>
+                    Create subdomain
+                  </button>
+                  <input onChange={onChange} placeholder="create subdomain" />
+                  {meta.error && meta.error.subdomain && meta.error.subdomain}
+                </div>
+              );
+            }}
           </Field>
 
           <div className="domains">Domain: {domain.value.domain}</div>
@@ -94,17 +80,5 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     />
   );
 };
-
-const composeValidators = (
-  ...validators: {
-    (v: string): "required please pass in a domain" | undefined;
-    (v: string): "All domains must be lower case" | undefined;
-    (v: string): "Forbiden name please try again" | undefined;
-  }[]
-) => (value: string) =>
-  validators.reduce(
-    (error, validator) => (error as any) || validator(value),
-    undefined
-  );
 
 export default Subdomains;
