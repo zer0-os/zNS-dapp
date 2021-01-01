@@ -6,6 +6,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import Wallet from "./components/wallet";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import Subdomains from "./components/subdomains";
+import Owned from "./components/owned";
 import { DomainCacheProvider } from "./lib/useDomainCache";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -52,9 +53,11 @@ function App() {
                     .replace(/\/+$/, "")
                     .replace(/\//, ".")}
                 />
+                <Owned />
               </Route>
               <Route path="/">
                 <Subdomains domain={"_root"} />
+                <Owned />
               </Route>
             </Switch>
           )}

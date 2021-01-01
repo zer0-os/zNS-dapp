@@ -81,7 +81,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           </div>
         ))}
       </div>
-      <div>Owner:{domain.value.owner}</div>
+      <div>Owner: {domain.value.owner}</div>
     </>
   );
 };
