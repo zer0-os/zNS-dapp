@@ -20,22 +20,7 @@ const Owned: FC = () => {
 
   return (
     <>
-      <p>Domains Owned by {account}:</p>
-      {/* <Link to={"/" + controlled.value.domain.replace(/\./, "/")}>
-        Domain: {domain.value.domain}
-      </Link>
-      <div>
-        Children:
-        {domain.value.children.map((child) => (
-          <div>
-            <Link to={"/" + child.replace(/\./, "/")} key={child}>
-              {child}
-              {console.log("/" + child.replace(/\./, "/"))}
-            </Link>
-          </div>
-        ))}
-      </div>
-      <div>Owner: {domain.value.owner}</div> */}
+      <div>Domains Owned by {account}:</div>
       {controlled.value.map((control) => {
         return (
           <div>
