@@ -7,6 +7,7 @@ import Wallet from "./components/wallet";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import Subdomains from "./components/subdomains";
 import { DomainCacheProvider } from "./lib/useDomainCache";
+import Transfer from "./components/transferDomains";
 
 const client = new ApolloClient({
   uri: "http://localhost:8000/subgraphs/name/zer0-os/ZNS-subgraph",

@@ -10,10 +10,6 @@ interface SubdomainsProps {
   domain: string;
 }
 
-interface validations {
-  message: string;
-}
-
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
@@ -46,20 +42,18 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   return (
     <Form
       onSubmit={_onClick}
+      validate={composeValidator({
+        ref: (_ref: string) => undefined,
+        subdomain: subdomainValidator,
+      })}
       render={({ handleSubmit, invalid }) => (
         <form onSubmit={handleSubmit}>
-          <Field
-            name="subdomain"
-            validate={composeValidator({
-              ref: (ref: string) => undefined,
-              subdomain: subdomainValidator,
-            })}
-          >
+          <Field name="subdomain">
             {({ input, meta }) => {
               return (
                 <div>
                   <button type="submit" onClick={_onClick} disabled={invalid}>
-                    Create subdomain
+                    Create
                   </button>
                   <input onChange={onChange} placeholder="create subdomain" />
                   {meta.error && meta.error.subdomain && meta.error.subdomain}

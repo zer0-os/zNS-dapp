@@ -2,23 +2,30 @@ import * as _ from "lodash";
 import { AsyncOrSync } from "ts-essentials";
 
 type FieldValidator<Values> = {
-  [name in keyof Values]: (value: Values[name]) => AsyncOrSync<string | undefined>;
+  [name in keyof Values]: (
+    value: Values[name]
+  ) => AsyncOrSync<string | undefined>;
 };
 
 type FormErrors<Values> = {
-  [name in keyof Values]: string;
+  [name in keyof Values]: string | undefined;
 };
 
-type FormValidator<Values> = (
+type FormValidator<Values extends Record<string, any>> = (
   values: Values,
   errors: FormErrors<Values>
 ) => FormErrors<Values>;
 
-export const composeValidator = <Values>(
+export const composeValidator = <Values extends Record<string, any>>(
   fieldValidators: FieldValidator<Values>,
   // the default form validator just returns field-level validations
-  formValidator: FormValidator<Values> = (values: Values, errors: FormErrors<Values>) => errors
-) => {
+  formValidator: FormValidator<Values> = (
+    values: Values,
+    errors: FormErrors<Values>
+  ) => errors
+): ((
+  values: Record<string, any>
+) => AsyncOrSync<FormErrors<Record<string, any>>>) => {
   const names: (keyof Values)[] = _.keys(fieldValidators) as any;
 
   const fieldLevelValidators = names.map(
@@ -45,7 +52,8 @@ export const composeValidator = <Values>(
     if (
       _.some(
         errorsOrPromises,
-        (val: any) => val.then && typeof val.then === "function"
+        (val: any) =>
+          typeof val === "object" && val.then && typeof val.then === "function"
       )
     ) {
       // if any of these results are a promise, await them all then reduce
@@ -61,17 +69,20 @@ export const composeValidator = <Values>(
   // state, which is expected. If our promise resolves immediately, however,
   // that means our `validating` state flickers the UI and it looks pretty bad.
   // The solution is to conditionally return a promise only when necessary.
-  return (values: Values) => {
+  return (values: Record<string, any>) => {
     // ask for field-level errors
-    const errorsOrPromise = fieldLevelValidator(values);
+    const errorsOrPromise = fieldLevelValidator(<any>values);
 
     // pass the current values and their validity to the form-level validator
     // that can implement conditional logic and more complex validations
-    const runFormValidator = (errors: FormErrors<Values>) => formValidator(values, errors);
+    const runFormValidator = (errors: FormErrors<Values>) =>
+      formValidator(<any>values, errors);
 
-    if ((<any>errorsOrPromise).then) {
+    if (errorsOrPromise && (<any>errorsOrPromise).then) {
       // if promise, promise
-      return (<Promise<FormErrors<Values>>>errorsOrPromise).then(runFormValidator);
+      return (<Promise<FormErrors<Values>>>errorsOrPromise).then(
+        runFormValidator
+      );
     }
 
     // otherwise, it's an errors object
