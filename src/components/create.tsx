@@ -1,10 +1,7 @@
-import React, { Children, FC, useCallback, useEffect, useState } from 'react';
-import { ethers, utils, BigNumberish } from 'ethers';
+import React, { useCallback, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { getAddress } from '@ethersproject/address';
 import { useZnsContracts } from '../lib/contracts';
-import { useDomainCache } from '../lib/useDomainCache';
 import * as z from 'zod';
 import { zodResolver } from '../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
