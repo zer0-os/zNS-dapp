@@ -1,6 +1,7 @@
 import React, { Children, FC, useCallback, useState } from "react";
 import { ethers, utils, BigNumberish } from "ethers";
 import { useWeb3React } from "@web3-react/core";
+import { Form, Field } from "react-final-form";
 import { Web3Provider } from "@ethersproject/providers";
 import { useZnsContracts } from "../lib/contracts";
 import { values } from "lodash";
@@ -23,6 +24,7 @@ const Approve: React.FC<ApprovalProps> = ({
   const contracts = useZnsContracts();
   const { useDomain } = useDomainCache();
   const { domain, refetchDomain } = useDomain(_domain);
+  const { controlled } = useDomainCache();
 
   const _approve = useCallback(() => {
     if (account && contracts.isJust() && account != _approvee) {
@@ -35,9 +37,18 @@ const Approve: React.FC<ApprovalProps> = ({
     }
   }, [contracts, account]);
 
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (
+    controlled.isNothing() ||
+    domain.isNothing() ||
+    domain.value.owner != account
+  )
+    return null;
 
-  return <>z</>;
+  return (
+    <>
+      <Form onSubmit={_approve} />
+    </>
+  );
 };
 
 export default Approve;
