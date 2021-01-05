@@ -1,12 +1,10 @@
 import React, { FC, useCallback, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { composeValidator } from '../lib/validation/form-validation';
-import { subdomainValidator } from '../lib/validation/validators';
-import { Form, Field } from 'react-final-form';
 import { Link } from 'react-router-dom';
 import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
+import Transfer from './transferDomains';
 
 interface SubdomainsProps {
   domain: string;
@@ -17,12 +15,13 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
-  const { domain, refetchDomain } = useDomain(_domain);
+  const domainContext = useDomain(_domain);
+  const { domain, refetchDomain } = domainContext;
   const [input, setInput] = useState<string>();
-  const onChange = (ev: any) => {
+  const onChange = useCallback((ev: any) => {
     setInput(ev.target.value);
-  };
-
+  }, []);
+  console.log(account, domain.isJust() && domain.value.owner);
   // TODO: form validation!
   const _onClick = useCallback(() => {
     if (input && account && contracts.isJust())
@@ -40,10 +39,15 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   }, [contracts, account, input]);
 
   if (domain.isNothing()) return <p>Loading</p>;
-
   return (
     <>
-      <Form
+      {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
+        <>
+          {'wtf ?'}
+          <Transfer domainId={domain.value.id} domainContext={domainContext} />
+        </>
+      ) : null}
+      {/* <Form
         onSubmit={_onClick}
         validate={composeValidator({
           ref: (_ref: string) => undefined,
@@ -66,7 +70,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
             </Field>
           </form>
         )}
-      />
+      /> */}
       <Link to={'/' + domain.value.domain.replace(/\./, '/')}>
         Domain: {domain.value.domain}
       </Link>
@@ -74,7 +78,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         Children:
         {domain.value.children.map((child) => (
           <div key={child}>
-            <Link to={"/" + child.replace(/\./, "/")}>{child}</Link>
+            <Link to={'/' + child.replace(/\./, '/')}>{child}</Link>
           </div>
         ))}
       </div>

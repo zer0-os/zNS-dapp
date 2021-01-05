@@ -1,14 +1,10 @@
-import {
-  ApolloQueryResult,
-  gql,
-  useLazyQuery,
-  useQuery,
-} from "@apollo/client";
-import { Web3Provider } from "@ethersproject/providers";
-import { useWeb3React } from "@web3-react/core";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Maybe } from "true-myth";
-import { getDomainId } from "./domains";
+import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+import { getAddress } from 'ethers/lib/utils';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Maybe } from 'true-myth';
+import { getDomainId } from './domains';
 
 interface Domain {
   id: string;
@@ -51,25 +47,29 @@ const controlledDomainsQuery = gql`
 `;
 
 type RefetchQuery<T> = (
-  variables?: Partial<Record<string, any>>
+  variables?: Partial<Record<string, any>>,
 ) => Promise<ApolloQueryResult<T>>;
 
 function useDomain(domain: string) {
-  const id = domain === '_root' ? '0' : getDomainId(domain)
+  const id = domain === '_root' ? '0' : getDomainId(domain);
   const { error, data, refetch } = useQuery<DomainData>(domainQuery, {
     variables: { id },
   });
 
   const _domain: Maybe<Domain> = useMemo(() => {
-    console.log('wtf?', data)
+    console.log('wtf?', data);
     if (error) {
       // TODO: maybe throw?
       console.error(error);
     }
     if (data) {
-      return Maybe.of(data.domain);
+      return Maybe.of({
+        ...data.domain,
+        owner: getAddress(data.domain.owner),
+        controller: getAddress(data.domain.controller),
+      });
     }
-    return Maybe.nothing()
+    return Maybe.nothing();
   }, [data]);
 
   return { domain: _domain, refetchDomain: refetch };
@@ -96,7 +96,7 @@ function useControlledDomains(): {
     if (data) {
       return Maybe.of(data.domains);
     }
-    return Maybe.nothing()
+    return Maybe.nothing();
   }, [data]);
 
   useEffect(() => {
@@ -114,5 +114,9 @@ const useDomainStore = () => {
 
   return { useDomain, ...controlled };
 };
+
+export type DomainStoreContext = ReturnType<typeof useDomainStore>;
+
+export type DomainContext = ReturnType<typeof useDomain>;
 
 export { useDomainStore };

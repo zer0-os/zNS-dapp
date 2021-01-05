@@ -3,7 +3,6 @@ import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from "@web3-react/core";
 import { useZnsContracts } from "../lib/contracts";
 import { useDomainCache } from "../lib/useDomainCache";
-import { Form, Field } from "react-final-form";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const Owned: FC = () => {

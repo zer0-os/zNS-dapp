@@ -9,7 +9,7 @@ import * as z from 'zod';
 import { zodResolver } from '../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { DomainContext } from '../lib/useDomainStore';
-import { hexRegex } from '../lib/validation/validators';
+import { subdomainRegex } from '../lib/validation/validators';
 
 interface TransferProps {
   domainId: string;
@@ -17,26 +17,14 @@ interface TransferProps {
 }
 
 const schema = z.object({
-  address: z
+  child: z
     .string()
-    .regex(hexRegex, 'Address must be hex')
-    .refine(
-      (address) => {
-        try {
-          return address === getAddress(address);
-        } catch (e) {
-          return false;
-        }
-      },
-      {
-        message: 'Not checksummed address',
-      },
-    ),
+    .regex(subdomainRegex, 'Subdomain must only contain alphanumeric letters')
 });
 
 const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
   const { refetchDomain, domain } = domainContext;
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
   // TODO: show user what they're doing wrong
@@ -45,28 +33,25 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
   const { account } = context;
   const contracts = useZnsContracts();
 
-  const _transfer = useCallback(
-    (address: string) => {
-      if (
-        account &&
-        contracts.isJust() &&
-        domain.isJust() &&
-        account === domain.value.owner
-      )
-        contracts.value.registrar
-          .safeTransferFrom(account, address)
-          .then((txr: any) => txr.wait(1))
-          .then(() => {
-            refetchDomain();
-          });
-    },
-    [contracts, account, domain],
-  );
+  const _create = useCallback((child: string) => {
+    if (account && contracts.isJust() && domain.isJust())
+      contracts.value.registrar
+        .createDomain(
+          domain.value.domain === '_root' ? child : domain.value.domain + '.' + child,
+          account,
+          account,
+          'some ref',
+        )
+        .then((txr) => txr.wait(1))
+        .then(() => {
+          refetchDomain();
+        });
+  }, [contracts, account]);
 
   if (domain.isNothing() || domain.value.owner !== account) return null;
 
   return (
-    <form onSubmit={handleSubmit(({ address }) => _transfer(address))}>
+    <form onSubmit={handleSubmit(({ child }) => _create(child))}>
       <div>
         <button type="submit"> Transfer Domain</button>
         <input name={'address'} ref={register} placeholder="receiver address" />
