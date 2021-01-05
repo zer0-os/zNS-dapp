@@ -6,6 +6,7 @@ import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
 import Transfer from './transferDomains';
 import Create from './create';
+import Approve from './approval';
 
 interface SubdomainsProps {
   domain: string;
@@ -25,6 +26,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         <>
           <Create domainId={domain.value.id} domainContext={domainContext} />
           <Transfer domainId={domain.value.id} domainContext={domainContext} />
+          <Approve domainId={domain.value.id} domainContext={domainContext} />
         </>
       ) : null}
       <Link to={'/' + domain.value.domain.replace(/\./, '/')}>

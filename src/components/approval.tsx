@@ -7,12 +7,12 @@ import { ethers, utils, BigNumberish } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsContracts } from '../lib/contracts';
-import { useDomainCache } from '../lib/useDomainCache';
+import { DomainContext } from '../lib/useDomainStore';
 import { hexRegex } from '../lib/validation/validators';
 
 interface ApprovalProps {
   domainId: string;
-  domain: string;
+  domainContext: DomainContext;
 }
 
 const schema = z.object({
@@ -35,38 +35,37 @@ const schema = z.object({
 
 const Approve: React.FC<ApprovalProps> = ({
   domainId: _domainId,
-  domain: _domain,
+  domainContext,
 }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
-  const { useDomain } = useDomainCache();
-  const { domain, refetchDomain } = useDomain(_domain);
-  const { controlled } = useDomainCache();
+  const { domain, refetchDomain } = domainContext;
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
 
   const _approve = useCallback(
     (address: string) => {
-      if (account && contracts.isJust() && account != address) {
+      if (
+        account &&
+        contracts.isJust() &&
+        domain.isJust() &&
+        account != address
+      ) {
         contracts.value.registrar
           .approve(_domainId, address)
           .then((txr) => txr.wait(1))
           .then(() => {
+            //TODO subgraph Approval!
             refetchDomain();
           });
       }
     },
-    [contracts, account],
+    [contracts, account, domain],
   );
 
-  if (
-    controlled.isNothing() ||
-    domain.isNothing() ||
-    domain.value.owner != account
-  )
-    return null;
+  if (domain.isNothing() || domain.value.owner != account) return null;
 
   return (
     <form onSubmit={handleSubmit(({ address }) => _approve(address))}>
