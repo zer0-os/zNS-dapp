@@ -8,31 +8,34 @@ import { useDomainCache } from "../lib/useDomainCache";
 import { send } from "q";
 
 interface ApprovalProps {
-  approver: string;
   approvee: string;
   domain_id: BigNumberish;
+  domain: string;
 }
 
 const Approve: React.FC<ApprovalProps> = ({
-  approver: _approver,
   approvee: _approvee,
   domain_id: _domain_id,
+  domain: _domain,
 }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
+  const { useDomain } = useDomainCache();
+  const { domain, refetchDomain } = useDomain(_domain);
 
   const _approve = useCallback(() => {
-    if (account && contracts.isJust())
+    if (account && contracts.isJust() && account != _approvee) {
       contracts.value.registrar
-        .safeApproveFrom(_sender === account)
-        .then((txr: { wait: (arg0: number) => any }) => txr.wait(1))
+        .approve(_approvee, _domain_id)
+        .then((txr) => txr.wait(1))
         .then(() => {
-          return Approve();
+          refetchDomain();
         });
+    }
   }, [contracts, account]);
 
-  if (sender.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return <p>Loading</p>;
 
   return <>z</>;
 };
