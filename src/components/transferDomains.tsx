@@ -3,36 +3,39 @@ import { ethers, utils, BigNumberish } from "ethers";
 import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { useZnsContracts } from "../lib/contracts";
-import { values } from "lodash";
 import { useDomainCache } from "../lib/useDomainCache";
+import { reject } from "lodash";
 
 interface TransferProps {
-  sender: string;
+  domain: string;
   receiver: string;
   domain_id: BigNumberish;
 }
 
 const Transfer: React.FC<TransferProps> = ({
-  sender: _sender,
   receiver: _reveicer,
   domain_id: _domain_id,
+  domain: _domain,
 }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
-  //   const { useDomain } = useDomainCache();
+  const { useDomain } = useDomainCache();
+  const { domain, refetchDomain } = useDomain(_domain);
 
   const _transfer = useCallback(() => {
     if (account && contracts.isJust())
       contracts.value.registrar
-        .safeTransferFrom(_sender === account)
-        .then((txr: { wait: (arg0: number) => any }) => txr.wait(1))
+        .safeTransferFrom(
+          contracts.value.signer === account ? Transfer : reject
+        )
+        .then((txr: any) => txr.wait(1))
         .then(() => {
-          return Transfer();
+          refetchDomain();
         });
   }, [contracts, account]);
 
-  if (sender.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return <p>Loading</p>;
 
   return <>l</>;
 };
