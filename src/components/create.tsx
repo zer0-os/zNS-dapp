@@ -11,7 +11,7 @@ import { useForm } from 'react-hook-form';
 import { DomainContext } from '../lib/useDomainStore';
 import { subdomainRegex } from '../lib/validation/validators';
 
-interface TransferProps {
+interface CreateProps {
   domainId: string;
   domainContext: DomainContext;
 }
@@ -22,7 +22,7 @@ const schema = z.object({
     .regex(subdomainRegex, 'Subdomain must only contain alphanumeric letters')
 });
 
-const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
+const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
   const { refetchDomain, domain } = domainContext;
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -53,11 +53,11 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
   return (
     <form onSubmit={handleSubmit(({ child }) => _create(child))}>
       <div>
-        <button type="submit"> Transfer Domain</button>
-        <input name={'address'} ref={register} placeholder="receiver address" />
+        <button type="submit"> Create Domain</button>
+        <input name={'child'} ref={register} placeholder="child domain" />
       </div>
     </form>
   );
 };
 
-export default Transfer;
+export default Create;

@@ -36,7 +36,7 @@ const schema = z.object({
 
 const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
   const { refetchDomain, domain } = domainContext;
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
   // TODO: show user what they're doing wrong
