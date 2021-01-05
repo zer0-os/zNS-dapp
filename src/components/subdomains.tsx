@@ -37,7 +37,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         });
   }, [contracts, account, input]);
 
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing() || domain.value.owner != account) return null;
 
   return (
     <Form

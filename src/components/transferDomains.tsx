@@ -4,6 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { useZnsContracts } from "../lib/contracts";
 import { useDomainCache } from "../lib/useDomainCache";
+import { Field, Form } from "react-final-form";
 
 interface TransferProps {
   domain: string;
@@ -21,9 +22,13 @@ const Transfer: React.FC<TransferProps> = ({
   const contracts = useZnsContracts();
   const { useDomain } = useDomainCache();
   const { domain, refetchDomain } = useDomain(_domain);
+  const [input, setInput] = useState<string>();
+  const onChange = (ev: any) => {
+    setInput(ev.target.value);
+  };
 
   const _transfer = useCallback(() => {
-    if (account && contracts.isJust() && account === _domain)
+    if (input && account && contracts.isJust() && account === _domain)
       contracts.value.registrar
         .safeTransferFrom(account, _reveicer)
         .then((txr: any) => txr.wait(1))
@@ -32,9 +37,16 @@ const Transfer: React.FC<TransferProps> = ({
         });
   }, [contracts, account]);
 
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing() || domain.value.owner != account) return null;
 
-  return <></>;
+  return (
+    <Form
+      onSubmit={_transfer}
+      render={({ handleSubmit }) => <form onSubmit={handleSubmit}>
+          <Field 
+      </form>}
+    />
+  );
 };
 
 export default Transfer;
