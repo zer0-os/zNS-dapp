@@ -4,7 +4,6 @@ import { useWeb3React } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { useZnsContracts } from "../lib/contracts";
 import { useDomainCache } from "../lib/useDomainCache";
-import { reject } from "lodash";
 
 interface TransferProps {
   domain: string;
@@ -24,11 +23,9 @@ const Transfer: React.FC<TransferProps> = ({
   const { domain, refetchDomain } = useDomain(_domain);
 
   const _transfer = useCallback(() => {
-    if (account && contracts.isJust())
+    if (account && contracts.isJust() && account === _domain)
       contracts.value.registrar
-        .safeTransferFrom(
-          contracts.value.signer === account ? Transfer : reject
-        )
+        .safeTransferFrom(account, _reveicer)
         .then((txr: any) => txr.wait(1))
         .then(() => {
           refetchDomain();
@@ -37,7 +34,7 @@ const Transfer: React.FC<TransferProps> = ({
 
   if (domain.isNothing()) return <p>Loading</p>;
 
-  return <>l</>;
+  return <></>;
 };
 
 export default Transfer;
