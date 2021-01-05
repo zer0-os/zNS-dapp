@@ -7,6 +7,7 @@ import { Form, Field } from 'react-final-form';
 import { Link } from 'react-router-dom';
 import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
+import Approve from './approval';
 
 interface SubdomainsProps {
   domain: string;
@@ -74,11 +75,12 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         Children:
         {domain.value.children.map((child) => (
           <div key={child}>
-            <Link to={"/" + child.replace(/\./, "/")}>{child}</Link>
+            <Link to={'/' + child.replace(/\./, '/')}>{child}</Link>
           </div>
         ))}
       </div>
       <div>Owner: {domain.value.owner}</div>
+      <Approve domain_id={domain.value.id} domain={domain.value.domain} />
     </>
   );
 };
