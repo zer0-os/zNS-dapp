@@ -1,10 +1,10 @@
-import React, { Children, FC, useCallback, useState } from "react";
-import { ethers, utils, BigNumberish } from "ethers";
-import { useWeb3React } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
-import { useZnsContracts } from "../lib/contracts";
-import { useDomainCache } from "../lib/useDomainCache";
-import { Field, Form } from "react-final-form";
+import React, { Children, FC, useCallback, useState } from 'react';
+import { ethers, utils, BigNumberish } from 'ethers';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+import { useZnsContracts } from '../lib/contracts';
+import { useDomainCache } from '../lib/useDomainCache';
+import { Field, Form } from 'react-final-form';
 
 interface TransferProps {
   domain: string;
@@ -42,9 +42,19 @@ const Transfer: React.FC<TransferProps> = ({
   return (
     <Form
       onSubmit={_transfer}
-      render={({ handleSubmit }) => <form onSubmit={handleSubmit}>
-          <Field 
-      </form>}
+      render={({ handleSubmit, invalid }) => (
+        <form onSubmit={handleSubmit}>
+          <Field name="transfer">
+            <div>
+              <button type="submit" onSubmit={_transfer} disabled={invalid}>
+                {' '}
+                Transfer Domain
+              </button>
+              <input onChange={onChange} placeholder="receiver address" />
+            </div>
+          </Field>
+        </form>
+      )}
     />
   );
 };
