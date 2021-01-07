@@ -140,7 +140,7 @@ function useApprovedTo(): {
     getApprovedTo,
     { data, refetch, error },
   ] = useLazyQuery<ApprovedToData>(approvalQuery, {
-    variables: { owner: account },
+    variables: { to: account },
   });
 
   const approvedTo: Maybe<Domain[]> = useMemo(() => {

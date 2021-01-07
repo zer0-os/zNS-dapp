@@ -13,6 +13,7 @@ import { hexRegex } from '../lib/validation/validators';
 interface ApprovalProps {
   domainId: string;
   domainContext: DomainContext;
+  domainStoreContext: DomainStoreContext;
 }
 
 const schema = z.object({
@@ -36,12 +37,13 @@ const schema = z.object({
 const Approve: React.FC<ApprovalProps> = ({
   domainId: _domainId,
   domainContext,
+  domainStoreContext,
 }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
   const { domain, refetchDomain } = domainContext;
-  const { useApprovedFrom, useApprovedTo } = DomainStoreContext;
+  const { refetchApprovedFrom, refetchApprovedTo } = domainStoreContext;
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -59,7 +61,7 @@ const Approve: React.FC<ApprovalProps> = ({
           .then((txr) => txr.wait(1))
           .then(() => {
             //TODO subgraph Approval!
-            refetchDomain(), refetchApprovedFrom();
+            refetchDomain(), refetchApprovedFrom(), refetchApprovedTo();
           });
       }
     },
