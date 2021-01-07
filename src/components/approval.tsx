@@ -59,10 +59,14 @@ const Approve: React.FC<ApprovalProps> = ({
         contracts.value.registrar
           .approve(_domainId, address)
           .then((txr) => txr.wait(1))
-          .then(() => {
-            //TODO subgraph Approval!
-            refetchDomain(), refetchApprovedFrom(), refetchApprovedTo();
-          });
+          .then(() =>
+            Promise.all([
+              //TODO subgraph Approval!
+              refetchDomain(),
+              refetchApprovedFrom(),
+              refetchApprovedTo(),
+            ]),
+          );
       }
     },
     [contracts, account, domain],
