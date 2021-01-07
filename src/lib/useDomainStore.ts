@@ -22,6 +22,14 @@ interface DomainData {
   domain: Domain;
 }
 
+interface ApprovedToData {
+  domains: Domain[]
+}
+
+interface ApprovedFromData {
+  domains: Domain[]
+}
+
 const domainQuery = gql`
   query Domain($id: ID!) {
     domain(id: $id) {
@@ -107,6 +115,74 @@ function useControlledDomains(): {
     }
   }, [account]);
   return { controlled, refetchControlled: refetch! };
+}
+
+function useApprovedTo(): {
+  approvedTo: Maybe<Domain[]>;
+  refetchApprovedTo: RefetchQuery<ApprovedToData>;
+} {
+  const context = useWeb3React<Web3Provider>();
+  const { library, account, active, chainId } = context;
+  const [
+    getApprovedTo,
+    { data, refetch, error },
+  ] = useLazyQuery<ApprovedToData>(approvedToQuery, {
+    variables: { owner: account },
+  });
+
+  const approvedTo: Maybe<Domain[]> = useMemo(() => {
+    if (error) {
+      // TODO: maybe throw?
+      console.error(error);
+    }
+    if (data) {
+      return Maybe.of(data.domains);
+    }
+    return Maybe.nothing();
+  }, [data]);
+
+  useEffect(() => {
+    if (refetch) {
+      refetch({ variables: { owner: account } });
+    } else if (account) {
+      getApprovedTo({ variables: { owner: account } });
+    }
+  }, [account]);
+  return { approvedTo, refetchApprovedTo: refetch! };
+}
+
+function useApprovedFrom(): {
+  approvedFrom: Maybe<Domain[]>;
+  refetchApprovedFrom: RefetchQuery<ApprovedToData>;
+} {
+  const context = useWeb3React<Web3Provider>();
+  const { library, account, active, chainId } = context;
+  const [
+    getApprovedFrom,
+    { data, refetch, error },
+  ] = useLazyQuery<ApprovedToData>(approvedFromQuery, {
+    variables: { owner: account },
+  });
+
+  const approvedFrom: Maybe<Domain[]> = useMemo(() => {
+    if (error) {
+      // TODO: maybe throw?
+      console.error(error);
+    }
+    if (data) {
+      return Maybe.of(data.domains);
+    }
+    return Maybe.nothing();
+  }, [data]);
+
+  useEffect(() => {
+    if (refetch) {
+      refetch({ variables: { owner: account } });
+    } else if (account) {
+      getApprovedFrom({ variables: { owner: account } });
+    }
+  }, [account]);
+  return { approvedFrom, refetchApprovedFrom: refetch! };
 }
 
 const useDomainStore = () => {
