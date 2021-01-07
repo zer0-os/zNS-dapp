@@ -23,11 +23,11 @@ interface DomainData {
 }
 
 interface ApprovedToData {
-  domains: Domain[]
+  domains: Domain[];
 }
 
 interface ApprovedFromData {
-  domains: Domain[]
+  domains: Domain[];
 }
 
 const domainQuery = gql`
@@ -139,7 +139,7 @@ function useApprovedTo(): {
   const [
     getApprovedTo,
     { data, refetch, error },
-  ] = useLazyQuery<ApprovedToData>(approvedToQuery, {
+  ] = useLazyQuery<ApprovedToData>(approvalQuery, {
     variables: { owner: account },
   });
 
@@ -173,7 +173,7 @@ function useApprovedFrom(): {
   const [
     getApprovedFrom,
     { data, refetch, error },
-  ] = useLazyQuery<ApprovedToData>(approvedFromQuery, {
+  ] = useLazyQuery<ApprovedToData>(approvalQuery, {
     variables: { owner: account },
   });
 
