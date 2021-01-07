@@ -17,7 +17,7 @@ import { hexRegex } from '../lib/validation/validators';
 interface ApprovalProps {
   domainId: string;
   domainContext: DomainContext;
-  approvaltoContext: ApprovalToContext;
+  approvalToContext: ApprovalToContext;
   approvalFromContext: ApprovalFromContext;
 }
 
@@ -43,14 +43,14 @@ const Approve: React.FC<ApprovalProps> = ({
   domainId: _domainId,
   domainContext,
   approvalFromContext,
-  approvaltoContext,
+  approvalToContext,
 }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
   const { domain, refetchDomain } = domainContext;
   const { refetchApprovedFrom } = approvalFromContext;
-  const { refetchApprovedTo } = approvaltoContext;
+  const { refetchApprovedTo } = approvalToContext;
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
