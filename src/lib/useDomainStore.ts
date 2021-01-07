@@ -29,6 +29,7 @@ const domainQuery = gql`
       domain
       children
       owner
+      approval
       controller
     }
   }
@@ -42,6 +43,18 @@ const controlledDomainsQuery = gql`
       children
       owner
       controller
+    }
+  }
+`;
+
+const approvalQuery = gql`
+  query Approval($from: Bytes!) {
+    domains(where: { to: $from }) {
+      id
+      domain
+      owner
+      from
+      to
     }
   }
 `;
