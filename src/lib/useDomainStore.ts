@@ -187,8 +187,10 @@ function useApprovedFrom(): {
 
 const useDomainStore = () => {
   const controlled = useControlledDomains();
+  const approvedTo = useApprovedTo();
+  const approvedFrom = useApprovedFrom();
 
-  return { useDomain, ...controlled };
+  return { useDomain, ...controlled, ...approvedTo, ...approvedFrom };
 };
 
 export type DomainStoreContext = ReturnType<typeof useDomainStore>;
