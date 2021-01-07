@@ -210,4 +210,8 @@ export type DomainStoreContext = ReturnType<typeof useDomainStore>;
 
 export type DomainContext = ReturnType<typeof useDomain>;
 
+export type ApprovalToContext = ReturnType<typeof useApprovedTo>;
+
+export type ApprovalFromContext = ReturnType<typeof useApprovedFrom>;
+
 export { useDomainStore };

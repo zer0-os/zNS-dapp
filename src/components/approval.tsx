@@ -7,13 +7,18 @@ import { ethers, utils, BigNumberish } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsContracts } from '../lib/contracts';
-import { DomainContext, DomainStoreContext } from '../lib/useDomainStore';
+import {
+  DomainContext,
+  ApprovalToContext,
+  ApprovalFromContext,
+} from '../lib/useDomainStore';
 import { hexRegex } from '../lib/validation/validators';
 
 interface ApprovalProps {
   domainId: string;
   domainContext: DomainContext;
-  domainStoreContext: DomainStoreContext;
+  approvaltoContext: ApprovalToContext;
+  approvalFromContext: ApprovalFromContext;
 }
 
 const schema = z.object({
@@ -37,13 +42,15 @@ const schema = z.object({
 const Approve: React.FC<ApprovalProps> = ({
   domainId: _domainId,
   domainContext,
-  domainStoreContext,
+  approvalFromContext,
+  approvaltoContext,
 }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
   const { domain, refetchDomain } = domainContext;
-  const { refetchApprovedFrom, refetchApprovedTo } = domainStoreContext;
+  const { refetchApprovedFrom } = approvalFromContext;
+  const { refetchApprovedTo } = approvaltoContext;
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
