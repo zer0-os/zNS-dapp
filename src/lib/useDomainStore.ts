@@ -174,7 +174,7 @@ function useApprovedFrom(): {
     getApprovedFrom,
     { data, refetch, error },
   ] = useLazyQuery<ApprovedToData>(approvalQuery, {
-    variables: { owner: account },
+    variables: { from: account },
   });
 
   const approvedFrom: Maybe<Domain[]> = useMemo(() => {
@@ -190,9 +190,9 @@ function useApprovedFrom(): {
 
   useEffect(() => {
     if (refetch) {
-      refetch({ variables: { owner: account } });
+      refetch({ variables: { from: account } });
     } else if (account) {
-      getApprovedFrom({ variables: { owner: account } });
+      getApprovedFrom({ variables: { from: account } });
     }
   }, [account]);
   return { approvedFrom, refetchApprovedFrom: refetch! };
