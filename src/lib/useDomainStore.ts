@@ -156,9 +156,9 @@ function useApprovedTo(): {
 
   useEffect(() => {
     if (refetch) {
-      refetch({ variables: { owner: account } });
+      refetch({ variables: { to: account } });
     } else if (account) {
-      getApprovedTo({ variables: { owner: account } });
+      getApprovedTo({ variables: { to: account } });
     }
   }, [account]);
   return { approvedTo, refetchApprovedTo: refetch! };

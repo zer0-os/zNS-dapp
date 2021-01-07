@@ -7,7 +7,7 @@ import { ethers, utils, BigNumberish } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsContracts } from '../lib/contracts';
-import { DomainContext } from '../lib/useDomainStore';
+import { DomainContext, DomainStoreContext } from '../lib/useDomainStore';
 import { hexRegex } from '../lib/validation/validators';
 
 interface ApprovalProps {
@@ -41,6 +41,7 @@ const Approve: React.FC<ApprovalProps> = ({
   const { account } = context;
   const contracts = useZnsContracts();
   const { domain, refetchDomain } = domainContext;
+  const { useApprovedFrom, useApprovedTo } = DomainStoreContext;
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -58,7 +59,7 @@ const Approve: React.FC<ApprovalProps> = ({
           .then((txr) => txr.wait(1))
           .then(() => {
             //TODO subgraph Approval!
-            refetchDomain();
+            refetchDomain(), refetchApprovedFrom();
           });
       }
     },
