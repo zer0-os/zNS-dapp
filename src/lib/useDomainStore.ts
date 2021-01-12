@@ -12,6 +12,7 @@ interface Domain {
   children: string[];
   owner: string;
   controller: string;
+  approval: Maybe<string>;
 }
 
 interface ControlledDomainsData {
@@ -19,7 +20,14 @@ interface ControlledDomainsData {
 }
 
 interface DomainData {
-  domain: Domain;
+  domain: {
+    id: string;
+    domain: string;
+    children: string[];
+    owner: string;
+    controller: string;
+    approval?: string;
+  };
 }
 
 interface ApprovedToData {
@@ -37,7 +45,6 @@ const domainQuery = gql`
       domain
       children
       owner
-      approval
       controller
     }
   }
@@ -49,6 +56,7 @@ const controlledDomainsQuery = gql`
       id
       domain
       children
+      approval
       owner
       controller
     }
@@ -86,6 +94,9 @@ function useDomain(domain: string) {
     if (data) {
       return Maybe.of({
         ...data.domain,
+        approval: data.domain.approval
+          ? Maybe.of(data.domain.approval)
+          : Maybe.nothing(),
         owner: getAddress(data.domain.owner),
         controller: getAddress(data.domain.controller),
       });
