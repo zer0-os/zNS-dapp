@@ -19,7 +19,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   if (domain.isNothing()) return <p>Loading</p>;
-  console.table(domain);
   return (
     <>
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
