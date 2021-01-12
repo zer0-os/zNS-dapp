@@ -20,26 +20,28 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   if (domain.isNothing()) return <p>Loading</p>;
   return (
-    <>
+    <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
           <Create domainId={domain.value.id} domainContext={domainContext} />
           <Transfer domainId={domain.value.id} domainContext={domainContext} />
         </>
       ) : null}
-      <Link to={'/' + domain.value.domain.replace(/\./, '/')}>
-        Domain: {domain.value.domain}
-      </Link>
-      <div>
-        Children:
-        {domain.value.children.map((child) => (
-          <div key={child}>
-            <Link to={'/' + child.replace(/\./, '/')}>{child}</Link>
-          </div>
-        ))}
+      <div id="domainContainer">
+        <Link to={'/' + domain.value.domain.replace(/\./, '/')}>
+          Domain: {domain.value.domain}
+        </Link>
+        <div>
+          Children:
+          {domain.value.children.map((child) => (
+            <div key={child}>
+              <Link to={'/' + child.replace(/\./, '/')}>{child}</Link>
+            </div>
+          ))}
+        </div>
+        <div>Owner: {domain.value.owner}</div>
       </div>
-      <div>Owner: {domain.value.owner}</div>
-    </>
+    </div>
   );
 };
 
