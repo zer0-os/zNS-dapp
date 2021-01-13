@@ -21,7 +21,7 @@
 }
 
 .menu {
-  background-color: white;
+  background-color: grey;
   height: 100px;
   width: 100px;
   border-radius: 50%;
@@ -33,7 +33,8 @@
   left: 0;
   margin: auto;
   z-index: -1;
-  border: yellow;
+  border-color: yellow;
+  border: 2px solid;
   transition: 0.7s;
 }
 
