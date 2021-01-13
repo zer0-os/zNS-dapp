@@ -9,6 +9,7 @@ import Subdomains from './components/subdomains';
 import Owned from './components/owned';
 import { DomainCacheProvider } from './lib/useDomainCache';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import ClearIcon from '@material-ui/icons/Clear';
 
 const client = new ApolloClient({
   uri: 'http://localhost:8000/subgraphs/name/zer0-os/ZNS-subgraph',
@@ -40,7 +41,7 @@ function App() {
     <>
       <div>
         <button onClick={onClick}>
-          {connect ? 'Close' : 'Connect wallet'}
+          {connect ? <ClearIcon /> : 'Connect wallet'}
         </button>
         {connect && <Wallet />}
       </div>

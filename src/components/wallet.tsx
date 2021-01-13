@@ -1,4 +1,5 @@
 import React from 'react';
+import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRounded';
 import {
   Web3ReactProvider,
   useWeb3React,
@@ -239,81 +240,62 @@ export default function Wallet() {
 
   return (
     <>
-      <div className="walletContainer">
-        <div className="grid">
-          <Header />
+      <div className="toggle">
+        <i className="fa-plus">
+          {' '}
+          <PowerSettingsNewRoundedIcon />
+        </i>
+      </div>
+      <div className="menu">
+        <div>
+          {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
+            const currentConnector = connectorsByName[name];
+            const activating = currentConnector === activatingConnector;
+            const connected = currentConnector === connector;
+            const disabled =
+              !triedEager || !!activatingConnector || connected || !!error;
 
-          <div>
-            {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
-              const currentConnector = connectorsByName[name];
-              const activating = currentConnector === activatingConnector;
-              const connected = currentConnector === connector;
-              const disabled =
-                !triedEager || !!activatingConnector || connected || !!error;
-
-              return (
-                <button
-                  className="networkButtons"
-                  disabled={disabled}
-                  key={name}
-                  onClick={() => {
-                    setActivatingConnector(currentConnector);
-                    activate(connectorsByName[name]);
-                  }}
-                >
-                  <div className="buttons">
-                    {activating && (
-                      <Spinner
-                        color={'black'}
-                        style={{ height: '25%', marginLeft: '-1rem' }}
-                      />
-                    )}
-                  </div>
-                  {name}
-                </button>
-              );
-            })}
-          </div>
-          <div>
-            {(active || error) && (
+            return (
               <button
+                className="networkButtons"
+                disabled={disabled}
+                key={name}
                 onClick={() => {
-                  deactivate();
+                  setActivatingConnector(currentConnector);
+                  activate(connectorsByName[name]);
                 }}
               >
-                Deactivate
+                <div className="buttons">
+                  {activating && (
+                    <Spinner
+                      color={'black'}
+                      style={{ height: '25%', marginLeft: '-1rem' }}
+                    />
+                  )}
+                </div>
+                {name}
               </button>
-            )}
+            );
+          })}
+        </div>
+        <div>
+          {(active || error) && (
+            <button
+              onClick={() => {
+                deactivate();
+              }}
+            >
+              Deactivate
+            </button>
+          )}
 
-            {!!error && <h4>{getErrorMessage(error)}</h4>}
-          </div>
+          {!!error && <h4>{getErrorMessage(error)}</h4>}
+        </div>
 
-          <div>
-            {!!(library && account) && (
-              <button
-                onClick={() => {
-                  library
-                    .getSigner(account)
-                    .signMessage('👋')
-                    .then((signature: any) => {
-                      window.alert(`Success!\n\n${signature}`);
-                    })
-                    .catch((error: any) => {
-                      window.alert(
-                        'Failure!' +
-                          (error && error.message
-                            ? `\n\n${error.message}`
-                            : ''),
-                      );
-                    });
-                }}
-              >
-                Sign Message
-              </button>
-            )}
-            {!!(
-              connector === connectorsByName[ConnectorNames.Network] && chainId
-            ) && (
+        <div>
+          {!!(library && account) &&
+            connector === connectorsByName[ConnectorNames.Network] &&
+            chainId && (
               <button
                 onClick={() => {
                   (connector as any).changeChainId(chainId === 1 ? 4 : 1);
@@ -322,72 +304,71 @@ export default function Wallet() {
                 Switch Networks
               </button>
             )}
-            {connector === connectorsByName[ConnectorNames.WalletConnect] && (
-              <button
-                onClick={() => {
-                  (connector as any).close();
-                }}
-              >
-                Kill WalletConnect Session
-              </button>
-            )}
-            {connector === connectorsByName[ConnectorNames.WalletLink] && (
-              <button
-                onClick={() => {
-                  (connector as any).close();
-                }}
-              >
-                Kill WalletLink Session
-              </button>
-            )}
-            {connector === connectorsByName[ConnectorNames.Fortmatic] && (
-              <button
-                onClick={() => {
-                  (connector as any).close();
-                }}
-              >
-                Kill Fortmatic Session
-              </button>
-            )}
-            {connector === connectorsByName[ConnectorNames.Magic] && (
-              <button
-                onClick={() => {
-                  (connector as any).close();
-                }}
-              >
-                Kill Magic Session
-              </button>
-            )}
-            {connector === connectorsByName[ConnectorNames.Portis] && (
-              <>
-                {chainId !== undefined && (
-                  <button
-                    onClick={() => {
-                      (connector as any).changeNetwork(chainId === 1 ? 100 : 1);
-                    }}
-                  >
-                    Switch Networks
-                  </button>
-                )}
+          {connector === connectorsByName[ConnectorNames.WalletConnect] && (
+            <button
+              onClick={() => {
+                (connector as any).close();
+              }}
+            >
+              Kill WalletConnect Session
+            </button>
+          )}
+          {connector === connectorsByName[ConnectorNames.WalletLink] && (
+            <button
+              onClick={() => {
+                (connector as any).close();
+              }}
+            >
+              Kill WalletLink Session
+            </button>
+          )}
+          {connector === connectorsByName[ConnectorNames.Fortmatic] && (
+            <button
+              onClick={() => {
+                (connector as any).close();
+              }}
+            >
+              Kill Fortmatic Session
+            </button>
+          )}
+          {connector === connectorsByName[ConnectorNames.Magic] && (
+            <button
+              onClick={() => {
+                (connector as any).close();
+              }}
+            >
+              Kill Magic Session
+            </button>
+          )}
+          {connector === connectorsByName[ConnectorNames.Portis] && (
+            <>
+              {chainId !== undefined && (
                 <button
                   onClick={() => {
-                    (connector as any).close();
+                    (connector as any).changeNetwork(chainId === 1 ? 100 : 1);
                   }}
                 >
-                  Kill Portis Session
+                  Switch Networks
                 </button>
-              </>
-            )}
-            {connector === connectorsByName[ConnectorNames.Torus] && (
+              )}
               <button
                 onClick={() => {
                   (connector as any).close();
                 }}
               >
-                Kill Torus Session
+                Kill Portis Session
               </button>
-            )}
-          </div>
+            </>
+          )}
+          {connector === connectorsByName[ConnectorNames.Torus] && (
+            <button
+              onClick={() => {
+                (connector as any).close();
+              }}
+            >
+              Kill Torus Session
+            </button>
+          )}
         </div>
       </div>
     </>
