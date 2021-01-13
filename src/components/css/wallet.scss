@@ -1,47 +1,21 @@
-.toggle {
-  background-color: blue;
-  height: 100px;
-  width: 100px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  margin: auto;
-  text-align: center;
-  border-radius: 50%;
-  cursor: pointer;
+.wallet-root {
+  padding-top: 20px;
+  flex: 1 1 auto;
+  padding: 8px 24px;
+  overflow-y: auto;
 }
 
-.toggle i {
-  font-size: 60px;
-  color: white;
-  display: block;
-  transition: 0.7s;
+.walleT {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: inherit;
 }
 
-.menu {
-  background-color: grey;
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  transform: scale(3);
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  margin: auto;
-  z-index: -1;
-  border-color: yellow;
-  border: 2px solid;
-  transition: 0.7s;
-}
-
-.menu button {
-  display: inline-block;
-  position: absolute;
-  font-size: 15px;
-  color: white;
-  transition: 0.4s;
+.wallet-buttons {
+  padding: 12px 0px;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: inherit;
 }
