@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 import {
   Web3ReactProvider,
   useWeb3React,
   UnsupportedChainIdError,
-} from "@web3-react/core";
+} from '@web3-react/core';
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
-} from "@web3-react/injected-connector";
-import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from "@web3-react/walletconnect-connector";
-import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from "@web3-react/frame-connector";
-import { Web3Provider } from "@ethersproject/providers";
-import { formatEther } from "@ethersproject/units";
-import _ from "lodash";
-import { useEagerConnect, useInactiveListener } from "../lib/provider-hooks";
+} from '@web3-react/injected-connector';
+import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from '@web3-react/walletconnect-connector';
+import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from '@web3-react/frame-connector';
+import { Web3Provider } from '@ethersproject/providers';
+import { formatEther } from '@ethersproject/units';
+import _ from 'lodash';
+import { useEagerConnect, useInactiveListener } from '../lib/provider-hooks';
 import {
   injected,
   network,
@@ -27,23 +27,24 @@ import {
   magic,
   portis,
   torus,
-} from "../lib/connectors";
-import { Spinner } from "./spinner";
-import { AbstractConnector } from "@web3-react/abstract-connector";
+} from '../lib/connectors';
+import { Spinner } from './spinner';
+import { AbstractConnector } from '@web3-react/abstract-connector';
+import './css/wallet.scss';
 
 enum ConnectorNames {
-  Injected = "Injected",
-  Network = "Network",
-  WalletConnect = "WalletConnect",
-  WalletLink = "WalletLink",
-  Ledger = "Ledger",
-  Trezor = "Trezor",
-  Frame = "Frame",
-  Authereum = "Authereum",
-  Fortmatic = "Fortmatic",
-  Magic = "Magic",
-  Portis = "Portis",
-  Torus = "Torus",
+  Injected = 'Injected',
+  Network = 'Network',
+  WalletConnect = 'WalletConnect',
+  WalletLink = 'WalletLink',
+  Ledger = 'Ledger',
+  Trezor = 'Trezor',
+  Frame = 'Frame',
+  Authereum = 'Authereum',
+  Fortmatic = 'Fortmatic',
+  Magic = 'Magic',
+  Portis = 'Portis',
+  Torus = 'Torus',
 }
 
 const connectorsByName: {
@@ -65,7 +66,7 @@ const connectorsByName: {
 
 function getErrorMessage(error: Error) {
   if (error instanceof NoEthereumProviderError) {
-    return "No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.";
+    return 'No Ethereum browser extension detected, install MetaMask on desktop or visit from a dApp browser on mobile.';
   } else if (error instanceof UnsupportedChainIdError) {
     return "You're connected to an unsupported network.";
   } else if (
@@ -73,10 +74,10 @@ function getErrorMessage(error: Error) {
     error instanceof UserRejectedRequestErrorWalletConnect ||
     error instanceof UserRejectedRequestErrorFrame
   ) {
-    return "Please authorize this website to access your Ethereum account.";
+    return 'Please authorize this website to access your Ethereum account.';
   } else {
     console.error(error);
-    return "An unknown error occurred. Check the console for more details.";
+    return 'An unknown error occurred. Check the console for more details.';
   }
 }
 
@@ -86,10 +87,8 @@ function ChainId() {
   return (
     <>
       <span>Chain Id</span>
-      <span role="img" aria-label="chain">
-        ⛓
-      </span>
-      <span>{chainId ?? ""}</span>
+      <span role="img" aria-label="chain"></span>
+      <span>{chainId ?? ''}</span>
     </>
   );
 }
@@ -118,11 +117,11 @@ function BlockNumber() {
       const updateBlockNumber = (blockNumber: number) => {
         setBlockNumber(blockNumber);
       };
-      library.on("block", updateBlockNumber);
+      library.on('block', updateBlockNumber);
 
       return () => {
         stale = true;
-        library.removeListener("block", updateBlockNumber);
+        library.removeListener('block', updateBlockNumber);
         setBlockNumber(undefined);
       };
     }
@@ -131,10 +130,8 @@ function BlockNumber() {
   return (
     <>
       <span>Block Number</span>
-      <span role="img" aria-label="numbers">
-        🔢
-      </span>
-      <span>{blockNumber === null ? "Error" : blockNumber ?? ""}</span>
+      <span role="img" aria-label="numbers"></span>
+      <span>{blockNumber === null ? 'Error' : blockNumber ?? ''}</span>
     </>
   );
 }
@@ -145,17 +142,15 @@ function Account() {
   return (
     <>
       <span>Account</span>
-      <span role="img" aria-label="robot">
-        🤖
-      </span>
+      <span role="img" aria-label="robot"></span>
       <span>
         {account === null
-          ? "-"
+          ? '-'
           : account
           ? `${account.substring(0, 6)}...${account.substring(
-              account.length - 4
+              account.length - 4,
             )}`
-          : ""}
+          : ''}
       </span>
     </>
   );
@@ -192,11 +187,9 @@ function Balance() {
   return (
     <>
       <span>Balance</span>
-      <span role="img" aria-label="gold">
-        💰
-      </span>
+
       <span>
-        {balance === null ? "Error" : balance ? `Ξ${formatEther(balance)}` : ""}
+        {balance === null ? 'Error' : balance ? `Ξ${formatEther(balance)}` : ''}
       </span>
     </>
   );
@@ -207,24 +200,12 @@ function Header() {
 
   return (
     <>
-      <h1 style={{ margin: "1rem", textAlign: "right" }}>
-        {active ? "🟢" : error ? "🔴" : "🟠"}
-      </h1>
-      <h3
-        style={{
-          display: "grid",
-          gridGap: "1rem",
-          gridTemplateColumns: "1fr min-content 1fr",
-          maxWidth: "20rem",
-          lineHeight: "2rem",
-          margin: "auto",
-        }}
-      >
-        <ChainId />
-        <BlockNumber />
-        <Account />
-        <Balance />
-      </h3>
+      <h4>{active ? '🟢' : error ? '🔴' : '🟠'}</h4>
+
+      <ChainId />
+      <BlockNumber />
+      <Account />
+      <Balance />
     </>
   );
 }
@@ -258,256 +239,156 @@ export default function Wallet() {
 
   return (
     <>
-      <Header />
-      <hr style={{ margin: "2rem" }} />
-      <div
-        style={{
-          display: "grid",
-          gridGap: "1rem",
-          gridTemplateColumns: "1fr 1fr",
-          maxWidth: "20rem",
-          margin: "auto",
-        }}
-      >
-        {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
-          const currentConnector = connectorsByName[name];
-          const activating = currentConnector === activatingConnector;
-          const connected = currentConnector === connector;
-          const disabled =
-            !triedEager || !!activatingConnector || connected || !!error;
+      <div className="walletContainer">
+        <div className="grid">
+          <Header />
 
-          return (
-            <button
-              style={{
-                height: "3rem",
-                borderRadius: "1rem",
-                borderColor: activating
-                  ? "orange"
-                  : connected
-                  ? "green"
-                  : "unset",
-                cursor: disabled ? "unset" : "pointer",
-                position: "relative",
-              }}
-              disabled={disabled}
-              key={name}
-              onClick={() => {
-                setActivatingConnector(currentConnector);
-                activate(connectorsByName[name]);
-              }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  top: "0",
-                  left: "0",
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  color: "black",
-                  margin: "0 0 0 1rem",
+          <div>
+            {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
+              const currentConnector = connectorsByName[name];
+              const activating = currentConnector === activatingConnector;
+              const connected = currentConnector === connector;
+              const disabled =
+                !triedEager || !!activatingConnector || connected || !!error;
+
+              return (
+                <button
+                  className="networkButtons"
+                  disabled={disabled}
+                  key={name}
+                  onClick={() => {
+                    setActivatingConnector(currentConnector);
+                    activate(connectorsByName[name]);
+                  }}
+                >
+                  <div className="buttons">
+                    {activating && (
+                      <Spinner
+                        color={'black'}
+                        style={{ height: '25%', marginLeft: '-1rem' }}
+                      />
+                    )}
+                  </div>
+                  {name}
+                </button>
+              );
+            })}
+          </div>
+          <div>
+            {(active || error) && (
+              <button
+                onClick={() => {
+                  deactivate();
                 }}
               >
-                {activating && (
-                  <Spinner
-                    color={"black"}
-                    style={{ height: "25%", marginLeft: "-1rem" }}
-                  />
-                )}
-                {connected && (
-                  <span role="img" aria-label="check">
-                    ✅
-                  </span>
-                )}
-              </div>
-              {name}
-            </button>
-          );
-        })}
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        {(active || error) && (
-          <button
-            style={{
-              height: "3rem",
-              marginTop: "2rem",
-              borderRadius: "1rem",
-              borderColor: "red",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              deactivate();
-            }}
-          >
-            Deactivate
-          </button>
-        )}
+                Deactivate
+              </button>
+            )}
 
-        {!!error && (
-          <h4 style={{ marginTop: "1rem", marginBottom: "0" }}>
-            {getErrorMessage(error)}
-          </h4>
-        )}
-      </div>
+            {!!error && <h4>{getErrorMessage(error)}</h4>}
+          </div>
 
-      <hr style={{ margin: "2rem" }} />
-
-      <div
-        style={{
-          display: "grid",
-          gridGap: "1rem",
-          gridTemplateColumns: "fit-content",
-          maxWidth: "20rem",
-          margin: "auto",
-        }}
-      >
-        {!!(library && account) && (
-          <button
-            style={{
-              height: "3rem",
-              borderRadius: "1rem",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              library
-                .getSigner(account)
-                .signMessage("👋")
-                .then((signature: any) => {
-                  window.alert(`Success!\n\n${signature}`);
-                })
-                .catch((error: any) => {
-                  window.alert(
-                    "Failure!" +
-                      (error && error.message ? `\n\n${error.message}` : "")
-                  );
-                });
-            }}
-          >
-            Sign Message
-          </button>
-        )}
-        {!!(
-          connector === connectorsByName[ConnectorNames.Network] && chainId
-        ) && (
-          <button
-            style={{
-              height: "3rem",
-              borderRadius: "1rem",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              (connector as any).changeChainId(chainId === 1 ? 4 : 1);
-            }}
-          >
-            Switch Networks
-          </button>
-        )}
-        {connector === connectorsByName[ConnectorNames.WalletConnect] && (
-          <button
-            style={{
-              height: "3rem",
-              borderRadius: "1rem",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              (connector as any).close();
-            }}
-          >
-            Kill WalletConnect Session
-          </button>
-        )}
-        {connector === connectorsByName[ConnectorNames.WalletLink] && (
-          <button
-            style={{
-              height: "3rem",
-              borderRadius: "1rem",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              (connector as any).close();
-            }}
-          >
-            Kill WalletLink Session
-          </button>
-        )}
-        {connector === connectorsByName[ConnectorNames.Fortmatic] && (
-          <button
-            style={{
-              height: "3rem",
-              borderRadius: "1rem",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              (connector as any).close();
-            }}
-          >
-            Kill Fortmatic Session
-          </button>
-        )}
-        {connector === connectorsByName[ConnectorNames.Magic] && (
-          <button
-            style={{
-              height: "3rem",
-              borderRadius: "1rem",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              (connector as any).close();
-            }}
-          >
-            Kill Magic Session
-          </button>
-        )}
-        {connector === connectorsByName[ConnectorNames.Portis] && (
-          <>
-            {chainId !== undefined && (
+          <div>
+            {!!(library && account) && (
               <button
-                style={{
-                  height: "3rem",
-                  borderRadius: "1rem",
-                  cursor: "pointer",
-                }}
                 onClick={() => {
-                  (connector as any).changeNetwork(chainId === 1 ? 100 : 1);
+                  library
+                    .getSigner(account)
+                    .signMessage('👋')
+                    .then((signature: any) => {
+                      window.alert(`Success!\n\n${signature}`);
+                    })
+                    .catch((error: any) => {
+                      window.alert(
+                        'Failure!' +
+                          (error && error.message
+                            ? `\n\n${error.message}`
+                            : ''),
+                      );
+                    });
+                }}
+              >
+                Sign Message
+              </button>
+            )}
+            {!!(
+              connector === connectorsByName[ConnectorNames.Network] && chainId
+            ) && (
+              <button
+                onClick={() => {
+                  (connector as any).changeChainId(chainId === 1 ? 4 : 1);
                 }}
               >
                 Switch Networks
               </button>
             )}
-            <button
-              style={{
-                height: "3rem",
-                borderRadius: "1rem",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                (connector as any).close();
-              }}
-            >
-              Kill Portis Session
-            </button>
-          </>
-        )}
-        {connector === connectorsByName[ConnectorNames.Torus] && (
-          <button
-            style={{
-              height: "3rem",
-              borderRadius: "1rem",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              (connector as any).close();
-            }}
-          >
-            Kill Torus Session
-          </button>
-        )}
+            {connector === connectorsByName[ConnectorNames.WalletConnect] && (
+              <button
+                onClick={() => {
+                  (connector as any).close();
+                }}
+              >
+                Kill WalletConnect Session
+              </button>
+            )}
+            {connector === connectorsByName[ConnectorNames.WalletLink] && (
+              <button
+                onClick={() => {
+                  (connector as any).close();
+                }}
+              >
+                Kill WalletLink Session
+              </button>
+            )}
+            {connector === connectorsByName[ConnectorNames.Fortmatic] && (
+              <button
+                onClick={() => {
+                  (connector as any).close();
+                }}
+              >
+                Kill Fortmatic Session
+              </button>
+            )}
+            {connector === connectorsByName[ConnectorNames.Magic] && (
+              <button
+                onClick={() => {
+                  (connector as any).close();
+                }}
+              >
+                Kill Magic Session
+              </button>
+            )}
+            {connector === connectorsByName[ConnectorNames.Portis] && (
+              <>
+                {chainId !== undefined && (
+                  <button
+                    onClick={() => {
+                      (connector as any).changeNetwork(chainId === 1 ? 100 : 1);
+                    }}
+                  >
+                    Switch Networks
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    (connector as any).close();
+                  }}
+                >
+                  Kill Portis Session
+                </button>
+              </>
+            )}
+            {connector === connectorsByName[ConnectorNames.Torus] && (
+              <button
+                onClick={() => {
+                  (connector as any).close();
+                }}
+              >
+                Kill Torus Session
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );
