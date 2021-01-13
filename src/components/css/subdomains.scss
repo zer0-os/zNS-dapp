@@ -1,5 +1,11 @@
 #subdomainsContainer {
-  display: flex;
+  position: relative;
+  display: inline-flex;
   flex-direction: column;
-  margin: 10px auto 10px;
+  align-items: left;
+  left: 20%;
+  margin: 15px, none, 15px;
+  padding: 15px;
+  border: 1px black solid;
+  min-width: 480px;
 }

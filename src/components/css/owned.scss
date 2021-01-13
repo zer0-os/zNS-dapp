@@ -1,0 +1,11 @@
+#ownedContainer {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: left;
+  left: 20%;
+  margin: 15px, none, 15px;
+  padding: 15px;
+  border: 1px black solid;
+  min-width: 480px;
+}

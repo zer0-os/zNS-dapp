@@ -38,8 +38,12 @@ function App() {
   };
   return (
     <>
-      <button onClick={onClick}>{connect ? 'Close' : 'Connect wallet'}</button>
-      {connect && <Wallet />}
+      <div>
+        <button onClick={onClick}>
+          {connect ? 'Close' : 'Connect wallet'}
+        </button>
+        {connect && <Wallet />}
+      </div>
       <Router>
         <Route
           render={({ location, match }) => (
@@ -55,8 +59,13 @@ function App() {
                 <Owned />
               </Route>
               <Route path="/">
-                <Subdomains domain={'_root'} />
-                <Owned />
+                {/* TODO: move to styling file */}
+                <div
+                  style={{ display: 'inline-flex', flexDirection: 'column' }}
+                >
+                  <Subdomains domain={'_root'} />
+                  <Owned />
+                </div>
               </Route>
             </Switch>
           )}
