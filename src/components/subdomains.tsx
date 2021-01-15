@@ -6,8 +6,15 @@ import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
 import Transfer from './transferDomains';
 import Create from './create';
+import { DataGrid, ColDef, ValueGetterParams } from '@material-ui/data-grid';
+import MUIDataTable from 'mui-datatables';
 
 interface SubdomainsProps {
+  domain: string;
+}
+
+interface RowProps {
+  id: number;
   domain: string;
 }
 
@@ -19,6 +26,19 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   if (domain.isNothing()) return <p>Loading</p>;
+
+  const columns = ['Domain'];
+
+  const data = domain.value.children.map((child, i) => [child.toString()]);
+
+  // const handleRowClick: FC<RowProps> = ({row: _row}) => {
+  //   this.props.history.push(`/${_row}`)
+  // }
+
+  const options = {
+    onRowClick: (rowData: any) => console.log(rowData),
+  };
+
   return (
     <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
@@ -31,15 +51,25 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         <Link to={'/' + domain.value.domain.replace(/\./, '/')}>
           Domain: {domain.value.domain}
         </Link>
-        <div>
+        {/* old subdomains code */}
+        {/* <div>
           Children:
           {domain.value.children.map((child) => (
             <div key={child}>
               <Link to={'/' + child.replace(/\./, '/')}>{child}</Link>
             </div>
           ))}
-        </div>
+        </div> */}
         <div>Owner: {domain.value.owner}</div>
+        <div style={{ minHeight: '500px', minWidth: '500px' }}>
+          {' '}
+          <MUIDataTable
+            title={'Domains'}
+            columns={columns}
+            data={data}
+            options={options}
+          />
+        </div>
       </div>
     </div>
   );
