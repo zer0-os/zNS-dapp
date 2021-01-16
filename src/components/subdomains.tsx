@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
 import Transfer from './transferDomains';
@@ -25,18 +26,21 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+  const history = useHistory();
   if (domain.isNothing()) return <p>Loading</p>;
 
-  const columns = ['Domain'];
+  const columns = [''];
 
   const data = domain.value.children.map((child, i) => [child.toString()]);
 
-  // const handleRowClick: FC<RowProps> = ({row: _row}) => {
-  //   this.props.history.push(`/${_row}`)
-  // }
-
   const options = {
-    onRowClick: (rowData: any) => console.log(rowData),
+    onRowClick: (rowData: any) =>
+      history.push({
+        pathname: rowData[0],
+      }),
+    filter: false,
+    selectableRowsHideCheckboxes: true,
+    sort: false,
   };
 
   return (
@@ -64,7 +68,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         <div style={{ minHeight: '500px', minWidth: '500px' }}>
           {' '}
           <MUIDataTable
-            title={'Domains'}
+            title={'Children'}
             columns={columns}
             data={data}
             options={options}
