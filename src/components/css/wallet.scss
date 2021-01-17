@@ -43,9 +43,13 @@
 .button-grid {
   display: grid;
   gap: 1rem;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 33.3% 33.3% 33.3%;
   max-width: 20rem;
   margin: auto;
+}
+
+#content div {
+  padding: 30px;
 }
 
 #overlay {

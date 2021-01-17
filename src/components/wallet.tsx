@@ -256,27 +256,23 @@ export default function Wallet() {
 
             return (
               <div className="button-grid">
-                <div className="test">
-                  <Grid item>
-                    <Button
-                      className="networkButtons"
-                      disabled={disabled}
-                      key={name}
-                      onClick={() => {
-                        setActivatingConnector(currentConnector);
-                        activate(connectorsByName[name]);
-                      }}
-                    >
-                      {activating && (
-                        <Spinner
-                          color={'black'}
-                          style={{ height: '25%', marginLeft: '-1rem' }}
-                        />
-                      )}
-                      {name}
-                    </Button>
-                  </Grid>
-                </div>
+                <Button
+                  className="networkButtons"
+                  disabled={disabled}
+                  key={name}
+                  onClick={() => {
+                    setActivatingConnector(currentConnector);
+                    activate(connectorsByName[name]);
+                  }}
+                >
+                  {activating && (
+                    <Spinner
+                      color={'black'}
+                      style={{ height: '25%', marginLeft: '-1rem' }}
+                    />
+                  )}
+                  {name}
+                </Button>
               </div>
             );
           })}
