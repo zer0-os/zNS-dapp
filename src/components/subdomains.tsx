@@ -7,9 +7,7 @@ import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
 import Transfer from './transferDomains';
 import Create from './create';
-import { DataGrid, ColDef, ValueGetterParams } from '@material-ui/data-grid';
-import MUIDataTable from 'mui-datatables';
-
+import { Table } from 'antd';
 interface SubdomainsProps {
   domain: string;
 }
@@ -29,8 +27,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const history = useHistory();
   if (domain.isNothing()) return <p>Loading</p>;
 
-  const columns = [''];
-
   const data = domain.value.children.map((child, i) => [child.toString()]);
 
   const options = {
@@ -42,6 +38,66 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     selectableRowsHideCheckboxes: true,
     sort: false,
   };
+
+  const dataSource = [
+    {
+      key: '1',
+      name: data,
+    },
+    {
+      key: '1',
+      volume: 'N/A',
+    },
+  ];
+
+  const columns = [
+    {
+      title: '#',
+      dataIndex: '#',
+      key: '#',
+    },
+
+    {
+      title: 'Asset',
+      dataIndex: 'Asset',
+      key: 'Asset',
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+    },
+    {
+      title: 'Volume',
+      dataIndex: 'Volume',
+      key: 'Volume',
+    },
+    {
+      title: '24Hr',
+      dataIndex: '24Hr',
+      key: '24Hr',
+    },
+    {
+      title: '7d',
+      dataIndex: '7d',
+      key: '7d',
+    },
+    {
+      title: 'Market Cap',
+      dataIndex: 'Market Cap',
+      key: 'Market Cap',
+    },
+    {
+      title: 'Last 7 days',
+      dataIndex: 'Last 7 days',
+      key: 'Last 7 days',
+    },
+    {
+      title: 'Trade',
+      dataIndex: 'Trade',
+      key: 'Trade',
+    },
+  ];
 
   return (
     <div id="subdomainsContainer">
@@ -65,15 +121,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           ))}
         </div> */}
         <div>Owner: {domain.value.owner}</div>
-        <div style={{ minHeight: '500px', minWidth: '500px' }}>
-          {' '}
-          <MUIDataTable
-            title={'Children'}
-            columns={columns}
-            data={data}
-            options={options}
-          />
-        </div>
+        <Table dataSource={dataSource} columns={columns} />
       </div>
     </div>
   );
