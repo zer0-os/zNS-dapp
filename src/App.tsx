@@ -67,7 +67,7 @@ function App() {
                     style={{ display: 'inline-flex', flexDirection: 'column' }}
                   >
                     <Subdomains domain={'_root'} />
-                    <Owned />
+                    {/* <Owned /> */}
                   </div>
                 </Route>
               </Switch>

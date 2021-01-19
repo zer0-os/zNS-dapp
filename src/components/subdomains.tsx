@@ -113,9 +113,9 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         </>
       ) : null}
       <div id="domainContainer">
-        <Link to={'/' + domain.value.domain.replace(/\./, '/')}>
+        {/* <Link to={'/' + domain.value.domain.replace(/\./, '/')}>
           Domain: {domain.value.domain}
-        </Link>
+        </Link> */}
         {/* old subdomains code */}
         {/* <div>
           Children:
@@ -125,7 +125,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
             </div>
           ))}
         </div> */}
-        <div>Owner: {domain.value.owner}</div>
+        {/* <div>Owner: {domain.value.owner}</div> */}
         <Table
           dataSource={dataSource}
           columns={columns}
