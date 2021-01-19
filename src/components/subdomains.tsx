@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Link } from 'react-router-dom';
@@ -8,16 +8,22 @@ import { useDomainCache } from '../lib/useDomainCache';
 import Transfer from './transferDomains';
 import Create from './create';
 import { Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
 interface SubdomainsProps {
   domain: string;
 }
 
+interface ColumnProps {
+  key: number;
+  name: string;
+}
 interface RowProps {
   id: number;
   domain: string;
 }
 
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
+  const [values, setValues] = useState([]);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
@@ -28,6 +34,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   if (domain.isNothing()) return <p>Loading</p>;
 
   const data = domain.value.children.map((child, i) => [child.toString()]);
+  console.log(data);
 
   const options = {
     onRowClick: (rowData: any) =>
@@ -41,11 +48,9 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
 
   const dataSource = [
     {
-      key: '1',
-      name: data,
-    },
-    {
-      key: '1',
+      key: domain.value.id,
+      assest: 'N/A',
+      name: domain.value.children,
       volume: 'N/A',
     },
   ];
@@ -59,8 +64,8 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
 
     {
       title: 'Asset',
-      dataIndex: 'Asset',
-      key: 'Asset',
+      dataIndex: 'asset',
+      key: 'asset',
     },
     {
       title: 'Name',
@@ -69,8 +74,8 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     },
     {
       title: 'Volume',
-      dataIndex: 'Volume',
-      key: 'Volume',
+      dataIndex: 'volume',
+      key: 'volume',
     },
     {
       title: '24Hr',
@@ -84,18 +89,18 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     },
     {
       title: 'Market Cap',
-      dataIndex: 'Market Cap',
-      key: 'Market Cap',
+      dataIndex: 'market Cap',
+      key: 'market Cap',
     },
     {
       title: 'Last 7 days',
-      dataIndex: 'Last 7 days',
-      key: 'Last 7 days',
+      dataIndex: 'last 7 days',
+      key: 'last 7 days',
     },
     {
       title: 'Trade',
-      dataIndex: 'Trade',
-      key: 'Trade',
+      dataIndex: 'trade',
+      key: 'trade',
     },
   ];
 
@@ -121,7 +126,14 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           ))}
         </div> */}
         <div>Owner: {domain.value.owner}</div>
-        <Table dataSource={dataSource} columns={columns} />
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          size="middle"
+          bordered
+          title={() => 'Domain Table Header'}
+          footer={() => 'Domain Table Footer'}
+        />
       </div>
     </div>
   );

@@ -9,8 +9,8 @@ import Subdomains from './components/subdomains';
 import Owned from './components/owned';
 import { DomainCacheProvider } from './lib/useDomainCache';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import ClearIcon from '@material-ui/icons/Clear';
-import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRounded';
+import { PoweroffOutlined } from '@ant-design/icons';
+import { Layout } from 'antd';
 
 const client = new ApolloClient({
   uri: 'http://localhost:8000/subgraphs/name/zer0-os/ZNS-subgraph',
@@ -40,39 +40,41 @@ function App() {
   };
   return (
     <>
-      <div>
-        <button onClick={onClick}>
-          {connect ? <ClearIcon /> : <PowerSettingsNewRoundedIcon />}
-        </button>
-        {connect && <Wallet />}
-      </div>
-      <Router>
-        <Route
-          render={({ location, match }) => (
-            <Switch>
-              <Route path="/:id">
-                <Subdomains
-                  //regex: removes trailing /, then replaces / with .
-                  domain={location.pathname
-                    .substring(1)
-                    .replace(/\/+$/, '')
-                    .replace(/\//, '.')}
-                />
-                <Owned />
-              </Route>
-              <Route path="/">
-                {/* TODO: move to styling file */}
-                <div
-                  style={{ display: 'inline-flex', flexDirection: 'column' }}
-                >
-                  <Subdomains domain={'_root'} />
+      <Layout>
+        <div className="button-n">
+          <button onClick={onClick}>
+            {connect ? <PoweroffOutlined /> : <PoweroffOutlined />}
+          </button>
+          {connect && <Wallet />}
+        </div>
+        <Router>
+          <Route
+            render={({ location, match }) => (
+              <Switch>
+                <Route path="/:id">
+                  <Subdomains
+                    //regex: removes trailing /, then replaces / with .
+                    domain={location.pathname
+                      .substring(1)
+                      .replace(/\/+$/, '')
+                      .replace(/\//, '.')}
+                  />
                   <Owned />
-                </div>
-              </Route>
-            </Switch>
-          )}
-        />
-      </Router>
+                </Route>
+                <Route path="/">
+                  {/* TODO: move to styling file */}
+                  <div
+                    style={{ display: 'inline-flex', flexDirection: 'column' }}
+                  >
+                    <Subdomains domain={'_root'} />
+                    <Owned />
+                  </div>
+                </Route>
+              </Switch>
+            )}
+          />
+        </Router>
+      </Layout>
     </>
   );
 }
