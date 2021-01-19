@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsContracts } from '../lib/contracts';
@@ -7,8 +7,7 @@ import { zodResolver } from '../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { DomainContext } from '../lib/useDomainStore';
 import { subdomainRegex } from '../lib/validation/validators';
-import ClearIcon from '@material-ui/icons/Clear';
-import './css/create.scss';
+import { Modal, Button } from 'antd';
 
 interface CreateProps {
   domainId: string;
@@ -55,22 +54,14 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
   if (domain.isNothing() || domain.value.owner !== account) return null;
 
   return (
-    <div className="modal-create">
-      <div className="create-header">
-        <h1 className="create">Create Subdomain</h1>
-        <span className="close-btn">
-          <ClearIcon />
-        </span>
-      </div>
-      <div className="create-content">
-        <form onSubmit={handleSubmit(({ child }) => _create(child))}>
-          <div>
-            <button type="submit"> Create Domain</button>
-            <input name={'child'} ref={register} placeholder="child domain" />
-          </div>
-        </form>
-      </div>
-    </div>
+    <>
+      <form onSubmit={handleSubmit(({ child }) => _create(child))}>
+        <div className="create-button">
+          <button type="submit"> Create Domain</button>
+          <input name={'child'} ref={register} placeholder="child domain" />
+        </div>
+      </form>
+    </>
   );
 };
 

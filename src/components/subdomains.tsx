@@ -9,6 +9,7 @@ import Transfer from './transferDomains';
 import Create from './create';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { Modal, Button } from 'antd';
 interface SubdomainsProps {
   domain: string;
 }
@@ -23,7 +24,8 @@ interface RowProps {
 }
 
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
-  const [values, setValues] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isTransferVisible, setTransferVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
@@ -104,12 +106,66 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     },
   ];
 
+  const showTransfer = () => {
+    setTransferVisible(true);
+  };
+
+  const transferOk = () => {
+    setTransferVisible(false);
+  };
+
+  const transferCancel = () => {
+    setTransferVisible(false);
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
-          <Create domainId={domain.value.id} domainContext={domainContext} />
-          <Transfer domainId={domain.value.id} domainContext={domainContext} />
+          <div>
+            <Button type="primary" onClick={showModal}>
+              Subdomain Modal Btn
+            </Button>
+            <Modal
+              title="subdomain"
+              visible={isModalVisible}
+              onOk={handleOk}
+              onCancel={handleCancel}
+            >
+              <Create
+                domainId={domain.value.id}
+                domainContext={domainContext}
+              />
+            </Modal>
+          </div>
+          <div>
+            <Button type="primary" onClick={showTransfer}>
+              Transfer Modal Btn
+            </Button>
+            <Modal
+              title="transfer"
+              visible={isTransferVisible}
+              onOk={transferOk}
+              onCancel={transferCancel}
+            >
+              <Transfer
+                domainId={domain.value.id}
+                domainContext={domainContext}
+              />
+            </Modal>
+          </div>
         </>
       ) : null}
       <div id="domainContainer">
@@ -129,7 +185,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         <Table
           dataSource={dataSource}
           columns={columns}
-          size="middle"
+          size="small"
           bordered
           title={() => 'Domain Table Header'}
           footer={() => 'Domain Table Footer'}
