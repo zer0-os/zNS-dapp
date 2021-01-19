@@ -43,8 +43,12 @@
 .button-grid {
   display: grid;
   gap: 1rem;
-  grid-template-columns: 33.3% 33.3% 33.3%;
+  grid-template-columns: 1fr 1fr;
   max-width: 20rem;
+  margin: auto;
+}
+
+.MuiButtonBase-root {
   margin: auto;
 }
 

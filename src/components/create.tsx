@@ -7,6 +7,8 @@ import { zodResolver } from '../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { DomainContext } from '../lib/useDomainStore';
 import { subdomainRegex } from '../lib/validation/validators';
+import ClearIcon from '@material-ui/icons/Clear';
+import './css/create.scss';
 
 interface CreateProps {
   domainId: string;
@@ -16,7 +18,7 @@ interface CreateProps {
 const schema = z.object({
   child: z
     .string()
-    .regex(subdomainRegex, 'Subdomain must only contain alphanumeric letters')
+    .regex(subdomainRegex, 'Subdomain must only contain alphanumeric letters'),
 });
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
@@ -30,30 +32,45 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
   const { account } = context;
   const contracts = useZnsContracts();
 
-  const _create = useCallback((child: string) => {
-    if (account && contracts.isJust() && domain.isJust())
-      contracts.value.registrar
-        .createDomain(
-          domain.value.domain === '_root' ? child : domain.value.domain + '.' + child,
-          account,
-          account,
-          'some ref',
-        )
-        .then((txr) => txr.wait(1))
-        .then(() => {
-          refetchDomain();
-        });
-  }, [contracts, account]);
+  const _create = useCallback(
+    (child: string) => {
+      if (account && contracts.isJust() && domain.isJust())
+        contracts.value.registrar
+          .createDomain(
+            domain.value.domain === '_root'
+              ? child
+              : domain.value.domain + '.' + child,
+            account,
+            account,
+            'some ref',
+          )
+          .then((txr) => txr.wait(1))
+          .then(() => {
+            refetchDomain();
+          });
+    },
+    [contracts, account],
+  );
 
   if (domain.isNothing() || domain.value.owner !== account) return null;
 
   return (
-    <form onSubmit={handleSubmit(({ child }) => _create(child))}>
-      <div>
-        <button type="submit"> Create Domain</button>
-        <input name={'child'} ref={register} placeholder="child domain" />
+    <div className="modal-create">
+      <div className="create-header">
+        <h1 className="create">Create Subdomain</h1>
+        <span className="close-btn">
+          <ClearIcon />
+        </span>
       </div>
-    </form>
+      <div className="create-content">
+        <form onSubmit={handleSubmit(({ child }) => _create(child))}>
+          <div>
+            <button type="submit"> Create Domain</button>
+            <input name={'child'} ref={register} placeholder="child domain" />
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };
 
