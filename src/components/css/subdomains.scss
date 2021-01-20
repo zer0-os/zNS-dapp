@@ -12,13 +12,38 @@
 
 @import '~antd/dist/antd.css';
 
-.btn-container {
-  display: flex;
-  justify-content: end;
-  justify-content: space-around;
-  border: 2px solid blue;
-  white-space: 3px;
+.big-btn {
+  display: flexbox;
+  justify-content: flex-start;
+  left: 90%;
 }
 
-.tra-btn {
+.btn-sub {
+  background: none;
+  color: #ccc;
+  width: 100px;
+  height: 50px;
+  border: 1px solid #76b1ce;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: 0.6s;
+  overflow: hidden;
+}
+
+.transfer-btn {
+  background: none;
+  color: #ccc;
+  width: 100px;
+  height: 50px;
+  border: 1px solid #76b1ce;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: 0.6s;
+  overflow: hidden;
+}
+
+.btn-container2 {
+}
+
+.ant-btn-primary {
 }

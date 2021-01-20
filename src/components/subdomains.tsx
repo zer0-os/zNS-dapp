@@ -136,15 +136,11 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
-          <div className="btn-container">
-            <div className="sub-btn">
-              <Button
-                className="button-sub"
-                type="primary"
-                onClick={showSubdomain}
-              >
+          <div className="big-btn">
+            <div className="btn-container">
+              <button className="btn-sub" onClick={showSubdomain}>
                 Subdomain Modal Btn
-              </Button>
+              </button>
               <Modal
                 title="subdomain"
                 visible={isSubdomainVisible}
@@ -157,11 +153,10 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
                 />
               </Modal>
             </div>
-
-            <div className="transfer-btn">
-              <Button className="tra-btn" type="primary" onClick={showTransfer}>
+            <div className="btn-container2">
+              <button className="transfer-btn" onClick={showTransfer}>
                 Transfer Modal Btn
-              </Button>
+              </button>
               <Modal
                 title="transfer"
                 visible={isTransferVisible}
