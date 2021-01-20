@@ -24,7 +24,7 @@ interface RowProps {
 }
 
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
@@ -118,16 +118,16 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     setTransferVisible(false);
   };
 
-  const showModal = () => {
-    setIsModalVisible(true);
+  const showSubdomain = () => {
+    setSubdomainVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const subdomainOk = () => {
+    setSubdomainVisible(false);
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
+  const subdomainCancel = () => {
+    setSubdomainVisible(false);
   };
 
   return (
@@ -135,14 +135,14 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
           <div>
-            <Button type="primary" onClick={showModal}>
+            <Button type="primary" onClick={showSubdomain}>
               Subdomain Modal Btn
             </Button>
             <Modal
               title="subdomain"
-              visible={isModalVisible}
-              onOk={handleOk}
-              onCancel={handleCancel}
+              visible={isSubdomainVisible}
+              onOk={subdomainOk}
+              onCancel={subdomainCancel}
             >
               <Create
                 domainId={domain.value.id}
