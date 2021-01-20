@@ -189,10 +189,66 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           columns={columns}
           size="small"
           bordered
-          style={{ maxWidth: '80%' }}
           title={() => 'Domain Table Header'}
           footer={() => 'Domain Table Footer'}
         />
+      </div>
+      <div style={{ background: '#641f29', height: '40px', width: '80%' }}>
+        641f29
+      </div>
+      <div style={{ background: '#cf7571', height: '40px', width: '80%' }}>
+        cf7571
+      </div>
+      <div style={{ background: '#171730', height: '40px', width: '80%' }}>
+        171730
+      </div>
+      <div style={{ background: '#953338', height: '40px', width: '80%' }}>
+        953338
+      </div>
+      <div style={{ background: '#8f6554', height: '40px', width: '80%' }}>
+        8f6554
+      </div>
+      <div style={{ background: '#584362', height: '40px', width: '80%' }}>
+        584362
+      </div>
+      <div style={{ background: '#754735', height: '40px', width: '80%' }}>
+        754735
+      </div>
+      <div style={{ background: '#8e7384', height: '40px', width: '80%' }}>
+        8e7384
+      </div>
+      <div style={{ background: '#979b9f', height: '40px', width: '80%' }}>
+        979b9f
+      </div>
+      <div style={{ background: '#1a3344', height: '40px', width: '80%' }}>
+        1a3344
+      </div>
+      <div style={{ background: '#0f1619', height: '40px', width: '80%' }}>
+        0f1619
+      </div>
+      <div style={{ background: '#224564', height: '40px', width: '80%' }}>
+        224564
+      </div>
+      <div style={{ background: '#33566d', height: '40px', width: '80%' }}>
+        33566d
+      </div>
+      <div style={{ background: '#b8bdca', height: '40px', width: '80%' }}>
+        b8bdca
+      </div>
+      <div style={{ background: '#76b1ce', height: '40px', width: '80%' }}>
+        76b1ce
+      </div>
+      <div style={{ background: '#678293', height: '40px', width: '80%' }}>
+        678293
+      </div>
+      <div style={{ background: '#426582', height: '40px', width: '80%' }}>
+        426582
+      </div>
+      <div style={{ background: '#414350', height: '40px', width: '80%' }}>
+        414350
+      </div>
+      <div style={{ background: '#675b68', height: '40px', width: '80%' }}>
+        675b68
       </div>
     </div>
   );
