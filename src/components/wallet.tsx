@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRounded';
 import {
   Web3ReactProvider,
   useWeb3React,
