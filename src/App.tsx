@@ -10,7 +10,9 @@ import Owned from './components/owned';
 import { DomainCacheProvider } from './lib/useDomainCache';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { PoweroffOutlined } from '@ant-design/icons';
-import { Layout } from 'antd';
+import { Layout, Menu } from 'antd';
+
+const { Content, Header } = Layout;
 
 const client = new ApolloClient({
   uri: 'http://localhost:8000/subgraphs/name/zer0-os/ZNS-subgraph',
@@ -42,38 +44,44 @@ function App() {
     <>
       <Layout>
         <div className="button-n">
-          <button onClick={onClick}>
+          <button className="button-n" onClick={onClick}>
             {connect ? <PoweroffOutlined /> : <PoweroffOutlined />}
           </button>
           {connect && <Wallet />}
         </div>
-        <Router>
-          <Route
-            render={({ location, match }) => (
-              <Switch>
-                <Route path="/:id">
-                  <Subdomains
-                    //regex: removes trailing /, then replaces / with .
-                    domain={location.pathname
-                      .substring(1)
-                      .replace(/\/+$/, '')
-                      .replace(/\//, '.')}
-                  />
-                  <Owned />
-                </Route>
-                <Route path="/">
-                  {/* TODO: move to styling file */}
-                  <div
-                    style={{ display: 'inline-flex', flexDirection: 'column' }}
-                  >
-                    <Subdomains domain={'_root'} />
-                    {/* <Owned /> */}
-                  </div>
-                </Route>
-              </Switch>
-            )}
-          />
-        </Router>
+
+        <Content>
+          <Router>
+            <Route
+              render={({ location, match }) => (
+                <Switch>
+                  <Route path="/:id">
+                    <Subdomains
+                      //regex: removes trailing /, then replaces / with .
+                      domain={location.pathname
+                        .substring(1)
+                        .replace(/\/+$/, '')
+                        .replace(/\//, '.')}
+                    />
+                    <Owned />
+                  </Route>
+                  <Route path="/">
+                    {/* TODO: move to styling file */}
+                    <div
+                      style={{
+                        display: 'inline-flex',
+                        flexDirection: 'column',
+                      }}
+                    >
+                      <Subdomains domain={'_root'} />
+                      {/* <Owned /> */}
+                    </div>
+                  </Route>
+                </Switch>
+              )}
+            />
+          </Router>
+        </Content>
       </Layout>
     </>
   );

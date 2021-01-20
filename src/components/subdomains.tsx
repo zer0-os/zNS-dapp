@@ -136,37 +136,44 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
-          <div>
-            <Button type="primary" onClick={showSubdomain}>
-              Subdomain Modal Btn
-            </Button>
-            <Modal
-              title="subdomain"
-              visible={isSubdomainVisible}
-              onOk={subdomainOk}
-              onCancel={subdomainCancel}
-            >
-              <Create
-                domainId={domain.value.id}
-                domainContext={domainContext}
-              />
-            </Modal>
-          </div>
-          <div>
-            <Button type="primary" onClick={showTransfer}>
-              Transfer Modal Btn
-            </Button>
-            <Modal
-              title="transfer"
-              visible={isTransferVisible}
-              onOk={transferOk}
-              onCancel={transferCancel}
-            >
-              <Transfer
-                domainId={domain.value.id}
-                domainContext={domainContext}
-              />
-            </Modal>
+          <div className="btn-container">
+            <div className="sub-btn">
+              <Button
+                className="button-sub"
+                type="primary"
+                onClick={showSubdomain}
+              >
+                Subdomain Modal Btn
+              </Button>
+              <Modal
+                title="subdomain"
+                visible={isSubdomainVisible}
+                onOk={subdomainOk}
+                onCancel={subdomainCancel}
+              >
+                <Create
+                  domainId={domain.value.id}
+                  domainContext={domainContext}
+                />
+              </Modal>
+            </div>
+
+            <div className="transfer-btn">
+              <Button className="tra-btn" type="primary" onClick={showTransfer}>
+                Transfer Modal Btn
+              </Button>
+              <Modal
+                title="transfer"
+                visible={isTransferVisible}
+                onOk={transferOk}
+                onCancel={transferCancel}
+              >
+                <Transfer
+                  domainId={domain.value.id}
+                  domainContext={domainContext}
+                />
+              </Modal>
+            </div>
           </div>
         </>
       ) : null}

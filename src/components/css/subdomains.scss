@@ -12,3 +12,14 @@
 }
 
 @import '~antd/dist/antd.css';
+
+.btn-container {
+  display: flex;
+  justify-content: end;
+  justify-content: space-around;
+  border: 2px solid blue;
+  white-space: 3px;
+}
+
+.tra-btn {
+}
