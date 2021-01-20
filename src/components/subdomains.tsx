@@ -138,8 +138,12 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         <>
           <div className="big-btn">
             <div className="btn-container">
-              <button className="btn-sub" onClick={showSubdomain}>
-                Subdomain Modal Btn
+              <button
+                className="btn-sub"
+                style={{ color: 'white' }}
+                onClick={showSubdomain}
+              >
+                Create
               </button>
               <Modal
                 title="subdomain"
@@ -154,8 +158,12 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
               </Modal>
             </div>
             <div className="btn-container2">
-              <button className="transfer-btn" onClick={showTransfer}>
-                Transfer Modal Btn
+              <button
+                className="transfer-btn"
+                style={{ color: 'white' }}
+                onClick={showTransfer}
+              >
+                Transfer
               </button>
               <Modal
                 title="transfer"
