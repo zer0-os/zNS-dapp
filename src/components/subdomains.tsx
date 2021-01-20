@@ -48,14 +48,16 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     sort: false,
   };
 
-  const dataSource = [
-    {
-      key: domain.value.id,
-      assest: 'N/A',
-      name: domain.value.children,
+  const dataSource: Object[] = [];
+
+  Object.keys(domain.value.children).forEach((key) => {
+    dataSource.push({
+      key: key,
+      asset: 'N/A',
+      name: domain.value.children[Number(key)],
       volume: 'N/A',
-    },
-  ];
+    });
+  });
 
   const columns = [
     {
@@ -187,6 +189,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           columns={columns}
           size="small"
           bordered
+          style={{ maxWidth: '80%' }}
           title={() => 'Domain Table Header'}
           footer={() => 'Domain Table Footer'}
         />
