@@ -193,61 +193,194 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           footer={() => 'Domain Table Footer'}
         />
       </div>
-      <div style={{ background: '#641f29', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#641f29',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         641f29
       </div>
-      <div style={{ background: '#cf7571', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#cf7571',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         cf7571
       </div>
-      <div style={{ background: '#171730', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#171730',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         171730
       </div>
-      <div style={{ background: '#953338', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#953338',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         953338
       </div>
-      <div style={{ background: '#8f6554', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#8f6554',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         8f6554
       </div>
-      <div style={{ background: '#584362', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#584362',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         584362
       </div>
-      <div style={{ background: '#754735', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#754735',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         754735
       </div>
-      <div style={{ background: '#8e7384', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#8e7384',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         8e7384
       </div>
-      <div style={{ background: '#979b9f', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#979b9f',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         979b9f
       </div>
-      <div style={{ background: '#1a3344', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#1a3344',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         1a3344
       </div>
-      <div style={{ background: '#0f1619', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#0f1619',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         0f1619
       </div>
-      <div style={{ background: '#224564', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#224564',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         224564
       </div>
-      <div style={{ background: '#33566d', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#33566d',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         33566d
       </div>
-      <div style={{ background: '#b8bdca', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#b8bdca',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         b8bdca
       </div>
-      <div style={{ background: '#76b1ce', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#76b1ce',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         76b1ce
       </div>
-      <div style={{ background: '#678293', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#678293',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         678293
       </div>
-      <div style={{ background: '#426582', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#426582',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         426582
       </div>
-      <div style={{ background: '#414350', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#414350',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         414350
       </div>
-      <div style={{ background: '#675b68', height: '40px', width: '80%' }}>
+      <div
+        style={{
+          background: '#675b68',
+          height: '40px',
+          width: '80%',
+          textAlign: 'right',
+        }}
+      >
         675b68
       </div>
     </div>
