@@ -185,7 +185,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           className="subdomainsTable"
           dataSource={dataSource}
           columns={columns}
-          size="small"
           bordered
           title={() => 'Domain Table Header'}
           footer={() => 'Domain Table Footer'}

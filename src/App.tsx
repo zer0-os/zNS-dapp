@@ -49,7 +49,7 @@ function App() {
           </button>
           {connect && <Wallet />}
         </div>
-
+    
         <Content>
           <Router>
             <Route

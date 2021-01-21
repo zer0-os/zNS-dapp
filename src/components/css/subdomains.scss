@@ -3,14 +3,28 @@ $middle-red: #953338;
 $dark-red: #641f29;
 
 #subdomainsContainer {
-  position: relative;
+  position: absolute;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
+<<<<<<< HEAD
+  margin: 15px, none, 15px;
+  padding-left: 15px;
+||||||| 4ccabd2
+  margin: 15px, none, 15px;
+  padding: 15px;
+=======
   margin: 15px;
   padding: 15px;
+>>>>>>> f846b19cfba7ca8195e9d436f59559c28ef43b13
   border: 1px black solid;
   min-width: 480px;
+<<<<<<< HEAD
+  max-width: 80%;
+  overflow: hidden;
+||||||| 4ccabd2
+  max-width: 80%;
+=======
 }
 
 table tr:nth-child(2n) td {
@@ -144,7 +158,18 @@ table tr:nth-child(2n) td {
 
 // border under table header
 .ant-table.ant-table-bordered > .ant-table-container {
+<<<<<<< HEAD
   border: none;
+||||||| f846b19
+  border: 1px solid purple;
+  border-right: 0;
+  border-bottom: 0;
+=======
+  border: 1px solid purple;
+  border-right: 0;
+  border-bottom: 0;
+>>>>>>> f846b19cfba7ca8195e9d436f59559c28ef43b13
+>>>>>>> 9cc36d8f7910d7010482ae2e9d196c43ae860a78
 }
 
 @import '~antd/dist/antd.css';
@@ -152,6 +177,10 @@ table tr:nth-child(2n) td {
 .big-btn {
   display: flex;
   padding-left: 55%;
+}
+
+.ant-table ant-table-bordered {
+  border-radius: 4px;
 }
 
 .btn-sub {
