@@ -10,7 +10,7 @@ import Owned from './components/owned';
 import { DomainCacheProvider } from './lib/useDomainCache';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { PoweroffOutlined } from '@ant-design/icons';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Modal } from 'antd';
 
 const { Content, Header } = Layout;
 
@@ -26,6 +26,7 @@ function getLibrary(provider: any): Web3Provider {
 }
 function App() {
   const [connect, setConnect] = useState(false);
+  const [isWalletVisible, setWalletVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const {
     connector,
@@ -40,16 +41,32 @@ function App() {
   const onClick = () => {
     setConnect(!connect);
   };
+
+  const showWallet = () => {
+    setWalletVisible(true);
+  };
+
+  const walletOk = () => {
+    setWalletVisible(false);
+  };
+
+  const walletCancel = () => {
+    setWalletVisible(false);
+  };
   return (
     <>
       <Layout>
         <div className="button-n">
-          <button className="button-n" onClick={onClick}>
-            {connect ? <PoweroffOutlined /> : <PoweroffOutlined />}
-          </button>
-          {connect && <Wallet />}
+          <button onClick={showWallet}> Connect Wallet </button>
+          <Modal
+            visible={isWalletVisible}
+            onOk={walletOk}
+            onCancel={walletCancel}
+          >
+            <Wallet />
+          </Modal>
         </div>
-    
+
         <Content>
           <Router>
             <Route
