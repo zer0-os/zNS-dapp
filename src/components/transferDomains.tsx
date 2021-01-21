@@ -52,7 +52,7 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
         account === domain.value.owner
       )
         contracts.value.registrar
-          .safeTransferFrom(account, address)
+          .transferFrom(account, address, domain.value.id)
           .then((txr: any) => txr.wait(1))
           .then(() => {
             refetchDomain();

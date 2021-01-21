@@ -4,7 +4,7 @@ import {
   useWeb3React,
   UnsupportedChainIdError,
 } from '@web3-react/core';
-import { Modal, Button } from 'antd';
+import { Row, Col, Divider } from 'antd';
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
@@ -240,8 +240,7 @@ export default function Wallet() {
 
   return (
     <>
-      <div className="modal-header"> Connect Wallet</div>
-      <div className="menu">
+      <Row justify="space-between" gutter={[32, 16]} align="middle">
         {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
           const currentConnector = connectorsByName[name];
           const activating = currentConnector === activatingConnector;
@@ -250,25 +249,23 @@ export default function Wallet() {
             !triedEager || !!activatingConnector || connected || !!error;
 
           return (
-            <div className="button-grid">
-              <button
-                className="networkButtons"
-                disabled={disabled}
-                key={name}
-                onClick={() => {
-                  setActivatingConnector(currentConnector);
-                  activate(connectorsByName[name]);
-                }}
-              >
-                {activating && (
-                  <Spinner
-                    color={'black'}
-                    style={{ height: '25%', marginLeft: '-1rem' }}
-                  />
-                )}
-                {name}
-              </button>
-            </div>
+            <button
+              className="networkButtons"
+              disabled={disabled}
+              key={name}
+              onClick={() => {
+                setActivatingConnector(currentConnector);
+                activate(connectorsByName[name]);
+              }}
+            >
+              {activating && (
+                <Spinner
+                  color={'black'}
+                  style={{ height: '25%', marginLeft: '-1rem' }}
+                />
+              )}
+              {name}
+            </button>
           );
         })}
 
@@ -378,9 +375,9 @@ export default function Wallet() {
             </button>
           </div>
         )}
-      </div>
 
-      <div id="overlay"></div>
+        <div id="overlay"></div>
+      </Row>
     </>
   );
 }
