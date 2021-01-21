@@ -37,14 +37,12 @@ table tr:nth-child(2n) td {
 // all cells + header
 .ant-table-bordered {
   background-color: $light-red;
-  &:nth-child(3) {
-    background-color: $middle-red;
-  }
-  // border-radius: 0px 15px 0px 0px;
+
+  border-radius: 0px 15px 0px 0px;
 }
 
 // table header
-.ant-table-small .ant-table-thead > tr > th {
+.ant-table-thead > tr > th {
   background-color: $middle-red;
   border: none;
 }
