@@ -3,11 +3,138 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  margin: 15px, none, 15px;
+  margin: 15px;
   padding: 15px;
   border: 1px black solid;
   min-width: 480px;
-  max-width: 80%;
+}
+
+// .ant-table-cell {
+//   border: 3px purple solid;
+// }
+
+// vertical borders
+.ant-table-tbody > tr > td {
+  border: none;
+}
+
+// horizontal borders
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-content
+  > table
+  > thead
+  > tr
+  > th,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-header
+  > table
+  > thead
+  > tr
+  > th,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-body
+  > table
+  > thead
+  > tr
+  > th,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-content
+  > table
+  > tbody
+  > tr
+  > td,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-header
+  > table
+  > tbody
+  > tr
+  > td,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-body
+  > table
+  > tbody
+  > tr
+  > td,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-content
+  > table
+  > tfoot
+  > tr
+  > th,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-header
+  > table
+  > tfoot
+  > tr
+  > th,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-body
+  > table
+  > tfoot
+  > tr
+  > th,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-content
+  > table
+  > tfoot
+  > tr
+  > td,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-header
+  > table
+  > tfoot
+  > tr
+  > td,
+.ant-table.ant-table-bordered
+  > .ant-table-container
+  > .ant-table-body
+  > table
+  > tfoot
+  > tr
+  > td {
+  border-right: none;
+}
+
+.td {
+  border: 3px solid blue;
+}
+
+// all cells + header
+.ant-table-bordered {
+  background-color: red;
+  border-radius: 0px 15px 0px 0px;
+}
+
+.ant-table.ant-table-bordered > .ant-table-container {
+  border: 1px solid blue;
+}
+
+.ant-table-small .ant-table-thead > tr > th {
+  background-color: green;
+}
+.ant-table-small .ant-table-selection-column {
+  width: 46px;
+  min-width: 46px;
+}
+.ant-table.ant-table-bordered > .ant-table-title {
+  border: 1px solid green;
+  border-bottom: 0;
+}
+.ant-table.ant-table-bordered > .ant-table-container {
+  border: 1px solid purple;
+  border-right: 0;
+  border-bottom: 0;
 }
 
 @import '~antd/dist/antd.css';
