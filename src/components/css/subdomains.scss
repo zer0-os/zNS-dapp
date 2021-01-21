@@ -1,3 +1,7 @@
+$light-red: #cf7571;
+$middle-red: #953338;
+$dark-red: #641f29;
+
 #subdomainsContainer {
   position: relative;
   display: inline-flex;
@@ -9,9 +13,10 @@
   min-width: 480px;
 }
 
-// .ant-table-cell {
-//   border: 3px purple solid;
-// }
+// table header
+.ant-table.ant-table-bordered > .ant-table-title {
+  border: none;
+}
 
 // vertical borders
 .ant-table-tbody > tr > td {
@@ -106,35 +111,25 @@
   border-right: none;
 }
 
-.td {
-  border: 3px solid blue;
-}
-
 // all cells + header
 .ant-table-bordered {
-  background-color: red;
-  border-radius: 0px 15px 0px 0px;
-}
-
-.ant-table.ant-table-bordered > .ant-table-container {
-  border: 1px solid blue;
+  background-color: $light-red;
+  // border-radius: 0px 15px 0px 0px;
 }
 
 .ant-table-small .ant-table-thead > tr > th {
-  background-color: green;
+  background-color: $light-red;
+  border: none;
 }
+
 .ant-table-small .ant-table-selection-column {
   width: 46px;
   min-width: 46px;
 }
-.ant-table.ant-table-bordered > .ant-table-title {
-  border: 1px solid green;
-  border-bottom: 0;
-}
+
+// border under table header
 .ant-table.ant-table-bordered > .ant-table-container {
-  border: 1px solid purple;
-  border-right: 0;
-  border-bottom: 0;
+  border: none;
 }
 
 @import '~antd/dist/antd.css';
