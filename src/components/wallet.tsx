@@ -242,15 +242,15 @@ export default function Wallet() {
     <>
       <div className="modal-header"> Connect Wallet</div>
       <div className="menu">
-        {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
-          const currentConnector = connectorsByName[name];
-          const activating = currentConnector === activatingConnector;
-          const connected = currentConnector === connector;
-          const disabled =
-            !triedEager || !!activatingConnector || connected || !!error;
+        <div className="button-grid">
+          {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
+            const currentConnector = connectorsByName[name];
+            const activating = currentConnector === activatingConnector;
+            const connected = currentConnector === connector;
+            const disabled =
+              !triedEager || !!activatingConnector || connected || !!error;
 
-          return (
-            <div className="button-grid">
+            return (
               <button
                 className="networkButtons"
                 disabled={disabled}
@@ -268,9 +268,9 @@ export default function Wallet() {
                 )}
                 {name}
               </button>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
 
         {(active || error) && (
           <div className="button-target">
