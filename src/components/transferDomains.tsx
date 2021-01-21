@@ -66,7 +66,7 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
   return (
     <form onSubmit={handleSubmit(({ address }) => _transfer(address))}>
       <div>
-        <button type="submit"> Transfer Domain</button>
+        <button type="submit"> Transfer</button>
         <input name={'address'} ref={register} placeholder="receiver address" />
       </div>
     </form>
