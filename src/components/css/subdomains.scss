@@ -1,13 +1,14 @@
 #subdomainsContainer {
-  position: relative;
+  position: absolute;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   margin: 15px, none, 15px;
-  padding: 15px;
+  padding-left: 15px;
   border: 1px black solid;
   min-width: 480px;
   max-width: 80%;
+  overflow: hidden;
 }
 
 @import '~antd/dist/antd.css';
@@ -15,6 +16,10 @@
 .big-btn {
   display: flex;
   padding-left: 55%;
+}
+
+.ant-table ant-table-bordered {
+  border-radius: 4px;
 }
 
 .btn-sub {
