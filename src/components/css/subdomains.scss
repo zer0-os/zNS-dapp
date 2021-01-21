@@ -150,6 +150,7 @@ table tr:nth-child(2n) td {
 .big-btn {
   display: flex;
   padding-left: 55%;
+  overflow: hidden;
 }
 
 .btn-sub {
@@ -176,6 +177,7 @@ table tr:nth-child(2n) td {
 
 .btn-container {
   padding-right: 16px;
+  overflow: hidden;
 }
 
 .ant-btn-primary {

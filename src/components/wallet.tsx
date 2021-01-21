@@ -4,6 +4,7 @@ import {
   useWeb3React,
   UnsupportedChainIdError,
 } from '@web3-react/core';
+import { Modal, Button } from 'antd';
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,

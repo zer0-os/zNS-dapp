@@ -10,6 +10,7 @@ import Create from './create';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Modal, Button } from 'antd';
+import Owned from './owned';
 interface SubdomainsProps {
   domain: string;
 }
@@ -177,6 +178,9 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
                 />
               </Modal>
             </div>
+          </div>
+          <div>
+            <Owned />
           </div>
         </>
       ) : null}
