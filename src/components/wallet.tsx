@@ -241,33 +241,35 @@ export default function Wallet() {
   return (
     <>
       <Row justify="space-between" gutter={[32, 16]} align="middle">
-        {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
-          const currentConnector = connectorsByName[name];
-          const activating = currentConnector === activatingConnector;
-          const connected = currentConnector === connector;
-          const disabled =
-            !triedEager || !!activatingConnector || connected || !!error;
+        <div className="walletButtonContainer">
+          {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
+            const currentConnector = connectorsByName[name];
+            const activating = currentConnector === activatingConnector;
+            const connected = currentConnector === connector;
+            const disabled =
+              !triedEager || !!activatingConnector || connected || !!error;
 
-          return (
-            <button
-              className="networkButtons"
-              disabled={disabled}
-              key={name}
-              onClick={() => {
-                setActivatingConnector(currentConnector);
-                activate(connectorsByName[name]);
-              }}
-            >
-              {activating && (
-                <Spinner
-                  color={'black'}
-                  style={{ height: '25%', marginLeft: '-1rem' }}
-                />
-              )}
-              {name}
-            </button>
-          );
-        })}
+            return (
+              <button
+                className="networkButtons"
+                disabled={disabled}
+                key={name}
+                onClick={() => {
+                  setActivatingConnector(currentConnector);
+                  activate(connectorsByName[name]);
+                }}
+              >
+                {activating && (
+                  <Spinner
+                    color={'black'}
+                    style={{ height: '25%', marginLeft: '-1rem' }}
+                  />
+                )}
+                {name}
+              </button>
+            );
+          })}
+        </div>
 
         {(active || error) && (
           <div className="button-target">
