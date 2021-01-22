@@ -13,8 +13,41 @@ $dark-red: #641f29;
   min-width: 480px;
 }
 
+// every second row
 table tr:nth-child(2n) td {
   background-color: $middle-red;
+}
+
+// every other row from the first row
+table tr:nth-child(2n-1) td {
+  background-color: $light-red;
+}
+
+// bottom right cell
+table tr:last-child td:last-child {
+  border-radius: 0px 0px 15px 0px;
+}
+
+// bottom left cell
+table tr:last-child td:first-child {
+  border-radius: 0px 0px 0px 15px;
+}
+
+.ant-table-container table > thead > tr:first-child th:first-child {
+  border-radius: 15px 0px 0px 0px !important;
+}
+
+.ant-table-container table > thead > tr:last-child th:last-child {
+  border-radius: 0px 75px 0px 0px !important;
+}
+
+// .ant-table-thread {
+//   border-radius: 15px;
+//   color: blue;
+// }
+
+.ant-table.ant-table-bordered {
+  border-radius: 15px;
 }
 
 // table header
@@ -36,15 +69,17 @@ table tr:nth-child(2n) td {
 
 // all cells + header
 .ant-table-bordered {
-  background-color: $light-red;
-
-  border-radius: 0px 15px 0px 0px;
+  background-color: none;
 }
 
 // table header
 .ant-table-thead > tr > th {
   background-color: $middle-red;
   border: none;
+}
+
+.ant-table-thread > tr {
+  border-radius: 15px;
 }
 
 // horizontal borders
