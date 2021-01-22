@@ -11,6 +11,7 @@ import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Modal, Button } from 'antd';
 import Owned from './owned';
+import { String } from 'lodash';
 interface SubdomainsProps {
   domain: string;
 }
@@ -133,6 +134,12 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     setSubdomainVisible(false);
   };
 
+  const handleRowClick = (record: any) => {
+    history.push({
+      pathname: record.name,
+    });
+  };
+
   return (
     <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
@@ -192,6 +199,12 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           bordered
           title={() => 'Domain Table Header'}
           footer={() => 'Domain Table Footer'}
+          onRow={(record, recordIndex) => ({
+            onClick: (event) => {
+              handleRowClick(record);
+              console.log('onRow onClick', event.target, record, recordIndex);
+            },
+          })}
         />
       </div>
       <div
