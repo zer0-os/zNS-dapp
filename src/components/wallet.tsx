@@ -4,7 +4,7 @@ import {
   useWeb3React,
   UnsupportedChainIdError,
 } from '@web3-react/core';
-import { Modal, Button } from 'antd';
+import { Row } from 'antd';
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
@@ -240,37 +240,34 @@ export default function Wallet() {
 
   return (
     <>
-      <div className="modal-header"> Connect Wallet</div>
-      <div className="menu">
-        <div className="button-grid">
-          {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
-            const currentConnector = connectorsByName[name];
-            const activating = currentConnector === activatingConnector;
-            const connected = currentConnector === connector;
-            const disabled =
-              !triedEager || !!activatingConnector || connected || !!error;
+      <Row justify="space-between" gutter={[32, 16]} align="middle">
+        {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
+          const currentConnector = connectorsByName[name];
+          const activating = currentConnector === activatingConnector;
+          const connected = currentConnector === connector;
+          const disabled =
+            !triedEager || !!activatingConnector || connected || !!error;
 
-            return (
-              <button
-                className="networkButtons"
-                disabled={disabled}
-                key={name}
-                onClick={() => {
-                  setActivatingConnector(currentConnector);
-                  activate(connectorsByName[name]);
-                }}
-              >
-                {activating && (
-                  <Spinner
-                    color={'black'}
-                    style={{ height: '25%', marginLeft: '-1rem' }}
-                  />
-                )}
-                {name}
-              </button>
-            );
-          })}
-        </div>
+          return (
+            <button
+              className="networkButtons"
+              disabled={disabled}
+              key={name}
+              onClick={() => {
+                setActivatingConnector(currentConnector);
+                activate(connectorsByName[name]);
+              }}
+            >
+              {activating && (
+                <Spinner
+                  color={'black'}
+                  style={{ height: '25%', marginLeft: '-1rem' }}
+                />
+              )}
+              {name}
+            </button>
+          );
+        })}
 
         {(active || error) && (
           <div className="button-target">
@@ -378,9 +375,9 @@ export default function Wallet() {
             </button>
           </div>
         )}
-      </div>
 
-      <div id="overlay"></div>
+        <div id="overlay"></div>
+      </Row>
     </>
   );
 }
