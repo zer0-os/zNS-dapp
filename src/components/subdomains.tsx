@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useMemo } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Link } from 'react-router-dom';
@@ -12,6 +12,8 @@ import { ColumnsType } from 'antd/es/table';
 import { Modal, Button } from 'antd';
 import Owned from './owned';
 import { String } from 'lodash';
+import { useTable } from 'react-table';
+
 interface SubdomainsProps {
   domain: string;
 }
@@ -35,10 +37,51 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const history = useHistory();
+  const data = useMemo(
+    () => [
+      {
+        col1: 'Hello',
+
+        col2: 'World',
+      },
+
+      {
+        col1: 'react-table',
+
+        col2: 'rocks',
+      },
+
+      {
+        col1: 'whatever',
+
+        col2: 'you want',
+      },
+    ],
+
+    [],
+  );
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Column 1',
+
+        accessor: 'col1', // accessor is the "key" in the data
+      },
+
+      {
+        Header: 'Column 2',
+
+        accessor: 'col2',
+      },
+    ],
+
+    [],
+  );
+  const tableInstance = useTable({ columns, data });
   if (domain.isNothing()) return <p>Loading</p>;
 
-  const data = domain.value.children.map((child, i) => [child.toString()]);
-  console.log(data);
+  // const data = domain.value.children.map((child, i) => [child.toString()]);
+  // console.log(data);
 
   const options = {
     onRowClick: (rowData: any) =>
@@ -50,65 +93,65 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     sort: false,
   };
 
-  const dataSource: Object[] = [];
+  // const dataSource: Object[] = [];
 
-  Object.keys(domain.value.children).forEach((key) => {
-    dataSource.push({
-      key: key,
-      asset: 'N/A',
-      name: domain.value.children[Number(key)],
-      volume: 'N/A',
-    });
-  });
+  // Object.keys(domain.value.children).forEach((key) => {
+  //   dataSource.push({
+  //     key: key,
+  //     asset: 'N/A',
+  //     name: domain.value.children[Number(key)],
+  //     volume: 'N/A',
+  //   });
+  // });
 
-  const columns = [
-    {
-      title: '#',
-      dataIndex: '#',
-      key: '#',
-    },
+  // const columns = [
+  //   {
+  //     title: '#',
+  //     dataIndex: '#',
+  //     key: '#',
+  //   },
 
-    {
-      title: 'Asset',
-      dataIndex: 'asset',
-      key: 'asset',
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Volume',
-      dataIndex: 'volume',
-      key: 'volume',
-    },
-    {
-      title: '24Hr',
-      dataIndex: '24Hr',
-      key: '24Hr',
-    },
-    {
-      title: '7d',
-      dataIndex: '7d',
-      key: '7d',
-    },
-    {
-      title: 'Market Cap',
-      dataIndex: 'market Cap',
-      key: 'market Cap',
-    },
-    {
-      title: 'Last 7 days',
-      dataIndex: 'last 7 days',
-      key: 'last 7 days',
-    },
-    {
-      title: 'Trade',
-      dataIndex: 'trade',
-      key: 'trade',
-    },
-  ];
+  //   {
+  //     title: 'Asset',
+  //     dataIndex: 'asset',
+  //     key: 'asset',
+  //   },
+  //   {
+  //     title: 'Name',
+  //     dataIndex: 'name',
+  //     key: 'name',
+  //   },
+  //   {
+  //     title: 'Volume',
+  //     dataIndex: 'volume',
+  //     key: 'volume',
+  //   },
+  //   {
+  //     title: '24Hr',
+  //     dataIndex: '24Hr',
+  //     key: '24Hr',
+  //   },
+  //   {
+  //     title: '7d',
+  //     dataIndex: '7d',
+  //     key: '7d',
+  //   },
+  //   {
+  //     title: 'Market Cap',
+  //     dataIndex: 'market Cap',
+  //     key: 'market Cap',
+  //   },
+  //   {
+  //     title: 'Last 7 days',
+  //     dataIndex: 'last 7 days',
+  //     key: 'last 7 days',
+  //   },
+  //   {
+  //     title: 'Trade',
+  //     dataIndex: 'trade',
+  //     key: 'trade',
+  //   },
+  // ];
 
   const showTransfer = () => {
     setTransferVisible(true);
@@ -192,7 +235,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         </>
       ) : null}
       <div id="domainContainer">
-        <Table
+        {/* <Table
           className="subdomainsTable"
           dataSource={dataSource}
           columns={columns}
@@ -205,7 +248,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
               console.log('onRow onClick', event.target, record, recordIndex);
             },
           })}
-        />
+        /> */}
       </div>
       <div
         style={{
