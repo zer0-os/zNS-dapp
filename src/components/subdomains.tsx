@@ -107,65 +107,13 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     sort: false,
   };
 
-  // const dataSource: Object[] = [];
-
-  // Object.keys(domain.value.children).forEach((key) => {
-  //   dataSource.push({
-  //     key: key,
-  //     asset: 'N/A',
-  //     name: domain.value.children[Number(key)],
-  //     volume: 'N/A',
-  //   });
-  // });
-
-  // const columns = [
-  //   {
-  //     title: '#',
-  //     dataIndex: '#',
-  //     key: '#',
-  //   },
-
-  //   {
-  //     title: 'Asset',
-  //     dataIndex: 'asset',
-  //     key: 'asset',
-  //   },
-  //   {
-  //     title: 'Name',
-  //     dataIndex: 'name',
-  //     key: 'name',
-  //   },
-  //   {
-  //     title: 'Volume',
-  //     dataIndex: 'volume',
-  //     key: 'volume',
-  //   },
-  //   {
-  //     title: '24Hr',
-  //     dataIndex: '24Hr',
-  //     key: '24Hr',
-  //   },
-  //   {
-  //     title: '7d',
-  //     dataIndex: '7d',
-  //     key: '7d',
-  //   },
-  //   {
-  //     title: 'Market Cap',
-  //     dataIndex: 'market Cap',
-  //     key: 'market Cap',
-  //   },
-  //   {
-  //     title: 'Last 7 days',
-  //     dataIndex: 'last 7 days',
-  //     key: 'last 7 days',
-  //   },
-  //   {
-  //     title: 'Trade',
-  //     dataIndex: 'trade',
-  //     key: 'trade',
-  //   },
-  // ];
+  const handleRowClick = (row: any) => {
+    console.log('fire');
+    console.log(row);
+    history.push({
+      pathname: row.values.name,
+    });
+  };
 
   const showTransfer = () => {
     setTransferVisible(true);
@@ -191,11 +139,11 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     setSubdomainVisible(false);
   };
 
-  const handleRowClick = (record: any) => {
-    history.push({
-      pathname: record.name,
-    });
-  };
+  // const handleRowClick = (record: any) => {
+  //   history.push({
+  //     pathname: record.name,
+  //   });
+  // };
 
   return (
     <div id="subdomainsContainer">
@@ -303,7 +251,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
               prepareRow(row);
               return (
                 // Apply the row props
-                <tr {...row.getRowProps()}>
+                <tr onClick={() => handleRowClick(row)} {...row.getRowProps()}>
                   {
                     // Loop over the rows cells
                     row.cells.map((cell) => {
