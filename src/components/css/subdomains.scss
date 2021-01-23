@@ -17,13 +17,23 @@ $dark-red: #641f29;
   background: none;
 }
 
+// every second row on hover
+.subdomainsTable tbody tr:nth-child(2n):hover td {
+  background: lighten($middle-red, 10%) !important;
+}
+
+// every other row on hover from the first row
+.subdomainsTable tbody tr:nth-child(2n-1):hover td {
+  background: darken($light-red, 10%) !important;
+}
+
 // every second row
-.subdomainsTable tr:nth-child(2n) td {
+.subdomainsTable tbody tr:nth-child(2n) td {
   background-color: $middle-red;
 }
 
 // every other row from the first row
-.subdomainsTable tr:nth-child(2n-1) td {
+.subdomainsTable tbody tr:nth-child(2n-1) td {
   background-color: $light-red;
 }
 
