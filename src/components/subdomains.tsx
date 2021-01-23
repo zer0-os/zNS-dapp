@@ -27,6 +27,11 @@ interface RowProps {
   domain: string;
 }
 
+interface Data {
+  col1: string;
+  col2: string;
+}
+
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
@@ -38,11 +43,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
 
   const history = useHistory();
-
-  interface Data {
-    col1: string;
-    col2: string;
-  }
 
   const data = React.useMemo<Data[]>(
     () => [
