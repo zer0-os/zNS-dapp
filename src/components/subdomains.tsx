@@ -13,6 +13,7 @@ import { Modal, Button } from 'antd';
 import Owned from './owned';
 import { String } from 'lodash';
 import { Column, useTable, UseTableOptions } from 'react-table';
+import { string } from 'zod';
 
 interface SubdomainsProps {
   domain: string;
@@ -28,9 +29,15 @@ interface RowProps {
 }
 
 interface Data {
-  col1: string;
-  col2: string;
-  col3: string;
+  '#': string;
+  asset: string;
+  name: string;
+  volume: string;
+  '24Hr': string;
+  '7d': string;
+  marketcap: string;
+  last7days: string;
+  trade: string;
 }
 
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
@@ -42,42 +49,45 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
-
   const history = useHistory();
-
   const dataInput: Data[] = [];
   if (domain.isNothing()) {
   } else {
     Object.keys(domain.value.children).forEach((key) => {
       dataInput.push({
-        col1: key.toString(),
-        col2: domain.value.children[Number(key)],
-        col3: 'N/A',
+        '#': '',
+        asset: 'N/A',
+        name: domain.value.children[Number(key)],
+        volume: 'N/A',
+        '24Hr': 'N/A',
+        '7d': 'N/A',
+        marketcap: 'N/A',
+        last7days: 'N/A',
+        trade: 'N/A',
       });
     });
   }
-
-  console.log('DI', dataInput);
-
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
-
-  console.log('data', data);
-
   const columns = useMemo<Column<Data>[]>(
     () => [
       {
-        Header: 'Column 1',
-        accessor: 'col1',
+        Header: '#',
+        accessor: '#',
       },
       {
-        Header: 'Column 1',
-        accessor: 'col2',
+        Header: 'Asset',
+        accessor: 'asset',
       },
-      { Header: 'Column 3', accessor: 'col3' },
+      { Header: 'Name', accessor: 'name' },
+      { Header: 'Volume', accessor: 'volume' },
+      { Header: '24Hr', accessor: '24Hr' },
+      { Header: '7d', accessor: '7d' },
+      { Header: 'Market Cap', accessor: 'marketcap' },
+      { Header: 'Last 7 Days', accessor: 'last7days' },
+      { Header: 'Trade', accessor: 'trade' },
     ],
     [],
   );
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -85,13 +95,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     rows,
     prepareRow,
   } = useTable({ columns, data });
-
   if (domain.isNothing()) return <p>Loading</p>;
-
-  // const data = domain.value.children.map((child, i) => [child.toString()]);
-  // console.log(data);
-
-  console.log(domain.value.children);
 
   const options = {
     onRowClick: (rowData: any) =>
