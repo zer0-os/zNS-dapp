@@ -41,6 +41,10 @@ table tr:last-child td:first-child {
   border-radius: 0px 75px 0px 0px !important;
 }
 
+ant-table-container table > thead > tr {
+  border: 3px black solid;
+}
+
 // .ant-table-thread {
 //   border-radius: 15px;
 //   color: blue;
@@ -69,7 +73,7 @@ table tr:last-child td:first-child {
 
 // all cells + header
 .ant-table-bordered {
-  background-color: none;
+  background: none;
 }
 
 // table header
