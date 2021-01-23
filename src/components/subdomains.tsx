@@ -45,28 +45,25 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
 
   const history = useHistory();
 
-  const data = React.useMemo<Data[]>(
-    () => [
-      {
-        col1: 'Hello',
-        col2: 'World',
-        col3: 'chungus',
-      },
-      {
-        col1: 'react-table',
-        col2: 'rocks',
-        col3: 'uganda',
-      },
-      {
-        col1: 'whatever',
-        col2: 'you want',
-        col3: 'shitcoin',
-      },
-    ],
-    [],
-  );
+  const dataInput: Data[] = [];
+  if (domain.isNothing()) {
+  } else {
+    Object.keys(domain.value.children).forEach((key) => {
+      dataInput.push({
+        col1: key.toString(),
+        col2: domain.value.children[Number(key)],
+        col3: 'N/A',
+      });
+    });
+  }
 
-  const columns = React.useMemo<Column<Data>[]>(
+  console.log('DI', dataInput);
+
+  const data = useMemo<Data[]>(() => dataInput, [dataInput]);
+
+  console.log('data', data);
+
+  const columns = useMemo<Column<Data>[]>(
     () => [
       {
         Header: 'Column 1',
@@ -93,6 +90,8 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
 
   // const data = domain.value.children.map((child, i) => [child.toString()]);
   // console.log(data);
+
+  console.log(domain.value.children);
 
   const options = {
     onRowClick: (rowData: any) =>
