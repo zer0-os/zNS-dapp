@@ -196,54 +196,42 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           </div>
         </>
       ) : null}
-      {/* <div id="domainContainer"> */}
-      {/* <Table
-          className="subdomainsTable"
-          dataSource={dataSource}
-          columns={columns}
-          bordered
-          title={() => 'Domain Table Header'}
-          footer={() => 'Domain Table Footer'}
-          onRow={(record, recordIndex) => ({
-            onClick: (event) => {
-              handleRowClick(record);
-              console.log('onRow onClick', event.target, record, recordIndex);
-            },
-          })}
-        /> */}
-      {/* </div> */}
       {/* // apply the table props */}
       <table {...getTableProps()} className="subdomainsTable">
-        <thead className="subdomainsHeaderGroup">
-          {
-            // Loop over the header rows
-            headerGroups.map((headerGroup) => (
-              // Apply the header row props
-              <tr
-                className="subdomainsHeaderTR"
-                {...headerGroup.getHeaderGroupProps()}
-              >
-                {
-                  // Loop over the headers in each row
-                  headerGroup.headers.map((column) => (
-                    // Apply the header cell props
-                    <th
-                      className="subdomainsHeaderTH"
-                      {...column.getHeaderProps()}
-                    >
-                      {
-                        // Render the header
-                        column.render('Header')
-                      }
-                    </th>
-                  ))
-                }
-              </tr>
-            ))
-          }
-        </thead>
+        {rows.length === 0 ? null : (
+          <thead className="subdomainsHeaderGroup">
+            {
+              // Loop over the header rows
+              headerGroups.map((headerGroup) => (
+                // Apply the header row props
+                <tr
+                  className="subdomainsHeaderTR"
+                  {...headerGroup.getHeaderGroupProps()}
+                >
+                  {
+                    // Loop over the headers in each row
+                    headerGroup.headers.map((column) => (
+                      // Apply the header cell props
+                      <th
+                        className="subdomainsHeaderTH"
+                        {...column.getHeaderProps()}
+                      >
+                        {
+                          // Render the header
+                          column.render('Header')
+                        }
+                      </th>
+                    ))
+                  }
+                </tr>
+              ))
+            }
+          </thead>
+        )}
         {/* Apply the table body props */}
         <tbody {...getTableBodyProps()}>
+          {console.log('ROWS', rows)}
+
           {
             // Loop over the table rows
             rows.map((row) => {
@@ -271,6 +259,13 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
             })
           }
         </tbody>
+        {rows.length !== 0 ? null : (
+          <tfoot>
+            <tr>
+              <td>Footer text displays here when there are no subdomains</td>
+            </tr>
+          </tfoot>
+        )}
       </table>
       <div
         style={{

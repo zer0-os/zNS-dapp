@@ -51,12 +51,12 @@ $dark-red: #641f29;
 }
 
 // bottom right cell
-.subdomainsTable tr:last-child td:last-child {
+.subdomainsTable tbody tr:last-child td:last-child {
   border-radius: 0px 0px 15px 0px;
 }
 
 // bottom left cell
-.subdomainsTable tr:last-child td:first-child {
+.subdomainsTable tbody tr:last-child td:first-child {
   border-radius: 0px 0px 0px 15px;
 }
 
