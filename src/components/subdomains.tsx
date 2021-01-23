@@ -30,6 +30,7 @@ interface RowProps {
 interface Data {
   col1: string;
   col2: string;
+  col3: string;
 }
 
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
@@ -49,14 +50,17 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
       {
         col1: 'Hello',
         col2: 'World',
+        col3: 'chungus',
       },
       {
         col1: 'react-table',
         col2: 'rocks',
+        col3: 'uganda',
       },
       {
         col1: 'whatever',
         col2: 'you want',
+        col3: 'shitcoin',
       },
     ],
     [],
@@ -72,6 +76,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         Header: 'Column 1',
         accessor: 'col2',
       },
+      { Header: 'Column 3', accessor: 'col3' },
     ],
     [],
   );
@@ -240,8 +245,8 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           </div>
         </>
       ) : null}
-      <div id="domainContainer">
-        {/* <Table
+      {/* <div id="domainContainer"> */}
+      {/* <Table
           className="subdomainsTable"
           dataSource={dataSource}
           columns={columns}
@@ -255,27 +260,28 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
             },
           })}
         /> */}
-      </div>
+      {/* </div> */}
       {/* // apply the table props */}
-      <table {...getTableProps()}>
-        <thead>
+      <table {...getTableProps()} className="subdomainsTable">
+        <thead className="subdomainsHeaderGroup">
           {
             // Loop over the header rows
-
             headerGroups.map((headerGroup) => (
               // Apply the header row props
-
-              <tr {...headerGroup.getHeaderGroupProps()}>
+              <tr
+                className="subdomainsHeaderTR"
+                {...headerGroup.getHeaderGroupProps()}
+              >
                 {
                   // Loop over the headers in each row
-
                   headerGroup.headers.map((column) => (
                     // Apply the header cell props
-
-                    <th {...column.getHeaderProps()}>
+                    <th
+                      className="subdomainsHeaderTH"
+                      {...column.getHeaderProps()}
+                    >
                       {
                         // Render the header
-
                         column.render('Header')
                       }
                     </th>
@@ -285,33 +291,24 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
             ))
           }
         </thead>
-
         {/* Apply the table body props */}
-
         <tbody {...getTableBodyProps()}>
           {
             // Loop over the table rows
-
             rows.map((row) => {
               // Prepare the row for display
-
               prepareRow(row);
-
               return (
                 // Apply the row props
-
                 <tr {...row.getRowProps()}>
                   {
                     // Loop over the rows cells
-
                     row.cells.map((cell) => {
                       // Apply the cell props
-
                       return (
                         <td {...cell.getCellProps()}>
                           {
                             // Render the cell contents
-
                             cell.render('Cell')
                           }
                         </td>

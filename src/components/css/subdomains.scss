@@ -13,175 +13,51 @@ $dark-red: #641f29;
   min-width: 480px;
 }
 
+.subdomainsTable {
+  background: none;
+}
+
 // every second row
-table tr:nth-child(2n) td {
+.subdomainsTable tr:nth-child(2n) td {
   background-color: $middle-red;
 }
 
 // every other row from the first row
-table tr:nth-child(2n-1) td {
+.subdomainsTable tr:nth-child(2n-1) td {
   background-color: $light-red;
 }
 
+// subdomains header
+.subdomainsHeaderGroup {
+  background-color: $middle-red;
+}
+
+// subdomains header
+.subdomainsHeaderGroup tr th:first-child {
+  border-radius: 15px 15px 15px 15px !important;
+  border: 1px solid black;
+}
+
+// subdomains header group
+.subdomainsHeaderTR {
+}
+
+// subdomains header cell
+.subdomainsHeaderTH {
+}
+
+.subdomainsTable {
+  border-radius: 15px;
+}
+
 // bottom right cell
-table tr:last-child td:last-child {
+.subdomainsTable tr:last-child td:last-child {
   border-radius: 0px 0px 15px 0px;
 }
 
 // bottom left cell
-table tr:last-child td:first-child {
+.subdomainsTable tr:last-child td:first-child {
   border-radius: 0px 0px 0px 15px;
-}
-
-.ant-table-container table > thead > tr:first-child th:first-child {
-  border-radius: 15px 0px 0px 0px !important;
-}
-
-.ant-table-container table > thead > tr:last-child th:last-child {
-  border-radius: 0px 75px 0px 0px !important;
-}
-
-ant-table-container table > thead > tr {
-  border: 3px black solid;
-}
-
-// .ant-table-thread {
-//   border-radius: 15px;
-//   color: blue;
-// }
-
-.ant-table.ant-table-bordered {
-  border-radius: 15px;
-}
-
-// table header
-.ant-table.ant-table-bordered > .ant-table-title {
-  border: none;
-  display: none;
-}
-
-// table footer
-.ant-table.ant-table-bordered > .ant-table-footer {
-  border: none;
-  display: none;
-}
-
-// vertical borders
-.ant-table-tbody > tr > td {
-  border: none;
-}
-
-// all cells + header
-.ant-table-bordered {
-  background: none;
-}
-
-// table header
-.ant-table-thead > tr > th {
-  background-color: $middle-red;
-  border: none;
-}
-
-.ant-table-thread > tr {
-  border-radius: 15px;
-}
-
-// horizontal borders
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-content
-  > table
-  > thead
-  > tr
-  > th,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-header
-  > table
-  > thead
-  > tr
-  > th,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-body
-  > table
-  > thead
-  > tr
-  > th,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-content
-  > table
-  > tbody
-  > tr
-  > td,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-header
-  > table
-  > tbody
-  > tr
-  > td,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-body
-  > table
-  > tbody
-  > tr
-  > td,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-content
-  > table
-  > tfoot
-  > tr
-  > th,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-header
-  > table
-  > tfoot
-  > tr
-  > th,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-body
-  > table
-  > tfoot
-  > tr
-  > th,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-content
-  > table
-  > tfoot
-  > tr
-  > td,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-header
-  > table
-  > tfoot
-  > tr
-  > td,
-.ant-table.ant-table-bordered
-  > .ant-table-container
-  > .ant-table-body
-  > table
-  > tfoot
-  > tr
-  > td {
-  border-right: none;
-}
-
-.ant-table-small .ant-table-selection-column {
-  width: 46px;
-  min-width: 46px;
-}
-
-// border under table header
-.ant-table.ant-table-bordered > .ant-table-container {
-  border: none;
 }
 
 @import '~antd/dist/antd.css';
