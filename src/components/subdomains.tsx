@@ -12,7 +12,7 @@ import { ColumnsType } from 'antd/es/table';
 import { Modal, Button } from 'antd';
 import Owned from './owned';
 import { String } from 'lodash';
-import { useTable } from 'react-table';
+import { Column, useTable, UseTableOptions } from 'react-table';
 
 interface SubdomainsProps {
   domain: string;
@@ -36,48 +36,54 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+
   const history = useHistory();
-  const data = useMemo(
+
+  interface Data {
+    col1: string;
+    col2: string;
+  }
+
+  const data = React.useMemo<Data[]>(
     () => [
       {
         col1: 'Hello',
-
         col2: 'World',
       },
-
       {
         col1: 'react-table',
-
         col2: 'rocks',
       },
-
       {
         col1: 'whatever',
-
         col2: 'you want',
       },
     ],
-
     [],
   );
-  const columns = React.useMemo(
+
+  const columns = React.useMemo<Column<Data>[]>(
     () => [
       {
         Header: 'Column 1',
-
-        accessor: 'col1', // accessor is the "key" in the data
+        accessor: 'col1',
       },
-
       {
-        Header: 'Column 2',
-
+        Header: 'Column 1',
         accessor: 'col2',
       },
     ],
-
     [],
   );
-  const tableInstance = useTable({ columns, data });
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+  } = useTable({ columns, data });
+
   if (domain.isNothing()) return <p>Loading</p>;
 
   // const data = domain.value.children.map((child, i) => [child.toString()]);
