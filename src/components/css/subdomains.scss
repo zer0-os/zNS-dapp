@@ -5,6 +5,7 @@ $middle-red: #953338;
 $dark-red: #641f29;
 $dark-grey: lighten(#678293, 20%);
 $light-grey: lighten(#b8bdca, 20%);
+$sky-blue: #76b1ce;
 
 #subdomainsContainer {
   position: relative;
@@ -80,7 +81,7 @@ $light-grey: lighten(#b8bdca, 20%);
           color: $light-grey;
         }
         &:nth-child(6) {
-          color: $light-grey;
+          color: $sky-blue;
         }
         &:nth-child(7) {
           color: $light-grey;
