@@ -55,15 +55,15 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   } else {
     Object.keys(domain.value.children).forEach((key) => {
       dataInput.push({
-        '#': '',
-        asset: 'N/A',
+        '#': key,
+        asset: '',
         name: domain.value.children[Number(key)],
         volume: 'N/A',
         '24Hr': 'N/A',
         '7d': 'N/A',
         marketcap: 'N/A',
-        last7days: 'N/A',
-        trade: 'N/A',
+        last7days: '',
+        trade: '',
       });
     });
   }
@@ -267,6 +267,8 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           </tfoot>
         )}
       </table>
+      <br />
+      <br />
       <div
         style={{
           background: '#641f29',
