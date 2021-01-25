@@ -20,6 +20,9 @@ $sky-blue: #76b1ce;
   font-family: 'JetBrains Mono', monospace;
 }
 
+.tableContainer {
+}
+
 .subdomainsTable {
   background: none;
   width: 80%;
@@ -99,6 +102,7 @@ $sky-blue: #76b1ce;
     border-radius: 15px 15px 15px 15px !important;
     border: 1px solid black;
   }
+  text-align: center;
 }
 
 @import '~antd/dist/antd.css';
