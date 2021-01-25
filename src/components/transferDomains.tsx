@@ -8,6 +8,7 @@ import { zodResolver } from '../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { DomainContext } from '../lib/useDomainStore';
 import { hexRegex } from '../lib/validation/validators';
+import { useDomainCache } from '../lib/useDomainCache';
 
 interface TransferProps {
   domainId: string;
@@ -42,6 +43,7 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
+  const { useDomain } = useDomainCache();
 
   const _transfer = useCallback(
     (address: string) => {

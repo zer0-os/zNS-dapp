@@ -14,6 +14,7 @@ import Owned from './owned';
 import { String } from 'lodash';
 import { Column, useTable, UseTableOptions } from 'react-table';
 import { string } from 'zod';
+import Profile from './profileIcon';
 
 interface SubdomainsProps {
   domain: string;
@@ -30,7 +31,7 @@ interface RowProps {
 
 interface Data {
   '#': string;
-  asset: string;
+  asset: any;
   name: string;
   volume: string;
   '24Hr': string;
@@ -56,7 +57,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     Object.keys(domain.value.children).forEach((key) => {
       dataInput.push({
         '#': key,
-        asset: '',
+        asset: <Profile domain={domain.value.domain} />,
         name: domain.value.children[Number(key)],
         volume: 'N/A',
         '24Hr': 'N/A',

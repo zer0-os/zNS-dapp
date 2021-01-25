@@ -55,51 +55,47 @@ function App() {
   };
   return (
     <>
-      <Layout>
-        <div className="button-n">
-          <button onClick={showWallet}> Connect Wallet </button>
-          <Modal
-            visible={isWalletVisible}
-            onOk={walletOk}
-            onCancel={walletCancel}
-          >
-            <Wallet />
-          </Modal>
-        </div>
+      <div className="button-n">
+        <button onClick={showWallet}> Connect Wallet </button>
+        <Modal
+          visible={isWalletVisible}
+          onOk={walletOk}
+          onCancel={walletCancel}
+        >
+          <Wallet />
+        </Modal>
+      </div>
 
-        <Content>
-          <Router>
-            <Route
-              render={({ location, match }) => (
-                <Switch>
-                  <Route path="/:id">
-                    <Subdomains
-                      //regex: removes trailing /, then replaces / with .
-                      domain={location.pathname
-                        .substring(1)
-                        .replace(/\/+$/, '')
-                        .replace(/\//, '.')}
-                    />
-                    <Owned />
-                  </Route>
-                  <Route path="/">
-                    {/* TODO: move to styling file */}
-                    <div
-                      style={{
-                        display: 'inline-flex',
-                        flexDirection: 'column',
-                      }}
-                    >
-                      <Subdomains domain={'_root'} />
-                      {/* <Owned /> */}
-                    </div>
-                  </Route>
-                </Switch>
-              )}
-            />
-          </Router>
-        </Content>
-      </Layout>
+      <Router>
+        <Route
+          render={({ location, match }) => (
+            <Switch>
+              <Route path="/:id">
+                <Subdomains
+                  //regex: removes trailing /, then replaces / with .
+                  domain={location.pathname
+                    .substring(1)
+                    .replace(/\/+$/, '')
+                    .replace(/\//, '.')}
+                />
+                <Owned />
+              </Route>
+              <Route path="/">
+                {/* TODO: move to styling file */}
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Subdomains domain={'_root'} />
+                  {/* <Owned /> */}
+                </div>
+              </Route>
+            </Switch>
+          )}
+        />
+      </Router>
     </>
   );
 }
