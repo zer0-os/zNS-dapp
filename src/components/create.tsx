@@ -7,7 +7,8 @@ import { zodResolver } from '../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { DomainContext } from '../lib/useDomainStore';
 import { subdomainRegex } from '../lib/validation/validators';
-import { Modal, Button } from 'antd';
+import Modal from 'antd/lib/modal/Modal';
+// import { Modal, Button } from 'antd';
 
 interface CreateProps {
   domainId: string;
@@ -22,6 +23,7 @@ const schema = z.object({
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
   const { refetchDomain, domain } = domainContext;
+  const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -53,14 +55,40 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
 
   if (domain.isNothing() || domain.value.owner !== account) return null;
 
+  const showSubdomain = () => {
+    setSubdomainVisible(true);
+  };
+
+  const subdomainOk = () => {
+    setSubdomainVisible(false);
+  };
+
+  const subdomainCancel = () => {
+    setSubdomainVisible(false);
+  };
+
   return (
     <>
-      <form onSubmit={handleSubmit(({ child }) => _create(child))}>
-        <div className="create-button">
-          <button type="submit"> Create Domain</button>
-          <input name={'child'} ref={register} placeholder="child domain" />
-        </div>
-      </form>
+      <button
+        style={{ color: 'white' }}
+        className="owned-btn"
+        onClick={showSubdomain}
+      >
+        Create domain
+      </button>
+      <Modal
+        title="subdomain"
+        visible={isSubdomainVisible}
+        onOk={subdomainOk}
+        onCancel={subdomainCancel}
+      >
+        <form onSubmit={handleSubmit(({ child }) => _create(child))}>
+          <div className="create-button">
+            <button type="submit"> Create Domain</button>
+            <input name={'child'} ref={register} placeholder="child domain" />
+          </div>
+        </form>
+      </Modal>
     </>
   );
 };

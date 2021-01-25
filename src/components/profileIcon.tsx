@@ -77,7 +77,7 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
           onCancel={profileCancel}
         >
           {domain.value.children}
-          <Create domainId={domain.value.id} domainContext={domainContext} />
+
           <Transfer domainId={domain.value.id} domainContext={domainContext} />
         </Modal>
       </>

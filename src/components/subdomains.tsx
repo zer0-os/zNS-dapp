@@ -15,6 +15,7 @@ import { String } from 'lodash';
 import { Column, useTable, UseTableOptions } from 'react-table';
 import { string } from 'zod';
 import Profile from './profileIcon';
+import Approve from './approval';
 
 interface SubdomainsProps {
   domain: string;
@@ -43,6 +44,7 @@ interface Data {
 
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
+
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
@@ -74,7 +76,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         accessor: '#',
       },
       {
-        filterable: false,
         Header: 'Asset',
         accessor: 'asset',
       },
@@ -115,6 +116,23 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     });
   };
 
+  // const showSubdomain = () => {
+  //   setSubdomainVisible(true);
+  // };
+
+  // const subdomainOk = () => {
+  //   setSubdomainVisible(false);
+  // };
+
+  // const subdomainCancel = () => {
+  //   setSubdomainVisible(false);
+  // };
+
+  // const handleRowClick = (record: any) => {
+  //   history.push({
+  //     pathname: record.name,
+  //   });
+  // };
   const colors: string[] = [
     '641f29',
     'cf7571',
@@ -141,7 +159,16 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
-          <Owned />
+          <div className="big-btn"></div>
+          <div>
+            <Owned />
+            <Create domainId={domain.value.id} domainContext={domainContext} />
+          </div>
+          <Approve
+            domainId={domain.value.id}
+            domainContext={domainContext}
+            approvalFromContext={account.approvalFromContext}
+          />
         </>
       ) : null}
       {/* // apply the table props */}
