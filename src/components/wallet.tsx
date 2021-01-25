@@ -240,7 +240,7 @@ export default function Wallet() {
 
   return (
     <>
-      <Row justify="space-between" gutter={[32, 16]} align="middle">
+      <Row justify="space-around" gutter={[32, 16]} align="middle">
         <div className="walletButtonContainer">
           {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
             const currentConnector = connectorsByName[name];

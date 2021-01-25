@@ -14,6 +14,7 @@ import Owned from './owned';
 import { String } from 'lodash';
 import { Column, useTable, UseTableOptions } from 'react-table';
 import { string } from 'zod';
+import Profile from './profileIcon';
 
 interface SubdomainsProps {
   domain: string;
@@ -30,7 +31,7 @@ interface RowProps {
 
 interface Data {
   '#': string;
-  asset: string;
+  asset: any;
   name: string;
   volume: string;
   '24Hr': string;
@@ -41,8 +42,6 @@ interface Data {
 }
 
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
-  const [isSubdomainVisible, setSubdomainVisible] = useState(false);
-  const [isTransferVisible, setTransferVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
@@ -56,7 +55,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     Object.keys(domain.value.children).forEach((key) => {
       dataInput.push({
         '#': key,
-        asset: '',
+        asset: <Profile domain={domain.value.domain} />,
         name: domain.value.children[Number(key)],
         volume: 'N/A',
         '24Hr': 'N/A',
@@ -75,6 +74,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         accessor: '#',
       },
       {
+        filterable: false,
         Header: 'Asset',
         accessor: 'asset',
       },
@@ -115,30 +115,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     });
   };
 
-  const showTransfer = () => {
-    setTransferVisible(true);
-  };
-
-  const transferOk = () => {
-    setTransferVisible(false);
-  };
-
-  const transferCancel = () => {
-    setTransferVisible(false);
-  };
-
-  const showSubdomain = () => {
-    setSubdomainVisible(true);
-  };
-
-  const subdomainOk = () => {
-    setSubdomainVisible(false);
-  };
-
-  const subdomainCancel = () => {
-    setSubdomainVisible(false);
-  };
-
   const colors: string[] = [
     '641f29',
     'cf7571',
@@ -165,51 +141,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
-          <div className="big-btn">
-            <div className="btn-container">
-              <button
-                className="btn-sub"
-                style={{ color: 'white' }}
-                onClick={showSubdomain}
-              >
-                Create
-              </button>
-              <Modal
-                title="subdomain"
-                visible={isSubdomainVisible}
-                onOk={subdomainOk}
-                onCancel={subdomainCancel}
-              >
-                <Create
-                  domainId={domain.value.id}
-                  domainContext={domainContext}
-                />
-              </Modal>
-            </div>
-            <div className="btn-container2">
-              <button
-                className="transfer-btn"
-                style={{ color: 'white' }}
-                onClick={showTransfer}
-              >
-                Transfer
-              </button>
-              <Modal
-                title="transfer"
-                visible={isTransferVisible}
-                onOk={transferOk}
-                onCancel={transferCancel}
-              >
-                <Transfer
-                  domainId={domain.value.id}
-                  domainContext={domainContext}
-                />
-              </Modal>
-            </div>
-          </div>
-          <div>
-            <Owned />
-          </div>
+          <Owned />
         </>
       ) : null}
       {/* // apply the table props */}
@@ -290,7 +222,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
       </div>
       <br />
       <br />
-      {colors.map((color) => {
+      {/* {colors.map((color) => {
         return (
           <div
             style={{
@@ -303,7 +235,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
             {color}
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 };

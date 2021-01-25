@@ -27,8 +27,14 @@ const Owned: FC = () => {
     setOwnedVisible(false);
   };
   return (
-    <div id="ownedContainer">
-      <button onClick={showOwner}>Profile Icon Asset</button>
+    <>
+      <button
+        style={{ color: 'white' }}
+        className="owned-btn"
+        onClick={showOwner}
+      >
+        Profile
+      </button>
 
       <Modal visible={isOwnedVisible} onOk={ownerOk} onCancel={ownerCancel}>
         <div>Domains Owned by {account}:</div>
@@ -47,7 +53,7 @@ const Owned: FC = () => {
           })}
         </div>
       </Modal>
-    </div>
+    </>
   );
 };
 
