@@ -144,6 +144,27 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   //     pathname: record.name,
   //   });
   // };
+  const colors: string[] = [
+    '641f29',
+    'cf7571',
+    '171730',
+    '953338',
+    '8f6554',
+    '584362',
+    '754735',
+    '8e7384',
+    '979b9f',
+    '1a3344',
+    '0f1619',
+    '224564',
+    '33566d',
+    'b8bdca',
+    '76b1ce',
+    '678293',
+    '426582',
+    '414350',
+    '675b68',
+  ];
 
   return (
     <div id="subdomainsContainer">
@@ -269,196 +290,20 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
       </table>
       <br />
       <br />
-      <div
-        style={{
-          background: '#641f29',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        641f29
-      </div>
-      <div
-        style={{
-          background: '#cf7571',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        cf7571
-      </div>
-      <div
-        style={{
-          background: '#171730',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        171730
-      </div>
-      <div
-        style={{
-          background: '#953338',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        953338
-      </div>
-      <div
-        style={{
-          background: '#8f6554',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        8f6554
-      </div>
-      <div
-        style={{
-          background: '#584362',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        584362
-      </div>
-      <div
-        style={{
-          background: '#754735',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        754735
-      </div>
-      <div
-        style={{
-          background: '#8e7384',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        8e7384
-      </div>
-      <div
-        style={{
-          background: '#979b9f',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        979b9f
-      </div>
-      <div
-        style={{
-          background: '#1a3344',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        1a3344
-      </div>
-      <div
-        style={{
-          background: '#0f1619',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        0f1619
-      </div>
-      <div
-        style={{
-          background: '#224564',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        224564
-      </div>
-      <div
-        style={{
-          background: '#33566d',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        33566d
-      </div>
-      <div
-        style={{
-          background: '#b8bdca',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        b8bdca
-      </div>
-      <div
-        style={{
-          background: '#76b1ce',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        76b1ce
-      </div>
-      <div
-        style={{
-          background: '#678293',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        678293
-      </div>
-      <div
-        style={{
-          background: '#426582',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        426582
-      </div>
-      <div
-        style={{
-          background: '#414350',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        414350
-      </div>
-      <div
-        style={{
-          background: '#675b68',
-          height: '40px',
-          width: '80%',
-          textAlign: 'right',
-        }}
-      >
-        675b68
-      </div>
+      {colors.map((color) => {
+        return (
+          <div
+            style={{
+              background: '#' + color,
+              height: '40px',
+              width: '80%',
+              textAlign: 'right',
+            }}
+          >
+            {color}
+          </div>
+        );
+      })}
     </div>
   );
 };
