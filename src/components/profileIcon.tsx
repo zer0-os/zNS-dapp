@@ -4,6 +4,8 @@ import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
 import { Modal, Button } from 'antd';
+import Create from './create';
+import Transfer from './transferDomains';
 
 interface ProfileProps {
   domain: string;
@@ -11,6 +13,8 @@ interface ProfileProps {
 
 const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
+  const [isTransferVisible, setTransferVisible] = useState(false);
+  const [isProfileVisible, setProfileVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
@@ -31,6 +35,30 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
     setSubdomainVisible(false);
   };
 
+  const showTransfer = () => {
+    setTransferVisible(true);
+  };
+
+  const transferOk = () => {
+    setTransferVisible(false);
+  };
+
+  const transferCancel = () => {
+    setTransferVisible(false);
+  };
+
+  const showProfile = () => {
+    setProfileVisible(true);
+  };
+
+  const profileOk = () => {
+    setProfileVisible(false);
+  };
+
+  const profileCancel = () => {
+    setProfileVisible(false);
+  };
+
   return (
     <>
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
@@ -38,18 +66,23 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
           <button
             className="btn-sub"
             style={{ color: 'white' }}
-            onClick={showSubdomain}
+            onClick={showProfile}
           >
             image field
           </button>
 
           <Modal
             title="subdomain"
-            visible={isSubdomainVisible}
-            onOk={subdomainOk}
-            onCancel={subdomainCancel}
+            visible={isProfileVisible}
+            onOk={profileOk}
+            onCancel={profileCancel}
           >
             {domain.value.children}
+            <Create domainId={domain.value.id} domainContext={domainContext} />
+            <Transfer
+              domainId={domain.value.id}
+              domainContext={domainContext}
+            />
           </Modal>
         </>
       ) : null}
