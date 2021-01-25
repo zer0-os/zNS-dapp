@@ -291,7 +291,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
       </table>
       <br />
       <br />
-      {colors.map((color) => {
+      {/* {colors.map((color) => {
         return (
           <div
             style={{
@@ -304,7 +304,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
             {color}
           </div>
         );
-      })}
+      })} */}
     </div>
   );
 };
