@@ -74,6 +74,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         accessor: '#',
       },
       {
+        filterable: false,
         Header: 'Asset',
         accessor: 'asset',
       },
@@ -139,7 +140,9 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   return (
     <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
-        <></>
+        <>
+          <Owned />
+        </>
       ) : null}
       {/* // apply the table props */}
       <table {...getTableProps()} className="subdomainsTable">

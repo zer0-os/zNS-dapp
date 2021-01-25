@@ -61,31 +61,26 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
 
   return (
     <>
-      {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
-        <>
-          <button
-            className="btn-sub"
-            style={{ color: 'white' }}
-            onClick={showProfile}
-          >
-            image field
-          </button>
+      <>
+        <button
+          className="btn-sub"
+          style={{ color: 'white' }}
+          onClick={showProfile}
+        >
+          image field
+        </button>
 
-          <Modal
-            title="subdomain"
-            visible={isProfileVisible}
-            onOk={profileOk}
-            onCancel={profileCancel}
-          >
-            {domain.value.children}
-            <Create domainId={domain.value.id} domainContext={domainContext} />
-            <Transfer
-              domainId={domain.value.id}
-              domainContext={domainContext}
-            />
-          </Modal>
-        </>
-      ) : null}
+        <Modal
+          title="subdomain"
+          visible={isProfileVisible}
+          onOk={profileOk}
+          onCancel={profileCancel}
+        >
+          {domain.value.children}
+          <Create domainId={domain.value.id} domainContext={domainContext} />
+          <Transfer domainId={domain.value.id} domainContext={domainContext} />
+        </Modal>
+      </>
     </>
   );
 };
