@@ -54,14 +54,19 @@ function App() {
   };
   return (
     <>
-      <div className="network-btn-container">
+      <div className="control-btns-container">
+        {active && (
+          <div className="profile-btn">
+            <Owned />
+          </div>
+        )}
         <button
           className="connect-btn"
           style={{ color: 'white' }}
           onClick={showWallet}
         >
           {' '}
-          Connect Wallet{' '}
+          {active ? 'Connected' : 'Connect Wallet'}{' '}
         </button>
         <Modal
           visible={isWalletVisible}
@@ -93,9 +98,6 @@ function App() {
                       .replace(/\//, '.')}
                   />
                 </h1> */}
-                <div className="profile-btn">
-                  <Owned />
-                </div>
                 {/* TODO: move to styling file */}
                 <div
                   style={{
