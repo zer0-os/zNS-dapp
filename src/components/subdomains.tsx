@@ -46,7 +46,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
 
   const contracts = useZnsContracts();
-  const { library, account, active, chainId } = context;
+  const { account } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
@@ -163,12 +163,11 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           <div>
             <Owned />
             <Create domainId={domain.value.id} domainContext={domainContext} />
+            {/* <Transfer
+              domainId={domain.value.id}
+              domainContext={domainContext}
+            /> */}
           </div>
-          <Approve
-            domainId={domain.value.id}
-            domainContext={domainContext}
-            approvalFromContext={account.approvalFromContext}
-          />
         </>
       ) : null}
       {/* // apply the table props */}

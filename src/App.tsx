@@ -7,10 +7,11 @@ import Wallet from './components/wallet';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Subdomains from './components/subdomains';
 import Owned from './components/owned';
-import { DomainCacheProvider } from './lib/useDomainCache';
+import { domainCacheContext, DomainCacheProvider } from './lib/useDomainCache';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { PoweroffOutlined } from '@ant-design/icons';
 import { Layout, Menu, Modal } from 'antd';
+import Create from './components/create';
 
 const { Content, Header } = Layout;
 
@@ -55,8 +56,15 @@ function App() {
   };
   return (
     <>
-      <div className="button-n">
-        <button onClick={showWallet}> Connect Wallet </button>
+      <div className="network-btn-container">
+        <button
+          className="connect-btn"
+          style={{ color: 'white' }}
+          onClick={showWallet}
+        >
+          {' '}
+          Connect Wallet{' '}
+        </button>
         <Modal
           visible={isWalletVisible}
           onOk={walletOk}
@@ -65,7 +73,6 @@ function App() {
           <Wallet />
         </Modal>
       </div>
-
       <Router>
         <Route
           render={({ location, match }) => (
@@ -78,9 +85,11 @@ function App() {
                     .replace(/\/+$/, '')
                     .replace(/\//, '.')}
                 />
-                <Owned />
               </Route>
               <Route path="/">
+                <div className="profile-btn">
+                  <Owned />
+                </div>
                 {/* TODO: move to styling file */}
                 <div
                   style={{
@@ -89,7 +98,6 @@ function App() {
                   }}
                 >
                   <Subdomains domain={'_root'} />
-                  {/* <Owned /> */}
                 </div>
               </Route>
             </Switch>

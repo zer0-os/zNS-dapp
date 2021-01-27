@@ -146,7 +146,7 @@ function useApprovedTo(): {
   refetchApprovedTo: RefetchQuery<ApprovedToData>;
 } {
   const context = useWeb3React<Web3Provider>();
-  const { library, account, active, chainId } = context;
+  const { account } = context;
   const [
     getApprovedTo,
     { data, refetch, error },
