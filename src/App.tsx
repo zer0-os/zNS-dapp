@@ -53,32 +53,32 @@ function App() {
     setWalletVisible(false);
   };
   return (
-    <>
-      <div className="control-btns-container">
-        {active && (
-          <div className="profile-btn">
-            <Owned />
-          </div>
-        )}
-        <button
-          className="connect-btn"
-          style={{ color: 'white' }}
-          onClick={showWallet}
-        >
-          {' '}
-          {active ? 'Connected' : 'Connect Wallet'}{' '}
-        </button>
-        <Modal
-          visible={isWalletVisible}
-          onOk={walletOk}
-          onCancel={walletCancel}
-        >
-          <Wallet />
-        </Modal>
-      </div>
-      <Router>
-        <Route
-          render={({ location, match }) => (
+    <Router>
+      <Route
+        render={({ location, match }) => (
+          <>
+            <div className="control-btns-container">
+              {active && (
+                <div className="profile-btn">
+                  <Owned />
+                </div>
+              )}
+              <button
+                className="connect-btn"
+                style={{ color: 'white' }}
+                onClick={showWallet}
+              >
+                {' '}
+                {active ? 'Connected' : 'Connect Wallet'}{' '}
+              </button>
+              <Modal
+                visible={isWalletVisible}
+                onOk={walletOk}
+                onCancel={walletCancel}
+              >
+                <Wallet />
+              </Modal>
+            </div>
             <Switch>
               <Route path="/:id">
                 <Subdomains
@@ -109,10 +109,10 @@ function App() {
                 </div>
               </Route>
             </Switch>
-          )}
-        />
-      </Router>
-    </>
+          </>
+        )}
+      />
+    </Router>
   );
 }
 

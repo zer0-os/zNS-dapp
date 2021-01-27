@@ -1,7 +1,8 @@
 import React, { FC, useState, useMemo } from 'react';
+import _ from 'lodash'
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
@@ -44,7 +45,7 @@ interface Data {
 
 const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
-
+  const location = useLocation();
   const contracts = useZnsContracts();
   const { account } = context;
   const { useDomain } = useDomainCache();
@@ -52,6 +53,9 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   const history = useHistory();
   const dataInput: Data[] = [];
+  // const route = _.transform(location.pathname.split('/'), (acc, val) => {
+
+  // })
   if (domain.isNothing()) {
   } else {
     Object.keys(domain.value.children).forEach((key) => {
