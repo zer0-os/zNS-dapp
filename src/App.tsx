@@ -13,8 +13,6 @@ import { PoweroffOutlined } from '@ant-design/icons';
 import { Layout, Menu, Modal } from 'antd';
 import Create from './components/create';
 
-const { Content, Header } = Layout;
-
 const client = new ApolloClient({
   uri: 'http://localhost:8000/subgraphs/name/zer0-os/ZNS-subgraph',
   cache: new InMemoryCache(),
@@ -87,6 +85,14 @@ function App() {
                 />
               </Route>
               <Route path="/">
+                {/* <h1>
+                  <Subdomains
+                    domain={location.pathname
+                      .substring(1)
+                      .replace(/\/+$/, '')
+                      .replace(/\//, '.')}
+                  />
+                </h1> */}
                 <div className="profile-btn">
                   <Owned />
                 </div>
