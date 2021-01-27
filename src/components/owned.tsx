@@ -1,10 +1,11 @@
 import React, { FC, useCallback, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useZnsContracts } from '../lib/contracts';
-import { domainCacheContext, useDomainCache } from '../lib/useDomainCache';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Modal, Button } from 'antd';
+import { useZnsContracts } from '../lib/contracts';
+import { domainCacheContext, useDomainCache } from '../lib/useDomainCache';
+
 
 import Approve from './approval';
 import { domain } from 'process';
@@ -14,9 +15,9 @@ const Owned: FC = () => {
   const [isOwnedVisible, setOwnedVisible] = useState(false);
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
-  const { controlled } = useDomainCache();
+  const { owned } = useDomainCache();
 
-  if (controlled.isNothing()) return <p>User owns no domains.</p>;
+  if (owned.isNothing()) return <p>User owns no domains.</p>;
 
   const showOwner = () => {
     setOwnedVisible(true);
@@ -42,7 +43,7 @@ const Owned: FC = () => {
       <Modal visible={isOwnedVisible} onOk={ownerOk} onCancel={ownerCancel}>
         <div>Domains Owned by {account}:</div>
         <div>
-          {controlled.value.map((control) => {
+          {owned.value.map((control) => {
             return (
               <div key={control.domain}>
                 <Link

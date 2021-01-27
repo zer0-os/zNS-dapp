@@ -12,51 +12,63 @@ interface Domain {
   children: string[];
   owner: string;
   controller: string;
+  parent: string;
   approval: Maybe<string>;
 }
 
-interface ControlledDomainsData {
-  domains: Domain[];
+interface _DomainData {
+  id: string;
+  domain: string;
+  owner: string;
+  parent: string;
+  controller: string;
+  approval?: string;
+}
+
+interface DomainsData {
+  domains: _DomainData[];
 }
 
 interface DomainData {
-  domain: {
-    id: string;
-    domain: string;
-    children: string[];
-    owner: string;
-    controller: string;
-    approval?: string;
-  };
+  domain: _DomainData;
 }
 
-interface ApprovedToData {
-  domains: Domain[];
-}
-
-interface ApprovedFromData {
-  domains: Domain[];
-}
+const zeroAddress =
+  '0x0000000000000000000000000000000000000000000000000000000000000000';
 
 const domainQuery = gql`
   query Domain($id: ID!) {
     domain(id: $id) {
       id
       domain
-      children
+      approval
+      parent
       owner
       controller
     }
   }
 `;
 
-const controlledDomainsQuery = gql`
-  query ControlledDomains($owner: Bytes!) {
+const childrenQuery = gql`
+  query ChildrenDomains($parent: Bytes!) {
+    domains(where: { parent: $parent }) {
+      id
+      domain
+      approval
+      parent
+      owner
+      controller
+    }
+  }
+`;
+
+const ownedDomainsQuery = gql`
+  query OwnedDomains($owner: Bytes!) {
     domains(where: { owner: $owner }) {
       id
       domain
-      children
       approval
+      parent
       owner
       controller
     }
@@ -64,69 +76,112 @@ const controlledDomainsQuery = gql`
 `;
 
 const approvalQuery = gql`
-  query Approval($from: Bytes!) {
-    domains(where: { to: $from }) {
+  query ApprovedDomains($approval: Bytes!) {
+    domains(where: { approval: $approval }) {
       id
       domain
+      approval
+      parent
       owner
-      from
-      to
+      controller
     }
   }
 `;
 
-type RefetchQuery<T> = (
-  variables?: Partial<Record<string, any>>,
-) => Promise<ApolloQueryResult<T>>;
+type QueryArgs = Partial<Record<string, any>> | undefined;
+
+type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
 function useDomain(domain: string) {
   const id = domain === '_root' ? '0' : getDomainId(domain);
-  const { error, data, refetch } = useQuery<DomainData>(domainQuery, {
+  const {
+    error: errorDomain,
+    data: dataDomain,
+    refetch: refetchDomain,
+  } = useQuery<DomainData>(domainQuery, {
     variables: { id },
   });
 
+  const {
+    error: errorChildren,
+    data: dataChildren,
+    refetch: refetchChildren,
+  } = useQuery<DomainsData>(childrenQuery, {
+    variables: { parent: id },
+  });
+
   const _domain: Maybe<Domain> = useMemo(() => {
-    console.log('wtf?', data);
-    if (error) {
+    if (errorDomain) {
       // TODO: maybe throw?
-      console.error(error);
+      console.error(errorDomain);
     }
-    if (data) {
+    if (errorChildren) {
+      console.error(errorChildren);
+    }
+    if (dataDomain) {
+      const children =
+        dataChildren &&
+        dataChildren.domains[0] &&
+        dataChildren.domains[0].parent === id
+          ? dataChildren.domains
+              .map((d) => d.domain)
+              .filter((d) => d !== '_root')
+          : [];
       return Maybe.of({
-        ...data.domain,
-        approval: data.domain.approval
-          ? Maybe.of(data.domain.approval)
+        ...dataDomain.domain,
+        approval: dataDomain.domain.approval
+          ? Maybe.of(dataDomain.domain.approval)
           : Maybe.nothing(),
-        owner: getAddress(data.domain.owner),
-        controller: getAddress(data.domain.controller),
+        owner: getAddress(dataDomain.domain.owner),
+        parent: dataDomain.domain.parent,
+        children,
+        controller: getAddress(dataDomain.domain.controller),
       });
     }
     return Maybe.nothing();
-  }, [data]);
+  }, [dataDomain, errorDomain, dataChildren, dataDomain, errorChildren]);
+
+  const refetch = useCallback(
+    (domainId?: string) =>
+      Promise.all([
+        refetchDomain({ variables: { id: domainId } }),
+        refetchChildren({ variables: { parent: domainId } }),
+      ]),
+    [refetchChildren, refetchDomain],
+  );
 
   return { domain: _domain, refetchDomain: refetch };
 }
 
-function useControlledDomains(): {
-  controlled: Maybe<Domain[]>;
-  refetchControlled: RefetchQuery<ControlledDomainsData>;
+function useOwnedDomains(): {
+  owned: Maybe<Domain[]>;
+  refetchOwned: RefetchQuery<DomainsData>;
 } {
   const context = useWeb3React<Web3Provider>();
   const { library, account, active, chainId } = context;
-  const [
-    getControlled,
-    { data, refetch, error },
-  ] = useLazyQuery<ControlledDomainsData>(controlledDomainsQuery, {
-    variables: { owner: account },
-  });
+  const [getOwned, { data, refetch, error }] = useLazyQuery<DomainsData>(
+    ownedDomainsQuery,
+    {
+      variables: { owner: account },
+    },
+  );
 
-  const controlled: Maybe<Domain[]> = useMemo(() => {
+  const owned: Maybe<Domain[]> = useMemo(() => {
     if (error) {
       // TODO: maybe throw?
       console.error(error);
     }
     if (data) {
-      return Maybe.of(data.domains);
+      return Maybe.of(
+        data.domains.map((d) => ({
+          ...d,
+          approval: d.approval ? Maybe.of(d.approval) : Maybe.nothing(),
+          owner: getAddress(d.owner),
+          parent: d.parent,
+          children: [],
+          controller: getAddress(d.controller),
+        })),
+      );
     }
     return Maybe.nothing();
   }, [data]);
@@ -135,32 +190,42 @@ function useControlledDomains(): {
     if (refetch) {
       refetch({ variables: { owner: account } });
     } else if (account) {
-      getControlled({ variables: { owner: account } });
+      getOwned({ variables: { owner: account } });
     }
   }, [account]);
-  return { controlled, refetchControlled: refetch! };
+
+  return { owned, refetchOwned: refetch! };
 }
 
-function useApprovedTo(): {
-  approvedTo: Maybe<Domain[]>;
-  refetchApprovedTo: RefetchQuery<ApprovedToData>;
+function useIncomingApprovals(): {
+  incomingApprovals: Maybe<Domain[]>;
+  refetchIncomingApprovals: RefetchQuery<DomainsData>;
 } {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const [
-    getApprovedTo,
+    getIncomingApprovals,
     { data, refetch, error },
-  ] = useLazyQuery<ApprovedToData>(approvalQuery, {
-    variables: { to: account },
+  ] = useLazyQuery<DomainsData>(approvalQuery, {
+    variables: { approval: account },
   });
 
-  const approvedTo: Maybe<Domain[]> = useMemo(() => {
+  const incomingApprovals: Maybe<Domain[]> = useMemo(() => {
     if (error) {
       // TODO: maybe throw?
       console.error(error);
     }
     if (data) {
-      return Maybe.of(data.domains);
+      return Maybe.of(
+        data.domains.map((d) => ({
+          ...d,
+          approval: d.approval ? Maybe.of(d.approval) : Maybe.nothing(),
+          owner: getAddress(d.owner),
+          parent: d.parent,
+          children: [],
+          controller: getAddress(d.controller),
+        })),
+      );
     }
     return Maybe.nothing();
   }, [data]);
@@ -169,60 +234,24 @@ function useApprovedTo(): {
     if (refetch) {
       refetch({ variables: { to: account } });
     } else if (account) {
-      getApprovedTo({ variables: { to: account } });
+      getIncomingApprovals({ variables: { to: account } });
     }
   }, [account]);
-  return { approvedTo, refetchApprovedTo: refetch! };
-}
 
-function useApprovedFrom(): {
-  approvedFrom: Maybe<Domain[]>;
-  refetchApprovedFrom: RefetchQuery<ApprovedToData>;
-} {
-  const context = useWeb3React<Web3Provider>();
-  const { library, account, active, chainId } = context;
-  const [
-    getApprovedFrom,
-    { data, refetch, error },
-  ] = useLazyQuery<ApprovedToData>(approvalQuery, {
-    variables: { from: account },
-  });
-
-  const approvedFrom: Maybe<Domain[]> = useMemo(() => {
-    if (error) {
-      // TODO: maybe throw?
-      console.error(error);
-    }
-    if (data) {
-      return Maybe.of(data.domains);
-    }
-    return Maybe.nothing();
-  }, [data]);
-
-  useEffect(() => {
-    if (refetch) {
-      refetch({ variables: { from: account } });
-    } else if (account) {
-      getApprovedFrom({ variables: { from: account } });
-    }
-  }, [account]);
-  return { approvedFrom, refetchApprovedFrom: refetch! };
+  return { incomingApprovals, refetchIncomingApprovals: refetch! };
 }
 
 const useDomainStore = () => {
-  const controlled = useControlledDomains();
-  const approvedTo = useApprovedTo();
-  const approvedFrom = useApprovedFrom();
+  const owned = useOwnedDomains();
+  const incomingApprovals = useIncomingApprovals();
 
-  return { useDomain, ...controlled, ...approvedTo, ...approvedFrom };
+  return { useDomain, ...owned, ...incomingApprovals };
 };
 
 export type DomainStoreContext = ReturnType<typeof useDomainStore>;
 
 export type DomainContext = ReturnType<typeof useDomain>;
 
-export type ApprovalToContext = ReturnType<typeof useApprovedTo>;
-
-export type ApprovalFromContext = ReturnType<typeof useApprovedFrom>;
+export type IncomingApprovalsContext = ReturnType<typeof useIncomingApprovals>;
 
 export { useDomainStore };
