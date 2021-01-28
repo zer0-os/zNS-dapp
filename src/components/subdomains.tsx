@@ -1,5 +1,5 @@
 import React, { FC, useState, useMemo } from 'react';
-import _ from 'lodash'
+import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Link, useLocation } from 'react-router-dom';
@@ -53,9 +53,13 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   const history = useHistory();
   const dataInput: Data[] = [];
-  // const route = _.transform(location.pathname.split('/'), (acc, val) => {
-
-  // })
+  const routes = _.transform(
+    location.pathname.split('/'),
+    (acc: [string, string][], val, i) => {
+      let _prev = 0 < i ? acc[i - 1][1] : '';
+      acc.push([val, _prev + val]);
+    },
+  );
   if (domain.isNothing()) {
   } else {
     Object.keys(domain.value.children).forEach((key) => {
@@ -158,19 +162,23 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     '414350',
     '675b68',
   ];
-  console.log('subdomains',domain);
+  console.log('subdomains', domain);
   return (
     <div id="subdomainsContainer">
+      <div className="route-nav">
+        {routes.map(([key, path], i) => (
+          <div className="route-nav-link">
+            <Link to={path}>{key}</Link>
+            {i < routes.length - 1 && '/'}
+          </div>
+        ))}
+      </div>
+
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
           <div className="big-btn"></div>
           <div>
-            <Owned />
             <Create domainId={domain.value.id} domainContext={domainContext} />
-            {/* <Transfer
-              domainId={domain.value.id}
-              domainContext={domainContext}
-            /> */}
           </div>
         </>
       ) : null}

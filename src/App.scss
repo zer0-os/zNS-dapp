@@ -60,6 +60,16 @@
   display: flex;
   padding-right: 10px;
 }
+
+.route-nav {
+  display: flex;
+  align-items: center;
+}
+
+.route-nav-link {
+  padding-right: 5%;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
