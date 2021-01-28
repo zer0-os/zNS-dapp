@@ -54,7 +54,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const history = useHistory();
   const dataInput: Data[] = [];
   const routes = _.transform(
-    location.pathname.split('/'),
+    location.pathname.split('/').filter((s) => s !== ''),
     (acc: [string, string][], val, i) => {
       let _prev = 0 < i ? acc[i - 1][1] : '';
       acc.push([val, _prev + val]);
@@ -163,9 +163,13 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     '675b68',
   ];
   console.log('subdomains', domain);
+  console.log('routes', routes);
   return (
     <div id="subdomainsContainer">
       <div className="route-nav">
+        <div className="route-nav-link">
+          <Link to={'/'}>Z:/</Link>{' '}
+        </div>
         {routes.map(([key, path], i) => (
           <div className="route-nav-link">
             <Link to={path}>{key}</Link>
