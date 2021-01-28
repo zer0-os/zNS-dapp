@@ -100,6 +100,12 @@ $sky-blue: #76b1ce;
   }
 }
 
+.route-nav-link {
+  display: flex;
+  flex-direction: row;
+  padding-right: 0% !important;
+}
+
 // subdomains header
 .subdomainsHeaderGroup {
   color: $dark-grey;

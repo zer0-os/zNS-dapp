@@ -185,12 +185,14 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
       <SetImage domain={domain.value.domain} />
       <div className="route-nav">
         <div className="route-nav-link">
-          <Link to={'/'}>Z:/</Link>{' '}
+          <Link to={'/'}>Z:/</Link>
         </div>
         {routes.map(([key, path], i) => (
           <div className="route-nav-link">
-            <Link to={path}>{' ' + key + ' '}</Link>
-            <div>{i < routes.length - 1 && ' . '}</div>
+            <Link to={path}>
+              {key}
+              {i < routes.length - 1 && '.'}
+            </Link>
           </div>
         ))}
       </div>
