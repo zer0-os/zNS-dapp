@@ -1,5 +1,5 @@
 import React, { FC, useState, useMemo } from 'react';
-import _ from 'lodash'
+import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Link, useLocation } from 'react-router-dom';
@@ -158,14 +158,12 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     '414350',
     '675b68',
   ];
-  console.log('subdomains',domain);
+  console.log('subdomains', domain);
   return (
     <div id="subdomainsContainer">
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
-          <div className="big-btn"></div>
           <div>
-            <Owned />
             <Create domainId={domain.value.id} domainContext={domainContext} />
             {/* <Transfer
               domainId={domain.value.id}
