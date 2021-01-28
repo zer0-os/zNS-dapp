@@ -162,7 +162,8 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     '414350',
     '675b68',
   ];
-  
+  console.log('subdomains', domain);
+  console.log('routes', routes);
   return (
     <div id="subdomainsContainer">
       <div className="route-nav">

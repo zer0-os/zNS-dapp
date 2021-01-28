@@ -14,9 +14,12 @@ $sky-blue: #76b1ce;
   align-items: center;
   margin: 15px;
   padding: 15px;
-  border: 1px black solid;
+  top: 50%;
+  left: 15%;
+  border: 2px $middle-red solid;
   min-width: 480px;
   width: 80vw;
+  border-top-right-radius: 95px;
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -25,6 +28,9 @@ $sky-blue: #76b1ce;
 
 .subdomainsTable {
   background: none;
+  border-radius: 50%;
+  border-collapse: inherit;
+  border-spacing: 0px;
   width: 80%;
   height: 30vh;
   // subdomains header
@@ -99,8 +105,16 @@ $sky-blue: #76b1ce;
   color: $dark-grey;
   text-decoration: none;
   tr th:first-child {
-    border-radius: 15px 15px 15px 15px !important;
-    border: 1px solid black;
+    // border-top-right-radius: 10%;
+    border-radius: 50%;
+    // border-collapse: inherit;
+    // border-spacing: 0px;
+    border: 1px solid $middle-red;
+  }
+  tr th:last-child {
+    border-top-right-radius: 95px;
+
+    // border-radius: 50%;
   }
 }
 
