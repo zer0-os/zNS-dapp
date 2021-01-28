@@ -47,7 +47,7 @@ const Owned: FC = () => {
             return (
               <div key={control.domain}>
                 <Link
-                  to={'/' + control.domain.replace(/\./, '/')}
+                  to={'/' + control.domain.replace('.', '/')}
                   //   key={control.domain}
                 >
                   {control.domain}

@@ -83,10 +83,13 @@ function App() {
               <Route path="/:id">
                 <Subdomains
                   //regex: removes trailing /, then replaces / with .
-                  domain={location.pathname
+                  /*
+                  location.pathname
                     .substring(1)
                     .replace(/\/+$/, '')
-                    .replace(/\//, '.')}
+                    .replace(/\//, '.')
+                  */
+                  domain={location.pathname.substring(1)}
                 />
               </Route>
               <Route path="/">
