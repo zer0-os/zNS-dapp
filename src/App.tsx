@@ -14,7 +14,7 @@ import { Layout, Menu, Modal } from 'antd';
 import Create from './components/create';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:8000/subgraphs/name/zer0-os/ZNS-subgraph',
+  uri: process.env.REACT_APP_SUBGRAPH_URL_4,
   cache: new InMemoryCache(),
 });
 
