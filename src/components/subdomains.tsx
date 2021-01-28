@@ -53,9 +53,13 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   const history = useHistory();
   const dataInput: Data[] = [];
-  // const route = _.transform(location.pathname.split('/'), (acc, val) => {
-
-  // })
+  const routes = _.transform(
+    location.pathname.split('/').filter((s) => s !== ''),
+    (acc: [string, string][], val, i) => {
+      let _prev = 0 < i ? acc[i - 1][1] : '';
+      acc.push([val, _prev + val]);
+    },
+  );
   if (domain.isNothing()) {
   } else {
     Object.keys(domain.value.children).forEach((key) => {
@@ -158,17 +162,32 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     '414350',
     '675b68',
   ];
+<<<<<<< HEAD
   console.log('subdomains', domain);
+||||||| 19fc73b
+  console.log('subdomains',domain);
+=======
+  console.log('subdomains', domain);
+  console.log('routes', routes);
+>>>>>>> abd11b45a2ecf8f86e77aba8031e27b985f018f4
   return (
     <div id="subdomainsContainer">
+      <div className="route-nav">
+        <div className="route-nav-link">
+          <Link to={'/'}>Z:/</Link>{' '}
+        </div>
+        {routes.map(([key, path], i) => (
+          <div className="route-nav-link">
+            <Link to={path}>{key}</Link>
+            {i < routes.length - 1 && '/'}
+          </div>
+        ))}
+      </div>
+
       {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
         <>
           <div>
             <Create domainId={domain.value.id} domainContext={domainContext} />
-            {/* <Transfer
-              domainId={domain.value.id}
-              domainContext={domainContext}
-            /> */}
           </div>
         </>
       ) : null}
