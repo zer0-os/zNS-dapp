@@ -3,6 +3,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
+import { useDomainStore } from '../lib/useDomainStore';
 import { Modal, Button } from 'antd';
 import Create from './create';
 import Transfer from './transferDomains';
@@ -62,14 +63,21 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
   return (
     <>
       <>
-        <button
-          className="btn-sub"
-          style={{ color: 'white' }}
-          onClick={showProfile}
-        >
-          image field
-        </button>
-
+        {domain.isNothing() && (
+          <button
+            className="btn-sub"
+            style={{ color: 'white' }}
+            onClick={showProfile}
+          >
+            image field
+          </button>
+        )}
+        {domain.isJust() && (
+          <img
+            style={{ height: '10%', width: '10%' }}
+            src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+          />
+        )}
         <Modal
           title="subdomain"
           visible={isProfileVisible}

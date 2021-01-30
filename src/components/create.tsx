@@ -24,6 +24,7 @@ const schema = z.object({
 const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
   const { refetchDomain, domain } = domainContext;
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
+  const [imageUrl, setImageUrl] = useState('ipfs://Qmimage');
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -36,14 +37,15 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
   const _create = useCallback(
     (child: string) => {
       if (account && contracts.isJust() && domain.isJust())
-        contracts.value.registrar
+        contracts.value.registry
           .createDomain(
-            domain.value.domain === '_root'
+            domain.value.domain === 'ROOT'
               ? child
               : domain.value.domain + '.' + child,
             account,
             account,
-            'some ref',
+            'ipfs://Qmresolver',
+            imageUrl,
           )
           .then((txr) => txr.wait(1))
           .then(() => {

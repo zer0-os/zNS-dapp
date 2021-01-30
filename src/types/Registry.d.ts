@@ -20,14 +20,19 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface RegistrarInterface extends ethers.utils.Interface {
+interface RegistryInterface extends ethers.utils.Interface {
   functions: {
+    "ROOT_ID()": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "baseURI()": FunctionFragment;
-    "createDomain(string,address,address,string)": FunctionFragment;
+    "canCreate(address,uint256)": FunctionFragment;
+    "controllerOf(uint256)": FunctionFragment;
+    "createDomain(string,address,address,string,string)": FunctionFragment;
     "entries(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "getChildLength(uint256)": FunctionFragment;
+    "getDepth(uint256)": FunctionFragment;
     "getId(string[])": FunctionFragment;
     "getOwner(string[])": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
@@ -35,17 +40,20 @@ interface RegistrarInterface extends ethers.utils.Interface {
     "ownerOf(uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
+    "setController(uint256,address)": FunctionFragment;
+    "setImage(uint256,string)": FunctionFragment;
+    "setResolver(uint256,string)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
     "tokenByIndex(uint256)": FunctionFragment;
     "tokenOfOwnerByIndex(address,uint256)": FunctionFragment;
     "tokenURI(uint256)": FunctionFragment;
-    "tokenUri(uint256)": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
     "validateDomain(string)": FunctionFragment;
   };
 
+  encodeFunctionData(functionFragment: "ROOT_ID", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "approve",
     values: [string, BigNumberish]
@@ -53,8 +61,16 @@ interface RegistrarInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(functionFragment: "baseURI", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "canCreate",
+    values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "controllerOf",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "createDomain",
-    values: [string, string, string, string]
+    values: [string, string, string, string, string]
   ): string;
   encodeFunctionData(
     functionFragment: "entries",
@@ -62,6 +78,14 @@ interface RegistrarInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getApproved",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getChildLength",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getDepth",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "getId", values: [string[]]): string;
@@ -84,6 +108,18 @@ interface RegistrarInterface extends ethers.utils.Interface {
     values: [string, boolean]
   ): string;
   encodeFunctionData(
+    functionFragment: "setController",
+    values: [BigNumberish, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setImage",
+    values: [BigNumberish, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setResolver",
+    values: [BigNumberish, string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
@@ -101,10 +137,6 @@ interface RegistrarInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "tokenUri",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "totalSupply",
     values?: undefined
   ): string;
@@ -117,9 +149,15 @@ interface RegistrarInterface extends ethers.utils.Interface {
     values: [string]
   ): string;
 
+  decodeFunctionResult(functionFragment: "ROOT_ID", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "baseURI", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "canCreate", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "controllerOf",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "createDomain",
     data: BytesLike
@@ -129,6 +167,11 @@ interface RegistrarInterface extends ethers.utils.Interface {
     functionFragment: "getApproved",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "getChildLength",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getOwner", data: BytesLike): Result;
   decodeFunctionResult(
@@ -146,6 +189,15 @@ interface RegistrarInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setController",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "setImage", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setResolver",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
@@ -159,7 +211,6 @@ interface RegistrarInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "tokenURI", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "tokenUri", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
     data: BytesLike
@@ -176,17 +227,23 @@ interface RegistrarInterface extends ethers.utils.Interface {
   events: {
     "Approval(address,address,uint256)": EventFragment;
     "ApprovalForAll(address,address,bool)": EventFragment;
-    "DomainCreated(uint256,uint256,string,address,address,string)": EventFragment;
+    "ControllerSet(uint256,address,address,address)": EventFragment;
+    "DomainCreated(uint256,uint256,string,address,address,string,string)": EventFragment;
+    "ImageSet(address,uint256,string)": EventFragment;
+    "ResolverSet(address,uint256,string)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ControllerSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DomainCreated"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ImageSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ResolverSet"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
-export class Registrar extends Contract {
+export class Registry extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -197,9 +254,13 @@ export class Registrar extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: RegistrarInterface;
+  interface: RegistryInterface;
 
   functions: {
+    ROOT_ID(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "ROOT_ID()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     approve(
       to: string,
       tokenId: BigNumberish,
@@ -223,19 +284,43 @@ export class Registrar extends Contract {
 
     "baseURI()"(overrides?: CallOverrides): Promise<[string]>;
 
+    canCreate(
+      creator: string,
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "canCreate(address,uint256)"(
+      creator: string,
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    controllerOf(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    "controllerOf(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     createDomain(
       domain: string,
       _owner: string,
       _controller: string,
-      _ref: string,
+      resolver: string,
+      image: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "createDomain(string,address,address,string)"(
+    "createDomain(string,address,address,string,string)"(
       domain: string,
       _owner: string,
       _controller: string,
-      _ref: string,
+      resolver: string,
+      image: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -244,21 +329,43 @@ export class Registrar extends Contract {
       overrides?: CallOverrides
     ): Promise<
       [
-        [BigNumber, string, string, string, string, BigNumber[]] & {
-          parent: BigNumber;
-          ref: string;
-          domain: string;
-          controller: string;
+        [
+          string,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          string,
+          string,
+          BigNumber[]
+        ] & {
           owner: string;
+          parent: BigNumber;
+          depth: BigNumber;
+          controller: string;
+          resolver: string;
+          image: string;
+          domain: string;
           children: BigNumber[];
         }
       ] & {
-        out: [BigNumber, string, string, string, string, BigNumber[]] & {
-          parent: BigNumber;
-          ref: string;
-          domain: string;
-          controller: string;
+        out: [
+          string,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          string,
+          string,
+          BigNumber[]
+        ] & {
           owner: string;
+          parent: BigNumber;
+          depth: BigNumber;
+          controller: string;
+          resolver: string;
+          image: string;
+          domain: string;
           children: BigNumber[];
         };
       }
@@ -269,21 +376,43 @@ export class Registrar extends Contract {
       overrides?: CallOverrides
     ): Promise<
       [
-        [BigNumber, string, string, string, string, BigNumber[]] & {
-          parent: BigNumber;
-          ref: string;
-          domain: string;
-          controller: string;
+        [
+          string,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          string,
+          string,
+          BigNumber[]
+        ] & {
           owner: string;
+          parent: BigNumber;
+          depth: BigNumber;
+          controller: string;
+          resolver: string;
+          image: string;
+          domain: string;
           children: BigNumber[];
         }
       ] & {
-        out: [BigNumber, string, string, string, string, BigNumber[]] & {
-          parent: BigNumber;
-          ref: string;
-          domain: string;
-          controller: string;
+        out: [
+          string,
+          BigNumber,
+          BigNumber,
+          string,
+          string,
+          string,
+          string,
+          BigNumber[]
+        ] & {
           owner: string;
+          parent: BigNumber;
+          depth: BigNumber;
+          controller: string;
+          resolver: string;
+          image: string;
+          domain: string;
           children: BigNumber[];
         };
       }
@@ -298,6 +427,23 @@ export class Registrar extends Contract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    getChildLength(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    "getChildLength(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getDepth(id: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "getDepth(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     getId(path: string[], overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -366,6 +512,42 @@ export class Registrar extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
+    setController(
+      id: BigNumberish,
+      controller: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setController(uint256,address)"(
+      id: BigNumberish,
+      controller: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setImage(
+      id: BigNumberish,
+      image: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setImage(uint256,string)"(
+      id: BigNumberish,
+      image: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    setResolver(
+      id: BigNumberish,
+      resolver: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "setResolver(uint256,string)"(
+      id: BigNumberish,
+      resolver: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -403,21 +585,11 @@ export class Registrar extends Contract {
     ): Promise<[BigNumber]>;
 
     tokenURI(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    "tokenURI(uint256)"(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    tokenUri(
       token: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string] & { out: string }>;
 
-    "tokenUri(uint256)"(
+    "tokenURI(uint256)"(
       token: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string] & { out: string }>;
@@ -444,9 +616,10 @@ export class Registrar extends Contract {
       _s: string,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BigNumber, string] & {
+      [boolean, BigNumber, BigNumber, string] & {
         valid: boolean;
         parent: BigNumber;
+        id: BigNumber;
         domain: string;
       }
     >;
@@ -455,13 +628,18 @@ export class Registrar extends Contract {
       _s: string,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BigNumber, string] & {
+      [boolean, BigNumber, BigNumber, string] & {
         valid: boolean;
         parent: BigNumber;
+        id: BigNumber;
         domain: string;
       }
     >;
   };
+
+  ROOT_ID(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "ROOT_ID()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   approve(
     to: string,
@@ -486,19 +664,40 @@ export class Registrar extends Contract {
 
   "baseURI()"(overrides?: CallOverrides): Promise<string>;
 
+  canCreate(
+    creator: string,
+    id: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "canCreate(address,uint256)"(
+    creator: string,
+    id: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  controllerOf(id: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  "controllerOf(uint256)"(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
   createDomain(
     domain: string,
     _owner: string,
     _controller: string,
-    _ref: string,
+    resolver: string,
+    image: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "createDomain(string,address,address,string)"(
+  "createDomain(string,address,address,string,string)"(
     domain: string,
     _owner: string,
     _controller: string,
-    _ref: string,
+    resolver: string,
+    image: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -506,12 +705,23 @@ export class Registrar extends Contract {
     id: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, string, string, string, string, BigNumber[]] & {
-      parent: BigNumber;
-      ref: string;
-      domain: string;
-      controller: string;
+    [
+      string,
+      BigNumber,
+      BigNumber,
+      string,
+      string,
+      string,
+      string,
+      BigNumber[]
+    ] & {
       owner: string;
+      parent: BigNumber;
+      depth: BigNumber;
+      controller: string;
+      resolver: string;
+      image: string;
+      domain: string;
       children: BigNumber[];
     }
   >;
@@ -520,12 +730,23 @@ export class Registrar extends Contract {
     id: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
-    [BigNumber, string, string, string, string, BigNumber[]] & {
-      parent: BigNumber;
-      ref: string;
-      domain: string;
-      controller: string;
+    [
+      string,
+      BigNumber,
+      BigNumber,
+      string,
+      string,
+      string,
+      string,
+      BigNumber[]
+    ] & {
       owner: string;
+      parent: BigNumber;
+      depth: BigNumber;
+      controller: string;
+      resolver: string;
+      image: string;
+      domain: string;
       children: BigNumber[];
     }
   >;
@@ -539,6 +760,23 @@ export class Registrar extends Contract {
     tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
+
+  getChildLength(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  "getChildLength(uint256)"(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getDepth(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+  "getDepth(uint256)"(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   getId(path: string[], overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -604,6 +842,42 @@ export class Registrar extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
+  setController(
+    id: BigNumberish,
+    controller: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setController(uint256,address)"(
+    id: BigNumberish,
+    controller: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setImage(
+    id: BigNumberish,
+    image: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setImage(uint256,string)"(
+    id: BigNumberish,
+    image: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  setResolver(
+    id: BigNumberish,
+    resolver: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "setResolver(uint256,string)"(
+    id: BigNumberish,
+    resolver: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
   supportsInterface(
     interfaceId: BytesLike,
     overrides?: CallOverrides
@@ -640,16 +914,9 @@ export class Registrar extends Contract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  tokenURI(token: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
   "tokenURI(uint256)"(
-    tokenId: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<string>;
-
-  tokenUri(token: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  "tokenUri(uint256)"(
     token: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
@@ -676,9 +943,10 @@ export class Registrar extends Contract {
     _s: string,
     overrides?: CallOverrides
   ): Promise<
-    [boolean, BigNumber, string] & {
+    [boolean, BigNumber, BigNumber, string] & {
       valid: boolean;
       parent: BigNumber;
+      id: BigNumber;
       domain: string;
     }
   >;
@@ -687,14 +955,19 @@ export class Registrar extends Contract {
     _s: string,
     overrides?: CallOverrides
   ): Promise<
-    [boolean, BigNumber, string] & {
+    [boolean, BigNumber, BigNumber, string] & {
       valid: boolean;
       parent: BigNumber;
+      id: BigNumber;
       domain: string;
     }
   >;
 
   callStatic: {
+    ROOT_ID(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "ROOT_ID()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     approve(
       to: string,
       tokenId: BigNumberish,
@@ -718,19 +991,40 @@ export class Registrar extends Contract {
 
     "baseURI()"(overrides?: CallOverrides): Promise<string>;
 
+    canCreate(
+      creator: string,
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "canCreate(address,uint256)"(
+      creator: string,
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    controllerOf(id: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    "controllerOf(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     createDomain(
       domain: string,
       _owner: string,
       _controller: string,
-      _ref: string,
+      resolver: string,
+      image: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "createDomain(string,address,address,string)"(
+    "createDomain(string,address,address,string,string)"(
       domain: string,
       _owner: string,
       _controller: string,
-      _ref: string,
+      resolver: string,
+      image: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -738,12 +1032,23 @@ export class Registrar extends Contract {
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, string, string, string, string, BigNumber[]] & {
-        parent: BigNumber;
-        ref: string;
-        domain: string;
-        controller: string;
+      [
+        string,
+        BigNumber,
+        BigNumber,
+        string,
+        string,
+        string,
+        string,
+        BigNumber[]
+      ] & {
         owner: string;
+        parent: BigNumber;
+        depth: BigNumber;
+        controller: string;
+        resolver: string;
+        image: string;
+        domain: string;
         children: BigNumber[];
       }
     >;
@@ -752,12 +1057,23 @@ export class Registrar extends Contract {
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
-      [BigNumber, string, string, string, string, BigNumber[]] & {
-        parent: BigNumber;
-        ref: string;
-        domain: string;
-        controller: string;
+      [
+        string,
+        BigNumber,
+        BigNumber,
+        string,
+        string,
+        string,
+        string,
+        BigNumber[]
+      ] & {
         owner: string;
+        parent: BigNumber;
+        depth: BigNumber;
+        controller: string;
+        resolver: string;
+        image: string;
+        domain: string;
         children: BigNumber[];
       }
     >;
@@ -771,6 +1087,23 @@ export class Registrar extends Contract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    getChildLength(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getChildLength(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getDepth(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getDepth(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getId(path: string[], overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -836,6 +1169,42 @@ export class Registrar extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    setController(
+      id: BigNumberish,
+      controller: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setController(uint256,address)"(
+      id: BigNumberish,
+      controller: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setImage(
+      id: BigNumberish,
+      image: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setImage(uint256,string)"(
+      id: BigNumberish,
+      image: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setResolver(
+      id: BigNumberish,
+      resolver: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "setResolver(uint256,string)"(
+      id: BigNumberish,
+      resolver: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -872,16 +1241,9 @@ export class Registrar extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+    tokenURI(token: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
     "tokenURI(uint256)"(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    tokenUri(token: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    "tokenUri(uint256)"(
       token: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -908,9 +1270,10 @@ export class Registrar extends Contract {
       _s: string,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BigNumber, string] & {
+      [boolean, BigNumber, BigNumber, string] & {
         valid: boolean;
         parent: BigNumber;
+        id: BigNumber;
         domain: string;
       }
     >;
@@ -919,9 +1282,10 @@ export class Registrar extends Contract {
       _s: string,
       overrides?: CallOverrides
     ): Promise<
-      [boolean, BigNumber, string] & {
+      [boolean, BigNumber, BigNumber, string] & {
         valid: boolean;
         parent: BigNumber;
+        id: BigNumber;
         domain: string;
       }
     >;
@@ -940,13 +1304,33 @@ export class Registrar extends Contract {
       approved: null
     ): EventFilter;
 
+    ControllerSet(
+      id: BigNumberish | null,
+      oldController: string | null,
+      newController: string | null,
+      sender: null
+    ): EventFilter;
+
     DomainCreated(
       parentId: BigNumberish | null,
       tokenId: null,
       domain: null,
-      _owner: null,
-      _controller: null,
-      _ref: null
+      owner: null,
+      controller: null,
+      resolver: null,
+      image: null
+    ): EventFilter;
+
+    ImageSet(
+      owner: string | null,
+      id: BigNumberish | null,
+      image: null
+    ): EventFilter;
+
+    ResolverSet(
+      owner: string | null,
+      id: BigNumberish | null,
+      resolver: null
     ): EventFilter;
 
     Transfer(
@@ -957,6 +1341,10 @@ export class Registrar extends Contract {
   };
 
   estimateGas: {
+    ROOT_ID(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "ROOT_ID()"(overrides?: CallOverrides): Promise<BigNumber>;
+
     approve(
       to: string,
       tokenId: BigNumberish,
@@ -980,19 +1368,43 @@ export class Registrar extends Contract {
 
     "baseURI()"(overrides?: CallOverrides): Promise<BigNumber>;
 
+    canCreate(
+      creator: string,
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "canCreate(address,uint256)"(
+      creator: string,
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    controllerOf(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "controllerOf(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     createDomain(
       domain: string,
       _owner: string,
       _controller: string,
-      _ref: string,
+      resolver: string,
+      image: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "createDomain(string,address,address,string)"(
+    "createDomain(string,address,address,string,string)"(
       domain: string,
       _owner: string,
       _controller: string,
-      _ref: string,
+      resolver: string,
+      image: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -1010,6 +1422,23 @@ export class Registrar extends Contract {
 
     "getApproved(uint256)"(
       tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getChildLength(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "getChildLength(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getDepth(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "getDepth(uint256)"(
+      id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1080,6 +1509,42 @@ export class Registrar extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
+    setController(
+      id: BigNumberish,
+      controller: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setController(uint256,address)"(
+      id: BigNumberish,
+      controller: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setImage(
+      id: BigNumberish,
+      image: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setImage(uint256,string)"(
+      id: BigNumberish,
+      image: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    setResolver(
+      id: BigNumberish,
+      resolver: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "setResolver(uint256,string)"(
+      id: BigNumberish,
+      resolver: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -1117,21 +1582,11 @@ export class Registrar extends Contract {
     ): Promise<BigNumber>;
 
     tokenURI(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "tokenURI(uint256)"(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    tokenUri(
       token: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "tokenUri(uint256)"(
+    "tokenURI(uint256)"(
       token: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1163,6 +1618,10 @@ export class Registrar extends Contract {
   };
 
   populateTransaction: {
+    ROOT_ID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "ROOT_ID()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     approve(
       to: string,
       tokenId: BigNumberish,
@@ -1189,19 +1648,43 @@ export class Registrar extends Contract {
 
     "baseURI()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    canCreate(
+      creator: string,
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "canCreate(address,uint256)"(
+      creator: string,
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    controllerOf(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "controllerOf(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     createDomain(
       domain: string,
       _owner: string,
       _controller: string,
-      _ref: string,
+      resolver: string,
+      image: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "createDomain(string,address,address,string)"(
+    "createDomain(string,address,address,string,string)"(
       domain: string,
       _owner: string,
       _controller: string,
-      _ref: string,
+      resolver: string,
+      image: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -1222,6 +1705,26 @@ export class Registrar extends Contract {
 
     "getApproved(uint256)"(
       tokenId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getChildLength(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getChildLength(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getDepth(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "getDepth(uint256)"(
+      id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1298,6 +1801,42 @@ export class Registrar extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
+    setController(
+      id: BigNumberish,
+      controller: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setController(uint256,address)"(
+      id: BigNumberish,
+      controller: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setImage(
+      id: BigNumberish,
+      image: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setImage(uint256,string)"(
+      id: BigNumberish,
+      image: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    setResolver(
+      id: BigNumberish,
+      resolver: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "setResolver(uint256,string)"(
+      id: BigNumberish,
+      resolver: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
     supportsInterface(
       interfaceId: BytesLike,
       overrides?: CallOverrides
@@ -1335,21 +1874,11 @@ export class Registrar extends Contract {
     ): Promise<PopulatedTransaction>;
 
     tokenURI(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "tokenURI(uint256)"(
-      tokenId: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    tokenUri(
       token: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "tokenUri(uint256)"(
+    "tokenURI(uint256)"(
       token: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

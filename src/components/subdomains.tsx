@@ -17,6 +17,7 @@ import { Column, useTable, UseTableOptions } from 'react-table';
 import { string } from 'zod';
 import Profile from './profileIcon';
 import Approve from './approval';
+import SetImage from './forms/set-image';
 
 interface SubdomainsProps {
   domain: string;
@@ -52,33 +53,40 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const history = useHistory();
-  const dataInput: Data[] = [];
-  const routes = _.transform(
-    location.pathname
-      .substr(1)
-      .split('.')
-      .filter((s) => s !== ''),
-    (acc: [string, string][], val, i) => {
-      let next = 0 < i ? acc[i - 1][1] + '.' + val : val;
-      acc.push([val, next]);
-    },
+
+  const routes = useMemo(
+    () =>
+      _.transform(
+        location.pathname
+          .substr(1)
+          .split('.')
+          .filter((s) => s !== ''),
+        (acc: [string, string][], val, i) => {
+          let next = 0 < i ? acc[i - 1][1] + '.' + val : val;
+          acc.push([val, next]);
+        },
+      ),
+    [location.pathname],
   );
-  if (domain.isNothing()) {
-  } else {
-    Object.keys(domain.value.children).forEach((key) => {
-      dataInput.push({
-        '#': key,
-        asset: <Profile domain={domain.value.domain} />,
-        name: domain.value.children[Number(key)],
-        volume: 'N/A',
-        '24Hr': 'N/A',
-        '7d': 'N/A',
-        marketcap: 'N/A',
-        last7days: '',
-        trade: '',
-      });
-    });
-  }
+
+  const dataInput: Data[] = useMemo(
+    () =>
+      domain.isNothing()
+        ? []
+        : _.keys(domain.value.children).map((key) => ({
+            '#': key,
+            asset: <Profile domain={domain.value.domain} />,
+            name: domain.value.children[Number(key)],
+            volume: 'N/A',
+            '24Hr': 'N/A',
+            '7d': 'N/A',
+            marketcap: 'N/A',
+            last7days: '',
+            trade: '',
+          })),
+    [domain],
+  );
+
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
   const columns = useMemo<Column<Data>[]>(
     () => [
@@ -107,7 +115,6 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     rows,
     prepareRow,
   } = useTable({ columns, data });
-  if (domain.isNothing()) return <p>Loading</p>;
 
   const options = {
     onRowClick: (rowData: any) =>
@@ -166,18 +173,23 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     '675b68',
   ];
   console.log('r', routes);
+  if (domain.isNothing()) return <p>Loading</p>;
+
   return (
     <div id="subdomainsContainer">
+      <img
+        style={{ height: '10%', width: '10%' }}
+        src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+      />
+      <SetImage domain={domain.value.domain} />
       <div className="route-nav">
         <div className="route-nav-link">
           <Link to={'/'}>Z:/</Link>{' '}
         </div>
         {routes.map(([key, path], i) => (
           <div className="route-nav-link">
-            <Link to={path}>
-              {' ' + key + ' '}
-            </Link>
-            {i < routes.length - 1 && ' . '}
+            <Link to={path}>{' ' + key + ' '}</Link>
+            <div>{i < routes.length - 1 && ' . '}</div>
           </div>
         ))}
       </div>
@@ -186,6 +198,12 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
         <>
           <div>
             <Create domainId={domain.value.id} domainContext={domainContext} />
+          </div>
+          <div>
+            <Transfer
+              domainId={domain.value.id}
+              domainContext={domainContext}
+            />
           </div>
         </>
       ) : null}

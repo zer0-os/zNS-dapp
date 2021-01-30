@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.scss';
 import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+import './lib/ipfs';
 import Wallet from './components/wallet';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Subdomains from './components/subdomains';
@@ -108,7 +109,7 @@ function App() {
                     flexDirection: 'column',
                   }}
                 >
-                  <Subdomains domain={'_root'} />
+                  <Subdomains domain={'ROOT'} />
                 </div>
               </Route>
             </Switch>

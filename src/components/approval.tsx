@@ -54,7 +54,7 @@ const Approve: React.FC<ApprovalProps> = ({ domainId: _domainId }) => {
         domain.isJust() &&
         account != address
       ) {
-        contracts.value.registrar
+        contracts.value.registry
           .approve(_domainId, address)
           .then((txr) => txr.wait(1))
           .then(() =>

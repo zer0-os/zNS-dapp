@@ -1,29 +1,29 @@
-import { Provider, Web3Provider } from "@ethersproject/providers";
-import { Signer } from "@ethersproject/abstract-signer";
-import { Registrar__factory, Registrar } from "../types";
-import { useWeb3React } from "@web3-react/core";
-import { useMemo } from "react";
-import addresses from "./addresses";
-import { Maybe } from "true-myth";
-import { chainIdToNetworkType } from "./network";
+import { Provider, Web3Provider } from '@ethersproject/providers';
+import { Signer } from '@ethersproject/abstract-signer';
+import { Registry__factory, Registry } from '../types';
+import { useWeb3React } from '@web3-react/core';
+import { useMemo } from 'react';
+import addresses from './addresses';
+import { Maybe } from 'true-myth';
+import { chainIdToNetworkType } from './network';
 
 export interface ContractAddresses {
-  registrar: string;
+  registry: string;
 }
 
 export interface Contracts {
-  registrar: Registrar;
+  registry: Registry;
 }
 
 function useZnsContracts(): Maybe<Contracts> {
   const context = useWeb3React<Web3Provider>();
   const { library, account, active, chainId } = context;
   const contracts = useMemo((): Maybe<Contracts> => {
-    if (!active || !library) return Maybe.nothing()
+    if (!active || !library) return Maybe.nothing();
     return Maybe.of({
-      registrar: Registrar__factory.connect(
-        addresses[chainIdToNetworkType(chainId!)].registrar,
-        library.getSigner()
+      registry: Registry__factory.connect(
+        addresses[chainIdToNetworkType(chainId!)].registry,
+        library.getSigner(),
       ),
     });
   }, [active, library, account]);

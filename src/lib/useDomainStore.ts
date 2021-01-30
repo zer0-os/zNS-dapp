@@ -6,13 +6,15 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
 import { getDomainId } from './domains';
 
-interface Domain {
+export interface Domain {
   id: string;
   domain: string;
   children: string[];
   owner: string;
   controller: string;
   parent: string;
+  image: string;
+  resolver: string;
   approval: Maybe<string>;
 }
 
@@ -22,6 +24,8 @@ interface _DomainData {
   owner: string;
   parent: string;
   controller: string;
+  image: string;
+  resolver: string;
   approval?: string;
 }
 
@@ -45,6 +49,8 @@ const domainQuery = gql`
       parent
       owner
       controller
+      image
+      resolver
     }
   }
 `;
@@ -58,6 +64,8 @@ const childrenQuery = gql`
       parent
       owner
       controller
+      image
+      resolver
     }
   }
 `;
@@ -71,6 +79,8 @@ const ownedDomainsQuery = gql`
       parent
       owner
       controller
+      image
+      resolver
     }
   }
 `;
@@ -84,6 +94,8 @@ const approvalQuery = gql`
       parent
       owner
       controller
+      image
+      resolver
     }
   }
 `;
@@ -93,7 +105,7 @@ type QueryArgs = Partial<Record<string, any>> | undefined;
 type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
 function useDomain(domain: string) {
-  const id = domain === '_root' ? '0' : getDomainId(domain);
+  const id = getDomainId(domain);
   const {
     error: errorDomain,
     data: dataDomain,
@@ -111,6 +123,7 @@ function useDomain(domain: string) {
   });
 
   const _domain: Maybe<Domain> = useMemo(() => {
+    console.log('hmmm', dataDomain);
     if (errorDomain) {
       // TODO: maybe throw?
       console.error(errorDomain);
@@ -118,15 +131,14 @@ function useDomain(domain: string) {
     if (errorChildren) {
       console.error(errorChildren);
     }
-    if (dataDomain) {
+    if (dataDomain && dataDomain.domain) {
       const children =
         dataChildren &&
         dataChildren.domains[0] &&
         dataChildren.domains[0].parent === id
-          ? dataChildren.domains
-              .map((d) => d.domain)
-              .filter((d) => d !== '_root')
-          : [];
+          ? dataChildren.domains.map((d) => d.domain)
+          : //.filter((d) => d !== 'ROOT')
+            [];
       return Maybe.of({
         ...dataDomain.domain,
         approval: dataDomain.domain.approval
@@ -134,6 +146,8 @@ function useDomain(domain: string) {
           : Maybe.nothing(),
         owner: getAddress(dataDomain.domain.owner),
         parent: dataDomain.domain.parent,
+        resolver: dataDomain.domain.resolver,
+        image: dataDomain.domain.image,
         children,
         controller: getAddress(dataDomain.domain.controller),
       });
