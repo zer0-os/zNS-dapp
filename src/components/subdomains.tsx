@@ -151,6 +151,23 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   //     pathname: record.name,
   //   });
   // };
+  const metric = (
+    name: string,
+    price: string,
+    unit: string,
+    percent: string,
+  ) => {
+    return (
+      <div className="metric">
+        <div className="metricField">{name}</div>
+        <div className="metricField">{price}</div>
+        <div className="metricField">
+          {unit} <span className="metricPercent">{percent}</span>
+        </div>
+      </div>
+    );
+  };
+
   const colors: string[] = [
     '641f29',
     'cf7571',
@@ -177,118 +194,131 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
   if (domain.isNothing()) return <p>Loading</p>;
 
   return (
-    <div id="subdomainsContainer">
-      <img
-        style={{ height: '10%', width: '10%' }}
-        src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-      />
-      <SetImage domain={domain.value.domain} />
-      <div className="route-nav">
-        <div className="route-nav-link">
-          <Link to={'/'}>Z:/</Link>
+    <div>
+      <div className="metricsBar">
+        <div className="metricsTitle">Metrics</div>
+        <div className="metricsContainer">
+          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
+          {metric(
+            'MARKET CAP',
+            '$369,000,101',
+            'Fully diluted market cap for WILD',
+            '',
+          )}
         </div>
-        {routes.map(([key, path], i) => (
+      </div>
+      <div id="subdomainsContainer">
+        <img
+          style={{ height: '10%', width: '10%' }}
+          src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+        />
+
+        <div className="route-nav">
           <div className="route-nav-link">
-            <Link to={path}>
-              {key}
-              {i < routes.length - 1 && '.'}
-            </Link>
+            <Link to={'/'}>Z:/</Link>
           </div>
-        ))}
-      </div>
+          {routes.map(([key, path], i) => (
+            <div className="route-nav-link">
+              <Link to={path}>
+                {key}
+                {i < routes.length - 1 && '.'}
+              </Link>
+            </div>
+          ))}
+        </div>
 
-      {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
-        <>
-          <div>
-            <Create domainId={domain.value.id} domainContext={domainContext} />
-          </div>
-          <div>
-            <Transfer
-              domainId={domain.value.id}
-              domainContext={domainContext}
-            />
-          </div>
-        </>
-      ) : null}
-      {/* // apply the table props */}
-      <div className="tableContainer">
-        <table {...getTableProps()} className="subdomainsTable">
-          {rows.length === 0 ? null : (
-            <thead className="subdomainsHeaderGroup">
-              {
-                // Loop over the header rows
-                headerGroups.map((headerGroup) => (
-                  // Apply the header row props
-                  <tr
-                    className="subdomainsHeaderTR"
-                    {...headerGroup.getHeaderGroupProps()}
-                  >
-                    {
-                      // Loop over the headers in each row
-                      headerGroup.headers.map((column) => (
-                        // Apply the header cell props
-                        <th
-                          className="subdomainsHeaderTH"
-                          {...column.getHeaderProps()}
-                        >
-                          {
-                            // Render the header
-                            column.render('Header')
-                          }
-                        </th>
-                      ))
-                    }
-                  </tr>
-                ))
-              }
-            </thead>
-          )}
-          {/* Apply the table body props */}
-          <tbody {...getTableBodyProps()}>
-            {console.log('ROWS', rows)}
-
-            {
-              // Loop over the table rows
-              rows.map((row) => {
-                // Prepare the row for display
-                prepareRow(row);
-                return (
-                  // Apply the row props
-                  <tr
-                    onClick={() => handleRowClick(row)}
-                    {...row.getRowProps()}
-                  >
-                    {
-                      // Loop over the rows cells
-                      row.cells.map((cell) => {
-                        // Apply the cell props
-                        return (
-                          <td {...cell.getCellProps()}>
+        {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
+          <>
+            <div>
+              <Create
+                domainId={domain.value.id}
+                domainContext={domainContext}
+              />
+              <SetImage domain={domain.value.domain} />
+            </div>
+          </>
+        ) : null}
+        {/* // apply the table props */}
+        <div className="tableContainer">
+          <table {...getTableProps()} className="subdomainsTable">
+            {rows.length === 0 ? null : (
+              <thead className="subdomainsHeaderGroup">
+                {
+                  // Loop over the header rows
+                  headerGroups.map((headerGroup) => (
+                    // Apply the header row props
+                    <tr
+                      className="subdomainsHeaderTR"
+                      {...headerGroup.getHeaderGroupProps()}
+                    >
+                      {
+                        // Loop over the headers in each row
+                        headerGroup.headers.map((column) => (
+                          // Apply the header cell props
+                          <th
+                            className="subdomainsHeaderTH"
+                            {...column.getHeaderProps()}
+                          >
                             {
-                              // Render the cell contents
-                              cell.render('Cell')
+                              // Render the header
+                              column.render('Header')
                             }
-                          </td>
-                        );
-                      })
-                    }
-                  </tr>
-                );
-              })
-            }
-          </tbody>
-          {rows.length !== 0 ? null : (
-            <tfoot>
-              <tr>
-                <td>Footer text displays here when there are no subdomains</td>
-              </tr>
-            </tfoot>
-          )}
-        </table>
-      </div>
-      <br />
-      <br />
-      {/* {colors.map((color) => {
+                          </th>
+                        ))
+                      }
+                    </tr>
+                  ))
+                }
+              </thead>
+            )}
+            {/* Apply the table body props */}
+            <tbody {...getTableBodyProps()}>
+              {console.log('ROWS', rows)}
+
+              {
+                // Loop over the table rows
+                rows.map((row) => {
+                  // Prepare the row for display
+                  prepareRow(row);
+                  return (
+                    // Apply the row props
+                    <tr
+                      onClick={() => handleRowClick(row)}
+                      {...row.getRowProps()}
+                    >
+                      {
+                        // Loop over the rows cells
+                        row.cells.map((cell) => {
+                          // Apply the cell props
+                          return (
+                            <td {...cell.getCellProps()}>
+                              {
+                                // Render the cell contents
+                                cell.render('Cell')
+                              }
+                            </td>
+                          );
+                        })
+                      }
+                    </tr>
+                  );
+                })
+              }
+            </tbody>
+            {rows.length !== 0 ? null : (
+              <tfoot>
+                <tr>
+                  <td>
+                    Footer text displays here when there are no subdomains
+                  </td>
+                </tr>
+              </tfoot>
+            )}
+          </table>
+        </div>
+        <br />
+        <br />
+        {/* {colors.map((color) => {
         return (
           <div
             style={{
@@ -302,6 +332,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
           </div>
         );
       })} */}
+      </div>
     </div>
   );
 };

@@ -59,7 +59,7 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
   const profileCancel = () => {
     setProfileVisible(false);
   };
-  console.log('profile icon', domain);
+
   return (
     <>
       <>
