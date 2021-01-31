@@ -15,7 +15,8 @@ import Owned from './owned';
 import { String } from 'lodash';
 import { Column, useTable, UseTableOptions } from 'react-table';
 import { string } from 'zod';
-import Profile from './profileIcon';
+
+import Profile from './nft-view';
 import Approve from './approval';
 import SetImage from './forms/set-image';
 

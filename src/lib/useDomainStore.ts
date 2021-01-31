@@ -123,7 +123,6 @@ function useDomain(domain: string) {
   });
 
   const _domain: Maybe<Domain> = useMemo(() => {
-    console.log('hmmm', dataDomain);
     if (errorDomain) {
       // TODO: maybe throw?
       console.error(errorDomain);
