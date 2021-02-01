@@ -1,28 +1,32 @@
 import React, { FC, useState } from 'react';
 import { useAsyncDebounce } from 'react-table';
-
-interface SearchProps {
-  setGlobalFilter: any;
+interface SearchTableProps {
+  filter: any;
+  setFilter: any;
 }
 
-const SearchTable: FC<SearchProps> = ({ setGlobalFilter }) => {
-  const [value, setValue] = useState(setGlobalFilter);
+const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
+  const [value, setValue] = useState(filter);
   const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
+    setFilter(value || undefined);
   });
+
   return (
     <span>
-      Search:{' '}
-      <input
-        value={value || ''}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder="search"
-      />
+      <span>
+        Search:{' '}
+        <input
+          type="text"
+          value={value || ''}
+          onChange={(e) => {
+            setValue(e.target.value);
+            onChange(e.target.value);
+          }}
+          placeholder="search"
+        />
+      </span>
     </span>
   );
 };
 
-export default SearchTable;
+export default GlobalFilter;

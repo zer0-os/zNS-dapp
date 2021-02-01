@@ -26,6 +26,7 @@ import Approve from './approval';
 import TableView from './tableView';
 import SearchTable from './searchTable';
 import SetImage from './forms/set-image';
+
 interface SubdomainsProps {
   domain: string;
 }
@@ -157,6 +158,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             </div>
           ))}
         </div>
+
         <TableView domain={domain.value.domain} />
 
         {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
