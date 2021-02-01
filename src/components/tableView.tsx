@@ -82,29 +82,6 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
   );
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
 
-  //   const asc = () => {
-  //     let sorted = data.sort((a, b) => {
-  //       return parseInt(a.name) - parseInt(b.name);
-  //     });
-  //     setSortConfig({  sorted });
-  //   };
-
-  //   const sortedData = useMemo(() => {
-  //     let sortData = [...data];
-  //     if (sortConfig !== null) {
-  //       sortData.sort((a, b) => {
-  //         if (a[sortConfig.key] < b[sortConfig.key]) {
-  //           return sortConfig.direction === 'ascending' ? -1 : 1;
-  //         }
-  //         if (a[sortConfig.key] > b[sortConfig.key]) {
-  //           return sortConfig.direction === 'ascending' ? 1 : -1;
-  //         }
-  //         return 0;
-  //       });
-  //     }
-  //     return sortData;
-  //   }, [data, sortConfig]);
-
   const columns = useMemo<Column<Data>[]>(
     () => [
       {
