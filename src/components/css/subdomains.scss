@@ -11,20 +11,17 @@ $sky-blue: #76b1ce;
   position: relative;
   display: inline-flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
   margin: 15px;
   padding: 15px;
+  margin-left: 100px;
   top: 50%;
-  left: 15%;
-  border: 2px $middle-red solid;
+  left: 0%;
   min-width: 480px;
   width: 80vw;
-  border-top-right-radius: 95px;
   font-family: 'JetBrains Mono', monospace;
 }
 .metricsBar {
-  font-family: 'JetBrains Mono', monospace;
-  margin-left: 150px;
   display: flex;
   flex-direction: column;
   .metricsTitle {
@@ -73,18 +70,30 @@ $sky-blue: #76b1ce;
   }
 }
 
+.tableButtons {
+  border: 15px black solid;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
 .subdomainsTable {
   background: none;
-  border-radius: 50%;
   border-collapse: inherit;
   border-spacing: 0px;
-  width: 80%;
+  width: 100%;
   height: 30vh;
+  margin-top: 25px;
   // subdomains header
   .subdomainsHeaderGroup {
     background-color: $middle-red;
   }
   // table body
+  .subDomainsHeaderTH {
+    text-align: center;
+  }
   tbody {
     // all rows
     tr {
