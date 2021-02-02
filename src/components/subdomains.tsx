@@ -73,10 +73,10 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     () =>
       domain.isNothing()
         ? []
-        : _.keys(domain.value.children).map((key) => ({
+        : domain.value.children.map((key) => ({
             '#': key,
-            asset: <Profile domain={domain.value.domain} />,
-            name: domain.value.children[Number(key)],
+            asset: <Profile domain={key} />,
+            name: key,
             volume: 'N/A',
             '24Hr': 'N/A',
             '7d': 'N/A',
@@ -173,6 +173,7 @@ const Subdomains: FC<SubdomainsProps> = ({ domain: _domain }) => {
     '675b68',
   ];
   console.log('r', routes);
+  console.log('subdomain', domain);
   if (domain.isNothing()) return <p>Loading</p>;
 
   return (

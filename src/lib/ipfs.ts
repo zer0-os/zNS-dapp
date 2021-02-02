@@ -1,8 +1,20 @@
-import ipfsClient from 'ipfs-http-client';
+import fleekStorage, { uploadInput } from '@fleekhq/fleek-storage-js';
 
-const ipfs = ipfsClient({
-  host: 'localhost',
-  port: 5002,
-});
+class FleekStorage {
+  constructor(private apiKey: string, private apiSecret: string) {}
+  upload(key: string, data: any) {
+    return fleekStorage.upload({
+      apiKey: this.apiKey,
+      apiSecret: this.apiSecret,
+      key,
+      data,
+    });
+  }
+}
+
+const ipfs = new FleekStorage(
+  process.env.REACT_APP_FLEEK_API_KEY!,
+  process.env.REACT_APP_FLEEK_API_SECRET!,
+);
 
 export default ipfs;

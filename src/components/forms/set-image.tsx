@@ -10,6 +10,7 @@ import { Modal, Button } from 'antd';
 import Create from '../create';
 import { zodResolver } from '../../lib/validation/zodResolver';
 import ipfs from '../../lib/ipfs';
+import assert from 'assert';
 interface SetImageProps {
   domain: string;
 }
@@ -25,7 +26,7 @@ const schema = z
   .refine((obj) => 'url' in obj || (obj.image && obj.image.size > 0));
 
 const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
-  const [isSetImageVisible, setSetImageVisible] = useState(false);
+  const [isSetImageVisible, setIsSetImageVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
@@ -55,27 +56,25 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
   );
 
   const uploadAndSetImage = useCallback(
-    (file: File) =>
-      ipfs
-        .add(file)
-        .then((added) => _setImage('ipfs://' + added.cid.toV0().toString()))
-        .then(() => refetchDomain()),
-    [_setImage],
+    async (file: File) => {
+      assert(domain.isJust());
+      return ipfs
+        .upload(domain.value.domain, file)
+        .then(async (added) => _setImage('ipfs://' + added.hash))
+        .then(() => refetchDomain());
+    },
+    [_setImage, domain],
   );
+
+  const hideSetImage = useCallback(() => {
+    setIsSetImageVisible(false);
+  }, [setIsSetImageVisible]);
+
+  const showSetImage = useCallback(() => {
+    setIsSetImageVisible(true);
+  }, [setIsSetImageVisible]);
 
   if (domain.isNothing()) return <p>Loading</p>;
-
-  console.log(
-    'domain image',
-    domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-  );
-  const hideSetImage = () => {
-    setSetImageVisible(false);
-  };
-
-  const showSetImage = () => {
-    setSetImageVisible(true);
-  };
 
   return (
     <>
