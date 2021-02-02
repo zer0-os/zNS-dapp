@@ -26,6 +26,8 @@ import Approve from './approval';
 import TableView from './tableView';
 import SearchTable from './searchTable';
 import SetImage from './forms/set-image';
+import linebutton from './css/img/threelinebutton.png';
+import squarebutton from './css/img/squaregridbutton.png';
 
 interface SubdomainsProps {
   domain: string;
@@ -139,12 +141,40 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
           )}
         </div>
       </div>
+
       <div id="subdomainsContainer">
         <img
           style={{ height: '10%', width: '10%' }}
           src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
         />
 
+        <div className="subdomainsSortBar">
+          <div>Discover</div>
+          <div className="subdomainsButtonSortContainer">
+            <div className="subdomainsButtonSortLeft">
+              <div className="sdbslItem sdbslItemSelected">
+                <span className="bolt">⚡</span> New Drops{' '}
+                <span className="bolt">⚡</span>
+              </div>
+              <div className="sdbslItem">Trending</div>
+              <div className="sdbslItem">Leaderboard</div>
+              <div className="sdbslItem">Top Collectors</div>
+            </div>
+            <div className="subdomainsButtonSortRight">
+              {' '}
+              <div className="sdbsrItem">
+                <img src={linebutton} alt="" />
+              </div>
+              <div className="sdbsrItem">
+                <img src={squarebutton} alt="" />
+              </div>
+              <div className="sdbsrItem sdbsrSort">
+                <div>Sort</div>
+                <div>Market Cap ▼</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="route-nav">
           <div className="route-nav-link">
             <Link to={'/'}>Z:/</Link>

@@ -6,7 +6,6 @@ import { Modal, Button } from 'antd';
 import { useZnsContracts } from '../lib/contracts';
 import { domainCacheContext, useDomainCache } from '../lib/useDomainCache';
 
-
 import Approve from './approval';
 import { domain } from 'process';
 
@@ -32,11 +31,7 @@ const Owned: FC = () => {
   };
   return (
     <>
-      <button
-        style={{ color: 'white' }}
-        className="owned-btn"
-        onClick={showOwner}
-      >
+      <button className="owned-btn" onClick={showOwner}>
         Profile
       </button>
 

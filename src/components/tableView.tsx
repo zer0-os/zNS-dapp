@@ -24,6 +24,7 @@ import { string } from 'zod';
 import Profile from './nft-view';
 import Approve from './approval';
 import SearchTable from './searchTable';
+import marketimg from './css/img/chart.svg';
 
 interface ColumnProps {
   key: number;
@@ -97,7 +98,11 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
       { Header: '24Hr', accessor: '24Hr' },
       { Header: '7d', accessor: '7d' },
       { Header: 'Market Cap', accessor: 'marketcap' },
-      { Header: 'Last 7 Days', accessor: 'last7days' },
+      {
+        Header: 'Last 7 Days',
+        accessor: 'last7days',
+        Cell: (props) => <img src={marketimg} alt="" />,
+      },
       { Header: 'Trade', accessor: 'trade' },
     ],
     [],

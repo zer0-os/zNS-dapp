@@ -23,7 +23,8 @@ const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
             onChange(e.target.value);
           }}
           placeholder="search"
-        />
+        />{' '}
+        note: moving search to topbar
       </span>
     </span>
   );

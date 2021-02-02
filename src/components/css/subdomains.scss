@@ -24,9 +24,11 @@ $sky-blue: #76b1ce;
 .metricsBar {
   display: flex;
   flex-direction: column;
+  margin-left: 100px;
   .metricsTitle {
     font-size: 1.3rem;
     margin-bottom: 10px;
+    color: white;
   }
   .metricsContainer {
     display: flex;
@@ -70,6 +72,66 @@ $sky-blue: #76b1ce;
   }
 }
 
+.subdomainsSortBar {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: white;
+  // border: 3px black solid;
+  .subdomainsButtonSortContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    .subdomainsButtonSortLeft {
+      display: flex;
+      flex-direction: row;
+      width: 60%;
+      justify-content: space-between;
+      .sdbslItemSelected {
+        border: $light-red;
+        border-radius: 15px;
+        background: lighten($dark-red, 10%);
+        .bolt {
+          color: transparent;
+          text-shadow: 0 0 0 lighten($light-red, 10%);
+        }
+      }
+      div {
+        color: $light-grey;
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-right: 6px;
+        padding-left: 6px;
+      }
+    }
+    .subdomainsButtonSortRight {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .sdbsrItem {
+        margin-left: 15px;
+        margin-top: -15px;
+      }
+      .sdbsrSort {
+        display: flex;
+        flex-direction: column;
+        padding-left: 10px;
+        div {
+          &:nth-child(1) {
+            color: $light-red;
+          }
+          &:nth-child(2) {
+            margin-top: -3px;
+          }
+        }
+      }
+    }
+  }
+}
+
 .tableButtons {
   border: 15px black solid;
   width: 100%;
@@ -89,11 +151,13 @@ table {
   // subdomains header
   .subdomainsHeaderGroup {
     background-color: $middle-red;
+    tr th {
+      &:not(:nth-child(3)) {
+        text-align: center;
+      }
+    }
   }
   // table body
-  .subDomainsHeaderTH {
-    text-align: center;
-  }
   tbody {
     // all rows
     tr {

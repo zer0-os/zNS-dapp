@@ -58,17 +58,13 @@ function App() {
       <Route
         render={({ location, match }) => (
           <>
-            <div className="control-btns-container">
+            <div className="topbarContainer">
               {active && (
                 <div className="profile-btn">
                   <Owned />
                 </div>
               )}
-              <button
-                className="connect-btn"
-                style={{ color: 'white' }}
-                onClick={showWallet}
-              >
+              <button className="connect-btn" onClick={showWallet}>
                 {' '}
                 {active ? 'Connected' : 'Connect Wallet'}{' '}
               </button>
