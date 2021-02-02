@@ -68,8 +68,8 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     () =>
       domain.isNothing()
         ? []
-        : _.map(domain.value.children, (key) => ({
-            '#': key,
+        : _.map(domain.value.children, (key, i) => ({
+            '#': i.toString(),
             asset: <Profile domain={key} />,
             name: key,
             volume: 'N/A',
