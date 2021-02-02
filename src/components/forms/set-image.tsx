@@ -79,7 +79,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
   return (
     <>
       <button
-        className="btn-sub"
+        className="owned-btn"
         style={{ color: 'white' }}
         onClick={showSetImage}
       >
