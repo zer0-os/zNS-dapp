@@ -13,6 +13,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { PoweroffOutlined } from '@ant-design/icons';
 import { Layout, Menu, Modal } from 'antd';
 import Create from './components/create';
+import Topbar from './components/topbar';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_SUBGRAPH_URL_4,
@@ -58,7 +59,8 @@ function App() {
       <Route
         render={({ location, match }) => (
           <>
-            <div className="topbarContainer">
+            <Topbar domain={location.pathname.substring(1)} />
+            {/* <div className="topbarContainer">
               {active && (
                 <div className="profile-btn">
                   <Owned />
@@ -75,7 +77,7 @@ function App() {
               >
                 <Wallet />
               </Modal>
-            </div>
+            </div> */}
             <Switch>
               <Route path="/:id">
                 <Subdomains
