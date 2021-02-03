@@ -60,24 +60,6 @@ function App() {
         render={({ location, match }) => (
           <>
             <Topbar domain={location.pathname.substring(1)} />
-            {/* <div className="topbarContainer">
-              {active && (
-                <div className="profile-btn">
-                  <Owned />
-                </div>
-              )}
-              <button className="connect-btn" onClick={showWallet}>
-                {' '}
-                {active ? 'Connected' : 'Connect Wallet'}{' '}
-              </button>
-              <Modal
-                visible={isWalletVisible}
-                onOk={walletOk}
-                onCancel={walletCancel}
-              >
-                <Wallet />
-              </Modal>
-            </div> */}
             <Switch>
               <Route path="/:id">
                 <Subdomains
