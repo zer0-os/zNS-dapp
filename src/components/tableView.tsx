@@ -19,12 +19,14 @@ import {
   usePagination,
   useGlobalFilter,
   useAsyncDebounce,
+  useFilters,
 } from 'react-table';
 import { string } from 'zod';
 import Profile from './nft-view';
 import Approve from './approval';
 import SearchTable from './searchTable';
 import marketimg from './css/img/chart.svg';
+import { table } from 'console';
 
 interface ColumnProps {
   key: number;
@@ -112,6 +114,8 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     getTableBodyProps,
     headerGroups,
     prepareRow,
+    rows,
+
     page,
     canPreviousPage,
     canNextPage,
@@ -122,27 +126,14 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     previousPage,
     setPageSize,
     state,
-    globalFilter,
     setGlobalFilter,
-
-    state: { pageIndex, pageSize },
   } = useTable(
     {
       columns,
       data,
-
-      initialState: { pageIndex: 0 },
-      manualPagination: true,
-      pageCount: 1000,
-      sortBy: [
-        {
-          id: 'asset',
-          desc: false,
-        },
-      ],
     },
+    useFilters,
     useGlobalFilter,
-    usePagination,
   );
 
   const options = {
@@ -165,11 +156,11 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
   if (domain.isNothing()) return <p>Loading</p>;
   return (
     <>
-      <SearchTable setFilter={setGlobalFilter} filter={page} />
+      <SearchTable setFilter={setGlobalFilter} filter={null} />
       <div>
         <div className="tableContainer">
           <table {...getTableProps()} className="subdomainsTable">
-            {page.length === 0 ? null : (
+            {rows.length === 0 ? null : (
               <thead className="subdomainsHeaderGroup">
                 {
                   // Loop over the header rows
@@ -201,11 +192,10 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
             )}
             {/* Apply the table body props */}
             <tbody {...getTableBodyProps()}>
-              {console.log('ROWS', page)}
-
+              {console.log('ROWS', rows)}
               {
                 // Loop over the table rows
-                page.map((row) => {
+                rows.map((row) => {
                   // Prepare the row for display
                   prepareRow(row);
                   return (
@@ -233,7 +223,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
                 })
               }
             </tbody>
-            {page.length !== 0 ? null : (
+            {rows.length !== 0 ? null : (
               <tfoot>
                 <tr>
                   <td>
@@ -243,29 +233,6 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
               </tfoot>
             )}
           </table>
-          <div className="pagination">
-            <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-              {'<<'}
-            </button>{' '}
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-              {'<'}
-            </button>{' '}
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-              {'>'}
-            </button>{' '}
-            <button
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              {'>>'}
-            </button>{' '}
-            <span>
-              Page{' '}
-              <strong>
-                {pageIndex + 1} of {pageOptions.length}
-              </strong>{' '}
-            </span>
-          </div>
         </div>
         <br />
         <br />
