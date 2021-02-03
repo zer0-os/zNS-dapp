@@ -28,6 +28,7 @@ import SearchTable from './searchTable';
 import SetImage from './forms/set-image';
 import linebutton from './css/img/threelinebutton.png';
 import squarebutton from './css/img/squaregridbutton.png';
+import './css/subdomains.scss';
 
 interface SubdomainsProps {
   domain: string;

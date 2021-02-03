@@ -72,14 +72,8 @@ function App() {
                   />
                 </h1> */}
                 {/* TODO: move to styling file */}
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <Subdomains domain={'ROOT'} />
-                </div>
+
+                <Subdomains domain={'ROOT'} />
               </Route>
             </Switch>
           </>
