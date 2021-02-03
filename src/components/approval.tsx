@@ -14,7 +14,6 @@ import { useDomainCache } from '../lib/useDomainCache';
 interface ApprovalProps {
   domainId: string;
   domainContext: DomainContext;
-  incomingApprovals: IncomingApprovalsContext;
 }
 
 const schema = z.object({

@@ -7,6 +7,7 @@ import { useDomainStore } from '../lib/useDomainStore';
 import { Modal, Button } from 'antd';
 import Create from './create';
 import Transfer from './transferDomains';
+import Approve from './approval';
 
 interface ProfileProps {
   domain: string;
@@ -87,6 +88,7 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
           {domain.value.children}
           {domain.value.owner}
 
+          <Approve domainContext={domainContext} domainId={domain.value.id} />
           <Transfer domainId={domain.value.id} domainContext={domainContext} />
         </Modal>
       </>

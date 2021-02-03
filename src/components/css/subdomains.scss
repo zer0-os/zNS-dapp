@@ -27,7 +27,8 @@ $page-margin: 100px;
   flex-direction: column;
   margin-left: $page-margin;
   overflow-x: hidden;
-  // width: 80vw;
+
+  // width: 100%;
   white-space: nowrap;
 
   .metricsTitle {
@@ -42,7 +43,7 @@ $page-margin: 100px;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
-    width: 600px;
+    width: 100%;
     &::-webkit-scrollbar {
       height: 5px;
       // &::before {
