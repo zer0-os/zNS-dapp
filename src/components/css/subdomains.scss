@@ -6,6 +6,7 @@ $dark-red: #641f29;
 $dark-grey: lighten(#678293, 20%);
 $light-grey: lighten(#b8bdca, 20%);
 $sky-blue: #76b1ce;
+$page-margin: 100px;
 
 #subdomainsContainer {
   position: relative;
@@ -14,7 +15,7 @@ $sky-blue: #76b1ce;
   align-items: left;
   margin: 15px;
   padding: 15px;
-  margin-left: 100px;
+  margin-left: $page-margin;
   top: 50%;
   left: 0%;
   min-width: 480px;
@@ -24,47 +25,75 @@ $sky-blue: #76b1ce;
 .metricsBar {
   display: flex;
   flex-direction: column;
-  margin-left: 100px;
+  margin-left: $page-margin;
+  overflow-x: hidden;
+  // width: 80vw;
+  white-space: nowrap;
+
   .metricsTitle {
     font-size: 1.3rem;
     margin-bottom: 10px;
     color: white;
   }
   .metricsContainer {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    .metric {
-      margin-right: 30px;
-      position: relative;
-      float: left;
-      width: 370px;
-      height: 182px;
-      border-width: 2px;
-      border-style: solid;
-      border-radius: 12px 72px 12px 12px;
-      background-color: rgba(244, 93, 100, 0.14);
-      border-color: rgba(244, 93, 100, 0.68);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      .metricField {
-        margin-left: 15px;
-        &:first-child {
-          margin-top: 15px;
-          color: white;
-          font-size: 1rem;
-        }
-        &:nth-child(2) {
-          color: rgb(244, 93, 100);
-          font-size: 2rem;
-        }
-        &:nth-child(3) {
-          margin-bottom: 15px;
-          color: $light-grey;
-          font-size: 0.9rem;
-          span {
-            color: $sky-blue;
+    display: inline-block;
+    // flex-direction: row;
+    // flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    width: 600px;
+    &::-webkit-scrollbar {
+      height: 5px;
+      // &::before {
+      // 	content: "hello";
+      // 	width: 15px;
+      // 	height: 15px;
+      // }
+    }
+
+    &::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(0, 128, 0);
+      // outline: 1px solid purple;
+    }
+    .metricBlock {
+      display: inline-block;
+      .metric {
+        margin-right: 30px;
+        position: relative;
+        float: left;
+        width: 370px;
+        height: 182px;
+        border-width: 2px;
+        border-style: solid;
+        border-radius: 12px 72px 12px 12px;
+        background-color: rgba(244, 93, 100, 0.14);
+        border-color: rgba(244, 93, 100, 0.68);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .metricField {
+          margin-left: 15px;
+          &:first-child {
+            margin-top: 15px;
+            color: white;
+            font-size: 1rem;
+          }
+          &:nth-child(2) {
+            color: rgb(244, 93, 100);
+            font-size: 2rem;
+          }
+          &:nth-child(3) {
+            margin-bottom: 15px;
+            color: $light-grey;
+            font-size: 0.9rem;
+            span {
+              color: $sky-blue;
+            }
           }
         }
       }

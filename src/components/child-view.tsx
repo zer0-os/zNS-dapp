@@ -84,11 +84,13 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     percent: string,
   ) => {
     return (
-      <div className="metric">
-        <div className="metricField">{name}</div>
-        <div className="metricField">{price}</div>
-        <div className="metricField">
-          {unit} <span className="metricPercent">{percent}</span>
+      <div className="metricBlock">
+        <div className="metric">
+          <div className="metricField">{name}</div>
+          <div className="metricField">{price}</div>
+          <div className="metricField">
+            {unit} <span className="metricPercent">{percent}</span>
+          </div>
         </div>
       </div>
     );
@@ -122,6 +124,10 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
         <div className="metricsTitle">Metrics</div>
         <div className="metricsContainer">
           {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
+          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
+          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
+          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
+          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
           {metric(
             'MARKET CAP',
             '$369,000,101',
@@ -132,12 +138,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
       </div>
 
       <div id="subdomainsContainer">
-        {console.log('domain ', domain, domain.value, domain.value.image)}
-        <img
-          style={{ height: '10%', width: '10%' }}
-          src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-        />
-
         <div className="subdomainsSortBar">
           <div>Discover</div>
           <div className="subdomainsButtonSortContainer">
