@@ -13,7 +13,7 @@ interface TopbarProps {
   domain: string;
 }
 
-const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
+const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { account, active } = context;
   const { useDomain } = useDomainCache();
@@ -47,12 +47,14 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const walletCancel = () => {
     setWalletVisible(false);
   };
-  if (domain.isNothing()) return <p>Loading</p>;
   return (
     <div className="topbarContainer">
       <img
         style={{ height: '10%', width: '10%' }}
-        src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+        src={'ipfs://QmS2G8rZiXVhGYuEPxdeFpYnxwbERh1e538MUfXe9Vghw8'.replace(
+          'ipfs://',
+          'https://ipfs.io/ipfs/',
+        )}
         alt=""
       />
       <div className="route-nav">
@@ -84,4 +86,4 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   );
 };
 
-export default Topbar;
+export default TopbarGlobal;

@@ -56,16 +56,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   const history = useHistory();
   const dataInput: Data[] = [];
-  const routes = _.transform(
-    location.pathname
-      .substr(1)
-      .split('.')
-      .filter((s) => s !== ''),
-    (acc: [string, string][], val, i) => {
-      let next = 0 < i ? acc[i - 1][1] + '.' + val : val;
-      acc.push([val, next]);
-    },
-  );
 
   useEffect(() => {
     console.log('ChildView', domain);
@@ -125,7 +115,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     '414350',
     '675b68',
   ];
-  console.log('r', routes);
   if (domain.isNothing()) return <p>Loading</p>;
   return (
     <div>
@@ -143,6 +132,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
       </div>
 
       <div id="subdomainsContainer">
+        {console.log('domain ', domain, domain.value, domain.value.image)}
         <img
           style={{ height: '10%', width: '10%' }}
           src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
@@ -174,19 +164,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="route-nav">
-          <div className="route-nav-link">
-            <Link to={'/'}>Z:/</Link>
-          </div>
-          {routes.map(([key, path], i) => (
-            <div className="route-nav-link">
-              <Link to={path}>
-                {key}
-                {i < routes.length - 1 && '.'}
-              </Link>
-            </div>
-          ))}
         </div>
 
         <TableView domain={domain.value.domain} />

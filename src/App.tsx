@@ -14,6 +14,7 @@ import { PoweroffOutlined } from '@ant-design/icons';
 import { Layout, Menu, Modal } from 'antd';
 import Create from './components/create';
 import Topbar from './components/topbar';
+import TopbarGlobal from './components/topbar-global';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_SUBGRAPH_URL_4,
@@ -26,8 +27,6 @@ function getLibrary(provider: any): Web3Provider {
   return library;
 }
 function App() {
-  const [connect, setConnect] = useState(false);
-  const [isWalletVisible, setWalletVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const {
     connector,
@@ -39,29 +38,16 @@ function App() {
     active,
     error,
   } = context;
-  const onClick = () => {
-    setConnect(!connect);
-  };
 
-  const showWallet = () => {
-    setWalletVisible(true);
-  };
-
-  const walletOk = () => {
-    setWalletVisible(false);
-  };
-
-  const walletCancel = () => {
-    setWalletVisible(false);
-  };
   return (
     <Router>
       <Route
         render={({ location, match }) => (
           <>
-            <Topbar domain={location.pathname.substring(1)} />
             <Switch>
               <Route path="/:id">
+                {/* defaults to the LOCAL NETWORKS page */}
+                <Topbar domain={location.pathname.substring(1)} />
                 <Subdomains
                   //regex: removes trailing /, then replaces / with .
                   /*
@@ -74,6 +60,9 @@ function App() {
                 />
               </Route>
               <Route path="/">
+                <TopbarGlobal domain={location.pathname.substring(1)} />
+
+                {/* defaults to the GLOBAL NETWORKS page */}
                 {/* <h1>
                   <Subdomains
                     domain={location.pathname
