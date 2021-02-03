@@ -15,6 +15,7 @@ export interface Domain {
   parent: string;
   image: string;
   resolver: string;
+  timeCreated: number;
   approval: Maybe<string>;
 }
 
@@ -25,6 +26,7 @@ interface _DomainData {
   parent: string;
   controller: string;
   image: string;
+  timeCreated: number;
   resolver: string;
   approval?: string;
 }
@@ -39,7 +41,7 @@ interface DomainData {
 
 const zeroAddress =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
-
+// TODO: turn queries into fragments
 const domainQuery = gql`
   query Domain($id: ID!) {
     domain(id: $id) {
@@ -51,6 +53,7 @@ const domainQuery = gql`
       controller
       image
       resolver
+      timeCreated
     }
   }
 `;
@@ -65,6 +68,7 @@ const childrenQuery = gql`
       owner
       controller
       image
+      timeCreated
       resolver
     }
   }
@@ -79,6 +83,7 @@ const ownedDomainsQuery = gql`
       parent
       owner
       controller
+      timeCreated
       image
       resolver
     }
@@ -94,6 +99,7 @@ const approvalQuery = gql`
       parent
       owner
       controller
+      timeCreated
       image
       resolver
     }
@@ -123,6 +129,7 @@ function useDomain(domain: string) {
   });
 
   const _domain: Maybe<Domain> = useMemo(() => {
+    console.log('domain!', dataDomain);
     if (errorDomain) {
       // TODO: maybe throw?
       console.error(errorDomain);
