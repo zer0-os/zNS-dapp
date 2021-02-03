@@ -72,7 +72,6 @@ function App() {
                   />
                 </h1> */}
                 {/* TODO: move to styling file */}
-
                 <Subdomains domain={'ROOT'} />
               </Route>
             </Switch>
