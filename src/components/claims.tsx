@@ -65,10 +65,6 @@ const Claim: React.FC<ClaimProps> = ({ domainId, domainContext }) => {
 
   return (
     <>
-      <button style={{ color: 'white' }} className="owned-btn">
-        Transfer domain
-      </button>
-
       <form onSubmit={handleSubmit(({ account }) => _claim(account))}>
         <div className="create-button">
           <button type="submit"> Claim Domain</button>

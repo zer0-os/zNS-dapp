@@ -1,7 +1,7 @@
 import React from 'react';
 
-const outGoingApproval = () => {
+const OutGoingApproval = () => {
   return <div></div>;
 };
 
-export default outGoingApproval;
+export default OutGoingApproval;
