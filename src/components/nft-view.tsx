@@ -75,7 +75,7 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
         )}
         {domain.isJust() && (
           <img
-            style={{ height: '10%', width: '10%' }}
+            className="domainImage"
             src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
           />
         )}

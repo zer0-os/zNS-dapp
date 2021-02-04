@@ -27,6 +27,7 @@ import Approve from './approval';
 import SearchTable from './searchTable';
 import marketimg from './css/img/chart.svg';
 import { table } from 'console';
+import '../components/css/subdomains.scss';
 
 interface ColumnProps {
   key: number;

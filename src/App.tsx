@@ -14,6 +14,7 @@ import { PoweroffOutlined } from '@ant-design/icons';
 import { Layout, Menu, Modal } from 'antd';
 import Create from './components/create';
 import Topbar from './components/topbar';
+import DomainsGlobal from './components/domains-global';
 import TopbarGlobal from './components/topbar-global';
 
 const client = new ApolloClient({
@@ -72,7 +73,8 @@ function App() {
                   />
                 </h1> */}
                 {/* TODO: move to styling file */}
-                <Subdomains domain={'ROOT'} />
+                <DomainsGlobal domain={'ROOT'} />
+                {/* <Subdomains domain={'ROOT'} /> */}
               </Route>
             </Switch>
           </>
