@@ -24,9 +24,11 @@ import {
 import { string } from 'zod';
 import Profile from './nft-view';
 import Approve from './approval';
+import TableImage from './table-image';
 import SearchTable from './searchTable';
 import marketimg from './css/img/chart.svg';
 import { table } from 'console';
+import '../components/css/subdomains.scss';
 
 interface ColumnProps {
   key: number;
@@ -72,7 +74,8 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
         ? []
         : _.map(domain.value.children, (key, i) => ({
             '#': i.toString(),
-            asset: <Profile domain={key} />,
+            // asset: <Profile domain={key} />,
+            asset: <TableImage domain={key} />,
             name: key,
             volume: 'N/A',
             '24Hr': 'N/A',
@@ -154,6 +157,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     });
   };
   if (domain.isNothing()) return <p>Loading</p>;
+  console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
     <>
       <SearchTable setFilter={setGlobalFilter} filter={null} />
