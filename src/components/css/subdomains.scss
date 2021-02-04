@@ -44,6 +44,9 @@ $page-margin: 100px;
     overflow-y: hidden;
     white-space: nowrap;
     width: 100%;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
     &::-webkit-scrollbar {
       height: 0px;
       // &::before {
