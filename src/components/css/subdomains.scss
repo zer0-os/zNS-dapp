@@ -26,7 +26,7 @@ $page-margin: 100px;
   display: flex;
   flex-direction: column;
   margin-left: $page-margin;
-  overflow-x: hidden;
+  overflow-x: auto;
 
   // width: 100%;
   white-space: nowrap;
@@ -40,12 +40,14 @@ $page-margin: 100px;
     display: inline-block;
     // flex-direction: row;
     // flex-wrap: nowrap;
+    overflow: auto;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
     width: 100%;
     &::-webkit-scrollbar {
       height: 6px;
+      // width: 0;
       // &::before {
       // 	content: "hello";
       // 	width: 15px;
