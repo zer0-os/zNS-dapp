@@ -189,10 +189,35 @@ table {
   height: 30vh;
   margin-top: 25px;
   // subdomains header
-  .subdomainsHeaderGroup {
+  .subdomainsHeaderGroupLocal,
+  .subdomainsHeaderGroupGlobal {
+    color: $dark-grey;
+    text-decoration: none;
+    tr th:first-child {
+      // border-top-right-radius: 10%;
+      border-radius: 50%;
+      // border-collapse: inherit;
+      // border-spacing: 0px;
+      border: 1px solid $middle-red;
+    }
+    tr th:last-child {
+      border-top-right-radius: 95px;
+
+      // border-radius: 50%;
+    }
+  }
+  .subdomainsHeaderGroupLocal {
     background-color: $middle-red;
     tr th {
       &:not(:nth-child(3)) {
+        text-align: center;
+      }
+    }
+  }
+  .subdomainsHeaderGroupGlobal {
+    background-color: $middle-red;
+    tr th {
+      &:not(:nth-child(3)):not(:nth-child(4)) {
         text-align: center;
       }
     }
@@ -230,8 +255,34 @@ table {
           border-radius: 0px 0px 0px 15px;
         }
       }
-      // all columns
-      td {
+      // all columns local
+      .tdLocal {
+        // every cell except the third
+        &:not(:nth-child(3)) {
+          text-align: center;
+        }
+        &:first-child {
+          color: $dark-grey;
+          font-weight: bold;
+        }
+        &:nth-child(3) {
+          color: $light-grey;
+        }
+        &:nth-child(4) {
+          color: $light-grey;
+        }
+        &:nth-child(5) {
+          color: $light-grey;
+        }
+        &:nth-child(6) {
+          color: $sky-blue;
+        }
+        &:nth-child(7) {
+          color: $light-grey;
+        }
+      }
+      // all columns global
+      .tdGlobal {
         // every cell except the third
         &:not(:nth-child(3)) {
           text-align: center;
@@ -264,24 +315,6 @@ table {
   display: flex;
   flex-direction: row;
   padding-right: 0% !important;
-}
-
-// subdomains header
-.subdomainsHeaderGroup {
-  color: $dark-grey;
-  text-decoration: none;
-  tr th:first-child {
-    // border-top-right-radius: 10%;
-    border-radius: 50%;
-    // border-collapse: inherit;
-    // border-spacing: 0px;
-    border: 1px solid $middle-red;
-  }
-  tr th:last-child {
-    border-top-right-radius: 95px;
-
-    // border-radius: 50%;
-  }
 }
 
 @import '~antd/dist/antd.css';

@@ -41,8 +41,9 @@ interface RowProps {
 
 interface Data {
   '#': string;
-  asset: any;
-  name: string;
+  image: any;
+  network: string;
+  token: string;
   volume: string;
   '24Hr': string;
   '7d': string;
@@ -55,7 +56,7 @@ interface TProps {
   domain: string;
 }
 
-const TableView: FC<TProps> = ({ domain: _domain }) => {
+const TableViewGlobal: FC<TProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const [sortConfig, setSortConfig] = useState();
   const [search, setSearch] = useState('');
@@ -75,8 +76,9 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
         : _.map(domain.value.children, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
-            asset: <TableImage domain={key} />,
-            name: key,
+            image: <TableImage domain={key} />,
+            network: key,
+            token: key + ' token',
             volume: 'N/A',
             '24Hr': 'N/A',
             '7d': 'N/A',
@@ -95,10 +97,11 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
         accessor: '#',
       },
       {
-        Header: 'Asset',
-        accessor: 'asset',
+        Header: '',
+        accessor: 'image',
       },
-      { Header: 'Name', accessor: 'name' },
+      { Header: 'Network', accessor: 'network' },
+      { Header: 'Token', accessor: 'token' },
       { Header: 'Volume', accessor: 'volume' },
       { Header: '24Hr', accessor: '24Hr' },
       { Header: '7d', accessor: '7d' },
@@ -153,7 +156,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     console.log('fire');
     console.log(row);
     history.push({
-      pathname: row.values.name,
+      pathname: row.values.network,
     });
   };
   if (domain.isNothing()) return <p>Loading</p>;
@@ -165,7 +168,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
         <div className="tableContainer">
           <table {...getTableProps()} className="subdomainsTable">
             {rows.length === 0 ? null : (
-              <thead className="subdomainsHeaderGroupLocal">
+              <thead className="subdomainsHeaderGroupGlobal">
                 {
                   // Loop over the header rows
                   headerGroups.map((headerGroup) => (
@@ -213,7 +216,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
                         row.cells.map((cell) => {
                           // Apply the cell props
                           return (
-                            <td className="tdLocal" {...cell.getCellProps()}>
+                            <td className="tdGlobal" {...cell.getCellProps()}>
                               {
                                 // Render the cell contents
                                 cell.render('Cell')
@@ -259,4 +262,4 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
   );
 };
 
-export default TableView;
+export default TableViewGlobal;

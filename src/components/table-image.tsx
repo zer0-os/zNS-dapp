@@ -1,18 +1,11 @@
 import React, { FC } from 'react';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { useZnsContracts } from '../lib/contracts';
 import { useDomainCache } from '../lib/useDomainCache';
-import { useDomainStore } from '../lib/useDomainStore';
 
 interface TableImageProps {
   domain: string;
 }
 
 const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
-  const context = useWeb3React<Web3Provider>();
-  const contracts = useZnsContracts();
-  const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;

@@ -23,7 +23,7 @@ import {
 import { string } from 'zod';
 import Profile from './nft-view';
 import Approve from './approval';
-import TableView from './tableView';
+import TableViewGlobal from './tableView-global';
 import SearchTable from './searchTable';
 import SetImage from './forms/set-image';
 import linebutton from './css/img/threelinebutton.png';
@@ -36,8 +36,9 @@ interface DomainsGlobalProps {
 
 interface Data {
   '#': string;
-  asset: any;
-  name: string;
+  '': any;
+  network: string;
+  token: string;
   volume: string;
   '24Hr': string;
   '7d': string;
@@ -164,7 +165,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
           </div>
         </div>
 
-        <TableView domain={domain.value.domain} />
+        <TableViewGlobal domain={domain.value.domain} />
 
         {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
           <>
