@@ -70,6 +70,10 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
           </div>
         ))}
       </div>
+      <div className="search-bar">
+        <input className="search-bar-input" type="text" placeholder="Search" />
+        <button className="search-bar-button"></button>
+      </div>
       {active && (
         <div className="profile-btn">
           <Owned />
