@@ -1,12 +1,63 @@
+@import './color-variables.scss';
+
 .topbarContainer {
   display: flex;
-  // justify-items: flex-end;
-  // align-items: flex-end;
-  justify-content: flex-end;
-  // align-content: flex-end;
-  // justify-self: flex-end;
-  // align-self: flex-end;
-  border: 3px black solid;
+  flex-direction: row;
+  padding: 21px 25px 21px 60px;
+
+  .topbarLogo {
+    height: 60px;
+    width: 60px;
+  }
+
+  .route-nav-text {
+    margin-left: 16px;
+    color: #b5b5b5;
+    letter-spacing: 0;
+  }
+
+  .route-nav-text-sub {
+    color: #b5b5b5;
+    letter-spacing: 0;
+  }
+
+  .search-bar {
+    position: relative;
+    border: none;
+    .search-bar-input {
+      border-color: none;
+      border-width: 0px !important;
+      width: 330px;
+      background-color: rgba(115, 201, 241, 0.06);
+      border-radius: 31px;
+      padding: 15px 31px 13px 31px;
+      /* Text */
+      text-align: left;
+      font-size: 16px;
+      color: white;
+      &:placeholder {
+        color: #727272;
+        font-size: 16px;
+      }
+    }
+    .search-bar-button {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 47px;
+      width: 49px;
+      border-radius: 31px;
+      border-color: none;
+      border-width: 0px !important;
+      background-color: $dark-red;
+      background-image: url('./img/search-icon.svg');
+      background-position: center;
+      background-size: 18px 18px;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+  }
+
   .connect-btn {
     padding-right: 10px;
     background-color: transparent;

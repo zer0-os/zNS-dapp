@@ -50,7 +50,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   return (
     <div className="topbarContainer">
       <img
-        style={{ height: '10%', width: '10%' }}
+        className="topbarLogo"
         src={'ipfs://QmS2G8rZiXVhGYuEPxdeFpYnxwbERh1e538MUfXe9Vghw8'.replace(
           'ipfs://',
           'https://ipfs.io/ipfs/',
@@ -59,16 +59,23 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       />
       <div className="route-nav">
         <div className="route-nav-link">
-          <Link to={'/'}>Z:/</Link>
+          <Link className="route-nav-text" to={'/'}>
+            0::/
+          </Link>
         </div>
-        {routes.map(([key, path], i) => (
+        {/* not needed: topbar-global is only ROOT */}
+        {/* {routes.map(([key, path], i) => (
           <div className="route-nav-link">
             <Link to={path}>
               {key}
               {i < routes.length - 1 && '.'}
             </Link>
           </div>
-        ))}
+        ))} */}
+      </div>
+      <div className="search-bar">
+        <input className="search-bar-input" type="text" placeholder="Search" />
+        <button className="search-bar-button"></button>
       </div>
       {active && (
         <div className="profile-btn">
