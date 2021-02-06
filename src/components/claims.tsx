@@ -4,25 +4,24 @@ import { Web3Provider } from '@ethersproject/providers';
 import { getAddress } from '@ethersproject/address';
 import { useZnsContracts } from '../lib/contracts';
 import * as z from 'zod';
-
-import { zodResolver } from '../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { DomainContext } from '../lib/useDomainStore';
 import { hexRegex } from '../lib/validation/validators';
 import { useDomainCache } from '../lib/useDomainCache';
 import Transfer from './transferDomains';
+import { zeroAddress } from '../lib/useDomainStore';
 
 interface ClaimProps {
-  domainId: string;
-  domainContext: DomainContext;
+  domain: string;
 }
 
-const Claim: React.FC<ClaimProps> = ({ domainId, domainContext }) => {
-  const { refetchDomain, domain } = domainContext;
+const Claim: React.FC<ClaimProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
-  const { useDomain } = useDomainCache();
+  const domainStore = useDomainCache();
+  const { useDomain } = domainStore;
+  const { domain, refetchDomain } = useDomain(_domain);
   const { register, handleSubmit, errors } = useForm();
 
   const _claim = useCallback(
@@ -43,8 +42,25 @@ const Claim: React.FC<ClaimProps> = ({ domainId, domainContext }) => {
     [contracts, account, domain],
   );
 
-  if (domain.isNothing() || domain.value.owner !== domain.value.owner)
-    return null;
+  const _revoke = useCallback(
+    (address: string) => {
+      if (
+        account &&
+        contracts.isJust() &&
+        domain.isJust() &&
+        account != address
+      )
+        contracts.value.registry
+          .approve(zeroAddress, domain.value.id)
+          .then((txr: any) => txr.wait(1))
+          .then(() => {
+            refetchDomain();
+          });
+    },
+    [contracts, account, domain],
+  );
+
+  if (domain.isNothing() || domain.value.owner !== account) return null;
 
   return (
     <>
@@ -55,6 +71,14 @@ const Claim: React.FC<ClaimProps> = ({ domainId, domainContext }) => {
         >
           {' '}
           Claim Domain
+        </button>
+
+        <button
+          onSubmit={handleSubmit(({ account }) => _revoke(account))}
+          type="submit"
+        >
+          {' '}
+          Revoke
         </button>
       </div>
     </>

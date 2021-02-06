@@ -9,15 +9,20 @@ import Create from './create';
 import Transfer from './transferDomains';
 import Approve from './approval';
 import { Link } from 'react-router-dom';
+import Claim from './claims';
 
-const Profile: FC = () => {
+interface ProfileProps {
+  domain: string;
+}
+
+const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const [isOwnedVisible, setOwnedVisible] = useState(false);
-  const [count, setCount] = useState(4);
+  const [count, setCount] = useState(0);
   const contracts = useZnsContracts();
-  const { useDomain } = useDomainCache();
+  const { useDomain, owned, incomingApprovals } = useDomainStore();
+  const { domain, refetchDomain } = useDomain(_domain);
   const { library, account, active, chainId } = context;
-  const { owned, incomingApprovals } = useDomainStore();
 
   const outgoingApprovals = owned.isJust()
     ? owned.value.filter((control) => {
@@ -30,8 +35,6 @@ const Profile: FC = () => {
 
   const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
 
-  if (owned.isNothing()) return <p>User owns no domains.</p>;
-
   const showOwner = () => {
     setOwnedVisible(true);
   };
@@ -43,6 +46,8 @@ const Profile: FC = () => {
   const ownerCancel = () => {
     setOwnedVisible(false);
   };
+
+  if (owned.isNothing()) return <p>User owns no domains.</p>;
   return (
     <>
       <button className="owned-btn" onClick={showOwner}>
@@ -77,6 +82,10 @@ const Profile: FC = () => {
           {incomingApprovals.isJust() ? incomingApprovals.value.length : 0}
         </div>
         <div>Pending Outgoing Approvals: {outgoingPendingCount}</div>
+
+        <div>
+          <Claim domain={_domain} />
+        </div>
       </Modal>
     </>
   );

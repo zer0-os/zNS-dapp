@@ -80,7 +80,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
       </div>
       {active && (
         <div className="profile-btn">
-          <Profile />
+          <Profile domain={_domain} />
         </div>
       )}
       <div className="topbarRight">
