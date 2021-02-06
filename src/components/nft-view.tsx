@@ -109,6 +109,7 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
             Outgoing Approvals:{' '}
             {outgoingApprovals ? outgoingApprovals.length : 0}
           </div>
+
           <div>
             {' '}
             Incoming Approvals:{' '}
