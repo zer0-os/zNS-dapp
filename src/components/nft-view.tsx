@@ -23,6 +23,7 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+  if (domain.isNothing()) return <p>Loading</p>;
 
   const showSubdomain = () => {
     setSubdomainVisible(true);
@@ -59,12 +60,11 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   const profileCancel = () => {
     setProfileVisible(false);
   };
-  if (domain.isNothing()) return <p>Loading</p>;
 
   return (
     <>
       <>
-        {domain.isNothing() && (
+        {domain.isJust() && (
           <button
             className="btn-sub"
             style={{ color: 'white' }}
@@ -73,18 +73,14 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
             image field
           </button>
         )}
-        {domain.isJust() && (
-          <img
-            style={{ height: '10%', width: '10%' }}
-            src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-          />
-        )}
+        test
         <Modal
           title="subdomain"
           visible={isProfileVisible}
           onOk={profileOk}
           onCancel={profileCancel}
         >
+          test2
           <Approve domainContext={domainContext} domainId={domain.value.id} />
         </Modal>
       </>

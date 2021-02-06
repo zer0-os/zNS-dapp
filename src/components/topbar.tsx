@@ -97,13 +97,8 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
       <Modal visible={isWalletVisible} onOk={walletOk} onCancel={walletCancel}>
         <Wallet />
       </Modal>
-      {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
-        <>
-          <div>
-            <NFTview domain={domain.value.domain} />
-          </div>
-        </>
-      ) : null}
+
+      <NFTview domain={domain.value.domain} />
     </div>
   );
 };
