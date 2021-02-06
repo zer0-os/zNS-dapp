@@ -47,7 +47,7 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
     setOwnedVisible(false);
   };
 
-  if (owned.isNothing()) return <p>User owns no domains.</p>;
+  if (owned.isNothing()) return null;
   return (
     <>
       <button className="owned-btn" onClick={showOwner}>

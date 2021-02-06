@@ -1,0 +1,47 @@
+@import './color-variables.scss';
+
+.sidebarContainer {
+  height: 100vh;
+  width: 180px;
+
+  padding: 35px 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  .sidebarNav {
+    display: flex;
+    align-items: center;
+    .icons {
+      padding-left: 34px;
+      li {
+        height: 60px;
+        width: 60px;
+        border-radius: 50%;
+        background-color: rgba(42, 46, 50, 0.33);
+
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+  }
+
+  .profile {
+    position: absolute;
+    left: 54px;
+    bottom: 35px;
+    text-align: center;
+    .profilepic {
+      width: 60px;
+      height: 60px;
+      border-radius: 30px;
+      background-color: white;
+      margin-bottom: 12px;
+    }
+  }
+}

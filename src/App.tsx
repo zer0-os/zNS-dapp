@@ -16,6 +16,7 @@ import Create from './components/create';
 import Topbar from './components/topbar';
 import DomainsGlobal from './components/domains-global';
 import TopbarGlobal from './components/topbar-global';
+import Sidebar from './components/sidebar';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_SUBGRAPH_URL_4,
@@ -42,6 +43,7 @@ function App() {
 
   return (
     <Router>
+      <Sidebar />
       <Route
         render={({ location, match }) => (
           <>

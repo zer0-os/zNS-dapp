@@ -57,10 +57,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
       <div className="topbarLeft">
         <img
           className="topbarLogo"
-          src={'ipfs://QmS2G8rZiXVhGYuEPxdeFpYnxwbERh1e538MUfXe9Vghw8'.replace(
-            'ipfs://',
-            'https://ipfs.io/ipfs/',
-          )}
+          src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
           alt=""
         />
         <div className="route-nav">

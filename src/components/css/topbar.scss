@@ -4,13 +4,15 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   padding: 21px 25px 21px 60px;
   width: 100vw;
+  height: 124px;
 
   .topbarLeft {
     .topbarLogo {
-      height: 60px;
-      width: 60px;
+      max-height: 60px;
+      max-width: 60px;
     }
 
     .route-nav-text {
@@ -28,7 +30,7 @@
   .search-bar {
     position: absolute;
     border: none;
-    margin-left: 40vw;
+    margin-left: 25vw;
 
     .search-bar-input {
       border-color: none;
@@ -75,7 +77,7 @@
     .connect-btn {
       padding-right: 10px;
       background-color: transparent;
-      width: 100px;
+      // width: 100px;
       height: 50px;
       border: none;
       font-size: 14px;
@@ -95,7 +97,8 @@
       background-color: rgba(0, 0, 0, 0);
       box-shadow: 4px 6px 17px 0px rgba(0, 0, 0, 0.45);
       border-radius: 24px;
-      border: 2px solid #78d0f8;
+      // border: 2px solid #78d0f8;
+      border: 2px solid rgba(244, 93, 100, 0.68);
       border-width: 2px 0;
       height: 47px;
       margin-left: 29px;
