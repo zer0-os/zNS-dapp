@@ -91,8 +91,7 @@ const Approve: React.FC<ApprovalProps> = ({
   console.log(domain);
 
   console.log(account);
-  if (domain.isNothing() || domain.value.owner !== account)
-    return <p>nothing</p>;
+  if (domain.isNothing() || domain.value.owner !== account) return null;
   console.log('FIRE2');
   return (
     <form onSubmit={handleSubmit(({ address }) => _approve(address))}>
