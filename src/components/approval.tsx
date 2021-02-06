@@ -53,16 +53,27 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
         account != address
       ) {
         contracts.value.registry
-          .approve(domain.value.id, address)
-          .then((txr) => txr.wait(1))
-
-          .then(() =>
+          .approve(address, domain.value.id)
+          .then((txr) => {
+            alert('PENDING TX');
+            return txr.wait(1);
+          })
+          .then((txh) => {
+            if (txh.status === 1) {
+              alert('TX APPROVED');
+            } else {
+              alert('TX REJECTED');
+            }
             Promise.all([
               refetchIncomingApprovals,
               refetchDomain,
               refetchOwned,
-            ]),
-          );
+            ]);
+          })
+          .catch((e) => {
+            console.log('error?', e);
+            alert('TX ERROR');
+          });
       }
     },
     [contracts, account, domain],
