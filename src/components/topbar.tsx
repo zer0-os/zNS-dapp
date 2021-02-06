@@ -52,22 +52,28 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   return (
     <div className="topbarContainer">
       <img
-        style={{ height: '10%', width: '10%' }}
+        className="topbarLogo"
         src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
         alt=""
       />
       <div className="route-nav">
         <div className="route-nav-link">
-          <Link to={'/'}>Z:/</Link>
+          <Link className="route-nav-text" to={'/'}>
+            0::/
+          </Link>
         </div>
         {routes.map(([key, path], i) => (
           <div className="route-nav-link">
-            <Link to={path}>
+            <Link className="route-nav-text-sub" to={path}>
               {key}
               {i < routes.length - 1 && '.'}
             </Link>
           </div>
         ))}
+      </div>
+      <div className="search-bar">
+        <input className="search-bar-input" type="text" placeholder="Search" />
+        <button className="search-bar-button"></button>
       </div>
       {active && (
         <div className="profile-btn">
