@@ -13,7 +13,7 @@ interface ProfileProps {
   domain: string;
 }
 
-const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
+const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
   const [isProfileVisible, setProfileVisible] = useState(false);
@@ -75,7 +75,7 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
         )}
         {domain.isJust() && (
           <img
-            className="domainImage"
+            style={{ height: '10%', width: '10%' }}
             src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
           />
         )}
@@ -85,14 +85,10 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
           onOk={profileOk}
           onCancel={profileCancel}
         >
-          {domain.value.children}
-          {domain.value.owner}
-
           <Approve domainContext={domainContext} domainId={domain.value.id} />
-          <Transfer domainId={domain.value.id} domainContext={domainContext} />
         </Modal>
       </>
     </>
   );
 };
-export default Profile;
+export default NFTview;

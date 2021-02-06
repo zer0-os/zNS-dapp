@@ -10,6 +10,8 @@ import Wallet from '../components/wallet';
 import './css/topbar.scss';
 import downarrow from './css/img/down-arrow.png';
 import nightmoon from './css/img/night-moon-2.png';
+import Profile from './profile';
+import NFTview from './nft-view';
 
 interface TopbarProps {
   domain: string;
@@ -81,7 +83,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       </div>
       {active && (
         <div className="profile-btn">
-          <Owned />
+          <Profile />
         </div>
       )}
       <div className="topbarRight">
