@@ -1,21 +1,34 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { Modal, Button, Badge } from 'antd';
 import { useZnsContracts } from '../lib/contracts';
-import { domainCacheContext, useDomainCache } from '../lib/useDomainCache';
+import { useDomainCache } from '../lib/useDomainCache';
+import { useDomainStore } from '../lib/useDomainStore';
+import { Modal, Button } from 'antd';
+import Create from './create';
+import Transfer from './transferDomains';
 import Approve from './approval';
-import { domain } from 'process';
-import NFTview from './nft-view';
+import { Link } from 'react-router-dom';
 
 const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
   const [isOwnedVisible, setOwnedVisible] = useState(false);
   const [count, setCount] = useState(4);
   const contracts = useZnsContracts();
+  const { useDomain } = useDomainCache();
   const { library, account, active, chainId } = context;
-  const { owned } = useDomainCache();
+  const { owned, incomingApprovals } = useDomainStore();
+
+  const outgoingApprovals = owned.isJust()
+    ? owned.value.filter((control) => {
+        return control.approval.isJust();
+      })
+    : null;
+
+  console.log(outgoingApprovals);
+  console.log(outgoingApprovals?.length, 'MANYAPPROVALS');
+
+  const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
 
   if (owned.isNothing()) return <p>User owns no domains.</p>;
 
