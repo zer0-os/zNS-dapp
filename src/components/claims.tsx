@@ -68,6 +68,8 @@ const Claim: React.FC<ClaimProps> = ({ domain: _domain }) => {
         <button
           onSubmit={handleSubmit(({ account }) => _claim(account))}
           type="submit"
+          name={'address'}
+          ref={register}
         >
           {' '}
           Claim Domain
@@ -76,6 +78,8 @@ const Claim: React.FC<ClaimProps> = ({ domain: _domain }) => {
         <button
           onSubmit={handleSubmit(({ account }) => _revoke(account))}
           type="submit"
+          name={'address'}
+          ref={register}
         >
           {' '}
           Revoke
