@@ -87,7 +87,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       <div className="topbarRight">
         {active && (
           <div className="profile-btn">
-            <Profile />
+            <Profile domain={_domain} />
           </div>
         )}
         <button className="connect-btn" onClick={showWallet}>

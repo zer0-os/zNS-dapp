@@ -4,43 +4,24 @@ import { Web3Provider } from '@ethersproject/providers';
 import { getAddress } from '@ethersproject/address';
 import { useZnsContracts } from '../lib/contracts';
 import * as z from 'zod';
-
-import { zodResolver } from '../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { DomainContext } from '../lib/useDomainStore';
 import { hexRegex } from '../lib/validation/validators';
 import { useDomainCache } from '../lib/useDomainCache';
 import Transfer from './transferDomains';
+import { zeroAddress } from '../lib/useDomainStore';
 
 interface ClaimProps {
-  domainId: string;
-  domainContext: DomainContext;
+  domain: string;
 }
 
-const schema = z.object({
-  address: z
-    .string()
-    .regex(hexRegex, 'Address must be hex')
-    .refine(
-      (account) => {
-        try {
-          return account === getAddress(account);
-        } catch (e) {
-          return false;
-        }
-      },
-      {
-        message: 'Not checksummed address',
-      },
-    ),
-});
-
-const Claim: React.FC<ClaimProps> = ({ domainId, domainContext }) => {
-  const { refetchDomain, domain } = domainContext;
+const Claim: React.FC<ClaimProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
-  const { useDomain } = useDomainCache();
+  const domainStore = useDomainCache();
+  const { useDomain } = domainStore;
+  const { domain, refetchDomain } = useDomain(_domain);
   const { register, handleSubmit, errors } = useForm();
 
   const _claim = useCallback(
@@ -61,16 +42,45 @@ const Claim: React.FC<ClaimProps> = ({ domainId, domainContext }) => {
     [contracts, account, domain],
   );
 
+  const _revoke = useCallback(
+    (address: string) => {
+      if (
+        account &&
+        contracts.isJust() &&
+        domain.isJust() &&
+        account != address
+      )
+        contracts.value.registry
+          .approve(zeroAddress, domain.value.id)
+          .then((txr: any) => txr.wait(1))
+          .then(() => {
+            refetchDomain();
+          });
+    },
+    [contracts, account, domain],
+  );
+
   if (domain.isNothing() || domain.value.owner !== account) return null;
 
   return (
     <>
-      <form onSubmit={handleSubmit(({ account }) => _claim(account))}>
-        <div className="create-button">
-          <button type="submit"> Claim Domain</button>
-          <input name={'account'} ref={register} placeholder="Claim Domain" />
-        </div>
-      </form>
+      <div className="create-button">
+        <button
+          onSubmit={handleSubmit(({ account }) => _claim(account))}
+          type="submit"
+        >
+          {' '}
+          Claim Domain
+        </button>
+
+        <button
+          onSubmit={handleSubmit(({ account }) => _revoke(account))}
+          type="submit"
+        >
+          {' '}
+          Revoke
+        </button>
+      </div>
     </>
   );
 };
