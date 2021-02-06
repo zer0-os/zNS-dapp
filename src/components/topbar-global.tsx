@@ -8,6 +8,8 @@ import Owned from '../components/owned';
 import { Layout, Menu, Modal } from 'antd';
 import Wallet from '../components/wallet';
 import './css/topbar.scss';
+import downarrow from './css/img/down-arrow.png';
+import nightmoon from './css/img/night-moon-2.png';
 
 interface TopbarProps {
   domain: string;
@@ -82,10 +84,18 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           <Owned />
         </div>
       )}
-      <button className="connect-btn" onClick={showWallet}>
-        {' '}
-        {active ? 'Connected' : 'Connect Wallet'}{' '}
-      </button>
+      <div className="topbarRight">
+        <button className="connect-btn" onClick={showWallet}>
+          {' '}
+          {active ? 'Connected' : 'Connect Wallet'}{' '}
+        </button>
+        <button className="create-network">
+          Create Network
+          <img src={downarrow} alt="" />
+        </button>
+        <img className="nightmoon" src={nightmoon} alt="" />
+      </div>
+
       <Modal visible={isWalletVisible} onOk={walletOk} onCancel={walletCancel}>
         <Wallet />
       </Modal>

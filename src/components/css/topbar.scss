@@ -28,7 +28,8 @@
       border-color: none;
       border-width: 0px !important;
       width: 330px;
-      background-color: rgba(115, 201, 241, 0.06);
+      height: 49px;
+      background-color: rgba(241, 115, 115, 0.06);
       border-radius: 31px;
       padding: 15px 31px 13px 31px;
       /* Text */
@@ -44,12 +45,12 @@
       position: absolute;
       right: 0;
       top: 0;
-      height: 47px;
+      height: 49px;
       width: 49px;
       border-radius: 31px;
       border-color: none;
       border-width: 0px !important;
-      background-color: $dark-red;
+      background-color: $middle-red;
       background-image: url('./img/search-icon.svg');
       background-position: center;
       background-size: 18px 18px;
@@ -58,18 +59,42 @@
     }
   }
 
-  .connect-btn {
-    padding-right: 10px;
-    background-color: transparent;
-    width: 100px;
-    height: 50px;
-    border: none;
-    font-size: 14px;
-    border-radius: 100px;
-    transition: 0.6s;
-    overflow: hidden;
-    padding-right: 10px;
-    color: lightgray !important;
+  .topbarRight {
+    display: flex;
+    flex-direction: row;
+    .connect-btn {
+      padding-right: 10px;
+      background-color: transparent;
+      width: 100px;
+      height: 50px;
+      border: none;
+      font-size: 14px;
+      border-radius: 100px;
+      transition: 0.6s;
+      overflow: hidden;
+      padding-right: 10px;
+      color: lightgray !important;
+    }
+    .create-network {
+      display: flex;
+      align-items: center;
+      padding: 9px 24px 9px 27px;
+      font-size: 16px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0);
+      box-shadow: 4px 6px 17px 0px rgba(0, 0, 0, 0.45);
+      /* Border */
+      border-radius: 24px;
+      border: 2px solid #78d0f8;
+      border-width: 2px 0;
+    }
+
+    .nightmoon {
+      height: 41px;
+      width: 41px;
+      background-color: #172c3c;
+      border-radius: 50%;
+    }
   }
 
   .profile-btn {
