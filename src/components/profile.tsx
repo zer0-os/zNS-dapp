@@ -51,10 +51,7 @@ const Profile: FC = () => {
 
       <Modal visible={isOwnedVisible} onOk={ownerOk} onCancel={ownerCancel}>
         <div>Domains Owned by {account}:</div>
-        <button onClick={() => setCount(count * 0)}>
-          {' '}
-          reset notifications
-        </button>
+
         {console.log('OWNED ', owned)}
         <div>
           {owned.value.map((control) => {
@@ -70,6 +67,16 @@ const Profile: FC = () => {
             );
           })}
         </div>
+        <div>
+          Outgoing Approvals: {outgoingApprovals ? outgoingApprovals.length : 0}
+        </div>
+
+        <div>
+          {' '}
+          Incoming Approvals:{' '}
+          {incomingApprovals.isJust() ? incomingApprovals.value.length : 0}
+        </div>
+        <div>Pending Outgoing Approvals: {outgoingPendingCount}</div>
       </Modal>
     </>
   );

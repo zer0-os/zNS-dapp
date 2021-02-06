@@ -27,14 +27,11 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
 
   const { owned, incomingApprovals } = useDomainStore();
 
-  const outgoingApprovals = owned.isJust()
-    ? owned.value.filter((control) => {
-        return control.approval.isJust();
-      })
-    : null;
-
-  console.log(outgoingApprovals);
-  console.log(outgoingApprovals?.length, 'MANYAPPROVALS');
+  // const outgoingApprovals = owned.isJust()
+  //   ? owned.value.filter((control) => {
+  //       return control.approval.isJust();
+  //     })
+  //   : null;
 
   const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
 
@@ -100,24 +97,13 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
           onOk={profileOk}
           onCancel={profileCancel}
         >
-          {domain.value.id}
+          {domain.value.controller}
           <Outgoing domain={_domain} />
           <Approve
             domain={_domain}
             outgoingPendingCount={outgoingPendingCount}
             setOutgoingPendingCount={setOutgoingPendingCount}
           />
-          <div>
-            Outgoing Approvals:{' '}
-            {outgoingApprovals ? outgoingApprovals.length : 0}
-          </div>
-
-          <div>
-            {' '}
-            Incoming Approvals:{' '}
-            {incomingApprovals.isJust() ? incomingApprovals.value.length : 0}
-          </div>
-          <div>Pending Outgoing Approvals: {outgoingPendingCount}</div>
         </Modal>
         test
       </>
