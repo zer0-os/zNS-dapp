@@ -17,24 +17,6 @@ interface ClaimProps {
   domainContext: DomainContext;
 }
 
-const schema = z.object({
-  address: z
-    .string()
-    .regex(hexRegex, 'Address must be hex')
-    .refine(
-      (account) => {
-        try {
-          return account === getAddress(account);
-        } catch (e) {
-          return false;
-        }
-      },
-      {
-        message: 'Not checksummed address',
-      },
-    ),
-});
-
 const Claim: React.FC<ClaimProps> = ({ domainId, domainContext }) => {
   const { refetchDomain, domain } = domainContext;
   const context = useWeb3React<Web3Provider>();
@@ -61,16 +43,20 @@ const Claim: React.FC<ClaimProps> = ({ domainId, domainContext }) => {
     [contracts, account, domain],
   );
 
-  if (domain.isNothing() || domain.value.owner !== account) return null;
+  if (domain.isNothing() || domain.value.owner !== domain.value.owner)
+    return null;
 
   return (
     <>
-      <form onSubmit={handleSubmit(({ account }) => _claim(account))}>
-        <div className="create-button">
-          <button type="submit"> Claim Domain</button>
-          <input name={'account'} ref={register} placeholder="Claim Domain" />
-        </div>
-      </form>
+      <div className="create-button">
+        <button
+          onSubmit={handleSubmit(({ account }) => _claim(account))}
+          type="submit"
+        >
+          {' '}
+          Claim Domain
+        </button>
+      </div>
     </>
   );
 };
