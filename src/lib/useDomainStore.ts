@@ -39,6 +39,13 @@ interface DomainData {
   domain: _DomainData;
 }
 
+interface ZeroTransaction {
+  txHash: string;
+  method: string;
+  description: string;
+  pending: boolean;
+  nonce: number;
+}
 const zeroAddress =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
 // TODO: turn queries into fragments
@@ -264,8 +271,40 @@ function useIncomingApprovals(): {
 const useDomainStore = () => {
   const owned = useOwnedDomains();
   const incomingApprovals = useIncomingApprovals();
+  const [transactions, setTransactions] = useState<ZeroTransaction[]>([]);
 
-  return { useDomain, ...owned, ...incomingApprovals };
+  const pushTransaction = useCallback(
+    (tx: ZeroTransaction) => {
+      setTransactions(
+        transactions.filter((_tx) => _tx.nonce !== tx.nonce).concat(tx),
+      );
+    },
+    [transactions, setTransactions],
+  );
+
+  const updateTransaction = useCallback(
+    (tx: ZeroTransaction) => {
+      const txIndex = transactions.findIndex((_tx) => _tx.txHash === tx.txHash);
+      if (txIndex < 0) {
+        console.error(
+          `updateTransaction: could not find transaction ${tx.txHash}`,
+        );
+        return;
+      }
+      transactions[txIndex] = tx;
+      setTransactions(transactions);
+    },
+    [transactions, setTransactions],
+  );
+
+  return {
+    useDomain,
+    ...owned,
+    ...incomingApprovals,
+    pushTransaction,
+    updateTransaction,
+    transactions,
+  };
 };
 
 export type DomainStoreContext = ReturnType<typeof useDomainStore>;

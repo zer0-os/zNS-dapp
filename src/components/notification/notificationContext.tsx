@@ -15,7 +15,7 @@ type RejectedState = {
 };
 
 const initalState = {
-  count0: 0 as number,
+  count0: 0,
 };
 
 const NotificationContext = createContext<{
