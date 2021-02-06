@@ -54,36 +54,41 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   if (domain.isNothing()) return <p>Loading</p>;
   return (
     <div className="topbarContainer">
-      <img
-        className="topbarLogo"
-        src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-        alt=""
-      />
-      <div className="route-nav">
-        <div className="route-nav-link">
-          <Link className="route-nav-text" to={'/'}>
-            0::/
-          </Link>
-        </div>
-        {routes.map(([key, path], i) => (
+      <div className="topbarLeft">
+        <img
+          className="topbarLogo"
+          src={'ipfs://QmS2G8rZiXVhGYuEPxdeFpYnxwbERh1e538MUfXe9Vghw8'.replace(
+            'ipfs://',
+            'https://ipfs.io/ipfs/',
+          )}
+          alt=""
+        />
+        <div className="route-nav">
           <div className="route-nav-link">
-            <Link className="route-nav-text-sub" to={path}>
-              {key}
-              {i < routes.length - 1 && '.'}
+            <Link className="route-nav-text" to={'/'}>
+              0::/
             </Link>
           </div>
-        ))}
+          {routes.map(([key, path], i) => (
+            <div className="route-nav-link">
+              <Link className="route-nav-text-sub" to={path}>
+                {key}
+                {i < routes.length - 1 && '.'}
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="search-bar">
         <input className="search-bar-input" type="text" placeholder="Search" />
         <button className="search-bar-button"></button>
       </div>
-      {active && (
-        <div className="profile-btn">
-          <Profile />
-        </div>
-      )}
       <div className="topbarRight">
+        {active && (
+          <div className="profile-btn">
+            <Profile />
+          </div>
+        )}
         <button className="connect-btn" onClick={showWallet}>
           {' '}
           {active ? 'Connected' : 'Connect Wallet'}{' '}
@@ -94,11 +99,10 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
         </button>
         <img className="nightmoon" src={nightmoon} alt="" />
       </div>
+
       <Modal visible={isWalletVisible} onOk={walletOk} onCancel={walletCancel}>
         <Wallet />
       </Modal>
-
-      <NFTview domain={domain.value.domain} />
     </div>
   );
 };

@@ -3,27 +3,33 @@
 .topbarContainer {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   padding: 21px 25px 21px 60px;
+  width: 100vw;
 
-  .topbarLogo {
-    height: 60px;
-    width: 60px;
-  }
+  .topbarLeft {
+    .topbarLogo {
+      height: 60px;
+      width: 60px;
+    }
 
-  .route-nav-text {
-    margin-left: 16px;
-    color: #b5b5b5;
-    letter-spacing: 0;
-  }
+    .route-nav-text {
+      margin-left: 16px;
+      color: #b5b5b5;
+      letter-spacing: 0;
+    }
 
-  .route-nav-text-sub {
-    color: #b5b5b5;
-    letter-spacing: 0;
+    .route-nav-text-sub {
+      color: #b5b5b5;
+      letter-spacing: 0;
+    }
   }
 
   .search-bar {
-    position: relative;
+    position: absolute;
     border: none;
+    margin-left: 40vw;
+
     .search-bar-input {
       border-color: none;
       border-width: 0px !important;
@@ -41,7 +47,9 @@
         font-size: 16px;
       }
     }
+
     .search-bar-button {
+      // TODO: make more responsive to page size
       position: absolute;
       right: 0;
       top: 0;
@@ -60,8 +68,10 @@
   }
 
   .topbarRight {
+    justify-self: flex-end;
     display: flex;
     flex-direction: row;
+
     .connect-btn {
       padding-right: 10px;
       background-color: transparent;
@@ -75,6 +85,7 @@
       padding-right: 10px;
       color: lightgray !important;
     }
+
     .create-network {
       display: flex;
       align-items: center;
@@ -83,15 +94,25 @@
       color: white;
       background-color: rgba(0, 0, 0, 0);
       box-shadow: 4px 6px 17px 0px rgba(0, 0, 0, 0.45);
-      /* Border */
       border-radius: 24px;
       border: 2px solid #78d0f8;
       border-width: 2px 0;
+      height: 47px;
+      margin-left: 29px;
+      &:nth-child(1) {
+        padding: none;
+        margin: none;
+      }
+      &:nth-child(2) {
+        padding: none;
+        margin: none;
+      }
     }
 
     .nightmoon {
       height: 41px;
       width: 41px;
+      margin-left: 29px;
       background-color: #172c3c;
       border-radius: 50%;
     }
