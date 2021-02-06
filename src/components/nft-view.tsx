@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../lib/contracts';
@@ -23,7 +23,23 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+
+  const { owned, incomingApprovals } = useDomainStore();
+
+  const outgoingApprovals = owned.isJust()
+    ? owned.value.filter((control) => {
+        return control.approval.isJust();
+      })
+    : null;
+
+  console.log(outgoingApprovals);
+  console.log(outgoingApprovals?.length, 'MANYAPPROVALS');
+
+  const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
+
   if (domain.isNothing()) return <p>Loading</p>;
+
+  //
 
   const showSubdomain = () => {
     setSubdomainVisible(true);
@@ -61,6 +77,10 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
     setProfileVisible(false);
   };
 
+  //
+
+  //
+
   return (
     <>
       <>
@@ -73,7 +93,6 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
             image field
           </button>
         )}
-
         <Modal
           title="subdomain"
           visible={isProfileVisible}
@@ -81,8 +100,23 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
           onCancel={profileCancel}
         >
           {domain.value.id}
-          <Approve domain={_domain} />
+          <Approve
+            domain={_domain}
+            outgoingPendingCount={outgoingPendingCount}
+            setOutgoingPendingCount={setOutgoingPendingCount}
+          />
+          <div>
+            Outgoing Approvals:{' '}
+            {outgoingApprovals ? outgoingApprovals.length : 0}
+          </div>
+          <div>
+            {' '}
+            Incoming Approvals:{' '}
+            {incomingApprovals.isJust() ? incomingApprovals.value.length : 0}
+          </div>
+          <div>Pending Outgoing Approvals: {outgoingPendingCount}</div>
         </Modal>
+        test
       </>
     </>
   );

@@ -18,6 +18,7 @@ const Owned: FC = () => {
   return (
     <>
       <div>
+        {console.log('OWNED ', owned)}
         {owned.value.map((control) => {
           return (
             <div key={control.domain}>

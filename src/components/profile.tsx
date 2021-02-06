@@ -42,6 +42,7 @@ const Profile: FC = () => {
           {' '}
           reset notifications
         </button>
+        {console.log('OWNED ', owned)}
         <div>
           {owned.value.map((control) => {
             return (
