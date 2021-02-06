@@ -28,6 +28,7 @@ import SearchTable from './searchTable';
 import SetImage from './forms/set-image';
 import linebutton from './css/img/threelinebutton.png';
 import squarebutton from './css/img/squaregridbutton.png';
+import NFTview from './nft-view';
 
 interface SubdomainsProps {
   domain: string;
@@ -171,6 +172,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
         {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
           <>
             <div>
+              <NFTview domain={domain.value.domain} />
               <Create
                 domainId={domain.value.id}
                 domainContext={domainContext}

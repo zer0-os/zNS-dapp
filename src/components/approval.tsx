@@ -56,6 +56,7 @@ const Approve: React.FC<ApprovalProps> = ({ domainId: _domainId }) => {
         contracts.value.registry
           .approve(_domainId, address)
           .then((txr) => txr.wait(1))
+
           .then(() =>
             Promise.all([
               refetchIncomingApprovals,

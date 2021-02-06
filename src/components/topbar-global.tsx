@@ -8,6 +8,8 @@ import Owned from '../components/owned';
 import { Layout, Menu, Modal } from 'antd';
 import Wallet from '../components/wallet';
 import './css/topbar.scss';
+import Profile from './profile';
+import NFTview from './nft-view';
 
 interface TopbarProps {
   domain: string;
@@ -72,7 +74,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       </div>
       {active && (
         <div className="profile-btn">
-          <Owned />
+          <Profile />
         </div>
       )}
       <button className="connect-btn" onClick={showWallet}>
