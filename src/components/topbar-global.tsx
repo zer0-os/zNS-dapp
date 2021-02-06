@@ -51,6 +51,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const walletCancel = () => {
     setWalletVisible(false);
   };
+
   return (
     <div className="topbarContainer">
       <img

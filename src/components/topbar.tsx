@@ -11,6 +11,7 @@ import './css/topbar.scss';
 import Profile from './profile';
 import downarrow from './css/img/down-arrow.png';
 import nightmoon from './css/img/night-moon-2.png';
+import NFTview from './nft-view';
 
 interface TopbarProps {
   domain: string;
@@ -96,6 +97,13 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
       <Modal visible={isWalletVisible} onOk={walletOk} onCancel={walletCancel}>
         <Wallet />
       </Modal>
+      {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
+        <>
+          <div>
+            <NFTview domain={domain.value.domain} />
+          </div>
+        </>
+      ) : null}
     </div>
   );
 };

@@ -23,7 +23,6 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
-  if (domain.isNothing()) return <p>Loading</p>;
 
   const showSubdomain = () => {
     setSubdomainVisible(true);
@@ -60,6 +59,7 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   const profileCancel = () => {
     setProfileVisible(false);
   };
+  if (domain.isNothing()) return <p>Loading</p>;
 
   return (
     <>
