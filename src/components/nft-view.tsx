@@ -8,7 +8,6 @@ import { Modal, Button } from 'antd';
 import Create from './create';
 import Transfer from './transferDomains';
 import Approve from './approval';
-import Outgoing from './outGoingApproval';
 
 interface ProfileProps {
   domain: string;
@@ -98,7 +97,7 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
           onCancel={profileCancel}
         >
           {domain.value.controller}
-          <Outgoing domain={_domain} />
+
           <Approve
             domain={_domain}
             outgoingPendingCount={outgoingPendingCount}
