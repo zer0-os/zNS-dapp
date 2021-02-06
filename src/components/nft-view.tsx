@@ -73,15 +73,15 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
             image field
           </button>
         )}
-        test
+
         <Modal
           title="subdomain"
           visible={isProfileVisible}
           onOk={profileOk}
           onCancel={profileCancel}
         >
-          test2
-          <Approve domainContext={domainContext} domainId={domain.value.id} />
+          {domain.value.id}
+          <Approve domain={_domain} />
         </Modal>
       </>
     </>

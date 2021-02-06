@@ -12,8 +12,7 @@ import { hexRegex } from '../lib/validation/validators';
 import { useDomainCache } from '../lib/useDomainCache';
 
 interface ApprovalProps {
-  domainId: string;
-  domainContext: DomainContext;
+  domain: string;
 }
 
 const schema = z.object({
@@ -34,13 +33,13 @@ const schema = z.object({
     ),
 });
 
-const Approve: React.FC<ApprovalProps> = ({ domainId: _domainId }) => {
+const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
   const domainStore = useDomainCache();
   const { refetchIncomingApprovals, useDomain, refetchOwned } = domainStore;
-  const { domain, refetchDomain } = useDomain(_domainId);
+  const { domain, refetchDomain } = useDomain(_domain);
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -54,7 +53,7 @@ const Approve: React.FC<ApprovalProps> = ({ domainId: _domainId }) => {
         account != address
       ) {
         contracts.value.registry
-          .approve(_domainId, address)
+          .approve(domain.value.id, address)
           .then((txr) => txr.wait(1))
 
           .then(() =>
@@ -68,9 +67,13 @@ const Approve: React.FC<ApprovalProps> = ({ domainId: _domainId }) => {
     },
     [contracts, account, domain],
   );
+  console.log('FIRE1');
+  console.log(domain);
 
-  if (domain.isNothing() || domain.value.owner != account) return null;
-
+  console.log(account);
+  if (domain.isNothing() || domain.value.owner !== account)
+    return <p>nothing</p>;
+  console.log('FIRE2');
   return (
     <form onSubmit={handleSubmit(({ address }) => _approve(address))}>
       <div>
