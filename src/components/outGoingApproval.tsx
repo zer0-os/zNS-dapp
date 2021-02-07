@@ -17,6 +17,10 @@ interface OutgoingProps {
   domain: string;
 }
 
+interface IncomingData {
+  approvals: IncomingApprovalsContext;
+}
+
 const Outgoing: React.FC<OutgoingProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
@@ -26,10 +30,18 @@ const Outgoing: React.FC<OutgoingProps> = ({ domain: _domain }) => {
   const { domain, refetchDomain } = useDomain(_domain);
   const { register, handleSubmit, errors } = useForm();
 
-  const outGoingData = useMemo(() => {
-    // if ( domain.isJust() &&
-    // incomingApprovals.isJust())
-  }, [domain]);
+  // change to use memo and depend on weather or not a claim has been approved or not
+  const outGoingData = useCallback(
+    (_domian: any) => {
+      // if (
+      //   account &&
+      //   domain.isJust() &&
+      //   incomingApprovals.isJust()
+      // )
+      // _domain.filter((_domain: any) => domain.value.domain);
+    },
+    [_domain],
+  );
 
   const _revoke = useCallback(
     (address: string) => {

@@ -299,6 +299,7 @@ const useDomainStore = () => {
 
   return {
     useDomain,
+    useIncomingApprovals,
     ...owned,
     ...incomingApprovals,
     pushTransaction,

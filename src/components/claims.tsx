@@ -9,7 +9,7 @@ import { DomainContext } from '../lib/useDomainStore';
 import { hexRegex } from '../lib/validation/validators';
 import { useDomainCache } from '../lib/useDomainCache';
 import Transfer from './transferDomains';
-import { zeroAddress } from '../lib/useDomainStore';
+import { IncomingMessage } from 'http';
 
 interface ClaimProps {
   domain: string;
@@ -20,7 +20,7 @@ const Claim: React.FC<ClaimProps> = ({ domain: _domain }) => {
   const { account } = context;
   const contracts = useZnsContracts();
   const domainStore = useDomainCache();
-  const { useDomain } = domainStore;
+  const { incomingApprovals, useDomain, refetchOwned } = domainStore;
   const { domain, refetchDomain } = useDomain(_domain);
   const { register, handleSubmit, errors } = useForm();
 
@@ -29,8 +29,9 @@ const Claim: React.FC<ClaimProps> = ({ domain: _domain }) => {
       if (
         account &&
         contracts.isJust() &&
+        incomingApprovals.isJust() &&
         domain.isJust() &&
-        domain.value.owner === domain.value.owner
+        account != domain.value.owner
       )
         contracts.value.registry
           .transferFrom(domain.value.owner, account, domain.value.id)
@@ -42,24 +43,7 @@ const Claim: React.FC<ClaimProps> = ({ domain: _domain }) => {
     [contracts, account, domain],
   );
 
-  const _revoke = useCallback(
-    (address: string) => {
-      if (
-        account &&
-        contracts.isJust() &&
-        domain.isJust() &&
-        account != address
-      )
-        contracts.value.registry
-          .approve(zeroAddress, domain.value.id)
-          .then((txr: any) => txr.wait(1))
-          .then(() => {
-            refetchDomain();
-          });
-    },
-    [contracts, account, domain],
-  );
-
+  console.log('THIS', incomingApprovals);
   if (domain.isNothing() || domain.value.owner !== account) return null;
 
   return (
@@ -75,15 +59,7 @@ const Claim: React.FC<ClaimProps> = ({ domain: _domain }) => {
           Claim Domain
         </button>
 
-        <button
-          onSubmit={handleSubmit(({ account }) => _revoke(account))}
-          type="submit"
-          name={'address'}
-          ref={register}
-        >
-          {' '}
-          Revoke
-        </button>
+        {/* <h1>{incomingApprovals}</h1> */}
       </div>
     </>
   );
