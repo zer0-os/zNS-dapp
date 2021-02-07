@@ -24,7 +24,7 @@
       display: flex;
       flex-direction: column;
       padding-left: 18px;
-      //   margin-top: 16px;
+
       .dot {
         height: 8px;
         width: 8px;
@@ -37,10 +37,6 @@
     .icons {
       padding-left: 34px;
       .iconRow {
-        // display: flex;
-        // flex-direction: row;
-        // justify-content: center;
-        // align-items: center;
         margin-bottom: 16px;
 
         .sbimgContainer {
@@ -51,10 +47,6 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          img {
-          }
-          &::before {
-          }
         }
       }
     }
