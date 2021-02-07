@@ -1,5 +1,7 @@
 @import './color-variables.scss';
 
+// TODO: add selected class & selector logic
+
 .sidebarContainer {
   height: 100vh;
   width: 180px;
@@ -16,17 +18,44 @@
 
   .sidebarNav {
     display: flex;
+    flex-direction: row;
     align-items: center;
+    .dotContainer {
+      display: flex;
+      flex-direction: column;
+      padding-left: 18px;
+      //   margin-top: 16px;
+      .dot {
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.19);
+        margin-right: 0;
+        margin-top: 16px;
+      }
+    }
     .icons {
       padding-left: 34px;
-      li {
-        height: 60px;
-        width: 60px;
-        border-radius: 50%;
-        background-color: rgba(42, 46, 50, 0.33);
+      .iconRow {
+        // display: flex;
+        // flex-direction: row;
+        // justify-content: center;
+        // align-items: center;
+        margin-bottom: 16px;
 
-        background-repeat: no-repeat;
-        background-position: center;
+        .sbimgContainer {
+          height: 60px;
+          width: 60px;
+          border-radius: 50%;
+          background-color: rgba(42, 46, 50, 0.33);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          img {
+          }
+          &::before {
+          }
+        }
       }
     }
   }
@@ -42,6 +71,25 @@
       border-radius: 30px;
       background-color: white;
       margin-bottom: 12px;
+    }
+    .buttons {
+      .wallet {
+        border-radius: 10px;
+        background-color: rgba(244, 93, 100, 0.2);
+        border: 2px solid #f45d64;
+        height: 30px;
+        width: 30px;
+      }
+      .darkmode-toggle {
+        background-image: url('./img/night-moon-2.png');
+        background-size: 35px 35px;
+        background-position: center;
+        background-color: #172c3c;
+        border: 2px solid #78d0f8;
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+      }
     }
   }
 }

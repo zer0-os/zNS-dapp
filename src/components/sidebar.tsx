@@ -12,9 +12,9 @@ import Profile from './profile';
 import downarrow from './css/img/down-arrow.png';
 import nightmoon from './css/img/night-moon-2.png';
 import NFTview from './nft-view';
-import galaxycircle from './css/img/galaxy-circle.png';
+import galaxycircle from './css/img/galaxy-small-borderless.svg';
 import feed from './css/img/feed.png';
-import tv from './css/img/tv-button.png';
+import tv from './css/img/tv-button-borderless.png';
 import geopin from './css/img/geo-pin.png';
 import elon from './css/img/elon.jpg';
 
@@ -55,27 +55,38 @@ const Sidebar: FC = () => {
   return (
     <div className="sidebarContainer">
       <div className="sidebarNav">
-        {/* <ul className="dots">
-          <li></li>
-          <li className="selected"></li>
-          <li></li>
-          <li></li>
-        </ul> */}
-        <ul className="icons">
-          <li>
-            <img src={tv} alt="" />
-          </li>
-          <li>
-            <img src={feed} alt="" />
-          </li>
-          <li>
-            {' '}
-            <img src={geopin} alt="" />
-          </li>
-          <li>
-            <img src={galaxycircle} alt="" />
-          </li>
-        </ul>
+        <div className="dotContainer">
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
+          <div className="dot"></div>
+        </div>
+        <div className="icons">
+          <div className="iconRow">
+            <div className="sbimgContainer">
+              {' '}
+              <img src={tv} alt="" />
+            </div>
+          </div>
+          <div className="iconRow">
+            <div className="sbimgContainer">
+              {' '}
+              <img src={feed} alt="" />
+            </div>
+          </div>
+          <div className="iconRow">
+            <div className="sbimgContainer">
+              {' '}
+              <img src={geopin} alt="" />
+            </div>
+          </div>
+          <div className="iconRow">
+            <div className="sbimgContainer">
+              {' '}
+              <img src={galaxycircle} alt="" />
+            </div>
+          </div>
+        </div>
       </div>
       <div className="profile">
         <img src={elon} alt="" className="profilepic" />
