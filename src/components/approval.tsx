@@ -63,10 +63,10 @@ const Approve: React.FC<ApprovalProps> = ({
           .then((txr) => {
             alert('PENDING TX');
             setOutgoingPendingCount(outgoingPendingCount++);
-            return txr.wait(1);
+            return txr.wait(2);
           })
           .then((txh) => {
-            if (txh.status === 1) {
+            if (txh.status === 2) {
               alert('TX APPROVED');
               setOutgoingPendingCount(outgoingPendingCount--);
             } else {

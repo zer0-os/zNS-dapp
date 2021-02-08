@@ -10,18 +10,15 @@ import Transfer from './transferDomains';
 import Approve from './approval';
 import { Link } from 'react-router-dom';
 import Claim from './claims';
+import Outgoing from './outGoingApproval';
 
-interface ProfileProps {
-  domain: string;
-}
-
-const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
+const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
   const [isOwnedVisible, setOwnedVisible] = useState(false);
   const [count, setCount] = useState(0);
   const contracts = useZnsContracts();
   const { useDomain, owned, incomingApprovals } = useDomainStore();
-  const { domain, refetchDomain } = useDomain(_domain);
+
   const { library, account, active, chainId } = context;
 
   const outgoingApprovals = owned.isJust()
@@ -29,6 +26,8 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
         return control.approval.isJust();
       })
     : null;
+
+  // console.log('CLAIMS', <Claim domain={_domain} />);
 
   console.log(outgoingApprovals);
   console.log(outgoingApprovals?.length, 'MANYAPPROVALS');
@@ -75,7 +74,7 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
         <div>
           Outgoing Approvals: {outgoingApprovals ? outgoingApprovals.length : 0}
         </div>
-
+        <Outgoing />
         <div>
           {' '}
           Incoming Approvals:{' '}
@@ -84,7 +83,7 @@ const Profile: FC<ProfileProps> = ({ domain: _domain }) => {
         <div>Pending Outgoing Approvals: {outgoingPendingCount}</div>
 
         <div>
-          <Claim domain={_domain} />
+          <Claim />
         </div>
       </Modal>
     </>

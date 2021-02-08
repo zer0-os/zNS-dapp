@@ -11,69 +11,44 @@ import { DomainContext, IncomingApprovalsContext } from '../lib/useDomainStore';
 import { hexRegex } from '../lib/validation/validators';
 import { useDomainCache } from '../lib/useDomainCache';
 import { zeroAddress } from '../lib/useDomainStore';
+import { Domain } from '../lib/useDomainStore';
 import Approve from './approval';
+import { domain } from 'process';
 
-interface OutgoingProps {
-  domain: string;
-}
-
-interface IncomingData {
-  approvals: IncomingApprovalsContext;
-}
-
-const Outgoing: React.FC<OutgoingProps> = ({ domain: _domain }) => {
+const Outgoing: React.FC = () => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
   const domainStore = useDomainCache();
-  const { incomingApprovals, useDomain, refetchOwned } = domainStore;
-  const { domain, refetchDomain } = useDomain(_domain);
-  const { register, handleSubmit, errors } = useForm();
+  const { owned, refetchOwned } = domainStore;
 
   // change to use memo and depend on weather or not a claim has been approved or not
-  const outGoingData = useCallback(
-    (_domian: any) => {
-      // if (
-      //   account &&
-      //   domain.isJust() &&
-      //   incomingApprovals.isJust()
-      // )
-      // _domain.filter((_domain: any) => domain.value.domain);
-    },
-    [_domain],
+  const outgoingData = useMemo(
+    () =>
+      owned.isNothing() ? [] : owned.value.filter((d) => d.approval.isJust()),
+    [owned],
   );
 
   const _revoke = useCallback(
-    (address: string) => {
-      if (
-        account &&
-        contracts.isJust() &&
-        domain.isJust() &&
-        account != address
-      )
+    (domain: Domain) => {
+      if (account && contracts.isJust())
         contracts.value.registry
-          .approve(zeroAddress, domain.value.id)
-          .then((txr: any) => txr.wait(1))
+          .approve(zeroAddress, domain.id)
+          .then((txr: any) => txr.wait(2))
           .then(() => {
-            refetchDomain();
+            refetchOwned();
           });
     },
-    [contracts, account, domain],
+    [contracts, account, refetchOwned],
   );
-  if (domain.isNothing()) return null;
+  if (owned.isNothing()) return null;
 
   return (
     <>
-      <div>
-        <button
-          onSubmit={handleSubmit(({ account }) => _revoke(account))}
-          type="submit"
-          name={'address'}
-          ref={register}
-        >
-          {' '}
-          Revoke
-        </button>
+      <div className="outgoing">
+        {owned.value.map((domain) => (
+          <div key={domain.domain}>{domain.domain}</div>
+        ))}
       </div>
     </>
   );

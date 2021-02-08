@@ -5,64 +5,51 @@ import { getAddress } from '@ethersproject/address';
 import { useZnsContracts } from '../lib/contracts';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
-import { DomainContext } from '../lib/useDomainStore';
+import { Domain } from '../lib/useDomainStore';
 import { hexRegex } from '../lib/validation/validators';
 import { useDomainCache } from '../lib/useDomainCache';
 import Transfer from './transferDomains';
-import { IncomingMessage } from 'http';
 
-interface ClaimProps {
-  domain: string;
-}
-
-const Claim: React.FC<ClaimProps> = ({ domain: _domain }) => {
+const Claims: React.FC = () => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
   const domainStore = useDomainCache();
-  const { incomingApprovals, useDomain, refetchOwned } = domainStore;
-  const { domain, refetchDomain } = useDomain(_domain);
-  const { register, handleSubmit, errors } = useForm();
+  const {
+    incomingApprovals,
+    refetchIncomingApprovals,
+    refetchOwned,
+  } = domainStore;
 
   const _claim = useCallback(
-    (address: string) => {
-      if (
-        account &&
-        contracts.isJust() &&
-        incomingApprovals.isJust() &&
-        domain.isJust() &&
-        account != domain.value.owner
-      )
+    (domain: Domain) => {
+      if (account && contracts.isJust())
         contracts.value.registry
-          .transferFrom(domain.value.owner, account, domain.value.id)
-          .then((txr: any) => txr.wait(1))
+          .transferFrom(domain.owner, account, domain.id)
+          .then((txr: any) => txr.wait(2))
           .then(() => {
-            refetchDomain();
+            refetchIncomingApprovals();
+            refetchOwned();
           });
     },
-    [contracts, account, domain],
+    [contracts, account, refetchOwned, refetchIncomingApprovals],
   );
 
-  console.log('THIS', incomingApprovals);
-  if (domain.isNothing() || domain.value.owner !== account) return null;
+  console.log('APPROVAL', incomingApprovals);
 
+  if (incomingApprovals.isNothing()) return null;
   return (
     <>
       <div className="create-button">
-        <button
-          onSubmit={handleSubmit(({ account }) => _claim(account))}
-          type="submit"
-          name={'address'}
-          ref={register}
-        >
-          {' '}
-          Claim Domain
-        </button>
-
-        {/* <h1>{incomingApprovals}</h1> */}
+        {incomingApprovals.value.map((domain) => (
+          <button onClick={() => _claim(domain)} key={domain.domain}>
+            {' '}
+            Claim Domain
+          </button>
+        ))}
       </div>
     </>
   );
 };
 
-export default Claim;
+export default Claims;
