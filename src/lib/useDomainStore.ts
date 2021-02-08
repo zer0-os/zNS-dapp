@@ -114,8 +114,12 @@ const approvalQuery = gql`
 `;
 
 const childTimestampQuery = gql`
-  query ChildrenDomains($parent: $Bytes!) {
-    domains(where: { owner: $owner }, orderBy: timeCreated, orderDirection: desc) {
+  query ChildrenDomains($parent: Bytes!) {
+    domains(
+      where: { owner: $owner }
+      orderBy: timeCreated
+      orderDirection: desc
+    ) {
       id
       domain
       approval
@@ -127,7 +131,7 @@ const childTimestampQuery = gql`
       resolver
     }
   }
-  `;
+`;
 
 type QueryArgs = Partial<Record<string, any>> | undefined;
 

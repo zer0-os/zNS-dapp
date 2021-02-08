@@ -41,11 +41,9 @@ enum ConnectorNames {
   Ledger = 'Ledger',
   Trezor = 'Trezor',
   Frame = 'Frame',
-  Authereum = 'Authereum',
+
   Fortmatic = 'Fortmatic',
-  Magic = 'Magic',
   Portis = 'Portis',
-  Torus = 'Torus',
 }
 
 const connectorsByName: {
@@ -58,11 +56,8 @@ const connectorsByName: {
   [ConnectorNames.Ledger]: ledger,
   [ConnectorNames.Trezor]: trezor,
   [ConnectorNames.Frame]: frame,
-  [ConnectorNames.Authereum]: authereum,
   [ConnectorNames.Fortmatic]: fortmatic,
-  [ConnectorNames.Magic]: magic,
   [ConnectorNames.Portis]: portis,
-  [ConnectorNames.Torus]: torus,
 };
 
 function getErrorMessage(error: Error) {
@@ -284,7 +279,7 @@ export default function Wallet() {
         )}
 
         {!!error && <h4>{getErrorMessage(error)}</h4>}
-
+        {/* 
         {!!(library && account) &&
           connector === connectorsByName[ConnectorNames.Network] &&
           chainId && (
@@ -297,7 +292,7 @@ export default function Wallet() {
                 Switch Networks
               </button>
             </div>
-          )}
+          )} */}
         {connector === connectorsByName[ConnectorNames.WalletConnect] && (
           <div className="button-target">
             <button
@@ -309,17 +304,7 @@ export default function Wallet() {
             </button>
           </div>
         )}
-        {connector === connectorsByName[ConnectorNames.WalletLink] && (
-          <div className="button-target">
-            <button
-              onClick={() => {
-                (connector as any).close();
-              }}
-            >
-              Kill WalletLink Session
-            </button>
-          </div>
-        )}
+
         {connector === connectorsByName[ConnectorNames.Fortmatic] && (
           <div className="button-target">
             <button
@@ -331,17 +316,7 @@ export default function Wallet() {
             </button>
           </div>
         )}
-        {connector === connectorsByName[ConnectorNames.Magic] && (
-          <div className="button-target">
-            <button
-              onClick={() => {
-                (connector as any).close();
-              }}
-            >
-              Kill Magic Session
-            </button>
-          </div>
-        )}
+
         {connector === connectorsByName[ConnectorNames.Portis] && (
           <>
             {chainId !== undefined && (
@@ -365,17 +340,6 @@ export default function Wallet() {
               </button>
             </div>
           </>
-        )}
-        {connector === connectorsByName[ConnectorNames.Torus] && (
-          <div className="button-target">
-            <button
-              onClick={() => {
-                (connector as any).close();
-              }}
-            >
-              Kill Torus Session
-            </button>
-          </div>
         )}
 
         <div id="overlay"></div>
