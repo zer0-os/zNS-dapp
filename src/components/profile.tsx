@@ -11,6 +11,7 @@ import Approve from './approval';
 import { Link } from 'react-router-dom';
 import Claim from './claims';
 import Outgoing from './outGoingApproval';
+import '../components/css/profile.scss';
 
 const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
@@ -71,16 +72,26 @@ const Profile: FC = () => {
             );
           })}
         </div>
-        <div>
-          Outgoing Approvals: {outgoingApprovals ? outgoingApprovals.length : 0}
+        <div className="listOut">
+          <div>
+            <h1>
+              Outgoing Approvals:
+              {outgoingApprovals ? outgoingApprovals.length : 0}{' '}
+            </h1>
+          </div>
+
+          <Outgoing />
         </div>
-        <Outgoing />
         <div>
-          {' '}
-          Incoming Approvals:{' '}
-          {incomingApprovals.isJust() ? incomingApprovals.value.length : 0}
+          <h1>
+            Incoming Approvals:{' '}
+            {incomingApprovals.isJust() ? incomingApprovals.value.length : 0}{' '}
+          </h1>
         </div>
-        <div>Pending Outgoing Approvals: {outgoingPendingCount}</div>
+
+        <div>
+          <h1>Pending Outgoing Approvals: {outgoingPendingCount} </h1>
+        </div>
 
         <div>
           <Claim />
