@@ -29,6 +29,7 @@ import SetImage from './forms/set-image';
 import linebutton from './css/img/threelinebutton.png';
 import squarebutton from './css/img/squaregridbutton.png';
 import filter from './css/img/filter.svg';
+import Search from 'antd/lib/input/Search';
 
 interface DomainsGlobalProps {
   domain: string;

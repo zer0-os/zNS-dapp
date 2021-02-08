@@ -88,7 +88,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
             marketcap: 'N/A',
             last7days: '',
             trade: '',
-            timestamp: domain.value.timeCreated,
+            timestamp: '',
           })),
     [domain],
   );
