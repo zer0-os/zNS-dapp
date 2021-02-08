@@ -10,6 +10,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: #641f29;
   color: black;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 code {

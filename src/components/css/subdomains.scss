@@ -225,7 +225,7 @@ table {
   tbody {
     // all rows
     tr {
-      height: 127px !important;
+      height: 100px !important;
       // every second row
       &:nth-child(2n) {
         &:hover td {
@@ -248,11 +248,11 @@ table {
       &:last-child td {
         // bottom right cell
         &:last-child {
-          border-radius: 0px 0px 15px 0px;
+          // border-radius: 0px 0px 15px 0px;
         }
         // bottom left cell
         &:first-child {
-          border-radius: 0px 0px 0px 15px;
+          // border-radius: 0px 0px 0px 15px;
         }
       }
       // all columns local
