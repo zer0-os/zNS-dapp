@@ -12,20 +12,21 @@ const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
   });
 
   return (
-    <span>
-      <span>
-        Search:{' '}
+    <div className='search-bar-table-container'>
+      <div className="search-bar-table">
         <input
+          className="search-bar-input"
           type="text"
           value={value || ''}
+          placeholder="Search"
           onChange={(e) => {
             setValue(e.target.value);
             onChange(e.target.value);
           }}
-          placeholder="search"
         />
-      </span>
-    </span>
+        <button className="search-bar-button"></button>
+      </div>
+    </div>
   );
 };
 

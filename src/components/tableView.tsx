@@ -101,6 +101,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
         : domain.value.children.sort((d) => domain.value.timeCreated),
     [domain],
   );
+  console.log(domain, 'DOMAAINBEACH');
 
   console.log('FILTER', timeFilter);
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
