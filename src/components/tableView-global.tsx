@@ -141,7 +141,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain }) => {
     },
     useFilters,
     useGlobalFilter,
-    useFlexLayout,
+    // useFlexLayout,
   );
 
   const options = {

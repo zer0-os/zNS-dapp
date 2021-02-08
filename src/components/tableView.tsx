@@ -164,7 +164,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     },
     useFilters,
     useGlobalFilter,
-    useFlexLayout,
+    // useFlexLayout,
   );
 
   const handleRowClick = (row: any) => {
