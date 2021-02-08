@@ -11,14 +11,17 @@ import Approve from './approval';
 import { Link } from 'react-router-dom';
 import Claim from './claims';
 import Outgoing from './outGoingApproval';
+
 import '../components/css/profile.scss';
+import { domain } from 'process';
 
 const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
   const [isOwnedVisible, setOwnedVisible] = useState(false);
   const [count, setCount] = useState(0);
+
   const contracts = useZnsContracts();
-  const { useDomain, owned, incomingApprovals } = useDomainStore();
+  const { owned, incomingApprovals } = useDomainStore();
 
   const { library, account, active, chainId } = context;
 

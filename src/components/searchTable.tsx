@@ -24,7 +24,6 @@ const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
           }}
           placeholder="search"
         />
-        note: moving search to topbar
       </span>
     </span>
   );

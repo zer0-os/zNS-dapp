@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo, useEffect } from 'react';
+import React, { FC, useState, useMemo, useEffect, Children } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -88,10 +88,21 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
             marketcap: 'N/A',
             last7days: '',
             trade: '',
-            timestamp: key + 1,
+            timestamp: domain.value.timeCreated,
           })),
     [domain],
   );
+
+  // few tweaks
+  const timeFilter = useMemo(
+    () =>
+      domain.isNothing()
+        ? []
+        : domain.value.children.sort((d) => domain.value.timeCreated),
+    [domain],
+  );
+
+  console.log('FILTER', timeFilter);
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
 
   const columns = useMemo<Column<Data>[]>(
@@ -163,11 +174,11 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     });
   };
   if (domain.isNothing()) return <p>Loading</p>;
-  console.log(domain, 'xxxxxxxxxxxxxxxxx');
+  console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (
     <>
       <SearchTable setFilter={setGlobalFilter} filter={null} />
-      <NewDrops setFilter={setGlobalFilter} filter={null} />
+      <NewDrops setFilter={setGlobalFilter} filter={domain.value.timeCreated} />
       <div>
         <div className="tableContainer">
           <table {...getTableProps()} className="subdomainsTable">

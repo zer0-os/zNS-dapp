@@ -1,3 +1,4 @@
+import { domain } from 'process';
 import React, { FC, useState } from 'react';
 import { useAsyncDebounce } from 'react-table';
 interface SearchTableProps {
@@ -12,6 +13,7 @@ const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
   });
   const handleClick = (e: any) => {
     e.preventDefault();
+
     console.log('doge');
     console.log();
     setFilter({ id: '9' });
@@ -20,7 +22,7 @@ const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
   return (
     <span>
       <span>
-        New Drops: <button onClick={(e) => handleClick(e)}>push me!</button>
+        <button> New Drops</button>)
       </span>
     </span>
   );
