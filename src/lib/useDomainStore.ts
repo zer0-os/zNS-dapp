@@ -179,6 +179,7 @@ function useDomain(domain: string) {
           : Maybe.nothing(),
         owner: getAddress(dataDomain.domain.owner),
         parent: dataDomain.domain.parent,
+
         resolver: dataDomain.domain.resolver,
         image: dataDomain.domain.image,
         children,

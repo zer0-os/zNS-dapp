@@ -34,13 +34,13 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import './css/wallet.scss';
 
 enum ConnectorNames {
-  Injected = 'Injected',
-  Network = 'Network',
+  MetaMask = 'MetaMask',
+  // Network = 'Network',
   WalletConnect = 'WalletConnect',
   WalletLink = 'WalletLink',
-  Ledger = 'Ledger',
-  Trezor = 'Trezor',
-  Frame = 'Frame',
+  // Ledger = 'Ledger',
+  // Trezor = 'Trezor',
+  // Frame = 'Frame',
 
   Fortmatic = 'Fortmatic',
   Portis = 'Portis',
@@ -49,13 +49,13 @@ enum ConnectorNames {
 const connectorsByName: {
   [connectorName in ConnectorNames]: AbstractConnector;
 } = {
-  [ConnectorNames.Injected]: injected,
-  [ConnectorNames.Network]: network,
+  [ConnectorNames.MetaMask]: injected,
+  // [ConnectorNames.Network]: network,
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.WalletLink]: walletlink,
-  [ConnectorNames.Ledger]: ledger,
-  [ConnectorNames.Trezor]: trezor,
-  [ConnectorNames.Frame]: frame,
+  // [ConnectorNames.Ledger]: ledger,
+  // [ConnectorNames.Trezor]: trezor,
+  // [ConnectorNames.Frame]: frame,
   [ConnectorNames.Fortmatic]: fortmatic,
   [ConnectorNames.Portis]: portis,
 };
