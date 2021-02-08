@@ -20,6 +20,7 @@ import {
   useGlobalFilter,
   useAsyncDebounce,
   useFilters,
+  useFlexLayout,
 } from 'react-table';
 import { string } from 'zod';
 import Profile from './nft-view';
@@ -27,6 +28,7 @@ import Approve from './approval';
 import TableImage from './table-image';
 import SearchTable from './searchTable';
 import marketimg from './css/img/chart.svg';
+import { FixedSizeList } from 'react-window';
 import { table } from 'console';
 import '../components/css/subdomains.scss';
 
@@ -137,6 +139,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     },
     useFilters,
     useGlobalFilter,
+    useFlexLayout,
   );
 
   const options = {
@@ -197,6 +200,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
             {/* Apply the table body props */}
             <tbody {...getTableBodyProps()}>
               {console.log('ROWS', rows)}
+
               {
                 // Loop over the table rows
                 rows.map((row) => {
