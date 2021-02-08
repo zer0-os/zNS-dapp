@@ -21,7 +21,7 @@ $page-margin: 180px;
 .domainImage {
   max-height: 100px !important;
   max-width: 350px !important;
-  border: 5px $light-red solid;
+  // border: 5px $light-red solid;
 }
 
 .metricsBar {
@@ -231,7 +231,7 @@ table {
   border-collapse: inherit;
   border-spacing: 0px;
   width: 100%;
-  height: 30vh;
+  // height: 30vh;
   margin-top: 25px;
   // subdomains header
   .subdomainsHeaderGroupLocal,
