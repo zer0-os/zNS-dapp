@@ -27,6 +27,7 @@ import Profile from './nft-view';
 import Approve from './approval';
 import TableImage from './table-image';
 import SearchTable from './searchTable';
+import NewDrops from './newDrops';
 import marketimg from './css/img/chart.svg';
 import { FixedSizeList } from 'react-window';
 import { table } from 'console';
@@ -51,6 +52,7 @@ interface Data {
   marketcap: string;
   last7days: string;
   trade: string;
+  timestamp: any;
 }
 
 interface TProps {
@@ -68,6 +70,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+  console.log('DOMAINTABLE!', domain);
   const history = useHistory();
 
   const dataInput: Data[] = useMemo(
@@ -85,6 +88,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
             marketcap: 'N/A',
             last7days: '',
             trade: '',
+            timestamp: key + 1,
           })),
     [domain],
   );
@@ -111,6 +115,12 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
         Cell: (props) => <img src={marketimg} alt="" />,
       },
       { Header: 'Trade', accessor: 'trade' },
+      {
+        Header: '',
+        accessor: 'timestamp',
+        width: '0px',
+        Cell: () => <div style={{ display: 'none' }}></div>,
+      },
     ],
     [],
   );
@@ -136,21 +146,14 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     {
       columns,
       data,
+      // initialState: {
+      //   hiddenColumns: ['timestamp'],
+      // },
     },
     useFilters,
     useGlobalFilter,
     useFlexLayout,
   );
-
-  const options = {
-    onRowClick: (rowData: any) =>
-      history.push({
-        pathname: rowData[0],
-      }),
-    filter: false,
-    selectableRowsHideCheckboxes: true,
-    sort: false,
-  };
 
   const handleRowClick = (row: any) => {
     console.log('fire');
@@ -164,6 +167,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
   return (
     <>
       <SearchTable setFilter={setGlobalFilter} filter={null} />
+      <NewDrops setFilter={setGlobalFilter} filter={null} />
       <div>
         <div className="tableContainer">
           <table {...getTableProps()} className="subdomainsTable">

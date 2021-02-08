@@ -113,6 +113,22 @@ const approvalQuery = gql`
   }
 `;
 
+const childTimestampQuery = gql`
+  query ChildrenDomains($parent: $Bytes!) {
+    domains(where: { owner: $owner }, orderBy: timeCreated, orderDirection: desc) {
+      id
+      domain
+      approval
+      parent
+      owner
+      controller
+      image
+      timeCreated
+      resolver
+    }
+  }
+  `;
+
 type QueryArgs = Partial<Record<string, any>> | undefined;
 
 type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
