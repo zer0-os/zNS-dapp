@@ -20,6 +20,7 @@ import {
   useGlobalFilter,
   useAsyncDebounce,
   useFilters,
+  useFlexLayout,
 } from 'react-table';
 import { string } from 'zod';
 import Profile from './nft-view';
@@ -140,6 +141,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain }) => {
     },
     useFilters,
     useGlobalFilter,
+    useFlexLayout,
   );
 
   const options = {
