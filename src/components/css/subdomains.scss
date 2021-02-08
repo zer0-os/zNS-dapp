@@ -190,7 +190,7 @@ table {
     color: $dark-grey;
     text-decoration: none;
     tr {
-      // height: 26px;
+      height: 26px;
     }
     tr th:first-child {
       // border-top-right-radius: 10%;
@@ -225,7 +225,7 @@ table {
   tbody {
     // all rows
     tr {
-      // height: 127px !important;
+      height: 127px !important;
       // every second row
       &:nth-child(2n) {
         &:hover td {
