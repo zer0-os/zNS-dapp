@@ -8,6 +8,8 @@ import { Modal, Button } from 'antd';
 import Create from './create';
 import Transfer from './transferDomains';
 import Approve from './approval';
+import { Link, useLocation } from 'react-router-dom';
+import _ from 'lodash';
 
 interface ProfileProps {
   domain: string;
@@ -23,20 +25,22 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+  const location = useLocation();
+
+  const routes = _.transform(
+    location.pathname
+      .substr(1)
+      .split('.')
+      .filter((s) => s !== ''),
+    (acc: [string, string][], val, i) => {
+      let next = 0 < i ? acc[i - 1][1] + '.' + val : val;
+      acc.push([val, next]);
+    },
+  );
 
   const { owned, incomingApprovals } = useDomainStore();
 
-  // const outgoingApprovals = owned.isJust()
-  //   ? owned.value.filter((control) => {
-  //       return control.approval.isJust();
-  //     })
-  //   : null;
-
   const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
-
-  if (domain.isNothing()) return <p>Loading</p>;
-
-  //
 
   const showSubdomain = () => {
     setSubdomainVisible(true);
@@ -77,7 +81,7 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   //
 
   //
-
+  if (domain.isNothing()) return <p>Loading</p>;
   return (
     <>
       <>
@@ -103,6 +107,22 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
             outgoingPendingCount={outgoingPendingCount}
             setOutgoingPendingCount={setOutgoingPendingCount}
           />
+
+          <div className="route-nav">
+            <div className="route-nav-link">
+              <Link className="route-nav-text" to={'/'}>
+                0::/
+              </Link>
+            </div>
+            {routes.map(([key, path], i) => (
+              <div className="route-nav-link">
+                <Link className="route-nav-text-sub" to={path}>
+                  {key}
+                  {i < routes.length - 1 && '.'}
+                </Link>
+              </div>
+            ))}
+          </div>
         </Modal>
         test
       </>

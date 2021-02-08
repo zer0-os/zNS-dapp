@@ -179,7 +179,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
   return (
     <>
       <SearchTable setFilter={setGlobalFilter} filter={null} />
-      <NewDrops setFilter={setGlobalFilter} filter={domain.value.timeCreated} />
+
       <div>
         <div className="tableContainer">
           <table {...getTableProps()} className="subdomainsTable">

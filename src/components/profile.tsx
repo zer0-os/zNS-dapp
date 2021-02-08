@@ -93,10 +93,6 @@ const Profile: FC = () => {
         </div>
 
         <div>
-          <h1>Pending Outgoing Approvals: {outgoingPendingCount} </h1>
-        </div>
-
-        <div>
           <Claim />
         </div>
       </Modal>
