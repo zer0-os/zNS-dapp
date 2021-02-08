@@ -9,7 +9,7 @@ const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return null;
 
   return (
     <>

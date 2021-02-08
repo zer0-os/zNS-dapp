@@ -10,7 +10,7 @@ import Transfer from './transferDomains';
 import Approve from './approval';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
-
+import '../components/css/subdomains.scss';
 interface ProfileProps {
   domain: string;
 }
