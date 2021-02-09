@@ -51,7 +51,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const walletCancel = () => {
     setWalletVisible(false);
   };
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return null;
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">

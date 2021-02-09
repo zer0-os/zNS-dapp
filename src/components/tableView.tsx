@@ -174,7 +174,7 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
       pathname: row.values.name,
     });
   };
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return null;
   console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (
     <>

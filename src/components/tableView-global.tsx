@@ -161,7 +161,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain }) => {
       pathname: row.values.network,
     });
   };
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return null;
   console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
     <>
