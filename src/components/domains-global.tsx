@@ -158,7 +158,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
               <div className="sdbsrItem">
                 <img src={squarebutton} alt="" />
               </div>
-              <div>
+              <div style={{ marginBottom: '13px' }}>
                 <img src={filter} alt="" />
                 <span>Filter By</span>
               </div>
