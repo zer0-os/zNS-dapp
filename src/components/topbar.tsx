@@ -12,6 +12,7 @@ import Profile from './profile';
 import downarrow from './css/img/down-arrow.png';
 import nightmoon from './css/img/night-moon-2.png';
 import NFTview from './nft-view';
+import Create from './create';
 
 interface TopbarProps {
   domain: string;
@@ -55,11 +56,13 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
-        <img
-          className="topbarLogo"
-          src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-          alt=""
-        />
+        <div className="topbarLogoContainer">
+          <img
+            className="topbarLogo"
+            src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+            alt=""
+          />
+        </div>
         <div className="route-nav">
           <div className="route-nav-link">
             <Link className="route-nav-text" to={'/'}>

@@ -75,10 +75,6 @@
       background-size: 18px 18px;
       background-repeat: no-repeat;
       cursor: pointer;
-      transition: 0.6s;
-      &:hover {
-        background-color: lighten($middle-red, 10%);
-      }
     }
   }
 
@@ -99,11 +95,6 @@
       overflow: hidden;
       padding-right: 10px;
       color: lightgray !important;
-      transition: 0.6s;
-      cursor: pointer;
-      &:hover {
-        color: white !important;
-      }
     }
 
     .create-network {
@@ -120,13 +111,6 @@
       border-width: 2px 0;
       height: 47px;
       margin-left: 29px;
-      cursor: pointer;
-      transition: 0.6s;
-      &:hover {
-        // background-color: rgba(0, 0, 0, 0.3);
-        // border-color: rgba(224, 93, 100, 0.38);
-        box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-      }
       &:nth-child(1) {
         padding: none;
         margin: none;
@@ -151,6 +135,6 @@
     padding-right: 10px;
     background: transparent;
     border: none;
-    color: lightgray;
+    color: lightgray !important;
   }
 }
