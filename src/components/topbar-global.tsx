@@ -63,14 +63,14 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           )}
           alt=""
         />
-        <div className="route-nav">
-          <div className="route-nav-link">
-            <Link className="route-nav-text" to={'/'}>
-              0::/
-            </Link>
-          </div>
-          {/* not needed: topbar-global is only ROOT */}
-          {/* {routes.map(([key, path], i) => (
+
+        <div className="route-nav-link">
+          <Link className="route-nav-text" to={'/'}>
+            0::/
+          </Link>
+        </div>
+        {/* not needed: topbar-global is only ROOT */}
+        {/* {routes.map(([key, path], i) => (
           <div className="route-nav-link">
             <Link to={path}>
               {key}
@@ -78,7 +78,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             </Link>
           </div>
         ))} */}
-        </div>
       </div>
       <div className="search-bar">
         <input className="search-bar-input" type="text" placeholder="Search" />
