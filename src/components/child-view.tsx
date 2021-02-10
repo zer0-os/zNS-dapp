@@ -153,10 +153,10 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             </div>
             <div className="subdomainsButtonSortRight">
               {' '}
-              <div className="sdbsrItem">
+              <div className="sdbsrItem tableNavButton tnb2">
                 <img src={linebutton} alt="" />
               </div>
-              <div className="sdbsrItem">
+              <div className="sdbsrItem tableNavButton tnb1">
                 <img src={squarebutton} alt="" />
               </div>
               <div className="sdbsrItem sdbsrSort">
