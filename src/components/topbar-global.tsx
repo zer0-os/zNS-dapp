@@ -7,7 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Owned from '../components/owned';
 import { Layout, Menu, Modal } from 'antd';
 import Wallet from '../components/wallet';
-import './css/topbar.scss';
+import './css/topbar-global.scss';
 import downarrow from './css/img/down-arrow.png';
 import nightmoon from './css/img/night-moon-2.png';
 import Profile from './profile';
