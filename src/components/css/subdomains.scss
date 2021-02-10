@@ -182,6 +182,7 @@ $page-margin: 180px;
         height: 36px;
         background: lighten($dark-red, 10%);
         text-align: center;
+        transition: 0.6s;
         cursor: pointer;
         &:hover {
           background: lighten($dark-red, 20%);
@@ -217,6 +218,7 @@ $page-margin: 180px;
       .tableNavButton {
         // border: 1px solid blue;
         // background: yellow;
+        transition: 0.6s;
         &.tnb1 {
           margin-right: 7px;
           &:hover {
@@ -247,6 +249,7 @@ $page-margin: 180px;
         justify-content: space-evenly;
         align-items: center;
         color: lightgrey;
+        transition: 0.6s;
         &:hover {
           background: lighten($dark-red, 20%);
           color: white;
@@ -295,10 +298,10 @@ table {
     }
     tr th:first-child {
       // border-top-right-radius: 10%;
-      border-radius: 50%;
+      // border-radius: 50%;
       // border-collapse: inherit;
       // border-spacing: 0px;
-      border: 1px solid $middle-red;
+      // border: 1px solid $middle-red;
     }
     tr th:last-child {
       border-top-right-radius: 95px;
@@ -329,10 +332,12 @@ table {
       height: 100px !important;
       // every second row
       &:nth-child(2n) {
+        transition: 0.6s;
         &:hover td {
           background: lighten($light-red, 10%) !important;
         }
         td {
+          transition: 0.6s;
           background-color: $middle-red;
         }
       }
@@ -343,6 +348,7 @@ table {
         }
         td {
           background-color: $light-red;
+          transition: 0.6s;
         }
       }
       // bottom  row
