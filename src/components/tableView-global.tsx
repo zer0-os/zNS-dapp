@@ -25,7 +25,7 @@ import {
 import { string } from 'zod';
 import Profile from './nft-view';
 import Approve from './approval';
-import TableImage from './table-image';
+import TableImage from './table-image-global';
 import SearchTable from './searchTable';
 import marketimg from './css/img/chart.svg';
 import { table } from 'console';

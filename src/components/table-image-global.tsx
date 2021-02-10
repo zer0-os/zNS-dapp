@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { useDomainCache } from '../lib/useDomainCache';
 
-interface TableImageProps {
+interface TableImageGlobalProps {
   domain: string;
 }
 
-const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
+const TableImageGlobal: FC<TableImageGlobalProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
@@ -15,9 +15,9 @@ const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
     <>
       {/* TODO: check if there is no image file */}
       {domain.isJust() && (
-        <div className="domainImageContainer">
+        <div className="domainImageGlobalContainer">
           <img
-            className="domainImage"
+            className="domainImageGlobal"
             src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
             alt=""
           />
@@ -27,4 +27,4 @@ const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
     </>
   );
 };
-export default TableImage;
+export default TableImageGlobal;

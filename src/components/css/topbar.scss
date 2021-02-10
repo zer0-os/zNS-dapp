@@ -69,6 +69,10 @@
       background-size: 18px 18px;
       background-repeat: no-repeat;
       cursor: pointer;
+      transition: 0.6s;
+      &:hover {
+        background-color: lighten($middle-red, 10%);
+      }
     }
   }
 
