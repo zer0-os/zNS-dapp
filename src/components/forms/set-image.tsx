@@ -74,7 +74,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     setIsSetImageVisible(true);
   }, [setIsSetImageVisible]);
 
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return null;
 
   return (
     <>

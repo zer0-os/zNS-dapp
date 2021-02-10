@@ -120,7 +120,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     '414350',
     '675b68',
   ];
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return null;
   return (
     <div>
       <div className="metricsBar">
@@ -152,15 +152,19 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
             </div>
             <div className="subdomainsButtonSortRight">
               {' '}
-              <div className="sdbsrItem">
+              <div className="sdbsrItem tableNavButton tnb2">
                 <img src={linebutton} alt="" />
               </div>
-              <div className="sdbsrItem">
+              <div className="sdbsrItem tableNavButton tnb1">
                 <img src={squarebutton} alt="" />
               </div>
-              <div style={{ marginBottom: '13px' }}>
-                <img src={filter} alt="" />
+              <div className="navFilter" style={{ marginBottom: '13px' }}>
+                <span>
+                  {' '}
+                  <img src={filter} alt="" />
+                </span>
                 <span>Filter By</span>
+                <span> </span>
               </div>
             </div>
           </div>

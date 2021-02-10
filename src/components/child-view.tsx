@@ -118,7 +118,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     '414350',
     '675b68',
   ];
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return null;
   return (
     <div>
       <div className="metricsBar">

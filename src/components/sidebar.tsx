@@ -57,7 +57,7 @@ const Sidebar: FC = () => {
       <div className="sidebarNav">
         <div className="dotContainer">
           <div className="dot"></div>
-          <div className="dot"></div>
+          <div className="dot selectedDot"></div>
           <div className="dot"></div>
           <div className="dot"></div>
         </div>

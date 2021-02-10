@@ -81,7 +81,7 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   //
 
   //
-  if (domain.isNothing()) return <p>Loading</p>;
+  if (domain.isNothing()) return null;
   return (
     <>
       <>
