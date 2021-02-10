@@ -20,4 +20,8 @@
   border-radius: 100px;
   transition: 0.6s;
   overflow: hidden;
+  cursor: pointer;
+  &:hover {
+    color: white !important;
+  }
 }
