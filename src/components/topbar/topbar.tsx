@@ -2,17 +2,17 @@ import React, { FC, useState, useMemo, useEffect } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useDomainCache } from '../lib/useDomainCache';
+import { useDomainCache } from '../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
-import Owned from '../components/owned';
+import Owned from './profile/owned';
 import { Layout, Menu, Modal } from 'antd';
-import Wallet from '../components/wallet';
-import './css/topbar.scss';
-import Profile from './profile';
-import downarrow from './css/img/down-arrow.png';
-import nightmoon from './css/img/night-moon-2.png';
-import NFTview from './nft-view';
-import Create from './create';
+import Wallet from './wallet';
+import '../css/topbar.scss';
+import Profile from './profile/profile';
+import downarrow from '../css/img/down-arrow.png';
+import nightmoon from '../css/img/night-moon-2.png';
+import NFTview from '../table/NFT-View/nft-view';
+import Create from '../table/create';
 
 interface TopbarProps {
   domain: string;

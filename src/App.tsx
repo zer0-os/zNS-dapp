@@ -4,18 +4,18 @@ import './App.scss';
 import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import './lib/ipfs';
-import Wallet from './components/wallet';
+import Wallet from './components/topbar/wallet';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import Subdomains from './components/child-view';
-import Owned from './components/owned';
+import Subdomains from './components/table/child-view';
+import Owned from './components/topbar/profile/owned';
 import { domainCacheContext, DomainCacheProvider } from './lib/useDomainCache';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { PoweroffOutlined } from '@ant-design/icons';
 import { Layout, Menu, Modal } from 'antd';
-import Create from './components/create';
-import Topbar from './components/topbar';
-import DomainsGlobal from './components/domains-global';
-import TopbarGlobal from './components/topbar-global';
+import Create from './components/table/create';
+import Topbar from './components/topbar/topbar';
+import DomainsGlobal from './components/table/domains-global';
+import TopbarGlobal from './components/topbar/topbar-global';
 import Sidebar from './components/sidebar';
 
 const client = new ApolloClient({

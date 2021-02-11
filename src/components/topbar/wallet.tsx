@@ -14,7 +14,7 @@ import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from '@web3
 import { Web3Provider } from '@ethersproject/providers';
 import { formatEther } from '@ethersproject/units';
 import _ from 'lodash';
-import { useEagerConnect, useInactiveListener } from '../lib/provider-hooks';
+import { useEagerConnect, useInactiveListener } from '../../lib/provider-hooks';
 import {
   injected,
   network,
@@ -28,10 +28,10 @@ import {
   magic,
   portis,
   torus,
-} from '../lib/connectors';
-import { Spinner } from './spinner';
+} from '../../lib/connectors';
+import { Spinner } from '../spinner';
 import { AbstractConnector } from '@web3-react/abstract-connector';
-import './css/wallet.scss';
+import '../css/wallet.scss';
 
 enum ConnectorNames {
   MetaMask = 'MetaMask',

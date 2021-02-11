@@ -2,13 +2,13 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { getAddress } from '@ethersproject/address';
-import { useZnsContracts } from '../lib/contracts';
+import { useZnsContracts } from '../../../lib/contracts';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
-import { Domain } from '../lib/useDomainStore';
-import { hexRegex } from '../lib/validation/validators';
-import { useDomainCache } from '../lib/useDomainCache';
-import Transfer from './transferDomains';
+import { Domain } from '../../../lib/useDomainStore';
+import { hexRegex } from '../../../lib/validation/validators';
+import { useDomainCache } from '../../../lib/useDomainCache';
+import Transfer from '../../transferDomains';
 
 const Claims: React.FC = () => {
   const context = useWeb3React<Web3Provider>();

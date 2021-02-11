@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { useZnsContracts } from '../lib/contracts';
+import { useZnsContracts } from '../../lib/contracts';
 import * as z from 'zod';
-import { zodResolver } from '../lib/validation/zodResolver';
+import { zodResolver } from '../../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
-import { DomainContext } from '../lib/useDomainStore';
-import { subdomainRegex } from '../lib/validation/validators';
+import { DomainContext } from '../../lib/useDomainStore';
+import { subdomainRegex } from '../../lib/validation/validators';
 import Modal from 'antd/lib/modal/Modal';
 // import { Modal, Button } from 'antd';
 

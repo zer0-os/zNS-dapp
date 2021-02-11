@@ -4,14 +4,14 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { Link, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import { useZnsContracts } from '../lib/contracts';
-import { useDomainCache } from '../lib/useDomainCache';
-import Transfer from './transferDomains';
+import { useZnsContracts } from '../../lib/contracts';
+import { useDomainCache } from '../../lib/useDomainCache';
+import Transfer from '../transferDomains';
 import Create from './create';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Modal, Button } from 'antd';
-import Owned from './owned';
+import Owned from '../topbar/profile/owned';
 import { String } from 'lodash';
 import {
   Column,
@@ -23,13 +23,13 @@ import {
   useFlexLayout,
 } from 'react-table';
 import { string } from 'zod';
-import Profile from './nft-view';
-import Approve from './approval';
-import TableImage from './table-image-global';
+import Profile from './NFT-View/nft-view';
+import Approve from './NFT-View/approval';
+import TableImage from '././table-image-global';
 import SearchTable from './searchTable';
-import marketimg from './css/img/chart.svg';
+import marketimg from '../css/img/chart.svg';
 import { table } from 'console';
-import '../components/css/subdomains.scss';
+import '../../components/css/subdomains.scss';
 
 interface ColumnProps {
   key: number;

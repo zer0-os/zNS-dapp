@@ -7,7 +7,7 @@ import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
 import { useDomainStore } from '../../lib/useDomainStore';
 import { Modal, Button } from 'antd';
-import Create from '../create';
+import Create from '../table/create';
 import { zodResolver } from '../../lib/validation/zodResolver';
 import ipfs from '../../lib/ipfs';
 import assert from 'assert';

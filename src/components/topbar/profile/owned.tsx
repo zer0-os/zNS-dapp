@@ -3,8 +3,11 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Modal, Button } from 'antd';
-import { useZnsContracts } from '../lib/contracts';
-import { domainCacheContext, useDomainCache } from '../lib/useDomainCache';
+import { useZnsContracts } from '../../../lib/contracts';
+import {
+  domainCacheContext,
+  useDomainCache,
+} from '../../../lib/useDomainCache';
 
 const Owned: FC = () => {
   const context = useWeb3React<Web3Provider>();

@@ -2,17 +2,20 @@ import React, { Children, FC, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { getAddress } from '@ethersproject/address';
 import * as z from 'zod';
-import { zodResolver } from '../lib/validation/zodResolver';
+import { zodResolver } from '../../../lib/validation/zodResolver';
 import { ethers, utils, BigNumberish } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { useZnsContracts } from '../lib/contracts';
-import { DomainContext, IncomingApprovalsContext } from '../lib/useDomainStore';
-import { hexRegex } from '../lib/validation/validators';
-import { useDomainCache } from '../lib/useDomainCache';
-import { zeroAddress } from '../lib/useDomainStore';
-import { Domain } from '../lib/useDomainStore';
-import Approve from './approval';
+import { useZnsContracts } from '../../../lib/contracts';
+import {
+  DomainContext,
+  IncomingApprovalsContext,
+} from '../../../lib/useDomainStore';
+import { hexRegex } from '../../../lib/validation/validators';
+import { useDomainCache } from '../../../lib/useDomainCache';
+import { zeroAddress } from '../../../lib/useDomainStore';
+import { Domain } from '../../../lib/useDomainStore';
+import Approve from '../../table/NFT-View/approval';
 import { domain } from 'process';
 
 const Outgoing: React.FC = () => {
@@ -22,7 +25,6 @@ const Outgoing: React.FC = () => {
   const domainStore = useDomainCache();
   const { owned, refetchOwned } = domainStore;
 
-  // change to use memo and depend on weather or not a claim has been approved or not
   const outgoingData = useMemo(
     () =>
       owned.isNothing() ? [] : owned.value.filter((d) => d.approval.isJust()),

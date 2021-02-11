@@ -1,18 +1,19 @@
 import React, { FC, useState, useCallback } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useZnsContracts } from '../lib/contracts';
-import { useDomainCache } from '../lib/useDomainCache';
-import { useDomainStore } from '../lib/useDomainStore';
+import { useZnsContracts } from '../../../lib/contracts';
+import { useDomainCache } from '../../../lib/useDomainCache';
+import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Button } from 'antd';
-import Create from './create';
-import Transfer from './transferDomains';
-import Approve from './approval';
+import Create from '../../table/create';
+import Transfer from '../../transferDomains';
+import Approve from '../../table/NFT-View/approval';
 import { Link } from 'react-router-dom';
 import Claim from './claims';
 import Outgoing from './outGoingApproval';
 
-import '../components/css/profile.scss';
+import '../../css/profile.scss';
+
 import { domain } from 'process';
 
 const Profile: FC = () => {

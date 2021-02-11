@@ -2,17 +2,17 @@ import React, { FC, useState, useMemo, useEffect } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useDomainCache } from '../lib/useDomainCache';
+import { useDomainCache } from '../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
-import Owned from '../components/owned';
+import Owned from './profile/owned';
 import { Layout, Menu, Modal } from 'antd';
-import Wallet from '../components/wallet';
-import './css/topbar-global.scss';
-import downarrow from './css/img/down-arrow.png';
-import nightmoon from './css/img/night-moon-2.png';
-import Profile from './profile';
-import NFTview from './nft-view';
-import Discover from './discover-view';
+import Wallet from './wallet';
+import '../css/topbar-global.scss';
+import downarrow from '../css/img/down-arrow.png';
+import nightmoon from '../css/img/night-moon-2.png';
+import Profile from './profile/profile';
+import NFTview from '../table/NFT-View/nft-view';
+import Discover from '../table/discover-view';
 interface TopbarProps {
   domain: string;
 }
@@ -110,7 +110,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         <Wallet />
         <hr />
         <div className="new-ETH">
-          <div> New to Ethereum?</div>{' '}
+          <div className="ETH"> New to Ethereum?</div>{' '}
           <a href="https://ethereum.org/en/wallets/">
             Learn more about wallets
           </a>
