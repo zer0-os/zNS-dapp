@@ -1,0 +1,27 @@
+@import './color-variables.scss';
+
+.gridContainer {
+  background: none;
+  width: 100%;
+  margin-top: 25px;
+  //testing
+  border: 5px black solid;
+  color: yellow;
+  //
+  display: inline-grid;
+  .gridCell {
+    height: 450px;
+    width: 375px;
+    background: blue;
+    .cellTop {
+      height: 75%;
+      width: auto;
+      background: $light-grey;
+    }
+    .cellBottom {
+      height: 25%;
+      width: auto;
+      background: $dark-red;
+    }
+  }
+}

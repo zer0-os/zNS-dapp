@@ -1,13 +1,21 @@
 import React, { FC } from 'react';
+import '../css/grid.scss';
 
 interface GridProps {}
 
 const gridCell = () => {
-  return <div>Grid Data Goes Here</div>;
+  return (
+    <div className="gridCell">
+      <div className="cellTop">top</div>
+      <div className="cellBottom">bottom</div>
+    </div>
+  );
 };
 
+const cells = gridCell();
+
 const Grid: FC<GridProps> = () => {
-  return <div>hello</div>;
+  return <div className="gridContainer">{cells}</div>;
 };
 
 export default Grid;
