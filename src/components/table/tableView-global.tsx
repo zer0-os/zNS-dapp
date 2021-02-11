@@ -31,6 +31,7 @@ import marketimg from '../css/img/chart.svg';
 import { table } from 'console';
 import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
+import Nestedview from './NFT-View/nestedNFT-view';
 
 interface ColumnProps {
   key: number;
@@ -239,7 +240,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
                 <tfoot>
                   <tr>
                     <td>
-                      Footer text displays here when there are no subdomains
+                      <Nestedview domain={_domain} />
                     </td>
                   </tr>
                 </tfoot>
@@ -247,7 +248,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
             </table>
           </div>
         ) : (
-          <Grid />
+          <Grid domain={_domain} />
         )}
 
         <br />

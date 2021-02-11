@@ -33,6 +33,8 @@ import { FixedSizeList } from 'react-window';
 import { table } from 'console';
 import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
+import NFTview from './NFT-View/nft-view';
+import Nestedview from './NFT-View/nestedNFT-view';
 
 interface ColumnProps {
   key: number;
@@ -66,6 +68,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
   const [sortConfig, setSortConfig] = useState();
   const [search, setSearch] = useState('');
   const [filterdData, setFilterdData] = useState([]);
+  const [modalState, setModalState] = useState(true);
   const location = useLocation();
   const contracts = useZnsContracts();
   const { account } = context;
@@ -95,6 +98,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
     [domain],
   );
 
+  console.log(dataInput, 'THIS List');
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
 
   const columns = useMemo<Column<Data>[]>(
@@ -165,6 +169,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
       pathname: row.values.name,
     });
   };
+
   if (domain.isNothing()) return null;
   console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (
@@ -243,7 +248,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
                 <tfoot>
                   <tr>
                     <td>
-                      Footer text displays here when there are no subdomains
+                      <Nestedview domain={_domain} />
                     </td>
                   </tr>
                 </tfoot>
@@ -251,7 +256,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
             </table>
           </div>
         ) : (
-          <Grid />
+          <Grid domain={_domain} />
         )}
 
         <br />

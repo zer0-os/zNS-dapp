@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
 import '../css/grid.scss';
 
-interface GridProps {}
+interface GridProps {
+  domain: string;
+}
 
 const gridCell = () => {
   return (
