@@ -6,11 +6,11 @@ interface GridProps {}
 const gridCell = () => {
   return (
     <div className="gridCell">
-      <div className="cellTop">top</div>
+      <div className="cellTop"></div>
       <div className="cellBottom">
-        <div>NFT Name</div>
-        <div>ticker</div>
-        <div>
+        <div className="cellTextTop">NFT Name</div>
+        <div className="cellTextMiddle">ticker</div>
+        <div className="cellTextBottom">
           <span>Left</span>
           <span>Right</span>
         </div>
