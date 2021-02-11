@@ -19,7 +19,15 @@ const gridCell = () => {
   );
 };
 
-const cells = gridCell();
+const cells: any = [];
+cells.push(gridCell());
+cells.push(gridCell());
+cells.push(gridCell());
+cells.push(gridCell());
+cells.push(gridCell());
+cells.push(gridCell());
+cells.push(gridCell());
+cells.push(gridCell());
 
 const Grid: FC<GridProps> = () => {
   return <div className="gridContainer">{cells}</div>;

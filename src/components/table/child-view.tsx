@@ -154,19 +154,17 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             </div>
             <div className="subdomainsButtonSortRight">
               {' '}
-              <div className="sdbsrItem tableNavButton tnb2">
-                <img
-                  onClick={() => toggleGridView(false)}
-                  src={linebutton}
-                  alt=""
-                />
+              <div
+                onClick={() => toggleGridView(false)}
+                className="sdbsrItem tableNavButton tnb2"
+              >
+                <img src={linebutton} alt="" />
               </div>
-              <div className="sdbsrItem tableNavButton tnb1">
-                <img
-                  onClick={() => toggleGridView(true)}
-                  src={squarebutton}
-                  alt=""
-                />
+              <div
+                onClick={() => toggleGridView(true)}
+                className="sdbsrItem tableNavButton tnb1"
+              >
+                <img src={squarebutton} alt="" />
               </div>
               <div className="sdbsrItem sdbsrSort">
                 <div>Sort</div>
