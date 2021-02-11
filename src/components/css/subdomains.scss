@@ -236,6 +236,7 @@ $page-margin: 180px;
       .tableNavButton {
         // border: 1px solid blue;
         // background: yellow;
+        cursor: pointer;
         transition: 0.6s;
         &.tnb1 {
           margin-right: 7px;

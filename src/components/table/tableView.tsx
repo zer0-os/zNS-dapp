@@ -31,6 +31,7 @@ import NewDrops from './newDrops';
 import marketimg from '../css/img/chart.svg';
 import { FixedSizeList } from 'react-window';
 import { table } from 'console';
+import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
 
 interface ColumnProps {
@@ -57,9 +58,10 @@ interface Data {
 
 interface TProps {
   domain: string;
+  gridView: boolean;
 }
 
-const TableView: FC<TProps> = ({ domain: _domain }) => {
+const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
   const context = useWeb3React<Web3Provider>();
   const [sortConfig, setSortConfig] = useState();
   const [search, setSearch] = useState('');
@@ -170,83 +172,88 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
       <SearchTable setFilter={setGlobalFilter} filter={null} />
 
       <div>
-        <div className="tableContainer">
-          <table {...getTableProps()} className="subdomainsTable">
-            {rows.length === 0 ? null : (
-              <thead className="subdomainsHeaderGroupLocal">
-                {
-                  // Loop over the header rows
-                  headerGroups.map((headerGroup) => (
-                    // Apply the header row props
-                    <tr
-                      className="subdomainsHeaderTR"
-                      {...headerGroup.getHeaderGroupProps()}
-                    >
-                      {
-                        // Loop over the headers in each row
-                        headerGroup.headers.map((column) => (
-                          // Apply the header cell props
-                          <th
-                            className="subdomainsHeaderTH"
-                            {...column.getHeaderProps()}
-                          >
-                            {
-                              // Render the header
-                              column.render('Header')
-                            }
-                          </th>
-                        ))
-                      }
-                    </tr>
-                  ))
-                }
-              </thead>
-            )}
-            {/* Apply the table body props */}
-            <tbody {...getTableBodyProps()}>
-              {console.log('ROWS', rows)}
-
-              {
-                // Loop over the table rows
-                rows.map((row) => {
-                  // Prepare the row for display
-                  prepareRow(row);
-                  return (
-                    // Apply the row props
-                    <tr
-                      onClick={() => handleRowClick(row)}
-                      {...row.getRowProps()}
-                    >
-                      {
-                        // Loop over the rows cells
-                        row.cells.map((cell) => {
-                          // Apply the cell props
-                          return (
-                            <td className="tdLocal" {...cell.getCellProps()}>
+        {!gridView ? (
+          <div className="tableContainer">
+            <table {...getTableProps()} className="subdomainsTable">
+              {rows.length === 0 ? null : (
+                <thead className="subdomainsHeaderGroupLocal">
+                  {
+                    // Loop over the header rows
+                    headerGroups.map((headerGroup) => (
+                      // Apply the header row props
+                      <tr
+                        className="subdomainsHeaderTR"
+                        {...headerGroup.getHeaderGroupProps()}
+                      >
+                        {
+                          // Loop over the headers in each row
+                          headerGroup.headers.map((column) => (
+                            // Apply the header cell props
+                            <th
+                              className="subdomainsHeaderTH"
+                              {...column.getHeaderProps()}
+                            >
                               {
-                                // Render the cell contents
-                                cell.render('Cell')
+                                // Render the header
+                                column.render('Header')
                               }
-                            </td>
-                          );
-                        })
-                      }
-                    </tr>
-                  );
-                })
-              }
-            </tbody>
-            {rows.length !== 0 ? null : (
-              <tfoot>
-                <tr>
-                  <td>
-                    Footer text displays here when there are no subdomains
-                  </td>
-                </tr>
-              </tfoot>
-            )}
-          </table>
-        </div>
+                            </th>
+                          ))
+                        }
+                      </tr>
+                    ))
+                  }
+                </thead>
+              )}
+              {/* Apply the table body props */}
+              <tbody {...getTableBodyProps()}>
+                {console.log('ROWS', rows)}
+
+                {
+                  // Loop over the table rows
+                  rows.map((row) => {
+                    // Prepare the row for display
+                    prepareRow(row);
+                    return (
+                      // Apply the row props
+                      <tr
+                        onClick={() => handleRowClick(row)}
+                        {...row.getRowProps()}
+                      >
+                        {
+                          // Loop over the rows cells
+                          row.cells.map((cell) => {
+                            // Apply the cell props
+                            return (
+                              <td className="tdLocal" {...cell.getCellProps()}>
+                                {
+                                  // Render the cell contents
+                                  cell.render('Cell')
+                                }
+                              </td>
+                            );
+                          })
+                        }
+                      </tr>
+                    );
+                  })
+                }
+              </tbody>
+              {rows.length !== 0 ? null : (
+                <tfoot>
+                  <tr>
+                    <td>
+                      Footer text displays here when there are no subdomains
+                    </td>
+                  </tr>
+                </tfoot>
+              )}
+            </table>
+          </div>
+        ) : (
+          <Grid />
+        )}
+
         <br />
         <br />
         {/* {colors.map((color) => {

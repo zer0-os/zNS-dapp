@@ -1,5 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-export const GRID = () => {
-  return <div></div>;
+interface GridProps {}
+
+const gridCell = () => {
+  return <div>Grid Data Goes Here</div>;
 };
+
+const Grid: FC<GridProps> = () => {
+  return <div>hello</div>;
+};
+
+export default Grid;

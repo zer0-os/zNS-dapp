@@ -57,6 +57,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   const history = useHistory();
   const dataInput: Data[] = [];
+  const [gridView, toggleGridView] = useState(false);
 
   useEffect(() => {
     console.log('ChildView', domain);
@@ -154,10 +155,18 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             <div className="subdomainsButtonSortRight">
               {' '}
               <div className="sdbsrItem tableNavButton tnb2">
-                <img src={linebutton} alt="" />
+                <img
+                  onClick={() => toggleGridView(false)}
+                  src={linebutton}
+                  alt=""
+                />
               </div>
               <div className="sdbsrItem tableNavButton tnb1">
-                <img src={squarebutton} alt="" />
+                <img
+                  onClick={() => toggleGridView(true)}
+                  src={squarebutton}
+                  alt=""
+                />
               </div>
               <div className="sdbsrItem sdbsrSort">
                 <div>Sort</div>
@@ -167,7 +176,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
           </div>
         </div>
 
-        <TableView domain={domain.value.domain} />
+        <TableView domain={domain.value.domain} gridView={gridView} />
 
         {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
           <>
