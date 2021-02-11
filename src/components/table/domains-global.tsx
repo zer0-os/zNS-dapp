@@ -25,7 +25,7 @@ import Profile from './NFT-View/nft-view';
 import Approve from './NFT-View/approval';
 import TableViewGlobal from './tableView-global';
 import SearchTable from './searchTable';
-import SetImage from '../forms/set-image';
+import SetImage from './forms/set-image';
 import linebutton from '../css/img/threelinebutton.png';
 import squarebutton from '../css/img/squaregridbutton.png';
 import filter from '../css/img/filter.svg';
