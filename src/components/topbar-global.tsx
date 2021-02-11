@@ -12,7 +12,7 @@ import downarrow from './css/img/down-arrow.png';
 import nightmoon from './css/img/night-moon-2.png';
 import Profile from './profile';
 import NFTview from './nft-view';
-
+import Discover from './discover-view';
 interface TopbarProps {
   domain: string;
 }
@@ -51,6 +51,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const walletCancel = () => {
     setWalletVisible(false);
   };
+  console.log(Discover, 'DiscoverList');
 
   return (
     <div className="topbarContainer">
@@ -100,8 +101,14 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         <img className="nightmoon" src={nightmoon} alt="" />
       </div>
 
-      <Modal visible={isWalletVisible} onOk={walletOk} onCancel={walletCancel}>
+      <Modal
+        visible={isWalletVisible}
+        onOk={walletOk}
+        onCancel={walletCancel}
+        footer={null}
+      >
         <Wallet />
+        <hr />
         <div> New to Ethereum?</div>{' '}
         <a href="https://ethereum.org/en/wallets/">Learn more about wallets</a>
       </Modal>

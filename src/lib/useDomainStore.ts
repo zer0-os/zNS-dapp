@@ -289,16 +289,6 @@ function useIncomingApprovals(): {
   return { incomingApprovals, refetchIncomingApprovals: refetch! };
 }
 
-function useTimeCreated() {
-  const {
-    error: errorChildren,
-    data: dataChildren,
-    refetch: refetchChildren,
-  } = useQuery<DomainsData>(childTimestampQuery, {
-    variables: { children: Children },
-  });
-}
-
 const useDomainStore = () => {
   const owned = useOwnedDomains();
   const incomingApprovals = useIncomingApprovals();
@@ -330,7 +320,6 @@ const useDomainStore = () => {
 
   return {
     useDomain,
-    useTimeCreated,
     useIncomingApprovals,
     ...owned,
     ...incomingApprovals,
@@ -343,8 +332,6 @@ const useDomainStore = () => {
 export type DomainStoreContext = ReturnType<typeof useDomainStore>;
 
 export type DomainContext = ReturnType<typeof useDomain>;
-
-export type TimeContext = ReturnType<typeof useTimeCreated>;
 
 export type IncomingApprovalsContext = ReturnType<typeof useIncomingApprovals>;
 

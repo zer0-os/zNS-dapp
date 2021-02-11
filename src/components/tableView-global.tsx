@@ -245,20 +245,6 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain }) => {
         </div>
         <br />
         <br />
-        {/* {colors.map((color) => {
-        return (
-          <div
-            style={{
-              background: '#' + color,
-              height: '40px',
-              width: '80%',
-              textAlign: 'right',
-            }}
-          >
-            {color}
-          </div>
-        );
-      })} */}
       </div>
     </>
   );

@@ -93,17 +93,6 @@ const TableView: FC<TProps> = ({ domain: _domain }) => {
     [domain],
   );
 
-  // few tweaks
-  const timeFilter = useMemo(
-    () =>
-      domain.isNothing()
-        ? []
-        : domain.value.children.sort((d) => domain.value.timeCreated),
-    [domain],
-  );
-  console.log(domain, 'DOMAAINBEACH');
-
-  console.log('FILTER', timeFilter);
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
 
   const columns = useMemo<Column<Data>[]>(
