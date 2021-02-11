@@ -12,7 +12,7 @@ import downarrow from '../css/img/down-arrow.png';
 import nightmoon from '../css/img/night-moon-2.png';
 import Profile from './profile/profile';
 import NFTview from '../table/NFT-View/nft-view';
-import Discover from '../table/discover-view';
+
 interface TopbarProps {
   domain: string;
 }
@@ -51,7 +51,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const walletCancel = () => {
     setWalletVisible(false);
   };
-  console.log(Discover, 'DiscoverList');
 
   return (
     <div className="topbarContainer">

@@ -1,9 +1,5 @@
-import React from 'react'
+import React from 'react';
 
-export const grid-view = () => {
-    return (
-        <div>
-            
-        </div>
-    )
-}
+export const GRID = () => {
+  return <div></div>;
+};
