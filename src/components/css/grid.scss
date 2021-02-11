@@ -24,6 +24,10 @@
       background: $dark-red;
       display: flex;
       flex-direction: column;
+      & > div {
+        margin-right: auto;
+        margin-left: auto;
+      }
     }
   }
 }

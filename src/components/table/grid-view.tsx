@@ -11,8 +11,8 @@ const gridCell = () => {
         <div>NFT Name</div>
         <div>ticker</div>
         <div>
-          <div>Left</div>
-          <div>Right</div>
+          <span>Left</span>
+          <span>Right</span>
         </div>
       </div>
     </div>
