@@ -109,8 +109,12 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       >
         <Wallet />
         <hr />
-        <div> New to Ethereum?</div>{' '}
-        <a href="https://ethereum.org/en/wallets/">Learn more about wallets</a>
+        <div className="new-ETH">
+          <div> New to Ethereum?</div>{' '}
+          <a href="https://ethereum.org/en/wallets/">
+            Learn more about wallets
+          </a>
+        </div>
       </Modal>
     </div>
   );
