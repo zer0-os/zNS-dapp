@@ -7,7 +7,14 @@ const gridCell = () => {
   return (
     <div className="gridCell">
       <div className="cellTop">top</div>
-      <div className="cellBottom">bottom</div>
+      <div className="cellBottom">
+        <div>NFT Name</div>
+        <div>ticker</div>
+        <div>
+          <div>Left</div>
+          <div>Right</div>
+        </div>
+      </div>
     </div>
   );
 };

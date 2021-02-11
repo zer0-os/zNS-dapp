@@ -14,14 +14,16 @@
     width: 375px;
     background: blue;
     .cellTop {
-      height: 75%;
+      height: 67%;
       width: auto;
       background: $light-grey;
     }
     .cellBottom {
-      height: 25%;
+      height: 33%;
       width: auto;
       background: $dark-red;
+      display: flex;
+      flex-direction: column;
     }
   }
 }
