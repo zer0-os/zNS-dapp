@@ -1,44 +1,30 @@
-import React, { FC, useMemo, useState } from 'react';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { useZnsContracts } from '../../lib/contracts';
-import { useDomainCache } from '../../lib/useDomainCache';
-import { useDomainStore } from '../../lib/useDomainStore';
-import _ from 'lodash';
-import { domain } from 'process';
+import React, { FC } from 'react';
+import '../css/grid.scss';
 
 interface GridProps {
   domain: string;
 }
 
-const Grid: FC<GridProps> = ({ domain: _domain }) => {
-  const context = useWeb3React<Web3Provider>();
-  const contracts = useZnsContracts();
-  const { account } = context;
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
-
-  //   const GlobalData = useMemo(
-  //     () => (domain.isNothing() ? [] : domain.map((d) => d.children)),
-  //     [domain],
-  //   );
-
-  //   const LocalData = useMemo(
-  //     () => (domain.isNothing() ? [] : _.map((domain.value.children)  => 'div' + domain + 'div'),
-  //     [domain],
-  //   );
-
-  //   console.log('LIST', GlobalData, LocalData);
+const gridCell = () => {
   return (
-    <div className="domainList">
-      {domain.map((domain) => (
-        <div key={domain.domain}>
-          {domain.domain} {domain.children}
+    <div className="gridCell">
+      <div className="cellTop"></div>
+      <div className="cellBottom">
+        <div className="cellTextTop">NFT Name</div>
+        <div className="cellTextMiddle">ticker</div>
+        <div className="cellTextBottom">
+          <span>Left</span>
+          <span>Right</span>
         </div>
-      ))}
+      </div>
     </div>
   );
+};
+
+const cells = gridCell();
+
+const Grid: FC<GridProps> = () => {
+  return <div className="gridContainer">{cells}</div>;
 };
 
 export default Grid;
