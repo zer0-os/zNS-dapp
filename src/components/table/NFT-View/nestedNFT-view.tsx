@@ -18,7 +18,7 @@ interface NestedProps {
 const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
-  const [isProfileVisible, setProfileVisible] = useState(false);
+  const [isProfileVisible, setProfileVisible] = useState(true);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
@@ -94,7 +94,12 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
             image field
           </button>
         )}
-        <Modal title="subdomain" visible={true}>
+        <Modal
+          title="subdomain"
+          visible={isProfileVisible}
+          onOk={profileOk}
+          onCancel={profileCancel}
+        >
           {domain.value.controller}
 
           <Approve
