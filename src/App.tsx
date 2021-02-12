@@ -50,7 +50,12 @@ function App() {
             <Switch>
               <Route path="/:id">
                 {/* defaults to the LOCAL NETWORKS page */}
-                <Topbar domain={location.pathname.substring(1)} />
+                <TopbarGlobal
+                  domain={
+                    // location.pathname.substring(1)
+                    'ROOT'
+                  }
+                />
                 <Subdomains
                   //regex: removes trailing /, then replaces / with .
                   /*
@@ -63,7 +68,12 @@ function App() {
                 />
               </Route>
               <Route path="/">
-                <TopbarGlobal domain={location.pathname.substring(1)} />
+                <TopbarGlobal
+                  domain={
+                    // location.pathname.substring(1)
+                    'ROOT'
+                  }
+                />
 
                 {/* defaults to the GLOBAL NETWORKS page */}
                 {/* <h1>

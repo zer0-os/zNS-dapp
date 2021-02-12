@@ -10,6 +10,7 @@ import Wallet from './wallet';
 import '../css/topbar-global.scss';
 import downarrow from '../css/img/down-arrow.png';
 import nightmoon from '../css/img/night-moon-2.png';
+import elon from '../css/img/elon.jpg';
 import Profile from './profile/profile';
 import NFTview from '../table/NFT-View/nft-view';
 
@@ -66,9 +67,14 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
 
         <div className="route-nav-link">
           <Link className="route-nav-text" to={'/'}>
-            0::/
+            0::
+            {domain.isJust() ? (
+              <span className="route-nav-root">{domain.value.domain}</span>
+            ) : null}
+            /
           </Link>
         </div>
+
         {/* not needed: topbar-global is only ROOT */}
         {/* {routes.map(([key, path], i) => (
           <div className="route-nav-link">
@@ -91,13 +97,16 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         )}
         <button className="connect-btn" onClick={showWallet}>
           {' '}
-          {active ? 'Connected' : 'Connect Wallet'}{' '}
+          {active ? 'Connected' : 'Connect'}{' '}
         </button>
         <button className="create-network">
-          <span>Create Network</span>
+          <span style={{ width: '16px' }}></span>
+          <div>MINT NFT</div>
+          <span style={{ width: '16px' }}></span>
           <img src={downarrow} alt="" />
+          <span style={{ width: '16px' }}></span>
         </button>
-        <img className="nightmoon" src={nightmoon} alt="" />
+        <img src={elon} alt="" className="profilepic" />
       </div>
 
       <Modal

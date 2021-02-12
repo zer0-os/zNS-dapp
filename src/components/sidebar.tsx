@@ -88,13 +88,13 @@ const Sidebar: FC = () => {
           </div>
         </div>
       </div>
-      <div className="profile">
+      {/* <div className="profile">
         <img src={elon} alt="" className="profilepic" />
         <div className="buttons">
           <button className="wallet"></button>
           <button className="darkmode-toggle"></button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
