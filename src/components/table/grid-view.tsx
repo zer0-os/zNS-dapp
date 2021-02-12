@@ -31,7 +31,8 @@ cells.push(gridCell());
 cells.push(gridCell());
 cells.push(gridCell());
 
-const Grid: FC<GridProps> = () => {
+const Grid: FC<GridProps> = (_domain) => {
+  console.log('grid', _domain);
   return <div className="gridContainer">{cells}</div>;
 };
 
