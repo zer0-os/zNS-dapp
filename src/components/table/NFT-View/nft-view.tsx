@@ -10,7 +10,7 @@ import Transfer from '../../transferDomains';
 import Approve from './approval';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
-import '../../css/subdomains.scss';
+import '../../css/nft-view.scss';
 import TableImage from '../table-image';
 interface ProfileProps {
   domain: string;
@@ -92,34 +92,53 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
           </button>
         )}
         <Modal
-          title="subdomain"
+          className="nft-view-modal"
           visible={isProfileVisible}
           onOk={profileOk}
           onCancel={profileCancel}
+          footer={null}
         >
-          {domain.value.controller}
+          <div className="left-container">
+            <div className="nft-img">
+              <TableImage domain={_domain} />
+            </div>
+            <div className="eth-address-d">
+              <div>ETH</div> {domain.value.controller}
+            </div>
 
-          <Approve
+            <div className="route-nav">
+              <div className="route-nav-link">
+                <div>ZNS</div>
+                <Link className="route-nav-text" to={'/'}>
+                  0::/
+                </Link>
+              </div>
+              {routes.map(([key, path], i) => (
+                <div className="route-nav-link">
+                  <Link className="route-nav-text-sub" to={path}>
+                    {key}
+                    {i < routes.length - 1 && '.'}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="right-container">
+            <h1 className="nft-title">TITLE</h1>
+            <div className="creator-title">CREATOR</div>
+            <div className="desc-f">DESCRIPTON FORM</div>
+            <div className="purch-btn">PURCHACE BUTTON</div>
+            <div className="price-time">PRICE 1</div>
+            <div className="price-current">PRICE 2</div>
+          </div>
+          <div className="btm-graph">GRAPH</div>
+
+          {/* <Approve
             domain={_domain}
             outgoingPendingCount={outgoingPendingCount}
             setOutgoingPendingCount={setOutgoingPendingCount}
-          />
-
-          <div className="route-nav">
-            <div className="route-nav-link">
-              <Link className="route-nav-text" to={'/'}>
-                0::/
-              </Link>
-            </div>
-            {routes.map(([key, path], i) => (
-              <div className="route-nav-link">
-                <Link className="route-nav-text-sub" to={path}>
-                  {key}
-                  {i < routes.length - 1 && '.'}
-                </Link>
-              </div>
-            ))}
-          </div>
+          /> */}
         </Modal>
       </>
     </>

@@ -13,6 +13,8 @@ import nightmoon from '../css/img/night-moon-2.png';
 import elon from '../css/img/elon.jpg';
 import Profile from './profile/profile';
 import NFTview from '../table/NFT-View/nft-view';
+import Create from '../table/create';
+import SetImage from '../table/forms/set-image';
 
 interface TopbarProps {
   domain: string;
