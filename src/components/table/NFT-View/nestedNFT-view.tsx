@@ -11,6 +11,7 @@ import Approve from './approval';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import '../../css/subdomains.scss';
+import TableImage from '../table-image';
 interface NestedProps {
   domain: string;
 }
@@ -86,12 +87,8 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
     <>
       <>
         {domain.isJust() && (
-          <button
-            className="btn-sub"
-            style={{ color: 'white' }}
-            onClick={showProfile}
-          >
-            image field
+          <button className="nft-btn" onClick={showProfile}>
+            <TableImage domain={_domain} />
           </button>
         )}
         <Modal
@@ -124,7 +121,6 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
             ))}
           </div>
         </Modal>
-        test
       </>
     </>
   );

@@ -11,6 +11,7 @@ import Approve from './approval';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import '../../css/subdomains.scss';
+import TableImage from '../table-image';
 interface ProfileProps {
   domain: string;
 }
@@ -86,12 +87,8 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
     <>
       <>
         {domain.isJust() && (
-          <button
-            className="btn-sub"
-            style={{ color: 'white' }}
-            onClick={showProfile}
-          >
-            image field
+          <button className="btn-" onClick={showProfile}>
+            <TableImage domain={_domain} />
           </button>
         )}
         <Modal
@@ -124,7 +121,6 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
             ))}
           </div>
         </Modal>
-        test
       </>
     </>
   );
