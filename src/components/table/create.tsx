@@ -83,6 +83,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
         visible={isSubdomainVisible}
         onOk={subdomainOk}
         onCancel={subdomainCancel}
+        footer={null}
       >
         <form onSubmit={handleSubmit(({ child }) => _create(child))}>
           <div className="create-button">

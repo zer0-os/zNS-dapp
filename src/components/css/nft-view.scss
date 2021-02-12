@@ -1,0 +1,66 @@
+.left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: unset;
+  width: 300px;
+  height: 540px;
+  border: 3px solid black;
+  overflow: hidden;
+}
+
+.nft-img {
+  height: 500px;
+  width: 300px;
+  border: 3px solid black;
+}
+
+.eth-address-d {
+  border: 3px solid black;
+  height: 100px;
+}
+
+.route-nav {
+  border: 3px solid black;
+  height: 100px;
+}
+
+.route-nav-link {
+}
+
+.route-nav-text {
+}
+
+.route-nav-text-sub {
+}
+
+.right-container {
+  display: flex;
+  flex-direction: column;
+  align-items: unset;
+  width: 300px;
+  height: 540px;
+  border: 3px solid black;
+  overflow: hidden;
+  margin: 0px 0px 300px 300px;
+}
+
+.nft-title {
+}
+
+.creator-title {
+}
+
+.desc-f {
+}
+
+.purch-btn {
+}
+
+.price-time {
+}
+
+.price-current {
+}
+
+.btm-graph {
+}
