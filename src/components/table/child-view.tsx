@@ -166,10 +166,10 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
               >
                 <img src={squarebutton} alt="" />
               </div>
-              <div className="sdbsrItem sdbsrSort">
+              {/* <div className="sdbsrItem sdbsrSort">
                 <div>Sort</div>
                 <div>Market Cap ▼</div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

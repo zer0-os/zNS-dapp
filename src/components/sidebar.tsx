@@ -55,12 +55,12 @@ const Sidebar: FC = () => {
   return (
     <div className="sidebarContainer">
       <div className="sidebarNav">
-        <div className="dotContainer">
+        {/* <div className="dotContainer">
           <div className="dot"></div>
           <div className="dot selectedDot"></div>
           <div className="dot"></div>
           <div className="dot"></div>
-        </div>
+        </div> */}
         <div className="icons">
           <div className="iconRow">
             <div className="sbimgContainer">

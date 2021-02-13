@@ -12,7 +12,7 @@ const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
   });
 
   return (
-    <div className='search-bar-table-container'>
+    <div className="search-bar-table-container">
       <div className="search-bar-table">
         <input
           className="search-bar-input"

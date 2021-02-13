@@ -165,14 +165,14 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
               >
                 <img src={squarebutton} alt="" />
               </div>
-              <div className="navFilter" style={{ marginBottom: '13px' }}>
+              {/* <div className="navFilter" style={{ marginBottom: '13px' }}>
                 <span>
                   {' '}
                   <img src={filter} alt="" />
                 </span>
                 <span>Filter By</span>
                 <span> </span>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

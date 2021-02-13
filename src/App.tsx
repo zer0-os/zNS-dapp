@@ -44,6 +44,7 @@ function App() {
   return (
     <Router>
       <Sidebar />
+      <div className="sideFadeRight"></div>
       <Route
         render={({ location, match }) => (
           <>

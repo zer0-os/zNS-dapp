@@ -42,12 +42,18 @@
       padding-left: 34px;
       .iconRow {
         margin-bottom: 16px;
-
+        &:nth-child(2) {
+          //placeholder until dynamic switching
+          & > div {
+            box-shadow: $boxShadow !important;
+          }
+        }
         .sbimgContainer {
           height: 60px;
           width: 60px;
           border-radius: 50%;
-          background-color: rgba(42, 46, 50, 0.33);
+          background-color: #1b1b1d;
+          box-shadow: $dropShadow;
           display: flex;
           justify-content: center;
           align-items: center;

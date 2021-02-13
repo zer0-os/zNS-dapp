@@ -138,7 +138,11 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
         width: '0px',
         Cell: () => <div style={{ display: 'none' }}></div>,
       },
-      { Header: 'Trade', accessor: 'trade' },
+      {
+        Header: 'Trade',
+        accessor: 'trade',
+        Cell: () => <div style={{ color: 'red' }}>Trading Data Goes Here</div>,
+      },
     ],
     [],
   );
@@ -184,7 +188,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
   if (domain.isNothing()) return null;
   console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (
-    <>
+    <div className="shiftTableUp">
       <SearchTable setFilter={setGlobalFilter} filter={null} />
 
       <div>
@@ -287,7 +291,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
         );
       })} */}
       </div>
-    </>
+    </div>
   );
 };
 

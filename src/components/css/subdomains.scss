@@ -18,6 +18,10 @@ $page-margin: 180px;
   // font-family: 'JetBrains Mono', monospace;
 }
 
+.shiftTableUp {
+  transform: translateY(-10px);
+}
+
 .domainImageGlobalContainer {
   border-radius: 50%;
   .domainImageGlobal {
@@ -28,13 +32,18 @@ $page-margin: 180px;
 
 .domainImageContainer {
   // border: 5px $light-red solid;
-  // height: 110px;
+  height: 200px;
   // width: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   .domainImage {
-    max-height: 100px !important;
-    max-width: 150px !important;
+    height: 180px !important;
+    width: auto !important;
     border-radius: 15px;
-    // border: 5px rgba(244, 93, 100, 0.68) solid;
+    border: 2px $bright solid;
+    // background-color: $dark;
   }
 }
 
@@ -137,9 +146,10 @@ $page-margin: 180px;
     right: 0;
 
     .search-bar-input {
+      display: none;
       border-color: none;
       border-width: 0px !important;
-      width: 330px;
+      width: 0px;
       height: 49px;
       background-color: rgba(241, 115, 115, 0.06);
       border-radius: 31px;
@@ -164,15 +174,16 @@ $page-margin: 180px;
       border-radius: 31px;
       border-color: none;
       border-width: 0px !important;
-      background-color: $middle-red;
+      background-color: rgba($bright, 0.14);
       background-image: url('./img/search-icon.svg');
       background-position: center;
       background-size: 18px 18px;
       background-repeat: no-repeat;
+      transform: translateY(-44px);
       cursor: pointer;
       transition: 0.6s;
       &:hover {
-        background-color: lighten($middle-red, 10%);
+        background-color: $medium;
       }
     }
   }
@@ -183,7 +194,7 @@ $page-margin: 180px;
   flex-direction: column;
   font-size: 1.3rem;
   margin-bottom: 15px;
-  color: white;
+  color: $grayFont;
   // border: 3px black solid;
   .subdomainsButtonSortContainer {
     display: flex;
@@ -197,20 +208,21 @@ $page-margin: 180px;
       width: 60%;
       justify-content: left;
       .sdbslItemSelected {
-        border: rgba(244, 93, 100, 0.68) 2px solid;
-        border-radius: 15px;
+        border: 2px $bright solid;
+        border-radius: 24px;
         width: 168px;
         height: 36px;
-        background: lighten($dark-red, 10%);
+        background: rgba($bright, 0.14);
+        color: #fff;
         text-align: center;
         transition: 0.6s;
         cursor: pointer;
         &:hover {
-          background: lighten($dark-red, 20%);
+          background: $medium;
         }
         .bolt {
           color: transparent;
-          text-shadow: 0 0 0 $bright;
+          text-shadow: 0 0 0 $dark-red;
         }
       }
       div {
@@ -232,6 +244,7 @@ $page-margin: 180px;
       display: flex;
       flex-direction: row;
       align-items: center;
+      transform: translateX(-50px);
       .sdbsrItem {
         // margin-left: 15px;
         margin-top: -15px;
