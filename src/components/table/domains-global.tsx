@@ -127,11 +127,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
       <div className="metricsBar">
         <div className="metricsTitle">Metrics</div>
         <div className="metricsContainer">
-          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
-          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
-          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
-          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
-          {metric('WILDER PRICE', '$2000', '@0.0410', '(+41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
           {metric(
             'MARKET CAP',
             '$369,000,101',

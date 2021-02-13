@@ -101,7 +101,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
         accessor: '#',
       },
       {
-        Header: '',
+        Header: <div style={{ height: '70px' }}></div>,
         accessor: 'image',
       },
       { Header: 'Network', accessor: 'network' },
