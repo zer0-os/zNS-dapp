@@ -9,6 +9,7 @@
 
 .sideFadeRight {
   position: fixed;
+  pointer-events: none;
   right: 0;
   z-index: 100;
   top: 0;
