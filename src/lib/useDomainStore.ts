@@ -2,8 +2,10 @@ import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
+import { domain } from 'process';
 import { Children, useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
+import { string } from 'zod';
 import { getDomainId } from './domains';
 
 export interface Domain {
@@ -129,6 +131,16 @@ const childTimestampQuery = gql`
       image
       timeCreated
       resolver
+    }
+  }
+`;
+
+const allDomainsQuery = gql`
+  query Domain($id: ID!) {
+    domains(where: { parent: $parent }) {
+      id
+      parent
+      domain
     }
   }
 `;
@@ -289,8 +301,53 @@ function useIncomingApprovals(): {
   return { incomingApprovals, refetchIncomingApprovals: refetch! };
 }
 
+function useAllDomains(): {
+  _allDomains: Maybe<Domain[]>;
+  refetchAllDomains: RefetchQuery<DomainsData>;
+} {
+  const context = useWeb3React<Web3Provider>();
+  const { account } = context;
+  const [getAllDomains, { data, refetch, error }] = useLazyQuery<DomainsData>(
+    allDomainsQuery,
+    {
+      variables: {},
+    },
+  );
+
+  const _allDomains: Maybe<Domain[]> = useMemo(() => {
+    if (error) {
+      // TODO: maybe throw?
+      console.error(error);
+    }
+    if (data) {
+      return Maybe.of(
+        data.domains.map((d) => ({
+          ...d,
+          approval: d.approval ? Maybe.of(d.approval) : Maybe.nothing(),
+          owner: getAddress(d.owner),
+          parent: d.parent,
+          children: [],
+          controller: getAddress(d.controller),
+        })),
+      );
+    }
+    return Maybe.nothing();
+  }, [data]);
+
+  useEffect(() => {
+    if (refetch) {
+      refetch({ variables: { to: domain } });
+    } else if (domain) {
+      getAllDomains({ variables: { to: domain } });
+    }
+  }, [domain]);
+
+  return { _allDomains, refetchAllDomains: refetch! };
+}
+
 const useDomainStore = () => {
   const owned = useOwnedDomains();
+  const alldomains = useAllDomains();
   const incomingApprovals = useIncomingApprovals();
   const [transactions, setTransactions] = useState<ZeroTransaction[]>([]);
 
@@ -321,6 +378,8 @@ const useDomainStore = () => {
   return {
     useDomain,
     useIncomingApprovals,
+    useAllDomains,
+    ...alldomains,
     ...owned,
     ...incomingApprovals,
     pushTransaction,

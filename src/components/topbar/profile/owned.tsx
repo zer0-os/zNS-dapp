@@ -14,6 +14,7 @@ const Owned: FC = () => {
 
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
+
   const { owned } = useDomainCache();
 
   if (owned.isNothing()) return <p>User owns no domains.</p>;

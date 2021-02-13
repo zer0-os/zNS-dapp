@@ -1,5 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import '../css/grid.scss';
+import { useWeb3React } from '@web3-react/core';
+import { useZnsContracts } from '../../lib/contracts';
+import { useDomainCache } from '../../lib/useDomainCache';
+import { Web3Provider } from '@ethersproject/providers';
 
 interface GridProps {
   domain: string;
@@ -31,8 +35,22 @@ cells.push(gridCell());
 cells.push(gridCell());
 cells.push(gridCell());
 
-const Grid: FC<GridProps> = (_domain) => {
-  console.log('grid', _domain);
+const Grid: FC<GridProps> = ({ domain: _domain }) => {
+  const context = useWeb3React<Web3Provider>();
+  const { account } = context;
+  const contracts = useZnsContracts();
+  const domainStore = useDomainCache();
+  const { useAllDomains, refetchAllDomains, useDomain } = domainStore;
+  const { domain, refetchDomain } = useDomain(_domain);
+
+  const gridData = useMemo(
+    () =>
+      domain.isNothing() ? [] : domain.map((_domain) => domain.value.parent),
+    [refetchAllDomains],
+  );
+
+  console.log({ domain });
+
   return <div className="gridContainer">{cells}</div>;
 };
 
