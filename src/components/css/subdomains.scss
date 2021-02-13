@@ -323,15 +323,13 @@ table {
       height: 26px;
     }
     tr th:first-child {
-      // border-top-right-radius: 10%;
       // border-radius: 50%;
       // border-collapse: inherit;
       // border-spacing: 0px;
       // border: 1px solid $middle-red;
     }
-    tr th:last-child {
-      border-top-right-radius: 95px;
 
+    tr th:last-child {
       // border-radius: 50%;
     }
   }
