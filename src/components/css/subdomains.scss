@@ -303,8 +303,11 @@ table {
   width: 100%;
 }
 
+.subdomainsHeaderTR {
+  border-radius: 15px;
+}
 .subdomainsHeaderTH {
-  // border-top: 2px $bright solid;
+  border-top: 2px $bright solid;
 }
 
 .tableContainer {
@@ -315,7 +318,10 @@ table {
 .subdomainsTable {
   background: none;
   // border-collapse: inherit;
+  border-radius: 15px;
   border-spacing: 0px;
+  border-collapse: separate;
+  border-spacing: 0;
   width: 100%;
   // height: 30vh;
   margin-top: 25px;
@@ -332,23 +338,30 @@ table {
       // border-collapse: inherit;
       // border-spacing: 0px;
       // border: 1px solid $middle-red;
+      border-top: 2px $bright solid;
+      border-left: 2px $bright solid;
+      border-radius: 12px 0px 0px 0px;
     }
 
     tr th:last-child {
-      border-radius: 50% !important;
+      border-top: 2px $bright solid;
+      border-right: 2px $bright solid;
+      border-radius: 0px 75px 0px 0px;
     }
   }
   .subdomainsHeaderGroupLocal {
-    background-color: rgba($bright, 0.09);
     tr th {
+      background-color: rgba($bright, 0.09);
+
       &:not(:nth-child(3)) {
         text-align: center;
       }
     }
   }
   .subdomainsHeaderGroupGlobal {
-    background-color: rgba($bright, 0.09);
     tr th {
+      background-color: rgba($bright, 0.09);
+
       &:not(:nth-child(3)):not(:nth-child(4)) {
         text-align: center;
       }
@@ -360,6 +373,14 @@ table {
     // all rows
     tr {
       height: 100px !important;
+      // every rightmost cell
+      & td:last-child {
+        border-right: 2px $bright solid;
+      }
+      // every leftmost cell
+      & td:first-child {
+        border-left: 2px $bright solid;
+      }
       // every second row
       &:nth-child(2n) {
         transition: 0.6s;
@@ -384,12 +405,13 @@ table {
       // bottom  row
       &:last-child td {
         // bottom right cell
+        border-bottom: 2px $bright solid;
         &:last-child {
-          // border-radius: 0px 0px 15px 0px;
+          border-radius: 0px 0px 12px 0px;
         }
         // bottom left cell
         &:first-child {
-          // border-radius: 0px 0px 0px 15px;
+          border-radius: 0px 0px 0px 12px;
         }
       }
       // all columns local
@@ -417,7 +439,6 @@ table {
         }
         &:nth-child(7) {
           color: #fff;
-          border-radius: 15px;
         }
       }
       // all columns global

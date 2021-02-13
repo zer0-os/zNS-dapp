@@ -52,8 +52,8 @@ interface Data {
   '7d': string;
   marketcap: string;
   last7days: string;
-  trade: string;
   timestamp: any;
+  trade: string;
 }
 
 interface TProps {
@@ -89,8 +89,8 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
             '7d': 'N/A',
             marketcap: 'N/A',
             last7days: '',
-            trade: '',
             timestamp: '',
+            trade: '',
           })),
     [domain],
   );
@@ -128,13 +128,13 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
         accessor: 'last7days',
         Cell: (props) => <img src={marketimg} alt="" />,
       },
-      { Header: 'Trade', accessor: 'trade' },
       {
         Header: '',
         accessor: 'timestamp',
         width: '0px',
         Cell: () => <div style={{ display: 'none' }}></div>,
       },
+      { Header: 'Trade', accessor: 'trade', width: '1000px' },
     ],
     [],
   );
