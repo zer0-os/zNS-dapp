@@ -1,1 +1,36 @@
+@import './color-variables.scss';
 
+.profile-container {
+  display: flex;
+}
+
+.profile-left {
+  padding-top: 100px;
+  padding-right: 150px;
+  width: 16vw;
+}
+
+.profile-middle {
+  padding-bottom: 20px;
+  width: 16vw;
+}
+
+.profile-name {
+}
+
+.profile-title {
+  align-items: center;
+  justify-content: center;
+}
+
+.profilepic {
+  width: 200px;
+  height: 200px;
+
+  // background-color: white;
+  margin-right: 40px;
+
+  // transform: translateY(-20px);
+  box-shadow: $dropShadow;
+  cursor: pointer;
+}
