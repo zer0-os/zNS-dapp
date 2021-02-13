@@ -104,7 +104,18 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
   const columns = useMemo<Column<Data>[]>(
     () => [
       {
-        Header: '#',
+        Header: (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '70px',
+            }}
+          >
+            #
+          </div>
+        ),
         accessor: '#',
       },
       {
