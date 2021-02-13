@@ -134,7 +134,11 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
         width: '0px',
         Cell: () => <div style={{ display: 'none' }}></div>,
       },
-      { Header: 'Trade', accessor: 'trade', width: '1000px' },
+      {
+        Header: 'Trade',
+        accessor: 'trade',
+        Cell: () => <div style={{color:'red'}}>Trading Data Goes here</div>,
+      },
     ],
     [],
   );
