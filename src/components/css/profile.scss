@@ -16,6 +16,7 @@
 }
 
 .profile-name {
+  padding-top: 10px;
 }
 
 .profile-title {
@@ -33,4 +34,8 @@
   // transform: translateY(-20px);
   box-shadow: $dropShadow;
   cursor: pointer;
+}
+
+.ZNA {
+  padding-right: 6px;
 }
