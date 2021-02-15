@@ -297,24 +297,24 @@ export default function Wallet() {
           )} */}
       {connector === connectorsByName[ConnectorNames.WalletConnect] && (
         <div className="button-target">
-          <button
+          {/* <button
             onClick={() => {
               (connector as any).close();
             }}
           >
             Kill WalletConnect Session
-          </button>
+          </button> */}
         </div>
       )}
       {connector === connectorsByName[ConnectorNames.Fortmatic] && (
         <div className="button-target">
-          <button
+          {/* <button
             onClick={() => {
               (connector as any).close();
             }}
           >
             Kill Fortmatic Session
-          </button>
+          </button> */}
         </div>
       )}
       {connector === connectorsByName[ConnectorNames.Portis] && (
@@ -331,13 +331,13 @@ export default function Wallet() {
             </div>
           )}
           <div className="button-target">
-            <button
+            {/* <button
               onClick={() => {
                 (connector as any).close();
               }}
             >
               Kill Portis Session
-            </button>
+            </button> */}
           </div>
         </>
       )}
