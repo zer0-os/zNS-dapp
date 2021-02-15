@@ -1,64 +1,69 @@
-.left-container {
+.nftviewContainer {
+  width: 80vw;
+  height: 80vh;
+  border: 5px red solid;
   display: flex;
-  flex-direction: column;
-  align-items: unset;
-  width: 300px;
-  height: 540px;
-  border: 3px solid black;
-  overflow: hidden;
-}
+  flex-direction: row;
+  .left-container {
+    display: flex;
+    flex-direction: column;
+    align-items: unset;
+    width: 300px;
+    height: 540px;
+    border: 3px solid black;
+    overflow: hidden;
+    .nft-img {
+      height: 500px;
+      width: 300px;
+      border: 3px solid black;
+    }
 
-.nft-img {
-  height: 500px;
-  width: 300px;
-  border: 3px solid black;
-}
+    .eth-address-d {
+      border: 3px solid black;
+      height: 100px;
+    }
 
-.eth-address-d {
-  border: 3px solid black;
-  height: 100px;
-}
+    .route-nav {
+    }
 
-.route-nav {
-}
+    .route-nav-link {
+    }
 
-.route-nav-link {
-}
+    .route-nav-text {
+    }
 
-.route-nav-text {
-}
+    .route-nav-text-sub {
+    }
+  }
 
-.route-nav-text-sub {
-}
+  .right-container {
+    display: flex;
+    flex-direction: column;
+    align-items: unset;
+    width: 300px;
+    height: 540px;
+    border: 3px solid black;
+    overflow: hidden;
+    margin: 0px 0px 300px 300px;
+    .nft-title {
+    }
 
-.right-container {
-  display: flex;
-  flex-direction: column;
-  align-items: unset;
-  width: 300px;
-  height: 540px;
-  border: 3px solid black;
-  overflow: hidden;
-  margin: 0px 0px 300px 300px;
-}
+    .creator-title {
+    }
 
-.nft-title {
-}
+    .desc-f {
+    }
 
-.creator-title {
-}
+    .purch-btn {
+    }
 
-.desc-f {
-}
+    .price-time {
+    }
 
-.purch-btn {
-}
+    .price-current {
+    }
+  }
 
-.price-time {
-}
-
-.price-current {
-}
-
-.btm-graph {
+  .btm-graph {
+  }
 }
