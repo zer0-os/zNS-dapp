@@ -86,78 +86,71 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   cells.push(gridCell());
   cells.push(gridCell());
   cells.push(gridCell());
-  if (domain.isNothing() && owned.isNothing()) return null;
+  if (owned.isNothing()) return null;
   return (
     <>
-      <>
-        {owned.isJust() && (
-          <button className="" onClick={showShop}>
-            Shop
-          </button>
-        )}
-        <Modal
-          visible={isShopVisible}
-          onOk={shopOk}
-          onCancel={shopCancel}
-          footer={null}
-        >
-          <div className="profile-container">
-            <div className="profile-left">
-              <div className="profile-name">Elon Musk</div>
-              <div className="route-nav">
+      {owned.isJust() && (
+        <button className="" onClick={showShop}>
+          Shop
+        </button>
+      )}
+      <Modal
+        visible={isShopVisible}
+        onOk={shopOk}
+        onCancel={shopCancel}
+        footer={null}
+      >
+        <div className="profile-container">
+          <div className="profile-left">
+            <div className="route-nav">
+              <div className="route-nav-link">
+                <div className="ZNA">ZNS</div>
+                <Link className="route-nav-text" to={'/'}>
+                  0::/
+                </Link>
+              </div>
+              {routes.map(([key, path], i) => (
                 <div className="route-nav-link">
-                  <div className="ZNA">ZNS</div>
-                  <Link className="route-nav-text" to={'/'}>
-                    0::/
+                  <Link className="route-nav-text-sub" to={path}>
+                    {key}
+                    {i < routes.length - 1 && '.'}
                   </Link>
                 </div>
-                {routes.map(([key, path], i) => (
-                  <div className="route-nav-link">
-                    <Link className="route-nav-text-sub" to={path}>
-                      {key}
-                      {i < routes.length - 1 && '.'}
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="profile-middle">
-              <h1 className="profile-title">Profile</h1>
-              <p>Description</p>
+              ))}
             </div>
           </div>
+        </div>
 
-          <Tabs defaultActiveKey="1" size={size} style={{ marginBottom: 32 }}>
-            <TabPane tab="Claims" key="1">
+        <Tabs defaultActiveKey="1" size={size} style={{ marginBottom: 32 }}>
+          <TabPane tab="Claims" key="1">
+            <div>
+              <h1>
+                Incoming Approvals:{' '}
+                {incomingApprovals.isJust()
+                  ? incomingApprovals.value.length
+                  : 0}{' '}
+              </h1>
+            </div>
+
+            <div>
+              <Claim />
+            </div>
+          </TabPane>
+          <TabPane tab=" Outgoing Approvals" key="2">
+            <div className="listOut">
               <div>
                 <h1>
-                  Incoming Approvals:{' '}
-                  {incomingApprovals.isJust()
-                    ? incomingApprovals.value.length
-                    : 0}{' '}
+                  Outgoing Approvals:
+                  {outgoingApprovals ? outgoingApprovals.length : 0}{' '}
                 </h1>
               </div>
 
-              <div>
-                <Claim />
-              </div>
-            </TabPane>
-            <TabPane tab=" Outgoing Approvals" key="2">
-              <div className="listOut">
-                <div>
-                  <h1>
-                    Outgoing Approvals:
-                    {outgoingApprovals ? outgoingApprovals.length : 0}{' '}
-                  </h1>
-                </div>
-
-                <Outgoing />
-              </div>
-            </TabPane>
-            <TabPane tab="Domains you own" key="3">
-              <div className="gridContainer-profile">{cells}</div>
-              {/* <div>
+              <Outgoing />
+            </div>
+          </TabPane>
+          <TabPane tab="Domains you own" key="3">
+            <div className="gridContainer-profile">{cells}</div>
+            {/* <div>
               {owned.value.map((control) => {
                 return (
                   <div key={control.domain}>
@@ -171,12 +164,11 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 );
               })}
             </div>{' '} */}
-            </TabPane>
-          </Tabs>
+          </TabPane>
+        </Tabs>
 
-          {console.log('OWNED ', owned)}
-        </Modal>
-      </>
+        {console.log('OWNED ', owned)}
+      </Modal>
     </>
   );
 };
