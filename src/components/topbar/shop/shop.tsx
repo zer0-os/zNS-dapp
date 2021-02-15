@@ -12,6 +12,7 @@ import Approve from '../../table/NFT-View/approval';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import TableImage from '.././../table/table-image';
+import '../../css/shop.scss';
 import Outgoing from './outGoingApproval';
 const { TabPane } = Tabs;
 
@@ -90,7 +91,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   return (
     <>
       {owned.isJust() && (
-        <button className="" onClick={showShop}>
+        <button className="btn-shop" onClick={showShop}>
           Shop
         </button>
       )}
