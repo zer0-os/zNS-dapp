@@ -156,52 +156,6 @@ const Profile: FC = () => {
           </div>
         </div>
 
-        <Tabs defaultActiveKey="1" size={size} style={{ marginBottom: 32 }}>
-          <TabPane tab="Claims" key="1">
-            <div>
-              <h1>
-                Incoming Approvals:{' '}
-                {incomingApprovals.isJust()
-                  ? incomingApprovals.value.length
-                  : 0}{' '}
-              </h1>
-            </div>
-
-            <div>
-              <Claim />
-            </div>
-          </TabPane>
-          <TabPane tab=" Outgoing Approvals" key="2">
-            <div className="listOut">
-              <div>
-                <h1>
-                  Outgoing Approvals:
-                  {outgoingApprovals ? outgoingApprovals.length : 0}{' '}
-                </h1>
-              </div>
-
-              <Outgoing />
-            </div>
-          </TabPane>
-          <TabPane tab="Domains you own" key="3">
-            <div className="gridContainer-profile">{cells}</div>
-            {/* <div>
-              {owned.value.map((control) => {
-                return (
-                  <div key={control.domain}>
-                    <Link
-                      to={'/' + control.domain}
-                      //   key={control.domain}
-                    >
-                      {control.domain}
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>{' '} */}
-          </TabPane>
-        </Tabs>
-
         {console.log('OWNED ', owned)}
       </Modal>
     </>
