@@ -113,25 +113,27 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                 <div className="nft-img">
                   <TableImage domain={_domain} />
                 </div>
-                <div className="eth-address-d">
-                  <div>ETH</div> {domain.value.controller}
-                </div>
-
-                <div className="route-nav">
-                  <div className="route-nav-link">
-                    <div>ZNS</div>
-                    <Link className="route-nav-text" to={'/'}>
-                      0::/
-                    </Link>
+                <div className="nftImageInfo">
+                  <div className="eth-address-d">
+                    <div>ETH</div> {domain.value.controller}
                   </div>
-                  {routes.map(([key, path], i) => (
+
+                  <div className="route-nav">
                     <div className="route-nav-link">
-                      <Link className="route-nav-text-sub" to={path}>
-                        {key}
-                        {i < routes.length - 1 && '.'}
+                      <div>ZNS</div>
+                      <Link className="route-nav-text" to={'/'}>
+                        0::/
                       </Link>
                     </div>
-                  ))}
+                    {routes.map(([key, path], i) => (
+                      <div className="route-nav-link">
+                        <Link className="route-nav-text-sub" to={path}>
+                          {key}
+                          {i < routes.length - 1 && '.'}
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
