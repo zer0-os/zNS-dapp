@@ -111,12 +111,14 @@
     flex-direction: row;
     align-items: center;
 
-    .shopContainer {
-      position: absolute;
-      // margin-right: 500px;
-      border: 5px yellow solid;
-      height: 50px;
-      width: 50px;
+    .shop-btn {
+      display: flex;
+      padding-right: 5px;
+      background: transparent;
+      border: none;
+      color: lightgray !important;
+      cursor: pointer;
+      border: 2px solid red;
     }
 
     .connect-btn {
@@ -189,15 +191,6 @@
   .profile-btn {
     display: flex;
     padding-right: 10px;
-    background: transparent;
-    border: none;
-    color: lightgray !important;
-    cursor: pointer;
-  }
-
-  .shop-btn {
-    display: flex;
-    padding-right: 5px;
     background: transparent;
     border: none;
     color: lightgray !important;
