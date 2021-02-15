@@ -86,9 +86,10 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   cells.push(gridCell());
   cells.push(gridCell());
   cells.push(gridCell());
-  if (domain.isNothing() && owned.isNothing()) return null;
+  if (false) return null;
   return (
     <>
+      test
       <>
         {owned.isJust() && (
           <button className="" onClick={showShop}>
