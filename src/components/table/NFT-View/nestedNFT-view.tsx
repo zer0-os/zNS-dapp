@@ -97,41 +97,43 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
           onCancel={profileCancel}
           footer={null}
         >
-          <div className="left-container">
-            <div className="nft-img">
-              <TableImage domain={_domain} />
-            </div>
-            <div className="eth-address-d">
-              <div>ETH</div> {domain.value.controller}
-            </div>
-
-            <div className="route-nav">
-              <div className="route-nav-link">
-                <div>ZNS</div>
-                <Link className="route-nav-text" to={'/'}>
-                  0::/
-                </Link>
+          <div className="nftviewContainer">
+            <div className="left-container">
+              <div className="nft-img">
+                <TableImage domain={_domain} />
               </div>
-              {routes.map(([key, path], i) => (
+              <div className="eth-address-d">
+                <div>ETH</div> {domain.value.controller}
+              </div>
+
+              <div className="route-nav">
                 <div className="route-nav-link">
-                  <Link className="route-nav-text-sub" to={path}>
-                    {key}
-                    {i < routes.length - 1 && '.'}
+                  <div>ZNS</div>
+                  <Link className="route-nav-text" to={'/'}>
+                    0::/
                   </Link>
                 </div>
-              ))}
+                {routes.map(([key, path], i) => (
+                  <div className="route-nav-link">
+                    <Link className="route-nav-text-sub" to={path}>
+                      {key}
+                      {i < routes.length - 1 && '.'}
+                    </Link>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          <div className="right-container">
-            <h1 className="nft-title">TITLE</h1>
-            <div className="creator-title">CREATOR</div>
-            <div className="desc-f">DESCRIPTON FORM</div>
-            <div className="purch-btn">PURCHACE BUTTON</div>
-            <div className="price-time">PRICE 1</div>
-            <div className="price-current">PRICE 2</div>
+            <div className="right-container">
+              <h1 className="nft-title">TITLE</h1>
+              <div className="creator-title">CREATOR</div>
+              <div className="desc-f">DESCRIPTON FORM</div>
+              <div className="purch-btn">PURCHACE BUTTON</div>
+              <div className="price-time">PRICE 1</div>
+              <div className="price-current">PRICE 2</div>
+            </div>
+            <div className="btm-graph">GRAPH</div>
           </div>
-          <div className="btm-graph">GRAPH</div>
 
           {/* 
           <Approve
