@@ -118,7 +118,7 @@
       border: none;
       color: lightgray !important;
       cursor: pointer;
-      border: 5px yellow solid;
+      border: 2px solid red;
     }
 
     .connect-btn {
@@ -130,7 +130,7 @@
       font-size: 14px;
       border-radius: 100px;
       transition: 0.6s;
-      overflow: hidden;
+      // overflow: hidden;
       padding-right: 10px;
       color: lightgray !important;
       width: 70px !important;

@@ -11,7 +11,6 @@ import Transfer from '../../transferDomains';
 import Approve from '../../table/NFT-View/approval';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
-import '../../css/nft-view.scss';
 import TableImage from '.././../table/table-image';
 import Outgoing from './outGoingApproval';
 const { TabPane } = Tabs;
@@ -91,7 +90,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   return (
     <>
       <>
-        {domain.isJust() && (
+        {owned.isJust() && (
           <button className="" onClick={showShop}>
             Shop
           </button>

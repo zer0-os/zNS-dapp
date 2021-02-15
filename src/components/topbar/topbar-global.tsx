@@ -112,8 +112,8 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             footer={null}
           >
             <Shop domain={_domain} />
-          </Modal>
-        </div> */}
+          </Modal> */}
+        {/* </div> */}
         {active && (
           <div className="profile-btn">
             <Profile />
