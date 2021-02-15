@@ -92,12 +92,11 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     <>
       <>
         {domain.isJust() && (
-          <button className="btn-" onClick={showShop}>
+          <button className="" onClick={showShop}>
             Shop
           </button>
         )}
         <Modal
-          className="nft-view-modal"
           visible={isShopVisible}
           onOk={shopOk}
           onCancel={shopCancel}

@@ -104,7 +104,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         <button className="search-bar-button"></button>
       </div>
       <div className="topbarRight">
-        <div className="shopContainer">
+        <div className="shop-btn">
           <Modal
             visible={isShopVisible}
             onOk={shopOk}
