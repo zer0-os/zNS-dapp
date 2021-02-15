@@ -94,12 +94,13 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
         <Modal
           style={{
             position: 'relative',
-            top: 40,
             margin: 0,
             padding: 0,
             border: '2px solid red',
           }}
+          bodyStyle={{ height: '90vh' }}
           closeIcon={null}
+          centered
           width={'400vw'}
           visible={isProfileVisible}
           onOk={profileOk}
