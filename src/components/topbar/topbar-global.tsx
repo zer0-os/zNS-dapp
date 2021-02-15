@@ -104,7 +104,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         <button className="search-bar-button"></button>
       </div>
       <div className="topbarRight">
-        {/* <div className="shop-btn">
+        <div className="shop-btn">
           <Modal
             visible={isShopVisible}
             onOk={shopOk}
@@ -112,8 +112,8 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             footer={null}
           >
             <Shop domain={_domain} />
-          </Modal> */}
-        {/* </div> */}
+          </Modal>
+        </div>
         {active && (
           <div className="profile-btn">
             <Profile />
