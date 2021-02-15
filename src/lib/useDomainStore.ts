@@ -301,16 +301,19 @@ function useIncomingApprovals(): {
   return { incomingApprovals, refetchIncomingApprovals: refetch! };
 }
 
-function useAllDomains(): {
+function useAllDomains(
+  domain: string,
+): {
   _allDomains: Maybe<Domain[]>;
   refetchAllDomains: RefetchQuery<DomainsData>;
 } {
-  const context = useWeb3React<Web3Provider>();
-  const { account } = context;
+  const id = getDomainId(domain);
+  // const context = useWeb3React<Web3Provider>();
+  // const { account } = context;
   const [getAllDomains, { data, refetch, error }] = useLazyQuery<DomainsData>(
     allDomainsQuery,
     {
-      variables: {},
+      variables: { id },
     },
   );
 
@@ -336,9 +339,9 @@ function useAllDomains(): {
 
   useEffect(() => {
     if (refetch) {
-      refetch({ variables: { to: domain } });
+      refetch({ variables: { to: id } });
     } else if (domain) {
-      getAllDomains({ variables: { to: domain } });
+      getAllDomains({ variables: { to: id } });
     }
   }, [domain]);
 
@@ -347,7 +350,6 @@ function useAllDomains(): {
 
 const useDomainStore = () => {
   const owned = useOwnedDomains();
-  const alldomains = useAllDomains();
   const incomingApprovals = useIncomingApprovals();
   const [transactions, setTransactions] = useState<ZeroTransaction[]>([]);
 
@@ -379,7 +381,6 @@ const useDomainStore = () => {
     useDomain,
     useIncomingApprovals,
     useAllDomains,
-    ...alldomains,
     ...owned,
     ...incomingApprovals,
     pushTransaction,

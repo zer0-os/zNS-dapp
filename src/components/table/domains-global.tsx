@@ -11,7 +11,7 @@ import Create from './create';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Modal, Button } from 'antd';
-import Owned from '../topbar/profile/owned';
+import Owned from '../topbar/shop/owned';
 import { String } from 'lodash';
 import {
   Column,

@@ -87,10 +87,11 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
       </button>
 
       <Modal
-        title="subdomain"
+        title="Set Image"
         visible={isSetImageVisible}
         // onOk={profileOk}
         onCancel={hideSetImage}
+        footer={null}
       >
         {domain.isJust() && (
           <>

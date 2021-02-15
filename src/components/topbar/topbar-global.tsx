@@ -4,7 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
-import Owned from './profile/owned';
+import Owned from './shop/owned';
 import { Layout, Menu, Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar-global.scss';

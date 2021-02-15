@@ -7,7 +7,7 @@ import './lib/ipfs';
 import Wallet from './components/topbar/wallet';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Subdomains from './components/table/child-view';
-import Owned from './components/topbar/profile/owned';
+import Owned from './components/topbar/shop/owned';
 import { domainCacheContext, DomainCacheProvider } from './lib/useDomainCache';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { PoweroffOutlined } from '@ant-design/icons';

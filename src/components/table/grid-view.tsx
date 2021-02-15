@@ -40,14 +40,8 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
   const { account } = context;
   const contracts = useZnsContracts();
   const domainStore = useDomainCache();
-  const { useAllDomains, refetchAllDomains, useDomain } = domainStore;
+  const { useAllDomains, useDomain } = domainStore;
   const { domain, refetchDomain } = useDomain(_domain);
-
-  const gridData = useMemo(
-    () =>
-      domain.isNothing() ? [] : domain.map((_domain) => domain.value.parent),
-    [refetchAllDomains],
-  );
 
   console.log({ domain });
 
