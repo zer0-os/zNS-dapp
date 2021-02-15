@@ -92,6 +92,15 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
           </button>
         )}
         <Modal
+          style={{
+            position: 'relative',
+            top: 40,
+            margin: 0,
+            padding: 0,
+            border: '2px solid red',
+          }}
+          closeIcon={null}
+          width={'400vw'}
           visible={isProfileVisible}
           onOk={profileOk}
           onCancel={profileCancel}
