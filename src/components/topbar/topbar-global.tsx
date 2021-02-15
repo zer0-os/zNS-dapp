@@ -104,12 +104,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         <button className="search-bar-button"></button>
       </div>
       <div className="topbarRight">
-        {active && (
-          <div className="profile-btn">
-            <Profile />
-          </div>
-        )}
-        <div>
+        <div className="shopContainer">
           <Modal
             visible={isShopVisible}
             onOk={shopOk}
@@ -119,6 +114,11 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             <Shop domain={_domain} />
           </Modal>
         </div>
+        {active && (
+          <div className="profile-btn">
+            <Profile />
+          </div>
+        )}
         <button className="connect-btn" onClick={showWallet}>
           {' '}
           {active ? 'Connected' : 'Connect'}{' '}

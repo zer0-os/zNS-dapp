@@ -111,6 +111,14 @@
     flex-direction: row;
     align-items: center;
 
+    .shopContainer {
+      position: absolute;
+      // margin-right: 500px;
+      border: 5px yellow solid;
+      height: 50px;
+      width: 50px;
+    }
+
     .connect-btn {
       padding-right: 10px;
       background-color: transparent;
