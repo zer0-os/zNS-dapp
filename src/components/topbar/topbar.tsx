@@ -95,7 +95,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
           {active ? 'Connected' : 'Connect Wallet'}{' '}
         </button>
         <button className="create-network">
-          Create Network
+          Create Networkk
           <img src={downarrow} alt="" />
         </button>
         <img className="nightmoon" src={nightmoon} alt="" />
