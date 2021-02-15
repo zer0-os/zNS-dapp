@@ -15,6 +15,7 @@ import Profile from './profile/profile';
 import NFTview from '../table/NFT-View/nft-view';
 import Create from '../table/create';
 import SetImage from '../table/forms/set-image';
+import Shop from './shop/shop';
 
 interface TopbarProps {
   domain: string;
@@ -41,6 +42,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
 
   const [connect, setConnect] = useState(false);
   const [isWalletVisible, setWalletVisible] = useState(false);
+  const [isShopVisible, setShopVisible] = useState(false);
 
   const onClick = () => {
     setConnect(!connect);
@@ -53,6 +55,16 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   };
   const walletCancel = () => {
     setWalletVisible(false);
+  };
+
+  const showShop = () => {
+    setWalletVisible(true);
+  };
+  const shopOk = () => {
+    setShopVisible(false);
+  };
+  const shopCancel = () => {
+    setShopVisible(false);
   };
 
   return (
@@ -97,6 +109,16 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             <Profile />
           </div>
         )}
+        <div>
+          <Modal
+            visible={isShopVisible}
+            onOk={shopOk}
+            onCancel={shopCancel}
+            footer={null}
+          >
+            <Shop domain={_domain} />
+          </Modal>
+        </div>
         <button className="connect-btn" onClick={showWallet}>
           {' '}
           {active ? 'Connected' : 'Connect'}{' '}
