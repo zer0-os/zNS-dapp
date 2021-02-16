@@ -42,11 +42,14 @@
       padding-left: 34px;
       .iconRow {
         margin-bottom: 16px;
-        &:nth-child(2) {
-          //placeholder until dynamic switching
-          & > div {
-            box-shadow: $boxShadow !important;
-          }
+        // &:nth-child(2) {
+        //   //placeholder until dynamic switching
+        //   & > div {
+        //     box-shadow: $boxShadow !important;
+        //   }
+        // }
+        .selectedSideBar {
+          box-shadow: 0px 2px 15px rgb(145, 85, 230) !important;
         }
         .sbimgContainer {
           height: 60px;
