@@ -33,26 +33,34 @@ $page-margin: 180px;
 .domainImageContainer {
   // border: 5px $light-red solid;
   height: 200px;
-  // width: 160px;
+  width: 240px;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: auto;
 
   .domainImage {
     height: 180px !important;
     width: auto !important;
+    // max-width: 240px;
+    overflow-x: hidden;
     border-radius: 15px;
     border: 2px $bright solid;
+    opacity: 0;
     // background-color: $dark;
+  }
+  .domainImageFade {
+    opacity: 1;
+    -webkit-transition: opacity 2s linear;
   }
 }
 
 .metricsBar {
+  margin-top: 115px;
   display: flex;
   flex-direction: column;
   margin-left: $page-margin;
   overflow-x: auto;
-
   // width: 100%;
   white-space: nowrap;
 
@@ -104,7 +112,7 @@ $page-margin: 180px;
         border-style: solid;
         border-radius: 12px 72px 12px 12px;
         background-color: rgba($bright, 0.18);
-        box-shadow: $boxShadow;
+        box-shadow: 0px 2px 5px rgba(145, 85, 230, 0.18);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -263,7 +271,7 @@ $page-margin: 180px;
         &.tnb1 {
           margin-right: 7px;
           &:hover {
-            background-color: rgba(222, 222, 222, 0.13);
+            background-color: rgba(222, 222, 222, 0.33);
           }
         }
         &.tnb2 {

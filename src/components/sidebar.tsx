@@ -74,7 +74,7 @@ const Sidebar: FC = () => {
               <img src={feed} alt="" />
             </div>
           </div>
-          <div className="iconRow">
+          {/* <div className="iconRow">
             <div className="sbimgContainer">
               {' '}
               <img src={geopin} alt="" />
@@ -85,7 +85,7 @@ const Sidebar: FC = () => {
               {' '}
               <img src={galaxycircle} alt="" />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* <div className="profile">

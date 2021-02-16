@@ -32,6 +32,8 @@ body {
   color: black;
   max-width: 100vw;
   overflow-x: hidden;
+  /* should fix bounce effect when scrolling on ios devices */
+  overscroll-behavior: none;
 }
 
 button:focus {
