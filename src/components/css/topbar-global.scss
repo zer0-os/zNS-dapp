@@ -1,11 +1,14 @@
 @import './color-variables.scss';
 
 .topbarContainer {
+  z-index: 20;
+  position: fixed;
+  top: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 21px 25px 21px 60px;
+  padding: 21px 25px 21px 34px;
   width: 100vw;
   max-width: 100vw;
   height: 110px;

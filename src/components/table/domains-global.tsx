@@ -28,6 +28,8 @@ import SearchTable from './searchTable';
 import SetImage from './forms/set-image';
 import linebutton from '../css/img/threelinebutton.png';
 import squarebutton from '../css/img/squaregridbutton.png';
+import linebuttongrey from '../css/img/threelinebuttongrey.png';
+import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
 import filter from '../css/img/filter.svg';
 import Search from 'antd/lib/input/Search';
 
@@ -157,13 +159,13 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
                 onClick={() => toggleGridView(false)}
                 className="sdbsrItem tableNavButton tnb2"
               >
-                <img src={linebutton} alt="" />
+                <img src={!gridView ? linebutton : linebuttongrey} alt="" />
               </div>
               <div
                 onClick={() => toggleGridView(true)}
                 className="sdbsrItem tableNavButton tnb1"
               >
-                <img src={squarebutton} alt="" />
+                <img src={gridView ? squarebuttonwhite : squarebutton} alt="" />
               </div>
               {/* <div className="navFilter" style={{ marginBottom: '13px' }}>
                 <span>
