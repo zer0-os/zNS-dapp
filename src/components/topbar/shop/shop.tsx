@@ -12,7 +12,7 @@ import Approve from '../../table/NFT-View/approval';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import TableImage from '.././../table/table-image';
-import '../../css/shop.scss';
+import '../../css/profile.scss';
 import Outgoing from './outGoingApproval';
 const { TabPane } = Tabs;
 
@@ -65,7 +65,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const gridCell = () => {
     return (
       <div className="Cellgrid">
-        <div className="Topcell"> </div>
+        <div className="Topcell"> DOMAIN DATA </div>
         <div className="Bottomcell">
           <div className="TextTopcell"></div>
           <div className="TextMiddlecell">ticker</div>
@@ -87,7 +87,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   cells.push(gridCell());
   cells.push(gridCell());
   cells.push(gridCell());
-  if (owned.isNothing()) return null;
+  if (owned.isNothing() && domain.isNothing()) return null;
   return (
     <>
       {owned.isJust() && (
@@ -96,6 +96,16 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         </button>
       )}
       <Modal
+        style={{
+          position: 'relative',
+          margin: 0,
+          padding: 0,
+          overflow: 'hidden',
+        }}
+        bodyStyle={{ height: '80vh' }}
+        closeIcon={null}
+        width={'400vw'}
+        centered
         visible={isShopVisible}
         onOk={shopOk}
         onCancel={shopCancel}
@@ -107,7 +117,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
           style={{ marginBottom: 32 }}
           tabPosition={'left'}
         >
-          <TabPane tab="NFTs You Own" key="1">
+          <TabPane tab="NFTs You Own" key="1" style={{ overflowY: 'scroll' }}>
             <div className="gridContainer-profile">{cells}</div>
             {/* <div>
               {owned.value.map((control) => {
