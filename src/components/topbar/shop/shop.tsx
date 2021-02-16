@@ -101,55 +101,13 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         onCancel={shopCancel}
         footer={null}
       >
-        <div className="profile-container">
-          <div className="profile-left">
-            <div className="route-nav">
-              <div className="route-nav-link">
-                <div className="ZNA">ZNS</div>
-                <Link className="route-nav-text" to={'/'}>
-                  0::/
-                </Link>
-              </div>
-              {routes.map(([key, path], i) => (
-                <div className="route-nav-link">
-                  <Link className="route-nav-text-sub" to={path}>
-                    {key}
-                    {i < routes.length - 1 && '.'}
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <Tabs defaultActiveKey="1" size={size} style={{ marginBottom: 32 }}>
-          <TabPane tab="Claims" key="1">
-            <div>
-              <h1>
-                Incoming Approvals:{' '}
-                {incomingApprovals.isJust()
-                  ? incomingApprovals.value.length
-                  : 0}{' '}
-              </h1>
-            </div>
-
-            <div>
-              <Claim />
-            </div>
-          </TabPane>
-          <TabPane tab=" Outgoing Approvals" key="2">
-            <div className="listOut">
-              <div>
-                <h1>
-                  Outgoing Approvals:
-                  {outgoingApprovals ? outgoingApprovals.length : 0}{' '}
-                </h1>
-              </div>
-
-              <Outgoing />
-            </div>
-          </TabPane>
-          <TabPane tab="Domains you own" key="3">
+        <Tabs
+          defaultActiveKey="1"
+          size={size}
+          style={{ marginBottom: 32 }}
+          tabPosition={'left'}
+        >
+          <TabPane tab="NFTs You Own" key="1">
             <div className="gridContainer-profile">{cells}</div>
             {/* <div>
               {owned.value.map((control) => {
@@ -165,6 +123,47 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 );
               })}
             </div>{' '} */}
+          </TabPane>
+          <TabPane tab="NFTs You've Made" key="2">
+            <div>
+              <h1>
+                Incoming Approvals:{' '}
+                {incomingApprovals.isJust()
+                  ? incomingApprovals.value.length
+                  : 0}{' '}
+              </h1>
+            </div>
+
+            <div>
+              <Claim />
+            </div>
+          </TabPane>
+
+          <TabPane tab="Offers You've Made" key="3">
+            <div className="listOut">
+              <div>
+                <h1>
+                  Outgoing Approvals:
+                  {outgoingApprovals ? outgoingApprovals.length : 0}{' '}
+                </h1>
+              </div>
+
+              <Outgoing />
+            </div>
+          </TabPane>
+          <TabPane tab="Offers Made To You" key="4">
+            <div>
+              <h1>
+                Incoming Approvals:{' '}
+                {incomingApprovals.isJust()
+                  ? incomingApprovals.value.length
+                  : 0}{' '}
+              </h1>
+            </div>
+
+            <div>
+              <Claim />
+            </div>
           </TabPane>
         </Tabs>
 
