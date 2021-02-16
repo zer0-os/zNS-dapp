@@ -137,7 +137,20 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
       {
         Header: 'Trade',
         accessor: 'trade',
-        Cell: () => <div style={{ color: 'red' }}>Trading Data Goes Here</div>,
+        Cell: () => (
+          <button
+            style={{
+              color: '#fff',
+              border: 'rgb(145, 85, 230) 2px solid',
+              borderRadius: '15px',
+              background: 'none',
+              width: '140px',
+              height: '55px',
+            }}
+          >
+            $12,504
+          </button>
+        ),
       },
     ],
     [],
