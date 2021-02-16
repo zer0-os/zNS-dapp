@@ -61,7 +61,6 @@ $page-margin: 180px;
   flex-direction: column;
   margin-left: $page-margin;
   overflow-x: auto;
-  box-shadow: $boxShadow;
   // width: 100%;
   white-space: nowrap;
 
@@ -113,7 +112,7 @@ $page-margin: 180px;
         border-style: solid;
         border-radius: 12px 72px 12px 12px;
         background-color: rgba($bright, 0.18);
-        box-shadow: $boxShadow;
+        box-shadow: 0px 2px 5px rgba(145, 85, 230, 0.18);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
