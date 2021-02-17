@@ -15,6 +15,7 @@ import TableImage from '.././../table/table-image';
 import '../../css/profile.scss';
 import Outgoing from './outGoingApproval';
 import { Column, useTable, useFlexLayout } from 'react-table';
+
 const { TabPane } = Tabs;
 
 interface ShopProps {
@@ -87,7 +88,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         : _.map(domain.value.owner, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
-            NFT: key,
+            NFT: 'n/a',
             Owner: 'n/a',
             Offer: 'N/A',
             Date: 'N/A',
@@ -172,8 +173,9 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
           position: 'relative',
           margin: 0,
           padding: 0,
+          background: '#E5E5E5',
         }}
-        bodyStyle={{ height: '90vh' }}
+        bodyStyle={{ height: '90vh', background: '#69038D' }}
         closeIcon={null}
         width={'400vw'}
         centered
@@ -185,7 +187,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         <Tabs
           defaultActiveKey="1"
           size={size}
-          style={{ marginBottom: 32, overflow: 'auto' }}
+          style={{ marginBottom: 32, overflow: 'auto', background: '#69038D' }}
           tabPosition={'left'}
         >
           <TabPane
@@ -209,8 +211,18 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
               })}
             </div>{' '} */}
           </TabPane>
+
           <TabPane
             tab="NFTs You've Made"
+            key="3"
+            style={{ overflow: 'auto', height: '80vh' }}
+          >
+            <div className="listOut">
+              <div className="gridContainer-profile">{cells}</div>
+            </div>
+          </TabPane>
+          <TabPane
+            tab="Offers You've Made"
             key="2"
             style={{ overflow: 'auto', height: '80vh' }}
           >
@@ -282,22 +294,8 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                   </tbody>
                 </table>
               </div>
-              )
               <br />
               <br />
-            </div>
-          </TabPane>
-
-          <TabPane tab="Offers You've Made" key="3">
-            <div className="listOut">
-              <div>
-                <h1>
-                  Outgoing Approvals:
-                  {outgoingApprovals ? outgoingApprovals.length : 0}{' '}
-                </h1>
-              </div>
-
-              <Outgoing />
             </div>
           </TabPane>
           <TabPane tab="Offers Made To You" key="4">
