@@ -212,7 +212,11 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             </div>{' '} */}
           </TabPane>
 
-          <TabPane tab="NFTs You've Made" key="3">
+          <TabPane
+            tab="NFTs You've Made"
+            key="3"
+            style={{ overflow: 'auto', height: '80vh' }}
+          >
             <div className="listOut">
               <div className="gridContainer-profile">{cells}</div>
             </div>
