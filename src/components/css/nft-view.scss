@@ -179,23 +179,37 @@
           .title {
             display: flex;
             flex-direction: row;
+            align-items: flex-end;
             .nftName {
+              font-size: 2.5rem;
               color: #fff;
               text-shadow: $textShadow;
+              line-height: 1;
             }
             .nftType {
+              margin-left: 15px;
+              font-size: 1.5rem;
               color: $grayFont;
+              // line-height: 1;
             }
-            .artistInfo {
-              display: flex;
-              flex-direction: row;
-              .artistImg {
-              }
-              .artist {
-                color: #fff;
-                .by {
-                  color: $grayFont;
-                }
+          }
+          .artistInfo {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            .artistIMG {
+              text-align: center;
+              height: 39px;
+              width: 39px;
+              background-color: $bright;
+              border-radius: 50%;
+            }
+            .artist {
+              margin-left: 15px;
+              color: #fff;
+              .by {
+                color: $grayFont;
               }
             }
           }
@@ -204,7 +218,18 @@
           display: flex;
           flex-direction: column;
           .purchase {
+            border: 2px $bright solid;
+            border-radius: 24px;
+            width: 168px;
+            height: 36px;
+            background: rgba($bright, 0.14);
             color: #fff;
+            text-align: center;
+            transition: 0.6s;
+            cursor: pointer;
+            &:hover {
+              background: rgba($medium, 0.5);
+            }
           }
           .lastprice {
             color: $grayFont;
