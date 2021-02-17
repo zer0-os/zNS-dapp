@@ -80,6 +80,16 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           )}
           alt=""
         />
+
+        <div className="route-nav">
+          <div className="route-nav-link">
+            <div>ZNS</div>
+            <Link className="route-nav-text" to={'/'}>
+              0::/
+            </Link>
+          </div>
+        </div>
+        <div></div>
       </div>
       <div className="search-bar">
         <input className="search-bar-input" type="text" placeholder="Search" />
