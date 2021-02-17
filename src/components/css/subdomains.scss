@@ -319,6 +319,17 @@ $page-margin: 180px;
       }
     }
   }
+  .route-nav {
+    .route-nav-link {
+      font-size: 18px;
+      .route-nav-text {
+        color: #b5b5b5;
+      }
+      .route-nav-text-sub {
+        color: #fff;
+      }
+    }
+  }
 }
 
 .tableButtons {

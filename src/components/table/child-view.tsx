@@ -157,7 +157,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
           <div>
             <div className="route-nav">
               <div className="route-nav-link">
-                <div>ZNS</div>
+                {/* <div>ZNS</div> */}
                 <Link className="route-nav-text" to={'/'}>
                   0::/
                 </Link>

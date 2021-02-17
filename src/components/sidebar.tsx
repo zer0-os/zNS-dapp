@@ -67,30 +67,24 @@ const Sidebar: FC = () => {
         <div className="icons">
           <div className="iconRow">
             <div
+              onClick={() => setSideToggle('domain')}
               className={`sbimgContainer ${
                 sideToggle === 'domain' ? 'selectedSideBar' : null
               }`}
             >
               {' '}
-              <img
-                onClick={() => setSideToggle('domain')}
-                src={sideToggle === 'domain' ? tvSelect : tv}
-                alt=""
-              />
+              <img src={sideToggle === 'domain' ? tvSelect : tv} alt="" />
             </div>
           </div>
           <div className="iconRow">
             <div
+              onClick={() => setSideToggle('global')}
               className={`sbimgContainer ${
                 sideToggle === 'global' ? 'selectedSideBar' : null
               }`}
             >
               {' '}
-              <img
-                onClick={() => setSideToggle('global')}
-                src={sideToggle === 'global' ? feedSelect : feed}
-                alt=""
-              />
+              <img src={sideToggle === 'global' ? feedSelect : feed} alt="" />
             </div>
           </div>
           {/* <div className="iconRow">
