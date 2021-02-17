@@ -12,6 +12,7 @@ import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import '../../css/subdomains.scss';
 import TableImage from '../table-image';
+import NFTImage from './nft-image';
 interface NestedProps {
   domain: string;
 }
@@ -96,7 +97,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
             position: 'relative',
             margin: 0,
             padding: 0,
-            border: '2px solid red',
+            // border: '2px solid red',
           }}
           bodyStyle={{ height: '80vh' }}
           closeIcon={null}
@@ -111,40 +112,94 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
             <div className="leftRightContainer">
               <div className="left-container">
                 <div className="nft-img">
-                  <TableImage domain={_domain} />
+                  <NFTImage domain={_domain} />
                 </div>
                 <div className="nftImageInfo">
-                  <div className="eth-address-d">
-                    <div>ETH</div> {domain.value.controller}
-                  </div>
-
-                  <div className="route-nav">
-                    <div className="route-nav-link">
-                      <div>ZNS</div>
-                      <Link className="route-nav-text" to={'/'}>
-                        0::/
-                      </Link>
+                  <div className="nftStamp"></div>
+                  <div className="nftAddress">
+                    <div className="eth-address-d nftInfoRow">
+                      <div className="nftInfoTag">
+                        <span className="nftInfoTagText">ETH</span>
+                      </div>{' '}
+                      <span className="nftDomain">
+                        <span className="grayNFTText">
+                          {domain.value.controller.slice(0, 2)}
+                        </span>
+                        {domain.value.controller.slice(2)}
+                      </span>
                     </div>
-                    {routes.map(([key, path], i) => (
-                      <div className="route-nav-link">
-                        <Link className="route-nav-text-sub" to={path}>
-                          {key}
-                          {i < routes.length - 1 && '.'}
+
+                    <div className="route-nav nftInfoRow">
+                      <div className="route-nav-preface">
+                        <div className="nftInfoTag">
+                          <span className="nftInfoTagText">ZNS</span>
+                        </div>
+                        <Link className="route-nav-0" to={'/'}>
+                          0::/
                         </Link>
                       </div>
-                    ))}
+                      <div className="link-text-container">
+                        {routes.map(([key, path], i) => (
+                          <span className="route-nav-link">
+                            <Link className="route-nav-text-sub" to={path}>
+                              {key}
+                              {i < routes.length - 1 && '.'}
+                            </Link>
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div className="right-container">
-                <h1 className="nft-title">TITLE</h1>
-                <div className="creator-title">CREATOR</div>
-                <div className="desc-f">DESCRIPTON FORM</div>
-                <div className="purch-btn">PURCHACE BUTTON</div>
-                <div className="price-time">PRICE 1</div>
-                <div className="price-current">PRICE 2</div>
-                <div className="btm-graph">GRAPH</div>
+                <div className="rightTopNFT">
+                  <div className="rightTopNFTLeft">
+                    <div className="title">
+                      <div className="nftName">name</div>
+                      <div className="nftType">type</div>
+                    </div>
+                    <div className="artistInfo">
+                      <div className="artistIMG">img</div>
+                      <div className="artist">
+                        <span className="by">by</span> Artist
+                      </div>
+                    </div>
+                  </div>
+                  <div className="rightTopNFTRight">
+                    <div className="purchase">
+                      <button>purchase</button>
+                    </div>
+                    <div className="lastprice">last price</div>
+                    <div className="change">%change</div>
+                  </div>
+                </div>
+                <div className="rightMiddleNFT">
+                  <div className="descriptionTitle">DESCRIPTION</div>
+                  <div className="description">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Error cumque reprehenderit nobis sint vel temporibus
+                    praesentium, provident perspiciatis nihil harum quidem
+                    molestiae saepe recusandae aut ad quaerat illo ut ipsa.
+                  </div>
+                  <div className="readmore">Read More</div>
+                </div>
+                <div className="rightGraphBarNFT">
+                  <div className="leftAlign">
+                    <div>Performance</div>
+                    <div>Collectors</div>
+                    <div>Price History</div>
+                    <div>Tx History</div>
+                  </div>
+                  <div className="rightAlign">
+                    <span className="numComments">33</span>
+                    <span className="comments">Comments</span>
+                  </div>
+                </div>
+                <div className="rightGraphNFT">
+                  <div className="graph"></div>
+                </div>
               </div>
             </div>
           </div>

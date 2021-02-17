@@ -1,11 +1,12 @@
 import React, { FC, useState, useEffect, useCallback } from 'react';
-import { useDomainCache } from '../../lib/useDomainCache';
+import { useDomainCache } from '../../../lib/useDomainCache';
+import '../../css/nft-view.scss';
 
-interface TableImageProps {
+interface NFTImageProps {
   domain: string;
 }
 
-const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
+const NFTImage: FC<NFTImageProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
@@ -22,10 +23,10 @@ const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
   if (domain.isNothing()) return null;
   return (
     <>
-      <div className="domainImageContainer">
+      <div className="NFTImageContainer">
         <img
           onLoad={_onLoad}
-          className={`domainImage ${loadedIMG}`}
+          className={`NFTImage ${loadedIMG}`}
           src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
           alt=""
         />
@@ -34,4 +35,4 @@ const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
     </>
   );
 };
-export default TableImage;
+export default NFTImage;
