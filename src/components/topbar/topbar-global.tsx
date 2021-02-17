@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Route, useLocation } from 'react-router-dom';
 import Owned from './shop/owned';
 import { Layout, Menu, Modal } from 'antd';
 import Wallet from './wallet';
@@ -16,6 +16,8 @@ import NFTview from '../table/NFT-View/nft-view';
 import Create from '../table/create';
 import SetImage from '../table/forms/set-image';
 import Shop from './shop/shop';
+import { domainToASCII } from 'url';
+import { any, string } from 'zod';
 
 interface TopbarProps {
   domain: string;
@@ -39,7 +41,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
-
   const [connect, setConnect] = useState(false);
   const [isWalletVisible, setWalletVisible] = useState(false);
   const [isShopVisible, setShopVisible] = useState(false);
@@ -67,6 +68,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     setShopVisible(false);
   };
 
+  if (domain.isNothing()) return null;
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -78,23 +80,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           )}
           alt=""
         />
-
-        <div className="route-nav">
-          <div className="route-nav-link">
-            <div>ZNS</div>
-            <Link className="route-nav-text" to={'/'}>
-              0::/
-            </Link>
-          </div>
-          {routes.map(([key, path], i) => (
-            <div className="route-nav-link">
-              <Link className="route-nav-text-sub" to={path}>
-                {key}
-                {i < routes.length - 1 && '.'}
-              </Link>
-            </div>
-          ))}
-        </div>
       </div>
       <div className="search-bar">
         <input className="search-bar-input" type="text" placeholder="Search" />
