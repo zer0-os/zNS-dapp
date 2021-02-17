@@ -214,9 +214,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
 
           <TabPane tab="NFTs You've Made" key="3">
             <div className="listOut">
-              <div>MAYBE A TABLE?</div>
-
-              <Outgoing />
+              <div className="gridContainer-profile">{cells}</div>
             </div>
           </TabPane>
           <TabPane
