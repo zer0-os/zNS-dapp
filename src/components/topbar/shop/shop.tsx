@@ -88,7 +88,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         : _.map(domain.value.owner, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
-            NFT: key,
+            NFT: 'n/a',
             Owner: 'n/a',
             Offer: 'N/A',
             Date: 'N/A',
