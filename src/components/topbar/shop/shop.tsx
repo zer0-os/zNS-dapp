@@ -100,9 +100,8 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
           position: 'relative',
           margin: 0,
           padding: 0,
-          overflow: 'hidden',
         }}
-        bodyStyle={{ height: '80vh' }}
+        bodyStyle={{ height: '90vh' }}
         closeIcon={null}
         width={'400vw'}
         centered
@@ -114,10 +113,14 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         <Tabs
           defaultActiveKey="1"
           size={size}
-          style={{ marginBottom: 32 }}
+          style={{ marginBottom: 32, overflow: 'auto' }}
           tabPosition={'left'}
         >
-          <TabPane tab="NFTs You Own" key="1" style={{ overflowY: 'scroll' }}>
+          <TabPane
+            tab="NFTs You Own"
+            key="1"
+            style={{ overflow: 'auto', height: '80vh' }}
+          >
             <div className="gridContainer-profile">{cells}</div>
             {/* <div>
               {owned.value.map((control) => {
@@ -176,8 +179,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             </div>
           </TabPane>
         </Tabs>
-
-        {console.log('OWNED ', owned)}
       </Modal>
     </>
   );

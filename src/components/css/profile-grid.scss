@@ -4,15 +4,15 @@
   background: none;
   width: 100%;
   margin-top: 25px;
-  overflow-y: scroll;
+  overflow: auto;
 
   //testing
   // border: 5px black solid;
   // color: yellow;
   //
   display: inline-grid;
-  grid-template-columns: repeat(2, 1fr);
-  overflow-y: scroll;
+  grid-template-columns: repeat(3, 0.5fr);
+  overflow: hidden;
   scroll-behavior: smooth;
 
   .Cellgrid {
