@@ -79,25 +79,22 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           alt=""
         />
 
-        <div className="route-nav-link">
-          <Link className="route-nav-text" to={'/'}>
-            0::
-            {domain.isJust() ? (
-              <span className="route-nav-root">{domain.value.domain}</span>
-            ) : null}
-            /
-          </Link>
-        </div>
-
-        {/* not needed: topbar-global is only ROOT */}
-        {/* {routes.map(([key, path], i) => (
+        <div className="route-nav">
           <div className="route-nav-link">
-            <Link to={path}>
-              {key}
-              {i < routes.length - 1 && '.'}
+            <div>ZNS</div>
+            <Link className="route-nav-text" to={'/'}>
+              0::/
             </Link>
           </div>
-        ))} */}
+          {routes.map(([key, path], i) => (
+            <div className="route-nav-link">
+              <Link className="route-nav-text-sub" to={path}>
+                {key}
+                {i < routes.length - 1 && '.'}
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="search-bar">
         <input className="search-bar-input" type="text" placeholder="Search" />

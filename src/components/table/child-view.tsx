@@ -61,6 +61,17 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
 
+  const routes = _.transform(
+    location.pathname
+      .substr(1)
+      .split('.')
+      .filter((s) => s !== ''),
+    (acc: [string, string][], val, i) => {
+      let next = 0 < i ? acc[i - 1][1] + '.' + val : val;
+      acc.push([val, next]);
+    },
+  );
+
   useEffect(() => {
     console.log('ChildView', domain);
   }, [domain]);
@@ -143,7 +154,24 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
 
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">
-          <div>Discover</div>
+          <div>
+            <div className="route-nav">
+              <div className="route-nav-link">
+                <div>ZNS</div>
+                <Link className="route-nav-text" to={'/'}>
+                  0::/
+                </Link>
+              </div>
+              {routes.map(([key, path], i) => (
+                <div className="route-nav-link">
+                  <Link className="route-nav-text-sub" to={path}>
+                    {key}
+                    {i < routes.length - 1 && '.'}
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
           <div className="subdomainsButtonSortContainer">
             <div className="subdomainsButtonSortLeft">
               <div className="sdbslItem sdbslItemSelected">
