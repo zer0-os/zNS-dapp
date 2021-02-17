@@ -83,7 +83,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
 
         <div className="route-nav">
           <div className="route-nav-link">
-            <div>ZNS</div>
             <Link className="route-nav-text" to={'/'}>
               0::/
             </Link>
