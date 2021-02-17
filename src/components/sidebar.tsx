@@ -13,8 +13,10 @@ import downarrow from './css/img/down-arrow.png';
 import nightmoon from './css/img/night-moon-2.png';
 import NFTview from './table/NFT-View/nft-view';
 import galaxycircle from './css/img/galaxy-small-borderless.svg';
-import feed from './css/img/feed.png';
+import feedSelect from './css/img/feed.png';
+import tvSelect from './css/img/tv-button-borderless-blue.png';
 import tv from './css/img/tv-button-borderless.png';
+import feed from './css/img/feedgrey.png';
 import geopin from './css/img/geo-pin.png';
 import elon from './css/img/elon.jpg';
 
@@ -39,6 +41,7 @@ const Sidebar: FC = () => {
 
   const [connect, setConnect] = useState(false);
   const [isWalletVisible, setWalletVisible] = useState(false);
+  const [sideToggle, setSideToggle] = useState('domain');
 
   const onClick = () => {
     setConnect(!connect);
@@ -63,15 +66,31 @@ const Sidebar: FC = () => {
         </div> */}
         <div className="icons">
           <div className="iconRow">
-            <div className="sbimgContainer">
+            <div
+              className={`sbimgContainer ${
+                sideToggle === 'domain' ? 'selectedSideBar' : null
+              }`}
+            >
               {' '}
-              <img src={tv} alt="" />
+              <img
+                onClick={() => setSideToggle('domain')}
+                src={sideToggle === 'domain' ? tvSelect : tv}
+                alt=""
+              />
             </div>
           </div>
           <div className="iconRow">
-            <div className="sbimgContainer">
+            <div
+              className={`sbimgContainer ${
+                sideToggle === 'global' ? 'selectedSideBar' : null
+              }`}
+            >
               {' '}
-              <img src={feed} alt="" />
+              <img
+                onClick={() => setSideToggle('global')}
+                src={sideToggle === 'global' ? feedSelect : feed}
+                alt=""
+              />
             </div>
           </div>
           {/* <div className="iconRow">
