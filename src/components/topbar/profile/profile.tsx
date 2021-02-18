@@ -60,10 +60,16 @@ const Profile: FC = () => {
             <div className="header-container">
               <header className="profile-title profile-row">Profile</header>
             </div>
+
             <div className="profile-center-container">
-              <div className="profile-img">image</div>
-              <div className="profile-des"> description </div>
+              <div className="img-container">
+                <div className="profile-img">image</div>
+              </div>
+              <div className="des-container">
+                <div className="profile-des"> description </div>
+              </div>
             </div>
+
             <div className="footer-container">
               <footer className="profile-clipboard">
                 <div className="footer-container">

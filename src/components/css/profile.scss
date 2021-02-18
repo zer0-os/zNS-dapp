@@ -40,14 +40,23 @@
   }
 
   .profile-center-container {
+    display: flex;
     border: 4px orange solid;
     height: 40vh;
+    justify-content: center;
+    justify-content: space-between;
   }
 
-  .profile-center {
+  .img-container {
     display: flex;
+    border: 4px solid yellow;
+    justify-content: start;
+  }
 
-    margin-top: 100px;
+  .des-container {
+    border: 4px solid grey;
+    align-self: center;
+    justify-items: center;
   }
 
   .profile-clipboard {
