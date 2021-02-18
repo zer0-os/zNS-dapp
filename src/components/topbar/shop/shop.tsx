@@ -47,18 +47,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     },
   );
 
-  const outgoingApprovals = owned.isJust()
-    ? owned.value.filter((control) => {
-        return control.approval.isJust();
-      })
-    : null;
-
-  // const outgoingData = useMemo(
-  //   () =>
-  //     owned.isNothing() ? [] : owned.value.filter((d) => d.approval.isJust()),
-  //   [owned],
-  // );
-
   const showShop = () => {
     setShopVisible(true);
   };
