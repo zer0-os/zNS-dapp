@@ -8,6 +8,7 @@ import {
   domainCacheContext,
   useDomainCache,
 } from '../../../lib/useDomainCache';
+import { domain } from 'process';
 
 const Owned: FC = () => {
   const context = useWeb3React<Web3Provider>();
@@ -17,11 +18,38 @@ const Owned: FC = () => {
 
   const { owned } = useDomainCache();
 
+  const gridCell = () => {
+    return (
+      <div className="Cellgrid">
+        <div className="Topcell"> </div>
+        <div className="Bottomcell">
+          <div className="TextTopcell"></div>
+          <div className="TextMiddlecell">ticker</div>
+          <div className="TextBottomcell">
+            <span>Left</span>
+            <span>Right</span>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const cells: any = [];
+  cells.push(gridCell());
+  cells.push(gridCell());
+  cells.push(gridCell());
+  cells.push(gridCell());
+  cells.push(gridCell());
+  cells.push(gridCell());
+  cells.push(gridCell());
+  cells.push(gridCell());
+
   if (owned.isNothing()) return <p>User owns no domains.</p>;
 
   return (
     <>
-      <div>
+      <div className="gridContainer-profile">{cells}</div>
+      {/* <div>
         {console.log('OWNED ', owned)}
         {owned.value.map((control) => {
           return (
@@ -35,7 +63,7 @@ const Owned: FC = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </>
   );
 };

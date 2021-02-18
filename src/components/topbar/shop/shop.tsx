@@ -119,7 +119,8 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             key="1"
             style={{ overflow: 'auto', height: '80vh' }}
           >
-            <div className="gridContainer-profile">{cells}</div>
+            {/* <div className="gridContainer-profile">{cells}</div> */}
+            <Owned />
             {/* <div>
               {owned.value.map((control) => {
                 return (
@@ -152,7 +153,11 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
           >
             <Outgoing />
           </TabPane>
-          <TabPane tab="Offers Made To You" key="4">
+          <TabPane
+            tab="Offers Made To You"
+            key="4"
+            style={{ overflow: 'auto', height: '80vh' }}
+          >
             <div>
               <h1>
                 Incoming Approvals:{' '}
@@ -167,6 +172,16 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             </div>
           </TabPane>
         </Tabs>
+
+        <button
+          style={{
+            color: 'black',
+            marginBottom: '200px',
+            overflow: 'auto',
+          }}
+        >
+          Press Me
+        </button>
       </Modal>
     </>
   );
