@@ -28,6 +28,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const location = useLocation();
+  const [graphButton, setGraphButton] = useState('performance');
 
   const routes = _.transform(
     location.pathname
@@ -168,9 +169,15 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                     </div>
                   </div>
                   <div className="rightTopNFTRight">
-                    <div className="purchase">purchase</div>
-                    <div className="lastprice">last price</div>
-                    <div className="change">%change</div>
+                    <div className="purchase">Purchase</div>
+                    <div className="lastprice">
+                      <div>Last Price</div>
+                      <div className="lastPriceText">$101.33</div>
+                    </div>
+                    <div className="change">
+                      <div>% Change</div>
+                      <div className="changeText">+36.09%</div>
+                    </div>
                   </div>
                 </div>
                 <div className="rightMiddleNFT">
@@ -185,12 +192,45 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                 </div>
                 <div className="rightGraphBarNFT">
                   <div className="leftAlign">
-                    <div>Performance</div>
-                    <div>Collectors</div>
-                    <div>Price History</div>
-                    <div>Tx History</div>
+                    <div
+                      onClick={() => setGraphButton('performance')}
+                      className={`${
+                        graphButton === 'performance' ? 'selectedItem' : null
+                      }`}
+                    >
+                      Performance
+                    </div>
+                    <div
+                      onClick={() => setGraphButton('collectors')}
+                      className={`${
+                        graphButton === 'collectors' ? 'selectedItem' : null
+                      }`}
+                    >
+                      Collectors
+                    </div>
+                    <div
+                      onClick={() => setGraphButton('price')}
+                      className={`${
+                        graphButton === 'price' ? 'selectedItem' : null
+                      }`}
+                    >
+                      Price History
+                    </div>
+                    <div
+                      onClick={() => setGraphButton('tx')}
+                      className={`${
+                        graphButton === 'tx' ? 'selectedItem' : null
+                      }`}
+                    >
+                      Tx History
+                    </div>
                   </div>
-                  <div className="rightAlign">
+                  <div
+                    onClick={() => setGraphButton('comments')}
+                    className={`rightAlign ${
+                      graphButton === 'comments' ? 'selectedItem' : null
+                    }`}
+                  >
                     <span className="numComments">33</span>
                     <span className="comments">Comments</span>
                   </div>
