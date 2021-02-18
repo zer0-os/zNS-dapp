@@ -15,28 +15,12 @@ import TableImage from '.././../table/table-image';
 import '../../css/profile.scss';
 import Outgoing from './outGoingApproval';
 import { Column, useTable, useFlexLayout } from 'react-table';
+import Owned from './owned';
 
 const { TabPane } = Tabs;
 
 interface ShopProps {
   domain: string;
-}
-
-interface NFTRowProps {
-  id: number;
-  domain: string;
-}
-interface NFTColumnProps {
-  key: number;
-  name: string;
-}
-
-interface NftData {
-  '#': string;
-  NFT: any;
-  Owner: string;
-  Offer: string;
-  Date: string;
 }
 
 const Shop: FC<ShopProps> = ({ domain: _domain }) => {
@@ -69,6 +53,12 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
       })
     : null;
 
+  // const outgoingData = useMemo(
+  //   () =>
+  //     owned.isNothing() ? [] : owned.value.filter((d) => d.approval.isJust()),
+  //   [owned],
+  // );
+
   const showShop = () => {
     setShopVisible(true);
   };
@@ -80,60 +70,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const shopCancel = () => {
     setShopVisible(false);
   };
-
-  const dataInput: NftData[] = useMemo(
-    () =>
-      domain.isNothing()
-        ? []
-        : _.map(domain.value.owner, (key, i) => ({
-            '#': i.toString(),
-            // asset: <Profile domain={key} />,
-            NFT: 'n/a',
-            Owner: 'n/a',
-            Offer: 'N/A',
-            Date: 'N/A',
-          })),
-    [domain],
-  );
-
-  const data = useMemo<NftData[]>(() => dataInput, [dataInput]);
-  const columns = React.useMemo<Column<NftData>[]>(
-    () => [
-      {
-        Header: '#',
-        accessor: '#',
-      },
-      {
-        Header: 'NFT',
-        accessor: 'NFT',
-      },
-      {
-        Header: 'Owner',
-        accessor: 'Owner',
-      },
-
-      {
-        Header: 'Offer',
-        accessor: 'Offer',
-      },
-      {
-        Header: 'Date',
-        accessor: 'Date',
-      },
-    ],
-    [],
-  );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns,
-    data,
-  });
 
   const gridCell = () => {
     return (
@@ -226,77 +162,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             key="2"
             style={{ overflow: 'auto', height: '80vh' }}
           >
-            <div>
-              <div className="tableContainer">
-                <table {...getTableProps()} className="subdomainsTable">
-                  {rows.length === 0 ? null : (
-                    <thead className="subdomainsHeaderGroupGlobal">
-                      {
-                        // Loop over the header rows
-                        headerGroups.map((headerGroup) => (
-                          // Apply the header row props
-                          <tr
-                            className="subdomainsHeaderTR"
-                            {...headerGroup.getHeaderGroupProps()}
-                          >
-                            {
-                              // Loop over the headers in each row
-                              headerGroup.headers.map((column) => (
-                                // Apply the header cell props
-                                <th
-                                  className="subdomainsHeaderTH"
-                                  {...column.getHeaderProps()}
-                                >
-                                  {
-                                    // Render the header
-                                    column.render('Header')
-                                  }
-                                </th>
-                              ))
-                            }
-                          </tr>
-                        ))
-                      }
-                    </thead>
-                  )}
-                  {/* Apply the table body props */}
-                  <tbody {...getTableBodyProps()}>
-                    {console.log('ROWS', rows)}
-                    {
-                      // Loop over the table rows
-                      rows.map((row) => {
-                        // Prepare the row for display
-                        prepareRow(row);
-                        return (
-                          // Apply the row props
-                          <tr>
-                            {
-                              // Loop over the rows cells
-                              row.cells.map((cell) => {
-                                // Apply the cell props
-                                return (
-                                  <td
-                                    className="tdGlobal"
-                                    {...cell.getCellProps()}
-                                  >
-                                    {
-                                      // Render the cell contents
-                                      cell.render('Cell')
-                                    }
-                                  </td>
-                                );
-                              })
-                            }
-                          </tr>
-                        );
-                      })
-                    }
-                  </tbody>
-                </table>
-              </div>
-              <br />
-              <br />
-            </div>
+            <Outgoing />
           </TabPane>
           <TabPane tab="Offers Made To You" key="4">
             <div>
