@@ -12,7 +12,7 @@ import Approve from '../../table/NFT-View/approval';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import TableImage from '.././../table/table-image';
-import '../../css/profile.scss';
+import '../../css/shop.scss';
 import Outgoing from './outGoingApproval';
 import { Column, useTable, useFlexLayout } from 'react-table';
 import Owned from './owned';

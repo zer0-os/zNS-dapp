@@ -116,9 +116,8 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         </button>
         <button className="create-network">
           <span style={{ width: '20px' }}></span>
-          <div>MINT NFT</div>
+          MINT NFT
           <span style={{ width: '16px' }}></span>
-          <img src={downarrow} alt="" />
           <span style={{ width: '16px' }}></span>
         </button>
         <img src={elon} alt="" className="profilepic" />
