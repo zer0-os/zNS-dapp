@@ -1,5 +1,9 @@
 @import './color-variables.scss';
 
+.topbarBackgroundFade {
+  background-color: rgba(20, 20, 20, 0.9) !important;
+}
+
 .topbarContainer {
   z-index: 20;
   position: fixed;
@@ -12,12 +16,12 @@
   width: 100vw;
   max-width: 100vw;
   height: 110px;
-  background: rgb(20, 20, 20);
-  background: linear-gradient(
-    0deg,
-    rgba(20, 20, 20, 0.66) 0%,
-    rgba(20, 20, 20, 1) 100%
-  );
+  background-color: none;
+  -webkit-transition: background-color 0.5s ease-in-out;
+  -moz-transition: background-color 0.5s ease-in-out;
+  -ms-transition: background-color 0.5s ease-in-out;
+  -o-transition: background-color 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out;
 
   .test-container {
     display: flex;
@@ -113,7 +117,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-right: 15px;
+    margin-right: 35px;
 
     .shop-btn {
       display: flex;
