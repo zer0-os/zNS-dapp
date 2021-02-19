@@ -127,11 +127,11 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           <Shop domain={_domain} />
           {/* <Stakingview domain={_domain} /> */}
         </div>
-
-        <button className="connect-btn" onClick={showWallet}>
-          {' '}
-          {active ? 'Connected' : 'Connect'}{' '}
-        </button>
+        {/* <button className="connect-btn" onClick={showWallet}> */}{' '}
+        <div className="connect-btn">
+          {''}
+          {active ? 'Connected' : 'Connect'} {/* </button> */}
+        </div>
         <button
           className="create-network"
           onClick={active ? showStaking : showWallet}
@@ -148,7 +148,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             </div>
           ) : null}
         </div>
-
         {/* <img src={elon} alt="" className="profilepic" /> */}
       </div>
 

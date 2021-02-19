@@ -207,17 +207,6 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
 
         <TableViewGlobal domain={domain.value.domain} gridView={gridView} />
 
-        {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
-          <>
-            <div>
-              <Create
-                domainId={domain.value.id}
-                domainContext={domainContext}
-              />
-              <SetImage domain={domain.value.domain} />
-            </div>
-          </>
-        ) : null}
         {/* // apply the table props */}
       </div>
     </div>
