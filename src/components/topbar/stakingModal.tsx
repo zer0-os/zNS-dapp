@@ -7,14 +7,17 @@ import { useDomainStore } from '../../lib/useDomainStore';
 import { Modal, Button } from 'antd';
 import Create from '../table/create';
 import { Link, useLocation } from 'react-router-dom';
+import { Menu, Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import _ from 'lodash';
-import '../../css/subdomains.scss';
+import SetImage from '../table/forms/set-image';
+const { SubMenu } = Menu;
 
 interface NestedProps {
   domain: string;
 }
 
-const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
+const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
   const [isProfileVisible, setProfileVisible] = useState(true);
@@ -73,6 +76,15 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
     setProfileVisible(false);
   };
 
+  const menu = (
+    <Menu>
+      <Menu.ItemGroup>
+        <Menu.Item>Wild Token</Menu.Item>
+        <Menu.Item>Ethereum</Menu.Item>
+        <Menu.Item>Infinity</Menu.Item>
+      </Menu.ItemGroup>
+    </Menu>
+  );
   //
 
   //
@@ -82,7 +94,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
       <>
         {domain.isJust() && (
           <button className="nft-btn" onClick={showProfile}>
-            Create NFT
+            Mint NFT
           </button>
         )}
         <Modal
@@ -90,19 +102,37 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
             position: 'relative',
             margin: 0,
             padding: 0,
+            color: 'black',
             // border: '2px solid red',
           }}
           bodyStyle={{ height: '80vh' }}
-          closeIcon={null}
           centered
           width={'80vw'}
           visible={isProfileVisible}
           onOk={profileOk}
           onCancel={profileCancel}
           footer={null}
-        ></Modal>
+        >
+          <form>
+            <SetImage domain={domain.value.domain} />
+            <div>Title</div>
+            <input placeholder="Title"></input>
+            <div>Story</div>
+            <input placeholder="Story"></input>
+            <div>Your Bid</div>
+            <input placeholder="Your Bid"></input>
+            <Dropdown overlay={menu}>
+              <a
+                className="ant-dropdown-link"
+                onClick={(e) => e.preventDefault()}
+              >
+                Cascading menu <DownOutlined />
+              </a>
+            </Dropdown>
+          </form>
+        </Modal>
       </>
     </>
   );
 };
-export default Nestedview;
+export default Stakingview;

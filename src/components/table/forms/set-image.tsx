@@ -78,43 +78,24 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
 
   return (
     <>
-      <button
-        className="owned-btn"
-        style={{ color: 'white' }}
-        onClick={showSetImage}
-      >
-        Set image
-      </button>
-
-      <Modal
-        title="Set Image"
-        visible={isSetImageVisible}
-        // onOk={profileOk}
-        onCancel={hideSetImage}
-        footer={null}
-      >
-        {domain.isJust() && (
-          <>
-            <img
-              style={{ height: '10%', width: '10%' }}
-              src={domain.value.image.replace(
-                'ipfs://',
-                'https://ipfs.io/ipfs/',
-              )}
-            />
-            <form
-              onSubmit={handleSubmit(({ image, url }) =>
-                url ? _setImage(url) : uploadAndSetImage(image),
-              )}
-            >
-              <div className="create-button">
-                <button type="submit">Set domain image</button>
-                <input name={'image'} type="file" ref={register} />
-              </div>
-            </form>
-          </>
-        )}
-      </Modal>
+      {domain.isJust() && (
+        <>
+          <img
+            style={{ height: '10%', width: '10%' }}
+            src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+          />
+          <form
+            onSubmit={handleSubmit(({ image, url }) =>
+              url ? _setImage(url) : uploadAndSetImage(image),
+            )}
+          >
+            <div className="create-button">
+              <button type="submit">Set domain image</button>
+              <input name={'image'} type="file" ref={register} />
+            </div>
+          </form>
+        </>
+      )}
     </>
   );
 };
