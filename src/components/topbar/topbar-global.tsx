@@ -104,8 +104,8 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       </div>
       <div className="topbarRight">
         <div className="shop-btn">
-          {/* <Shop domain={_domain} /> */}
-          <Stakingview domain={_domain} />
+          <Shop domain={_domain} />
+          {/* <Stakingview domain={_domain} /> */}
         </div>
         {active && (
           <div className="profile-btn">

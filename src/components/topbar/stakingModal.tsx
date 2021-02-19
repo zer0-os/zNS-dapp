@@ -113,23 +113,25 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
           onCancel={profileCancel}
           footer={null}
         >
-          <form>
-            <SetImage domain={domain.value.domain} />
-            <div>Title</div>
-            <input placeholder="Title"></input>
-            <div>Story</div>
-            <input placeholder="Story"></input>
-            <div>Your Bid</div>
-            <input placeholder="Your Bid"></input>
-            <Dropdown overlay={menu}>
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                Cascading menu <DownOutlined />
-              </a>
-            </Dropdown>
-          </form>
+          <div>
+            <form>
+              <SetImage domain={domain.value.domain} />
+              <div>Title</div>
+              <input placeholder="Title"></input>
+              <div>Story</div>
+              <input placeholder="Story"></input>
+              <div>Your Bid</div>
+              <input placeholder="Your Bid"></input>
+              <Dropdown overlay={menu}>
+                <a
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  CURRENCY <DownOutlined />
+                </a>
+              </Dropdown>
+            </form>
+          </div>
         </Modal>
       </>
     </>
