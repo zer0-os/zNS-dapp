@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
 import Owned from './topbar/shop/owned';
-import { Layout, Menu, Modal } from 'antd';
+import { Layout, Menu, Modal, Tooltip } from 'antd';
 import Wallet from './topbar/wallet';
 import './css/sidebar.scss';
 import Profile from './topbar/profile/profile';
@@ -27,6 +27,10 @@ const Sidebar: FC = () => {
   //   const domainContext = useDomain(_domain);
   //   const { domain } = domainContext;
   const location = useLocation();
+
+  const text2 = <span style={{ color: '#fff' }}>Discover</span>;
+  const text1 = <span style={{ color: '#fff' }}>Directory</span>;
+  const bright = 'rgb(145, 85, 230)';
 
   const routes = _.transform(
     location.pathname
@@ -66,26 +70,40 @@ const Sidebar: FC = () => {
         </div> */}
         <div className="icons">
           <div className="iconRow">
-            <div
-              onClick={() => setSideToggle('domain')}
-              className={`sbimgContainer ${
-                sideToggle === 'domain' ? 'selectedSideBar' : null
-              }`}
+            <Tooltip
+              color={bright}
+              className="tt"
+              placement="right"
+              title={text1}
             >
-              {' '}
-              <img src={sideToggle === 'domain' ? tvSelect : tv} alt="" />
-            </div>
+              <div
+                onClick={() => setSideToggle('domain')}
+                className={`sbimgContainer ${
+                  sideToggle === 'domain' ? 'selectedSideBar' : null
+                }`}
+              >
+                {' '}
+                <img src={sideToggle === 'domain' ? tvSelect : tv} alt="" />
+              </div>
+            </Tooltip>
           </div>
           <div className="iconRow">
-            <div
-              onClick={() => setSideToggle('global')}
-              className={`sbimgContainer ${
-                sideToggle === 'global' ? 'selectedSideBar' : null
-              }`}
+            <Tooltip
+              color={bright}
+              className="tt"
+              placement="right"
+              title={text2}
             >
-              {' '}
-              <img src={sideToggle === 'global' ? feedSelect : feed} alt="" />
-            </div>
+              <div
+                onClick={() => setSideToggle('global')}
+                className={`sbimgContainer ${
+                  sideToggle === 'global' ? 'selectedSideBar' : null
+                }`}
+              >
+                {' '}
+                <img src={sideToggle === 'global' ? feedSelect : feed} alt="" />
+              </div>
+            </Tooltip>
           </div>
           {/* <div className="iconRow">
             <div className="sbimgContainer">
