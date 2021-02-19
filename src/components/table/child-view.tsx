@@ -206,18 +206,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
 
         <TableView domain={domain.value.domain} gridView={gridView} />
 
-        {account?.toLowerCase() === domain.value.owner.toLowerCase() ? (
-          <>
-            <div>
-              <NFTview domain={domain.value.domain} />
-              <Create
-                domainId={domain.value.id}
-                domainContext={domainContext}
-              />
-              <SetImage domain={domain.value.domain} />
-            </div>
-          </>
-        ) : null}
         {/* // apply the table props */}
       </div>
     </div>
