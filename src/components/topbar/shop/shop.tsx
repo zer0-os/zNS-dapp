@@ -97,10 +97,11 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         style={{
           position: 'relative',
           margin: 0,
+          marginBottom: 0,
           padding: 0,
           background: '#E5E5E5',
         }}
-        bodyStyle={{ height: '90vh', background: '#69038D' }}
+        bodyStyle={{ height: '90vh', background: '#69038D', marginBottom: 0 }}
         closeIcon={null}
         width={'400vw'}
         centered
@@ -111,8 +112,14 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
       >
         <Tabs
           defaultActiveKey="1"
-          size={size}
-          style={{ marginBottom: 32, overflow: 'auto', background: '#69038D' }}
+          // size={size}
+          style={{
+            marginBottom: 32,
+            overflow: 'auto',
+            background: '#69038D',
+            height: '75vh',
+            border: '2px solid black',
+          }}
           tabPosition={'left'}
         >
           <TabPane
