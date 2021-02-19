@@ -13,6 +13,7 @@
   .bottomTopContainer {
     position: relative;
     width: 100%;
+    color: #fff;
 
     .header-container {
       // border: 5px blue solid;
@@ -84,6 +85,7 @@
       height: 38%;
       width: 100%;
       background-color: $grayFont;
+      color: black;
       .footer-qr {
         height: 100%;
         display: flex;
@@ -114,7 +116,6 @@
           border-radius: 3px;
           height: 30px;
           background-color: #fff;
-          color: black;
           width: 70%;
           margin-left: auto;
           margin-right: auto;
