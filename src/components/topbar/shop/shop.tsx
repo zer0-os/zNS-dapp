@@ -17,6 +17,7 @@ import Outgoing from './outGoingApproval';
 import { Column, useTable, useFlexLayout } from 'react-table';
 import Owned from './owned';
 import Claims from './claims';
+import Stakingview from '../stakingModal';
 
 const { TabPane } = Tabs;
 
@@ -176,6 +177,22 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             </div> */}
 
             <Claims />
+          </TabPane>
+          <TabPane
+            tab="Mint NFT"
+            key="5"
+            style={{ overflow: 'auto', height: '80vh' }}
+          >
+            {/* <div>
+              <h1>
+                Incoming Approvals:{' '}
+                {incomingApprovals.isJust()
+                  ? incomingApprovals.value.length
+                  : 0}{' '}
+              </h1>
+            </div> */}
+
+            <Stakingview domain={_domain} />
           </TabPane>
         </Tabs>
 
