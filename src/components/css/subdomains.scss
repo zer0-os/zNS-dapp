@@ -135,9 +135,10 @@ $page-margin: 180px;
             margin-bottom: 15px;
             color: #fff;
             font-size: 14px;
-            text-shadow: $textShadow;
+            text-shadow: 0px 2px 5px rgba(#fff, 0.4);
             span {
               color: $sky-blue;
+              text-shadow: 0px 2px 5px rgba(skyblue, 0.4);
             }
           }
         }
@@ -414,6 +415,7 @@ table {
     // all rows
     tr {
       height: 100px !important;
+      cursor: pointer;
       // every rightmost cell
       & td:last-child {
         border-right: 2px $bright solid;
@@ -434,6 +436,7 @@ table {
       }
       // every leftmost cell
       & td:first-child {
+        text-align: center;
         border-left: 2px $bright solid;
       }
       // every second row

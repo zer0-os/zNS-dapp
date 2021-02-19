@@ -94,14 +94,17 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     `}
     >
       <div className="topbarLeft">
-        <img
-          className="topbarLogo"
-          src={'ipfs://QmS2G8rZiXVhGYuEPxdeFpYnxwbERh1e538MUfXe9Vghw8'.replace(
-            'ipfs://',
-            'https://ipfs.io/ipfs/',
-          )}
-          alt=""
-        />
+        <Link className="" to={'/'}>
+          <img
+            className="topbarLogo"
+            src={'ipfs://QmS2G8rZiXVhGYuEPxdeFpYnxwbERh1e538MUfXe9Vghw8'.replace(
+              'ipfs://',
+              'https://ipfs.io/ipfs/',
+            )}
+            alt=""
+          />
+        </Link>
+
         <div className="route-nav">
           <div className="route-nav-link">
             <Link className="route-nav-text" to={'/'}>

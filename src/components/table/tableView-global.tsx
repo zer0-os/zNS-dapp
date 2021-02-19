@@ -105,6 +105,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              minWidth: '70px',
               height: '70px',
             }}
           >
