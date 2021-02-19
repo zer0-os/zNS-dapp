@@ -16,11 +16,16 @@ import elon from '../../css/img/elon.jpg';
 import '../../css/profile-grid.scss';
 import Owned from '../shop/owned';
 import TableImage from '../../table/table-image';
+import { getAddress } from 'ethers/lib/utils';
+import { Domain } from 'domain';
+import { string } from 'zod';
 const { TabPane } = Tabs;
+let ClipboardButton = require('react-clipboard.js');
 
 const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
   const [isOwnedVisible, setOwnedVisible] = useState(false);
+  const [text, setText] = useState('Copied');
   const [count, setCount] = useState(0);
   const [size, setSize] = useState();
   const contracts = useZnsContracts();
@@ -28,6 +33,8 @@ const Profile: FC = () => {
   const location = useLocation();
 
   const { library, account, active, chainId } = context;
+
+  const dataInput = account;
 
   const showOwner = () => {
     setOwnedVisible(true);
@@ -40,6 +47,14 @@ const Profile: FC = () => {
   const ownerCancel = () => {
     setOwnedVisible(false);
   };
+
+  // const copyFunction = () => {
+  //   let copyAccount = document.getElementById('account');
+  //   copyAccount?.onselect;
+  //   document.execCommand('copy');
+  // };
+
+  if (owned.isNothing()) return null;
 
   return (
     <>
@@ -87,7 +102,14 @@ const Profile: FC = () => {
                 <div className="ethLogo">Eth</div>
                 <div className="footer-text">Your Ethereum Address</div>
                 <div className="footer-address">
-                  <div>0xh$hfjfej*ne8uwe8vhHA8</div>
+                  <div className="eth-btn">
+                    <ClipboardButton
+                      data-clipboard-text={account}
+                      className="btn-43"
+                    >
+                      {account}
+                    </ClipboardButton>
+                  </div>
                 </div>
               </div>
             </div>

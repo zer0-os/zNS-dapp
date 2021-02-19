@@ -16,6 +16,7 @@ import '../../css/shop.scss';
 import Outgoing from './outGoingApproval';
 import { Column, useTable, useFlexLayout } from 'react-table';
 import Owned from './owned';
+import Claims from './claims';
 
 const { TabPane } = Tabs;
 
@@ -158,30 +159,20 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             key="4"
             style={{ overflow: 'auto', height: '80vh' }}
           >
-            <div>
+            {/* <div>
               <h1>
                 Incoming Approvals:{' '}
                 {incomingApprovals.isJust()
                   ? incomingApprovals.value.length
                   : 0}{' '}
               </h1>
-            </div>
+            </div> */}
 
-            <div>
-              <Claim />
-            </div>
+            <Claims />
           </TabPane>
         </Tabs>
 
-        <button
-          style={{
-            color: 'black',
-            marginBottom: '200px',
-            overflow: 'auto',
-          }}
-        >
-          Press Me
-        </button>
+        <button>Press Me</button>
       </Modal>
     </>
   );
