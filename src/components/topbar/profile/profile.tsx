@@ -64,18 +64,22 @@ const Profile: FC = () => {
             <div className="profile-center-container">
               <div className="img-container">
                 <div className="profile-img">image</div>
+                <div className="profile-text">
+                  <div className="profile-name">Name</div>
+                  <div className="profile-url">0::/etc</div>
+                </div>
               </div>
               <div className="des-container">
-                <div className="profile-des"> description </div>
+                <div className="profile-des">
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                  Aliquid ut tempore dolor maiores enim mollitia alias numquam
+                  impedit quas ipsa odit laborum aut temporibus veritatis itaque
+                  omnis sunt, quos vitae?{' '}
+                </div>
               </div>
             </div>
 
-            <div className="footer-container">
-              <footer className="profile-clipboard">
-                <div className="eth-add">holds eth address</div>
-                <button className="clipboard"> copy </button>
-              </footer>
-            </div>
+            <div className="footer-container"></div>
           </div>
         </div>
       </Modal>
