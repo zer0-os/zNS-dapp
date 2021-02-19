@@ -77,11 +77,56 @@
 
     .footer-container {
       display: flex;
-      border: 2px solid white;
+      flex-direction: row;
+      // border: 2px solid black;
       justify-content: center;
       // margin-top: 55px;
       height: 38%;
       width: 100%;
+      background-color: $grayFont;
+      .footer-qr {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        .qr {
+          height: 130px;
+          width: 130px;
+          background-color: #fff;
+        }
+      }
+      .footer-right {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 70%;
+        // border: 2px black solid;
+        .ethLogo {
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .footer-text {
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .footer-address {
+          border-radius: 3px;
+          height: 30px;
+          background-color: #fff;
+          color: black;
+          width: 70%;
+          margin-left: auto;
+          margin-right: auto;
+          text-align: center;
+          vertical-align: middle;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          & > div {
+          }
+        }
+      }
     }
   }
 }

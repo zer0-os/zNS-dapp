@@ -79,7 +79,18 @@ const Profile: FC = () => {
               </div>
             </div>
 
-            <div className="footer-container"></div>
+            <div className="footer-container">
+              <div className="footer-qr">
+                <div className="qr"></div>
+              </div>
+              <div className="footer-right">
+                <div className="ethLogo">Eth</div>
+                <div className="footer-text">Your Ethereum Address</div>
+                <div className="footer-address">
+                  <div>0xh$hfjfej*ne8uwe8vhHA8</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </Modal>
