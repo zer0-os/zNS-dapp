@@ -130,7 +130,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
 
         <button className="connect-btn" onClick={showWallet}>
           {' '}
-          {active ? 'Connected' : 'Connect'}{' '}
+          {active ? 'Connected 🟢' : 'Connect 🔴'}{' '}
         </button>
         <button
           className="create-network"
