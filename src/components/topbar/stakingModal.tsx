@@ -94,6 +94,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
       <>
         <div>
           <form>
+            <Create domainContext={domainContext} domainId={_domain} />
             <SetImage domain={domain.value.domain} />
             <div>Title</div>
             <input placeholder="Title"></input>

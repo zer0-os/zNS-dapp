@@ -71,27 +71,27 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
 
   return (
     <>
-      <button
+      {/* <button
         style={{ color: 'white' }}
         className="owned-btn"
         onClick={showSubdomain}
       >
         Create domain
-      </button>
-      <Modal
+      </button> */}
+      {/* <Modal
         title="subdomain"
         visible={isSubdomainVisible}
         onOk={subdomainOk}
         onCancel={subdomainCancel}
         footer={null}
-      >
-        <form onSubmit={handleSubmit(({ child }) => _create(child))}>
-          <div className="create-button">
-            <button type="submit"> Create Domain</button>
-            <input name={'child'} ref={register} placeholder="child domain" />
-          </div>
-        </form>
-      </Modal>
+      > */}
+      <form onSubmit={handleSubmit(({ child }) => _create(child))}>
+        <div className="create-button">
+          <button type="submit"> Create Domain</button>
+          <input name={'child'} ref={register} placeholder="child domain" />
+        </div>
+      </form>
+      {/* </Modal> */}
     </>
   );
 };
