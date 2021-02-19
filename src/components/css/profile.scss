@@ -12,78 +12,66 @@
 
   .bottomTopContainer {
     position: relative;
-  }
-
-  .header-container {
-    border: 5px blue solid;
-    display: flex;
-    position: relative;
-    justify-content: center;
-    flex-direction: row;
     width: 100%;
-    height: 14%;
-    background-color: $medium;
-  }
 
-  .profile-title {
-    width: 120px;
-    font-size: 26px;
-    margin-top: 20px;
-    background-color: $medium;
-  }
+    .header-container {
+      border: 5px blue solid;
+      display: flex;
+      position: relative;
+      justify-content: center;
+      flex-direction: row;
+      width: 100%;
+      height: 14%;
+      background-color: $medium;
 
-  .profile-row {
-    height: 30%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+      .profile-title {
+        width: 120px;
+        font-size: 26px;
+        margin-top: 20px;
+        background-color: $medium;
+      }
 
-  .profile-center-container {
-    display: flex;
-    border: 4px orange solid;
-    height: 40vh;
-    justify-content: center;
-  }
+      .profile-row {
+        height: 30%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+    .profile-center-container {
+      display: flex;
+      border: 4px orange solid;
+      height: 40vh;
+      justify-content: center;
+      .img-container {
+        display: flex;
+        border: 4px solid yellow;
+        height: 12vh;
+        width: 12vw;
+        justify-content: start;
+        margin-top: 80px;
+        margin-right: 50%;
+        margin-left: 0px;
+      }
 
-  .img-container {
-    display: flex;
-    border: 4px solid yellow;
-    height: 12vh;
-    width: 12vw;
-    justify-content: start;
-    margin-top: 80px;
-    margin-right: 50%;
-    margin-left: 0px;
-  }
-
-  .des-container {
-    border: 4px solid grey;
-    width: 500px;
-  }
-
-  .profile-clipboard {
-    border: 4px solid red;
-    width: 49vw;
-    height: 150px;
+      .des-container {
+        border: 4px solid grey;
+        width: 500px;
+      }
+    }
 
     .footer-container {
       display: flex;
       border: 2px solid white;
       justify-content: center;
-      margin-top: 55px;
+      // margin-top: 55px;
+      width: 100%;
+
+      .profile-clipboard {
+        border: 4px solid red;
+        width: 49vw;
+        height: 150px;
+      }
     }
   }
 }
-
-// .profilepic {
-//   width: 200px;
-//   height: 200px;
-
-//   // background-color: white;
-//   margin-right: 40px;
-
-//   // transform: translateY(-20px);
-//   box-shadow: $dropShadow;
-//   cursor: pointer;
-// }

@@ -72,10 +72,8 @@ const Profile: FC = () => {
 
             <div className="footer-container">
               <footer className="profile-clipboard">
-                <div className="footer-container">
-                  <div className="eth-add">holds eth address</div>
-                  <button className="clipboard"> copy </button>
-                </div>
+                <div className="eth-add">holds eth address</div>
+                <button className="clipboard"> copy </button>
               </footer>
             </div>
           </div>
