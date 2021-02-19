@@ -32,6 +32,19 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   const location = useLocation();
 
+  //   useEffect(() => {
+  //     if (window) {
+  //     $(window).on('scroll', function () {
+  //   if ($(window as any).scrollTop() > 50) {
+  //     $('.header').addClass('active');
+  //   } else {
+  //     //remove the background property so it comes transparent again (defined in your css)
+  //     $('.header').removeClass('active');
+  //   }
+  // });
+  //     }
+  //   }
+
   const routes = _.transform(
     location.pathname
       .substr(1)
@@ -107,11 +120,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           {/* <Shop domain={_domain} /> */}
           <Stakingview domain={_domain} />
         </div>
-        {active && (
-          <div className="profile-btn">
-            <Profile />
-          </div>
-        )}
+
         <button className="connect-btn" onClick={showWallet}>
           {' '}
           {active ? 'Connected' : 'Connect'}{' '}
@@ -122,7 +131,15 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           <span style={{ width: '16px' }}></span>
           <span style={{ width: '16px' }}></span>
         </button>
-        <img src={elon} alt="" className="profilepic" />
+        <div style={{ width: '50px' }}>
+          {active ? (
+            <div className="profile-btn">
+              <Profile />
+            </div>
+          ) : null}
+        </div>
+
+        {/* <img src={elon} alt="" className="profilepic" /> */}
       </div>
 
       <Modal

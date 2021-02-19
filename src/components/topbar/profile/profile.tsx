@@ -58,9 +58,7 @@ const Profile: FC = () => {
 
   return (
     <>
-      <button className="owned-btn" onClick={showOwner}>
-        Profile
-      </button>
+      <img src={elon} alt="" className="profilepic" onClick={showOwner} />
 
       <Modal
         visible={isOwnedVisible}
