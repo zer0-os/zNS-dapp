@@ -4,6 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
 import { Link, Route, useLocation } from 'react-router-dom';
+import useScrollPosition from '@react-hook/window-scroll';
 import Owned from './shop/owned';
 import { Layout, Menu, Modal } from 'antd';
 import Wallet from './wallet';
@@ -32,18 +33,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   const location = useLocation();
 
-  //   useEffect(() => {
-  //     if (window) {
-  //     $(window).on('scroll', function () {
-  //   if ($(window as any).scrollTop() > 50) {
-  //     $('.header').addClass('active');
-  //   } else {
-  //     //remove the background property so it comes transparent again (defined in your css)
-  //     $('.header').removeClass('active');
-  //   }
-  // });
-  //     }
-  //   }
+  const scrollY = useScrollPosition(60);
 
   const routes = _.transform(
     location.pathname
@@ -84,7 +74,12 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
 
   if (domain.isNothing()) return null;
   return (
-    <div className="topbarContainer">
+    <div
+      className={`
+    topbarContainer 
+    ${scrollY > 1 && 'topbarBackgroundFade'}
+    `}
+    >
       <div className="topbarLeft">
         <img
           className="topbarLogo"
@@ -94,7 +89,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           )}
           alt=""
         />
-
         <div className="route-nav">
           <div className="route-nav-link">
             <Link className="route-nav-text" to={'/'}>
