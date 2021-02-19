@@ -58,6 +58,19 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const [connect, setConnect] = useState(false);
   const [isWalletVisible, setWalletVisible] = useState(false);
   const [isShopVisible, setShopVisible] = useState(false);
+  const [isStakingVisible, setStakingVisible] = useState(false);
+
+  const showStaking = () => {
+    setStakingVisible(true);
+  };
+
+  const stakingOk = () => {
+    setStakingVisible(false);
+  };
+
+  const stakingCancel = () => {
+    setStakingVisible(false);
+  };
 
   const onClick = () => {
     setConnect(!connect);
@@ -125,7 +138,10 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           {' '}
           {active ? 'Connected' : 'Connect'}{' '}
         </button>
-        <button className="create-network">
+        <button
+          className="create-network"
+          onClick={active ? showStaking : showWallet}
+        >
           <span style={{ width: '20px' }}></span>
           MINT NFT
           <span style={{ width: '16px' }}></span>
@@ -141,6 +157,15 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
 
         {/* <img src={elon} alt="" className="profilepic" /> */}
       </div>
+
+      <Modal
+        visible={isStakingVisible}
+        onOk={stakingOk}
+        onCancel={stakingCancel}
+        footer={null}
+      >
+        <Stakingview domain={_domain} />
+      </Modal>
 
       <Modal
         visible={isWalletVisible}
