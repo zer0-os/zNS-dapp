@@ -85,7 +85,11 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
         : _.map(domain.value.children, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
-            asset: <TableImage domain={key} />,
+            asset: (
+              <div className="domainImageContainer">
+                <TableImage domain={key} />
+              </div>
+            ),
             name: key,
             volume: 'N/A',
             '24Hr': 'N/A',
