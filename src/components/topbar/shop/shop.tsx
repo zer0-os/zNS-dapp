@@ -37,6 +37,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   const { owned, incomingApprovals } = useDomainStore();
   const location = useLocation();
+  const [isStakingVisible, setStakingVisible] = useState(false);
 
   const routes = _.transform(
     location.pathname
@@ -48,6 +49,18 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
+
+  const showStaking = () => {
+    setStakingVisible(true);
+  };
+
+  const stakingOk = () => {
+    setStakingVisible(false);
+  };
+
+  const stakingCancel = () => {
+    setStakingVisible(false);
+  };
 
   const showShop = () => {
     setShopVisible(true);
@@ -196,7 +209,16 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
           </TabPane>
         </Tabs>
 
-        <button>Press Me</button>
+        <button onClick={showStaking}>Press Me</button>
+
+        <Modal
+          visible={isStakingVisible}
+          onOk={stakingOk}
+          onCancel={stakingCancel}
+          footer={null}
+        >
+          <Stakingview domain={_domain} />
+        </Modal>
       </Modal>
     </>
   );
