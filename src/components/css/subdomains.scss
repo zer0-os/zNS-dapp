@@ -85,11 +85,6 @@ $page-margin: 180px;
     scrollbar-width: none;
     &::-webkit-scrollbar {
       height: 0px;
-      // &::before {
-      // 	content: "hello";
-      // 	width: 15px;
-      // 	height: 15px;
-      // }
     }
 
     // &::-webkit-scrollbar-track {
@@ -102,7 +97,12 @@ $page-margin: 180px;
     // }
     .metricBlock {
       display: inline-block;
+      &:first-child {
+        margin-left: 5px;
+      }
       .metric {
+        margin-top: 5px;
+        margin-bottom: 5px;
         margin-right: 30px;
         position: relative;
         float: left;
@@ -113,10 +113,12 @@ $page-margin: 180px;
         border-style: solid;
         border-radius: 12px 72px 12px 12px;
         background-color: rgba($bright, 0.18);
-        box-shadow: inset 0px 2px 7px rgba(145, 85, 230, 0.8);
+        box-shadow: 0px 2px 7px rgba(145, 85, 230, 0.8),
+          0px 2px 7px rgba(145, 85, 230, 0.8);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        overflow-y: visible;
         .metricField {
           margin-left: 15px;
           &:first-child {
