@@ -92,47 +92,25 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   return (
     <>
       <>
-        {domain.isJust() && (
-          <button className="nft-btn" onClick={showProfile}>
-            Mint NFT
-          </button>
-        )}
-        <Modal
-          style={{
-            position: 'relative',
-            margin: 0,
-            padding: 0,
-            color: 'black',
-            // border: '2px solid red',
-          }}
-          bodyStyle={{ height: '80vh' }}
-          centered
-          width={'80vw'}
-          visible={isProfileVisible}
-          onOk={profileOk}
-          onCancel={profileCancel}
-          footer={null}
-        >
-          <div>
-            <form>
-              <SetImage domain={domain.value.domain} />
-              <div>Title</div>
-              <input placeholder="Title"></input>
-              <div>Story</div>
-              <input placeholder="Story"></input>
-              <div>Your Bid</div>
-              <input placeholder="Your Bid"></input>
-              <Dropdown overlay={menu}>
-                <a
-                  className="ant-dropdown-link"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  CURRENCY <DownOutlined />
-                </a>
-              </Dropdown>
-            </form>
-          </div>
-        </Modal>
+        <div>
+          <form>
+            <SetImage domain={domain.value.domain} />
+            <div>Title</div>
+            <input placeholder="Title"></input>
+            <div>Story</div>
+            <input placeholder="Story"></input>
+            <div>Your Bid</div>
+            <input placeholder="Your Bid"></input>
+            <Dropdown overlay={menu}>
+              <a
+                className="ant-dropdown-link"
+                onClick={(e) => e.preventDefault()}
+              >
+                CURRENCY <DownOutlined />
+              </a>
+            </Dropdown>
+          </form>
+        </div>
       </>
     </>
   );
