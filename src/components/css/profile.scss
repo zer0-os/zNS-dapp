@@ -7,7 +7,14 @@
   width: 100%;
   height: 100%;
   // border: 5px green solid;
+<<<<<<< HEAD
   // background-color: $blackbg;
+||||||| 3bdda91
+  background-color: $blackbg;
+=======
+  // background-color: $blackbg;
+
+>>>>>>> c390493ed7634612e2b5cf0a592acbd7cbacefa3
   display: flex;
 
   .bottomTopContainer {
@@ -25,12 +32,13 @@
       width: 100%;
       height: 22%;
       // background-color: $medium;
+      background-color: $blackbg;
 
       .profile-title {
         width: 120px;
         font-size: 3em;
         margin-top: 20px;
-        // background-color: $medium;
+        // background-color: $blackbg;
       }
 
       .profile-row {
@@ -138,4 +146,27 @@
 .btn-43 {
   background-color: transparent;
   border: transparent;
+}
+
+// .ant-modal {
+//   border: 1px solid black;
+//   // background-color: none;
+
+//   &:first-child {
+//     background: none;
+//   }
+//   &:nth-child(2) {
+//     background-color: none;
+//   }
+//   &:nth-child(3) {
+//     background-color: none;
+//   }
+// }
+
+.ant-modal-content {
+  background: none;
+}
+
+.ant-modal-wrap {
+  backdrop-filter: blur(6px);
 }
