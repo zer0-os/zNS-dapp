@@ -160,3 +160,7 @@
 .ant-modal-content {
   background: none;
 }
+
+.ant-modal-wrap {
+  backdrop-filter: blur(6px);
+}
