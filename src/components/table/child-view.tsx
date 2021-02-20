@@ -50,7 +50,6 @@ interface Data {
 
 const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
-
   const location = useLocation();
   const contracts = useZnsContracts();
   const { account } = context;

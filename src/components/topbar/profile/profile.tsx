@@ -62,11 +62,15 @@ const Profile: FC = () => {
 
       <Modal
         visible={isOwnedVisible}
+        getContainer={false}
+        maskStyle={{}}
         onOk={ownerOk}
         onCancel={ownerCancel}
         footer={null}
         width="50vw"
-        bodyStyle={{ height: '70vh' }}
+        bodyStyle={{
+          height: '70vh',
+        }}
       >
         <div className="profile-container">
           <div className="bottomTopContainer">
