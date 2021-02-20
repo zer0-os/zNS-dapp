@@ -47,6 +47,7 @@
       height: 40%;
       justify-content: center;
       .img-container {
+        margin-top: 30px;
         display: flex;
         flex-direction: column;
         justify-content: start;
@@ -70,6 +71,7 @@
       }
 
       .des-container {
+        margin-top: 30px;
         padding: 15px;
         padding-top: 0px;
         // border: 4px solid grey;

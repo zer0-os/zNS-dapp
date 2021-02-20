@@ -114,14 +114,8 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
               <div className="left-container">
                 <div className="nft-img">
                   <NFTImage domain={_domain} />
-                </div>
-                <div className="nftImageInfo">
-                  <div className="nftStamp"></div>
-                  <div className="nftAddress">
+                  <div className="nftImageInfo">
                     <div className="eth-address-d nftInfoRow">
-                      <div className="nftInfoTag">
-                        <span className="nftInfoTagText">ETH</span>
-                      </div>{' '}
                       <span className="nftDomain">
                         <span className="grayNFTText">
                           {domain.value.controller.slice(0, 2)}
@@ -132,9 +126,6 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
 
                     <div className="route-nav nftInfoRow">
                       <div className="route-nav-preface">
-                        <div className="nftInfoTag">
-                          <span className="nftInfoTagText">ZNS</span>
-                        </div>
                         <Link className="route-nav-0" to={'/'}>
                           0::/
                         </Link>
@@ -225,7 +216,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                       Tx History
                     </div>
                   </div>
-                  <div
+                  {/* <div
                     onClick={() => setGraphButton('comments')}
                     className={`rightAlign ${
                       graphButton === 'comments' ? 'selectedItem' : null
@@ -233,7 +224,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                   >
                     <span className="numComments">33</span>
                     <span className="comments">Comments</span>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="rightGraphNFT">
                   <div className="graph"></div>

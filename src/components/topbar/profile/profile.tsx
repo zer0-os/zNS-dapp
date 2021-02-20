@@ -77,10 +77,10 @@ const Profile: FC = () => {
             <div className="profile-center-container">
               <div className="img-container">
                 <div className="profile-img">image</div>
-                <div className="profile-text">
+                {/* <div className="profile-text">
                   <div className="profile-name">Name</div>
                   <div className="profile-url">0::/etc</div>
-                </div>
+                </div> */}
               </div>
               <div className="des-container">
                 <div className="profile-des">
@@ -97,7 +97,7 @@ const Profile: FC = () => {
                 <div className="qr"></div>
               </div>
               <div className="footer-right">
-                <div className="ethLogo">Eth</div>
+                {/* <div className="ethLogo">Eth</div> */}
                 <div className="footer-text">Your Ethereum Address</div>
                 <div className="footer-address">
                   <div className="eth-btn">

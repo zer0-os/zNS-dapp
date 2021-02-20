@@ -43,9 +43,12 @@
       overflow: hidden;
 
       .nft-img {
-        height: 80%;
+        // height: 80%;
+        position: relative;
         width: auto;
-        // border: 2px solid $bright;
+        margin-top: auto;
+        margin-bottom: auto;
+        // border: 2px solid red;
         // background-color: $grayFont;
         // border-radius: 15px 75px 0px 0px;
         overflow: hidden;
@@ -53,8 +56,8 @@
           // border: inherit;
           // overflow: hidden !important;
           // border: 3px solid brown;
-          width: 100%;
-          height: 100%;
+          // width: 100%;
+          // height: 100%;
           display: flex;
           justify-content: center;
           // background-color: blue;
@@ -62,9 +65,9 @@
           .NFTImage {
             // height: 100%;
             // overflow: hidden !important;
-            border: 2px $bright solid;
-            border-radius: 15px 75px 0px 0px;
-            margin-top: auto;
+            // border: 2px $bright solid;
+            border-radius: 15px;
+            margin-bottom: auto;
             object-fit: scale-down;
             bottom: 0;
             max-height: 100%;
@@ -72,44 +75,23 @@
             // border: 1px green solid;
           }
         }
-      }
-
-      .nftImageInfo {
-        border: 2px $bright solid;
-        border-radius: 0px 0px 15px 15px;
-        border-top: none;
-        height: 20%;
-        display: flex;
-        flex-direction: row;
-        overflow: hidden;
-        .nftStamp {
-          width: 15%;
-          background-color: $middle-red;
-          border-right: 2px $bright solid;
-        }
-        .nftAddress {
-          width: 85%;
+        .nftImageInfo {
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          // border: 2px $bright solid;
+          // border-radius: 0px 0px 15px 15px;
+          // border-top: none;
+          background: $blackbg;
+          backdrop-filter: blur(10px);
+          height: 20%;
           display: flex;
           flex-direction: column;
-          justify-content: space-around;
-          .nftInfoTag {
-            background-color: $bright;
-            color: #fff;
-            margin-left: 10px;
-            height: 100%;
-            // width: 40px !important;
-            display: flex;
-            // justify-content: center;
-            align-items: center;
-            .nftInfoTagText {
-              // align-self: center;
-              text-align: center;
-              width: 40px;
-            }
-          }
+          overflow: hidden;
+          align-items: center;
 
           .nftInfoRow {
-            background-color: $medium;
+            // background-color: $medium;
             height: 30%;
             display: flex;
             flex-direction: row;
@@ -117,12 +99,13 @@
           }
 
           .eth-address-d {
+            font-size: 1em;
             margin-top: 10px;
             .nftDomain {
-              margin-left: 5px;
+              // margin-left: 5px;
               color: #fff;
               .grayNFTText {
-                color: $grayFont;
+                // color: $grayFont;
               }
             }
           }
@@ -137,8 +120,9 @@
               flex-direction: row;
               align-items: center;
               .route-nav-0 {
-                margin-left: 5px;
-                color: $grayFont;
+                // margin-left: 5px;
+                // color: $grayFont;
+                color: #fff;
               }
             }
             .link-text-container {
@@ -281,30 +265,33 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        width: 100%;
 
         .leftAlign {
           display: flex;
           flex-direction: row;
           color: $grayFont;
+          border: 5px solid blue;
+          width: 100%;
           & > div {
             cursor: pointer;
-            margin-right: 25px;
+            // margin-right: 25px;
             // width: 40px;
             padding: 10px 20px 10px 20px;
           }
         }
-        .rightAlign {
-          display: flex;
-          flex-direction: row;
-          padding: 10px 20px 10px 20px;
-          cursor: pointer;
-          .numComments {
-            color: #fff;
-          }
-          .comments {
-            color: $grayFont;
-          }
-        }
+        // .rightAlign {
+        //   display: flex;
+        //   flex-direction: row;
+        //   padding: 10px 20px 10px 20px;
+        //   cursor: pointer;
+        //   .numComments {
+        //     color: #fff;
+        //   }
+        //   .comments {
+        //     color: $grayFont;
+        //   }
+        // }
         .selectedItem {
           color: #fff !important;
           border-radius: 50px;
