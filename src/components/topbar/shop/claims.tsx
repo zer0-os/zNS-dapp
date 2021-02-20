@@ -9,7 +9,9 @@ import { Domain } from '../../../lib/useDomainStore';
 import { hexRegex } from '../../../lib/validation/validators';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import Transfer from '../../transferDomains';
-import { useTable, Column } from 'react-table';
+import { Table, Tag, Space } from 'antd';
+
+const { Column, ColumnGroup } = Table;
 
 interface NFRowProps {
   id: number;
@@ -60,49 +62,22 @@ const Claims: React.FC = () => {
         ? []
         : incomingApprovals.value.map((domain) => ({
             // asset: <Profile domain={key} />,
-            NFT: 'n/a',
-            Owner: 'n/a',
+            NFT: domain.domain,
+            Owner: domain.owner,
             Offer: '$1,234.56',
             Date: '1 sept 2020',
           })),
     [incomingApprovals],
   );
 
-  const data = useMemo<NfData[]>(() => dataInput, [dataInput]);
-  const columns = React.useMemo<Column<NfData>[]>(
-    () => [
-      {
-        Header: 'NFT',
-        accessor: 'NFT',
-      },
-      {
-        Header: 'Owner',
-        accessor: 'Owner',
-      },
-
-      {
-        Header: 'Offer',
-        accessor: 'Offer',
-      },
-      {
-        Header: 'Date',
-        accessor: 'Date',
-      },
-    ],
-    [],
-  );
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns,
-    data,
-  });
-
+  // const claimBtn = () => {
+  //   if (incomingApprovals.isJust()) return incomingApprovals.value.map((domain) => (
+  //     <button onClick={() => _claim(domain)} key={domain.domain}>
+  //       {' '}
+  //       Claim Domain
+  //     </button>
+  //   ))}
+  // }
   if (incomingApprovals.isNothing()) return null;
   return (
     <>
@@ -115,72 +90,22 @@ const Claims: React.FC = () => {
         ))}
       </div> */}
       <div>
-        <div className="tableContainer">
-          <table {...getTableProps()} className="subdomainsTable">
-            {rows.length === 0 ? null : (
-              <thead className="subdomainsHeaderGroupGlobal">
-                {
-                  // Loop over the header rows
-                  headerGroups.map((headerGroup) => (
-                    // Apply the header row props
-                    <tr
-                      className="subdomainsHeaderTR"
-                      {...headerGroup.getHeaderGroupProps()}
-                    >
-                      {
-                        // Loop over the headers in each row
-                        headerGroup.headers.map((column) => (
-                          // Apply the header cell props
-                          <th
-                            className="subdomainsHeaderTH"
-                            {...column.getHeaderProps()}
-                          >
-                            {
-                              // Render the header
-                              column.render('Header')
-                            }
-                          </th>
-                        ))
-                      }
-                    </tr>
-                  ))
-                }
-              </thead>
+        <Table dataSource={dataInput} style={{ backgroundImage: 'none' }}>
+          <Column title="NFT" dataIndex="NFT" key="NFT" />
+          <Column title="Owner" dataIndex="Owner" key="Owner" />
+
+          <Column title="Offer" dataIndex="Offer" key="Offer" />
+          <Column title="Date" dataIndex="Date" key="Date" />
+          <Column
+            title="Accept"
+            key="action"
+            render={(text, record) => (
+              <Space size="middle">
+                <a>Claim </a>
+              </Space>
             )}
-            {/* Apply the table body props */}
-            <tbody {...getTableBodyProps()}>
-              {console.log('ROWS', rows)}
-              {
-                // Loop over the table rows
-                rows.map((row) => {
-                  // Prepare the row for display
-                  prepareRow(row);
-                  return (
-                    // Apply the row props
-                    <tr>
-                      {
-                        // Loop over the rows cells
-                        row.cells.map((cell) => {
-                          // Apply the cell props
-                          return (
-                            <td className="tdGlobal" {...cell.getCellProps()}>
-                              {
-                                // Render the cell contents
-                                cell.render('Cell')
-                              }
-                            </td>
-                          );
-                        })
-                      }
-                    </tr>
-                  );
-                })
-              }
-            </tbody>
-          </table>
-        </div>
-        <br />
-        <br />
+          />
+        </Table>
       </div>
     </>
   );

@@ -93,15 +93,19 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
     <>
       <>
         <div>
-          <form>
+          <form style={{ backgroundColor: 'grey' }}>
             <Create domainContext={domainContext} domainId={_domain} />
-            <SetImage domain={domain.value.domain} />
+            <div>
+              <SetImage domain={domain.value.domain} />
+            </div>
+
             <div>Title</div>
             <input placeholder="Title"></input>
             <div>Story</div>
             <input placeholder="Story"></input>
             <div>Your Bid</div>
             <input placeholder="Your Bid"></input>
+
             <Dropdown overlay={menu}>
               <a
                 className="ant-dropdown-link"
