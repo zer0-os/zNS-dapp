@@ -121,8 +121,8 @@
         .footer-address {
           border-radius: 3px;
           height: 30px;
-          background-color: #fff;
-          width: 75%;
+          // background-color: #fff;
+          // width: 75%;
           margin-left: auto;
           margin-right: auto;
           text-align: center;
@@ -130,20 +130,23 @@
           display: flex;
           flex-direction: column;
           justify-content: center;
-          & > div {
-            color: black;
-            cursor: pointer !important;
+          cursor: pointer !important;
+          .eth-btn {
+            .btn-43 {
+              margin-top: 10px;
+              border-radius: 5px;
+              padding: 10px;
+              cursor: pointer;
+              color: black;
+              background-color: #fff;
+              border: transparent;
+            }
           }
         }
       }
     }
   }
 }
-
-// .btn-43 {
-//   background-color: transparent;
-//   border: transparent;
-// }
 
 // .ant-modal {
 //   border: 1px solid black;
