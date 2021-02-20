@@ -191,22 +191,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
 
             <Claims />
           </TabPane>
-          <TabPane
-            tab="Mint NFT"
-            key="5"
-            style={{ overflow: 'auto', height: '80vh' }}
-          >
-            {/* <div>
-              <h1>
-                Incoming Approvals:{' '}
-                {incomingApprovals.isJust()
-                  ? incomingApprovals.value.length
-                  : 0}{' '}
-              </h1>
-            </div> */}
-
-            <Stakingview domain={_domain} />
-          </TabPane>
         </Tabs>
 
         <button onClick={showStaking}>Press Me</button>
