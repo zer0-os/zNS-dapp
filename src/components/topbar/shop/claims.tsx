@@ -97,7 +97,7 @@ const Claims: React.FC = () => {
           <Column title="Offer" dataIndex="Offer" key="Offer" />
           <Column title="Date" dataIndex="Date" key="Date" />
           <Column
-            title="Accept"
+            title={null}
             key="action"
             render={(text, record) => (
               <Space size="middle">
