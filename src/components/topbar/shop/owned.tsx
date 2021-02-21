@@ -18,16 +18,26 @@ const Owned: FC = () => {
 
   const { owned } = useDomainCache();
 
+  const allOwned = () => {
+    if (owned.isJust())
+      owned.value.map((control) => {
+        return control.domain;
+      });
+  };
+
+  console.log('list here', allOwned);
   const gridCell = () => {
     return (
       <div className="Cellgrid">
-        <div className="Topcell"> </div>
+        <div className="Topcell"> {allOwned} </div>
         <div className="Bottomcell">
           <div className="TextTopcell"></div>
-          <div className="TextMiddlecell">ticker</div>
+          <div className="TextMiddlecell">Price of Domain</div>
           <div className="TextBottomcell">
             <span>Left</span>
-            <span>Right</span>
+            <span>
+              <button> transfer Modal</button>
+            </span>
           </div>
         </div>
       </div>

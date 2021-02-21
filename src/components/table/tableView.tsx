@@ -35,6 +35,7 @@ import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
 import NFTview from './NFT-View/nft-view';
 import Nestedview from './NFT-View/nestedNFT-view';
+import { Domain } from 'domain';
 
 interface ColumnProps {
   key: number;
