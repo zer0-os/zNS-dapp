@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
 import Transfer from '../transferDomains';
-import Create from './create';
+import Create from '../topbar/create';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Modal, Button } from 'antd';

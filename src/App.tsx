@@ -12,7 +12,7 @@ import { domainCacheContext, DomainCacheProvider } from './lib/useDomainCache';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { PoweroffOutlined } from '@ant-design/icons';
 import { Layout, Menu, Modal } from 'antd';
-import Create from './components/table/create';
+import Create from './components/topbar/create';
 import Topbar from './components/topbar/topbar';
 import DomainsGlobal from './components/table/domains-global';
 import TopbarGlobal from './components/topbar/topbar-global';
