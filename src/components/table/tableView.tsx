@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
 import Transfer from '../transferDomains';
-import Create from './create';
+import Create from '../topbar/create';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { Modal, Button } from 'antd';
@@ -35,6 +35,7 @@ import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
 import NFTview from './NFT-View/nft-view';
 import Nestedview from './NFT-View/nestedNFT-view';
+import { Domain } from 'domain';
 
 interface ColumnProps {
   key: number;

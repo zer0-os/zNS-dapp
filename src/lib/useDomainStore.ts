@@ -300,7 +300,7 @@ function useIncomingApprovals(): {
 
   return { incomingApprovals, refetchIncomingApprovals: refetch! };
 }
-
+// maybe fx
 function useAllDomains(
   domain: string,
 ): {
@@ -381,6 +381,7 @@ const useDomainStore = () => {
     useDomain,
     useIncomingApprovals,
     useAllDomains,
+
     ...owned,
     ...incomingApprovals,
     pushTransaction,

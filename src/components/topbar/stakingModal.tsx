@@ -5,12 +5,12 @@ import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
 import { useDomainStore } from '../../lib/useDomainStore';
 import { Modal, Button } from 'antd';
-import Create from '../table/create';
+import Create from './create';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import _ from 'lodash';
-import SetImage from '../table/forms/set-image';
+import SetImage from './forms/set-image';
 const { SubMenu } = Menu;
 
 interface NestedProps {
@@ -96,6 +96,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
           <form style={{ backgroundColor: 'grey' }}>
             <Create domainContext={domainContext} domainId={_domain} />
             <div>
+              <div> Upload Media File</div>
               <SetImage domain={domain.value.domain} />
             </div>
 

@@ -6,7 +6,7 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Button, Tabs } from 'antd';
 import Claim from '../shop/claims';
-import Create from '../../table/create';
+import Create from '../create';
 import Transfer from '../../transferDomains';
 import Approve from '../../table/NFT-View/approval';
 import { Link, useLocation } from 'react-router-dom';

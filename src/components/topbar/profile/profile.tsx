@@ -5,7 +5,7 @@ import { useZnsContracts } from '../../../lib/contracts';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Button, Tabs, Radio, Space } from 'antd';
-import Create from '../../table/create';
+import Create from '../create';
 import { Link, useLocation } from 'react-router-dom';
 import Claim from '../shop/claims';
 import Outgoing from '../shop/outGoingApproval';

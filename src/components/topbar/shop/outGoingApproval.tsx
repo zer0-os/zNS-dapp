@@ -46,7 +46,7 @@ const Outgoing: React.FC = () => {
   const outgoingData = useMemo(
     () =>
       owned.isNothing() ? [] : owned.value.filter((d) => d.approval.isJust()),
-    [owned],
+    [owned, refetchOwned],
   );
 
   const _revoke = useCallback(
@@ -73,7 +73,7 @@ const Outgoing: React.FC = () => {
             Offer: '$1,234.56',
             Date: '1 sept 2020',
           })),
-    [domain],
+    [domain, refetchOwned],
   );
 
   const data = useMemo<NftData[]>(() => dataInput, [dataInput]);
@@ -97,12 +97,8 @@ const Outgoing: React.FC = () => {
         accessor: 'Date',
       },
     ],
-    [],
+    [account],
   );
-
-  const getRowId = React.useCallback((row) => {
-    return row.id;
-  }, []);
 
   const {
     getTableProps,
