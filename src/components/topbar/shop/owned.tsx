@@ -29,7 +29,7 @@ const Owned: FC = () => {
   const gridCell = () => {
     return (
       <div className="Cellgrid">
-        <div className="Topcell"> {allOwned} </div>
+        <div className="Topcell"> domains </div>
         <div className="Bottomcell">
           <div className="TextTopcell"></div>
           <div className="TextMiddlecell">Price of Domain</div>

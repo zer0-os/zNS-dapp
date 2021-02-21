@@ -96,6 +96,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
           <form style={{ backgroundColor: 'grey' }}>
             <Create domainContext={domainContext} domainId={_domain} />
             <div>
+              <div> Upload Media File</div>
               <SetImage domain={domain.value.domain} />
             </div>
 
