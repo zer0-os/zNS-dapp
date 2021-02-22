@@ -104,7 +104,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 onCancel={transferCancel}
                 footer={null}
                 width={'65vw'}
-                bodyStyle={{ color: 'white' }}
                 closable={false}
               >
                 <Approve domain={_domain} />
