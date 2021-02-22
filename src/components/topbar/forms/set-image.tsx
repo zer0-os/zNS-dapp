@@ -80,25 +80,32 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     <>
       {domain.isJust() && (
         <>
-          <img
+          {/* <img
             style={{ height: '10%', width: '10%' }}
             src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-          />
+          /> */}
           {/* <form
             onSubmit={handleSubmit(({ image, url }) =>
               url ? _setImage(url) : uploadAndSetImage(image),
             )}
           > */}
           <div className="create-button">
+            <input
+              className="fileInput"
+              style={{}}
+              name={'image'}
+              type="file"
+              ref={register}
+            />
             <button
+              className="img-btn"
               type="submit"
               onSubmit={handleSubmit(({ image, url }) =>
                 url ? _setImage(url) : uploadAndSetImage(image),
               )}
             >
-              Set domain image
+              SET IMAGE
             </button>
-            <input name={'image'} type="file" ref={register} />
           </div>
           {/* </form> */}
         </>

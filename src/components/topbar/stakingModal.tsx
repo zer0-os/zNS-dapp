@@ -15,6 +15,7 @@ import * as z from 'zod';
 import { zodResolver } from '../../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { subdomainRegex } from '../../lib/validation/validators';
+import '../css/stakingModal.scss';
 const { SubMenu } = Menu;
 
 interface NestedProps {
@@ -125,10 +126,42 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   //
   if (domain.isNothing()) return null;
   return (
-    <>
-      <>
-        <div>
-          <form style={{ backgroundColor: 'grey' }}>
+    <div className="mintContainer">
+      <form className="mintForm">
+        <div className="mintBar">
+          <div className="headerText">Mint A New NFT</div>
+          <div className="subText">by **Artist**</div>
+        </div>
+        <div className="mintBodyContainer">
+          <div className="mintMedia">
+            <div className="mintMediaText">UPLOAD MEDIA FILE</div>
+            <SetImage domain={domain.value.domain} />{' '}
+          </div>
+          <div className="content">
+            <div className="left">
+              <div className="title">
+                <div className="titleText">TITLE</div>
+                <input
+                  className="titleInput"
+                  // placeholder="NFT TITLE"
+                  type="text"
+                />
+              </div>
+              <div className="story">
+                <div className="storyText">STORY</div>
+                <textarea
+                  className="storyInput"
+                  // placeholder="NFT STORY"
+                ></textarea>
+              </div>
+            </div>
+            <div className="right">
+              <div className="image"></div>
+            </div>
+          </div>
+          <div style={{ display: 'none' }}>
+            <div>Your Bid</div>
+            <input placeholder="Your Bid"></input>
             <div>
               {/* <button
                 type="submit"
@@ -140,22 +173,6 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
               <input name={'child'} ref={register} placeholder="Domain" /> */}
               <Create domainId={_domain} domainContext={domainContext} />
             </div>
-            <div>
-              <div> Upload Media File</div>
-              <span>
-                <SetImage domain={domain.value.domain} />{' '}
-              </span>
-            </div>
-
-            <div>Story</div>
-            <input placeholder="Story"></input>
-            <div>
-              <button> Continue </button>
-            </div>
-
-            <div>Your Bid</div>
-            <input placeholder="Your Bid"></input>
-
             <Dropdown overlay={menu}>
               <a
                 className="ant-dropdown-link"
@@ -164,10 +181,13 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
                 CURRENCY <DownOutlined />
               </a>
             </Dropdown>
-          </form>
+          </div>
+          <div className="continueBar">
+            <button> Continue </button>
+          </div>
         </div>
-      </>
-    </>
+      </form>
+    </div>
   );
 };
 export default Stakingview;
