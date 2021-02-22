@@ -97,6 +97,7 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
           onOk={profileOk}
           onCancel={profileCancel}
           footer={null}
+          closable={false}
         >
           <div className="left-container">
             <div className="nft-img">

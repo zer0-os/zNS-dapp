@@ -108,6 +108,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
           onOk={profileOk}
           onCancel={profileCancel}
           footer={null}
+          closable={false}
         >
           <div className="nftviewContainer">
             <div className="leftRightContainer">

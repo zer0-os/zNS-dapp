@@ -123,6 +123,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         onOk={shopOk}
         onCancel={shopCancel}
         footer={null}
+        closable={false}
       >
         <Tabs
           defaultActiveKey="1"
@@ -200,6 +201,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
           onOk={stakingOk}
           onCancel={stakingCancel}
           footer={null}
+          closable={false}
         >
           <Stakingview domain={_domain} />
         </Modal>
