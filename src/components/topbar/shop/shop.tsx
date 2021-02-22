@@ -142,7 +142,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         }}
         bodyStyle={{ height: '90vh', background: '#69038D', marginBottom: 0 }}
         closeIcon={null}
-        width={'400vw'}
+        width={'90vw'}
         centered
         visible={isShopVisible}
         onOk={shopOk}
