@@ -37,6 +37,14 @@ const Owned: FC = () => {
     );
   };
 
+  const ownedCells = [];
+
+  if (owned.isJust()) {
+    owned.map((own) => {
+      ownedCells.push(gridCell());
+    });
+  }
+
   const cells: any = [];
   cells.push(gridCell());
   cells.push(gridCell());
