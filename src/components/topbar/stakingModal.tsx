@@ -123,7 +123,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   //
 
   //
-  if (domain.isNothing() || domain.value.owner !== account) return null;
+  if (domain.isNothing()) return null;
   return (
     <>
       <>
