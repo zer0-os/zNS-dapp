@@ -206,7 +206,17 @@
   }
 }
 
+//
+// utilities
+//
+
 .new-ETH {
   display: flex;
   flex-direction: row;
+}
+
+.noModalPadding {
+  .ant-modal-body {
+    padding: 0;
+  }
 }

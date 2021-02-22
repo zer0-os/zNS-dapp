@@ -1,12 +1,12 @@
 @import './color-variables.scss';
 
 .mintContainer {
-  border: solid blue 2px;
+  //   border: solid blue 2px;
   background-color: $blackbg;
   height: 60vh;
   color: #fff;
   .mintForm {
-    border: solid red 2px;
+    // border: solid red 2px;
     height: 100%;
     width: 100%;
     .mintBar {
@@ -27,13 +27,14 @@
       }
     }
     .mintBodyContainer {
-      overflow-x: scroll;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       background: $hzflat;
       height: 80%;
+      max-height: 80%;
       width: 100%;
-      border: 2px green solid;
+      //   border: 2px green solid;
       & > div {
         margin-right: 30px;
         margin-left: 30px;
@@ -62,6 +63,7 @@
             }
           }
           .img-btn {
+            margin-top: 10px;
             width: 150px;
             background: $blueBtnGrad;
             display: flex;
@@ -80,17 +82,20 @@
         height: auto;
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
         .left {
           width: 45%;
           //   border: 2px solid lime;
           .title {
             width: 100%;
+            margin-bottom: 10px;
             .titleText {
               color: $grayModal;
+              background: none;
             }
             .titleInput {
               background: none;
-              border: 2px solid cyan;
+              border: 2px solid $grayModal !important;
               width: 100%;
               border: none;
               color: #fff;
@@ -103,7 +108,7 @@
             }
             .storyInput {
               background: none;
-              border: 5px solid cyan;
+              border: 2px solid $grayModal !important;
               width: 100%;
               border: none;
               color: #fff;
@@ -113,14 +118,31 @@
           }
         }
         .right {
+          width: 45%;
           .image {
+            height: 100%;
+            width: 100%;
+            background: rgba(royalblue, 0.5);
           }
         }
       }
       .continueBar {
+        margin-top: 25px;
+        // margin-bottom: 10px;
         display: flex;
         flex-direction: row;
         justify-content: end;
+        .continueButton {
+          width: 150px;
+          background: $blueBtnGrad;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          padding: 8px 32px;
+          border-radius: 86px;
+          border: none;
+        }
       }
     }
   }

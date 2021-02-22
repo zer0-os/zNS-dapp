@@ -183,7 +183,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
             </Dropdown>
           </div>
           <div className="continueBar">
-            <button> Continue </button>
+            <button className="continueButton"> Continue </button>
           </div>
         </div>
       </form>

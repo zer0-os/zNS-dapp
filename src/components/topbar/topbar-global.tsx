@@ -161,12 +161,9 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         onCancel={stakingCancel}
         footer={null}
         width={'65vw'}
-        bodyStyle={
-          {
-            // height: '30vh'
-          }
-        }
+        bodyStyle={{}}
         closable={false}
+        className="noModalPadding"
       >
         <Stakingview domain={_domain} />
       </Modal>
