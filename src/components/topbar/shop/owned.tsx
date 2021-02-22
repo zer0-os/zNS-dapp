@@ -40,7 +40,7 @@ const Owned: FC = () => {
   const ownedCells = [];
 
   if (owned.isJust()) {
-    owned.map((own) => {
+    owned.value.map((own) => {
       ownedCells.push(gridCell());
     });
   }
