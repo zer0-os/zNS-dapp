@@ -59,21 +59,6 @@ const Owned: FC = () => {
   return (
     <>
       <div className="gridContainer-profile">{cells}</div>
-      {/* <div>
-        {console.log('OWNED ', owned)}
-        {owned.value.map((control) => {
-          return (
-            <div key={control.domain}>
-              <Link
-                to={'/' + control.domain}
-                //   key={control.domain}
-              >
-                {control.domain}
-              </Link>
-            </div>
-          );
-        })}
-      </div> */}
     </>
   );
 };

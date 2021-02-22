@@ -85,12 +85,18 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
         onCancel={subdomainCancel}
         footer={null}
       > */}
-      <form onSubmit={handleSubmit(({ child }) => _create(child))}>
-        <div className="create-button">
-          <button type="submit"> Create Domain</button>
-          <input name={'child'} ref={register} placeholder="child domain" />
-        </div>
-      </form>
+
+      <div className="create-button">
+        <button
+          type="submit"
+          onSubmit={handleSubmit(({ child }) => _create(child))}
+        >
+          {' '}
+          Mint NFT
+        </button>
+        <input name={'child'} ref={register} placeholder="Domain" />
+      </div>
+
       {/* </Modal> */}
     </>
   );

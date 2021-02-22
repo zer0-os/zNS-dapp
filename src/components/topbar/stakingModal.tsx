@@ -11,22 +11,36 @@ import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import SetImage from './forms/set-image';
+import * as z from 'zod';
+import { zodResolver } from '../../lib/validation/zodResolver';
+import { useForm } from 'react-hook-form';
+import { subdomainRegex } from '../../lib/validation/validators';
 const { SubMenu } = Menu;
 
 interface NestedProps {
   domain: string;
 }
 
+const schema = z.object({
+  child: z
+    .string()
+    .regex(subdomainRegex, 'Subdomain must only contain alphanumeric letters'),
+});
+
 const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
   const [isProfileVisible, setProfileVisible] = useState(true);
+  const [imageUrl, setImageUrl] = useState('ipfs://Qmimage');
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  const { domain, refetchDomain } = domainContext;
+  const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
   const location = useLocation();
 
   const routes = _.transform(
@@ -39,6 +53,27 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
+
+  // const _create = useCallback(
+  //   (child: string) => {
+  //     if (account && contracts.isJust() && domain.isJust())
+  //       contracts.value.registry
+  //         .createDomain(
+  //           domain.value.domain === 'ROOT'
+  //             ? child
+  //             : domain.value.domain + '.' + child,
+  //           account,
+  //           account,
+  //           'ipfs://Qmresolver',
+  //           imageUrl,
+  //         )
+  //         .then((txr) => txr.wait(1))
+  //         .then(() => {
+  //           refetchDomain();
+  //         });
+  //   },
+  //   [contracts, account],
+  // );
 
   const showSubdomain = () => {
     setSubdomainVisible(true);
@@ -88,22 +123,33 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   //
 
   //
-  if (domain.isNothing()) return null;
+  if (domain.isNothing() || domain.value.owner !== account) return null;
   return (
     <>
       <>
         <div>
           <form style={{ backgroundColor: 'grey' }}>
-            <Create domainContext={domainContext} domainId={_domain} />
+            <div>
+              {/* <button
+                type="submit"
+                onSubmit={handleSubmit(({ child }) => _create(child))}
+              >
+                {' '}
+                Mint NFT
+              </button>
+              <input name={'child'} ref={register} placeholder="Domain" /> */}
+              <Create domainId={_domain} domainContext={domainContext} />
+            </div>
             <div>
               <div> Upload Media File</div>
-              <SetImage domain={domain.value.domain} />
+              <span>
+                <SetImage domain={domain.value.domain} />{' '}
+              </span>
             </div>
 
-            <div>Title</div>
-            <input placeholder="Title"></input>
             <div>Story</div>
             <input placeholder="Story"></input>
+
             <div>Your Bid</div>
             <input placeholder="Your Bid"></input>
 
