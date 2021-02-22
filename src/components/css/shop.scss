@@ -1,7 +1,7 @@
 @import './color-variables.scss';
 
 .shopContainer {
-  border: 2px green solid;
+  // border: 2px green solid;
   background: $shopbg;
   height: 100%;
   width: 100%;
@@ -9,7 +9,7 @@
   .tabs {
     overflow: hidden;
     height: 90vh;
-    border: 2px solid red;
+    // border: 2px solid red;
     background: $blackbg;
 
     .tabPane {
@@ -17,6 +17,7 @@
     }
   }
   .mintNFT {
+    color: #fff;
     transform: translate(15px, -60px);
     width: 150px;
     background: $blueBtnGrad;
