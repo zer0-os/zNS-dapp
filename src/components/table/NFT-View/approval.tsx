@@ -16,8 +16,6 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 
 interface ApprovalProps {
   domain: string;
-  outgoingPendingCount: any;
-  setOutgoingPendingCount: any;
 }
 
 const schema = z.object({
@@ -38,11 +36,7 @@ const schema = z.object({
     ),
 });
 
-const Approve: React.FC<ApprovalProps> = ({
-  domain: _domain,
-  outgoingPendingCount: outgoingPendingCount,
-  setOutgoingPendingCount: setOutgoingPendingCount,
-}) => {
+const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
@@ -65,16 +59,14 @@ const Approve: React.FC<ApprovalProps> = ({
           .approve(address, domain.value.id)
           .then((txr) => {
             alert('PENDING TX');
-            setOutgoingPendingCount(outgoingPendingCount++);
+
             return txr.wait(2);
           })
           .then((txh) => {
             if (txh.status === 2) {
               alert('TX APPROVED');
-              setOutgoingPendingCount(outgoingPendingCount--);
             } else {
               alert('TX REJECTED');
-              setOutgoingPendingCount(outgoingPendingCount--);
             }
             Promise.all([
               refetchIncomingApprovals,

@@ -9,6 +9,7 @@ import {
   useDomainCache,
 } from '../../../lib/useDomainCache';
 import { domain } from 'process';
+import Approve from '../../table/NFT-View/approval';
 
 const Owned: FC = () => {
   const context = useWeb3React<Web3Provider>();

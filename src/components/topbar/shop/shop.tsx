@@ -27,6 +27,7 @@ interface ShopProps {
 
 const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const [isShopVisible, setShopVisible] = useState(false);
+  const [isTransferVisible, setTransferVisible] = useState(false);
   const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
   const [size, setSize] = useState();
   const context = useWeb3React<Web3Provider>();
@@ -74,6 +75,18 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     setShopVisible(false);
   };
 
+  const showTransfer = () => {
+    setTransferVisible(true);
+  };
+
+  const transferOk = () => {
+    setTransferVisible(false);
+  };
+
+  const transferCancel = () => {
+    setTransferVisible(false);
+  };
+
   const gridCell = () => {
     return (
       <div className="Cellgrid">
@@ -83,7 +96,20 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
           <div className="TextMiddlecell">ticker</div>
           <div className="TextBottomcell">
             <span>Left</span>
-            <span>Right</span>
+            <span>
+              <button onClick={showTransfer}> Transfer </button>
+              <Modal
+                visible={isTransferVisible}
+                onOk={transferOk}
+                onCancel={transferCancel}
+                footer={null}
+                width={'65vw'}
+                bodyStyle={{ color: 'white' }}
+                closable={false}
+              >
+                <Approve domain={_domain} />
+              </Modal>
+            </span>
           </div>
         </div>
       </div>
@@ -142,8 +168,8 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             key="1"
             style={{ overflow: 'auto', height: '80vh' }}
           >
-            {/* <div className="gridContainer-profile">{cells}</div> */}
-            <Owned />
+            <div className="gridContainer-profile">{cells}</div>
+            {/* <Owned /> */}
             {/* <div>
               {owned.value.map((control) => {
                 return (
@@ -166,7 +192,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             style={{ overflow: 'auto', height: '80vh' }}
           >
             <div className="listOut">
-              <div className="gridContainer-profile">{cells}</div>
+              <div className="gridContainer-profile">domains</div>
             </div>
           </TabPane>
           <TabPane
