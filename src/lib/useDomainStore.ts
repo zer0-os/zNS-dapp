@@ -289,7 +289,7 @@ function useIncomingApprovals(): {
       );
     }
     return Maybe.nothing();
-  }, [data, account]);
+  }, [data, account, Owned]);
 
   useEffect(() => {
     if (refetch) {
