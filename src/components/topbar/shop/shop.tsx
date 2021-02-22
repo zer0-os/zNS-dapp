@@ -133,14 +133,19 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         </button>
       )}
       <Modal
+        className="noModalPadding"
         style={{
           position: 'relative',
           margin: 0,
           marginBottom: 0,
           padding: 0,
-          background: '#E5E5E5',
+          background: 'none',
         }}
-        bodyStyle={{ height: '90vh', background: '#69038D', marginBottom: 0 }}
+        bodyStyle={{
+          height: '90vh',
+          background: 'none',
+          marginBottom: 0,
+        }}
         closeIcon={null}
         width={'90vw'}
         centered
@@ -150,26 +155,22 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         footer={null}
         closable={false}
       >
-        <Tabs
-          defaultActiveKey="1"
-          // size={size}
-          style={{
-            marginBottom: 32,
-            overflow: 'auto',
-            background: '#69038D',
-            height: '75vh',
-            border: '2px solid black',
-          }}
-          tabPosition={'left'}
-        >
-          <TabPane
-            tab="NFTs You Own"
-            key="1"
-            style={{ overflow: 'auto', height: '80vh' }}
+        <div className="shopContainer">
+          <Tabs
+            className="tabs"
+            defaultActiveKey="1"
+            // size={size}
+            tabPosition={'left'}
           >
-            <div className="gridContainer-profile">{cells}</div>
-            {/* <Owned /> */}
-            {/* <div>
+            <TabPane
+              className="tabPane"
+              tab="NFTs You Own"
+              key="1"
+              style={{ overflow: 'auto', height: '90vh' }}
+            >
+              <div className="gridContainer-profile">{cells}</div>
+              {/* <Owned /> */}
+              {/* <div>
               {owned.value.map((control) => {
                 return (
                   <div key={control.domain}>
@@ -183,30 +184,33 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 );
               })}
             </div>{' '} */}
-          </TabPane>
+            </TabPane>
 
-          <TabPane
-            tab="NFTs You've Made"
-            key="3"
-            style={{ overflow: 'auto', height: '80vh' }}
-          >
-            <div className="listOut">
-              <div className="gridContainer-profile">domains</div>
-            </div>
-          </TabPane>
-          <TabPane
-            tab="Offers You've Made"
-            key="2"
-            style={{ overflow: 'auto', height: '80vh' }}
-          >
-            <Outgoing />
-          </TabPane>
-          <TabPane
-            tab="Offers Made To You"
-            key="4"
-            style={{ overflow: 'auto', height: '80vh' }}
-          >
-            {/* <div>
+            <TabPane
+              className="tabPane"
+              tab="NFTs You've Made"
+              key="3"
+              style={{ overflow: 'auto', height: '90vh' }}
+            >
+              <div className="listOut">
+                <div className="gridContainer-profile">domains</div>
+              </div>
+            </TabPane>
+            <TabPane
+              className="tabPane"
+              tab="Offers You've Made"
+              key="2"
+              style={{ overflow: 'auto', height: '90vh' }}
+            >
+              <Outgoing />
+            </TabPane>
+            <TabPane
+              className="tabPane"
+              tab="Offers Made To You"
+              key="4"
+              style={{ overflow: 'auto', height: '90vh' }}
+            >
+              {/* <div>
               <h1>
                 Incoming Approvals:{' '}
                 {incomingApprovals.isJust()
@@ -215,21 +219,22 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
               </h1>
             </div> */}
 
-            <Claims />
-          </TabPane>
-        </Tabs>
+              <Claims />
+            </TabPane>
+          </Tabs>
+          {/* 
+          <button onClick={showStaking}>Mint NFT</button> */}
 
-        <button onClick={showStaking}>Mint NFT</button>
-
-        <Modal
-          visible={isStakingVisible}
-          onOk={stakingOk}
-          onCancel={stakingCancel}
-          footer={null}
-          closable={false}
-        >
-          <Stakingview domain={_domain} />
-        </Modal>
+          <Modal
+            visible={isStakingVisible}
+            onOk={stakingOk}
+            onCancel={stakingCancel}
+            footer={null}
+            closable={false}
+          >
+            <Stakingview domain={_domain} />
+          </Modal>
+        </div>
       </Modal>
     </>
   );

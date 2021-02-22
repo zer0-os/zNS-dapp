@@ -70,6 +70,8 @@ const Profile: FC = () => {
         width="50vw"
         bodyStyle={{
           height: '70vh',
+          padding: '0',
+          margin: '0',
         }}
       >
         <div className="profile-container">

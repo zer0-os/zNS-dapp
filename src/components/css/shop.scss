@@ -1,5 +1,23 @@
 @import './color-variables.scss';
 
+.shopContainer {
+  border: 2px green solid;
+  background: $shopbg;
+  height: 100%;
+  width: 100%;
+
+  .tabs {
+    overflow: hidden;
+    height: 90vh;
+    border: 2px solid red;
+    background: $blackbg;
+
+    .tabPane {
+      background: $shopbg;
+    }
+  }
+}
+
 .profile-container {
   display: flex;
 }
@@ -42,4 +60,10 @@
 
 .ant-modal-mask {
   background-color: rgba($blackbg, 0.2);
+}
+
+.noModalPadding {
+  .ant-table-body {
+    padding: 0;
+  }
 }
