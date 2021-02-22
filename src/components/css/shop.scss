@@ -1,5 +1,36 @@
 @import './color-variables.scss';
 
+.shopContainer {
+  // border: 2px green solid;
+  background: $shopbg;
+  height: 100%;
+  width: 100%;
+
+  .tabs {
+    overflow: hidden;
+    height: 90vh;
+    // border: 2px solid red;
+    background: $blackbg;
+
+    .tabPane {
+      background: $shopbg;
+    }
+  }
+  .mintNFT {
+    color: #fff;
+    transform: translate(15px, -60px);
+    width: 150px;
+    background: $blueBtnGrad;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 32px;
+    border-radius: 86px;
+    border: none;
+  }
+}
+
 .profile-container {
   display: flex;
 }
@@ -42,4 +73,10 @@
 
 .ant-modal-mask {
   background-color: rgba($blackbg, 0.2);
+}
+
+.noModalPadding {
+  .ant-table-body {
+    padding: 0;
+  }
 }
