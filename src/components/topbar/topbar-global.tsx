@@ -162,6 +162,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         footer={null}
         width={'65vw'}
         bodyStyle={{}}
+        closable={false}
       >
         <Stakingview domain={_domain} />
       </Modal>
