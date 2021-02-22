@@ -16,6 +16,18 @@
       background: $shopbg;
     }
   }
+  .mintNFT {
+    transform: translate(15px, -60px);
+    width: 150px;
+    background: $blueBtnGrad;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 32px;
+    border-radius: 86px;
+    border: none;
+  }
 }
 
 .profile-container {

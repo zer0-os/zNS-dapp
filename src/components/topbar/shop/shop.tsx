@@ -222,9 +222,9 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
               <Claims />
             </TabPane>
           </Tabs>
-          {/* 
-          <button onClick={showStaking}>Mint NFT</button> */}
-
+          <button className="mintNFT" onClick={showStaking}>
+            Mint NFT
+          </button>
           <Modal
             visible={isStakingVisible}
             onOk={stakingOk}
