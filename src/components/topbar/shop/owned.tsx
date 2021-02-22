@@ -25,7 +25,7 @@ const Owned: FC = () => {
         <div className="Topcell"></div>
         <div className="Bottomcell">
           <div className="TextTopcell"></div>
-          <div className="TextMiddlecell">Price of Domain</div>
+          <div className="TextMiddlecell"></div>
           <div className="TextBottomcell">
             <span>Left</span>
             <span>
@@ -37,14 +37,15 @@ const Owned: FC = () => {
     );
   };
 
-  const ownedCells: any = [];
+  // const ownedCells: any = [];
 
-  if (owned.isJust()) {
-    owned.value.map((own) => {
-      ownedCells.push(gridCell());
-    });
-  }
+  // if (owned.isJust()) {
+  //   owned.value.map((own) => {
+  //     push(ownedCells);
+  //   });
+  // }
 
+  // console.log('all owned', ownedCells);
   const cells: any = [];
   cells.push(gridCell());
   cells.push(gridCell());

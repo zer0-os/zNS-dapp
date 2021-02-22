@@ -14,7 +14,7 @@ import _ from 'lodash';
 import TableImage from '.././../table/table-image';
 import '../../css/shop.scss';
 import Outgoing from './outGoingApproval';
-import { Column, useTable, useFlexLayout } from 'react-table';
+import { Column, useTable, useFlexLayout, Cell } from 'react-table';
 import Owned from './owned';
 import Claims from './claims';
 import Stakingview from '../stakingModal';
@@ -87,12 +87,31 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     setTransferVisible(false);
   };
 
+  const allOwned = useMemo(
+    () =>
+      owned.isNothing()
+        ? []
+        : owned.value.map((control) => {
+            return (
+              <div className="TextTopcell" key={control.domain}>
+                {control.domain}
+              </div>
+            );
+          }),
+    [owned, account],
+  );
   const gridCell = () => {
     return (
       <div className="Cellgrid">
-        <div className="Topcell"> DOMAIN DATA </div>
         <div className="Bottomcell">
-          <div className="TextTopcell"></div>
+          <div className="TextTopcells">
+            {' '}
+            {owned.isNothing()
+              ? []
+              : owned.value.flatMap((control) => {
+                  return control.domain;
+                })}
+          </div>
           <div className="TextMiddlecell">ticker</div>
           <div className="TextBottomcell">
             <span>Left</span>
