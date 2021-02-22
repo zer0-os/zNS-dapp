@@ -18,23 +18,13 @@ const AllOwned: FC = () => {
 
   const { owned } = useDomainCache();
 
-  if (owned.isNothing()) return <p>User owns no domains.</p>;
+  if (owned.isNothing()) return null;
 
   return (
     <>
       <div>
-        {console.log('OWNED ', owned)}
         {owned.value.map((control) => {
-          return (
-            <div key={control.domain}>
-              <Link
-                to={'/' + control.domain}
-                //   key={control.domain}
-              >
-                {control.domain}
-              </Link>
-            </div>
-          );
+          return <div key={control.domain}>{control.domain}</div>;
         })}
       </div>
     </>

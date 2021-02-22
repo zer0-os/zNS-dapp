@@ -219,7 +219,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
           </TabPane>
         </Tabs>
 
-        <button onClick={showStaking}>Press Me</button>
+        <button onClick={showStaking}>Mint NFT</button>
 
         <Modal
           visible={isStakingVisible}

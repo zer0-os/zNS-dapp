@@ -19,14 +19,6 @@ const Owned: FC = () => {
 
   const { owned } = useDomainCache();
 
-  const allOwned = () => {
-    if (owned.isJust())
-      owned.value.map((control) => {
-        return control.domain;
-      });
-  };
-
-  console.log('list here', allOwned);
   const gridCell = () => {
     return (
       <div className="Cellgrid">
