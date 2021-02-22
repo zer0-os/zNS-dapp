@@ -6,6 +6,7 @@ import { domain } from 'process';
 import { Children, useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
 import { string } from 'zod';
+import Owned from '../components/topbar/shop/owned';
 import { getDomainId } from './domains';
 
 export interface Domain {
@@ -244,7 +245,7 @@ function useOwnedDomains(): {
       );
     }
     return Maybe.nothing();
-  }, [data]);
+  }, [data, account]);
 
   useEffect(() => {
     if (refetch) {
@@ -252,7 +253,7 @@ function useOwnedDomains(): {
     } else if (account) {
       getOwned({ variables: { owner: account } });
     }
-  }, [account]);
+  }, [account, owned]);
 
   return { owned, refetchOwned: refetch! };
 }
@@ -288,7 +289,7 @@ function useIncomingApprovals(): {
       );
     }
     return Maybe.nothing();
-  }, [data]);
+  }, [data, account]);
 
   useEffect(() => {
     if (refetch) {
@@ -296,7 +297,7 @@ function useIncomingApprovals(): {
     } else if (account) {
       getIncomingApprovals({ variables: { to: account } });
     }
-  }, [account]);
+  }, [account, Owned]);
 
   return { incomingApprovals, refetchIncomingApprovals: refetch! };
 }

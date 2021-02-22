@@ -22,7 +22,7 @@ const Owned: FC = () => {
   const gridCell = () => {
     return (
       <div className="Cellgrid">
-        <div className="Topcell"> domains </div>
+        <div className="Topcell"></div>
         <div className="Bottomcell">
           <div className="TextTopcell"></div>
           <div className="TextMiddlecell">Price of Domain</div>
@@ -37,7 +37,7 @@ const Owned: FC = () => {
     );
   };
 
-  const ownedCells = [];
+  const ownedCells: any = [];
 
   if (owned.isJust()) {
     owned.value.map((own) => {

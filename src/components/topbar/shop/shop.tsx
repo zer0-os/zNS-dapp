@@ -175,7 +175,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 return (
                   <div key={control.domain}>
                     <Link
-                      to={'/' + control.domain}
+                      to={'/' + control.domain} 
                       //   key={control.domain}
                     >
                       {control.domain}
