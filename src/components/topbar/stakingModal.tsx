@@ -149,6 +149,9 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
 
             <div>Story</div>
             <input placeholder="Story"></input>
+            <div>
+              <button> Continue </button>
+            </div>
 
             <div>Your Bid</div>
             <input placeholder="Your Bid"></input>
