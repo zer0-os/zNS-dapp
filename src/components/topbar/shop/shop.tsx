@@ -87,31 +87,12 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     setTransferVisible(false);
   };
 
-  const allOwned = useMemo(
-    () =>
-      owned.isNothing()
-        ? []
-        : owned.value.map((control) => {
-            return (
-              <div className="TextTopcell" key={control.domain}>
-                {control.domain}
-              </div>
-            );
-          }),
-    [owned, account],
-  );
-  const gridCell = () => {
+  console.log('OWNED!!', owned);
+  const gridCell = (name: string) => {
     return (
       <div className="Cellgrid">
         <div className="Bottomcell">
-          <div className="TextTopcells">
-            {' '}
-            {owned.isNothing()
-              ? []
-              : owned.value.flatMap((control) => {
-                  return control.domain;
-                })}
-          </div>
+          <div className="TextTopcells">{name}</div>
           <div className="TextMiddlecell">ticker</div>
           <div className="TextBottomcell">
             <span>Left</span>
@@ -134,15 +115,25 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     );
   };
 
-  const cells: any = [];
-  cells.push(gridCell());
-  cells.push(gridCell());
-  cells.push(gridCell());
-  cells.push(gridCell());
-  cells.push(gridCell());
-  cells.push(gridCell());
-  cells.push(gridCell());
-  cells.push(gridCell());
+  const allOwned = useMemo(
+    () =>
+      owned.isNothing()
+        ? []
+        : owned.value.map((control) => {
+            return gridCell(control.domain);
+          }),
+    [owned, account],
+  );
+
+  // const cells: any = [];
+  // cells.push(gridCell());
+  // cells.push(gridCell());
+  // cells.push(gridCell());
+  // cells.push(gridCell());
+  // cells.push(gridCell());
+  // cells.push(gridCell());
+  // cells.push(gridCell());
+  // cells.push(gridCell());
   if (owned.isNothing() && domain.isNothing()) return null;
   return (
     <>
@@ -187,7 +178,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
               key="1"
               style={{ overflow: 'auto', height: '90vh' }}
             >
-              <div className="gridContainer-profile">{cells}</div>
+              <div className="gridContainer-profile">{allOwned}</div>
               {/* <Owned /> */}
               {/* <div>
               {owned.value.map((control) => {
