@@ -21,14 +21,21 @@ const Owned: FC = () => {
 
   const gridCell = () => {
     return (
-      <div className="Cellgrid">
-        <div className="Topcell"></div>
-        <div className="Bottomcell">
-          <div className="TextTopcell"></div>
-          <div className="TextMiddlecell"></div>
-          <div className="TextBottomcell">
-            <span>Left</span>
-            <span>
+      <div className="gridCell">
+        <div className="topCell">
+          <div className="cellImage"></div>
+        </div>
+        <div className="bottomCell">
+          <div className="name"></div>
+          <div className="domain"></div>
+          <div className="desc">
+            <div className="ticker">XYZ</div>
+            <div className="holders">X Holdes</div>
+          </div>
+          <div className="price">$1234.00</div>
+          <div className="bottom">
+            <span className="eth-price">(Eth price)</span>
+            <span className="cell-btn">
               <button> transfer Modal</button>
             </span>
           </div>
@@ -37,7 +44,7 @@ const Owned: FC = () => {
     );
   };
 
-  // const ownedCells: any = [];
+  const ownedCells: any = [];
 
   // if (owned.isJust()) {
   //   owned.value.map((own) => {

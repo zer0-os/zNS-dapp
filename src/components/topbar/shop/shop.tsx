@@ -90,13 +90,21 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   console.log('OWNED!!', owned);
   const gridCell = (name: string) => {
     return (
-      <div className="Cellgrid">
-        <div className="Bottomcell">
-          <div className="TextTopcells">{name}</div>
-          <div className="TextMiddlecell">ticker</div>
-          <div className="TextBottomcell">
-            <span>Left</span>
-            <span>
+      <div className="gridCell">
+        <div className="topCell">
+          <div className="cellImage"></div>
+        </div>
+        <div className="bottomCell">
+          <div className="name">{name}</div>
+          <div className="domain">{name}</div>
+          <div className="desc">
+            <div className="ticker">XYZ</div>
+            <div className="holders">X Holdes</div>
+          </div>
+          <div className="price">$1234.00</div>
+          <div className="bottom">
+            <span className="eth-price">(eth price)</span>
+            <span className="cell-btn">
               <button onClick={showTransfer}> Transfer </button>
               <Modal
                 visible={isTransferVisible}
@@ -173,7 +181,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             tabPosition={'left'}
           >
             <TabPane
-              className="tabPane"
+              className="tabPane firstPane"
               tab="NFTs You Own"
               key="1"
               style={{ overflow: 'auto', height: '90vh' }}
