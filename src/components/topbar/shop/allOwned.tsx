@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
@@ -17,6 +17,16 @@ const AllOwned: FC = () => {
   const { library, account, active, chainId } = context;
 
   const { owned } = useDomainCache();
+
+  const allOwned = useMemo(
+    () =>
+      owned.isNothing()
+        ? []
+        : owned.value.map((control) => {
+            return control.image;
+          }),
+    [owned, account],
+  );
 
   if (owned.isNothing()) return null;
 

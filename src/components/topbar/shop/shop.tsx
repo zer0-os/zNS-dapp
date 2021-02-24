@@ -18,6 +18,7 @@ import { Column, useTable, useFlexLayout, Cell } from 'react-table';
 import Owned from './owned';
 import Claims from './claims';
 import Stakingview from '../stakingModal';
+import NFTImage from '../../table/NFT-View/nft-image';
 
 const { TabPane } = Tabs;
 
@@ -36,7 +37,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
-  const { owned, incomingApprovals } = useDomainStore();
+  const { owned, refetchOwned } = useDomainStore();
   const location = useLocation();
   const [isStakingVisible, setStakingVisible] = useState(false);
 
@@ -88,14 +89,18 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   };
 
   console.log('OWNED!!', owned);
-  const gridCell = (name: string) => {
+  const gridCell = (name: string, image: any) => {
     return (
       <div className="gridCell">
         <div className="topCell">
-          <div className="cellImage"></div>
+          <img
+            className="cellImage"
+            src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+            alt=""
+          />
         </div>
         <div className="bottomCell">
-          <div className="name">{name}</div>
+          {/* <div className="name">{name}</div> */}
           <div className="domain">{name}</div>
           <div className="desc">
             <div className="ticker">XYZ</div>
@@ -128,9 +133,9 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
       owned.isNothing()
         ? []
         : owned.value.map((control) => {
-            return gridCell(control.domain);
+            return gridCell(control.domain, control.image);
           }),
-    [owned, account],
+    [owned, account, refetchOwned],
   );
 
   // const cells: any = [];
@@ -187,6 +192,22 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
               style={{ overflow: 'auto', height: '90vh' }}
             >
               <div className="gridContainer-profile">{allOwned}</div>
+
+              <button id="more" onClick={showTransfer}>
+                {' '}
+                Transfer{' '}
+              </button>
+              <Modal
+                visible={isTransferVisible}
+                onOk={transferOk}
+                onCancel={transferCancel}
+                footer={null}
+                width={'65vw'}
+                closable={false}
+              >
+                <Approve domain={_domain} />
+              </Modal>
+
               {/* <Owned /> */}
               {/* <div>
               {owned.value.map((control) => {

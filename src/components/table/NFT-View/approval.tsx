@@ -64,9 +64,9 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
           })
           .then((txh) => {
             if (txh.status === 2) {
-              alert('TX APPROVED');
-            } else {
               alert('TX REJECTED');
+            } else {
+              alert('TX APPOVED');
             }
             Promise.all([
               refetchIncomingApprovals,
@@ -91,8 +91,9 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
   return (
     <form onSubmit={handleSubmit(({ address }) => _approve(address))}>
       <div>
-        <button type="submit">Approve Address</button>
-        <input name={'address'} ref={register} placeholder="approval address" />
+        <div>ETHEREUM ADDRESS TO TRANSFER TO</div>
+        <button type="submit">Transfer</button>
+        <input name={'address'} ref={register} placeholder="address" />
       </div>
     </form>
   );
