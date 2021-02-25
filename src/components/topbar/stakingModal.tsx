@@ -32,6 +32,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
   const [isProfileVisible, setProfileVisible] = useState(true);
+  const [isStakeVisible, setStakeVisible] = useState(false);
   const [imageUrl, setImageUrl] = useState('ipfs://Qmimage');
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
@@ -112,6 +113,10 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
     setProfileVisible(false);
   };
 
+  const showStake = () => {
+    setStakeVisible(true);
+  };
+
   const menu = (
     <Menu>
       <Menu.ItemGroup>
@@ -173,18 +178,32 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
               <input name={'child'} ref={register} placeholder="Domain" /> */}
               <Create domainId={_domain} domainContext={domainContext} />
             </div>
-            <Dropdown overlay={menu}>
-              <a
-                className="ant-dropdown-link"
-                onClick={(e) => e.preventDefault()}
-              >
-                CURRENCY <DownOutlined />
-              </a>
-            </Dropdown>
           </div>
           <div className="continueBar">
-            <button className="continueButton"> Continue </button>
+            <button
+              type="button"
+              onClick={showStake}
+              className="continueButton"
+            >
+              {' '}
+              Continue{' '}
+            </button>
           </div>
+          {isStakeVisible ? (
+            <div>
+              <div> Stake W </div>
+              <div> YOUR BID</div>
+              <input placeholder="Your Bid"></input>
+              <Dropdown overlay={menu}>
+                <a
+                  className="ant-dropdown-link"
+                  onClick={(e) => e.preventDefault()}
+                >
+                  CURRENCY <DownOutlined />
+                </a>
+              </Dropdown>
+            </div>
+          ) : null}
         </div>
       </form>
     </div>
