@@ -7,7 +7,7 @@
   width: 100%;
   height: 100%;
   // border: 5px red solid;
-  background-color: darken($dark, 10%);
+  background-color: $shopbg;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,7 +66,7 @@
             // height: 100%;
             // overflow: hidden !important;
             // border: 2px $bright solid;
-            border-radius: 15px;
+            border-radius: 10px;
             margin-bottom: auto;
             object-fit: scale-down;
             bottom: 0;
@@ -89,6 +89,7 @@
           flex-direction: column;
           overflow: hidden;
           align-items: center;
+          border-radius: 0px 0px 10px 10px;
 
           .nftInfoRow {
             // background-color: $medium;
@@ -202,19 +203,20 @@
           display: flex;
           flex-direction: column;
           .purchase {
-            border: 2px $bright solid;
-            border-radius: 24px;
-            width: 168px;
-            height: 36px;
-            line-height: 30px;
-            background: rgba($bright, 0.14);
             color: #fff;
-            text-align: center;
-            transition: 0.6s;
-            vertical-align: middle;
+            // transform: translate(15px, -60px);
+            width: 150px;
+            background: $blueBtnGrad;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 32px;
+            border-radius: 86px;
+            border: none;
             cursor: pointer;
             &:hover {
-              background: rgba($medium, 0.5);
+              // background: rgba($medium, 0.5);
             }
           }
           .lastprice {
@@ -264,14 +266,16 @@
       .rightGraphBarNFT {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+
         width: 100%;
+        // border: 5px solid blue;
 
         .leftAlign {
           display: flex;
           flex-direction: row;
+          justify-content: space-between;
           color: $grayFont;
-          border: 5px solid blue;
+
           width: 100%;
           & > div {
             cursor: pointer;
@@ -294,8 +298,8 @@
         // }
         .selectedItem {
           color: #fff !important;
-          border-radius: 50px;
-          background-color: $medium;
+          border-radius: 10px 10px 0px 0px;
+          background-color: $blackbg;
         }
       }
       .rightGraphNFT {
@@ -304,9 +308,9 @@
         .graph {
           height: 100%;
           // height: auto;
-          background-color: $medium;
-          border: 2px $bright solid;
-          border-radius: 15px;
+          background-color: $blackbg;
+          // border: 2px $bright solid;
+          border-radius: 0px 0px 10px 10px;
         }
       }
     }

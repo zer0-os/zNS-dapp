@@ -161,7 +161,6 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                     </div>
                   </div>
                   <div className="rightTopNFTRight">
-                    <div className="purchase">Purchase</div>
                     <div className="lastprice">
                       <div>Last Price</div>
                       <div className="lastPriceText">$101.33</div>
@@ -170,6 +169,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                       <div>% Change</div>
                       <div className="changeText">+36.09%</div>
                     </div>
+                    <div className="purchase">Purchase</div>
                   </div>
                 </div>
                 <div className="rightMiddleNFT">

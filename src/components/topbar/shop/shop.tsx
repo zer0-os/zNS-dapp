@@ -87,7 +87,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     setTransferVisible(false);
   };
 
-  console.log('OWNED!!', owned);
   const gridCell = (name: string) => {
     return (
       <div className="gridCell">
