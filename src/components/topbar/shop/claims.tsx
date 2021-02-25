@@ -78,6 +78,7 @@ const Claims: React.FC = () => {
   //     </button>
   //   ))}
   // }
+
   if (incomingApprovals.isNothing()) return null;
   return (
     <>
@@ -99,10 +100,11 @@ const Claims: React.FC = () => {
           <Column
             title={null}
             key="action"
-            render={(text, record) => (
-              <Space size="middle">
-                <a>Claim </a>
-              </Space>
+            render={(domain: Domain) => (
+              <button onClick={() => _claim(domain)} key={domain.domain}>
+                {' '}
+                cLAIM
+              </button>
             )}
           />
         </Table>

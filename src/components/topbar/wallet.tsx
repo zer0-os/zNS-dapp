@@ -14,7 +14,10 @@ import { UserRejectedRequestError as UserRejectedRequestErrorFrame } from '@web3
 import { Web3Provider } from '@ethersproject/providers';
 import { formatEther } from '@ethersproject/units';
 import _ from 'lodash';
-import { useEagerConnect, useInactiveListener } from '../../lib/provider-hooks';
+import {
+  useEagerConnect,
+  useInactiveListener,
+} from '../../lib/hooks/provider-hooks';
 import {
   injected,
   network,
