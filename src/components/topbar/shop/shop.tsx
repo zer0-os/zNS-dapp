@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useMemo } from 'react';
+import React, { FC, useState, useCallback, useMemo, useEffect } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../../../lib/contracts';
@@ -18,7 +18,7 @@ import { Column, useTable, useFlexLayout, Cell } from 'react-table';
 import Owned from './owned';
 import Claims from './claims';
 import Stakingview from '../stakingModal';
-import NFTImage from '../../table/NFT-View/nft-image';
+import usePrevious from '../../../lib/hooks/usePrevious';
 
 const { TabPane } = Tabs;
 
@@ -40,6 +40,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const { owned, refetchOwned } = useDomainStore();
   const location = useLocation();
   const [isStakingVisible, setStakingVisible] = useState(false);
+  const previousAccount = usePrevious(account);
 
   const routes = _.transform(
     location.pathname
@@ -51,6 +52,11 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
+
+  const reRender = useEffect(() => {
+    if (account !== previousAccount) {
+    }
+  }, [account, previousAccount]);
 
   const showStaking = () => {
     setStakingVisible(true);

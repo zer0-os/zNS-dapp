@@ -78,6 +78,7 @@ const Claims: React.FC = () => {
   //     </button>
   //   ))}
   // }
+
   if (incomingApprovals.isNothing()) return null;
   return (
     <>

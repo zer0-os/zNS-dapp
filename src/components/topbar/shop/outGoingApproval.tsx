@@ -74,10 +74,10 @@ const Outgoing: React.FC = () => {
             Offer: '$1,234.56',
             Date: '1 sept 2020',
           })),
-    [domain, refetchOwned],
+    [domain, refetchOwned, account],
   );
 
-  const data = useMemo<NftData[]>(() => dataInput, [dataInput]);
+  const data = useMemo<NftData[]>(() => dataInput, [dataInput, account]);
   // const columns = React.useMemo<Column<NftData>[]>(
   //   () => [
   //     {
