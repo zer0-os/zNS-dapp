@@ -199,7 +199,11 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             >
               <div className="gridContainer-profile">{allOwned}</div>
 
-              <button id="more" onClick={showTransfer}>
+              <button
+                id="more"
+                onClick={showTransfer}
+                style={{ display: 'none' }}
+              >
                 {' '}
                 Transfer{' '}
               </button>
