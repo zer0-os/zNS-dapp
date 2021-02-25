@@ -147,7 +147,50 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
               </div>
 
               <div className="right-container">
-                <div className="rightTopNFT">
+                <div className="rightTop">
+                  <div className="namebar">
+                    <div className="artistIMG">img</div>
+                    <div className="title">
+                      <div className="nftName">
+                        <div>NFT Name</div>
+                      </div>
+                      <div className="type">
+                        <div>NFT</div>
+                      </div>
+                    </div>
+                    <div className="artistName"></div>
+                  </div>
+                  <div className="infobar">
+                    <div className="description">
+                      Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                      Perferendis, vel non. Praesentium explicabo assumenda
+                      distinctio quidem. Quasi neque culpa dolor.
+                    </div>
+                    <div className="infoRight">
+                      {/* <div className="headers">
+                        <div>Last Price</div>
+                        <div>% Change</div>
+                      </div>
+                      <div className="numbers">
+                        <div className="lastPriceText">$101.33</div>
+                        <div className="changeText">+36.09%</div>
+                      </div> */}
+                      <div className="info">
+                        <div className="lastprice">
+                          <div>Last Price</div>
+                          <div className="lastPriceText">$101.33</div>
+                        </div>
+                        <div className="change">
+                          <div>% Change</div>
+                          <div className="changeText">+36.09%</div>
+                        </div>
+                      </div>
+                      <div className="purchase">Purchase</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* <div className="rightTopNFT">
                   <div className="rightTopNFTLeft">
                     <div className="title">
                       <div className="nftName">Name</div>
@@ -171,8 +214,8 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                     </div>
                     <div className="purchase">Purchase</div>
                   </div>
-                </div>
-                <div className="rightMiddleNFT">
+                </div> */}
+                {/* <div className="rightMiddleNFT">
                   <div className="descriptionTitle">DESCRIPTION</div>
                   <div className="description">
                     Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -181,43 +224,44 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                     molestiae saepe recusandae aut ad quaerat illo ut ipsa.
                   </div>
                   <div className="readmore">Read More</div>
-                </div>
-                <div className="rightGraphBarNFT">
-                  <div className="leftAlign">
-                    <div
-                      onClick={() => setGraphButton('performance')}
-                      className={`${
-                        graphButton === 'performance' ? 'selectedItem' : null
-                      }`}
-                    >
-                      Performance
+                </div> */}
+                <div className="graphContainer">
+                  <div className="rightGraphBarNFT">
+                    <div className="leftAlign">
+                      <div
+                        onClick={() => setGraphButton('performance')}
+                        className={`${
+                          graphButton === 'performance' ? 'selectedItem' : null
+                        }`}
+                      >
+                        Performance
+                      </div>
+                      <div
+                        onClick={() => setGraphButton('collectors')}
+                        className={`${
+                          graphButton === 'collectors' ? 'selectedItem' : null
+                        }`}
+                      >
+                        Collectors
+                      </div>
+                      <div
+                        onClick={() => setGraphButton('price')}
+                        className={`${
+                          graphButton === 'price' ? 'selectedItem' : null
+                        }`}
+                      >
+                        Price History
+                      </div>
+                      <div
+                        onClick={() => setGraphButton('tx')}
+                        className={`${
+                          graphButton === 'tx' ? 'selectedItem' : null
+                        }`}
+                      >
+                        Tx History
+                      </div>
                     </div>
-                    <div
-                      onClick={() => setGraphButton('collectors')}
-                      className={`${
-                        graphButton === 'collectors' ? 'selectedItem' : null
-                      }`}
-                    >
-                      Collectors
-                    </div>
-                    <div
-                      onClick={() => setGraphButton('price')}
-                      className={`${
-                        graphButton === 'price' ? 'selectedItem' : null
-                      }`}
-                    >
-                      Price History
-                    </div>
-                    <div
-                      onClick={() => setGraphButton('tx')}
-                      className={`${
-                        graphButton === 'tx' ? 'selectedItem' : null
-                      }`}
-                    >
-                      Tx History
-                    </div>
-                  </div>
-                  {/* <div
+                    {/* <div
                     onClick={() => setGraphButton('comments')}
                     className={`rightAlign ${
                       graphButton === 'comments' ? 'selectedItem' : null
@@ -226,9 +270,10 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                     <span className="numComments">33</span>
                     <span className="comments">Comments</span>
                   </div> */}
-                </div>
-                <div className="rightGraphNFT">
-                  <div className="graph"></div>
+                  </div>
+                  <div className="rightGraphNFT">
+                    <div className="graph"></div>
+                  </div>
                 </div>
               </div>
             </div>
