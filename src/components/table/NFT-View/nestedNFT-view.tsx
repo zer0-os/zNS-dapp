@@ -198,7 +198,24 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                           <div className="changeText">+36.09%</div>
                         </div>
                       </div>
-                      <div className="purchase">Purchase</div>
+                      <button
+                        type="button"
+                        onClick={showPurchase}
+                        className="purchase"
+                      >
+                        Purchase
+                      </button>
+                      <Modal
+                        visible={isPurchaseVisible}
+                        getContainer={false}
+                        maskStyle={{}}
+                        onOk={purchaseOk}
+                        onCancel={purchaseCancel}
+                        footer={null}
+                        width="50vw"
+                      >
+                        <Purchase />
+                      </Modal>
                     </div>
                   </div>
                 </div>
