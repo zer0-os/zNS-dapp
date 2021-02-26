@@ -21,6 +21,7 @@ import {
   useAsyncDebounce,
   useFilters,
   useFlexLayout,
+  useAbsoluteLayout,
 } from 'react-table';
 import { string } from 'zod';
 import Profile from './NFT-View/nft-view';
@@ -78,6 +79,13 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
   const { domain } = domainContext;
   console.log('DOMAINTABLE!', domain);
   const history = useHistory();
+
+  const defaultColumn = React.useMemo(
+    () => ({
+      width: 150,
+    }),
+    [],
+  );
 
   const dataInput: Data[] = useMemo(
     () =>
@@ -177,13 +185,14 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
     {
       columns,
       data,
+      defaultColumn,
       // initialState: {
       //   hiddenColumns: ['timestamp'],
       // },
     },
     useFilters,
     useGlobalFilter,
-    // useFlexLayout,
+    // useAbsoluteLayout,
   );
 
   const handleRowClick = (row: any) => {
