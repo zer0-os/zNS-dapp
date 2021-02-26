@@ -9,7 +9,7 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Subdomains from './components/table/child-view';
 import Owned from './components/topbar/shop/owned';
 import { domainCacheContext, DomainCacheProvider } from './lib/useDomainCache';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { PoweroffOutlined } from '@ant-design/icons';
 import { Layout, Menu, Modal } from 'antd';
 import Create from './components/topbar/create';
