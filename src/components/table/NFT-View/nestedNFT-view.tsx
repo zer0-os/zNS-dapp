@@ -13,6 +13,7 @@ import _ from 'lodash';
 import '../../css/subdomains.scss';
 import TableImage from '../table-image';
 import NFTImage from './nft-image';
+import Purchase from './purchaseModal';
 interface NestedProps {
   domain: string;
 }
@@ -21,6 +22,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
   const [isProfileVisible, setProfileVisible] = useState(true);
+  const [isPurchaseVisible, setPurchaseVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
   const { library, account, active, chainId } = context;
@@ -81,6 +83,17 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
     setProfileVisible(false);
   };
 
+  const showPurchase = () => {
+    setPurchaseVisible(true);
+  };
+
+  const purchaseOk = () => {
+    setPurchaseVisible(false);
+  };
+
+  const purchaseCancel = () => {
+    setPurchaseVisible(false);
+  };
   //
 
   //
@@ -212,7 +225,24 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                       <div>% Change</div>
                       <div className="changeText">+36.09%</div>
                     </div>
-                    <div className="purchase">Purchase</div>
+                    <button
+                      type="button"
+                      onClick={showPurchase}
+                      className="purchase"
+                    >
+                      Purchase
+                    </button>
+                    <Modal
+                      visible={isPurchaseVisible}
+                      getContainer={false}
+                      maskStyle={{}}
+                      onOk={purchaseOk}
+                      onCancel={purchaseCancel}
+                      footer={null}
+                      width="50vw"
+                    >
+                      <Purchase />
+                    </Modal>
                   </div>
                 </div> */}
                 {/* <div className="rightMiddleNFT">
