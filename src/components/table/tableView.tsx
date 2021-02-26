@@ -80,12 +80,12 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
   console.log('DOMAINTABLE!', domain);
   const history = useHistory();
 
-  const defaultColumn = React.useMemo(
-    () => ({
-      width: 150,
-    }),
-    [],
-  );
+  // const defaultColumn = React.useMemo(
+  //   () => ({
+  //     width: 150,
+  //   }),
+  //   [],
+  // );
 
   const dataInput: Data[] = useMemo(
     () =>
@@ -137,11 +137,45 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
         Header: 'Asset',
         accessor: 'asset',
       },
-      { Header: 'Name', accessor: 'name' },
+      {
+        Header: 'Name',
+        accessor: 'name',
+        width: '100%',
+        Cell: (props) => (
+          <span
+            style={{
+              width: '180px',
+              maxWidth: '180px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              // height: '100%',
+              wordWrap: 'break-word',
+              verticalAlign: 'center',
+            }}
+          >
+            {console.log('PROPS!!!', props)}
+            <span
+              style={{
+                textAlign: 'left',
+                width: '100%',
+                wordWrap: 'break-word',
+              }}
+            >
+              {props.data[0].key}
+            </span>
+          </span>
+        ),
+      },
       { Header: 'Volume', accessor: 'volume' },
       { Header: '24Hr', accessor: '24Hr' },
       { Header: '7d', accessor: '7d' },
-      { Header: 'Market Cap', accessor: 'marketcap' },
+      {
+        Header: 'Market Cap',
+        accessor: 'marketcap',
+        // Cell: (props) => {
+        //   <div>{JSON.stringify(props)}</div>;
+        // },
+      },
       {
         Header: 'Last 7 Days',
         accessor: 'last7days',
@@ -186,7 +220,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
     {
       columns,
       data,
-      defaultColumn,
+      // defaultColumn,
       // initialState: {
       //   hiddenColumns: ['timestamp'],
       // },
@@ -200,7 +234,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
     console.log('fire');
     console.log(row);
     history.push({
-      pathname: row.values.name,
+      pathname: row.original.key,
     });
   };
 
