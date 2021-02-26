@@ -19,6 +19,7 @@ import Owned from './owned';
 import Claims from './claims';
 import Stakingview from '../stakingModal';
 import usePrevious from '../../../lib/hooks/usePrevious';
+import tripledot from '../../css/img/tripledot.svg';
 
 const { TabPane } = Tabs;
 
@@ -94,7 +95,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     setTransferVisible(false);
   };
 
-  console.log('OWNED!!', owned);
   const gridCell = (name: string, image: any) => {
     return (
       <div className="gridCell">
@@ -107,16 +107,17 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         </div>
         <div className="bottomCell">
           {/* <div className="name">{name}</div> */}
-          <div className="domain">{name}</div>
+          <div className="name">{name.match(/[^.]+$/)}</div>
+          <div className="domain">O::/{name}</div>
           <div className="desc">
-            <div className="ticker">XYZ</div>
-            <div className="holders">X Holdes</div>
+            <div className="ticker">Ticker</div>
+            <div className="holders">X Holders</div>
           </div>
           <div className="price">$1234.00</div>
           <div className="bottom">
-            <span className="eth-price">(eth price)</span>
+            <span className="eth-price">(Ξ 1.0015)</span>
             <span className="cell-btn">
-              <button onClick={showTransfer}> Transfer </button>
+              <img onClick={showTransfer} src={tripledot} alt="" />
               <Modal
                 visible={isTransferVisible}
                 onOk={transferOk}
