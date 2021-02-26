@@ -57,7 +57,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\""
+    "typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
+    "lint": "eslint"
   },
   "eslintConfig": {
     "extends": [
