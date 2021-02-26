@@ -485,6 +485,10 @@ table {
         }
         &:nth-child(3) {
           color: #fff;
+          width: 10% !important;
+          max-width: 10% !important;
+          word-wrap: break-word !important;
+          overflow-wrap: break-word !important;
         }
         &:nth-child(4) {
           color: #fff;

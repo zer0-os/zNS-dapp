@@ -84,6 +84,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
       domain.isNothing()
         ? []
         : _.map(domain.value.children, (key, i) => ({
+            key: key,
             '#': i.toString(),
             // asset: <Profile domain={key} />,
             asset: (
