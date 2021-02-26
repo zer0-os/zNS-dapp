@@ -114,7 +114,7 @@ const Outgoing: React.FC = () => {
         ))}
       </div> */}
       <div>
-        <Table dataSource={dataInput} style={{ backgroundImage: 'none' }}>
+        <Table dataSource={dataInput} style={{ background: 'none' }}>
           <Column title="NFT" dataIndex="NFT" key="NFT" />
           <Column title="Owner" dataIndex="Owner" key="Owner" />
 
