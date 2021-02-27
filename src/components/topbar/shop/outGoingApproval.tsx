@@ -113,25 +113,23 @@ const Outgoing: React.FC = () => {
           </button>
         ))}
       </div> */}
-      <div>
-        <Table dataSource={dataInput} style={{ background: 'none' }}>
-          <Column title="NFT" dataIndex="NFT" key="NFT" />
-          <Column title="Owner" dataIndex="Owner" key="Owner" />
 
-          <Column title="Offer" dataIndex="Offer" key="Offer" />
-          <Column title="Date" dataIndex="Date" key="Date" />
-          {/* <Column
-            title={null}
-            key="action"
-            render={(domain: Domain) => (
-              <button onClick={() => _revoke(domain)} key={domain.domain}>
-                {' '}
-                _revoke
-              </button>
-            )}
-          /> */}
-        </Table>
-      </div>
+      <Table dataSource={dataInput} style={{}}>
+        <Column title="NFT" dataIndex="NFT" key="NFT" />
+        <Column title="Owner" dataIndex="Owner" key="Owner" />
+
+        <Column title="Offer" dataIndex="Offer" key="Offer" />
+        <Column title="Date" dataIndex="Date" key="Date" />
+        <Column
+          title={null}
+          key="action"
+          render={(text, record) => (
+            <Space size="middle">
+              <a>Revoke </a>
+            </Space>
+          )}
+        />
+      </Table>
     </>
   );
 };
