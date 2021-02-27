@@ -5,7 +5,7 @@ import { getAddress } from '@ethersproject/address';
 import { useZnsContracts } from '../../../lib/contracts';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
-import { Domain } from '../../../lib/useDomainStore';
+import { Domain, zeroAddress } from '../../../lib/useDomainStore';
 import { hexRegex } from '../../../lib/validation/validators';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import Transfer from '../../transferDomains';
@@ -54,6 +54,19 @@ const Claims: React.FC = () => {
     [contracts, account, refetchOwned, refetchIncomingApprovals],
   );
 
+  const _revoke = useCallback(
+    (domain: Domain) => {
+      if (account && contracts.isJust())
+        contracts.value.registry
+          .approve(zeroAddress, domain.id)
+          .then((txr: any) => txr.wait(2))
+          .then(() => {
+            refetchOwned();
+          });
+    },
+    [contracts, account, refetchOwned],
+  );
+
   console.log('APPROVAL', incomingApprovals);
 
   const dataInput: NfData[] = useMemo(
@@ -67,7 +80,7 @@ const Claims: React.FC = () => {
             Offer: '$1,234.56',
             Date: '1 sept 2020',
           })),
-    [incomingApprovals],
+    [contracts, account, refetchOwned, refetchIncomingApprovals],
   );
 
   // const claimBtn = () => {
@@ -104,6 +117,16 @@ const Claims: React.FC = () => {
               <button onClick={() => _claim(domain)} key={domain.domain}>
                 {' '}
                 cLAIM
+              </button>
+            )}
+          />
+          <Column
+            title={null}
+            key="action"
+            render={(domain: Domain) => (
+              <button onClick={() => _revoke(domain)} key={domain.domain}>
+                {' '}
+                revoke
               </button>
             )}
           />

@@ -120,15 +120,16 @@ const Outgoing: React.FC = () => {
 
           <Column title="Offer" dataIndex="Offer" key="Offer" />
           <Column title="Date" dataIndex="Date" key="Date" />
-          <Column
+          {/* <Column
             title={null}
             key="action"
-            render={(text, record) => (
-              <Space size="middle">
-                <a>Revoke </a>
-              </Space>
+            render={(domain: Domain) => (
+              <button onClick={() => _revoke(domain)} key={domain.domain}>
+                {' '}
+                _revoke
+              </button>
             )}
-          />
+          /> */}
         </Table>
       </div>
     </>

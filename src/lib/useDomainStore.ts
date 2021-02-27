@@ -49,7 +49,7 @@ interface ZeroTransaction {
   pending: boolean;
   nonce: number;
 }
-export const zeroAddress =
+export const zeroAddress: any =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
 // TODO: turn queries into fragments
 const domainQuery = gql`

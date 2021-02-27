@@ -13,6 +13,7 @@ import {
 } from '../../../lib/useDomainStore';
 import { hexRegex } from '../../../lib/validation/validators';
 import { useDomainCache } from '../../../lib/useDomainCache';
+import Modal from 'antd/lib/modal/Modal';
 
 interface ApprovalProps {
   domain: string;
@@ -42,6 +43,7 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
   const contracts = useZnsContracts();
   const domainStore = useDomainCache();
   const { refetchIncomingApprovals, useDomain, refetchOwned } = domainStore;
+  const [isTransferVisible, setTransferVisible] = useState(false);
   const { domain, refetchDomain } = useDomain(_domain);
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -82,6 +84,19 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
     },
     [contracts, account, domain],
   );
+
+  const showTransfer = () => {
+    setTransferVisible(true);
+  };
+
+  const transferOk = () => {
+    setTransferVisible(false);
+  };
+
+  const transferCancel = () => {
+    setTransferVisible(false);
+  };
+
   console.log('FIRE1');
   console.log(domain);
 
@@ -89,13 +104,15 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
   if (domain.isNothing() || domain.value.owner !== account) return null;
   console.log('FIRE2');
   return (
-    <form onSubmit={handleSubmit(({ address }) => _approve(address))}>
-      <div>
-        <div>ETHEREUM ADDRESS TO TRANSFER TO</div>
-        <button type="submit">Transfer</button>
-        <input name={'address'} ref={register} placeholder="address" />
-      </div>
-    </form>
+    <>
+      <form onSubmit={handleSubmit(({ address }) => _approve(address))}>
+        <div>
+          <div>ETHEREUM ADDRESS TO TRANSFER TO</div>
+          <button type="submit">Transfer</button>
+          <input name={'address'} ref={register} placeholder="address" />
+        </div>
+      </form>
+    </>
   );
 };
 
