@@ -25,7 +25,7 @@ let ClipboardButton = require('react-clipboard.js');
 const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
   const [isOwnedVisible, setOwnedVisible] = useState(false);
-  const [text, setText] = useState('Copied');
+  const [text, setText] = useState('');
   const [count, setCount] = useState(0);
   const [size, setSize] = useState();
   const contracts = useZnsContracts();
@@ -46,6 +46,10 @@ const Profile: FC = () => {
 
   const ownerCancel = () => {
     setOwnedVisible(false);
+  };
+
+  const onSuccess = () => {
+    return 'Coppied';
   };
 
   // const copyFunction = () => {
@@ -108,8 +112,9 @@ const Profile: FC = () => {
                 <div className="footer-address">
                   <div className="eth-btn">
                     <ClipboardButton
-                      data-clipboard-text={account}
                       className="btn-43"
+                      data-clipboard-text={account}
+                      onSuccess={onSuccess}
                     >
                       {account}
                     </ClipboardButton>
