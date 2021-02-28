@@ -19,6 +19,7 @@ import Approve from '../../table/NFT-View/approval';
 import { domain } from 'process';
 import { indexOf } from 'lodash';
 import { Space, Table } from 'antd';
+import Profile from '../../table/table-image';
 const { Column, ColumnGroup } = Table;
 
 interface NFTRowProps {
@@ -31,9 +32,10 @@ interface NFTColumnProps {
 }
 
 interface NftData {
+  Image: any;
   NFT: any;
-  Owner: string;
-  Offer: string;
+  Owner: any;
+  Offer: any;
   Date: string;
 }
 
@@ -68,11 +70,26 @@ const Outgoing: React.FC = () => {
       owned.isNothing()
         ? []
         : owned.value.map((domain) => ({
-            // asset: <Profile domain={key} />,
+            Image: (
+              <div className="imgContainer">
+                <Profile domain={domain.domain} />
+              </div>
+            ),
             NFT: domain.domain,
-            Owner: domain.owner,
-            Offer: '$1,234.56',
-            Date: '1 sept 2020',
+            Owner: (
+              <div className="ownerCol">
+                <div className="ownerIcon">img</div>
+                {/* <div>{domain.owner}</div> */}
+                <div>Artist Name</div>
+              </div>
+            ),
+            Offer: (
+              <div>
+                <div>$1234.56</div>
+                <div>(Ξ2.0476)</div>
+              </div>
+            ),
+            Date: '1 Sept 2020',
           })),
     [domain, refetchOwned, account],
   );
@@ -115,7 +132,8 @@ const Outgoing: React.FC = () => {
       </div> */}
 
       <Table dataSource={dataInput} style={{}}>
-        <Column title="NFT" dataIndex="NFT" key="NFT" />
+        <Column title="NFT" dataIndex="Image" key="Image" />
+        <Column title="" dataIndex="NFT" key="NFT" />
         <Column title="Owner" dataIndex="Owner" key="Owner" />
 
         <Column title="Offer" dataIndex="Offer" key="Offer" />
@@ -125,7 +143,7 @@ const Outgoing: React.FC = () => {
           key="action"
           render={(text, record) => (
             <Space size="middle">
-              <a>Revoke </a>
+              <div className="declineBtn">Decline</div>
             </Space>
           )}
         />
