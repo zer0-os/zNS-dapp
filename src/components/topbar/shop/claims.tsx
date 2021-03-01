@@ -10,6 +10,7 @@ import { hexRegex } from '../../../lib/validation/validators';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import Transfer from '../../transferDomains';
 import { Table, Tag, Space } from 'antd';
+import Profile from '../../table/table-image';
 
 const { Column, ColumnGroup } = Table;
 
@@ -23,9 +24,10 @@ interface NFColumnProps {
 }
 
 interface NfData {
+  Image: any;
   NFT: any;
-  Owner: string;
-  Offer: string;
+  Owner: any;
+  Offer: any;
   Date: string;
 }
 
@@ -74,11 +76,26 @@ const Claims: React.FC = () => {
       incomingApprovals.isNothing()
         ? []
         : incomingApprovals.value.map((domain) => ({
-            // asset: <Profile domain={key} />,
+            Image: (
+              <div className="imgContainer">
+                <Profile domain={domain.domain} />
+              </div>
+            ),
             NFT: domain.domain,
-            Owner: domain.owner,
-            Offer: '$1,234.56',
-            Date: '1 sept 2020',
+            Owner: (
+              <div className="ownerCol">
+                <div className="ownerIcon">img</div>
+                {/* <div>{domain.owner}</div> */}
+                <div>Artist Name</div>
+              </div>
+            ),
+            Offer: (
+              <div>
+                <div>$1234.56</div>
+                <div>(Ξ2.0476)</div>
+              </div>
+            ),
+            Date: '1 Sept 2020',
           })),
     [contracts, account, refetchOwned, refetchIncomingApprovals],
   );
@@ -105,29 +122,40 @@ const Claims: React.FC = () => {
       </div> */}
       <div>
         <Table dataSource={dataInput} style={{ backgroundImage: 'none' }}>
-          <Column title="NFT" dataIndex="NFT" key="NFT" />
+          <Column title="NFT" dataIndex="Image" key="Image" />
+          <Column title="" dataIndex="NFT" key="NFT" />
           <Column title="Owner" dataIndex="Owner" key="Owner" />
 
           <Column title="Offer" dataIndex="Offer" key="Offer" />
           <Column title="Date" dataIndex="Date" key="Date" />
           <Column
+            width="130px"
             title={null}
             key="action"
             render={(domain: Domain) => (
-              <button onClick={() => _claim(domain)} key={domain.domain}>
+              <div
+                className="claimsBtn"
+                onClick={() => _claim(domain)}
+                key={domain.domain}
+              >
                 {' '}
-                cLAIM
-              </button>
+                Claim
+              </div>
             )}
           />
           <Column
+            width="130px"
             title={null}
             key="action"
             render={(domain: Domain) => (
-              <button onClick={() => _revoke(domain)} key={domain.domain}>
+              <div
+                className="claimsBtn"
+                onClick={() => _revoke(domain)}
+                key={domain.domain}
+              >
                 {' '}
-                revoke
-              </button>
+                Revoke
+              </div>
             )}
           />
         </Table>
