@@ -284,29 +284,28 @@ export default function Wallet() {
         </div>
       )}
       {!!error && <h4>{getErrorMessage(error)}</h4>}
-      {/* 
-        {!!(library && account) &&
-          connector === connectorsByName[ConnectorNames.Network] &&
-          chainId && (
-            <div className="button-target">
-              <button
-                onClick={() => {
-                  (connector as any).changeChainId(chainId === 1 ? 4 : 1);
-                }}
-              >
-                Switch Networks
-              </button>
-            </div>
-          )} */}
+      {/* {!!(library && account) &&
+        connector === connectorsByName[ConnectorNames.Network] &&
+        chainId && (
+          <div className="button-target">
+            <button
+              onClick={() => {
+                (connector as any).changeChainId(chainId === 1 ? 4 : 1);
+              }}
+            >
+              Switch Networks
+            </button>
+          </div>
+        )} */}
       {connector === connectorsByName[ConnectorNames.WalletConnect] && (
         <div className="button-target">
-          {/* <button
+          <button
             onClick={() => {
               (connector as any).close();
             }}
           >
             Kill WalletConnect Session
-          </button> */}
+          </button>
         </div>
       )}
       {connector === connectorsByName[ConnectorNames.Fortmatic] && (

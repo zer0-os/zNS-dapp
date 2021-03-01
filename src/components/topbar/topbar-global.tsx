@@ -20,6 +20,7 @@ import Shop from './shop/shop';
 import { domainToASCII } from 'url';
 import { any, string } from 'zod';
 import Stakingview from './stakingModal';
+import usePrevious from '../../lib/hooks/usePrevious';
 
 interface TopbarProps {
   domain: string;
@@ -32,6 +33,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const location = useLocation();
+  const previousAccount = usePrevious(account);
 
   const scrollY = useScrollPosition(60);
 

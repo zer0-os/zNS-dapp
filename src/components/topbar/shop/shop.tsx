@@ -31,6 +31,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const [isShopVisible, setShopVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
   const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
+
   const [size, setSize] = useState();
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
@@ -41,7 +42,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const { owned, refetchOwned } = useDomainStore();
   const location = useLocation();
   const [isStakingVisible, setStakingVisible] = useState(false);
-  const previousAccount = usePrevious(account);
 
   const routes = _.transform(
     location.pathname
@@ -53,11 +53,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
-
-  const reRender = useEffect(() => {
-    if (account !== previousAccount) {
-    }
-  }, [account, previousAccount]);
 
   const showStaking = () => {
     setStakingVisible(true);
@@ -142,7 +137,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
         : owned.value.map((control) => {
             return gridCell(control.domain, control.image);
           }),
-    [owned, account, refetchOwned],
+    [owned, refetchOwned],
   );
 
   // const cells: any = [];

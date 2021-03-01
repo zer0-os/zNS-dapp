@@ -253,7 +253,7 @@ function useOwnedDomains(): {
     } else if (account) {
       getOwned({ variables: { owner: account } });
     }
-  }, [account, owned]);
+  }, [account, getOwned, refetch]);
 
   return { owned, refetchOwned: refetch! };
 }
@@ -289,7 +289,7 @@ function useIncomingApprovals(): {
       );
     }
     return Maybe.nothing();
-  }, [data, account, Owned]);
+  }, [data, account]);
 
   useEffect(() => {
     if (refetch) {
@@ -297,7 +297,7 @@ function useIncomingApprovals(): {
     } else if (account) {
       getIncomingApprovals({ variables: { to: account } });
     }
-  }, [account, Owned]);
+  }, [account, refetch, getIncomingApprovals]);
 
   return { incomingApprovals, refetchIncomingApprovals: refetch! };
 }
