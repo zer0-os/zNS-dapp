@@ -5,6 +5,39 @@
   background: $shopbg;
   height: 100%;
   width: 100%;
+  // tab sidebar no display
+  .ant-tabs-left > .ant-tabs-content-holder,
+  .ant-tabs-left > div > .ant-tabs-content-holder {
+    margin-left: 0px;
+    border-left: none;
+  }
+  // tab scroll gutter on selected item
+  .ant-tabs-ink-bar-animated {
+    display: none;
+    width: 0px;
+    &:after {
+      display: none;
+    }
+    &:before {
+      display: none;
+    }
+  }
+  .ant-tabs-nav-list {
+    margin-top: 40px;
+    .ant-tabs-tab {
+      color: $grayFont;
+      font-size: 18px;
+    }
+    .ant-tabs-tab-active {
+      background: $shopbg;
+      color: #fff !important;
+      font-weight: bold;
+    }
+    .ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: #fff;
+      font-weight: bold;
+    }
+  }
 
   .tabs {
     overflow: hidden;
@@ -116,8 +149,8 @@
       // );
       background: $shopbg;
     }
-    // tab container
-    #rc-tabs-0-panel-2 {
+    // tab container # 3
+    #rc-tabs-0-panel-3 {
       height: 100%;
       width: 100%;
       padding: 0;
@@ -209,6 +242,129 @@
                     flex-direction: row;
                     flex-wrap: nowrap;
                     align-items: center;
+                    justify-content: center;
+                    .ownerIcon {
+                      height: 48px;
+                      width: 48px;
+                      border-radius: 30px;
+                      background-color: $bright;
+                      margin-right: 10px;
+                    }
+                  }
+                }
+              }
+              // every second row
+              &:nth-child(2n) {
+                background: none;
+              }
+              // first row and every second row after
+              &:nth-child(2n-1) {
+                background-color: rgba(0, 0, 0, 0.2);
+              }
+            }
+          }
+        }
+      }
+    }
+    .fourthPane {
+    }
+    // tab container #4
+    // tab container
+    #rc-tabs-0-panel-4 {
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      // entire table component
+
+      .ant-table-wrapper {
+        left: 0;
+        top: 0;
+        // border: 2px red solid;
+        height: 100%;
+        width: 100%;
+        // border: none;
+        // table without footer
+        .ant-table {
+          background: none;
+          font-size: 18px;
+          // border: none;
+          // disable hover effect on all rows
+          .ant-table-tbody > tr.ant-table-row-level-0:hover > td {
+            background: unset !important;
+          }
+          // table header
+          .ant-table-thead {
+            tr th {
+              height: 71px;
+              border: none;
+              background: none !important;
+              color: $grayFont;
+              text-transform: uppercase;
+              text-align: center;
+            }
+          }
+          // table body
+          .ant-table-tbody {
+            // all rows
+            tr {
+              border: 0px;
+              color: #fff;
+              &:hover {
+                background: unset;
+              }
+              // every row
+              td {
+                height: 122px;
+                border: 0px;
+                // disclude nft name
+                &:not(:nth-child(2)) {
+                  text-align: center;
+                }
+                .claimsBtn {
+                  color: #fff;
+                  width: 125px;
+                  height: 38px;
+                  background: $shopbg;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: center;
+                  align-items: center;
+                  padding: 8px 32px;
+                  border-radius: 86px;
+                  // border: none;
+                  border-top: 1px $bright solid !important;
+                  border-bottom: 2px transparent solid;
+                  cursor: pointer;
+                  transition: 0.6s;
+                  &:hover {
+                    border-top: 1px transparent solid;
+                    border-bottom: 2px $bright solid !important;
+                    background: lighten($shopbg, 30%);
+                  }
+                }
+                // image column
+                &:nth-child(1) {
+                  .imgContainer {
+                    height: 100px;
+                    width: 100px;
+                    max-width: 100px;
+                    max-height: 100px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    .domainImage {
+                      max-width: 100px;
+                      max-height: 100px;
+                    }
+                  }
+                }
+                // owner column
+                &:nth-child(3) {
+                  .ownerCol {
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    align-items: center;
+                    justify-content: center;
                     .ownerIcon {
                       height: 48px;
                       width: 48px;

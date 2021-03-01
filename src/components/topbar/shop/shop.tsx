@@ -239,7 +239,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             <TabPane
               className="tabPane secondPane"
               tab="NFTs You've Made"
-              key="3"
+              key="2"
               style={{ overflow: 'auto', height: '90vh' }}
             >
               <div className="listOut">
@@ -249,7 +249,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             <TabPane
               className="tabPane thirdPane"
               tab="Offers You've Made"
-              key="2"
+              key="3"
               style={{ overflow: 'auto', height: '90vh' }}
             >
               <Outgoing />
