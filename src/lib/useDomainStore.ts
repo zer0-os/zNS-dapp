@@ -253,7 +253,17 @@ function useOwnedDomains(): {
     } else if (account) {
       getOwned({ variables: { owner: account } });
     }
-  }, [account, getOwned, refetch]);
+  }, [getOwned, refetch]);
+
+  console.log('usedomain list', owned);
+
+  useEffect(() => {
+    if (refetch) {
+      refetch({ variables: { owner: account } });
+    } else if (account) {
+      getOwned({ variables: { owner: account } });
+    }
+  }, [account]);
 
   return { owned, refetchOwned: refetch! };
 }
