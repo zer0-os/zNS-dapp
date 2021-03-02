@@ -25,6 +25,7 @@ type DeclineState = {
 type AcceptState = {
   count5: number;
 };
+
 const initalState = {
   count0: 0 as number,
 };
