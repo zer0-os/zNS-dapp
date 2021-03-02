@@ -2,6 +2,13 @@ import { useReducer } from 'react';
 
 export const reduceNotification = (state: any, action: any) => {
   switch (action.type) {
+    case 'ZeroState':
+      return [
+        state,
+        {
+          count0: action.count0,
+        },
+      ];
     case 'APPROVED':
       return [
         state + 1,
