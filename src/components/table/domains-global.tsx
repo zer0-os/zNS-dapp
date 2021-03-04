@@ -56,12 +56,16 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   const location = useLocation();
   const contracts = useZnsContracts();
   const { account } = context;
-  const { useDomain } = useDomainCache();
+  const { useDomain, useAllDomains } = useDomainCache();
+  const { _allDomains, refetchAllDomains } = useAllDomains(_domain);
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const history = useHistory();
   const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
+
+  console.log('TOP ALL DOMAIN!!', _allDomains);
+  console.log('TOP DDOMAIN', domain);
 
   const routes = _.transform(
     location.pathname

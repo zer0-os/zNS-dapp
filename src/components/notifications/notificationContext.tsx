@@ -14,6 +14,18 @@ type RejectedState = {
   count2: number;
 };
 
+type SentState = {
+  count3: number;
+};
+
+type DeclineState = {
+  count4: number;
+};
+
+type AcceptState = {
+  count5: number;
+};
+
 const initalState = {
   count0: 0 as number,
 };

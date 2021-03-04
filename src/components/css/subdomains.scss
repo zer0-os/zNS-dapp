@@ -372,9 +372,11 @@ table {
   .subdomainsHeaderGroupGlobal {
     color: $grayFont;
     text-decoration: none;
+    // tr = row
     tr {
       height: 26px;
     }
+    // th = header cell
     tr th:first-child {
       // border-radius: 50%;
       // border-collapse: inherit;
