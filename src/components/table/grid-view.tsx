@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
 import { Web3Provider } from '@ethersproject/providers';
+import TableImage from './table-image';
 
 interface GridProps {
   domain: string;
@@ -52,6 +53,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
             src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
             alt=""
           /> */}
+          <TableImage domain={name} />
         </div>
         <div className="bottomCell">
           {/* <div className="name">{name}</div> */}
@@ -64,7 +66,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
           <div className="price">$1234.00</div>
           <div className="bottom">
             <span className="eth-price">(Ξ 1.0015)</span>
-            <span className="cell-btn">placeholder</span>
+            <span className="cell-btn">Trade</span>
           </div>
         </div>
       </div>
@@ -81,6 +83,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     [domain],
   );
   if (domain.isNothing()) return null;
+  console.log('GRID CHILDREN!!!', domain.value.children);
   return <div className="gridContainer">{gridCells}</div>;
 };
 

@@ -153,7 +153,6 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
     headerGroups,
     prepareRow,
     rows,
-
     page,
     canPreviousPage,
     canNextPage,
