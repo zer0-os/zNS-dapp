@@ -56,12 +56,12 @@ interface Data {
   trade: string;
 }
 
-interface TProps {
+interface ADProps {
   domain: string;
   gridView: boolean;
 }
 
-const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
+const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
   const context = useWeb3React<Web3Provider>();
   const [sortConfig, setSortConfig] = useState();
   const [search, setSearch] = useState('');
@@ -70,13 +70,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
   const contracts = useZnsContracts();
   const { account } = context;
   const { useDomain, useAllDomains } = useDomainCache();
-  const { _allDomains, refetchAllDomains } = useAllDomains(_domain);
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const history = useHistory();
-
-  console.log('ALL DOMAIN!!', _allDomains);
-  console.log('DDOMAIN', domain);
 
   const dataInput: Data[] = useMemo(
     () =>
@@ -289,4 +285,4 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
   );
 };
 
-export default TableViewGlobal;
+export default AllDomains;
