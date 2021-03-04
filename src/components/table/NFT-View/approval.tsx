@@ -14,6 +14,7 @@ import {
 import { hexRegex } from '../../../lib/validation/validators';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import Modal from 'antd/lib/modal/Modal';
+import { Domain } from 'domain';
 
 interface ApprovalProps {
   domain: string;
@@ -55,13 +56,12 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
         account &&
         contracts.isJust() &&
         domain.isJust() &&
-        account != address
+        account != address &&
+        account === domain.value.owner
       ) {
         contracts.value.registry
           .approve(address, domain.value.id)
           .then((txr) => {
-            alert('PENDING TX');
-
             return txr.wait(2);
           })
           .then((txh) => {
@@ -98,8 +98,7 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
   };
 
   console.log('FIRE1');
-  console.log(domain);
-
+  console.log('approval domain', domain);
   console.log(account);
   if (domain.isNothing() || domain.value.owner !== account) return null;
   console.log('FIRE2');
