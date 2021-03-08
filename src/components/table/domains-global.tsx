@@ -132,7 +132,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     '678293',
     '426582',
     '414350',
-    '675b68',
+    '675b67',
   ];
   if (domain.isNothing()) return null;
   return (
