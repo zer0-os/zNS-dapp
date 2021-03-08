@@ -3,8 +3,8 @@
 1. (Create and) assign task in [Zer0 board](https://zer0.io/a/network/tasks/board/3ac44844-2b98-46e1-b29d-7886da72484f) to self
 2. Branch from develop (or another feature branch) if work/feature, from master if hotfix
 3. Name the branch the type of work followed by the task’s universally unique identifier and a friendly name describing the task; examples:
-    *  ```hotfix/benefacto/0c1a-fixCacheConfig ```
-    *  ```feature/remscar/b175-stakingPage ```
+    *  ```hotfix/0c1a-fixCacheConfig ```
+    *  ```feature/b175-stakingPage ```
     *  ```work/Joshua-Jack/b62b-reworkRoutes ```
 4. Create (a) failing test(s) (if feature/work/hotfix is testable) that verifies that the feature/work/hotfix has not been implemented yet
 5. Perform work on branch in small commits, pushing after each commit
