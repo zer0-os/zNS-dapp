@@ -17,8 +17,8 @@ import TableImage from '../../table/table-image';
 import { getAddress } from 'ethers/lib/utils';
 import { Domain } from 'domain';
 import { string } from 'zod';
+import ClipboardButton from 'react-clipboard.js';
 const { TabPane } = Tabs;
-let ClipboardButton = require('react-clipboard.js');
 
 const Purchase: FC = () => {
   const context = useWeb3React<Web3Provider>();
