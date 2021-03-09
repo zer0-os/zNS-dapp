@@ -51,6 +51,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const [isWalletVisible, setWalletVisible] = useState(false);
   const [isShopVisible, setShopVisible] = useState(false);
   const [isStakingVisible, setStakingVisible] = useState(false);
+  const [selected, setSelected] = useState('networks');
 
   const showStaking = () => {
     setStakingVisible(true);
@@ -97,11 +98,69 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     >
       <div className="topHalfContainer">
         <div className="topHalf">
-          <div className="topLeft"></div>
-          <div className="topRight"></div>
+          <div className="topLeft">
+            <div className="network">0://</div>
+            {routes.length > 0 ? (
+              // <div className="routeBox">
+              <div className="route">{routes[0][0]}</div>
+            ) : null}
+          </div>
+          <div className="topRight">
+            <div className="search-bar">
+              <button className="search-bar-button"></button>
+              <input
+                className="search-bar-input"
+                type="text"
+                placeholder="Search"
+              />
+            </div>
+            <div className="connect-btn" onClick={showWallet}>
+              <div className="dot">{active ? '🟢' : '🔴'}</div>
+              <div className="btn-text">
+                {active ? 'Connected' : 'Connect Wallet'}
+              </div>
+            </div>
+            <div className="dotMenu">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+        <div className="bottomHalf">
+          <div
+            onClick={() => setSelected('networks')}
+            className={selected === 'networks' ? 'selected' : ''}
+          >
+            Zero Networks
+          </div>
+          <div
+            onClick={() => setSelected('members')}
+            className={selected === 'members' ? 'selected' : ''}
+          >
+            Members
+          </div>
+          <div
+            onClick={() => setSelected('nfts')}
+            className={selected === 'nfts' ? 'selected' : ''}
+          >
+            NFTs
+          </div>
+          <div
+            onClick={() => setSelected('daos')}
+            className={selected === 'daos' ? 'selected' : ''}
+          >
+            DAOs
+          </div>
+          <div
+            onClick={() => setSelected('universes')}
+            className={selected === 'universes' ? 'selected' : ''}
+          >
+            Universes
+          </div>
         </div>
       </div>
-      <div className="bottomHalf"></div>
+
       {/* <div className="topbarLeft">
         <Link className="" to={'/'}>
           <img
@@ -190,6 +249,21 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           </a>
         </div>
       </Modal> */}
+      <Modal
+        visible={isWalletVisible}
+        onOk={walletOk}
+        onCancel={walletCancel}
+        footer={null}
+      >
+        <Wallet />
+        <hr />
+        <div className="new-ETH">
+          <div className="ETH"> New to Ethereum?</div>{' '}
+          <a href="https://ethereum.org/en/wallets/">
+            Learn more about wallets
+          </a>
+        </div>
+      </Modal>
     </div>
   );
 };
