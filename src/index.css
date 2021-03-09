@@ -17,9 +17,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   /* background-color: #641f29; */
   background-image: linear-gradient(
-      45deg,
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.47) 100%
+      0deg,
+      rgba(0, 0, 0, 0.4),
+      rgba(0, 0, 0, 0.4)
     ),
     url('./components/css/img/grainybg.png');
   background-size: cover;

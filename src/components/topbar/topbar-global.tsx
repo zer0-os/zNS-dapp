@@ -91,11 +91,18 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   return (
     <div
       className={`
-    topbarContainer 
+    topbarContainerNeo
     ${scrollY > 1 && 'topbarBackgroundFade'}
     `}
     >
-      <div className="topbarLeft">
+      <div className="topHalfContainer">
+        <div className="topHalf">
+          <div className="topLeft"></div>
+          <div className="topRight"></div>
+        </div>
+      </div>
+      <div className="bottomHalf"></div>
+      {/* <div className="topbarLeft">
         <Link className="" to={'/'}>
           <img
             className="topbarLogo"
@@ -130,7 +137,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       <div className="topbarRight">
         <div className="shop-btn">
           <Shop domain={_domain} />
-          {/* <Stakingview domain={_domain} /> */}
         </div>
 
         <button className="connect-btn" onClick={showWallet}>
@@ -154,7 +160,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           ) : null}
         </div>
 
-        {/* <img src={elon} alt="" className="profilepic" /> */}
       </div>
 
       <Modal
@@ -184,7 +189,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             Learn more about wallets
           </a>
         </div>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };
