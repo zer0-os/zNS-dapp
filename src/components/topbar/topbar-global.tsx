@@ -8,9 +8,6 @@ import useScrollPosition from '@react-hook/window-scroll';
 import { Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar-global.scss';
-import Profile from './profile/profile';
-import Shop from './shop/shop';
-import Stakingview from './stakingModal';
 import usePrevious from '../../lib/hooks/usePrevious';
 
 interface TopbarProps {
@@ -43,17 +40,21 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const [isWalletVisible, setWalletVisible] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isShopVisible, setShopVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isStakingVisible, setStakingVisible] = useState(false);
   const [selected, setSelected] = useState('networks');
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showStaking = () => {
     setStakingVisible(true);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const stakingOk = () => {
     setStakingVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const stakingCancel = () => {
     setStakingVisible(false);
   };
