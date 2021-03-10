@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import '../css/grid.scss';
 import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../../lib/contracts';
@@ -38,10 +38,14 @@ interface GridProps {
 
 const Grid: FC<GridProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { account } = context;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contracts = useZnsContracts();
   const domainStore = useDomainCache();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { useAllDomains, useDomain } = domainStore;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { domain, refetchDomain } = useDomain(_domain);
 
   const gridCell = (name: string) => {
@@ -78,8 +82,8 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
       domain.isNothing()
         ? []
         : domain.value.children.map((key, i) => {
-            return gridCell(key);
-          }),
+          return gridCell(key);
+        }),
     [domain],
   );
   if (domain.isNothing()) return null;
