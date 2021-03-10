@@ -1,7 +1,5 @@
 # Zer0 Namespace Dapp
 
-[![zer0-os](https://circleci.com/github/zer0-os/ZNS-dapp.svg?style=svg)](https://circleci.com/github/zer0-os/ZNS-dapp)
-
 ## Developing Locally
 
 Add a `.env` file to the base of the repository, replacing the brackets with the appropriate values:
