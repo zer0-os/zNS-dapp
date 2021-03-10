@@ -1,6 +1,6 @@
 # Zer0 Namespace Dapp
 
-[![zer0-os](https://circleci.com/github/zer0-os/ZNS-dapp/tree/develop.svg?style=svg)](https://circleci.com/github/zer0-os/ZNS-dapp/tree/develop)
+[![zer0-os](https://circleci.com/github/zer0-os/ZNS-dapp.svg?style=svg)](https://circleci.com/github/zer0-os/ZNS-dapp)
 
 ## Developing Locally
 
