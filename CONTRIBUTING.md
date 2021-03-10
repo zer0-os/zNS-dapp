@@ -12,7 +12,7 @@
 7. Create a draft pull request from the parent branch so that active work is easily visible
 8. Ensure test(s) are now passing
 9. Once work is completed, mark pull request as ready for review: add relevant reviewers
-10. Once pull request is approved, merge into parent branch, create pull request from master to develop and merge if hotfix
+10. Once pull request is approved, squash and merge into parent branch, create pull request from master to develop and merge if hotfix
 11. Mark task in [Zer0 board](https://zer0.io/a/network/tasks/board/3ac44844-2b98-46e1-b29d-7886da72484f) complete and delete branch
 
 **Branches Naming Guidelines:**
