@@ -253,21 +253,14 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           </a>
         </div>
       </Modal> */}
-      <Modal
-        visible={isWalletVisible}
-        onOk={walletOk}
-        onCancel={walletCancel}
-        footer={null}
-      >
-        <Wallet />
-        <hr />
-        <div className="new-ETH">
-          <div className="ETH"> New to Ethereum?</div>{' '}
-          <a href="https://ethereum.org/en/wallets/">
-            Learn more about wallets
-          </a>
-        </div>
-      </Modal>
+
+      <Wallet />
+
+      {/* <hr />
+      <div className="new-ETH">
+        <div className="ETH"> New to Ethereum?</div>{' '}
+        <a href="https://ethereum.org/en/wallets/">Learn more about wallets</a>
+      </div> */}
     </div>
   );
 };
