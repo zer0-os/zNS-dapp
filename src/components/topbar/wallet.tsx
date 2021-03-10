@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Web3ReactProvider,
   useWeb3React,
   UnsupportedChainIdError,
 } from '@web3-react/core';
-import { Row } from 'antd';
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
@@ -20,17 +18,10 @@ import {
 } from '../../lib/hooks/provider-hooks';
 import {
   injected,
-  network,
   walletconnect,
   walletlink,
-  ledger,
-  trezor,
-  frame,
-  authereum,
   fortmatic,
-  magic,
   portis,
-  torus,
 } from '../../lib/connectors';
 import { Spinner } from '../spinner';
 import { AbstractConnector } from '@web3-react/abstract-connector';
@@ -194,6 +185,7 @@ function Balance() {
   );
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function Header() {
   const { active, error } = useWeb3React();
 
@@ -213,8 +205,10 @@ export default function Wallet() {
   const context = useWeb3React<Web3Provider>();
   const {
     connector,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     library,
     chainId,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     account,
     activate,
     deactivate,

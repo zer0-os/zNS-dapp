@@ -1,31 +1,21 @@
-import React, { Children, FC, useCallback, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { getAddress } from '@ethersproject/address';
-import * as z from 'zod';
-import { zodResolver } from '../../../lib/validation/zodResolver';
-import { ethers, utils, BigNumberish } from 'ethers';
+import React, { useCallback, useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsContracts } from '../../../lib/contracts';
-import {
-  DomainContext,
-  IncomingApprovalsContext,
-} from '../../../lib/useDomainStore';
-import { hexRegex } from '../../../lib/validation/validators';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { zeroAddress } from '../../../lib/useDomainStore';
 import { Domain } from '../../../lib/useDomainStore';
-import Approve from '../../table/NFT-View/approval';
 import { domain } from 'process';
-import { indexOf } from 'lodash';
 import { Space, Table } from 'antd';
 import Profile from '../../table/table-image';
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface NFTRowProps {
   id: number;
   domain: string;
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface NFTColumnProps {
   key: number;
   name: string;
@@ -46,12 +36,14 @@ const Outgoing: React.FC = () => {
   const domainStore = useDomainCache();
   const { owned, refetchOwned } = domainStore;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const outgoingData = useMemo(
     () =>
       owned.isNothing() ? [] : owned.value.filter((d) => d.approval.isJust()),
-    [owned, refetchOwned],
+    [owned],
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const _revoke = useCallback(
     (domain: Domain) => {
       if (account && contracts.isJust())
@@ -70,31 +62,32 @@ const Outgoing: React.FC = () => {
       owned.isNothing()
         ? []
         : owned.value.map((domain) => ({
-            Image: (
-              <div className="imgContainer">
-                <Profile domain={domain.domain} />
-              </div>
-            ),
-            NFT: domain.domain,
-            Owner: (
-              <div className="ownerCol">
-                <div className="ownerIcon">img</div>
-                {/* <div>{domain.owner}</div> */}
-                <div>Artist Name</div>
-              </div>
-            ),
-            Offer: (
-              <div>
-                <div>$1234.56</div>
-                <div>(Ξ2.0476)</div>
-              </div>
-            ),
-            Date: '1 Sept 2020',
-          })),
-    [domain, refetchOwned, account],
+          Image: (
+            <div className="imgContainer">
+              <Profile domain={domain.domain} />
+            </div>
+          ),
+          NFT: domain.domain,
+          Owner: (
+            <div className="ownerCol">
+              <div className="ownerIcon">img</div>
+              {/* <div>{domain.owner}</div> */}
+              <div>Artist Name</div>
+            </div>
+          ),
+          Offer: (
+            <div>
+              <div>$1234.56</div>
+              <div>(Ξ2.0476)</div>
+            </div>
+          ),
+          Date: '1 Sept 2020',
+        })),
+    [owned],
   );
 
-  const data = useMemo<NftData[]>(() => dataInput, [dataInput, account]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const data = useMemo<NftData[]>(() => dataInput, [dataInput]);
   // const columns = React.useMemo<Column<NftData>[]>(
   //   () => [
   //     {

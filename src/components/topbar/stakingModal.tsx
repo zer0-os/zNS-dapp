@@ -1,12 +1,10 @@
-import React, { FC, useState, useCallback } from 'react';
+import { FC, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
-import { useDomainStore } from '../../lib/useDomainStore';
-import { Modal, Button } from 'antd';
 import Create from './create';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import _ from 'lodash';
@@ -16,7 +14,6 @@ import { zodResolver } from '../../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { subdomainRegex } from '../../lib/validation/validators';
 import '../css/stakingModal.scss';
-const { SubMenu } = Menu;
 
 interface NestedProps {
   domain: string;
@@ -29,22 +26,31 @@ const schema = z.object({
 });
 
 const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isTransferVisible, setTransferVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isProfileVisible, setProfileVisible] = useState(true);
   const [isStakeVisible, setStakeVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [imageUrl, setImageUrl] = useState('ipfs://Qmimage');
   const context = useWeb3React<Web3Provider>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contracts = useZnsContracts();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { domain, refetchDomain } = domainContext;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
   const location = useLocation();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const routes = _.transform(
     location.pathname
       .substr(1)
@@ -77,38 +83,47 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   //   [contracts, account],
   // );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showSubdomain = () => {
     setSubdomainVisible(true);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const subdomainOk = () => {
     setSubdomainVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const subdomainCancel = () => {
     setSubdomainVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showTransfer = () => {
     setTransferVisible(true);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const transferOk = () => {
     setTransferVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const transferCancel = () => {
     setTransferVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showProfile = () => {
     setProfileVisible(true);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const profileOk = () => {
     setProfileVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const profileCancel = () => {
     setProfileVisible(false);
   };
@@ -156,7 +171,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
                 <div className="storyText">STORY</div>
                 <textarea
                   className="storyInput"
-                  // placeholder="NFT STORY"
+                // placeholder="NFT STORY"
                 ></textarea>
               </div>
             </div>
@@ -195,6 +210,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
               <div> YOUR BID</div>
               <input placeholder="Your Bid"></input>
               <Dropdown overlay={menu}>
+                {/* eslint-disable-next-line jsx-a11y/anchor-is-valid*/}
                 <a
                   className="ant-dropdown-link"
                   onClick={(e) => e.preventDefault()}
