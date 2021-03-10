@@ -1,39 +1,35 @@
-import React, { FC, useState, useCallback, useMemo } from 'react';
+import { FC, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../../../lib/contracts';
-import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
-import { Modal, Button, Tabs, Radio, Space } from 'antd';
-import Create from '../create';
-import { Link, useLocation } from 'react-router-dom';
-import Claim from '../shop/claims';
-import Outgoing from '../shop/outGoingApproval';
-import _ from 'lodash';
+import { Modal } from 'antd';
+import { useLocation } from 'react-router-dom';
 import '../../css/profile.scss';
-import { domain } from 'process';
 import elon from '../../css/img/elon.jpg';
 import '../../css/profile-grid.scss';
-import Owned from '../shop/owned';
-import TableImage from '../../table/table-image';
-import { getAddress } from 'ethers/lib/utils';
-import { Domain } from 'domain';
-import { string } from 'zod';
 import ClipboardButton from 'react-clipboard.js';
-const { TabPane } = Tabs;
 
 const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
   const [isOwnedVisible, setOwnedVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [text, setText] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [count, setCount] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [size, setSize] = useState();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contracts = useZnsContracts();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { owned, incomingApprovals } = useDomainStore();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const location = useLocation();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { library, account, active, chainId } = context;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dataInput = account;
 
   const showOwner = () => {

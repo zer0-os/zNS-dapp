@@ -1,24 +1,15 @@
-import React, { FC, useState, useMemo, useEffect } from 'react';
+import { FC, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
-import { Link, Route, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useScrollPosition from '@react-hook/window-scroll';
-import Owned from './shop/owned';
-import { Layout, Menu, Modal } from 'antd';
+import { Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar-global.scss';
-import downarrow from '../css/img/down-arrow.png';
-import nightmoon from '../css/img/night-moon-2.png';
-import elon from '../css/img/elon.jpg';
 import Profile from './profile/profile';
-import NFTview from '../table/NFT-View/nft-view';
-import Create from './create';
-import SetImage from './forms/set-image';
 import Shop from './shop/shop';
-import { domainToASCII } from 'url';
-import { any, string } from 'zod';
 import Stakingview from './stakingModal';
 import usePrevious from '../../lib/hooks/usePrevious';
 
@@ -33,6 +24,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const location = useLocation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const previousAccount = usePrevious(account);
 
   const scrollY = useScrollPosition(60);
@@ -49,6 +41,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   );
   const [connect, setConnect] = useState(false);
   const [isWalletVisible, setWalletVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isShopVisible, setShopVisible] = useState(false);
   const [isStakingVisible, setStakingVisible] = useState(false);
 
@@ -64,6 +57,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     setStakingVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onClick = () => {
     setConnect(!connect);
   };
@@ -77,12 +71,15 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     setWalletVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showShop = () => {
     setWalletVisible(true);
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const shopOk = () => {
     setShopVisible(false);
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const shopCancel = () => {
     setShopVisible(false);
   };

@@ -1,5 +1,4 @@
-import { domain } from 'process';
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useAsyncDebounce } from 'react-table';
 interface SearchTableProps {
   filter: any;
@@ -7,10 +6,13 @@ interface SearchTableProps {
 }
 
 const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, setValue] = useState(filter);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onChange = useAsyncDebounce((value) => {
     setFilter(value || undefined);
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleClick = (e: any) => {
     e.preventDefault();
 

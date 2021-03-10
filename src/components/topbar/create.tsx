@@ -7,7 +7,6 @@ import { zodResolver } from '../../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
 import { DomainContext } from '../../lib/useDomainStore';
 import { subdomainRegex } from '../../lib/validation/validators';
-import Modal from 'antd/lib/modal/Modal';
 // import { Modal, Button } from 'antd';
 
 interface CreateProps {
@@ -23,7 +22,9 @@ const schema = z.object({
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
   const { refetchDomain, domain } = domainContext;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [imageUrl, setImageUrl] = useState('ipfs://Qmimage');
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -52,19 +53,22 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
             refetchDomain();
           });
     },
-    [contracts, account],
+    [account, contracts, domain, imageUrl, refetchDomain],
   );
 
   if (domain.isNothing() || domain.value.owner !== account) return null;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showSubdomain = () => {
     setSubdomainVisible(true);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const subdomainOk = () => {
     setSubdomainVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const subdomainCancel = () => {
     setSubdomainVisible(false);
   };

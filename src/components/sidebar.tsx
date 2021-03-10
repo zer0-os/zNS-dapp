@@ -1,28 +1,21 @@
-import React, { FC, useState, useMemo, useEffect } from 'react';
+import { FC, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../lib/useDomainCache';
-import { Link, useLocation } from 'react-router-dom';
-import Owned from './topbar/shop/owned';
-import { Layout, Menu, Modal, Tooltip } from 'antd';
-import Wallet from './topbar/wallet';
+import { useLocation } from 'react-router-dom';
+import { Tooltip } from 'antd';
 import './css/sidebar.scss';
-import Profile from './topbar/profile/profile';
-import downarrow from './css/img/down-arrow.png';
-import nightmoon from './css/img/night-moon-2.png';
-import NFTview from './table/NFT-View/nft-view';
-import galaxycircle from './css/img/galaxy-small-borderless.svg';
 import feedSelect from './css/img/feed.png';
 import tvSelect from './css/img/tv-button-borderless-blue.png';
 import tv from './css/img/tv-button-borderless.png';
 import feed from './css/img/feedgrey.png';
-import geopin from './css/img/geo-pin.png';
-import elon from './css/img/elon.jpg';
 
 const Sidebar: FC = () => {
   const context = useWeb3React<Web3Provider>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { account, active } = context;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { useDomain } = useDomainCache();
   //   const domainContext = useDomain(_domain);
   //   const { domain } = domainContext;
@@ -32,6 +25,7 @@ const Sidebar: FC = () => {
   const text1 = <span style={{ color: '#fff' }}>Directory</span>;
   const bright = 'rgb(145, 85, 230)';
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const routes = _.transform(
     location.pathname
       .substr(1)
@@ -44,18 +38,23 @@ const Sidebar: FC = () => {
   );
 
   const [connect, setConnect] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isWalletVisible, setWalletVisible] = useState(false);
   const [sideToggle, setSideToggle] = useState('domain');
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onClick = () => {
     setConnect(!connect);
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showWallet = () => {
     setWalletVisible(true);
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const walletOk = () => {
     setWalletVisible(false);
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const walletCancel = () => {
     setWalletVisible(false);
   };

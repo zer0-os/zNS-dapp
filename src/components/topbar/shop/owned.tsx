@@ -1,20 +1,17 @@
-import React, { FC, useCallback, useState } from 'react';
+import { FC } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import { Modal, Button } from 'antd';
 import { useZnsContracts } from '../../../lib/contracts';
 import {
-  domainCacheContext,
   useDomainCache,
 } from '../../../lib/useDomainCache';
-import { domain } from 'process';
-import Approve from '../../table/NFT-View/approval';
 
 const Owned: FC = () => {
   const context = useWeb3React<Web3Provider>();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contracts = useZnsContracts();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { library, account, active, chainId } = context;
 
   const { owned } = useDomainCache();
@@ -44,6 +41,7 @@ const Owned: FC = () => {
     );
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const ownedCells: any = [];
 
   // if (owned.isJust()) {
