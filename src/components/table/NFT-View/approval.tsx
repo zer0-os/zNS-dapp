@@ -1,20 +1,13 @@
-import React, { Children, FC, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { getAddress } from '@ethersproject/address';
 import * as z from 'zod';
 import { zodResolver } from '../../../lib/validation/zodResolver';
-import { ethers, utils, BigNumberish } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsContracts } from '../../../lib/contracts';
-import {
-  DomainContext,
-  IncomingApprovalsContext,
-} from '../../../lib/useDomainStore';
 import { hexRegex } from '../../../lib/validation/validators';
 import { useDomainCache } from '../../../lib/useDomainCache';
-import Modal from 'antd/lib/modal/Modal';
-import { Domain } from 'domain';
 
 interface ApprovalProps {
   domain: string;
@@ -44,8 +37,10 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
   const contracts = useZnsContracts();
   const domainStore = useDomainCache();
   const { refetchIncomingApprovals, useDomain, refetchOwned } = domainStore;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isTransferVisible, setTransferVisible] = useState(false);
   const { domain, refetchDomain } = useDomain(_domain);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -56,7 +51,7 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
         account &&
         contracts.isJust() &&
         domain.isJust() &&
-        account != address &&
+        account !== address &&
         account === domain.value.owner
       ) {
         contracts.value.registry
@@ -82,17 +77,20 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
           });
       }
     },
-    [contracts, account, domain],
+    [account, contracts, domain, refetchIncomingApprovals, refetchDomain, refetchOwned],
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showTransfer = () => {
     setTransferVisible(true);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const transferOk = () => {
     setTransferVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const transferCancel = () => {
     setTransferVisible(false);
   };
