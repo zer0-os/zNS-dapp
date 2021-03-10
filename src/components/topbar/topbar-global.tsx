@@ -51,6 +51,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const [isWalletVisible, setWalletVisible] = useState(false);
   const [isShopVisible, setShopVisible] = useState(false);
   const [isStakingVisible, setStakingVisible] = useState(false);
+  const [selected, setSelected] = useState('networks');
 
   const showStaking = () => {
     setStakingVisible(true);
@@ -91,11 +92,80 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   return (
     <div
       className={`
-    topbarContainer 
+    topbarContainerNeo
     ${scrollY > 1 && 'topbarBackgroundFade'}
     `}
     >
-      <div className="topbarLeft">
+      <div className="topHalfContainer">
+        <div className="topHalf">
+          <div className="topLeft">
+            <Link to={'/'} className="network">
+              0://
+            </Link>
+            {routes.length > 0 ? (
+              // <div className="routeBox">
+              <Link to={`/${routes[0][0]}`} className="route">
+                {routes[0][0]}
+              </Link>
+            ) : null}
+          </div>
+          <div className="topRight">
+            <div className="search-bar">
+              <button className="search-bar-button"></button>
+              <input
+                className="search-bar-input"
+                type="text"
+                placeholder="Search"
+              />
+            </div>
+            <div className="connect-btn" onClick={showWallet}>
+              <div className="dot">{active ? '🟢' : '🔴'}</div>
+              <div className="btn-text">
+                {active ? 'Connected' : 'Connect Wallet'}
+              </div>
+            </div>
+            <div className="dotMenu">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+        <div className="bottomHalf">
+          <div
+            onClick={() => setSelected('networks')}
+            className={selected === 'networks' ? 'selected' : ''}
+          >
+            Zero Networks
+          </div>
+          <div
+            onClick={() => setSelected('members')}
+            className={selected === 'members' ? 'selected' : ''}
+          >
+            Members
+          </div>
+          <div
+            onClick={() => setSelected('nfts')}
+            className={selected === 'nfts' ? 'selected' : ''}
+          >
+            NFTs
+          </div>
+          <div
+            onClick={() => setSelected('daos')}
+            className={selected === 'daos' ? 'selected' : ''}
+          >
+            DAOs
+          </div>
+          <div
+            onClick={() => setSelected('universes')}
+            className={selected === 'universes' ? 'selected' : ''}
+          >
+            Universes
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="topbarLeft">
         <Link className="" to={'/'}>
           <img
             className="topbarLogo"
@@ -130,7 +200,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       <div className="topbarRight">
         <div className="shop-btn">
           <Shop domain={_domain} />
-          {/* <Stakingview domain={_domain} /> */}
         </div>
 
         <button className="connect-btn" onClick={showWallet}>
@@ -154,7 +223,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           ) : null}
         </div>
 
-        {/* <img src={elon} alt="" className="profilepic" /> */}
       </div>
 
       <Modal
@@ -170,6 +238,21 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         <Stakingview domain={_domain} />
       </Modal>
 
+      <Modal
+        visible={isWalletVisible}
+        onOk={walletOk}
+        onCancel={walletCancel}
+        footer={null}
+      >
+        <Wallet />
+        <hr />
+        <div className="new-ETH">
+          <div className="ETH"> New to Ethereum?</div>{' '}
+          <a href="https://ethereum.org/en/wallets/">
+            Learn more about wallets
+          </a>
+        </div>
+      </Modal> */}
       <Modal
         visible={isWalletVisible}
         onOk={walletOk}

@@ -1,7 +1,246 @@
 @import './color-variables.scss';
 
+.topbarContainerNeo {
+  // border: 1px red solid;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 157px;
+  position: fixed;
+  -webkit-transition: background-color 0.5s ease-in-out;
+  -moz-transition: background-color 0.5s ease-in-out;
+  -ms-transition: background-color 0.5s ease-in-out;
+  -o-transition: background-color 0.5s ease-in-out;
+  transition: background-color 0.5s ease-in-out;
+  background-color: none;
+  // z-index: 20;
+  z-index: 999;
+  .topHalfContainer {
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 23px;
+    height: 111px;
+    background: linear-gradient(
+      0deg,
+      rgba(78, 0, 132, 0.2),
+      rgba(78, 0, 132, 0.2)
+    );
+    backdrop-filter: blur(40px);
+    /* Note: backdrop-filter has minimal browser support */
+    border-radius: 16px;
+
+    .topHalf {
+      position: relative;
+      margin-right: 1px;
+      margin-left: 1px;
+      margin-top: 1px;
+      margin-bottom: 1px;
+      height: 56px;
+      background: linear-gradient(
+        92.24deg,
+        rgba(0, 102, 255, 0.4) 0%,
+        rgba(0, 63, 137, 0.4) 100%
+      );
+      border-radius: 16px;
+
+      // needed to create a hack for the border gradient
+      // the css in the mockups doesn't work here
+      // this pseudoelement creates a border by using a div with a solid background linear gradient
+      &::after {
+        content: '';
+        position: absolute;
+        top: -1px;
+        bottom: -1px;
+        right: -1px;
+        left: -1px;
+        border-radius: 15px;
+        background: linear-gradient(
+          180deg,
+          rgba(#bd5fff, 0.8) 0%,
+          rgba(#4e0084, 0.8) 100%
+        );
+
+        filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
+        z-index: -2;
+      }
+      // this pseudoelement creates a background layer before the top level div, to create an effect for the opacity of the top level div
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        border-radius: 16px;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+      }
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      .topLeft {
+        margin-left: 16px;
+        // border: 1px yellow solid;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .network {
+          font-size: 16px;
+          line-height: 19px;
+          color: #ffffff;
+          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          // align-self: center;
+        }
+        .route {
+          margin-left: 6px;
+          height: 32px;
+          background-color: rgba(0, 71, 137, 1);
+          border-radius: 8px;
+          // .route {
+          font-size: 16px;
+          // line-height: 19px;
+          color: #ffffff;
+          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          padding: 3px;
+          display: flex;
+          // align-self: center;
+          // }
+        }
+      }
+      .topRight {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .search-bar {
+          position: relative;
+          border: none;
+          margin-right: 16px;
+          // move text input right
+          input[type='text'] {
+            padding-left: 50px; //change it base on your desired output
+          }
+          .search-bar-input {
+            border-color: none;
+            border-width: 0px !important;
+            width: 243px;
+            height: 28px;
+            background: linear-gradient(
+              94.23deg,
+              rgba(0, 123, 237, 0.2) 0%,
+              rgba(0, 83, 160, 0.2) 100%
+            );
+
+            border-radius: 15px;
+            text-align: left;
+            font-size: 16px;
+            color: white;
+            &:placeholder {
+              color: #ffffff;
+              text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+              font-size: 16px;
+            }
+          }
+
+          .search-bar-button {
+            // TODO: make more responsive to page size
+            position: absolute;
+            left: 15px;
+            top: 7px;
+            height: 14px;
+            width: 14px;
+            // border-radius: 31px;
+            border-color: none;
+            border-width: 0px !important;
+            background-color: transparent;
+            background-image: url('./img/search-icon.svg');
+            background-position: center;
+            background-size: 14px 14px;
+            background-repeat: no-repeat;
+            // hotfix: box shadow not appearing correctly
+            // box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: 0.6s;
+            &:hover {
+              // background-color: $medium;
+            }
+          }
+        }
+        .connect-btn {
+          // padding-right: 10px;
+          margin-right: 16px;
+          background: linear-gradient(148deg, #00407c 20.93%, #00203f 82.47%);
+          width: 162px;
+          height: 28px;
+          border: rgba(95, 140, 255, 1) solid 1px;
+          box-shadow: 0px 0px 10px 0px rgba(60, 161, 255, 0.7);
+          font-size: 16px;
+          border-radius: 15px;
+          transition: 0.6s;
+          color: #ffffff;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .dot {
+            margin-left: 10px;
+            margin-right: 10px;
+            pointer-events: none;
+            font-size: 12px;
+            vertical-align: middle;
+          }
+          .btn-text {
+            pointer-events: none;
+            font-size: 14px;
+            line-height: 19px;
+            vertical-align: middle;
+          }
+          cursor: pointer;
+        }
+        .dotMenu {
+          margin-right: 16px;
+          height: 18px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          cursor: pointer;
+          & > div {
+            height: 4px;
+            width: 4px;
+            border-radius: 50%;
+            background: rgba(60, 161, 255, 1);
+          }
+        }
+      }
+    }
+    .bottomHalf {
+      height: 50%;
+      margin-left: 16px;
+      display: flex;
+      flex-direction: row;
+      justify-content: left;
+      align-items: center;
+      color: rgba(60, 161, 255, 0.5);
+      font-size: 16px;
+      font-weight: bold;
+      & > div {
+        cursor: pointer;
+        margin-right: 28px;
+        padding: 7px;
+      }
+      .selected {
+        background: #004789;
+        border-radius: 8px;
+        color: #ffffff;
+        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+      }
+    }
+  }
+}
+
 .topbarBackgroundFade {
-  background-color: rgba(20, 20, 20, 0.9) !important;
+  background-color: rgba(14, 2, 27, 0.9) !important;
+  // backdrop-filter: blur(10px);
 }
 
 .topbarContainer {

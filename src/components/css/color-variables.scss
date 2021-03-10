@@ -1,9 +1,14 @@
+//
+// initial color palette
+//
 $light-red: darken(#cf7571, 10%);
 $middle-red: #953338;
 $dark-red: #641f29;
 $dark-grey: lighten(#678293, 20%);
 $light-grey: lighten(#b8bdca, 20%);
 $sky-blue: #76b1ce;
+//
+// second color palette
 //
 $bright: hsl(265, 74%, 62%);
 $medium: darken($bright, 20%);
@@ -13,6 +18,8 @@ $textShadow: 0px 2px 5px rgba(255, 255, 255, 0.4);
 $boxShadow: 0px 2px 5px rgba(145, 85, 230, 0.18);
 $dropShadow: 0px 2px 5px rgba(0, 0, 0, 0.18);
 $root: #b5b5b5;
+//
+// third color palette
 //
 $selectedbg: #1b1b1d;
 $darkerpurp: #2f3048;
@@ -33,3 +40,6 @@ $blueBtnGrad: linear-gradient(
   rgba(106, 183, 255, 0.7) 100%
 );
 $shopbg: rgba(#69038d, 0.33);
+//
+// figma 0.5 mockups, 3/8/2021
+//
