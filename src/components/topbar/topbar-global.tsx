@@ -99,10 +99,14 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       <div className="topHalfContainer">
         <div className="topHalf">
           <div className="topLeft">
-            <div className="network">0://</div>
+            <Link to={'/'} className="network">
+              0://
+            </Link>
             {routes.length > 0 ? (
               // <div className="routeBox">
-              <div className="route">{routes[0][0]}</div>
+              <Link to={`/${routes[0][0]}`} className="route">
+                {routes[0][0]}
+              </Link>
             ) : null}
           </div>
           <div className="topRight">
