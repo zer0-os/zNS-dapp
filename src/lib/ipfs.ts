@@ -1,4 +1,4 @@
-import fleekStorage, { uploadInput } from '@fleekhq/fleek-storage-js';
+import fleekStorage from '@fleekhq/fleek-storage-js';
 
 class FleekStorage {
   constructor(private apiKey: string, private apiSecret: string) {}

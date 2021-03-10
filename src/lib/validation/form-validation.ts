@@ -61,6 +61,7 @@ export const composeValidator = <Values extends Record<string, any>>(
     }
 
     // otherwise return immediately
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return reduce(<any>errorsOrPromises);
   };
 
@@ -71,21 +72,26 @@ export const composeValidator = <Values extends Record<string, any>>(
   // The solution is to conditionally return a promise only when necessary.
   return (values: Record<string, any>) => {
     // ask for field-level errors
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     const errorsOrPromise = fieldLevelValidator(<any>values);
 
     // pass the current values and their validity to the form-level validator
     // that can implement conditional logic and more complex validations
     const runFormValidator = (errors: FormErrors<Values>) =>
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       formValidator(<any>values, errors);
 
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     if (errorsOrPromise && (<any>errorsOrPromise).then) {
       // if promise, promise
+      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
       return (<Promise<FormErrors<Values>>>errorsOrPromise).then(
         runFormValidator
       );
     }
 
     // otherwise, it's an errors object
+    // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
     return runFormValidator(<FormErrors<Values>>errorsOrPromise);
   };
 };

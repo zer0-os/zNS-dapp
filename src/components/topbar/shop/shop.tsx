@@ -36,6 +36,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { owned, refetchOwned } = useDomainStore();
   const location = useLocation();
   const [isStakingVisible, setStakingVisible] = useState(false);

@@ -131,7 +131,7 @@
         // margin-bottom: 10px;
         display: flex;
         flex-direction: row;
-        justify-content: end;
+        justify-content: end; // TO-DO: end value has mixed support, consider using flex-end instead
         .continueButton {
           width: 150px;
           background: $blueBtnGrad;

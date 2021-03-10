@@ -5,7 +5,6 @@ import { useZnsContracts } from '../../../lib/contracts';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { zeroAddress } from '../../../lib/useDomainStore';
 import { Domain } from '../../../lib/useDomainStore';
-import { domain } from 'process';
 import { Space, Table } from 'antd';
 import Profile from '../../table/table-image';
 const { Column } = Table;
