@@ -1,7 +1,34 @@
 # Zer0 Namespace Dapp
 
-## .env
-Set `REACT_APP_RPC_URL_1` and `REACT_APP_RPC_URL_4` to a mainnet and rinkeby rpc node url respectively.
+[![zer0-os](https://circleci.com/github/zer0-os/ZNS-dapptree/develop.svg?style=svg)](https://circleci.com/github/zer0-os/ZNS-dapp/tree/develop)
+
+## Developing Locally
+
+Add a `.env` file to the base of the repository, replacing the brackets with the appropriate values:
+```
+REACT_APP_RPC_URL_1=https://mainnet.infura.io/v3/[someMainnetNode]
+REACT_APP_RPC_URL_4=https://[someTestnet].infura.io/v3/[someTestnetNode]
+REACT_APP_SUBGRAPH_URL_4=https://api.thegraph.com/subgraphs/name/[subgraphLocation]
+REACT_APP_FLEEK_API_KEY=[fleekApiKey]
+REACT_APP_FLEEK_API_SECRET=[fleekApiSecret]
+```
+
+Run [Node Version Manager](https://github.com/nvm-sh/nvm) to use the supported version of Node, ensuring it is installed on your system:
+```
+nvm use
+```
+
+Then, run the following to install the packages:
+```
+npm install
+```
+
+Finally, start the development server:
+```
+npm start
+```
+
+# Default React Docs
 
 ## Available Scripts
 
