@@ -1,5 +1,4 @@
-import { Provider, Web3Provider } from '@ethersproject/providers';
-import { Signer } from '@ethersproject/abstract-signer';
+import { Web3Provider } from '@ethersproject/providers';
 import { Registry__factory, Registry } from '../types';
 import { useWeb3React } from '@web3-react/core';
 import { useMemo } from 'react';
@@ -17,7 +16,7 @@ export interface Contracts {
 
 function useZnsContracts(): Maybe<Contracts> {
   const context = useWeb3React<Web3Provider>();
-  const { library, account, active, chainId } = context;
+  const { library, active, chainId } = context;
   const contracts = useMemo((): Maybe<Contracts> => {
     if (!active || !library) return Maybe.nothing();
     return Maybe.of({
@@ -26,7 +25,7 @@ function useZnsContracts(): Maybe<Contracts> {
         library.getSigner(),
       ),
     });
-  }, [active, library, account]);
+  }, [active, library, chainId]);
   return contracts;
 }
 

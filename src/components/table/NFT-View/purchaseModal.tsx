@@ -1,43 +1,44 @@
-import React, { FC, useState, useCallback, useMemo } from 'react';
+import { FC, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../../../lib/contracts';
-import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
-import { Modal, Button, Tabs, Radio, Space, Menu, Dropdown } from 'antd';
+import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import '../../css/profile.scss';
-import { domain } from 'process';
-import elon from '../../css/img/elon.jpg';
 import '../../css/profile-grid.scss';
 
-import TableImage from '../../table/table-image';
-import { getAddress } from 'ethers/lib/utils';
-import { Domain } from 'domain';
-import { string } from 'zod';
-import ClipboardButton from 'react-clipboard.js';
-const { TabPane } = Tabs;
-
 const Purchase: FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const context = useWeb3React<Web3Provider>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isPurchaseVisible, setPurchaseVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [text, setText] = useState('Copied');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [count, setCount] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [size, setSize] = useState();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contracts = useZnsContracts();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { owned, incomingApprovals } = useDomainStore();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const location = useLocation();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showPurchase = () => {
     setPurchaseVisible(true);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const purchaseOk = () => {
     setPurchaseVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const purchaseCancel = () => {
     setPurchaseVisible(false);
   };
@@ -58,6 +59,7 @@ const Purchase: FC = () => {
       <input placeholder="your bid"></input>
 
       <Dropdown overlay={menu}>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid*/}
         <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
           CURRENCY <DownOutlined />
         </a>

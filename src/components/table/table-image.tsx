@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useCallback } from 'react';
+import { FC, useState, useEffect, useCallback } from 'react';
 import { useDomainCache } from '../../lib/useDomainCache';
 
 interface TableImageProps {
@@ -14,10 +14,7 @@ const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
     setLoadedIMG('');
   }, [domain, setLoadedIMG]);
 
-  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [
-    setLoadedIMG,
-    domain,
-  ]);
+  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [setLoadedIMG]);
 
   if (domain.isNothing()) return null;
   return (

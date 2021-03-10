@@ -1,5 +1,3 @@
-import { useReducer } from 'react';
-
 export const reduceNotification = (state: any, action: any) => {
   switch (action.type) {
     case 'ZeroState':

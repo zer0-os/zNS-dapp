@@ -1,23 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { getAddress } from '@ethersproject/address';
 import { useZnsContracts } from '../../../lib/contracts';
-import * as z from 'zod';
-import { useForm } from 'react-hook-form';
 import { Domain, zeroAddress } from '../../../lib/useDomainStore';
-import { hexRegex } from '../../../lib/validation/validators';
 import { useDomainCache } from '../../../lib/useDomainCache';
-import Transfer from '../../transferDomains';
-import { Table, Tag, Space } from 'antd';
+import { Table } from 'antd';
 import Profile from '../../table/table-image';
 
-const { Column, ColumnGroup } = Table;
+const { Column } = Table;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface NFRowProps {
   id: number;
   domain: string;
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface NFColumnProps {
   key: number;
   name: string;
@@ -97,7 +94,7 @@ const Claims: React.FC = () => {
             ),
             Date: '1 Sept 2020',
           })),
-    [contracts, account, refetchOwned, refetchIncomingApprovals],
+    [incomingApprovals],
   );
 
   // const claimBtn = () => {
