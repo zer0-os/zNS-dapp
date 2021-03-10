@@ -15,10 +15,7 @@ const NFTImage: FC<NFTImageProps> = ({ domain: _domain }) => {
     setLoadedIMG('');
   }, [domain, setLoadedIMG]);
 
-  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [
-    setLoadedIMG,
-    domain,
-  ]);
+  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [setLoadedIMG]);
 
   if (domain.isNothing()) return null;
   return (
