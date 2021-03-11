@@ -1,19 +1,15 @@
-import React, { FC, useState, useMemo, useEffect } from 'react';
+import { FC, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
-import Owned from './shop/owned';
-import { Layout, Menu, Modal } from 'antd';
+import { Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar.scss';
 import Profile from './profile/profile';
 import downarrow from '../css/img/down-arrow.png';
 import nightmoon from '../css/img/night-moon-2.png';
-import NFTview from '../table/NFT-View/nft-view';
-import Create from './create';
-import SetImage from './forms/set-image';
 
 interface TopbarProps {
   domain: string;
@@ -21,6 +17,7 @@ interface TopbarProps {
 
 const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { account, active } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
@@ -41,6 +38,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const [connect, setConnect] = useState(false);
   const [isWalletVisible, setWalletVisible] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onClick = () => {
     setConnect(!connect);
   };

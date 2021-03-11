@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -6,32 +6,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
-import Transfer from '../transferDomains';
-import Create from '../topbar/create';
-import { Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
-import { Modal, Button } from 'antd';
-import Owned from '../topbar/shop/owned';
-import { String } from 'lodash';
-import {
-  Column,
-  useTable,
-  usePagination,
-  useGlobalFilter,
-  useAsyncDebounce,
-} from 'react-table';
-import { string } from 'zod';
-import Profile from './NFT-View/nft-view';
-import Approve from './NFT-View/approval';
 import TableViewGlobal from './tableView-global';
-import SearchTable from './searchTable';
-import SetImage from '../topbar/forms/set-image';
 import linebutton from '../css/img/threelinebutton.png';
 import squarebutton from '../css/img/squaregridbutton.png';
 import linebuttongrey from '../css/img/threelinebuttongrey.png';
 import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
-import filter from '../css/img/filter.svg';
-import Search from 'antd/lib/input/Search';
 
 interface DomainsGlobalProps {
   domain: string;
@@ -54,13 +33,18 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
 
   const location = useLocation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contracts = useZnsContracts();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { account } = context;
   const { useDomain, useAllDomains } = useDomainCache();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { _allDomains, refetchAllDomains } = useAllDomains(_domain);
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const history = useHistory();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
 
@@ -117,6 +101,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     );
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const colors: string[] = [
     '641f29',
     'cf7571',

@@ -1,24 +1,17 @@
-import React, { FC, useState, useCallback, useMemo, useEffect } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from '../../../lib/contracts';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
-import { Modal, Button, Tabs } from 'antd';
-import Claim from '../shop/claims';
-import Create from '../create';
-import Transfer from '../../transferDomains';
+import { Modal, Tabs } from 'antd';
 import Approve from '../../table/NFT-View/approval';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import _ from 'lodash';
-import TableImage from '.././../table/table-image';
 import '../../css/shop.scss';
 import Outgoing from './outGoingApproval';
-import { Column, useTable, useFlexLayout, Cell } from 'react-table';
-import Owned from './owned';
 import Claims from './claims';
 import Stakingview from '../stakingModal';
-import usePrevious from '../../../lib/hooks/usePrevious';
 import tripledot from '../../css/img/tripledot.svg';
 
 const { TabPane } = Tabs;
@@ -30,19 +23,25 @@ interface ShopProps {
 const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const [isShopVisible, setShopVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [size, setSize] = useState();
   const context = useWeb3React<Web3Provider>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contracts = useZnsContracts();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { owned, refetchOwned } = useDomainStore();
   const location = useLocation();
   const [isStakingVisible, setStakingVisible] = useState(false);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const routes = _.transform(
     location.pathname
       .substr(1)
@@ -90,6 +89,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     setTransferVisible(false);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const gridCell = (name: string, image: any) => {
     return (
       <div className="gridCell">
@@ -135,9 +135,9 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
       owned.isNothing()
         ? []
         : owned.value.map((control) => {
-            return gridCell(control.domain, control.image);
-          }),
-    [owned, refetchOwned],
+          return gridCell(control.domain, control.image);
+        }),
+    [gridCell, owned],
   );
 
   // const cells: any = [];

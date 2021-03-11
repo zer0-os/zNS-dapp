@@ -1,25 +1,13 @@
-import React, { FC, useState, useMemo, useEffect } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
-import { Link, Route, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useScrollPosition from '@react-hook/window-scroll';
-import Owned from './shop/owned';
-import { Layout, Menu, Modal } from 'antd';
+import { Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar-global.scss';
-import downarrow from '../css/img/down-arrow.png';
-import nightmoon from '../css/img/night-moon-2.png';
-import elon from '../css/img/elon.jpg';
-import Profile from './profile/profile';
-import NFTview from '../table/NFT-View/nft-view';
-import Create from './create';
-import SetImage from './forms/set-image';
-import Shop from './shop/shop';
-import { domainToASCII } from 'url';
-import { any, string } from 'zod';
-import Stakingview from './stakingModal';
 import usePrevious from '../../lib/hooks/usePrevious';
 import searchIcon from '../css/img/search-icon.svg';
 
@@ -29,11 +17,13 @@ interface TopbarProps {
 
 const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
-  const { account, active } = context;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { active, account, connector, activate, error } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const location = useLocation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const previousAccount = usePrevious(account);
 
   const scrollY = useScrollPosition(60);
@@ -49,29 +39,35 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     },
   );
   const [connect, setConnect] = useState(false);
-  const [isWalletVisible, setWalletVisible] = useState(false);
+  const [isWalletVisible, setWalletVisible] = useState<any>(active);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isShopVisible, setShopVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isStakingVisible, setStakingVisible] = useState(false);
   const [selected, setSelected] = useState('networks');
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showStaking = () => {
     setStakingVisible(true);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const stakingOk = () => {
     setStakingVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const stakingCancel = () => {
     setStakingVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onClick = () => {
     setConnect(!connect);
   };
-  const showWallet = () => {
+  const showWallet = useCallback(() => {
     setWalletVisible(true);
-  };
+  }, []);
   const walletOk = () => {
     setWalletVisible(false);
   };
@@ -79,15 +75,38 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     setWalletVisible(false);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showShop = () => {
     setWalletVisible(true);
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const shopOk = () => {
     setShopVisible(false);
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const shopCancel = () => {
     setShopVisible(false);
   };
+
+  const activePrevious = usePrevious(active);
+  const connectorPrevious = usePrevious(connector);
+  useEffect(() => {
+    if (
+      { showWallet } &&
+      ((active && !activePrevious) ||
+        (connector && connector !== connectorPrevious && !error))
+    ) {
+      setWalletVisible(false);
+    }
+  }, [
+    setWalletVisible,
+    active,
+    error,
+    connector,
+    showWallet,
+    activePrevious,
+    connectorPrevious,
+  ]);
 
   if (domain.isNothing()) return null;
   return (
@@ -261,6 +280,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           </a>
         </div>
       </Modal> */}
+
       <Modal
         visible={isWalletVisible}
         onOk={walletOk}

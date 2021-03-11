@@ -1,47 +1,30 @@
-import React, { FC, useState, useMemo, useEffect, Children } from 'react';
+import { FC, useState, useMemo } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
-import Transfer from '../transferDomains';
-import Create from '../topbar/create';
-import { Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
-import { Modal, Button } from 'antd';
-import Owned from '../topbar/shop/owned';
-import { String } from 'lodash';
 import {
   Column,
   useTable,
-  usePagination,
   useGlobalFilter,
-  useAsyncDebounce,
   useFilters,
-  useFlexLayout,
-  useAbsoluteLayout,
 } from 'react-table';
-import { string } from 'zod';
-import Profile from './NFT-View/nft-view';
-import Approve from './NFT-View/approval';
 import TableImage from './table-image';
 import SearchTable from './searchTable';
-import NewDrops from './newDrops';
 import marketimg from '../css/img/chart.svg';
-import { FixedSizeList } from 'react-window';
-import { table } from 'console';
 import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
-import NFTview from './NFT-View/nft-view';
 import Nestedview from './NFT-View/nestedNFT-view';
-import { Domain } from 'domain';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface ColumnProps {
   key: number;
   name: string;
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface RowProps {
   id: number;
   domain: string;
@@ -67,12 +50,19 @@ interface TProps {
 
 const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
   const context = useWeb3React<Web3Provider>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sortConfig, setSortConfig] = useState();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [search, setSearch] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filterdData, setFilterdData] = useState([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [modalState, setModalState] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const location = useLocation();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contracts = useZnsContracts();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { account } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
@@ -92,23 +82,23 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
       domain.isNothing()
         ? []
         : _.map(domain.value.children, (key, i) => ({
-            key: key,
-            '#': i.toString(),
-            // asset: <Profile domain={key} />,
-            asset: (
-              <div className="domainImageContainer">
-                <TableImage domain={key} />
-              </div>
-            ),
-            name: key,
-            volume: 'N/A',
-            '24Hr': 'N/A',
-            '7d': 'N/A',
-            marketcap: 'N/A',
-            last7days: '',
-            timestamp: '',
-            trade: '',
-          })),
+          key: key,
+          '#': i.toString(),
+          // asset: <Profile domain={key} />,
+          asset: (
+            <div className="domainImageContainer">
+              <TableImage domain={key} />
+            </div>
+          ),
+          name: key,
+          volume: 'N/A',
+          '24Hr': 'N/A',
+          '7d': 'N/A',
+          marketcap: 'N/A',
+          last7days: '',
+          timestamp: '',
+          trade: '',
+        })),
     [domain],
   );
 
@@ -205,15 +195,25 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
     headerGroups,
     prepareRow,
     rows,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     page,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     canPreviousPage,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     canNextPage,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     pageOptions,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     pageCount,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     gotoPage,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     nextPage,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     previousPage,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     setPageSize,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     state,
     setGlobalFilter,
   } = useTable(

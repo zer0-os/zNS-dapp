@@ -2,11 +2,8 @@ import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
-import { domain } from 'process';
-import { Children, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
-import { string } from 'zod';
-import Owned from '../components/topbar/shop/owned';
 import { getDomainId } from './domains';
 
 export interface Domain {
@@ -116,6 +113,7 @@ const approvalQuery = gql`
   }
 `;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const childTimestampQuery = gql`
   query ChildDomains($parent: Bytes!) {
     domains(
@@ -200,7 +198,7 @@ function useDomain(domain: string) {
       });
     }
     return Maybe.nothing();
-  }, [dataDomain, errorDomain, dataChildren, dataDomain, errorChildren]);
+  }, [dataDomain, errorDomain, errorChildren, dataChildren, id]);
 
   const refetch = useCallback(
     (domainId?: string) =>
@@ -219,6 +217,7 @@ function useOwnedDomains(): {
   refetchOwned: RefetchQuery<DomainsData>;
 } {
   const context = useWeb3React<Web3Provider>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { library, account, active, chainId } = context;
   const [getOwned, { data, refetch, error }] = useLazyQuery<DomainsData>(
     ownedDomainsQuery,
@@ -245,7 +244,7 @@ function useOwnedDomains(): {
       );
     }
     return Maybe.nothing();
-  }, [data, account]);
+  }, [error, data]);
 
   useEffect(() => {
     if (refetch) {
@@ -253,7 +252,7 @@ function useOwnedDomains(): {
     } else if (account) {
       getOwned({ variables: { owner: account } });
     }
-  }, [getOwned, refetch]);
+  }, [account, getOwned, refetch]);
 
   console.log('usedomain list', owned);
 
@@ -263,7 +262,7 @@ function useOwnedDomains(): {
     } else if (account) {
       getOwned({ variables: { owner: account } });
     }
-  }, [account]);
+  }, [account, getOwned, refetch]);
 
   return { owned, refetchOwned: refetch! };
 }
@@ -299,7 +298,7 @@ function useIncomingApprovals(): {
       );
     }
     return Maybe.nothing();
-  }, [data, account]);
+  }, [error, data]);
 
   useEffect(() => {
     if (refetch) {
@@ -346,7 +345,7 @@ function useAllDomains(
       );
     }
     return Maybe.nothing();
-  }, [data]);
+  }, [data, error]);
 
   useEffect(() => {
     if (refetch) {
@@ -354,7 +353,7 @@ function useAllDomains(
     } else if (domain) {
       getAllDomains({ variables: { to: id } });
     }
-  }, [domain]);
+  }, [domain, getAllDomains, id, refetch]);
 
   return { _allDomains, refetchAllDomains: refetch! };
 }

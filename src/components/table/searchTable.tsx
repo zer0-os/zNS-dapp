@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useAsyncDebounce } from 'react-table';
 interface SearchTableProps {
   filter: any;

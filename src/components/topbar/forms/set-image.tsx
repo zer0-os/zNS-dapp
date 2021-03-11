@@ -1,13 +1,10 @@
-import React, { FC, useState, useCallback } from 'react';
+import { FC, useState, useCallback } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { useZnsContracts } from '../../../lib/contracts';
 import { useDomainCache } from '../../../lib/useDomainCache';
-import { useDomainStore } from '../../../lib/useDomainStore';
-import { Modal, Button } from 'antd';
-import Create from '../create';
 import { zodResolver } from '../../../lib/validation/zodResolver';
 import ipfs from '../../../lib/ipfs';
 import assert from 'assert';
@@ -26,14 +23,18 @@ const schema = z
   .refine((obj) => 'url' in obj || (obj.image && obj.image.size > 0));
 
 const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isSetImageVisible, setIsSetImageVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain, refetchDomain } = domainContext;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [done, setDone] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -52,7 +53,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
             refetchDomain();
           });
     },
-    [contracts, account, domain],
+    [account, contracts, domain, refetchDomain],
   );
 
   const uploadAndSetImage = useCallback(
@@ -63,13 +64,15 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
         .then(async (added) => _setImage('ipfs://' + added.hash))
         .then(() => refetchDomain());
     },
-    [_setImage, domain],
+    [_setImage, domain, refetchDomain],
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const hideSetImage = useCallback(() => {
     setIsSetImageVisible(false);
   }, [setIsSetImageVisible]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showSetImage = useCallback(() => {
     setIsSetImageVisible(true);
   }, [setIsSetImageVisible]);

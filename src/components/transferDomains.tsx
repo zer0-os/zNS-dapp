@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { getAddress } from '@ethersproject/address';
@@ -36,6 +36,7 @@ const schema = z.object({
 
 const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
   const { refetchDomain, domain } = domainContext;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
@@ -45,6 +46,7 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { useDomain } = useDomainCache();
 
   const _transfer = useCallback(
@@ -62,7 +64,7 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
             refetchDomain();
           });
     },
-    [contracts, account, domain],
+    [account, contracts, domain, refetchDomain],
   );
 
   const showSubdomain = () => {

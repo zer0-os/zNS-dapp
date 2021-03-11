@@ -1,19 +1,11 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.scss';
 import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import './lib/ipfs';
-import Wallet from './components/topbar/wallet';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Subdomains from './components/table/child-view';
-import Owned from './components/topbar/shop/owned';
-import { domainCacheContext, DomainCacheProvider } from './lib/useDomainCache';
+import { DomainCacheProvider } from './lib/useDomainCache';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import { PoweroffOutlined } from '@ant-design/icons';
-import { Layout, Menu, Modal } from 'antd';
-import Create from './components/topbar/create';
-import Topbar from './components/topbar/topbar';
 import DomainsGlobal from './components/table/domains-global';
 import TopbarGlobal from './components/topbar/topbar-global';
 import Sidebar from './components/sidebar';
@@ -32,13 +24,21 @@ function getLibrary(provider: any): Web3Provider {
 function App() {
   const context = useWeb3React<Web3Provider>();
   const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     connector,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     library,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     chainId,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     account,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     activate,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     deactivate,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     active,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     error,
   } = context;
 
