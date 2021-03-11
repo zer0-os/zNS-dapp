@@ -229,27 +229,27 @@ export default function Wallet() {
 
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
-  const [isWalletVisible, setWalletVisible] = useState(true);
+  // const [isWalletVisible, setWalletVisible] = useState(true);
 
   const activePrevious = usePrevious(active);
   const connectorPrevious = usePrevious(connector);
-  React.useEffect(() => {
-    if (
-      { isWalletVisible } &&
-      ((active && !activePrevious) ||
-        (connector && connector !== connectorPrevious && !error))
-    ) {
-      setWalletVisible(false);
-    }
-  }, [
-    setWalletVisible,
-    active,
-    error,
-    connector,
-    isWalletVisible,
-    activePrevious,
-    connectorPrevious,
-  ]);
+  // React.useEffect(() => {
+  //   if (
+  //     { isWalletVisible } &&
+  //     ((active && !activePrevious) ||
+  //       (connector && connector !== connectorPrevious && !error))
+  //   ) {
+  //     setWalletVisible(false);
+  //   }
+  // }, [
+  //   setWalletVisible,
+  //   active,
+  //   error,
+  //   connector,
+  //   isWalletVisible,
+  //   activePrevious,
+  //   connectorPrevious,
+  // ]);
 
   React.useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {
