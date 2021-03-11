@@ -29,6 +29,8 @@ import {
 import { Spinner } from '../spinner';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import '../css/wallet.scss';
+import usePrevious from '../../lib/hooks/usePrevious';
+import { triggerFocus } from 'antd/lib/input/Input';
 // import { METAMASK } from 'web3modal/dist/providers/injected';
 
 enum ConnectorNames {
@@ -234,8 +236,29 @@ export default function Wallet() {
 
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isWalletVisible, setWalletVisible] = useState(false);
+
+  const [isWalletVisible, setWalletVisible] = useState(true);
+
+  const activePrevious = usePrevious(active);
+  const connectorPrevious = usePrevious(connector);
+  React.useEffect(() => {
+    if (
+      { isWalletVisible } &&
+      ((active && !activePrevious) ||
+        (connector && connector !== connectorPrevious && !error))
+    ) {
+      setWalletVisible(false);
+    }
+  }, [
+    setWalletVisible,
+    active,
+    error,
+    connector,
+    isWalletVisible,
+    activePrevious,
+    connectorPrevious,
+  ]);
+
   React.useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {
       setActivatingConnector(undefined);

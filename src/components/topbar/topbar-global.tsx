@@ -95,7 +95,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       ((active && !activePrevious) ||
         (connector && connector !== connectorPrevious && !error))
     ) {
-      setWalletVisible(active);
+      setWalletVisible(false);
     }
   }, [
     setWalletVisible,
