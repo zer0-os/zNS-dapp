@@ -48,8 +48,8 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
 
-  console.log('TOP ALL DOMAIN!!', _allDomains);
-  console.log('TOP DDOMAIN', domain);
+  //console.log('TOP ALL DOMAIN!!', _allDomains);
+  //console.log('TOP DDOMAIN', domain);
 
   const routes = _.transform(
     location.pathname
@@ -63,7 +63,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   );
 
   useEffect(() => {
-    console.log('ChildView', domain);
+    //console.log('ChildView', domain);
   }, [domain]);
   // const showSubdomain = () => {
   //   setSubdomainVisible(true);

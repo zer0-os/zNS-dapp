@@ -56,7 +56,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   );
 
   useEffect(() => {
-    console.log('ChildView', domain);
+    //console.log('ChildView', domain);
   }, [domain]);
   // const showSubdomain = () => {
   //   setSubdomainVisible(true);

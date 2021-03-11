@@ -16,8 +16,8 @@ const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
   const handleClick = (e: any) => {
     e.preventDefault();
 
-    console.log('doge');
-    console.log();
+    //console.log('doge');
+    //console.log();
     setFilter({ id: '9' });
   };
 

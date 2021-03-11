@@ -50,7 +50,7 @@ const Owned: FC = () => {
   //   });
   // }
 
-  // console.log('all owned', ownedCells);
+  // //console.log('all owned', ownedCells);
   const cells: any = [];
   cells.push(gridCell());
   cells.push(gridCell());

@@ -87,7 +87,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     [domain],
   );
   if (domain.isNothing()) return null;
-  console.log('GRID CHILDREN!!!', domain.value.children);
+  //console.log('GRID CHILDREN!!!', domain.value.children);
   return <div className="gridContainer">{gridCells}</div>;
 };
 

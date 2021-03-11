@@ -30,7 +30,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
     resolver: zodResolver(schema),
   });
   // TODO: show user what they're doing wrong
-  useEffect(() => console.log(errors), [errors]);
+  useEffect(() => //console.log(errors), [errors]);
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();

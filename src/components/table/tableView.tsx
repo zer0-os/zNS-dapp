@@ -67,7 +67,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
-  console.log('DOMAINTABLE!', domain);
+  //console.log('DOMAINTABLE!', domain);
   const history = useHistory();
 
   // const defaultColumn = React.useMemo(
@@ -102,7 +102,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
     [domain],
   );
 
-  console.log(dataInput, 'THIS List');
+  //console.log(dataInput, 'THIS List');
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
 
   const columns = useMemo<Column<Data>[]>(
@@ -143,7 +143,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
               verticalAlign: 'center',
             }}
           >
-            {console.log('PROPS!!!', props)}
+            {/*console.log('PROPS!!!', props)*/}
             <span
               style={{
                 textAlign: 'left',
@@ -231,15 +231,15 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
   );
 
   const handleRowClick = (row: any) => {
-    console.log('fire');
-    console.log(row);
+    //console.log('fire');
+    //console.log(row);
     history.push({
       pathname: row.original.key,
     });
   };
 
   if (domain.isNothing()) return null;
-  console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
+  //console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">
       <SearchTable setFilter={setGlobalFilter} filter={null} />
@@ -280,7 +280,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
               )}
               {/* Apply the table body props */}
               <tbody {...getTableBodyProps()}>
-                {console.log('ROWS', rows)}
+                {/*console.log('ROWS', rows)*/}
 
                 {
                   // Loop over the table rows

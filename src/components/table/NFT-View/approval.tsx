@@ -72,7 +72,7 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
             ]);
           })
           .catch((e) => {
-            console.log('error?', e);
+            //console.log('error?', e);
             alert('TX ERROR');
           });
       }
@@ -95,11 +95,11 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
     setTransferVisible(false);
   };
 
-  console.log('FIRE1');
-  console.log('approval domain', domain);
-  console.log(account);
+  //console.log('FIRE1');
+  //console.log('approval domain', domain);
+  //console.log(account);
   if (domain.isNothing() || domain.value.owner !== account) return null;
-  console.log('FIRE2');
+  //console.log('FIRE2');
   return (
     <>
       <form onSubmit={handleSubmit(({ address }) => _approve(address))}>
