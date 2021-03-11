@@ -140,7 +140,9 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   ];
   if (domain.isNothing()) return null;
   return (
-    <div>
+    <div
+    //  style={{ position: 'relative', top: '0' }}
+    >
       <div className="metricsBar">
         <div className="metricsTitle">Metrics</div>
         <div className="metricsContainer">

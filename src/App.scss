@@ -3,8 +3,21 @@
 
 .App {
   text-align: center;
-  background-color: #641f29;
-  border: 5px blue solid;
+  // background-color: #641f29;
+  // border: 5px blue solid;
+  height: 100vh;
+}
+
+#bgvid {
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+  // max-width: 100vw;
+  max-height: 100vh;
+  position: fixed !important;
+  overflow: hidden;
+  top: 0;
+  left: 0;
 }
 
 .sideFadeRight {

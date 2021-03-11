@@ -105,9 +105,14 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             </Link>
             {routes.length > 0 ? (
               // <div className="routeBox">
-              <Link to={`/${routes[0][0]}`} className="route">
-                {routes[0][0]}
-              </Link>
+              <div className="route">
+                {routes.map(([key, path], i) => (
+                  <Link className="route-nav-text-sub" to={path}>
+                    {key}
+                    {i < routes.length - 1 && '.'}
+                  </Link>
+                ))}
+              </div>
             ) : null}
           </div>
           <div className="topRight">
