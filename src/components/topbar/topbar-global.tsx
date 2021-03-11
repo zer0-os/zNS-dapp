@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -16,7 +16,8 @@ interface TopbarProps {
 
 const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
-  const { account, active } = context;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { active, account, connector, activate, error } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
@@ -37,7 +38,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     },
   );
   const [connect, setConnect] = useState(false);
-  const [isWalletVisible, setWalletVisible] = useState(false);
+  const [isWalletVisible, setWalletVisible] = useState<any>(active);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isShopVisible, setShopVisible] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,9 +64,9 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const onClick = () => {
     setConnect(!connect);
   };
-  const showWallet = () => {
+  const showWallet = useCallback(() => {
     setWalletVisible(true);
-  };
+  }, []);
   const walletOk = () => {
     setWalletVisible(false);
   };
@@ -85,6 +86,26 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const shopCancel = () => {
     setShopVisible(false);
   };
+
+  const activePrevious = usePrevious(active);
+  const connectorPrevious = usePrevious(connector);
+  useEffect(() => {
+    if (
+      { showWallet } &&
+      ((active && !activePrevious) ||
+        (connector && connector !== connectorPrevious && !error))
+    ) {
+      setWalletVisible(false);
+    }
+  }, [
+    setWalletVisible,
+    active,
+    error,
+    connector,
+    showWallet,
+    activePrevious,
+    connectorPrevious,
+  ]);
 
   if (domain.isNothing()) return null;
   return (
@@ -251,6 +272,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           </a>
         </div>
       </Modal> */}
+
       <Modal
         visible={isWalletVisible}
         onOk={walletOk}

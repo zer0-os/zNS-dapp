@@ -21,32 +21,39 @@ import {
   walletconnect,
   walletlink,
   fortmatic,
+  // magic,
   portis,
+  network,
+  // torus,
 } from '../../lib/connectors';
 import { Spinner } from '../spinner';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import '../css/wallet.scss';
+import usePrevious from '../../lib/hooks/usePrevious';
+// import { METAMASK } from 'web3modal/dist/providers/injected';
 
 enum ConnectorNames {
   MetaMask = 'MetaMask',
-  // Network = 'Network',
+  Network = 'Network',
   WalletConnect = 'WalletConnect',
   WalletLink = 'WalletLink',
   // Ledger = 'Ledger',
   // Trezor = 'Trezor',
   // Frame = 'Frame',
-
   Fortmatic = 'Fortmatic',
   Portis = 'Portis',
+  // Network = 'Network',
 }
 
 const connectorsByName: {
   [connectorName in ConnectorNames]: AbstractConnector;
 } = {
   [ConnectorNames.MetaMask]: injected,
-  // [ConnectorNames.Network]: network,
+
   [ConnectorNames.WalletConnect]: walletconnect,
   [ConnectorNames.WalletLink]: walletlink,
+  [ConnectorNames.Network]: network,
+
   // [ConnectorNames.Ledger]: ledger,
   // [ConnectorNames.Trezor]: trezor,
   // [ConnectorNames.Frame]: frame,
@@ -137,10 +144,10 @@ function Account() {
         {account === null
           ? '-'
           : account
-          ? `${account.substring(0, 6)}...${account.substring(
+            ? `${account.substring(0, 6)}...${account.substring(
               account.length - 4,
             )}`
-          : ''}
+            : ''}
       </span>
     </>
   );
@@ -205,19 +212,53 @@ export default function Wallet() {
   const context = useWeb3React<Web3Provider>();
   const {
     connector,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     library,
     chainId,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     account,
     activate,
     deactivate,
     active,
     error,
   } = context;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const showWallet = () => {
+    // setWalletVisible(true);
+  };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const walletOk = () => {
+    // setWalletVisible(false);
+  };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const walletCancel = () => {
+    // setWalletVisible(false);
+  };
 
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
+  // const [isWalletVisible, setWalletVisible] = useState(true);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const activePrevious = usePrevious(active);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const connectorPrevious = usePrevious(connector);
+  // React.useEffect(() => {
+  //   if (
+  //     { isWalletVisible } &&
+  //     ((active && !activePrevious) ||
+  //       (connector && connector !== connectorPrevious && !error))
+  //   ) {
+  //     setWalletVisible(false);
+  //   }
+  // }, [
+  //   setWalletVisible,
+  //   active,
+  //   error,
+  //   connector,
+  //   isWalletVisible,
+  //   activePrevious,
+  //   connectorPrevious,
+  // ]);
+
   React.useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {
       setActivatingConnector(undefined);
@@ -232,6 +273,12 @@ export default function Wallet() {
 
   return (
     <>
+      {/* <Modal
+        visible={isWalletVisible}
+        onOk={walletOk}
+        onCancel={walletCancel}
+        footer={null}
+      > */}
       <h1>Conntect to a wallet</h1> <hr />
       <div className="walletButtonContainer">
         {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
@@ -278,7 +325,7 @@ export default function Wallet() {
         </div>
       )}
       {!!error && <h4>{getErrorMessage(error)}</h4>}
-      {/* {!!(library && account) &&
+      {!!(library && account) &&
         connector === connectorsByName[ConnectorNames.Network] &&
         chainId && (
           <div className="button-target">
@@ -290,7 +337,7 @@ export default function Wallet() {
               Switch Networks
             </button>
           </div>
-        )} */}
+        )}
       {connector === connectorsByName[ConnectorNames.WalletConnect] && (
         <div className="button-target">
           <button
@@ -304,13 +351,13 @@ export default function Wallet() {
       )}
       {connector === connectorsByName[ConnectorNames.Fortmatic] && (
         <div className="button-target">
-          {/* <button
+          <button
             onClick={() => {
               (connector as any).close();
             }}
           >
             Kill Fortmatic Session
-          </button> */}
+          </button>
         </div>
       )}
       {connector === connectorsByName[ConnectorNames.Portis] && (
@@ -327,17 +374,18 @@ export default function Wallet() {
             </div>
           )}
           <div className="button-target">
-            {/* <button
+            <button
               onClick={() => {
                 (connector as any).close();
               }}
             >
               Kill Portis Session
-            </button> */}
+            </button>
           </div>
         </>
       )}
       <div id="overlay"></div>
+      {/* </Modal> */}
     </>
   );
 }
