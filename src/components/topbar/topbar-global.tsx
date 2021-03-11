@@ -28,7 +28,7 @@ interface TopbarProps {
 
 const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
-  const { account, active } = context;
+  const { active, account, connector, activate, error } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
@@ -48,7 +48,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     },
   );
   const [connect, setConnect] = useState(false);
-  const [isWalletVisible, setWalletVisible] = useState(false);
+  const [isWalletVisible, setWalletVisible] = useState<any>(active);
   const [isShopVisible, setShopVisible] = useState(false);
   const [isStakingVisible, setStakingVisible] = useState(false);
   const [selected, setSelected] = useState('networks');
@@ -87,6 +87,26 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const shopCancel = () => {
     setShopVisible(false);
   };
+
+  const activePrevious = usePrevious(active);
+  const connectorPrevious = usePrevious(connector);
+  useEffect(() => {
+    if (
+      { showWallet } &&
+      ((active && !activePrevious) ||
+        (connector && connector !== connectorPrevious && !error))
+    ) {
+      setWalletVisible(active);
+    }
+  }, [
+    setWalletVisible,
+    active,
+    error,
+    connector,
+    showWallet,
+    activePrevious,
+    connectorPrevious,
+  ]);
 
   if (domain.isNothing()) return null;
   return (
@@ -254,13 +274,21 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         </div>
       </Modal> */}
 
-      <Wallet />
-
-      {/* <hr />
-      <div className="new-ETH">
-        <div className="ETH"> New to Ethereum?</div>{' '}
-        <a href="https://ethereum.org/en/wallets/">Learn more about wallets</a>
-      </div> */}
+      <Modal
+        visible={isWalletVisible}
+        onOk={walletOk}
+        onCancel={walletCancel}
+        footer={null}
+      >
+        <Wallet />
+        <hr />
+        <div className="new-ETH">
+          <div className="ETH"> New to Ethereum?</div>{' '}
+          <a href="https://ethereum.org/en/wallets/">
+            Learn more about wallets
+          </a>
+        </div>
+      </Modal>
     </div>
   );
 };
