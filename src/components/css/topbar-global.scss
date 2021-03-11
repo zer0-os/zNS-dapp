@@ -88,6 +88,7 @@
         .network {
           font-size: 16px;
           line-height: 19px;
+          font-weight: bold;
           color: #ffffff;
           text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
           // align-self: center;
@@ -130,45 +131,78 @@
               rgba(0, 123, 237, 0.2) 0%,
               rgba(0, 83, 160, 0.2) 100%
             );
-
+            // text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+            // font-size: 16px;
             border-radius: 15px;
             text-align: left;
             font-size: 16px;
             color: white;
-            &:placeholder {
+            &::placeholder {
               color: #ffffff;
+              // filter: drop-shadow(0px 0px 15px rgb(139, 34, 34));
               text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
               font-size: 16px;
+              overflow: visible;
             }
           }
-
+          svg {
+            overflow: visible !important;
+          }
           .search-bar-button {
             // TODO: make more responsive to page size
             position: absolute;
             left: 15px;
-            top: 7px;
-            height: 14px;
-            width: 14px;
+            top: 5px;
+            height: 20px;
+            width: 20px;
+
             // border-radius: 31px;
             border-color: none;
-            border-width: 0px !important;
+            border-width: 0px;
+            // border: 1px yellow solid;
             background-color: transparent;
             background-image: url('./img/search-icon.svg');
+            // fill: red;
+            // stroke: black;
+            // stroke-width: 50 !important;
             background-position: center;
             background-size: 14px 14px;
             background-repeat: no-repeat;
+            overflow: visible;
+            // opacity: 1;
             // hotfix: box shadow not appearing correctly
             // box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+            // filter: drop-shadow(5px 5px 15px rgb(187, 41, 41));
+            z-index: 100;
             cursor: pointer;
             transition: 0.6s;
             &:hover {
               // background-color: $medium;
             }
           }
+          // this creates a shadow element behind the search icon to provide a glow effect, which is otherwise difficult to achieve using an svg as a background element
+          .search-bar-glow {
+            position: absolute;
+            left: 13px;
+            top: 3px;
+            height: 25px;
+            width: 25px;
+            border-color: none;
+            border-width: 0px;
+            background-color: transparent;
+            background-image: url('./img/search-icon.svg');
+            background-position: center;
+            background-size: 14px 14px;
+            background-repeat: no-repeat;
+            // transform: scale(1.01) translate(-50%, -50%);
+            // -webkit-transform: scale(1.01) translate(-50%, -50%);
+            filter: brightness(0) invert(1) blur(5px);
+            -webkit-filter: brightness(0) invert(1) blur(5px);
+          }
         }
         .connect-btn {
           // padding-right: 10px;
-          margin-right: 16px;
+          margin-right: 24px;
           background: linear-gradient(148deg, #00407c 20.93%, #00203f 82.47%);
           width: 162px;
           height: 28px;
@@ -194,11 +228,13 @@
             font-size: 14px;
             line-height: 19px;
             vertical-align: middle;
+            color: #ffffff;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
           }
           cursor: pointer;
         }
         .dotMenu {
-          margin-right: 16px;
+          margin-right: 24px;
           height: 18px;
           display: flex;
           flex-direction: column;

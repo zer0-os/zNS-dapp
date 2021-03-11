@@ -21,6 +21,7 @@ import { domainToASCII } from 'url';
 import { any, string } from 'zod';
 import Stakingview from './stakingModal';
 import usePrevious from '../../lib/hooks/usePrevious';
+import searchIcon from '../css/img/search-icon.svg';
 
 interface TopbarProps {
   domain: string;
@@ -112,6 +113,8 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           <div className="topRight">
             <div className="search-bar">
               <button className="search-bar-button"></button>
+              <div className="search-bar-glow"></div>
+              {/* <img src={searchIcon} alt="" className="search-bar-button" /> */}
               <input
                 className="search-bar-input"
                 type="text"
@@ -119,7 +122,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
               />
             </div>
             <div className="connect-btn" onClick={showWallet}>
-              <div className="dot">{active ? '🟢' : '🔴'}</div>
+              <div className="dot">{active ? '🔵' : '🔴'}</div>
               <div className="btn-text">
                 {active ? 'Connected' : 'Connect Wallet'}
               </div>
