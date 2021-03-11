@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   useWeb3React,
   UnsupportedChainIdError,
@@ -30,7 +30,6 @@ import { Spinner } from '../spinner';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import '../css/wallet.scss';
 import usePrevious from '../../lib/hooks/usePrevious';
-import { triggerFocus } from 'antd/lib/input/Input';
 // import { METAMASK } from 'web3modal/dist/providers/injected';
 
 enum ConnectorNames {
@@ -223,21 +222,21 @@ export default function Wallet() {
   } = context;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showWallet = () => {
-    setWalletVisible(true);
+    // setWalletVisible(true);
   };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const walletOk = () => {
-    setWalletVisible(false);
+    // setWalletVisible(false);
   };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const walletCancel = () => {
-    setWalletVisible(false);
+    // setWalletVisible(false);
   };
 
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isWalletVisible, setWalletVisible] = useState(true);
+  // const [isWalletVisible, setWalletVisible] = useState(true);
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const activePrevious = usePrevious(active);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
