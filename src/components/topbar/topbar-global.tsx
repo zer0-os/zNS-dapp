@@ -9,7 +9,6 @@ import { Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar-global.scss';
 import usePrevious from '../../lib/hooks/usePrevious';
-import searchIcon from '../css/img/search-icon.svg';
 
 interface TopbarProps {
   domain: string;
