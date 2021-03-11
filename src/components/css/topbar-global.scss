@@ -7,11 +7,11 @@
   left: 0;
   height: 157px;
   position: fixed;
-  -webkit-transition: background-color 0.5s ease-in-out;
-  -moz-transition: background-color 0.5s ease-in-out;
-  -ms-transition: background-color 0.5s ease-in-out;
-  -o-transition: background-color 0.5s ease-in-out;
-  transition: background-color 0.5s ease-in-out;
+  // -webkit-transition: background-color 0.5s ease-in-out;
+  // -moz-transition: background-color 0.5s ease-in-out;
+  // -ms-transition: background-color 0.5s ease-in-out;
+  // -o-transition: background-color 0.5s ease-in-out;
+  // transition: background-color 0.5s ease-in-out;
   background-color: none;
   // z-index: 20;
   z-index: 999;
@@ -25,7 +25,7 @@
       rgba(78, 0, 132, 0.2),
       rgba(78, 0, 132, 0.2)
     );
-    backdrop-filter: blur(40px);
+    backdrop-filter: blur(20px);
     /* Note: backdrop-filter has minimal browser support */
     border-radius: 16px;
 
@@ -38,43 +38,48 @@
       height: 56px;
       background: linear-gradient(
         92.24deg,
-        rgba(0, 102, 255, 0.4) 0%,
-        rgba(0, 63, 137, 0.4) 100%
+        rgba(0, 102, 255, 0.2) 0%,
+        rgba(0, 63, 137, 0.2) 100%
       );
-      border-radius: 16px;
+      border-top: 2px solid #bd5fff;
+      border-bottom: 1px solid #4e0084;
+      border-right: 1px solid #bd5fff;
+      border-left: 1px solid #bd5fff;
+      border-radius: 15px 15px 15px 15px;
+      filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
 
       // needed to create a hack for the border gradient
       // the css in the mockups doesn't work here
       // this pseudoelement creates a border by using a div with a solid background linear gradient
-      &::after {
-        content: '';
-        position: absolute;
-        top: -1px;
-        bottom: -1px;
-        right: -1px;
-        left: -1px;
-        border-radius: 15px;
-        background: linear-gradient(
-          180deg,
-          rgba(#bd5fff, 0.8) 0%,
-          rgba(#4e0084, 0.8) 100%
-        );
+      // &::after {
+      //   content: '';
+      //   position: absolute;
+      //   top: -1px;
+      //   bottom: -1px;
+      //   right: -1px;
+      //   left: -1px;
+      //   border-radius: 15px;
+      //   background: linear-gradient(
+      //     180deg,
+      //     rgba(#bd5fff, 0.8) 0%,
+      //     rgba(#4e0084, 0.8) 100%
+      //   );
 
-        filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
-        z-index: -2;
-      }
+      //   filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
+      //   z-index: -2;
+      // }
       // this pseudoelement creates a background layer before the top level div, to create an effect for the opacity of the top level div
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        border-radius: 16px;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: -1;
-      }
+      // &::before {
+      //   content: '';
+      //   position: absolute;
+      //   top: 0;
+      //   bottom: 0;
+      //   right: 0;
+      //   left: 0;
+      //   border-radius: 16px;
+      //   background: rgba(0, 0, 0, 0.5);
+      //   z-index: -1;
+      // }
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -88,6 +93,7 @@
         .network {
           font-size: 16px;
           line-height: 19px;
+          font-weight: bold;
           color: #ffffff;
           text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
           // align-self: center;
@@ -102,10 +108,17 @@
           // line-height: 19px;
           color: #ffffff;
           text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
-          padding: 3px;
+          padding-top: 3px;
+          padding-bottom: 3px;
+          padding-left: 10px;
+          padding-right: 10px;
           display: flex;
           // align-self: center;
           // }
+          .route-nav-text-sub {
+            color: #ffffff;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          }
         }
       }
       .topRight {
@@ -130,45 +143,75 @@
               rgba(0, 123, 237, 0.2) 0%,
               rgba(0, 83, 160, 0.2) 100%
             );
-
+            // text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+            // font-size: 16px;
             border-radius: 15px;
             text-align: left;
             font-size: 16px;
             color: white;
-            &:placeholder {
+            &::placeholder {
               color: #ffffff;
+              // filter: drop-shadow(0px 0px 15px rgb(139, 34, 34));
               text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
               font-size: 16px;
+              overflow: visible;
             }
           }
-
           .search-bar-button {
             // TODO: make more responsive to page size
             position: absolute;
             left: 15px;
-            top: 7px;
-            height: 14px;
-            width: 14px;
+            top: 5px;
+            height: 20px;
+            width: 20px;
+
             // border-radius: 31px;
             border-color: none;
-            border-width: 0px !important;
+            border-width: 0px;
+            // border: 1px yellow solid;
             background-color: transparent;
             background-image: url('./img/search-icon.svg');
+            // fill: red;
+            // stroke: black;
+            // stroke-width: 50 !important;
             background-position: center;
             background-size: 14px 14px;
             background-repeat: no-repeat;
+            overflow: visible;
+            // opacity: 1;
             // hotfix: box shadow not appearing correctly
             // box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+            // filter: drop-shadow(5px 5px 15px rgb(187, 41, 41));
+            z-index: 100;
             cursor: pointer;
             transition: 0.6s;
             &:hover {
               // background-color: $medium;
             }
           }
+          // this creates a shadow element behind the search icon to provide a glow effect, which is otherwise difficult to achieve using an svg as a background element
+          .search-bar-glow {
+            position: absolute;
+            left: 13px;
+            top: 3px;
+            height: 25px;
+            width: 25px;
+            border-color: none;
+            border-width: 0px;
+            background-color: transparent;
+            background-image: url('./img/search-icon.svg');
+            background-position: center;
+            background-size: 14px 14px;
+            background-repeat: no-repeat;
+            // transform: scale(1.01) translate(-50%, -50%);
+            // -webkit-transform: scale(1.01) translate(-50%, -50%);
+            filter: brightness(0) invert(1) blur(5px);
+            -webkit-filter: brightness(0) invert(1) blur(5px);
+          }
         }
         .connect-btn {
           // padding-right: 10px;
-          margin-right: 16px;
+          margin-right: 24px;
           background: linear-gradient(148deg, #00407c 20.93%, #00203f 82.47%);
           width: 162px;
           height: 28px;
@@ -194,11 +237,13 @@
             font-size: 14px;
             line-height: 19px;
             vertical-align: middle;
+            color: #ffffff;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
           }
           cursor: pointer;
         }
         .dotMenu {
-          margin-right: 16px;
+          margin-right: 24px;
           height: 18px;
           display: flex;
           flex-direction: column;
@@ -226,20 +271,20 @@
       & > div {
         cursor: pointer;
         margin-right: 28px;
-        padding: 7px;
+        padding: 9px;
       }
       .selected {
         background: #004789;
         border-radius: 8px;
         color: #ffffff;
-        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+        text-shadow: 0px 0px 15px rgba(255, 255, 255, 0.7);
       }
     }
   }
 }
 
 .topbarBackgroundFade {
-  background-color: rgba(14, 2, 27, 0.9) !important;
+  // background-color: rgba(14, 2, 27, 0.9) !important;
   // backdrop-filter: blur(10px);
 }
 

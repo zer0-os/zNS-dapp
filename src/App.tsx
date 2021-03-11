@@ -9,6 +9,7 @@ import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import DomainsGlobal from './components/table/domains-global';
 import TopbarGlobal from './components/topbar/topbar-global';
 import Sidebar from './components/sidebar';
+import znsbg from '../src/components/css/video/znsbg.mp4';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_SUBGRAPH_URL_4,
@@ -43,6 +44,15 @@ function App() {
 
   return (
     <Router>
+      <video
+        playsInline={true}
+        autoPlay={true}
+        muted={true}
+        loop={true}
+        id="bgvid"
+      >
+        <source src={znsbg} type="video/mp4" />
+      </video>
       <Sidebar />
       <div className="sideFadeRight"></div>
       <Route
@@ -86,7 +96,9 @@ function App() {
                   />
                 </h1> */}
                 {/* TODO: move to styling file */}
-                <DomainsGlobal domain={'ROOT'} />
+                <div style={{ position: 'absolute', top: '0' }}>
+                  <DomainsGlobal domain={'ROOT'} />
+                </div>
                 {/* <Subdomains domain={'ROOT'} /> */}
               </Route>
             </Switch>

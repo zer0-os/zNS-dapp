@@ -9,6 +9,7 @@ import { Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar-global.scss';
 import usePrevious from '../../lib/hooks/usePrevious';
+import searchIcon from '../css/img/search-icon.svg';
 
 interface TopbarProps {
   domain: string;
@@ -123,14 +124,21 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             </Link>
             {routes.length > 0 ? (
               // <div className="routeBox">
-              <Link to={`/${routes[0][0]}`} className="route">
-                {routes[0][0]}
-              </Link>
+              <div className="route">
+                {routes.map(([key, path], i) => (
+                  <Link className="route-nav-text-sub" to={path}>
+                    {key}
+                    {i < routes.length - 1 && '.'}
+                  </Link>
+                ))}
+              </div>
             ) : null}
           </div>
           <div className="topRight">
             <div className="search-bar">
               <button className="search-bar-button"></button>
+              <div className="search-bar-glow"></div>
+              {/* <img src={searchIcon} alt="" className="search-bar-button" /> */}
               <input
                 className="search-bar-input"
                 type="text"
@@ -138,7 +146,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
               />
             </div>
             <div className="connect-btn" onClick={showWallet}>
-              <div className="dot">{active ? '🟢' : '🔴'}</div>
+              <div className="dot">{active ? '🔵' : '🔴'}</div>
               <div className="btn-text">
                 {active ? 'Connected' : 'Connect Wallet'}
               </div>
