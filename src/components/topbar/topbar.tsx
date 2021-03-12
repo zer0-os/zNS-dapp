@@ -18,7 +18,7 @@ interface TopbarProps {
 const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { account, active } = context;
+  const { active } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
@@ -37,11 +37,6 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
 
   const [connect, setConnect] = useState(false);
   const [isWalletVisible, setWalletVisible] = useState(false);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onClick = () => {
-    setConnect(!connect);
-  };
   const showWallet = () => {
     setWalletVisible(true);
   };

@@ -41,7 +41,7 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
   const [isTransferVisible, setTransferVisible] = useState(false);
   const { domain, refetchDomain } = useDomain(_domain);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
+  const { register, handleSubmit } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
 
@@ -77,29 +77,18 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
           });
       }
     },
-    [account, contracts, domain, refetchIncomingApprovals, refetchDomain, refetchOwned],
+    [
+      account,
+      contracts,
+      domain,
+      refetchIncomingApprovals,
+      refetchDomain,
+      refetchOwned,
+    ],
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showTransfer = () => {
-    setTransferVisible(true);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const transferOk = () => {
-    setTransferVisible(false);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const transferCancel = () => {
-    setTransferVisible(false);
-  };
-
-  console.log('FIRE1');
-  console.log('approval domain', domain);
-  console.log(account);
   if (domain.isNothing() || domain.value.owner !== account) return null;
-  console.log('FIRE2');
+
   return (
     <>
       <form onSubmit={handleSubmit(({ address }) => _approve(address))}>

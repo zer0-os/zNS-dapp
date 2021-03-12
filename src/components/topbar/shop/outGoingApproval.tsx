@@ -1,24 +1,19 @@
-import React, { useCallback, useMemo } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-import { useZnsContracts } from '../../../lib/contracts';
+import React, { useMemo } from 'react';
 import { useDomainCache } from '../../../lib/useDomainCache';
-import { zeroAddress } from '../../../lib/useDomainStore';
-import { Domain } from '../../../lib/useDomainStore';
 import { Space, Table } from 'antd';
 import Profile from '../../table/table-image';
 const { Column } = Table;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface NFTRowProps {
-  id: number;
-  domain: string;
-}
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface NFTColumnProps {
-  key: number;
-  name: string;
-}
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface NFTRowProps {
+//   id: number;
+//   domain: string;
+// }
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface NFTColumnProps {
+//   key: number;
+//   name: string;
+// }
 
 interface NftData {
   Image: any;
@@ -29,64 +24,56 @@ interface NftData {
 }
 
 const Outgoing: React.FC = () => {
-  const context = useWeb3React<Web3Provider>();
-  const { account } = context;
-  const contracts = useZnsContracts();
+  // const context = useWeb3React<Web3Provider>();
+  // const { account } = context;
   const domainStore = useDomainCache();
-  const { owned, refetchOwned } = domainStore;
+  const { owned } = domainStore;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const outgoingData = useMemo(
-    () =>
-      owned.isNothing() ? [] : owned.value.filter((d) => d.approval.isJust()),
-    [owned],
-  );
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const _revoke = useCallback(
-    (domain: Domain) => {
-      if (account && contracts.isJust())
-        contracts.value.registry
-          .approve(zeroAddress, domain.id)
-          .then((txr: any) => txr.wait(2))
-          .then(() => {
-            refetchOwned();
-          });
-    },
-    [contracts, account, refetchOwned],
-  );
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const _revoke = useCallback(
+  //   (domain: Domain) => {
+  //     if (account && contracts.isJust())
+  //       contracts.value.registry
+  //         .approve(zeroAddress, domain.id)
+  //         .then((txr: any) => txr.wait(2))
+  //         .then(() => {
+  //           refetchOwned();
+  //         });
+  //   },
+  //   [contracts, account, refetchOwned],
+  // );
 
   const dataInput: NftData[] = useMemo(
     () =>
       owned.isNothing()
         ? []
         : owned.value.map((domain) => ({
-          Image: (
-            <div className="imgContainer">
-              <Profile domain={domain.domain} />
-            </div>
-          ),
-          NFT: domain.domain,
-          Owner: (
-            <div className="ownerCol">
-              <div className="ownerIcon">img</div>
-              {/* <div>{domain.owner}</div> */}
-              <div>Artist Name</div>
-            </div>
-          ),
-          Offer: (
-            <div>
-              <div>$1234.56</div>
-              <div>(Ξ2.0476)</div>
-            </div>
-          ),
-          Date: '1 Sept 2020',
-        })),
+            Image: (
+              <div className="imgContainer">
+                <Profile domain={domain.domain} />
+              </div>
+            ),
+            NFT: domain.domain,
+            Owner: (
+              <div className="ownerCol">
+                <div className="ownerIcon">img</div>
+                {/* <div>{domain.owner}</div> */}
+                <div>Artist Name</div>
+              </div>
+            ),
+            Offer: (
+              <div>
+                <div>$1234.56</div>
+                <div>(Ξ2.0476)</div>
+              </div>
+            ),
+            Date: '1 Sept 2020',
+          })),
     [owned],
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const data = useMemo<NftData[]>(() => dataInput, [dataInput]);
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const data = useMemo<NftData[]>(() => dataInput, [dataInput]);
   // const columns = React.useMemo<Column<NftData>[]>(
   //   () => [
   //     {

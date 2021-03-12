@@ -1,9 +1,7 @@
 import { FC, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useZnsContracts } from '../../../lib/contracts';
 import { useDomainCache } from '../../../lib/useDomainCache';
-import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
@@ -14,15 +12,8 @@ interface ProfileProps {
 }
 
 const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isSubdomainVisible, setSubdomainVisible] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isTransferVisible, setTransferVisible] = useState(false);
-  const [isProfileVisible, setProfileVisible] = useState(false);
+  const [isNftVisible, setNftVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const contracts = useZnsContracts();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
@@ -40,71 +31,32 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
     },
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { owned, incomingApprovals } = useDomainStore();
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showSubdomain = () => {
-    setSubdomainVisible(true);
+  const showNft = () => {
+    setNftVisible(true);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const subdomainOk = () => {
-    setSubdomainVisible(false);
+  const nftOk = () => {
+    setNftVisible(false);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const subdomainCancel = () => {
-    setSubdomainVisible(false);
+  const nftCancel = () => {
+    setNftVisible(false);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showTransfer = () => {
-    setTransferVisible(true);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const transferOk = () => {
-    setTransferVisible(false);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const transferCancel = () => {
-    setTransferVisible(false);
-  };
-
-  const showProfile = () => {
-    setProfileVisible(true);
-  };
-
-  const profileOk = () => {
-    setProfileVisible(false);
-  };
-
-  const profileCancel = () => {
-    setProfileVisible(false);
-  };
-
-  //
-
-  //
   if (domain.isNothing()) return null;
   return (
     <>
       <>
         {domain.isJust() && (
-          <button className="btn-" onClick={showProfile}>
+          <button className="btn-" onClick={showNft}>
             <TableImage domain={_domain} />
           </button>
         )}
         <Modal
           className="nft-view-modal"
-          visible={isProfileVisible}
-          onOk={profileOk}
-          onCancel={profileCancel}
+          visible={isNftVisible}
+          onOk={nftOk}
+          onCancel={nftCancel}
           footer={null}
           closable={false}
         >
