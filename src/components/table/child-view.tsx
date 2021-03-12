@@ -120,7 +120,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   return (
     <div>
       <div className="metricsBar">
-        <div className="metricsTitle">Metrics</div>
+        {/* <div className="metricsTitle">Metrics</div> */}
         <div className="metricsContainer">
           {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
           {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
