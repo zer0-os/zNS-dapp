@@ -289,11 +289,10 @@ export default function Wallet() {
             !triedEager || !!activatingConnector || connected || !!error;
 
           return (
-            <>
+            <div key={name}>
               <button
                 className="network-btns"
                 disabled={disabled}
-                key={name}
                 onClick={() => {
                   setActivatingConnector(currentConnector);
                   activate(connectorsByName[name]);
@@ -307,12 +306,12 @@ export default function Wallet() {
                 )}
                 {name}
               </button>
-            </>
+            </div>
           );
         })}
       </div>
       {(active || error) && (
-        <div className="button-target">
+        <div key="network-button" className="button-target">
           <button
             className="network-d-btn"
             style={{ border: 'none', background: 'transparent' }}
@@ -328,7 +327,7 @@ export default function Wallet() {
       {!!(library && account) &&
         connector === connectorsByName[ConnectorNames.Network] &&
         chainId && (
-          <div className="button-target">
+          <div key="switch-network-button" className="button-target">
             <button
               onClick={() => {
                 (connector as any).changeChainId(chainId === 1 ? 4 : 1);
@@ -339,7 +338,7 @@ export default function Wallet() {
           </div>
         )}
       {connector === connectorsByName[ConnectorNames.WalletConnect] && (
-        <div className="button-target">
+        <div key="kill-walletconnect" className="button-target">
           <button
             onClick={() => {
               (connector as any).close();
@@ -350,7 +349,7 @@ export default function Wallet() {
         </div>
       )}
       {connector === connectorsByName[ConnectorNames.Fortmatic] && (
-        <div className="button-target">
+        <div key="kill-fortmatic" className="button-target">
           <button
             onClick={() => {
               (connector as any).close();
@@ -363,7 +362,7 @@ export default function Wallet() {
       {connector === connectorsByName[ConnectorNames.Portis] && (
         <>
           {chainId !== undefined && (
-            <div className="button-target">
+            <div key="switch-network-button-portis" className="button-target">
               <button
                 onClick={() => {
                   (connector as any).changeNetwork(chainId === 1 ? 100 : 1);
@@ -373,7 +372,7 @@ export default function Wallet() {
               </button>
             </div>
           )}
-          <div className="button-target">
+          <div key="kill-portis" className="button-target">
             <button
               onClick={() => {
                 (connector as any).close();
