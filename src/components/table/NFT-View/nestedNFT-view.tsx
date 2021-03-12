@@ -155,7 +155,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                       </div>
                       <div className="link-text-container">
                         {routes.map(([key, path], i) => (
-                          <span className="route-nav-link">
+                          <span key={key} className="route-nav-link">
                             <Link className="route-nav-text-sub" to={path}>
                               {key}
                               {i < routes.length - 1 && '.'}
