@@ -1,9 +1,8 @@
 import { FC, useMemo } from 'react';
 import '../css/grid.scss';
-import { useWeb3React } from '@web3-react/core';
-import { useZnsContracts } from '../../lib/contracts';
+// import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
-import { Web3Provider } from '@ethersproject/providers';
+// import { Web3Provider } from '@ethersproject/providers';
 import TableImage from './table-image';
 
 interface GridProps {
@@ -37,16 +36,14 @@ interface GridProps {
 // cells.push(gridCell());
 
 const Grid: FC<GridProps> = ({ domain: _domain }) => {
-  const context = useWeb3React<Web3Provider>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { account } = context;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const contracts = useZnsContracts();
+  // const context = useWeb3React<Web3Provider>();
+
+  // const { account } = context;
   const domainStore = useDomainCache();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { useAllDomains, useDomain } = domainStore;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { domain, refetchDomain } = useDomain(_domain);
+
+  const { useDomain } = domainStore;
+
+  const { domain } = useDomain(_domain);
 
   const gridCell = (name: string) => {
     return (
@@ -82,12 +79,11 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
       domain.isNothing()
         ? []
         : domain.value.children.map((key, i) => {
-          return gridCell(key);
-        }),
+            return gridCell(key);
+          }),
     [domain],
   );
   if (domain.isNothing()) return null;
-  //console.log('GRID CHILDREN!!!', domain.value.children);
   return <div className="gridContainer">{gridCells}</div>;
 };
 

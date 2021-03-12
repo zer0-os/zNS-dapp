@@ -9,16 +9,16 @@ import Profile from '../../table/table-image';
 
 const { Column } = Table;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface NFRowProps {
-  id: number;
-  domain: string;
-}
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface NFColumnProps {
-  key: number;
-  name: string;
-}
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface NFRowProps {
+//   id: number;
+//   domain: string;
+// }
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface NFColumnProps {
+//   key: number;
+//   name: string;
+// }
 
 interface NfData {
   Image: any;
@@ -65,8 +65,6 @@ const Claims: React.FC = () => {
     },
     [contracts, account, refetchOwned],
   );
-
-  //console.log('APPROVAL', incomingApprovals);
 
   const dataInput: NfData[] = useMemo(
     () =>

@@ -1,17 +1,8 @@
-import { FC, useState, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import _ from 'lodash';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
-import {
-  Column,
-  useTable,
-  useGlobalFilter,
-  useFilters,
-} from 'react-table';
+import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import TableImage from '././table-image-global';
 import SearchTable from './searchTable';
 import marketimg from '../css/img/chart.svg';
@@ -20,15 +11,15 @@ import '../../components/css/subdomains.scss';
 import Nestedview from './NFT-View/nestedNFT-view';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface ColumnProps {
-  key: number;
-  name: string;
-}
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface RowProps {
-  id: number;
-  domain: string;
-}
+// interface ColumnProps {
+//   key: number;
+//   name: string;
+// }
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface RowProps {
+//   id: number;
+//   domain: string;
+// }
 
 interface Data {
   '#': string;
@@ -50,28 +41,14 @@ interface TProps {
 }
 
 const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
-  const context = useWeb3React<Web3Provider>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [sortConfig, setSortConfig] = useState();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [search, setSearch] = useState('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [filterdData, setFilterdData] = useState([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const location = useLocation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const contracts = useZnsContracts();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { account } = context;
-  const { useDomain, useAllDomains } = useDomainCache();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { _allDomains, refetchAllDomains } = useAllDomains(_domain);
+  // const context = useWeb3React<Web3Provider>();
+
+  // const { account } = context;
+  const { useDomain } = useDomainCache();
+
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const history = useHistory();
-
-  //console.log('ALL DOMAIN!!', _allDomains);
-  //console.log('DDOMAIN', domain);
 
   const dataInput: Data[] = useMemo(
     () =>

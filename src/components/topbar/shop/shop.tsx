@@ -1,7 +1,5 @@
 import { FC, useState, useMemo } from 'react';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { useZnsContracts } from '../../../lib/contracts';
+
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
@@ -23,35 +21,27 @@ interface ShopProps {
 const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const [isShopVisible, setShopVisible] = useState(false);
   const [isTransferVisible, setTransferVisible] = useState(false);
+  // const context = useWeb3React<Web3Provider>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [outgoingPendingCount, setOutgoingPendingCount] = useState(0);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [size, setSize] = useState();
-  const context = useWeb3React<Web3Provider>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const contracts = useZnsContracts();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { owned, refetchOwned } = useDomainStore();
-  const location = useLocation();
+  const { owned } = useDomainStore();
+
   const [isStakingVisible, setStakingVisible] = useState(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const routes = _.transform(
-    location.pathname
-      .substr(1)
-      .split('.')
-      .filter((s) => s !== ''),
-    (acc: [string, string][], val, i) => {
-      let next = 0 < i ? acc[i - 1][1] + '.' + val : val;
-      acc.push([val, next]);
-    },
-  );
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const routes = _.transform(
+  //   location.pathname
+  //     .substr(1)
+  //     .split('.')
+  //     .filter((s) => s !== ''),
+  //   (acc: [string, string][], val, i) => {
+  //     let next = 0 < i ? acc[i - 1][1] + '.' + val : val;
+  //     acc.push([val, next]);
+  //   },
+  // );
 
   const showStaking = () => {
     setStakingVisible(true);
@@ -135,8 +125,8 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
       owned.isNothing()
         ? []
         : owned.value.map((control) => {
-          return gridCell(control.domain, control.image);
-        }),
+            return gridCell(control.domain, control.image);
+          }),
     [gridCell, owned],
   );
 

@@ -6,30 +6,13 @@ import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
-import {
-  Column,
-  useTable,
-  useGlobalFilter,
-  useFilters,
-} from 'react-table';
+import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import TableImage from '././table-image-global';
 import SearchTable from './searchTable';
 import marketimg from '../css/img/chart.svg';
 import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
 import Nestedview from './NFT-View/nestedNFT-view';
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface ColumnProps {
-  key: number;
-  name: string;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-interface RowProps {
-  id: number;
-  domain: string;
-}
 
 interface Data {
   '#': string;
@@ -51,20 +34,7 @@ interface ADProps {
 }
 
 const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
-  const context = useWeb3React<Web3Provider>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [sortConfig, setSortConfig] = useState();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [search, setSearch] = useState('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [filterdData, setFilterdData] = useState([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const location = useLocation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const contracts = useZnsContracts();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { account } = context;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const context = useWeb3React<Web3Provider>();
   const { useDomain, useAllDomains } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
@@ -75,19 +45,19 @@ const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
       domain.isNothing()
         ? []
         : _.map(domain.value.children, (key, i) => ({
-          '#': i.toString(),
-          // asset: <Profile domain={key} />,
-          image: <TableImage domain={key} />,
-          network: key,
-          token: key + ' token',
-          volume: 'N/A',
-          '24Hr': 'N/A',
-          '7d': 'N/A',
-          marketcap: 'N/A',
-          last7days: '',
-          timestamp: '',
-          trade: '',
-        })),
+            '#': i.toString(),
+            // asset: <Profile domain={key} />,
+            image: <TableImage domain={key} />,
+            network: key,
+            token: key + ' token',
+            volume: 'N/A',
+            '24Hr': 'N/A',
+            '7d': 'N/A',
+            marketcap: 'N/A',
+            last7days: '',
+            timestamp: '',
+            trade: '',
+          })),
     [domain],
   );
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
@@ -149,26 +119,7 @@ const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
     headerGroups,
     prepareRow,
     rows,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    page,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    canPreviousPage,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    canNextPage,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    pageOptions,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    pageCount,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    gotoPage,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    nextPage,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    previousPage,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    setPageSize,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    state,
+
     setGlobalFilter,
   } = useTable(
     {
@@ -180,16 +131,16 @@ const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
     // useFlexLayout,
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const options = {
-    onRowClick: (rowData: any) =>
-      history.push({
-        pathname: rowData[0],
-      }),
-    filter: false,
-    selectableRowsHideCheckboxes: true,
-    sort: false,
-  };
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const options = {
+  //   onRowClick: (rowData: any) =>
+  //     history.push({
+  //       pathname: rowData[0],
+  //     }),
+  //   filter: false,
+  //   selectableRowsHideCheckboxes: true,
+  //   sort: false,
+  // };
 
   const handleRowClick = (row: any) => {
     //console.log('fire');
