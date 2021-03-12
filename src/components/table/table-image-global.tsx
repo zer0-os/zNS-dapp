@@ -23,7 +23,7 @@ const TableImageGlobal: FC<TableImageGlobalProps> = ({ domain: _domain }) => {
           />
         </div>
       )}
-      {console.log(domain.value.image, domain.value.domain)}
+      {/*console.log(domain.value.image, domain.value.domain)*/}
     </>
   );
 };

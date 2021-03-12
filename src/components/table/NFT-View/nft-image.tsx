@@ -28,7 +28,7 @@ const NFTImage: FC<NFTImageProps> = ({ domain: _domain }) => {
           alt=""
         />
       </div>
-      {console.log(domain.value.image, domain.value.domain)}
+      {/*console.log(domain.value.image, domain.value.domain)*/}
     </>
   );
 };

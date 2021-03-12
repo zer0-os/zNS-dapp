@@ -56,7 +56,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   );
 
   useEffect(() => {
-    console.log('ChildView', domain);
+    //console.log('ChildView', domain);
   }, [domain]);
   // const showSubdomain = () => {
   //   setSubdomainVisible(true);
@@ -147,7 +147,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                 </Link>
               </div>
               {routes.map(([key, path], i) => (
-                <div className="route-nav-link">
+                <div key={key} className="route-nav-link">
                   <Link className="route-nav-text-sub" to={path}>
                     {key}
                     {i < routes.length - 1 && '.'}

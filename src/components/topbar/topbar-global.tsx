@@ -9,7 +9,6 @@ import { Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar-global.scss';
 import usePrevious from '../../lib/hooks/usePrevious';
-import searchIcon from '../css/img/search-icon.svg';
 
 interface TopbarProps {
   domain: string;
@@ -126,7 +125,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
               // <div className="routeBox">
               <div className="route">
                 {routes.map(([key, path], i) => (
-                  <Link className="route-nav-text-sub" to={path}>
+                  <Link key={key} className="route-nav-text-sub" to={path}>
                     {key}
                     {i < routes.length - 1 && '.'}
                   </Link>

@@ -192,14 +192,14 @@ const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
   };
 
   const handleRowClick = (row: any) => {
-    console.log('fire');
-    console.log(row);
+    //console.log('fire');
+    //console.log(row);
     history.push({
       pathname: row.values.network,
     });
   };
   if (domain.isNothing()) return null;
-  console.log(domain, 'xxxxxxxxxxxxxxxxx');
+  //console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">
       <SearchTable setFilter={setGlobalFilter} filter={null} />
@@ -239,7 +239,7 @@ const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
               )}
               {/* Apply the table body props */}
               <tbody {...getTableBodyProps()}>
-                {console.log('ROWS', rows)}
+                {/*console.log('ROWS', rows)*/}
                 {
                   // Loop over the table rows
                   rows.map((row) => {

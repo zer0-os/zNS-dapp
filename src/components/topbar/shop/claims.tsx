@@ -66,7 +66,7 @@ const Claims: React.FC = () => {
     [contracts, account, refetchOwned],
   );
 
-  console.log('APPROVAL', incomingApprovals);
+  //console.log('APPROVAL', incomingApprovals);
 
   const dataInput: NfData[] = useMemo(
     () =>
