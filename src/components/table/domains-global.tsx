@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -62,9 +62,9 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     },
   );
 
-  useEffect(() => {
-    //console.log('ChildView', domain);
-  }, [domain]);
+  //useEffect(() => {
+  //console.log('ChildView', domain);
+  //}, [domain]);
   // const showSubdomain = () => {
   //   setSubdomainVisible(true);
   // };
