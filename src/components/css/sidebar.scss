@@ -22,10 +22,13 @@
       top: 24px;
       height: 56px;
       width: 56px;
-      background: blue;
+      background: linear-gradient(180deg, #1c4358 0%, #2a0047 100%);
       border-radius: 50%;
       margin-left: 24px;
       margin-right: auto;
+      img {
+        // border: 1px red solid;
+      }
     }
     .middleNav {
       position: relative;

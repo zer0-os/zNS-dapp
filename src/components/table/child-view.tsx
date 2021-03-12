@@ -11,6 +11,7 @@ import linebutton from '../css/img/threelinebutton.png';
 import squarebutton from '../css/img/squaregridbutton.png';
 import linebuttongrey from '../css/img/threelinebuttongrey.png';
 import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
+import AdBar from './adbar';
 
 interface SubdomainsProps {
   domain: string;
@@ -188,7 +189,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             </div>
           </div>
         </div>
-
+        <AdBar domain={domain.value.domain} />
         <TableView domain={domain.value.domain} gridView={gridView} />
 
         {/* // apply the table props */}

@@ -10,6 +10,7 @@ import feedSelect from './css/img/feed.png';
 import tvSelect from './css/img/tv-button-borderless-blue.png';
 import tv from './css/img/tv-button-borderless.png';
 import feed from './css/img/feedgrey.png';
+import wilderLogo from './css/img/wilderlogo.png';
 
 const Sidebar: FC = () => {
   const context = useWeb3React<Web3Provider>();
@@ -61,7 +62,9 @@ const Sidebar: FC = () => {
   return (
     <div className="sidebarContainer">
       <div className="sidebarContainer">
-        <div className="topLogo"></div>
+        <div className="topLogo">
+          <img src={wilderLogo} alt="" />
+        </div>
         <div className="middleNav">
           <div className="sideItem i1"></div>
           <div className="sideItem 2"></div>
