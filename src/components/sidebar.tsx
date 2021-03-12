@@ -60,13 +60,19 @@ const Sidebar: FC = () => {
   };
   return (
     <div className="sidebarContainer">
-      <div className="sidebarNav">
-        {/* <div className="dotContainer">
-          <div className="dot"></div>
-          <div className="dot selectedDot"></div>
-          <div className="dot"></div>
-          <div className="dot"></div>
-        </div> */}
+      <div className="sidebarContainer">
+        <div className="topLogo"></div>
+        <div className="middleNav">
+          <div className="sideItem i1"></div>
+          <div className="sideItem 2"></div>
+          <div className="sideItem 3"></div>
+          <div className="sideItem 4"></div>
+        </div>
+      </div>
+
+      {/* depricated */}
+      {/* <div className="sidebarNav">
+       
         <div className="icons">
           <div className="iconRow">
             <Tooltip
@@ -104,25 +110,7 @@ const Sidebar: FC = () => {
               </div>
             </Tooltip>
           </div>
-          {/* <div className="iconRow">
-            <div className="sbimgContainer">
-              {' '}
-              <img src={geopin} alt="" />
-            </div>
-          </div>
-          <div className="iconRow">
-            <div className="sbimgContainer">
-              {' '}
-              <img src={galaxycircle} alt="" />
-            </div>
-          </div> */}
-        </div>
-      </div>
-      {/* <div className="profile">
-        <img src={elon} alt="" className="profilepic" />
-        <div className="buttons">
-          <button className="wallet"></button>
-          <button className="darkmode-toggle"></button>
+         
         </div>
       </div> */}
     </div>
