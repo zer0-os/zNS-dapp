@@ -1,10 +1,6 @@
 import { FC, useState, useMemo } from 'react';
 import _ from 'lodash';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
-import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import TableImage from '././table-image-global';
@@ -35,7 +31,7 @@ interface ADProps {
 
 const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
   // const context = useWeb3React<Web3Provider>();
-  const { useDomain, useAllDomains } = useDomainCache();
+  const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const history = useHistory();

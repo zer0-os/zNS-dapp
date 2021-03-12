@@ -37,10 +37,7 @@ const Approve: React.FC<ApprovalProps> = ({ domain: _domain }) => {
   const contracts = useZnsContracts();
   const domainStore = useDomainCache();
   const { refetchIncomingApprovals, useDomain, refetchOwned } = domainStore;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isTransferVisible, setTransferVisible] = useState(false);
   const { domain, refetchDomain } = useDomain(_domain);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { register, handleSubmit } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
