@@ -26,11 +26,12 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [imageUrl, setImageUrl] = useState('ipfs://Qmimage');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
   // TODO: show user what they're doing wrong
-  useEffect(() => //console.log(errors), [errors]);
+  // useEffect(() => console.log(errors), [errors]);
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
