@@ -120,7 +120,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         <div className="topHalf">
           <div className="topLeft">
             <Link to={'/'} className="network">
-              0:/ <span style={{ marginLeft: '-5px' }}>/</span>
+              0:/ <span className="slash">/</span>
             </Link>
             {routes.length > 0 ? (
               // <div className="routeBox">
