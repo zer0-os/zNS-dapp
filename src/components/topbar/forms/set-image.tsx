@@ -23,19 +23,17 @@ const schema = z
   .refine((obj) => 'url' in obj || (obj.image && obj.image.size > 0));
 
 const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isSetImageVisible, setIsSetImageVisible] = useState(false);
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const [isSetImageVisible, setIsSetImageVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const contracts = useZnsContracts();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { library, account, active, chainId } = context;
+
+  const { account } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain, refetchDomain } = domainContext;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [done, setDone] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
+
+  const { register, handleSubmit } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
   const _setImage = useCallback(
@@ -67,15 +65,15 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     [_setImage, domain, refetchDomain],
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const hideSetImage = useCallback(() => {
-    setIsSetImageVisible(false);
-  }, [setIsSetImageVisible]);
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const hideSetImage = useCallback(() => {
+  //   setIsSetImageVisible(false);
+  // }, [setIsSetImageVisible]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showSetImage = useCallback(() => {
-    setIsSetImageVisible(true);
-  }, [setIsSetImageVisible]);
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const showSetImage = useCallback(() => {
+  //   setIsSetImageVisible(true);
+  // }, [setIsSetImageVisible]);
 
   if (domain.isNothing()) return null;
 

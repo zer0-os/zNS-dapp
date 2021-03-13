@@ -1,10 +1,8 @@
 import { FC, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useZnsContracts } from '../../../lib/contracts';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal } from 'antd';
-import { useLocation } from 'react-router-dom';
 import '../../css/profile.scss';
 import elon from '../../css/img/elon.jpg';
 import '../../css/profile-grid.scss';
@@ -13,24 +11,10 @@ import ClipboardButton from 'react-clipboard.js';
 const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
   const [isOwnedVisible, setOwnedVisible] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [text, setText] = useState('');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [count, setCount] = useState(0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [size, setSize] = useState();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const contracts = useZnsContracts();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { owned, incomingApprovals } = useDomainStore();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const location = useLocation();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { library, account, active, chainId } = context;
+  const { owned } = useDomainStore();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const dataInput = account;
+  const { account } = context;
 
   const showOwner = () => {
     setOwnedVisible(true);

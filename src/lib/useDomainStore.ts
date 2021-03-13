@@ -167,7 +167,7 @@ function useDomain(domain: string) {
   });
 
   const _domain: Maybe<Domain> = useMemo(() => {
-    console.log('domain!', dataDomain);
+    //console.log('domain!', dataDomain);
     if (errorDomain) {
       // TODO: maybe throw?
       console.error(errorDomain);
@@ -254,7 +254,7 @@ function useOwnedDomains(): {
     }
   }, [account, getOwned, refetch]);
 
-  console.log('usedomain list', owned);
+  //console.log('usedomain list', owned);
 
   useEffect(() => {
     if (refetch) {

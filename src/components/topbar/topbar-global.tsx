@@ -9,7 +9,6 @@ import { Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar-global.scss';
 import usePrevious from '../../lib/hooks/usePrevious';
-import searchIcon from '../css/img/search-icon.svg';
 
 interface TopbarProps {
   domain: string;
@@ -17,14 +16,11 @@ interface TopbarProps {
 
 const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { active, account, connector, activate, error } = context;
+  const { active, connector, error } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const location = useLocation();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const previousAccount = usePrevious(account);
 
   const scrollY = useScrollPosition(60);
 
@@ -38,33 +34,11 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
-  const [connect, setConnect] = useState(false);
+
   const [isWalletVisible, setWalletVisible] = useState<any>(active);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isShopVisible, setShopVisible] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isStakingVisible, setStakingVisible] = useState(false);
+
   const [selected, setSelected] = useState('networks');
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showStaking = () => {
-    setStakingVisible(true);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const stakingOk = () => {
-    setStakingVisible(false);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const stakingCancel = () => {
-    setStakingVisible(false);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const onClick = () => {
-    setConnect(!connect);
-  };
   const showWallet = useCallback(() => {
     setWalletVisible(true);
   }, []);
@@ -73,19 +47,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   };
   const walletCancel = () => {
     setWalletVisible(false);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showShop = () => {
-    setWalletVisible(true);
-  };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const shopOk = () => {
-    setShopVisible(false);
-  };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const shopCancel = () => {
-    setShopVisible(false);
   };
 
   const activePrevious = usePrevious(active);
@@ -126,7 +87,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
               // <div className="routeBox">
               <div className="route">
                 {routes.map(([key, path], i) => (
-                  <Link className="route-nav-text-sub" to={path}>
+                  <Link key={key} className="route-nav-text-sub" to={path}>
                     {key}
                     {i < routes.length - 1 && '.'}
                   </Link>
