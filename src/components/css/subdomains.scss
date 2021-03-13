@@ -27,8 +27,8 @@ $page-margin: 100px;
 .domainImageGlobalContainer {
   border-radius: 50%;
   .domainImageGlobal {
-    height: 49px;
-    width: 49px;
+    height: 36px;
+    width: 36px;
   }
 }
 
@@ -639,23 +639,38 @@ table {
   // border-top: 2px $bright solid;
 }
 
-.tableContainer {
-  // border: 5px bright solid;
-  // border-radius: 15px;
-  box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
-  border-radius: 0px 0px 15px 15px;
+.removeTopShadow {
+  // creates padding around the tableContainer to allow the shadow to bleed through on every side except the top, which is hidden by removing overflow
+  position: relative;
+  padding-top: 0px;
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  overflow: hidden;
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-top: 10px;
+  .tableContainer {
+    // border: 5px bright solid;
+    // border-radius: 15px;
+
+    box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+    border-radius: 0px 0px 15px 15px;
+  }
 }
 
 .subdomainsTable {
   background: none;
   // border-collapse: inherit;
-  border-radius: 15px;
+  // border-radius: 15px;
   border-spacing: 0px;
   border-collapse: separate;
   border-spacing: 0;
   width: 100%;
+  background: rgba(78, 0, 132, 0.2);
+  backdrop-filter: blur(20px);
   // height: 30vh;
-  margin-top: 10px;
+  // margin-top: 10px;
   // subdomains header
   .subdomainsHeaderGroupLocal,
   .subdomainsHeaderGroupGlobal {
@@ -664,6 +679,22 @@ table {
     // tr = row
     tr {
       height: 26px;
+      position: relative;
+      // top border
+      &::after {
+        content: '';
+        background: rgba(141, 141, 141, 0.2);
+        position: absolute;
+        // bottom: 0;
+        left: 2%;
+        width: 96%;
+        height: 1px;
+      }
+    }
+
+    tr th {
+      // border-top: 1px solid rgba(141, 141, 141, 0.2);
+      // border: 3px solid red;
     }
     // th = header cell
     tr th:first-child {
@@ -673,6 +704,7 @@ table {
       // border: 1px solid $middle-red;
       // border-top: 2px $bright solid;
       border-left: 1px solid #bd5fff;
+
       // border-radius: 12px 0px 0px 0px;
     }
 
@@ -684,8 +716,7 @@ table {
   }
   .subdomainsHeaderGroupLocal {
     tr th {
-      background-color: rgba($bright, 0.09);
-
+      // background-color: rgba($bright, 0.09);
       &:not(:nth-child(3)) {
         text-align: center;
       }
@@ -693,7 +724,7 @@ table {
   }
   .subdomainsHeaderGroupGlobal {
     tr th {
-      background-color: rgba($bright, 0.09);
+      // background-color: rgba($bright, 0.09);
 
       &:not(:nth-child(3)):not(:nth-child(4)) {
         text-align: center;
@@ -701,13 +732,23 @@ table {
     }
   }
 
-  // table body
+  // table
   tbody {
     // all rows
     tr {
-      height: 100px !important;
+      height: 72px !important;
       cursor: pointer;
       // every rightmost cell
+      // top border
+      &::after {
+        content: '';
+        background: rgba(141, 141, 141, 0.2);
+        position: absolute;
+        // bottom: 0;
+        left: 2%;
+        width: 96%;
+        height: 1px;
+      }
       & td:last-child {
         border-right: 1px solid #bd5fff;
         // background-color: red !important;
@@ -734,20 +775,20 @@ table {
       &:nth-child(2n) {
         transition: 0.6s;
         &:hover td {
-          background: rgba($bright, 0.5) !important;
+          background: rgba($bright, 0.2) !important;
         }
         td {
           transition: 0.6s;
-          background-color: rgba($bright, 0.09);
+          // background-color: rgba($bright, 0.09);
         }
       }
       // first row and every other row
       &:nth-child(2n-1) {
         &:hover td {
-          background: rgba($bright, 0.5) !important;
+          background: rgba($bright, 0.2) !important;
         }
         td {
-          background-color: rgba(#fff, 0.05);
+          // background-color: rgba(#fff, 0.05);
           transition: 0.6s;
         }
       }
@@ -798,7 +839,7 @@ table {
       }
       // all columns global
       .tdGlobal {
-        height: 81px;
+        // height: 81px;
         // every cell except the third
         &:not(:nth-child(3)):not(:nth-child(4)) {
           text-align: center;

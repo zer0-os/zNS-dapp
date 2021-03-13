@@ -82,7 +82,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
               alignItems: 'center',
               justifyContent: 'center',
               minWidth: '70px',
-              height: '70px',
+              height: '40px',
             }}
           >
             #
@@ -183,7 +183,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
   return (
     <div className="shiftTableUp">
       {/* <SearchTable setFilter={setGlobalFilter} filter={null} /> */}
-      <div>
+      <div className="removeTopShadow">
         {!gridView ? (
           <div className="tableContainer">
             <table {...getTableProps()} className="subdomainsTable">
