@@ -5,17 +5,19 @@ $page-margin: 100px;
 
 #subdomainsContainer {
   position: relative;
-  display: inline-flex;
+  // display: inline-flex;
   flex-direction: column;
   align-items: left;
   margin: 15px;
   padding-top: 15px;
   margin-left: $page-margin;
+  margin-right: $page-margin;
   top: 50%;
   left: 0%;
   min-width: 480px;
-  width: 80vw;
+  // width: 100%;s\
   // font-family: 'JetBrains Mono', monospace;
+  border: 1px solid red;
 }
 
 .shiftTableUp {
@@ -272,7 +274,100 @@ $page-margin: 100px;
   margin-bottom: 15px;
   color: #fff;
   text-shadow: $textShadow;
-  // border: 3px black solid;
+  border: 3px blue solid;
+  .subdomainsBar {
+    border: 1px yellow solid;
+    height: 66px;
+    width: 100%;
+    background: rgba(78, 0, 132, 0.2);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: row;
+    .search {
+      width: 100%;
+      height: auto;
+      border: 1px solid red;
+    }
+    .buttons {
+      width: 345px;
+      height: 100%;
+      border: 1px green solid;
+      display: flex;
+      flex-direction: row;
+      .filter {
+        width: 103px;
+        height: 34px;
+        background: linear-gradient(
+          94.23deg,
+          rgba(0, 123, 237, 0.2) 0%,
+          rgba(0, 83, 160, 0.2) 100%
+        );
+        border-radius: 16px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        .text {
+          margin-left: 20px;
+        }
+        .imgContainer {
+          position: relative;
+          img {
+            position: absolute;
+            left: 0;
+            transform: translate(-4px, -10px);
+            // margin-right: 19px;
+            width: 18px;
+            height: 18px;
+            &:last-child {
+              filter: brightness(0) invert(1) blur(5px);
+              -webkit-filter: brightness(0) invert(1) blur(5px);
+            }
+          }
+        }
+      }
+      .number {
+        width: 89px;
+        height: 34px;
+        background: linear-gradient(
+          94.23deg,
+          rgba(0, 123, 237, 0.2) 0%,
+          rgba(0, 83, 160, 0.2) 100%
+        );
+        border-radius: 16px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        .text {
+          margin-right: 15px;
+        }
+        .imgContainer {
+          position: relative;
+          img {
+            position: absolute;
+            left: 0;
+            transform: translateY(-4px);
+            margin-left: -8px;
+            width: 12px;
+            height: 8px;
+            &:last-child {
+              filter: brightness(0) invert(1) blur(5px);
+              -webkit-filter: brightness(0) invert(1) blur(5px);
+            }
+          }
+        }
+      }
+
+      .list {
+      }
+      .grid {
+      }
+    }
+  }
   .subdomainsButtonSortContainer {
     text-shadow: none;
     display: flex;

@@ -8,6 +8,8 @@ import squarebutton from '../css/img/squaregridbutton.png';
 import linebuttongrey from '../css/img/threelinebuttongrey.png';
 import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
 import AdBar from './adbar';
+import filtericon from '../css/img/filtericon.png';
+import filterarrow from '../css/img/filterarrow.png';
 
 interface DomainsGlobalProps {
   domain: string;
@@ -158,19 +160,31 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
               >
                 <img src={gridView ? squarebuttonwhite : squarebutton} alt="" />
               </div>
-              {/* <div className="navFilter" style={{ marginBottom: '13px' }}>
-                <span>
-                  {' '}
-                  <img src={filter} alt="" />
-                </span>
-                <span>Filter By</span>
-                <span> </span>
-              </div> */}
+            </div>
+          </div>
+
+          <div className="subdomainsBar">
+            <div className="search"></div>
+            <div className="buttons">
+              <div className="filter">
+                <div className="imgContainer">
+                  <img src={filtericon} alt="" />
+                  <img src={filtericon} alt="" />
+                </div>
+                <div className="text">Filters</div>
+              </div>
+              <div className="number">
+                <div className="text">100</div>
+                <div className="imgContainer">
+                  <img src={filterarrow} alt="" />
+                  <img src={filterarrow} alt="" />
+                </div>
+              </div>
+              <div className="list"></div>
+              <div className="grid"></div>
             </div>
           </div>
         </div>
-
-       
 
         <TableViewGlobal domain={domain.value.domain} gridView={gridView} />
 
