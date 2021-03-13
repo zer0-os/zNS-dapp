@@ -81,33 +81,10 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     );
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const colors: string[] = [
-  //   '641f29',
-  //   'cf7571',
-  //   '171730',
-  //   '953338',
-  //   '8f6554',
-  //   '584362',
-  //   '754735',
-  //   '8e7384',
-  //   '979b9f',
-  //   '1a3344',
-  //   '0f1619',
-  //   '224564',
-  //   '33566d',
-  //   'b8bdca',
-  //   '76b1ce',
-  //   '678293',
-  //   '426582',
-  //   '414350',
-  //   '675b67',
-  // ];
   if (domain.isNothing()) return null;
   return (
     <div style={{ position: 'relative', top: '0', width: '100vw' }}>
       <div className="metricsBar">
-        {/* <div className="metricsTitle">Metrics</div> */}
         <div className="metricsContainer">
           {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
           {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
@@ -123,9 +100,8 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
 
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">
-          <div className="route-nav">
+          {/* <div className="route-nav">
             <div className="route-nav-link">
-              {/* <div>ZNS</div> */}
               <Link className="route-nav-text" to={'/'}>
                 0::/
               </Link>
@@ -161,10 +137,18 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
                 <img src={gridView ? squarebuttonwhite : squarebutton} alt="" />
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="subdomainsBar">
-            <div className="search"></div>
+            <div className="search">
+              <button className="search-bar-button"></button>
+              <div className="search-bar-glow"></div>
+              <input
+                className="searchBar"
+                type="text"
+                placeholder="Search by Creator, Creation, and Collection"
+              ></input>
+            </div>
             <div className="buttons">
               <div className="filter">
                 <div className="imgContainer">
@@ -180,15 +164,34 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
                   <img src={filterarrow} alt="" />
                 </div>
               </div>
-              <div className="list"></div>
-              <div className="grid"></div>
+              <div
+                onClick={() => toggleGridView(false)}
+                className={`list ${gridView ? '' : 'selected'}`}
+              >
+                <div className="lines">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+              <div
+                onClick={() => toggleGridView(true)}
+                className={`grid ${gridView ? 'selected' : ''}`}
+              >
+                <div>
+                  <div></div>
+                  <div></div>
+                </div>
+                <div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <TableViewGlobal domain={domain.value.domain} gridView={gridView} />
-
-        {/* // apply the table props */}
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ $page-margin: 100px;
   min-width: 480px;
   // width: 100%;s\
   // font-family: 'JetBrains Mono', monospace;
-  border: 1px solid red;
+  // border: 1px solid red;
 }
 
 .shiftTableUp {
@@ -274,9 +274,9 @@ $page-margin: 100px;
   margin-bottom: 15px;
   color: #fff;
   text-shadow: $textShadow;
-  border: 3px blue solid;
+  // border: 3px blue solid;
   .subdomainsBar {
-    border: 1px yellow solid;
+    // border: 1px yellow solid;
     height: 66px;
     width: 100%;
     background: rgba(78, 0, 132, 0.2);
@@ -286,17 +286,96 @@ $page-margin: 100px;
     text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
     display: flex;
     flex-direction: row;
+    // justify-content: center;
+    // align-items: center;
+    // align-content: center;
     .search {
+      position: relative;
       width: 100%;
       height: auto;
-      border: 1px solid red;
+      // border: 1px solid red;
+      margin-right: 16px;
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      input[type='text'] {
+        padding-left: 43px; //change it base on your desired output
+      }
+      .search-bar-button {
+        // TODO: make more responsive to page size
+        position: absolute;
+        left: 15px;
+        top: 20px;
+        height: 20px;
+        width: 20px;
+        border-color: none;
+        border-width: 0px;
+        background-color: transparent;
+        background-image: url('./img/search-icon.svg');
+        background-position: center;
+        background-size: 14px 14px;
+        background-repeat: no-repeat;
+        overflow: visible;
+        z-index: 100;
+        cursor: pointer;
+        transition: 0.6s;
+        &:hover {
+          // background-color: $medium;
+        }
+      }
+      // this creates a shadow element behind the search icon to provide a glow effect, which is otherwise difficult to achieve using an svg as a background element
+      .search-bar-glow {
+        position: absolute;
+        left: 12px;
+        top: 17px;
+        height: 25px;
+        width: 25px;
+        border-color: none;
+        border-width: 0px;
+        background-color: transparent;
+        background-image: url('./img/search-icon.svg');
+        background-position: center;
+        background-size: 14px 14px;
+        background-repeat: no-repeat;
+        z-index: 99;
+        filter: brightness(0) invert(1) blur(5px);
+        -webkit-filter: brightness(0) invert(1) blur(5px);
+      }
+      .searchBar {
+        width: 100%;
+        height: 33px;
+        border: none;
+        background: linear-gradient(
+          94.23deg,
+          rgba(0, 123, 237, 0.2) 0%,
+          rgba(0, 83, 160, 0.2) 100%
+        );
+        backdrop-filter: blur(40px);
+        border-radius: 16px;
+        color: #fff;
+        font-weight: bold;
+        &::placeholder {
+          color: #ffffff;
+          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          font-size: 16px;
+          font-weight: bold;
+          overflow: visible;
+        }
+      }
     }
     .buttons {
       width: 345px;
       height: 100%;
-      border: 1px green solid;
+      // border: 1px green solid;
       display: flex;
       flex-direction: row;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      & > div {
+        margin-right: 16px;
+      }
       .filter {
         width: 103px;
         height: 34px;
@@ -310,6 +389,7 @@ $page-margin: 100px;
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
         .text {
           margin-left: 20px;
         }
@@ -342,6 +422,7 @@ $page-margin: 100px;
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
         .text {
           margin-right: 15px;
         }
@@ -363,8 +444,39 @@ $page-margin: 100px;
       }
 
       .list {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        .lines {
+          width: 19px;
+          height: 15px;
+          display: flex;
+          flex-direction: column;
+          // justify-content: space-between;
+          & > div {
+            background: rgba(60, 161, 255, 0.5);
+            width: 100%;
+            height: 2px;
+            border-radius: 15%;
+            margin-top: 2px;
+          }
+        }
       }
       .grid {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: none;
+        cursor: pointer;
+      }
+      .selected {
+        background: #004789;
       }
     }
   }
