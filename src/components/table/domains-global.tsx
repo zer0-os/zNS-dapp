@@ -87,7 +87,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
 
   if (domain.isNothing()) return null;
   return (
-    <div style={{ position: 'relative', top: '0', width: '100vw' }}>
+    <div className="pageContainerPositionFix">
       <div className="metricsBar">
         <div className="metricsContainer">
           {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}

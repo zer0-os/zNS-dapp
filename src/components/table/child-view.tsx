@@ -84,7 +84,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
 
   if (domain.isNothing()) return null;
   return (
-    <div style={{ position: 'relative', top: '0', width: '100vw' }}>
+    <div className="pageContainerPositionFix">
       <div className="metricsBar">
         {/* <div className="metricsTitle">Metrics</div> */}
         <div className="metricsContainer">
