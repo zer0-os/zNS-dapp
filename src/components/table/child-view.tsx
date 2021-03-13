@@ -7,6 +7,7 @@ import linebutton from '../css/img/threelinebutton.png';
 import squarebutton from '../css/img/squaregridbutton.png';
 import linebuttongrey from '../css/img/threelinebuttongrey.png';
 import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
+import AdBar from './adbar';
 
 interface SubdomainsProps {
   domain: string;
@@ -60,9 +61,14 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     return (
       <div className="metricBlock">
         <div className="metric">
-          <div className="metricField">{name}</div>
-          <div className="metricField">{price}</div>
-          <div className="metricField">
+          <div className="metricTitle">
+            <div> {name} </div>
+            <div className="info">
+              <div className="symbol">?</div>
+            </div>
+          </div>
+          <div className="metricPrice">{price}</div>
+          <div className="metricBottom">
             {unit} <span className="metricPercent">{percent}</span>
           </div>
         </div>
@@ -96,19 +102,15 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   return (
     <div>
       <div className="metricsBar">
-        <div className="metricsTitle">Metrics</div>
+        {/* <div className="metricsTitle">Metrics</div> */}
         <div className="metricsContainer">
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(+41.10%)')}
-          {metric(
-            'MARKET CAP',
-            '$369,000,101',
-            'Fully diluted market cap for WILD',
-            '',
-          )}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+          {metric('Total Wild Holders', '12,302', '', '')}
         </div>
       </div>
 
@@ -163,7 +165,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             </div>
           </div>
         </div>
-
+        <AdBar domain={domain.value.domain} />
         <TableView domain={domain.value.domain} gridView={gridView} />
 
         {/* // apply the table props */}

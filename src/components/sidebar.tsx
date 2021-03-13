@@ -10,6 +10,7 @@ import feedSelect from './css/img/feed.png';
 import tvSelect from './css/img/tv-button-borderless-blue.png';
 import tv from './css/img/tv-button-borderless.png';
 import feed from './css/img/feedgrey.png';
+import wilderLogo from './css/img/wilderlogo.png';
 
 const Sidebar: FC = () => {
   const context = useWeb3React<Web3Provider>();
@@ -60,13 +61,21 @@ const Sidebar: FC = () => {
   };
   return (
     <div className="sidebarContainer">
-      <div className="sidebarNav">
-        {/* <div className="dotContainer">
-          <div className="dot"></div>
-          <div className="dot selectedDot"></div>
-          <div className="dot"></div>
-          <div className="dot"></div>
-        </div> */}
+      <div className="sidebarContainer">
+        <div className="topLogo">
+          <img src={wilderLogo} alt="" />
+        </div>
+        <div className="middleNav">
+          <div className="sideItem i1"></div>
+          <div className="sideItem 2"></div>
+          <div className="sideItem 3"></div>
+          <div className="sideItem 4"></div>
+        </div>
+      </div>
+
+      {/* depricated */}
+      {/* <div className="sidebarNav">
+       
         <div className="icons">
           <div className="iconRow">
             <Tooltip
@@ -104,25 +113,7 @@ const Sidebar: FC = () => {
               </div>
             </Tooltip>
           </div>
-          {/* <div className="iconRow">
-            <div className="sbimgContainer">
-              {' '}
-              <img src={geopin} alt="" />
-            </div>
-          </div>
-          <div className="iconRow">
-            <div className="sbimgContainer">
-              {' '}
-              <img src={galaxycircle} alt="" />
-            </div>
-          </div> */}
-        </div>
-      </div>
-      {/* <div className="profile">
-        <img src={elon} alt="" className="profilepic" />
-        <div className="buttons">
-          <button className="wallet"></button>
-          <button className="darkmode-toggle"></button>
+         
         </div>
       </div> */}
     </div>

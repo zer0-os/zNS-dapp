@@ -67,16 +67,18 @@ function App() {
                     'ROOT'
                   }
                 />
-                <Subdomains
-                  //regex: removes trailing /, then replaces / with .
-                  /*
+                <div className="contentScrollContainer">
+                  <Subdomains
+                    //regex: removes trailing /, then replaces / with .
+                    /*
                   location.pathname
                     .substring(1)
                     .replace(/\/+$/, '')
                     .replace(/\//, '.')
                   */
-                  domain={location.pathname.substring(1)}
-                />
+                    domain={location.pathname.substring(1)}
+                  />
+                </div>
               </Route>
               <Route path="/">
                 <TopbarGlobal
@@ -96,7 +98,7 @@ function App() {
                   />
                 </h1> */}
                 {/* TODO: move to styling file */}
-                <div style={{ position: 'absolute', top: '0' }}>
+                <div className="contentScrollContainer">
                   <DomainsGlobal domain={'ROOT'} />
                 </div>
                 {/* <Subdomains domain={'ROOT'} /> */}
