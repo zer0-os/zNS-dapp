@@ -8,6 +8,12 @@ import squarebutton from '../css/img/squaregridbutton.png';
 import linebuttongrey from '../css/img/threelinebuttongrey.png';
 import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
 import AdBar from './adbar';
+import filtericon from '../css/img/filtericon.png';
+import filterarrow from '../css/img/filterarrow.png';
+import listselected from '../css/img/listselected.png';
+// import listunselected from '../css/img/listunselected.png';
+// import gridselected from '../css/img/gridselected.png';
+import gridunselected from '../css/img/gridunselected.png';
 
 interface SubdomainsProps {
   domain: string;
@@ -76,31 +82,9 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     );
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const colors: string[] = [
-  //   '641f29',
-  //   'cf7571',
-  //   '171730',
-  //   '953338',
-  //   '8f6554',
-  //   '584362',
-  //   '754735',
-  //   '8e7384',
-  //   '979b9f',
-  //   '1a3344',
-  //   '0f1619',
-  //   '224564',
-  //   '33566d',
-  //   'b8bdca',
-  //   '76b1ce',
-  //   '678293',
-  //   '426582',
-  //   '414350',
-  //   '675b68',
-  // ];
   if (domain.isNothing()) return null;
   return (
-    <div>
+    <div style={{ position: 'relative', top: '0', width: '100vw' }}>
       <div className="metricsBar">
         {/* <div className="metricsTitle">Metrics</div> */}
         <div className="metricsContainer">
@@ -114,12 +98,14 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
         </div>
       </div>
 
+      <AdBar domain={domain.value.domain} />
+
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">
-          <div>
+          {/* <div>
             <div className="route-nav">
               <div className="route-nav-link">
-                {/* <div>ZNS</div> */}
+            
                 <Link className="route-nav-text" to={'/'}>
                   0::/
                 </Link>
@@ -158,17 +144,55 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
               >
                 <img src={gridView ? squarebuttonwhite : squarebutton} alt="" />
               </div>
-              {/* <div className="sdbsrItem sdbsrSort">
-                <div>Sort</div>
-                <div>Market Cap ▼</div>
-              </div> */}
+         
+            </div>
+          </div> */}
+          <div className="subdomainsBar">
+            <div className="search">
+              <button className="search-bar-button"></button>
+              <div className="search-bar-glow"></div>
+              <input
+                className="searchBar"
+                type="text"
+                placeholder="Search by Creator, Creation, and Collection"
+              ></input>
+            </div>
+            <div className="buttons">
+              <div className="filter">
+                <div className="imgContainer">
+                  <img src={filtericon} alt="" />
+                  <img src={filtericon} alt="" />
+                </div>
+                <div className="text">Filters</div>
+              </div>
+              <div className="number">
+                <div className="text">100</div>
+                <div className="imgContainer">
+                  <img src={filterarrow} alt="" />
+                  <img src={filterarrow} alt="" />
+                </div>
+              </div>
+              <div
+                onClick={() => toggleGridView(false)}
+                className={`list ${gridView ? '' : 'selected'}`}
+              >
+                <div className="lines">
+                  <img src={listselected} alt="" />
+                </div>
+              </div>
+              <div
+                onClick={() => toggleGridView(true)}
+                className={`grid ${gridView ? 'selected' : ''}`}
+              >
+                <div className="squares">
+                  <img src={gridunselected} alt="" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <AdBar domain={domain.value.domain} />
-        <TableView domain={domain.value.domain} gridView={gridView} />
 
-        {/* // apply the table props */}
+        <TableView domain={domain.value.domain} gridView={gridView} />
       </div>
     </div>
   );

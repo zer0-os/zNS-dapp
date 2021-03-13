@@ -10,6 +10,10 @@ import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
 import AdBar from './adbar';
 import filtericon from '../css/img/filtericon.png';
 import filterarrow from '../css/img/filterarrow.png';
+import listselected from '../css/img/listselected.png';
+// import listunselected from '../css/img/listunselected.png';
+// import gridselected from '../css/img/gridselected.png';
+import gridunselected from '../css/img/gridunselected.png';
 
 interface DomainsGlobalProps {
   domain: string;
@@ -169,22 +173,15 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
                 className={`list ${gridView ? '' : 'selected'}`}
               >
                 <div className="lines">
-                  <div></div>
-                  <div></div>
-                  <div></div>
+                  <img src={listselected} alt="" />
                 </div>
               </div>
               <div
                 onClick={() => toggleGridView(true)}
                 className={`grid ${gridView ? 'selected' : ''}`}
               >
-                <div>
-                  <div></div>
-                  <div></div>
-                </div>
-                <div>
-                  <div></div>
-                  <div></div>
+                <div className="squares">
+                  <img src={gridunselected} alt="" />
                 </div>
               </div>
             </div>

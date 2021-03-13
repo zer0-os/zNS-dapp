@@ -9,12 +9,12 @@ $page-margin: 100px;
   flex-direction: column;
   align-items: left;
   margin: 15px;
-  padding-top: 15px;
+  padding-top: 5px;
   margin-left: $page-margin;
   margin-right: $page-margin;
   top: 50%;
   left: 0%;
-  min-width: 480px;
+  // min-width: 480px;
   // width: 100%;s\
   // font-family: 'JetBrains Mono', monospace;
   // border: 1px solid red;
@@ -271,24 +271,32 @@ $page-margin: 100px;
   display: flex;
   flex-direction: column;
   font-size: 1.3rem;
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
   color: #fff;
   text-shadow: $textShadow;
   // border: 3px blue solid;
+  margin-left: -10px;
+  margin-right: -10px;
+  padding: 10px 10px 0px 10px;
+  overflow: hidden;
   .subdomainsBar {
     // border: 1px yellow solid;
     height: 66px;
     width: 100%;
     background: rgba(78, 0, 132, 0.2);
+    backdrop-filter: blur(20px);
     color: #ffffff;
     font-size: 16px;
     font-weight: bold;
     text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
     display: flex;
     flex-direction: row;
-    // justify-content: center;
-    // align-items: center;
-    // align-content: center;
+    border-radius: 15px 15px 0px 0px;
+    border-right: 1px solid #bd5fff;
+    border-left: 1px solid #bd5fff;
+    border-top: 1px solid #bd5fff;
+    // need to create a way for box shadow not to display underneath this element to seamlessly integrate with the table
+    box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
     .search {
       position: relative;
       width: 100%;
@@ -306,7 +314,7 @@ $page-margin: 100px;
         // TODO: make more responsive to page size
         position: absolute;
         left: 15px;
-        top: 20px;
+        top: 22px;
         height: 20px;
         width: 20px;
         border-color: none;
@@ -328,7 +336,7 @@ $page-margin: 100px;
       .search-bar-glow {
         position: absolute;
         left: 12px;
-        top: 17px;
+        top: 19px;
         height: 25px;
         width: 25px;
         border-color: none;
@@ -458,28 +466,31 @@ $page-margin: 100px;
           height: 15px;
           display: flex;
           flex-direction: column;
-          // justify-content: space-between;
-          & > div {
-            background: rgba(60, 161, 255, 0.5);
-            width: 100%;
-            height: 2px;
-            border-radius: 15%;
-            margin-top: 2px;
-          }
         }
       }
       .grid {
+        margin-left: -7px;
         width: 34px;
         height: 34px;
         border-radius: 8px;
         background: none;
         cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .squares {
+          display: flex;
+          flex-direction: column;
+        }
       }
       .selected {
         background: #004789;
       }
     }
   }
+
+  // below div and children are depricated
   .subdomainsButtonSortContainer {
     text-shadow: none;
     display: flex;
@@ -619,12 +630,14 @@ table {
   border-radius: 15px;
 }
 .subdomainsHeaderTH {
-  border-top: 2px $bright solid;
+  // border-top: 2px $bright solid;
 }
 
 .tableContainer {
   // border: 5px bright solid;
   // border-radius: 15px;
+  box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+  border-radius: 0px 0px 15px 15px;
 }
 
 .subdomainsTable {
@@ -636,7 +649,7 @@ table {
   border-spacing: 0;
   width: 100%;
   // height: 30vh;
-  margin-top: 25px;
+  margin-top: 10px;
   // subdomains header
   .subdomainsHeaderGroupLocal,
   .subdomainsHeaderGroupGlobal {
@@ -652,15 +665,15 @@ table {
       // border-collapse: inherit;
       // border-spacing: 0px;
       // border: 1px solid $middle-red;
-      border-top: 2px $bright solid;
-      border-left: 2px $bright solid;
-      border-radius: 12px 0px 0px 0px;
+      // border-top: 2px $bright solid;
+      border-left: 1px solid #bd5fff;
+      // border-radius: 12px 0px 0px 0px;
     }
 
     tr th:last-child {
-      border-top: 2px $bright solid;
-      border-right: 2px $bright solid;
-      border-radius: 0px 75px 0px 0px;
+      // border-top: 2px $bright solid;
+      border-right: 1px solid #bd5fff;
+      // border-radius: 0px 75px 0px 0px;
     }
   }
   .subdomainsHeaderGroupLocal {
@@ -690,7 +703,7 @@ table {
       cursor: pointer;
       // every rightmost cell
       & td:last-child {
-        border-right: 2px $bright solid;
+        border-right: 1px solid #bd5fff;
         // background-color: red !important;
         .tradeButton {
           color: #fff;
@@ -709,7 +722,7 @@ table {
       // every leftmost cell
       & td:first-child {
         text-align: center;
-        border-left: 2px $bright solid;
+        border-left: 1px solid #bd5fff;
       }
       // every second row
       &:nth-child(2n) {
@@ -735,7 +748,7 @@ table {
       // bottom  row
       &:last-child td {
         // bottom right cell
-        border-bottom: 2px $bright solid;
+        border-bottom: 1px solid #bd5fff;
         &:last-child {
           border-radius: 0px 0px 12px 0px;
         }
