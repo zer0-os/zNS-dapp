@@ -7,6 +7,8 @@ import { useHistory } from 'react-router-dom';
 import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
 import '../css/adbar.scss';
+import adbg from '../css/img/adbg.png';
+import wilderavatar from '../css/img/wilderavatar.png';
 
 interface AdBarProps {
   domain: string;
@@ -40,7 +42,29 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
   );
 
   if (domain.isNothing()) return null;
-  return <div className="adbarContainer"></div>;
+  return (
+    <div className="adbarContainer">
+      <img className="adbg" src={adbg} alt="" />
+      <div className="content">
+        <div className="profileIcon">
+          <img src={wilderavatar} alt="" />
+        </div>
+        <div className="infoContainer">
+          <div className="next">
+            <div className="n1">Next Drop in</div>
+            <div className="n2">14:03</div>
+            <div className="n3">
+              <span className="symbol">?</span>
+            </div>
+          </div>
+          <div className="desc">
+            A new artwork '<span>Futopia</span>' by '<span>Frank Wilder</span>'
+            is dropping soon.
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default AdBar;

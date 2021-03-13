@@ -46,6 +46,7 @@
       border-right: 1px solid #bd5fff;
       border-left: 1px solid #bd5fff;
       border-radius: 15px 15px 15px 15px;
+      box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
       filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
 
       // needed to create a hack for the border gradient
