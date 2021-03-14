@@ -46,6 +46,7 @@
       border-right: 1px solid #bd5fff;
       border-left: 1px solid #bd5fff;
       border-radius: 15px 15px 15px 15px;
+      box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
       filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
 
       // needed to create a hack for the border gradient
@@ -97,6 +98,9 @@
           color: #ffffff;
           text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
           // align-self: center;
+          .slash {
+            margin-left: -5px;
+          }
         }
         .route {
           margin-left: 6px;
@@ -164,24 +168,14 @@
             top: 5px;
             height: 20px;
             width: 20px;
-
-            // border-radius: 31px;
             border-color: none;
             border-width: 0px;
-            // border: 1px yellow solid;
             background-color: transparent;
             background-image: url('./img/search-icon.svg');
-            // fill: red;
-            // stroke: black;
-            // stroke-width: 50 !important;
             background-position: center;
             background-size: 14px 14px;
             background-repeat: no-repeat;
             overflow: visible;
-            // opacity: 1;
-            // hotfix: box shadow not appearing correctly
-            // box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
-            // filter: drop-shadow(5px 5px 15px rgb(187, 41, 41));
             z-index: 100;
             cursor: pointer;
             transition: 0.6s;
@@ -203,8 +197,6 @@
             background-position: center;
             background-size: 14px 14px;
             background-repeat: no-repeat;
-            // transform: scale(1.01) translate(-50%, -50%);
-            // -webkit-transform: scale(1.01) translate(-50%, -50%);
             filter: brightness(0) invert(1) blur(5px);
             -webkit-filter: brightness(0) invert(1) blur(5px);
           }
@@ -287,6 +279,8 @@
   // background-color: rgba(14, 2, 27, 0.9) !important;
   // backdrop-filter: blur(10px);
 }
+
+// topbarContainer and contents are depricated
 
 .topbarContainer {
   z-index: 20;

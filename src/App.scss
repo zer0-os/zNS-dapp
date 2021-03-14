@@ -20,6 +20,11 @@
   left: 0;
 }
 
+.contentScrollContainer {
+  position: absolute;
+  top: 0;
+}
+
 .sideFadeRight {
   position: fixed;
   pointer-events: none;

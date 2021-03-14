@@ -25,11 +25,12 @@ interface Data {
   '#': string;
   image: any;
   network: string;
-  token: string;
-  volume: string;
-  '24Hr': string;
-  '7d': string;
+  // token: string;
+  '24Hr': any;
+  '7d': any;
   marketcap: string;
+  volume: string;
+  supply: string;
   last7days: string;
   timestamp: any;
   trade: string;
@@ -50,6 +51,73 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
   const { domain } = domainContext;
   const history = useHistory();
 
+  //
+  // Following functions generate random numbers to display mock data in the UI
+  //
+
+  const randThreeS = () => {
+    let temp =
+      Math.random() > 0.5
+        ? Math.floor(Math.random() * 1000).toString()
+        : Math.floor(Math.random() * 100).toString();
+    if (temp === '0') {
+      temp = '10';
+    }
+    return temp;
+  };
+
+  const randThree = () => {
+    let temp = Math.floor(Math.random() * 1000).toString();
+    if (temp.length === 1) {
+      temp = '00' + temp;
+    }
+    if (temp.length === 2) {
+      temp = '0' + temp;
+    }
+    return temp;
+  };
+
+  const randVol = () => {
+    let temp =
+      (Math.floor(Math.random() * 99) + 1).toString() +
+      ',' +
+      randThree() +
+      ',' +
+      randThree();
+    return temp;
+  };
+
+  const randPrice = () => {
+    let temp = Math.floor(Math.random() * 100).toString();
+    let dot = Math.floor(Math.random() * 100).toString();
+    if (dot.length === 1) {
+      dot = '0' + dot;
+    }
+    let up = Math.random() > 0.3;
+    let price = `${up ? '▲' : '▼'} ${temp}.${dot}%`;
+    return (
+      <div style={{ color: `${up ? '#27AE60' : '#EB5757'}` }}>{price}</div>
+    );
+  };
+
+  const randTrade = () => {
+    let digits = Math.random() > 0.5;
+    let temp;
+    digits
+      ? (temp =
+          (Math.floor(Math.random() * 2) + 1).toString() + ',' + randThree())
+      : (temp = randThreeS());
+    let dec = Math.floor(Math.random() * 100).toString();
+    if (dec.length === 1) {
+      dec = '0' + dec;
+    }
+    return '$' + temp + '.' + dec;
+  };
+
+  //
+  //
+  //
+
   const dataInput: Data[] = useMemo(
     () =>
       domain.isNothing()
@@ -59,11 +127,12 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
             // asset: <Profile domain={key} />,
             image: <TableImage domain={key} />,
             network: key,
-            token: key + ' token',
-            volume: 'N/A',
-            '24Hr': 'N/A',
-            '7d': 'N/A',
-            marketcap: 'N/A',
+            // token: key + ' token',
+            '24Hr': randPrice(),
+            '7d': randPrice(),
+            marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
+            volume: '$' + randVol(),
+            supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
             last7days: '',
             timestamp: '',
             trade: '',
@@ -81,8 +150,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              minWidth: '70px',
-              height: '70px',
+              minWidth: '60px',
+              // maxWidth: '60px',
+              height: '40px',
             }}
           >
             #
@@ -91,15 +161,47 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
         accessor: '#',
       },
       {
-        Header: '',
+        Header: 'Name',
         accessor: 'image',
       },
-      { Header: 'Network', accessor: 'network' },
-      { Header: 'Token', accessor: 'token' },
-      { Header: 'Volume', accessor: 'volume' },
+      { Header: '', accessor: 'network' },
+      // { Header: 'Token', accessor: 'token' },
       { Header: '24Hr', accessor: '24Hr' },
       { Header: '7d', accessor: '7d' },
-      { Header: 'Market Cap', accessor: 'marketcap' },
+      {
+        Header: (
+          <div className="infoHeader">
+            <span>Market Cap </span>
+            <span className="infoButton">
+              <span className="infoMark">?</span>
+            </span>
+          </div>
+        ),
+
+        accessor: 'marketcap',
+      },
+      {
+        Header: (
+          <div className="infoHeader">
+            <span>Volume </span>
+            <span className="infoButton">
+              <span className="infoMark">?</span>
+            </span>
+          </div>
+        ),
+        accessor: 'volume',
+      },
+      {
+        Header: (
+          <div className="infoHeader">
+            <span>Supply </span>
+            <span className="infoButton">
+              <span className="infoMark">?</span>
+            </span>
+          </div>
+        ),
+        accessor: 'supply',
+      },
       {
         Header: 'Last 7 Days',
         accessor: 'last7days',
@@ -112,13 +214,16 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
         Cell: () => <div style={{ display: 'none' }}></div>,
       },
       {
-        Header: 'Trade',
-        accessor: 'trade',
-        Cell: () => (
-          <button className="tradeButton" style={{}}>
-            $12,504
-          </button>
+        Header: (
+          <div className="infoHeader">
+            <span>Trade </span>
+            <span className="infoButton">
+              <span className="infoMark">?</span>
+            </span>
+          </div>
         ),
+        accessor: 'trade',
+        Cell: () => <button className="tradeButton">{randTrade()}</button>,
       },
     ],
     [],
@@ -182,8 +287,8 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
   //console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">
-      <SearchTable setFilter={setGlobalFilter} filter={null} />
-      <div>
+      {/* <SearchTable setFilter={setGlobalFilter} filter={null} /> */}
+      <div className="removeTopShadow">
         {!gridView ? (
           <div className="tableContainer">
             <table {...getTableProps()} className="subdomainsTable">
