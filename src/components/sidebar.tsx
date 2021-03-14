@@ -71,10 +71,10 @@ const Sidebar: FC = () => {
         </div>
         <div className="middleNav">
           <div className="sideItem i1">
-            <div>
-              {/* <img src={trending} alt="" /> */}
-              <img src={trendingS} alt="" />
-            </div>
+            {/* <div> */}
+            <img src={trending} alt="" />
+            {/* <img src={trendingS} alt="" /> */}
+            {/* </div> */}
           </div>
           <div className="sideItem i2">
             <img src={explore} alt="" />
