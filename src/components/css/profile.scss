@@ -147,7 +147,17 @@
     }
   }
 }
+.profilepic {
+  height: 14px;
+  width: 14px;
+  border-radius: 30px;
+  // background-color: white;
+  margin-right: 20px;
+  margin-left: 20px;
 
+  box-shadow: $dropShadow;
+  cursor: pointer;
+}
 // .ant-modal {
 //   border: 1px solid black;
 //   // background-color: none;

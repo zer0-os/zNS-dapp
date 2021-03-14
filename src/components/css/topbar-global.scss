@@ -295,6 +295,7 @@
   max-width: 100vw;
   height: 110px;
   background-color: none;
+
   -webkit-transition: background-color 0.5s ease-in-out;
   -moz-transition: background-color 0.5s ease-in-out;
   -ms-transition: background-color 0.5s ease-in-out;
@@ -462,13 +463,13 @@
     //   border-radius: 50%;
     // }
     .profilepic {
-      width: 50px;
-      height: 50px;
+      height: 14px;
+      width: 14px;
       border-radius: 30px;
       // background-color: white;
       margin-right: 20px;
       margin-left: 20px;
-      // transform: translateY(-20px);
+
       box-shadow: $dropShadow;
       cursor: pointer;
     }

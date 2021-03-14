@@ -1,10 +1,8 @@
 import { FC, useState, useMemo } from 'react';
-
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
 import Approve from '../../table/NFT-View/approval';
-import { useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import '../../css/shop.scss';
 import Outgoing from './outGoingApproval';

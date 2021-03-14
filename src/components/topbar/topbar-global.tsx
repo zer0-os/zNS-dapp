@@ -9,6 +9,8 @@ import { Modal } from 'antd';
 import Wallet from './wallet';
 import '../css/topbar-global.scss';
 import usePrevious from '../../lib/hooks/usePrevious';
+import Profile from './profile/profile';
+import Shop from './shop/shop';
 
 interface TopbarProps {
   domain: string;
@@ -106,10 +108,18 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
                 placeholder="Search"
               />
             </div>
+            <div className="shop-btn">
+              <Shop domain={_domain} />
+            </div>
             <div className="connect-btn" onClick={showWallet}>
               <div className="dot">{active ? '🔵' : '🔴'}</div>
               <div className="btn-text">
                 {active ? 'Connected' : 'Connect Wallet'}
+              </div>
+            </div>
+            <div className="profile-btn">
+              <div className="profile-btn">
+                <Profile />
               </div>
             </div>
             <div className="dotMenu">
