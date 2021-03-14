@@ -132,7 +132,7 @@
         .search-bar {
           position: relative;
           border: none;
-          margin-right: 16px;
+          margin-right: 70px;
           // move text input right
           input[type='text'] {
             padding-left: 50px; //change it base on your desired output
@@ -150,7 +150,7 @@
             // text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
             // font-size: 16px;
             border-radius: 15px;
-            text-align: left;
+
             font-size: 16px;
             color: white;
             &::placeholder {
@@ -201,9 +201,17 @@
             -webkit-filter: brightness(0) invert(1) blur(5px);
           }
         }
+        .shop-btn {
+          background: transparent;
+          margin-right: 50px;
+          border: none;
+
+          color: lightgray !important;
+          cursor: pointer;
+        }
+
         .connect-btn {
-          // padding-right: 10px;
-          margin-right: 24px;
+          margin-right: 15px;
           background: linear-gradient(148deg, #00407c 20.93%, #00203f 82.47%);
           width: 162px;
           height: 28px;
@@ -398,18 +406,8 @@
     align-items: center;
     margin-right: 35px;
 
-    .shop-btn {
-      display: flex;
-      padding-right: 5px;
-      background: transparent;
-      border: none;
-
-      color: lightgray !important;
-      cursor: pointer;
-    }
-
     .connect-btn {
-      padding-right: 10px;
+      padding-right: 5px;
       background-color: transparent;
       // width: 100px;
       height: 50px;
@@ -463,8 +461,8 @@
     //   border-radius: 50%;
     // }
     .profilepic {
-      height: 14px;
-      width: 14px;
+      height: 45px;
+      width: 45px;
       border-radius: 30px;
       // background-color: white;
       margin-right: 20px;

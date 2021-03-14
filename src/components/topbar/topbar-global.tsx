@@ -129,6 +129,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             </div>
           </div>
         </div>
+
         <div className="bottomHalf">
           <div
             onClick={() => setSelected('networks')}
