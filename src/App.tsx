@@ -23,24 +23,6 @@ function getLibrary(provider: any): Web3Provider {
 }
 function App() {
   const context = useWeb3React<Web3Provider>();
-  const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    connector,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    library,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    chainId,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    account,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    activate,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    deactivate,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    active,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    error,
-  } = context;
 
   return (
     <Router>
@@ -67,18 +49,16 @@ function App() {
                     'ROOT'
                   }
                 />
-                <div className="contentScrollContainer">
-                  <Subdomains
-                    //regex: removes trailing /, then replaces / with .
-                    /*
+                <Subdomains
+                  //regex: removes trailing /, then replaces / with .
+                  /*
                   location.pathname
                     .substring(1)
                     .replace(/\/+$/, '')
                     .replace(/\//, '.')
                   */
-                    domain={location.pathname.substring(1)}
-                  />
-                </div>
+                  domain={location.pathname.substring(1)}
+                />
               </Route>
               <Route path="/">
                 <TopbarGlobal
@@ -98,7 +78,7 @@ function App() {
                   />
                 </h1> */}
                 {/* TODO: move to styling file */}
-                <div className="contentScrollContainer">
+                <div style={{ position: 'absolute', top: '0' }}>
                   <DomainsGlobal domain={'ROOT'} />
                 </div>
                 {/* <Subdomains domain={'ROOT'} /> */}
