@@ -6,11 +6,15 @@ import { useDomainCache } from '../lib/useDomainCache';
 import { useLocation } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import './css/sidebar.scss';
-import feedSelect from './css/img/feed.png';
-import tvSelect from './css/img/tv-button-borderless-blue.png';
-import tv from './css/img/tv-button-borderless.png';
-import feed from './css/img/feedgrey.png';
 import wilderLogo from './css/img/wilderlogo.png';
+import trending from './css/img/trending.png';
+import trendingS from './css/img/trending-selected.png';
+import explore from './css/img/explorer.png';
+import exploreS from './css/img/explorer-selected.png';
+import lending from './css/img/lending.png';
+import lendingS from './css/img/lending-selected.png';
+import gov from './css/img/governance.png';
+import govS from './css/img/governance-selected.png';
 
 const Sidebar: FC = () => {
   const context = useWeb3React<Web3Provider>();
@@ -66,10 +70,21 @@ const Sidebar: FC = () => {
           <img src={wilderLogo} alt="" />
         </div>
         <div className="middleNav">
-          <div className="sideItem i1"></div>
-          <div className="sideItem 2"></div>
-          <div className="sideItem 3"></div>
-          <div className="sideItem 4"></div>
+          <div className="sideItem i1">
+            {/* <div> */}
+            <img src={trending} alt="" />
+            {/* <img src={trendingS} alt="" /> */}
+            {/* </div> */}
+          </div>
+          <div className="sideItem i2">
+            <img src={explore} alt="" />
+          </div>
+          <div className="sideItem i3">
+            <img src={lending} alt="" />
+          </div>
+          <div className="sideItem i4">
+            <img src={gov} alt="" />
+          </div>
         </div>
       </div>
 

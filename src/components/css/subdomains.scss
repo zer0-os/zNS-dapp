@@ -5,17 +5,19 @@ $page-margin: 100px;
 
 #subdomainsContainer {
   position: relative;
-  display: inline-flex;
+  // display: inline-flex;
   flex-direction: column;
   align-items: left;
   margin: 15px;
-  padding-top: 15px;
+  padding-top: 5px;
   margin-left: $page-margin;
+  margin-right: $page-margin;
   top: 50%;
   left: 0%;
-  min-width: 480px;
-  width: 80vw;
+  // min-width: 480px;
+  // width: 100%;s\
   // font-family: 'JetBrains Mono', monospace;
+  // border: 1px solid red;
 }
 
 .shiftTableUp {
@@ -25,8 +27,8 @@ $page-margin: 100px;
 .domainImageGlobalContainer {
   border-radius: 50%;
   .domainImageGlobal {
-    height: 49px;
-    width: 49px;
+    height: 36px;
+    width: 36px;
   }
 }
 
@@ -54,6 +56,12 @@ $page-margin: 100px;
     opacity: 1;
     -webkit-transition: opacity 2s linear;
   }
+}
+
+.pageContainerPositionFix {
+  position: relative;
+  top: 0;
+  width: 100vw;
 }
 
 .metricsBar {
@@ -269,10 +277,226 @@ $page-margin: 100px;
   display: flex;
   flex-direction: column;
   font-size: 1.3rem;
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
   color: #fff;
   text-shadow: $textShadow;
-  // border: 3px black solid;
+  // border: 3px blue solid;
+  margin-left: -10px;
+  margin-right: -10px;
+  padding: 10px 10px 0px 10px;
+  overflow: hidden;
+  .subdomainsBar {
+    // border: 1px yellow solid;
+    height: 66px;
+    width: 100%;
+    background: rgba(78, 0, 132, 0.2);
+    backdrop-filter: blur(20px);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+    display: flex;
+    flex-direction: row;
+    border-radius: 15px 15px 0px 0px;
+    border-right: 1px solid #bd5fff;
+    border-left: 1px solid #bd5fff;
+    border-top: 1px solid #bd5fff;
+    // need to create a way for box shadow not to display underneath this element to seamlessly integrate with the table
+    box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+    .search {
+      position: relative;
+      width: 100%;
+      height: auto;
+      // border: 1px solid red;
+      margin-right: 16px;
+      margin-left: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      input[type='text'] {
+        padding-left: 43px; //change it base on your desired output
+      }
+      .search-bar-button {
+        // TODO: make more responsive to page size
+        position: absolute;
+        left: 15px;
+        top: 22px;
+        height: 20px;
+        width: 20px;
+        border-color: none;
+        border-width: 0px;
+        background-color: transparent;
+        background-image: url('./img/search-icon.svg');
+        background-position: center;
+        background-size: 14px 14px;
+        background-repeat: no-repeat;
+        overflow: visible;
+        z-index: 100;
+        cursor: pointer;
+        transition: 0.6s;
+        &:hover {
+          // background-color: $medium;
+        }
+      }
+      // this creates a shadow element behind the search icon to provide a glow effect, which is otherwise difficult to achieve using an svg as a background element
+      .search-bar-glow {
+        position: absolute;
+        left: 12px;
+        top: 19px;
+        height: 25px;
+        width: 25px;
+        border-color: none;
+        border-width: 0px;
+        background-color: transparent;
+        background-image: url('./img/search-icon.svg');
+        background-position: center;
+        background-size: 14px 14px;
+        background-repeat: no-repeat;
+        z-index: 99;
+        filter: brightness(0) invert(1) blur(5px);
+        -webkit-filter: brightness(0) invert(1) blur(5px);
+      }
+      .searchBar {
+        width: 100%;
+        height: 33px;
+        border: none;
+        background: linear-gradient(
+          94.23deg,
+          rgba(0, 123, 237, 0.2) 0%,
+          rgba(0, 83, 160, 0.2) 100%
+        );
+        backdrop-filter: blur(40px);
+        border-radius: 16px;
+        color: #fff;
+        font-weight: bold;
+        &::placeholder {
+          color: #ffffff;
+          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          font-size: 16px;
+          font-weight: bold;
+          overflow: visible;
+        }
+      }
+    }
+    .buttons {
+      width: 345px;
+      height: 100%;
+      // border: 1px green solid;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-content: center;
+      align-items: center;
+      & > div {
+        margin-right: 16px;
+      }
+      .filter {
+        width: 103px;
+        height: 34px;
+        background: linear-gradient(
+          94.23deg,
+          rgba(0, 123, 237, 0.2) 0%,
+          rgba(0, 83, 160, 0.2) 100%
+        );
+        border-radius: 16px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        .text {
+          margin-left: 20px;
+        }
+        .imgContainer {
+          position: relative;
+          img {
+            position: absolute;
+            left: 0;
+            transform: translate(-4px, -10px);
+            // margin-right: 19px;
+            width: 18px;
+            height: 18px;
+            &:last-child {
+              filter: brightness(0) invert(1) blur(5px);
+              -webkit-filter: brightness(0) invert(1) blur(5px);
+            }
+          }
+        }
+      }
+      .number {
+        width: 89px;
+        height: 34px;
+        background: linear-gradient(
+          94.23deg,
+          rgba(0, 123, 237, 0.2) 0%,
+          rgba(0, 83, 160, 0.2) 100%
+        );
+        border-radius: 16px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        .text {
+          margin-right: 15px;
+        }
+        .imgContainer {
+          position: relative;
+          img {
+            position: absolute;
+            left: 0;
+            transform: translateY(-4px);
+            margin-left: -8px;
+            width: 12px;
+            height: 8px;
+            &:last-child {
+              filter: brightness(0) invert(1) blur(5px);
+              -webkit-filter: brightness(0) invert(1) blur(5px);
+            }
+          }
+        }
+      }
+
+      .list {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        .lines {
+          width: 19px;
+          height: 15px;
+          display: flex;
+          flex-direction: column;
+        }
+      }
+      .grid {
+        margin-left: -7px;
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: none;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .squares {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+      .selected {
+        background: #004789;
+      }
+    }
+  }
+
+  // below div and children are depricated
   .subdomainsButtonSortContainer {
     text-shadow: none;
     display: flex;
@@ -412,54 +636,113 @@ table {
   border-radius: 15px;
 }
 .subdomainsHeaderTH {
-  border-top: 2px $bright solid;
+  // border-top: 2px $bright solid;
 }
 
-.tableContainer {
-  // border: 5px bright solid;
-  // border-radius: 15px;
+.removeTopShadow {
+  // creates padding around the tableContainer to allow the shadow to bleed through on every side except the top, which is hidden by removing overflow
+  position: relative;
+  padding-top: 0px;
+  padding-right: 5px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  overflow: hidden;
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-top: 10px;
+  .tableContainer {
+    // border: 5px bright solid;
+    // border-radius: 15px;
+
+    box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+    border-radius: 0px 0px 15px 15px;
+  }
 }
 
 .subdomainsTable {
   background: none;
   // border-collapse: inherit;
-  border-radius: 15px;
+  // border-radius: 15px;
   border-spacing: 0px;
   border-collapse: separate;
   border-spacing: 0;
   width: 100%;
+  background: rgba(78, 0, 132, 0.2);
+  backdrop-filter: blur(20px);
   // height: 30vh;
-  margin-top: 25px;
+  // margin-top: 10px;
   // subdomains header
   .subdomainsHeaderGroupLocal,
   .subdomainsHeaderGroupGlobal {
-    color: $grayFont;
+    // color: $grayFont;
+    color: #1c83e4;
+    font-size: 16px;
+    font-weight: bold;
     text-decoration: none;
     // tr = row
     tr {
       height: 26px;
+      position: relative;
+      // top border
+      &::after {
+        content: '';
+        background: rgba(141, 141, 141, 0.2);
+        position: absolute;
+        // bottom: 0;
+        left: 1%;
+        width: 98%;
+        height: 1px;
+      }
     }
+
     // th = header cell
     tr th:first-child {
       // border-radius: 50%;
       // border-collapse: inherit;
       // border-spacing: 0px;
       // border: 1px solid $middle-red;
-      border-top: 2px $bright solid;
-      border-left: 2px $bright solid;
-      border-radius: 12px 0px 0px 0px;
+      // border-top: 2px $bright solid;
+      border-left: 1px solid #bd5fff;
+
+      // border-radius: 12px 0px 0px 0px;
     }
 
     tr th:last-child {
-      border-top: 2px $bright solid;
-      border-right: 2px $bright solid;
-      border-radius: 0px 75px 0px 0px;
+      // border-top: 2px $bright solid;
+      border-right: 1px solid #bd5fff;
+      // border-radius: 0px 75px 0px 0px;
+    }
+    .infoHeader {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      // padding-left: auto;
+      // position: relative;
+      .infoButton {
+        background: #002f5b;
+        border-radius: 50%;
+        font-weight: normal;
+        width: 18px !important;
+        height: 18px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        transform: translateY(2px);
+        margin-left: 2px;
+        cursor: pointer;
+        .infoMark {
+          color: rgba(60, 161, 255, 1);
+          font-weight: bold;
+          font-size: 12px !important;
+          margin: auto;
+          transform: translateY(1px);
+        }
+      }
     }
   }
   .subdomainsHeaderGroupLocal {
     tr th {
-      background-color: rgba($bright, 0.09);
-
+      // background-color: rgba($bright, 0.09);
       &:not(:nth-child(3)) {
         text-align: center;
       }
@@ -467,68 +750,88 @@ table {
   }
   .subdomainsHeaderGroupGlobal {
     tr th {
-      background-color: rgba($bright, 0.09);
+      // background-color: rgba($bright, 0.09);
 
-      &:not(:nth-child(3)):not(:nth-child(4)) {
+      &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
+        text-align: right;
+      }
+      // trade header
+      &:last-child {
         text-align: center;
+        & > div {
+          transform: translateX(-18px);
+        }
+        // transform: translateX(20px);
       }
     }
   }
 
-  // table body
+  // table
   tbody {
     // all rows
     tr {
-      height: 100px !important;
+      height: 72px !important;
       cursor: pointer;
+      // top border
+      &::after {
+        content: '';
+        background: rgba(141, 141, 141, 0.2);
+        position: absolute;
+        // bottom: 0;
+        left: 1%;
+        width: 98%;
+        height: 1px;
+      }
       // every rightmost cell
       & td:last-child {
-        border-right: 2px $bright solid;
+        border-right: 1px solid #bd5fff;
         // background-color: red !important;
         .tradeButton {
           color: #fff;
-          border: rgb(145, 85, 230) 2px solid;
+          border: #5f8cff 1px solid;
           border-radius: 15px;
-          background: rgba(0, 0, 0, 0);
-          width: 140px;
-          height: 55px;
+          background: linear-gradient(148deg, #00407c 20.93%, #00203f 82.47%);
+          box-shadow: 0px 0px 10px rgba(60, 161, 255, 0.7);
+          width: 119px;
+          height: 28px;
           transition: 0.6s;
+          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
           cursor: pointer;
           &:hover {
-            background: rgba($bright, 0.75);
+            background: rgba(#5f8cff, 0.75);
           }
         }
       }
       // every leftmost cell
       & td:first-child {
         text-align: center;
-        border-left: 2px $bright solid;
+        border-left: 1px solid #bd5fff;
       }
       // every second row
       &:nth-child(2n) {
         transition: 0.6s;
         &:hover td {
-          background: rgba($bright, 0.5) !important;
+          background: rgba($bright, 0.2) !important;
         }
         td {
           transition: 0.6s;
-          background-color: rgba($bright, 0.09);
+          // background-color: rgba($bright, 0.09);
         }
       }
       // first row and every other row
       &:nth-child(2n-1) {
         &:hover td {
-          background: rgba($bright, 0.5) !important;
+          background: rgba($bright, 0.2) !important;
         }
         td {
-          background-color: rgba(#fff, 0.05);
+          // background-color: rgba(#fff, 0.05);
           transition: 0.6s;
         }
       }
       // bottom  row
       &:last-child td {
         // bottom right cell
-        border-bottom: 2px $bright solid;
+        border-bottom: 1px solid #bd5fff;
         &:last-child {
           border-radius: 0px 0px 12px 0px;
         }
@@ -572,17 +875,30 @@ table {
       }
       // all columns global
       .tdGlobal {
-        height: 81px;
+        // height: 81px;
         // every cell except the third
-        &:not(:nth-child(3)):not(:nth-child(4)) {
+        &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
+          text-align: right;
+        }
+        &:last-child {
           text-align: center;
         }
         &:first-child {
-          color: $dark-grey;
+          // color: $dark-grey;
+          color: #fff;
           font-weight: bold;
         }
         &:nth-child(3) {
           color: #fff;
+          position: relative;
+          // placeholder for token ticker
+          &::after {
+            content: 'TICK';
+            position: relative;
+            font-weight: bold;
+            color: #9ed0ff;
+            left: 5px;
+          }
         }
         &:nth-child(4) {
           color: #fff;
