@@ -890,6 +890,15 @@ table {
         }
         &:nth-child(3) {
           color: #fff;
+          position: relative;
+          // placeholder for token ticker
+          &::after {
+            content: 'TICK';
+            position: relative;
+            font-weight: bold;
+            color: #9ed0ff;
+            left: 5px;
+          }
         }
         &:nth-child(4) {
           color: #fff;

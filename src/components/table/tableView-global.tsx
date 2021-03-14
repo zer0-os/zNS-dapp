@@ -24,7 +24,7 @@ import Nestedview from './NFT-View/nestedNFT-view';
 interface Data {
   '#': string;
   image: any;
-  network: any;
+  network: string;
   // token: string;
   '24Hr': any;
   '7d': any;
@@ -126,15 +126,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
             '#': i.toString(),
             // asset: <Profile domain={key} />,
             image: <TableImage domain={key} />,
-            network: (
-              <div>
-                {key}
-                <span style={{ color: '#9ED0FF', fontWeight: 'bold' }}>
-                  {' '}
-                  TICK
-                </span>
-              </div>
-            ),
+            network: key,
             // token: key + ' token',
             '24Hr': randPrice(),
             '7d': randPrice(),
