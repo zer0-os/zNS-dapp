@@ -64,16 +64,15 @@ $page-margin: 100px;
         .n3 {
           margin-left: 8px;
           background: #002f5b;
-          // background: red;
           border-radius: 50%;
           font-weight: normal;
-          // font-size: 16px;
           width: 18px !important;
           height: 18px;
           display: flex;
           flex-direction: row;
           justify-content: center;
           transform: translateY(5px);
+          cursor: pointer;
           .symbol {
             color: rgba(60, 161, 255, 1);
             font-weight: bold;

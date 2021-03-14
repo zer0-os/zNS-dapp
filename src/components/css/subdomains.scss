@@ -674,7 +674,10 @@ table {
   // subdomains header
   .subdomainsHeaderGroupLocal,
   .subdomainsHeaderGroupGlobal {
-    color: $grayFont;
+    // color: $grayFont;
+    color: #1c83e4;
+    font-size: 16px;
+    font-weight: bold;
     text-decoration: none;
     // tr = row
     tr {
@@ -686,16 +689,12 @@ table {
         background: rgba(141, 141, 141, 0.2);
         position: absolute;
         // bottom: 0;
-        left: 2%;
-        width: 96%;
+        left: 1%;
+        width: 98%;
         height: 1px;
       }
     }
 
-    tr th {
-      // border-top: 1px solid rgba(141, 141, 141, 0.2);
-      // border: 3px solid red;
-    }
     // th = header cell
     tr th:first-child {
       // border-radius: 50%;
@@ -713,6 +712,33 @@ table {
       border-right: 1px solid #bd5fff;
       // border-radius: 0px 75px 0px 0px;
     }
+    .infoHeader {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      // padding-left: auto;
+      // position: relative;
+      .infoButton {
+        background: #002f5b;
+        border-radius: 50%;
+        font-weight: normal;
+        width: 18px !important;
+        height: 18px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        transform: translateY(2px);
+        margin-left: 2px;
+        cursor: pointer;
+        .infoMark {
+          color: rgba(60, 161, 255, 1);
+          font-weight: bold;
+          font-size: 12px !important;
+          margin: auto;
+          transform: translateY(1px);
+        }
+      }
+    }
   }
   .subdomainsHeaderGroupLocal {
     tr th {
@@ -726,8 +752,16 @@ table {
     tr th {
       // background-color: rgba($bright, 0.09);
 
-      &:not(:nth-child(3)):not(:nth-child(4)) {
+      &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
+        text-align: right;
+      }
+      // trade header
+      &:last-child {
         text-align: center;
+        & > div {
+          transform: translateX(-18px);
+        }
+        // transform: translateX(20px);
       }
     }
   }
@@ -738,31 +772,33 @@ table {
     tr {
       height: 72px !important;
       cursor: pointer;
-      // every rightmost cell
       // top border
       &::after {
         content: '';
         background: rgba(141, 141, 141, 0.2);
         position: absolute;
         // bottom: 0;
-        left: 2%;
-        width: 96%;
+        left: 1%;
+        width: 98%;
         height: 1px;
       }
+      // every rightmost cell
       & td:last-child {
         border-right: 1px solid #bd5fff;
         // background-color: red !important;
         .tradeButton {
           color: #fff;
-          border: rgb(145, 85, 230) 2px solid;
+          border: #5f8cff 1px solid;
           border-radius: 15px;
-          background: rgba(0, 0, 0, 0);
-          width: 140px;
-          height: 55px;
+          background: linear-gradient(148deg, #00407c 20.93%, #00203f 82.47%);
+          box-shadow: 0px 0px 10px rgba(60, 161, 255, 0.7);
+          width: 119px;
+          height: 28px;
           transition: 0.6s;
+          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
           cursor: pointer;
           &:hover {
-            background: rgba($bright, 0.75);
+            background: rgba(#5f8cff, 0.75);
           }
         }
       }
@@ -841,11 +877,15 @@ table {
       .tdGlobal {
         // height: 81px;
         // every cell except the third
-        &:not(:nth-child(3)):not(:nth-child(4)) {
+        &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
+          text-align: right;
+        }
+        &:last-child {
           text-align: center;
         }
         &:first-child {
-          color: $dark-grey;
+          // color: $dark-grey;
+          color: #fff;
           font-weight: bold;
         }
         &:nth-child(3) {
