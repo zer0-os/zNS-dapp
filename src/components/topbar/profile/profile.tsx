@@ -42,9 +42,9 @@ const Profile: FC = () => {
 
   return (
     <>
-      {owned.isJust() && (
+      {owned.isJust() ? (
         <img src={elon} alt="" className="profilepic" onClick={showOwner} />
-      )}
+      ) : null}
       <Modal
         visible={isOwnedVisible}
         onOk={ownerOk}
