@@ -1,4 +1,4 @@
-import { FC, useState, useCallback } from 'react';
+import { FC, useCallback } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import * as z from 'zod';

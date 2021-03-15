@@ -42,20 +42,22 @@ const Profile: FC = () => {
 
   return (
     <>
-      <img src={elon} alt="" className="profilepic" onClick={showOwner} />
-
+      {owned.isJust() ? (
+        <img src={elon} alt="" className="profilepic" onClick={showOwner} />
+      ) : null}
       <Modal
         visible={isOwnedVisible}
-        getContainer={false}
-        maskStyle={{}}
         onOk={ownerOk}
         onCancel={ownerCancel}
         footer={null}
-        width="50vw"
+        width={'50vw'}
         bodyStyle={{
           height: '70vh',
           padding: '0',
           margin: '0',
+        }}
+        style={{
+          position: 'relative',
         }}
       >
         <div className="profile-container">

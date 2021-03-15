@@ -1,14 +1,9 @@
 import { FC, useState, useMemo } from 'react';
-
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
 import Approve from '../../table/NFT-View/approval';
-import { useLocation } from 'react-router-dom';
-import _ from 'lodash';
 import '../../css/shop.scss';
-import Outgoing from './outGoingApproval';
-import Claims from './claims';
 import Stakingview from '../stakingModal';
 import tripledot from '../../css/img/tripledot.svg';
 
@@ -230,31 +225,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
               <div className="listOut">
                 <div className="gridContainer-profile">domains</div>
               </div>
-            </TabPane>
-            <TabPane
-              className="tabPane thirdPane"
-              tab="Offers You've Made"
-              key="3"
-              style={{ overflow: 'auto', height: '90vh' }}
-            >
-              <Outgoing />
-            </TabPane>
-            <TabPane
-              className="tabPane fourthPane"
-              tab="Offers Made To You"
-              key="4"
-              style={{ overflow: 'auto', height: '90vh' }}
-            >
-              {/* <div>
-              <h1>
-                Incoming Approvals:{' '}
-                {incomingApprovals.isJust()
-                  ? incomingApprovals.value.length
-                  : 0}{' '}
-              </h1>
-            </div> */}
-
-              <Claims />
             </TabPane>
           </Tabs>
           <button className="mintNFT" onClick={showStaking}>
