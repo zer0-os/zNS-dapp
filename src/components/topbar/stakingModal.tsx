@@ -1,13 +1,9 @@
 import { FC, useState } from 'react';
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { useZnsContracts } from '../../lib/contracts';
 import { useDomainCache } from '../../lib/useDomainCache';
 import Create from './create';
-import { useLocation } from 'react-router-dom';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import _ from 'lodash';
+
 import SetImage from './forms/set-image';
 import '../css/stakingModal.scss';
 
@@ -17,9 +13,6 @@ interface NestedProps {
 
 const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   const [isStakeVisible, setStakeVisible] = useState(false);
-  // const context = useWeb3React<Web3Provider>();
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

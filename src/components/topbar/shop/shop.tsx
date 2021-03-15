@@ -3,10 +3,7 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
 import Approve from '../../table/NFT-View/approval';
-import _ from 'lodash';
 import '../../css/shop.scss';
-import Outgoing from './outGoingApproval';
-import Claims from './claims';
 import Stakingview from '../stakingModal';
 import tripledot from '../../css/img/tripledot.svg';
 

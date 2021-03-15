@@ -22,8 +22,6 @@ function getLibrary(provider: any): Web3Provider {
   return library;
 }
 function App() {
-  const context = useWeb3React<Web3Provider>();
-
   return (
     <Router>
       <video
