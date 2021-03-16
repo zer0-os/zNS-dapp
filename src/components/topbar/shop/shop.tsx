@@ -3,10 +3,14 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
 import Approve from '../../table/NFT-View/approval';
+<<<<<<< HEAD
 import _ from 'lodash';
+||||||| 089b49a
+import { useLocation } from 'react-router-dom';
+import _ from 'lodash';
+=======
+>>>>>>> 0cc68cb82d652eaec121d47e93f5b0e7aec48bff
 import '../../css/shop.scss';
-import Outgoing from './outGoingApproval';
-import Claims from './claims';
 import Stakingview from '../stakingModal';
 import tripledot from '../../css/img/tripledot.svg';
 

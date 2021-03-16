@@ -22,8 +22,32 @@ function getLibrary(provider: any): Web3Provider {
   return library;
 }
 function App() {
+<<<<<<< HEAD
   const context = useWeb3React<Web3Provider>();
 
+||||||| 089b49a
+  const context = useWeb3React<Web3Provider>();
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    connector,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    library,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    chainId,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    account,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    activate,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    deactivate,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    active,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    error,
+  } = context;
+
+=======
+>>>>>>> 0cc68cb82d652eaec121d47e93f5b0e7aec48bff
   return (
     <Router>
       <video
