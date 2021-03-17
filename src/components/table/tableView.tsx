@@ -25,10 +25,11 @@ interface Data {
   '#': string;
   asset: any;
   name: string;
-  volume: string;
-  '24Hr': string;
-  '7d': string;
+  '24Hr': any;
+  '7d': any;
   marketcap: string;
+  volume: string;
+  supply: string;
   last7days: string;
   timestamp: any;
   trade: string;
@@ -72,6 +73,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
             '24Hr': 'N/A',
             '7d': 'N/A',
             marketcap: 'N/A',
+            supply: 'N/A',
             last7days: '',
             timestamp: '',
             trade: '',
@@ -91,8 +93,8 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              minWidth: '70px',
-              height: '70px',
+              minWidth: '60px',
+              height: '40px',
             }}
           >
             #
@@ -101,48 +103,78 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
         accessor: '#',
       },
       {
-        Header: 'Asset',
+        Header: 'Name',
         accessor: 'asset',
       },
       {
-        Header: 'Name',
+        Header: '',
         accessor: 'name',
         width: '100%',
-        Cell: (props) => (
-          <span
-            style={{
-              width: '180px',
-              maxWidth: '180px',
-              display: 'flex',
-              flexWrap: 'wrap',
-              // height: '100%',
-              wordWrap: 'break-word',
-              verticalAlign: 'center',
-            }}
-          >
-            {/*console.log('PROPS!!!', props)*/}
-            <span
-              style={{
-                textAlign: 'left',
-                width: '100%',
-                wordWrap: 'break-word',
-              }}
-            >
-              {props.data[0].key}
-            </span>
-          </span>
-        ),
+        // Cell: (props) => (
+        //   <span
+        //     style={{
+        //       width: '180px',
+        //       maxWidth: '180px',
+        //       display: 'flex',
+        //       flexWrap: 'wrap',
+        //       // height: '100%',
+        //       wordWrap: 'break-word',
+        //       verticalAlign: 'center',
+        //     }}
+        //   >
+        //     <span
+        //       style={{
+        //         textAlign: 'left',
+        //         width: '100%',
+        //         wordWrap: 'break-word',
+        //       }}
+        //     >
+        //       {console.log('NAME DATA FOR CHILDREN!', props.data)}
+        //       {props.data[0].key}
+        //     </span>
+        //   </span>
+        // )
+        // ,
       },
-      { Header: 'Volume', accessor: 'volume' },
       { Header: '24Hr', accessor: '24Hr' },
       { Header: '7d', accessor: '7d' },
       {
-        Header: 'Market Cap',
+        Header: (
+          <div className="infoHeader">
+            <span>Market Cap </span>
+            <span className="infoButton">
+              <span className="infoMark">?</span>
+            </span>
+          </div>
+        ),
         accessor: 'marketcap',
         // Cell: (props) => {
         //   <div>{JSON.stringify(props)}</div>;
         // },
       },
+      {
+        Header: (
+          <div className="infoHeader">
+            <span>Volume </span>
+            <span className="infoButton">
+              <span className="infoMark">?</span>
+            </span>
+          </div>
+        ),
+        accessor: 'volume',
+      },
+      {
+        Header: (
+          <div className="infoHeader">
+            <span>Supply </span>
+            <span className="infoButton">
+              <span className="infoMark">?</span>
+            </span>
+          </div>
+        ),
+        accessor: 'supply',
+      },
+
       {
         Header: 'Last 7 Days',
         accessor: 'last7days',
@@ -155,7 +187,14 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
         Cell: () => <div style={{ display: 'none' }}></div>,
       },
       {
-        Header: 'Trade',
+        Header: (
+          <div className="infoHeader">
+            <span>Trade </span>
+            <span className="infoButton">
+              <span className="infoMark">?</span>
+            </span>
+          </div>
+        ),
         accessor: 'trade',
         Cell: () => (
           <button className="tradeButton" style={{}}>

@@ -168,7 +168,7 @@ $page-margin: 100px;
               font-weight: bold;
               font-size: 12px !important;
               margin: auto;
-              transform: translateY(1px);
+              transform: translate(1px, 1px);
             }
           }
         }
@@ -294,7 +294,7 @@ $page-margin: 100px;
     color: #ffffff;
     font-size: 16px;
     font-weight: bold;
-    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
     display: flex;
     flex-direction: row;
     border-radius: 15px 15px 0px 0px;
@@ -371,7 +371,7 @@ $page-margin: 100px;
         font-weight: bold;
         &::placeholder {
           color: #ffffff;
-          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
           font-size: 16px;
           font-weight: bold;
           overflow: visible;
@@ -706,11 +706,14 @@ table {
 
       // border-radius: 12px 0px 0px 0px;
     }
-
+    // trade button
     tr th:last-child {
-      // border-top: 2px $bright solid;
       border-right: 1px solid #bd5fff;
-      // border-radius: 0px 75px 0px 0px;
+      & > div {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
     }
     .infoHeader {
       display: flex;
@@ -735,7 +738,7 @@ table {
           font-weight: bold;
           font-size: 12px !important;
           margin: auto;
-          transform: translateY(1px);
+          transform: translate(1px, 1px);
         }
       }
     }
@@ -754,14 +757,6 @@ table {
 
       &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
         text-align: right;
-      }
-      // trade header
-      &:last-child {
-        text-align: center;
-        & > div {
-          transform: translateX(-18px);
-        }
-        // transform: translateX(20px);
       }
     }
   }
@@ -785,6 +780,8 @@ table {
       // every rightmost cell
       & td:last-child {
         border-right: 1px solid #bd5fff;
+        // probably change this
+        // margin-right: 15px;
         // background-color: red !important;
         .tradeButton {
           color: #fff;
@@ -792,7 +789,8 @@ table {
           border-radius: 15px;
           background: linear-gradient(148deg, #00407c 20.93%, #00203f 82.47%);
           box-shadow: 0px 0px 10px rgba(60, 161, 255, 0.7);
-          width: 119px;
+          // probably change this
+          width: 100%;
           height: 28px;
           transition: 0.6s;
           text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
