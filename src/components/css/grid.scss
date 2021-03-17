@@ -3,62 +3,21 @@
 .gridContainer {
   background: none;
   width: 100%;
-  margin-top: 25px;
-  //testing
-  // border: 5px black solid;
-  // color: yellow;
-  //
+  // margin-top: 25px;
   display: inline-grid;
   grid-template-columns: repeat(3, 1fr);
-  // .gridCell {
-  //   margin-left: auto;
-  //   margin-right: auto;
-  //   margin-bottom: 35px;
-  //   height: 450px;
-  //   width: 375px;
-  //   // background: blue;
-  //   border-radius: 15px;
-  //   overflow: hidden;
-  //   transition: all 0.4s ease-in-out;
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-items: space-between;
-  //   &:hover {
-  //     transform: scale(1.05);
-  //     box-shadow: 0px 0px 15px 5px rgb(190, 166, 30);
-  //   }
-  //   .cellTop {
-  //     height: 67%;
-  //     width: auto;
-  //     background: rgb(180, 179, 179);
-  //     // border-radius: 15px;
-  //   }
-  //   .cellBottom {
-  //     height: 33%;
-  //     width: auto;
-  //     background: $dark-red;
-  //     display: flex;
-  //     flex-direction: column;
-  //     & > div {
-  //       &:not(:nth-child(3)) {
-  //         margin-right: auto;
-  //         margin-left: auto;
-  //       }
-  //       margin-top: auto;
-  //       margin-bottom: auto;
-  //     }
-  //     .cellTextTop {
-  //       font-size: 1.3em;
-  //     }
-  //     .cellTextMiddle {
-  //     }
-  //     .cellTextBottom {
-  //       display: flex;
-  //       flex-direction: row;
-  //       justify-content: space-between;
-  //     }
-  //   }
-  // }
+  border-right: 1px solid #bd5fff;
+  border-left: 1px solid #bd5fff;
+  border-bottom: 1px solid #bd5fff;
+  border-radius: 0px 0px 15px 15px;
+  box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+  background: rgba(78, 0, 132, 0.2);
+  backdrop-filter: blur(20px);
+  padding-top: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  overflow: hidden;
   .gridCell {
     // overflow: visible;
     margin-left: auto;
