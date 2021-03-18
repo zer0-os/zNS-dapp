@@ -7,6 +7,7 @@ import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import '../../css/nft-view.scss';
 import TableImage from '../table-image';
+
 interface ProfileProps {
   domain: string;
 }

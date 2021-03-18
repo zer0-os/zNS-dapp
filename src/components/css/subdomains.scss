@@ -3,6 +3,13 @@
 
 $page-margin: 100px;
 
+.pageContainerPositionFix {
+  position: relative;
+  top: 0;
+  width: 100vw;
+  // border: 1px red solid;
+}
+
 #subdomainsContainer {
   position: relative;
   flex-direction: column;
@@ -49,13 +56,8 @@ $page-margin: 100px;
   }
 }
 
-.pageContainerPositionFix {
-  position: relative;
-  top: 0;
-  width: 100vw;
-}
-
 .metricsBar {
+  // border: 1px blue solid;
   margin-top: 150px;
   display: flex;
   flex-direction: column;
