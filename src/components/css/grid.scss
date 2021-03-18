@@ -26,7 +26,6 @@
   }
   .gridMargin {
     display: grid;
-    grid-template-columns: repeat(3, 388px);
     justify-content: space-evenly;
     width: 100%;
     height: 100%;
@@ -209,5 +208,27 @@
       //   }
       // }
     }
+  }
+}
+
+//
+// @media queries
+//
+
+@media (max-width: 14880px) {
+  .gridMargin {
+    grid-template-columns: repeat(3, 388px);
+  }
+}
+
+@media (max-width: 1488px) {
+  .gridMargin {
+    grid-template-columns: repeat(2, 388px);
+  }
+}
+
+@media (max-width: 1044px) {
+  .gridMargin {
+    grid-template-columns: repeat(1, 388px);
   }
 }
