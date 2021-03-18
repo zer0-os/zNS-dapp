@@ -3,145 +3,232 @@
 .gridContainer {
   background: none;
   width: 100%;
-  margin-top: 25px;
-  //testing
-  // border: 5px black solid;
-  // color: yellow;
-  //
-  display: inline-grid;
-  grid-template-columns: repeat(3, 1fr);
-  // .gridCell {
-  //   margin-left: auto;
-  //   margin-right: auto;
-  //   margin-bottom: 35px;
-  //   height: 450px;
-  //   width: 375px;
-  //   // background: blue;
-  //   border-radius: 15px;
-  //   overflow: hidden;
-  //   transition: all 0.4s ease-in-out;
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-items: space-between;
-  //   &:hover {
-  //     transform: scale(1.05);
-  //     box-shadow: 0px 0px 15px 5px rgb(190, 166, 30);
-  //   }
-  //   .cellTop {
-  //     height: 67%;
-  //     width: auto;
-  //     background: rgb(180, 179, 179);
-  //     // border-radius: 15px;
-  //   }
-  //   .cellBottom {
-  //     height: 33%;
-  //     width: auto;
-  //     background: $dark-red;
-  //     display: flex;
-  //     flex-direction: column;
-  //     & > div {
-  //       &:not(:nth-child(3)) {
-  //         margin-right: auto;
-  //         margin-left: auto;
-  //       }
-  //       margin-top: auto;
-  //       margin-bottom: auto;
-  //     }
-  //     .cellTextTop {
-  //       font-size: 1.3em;
-  //     }
-  //     .cellTextMiddle {
-  //     }
-  //     .cellTextBottom {
-  //       display: flex;
-  //       flex-direction: row;
-  //       justify-content: space-between;
-  //     }
-  //   }
-  // }
-  .gridCell {
-    // overflow: visible;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 35px;
-    height: 475px;
-    width: 327px;
-    // background: blue;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: all 0.4s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    align-items: space-between;
-    &:hover {
-      transform: scale(1.05);
-      box-shadow: 0px 0px 15px 5px $bright;
-    }
-    .topCell {
-      height: 67%;
-      width: auto;
-      background: rgba($bright, 0.2);
-      // border-radius: 15px;
-      // border: 2px solid blue;
+  position: relative;
+  border-right: 1px solid #bd5fff;
+  border-left: 1px solid #bd5fff;
+  border-bottom: 1px solid #bd5fff;
+  border-radius: 0px 0px 15px 15px;
+  box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+  background: rgba(78, 0, 132, 0.2);
+  backdrop-filter: blur(20px);
+  padding-top: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+  overflow: hidden;
+  &::before {
+    content: '';
+    background: rgba(141, 141, 141, 0.2);
+    position: absolute;
+    left: 1%;
+    width: 98%;
+    height: 1px;
+  }
+  .gridMargin {
+    display: grid;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 100%;
+    // remove this
+    margin-top: 20px;
+    padding-top: 10px;
+    .gridCell {
+      position: relative;
+      margin-bottom: 35px;
+      height: 525px;
+      width: 388px;
+      background: linear-gradient(
+        92.24deg,
+        rgba(190, 96, 255, 0.1) 0%,
+        rgba(78, 0, 132, 0.1) 100%
+      );
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.4s ease-in-out;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      .domainImage {
-        // margin-top: auto;
-        // margin-bottom: auto;
-        max-width: 100%;
-        // max-height: 100%;
-        overflow: hidden;
-        object-fit: cover;
+      align-items: space-between;
+      &:hover {
+        transform: scale(1.01);
+        box-shadow: 0px 0px 15px 5px $bright;
       }
-    }
-    .bottomCell {
-      height: 33%;
-      width: auto;
-      background: $blackbg;
-      color: $lightgrey;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: 12px;
-      // align-content: center;
-      // border: 2px solid green;
-      & > div {
-        text-align: center;
-        width: 100%;
-      }
-      .name {
-        font-size: 33px;
-      }
-      .domain {
-      }
-      .desc {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        .ticker {
-        }
-        .holders {
-        }
-      }
-      .price {
-        font-size: 18px;
-      }
-      .bottom {
+      .gridCellContent {
         position: relative;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        .eth-price {
+        margin: 20px;
+        height: 100%;
+        width: auto;
+        color: #fff;
+        font-size: 16px;
+        text-shadow: 0px 0px 10px rgba(60, 161, 255, 0.7);
+        .topbar {
+          height: 32px;
+          // border: 1px blue solid;
+          margin-bottom: 8px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          .left {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            .avatar {
+              margin-right: 12px;
+              img {
+                height: 32px;
+                width: 32px;
+              }
+            }
+            .artist {
+            }
+          }
+          .dots {
+            margin-top: auto;
+            margin-bottom: auto;
+            height: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            & > div {
+              height: 4px;
+              width: 4px;
+              border-radius: 50%;
+              background: #fff;
+            }
+          }
         }
-        .cell-btn {
-          position: absolute;
-          right: 0;
-          transform: translate(-15px, -10px);
-          cursor: pointer;
+        .name {
+          height: 29px;
+          // border: 1px green solid;
+          margin-bottom: 4px;
+          font-size: 24px;
+        }
+        .image {
+          height: 348px;
+          // border: 1px purple solid;
+          margin-bottom: 12px;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          overflow: hidden;
+          .domainImage {
+            overflow: hidden;
+            object-fit: cover;
+            max-height: 100%;
+            margin: auto;
+          }
+        }
+        .text {
+          height: 19px;
+          color: #3ca1ff;
+          text-transform: uppercase;
+          font-weight: bold;
+          // border: 1px cyan solid;
+          margin-bottom: 4px;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .price {
+          height: 29px;
+          // border: 1px lime solid;
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 24px;
         }
       }
+      // .topCell {
+      //   height: 67%;
+      //   width: auto;
+      //   background: rgba($bright, 0.2);
+      //   // border-radius: 15px;
+      //   // border: 2px solid blue;
+      //   display: flex;
+      //   flex-direction: column;
+      //   justify-content: center;
+      //   .domainImage {
+      //     // margin-top: auto;
+      //     // margin-bottom: auto;
+      //     max-width: 100%;
+      //     // max-height: 100%;
+      //     overflow: hidden;
+      //     object-fit: cover;
+      //   }
+      // }
+      // .bottomCell {
+      //   height: 33%;
+      //   width: auto;
+      //   background: $blackbg;
+      //   color: $lightgrey;
+      //   display: flex;
+      //   flex-direction: column;
+      //   justify-content: center;
+      //   align-items: center;
+      //   font-size: 12px;
+      //   // align-content: center;
+      //   // border: 2px solid green;
+      //   & > div {
+      //     text-align: center;
+      //     width: 100%;
+      //   }
+      //   .name {
+      //     font-size: 33px;
+      //   }
+      //   .domain {
+      //   }
+      //   .desc {
+      //     display: flex;
+      //     flex-direction: row;
+      //     justify-content: space-around;
+      //     .ticker {
+      //     }
+      //     .holders {
+      //     }
+      //   }
+      //   .price {
+      //     font-size: 18px;
+      //   }
+      //   .bottom {
+      //     position: relative;
+      //     display: flex;
+      //     flex-direction: row;
+      //     justify-content: center;
+      //     .eth-price {
+      //     }
+      //     .cell-btn {
+      //       position: absolute;
+      //       right: 0;
+      //       transform: translate(-15px, -10px);
+      //       cursor: pointer;
+      //     }
+      //   }
+      // }
     }
+  }
+}
+
+//
+// @media queries
+//
+
+@media (max-width: 14880px) {
+  .gridMargin {
+    grid-template-columns: repeat(3, 388px);
+  }
+}
+
+@media (max-width: 1488px) {
+  .gridMargin {
+    grid-template-columns: repeat(2, 388px);
+  }
+}
+
+@media (max-width: 1044px) {
+  .gridMargin {
+    grid-template-columns: repeat(1, 388px);
   }
 }

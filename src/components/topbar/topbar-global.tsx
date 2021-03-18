@@ -112,7 +112,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
               <Shop domain={_domain} />
             </div>
             <div className="connect-btn" onClick={showWallet}>
-              <div className="dot">{active ? '🔵' : '🔴'}</div>
+              <div className="dot">{active ? '🟢' : '🔵'}</div>
               <div className="btn-text">
                 {active ? 'Connected' : 'Connect Wallet'}
               </div>

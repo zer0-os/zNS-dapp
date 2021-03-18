@@ -4,36 +4,11 @@ import '../css/grid.scss';
 import { useDomainCache } from '../../lib/useDomainCache';
 // import { Web3Provider } from '@ethersproject/providers';
 import TableImage from './table-image';
+import avatar from '../css/img/wilderavatar.png';
 
 interface GridProps {
   domain: string;
 }
-
-// const gridCell = (domain) => {
-//   return (
-//     <div className="gridCell">
-//       <div className="cellTop"></div>
-//       <div className="cellBottom">
-//         <div className="cellTextTop">NFT Name</div>
-//         <div className="cellTextMiddle">ticker</div>
-//         <div className="cellTextBottom">
-//           <span>Left</span>
-//           <span>Right</span>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const cells: any = [];
-// cells.push(gridCell());
-// cells.push(gridCell());
-// cells.push(gridCell());
-// cells.push(gridCell());
-// cells.push(gridCell());
-// cells.push(gridCell());
-// cells.push(gridCell());
-// cells.push(gridCell());
 
 const Grid: FC<GridProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
@@ -45,29 +20,86 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
 
   const { domain } = useDomain(_domain);
 
+  //
+  // The following functions generate random numbers for mock data display
+  //
+
+  const randThreeS = () => {
+    let temp =
+      Math.random() > 0.5
+        ? Math.floor(Math.random() * 1000).toString()
+        : Math.floor(Math.random() * 100).toString();
+    if (temp === '0') {
+      temp = '10';
+    }
+    return temp;
+  };
+
+  const randPrice = () => {
+    let temp = Math.floor(Math.random() * 100).toString();
+    let dot = Math.floor(Math.random() * 100).toString();
+    if (dot.length === 1) {
+      dot = '0' + dot;
+    }
+    let up = Math.random() > 0.3;
+    let price = `${up ? '▲' : '▼'} ${temp}.${dot}%`;
+    return (
+      <div style={{ color: `${up ? '#27AE60' : '#EB5757'}` }}>{price}</div>
+    );
+  };
+
+  //
+  //
+  //
+
   const gridCell = (name: string) => {
     return (
+      // <div className="gridCell">
+      //   <div className="topCell">
+      //     <TableImage domain={name} />
+      //   </div>
+      //   <div className="bottomCell">
+      //     <div className="name">{name.match(/[^.]+$/)}</div>
+      //     <div className="domain">O::/{name}</div>
+      //     <div className="desc">
+      //       <div className="ticker">Ticker</div>
+      //       <div className="holders">X Holders</div>
+      //     </div>
+      //     <div className="price">$1234.00</div>
+      //     <div className="bottom">
+      //       <span className="eth-price">(Ξ 1.0015)</span>
+      //       <span className="cell-btn">Trade</span>
+      //     </div>
+      //   </div>
+      // </div>
       <div className="gridCell">
-        <div className="topCell">
-          {/* <img
-            className="cellImage"
-            src={image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-            alt=""
-          /> */}
-          <TableImage domain={name} />
-        </div>
-        <div className="bottomCell">
-          {/* <div className="name">{name}</div> */}
-          <div className="name">{name.match(/[^.]+$/)}</div>
-          <div className="domain">O::/{name}</div>
-          <div className="desc">
-            <div className="ticker">Ticker</div>
-            <div className="holders">X Holders</div>
+        <div className="gridCellContent">
+          <div className="topbar">
+            <div className="left">
+              <div className="avatar">
+                <img src={avatar} alt="" />
+              </div>
+              <div className="artist">WILDER</div>
+            </div>
+            <div className="dots">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
           </div>
-          <div className="price">$1234.00</div>
-          <div className="bottom">
-            <span className="eth-price">(Ξ 1.0015)</span>
-            <span className="cell-btn">Trade</span>
+          <div className="name">
+            <div>{name.match(/[^.]+$/)}</div>
+          </div>
+          <div className="image">
+            <TableImage domain={name} />
+          </div>
+          <div className="text">
+            <div>Last Traded Price</div>
+            <div>Change</div>
+          </div>
+          <div className="price">
+            <div>{randThreeS()} WILD</div>
+            <div>{randPrice()}</div>
           </div>
         </div>
       </div>
@@ -84,7 +116,11 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     [domain],
   );
   if (domain.isNothing()) return null;
-  return <div className="gridContainer">{gridCells}</div>;
+  return (
+    <div className="gridContainer">
+      <div className="gridMargin">{gridCells}</div>
+    </div>
+  );
 };
 
 export default Grid;
