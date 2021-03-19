@@ -146,7 +146,14 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
           </div> */}
 
           <div className="subdomainsBar">
-            <GlobalFilter setFilter={GlobalFilter} filter={null} />
+            <div className="search">
+              <button className="search-bar-button"></button>
+              <div className="search-bar-glow"></div>
+              <input
+                className="searchBar"
+                placeholder="Search by Creator, Creation, and Collection"
+              ></input>
+            </div>
             <div className="buttons">
               <div className="filter">
                 <div className="imgContainer">
