@@ -149,7 +149,7 @@ const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
   //console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">
-      <SearchTable setFilter={setGlobalFilter} filter={null} />
+      {/* <SearchTable setFilter={setGlobalFilter} filter={null} /> */}
       <div>
         {!gridView ? (
           <div className="tableContainer">

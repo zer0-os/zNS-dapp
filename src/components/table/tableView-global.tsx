@@ -288,6 +288,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">
+      <SearchTable setFilter={setGlobalFilter} filter={null} search={search} />
       <div className="removeTopShadow">
         {!gridView ? (
           <div className="tableContainer">

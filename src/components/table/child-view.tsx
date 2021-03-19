@@ -158,7 +158,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                 type="text"
                 placeholder="Search by Creator, Creation, and Collection"
               ></input> */}
-              <GlobalFilter setFilter={GlobalFiliter} filter={null} />
+              {/* <GlobalFilter setFilter={GlobalFiliter} filter={null} /> */}
             </div>
             <div className="buttons">
               <div className="filter">
