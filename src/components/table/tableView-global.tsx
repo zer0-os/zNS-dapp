@@ -39,9 +39,10 @@ interface Data {
 interface TProps {
   domain: string;
   gridView: boolean;
+  search: string;
 }
 
-const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
+const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   // const context = useWeb3React<Web3Provider>();
 
   // const { account } = context;
@@ -287,7 +288,6 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView }) => {
   //console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">
-      {/* <SearchTable setFilter={setGlobalFilter} filter={null} /> */}
       <div className="removeTopShadow">
         {!gridView ? (
           <div className="tableContainer">

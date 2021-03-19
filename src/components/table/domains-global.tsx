@@ -31,6 +31,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   // const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
+  const [search, setSearch] = useState('');
 
   const routes = _.transform(
     location.pathname
@@ -152,6 +153,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
               <input
                 className="searchBar"
                 placeholder="Search by Creator, Creation, and Collection"
+                // value={search || ''}
+                type="text"
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
               ></input>
             </div>
             <div className="buttons">
@@ -189,7 +195,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
           </div>
         </div>
 
-        <TableViewGlobal domain={domain.value.domain} gridView={gridView} />
+        <TableViewGlobal
+          domain={domain.value.domain}
+          gridView={gridView}
+          search={search}
+        />
       </div>
     </div>
   );
