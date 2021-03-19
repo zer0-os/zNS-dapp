@@ -1,5 +1,6 @@
 import { FC, useMemo } from 'react';
 import '../css/grid.scss';
+import { useHistory } from 'react-router-dom';
 // import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
 // import { Web3Provider } from '@ethersproject/providers';
@@ -15,10 +16,17 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
 
   // const { account } = context;
   const domainStore = useDomainCache();
-
   const { useDomain } = domainStore;
-
   const { domain } = useDomain(_domain);
+
+  const history = useHistory();
+  const handleCellClick = (name: any) => {
+    //console.log('fire');
+    console.log(name);
+    history.push({
+      pathname: name,
+    });
+  };
 
   //
   // The following functions generate random numbers for mock data display
@@ -72,7 +80,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
       //     </div>
       //   </div>
       // </div>
-      <div className="gridCell">
+      <div onClick={() => handleCellClick(name)} className="gridCell">
         <div className="gridCellContent">
           <div className="topbar">
             <div className="left">
