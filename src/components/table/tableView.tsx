@@ -364,7 +364,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
                   })
                 }
               </tbody>
-              {rows.length !== 0 ? null : (
+              {/* {rows.length !== 0 ? null : (
                 <tfoot>
                   <tr>
                     <td>
@@ -372,7 +372,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView }) => {
                     </td>
                   </tr>
                 </tfoot>
-              )}
+              )} */}
             </table>
           </div>
         ) : (

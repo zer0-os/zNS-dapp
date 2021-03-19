@@ -217,7 +217,7 @@ const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
                   })
                 }
               </tbody>
-              {rows.length !== 0 ? null : (
+              {/* {rows.length !== 0 ? null : (
                 <tfoot>
                   <tr>
                     <td>
@@ -225,7 +225,7 @@ const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
                     </td>
                   </tr>
                 </tfoot>
-              )}
+              )} */}
             </table>
           </div>
         ) : (

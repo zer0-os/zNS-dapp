@@ -356,7 +356,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                   })
                 }
               </tbody>
-              {rows.length !== 0 ? null : (
+              {/* {rows.length !== 0 ? null : (
                 <tfoot>
                   <tr>
                     <td>
@@ -364,7 +364,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                     </td>
                   </tr>
                 </tfoot>
-              )}
+              )} */}
             </table>
           </div>
         ) : (
