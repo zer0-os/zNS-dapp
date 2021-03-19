@@ -29,6 +29,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const [gridView, toggleGridView] = useState(false);
+  const [search, setSearch] = useState('');
 
   const routes = _.transform(
     location.pathname
@@ -160,8 +161,12 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                   <div className="search-bar-glow"></div>
                   <input
                     className="searchBar"
-                    type="text"
                     placeholder="Search by Creator, Creation, and Collection"
+                    // value={search || ''}
+                    type="text"
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
                   ></input>
                 </div>
                 <div className="buttons">
@@ -199,7 +204,11 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
               </div>
             </div>
 
-            <TableView domain={domain.value.domain} gridView={gridView} />
+            <TableView
+              domain={domain.value.domain}
+              gridView={gridView}
+              search={search}
+            />
           </div>
         </div>
       ) : (
