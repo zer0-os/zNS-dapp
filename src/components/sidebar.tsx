@@ -7,14 +7,30 @@ import { useLocation } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import './css/sidebar.scss';
 import wilderLogo from './css/img/wilderlogo.png';
-import trending from './css/img/trending.png';
-import trendingS from './css/img/trending-selected.png';
-import explore from './css/img/explorer.png';
-import exploreS from './css/img/explorer-selected.png';
-import lending from './css/img/lending.png';
-import lendingS from './css/img/lending-selected.png';
-import gov from './css/img/governance.png';
-import govS from './css/img/governance-selected.png';
+// import trending from './css/img/trending.png';
+// import trendingS from './css/img/trending-selected.png';
+// import explore from './css/img/explorer.png';
+// import exploreS from './css/img/explorer-selected.png';
+// import lending from './css/img/lending.png';
+// import lendingS from './css/img/lending-selected.png';
+// import gov from './css/img/governance.png';
+// import govS from './css/img/governance-selected.png';
+import trending from './css/img/sidebar/Trending/trend-default.png';
+import trendingD from './css/img/sidebar/Trending/trend-down.png';
+import trendingH from './css/img/sidebar/Trending/trend-hover.png';
+import trendingS from './css/img/sidebar/Trending/trend-select.png';
+import explorer from './css/img/sidebar/Explorer/explorer-default.png';
+import explorerD from './css/img/sidebar/Explorer/explorer-down.png';
+import explorerH from './css/img/sidebar/Explorer/explorer-hover.png';
+import explorerS from './css/img/sidebar/Explorer/explorer-select.png';
+import lending from './css/img/sidebar/Lending/lend-default.png';
+import lendingD from './css/img/sidebar/Lending/lend-down.png';
+import lendingH from './css/img/sidebar/Lending/lend-hover.png';
+import lendingS from './css/img/sidebar/Lending/lend-select.png';
+import gov from './css/img/sidebar/Governance/gov-default.png';
+import govD from './css/img/sidebar/Governance/gov-down.png';
+import govH from './css/img/sidebar/Governance/gov-hover.png';
+import govS from './css/img/sidebar/Governance/gov-select.png';
 
 const Sidebar: FC = () => {
   const context = useWeb3React<Web3Provider>();
@@ -25,6 +41,8 @@ const Sidebar: FC = () => {
   //   const domainContext = useDomain(_domain);
   //   const { domain } = domainContext;
   const location = useLocation();
+  const [selected, setSelected] = useState('trending');
+  const [hover, setHover] = useState('');
 
   const text2 = <span style={{ color: '#fff' }}>Discover</span>;
   const text1 = <span style={{ color: '#fff' }}>Directory</span>;
@@ -71,19 +89,60 @@ const Sidebar: FC = () => {
         </div>
         <div className="middleNav">
           <div className="sideItem i1">
-            {/* <div> */}
-            <img src={trending} alt="" />
+            <img
+              onMouseEnter={() => setHover('trending')}
+              onMouseLeave={() => setHover('')}
+              onClick={() => setSelected('trending')}
+              src={
+                selected === 'trending'
+                  ? trendingS
+                  : hover === 'trending'
+                  ? trendingH
+                  : trending
+              }
+              alt=""
+            />
             {/* <img src={trendingS} alt="" /> */}
             {/* </div> */}
           </div>
           <div className="sideItem i2">
-            <img src={explore} alt="" />
+            <img
+              onMouseEnter={() => setHover('explorer')}
+              onMouseLeave={() => setHover('')}
+              onClick={() => setSelected('explorer')}
+              src={
+                selected === 'explorer'
+                  ? explorerS
+                  : hover === 'explorer'
+                  ? explorerH
+                  : explorer
+              }
+              alt=""
+            />
           </div>
           <div className="sideItem i3">
-            <img src={lending} alt="" />
+            <img
+              onMouseEnter={() => setHover('lending')}
+              onMouseLeave={() => setHover('')}
+              onClick={() => setSelected('lending')}
+              src={
+                selected === 'lending'
+                  ? lendingS
+                  : hover === 'lending'
+                  ? lendingH
+                  : lending
+              }
+              alt=""
+            />
           </div>
           <div className="sideItem i4">
-            <img src={gov} alt="" />
+            <img
+              onMouseEnter={() => setHover('gov')}
+              onMouseLeave={() => setHover('')}
+              onClick={() => setSelected('gov')}
+              src={selected === 'gov' ? govS : hover === 'gov' ? govH : gov}
+              alt=""
+            />
           </div>
         </div>
       </div>
