@@ -43,6 +43,7 @@ const Sidebar: FC = () => {
   const location = useLocation();
   const [selected, setSelected] = useState('trending');
   const [hover, setHover] = useState('');
+  const [down, setDown] = useState('');
 
   const text2 = <span style={{ color: '#fff' }}>Discover</span>;
   const text1 = <span style={{ color: '#fff' }}>Directory</span>;
@@ -90,11 +91,18 @@ const Sidebar: FC = () => {
         <div className="middleNav">
           <div className="sideItem i1">
             <img
+              onMouseDown={() => setDown('trending')}
+              onMouseUp={() => setDown('')}
               onMouseEnter={() => setHover('trending')}
-              onMouseLeave={() => setHover('')}
+              onMouseLeave={() => {
+                setDown('');
+                setHover('');
+              }}
               onClick={() => setSelected('trending')}
               src={
-                selected === 'trending'
+                down === 'trending'
+                  ? trendingD
+                  : selected === 'trending'
                   ? trendingS
                   : hover === 'trending'
                   ? trendingH
@@ -107,11 +115,18 @@ const Sidebar: FC = () => {
           </div>
           <div className="sideItem i2">
             <img
+              onMouseDown={() => setDown('explorer')}
+              onMouseUp={() => setDown('')}
               onMouseEnter={() => setHover('explorer')}
-              onMouseLeave={() => setHover('')}
+              onMouseLeave={() => {
+                setDown('');
+                setHover('');
+              }}
               onClick={() => setSelected('explorer')}
               src={
-                selected === 'explorer'
+                down === 'explorer'
+                  ? explorerD
+                  : selected === 'explorer'
                   ? explorerS
                   : hover === 'explorer'
                   ? explorerH
@@ -122,11 +137,18 @@ const Sidebar: FC = () => {
           </div>
           <div className="sideItem i3">
             <img
+              onMouseDown={() => setDown('lending')}
+              onMouseUp={() => setDown('')}
               onMouseEnter={() => setHover('lending')}
-              onMouseLeave={() => setHover('')}
+              onMouseLeave={() => {
+                setDown('');
+                setHover('');
+              }}
               onClick={() => setSelected('lending')}
               src={
-                selected === 'lending'
+                down === 'lending'
+                  ? lendingD
+                  : selected === 'lending'
                   ? lendingS
                   : hover === 'lending'
                   ? lendingH
@@ -137,10 +159,23 @@ const Sidebar: FC = () => {
           </div>
           <div className="sideItem i4">
             <img
+              onMouseDown={() => setDown('gov')}
+              onMouseUp={() => setDown('')}
               onMouseEnter={() => setHover('gov')}
-              onMouseLeave={() => setHover('')}
+              onMouseLeave={() => {
+                setDown('');
+                setHover('');
+              }}
               onClick={() => setSelected('gov')}
-              src={selected === 'gov' ? govS : hover === 'gov' ? govH : gov}
+              src={
+                down === 'gov'
+                  ? govD
+                  : selected === 'gov'
+                  ? govS
+                  : hover === 'gov'
+                  ? govH
+                  : gov
+              }
               alt=""
             />
           </div>
