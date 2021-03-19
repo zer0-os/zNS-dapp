@@ -2,16 +2,19 @@ import { FC, useState } from 'react';
 import { useAsyncDebounce } from 'react-table';
 import '../css/subdomains.scss';
 interface SearchTableProps {
-  filter: any;
-  setFilter: any;
-  search: string;
+  globalFilter: any;
+  setGlobalFilter: any;
 }
 
-const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter, search }) => {
-  const [value, setValue] = useState(filter);
-  useAsyncDebounce((search) => {
-    setFilter(value || undefined);
-  });
+const GlobalFilter: FC<SearchTableProps> = ({
+  globalFilter,
+  setGlobalFilter,
+}) => {
+  const [temp, setTemp] = useState(globalFilter);
+  if (temp !== globalFilter) {
+    setGlobalFilter(globalFilter);
+    setTemp(globalFilter);
+  }
 
   return null;
 };
