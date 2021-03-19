@@ -14,6 +14,8 @@ import listselected from '../css/img/listselected.png';
 // import listunselected from '../css/img/listunselected.png';
 // import gridselected from '../css/img/gridselected.png';
 import gridunselected from '../css/img/gridunselected.png';
+import GlobalFilter from './searchTable';
+import SearchDomains from './searchDomain';
 
 interface DomainsGlobalProps {
   domain: string;
@@ -144,15 +146,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
           </div> */}
 
           <div className="subdomainsBar">
-            <div className="search">
-              <button className="search-bar-button"></button>
-              <div className="search-bar-glow"></div>
-              <input
-                className="searchBar"
-                type="text"
-                placeholder="Search by Creator, Creation, and Collection"
-              ></input>
-            </div>
+            <GlobalFilter setFilter={GlobalFilter} filter={null} />
             <div className="buttons">
               <div className="filter">
                 <div className="imgContainer">

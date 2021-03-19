@@ -14,6 +14,8 @@ import listselected from '../css/img/listselected.png';
 // import listunselected from '../css/img/listunselected.png';
 // import gridselected from '../css/img/gridselected.png';
 import gridunselected from '../css/img/gridunselected.png';
+import GlobalFiliter from './searchTable';
+import GlobalFilter from './searchTable';
 
 interface SubdomainsProps {
   domain: string;
@@ -151,11 +153,12 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             <div className="search">
               <button className="search-bar-button"></button>
               <div className="search-bar-glow"></div>
-              <input
+              {/* <input
                 className="searchBar"
                 type="text"
                 placeholder="Search by Creator, Creation, and Collection"
-              ></input>
+              ></input> */}
+              <GlobalFilter setFilter={GlobalFiliter} filter={null} />
             </div>
             <div className="buttons">
               <div className="filter">

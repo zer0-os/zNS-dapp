@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useAsyncDebounce } from 'react-table';
+import '../css/subdomains.scss';
 interface SearchTableProps {
   filter: any;
   setFilter: any;
@@ -12,20 +13,19 @@ const GlobalFilter: FC<SearchTableProps> = ({ filter, setFilter }) => {
   });
 
   return (
-    <div className="search-bar-table-container">
-      <div className="search-bar-table">
-        <input
-          className="search-bar-input"
-          type="text"
-          value={value || ''}
-          placeholder="Search"
-          onChange={(e) => {
-            setValue(e.target.value);
-            onChange(e.target.value);
-          }}
-        />
-        <button className="search-bar-button"></button>
-      </div>
+    <div className="search">
+      <button className="search-bar-button"></button>
+      <div className="search-bar-glow"></div>
+      <input
+        className="searchBar"
+        type="text"
+        value={value || ''}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder="Search by Creator, Creation, and Collection"
+      ></input>
     </div>
   );
 };
