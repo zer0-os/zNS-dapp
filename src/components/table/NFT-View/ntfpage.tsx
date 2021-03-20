@@ -44,6 +44,19 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     setNftVisible(false);
   };
 
+  const historyRow = (
+    <div className="historyRow">
+      <div className="historyLeft">
+        <div className="avatar"></div>
+        <div className="historyText">
+          <span className="embolden">Phoenix</span> placed a bid for{' '}
+          <span className="embolden">20 WILD</span>
+        </div>
+      </div>
+      <div className="historyRight">4 days ago [tx]</div>
+    </div>
+  );
+
   if (domain.isNothing()) return null;
   return (
     // <div className="nftView">
@@ -166,6 +179,30 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       <div className="bottom">
         {/* <div className="chat"></div>
       <div className="history"></div> */}
+        <div className="history">
+          <div className="historyTitle">HISTORY</div>
+          <div className="historyBox">
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+          </div>
+        </div>
       </div>
     </div>
   );
