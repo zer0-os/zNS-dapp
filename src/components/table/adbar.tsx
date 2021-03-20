@@ -41,6 +41,11 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
     },
   );
 
+  // const timer = () => {
+  //   let seconds = 1000;
+  //   let minuets = seconds * 60;
+  // };
+
   if (domain.isNothing()) return null;
   return (
     <div className="adbarContainer">
