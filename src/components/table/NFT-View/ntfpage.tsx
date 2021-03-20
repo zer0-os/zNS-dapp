@@ -45,6 +45,30 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
 
   if (domain.isNothing()) return null;
   return (
+    // <div className="nftView">
+    //   <div className="showcase"></div>
+    //   <div className="info">
+    //     <div className="story"></div>
+    //     <div className="quad">
+    //       <div className="top">
+    //         <div className="last"></div>
+    //         <div className="change"></div>
+    //       </div>
+    //       <div className="bottom">
+    //         <div className="resale"></div>
+    //         <div className="original"></div>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   <div className="stats">
+    //     <div className="growth"></div>
+    //     <div className="market"></div>
+    //   </div>
+    //   <div className="bottom">
+    //     <div className="chat"></div>
+    //     <div className="history"></div>
+    //   </div>
+    // </div>
     <div className="nftView">
       <div className="showcase"></div>
       <div className="info">
@@ -54,19 +78,16 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
             <div className="last"></div>
             <div className="change"></div>
           </div>
-          <div className="bottom">
-            <div className="resale"></div>
-            <div className="original"></div>
-          </div>
+          <div className="bottomBar"></div>
         </div>
       </div>
-      <div className="stats">
-        <div className="growth"></div>
-        <div className="market"></div>
-      </div>
+      {/* <div className="stats">
+      <div className="growth"></div>
+      <div className="market"></div>
+    </div> */}
       <div className="bottom">
-        <div className="chat"></div>
-        <div className="history"></div>
+        {/* <div className="chat"></div>
+      <div className="history"></div> */}
       </div>
     </div>
   );
