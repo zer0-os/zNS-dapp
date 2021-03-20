@@ -53,7 +53,9 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <span className="embolden">20 WILD</span>
         </div>
       </div>
-      <div className="historyRight">4 days ago [tx]</div>
+      <div className="historyRight">
+        4 days ago [tx] <span className="viewTx">[view tx]</span>
+      </div>
     </div>
   );
 
@@ -111,15 +113,15 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           </div>
           <div className="middle">
             <div className="midLeft">
-              <div className="text">Last Bid</div>
+              <div className="text">Price</div>
               <div className="units">250 LOOT</div>
               <div className="price">$1,304.12</div>
             </div>
-            <div className="midRight">
+            {/* <div className="midRight">
               <div className="text">Current Price</div>
               <div className="units">65,045 LOOT</div>
               <div className="price">$23,401,123.43</div>
-            </div>
+            </div> */}
           </div>
           <div className="showcaseBottom">
             <div className="shadowContainer">
