@@ -730,10 +730,12 @@ table {
       // all columns local
       .tdLocal {
         height: 120px;
-        &:not(:first-child):not(:nth-child(3)) {
+        &:not(:first-child):not(:nth-child(3)):not(:last-child) {
           text-align: right;
         }
-
+        &:last-child {
+          text-align: center;
+        }
         &:first-child {
           color: #fff;
           font-weight: bold;
