@@ -1,20 +1,54 @@
-.walletButtonContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 10vw;
+@import './color-variables.scss';
+
+.wallet-container {
+  background-color: $blackbg;
+  .title {
+    text-align: center;
+    padding-top: 4%;
+    height: 9vh;
+    background: $hzflat;
+    .con- {
+      color: white;
+    }
+  }
+  .walletButtonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    background-color: $grayModal;
+  }
+  .btn-div {
+    .network-btns {
+      margin-bottom: 20px;
+      border: none;
+      background-color: transparent;
+      color: white;
+      max-width: 100%;
+
+      .btn-lines {
+        width: 500%;
+      }
+    }
+  }
+
+  .button-target {
+    margin-left: 30px;
+  }
+  .walletButtonContainer:nth-child(1) {
+    margin-bottom: 20px;
+  }
+  .new-ETH {
+    padding-top: 3%;
+    padding-left: 13%;
+    height: 8vh;
+    // border: 2px solid red;
+    color: white;
+    background: $hzflat;
+  }
 }
 
-.walletButtonContainer:nth-child(1) {
-  margin-bottom: 20px;
-}
-
-.network-btns {
-  margin-bottom: 20px;
-  border: none;
-  background-color: transparent;
-}
-
-.button-target {
-  margin-left: 30px;
-}
+// .ant-modal-body {
+//   padding: 0;
+// }
