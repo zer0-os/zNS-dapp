@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Link, useLocation } from 'react-router-dom';
 import { useDomainCache } from '../../lib/useDomainCache';
 import TableView from './tableView';
+import NFTPage from './NFT-View/ntfpage';
 import linebutton from '../css/img/threelinebutton.png';
 import squarebutton from '../css/img/squaregridbutton.png';
 import linebuttongrey from '../css/img/threelinebuttongrey.png';
@@ -14,6 +15,8 @@ import listselected from '../css/img/listselected.png';
 // import listunselected from '../css/img/listunselected.png';
 // import gridselected from '../css/img/gridselected.png';
 import gridunselected from '../css/img/gridunselected.png';
+import GlobalFiliter from './searchTable';
+import GlobalFilter from './searchTable';
 
 interface SubdomainsProps {
   domain: string;
@@ -26,6 +29,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const [gridView, toggleGridView] = useState(false);
+  const [search, setSearch] = useState('');
 
   const routes = _.transform(
     location.pathname
@@ -37,6 +41,8 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
+
+  console.log('DOMAIN!', domain);
 
   useEffect(() => {
     //console.log('ChildView', domain);
@@ -85,24 +91,26 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   if (domain.isNothing()) return null;
   return (
     <div className="pageContainerPositionFix">
-      <div className="metricsBar">
-        {/* <div className="metricsTitle">Metrics</div> */}
-        <div className="metricsContainer">
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-          {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-          {metric('Total Wild Holders', '12,302', '', '')}
-        </div>
-      </div>
+      {domain.value.children.length !== 0 ? (
+        <div>
+          <div className="metricsBar">
+            {/* <div className="metricsTitle">Metrics</div> */}
+            <div className="metricsContainer">
+              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+              {metric('Total Wild Holders', '12,302', '', '')}
+            </div>
+          </div>
 
-      <AdBar domain={domain.value.domain} />
+          <AdBar domain={domain.value.domain} />
 
-      <div id="subdomainsContainer">
-        <div className="subdomainsSortBar">
-          {/* <div>
+          <div id="subdomainsContainer">
+            <div className="subdomainsSortBar">
+              {/* <div>
             <div className="route-nav">
               <div className="route-nav-link">
             
@@ -147,53 +155,65 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
          
             </div>
           </div> */}
-          <div className="subdomainsBar">
-            <div className="search">
-              <button className="search-bar-button"></button>
-              <div className="search-bar-glow"></div>
-              <input
-                className="searchBar"
-                type="text"
-                placeholder="Search by Creator, Creation, and Collection"
-              ></input>
+              <div className="subdomainsBar">
+                <div className="search">
+                  <button className="search-bar-button"></button>
+                  <div className="search-bar-glow"></div>
+                  <input
+                    className="searchBar"
+                    placeholder="Search by Creator, Creation, and Collection"
+                    // value={search || ''}
+                    type="text"
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
+                  ></input>
+                </div>
+                <div className="buttons">
+                  <div className="filter">
+                    <div className="imgContainer">
+                      <img src={filtericon} alt="" />
+                      <img src={filtericon} alt="" />
+                    </div>
+                    <div className="text">Filters</div>
+                  </div>
+                  <div className="number">
+                    <div className="text">100</div>
+                    <div className="imgContainer">
+                      <img src={filterarrow} alt="" />
+                      <img src={filterarrow} alt="" />
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => toggleGridView(false)}
+                    className={`list ${gridView ? '' : 'selected'}`}
+                  >
+                    <div className="lines">
+                      <img src={listselected} alt="" />
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => toggleGridView(true)}
+                    className={`grid ${gridView ? 'selected' : ''}`}
+                  >
+                    <div className="squares">
+                      <img src={gridunselected} alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="buttons">
-              <div className="filter">
-                <div className="imgContainer">
-                  <img src={filtericon} alt="" />
-                  <img src={filtericon} alt="" />
-                </div>
-                <div className="text">Filters</div>
-              </div>
-              <div className="number">
-                <div className="text">100</div>
-                <div className="imgContainer">
-                  <img src={filterarrow} alt="" />
-                  <img src={filterarrow} alt="" />
-                </div>
-              </div>
-              <div
-                onClick={() => toggleGridView(false)}
-                className={`list ${gridView ? '' : 'selected'}`}
-              >
-                <div className="lines">
-                  <img src={listselected} alt="" />
-                </div>
-              </div>
-              <div
-                onClick={() => toggleGridView(true)}
-                className={`grid ${gridView ? 'selected' : ''}`}
-              >
-                <div className="squares">
-                  <img src={gridunselected} alt="" />
-                </div>
-              </div>
-            </div>
+
+            <TableView
+              domain={domain.value.domain}
+              gridView={gridView}
+              search={search}
+            />
           </div>
         </div>
-
-        <TableView domain={domain.value.domain} gridView={gridView} />
-      </div>
+      ) : (
+        <NFTPage domain={domain.value.domain} />
+      )}
     </div>
   );
 };

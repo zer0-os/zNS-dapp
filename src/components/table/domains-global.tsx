@@ -14,6 +14,8 @@ import listselected from '../css/img/listselected.png';
 // import listunselected from '../css/img/listunselected.png';
 // import gridselected from '../css/img/gridselected.png';
 import gridunselected from '../css/img/gridunselected.png';
+import GlobalFilter from './searchTable';
+import SearchDomains from './searchDomain';
 
 interface DomainsGlobalProps {
   domain: string;
@@ -29,6 +31,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   // const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
+  const [search, setSearch] = useState('');
 
   const routes = _.transform(
     location.pathname
@@ -149,8 +152,12 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
               <div className="search-bar-glow"></div>
               <input
                 className="searchBar"
-                type="text"
                 placeholder="Search by Creator, Creation, and Collection"
+                // value={search || ''}
+                type="text"
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
               ></input>
             </div>
             <div className="buttons">
@@ -188,7 +195,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
           </div>
         </div>
 
-        <TableViewGlobal domain={domain.value.domain} gridView={gridView} />
+        <TableViewGlobal
+          domain={domain.value.domain}
+          gridView={gridView}
+          search={search}
+        />
       </div>
     </div>
   );
