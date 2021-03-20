@@ -1,7 +1,8 @@
 @import './color-variables.scss';
 
 .wallet-container {
-  background-color: $hzgradient;
+  background-color: $hzflat;
+
   .title {
     text-align: center;
     padding-top: 2%;
@@ -19,15 +20,14 @@
     width: 100%;
     max-width: 100%;
     background-color: $hzgradient;
+    padding-top: 13px;
   }
   .btn-div {
     width: 100%;
     max-width: 100%;
-
     .network-btns {
-      margin-top: 2%;
       text-align: left;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       border: none;
       background-color: transparent;
       color: white;
@@ -53,6 +53,8 @@
 
       .btn-lines {
         width: 95%;
+        height: 2px;
+        background-color: $hzflat;
       }
     }
   }

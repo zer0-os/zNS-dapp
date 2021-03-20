@@ -307,7 +307,7 @@ export default function Wallet() {
                   <div className="name-con">
                     {name} <div className="circle"></div>
                   </div>
-                  <hr className="btn-lines" />
+                  <div className="btn-lines"> </div>
                 </button>
               </div>
             );
