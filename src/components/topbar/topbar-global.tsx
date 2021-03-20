@@ -258,15 +258,19 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         onOk={walletOk}
         onCancel={walletCancel}
         footer={null}
+        bodyStyle={{
+          height: '464px',
+          // width: '385px',
+          padding: '0',
+          margin: '0',
+        }}
+        width="385px"
+        style={{
+          position: 'relative',
+          height: '464px',
+        }}
       >
         <Wallet />
-        <hr />
-        <div className="new-ETH">
-          <div className="ETH"> New to Ethereum?</div>{' '}
-          <a href="https://ethereum.org/en/wallets/">
-            Learn more about wallets
-          </a>
-        </div>
       </Modal>
     </div>
   );
