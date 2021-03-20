@@ -11,6 +11,7 @@ import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
 import AdBar from './adbar';
 import filtericon from '../css/img/filtericon.png';
 import filterarrow from '../css/img/filterarrow.png';
+<<<<<<< HEAD
 import list from '../css/img/tablebar/list-default.png';
 import listD from '../css/img/tablebar/list-down.png';
 import listH from '../css/img/tablebar/list-hover.png';
@@ -19,6 +20,14 @@ import grid from '../css/img/tablebar/grid-default.png';
 import gridD from '../css/img/tablebar/grid-down.png';
 import gridH from '../css/img/tablebar/grid-hover.png';
 import gridS from '../css/img/tablebar/grid-select.png';
+=======
+import listselected from '../css/img/listselected.png';
+// import listunselected from '../css/img/listunselected.png';
+// import gridselected from '../css/img/gridselected.png';
+import gridunselected from '../css/img/gridunselected.png';
+import GlobalFiliter from './searchTable';
+import GlobalFilter from './searchTable';
+>>>>>>> develop
 
 interface SubdomainsProps {
   domain: string;
@@ -31,8 +40,12 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const [gridView, toggleGridView] = useState(false);
+<<<<<<< HEAD
   const [hover, setHover] = useState('');
   const [down, setDown] = useState('');
+=======
+  const [search, setSearch] = useState('');
+>>>>>>> develop
 
   const routes = _.transform(
     location.pathname
@@ -164,8 +177,17 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                   <div className="search-bar-glow"></div>
                   <input
                     className="searchBar"
+<<<<<<< HEAD
                     type="text"
                     placeholder="Search by Creator, Creation, and Collection"
+=======
+                    placeholder="Search by Creator, Creation, and Collection"
+                    // value={search || ''}
+                    type="text"
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
+>>>>>>> develop
                   ></input>
                 </div>
                 <div className="buttons">
@@ -185,6 +207,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                   </div>
                   <div
                     onClick={() => toggleGridView(false)}
+<<<<<<< HEAD
                     onMouseDown={() => setDown('list')}
                     onMouseUp={() => setDown('')}
                     onMouseEnter={() => setHover('list')}
@@ -230,12 +253,35 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                       }
                       alt=""
                     />
+=======
+                    className={`list ${gridView ? '' : 'selected'}`}
+                  >
+                    <div className="lines">
+                      <img src={listselected} alt="" />
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => toggleGridView(true)}
+                    className={`grid ${gridView ? 'selected' : ''}`}
+                  >
+                    <div className="squares">
+                      <img src={gridunselected} alt="" />
+                    </div>
+>>>>>>> develop
                   </div>
                 </div>
               </div>
             </div>
 
+<<<<<<< HEAD
             <TableView domain={domain.value.domain} gridView={gridView} />
+=======
+            <TableView
+              domain={domain.value.domain}
+              gridView={gridView}
+              search={search}
+            />
+>>>>>>> develop
           </div>
         </div>
       ) : (

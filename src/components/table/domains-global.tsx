@@ -10,6 +10,7 @@ import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
 import AdBar from './adbar';
 import filtericon from '../css/img/filtericon.png';
 import filterarrow from '../css/img/filterarrow.png';
+<<<<<<< HEAD
 import list from '../css/img/tablebar/list-default.png';
 import listD from '../css/img/tablebar/list-down.png';
 import listH from '../css/img/tablebar/list-hover.png';
@@ -18,6 +19,15 @@ import grid from '../css/img/tablebar/grid-default.png';
 import gridD from '../css/img/tablebar/grid-down.png';
 import gridH from '../css/img/tablebar/grid-hover.png';
 import gridS from '../css/img/tablebar/grid-select.png';
+=======
+import listselected from '../css/img/listselected.png';
+// import listunselected from '../css/img/listunselected.png';
+// import gridselected from '../css/img/gridselected.png';
+import gridunselected from '../css/img/gridunselected.png';
+import GlobalFilter from './searchTable';
+import SearchDomains from './searchDomain';
+
+>>>>>>> develop
 interface DomainsGlobalProps {
   domain: string;
 }
@@ -32,8 +42,12 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   // const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
+<<<<<<< HEAD
   const [hover, setHover] = useState('');
   const [down, setDown] = useState('');
+=======
+  const [search, setSearch] = useState('');
+>>>>>>> develop
 
   const routes = _.transform(
     location.pathname
@@ -154,8 +168,12 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
               <div className="search-bar-glow"></div>
               <input
                 className="searchBar"
-                type="text"
                 placeholder="Search by Creator, Creation, and Collection"
+                // value={search || ''}
+                type="text"
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                }}
               ></input>
             </div>
             <div className="buttons">
@@ -225,7 +243,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
           </div>
         </div>
 
-        <TableViewGlobal domain={domain.value.domain} gridView={gridView} />
+        <TableViewGlobal
+          domain={domain.value.domain}
+          gridView={gridView}
+          search={search}
+        />
       </div>
     </div>
   );
