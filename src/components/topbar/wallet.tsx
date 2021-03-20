@@ -388,8 +388,9 @@ export default function Wallet() {
         <div id="overlay"></div>
         <div className="new-ETH">
           <div className="ETH"> New to Ethereum?</div>{' '}
-          <a href="https://ethereum.org/en/wallets/">
+          <a className="link" href="https://ethereum.org/en/wallets/">
             Learn more about wallets
+            <hr />
           </a>
         </div>
       </div>
