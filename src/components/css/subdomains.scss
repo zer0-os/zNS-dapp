@@ -394,12 +394,6 @@ $page-margin: 100px;
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        .lines {
-          width: 19px;
-          height: 15px;
-          display: flex;
-          flex-direction: column;
-        }
       }
       .grid {
         margin-left: -7px;
@@ -412,10 +406,6 @@ $page-margin: 100px;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        .squares {
-          display: flex;
-          flex-direction: column;
-        }
       }
       .selected {
         background: #004789;
@@ -691,7 +681,7 @@ table {
           background: linear-gradient(148deg, #00407c 20.93%, #00203f 82.47%);
           box-shadow: 0px 0px 10px rgba(60, 161, 255, 0.7);
           // probably change this
-          width: 100%;
+          width: 119px;
           height: 28px;
           transition: 0.6s;
           text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
@@ -740,10 +730,12 @@ table {
       // all columns local
       .tdLocal {
         height: 120px;
-        &:not(:first-child):not(:nth-child(3)) {
+        &:not(:first-child):not(:nth-child(3)):not(:last-child) {
           text-align: right;
         }
-
+        &:last-child {
+          text-align: center;
+        }
         &:first-child {
           color: #fff;
           font-weight: bold;

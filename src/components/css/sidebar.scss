@@ -5,7 +5,7 @@
 .sidebarContainer {
   height: 100vh;
   width: 100px;
-
+  z-index: 100;
   // padding: 35px 0;
 
   display: flex;
@@ -59,6 +59,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        // border: 5px red solid;
         cursor: pointer;
         // div {
         //   position: relative;
@@ -74,6 +75,8 @@
         // }
         img {
           align-self: center;
+          // pointer-events: inherit;
+          cursor: pointer;
         }
         &:first-child {
           margin-top: 37px;

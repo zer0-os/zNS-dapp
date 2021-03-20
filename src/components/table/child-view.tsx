@@ -11,12 +11,14 @@ import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
 import AdBar from './adbar';
 import filtericon from '../css/img/filtericon.png';
 import filterarrow from '../css/img/filterarrow.png';
-import listselected from '../css/img/listselected.png';
-// import listunselected from '../css/img/listunselected.png';
-// import gridselected from '../css/img/gridselected.png';
-import gridunselected from '../css/img/gridunselected.png';
-import GlobalFiliter from './searchTable';
-import GlobalFilter from './searchTable';
+import list from '../css/img/tablebar/list-default.png';
+import listD from '../css/img/tablebar/list-down.png';
+import listH from '../css/img/tablebar/list-hover.png';
+import listS from '../css/img/tablebar/list-select.png';
+import grid from '../css/img/tablebar/grid-default.png';
+import gridD from '../css/img/tablebar/grid-down.png';
+import gridH from '../css/img/tablebar/grid-hover.png';
+import gridS from '../css/img/tablebar/grid-select.png';
 
 interface SubdomainsProps {
   domain: string;
@@ -29,6 +31,8 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const [gridView, toggleGridView] = useState(false);
+  const [hover, setHover] = useState('');
+  const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
 
   const routes = _.transform(
@@ -186,19 +190,51 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                   </div>
                   <div
                     onClick={() => toggleGridView(false)}
+                    onMouseDown={() => setDown('list')}
+                    onMouseUp={() => setDown('')}
+                    onMouseEnter={() => setHover('list')}
+                    onMouseLeave={() => {
+                      setDown('');
+                      setHover('');
+                    }}
                     className={`list ${gridView ? '' : 'selected'}`}
                   >
-                    <div className="lines">
-                      <img src={listselected} alt="" />
-                    </div>
+                    <img
+                      src={
+                        down === 'list'
+                          ? listD
+                          : gridView === false
+                          ? listS
+                          : hover === 'list'
+                          ? listH
+                          : list
+                      }
+                      alt=""
+                    />
                   </div>
                   <div
                     onClick={() => toggleGridView(true)}
+                    onMouseDown={() => setDown('grid')}
+                    onMouseUp={() => setDown('')}
+                    onMouseEnter={() => setHover('grid')}
+                    onMouseLeave={() => {
+                      setDown('');
+                      setHover('');
+                    }}
                     className={`grid ${gridView ? 'selected' : ''}`}
                   >
-                    <div className="squares">
-                      <img src={gridunselected} alt="" />
-                    </div>
+                    <img
+                      src={
+                        down === 'grid'
+                          ? gridD
+                          : gridView === true
+                          ? gridS
+                          : hover === 'grid'
+                          ? gridH
+                          : grid
+                      }
+                      alt=""
+                    />
                   </div>
                 </div>
               </div>
