@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import '../../css/nftpage.scss';
 import TableImage from '../table-image';
+import NFTImage from './nft-image';
 
 interface ProfileProps {
   domain: string;
@@ -43,30 +44,167 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     setNftVisible(false);
   };
 
+  const historyRow = (
+    <div className="historyRow">
+      <div className="historyLeft">
+        <div className="avatar"></div>
+        <div className="historyText">
+          <span className="embolden">Phoenix</span> placed a bid for{' '}
+          <span className="embolden">20 WILD</span>
+        </div>
+      </div>
+      <div className="historyRight">
+        4 days ago [tx] <span className="viewTx">[view tx]</span>
+      </div>
+    </div>
+  );
+
   if (domain.isNothing()) return null;
   return (
+    // <div className="nftView">
+    //   <div className="showcase"></div>
+    //   <div className="info">
+    //     <div className="story"></div>
+    //     <div className="quad">
+    //       <div className="top">
+    //         <div className="last"></div>
+    //         <div className="change"></div>
+    //       </div>
+    //       <div className="bottom">
+    //         <div className="resale"></div>
+    //         <div className="original"></div>
+    //       </div>
+    //     </div>
+    //   </div>
+    //   <div className="stats">
+    //     <div className="growth"></div>
+    //     <div className="market"></div>
+    //   </div>
+    //   <div className="bottom">
+    //     <div className="chat"></div>
+    //     <div className="history"></div>
+    //   </div>
+    // </div>
     <div className="nftView">
-      <div className="showcase"></div>
-      <div className="info">
-        <div className="story"></div>
-        <div className="quad">
+      <div className="showcase">
+        <div className="showcaseIMG">
+          <NFTImage domain={domain.value.domain} />
+        </div>
+        <div className="showcaseInfo">
           <div className="top">
-            <div className="last"></div>
-            <div className="change"></div>
+            <div className="title">Blue Pill / Red Pill</div>
+            <div className="domain">0:/ / {domain.value.domain}</div>
+            <div className="users">
+              <div className="creator">
+                <div className="avatar"></div>
+                <div className="creatorFlex">
+                  <div className="creatorText">Frank Wilder</div>
+                  <div className="desc">Creator</div>
+                </div>
+              </div>
+              <div className="owner">
+                <div className="avatar"></div>
+                <div className="ownerFlex">
+                  <div className="ownerText">Neo Wilder</div>
+                  <div className="desc">Owner</div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="bottom">
-            <div className="resale"></div>
-            <div className="original"></div>
+          <div className="middle">
+            <div className="midLeft">
+              <div className="text">Price</div>
+              <div className="units">250 LOOT</div>
+              <div className="price">$1,304.12</div>
+            </div>
+            {/* <div className="midRight">
+              <div className="text">Current Price</div>
+              <div className="units">65,045 LOOT</div>
+              <div className="price">$23,401,123.43</div>
+            </div> */}
+          </div>
+          <div className="showcaseBottom">
+            <div className="shadowContainer">
+              <div className="makeOffer">
+                <div>MAKE AN OFFER</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div className="stats">
-        <div className="growth"></div>
-        <div className="market"></div>
+      <div className="info">
+        <div className="story">
+          <div>STORY</div>
+          <div>
+            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum,
+            facilis iste perferendis molestiae nostrum, similique blanditiis
+            delectus quam dicta ratione recusandae reprehenderit quia culpa qui
+            quos eligendi quidem quisquam aliquam sed eveniet minima quas
+            corporis aspernatur. Quisquam ex rerum praesentium? Similique dolor
+            qui pariatur autem? Earum animi sequi pariatur corporis." -Frank
+            Wilder
+          </div>
+        </div>
+        <div className="quad">
+          <div className="top">
+            <div className="views">
+              <div className="quadHeader">VIEWS</div>
+              <div className="quadText">12,317</div>
+            </div>
+            <div className="edition">
+              <div className="quadHeader">
+                <span>EDITION</span>
+                <span className="infoButton">
+                  <span className="infoMark">?</span>
+                </span>
+              </div>
+              <div className="quadText">1 of 1</div>
+            </div>
+          </div>
+          <div className="address">
+            <div className="quadHeader">
+              <span>CONTRACT ADDRESS</span>
+              <span className="infoButton">
+                <span className="infoMark">?</span>
+              </span>
+            </div>
+            <div className="quadText">
+              0xbCC817f057950b0df41206C5D7125E6225Cae18e
+            </div>
+          </div>
+        </div>
       </div>
+      {/* <div className="stats">
+      <div className="growth"></div>
+      <div className="market"></div>
+    </div> */}
       <div className="bottom">
-        <div className="chat"></div>
-        <div className="history"></div>
+        {/* <div className="chat"></div>
+      <div className="history"></div> */}
+        <div className="history">
+          <div className="historyTitle">HISTORY</div>
+          <div className="historyBox">
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+            {historyRow}
+          </div>
+        </div>
       </div>
     </div>
   );
