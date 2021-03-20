@@ -304,8 +304,9 @@ export default function Wallet() {
                       style={{ height: '25%', marginLeft: '-1rem' }}
                     />
                   )}
-                  {name}
-
+                  <div className="name-con">
+                    {name} <div className="circle"></div>
+                  </div>
                   <hr className="btn-lines" />
                 </button>
               </div>

@@ -260,7 +260,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         footer={null}
         bodyStyle={{
           height: '464px',
-          width: '385px',
+          // width: '385px',
           padding: '0',
           margin: '0',
         }}

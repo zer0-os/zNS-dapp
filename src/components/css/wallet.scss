@@ -1,12 +1,13 @@
 @import './color-variables.scss';
 
 .wallet-container {
-  background-color: $blackbg;
+  background-color: $hzgradient;
   .title {
     text-align: center;
-    padding-top: 4%;
-    height: 9vh;
+    padding-top: 2%;
+    height: 8vh;
     background: $hzflat;
+
     .con- {
       color: white;
     }
@@ -17,18 +18,41 @@
     justify-content: space-between;
     width: 100%;
     max-width: 100%;
-    background-color: $grayModal;
+    background-color: $hzgradient;
   }
   .btn-div {
+    width: 100%;
+    max-width: 100%;
+
     .network-btns {
+      margin-top: 2%;
+      text-align: left;
       margin-bottom: 20px;
       border: none;
       background-color: transparent;
       color: white;
+      width: 100%;
       max-width: 100%;
 
+      .name-con {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        &:first-child {
+          margin-left: 15px;
+        }
+        .circle {
+          margin-right: 15px;
+          border-radius: 50%;
+          background-color: purple;
+          height: 32px;
+          width: 32px;
+        }
+      }
+
       .btn-lines {
-        width: 500%;
+        width: 95%;
       }
     }
   }
