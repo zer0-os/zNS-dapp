@@ -29,6 +29,15 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const history = useHistory();
+  const [counter, setCounter] = useState(4800);
+
+  useEffect(() => {
+    const timer: any =
+      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+    minutes: Math.floor((counter / 1000 / 60) % 60);
+    seconds: Math.floor((counter / 1000) % 60);
+    return () => clearInterval(timer);
+  }, [counter]);
 
   const routes = _.transform(
     location.pathname
@@ -57,7 +66,7 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
         <div className="infoContainer">
           <div className="next">
             <div className="n1">Next Drop in</div>
-            <div className="n2">14:03</div>
+            <div className="n2">{counter}</div>
             <div className="n3">
               <span className="symbol">?</span>
             </div>
