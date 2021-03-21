@@ -9,6 +9,7 @@ import marketimg from '../css/img/chart.svg';
 import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
 import Nestedview from './NFT-View/nestedNFT-view';
+import Image from './mockup/image';
 
 // // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // interface ColumnProps {
@@ -116,6 +117,32 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //
   //
 
+  // const dataInput: Data[] = useMemo(
+  //   () =>
+  //     domain.isNothing()
+  //       ? []
+  //       : _.map(domain.value.children, (key, i) => ({
+  //           key: key,
+  //           '#': i.toString(),
+  //           // asset: <Profile domain={key} />,
+  //           asset: (
+  //             <div className="domainImageContainer">
+  //               <TableImage domain={key} />
+  //             </div>
+  //           ),
+  //           name: key,
+  //           '24Hr': randPrice(),
+  //           '7d': randPrice(),
+  //           marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
+  //           volume: '$' + randVol(),
+  //           supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
+  //           last7days: '',
+  //           timestamp: '',
+  //           trade: '',
+  //         })),
+  //   [domain],
+  // );
+
   const dataInput: Data[] = useMemo(
     () =>
       domain.isNothing()
@@ -124,11 +151,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             key: key,
             '#': i.toString(),
             // asset: <Profile domain={key} />,
-            asset: (
-              <div className="domainImageContainer">
-                <TableImage domain={key} />
-              </div>
-            ),
+            asset: <Image />,
             name: key,
             '24Hr': randPrice(),
             '7d': randPrice(),

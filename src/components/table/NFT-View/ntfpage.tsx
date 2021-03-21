@@ -7,6 +7,7 @@ import _ from 'lodash';
 import '../../css/nftpage.scss';
 import TableImage from '../table-image';
 import NFTImage from './nft-image';
+import neo2 from '../../css/img/neo2.jpeg';
 
 interface ProfileProps {
   domain: string;
@@ -88,7 +89,8 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     <div className="nftView">
       <div className="showcase">
         <div className="showcaseIMG">
-          <NFTImage domain={domain.value.domain} />
+          {/* <NFTImage domain={domain.value.domain} /> */}
+          <img src={neo2} alt="" />
         </div>
         <div className="showcaseInfo">
           <div className="top">
