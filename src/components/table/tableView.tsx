@@ -388,16 +388,26 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                   })
                 }
               </tbody>
-              <div
-                style={{
-                  color: '#fff',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  marginBottom: '20px',
-                }}
-              >
-                No domains to view
-              </div>
+              {rows.length !== 0 ? null : (
+                <tfoot>
+                  <tr>
+                    <td>
+                      <div
+                        style={{
+                          color: '#fff',
+                          fontWeight: 'bold',
+                          textAlign: 'center',
+                          marginBottom: '20px',
+                          borderLeft: '1px solid #bd5fff',
+                          borderRight: '1px solid #bd5fff',
+                        }}
+                      >
+                        No domains to view
+                      </div>
+                    </td>
+                  </tr>
+                </tfoot>
+              )}
             </table>
           </div>
         ) : (
