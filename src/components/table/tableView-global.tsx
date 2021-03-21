@@ -1,14 +1,25 @@
 import { FC, useMemo } from 'react';
-import _ from 'lodash';
+import _, { random } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useDomainCache } from '../../lib/useDomainCache';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import TableImage from '././table-image-global';
 import SearchTable from './searchTable';
 import marketimg from '../css/img/chart.svg';
+import graph1 from '../css/img/table/mockgraphs/graph1.png';
+import graph2 from '../css/img/table/mockgraphs/graph2.png';
+import graph3 from '../css/img/table/mockgraphs/graph3.png';
+import graph4 from '../css/img/table/mockgraphs/graph4.png';
+import graph5 from '../css/img/table/mockgraphs/graph5.png';
 import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
 import Nestedview from './NFT-View/nestedNFT-view';
+import elon from '../css/img/elon.jpg';
+import wilderavatar from '../css/img/wilderavatar.png';
+import neo from '../css/img/neo.jpeg';
+import kitty from '../css/img/kitty.jpeg';
+import cybercar from '../css/img/cybercar.jpeg';
+import realestate from '../css/img/realestate.jpeg';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // interface ColumnProps {
@@ -24,7 +35,7 @@ import Nestedview from './NFT-View/nestedNFT-view';
 interface Data {
   '#': string;
   image: any;
-  network: string;
+  network: any;
   // token: string;
   '24Hr': any;
   '7d': any;
@@ -55,6 +66,20 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //
   // Following functions generate random numbers to display mock data in the UI
   //
+
+  let names = ['Frank', 'BluePill', 'Zine'];
+
+  let images = [
+    <img src={wilderavatar} alt="" />,
+    <img src={neo} alt="" className="neo2" />,
+    <img src={kitty} alt="" className="neo2" />,
+    <img src={cybercar} alt="" className="neo2" />,
+    <img src={realestate} alt="" className="neo2" />,
+  ];
+
+  let List = images.map((image: any) => {
+    return <div> {image} </div>;
+  });
 
   const randThreeS = () => {
     let temp =
@@ -115,6 +140,21 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     return '$' + temp + '.' + dec;
   };
 
+  const randGraph = () => {
+    let temp = Math.floor(Math.random() * 10);
+    if (temp === 0 || temp === 1) {
+      return graph1;
+    } else if (temp === 2 || temp === 3) {
+      return graph2;
+    } else if (temp === 4 || temp === 5) {
+      return graph3;
+    } else if (temp === 6 || temp === 7) {
+      return graph4;
+    } else if (temp === 8 || temp === 9) {
+      return graph5;
+    } else return graph5;
+  };
+
   //
   //
   //
@@ -126,7 +166,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         : _.map(domain.value.children, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
-            image: <TableImage domain={key} />,
+            image: List[i],
             network: key,
             // token: key + ' token',
             '24Hr': randPrice(),
@@ -140,6 +180,29 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
           })),
     [domain],
   );
+
+  // const dataInput: Data[] = useMemo(
+  //   () =>
+  //     domain.isNothing()
+  //       ? []
+  //       : _.map(domain.value.children, (key, i) => ({
+  //           '#': i.toString(),
+  //           // asset: <Profile domain={key} />,
+  //           image: <img src={elon} alt="" />,
+  //           network: <Names key={key} />,
+  //           // token: key + ' token'
+  //           '24Hr': randPrice(),
+  //           '7d': randPrice(),
+  //           marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
+  //           volume: '$' + randVol(),
+  //           supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
+  //           last7days: '',
+  //           timestamp: '',
+  //           trade: '',
+  //         })),
+  //   [domain],
+  // );
+
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
 
   const columns = useMemo<Column<Data>[]>(
@@ -206,7 +269,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       {
         Header: 'Last 7 Days',
         accessor: 'last7days',
-        Cell: (props) => <img src={marketimg} alt="" />,
+        Cell: (props) => <img src={randGraph()} alt="" />,
       },
       {
         Header: '',
@@ -284,6 +347,23 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       pathname: row.values.network,
     });
   };
+
+  // const handleRowClick = (row: any) => {
+  //   //console.log('fire');
+  //   //console.log(row);
+  //   let routes;
+  //   if (row.values.network == 'Frank') {
+  //     routes = 'community';
+  //   }
+  //   history.push({
+  //     pathname: routes,
+  //     //  neo
+
+  //     //   foobarbar
+
+  //     //   foo
+  //   });
+  // };
   if (domain.isNothing()) return null;
   //console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
@@ -356,15 +436,31 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                   })
                 }
               </tbody>
-              {/* {rows.length !== 0 ? null : (
+              {rows.length !== 0 ? null : (
                 <tfoot>
                   <tr>
-                    <td>
-                      <Nestedview domain={_domain} />
+                    <td
+                      style={{
+                        borderLeft: '1px solid #bd5fff',
+                        borderRight: '1px solid #bd5fff',
+                        borderBottom: '1px solid #bd5fff',
+                        borderRadius: '0px 0px 15px 15px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: '#fff',
+                          fontWeight: 'bold',
+                          textAlign: 'center',
+                          marginBottom: '20px',
+                        }}
+                      >
+                        No domains to view
+                      </div>
                     </td>
                   </tr>
                 </tfoot>
-              )} */}
+              )}
             </table>
           </div>
         ) : (

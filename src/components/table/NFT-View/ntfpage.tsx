@@ -7,6 +7,8 @@ import _ from 'lodash';
 import '../../css/nftpage.scss';
 import TableImage from '../table-image';
 import NFTImage from './nft-image';
+import neo2 from '../../css/img/neo2.jpeg';
+import nFTpAGE from '../../css/video/nFTpAGE.mp4';
 
 interface ProfileProps {
   domain: string;
@@ -54,7 +56,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         </div>
       </div>
       <div className="historyRight">
-        4 days ago [tx] <span className="viewTx">[view tx]</span>
+        4 days ago <span className="viewTx">[view tx]</span>
       </div>
     </div>
   );
@@ -88,7 +90,16 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     <div className="nftView">
       <div className="showcase">
         <div className="showcaseIMG">
-          <NFTImage domain={domain.value.domain} />
+          {/* <NFTImage domain={domain.value.domain} /> */}
+          <video
+            playsInline={true}
+            autoPlay={true}
+            muted={true}
+            loop={true}
+            className="showcaseIMG"
+          >
+            <source src={nFTpAGE} type="video/mp4" />
+          </video>
         </div>
         <div className="showcaseInfo">
           <div className="top">

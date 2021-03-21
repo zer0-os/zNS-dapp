@@ -6,6 +6,13 @@ import { useDomainCache } from '../../lib/useDomainCache';
 // import { Web3Provider } from '@ethersproject/providers';
 import TableImage from './table-image';
 import avatar from '../css/img/wilderavatar.png';
+import wilderavatar from '../css/img/wilderavatar.png';
+import neo from '../css/img/neo.jpeg';
+import kitty from '../css/img/kitty.jpeg';
+import cybercar from '../css/img/cybercar.jpeg';
+import realestate from '../css/img/realestate.jpeg';
+import { Indexed } from '@ethersproject/abi';
+import { inflate } from 'node:zlib';
 
 interface GridProps {
   domain: string;
@@ -27,6 +34,14 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
       pathname: name,
     });
   };
+
+  let images: any = [
+    <img src={wilderavatar} alt="" />,
+    <img src={neo} alt="" className="" />,
+    <img src={kitty} alt="" className="" />,
+    <img src={cybercar} alt="" className="" />,
+    <img src={realestate} alt="" className="" />,
+  ];
 
   //
   // The following functions generate random numbers for mock data display
@@ -60,7 +75,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
   //
   //
 
-  const gridCell = (name: string) => {
+  const gridCell = (name: string, i: any) => {
     return (
       // <div className="gridCell">
       //   <div className="topCell">
@@ -99,7 +114,10 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
             <div>{name.match(/[^.]+$/)}</div>
           </div>
           <div className="image">
-            <TableImage domain={name} />
+            {/* {images.map((image: any) => {
+              return <div key={name}>{image}</div>;
+            })} */}
+            {images[i]}
           </div>
           <div className="text">
             <div>Last Traded Price</div>
@@ -119,7 +137,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
       domain.isNothing()
         ? []
         : domain.value.children.map((key, i) => {
-            return gridCell(key);
+            return gridCell(key, i);
           }),
     [domain],
   );

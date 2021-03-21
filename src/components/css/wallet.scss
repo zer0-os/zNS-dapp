@@ -6,7 +6,7 @@
   .title {
     text-align: center;
     padding-top: 2%;
-    height: 8vh;
+    height: 60px;
     background: $hzflat;
 
     .con- {
@@ -21,6 +21,7 @@
     max-width: 100%;
     background-color: $hzgradient;
     padding-top: 13px;
+    // margin-bottom: -12px;
   }
   .btn-div {
     width: 100%;
@@ -39,11 +40,14 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 10px;
+
+        cursor: pointer;
         &:first-child {
           margin-left: 15px;
         }
         .circle {
-          margin-right: 15px;
+          margin-right: 25px;
           border-radius: 50%;
           background-color: purple;
           height: 32px;
@@ -53,7 +57,7 @@
 
       .btn-lines {
         width: 95%;
-        height: 2px;
+        height: 1px;
         background-color: $hzflat;
       }
     }
@@ -63,19 +67,21 @@
     margin-left: 30px;
   }
   .walletButtonContainer:nth-child(1) {
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
   }
   .new-ETH {
     display: flex;
     flex-direction: row;
-    align-content: space-between;
-    padding-top: 5%;
-    padding-left: 13%;
-    height: 8vh;
+    justify-content: center;
+    align-items: baseline;
+    padding-top: 15px;
+    // padding-left: 13%;
+    height: 61px;
     // border: 2px solid red;
     color: $dark-grey;
     background: $hzflat;
     .link {
+      margin-left: 15px;
       color: $dark-grey;
     }
   }
