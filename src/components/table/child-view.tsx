@@ -100,12 +100,12 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
           <div className="metricsBar">
             {/* <div className="metricsTitle">Metrics</div> */}
             <div className="metricsContainer">
-              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
-              {metric('WILDER PRICE', '$2,000', '@0.0410', '(▲41.10%)')}
+              {metric('WILDER PRICE', '$2,000', '', '(▲01.10%)')}
+              {metric('WILDER PRICE', '$1,000', '', '(▲23.11%)')}
+              {metric('WILDER PRICE', '$3,040', '', '(▲41.14%)')}
+              {metric('WILDER PRICE', '$200', '', '(▲78.50%)')}
+              {metric('WILDER PRICE', '$560', '', '(▲61.70%)')}
+              {metric('WILDER PRICE', '$2,600', '', '(▲03.80%)')}
               {metric('Total Wild Holders', '12,302', '', '')}
             </div>
           </div>
