@@ -8,6 +8,7 @@ import '../../css/nftpage.scss';
 import TableImage from '../table-image';
 import NFTImage from './nft-image';
 import neo2 from '../../css/img/neo2.jpeg';
+import nFTpAGE from '../../css/video/nFTpAGE.mp4';
 
 interface ProfileProps {
   domain: string;
@@ -90,7 +91,15 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       <div className="showcase">
         <div className="showcaseIMG">
           {/* <NFTImage domain={domain.value.domain} /> */}
-          <img src={neo2} alt="" />
+          <video
+            playsInline={true}
+            autoPlay={true}
+            muted={true}
+            loop={true}
+            className="showcaseIMG"
+          >
+            <source src={nFTpAGE} type="video/mp4" />
+          </video>
         </div>
         <div className="showcaseInfo">
           <div className="top">

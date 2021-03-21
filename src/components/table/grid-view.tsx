@@ -6,6 +6,12 @@ import { useDomainCache } from '../../lib/useDomainCache';
 // import { Web3Provider } from '@ethersproject/providers';
 import TableImage from './table-image';
 import avatar from '../css/img/wilderavatar.png';
+import wilderavatar from '../css/img/wilderavatar.png';
+import neo from '../css/img/neo.jpeg';
+import kitty from '../css/img/kitty.jpeg';
+import cybercar from '../css/img/cybercar.jpeg';
+import realestate from '../css/img/realestate.jpeg';
+import { Indexed } from '@ethersproject/abi';
 
 interface GridProps {
   domain: string;
@@ -28,6 +34,17 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     });
   };
 
+  let images = [
+    <img src={wilderavatar} alt="" />,
+    <img src={neo} alt="" className="" />,
+    <img src={kitty} alt="" className="neo2" />,
+    <img src={cybercar} alt="" className="neo2" />,
+    <img src={realestate} alt="" className="neo2" />,
+  ];
+
+  let List = images.map((image: any, i) => {
+    return <div> {image} </div>;
+  });
   //
   // The following functions generate random numbers for mock data display
   //
@@ -99,7 +116,9 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
             <div>{name.match(/[^.]+$/)}</div>
           </div>
           <div className="image">
-            <TableImage domain={name} />
+            {images.map((image: any) => {
+              return <div key={image}>{image}</div>;
+            })}
           </div>
           <div className="text">
             <div>Last Traded Price</div>
