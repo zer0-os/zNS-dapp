@@ -426,8 +426,6 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                           fontWeight: 'bold',
                           textAlign: 'center',
                           marginBottom: '20px',
-                          borderLeft: '1px solid #bd5fff',
-                          borderRight: '1px solid #bd5fff',
                         }}
                       >
                         No domains to view
