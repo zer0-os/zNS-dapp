@@ -6,11 +6,17 @@
   position: absolute;
   width: 100%;
   height: 100%;
+  border-radius: 14px;
+  border: 1px solid rgba(#bd5fff, 0.5);
+  background: rgba(black, 0.05);
   // cursor: default;
   // border: 5px green solid;
   // background-color: $blackbg;
-
+  -webkit-backdrop-filter: blur(250px);
+  backdrop-filter: blur(250px);
   display: flex;
+  // flex-direction: column;
+  // justify-content: space-around;
 
   .bottomTopContainer {
     position: relative;
@@ -21,33 +27,44 @@
       // border: 5px blue solid;
       display: flex;
       position: relative;
-      justify-content: center;
+      justify-content: left;
       flex-direction: row;
       align-items: center;
       width: 100%;
-      height: 22%;
+      height: 25%;
+      border-radius: 14px 14px 0px 0px;
       // background-color: $medium;
-      background-color: $blackbg;
+      // background-color: $blackbg;
+      background: linear-gradient(
+        92.24deg,
+        rgba(0, 22, 55, 0.7) 0%,
+        rgba(0, 63, 137, 0.5) 100%
+      );
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
 
       .profile-title {
         width: 120px;
         font-size: 3em;
         margin-top: 20px;
+        margin-left: 80px;
         // background-color: $blackbg;
       }
 
       .profile-row {
-        height: 30%;
         display: flex;
         flex-direction: row;
-        align-items: center;
       }
     }
     .profile-center-container {
       display: flex;
       // border: 4px orange solid;
-      background: $hzflat;
-      height: 40%;
+      // background: $hzflat;
+      border-radius: 0px 0px 16px 16px;
+      background: rgba(78, 0, 132, 0.5);
+      -webkit-backdrop-filter: blur(50px);
+      backdrop-filter: blur(50px);
+      height: 75%;
       justify-content: center;
       .img-container {
         margin-top: 30px;
@@ -65,14 +82,20 @@
           img {
             height: 150px;
             width: 150px;
+            border-radius: 50%;
           }
         }
         .profile-text {
           margin-left: auto;
           margin-right: auto;
+          font-weight: bold;
           .profile-name {
+            font-size: 24px;
           }
           .profile-url {
+            font-size: 18px;
+            color: #3ca1ff;
+            cursor: pointer;
           }
         }
       }
@@ -83,76 +106,113 @@
         padding-top: 0px;
         // border: 4px solid grey;
         width: 67%;
+        font-weight: bold;
+        font-size: 16px;
       }
     }
 
-    .footer-container {
-      display: flex;
-      flex-direction: row;
-      // border: 2px solid black;
-      justify-content: center;
-      // margin-top: 55px;
-      height: 38%;
-      width: 100%;
-      background-color: $blackbg;
-      color: #fff;
-      .footer-qr {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+    // .footer-container {
+    //   display: flex;
+    //   flex-direction: row;
+    //   // border: 2px solid black;
+    //   justify-content: center;
+    //   // margin-top: 55px;
+    //   height: 38%;
+    //   width: 100%;
+    //   background-color: $blackbg;
+    //   color: #fff;
+    //   .footer-qr {
+    //     height: 100%;
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: space-around;
 
-        .qr {
-          margin-left: 25px;
-          height: 130px;
-          width: 130px;
-          background-color: #fff;
-          img {
-            height: 130px;
-            width: 130pxß;
-          }
-        }
-      }
-      .footer-right {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 70%;
-        // border: 2px black solid;
-        .ethLogo {
-          margin-left: auto;
-          margin-right: auto;
-        }
-        .footer-text {
-          margin-left: auto;
-          margin-right: auto;
-        }
-        .footer-address {
-          border-radius: 3px;
-          height: 30px;
-          // background-color: #fff;
-          // width: 75%;
-          margin-left: auto;
-          margin-right: auto;
-          text-align: center;
-          vertical-align: middle;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          cursor: pointer !important;
-          .eth-btn {
-            .btn-43 {
-              margin-top: 10px;
-              border-radius: 5px;
-              padding: 10px;
-              cursor: pointer;
-              color: black;
-              background-color: #fff;
-              border: transparent;
-            }
-          }
-        }
-      }
+    //     .qr {
+    //       margin-left: 25px;
+    //       height: 130px;
+    //       width: 130px;
+    //       background-color: #fff;
+    //       img {
+    //         height: 130px;
+    //         width: 130pxß;
+    //       }
+    //     }
+    //   }
+    //   .footer-right {
+    //     display: flex;
+    //     flex-direction: column;
+    //     justify-content: center;
+    //     width: 70%;
+    //     // border: 2px black solid;
+    //     .ethLogo {
+    //       margin-left: auto;
+    //       margin-right: auto;
+    //     }
+    //     .footer-text {
+    //       margin-left: auto;
+    //       margin-right: auto;
+    //     }
+    //     .footer-address {
+    //       border-radius: 3px;
+    //       height: 30px;
+    //       // background-color: #fff;
+    //       // width: 75%;
+    //       margin-left: auto;
+    //       margin-right: auto;
+    //       text-align: center;
+    //       vertical-align: middle;
+    //       display: flex;
+    //       flex-direction: column;
+    //       justify-content: center;
+    //       cursor: pointer !important;
+    //       .eth-btn {
+    //         .btn-43 {
+    //           margin-top: 10px;
+    //           border-radius: 5px;
+    //           padding: 10px;
+    //           cursor: pointer;
+    //           color: black;
+    //           background-color: #fff;
+    //           border: transparent;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+  }
+  .savePadding {
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    height: 32px;
+    width: 100px;
+    // border: 1px red solid;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    overflow: hidden;
+    .saveButton {
+      position: relative;
+      height: 32px;
+      width: 90px;
+      color: #3ca1ff;
+      cursor: pointer;
+      background: linear-gradient(
+        94.23deg,
+        rgba(60, 161, 255, 0.2) 0%,
+        rgba(30, 81, 128, 0.2) 100%
+      );
+      border-radius: 16px;
+      border-right: 1px solid #3ca1ff;
+      border-left: 1px solid #3ca1ff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 16px;
+      box-shadow: 0px 0px 3px rgba(0, 178, 255, 0.7);
     }
   }
 }
