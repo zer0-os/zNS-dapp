@@ -278,7 +278,7 @@ export default function Wallet() {
       > */}
       <div className="wallet-container">
         <div className="title">
-          <h1 className="con-">Conntect to a wallet</h1>
+          <h1 className="con-">Connect to a wallet</h1>
         </div>{' '}
         <div className="walletButtonContainer">
           {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
@@ -298,12 +298,13 @@ export default function Wallet() {
                     activate(connectorsByName[name]);
                   }}
                 >
-                  {activating && (
+                  {/* displays spinner while a wallet is clicked and being confirmed by the user */}
+                  {/* {activating && (
                     <Spinner
                       color={'black'}
                       style={{ height: '25%', marginLeft: '-1rem' }}
                     />
-                  )}
+                  )} */}
                   <div className="name-con">
                     {name} <div className="circle"></div>
                   </div>
