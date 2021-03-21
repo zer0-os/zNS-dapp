@@ -6,7 +6,7 @@ import { useDomainCache } from '../../lib/useDomainCache';
 // import { Web3Provider } from '@ethersproject/providers';
 import TableImage from './table-image';
 import avatar from '../css/img/wilderavatar.png';
-import wilderavatar from '../css/img/wilderavatar.png';
+import zero from '../css/img/zero.jpeg';
 import neo from '../css/img/neo.jpeg';
 import kitty from '../css/img/kitty.jpeg';
 import cybercar from '../css/img/cybercar.jpeg';
@@ -36,7 +36,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
   };
 
   let images: any = [
-    <img src={wilderavatar} alt="" />,
+    <img src={zero} alt="" />,
     <img src={neo} alt="" className="" />,
     <img src={kitty} alt="" className="" />,
     <img src={cybercar} alt="" className="" />,
