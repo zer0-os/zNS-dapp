@@ -1,5 +1,10 @@
-.neo2 {
-  border-radius: 50%;
-  height: 64px;
-  width: 64px;
+.neo-demo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  .neo2 {
+    border-radius: 50%;
+    height: 64px;
+    width: 64px;
+  }
 }
