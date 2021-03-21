@@ -46,20 +46,22 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     setNftVisible(false);
   };
 
-  const historyRow = (
-    <div className="historyRow">
-      <div className="historyLeft">
-        <div className="avatar"></div>
-        <div className="historyText">
-          <span className="embolden">Phoenix</span> placed a bid for{' '}
-          <span className="embolden">20 WILD</span>
+  const historyRow = (name: string, number: string, days: string) => {
+    return (
+      <div className="historyRow">
+        <div className="historyLeft">
+          <div className="avatar"></div>
+          <div className="historyText">
+            <span className="embolden">{name}</span> placed a bid for{' '}
+            <span className="embolden">{number} WILD</span>
+          </div>
+        </div>
+        <div className="historyRight">
+          {days} days ago <span className="viewTx">[view tx]</span>
         </div>
       </div>
-      <div className="historyRight">
-        4 days ago <span className="viewTx">[view tx]</span>
-      </div>
-    </div>
-  );
+    );
+  };
 
   if (domain.isNothing()) return null;
   return (
@@ -195,25 +197,14 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         <div className="history">
           <div className="historyTitle">HISTORY</div>
           <div className="historyBox">
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
-            {historyRow}
+            {historyRow('Phoenix', '280', '4')}
+            {historyRow('Frank', '180', '6')}
+            {historyRow('Wilder', '50', '8')}
+            {historyRow('Joe', '6', '8')}
+            {historyRow('Muskrat', '200', '8')}
+            {historyRow('Satoshi', '230', '10')}
+            {historyRow('Joe', '43', '10')}
+            {historyRow('WhaleShark', '34', '11')}
           </div>
         </div>
       </div>
