@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  useWeb3React,
-  UnsupportedChainIdError,
-} from '@web3-react/core';
+import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 import {
   NoEthereumProviderError,
   UserRejectedRequestError as UserRejectedRequestErrorInjected,
@@ -144,10 +141,10 @@ function Account() {
         {account === null
           ? '-'
           : account
-            ? `${account.substring(0, 6)}...${account.substring(
+          ? `${account.substring(0, 6)}...${account.substring(
               account.length - 4,
             )}`
-            : ''}
+          : ''}
       </span>
     </>
   );
@@ -279,111 +276,126 @@ export default function Wallet() {
         onCancel={walletCancel}
         footer={null}
       > */}
-      <h1>Conntect to a wallet</h1> <hr />
-      <div className="walletButtonContainer">
-        {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
-          const currentConnector = connectorsByName[name];
-          const activating = currentConnector === activatingConnector;
-          const connected = currentConnector === connector;
-          const disabled =
-            !triedEager || !!activatingConnector || connected || !!error;
+      <div className="wallet-container">
+        <div className="title">
+          <h1 className="con-">Connect to a wallet</h1>
+        </div>{' '}
+        <div className="walletButtonContainer">
+          {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
+            const currentConnector = connectorsByName[name];
+            const activating = currentConnector === activatingConnector;
+            const connected = currentConnector === connector;
+            const disabled =
+              !triedEager || !!activatingConnector || connected || !!error;
 
-          return (
-            <div key={name}>
-              <button
-                className="network-btns"
-                disabled={disabled}
-                onClick={() => {
-                  setActivatingConnector(currentConnector);
-                  activate(connectorsByName[name]);
-                }}
-              >
-                {activating && (
-                  <Spinner
-                    color={'black'}
-                    style={{ height: '25%', marginLeft: '-1rem' }}
-                  />
-                )}
-                {name}
-              </button>
-            </div>
-          );
-        })}
-      </div>
-      {(active || error) && (
-        <div key="network-button" className="button-target">
-          <button
-            className="network-d-btn"
-            style={{ border: 'none', background: 'transparent' }}
-            onClick={() => {
-              deactivate();
-            }}
-          >
-            Deactivate
-          </button>
+            return (
+              <div className="btn-div" key={name}>
+                <button
+                  className="network-btns"
+                  disabled={disabled}
+                  onClick={() => {
+                    setActivatingConnector(currentConnector);
+                    activate(connectorsByName[name]);
+                  }}
+                >
+                  {/* displays spinner while a wallet is clicked and being confirmed by the user */}
+                  {/* {activating && (
+                    <Spinner
+                      color={'black'}
+                      style={{ height: '25%', marginLeft: '-1rem' }}
+                    />
+                  )} */}
+                  <div className="name-con">
+                    {name} <div className="circle"></div>
+                  </div>
+                  <div className="btn-lines"> </div>
+                </button>
+              </div>
+            );
+          })}
         </div>
-      )}
-      {!!error && <h4>{getErrorMessage(error)}</h4>}
-      {!!(library && account) &&
-        connector === connectorsByName[ConnectorNames.Network] &&
-        chainId && (
-          <div key="switch-network-button" className="button-target">
+        {/* {(active || error) && (
+          <div key="network-button" className="button-target">
             <button
+              className="network-d-btn"
+              style={{ border: 'none', background: 'transparent' }}
               onClick={() => {
-                (connector as any).changeChainId(chainId === 1 ? 4 : 1);
+                deactivate();
               }}
             >
-              Switch Networks
+              Deactivate
             </button>
           </div>
-        )}
-      {connector === connectorsByName[ConnectorNames.WalletConnect] && (
-        <div key="kill-walletconnect" className="button-target">
-          <button
-            onClick={() => {
-              (connector as any).close();
-            }}
-          >
-            Kill WalletConnect Session
-          </button>
-        </div>
-      )}
-      {connector === connectorsByName[ConnectorNames.Fortmatic] && (
-        <div key="kill-fortmatic" className="button-target">
-          <button
-            onClick={() => {
-              (connector as any).close();
-            }}
-          >
-            Kill Fortmatic Session
-          </button>
-        </div>
-      )}
-      {connector === connectorsByName[ConnectorNames.Portis] && (
-        <>
-          {chainId !== undefined && (
-            <div key="switch-network-button-portis" className="button-target">
+        )} */}
+        {!!error && <h4>{getErrorMessage(error)}</h4>}
+        {!!(library && account) &&
+          connector === connectorsByName[ConnectorNames.Network] &&
+          chainId && (
+            <div key="switch-network-button" className="button-target">
               <button
                 onClick={() => {
-                  (connector as any).changeNetwork(chainId === 1 ? 100 : 1);
+                  (connector as any).changeChainId(chainId === 1 ? 4 : 1);
                 }}
               >
                 Switch Networks
               </button>
             </div>
           )}
-          <div key="kill-portis" className="button-target">
+        {connector === connectorsByName[ConnectorNames.WalletConnect] && (
+          <div key="kill-walletconnect" className="button-target">
             <button
               onClick={() => {
                 (connector as any).close();
               }}
             >
-              Kill Portis Session
+              Kill WalletConnect Session
             </button>
           </div>
-        </>
-      )}
-      <div id="overlay"></div>
+        )}
+        {connector === connectorsByName[ConnectorNames.Fortmatic] && (
+          <div key="kill-fortmatic" className="button-target">
+            <button
+              onClick={() => {
+                (connector as any).close();
+              }}
+            >
+              Kill Fortmatic Session
+            </button>
+          </div>
+        )}
+        {connector === connectorsByName[ConnectorNames.Portis] && (
+          <>
+            {chainId !== undefined && (
+              <div key="switch-network-button-portis" className="button-target">
+                <button
+                  onClick={() => {
+                    (connector as any).changeNetwork(chainId === 1 ? 100 : 1);
+                  }}
+                >
+                  Switch Networks
+                </button>
+              </div>
+            )}
+            <div key="kill-portis" className="button-target">
+              <button
+                onClick={() => {
+                  (connector as any).close();
+                }}
+              >
+                Kill Portis Session
+              </button>
+            </div>
+          </>
+        )}
+        <div id="overlay"></div>
+        <div className="new-ETH">
+          <div className="ETH"> New to Ethereum?</div>{' '}
+          <a className="link" href="https://ethereum.org/en/wallets/">
+            Learn more about wallets
+            <hr />
+          </a>
+        </div>
+      </div>
       {/* </Modal> */}
     </>
   );

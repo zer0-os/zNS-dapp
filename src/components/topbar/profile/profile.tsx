@@ -7,6 +7,7 @@ import '../../css/profile.scss';
 import elon from '../../css/img/elon.jpg';
 import '../../css/profile-grid.scss';
 import ClipboardButton from 'react-clipboard.js';
+import qr from '../../css/img/qrcode-mockdata.png';
 
 const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
@@ -68,7 +69,9 @@ const Profile: FC = () => {
 
             <div className="profile-center-container">
               <div className="img-container">
-                <div className="profile-img">image</div>
+                <div className="profile-img">
+                  <img src={elon} alt="" />
+                </div>
                 {/* <div className="profile-text">
                   <div className="profile-name">Name</div>
                   <div className="profile-url">0::/etc</div>
@@ -86,7 +89,9 @@ const Profile: FC = () => {
 
             <div className="footer-container">
               <div className="footer-qr">
-                <div className="qr"></div>
+                <div className="qr">
+                  <img src={qr} alt="" />
+                </div>
               </div>
               <div className="footer-right">
                 {/* <div className="ethLogo">Eth</div> */}

@@ -55,7 +55,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         </div>
       </div>
       <div className="historyRight">
-        4 days ago [tx] <span className="viewTx">[view tx]</span>
+        4 days ago <span className="viewTx">[view tx]</span>
       </div>
     </div>
   );
