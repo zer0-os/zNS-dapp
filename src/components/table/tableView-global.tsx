@@ -416,15 +416,24 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                   })
                 }
               </tbody>
-              {/* {rows.length !== 0 ? null : (
+              {rows.length !== 0 ? null : (
                 <tfoot>
                   <tr>
                     <td>
-                      <Nestedview domain={_domain} />
+                      <div
+                        style={{
+                          color: '#fff',
+                          fontWeight: 'bold',
+                          textAlign: 'center',
+                          marginBottom: '20px',
+                        }}
+                      >
+                        No domains to view
+                      </div>
                     </td>
                   </tr>
                 </tfoot>
-              )} */}
+              )}
             </table>
           </div>
         ) : (
