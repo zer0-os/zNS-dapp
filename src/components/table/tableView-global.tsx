@@ -67,7 +67,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   // Following functions generate random numbers to display mock data in the UI
   //
 
-  let names = ['Frank', 'BluePill', 'ed'];
+  let names = ['Frank', 'BluePill', 'Zine'];
 
   let images = [
     <img src={wilderavatar} alt="" />,
