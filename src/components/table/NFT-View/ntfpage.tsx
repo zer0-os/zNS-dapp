@@ -96,7 +96,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
             autoPlay={true}
             muted={true}
             loop={true}
-            className="showcaseIMG"
+            className=""
           >
             <source src={nFTpAGE} type="video/mp4" />
           </video>
