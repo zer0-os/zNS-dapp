@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
@@ -29,15 +29,34 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
   const { domain } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const history = useHistory();
-  const [counter, setCounter] = useState(4800);
+  const [timeMinutes, setTimeMinutes] = useState<any>('00');
+  const [timeSeconds, setTimeSeconds] = useState<any>('00');
 
+  let interval: any = useRef();
+
+  const startTimer = () => {
+    const countdownDate = new Date('April 15, 2021 00:00:00').getTime();
+    interval = setInterval(() => {
+      const now = new Date().getTime();
+      const diff = countdownDate - now;
+      let minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      let seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      if (diff < 0) {
+        clearInterval(interval.current);
+      } else {
+        setTimeMinutes(minutes);
+        setTimeSeconds(seconds);
+      }
+    }, 1000);
+  };
   useEffect(() => {
-    const timer: any =
-      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
-    minutes: Math.floor((counter / 1000 / 60) % 60);
-    seconds: Math.floor((counter / 1000) % 60);
-    return () => clearInterval(timer);
-  }, [counter]);
+    const someref = interval.current;
+    startTimer();
+    return () => {
+      clearInterval(someref);
+    };
+  }, []);
 
   const routes = _.transform(
     location.pathname
@@ -66,7 +85,9 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
         <div className="infoContainer">
           <div className="next">
             <div className="n1">Next Drop in</div>
-            <div className="n2">{counter}</div>
+            <div className="n2">
+              {timeMinutes}:{timeSeconds}
+            </div>
             <div className="n3">
               <span className="symbol">?</span>
             </div>
