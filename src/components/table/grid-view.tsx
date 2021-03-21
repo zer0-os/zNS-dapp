@@ -12,6 +12,7 @@ import kitty from '../css/img/kitty.jpeg';
 import cybercar from '../css/img/cybercar.jpeg';
 import realestate from '../css/img/realestate.jpeg';
 import { Indexed } from '@ethersproject/abi';
+import { inflate } from 'node:zlib';
 
 interface GridProps {
   domain: string;
@@ -34,17 +35,14 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     });
   };
 
-  let images = [
+  let images: any = [
     <img src={wilderavatar} alt="" />,
     <img src={neo} alt="" className="" />,
-    <img src={kitty} alt="" className="neo2" />,
-    <img src={cybercar} alt="" className="neo2" />,
-    <img src={realestate} alt="" className="neo2" />,
+    <img src={kitty} alt="" className="" />,
+    <img src={cybercar} alt="" className="" />,
+    <img src={realestate} alt="" className="" />,
   ];
 
-  let List = images.map((image: any, i) => {
-    return <div> {image} </div>;
-  });
   //
   // The following functions generate random numbers for mock data display
   //
@@ -77,7 +75,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
   //
   //
 
-  const gridCell = (name: string) => {
+  const gridCell = (name: string, i: any) => {
     return (
       // <div className="gridCell">
       //   <div className="topCell">
@@ -116,9 +114,10 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
             <div>{name.match(/[^.]+$/)}</div>
           </div>
           <div className="image">
-            {images.map((image: any) => {
-              return <div key={image}>{image}</div>;
-            })}
+            {/* {images.map((image: any) => {
+              return <div key={name}>{image}</div>;
+            })} */}
+            {images[i]}
           </div>
           <div className="text">
             <div>Last Traded Price</div>
@@ -138,7 +137,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
       domain.isNothing()
         ? []
         : domain.value.children.map((key, i) => {
-            return gridCell(key);
+            return gridCell(key, i);
           }),
     [domain],
   );
