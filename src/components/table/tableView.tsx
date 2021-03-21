@@ -10,6 +10,11 @@ import Grid from './grid-view';
 import '../../components/css/subdomains.scss';
 import Nestedview from './NFT-View/nestedNFT-view';
 import Image from './mockup/image';
+import graph1 from '../css/img/table/mockgraphs/graph1.png';
+import graph2 from '../css/img/table/mockgraphs/graph2.png';
+import graph3 from '../css/img/table/mockgraphs/graph3.png';
+import graph4 from '../css/img/table/mockgraphs/graph4.png';
+import graph5 from '../css/img/table/mockgraphs/graph5.png';
 
 // // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // interface ColumnProps {
@@ -111,6 +116,21 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       dec = '0' + dec;
     }
     return '$' + temp + '.' + dec;
+  };
+
+  const randGraph = () => {
+    let temp = Math.floor(Math.random() * 10);
+    if (temp === 0 || temp === 1) {
+      return graph1;
+    } else if (temp === 2 || temp === 3) {
+      return graph2;
+    } else if (temp === 4 || temp === 5) {
+      return graph3;
+    } else if (temp === 6 || temp === 7) {
+      return graph4;
+    } else if (temp === 8 || temp === 9) {
+      return graph5;
+    } else return graph5;
   };
 
   //
@@ -262,7 +282,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       {
         Header: 'Last 7 Days',
         accessor: 'last7days',
-        Cell: (props) => <img src={marketimg} alt="" />,
+        Cell: (props) => <img src={randGraph()} alt="" />,
       },
       {
         Header: '',
