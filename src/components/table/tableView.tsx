@@ -391,7 +391,14 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               {rows.length !== 0 ? null : (
                 <tfoot>
                   <tr>
-                    <td>
+                    <td
+                      style={{
+                        borderLeft: '1px solid #bd5fff',
+                        borderRight: '1px solid #bd5fff',
+                        borderBottom: '1px solid #bd5fff',
+                        borderRadius: '0px 0px 15px 15px',
+                      }}
+                    >
                       <div
                         style={{
                           color: '#fff',
