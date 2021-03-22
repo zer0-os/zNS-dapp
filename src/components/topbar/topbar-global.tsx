@@ -98,6 +98,9 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             ) : null}
           </div>
           <div className="topRight">
+            <div className="shop-btn">
+              <Shop domain={_domain} />
+            </div>
             <div className="search-bar">
               <button className="search-bar-button"></button>
               <div className="search-bar-glow"></div>
@@ -107,9 +110,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
                 type="text"
                 placeholder="Search"
               />
-            </div>
-            <div className="shop-btn">
-              <Shop domain={_domain} />
             </div>
             <div className="connect-btn" onClick={showWallet}>
               <div className="dot">{active ? '🟢' : '🔵'}</div>
@@ -135,7 +135,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             onClick={() => setSelected('networks')}
             className={selected === 'networks' ? 'selected' : ''}
           >
-            Zero Networks
+            Wilder Networks
           </div>
           <div
             onClick={() => setSelected('members')}
