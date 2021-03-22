@@ -111,7 +111,24 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         <div className="showcaseInfo">
           <div className="top">
             <div className="title">Blue Pill / Red Pill</div>
-            <div className="domain">0:/ / {domain.value.domain}</div>
+            <div className="domain">
+              {/* 0:/ / {domain.value.domain} */}
+
+              <Link to={'/'} className="network">
+                0:/ <span className="slash">/</span>
+              </Link>
+              {routes.length > 0 ? (
+                // <div className="routeBox">
+                <div className="route">
+                  {routes.map(([key, path], i) => (
+                    <Link key={key} className="route-nav-text-sub" to={path}>
+                      {key}
+                      {i < routes.length - 1 && '.'}
+                    </Link>
+                  ))}
+                </div>
+              ) : null}
+            </div>
             <div className="users">
               <div className="creator">
                 <img src={wilder} alt="" className="avatar" />
