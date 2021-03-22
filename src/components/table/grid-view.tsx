@@ -7,6 +7,7 @@ import { useDomainCache } from '../../lib/useDomainCache';
 import TableImage from './table-image';
 import avatar from '../css/img/wilderavatar.png';
 import zero from '../css/img/zero.jpeg';
+import wilderavatar from '../css/img/wilderavatar.png';
 import neo from '../css/img/neo.jpeg';
 import kitty from '../css/img/kitty.jpeg';
 import cybercar from '../css/img/cybercar.jpeg';
