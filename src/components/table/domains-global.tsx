@@ -96,7 +96,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     <div className="pageContainerPositionFix">
       <div className="metricsBar">
         <div className="metricsContainer">
-          {metric('WILDER PRICE', '$2,000', '', '(▲01.10%)')}
+          {metric('Wild Price', '$2,010', '', '(▲41.10%)')}
           {metric('WILDER PRICE', '$1,000', '', '(▲23.11%)')}
           {metric('WILDER PRICE', '$3,040', '', '(▲41.14%)')}
           {metric('WILDER PRICE', '$200', '', '(▲78.50%)')}

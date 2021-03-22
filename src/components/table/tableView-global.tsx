@@ -70,7 +70,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   let names = ['Frank', 'BluePill', 'Zine'];
 
   let images = [
-    <img src={wilderavatar} alt="" />,
+    <img src={wilderavatar} alt="" className="neo2" />,
     <img src={neo} alt="" className="neo2" />,
     <img src={kitty} alt="" className="neo2" />,
     <img src={cybercar} alt="" className="neo2" />,
