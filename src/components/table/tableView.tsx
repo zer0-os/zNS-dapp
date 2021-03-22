@@ -15,6 +15,10 @@ import graph2 from '../css/img/table/mockgraphs/graph2.png';
 import graph3 from '../css/img/table/mockgraphs/graph3.png';
 import graph4 from '../css/img/table/mockgraphs/graph4.png';
 import graph5 from '../css/img/table/mockgraphs/graph5.png';
+import cat from '../../css/img/mockusers/cat.png';
+import phoenix from '../../css/img/mockusers/phoenix.png';
+import vape from '../../css/img/mockusers/vape.png';
+import wilder from '../../css/img/mockusers/wilder.png';
 
 // // eslint-disable-next-line @typescript-eslint/no-unused-vars
 // interface ColumnProps {
