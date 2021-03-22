@@ -135,7 +135,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             onClick={() => setSelected('networks')}
             className={selected === 'networks' ? 'selected' : ''}
           >
-            Zero Networks
+            Wilder Networks
           </div>
           <div
             onClick={() => setSelected('members')}
