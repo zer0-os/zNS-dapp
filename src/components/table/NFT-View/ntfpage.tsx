@@ -9,6 +9,11 @@ import TableImage from '../table-image';
 import NFTImage from './nft-image';
 import neo2 from '../../css/img/neo2.jpeg';
 import nFTpAGE from '../../css/video/nFTpAGE.mp4';
+import neo from '../../css/img/mockusers/neo.png';
+import cat from '../../css/img/mockusers/cat.png';
+import phoenix from '../../css/img/mockusers/phoenix.png';
+import vape from '../../css/img/mockusers/vape.png';
+import wilder from '../../css/img/mockusers/wilder.png';
 
 interface ProfileProps {
   domain: string;
@@ -46,11 +51,11 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     setNftVisible(false);
   };
 
-  const historyRow = (name: string, number: string, days: string) => {
+  const historyRow = (name: string, number: string, days: string, img: any) => {
     return (
       <div className="historyRow">
         <div className="historyLeft">
-          <div className="avatar"></div>
+          <img src={img} alt="" className="avatar" />
           <div className="historyText">
             <span className="embolden">{name}</span> placed a bid for{' '}
             <span className="embolden">{number} WILD</span>
@@ -109,14 +114,14 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
             <div className="domain">0:/ / {domain.value.domain}</div>
             <div className="users">
               <div className="creator">
-                <div className="avatar"></div>
+                <img src={wilder} alt="" className="avatar" />
                 <div className="creatorFlex">
                   <div className="creatorText">Frank Wilder</div>
                   <div className="desc">Creator</div>
                 </div>
               </div>
               <div className="owner">
-                <div className="avatar"></div>
+                <img src={neo} alt="" className="avatar" />
                 <div className="ownerFlex">
                   <div className="ownerText">Neo Wilder</div>
                   <div className="desc">Owner</div>
@@ -149,13 +154,22 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         <div className="story">
           <div>STORY</div>
           <div>
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Earum,
-            facilis iste perferendis molestiae nostrum, similique blanditiis
-            delectus quam dicta ratione recusandae reprehenderit quia culpa qui
-            quos eligendi quidem quisquam aliquam sed eveniet minima quas
-            corporis aspernatur. Quisquam ex rerum praesentium? Similique dolor
-            qui pariatur autem? Earum animi sequi pariatur corporis." -Frank
-            Wilder
+            To understand where we are, we must honor what has come before us.
+            With NFTs catapulting Crypto into the mainstream, it shouldn’t be
+            forgotten that the DeFi movement of 2020 helped pave the way.
+            Digital art and crypto have served as a catalyst to one another
+            reinventing modern art as we know it. With characters like n3o, the
+            Wilders, Beeple and Elon all playing a significant role it’s only
+            right we break bread to celebrate. While Mickey was so infatuated
+            with the Wilder VR experience he didn’t take the time to eat, the
+            other attendees enjoyed uni, sushi, pancake and pineapple on the set
+            menu for the evening. With the NFT wave taking the world by storm,
+            the Wilders have had a plan of their own... Wilder World will be
+            opening as a fully interactive 3D world, with all characters present
+            in the DeFi dinner game ready. We’ll be launching the immersive
+            world with our next event, the first annual Cyber Gala in July 2021.
+            The collector of this piece will be blessed with a custom fully
+            functional "in world" avatar to roam Wilder World.
           </div>
         </div>
         <div className="quad">
@@ -197,14 +211,14 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         <div className="history">
           <div className="historyTitle">HISTORY</div>
           <div className="historyBox">
-            {historyRow('Phoenix', '280', '4')}
-            {historyRow('Frank', '180', '6')}
-            {historyRow('Wilder', '50', '8')}
-            {historyRow('Joe', '6', '8')}
-            {historyRow('Muskrat', '200', '8')}
-            {historyRow('Satoshi', '230', '10')}
-            {historyRow('Joe', '43', '10')}
-            {historyRow('WhaleShark', '34', '11')}
+            {historyRow('Phoenix', '280', '4', phoenix)}
+            {historyRow('Frank', '180', '6', wilder)}
+            {historyRow('Neo', '50', '8', neo)}
+            {historyRow('Cyber_Cat', '6', '8', cat)}
+            {historyRow('Cyber_Cat', '200', '8', cat)}
+            {historyRow('Frank', '230', '10', wilder)}
+            {historyRow('888', '43', '10', vape)}
+            {historyRow('Neo', '34', '11', neo)}
           </div>
         </div>
       </div>

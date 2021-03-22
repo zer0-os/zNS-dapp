@@ -98,7 +98,7 @@ $page-margin: 100px;
               height: 36px;
               width: 36px !important;
               border-radius: 50%;
-              background: rgba(235, 0, 255, 1);
+              // background: rgba(235, 0, 255, 1);
             }
             .creatorFlex {
               transform: translateY(7px);
@@ -121,7 +121,7 @@ $page-margin: 100px;
               height: 36px;
               width: 36px;
               border-radius: 50%;
-              background: rgba(235, 0, 255, 1);
+              // background: rgba(235, 0, 255, 1);
             }
             .ownerFlex {
               transform: translateY(7px);
@@ -144,6 +144,7 @@ $page-margin: 100px;
         justify-content: space-around;
         width: 100%;
         .midLeft {
+          margin-right: 30%;
           .text {
             color: rgba(60, 161, 255, 1);
             font-size: 16px;
@@ -218,6 +219,8 @@ $page-margin: 100px;
     flex-direction: row;
 
     .story {
+      position: relative;
+      // overflow: hidden;
       height: 212px;
       width: 49%;
       background: rgba(78, 0, 132, 0.2);
@@ -235,6 +238,9 @@ $page-margin: 100px;
         }
         &:last-child {
           color: #9ed0ff;
+          overflow: scroll;
+          height: 200%;
+          max-height: 63%;
         }
       }
     }
@@ -415,7 +421,7 @@ $page-margin: 100px;
             .avatar {
               height: 36px;
               width: 36px;
-              background: rgba(60, 161, 255, 1);
+              // background: rgba(60, 161, 255, 1);
               border-radius: 50%;
               margin-right: 8px;
             }
