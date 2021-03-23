@@ -19,8 +19,8 @@ $page-margin: 100px;
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 16px;
-    border: 1px solid #bd5fff;
-    box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+    border: $lp-border;
+    box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
     margin-bottom: 20px;
     display: flex;
     color: #fff;
@@ -54,8 +54,8 @@ $page-margin: 100px;
           overflow: hidden;
           object-fit: cover;
           margin: auto;
-          border: 3px solid #bd5fff;
-          box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+          border: 3px solid $light-purple;
+          box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
         }
       }
     }
@@ -79,7 +79,7 @@ $page-margin: 100px;
           text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
         }
         .domain {
-          color: rgba(60, 161, 255, 1);
+          color: rgba($med-blue, 1);
           font-size: 16px;
           font-weight: bold;
           display: flex;
@@ -101,7 +101,7 @@ $page-margin: 100px;
               height: 36px;
               width: 36px !important;
               border-radius: 50%;
-              // background: rgba(235, 0, 255, 1);
+              // background: rgba($purple-shadow, 1);
             }
             .creatorFlex {
               transform: translateY(7px);
@@ -112,7 +112,7 @@ $page-margin: 100px;
               .creatorText {
               }
               .desc {
-                color: lighten(rgba(60, 161, 255, 1), 20%);
+                color: lighten(rgba($med-blue, 1), 20%);
               }
             }
           }
@@ -124,7 +124,7 @@ $page-margin: 100px;
               height: 36px;
               width: 36px;
               border-radius: 50%;
-              // background: rgba(235, 0, 255, 1);
+              // background: rgba($purple-shadow, 1);
             }
             .ownerFlex {
               transform: translateY(7px);
@@ -135,7 +135,7 @@ $page-margin: 100px;
               .ownerText {
               }
               .desc {
-                color: lighten(rgba(60, 161, 255, 1), 20%);
+                color: lighten(rgba($med-blue, 1), 20%);
               }
             }
           }
@@ -149,7 +149,7 @@ $page-margin: 100px;
         .midLeft {
           margin-right: 30%;
           .text {
-            color: rgba(60, 161, 255, 1);
+            color: rgba($med-blue, 1);
             font-size: 16px;
             font-weight: bold;
           }
@@ -158,14 +158,14 @@ $page-margin: 100px;
             font-weight: bold;
           }
           .price {
-            color: lighten(rgba(60, 161, 255, 1), 20%);
+            color: lighten(rgba($med-blue, 1), 20%);
             font-size: 16px;
             font-weight: bold;
           }
         }
         .midRight {
           .text {
-            color: rgba(60, 161, 255, 1);
+            color: rgba($med-blue, 1);
             font-size: 16px;
             font-weight: bold;
           }
@@ -174,7 +174,7 @@ $page-margin: 100px;
             font-weight: bold;
           }
           .price {
-            color: lighten(rgba(60, 161, 255, 1), 20%);
+            color: lighten(rgba($med-blue, 1), 20%);
             font-size: 16px;
             font-weight: bold;
           }
@@ -203,12 +203,12 @@ $page-margin: 100px;
           font-size: 18px;
           text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
           font-weight: normal;
-          // color: lighten(rgba(60, 161, 255, 1), 20%);
+          // color: lighten(rgba($med-blue, 1), 20%);
           color: #fff;
-          border-left: 2px solid lighten(rgba(60, 161, 255, 0.9), 60%);
-          border-right: 2px solid lighten(rgba(60, 161, 255, 0.9), 60%);
+          border-left: 2px solid lighten(rgba($med-blue, 0.9), 60%);
+          border-right: 2px solid lighten(rgba($med-blue, 0.9), 60%);
           border-radius: 25px;
-          // background: darken(rgba(60, 161, 255, 0.2), 20%);
+          // background: darken(rgba($med-blue, 0.2), 20%);
           display: flex;
           flex-direction: row;
           justify-content: center;
@@ -235,18 +235,18 @@ $page-margin: 100px;
       background: rgba(78, 0, 132, 0.2);
       backdrop-filter: blur(30px);
       border-radius: 16px;
-      border: 1px solid #bd5fff;
-      box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+      border: $lp-border;
+      box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
       & > div {
         margin: 18px;
         &:first-child {
-          color: #3ca1ff;
+          color: $med-blue;
           font-size: 16px;
           font-weight: bold;
-          text-shadow: 0px 0px 10px rgba(#3ca1ff, 0.7);
+          text-shadow: 0px 0px 10px rgba($med-blue, 0.7);
         }
         &:last-child {
-          color: #9ed0ff;
+          color: $light-blue;
           overflow: scroll;
           height: 200%;
           max-height: 63%;
@@ -265,8 +265,8 @@ $page-margin: 100px;
       .quadHeader {
         font-weight: bold;
         font-size: 16px;
-        color: #3ca1ff;
-        text-shadow: 0px 0px 10px rgba(60, 161, 255, 0.7);
+        color: $med-blue;
+        text-shadow: 0px 0px 10px rgba($med-blue, 0.7);
         display: flex;
         flex-direction: row;
       }
@@ -277,7 +277,7 @@ $page-margin: 100px;
         text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
       }
       .infoButton {
-        background: #002f5b;
+        background: $dark-blue;
         border-radius: 50%;
         font-weight: normal;
         width: 18px !important;
@@ -289,7 +289,7 @@ $page-margin: 100px;
         margin-left: 8px;
         cursor: pointer;
         .infoMark {
-          color: rgba(60, 161, 255, 1);
+          color: rgba($med-blue, 1);
           font-weight: bold;
           font-size: 12px !important;
           margin: auto;
@@ -308,8 +308,8 @@ $page-margin: 100px;
           background: rgba(78, 0, 132, 0.2);
           backdrop-filter: blur(30px);
           border-radius: 16px;
-          border: 1px solid #bd5fff;
-          box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+          border: $lp-border;
+          box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -330,8 +330,8 @@ $page-margin: 100px;
         background: rgba(78, 0, 132, 0.2);
         backdrop-filter: blur(30px);
         border-radius: 16px;
-        border: 1px solid #bd5fff;
-        box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+        border: $lp-border;
+        box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -356,8 +356,8 @@ $page-margin: 100px;
   //     background: rgba(78, 0, 132, 0.2);
   //     backdrop-filter: blur(30px);
   //     border-radius: 16px;
-  //     border: 1px solid #bd5fff;
-  //     box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+  //     border: $lp-border;
+  //     box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
   //   }
   //   .market {
   //     height: 303px;
@@ -365,8 +365,8 @@ $page-margin: 100px;
   //     background: rgba(78, 0, 132, 0.2);
   //     backdrop-filter: blur(30px);
   //     border-radius: 16px;
-  //     border: 1px solid #bd5fff;
-  //     box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+  //     border: $lp-border;
+  //     box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
   //   }
   // }
   .bottom {
@@ -380,8 +380,8 @@ $page-margin: 100px;
     //   background: rgba(78, 0, 132, 0.2);
     //   backdrop-filter: blur(30px);
     //   border-radius: 16px;
-    //   border: 1px solid #bd5fff;
-    //   box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+    //   border: $lp-border;
+    //   box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
     // }
     // .history {
     //   height: 791px;
@@ -389,16 +389,16 @@ $page-margin: 100px;
     //   background: rgba(78, 0, 132, 0.2);
     //   backdrop-filter: blur(30px);
     //   border-radius: 16px;
-    //   border: 1px solid #bd5fff;
-    //   box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+    //   border: $lp-border;
+    //   box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
     // }
     // height: 791px;
     width: 100%;
     background: rgba(78, 0, 132, 0.2);
     backdrop-filter: blur(30px);
     border-radius: 16px;
-    border: 1px solid #bd5fff;
-    box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+    border: $lp-border;
+    box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
     .history {
       height: 100%;
       width: 100%;
@@ -407,10 +407,10 @@ $page-margin: 100px;
       flex-direction: column;
       margin: 27px;
       .historyTitle {
-        color: #3ca1ff;
+        color: $med-blue;
         font-size: 16px;
         font-weight: bold;
-        text-shadow: 0px 0px 10px rgba(#3ca1ff, 0.7);
+        text-shadow: 0px 0px 10px rgba($med-blue, 0.7);
         margin-bottom: 22px;
       }
       .historyBox {
@@ -430,7 +430,7 @@ $page-margin: 100px;
             .avatar {
               height: 36px;
               width: 36px;
-              // background: rgba(60, 161, 255, 1);
+              // background: rgba($med-blue, 1);
               border-radius: 50%;
               margin-right: 8px;
             }
@@ -447,7 +447,7 @@ $page-margin: 100px;
             .viewTx {
               margin-left: 10px;
               margin-right: 60px;
-              color: #3ca1ff;
+              color: $med-blue;
               cursor: pointer;
             }
           }

@@ -4,12 +4,12 @@
   background: none;
   width: 100%;
   position: relative;
-  border-right: 1px solid #bd5fff;
-  border-left: 1px solid #bd5fff;
-  border-bottom: 1px solid #bd5fff;
+  border-right: $lp-border;
+  border-left: $lp-border;
+  border-bottom: $lp-border;
   border-radius: 0px 0px 15px 15px;
-  box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
-  background: rgba(78, 0, 132, 0.2);
+  box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
+  background: rgba($dark-purple2, 0.2);
   backdrop-filter: blur(20px);
   padding-top: 0px;
   padding-left: 5px;
@@ -18,7 +18,7 @@
   overflow: hidden;
   &::before {
     content: '';
-    background: rgba(141, 141, 141, 0.2);
+    background: rgba($slate, 0.2);
     position: absolute;
     left: 1%;
     width: 98%;
@@ -29,7 +29,6 @@
     justify-content: space-evenly;
     width: 100%;
     height: 100%;
-    // remove this
     margin-top: 20px;
     padding-top: 10px;
     .gridCell {
@@ -59,7 +58,7 @@
         width: auto;
         color: #fff;
         font-size: 16px;
-        text-shadow: 0px 0px 10px rgba(60, 161, 255, 0.7);
+        text-shadow: 0px 0px 10px rgba($med-blue, 0.7);
         .topbar {
           height: 32px;
           // border: 1px blue solid;
@@ -121,7 +120,7 @@
         }
         .text {
           height: 19px;
-          color: #3ca1ff;
+          color: $med-blue;
           text-transform: uppercase;
           font-weight: bold;
           // border: 1px cyan solid;

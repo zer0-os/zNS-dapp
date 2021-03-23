@@ -41,12 +41,12 @@
         rgba(0, 102, 255, 0.2) 0%,
         rgba(0, 63, 137, 0.2) 100%
       );
-      border-top: 2px solid #bd5fff;
-      border-bottom: 1px solid #4e0084;
-      border-right: 1px solid #bd5fff;
-      border-left: 1px solid #bd5fff;
+      border-top: 2px solid $light-purple;
+      border-bottom: 1px solid $dark-purple;
+      border-right: $lp-border;
+      border-left: $lp-border;
       border-radius: 15px 15px 15px 15px;
-      box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+      box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
       filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
 
       // needed to create a hack for the border gradient
@@ -62,8 +62,8 @@
       //   border-radius: 15px;
       //   background: linear-gradient(
       //     180deg,
-      //     rgba(#bd5fff, 0.8) 0%,
-      //     rgba(#4e0084, 0.8) 100%
+      //     rgba($light-purple, 0.8) 0%,
+      //     rgba($dark-purple, 0.8) 100%
       //   );
 
       //   filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
@@ -219,13 +219,13 @@
           // width: 100px;
           font-size: 16px;
           border-radius: 16px;
-          border-right: 3px solid #3ca1ff;
-          border-left: 3px solid #3ca1ff;
+          border-right: 3px solid $med-blue;
+          border-left: 3px solid $med-blue;
           //
           margin-right: 15px;
           width: 162px;
           height: 28px;
-          // box-shadow: 0px 0px 10px 0px rgba(60, 161, 255, 0.7);
+          // box-shadow: 0px 0px 10px 0px rgba($med-blue, 0.7);
           font-size: 16px;
           border-radius: 15px;
           transition: 0.6s;
@@ -262,7 +262,7 @@
             height: 4px;
             width: 4px;
             border-radius: 50%;
-            background: rgba(60, 161, 255, 1);
+            background: rgba($med-blue, 1);
           }
         }
       }
@@ -274,7 +274,7 @@
       flex-direction: row;
       justify-content: left;
       align-items: center;
-      color: rgba(60, 161, 255, 0.5);
+      color: rgba($med-blue, 0.5);
       font-size: 16px;
       font-weight: bold;
       & > div {
@@ -426,8 +426,8 @@
 //       border: none;
 //       font-size: 16px;
 //       border-radius: 16px;
-//       border-right: 3px solid #3ca1ff;
-//       border-left: 3px solid #3ca1ff;
+//       border-right: 3px solid $med-blue;
+//       border-left: 3px solid $med-blue;
 //       border-top: none;
 //       border-bottom: none;
 //       transition: 0.6s;
@@ -442,7 +442,7 @@
 //       align-items: center;
 
 //       .btn-text {
-//         color: #3ca1ff;
+//         color: $med-blue;
 //         font-weight: bold;
 //         text-shadow: 0px 0px 7px rgba(0, 178, 255, 0.7);
 //       }

@@ -99,7 +99,7 @@ $page-margin: 100px;
         background: rgba(78, 0, 132, 0.2);
         backdrop-filter: blur(10px);
         display: flex;
-        box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+        box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
         flex-direction: column;
         justify-content: space-between;
         overflow-y: visible;
@@ -108,16 +108,16 @@ $page-margin: 100px;
         }
         .metricTitle {
           margin-top: 15px;
-          color: rgba(60, 161, 255, 1);
+          color: rgba($med-blue, 1);
           font-size: 16px;
           font-weight: bold;
           text-transform: uppercase;
-          text-shadow: 0px 0px 10px rgba(60, 161, 255, 0.7);
+          text-shadow: 0px 0px 10px rgba($med-blue, 0.7);
           display: flex;
           flex-direction: row;
           .info {
             margin-left: 5px;
-            background: #002f5b;
+            background: $dark-blue;
             border-radius: 50%;
             font-weight: normal;
             width: 18px !important;
@@ -230,11 +230,11 @@ $page-margin: 100px;
     display: flex;
     flex-direction: row;
     border-radius: 15px 15px 0px 0px;
-    border-right: 1px solid #bd5fff;
-    border-left: 1px solid #bd5fff;
-    border-top: 1px solid #bd5fff;
+    border-right: $lp-border;
+    border-left: $lp-border;
+    border-top: $lp-border;
     // need to create a way for box shadow not to display underneath this element to seamlessly integrate with the table
-    box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+    box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
     .search {
       position: relative;
       width: 100%;
@@ -565,7 +565,7 @@ table {
   margin-right: -5px;
   margin-top: 10px;
   .tableContainer {
-    box-shadow: 0px 0px 10px 0px darken(rgba(235, 0, 255, 1), 20%);
+    box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
     border-radius: 0px 0px 15px 15px;
   }
 }
@@ -593,7 +593,7 @@ table {
       // top border
       &::after {
         content: '';
-        background: rgba(141, 141, 141, 0.2);
+        background: rgba($slate, 0.2);
         position: absolute;
         left: 1%;
         width: 98%;
@@ -603,11 +603,11 @@ table {
 
     // th = header cell
     tr th:first-child {
-      border-left: 1px solid #bd5fff;
+      border-left: $lp-border;
     }
     // trade button
     tr th:last-child {
-      border-right: 1px solid #bd5fff;
+      border-right: $lp-border;
       & > div {
         display: flex;
         flex-direction: row;
@@ -619,7 +619,7 @@ table {
       flex-direction: row;
       justify-content: flex-end;
       .infoButton {
-        background: #002f5b;
+        background: $dark-blue;
         border-radius: 50%;
         font-weight: normal;
         width: 18px !important;
@@ -631,7 +631,7 @@ table {
         margin-left: 2px;
         cursor: pointer;
         .infoMark {
-          color: rgba(60, 161, 255, 1);
+          color: rgba($med-blue, 1);
           font-weight: bold;
           font-size: 12px !important;
           margin: auto;
@@ -665,7 +665,7 @@ table {
       // top border
       &::after {
         content: '';
-        background: rgba(141, 141, 141, 0.2);
+        background: rgba($slate, 0.2);
         position: absolute;
         // bottom: 0;
         left: 1%;
@@ -674,20 +674,20 @@ table {
       }
       // every rightmost cell
       & td:last-child {
-        border-right: 1px solid #bd5fff;
+        border-right: $lp-border;
         .tradeButton {
-          color: #3ca1ff;
+          color: $med-blue;
           // border: #5f8cff 1px solid;
           border-top: none;
-          border-right: 3px solid #3ca1ff;
-          border-left: 3px solid #3ca1ff;
+          border-right: 3px solid $med-blue;
+          border-left: 3px solid $med-blue;
           border-radius: 15px;
           background: linear-gradient(
             94.23deg,
-            rgba(60, 161, 255, 0.2) 0%,
+            rgba($med-blue, 0.2) 0%,
             rgba(30, 81, 128, 0.2) 100%
           );
-          //  box-shadow: 0px 0px 10px rgba(60, 161, 255, 0.7);
+          //  box-shadow: 0px 0px 10px rgba($med-blue, 0.7);
           // probably change this
           width: 110px;
           height: 24px;
@@ -703,7 +703,7 @@ table {
       // every leftmost cell
       & td:first-child {
         text-align: center;
-        border-left: 1px solid #bd5fff;
+        border-left: $lp-border;
       }
       // every second row
       &:nth-child(2n) {
@@ -727,7 +727,7 @@ table {
       // bottom  row
       &:last-child td {
         // bottom right cell
-        border-bottom: 1px solid #bd5fff;
+        border-bottom: $lp-border;
         &:last-child {
           border-radius: 0px 0px 12px 0px;
         }
@@ -793,7 +793,7 @@ table {
             content: 'TICK';
             position: relative;
             font-weight: bold;
-            color: #9ed0ff;
+            color: $light-blue;
             left: 5px;
           }
         }
