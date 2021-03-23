@@ -7,14 +7,11 @@ $page-margin: 100px;
   margin-top: 150px;
   margin-left: $page-margin;
   margin-right: $page-margin;
-  // border: 1px red solid;
   display: flex;
   flex-direction: column;
 
   .showcase {
-    // remove
-    height: 50vh;
-    height: 600px;
+    height: 75vh;
     background: url(../css/img/starsbg.png);
     background-repeat: no-repeat;
     background-size: cover;
@@ -28,10 +25,8 @@ $page-margin: 100px;
     justify-content: center;
     align-items: center;
     .showcaseIMG {
-      // position: relative;
       width: 40%;
       height: 78%;
-      // border: 1px red solid;
       margin-right: 2%;
       display: flex;
       flex-direction: row;
@@ -62,7 +57,6 @@ $page-margin: 100px;
     .showcaseInfo {
       width: 40%;
       height: 78%;
-      // border: 1px red solid;
       margin-left: 2%;
       display: flex;
       flex-direction: column;
@@ -76,7 +70,7 @@ $page-margin: 100px;
         .title {
           font-size: 36px;
           font-weight: bold;
-          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          text-shadow: 0px 0px 10px $white-shadow;
         }
         .domain {
           color: rgba($med-blue, 1);
@@ -101,7 +95,6 @@ $page-margin: 100px;
               height: 36px;
               width: 36px !important;
               border-radius: 50%;
-              // background: rgba($purple-shadow, 1);
             }
             .creatorFlex {
               transform: translateY(7px);
@@ -124,7 +117,6 @@ $page-margin: 100px;
               height: 36px;
               width: 36px;
               border-radius: 50%;
-              // background: rgba($purple-shadow, 1);
             }
             .ownerFlex {
               transform: translateY(7px);
@@ -182,7 +174,6 @@ $page-margin: 100px;
       }
       .showcaseBottom {
         width: 100%;
-        // border: 1px solid red;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -191,31 +182,28 @@ $page-margin: 100px;
           padding-bottom: 0px;
           padding-right: 5px;
           padding-left: 5px;
-          // overflow: hidden;
           width: 50%;
           height: 45px;
         }
         .makeOffer {
           background: rgba(0, 209, 255, 0.1);
-          box-shadow: 0px 0px 40px rgba(0, 178, 255, 0.69);
+          box-shadow: 0px 0px 40px rgba($blue-shadow, 0.69);
           width: 100%;
           height: 45px;
           font-size: 18px;
-          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          text-shadow: 0px 0px 10px $white-shadow;
           font-weight: normal;
-          // color: lighten(rgba($med-blue, 1), 20%);
           color: #fff;
           border-left: 2px solid lighten(rgba($med-blue, 0.9), 60%);
           border-right: 2px solid lighten(rgba($med-blue, 0.9), 60%);
           border-radius: 25px;
-          // background: darken(rgba($med-blue, 0.2), 20%);
           display: flex;
           flex-direction: row;
           justify-content: center;
           align-items: center;
           cursor: pointer;
           & > div {
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+            text-shadow: 0px 0px 10px $white-shadow;
           }
         }
       }
@@ -229,10 +217,9 @@ $page-margin: 100px;
 
     .story {
       position: relative;
-      // overflow: hidden;
       height: 212px;
       width: 49%;
-      background: rgba(78, 0, 132, 0.2);
+      background: rgba($dark-purple2, 0.2);
       backdrop-filter: blur(30px);
       border-radius: 16px;
       border: $lp-border;
@@ -260,8 +247,6 @@ $page-margin: 100px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      // border: 1px red solid;
-      //
       .quadHeader {
         font-weight: bold;
         font-size: 16px;
@@ -274,7 +259,7 @@ $page-margin: 100px;
         font-weight: bold;
         font-size: 20px;
         color: #fff;
-        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+        text-shadow: 0px 0px 10px $white-shadow;
       }
       .infoButton {
         background: $dark-blue;
@@ -327,7 +312,7 @@ $page-margin: 100px;
         bottom: 0;
         height: 96px;
         width: 100%;
-        background: rgba(78, 0, 132, 0.2);
+        background: rgba($dark-purple, 0.2);
         backdrop-filter: blur(30px);
         border-radius: 16px;
         border: $lp-border;
@@ -344,55 +329,11 @@ $page-margin: 100px;
       }
     }
   }
-  // .stats {
-  //   display: flex;
-  //   flex-direction: row;
-  //   justify-content: space-between;
-  //   margin-bottom: 20px;
 
-  //   .growth {
-  //     height: 303px;
-  //     width: 49%;
-  //     background: rgba(78, 0, 132, 0.2);
-  //     backdrop-filter: blur(30px);
-  //     border-radius: 16px;
-  //     border: $lp-border;
-  //     box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
-  //   }
-  //   .market {
-  //     height: 303px;
-  //     width: 49%;
-  //     background: rgba(78, 0, 132, 0.2);
-  //     backdrop-filter: blur(30px);
-  //     border-radius: 16px;
-  //     border: $lp-border;
-  //     box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
-  //   }
-  // }
   .bottom {
     display: flex;
     flex-direction: row;
-    // justify-content: space-between;
     margin-bottom: 30px;
-    // .chat {
-    //   height: 791px;
-    //   width: 49%;
-    //   background: rgba(78, 0, 132, 0.2);
-    //   backdrop-filter: blur(30px);
-    //   border-radius: 16px;
-    //   border: $lp-border;
-    //   box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
-    // }
-    // .history {
-    //   height: 791px;
-    //   width: 49%;
-    //   background: rgba(78, 0, 132, 0.2);
-    //   backdrop-filter: blur(30px);
-    //   border-radius: 16px;
-    //   border: $lp-border;
-    //   box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
-    // }
-    // height: 791px;
     width: 100%;
     background: rgba(78, 0, 132, 0.2);
     backdrop-filter: blur(30px);
@@ -402,7 +343,6 @@ $page-margin: 100px;
     .history {
       height: 100%;
       width: 100%;
-      // border: 1px solid red;
       display: flex;
       flex-direction: column;
       margin: 27px;
@@ -430,7 +370,6 @@ $page-margin: 100px;
             .avatar {
               height: 36px;
               width: 36px;
-              // background: rgba($med-blue, 1);
               border-radius: 50%;
               margin-right: 8px;
             }

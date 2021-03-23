@@ -1,17 +1,11 @@
 @import './color-variables.scss';
 
-// TODO: add selected class & selector logic
-
 .sidebarContainer {
   height: 100vh;
   width: 100px;
   z-index: 100;
-  // padding: 35px 0;
-
   display: flex;
   flex-direction: column;
-  // justify-content: center;
-
   position: fixed;
   top: 0;
   left: 0;
@@ -34,7 +28,6 @@
       position: relative;
       align-self: center;
       margin: auto;
-      // top: 40vh;
       height: 302px;
       width: 66px;
       background: linear-gradient(
@@ -61,21 +54,8 @@
         justify-content: center;
         // border: 5px red solid;
         cursor: pointer;
-        // div {
-        //   position: relative;
-        //   align-self: center;
-        //   border: 1px blue solid;
-        //   width: 100%;
-        //   height: 100%;
-        //   & img {
-        //     position: absolute;
-        //     left: 0;
-        //     top: 0;
-        //   }
-        // }
         img {
           align-self: center;
-          // pointer-events: inherit;
           cursor: pointer;
         }
         &:first-child {
@@ -84,94 +64,6 @@
         &:last-child {
           margin-bottom: 37px;
         }
-      }
-    }
-  }
-
-  // depricated
-  .sidebarNav {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    .dotContainer {
-      display: flex;
-      flex-direction: column;
-      padding-left: 18px;
-
-      .dot {
-        height: 8px;
-        width: 8px;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.19);
-        margin-right: 0;
-        margin-top: 16px;
-        cursor: pointer;
-        &.selectedDot {
-          background-color: white !important;
-        }
-      }
-    }
-    .icons {
-      padding-left: 34px;
-      .iconRow {
-        margin-bottom: 16px;
-        // &:nth-child(2) {
-        //   //placeholder until dynamic switching
-        //   & > div {
-        //     box-shadow: $boxShadow !important;
-        //   }
-        // }
-        .selectedSideBar {
-          transition: 0.6s;
-          box-shadow: 0px 2px 15px rgb(145, 85, 230) !important;
-        }
-        .sbimgContainer {
-          height: 60px;
-          width: 60px;
-          border-radius: 50%;
-          background-color: #1b1b1d;
-          box-shadow: $dropShadow;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-        }
-      }
-    }
-  }
-
-  .profile {
-    position: absolute;
-    left: 54px;
-    bottom: 35px;
-    text-align: center;
-    .profilepic {
-      width: 60px;
-      height: 60px;
-      border-radius: 30px;
-      background-color: white;
-      margin-bottom: 12px;
-      cursor: pointer;
-    }
-    .buttons {
-      .wallet {
-        border-radius: 10px;
-        background-color: rgba(244, 93, 100, 0.2);
-        border: 2px solid #f45d64;
-        height: 30px;
-        width: 30px;
-        cursor: pointer;
-      }
-      .darkmode-toggle {
-        background-image: url('./img/night-moon-2.png');
-        background-size: 35px 35px;
-        background-position: center;
-        background-color: #172c3c;
-        border: 2px solid #78d0f8;
-        border-radius: 50%;
-        height: 30px;
-        width: 30px;
-        cursor: pointer;
       }
     }
   }

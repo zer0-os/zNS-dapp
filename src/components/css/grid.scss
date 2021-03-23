@@ -98,13 +98,11 @@
         }
         .name {
           height: 29px;
-          // border: 1px green solid;
           margin-bottom: 4px;
           font-size: 24px;
         }
         .image {
           height: 348px;
-          // border: 1px purple solid;
           margin-bottom: 12px;
           position: relative;
           display: flex;
@@ -123,7 +121,6 @@
           color: $med-blue;
           text-transform: uppercase;
           font-weight: bold;
-          // border: 1px cyan solid;
           margin-bottom: 4px;
           display: flex;
           flex-direction: row;
@@ -132,7 +129,6 @@
         }
         .price {
           height: 29px;
-          // border: 1px lime solid;
           display: flex;
           flex-direction: row;
           justify-content: space-between;
@@ -140,72 +136,6 @@
           font-size: 24px;
         }
       }
-      // .topCell {
-      //   height: 67%;
-      //   width: auto;
-      //   background: rgba($bright, 0.2);
-      //   // border-radius: 15px;
-      //   // border: 2px solid blue;
-      //   display: flex;
-      //   flex-direction: column;
-      //   justify-content: center;
-      //   .domainImage {
-      //     // margin-top: auto;
-      //     // margin-bottom: auto;
-      //     max-width: 100%;
-      //     // max-height: 100%;
-      //     overflow: hidden;
-      //     object-fit: cover;
-      //   }
-      // }
-      // .bottomCell {
-      //   height: 33%;
-      //   width: auto;
-      //   background: $blackbg;
-      //   color: $lightgrey;
-      //   display: flex;
-      //   flex-direction: column;
-      //   justify-content: center;
-      //   align-items: center;
-      //   font-size: 12px;
-      //   // align-content: center;
-      //   // border: 2px solid green;
-      //   & > div {
-      //     text-align: center;
-      //     width: 100%;
-      //   }
-      //   .name {
-      //     font-size: 33px;
-      //   }
-      //   .domain {
-      //   }
-      //   .desc {
-      //     display: flex;
-      //     flex-direction: row;
-      //     justify-content: space-around;
-      //     .ticker {
-      //     }
-      //     .holders {
-      //     }
-      //   }
-      //   .price {
-      //     font-size: 18px;
-      //   }
-      //   .bottom {
-      //     position: relative;
-      //     display: flex;
-      //     flex-direction: row;
-      //     justify-content: center;
-      //     .eth-price {
-      //     }
-      //     .cell-btn {
-      //       position: absolute;
-      //       right: 0;
-      //       transform: translate(-15px, -10px);
-      //       cursor: pointer;
-      //     }
-      //   }
-      // }
     }
   }
 }

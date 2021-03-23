@@ -96,7 +96,7 @@
           line-height: 19px;
           font-weight: bold;
           color: #ffffff;
-          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          text-shadow: 0px 0px 10px $white-shadow;
           // align-self: center;
           .slash {
             margin-left: -5px;
@@ -111,7 +111,7 @@
           font-size: 16px;
           // line-height: 19px;
           color: #ffffff;
-          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+          text-shadow: 0px 0px 10px $white-shadow;
           padding-top: 3px;
           padding-bottom: 3px;
           padding-left: 10px;
@@ -121,7 +121,7 @@
           // }
           .route-nav-text-sub {
             color: #ffffff;
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+            text-shadow: 0px 0px 10px $white-shadow;
           }
         }
       }
@@ -147,7 +147,7 @@
               rgba(0, 123, 237, 0.2) 0%,
               rgba(0, 83, 160, 0.2) 100%
             );
-            // text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+            // text-shadow: 0px 0px 10px $white-shadow;
             // font-size: 16px;
             border-radius: 15px;
 
@@ -156,7 +156,7 @@
             &::placeholder {
               color: #ffffff;
               // filter: drop-shadow(0px 0px 15px rgb(139, 34, 34));
-              text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+              text-shadow: 0px 0px 10px $white-shadow;
               font-size: 16px;
               overflow: visible;
             }
@@ -247,7 +247,7 @@
             line-height: 19px;
             vertical-align: middle;
             color: #ffffff;
-            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+            text-shadow: 0px 0px 10px $white-shadow;
           }
           cursor: pointer;
         }
@@ -444,7 +444,7 @@
 //       .btn-text {
 //         color: $med-blue;
 //         font-weight: bold;
-//         text-shadow: 0px 0px 7px rgba(0, 178, 255, 0.7);
+//         text-shadow: 0px 0px 7px rgba($blue-shadow, 0.7);
 //       }
 //     }
 

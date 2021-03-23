@@ -21,7 +21,6 @@
     max-width: 100%;
     background-color: $hzgradient;
     padding-top: 13px;
-    // margin-bottom: -12px;
   }
   .btn-div {
     width: 100%;
@@ -67,7 +66,6 @@
     margin-left: 30px;
   }
   .walletButtonContainer:nth-child(1) {
-    // margin-bottom: 20px;
   }
   .new-ETH {
     display: flex;
@@ -75,9 +73,7 @@
     justify-content: center;
     align-items: baseline;
     padding-top: 15px;
-    // padding-left: 13%;
     height: 61px;
-    // border: 2px solid red;
     color: $dark-grey;
     background: $hzflat;
     .link {
@@ -86,7 +82,3 @@
     }
   }
 }
-
-// .ant-modal-body {
-//   padding: 0;
-// }
