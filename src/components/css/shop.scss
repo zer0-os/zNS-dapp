@@ -1,7 +1,6 @@
 @import './color-variables.scss';
 
 .shopContainer {
-  // border: 2px green solid;
   background: $shopbg;
   height: 100%;
   width: 100%;
@@ -42,7 +41,6 @@
   .tabs {
     overflow: hidden;
     height: 90vh;
-    // border: 2px solid red;
     background: $blackbg;
 
     .tabPane {
@@ -53,13 +51,11 @@
       .gridContainer-profile {
         padding-top: 35px;
         .gridCell {
-          // overflow: visible;
           margin-left: auto;
           margin-right: auto;
           margin-bottom: 35px;
           height: 475px;
           width: 327px;
-          // background: blue;
           border-radius: 10px;
           overflow: hidden;
           transition: all 0.4s ease-in-out;
@@ -74,16 +70,11 @@
             height: 67%;
             width: auto;
             background: rgba(180, 179, 179, 0.4);
-            // border-radius: 15px;
-            // border: 2px solid blue;
             display: flex;
             flex-direction: column;
             justify-content: center;
             .cellImage {
-              // margin-top: auto;
-              // margin-bottom: auto;
               max-width: 100%;
-              // max-height: 100%;
               overflow: hidden;
               object-fit: cover;
             }
@@ -98,8 +89,6 @@
             justify-content: center;
             align-items: center;
             font-size: 12px;
-            // align-content: center;
-            // border: 2px solid green;
             & > div {
               text-align: center;
               width: 100%;
@@ -142,11 +131,6 @@
     .secondPane {
     }
     .thirdPane {
-      // background: radial-gradient(
-      //   50% 50% at 50% 50%,
-      //   rgba(107, 59, 209, 0) 0%,
-      //   rgba(105, 3, 141, 0.33) 100%
-      // );
       background: $shopbg;
     }
     // tab container # 3
@@ -159,15 +143,12 @@
       .ant-table-wrapper {
         left: 0;
         top: 0;
-        // border: 2px red solid;
         height: 100%;
         width: 100%;
-        // border: none;
         // table without footer
         .ant-table {
           background: none;
           font-size: 18px;
-          // border: none;
           // disable hover effect on all rows
           .ant-table-tbody > tr.ant-table-row-level-0:hover > td {
             background: unset !important;
@@ -211,7 +192,6 @@
                   align-items: center;
                   padding: 8px 32px;
                   border-radius: 86px;
-                  // border: none;
                   border-top: 1px $bright solid !important;
                   border-bottom: 2px transparent solid;
                   cursor: pointer;
@@ -279,15 +259,12 @@
       .ant-table-wrapper {
         left: 0;
         top: 0;
-        // border: 2px red solid;
         height: 100%;
         width: 100%;
-        // border: none;
         // table without footer
         .ant-table {
           background: none;
           font-size: 18px;
-          // border: none;
           // disable hover effect on all rows
           .ant-table-tbody > tr.ant-table-row-level-0:hover > td {
             background: unset !important;
@@ -331,7 +308,6 @@
                   align-items: center;
                   padding: 8px 32px;
                   border-radius: 86px;
-                  // border: none;
                   border-top: 1px $bright solid !important;
                   border-bottom: 2px transparent solid;
                   cursor: pointer;
@@ -432,11 +408,7 @@
 .profilepic {
   width: 50px;
   height: 50px;
-
-  // background-color: white;
   margin-right: 16px;
-
-  // transform: translateY(-20px);
   box-shadow: $dropShadow;
   cursor: pointer;
 }

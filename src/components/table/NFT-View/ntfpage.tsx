@@ -218,13 +218,8 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           </div>
         </div>
       </div>
-      {/* <div className="stats">
-      <div className="growth"></div>
-      <div className="market"></div>
-    </div> */}
+
       <div className="bottom">
-        {/* <div className="chat"></div>
-      <div className="history"></div> */}
         <div className="history">
           <div className="historyTitle">HISTORY</div>
           <div className="historyBox">

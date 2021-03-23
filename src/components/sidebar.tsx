@@ -110,8 +110,6 @@ const Sidebar: FC = () => {
               }
               alt=""
             />
-            {/* <img src={trendingS} alt="" /> */}
-            {/* </div> */}
           </div>
           <div className="sideItem i2">
             <img
@@ -181,50 +179,6 @@ const Sidebar: FC = () => {
           </div>
         </div>
       </div>
-
-      {/* depricated */}
-      {/* <div className="sidebarNav">
-       
-        <div className="icons">
-          <div className="iconRow">
-            <Tooltip
-              color={bright}
-              className="tt"
-              placement="right"
-              title={text1}
-            >
-              <div
-                onClick={() => setSideToggle('domain')}
-                className={`sbimgContainer ${
-                  sideToggle === 'domain' ? 'selectedSideBar' : null
-                }`}
-              >
-                {' '}
-                <img src={sideToggle === 'domain' ? tvSelect : tv} alt="" />
-              </div>
-            </Tooltip>
-          </div>
-          <div className="iconRow">
-            <Tooltip
-              color={bright}
-              className="tt"
-              placement="right"
-              title={text2}
-            >
-              <div
-                onClick={() => setSideToggle('global')}
-                className={`sbimgContainer ${
-                  sideToggle === 'global' ? 'selectedSideBar' : null
-                }`}
-              >
-                {' '}
-                <img src={sideToggle === 'global' ? feedSelect : feed} alt="" />
-              </div>
-            </Tooltip>
-          </div>
-         
-        </div>
-      </div> */}
     </div>
   );
 };

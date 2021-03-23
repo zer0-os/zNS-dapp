@@ -97,7 +97,7 @@ const Profile: FC = () => {
                 </div>
               </div>
             </div>
-
+            {/* may need this code to display QR */}
             {/* <div className="footer-container">
               <div className="footer-qr">
                 <div className="qr">
