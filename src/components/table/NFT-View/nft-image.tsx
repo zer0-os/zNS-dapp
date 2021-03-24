@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect, useCallback } from 'react';
 import { useDomainCache } from '../../../lib/useDomainCache';
-import '../../css/nft-view.scss';
+import './nft-view.scss';
 
 interface NFTImageProps {
   domain: string;
@@ -15,7 +15,9 @@ const NFTImage: FC<NFTImageProps> = ({ domain: _domain }) => {
     setLoadedIMG('');
   }, [domain, setLoadedIMG]);
 
-  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [setLoadedIMG]);
+  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [
+    setLoadedIMG,
+  ]);
 
   if (domain.isNothing()) return null;
   return (

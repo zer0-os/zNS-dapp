@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { Space, Table } from 'antd';
-import Profile from '../../table/table-image';
+import Profile from '../../table/table/table-image';
 const { Column } = Table;
 
 // // eslint-disable-next-line @typescript-eslint/no-unused-vars

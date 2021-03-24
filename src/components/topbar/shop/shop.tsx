@@ -2,10 +2,9 @@ import { FC, useState, useMemo } from 'react';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
-import Approve from '../../table/NFT-View/approval';
-import '../../css/shop.scss';
-import Stakingview from '../stakingModal';
-import tripledot from '../../css/img/tripledot.svg';
+import './css/shop.scss';
+import Stakingview from '../topbar/stakingModal';
+import tripledot from './img/tripledot.svg';
 
 const { TabPane } = Tabs;
 
@@ -105,9 +104,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 footer={null}
                 width={'65vw'}
                 closable={false}
-              >
-                <Approve domain={_domain} />
-              </Modal>
+              ></Modal>
             </span>
           </div>
         </div>
@@ -195,9 +192,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 footer={null}
                 width={'65vw'}
                 closable={false}
-              >
-                <Approve domain={_domain} />
-              </Modal>
+              ></Modal>
 
               {/* <Owned /> */}
               {/* <div>
