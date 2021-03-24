@@ -4,16 +4,16 @@ import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
-import '../../css/nftpage.scss';
-import TableImage from '../table-image';
+import './css/nftpage.scss';
+import TableImage from '../table/table-image';
 import NFTImage from './nft-image';
-import neo2 from '../../css/img/neo2.jpeg';
+import neo2 from './img/neo2.jpeg';
 import nFTpAGE from '../../css/video/nFTpAGE.mp4';
-import neo from '../../css/img/mockusers/neo.png';
-import cat from '../../css/img/mockusers/cat.png';
-import phoenix from '../../css/img/mockusers/phoenix.png';
-import vape from '../../css/img/mockusers/vape.png';
-import wilder from '../../css/img/mockusers/wilder.png';
+import neo from './img/mockusers/neo.png';
+import cat from './img/mockusers/cat.png';
+import phoenix from './img/mockusers/phoenix.png';
+import vape from './img/mockusers/vape.png';
+import wilder from './img/mockusers/wilder.png';
 
 interface ProfileProps {
   domain: string;

@@ -1,0 +1,84 @@
+@import '../../css/color-variables.scss';
+
+.wallet-container {
+  background-color: $hzflat;
+
+  .title {
+    text-align: center;
+    padding-top: 2%;
+    height: 60px;
+    background: $hzflat;
+
+    .con- {
+      color: white;
+    }
+  }
+  .walletButtonContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 100%;
+    background-color: $hzgradient;
+    padding-top: 13px;
+  }
+  .btn-div {
+    width: 100%;
+    max-width: 100%;
+    .network-btns {
+      text-align: left;
+      margin-bottom: 10px;
+      border: none;
+      background-color: transparent;
+      color: white;
+      width: 100%;
+      max-width: 100%;
+
+      .name-con {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        cursor: pointer;
+        &:first-child {
+          margin-left: 15px;
+        }
+        .circle {
+          margin-right: 25px;
+          border-radius: 50%;
+          background-color: purple;
+          height: 32px;
+          width: 32px;
+        }
+      }
+
+      .btn-lines {
+        width: 95%;
+        height: 1px;
+        background-color: $hzflat;
+      }
+    }
+  }
+
+  .button-target {
+    margin-left: 30px;
+  }
+  .walletButtonContainer:nth-child(1) {
+  }
+  .new-ETH {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    padding-top: 15px;
+    height: 61px;
+    color: $dark-grey;
+    background: $hzflat;
+    .link {
+      margin-left: 15px;
+      color: $dark-grey;
+    }
+  }
+}
