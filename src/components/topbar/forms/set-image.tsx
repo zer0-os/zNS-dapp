@@ -58,7 +58,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     async (file: File) => {
       assert(domain.isJust());
       return ipfs
-        .upload(domain.value.domain, file)
+        .upload(domain.value.name, file)
         .then(async (added) => _setImage('ipfs://' + added.hash))
         .then(() => refetchDomain());
     },

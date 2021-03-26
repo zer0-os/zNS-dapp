@@ -66,7 +66,7 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
               <TableImage domain={_domain} />
             </div>
             <div className="eth-address-d">
-              <div>ETH</div> {domain.value.controller}
+              <div>ETH</div> {domain.value.owner}
             </div>
 
             <div className="route-nav">

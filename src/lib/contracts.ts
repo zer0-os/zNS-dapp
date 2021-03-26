@@ -1,17 +1,18 @@
 import { Web3Provider } from '@ethersproject/providers';
-import { Registry__factory, Registry } from '../types';
+import { Registrar__factory } from '../types/factories/Registrar__factory';
 import { useWeb3React } from '@web3-react/core';
 import { useMemo } from 'react';
 import addresses from './addresses';
 import { Maybe } from 'true-myth';
 import { chainIdToNetworkType } from './network';
+import { Registrar } from '../types/Registrar';
 
 export interface ContractAddresses {
-  registry: string;
+  registrar: string;
 }
 
 export interface Contracts {
-  registry: Registry;
+  registry: Registrar;
 }
 
 function useZnsContracts(): Maybe<Contracts> {
@@ -20,8 +21,8 @@ function useZnsContracts(): Maybe<Contracts> {
   const contracts = useMemo((): Maybe<Contracts> => {
     if (!active || !library) return Maybe.nothing();
     return Maybe.of({
-      registry: Registry__factory.connect(
-        addresses[chainIdToNetworkType(chainId!)].registry,
+      registry: Registrar__factory.connect(
+        addresses[chainIdToNetworkType(chainId!)].registrar,
         library.getSigner(),
       ),
     });

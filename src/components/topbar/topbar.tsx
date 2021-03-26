@@ -51,11 +51,11 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
     <div className="topbarContainer">
       <div className="topbarLeft">
         <div className="topbarLogoContainer">
-          <img
+          {/* <img
             className="topbarLogo"
             src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-            alt=""
-          />
+            alt="" 
+          /> */}
         </div>
         <div className="route-nav">
           <div className="route-nav-link">

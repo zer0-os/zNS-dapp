@@ -15,18 +15,20 @@ const NFTImage: FC<NFTImageProps> = ({ domain: _domain }) => {
     setLoadedIMG('');
   }, [domain, setLoadedIMG]);
 
-  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [setLoadedIMG]);
+  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [
+    setLoadedIMG,
+  ]);
 
   if (domain.isNothing()) return null;
   return (
     <>
       <div className="NFTImageContainer">
-        <img
+        {/* <img
           onLoad={_onLoad}
           className={`NFTImage ${loadedIMG}`}
           src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
           alt=""
-        />
+        /> */}
       </div>
       {/*console.log(domain.value.image, domain.value.domain)*/}
     </>

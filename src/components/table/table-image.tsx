@@ -14,16 +14,19 @@ const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
     setLoadedIMG('');
   }, [domain, setLoadedIMG]);
 
-  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [setLoadedIMG]);
+  const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [
+    setLoadedIMG,
+  ]);
 
   if (domain.isNothing()) return null;
   return (
-    <img
-      onLoad={_onLoad}
-      className={`domainImage ${loadedIMG}`}
-      src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-      alt=""
-    />
+    <> </>
+    // <img
+    //   onLoad={_onLoad}
+    //   className={`domainImage ${loadedIMG}`}
+    //   src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+    //   alt=""
+    // />
   );
 };
 export default TableImage;

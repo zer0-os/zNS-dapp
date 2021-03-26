@@ -14,7 +14,7 @@ const TableImageGlobal: FC<TableImageGlobalProps> = ({ domain: _domain }) => {
   return (
     <>
       {/* TODO: check if there is no image file */}
-      {domain.isJust() && (
+      {/* {domain.isJust() && (
         <div className="domainImageGlobalContainer">
           <img
             className="domainImageGlobal"
@@ -22,7 +22,7 @@ const TableImageGlobal: FC<TableImageGlobalProps> = ({ domain: _domain }) => {
             alt=""
           />
         </div>
-      )}
+      )} */}
       {/*console.log(domain.value.image, domain.value.domain)*/}
     </>
   );

@@ -45,7 +45,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
         <div className="mintBodyContainer">
           <div className="mintMedia">
             <div className="mintMediaText">UPLOAD MEDIA FILE</div>
-            <SetImage domain={domain.value.domain} />{' '}
+            {/* <SetImage domain={domain.value.domain} />{' '} */}
           </div>
           <div className="content">
             <div className="left">

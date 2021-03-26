@@ -2,7 +2,6 @@ import { FC, useState, useMemo } from 'react';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
-import Approve from '../../table/NFT-View/approval';
 import '../../css/shop.scss';
 import Stakingview from '../stakingModal';
 import tripledot from '../../css/img/tripledot.svg';
@@ -106,7 +105,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 width={'65vw'}
                 closable={false}
               >
-                <Approve domain={_domain} />
+                Hello world
               </Modal>
             </span>
           </div>
@@ -120,7 +119,8 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
       owned.isNothing()
         ? []
         : owned.value.map((control) => {
-            return gridCell(control.domain, control.image);
+            // return gridCell(control.name, control.image);
+            return gridCell(control.name, control.owner);
           }),
     [gridCell, owned],
   );
@@ -196,7 +196,8 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 width={'65vw'}
                 closable={false}
               >
-                <Approve domain={_domain} />
+                {/* <Approve domain={_domain} /> */}
+                Hello World
               </Modal>
 
               {/* <Owned /> */}

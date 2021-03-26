@@ -94,9 +94,9 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                     <div className="eth-address-d nftInfoRow">
                       <span className="nftDomain">
                         <span className="grayNFTText">
-                          {domain.value.controller.slice(0, 2)}
+                          {/* {domain.value.controller.slice(0, 2)} */}
                         </span>
-                        {domain.value.controller.slice(2)}
+                        {/* {domain.value.controller.slice(2)} */}
                       </span>
                     </div>
 

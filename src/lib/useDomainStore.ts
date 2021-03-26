@@ -8,27 +8,22 @@ import { getDomainId } from './domains';
 
 export interface Domain {
   id: string;
-  domain: string;
-  children: string[];
+  name: string;
+  subdomain: string[];
   owner: string;
-  controller: string;
   parent: string;
-  image: string;
-  resolver: string;
-  timeCreated: number;
-  approval: Maybe<string>;
+  isLocked: boolean;
+  metadata: string;
 }
 
 interface _DomainData {
   id: string;
-  domain: string;
+  name: string;
+  subdomain: string[];
   owner: string;
   parent: string;
-  controller: string;
-  image: string;
-  timeCreated: number;
-  resolver: string;
-  approval?: string;
+  isLocked: boolean;
+  metadata: string;
 }
 
 interface DomainsData {
@@ -53,14 +48,8 @@ const domainQuery = gql`
   query Domain($id: ID!) {
     domain(id: $id) {
       id
-      domain
-      approval
-      parent
-      owner
-      controller
-      image
-      resolver
-      timeCreated
+      name
+      metadata
     }
   }
 `;
@@ -69,14 +58,8 @@ const childrenQuery = gql`
   query ChildrenDomains($parent: Bytes!) {
     domains(where: { parent: $parent }) {
       id
-      domain
-      approval
-      parent
-      owner
-      controller
-      image
-      timeCreated
-      resolver
+      name
+      metadata
     }
   }
 `;
@@ -180,21 +163,19 @@ function useDomain(domain: string) {
         dataChildren &&
         dataChildren.domains[0] &&
         dataChildren.domains[0].parent === id
-          ? dataChildren.domains.map((d) => d.domain)
+          ? dataChildren.domains.map((d) => d.name)
           : //.filter((d) => d !== 'ROOT')
             [];
       return Maybe.of({
         ...dataDomain.domain,
-        approval: dataDomain.domain.approval
-          ? Maybe.of(dataDomain.domain.approval)
-          : Maybe.nothing(),
         owner: getAddress(dataDomain.domain.owner),
         parent: dataDomain.domain.parent,
+        metadata: dataDomain.domain.metadata,
+        subdomain: dataDomain.domain.subdomain,
+        isLocked: dataDomain.domain.isLocked,
+        name: dataDomain.domain.name,
 
-        resolver: dataDomain.domain.resolver,
-        image: dataDomain.domain.image,
         children,
-        controller: getAddress(dataDomain.domain.controller),
       });
     }
     return Maybe.nothing();
@@ -235,11 +216,9 @@ function useOwnedDomains(): {
       return Maybe.of(
         data.domains.map((d) => ({
           ...d,
-          approval: d.approval ? Maybe.of(d.approval) : Maybe.nothing(),
           owner: getAddress(d.owner),
           parent: d.parent,
           children: [],
-          controller: getAddress(d.controller),
         })),
       );
     }
@@ -289,11 +268,9 @@ function useIncomingApprovals(): {
       return Maybe.of(
         data.domains.map((d) => ({
           ...d,
-          approval: d.approval ? Maybe.of(d.approval) : Maybe.nothing(),
           owner: getAddress(d.owner),
           parent: d.parent,
           children: [],
-          controller: getAddress(d.controller),
         })),
       );
     }
@@ -336,11 +313,9 @@ function useAllDomains(
       return Maybe.of(
         data.domains.map((d) => ({
           ...d,
-          approval: d.approval ? Maybe.of(d.approval) : Maybe.nothing(),
           owner: getAddress(d.owner),
           parent: d.parent,
           children: [],
-          controller: getAddress(d.controller),
         })),
       );
     }

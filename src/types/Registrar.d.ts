@@ -20,29 +20,37 @@ import { BytesLike } from "@ethersproject/bytes";
 import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 
-interface RegistryInterface extends ethers.utils.Interface {
+interface RegistrarInterface extends ethers.utils.Interface {
   functions: {
-    "ROOT_ID()": FunctionFragment;
+    "addController(address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "baseURI()": FunctionFragment;
-    "canCreate(address,uint256)": FunctionFragment;
-    "controllerOf(uint256)": FunctionFragment;
-    "createDomain(string,address,address,string,string)": FunctionFragment;
-    "entries(uint256)": FunctionFragment;
+    "controllers(address)": FunctionFragment;
+    "domainController(uint256)": FunctionFragment;
+    "domainExists(uint256)": FunctionFragment;
+    "domainMetadataLockedBy(uint256)": FunctionFragment;
+    "domainRoyaltyAmount(uint256)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
-    "getChildLength(uint256)": FunctionFragment;
-    "getDepth(uint256)": FunctionFragment;
-    "getId(string[])": FunctionFragment;
-    "getOwner(string[])": FunctionFragment;
+    "initialize()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
+    "isAvailable(uint256)": FunctionFragment;
+    "isDomainMetadataLocked(uint256)": FunctionFragment;
+    "lockDomainMetadata(uint256)": FunctionFragment;
+    "lockDomainMetadataForOwner(uint256)": FunctionFragment;
+    "minterOf(uint256)": FunctionFragment;
     "name()": FunctionFragment;
+    "owner()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
+    "paused()": FunctionFragment;
+    "records(uint256)": FunctionFragment;
+    "registerDomain(uint256,string,address,address)": FunctionFragment;
+    "removeController(address)": FunctionFragment;
+    "renounceOwnership()": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
-    "setController(uint256,address)": FunctionFragment;
-    "setImage(uint256,string)": FunctionFragment;
-    "setResolver(uint256,string)": FunctionFragment;
+    "setDomainMetadataUri(uint256,string)": FunctionFragment;
+    "setDomainRoyaltyAmount(uint256,uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
     "tokenByIndex(uint256)": FunctionFragment;
@@ -50,30 +58,35 @@ interface RegistryInterface extends ethers.utils.Interface {
     "tokenURI(uint256)": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
-    "validateDomain(string)": FunctionFragment;
+    "transferOwnership(address)": FunctionFragment;
+    "unlockDomainMetadata(uint256)": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "ROOT_ID", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "addController",
+    values: [string]
+  ): string;
   encodeFunctionData(
     functionFragment: "approve",
     values: [string, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
   encodeFunctionData(functionFragment: "baseURI", values?: undefined): string;
+  encodeFunctionData(functionFragment: "controllers", values: [string]): string;
   encodeFunctionData(
-    functionFragment: "canCreate",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "controllerOf",
+    functionFragment: "domainController",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "createDomain",
-    values: [string, string, string, string, string]
+    functionFragment: "domainExists",
+    values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "entries",
+    functionFragment: "domainMetadataLockedBy",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "domainRoyaltyAmount",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -81,23 +94,55 @@ interface RegistryInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "getChildLength",
-    values: [BigNumberish]
+    functionFragment: "initialize",
+    values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "getDepth",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "getId", values: [string[]]): string;
-  encodeFunctionData(functionFragment: "getOwner", values: [string[]]): string;
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [string, string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "isAvailable",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isDomainMetadataLocked",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "lockDomainMetadata",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "lockDomainMetadataForOwner",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "minterOf",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "ownerOf",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "paused", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "records",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "registerDomain",
+    values: [BigNumberish, string, string, string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "removeController",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "renounceOwnership",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "safeTransferFrom",
@@ -108,16 +153,12 @@ interface RegistryInterface extends ethers.utils.Interface {
     values: [string, boolean]
   ): string;
   encodeFunctionData(
-    functionFragment: "setController",
+    functionFragment: "setDomainMetadataUri",
     values: [BigNumberish, string]
   ): string;
   encodeFunctionData(
-    functionFragment: "setImage",
-    values: [BigNumberish, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setResolver",
-    values: [BigNumberish, string]
+    functionFragment: "setDomainRoyaltyAmount",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "supportsInterface",
@@ -145,41 +186,84 @@ interface RegistryInterface extends ethers.utils.Interface {
     values: [string, string, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "validateDomain",
+    functionFragment: "transferOwnership",
     values: [string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "unlockDomainMetadata",
+    values: [BigNumberish]
+  ): string;
 
-  decodeFunctionResult(functionFragment: "ROOT_ID", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "addController",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "baseURI", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "canCreate", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "controllerOf",
+    functionFragment: "controllers",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "createDomain",
+    functionFragment: "domainController",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "entries", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "domainExists",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "domainMetadataLockedBy",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "domainRoyaltyAmount",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "getChildLength",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getDepth", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getId", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getOwner", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "initialize", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isApprovedForAll",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "isAvailable",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isDomainMetadataLocked",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "lockDomainMetadata",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "lockDomainMetadataForOwner",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "minterOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "records", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "registerDomain",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "removeController",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "safeTransferFrom",
     data: BytesLike
@@ -189,12 +273,11 @@ interface RegistryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setController",
+    functionFragment: "setDomainMetadataUri",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "setImage", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setResolver",
+    functionFragment: "setDomainRoyaltyAmount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -220,30 +303,46 @@ interface RegistryInterface extends ethers.utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "validateDomain",
+    functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "unlockDomainMetadata",
     data: BytesLike
   ): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
     "ApprovalForAll(address,address,bool)": EventFragment;
-    "ControllerSet(uint256,address,address,address)": EventFragment;
-    "DomainCreated(uint256,uint256,string,address,address,string,string)": EventFragment;
-    "ImageSet(address,uint256,string)": EventFragment;
-    "ResolverSet(address,uint256,string)": EventFragment;
+    "ControllerAdded(address)": EventFragment;
+    "ControllerRemoved(address)": EventFragment;
+    "DomainCreated(uint256,string,uint256,uint256,address,address)": EventFragment;
+    "MetadataChanged(uint256,string)": EventFragment;
+    "MetadataLocked(uint256,address)": EventFragment;
+    "MetadataUnlocked(uint256)": EventFragment;
+    "OwnershipTransferred(address,address)": EventFragment;
+    "Paused(address)": EventFragment;
+    "RoyaltiesAmountChanged(uint256,uint256)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
+    "Unpaused(address)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "Approval"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ControllerSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ControllerAdded"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "ControllerRemoved"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DomainCreated"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ImageSet"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "ResolverSet"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MetadataChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MetadataLocked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "MetadataUnlocked"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Paused"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "RoyaltiesAmountChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Unpaused"): EventFragment;
 }
 
-export class Registry extends Contract {
+export class Registrar extends Contract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -254,12 +353,18 @@ export class Registry extends Contract {
   removeAllListeners(eventName: EventFilter | string): this;
   removeListener(eventName: any, listener: Listener): this;
 
-  interface: RegistryInterface;
+  interface: RegistrarInterface;
 
   functions: {
-    ROOT_ID(overrides?: CallOverrides): Promise<[BigNumber]>;
+    addController(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
-    "ROOT_ID()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+    "addController(address)"(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
     approve(
       to: string,
@@ -284,139 +389,52 @@ export class Registry extends Contract {
 
     "baseURI()"(overrides?: CallOverrides): Promise<[string]>;
 
-    canCreate(
-      creator: string,
-      id: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
+    controllers(arg0: string, overrides?: CallOverrides): Promise<[boolean]>;
 
-    "canCreate(address,uint256)"(
-      creator: string,
-      id: BigNumberish,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
+    "controllers(address)"(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
-    controllerOf(
+    domainController(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    "controllerOf(uint256)"(
+    "domainController(uint256)"(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    createDomain(
-      domain: string,
-      _owner: string,
-      _controller: string,
-      resolver: string,
-      image: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    "createDomain(string,address,address,string,string)"(
-      domain: string,
-      _owner: string,
-      _controller: string,
-      resolver: string,
-      image: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    entries(
+    domainExists(
       id: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<
-      [
-        [
-          string,
-          BigNumber,
-          BigNumber,
-          string,
-          string,
-          string,
-          string,
-          BigNumber[]
-        ] & {
-          owner: string;
-          parent: BigNumber;
-          depth: BigNumber;
-          controller: string;
-          resolver: string;
-          image: string;
-          domain: string;
-          children: BigNumber[];
-        }
-      ] & {
-        out: [
-          string,
-          BigNumber,
-          BigNumber,
-          string,
-          string,
-          string,
-          string,
-          BigNumber[]
-        ] & {
-          owner: string;
-          parent: BigNumber;
-          depth: BigNumber;
-          controller: string;
-          resolver: string;
-          image: string;
-          domain: string;
-          children: BigNumber[];
-        };
-      }
-    >;
+    ): Promise<[boolean]>;
 
-    "entries(uint256)"(
+    "domainExists(uint256)"(
       id: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<
-      [
-        [
-          string,
-          BigNumber,
-          BigNumber,
-          string,
-          string,
-          string,
-          string,
-          BigNumber[]
-        ] & {
-          owner: string;
-          parent: BigNumber;
-          depth: BigNumber;
-          controller: string;
-          resolver: string;
-          image: string;
-          domain: string;
-          children: BigNumber[];
-        }
-      ] & {
-        out: [
-          string,
-          BigNumber,
-          BigNumber,
-          string,
-          string,
-          string,
-          string,
-          BigNumber[]
-        ] & {
-          owner: string;
-          parent: BigNumber;
-          depth: BigNumber;
-          controller: string;
-          resolver: string;
-          image: string;
-          domain: string;
-          children: BigNumber[];
-        };
-      }
-    >;
+    ): Promise<[boolean]>;
+
+    domainMetadataLockedBy(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    "domainMetadataLockedBy(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    domainRoyaltyAmount(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    "domainRoyaltyAmount(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     getApproved(
       tokenId: BigNumberish,
@@ -428,36 +446,9 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    getChildLength(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+    initialize(overrides?: Overrides): Promise<ContractTransaction>;
 
-    "getChildLength(uint256)"(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    getDepth(id: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    "getDepth(uint256)"(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    getId(path: string[], overrides?: CallOverrides): Promise<[BigNumber]>;
-
-    "getId(string[])"(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
-    getOwner(path: string[], overrides?: CallOverrides): Promise<[string]>;
-
-    "getOwner(string[])"(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<[string]>;
+    "initialize()"(overrides?: Overrides): Promise<ContractTransaction>;
 
     isApprovedForAll(
       owner: string,
@@ -471,9 +462,60 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    isAvailable(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    "isAvailable(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    isDomainMetadataLocked(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    "isDomainMetadataLocked(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    lockDomainMetadata(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "lockDomainMetadata(uint256)"(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    lockDomainMetadataForOwner(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "lockDomainMetadataForOwner(uint256)"(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    minterOf(id: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+
+    "minterOf(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     name(overrides?: CallOverrides): Promise<[string]>;
 
     "name()"(overrides?: CallOverrides): Promise<[string]>;
+
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
+    "owner()"(overrides?: CallOverrides): Promise<[string]>;
 
     ownerOf(
       tokenId: BigNumberish,
@@ -484,6 +526,66 @@ export class Registry extends Contract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[string]>;
+
+    paused(overrides?: CallOverrides): Promise<[boolean]>;
+
+    "paused()"(overrides?: CallOverrides): Promise<[boolean]>;
+
+    records(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, boolean, string, string, BigNumber] & {
+        minter: string;
+        metadataLocked: boolean;
+        metadataLockedBy: string;
+        controller: string;
+        royaltyAmount: BigNumber;
+      }
+    >;
+
+    "records(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, boolean, string, string, BigNumber] & {
+        minter: string;
+        metadataLocked: boolean;
+        metadataLockedBy: string;
+        controller: string;
+        royaltyAmount: BigNumber;
+      }
+    >;
+
+    registerDomain(
+      parentId: BigNumberish,
+      name: string,
+      domainOwner: string,
+      minter: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "registerDomain(uint256,string,address,address)"(
+      parentId: BigNumberish,
+      name: string,
+      domainOwner: string,
+      minter: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    removeController(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "removeController(address)"(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>;
+
+    "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -512,39 +614,27 @@ export class Registry extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    setController(
+    setDomainMetadataUri(
       id: BigNumberish,
-      controller: string,
+      uri: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "setController(uint256,address)"(
+    "setDomainMetadataUri(uint256,string)"(
       id: BigNumberish,
-      controller: string,
+      uri: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    setImage(
+    setDomainRoyaltyAmount(
       id: BigNumberish,
-      image: string,
+      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "setImage(uint256,string)"(
+    "setDomainRoyaltyAmount(uint256,uint256)"(
       id: BigNumberish,
-      image: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    setResolver(
-      id: BigNumberish,
-      resolver: string,
-      overrides?: Overrides
-    ): Promise<ContractTransaction>;
-
-    "setResolver(uint256,string)"(
-      id: BigNumberish,
-      resolver: string,
+      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -585,14 +675,14 @@ export class Registry extends Contract {
     ): Promise<[BigNumber]>;
 
     tokenURI(
-      token: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string] & { out: string }>;
+    ): Promise<[string]>;
 
     "tokenURI(uint256)"(
-      token: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<[string] & { out: string }>;
+    ): Promise<[string]>;
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -612,34 +702,36 @@ export class Registry extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    validateDomain(
-      _s: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber, string] & {
-        valid: boolean;
-        parent: BigNumber;
-        id: BigNumber;
-        domain: string;
-      }
-    >;
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
 
-    "validateDomain(string)"(
-      _s: string,
-      overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber, string] & {
-        valid: boolean;
-        parent: BigNumber;
-        id: BigNumber;
-        domain: string;
-      }
-    >;
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    unlockDomainMetadata(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
+
+    "unlockDomainMetadata(uint256)"(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<ContractTransaction>;
   };
 
-  ROOT_ID(overrides?: CallOverrides): Promise<BigNumber>;
+  addController(
+    controller: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
-  "ROOT_ID()"(overrides?: CallOverrides): Promise<BigNumber>;
+  "addController(address)"(
+    controller: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
   approve(
     to: string,
@@ -664,92 +756,49 @@ export class Registry extends Contract {
 
   "baseURI()"(overrides?: CallOverrides): Promise<string>;
 
-  canCreate(
-    creator: string,
-    id: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
+  controllers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
-  "canCreate(address,uint256)"(
-    creator: string,
-    id: BigNumberish,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
+  "controllers(address)"(
+    arg0: string,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
-  controllerOf(id: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  "controllerOf(uint256)"(
+  domainController(
     id: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
-  createDomain(
-    domain: string,
-    _owner: string,
-    _controller: string,
-    resolver: string,
-    image: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  "createDomain(string,address,address,string,string)"(
-    domain: string,
-    _owner: string,
-    _controller: string,
-    resolver: string,
-    image: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  entries(
+  "domainController(uint256)"(
     id: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<
-    [
-      string,
-      BigNumber,
-      BigNumber,
-      string,
-      string,
-      string,
-      string,
-      BigNumber[]
-    ] & {
-      owner: string;
-      parent: BigNumber;
-      depth: BigNumber;
-      controller: string;
-      resolver: string;
-      image: string;
-      domain: string;
-      children: BigNumber[];
-    }
-  >;
+  ): Promise<string>;
 
-  "entries(uint256)"(
+  domainExists(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+  "domainExists(uint256)"(
     id: BigNumberish,
     overrides?: CallOverrides
-  ): Promise<
-    [
-      string,
-      BigNumber,
-      BigNumber,
-      string,
-      string,
-      string,
-      string,
-      BigNumber[]
-    ] & {
-      owner: string;
-      parent: BigNumber;
-      depth: BigNumber;
-      controller: string;
-      resolver: string;
-      image: string;
-      domain: string;
-      children: BigNumber[];
-    }
-  >;
+  ): Promise<boolean>;
+
+  domainMetadataLockedBy(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  "domainMetadataLockedBy(uint256)"(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  domainRoyaltyAmount(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  "domainRoyaltyAmount(uint256)"(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   getApproved(
     tokenId: BigNumberish,
@@ -761,36 +810,9 @@ export class Registry extends Contract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  getChildLength(
-    id: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  initialize(overrides?: Overrides): Promise<ContractTransaction>;
 
-  "getChildLength(uint256)"(
-    id: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getDepth(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-  "getDepth(uint256)"(
-    id: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getId(path: string[], overrides?: CallOverrides): Promise<BigNumber>;
-
-  "getId(string[])"(
-    path: string[],
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
-  getOwner(path: string[], overrides?: CallOverrides): Promise<string>;
-
-  "getOwner(string[])"(
-    path: string[],
-    overrides?: CallOverrides
-  ): Promise<string>;
+  "initialize()"(overrides?: Overrides): Promise<ContractTransaction>;
 
   isApprovedForAll(
     owner: string,
@@ -804,9 +826,57 @@ export class Registry extends Contract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  isAvailable(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+  "isAvailable(uint256)"(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  isDomainMetadataLocked(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  "isDomainMetadataLocked(uint256)"(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  lockDomainMetadata(
+    id: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "lockDomainMetadata(uint256)"(
+    id: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  lockDomainMetadataForOwner(
+    id: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "lockDomainMetadataForOwner(uint256)"(
+    id: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  minterOf(id: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+  "minterOf(uint256)"(
+    id: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
   name(overrides?: CallOverrides): Promise<string>;
 
   "name()"(overrides?: CallOverrides): Promise<string>;
+
+  owner(overrides?: CallOverrides): Promise<string>;
+
+  "owner()"(overrides?: CallOverrides): Promise<string>;
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
@@ -814,6 +884,66 @@ export class Registry extends Contract {
     tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
+
+  paused(overrides?: CallOverrides): Promise<boolean>;
+
+  "paused()"(overrides?: CallOverrides): Promise<boolean>;
+
+  records(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, boolean, string, string, BigNumber] & {
+      minter: string;
+      metadataLocked: boolean;
+      metadataLockedBy: string;
+      controller: string;
+      royaltyAmount: BigNumber;
+    }
+  >;
+
+  "records(uint256)"(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<
+    [string, boolean, string, string, BigNumber] & {
+      minter: string;
+      metadataLocked: boolean;
+      metadataLockedBy: string;
+      controller: string;
+      royaltyAmount: BigNumber;
+    }
+  >;
+
+  registerDomain(
+    parentId: BigNumberish,
+    name: string,
+    domainOwner: string,
+    minter: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "registerDomain(uint256,string,address,address)"(
+    parentId: BigNumberish,
+    name: string,
+    domainOwner: string,
+    minter: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  removeController(
+    controller: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "removeController(address)"(
+    controller: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  renounceOwnership(overrides?: Overrides): Promise<ContractTransaction>;
+
+  "renounceOwnership()"(overrides?: Overrides): Promise<ContractTransaction>;
 
   "safeTransferFrom(address,address,uint256)"(
     from: string,
@@ -842,39 +972,27 @@ export class Registry extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  setController(
+  setDomainMetadataUri(
     id: BigNumberish,
-    controller: string,
+    uri: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "setController(uint256,address)"(
+  "setDomainMetadataUri(uint256,string)"(
     id: BigNumberish,
-    controller: string,
+    uri: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  setImage(
+  setDomainRoyaltyAmount(
     id: BigNumberish,
-    image: string,
+    amount: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "setImage(uint256,string)"(
+  "setDomainRoyaltyAmount(uint256,uint256)"(
     id: BigNumberish,
-    image: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  setResolver(
-    id: BigNumberish,
-    resolver: string,
-    overrides?: Overrides
-  ): Promise<ContractTransaction>;
-
-  "setResolver(uint256,string)"(
-    id: BigNumberish,
-    resolver: string,
+    amount: BigNumberish,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -914,10 +1032,10 @@ export class Registry extends Contract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
-  tokenURI(token: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
   "tokenURI(uint256)"(
-    token: BigNumberish,
+    tokenId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
 
@@ -939,34 +1057,33 @@ export class Registry extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  validateDomain(
-    _s: string,
-    overrides?: CallOverrides
-  ): Promise<
-    [boolean, BigNumber, BigNumber, string] & {
-      valid: boolean;
-      parent: BigNumber;
-      id: BigNumber;
-      domain: string;
-    }
-  >;
+  transferOwnership(
+    newOwner: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
-  "validateDomain(string)"(
-    _s: string,
-    overrides?: CallOverrides
-  ): Promise<
-    [boolean, BigNumber, BigNumber, string] & {
-      valid: boolean;
-      parent: BigNumber;
-      id: BigNumber;
-      domain: string;
-    }
-  >;
+  "transferOwnership(address)"(
+    newOwner: string,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  unlockDomainMetadata(
+    id: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
+
+  "unlockDomainMetadata(uint256)"(
+    id: BigNumberish,
+    overrides?: Overrides
+  ): Promise<ContractTransaction>;
 
   callStatic: {
-    ROOT_ID(overrides?: CallOverrides): Promise<BigNumber>;
+    addController(controller: string, overrides?: CallOverrides): Promise<void>;
 
-    "ROOT_ID()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "addController(address)"(
+      controller: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     approve(
       to: string,
@@ -991,92 +1108,49 @@ export class Registry extends Contract {
 
     "baseURI()"(overrides?: CallOverrides): Promise<string>;
 
-    canCreate(
-      creator: string,
-      id: BigNumberish,
+    controllers(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
+    "controllers(address)"(
+      arg0: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    "canCreate(address,uint256)"(
-      creator: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    controllerOf(id: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-    "controllerOf(uint256)"(
+    domainController(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
-    createDomain(
-      domain: string,
-      _owner: string,
-      _controller: string,
-      resolver: string,
-      image: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "createDomain(string,address,address,string,string)"(
-      domain: string,
-      _owner: string,
-      _controller: string,
-      resolver: string,
-      image: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    entries(
+    "domainController(uint256)"(
       id: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<
-      [
-        string,
-        BigNumber,
-        BigNumber,
-        string,
-        string,
-        string,
-        string,
-        BigNumber[]
-      ] & {
-        owner: string;
-        parent: BigNumber;
-        depth: BigNumber;
-        controller: string;
-        resolver: string;
-        image: string;
-        domain: string;
-        children: BigNumber[];
-      }
-    >;
+    ): Promise<string>;
 
-    "entries(uint256)"(
+    domainExists(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+    "domainExists(uint256)"(
       id: BigNumberish,
       overrides?: CallOverrides
-    ): Promise<
-      [
-        string,
-        BigNumber,
-        BigNumber,
-        string,
-        string,
-        string,
-        string,
-        BigNumber[]
-      ] & {
-        owner: string;
-        parent: BigNumber;
-        depth: BigNumber;
-        controller: string;
-        resolver: string;
-        image: string;
-        domain: string;
-        children: BigNumber[];
-      }
-    >;
+    ): Promise<boolean>;
+
+    domainMetadataLockedBy(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    "domainMetadataLockedBy(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    domainRoyaltyAmount(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "domainRoyaltyAmount(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getApproved(
       tokenId: BigNumberish,
@@ -1088,36 +1162,9 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    getChildLength(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    initialize(overrides?: CallOverrides): Promise<void>;
 
-    "getChildLength(uint256)"(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getDepth(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getDepth(uint256)"(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getId(path: string[], overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getId(string[])"(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getOwner(path: string[], overrides?: CallOverrides): Promise<string>;
-
-    "getOwner(string[])"(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<string>;
+    "initialize()"(overrides?: CallOverrides): Promise<void>;
 
     isApprovedForAll(
       owner: string,
@@ -1131,9 +1178,57 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
+    isAvailable(id: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+    "isAvailable(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    isDomainMetadataLocked(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    "isDomainMetadataLocked(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    lockDomainMetadata(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "lockDomainMetadata(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    lockDomainMetadataForOwner(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "lockDomainMetadataForOwner(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    minterOf(id: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    "minterOf(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     name(overrides?: CallOverrides): Promise<string>;
 
     "name()"(overrides?: CallOverrides): Promise<string>;
+
+    owner(overrides?: CallOverrides): Promise<string>;
+
+    "owner()"(overrides?: CallOverrides): Promise<string>;
 
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
@@ -1141,6 +1236,66 @@ export class Registry extends Contract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    paused(overrides?: CallOverrides): Promise<boolean>;
+
+    "paused()"(overrides?: CallOverrides): Promise<boolean>;
+
+    records(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, boolean, string, string, BigNumber] & {
+        minter: string;
+        metadataLocked: boolean;
+        metadataLockedBy: string;
+        controller: string;
+        royaltyAmount: BigNumber;
+      }
+    >;
+
+    "records(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<
+      [string, boolean, string, string, BigNumber] & {
+        minter: string;
+        metadataLocked: boolean;
+        metadataLockedBy: string;
+        controller: string;
+        royaltyAmount: BigNumber;
+      }
+    >;
+
+    registerDomain(
+      parentId: BigNumberish,
+      name: string,
+      domainOwner: string,
+      minter: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "registerDomain(uint256,string,address,address)"(
+      parentId: BigNumberish,
+      name: string,
+      domainOwner: string,
+      minter: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    removeController(
+      controller: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "removeController(address)"(
+      controller: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    "renounceOwnership()"(overrides?: CallOverrides): Promise<void>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -1169,39 +1324,27 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setController(
+    setDomainMetadataUri(
       id: BigNumberish,
-      controller: string,
+      uri: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "setController(uint256,address)"(
+    "setDomainMetadataUri(uint256,string)"(
       id: BigNumberish,
-      controller: string,
+      uri: string,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setImage(
+    setDomainRoyaltyAmount(
       id: BigNumberish,
-      image: string,
+      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "setImage(uint256,string)"(
+    "setDomainRoyaltyAmount(uint256,uint256)"(
       id: BigNumberish,
-      image: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setResolver(
-      id: BigNumberish,
-      resolver: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    "setResolver(uint256,string)"(
-      id: BigNumberish,
-      resolver: string,
+      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1241,10 +1384,10 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    tokenURI(token: BigNumberish, overrides?: CallOverrides): Promise<string>;
+    tokenURI(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
     "tokenURI(uint256)"(
-      token: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -1266,29 +1409,25 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    validateDomain(
-      _s: string,
+    transferOwnership(
+      newOwner: string,
       overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber, string] & {
-        valid: boolean;
-        parent: BigNumber;
-        id: BigNumber;
-        domain: string;
-      }
-    >;
+    ): Promise<void>;
 
-    "validateDomain(string)"(
-      _s: string,
+    "transferOwnership(address)"(
+      newOwner: string,
       overrides?: CallOverrides
-    ): Promise<
-      [boolean, BigNumber, BigNumber, string] & {
-        valid: boolean;
-        parent: BigNumber;
-        id: BigNumber;
-        domain: string;
-      }
-    >;
+    ): Promise<void>;
+
+    unlockDomainMetadata(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    "unlockDomainMetadata(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -1304,46 +1443,53 @@ export class Registry extends Contract {
       approved: null
     ): EventFilter;
 
-    ControllerSet(
-      id: BigNumberish | null,
-      oldController: string | null,
-      newController: string | null,
-      sender: null
-    ): EventFilter;
+    ControllerAdded(controller: string | null): EventFilter;
+
+    ControllerRemoved(controller: string | null): EventFilter;
 
     DomainCreated(
-      parentId: BigNumberish | null,
-      tokenId: null,
-      domain: null,
-      owner: null,
-      controller: null,
-      resolver: null,
-      image: null
+      id: BigNumberish | null,
+      name: null,
+      nameHash: BigNumberish | null,
+      parent: BigNumberish | null,
+      minter: null,
+      controller: null
     ): EventFilter;
 
-    ImageSet(
-      owner: string | null,
-      id: BigNumberish | null,
-      image: null
+    MetadataChanged(id: BigNumberish | null, uri: null): EventFilter;
+
+    MetadataLocked(id: BigNumberish | null, locker: null): EventFilter;
+
+    MetadataUnlocked(id: BigNumberish | null): EventFilter;
+
+    OwnershipTransferred(
+      previousOwner: string | null,
+      newOwner: string | null
     ): EventFilter;
 
-    ResolverSet(
-      owner: string | null,
-      id: BigNumberish | null,
-      resolver: null
-    ): EventFilter;
+    Paused(account: null): EventFilter;
+
+    RoyaltiesAmountChanged(id: BigNumberish | null, amount: null): EventFilter;
 
     Transfer(
       from: string | null,
       to: string | null,
       tokenId: BigNumberish | null
     ): EventFilter;
+
+    Unpaused(account: null): EventFilter;
   };
 
   estimateGas: {
-    ROOT_ID(overrides?: CallOverrides): Promise<BigNumber>;
+    addController(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
-    "ROOT_ID()"(overrides?: CallOverrides): Promise<BigNumber>;
+    "addController(address)"(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
     approve(
       to: string,
@@ -1368,49 +1514,49 @@ export class Registry extends Contract {
 
     "baseURI()"(overrides?: CallOverrides): Promise<BigNumber>;
 
-    canCreate(
-      creator: string,
-      id: BigNumberish,
-      overrides?: Overrides
+    controllers(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "controllers(address)"(
+      arg0: string,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "canCreate(address,uint256)"(
-      creator: string,
-      id: BigNumberish,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    controllerOf(
+    domainController(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "controllerOf(uint256)"(
+    "domainController(uint256)"(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    createDomain(
-      domain: string,
-      _owner: string,
-      _controller: string,
-      resolver: string,
-      image: string,
-      overrides?: Overrides
+    domainExists(
+      id: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "createDomain(string,address,address,string,string)"(
-      domain: string,
-      _owner: string,
-      _controller: string,
-      resolver: string,
-      image: string,
-      overrides?: Overrides
+    "domainExists(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    entries(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    domainMetadataLockedBy(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
-    "entries(uint256)"(
+    "domainMetadataLockedBy(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    domainRoyaltyAmount(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "domainRoyaltyAmount(uint256)"(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -1425,36 +1571,9 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getChildLength(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    initialize(overrides?: Overrides): Promise<BigNumber>;
 
-    "getChildLength(uint256)"(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getDepth(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getDepth(uint256)"(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getId(path: string[], overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getId(string[])"(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    getOwner(path: string[], overrides?: CallOverrides): Promise<BigNumber>;
-
-    "getOwner(string[])"(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    "initialize()"(overrides?: Overrides): Promise<BigNumber>;
 
     isApprovedForAll(
       owner: string,
@@ -1468,9 +1587,60 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    isAvailable(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "isAvailable(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isDomainMetadataLocked(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    "isDomainMetadataLocked(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    lockDomainMetadata(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "lockDomainMetadata(uint256)"(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    lockDomainMetadataForOwner(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "lockDomainMetadataForOwner(uint256)"(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    minterOf(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "minterOf(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     "name()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "owner()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     ownerOf(
       tokenId: BigNumberish,
@@ -1481,6 +1651,47 @@ export class Registry extends Contract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    paused(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "paused()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    records(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    "records(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    registerDomain(
+      parentId: BigNumberish,
+      name: string,
+      domainOwner: string,
+      minter: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "registerDomain(uint256,string,address,address)"(
+      parentId: BigNumberish,
+      name: string,
+      domainOwner: string,
+      minter: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    removeController(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "removeController(address)"(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    renounceOwnership(overrides?: Overrides): Promise<BigNumber>;
+
+    "renounceOwnership()"(overrides?: Overrides): Promise<BigNumber>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -1509,39 +1720,27 @@ export class Registry extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    setController(
+    setDomainMetadataUri(
       id: BigNumberish,
-      controller: string,
+      uri: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "setController(uint256,address)"(
+    "setDomainMetadataUri(uint256,string)"(
       id: BigNumberish,
-      controller: string,
+      uri: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    setImage(
+    setDomainRoyaltyAmount(
       id: BigNumberish,
-      image: string,
+      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "setImage(uint256,string)"(
+    "setDomainRoyaltyAmount(uint256,uint256)"(
       id: BigNumberish,
-      image: string,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    setResolver(
-      id: BigNumberish,
-      resolver: string,
-      overrides?: Overrides
-    ): Promise<BigNumber>;
-
-    "setResolver(uint256,string)"(
-      id: BigNumberish,
-      resolver: string,
+      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -1582,12 +1781,12 @@ export class Registry extends Contract {
     ): Promise<BigNumber>;
 
     tokenURI(
-      token: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     "tokenURI(uint256)"(
-      token: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -1609,18 +1808,37 @@ export class Registry extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    validateDomain(_s: string, overrides?: CallOverrides): Promise<BigNumber>;
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
 
-    "validateDomain(string)"(
-      _s: string,
-      overrides?: CallOverrides
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    unlockDomainMetadata(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<BigNumber>;
+
+    "unlockDomainMetadata(uint256)"(
+      id: BigNumberish,
+      overrides?: Overrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    ROOT_ID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    addController(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
 
-    "ROOT_ID()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    "addController(address)"(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
 
     approve(
       to: string,
@@ -1648,52 +1866,52 @@ export class Registry extends Contract {
 
     "baseURI()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    canCreate(
-      creator: string,
-      id: BigNumberish,
-      overrides?: Overrides
+    controllers(
+      arg0: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "canCreate(address,uint256)"(
-      creator: string,
-      id: BigNumberish,
-      overrides?: Overrides
+    "controllers(address)"(
+      arg0: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    controllerOf(
+    domainController(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "controllerOf(uint256)"(
+    "domainController(uint256)"(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    createDomain(
-      domain: string,
-      _owner: string,
-      _controller: string,
-      resolver: string,
-      image: string,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    "createDomain(string,address,address,string,string)"(
-      domain: string,
-      _owner: string,
-      _controller: string,
-      resolver: string,
-      image: string,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    entries(
+    domainExists(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "entries(uint256)"(
+    "domainExists(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    domainMetadataLockedBy(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "domainMetadataLockedBy(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    domainRoyaltyAmount(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "domainRoyaltyAmount(uint256)"(
       id: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1708,45 +1926,9 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getChildLength(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    initialize(overrides?: Overrides): Promise<PopulatedTransaction>;
 
-    "getChildLength(uint256)"(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getDepth(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "getDepth(uint256)"(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getId(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "getId(string[])"(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    getOwner(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "getOwner(string[])"(
-      path: string[],
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    "initialize()"(overrides?: Overrides): Promise<PopulatedTransaction>;
 
     isApprovedForAll(
       owner: string,
@@ -1760,9 +1942,63 @@ export class Registry extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    isAvailable(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "isAvailable(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isDomainMetadataLocked(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "isDomainMetadataLocked(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    lockDomainMetadata(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "lockDomainMetadata(uint256)"(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    lockDomainMetadataForOwner(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "lockDomainMetadataForOwner(uint256)"(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    minterOf(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "minterOf(uint256)"(
+      id: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "name()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "owner()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     ownerOf(
       tokenId: BigNumberish,
@@ -1773,6 +2009,50 @@ export class Registry extends Contract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    "paused()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    records(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "records(uint256)"(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    registerDomain(
+      parentId: BigNumberish,
+      name: string,
+      domainOwner: string,
+      minter: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "registerDomain(uint256,string,address,address)"(
+      parentId: BigNumberish,
+      name: string,
+      domainOwner: string,
+      minter: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    removeController(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "removeController(address)"(
+      controller: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    renounceOwnership(overrides?: Overrides): Promise<PopulatedTransaction>;
+
+    "renounceOwnership()"(overrides?: Overrides): Promise<PopulatedTransaction>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -1801,39 +2081,27 @@ export class Registry extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    setController(
+    setDomainMetadataUri(
       id: BigNumberish,
-      controller: string,
+      uri: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "setController(uint256,address)"(
+    "setDomainMetadataUri(uint256,string)"(
       id: BigNumberish,
-      controller: string,
+      uri: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    setImage(
+    setDomainRoyaltyAmount(
       id: BigNumberish,
-      image: string,
+      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "setImage(uint256,string)"(
+    "setDomainRoyaltyAmount(uint256,uint256)"(
       id: BigNumberish,
-      image: string,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    setResolver(
-      id: BigNumberish,
-      resolver: string,
-      overrides?: Overrides
-    ): Promise<PopulatedTransaction>;
-
-    "setResolver(uint256,string)"(
-      id: BigNumberish,
-      resolver: string,
+      amount: BigNumberish,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
@@ -1874,12 +2142,12 @@ export class Registry extends Contract {
     ): Promise<PopulatedTransaction>;
 
     tokenURI(
-      token: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     "tokenURI(uint256)"(
-      token: BigNumberish,
+      tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -1901,14 +2169,24 @@ export class Registry extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    validateDomain(
-      _s: string,
-      overrides?: CallOverrides
+    transferOwnership(
+      newOwner: string,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "validateDomain(string)"(
-      _s: string,
-      overrides?: CallOverrides
+    "transferOwnership(address)"(
+      newOwner: string,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    unlockDomainMetadata(
+      id: BigNumberish,
+      overrides?: Overrides
+    ): Promise<PopulatedTransaction>;
+
+    "unlockDomainMetadata(uint256)"(
+      id: BigNumberish,
+      overrides?: Overrides
     ): Promise<PopulatedTransaction>;
   };
 }
