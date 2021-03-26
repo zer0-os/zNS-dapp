@@ -36,9 +36,9 @@ interface Data {
   marketcap: string;
   volume: string;
   supply: string;
-  last7days: string;
+  last7days: any;
   timestamp: any;
-  trade: string;
+  trade: any;
 }
 
 interface TProps {
@@ -137,32 +137,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //
   //
 
-  // const dataInput: Data[] = useMemo(
-  //   () =>
-  //     domain.isNothing()
-  //       ? []
-  //       : _.map(domain.value.children, (key, i) => ({
-  //           key: key,
-  //           '#': i.toString(),
-  //           // asset: <Profile domain={key} />,
-  //           asset: (
-  //             <div className="domainImageContainer">
-  //               <TableImage domain={key} />
-  //             </div>
-  //           ),
-  //           name: key,
-  //           '24Hr': randPrice(),
-  //           '7d': randPrice(),
-  //           marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
-  //           volume: '$' + randVol(),
-  //           supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
-  //           last7days: '',
-  //           timestamp: '',
-  //           trade: '',
-  //         })),
-  //   [domain],
-  // );
-
   const dataInput: Data[] = useMemo(
     () =>
       domain.isNothing()
@@ -178,9 +152,9 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
             volume: '$' + randVol(),
             supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
-            last7days: '',
+            last7days: <img src={randGraph()} alt="" />,
             timestamp: '',
-            trade: '',
+            trade: <button className="tradeButton">{randTrade()}</button>,
           })),
     [domain],
   );
@@ -214,31 +188,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         Header: 'Name',
         accessor: 'name',
         width: '100%',
-        // Cell: (props) => (
-        //   <span
-        //     style={{
-        //       width: '180px',
-        //       maxWidth: '180px',
-        //       display: 'flex',
-        //       flexWrap: 'wrap',
-        //       // height: '100%',
-        //       wordWrap: 'break-word',
-        //       verticalAlign: 'center',
-        //     }}
-        //   >
-        //     <span
-        //       style={{
-        //         textAlign: 'left',
-        //         width: '100%',
-        //         wordWrap: 'break-word',
-        //       }}
-        //     >
-        //       {console.log('NAME DATA FOR CHILDREN!', props.data)}
-        //       {props.data[0].key}
-        //     </span>
-        //   </span>
-        // )
-        // ,
       },
       { Header: '24Hr', accessor: '24Hr' },
       { Header: '7d', accessor: '7d' },
@@ -252,9 +201,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
           </div>
         ),
         accessor: 'marketcap',
-        // Cell: (props) => {
-        //   <div>{JSON.stringify(props)}</div>;
-        // },
       },
       {
         Header: (
@@ -282,7 +228,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       {
         Header: 'Last 7 Days',
         accessor: 'last7days',
-        Cell: (props) => <img src={randGraph()} alt="" />,
       },
       {
         Header: '',
@@ -300,7 +245,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
           </div>
         ),
         accessor: 'trade',
-        Cell: () => <button className="tradeButton">{randTrade()}</button>,
       },
     ],
     [],

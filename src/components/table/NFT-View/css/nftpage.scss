@@ -237,6 +237,11 @@ $page-margin: 100px;
           overflow: scroll;
           height: 200%;
           max-height: 63%;
+          &::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+          }
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
         }
       }
     }
