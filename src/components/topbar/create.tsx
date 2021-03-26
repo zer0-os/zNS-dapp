@@ -49,7 +49,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
             'ipfs://Qmresolver',
             imageUrl,
           )
-          .then((txr) => txr.wait(1))
+          .then((txr: any) => txr.wait(1))
           .then(() => {
             refetchDomain();
           });

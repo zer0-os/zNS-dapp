@@ -58,7 +58,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     async (file: File) => {
       assert(domain.isJust());
       return ipfs
-        .upload(domain.value.name, file)
+        .upload(domain.value.metadata, file)
         .then(async (added) => _setImage('ipfs://' + added.hash))
         .then(() => refetchDomain());
     },
@@ -81,34 +81,37 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     <>
       {domain.isJust() && (
         <>
-          {/* <img
+          <img
             style={{ height: '10%', width: '10%' }}
-            src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-          /> */}
-          {/* <form
+            src={domain.value.metadata.replace(
+              'ipfs://',
+              'https://ipfs.io/ipfs/',
+            )}
+          />
+          <form
             onSubmit={handleSubmit(({ image, url }) =>
               url ? _setImage(url) : uploadAndSetImage(image),
             )}
-          > */}
-          <div className="create-button">
-            <input
-              className="fileInput"
-              style={{}}
-              name={'image'}
-              type="file"
-              ref={register}
-            />
-            <button
-              className="img-btn"
-              type="submit"
-              onSubmit={handleSubmit(({ image, url }) =>
-                url ? _setImage(url) : uploadAndSetImage(image),
-              )}
-            >
-              SET IMAGE
-            </button>
-          </div>
-          {/* </form> */}
+          >
+            <div className="create-button">
+              <input
+                className="fileInput"
+                style={{}}
+                name={'image'}
+                type="file"
+                ref={register}
+              />
+              <button
+                className="img-btn"
+                type="submit"
+                onSubmit={handleSubmit(({ image, url }) =>
+                  url ? _setImage(url) : uploadAndSetImage(image),
+                )}
+              >
+                SET IMAGE
+              </button>
+            </div>
+          </form>
         </>
       )}
     </>
