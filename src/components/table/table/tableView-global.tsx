@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useLayoutEffect, useEffect, useState } from 'react';
 import _, { random } from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useDomainCache } from '../../../lib/useDomainCache';
@@ -41,9 +41,9 @@ interface Data {
   marketcap: string;
   volume: string;
   supply: string;
-  last7days: string;
+  last7days: any;
   timestamp: any;
-  trade: string;
+  trade: any;
 }
 
 interface TProps {
@@ -158,6 +158,13 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //
   //
 
+  const [tableImg, setTableImg] = useState(null);
+  const [tablePrice, setTablePrice] = useState(randTrade());
+  let testingPrice = '';
+  useEffect(() => {
+    testingPrice = 'test!';
+  }, []);
+
   const dataInput: Data[] = useMemo(
     () =>
       domain.isNothing()
@@ -173,34 +180,12 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
             volume: '$' + randVol(),
             supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
-            last7days: '',
+            last7days: <img src={randGraph()} alt="" />,
             timestamp: '',
-            trade: '',
+            trade: <button className="tradeButton">{randTrade()}</button>,
           })),
     [domain],
   );
-
-  // const dataInput: Data[] = useMemo(
-  //   () =>
-  //     domain.isNothing()
-  //       ? []
-  //       : _.map(domain.value.children, (key, i) => ({
-  //           '#': i.toString(),
-  //           // asset: <Profile domain={key} />,
-  //           image: <img src={elon} alt="" />,
-  //           network: <Names key={key} />,
-  //           // token: key + ' token'
-  //           '24Hr': randPrice(),
-  //           '7d': randPrice(),
-  //           marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
-  //           volume: '$' + randVol(),
-  //           supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
-  //           last7days: '',
-  //           timestamp: '',
-  //           trade: '',
-  //         })),
-  //   [domain],
-  // );
 
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
 
@@ -268,7 +253,6 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       {
         Header: 'Last 7 Days',
         accessor: 'last7days',
-        Cell: (props) => <img src={randGraph()} alt="" />,
       },
       {
         Header: '',
@@ -286,7 +270,6 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
           </div>
         ),
         accessor: 'trade',
-        Cell: () => <button className="tradeButton">{randTrade()}</button>,
       },
     ],
     [],
