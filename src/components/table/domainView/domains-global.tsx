@@ -98,7 +98,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         <div className="metricsContainer">
           {metric('Wild Price', '$2,010', '', '(▲41.10%)')}
           {metric('24hr Volume', '$3,069,333,102', '', '(▲12.03%)')}
-          {metric('Token HODLrs', '3,960,013', '', '(▲2/01%)')}
+          {metric('Token HODLrs', '3,960,013', '', '(▲2.01%)')}
           {metric('24hr NFTs Sold', '5,103', '', '(▲9.93%)')}
           {metric('Active Subdomains', '3,666', '', '(▲1.11%)')}
         </div>

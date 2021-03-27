@@ -10,11 +10,11 @@ $page-margin: 100px;
   height: 96px;
   overflow: hidden;
   border-radius: 16px;
-  border-top: 2px solid $light-purple;
+  border-top: 1px solid $light-purple;
   border-bottom: 1px solid $dark-purple;
   border-right: $lp-border;
   border-left: $lp-border;
-  box-shadow: 0px 0px 10px 0px darken($purple-shadow, 20%);
+  box-shadow: 0px 0px 3px 0px darken($purple-shadow, 20%);
 
   .adbg {
     position: absolute;
