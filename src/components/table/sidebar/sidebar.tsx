@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../../lib/useDomainCache';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import './css/sidebar.scss';
 import wilderLogo from '../../css/img/wilderlogo.png';
@@ -85,9 +85,9 @@ const Sidebar: FC = () => {
   return (
     <div className="sidebarContainer">
       <div className="sidebarContainer">
-        <div className="topLogo">
+        <Link to={'/'} className="topLogo">
           <img src={wilderLogo} alt="" />
-        </div>
+        </Link>
         <div className="middleNav">
           <div className="sideItem i1">
             <img

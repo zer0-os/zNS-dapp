@@ -14,16 +14,16 @@
   // transition: background-color 0.5s ease-in-out;
   background-color: none;
   // z-index: 20;
-  z-index: 999;
+  z-index: 40;
   .topHalfContainer {
     margin-left: 100px;
     margin-right: 100px;
-    margin-top: 23px;
+    margin-top: 29px;
     height: 111px;
     background: linear-gradient(
       0deg,
-      rgba(78, 0, 132, 0.2),
-      rgba(78, 0, 132, 0.2)
+      rgba(78, 0, 132, 0.05),
+      rgba(78, 0, 132, 0.05)
     );
     backdrop-filter: blur(20px);
     /* Note: backdrop-filter has minimal browser support */
@@ -35,16 +35,16 @@
       margin-left: 1px;
       margin-top: 1px;
       margin-bottom: 1px;
-      height: 56px;
+      height: 55px;
       background: linear-gradient(
         92.24deg,
         rgba(0, 102, 255, 0.2) 0%,
         rgba(0, 63, 137, 0.2) 100%
       );
-      border-top: 2px solid $light-purple;
-      border-bottom: 1px solid $dark-purple;
-      border-right: $lp-border;
-      border-left: $lp-border;
+      border-top: 1px solid lighten($dark-purple, 10%);
+      border-bottom: 1px solid lighten($dark-purple, 10%);
+      border-right: 1px solid lighten($dark-purple, 10%);
+      border-left: 1px solid lighten($dark-purple, 10%);
       border-radius: 15px 15px 15px 15px;
       box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
       filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));

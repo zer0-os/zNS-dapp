@@ -13,15 +13,17 @@
   .sidebarContainer {
     .topLogo {
       position: absolute;
-      top: 24px;
+      top: 30px;
       height: 56px;
       width: 56px;
       background: linear-gradient(180deg, #1c4358 0%, #2a0047 100%);
       border-radius: 50%;
       margin-left: 24px;
       margin-right: auto;
+      cursor: pointer;
       img {
         transform: translate(2px, 2px);
+        pointer-events: none;
       }
     }
     .middleNav {
