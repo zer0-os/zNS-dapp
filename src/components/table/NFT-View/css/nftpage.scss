@@ -62,113 +62,118 @@ $page-margin: 100px;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      .top {
-        width: 100%;
+      .topmid {
+        width: 70%;
+        height: 60%;
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         align-items: center;
-        .title {
-          font-size: 36px;
-          font-weight: bold;
-          text-shadow: 0px 0px 10px $white-shadow;
-        }
-        .domain {
-          color: rgba($med-blue, 1);
-          font-size: 16px;
-          font-weight: bold;
+        .top {
+          width: 100%;
           display: flex;
-          flex-direction: row;
-        }
-        .users {
-          margin-top: 12px;
-          width: 80%;
-          max-width: 80%;
-          display: flex;
-          flex-direction: row;
-          justify-content: space-around;
-          .creator {
-            display: flex;
-            flex-direction: row;
-            .avatar {
-              flex-grow: 1;
-              margin-right: 12px;
-              height: 36px;
-              width: 36px !important;
-              border-radius: 50%;
-            }
-            .creatorFlex {
-              transform: translateY(7px);
-              display: flex;
-              flex-direction: column;
-              font-size: 16px;
-              font-weight: bold;
-              .creatorText {
-              }
-              .desc {
-                color: lighten(rgba($med-blue, 1), 20%);
-              }
-            }
+          flex-direction: column;
+          align-items: left;
+          .title {
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 0px 0px 10px $white-shadow;
           }
-          .owner {
-            display: flex;
-            flex-direction: row;
-            .avatar {
-              margin-right: 12px;
-              height: 36px;
-              width: 36px;
-              border-radius: 50%;
-            }
-            .ownerFlex {
-              transform: translateY(7px);
-              display: flex;
-              flex-direction: column;
-              font-size: 16px;
-              font-weight: bold;
-              .ownerText {
-              }
-              .desc {
-                color: lighten(rgba($med-blue, 1), 20%);
-              }
-            }
-          }
-        }
-      }
-      .middle {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        width: 100%;
-        .midLeft {
-          margin-right: 30%;
-          .text {
+          .domain {
             color: rgba($med-blue, 1);
             font-size: 16px;
             font-weight: bold;
+            display: flex;
+            flex-direction: row;
           }
-          .units {
-            font-size: 32px;
-            font-weight: bold;
-          }
-          .price {
-            color: lighten(rgba($med-blue, 1), 20%);
-            font-size: 16px;
-            font-weight: bold;
+          .users {
+            margin-top: 24px;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .creator {
+              display: flex;
+              flex-direction: row;
+              .avatar {
+                flex-grow: 1;
+                margin-right: 12px;
+                height: 36px;
+                width: 36px !important;
+                border-radius: 50%;
+              }
+              .creatorFlex {
+                transform: translateY(7px);
+                display: flex;
+                flex-direction: column;
+                font-size: 16px;
+                font-weight: bold;
+                .creatorText {
+                }
+                .desc {
+                  color: lighten(rgba($med-blue, 1), 20%);
+                }
+              }
+            }
+            .owner {
+              display: flex;
+              flex-direction: row;
+              .avatar {
+                margin-right: 12px;
+                height: 36px;
+                width: 36px;
+                border-radius: 50%;
+              }
+              .ownerFlex {
+                transform: translateY(7px);
+                display: flex;
+                flex-direction: column;
+                font-size: 16px;
+                font-weight: bold;
+                .ownerText {
+                }
+                .desc {
+                  color: lighten(rgba($med-blue, 1), 20%);
+                }
+              }
+            }
           }
         }
-        .midRight {
-          .text {
-            color: rgba($med-blue, 1);
-            font-size: 16px;
-            font-weight: bold;
+        .middle {
+          display: flex;
+          flex-direction: row;
+          justify-content: left;
+          width: 100%;
+          .midLeft {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            .units {
+              font-size: 36px;
+              font-weight: bold;
+            }
+            .price {
+              margin-left: 15px;
+              color: lighten(rgba($med-blue, 1), 20%);
+              font-size: 24px;
+              font-weight: bold;
+            }
           }
-          .units {
-            font-size: 32px;
-            font-weight: bold;
-          }
-          .price {
-            color: lighten(rgba($med-blue, 1), 20%);
-            font-size: 16px;
-            font-weight: bold;
+          .midRight {
+            .text {
+              color: rgba($med-blue, 1);
+              font-size: 16px;
+              font-weight: bold;
+            }
+            .units {
+              font-size: 32px;
+              font-weight: bold;
+            }
+            .price {
+              color: lighten(rgba($med-blue, 1), 20%);
+              font-size: 16px;
+              font-weight: bold;
+            }
           }
         }
       }
@@ -218,7 +223,8 @@ $page-margin: 100px;
     .story {
       position: relative;
       height: 212px;
-      width: 49%;
+      width: 50%;
+      margin-right: 10px;
       background: rgba($dark-purple2, 0.2);
       backdrop-filter: blur(30px);
       border-radius: 16px;
@@ -248,7 +254,8 @@ $page-margin: 100px;
     .quad {
       position: relative;
       height: 212px;
-      width: 49%;
+      width: 50%;
+      margin-left: 10px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -294,7 +301,7 @@ $page-margin: 100px;
 
         & > div {
           height: 96px;
-          width: 49%;
+          width: 50%;
           background: rgba(78, 0, 132, 0.2);
           backdrop-filter: blur(30px);
           border-radius: 16px;
@@ -303,6 +310,13 @@ $page-margin: 100px;
           display: flex;
           flex-direction: column;
           justify-content: center;
+
+          &:first-child {
+            margin-right: 10px;
+          }
+          &:last-child {
+            margin-left: 10px;
+          }
 
           & > div {
             &:first-child {
