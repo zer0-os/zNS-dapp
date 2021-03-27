@@ -789,6 +789,13 @@ table {
           color: #fff;
           font-weight: bold;
         }
+        &:nth-child(2) {
+          img {
+            border-radius: 50%;
+            height: 64px;
+            width: 64px;
+          }
+        }
         &:nth-child(3) {
           color: #fff;
           position: relative;
