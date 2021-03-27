@@ -9,20 +9,22 @@ import { getDomainId } from './domains';
 export interface Domain {
   id: string;
   name: string;
-  subdomain: string[];
+  children: string[];
   owner: string;
-  parent: string;
-  isLocked: boolean;
+  controller: string;
   metadata: string;
+  parent: string;
+  timeCreated: number;
 }
 
 interface _DomainData {
   id: string;
   name: string;
-  subdomain: string[];
   owner: string;
   parent: string;
-  isLocked: boolean;
+  controller: string;
+  subdomains: string;
+  timeCreated: number;
   metadata: string;
 }
 
@@ -49,7 +51,14 @@ const domainQuery = gql`
     domain(id: $id) {
       id
       name
+      parent
+      subdomains
+      owner
+      minter
+      lockedBy
+      isLocked
       metadata
+      timeStamp
     }
   }
 `;
@@ -59,7 +68,14 @@ const childrenQuery = gql`
     domains(where: { parent: $parent }) {
       id
       name
+      parent
+      subdomains
+      owner
+      minter
+      lockedBy
+      isLocked
       metadata
+      timeStamp
     }
   }
 `;
@@ -68,51 +84,15 @@ const ownedDomainsQuery = gql`
   query OwnedDomains($owner: Bytes!) {
     domains(where: { owner: $owner }) {
       id
-      domain
-      approval
+      name
       parent
+      subdomains
       owner
-      controller
-      timeCreated
-      image
-      resolver
-    }
-  }
-`;
-
-const approvalQuery = gql`
-  query ApprovedDomains($approval: Bytes!) {
-    domains(where: { approval: $approval }) {
-      id
-      domain
-      approval
-      parent
-      owner
-      controller
-      timeCreated
-      image
-      resolver
-    }
-  }
-`;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const childTimestampQuery = gql`
-  query ChildDomains($parent: Bytes!) {
-    domains(
-      where: { owner: $owner }
-      orderBy: timeCreated
-      orderDirection: desc
-    ) {
-      id
-      domain
-      approval
-      parent
-      owner
-      controller
-      image
-      timeCreated
-      resolver
+      minter
+      lockedBy
+      isLocked
+      metadata
+      timeStamp
     }
   }
 `;
@@ -122,7 +102,8 @@ const allDomainsQuery = gql`
     domains(where: { parent: $parent }) {
       id
       parent
-      domain
+      name
+      subdomain
     }
   }
 `;
@@ -171,9 +152,9 @@ function useDomain(domain: string) {
         owner: getAddress(dataDomain.domain.owner),
         parent: dataDomain.domain.parent,
         metadata: dataDomain.domain.metadata,
-        subdomain: dataDomain.domain.subdomain,
-        isLocked: dataDomain.domain.isLocked,
+        subdomains: dataDomain.domain.subdomains,
         name: dataDomain.domain.name,
+        controller: getAddress(dataDomain.domain.controller),
 
         children,
       });
@@ -199,7 +180,7 @@ function useOwnedDomains(): {
 } {
   const context = useWeb3React<Web3Provider>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { library, account, active, chainId } = context;
+  const { account } = context;
   const [getOwned, { data, refetch, error }] = useLazyQuery<DomainsData>(
     ownedDomainsQuery,
     {
@@ -246,47 +227,6 @@ function useOwnedDomains(): {
   return { owned, refetchOwned: refetch! };
 }
 
-function useIncomingApprovals(): {
-  incomingApprovals: Maybe<Domain[]>;
-  refetchIncomingApprovals: RefetchQuery<DomainsData>;
-} {
-  const context = useWeb3React<Web3Provider>();
-  const { account } = context;
-  const [
-    getIncomingApprovals,
-    { data, refetch, error },
-  ] = useLazyQuery<DomainsData>(approvalQuery, {
-    variables: { approval: account },
-  });
-
-  const incomingApprovals: Maybe<Domain[]> = useMemo(() => {
-    if (error) {
-      // TODO: maybe throw?
-      console.error(error);
-    }
-    if (data) {
-      return Maybe.of(
-        data.domains.map((d) => ({
-          ...d,
-          owner: getAddress(d.owner),
-          parent: d.parent,
-          children: [],
-        })),
-      );
-    }
-    return Maybe.nothing();
-  }, [error, data]);
-
-  useEffect(() => {
-    if (refetch) {
-      refetch({ variables: { to: account } });
-    } else if (account) {
-      getIncomingApprovals({ variables: { to: account } });
-    }
-  }, [account, refetch, getIncomingApprovals]);
-
-  return { incomingApprovals, refetchIncomingApprovals: refetch! };
-}
 // maybe fx
 function useAllDomains(
   domain: string,
@@ -335,7 +275,6 @@ function useAllDomains(
 
 const useDomainStore = () => {
   const owned = useOwnedDomains();
-  const incomingApprovals = useIncomingApprovals();
   const [transactions, setTransactions] = useState<ZeroTransaction[]>([]);
 
   const pushTransaction = useCallback(
@@ -364,11 +303,9 @@ const useDomainStore = () => {
 
   return {
     useDomain,
-    useIncomingApprovals,
     useAllDomains,
 
     ...owned,
-    ...incomingApprovals,
     pushTransaction,
     updateTransaction,
     transactions,
@@ -378,7 +315,5 @@ const useDomainStore = () => {
 export type DomainStoreContext = ReturnType<typeof useDomainStore>;
 
 export type DomainContext = ReturnType<typeof useDomain>;
-
-export type IncomingApprovalsContext = ReturnType<typeof useIncomingApprovals>;
 
 export { useDomainStore };

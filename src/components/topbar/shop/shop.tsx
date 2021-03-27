@@ -118,7 +118,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     () =>
       owned.isNothing()
         ? []
-        : owned.value.map((control) => {
+        : owned.value.map((control: any) => {
             // return gridCell(control.name, control.image);
             return gridCell(control.name, control.owner);
           }),

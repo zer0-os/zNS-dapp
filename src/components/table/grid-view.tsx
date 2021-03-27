@@ -137,7 +137,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     () =>
       domain.isNothing()
         ? []
-        : domain.value.subdomain.map((key, i) => {
+        : domain.value.children.map((key, i) => {
             return gridCell(key, i);
           }),
     [domain],

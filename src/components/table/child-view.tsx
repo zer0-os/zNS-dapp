@@ -95,7 +95,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   if (domain.isNothing()) return null;
   return (
     <div className="pageContainerPositionFix">
-      {domain.value.subdomain.length !== 0 ? (
+      {domain.value.name.length !== 0 ? (
         <div>
           <div className="metricsBar">
             {/* <div className="metricsTitle">Metrics</div> */}
