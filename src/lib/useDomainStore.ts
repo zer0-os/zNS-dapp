@@ -12,6 +12,7 @@ export interface Domain {
   id: string;
   name: string;
   subdomains: string[];
+  minter: string;
   owner: string;
   controller: string;
   parent: string;
@@ -28,6 +29,9 @@ interface _DomainData {
   metadata: string;
   controller: string;
   timeStamp: number;
+  lockedBy: string;
+  isLocked: boolean;
+  subdomains: string[];
 }
 
 interface DomainsData {
@@ -50,17 +54,17 @@ export const zeroAddress: any =
 // TODO: turn queries into fragments
 const domainQuery = gql`
   query Domain($id: ID!) {
-    domain(id: $id) {
+    domains(id: $id) {
       id
       name
-      parent
-      owner
-      minter
-      lockedBy
-      isLocked
-      metadata
-      timeStamp
-      controller
+      # parent
+      # owner
+      # minter
+      # lockedBy
+      # isLocked
+      # metadata
+      # timeStamp
+      # controller
     }
   }
 `;
@@ -151,6 +155,7 @@ function useDomain(domain: string) {
             [];
       return Maybe.of({
         ...dataDomain.domain,
+        name: dataDomain.domain.name,
         owner: getAddress(dataDomain.domain.owner),
         parent: dataDomain.domain.parent,
         minter: dataDomain.domain.minter,
