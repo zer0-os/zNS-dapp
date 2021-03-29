@@ -58,7 +58,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     async (file: File) => {
       assert(domain.isJust());
       return ipfs
-        .upload(domain.value.image, file)
+        .upload(domain.value.metadata, file)
         .then(async (added) => _setImage('ipfs://' + added.hash))
         .then(() => refetchDomain());
     },
@@ -83,7 +83,10 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
         <>
           <img
             style={{ height: '10%', width: '10%' }}
-            src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+            src={domain.value.metadata.replace(
+              'ipfs://',
+              'https://ipfs.io/ipfs/',
+            )}
           />
           <form
             onSubmit={handleSubmit(({ image, url }) =>

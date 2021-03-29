@@ -50,10 +50,10 @@ const Outgoing: React.FC = () => {
         : owned.value.map((domain) => ({
             Image: (
               <div className="imgContainer">
-                <Profile domain={domain.domain} />
+                <Profile domain={domain.name} />
               </div>
             ),
-            NFT: domain.domain,
+            NFT: domain.name,
             Owner: (
               <div className="ownerCol">
                 <div className="ownerIcon">img</div>

@@ -41,9 +41,9 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
       if (account && contracts.isJust() && domain.isJust())
         contracts.value.registry
           .createDomain(
-            domain.value.domain === 'ROOT'
+            domain.value.name === 'ROOT'
               ? child
-              : domain.value.domain + '.' + child,
+              : domain.value.name + '.' + child,
             account,
             account,
             'ipfs://Qmresolver',

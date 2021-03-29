@@ -103,7 +103,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         </div>
       </div>
 
-      <AdBar domain={domain.value.domain} />
+      <AdBar domain={domain.value.name} />
 
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">
@@ -228,7 +228,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         </div>
 
         <TableViewGlobal
-          domain={domain.value.domain}
+          domain={domain.value.name}
           gridView={gridView}
           search={search}
         />

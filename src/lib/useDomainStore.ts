@@ -6,31 +6,28 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
 import { getDomainId } from './domains';
 
+// cahching
+// querys
 export interface Domain {
   id: string;
-  domain: string;
-  children: string[];
+  name: string;
+  subdomains: string[];
   owner: string;
   controller: string;
   parent: string;
-  image: string;
-  resolver: string;
-  timeCreated: number;
-  approval: Maybe<string>;
+  metadata: string;
+  timeStamp: number;
 }
 
 interface _DomainData {
   id: string;
   name: string;
   parent: string;
-  subdomains: string;
   owner: string;
   minter: string;
-  lockedBy: string;
-  isLocked: boolean;
   metadata: string;
-  timeStamp: number;
   controller: string;
+  timeStamp: number;
 }
 
 interface DomainsData {
@@ -57,7 +54,6 @@ const domainQuery = gql`
       id
       name
       parent
-      subdomains
       owner
       minter
       lockedBy
@@ -146,7 +142,7 @@ function useDomain(domain: string) {
       console.error(errorChildren);
     }
     if (dataDomain && dataDomain.domain) {
-      const children =
+      const subdomains =
         dataChildren &&
         dataChildren.domains[0] &&
         dataChildren.domains[0].parent === id
@@ -157,8 +153,10 @@ function useDomain(domain: string) {
         ...dataDomain.domain,
         owner: getAddress(dataDomain.domain.owner),
         parent: dataDomain.domain.parent,
-        image: dataDomain.domain.metadata,
-        children,
+        minter: dataDomain.domain.minter,
+        metadata: dataDomain.domain.metadata,
+        timeStamp: dataDomain.domain.timeStamp,
+        subdomains,
         controller: getAddress(dataDomain.domain.controller),
       });
     }
@@ -202,7 +200,9 @@ function useOwnedDomains(): {
           ...d,
           owner: getAddress(d.owner),
           parent: d.parent,
-          children: [],
+          subdomains: [],
+          controller: getAddress(d.controller),
+          metadata: d.metadata,
         })),
       );
     }
@@ -258,7 +258,7 @@ function useAllDomains(
           ...d,
           owner: getAddress(d.owner),
           parent: d.parent,
-          children: [],
+          subdomains: [],
         })),
       );
     }
