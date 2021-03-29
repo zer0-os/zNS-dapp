@@ -33,7 +33,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   // const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
-  const [down, setDown] = useState('');
+  // const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
 
   const routes = _.transform(
@@ -178,48 +178,42 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
               </div>
               <div
                 onClick={() => toggleGridView(false)}
-                onMouseDown={() => setDown('list')}
-                onMouseUp={() => setDown('')}
+                // onMouseDown={() => setDown('list')}
+                // onMouseUp={() => setDown('')}
                 onMouseEnter={() => setHover('list')}
                 onMouseLeave={() => {
-                  setDown('');
+                  // setDown('');
                   setHover('');
                 }}
                 className={`list ${gridView ? '' : 'selected'}`}
               >
                 <img
                   src={
-                    down === 'list'
-                      ? listD
-                      : gridView === false
-                      ? listS
-                      : hover === 'list'
-                      ? listH
-                      : list
+                    // down === 'list'
+                    //   ? listD
+                    //   :
+                    gridView === false ? listS : hover === 'list' ? listH : list
                   }
                   alt=""
                 />
               </div>
               <div
                 onClick={() => toggleGridView(true)}
-                onMouseDown={() => setDown('grid')}
-                onMouseUp={() => setDown('')}
+                // onMouseDown={() => setDown('grid')}
+                // onMouseUp={() => setDown('')}
                 onMouseEnter={() => setHover('grid')}
                 onMouseLeave={() => {
-                  setDown('');
+                  // setDown('');
                   setHover('');
                 }}
                 className={`grid ${gridView ? 'selected' : ''}`}
               >
                 <img
                   src={
-                    down === 'grid'
-                      ? gridD
-                      : gridView === true
-                      ? gridS
-                      : hover === 'grid'
-                      ? gridH
-                      : grid
+                    // down === 'grid'
+                    //   ? gridD
+                    //   :
+                    gridView === true ? gridS : hover === 'grid' ? gridH : grid
                   }
                   alt=""
                 />
