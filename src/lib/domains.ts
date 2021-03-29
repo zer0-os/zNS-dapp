@@ -7,10 +7,10 @@ const zeroBytes32 =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
 
 const ROOT_ID = keccak256(
-  coder.encode(['uint256', 'string'], [zeroBytes32, 'ROOT']),
+  coder.encode(['uint256', 'string'], [zeroBytes32, 'rootDomain']),
 );
 function getDomainId(_domain: string): string {
-  if (_domain === 'ROOT') {
+  if (_domain === 'rootDomain') {
     return BigNumber.from(ROOT_ID).toString();
   }
   const domains = _domain.split('.');

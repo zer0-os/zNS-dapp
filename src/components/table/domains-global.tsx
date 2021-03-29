@@ -21,7 +21,6 @@ import gridS from '../css/img/tablebar/grid-select.png';
 interface DomainsGlobalProps {
   domain: string;
 }
-
 const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
 
@@ -104,7 +103,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         </div>
       </div>
 
-      <AdBar domain={domain.value.name} />
+      <AdBar domain={domain.value.domain} />
 
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">
@@ -229,7 +228,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         </div>
 
         <TableViewGlobal
-          domain={domain.value.name}
+          domain={domain.value.domain}
           gridView={gridView}
           search={search}
         />

@@ -40,7 +40,7 @@ const AllDomains: FC<ADProps> = ({ domain: _domain, gridView }) => {
     () =>
       domain.isNothing()
         ? []
-        : _.map(domain.value.name, (key, i) => ({
+        : _.map(domain.value.children, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
             image: <TableImage domain={key} />,

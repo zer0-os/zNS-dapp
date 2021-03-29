@@ -95,7 +95,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   if (domain.isNothing()) return null;
   return (
     <div className="pageContainerPositionFix">
-      {domain.value.name.length !== 0 ? (
+      {domain.value.domain.length !== 0 ? (
         <div>
           <div className="metricsBar">
             {/* <div className="metricsTitle">Metrics</div> */}
@@ -110,7 +110,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             </div>
           </div>
 
-          <AdBar domain={domain.value.name} />
+          <AdBar domain={domain.value.domain} />
 
           <div id="subdomainsContainer">
             <div className="subdomainsSortBar">
@@ -241,14 +241,14 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             </div>
 
             <TableView
-              domain={domain.value.name}
+              domain={domain.value.domain}
               gridView={gridView}
               search={search}
             />
           </div>
         </div>
       ) : (
-        <NFTPage domain={domain.value.name} />
+        <NFTPage domain={domain.value.domain} />
       )}
     </div>
   );

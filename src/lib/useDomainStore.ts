@@ -8,24 +8,29 @@ import { getDomainId } from './domains';
 
 export interface Domain {
   id: string;
-  name: string;
+  domain: string;
   children: string[];
   owner: string;
   controller: string;
-  metadata: string;
   parent: string;
+  image: string;
+  resolver: string;
   timeCreated: number;
+  approval: Maybe<string>;
 }
 
 interface _DomainData {
   id: string;
   name: string;
-  owner: string;
   parent: string;
-  controller: string;
   subdomains: string;
-  timeCreated: number;
+  owner: string;
+  minter: string;
+  lockedBy: string;
+  isLocked: boolean;
   metadata: string;
+  timeStamp: number;
+  controller: string;
 }
 
 interface DomainsData {
@@ -59,6 +64,7 @@ const domainQuery = gql`
       isLocked
       metadata
       timeStamp
+      controller
     }
   }
 `;
@@ -151,12 +157,9 @@ function useDomain(domain: string) {
         ...dataDomain.domain,
         owner: getAddress(dataDomain.domain.owner),
         parent: dataDomain.domain.parent,
-        metadata: dataDomain.domain.metadata,
-        subdomains: dataDomain.domain.subdomains,
-        name: dataDomain.domain.name,
-        controller: getAddress(dataDomain.domain.controller),
-
+        image: dataDomain.domain.metadata,
         children,
+        controller: getAddress(dataDomain.domain.controller),
       });
     }
     return Maybe.nothing();

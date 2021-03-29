@@ -58,7 +58,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     async (file: File) => {
       assert(domain.isJust());
       return ipfs
-        .upload(domain.value.metadata, file)
+        .upload(domain.value.image, file)
         .then(async (added) => _setImage('ipfs://' + added.hash))
         .then(() => refetchDomain());
     },
@@ -83,10 +83,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
         <>
           <img
             style={{ height: '10%', width: '10%' }}
-            src={domain.value.metadata.replace(
-              'ipfs://',
-              'https://ipfs.io/ipfs/',
-            )}
+            src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
           />
           <form
             onSubmit={handleSubmit(({ image, url }) =>
@@ -94,13 +91,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
             )}
           >
             <div className="create-button">
-              <input
-                className="fileInput"
-                style={{}}
-                name={'image'}
-                type="file"
-                ref={register}
-              />
+              <input style={{}} name={'image'} type="file" ref={register} />
               <button
                 className="img-btn"
                 type="submit"
