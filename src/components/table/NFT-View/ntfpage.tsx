@@ -73,29 +73,17 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     <div className="nftView">
       <div className="showcase">
         <div className="showcaseIMG">
-          {/* <NFTImage domain={domain.value.domain} /> */}
-          <video
-            playsInline={true}
-            autoPlay={true}
-            muted={true}
-            loop={true}
-            className=""
-          >
-            <source src={nFTpAGE} type="video/mp4" />
-          </video>
+          <NFTImage domain={domain.value.domain} />
         </div>
         <div className="showcaseInfo">
           <div className="topmid">
             <div className="top">
-              <div className="title">Blue Pill / Red Pill</div>
+              <div className="title">{domain.value.domain.match(/[^.]+$/)}</div>
               <div className="domain">
-                {/* 0:/ / {domain.value.domain} */}
-
                 <Link to={'/'} className="network">
                   0:/ <span className="slash">/</span>
                 </Link>
                 {routes.length > 0 ? (
-                  // <div className="routeBox">
                   <div className="route">
                     {routes.map(([key, path], i) => (
                       <Link key={key} className="route-nav-text-sub" to={path}>

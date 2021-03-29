@@ -15,15 +15,12 @@ const TableImageGlobal: FC<TableImageGlobalProps> = ({ domain: _domain }) => {
     <>
       {/* TODO: check if there is no image file */}
       {domain.isJust() && (
-        <div className="domainImageGlobalContainer">
-          <img
-            className="domainImageGlobal"
-            src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-            alt=""
-          />
-        </div>
+        <img
+          className="neo2"
+          src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+          alt=""
+        />
       )}
-      {/*console.log(domain.value.image, domain.value.domain)*/}
     </>
   );
 };
