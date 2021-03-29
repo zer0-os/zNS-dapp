@@ -681,10 +681,11 @@ table {
         border-right: $lp-border;
         .tradeButton {
           color: $med-blue;
-          // border: #5f8cff 1px solid;
+          border-collapse: separate;
           border-top: none;
-          border-right: 3px solid $med-blue;
-          border-left: 3px solid $med-blue;
+          border-bottom: none;
+          border-right: 1px solid $med-blue;
+          border-left: 1px solid $med-blue;
           border-radius: 15px;
           background: linear-gradient(
             94.23deg,
