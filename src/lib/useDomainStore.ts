@@ -6,18 +6,16 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
 import { getDomainId } from './domains';
 
-// cahching
-// querys
 export interface Domain {
   id: string;
   name: string;
-  subdomains: string[];
-  minter: string;
-  owner: string;
-  controller: string;
   parent: string;
+  subdomains: string[];
+  owner: string;
+  minter: string;
+  lockedBy: string;
+  isLocked: boolean;
   metadata: string;
-  timeStamp: number;
 }
 
 interface _DomainData {
@@ -26,12 +24,9 @@ interface _DomainData {
   parent: string;
   owner: string;
   minter: string;
-  metadata: string;
-  controller: string;
-  timeStamp: number;
   lockedBy: string;
   isLocked: boolean;
-  subdomains: string[];
+  metadata: string;
 }
 
 interface DomainsData {
@@ -57,14 +52,12 @@ const domainQuery = gql`
     domains(id: $id) {
       id
       name
-      # parent
-      # owner
-      # minter
-      # lockedBy
-      # isLocked
-      # metadata
-      # timeStamp
-      # controller
+      parent
+      owner
+      minter
+      lockedBy
+      isLocked
+      metadata
     }
   }
 `;
@@ -160,9 +153,8 @@ function useDomain(domain: string) {
         parent: dataDomain.domain.parent,
         minter: dataDomain.domain.minter,
         metadata: dataDomain.domain.metadata,
-        timeStamp: dataDomain.domain.timeStamp,
+
         subdomains,
-        controller: getAddress(dataDomain.domain.controller),
       });
     }
     return Maybe.nothing();
@@ -206,7 +198,7 @@ function useOwnedDomains(): {
           owner: getAddress(d.owner),
           parent: d.parent,
           subdomains: [],
-          controller: getAddress(d.controller),
+
           metadata: d.metadata,
         })),
       );
