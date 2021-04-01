@@ -46,7 +46,7 @@ interface ZeroTransaction {
 }
 export const zeroAddress: any =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
-// TODO: turn queries into fragments
+
 const domainQuery = gql`
   query Domain($id: ID!) {
     domains(id: $id) {
@@ -68,13 +68,11 @@ const childrenQuery = gql`
       id
       name
       parent
-      subdomains
       owner
       minter
       lockedBy
       isLocked
       metadata
-      timeStamp
     }
   }
 `;
@@ -91,14 +89,13 @@ const ownedDomainsQuery = gql`
       lockedBy
       isLocked
       metadata
-      timeStamp
     }
   }
 `;
 
 const allDomainsQuery = gql`
   query Domain($id: ID!) {
-    domains(where: { parent: $parent }) {
+    domains(where: { id: $id }) {
       id
       parent
       name
@@ -153,7 +150,6 @@ function useDomain(domain: string) {
         parent: dataDomain.domain.parent,
         minter: dataDomain.domain.minter,
         metadata: dataDomain.domain.metadata,
-
         subdomains,
       });
     }

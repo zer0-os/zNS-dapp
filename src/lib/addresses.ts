@@ -3,7 +3,7 @@ import { NETWORK_TYPES } from './network';
 // TODO: remove any, fix network types
 const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
   [NETWORK_TYPES.KOVAN]: {
-    registry: '0x909d371C8898dcA48Ec65c72015388c1Cb11f4A8',
+    registrar: '0x74299b367E199a3f9a37fdFDb1f9dE85b1224A13',
   },
 } as any;
 

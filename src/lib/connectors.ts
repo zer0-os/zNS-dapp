@@ -14,7 +14,7 @@ import { TorusConnector } from '@web3-react/torus-connector';
 const POLLING_INTERVAL = 12000;
 const RPC_URLS: { [chainId: number]: string } = {
   1: process.env.REACT_APP_RPC_URL_1 as string,
-  4: process.env.REACT_APP_RPC_URL_4 as string,
+  // 4: process.env.REACT_APP_RPC_URL_4 as string,
   42: process.env.REACT_APP_RPC_URL_42 as string,
 };
 
@@ -23,7 +23,7 @@ export const injected = new MetaMask({
 });
 
 export const network = new Network({
-  urls: { 1: RPC_URLS[1], 4: RPC_URLS[4] },
+  urls: { 1: RPC_URLS[1], 42: RPC_URLS[42] },
   defaultChainId: 1,
 });
 
@@ -59,7 +59,7 @@ export const authereum = new AuthereumConnector({ chainId: 42 });
 
 export const fortmatic = new FortmaticConnector({
   apiKey: process.env.FORTMATIC_API_KEY as string,
-  chainId: 4,
+  chainId: 42,
 });
 
 export const magic = new MagicConnector({

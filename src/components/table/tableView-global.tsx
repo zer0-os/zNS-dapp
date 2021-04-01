@@ -180,7 +180,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
           })),
     [domain],
   );
-
+  console.log(dataInput, 'LIST DATA');
   // const dataInput: Data[] = useMemo(
   //   () =>
   //     domain.isNothing()
