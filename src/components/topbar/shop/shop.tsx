@@ -5,7 +5,6 @@ import { Modal, Tabs } from 'antd';
 import './css/shop.scss';
 import Stakingview from '../topbar/stakingModal';
 import tripledot from './img/tripledot.svg';
-import Owned from './owned';
 
 const { TabPane } = Tabs;
 
@@ -195,7 +194,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 closable={false}
               ></Modal>
 
-              <Owned />
+              {/* <Owned /> */}
               {/* <div>
               {owned.value.map((control) => {
                 return (

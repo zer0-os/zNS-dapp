@@ -13,6 +13,23 @@ import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
 import Grid from './grid-view';
 import './css/subdomains.scss';
+import Nestedview from '../NFT-View/nestedNFT-view';
+import wilderavatar from '../../css/img/wilderavatar.png';
+import neo from '../../css/img/neo.jpeg';
+import kitty from '../../css/img/kitty.jpeg';
+import cybercar from '../../css/img/cybercar.jpeg';
+import realestate from '../../css/img/realestate.jpeg';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface ColumnProps {
+//   key: number;
+//   name: string;
+// }
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface RowProps {
+//   id: number;
+//   domain: string;
+// }
 
 interface Data {
   '#': string;
@@ -48,6 +65,20 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //
   // Following functions generate random numbers to display mock data in the UI
   //
+
+  let names = ['Frank', 'BluePill', 'Zine'];
+
+  let images = [
+    <img src={wilderavatar} alt="" className="neo2" />,
+    <img src={neo} alt="" className="neo2" />,
+    <img src={kitty} alt="" className="neo2" />,
+    <img src={cybercar} alt="" className="neo2" />,
+    <img src={realestate} alt="" className="neo2" />,
+  ];
+
+  let List = images.map((image: any) => {
+    return <div> {image} </div>;
+  });
 
   const randThreeS = () => {
     let temp =
@@ -127,6 +158,13 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //
   //
 
+  const [tableImg, setTableImg] = useState(null);
+  const [tablePrice, setTablePrice] = useState(randTrade());
+  let testingPrice = '';
+  useEffect(() => {
+    testingPrice = 'test!';
+  }, []);
+
   const dataInput: Data[] = useMemo(
     () =>
       domain.isNothing()
@@ -134,7 +172,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         : _.map(domain.value.children, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
-            image: <TableImage domain={key} />,
+            image: List[i],
             network: key,
             // token: key + ' token',
             '24Hr': randPrice(),
@@ -161,6 +199,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               alignItems: 'center',
               justifyContent: 'center',
               minWidth: '60px',
+              // maxWidth: '60px',
               height: '40px',
             }}
           >
@@ -174,6 +213,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         accessor: 'image',
       },
       { Header: '', accessor: 'network' },
+      // { Header: 'Token', accessor: 'token' },
       { Header: '24Hr', accessor: '24Hr' },
       { Header: '7d', accessor: '7d' },
       {
@@ -283,12 +323,31 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   };
 
   const handleRowClick = (row: any) => {
+    //console.log('fire');
+    //console.log(row);
     history.push({
       pathname: row.values.network,
     });
   };
 
+  // const handleRowClick = (row: any) => {
+  //   //console.log('fire');
+  //   //console.log(row);
+  //   let routes;
+  //   if (row.values.network == 'Frank') {
+  //     routes = 'community';
+  //   }
+  //   history.push({
+  //     pathname: routes,
+  //     //  neo
+
+  //     //   foobarbar
+
+  //     //   foo
+  //   });
+  // };
   if (domain.isNothing()) return null;
+  //console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />

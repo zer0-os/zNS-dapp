@@ -20,14 +20,12 @@ const TableImage: FC<TableImageProps> = ({ domain: _domain }) => {
 
   if (domain.isNothing()) return null;
   return (
-    <div className="domainImageContainer">
-      <img
-        onLoad={_onLoad}
-        className={`domainImage ${loadedIMG}`}
-        src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
-        alt=""
-      />
-    </div>
+    <img
+      onLoad={_onLoad}
+      className={`domainImage ${loadedIMG}`}
+      src={domain.value.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+      alt=""
+    />
   );
 };
 export default TableImage;

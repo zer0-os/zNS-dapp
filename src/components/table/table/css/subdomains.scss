@@ -681,11 +681,10 @@ table {
         border-right: $lp-border;
         .tradeButton {
           color: $med-blue;
-          border-collapse: separate;
+          // border: #5f8cff 1px solid;
           border-top: none;
-          border-bottom: none;
-          border-right: 1px solid $med-blue;
-          border-left: 1px solid $med-blue;
+          border-right: 3px solid $med-blue;
+          border-left: 3px solid $med-blue;
           border-radius: 15px;
           background: linear-gradient(
             94.23deg,
@@ -789,13 +788,6 @@ table {
           // color: $dark-grey;
           color: #fff;
           font-weight: bold;
-        }
-        &:nth-child(2) {
-          img {
-            border-radius: 50%;
-            height: 64px;
-            width: 64px;
-          }
         }
         &:nth-child(3) {
           color: #fff;

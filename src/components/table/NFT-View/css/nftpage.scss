@@ -12,6 +12,7 @@ $page-margin: 100px;
 
   .showcase {
     height: 75vh;
+    // background: url(./img/starsbg.png);
     background-repeat: no-repeat;
     background-size: cover;
     border-radius: 16px;
@@ -30,6 +31,9 @@ $page-margin: 100px;
       display: flex;
       flex-direction: row;
       justify-content: center;
+      video {
+        height: 100%;
+      }
       .NFTImageContainer {
         height: 100%;
         width: 100%;
@@ -38,15 +42,15 @@ $page-margin: 100px;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        padding: 4px;
+
         .NFTImage {
           max-width: 100%;
           max-height: 100%;
           overflow: hidden;
           object-fit: cover;
           margin: auto;
-          border: $lp-border;
-          box-shadow: 0px 0px 10px 0px lighten(rgba($purple-shadow, 1), 20%);
+          border: 3px solid $light-purple;
+          box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
         }
       }
     }

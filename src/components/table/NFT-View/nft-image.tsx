@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect, useCallback } from 'react';
 import { useDomainCache } from '../../../lib/useDomainCache';
-import './css/nft-view.scss';
+import './nft-view.scss';
 
 interface NFTImageProps {
   domain: string;

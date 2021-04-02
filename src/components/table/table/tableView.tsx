@@ -8,12 +8,24 @@ import SearchTable from './searchTable';
 import marketimg from '../css/img/chart.svg';
 import Grid from './grid-view';
 import './css/subdomains.scss';
+import Nestedview from '../NFT-View/nestedNFT-view';
 import Image from '../mockup/image';
 import graph1 from './img/mockgraphs/graph1.png';
 import graph2 from './img/mockgraphs/graph2.png';
 import graph3 from './img/mockgraphs/graph3.png';
 import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
+
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface ColumnProps {
+//   key: number;
+//   name: string;
+// }
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// interface RowProps {
+//   id: number;
+//   domain: string;
+// }
 
 interface Data {
   '#': string;
@@ -133,7 +145,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             key: key,
             '#': i.toString(),
             // asset: <Profile domain={key} />,
-            asset: <TableImage domain={key} />,
+            asset: <Image />,
             name: key,
             '24Hr': randPrice(),
             '7d': randPrice(),
