@@ -163,7 +163,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     () =>
       domain.isNothing()
         ? []
-        : _.map(domain.value.name, (key, i) => ({
+        : _.map(domain.value.subdomains, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
             image: List[i],
@@ -364,7 +364,8 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //     //   foo
   //   });
   // };
-  if (domain.isNothing()) return null;
+
+  // if (domain.isJust()) return null;
   //console.log(domain, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">

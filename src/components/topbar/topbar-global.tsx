@@ -72,6 +72,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   ]);
 
   if (domain.isNothing()) return null;
+
   return (
     <div
       className={`

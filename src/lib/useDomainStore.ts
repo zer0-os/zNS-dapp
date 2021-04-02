@@ -63,11 +63,11 @@ const domainQuery = gql`
 `;
 
 const childrenQuery = gql`
-  query ChildrenDomains($parent: Bytes!) {
+  query ChildrenDomains($parent: ID!) {
     domains(where: { parent: $parent }) {
       id
       name
-      parent
+      subdomains
       owner
       minter
       lockedBy
@@ -116,6 +116,7 @@ function useDomain(domain: string) {
     refetch: refetchDomain,
   } = useQuery<DomainData>(domainQuery, {
     variables: { id },
+    fetchPolicy: 'no-cache',
   });
 
   const {
@@ -124,6 +125,7 @@ function useDomain(domain: string) {
     refetch: refetchChildren,
   } = useQuery<DomainsData>(childrenQuery, {
     variables: { parent: id },
+    fetchPolicy: 'no-cache',
   });
 
   const _domain: Maybe<Domain> = useMemo(() => {
@@ -136,7 +138,10 @@ function useDomain(domain: string) {
       console.error(errorChildren);
       // TODO: error handle?
     }
-    if (dataDomain && dataDomain.domain) {
+
+    const thisDomain: any = dataDomain;
+    console.log(thisDomain, 'thisDomain');
+    if (thisDomain && thisDomain.domain) {
       const subdomains =
         dataChildren &&
         dataChildren.domains[0] &&
@@ -144,16 +149,17 @@ function useDomain(domain: string) {
           ? dataChildren.domains.map((d) => d.name)
           : //.filter((d) => d !== 'ROOT')
             [];
+      console.log('sub', 'LIST');
       return Maybe.of({
-        ...dataDomain.domain,
-        name: dataDomain.domain.name,
-        owner: getAddress(dataDomain.domain.owner),
-        parent: dataDomain.domain.parent,
-        minter: dataDomain.domain.minter,
-        metadata: dataDomain.domain.metadata,
+        ...thisDomain.domain,
+        owner: getAddress(thisDomain.domain.owner),
+        parent: thisDomain.domain.parent,
+        minter: thisDomain.domain.minter,
+        metadata: thisDomain.domain.metadata,
         subdomains,
       });
     }
+
     return Maybe.nothing();
   }, [dataDomain, errorDomain, errorChildren, dataChildren, id]);
 
@@ -180,6 +186,7 @@ function useOwnedDomains(): {
     ownedDomainsQuery,
     {
       variables: { owner: account },
+      fetchPolicy: 'no-cache',
     },
   );
 
@@ -238,6 +245,7 @@ function useAllDomains(
     allDomainsQuery,
     {
       variables: { id },
+      fetchPolicy: 'no-cache',
     },
   );
 
@@ -314,3 +322,6 @@ export type DomainStoreContext = ReturnType<typeof useDomainStore>;
 export type DomainContext = ReturnType<typeof useDomain>;
 
 export { useDomainStore };
+function subdomains(subdomains: any, arg1: string) {
+  throw new Error('Function not implemented.');
+}

@@ -82,6 +82,7 @@ const Sidebar: FC = () => {
   const walletCancel = () => {
     setWalletVisible(false);
   };
+
   return (
     <div className="sidebarContainer">
       <div className="sidebarContainer">
