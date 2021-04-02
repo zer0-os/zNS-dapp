@@ -3,8 +3,7 @@ import { keccak256 } from '@ethersproject/keccak256';
 import { BigNumber } from '@ethersproject/bignumber';
 const coder = new AbiCoder();
 
-const zeroBytes32 =
-  '0x0000000000000000000000000000000000000000000000000000000000000000';
+const zeroBytes32 = '0x0';
 
 const ROOT_ID = keccak256(
   coder.encode(['uint256', 'string'], [zeroBytes32, 'ROOT']),

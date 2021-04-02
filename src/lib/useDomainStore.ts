@@ -129,11 +129,12 @@ function useDomain(domain: string) {
   const _domain: Maybe<Domain> = useMemo(() => {
     //console.log('domain!', dataDomain);
     if (errorDomain) {
-      // TODO: maybe throw?
+      // TODO: error handle?
       console.error(errorDomain);
     }
     if (errorChildren) {
       console.error(errorChildren);
+      // TODO: error handle?
     }
     if (dataDomain && dataDomain.domain) {
       const subdomains =

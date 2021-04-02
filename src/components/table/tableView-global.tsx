@@ -163,7 +163,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     () =>
       domain.isNothing()
         ? []
-        : _.map(domain.value.subdomains, (key, i) => ({
+        : _.map(domain.value.name, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
             image: List[i],
@@ -180,7 +180,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
           })),
     [domain],
   );
-  console.log(dataInput, 'LIST DATA');
+
   // const dataInput: Data[] = useMemo(
   //   () =>
   //     domain.isNothing()
