@@ -34,9 +34,11 @@
     "@web3-react/walletconnect-connector": "^6.1.9",
     "@web3-react/walletlink-connector": "^6.1.9",
     "antd": "^4.15.0",
+    "apollo": "^2.32.5",
     "dayjs": "^1.10.4",
     "ethers": "^5.1.0",
     "graphql": "^15.5.0",
+    "graphql-tag": "^2.11.0",
     "lodash": "^4.17.21",
     "node-sass": "^4.14.1",
     "react": "^17.0.2",
@@ -59,6 +61,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
+    "apollo:codegen": "apollo codegen:generate --target typescript --excludes=node_modules/* --includes=**/*.tsx --endpoint https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan --tagName=gql",
     "lint": "eslint src --ext .ts"
   },
   "eslintConfig": {
