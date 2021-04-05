@@ -1,0 +1,16 @@
+import { gql } from '@apollo/client';
+
+export const childrenQuery = gql`
+  query ChildrenDomains($parent: ID!) {
+    domains(where: { parent: $parent }) {
+      id
+      name
+      subdomains
+      owner
+      minter
+      lockedBy
+      isLocked
+      metadata
+    }
+  }
+`;
