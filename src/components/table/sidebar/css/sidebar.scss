@@ -1,0 +1,72 @@
+@import '../../../css/color-variables.scss';
+
+.sidebarContainer {
+  height: 100vh;
+  width: 100px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  .sidebarContainer {
+    .topLogo {
+      position: absolute;
+      top: 30px;
+      height: 56px;
+      width: 56px;
+      background: linear-gradient(180deg, #1c4358 0%, #2a0047 100%);
+      border-radius: 50%;
+      margin-left: 24px;
+      margin-right: auto;
+      cursor: pointer;
+      img {
+        transform: translate(2px, 2px);
+        pointer-events: none;
+      }
+    }
+    .middleNav {
+      position: relative;
+      align-self: center;
+      margin: auto;
+      height: 302px;
+      width: 66px;
+      background: linear-gradient(
+        92.24deg,
+        rgba(40, 0, 68, 0.5) 0%,
+        rgba(62, 0, 105, 0.5) 100%
+      );
+      border-radius: 37px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      .sideItem {
+        margin-left: 8px;
+        height: 50px;
+        width: 50px;
+        border-radius: 50px;
+        background: linear-gradient(
+          180deg,
+          rgba(119, 8, 197, 0.5) 0%,
+          rgba(58, 1, 98, 0.5) 100%
+        );
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        // border: 5px red solid;
+        cursor: pointer;
+        img {
+          align-self: center;
+          cursor: pointer;
+        }
+        &:first-child {
+          margin-top: 37px;
+        }
+        &:last-child {
+          margin-bottom: 37px;
+        }
+      }
+    }
+  }
+}

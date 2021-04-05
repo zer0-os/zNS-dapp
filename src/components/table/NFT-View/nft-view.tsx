@@ -5,8 +5,8 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { Modal } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
-import '../../css/nft-view.scss';
-import TableImage from '../table-image';
+import './css/nft-view.scss';
+import TableImage from '../table/table-image';
 
 interface ProfileProps {
   domain: string;

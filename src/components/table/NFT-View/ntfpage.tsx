@@ -4,16 +4,16 @@ import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
-import '../../css/nftpage.scss';
-import TableImage from '../table-image';
+import './css/nftpage.scss';
+import TableImage from '../table/table-image';
 import NFTImage from './nft-image';
-import neo2 from '../../css/img/neo2.jpeg';
+import neo2 from './img/neo2.jpeg';
 import nFTpAGE from '../../css/video/nFTpAGE.mp4';
-import neo from '../../css/img/mockusers/neo.png';
-import cat from '../../css/img/mockusers/cat.png';
-import phoenix from '../../css/img/mockusers/phoenix.png';
-import vape from '../../css/img/mockusers/vape.png';
-import wilder from '../../css/img/mockusers/wilder.png';
+import neo from './img/mockusers/neo.png';
+import cat from './img/mockusers/cat.png';
+import phoenix from './img/mockusers/phoenix.png';
+import vape from './img/mockusers/vape.png';
+import wilder from './img/mockusers/wilder.png';
 
 interface ProfileProps {
   domain: string;
@@ -70,93 +70,58 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
 
   if (domain.isNothing()) return null;
   return (
-    // <div className="nftView">
-    //   <div className="showcase"></div>
-    //   <div className="info">
-    //     <div className="story"></div>
-    //     <div className="quad">
-    //       <div className="top">
-    //         <div className="last"></div>
-    //         <div className="change"></div>
-    //       </div>
-    //       <div className="bottom">
-    //         <div className="resale"></div>
-    //         <div className="original"></div>
-    //       </div>
-    //     </div>
-    //   </div>
-    //   <div className="stats">
-    //     <div className="growth"></div>
-    //     <div className="market"></div>
-    //   </div>
-    //   <div className="bottom">
-    //     <div className="chat"></div>
-    //     <div className="history"></div>
-    //   </div>
-    // </div>
     <div className="nftView">
       <div className="showcase">
         <div className="showcaseIMG">
-          {/* <NFTImage domain={domain.value.domain} /> */}
-          <video
-            playsInline={true}
-            autoPlay={true}
-            muted={true}
-            loop={true}
-            className=""
-          >
-            <source src={nFTpAGE} type="video/mp4" />
-          </video>
+          <NFTImage domain={domain.value.domain} />
         </div>
         <div className="showcaseInfo">
-          <div className="top">
-            <div className="title">Blue Pill / Red Pill</div>
-            <div className="domain">
-              {/* 0:/ / {domain.value.domain} */}
-
-              <Link to={'/'} className="network">
-                0:/ <span className="slash">/</span>
-              </Link>
-              {routes.length > 0 ? (
-                // <div className="routeBox">
-                <div className="route">
-                  {routes.map(([key, path], i) => (
-                    <Link key={key} className="route-nav-text-sub" to={path}>
-                      {key}
-                      {i < routes.length - 1 && '.'}
-                    </Link>
-                  ))}
+          <div className="topmid">
+            <div className="top">
+              <div className="title">{domain.value.domain.match(/[^.]+$/)}</div>
+              <div className="domain">
+                <Link to={'/'} className="network">
+                  0:/ <span className="slash">/</span>
+                </Link>
+                {routes.length > 0 ? (
+                  <div className="route">
+                    {routes.map(([key, path], i) => (
+                      <Link key={key} className="route-nav-text-sub" to={path}>
+                        {key}
+                        {i < routes.length - 1 && '.'}
+                      </Link>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+              <div className="users">
+                <div className="creator">
+                  <img src={wilder} alt="" className="avatar" />
+                  <div className="creatorFlex">
+                    <div className="creatorText">Frank Wilder</div>
+                    <div className="desc">Creator</div>
+                  </div>
                 </div>
-              ) : null}
-            </div>
-            <div className="users">
-              <div className="creator">
-                <img src={wilder} alt="" className="avatar" />
-                <div className="creatorFlex">
-                  <div className="creatorText">Frank Wilder</div>
-                  <div className="desc">Creator</div>
+                <div className="owner">
+                  <img src={neo} alt="" className="avatar" />
+                  <div className="ownerFlex">
+                    <div className="ownerText">Neo Wilder</div>
+                    <div className="desc">Owner</div>
+                  </div>
                 </div>
               </div>
-              <div className="owner">
-                <img src={neo} alt="" className="avatar" />
-                <div className="ownerFlex">
-                  <div className="ownerText">Neo Wilder</div>
-                  <div className="desc">Owner</div>
-                </div>
+            </div>
+            <div className="middle">
+              <div className="midLeft">
+                <div className="units">250 LOOT</div>
+                <div className="price">[$1,304.12]</div>
               </div>
-            </div>
-          </div>
-          <div className="middle">
-            <div className="midLeft">
-              <div className="text">Price</div>
-              <div className="units">250 LOOT</div>
-              <div className="price">$1,304.12</div>
-            </div>
-            {/* <div className="midRight">
+              {/* <div className="midRight">
               <div className="text">Current Price</div>
               <div className="units">65,045 LOOT</div>
               <div className="price">$23,401,123.43</div>
             </div> */}
+            </div>
           </div>
           <div className="showcaseBottom">
             <div className="shadowContainer">

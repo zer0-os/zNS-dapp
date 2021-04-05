@@ -3,10 +3,10 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { Modal } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
-import '../../css/subdomains.scss';
-import TableImage from '../table-image';
+import '../table/css/subdomains.scss';
+import TableImage from '../table/table-image';
 import NFTImage from './nft-image';
-import Purchase from './purchaseModal';
+import Purchase from '../../topbar/profile/purchaseModal';
 interface NestedProps {
   domain: string;
 }

@@ -3,12 +3,12 @@ import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import './lib/ipfs';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import Subdomains from './components/table/child-view';
+import Subdomains from './components/table/domainView/child-view';
 import { DomainCacheProvider } from './lib/useDomainCache';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import DomainsGlobal from './components/table/domains-global';
-import TopbarGlobal from './components/topbar/topbar-global';
-import Sidebar from './components/sidebar';
+import DomainsGlobal from './components/table/domainView/domains-global';
+import TopbarGlobal from './components/topbar/topbar/topbar-global';
+import Sidebar from './components/table/sidebar/sidebar';
 import znsbg from '../src/components/css/video/znsbgslow.mp4';
 
 const client = new ApolloClient({
@@ -72,7 +72,7 @@ function App() {
                     domain={location.pathname
                       .substring(1)
                       .replace(/\/+$/, '')
-                      .replace(/\//, '.')}
+                      .replace(/\//, '.')} 
                   />
                 </h1> */}
                 {/* TODO: move to styling file */}
