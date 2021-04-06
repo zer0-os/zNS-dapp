@@ -14,6 +14,8 @@ import graph2 from './img/mockgraphs/graph2.png';
 import graph3 from './img/mockgraphs/graph3.png';
 import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
+import { domainQuery } from '../../../lib/queries/domainQueries';
+import { useQuery, gql } from '@apollo/client';
 
 interface Data {
   '#': string;
@@ -38,14 +40,18 @@ interface TProps {
 const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   // const context = useWeb3React<Web3Provider>();
   // const { account } = context;
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const { useDomain } = useDomainCache();
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   const history = useHistory();
 
   //
   // Following functions generate random numbers to display mock data in the UI
   //
+
+  const { error, loading, data } = useQuery(domainQuery);
+
+  const domain: any = true;
 
   const randThreeS = () => {
     let temp =
@@ -148,7 +154,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   );
 
   //console.log(dataInput, 'THIS List');
-  const data = useMemo<Data[]>(() => dataInput, [dataInput]);
+  const _data = useMemo<Data[]>(() => dataInput, [dataInput]);
 
   const columns = useMemo<Column<Data>[]>(
     () => [
@@ -266,7 +272,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     });
   };
 
-  if (domain.isNothing()) return null;
+  // if (domain.isNothing()) return null;
   //console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">
@@ -367,9 +373,8 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               )}
             </table>
           </div>
-        ) : (
-          <Grid domain={_domain} />
-        )}
+        ) : // <Grid domain={_domain} />
+        null}
 
         <br />
         <br />

@@ -19,9 +19,9 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { active } = context;
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const { useDomain } = useDomainCache();
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   const location = useLocation();
 
   const routes = _.transform(
@@ -46,7 +46,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const walletCancel = () => {
     setWalletVisible(false);
   };
-  if (domain.isNothing()) return null;
+  // if (domain.isNothing()) return null;
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">

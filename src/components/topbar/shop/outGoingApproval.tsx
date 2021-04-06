@@ -26,8 +26,8 @@ interface NftData {
 const Outgoing: React.FC = () => {
   // const context = useWeb3React<Web3Provider>();
   // const { account } = context;
-  const domainStore = useDomainCache();
-  const { owned } = domainStore;
+  // const domainStore = useDomainCache();
+  // const { owned } = domainStore;
 
   // // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const _revoke = useCallback(
@@ -43,34 +43,34 @@ const Outgoing: React.FC = () => {
   //   [contracts, account, refetchOwned],
   // );
 
-  const dataInput: NftData[] = useMemo(
-    () =>
-      owned.isNothing()
-        ? []
-        : owned.value.map((domain) => ({
-            Image: (
-              <div className="imgContainer">
-                <Profile domain={domain.name} />
-              </div>
-            ),
-            NFT: domain.name,
-            Owner: (
-              <div className="ownerCol">
-                <div className="ownerIcon">img</div>
-                {/* <div>{domain.owner}</div> */}
-                <div>Artist Name</div>
-              </div>
-            ),
-            Offer: (
-              <div>
-                <div>$1234.56</div>
-                <div>(Ξ2.0476)</div>
-              </div>
-            ),
-            Date: '1 Sept 2020',
-          })),
-    [owned],
-  );
+  // const dataInput: NftData[] = useMemo(
+  //   () =>
+  //     owned.isNothing()
+  //       ? []
+  //       : owned.value.map((domain) => ({
+  //           Image: (
+  //             <div className="imgContainer">
+  //               <Profile domain={domain.name} />
+  //             </div>
+  //           ),
+  //           NFT: domain.name,
+  //           Owner: (
+  //             <div className="ownerCol">
+  //               <div className="ownerIcon">img</div>
+  //               {/* <div>{domain.owner}</div> */}
+  //               <div>Artist Name</div>
+  //             </div>
+  //           ),
+  //           Offer: (
+  //             <div>
+  //               <div>$1234.56</div>
+  //               <div>(Ξ2.0476)</div>
+  //             </div>
+  //           ),
+  //           Date: '1 Sept 2020',
+  //         })),
+  //   [owned],
+  // );
 
   // // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const data = useMemo<NftData[]>(() => dataInput, [dataInput]);
@@ -97,7 +97,7 @@ const Outgoing: React.FC = () => {
   //   [account],
   // );
 
-  if (owned.isNothing()) return null;
+  // if (owned.isNothing()) return null;
 
   return (
     <>
@@ -110,23 +110,23 @@ const Outgoing: React.FC = () => {
         ))}
       </div> */}
 
-      <Table dataSource={dataInput} style={{}}>
-        <Column title="NFT" dataIndex="Image" key="Image" />
-        <Column title="" dataIndex="NFT" key="NFT" />
-        <Column title="Owner" dataIndex="Owner" key="Owner" />
+      {/* <Table dataSource={dataInput} style={{}}> */}
+      <Column title="NFT" dataIndex="Image" key="Image" />
+      <Column title="" dataIndex="NFT" key="NFT" />
+      <Column title="Owner" dataIndex="Owner" key="Owner" />
 
-        <Column title="Offer" dataIndex="Offer" key="Offer" />
-        <Column title="Date" dataIndex="Date" key="Date" />
-        <Column
-          title={null}
-          key="action"
-          render={(text, record) => (
-            <Space size="middle">
-              <div className="declineBtn">Decline</div>
-            </Space>
-          )}
-        />
-      </Table>
+      <Column title="Offer" dataIndex="Offer" key="Offer" />
+      <Column title="Date" dataIndex="Date" key="Date" />
+      <Column
+        title={null}
+        key="action"
+        render={(text, record) => (
+          <Space size="middle">
+            <div className="declineBtn">Decline</div>
+          </Space>
+        )}
+      />
+      {/* </Table> */}
     </>
   );
 };

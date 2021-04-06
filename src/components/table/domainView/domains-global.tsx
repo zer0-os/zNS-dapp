@@ -25,10 +25,10 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
 
   const location = useLocation();
-  const { useDomain } = useDomainCache();
+  // const { useDomain } = useDomainCache();
 
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   // const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
@@ -90,7 +90,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     );
   };
 
-  if (domain.isNothing()) return null;
+  // if (domain.isNothing()) return null;
   return (
     <div className="pageContainerPositionFix">
       <div className="metricsBar">
@@ -103,7 +103,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         </div>
       </div>
 
-      <AdBar domain={domain.value.name} />
+      {/* <AdBar domain={domain.value.name} /> */}
 
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">
@@ -221,11 +221,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
           </div>
         </div>
 
-        <TableViewGlobal
+        {/* <TableViewGlobal
           domain={domain.value.name}
           gridView={gridView}
           search={search}
-        />
+        /> */}
       </div>
     </div>
   );

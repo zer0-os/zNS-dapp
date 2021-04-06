@@ -19,9 +19,9 @@ interface TopbarProps {
 const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { active, connector, error } = context;
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const { useDomain } = useDomainCache();
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   const location = useLocation();
 
   const scrollY = useScrollPosition(60);
@@ -71,7 +71,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     connectorPrevious,
   ]);
 
-  if (domain.isNothing()) return null;
+  // if (domain.isNothing()) return null;
 
   return (
     <div

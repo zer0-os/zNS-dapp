@@ -3,7 +3,7 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
 import './css/shop.scss';
-import Stakingview from '../topbar/stakingModal';
+// import Stakingview from '../topbar/stakingModal';
 import tripledot from './img/tripledot.svg';
 import Owned from './owned';
 
@@ -18,9 +18,9 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const [isTransferVisible, setTransferVisible] = useState(false);
   // const context = useWeb3React<Web3Provider>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const { useDomain } = useDomainCache();
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { owned } = useDomainStore();
 
@@ -133,10 +133,10 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   // cells.push(gridCell());
   // cells.push(gridCell());
   // cells.push(gridCell());
-  if (owned.isNothing() && domain.isNothing()) return null;
+  // if (owned.isNothing() && domain.isNothing()) return null;
   return (
     <>
-      {owned.isJust() && (
+      {/* {owned.isJust() && (
         <button className="btn-shop" onClick={showShop}>
           Shop
         </button>
@@ -211,7 +211,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 );
               })}
             </div>{' '} */}
-            </TabPane>
+      {/* </TabPane>
 
             <TabPane
               className="tabPane secondPane"
@@ -224,8 +224,8 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
               </div>
             </TabPane>
           </Tabs>
-          <button className="mintNFT" onClick={showStaking}>
-            Mint NFT
+          <button className="mintNFT" onClick={showStaking}> */}
+      {/* Mint NFT
           </button>
           <Modal
             visible={isStakingVisible}
@@ -237,7 +237,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             <Stakingview domain={_domain} />
           </Modal>
         </div>
-      </Modal>
+      </Modal> */}
     </>
   );
 };

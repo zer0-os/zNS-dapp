@@ -16,9 +16,9 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
   const [isPurchaseVisible, setPurchaseVisible] = useState(false);
   // const context = useWeb3React<Web3Provider>();
   // const { library, account, active, chainId } = context;
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const { useDomain } = useDomainCache();
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   const location = useLocation();
   const [graphButton, setGraphButton] = useState('performance');
 
@@ -58,16 +58,16 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
   };
   //
 
-  //
-  if (domain.isNothing()) return null;
+  // //
+  // if (domain.isNothing()) return null;
   return (
     <>
       <>
-        {domain.isJust() && (
+        {/* {domain.isJust() && (
           <button className="nft-btn" onClick={showProfile}>
             <TableImage domain={_domain} />
           </button>
-        )}
+        )} */}
         <Modal
           style={{
             position: 'relative',

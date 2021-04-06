@@ -39,10 +39,10 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   // const context = useWeb3React<Web3Provider>();
 
   // const { account } = context;
-  const { useDomain } = useDomainCache();
+  // const { useDomain } = useDomainCache();
 
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   const history = useHistory();
 
   //
@@ -126,6 +126,8 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //
   //
   //
+
+  const domain: any = true;
 
   const dataInput: Data[] = useMemo(
     () =>
@@ -288,7 +290,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     });
   };
 
-  if (domain.isNothing()) return null;
+  // if (domain.isNothing()) return null;
   return (
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />
@@ -386,9 +388,8 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               )}
             </table>
           </div>
-        ) : (
-          <Grid domain={_domain} />
-        )}
+        ) : // <Grid domain={_domain} />
+        null}
 
         <br />
         <br />

@@ -23,9 +23,9 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   const [isNftVisible, setNftVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const { library, account, active, chainId } = context;
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const { useDomain } = useDomainCache();
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   const location = useLocation();
 
   const routes = _.transform(
@@ -68,17 +68,17 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     );
   };
 
-  if (domain.isNothing()) return null;
+  // if (domain.isNothing()) return null;
   return (
     <div className="nftView">
       <div className="showcase">
         <div className="showcaseIMG">
-          <NFTImage domain={domain.value.domain} />
+          {/* <NFTImage domain={domain.value.domain} /> */}
         </div>
         <div className="showcaseInfo">
           <div className="topmid">
             <div className="top">
-              <div className="title">{domain.value.domain.match(/[^.]+$/)}</div>
+              {/* <div className="title">{domain.value.domain.match(/[^.]+$/)}</div> */}
               <div className="domain">
                 <Link to={'/'} className="network">
                   0:/ <span className="slash">/</span>

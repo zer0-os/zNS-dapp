@@ -18,9 +18,9 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
 
   // const { account } = context;
-  const domainStore = useDomainCache();
-  const { useDomain } = domainStore;
-  const { domain } = useDomain(_domain);
+  // const domainStore = useDomainCache();
+  // const { useDomain } = domainStore;
+  // const { domain } = useDomain(_domain);
 
   const history = useHistory();
   const handleCellClick = (name: any) => {
@@ -107,11 +107,13 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     );
   };
 
+  const domain: any = true;
+
   const gridCells = useMemo(
     () =>
       domain.isNothing()
         ? []
-        : domain.value.subdomains.map((key, i) => {
+        : domain.value.subdomains.map((key: any, i: number) => {
             return gridCell(key, i);
           }),
     [domain],

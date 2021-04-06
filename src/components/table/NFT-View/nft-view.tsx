@@ -44,15 +44,15 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
     setNftVisible(false);
   };
 
-  if (domain.isNothing()) return null;
+  // if (domain.isNothing()) return null;
   return (
     <>
       <>
-        {domain.isJust() && (
+        {/* {domain.isJust() && (
           <button className="btn-" onClick={showNft}>
             <TableImage domain={_domain} />
           </button>
-        )}
+        )} */}
         <Modal
           className="nft-view-modal"
           visible={isNftVisible}
@@ -63,10 +63,10 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
         >
           <div className="left-container">
             <div className="nft-img">
-              <TableImage domain={_domain} />
+              {/* <TableImage domain={_domain} /> */}
             </div>
             <div className="eth-address-d">
-              <div>ETH</div> {domain.value.owner}
+              {/* <div>ETH</div> {domain.value.owner} */}
             </div>
 
             <div className="route-nav">
