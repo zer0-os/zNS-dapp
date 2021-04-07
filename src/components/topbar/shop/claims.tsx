@@ -2,8 +2,8 @@ import React, { useCallback, useMemo } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsContracts } from '../../../lib/contracts';
-import { Domain, zeroAddress } from '../../../lib/useDomainStore';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { Domain, zeroAddress } from '../../../lib/useDomainStore';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import { Table } from 'antd';
 import Profile from '../../table/table/table-image';
 

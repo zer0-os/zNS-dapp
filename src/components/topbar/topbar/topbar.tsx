@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
 import { Modal } from 'antd';
 import Wallet from '../wallet/wallet';

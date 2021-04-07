@@ -1,6 +1,6 @@
 import { FC, useState, useMemo } from 'react';
-import { useDomainCache } from '../../../lib/useDomainCache';
-import { useDomainStore } from '../../../lib/useDomainStore';
+// import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
 import './css/shop.scss';
 // import Stakingview from '../topbar/stakingModal';
@@ -22,7 +22,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   // const domainContext = useDomain(_domain);
   // const { domain } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { owned } = useDomainStore();
+  // const { owned } = useDomainStore();
 
   const [isStakingVisible, setStakingVisible] = useState(false);
 
@@ -113,16 +113,16 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     );
   };
 
-  const allOwned = useMemo(
-    () =>
-      owned.isNothing()
-        ? []
-        : owned.value.map((control: any) => {
-            // return gridCell(control.name, control.image);
-            return gridCell(control.name, control.owner);
-          }),
-    [gridCell, owned],
-  );
+  // const allOwned = useMemo(
+  //   () =>
+  //     owned.isNothing()
+  //       ? []
+  //       : owned.value.map((control: any) => {
+  //           // return gridCell(control.name, control.image);
+  //           return gridCell(control.name, control.owner);
+  //         }),
+  //   [gridCell, owned],
+  // );
 
   // const cells: any = [];
   // cells.push(gridCell());

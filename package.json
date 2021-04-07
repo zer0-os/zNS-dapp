@@ -61,8 +61,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
-    "apollo:codegen": "apollo codegen:generate --target typescript --excludes=node_modules/* --includes=**/*.tsx --endpoint https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan --tagName=gql",
-    "lint": "eslint src --ext .ts"
+    "lint": "eslint src --ext .ts",
+    "apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql ",
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
     "extends": [
@@ -83,6 +84,7 @@
     ]
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.21.3",
     "@typechain/ethers-v5": "^5.0.0",
     "@types/clipboard": "^2.0.1",
     "@types/graphql": "^14.5.0",
@@ -96,6 +98,10 @@
     "@types/react-window": "^1.8.2",
     "prettier": "^2.2.1",
     "ts-essentials": "^7.0.1",
-    "typechain": "^4.0.3"
+    "typechain": "^4.0.3",
+    "@graphql-codegen/typescript": "1.21.1",
+    "@graphql-codegen/typescript-react-apollo": "2.2.3",
+    "@graphql-codegen/typescript-operations": "1.17.15",
+    "@graphql-codegen/introspection": "1.18.1"
   }
 }

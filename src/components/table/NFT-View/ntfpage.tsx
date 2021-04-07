@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import './css/nftpage.scss';
 import TableImage from '../table/table-image';
-import NFTImage from './nft-image';
+// import NFTImage from './nft-image';
 import neo2 from './img/neo2.jpeg';
 import nFTpAGE from '../../css/video/nFTpAGE.mp4';
 import neo from './img/mockusers/neo.png';

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 
 interface TableImageGlobalProps {
   domain: string;

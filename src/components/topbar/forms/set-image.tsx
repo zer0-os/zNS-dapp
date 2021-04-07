@@ -4,7 +4,7 @@ import { useWeb3React } from '@web3-react/core';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { useZnsContracts } from '../../../lib/contracts';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import { zodResolver } from '../../../lib/validation/zodResolver';
 import ipfs from '../../../lib/ipfs';
 import assert from 'assert';

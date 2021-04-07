@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import _ from 'lodash';
 import { Link, useLocation } from 'react-router-dom';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import TableViewGlobal from '../table/tableView-global';
 import linebutton from '../css/img/threelinebutton.png';
 import squarebutton from '../css/img/squaregridbutton.png';

@@ -1,6 +1,7 @@
-import { gql } from '@apollo/client';
+// import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
 
-export const domainQuery = gql`
+export const DomainQuery = gql`
   query Domain($id: ID!) {
     domains(id: $id) {
       id

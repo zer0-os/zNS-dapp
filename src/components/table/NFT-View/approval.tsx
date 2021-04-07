@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsContracts } from '../../../lib/contracts';
 import { hexRegex } from '../../../lib/validation/validators';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 
 // interface ApprovalProps {
 //   domain: string;

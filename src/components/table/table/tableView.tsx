@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
 import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import TableImage from './table-image';
 import SearchTable from './searchTable';
@@ -14,7 +14,7 @@ import graph2 from './img/mockgraphs/graph2.png';
 import graph3 from './img/mockgraphs/graph3.png';
 import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
-import { domainQuery } from '../../../lib/queries/domainQueries';
+import { DomainQuery } from '../../../lib/queries/domainQueries';
 import { useQuery, gql } from '@apollo/client';
 
 interface Data {
@@ -49,7 +49,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   // Following functions generate random numbers to display mock data in the UI
   //
 
-  const { error, loading, data } = useQuery(domainQuery);
+  const { error, loading, data } = useQuery(DomainQuery);
 
   const domain: any = true;
 

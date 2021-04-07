@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-const ownedDomainsQuery = gql`
+const OwnedDomainsQuery = gql`
   query OwnedDomains($owner: Bytes!) {
     domains(where: { owner: $owner }) {
       id

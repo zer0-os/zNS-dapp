@@ -4,7 +4,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import './lib/ipfs';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Subdomains from './components/table/domainView/child-view';
-import { DomainCacheProvider } from './lib/useDomainCache';
+// import { DomainCacheProvider } from './lib/useDomainCache';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import DomainsGlobal from './components/table/domainView/domains-global';
 import TopbarGlobal from './components/topbar/topbar/topbar-global';
@@ -94,9 +94,9 @@ function wrappedApp() {
   return (
     <ApolloProvider client={client}>
       <Web3ReactProvider getLibrary={getLibrary}>
-        <DomainCacheProvider>
-          <App />
-        </DomainCacheProvider>
+        {/* <DomainCacheProvider> */}
+        <App />
+        {/* </DomainCacheProvider> */}
       </Web3ReactProvider>
     </ApolloProvider>
   );

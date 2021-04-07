@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import _ from 'lodash';
 import { Link, useLocation } from 'react-router-dom';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import TableView from '../table/tableView';
 import NFTPage from '../NFT-View/ntfpage';
 import linebutton from '../css/img/threelinebutton.png';
@@ -27,9 +27,9 @@ interface SubdomainsProps {
 const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
   const location = useLocation();
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const { useDomain } = useDomainCache();
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
   // const [down, setDown] = useState('');
@@ -46,11 +46,11 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     },
   );
 
-  console.log('DOMAIN!', domain);
+  // console.log('DOMAIN!', domain);
 
-  useEffect(() => {
-    //console.log('ChildView', domain);
-  }, [domain]);
+  // useEffect(() => {
+  //   //console.log('ChildView', domain);
+  // }, [domain]);
   // const showSubdomain = () => {
   //   setSubdomainVisible(true);
   // };

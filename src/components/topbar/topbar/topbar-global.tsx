@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
 import useScrollPosition from '@react-hook/window-scroll';
 import { Modal } from 'antd';

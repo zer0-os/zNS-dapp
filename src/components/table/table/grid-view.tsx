@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 import './css/grid.scss';
 import { useHistory } from 'react-router-dom';
 // import { useWeb3React } from '@web3-react/core';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 // import { Web3Provider } from '@ethersproject/providers';
 import TableImage from './table-image';
 import GridImage from './grid-image';

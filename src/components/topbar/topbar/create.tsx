@@ -5,7 +5,7 @@ import { useZnsContracts } from '../../../lib/contracts';
 import * as z from 'zod';
 import { zodResolver } from '../../../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
-import { DomainContext } from '../../../lib/useDomainStore';
+// import { DomainContext } from '../../../lib/useDomainStore';
 import { subdomainRegex } from '../../../lib/validation/validators';
 // import { Modal, Button } from 'antd';
 

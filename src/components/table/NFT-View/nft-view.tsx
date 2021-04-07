@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import { Modal } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
@@ -16,9 +16,9 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
   const [isNftVisible, setNftVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const { library, account, active, chainId } = context;
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  // const { useDomain } = useDomainCache();
+  // const domainContext = useDomain(_domain);
+  // const { domain } = domainContext;
   const location = useLocation();
 
   const routes = _.transform(

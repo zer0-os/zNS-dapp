@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 import { useLocation, Link } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import './css/sidebar.scss';
@@ -37,7 +37,7 @@ const Sidebar: FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { account, active } = context;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { useDomain } = useDomainCache();
+  // const { useDomain } = useDomainCache();
   //   const domainContext = useDomain(_domain);
   //   const { domain } = domainContext;
   const location = useLocation();

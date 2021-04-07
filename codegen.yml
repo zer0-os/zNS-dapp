@@ -1,0 +1,12 @@
+overwrite: true
+schema: "https://api.thegraph.com/subgraphs/name/zer0-os/zns"
+documents: "src/lib/queries/**/*.ts"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

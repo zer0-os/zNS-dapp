@@ -1,12 +1,12 @@
 import { FC } from 'react';
-import { useDomainCache } from '../../../lib/useDomainCache';
+// import { useDomainCache } from '../../../lib/useDomainCache';
 
 const Owned: FC = () => {
   // const context = useWeb3React<Web3Provider>();
 
   // const { library, account, active, chainId } = context;
 
-  const { owned } = useDomainCache();
+  // const { owned } = useDomainCache();
 
   const gridCell = () => {
     return (
@@ -53,7 +53,7 @@ const Owned: FC = () => {
   cells.push(gridCell());
   cells.push(gridCell());
 
-  if (owned.isNothing()) return <p>User owns no domains.</p>;
+  // if (owned.isNothing()) return <p>User owns no domains.</p>;
 
   return (
     <>
