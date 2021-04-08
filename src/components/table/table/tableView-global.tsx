@@ -1,7 +1,7 @@
 import { FC, useMemo, useLayoutEffect, useEffect, useState } from 'react';
 import _, { random } from 'lodash';
 import { useHistory } from 'react-router-dom';
-// import { useDomainCache } from '../../../lib/useDomainCache';
+import { useDomainCache } from '../../../lib/useDomainCache';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import TableImage from './table-image-global';
 import SearchTable from './searchTable';
@@ -39,10 +39,10 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   // const context = useWeb3React<Web3Provider>();
 
   // const { account } = context;
-  // const { useDomain } = useDomainCache();
+  const { useDomain } = useDomainCache();
 
-  // const domainContext = useDomain(_domain);
-  // const { domain } = domainContext;
+  const domainContext = useDomain(_domain);
+  const { domain } = domainContext;
   const history = useHistory();
 
   //
@@ -127,13 +127,11 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //
   //
 
-  const domain: any = true;
-
   const dataInput: Data[] = useMemo(
     () =>
       domain.isNothing()
         ? []
-        : _.map(domain.value.subdomains, (key, i) => ({
+        : _.map(domain.value.name, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
             image: <TableImage domain={key} />,
@@ -290,7 +288,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     });
   };
 
-  // if (domain.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />

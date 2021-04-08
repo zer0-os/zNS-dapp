@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import _ from 'lodash';
 import { Link, useLocation } from 'react-router-dom';
-// import { useDomainCache } from '../../../lib/useDomainCache';
+import { useDomainCache } from '../../../lib/useDomainCache';
 import TableViewGlobal from '../table/tableView-global';
 import linebutton from '../css/img/threelinebutton.png';
 import squarebutton from '../css/img/squaregridbutton.png';
@@ -25,10 +25,10 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
 
   const location = useLocation();
-  // const { useDomain } = useDomainCache();
+  const { useDomain } = useDomainCache();
 
-  // const domainContext = useDomain(_domain);
-  // const { domain } = domainContext;
+  const domainContext = useDomain(_domain);
+  const { domain } = domainContext;
   // const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
