@@ -4,40 +4,36 @@ import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
-import { AnyArray } from 'ts-essentials';
 import { getDomainId } from './domains';
 
 //** DEPRECATED **//
-// export interface Domain {
-//   id: string;
-//   name: string;
-//   parent: string;
-//   subdomains: string[];
-//   owner: string;
-//   minter: string;
-//   lockedBy: string;
-//   isLocked: boolean;
-//   metadata: string;
-// }
+export interface Domain {
+  id: string;
+  name: string;
+  parent: string;
+  subdomains: string[];
+  owner: string;
+  minter: string;
+  metadata: string;
+}
 
-// interface _DomainData {
-//   id: string;
-//   name: string;
-//   parent: string;
-//   owner: string;
-//   minter: string;
-//   lockedBy: string;
-//   isLocked: boolean;
-//   metadata: string;
-// }
+interface _DomainData {
+  id: string;
+  name: string;
+  parent: string;
+  subdomains: string[];
+  owner: string;
+  minter: string;
+  metadata: string;
+}
 
-// interface DomainsData {
-//   domains: _DomainData[];
-// }
+interface DomainsData {
+  domains: _DomainData[];
+}
 
-// interface DomainData {
-//   domain: _DomainData;
-// }
+interface DomainData {
+  domain: _DomainData;
+}
 
 // interface ZeroTransaction {
 //   txHash: string;
@@ -49,23 +45,23 @@ import { getDomainId } from './domains';
 export const zeroAddress: any =
   '0x0000000000000000000000000000000000000000000000000000000000000000';
 
-export const domainQuery = gql`
+export const DOMAIN_QUERY = gql`
   query Domain($id: ID!) {
     domains(id: $id) {
       id
       name
       parent
+      subdomains
       owner
       minter
       lockedBy
       isLocked
-      metadata
     }
   }
 `;
 
-const childrenQuery = gql`
-  query ChildrenDomains($parent: ID!) {
+export const CHILDREN_QUERY = gql`
+  query ChildrenDomains($id: ID!) {
     domains(where: { parent: $parent }) {
       id
       name
@@ -74,12 +70,11 @@ const childrenQuery = gql`
       minter
       lockedBy
       isLocked
-      metadata
     }
   }
 `;
 
-const ownedDomainsQuery = gql`
+export const OWNED_DOMAIN_QUERY = gql`
   query OwnedDomains($owner: Bytes!) {
     domains(where: { owner: $owner }) {
       id
@@ -90,18 +85,16 @@ const ownedDomainsQuery = gql`
       minter
       lockedBy
       isLocked
-      metadata
     }
   }
 `;
 
-const allDomainsQuery = gql`
+const ALL_DOMAIN_QUERY = gql`
   query allDomain($id: ID!) {
     domains(where: { id: $id }) {
       id
       parent
       name
-      subdomain
     }
   }
 `;
@@ -113,60 +106,62 @@ type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 function useDomain(domain: string) {
   const id = getDomainId(domain);
   const {
-    error: errorDomain,
     data: dataDomain,
+    error: errorDomain,
     refetch: refetchDomain,
-  } = useQuery(domainQuery, {
+  } = useQuery<DomainData>(DOMAIN_QUERY, {
     variables: { id },
+    fetchPolicy: 'no-cache',
   });
+  console.log(dataDomain + 'dataDomain3');
 
-  const {
-    error: errorChildren,
-    data: dataChildren,
-    refetch: refetchChildren,
-  } = useQuery(childrenQuery, {
-    variables: { parent: id },
-  });
+  // const {
+  //   data: dataChildren,
+  //   error: errorChildren,
+  //   refetch: refetchChildren,
+  // } = useQuery<DomainsData>(CHILDREN_QUERY, {
+  //   variables: { parent: id },
+  //   fetchPolicy: 'no-cache',
+  // });
 
-  const _domain: any = useMemo(() => {
-    if (errorDomain) {
-      console.error(errorDomain);
-    }
-    if (errorChildren) {
-      console.error(errorChildren);
-      // TODO: error handle?
-    }
-
+  const _domain: Maybe<Domain> = useMemo(() => {
+    console.log(dataDomain + 'dataDomain2');
     if (dataDomain && dataDomain.domain) {
-      const subdomains =
-        dataChildren &&
-        dataChildren.domains[0] &&
-        dataChildren.domains[0].parent === id
-          ? dataChildren.domains.map((d: any) => d.name)
-          : //.filter((d) => d !== 'ROOT')
-            [];
-
-      return {
+      console.log(dataDomain + 'data???');
+      // const subdomains =
+      //   dataChildren &&
+      //   dataChildren.domains[0] &&
+      //   dataChildren.domains[0].parent === id
+      //     ? dataChildren.domains.map((d) => d.name)
+      //     : //.filter((d) => d !== 'ROOT')
+      //       [];
+      return Maybe.of({
         ...dataDomain.domain,
         owner: getAddress(dataDomain.domain.owner),
         parent: dataDomain.domain.parent,
         minter: dataDomain.domain.minter,
         metadata: dataDomain.domain.metadata,
-        subdomains,
-      };
+        subdomains: dataDomain.domain.subdomains,
+      });
     }
-    return;
-  }, [dataDomain, errorDomain, errorChildren, dataChildren, id]);
-  const refetch: any = useCallback(
+    if (errorDomain) {
+      console.error(errorDomain + 'Error');
+    }
+    // console.log(dataDomain + 'Domain Data');
+    return Maybe.nothing();
+  }, [dataDomain, errorDomain, id]);
+  console.log(dataDomain + 'dataDomain1');
+  const refetch = useCallback(
     (domainId?: string) =>
       Promise.all([
         refetchDomain(<any>{ variables: { id: domainId } }),
-        refetchChildren(<any>{ variables: { parent: domainId } }),
+        // refetchChildren(<any>{ variables: { parent: domainId } }),
       ]),
-    [refetchChildren, refetchDomain],
+
+    [refetchDomain],
   );
 
-  return { domain: _domain, refetchDomain: refetch };
+  return { domain: _domain, refetchDomain: refetch! };
 }
 
 function useOwnedDomains(): {
@@ -177,7 +172,7 @@ function useOwnedDomains(): {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { account } = context;
   const [getOwned, { data, refetch, error }] = useLazyQuery<any>(
-    ownedDomainsQuery,
+    OWNED_DOMAIN_QUERY,
     {
       variables: { owner: account },
     },
@@ -235,7 +230,7 @@ function useAllDomains(
   // const context = useWeb3React<Web3Provider>();
   // const { account } = context;
   const [getAllDomains, { data, refetch, error }] = useLazyQuery<any>(
-    allDomainsQuery,
+    ALL_DOMAIN_QUERY,
     {
       variables: { id },
     },
@@ -251,8 +246,7 @@ function useAllDomains(
         data.domains.map((d: any) => ({
           ...d,
           owner: getAddress(d.owner),
-          parent: d.parent,
-          subdomains: [],
+          name: d.name,
         })),
       );
     }
@@ -301,7 +295,6 @@ const useDomainStore = () => {
   return {
     useDomain,
     useAllDomains,
-
     ...owned,
     pushTransaction,
     updateTransaction,

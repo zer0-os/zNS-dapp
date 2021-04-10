@@ -88,6 +88,7 @@ function App() {
     </Router>
   );
 }
+
 const e = 'hello world';
 console.log(client, 'hello world');
 function wrappedApp() {

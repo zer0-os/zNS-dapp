@@ -4,9 +4,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import TableViewGlobal from '../table/tableView-global';
 import linebutton from '../css/img/threelinebutton.png';
-import squarebutton from '../css/img/squaregridbutton.png';
-import linebuttongrey from '../css/img/threelinebuttongrey.png';
-import squarebuttonwhite from '../css/img/squaregridbuttonwhite.png';
+// import squarebutton from './img/squaregridbutton.png';
+// import linebuttongrey from './img/threelinebuttongrey.png';
+// import squarebuttonwhite from './img/squaregridbuttonwhite.png';
 import AdBar from '../adBar/adbar';
 import filtericon from '../../css/img/filtericon.png';
 import filterarrow from '../../css/img/filterarrow.png';
@@ -90,7 +90,8 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     );
   };
 
-  // if (domain.isNothing()) return null;
+  if (domain.isNothing()) return null;
+  console.log(domain + 'data?');
   return (
     <div className="pageContainerPositionFix">
       <div className="metricsBar">
@@ -103,11 +104,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         </div>
       </div>
 
-      {/* <AdBar domain={domain.value.name} /> */}
+      <AdBar domain={domain.value.name} />
 
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">
-          {/* <div className="route-nav">
+          <div className="route-nav">
             <div className="route-nav-link">
               <Link className="route-nav-text" to={'/'}>
                 0::/
@@ -135,16 +136,16 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
                 onClick={() => toggleGridView(false)}
                 className="sdbsrItem tableNavButton tnb2"
               >
-                <img src={!gridView ? linebutton : linebuttongrey} alt="" />
+                {/* <img src={!gridView ? linebutton : linebuttongrey} alt="" /> */}
               </div>
               <div
                 onClick={() => toggleGridView(true)}
                 className="sdbsrItem tableNavButton tnb1"
               >
-                <img src={gridView ? squarebuttonwhite : squarebutton} alt="" />
+                {/* <img src={gridView ? squarebuttonwhite : squarebutton} alt="" /> */}
               </div>
             </div>
-          </div> */}
+          </div>
 
           <div className="subdomainsBar">
             <div className="search">
@@ -221,11 +222,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
           </div>
         </div>
 
-        {/* <TableViewGlobal
+        <TableViewGlobal
           domain={domain.value.name}
           gridView={gridView}
           search={search}
-        /> */}
+        />
       </div>
     </div>
   );

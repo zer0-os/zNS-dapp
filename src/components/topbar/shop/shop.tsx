@@ -1,9 +1,9 @@
 import { FC, useState, useMemo } from 'react';
-// import { useDomainCache } from '../../../lib/useDomainCache';
-// import { useDomainStore } from '../../../lib/useDomainStore';
+import { useDomainCache } from '../../../lib/useDomainCache';
+import { useDomainStore } from '../../../lib/useDomainStore';
 import { Modal, Tabs } from 'antd';
 import './css/shop.scss';
-// import Stakingview from '../topbar/stakingModal';
+import Stakingview from '../topbar/stakingModal';
 import tripledot from './img/tripledot.svg';
 import Owned from './owned';
 
@@ -18,11 +18,11 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   const [isTransferVisible, setTransferVisible] = useState(false);
   // const context = useWeb3React<Web3Provider>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const { useDomain } = useDomainCache();
-  // const domainContext = useDomain(_domain);
-  // const { domain } = domainContext;
+  const { useDomain } = useDomainCache();
+  const domainContext = useDomain(_domain);
+  const { domain } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const { owned } = useDomainStore();
+  const { owned } = useDomainStore();
 
   const [isStakingVisible, setStakingVisible] = useState(false);
 
@@ -113,16 +113,16 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
     );
   };
 
-  // const allOwned = useMemo(
-  //   () =>
-  //     owned.isNothing()
-  //       ? []
-  //       : owned.value.map((control: any) => {
-  //           // return gridCell(control.name, control.image);
-  //           return gridCell(control.name, control.owner);
-  //         }),
-  //   [gridCell, owned],
-  // );
+  const allOwned = useMemo(
+    () =>
+      owned.isNothing()
+        ? []
+        : owned.value.map((control: any) => {
+            // return gridCell(control.name, control.image);
+            return gridCell(control.name, control.owner);
+          }),
+    [gridCell, owned],
+  );
 
   // const cells: any = [];
   // cells.push(gridCell());
@@ -133,10 +133,10 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   // cells.push(gridCell());
   // cells.push(gridCell());
   // cells.push(gridCell());
-  // if (owned.isNothing() && domain.isNothing()) return null;
+  if (owned.isNothing() && domain.isNothing()) return null;
   return (
     <>
-      {/* {owned.isJust() && (
+      {owned.isJust() && (
         <button className="btn-shop" onClick={showShop}>
           Shop
         </button>
@@ -178,7 +178,6 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
               style={{ overflow: 'auto', height: '90vh' }}
             >
               <div className="gridContainer-profile">{allOwned}</div>
-
               <button
                 id="more"
                 onClick={showTransfer}
@@ -195,23 +194,22 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 width={'65vw'}
                 closable={false}
               ></Modal>
-
               <Owned />
               {/* <div>
-              {owned.value.map((control) => {
-                return (
-                  <div key={control.domain}>
-                    <Link
-                      to={'/' + control.domain} 
-                      //   key={control.domain}
-                    >
-                      {control.domain}
-                    </Link>
-                  </div>
-                );
-              })}
-            </div>{' '} */}
-      {/* </TabPane>
+                {owned.value.map((control) => {
+                  return (
+                    <div key={control.domain}>
+                      <Link
+                        to={'/' + control.domain}
+                        //   key={control.domain}
+                      >
+                        {control.domain}
+                      </Link>
+                    </div>
+                  );
+                })}
+              </div>{' '} */}
+            </TabPane>
 
             <TabPane
               className="tabPane secondPane"
@@ -224,8 +222,8 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
               </div>
             </TabPane>
           </Tabs>
-          <button className="mintNFT" onClick={showStaking}> */}
-      {/* Mint NFT
+          <button className="mintNFT" onClick={showStaking}>
+            Mint NFT
           </button>
           <Modal
             visible={isStakingVisible}
@@ -237,7 +235,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             <Stakingview domain={_domain} />
           </Modal>
         </div>
-      </Modal> */}
+      </Modal>
     </>
   );
 };
