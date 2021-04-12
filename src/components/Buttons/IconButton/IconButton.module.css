@@ -1,0 +1,46 @@
+.iconButton {
+    position: relative;
+    padding: 0;
+
+    color: var(--color-accent-1);
+    background-color: rgba(0,0,0,0);
+
+    border-radius: calc(var(--box-radius) / 2);
+
+    transition: background-color var(--animation-time-short) ease-in-out; 
+}
+
+.iconButton > img {
+    height: 100%;
+    width: 100%;
+}
+
+.iconButton::after {
+    content: ' ';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 0px;
+    width: 0px;
+    border-radius: var(--box-radius);
+
+    transition: box-shadow var(--animation-time-short) ease-in-out;
+}
+
+.iconButton:hover {
+    text-shadow: var(--glow-text-blue); 
+}
+
+.iconButton:hover {
+    text-shadow: var(--glow-text-blue); 
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.selected {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.iconButton.selected:after {
+    box-shadow: 0px 0px 17px 12px rgba(255, 255, 255, 0.5);
+}
