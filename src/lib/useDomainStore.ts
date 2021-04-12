@@ -4,6 +4,7 @@ import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
+import { string } from 'zod';
 import { getDomainId } from './domains';
 
 //** DEPRECATED **//
@@ -33,6 +34,10 @@ interface DomainsData {
 
 interface DomainData {
   domain: _DomainData;
+}
+
+interface DomainVar {
+  id: string;
 }
 
 // interface ZeroTransaction {
@@ -104,6 +109,7 @@ type QueryArgs = Partial<Record<string, any>>;
 type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
 function useDomain(domain: string) {
+  console.log(domain + 'domain: string');
   const id = getDomainId(domain);
   const {
     data: dataDomain,
@@ -113,28 +119,11 @@ function useDomain(domain: string) {
     variables: { id },
     fetchPolicy: 'no-cache',
   });
-  console.log(dataDomain + 'dataDomain3');
-
-  // const {
-  //   data: dataChildren,
-  //   error: errorChildren,
-  //   refetch: refetchChildren,
-  // } = useQuery<DomainsData>(CHILDREN_QUERY, {
-  //   variables: { parent: id },
-  //   fetchPolicy: 'no-cache',
-  // });
 
   const _domain: Maybe<Domain> = useMemo(() => {
     console.log(dataDomain + 'dataDomain2');
     if (dataDomain && dataDomain.domain) {
       console.log(dataDomain + 'data???');
-      // const subdomains =
-      //   dataChildren &&
-      //   dataChildren.domains[0] &&
-      //   dataChildren.domains[0].parent === id
-      //     ? dataChildren.domains.map((d) => d.name)
-      //     : //.filter((d) => d !== 'ROOT')
-      //       [];
       return Maybe.of({
         ...dataDomain.domain,
         owner: getAddress(dataDomain.domain.owner),
@@ -147,10 +136,11 @@ function useDomain(domain: string) {
     if (errorDomain) {
       console.error(errorDomain + 'Error');
     }
+    console.log(dataDomain + 'dataDomain');
     // console.log(dataDomain + 'Domain Data');
     return Maybe.nothing();
-  }, [dataDomain, errorDomain, id]);
-  console.log(dataDomain + 'dataDomain1');
+  }, [dataDomain, errorDomain]);
+
   const refetch = useCallback(
     (domainId?: string) =>
       Promise.all([

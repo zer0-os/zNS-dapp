@@ -46,6 +46,8 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     },
   );
 
+  console.log('DOMAIN?!' + domain);
+
   //useEffect(() => {
   //console.log('ChildView', domain);
   //}, [domain]);
@@ -91,7 +93,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   };
 
   if (domain.isNothing()) return null;
-  console.log(domain + 'data?');
+  console.log(domain + 'this One');
   return (
     <div className="pageContainerPositionFix">
       <div className="metricsBar">

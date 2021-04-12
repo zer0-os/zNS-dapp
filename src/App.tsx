@@ -44,7 +44,7 @@ function App() {
                 <TopbarGlobal
                   domain={
                     // location.pathname.substring(1)
-                    'ROOT'
+                    'domainID'
                   }
                 />
                 <Subdomains
@@ -62,7 +62,7 @@ function App() {
                 <TopbarGlobal
                   domain={
                     // location.pathname.substring(1)
-                    'ROOT'
+                    'domainID'
                   }
                 />
 
@@ -77,7 +77,7 @@ function App() {
                 </h1> */}
                 {/* TODO: move to styling file */}
                 <div style={{ position: 'absolute', top: '0' }}>
-                  <DomainsGlobal domain={'ROOT'} />
+                  <DomainsGlobal domain={'domainID'} />
                 </div>
                 {/* <Subdomains domain={'ROOT'} /> */}
               </Route>

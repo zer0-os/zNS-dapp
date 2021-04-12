@@ -41,21 +41,20 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
     (child: string) => {
       if (account && contracts.isJust() && domain.isJust())
         contracts.value.registry
-          .createDomain(
+          .registerDomain(
             domain.value.name === 'ROOT'
               ? child
               : domain.value.name + '.' + child,
             account,
             account,
-            'ipfs://Qmresolver',
-            imageUrl,
+            account,
           )
           .then((txr: any) => txr.wait(1))
           .then(() => {
             refetchDomain();
           });
     },
-    [account, contracts, domain, imageUrl, refetchDomain],
+    [account, contracts, domain, refetchDomain],
   );
 
   if (domain.isNothing() || domain.value.owner !== account) return null;
