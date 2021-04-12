@@ -10,14 +10,15 @@ import qr from '../../css/img/qrcode-mockdata.png';
 import wilderavatar from '../../css/img/wilderavatar.png';
 import zero from '../../css/img/zero.jpeg';
 
-
-import ProfileNew from '../../Profile/Profile.js' 
+import ProfileNew from '../../Profile/Profile.js';
 
 const Profile: FC = () => {
   const context = useWeb3React<Web3Provider>();
   const [isOwnedVisible, setOwnedVisible] = useState(false);
 
   const { owned } = useDomainStore();
+
+  console.log(owned, 'OWNED!!');
 
   const { account } = context;
 
@@ -60,10 +61,11 @@ const Profile: FC = () => {
         onOk={ownerOk}
         onCancel={ownerCancel}
         footer={null}
-        width={'50vw'}
+        width={'90vw'}
         bodyStyle={{
-          height: '50vh',
+          // height: '50vh',
           padding: '0',
+          paddingBottom: '25px',
           margin: '0',
         }}
         style={{
@@ -71,8 +73,8 @@ const Profile: FC = () => {
         }}
       >
         <ProfileNew
-          name={name}
-         />
+        // name={name}
+        />
       </Modal>
     </>
   );
