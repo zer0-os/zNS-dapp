@@ -13,8 +13,8 @@ import Profile from '../profile/profile';
 import Shop from '../shop/shop';
 
 // New
-import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
-import MintNewNFT from '../../MintNewNFT/MintNewNFT.js'
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
+import MintNewNFT from '../../MintNewNFT/MintNewNFT.js';
 
 interface TopbarProps {
   domain: string;
@@ -53,6 +53,19 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   };
   const walletCancel = () => {
     setWalletVisible(false);
+  };
+
+  const showMint = useCallback(() => {
+    setMintVisible(true);
+  }, []);
+
+  const [isMintVisible, setMintVisible] = useState(false);
+
+  const mintOk = () => {
+    setMintVisible(false);
+  };
+  const mintCancel = () => {
+    setMintVisible(false);
   };
 
   const activePrevious = usePrevious(active);
@@ -117,7 +130,9 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             </div>
             {!active ? (
               <FutureButton onClick={showWallet}>Connnect Wallet</FutureButton>
-            ) : <FutureButton>Mint New NFT</FutureButton>}
+            ) : (
+              <FutureButton onClick={showMint}>Mint New NFT</FutureButton>
+            )}
 
             <div className="profile-btn">
               <div className="profile-btn">
@@ -254,6 +269,15 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           </a>
         </div>
       </Modal> */}
+
+      <Modal
+        visible={isMintVisible}
+        onOk={mintOk}
+        onCancel={mintCancel}
+        footer={null}
+      >
+        <MintNewNFT></MintNewNFT>
+      </Modal>
 
       <Modal
         visible={isWalletVisible}
