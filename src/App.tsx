@@ -42,7 +42,7 @@ function App() {
               <Route path="/:id">
                 {/* defaults to the LOCAL NETWORKS page */}
                 <TopbarGlobal
-                  domain={
+                  name={
                     // location.pathname.substring(1)
                     'domainID'
                   }
@@ -60,7 +60,7 @@ function App() {
               </Route>
               <Route path="/">
                 <TopbarGlobal
-                  domain={
+                  name={
                     // location.pathname.substring(1)
                     'domainID'
                   }

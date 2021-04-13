@@ -2,13 +2,10 @@ import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
-
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
-import { string } from 'zod';
 import { getDomainId } from './domains';
 
-//** DEPRECATED **//
 export interface Domain {
   id: string;
   name: string;
@@ -116,18 +113,18 @@ function useDomain(name: string) {
   });
   console.log(dataDomain + 'dataDomain3');
   const _domain: Maybe<Domain> = useMemo(() => {
-    // console.log(JSON.stringify(dataDomain) + 'dataDomain2');
-    if (dataDomain && dataDomain.domain) {
+    console.log(dataDomain + 'logging if');
+    if (dataDomain && dataDomain?.domains) {
       return Maybe.of({
         ...dataDomain.domain,
-        owner: getAddress(dataDomain.domain.owner),
-        parent: dataDomain.domain.parent,
-        minter: getAddress(dataDomain.domain.minter),
-        metadata: dataDomain.domain.metadata,
-        subdomains: dataDomain.domain.subdomains,
+        // owner: getAddress(dataDomain.domain.owner),
+        // parent: dataDomain.domain.parent,
+        // minter: getAddress(dataDomain.domain.minter),
+        // metadata: dataDomain.domain.metadata,
+        // subdomains: dataDomain.domain.subdomains,
       });
     }
-    console.log(dataDomain + 'data4');
+    // console.log(JSON.stringify(dataDomain) + 'dataDomain2');
     if (errorDomain) {
       console.error(errorDomain + 'Error');
     }

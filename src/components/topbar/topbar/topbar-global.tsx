@@ -15,10 +15,10 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import Owned from '../shop/owned';
 
 interface TopbarProps {
-  domain: string;
+  name: string;
 }
 
-const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
+const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { active, connector, error } = context;
   const { useDomain } = useDomainCache();

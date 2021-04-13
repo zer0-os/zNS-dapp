@@ -14,15 +14,15 @@ interface SetImageProps {
 
 const schema = z
   .object({
-    image: z
+    description: z
       .any()
       .transform(z.any(), (files: FileList) => files[0])
       .optional(),
     url: z.string().url().optional(),
   })
-  .refine((obj) => 'url' in obj || (obj.image && obj.image.size > 0));
+  .refine((obj) => 'url' in obj || obj.description);
 
-const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
+const SetStory: FC<SetImageProps> = ({ domain: _domain }) => {
   // // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const [isSetImageVisible, setIsSetImageVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
@@ -36,8 +36,8 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
   const { register, handleSubmit } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
-  const _setImage = useCallback(
-    (image: string) => {
+  const _setStory = useCallback(
+    (description: string) => {
       if (
         account &&
         contracts.isJust() &&
@@ -45,7 +45,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
         account === name.value.owner
       )
         contracts.value.registry
-          .setDomainMetadataUri(name.value.id, image)
+          .setDomainMetadataUri(name.value.id, description)
           .then((txr: any) => txr.wait(1))
           .then(() => {
             refetchDomain();
@@ -54,26 +54,16 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     [account, contracts, name, refetchDomain],
   );
 
-  const uploadAndSetImage = useCallback(
+  const SetStory = useCallback(
     async (file: File) => {
       assert(name.isJust());
       return ipfs
         .upload(name.value.metadata, file)
-        .then(async (added) => _setImage('ipfs://' + added.hash))
+        .then(async (added) => _setStory('ipfs://' + added.hash))
         .then(() => refetchDomain());
     },
-    [_setImage, name, refetchDomain],
+    [_setStory, name, refetchDomain],
   );
-
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const hideSetImage = useCallback(() => {
-  //   setIsSetImageVisible(false);
-  // }, [setIsSetImageVisible]);
-
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const showSetImage = useCallback(() => {
-  //   setIsSetImageVisible(true);
-  // }, [setIsSetImageVisible]);
 
   if (name.isNothing()) return null;
 
@@ -89,8 +79,8 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
             )}
           />
           <form
-            onSubmit={handleSubmit(({ image, url }) =>
-              url ? _setImage(url) : uploadAndSetImage(image),
+            onSubmit={handleSubmit(({ description, url }) =>
+              url ? _setStory(url) : SetStory(description),
             )}
           >
             <div className="create-button">
@@ -98,11 +88,11 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
               <button
                 className="img-btn"
                 type="submit"
-                onSubmit={handleSubmit(({ image, url }) =>
-                  url ? _setImage(url) : uploadAndSetImage(image),
+                onSubmit={handleSubmit(({ description, url }) =>
+                  url ? _setStory(url) : SetStory(description),
                 )}
               >
-                SET IMAGE
+                save story
               </button>
             </div>
           </form>
@@ -111,4 +101,4 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
     </>
   );
 };
-export default SetImage;
+export default SetStory;
