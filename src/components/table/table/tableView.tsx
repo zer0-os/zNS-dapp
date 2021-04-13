@@ -267,7 +267,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     });
   };
 
-  // if (domain.isNothing()) return null;
+  if (domain.isNothing()) return null;
 
   //console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (

@@ -18,6 +18,7 @@ import grid from './img/tablebar/grid-default.png';
 import gridD from './img/tablebar/grid-down.png';
 import gridH from './img/tablebar/grid-hover.png';
 import gridS from './img/tablebar/grid-select.png';
+import { concatAST } from 'graphql';
 interface DomainsGlobalProps {
   domain: string;
 }
@@ -25,10 +26,13 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
 
   const location = useLocation();
-  const { useDomain } = useDomainCache();
+  const { useDomain, owned } = useDomainCache();
 
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
+  console.log(domain + 'domains Global');
+  console.log(owned + 'data?');
+
   // const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
@@ -93,6 +97,8 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   };
 
   if (domain.isNothing()) return null;
+
+  console.log(domain + 'data is');
   console.log(domain + 'this One');
   return (
     <div className="pageContainerPositionFix">

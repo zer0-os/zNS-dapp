@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import _ from 'lodash';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-// import { useDomainCache } from '../../../lib/useDomainCache';
+import { useDomainCache } from '../../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
 import { Modal } from 'antd';
 import Wallet from '../wallet/wallet';
@@ -10,6 +10,7 @@ import './css/topbar.scss';
 import Profile from '../profile/profile';
 import downarrow from './img/down-arrow.png';
 import nightmoon from './img/night-moon-2.png';
+import Owned from '../shop/owned';
 
 interface TopbarProps {
   domain: string;
@@ -19,9 +20,9 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { active } = context;
-  // const { useDomain } = useDomainCache();
-  // const domainContext = useDomain(_domain);
-  // const { domain } = domainContext;
+  const { useDomain } = useDomainCache();
+  const domainContext = useDomain(_domain);
+  const { domain } = domainContext;
   const location = useLocation();
 
   const routes = _.transform(
@@ -46,7 +47,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const walletCancel = () => {
     setWalletVisible(false);
   };
-  // if (domain.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">

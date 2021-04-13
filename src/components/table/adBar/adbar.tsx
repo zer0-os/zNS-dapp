@@ -5,7 +5,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Link, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { useZnsContracts } from '../../../lib/contracts';
-// import { useDomainCache } from '../../../lib/useDomainCache';
+import { useDomainCache } from '../../../lib/useDomainCache';
 import './css/adbar.scss';
 import adbg from './img/adbg.png';
 import wilderavatar from '../../css/img/wilderavatar.png';
@@ -22,11 +22,11 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
   const contracts = useZnsContracts();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { account } = context;
-  // const { useDomain, useAllDomains } = useDomainCache();
+  const { useDomain } = useDomainCache();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const { _allDomains, refetchAllDomains } = useAllDomains(_domain);
-  // const domainContext = useDomain(_domain);
-  // const { domain } = domainContext;
+  const domainContext = useDomain(_domain);
+  const { domain } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const history = useHistory();
   const [timeMinutes, setTimeMinutes] = useState<any>('00');
@@ -74,7 +74,7 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
   //   let minuets = seconds * 60;
   // };
 
-  // if (domain.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div className="adbarContainer">
       <img className="adbg" src={adbg} alt="" />

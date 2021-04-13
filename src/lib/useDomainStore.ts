@@ -2,6 +2,7 @@ import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
+
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
 import { string } from 'zod';
@@ -108,9 +109,8 @@ type QueryArgs = Partial<Record<string, any>>;
 
 type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
-function useDomain(domain: string) {
-  console.log(domain + 'domain: string');
-  const id = getDomainId(domain);
+function useDomain(name: string) {
+  const id = getDomainId(name);
   const {
     data: dataDomain,
     error: errorDomain,
@@ -119,11 +119,10 @@ function useDomain(domain: string) {
     variables: { id },
     fetchPolicy: 'no-cache',
   });
-
+  console.log(dataDomain + 'dataDomain3');
   const _domain: Maybe<Domain> = useMemo(() => {
     console.log(dataDomain + 'dataDomain2');
     if (dataDomain && dataDomain.domain) {
-      console.log(dataDomain + 'data???');
       return Maybe.of({
         ...dataDomain.domain,
         owner: getAddress(dataDomain.domain.owner),
@@ -133,6 +132,7 @@ function useDomain(domain: string) {
         subdomains: dataDomain.domain.subdomains,
       });
     }
+    console.log(dataDomain + 'data4');
     if (errorDomain) {
       console.error(errorDomain + 'Error');
     }
@@ -150,7 +150,7 @@ function useDomain(domain: string) {
 
     [refetchDomain],
   );
-
+  console.log(dataDomain + 'return function');
   return { domain: _domain, refetchDomain: refetch! };
 }
 
@@ -297,6 +297,6 @@ export type DomainStoreContext = ReturnType<typeof useDomainStore>;
 export type DomainContext = ReturnType<typeof useDomain>;
 
 export { useDomainStore };
-function subdomains(subdomains: any, arg1: string) {
-  throw new Error('Function not implemented.');
-}
+// function subdomains(subdomains: any, arg1: string) {
+//   throw new Error('Function not implemented.');
+// }

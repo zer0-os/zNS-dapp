@@ -19,6 +19,7 @@ import grid from './img/tablebar/grid-default.png';
 import gridD from './img/tablebar/grid-down.png';
 import gridH from './img/tablebar/grid-hover.png';
 import gridS from './img/tablebar/grid-select.png';
+import { useDomainCache } from '../../../lib/useDomainCache';
 
 interface SubdomainsProps {
   domain: string;
@@ -27,9 +28,9 @@ interface SubdomainsProps {
 const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
   const location = useLocation();
-  // const { useDomain } = useDomainCache();
-  // const domainContext = useDomain(_domain);
-  // const { domain } = domainContext;
+  const { useDomain } = useDomainCache();
+  const domainContext = useDomain(_domain);
+  const { domain } = domainContext;
   const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
   // const [down, setDown] = useState('');
@@ -46,7 +47,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     },
   );
 
-  console.log('DOMAIN!', _domain);
+  console.log('DOMAIN!', domain);
 
   // useEffect(() => {
   //   //console.log('ChildView', domain);
@@ -92,7 +93,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     );
   };
 
-  // if (domain.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div className="pageContainerPositionFix">
       {0 !== 0 ? (

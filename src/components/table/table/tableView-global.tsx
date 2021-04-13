@@ -288,8 +288,8 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       pathname: row.values.network,
     });
   };
+  if (domain.isJust()) return null;
 
-  // if (domain.isNothing()) return null;
   return (
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />

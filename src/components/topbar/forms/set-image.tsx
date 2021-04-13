@@ -79,16 +79,16 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
 
   return (
     <>
-      {true && (
-        <>
-          {/* <img
+      {/* {true && ( */}
+      <>
+        {/* <img
             style={{ height: '10%', width: '10%' }}
             src={domain.value.metadata.replace(
               'ipfs://',
               'https://ipfs.io/ipfs/',
             )}
           /> */}
-          {/* <form
+        {/* <form
             onSubmit={handleSubmit(({ image, url }) =>
               url ? _setImage(url) : uploadAndSetImage(image),
             )}
@@ -106,8 +106,8 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
               </button>
             </div>
           </form> */}
-        </>
-      )}
+      </>
+      {/* )} */}
     </>
   );
 };
