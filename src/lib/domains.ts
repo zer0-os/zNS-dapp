@@ -8,7 +8,10 @@ const coder = new AbiCoder();
 const zeroBytes32 = '0x0';
 
 const getDomainId = (name: string): string => {
+  console.log('DOMAIN TEST 1', name)
   const Domain_ID = ethers.utils.id(name);
+  console.log('DOMAIN TEST 2', name)
+
   return Domain_ID;
 };
 

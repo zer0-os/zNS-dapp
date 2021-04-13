@@ -97,7 +97,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
 
   if (name.isNothing()) return null;
 
-  console.log(name + 'data is');
+  console.log(JSON.stringify(name) + 'data is');
 
   return (
     <div className="pageContainerPositionFix">

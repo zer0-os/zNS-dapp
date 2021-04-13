@@ -41,7 +41,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
 
   // const { account } = context;
   const { useDomain } = useDomainCache();
-
+  console.log(_domain, 'TABLE VIEW DOMAIN');
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
   const history = useHistory();

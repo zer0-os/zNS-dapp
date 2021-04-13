@@ -1,0 +1,6 @@
+REACT_APP_RPC_URL_1=https://mainnet.infura.io/v3/77c3d733140f4c12a77699e24cb30c27
+REACT_APP_RPC_URL_4=https://rinkeby.infura.io/v3/da4f9f7c83414ba6825981f637c24e33
+REACT_APP_RPC_URL_42=https://kovan.infura.io/v3/d0a982194ba740eb9dcbd9e112dc2dfb
+REACT_APP_SUBGRAPH_URL_4=https://api.thegraph.com/subgraphs/name/zer0-os/zns-demo
+REACT_APP_FLEEK_API_KEY=AM5zWrogmOA5txyP4tVEyg==
+REACT_APP_FLEEK_API_SECRET=ku+W5nUObhr/hUeXQzoH7TiZuYQafXTfuCQMmSDjFmQ=

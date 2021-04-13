@@ -106,6 +106,7 @@ type QueryArgs = Partial<Record<string, any>>;
 type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
 function useDomain(name: string) {
+  console.log('USEDOMAIN')
   const id = getDomainId(name);
   const {
     data: dataDomain,
@@ -114,17 +115,46 @@ function useDomain(name: string) {
   } = useQuery<DomainData>(DOMAIN_QUERY, {
     variables: { id },
   });
-  console.log(dataDomain + 'dataDomain3');
-  const _domain: Maybe<Domain> = useMemo(() => {
+  console.log(JSON.stringify(dataDomain) + 'dataDomain3');
+  const _domain: Maybe<any> = useMemo(() => {
     // console.log(JSON.stringify(dataDomain) + 'dataDomain2');
-    if (dataDomain && dataDomain.domain) {
+    console.log('TEST')
+    console.log(dataDomain,'1')
+    console.log(dataDomain?.domains, '2')
+    if (dataDomain && dataDomain.domains) {
+      console.log('THIS BITCH FIRES')
+      //
+      const test = dataDomain?.domains.map((d: any)=> (
+        d
+      ))
+      console.log(test, "TEST2")
+
+
+      // const dataDomain = 
+      //
       return Maybe.of({
-        ...dataDomain.domain,
-        owner: getAddress(dataDomain.domain.owner),
-        parent: dataDomain.domain.parent,
-        minter: getAddress(dataDomain.domain.minter),
-        metadata: dataDomain.domain.metadata,
-        subdomains: dataDomain.domain.subdomains,
+        ...dataDomain.domains.map((d:any) => ({
+          ...d,
+          id: d.id,
+          name: d.name,
+          parent: d.parent,
+          subdomains: d.subdomains,
+          owner: d.owner,
+          minter: d.minter,
+          metadata: d.metadata,
+          // id: 'test',
+          // name: 'test',
+          // parent: 'test',
+          // subdomains: [],
+          // owner: 'test',
+          // minter: 'test',
+          // metadata: 'test',
+        })),
+        // owner: getAddress(dataDomain.domain.owner),
+        // parent: dataDomain.domain.parent,
+        // minter: getAddress(dataDomain.domain.minter),
+        // metadata: dataDomain.domain.metadata,
+        // subdomains: dataDomain.domain.subdomains,
       });
     }
     console.log(dataDomain + 'data4');

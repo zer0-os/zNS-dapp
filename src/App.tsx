@@ -43,8 +43,8 @@ function App() {
                 {/* defaults to the LOCAL NETWORKS page */}
                 <TopbarGlobal
                   domain={
-                    // location.pathname.substring(1)
-                    'domainID'
+                    location.pathname.substring(1)
+                    // 'domainID'
                   }
                 />
                 <Subdomains
@@ -62,7 +62,8 @@ function App() {
                 <TopbarGlobal
                   domain={
                     // location.pathname.substring(1)
-                    'domainID'
+                    // 'domainID'
+                    '0x0'
                   }
                 />
 
@@ -77,7 +78,7 @@ function App() {
                 </h1> */}
                 {/* TODO: move to styling file */}
                 <div style={{ position: 'absolute', top: '0' }}>
-                  <DomainsGlobal domain={'domainID'} />
+                  <DomainsGlobal domain={location.pathname.substring(1)} />
                 </div>
                 {/* <Subdomains domain={'ROOT'} /> */}
               </Route>
