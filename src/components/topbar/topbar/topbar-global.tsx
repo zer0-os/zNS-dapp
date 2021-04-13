@@ -111,12 +111,15 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
                 placeholder="Search"
               />
             </div>
-            <div className="connect-btn" onClick={showWallet}>
-              <div className="dot">{active ? '🟢' : '🔵'}</div>
-              <div className="btn-text">
-                {active ? 'Connected' : 'Connect Wallet'}
+            {!active ? (
+              <div className="connect-btn" onClick={showWallet}>
+                <div className="dot">{active ? '🟢' : '🔵'}</div>
+                <div className="btn-text">
+                  {active ? 'Connected' : 'Connect Wallet'}
+                </div>
               </div>
-            </div>
+            ) : null}
+
             <div className="profile-btn">
               <div className="profile-btn">
                 <Profile />
