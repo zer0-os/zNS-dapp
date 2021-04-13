@@ -1,0 +1,14 @@
+.TextInput {
+    width: 100%;
+    padding: 16.5px 24px 12.5px 24px;
+
+    border-radius: 24px;
+
+    color: white;
+
+    background: var(--background-field-bg);
+}
+
+.TextInput::placeholder {
+    color: white;
+}

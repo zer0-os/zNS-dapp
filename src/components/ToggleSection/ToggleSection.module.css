@@ -1,0 +1,17 @@
+.ToggleSection {
+    width: 100%;
+}
+
+.Header {
+    display: flex;
+    cursor: pointer;
+    
+}
+
+.Header > span {
+    margin-left: 14px;
+}
+
+.Header > img {
+    transition: transform var(--animation-time-short) ease-in-out;
+}

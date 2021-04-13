@@ -12,6 +12,10 @@ import usePrevious from '../../../lib/hooks/usePrevious';
 import Profile from '../profile/profile';
 import Shop from '../shop/shop';
 
+// New
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
+import MintNewNFT from '../../MintNewNFT/MintNewNFT.js'
+
 interface TopbarProps {
   domain: string;
 }
@@ -112,13 +116,8 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
               />
             </div>
             {!active ? (
-              <div className="connect-btn" onClick={showWallet}>
-                <div className="dot">{active ? '🟢' : '🔵'}</div>
-                <div className="btn-text">
-                  {active ? 'Connected' : 'Connect Wallet'}
-                </div>
-              </div>
-            ) : null}
+              <FutureButton onClick={showWallet}>Connnect Wallet</FutureButton>
+            ) : <FutureButton>Mint New NFT</FutureButton>}
 
             <div className="profile-btn">
               <div className="profile-btn">
