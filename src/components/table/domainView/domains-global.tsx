@@ -26,12 +26,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
 
   const location = useLocation();
-  const { useDomain, owned } = useDomainCache();
+  const { useDomain } = useDomainCache();
 
   const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
-  console.log(domain + 'domains Global');
-  console.log(owned + 'data?');
+  const { name } = domainContext;
+  console.log(JSON.stringify(name) + 'domains Global');
 
   // const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
@@ -50,7 +49,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     },
   );
 
-  console.log('DOMAIN?!' + domain);
+  console.log('DOMAIN?!' + name);
 
   //useEffect(() => {
   //console.log('ChildView', domain);
@@ -96,10 +95,10 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
     );
   };
 
-  if (domain.isNothing()) return null;
+  if (name.isNothing()) return null;
 
-  console.log(domain + 'data is');
-  console.log(domain + 'this One');
+  console.log(name + 'data is');
+
   return (
     <div className="pageContainerPositionFix">
       <div className="metricsBar">
@@ -112,7 +111,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         </div>
       </div>
 
-      <AdBar domain={domain.value.name} />
+      <AdBar domain={name.value.name} />
 
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">
@@ -231,7 +230,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         </div>
 
         <TableViewGlobal
-          domain={domain.value.name}
+          domain={name.value.name}
           gridView={gridView}
           search={search}
         />

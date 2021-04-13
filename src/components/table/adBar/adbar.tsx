@@ -26,7 +26,7 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const { _allDomains, refetchAllDomains } = useAllDomains(_domain);
   const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  const { name } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const history = useHistory();
   const [timeMinutes, setTimeMinutes] = useState<any>('00');
@@ -74,7 +74,7 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
   //   let minuets = seconds * 60;
   // };
 
-  if (domain.isNothing()) return null;
+  if (name.isNothing()) return null;
   return (
     <div className="adbarContainer">
       <img className="adbg" src={adbg} alt="" />

@@ -22,7 +22,7 @@ const schema = z.object({
 });
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
-  const { refetchDomain, domain } = domainContext;
+  const { refetchDomain, name } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,12 +39,10 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
 
   const _create = useCallback(
     (child: string) => {
-      if (account && contracts.isJust() && domain.isJust())
+      if (account && contracts.isJust() && name.isJust())
         contracts.value.registry
           .registerDomain(
-            domain.value.name === 'ROOT'
-              ? child
-              : domain.value.name + '.' + child,
+            name.value.name === 'ROOT' ? child : name.value.name + '.' + child,
             account,
             account,
             account,
@@ -54,10 +52,10 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
             refetchDomain();
           });
     },
-    [account, contracts, domain, refetchDomain],
+    [account, contracts, name, refetchDomain],
   );
 
-  if (domain.isNothing() || domain.value.owner !== account) return null;
+  if (name.isNothing() || name.value.owner !== account) return null;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showSubdomain = () => {

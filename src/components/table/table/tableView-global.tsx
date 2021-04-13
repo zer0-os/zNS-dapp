@@ -43,7 +43,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const { useDomain } = useDomainCache();
 
   const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  const { name } = domainContext;
   const history = useHistory();
 
   //
@@ -130,9 +130,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
 
   const dataInput: Data[] = useMemo(
     () =>
-      domain.isNothing()
+      name.isNothing()
         ? []
-        : _.map(domain.value.name, (key, i) => ({
+        : _.map(name.value.name, (key, i) => ({
             '#': i.toString(),
             // asset: <Profile domain={key} />,
             image: <TableImage domain={key} />,
@@ -147,7 +147,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             timestamp: '',
             trade: <button className="tradeButton">{randTrade()}</button>,
           })),
-    [domain],
+    [name],
   );
 
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
@@ -288,7 +288,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       pathname: row.values.network,
     });
   };
-  if (domain.isJust()) return null;
+  if (name.isJust()) return null;
 
   return (
     <div className="shiftTableUp">

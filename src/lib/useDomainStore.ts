@@ -29,16 +29,12 @@ interface _DomainData {
   metadata: string;
 }
 
-interface DomainsData {
+interface DomainData {
   domains: _DomainData[];
 }
 
 interface DomainData {
   domain: _DomainData;
-}
-
-interface DomainVar {
-  id: string;
 }
 
 // interface ZeroTransaction {
@@ -117,17 +113,16 @@ function useDomain(name: string) {
     refetch: refetchDomain,
   } = useQuery<DomainData>(DOMAIN_QUERY, {
     variables: { id },
-    fetchPolicy: 'no-cache',
   });
   console.log(dataDomain + 'dataDomain3');
   const _domain: Maybe<Domain> = useMemo(() => {
-    console.log(dataDomain + 'dataDomain2');
+    // console.log(JSON.stringify(dataDomain) + 'dataDomain2');
     if (dataDomain && dataDomain.domain) {
       return Maybe.of({
         ...dataDomain.domain,
         owner: getAddress(dataDomain.domain.owner),
         parent: dataDomain.domain.parent,
-        minter: dataDomain.domain.minter,
+        minter: getAddress(dataDomain.domain.minter),
         metadata: dataDomain.domain.metadata,
         subdomains: dataDomain.domain.subdomains,
       });
@@ -136,7 +131,7 @@ function useDomain(name: string) {
     if (errorDomain) {
       console.error(errorDomain + 'Error');
     }
-    console.log(dataDomain + 'dataDomain');
+    // console.log(dataDomain + 'dataDomain');
     // console.log(dataDomain + 'Domain Data');
     return Maybe.nothing();
   }, [dataDomain, errorDomain]);
@@ -150,8 +145,8 @@ function useDomain(name: string) {
 
     [refetchDomain],
   );
-  console.log(dataDomain + 'return function');
-  return { domain: _domain, refetchDomain: refetch! };
+  // console.log(JSON.stringify(dataDomain) + 'return function');
+  return { name: _domain, refetchDomain: refetch! };
 }
 
 function useOwnedDomains(): {

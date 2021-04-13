@@ -16,7 +16,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { domain } = domainContext;
+  const { name } = domainContext;
 
   const showStake = () => {
     setStakeVisible(true);
@@ -34,7 +34,7 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
   //
 
   //
-  if (domain.isNothing()) return null;
+  if (name.isNothing()) return null;
   return (
     <div className="mintContainer">
       <form className="mintForm">

@@ -23,7 +23,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const { active, connector, error } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  const { name } = domainContext;
   const location = useLocation();
 
   const scrollY = useScrollPosition(60);
@@ -73,7 +73,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
     connectorPrevious,
   ]);
 
-  if (domain.isNothing()) return null;
+  if (name.isNothing()) return null;
 
   return (
     <div

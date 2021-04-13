@@ -30,7 +30,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const location = useLocation();
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  const { name } = domainContext;
   const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
   // const [down, setDown] = useState('');
@@ -47,7 +47,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     },
   );
 
-  console.log('DOMAIN!', domain);
+  console.log('DOMAIN!', name);
 
   // useEffect(() => {
   //   //console.log('ChildView', domain);
@@ -93,7 +93,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     );
   };
 
-  if (domain.isNothing()) return null;
+  if (name.isNothing()) return null;
   return (
     <div className="pageContainerPositionFix">
       {0 !== 0 ? (

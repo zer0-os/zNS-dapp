@@ -20,7 +20,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  const { name } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { owned } = useDomainStore();
 
@@ -133,7 +133,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
   // cells.push(gridCell());
   // cells.push(gridCell());
   // cells.push(gridCell());
-  if (owned.isNothing() && domain.isNothing()) return null;
+  if (owned.isNothing() && name.isNothing()) return null;
   return (
     <>
       {owned.isJust() && (

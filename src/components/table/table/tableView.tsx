@@ -40,7 +40,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   // const { account } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { domain } = domainContext;
+  const { name } = domainContext;
   const history = useHistory();
 
   //
@@ -127,9 +127,9 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
 
   const dataInput: Data[] = useMemo(
     () =>
-      domain.isNothing()
+      name.isNothing()
         ? []
-        : _.map(domain.value.name, (key, i) => ({
+        : _.map(name.value.name, (key, i) => ({
             key: key,
             '#': i.toString(),
             // asset: <Profile domain={key} />,
@@ -145,7 +145,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             trade: <button className="tradeButton">{randTrade()}</button>,
           })),
 
-    [domain],
+    [name],
   );
 
   console.log(dataInput, 'THIS List');
@@ -267,7 +267,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     });
   };
 
-  if (domain.isNothing()) return null;
+  if (name.isNothing()) return null;
 
   //console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (
