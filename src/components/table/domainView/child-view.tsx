@@ -20,6 +20,24 @@ import gridD from './img/tablebar/grid-down.png';
 import gridH from './img/tablebar/grid-hover.png';
 import gridS from './img/tablebar/grid-select.png';
 
+
+import PreviewCard from '../../PreviewCard/PreviewCard.js'
+
+const previewData = {
+    owner: {
+        domain: '0.cyber.n3o',
+        img: '/assets/wilderverse.png',
+    },
+    creator: { 
+        domain: '0.wilder.frank',
+        img: '/assets/wilderverse.png'
+    },
+    name: 'CoronaLisa',
+    domain: '0.wilder.frank.coronalisa',
+    description: 'It’s long been wondered why the Mona Lisa looks so sad. Perhaps she foresaw the current state of the world and empathised with us all.',
+    img: '/assets/nft-image-coronalisa.png'
+}
+
 interface SubdomainsProps {
   domain: string;
 }
@@ -97,8 +115,20 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     <div className="pageContainerPositionFix">
       {domain.value.children.length !== 0 ? (
         <div>
-          <div className="metricsBar">
-            {/* <div className="metricsTitle">Metrics</div> */}
+
+          <PreviewCard 
+            name={previewData.name}
+            domain={previewData.domain}
+            creator={previewData.creator}
+            owner={previewData.owner}
+            description={previewData.description}
+            data={previewData}
+            style={{marginLeft: 100, marginRight: 100, marginBottom: 16, marginTop: 155}}
+            // img={previewData.img} 
+          />
+
+          {/* <div className="metricsBar">
+            <div className="metricsTitle">Metrics</div>
             <div className="metricsContainer">
               {metric('WILDER PRICE', '$2,000', '', '(▲01.10%)')}
               {metric('WILDER PRICE', '$1,000', '', '(▲23.11%)')}
@@ -108,9 +138,9 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
               {metric('WILDER PRICE', '$2,600', '', '(▲03.80%)')}
               {metric('Total Wild Holders', '12,302', '', '')}
             </div>
-          </div>
+          </div> */}
 
-          <AdBar domain={domain.value.domain} />
+          {/* <AdBar domain={domain.value.domain} /> */}
 
           <div id="subdomainsContainer">
             <div className="subdomainsSortBar">

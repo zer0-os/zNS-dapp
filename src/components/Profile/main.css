@@ -134,12 +134,12 @@ h1 {
  *
  */
 
-.content {
+/* .content {
 	display: flex;
 	margin-left: 180px;
 	margin-top: 106px;
 	padding: 25px;
-}
+} */
 
 .main {
 	flex: 1;

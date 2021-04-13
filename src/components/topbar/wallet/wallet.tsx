@@ -29,6 +29,8 @@ import './wallet.scss';
 import usePrevious from '../../../lib/hooks/usePrevious';
 // import { METAMASK } from 'web3modal/dist/providers/injected';
 
+import ConnectToWallet from '../../ConnectToWallet/ConnectToWallet.js'
+
 enum ConnectorNames {
   MetaMask = 'MetaMask',
   Network = 'Network',
@@ -276,9 +278,10 @@ export default function Wallet() {
         onCancel={walletCancel}
         footer={null}
       > */}
+
       <div className="wallet-container">
         <div className="title">
-          <h1 className="con-">Connect to a wallet</h1>
+          <h1 className="con- glow-text-white">Connect to a wallet</h1>
         </div>{' '}
         <div className="walletButtonContainer">
           {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {

@@ -1,11 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
-/* @import UniviaPro-Regular from './components/css/fonts/UniviaPro-Regular.ttf'; */
+/* @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+@import UniviaPro-Regular from './components/css/fonts/UniviaPro-Regular.ttf';
 
 @font-face {
   font-family: 'UniviaProRegular';
   src: url('../src/components/css/fonts/UniviaPro-Regular.woff') format('woff'),
     url('../src/components/css/fonts/UniviaPro-Regular.ttf') format('truetype');
+} */
+
+@font-face {
+	font-family: 'Eurostile';
+	src: local('Eurostile'), url('./fonts/Eurostile-Reg.otf') format('opentype');
 }
+
+@font-face {
+	font-family: 'Eurostile';
+	font-weight: 500;
+	src: local('Eurostile'), url('./fonts/Eurostile-Med.otf') format('opentype');
+}
+
+@font-face {
+	font-family: 'Eurostile';
+	font-weight: 700;
+	src: local('Eurostile'), url('./fonts/Eurostile-Bol.otf') format('opentype');
+}
+
 body {
   margin: 0;
   /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

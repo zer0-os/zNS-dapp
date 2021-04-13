@@ -1,0 +1,113 @@
+:root {
+    --height: 236px;
+}
+
+.PreviewCard {
+    display: flex;
+    /* width: 100%; */
+    height: var(--height);
+
+    padding: 8px;
+
+    background: var(--background-purple-card-20);
+}
+
+.Asset {
+    width: 398.33px;
+
+    /* background-color: var(--background-purple-card); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    border-radius: 9px 0px 0px 13px;
+}
+
+.Body {
+    display: flex;
+    flex-direction: column;
+
+    width: 562px;
+    margin: 10px 40px 12px 36px;
+}
+
+.Body h5 {
+    color: var(--color-accent-1);
+    font-size: 24px;
+
+    margin-bottom: 6px;
+}
+
+.Domain {
+    font-weight: 700;
+}
+
+.Body p {
+    margin-top: 20px;
+    color: var(--color-accent-1-lighter);
+    line-height: 19.2px;
+}
+
+.Members {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 41px;
+}
+
+.Members > div {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.Dp {
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    background-color: var(--color-accent-1-lighter);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.Member {
+    margin-top: 12px;
+    margin-left: 16px;
+    font-weight: 700;
+}
+
+.Member > span:first-of-type {
+
+}
+
+.Member > span:last-of-type {
+    color: var(--color-accent-1-lighter);
+    margin-top: 4px;
+}
+
+.Buy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+
+    margin-left: auto;
+    margin-right: 40px;
+}
+
+/* "Last Offer" text */
+.Buy > span:first-of-type {
+    margin-top: 20px;
+    color: var(--color-accent-1);
+}
+
+/* Offer amount */
+.Buy > span:last-of-type {
+    margin-top: 8px;
+    font-size: 24px;
+}
+
+.Buy > span > span {
+    font-size: 16px;
+    color: var(--color-accent-1-lighter);
+}
