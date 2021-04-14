@@ -116,7 +116,9 @@ function useDomain(name: string) {
     refetch: refetchDomain,
   } = useQuery<DomainData>(DOMAIN_QUERY, {
     variables: { id: name },
+    fetchPolicy:  'no-cache',
   });
+  console.log(name, 'DOMAIN STORE NAME')
   const _domain: Maybe<any> = useMemo(() => {
     if (dataDomain && dataDomain.domains) {
       const test = dataDomain;
@@ -159,7 +161,7 @@ function useDomain(name: string) {
   const refetch = useCallback(
     (domainId?: string) =>
       Promise.all([
-        refetchDomain(<any>{ variables: { id: domainId } }),
+        refetchDomain({ variables: { id: domainId } }),
         // refetchChildren(<any>{ variables: { parent: domainId } }),
       ]),
 

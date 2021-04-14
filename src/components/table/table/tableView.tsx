@@ -129,12 +129,12 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     () =>
       name.isNothing()
         ? []
-        : _.map(name.value.name, (key, i) => ({
+        : _.map(name.value.subdomains, (key, i) => ({
             key: key,
             '#': i.toString(),
             // asset: <Profile domain={key} />,
-            asset: <TableImage domain={key} />,
-            name: key,
+            asset: <TableImage domain={key.name} />,
+            name: key.name,
             '24Hr': randPrice(),
             '7d': randPrice(),
             marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
