@@ -20,13 +20,15 @@ import gridD from './img/tablebar/grid-down.png';
 import gridH from './img/tablebar/grid-hover.png';
 import gridS from './img/tablebar/grid-select.png';
 import { useDomainCache } from '../../../lib/useDomainCache';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 
 interface SubdomainsProps {
   domain: string;
 }
 
 const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
-  // const context = useWeb3React<Web3Provider>();
+  const context = useWeb3React<Web3Provider>();
   const location = useLocation();
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);

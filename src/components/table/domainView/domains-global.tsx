@@ -19,11 +19,15 @@ import gridD from './img/tablebar/grid-down.png';
 import gridH from './img/tablebar/grid-hover.png';
 import gridS from './img/tablebar/grid-select.png';
 import { concatAST } from 'graphql';
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { useWeb3React } from '@web3-react/core';
 interface DomainsGlobalProps {
   domain: string;
 }
 const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
-  // const context = useWeb3React<Web3Provider>();
+  const context = useWeb3React<Web3Provider>();
+
+  const { account } = context;
 
   const location = useLocation();
   const { useDomain } = useDomainCache();

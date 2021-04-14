@@ -18,7 +18,9 @@ const getDomainId = (name: string): string => {
   const domains = name.split('.', 1);
   const parentDomain = domains[0];
   const subDomains = domains[1];
-  return keccak256(keccak256(parentDomain) + getDomainId(subDomains));
+  return keccak256(
+    keccak256(ethers.utils.toUtf8Bytes(parentDomain) + getDomainId(subDomains)),
+  );
 };
 
 // const getHash = (parentHash: string, labelHash: string): string => {

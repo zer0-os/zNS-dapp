@@ -14,6 +14,8 @@ import graph5 from './img/mockgraphs/graph5.png';
 import Grid from './grid-view';
 import './css/subdomains.scss';
 import { any } from 'zod';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 
 interface Data {
   '#': string;
@@ -37,9 +39,9 @@ interface TProps {
 }
 
 const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
-  // const context = useWeb3React<Web3Provider>();
+  const context = useWeb3React<Web3Provider>();
 
-  // const { account } = context;
+  const { account } = context;
   console.log(_domain, 'DOMAIN TABLE');
   const { useDomain } = useDomainCache();
   console.log(_domain, 'TABLE VIEW DOMAIN');
