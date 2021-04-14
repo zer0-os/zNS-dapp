@@ -16,27 +16,24 @@ import graph3 from './img/mockgraphs/graph3.png';
 import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
 
-// // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// interface ColumnProps {
-//   key: number;
-//   name: string;
-// }
-// // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// interface RowProps {
-//   id: number;
-//   domain: string;
-// }
+//
+// Please Read
+// Much data availability of the table has changed throughout versions of this app, and the MVP version removes essentially all of the data to be replaced with the Last Bid, No Bids, and Last Sales Price field. In lieu of deleting these fields, which may retain their usefulness at some point in the future, I have commented them out, so that they may be used when they prove useful. If you still have your code editor set to horizontal scrolling, than all I can say is git gud.
+//
 
 interface Data {
   '#': string;
   asset: any;
   name: string;
-  '24Hr': any;
-  '7d': any;
-  marketcap: string;
-  volume: string;
-  supply: string;
-  last7days: any;
+  // '24Hr': any;
+  // '7d': any;
+  // marketcap: string;
+  // volume: string;
+  // supply: string;
+  // last7days: any;
+  lastbid: string;
+  nobids: string;
+  lastsale: string;
   timestamp: any;
   trade: any;
 }
@@ -147,12 +144,15 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             asset: <Image />,
             name: key,
-            '24Hr': randPrice(),
-            '7d': randPrice(),
-            marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
-            volume: '$' + randVol(),
-            supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
-            last7days: <img src={randGraph()} alt="" />,
+            // '24Hr': randPrice(),
+            // '7d': randPrice(),
+            // marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
+            // volume: '$' + randVol(),
+            // supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
+            // last7days: <img src={randGraph()} alt="" />,
+            lastbid: '10',
+            nobids: '12',
+            lastsale: '$14',
             timestamp: '',
             trade: <button className="tradeButton">{randTrade()}</button>,
           })),
@@ -189,45 +189,57 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         accessor: 'name',
         width: '100%',
       },
-      { Header: '24Hr', accessor: '24Hr' },
-      { Header: '7d', accessor: '7d' },
-      {
-        Header: (
-          <div className="infoHeader">
-            <span>Market Cap </span>
-            <span className="infoButton">
-              <span className="infoMark">?</span>
-            </span>
-          </div>
-        ),
-        accessor: 'marketcap',
-      },
-      {
-        Header: (
-          <div className="infoHeader">
-            <span>Volume </span>
-            <span className="infoButton">
-              <span className="infoMark">?</span>
-            </span>
-          </div>
-        ),
-        accessor: 'volume',
-      },
-      {
-        Header: (
-          <div className="infoHeader">
-            <span>Supply </span>
-            <span className="infoButton">
-              <span className="infoMark">?</span>
-            </span>
-          </div>
-        ),
-        accessor: 'supply',
-      },
+      // { Header: '24Hr', accessor: '24Hr' },
+      // { Header: '7d', accessor: '7d' },
+      // {
+      //   Header: (
+      //     <div className="infoHeader">
+      //       <span>Market Cap </span>
+      //       <span className="infoButton">
+      //         <span className="infoMark">?</span>
+      //       </span>
+      //     </div>
+      //   ),
+      //   accessor: 'marketcap',
+      // },
+      // {
+      //   Header: (
+      //     <div className="infoHeader">
+      //       <span>Volume </span>
+      //       <span className="infoButton">
+      //         <span className="infoMark">?</span>
+      //       </span>
+      //     </div>
+      //   ),
+      //   accessor: 'volume',
+      // },
+      // {
+      //   Header: (
+      //     <div className="infoHeader">
+      //       <span>Supply </span>
+      //       <span className="infoButton">
+      //         <span className="infoMark">?</span>
+      //       </span>
+      //     </div>
+      //   ),
+      //   accessor: 'supply',
+      // },
 
+      // {
+      //   Header: 'Last 7 Days',
+      //   accessor: 'last7days',
+      // },
       {
-        Header: 'Last 7 Days',
-        accessor: 'last7days',
+        Header: 'Last Bid',
+        accessor: 'lastbid',
+      },
+      {
+        Header: 'No of Bids',
+        accessor: 'nobids',
+      },
+      {
+        Header: 'Last Sale Price',
+        accessor: 'lastsale',
       },
       {
         Header: '',
