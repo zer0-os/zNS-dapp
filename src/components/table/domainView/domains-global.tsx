@@ -30,7 +30,6 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
 
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
-  console.log(JSON.stringify(name) + 'domains Global');
 
   // const dataInput: Data[] = [];
   const [gridView, toggleGridView] = useState(false);
@@ -48,8 +47,6 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
-
-  console.log('DOMAIN?!' + name);
 
   //useEffect(() => {
   //console.log('ChildView', domain);
@@ -96,9 +93,8 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   };
 
   if (name.isNothing()) return null;
-
-  console.log(JSON.stringify(name) + 'data is');
-
+  console.log(name + 'useDomain');
+  console.dir(JSON.stringify(name) + 'use');
   return (
     <div className="pageContainerPositionFix">
       <div className="metricsBar">

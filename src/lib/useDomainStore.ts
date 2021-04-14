@@ -46,15 +46,22 @@ export const zeroAddress: any =
 
 export const DOMAIN_QUERY = gql`
   query Domain($id: ID!) {
-    domains(id: $id) {
+    domains(where: { id: $id }) {
       id
       name
-      parent
-      subdomains
+      parent {
+        id
+        name
+      }
+      subdomains {
+        id
+        name
+      }
       owner
       minter
       lockedBy
       isLocked
+      metadata
     }
   }
 `;
@@ -111,11 +118,28 @@ function useDomain(name: string) {
     variables: { id: name },
     fetchPolicy: 'no-cache',
   });
+  const _domain: Maybe<any> = useMemo(() => {
+    if (dataDomain && dataDomain.domains) {
+      const test = dataDomain;
+      console.log(test, 'dataDomains');
 
-  const _domain: Maybe<Domain> = useMemo(() => {
-    if (dataDomain && dataDomain?.domains) {
       return Maybe.of({
-        ...dataDomain.domain,
+        ...dataDomain.domains[0],
+        // id: dataDomain.domain.id,
+        // name: dataDomain.domain.name,
+        // parent: dataDomain.domain.parent,
+        // subdomains: dataDomain.domain.subdomains,
+        // owner: dataDomain.domain.owner,
+        // minter: dataDomain.domain.minter,
+        // metadata: dataDomain.domain.metadata,
+        // id: 'test',
+        // name: 'test',
+        // parent: 'test',
+        // subdomains: [],
+        // owner: 'test',
+        // minter: 'test',
+        // metadata: 'test',
+
         // owner: getAddress(dataDomain.domain.owner),
         // parent: dataDomain.domain.parent,
         // minter: getAddress(dataDomain.domain.minter),
@@ -123,6 +147,7 @@ function useDomain(name: string) {
         // subdomains: dataDomain.domain.subdomains,
       });
     }
+
     // console.log(JSON.stringify(dataDomain) + 'dataDomain2');
     if (errorDomain) {
       console.error(errorDomain + 'Error');
