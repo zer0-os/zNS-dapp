@@ -21,7 +21,7 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contracts = useZnsContracts();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { account } = context;
+  // const { account } = context;
   const { useDomain } = useDomainCache();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const { _allDomains, refetchAllDomains } = useAllDomains(_domain);
@@ -75,6 +75,7 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
   // };
 
   if (name.isNothing()) return null;
+
   return (
     <div className="adbarContainer">
       <img className="adbg" src={adbg} alt="" />

@@ -116,7 +116,6 @@ function useDomain(name: string) {
     refetch: refetchDomain,
   } = useQuery<DomainData>(DOMAIN_QUERY, {
     variables: { id: name },
-    fetchPolicy: 'no-cache',
   });
   const _domain: Maybe<any> = useMemo(() => {
     if (dataDomain && dataDomain.domains) {

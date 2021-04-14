@@ -46,6 +46,8 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const { name } = domainContext;
   const history = useHistory();
 
+  console.log(name + 'Name');
+
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -288,7 +290,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       pathname: row.values.network,
     });
   };
-  if (name.isJust()) return null;
+  if (name.isNothing()) return null;
 
   return (
     <div className="shiftTableUp">
@@ -387,8 +389,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               )}
             </table>
           </div>
-        ) : // <Grid domain={_domain} />
-        null}
+        ) : (
+          <Grid domain={_domain} />
+        )}
 
         <br />
         <br />

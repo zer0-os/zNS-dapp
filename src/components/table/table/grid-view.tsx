@@ -1,9 +1,9 @@
 import { FC, useMemo } from 'react';
 import './css/grid.scss';
 import { useHistory } from 'react-router-dom';
-// import { useWeb3React } from '@web3-react/core';
-// import { useDomainCache } from '../../../lib/useDomainCache';
-// import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+import { useDomainCache } from '../../../lib/useDomainCache';
+import { Web3Provider } from '@ethersproject/providers';
 import TableImage from './table-image';
 import GridImage from './grid-image';
 import avatar from '../../css/img/wilderavatar.png';
@@ -15,12 +15,12 @@ interface GridProps {
 }
 
 const Grid: FC<GridProps> = ({ domain: _domain }) => {
-  // const context = useWeb3React<Web3Provider>();
+  const context = useWeb3React<Web3Provider>();
 
-  // const { account } = context;
-  // const domainStore = useDomainCache();
-  // const { useDomain } = domainStore;
-  // const { domain } = useDomain(_domain);
+  const { account } = context;
+  const domainStore = useDomainCache();
+  const { useDomain } = domainStore;
+  const { name } = useDomain(_domain);
 
   const history = useHistory();
   const handleCellClick = (name: any) => {
@@ -111,14 +111,14 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
 
   const gridCells = useMemo(
     () =>
-      domain.isNothing()
+      name.isNothing()
         ? []
         : domain.value.subdomains.map((key: any, i: number) => {
             return gridCell(key, i);
           }),
     [domain],
   );
-  if (domain.isNothing()) return null;
+  if (name.isNothing()) return null;
   return (
     <div className="gridContainer">
       <div className="gridMargin">{gridCells}</div>
