@@ -27,6 +27,7 @@ interface SubdomainsProps {
 
 const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
+  console.log(_domain, 'CHILDDOMAIN');
   const location = useLocation();
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
@@ -35,7 +36,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const [hover, setHover] = useState('');
   // const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
-
+  console.log(name, 'CHILDNAME');
   const routes = _.transform(
     location.pathname
       .substr(1)
