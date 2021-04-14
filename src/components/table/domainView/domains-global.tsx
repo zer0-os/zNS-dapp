@@ -94,7 +94,8 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   if (domain.isNothing()) return null;
   return (
     <div className="pageContainerPositionFix">
-      <div className="metricsBar">
+      {/* Metrics bar is removed for now: may be added back in further iterations */}
+      {/* <div className="metricsBar">
         <div className="metricsContainer">
           {metric('Wild Price', '$2,010', '', '(▲41.10%)')}
           {metric('24hr Volume', '$3,069,333,102', '', '(▲12.03%)')}
@@ -102,7 +103,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
           {metric('24hr NFTs Sold', '5,103', '', '(▲9.93%)')}
           {metric('Active Subdomains', '3,666', '', '(▲1.11%)')}
         </div>
-      </div>
+      </div> */}
 
       <AdBar domain={domain.value.domain} />
 

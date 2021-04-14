@@ -648,14 +648,14 @@ table {
     tr th {
       text-align: left;
       &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
-        text-align: right;
+        text-align: center;
       }
     }
   }
   .subdomainsHeaderGroupGlobal {
     tr th {
       &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
-        text-align: right;
+        text-align: center;
       }
     }
   }
@@ -744,7 +744,7 @@ table {
       .tdLocal {
         height: 120px;
         &:not(:first-child):not(:nth-child(3)):not(:last-child) {
-          text-align: right;
+          text-align: center;
         }
         &:last-child {
           text-align: center;
@@ -779,7 +779,7 @@ table {
         // height: 81px;
         // every cell except the third
         &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
-          text-align: right;
+          text-align: center;
         }
         &:last-child {
           text-align: center;
