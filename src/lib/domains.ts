@@ -11,7 +11,9 @@ const getDomainId = (name: string): string => {
   if (name === '') {
     return zeroBytes32;
   }
-  // const parentHash =
+
+  const nameHash = keccak256(coder.encode(['bytes32'], [name]));
+
   const Domain_ID = ethers.utils.id(name);
   const domains = name.split('.', 1);
   const parentDomain = domains[0];

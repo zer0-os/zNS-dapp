@@ -42,7 +42,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
       if (account && contracts.isJust() && name.isJust())
         contracts.value.registry
           .registerDomain(
-            name.value.name === 'ROOT' ? child : name.value.name + '.' + child,
+            name.value.name === '' ? child : name.value.name + '.' + child,
             account,
             account,
             account,

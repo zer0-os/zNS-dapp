@@ -103,13 +103,13 @@ type QueryArgs = Partial<Record<string, any>>;
 type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
 function useDomain(name: string) {
-  const id = getDomainId(name);
   const {
     data: dataDomain,
     error: errorDomain,
     refetch: refetchDomain,
   } = useQuery<DomainData>(DOMAIN_QUERY, {
-    variables: { id },
+    variables: { id: name },
+    fetchPolicy: 'no-cache',
   });
   console.log(dataDomain + 'dataDomain3');
   const _domain: Maybe<Domain> = useMemo(() => {
