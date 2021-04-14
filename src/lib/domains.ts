@@ -11,11 +11,23 @@ const getDomainId = (name: string): string => {
   if (name === '') {
     return zeroBytes32;
   }
-
+  console.log('BREAK1')
   const nameHash = keccak256(coder.encode(['bytes32'], [name]));
-
+  console.log('BREAK2')
   const Domain_ID = ethers.utils.id(name);
+  console.log('BREAK3')
+
   const domains = name.split('.', 1);
+  console.log('BREAK4')
+
+  console.log('DOMAINSTS',domains)
+  if (domains.length === 1) {
+    console.log('ONEFOUND')
+  } else {
+    console.log('OTHERFOUND')
+  }
+  console.log('BREAK5')
+
   const parentDomain = domains[0];
   const subDomains = domains[1];
   return keccak256(
@@ -35,3 +47,6 @@ const getDomainId = (name: string): string => {
 // };
 
 export { getDomainId };
+
+//
+

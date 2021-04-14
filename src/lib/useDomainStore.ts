@@ -111,12 +111,13 @@ type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
 function useDomain(name: string) {
   const id = getDomainId(name);
+  console.log(id,'STOREID')
   const {
     data: dataDomain,
     error: errorDomain,
     refetch: refetchDomain,
   } = useQuery<DomainData>(DOMAIN_QUERY, {
-    variables: { id },
+    variables: { id: id },
     fetchPolicy: 'no-cache',
   });
   console.log(name, 'DOMAIN STORE NAME');

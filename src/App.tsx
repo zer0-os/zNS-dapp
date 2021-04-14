@@ -58,7 +58,7 @@ function App() {
                   name={
                     // location.pathname.substring(1)
                     // 'domainID'
-                    '0x0'
+                    ''
                   }
                 />
 
@@ -73,7 +73,7 @@ function App() {
                 </h1> */}
                 {/* TODO: move to styling file */}
                 <div style={{ position: 'absolute', top: '0' }}>
-                  <DomainsGlobal domain={'0x0'} />
+                  <DomainsGlobal domain={''} />
                 </div>
                 {/* <Subdomains domain={'ROOT'} /> */}
               </Route>
