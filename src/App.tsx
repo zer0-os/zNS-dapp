@@ -41,12 +41,7 @@ function App() {
             <Switch>
               <Route path="/:id">
                 {/* defaults to the LOCAL NETWORKS page */}
-                <TopbarGlobal
-                  name={
-                    // location.pathname.substring(1)
-                    'domainID'
-                  }
-                />
+                <TopbarGlobal name={location.pathname.substring(1)} />
                 <Subdomains
                   //regex: removes trailing /, then replaces / with .
                   /*
@@ -62,7 +57,8 @@ function App() {
                 <TopbarGlobal
                   name={
                     // location.pathname.substring(1)
-                    'domainID'
+                    // 'domainID'
+                    '0x0'
                   }
                 />
 
@@ -77,7 +73,7 @@ function App() {
                 </h1> */}
                 {/* TODO: move to styling file */}
                 <div style={{ position: 'absolute', top: '0' }}>
-                  <DomainsGlobal domain={'domainID'} />
+                  <DomainsGlobal domain={location.pathname.substring(1)} />
                 </div>
                 {/* <Subdomains domain={'ROOT'} /> */}
               </Route>

@@ -111,9 +111,8 @@ function useDomain(name: string) {
     variables: { id: name },
     fetchPolicy: 'no-cache',
   });
-  console.log(dataDomain + 'dataDomain3');
+
   const _domain: Maybe<Domain> = useMemo(() => {
-    console.log(dataDomain + 'logging if');
     if (dataDomain && dataDomain?.domains) {
       return Maybe.of({
         ...dataDomain.domain,
