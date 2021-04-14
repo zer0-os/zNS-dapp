@@ -25,10 +25,8 @@ interface DomainsGlobalProps {
   domain: string;
 }
 const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
-  const context = useWeb3React<Web3Provider>();
-
-  const { account } = context;
-
+  // const context = useWeb3React<Web3Provider>();
+  console.log(_domain, 'GLOBALDOMAIN');
   const location = useLocation();
   const { useDomain } = useDomainCache();
 
