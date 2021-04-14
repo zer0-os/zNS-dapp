@@ -115,35 +115,36 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
             ) : null}
           </div>
           <div className="topRight">
-            <div className="shop-btn">
+            {/* <div className="shop-btn">
               <Shop domain={_domain} />
-            </div>
-            <div className="search-bar">
+            </div> */}
+            {/* <div className="search-bar">
               <button className="search-bar-button"></button>
               <div className="search-bar-glow"></div>
-              {/* <img src={searchIcon} alt="" className="search-bar-button" /> */}
+              <img src={searchIcon} alt="" className="search-bar-button" />
               <input
                 className="search-bar-input"
                 type="text"
                 placeholder="Search"
               />
-            </div>
+            </div> */}
             {!active ? (
               <FutureButton onClick={showWallet}>Connnect Wallet</FutureButton>
             ) : (
-              <FutureButton onClick={showMint}>Mint New NFT</FutureButton>
+              <>
+                <FutureButton glow onClick={showMint}>Mint New NFT</FutureButton>
+                <div className="profile-btn">
+                  <div className="profile-btn">
+                    <Profile />
+                  </div>
+                </div>
+                <div className="dotMenu">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </>
             )}
-
-            <div className="profile-btn">
-              <div className="profile-btn">
-                <Profile />
-              </div>
-            </div>
-            <div className="dotMenu">
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
           </div>
         </div>
 
@@ -275,6 +276,11 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
         onOk={mintOk}
         onCancel={mintCancel}
         footer={null}
+        bodyStyle={{
+          width: 640,
+          padding: 0,
+          margin: 0,
+        }}
       >
         <MintNewNFT></MintNewNFT>
       </Modal>
@@ -290,7 +296,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
           padding: '0',
           margin: '0',
         }}
-        width="385px"
+        // width="385px"
         style={{
           position: 'relative',
           height: '464px',

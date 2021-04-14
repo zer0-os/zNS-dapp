@@ -15,6 +15,7 @@ import graph2 from './img/mockgraphs/graph2.png';
 import graph3 from './img/mockgraphs/graph3.png';
 import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
 
 //
 // Please Read
@@ -140,7 +141,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         ? []
         : _.map(domain.value.children, (key, i) => ({
             key: key,
-            '#': i.toString(),
+            '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
             asset: <Image />,
             name: key,
@@ -154,7 +155,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             nobids: '12',
             lastsale: '$14',
             timestamp: '',
-            trade: <button className="tradeButton">{randTrade()}</button>,
+            trade: <FutureButton style={{height: 24}}>Enlist</FutureButton>,
           })),
     [domain],
   );
@@ -166,15 +167,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     () => [
       {
         Header: (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: '60px',
-              height: '40px',
-            }}
-          >
+          <div>
             #
           </div>
         ),

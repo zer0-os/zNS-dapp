@@ -8,14 +8,6 @@ import FutureButton from '../Buttons/FutureButton/FutureButton.js';
 import MintNewNFTStyle from './MintNewNFT.module.css';
 
 const MintNewNFT = (props) => {
-  const [step, setStep] = useState(1);
-  const steps = 3;
-
-  const toStep = (i) => {
-    console.log(i);
-    setStep(i >= steps ? steps : i);
-  };
-
   return (
     <div
       className={`${MintNewNFTStyle.MintNewNFT} blur border-rounded border-primary`}
@@ -27,37 +19,28 @@ const MintNewNFT = (props) => {
           <span>By Frank Wilder</span>
         </div>
       </div>
-      <StepBar style={{ marginTop: 24 }} step={step} steps={steps} />
-      <ToggleSection
-        open={step === 1 ? true : undefined}
-        style={{ marginTop: 51 }}
-        label={'Token Information'}
-      >
         <form className={MintNewNFTStyle.Section}>
           <div style={{ display: 'flex' }}>
+            <div className={MintNewNFTStyle.Inputs}>
+              <TextInput placeholder={'NFT Name'} />
+              <TextInput
+                multiline={true}
+                placeholder={'Story'}
+                style={{ height: 146, marginTop: 24 }}
+              />
+            </div>
             <div
-              className={`${MintNewNFTStyle.NFT} border-rounded border-blue`}
+              className={`${MintNewNFTStyle.NFT} border-rounded`}
               // Template background for now
               style={{ backgroundImage: `url(assets/nft/redpill.png)` }}
             ></div>
-            <div className={MintNewNFTStyle.Inputs}>
-              <TextInput placeholder={'NFT Name'} />
-              <TextInput style={{ width: 145 }} placeholder={'Ticker'} />
-            </div>
           </div>
-          <TextInput
-            multiline={true}
-            placeholder={'Story (400 characters max)'}
-            style={{ height: 200, marginTop: 40 }}
-          />
         </form>
         <FutureButton
-          style={{ margin: '40px auto 0 auto' }}
-          onClick={() => toStep(2)}
+          style={{ margin: '47px auto 0 auto' }}
         >
           Continue
         </FutureButton>
-      </ToggleSection>
       {/* <ToggleSection 
 				open={step === 2}
 				style={{marginTop: 51}}

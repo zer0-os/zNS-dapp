@@ -32,10 +32,10 @@ const previewData = {
         domain: '0.wilder.frank',
         img: '/assets/wilderverse.png'
     },
-    name: 'CoronaLisa',
-    domain: '0.wilder.frank.coronalisa',
-    description: 'It’s long been wondered why the Mona Lisa looks so sad. Perhaps she foresaw the current state of the world and empathised with us all.',
-    img: '/assets/nft-image-coronalisa.png'
+    name: 'Frank Wilder',
+    domain: '0://wilder.frank',
+    description: 'Great artists use the tools of their time to reflect the concerns of their time. Great art is the intersection of personality, opportunity and timing.',
+    img: 'assets/nft/redpill.png'
 }
 
 interface SubdomainsProps {
@@ -123,8 +123,8 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             owner={previewData.owner}
             description={previewData.description}
             data={previewData}
-            style={{marginLeft: 100, marginRight: 100, marginBottom: 16, marginTop: 155}}
-            // img={previewData.img} 
+            style={{marginLeft: 100, marginRight: 100, marginBottom: 16}}
+            img={previewData.img} 
           />
 
           {/* <div className="metricsBar">
@@ -210,13 +210,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                       <img src={filtericon} alt="" />
                     </div>
                     <div className="text">Filters</div>
-                  </div>
-                  <div className="number">
-                    <div className="text">100</div>
-                    <div className="imgContainer">
-                      <img src={filterarrow} alt="" />
-                      <img src={filterarrow} alt="" />
-                    </div>
                   </div>
                   <div
                     onClick={() => toggleGridView(false)}

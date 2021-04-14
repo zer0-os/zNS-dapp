@@ -19,6 +19,7 @@ import neo from '../../css/img/neo.jpeg';
 import kitty from '../../css/img/kitty.jpeg';
 import cybercar from '../../css/img/cybercar.jpeg';
 import realestate from '../../css/img/realestate.jpeg';
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
 
 //
 // Please Read
@@ -74,7 +75,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   ];
 
   let List = images.map((image: any) => {
-    return <div> {image} </div>;
+    return <> {image} </>;
   });
 
   const randThreeS = () => {
@@ -167,7 +168,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       domain.isNothing()
         ? []
         : _.map(domain.value.children, (key, i) => ({
-            '#': i.toString(),
+            '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
             image: List[i],
             network: key,
@@ -178,11 +179,11 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // volume: '$' + randVol(),
             // supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
             // last7days: <img src={randGraph()} alt="" />,
-            lastbid: '10',
+            lastbid: '$10.27',
             nobids: '12',
-            lastsale: '$14',
+            lastsale: '$14.34',
             timestamp: '',
-            trade: <button className="tradeButton">{randTrade()}</button>,
+            trade: <FutureButton style={{height: 24}}>{randTrade()}</FutureButton>,
           })),
     [domain],
   );
@@ -193,16 +194,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     () => [
       {
         Header: (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: '60px',
-              // maxWidth: '60px',
-              height: '40px',
-            }}
-          >
+          <div>
             #
           </div>
         ),
@@ -259,7 +251,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         accessor: 'lastbid',
       },
       {
-        Header: 'No of Bids',
+        Header: 'No Of Bids',
         accessor: 'nobids',
       },
       {
@@ -433,16 +425,10 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               {rows.length !== 0 ? null : (
                 <tfoot>
                   <tr>
-                    <td
-                      style={{
-                        borderLeft: '1px solid #bd5fff',
-                        borderRight: '1px solid #bd5fff',
-                        borderBottom: '1px solid #bd5fff',
-                        borderRadius: '0px 0px 15px 15px',
-                      }}
-                    >
+                    <td>
                       <div
                         style={{
+                          background: 'red',
                           color: '#fff',
                           fontWeight: 'bold',
                           textAlign: 'center',
@@ -460,9 +446,6 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         ) : (
           <Grid domain={_domain} />
         )}
-
-        <br />
-        <br />
       </div>
     </div>
   );

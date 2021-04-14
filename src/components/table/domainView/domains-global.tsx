@@ -170,13 +170,6 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
                 </div>
                 <div className="text">Filters</div>
               </div>
-              <div className="number">
-                <div className="text">100</div>
-                <div className="imgContainer">
-                  <img src={filterarrow} alt="" />
-                  <img src={filterarrow} alt="" />
-                </div>
-              </div>
               <div
                 onClick={() => toggleGridView(false)}
                 onMouseDown={() => setDown('list')}

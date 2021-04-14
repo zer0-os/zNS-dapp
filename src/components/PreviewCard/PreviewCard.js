@@ -4,6 +4,8 @@ import styles from './PreviewCard.module.css'
 
 import FutureButton from '../Buttons/FutureButton/FutureButton.js'
 
+const templateNFT = 'assets/nft/redpill.png'
+
 const PreviewCard = (props) => {
 
     return(
@@ -13,7 +15,7 @@ const PreviewCard = (props) => {
         >
             <div 
                 className={styles.Asset}
-                // style={{backgroundImage: `url(${props.img})`}}
+                style={{backgroundImage: `url(${props.img})`}}
             >
             </div>
             <div className={styles.Body}>
@@ -46,9 +48,9 @@ const PreviewCard = (props) => {
                 </div>
             </div>
             <div className={styles.Buy}>
-                <FutureButton style={{height: 36, width: 118, borderRadius: 30}}>BUY</FutureButton>
-                <span className={`glow-text-blue`}>Last Offer</span>
+                <FutureButton glow style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
                 <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span>
+                <span className={`glow-text-blue`}>Last Offer</span>
             </div>
         </div>
     )

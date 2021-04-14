@@ -76,7 +76,7 @@ function App() {
                   />
                 </h1> */}
                 {/* TODO: move to styling file */}
-                <div style={{ position: 'absolute', top: '0' }}>
+                <div>
                   <DomainsGlobal domain={'ROOT'} />
                 </div>
                 {/* <Subdomains domain={'ROOT'} /> */}

@@ -16,6 +16,8 @@
     cursor: pointer;
 }
 
+
+
 /* 
  * Border - we need to separate it into a psuedoelement to get the glow effect 
  * This didn't quite work out as I intended it to - fix later
@@ -213,4 +215,31 @@
 .futureButton:hover:not(.selected) .wash {
     animation: expand 0.4s forwards;
     animation-timing-function: ease-in-out;
+}
+
+/* Glow button */
+
+.glow {
+    background: rgba(0, 209, 255, 0.1);
+}
+
+.glow:after {
+    border-color: white;
+}
+
+.glow:before {
+    content: ' ';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 0;
+
+    box-shadow: 0px 0px 40px 15px rgba(0, 178, 255, 0.69);
+    z-index: -1;
+}
+
+.glow .content {
+    color: white;
+    text-shadow: var(--glow-text-white);
 }

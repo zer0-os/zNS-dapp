@@ -7,30 +7,6 @@ import { useLocation, Link } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import './css/sidebar.scss';
 import wilderLogo from '../../css/img/wilderlogo.png';
-// import trending from './css/img/trending.png';
-// import trendingS from './css/img/trending-selected.png';
-// import explore from './css/img/explorer.png';
-// import exploreS from './css/img/explorer-selected.png';
-// import lending from './css/img/lending.png';
-// import lendingS from './css/img/lending-selected.png';
-// import gov from './css/img/governance.png';
-// import govS from './css/img/governance-selected.png';
-import trending from './img/sidebar/Trending/trend-default.png';
-import trendingD from './img/sidebar/Trending/trend-down.png';
-import trendingH from './img/sidebar/Trending/trend-hover.png';
-import trendingS from './img/sidebar/Trending/trend-select.png';
-import explorer from './img/sidebar/Explorer/explorer-default.png';
-import explorerD from './img/sidebar/Explorer/explorer-down.png';
-import explorerH from './img/sidebar/Explorer/explorer-hover.png';
-import explorerS from './img/sidebar/Explorer/explorer-select.png';
-import lending from './img/sidebar/Lending/lend-default.png';
-import lendingD from './img/sidebar/Lending/lend-down.png';
-import lendingH from './img/sidebar/Lending/lend-hover.png';
-import lendingS from './img/sidebar/Lending/lend-select.png';
-import gov from './img/sidebar/Governance/gov-default.png';
-import govD from './img/sidebar/Governance/gov-down.png';
-import govH from './img/sidebar/Governance/gov-hover.png';
-import govS from './img/sidebar/Governance/gov-select.png';
 
 const Sidebar: FC = () => {
   const context = useWeb3React<Web3Provider>();
@@ -88,94 +64,14 @@ const Sidebar: FC = () => {
         <Link to={'/'} className="topLogo">
           <img src={wilderLogo} alt="" />
         </Link>
-        <div className="middleNav">
+        <div className="middleNav border-primary">
           <div className="sideItem i1">
-            <img
-              onMouseDown={() => setDown('trending')}
-              onMouseUp={() => setDown('')}
-              onMouseEnter={() => setHover('trending')}
-              onMouseLeave={() => {
-                setDown('');
-                setHover('');
-              }}
-              onClick={() => setSelected('trending')}
-              src={
-                down === 'trending'
-                  ? trendingD
-                  : selected === 'trending'
-                  ? trendingS
-                  : hover === 'trending'
-                  ? trendingH
-                  : trending
-              }
-              alt=""
-            />
           </div>
           <div className="sideItem i2">
-            <img
-              onMouseDown={() => setDown('explorer')}
-              onMouseUp={() => setDown('')}
-              onMouseEnter={() => setHover('explorer')}
-              onMouseLeave={() => {
-                setDown('');
-                setHover('');
-              }}
-              onClick={() => setSelected('explorer')}
-              src={
-                down === 'explorer'
-                  ? explorerD
-                  : selected === 'explorer'
-                  ? explorerS
-                  : hover === 'explorer'
-                  ? explorerH
-                  : explorer
-              }
-              alt=""
-            />
           </div>
           <div className="sideItem i3">
-            <img
-              onMouseDown={() => setDown('lending')}
-              onMouseUp={() => setDown('')}
-              onMouseEnter={() => setHover('lending')}
-              onMouseLeave={() => {
-                setDown('');
-                setHover('');
-              }}
-              onClick={() => setSelected('lending')}
-              src={
-                down === 'lending'
-                  ? lendingD
-                  : selected === 'lending'
-                  ? lendingS
-                  : hover === 'lending'
-                  ? lendingH
-                  : lending
-              }
-              alt=""
-            />
           </div>
           <div className="sideItem i4">
-            <img
-              onMouseDown={() => setDown('gov')}
-              onMouseUp={() => setDown('')}
-              onMouseEnter={() => setHover('gov')}
-              onMouseLeave={() => {
-                setDown('');
-                setHover('');
-              }}
-              onClick={() => setSelected('gov')}
-              src={
-                down === 'gov'
-                  ? govD
-                  : selected === 'gov'
-                  ? govS
-                  : hover === 'gov'
-                  ? govH
-                  : gov
-              }
-              alt=""
-            />
           </div>
         </div>
       </div>

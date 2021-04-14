@@ -4,7 +4,6 @@ $page-margin: 100px;
 
 .adbarContainer {
   position: relative;
-  margin-top: 130px;
   margin-left: $page-margin;
   margin-right: $page-margin;
   height: 96px;
@@ -77,9 +76,9 @@ $page-margin: 100px;
       }
       .desc {
         font-size: 16px;
+        font-weight: 700;
         font-style: normal;
-        text-shadow: 0px 0px 10px rgba($med-blue, 0.7);
-        span {
+        span > span {
           color: $med-blue;
         }
       }

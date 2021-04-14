@@ -93,8 +93,8 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
             </div>
           </div>
           <div className="desc">
-            A new artwork '<span>Futopia</span>' by '<span>Frank Wilder</span>'
-            is dropping soon.
+            <span className='glow-text-blue'>A new artwork '<span>Futopia</span>' by '<span>Frank Wilder</span>'
+            is dropping soon.</span>
           </div>
         </div>
       </div>

@@ -25,7 +25,7 @@ const FutureButton = (props) => {
 
     return (
         <button 
-            className={`${styles.futureButton} ${isSelected ? styles.selected : ''}`}
+            className={`${styles.futureButton} ${isSelected ? styles.selected : ''} ${props.glow ? styles.glow : ''}`}
             onMouseEnter={handleHover}
             onMouseUp={handleClick}
             style={props.style}

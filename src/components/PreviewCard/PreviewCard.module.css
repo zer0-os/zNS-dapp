@@ -24,11 +24,12 @@
 }
 
 .Body {
+    position: relative;
     display: flex;
     flex-direction: column;
 
     width: 562px;
-    margin: 10px 40px 12px 36px;
+    margin: 10px 40px 0 36px;
 }
 
 .Body h5 {
@@ -43,7 +44,7 @@
 }
 
 .Body p {
-    margin-top: 20px;
+    margin-top: 17px;
     color: var(--color-accent-1-lighter);
     line-height: 19.2px;
 }
@@ -51,7 +52,10 @@
 .Members {
     display: flex;
     justify-content: space-between;
-    margin-top: 41px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
 
 .Members > div {
@@ -76,9 +80,6 @@
     font-weight: 700;
 }
 
-.Member > span:first-of-type {
-
-}
 
 .Member > span:last-of-type {
     color: var(--color-accent-1-lighter);
@@ -93,18 +94,23 @@
 
     margin-left: auto;
     margin-right: 40px;
+    padding-top: 28px;
 }
 
-/* "Last Offer" text */
-.Buy > span:first-of-type {
-    margin-top: 20px;
-    color: var(--color-accent-1);
+.Buy > span { 
+    font-weight: 700;
 }
 
 /* Offer amount */
-.Buy > span:last-of-type {
-    margin-top: 8px;
+.Buy > span:first-of-type {
+    margin-top: 38px;
     font-size: 24px;
+}
+
+/* "Last Offer" text */
+.Buy > span:last-of-type {
+    color: var(--color-accent-1);
+    margin-right: 25px;
 }
 
 .Buy > span > span {

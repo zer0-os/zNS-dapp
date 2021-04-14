@@ -111,9 +111,12 @@ body {
 	background-repeat: no-repeat;
 	background-size: cover;
 
+	position: relative;
 	min-height: 100vh;
 	height: auto;
-	width: 100%;
+	margin: 0 auto;
+	min-width: 1247px;
+	max-width: 1247px;
 	margin-top: 29px;
 	/* padding-top: 123px; */
 	/* padding-bottom: 123px; */
