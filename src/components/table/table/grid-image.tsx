@@ -19,8 +19,6 @@ const GridImage: FC<GridImageProps> = ({ domain: _domain }) => {
   ]);
 
   if (name.isNothing()) return null;
-  console.log('GRIDIMAGE ', name);
-  console.log('GRIDMETADATA', name.value.metadata.image);
   return (
     <img
       style={{ maxHeight: '100%' }}

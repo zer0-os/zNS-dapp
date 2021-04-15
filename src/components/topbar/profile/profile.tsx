@@ -19,8 +19,6 @@ const Profile: FC = () => {
 
   const { owned } = useDomainStore();
 
-  console.log(owned, 'OWNED!!');
-
   const { account } = context;
 
   const showOwner = () => {

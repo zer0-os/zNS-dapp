@@ -47,7 +47,6 @@ interface SubdomainsProps {
 
 const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
-  console.log(_domain, 'CHILDDOMAIN');
   const location = useLocation();
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
@@ -56,8 +55,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const [hover, setHover] = useState('');
   // const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
-  console.log(JSON.stringify(name) + 'CHILDVIEWNAME');
-  console.log(name, 'CHILDNAME');
   const routes = _.transform(
     location.pathname
       .substr(1)
@@ -68,8 +65,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
-
-  console.log('DOMAIN!', name);
 
   // useEffect(() => {
   //   //console.log('ChildView', domain);
@@ -118,8 +113,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   if (name.isNothing()) return <div>Kurt Kobain</div>;
   return (
     <div className="pageContainerPositionFix">
-      {console.log('TESTING3')}
-      {console.log('TESTSUB ', name.value)}
       {name.value.subdomains.length !== 0 ? (
         <div>
           <PreviewCard
@@ -129,7 +122,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             owner={previewData.owner}
             description={previewData.description}
             data={previewData}
-            style={{ marginLeft: 100, marginRight: 100, marginBottom: 16 }}
             img={previewData.img}
           />
 

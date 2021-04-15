@@ -27,9 +27,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   // const domainContext = useDomain(_domain);
   // const { domain } = domainContext;
   const location = useLocation();
-  {
-    console.log('TESTING6');
-  }
 
   const routes = _.transform(
     location.pathname
@@ -86,7 +83,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
                 <Link to={'/'} className="network">
                   0:/ <span className="slash">/</span>
                 </Link>
-                {console.log('TESTING4')}
                 {routes.length > 0 ? (
                   <div className="route">
                     {routes.map(([key, path], i) => (
@@ -203,7 +199,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           </div>
         </div>
       </div>
-      {console.log('TESTING5')}
     </div>
   );
 };

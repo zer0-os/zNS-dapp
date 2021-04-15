@@ -26,7 +26,6 @@ interface DomainsGlobalProps {
 }
 const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   // const context = useWeb3React<Web3Provider>();
-  console.log(_domain, 'GLOBALDOMAIN');
   const location = useLocation();
   const { useDomain } = useDomainCache();
 
@@ -112,45 +111,6 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
 
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">
-          <div className="route-nav">
-            <div className="route-nav-link">
-              <Link className="route-nav-text" to={'/'}>
-                0::/
-              </Link>
-            </div>
-            {routes.map(([key, path], i) => (
-              <div className="route-nav-link">
-                <Link className="route-nav-text-sub" to={path}>
-                  {key}
-                  {i < routes.length - 1 && '.'}
-                </Link>
-              </div>
-            ))}
-          </div>
-          <div className="subdomainsButtonSortContainer">
-            <div className="subdomainsButtonSortLeft">
-              <div className="sdbslItem sdbslItemSelected">Zero Networks</div>
-              <div className="sdbslItem">NFTs</div>
-              <div className="sdbslItem">DAOs</div>
-              <div className="sdbslItem">Universes</div>
-            </div>
-            <div className="subdomainsButtonSortRight">
-              {' '}
-              <div
-                onClick={() => toggleGridView(false)}
-                className="sdbsrItem tableNavButton tnb2"
-              >
-                {/* <img src={!gridView ? linebutton : linebuttongrey} alt="" /> */}
-              </div>
-              <div
-                onClick={() => toggleGridView(true)}
-                className="sdbsrItem tableNavButton tnb1"
-              >
-                {/* <img src={gridView ? squarebuttonwhite : squarebutton} alt="" /> */}
-              </div>
-            </div>
-          </div>
-
           <div className="subdomainsBar">
             <div className="search">
               <button className="search-bar-button"></button>
@@ -218,7 +178,6 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
             </div>
           </div>
         </div>
-        {console.log(name, 'NAME DOMAINS VIEW')}
         <TableViewGlobal domain={_domain} gridView={gridView} search={search} />
       </div>
     </div>

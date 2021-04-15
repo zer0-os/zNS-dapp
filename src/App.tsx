@@ -72,7 +72,7 @@ function App() {
                   />
                 </h1> */}
                 {/* TODO: move to styling file */}
-                <div style={{ position: 'absolute', top: '0' }}>
+                <div>
                   <DomainsGlobal domain={''} />
                 </div>
                 {/* <Subdomains domain={'ROOT'} /> */}
@@ -86,7 +86,6 @@ function App() {
 }
 
 const e = 'hello world';
-console.log(client, 'hello world');
 function wrappedApp() {
   return (
     <ApolloProvider client={client}>

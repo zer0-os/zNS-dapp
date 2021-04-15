@@ -160,7 +160,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     [name],
   );
 
-  console.log(dataInput, 'THIS List');
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
 
   const columns = useMemo<Column<Data>[]>(
@@ -237,14 +236,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         Cell: () => <div style={{ display: 'none' }}></div>,
       },
       {
-        Header: (
-          <div className="infoHeader">
-            <span>Trade </span>
-            <span className="infoButton">
-              <span className="infoMark">?</span>
-            </span>
-          </div>
-        ),
+        Header: 'Trade',
         accessor: 'trade',
       },
     ],
@@ -272,17 +264,11 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   );
 
   const handleRowClick = (row: any) => {
-    //console.log('fire');
-    //console.log(row);
-    console.log('DOES IT FIRE?');
-    console.log('ROW NAME ', row.original.key);
     history.push({
       pathname: row.original.key,
     });
   };
-  console.log('TESTING1');
   if (name.isNothing()) return null;
-  console.log('TESTING2');
 
   //console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (

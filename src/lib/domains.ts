@@ -43,11 +43,9 @@ const getDomainId = (name: string): string => {
       console.log(domains[i], 'CURRENT DOMAIN')
       hashReturn = getSubnodeHash(hashReturn, ethers.utils.id(domains[i]))
     }
-    console.log(hashReturn, 'HASHRETURN')
   }
   return hashReturn;
   //
-
 
   // const parentDomain = domains[0];
   // const subDomains = domains[1];

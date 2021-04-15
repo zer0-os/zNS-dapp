@@ -66,7 +66,7 @@
       border-right: 1px solid lighten($dark-purple, 10%);
       border-left: 1px solid lighten($dark-purple, 10%);
       border-radius: 15px 15px 15px 15px;
-      box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
+      // box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
       filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
 
       // needed to create a hack for the border gradient

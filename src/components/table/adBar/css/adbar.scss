@@ -1,11 +1,7 @@
 @import '../../../css/color-variables.scss';
 
-$page-margin: 100px;
-
 .adbarContainer {
   position: relative;
-  margin-left: $page-margin;
-  margin-right: $page-margin;
   height: 96px;
   overflow: hidden;
   border-radius: 16px;
