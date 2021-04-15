@@ -25,7 +25,6 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
   const history = useHistory();
   const handleCellClick = (name: any) => {
     //console.log('fire');
-    console.log(name);
     history.push({
       pathname: name,
     });
@@ -114,7 +113,6 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
       name.isNothing()
         ? []
         : name.value.subdomains.map((key: any, i: number) => {
-            console.log('GRID CELL FIRES');
             return gridCell(key, i);
           }),
     [name],

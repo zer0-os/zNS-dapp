@@ -57,14 +57,10 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const context = useWeb3React<Web3Provider>();
 
   const { account } = context;
-  console.log(_domain, 'DOMAIN TABLE');
   const { useDomain } = useDomainCache();
-  console.log(_domain, 'TABLE VIEW DOMAIN');
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
   const history = useHistory();
-
-  console.log(JSON.stringify(name) + 'NameTable');
 
   //
   // Following functions generate random numbers to display mock data in the UI
