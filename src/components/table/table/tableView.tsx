@@ -143,7 +143,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
             asset: <Image />,
-            name: key.name,
+            name: key.name, 
             // '24Hr': randPrice(),
             // '7d': randPrice(),
             // marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
@@ -154,7 +154,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             nobids: '',
             lastsale: '',
             timestamp: '',
-            trade: <FutureButton style={{ height: 24 }}>Enlist</FutureButton>,
+            trade: <FutureButton style={{ height: 24 }}>ENLIST</FutureButton>,
           })),
 
     [name],
@@ -169,11 +169,11 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         accessor: '#',
       },
       {
-        Header: '',
+        Header: 'Name',
         accessor: 'asset',
       },
       {
-        Header: 'Name',
+        Header: '',
         accessor: 'name',
         width: '100%',
       },
@@ -236,7 +236,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         Cell: () => <div style={{ display: 'none' }}></div>,
       },
       {
-        Header: '',
+        Header: 'Trade',
         accessor: 'trade',
       },
     ],
@@ -275,10 +275,9 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />
 
-      <div className="removeTopShadow">
         {!gridView ? (
           <div className="tableContainer">
-            <table {...getTableProps()} className="subdomainsTable">
+            <table {...getTableProps()} className="subdomainsTable localTable">
               {rows.length === 0 ? null : (
                 <thead className="subdomainsHeaderGroupLocal">
                   {
@@ -346,23 +345,16 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               {rows.length !== 0 ? null : (
                 <tfoot>
                   <tr>
-                    <td
-                      style={{
-                        borderLeft: '1px solid #bd5fff',
-                        borderRight: '1px solid #bd5fff',
-                        borderBottom: '1px solid #bd5fff',
-                        borderRadius: '0px 0px 15px 15px',
-                      }}
-                    >
+                    <td>
                       <div
                         style={{
                           color: '#fff',
                           fontWeight: 'bold',
                           textAlign: 'center',
-                          marginBottom: '20px',
+                          marginTop: 20,
                         }}
                       >
-                        No domains to view
+                        Nothing to see here!
                       </div>
                     </td>
                   </tr>
@@ -373,9 +365,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         ) : (
           <Grid domain={_domain} />
         )}
-
-        <br />
-        <br />
         {/* {colors.map((color) => {
         return (
           <div
@@ -391,7 +380,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         );
       })} */}
       </div>
-    </div>
   );
 };
 

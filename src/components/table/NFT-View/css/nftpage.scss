@@ -6,25 +6,22 @@
   flex-direction: column;
 
   .showcase {
-    height: 75vh;
+    width: 100%;
+    height: 542px;
+    background-image: url("./assets/galaxy.jpeg");
     background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
     border-radius: 16px;
-    border: $lp-border;
-    box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
+    padding: 60px 57.5px;
     margin-bottom: 20px;
     display: flex;
     color: #fff;
     flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
     .showcaseIMG {
-      width: 40%;
-      height: 78%;
-      margin-right: 2%;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
+      width: 505px;
+      height: 422px;
       .NFTImageContainer {
         height: 100%;
         width: 100%;
@@ -40,22 +37,17 @@
           overflow: hidden;
           object-fit: cover;
           margin: auto;
-          border: $lp-border;
-          box-shadow: 0px 0px 10px 0px lighten(rgba($purple-shadow, 1), 20%);
         }
       }
     }
     .showcaseInfo {
-      width: 40%;
-      height: 78%;
-      margin-left: 2%;
+      height: 100%;
+      flex: 1;
+      margin-left: 191px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      align-items: center;
       .topmid {
-        width: 70%;
-        height: 60%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -68,21 +60,19 @@
           .title {
             font-size: 36px;
             font-weight: bold;
-            text-shadow: 0px 0px 10px $white-shadow;
           }
           .domain {
-            color: rgba($med-blue, 1);
+            margin-top: -4px;
             font-size: 16px;
             font-weight: bold;
             display: flex;
             flex-direction: row;
           }
           .users {
-            margin-top: 24px;
+            margin-top: 32px;
             width: 100%;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
             .creator {
               display: flex;
               flex-direction: row;
@@ -109,6 +99,7 @@
             .owner {
               display: flex;
               flex-direction: row;
+              margin-left: 100px;
               .avatar {
                 margin-right: 12px;
                 height: 36px;
@@ -135,6 +126,7 @@
           flex-direction: row;
           justify-content: left;
           width: 100%;
+          margin-top: 83px;
           .midLeft {
             display: flex;
             flex-direction: row;
@@ -170,36 +162,29 @@
       }
       .showcaseBottom {
         width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
         .shadowContainer {
-          padding-top: 0px;
-          padding-bottom: 0px;
-          padding-right: 5px;
-          padding-left: 5px;
-          width: 50%;
+          margin-left: 56px;
           height: 45px;
         }
-        .makeOffer {
-          background: rgba(0, 209, 255, 0.1);
-          box-shadow: 0px 0px 40px rgba($blue-shadow, 0.69);
-          width: 100%;
-          height: 45px;
-          font-size: 18px;
-          text-shadow: 0px 0px 10px $white-shadow;
-          font-weight: normal;
-          color: #fff;
-          border-left: 2px solid lighten(rgba($med-blue, 0.9), 60%);
-          border-right: 2px solid lighten(rgba($med-blue, 0.9), 60%);
-          border-radius: 25px;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
+        & button {
+          width: 256px;
+          height: 48px;
+          border-radius: 24px;
+          
+
           & > div {
-            text-shadow: 0px 0px 10px $white-shadow;
+            padding-top: 4px;
+            text-transform: uppercase;
+            font-size: 18px;
+            z-index: 10;
+          }
+
+          &:before {
+            width: 85%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0px 0px 40px 20px rgba(0, 178, 255, 0.9);
+            z-index: 0;            
           }
         }
       }
@@ -219,8 +204,6 @@
       background: rgba($dark-purple2, 0.2);
       backdrop-filter: blur(30px);
       border-radius: 16px;
-      border: $lp-border;
-      box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
       & > div {
         &:first-child {
           margin-top: 18px;
@@ -301,8 +284,6 @@
           background: rgba(78, 0, 132, 0.2);
           backdrop-filter: blur(30px);
           border-radius: 16px;
-          border: $lp-border;
-          box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -330,7 +311,6 @@
         background: rgba($dark-purple, 0.2);
         backdrop-filter: blur(30px);
         border-radius: 16px;
-        border: $lp-border;
         box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
         display: flex;
         flex-direction: column;
@@ -353,8 +333,6 @@
     background: rgba(78, 0, 132, 0.2);
     backdrop-filter: blur(30px);
     border-radius: 16px;
-    border: $lp-border;
-    box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
     .history {
       height: 100%;
       width: 100%;

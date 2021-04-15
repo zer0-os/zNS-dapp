@@ -15,6 +15,11 @@ import phoenix from './img/mockusers/phoenix.png';
 import vape from './img/mockusers/vape.png';
 import wilder from './img/mockusers/wilder.png';
 
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
+
+const images = ['assets/nft/greener.png', 'assets/nft/mossy.png', 'assets/nft/redpill.png', 'assets/nft/revenge.png']
+const randomImage = () => images[Math.floor(Math.random() * images.length)]
+
 interface ProfileProps {
   domain: string;
 }
@@ -38,6 +43,8 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
+
+  console.log()
 
   const showNft = () => {
     setNftVisible(true);
@@ -71,17 +78,18 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   // if (domain.isNothing()) return null;
   return (
     <div className="nftView">
-      <div className="showcase">
-        <div className="showcaseIMG">
+      <div style={{background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("assets/galaxy.jpeg")`}} className="showcase border-primary">
+        <div className="showcaseIMG border-primary">
+          <img style={{height: '100%', width: '100%'}} src={randomImage()}/>
           {/* <NFTImage domain={domain.value.domain} /> */}
         </div>
         <div className="showcaseInfo">
           <div className="topmid">
             <div className="top">
-              {/* <div className="title">{domain.value.domain.match(/[^.]+$/)}</div> */}
+              <div className="title glow-text-white">{ routes[routes.length - 1][0] }</div>
               <div className="domain">
                 <Link to={'/'} className="network">
-                  0:/ <span className="slash">/</span>
+                  0://
                 </Link>
                 {routes.length > 0 ? (
                   <div className="route">
@@ -125,15 +133,13 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           </div>
           <div className="showcaseBottom">
             <div className="shadowContainer">
-              <div className="makeOffer">
-                <div>MAKE AN OFFER</div>
-              </div>
+              <FutureButton glow>Make An Offer</FutureButton>
             </div>
           </div>
         </div>
       </div>
       <div className="info">
-        <div className="story">
+        <div className="story border-primary">
           <div>STORY</div>
           <div>
             To understand where we are, we must honor what has come before us.
@@ -156,11 +162,11 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         </div>
         <div className="quad">
           <div className="top">
-            <div className="views">
+            <div className="views border-primary">
               <div className="quadHeader">VIEWS</div>
               <div className="quadText">12,317</div>
             </div>
-            <div className="edition">
+            <div className="edition border-primary">
               <div className="quadHeader">
                 <span>EDITION</span>
                 <span className="infoButton">
@@ -170,7 +176,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
               <div className="quadText">1 of 1</div>
             </div>
           </div>
-          <div className="address">
+          <div className="address border-primary">
             <div className="quadHeader">
               <span>CONTRACT ADDRESS</span>
               <span className="infoButton">
@@ -184,7 +190,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         </div>
       </div>
 
-      <div className="bottom">
+      <div className="bottom border-primary">
         <div className="history">
           <div className="historyTitle">HISTORY</div>
           <div className="historyBox">

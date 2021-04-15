@@ -59,17 +59,9 @@ const Profile: FC = () => {
         visible={isOwnedVisible}
         onOk={ownerOk}
         onCancel={ownerCancel}
+        closable={false}
         footer={null}
-        width={'90vw'}
-        bodyStyle={{
-          // height: '50vh',
-          padding: '0',
-          paddingBottom: '25px',
-          margin: '0',
-        }}
-        style={{
-          position: 'relative',
-        }}
+        width={1320}
       >
         <ProfileNew
         // name={name}

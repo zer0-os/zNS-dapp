@@ -1,5 +1,5 @@
 import { FC } from 'react';
-// import { useDomainCache } from '../../../lib/useDomainCache';
+import { useDomainCache } from '../../../lib/useDomainCache';
 
 interface TableImageGlobalProps {
   domain: string;
@@ -8,7 +8,6 @@ interface TableImageGlobalProps {
 const TableImageGlobal: FC<TableImageGlobalProps> = ({ domain: _domain }) => {
   // const { useDomain } = useDomainCache();
   // const domainContext = useDomain(_domain);
-  // const { domain } = domainContext;
   // if (domain.isNothing()) return null;
 
   return (

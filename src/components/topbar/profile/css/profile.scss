@@ -215,15 +215,3 @@
   box-shadow: $dropShadow;
   cursor: pointer;
 }
-
-.ant-modal-content {
-  background: none;
-}
-
-.ant-modal-wrap {
-  backdrop-filter: var(--blur-2);
-}
-
-.ant-modal-mask {
-  background: rgba(0,0,0,0.1);
-}

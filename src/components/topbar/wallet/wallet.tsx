@@ -279,7 +279,7 @@ export default function Wallet() {
         footer={null}
       > */}
 
-      <div className="wallet-container">
+      <div className="wallet-container border-pink-glow">
         <div className="title">
           <h1 className="con- glow-text-white">Connect to a wallet</h1>
         </div>{' '}
@@ -291,7 +291,7 @@ export default function Wallet() {
             const connected = currentConnector === connector;
             const disabled =
               !triedEager || !!activatingConnector || connected || !!error;
-
+              console.log(name.toLowerCase() + '.png')
             return (
               <div className="btn-div" key={name}>
                 <button
@@ -312,7 +312,7 @@ export default function Wallet() {
                   <div className="name-con">
                     {name} 
                   </div>
-                  <div className="circle"></div>
+                  <div style={{backgroundImage: `url("assets/wallets/${name.toLowerCase()}.png`}} className="circle"></div>
                 </button>
               </div>
             );

@@ -1,10 +1,5 @@
 @import '../../../css/color-variables.scss';
 
-// Wasn't sure how to structure this bit for sass, so just put it at the top
-.topRight {
-  margin-right: 24px;
-}
-
 .topRight > div:not(:first-child) {
   margin-left: 16px;
 }
@@ -26,7 +21,6 @@
   right: 0;
   left: 50%;
   transform: translateX(-50%);
-  height: 157px;
   max-width: 1247px;
   min-width: 1247px;
   position: absolute;
@@ -40,34 +34,18 @@
   z-index: 40;
   .topHalfContainer {
     height: 111px;
-    background: linear-gradient(
-      0deg,
-      rgba(78, 0, 132, 0.05),
-      rgba(78, 0, 132, 0.05)
-    );
-    backdrop-filter: blur(20px);
+    backdrop-filter: var(--blur);
     /* Note: backdrop-filter has minimal browser support */
     border-radius: 16px;
 
     .topHalf {
       position: relative;
-      margin-right: 1px;
-      margin-left: 1px;
-      margin-top: 1px;
-      margin-bottom: 1px;
-      height: 55px;
-      background: linear-gradient(
-        92.24deg,
-        rgba(0, 102, 255, 0.2) 0%,
-        rgba(0, 63, 137, 0.2) 100%
-      );
-      border-top: 1px solid lighten($dark-purple, 10%);
-      border-bottom: 1px solid lighten($dark-purple, 10%);
-      border-right: 1px solid lighten($dark-purple, 10%);
-      border-left: 1px solid lighten($dark-purple, 10%);
+      padding: 11px 17px 11px 17px;
+      margin: 0;
+      background: var(--background-primary-gradient);
       border-radius: 15px 15px 15px 15px;
       // box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
-      filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
+      // filter: drop-shadow(0px 0px 10px rgba(78, 0, 132, 1));
 
       // needed to create a hack for the border gradient
       // the css in the mockups doesn't work here
@@ -106,11 +84,20 @@
       justify-content: space-between;
       align-items: center;
       .topLeft {
-        margin-left: 16px;
         // border: 1px yellow solid;
         display: flex;
         flex-direction: row;
         align-items: center;
+        font-weight: 700;
+
+        padding-top: 2px; // Network text is not quite centered from some reason
+
+        // Bad, but works for now :shrug:
+        height: 24px;
+        & * {
+          line-height: 24px !important;
+        }
+        
         .network {
           font-size: 16px;
           line-height: 19px;
@@ -287,13 +274,19 @@
       }
     }
     .bottomHalf {
-      height: 50%;
-      margin-left: 20px;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
       display: flex;
-      flex-direction: row;
-      justify-content: left;
-      align-items: center;
+      z-index: -1;
+      align-items: flex-end;
       color: rgba($med-blue, 0.5);
+      padding: 0 25px 12px 25px;
+      border-radius: var(--box-radius);
+      background: var(--background-purple-card-20);
+      
       font-size: 16px;
       font-weight: bold;
       -webkit-user-select: none; /* Chrome all / Safari all */
