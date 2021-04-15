@@ -70,12 +70,10 @@ select:focus {
   outline: 0;
 }
 
-code {
-  /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace; */
-}
-
 #root {
   position: relative;
-  padding-top: 140px;
+  padding-top: 135px;
+  max-width: 1250px;
+  min-width: 1250px;
+  margin: 0 auto;
 }

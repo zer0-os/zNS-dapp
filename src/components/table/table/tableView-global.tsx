@@ -13,6 +13,7 @@ import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
 import Grid from './grid-view';
 import './css/subdomains.scss';
+import Image from '../mockup/image';
 import { any } from 'zod';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -24,6 +25,8 @@ import cybercar from '../../css/img/cybercar.jpeg';
 import realestate from '../../css/img/realestate.jpeg';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 
+const images = [wilderavatar, neo, kitty, cybercar, realestate]
+const randomImage = () => images[Math.floor(Math.random() * images.length)]
 //
 // Please Read
 // Much data availability of the table has changed throughout versions of this app, and the MVP version removes essentially all of the data to be replaced with the Last Bid, No Bids, and Last Sales Price field. In lieu of deleting these fields, which may retain their usefulness at some point in the future, I have commented them out, so that they may be used when they prove useful. If you still have your code editor set to horizontal scrolling, than all I can say is git gud.
@@ -149,9 +152,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       name.isNothing()
         ? []
         : _.map(name.value.subdomains, (key, i) => ({
-            '#': i.toString(),
+            '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
-            image: <TableImage domain={key.name} />,
+            image: <Image />,
             network: key.name,
             // token: key + ' token',
             // '24Hr': randPrice(),
@@ -238,7 +241,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         accessor: 'lastsale',
       },
       {
-        Header: '',
+        Header: 'Trade',
         accessor: 'trade',
       },
     ],
@@ -371,16 +374,17 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             <tfoot>
               <tr>
                 <td>
-                  <div
-                    style={{
-                      color: '#fff',
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                      marginBottom: '20px',
-                    }}
-                  >
-                    No domains to view
-                  </div>
+                    <div
+                      style={{
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        marginTop: 20,
+                        paddingBottom: 30,
+                      }}
+                    >
+                      Nothing to see here!
+                    </div>
                 </td>
               </tr>
             </tfoot>

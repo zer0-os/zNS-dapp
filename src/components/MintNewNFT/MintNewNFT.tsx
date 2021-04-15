@@ -34,7 +34,7 @@ const MintNewNFT: FC<MintProps> = ({ props, name: _domain }) => {
         <h1 className={`glow-text-white`}>Mint A New NFT</h1>
         <div>
           <h2 className={`glow-text-white`}>0:/Wilder.NewNFT</h2>
-          <span>By Frank Wilder</span>
+          {/* <span>By Frank Wilder</span> */}
         </div>
       </div>
 

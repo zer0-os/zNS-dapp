@@ -134,6 +134,10 @@ h1 {
 	font-size: 22px;
 }
 
+a {
+	color: var(--color-accent-1);
+}
+
 /*
  *
  * Custom HTML Elements 
@@ -173,8 +177,14 @@ h1 {
  */
 
 .border-primary {
-	border: 1px solid var(--color-primary);
+	border: 1px solid #9340d0;
   	border-collapse: separate;
+    box-shadow: 0px 0px 10px 0px rgba(235,0,255,0.4);
+}
+
+.border-pink-glow {
+	border: 1px solid #e5baff;
+	box-shadow: 0px 0px 10px 0px #8d0099;
 }
 
 .border-rounded {
@@ -217,4 +227,30 @@ h1 {
 	backdrop-moz-filter: var(--blur);
 	backdrop-o-filter: var(--blur);
 	backdrop-ms-filter: var(--blur);
+}
+
+/* 
+ *
+ * Antd Modal Fixes
+ *
+ */
+
+.ant-modal-mask {
+	backdrop-filter: var(--blur-2);
+	background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.01) 0%, rgba(0, 0, 0, 0.01) 100%);
+}
+
+.ant-modal-content {
+	background: none;
+}
+
+.ant-modal-wrap {
+}
+
+.ant-modal-body {
+	padding: 0;
+}
+
+.ant-modal {
+	padding-bottom: 128px;
 }

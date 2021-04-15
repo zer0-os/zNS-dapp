@@ -8,11 +8,27 @@
   border-radius: 5px;
 }
 
+.tdLocal:nth-child(2) {
+  padding: 8px 0 !important;
+}
+
+.tdLocal:nth-child(3) {
+  padding-left: 16px !important;
+}
+
+.localTable tbody tr:last-of-type > td:nth-child(2) {
+  padding-bottom: 16px !important;
+}
+
+.localTable tbody tr:last-of-type > td:not(:nth-child(2)) {
+  padding-top: 8px;  
+  padding-bottom: 20px;
+}
+
 // components
 
 .pageContainerPositionFix {
   position: relative;
-  padding: 0 100px;
 }
 
 #subdomainsContainer {
@@ -21,13 +37,10 @@
   align-items: left;
   border-radius: var(--box-radius);
   overflow: hidden;
-  margin-top: 24px;
   top: 50%;
   left: 0%;
 
   backdrop-filter: var(--blur);
-
-  border: 1px solid var(--color-primary);
   border-collapse: separate;
 
   border-radius: 16px;
@@ -260,7 +273,6 @@
         // TODO: make more responsive to page size
         position: absolute;
         left: 20px;
-        top: 22px;
         height: 20px;
         width: 20px;
         border-color: none;
@@ -281,7 +293,6 @@
       .search-bar-glow {
         position: absolute;
         left: 20px;
-        top: 19px;
         height: 25px;
         width: 25px;
         border-color: none;
@@ -302,6 +313,7 @@
         background: var(--background-blue-card);
         border-radius: 16px;
         color: #fff;
+        line-height: 0px;
         &::placeholder {
           opacity: 60%;
           color: #ffffff;
@@ -630,23 +642,29 @@ table {
   thead,
   tbody {
     font-size: 16px !important;
+    font-weight: 700 !important;
 
     td:first-child,
     th:first-child {
-      padding: 0 7px;
+      padding: 0 30px 0 25px;
       text-align: center;
     }
 
     td:nth-child(2),
     th:nth-child(2) {
       width: 36px;
+      text-align: center;
     }
 
-    // Skip 3 for now
+    td:nth-child(3),
+    th:nth-child(3) {
+      padding-left: 8px;
+      width: 100%;
+    }
 
     td:nth-child(n + 4),
     th:nth-child(n + 4) {
-      text-align: right !important;
+      text-align: right;
     }
 
     td:last-child {
@@ -655,7 +673,18 @@ table {
 
     td:last-child,
     th:last-child {
-      padding-right: 32px;
+      width: 200px;
+      text-align: center;
+
+      & * {
+        margin: 0 auto;
+      }
+    }
+
+    td:last-child {
+      height: 76px;
+      display: flex;
+      align-items: center;
     }
   }
 
@@ -680,11 +709,6 @@ table {
       &:last-child:hover {
         border-radius: 0 0 16px 16px;
       }
-
-      // all columns local
-      .tdLocal,
-      .tdGlobal {
-      }
     }
   }
 }
@@ -696,6 +720,7 @@ table {
 }
 
 @import '~antd/dist/antd.css';
+
 
 .big-btn {
   display: flex;

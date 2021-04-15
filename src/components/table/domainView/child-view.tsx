@@ -123,6 +123,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             description={previewData.description}
             data={previewData}
             img={previewData.img}
+            style={{marginBottom: 24}}
           />
 
           {/* <div className="metricsBar">
@@ -140,7 +141,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
 
           {/* <AdBar domain={domain.value.name} /> */}
 
-          <div id="subdomainsContainer">
+          <div id="subdomainsContainer" className="border-primary">
             <div className="subdomainsSortBar">
               {/* <div>
             <div className="route-nav">

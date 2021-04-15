@@ -4,13 +4,6 @@
   background: none;
   width: 100%;
   position: relative;
-  border-right: $lp-border;
-  border-left: $lp-border;
-  border-bottom: $lp-border;
-  border-radius: 0px 0px 15px 15px;
-  box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
-  background: rgba($dark-purple2, 0.2);
-  backdrop-filter: blur(20px);
   padding-top: 0px;
   padding-left: 5px;
   padding-right: 5px;
@@ -59,7 +52,7 @@
         width: auto;
         color: #fff;
         font-size: 16px;
-        text-shadow: 0px 0px 10px rgba($med-blue, 0.7);
+        // text-shadow: 0px 0px 10px rgba($med-blue, 0.7);
         .topbar {
           height: 32px;
           // border: 1px blue solid;

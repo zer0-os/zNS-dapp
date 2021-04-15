@@ -26,7 +26,7 @@ const PreviewCard = (props) => {
           <div>
             <div
               className={styles.Dp}
-              // style={{backgroundImage: `url(${props.creator.img})`}}
+              style={{backgroundImage: `url(${props.creator.img})`}}
             ></div>
             <div className={styles.Member}>
               <span>{props.creator.domain}</span>
@@ -37,7 +37,7 @@ const PreviewCard = (props) => {
           <div>
             <div
               className={styles.Dp}
-              // style={{backgroundImage: `url(${props.owner.img})`}}
+              style={{backgroundImage: `url(${props.owner.img})`}}
             ></div>
             <div className={styles.Member}>
               <span>{props.owner.domain}</span>

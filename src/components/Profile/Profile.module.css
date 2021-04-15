@@ -5,7 +5,6 @@
 	color: #4D4D4D;
 	background: var(--background-blue-deck);
 	filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.5));
-	opacity: 0.9;
 }
 
 .profile h1 {

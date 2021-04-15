@@ -31,7 +31,7 @@
     top: 0;
     left: 0;
 
-    border-radius: var(--box-radius);
+    border-radius: inherit;
     border-style: solid;
     border-top-width: 0;
     border-bottom-width: 0;

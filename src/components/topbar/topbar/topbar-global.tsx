@@ -101,7 +101,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
     `}
     >
       <div className="topHalfContainer">
-        <div className="topHalf">
+        <div className="topHalf border-primary">
           <div className="topLeft">
             <Link to={'/'} className="network">
               0:/ <span className="slash">/</span>
@@ -272,13 +272,10 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
       <Modal
         visible={isMintVisible}
         onOk={mintOk}
+        closable={false}
         onCancel={mintCancel}
         footer={null}
-        bodyStyle={{
-          width: 640,
-          padding: 0,
-          margin: 0,
-        }}
+        width={640}
       >
         <MintNewNFT name={''} props={any}></MintNewNFT>
       </Modal>
@@ -287,18 +284,9 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
         visible={isWalletVisible}
         onOk={walletOk}
         onCancel={walletCancel}
+        closable={false}
         footer={null}
-        bodyStyle={{
-          height: '464px',
-          // width: '385px',
-          padding: '0',
-          margin: '0',
-        }}
-        // width="385px"
-        style={{
-          position: 'relative',
-          height: '464px',
-        }}
+        width={304}
       >
         <Wallet />
       </Modal>
