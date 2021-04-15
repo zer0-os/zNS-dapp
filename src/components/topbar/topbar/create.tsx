@@ -47,11 +47,12 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
 
   const _create = useCallback(
     (child: string) => {
+      console.log();
       if (account && contracts.isJust() && name.isJust())
         contracts.value.registry
           .registerDomain(
             name.value.name === '' ? child : name.value.id + '.' + child,
-            account,
+            name.value.id,
             account,
             account,
           )
