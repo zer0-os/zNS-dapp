@@ -43,6 +43,9 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const { account } = context;
   const contracts = useZnsContracts();
 
+  const [ nftName, setName ] = useState('')
+  const [ nftStory, setStory ] = useState('')
+
   console.log(account + 'data?');
   const _create = useCallback(
     (child: string) => {
@@ -78,6 +81,11 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     setSubdomainVisible(false);
   };
 
+  const someEventThatHappensWhenYouClickContinue = () => {
+    console.log(nftName, nftStory)
+  }
+
+
   return (
     <>
       {/* <button
@@ -102,11 +110,13 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           <div className={MintNewNFTStyle.Inputs}>
             <TextInput
               placeholder={'Name'}
+              onChange={(text: string) => setName(text)}
             />
             <TextInput
               multiline={true}
               placeholder={'Story'}
               style={{ height: 146, marginTop: 24 }}
+              onChange={(text: string) => setStory(text)}
             />
           </div>
           <div
@@ -119,8 +129,9 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
       <FutureButton 
         glow
         style={{ margin: '47px auto 0 auto' }}
-        type='submit'
-         onSubmit={handleSubmit(({ child }) => _create(child))}
+        onClick={someEventThatHappensWhenYouClickContinue}
+        // type='submit'
+        // onSubmit={() => console.log(nftStory, nftName)}
       >
         Continue
       </FutureButton>

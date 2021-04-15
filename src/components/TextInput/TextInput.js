@@ -6,11 +6,17 @@ import styles from './TextInput.module.css';
 // - Implement max characters (props.max)
 
 const TextInput = (props) => {
+
+  const handleChange = (text) => {
+    if(props.onChange) props.onChange(text.target.value)
+  }
+
   return (
     <>
       {props.multiline && (
         <textarea
           className={`${styles.TextInput} border-blue`}
+          onChange={handleChange}
           style={{
             ...props.style,
             resize: props.resizable ? 'vertical' : 'none',
@@ -21,6 +27,7 @@ const TextInput = (props) => {
       {!props.multiline && (
         <input
           className={`${styles.TextInput} border-blue`}
+          onChange={handleChange}
           style={props.style}
           placeholder={props.placeholder}
         />
