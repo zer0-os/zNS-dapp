@@ -71,9 +71,9 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
   //
   //
 
-  const gridCell = (name: string, i: any) => {
+  const gridCell = (cellInput: any, i: any) => {
     return (
-      <div onClick={() => handleCellClick(name)} className="gridCell">
+      <div onClick={() => handleCellClick(cellInput.name)} className="gridCell">
         <div className="gridCellContent">
           <div className="topbar">
             <div className="left">
@@ -89,10 +89,10 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
             </div>
           </div>
           <div className="name">
-            <div>{name.match(/[^.]+$/)}</div>
+            <div>{cellInput.name.match(/[^.]+$/)}</div>
           </div>
           <div className="image">
-            <GridImage domain={name} />
+            <GridImage domain={cellInput.name} />
           </div>
           <div className="text">
             <div>Last Traded Price</div>
@@ -113,10 +113,11 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     () =>
       name.isNothing()
         ? []
-        : domain.value.subdomains.map((key: any, i: number) => {
+        : name.value.subdomains.map((key: any, i: number) => {
+            console.log('GRID CELL FIRES');
             return gridCell(key, i);
           }),
-    [domain],
+    [name],
   );
   if (name.isNothing()) return null;
   return (

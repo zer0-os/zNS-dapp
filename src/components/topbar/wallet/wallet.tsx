@@ -29,6 +29,8 @@ import './wallet.scss';
 import usePrevious from '../../../lib/hooks/usePrevious';
 // import { METAMASK } from 'web3modal/dist/providers/injected';
 
+import ConnectToWallet from '../../ConnectToWallet/ConnectToWallet.js'
+
 enum ConnectorNames {
   MetaMask = 'MetaMask',
   Network = 'Network',
@@ -276,10 +278,12 @@ export default function Wallet() {
         onCancel={walletCancel}
         footer={null}
       > */}
+
       <div className="wallet-container">
         <div className="title">
-          <h1 className="con-">Connect to a wallet</h1>
+          <h1 className="con- glow-text-white">Connect to a wallet</h1>
         </div>{' '}
+        <hr />
         <div className="walletButtonContainer">
           {(_.keys(connectorsByName) as ConnectorNames[]).map((name) => {
             const currentConnector = connectorsByName[name];
@@ -306,9 +310,9 @@ export default function Wallet() {
                     />
                   )} */}
                   <div className="name-con">
-                    {name} <div className="circle"></div>
+                    {name} 
                   </div>
-                  <div className="btn-lines"> </div>
+                  <div className="circle"></div>
                 </button>
               </div>
             );
@@ -387,12 +391,11 @@ export default function Wallet() {
             </div>
           </>
         )}
-        <div id="overlay"></div>
+        <hr style={{marginTop: 18}}/>
         <div className="new-ETH">
-          <div className="ETH"> New to Ethereum?</div>{' '}
-          <a className="link" href="https://ethereum.org/en/wallets/">
+          <div className="ETH"> New to Ethereum?</div>
+          <a className="link" href="https://ethereum.org/en/wallets/" target='_blank'>
             Learn more about wallets
-            <hr />
           </a>
         </div>
       </div>

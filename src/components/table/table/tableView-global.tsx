@@ -16,18 +16,33 @@ import './css/subdomains.scss';
 import { any } from 'zod';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+import Nestedview from '../NFT-View/nestedNFT-view';
+import wilderavatar from '../../css/img/wilderavatar.png';
+import neo from '../../css/img/neo.jpeg';
+import kitty from '../../css/img/kitty.jpeg';
+import cybercar from '../../css/img/cybercar.jpeg';
+import realestate from '../../css/img/realestate.jpeg';
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
+
+//
+// Please Read
+// Much data availability of the table has changed throughout versions of this app, and the MVP version removes essentially all of the data to be replaced with the Last Bid, No Bids, and Last Sales Price field. In lieu of deleting these fields, which may retain their usefulness at some point in the future, I have commented them out, so that they may be used when they prove useful. If you still have your code editor set to horizontal scrolling, than all I can say is git gud.
+//
 
 interface Data {
   '#': string;
   image: any;
   network: any;
   // token: string;
-  '24Hr': any;
-  '7d': any;
-  marketcap: string;
-  volume: string;
-  supply: string;
-  last7days: any;
+  // '24Hr': any;
+  // '7d': any;
+  // marketcap: string;
+  // volume: string;
+  // supply: string;
+  // last7days: any;
+  lastbid: string;
+  nobids: string;
+  lastsale: string;
   timestamp: any;
   trade: any;
 }
@@ -143,14 +158,19 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             image: <TableImage domain={key.name} />,
             network: key.name,
             // token: key + ' token',
-            '24Hr': randPrice(),
-            '7d': randPrice(),
-            marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
-            volume: '$' + randVol(),
-            supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
-            last7days: <img src={randGraph()} alt="" />,
+            // '24Hr': randPrice(),
+            // '7d': randPrice(),
+            // marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
+            // volume: '$' + randVol(),
+            // supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
+            // last7days: <img src={randGraph()} alt="" />,
+            lastbid: '$10.27',
+            nobids: '12',
+            lastsale: '$14.34',
             timestamp: '',
-            trade: <button className="tradeButton">{randTrade()}</button>,
+            trade: (
+              <FutureButton style={{ height: 24 }}>{randTrade()}</FutureButton>
+            ),
           })),
     [name],
   );
@@ -160,19 +180,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const columns = useMemo<Column<Data>[]>(
     () => [
       {
-        Header: (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: '60px',
-              height: '40px',
-            }}
-          >
-            #
-          </div>
-        ),
+        Header: <div>#</div>,
         accessor: '#',
       },
       {
@@ -180,45 +188,58 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         accessor: 'image',
       },
       { Header: '', accessor: 'network' },
-      { Header: '24Hr', accessor: '24Hr' },
-      { Header: '7d', accessor: '7d' },
-      {
-        Header: (
-          <div className="infoHeader">
-            <span>Market Cap </span>
-            <span className="infoButton">
-              <span className="infoMark">?</span>
-            </span>
-          </div>
-        ),
+      // { Header: 'Token', accessor: 'token' },
+      // { Header: '24Hr', accessor: '24Hr' },
+      // { Header: '7d', accessor: '7d' },
+      // {
+      //   Header: (
+      //     <div className="infoHeader">
+      //       <span>Market Cap </span>
+      //       <span className="infoButton">
+      //         <span className="infoMark">?</span>
+      //       </span>
+      //     </div>
+      //   ),
 
-        accessor: 'marketcap',
+      //   accessor: 'marketcap',
+      // },
+      // {
+      //   Header: (
+      //     <div className="infoHeader">
+      //       <span>Volume </span>
+      //       <span className="infoButton">
+      //         <span className="infoMark">?</span>
+      //       </span>
+      //     </div>
+      //   ),
+      //   accessor: 'volume',
+      // },
+      // {
+      //   Header: (
+      //     <div className="infoHeader">
+      //       <span>Supply </span>
+      //       <span className="infoButton">
+      //         <span className="infoMark">?</span>
+      //       </span>
+      //     </div>
+      //   ),
+      //   accessor: 'supply',
+      // },
+      // {
+      //   Header: 'Last 7 Days',
+      //   accessor: 'last7days',
+      // },
+      {
+        Header: 'Last Bid',
+        accessor: 'lastbid',
       },
       {
-        Header: (
-          <div className="infoHeader">
-            <span>Volume </span>
-            <span className="infoButton">
-              <span className="infoMark">?</span>
-            </span>
-          </div>
-        ),
-        accessor: 'volume',
+        Header: 'No Of Bids',
+        accessor: 'nobids',
       },
       {
-        Header: (
-          <div className="infoHeader">
-            <span>Supply </span>
-            <span className="infoButton">
-              <span className="infoMark">?</span>
-            </span>
-          </div>
-        ),
-        accessor: 'supply',
-      },
-      {
-        Header: 'Last 7 Days',
-        accessor: 'last7days',
+        Header: 'Last Sale Price',
+        accessor: 'lastsale',
       },
       {
         Header: '',
@@ -368,16 +389,10 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               {rows.length !== 0 ? null : (
                 <tfoot>
                   <tr>
-                    <td
-                      style={{
-                        borderLeft: '1px solid #bd5fff',
-                        borderRight: '1px solid #bd5fff',
-                        borderBottom: '1px solid #bd5fff',
-                        borderRadius: '0px 0px 15px 15px',
-                      }}
-                    >
+                    <td>
                       <div
                         style={{
+                          background: 'red',
                           color: '#fff',
                           fontWeight: 'bold',
                           textAlign: 'center',
@@ -395,9 +410,6 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         ) : (
           <Grid domain={_domain} />
         )}
-
-        <br />
-        <br />
       </div>
     </div>
   );

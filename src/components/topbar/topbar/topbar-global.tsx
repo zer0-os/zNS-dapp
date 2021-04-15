@@ -14,6 +14,10 @@ import Shop from '../shop/shop';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import Owned from '../shop/owned';
 
+// New
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
+import MintNewNFT from '../../MintNewNFT/MintNewNFT.js';
+
 interface TopbarProps {
   name: string;
 }
@@ -51,6 +55,19 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
   };
   const walletCancel = () => {
     setWalletVisible(false);
+  };
+
+  const showMint = useCallback(() => {
+    setMintVisible(true);
+  }, []);
+
+  const [isMintVisible, setMintVisible] = useState(false);
+
+  const mintOk = () => {
+    setMintVisible(false);
+  };
+  const mintCancel = () => {
+    setMintVisible(false);
   };
 
   const activePrevious = usePrevious(active);
@@ -101,35 +118,38 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
             ) : null}
           </div>
           <div className="topRight">
-            <div className="shop-btn">
+            {/* <div className="shop-btn">
               <Shop domain={_domain} />
-            </div>
-            <div className="search-bar">
+            </div> */}
+            {/* <div className="search-bar">
               <button className="search-bar-button"></button>
               <div className="search-bar-glow"></div>
-              {/* <img src={searchIcon} alt="" className="search-bar-button" /> */}
+              <img src={searchIcon} alt="" className="search-bar-button" />
               <input
                 className="search-bar-input"
                 type="text"
                 placeholder="Search"
               />
-            </div>
-            <div className="connect-btn" onClick={showWallet}>
-              {/* <div className="dot">{active ? '🟢' : '🔵'}</div> */}
-              <div className="btn-text">
-                {active ? 'Connected' : 'Connect Wallet'}
-              </div>
-            </div>
-            <div className="profile-btn">
-              <div className="profile-btn">
-                <Profile />
-              </div>
-            </div>
-            <div className="dotMenu">
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
+            </div> */}
+            {!active ? (
+              <FutureButton onClick={showWallet}>Connnect Wallet</FutureButton>
+            ) : (
+              <>
+                <FutureButton glow onClick={showMint}>
+                  Mint New NFT
+                </FutureButton>
+                <div className="profile-btn">
+                  <div className="profile-btn">
+                    <Profile />
+                  </div>
+                </div>
+                <div className="dotMenu">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
@@ -138,7 +158,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
             onClick={() => setSelected('networks')}
             className={selected === 'networks' ? 'selected' : ''}
           >
-            Wilder Networks
+            Zero Networks
           </div>
           <div
             onClick={() => setSelected('members')}
@@ -257,6 +277,20 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
       </Modal> */}
 
       <Modal
+        visible={isMintVisible}
+        onOk={mintOk}
+        onCancel={mintCancel}
+        footer={null}
+        bodyStyle={{
+          width: 640,
+          padding: 0,
+          margin: 0,
+        }}
+      >
+        <MintNewNFT></MintNewNFT>
+      </Modal>
+
+      <Modal
         visible={isWalletVisible}
         onOk={walletOk}
         onCancel={walletCancel}
@@ -267,7 +301,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
           padding: '0',
           margin: '0',
         }}
-        width="385px"
+        // width="385px"
         style={{
           position: 'relative',
           height: '464px',

@@ -1,13 +1,47 @@
 @import '../../css/color-variables.scss';
 
 .wallet-container {
+  width: 304px;
+  border-radius: 16px;
+  overflow: hidden;
   background-color: $hzflat;
+  background: radial-gradient(56.93% 56.93% at 50% 50%, rgba(206, 183, 255, 0) 0%, rgba(103, 79, 255, 0.2) 100%);
+
+  padding: 41px 0 36px 0;
+
+  hr {
+    position: relative;
+    height: 1px;
+    width: 236px;
+    background-color: #6E10BB;
+    border: none;
+  }
+
+  hr::before {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    height: 1px;
+    width: 8px;
+    background-color: #E0BAFF;
+  }
+
+  hr::after {
+    content: ' ';
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    height: 1px;
+    width: 8px;
+    background-color: #E0BAFF;
+  }
 
   .title {
     text-align: center;
-    padding-top: 2%;
     height: 60px;
-    background: $hzflat;
 
     .con- {
       color: white;
@@ -25,39 +59,46 @@
   .btn-div {
     width: 100%;
     max-width: 100%;
+    padding: 4px 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:not(:first-of-type) {
+      margin-top: 8px;
+    }
+
+    &:hover {
+      background: rgba(60, 161, 255, 0.3);;
+    }
+
     .network-btns {
-      text-align: left;
-      margin-bottom: 10px;
       border: none;
+      padding: 0;
       background-color: transparent;
       color: white;
       width: 100%;
-      max-width: 100%;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
       .name-con {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 10px;
+        font-size: 18px;
+        margin-top: 4px;
 
         cursor: pointer;
-        &:first-child {
-          margin-left: 15px;
-        }
-        .circle {
-          margin-right: 25px;
-          border-radius: 50%;
-          background-color: purple;
-          height: 32px;
-          width: 32px;
-        }
       }
-
-      .btn-lines {
-        width: 95%;
-        height: 1px;
-        background-color: $hzflat;
+      .circle {
+        border-radius: 50%;
+        background-color: purple;
+        height: 38px;
+        width: 38px;
       }
     }
   }
@@ -68,17 +109,11 @@
   .walletButtonContainer:nth-child(1) {
   }
   .new-ETH {
+    color: white;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    align-items: baseline;
-    padding-top: 15px;
-    height: 61px;
-    color: $dark-grey;
-    background: $hzflat;
-    .link {
-      margin-left: 15px;
-      color: $dark-grey;
-    }
+    align-items: center;
+    margin-top: 18px;
   }
 }

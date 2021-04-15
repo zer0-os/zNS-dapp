@@ -23,6 +23,24 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 
+import PreviewCard from '../../PreviewCard/PreviewCard.js';
+
+const previewData = {
+  owner: {
+    domain: '0.cyber.n3o',
+    img: '/assets/wilderverse.png',
+  },
+  creator: {
+    domain: '0.wilder.frank',
+    img: '/assets/wilderverse.png',
+  },
+  name: 'Frank Wilder',
+  domain: '0://wilder.frank',
+  description:
+    'Great artists use the tools of their time to reflect the concerns of their time. Great art is the intersection of personality, opportunity and timing.',
+  img: 'assets/nft/redpill.png',
+};
+
 interface SubdomainsProps {
   domain: string;
 }
@@ -100,10 +118,22 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   if (name.isNothing()) return <div>Kurt Kobain</div>;
   return (
     <div className="pageContainerPositionFix">
+      {console.log('TESTING3')}
       {name.value.subdomains.length !== 0 ? (
         <div>
-          <div className="metricsBar">
-            {/* <div className="metricsTitle">Metrics</div> */}
+          <PreviewCard
+            name={previewData.name}
+            domain={previewData.domain}
+            creator={previewData.creator}
+            owner={previewData.owner}
+            description={previewData.description}
+            data={previewData}
+            style={{ marginLeft: 100, marginRight: 100, marginBottom: 16 }}
+            img={previewData.img}
+          />
+
+          {/* <div className="metricsBar">
+            <div className="metricsTitle">Metrics</div>
             <div className="metricsContainer">
               {metric('WILDER PRICE', '$2,000', '', '(▲01.10%)')}
               {metric('WILDER PRICE', '$1,000', '', '(▲23.11%)')}
@@ -113,7 +143,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
               {metric('WILDER PRICE', '$2,600', '', '(▲03.80%)')}
               {metric('Total Wild Holders', '12,302', '', '')}
             </div>
-          </div>
+          </div> */}
 
           {/* <AdBar domain={domain.value.name} /> */}
 
@@ -185,13 +215,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                       <img src={filtericon} alt="" />
                     </div>
                     <div className="text">Filters</div>
-                  </div>
-                  <div className="number">
-                    <div className="text">100</div>
-                    <div className="imgContainer">
-                      <img src={filterarrow} alt="" />
-                      <img src={filterarrow} alt="" />
-                    </div>
                   </div>
                   <div
                     onClick={() => toggleGridView(false)}

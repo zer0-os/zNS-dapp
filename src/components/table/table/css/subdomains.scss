@@ -1,15 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
 @import '../../../css/color-variables.scss';
 
+// Couldn't work out some of the styles so here goes
+.tdLocal .neo-demo img {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
+}
+
 // components
 
 $page-margin: 100px;
 
 .pageContainerPositionFix {
   position: relative;
-  top: 0;
-  width: 100vw;
-  // border: 1px red solid;
 }
 
 #subdomainsContainer {
@@ -17,12 +21,20 @@ $page-margin: 100px;
   flex-direction: column;
   align-items: left;
   margin: 15px;
-  margin-top: 10px;
-  padding-top: 5px;
+  border-radius: var(--box-radius);
+  overflow: hidden;
+  margin-top: 24px;
   margin-left: $page-margin;
   margin-right: $page-margin;
   top: 50%;
   left: 0%;
+
+  border-top: 1px solid #6c00b7;
+  border-bottom: 1px solid #6c00b7;
+  border-right: 1px solid #6c00b7;
+  border-left: 1px solid #6c00b7;
+  border-radius: 15px 15px 15px 15px;
+  box-shadow: 0px 0px 10px 0px #8d0099;
 }
 
 .shiftTableUp {
@@ -217,12 +229,12 @@ $page-margin: 100px;
   flex-direction: column;
   font-size: 1.3rem;
   color: #fff;
+  font-weight: 400;
   text-shadow: $textShadow;
-  margin-left: -10px;
-  margin-right: -10px;
-  padding: 10px 10px 0px 10px;
   overflow: hidden;
   .subdomainsBar {
+    padding-left: 20px;
+    padding-right: 20px;
     height: 66px;
     width: 100%;
     background: rgba(78, 0, 132, 0.2);
@@ -233,28 +245,24 @@ $page-margin: 100px;
     text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
     display: flex;
     flex-direction: row;
-    border-radius: 15px 15px 0px 0px;
-    border-right: $lp-border;
-    border-left: $lp-border;
-    border-top: $lp-border;
     // need to create a way for box shadow not to display underneath this element to seamlessly integrate with the table
     box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
     .search {
       position: relative;
       width: 100%;
       height: auto;
-      margin-right: 16px;
-      margin-left: 20px;
+      margin-right: 28px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       input[type='text'] {
+        padding-top: 4px;
         padding-left: 43px; //change it base on your desired output
       }
       .search-bar-button {
         // TODO: make more responsive to page size
         position: absolute;
-        left: 15px;
+        left: 20px;
         top: 22px;
         height: 20px;
         width: 20px;
@@ -275,7 +283,7 @@ $page-margin: 100px;
       // this creates a shadow element behind the search icon to provide a glow effect, which is otherwise difficult to achieve using an svg as a background element
       .search-bar-glow {
         position: absolute;
-        left: 12px;
+        left: 20px;
         top: 19px;
         height: 25px;
         width: 25px;
@@ -294,36 +302,29 @@ $page-margin: 100px;
         width: 100%;
         height: 33px;
         border: none;
-        background: linear-gradient(
-          94.23deg,
-          rgba(0, 123, 237, 0.2) 0%,
-          rgba(0, 83, 160, 0.2) 100%
-        );
-        backdrop-filter: blur(40px);
+        background: var(--background-blue-card);
         border-radius: 16px;
         color: #fff;
-        font-weight: bold;
         &::placeholder {
+          opacity: 60%;
           color: #ffffff;
-          text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
           font-size: 16px;
-          font-weight: bold;
           overflow: visible;
         }
       }
     }
     .buttons {
-      width: 345px;
       height: 100%;
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-content: center;
       align-items: center;
-      & > div {
+      & > div:not(:last-child) {
         margin-right: 16px;
       }
       .filter {
+        margin-right: 28px !important;
         width: 103px;
         height: 34px;
         background: linear-gradient(
@@ -561,16 +562,9 @@ table {
   // creates padding around the tableContainer to allow the shadow to bleed through on every side except the top, which is hidden by removing overflow
   position: relative;
   padding-top: 0px;
-  padding-right: 5px;
-  padding-left: 5px;
-  padding-bottom: 5px;
   overflow: hidden;
-  margin-left: -5px;
-  margin-right: -5px;
   margin-top: 10px;
   .tableContainer {
-    box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
-    border-radius: 0px 0px 15px 15px;
   }
 }
 
@@ -580,6 +574,7 @@ table {
   border-collapse: separate;
   border-spacing: 0;
   width: 100%;
+  border-radius: 0 0 var(--box-radius) var(--box-radius);
   background: rgba(78, 0, 132, 0.2);
   backdrop-filter: blur(20px);
   // subdomains header
@@ -605,19 +600,6 @@ table {
       }
     }
 
-    // th = header cell
-    tr th:first-child {
-      border-left: $lp-border;
-    }
-    // trade button
-    tr th:last-child {
-      border-right: $lp-border;
-      & > div {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-      }
-    }
     .infoHeader {
       display: flex;
       flex-direction: row;
@@ -644,186 +626,69 @@ table {
       }
     }
   }
-  .subdomainsHeaderGroupLocal {
-    tr th {
-      text-align: left;
-      &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
-        text-align: right;
-      }
-    }
+
+  thead th {
+    padding: 11px 0;
   }
-  .subdomainsHeaderGroupGlobal {
-    tr th {
-      &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
-        text-align: right;
-      }
+
+  // Selecting row by row (including headers)
+  thead,
+  tbody {
+    font-size: 16px !important;
+
+    td:first-child,
+    th:first-child {
+      padding: 0 7px;
+      text-align: center;
+    }
+
+    td:nth-child(2),
+    th:nth-child(2) {
+      width: 36px;
+    }
+
+    // Skip 3 for now
+
+    td:nth-child(n + 4),
+    th:nth-child(n + 4) {
+      text-align: right !important;
+    }
+
+    td:last-child {
+      float: right;
+    }
+
+    td:last-child,
+    th:last-child {
+      padding-right: 32px;
     }
   }
 
   // table
   tbody {
+    border-radius: 16;
+    overflow: hidden;
+
     // all rows
     tr {
-      height: 72px !important;
       cursor: pointer;
-      // top border
-      &::after {
-        content: '';
-        background: rgba($slate, 0.2);
-        position: absolute;
-        // bottom: 0;
-        left: 1%;
-        width: 98%;
-        height: 1px;
-      }
-      // every rightmost cell
-      & td:last-child {
-        border-right: $lp-border;
-        .tradeButton {
-          color: $med-blue;
-          border-collapse: separate;
-          border-top: none;
-          border-bottom: none;
-          border-right: 1px solid $med-blue;
-          border-left: 1px solid $med-blue;
-          border-radius: 15px;
-          background: linear-gradient(
-            94.23deg,
-            rgba($med-blue, 0.2) 0%,
-            rgba(30, 81, 128, 0.2) 100%
-          );
-          //  box-shadow: 0px 0px 10px rgba($med-blue, 0.7);
-          // probably change this
-          width: 110px;
-          height: 24px;
-          transition: 0.6s;
-          text-shadow: 0px 0px 10px $white-shadow;
-          font-size: 14px;
-          cursor: pointer;
-          &:hover {
-            background: rgba(#5f8cff, 0.2);
-          }
-        }
-      }
-      // every leftmost cell
-      & td:first-child {
-        text-align: center;
-        border-left: $lp-border;
-      }
-      // every second row
-      &:nth-child(2n) {
-        transition: 0.6s;
-        &:hover td {
-          background: rgba($bright, 0.2) !important;
-        }
-        td {
-          transition: 0.6s;
-        }
-      }
-      // first row and every other row
-      &:nth-child(2n-1) {
-        &:hover td {
-          background: rgba($bright, 0.2) !important;
-        }
-        td {
-          transition: 0.6s;
-        }
-      }
-      // bottom  row
-      &:last-child td {
-        // bottom right cell
-        border-bottom: $lp-border;
-        &:last-child {
-          border-radius: 0px 0px 12px 0px;
-        }
-        // bottom left cell
-        &:first-child {
-          border-radius: 0px 0px 0px 12px;
-        }
-      }
-      // all columns local
-      .tdLocal {
-        height: 120px;
-        &:not(:first-child):not(:nth-child(3)):not(:last-child) {
-          text-align: right;
-        }
-        &:last-child {
-          text-align: center;
-        }
-        &:first-child {
-          color: #fff;
-          font-weight: bold;
-        }
 
-        &:nth-child(3) {
-          color: #fff;
-          text-align: left;
-        }
-        &:nth-child(4) {
-          color: #fff;
-        }
-        &:nth-child(5) {
-          color: #fff;
-        }
-        &:nth-child(6) {
-          color: #fff;
-        }
-        &:nth-child(7) {
-          color: #fff;
-        }
-        &:nth-child(8) {
-          color: #fff;
-        }
+      td {
+        padding: 16px 0;
       }
-      // all columns global
+
+      &:hover {
+        transition: 0.2s;
+        background: rgba($bright, 0.2) !important;
+      }
+
+      &:last-child:hover {
+        border-radius: 0 0 16px 16px;
+      }
+
+      // all columns local
+      .tdLocal,
       .tdGlobal {
-        // height: 81px;
-        // every cell except the third
-        &:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)):not(:last-child) {
-          text-align: right;
-        }
-        &:last-child {
-          text-align: center;
-        }
-        &:first-child {
-          // color: $dark-grey;
-          color: #fff;
-          font-weight: bold;
-        }
-        &:nth-child(2) {
-          img {
-            border-radius: 50%;
-            height: 64px;
-            width: 64px;
-          }
-        }
-        &:nth-child(3) {
-          color: #fff;
-          position: relative;
-          // placeholder for token ticker
-          &::after {
-            content: 'TICK';
-            position: relative;
-            font-weight: bold;
-            color: $light-blue;
-            left: 5px;
-          }
-        }
-        &:nth-child(4) {
-          color: #fff;
-        }
-        &:nth-child(5) {
-          color: #fff;
-        }
-        &:nth-child(6) {
-          color: #fff;
-        }
-        &:nth-child(7) {
-          color: $sky-blue;
-        }
-        &:nth-child(8) {
-          color: #fff;
-        }
       }
     }
   }

@@ -1,0 +1,78 @@
+.NFTCard {
+    width: 388px;
+    padding: 18px 20px;
+
+    background-color: var(--background-purple-light-20)
+}
+
+.Creator {
+    display: flex;
+    align-items: center;
+
+    color: white;
+}
+
+.Creator > div {
+    height: 32px;
+    width: 32px;
+
+
+    background: var(--background-purple-card);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    border-radius: 50%;
+}
+
+.Creator > span {
+    margin-left: 8px;
+}
+
+.NFTCard > h5 {
+    margin-top: 12px;
+
+    color: white;
+    font-size: 24px;
+}
+
+.NFT {
+    width: 348px;
+    height: 348px;
+    margin-top: 16px;
+
+    background: var(--background-blue-card);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.Foot {
+    display: flex;
+    justify-content: space-between;
+}
+
+.Foot > div {
+    display: flex;
+    flex-direction: column;
+
+    margin-top: 16px;
+}
+
+.Foot > div:not(:first-child) {
+    text-align: right;
+}
+
+.Foot > div > span:first-child {
+    font-weight: 700;
+    color: var(--color-accent-1);
+
+    text-transform: uppercase;
+}
+
+.Foot > div > span:last-child {
+    margin-top: 8px;
+
+    font-size: 24px;
+    color: white;
+}

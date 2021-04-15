@@ -1,12 +1,35 @@
 @import '../../../css/color-variables.scss';
 
+// Wasn't sure how to structure this bit for sass, so just put it at the top
+.topRight {
+  margin-right: 24px;
+}
+
+.topRight > div:not(:first-child) {
+  margin-left: 16px;
+}
+
+.topRight .profilepic {
+  height: 32px;
+  width: 32px;
+  margin: 0;
+}
+
+.topRight .profile-btn {
+  height: 32px;
+  width: 32px;
+}
+
 .topbarContainerNeo {
   // border: 1px red solid;
   top: 0;
   right: 0;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   height: 157px;
-  position: fixed;
+  max-width: 1247px;
+  min-width: 1247px;
+  position: absolute;
   // -webkit-transition: background-color 0.5s ease-in-out;
   // -moz-transition: background-color 0.5s ease-in-out;
   // -ms-transition: background-color 0.5s ease-in-out;
@@ -16,9 +39,6 @@
   // z-index: 20;
   z-index: 40;
   .topHalfContainer {
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 29px;
     height: 111px;
     background: linear-gradient(
       0deg,
@@ -250,7 +270,8 @@
           cursor: pointer;
         }
         .dotMenu {
-          margin-right: 24px;
+          padding-right: 5px;
+          padding-left: 5px;
           height: 18px;
           display: flex;
           flex-direction: column;
