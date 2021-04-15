@@ -24,7 +24,7 @@ const GridImage: FC<GridImageProps> = ({ domain: _domain }) => {
       style={{ maxHeight: '100%' }}
       onLoad={_onLoad}
       className={` ${loadedIMG}`}
-      src={name.value.metadata.image}
+      src={name.value.metadata}
       alt=""
     />
   );

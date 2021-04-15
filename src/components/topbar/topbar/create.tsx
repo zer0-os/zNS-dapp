@@ -13,7 +13,7 @@ import styles from '../../TextInput/TextInput.module.css';
 
 import MintNewNFTStyle from '../../MintNewNFT/MintNewNFT.module.css';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
-import TextInput from '../../TextInput/TextInput.js'
+import TextInput from '../../TextInput/TextInput.js';
 
 interface CreateProps {
   domainId: string;
@@ -22,9 +22,7 @@ interface CreateProps {
 }
 
 const schema = z.object({
-  child: z
-    .string()
-    .regex(subdomainRegex, 'Subdomain must only contain alphanumeric letters'),
+  child: z.string(),
 });
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
@@ -43,20 +41,15 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const { account } = context;
   const contracts = useZnsContracts();
 
-  const [ nftName, setName ] = useState('')
-  const [ nftStory, setStory ] = useState('')
+  const [nftName, setName] = useState('');
+  const [nftStory, setStory] = useState('');
 
   console.log(account + 'data?');
   const _create = useCallback(
     (child: string) => {
       if (account && contracts.isJust() && name.isJust())
         contracts.value.registry
-          .registerDomain(
-            name.value.name === '' ? child : name.value.name + '.' + child,
-            account,
-            account,
-            account,
-          )
+          .registerDomain(name.value.name, account, account, account)
           .then((txr: any) => txr.wait(1))
           .then(() => {
             refetchDomain();
@@ -82,9 +75,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   };
 
   const someEventThatHappensWhenYouClickContinue = () => {
-    console.log(nftName, nftStory)
-  }
-
+    console.log(nftName, nftStory);
+  };
 
   return (
     <>
@@ -103,14 +95,18 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         footer={null}
       > */}
 
-
-
       <form className={MintNewNFTStyle.Section}>
         <div style={{ display: 'flex' }}>
           <div className={MintNewNFTStyle.Inputs}>
-            <TextInput
-              placeholder={'Name'}
-              onChange={(text: string) => setName(text)}
+            <input
+              className={`${styles.TextInput} border-blue`}
+              style={{
+                ...props.style,
+                resize: props.resizable ? 'vertical' : 'none',
+              }}
+              placeholder={'name'}
+              name={'child'}
+              ref={register}
             />
             <TextInput
               multiline={true}
@@ -126,25 +122,18 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           ></div>
         </div>
       </form>
-      <FutureButton 
+      <FutureButton
         glow
         style={{ margin: '47px auto 0 auto' }}
-        onClick={someEventThatHappensWhenYouClickContinue}
-        // type='submit'
-        // onSubmit={handleSubmit(({ child }) => _create(child))}
+        // onClick={someEventThatHappensWhenYouClickContinue}
+        type="submit"
+        onSubmit={handleSubmit(({ child }) => _create(child))}
       >
         Continue
       </FutureButton>
 
-
       {/* <div className="create-button">
-        <button
-          type="submit"
-          onSubmit={handleSubmit(({ child }) => _create(child))}
-        >
-          {' '}
-          Mint NFT
-        </button>
+      
         <input
           className={`${styles.TextInput} border-blue`}
           style={{
