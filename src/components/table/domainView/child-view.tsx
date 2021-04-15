@@ -119,6 +119,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   return (
     <div className="pageContainerPositionFix">
       {console.log('TESTING3')}
+      {console.log('TESTSUB ', name.value)}
       {name.value.subdomains.length !== 0 ? (
         <div>
           <PreviewCard
