@@ -38,6 +38,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const [hover, setHover] = useState('');
   // const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
+  console.log(JSON.stringify(name) + 'CHILDVIEWNAME');
   console.log(name, 'CHILDNAME');
   const routes = _.transform(
     location.pathname
@@ -96,10 +97,10 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     );
   };
 
-  if (name.isNothing()) return null;
+  if (name.isNothing()) return <div>Kurt Kobain</div>;
   return (
     <div className="pageContainerPositionFix">
-      {0 !== 0 ? (
+      {name.value.subdomains.length !== 0 ? (
         <div>
           <div className="metricsBar">
             {/* <div className="metricsTitle">Metrics</div> */}
@@ -246,15 +247,12 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
               </div>
             </div>
 
-            {/* <TableView
-              domain={domain.value.name}
-              gridView={gridView}
-              search={search}
-            /> */}
+            <TableView domain={_domain} gridView={gridView} search={search} />
           </div>
         </div>
-      ) : // <NFTPage domain={domain.value.name} />
-      null}
+      ) : (
+        <NFTPage domain={_domain} />
+      )}
     </div>
   );
 };
