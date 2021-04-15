@@ -11,6 +11,10 @@ import { DomainContext } from '../../../lib/useDomainStore';
 import { Modal, Button } from 'antd';
 import styles from '../../TextInput/TextInput.module.css';
 
+import MintNewNFTStyle from '../../MintNewNFT/MintNewNFT.module.css';
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
+import TextInput from '../../TextInput/TextInput.js'
+
 interface CreateProps {
   domainId: string;
   domainContext: DomainContext;
@@ -90,7 +94,39 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         onCancel={subdomainCancel}
         footer={null}
       > */}
-      <div className="create-button">
+
+
+
+      <form className={MintNewNFTStyle.Section}>
+        <div style={{ display: 'flex' }}>
+          <div className={MintNewNFTStyle.Inputs}>
+            <TextInput
+              placeholder={'Name'}
+            />
+            <TextInput
+              multiline={true}
+              placeholder={'Story'}
+              style={{ height: 146, marginTop: 24 }}
+            />
+          </div>
+          <div
+            className={`${MintNewNFTStyle.NFT} border-rounded`}
+            // Template background for now
+            style={{ backgroundImage: `url(assets/nft/redpill.png)` }}
+          ></div>
+        </div>
+      </form>
+      <FutureButton 
+        glow
+        style={{ margin: '47px auto 0 auto' }}
+        type='submit'
+         onSubmit={handleSubmit(({ child }) => _create(child))}
+      >
+        Continue
+      </FutureButton>
+
+
+      {/* <div className="create-button">
         <button
           type="submit"
           onSubmit={handleSubmit(({ child }) => _create(child))}
@@ -108,7 +144,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           name={'child'}
           ref={register}
         />
-      </div>
+      </div> */}
       {/* </Modal> */}
     </>
   );

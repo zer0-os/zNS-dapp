@@ -38,30 +38,12 @@ const MintNewNFT: FC<MintProps> = ({ props, name: _domain }) => {
         </div>
       </div>
 
-      <form className={MintNewNFTStyle.Section}>
-        <div style={{ display: 'flex' }}>
-          <div className={MintNewNFTStyle.Inputs}>
-            <Create
-              props={props}
-              domainId={name.value.id}
-              domainContext={domainContext}
-            />
-            <TextInput
-              multiline={true}
-              placeholder={'Story'}
-              style={{ height: 146, marginTop: 24 }}
-            />
-          </div>
-          <div
-            className={`${MintNewNFTStyle.NFT} border-rounded`}
-            // Template background for now
-            style={{ backgroundImage: `url(assets/nft/redpill.png)` }}
-          ></div>
-        </div>
-      </form>
-      <FutureButton style={{ margin: '47px auto 0 auto' }}>
-        Continue
-      </FutureButton>
+
+      <Create
+        props={props}
+        domainId={name.value.id}
+        domainContext={domainContext}
+      />
       {/* <ToggleSection 
 				open={step === 2}
 				style={{marginTop: 51}}

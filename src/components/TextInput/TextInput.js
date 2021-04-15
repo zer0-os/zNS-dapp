@@ -9,7 +9,7 @@ const TextInput = (props) => {
   return (
     <>
       {props.multiline && (
-        <input
+        <textarea
           className={`${styles.TextInput} border-blue`}
           style={{
             ...props.style,
