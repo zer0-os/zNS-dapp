@@ -16,8 +16,6 @@ const getDomainId = (name: string): string => {
   if (name === '' || undefined || null) {
     return ethers.constants.HashZero;
   }
-  // const nameHash = keccak256(coder.encode(['bytes32'], [name]));
-  // const Domain_ID = ethers.utils.id(name);
 
   const domains = name.split('.');
 

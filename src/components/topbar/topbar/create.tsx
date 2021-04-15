@@ -5,10 +5,9 @@ import { useZnsContracts } from '../../../lib/contracts';
 import * as z from 'zod';
 import { zodResolver } from '../../../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
-// import { DomainContext } from '../../../lib/useDomainStore';
 import { subdomainRegex } from '../../../lib/validation/validators';
 import { DomainContext } from '../../../lib/useDomainStore';
-import { Modal, Button } from 'antd';
+import { Modal, Button, Input } from 'antd';
 import styles from '../../TextInput/TextInput.module.css';
 
 import MintNewNFTStyle from '../../MintNewNFT/MintNewNFT.module.css';
@@ -22,34 +21,40 @@ interface CreateProps {
 }
 
 const schema = z.object({
-  child: z.string(),
+  child: z
+    .string()
+    .regex(subdomainRegex, 'Subdomain must only contain alphanumeric letters'),
 });
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const { refetchDomain, name } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isSubdomainVisible, setSubdomainVisible] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [imageUrl, setImageUrl] = useState('ipfs://Qmimage');
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const [isSubdomainVisible, setSubdomainVisible] = useState(false);
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const [imageUrl, setImageUrl] = useState('ipfs://Qmimage');
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
   // TODO: show user what they're doing wrong
-  // useEffect(() => console.log(errors), [errors]);
+  useEffect(() => console.log(errors), [errors]);
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
 
-  const [nftName, setName] = useState('');
-  const [nftStory, setStory] = useState('');
+  // const [nftName, setName] = useState('');
+  // const [nftStory, setStory] = useState('');
 
-  console.log(account + 'data?');
   const _create = useCallback(
     (child: string) => {
       if (account && contracts.isJust() && name.isJust())
         contracts.value.registry
-          .registerDomain(name.value.name, account, account, account)
+          .registerDomain(
+            name.value.name === '' ? child : name.value.id + '.' + child,
+            account,
+            account,
+            account,
+          )
           .then((txr: any) => txr.wait(1))
           .then(() => {
             refetchDomain();
@@ -58,25 +63,25 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     [account, contracts, name, refetchDomain],
   );
 
-  if (name.isNothing()) return null;
+  if (name.isNothing() || account !== account) return null;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showSubdomain = () => {
-    setSubdomainVisible(true);
-  };
+  // const showSubdomain = () => {
+  //   setSubdomainVisible(true);
+  // };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const subdomainOk = () => {
-    setSubdomainVisible(false);
-  };
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const subdomainOk = () => {
+  //   setSubdomainVisible(false);
+  // };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const subdomainCancel = () => {
-    setSubdomainVisible(false);
-  };
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const subdomainCancel = () => {
+  //   setSubdomainVisible(false);
+  // };
 
-  const someEventThatHappensWhenYouClickContinue = () => {
-    console.log(nftName, nftStory);
-  };
+  // const someEventThatHappensWhenYouClickContinue = () => {
+  //   // console.log(nftName, nftStory);
+  // };
 
   return (
     <>
@@ -105,15 +110,22 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
                 resize: props.resizable ? 'vertical' : 'none',
               }}
               placeholder={'name'}
-              name={'child'}
+              name={'input'}
               ref={register}
             />
-            <TextInput
+            <button
+              type="submit"
+              onSubmit={handleSubmit(({ child }) => _create(child))}
+            >
+              {' '}
+              Mint NFT
+            </button>
+            {/* <TextInput
               multiline={true}
               placeholder={'Story'}
               style={{ height: 146, marginTop: 24 }}
               onChange={(text: string) => setStory(text)}
-            />
+            /> */}
           </div>
           <div
             className={`${MintNewNFTStyle.NFT} border-rounded`}
@@ -122,7 +134,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           ></div>
         </div>
       </form>
-      <FutureButton
+
+      {/* <FutureButton
         glow
         style={{ margin: '47px auto 0 auto' }}
         // onClick={someEventThatHappensWhenYouClickContinue}
@@ -130,7 +143,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         onSubmit={handleSubmit(({ child }) => _create(child))}
       >
         Continue
-      </FutureButton>
+      </FutureButton> */}
 
       {/* <div className="create-button">
       

@@ -21,6 +21,7 @@ function getLibrary(provider: any): Web3Provider {
   library.pollingInterval = 12000;
   return library;
 }
+
 function App() {
   return (
     <Router>

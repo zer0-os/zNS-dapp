@@ -291,7 +291,7 @@ export default function Wallet() {
             const connected = currentConnector === connector;
             const disabled =
               !triedEager || !!activatingConnector || connected || !!error;
-              console.log(name.toLowerCase() + '.png')
+            console.log(name.toLowerCase() + '.png');
             return (
               <div className="btn-div" key={name}>
                 <button
@@ -303,22 +303,25 @@ export default function Wallet() {
                   }}
                 >
                   {/* displays spinner while a wallet is clicked and being confirmed by the user */}
-                  {/* {activating && (
+                  {activating && (
                     <Spinner
                       color={'black'}
                       style={{ height: '25%', marginLeft: '-1rem' }}
                     />
-                  )} */}
-                  <div className="name-con">
-                    {name} 
-                  </div>
-                  <div style={{backgroundImage: `url("assets/wallets/${name.toLowerCase()}.png`}} className="circle"></div>
+                  )}
+                  <div className="name-con">{name}</div>
+                  <div
+                    style={{
+                      backgroundImage: `url("assets/wallets/${name.toLowerCase()}.png`,
+                    }}
+                    className="circle"
+                  ></div>
                 </button>
               </div>
             );
           })}
         </div>
-        {/* {(active || error) && (
+        {(active || error) && (
           <div key="network-button" className="button-target">
             <button
               className="network-d-btn"
@@ -330,7 +333,7 @@ export default function Wallet() {
               Deactivate
             </button>
           </div>
-        )} */}
+        )}
         {!!error && <h4>{getErrorMessage(error)}</h4>}
         {!!(library && account) &&
           connector === connectorsByName[ConnectorNames.Network] &&
@@ -391,10 +394,14 @@ export default function Wallet() {
             </div>
           </>
         )}
-        <hr style={{marginTop: 18}}/>
+        <hr style={{ marginTop: 18 }} />
         <div className="new-ETH">
           <div className="ETH"> New to Ethereum?</div>
-          <a className="link" href="https://ethereum.org/en/wallets/" target='_blank'>
+          <a
+            className="link"
+            href="https://ethereum.org/en/wallets/"
+            target="_blank"
+          >
             Learn more about wallets
           </a>
         </div>
