@@ -29,7 +29,7 @@ import './wallet.scss';
 import usePrevious from '../../../lib/hooks/usePrevious';
 // import { METAMASK } from 'web3modal/dist/providers/injected';
 
-import ConnectToWallet from '../../ConnectToWallet/ConnectToWallet.js'
+// import ConnectToWallet from '../../ConnectToWallet/ConnectToWallet.js'
 
 enum ConnectorNames {
   MetaMask = 'MetaMask',
