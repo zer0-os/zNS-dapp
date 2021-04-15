@@ -25,12 +25,11 @@
   top: 0;
   right: 0;
   left: 50%;
-  margin-top: 29px;
   transform: translateX(-50%);
   height: 157px;
   max-width: 1247px;
   min-width: 1247px;
-  position: fixed;
+  position: absolute;
   // -webkit-transition: background-color 0.5s ease-in-out;
   // -moz-transition: background-color 0.5s ease-in-out;
   // -ms-transition: background-color 0.5s ease-in-out;
