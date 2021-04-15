@@ -263,7 +263,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     //console.log('fire');
     //console.log(row);
     history.push({
-      pathname: row.original.key,
+      pathname: row.original.key.name,
     });
   };
 
