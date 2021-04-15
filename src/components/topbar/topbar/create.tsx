@@ -131,7 +131,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         style={{ margin: '47px auto 0 auto' }}
         onClick={someEventThatHappensWhenYouClickContinue}
         // type='submit'
-        // onSubmit={() => console.log(nftStory, nftName)}
+        // onSubmit={handleSubmit(({ child }) => _create(child))}
       >
         Continue
       </FutureButton>
