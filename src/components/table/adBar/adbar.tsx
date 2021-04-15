@@ -50,13 +50,13 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
       }
     }, 1000);
   };
-  useEffect(() => {
-    const someref = interval.current;
-    startTimer();
-    return () => {
-      clearInterval(someref);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const someref = interval.current;
+  //   startTimer();
+  //   return () => {
+  //     clearInterval(someref);
+  //   };
+  // }, []);
 
   const routes = _.transform(
     location.pathname
@@ -94,8 +94,10 @@ const AdBar: FC<AdBarProps> = ({ domain: _domain }) => {
             </div>
           </div>
           <div className="desc">
-            <span className='glow-text-blue'>A new artwork '<span>Futopia</span>' by '<span>Frank Wilder</span>'
-            is dropping soon.</span>
+            <span className="glow-text-blue">
+              A new artwork '<span>Futopia</span>' by '<span>Frank Wilder</span>
+              ' is dropping soon.
+            </span>
           </div>
         </div>
       </div>
