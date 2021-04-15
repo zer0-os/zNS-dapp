@@ -16,7 +16,8 @@ import Owned from '../shop/owned';
 
 // New
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
-import MintNewNFT from '../../MintNewNFT/MintNewNFT.js';
+import MintNewNFT from '../../MintNewNFT/MintNewNFT';
+import { any } from 'zod';
 
 interface TopbarProps {
   name: string;
@@ -143,7 +144,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
                     <Profile />
                   </div>
                 </div>
-                <div className="dotMenu">
+                <div className="dotMenu" onClick={showWallet}>
                   <div></div>
                   <div></div>
                   <div></div>
@@ -158,32 +159,24 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
             onClick={() => setSelected('networks')}
             className={selected === 'networks' ? 'selected' : ''}
           >
-            Zero Networks
+            New Drop
           </div>
           <div
             onClick={() => setSelected('members')}
             className={selected === 'members' ? 'selected' : ''}
-          >
-            Members
-          </div>
+          ></div>
           <div
             onClick={() => setSelected('nfts')}
             className={selected === 'nfts' ? 'selected' : ''}
-          >
-            NFTs
-          </div>
+          ></div>
           <div
             onClick={() => setSelected('daos')}
             className={selected === 'daos' ? 'selected' : ''}
-          >
-            DAOs
-          </div>
+          ></div>
           <div
             onClick={() => setSelected('universes')}
             className={selected === 'universes' ? 'selected' : ''}
-          >
-            Universes
-          </div>
+          ></div>
         </div>
       </div>
 
@@ -287,7 +280,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
           margin: 0,
         }}
       >
-        <MintNewNFT></MintNewNFT>
+        <MintNewNFT name={''} props={any}></MintNewNFT>
       </Modal>
 
       <Modal

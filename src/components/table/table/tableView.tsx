@@ -150,9 +150,9 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // volume: '$' + randVol(),
             // supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
             // last7days: <img src={randGraph()} alt="" />,
-            lastbid: '10',
-            nobids: '12',
-            lastsale: '$14',
+            lastbid: '',
+            nobids: '',
+            lastsale: '',
             timestamp: '',
             trade: <FutureButton style={{ height: 24 }}>Enlist</FutureButton>,
           })),
@@ -218,15 +218,15 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       //   accessor: 'last7days',
       // },
       {
-        Header: 'Last Bid',
+        Header: '',
         accessor: 'lastbid',
       },
       {
-        Header: 'No of Bids',
+        Header: '',
         accessor: 'nobids',
       },
       {
-        Header: 'Last Sale Price',
+        Header: '',
         accessor: 'lastsale',
       },
       {
@@ -236,7 +236,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         Cell: () => <div style={{ display: 'none' }}></div>,
       },
       {
-        Header: 'Trade',
+        Header: '',
         accessor: 'trade',
       },
     ],

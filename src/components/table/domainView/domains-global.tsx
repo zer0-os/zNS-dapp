@@ -107,7 +107,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
         </div>
       </div> */}
 
-      <AdBar domain={_domain} />
+      {/* <AdBar domain={_domain} /> */}
 
       <div id="subdomainsContainer">
         <div className="subdomainsSortBar">

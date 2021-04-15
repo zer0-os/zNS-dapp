@@ -81,7 +81,11 @@ const Stakingview: FC<NestedProps> = ({ domain: _domain }) => {
                 Mint NFT
               </button>
               <input name={'child'} ref={register} placeholder="Domain" /> */}
-              <Create domainId={_domain} domainContext={domainContext} />
+              <Create
+                props={''}
+                domainId={_domain}
+                domainContext={domainContext}
+              />
             </div>
           </div>
           <div className="continueBar">

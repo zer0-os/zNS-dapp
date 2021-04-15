@@ -9,10 +9,12 @@ import { useForm } from 'react-hook-form';
 import { subdomainRegex } from '../../../lib/validation/validators';
 import { DomainContext } from '../../../lib/useDomainStore';
 import { Modal, Button } from 'antd';
+import styles from '../../TextInput/TextInput.module.css';
 
 interface CreateProps {
   domainId: string;
   domainContext: DomainContext;
+  props: any;
 }
 
 const schema = z.object({
@@ -21,7 +23,7 @@ const schema = z.object({
     .regex(subdomainRegex, 'Subdomain must only contain alphanumeric letters'),
 });
 
-const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
+const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const { refetchDomain, name } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isSubdomainVisible, setSubdomainVisible] = useState(false);
@@ -37,6 +39,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
   const { account } = context;
   const contracts = useZnsContracts();
 
+  console.log(account + 'data?');
   const _create = useCallback(
     (child: string) => {
       if (account && contracts.isJust() && name.isJust())
@@ -55,8 +58,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
     [account, contracts, name, refetchDomain],
   );
 
-  if (name.isNothing() || name.value.owner !== account) return null;
-
+  if (name.isNothing()) return null;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const showSubdomain = () => {
     setSubdomainVisible(true);
@@ -81,24 +83,33 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext }) => {
       >
         Create domain
       </button> */}
-      <Modal
+      {/* <Modal
         title="subdomain"
         visible={isSubdomainVisible}
         onOk={subdomainOk}
         onCancel={subdomainCancel}
         footer={null}
-      >
-        <div className="create-button">
-          <button
-            type="submit"
-            onSubmit={handleSubmit(({ child }) => _create(child))}
-          >
-            {' '}
-            Mint NFT
-          </button>
-          <input name={'child'} ref={register} placeholder="Domain" />
-        </div>
-      </Modal>
+      > */}
+      <div className="create-button">
+        <button
+          type="submit"
+          onSubmit={handleSubmit(({ child }) => _create(child))}
+        >
+          {' '}
+          Mint NFT
+        </button>
+        <input
+          className={`${styles.TextInput} border-blue`}
+          style={{
+            ...props.style,
+            resize: props.resizable ? 'vertical' : 'none',
+          }}
+          placeholder={props.placeholder}
+          name={'child'}
+          ref={register}
+        />
+      </div>
+      {/* </Modal> */}
     </>
   );
 };

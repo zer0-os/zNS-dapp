@@ -160,9 +160,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // volume: '$' + randVol(),
             // supply: `${randThreeS()},${randThree()},${randThree()} TICK`,
             // last7days: <img src={randGraph()} alt="" />,
-            lastbid: '$10.27',
-            nobids: '12',
-            lastsale: '$14.34',
+            lastbid: '',
+            nobids: '',
+            lastsale: '',
             timestamp: '',
             trade: (
               <FutureButton style={{ height: 24 }}>{randTrade()}</FutureButton>
@@ -226,19 +226,19 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       //   accessor: 'last7days',
       // },
       {
-        Header: 'Last Bid',
+        Header: '',
         accessor: 'lastbid',
       },
       {
-        Header: 'No Of Bids',
+        Header: '',
         accessor: 'nobids',
       },
       {
-        Header: 'Last Sale Price',
+        Header: '',
         accessor: 'lastsale',
       },
       {
-        Header: 'Trade',
+        Header: '',
         accessor: 'trade',
       },
     ],
@@ -302,93 +302,93 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   return (
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />
-        {!gridView ? (
-            <table {...getTableProps()} className="subdomainsTable">
-              {rows.length === 0 ? null : (
-                <thead className="subdomainsHeaderGroupGlobal">
-                  {
-                    // Loop over the header rows
-                    headerGroups.map((headerGroup) => (
-                      // Apply the header row props
-                      <tr
-                        className="subdomainsHeaderTR"
-                        {...headerGroup.getHeaderGroupProps()}
-                      >
-                        {
-                          // Loop over the headers in each row
-                          headerGroup.headers.map((column) => (
-                            // Apply the header cell props
-                            <th
-                              className="subdomainsHeaderTH"
-                              {...column.getHeaderProps()}
-                            >
-                              {
-                                // Render the header
-                                column.render('Header')
-                              }
-                            </th>
-                          ))
-                        }
-                      </tr>
-                    ))
-                  }
-                </thead>
-              )}
-              {/* Apply the table body props */}
-              <tbody {...getTableBodyProps()}>
-                {/*console.log('ROWS', rows)*/}
-                {
-                  // Loop over the table rows
-                  rows.map((row) => {
-                    // Prepare the row for display
-                    prepareRow(row);
-                    return (
-                      // Apply the row props
-                      <tr
-                        onClick={() => handleRowClick(row)}
-                        {...row.getRowProps()}
-                      >
-                        {
-                          // Loop over the rows cells
-                          row.cells.map((cell) => {
-                            // Apply the cell props
-                            return (
-                              <td className="tdGlobal" {...cell.getCellProps()}>
-                                {
-                                  // Render the cell contents
-                                  cell.render('Cell')
-                                }
-                              </td>
-                            );
-                          })
-                        }
-                      </tr>
-                    );
-                  })
-                }
-              </tbody>
-              {rows.length !== 0 ? null : (
-                <tfoot>
-                  <tr>
-                    <td>
-                      <div
-                        style={{
-                          color: '#fff',
-                          fontWeight: 'bold',
-                          textAlign: 'center',
-                          marginBottom: '20px',
-                        }}
-                      >
-                        No domains to view
-                      </div>
-                    </td>
+      {!gridView ? (
+        <table {...getTableProps()} className="subdomainsTable">
+          {rows.length === 0 ? null : (
+            <thead className="subdomainsHeaderGroupGlobal">
+              {
+                // Loop over the header rows
+                headerGroups.map((headerGroup) => (
+                  // Apply the header row props
+                  <tr
+                    className="subdomainsHeaderTR"
+                    {...headerGroup.getHeaderGroupProps()}
+                  >
+                    {
+                      // Loop over the headers in each row
+                      headerGroup.headers.map((column) => (
+                        // Apply the header cell props
+                        <th
+                          className="subdomainsHeaderTH"
+                          {...column.getHeaderProps()}
+                        >
+                          {
+                            // Render the header
+                            column.render('Header')
+                          }
+                        </th>
+                      ))
+                    }
                   </tr>
-                </tfoot>
-              )}
-            </table>
-        ) : (
-          <Grid domain={_domain} />
-        )}
+                ))
+              }
+            </thead>
+          )}
+          {/* Apply the table body props */}
+          <tbody {...getTableBodyProps()}>
+            {/*console.log('ROWS', rows)*/}
+            {
+              // Loop over the table rows
+              rows.map((row) => {
+                // Prepare the row for display
+                prepareRow(row);
+                return (
+                  // Apply the row props
+                  <tr
+                    onClick={() => handleRowClick(row)}
+                    {...row.getRowProps()}
+                  >
+                    {
+                      // Loop over the rows cells
+                      row.cells.map((cell) => {
+                        // Apply the cell props
+                        return (
+                          <td className="tdGlobal" {...cell.getCellProps()}>
+                            {
+                              // Render the cell contents
+                              cell.render('Cell')
+                            }
+                          </td>
+                        );
+                      })
+                    }
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+          {rows.length !== 0 ? null : (
+            <tfoot>
+              <tr>
+                <td>
+                  <div
+                    style={{
+                      color: '#fff',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    No domains to view
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
+          )}
+        </table>
+      ) : (
+        <Grid domain={_domain} />
+      )}
     </div>
   );
 };

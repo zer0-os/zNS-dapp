@@ -33,7 +33,7 @@ function App() {
       >
         <source src={znsbg} type="video/mp4" />
       </video>
-      <Sidebar />
+      {/* <Sidebar /> */}
       {/* <div className="sideFadeRight"></div> */}
       <Route
         render={({ location, match }) => (

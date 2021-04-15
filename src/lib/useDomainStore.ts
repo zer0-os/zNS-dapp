@@ -111,7 +111,6 @@ type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
 function useDomain(name: string) {
   const id = getDomainId(name);
-  console.log(id,'STOREID')
   const {
     data: dataDomain,
     error: errorDomain,
@@ -120,7 +119,6 @@ function useDomain(name: string) {
     variables: { id: id },
     fetchPolicy: 'no-cache',
   });
-  console.log(name, 'DOMAIN STORE NAME');
   const _domain: Maybe<any> = useMemo(() => {
     if (dataDomain && dataDomain.domains) {
       const test = dataDomain;
@@ -128,35 +126,11 @@ function useDomain(name: string) {
 
       return Maybe.of({
         ...dataDomain.domains[0],
-        // id: dataDomain.domain.id,
-        // name: dataDomain.domain.name,
-        // parent: dataDomain.domain.parent,
-        // subdomains: dataDomain.domain.subdomains,
-        // owner: dataDomain.domain.owner,
-        // minter: dataDomain.domain.minter,
-        // metadata: dataDomain.domain.metadata,
-        // id: 'test',
-        // name: 'test',
-        // parent: 'test',
-        // subdomains: [],
-        // owner: 'test',
-        // minter: 'test',
-        // metadata: 'test',
-
-        // owner: getAddress(dataDomain.domain.owner),
-        // parent: dataDomain.domain.parent,
-        // minter: getAddress(dataDomain.domain.minter),
-        // metadata: dataDomain.domain.metadata,
-        // subdomains: dataDomain.domain.subdomains,
       });
     }
-
-    // console.log(JSON.stringify(dataDomain) + 'dataDomain2');
     if (errorDomain) {
       console.error(errorDomain + 'Error');
     }
-    // console.log(dataDomain + 'dataDomain');
-    // console.log(dataDomain + 'Domain Data');
     return Maybe.nothing();
   }, [dataDomain, errorDomain]);
 
