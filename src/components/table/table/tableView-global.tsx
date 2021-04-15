@@ -238,20 +238,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         accessor: 'lastsale',
       },
       {
-        Header: '',
-        accessor: 'timestamp',
-        width: '0px',
-        Cell: () => <div style={{ display: 'none' }}></div>,
-      },
-      {
-        Header: (
-          <div className="infoHeader">
-            <span>Trade </span>
-            <span className="infoButton">
-              <span className="infoMark">?</span>
-            </span>
-          </div>
-        ),
+        Header: 'Trade',
         accessor: 'trade',
       },
     ],
@@ -315,9 +302,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   return (
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />
-      <div className="removeTopShadow">
         {!gridView ? (
-          <div className="tableContainer">
             <table {...getTableProps()} className="subdomainsTable">
               {rows.length === 0 ? null : (
                 <thead className="subdomainsHeaderGroupGlobal">
@@ -388,7 +373,6 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                     <td>
                       <div
                         style={{
-                          background: 'red',
                           color: '#fff',
                           fontWeight: 'bold',
                           textAlign: 'center',
@@ -402,11 +386,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                 </tfoot>
               )}
             </table>
-          </div>
         ) : (
           <Grid domain={_domain} />
         )}
-      </div>
     </div>
   );
 };

@@ -236,14 +236,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         Cell: () => <div style={{ display: 'none' }}></div>,
       },
       {
-        Header: (
-          <div className="infoHeader">
-            <span>Trade </span>
-            <span className="infoButton">
-              <span className="infoMark">?</span>
-            </span>
-          </div>
-        ),
+        Header: 'Trade',
         accessor: 'trade',
       },
     ],

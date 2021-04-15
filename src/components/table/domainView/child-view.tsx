@@ -122,7 +122,6 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             owner={previewData.owner}
             description={previewData.description}
             data={previewData}
-            style={{ marginLeft: 100, marginRight: 100, marginBottom: 16 }}
             img={previewData.img}
           />
 

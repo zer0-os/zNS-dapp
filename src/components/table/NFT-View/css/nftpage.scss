@@ -1,12 +1,7 @@
 @import '../../../css/color-variables.scss';
 
-$page-margin: 100px;
-
 .nftView {
   position: relative;
-  margin-top: 155px;
-  margin-left: $page-margin;
-  margin-right: $page-margin;
   display: flex;
   flex-direction: column;
 

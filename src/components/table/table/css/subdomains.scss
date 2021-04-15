@@ -10,35 +10,33 @@
 
 // components
 
-$page-margin: 100px;
-
 .pageContainerPositionFix {
   position: relative;
+  padding: 0 100px;
 }
 
 #subdomainsContainer {
   position: relative;
   flex-direction: column;
   align-items: left;
-  margin: 15px;
   border-radius: var(--box-radius);
   overflow: hidden;
   margin-top: 24px;
-  margin-left: $page-margin;
-  margin-right: $page-margin;
   top: 50%;
   left: 0%;
 
-  border-top: 1px solid #6c00b7;
-  border-bottom: 1px solid #6c00b7;
-  border-right: 1px solid #6c00b7;
-  border-left: 1px solid #6c00b7;
-  border-radius: 15px 15px 15px 15px;
-  box-shadow: 0px 0px 10px 0px #8d0099;
+  backdrop-filter: var(--blur);
+
+  border: 1px solid var(--color-primary);
+  border-collapse: separate;
+
+  border-radius: 16px;
+  background: var(--background-purple-card-20)
+  // box-shadow: 0px 0px 10px 0px #8d0099;
 }
 
 .shiftTableUp {
-  transform: translateY(-10px);
+  position: relative;
 }
 
 .domainImageGlobalContainer {
@@ -232,21 +230,20 @@ $page-margin: 100px;
   font-weight: 400;
   text-shadow: $textShadow;
   overflow: hidden;
+
+  padding-top: 14px;
+  padding-bottom: 17px;
+
   .subdomainsBar {
     padding-left: 20px;
     padding-right: 20px;
-    height: 66px;
     width: 100%;
-    background: rgba(78, 0, 132, 0.2);
-    backdrop-filter: blur(20px);
     color: #ffffff;
     font-size: 16px;
     font-weight: bold;
-    text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
     display: flex;
     flex-direction: row;
     // need to create a way for box shadow not to display underneath this element to seamlessly integrate with the table
-    box-shadow: 0px 0px 10px 0px darken(rgba($purple-shadow, 1), 20%);
     .search {
       position: relative;
       width: 100%;
@@ -575,8 +572,6 @@ table {
   border-spacing: 0;
   width: 100%;
   border-radius: 0 0 var(--box-radius) var(--box-radius);
-  background: rgba(78, 0, 132, 0.2);
-  backdrop-filter: blur(20px);
   // subdomains header
   .subdomainsHeaderGroupLocal,
   .subdomainsHeaderGroupGlobal {
