@@ -7,10 +7,4 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
   },
 } as any;
 
-const address: { [network in NETWORK_TYPES]: ContractAddresses } = {
-  [NETWORK_TYPES.KOVAN]: {
-    controller: '0x682ac9f7BA50A2713510598bF2b7901E2AC0B096',
-  },
-} as any;
-
 export default addresses;
