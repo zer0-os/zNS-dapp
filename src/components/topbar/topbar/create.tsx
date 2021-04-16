@@ -72,7 +72,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
       if (account && contracts.isJust() && name.isJust()) {
         console.log('if statement');
         contracts.value.registry
-          .registerDomain(
+          .registerSubdomainExtended(
             name.value.name === '' ? child : name.value.id + '.' + child,
             name.value.id,
             account,
@@ -110,7 +110,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   // const someEventThatHappensWhenYouClickContinue = () => {
   //   // console.log(nftName, nftStory);
   // };
-
+  console.log(register);
   return (
     <>
       {/* <button
@@ -128,7 +128,13 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         footer={null}
       > */}
 
-      <form className={MintNewNFTStyle.Section}>
+      <form
+        className={MintNewNFTStyle.Section}
+        // onSubmit={(e) => {
+        //   e.preventDefault();
+        //   const domain = name.value;
+        // }}
+      >
         <div style={{ display: 'flex' }}>
           <div className={MintNewNFTStyle.Inputs}>
             <input
