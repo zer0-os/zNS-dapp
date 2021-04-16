@@ -75,9 +75,8 @@ const PreviewCard = (props) => {
             position: 'relative',
             margin: 0,
             padding: 0,
-            // border: '2px solid red',
           }}
-          bodyStyle={{ height: '80vh' }}
+          bodyStyle={{ width: 640 }}
           closeIcon={null}
           centered
           visible={enlistOpen}
