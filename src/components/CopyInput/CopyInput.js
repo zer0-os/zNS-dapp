@@ -9,7 +9,7 @@ const CopyInput = (props) => {
 			{/* <div className={CopyInputStyle.icon}></div> */}
 			<div className={CopyInputStyle.stack}>
 				<span>Ethereum Address</span>
-				<input spellcheck='false' type='text' value={props.value}></input>
+				<input spellCheck='false' readOnly type='text' value={props.value}></input>
 			</div>
 			<button></button>
 		</div>
