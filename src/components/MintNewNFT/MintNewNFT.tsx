@@ -27,36 +27,11 @@ const MintNewNFT: FC<MintProps> = ({ props, name: _domain }) => {
 
   if (name.isNothing()) return null;
   return (
-    <div
-      className={`${MintNewNFTStyle.MintNewNFT} blur border-rounded border-primary`}
-    >
-      <div className={MintNewNFTStyle.Header}>
-        <h1 className={`glow-text-white`}>Mint A New NFT</h1>
-        <div>
-          <h2 className={`glow-text-white`}>0:/Wilder.NewNFT</h2>
-          {/* <span>By Frank Wilder</span> */}
-        </div>
-      </div>
-
-
       <Create
         props={props}
         domainId={name.value.id}
         domainContext={domainContext}
       />
-      {/* <ToggleSection 
-				open={step === 2}
-				style={{marginTop: 51}}
-				label={'Token Dynamics'}
-			>
-			</ToggleSection>
-			<ToggleSection 
-				open={step === 3}
-				style={{marginTop: 51}}
-				label={'Staking'}
-			>
-			</ToggleSection> */}
-    </div>
   );
 };
 

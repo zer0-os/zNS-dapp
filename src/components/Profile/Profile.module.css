@@ -27,8 +27,7 @@
 
 .body {
 	display: flex;
-	justify-content: center;
-	padding: 39px 52px 62px 60px;
+	padding: 39px 52px 62px 0;
 
 	font-size: var(--font-size-default);
 	color: white;
@@ -48,6 +47,7 @@
 	margin: 0 auto;
 
 	border-radius: 50%;
+	border: 1px solid #d28bff;
 
 	filter: drop-shadow(0px 0px 40px rgba(255, 255, 255, 0.5));
 
@@ -66,7 +66,6 @@
 	flex-direction: column;
 	align-items: center;
 
-	width: 176px;
 }
 
 /* Profile paragraph */
