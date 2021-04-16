@@ -11,7 +11,7 @@ import Shop from '../Shop/Shop.js'
 
 import qr from './assets/qr.png'
 import eth from './assets/eth.svg'
-import dp from './assets/wilder.jpg'
+import dp from './assets/redpill.png'
 
 const Profile = (props) => {
 

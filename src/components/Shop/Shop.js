@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import styles from './Shop.module.css'
 
@@ -28,14 +28,11 @@ const Shop = (props) => {
         setSelected('offers')
     }
 
-    const selectedCss = {
-        borderBottom: '1px solid #E0BAFF',
-        fontWeight: 400,
-    }
-
-    const defaultCss = {
-        fontWeight: 400,
-        color: 'white'
+    const getSliderOffset = () => {
+        // These are very hard coded right now - not great but it works for MVP
+        if(selected === 'ownedBy') return {left: 0, width: 158}
+        else if(selected === 'createdBy') return {left: 198, width: 197}
+        else return {left: 435, width: 77}
     }
 
     return(
@@ -44,18 +41,20 @@ const Shop = (props) => {
                 <TextButton 
                     onClick={getOwnedBy}
                     selected={selected === 'ownedBy'}
-                    style={selected === 'ownedBy' ? selectedCss : defaultCss}
                 >NFTs You Own</TextButton>
                 <TextButton
                     onClick={getCreatedBy}
                     selected={selected === 'createdBy'}
-                    style={selected === 'createdBy' ? selectedCss : defaultCss}
                 >NFTs You've Made</TextButton>
                 <TextButton
                     onClick={getOffers}
                     selected={selected === 'offers'}
-                    style={selected === 'offers' ? selectedCss : defaultCss}
                 >Offers</TextButton>
+                <div 
+                    className={styles.Slider}
+                    style={getSliderOffset()}
+                >
+                </div>
                 {/* <TextButton toggleable={true}>Offers</TextButton> */}
             </div>
             <ul>
