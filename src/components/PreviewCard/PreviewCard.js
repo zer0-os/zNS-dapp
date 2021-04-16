@@ -1,12 +1,20 @@
-import React from 'react';
-
-import styles from './PreviewCard.module.css';
+import React, { useState } from 'react';
 
 import FutureButton from '../Buttons/FutureButton/FutureButton.js';
+import Enlist from '../Enlist/Enlist'
+import { Modal } from 'antd';
+import { any } from 'zod';
+
+import styles from './PreviewCard.module.css';
 
 const templateNFT = 'assets/nft/redpill.png';
 
 const PreviewCard = (props) => {
+
+  const [ enlistOpen, setEnlistOpen ] = useState(false)
+
+  const enlist = () => setEnlistOpen(true)
+
   return (
     <div
       className={`${styles.PreviewCard} border-primary border-rounded blur`}
@@ -48,7 +56,11 @@ const PreviewCard = (props) => {
         </div>
       </div>
       <div className={styles.Buy}>
-        <FutureButton glow style={{ height: 36, width: 118, borderRadius: 30 }}>
+        <FutureButton 
+          glow 
+          style={{ height: 36, width: 118, borderRadius: 30 }}
+          onClick={enlist}
+        >
           ENLIST
         </FutureButton>
         <span className={`glow-text-white`}>
@@ -57,6 +69,24 @@ const PreviewCard = (props) => {
         </span>
         <span className={`glow-text-blue`}></span>
       </div>
+
+      <Modal
+          style={{
+            position: 'relative',
+            margin: 0,
+            padding: 0,
+            // border: '2px solid red',
+          }}
+          bodyStyle={{ height: '80vh' }}
+          closeIcon={null}
+          centered
+          visible={enlistOpen}
+          onCancel={() => setEnlistOpen(false)}
+          footer={null}
+          closable={false}
+        >
+        <Enlist name={''} props={any} />
+      </Modal>
     </div>
   );
 };
