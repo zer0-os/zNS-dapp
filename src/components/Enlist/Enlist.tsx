@@ -11,7 +11,7 @@ import styles from './Enlist.module.css';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
-import Create from '../topbar/topbar/create';
+import emailjs from 'emailjs-com';
 
 const wildToUsd = 0.5; // Just a template for now
 
@@ -28,24 +28,43 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
   const { name } = domainContext;
 
   // State
-  const [ emailAddress, setEmailAddress ] = useState('')
-  const [ reasonForPurchase, setReasonForPurchase ] = useState('')
-  const [ bidUsd, setBidUsd ] = useState(0)
+  const [emailAddress, setEmailAddress] = useState('');
+  const [reasonForPurchase, setReasonForPurchase] = useState('');
+  const [bidUsd, setBidUsd] = useState(0);
 
   // Form validation
-  const isEmail = (text: string) => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(String(text).toLowerCase())
-  const valid = isEmail(emailAddress) && reasonForPurchase.length > 0 && bidUsd > 0
+  const isEmail = (text: string) =>
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      String(text).toLowerCase(),
+    );
+  const valid =
+    isEmail(emailAddress) && reasonForPurchase.length > 0 && bidUsd > 0;
 
   const submit = () => {
     // Got all the form data here
-  }
+  };
 
+  function sendEmail(e: any): any {
+    emailjs
+      .sendForm(
+        'gmail',
+        'template_t5hifjr',
+        e.target,
+        process.env.REACT_APP_EMAIL,
+      )
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        },
+      );
+  }
 
   if (name.isNothing()) return null;
   return (
-    <div
-      className={`${styles.Enlist} blur border-rounded border-primary`}
-    >
+    <div className={`${styles.Enlist} blur border-rounded border-primary`}>
       <div className={styles.Header}>
         <h1 className={`glow-text-white`}>Enlist To Purchase</h1>
         <div>
@@ -53,29 +72,34 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
           {/* <span>By Frank Wilder</span> */}
         </div>
       </div>
-      <hr className='glow-line' />
+      <hr className="glow-line" />
 
       <form className={styles.Section}>
         <div style={{ display: 'flex' }}>
           <div className={styles.Inputs}>
             <TextInput
               placeholder={'Email Address'}
-              style={{height: 48}}
+              name={emailAddress}
+              style={{ height: 48 }}
               onChange={(text: string) => setEmailAddress(text)}
             />
             <TextInput
               placeholder={'Reason for purchase'}
               multiline
-              style={{height: 79}}
+              style={{ height: 79 }}
               onChange={(text: string) => setReasonForPurchase(text)}
             />
             <TextInput
-              type='number'
+              type="number"
               placeholder={'Bid (USD)'}
-              style={{height: 48}}
-              onChange={(text: string) => setBidUsd(text == '' ? 0 : parseFloat(text))}
+              style={{ height: 48 }}
+              onChange={(text: string) =>
+                setBidUsd(text == '' ? 0 : parseFloat(text))
+              }
             />
-            <span className={styles.Bid}>{Number((bidUsd * wildToUsd).toFixed(2)).toLocaleString()} WILD</span>
+            <span className={styles.Bid}>
+              {Number((bidUsd * wildToUsd).toFixed(2)).toLocaleString()} WILD
+            </span>
           </div>
           <div
             className={`${styles.NFT} border-rounded`}
@@ -85,9 +109,14 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
         </div>
       </form>
       <FutureButton
-        glow={ valid }
-        style={{ height: 36, borderRadius: 18, textTransform: 'uppercase', margin: '47px auto 0 auto' }}
-        onClick={submit}
+        glow={valid}
+        style={{
+          height: 36,
+          borderRadius: 18,
+          textTransform: 'uppercase',
+          margin: '47px auto 0 auto',
+        }}
+        onClick={sendEmail}
       >
         Submit
       </FutureButton>
