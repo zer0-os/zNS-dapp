@@ -38,24 +38,32 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     resolver: zodResolver(schema),
   });
   // TODO: show user what they're doing wrong
-  useEffect(() => console.log(errors), [errors]);
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsContracts();
 
-  // Name field stored in state
-  const [nftName, setName] = useState('');
+  const [ nftName, setName ] = useState('')
+  const [ nftStory, setStory ] = useState('')
+  const [ progress, setProgress ] = useState(0)
+  
+  const { onMint, onCancel } = props
+
   const submit = () => {
-    // Click handler for continue button
-    _create(nftName);
+    // _create(nftName);
+    // Skipping the actual create for now
+    onMint()
   };
+
+  const cancel = () => {
+    onCancel()
+  }
+
+  const goTo = (x: number) => nftName.length && nftStory.length ? setProgress(x) : setProgress(0)
 
   const _create = useCallback(
     (child: string) => {
-      console.log(child);
-      // Didn't want to call any of the query stuff so just chucked a return here
+      
       if (account && contracts.isJust() && name.isJust()) {
-        console.log('if statement');
         contracts.value.registry
           .registerDomain(
             name.value.name === '' ? child : name.value.name + '.' + child,
@@ -78,14 +86,28 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
 
   if (name.isNothing() || account !== account) return null;
 
-  return (
-    <>
+  const details = () => (
+    <div
+      className={`${MintNewNFTStyle.MintNewNFT} blur border-rounded border-primary`}
+    >
+      <div className={MintNewNFTStyle.Header}>
+        <h1 className={`glow-text-white`}>Mint A New NFT</h1>
+        <div>
+          <h2 className={`glow-text-white`}>0:/Wilder.NewNFT</h2>
+        </div>
+      </div>
       <form className={MintNewNFTStyle.Section}>
         <div style={{ display: 'flex' }}>
           <div className={MintNewNFTStyle.Inputs}>
             <TextInput
               onChange={(text: string) => setName(text)}
               placeholder="Name"
+            />
+            <TextInput
+              onChange={(text: string) => setStory(text)}
+              multiline={true}
+              placeholder={'Story'}
+              style={{ height: 146, marginTop: 24 }}
             />
           </div>
           <div
@@ -94,14 +116,48 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           ></div>
         </div>
       </form>
-
       <FutureButton
-        glow
-        style={{ margin: '47px auto 0 auto' }}
-        onClick={submit}
+        glow={ nftName.length && nftStory.length }
+        style={{ height: 36, borderRadius: 18, margin: '47px auto 0 auto' }}
+        onClick={() => goTo(1)}
       >
         Continue
       </FutureButton>
+    </div>
+  )
+
+   const confirmation = () => (
+    <div
+      className={`${MintNewNFTStyle.MintNewNFT} blur border-rounded border-primary`}
+    >
+      <div className={MintNewNFTStyle.Header}>
+        <h1 className={`glow-text-white`}>Are You Sure?</h1>
+      </div>
+      <hr style={{marginTop: 34}} className='glow-line' />
+      <p className={MintNewNFTStyle.Warning}>This transaction is about to be seared upon the Blockchain. There’s no going back.</p>
+      <div className={MintNewNFTStyle.Buttons}>
+        <FutureButton
+          glow
+          style={{ height: 36, borderRadius: 18 }}
+          onClick={() => goTo(0)}
+        >
+          Back
+        </FutureButton>
+        <FutureButton
+          glow
+          style={{ height: 36, borderRadius: 18 }}
+          onClick={submit}
+        >
+          Confirm
+        </FutureButton>
+      </div>
+    </div>
+  )
+
+  return (
+    <>
+      { progress === 0 && details() }
+      { progress === 1 && confirmation() }
     </>
   );
 };

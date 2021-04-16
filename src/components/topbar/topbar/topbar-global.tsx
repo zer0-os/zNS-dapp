@@ -286,7 +286,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
         footer={null}
         width={640}
       >
-        <MintNewNFT name={''} props={any}></MintNewNFT>
+        <MintNewNFT name={''} props={{onMint: mintCancel, onCancel: mintCancel}}></MintNewNFT>
       </Modal>
 
       <Modal
