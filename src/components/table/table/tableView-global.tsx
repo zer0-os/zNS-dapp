@@ -306,7 +306,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />
       {!gridView ? (
-        <table {...getTableProps()} className="subdomainsTable">
+        <table {...getTableProps()} className="subdomainsTable globalTable">
           {rows.length === 0 ? null : (
             <thead className="subdomainsHeaderGroupGlobal">
               {

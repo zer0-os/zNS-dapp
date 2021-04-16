@@ -707,14 +707,18 @@ table {
         position: absolute;
         left: 0;
         width: 100%;
+        margin-top: 38px;
+        box-shadow: 0px 0px 40px 0px rgba(60, 161, 255, 0.8); 
+        z-index: -1;
+        transition: box-shadow 0.2s ease-in-out;
+        opacity: 0;
       }
 
       &:hover {
         &::after {
-          background: red;
+          box-shadow: 0px 0px 40px 20px rgba(60, 161, 255, 0.8); 
+          opacity: 1;
         }
-        transition: 0.2s;
-        background: rgba($bright, 0.2) !important;
       }
 
       &:last-child:hover {
