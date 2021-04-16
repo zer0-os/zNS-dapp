@@ -121,7 +121,7 @@
         .route {
           margin-left: 6px;
           height: 32px;
-          background-color: rgba(0, 71, 137, 1);
+          // background-color: rgba(0, 71, 137, 1);
           border-radius: 8px;
           // .route {
           font-size: 16px;
@@ -136,8 +136,26 @@
           // align-self: center;
           // }
           .route-nav-text-sub {
+            position: relative;
             color: #ffffff;
             text-shadow: 0px 0px 10px $white-shadow;
+            z-index: 100;
+
+            &:last-of-type {
+
+              &::before {
+                content: ' ';
+                position: absolute;
+                top: 11px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 45%;
+                box-shadow: 0px 0px 20px 13px rgba(60, 161, 255, 1);
+                z-index: -1;
+              }
+            }
+
+            
           }
         }
       }
