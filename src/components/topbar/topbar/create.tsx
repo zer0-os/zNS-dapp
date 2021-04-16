@@ -14,6 +14,8 @@ import MintNewNFTStyle from '../../MintNewNFT/MintNewNFT.module.css';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import TextInput from '../../TextInput/TextInput.js';
 import { ethers } from 'ethers';
+import { Link, useLocation } from 'react-router-dom';
+import _ from 'lodash';
 
 interface CreateProps {
   domainId: string;
@@ -29,6 +31,17 @@ const schema = z.object({
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const { refetchDomain, name } = domainContext;
+  const location = useLocation();
+  const routes = _.transform(
+    location.pathname
+      .substr(1)
+      .split('.')
+      .filter((s) => s !== ''),
+    (acc: [string, string][], val, i) => {
+      let next = 0 < i ? acc[i - 1][1] + '.' + val : val;
+      acc.push([val, next]);
+    },
+  );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const [isSubdomainVisible, setSubdomainVisible] = useState(false);
   // // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -49,9 +62,9 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const { onMint, onCancel } = props;
 
   const submit = () => {
-    // _create(nftName);
+    _create(nftName);
     // Skipping the actual create for now
-    onMint();
+    // onMint();
   };
 
   const cancel = () => {
@@ -59,7 +72,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   };
 
   const goTo = (x: number) =>
-    nftName.length && nftStory.length ? setProgress(x) : setProgress(0);
+    nftName.length ? setProgress(x) : setProgress(0);
 
   const _create = useCallback(
     (child: string) => {
@@ -67,7 +80,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         contracts.value.registry
           .registerDomain(
             name.value.name === '' ? child : name.value.name + '.' + child,
-            '0X0',
+            name.value.id,
             account,
             account,
           )
@@ -85,7 +98,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   );
 
   if (name.isNothing() || account !== account) return null;
-
+  console.log(name.value.name + 'id data');
   const details = () => (
     <div
       className={`${MintNewNFTStyle.MintNewNFT} blur border-rounded border-primary`}
@@ -93,7 +106,19 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
       <div className={MintNewNFTStyle.Header}>
         <h1 className={`glow-text-white`}>Mint A New NFT</h1>
         <div>
-          <h2 className={`glow-text-white`}>0:/Wilder.NewNFT</h2>
+          <h2 className={`glow-text-white`}>
+            {routes.length > 0 ? (
+              // <div className="routeBox">
+              <div className="route">
+                {routes.map(([key, path], i) => (
+                  <Link key={key} className="route-nav-text-sub" to={path}>
+                    {key}
+                    {i < routes.length - 1 && '.'}
+                  </Link>
+                ))}
+              </div>
+            ) : null}
+          </h2>
         </div>
       </div>
       <form className={MintNewNFTStyle.Section}>
@@ -103,12 +128,12 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               onChange={(text: string) => setName(text)}
               placeholder="Name"
             />
-            <TextInput
+            {/* <TextInput
               onChange={(text: string) => setStory(text)}
               multiline={true}
               placeholder={'Story'}
               style={{ height: 146, marginTop: 24 }}
-            />
+            /> */}
           </div>
           <div
             className={`${MintNewNFTStyle.NFT} border-rounded`}
