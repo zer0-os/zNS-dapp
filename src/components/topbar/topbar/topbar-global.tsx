@@ -17,6 +17,7 @@ import Owned from '../shop/owned';
 // New
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import MintNewNFT from '../../MintNewNFT/MintNewNFT';
+import ProfileNew from '../../Profile/Profile.js';
 import { any } from 'zod';
 
 interface TopbarProps {
@@ -56,33 +57,28 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
     },
   );
 
-  const [isWalletVisible, setWalletVisible] = useState<any>(active);
-
   const [selected, setSelected] = useState('networks');
 
-  const showWallet = useCallback(() => {
-    setWalletVisible(true);
-  }, []);
-  const walletOk = () => {
-    setWalletVisible(false);
-  };
-  const walletCancel = () => {
-    setWalletVisible(false);
-  };
+  // Profile modal handling
+  const [ isProfileVisible, setProfileVisible ] = useState(false)
+  const openProfile = () => setProfileVisible(true)
+  const closeProfile = () => setProfileVisible(false)
 
+  // Mint modal handling
   const showMint = useCallback(() => {
     setMintVisible(true);
   }, []);
-
   const [isMintVisible, setMintVisible] = useState(false);
+  const mintOk = () => setMintVisible(false)
+  const mintCancel = () => setMintVisible(false)
 
-  const mintOk = () => {
-    setMintVisible(false);
-  };
-  const mintCancel = () => {
-    setMintVisible(false);
-  };
-
+  // Wallet modal handling
+  const [isWalletVisible, setWalletVisible] = useState<any>(active);
+  const showWallet = useCallback(() => {
+    setWalletVisible(true);
+  }, []);
+  const walletOk = () => setWalletVisible(false)
+  const walletCancel = () => setWalletVisible(false)
   const activePrevious = usePrevious(active);
   const connectorPrevious = usePrevious(connector);
   useEffect(() => {
@@ -128,19 +124,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
             ) : null}
           </div>
           <div className="topRight">
-            {/* <div className="shop-btn">
-              <Shop domain={_domain} />
-            </div> */}
-            {/* <div className="search-bar">
-              <button className="search-bar-button"></button>
-              <div className="search-bar-glow"></div>
-              <img src={searchIcon} alt="" className="search-bar-button" />
-              <input
-                className="search-bar-input"
-                type="text"
-                placeholder="Search"
-              />
-            </div> */}
             {!active ? (
               <FutureButton onClick={showWallet}>Connnect Wallet</FutureButton>
             ) : (
@@ -148,9 +131,10 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
                 <FutureButton glow onClick={showMint}>
                   Mint New NFT
                 </FutureButton>
-                <div className="profile-btn">
+                <div onClick={openProfile} className="profile-btn">
                   <div className="profile-btn">
-                    <Profile />
+                    <Profile
+                    />
                   </div>
                 </div>
                 <div className="dotMenu" onClick={showWallet}>
@@ -189,95 +173,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
         </div>
       </div>
 
-      {/* <div className="topbarLeft">
-        <Link className="" to={'/'}>
-          <img
-            className="topbarLogo"
-            src={'ipfs://QmS2G8rZiXVhGYuEPxdeFpYnxwbERh1e538MUfXe9Vghw8'.replace(
-              'ipfs://',
-              'https://ipfs.io/ipfs/',
-            )}
-            alt=""
-          />
-        </Link>
-
-        <div className="route-nav">
-          <div className="route-nav-link">
-            <Link className="route-nav-text" to={'/'}>
-              0::/
-            </Link>
-          </div>
-          {routes.length > 0 ? (
-            <div className="route-nav-link">
-              <Link className="route-nav-text-sub" to={`/${routes[0][0]}`}>
-                {routes[0][0]}
-              </Link>
-            </div>
-          ) : null}
-        </div>
-        <div></div>
-      </div>
-      <div className="search-bar">
-        <input className="search-bar-input" type="text" placeholder="Search" />
-        <button className="search-bar-button"></button>
-      </div>
-      <div className="topbarRight">
-        <div className="shop-btn">
-          <Shop domain={_domain} />
-        </div>
-
-        <button className="connect-btn" onClick={showWallet}>
-          {' '}
-          {active ? 'Connected 🟢' : 'Connect 🔴'}{' '}
-        </button>
-        <button
-          className="create-network"
-          onClick={active ? showStaking : showWallet}
-        >
-          <span style={{ width: '20px' }}></span>
-          MINT NFT
-          <span style={{ width: '16px' }}></span>
-          <span style={{ width: '16px' }}></span>
-        </button>
-        <div style={{ width: '50px' }}>
-          {active ? (
-            <div className="profile-btn">
-              <Profile />
-            </div>
-          ) : null}
-        </div>
-
-      </div>
-
-      <Modal
-        visible={isStakingVisible}
-        onOk={stakingOk}
-        onCancel={stakingCancel}
-        footer={null}
-        width={'65vw'}
-        bodyStyle={{}}
-        closable={false}
-        className="noModalPadding"
-      >
-        <Stakingview domain={_domain} />
-      </Modal>
-
-      <Modal
-        visible={isWalletVisible}
-        onOk={walletOk}
-        onCancel={walletCancel}
-        footer={null}
-      >
-        <Wallet />
-        <hr />
-        <div className="new-ETH">
-          <div className="ETH"> New to Ethereum?</div>{' '}
-          <a href="https://ethereum.org/en/wallets/">
-            Learn more about wallets
-          </a>
-        </div>
-      </Modal> */}
-
       <Modal
         visible={isMintVisible}
         onOk={mintOk}
@@ -287,6 +182,17 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
         width={640}
       >
         <MintNewNFT name={''} props={{onMint: mintCancel, onCancel: mintCancel}}></MintNewNFT>
+      </Modal>
+
+      <Modal
+        visible={isProfileVisible}
+        onCancel={closeProfile}
+        closable={false}
+        footer={null}
+        width={1320}
+      >
+        <ProfileNew
+        />
       </Modal>
 
       <Modal

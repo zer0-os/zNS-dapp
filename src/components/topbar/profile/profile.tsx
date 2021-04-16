@@ -52,21 +52,8 @@ const Profile: FC = () => {
           src={wilderavatar}
           alt=""
           className="profilepic"
-          onClick={showOwner}
         />
       ) : null}
-      <Modal
-        visible={isOwnedVisible}
-        onOk={ownerOk}
-        onCancel={ownerCancel}
-        closable={false}
-        footer={null}
-        width={1320}
-      >
-        <ProfileNew
-        // name={name}
-        />
-      </Modal>
     </>
   );
 };

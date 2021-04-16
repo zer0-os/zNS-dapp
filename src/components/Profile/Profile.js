@@ -3,7 +3,7 @@ import React from 'react'
 import './main.css'
 import './reset.css'
 
-// import CopyInput from '../CopyInput/CopyInput.js'
+import CopyInput from '../CopyInput/CopyInput.js'
 
 import ProfileStyle from './Profile.module.css'
 
@@ -26,6 +26,7 @@ const Profile = (props) => {
 				<div>
 					<span className={`${ProfileStyle.name} glow-text-blue`}>Frank Wilder</span>
 					<p>Hey I’m Frank and I like staring into the night sky and imagining myself in another galaxy. I’m so passionate about space travel that I spend the majority of my time making animated short films about it. With the magic of CGI, I can make worlds and journeys so real that I can almost taste the synthetic beef that comes out of the assembler!<br/><br/>Join me on one or all of my journeys, I welcome you aboard!</p>
+					<CopyInput style={{marginTop: 40}} value='0x1wiioasoidijjafs8wjlasdi98sdff099sd' />
 				</div>
 			</div>
 			<Shop />

@@ -81,7 +81,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
       <div className="topbarRight">
         {active && (
           <div className="profile-btn">
-            <Profile />
+            {/* <Profile /> */}
           </div>
         )}
         <button className="connect-btn" onClick={showWallet}>

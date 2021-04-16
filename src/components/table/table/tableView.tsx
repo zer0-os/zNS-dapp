@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useMemo, useState } from 'react';
 import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useDomainCache } from '../../../lib/useDomainCache';
@@ -7,6 +7,7 @@ import TableImage from './table-image';
 import SearchTable from './searchTable';
 import marketimg from '../css/img/chart.svg';
 import Grid from './grid-view';
+import { Modal } from 'antd';
 import './css/subdomains.scss';
 import Image from '../mockup/image';
 import graph1 from './img/mockgraphs/graph1.png';
@@ -15,6 +16,7 @@ import graph3 from './img/mockgraphs/graph3.png';
 import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
+import Enlist from '../../Enlist/Enlist'
 
 //
 // Please Read
@@ -51,6 +53,10 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
   const history = useHistory();
+
+  const [ isEnlistVisible, setEnlistVisible ] = useState(false)
+  const openEnlist = () => setEnlistVisible(true)
+  const closeEnlist = () => setEnlistVisible(false)
 
   //
   // Following functions generate random numbers to display mock data in the UI
@@ -154,7 +160,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             nobids: '',
             lastsale: '',
             timestamp: '',
-            trade: <FutureButton style={{ height: 24 }}>ENLIST</FutureButton>,
+            trade: <FutureButton onClick={openEnlist} style={{ height: 24 }}>ENLIST</FutureButton>,
           })),
 
     [name],
@@ -264,6 +270,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   );
 
   const handleRowClick = (row: any) => {
+    console.log(row)
     history.push({
       pathname: row.original.key,
     });
@@ -320,7 +327,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                   return (
                     // Apply the row props
                     <tr
-                      onClick={() => handleRowClick(row)}
+                      
                       {...row.getRowProps()}
                     >
                       {
@@ -328,7 +335,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                         row.cells.map((cell) => {
                           // Apply the cell props
                           return (
-                            <td className="tdLocal" {...cell.getCellProps()}>
+                            <td onClick={() => handleRowClick(row)} className="tdLocal" {...cell.getCellProps()}>
                               {
                                 // Render the cell contents
                                 cell.render('Cell')
@@ -379,6 +386,17 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
           </div>
         );
       })} */}
+
+      <Modal
+        visible={isEnlistVisible}
+        onOk={closeEnlist}
+        onCancel={closeEnlist}
+        closable={false}
+        footer={null}
+        width={304}
+      >
+        <Enlist name={''} props={{}} />
+      </Modal>
     </div>
   );
 };
