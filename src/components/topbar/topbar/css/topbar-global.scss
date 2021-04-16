@@ -15,6 +15,8 @@
   width: 32px;
 }
 
+
+
 .topbarContainerNeo {
   // border: 1px red solid;
   top: 0;
@@ -23,20 +25,27 @@
   transform: translateX(-50%);
   max-width: 1247px;
   min-width: 1247px;
-  position: absolute;
-  // -webkit-transition: background-color 0.5s ease-in-out;
-  // -moz-transition: background-color 0.5s ease-in-out;
-  // -ms-transition: background-color 0.5s ease-in-out;
-  // -o-transition: background-color 0.5s ease-in-out;
-  // transition: background-color 0.5s ease-in-out;
+  position: fixed;
+  top: 24px;
+
+  
+
   background-color: none;
-  // z-index: 20;
   z-index: 40;
   .topHalfContainer {
     height: 111px;
     backdrop-filter: var(--blur);
     /* Note: backdrop-filter has minimal browser support */
     border-radius: 16px;
+
+    // Hide transition
+    transition: opacity 0.2s ease-in-out, 0.2s ease-in-out;
+    transform: translateY(0);
+    opacity: 1;
+    &.hidden {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
 
     .topHalf {
       position: relative;

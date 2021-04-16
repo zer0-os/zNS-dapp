@@ -26,6 +26,7 @@ const TextInput = (props) => {
       )}
       {!props.multiline && (
         <input
+          type={props.type ? props.type : ''}
           className={`${styles.TextInput} border-blue`}
           onChange={handleChange}
           style={props.style}
