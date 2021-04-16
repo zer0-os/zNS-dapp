@@ -25,8 +25,8 @@ import cybercar from '../../css/img/cybercar.jpeg';
 import realestate from '../../css/img/realestate.jpeg';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 
-const images = [wilderavatar, neo, kitty, cybercar, realestate]
-const randomImage = () => images[Math.floor(Math.random() * images.length)]
+const images = [wilderavatar, neo, kitty, cybercar, realestate];
+const randomImage = () => images[Math.floor(Math.random() * images.length)];
 //
 // Please Read
 // Much data availability of the table has changed throughout versions of this app, and the MVP version removes essentially all of the data to be replaced with the Last Bid, No Bids, and Last Sales Price field. In lieu of deleting these fields, which may retain their usefulness at some point in the future, I have commented them out, so that they may be used when they prove useful. If you still have your code editor set to horizontal scrolling, than all I can say is git gud.
@@ -374,17 +374,17 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             <tfoot>
               <tr>
                 <td>
-                    <div
-                      style={{
-                        color: '#fff',
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                        marginTop: 20,
-                        paddingBottom: 30,
-                      }}
-                    >
-                      Nothing to see here!
-                    </div>
+                  <div
+                    style={{
+                      color: '#fff',
+                      fontWeight: 'bold',
+                      textAlign: 'center',
+                      marginTop: 20,
+                      paddingBottom: 30,
+                    }}
+                  >
+                    Nothing to see here!
+                  </div>
                 </td>
               </tr>
             </tfoot>

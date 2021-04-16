@@ -143,7 +143,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
             asset: <Image />,
-            name: key.name, 
+            name: key.name,
             // '24Hr': randPrice(),
             // '7d': randPrice(),
             // marketcap: `$${randThreeS()},${randThree()},${randThree()}`,
@@ -275,97 +275,97 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />
 
-        {!gridView ? (
-          <div className="tableContainer">
-            <table {...getTableProps()} className="subdomainsTable localTable">
-              {rows.length === 0 ? null : (
-                <thead className="subdomainsHeaderGroupLocal">
-                  {
-                    // Loop over the header rows
-                    headerGroups.map((headerGroup) => (
-                      // Apply the header row props
-                      <tr
-                        className="subdomainsHeaderTR"
-                        {...headerGroup.getHeaderGroupProps()}
-                      >
-                        {
-                          // Loop over the headers in each row
-                          headerGroup.headers.map((column) => (
-                            // Apply the header cell props
-                            <th
-                              className="subdomainsHeaderTH"
-                              {...column.getHeaderProps()}
-                            >
-                              {
-                                // Render the header
-                                column.render('Header')
-                              }
-                            </th>
-                          ))
-                        }
-                      </tr>
-                    ))
-                  }
-                </thead>
-              )}
-              {/* Apply the table body props */}
-              <tbody {...getTableBodyProps()}>
-                {/*console.log('ROWS', rows)*/}
-
+      {!gridView ? (
+        <div className="tableContainer">
+          <table {...getTableProps()} className="subdomainsTable localTable">
+            {rows.length === 0 ? null : (
+              <thead className="subdomainsHeaderGroupLocal">
                 {
-                  // Loop over the table rows
-                  rows.map((row) => {
-                    // Prepare the row for display
-                    prepareRow(row);
-                    return (
-                      // Apply the row props
-                      <tr
-                        onClick={() => handleRowClick(row)}
-                        {...row.getRowProps()}
-                      >
-                        {
-                          // Loop over the rows cells
-                          row.cells.map((cell) => {
-                            // Apply the cell props
-                            return (
-                              <td className="tdLocal" {...cell.getCellProps()}>
-                                {
-                                  // Render the cell contents
-                                  cell.render('Cell')
-                                }
-                              </td>
-                            );
-                          })
-                        }
-                      </tr>
-                    );
-                  })
+                  // Loop over the header rows
+                  headerGroups.map((headerGroup) => (
+                    // Apply the header row props
+                    <tr
+                      className="subdomainsHeaderTR"
+                      {...headerGroup.getHeaderGroupProps()}
+                    >
+                      {
+                        // Loop over the headers in each row
+                        headerGroup.headers.map((column) => (
+                          // Apply the header cell props
+                          <th
+                            className="subdomainsHeaderTH"
+                            {...column.getHeaderProps()}
+                          >
+                            {
+                              // Render the header
+                              column.render('Header')
+                            }
+                          </th>
+                        ))
+                      }
+                    </tr>
+                  ))
                 }
-              </tbody>
-              {rows.length !== 0 ? null : (
-                <tfoot>
-                  <tr>
-                    <td>
-                      <div
-                        style={{
-                          color: '#fff',
-                          fontWeight: 'bold',
-                          textAlign: 'center',
-                          marginTop: 20,
-                        }}
-                      >
-                        Nothing to see here!
-                      </div>
-                    </td>
-                  </tr>
-                </tfoot>
-              )}
-            </table>
-          </div>
-        ) : (
-          <Grid domain={_domain} />
-        )}
-        {/* {colors.map((color) => {
+              </thead>
+            )}
+            {/* Apply the table body props */}
+            <tbody {...getTableBodyProps()}>
+              {/*console.log('ROWS', rows)*/}
+
+              {
+                // Loop over the table rows
+                rows.map((row) => {
+                  // Prepare the row for display
+                  prepareRow(row);
+                  return (
+                    // Apply the row props
+                    <tr
+                      onClick={() => handleRowClick(row)}
+                      {...row.getRowProps()}
+                    >
+                      {
+                        // Loop over the rows cells
+                        row.cells.map((cell) => {
+                          // Apply the cell props
+                          return (
+                            <td className="tdLocal" {...cell.getCellProps()}>
+                              {
+                                // Render the cell contents
+                                cell.render('Cell')
+                              }
+                            </td>
+                          );
+                        })
+                      }
+                    </tr>
+                  );
+                })
+              }
+            </tbody>
+            {rows.length !== 0 ? null : (
+              <tfoot>
+                <tr>
+                  <td>
+                    <div
+                      style={{
+                        color: '#fff',
+                        fontWeight: 'bold',
+                        textAlign: 'center',
+                        marginTop: 20,
+                      }}
+                    >
+                      Nothing to see here!
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            )}
+          </table>
+        </div>
+      ) : (
+        <Grid domain={_domain} />
+      )}
+      {/* {colors.map((color) => {
         return (
           <div
             style={{
@@ -379,7 +379,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
           </div>
         );
       })} */}
-      </div>
+    </div>
   );
 };
 

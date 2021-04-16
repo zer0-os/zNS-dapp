@@ -47,19 +47,19 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const [nftName, setName] = useState('');
   const submit = () => {
     // Click handler for continue button
-    _create(nftName)
-  }
+    _create(nftName);
+  };
 
   const _create = useCallback(
     (child: string) => {
-      console.log(child)
+      console.log(child);
       // Didn't want to call any of the query stuff so just chucked a return here
       if (account && contracts.isJust() && name.isJust()) {
         console.log('if statement');
         contracts.value.registry
-          .registerSubdomainExtended(
-            name.value.name === '' ? child : name.value.id + '.' + child,
-            name.value.id,
+          .registerDomain(
+            name.value.name === '' ? child : name.value.name + '.' + child,
+            '0X0',
             account,
             account,
           )
