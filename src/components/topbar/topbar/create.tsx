@@ -110,7 +110,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   // const someEventThatHappensWhenYouClickContinue = () => {
   //   // console.log(nftName, nftStory);
   // };
-  console.log(register);
+
   return (
     <>
       {/* <button
@@ -128,13 +128,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         footer={null}
       > */}
 
-      <form
-        className={MintNewNFTStyle.Section}
-        // onSubmit={(e) => {
-        //   e.preventDefault();
-        //   const domain = name.value;
-        // }}
-      >
+      <form className={MintNewNFTStyle.Section}>
         <div style={{ display: 'flex' }}>
           <div className={MintNewNFTStyle.Inputs}>
             <input
@@ -148,8 +142,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               ref={register}
             />
             <button
-              type="submit"
-              onSubmit={handleSubmit(({ child }) => _create(child))}
+              type="button"
+              onClick={handleSubmit(({ child }) => _create(child))}
             >
               {' '}
               Mint NFT
