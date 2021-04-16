@@ -13,6 +13,7 @@ import styles from '../../TextInput/TextInput.module.css';
 import MintNewNFTStyle from '../../MintNewNFT/MintNewNFT.module.css';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import TextInput from '../../TextInput/TextInput.js';
+import { ethers } from 'ethers';
 
 interface CreateProps {
   domainId: string;
@@ -45,10 +46,31 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   // const [nftName, setName] = useState('');
   // const [nftStory, setStory] = useState('');
 
+  // const mintNft = async (child: string) => {
+  //   if (account && contracts.isJust() && name.isJust()) {
+  //     console.log('if statement');
+  //     await contracts.value.registry
+  //       .registerDomain(
+  //         name.value.name === '' ? child : name.value.id + '.' + child,
+  //         name.value.id,
+  //         account,
+  //         account,
+  //       )
+  //       .then((txr: any) => {
+  //         console.log('contract call');
+  //         txr.wait(1);
+  //       })
+  //       .then(() => {
+  //         console.log('refetch domain');
+  //         refetchDomain();
+  //       });
+  //   }
+  // };
+
   const _create = useCallback(
     (child: string) => {
-      console.log();
-      if (account && contracts.isJust() && name.isJust())
+      if (account && contracts.isJust() && name.isJust()) {
+        console.log('if statement');
         contracts.value.registry
           .registerDomain(
             name.value.name === '' ? child : name.value.id + '.' + child,
@@ -56,10 +78,15 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
             account,
             account,
           )
-          .then((txr: any) => txr.wait(1))
+          .then((txr: any) => {
+            console.log('contract call');
+            txr.wait(1);
+          })
           .then(() => {
+            console.log('refetch domain');
             refetchDomain();
           });
+      }
     },
     [account, contracts, name, refetchDomain],
   );
