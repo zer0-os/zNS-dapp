@@ -695,13 +695,24 @@ table {
 
     // all rows
     tr {
+      position: relative;
       cursor: pointer;
 
       td {
         padding: 16px 0;
       }
 
+      &::after {
+        content: ' ';
+        position: absolute;
+        left: 0;
+        width: 100%;
+      }
+
       &:hover {
+        &::after {
+          background: red;
+        }
         transition: 0.2s;
         background: rgba($bright, 0.2) !important;
       }

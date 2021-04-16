@@ -43,32 +43,17 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const { account } = context;
   const contracts = useZnsContracts();
 
-  // const [nftName, setName] = useState('');
-  // const [nftStory, setStory] = useState('');
-
-  // const mintNft = async (child: string) => {
-  //   if (account && contracts.isJust() && name.isJust()) {
-  //     console.log('if statement');
-  //     await contracts.value.registry
-  //       .registerDomain(
-  //         name.value.name === '' ? child : name.value.id + '.' + child,
-  //         name.value.id,
-  //         account,
-  //         account,
-  //       )
-  //       .then((txr: any) => {
-  //         console.log('contract call');
-  //         txr.wait(1);
-  //       })
-  //       .then(() => {
-  //         console.log('refetch domain');
-  //         refetchDomain();
-  //       });
-  //   }
-  // };
+  // Name field stored in state
+  const [nftName, setName] = useState('');
+  const submit = () => {
+    // Click handler for continue button
+    _create(nftName)
+  }
 
   const _create = useCallback(
     (child: string) => {
+      console.log(child)
+      // Didn't want to call any of the query stuff so just chucked a return here
       if (account && contracts.isJust() && name.isJust()) {
         console.log('if statement');
         contracts.value.registry
@@ -92,101 +77,31 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   );
 
   if (name.isNothing() || account !== account) return null;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const showSubdomain = () => {
-  //   setSubdomainVisible(true);
-  // };
-
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const subdomainOk = () => {
-  //   setSubdomainVisible(false);
-  // };
-
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const subdomainCancel = () => {
-  //   setSubdomainVisible(false);
-  // };
-
-  // const someEventThatHappensWhenYouClickContinue = () => {
-  //   // console.log(nftName, nftStory);
-  // };
 
   return (
     <>
-      {/* <button
-        style={{ color: 'white' }}
-        className="owned-btn"
-        onClick={showSubdomain}
-      >
-        Create domain
-      </button> */}
-      {/* <Modal
-        title="subdomain"
-        visible={isSubdomainVisible}
-        onOk={subdomainOk}
-        onCancel={subdomainCancel}
-        footer={null}
-      > */}
-
       <form className={MintNewNFTStyle.Section}>
         <div style={{ display: 'flex' }}>
           <div className={MintNewNFTStyle.Inputs}>
-            <input
-              className={`${styles.TextInput} border-blue`}
-              style={{
-                ...props.style,
-                resize: props.resizable ? 'vertical' : 'none',
-              }}
-              placeholder={'name'}
-              name={'input'}
-              ref={register}
+            <TextInput
+              onChange={(text: string) => setName(text)}
+              placeholder="Name"
             />
-            <button
-              type="button"
-              onClick={handleSubmit(({ child }) => _create(child))}
-            >
-              {' '}
-              Mint NFT
-            </button>
-            {/* <TextInput
-              multiline={true}
-              placeholder={'Story'}
-              style={{ height: 146, marginTop: 24 }}
-              onChange={(text: string) => setStory(text)}
-            /> */}
           </div>
           <div
             className={`${MintNewNFTStyle.NFT} border-rounded`}
-            // Template background for now
             style={{ backgroundImage: `url(assets/nft/redpill.png)` }}
           ></div>
         </div>
       </form>
 
-      {/* <FutureButton
+      <FutureButton
         glow
         style={{ margin: '47px auto 0 auto' }}
-        // onClick={someEventThatHappensWhenYouClickContinue}
-        type="submit"
-        onSubmit={handleSubmit(({ child }) => _create(child))}
+        onClick={submit}
       >
         Continue
-      </FutureButton> */}
-
-      {/* <div className="create-button">
-      
-        <input
-          className={`${styles.TextInput} border-blue`}
-          style={{
-            ...props.style,
-            resize: props.resizable ? 'vertical' : 'none',
-          }}
-          placeholder={props.placeholder}
-          name={'child'}
-          ref={register}
-        />
-      </div> */}
-      {/* </Modal> */}
+      </FutureButton>
     </>
   );
 };
