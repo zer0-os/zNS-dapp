@@ -23,6 +23,8 @@ interface TopbarProps {
   name: string;
 }
 
+var lastY = 0 // Just a global variable to stash last scroll position
+
 const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { active, connector, error } = context;
@@ -31,7 +33,17 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
   const { name } = domainContext;
   const location = useLocation();
 
-  const scrollY = useScrollPosition(60);
+  // Hide header on scroll
+  const [hideHeader, setHideHeader] = useState(false)
+  const handleScroll = () => {
+    const hide = window.pageYOffset > 100 && window.pageYOffset > lastY
+    lastY = window.pageYOffset
+    setHideHeader(hide)
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [ hideHeader, handleScroll ])
 
   const routes = _.transform(
     location.pathname
@@ -95,12 +107,9 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
 
   return (
     <div
-      className={`
-    topbarContainerNeo
-    ${scrollY > 1 && 'topbarBackgroundFade'}
-    `}
+      className={`topbarContainerNeo`}
     >
-      <div className="topHalfContainer">
+      <div className={`topHalfContainer ${hideHeader ? 'hidden' : ''}`}>
         <div className="topHalf border-primary">
           <div className="topLeft">
             <Link to={'/'} className="network">
