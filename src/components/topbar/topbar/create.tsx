@@ -77,7 +77,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   );
 
   if (name.isNothing() || account !== account) return null;
-
+  console.log(name.value.name + 'name');
   return (
     <>
       <form className={MintNewNFTStyle.Section}>

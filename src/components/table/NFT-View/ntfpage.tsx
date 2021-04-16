@@ -15,10 +15,15 @@ import phoenix from './img/mockusers/phoenix.png';
 import vape from './img/mockusers/vape.png';
 import wilder from './img/mockusers/wilder.png';
 
-import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 
-const images = ['assets/nft/greener.png', 'assets/nft/mossy.png', 'assets/nft/redpill.png', 'assets/nft/revenge.png']
-const randomImage = () => images[Math.floor(Math.random() * images.length)]
+const images = [
+  'assets/nft/greener.png',
+  'assets/nft/mossy.png',
+  'assets/nft/redpill.png',
+  'assets/nft/revenge.png',
+];
+const randomImage = () => images[Math.floor(Math.random() * images.length)];
 
 interface ProfileProps {
   domain: string;
@@ -44,7 +49,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     },
   );
 
-  console.log()
+  console.log();
 
   const showNft = () => {
     setNftVisible(true);
@@ -78,15 +83,22 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   // if (domain.isNothing()) return null;
   return (
     <div className="nftView">
-      <div style={{background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("assets/galaxy.jpeg")`}} className="showcase border-primary">
+      <div
+        style={{
+          background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("assets/galaxy.jpeg")`,
+        }}
+        className="showcase border-primary"
+      >
         <div className="showcaseIMG border-primary">
-          <img style={{height: '100%', width: '100%'}} src={randomImage()}/>
+          <img style={{ height: '100%', width: '100%' }} src={randomImage()} />
           {/* <NFTImage domain={domain.value.domain} /> */}
         </div>
         <div className="showcaseInfo">
           <div className="topmid">
             <div className="top">
-              <div className="title glow-text-white">{ routes[routes.length - 1][0] }</div>
+              <div className="title glow-text-white">
+                {routes[routes.length - 1][0]}
+              </div>
               <div className="domain">
                 <Link to={'/'} className="network">
                   0://
@@ -178,14 +190,12 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           </div>
           <div className="address border-primary">
             <div className="quadHeader">
-              <span>CONTRACT ADDRESS</span>
+              <span>ETH ADDRESS</span>
               <span className="infoButton">
                 <span className="infoMark">?</span>
               </span>
             </div>
-            <div className="quadText">
-              0xbCC817f057950b0df41206C5D7125E6225Cae18e
-            </div>
+            <div className="quadText">{account}</div>
           </div>
         </div>
       </div>

@@ -167,9 +167,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             nobids: '',
             lastsale: '',
             timestamp: '',
-            trade: (
-              <FutureButton style={{ height: 24 }}>{randTrade()}</FutureButton>
-            ),
+            trade: '',
           })),
     [name],
   );
@@ -241,7 +239,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         accessor: 'lastsale',
       },
       {
-        Header: 'Trade',
+        Header: '',
         accessor: 'trade',
       },
     ],

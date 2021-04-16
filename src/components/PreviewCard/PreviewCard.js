@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import FutureButton from '../Buttons/FutureButton/FutureButton.js';
-import Enlist from '../Enlist/Enlist'
+import Enlist from '../Enlist/Enlist';
 import { Modal } from 'antd';
 import { any } from 'zod';
 
@@ -10,10 +10,9 @@ import styles from './PreviewCard.module.css';
 const templateNFT = 'assets/nft/redpill.png';
 
 const PreviewCard = (props) => {
+  const [enlistOpen, setEnlistOpen] = useState(false);
 
-  const [ enlistOpen, setEnlistOpen ] = useState(false)
-
-  const enlist = () => setEnlistOpen(true)
+  const enlist = () => setEnlistOpen(true);
 
   return (
     <div
@@ -34,7 +33,7 @@ const PreviewCard = (props) => {
           <div>
             <div
               className={styles.Dp}
-              style={{backgroundImage: `url(${props.creator.img})`}}
+              style={{ backgroundImage: `url(${props.creator.img})` }}
             ></div>
             <div className={styles.Member}>
               <span>{props.creator.domain}</span>
@@ -45,7 +44,7 @@ const PreviewCard = (props) => {
           <div>
             <div
               className={styles.Dp}
-              style={{backgroundImage: `url(${props.owner.img})`}}
+              style={{ backgroundImage: `url(${props.owner.img})` }}
             ></div>
             <div className={styles.Member}>
               <span>{props.owner.domain}</span>
@@ -56,8 +55,8 @@ const PreviewCard = (props) => {
         </div>
       </div>
       <div className={styles.Buy}>
-        <FutureButton 
-          glow 
+        <FutureButton
+          glow
           style={{ height: 36, width: 118, borderRadius: 30 }}
           onClick={enlist}
         >
@@ -71,19 +70,19 @@ const PreviewCard = (props) => {
       </div>
 
       <Modal
-          style={{
-            position: 'relative',
-            margin: 0,
-            padding: 0,
-          }}
-          bodyStyle={{ width: 640 }}
-          closeIcon={null}
-          centered
-          visible={enlistOpen}
-          onCancel={() => setEnlistOpen(false)}
-          footer={null}
-          closable={false}
-        >
+        style={{
+          position: 'relative',
+          margin: 0,
+          padding: 0,
+        }}
+        bodyStyle={{ width: 640 }}
+        closeIcon={null}
+        centered
+        visible={enlistOpen}
+        onCancel={() => setEnlistOpen(false)}
+        footer={null}
+        closable={false}
+      >
         <Enlist name={''} props={any} />
       </Modal>
     </div>
