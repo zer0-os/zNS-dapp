@@ -29,6 +29,8 @@ import './wallet.scss';
 import usePrevious from '../../../lib/hooks/usePrevious';
 // import { METAMASK } from 'web3modal/dist/providers/injected';
 
+import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
+
 // import ConnectToWallet from '../../ConnectToWallet/ConnectToWallet.js'
 
 enum ConnectorNames {
@@ -42,6 +44,12 @@ enum ConnectorNames {
   Fortmatic = 'Fortmatic',
   Portis = 'Portis',
   // Network = 'Network',
+}
+
+const getConnectorNameFromContext = (n: any) => {
+  const url = n.library.connection.url
+  const result = Object.keys(ConnectorNames).filter(i => i.toLowerCase() === url.toLowerCase())
+  return result.length > -1 ? result[0] : ''
 }
 
 const connectorsByName: {
@@ -291,7 +299,6 @@ export default function Wallet() {
             const connected = currentConnector === connector;
             const disabled =
               !triedEager || !!activatingConnector || connected || !!error;
-            console.log(name.toLowerCase() + '.png');
             return (
               <div className="btn-div" key={name}>
                 <button
@@ -322,17 +329,15 @@ export default function Wallet() {
           })}
         </div>
         {(active || error) && (
+          <>
+          <hr style={{marginTop: 20, marginBottom: 18}}/>
           <div key="network-button" className="button-target">
-            <button
-              className="network-d-btn"
-              style={{ border: 'none', background: 'transparent' }}
-              onClick={() => {
-                deactivate();
-              }}
-            >
-              Deactivate
-            </button>
+            <FutureButton
+              glow
+              onClick={deactivate}
+            >Disconnect { getConnectorNameFromContext(context) }</FutureButton>
           </div>
+          </>
         )}
         {!!error && <h4>{getErrorMessage(error)}</h4>}
         {!!(library && account) &&
