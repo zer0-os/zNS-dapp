@@ -66,6 +66,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     },
   );
 
+  console.log(JSON.stringify(name) + 'DOMAIN!');
   // useEffect(() => {
   //   //console.log('ChildView', domain);
   // }, [domain]);
@@ -123,7 +124,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             description={previewData.description}
             data={previewData}
             img={previewData.img}
-            style={{marginBottom: 24}}
+            style={{ marginBottom: 24 }}
           />
 
           {/* <div className="metricsBar">

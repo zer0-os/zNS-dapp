@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { useZnsContracts } from '../../../lib/contracts';
+import { useZnsBasicContracts } from '../../../lib/basicContract';
 import * as z from 'zod';
 import { zodResolver } from '../../../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
@@ -53,7 +53,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   // TODO: show user what they're doing wrong
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
-  const contracts = useZnsContracts();
+  const contracts = useZnsBasicContracts();
 
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
@@ -77,13 +77,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const _create = useCallback(
     (child: string) => {
       if (account && contracts.isJust() && name.isJust()) {
-        contracts.value.registry
-          .registerDomain(
-            name.value.name === '' ? child : name.value.name + '.' + child,
-            name.value.id,
-            account,
-            account,
-          )
+        contracts.value.basic
+          .registerSubdomain(name.value.id, child, account)
           .then((txr: any) => {
             console.log('contract call');
             txr.wait(1);

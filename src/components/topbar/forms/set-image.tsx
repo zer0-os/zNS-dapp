@@ -9,7 +9,7 @@ import { zodResolver } from '../../../lib/validation/zodResolver';
 import ipfs from '../../../lib/ipfs';
 import assert from 'assert';
 interface SetImageProps {
-  domain: string;
+  name: string;
 }
 
 const schema = z
@@ -22,7 +22,7 @@ const schema = z
   })
   .refine((obj) => 'url' in obj || (obj.image && obj.image.size > 0));
 
-const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
+const SetImage: FC<SetImageProps> = ({ name: _domain }) => {
   // // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const [isSetImageVisible, setIsSetImageVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
@@ -38,12 +38,7 @@ const SetImage: FC<SetImageProps> = ({ domain: _domain }) => {
   });
   const _setImage = useCallback(
     (image: string) => {
-      if (
-        account &&
-        contracts.isJust() &&
-        name.isJust() &&
-        account === name.value.owner
-      )
+      if (account && contracts.isJust() && name.isJust())
         contracts.value.registry
           .setDomainMetadataUri(name.value.id, image)
           .then((txr: any) => txr.wait(1))
