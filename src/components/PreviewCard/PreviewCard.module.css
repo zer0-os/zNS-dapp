@@ -12,6 +12,10 @@
     background: var(--background-purple-card-20);
 }
 
+.PreviewCard p {
+    font-size: 16px;
+}
+
 .Asset {
     width: 398.33px;
 
@@ -33,15 +37,20 @@
 }
 
 .Body h5 {
-    color: var(--color-accent-1);
+    color: white;
     font-size: 24px;
 
     margin-bottom: 6px;
 }
 
 .Domain {
-    color: white;
+    color: var(--color-accent-1);
     font-weight: 700;
+}
+
+.Domain:hover {
+    color: var(--color-accent-1);
+    text-shadow: 0px 0px 15px var(--color-accent-1), 0px 0px 15px var(--color-accent-1), 0px 0px 15px var(--color-accent-1), 0px 0px 15px var(--color-accent-1); 
 }
 
 .Body p {

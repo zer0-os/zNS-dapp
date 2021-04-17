@@ -81,11 +81,11 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
               </div>
               <div className="artist">WILDER</div>
             </div>
-            <div className="dots">
+            {/* <div className="dots">
               <div></div>
               <div></div>
               <div></div>
-            </div>
+            </div> */}
           </div>
           <div className="name">
             <div>{cellInput.name.match(/[^.]+$/)}</div>
@@ -93,13 +93,13 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
           <div className="image">
             <GridImage domain={cellInput.name} />
           </div>
-          <div className="text">
+          {/* <div className="text">
             <div>Last Traded Price</div>
             <div>Change</div>
-          </div>
+          </div> */}
           <div className="price">
             <div>{randThreeS()} WILD</div>
-            <div>{randPrice()}</div>
+            {/* <div>{randPrice()}</div> */}
           </div>
         </div>
       </div>
