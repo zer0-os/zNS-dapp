@@ -160,7 +160,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             nobids: '',
             lastsale: '',
             timestamp: '',
-            trade: <FutureButton onClick={openEnlist} style={{ height: 24 }}>ENLIST</FutureButton>,
+            trade: <FutureButton glow onClick={openEnlist} style={{ height: 24 }}>ENLIST</FutureButton>,
           })),
 
     [name],
