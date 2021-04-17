@@ -15,25 +15,14 @@ import emailjs from 'emailjs-com';
 
 const wildToUsd = 0.5; // Just a template for now
 
-interface EnlistProps {
-  name: string;
-  props: any;
-}
-
-const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
-  const context = useWeb3React<Web3Provider>();
-  const { active, connector, error } = context;
-  const { useDomain } = useDomainCache();
-  const domainContext = useDomain(_domain);
-  const { name } = domainContext;
-
+const Enlist = (props) => {
   // State
   const [emailAddress, setEmailAddress] = useState('');
   const [reasonForPurchase, setReasonForPurchase] = useState('');
   const [bidUsd, setBidUsd] = useState(0);
 
   // Form validation
-  const isEmail = (text: string) =>
+  const isEmail = (text) =>
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
       String(text).toLowerCase(),
     );
@@ -44,12 +33,12 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
     // Got all the form data here
   };
 
-  function sendEmail(e: any): any {
+  function sendEmail(e) {
     emailjs
       .sendForm(
-        'gmail',
-        'template_t5hifjr',
+        'service_ht5ak0n',
         e.target,
+        'template_t5hifjr',
         process.env.REACT_APP_EMAIL,
       )
       .then(
@@ -60,9 +49,9 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
           console.log(error.text);
         },
       );
+    e.target.reset();
   }
 
-  if (name.isNothing()) return null;
   return (
     <div className={`${styles.Enlist} blur border-rounded border-primary`}>
       <div className={styles.Header}>
@@ -81,21 +70,20 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
               placeholder={'Email Address'}
               name={emailAddress}
               style={{ height: 48 }}
-              onChange={(text: string) => setEmailAddress(text)}
+              onChange={(text) => setEmailAddress(text)}
             />
             <TextInput
               placeholder={'Reason for purchase'}
+              name={reasonForPurchase}
               multiline
               style={{ height: 79 }}
-              onChange={(text: string) => setReasonForPurchase(text)}
+              onChange={(text) => setReasonForPurchase(text)}
             />
             <TextInput
               type="number"
               placeholder={'Bid (USD)'}
               style={{ height: 48 }}
-              onChange={(text: string) =>
-                setBidUsd(text == '' ? 0 : parseFloat(text))
-              }
+              onChange={(text) => setBidUsd(text == '' ? 0 : parseFloat(text))}
             />
             <span className={styles.Bid}>
               {Number((bidUsd * wildToUsd).toFixed(2)).toLocaleString()} WILD

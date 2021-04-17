@@ -19,7 +19,7 @@ export interface Contracts {
 function useZnsContracts(): Maybe<Contracts> {
   const context = useWeb3React<Web3Provider>();
   const { library, active, chainId } = context;
-  const contracts = useMemo((): Maybe<Contracts> => {
+  const contract = useMemo((): Maybe<Contracts> => {
     if (!active || !library) return Maybe.nothing();
     return Maybe.of({
       registry: Registrar__factory.connect(
@@ -28,7 +28,7 @@ function useZnsContracts(): Maybe<Contracts> {
       ),
     });
   }, [active, library, chainId]);
-  return contracts;
+  return contract;
 }
 
 export { useZnsContracts };

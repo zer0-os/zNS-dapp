@@ -9,6 +9,7 @@ import { BasicController__factory } from '../types';
 
 export interface ContractAddresses {
   basic: string;
+  registrar: string;
 }
 
 export interface Contract {

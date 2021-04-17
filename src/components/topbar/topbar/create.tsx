@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsBasicContracts } from '../../../lib/basicContract';
+import { useZnsContracts } from '../../../lib/contracts';
 import * as z from 'zod';
 import { zodResolver } from '../../../lib/validation/zodResolver';
 import { useForm } from 'react-hook-form';
@@ -16,6 +17,8 @@ import TextInput from '../../TextInput/TextInput.js';
 import { ethers } from 'ethers';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
+import ipfs_metadata from '../../../lib/metadata';
+import assert from 'assert';
 
 interface CreateProps {
   domainId: string;
@@ -50,10 +53,12 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
+
   // TODO: show user what they're doing wrong
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsBasicContracts();
+  const contract = useZnsContracts();
 
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
@@ -74,15 +79,50 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const goTo = (x: number) =>
     nftName.length ? setProgress(x) : setProgress(0);
 
+
+  const _metaData = useCallback(
+    (image: string) => {
+      if (account && contract.isJust() && name.isJust())
+      contract.value.registry
+        .setDomainMetadataUri(name.value.id, image)
+        .then((txr: any) => txr.wait(1))
+        .then(() => {
+          refetchDomain();
+  );
+
+  const upload = useCallback(
+    async (file: string) => {
+      assert(name.isJust());
+      return ipfs_metadata
+        .upload(name.value.metadata, file)
+        .then(async (added: any) => _metaData('ipfs://' + added.hash))
+        .then(() => refetchDomain());
+    },
+    [_metaData, name, refetchDomain],
+  );
+
   const _create = useCallback(
     (child: string) => {
       if (account && contracts.isJust() && name.isJust()) {
         contracts.value.basic
-          .registerSubdomain(name.value.id, child, account)
+          .registerSubdomainExtended(
+            name.value.id,
+            child,
+            account,
+            _metaData,
+            metedate,
+            name.value.name,
+          )
           .then((txr: any) => {
             console.log('contract call');
             txr.wait(1);
           })
+          .catch((err) =>
+            console.error(
+              'Oh well, you failed. Here some thoughts on the error that occured:',
+              err,
+            ),
+          )
           .then(() => {
             console.log('refetch domain');
             refetchDomain();
