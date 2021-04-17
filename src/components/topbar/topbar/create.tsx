@@ -18,7 +18,9 @@ import { ethers } from 'ethers';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import ipfs_metadata from '../../../lib/metadata';
+import ipfsClient from 'ipfs-http-client';
 import assert from 'assert';
+import MetaData from '../../../json/metadata.json';
 
 interface CreateProps {
   domainId: string;
@@ -34,7 +36,37 @@ const schema = z.object({
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const { refetchDomain, name } = domainContext;
+  const context = useWeb3React<Web3Provider>();
+  const { account } = context;
+  const contracts = useZnsBasicContracts();
+  const contract = useZnsContracts();
+  const [nftName, setName] = useState('');
+  const [nftStory, setStory] = useState('');
+  const [progress, setProgress] = useState(0);
+  const { onMint, onCancel } = props;
   const location = useLocation();
+  const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
+  });
+
+  const IPFS = require('ipfs-mini');
+  const ipfs = new IPFS({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+  });
+  const data = JSON.stringify(MetaData);
+  ipfs.add(data).then(console.log).catch(console.log);
+  // const createClient = require('ipfs-http-client');
+  // const client = createClient('https://ipfs.infura.io:5001');
+  // const data = 'data';
+  // ipfs.add(data, (err, hash) => {
+
+  // });
+  // const content = JSON.stringify('./metadata.json');
+  // const entry = await client.add(content);
+  // console.log(content + 'ipfs');
+  // ZNA-Routes
   const routes = _.transform(
     location.pathname
       .substr(1)
@@ -45,61 +77,19 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
       acc.push([val, next]);
     },
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const [isSubdomainVisible, setSubdomainVisible] = useState(false);
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const [imageUrl, setImageUrl] = useState('ipfs://Qmimage');
-  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
-  });
 
-  // TODO: show user what they're doing wrong
-  const context = useWeb3React<Web3Provider>();
-  const { account } = context;
-  const contracts = useZnsBasicContracts();
-  const contract = useZnsContracts();
-
-  const [nftName, setName] = useState('');
-  const [nftStory, setStory] = useState('');
-  const [progress, setProgress] = useState(0);
-
-  const { onMint, onCancel } = props;
-
+  // //  Form Submit Handlers
   const submit = () => {
-    _create(nftName);
+    // _create(nftName);
     // Skipping the actual create for now
     // onMint();
   };
-
   const cancel = () => {
     onCancel();
   };
 
   const goTo = (x: number) =>
     nftName.length ? setProgress(x) : setProgress(0);
-
-
-  const _metaData = useCallback(
-    (image: string) => {
-      if (account && contract.isJust() && name.isJust())
-      contract.value.registry
-        .setDomainMetadataUri(name.value.id, image)
-        .then((txr: any) => txr.wait(1))
-        .then(() => {
-          refetchDomain();
-  );
-
-  const upload = useCallback(
-    async (file: string) => {
-      assert(name.isJust());
-      return ipfs_metadata
-        .upload(name.value.metadata, file)
-        .then(async (added: any) => _metaData('ipfs://' + added.hash))
-        .then(() => refetchDomain());
-    },
-    [_metaData, name, refetchDomain],
-  );
 
   const _create = useCallback(
     (child: string) => {
@@ -109,8 +99,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
             name.value.id,
             child,
             account,
-            _metaData,
-            metedate,
+            data,
+            data,
             name.value.name,
           )
           .then((txr: any) => {
