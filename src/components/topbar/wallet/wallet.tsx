@@ -317,12 +317,12 @@ export default function Wallet() {
                     />
                   )}
                   <div className="name-con">{name}</div>
-                  <div
+                  {/* <div
                     style={{
                       backgroundImage: `url("assets/wallets/${name.toLowerCase()}.png`,
                     }}
                     className="circle"
-                  ></div>
+                  ></div> */}
                 </button>
               </div>
             );

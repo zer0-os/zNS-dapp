@@ -99,8 +99,9 @@
       width: 100%;
 
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
+
 
       .name-con {
         display: flex;
@@ -109,6 +110,7 @@
         align-items: center;
         font-size: 18px;
         margin-top: 4px;
+        text-align: center;
 
         cursor: pointer;
       }
