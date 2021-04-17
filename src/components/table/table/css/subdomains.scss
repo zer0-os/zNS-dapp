@@ -271,9 +271,14 @@
         -moz-box-sizing: border-box;    /* Firefox, other Gecko */
         box-sizing: border-box;         /* Opera/IE 8+ */
 
+        &:hover {
+          border: 1px solid rgba(147,64,208, 0.3);
+          padding-left: 42px;
+        }
+
         // transition: border var(--animation-time-medium) ease-in-out;
         &:focus {
-          border: 1px solid #9340d0;
+          border: 1px solid rgba(147,64,208, 0.5);
           padding-left: 42px;
         }
       }
