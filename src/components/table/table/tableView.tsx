@@ -58,7 +58,9 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const history = useHistory();
 
   const [ isEnlistVisible, setEnlistVisible ] = useState(false)
-  const openEnlist = () => setEnlistVisible(true)
+  const openEnlist = (e: any) => {
+    setEnlistVisible(true)
+  }
   const closeEnlist = () => setEnlistVisible(false)
 
   //
@@ -165,7 +167,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             nobids: '',
             lastsale: '',
             timestamp: '',
-            trade: <FutureButton glow onClick={openEnlist} style={{ height: 24 }}>ENLIST</FutureButton>,
+            trade: <FutureButton glow onClick={openEnlist} style={{ height: 24, zIndex: 1000 }}>ENLIST</FutureButton>,
           })),
 
     [name],
@@ -274,7 +276,8 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     // useAbsoluteLayout,
   );
 
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (e:any, row: any) => {
+    if(e.target.nodeName.toLowerCase() === 'button') return
     history.push({
       pathname: row.original.key,
     });
@@ -339,7 +342,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                         row.cells.map((cell) => {
                           // Apply the cell props
                           return (
-                            <td onClick={() => handleRowClick(row)} className="tdLocal" {...cell.getCellProps()}>
+                            <td onClick={(e:any) => handleRowClick(e, row)} className="tdLocal" {...cell.getCellProps()}>
                               {
                                 // Render the cell contents
                                 cell.render('Cell')

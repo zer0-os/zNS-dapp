@@ -299,7 +299,8 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     sort: false,
   };
 
-  const handleRowClick = (row: any) => {
+  const handleRowClick = (e: any, row: any) => {
+    if(e.target.nodeName.toLowerCase() === 'button') return
     history.push({
       pathname: row.values.network,
     });
@@ -352,7 +353,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                 return (
                   // Apply the row props
                   <tr
-                    onClick={() => handleRowClick(row)}
+                    onClick={(e: any) => handleRowClick(e, row)}
                     {...row.getRowProps()}
                   >
                     {
