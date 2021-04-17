@@ -715,23 +715,24 @@ table {
         padding: 16px 0;
       }
 
-      &::after {
-        content: ' ';
-        position: absolute;
-        left: 0;
-        width: 100%;
-        margin-top: 38px;
-        box-shadow: 0px 0px 40px 0px rgba(60, 161, 255, 0.8); 
-        z-index: -1;
-        transition: all 0.05s ease-in-out;
-        opacity: 0;
-      }
+      // &::after {
+      //   content: ' ';
+      //   position: absolute;
+      //   left: 0;
+      //   width: 100%;
+      //   margin-top: 38px;
+      //   box-shadow: 0px 0px 40px 0px rgba(60, 161, 255, 0.8); 
+      //   z-index: -1;
+      //   transition: all 0.05s ease-in-out;
+      //   opacity: 0;
+      // }
 
       &:hover {
-        &::after {
-          box-shadow: 0px 0px 15px 35px rgba(60, 161, 255, 0.8); 
-          opacity: 1;
-        }
+        background: var(--background-purple-card-20);
+        // &::after {
+        //   box-shadow: 0px 0px 15px 35px rgba(60, 161, 255, 0.8); 
+        //   opacity: 1;
+        // }
       }
 
       &:last-child:hover {

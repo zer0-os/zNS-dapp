@@ -125,7 +125,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
           </div>
           <div className="topRight">
             {!active ? (
-              <FutureButton onClick={showWallet}>Connnect Wallet</FutureButton>
+              <FutureButton onClick={showWallet}>Connect Wallet</FutureButton>
             ) : (
               <>
                 <FutureButton glow onClick={showMint}>
