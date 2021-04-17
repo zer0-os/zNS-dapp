@@ -72,11 +72,9 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
             account,
           )
           .then((txr: any) => {
-            console.log('contract call');
             txr.wait(1);
           })
           .then(() => {
-            console.log('refetch domain');
             refetchDomain();
           });
       }

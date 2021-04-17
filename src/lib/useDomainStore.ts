@@ -122,7 +122,6 @@ function useDomain(name: string) {
   const _domain: Maybe<any> = useMemo(() => {
     if (dataDomain && dataDomain.domains) {
       const test = dataDomain;
-      console.log(test, 'dataDomains');
 
       return Maybe.of({
         ...dataDomain.domains[0],

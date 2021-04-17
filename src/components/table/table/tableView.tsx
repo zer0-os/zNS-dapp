@@ -275,7 +275,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   );
 
   const handleRowClick = (row: any) => {
-    console.log(row)
     history.push({
       pathname: row.original.key,
     });
