@@ -18,6 +18,9 @@ import wilder from './img/mockusers/wilder.png';
 
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
 
+import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js'
+
+
 interface ProfileProps {
   domain: string;
 }
@@ -45,8 +48,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
-
-  console.log()
 
   const showNft = () => {
     setNftVisible(true);
@@ -82,7 +83,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     <div className="nftView">
       <div style={{background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("assets/galaxy.jpeg")`}} className="showcase border-primary">
         <div className="showcaseIMG">
-          <img onClick={openPreview} style={{height: '100%', width: '100%'}} src={neo2}/>
+          <img onClick={openPreview} style={{height: '100%', width: '100%'}} src={StaticEmulator(routes[routes.length - 1][0])}/>
           {/* <NFTImage domain={domain.value.domain} /> */}
         </div>
         <div className="showcaseInfo">

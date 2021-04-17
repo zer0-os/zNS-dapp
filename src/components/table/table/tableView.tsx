@@ -10,6 +10,7 @@ import Grid from './grid-view';
 import { Modal } from 'antd';
 import './css/subdomains.scss';
 import Image from '../mockup/image';
+import '../mockup/image.scss'
 import graph1 from './img/mockgraphs/graph1.png';
 import graph2 from './img/mockgraphs/graph2.png';
 import graph3 from './img/mockgraphs/graph3.png';
@@ -17,6 +18,8 @@ import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../../Enlist/Enlist'
+
+import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js'
 
 //
 // Please Read
@@ -148,7 +151,9 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             key: key.name,
             '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
-            asset: <Image />,
+            asset: <div className="neo-demo">
+                    <img src={StaticEmulator(key.name.split('.')[key.name.split('.').length - 1])} alt="" className="neo2" />
+                    </div>,
             name: key.name,
             // '24Hr': randPrice(),
             // '7d': randPrice(),

@@ -25,6 +25,8 @@ import cybercar from '../../css/img/cybercar.jpeg';
 import realestate from '../../css/img/realestate.jpeg';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 
+import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js'
+
 const images = [wilderavatar, neo, kitty, cybercar, realestate];
 const randomImage = () => images[Math.floor(Math.random() * images.length)];
 //
@@ -154,7 +156,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         : _.map(name.value.subdomains, (key, i) => ({
             '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
-            image: <Image />,
+            image: <div className="neo-demo">
+                    <img src={StaticEmulator(key.name)} alt="" className="neo2" />
+                    </div>,
             network: key.name,
             // token: key + ' token',
             // '24Hr': randPrice(),

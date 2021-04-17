@@ -14,6 +14,7 @@ const PreviewCard = (props) => {
   const [ enlistOpen, setEnlistOpen ] = useState(false)
 
   const enlist = () => setEnlistOpen(true)
+  console.log(props)
 
   return (
     <div
