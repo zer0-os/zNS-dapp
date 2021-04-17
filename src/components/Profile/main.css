@@ -90,6 +90,7 @@
     --glow-primary: drop-shadow(0px 0px 10px 0px #EB00FF);
     --glow-text-blue: 0px 0px 10px rgba(60, 161, 255, 0.7);
     --glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
+	--glow-text-white-big: 0px 0px 10px rgba(255, 255, 255, 1); 
 
     --animation-time-short: 0.1s;
     --animation-time-medium: 0.3s;
@@ -150,7 +151,7 @@ a {
 
 a:hover {
 	color: inherit;
-	text-shadow: var(--glow-text-white);
+	text-shadow: var(--glow-text-white-big);
 }
 
 /*
