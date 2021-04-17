@@ -79,7 +79,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   return (
     <div className="nftView">
       <div style={{background: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("assets/galaxy.jpeg")`}} className="showcase border-primary">
-        <div className="showcaseIMG border-primary">
+        <div className="showcaseIMG">
           <img style={{height: '100%', width: '100%'}} src={randomImage()}/>
           {/* <NFTImage domain={domain.value.domain} /> */}
         </div>
