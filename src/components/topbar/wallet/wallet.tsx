@@ -310,12 +310,12 @@ export default function Wallet() {
                   }}
                 >
                   {/* displays spinner while a wallet is clicked and being confirmed by the user */}
-                  {activating && (
+                  {/* {activating && (
                     <Spinner
                       color={'black'}
                       style={{ height: '25%', marginLeft: '-1rem' }}
                     />
-                  )}
+                  )} */}
                   <div className="name-con">{name}</div>
                   {/* <div
                     style={{
