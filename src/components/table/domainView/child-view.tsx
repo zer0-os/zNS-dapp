@@ -203,13 +203,13 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                   ></input>
                 </div>
                 <div className="buttons">
-                  <div className="filter">
+                  {/* <div className="filter">
                     <div className="imgContainer">
                       <img src={filtericon} alt="" />
                       <img src={filtericon} alt="" />
                     </div>
                     <div className="text">Filters</div>
-                  </div>
+                  </div> */}
                   <div
                     onClick={() => toggleGridView(false)}
                     // onMouseDown={() => setDown('list')}
