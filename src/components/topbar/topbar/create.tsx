@@ -55,17 +55,23 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     port: 5001,
     protocol: 'https',
   });
+
+  // upload data to ipfs
   const data = JSON.stringify(MetaData);
   ipfs.add(data).then(console.log).catch(console.log);
-  // const createClient = require('ipfs-http-client');
-  // const client = createClient('https://ipfs.infura.io:5001');
-  // const data = 'data';
-  // ipfs.add(data, (err, hash) => {
-
-  // });
-  // const content = JSON.stringify('./metadata.json');
-  // const entry = await client.add(content);
-  // console.log(content + 'ipfs');
+  ipfs.cat(
+    'QmXPBDtWEmVmo5jX8Cz3Ums9m7if8VEHDZbEUp9WQxMWnR',
+    (err: any, result: any) => {
+      console.log(err, result);
+    },
+  );
+  ipfs.addJSON({ somevalue: 2, name: 'Nick' }, (err: any, result: any) => {
+    console.log(err, result);
+  });
+  ipfs
+    .catJSON('QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j')
+    .then(console.log)
+    .catch(console.log);
   // ZNA-Routes
   const routes = _.transform(
     location.pathname
@@ -80,7 +86,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
 
   // //  Form Submit Handlers
   const submit = () => {
-    // _create(nftName);
+    _create(nftName);
     // Skipping the actual create for now
     // onMint();
   };
@@ -99,8 +105,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
             name.value.id,
             child,
             account,
-            data,
-            data,
+            child,
+            child,
             name.value.name,
           )
           .then((txr: any) => {
@@ -153,12 +159,12 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               onChange={(text: string) => setName(text)}
               placeholder="Name"
             />
-            {/* <TextInput
+            <TextInput
               onChange={(text: string) => setStory(text)}
               multiline={true}
               placeholder={'Story'}
               style={{ height: 146, marginTop: 24 }}
-            /> */}
+            />
           </div>
           <div
             className={`${MintNewNFTStyle.NFT} border-rounded`}
