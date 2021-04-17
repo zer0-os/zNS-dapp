@@ -199,14 +199,13 @@
       height: 49px;
       background-color: rgba(241, 115, 115, 0.06);
       border-radius: 31px;
-      padding: 15px 31px 13px 31px;
+      padding: 0 48px;
       /* Text */
       text-align: left;
       font-size: 16px;
       color: white;
       &:placeholder {
         color: #727272;
-        font-size: 16px;
       }
     }
 
@@ -268,6 +267,15 @@
       input[type='text'] {
         padding-top: 4px;
         padding-left: 43px; //change it base on your desired output
+        -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+        box-sizing: border-box;         /* Opera/IE 8+ */
+
+        // transition: border var(--animation-time-medium) ease-in-out;
+        &:focus {
+          border: 1px solid #9340d0;
+          padding-left: 42px;
+        }
       }
       .search-bar-button {
         // TODO: make more responsive to page size
@@ -292,7 +300,7 @@
       // this creates a shadow element behind the search icon to provide a glow effect, which is otherwise difficult to achieve using an svg as a background element
       .search-bar-glow {
         position: absolute;
-        left: 20px;
+        left: 17px;
         height: 25px;
         width: 25px;
         border-color: none;
