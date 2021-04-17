@@ -214,7 +214,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         closable={false}
         footer={null}
       >
-        <img src={neo2} />
+        <img src={StaticEmulator(routes[routes.length - 1][0])} />
       </Modal>
     </div>
   );
