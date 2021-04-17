@@ -27,7 +27,7 @@ const PreviewCard = (props) => {
       <div className={styles.Body}>
         <div>
           <h5 className={'glow-text-blue'}>{props.name}</h5>
-          <span className={styles.Domain}>{props.domain}</span>
+          <a className={styles.Domain}>{props.domain}</a>
         </div>
         <p>{props.description}</p>
         <div className={styles.Members}>
