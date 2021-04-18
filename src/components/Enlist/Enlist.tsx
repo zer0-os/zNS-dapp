@@ -13,6 +13,9 @@ import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../lib/useDomainCache';
 import Create from '../topbar/topbar/create';
 
+
+import StaticEmulator from '../../lib/StaticEmulator/StaticEmulator.js'
+
 const wildToUsd = 0.5; // Just a template for now
 
 interface EnlistProps {
@@ -26,6 +29,9 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
+
+  console.log(name)
+  console.log(props)
 
   // State
   const [ emailAddress, setEmailAddress ] = useState('')
@@ -49,7 +55,7 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
       <div className={styles.Header}>
         <h1 className={`glow-text-white`}>Enlist To Purchase</h1>
         <div>
-          <h2 className={`glow-text-white`}>0:/Wilder.NewNFT</h2>
+          <h2 className={`glow-text-white`}>0://{ name.value.name }</h2>
           {/* <span>By Frank Wilder</span> */}
         </div>
       </div>
@@ -80,7 +86,7 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
           <div
             className={`${styles.NFT} border-rounded`}
             // Template NFT for now
-            style={{ backgroundImage: `url(assets/nft/redpill.png)` }}
+            style={{ backgroundImage: `url(${props.image})` }}
           ></div>
         </div>
       </form>

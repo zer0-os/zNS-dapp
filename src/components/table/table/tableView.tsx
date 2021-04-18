@@ -57,11 +57,9 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const { name } = domainContext;
   const history = useHistory();
 
-  const [ isEnlistVisible, setEnlistVisible ] = useState(false)
-  const openEnlist = (e: any) => {
-    setEnlistVisible(true)
-  }
-  const closeEnlist = () => setEnlistVisible(false)
+
+  const [ enlist, setEnlist ] = useState('')
+  const closeEnlist = () => setEnlist('')
 
   //
   // Following functions generate random numbers to display mock data in the UI
@@ -167,7 +165,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             nobids: '',
             lastsale: '',
             timestamp: '',
-            trade: <FutureButton glow onClick={openEnlist} style={{ height: 24, zIndex: 1000 }}>ENLIST</FutureButton>,
+            trade: <FutureButton glow onClick={() => setEnlist(key.name)} style={{ height: 24, zIndex: 1000 }}>ENLIST</FutureButton>,
           })),
 
     [name],
@@ -395,14 +393,15 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       })} */}
 
       <Modal
-        visible={isEnlistVisible}
+        visible={enlist.length > 0}
         onOk={closeEnlist}
         onCancel={closeEnlist}
         closable={false}
         footer={null}
         width={304}
       >
-        <Enlist name={''} props={{}} />
+        {console.log(enlist)}
+        <Enlist name={enlist} props={{image: StaticEmulator(enlist.split('.')[enlist.split('.').length - 1])}} />
       </Modal>
     </div>
   );
