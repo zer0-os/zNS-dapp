@@ -3,8 +3,11 @@ import React from 'react'
 import styles from './NFTCard.module.css'
 
 const NFTCard = (props) => {
+
+    console.log(props)
+
     return(
-        <div className={`${styles.NFTCard} border-rounded`}>
+        <div onClick={props.onClick} className={`${styles.NFTCard} border-rounded`}>
             
             <div 
                 className={styles.NFT}
