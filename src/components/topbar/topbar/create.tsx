@@ -20,7 +20,6 @@ import _ from 'lodash';
 import ipfs_metadata from '../../../lib/metadata';
 import ipfsClient from 'ipfs-http-client';
 import assert from 'assert';
-import MetaData from '../../../json/metadata.json';
 
 interface CreateProps {
   domainId: string;
@@ -49,6 +48,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     resolver: zodResolver(schema),
   });
 
+  const fs = require('fs');
   const IPFS = require('ipfs-mini');
   const ipfs = new IPFS({
     host: 'ipfs.infura.io',
@@ -56,22 +56,23 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     protocol: 'https',
   });
 
+  const metaData = {
+    description: '<story goes here>',
+    image:
+      'https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png',
+    name: '<title>',
+  };
   // upload data to ipfs
-  const data = JSON.stringify(MetaData);
-  ipfs.add(data).then(console.log).catch(console.log);
-  ipfs.cat(
-    'QmXPBDtWEmVmo5jX8Cz3Ums9m7if8VEHDZbEUp9WQxMWnR',
-    (err: any, result: any) => {
-      console.log(err, result);
-    },
-  );
-  ipfs.addJSON({ somevalue: 2, name: 'Nick' }, (err: any, result: any) => {
-    console.log(err, result);
+  const data = JSON.stringify(metaData);
+  fs.writeFileSync('./metadata.json', data, (err: any) => {
+    if (err) {
+      console.log('Error writing file', err);
+    } else {
+      console.log('writing file success');
+    }
   });
-  ipfs
-    .catJSON('QmTp2hEo8eXRp6wg7jXv1BLCMh5a4F3B7buAUZNZUu772j')
-    .then(console.log)
-    .catch(console.log);
+  ipfs.add(data).then(console.log).catch(console.log);
+
   // ZNA-Routes
   const routes = _.transform(
     location.pathname
