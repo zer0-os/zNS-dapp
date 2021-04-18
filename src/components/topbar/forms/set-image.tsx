@@ -8,6 +8,7 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { zodResolver } from '../../../lib/validation/zodResolver';
 import ipfs from '../../../lib/ipfs';
 import assert from 'assert';
+import ipfs_metadata from '../../../lib/metadata';
 interface SetImageProps {
   name: string;
 }
@@ -52,7 +53,7 @@ const SetImage: FC<SetImageProps> = ({ name: _domain }) => {
   const uploadAndSetImage = useCallback(
     async (file: File) => {
       assert(name.isJust());
-      return ipfs
+      return ipfs_metadata
         .upload(name.value.metadata, file)
         .then(async (added) => _setImage('ipfs://' + added.hash))
         .then(() => refetchDomain());
