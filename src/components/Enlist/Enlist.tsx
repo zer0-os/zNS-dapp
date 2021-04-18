@@ -30,9 +30,6 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
 
-  console.log(name)
-  console.log(props)
-
   // State
   const [ emailAddress, setEmailAddress ] = useState('')
   const [ reasonForPurchase, setReasonForPurchase ] = useState('')

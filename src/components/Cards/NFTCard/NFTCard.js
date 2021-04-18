@@ -1,10 +1,9 @@
 import React from 'react'
 
+import { Modal } from 'antd';
 import styles from './NFTCard.module.css'
 
 const NFTCard = (props) => {
-
-    console.log(props)
 
     return(
         <div onClick={props.onClick} className={`${styles.NFTCard} border-rounded`}>

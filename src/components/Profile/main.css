@@ -299,5 +299,9 @@ a:hover {
 }
 
 .ant-modal {
-	padding-bottom: 128px;
+	/* padding-bottom: 128px; */
+}
+
+.ant-modal-body > img {
+	max-width: 100%;
 }

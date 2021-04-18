@@ -53,6 +53,13 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+
+	cursor: pointer;
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.NFT:hover {
+	transform: scale(1.05);
 }
 
 .Inputs {

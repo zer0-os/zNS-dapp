@@ -4,6 +4,7 @@ import StepBar from '../StepBar/StepBar.js';
 import ToggleSection from '../ToggleSection/ToggleSection.js';
 import TextInput from '../TextInput/TextInput.js';
 import FutureButton from '../Buttons/FutureButton/FutureButton.js';
+import { Modal } from 'antd';
 
 import styles from './Enlist.module.css';
 
@@ -20,6 +21,10 @@ const Enlist = (props) => {
   const [emailAddress, setEmailAddress] = useState('');
   const [reasonForPurchase, setReasonForPurchase] = useState('');
   const [bidUsd, setBidUsd] = useState(0);
+
+  const [ previewOpen, setPreviewOpen ] = useState(false)
+  const openPreview = () => setPreviewOpen(true)
+  const closePreview = () => setPreviewOpen(false)
 
   // Form validation
   const isEmail = (text) =>
@@ -57,7 +62,7 @@ const Enlist = (props) => {
       <div className={styles.Header}>
         <h1 className={`glow-text-white`}>Enlist To Purchase</h1>
         <div>
-          <h2 className={`glow-text-white`}>0:/Wilder.NewNFT</h2>
+          <h2 className={`glow-text-white`}>0://{props.name}</h2>
           {/* <span>By Frank Wilder</span> */}
         </div>
       </div>
@@ -91,8 +96,8 @@ const Enlist = (props) => {
           </div>
           <div
             className={`${styles.NFT} border-rounded`}
-            // Template NFT for now
-            style={{ backgroundImage: `url(assets/nft/redpill.png)` }}
+            onClick={openPreview}
+            style={{ backgroundImage: `url(${props.props.image})` }}
           ></div>
         </div>
       </form>
@@ -108,6 +113,16 @@ const Enlist = (props) => {
       >
         Submit
       </FutureButton>
+      <Modal
+        centered
+        visible={previewOpen}
+        onCancel={closePreview}
+        closable={false}
+        footer={null}
+        style={{ width: 500 }}
+      >
+        <img src={props.props.image} />
+      </Modal>
     </div>
   );
 };
