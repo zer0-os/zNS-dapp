@@ -99,6 +99,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             <span className="cell-btn">
               <img onClick={showTransfer} src={tripledot} alt="" />
               <Modal
+                centered
                 visible={isTransferVisible}
                 onOk={transferOk}
                 onCancel={transferCancel}
@@ -187,6 +188,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
                 Transfer{' '}
               </button>
               <Modal
+                centered
                 visible={isTransferVisible}
                 onOk={transferOk}
                 onCancel={transferCancel}
@@ -226,6 +228,7 @@ const Shop: FC<ShopProps> = ({ domain: _domain }) => {
             Mint NFT
           </button>
           <Modal
+            centered
             visible={isStakingVisible}
             onOk={stakingOk}
             onCancel={stakingCancel}

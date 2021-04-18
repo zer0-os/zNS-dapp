@@ -25,6 +25,13 @@
     background-repeat: no-repeat;
 
     border-radius: 9px 0px 0px 13px;
+    cursor: pointer;
+
+    transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Asset:hover {
+    transform: scale(1.02);
 }
 
 .Body {

@@ -395,10 +395,11 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       <Modal
         visible={enlist.length > 0}
         onOk={closeEnlist}
+        centered
         onCancel={closeEnlist}
         closable={false}
         footer={null}
-        width={304}
+        width={640}
       >
         {console.log(enlist)}
         <Enlist name={enlist} props={{image: StaticEmulator(enlist.split('.')[enlist.split('.').length - 1])}} />

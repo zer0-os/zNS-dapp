@@ -95,7 +95,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
         <img className="nightmoon" src={nightmoon} alt="" />
       </div>
 
-      <Modal visible={isWalletVisible} onOk={walletOk} onCancel={walletCancel}>
+      <Modal centered visible={isWalletVisible} onOk={walletOk} onCancel={walletCancel}>
         <Wallet />
       </Modal>
     </div>

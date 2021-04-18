@@ -12,8 +12,12 @@ const templateNFT = 'assets/nft/redpill.png';
 const PreviewCard = (props) => {
 
   const [ enlistOpen, setEnlistOpen ] = useState(false)
+  const [ previewOpen, setPreviewOpen ] = useState(false)
 
   const enlist = () => setEnlistOpen(true)
+  const closeEnlist = () => setEnlistOpen(false)
+  const preview = () => setPreviewOpen(true)
+  const closePreview = () => setPreviewOpen(false)
 
   return (
     <div
@@ -22,6 +26,7 @@ const PreviewCard = (props) => {
     >
       <div
         className={styles.Asset}
+        onClick={preview}
         style={{ backgroundImage: `url(${props.img})` }}
       ></div>
       <div className={styles.Body}>
@@ -80,12 +85,24 @@ const PreviewCard = (props) => {
           closeIcon={null}
           centered
           visible={enlistOpen}
-          onCancel={() => setEnlistOpen(false)}
+          onCancel={closeEnlist}
           footer={null}
           closable={false}
         >
         <Enlist name={props.name} props={{image: props.img}} />
       </Modal>
+
+      <Modal
+        centered
+        visible={previewOpen}
+        onCancel={closePreview}
+        closable={false}
+        footer={null}
+        style={{width: 500}}
+      >
+        <img src={props.img} />
+      </Modal>
+
     </div>
   );
 };

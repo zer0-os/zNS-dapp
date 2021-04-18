@@ -212,6 +212,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         visible={isPreviewOpen}
         onCancel={closePreview}
         closable={false}
+        centered
         footer={null}
       >
         <img src={StaticEmulator(routes[routes.length - 1][0])} />

@@ -54,6 +54,7 @@ const NFTview: FC<ProfileProps> = ({ domain: _domain }) => {
           </button>
         )} */}
         <Modal
+          centered
           className="nft-view-modal"
           visible={isNftVisible}
           onOk={nftOk}

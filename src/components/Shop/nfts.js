@@ -42,6 +42,34 @@ const nfts = [
         img: 'assets/nft/mossy.png',
         price: '250',
     },
+    {
+        creator: users.frank,
+        owner: users.ccat,
+        name: `The Grass Is Greener`,
+        img: 'assets/nft/greener.png',
+        price: '250',
+    },
+    {
+        creator: users.frank,
+        owner: users.frank,
+        name: `Mossy Haven`,
+        img: 'assets/nft/mossy.png',
+        price: '250',
+    },
+    {
+        creator: users.frank,
+        owner: users.frank,
+        name: `The Grass Is Greener`,
+        img: 'assets/nft/greener.png',
+        price: '250',
+    },
+    {
+        creator: users.frank,
+        owner: users.hypno,
+        name: `Mossy Haven`,
+        img: 'assets/nft/mossy.png',
+        price: '250',
+    },
 ]
 
 const getAll = () => nfts

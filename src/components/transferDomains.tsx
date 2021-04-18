@@ -88,6 +88,7 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
         Transfer domain
       </button>
       <Modal
+        centered
         title="subdomain"
         visible={isSubdomainVisible}
         onOk={subdomainOk}

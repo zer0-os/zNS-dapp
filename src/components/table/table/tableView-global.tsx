@@ -172,7 +172,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             lastsale: '',
             timestamp: '',
             trade: (
-              <FutureButton style={{ height: 24 }}>{randTrade()}</FutureButton>
+              <FutureButton glow style={{ height: 24 }}>{randTrade()}</FutureButton>
             ),
           })),
     [name],
