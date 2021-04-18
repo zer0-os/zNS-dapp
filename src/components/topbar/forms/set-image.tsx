@@ -50,16 +50,16 @@ const SetImage: FC<SetImageProps> = ({ name: _domain }) => {
     [account, contracts, name, refetchDomain],
   );
 
-  const uploadAndSetImage = useCallback(
-    async (file: File) => {
-      assert(name.isJust());
-      return ipfs_metadata
-        .upload(name.value.metadata, file)
-        .then(async (added) => _setImage('ipfs://' + added.hash))
-        .then(() => refetchDomain());
-    },
-    [_setImage, name, refetchDomain],
-  );
+  // const uploadAndSetImage = useCallback(
+  //   async (file: File) => {
+  //     assert(name.isJust());
+  //     return ipfs_metadata
+  //       .upload(name.value.metadata, file)
+  //       .then(async (added) => _setImage('ipfs://' + added.hash))
+  //       .then(() => refetchDomain());
+  //   },
+  //   [_setImage, name, refetchDomain],
+  // );
 
   // // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // const hideSetImage = useCallback(() => {
@@ -75,7 +75,7 @@ const SetImage: FC<SetImageProps> = ({ name: _domain }) => {
 
   return (
     <>
-      {true && (
+      {/* {true && (
         <>
           <img
             style={{ height: '10%', width: '10%' }}
@@ -103,7 +103,7 @@ const SetImage: FC<SetImageProps> = ({ name: _domain }) => {
             </div>
           </form>
         </>
-      )}
+      )} */}
     </>
   );
 };
