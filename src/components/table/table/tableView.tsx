@@ -59,6 +59,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
 
   const [enlist, setEnlist] = useState('');
   const closeEnlist = () => setEnlist('');
+  console.log(enlist)
 
   //
   // Following functions generate random numbers to display mock data in the UI
@@ -417,7 +418,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         footer={null}
         width={640}
       >
-        {console.log(enlist)}
         <Enlist
           name={enlist}
           props={{

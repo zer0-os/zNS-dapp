@@ -75,7 +75,6 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
             padding: 0,
             // border: '2px solid red',
           }}
-          bodyStyle={{ height: '80vh' }}
           closeIcon={null}
           centered
           width={'80vw'}

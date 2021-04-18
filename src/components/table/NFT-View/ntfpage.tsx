@@ -17,6 +17,7 @@ import Modal from 'antd/lib/modal/Modal';
 import wilder from './img/mockusers/wilder.png';
 
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
+import Enlist from '../../Enlist/Enlist'
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
@@ -36,6 +37,10 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   const [isPreviewOpen, setPreviewOpen] = useState(false);
   const openPreview = () => setPreviewOpen(true);
   const closePreview = () => setPreviewOpen(false);
+
+  const [ enlist, setEnlist ] = useState(false)
+  const openEnlist = () => setEnlist(true)
+  const closeEnlist = () => setEnlist(false)
 
   const routes = _.transform(
     location.pathname
@@ -70,9 +75,9 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
             <span className="embolden">{number} WILD</span>
           </div>
         </div>
-        <div className="historyRight">
+        {/* <div className="historyRight">
           {days} days ago <span className="viewTx">[view tx]</span>
-        </div>
+        </div> */}
       </div>
     );
   };
@@ -101,19 +106,9 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
                 {routes[routes.length - 1][0]}
               </div>
               <div className="domain">
-                <Link to={'/'} className="network">
-                  0://
+                <Link to={location.pathname} className="network">
+                  0:/{location.pathname}
                 </Link>
-                {routes.length > 0 ? (
-                  <div className="route">
-                    {routes.map(([key, path], i) => (
-                      <Link key={key} className="route-nav-text-sub" to={path}>
-                        {key}
-                        {i < routes.length - 1 && '.'}
-                      </Link>
-                    ))}
-                  </div>
-                ) : null}
               </div>
               <div className="users">
                 <div className="creator">
@@ -146,7 +141,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           </div>
           <div className="showcaseBottom">
             <div className="shadowContainer">
-              <FutureButton glow>Make An Offer</FutureButton>
+              <FutureButton onClick={openEnlist} glow>Enlist</FutureButton>
             </div>
           </div>
         </div>
@@ -196,7 +191,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
                 <span className="infoMark">?</span>
               </span>
             </div>
-            <div className="quadText">{account}</div>
+            <div className="quadText">{account && account.length ? account : 'Connect a wallet to see your Ethereum address!'}</div>
           </div>
         </div>
       </div>
@@ -224,6 +219,15 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         footer={null}
       >
         <img src={StaticEmulator(routes[routes.length - 1][0])} />
+      </Modal>
+      <Modal
+        visible={enlist}
+        onCancel={closeEnlist}
+        closable={false}
+        centered
+        footer={null}
+      >
+        <Enlist name={location.pathname} props={{image: StaticEmulator(routes[routes.length - 1][0])}} />
       </Modal>
     </div>
   );

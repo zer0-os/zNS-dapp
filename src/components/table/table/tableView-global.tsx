@@ -67,6 +67,10 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const { name } = domainContext;
   const history = useHistory();
 
+  const openNft = (nft: string) => {
+    
+  }
+
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -174,7 +178,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             lastsale: '',
             timestamp: '',
             trade: (
-              <FutureButton glow style={{ height: 24 }}>
+              <FutureButton onClick={() => openNft(key.name)} glow style={{ height: 24 }}>
                 {randTrade()}
               </FutureButton>
             ),
