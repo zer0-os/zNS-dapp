@@ -41,6 +41,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const contract = useZnsContracts();
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
+  const [Image, setImage] = useState('');
   const [progress, setProgress] = useState(0);
   const { onMint, onCancel } = props;
   const location = useLocation();
@@ -56,22 +57,34 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     protocol: 'https',
   });
 
-  const metaData = {
-    description: '<story goes here>',
-    image:
-      'https://storage.googleapis.com/opensea-prod.appspot.com/puffs/3.png',
-    name: '<title>',
-  };
-  // upload data to ipfs
-  const data = JSON.stringify(metaData);
-  fs.writeFileSync('./metadata.json', data, (err: any) => {
-    if (err) {
-      console.log('Error writing file', err);
-    } else {
-      console.log('writing file success');
-    }
-  });
-  ipfs.add(data).then(console.log).catch(console.log);
+  ipfs.add(nftStory).then(console.log).catch(console.log);
+
+  const uploadAndSetImage = useCallback(
+    async (file: File) => {
+      assert(name.isJust());
+      return ipfs.upload(setImage, file);
+    },
+    [name, setImage],
+  );
+
+  ipfs.add(Image).then(console.log).catch(console.log);
+
+  const uploadStory = () => {};
+  // const metaData = {
+  //   description: '',
+  // };
+
+  // upload data to ipf
+  // const cid = ipfs.add(metaData);
+  // const data = JSON.stringify(metaData);
+  // fs.writeFile('./metadata.json', data, (err: any) => {
+  //   if (err) {
+  //     console.log('Error writing file', err);
+  //   } else {
+  //     console.log('writing file success');
+  //   }
+  // });
+  // ipfs.add(data).then(console.log).catch(console.log);
 
   // ZNA-Routes
   const routes = _.transform(
@@ -96,7 +109,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   };
 
   const goTo = (x: number) =>
-    nftName.length ? setProgress(x) : setProgress(0);
+    nftName.length && setStory.length ? setProgress(x) : setProgress(0);
 
   const _create = useCallback(
     (child: string) => {
@@ -106,9 +119,9 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
             name.value.id,
             child,
             account,
-            child,
-            child,
-            name.value.name,
+            Image,
+            account,
+            name.value.isLocked,
           )
           .then((txr: any) => {
             txr.wait(1);
@@ -165,10 +178,13 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               style={{ height: 146, marginTop: 24 }}
             />
           </div>
-          <div
-            className={`${MintNewNFTStyle.NFT} border-rounded`}
-            style={{ backgroundImage: `url(assets/nft/redpill.png)` }}
-          ></div>
+          <div>
+            <img
+              style={{ height: '10%', width: '10%' }}
+              src={Image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+            />
+            <input style={{}} name={'image'} type="file" ref={register}></input>
+          </div>
         </div>
       </form>
       <FutureButton
