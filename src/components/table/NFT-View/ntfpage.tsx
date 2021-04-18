@@ -13,17 +13,12 @@ import neo from './img/mockusers/neo.png';
 import cat from './img/mockusers/cat.png';
 import phoenix from './img/mockusers/phoenix.png';
 import vape from './img/mockusers/vape.png';
+import Modal from 'antd/lib/modal/Modal';
 import wilder from './img/mockusers/wilder.png';
 
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 
-const images = [
-  'assets/nft/greener.png',
-  'assets/nft/mossy.png',
-  'assets/nft/redpill.png',
-  'assets/nft/revenge.png',
-];
-const randomImage = () => images[Math.floor(Math.random() * images.length)];
+import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
 interface ProfileProps {
   domain: string;
@@ -38,6 +33,10 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   // const { domain } = domainContext;
   const location = useLocation();
 
+  const [isPreviewOpen, setPreviewOpen] = useState(false);
+  const openPreview = () => setPreviewOpen(true);
+  const closePreview = () => setPreviewOpen(false);
+
   const routes = _.transform(
     location.pathname
       .substr(1)
@@ -48,8 +47,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
-
-  console.log();
 
   const showNft = () => {
     setNftVisible(true);
@@ -89,8 +86,12 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         }}
         className="showcase border-primary"
       >
-        <div className="showcaseIMG border-primary">
-          <img style={{ height: '100%', width: '100%' }} src={randomImage()} />
+        <div className="showcaseIMG">
+          <img
+            onClick={openPreview}
+            style={{ height: '100%', width: '100%' }}
+            src={StaticEmulator(routes[routes.length - 1][0])}
+          />
           {/* <NFTImage domain={domain.value.domain} /> */}
         </div>
         <div className="showcaseInfo">
@@ -153,7 +154,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       <div className="info">
         <div className="story border-primary">
           <div>STORY</div>
-          <div>
+          <div style={{ fontSize: 16 }}>
             To understand where we are, we must honor what has come before us.
             With NFTs catapulting Crypto into the mainstream, it shouldn’t be
             forgotten that the DeFi movement of 2020 helped pave the way.
@@ -215,6 +216,15 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           </div>
         </div>
       </div>
+      <Modal
+        visible={isPreviewOpen}
+        onCancel={closePreview}
+        closable={false}
+        centered
+        footer={null}
+      >
+        <img src={StaticEmulator(routes[routes.length - 1][0])} />
+      </Modal>
     </div>
   );
 };

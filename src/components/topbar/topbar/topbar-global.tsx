@@ -125,7 +125,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
           </div>
           <div className="topRight">
             {!active ? (
-              <FutureButton onClick={showWallet}>Connnect Wallet</FutureButton>
+              <FutureButton onClick={showWallet}>Connect Wallet</FutureButton>
             ) : (
               <>
                 <FutureButton glow onClick={showMint}>
@@ -177,6 +177,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
         visible={isMintVisible}
         onOk={mintOk}
         closable={false}
+        centered
         onCancel={mintCancel}
         footer={null}
         width={640}
@@ -185,10 +186,12 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
       </Modal>
 
       <Modal
+        centered
         visible={isProfileVisible}
         onCancel={closeProfile}
         closable={false}
         footer={null}
+        style={{top: 27}}
         width={1320}
       >
         <ProfileNew
@@ -196,6 +199,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
       </Modal>
 
       <Modal
+        centered
         visible={isWalletVisible}
         onOk={walletOk}
         onCancel={walletCancel}

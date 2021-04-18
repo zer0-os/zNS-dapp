@@ -10,6 +10,8 @@ import avatar from '../../css/img/wilderavatar.png';
 import { Indexed } from '@ethersproject/abi';
 import { inflate } from 'node:zlib';
 
+import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js'
+
 interface GridProps {
   domain: string;
 }
@@ -81,25 +83,25 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
               </div>
               <div className="artist">WILDER</div>
             </div>
-            <div className="dots">
+            {/* <div className="dots">
               <div></div>
               <div></div>
               <div></div>
-            </div>
+            </div> */}
           </div>
           <div className="name">
             <div>{cellInput.name.match(/[^.]+$/)}</div>
           </div>
           <div className="image">
-            <GridImage domain={cellInput.name} />
+            <GridImage domain={cellInput.name} props={{image: StaticEmulator(cellInput.name.split('.')[cellInput.name.split('.').length - 1])}} />
           </div>
-          <div className="text">
+          {/* <div className="text">
             <div>Last Traded Price</div>
             <div>Change</div>
-          </div>
+          </div> */}
           <div className="price">
             <div>{randThreeS()} WILD</div>
-            <div>{randPrice()}</div>
+            {/* <div>{randPrice()}</div> */}
           </div>
         </div>
       </div>

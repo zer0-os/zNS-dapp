@@ -110,7 +110,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
             name.value.name,
           )
           .then((txr: any) => {
-            console.log('contract call');
             txr.wait(1);
           })
           .catch((err) =>
@@ -120,7 +119,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
             ),
           )
           .then(() => {
-            console.log('refetch domain');
             refetchDomain();
           });
       }

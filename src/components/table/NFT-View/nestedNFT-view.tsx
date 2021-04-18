@@ -168,6 +168,7 @@ const Nestedview: FC<NestedProps> = ({ domain: _domain }) => {
                         Purchase
                       </button>
                       <Modal
+                        centered
                         visible={isPurchaseVisible}
                         getContainer={false}
                         maskStyle={{}}

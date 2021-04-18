@@ -24,6 +24,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 
 import PreviewCard from '../../PreviewCard/PreviewCard.js';
+import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
 const previewData = {
   owner: {
@@ -117,13 +118,15 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
       {name.value.subdomains.length !== 0 ? (
         <div>
           <PreviewCard
-            name={previewData.name}
-            domain={previewData.domain}
+            name={name.value.name}
+            domain={'0://' + name.value.name}
             creator={previewData.creator}
             owner={previewData.owner}
             description={previewData.description}
             data={previewData}
-            img={previewData.img}
+            img={StaticEmulator(
+              name.value.name.split('.')[name.value.name.split('.').length - 1],
+            )}
             style={{ marginBottom: 24 }}
           />
 
@@ -204,13 +207,13 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                   ></input>
                 </div>
                 <div className="buttons">
-                  <div className="filter">
+                  {/* <div className="filter">
                     <div className="imgContainer">
                       <img src={filtericon} alt="" />
                       <img src={filtericon} alt="" />
                     </div>
                     <div className="text">Filters</div>
-                  </div>
+                  </div> */}
                   <div
                     onClick={() => toggleGridView(false)}
                     // onMouseDown={() => setDown('list')}

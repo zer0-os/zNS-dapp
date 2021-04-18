@@ -25,6 +25,11 @@
   padding-bottom: 20px;
 }
 
+.gridCellContent .image img {
+  object-fit: cover;
+  height: 100%;
+}
+
 // components
 
 .pageContainerPositionFix {
@@ -199,14 +204,13 @@
       height: 49px;
       background-color: rgba(241, 115, 115, 0.06);
       border-radius: 31px;
-      padding: 15px 31px 13px 31px;
+      padding: 0 48px;
       /* Text */
       text-align: left;
       font-size: 16px;
       color: white;
       &:placeholder {
         color: #727272;
-        font-size: 16px;
       }
     }
 
@@ -267,7 +271,22 @@
       justify-content: center;
       input[type='text'] {
         padding-top: 4px;
-        padding-left: 43px; //change it base on your desired output
+        padding-left: 42px; //change it base on your desired output
+        -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+        box-sizing: border-box;         /* Opera/IE 8+ */
+
+        border: 1px solid rgba(0,0,0,0);
+
+        &:hover {
+          box-shadow: 0px 0px 7px 0px var(--color-accent-1);
+        }
+
+        transition: border var(--animation-time-medium) ease-in-out, box-shadow var(--animation-time-medium) ease-in-out;
+        &:focus {
+          border: 1px solid var(--color-accent-1);
+          // padding-left: 42px;
+        }
       }
       .search-bar-button {
         // TODO: make more responsive to page size
@@ -292,7 +311,7 @@
       // this creates a shadow element behind the search icon to provide a glow effect, which is otherwise difficult to achieve using an svg as a background element
       .search-bar-glow {
         position: absolute;
-        left: 20px;
+        left: 17px;
         height: 25px;
         width: 25px;
         border-color: none;
@@ -690,7 +709,7 @@ table {
 
   // table
   tbody {
-    border-radius: 16;
+    border-radius: 16px;
     overflow: hidden;
 
     // all rows
@@ -702,23 +721,26 @@ table {
         padding: 16px 0;
       }
 
-      &::after {
-        content: ' ';
-        position: absolute;
-        left: 0;
-        width: 100%;
-        margin-top: 38px;
-        box-shadow: 0px 0px 40px 0px rgba(60, 161, 255, 0.8); 
-        z-index: -1;
-        transition: all 0.05s ease-in-out;
-        opacity: 0;
-      }
+      transition: background var(--animation-time-medium) ease-in-out;
+
+      // &::after {
+      //   content: ' ';
+      //   position: absolute;
+      //   left: 0;
+      //   width: 100%;
+      //   margin-top: 38px;
+      //   box-shadow: 0px 0px 40px 0px rgba(60, 161, 255, 0.8); 
+      //   z-index: -1;
+      //   transition: all 0.05s ease-in-out;
+      //   opacity: 0;
+      // }
 
       &:hover {
-        &::after {
-          box-shadow: 0px 0px 15px 35px rgba(60, 161, 255, 0.8); 
-          opacity: 1;
-        }
+        background: var(--background-purple-card-20);
+        // &::after {
+        //   box-shadow: 0px 0px 15px 35px rgba(60, 161, 255, 0.8); 
+        //   opacity: 1;
+        // }
       }
 
       &:last-child:hover {

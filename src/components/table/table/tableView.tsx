@@ -10,6 +10,7 @@ import Grid from './grid-view';
 import { Modal } from 'antd';
 import './css/subdomains.scss';
 import Image from '../mockup/image';
+import '../mockup/image.scss';
 import graph1 from './img/mockgraphs/graph1.png';
 import graph2 from './img/mockgraphs/graph2.png';
 import graph3 from './img/mockgraphs/graph3.png';
@@ -17,6 +18,8 @@ import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../../Enlist/Enlist';
+
+import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
 //
 // Please Read
@@ -54,9 +57,8 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const { name } = domainContext;
   const history = useHistory();
 
-  const [isEnlistVisible, setEnlistVisible] = useState(false);
-  const openEnlist = () => setEnlistVisible(true);
-  const closeEnlist = () => setEnlistVisible(false);
+  const [enlist, setEnlist] = useState('');
+  const closeEnlist = () => setEnlist('');
 
   //
   // Following functions generate random numbers to display mock data in the UI
@@ -148,7 +150,17 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             key: key.name,
             '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
-            asset: <Image />,
+            asset: (
+              <div className="neo-demo">
+                <img
+                  src={StaticEmulator(
+                    key.name.split('.')[key.name.split('.').length - 1],
+                  )}
+                  alt=""
+                  className="neo2"
+                />
+              </div>
+            ),
             name: key.name,
             // '24Hr': randPrice(),
             // '7d': randPrice(),
@@ -161,7 +173,11 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             lastsale: '',
             timestamp: '',
             trade: (
-              <FutureButton onClick={openEnlist} style={{ height: 24 }}>
+              <FutureButton
+                glow
+                onClick={() => setEnlist(key.name)}
+                style={{ height: 24, zIndex: 1000 }}
+              >
                 ENLIST
               </FutureButton>
             ),
@@ -273,8 +289,8 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
     // useAbsoluteLayout,
   );
 
-  const handleRowClick = (row: any) => {
-    console.log(row);
+  const handleRowClick = (e: any, row: any) => {
+    if (e.target.nodeName.toLowerCase() === 'button') return;
     history.push({
       pathname: row.original.key,
     });
@@ -337,7 +353,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
                           // Apply the cell props
                           return (
                             <td
-                              onClick={() => handleRowClick(row)}
+                              onClick={(e: any) => handleRowClick(e, row)}
                               className="tdLocal"
                               {...cell.getCellProps()}
                             >
@@ -393,14 +409,23 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       })} */}
 
       <Modal
-        visible={isEnlistVisible}
+        visible={enlist.length > 0}
         onOk={closeEnlist}
+        centered
         onCancel={closeEnlist}
         closable={false}
         footer={null}
-        width={304}
+        width={640}
       >
-        <Enlist name={''} props={{}} />
+        {console.log(enlist)}
+        <Enlist
+          name={enlist}
+          props={{
+            image: StaticEmulator(
+              enlist.split('.')[enlist.split('.').length - 1],
+            ),
+          }}
+        />
       </Modal>
     </div>
   );

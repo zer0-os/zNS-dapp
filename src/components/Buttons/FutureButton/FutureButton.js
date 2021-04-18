@@ -17,9 +17,9 @@ const FutureButton = (props) => {
         setHovered(true)
     }
 
-    const handleClick = () => {
-        if(props.onClick) props.onClick()
-        else if(props.click) props.click() // Legacy
+    const handleClick = (e) => {
+        if(props.onClick) props.onClick(e)
+        else if(props.click) props.click(e) // Legacy
         if(props.togglable) setSelected(!isSelected)
     }
 

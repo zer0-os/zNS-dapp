@@ -12,6 +12,10 @@
     background: var(--background-purple-card-20);
 }
 
+.PreviewCard p {
+    font-size: 16px;
+}
+
 .Asset {
     width: 398.33px;
 
@@ -21,6 +25,13 @@
     background-repeat: no-repeat;
 
     border-radius: 9px 0px 0px 13px;
+    cursor: pointer;
+
+    transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Asset:hover {
+    transform: scale(1.02);
 }
 
 .Body {
@@ -33,14 +44,20 @@
 }
 
 .Body h5 {
-    color: var(--color-accent-1);
+    color: white;
     font-size: 24px;
 
     margin-bottom: 6px;
 }
 
 .Domain {
+    color: var(--color-accent-1);
     font-weight: 700;
+}
+
+.Domain:hover {
+    color: var(--color-accent-1);
+    text-shadow: 0px 0px 15px var(--color-accent-1), 0px 0px 15px var(--color-accent-1), 0px 0px 15px var(--color-accent-1), 0px 0px 15px var(--color-accent-1); 
 }
 
 .Body p {
@@ -94,7 +111,7 @@
 
     margin-left: auto;
     margin-right: 40px;
-    padding-top: 28px;
+    /* padding-top: 28px; */
 }
 
 .Buy > span { 
@@ -103,7 +120,7 @@
 
 /* Offer amount */
 .Buy > span:first-of-type {
-    margin-top: 38px;
+    /* margin-top: 38px; */
     font-size: 24px;
 }
 
