@@ -76,9 +76,6 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     return (
       <div onClick={() => handleCellClick(cellInput.name)} className="gridCell">
         <div className="gridCellContent">
-          <div className="image">
-            <GridImage domain={cellInput.name} props={{image: StaticEmulator(cellInput.name.split('.')[cellInput.name.split('.').length - 1])}} />
-          </div>
           <div className="topbar">
             <div className="left">
               <div className="avatar">
@@ -94,6 +91,9 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
           </div>
           <div className="name">
             <div>{cellInput.name.match(/[^.]+$/)}</div>
+          </div>
+          <div className="image">
+            <GridImage domain={cellInput.name} props={{image: StaticEmulator(cellInput.name.split('.')[cellInput.name.split('.').length - 1])}} />
           </div>
           {/* <div className="text">
             <div>Last Traded Price</div>
