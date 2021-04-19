@@ -235,6 +235,7 @@
       position: relative;
       height: 212px;
       width: 50%;
+      color: white;
       margin-right: 10px;
       background: rgba($dark-purple2, 0.2);
       backdrop-filter: blur(30px);
@@ -254,7 +255,7 @@
           margin-left: 18px;
           margin-right: 8px;
           padding-right: 10px;
-          color: $light-blue;
+          color: white;
 
           height: 200%;
           max-height: 63%;
