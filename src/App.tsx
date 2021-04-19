@@ -21,6 +21,7 @@ function getLibrary(provider: any): Web3Provider {
   library.pollingInterval = 12000;
   return library;
 }
+// This is a comment for a test commit, please remove it
 
 function App() {
   return (
