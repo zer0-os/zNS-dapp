@@ -7,12 +7,6 @@ const NFTCard = (props) => {
 
     return(
         <div onClick={props.onClick} className={`${styles.NFTCard} border-rounded`}>
-            
-            <div 
-                className={styles.NFT}
-                style={{backgroundImage: `url(${props.NFT.img})`}}
-            >
-            </div>
             <div className={styles.Details}>
                 { props.showCreator && 
                     <div className={styles.Creator}>
@@ -23,6 +17,11 @@ const NFTCard = (props) => {
                     </div>
                 }
             <h5 className={`glow-text-blue`}>{props.NFT.name}</h5>
+            </div>
+            <div 
+                className={styles.NFT}
+                style={{backgroundImage: `url(${props.NFT.img})`}}
+            >
             </div>
             <div className={styles.Foot}>
                 <div>
