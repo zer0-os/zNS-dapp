@@ -26,6 +26,8 @@ const Enlist = (props) => {
   const openPreview = () => setPreviewOpen(true)
   const closePreview = () => setPreviewOpen(false)
 
+  emailjs.init(process.env.REACT_APP_EMAIL);
+
   // Form validation
   const isEmail = (text) =>
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
@@ -40,11 +42,13 @@ const Enlist = (props) => {
 
   function sendEmail(e) {
     emailjs
-      .sendForm(
+      .send(
         'service_ht5ak0n',
-        e.target,
         'template_t5hifjr',
-        process.env.REACT_APP_EMAIL,
+        {
+          emailAddress,
+          reasonForPurchase,
+        }
       )
       .then(
         (result) => {
@@ -54,7 +58,6 @@ const Enlist = (props) => {
           console.log(error.text);
         },
       );
-    e.target.reset();
   }
 
   return (
@@ -68,23 +71,24 @@ const Enlist = (props) => {
       </div>
       <hr className="glow-line" />
 
-      <form className={styles.Section}>
+      <form id="enlistForm" className={styles.Section}>
         <div style={{ display: 'flex' }}>
           <div className={styles.Inputs}>
             <TextInput
+              name={"emailAddress"}
               placeholder={'Email Address'}
-              name={emailAddress}
               style={{ height: 48 }}
               onChange={(text) => setEmailAddress(text)}
             />
             <TextInput
+              name={"reasonForPurchase"}
               placeholder={'Reason for purchase'}
-              name={reasonForPurchase}
               multiline
               style={{ height: 79 }}
               onChange={(text) => setReasonForPurchase(text)}
             />
             <TextInput
+              name={"bid"}
               type="number"
               placeholder={'Bid (USD)'}
               style={{ height: 48 }}
