@@ -23,8 +23,12 @@ const Enlist = (props) => {
   const [bidUsd, setBidUsd] = useState(0);
 
   const [ previewOpen, setPreviewOpen ] = useState(false)
-  const openPreview = () => setPreviewOpen(true)
-  const closePreview = () => setPreviewOpen(false)
+  const openPreview = () => {
+    setPreviewOpen(true);
+  }
+  const closePreview = () => {
+    setPreviewOpen(false);
+  }
 
   emailjs.init(process.env.REACT_APP_EMAIL);
 
@@ -58,6 +62,8 @@ const Enlist = (props) => {
           console.log(error.text);
         },
       );
+
+      props.props.close();
   }
 
   return (

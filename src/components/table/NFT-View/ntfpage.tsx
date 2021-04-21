@@ -227,7 +227,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         centered
         footer={null}
       >
-        <Enlist name={location.pathname} props={{image: StaticEmulator(routes[routes.length - 1][0])}} />
+        <Enlist name={location.pathname} props={{image: StaticEmulator(routes[routes.length - 1][0]), close: closeEnlist}} />
       </Modal>
     </div>
   );
