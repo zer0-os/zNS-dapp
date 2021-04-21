@@ -43,7 +43,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const contract = useZnsContracts();
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
-  const [Image, setImage] = useState('');
+  const [uploadedImage, setImage] = useState<string | ArrayBuffer | null>(null);
   const [progress, setProgress] = useState(0);
   const { onMint, onCancel } = props;
   const location = useLocation();
@@ -58,11 +58,11 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     protocol: 'https',
   });
 
-  const uploadImage = async () => {
-    ipfs.add()
-  }
+  // const uploadImage = async () => {
+  //   ipfs.add()
+  // }
 
-  ipfs.add(nftStory).then(console.log).catch(console.log);
+  // ipfs.add(nftStory).then(console.log).catch(console.log);
 
   const uploadAndSetImage = useCallback(
     async (file: File) => {
@@ -101,14 +101,22 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     },
   );
 
-  const onSubmit = (data: any) => {
+  const onSubmit = () => {
     console.log("submit");
-    console.log(data);
   }
 
-  const onFailSubmit = (data: any) => {
-    console.log('failed submit');
-    console.log(data);
+  const onImageChanged = (event: any) => {
+    if (event.target.files && event.target.files[0]) {
+      let reader = new FileReader();
+      reader.onload = (e) => {
+        if (!e.target) {
+          console.error('no target');
+          return;
+        }
+        setImage(e.target?.result);
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
   }
 
   // //  Form Submit Handlers
@@ -126,29 +134,29 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
 
   const _create = useCallback(
     (child: string) => {
-      if (account && contracts.isJust() && name.isJust()) {
-        contracts.value.basic
-          .registerSubdomainExtended(
-            name.value.id,
-            child,
-            account,
-            Image,
-            account,
-            name.value.isLocked,
-          )
-          .then((txr: any) => {
-            txr.wait(1);
-          })
-          .catch((err) =>
-            console.error(
-              'Oh well, you failed. Here some thoughts on the error that occurred:',
-              err,
-            ),
-          )
-          .then(() => {
-            refetchDomain();
-          });
-      }
+      // if (account && contracts.isJust() && name.isJust()) {
+      //   contracts.value.basic
+      //     .registerSubdomainExtended(
+      //       name.value.id,
+      //       child,
+      //       account,
+      //       Image,
+      //       account,
+      //       name.value.isLocked,
+      //     )
+      //     .then((txr: any) => {
+      //       txr.wait(1);
+      //     })
+      //     .catch((err) =>
+      //       console.error(
+      //         'Oh well, you failed. Here some thoughts on the error that occurred:',
+      //         err,
+      //       ),
+      //     )
+      //     .then(() => {
+      //       refetchDomain();
+      //     });
+      // }
     },
     [account, contracts, name, refetchDomain],
   );
@@ -181,15 +189,11 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         <div style={{ display: 'flex' }}>
           <div className={MintNewNFTStyle.Inputs}>
             <TextInput
-              name={'story'}
-              ref={register}
               onChange={(text: string) => {
                 setName(text)}}
               placeholder="Name"
             />
             <TextInput
-              name={'story'}
-              ref={register}
               onChange={(text: string) => {
                 setStory(text)}}
               multiline={true}
@@ -200,9 +204,9 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           <div>
             <img
               style={{ height: '10%', width: '10%' }}
-              src={Image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
+              src={uploadedImage as string}
             />
-            <input style={{}} name={'image'} ref={register} type="file"></input>
+            <input accept="image/*" multiple={false} style={{}} name={'image'} type="file" onChange={onImageChanged}></input>
           </div>
         </div>
       </form>
@@ -211,7 +215,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         style={{ height: 36, borderRadius: 18, margin: '47px auto 0 auto' }}
         onClick={async () => {
           console.log("press");
-          handleSubmit(onSubmit, onFailSubmit)();
+          onSubmit();
           //goTo(1)
         }}
       >
