@@ -200,7 +200,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               }}
               multiline={true}
               placeholder={'Story'}
-              style={{ height: 146, marginTop: 24, marginLeft: 200 }}
+              style={{ height: 146, marginTop: 24, marginLeft: 150 }}
             />
           </div>
           <div>

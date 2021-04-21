@@ -1,89 +1,89 @@
 .MintNewNFT {
-	width: 640px;
-	padding: 40px;
+  width: 640px;
+  padding: 40px;
 
-	color: white !important;
-	background: var(--background-purple-card-20);
+  color: white !important;
+  background: var(--background-purple-card-20);
 }
 
 .Header {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
-	width: 100%;
+  width: 100%;
 }
 
 .Header h1 {
-	color: white;
-	font-size: 36px;
-	font-weight: 700;
-	margin-bottom: 0;
+  color: white;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 0;
 }
 
 .Header h2 {
-	color: white;
-	font-size: 24px;
+  color: white;
+  font-size: 24px;
 }
 
 .Header > div {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 
-	margin-top: 8px;
+  margin-top: 8px;
 }
 
 .Header > div > span {
-	margin-left: 32px;
+  margin-left: 32px;
 }
 
 .Section {
-	margin-top: 32px;
+  margin-top: 32px;
 }
 
-.Section > div > div:not(:first-of-type) { 
-	margin-left: 46px;
+.Section > div > div:not(:first-of-type) {
+  margin-left: 46px;
 }
 
 .NFT {
-    height: 224px;
-    width: 224px;
+  height: 224px;
+  width: 224px;
 
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .Inputs {
-	display: flex;
-	flex-direction: column;
-	flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .Inputs > *:not(:first-child) {
-	margin-top: 24px;
+  margin-top: 24px;
 }
 
 .Warning {
-	margin: 42px auto;
-	width: 460px;
-	font-size: 24px;
-	line-height: 29px;
-	font-weight: 700;
-	text-align: center;
+  margin: 42px auto;
+  width: 460px;
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 700;
+  text-align: center;
 }
 
 .Buttons {
-	display: flex;
-	justify-content: space-between;
-	width: 276px;
-	margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  width: 276px;
+  margin: 0 auto;
 }
 
 .Buttons > button:first-of-type {
-	background: rgba(189, 0, 255, 0.1);
+  background: rgba(189, 0, 255, 0.1);
 }
 
 .Buttons > button:first-of-type:before {
-    box-shadow: 0px 0px 40px 15px rgba(173, 0, 255, 0.69);
+  box-shadow: 0px 0px 40px 15px rgba(173, 0, 255, 0.69);
 }
