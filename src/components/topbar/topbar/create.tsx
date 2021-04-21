@@ -28,11 +28,9 @@ interface CreateProps {
 }
 
 const schema = z.object({
-  image: z
-    .any()
-    .transform(z.any(), (file: FileList) => file[0]),
+  image: z.any().transform(z.any(), (file: FileList) => file[0]),
   name: z.string(),
-  story: z.string()
+  story: z.string(),
 });
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
@@ -47,7 +45,9 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const [progress, setProgress] = useState(0);
   const { onMint, onCancel } = props;
   const location = useLocation();
-  const { register, handleSubmit, errors, setValue } = useForm<z.infer<typeof schema>>({
+  const { register, handleSubmit, errors, setValue } = useForm<
+    z.infer<typeof schema>
+  >({
     resolver: zodResolver(schema),
   });
 
@@ -102,8 +102,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   );
 
   const onSubmit = () => {
-    console.log("submit");
-  }
+    console.log('submit');
+  };
 
   const onImageChanged = (event: any) => {
     if (event.target.files && event.target.files[0]) {
@@ -117,7 +117,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
       };
       reader.readAsDataURL(event.target.files[0]);
     }
-  }
+  };
 
   // //  Form Submit Handlers
   const submit = () => {
@@ -190,23 +190,37 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           <div className={MintNewNFTStyle.Inputs}>
             <TextInput
               onChange={(text: string) => {
-                setName(text)}}
+                setName(text);
+              }}
               placeholder="Name"
             />
             <TextInput
               onChange={(text: string) => {
-                setStory(text)}}
+                setStory(text);
+              }}
               multiline={true}
               placeholder={'Story'}
-              style={{ height: 146, marginTop: 24 }}
+              style={{ height: 146, marginTop: 24, marginLeft: 200 }}
             />
           </div>
           <div>
             <img
-              style={{ height: '10%', width: '10%' }}
+              className={`${MintNewNFTStyle.NFT} border-rounded`}
               src={uploadedImage as string}
+              onChange={onImageChanged}
             />
-            <input accept="image/*" multiple={false} style={{}} name={'image'} type="file" onChange={onImageChanged}></input>
+            <input
+              style={{
+                height: 36,
+
+                margin: '47px auto 0 auto',
+              }}
+              accept="image/*"
+              multiple={false}
+              name={'image'}
+              type="file"
+              onChange={onImageChanged}
+            ></input>
           </div>
         </div>
       </form>
@@ -214,7 +228,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         glow={nftName.length && nftStory.length}
         style={{ height: 36, borderRadius: 18, margin: '47px auto 0 auto' }}
         onClick={async () => {
-          console.log("press");
+          console.log('press');
           onSubmit();
           //goTo(1)
         }}
