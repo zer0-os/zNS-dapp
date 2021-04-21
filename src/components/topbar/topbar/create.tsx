@@ -17,10 +17,9 @@ import TextInput from '../../TextInput/TextInput.js';
 import { ethers } from 'ethers';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
-import ipfs_metadata from '../../../lib/metadata';
-import ipfsClient from 'ipfs-http-client';
-import assert from 'assert';
 
+
+import assert from 'assert';
 interface CreateProps {
   domainId: string;
   domainContext: DomainContext;
@@ -43,7 +42,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const contract = useZnsContracts();
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
-  const [uploadedImage, setImage] = useState<string | ArrayBuffer | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>(null);
+  const [imageFile, setImageFile] = useState<any>();
   const [progress, setProgress] = useState(0);
   const { onMint, onCancel } = props;
   const location = useLocation();
@@ -51,12 +51,15 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     resolver: zodResolver(schema),
   });
 
-  const IPFS = require('ipfs-mini');
-  const ipfs = new IPFS({
-    host: 'ipfs.infura.io',
-    port: 5001,
-    protocol: 'https',
-  });
+  
+  const createClient = require("ipfs-http-client"); 
+  const ipfsClient = createClient("https://ipfs.infura.io:5001");
+
+  // const ipfs = new IPFS({
+  //   host: 'ipfs.infura.io',
+  //   port: 5001,
+  //   protocol: 'https',
+  // });
 
   // const uploadImage = async () => {
   //   ipfs.add()
@@ -64,13 +67,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
 
   // ipfs.add(nftStory).then(console.log).catch(console.log);
 
-  const uploadAndSetImage = useCallback(
-    async (file: File) => {
-      assert(name.isJust());
-      return ipfs.upload(setImage, file);
-    },
-    [name, setImage],
-  );
 
   const uploadStory = () => {};
   // const metaData = {
@@ -101,8 +97,22 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     },
   );
 
-  const onSubmit = () => {
+  const onSubmit = async () => {
     console.log("submit");
+
+    const fileDetails = {
+      path: imageFile.name,
+      content: imageFile
+    }
+    const options = {
+      wrapWithDirectory: true,
+      progress: (prog: any) => console.log(`received: ${prog}`)
+    }
+
+    const source = await ipfsClient.add(fileDetails, options)
+
+
+    console.log(source);
   }
 
   const onImageChanged = (event: any) => {
@@ -113,9 +123,11 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           console.error('no target');
           return;
         }
-        setImage(e.target?.result);
+        setUploadedImage(e.target?.result);
       };
       reader.readAsDataURL(event.target.files[0]);
+
+      setImageFile(event.target.files[0]);
     }
   }
 
