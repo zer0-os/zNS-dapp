@@ -21,6 +21,8 @@ const TextInput = (props) => {
             ...props.style,
             resize: props.resizable ? 'vertical' : 'none',
           }}
+          ref={props.ref}
+          name={props.name}
           placeholder={props.placeholder}
         />
       )}
@@ -30,6 +32,8 @@ const TextInput = (props) => {
           className={`${styles.TextInput} border-blue`}
           onChange={handleChange}
           style={props.style}
+          ref={props.ref}
+          name={props.name}
           placeholder={props.placeholder}
         />
       )}

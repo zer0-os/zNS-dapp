@@ -28,9 +28,11 @@ interface CreateProps {
 }
 
 const schema = z.object({
-  child: z
-    .string()
-    .regex(subdomainRegex, 'Subdomain must only contain alphanumeric letters'),
+  image: z
+    .any()
+    .transform(z.any(), (file: FileList) => file[0]),
+  name: z.string(),
+  story: z.string()
 });
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
@@ -45,17 +47,20 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const [progress, setProgress] = useState(0);
   const { onMint, onCancel } = props;
   const location = useLocation();
-  const { register, handleSubmit, errors } = useForm<z.infer<typeof schema>>({
+  const { register, handleSubmit, errors, setValue } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
 
-  const fs = require('fs');
   const IPFS = require('ipfs-mini');
   const ipfs = new IPFS({
     host: 'ipfs.infura.io',
     port: 5001,
     protocol: 'https',
   });
+
+  const uploadImage = async () => {
+    ipfs.add()
+  }
 
   ipfs.add(nftStory).then(console.log).catch(console.log);
 
@@ -66,8 +71,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     },
     [name, setImage],
   );
-
-  ipfs.add(Image).then(console.log).catch(console.log);
 
   const uploadStory = () => {};
   // const metaData = {
@@ -97,6 +100,16 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
       acc.push([val, next]);
     },
   );
+
+  const onSubmit = (data: any) => {
+    console.log("submit");
+    console.log(data);
+  }
+
+  const onFailSubmit = (data: any) => {
+    console.log('failed submit');
+    console.log(data);
+  }
 
   // //  Form Submit Handlers
   const submit = () => {
@@ -128,7 +141,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           })
           .catch((err) =>
             console.error(
-              'Oh well, you failed. Here some thoughts on the error that occured:',
+              'Oh well, you failed. Here some thoughts on the error that occurred:',
               err,
             ),
           )
@@ -168,11 +181,17 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         <div style={{ display: 'flex' }}>
           <div className={MintNewNFTStyle.Inputs}>
             <TextInput
-              onChange={(text: string) => setName(text)}
+              name={'story'}
+              ref={register}
+              onChange={(text: string) => {
+                setName(text)}}
               placeholder="Name"
             />
             <TextInput
-              onChange={(text: string) => setStory(text)}
+              name={'story'}
+              ref={register}
+              onChange={(text: string) => {
+                setStory(text)}}
               multiline={true}
               placeholder={'Story'}
               style={{ height: 146, marginTop: 24 }}
@@ -183,14 +202,18 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               style={{ height: '10%', width: '10%' }}
               src={Image.replace('ipfs://', 'https://ipfs.io/ipfs/')}
             />
-            <input style={{}} name={'image'} type="file" ref={register}></input>
+            <input style={{}} name={'image'} ref={register} type="file"></input>
           </div>
         </div>
       </form>
       <FutureButton
         glow={nftName.length && nftStory.length}
         style={{ height: 36, borderRadius: 18, margin: '47px auto 0 auto' }}
-        onClick={() => goTo(1)}
+        onClick={async () => {
+          console.log("press");
+          handleSubmit(onSubmit, onFailSubmit)();
+          //goTo(1)
+        }}
       >
         Continue
       </FutureButton>
