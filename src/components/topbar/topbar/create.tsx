@@ -43,7 +43,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
   const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>(null);
-  const [imageFile, setImageFile] = useState<any>();
+  const [imageFile, setImageFile] = useState<Buffer>(Buffer.from(""));
   const [progress, setProgress] = useState(0);
   const { onMint, onCancel } = props;
   const location = useLocation();
@@ -52,8 +52,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   });
 
   
-  const createClient = require("ipfs-http-client"); 
-  const ipfsClient = createClient("https://ipfs.infura.io:5001");
 
   // const ipfs = new IPFS({
   //   host: 'ipfs.infura.io',
@@ -69,21 +67,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
 
 
   const uploadStory = () => {};
-  // const metaData = {
-  //   description: '',
-  // };
-
-  // upload data to ipf
-  // const cid = ipfs.add(metaData);
-  // const data = JSON.stringify(metaData);
-  // fs.writeFile('./metadata.json', data, (err: any) => {
-  //   if (err) {
-  //     console.log('Error writing file', err);
-  //   } else {
-  //     console.log('writing file success');
-  //   }
-  // });
-  // ipfs.add(data).then(console.log).catch(console.log);
 
   // ZNA-Routes
   const routes = _.transform(
@@ -97,26 +80,36 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     },
   );
 
+  const ipfsLib = require('ipfs-api');
+  const ipfsClient = new ipfsLib({host: "ipfs.infura.io", port: 5001, protocol: "https"})
+
   const onSubmit = async () => {
     console.log("submit");
 
-    const fileDetails = {
-      path: imageFile.name,
-      content: imageFile
+    const ipfsRoot = `https://ipfs.io/ipfs/`
+
+    let res = await ipfsClient.add(imageFile)
+    const imagePath = `${ipfsRoot}${res[0].hash}`;
+    console.log(`Image is at ${imagePath}`);
+
+    const metadataObject = {
+      title: nftName,
+      story: nftStory,
+      image: imagePath
     }
-    const options = {
-      wrapWithDirectory: true,
-      progress: (prog: any) => console.log(`received: ${prog}`)
-    }
 
-    const source = await ipfsClient.add(fileDetails, options)
+    const metadataJson = JSON.stringify(metadataObject);
+    res = await ipfsClient.add(Buffer.from(metadataJson));
+    const metadataPath = `${ipfsRoot}${res[0].hash}`;
+    console.log(`Metadata is at ${metadataPath}`);
 
-
-    console.log(source);
+    _create(nftName, metadataPath);
   }
 
   const onImageChanged = (event: any) => {
     if (event.target.files && event.target.files[0]) {
+
+      const file = event.target.files[0];
       let reader = new FileReader();
       reader.onload = (e) => {
         if (!e.target) {
@@ -125,18 +118,16 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         }
         setUploadedImage(e.target?.result);
       };
-      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(file);
 
-      setImageFile(event.target.files[0]);
+      const bufferReader = new FileReader();
+      bufferReader.readAsArrayBuffer(file);
+      bufferReader.onloadend = () => {
+        setImageFile(Buffer.from(bufferReader.result as ArrayBuffer));
+      }
     }
   }
 
-  // //  Form Submit Handlers
-  const submit = () => {
-    _create(nftName);
-    // Skipping the actual create for now
-    // onMint();
-  };
   const cancel = () => {
     onCancel();
   };
@@ -145,30 +136,30 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     nftName.length && setStory.length ? setProgress(x) : setProgress(0);
 
   const _create = useCallback(
-    (child: string) => {
-      // if (account && contracts.isJust() && name.isJust()) {
-      //   contracts.value.basic
-      //     .registerSubdomainExtended(
-      //       name.value.id,
-      //       child,
-      //       account,
-      //       Image,
-      //       account,
-      //       name.value.isLocked,
-      //     )
-      //     .then((txr: any) => {
-      //       txr.wait(1);
-      //     })
-      //     .catch((err) =>
-      //       console.error(
-      //         'Oh well, you failed. Here some thoughts on the error that occurred:',
-      //         err,
-      //       ),
-      //     )
-      //     .then(() => {
-      //       refetchDomain();
-      //     });
-      // }
+    (label: string, metadataUri: string) => {
+      if (account && contracts.isJust() && name.isJust()) {
+        contracts.value.basic
+          .registerSubdomainExtended(
+            name.value.id,
+            label,
+            account,
+            metadataUri,
+            0, // royalty amount
+            true, // locked by default
+          )
+          .then((txr: any) => {
+            txr.wait(1);
+          })
+          .catch((err) =>
+            console.error(
+              'Oh well, you failed. Here some thoughts on the error that occurred:',
+              err,
+            ),
+          )
+          .then(() => {
+            refetchDomain();
+          });
+      }
     },
     [account, contracts, name, refetchDomain],
   );
@@ -227,8 +218,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         style={{ height: 36, borderRadius: 18, margin: '47px auto 0 auto' }}
         onClick={async () => {
           console.log("press");
-          onSubmit();
-          //goTo(1)
+          
+          goTo(1)
         }}
       >
         Continue
@@ -259,7 +250,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         <FutureButton
           glow
           style={{ height: 36, borderRadius: 18 }}
-          onClick={submit}
+          onClick={onSubmit}
         >
           Confirm
         </FutureButton>

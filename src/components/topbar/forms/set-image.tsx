@@ -6,9 +6,9 @@ import { useForm } from 'react-hook-form';
 import { useZnsContracts } from '../../../lib/contracts';
 import { useDomainCache } from '../../../lib/useDomainCache';
 import { zodResolver } from '../../../lib/validation/zodResolver';
-import ipfs from '../../../lib/ipfs';
 import assert from 'assert';
-import ipfs_metadata from '../../../lib/metadata';
+
+
 interface SetImageProps {
   name: string;
 }

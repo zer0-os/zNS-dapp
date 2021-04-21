@@ -40,6 +40,7 @@
     "ethers": "^5.1.0",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
+    "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^49.0.4",
     "ipfs-mini": "^1.1.5",
     "lodash": "^4.17.21",
