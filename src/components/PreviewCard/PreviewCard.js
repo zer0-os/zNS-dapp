@@ -88,7 +88,7 @@ const PreviewCard = (props) => {
         footer={null}
         closable={false}
       >
-        <Enlist name={props.name} props={{ image: props.img }} />
+        <Enlist name={props.name} props={{ image: props.img, close: closeEnlist}} />
       </Modal>
 
       <Modal

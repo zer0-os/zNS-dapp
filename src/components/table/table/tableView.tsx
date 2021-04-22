@@ -424,6 +424,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             image: StaticEmulator(
               enlist.split('.')[enlist.split('.').length - 1],
             ),
+            close: closeEnlist
           }}
         />
       </Modal>
