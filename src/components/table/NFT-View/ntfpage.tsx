@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-// import { useDomainCache } from '../../../lib/useDomainCache';
+import { useDomainCache } from '../../../lib/useDomainCache';
 import { Link, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 import './css/nftpage.scss';
@@ -17,7 +17,7 @@ import Modal from 'antd/lib/modal/Modal';
 import wilder from './img/mockusers/wilder.png';
 
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
-import Enlist from '../../Enlist/Enlist'
+import Enlist from '../../Enlist/Enlist';
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
@@ -29,18 +29,18 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   const [isNftVisible, setNftVisible] = useState(false);
   const context = useWeb3React<Web3Provider>();
   const { library, account, active, chainId } = context;
-  // const { useDomain } = useDomainCache();
-  // const domainContext = useDomain(_domain);
-  // const { domain } = domainContext;
+  const { useDomain } = useDomainCache();
+  const domainContext = useDomain(_domain);
+  const { name } = domainContext;
   const location = useLocation();
 
   const [isPreviewOpen, setPreviewOpen] = useState(false);
   const openPreview = () => setPreviewOpen(true);
   const closePreview = () => setPreviewOpen(false);
 
-  const [ enlist, setEnlist ] = useState(false)
-  const openEnlist = () => setEnlist(true)
-  const closeEnlist = () => setEnlist(false)
+  const [enlist, setEnlist] = useState(false);
+  const openEnlist = () => setEnlist(true);
+  const closeEnlist = () => setEnlist(false);
 
   const routes = _.transform(
     location.pathname
@@ -82,7 +82,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     );
   };
 
-  // if (domain.isNothing()) return null;
+  if (name.isNothing()) return null;
   return (
     <div className="nftView">
       <div
@@ -95,7 +95,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <img
             onClick={openPreview}
             style={{ height: '100%', width: '100%' }}
-            src={StaticEmulator(routes[routes.length - 1][0])}
+            src={name.value.metadata}
           />
           {/* <NFTImage domain={domain.value.domain} /> */}
         </div>
@@ -141,7 +141,9 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           </div>
           <div className="showcaseBottom">
             <div className="shadowContainer">
-              <FutureButton onClick={openEnlist} glow>Enlist</FutureButton>
+              <FutureButton onClick={openEnlist} glow>
+                Enlist
+              </FutureButton>
             </div>
           </div>
         </div>
@@ -149,24 +151,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       <div className="info">
         <div className="story border-primary">
           <div>STORY</div>
-          <div style={{ fontSize: 16 }}>
-            To understand where we are, we must honor what has come before us.
-            With NFTs catapulting Crypto into the mainstream, it shouldn’t be
-            forgotten that the DeFi movement of 2020 helped pave the way.
-            Digital art and crypto have served as a catalyst to one another
-            reinventing modern art as we know it. With characters like n3o, the
-            Wilders, Beeple and Elon all playing a significant role it’s only
-            right we break bread to celebrate. While Mickey was so infatuated
-            with the Wilder VR experience he didn’t take the time to eat, the
-            other attendees enjoyed uni, sushi, pancake and pineapple on the set
-            menu for the evening. With the NFT wave taking the world by storm,
-            the Wilders have had a plan of their own... Wilder World will be
-            opening as a fully interactive 3D world, with all characters present
-            in the DeFi dinner game ready. We’ll be launching the immersive
-            world with our next event, the first annual Cyber Gala in July 2021.
-            The collector of this piece will be blessed with a custom fully
-            functional "in world" avatar to roam Wilder World.
-          </div>
+          <div style={{ fontSize: 16 }}>{name.value.metadata[1]}</div>
         </div>
         <div className="quad">
           <div className="top">
@@ -191,7 +176,11 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
                 <span className="infoMark">?</span>
               </span>
             </div>
-            <div className="quadText">{account && account.length ? account : 'Connect a wallet to see your Ethereum address!'}</div>
+            <div className="quadText">
+              {account && account.length
+                ? account
+                : 'Connect a wallet to see your Ethereum address!'}
+            </div>
           </div>
         </div>
       </div>
@@ -227,7 +216,10 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         centered
         footer={null}
       >
-        <Enlist name={location.pathname} props={{image: StaticEmulator(routes[routes.length - 1][0])}} />
+        <Enlist
+          name={location.pathname}
+          props={{ image: StaticEmulator(routes[routes.length - 1][0]) }}
+        />
       </Modal>
     </div>
   );

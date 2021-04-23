@@ -122,7 +122,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             domain={'0://' + name.value.name}
             creator={previewData.creator}
             owner={previewData.owner}
-            description={previewData.description}
+            description={name.value.metadata[1]}
             data={previewData}
             img={StaticEmulator(
               name.value.name.split('.')[name.value.name.split('.').length - 1],
