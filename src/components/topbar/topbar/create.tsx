@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useZnsBasicContracts } from '../../../lib/basicContract';
@@ -39,6 +39,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const contract = useZnsContracts();
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
+  const [nftOwner, setOwner] = useState('');
+  const [nftCreator, setCreator] = useState('')
   const [uploadedImage, setUploadedImage] = useState<
     string | ArrayBuffer | null
   >(null);
@@ -51,6 +53,12 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   >({
     resolver: zodResolver(schema),
   });
+
+  // Handling the upload dialog
+  const inputFile = useRef<HTMLInputElement>(null)
+  const openUploadDialog = () => {
+    if(inputFile.current) inputFile.current.click()
+  }
 
   // const ipfs = new IPFS({
   //   host: 'ipfs.infura.io',
@@ -204,26 +212,45 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               }}
               multiline={true}
               placeholder={'Story'}
-              style={{ height: 146, marginTop: 24, marginLeft: 150 }}
+              style={{ height: 146, marginTop: 24}}
+            />
+            <TextInput
+              onChange={(text: string) => {
+                setOwner(text);
+              }}
+              placeholder={'Owner'}
+              style={{ marginTop: 24}}
+            />
+            <TextInput
+              onChange={(text: string) => {
+                setCreator(text);
+              }}
+              placeholder={'Creator'}
+              style={{  marginTop: 24}}
             />
           </div>
           <div>
-            <img
+            <div
+              onClick={openUploadDialog}
               className={`${MintNewNFTStyle.NFT} border-rounded`}
+            >
+            {!uploadedImage && <span className='glow-text-white'>Choose an Image</span>}
+            <img
               src={uploadedImage as string}
               onChange={onImageChanged}
+              style={{display: uploadedImage ? 'inline-block' : 'none'}}
             />
+            </div>
             <input
               style={{
-                height: 36,
-
-                margin: '47px auto 0 auto',
+                display: 'none'
               }}
               accept="image/*"
               multiple={false}
               name={'image'}
               type="file"
               onChange={onImageChanged}
+              ref={inputFile}
             ></input>
           </div>
         </div>
