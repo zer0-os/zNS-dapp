@@ -42,22 +42,48 @@
 }
 
 .Section > div > div:not(:first-of-type) {
-  margin-left: 46px;
+  margin-left: 44px;
 }
 
 .NFT {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   height: 224px;
   width: 224px;
 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  border: 1px solid #88D7FF;
+  overflow: none;
+
+  cursor: pointer;
+  transition: transform var(--animation-time-medium) ease-in-out
+}
+
+.NFT > span {
+  font-weight: bold; 
+}
+
+.NFT:hover {
+  transform: scale(1.05)
+}
+
+.NFT img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
 }
 
 .Inputs {
   display: flex;
   flex-direction: column;
   flex: 1;
+  min-width: 290px;
 }
 
 .Inputs > *:not(:first-child) {
