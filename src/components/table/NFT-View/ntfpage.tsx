@@ -218,7 +218,10 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       >
         <Enlist
           name={location.pathname}
-          props={{ image: StaticEmulator(routes[routes.length - 1][0]) }}
+          props={{
+            image: StaticEmulator(routes[routes.length - 1][0]),
+            close: closeEnlist,
+          }}
         />
       </Modal>
     </div>
