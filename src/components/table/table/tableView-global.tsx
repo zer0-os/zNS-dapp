@@ -67,9 +67,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const { name } = domainContext;
   const history = useHistory();
 
-  const openNft = (nft: string) => {
-    
-  }
+  const openNft = (nft: string) => {};
 
   //
   // Following functions generate random numbers to display mock data in the UI
@@ -162,7 +160,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             image: (
               <div className="neo-demo">
-                <img src={StaticEmulator(key.name)} alt="" className="neo2" />
+                <img src={name.value.metadata} alt="" className="neo2" />
               </div>
             ),
             network: key.name,
@@ -178,7 +176,11 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             lastsale: '',
             timestamp: '',
             trade: (
-              <FutureButton onClick={() => openNft(key.name)} glow style={{ height: 24 }}>
+              <FutureButton
+                onClick={() => openNft(key.name)}
+                glow
+                style={{ height: 24 }}
+              >
                 {randTrade()}
               </FutureButton>
             ),

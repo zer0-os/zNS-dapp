@@ -40,7 +40,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
   const [nftOwner, setOwner] = useState('');
-  const [nftCreator, setCreator] = useState('')
+  const [nftCreator, setCreator] = useState('');
   const [uploadedImage, setUploadedImage] = useState<
     string | ArrayBuffer | null
   >(null);
@@ -55,10 +55,10 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   });
 
   // Handling the upload dialog
-  const inputFile = useRef<HTMLInputElement>(null)
+  const inputFile = useRef<HTMLInputElement>(null);
   const openUploadDialog = () => {
-    if(inputFile.current) inputFile.current.click()
-  }
+    if (inputFile.current) inputFile.current.click();
+  };
 
   // const ipfs = new IPFS({
   //   host: 'ipfs.infura.io',
@@ -106,6 +106,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
       title: nftName,
       story: nftStory,
       image: imagePath,
+      owner: nftOwner,
+      creator: nftCreator,
     };
 
     const metadataJson = JSON.stringify(metadataObject);
@@ -212,21 +214,21 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               }}
               multiline={true}
               placeholder={'Story'}
-              style={{ height: 146, marginTop: 24}}
+              style={{ height: 146, marginTop: 24 }}
             />
             <TextInput
               onChange={(text: string) => {
                 setOwner(text);
               }}
               placeholder={'Owner'}
-              style={{ marginTop: 24}}
+              style={{ marginTop: 24 }}
             />
             <TextInput
               onChange={(text: string) => {
                 setCreator(text);
               }}
               placeholder={'Creator'}
-              style={{  marginTop: 24}}
+              style={{ marginTop: 24 }}
             />
           </div>
           <div>
@@ -234,16 +236,18 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               onClick={openUploadDialog}
               className={`${MintNewNFTStyle.NFT} border-rounded`}
             >
-            {!uploadedImage && <span className='glow-text-white'>Choose an Image</span>}
-            <img
-              src={uploadedImage as string}
-              onChange={onImageChanged}
-              style={{display: uploadedImage ? 'inline-block' : 'none'}}
-            />
+              {!uploadedImage && (
+                <span className="glow-text-white">Choose an Image</span>
+              )}
+              <img
+                src={uploadedImage as string}
+                onChange={onImageChanged}
+                style={{ display: uploadedImage ? 'inline-block' : 'none' }}
+              />
             </div>
             <input
               style={{
-                display: 'none'
+                display: 'none',
               }}
               accept="image/*"
               multiple={false}

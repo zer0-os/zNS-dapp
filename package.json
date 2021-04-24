@@ -43,6 +43,7 @@
     "ipfs-api": "^26.1.2",
     "ipfs-http-client": "^49.0.4",
     "ipfs-mini": "^1.1.5",
+    "js-ipfs-fetch": "^1.4.2",
     "lodash": "^4.17.21",
     "node-sass": "^4.14.1",
     "react": "^17.0.2",

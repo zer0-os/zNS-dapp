@@ -95,7 +95,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <img
             onClick={openPreview}
             style={{ height: '100%', width: '100%' }}
-            src={name.value.metadata}
+            src={'https://ipfs.io/ipfs/' + name.value.metadata[1]}
           />
           {/* <NFTImage domain={domain.value.domain} /> */}
         </div>

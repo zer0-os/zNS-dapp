@@ -25,6 +25,9 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 
 import PreviewCard from '../../PreviewCard/PreviewCard.js';
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
+import { all } from 'true-myth/maybe';
+import { title } from 'node:process';
+import ipfs from '../../../lib/ipfs';
 
 const previewData = {
   owner: {
@@ -54,6 +57,9 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const { name } = domainContext;
   const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
+  const [uploadedImage, setUploadedImage] = useState<
+    string | ArrayBuffer | null
+  >(null);
   // const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
   const routes = _.transform(
@@ -66,8 +72,18 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
+  const ipfsreq = async () => {
+    const ipfsLib = require('ipfs-api');
+    const ipfsClient = new ipfsLib({
+      host: 'ipfs.infura.io',
+      port: 5001,
+      protocol: 'https',
+    });
+    if (name.isNothing()) return null;
 
-  console.log(JSON.stringify(name) + 'DOMAIN!');
+    const cid = name.value.metadata.slice(21);
+  };
+
   // useEffect(() => {
   //   //console.log('ChildView', domain);
   // }, [domain]);
@@ -113,6 +129,8 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   };
 
   if (name.isNothing()) return <div>Kurt Kobain</div>;
+  console.log(JSON.stringify(name.value.metadata.slice(21)));
+  console.log(JSON.stringify(ipfsreq) + 'request');
   return (
     <div className="pageContainerPositionFix">
       {name.value.subdomains.length !== 0 ? (
@@ -122,11 +140,9 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             domain={'0://' + name.value.name}
             creator={previewData.creator}
             owner={previewData.owner}
-            description={name.value.metadata[1]}
+            description={ipfsreq()}
             data={previewData}
-            img={StaticEmulator(
-              name.value.name.split('.')[name.value.name.split('.').length - 1],
-            )}
+            img={'https://ipfs.infura.io/ipfs/Qmimage'}
             style={{ marginBottom: 24 }}
           />
 
