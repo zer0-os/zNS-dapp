@@ -132,7 +132,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   };
 
   if (name.isNothing()) return <div>Kurt Kobain</div>;
-  console.log(name.value.metadata);
+  console.log(JSON.parse(name.value.metadata.slice(21)) + 'data');
   console.log(ipfsreq() + '??');
 
   return (
