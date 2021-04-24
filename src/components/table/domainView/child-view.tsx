@@ -81,7 +81,10 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     });
     if (name.isNothing()) return null;
 
-    const cid = name.value.metadata.slice(21);
+    const cid = await ipfsClient.cat(name.value.metadata.slice(21));
+    console.log(cid + 'data');
+
+    return JSON.parse(name.value.metadata.slice(21));
   };
 
   // useEffect(() => {
@@ -129,8 +132,9 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   };
 
   if (name.isNothing()) return <div>Kurt Kobain</div>;
-  console.log(JSON.stringify(name.value.metadata.slice(21)));
-  console.log(JSON.stringify(ipfsreq) + 'request');
+  console.log(name.value.metadata);
+  console.log(ipfsreq() + '??');
+
   return (
     <div className="pageContainerPositionFix">
       {name.value.subdomains.length !== 0 ? (
@@ -140,7 +144,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             domain={'0://' + name.value.name}
             creator={previewData.creator}
             owner={previewData.owner}
-            description={ipfsreq()}
+            description={'ipfsreq()'}
             data={previewData}
             img={'https://ipfs.infura.io/ipfs/Qmimage'}
             style={{ marginBottom: 24 }}
