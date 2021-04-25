@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import _ from 'lodash';
+import _, { set } from 'lodash';
 import { Link, useLocation } from 'react-router-dom';
 // import { useDomainCache } from '../../../lib/useDomainCache';
 import TableView from '../table/tableView';
@@ -60,6 +60,9 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const [uploadedImage, setUploadedImage] = useState<
     string | ArrayBuffer | null
   >(null);
+  const [descriptions, setDescription] = useState('');
+  const [names, setName] = useState('');
+  const [Image, setImage] = useState('');
   // const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
   const routes = _.transform(
@@ -72,6 +75,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
+
   const ipfsreq = async () => {
     const ipfsLib = require('ipfs-api');
     const ipfsClient = new ipfsLib({
@@ -80,16 +84,16 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
       protocol: 'https',
     });
     if (name.isNothing()) return null;
-
     const cid = await ipfsClient.cat(name.value.metadata.slice(21));
-    console.log(cid + 'data');
 
-    return JSON.parse(name.value.metadata.slice(21));
+    return [JSON.parse(cid).description];
   };
 
-  // useEffect(() => {
-  //   //console.log('ChildView', domain);
-  // }, [domain]);
+  const descrii = () => {
+    let desc = ipfsreq();
+    console.log(desc);
+  };
+
   // const showSubdomain = () => {
   //   setSubdomainVisible(true);
   // };
@@ -132,8 +136,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   };
 
   if (name.isNothing()) return <div>Kurt Kobain</div>;
-  console.log(JSON.parse(name.value.metadata.slice(21)) + 'data');
-  console.log(ipfsreq() + '??');
+  console.log(name.value.metadata.slice(21) + 'data');
 
   return (
     <div className="pageContainerPositionFix">
@@ -144,9 +147,9 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             domain={'0://' + name.value.name}
             creator={previewData.creator}
             owner={previewData.owner}
-            description={'ipfsreq()'}
+            description={descrii()}
             data={previewData}
-            img={'https://ipfs.infura.io/ipfs/Qmimage'}
+            img={Image}
             style={{ marginBottom: 24 }}
           />
 
