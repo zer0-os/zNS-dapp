@@ -175,15 +175,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             nobids: '',
             lastsale: '',
             timestamp: '',
-            trade: (
-              <FutureButton
-                onClick={() => openNft(key.name)}
-                glow
-                style={{ height: 24 }}
-              >
-                {randTrade()}
-              </FutureButton>
-            ),
+            trade: '',
           })),
     [name],
   );
