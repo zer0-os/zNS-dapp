@@ -76,23 +76,38 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     },
   );
 
-  const ipfsreq = async () => {
-    const ipfsLib = require('ipfs-api');
-    const ipfsClient = new ipfsLib({
-      host: 'ipfs.infura.io',
-      port: 5001,
-      protocol: 'https',
-    });
-    if (name.isNothing()) return null;
-    const cid = await ipfsClient.cat(name.value.metadata.slice(21));
+  // const ipfsreq = async () => {
+  //   const ipfsLib = require('ipfs-api');
+  //   const ipfsClient = new ipfsLib({
+  //     host: 'ipfs.infura.io',
+  //     port: 5001,
+  //     protocol: 'https',
+  //   });
+  //   if (name.isNothing()) return null;
+  //   const cid = await ipfsClient.cat(name.value.metadata.slice(21));
 
-    return [JSON.parse(cid).description];
-  };
+  //   return [JSON.parse(cid).description];
+  // };
 
-  const descrii = () => {
-    let desc = ipfsreq();
-    console.log(desc);
-  };
+  // const descrii = () => {
+  //   let desc = ipfsreq();
+  //   console.log(desc);
+  // };
+
+  useEffect(() => {
+    const ipfsreq = async () => {
+      const ipfsLib = require('ipfs-api');
+      const ipfsClient = new ipfsLib({
+        host: 'ipfs.infura.io',
+        port: 5001,
+        protocol: 'https',
+      });
+      if (name.isNothing()) return null;
+      const cid = await ipfsClient.cat(name.value.metadata.slice(21));
+
+      return JSON.parse(cid).description;
+    };
+  }, []);
 
   // const showSubdomain = () => {
   //   setSubdomainVisible(true);
@@ -147,7 +162,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
             domain={'0://' + name.value.name}
             creator={previewData.creator}
             owner={previewData.owner}
-            description={descrii()}
+            description={'https://dweb.link/ipfs/' + name.value.metadata}
             data={previewData}
             img={Image}
             style={{ marginBottom: 24 }}
