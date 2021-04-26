@@ -162,9 +162,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
             <div className="edition border-primary">
               <div className="quadHeader">
                 <span>EDITION</span>
-                <span className="infoButton">
-                  <span className="infoMark">?</span>
-                </span>
               </div>
               <div className="quadText">1 of 1</div>
             </div>
@@ -172,9 +169,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <div className="address border-primary">
             <div className="quadHeader">
               <span>ETH ADDRESS</span>
-              <span className="infoButton">
-                <span className="infoMark">?</span>
-              </span>
             </div>
             <div className="quadText">
               {account && account.length
