@@ -23,11 +23,8 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 
-import PreviewCard from '../../PreviewCard/PreviewCard.js';
+import PreviewCard from '../../PreviewCard/PreviewCard';
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
-import { all } from 'true-myth/maybe';
-import { title } from 'node:process';
-import ipfs from '../../../lib/ipfs';
 
 const previewData = {
   owner: {
@@ -60,7 +57,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   const [uploadedImage, setUploadedImage] = useState<
     string | ArrayBuffer | null
   >(null);
-  const [descriptions, setDescription] = useState('');
+  const [descriptions, setDescription] = useState(null);
   const [names, setName] = useState('');
   const [Image, setImage] = useState('');
   // const [down, setDown] = useState('');
@@ -85,29 +82,15 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
   //   });
   //   if (name.isNothing()) return null;
   //   const cid = await ipfsClient.cat(name.value.metadata.slice(21));
+  //   return (
 
-  //   return [JSON.parse(cid).description];
+  //   );
   // };
 
   // const descrii = () => {
   //   let desc = ipfsreq();
   //   console.log(desc);
   // };
-
-  useEffect(() => {
-    const ipfsreq = async () => {
-      const ipfsLib = require('ipfs-api');
-      const ipfsClient = new ipfsLib({
-        host: 'ipfs.infura.io',
-        port: 5001,
-        protocol: 'https',
-      });
-      if (name.isNothing()) return null;
-      const cid = await ipfsClient.cat(name.value.metadata.slice(21));
-
-      return JSON.parse(cid).description;
-    };
-  }, []);
 
   // const showSubdomain = () => {
   //   setSubdomainVisible(true);
@@ -157,16 +140,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     <div className="pageContainerPositionFix">
       {name.value.subdomains.length !== 0 ? (
         <div>
-          <PreviewCard
-            name={name.value.name}
-            domain={'0://' + name.value.name}
-            creator={previewData.creator}
-            owner={previewData.owner}
-            description={'https://dweb.link/ipfs/' + name.value.metadata}
-            data={previewData}
-            img={Image}
-            style={{ marginBottom: 24 }}
-          />
+          <PreviewCard name={name.value.name} props={null} />
 
           {/* <div className="metricsBar">
             <div className="metricsTitle">Metrics</div>
