@@ -127,7 +127,7 @@
                 .creatorText {
                 }
                 .desc {
-                  color: lighten(rgba($med-blue, 1), 20%);
+                  color: var(--color-primary-lighter-2);
                 }
               }
             }
@@ -150,7 +150,7 @@
                 .ownerText {
                 }
                 .desc {
-                  color: lighten(rgba($med-blue, 1), 20%);
+                  color: var(--color-primary-lighter-2);
                 }
               }
             }
@@ -172,7 +172,7 @@
             }
             .price {
               margin-left: 15px;
-              color: lighten(rgba($med-blue, 1), 20%);
+              color: var(--color-primary-lighter-2);
               font-size: 24px;
               font-weight: bold;
             }
@@ -198,7 +198,7 @@
       .showcaseBottom {
         width: 100%;
         .shadowContainer {
-          margin-left: 56px;
+          // margin-left: 56px;
           height: 45px;
         }
         & button {

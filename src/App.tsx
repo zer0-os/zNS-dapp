@@ -1,4 +1,5 @@
 import './App.scss';
+import { useState } from 'react'
 import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import './lib/ipfs';
@@ -24,6 +25,9 @@ function getLibrary(provider: any): Web3Provider {
 // This is a comment for a test commit, please remove it
 
 function App() {
+
+  const [ isGridView, toggleGridView ] = useState(false)
+
   return (
     <Router>
       <video
@@ -53,6 +57,8 @@ function App() {
                     .replace(/\//, '.')
                   */
                   domain={location.pathname.substring(1)}
+                  isGridView={isGridView}
+                  toggleGridView={toggleGridView}
                 />
               </Route>
               <Route path="/">
@@ -75,7 +81,11 @@ function App() {
                 </h1> */}
                 {/* TODO: move to styling file */}
                 <div>
-                  <DomainsGlobal domain={''} />
+                  <DomainsGlobal 
+                    domain={''} 
+                    isGridView={isGridView}
+                    toggleGridView={toggleGridView}
+                  />
                 </div>
                 {/* <Subdomains domain={'ROOT'} /> */}
               </Route>

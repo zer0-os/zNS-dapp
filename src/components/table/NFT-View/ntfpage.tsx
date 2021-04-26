@@ -95,7 +95,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <img
             onClick={openPreview}
             style={{ height: '100%', width: '100%' }}
-            src={'https://ipfs.io/ipfs/' + name.value.metadata[1]}
+            src={StaticEmulator(routes[routes.length - 1][0])}
           />
           {/* <NFTImage domain={domain.value.domain} /> */}
         </div>
@@ -114,14 +114,15 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
                 <div className="creator">
                   <img src={wilder} alt="" className="avatar" />
                   <div className="creatorFlex">
-                    <div className="creatorText">Frank Wilder</div>
+                    <a>0.wilder.frank</a>
                     <div className="desc">Creator</div>
                   </div>
                 </div>
                 <div className="owner">
                   <img src={neo} alt="" className="avatar" />
                   <div className="ownerFlex">
-                    <div className="ownerText">Neo Wilder</div>
+                    <a>0.cyber.n3o</a>
+                    {/* <div className="ownerText">Neo Wilder</div> */}
                     <div className="desc">Owner</div>
                   </div>
                 </div>

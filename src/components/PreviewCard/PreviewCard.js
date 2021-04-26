@@ -41,7 +41,7 @@ const PreviewCard = (props) => {
               style={{ backgroundImage: `url(${props.creator.img})` }}
             ></div>
             <div className={styles.Member}>
-              <span>{props.creator.domain}</span>
+              <a>{props.creator.domain}</a>
               <br />
               <span>Creator</span>
             </div>
@@ -52,7 +52,7 @@ const PreviewCard = (props) => {
               style={{ backgroundImage: `url(${props.owner.img})` }}
             ></div>
             <div className={styles.Member}>
-              <span>{props.owner.domain}</span>
+              <a>{props.owner.domain}</a>
               <br />
               <span>Owner</span>
             </div>
@@ -97,7 +97,6 @@ const PreviewCard = (props) => {
         onCancel={closePreview}
         closable={false}
         footer={null}
-        style={{ width: 500 }}
       >
         <img src={props.img} />
       </Modal>

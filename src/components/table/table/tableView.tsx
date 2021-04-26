@@ -153,6 +153,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             asset: (
               <div className="neo-demo">
+                {console.log('key', key.name)}
                 <img
                   src={StaticEmulator(
                     key.name.split('.')[key.name.split('.').length - 1],

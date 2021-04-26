@@ -160,7 +160,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             image: (
               <div className="neo-demo">
-                <img src={name.value.metadata} alt="" className="neo2" />
+                <img src={StaticEmulator(
+                    key.name.split('.')[key.name.split('.').length - 1],
+                  )} alt="" className="neo2" />
               </div>
             ),
             network: key.name,

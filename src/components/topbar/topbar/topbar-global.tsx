@@ -108,7 +108,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
       <div className={`topHalfContainer ${hideHeader ? 'hidden' : ''}`}>
         <div className="topHalf border-primary">
           <div className="topLeft">
-            <Link to={'/'} className="network">
+            <Link to={'/'} className="network alt-link">
               0:/ <span className="slash">/</span>
             </Link>
             {routes.length > 0 ? (
