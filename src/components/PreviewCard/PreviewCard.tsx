@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 
 import FutureButton from '../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../Enlist/Enlist';
@@ -19,7 +19,10 @@ interface CardProps {
 const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
   const [enlistOpen, setEnlistOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [descript, setDescription] = useState('');
+  const [descript, setDescription] = useState(null);
+  const [image, setImage] = useState(null);
+  const [create, setCreator] = useState(null);
+  const [meta, setData] = useState(null);
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
@@ -40,26 +43,52 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
       acc.push([val, next]);
     },
   );
-  const ipfsreq = async (cid: string) => {
-    const ipfsLib = require('ipfs-api');
-    const ipfsClient = new ipfsLib({
-      host: 'ipfs.infura.io',
-      port: 5001,
-      protocol: 'https',
-    });
-    if (name.isNothing()) return null;
+  // const ipfsreq = async () => {
+  //   const ipfsLib = require('ipfs-api');
+  //   const ipfsClient = new ipfsLib({
+  //     host: 'ipfs.infura.io',
+  //     port: 5001,
+  //     protocol: 'https',
+  //   });
+  //   if (name.isNothing()) return null;
 
-    cid = await ipfsClient.cat(name.value.metadata.slice(21));
-    let desc = JSON.stringify(cid);
-    let data = JSON.parse(desc).description;
-    return data;
-  };
+  //   let cid = await ipfsClient.cat(name.value.metadata.slice(21));
+
+  //   return JSON.parse(cid).descripton;
+  // };
+
+  useEffect(() => {
+    // if statement for "base case" state varible if not set then set
+    if (descript === null) {
+      const ipfsreq = async () => {
+        const ipfsLib = require('ipfs-api');
+        const ipfsClient = new ipfsLib({
+          host: 'ipfs.infura.io',
+          port: 5001,
+          protocol: 'https',
+        });
+
+        // let domain = name as any;
+        if (name.isNothing()) return;
+        let cid = await ipfsClient.cat(name.value.metadata.slice(21));
+
+        console.log(cid + '');
+        let desc = JSON.parse(cid).description;
+        let img = JSON.parse(cid).image;
+
+        setData(cid);
+        setImage(img);
+        setDescription(desc);
+      };
+      ipfsreq();
+    }
+    console.log('useEffect');
+  }, [descript, name]);
+
   // const descrii = () => {
   //   let desc = ipfsreq();
   //   console.log(desc);
   // };
-
-  let desc = ipfsreq('cid');
 
   if (name.isNothing()) return null;
   return (
@@ -71,7 +100,9 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         className={styles.Asset}
         onClick={preview}
         style={{ backgroundImage: `url({cid})` }}
-      ></div>
+      >
+        <img></img>
+      </div>
       <div className={styles.Body}>
         <div>
           <h5 className={'glow-text-white'}>{name.value.name}</h5>
@@ -85,7 +116,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
             </a>
           ))}
         </div>
-        <p>desc</p>
+        <p>{descript}</p>
         <div className={styles.Members}>
           <div>
             <div
