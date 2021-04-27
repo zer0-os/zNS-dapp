@@ -1,4 +1,4 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import './css/grid.scss';
 import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
@@ -10,7 +10,7 @@ import avatar from '../../css/img/wilderavatar.png';
 import { Indexed } from '@ethersproject/abi';
 import { inflate } from 'node:zlib';
 
-import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js'
+import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
 interface GridProps {
   domain: string;
@@ -32,6 +32,35 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     });
   };
 
+  const [image, setImage] = useState('');
+  const [descript, setDescription] = useState(null);
+
+  // useEffect(() => {
+  //   // if statement for "base case" state varible if not set then set
+  //   if (descript === null) {
+  //     const ipfsreq = async () => {
+  //       const ipfsLib = require('ipfs-api');
+  //       const ipfsClient = new ipfsLib({
+  //         host: 'ipfs.infura.io',
+  //         port: 5001,
+  //         protocol: 'https',
+  //       });
+
+  //       // let domain = name as any;
+  //       if (name.isNothing()) return;
+  //       let cid = await ipfsClient.cat(name.value.metadata.slice(21));
+
+  //       console.log(cid + '');
+  //       let desc = JSON.parse(cid).description;
+  //       let img = JSON.parse(cid).image;
+
+  //       setImage(img);
+  //       setDescription(desc);
+  //     };
+  //     ipfsreq();
+  //   }
+  //   console.log('useEffect');
+  // }, [descript, name, image]);
   // let images: any = [
   //   <img src={zero} alt="" />,
   //   <img src={neo} alt="" className="" />,
@@ -93,7 +122,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
             <div>{cellInput.name.match(/[^.]+$/)}</div>
           </div>
           <div className="image">
-            <GridImage domain={cellInput.name} props={{image: StaticEmulator(cellInput.name.split('.')[cellInput.name.split('.').length - 1])}} />
+            <img src={avatar} />
           </div>
           {/* <div className="text">
             <div>Last Traded Price</div>
