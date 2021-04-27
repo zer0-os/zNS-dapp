@@ -106,12 +106,6 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
       <div onClick={() => handleCellClick(cellInput.name)} className="gridCell">
         <div className="gridCellContent">
           <div className="topbar">
-            <div className="left">
-              <div className="avatar">
-                <img src={avatar} alt="" />
-              </div>
-              <div className="artist">WILDER</div>
-            </div>
             {/* <div className="dots">
               <div></div>
               <div></div>
@@ -122,16 +116,12 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
             <div>{cellInput.name.match(/[^.]+$/)}</div>
           </div>
           <div className="image">
-            <img src={avatar} />
+            <img src={image} />
           </div>
           {/* <div className="text">
             <div>Last Traded Price</div>
             <div>Change</div>
           </div> */}
-          <div className="price">
-            <div>{randThreeS()} WILD</div>
-            {/* <div>{randPrice()}</div> */}
-          </div>
         </div>
       </div>
     );
