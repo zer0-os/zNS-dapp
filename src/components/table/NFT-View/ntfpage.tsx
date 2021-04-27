@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { useDomainCache } from '../../../lib/useDomainCache';
@@ -33,7 +33,10 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
   const location = useLocation();
-
+  const [image, setImage] = useState('');
+  const [create, setCreator] = useState(null);
+  const [meta, setData] = useState(null);
+  const [descript, setDescription] = useState(null);
   const [isPreviewOpen, setPreviewOpen] = useState(false);
   const openPreview = () => setPreviewOpen(true);
   const closePreview = () => setPreviewOpen(false);
@@ -52,6 +55,34 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       acc.push([val, next]);
     },
   );
+
+  useEffect(() => {
+    // if statement for "base case" state varible if not set then set
+    if (descript === null) {
+      const ipfsreq = async () => {
+        const ipfsLib = require('ipfs-api');
+        const ipfsClient = new ipfsLib({
+          host: 'ipfs.infura.io',
+          port: 5001,
+          protocol: 'https',
+        });
+
+        // let domain = name as any;
+        if (name.isNothing()) return;
+        let cid = await ipfsClient.cat(name.value.metadata.slice(21));
+
+        console.log(cid + '');
+        let desc = JSON.parse(cid).description;
+        let img = JSON.parse(cid).image;
+
+        setData(cid);
+        setImage(img);
+        setDescription(desc);
+      };
+      ipfsreq();
+    }
+    console.log('useEffect');
+  }, [descript, name, image]);
 
   const showNft = () => {
     setNftVisible(true);
@@ -95,7 +126,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <img
             onClick={openPreview}
             style={{ height: '100%', width: '100%' }}
-            src={'https://ipfs.io/ipfs/' + name.value.metadata[1]}
+            src={image}
           />
           {/* <NFTImage domain={domain.value.domain} /> */}
         </div>
@@ -151,7 +182,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       <div className="info">
         <div className="story border-primary">
           <div>STORY</div>
-          <div style={{ fontSize: 16 }}>{name.value.metadata[1]}</div>
+          <div style={{ fontSize: 16 }}>{descript}</div>
         </div>
         <div className="quad">
           <div className="top">

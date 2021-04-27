@@ -20,7 +20,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
   const [enlistOpen, setEnlistOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [descript, setDescription] = useState(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState('');
   const [create, setCreator] = useState(null);
   const [meta, setData] = useState(null);
   const { useDomain } = useDomainCache();
@@ -101,7 +101,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         onClick={preview}
         style={{ backgroundImage: `url({cid})` }}
       >
-        <img></img>
+        <img src={image} />
       </div>
       <div className={styles.Body}>
         <div>
