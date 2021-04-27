@@ -4,7 +4,7 @@ import { NETWORK_TYPES } from './network';
 const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
   [NETWORK_TYPES.KOVAN]: {
     registrar: '0x7293c267cA90FEdD32c67AEf52fB3416903A24B3',
-    basic: '0x682ac9f7BA50A2713510598bF2b7901E2AC0B096',
+    basic: '0x7EB6D0E8c91F6e88bf029138FDf0d04Fb78E43a4',
   },
 } as any;
 
