@@ -123,29 +123,8 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         </div>
         <p>{descript}</p>
         <div className={styles.Members}>
-          <div>
-            <div
-              className={styles.Dp}
-              style={{ backgroundImage: `url({cid})` }}
-            ></div>
-            <div className={styles.Member}>
-              <span>{create}</span>
-              <br />
-              <span>Creator</span>
-            </div>
-          </div>
-          <div>
-            <div
-              className={styles.Dp}
-              // style={{ backgroundImage: `url(${props.owner.img})` }}
-            ></div>
-            <div className={styles.Member}>
-              {/* <span>{props.owner.domain}</span> */}
-              <div>{own}</div>
-              <br />
-              <span>Owner</span>
-            </div>
-          </div>
+          <div></div>
+          <div></div>
         </div>
       </div>
       <div className={styles.Buy}>

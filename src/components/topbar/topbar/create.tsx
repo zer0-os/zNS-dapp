@@ -104,7 +104,7 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
 
     const metadataObject = {
       title: nftName,
-      story: nftStory,
+      description: nftStory,
       image: imagePath,
     };
 

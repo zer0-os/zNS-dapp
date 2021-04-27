@@ -101,22 +101,22 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     setNftVisible(false);
   };
 
-  const historyRow = (name: string, number: string, days: string, img: any) => {
-    return (
-      <div className="historyRow">
-        <div className="historyLeft">
-          <img src={img} alt="" className="avatar" />
-          <div className="historyText">
-            <span className="embolden">{name}</span> placed a bid for{' '}
-            <span className="embolden">{number} WILD</span>
-          </div>
-        </div>
-        {/* <div className="historyRight">
-          {days} days ago <span className="viewTx">[view tx]</span>
-        </div> */}
-      </div>
-    );
-  };
+  // const historyRow = (name: string, number: string, days: string, img: any) => {
+  //   return (
+  //     <div className="historyRow">
+  //       <div className="historyLeft">
+  //         <img src={img} alt="" className="avatar" />
+  //         <div className="historyText">
+  //           <span className="embolden">{name}</span> placed a bid for{' '}
+  //           <span className="embolden">{number} WILD</span>
+  //         </div>
+  //       </div>
+  //       {/* <div className="historyRight">
+  //         {days} days ago <span className="viewTx">[view tx]</span>
+  //       </div> */}
+  //     </div>
+  //   );
+  // };
 
   if (name.isNothing()) return null;
   return (
@@ -146,22 +146,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
                   0:/{location.pathname}
                 </Link>
               </div>
-              <div className="users">
-                <div className="creator">
-                  <img src={wilder} alt="" className="avatar" />
-                  <div className="creatorFlex">
-                    <div className="creatorText">{create}</div>
-                    <div className="desc">Creator</div>
-                  </div>
-                </div>
-                <div className="owner">
-                  <img src={neo} alt="" className="avatar" />
-                  <div className="ownerFlex">
-                    <div className="ownerText">{own}</div>
-                    <div className="desc">Owner</div>
-                  </div>
-                </div>
-              </div>
             </div>
             <div className="middle">
               <div className="midLeft">
@@ -186,25 +170,10 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       </div>
       <div className="info">
         <div className="story border-primary">
-          <div>STORY</div>
+          <div>DESCRIPTION</div>
           <div style={{ fontSize: 16 }}>{descript}</div>
         </div>
         <div className="quad">
-          <div className="top">
-            <div className="views border-primary">
-              <div className="quadHeader"></div>
-              <div className="quadText"></div>
-            </div>
-            <div className="edition border-primary">
-              <div className="quadHeader">
-                <span></span>
-                <span className="infoButton">
-                  <span className="infoMark">?</span>
-                </span>
-              </div>
-              <div className="quadText"></div>
-            </div>
-          </div>
           <div className="address border-primary">
             <div className="quadHeader">
               <span>ETH ADDRESS</span>
@@ -221,21 +190,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         </div>
       </div>
 
-      <div className="bottom border-primary">
-        <div className="history">
-          <div className="historyTitle">HISTORY</div>
-          <div className="historyBox">
-            {historyRow('Phoenix', '280', '4', phoenix)}
-            {historyRow('Frank', '180', '6', wilder)}
-            {historyRow('Neo', '50', '8', neo)}
-            {historyRow('Cyber_Cat', '6', '8', cat)}
-            {historyRow('Cyber_Cat', '200', '8', cat)}
-            {historyRow('Frank', '230', '10', wilder)}
-            {historyRow('888', '43', '10', vape)}
-            {historyRow('Neo', '34', '11', neo)}
-          </div>
-        </div>
-      </div>
       <Modal
         visible={isPreviewOpen}
         onCancel={closePreview}
@@ -243,7 +197,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         centered
         footer={null}
       >
-        <img src={StaticEmulator(routes[routes.length - 1][0])} />
+        <img src={image} />
       </Modal>
       <Modal
         visible={enlist}
@@ -255,7 +209,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         <Enlist
           name={location.pathname}
           props={{
-            image: StaticEmulator(routes[routes.length - 1][0]),
+            image: image,
             close: closeEnlist,
           }}
         />
