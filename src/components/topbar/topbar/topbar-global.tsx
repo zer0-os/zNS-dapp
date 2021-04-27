@@ -106,13 +106,10 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
     if (account) {
       mintNFTEnabled = (account.toLowerCase() == name.value.owner.id.toLowerCase());
     }
-    
   } catch (e) {
     console.log(`mintNFTEnabled error: ${e}`);
   }
-  
 
-  console.log(name.value, mintNFTEnabled, account);
 
   return (
     <div
