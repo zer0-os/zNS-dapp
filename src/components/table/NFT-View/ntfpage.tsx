@@ -37,6 +37,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   const [create, setCreator] = useState(null);
   const [meta, setData] = useState(null);
   const [descript, setDescription] = useState(null);
+  const [own, setOwner] = useState(null);
   const [isPreviewOpen, setPreviewOpen] = useState(false);
   const openPreview = () => setPreviewOpen(true);
   const closePreview = () => setPreviewOpen(false);
@@ -74,10 +75,14 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         console.log(cid + '');
         let desc = JSON.parse(cid).description;
         let img = JSON.parse(cid).image;
+        let cre = JSON.parse(cid).creator;
+        let own = JSON.parse(cid).owner;
 
         setData(cid);
         setImage(img);
         setDescription(desc);
+        setCreator(cre);
+        setOwner(own);
       };
       ipfsreq();
     }
@@ -145,14 +150,14 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
                 <div className="creator">
                   <img src={wilder} alt="" className="avatar" />
                   <div className="creatorFlex">
-                    <div className="creatorText">Frank Wilder</div>
+                    <div className="creatorText">{create}</div>
                     <div className="desc">Creator</div>
                   </div>
                 </div>
                 <div className="owner">
                   <img src={neo} alt="" className="avatar" />
                   <div className="ownerFlex">
-                    <div className="ownerText">Neo Wilder</div>
+                    <div className="ownerText">{own}</div>
                     <div className="desc">Owner</div>
                   </div>
                 </div>
@@ -160,8 +165,8 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
             </div>
             <div className="middle">
               <div className="midLeft">
-                <div className="units">250 LOOT</div>
-                <div className="price">[$1,304.12]</div>
+                <div className="units"></div>
+                <div className="price"></div>
               </div>
               {/* <div className="midRight">
               <div className="text">Current Price</div>
@@ -187,17 +192,17 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         <div className="quad">
           <div className="top">
             <div className="views border-primary">
-              <div className="quadHeader">VIEWS</div>
-              <div className="quadText">12,317</div>
+              <div className="quadHeader"></div>
+              <div className="quadText"></div>
             </div>
             <div className="edition border-primary">
               <div className="quadHeader">
-                <span>EDITION</span>
+                <span></span>
                 <span className="infoButton">
                   <span className="infoMark">?</span>
                 </span>
               </div>
-              <div className="quadText">1 of 1</div>
+              <div className="quadText"></div>
             </div>
           </div>
           <div className="address border-primary">

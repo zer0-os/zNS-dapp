@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
 import { useDomainCache } from '../../../lib/useDomainCache';
@@ -56,11 +56,37 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
   const history = useHistory();
+  const [image, setImage] = useState('');
+  const [descript, setDescription] = useState(null);
 
   const [enlist, setEnlist] = useState('');
   const closeEnlist = () => setEnlist('');
-  console.log(enlist)
+  console.log(enlist);
 
+  useEffect(() => {
+    // if statement for "base case" state varible if not set then set
+    if (descript === null) {
+      const ipfsreq = async () => {
+        const ipfsLib = require('ipfs-api');
+        const ipfsClient = new ipfsLib({
+          host: 'ipfs.infura.io',
+          port: 5001,
+          protocol: 'https',
+        });
+
+        // let domain = name as any;
+        if (name.isNothing()) return;
+        let cid = await ipfsClient.cat(name.value.metadata.slice(21));
+
+        let img = JSON.parse(cid).image;
+        let desc = JSON.parse(cid).description;
+        setImage(img);
+        setDescription(desc);
+      };
+      ipfsreq();
+    }
+    console.log('useEffect');
+  }, [name, image]);
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -153,13 +179,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             asset: (
               <div className="neo-demo">
-                <img
-                  src={StaticEmulator(
-                    key.name.split('.')[key.name.split('.').length - 1],
-                  )}
-                  alt=""
-                  className="neo2"
-                />
+                <img src={image} alt="" className="neo2" />
               </div>
             ),
             name: key.name,
@@ -424,7 +444,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             image: StaticEmulator(
               enlist.split('.')[enlist.split('.').length - 1],
             ),
-            close: closeEnlist
+            close: closeEnlist,
           }}
         />
       </Modal>

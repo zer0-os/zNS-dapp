@@ -26,6 +26,7 @@ import realestate from '../../css/img/realestate.jpeg';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
+import { err } from 'true-myth/result';
 
 const images = [wilderavatar, neo, kitty, cybercar, realestate];
 const randomImage = () => images[Math.floor(Math.random() * images.length)];
@@ -66,9 +67,37 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
   const history = useHistory();
+  const [image, setImage] = useState('');
+  const [descript, setDescription] = useState(null);
 
   const openNft = (nft: string) => {};
 
+  useEffect(() => {
+    // if statement for "base case" state varible if not set then set
+    if (descript === null) {
+      const ipfsreq = async () => {
+        const ipfsLib = require('ipfs-api');
+        const ipfsClient = new ipfsLib({
+          host: 'ipfs.infura.io',
+          port: 5001,
+          protocol: 'https',
+        });
+
+        // let domain = name as any;
+        if (name.isNothing()) return;
+        let _hash = await ipfsClient
+          .cat(name.value.metadata)
+          .catch((err: any) => console.log);
+
+        let img = JSON.parse(_hash).image;
+        let desc = JSON.parse(_hash).description;
+        setImage(img);
+        setDescription(desc);
+      };
+      ipfsreq();
+    }
+    console.log('useEffect');
+  }, [name, image]);
   //
   // Following functions generate random numbers to display mock data in the UI
   //

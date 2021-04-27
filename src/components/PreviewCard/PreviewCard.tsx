@@ -23,6 +23,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
   const [image, setImage] = useState('');
   const [create, setCreator] = useState(null);
   const [meta, setData] = useState(null);
+  const [own, setOwner] = useState(null);
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
@@ -75,10 +76,14 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         console.log(cid + '');
         let desc = JSON.parse(cid).description;
         let img = JSON.parse(cid).image;
+        let cre = JSON.parse(cid).creator;
+        let own = JSON.parse(cid).owner;
 
         setData(cid);
         setImage(img);
         setDescription(desc);
+        setCreator(cre);
+        setOwner(own);
       };
       ipfsreq();
     }
@@ -124,7 +129,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
               style={{ backgroundImage: `url({cid})` }}
             ></div>
             <div className={styles.Member}>
-              <span>ttt</span>
+              <span>{create}</span>
               <br />
               <span>Creator</span>
             </div>
@@ -136,7 +141,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
             ></div>
             <div className={styles.Member}>
               {/* <span>{props.owner.domain}</span> */}
-              <div>div</div>
+              <div>{own}</div>
               <br />
               <span>Owner</span>
             </div>
@@ -183,7 +188,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         footer={null}
         style={{ width: 500 }}
       >
-        <img src={name.value.metadata} />
+        <img src={image} />
       </Modal>
     </div>
   );
