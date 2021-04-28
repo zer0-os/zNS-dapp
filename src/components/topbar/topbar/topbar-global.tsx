@@ -197,7 +197,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
       </Modal>
 
       <Modal
-        centered
         visible={isProfileVisible}
         onCancel={closeProfile}
         closable={false}
