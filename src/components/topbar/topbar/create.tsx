@@ -39,8 +39,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const contract = useZnsContracts();
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
-  const [nftOwner, setOwner] = useState('');
-  const [nftCreator, setCreator] = useState('');
   const [uploadedImage, setUploadedImage] = useState<
     string | ArrayBuffer | null
   >(null);
@@ -213,20 +211,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               multiline={true}
               placeholder={'Story'}
               style={{ height: 146, marginTop: 24 }}
-            />
-            <TextInput
-              onChange={(text: string) => {
-                setOwner(text);
-              }}
-              placeholder={'Owner'}
-              style={{ marginTop: 24 }}
-            />
-            <TextInput
-              onChange={(text: string) => {
-                setCreator(text);
-              }}
-              placeholder={'Creator'}
-              style={{ marginTop: 24 }}
             />
           </div>
           <div>

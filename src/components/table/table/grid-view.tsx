@@ -10,6 +10,7 @@ import avatar from '../../css/img/wilderavatar.png';
 import { Indexed } from '@ethersproject/abi';
 import { inflate } from 'node:zlib';
 
+import Image from '../../Image/Image'
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
 interface GridProps {
@@ -111,7 +112,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
           </div>
           <div className="image">
             
-            <img src={key.image ? key.image : ''} />
+            <Image src={key.image ? key.image : ''} />
           </div>
           {/* <div className="text">
             <div>Last Traded Price</div>

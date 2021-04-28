@@ -23,7 +23,7 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 
-import PreviewCard from '../../PreviewCard/PreviewCard';
+import PreviewCard from '../../PreviewCard/PreviewCard.js';
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
 const previewData = {
@@ -44,15 +44,17 @@ const previewData = {
 
 interface SubdomainsProps {
   domain: string;
+  isGridView: boolean;
+  toggleGridView: (arg0: boolean) => void;
 }
 
-const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
+const ChildView: FC<SubdomainsProps> = ({ domain: _domain, isGridView, toggleGridView }) => {
   // const context = useWeb3React<Web3Provider>();
   const location = useLocation();
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
-  const [gridView, toggleGridView] = useState(false);
+  // const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
   const [uploadedImage, setUploadedImage] = useState<
     string | ArrayBuffer | null
@@ -140,7 +142,16 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
     <div className="pageContainerPositionFix">
       {name.value.subdomains.length !== 0 ? (
         <div>
-          <PreviewCard name={name.value.name} props={null} />
+          <PreviewCard
+            name={name.value.name}
+            domain={'0://' + name.value.name}
+            creator={previewData.creator}
+            owner={previewData.owner}
+            description={'https://dweb.link/ipfs/' + name.value.metadata}
+            data={previewData}
+            img={StaticEmulator(name.value.name)}
+            style={{ marginBottom: 24 }}
+          />
 
           {/* <div className="metricsBar">
             <div className="metricsTitle">Metrics</div>
@@ -235,14 +246,14 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                       // setDown('');
                       setHover('');
                     }}
-                    className={`list ${gridView ? '' : 'selected'}`}
+                    className={`list ${isGridView ? '' : 'selected'}`}
                   >
                     <img
                       src={
                         // down === 'list'
                         //   ? listD
                         //   :
-                        gridView === false
+                        isGridView === false
                           ? listS
                           : hover === 'list'
                           ? listH
@@ -260,14 +271,14 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
                       // setDown('');
                       setHover('');
                     }}
-                    className={`grid ${gridView ? 'selected' : ''}`}
+                    className={`grid ${isGridView ? 'selected' : ''}`}
                   >
                     <img
                       src={
                         // down === 'grid'
                         //   ? gridD
                         //   :
-                        gridView === true
+                        isGridView === true
                           ? gridS
                           : hover === 'grid'
                           ? gridH
@@ -280,7 +291,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain }) => {
               </div>
             </div>
 
-            <TableView domain={_domain} gridView={gridView} search={search} />
+            <TableView domain={_domain} gridView={isGridView} search={search} />
           </div>
         </div>
       ) : (

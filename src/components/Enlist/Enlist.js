@@ -129,7 +129,6 @@ const Enlist = (props) => {
         onCancel={closePreview}
         closable={false}
         footer={null}
-        style={{ width: 500 }}
       >
         <img src={props.props.image} />
       </Modal>

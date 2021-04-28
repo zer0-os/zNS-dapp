@@ -18,6 +18,7 @@ import wilder from './img/mockusers/wilder.png';
 
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../../Enlist/Enlist';
+import Image from '../../Image/Image'
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
@@ -128,7 +129,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         className="showcase border-primary"
       >
         <div className="showcaseIMG">
-          <img
+          <Image
             onClick={openPreview}
             style={{ height: '100%', width: '100%' }}
             src={image}
@@ -174,12 +175,21 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <div style={{ fontSize: 16 }}>{descript}</div>
         </div>
         <div className="quad">
+          <div className="top">
+            <div className="views border-primary">
+              <div className="quadHeader">VIEWS</div>
+              <div className="quadText">12,317</div>
+            </div>
+            <div className="edition border-primary">
+              <div className="quadHeader">
+                <span>EDITION</span>
+              </div>
+              <div className="quadText">1 of 1</div>
+            </div>
+          </div>
           <div className="address border-primary">
             <div className="quadHeader">
               <span>ETH ADDRESS</span>
-              <span className="infoButton">
-                <span className="infoMark">?</span>
-              </span>
             </div>
             <div className="quadText">
               {account && account.length

@@ -23,8 +23,10 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useWeb3React } from '@web3-react/core';
 interface DomainsGlobalProps {
   domain: string;
+  isGridView: boolean;
+  toggleGridView: (arg0: boolean) => void;
 }
-const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
+const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain, isGridView, toggleGridView }) => {
   // const context = useWeb3React<Web3Provider>();
   const location = useLocation();
   const { useDomain } = useDomainCache();
@@ -33,7 +35,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
   const { name } = domainContext;
 
   // const dataInput: Data[] = [];
-  const [gridView, toggleGridView] = useState(false);
+  // const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
   // const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
@@ -134,7 +136,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
                 <div className="text">Filters</div>
               </div> */}
               <div
-                onClick={() => toggleGridView(false)}
+                onClick={() => {toggleGridView(false)}}
                 // onMouseDown={() => setDown('list')}
                 // onMouseUp={() => setDown('')}
                 onMouseEnter={() => setHover('list')}
@@ -142,14 +144,14 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
                   // setDown('');
                   setHover('');
                 }}
-                className={`list ${gridView ? '' : 'selected'}`}
+                className={`list ${isGridView ? '' : 'selected'}`}
               >
                 <img
                   src={
                     // down === 'list'
                     //   ? listD
                     //   :
-                    gridView === false ? listS : hover === 'list' ? listH : list
+                    isGridView === false ? listS : hover === 'list' ? listH : list
                   }
                   alt=""
                 />
@@ -163,14 +165,14 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
                   // setDown('');
                   setHover('');
                 }}
-                className={`grid ${gridView ? 'selected' : ''}`}
+                className={`grid ${isGridView ? 'selected' : ''}`}
               >
                 <img
                   src={
                     // down === 'grid'
                     //   ? gridD
                     //   :
-                    gridView === true ? gridS : hover === 'grid' ? gridH : grid
+                    isGridView === true ? gridS : hover === 'grid' ? gridH : grid
                   }
                   alt=""
                 />
@@ -178,7 +180,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain }) => {
             </div>
           </div>
         </div>
-        <TableViewGlobal domain={_domain} gridView={gridView} search={search} />
+        <TableViewGlobal domain={_domain} gridView={isGridView} search={search} />
       </div>
     </div>
   );

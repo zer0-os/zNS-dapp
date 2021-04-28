@@ -197,7 +197,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               <FutureButton
                 glow
                 onClick={() => setEnlist(key.name)}
-                style={{ height: 24, zIndex: 1000 }}
+                style={{ height: 36, width: 118, borderRadius: 18, zIndex: 1000 }}
               >
                 ENLIST
               </FutureButton>

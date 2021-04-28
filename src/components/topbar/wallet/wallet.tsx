@@ -18,20 +18,45 @@ import {
   walletconnect,
   walletlink,
   fortmatic,
-  // magic,
   portis,
   network,
-  // torus,
 } from '../../../lib/connectors';
 import { Spinner } from '../../spinner';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import './wallet.scss';
 import usePrevious from '../../../lib/hooks/usePrevious';
-// import { METAMASK } from 'web3modal/dist/providers/injected';
 
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
 
-// import ConnectToWallet from '../../ConnectToWallet/ConnectToWallet.js'
+// Wallet images
+import coinbaseIcon from './assets/coinbasewallet.svg'
+import fortmaticIcon from './assets/fortmatic.svg'
+import metamaskIcon from './assets/metamask.svg'
+import networkIcon from './assets/network.svg'
+import portisIcon from './assets/portis.svg'
+import walletConnectIcon from './assets/walletconnect.svg'
+import walletLinkIcon from './assets/walletlink.svg'
+
+const imgFromName = (name: string) => {
+  switch (name.toLowerCase()) {
+    case 'coinbasewallet':
+      return coinbaseIcon
+    case 'fortmatic':
+      return fortmaticIcon
+    case 'metamask':
+      return metamaskIcon
+    case 'network':
+      return networkIcon
+    case 'portis':
+      return portisIcon
+    case 'walletconnect':
+      return walletConnectIcon
+    case 'walletlink':
+      return walletLinkIcon
+  }
+}
+
+const getImage = () => console.log('yoza')
 
 enum ConnectorNames {
   MetaMask = 'MetaMask',
@@ -317,12 +342,13 @@ export default function Wallet() {
                     />
                   )} */}
                   <div className="name-con">{name}</div>
-                  {/* <div
+                  { console.log(imgFromName(name)) }
+                  <div
                     style={{
-                      backgroundImage: `url("assets/wallets/${name.toLowerCase()}.png`,
+                      backgroundImage: `url(${imgFromName(name)})`,
                     }}
                     className="circle"
-                  ></div> */}
+                  ></div>
                 </button>
               </div>
             );
