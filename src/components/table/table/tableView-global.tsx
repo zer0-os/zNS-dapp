@@ -67,9 +67,10 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
   const history = useHistory();
-  const [image, setImage] = useState('');
+  const [imageCount, setImageCount] = useState(0)
   const [descript, setDescription] = useState(null);
 
+ 
   const openNft = (nft: string) => {};
 
   useEffect(() => {
@@ -84,20 +85,19 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         });
 
         // let domain = name as any;
-        if (name.isNothing()) return;
-        let _hash = await ipfsClient
-          .cat(name.value.metadata)
-          .catch((err: any) => console.log);
+        if (name.isNothing() || !name.value.subdomains.length) return;
 
-        let img = JSON.parse(_hash).image;
-        let desc = JSON.parse(_hash).description;
-        setImage(img);
-        setDescription(desc);
+        // Go through each subdomain
+        for(var i = 0; i < name.value.subdomains.length; i++) {
+          const sub = name.value.subdomains[i]
+          const _hash = await ipfsClient.cat(sub.metadata.slice(21))
+          sub.image = JSON.parse(_hash).image
+          setImageCount(i + 1)
+        }
       };
       ipfsreq();
     }
-    console.log('useEffect');
-  }, [name, image]);
+  }, [name]);
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -189,7 +189,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             image: (
               <div className="neo-demo">
-                <img src={name.value.metadata} alt="" className="neo2" />
+                <img style={{opacity: key.image ? 1 : 0}} src={key.image ? key.image : ''} alt="" className="neo2" />
               </div>
             ),
             network: key.name,
@@ -206,7 +206,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             timestamp: '',
             trade: '',
           })),
-    [name],
+    [name, imageCount],
   );
 
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
