@@ -61,9 +61,7 @@ export const DOMAIN_QUERY = gql`
       owner {
         id
       }
-      minter {
-        id
-      }
+      minter
       lockedBy
       isLocked
       metadata

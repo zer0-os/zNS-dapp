@@ -18,7 +18,7 @@ import wilder from './img/mockusers/wilder.png';
 
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../../Enlist/Enlist';
-import Image from '../../Image/Image'
+import Image from '../../Image/Image';
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
@@ -78,7 +78,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         let cre = JSON.parse(cid).creator;
         let own = JSON.parse(cid).owner;
 
-
         setData(cid);
         setImage(img);
         setDescription(desc);
@@ -100,7 +99,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   const nftCancel = () => {
     setNftVisible(false);
   };
-
 
   if (name.isNothing()) return null;
   return (
@@ -158,18 +156,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <div style={{ fontSize: 16 }}>{descript}</div>
         </div>
         <div className="quad">
-          <div className="top">
-            <div className="views border-primary">
-              <div className="quadHeader">VIEWS</div>
-              <div className="quadText">12,317</div>
-            </div>
-            <div className="edition border-primary">
-              <div className="quadHeader">
-                <span>EDITION</span>
-              </div>
-              <div className="quadText">1 of 1</div>
-            </div>
-          </div>
           <div className="address border-primary">
             <div className="quadHeader">
               <span>ETH ADDRESS</span>
@@ -189,7 +175,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         closable={false}
         centered
         footer={null}
-        style={{width: '600px !important'}}
+        style={{ width: '600px !important' }}
       >
         <Image src={image} />
       </Modal>
