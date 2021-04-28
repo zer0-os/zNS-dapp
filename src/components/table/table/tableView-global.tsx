@@ -28,8 +28,14 @@ import Image from '../../Image/Image'
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 import { err } from 'true-myth/result';
 
-const images = [wilderavatar, neo, kitty, cybercar, realestate];
-const randomImage = () => images[Math.floor(Math.random() * images.length)];
+// IPFS Config
+const ipfsLib = require('ipfs-api');
+const ipfsClient = new ipfsLib({
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+});
+
 //
 // Please Read
 // Much data availability of the table has changed throughout versions of this app, and the MVP version removes essentially all of the data to be replaced with the Last Bid, No Bids, and Last Sales Price field. In lieu of deleting these fields, which may retain their usefulness at some point in the future, I have commented them out, so that they may be used when they prove useful. If you still have your code editor set to horizontal scrolling, than all I can say is git gud.
@@ -39,13 +45,6 @@ interface Data {
   '#': string;
   image: any;
   network: any;
-  // token: string;
-  // '24Hr': any;
-  // '7d': any;
-  // marketcap: string;
-  // volume: string;
-  // supply: string;
-  // last7days: any;
   lastbid: string;
   nobids: string;
   lastsale: string;
@@ -69,46 +68,24 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const subdomains = !name.isNothing() ? name.value.subdomains : []
   const history = useHistory();
   const [imageCount, setImageCount] = useState(0)
-  const [descript, setDescription] = useState(null);
-
-
-  const loadedImage = (key: any) => {
-    // Set a 'loaded' flag on the subdomain
-    key.loaded = true
-    // Tell state that another image has loaded
-  }
-
- 
-  const openNft = (nft: string) => {};
 
   //- Getting image data for all subdomains
   useEffect(() => {
-    // if statement for "base case" state varible if not set then set
-    if (descript === null) {
-      const ipfsreq = async () => {
-        const ipfsLib = require('ipfs-api');
-        const ipfsClient = new ipfsLib({
-          host: 'ipfs.infura.io',
-          port: 5001,
-          protocol: 'https',
-        });
-
-        // let domain = name as any;
-        if (name.isNothing() || !subdomains.length) return;
-
-        // Go through each subdomain
-        for(var i = 0; i < subdomains.length; i++) {
-          const sub = subdomains[i]
-          if(!sub.image) {
-            const _hash = await ipfsClient.cat(sub.metadata.slice(21))
-            sub.image = JSON.parse(_hash).image
-            sub.loaded = false
-            setImageCount(i + 1)
-          }
+    const ipfsreq = async () => {
+    if (name.isNothing() || !subdomains.length) return;
+      // Get each subdomain and pull its metadata from IPFS
+      for(var i = 0; i < subdomains.length; i++) {
+        const sub = subdomains[i]
+        if(!sub.image) {
+          const d = JSON.parse(await ipfsClient.cat(sub.metadata.slice(21)))
+          sub.image = d.image
+          sub.nftName = d.name
+          sub.nftDescription = d.description
+          setImageCount(i + 1)
         }
-      };
-      ipfsreq();
-    }
+      }
+    };
+    ipfsreq();
   }, [name]);
   //
   // Following functions generate random numbers to display mock data in the UI
@@ -201,7 +178,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             image: (
               <div className="neo-demo">
-                <Image style={{opacity: key.image ? 1 : 0}} src={key.image ? key.image : ''} alt="" className="neo2" />
+                <Image src={key.image ? key.image : ''} alt="" className="neo2" />
               </div>
             ),
             network: key.name,
@@ -217,13 +194,14 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             lastsale: '',
             timestamp: '',
             trade: (
-              <FutureButton
-                onClick={() => openNft(key.name)}
-                glow
-                style={{ height: 36, width: 118, borderRadius: 18 }}
-              >
-                ENLIST
-              </FutureButton>
+              <></>
+              // <FutureButton
+              //   onClick={() => openNft(key.name)}
+              //   glow
+              //   style={{ height: 36, width: 118, borderRadius: 18 }}
+              // >
+              //   ENLIST
+              // </FutureButton>
             ),
           })),
     [name, imageCount, subdomains],
