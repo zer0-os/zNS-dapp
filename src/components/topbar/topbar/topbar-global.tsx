@@ -28,7 +28,7 @@ var lastY = 0 // Just a global variable to stash last scroll position
 
 const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
   const context = useWeb3React<Web3Provider>();
-  const { active, connector, error } = context;
+  const { active, connector, error, account } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
@@ -101,6 +101,16 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
 
   if (name.isNothing()) return null;
 
+  let mintNFTEnabled = false;
+  try {
+    if (account) {
+      mintNFTEnabled = (account.toLowerCase() == name.value.owner.id.toLowerCase());
+    }
+  } catch (e) {
+    console.log(`mintNFTEnabled error: ${e}`);
+  }
+
+
   return (
     <div
       className={`topbarContainerNeo`}
@@ -128,9 +138,10 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
               <FutureButton glow onClick={showWallet}>Connect Wallet</FutureButton>
             ) : (
               <>
+                {mintNFTEnabled ? 
                 <FutureButton glow onClick={showMint}>
                   Mint New NFT
-                </FutureButton>
+                </FutureButton> : null }
                 <div onClick={openProfile} className="profile-btn">
                   <div className="profile-btn">
                     <Profile
