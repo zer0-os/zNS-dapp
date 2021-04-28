@@ -73,7 +73,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         if (name.isNothing()) return;
         let cid = await ipfsClient.cat(name.value.metadata.slice(21));
 
-        console.log(cid + '');
         let desc = JSON.parse(cid).description;
         let img = JSON.parse(cid).image;
         let cre = JSON.parse(cid).creator;
@@ -87,7 +86,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       };
       ipfsreq();
     }
-    console.log('useEffect');
   }, [descript, name, image]);
 
   const showNft = () => {
