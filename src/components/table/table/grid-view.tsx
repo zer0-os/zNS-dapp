@@ -99,13 +99,13 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     return (
       <div onClick={() => handleCellClick(key.name)} className="gridCell">
         <div className="gridCellContent">
-          <div className="topbar">
-            {/* <div className="dots">
+          {/* <div className="topbar">
+            <div className="dots">
               <div></div>
               <div></div>
               <div></div>
-            </div> */}
-          </div>
+            </div>
+          </div> */}
           <div className="name">
             <div>{key.name.match(/[^.]+$/)}</div>
           </div>
