@@ -78,6 +78,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         let cre = JSON.parse(cid).creator;
         let own = JSON.parse(cid).owner;
 
+
         setData(cid);
         setImage(img);
         setDescription(desc);
@@ -100,22 +101,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     setNftVisible(false);
   };
 
-  // const historyRow = (name: string, number: string, days: string, img: any) => {
-  //   return (
-  //     <div className="historyRow">
-  //       <div className="historyLeft">
-  //         <img src={img} alt="" className="avatar" />
-  //         <div className="historyText">
-  //           <span className="embolden">{name}</span> placed a bid for{' '}
-  //           <span className="embolden">{number} WILD</span>
-  //         </div>
-  //       </div>
-  //       {/* <div className="historyRight">
-  //         {days} days ago <span className="viewTx">[view tx]</span>
-  //       </div> */}
-  //     </div>
-  //   );
-  // };
 
   if (name.isNothing()) return null;
   return (
@@ -204,8 +189,9 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         closable={false}
         centered
         footer={null}
+        style={{width: '600px !important'}}
       >
-        <img src={image} />
+        <Image src={image} />
       </Modal>
       <Modal
         visible={enlist}

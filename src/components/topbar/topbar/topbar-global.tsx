@@ -74,7 +74,6 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
 
   // Wallet modal handling
   const [isWalletVisible, setWalletVisible] = useState<any>(active);
-  console.log(isWalletVisible)
   const showWallet = useCallback(() => {
     setWalletVisible(true);
   }, []);

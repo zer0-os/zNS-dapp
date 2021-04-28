@@ -118,7 +118,6 @@ body {
 	background-size: cover;
 
 	position: relative;
-	min-height: 100vh;
 	height: auto;
 	margin: 0 auto;
 	min-width: 1247px;
@@ -300,6 +299,7 @@ a.alt-link:hover {
 
 .ant-modal-content {
 	background: none;
+	box-shadow: none;
 }
 
 .ant-modal-wrap {
@@ -311,7 +311,7 @@ a.alt-link:hover {
 
 .ant-modal {
 	/* padding-bottom: 128px; */
-	width: auto !important;
+	/* width: auto !important; */
 }
 
 .ant-modal-body > img {

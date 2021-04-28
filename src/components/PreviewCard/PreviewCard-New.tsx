@@ -165,7 +165,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         onCancel={closePreview}
         closable={false}
         footer={null}
-        style={{ width: 500 }}
+        style={{maxWidth: '600px !important', maxHeight: '600px !important'}}
       >
         <img src={image} />
       </Modal>

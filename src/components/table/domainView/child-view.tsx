@@ -135,8 +135,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain, isGridView, toggleGri
     );
   };
 
-  if (name.isNothing()) return <div>Kurt Kobain</div>;
-  console.log(name.value.metadata.slice(21) + 'data');
+  if (name.isNothing()) return <div style={{backgroundColor: 'black'}}></div>;
 
   return (
     <div className="pageContainerPositionFix">
