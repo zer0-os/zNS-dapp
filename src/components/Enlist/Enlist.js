@@ -5,6 +5,7 @@ import ToggleSection from '../ToggleSection/ToggleSection.js';
 import TextInput from '../TextInput/TextInput.js';
 import FutureButton from '../Buttons/FutureButton/FutureButton.js';
 import { Modal } from 'antd';
+import Image from '../Image/Image'
 
 import styles from './Enlist.module.css';
 
@@ -104,11 +105,16 @@ const Enlist = (props) => {
               {Number((bidUsd * wildToUsd).toFixed(2)).toLocaleString()} WILD
             </span>
           </div>
+          
           <div
             className={`${styles.NFT} border-rounded`}
             onClick={openPreview}
-            style={{ backgroundImage: `url(${props.props.image})` }}
-          ></div>
+          >
+          <Image 
+            style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit'}}
+            src={props.props.image} 
+          />
+          </div>
         </div>
       </form>
       <FutureButton
@@ -131,7 +137,7 @@ const Enlist = (props) => {
         footer={null}
         style={{maxWidth: '600px !important', maxHeight: '600px !important'}}
       >
-        <img src={props.props.image} />
+        <Image src={props.props.image} />
       </Modal>
     </div>
   );
