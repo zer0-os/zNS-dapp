@@ -56,7 +56,6 @@ export const DOMAIN_QUERY = gql`
       subdomains {
         id
         name
-        metadata
       }
       owner {
         id
