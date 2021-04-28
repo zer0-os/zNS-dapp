@@ -57,7 +57,13 @@
 .endpoint {
 	margin-top: 16px;
 
-	color: white;
+	color: var(--color-accent-1);
+	font-weight: 700;
+}
+
+.endpoint:hover {
+	color: var(--color-accent-1);
+	text-shadow: var(--glow-text-blue-big)
 }
 
 /* DP section */

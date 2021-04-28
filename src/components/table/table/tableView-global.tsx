@@ -13,7 +13,6 @@ import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
 import Grid from './grid-view';
 import './css/subdomains.scss';
-import Image from '../mockup/image';
 import { any } from 'zod';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -24,12 +23,19 @@ import kitty from '../../css/img/kitty.jpeg';
 import cybercar from '../../css/img/cybercar.jpeg';
 import realestate from '../../css/img/realestate.jpeg';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
+import Image from '../../Image/Image'
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 import { err } from 'true-myth/result';
 
-const images = [wilderavatar, neo, kitty, cybercar, realestate];
-const randomImage = () => images[Math.floor(Math.random() * images.length)];
+// IPFS Config
+const ipfsLib = require('ipfs-api');
+const ipfsClient = new ipfsLib({
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+});
+
 //
 // Please Read
 // Much data availability of the table has changed throughout versions of this app, and the MVP version removes essentially all of the data to be replaced with the Last Bid, No Bids, and Last Sales Price field. In lieu of deleting these fields, which may retain their usefulness at some point in the future, I have commented them out, so that they may be used when they prove useful. If you still have your code editor set to horizontal scrolling, than all I can say is git gud.
@@ -39,13 +45,6 @@ interface Data {
   '#': string;
   image: any;
   network: any;
-  // token: string;
-  // '24Hr': any;
-  // '7d': any;
-  // marketcap: string;
-  // volume: string;
-  // supply: string;
-  // last7days: any;
   lastbid: string;
   nobids: string;
   lastsale: string;
@@ -66,38 +65,28 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
+  const subdomains = !name.isNothing() ? name.value.subdomains : []
   const history = useHistory();
-  const [image, setImage] = useState('');
-  const [descript, setDescription] = useState(null);
+  const [imageCount, setImageCount] = useState(0)
 
-  const openNft = (nft: string) => {};
-
+  //- Getting image data for all subdomains
   useEffect(() => {
-    // if statement for "base case" state varible if not set then set
-    if (descript === null) {
-      const ipfsreq = async () => {
-        const ipfsLib = require('ipfs-api');
-        const ipfsClient = new ipfsLib({
-          host: 'ipfs.infura.io',
-          port: 5001,
-          protocol: 'https',
-        });
-
-        // let domain = name as any;
-        if (name.isNothing()) return;
-        let _hash = await ipfsClient
-          .cat(name.value.metadata)
-          .catch((err: any) => console.log);
-
-        let img = JSON.parse(_hash).image;
-        let desc = JSON.parse(_hash).description;
-        setImage(img);
-        setDescription(desc);
-      };
-      ipfsreq();
-    }
-    console.log('useEffect');
-  }, [name, image]);
+    const ipfsreq = async () => {
+    if (name.isNothing() || !subdomains.length) return;
+      // Get each subdomain and pull its metadata from IPFS
+      for(var i = 0; i < subdomains.length; i++) {
+        const sub = subdomains[i]
+        if(!sub.image) {
+          const d = JSON.parse(await ipfsClient.cat(sub.metadata.slice(21)))
+          sub.image = d.image
+          sub.nftName = d.name
+          sub.nftDescription = d.description
+          setImageCount(i + 1)
+        }
+      }
+    };
+    ipfsreq();
+  }, [name]);
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -189,7 +178,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             image: (
               <div className="neo-demo">
-                <img src={name.value.metadata} alt="" className="neo2" />
+                <Image src={key.image ? key.image : ''} alt="" className="neo2" />
               </div>
             ),
             network: key.name,
@@ -204,9 +193,18 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             nobids: '',
             lastsale: '',
             timestamp: '',
-            trade: '',
+            trade: (
+              <></>
+              // <FutureButton
+              //   onClick={() => openNft(key.name)}
+              //   glow
+              //   style={{ height: 36, width: 118, borderRadius: 18 }}
+              // >
+              //   ENLIST
+              // </FutureButton>
+            ),
           })),
-    [name],
+    [name, imageCount, subdomains],
   );
 
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);

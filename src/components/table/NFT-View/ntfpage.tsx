@@ -18,6 +18,7 @@ import wilder from './img/mockusers/wilder.png';
 
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../../Enlist/Enlist';
+import Image from '../../Image/Image';
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
@@ -72,7 +73,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         if (name.isNothing()) return;
         let cid = await ipfsClient.cat(name.value.metadata.slice(21));
 
-        console.log(cid + '');
         let desc = JSON.parse(cid).description;
         let img = JSON.parse(cid).image;
         let cre = JSON.parse(cid).creator;
@@ -86,7 +86,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       };
       ipfsreq();
     }
-    console.log('useEffect');
   }, [descript, name, image]);
 
   const showNft = () => {
@@ -101,23 +100,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     setNftVisible(false);
   };
 
-  // const historyRow = (name: string, number: string, days: string, img: any) => {
-  //   return (
-  //     <div className="historyRow">
-  //       <div className="historyLeft">
-  //         <img src={img} alt="" className="avatar" />
-  //         <div className="historyText">
-  //           <span className="embolden">{name}</span> placed a bid for{' '}
-  //           <span className="embolden">{number} WILD</span>
-  //         </div>
-  //       </div>
-  //       {/* <div className="historyRight">
-  //         {days} days ago <span className="viewTx">[view tx]</span>
-  //       </div> */}
-  //     </div>
-  //   );
-  // };
-
   if (name.isNothing()) return null;
   return (
     <div className="nftView">
@@ -128,7 +110,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         className="showcase border-primary"
       >
         <div className="showcaseIMG">
-          <img
+          <Image
             onClick={openPreview}
             style={{ height: '100%', width: '100%' }}
             src={image}
@@ -177,9 +159,6 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <div className="address border-primary">
             <div className="quadHeader">
               <span>ETH ADDRESS</span>
-              <span className="infoButton">
-                <span className="infoMark">?</span>
-              </span>
             </div>
             <div className="quadText">
               {account && account.length
@@ -196,8 +175,9 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         closable={false}
         centered
         footer={null}
+        style={{ width: '600px !important' }}
       >
-        <img src={image} />
+        <Image src={image} />
       </Modal>
       <Modal
         visible={enlist}

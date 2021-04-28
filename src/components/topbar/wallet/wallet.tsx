@@ -18,20 +18,43 @@ import {
   walletconnect,
   walletlink,
   fortmatic,
-  // magic,
   portis,
   network,
-  // torus,
 } from '../../../lib/connectors';
 import { Spinner } from '../../spinner';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 import './wallet.scss';
 import usePrevious from '../../../lib/hooks/usePrevious';
-// import { METAMASK } from 'web3modal/dist/providers/injected';
 
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js'
 
-// import ConnectToWallet from '../../ConnectToWallet/ConnectToWallet.js'
+// Wallet images
+import coinbaseIcon from './assets/coinbasewallet.svg'
+import fortmaticIcon from './assets/fortmatic.svg'
+import metamaskIcon from './assets/metamask.svg'
+import networkIcon from './assets/network.svg'
+import portisIcon from './assets/portis.svg'
+import walletConnectIcon from './assets/walletconnect.svg'
+import walletLinkIcon from './assets/walletlink.svg'
+
+const imgFromName = (name: string) => {
+  switch (name.toLowerCase()) {
+    case 'coinbasewallet':
+      return coinbaseIcon
+    case 'fortmatic':
+      return fortmaticIcon
+    case 'metamask':
+      return metamaskIcon
+    case 'network':
+      return networkIcon
+    case 'portis':
+      return portisIcon
+    case 'walletconnect':
+      return walletConnectIcon
+    case 'walletlink':
+      return walletLinkIcon
+  }
+}
 
 enum ConnectorNames {
   MetaMask = 'MetaMask',
@@ -85,135 +108,6 @@ function getErrorMessage(error: Error) {
   }
 }
 
-function ChainId() {
-  const { chainId } = useWeb3React();
-
-  return (
-    <>
-      <span>Chain Id</span>
-      <span role="img" aria-label="chain"></span>
-      <span>{chainId ?? ''}</span>
-    </>
-  );
-}
-
-function BlockNumber() {
-  const { chainId, library } = useWeb3React();
-
-  const [blockNumber, setBlockNumber] = React.useState<number | null>();
-  React.useEffect((): any => {
-    if (!!library) {
-      let stale = false;
-
-      library
-        .getBlockNumber()
-        .then((blockNumber: number) => {
-          if (!stale) {
-            setBlockNumber(blockNumber);
-          }
-        })
-        .catch(() => {
-          if (!stale) {
-            setBlockNumber(null);
-          }
-        });
-
-      const updateBlockNumber = (blockNumber: number) => {
-        setBlockNumber(blockNumber);
-      };
-      library.on('block', updateBlockNumber);
-
-      return () => {
-        stale = true;
-        library.removeListener('block', updateBlockNumber);
-        setBlockNumber(undefined);
-      };
-    }
-  }, [library, chainId]); // ensures refresh if referential identity of library doesn't change across chainIds
-
-  return (
-    <>
-      <span>Block Number</span>
-      <span role="img" aria-label="numbers"></span>
-      <span>{blockNumber === null ? 'Error' : blockNumber ?? ''}</span>
-    </>
-  );
-}
-
-function Account() {
-  const { account } = useWeb3React();
-
-  return (
-    <>
-      <span>Account</span>
-      <span role="img" aria-label="robot"></span>
-      <span>
-        {account === null
-          ? '-'
-          : account
-          ? `${account.substring(0, 6)}...${account.substring(
-              account.length - 4,
-            )}`
-          : ''}
-      </span>
-    </>
-  );
-}
-
-function Balance() {
-  const { account, library, chainId } = useWeb3React();
-
-  const [balance, setBalance] = React.useState<any>();
-  React.useEffect((): any => {
-    if (!!account && !!library) {
-      let stale = false;
-
-      library
-        .getBalance(account)
-        .then((balance: any) => {
-          if (!stale) {
-            setBalance(balance);
-          }
-        })
-        .catch(() => {
-          if (!stale) {
-            setBalance(null);
-          }
-        });
-
-      return () => {
-        stale = true;
-        setBalance(undefined);
-      };
-    }
-  }, [account, library, chainId]); // ensures refresh if referential identity of library doesn't change across chainIds
-
-  return (
-    <>
-      <span>Balance</span>
-
-      <span>
-        {balance === null ? 'Error' : balance ? `Ξ${formatEther(balance)}` : ''}
-      </span>
-    </>
-  );
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function Header() {
-  const { active, error } = useWeb3React();
-
-  return (
-    <>
-      <h4>{active ? '🟢' : error ? '🔴' : '🟠'}</h4>
-
-      <ChainId />
-      <BlockNumber />
-      <Account />
-      <Balance />
-    </>
-  );
-}
 
 export default function Wallet() {
   const context = useWeb3React<Web3Provider>();
@@ -227,18 +121,6 @@ export default function Wallet() {
     active,
     error,
   } = context;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const showWallet = () => {
-    // setWalletVisible(true);
-  };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const walletOk = () => {
-    // setWalletVisible(false);
-  };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const walletCancel = () => {
-    // setWalletVisible(false);
-  };
 
   // handle logic to recognize the connector currently being activated
   const [activatingConnector, setActivatingConnector] = React.useState<any>();
@@ -248,23 +130,6 @@ export default function Wallet() {
   const activePrevious = usePrevious(active);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const connectorPrevious = usePrevious(connector);
-  // React.useEffect(() => {
-  //   if (
-  //     { isWalletVisible } &&
-  //     ((active && !activePrevious) ||
-  //       (connector && connector !== connectorPrevious && !error))
-  //   ) {
-  //     setWalletVisible(false);
-  //   }
-  // }, [
-  //   setWalletVisible,
-  //   active,
-  //   error,
-  //   connector,
-  //   isWalletVisible,
-  //   activePrevious,
-  //   connectorPrevious,
-  // ]);
 
   React.useEffect(() => {
     if (activatingConnector && activatingConnector === connector) {
@@ -317,12 +182,12 @@ export default function Wallet() {
                     />
                   )} */}
                   <div className="name-con">{name}</div>
-                  {/* <div
+                  <div
                     style={{
-                      backgroundImage: `url("assets/wallets/${name.toLowerCase()}.png`,
+                      backgroundImage: `url(${imgFromName(name)})`,
                     }}
                     className="circle"
-                  ></div> */}
+                  ></div>
                 </button>
               </div>
             );

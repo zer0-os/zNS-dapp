@@ -10,6 +10,7 @@ import avatar from '../../css/img/wilderavatar.png';
 import { Indexed } from '@ethersproject/abi';
 import { inflate } from 'node:zlib';
 
+import Image from '../../Image/Image'
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
 interface GridProps {
@@ -34,40 +35,34 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
 
   const [image, setImage] = useState('');
   const [descript, setDescription] = useState(null);
+  const [imageCount, setImageCount] = useState(0)
 
-  // useEffect(() => {
-  //   // if statement for "base case" state varible if not set then set
-  //   if (descript === null) {
-  //     const ipfsreq = async () => {
-  //       const ipfsLib = require('ipfs-api');
-  //       const ipfsClient = new ipfsLib({
-  //         host: 'ipfs.infura.io',
-  //         port: 5001,
-  //         protocol: 'https',
-  //       });
+  useEffect(() => {
+    // if statement for "base case" state varible if not set then set
+    if (descript === null) {
+      const ipfsreq = async () => {
+        const ipfsLib = require('ipfs-api');
+        const ipfsClient = new ipfsLib({
+          host: 'ipfs.infura.io',
+          port: 5001,
+          protocol: 'https',
+        });
 
-  //       // let domain = name as any;
-  //       if (name.isNothing()) return;
-  //       let cid = await ipfsClient.cat(name.value.metadata.slice(21));
+        // let domain = name as any;
+        if (name.isNothing() || !name.value.subdomains.length) return;
 
-  //       console.log(cid + '');
-  //       let desc = JSON.parse(cid).description;
-  //       let img = JSON.parse(cid).image;
-
-  //       setImage(img);
-  //       setDescription(desc);
-  //     };
-  //     ipfsreq();
-  //   }
-  //   console.log('useEffect');
-  // }, [descript, name, image]);
-  // let images: any = [
-  //   <img src={zero} alt="" />,
-  //   <img src={neo} alt="" className="" />,
-  //   <img src={kitty} alt="" className="" />,
-  //   <img src={cybercar} alt="" className="" />,
-  //   <img src={realestate} alt="" className="" />,
-  // ];
+        // Go through each subdomain
+        for(var i = 0; i < name.value.subdomains.length; i++) {
+          const sub = name.value.subdomains[i]
+          const _hash = await ipfsClient.cat(sub.metadata.slice(21))
+          sub.image = JSON.parse(_hash).image
+          setImageCount(i + 1)
+        }
+      };
+      ipfsreq();
+    }
+  }, [name]);
+  
 
   //
   // The following functions generate random numbers for mock data display
@@ -101,22 +96,23 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
   //
   //
 
-  const gridCell = (cellInput: any, i: any) => {
+  const gridCell = (key: any, i: any) => {
     return (
-      <div onClick={() => handleCellClick(cellInput.name)} className="gridCell">
+      <div onClick={() => handleCellClick(key.name)} className="gridCell">
         <div className="gridCellContent">
-          <div className="topbar">
-            {/* <div className="dots">
+          {/* <div className="topbar">
+            <div className="dots">
               <div></div>
               <div></div>
               <div></div>
-            </div> */}
-          </div>
+            </div>
+          </div> */}
           <div className="name">
-            <div>{cellInput.name.match(/[^.]+$/)}</div>
+            <div>{key.name.match(/[^.]+$/)}</div>
           </div>
           <div className="image">
-            <img src={image} />
+            
+            <Image src={key.image ? key.image : ''} />
           </div>
           {/* <div className="text">
             <div>Last Traded Price</div>
@@ -136,7 +132,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
         : name.value.subdomains.map((key: any, i: number) => {
             return gridCell(key, i);
           }),
-    [name],
+    [name, imageCount],
   );
   if (name.isNothing()) return null;
   return (
