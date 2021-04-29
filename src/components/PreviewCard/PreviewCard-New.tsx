@@ -16,8 +16,9 @@ const templateNFT = 'assets/nft/redpill.png';
 interface CardProps {
   props: any;
   name: string;
+  onClickLink: () => void;
 }
-const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
+const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
   const [enlistOpen, setEnlistOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [descript, setDescription] = useState(null);
@@ -114,11 +115,9 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
           <h5 className={'glow-text-white'}>{name.value.name}</h5>
 
           {routes.map(([key, path], i) => (
-            <a key={key} className={styles.Domain}>
-              <Link className="route-nav-text-sub" to={path}>
+            <a key={key} className={styles.Domain} onClick={onClickLink}>
                 {key}
                 {i < routes.length - 1 && '.'}
-              </Link>
             </a>
           ))}
         </div>
