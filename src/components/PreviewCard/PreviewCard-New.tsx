@@ -2,6 +2,7 @@ import React, { useState, FC, useEffect } from 'react';
 
 import FutureButton from '../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../Enlist/Enlist';
+import Image from '../Image/Image'
 import { Modal } from 'antd';
 import { any } from 'zod';
 
@@ -106,7 +107,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         onClick={preview}
         style={{ backgroundImage: `url({cid})` }}
       >
-        <img src={image} />
+        <Image src={image} />
       </div>
       <div className={styles.Body}>
         <div>
@@ -167,7 +168,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         footer={null}
         style={{maxWidth: '600px !important', maxHeight: '600px !important'}}
       >
-        <img src={image} />
+        <Image src={image} />
       </Modal>
     </div>
   );
