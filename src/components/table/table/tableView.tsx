@@ -181,7 +181,6 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             asset: (
               <div className="neo-demo">
-                {console.log(key)}
                 <Image src={key.image} alt="" className="neo2" />
               </div>
             ),
