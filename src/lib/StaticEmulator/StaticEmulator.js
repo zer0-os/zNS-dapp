@@ -14,9 +14,7 @@ import img8 from './assets/cybercar.jpeg'
 const images = [ img1, img2, img3, img4, img5, img6, img7, img8 ]
 
 const StaticEmulator = (id) => {
-    console.log(id)
     const randIndex = Math.round(randomIndexFromSeed(id))
-    console.log(randIndex)
     return images[randIndex % images.length]
 }
 
