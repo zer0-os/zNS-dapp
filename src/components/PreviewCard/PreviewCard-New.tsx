@@ -156,7 +156,13 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
         footer={null}
         closable={false}
       >
-        <Enlist name={name.value.name} props={{ close: closeEnlist }} />
+        <Enlist
+          name={location.pathname}
+          props={{
+            image: image,
+            close: closeEnlist,
+          }}
+        />
       </Modal>
 
       <Modal
