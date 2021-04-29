@@ -2,7 +2,7 @@ import React, { useState, FC, useEffect } from 'react';
 
 import FutureButton from '../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../Enlist/Enlist';
-import Image from '../Image/Image'
+import Image from '../Image/Image';
 import { Modal } from 'antd';
 import { any } from 'zod';
 
@@ -90,7 +90,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
       ipfsreq();
     }
     console.log('useEffect');
-  }, [descript, name]);
+  }, [descript, name, image]);
 
   // const descrii = () => {
   //   let desc = ipfsreq();
@@ -116,8 +116,8 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
 
           {routes.map(([key, path], i) => (
             <a key={key} className={styles.Domain} onClick={onClickLink}>
-                {key}
-                {i < routes.length - 1 && '.'}
+              {key}
+              {i < routes.length - 1 && '.'}
             </a>
           ))}
         </div>
@@ -165,7 +165,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
         onCancel={closePreview}
         closable={false}
         footer={null}
-        style={{maxWidth: '600px !important', maxHeight: '600px !important'}}
+        style={{ maxWidth: '600px !important', maxHeight: '600px !important' }}
       >
         <Image src={image} />
       </Modal>

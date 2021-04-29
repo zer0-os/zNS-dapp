@@ -5,7 +5,7 @@ import ToggleSection from '../ToggleSection/ToggleSection.js';
 import TextInput from '../TextInput/TextInput.js';
 import FutureButton from '../Buttons/FutureButton/FutureButton.js';
 import { Modal } from 'antd';
-import Image from '../Image/Image'
+import Image from '../Image/Image';
 
 import styles from './Enlist.module.css';
 
@@ -23,13 +23,13 @@ const Enlist = (props) => {
   const [reasonForPurchase, setReasonForPurchase] = useState('');
   const [bidUsd, setBidUsd] = useState(0);
 
-  const [ previewOpen, setPreviewOpen ] = useState(false)
+  const [previewOpen, setPreviewOpen] = useState(false);
   const openPreview = () => {
     setPreviewOpen(true);
-  }
+  };
   const closePreview = () => {
     setPreviewOpen(false);
-  }
+  };
 
   emailjs.init(process.env.REACT_APP_EMAIL);
 
@@ -47,14 +47,10 @@ const Enlist = (props) => {
 
   function sendEmail(e) {
     emailjs
-      .send(
-        'service_ht5ak0n',
-        'template_t5hifjr',
-        {
-          emailAddress,
-          reasonForPurchase,
-        }
-      )
+      .send('service_ht5ak0n', 'template_t5hifjr', {
+        emailAddress,
+        reasonForPurchase,
+      })
       .then(
         (result) => {
           console.log(result.text);
@@ -64,7 +60,7 @@ const Enlist = (props) => {
         },
       );
 
-      props.props.close();
+    props.props.close();
   }
 
   return (
@@ -82,38 +78,30 @@ const Enlist = (props) => {
         <div style={{ display: 'flex' }}>
           <div className={styles.Inputs}>
             <TextInput
-              name={"emailAddress"}
+              name={'emailAddress'}
               placeholder={'Email Address'}
               style={{ height: 48 }}
               onChange={(text) => setEmailAddress(text)}
             />
             <TextInput
-              name={"reasonForPurchase"}
+              name={'reasonForPurchase'}
               placeholder={'Reason for purchase'}
               multiline
               style={{ height: 79 }}
               onChange={(text) => setReasonForPurchase(text)}
             />
-            <TextInput
-              name={"bid"}
-              type="number"
-              placeholder={'Bid (USD)'}
-              style={{ height: 48 }}
-              onChange={(text) => setBidUsd(text == '' ? 0 : parseFloat(text))}
-            />
-            <span className={styles.Bid}>
-              {Number((bidUsd * wildToUsd).toFixed(2)).toLocaleString()} WILD
-            </span>
           </div>
-          
-          <div
-            className={`${styles.NFT} border-rounded`}
-            onClick={openPreview}
-          >
-          <Image 
-            style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'inherit'}}
-            src={props.props.image} 
-          />
+
+          <div className={`${styles.NFT} border-rounded`} onClick={openPreview}>
+            <Image
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: 'inherit',
+              }}
+              src={props.props.image}
+            />
           </div>
         </div>
       </form>
@@ -135,7 +123,7 @@ const Enlist = (props) => {
         onCancel={closePreview}
         closable={false}
         footer={null}
-        style={{maxWidth: '600px !important', maxHeight: '600px !important'}}
+        style={{ maxWidth: '600px !important', maxHeight: '600px !important' }}
       >
         <Image src={props.props.image} />
       </Modal>
