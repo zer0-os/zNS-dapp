@@ -158,7 +158,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         <div className="quad">
           <div className="address border-primary">
             <div className="quadHeader">
-              <span>ETH ADDRESS</span>
+              <span>YOUR ETH ADDRESS</span>
             </div>
             <div className="quadText">
               {account && account.length

@@ -2,6 +2,7 @@ import React, { useState, FC, useEffect } from 'react';
 
 import FutureButton from '../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../Enlist/Enlist';
+import Image from '../Image/Image';
 import { Modal } from 'antd';
 import { any } from 'zod';
 
@@ -15,8 +16,9 @@ const templateNFT = 'assets/nft/redpill.png';
 interface CardProps {
   props: any;
   name: string;
+  onClickLink: () => void;
 }
-const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
+const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
   const [enlistOpen, setEnlistOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [descript, setDescription] = useState(null);
@@ -88,7 +90,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
       ipfsreq();
     }
     console.log('useEffect');
-  }, [descript, name]);
+  }, [descript, name, image]);
 
   // const descrii = () => {
   //   let desc = ipfsreq();
@@ -106,18 +108,16 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         onClick={preview}
         style={{ backgroundImage: `url({cid})` }}
       >
-        <img src={image} />
+        <Image src={image} />
       </div>
       <div className={styles.Body}>
         <div>
           <h5 className={'glow-text-white'}>{name.value.name}</h5>
 
           {routes.map(([key, path], i) => (
-            <a key={key} className={styles.Domain}>
-              <Link className="route-nav-text-sub" to={path}>
-                {key}
-                {i < routes.length - 1 && '.'}
-              </Link>
+            <a key={key} className={styles.Domain} onClick={onClickLink}>
+              {key}
+              {i < routes.length - 1 && '.'}
             </a>
           ))}
         </div>
@@ -165,9 +165,9 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain }) => {
         onCancel={closePreview}
         closable={false}
         footer={null}
-        style={{maxWidth: '600px !important', maxHeight: '600px !important'}}
+        style={{ maxWidth: '600px !important', maxHeight: '600px !important' }}
       >
-        <img src={image} />
+        <Image src={image} />
       </Modal>
     </div>
   );

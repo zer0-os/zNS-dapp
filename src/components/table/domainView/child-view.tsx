@@ -23,7 +23,7 @@ import { useDomainCache } from '../../../lib/useDomainCache';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 
-import PreviewCard from '../../PreviewCard/PreviewCard.js';
+import PreviewCard from '../../PreviewCard/PreviewCard-New';
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
 const previewData = {
@@ -48,7 +48,11 @@ interface SubdomainsProps {
   toggleGridView: (arg0: boolean) => void;
 }
 
-const ChildView: FC<SubdomainsProps> = ({ domain: _domain, isGridView, toggleGridView }) => {
+const ChildView: FC<SubdomainsProps> = ({
+  domain: _domain,
+  isGridView,
+  toggleGridView,
+}) => {
   // const context = useWeb3React<Web3Provider>();
   const location = useLocation();
   const { useDomain } = useDomainCache();
@@ -62,6 +66,7 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain, isGridView, toggleGri
   const [descriptions, setDescription] = useState(null);
   const [names, setName] = useState('');
   const [Image, setImage] = useState('');
+  const [shouldViewNftPage, setShouldViewNftPage] = useState(false);
   // const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
   const routes = _.transform(
@@ -74,6 +79,12 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain, isGridView, toggleGri
       acc.push([val, next]);
     },
   );
+
+  const onPreviewLink = () => {
+    setShouldViewNftPage(true);
+  };
+
+  useEffect(() => setShouldViewNftPage(false), [name]);
 
   // const ipfsreq = async () => {
   //   const ipfsLib = require('ipfs-api');
@@ -135,21 +146,16 @@ const ChildView: FC<SubdomainsProps> = ({ domain: _domain, isGridView, toggleGri
     );
   };
 
-  if (name.isNothing()) return <div style={{backgroundColor: 'black'}}></div>;
+  if (name.isNothing()) return <div style={{ backgroundColor: 'black' }}></div>;
 
   return (
     <div className="pageContainerPositionFix">
-      {name.value.subdomains.length !== 0 ? (
+      {name.value.subdomains.length && !shouldViewNftPage ? (
         <div>
           <PreviewCard
             name={name.value.name}
-            domain={'0://' + name.value.name}
-            creator={previewData.creator}
-            owner={previewData.owner}
-            description={'https://dweb.link/ipfs/' + name.value.metadata}
-            data={previewData}
-            img={StaticEmulator(name.value.name)}
-            style={{ marginBottom: 24 }}
+            props={''}
+            onClickLink={onPreviewLink}
           />
 
           {/* <div className="metricsBar">

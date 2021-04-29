@@ -24,7 +24,7 @@ interface TopbarProps {
   name: string;
 }
 
-var lastY = 0 // Just a global variable to stash last scroll position
+var lastY = 0; // Just a global variable to stash last scroll position
 
 const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
   const context = useWeb3React<Web3Provider>();
@@ -35,16 +35,16 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
   const location = useLocation();
 
   // Hide header on scroll
-  const [hideHeader, setHideHeader] = useState(false)
+  const [hideHeader, setHideHeader] = useState(false);
   const handleScroll = () => {
-    const hide = window.pageYOffset > 100 && window.pageYOffset > lastY
-    lastY = window.pageYOffset
-    setHideHeader(hide)
-  }
+    const hide = window.pageYOffset > 100 && window.pageYOffset > lastY;
+    lastY = window.pageYOffset;
+    setHideHeader(hide);
+  };
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [ hideHeader, handleScroll ])
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hideHeader, handleScroll]);
 
   const routes = _.transform(
     location.pathname
@@ -60,25 +60,25 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
   const [selected, setSelected] = useState('networks');
 
   // Profile modal handling
-  const [ isProfileVisible, setProfileVisible ] = useState(false)
-  const openProfile = () => setProfileVisible(true)
-  const closeProfile = () => setProfileVisible(false)
+  const [isProfileVisible, setProfileVisible] = useState(false);
+  const openProfile = () => setProfileVisible(true);
+  const closeProfile = () => setProfileVisible(false);
 
   // Mint modal handling
   const showMint = useCallback(() => {
     setMintVisible(true);
   }, []);
   const [isMintVisible, setMintVisible] = useState(false);
-  const mintOk = () => setMintVisible(false)
-  const mintCancel = () => setMintVisible(false)
+  const mintOk = () => setMintVisible(false);
+  const mintCancel = () => setMintVisible(false);
 
   // Wallet modal handling
   const [isWalletVisible, setWalletVisible] = useState<any>(active);
   const showWallet = useCallback(() => {
     setWalletVisible(true);
   }, []);
-  const walletOk = () => setWalletVisible(false)
-  const walletCancel = () => setWalletVisible(false)
+  const walletOk = () => setWalletVisible(false);
+  const walletCancel = () => setWalletVisible(false);
   const activePrevious = usePrevious(active);
   const connectorPrevious = usePrevious(connector);
   useEffect(() => {
@@ -104,17 +104,15 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
   let mintNFTEnabled = false;
   try {
     if (account) {
-      mintNFTEnabled = (account.toLowerCase() == name.value.owner.id.toLowerCase());
+      mintNFTEnabled =
+        account.toLowerCase() == name.value.owner.id.toLowerCase();
     }
   } catch (e) {
     console.log(`mintNFTEnabled error: ${e}`);
   }
 
-
   return (
-    <div
-      className={`topbarContainerNeo`}
-    >
+    <div className={`topbarContainerNeo`}>
       <div className={`topHalfContainer ${hideHeader ? 'hidden' : ''}`}>
         <div className="topHalf border-primary">
           <div className="topLeft">
@@ -135,17 +133,19 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
           </div>
           <div className="topRight">
             {!active ? (
-              <FutureButton glow onClick={showWallet}>Connect Wallet</FutureButton>
+              <FutureButton glow onClick={showWallet}>
+                Connect Wallet
+              </FutureButton>
             ) : (
               <>
-                {mintNFTEnabled ? 
-                <FutureButton glow onClick={showMint}>
-                  Mint New NFT
-                </FutureButton> : null }
+                {mintNFTEnabled ? (
+                  <FutureButton glow onClick={showMint}>
+                    Mint New NFT
+                  </FutureButton>
+                ) : null}
                 <div onClick={openProfile} className="profile-btn">
                   <div className="profile-btn">
-                    <Profile
-                    />
+                    <Profile />
                   </div>
                 </div>
                 <div className="dotMenu" onClick={showWallet}>
@@ -193,7 +193,10 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
         footer={null}
         width={640}
       >
-        <MintNewNFT name={''} props={{onMint: mintCancel, onCancel: mintCancel}}></MintNewNFT>
+        <MintNewNFT
+          name={name.value.name}
+          props={{ onMint: mintCancel, onCancel: mintCancel }}
+        ></MintNewNFT>
       </Modal>
 
       <Modal
@@ -201,11 +204,10 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
         onCancel={closeProfile}
         closable={false}
         footer={null}
-        style={{top: 27}}
+        style={{ top: 27 }}
         width={1320}
       >
-        <ProfileNew
-        />
+        <ProfileNew />
       </Modal>
 
       <Modal

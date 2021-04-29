@@ -29,6 +29,15 @@
     cursor: pointer;
 
     transition: transform var(--animation-time-medium) ease-in-out;
+
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.Asset > img {
+    object-fit: contain;
+    width: 100%;
 }
 
 .Asset:hover {

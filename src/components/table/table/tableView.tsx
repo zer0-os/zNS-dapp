@@ -9,7 +9,6 @@ import marketimg from '../css/img/chart.svg';
 import Grid from './grid-view';
 import { Modal } from 'antd';
 import './css/subdomains.scss';
-import Image from '../mockup/image';
 import '../mockup/image.scss';
 import graph1 from './img/mockgraphs/graph1.png';
 import graph2 from './img/mockgraphs/graph2.png';
@@ -18,8 +17,17 @@ import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../../Enlist/Enlist';
+import Image from '../../Image/Image'
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
+
+// IPFS Config
+const ipfsLib = require('ipfs-api');
+const ipfsClient = new ipfsLib({
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+});
 
 //
 // Please Read
@@ -58,35 +66,29 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const history = useHistory();
   const [image, setImage] = useState('');
   const [descript, setDescription] = useState(null);
-
+  const subdomains = !name.isNothing() ? name.value.subdomains : []
+  const [imageCount, setImageCount] = useState(0)
   const [enlist, setEnlist] = useState('');
   const closeEnlist = () => setEnlist('');
-  console.log(enlist);
 
+  //- Getting image data for all subdomains
   useEffect(() => {
-    // if statement for "base case" state varible if not set then set
-    if (descript === null) {
-      const ipfsreq = async () => {
-        const ipfsLib = require('ipfs-api');
-        const ipfsClient = new ipfsLib({
-          host: 'ipfs.infura.io',
-          port: 5001,
-          protocol: 'https',
-        });
-
-        // let domain = name as any;
-        if (name.isNothing()) return;
-        let cid = await ipfsClient.cat(name.value.metadata.slice(21));
-
-        let img = JSON.parse(cid).image;
-        let desc = JSON.parse(cid).description;
-        setImage(img);
-        setDescription(desc);
-      };
-      ipfsreq();
-    }
-    console.log('useEffect');
-  }, [name, image]);
+    const ipfsreq = async () => {
+    if (name.isNothing() || !subdomains.length) return;
+      // Get each subdomain and pull its metadata from IPFS
+      for(var i = 0; i < subdomains.length; i++) {
+        const sub = subdomains[i]
+        if(!sub.image) {
+          const d = JSON.parse(await ipfsClient.cat(sub.metadata.slice(21)))
+          sub.image = d.image
+          sub.nftName = d.name
+          sub.nftDescription = d.description
+          setImageCount(i + 1)
+        }
+      }
+    };
+    ipfsreq();
+  }, [name]);;
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -179,7 +181,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             asset: (
               <div className="neo-demo">
-                <img src={image} alt="" className="neo2" />
+                <Image src={key.image} alt="" className="neo2" />
               </div>
             ),
             name: key.name,
@@ -204,7 +206,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             ),
           })),
 
-    [name],
+    [name, imageCount],
   );
 
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);

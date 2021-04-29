@@ -23,7 +23,7 @@ import kitty from '../../css/img/kitty.jpeg';
 import cybercar from '../../css/img/cybercar.jpeg';
 import realestate from '../../css/img/realestate.jpeg';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
-import Image from '../../Image/Image'
+import Image from '../../Image/Image';
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 import { err } from 'true-myth/result';
@@ -65,28 +65,28 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
-  const subdomains = !name.isNothing() ? name.value.subdomains : []
+  const subdomains = !name.isNothing() ? name.value.subdomains : [];
   const history = useHistory();
-  const [imageCount, setImageCount] = useState(0)
+  const [imageCount, setImageCount] = useState(0);
 
   //- Getting image data for all subdomains
   useEffect(() => {
     const ipfsreq = async () => {
-    if (name.isNothing() || !subdomains.length) return;
+      if (name.isNothing() || !subdomains.length) return;
       // Get each subdomain and pull its metadata from IPFS
-      for(var i = 0; i < subdomains.length; i++) {
-        const sub = subdomains[i]
-        if(!sub.image) {
-          const d = JSON.parse(await ipfsClient.cat(sub.metadata.slice(21)))
-          sub.image = d.image
-          sub.nftName = d.name
-          sub.nftDescription = d.description
-          setImageCount(i + 1)
+      for (var i = 0; i < subdomains.length; i++) {
+        const sub = subdomains[i];
+        if (!sub.image) {
+          const d = JSON.parse(await ipfsClient.cat(sub.metadata.slice(21)));
+          sub.image = d.image;
+          sub.nftName = d.name;
+          sub.nftDescription = d.description;
+          setImageCount(i + 1);
         }
       }
     };
     ipfsreq();
-  }, [name]);
+  }, [name, subdomains]);
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -178,7 +178,11 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             // asset: <Profile domain={key} />,
             image: (
               <div className="neo-demo">
-                <Image src={key.image ? key.image : ''} alt="" className="neo2" />
+                <Image
+                  src={key.image ? key.image : ''}
+                  alt=""
+                  className="neo2"
+                />
               </div>
             ),
             network: key.name,
