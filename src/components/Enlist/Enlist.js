@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react';
+import React, { useState, FC, useEffect } from 'react';
 
 import StepBar from '../StepBar/StepBar.js';
 import ToggleSection from '../ToggleSection/ToggleSection.js';
@@ -22,14 +22,11 @@ const Enlist = (props) => {
   const [emailAddress, setEmailAddress] = useState('');
   const [reasonForPurchase, setReasonForPurchase] = useState('');
   const [bidUsd, setBidUsd] = useState(0);
-
+  const [errors, setErrors] = useState([])
   const [previewOpen, setPreviewOpen] = useState(false);
-  const openPreview = () => {
-    setPreviewOpen(true);
-  };
-  const closePreview = () => {
-    setPreviewOpen(false);
-  };
+
+  const openPreview = () => setPreviewOpen(true);
+  const closePreview = () => setPreviewOpen(false);
 
   emailjs.init(process.env.REACT_APP_EMAIL);
 
@@ -42,7 +39,14 @@ const Enlist = (props) => {
     isEmail(emailAddress) && reasonForPurchase.length > 0 && bidUsd > 0;
 
   const submit = () => {
-    // Got all the form data here
+    // Validate the data before submitting
+    const e = []
+    if(!isEmail(emailAddress)) e.push('email')
+    if(!reasonForPurchase.length > 0) e.push('reason')
+    if(e.length) setErrors(e)
+    else {
+      setErrors([])
+    }
   };
 
   function sendEmail(e) {
@@ -74,7 +78,7 @@ const Enlist = (props) => {
       </div>
       <hr className="glow-line" />
 
-      <form id="enlistForm" className={styles.Section}>
+      <form id="enlistForm" className={styles.Section} onSubmit={submit}>
         <div style={{ display: 'flex' }}>
           <div className={styles.Inputs}>
             <TextInput
@@ -82,6 +86,7 @@ const Enlist = (props) => {
               placeholder={'Email Address'}
               style={{ height: 48 }}
               onChange={(text) => setEmailAddress(text)}
+              error={errors.includes('email')}
             />
             <TextInput
               name={'reasonForPurchase'}
@@ -89,6 +94,7 @@ const Enlist = (props) => {
               multiline
               style={{ height: 79 }}
               onChange={(text) => setReasonForPurchase(text)}
+              error={errors.includes('reason')}
             />
           </div>
 
@@ -113,7 +119,7 @@ const Enlist = (props) => {
           textTransform: 'uppercase',
           margin: '47px auto 0 auto',
         }}
-        onClick={sendEmail}
+        onClick={submit}
       >
         Submit
       </FutureButton>

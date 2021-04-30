@@ -39,6 +39,8 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   const contract = useZnsContracts();
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
+  const [nftDomain, setNftDomain] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<string[]>([])
   const [uploadedImage, setUploadedImage] = useState<
     string | ArrayBuffer | null
   >(null);
@@ -92,13 +94,11 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   });
 
   const onSubmit = async () => {
-    console.log('submit');
 
     const ipfsRoot = `https://ipfs.io/ipfs/`;
 
     let res = await ipfsClient.add(imageFile);
     const imagePath = `${ipfsRoot}${res[0].hash}`;
-    console.log(`Image is at ${imagePath}`);
 
     const metadataObject = {
       title: nftName,
@@ -139,8 +139,21 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
     onCancel();
   };
 
-  const goTo = (x: number) =>
-    nftName.length && setStory.length ? setProgress(x) : setProgress(0);
+  const goTo = (x: number) => {
+    const e = []
+    if(!nftName.length) e.push('name')
+    if(!nftStory.length) e.push('story')
+    if(!nftDomain.length) e.push('domain')
+    if(!uploadedImage) e.push('image')
+    
+    if(e.length) return setFieldErrors(e)
+
+    console.log('no errors', e)
+    
+    setFieldErrors([])
+    setProgress(x)
+  }
+    
 
   const _create = useCallback(
     (label: string, metadataUri: string) => {
@@ -203,6 +216,14 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
                 setName(text);
               }}
               placeholder="Name"
+              error={fieldErrors.includes('name')}
+            />
+            <TextInput
+              onChange={(text: string) => {
+                setNftDomain(text);
+              }}
+              placeholder="Domain"
+              error={fieldErrors.includes('domain')}
             />
             <TextInput
               onChange={(text: string) => {
@@ -211,12 +232,14 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
               multiline={true}
               placeholder={'Story'}
               style={{ height: 146, marginTop: 24 }}
+              error={fieldErrors.includes('story')}
             />
           </div>
           <div>
             <div
               onClick={openUploadDialog}
-              className={`${MintNewNFTStyle.NFT} border-rounded`}
+              className={`${MintNewNFTStyle.NFT} border-rounded ${fieldErrors.includes('image') ? 'error' : ''}`}
+              style={{transition: 'border-color var(--animation-time-medium) ease-in-out'}}
             >
               {!uploadedImage && (
                 <span className="glow-text-white">Choose an Image</span>
@@ -245,8 +268,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
         glow={nftName.length && nftStory.length}
         style={{ height: 36, borderRadius: 18, margin: '47px auto 0 auto' }}
         onClick={async () => {
-          console.log('press');
-
           goTo(1);
         }}
       >
