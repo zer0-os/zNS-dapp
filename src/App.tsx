@@ -35,11 +35,11 @@ function App() {
   const { addNotification, removeNotification } = useNotification()
   useEffect(() => {
     setTimeout(() => {
-      addNotification('Minting Block')
+      addNotification('Hi there, friend')
       setTimeout(() => {
         removeNotification()
         setTimeout(() => {
-          addNotification('Block Succesfully Minted')
+          addNotification('See ya later alligator')
           setTimeout(() => removeNotification(), 2000)
         })
       }, 2000)
@@ -116,7 +116,6 @@ function App() {
   );
 }
 
-const e = 'hello world';
 function wrappedApp() {
   return (
     <ApolloProvider client={client}>
