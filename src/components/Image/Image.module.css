@@ -11,15 +11,17 @@
 .LazyImage img {
     opacity: 1;
     object-fit: cover;
-    width: 100%;
+    width: 100% !important;
+    height: 100% !important;
     transition: opacity var(--animation-time-medium) ease-in-out;
     z-index: 2;
 }
 
 .Indicator {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
