@@ -66,7 +66,7 @@ const ChildView: FC<SubdomainsProps> = ({
   const [descriptions, setDescription] = useState(null);
   const [names, setName] = useState('');
   const [Image, setImage] = useState('');
-  const [shouldViewNftPage, setShouldViewNftPage] = useState(false)
+  const [shouldViewNftPage, setShouldViewNftPage] = useState(false);
   // const [down, setDown] = useState('');
   const [search, setSearch] = useState('');
   const routes = _.transform(
@@ -81,10 +81,10 @@ const ChildView: FC<SubdomainsProps> = ({
   );
 
   const onPreviewLink = () => {
-    setShouldViewNftPage(true)
-  }
+    setShouldViewNftPage(true);
+  };
 
-  useEffect(() => setShouldViewNftPage(false), [name])
+  useEffect(() => setShouldViewNftPage(false), [name]);
 
   // const ipfsreq = async () => {
   //   const ipfsLib = require('ipfs-api');
@@ -152,7 +152,11 @@ const ChildView: FC<SubdomainsProps> = ({
     <div className="pageContainerPositionFix">
       {name.value.subdomains.length && !shouldViewNftPage ? (
         <div>
-          <PreviewCard name={name.value.name} props={''} onClickLink={onPreviewLink} />
+          <PreviewCard
+            name={name.value.name}
+            props={''}
+            onClickLink={onPreviewLink}
+          />
 
           {/* <div className="metricsBar">
             <div className="metricsTitle">Metrics</div>
