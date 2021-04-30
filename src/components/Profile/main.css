@@ -150,6 +150,10 @@ a {
 	transition: text-shadow var(--animation-time-short) ease-in-out;
 }
 
+.error {
+	border: 1px solid var(--color-error);
+}
+
 a:hover {
 	color: var(--color-accent-1);
 	text-shadow: var(--glow-text-blue-big);
