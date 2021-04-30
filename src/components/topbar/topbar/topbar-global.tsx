@@ -163,7 +163,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
             onClick={() => setSelected('networks')}
             className={selected === 'networks' ? 'selected' : ''}
           >
-            New Drop
+            Everything
           </div>
           <div
             onClick={() => setSelected('members')}
