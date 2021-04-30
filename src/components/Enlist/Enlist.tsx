@@ -78,7 +78,7 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
   return (
     <div className={`${styles.Enlist} blur border-rounded border-primary`}>
       <div className={styles.Header}>
-        <h1 className={`glow-text-white`}> nlist To Purchase</h1>
+        <h1 className={`glow-text-white`}> enlist To Purchase</h1>
         <div>
           <h2 className={`glow-text-white`}>0://{name.value.name}</h2>
           {/* <span>By Frank Wilder</span> */}

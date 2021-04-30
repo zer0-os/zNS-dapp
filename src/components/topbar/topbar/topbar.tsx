@@ -79,23 +79,24 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
         <button className="search-bar-button"></button>
       </div>
       <div className="topbarRight">
-        {active && (
-          <div className="profile-btn">
-            {/* <Profile /> */}
-          </div>
-        )}
+        {active && <div className="profile-btn">{/* <Profile /> */}</div>}
         <button className="connect-btn" onClick={showWallet}>
           {' '}
           {active ? 'Connected' : 'Connect Wallet'}{' '}
         </button>
         <button className="create-network">
-          Create Networkk
+          Create Network
           <img src={downarrow} alt="" />
         </button>
         <img className="nightmoon" src={nightmoon} alt="" />
       </div>
 
-      <Modal centered visible={isWalletVisible} onOk={walletOk} onCancel={walletCancel}>
+      <Modal
+        centered
+        visible={isWalletVisible}
+        onOk={walletOk}
+        onCancel={walletCancel}
+      >
         <Wallet />
       </Modal>
     </div>

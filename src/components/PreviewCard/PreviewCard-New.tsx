@@ -23,9 +23,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [descript, setDescription] = useState(null);
   const [image, setImage] = useState('');
-  const [create, setCreator] = useState(null);
   const [meta, setData] = useState(null);
-  const [own, setOwner] = useState(null);
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { name } = domainContext;
@@ -78,19 +76,14 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
         console.log(cid + '');
         let desc = JSON.parse(cid).description;
         let img = JSON.parse(cid).image;
-        let cre = JSON.parse(cid).creator;
-        let own = JSON.parse(cid).owner;
 
         setData(cid);
         setImage(img);
         setDescription(desc);
-        setCreator(cre);
-        setOwner(own);
       };
       ipfsreq();
     }
-    console.log('useEffect');
-  }, [descript, name, image]);
+  }, [descript, name, image, meta]);
 
   // const descrii = () => {
   //   let desc = ipfsreq();

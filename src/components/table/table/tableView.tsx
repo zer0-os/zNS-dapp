@@ -17,7 +17,7 @@ import graph4 from './img/mockgraphs/graph4.png';
 import graph5 from './img/mockgraphs/graph5.png';
 import FutureButton from '../../Buttons/FutureButton/FutureButton.js';
 import Enlist from '../../Enlist/Enlist';
-import Image from '../../Image/Image'
+import Image from '../../Image/Image';
 
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
@@ -66,29 +66,29 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const history = useHistory();
   const [image, setImage] = useState('');
   const [descript, setDescription] = useState(null);
-  const subdomains = !name.isNothing() ? name.value.subdomains : []
-  const [imageCount, setImageCount] = useState(0)
+  const subdomains = !name.isNothing() ? name.value.subdomains : [];
+  const [imageCount, setImageCount] = useState(0);
   const [enlist, setEnlist] = useState('');
   const closeEnlist = () => setEnlist('');
 
   //- Getting image data for all subdomains
   useEffect(() => {
     const ipfsreq = async () => {
-    if (name.isNothing() || !subdomains.length) return;
+      if (name.isNothing() || !subdomains.length) return;
       // Get each subdomain and pull its metadata from IPFS
-      for(var i = 0; i < subdomains.length; i++) {
-        const sub = subdomains[i]
-        if(!sub.image) {
-          const d = JSON.parse(await ipfsClient.cat(sub.metadata.slice(21)))
-          sub.image = d.image
-          sub.nftName = d.name
-          sub.nftDescription = d.description
-          setImageCount(i + 1)
+      for (var i = 0; i < subdomains.length; i++) {
+        const sub = subdomains[i];
+        if (!sub.image) {
+          const d = JSON.parse(await ipfsClient.cat(sub.metadata.slice(21)));
+          sub.image = d.image;
+          sub.nftName = d.name;
+          sub.nftDescription = d.description;
+          setImageCount(i + 1);
         }
       }
     };
     ipfsreq();
-  }, [name]);;
+  }, [name]);
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -199,14 +199,19 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               <FutureButton
                 glow
                 onClick={() => setEnlist(key.name)}
-                style={{ height: 36, width: 118, borderRadius: 18, zIndex: 1000 }}
+                style={{
+                  height: 36,
+                  width: 118,
+                  borderRadius: 18,
+                  zIndex: 1000,
+                }}
               >
                 ENLIST
               </FutureButton>
             ),
           })),
 
-    [name, imageCount],
+    [name, imageCount, image],
   );
 
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
