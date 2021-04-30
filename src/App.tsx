@@ -35,14 +35,14 @@ function App() {
   const { addNotification, removeNotification } = useNotification()
   useEffect(() => {
     setTimeout(() => {
-      addNotification('Hi there, friend')
+      addNotification('Hi, this is a test notification!')
       setTimeout(() => {
         removeNotification()
         setTimeout(() => {
-          addNotification('See ya later alligator')
+          addNotification('Thanks for listening!')
           setTimeout(() => removeNotification(), 2000)
         })
-      }, 2000)
+      }, 3000)
     }, 2000);
   }, [])
 

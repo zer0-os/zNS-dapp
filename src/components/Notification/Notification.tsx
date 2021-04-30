@@ -16,7 +16,7 @@ const Notification = () => {
     return(
         <>
         <div className={`${styles.Notification} border-primary blur ${!notification ? styles.Hidden : ''}`}>
-            { text }
+            <p>{text}</p>
         </div>
         </>
     )

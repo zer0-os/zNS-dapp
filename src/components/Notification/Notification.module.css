@@ -3,18 +3,31 @@
     top: 24px;
     right: 32px;
 
-    padding: 32px;
-    border-radius: 16px;
+    display: flex;
+    align-items: center;
+
+    min-width: 200px;
+    padding: 16px 32px 14px 32px;
+    border-radius: var(--box-radius);
 
     background: var(--background-purple-card-20);
     opacity: 1; 
+
+    transform: translateX(0) scale(1);
 
     z-index: 10000;
 
     transition: transform var(--animation-time-medium) ease-in-out, opacity var(--animation-time-medium) ease-in-out;
 }
 
+.Notification p {
+    width: 100%;
+    margin: 0;
+    text-align: center;
+}
+
 .Hidden {
-    transform: translateX(calc(100% + 48px));
-    opacity: 0;
+    transform: translateX(calc(100% + 48px)) scale(0.7);
+    /* opacity: 0; */
+
 }
