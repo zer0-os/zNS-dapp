@@ -15,7 +15,7 @@ const TextInput = (props) => {
     <>
       {props.multiline && (
         <textarea
-          className={`${styles.TextInput} border-blue`}
+          className={`${styles.TextInput} border-blue ${props.error ? styles.Error : ''}`}
           onChange={handleChange}
           style={{
             ...props.style,
@@ -27,7 +27,7 @@ const TextInput = (props) => {
       {!props.multiline && (
         <input
           type={props.type ? props.type : ''}
-          className={`${styles.TextInput} border-blue`}
+          className={`${styles.TextInput} border-blue ${props.error ? styles.Error : ''}`}
           onChange={handleChange}
           style={props.style}
           placeholder={props.placeholder}
