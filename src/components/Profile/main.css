@@ -200,6 +200,13 @@ a.alt-link:hover {
 	user-select: none; /* Standard */
 }
 
+.all-select {
+	-webkit-user-select: all;  /* Chrome 49+ */
+  	-moz-user-select: all;     /* Firefox 43+ */
+ 	-ms-user-select: all;      /* No support yet */
+  	user-select: all;          /* Likely future */
+}
+
 .glow-line {
 	position: relative;
 	height: 1px;

@@ -171,7 +171,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
             <div className="quadHeader">
               <span>CONTRACT ADDRESS</span>
             </div>
-            <div className="quadText">
+            <div className="quadText all-select">
               {name.value && name.value.id
                 ? name.value.id
                 : 'Having trouble retrieving contract address!'}
