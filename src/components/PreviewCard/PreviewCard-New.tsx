@@ -116,8 +116,28 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
         </div>
         <p>{descript}</p>
         <div className={styles.Members}>
-          <div></div>
-          <div></div>
+          <div>
+            <div
+              className={styles.Dp}
+              style={{ backgroundImage: `url()` }}
+            ></div>
+            <div className={styles.Member}>
+              <a>(to be replaced)</a>
+              <br />
+              <span>Creator</span>
+            </div>
+          </div>
+          <div>
+            <div
+              className={styles.Dp}
+              style={{ backgroundImage: `url()` }}
+            ></div>
+            <div className={styles.Member}>
+              <a>(to be replaced)</a>
+              <br />
+              <span>Owner</span>
+            </div>
+          </div>
         </div>
       </div>
       <div className={styles.Buy}>

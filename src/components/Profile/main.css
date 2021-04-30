@@ -150,6 +150,10 @@ a {
 	transition: text-shadow var(--animation-time-short) ease-in-out;
 }
 
+.error {
+	border: 1px solid var(--color-error);
+}
+
 a:hover {
 	color: var(--color-accent-1);
 	text-shadow: var(--glow-text-blue-big);
@@ -194,6 +198,13 @@ a.alt-link:hover {
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+/Edge */
 	user-select: none; /* Standard */
+}
+
+.all-select {
+	-webkit-user-select: all;  /* Chrome 49+ */
+  	-moz-user-select: all;     /* Firefox 43+ */
+ 	-ms-user-select: all;      /* No support yet */
+  	user-select: all;          /* Likely future */
 }
 
 .glow-line {

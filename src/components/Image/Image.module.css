@@ -1,4 +1,27 @@
-.Loading {
+.LazyImage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.LazyImage img {
+    opacity: 1;
+    object-fit: cover;
+    width: 100% !important;
+    height: 100% !important;
+    transition: opacity var(--animation-time-medium) ease-in-out;
+    z-index: 2;
+}
+
+.Indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;

@@ -1,16 +1,19 @@
 import './App.scss';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import './lib/ipfs';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Subdomains from './components/table/domainView/child-view';
 import { DomainCacheProvider } from './lib/useDomainCache';
+import NotificationProvider from './lib/providers/NotificationProvider.js'
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import DomainsGlobal from './components/table/domainView/domains-global';
 import TopbarGlobal from './components/topbar/topbar/topbar-global';
 import Sidebar from './components/table/sidebar/sidebar';
 import znsbg from '../src/components/css/video/znsbgslow.mp4';
+import Notification from './components/Notification/Notification'
+import useNotification from './lib/hooks/useNotification'
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_SUBGRAPH_URL_42,
@@ -28,6 +31,21 @@ function App() {
 
   const [ isGridView, toggleGridView ] = useState(false)
 
+  
+  const { addNotification, removeNotification } = useNotification()
+  useEffect(() => {
+    setTimeout(() => {
+      addNotification('Hi, this is a test notification!')
+      setTimeout(() => {
+        removeNotification()
+        setTimeout(() => {
+          addNotification('Thanks for listening!')
+          setTimeout(() => removeNotification(), 2000)
+        })
+      }, 3000)
+    }, 2000);
+  }, [])
+
   return (
     <Router>
       <video
@@ -44,6 +62,7 @@ function App() {
       <Route
         render={({ location, match }) => (
           <>
+            <Notification />
             <Switch>
               <Route path="/:id">
                 {/* defaults to the LOCAL NETWORKS page */}
@@ -97,13 +116,14 @@ function App() {
   );
 }
 
-const e = 'hello world';
 function wrappedApp() {
   return (
     <ApolloProvider client={client}>
       <Web3ReactProvider getLibrary={getLibrary}>
         <DomainCacheProvider>
-          <App />
+          <NotificationProvider>
+            <App />
+          </NotificationProvider>
         </DomainCacheProvider>
       </Web3ReactProvider>
     </ApolloProvider>

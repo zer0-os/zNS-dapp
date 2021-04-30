@@ -123,17 +123,28 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
               <div className="title glow-text-white">
                 {routes[routes.length - 1][0]}
               </div>
-              <div className="domain">
-                <Link to={location.pathname} className="network">
-                  0:/{location.pathname}
-                </Link>
+              <div className="users">
+                <div className="creator">
+                  <img src={wilder} alt="" className="avatar" />
+                  <div className="creatorFlex">
+                    <a className="creatorText">(to be replaced)</a>
+                    <div className="desc">Creator</div>
+                  </div>
+                </div>
+                <div className="owner">
+                  <img src={neo} alt="" className="avatar" />
+                  <div className="ownerFlex">
+                    <a className="ownerText">(to be replaced)</a>
+                    <div className="desc">Owner</div>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="middle">
-              <div className="midLeft">
-                <div className="units"></div>
-                <div className="price"></div>
-              </div>
+              {/* <div className="midLeft">
+                <div className="units">hello</div>
+                <div className="price">hello</div>
+              </div> */}
               {/* <div className="midRight">
               <div className="text">Current Price</div>
               <div className="units">65,045 LOOT</div>
@@ -158,12 +169,12 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         <div className="quad">
           <div className="address border-primary">
             <div className="quadHeader">
-              <span>YOUR ETH ADDRESS</span>
+              <span>CONTRACT ADDRESS</span>
             </div>
-            <div className="quadText">
-              {account && account.length
-                ? account
-                : 'Connect a wallet to see your Ethereum address!'}
+            <div className="quadText all-select">
+              {name.value && name.value.id
+                ? name.value.id
+                : 'Having trouble retrieving contract address!'}
             </div>
           </div>
         </div>
