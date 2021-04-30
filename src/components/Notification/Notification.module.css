@@ -1,20 +1,18 @@
 .Notification {
-    position: absolute;
-    top: 0;
-    right: 0;
+    position: fixed;
+    top: 32px;
+    right: 32px;
 
     padding: 32px;
     border-radius: 16px;
 
-    opacity: 1;
-    background: var(--background-purple-card);
+    background: var(--background-purple-card-20);
 
     z-index: 10000;
 
-    transition: right var(--animation-time-medium) ease-in-out, opacity var(--animation-time-medium) ease-in-out;
+    transition: transform var(--animation-time-long) ease-in-out
 }
 
 .Hidden {
-    right: -30px;
-    opacity: 0;
+    transform: translateX(calc(100% + 48px));
 }
