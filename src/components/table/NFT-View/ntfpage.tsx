@@ -172,9 +172,9 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
               <span>CONTRACT ADDRESS</span>
             </div>
             <div className="quadText all-select">
-              {domain.value && domain.value.id
-                ? domain.value.id
-                : 'Having trouble retrieving contract address!'}
+              <a href="https://kovan.etherscan.io/address/0x7EB6D0E8c91F6e88bf029138FDf0d04Fb78E43a4">
+                0x7EB6D0E8c91F6e88bf029138FDf0d04Fb78E43a4
+              </a>
             </div>
           </div>
         </div>
