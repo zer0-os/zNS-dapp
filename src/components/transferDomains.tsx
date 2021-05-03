@@ -34,7 +34,7 @@ const schema = z.object({
 });
 
 const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
-  const { refetchDomain, name } = domainContext;
+  const { refetchDomain, domain } = domainContext;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { register, handleSubmit } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
@@ -51,17 +51,17 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
       if (
         account &&
         contracts.isJust() &&
-        name.isJust() &&
-        account === name.value.owner
+        domain.isJust() &&
+        account === domain.value.owner
       )
         contracts.value.registry
-          .transferFrom(account, address, name.value.id)
+          .transferFrom(account, address, domain.value.id)
           .then((txr: any) => txr.wait(1))
           .then(() => {
             refetchDomain();
           });
     },
-    [account, contracts, name, refetchDomain],
+    [account, contracts, domain, refetchDomain],
   );
 
   const showSubdomain = () => {
@@ -76,7 +76,7 @@ const Transfer: React.FC<TransferProps> = ({ domainId, domainContext }) => {
     setSubdomainVisible(false);
   };
 
-  if (name.isNothing() || name.value.owner !== account) return null;
+  if (domain.isNothing() || domain.value.owner !== account) return null;
 
   return (
     <>

@@ -64,15 +64,15 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const { account } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
-  const subdomains = !name.isNothing() ? name.value.subdomains : [];
+  const { domain } = domainContext;
+  const subdomains = !domain.isNothing() ? domain.value.subdomains : [];
   const history = useHistory();
   const [imageCount, setImageCount] = useState(0);
 
   //- Getting image data for all subdomains
   useEffect(() => {
     const ipfsreq = async () => {
-      if (name.isNothing() || !subdomains.length) return;
+      if (domain.isNothing() || !subdomains.length) return;
       // Get each subdomain and pull its metadata from IPFS
       for (var i = 0; i < subdomains.length; i++) {
         const sub = subdomains[i];
@@ -86,7 +86,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       }
     };
     ipfsreq();
-  }, [name, subdomains]);
+  }, [domain, subdomains]);
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -171,9 +171,9 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
 
   const dataInput: Data[] = useMemo(
     () =>
-      name.isNothing()
+      domain.isNothing()
         ? []
-        : _.map(name.value.subdomains, (key, i) => ({
+        : _.map(domain.value.subdomains, (key, i) => ({
             '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
             image: (
@@ -208,7 +208,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
               // </FutureButton>
             ),
           })),
-    [name, imageCount, subdomains],
+    [domain, imageCount, subdomains],
   );
 
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
@@ -338,7 +338,7 @@ const TableViewGlobal: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       pathname: row.values.network,
     });
   };
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
 
   return (
     <div className="shiftTableUp">

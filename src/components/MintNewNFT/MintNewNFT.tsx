@@ -14,24 +14,24 @@ import { useDomainCache } from '../../lib/useDomainCache';
 import Create from '../topbar/topbar/create';
 
 interface MintProps {
-  name: string;
+  domain: string;
   props: any;
 }
 
-const MintNewNFT: FC<MintProps> = ({ props, name: _domain }) => {
+const MintNewNFT: FC<MintProps> = ({ props, domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { active, connector, error } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
 
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
-      <Create
-        props={props}
-        domainId={name.value.id}
-        domainContext={domainContext}
-      />
+    <Create
+      props={props}
+      domainId={domain.value.id}
+      domainContext={domainContext}
+    />
   );
 };
 

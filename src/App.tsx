@@ -1,19 +1,19 @@
 import './App.scss';
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import './lib/ipfs';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import Subdomains from './components/table/domainView/child-view';
 import { DomainCacheProvider } from './lib/useDomainCache';
-import NotificationProvider from './lib/providers/NotificationProvider.js'
+import NotificationProvider from './lib/providers/NotificationProvider.js';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import DomainsGlobal from './components/table/domainView/domains-global';
 import TopbarGlobal from './components/topbar/topbar/topbar-global';
 import Sidebar from './components/table/sidebar/sidebar';
 import znsbg from '../src/components/css/video/znsbgslow.mp4';
-import Notification from './components/Notification/Notification'
-import useNotification from './lib/hooks/useNotification'
+import Notification from './components/Notification/Notification';
+import useNotification from './lib/hooks/useNotification';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_SUBGRAPH_URL_42,
@@ -28,23 +28,21 @@ function getLibrary(provider: any): Web3Provider {
 // This is a comment for a test commit, please remove it
 
 function App() {
+  const [isGridView, toggleGridView] = useState(false);
 
-  const [ isGridView, toggleGridView ] = useState(false)
-
-  
-  const { addNotification, removeNotification } = useNotification()
+  const { addNotification, removeNotification } = useNotification();
   useEffect(() => {
     setTimeout(() => {
-      addNotification('Hi, this is a test notification!')
+      addNotification('Hi, this is a test notification!');
       setTimeout(() => {
-        removeNotification()
+        removeNotification();
         setTimeout(() => {
-          addNotification('Thanks for listening!')
-          setTimeout(() => removeNotification(), 2000)
-        })
-      }, 3000)
+          addNotification('Thanks for listening!');
+          setTimeout(() => removeNotification(), 2000);
+        });
+      }, 3000);
     }, 2000);
-  }, [])
+  }, []);
 
   return (
     <Router>
@@ -66,7 +64,7 @@ function App() {
             <Switch>
               <Route path="/:id">
                 {/* defaults to the LOCAL NETWORKS page */}
-                <TopbarGlobal name={location.pathname.substring(1)} />
+                <TopbarGlobal domain={location.pathname.substring(1)} />
                 <Subdomains
                   //regex: removes trailing /, then replaces / with .
                   /*
@@ -82,7 +80,7 @@ function App() {
               </Route>
               <Route path="/">
                 <TopbarGlobal
-                  name={
+                  domain={
                     // location.pathname.substring(1)
                     // 'domainID'
                     ''
@@ -100,8 +98,8 @@ function App() {
                 </h1> */}
                 {/* TODO: move to styling file */}
                 <div>
-                  <DomainsGlobal 
-                    domain={''} 
+                  <DomainsGlobal
+                    domain={''}
                     isGridView={isGridView}
                     toggleGridView={toggleGridView}
                   />

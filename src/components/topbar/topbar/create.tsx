@@ -32,15 +32,15 @@ const schema = z.object({
 });
 
 const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
-  const { refetchDomain, name } = domainContext;
+  const { refetchDomain, domain } = domainContext;
   const context = useWeb3React<Web3Provider>();
   const { account } = context;
   const contracts = useZnsBasicContracts();
   const contract = useZnsContracts();
   const [nftName, setName] = useState('');
   const [nftStory, setStory] = useState('');
-  const [nftDomain, setNftDomain] = useState('')
-  const [fieldErrors, setFieldErrors] = useState<string[]>([])
+  const [nftDomain, setNftDomain] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<string[]>([]);
   const [uploadedImage, setUploadedImage] = useState<
     string | ArrayBuffer | null
   >(null);
@@ -94,7 +94,6 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   });
 
   const onSubmit = async () => {
-
     const ipfsRoot = `https://ipfs.io/ipfs/`;
 
     let res = await ipfsClient.add(imageFile);
@@ -140,27 +139,26 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
   };
 
   const goTo = (x: number) => {
-    const e = []
-    if(!nftName.length) e.push('name')
-    if(!nftStory.length) e.push('story')
-    if(!nftDomain.length) e.push('domain')
-    if(!uploadedImage) e.push('image')
-    
-    if(e.length) return setFieldErrors(e)
+    const e = [];
+    if (!nftName.length) e.push('name');
+    if (!nftStory.length) e.push('story');
+    if (!nftDomain.length) e.push('domain');
+    if (!uploadedImage) e.push('image');
 
-    console.log('no errors', e)
-    
-    setFieldErrors([])
-    setProgress(x)
-  }
-    
+    if (e.length) return setFieldErrors(e);
+
+    console.log('no errors', e);
+
+    setFieldErrors([]);
+    setProgress(x);
+  };
 
   const _create = useCallback(
     (label: string, metadataUri: string) => {
-      if (account && contracts.isJust() && name.isJust()) {
+      if (account && contracts.isJust() && domain.isJust()) {
         contracts.value.basic
           .registerSubdomainExtended(
-            name.value.id,
+            domain.value.id,
             label,
             account,
             metadataUri,
@@ -181,11 +179,11 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           });
       }
     },
-    [account, contracts, name, refetchDomain],
+    [account, contracts, domain, refetchDomain],
   );
 
-  if (name.isNothing() || account !== account) return null;
-  console.log(name.value.name + 'id data');
+  if (domain.isNothing() || account !== account) return null;
+
   const details = () => (
     <div
       className={`${MintNewNFTStyle.MintNewNFT} blur border-rounded border-primary`}
@@ -238,8 +236,13 @@ const Create: React.FC<CreateProps> = ({ domainId, domainContext, props }) => {
           <div>
             <div
               onClick={openUploadDialog}
-              className={`${MintNewNFTStyle.NFT} border-rounded ${fieldErrors.includes('image') ? 'error' : ''}`}
-              style={{transition: 'border-color var(--animation-time-medium) ease-in-out'}}
+              className={`${MintNewNFTStyle.NFT} border-rounded ${
+                fieldErrors.includes('image') ? 'error' : ''
+              }`}
+              style={{
+                transition:
+                  'border-color var(--animation-time-medium) ease-in-out',
+              }}
             >
               {!uploadedImage && (
                 <span className="glow-text-white">Choose an Image</span>

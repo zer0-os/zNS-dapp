@@ -10,7 +10,7 @@ import avatar from '../../css/img/wilderavatar.png';
 import { Indexed } from '@ethersproject/abi';
 import { inflate } from 'node:zlib';
 
-import Image from '../../Image/Image'
+import Image from '../../Image/Image';
 import StaticEmulator from '../../../lib/StaticEmulator/StaticEmulator.js';
 
 interface GridProps {
@@ -23,11 +23,10 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
   const { account } = context;
   const domainStore = useDomainCache();
   const { useDomain } = domainStore;
-  const { name } = useDomain(_domain);
+  const { domain } = useDomain(_domain);
 
   const history = useHistory();
   const handleCellClick = (name: any) => {
-    //console.log('fire');
     history.push({
       pathname: name,
     });
@@ -35,7 +34,7 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
 
   const [image, setImage] = useState('');
   const [descript, setDescription] = useState(null);
-  const [imageCount, setImageCount] = useState(0)
+  const [imageCount, setImageCount] = useState(0);
 
   useEffect(() => {
     // if statement for "base case" state varible if not set then set
@@ -49,20 +48,19 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
         });
 
         // let domain = name as any;
-        if (name.isNothing() || !name.value.subdomains.length) return;
+        if (domain.isNothing() || !domain.value.subdomains.length) return;
 
         // Go through each subdomain
-        for(var i = 0; i < name.value.subdomains.length; i++) {
-          const sub = name.value.subdomains[i]
-          const _hash = await ipfsClient.cat(sub.metadata.slice(21))
-          sub.image = JSON.parse(_hash).image
-          setImageCount(i + 1)
+        for (var i = 0; i < domain.value.subdomains.length; i++) {
+          const sub = domain.value.subdomains[i];
+          const _hash = await ipfsClient.cat(sub.metadata.slice(21));
+          sub.image = JSON.parse(_hash).image;
+          setImageCount(i + 1);
         }
       };
       ipfsreq();
     }
-  }, [name]);
-  
+  }, [domain]);
 
   //
   // The following functions generate random numbers for mock data display
@@ -111,7 +109,6 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
             <div>{key.name.match(/[^.]+$/)}</div>
           </div>
           <div className="image">
-            
             <Image src={key.image ? key.image : ''} />
           </div>
           {/* <div className="text">
@@ -123,18 +120,18 @@ const Grid: FC<GridProps> = ({ domain: _domain }) => {
     );
   };
 
-  const domain: any = true;
+  const domain_: any = true;
 
   const gridCells = useMemo(
     () =>
-      name.isNothing()
+      domain.isNothing()
         ? []
-        : name.value.subdomains.map((key: any, i: number) => {
+        : domain.value.subdomains.map((key: any, i: number) => {
             return gridCell(key, i);
           }),
-    [name, imageCount],
+    [domain, imageCount],
   );
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div className="gridContainer">
       <div className="gridMargin">{gridCells}</div>

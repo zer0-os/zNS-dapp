@@ -32,7 +32,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   const { library, account, active, chainId } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
   const location = useLocation();
   const [image, setImage] = useState('');
   const [create, setCreator] = useState(null);
@@ -70,8 +70,8 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         });
 
         // let domain = name as any;
-        if (name.isNothing()) return;
-        let cid = await ipfsClient.cat(name.value.metadata.slice(21));
+        if (domain.isNothing()) return;
+        let cid = await ipfsClient.cat(domain.value.metadata.slice(21));
 
         let desc = JSON.parse(cid).description;
         let img = JSON.parse(cid).image;
@@ -86,7 +86,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
       };
       ipfsreq();
     }
-  }, [descript, name, image]);
+  }, [descript, domain, image]);
 
   const showNft = () => {
     setNftVisible(true);
@@ -100,7 +100,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
     setNftVisible(false);
   };
 
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div className="nftView">
       <div
@@ -172,8 +172,8 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
               <span>CONTRACT ADDRESS</span>
             </div>
             <div className="quadText all-select">
-              {name.value && name.value.id
-                ? name.value.id
+              {domain.value && domain.value.id
+                ? domain.value.id
                 : 'Having trouble retrieving contract address!'}
             </div>
           </div>
@@ -198,7 +198,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         footer={null}
       >
         <Enlist
-          name={location.pathname}
+          domain={location.pathname}
           props={{
             image: image,
             close: closeEnlist,

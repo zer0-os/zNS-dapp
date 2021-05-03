@@ -11,19 +11,17 @@ interface GridImageProps {
 const GridImage: FC<GridImageProps> = ({ domain: _domain, props }) => {
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
   const [image, setImage] = useState('');
   const [descript, setDescription] = useState(null);
   const [loadedIMG, setLoadedIMG] = useState<string>('');
   useEffect(() => {
     setLoadedIMG('');
-  }, [name, setLoadedIMG]);
+  }, [domain, setLoadedIMG]);
 
   const _onLoad = useCallback(() => setLoadedIMG('domainImageFade'), [
     setLoadedIMG,
   ]);
-
-  console.log(loadedIMG);
 
   useEffect(() => {
     // if statement for "base case" state varible if not set then set
@@ -37,9 +35,9 @@ const GridImage: FC<GridImageProps> = ({ domain: _domain, props }) => {
         });
 
         // let domain = name as any;
-        if (name.isNothing()) return;
+        if (domain.isNothing()) return;
         let _hash = await ipfsClient
-          .cat(name.value.metadata)
+          .cat(domain.value.metadata)
           .catch((err: any) => console.log);
 
         let img = JSON.parse(_hash).image;
@@ -49,11 +47,10 @@ const GridImage: FC<GridImageProps> = ({ domain: _domain, props }) => {
       };
       ipfsreq();
     }
-    console.log('useEffect');
-  }, [name, image]);
+  }, [domain, image]);
   //
 
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <img
       style={{ maxHeight: '100%' }}

@@ -22,7 +22,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const { active } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
   const location = useLocation();
 
   const routes = _.transform(
@@ -47,7 +47,7 @@ const Topbar: FC<TopbarProps> = ({ domain: _domain }) => {
   const walletCancel = () => {
     setWalletVisible(false);
   };
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">

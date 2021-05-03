@@ -57,7 +57,7 @@ const ChildView: FC<SubdomainsProps> = ({
   const location = useLocation();
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
   // const [gridView, toggleGridView] = useState(false);
   const [hover, setHover] = useState('');
   const [uploadedImage, setUploadedImage] = useState<
@@ -84,7 +84,7 @@ const ChildView: FC<SubdomainsProps> = ({
     setShouldViewNftPage(true);
   };
 
-  useEffect(() => setShouldViewNftPage(false), [name]);
+  useEffect(() => setShouldViewNftPage(false), [domain]);
 
   // const ipfsreq = async () => {
   //   const ipfsLib = require('ipfs-api');
@@ -146,14 +146,15 @@ const ChildView: FC<SubdomainsProps> = ({
     );
   };
 
-  if (name.isNothing()) return <div style={{ backgroundColor: 'black' }}></div>;
+  if (domain.isNothing())
+    return <div style={{ backgroundColor: 'black' }}></div>;
 
   return (
     <div className="pageContainerPositionFix">
-      {name.value.subdomains.length && !shouldViewNftPage ? (
+      {domain.value.subdomains.length && !shouldViewNftPage ? (
         <div>
           <PreviewCard
-            name={name.value.name}
+            domain={domain.value.name}
             props={''}
             onClickLink={onPreviewLink}
           />

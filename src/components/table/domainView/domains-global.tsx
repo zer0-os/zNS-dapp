@@ -26,13 +26,17 @@ interface DomainsGlobalProps {
   isGridView: boolean;
   toggleGridView: (arg0: boolean) => void;
 }
-const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain, isGridView, toggleGridView }) => {
+const DomainsGlobal: FC<DomainsGlobalProps> = ({
+  domain: _domain,
+  isGridView,
+  toggleGridView,
+}) => {
   // const context = useWeb3React<Web3Provider>();
   const location = useLocation();
   const { useDomain } = useDomainCache();
 
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
 
   // const dataInput: Data[] = [];
   // const [gridView, toggleGridView] = useState(false);
@@ -95,7 +99,7 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain, isGridView, to
     );
   };
 
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div className="pageContainerPositionFix">
       {/* Metrics bar is removed for now: may be added back in further iterations */}
@@ -136,7 +140,9 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain, isGridView, to
                 <div className="text">Filters</div>
               </div> */}
               <div
-                onClick={() => {toggleGridView(false)}}
+                onClick={() => {
+                  toggleGridView(false);
+                }}
                 // onMouseDown={() => setDown('list')}
                 // onMouseUp={() => setDown('')}
                 onMouseEnter={() => setHover('list')}
@@ -151,7 +157,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain, isGridView, to
                     // down === 'list'
                     //   ? listD
                     //   :
-                    isGridView === false ? listS : hover === 'list' ? listH : list
+                    isGridView === false
+                      ? listS
+                      : hover === 'list'
+                      ? listH
+                      : list
                   }
                   alt=""
                 />
@@ -172,7 +182,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain, isGridView, to
                     // down === 'grid'
                     //   ? gridD
                     //   :
-                    isGridView === true ? gridS : hover === 'grid' ? gridH : grid
+                    isGridView === true
+                      ? gridS
+                      : hover === 'grid'
+                      ? gridH
+                      : grid
                   }
                   alt=""
                 />
@@ -180,7 +194,11 @@ const DomainsGlobal: FC<DomainsGlobalProps> = ({ domain: _domain, isGridView, to
             </div>
           </div>
         </div>
-        <TableViewGlobal domain={_domain} gridView={isGridView} search={search} />
+        <TableViewGlobal
+          domain={_domain}
+          gridView={isGridView}
+          search={search}
+        />
       </div>
     </div>
   );

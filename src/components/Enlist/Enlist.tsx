@@ -18,16 +18,16 @@ import StaticEmulator from '../../lib/StaticEmulator/StaticEmulator.js';
 const wildToUsd = 0.5; // Just a template for now
 
 interface EnlistProps {
-  name: string;
+  domain: string;
   props: any;
 }
 
-const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
+const Enlist: FC<EnlistProps> = ({ props, domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { active, connector, error } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
 
   // State
   const [emailAddress, setEmailAddress] = useState('');
@@ -60,10 +60,9 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
         });
 
         // let domain = name as any;
-        if (name.isNothing()) return;
-        let cid = await ipfsClient.cat(name.value.metadata.slice(21));
+        if (domain.isNothing()) return;
+        let cid = await ipfsClient.cat(domain.value.metadata.slice(21));
 
-        console.log(cid + '');
         let desc = JSON.parse(cid).description;
         let img = JSON.parse(cid).image;
 
@@ -71,16 +70,15 @@ const Enlist: FC<EnlistProps> = ({ props, name: _domain }) => {
       };
       ipfsreq();
     }
-    console.log('useEffect');
-  }, [descript, name, image]);
+  }, [descript, domain, image]);
 
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div className={`${styles.Enlist} blur border-rounded border-primary`}>
       <div className={styles.Header}>
         <h1 className={`glow-text-white`}> enlist To Purchase</h1>
         <div>
-          <h2 className={`glow-text-white`}>0://{name.value.name}</h2>
+          <h2 className={`glow-text-white`}>0://{domain.value.name}</h2>
           {/* <span>By Frank Wilder</span> */}
         </div>
       </div>

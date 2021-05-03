@@ -146,7 +146,7 @@ function useDomain(name: string) {
     [refetchDomain],
   );
   // console.log(JSON.stringify(dataDomain) + 'return function');
-  return { name: _domain, refetchDomain: refetch! };
+  return { domain: _domain, refetchDomain: refetch! };
 }
 
 function useOwnedDomains(): {

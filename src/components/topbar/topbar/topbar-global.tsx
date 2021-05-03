@@ -21,17 +21,17 @@ import ProfileNew from '../../Profile/Profile.js';
 import { any } from 'zod';
 
 interface TopbarProps {
-  name: string;
+  domain: string;
 }
 
 var lastY = 0; // Just a global variable to stash last scroll position
 
-const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
+const TopbarGlobal: FC<TopbarProps> = ({ domain: _domain }) => {
   const context = useWeb3React<Web3Provider>();
   const { active, connector, error, account } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
   const location = useLocation();
 
   // Hide header on scroll
@@ -99,13 +99,13 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
     connectorPrevious,
   ]);
 
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
 
   let mintNFTEnabled = false;
   try {
     if (account) {
       mintNFTEnabled =
-        account.toLowerCase() == name.value.owner.id.toLowerCase();
+        account.toLowerCase() == domain.value.owner.id.toLowerCase();
     }
   } catch (e) {
     console.log(`mintNFTEnabled error: ${e}`);
@@ -194,7 +194,7 @@ const TopbarGlobal: FC<TopbarProps> = ({ name: _domain }) => {
         width={640}
       >
         <MintNewNFT
-          name={name.value.name}
+          domain={domain.value.name}
           props={{ onMint: mintCancel, onCancel: mintCancel }}
         ></MintNewNFT>
       </Modal>

@@ -62,11 +62,11 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   // const { account } = context;
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
   const history = useHistory();
   const [image, setImage] = useState('');
   const [descript, setDescription] = useState(null);
-  const subdomains = !name.isNothing() ? name.value.subdomains : [];
+  const subdomains = !domain.isNothing() ? domain.value.subdomains : [];
   const [imageCount, setImageCount] = useState(0);
   const [enlist, setEnlist] = useState('');
   const closeEnlist = () => setEnlist('');
@@ -74,7 +74,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   //- Getting image data for all subdomains
   useEffect(() => {
     const ipfsreq = async () => {
-      if (name.isNothing() || !subdomains.length) return;
+      if (domain.isNothing() || !subdomains.length) return;
       // Get each subdomain and pull its metadata from IPFS
       for (var i = 0; i < subdomains.length; i++) {
         const sub = subdomains[i];
@@ -88,7 +88,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       }
     };
     ipfsreq();
-  }, [name]);
+  }, [domain, subdomains]);
   //
   // Following functions generate random numbers to display mock data in the UI
   //
@@ -173,9 +173,9 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
 
   const dataInput: Data[] = useMemo(
     () =>
-      name.isNothing()
+      domain.isNothing()
         ? []
-        : _.map(name.value.subdomains, (key, i) => ({
+        : _.map(domain.value.subdomains, (key, i) => ({
             key: key.name,
             '#': (i + 1).toString(),
             // asset: <Profile domain={key} />,
@@ -211,7 +211,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             ),
           })),
 
-    [name, imageCount, image],
+    [domain, imageCount, image],
   );
 
   const data = useMemo<Data[]>(() => dataInput, [dataInput]);
@@ -323,9 +323,8 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
       pathname: row.original.key,
     });
   };
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
 
-  //console.log(domain.value.children, 'xxxxxxxxxxxxxxxxx');
   return (
     <div className="shiftTableUp">
       <SearchTable globalFilter={search} setGlobalFilter={setGlobalFilter} />
@@ -446,7 +445,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         width={640}
       >
         <Enlist
-          name={enlist}
+          domain={enlist}
           props={{
             image: StaticEmulator(
               enlist.split('.')[enlist.split('.').length - 1],

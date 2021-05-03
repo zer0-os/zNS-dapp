@@ -15,10 +15,14 @@ const templateNFT = 'assets/nft/redpill.png';
 
 interface CardProps {
   props: any;
-  name: string;
+  domain: string;
   onClickLink: () => void;
 }
-const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
+const PreviewCard: FC<CardProps> = ({
+  props,
+  domain: _domain,
+  onClickLink,
+}) => {
   const [enlistOpen, setEnlistOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [descript, setDescription] = useState(null);
@@ -26,7 +30,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
   const [meta, setData] = useState(null);
   const { useDomain } = useDomainCache();
   const domainContext = useDomain(_domain);
-  const { name } = domainContext;
+  const { domain } = domainContext;
   const location = useLocation();
 
   const enlist = () => setEnlistOpen(true);
@@ -70,10 +74,9 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
         });
 
         // let domain = name as any;
-        if (name.isNothing()) return;
-        let cid = await ipfsClient.cat(name.value.metadata.slice(21));
+        if (domain.isNothing()) return;
+        let cid = await ipfsClient.cat(domain.value.metadata.slice(21));
 
-        console.log(cid + '');
         let desc = JSON.parse(cid).description;
         let img = JSON.parse(cid).image;
 
@@ -83,14 +86,14 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
       };
       ipfsreq();
     }
-  }, [descript, name, image, meta]);
+  }, [descript, domain, image, meta]);
 
   // const descrii = () => {
   //   let desc = ipfsreq();
   //   console.log(desc);
   // };
 
-  if (name.isNothing()) return null;
+  if (domain.isNothing()) return null;
   return (
     <div
       className={`${styles.PreviewCard} border-primary border-rounded blur`}
@@ -105,7 +108,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
       </div>
       <div className={styles.Body}>
         <div>
-          <h5 className={'glow-text-white'}>{name.value.name}</h5>
+          <h5 className={'glow-text-white'}>{domain.value.name}</h5>
 
           {routes.map(([key, path], i) => (
             <a key={key} className={styles.Domain} onClick={onClickLink}>
@@ -170,7 +173,7 @@ const PreviewCard: FC<CardProps> = ({ props, name: _domain, onClickLink }) => {
         closable={false}
       >
         <Enlist
-          name={location.pathname}
+          domain={location.pathname}
           props={{
             image: image,
             close: closeEnlist,
