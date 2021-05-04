@@ -73,7 +73,7 @@ const Enlist = (props) => {
       <div className={styles.Header}>
         <h1 className={`glow-text-white`}>Enlist To Purchase</h1>
         <div>
-          <h2 className={`glow-text-white`}>0:/{props.name}</h2>
+          <h2 className={`glow-text-white`}>0://{props.props.name}</h2>
           {/* <span>By Frank Wilder</span> */}
         </div>
       </div>

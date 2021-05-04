@@ -155,7 +155,9 @@ const ChildView: FC<SubdomainsProps> = ({
         <div>
           <PreviewCard
             domain={domain.value.name}
-            props={''}
+            props={{
+              name: "test123"
+            }}
             onClickLink={onPreviewLink}
           />
 
