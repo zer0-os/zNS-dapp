@@ -69,6 +69,7 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
   const subdomains = !domain.isNothing() ? domain.value.subdomains : [];
   const [imageCount, setImageCount] = useState(0);
   const [enlist, setEnlist] = useState('');
+  const [enlistImage, setEnlistImage] = useState('');
   const closeEnlist = () => setEnlist('');
 
   //- Getting image data for all subdomains
@@ -198,7 +199,10 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
             trade: (
               <FutureButton
                 glow
-                onClick={() => setEnlist(key.name)}
+                onClick={() => {
+                  setEnlist(key.name)
+                  setEnlistImage(key.image);
+                }}
                 style={{
                   height: 36,
                   width: 118,
@@ -447,9 +451,8 @@ const TableView: FC<TProps> = ({ domain: _domain, gridView, search }) => {
         <Enlist
           domain={enlist}
           props={{
-            image: StaticEmulator(
-              enlist.split('.')[enlist.split('.').length - 1],
-            ),
+            name: enlist,
+            image: enlistImage,
             close: closeEnlist,
           }}
         />

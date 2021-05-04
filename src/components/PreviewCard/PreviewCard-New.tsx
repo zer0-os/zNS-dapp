@@ -130,7 +130,7 @@ const PreviewCard: FC<CardProps> = ({
               style={{ backgroundImage: `url()` }}
             ></div>
             <div className={styles.Member}>
-              <a> {domain.value.owner.id}</a>
+              <a href={`https://etherscan.io/address/${domain.value.minter.id}`} className="creatorText">{domain.value.minter.id.slice(0, 12)}...</a>
               <br />
               <span>Creator</span>
             </div>
@@ -141,7 +141,7 @@ const PreviewCard: FC<CardProps> = ({
               style={{ backgroundImage: `url()` }}
             ></div>
             <div className={styles.Member}>
-              <a>{domain.value.owner.id}</a>
+              <a href={`https://etherscan.io/address/${domain.value.minter.id}`} className="creatorText">{domain.value.owner.id.slice(0, 12)}...</a>
               <br />
               <span>Owner</span>
             </div>
@@ -180,6 +180,7 @@ const PreviewCard: FC<CardProps> = ({
         <Enlist
           domain={location.pathname}
           props={{
+            name: location.pathname,
             image: image,
             close: closeEnlist,
           }}

@@ -37,6 +37,7 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
   const [image, setImage] = useState('');
   const [create, setCreator] = useState(null);
   const [meta, setData] = useState(null);
+  const [title, setTitle] = useState(null);
   const [descript, setDescription] = useState(null);
   const [own, setOwner] = useState(null);
   const [isPreviewOpen, setPreviewOpen] = useState(false);
@@ -71,18 +72,21 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
 
         // let domain = name as any;
         if (domain.isNothing()) return;
-        let cid = await ipfsClient.cat(domain.value.metadata.slice(21));
+        const metadataContents = await ipfsClient.cat(domain.value.metadata.slice(21));
 
-        let desc = JSON.parse(cid).description;
-        let img = JSON.parse(cid).image;
-        let cre = JSON.parse(cid).creator;
-        let own = JSON.parse(cid).owner;
+        const metadata = JSON.parse(metadataContents)
+        let desc = metadata.description;
+        let img = metadata.image;
+        let cre = metadata.creator;
+        let own = metadata.owner;
+        let title = metadata.title;
 
-        setData(cid);
+        setData(metadataContents);
         setImage(img);
         setDescription(desc);
         setCreator(cre);
         setOwner(own);
+        setTitle(title);
       };
       ipfsreq();
     }
@@ -121,20 +125,24 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
           <div className="topmid">
             <div className="top">
               <div className="title glow-text-white">
-                {routes[routes.length - 1][0]}
+                {title ? title : domain.value.name}
               </div>
+              <div className="creatorFlex">
+                <a href={window.location.href} className="creatorText">0://{domain.value.name}</a>
+              </div>
+
               <div className="users">
                 <div className="creator">
                   <img src={wilder} alt="" className="avatar" />
                   <div className="creatorFlex">
-                    <a className="creatorText">(to be replaced)</a>
+                    <a href={`https://etherscan.io/address/${domain.value.minter.id}`} className="creatorText">{domain.value.minter.id.slice(0, 12)}...</a>
                     <div className="desc">Creator</div>
                   </div>
                 </div>
                 <div className="owner">
                   <img src={neo} alt="" className="avatar" />
                   <div className="ownerFlex">
-                    <a className="ownerText">(to be replaced)</a>
+                    <a href={`https://etherscan.io/address/${domain.value.owner.id}`} className="ownerText">{domain.value.owner.id.slice(0, 12)}...</a>
                     <div className="desc">Owner</div>
                   </div>
                 </div>
@@ -198,8 +206,9 @@ const NFTPage: FC<ProfileProps> = ({ domain: _domain }) => {
         footer={null}
       >
         <Enlist
-          domain={location.pathname}
+          domain={domain.value.name}
           props={{
+            name: domain.value.name,
             image: image,
             close: closeEnlist,
           }}
