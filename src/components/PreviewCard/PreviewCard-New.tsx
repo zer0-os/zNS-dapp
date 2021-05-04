@@ -10,6 +10,9 @@ import styles from './PreviewCard.module.css';
 import { useDomainCache } from '../../lib/useDomainCache';
 import _ from 'lodash';
 import { Link, useLocation } from 'react-router-dom';
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+import { useDomainStore } from '../../lib/useDomainStore';
 
 const templateNFT = 'assets/nft/redpill.png';
 
@@ -23,12 +26,15 @@ const PreviewCard: FC<CardProps> = ({
   domain: _domain,
   onClickLink,
 }) => {
+  const context = useWeb3React<Web3Provider>();
+  const { account } = context;
   const [enlistOpen, setEnlistOpen] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [descript, setDescription] = useState(null);
   const [image, setImage] = useState('');
   const [meta, setData] = useState(null);
   const { useDomain } = useDomainCache();
+  const { owned } = useDomainStore();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const location = useLocation();
@@ -125,7 +131,7 @@ const PreviewCard: FC<CardProps> = ({
               style={{ backgroundImage: `url()` }}
             ></div>
             <div className={styles.Member}>
-              <a>(to be replaced)</a>
+              <a>{account}</a>
               <br />
               <span>Creator</span>
             </div>
@@ -136,7 +142,7 @@ const PreviewCard: FC<CardProps> = ({
               style={{ backgroundImage: `url()` }}
             ></div>
             <div className={styles.Member}>
-              <a>(to be replaced)</a>
+              <a>{domain.value.id}</a>
               <br />
               <span>Owner</span>
             </div>
