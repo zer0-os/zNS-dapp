@@ -22,7 +22,7 @@ const Enlist = (props) => {
   const [emailAddress, setEmailAddress] = useState('');
   const [reasonForPurchase, setReasonForPurchase] = useState('');
   const [bidUsd, setBidUsd] = useState(0);
-  const [errors, setErrors] = useState([])
+  const [errors, setErrors] = useState([]);
   const [previewOpen, setPreviewOpen] = useState(false);
 
   const openPreview = () => setPreviewOpen(true);
@@ -40,12 +40,12 @@ const Enlist = (props) => {
 
   const submit = () => {
     // Validate the data before submitting
-    const e = []
-    if(!isEmail(emailAddress)) e.push('email')
-    if(!reasonForPurchase.length > 0) e.push('reason')
-    if(e.length) setErrors(e)
+    const e = [];
+    if (!isEmail(emailAddress)) e.push('email');
+    if (!reasonForPurchase.length > 0) e.push('reason');
+    if (e.length) setErrors(e);
     else {
-      setErrors([])
+      setErrors([]);
     }
   };
 
@@ -65,6 +65,7 @@ const Enlist = (props) => {
       );
 
     props.props.close();
+    document.getElementById('enlistForm').reset();
   }
 
   return (
@@ -119,7 +120,7 @@ const Enlist = (props) => {
           textTransform: 'uppercase',
           margin: '47px auto 0 auto',
         }}
-        onClick={submit}
+        onClick={sendEmail}
       >
         Submit
       </FutureButton>

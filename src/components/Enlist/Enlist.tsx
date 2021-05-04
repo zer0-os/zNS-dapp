@@ -14,6 +14,7 @@ import { useDomainCache } from '../../lib/useDomainCache';
 import Create from '../topbar/topbar/create';
 
 import StaticEmulator from '../../lib/StaticEmulator/StaticEmulator.js';
+import emailjs from 'emailjs-com';
 
 const wildToUsd = 0.5; // Just a template for now
 
@@ -47,6 +48,26 @@ const Enlist: FC<EnlistProps> = ({ props, domain: _domain }) => {
   const submit = () => {
     // Got all the form data here
   };
+
+  function sendEmail(e: any) {
+    // emailjs.init(process.env.REACT_APP_EMAIL);
+    emailjs
+      .send('service_ht5ak0n', 'template_t5hifjr', {
+        emailAddress,
+        reasonForPurchase,
+      })
+      .then(
+        (result) => {
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        },
+      );
+
+    props.props.close();
+    // document.getElementById('enlistForm').reset();
+  }
 
   useEffect(() => {
     // if statement for "base case" state varible if not set then set
@@ -84,7 +105,7 @@ const Enlist: FC<EnlistProps> = ({ props, domain: _domain }) => {
       </div>
       <hr className="glow-line" />
 
-      <form className={styles.Section}>
+      <form id="enlistForm" className={styles.Section}>
         <div style={{ display: 'flex' }}>
           <div className={styles.Inputs}>
             <TextInput
@@ -117,7 +138,7 @@ const Enlist: FC<EnlistProps> = ({ props, domain: _domain }) => {
           textTransform: 'uppercase',
           margin: '47px auto 0 auto',
         }}
-        onClick={submit}
+        onClick={sendEmail}
       >
         Submit
       </FutureButton>

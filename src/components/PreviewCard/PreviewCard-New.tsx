@@ -33,8 +33,7 @@ const PreviewCard: FC<CardProps> = ({
   const [descript, setDescription] = useState(null);
   const [image, setImage] = useState('');
   const [meta, setData] = useState(null);
-  const { useDomain } = useDomainCache();
-  const { owned } = useDomainStore();
+  const { useDomain, owned } = useDomainCache();
   const domainContext = useDomain(_domain);
   const { domain } = domainContext;
   const location = useLocation();
@@ -131,7 +130,7 @@ const PreviewCard: FC<CardProps> = ({
               style={{ backgroundImage: `url()` }}
             ></div>
             <div className={styles.Member}>
-              <a>{account}</a>
+              <a> {domain.value.owner.id}</a>
               <br />
               <span>Creator</span>
             </div>
@@ -142,7 +141,7 @@ const PreviewCard: FC<CardProps> = ({
               style={{ backgroundImage: `url()` }}
             ></div>
             <div className={styles.Member}>
-              <a>{domain.value.id}</a>
+              <a>{domain.value.owner.id}</a>
               <br />
               <span>Owner</span>
             </div>
