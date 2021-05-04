@@ -1,0 +1,16 @@
+/* Button tray */
+.tray {
+	padding: 10px 32px 12px 32px;
+	border-radius: 26px;
+	height: 51px;
+}
+
+.tray button {
+	padding: 0;
+	background-color: rgba(0,0,0,0);
+	height: 28px;
+}
+
+.tray > *:not(:first-child) {
+	margin-left: 32px;
+}

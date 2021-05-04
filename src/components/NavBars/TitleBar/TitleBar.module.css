@@ -1,0 +1,70 @@
+header {
+	/* Not sure if it's an absolute or static header */
+	z-index: 10;
+
+	width: 100%;
+	min-width: var(--width-max);
+	max-width: var(--width-max);
+
+	/* Just here to illustrate the actual size of the header */
+	/*border-bottom: 1px solid black;*/
+}
+
+/* Nav Alignments */
+
+.TitleBar {
+	position: relative;
+	display: flex;
+
+	width: 100%;
+
+	padding: 11px 17px; 
+
+	background: linear-gradient(92.24deg, rgba(0, 22, 55, 0.5) 0%, rgba(0, 63, 137, 0.265) 100%);
+	border-radius: var(--box-radius);
+	box-shadow: var(--glow-pimary);
+}
+
+.TitleBar::after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -1;
+
+	height: 100%;
+	width: 100%;
+
+	border-radius: var(--box-radius);
+	/* border: 1px solid #AF4CFF; */
+	box-shadow: var(--glow-pimary);
+	box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.TitleBar > div {
+	flex: 1;
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+}
+
+.TitleBar > div > * {
+	/* Maybe not the best solution long term but works for now
+	until we have other breakpoints designed */
+	flex-shrink: 0;
+}
+
+.TitleBar > div:not(:first-child) {
+	/*padding-top 11px;*/
+	/*padding-bottom: 1px;*/
+}
+
+.TitleBar > div:nth-child(2) {
+	justify-content: flex-end;
+}
+
+.TitleBar > div:nth-child(2) > *:not(:last-child) {
+	margin-right: 10px;
+}

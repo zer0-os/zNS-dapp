@@ -1,0 +1,58 @@
+.Enlist {
+	width: 640px;
+	padding: 40px;
+
+	background: var(--background-purple-card-20);
+}
+
+.Header {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	width: 100%;
+}
+
+.Header h1 {
+	font-size: 36px;
+	font-weight: 700;
+}
+
+.Header h2 {
+	font-size: 24px;
+}
+
+.Header > div {
+	display: flex;
+	align-items: center;
+
+	margin-top: 24px;
+}
+
+.Header > div > span {
+	margin-left: 32px;
+}
+
+.Section {
+    padding: 40px;
+}
+
+.NFT {
+    height: 224px;
+    width: 224px;
+
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.Inputs {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	margin-left: 24px;
+}
+
+.Inputs > *:not(:first-child) {
+	margin-top: 24px;
+}

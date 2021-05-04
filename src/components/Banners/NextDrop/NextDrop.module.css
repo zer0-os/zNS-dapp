@@ -1,0 +1,49 @@
+.nextDrop {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    padding: 15px 20px 16px 20px;
+
+    /* background: var(--background-purple-card-20); */
+    /* background: #7235A3; */
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 69.17%);
+    
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+.nextDrop > img {
+    height: 64px;
+    width: 64px;
+
+    margin-right: 12px;
+
+    border-radius: 50%;
+}
+
+.nextDrop h5 {
+    font-size: 24px;
+    font-weight: 700;
+
+    color: var(--color-accent-1);
+}
+
+.nextDrop h5 > span {
+    color: #9dd0ff;
+}
+
+.nextDrop p {
+    margin-top: 12px;
+    padding-bottom: 0;
+
+    font-weight: 700;
+}
+
+.nextDrop p > span {
+    color: var(--color-accent-1)
+}

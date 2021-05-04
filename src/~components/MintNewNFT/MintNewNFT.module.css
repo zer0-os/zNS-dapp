@@ -1,0 +1,115 @@
+.MintNewNFT {
+  width: 640px;
+  padding: 40px;
+
+  color: white !important;
+  background: var(--background-purple-card-20);
+}
+
+.Header {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 100%;
+}
+
+.Header h1 {
+  color: white;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+.Header h2 {
+  color: white;
+  font-size: 24px;
+}
+
+.Header > div {
+  display: flex;
+  align-items: center;
+
+  margin-top: 8px;
+}
+
+.Header > div > span {
+  margin-left: 32px;
+}
+
+.Section {
+  margin-top: 32px;
+}
+
+.Section > div > div:not(:first-of-type) {
+  margin-left: 44px;
+}
+
+.NFT {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 224px;
+  width: 224px;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  border: 1px solid #88D7FF;
+  overflow: none;
+
+  cursor: pointer;
+  transition: transform var(--animation-time-medium) ease-in-out
+}
+
+.NFT > span {
+  font-weight: bold; 
+}
+
+.NFT:hover {
+  transform: scale(1.05)
+}
+
+.NFT img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+
+.Inputs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 290px;
+}
+
+.Inputs > *:not(:first-child) {
+  margin-top: 24px;
+}
+
+.Warning {
+  margin: 42px auto;
+  width: 460px;
+  font-size: 24px;
+  line-height: 29px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.Buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 276px;
+  margin: 0 auto;
+}
+
+.Buttons > button:first-of-type {
+  background: rgba(189, 0, 255, 0.1);
+}
+
+.Buttons > button:first-of-type:before {
+  box-shadow: 0px 0px 40px 15px rgba(173, 0, 255, 0.69);
+}

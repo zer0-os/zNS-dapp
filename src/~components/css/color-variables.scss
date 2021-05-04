@@ -1,0 +1,58 @@
+//
+// initial color palette
+//
+$light-red: darken(#cf7571, 10%);
+$middle-red: #953338;
+$dark-red: #641f29;
+$dark-grey: lighten(#678293, 20%);
+$light-grey: lighten(#b8bdca, 20%);
+$sky-blue: #76b1ce;
+//
+// second color palette
+//
+$bright: hsl(265, 74%, 62%);
+$medium: darken($bright, 20%);
+$dark: darken($bright, 40%);
+$grayFont: #c2c2c9;
+$textShadow: 0px 2px 5px rgba(255, 255, 255, 0.4);
+$boxShadow: 0px 2px 5px rgba(145, 85, 230, 0.18);
+$dropShadow: 0px 2px 5px rgba(0, 0, 0, 0.18);
+$root: #b5b5b5;
+//
+// third color palette
+//
+$selectedbg: #1b1b1d;
+$darkerpurp: #2f3048;
+$darkpurp: #2c2b47;
+$lightpurp: #9958f8;
+$lightgrey: #dadcdf;
+$hzgradient: linear-gradient(
+  90deg,
+  rgba(63, 63, 63, 0.9) 0%,
+  rgba(57, 57, 57, 0.9) 100%
+);
+$hzflat: rgba(60, 60, 60, 0.5);
+$blackbg: rgba(0, 0, 0, 0.4);
+$grayModal: #b2b2b2;
+$blueBtnGrad: linear-gradient(
+  94.23deg,
+  rgba(0, 102, 197, 0.7) 0%,
+  rgba(106, 183, 255, 0.7) 100%
+);
+$shopbg: rgba(#69038d, 0.33);
+//
+// figma 0.5 mockups, 3/8/2021
+//
+$page-margin: 100px;
+$lp-border: 1px solid #bd5fff;
+$light-purple: #bd5fff;
+$dark-purple: #4e0084;
+$dark-purple2: #4d0085;
+$purple-shadow: #eb00ff;
+$light-blue: #9ed0ff;
+$med-blue: #3ca1ff;
+$dark-blue: #002f5b;
+$slate: #8d8d8d;
+$white-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+$blue-shadow: #00b2ff;
+$table-header: #a1d2ff;

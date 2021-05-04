@@ -1,0 +1,57 @@
+.offer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 646px;
+	text-align: center;
+
+	color: white;
+	background: radial-gradient(50% 50% at 50% 50%, rgba(107, 59, 209, 0) 0%, rgba(105, 3, 141, 0.33) 100%), #1B1B1D;
+	border-radius: 10px;
+}
+
+.newOffer {
+	padding: 24px;
+	background: linear-gradient(0deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), radial-gradient(50% 50% at 50% 50%, rgba(107, 59, 209, 0) 0%, rgba(105, 3, 141, 0.33) 100%);
+}
+
+.offerFiat {
+	font-size: 36px;
+	line-height: 43px;
+}
+
+.offer > div:first-of-type > h3 {
+	font-size: 36px;
+}
+
+.offer > div:first-of-type > img {
+	height: 304px;
+	width: 327px;
+	border-radius: 10px;
+	object-fit: cover;
+	margin-top: 24px;
+}
+
+.acceptDecline {
+	padding: 56px 40px 40px 40px;
+
+	background: radial-gradient(50% 50% at 50% 50%, rgba(107, 59, 209, 0) 0%, rgba(105, 3, 141, 0.33) 100%);
+}
+
+.acceptDecline > div {
+	margin-bottom: 24px;
+}
+
+.acceptDecline button {
+	width: 220px;
+}
+
+.acceptDecline button:last-of-type {
+	margin-left: 40px;
+}
+
+.acceptDecline a {
+	font-size: 14px;
+	color: #DADCDF;
+	text-decoration: underline;
+}

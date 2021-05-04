@@ -1,0 +1,53 @@
+.validatedInput {
+	position: relative;
+	width: 100%;
+}
+
+.validatedInput > div {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.validatedInput > input {
+	width: 100%;
+	min-height: 40px;
+
+	font-size: 22px;
+	color: white;
+
+	background-color: rgba(0,0,0,0);
+	border: 1px solid #828282;
+	box-sizing: border-box;
+}
+
+.valid > input {
+	border-radius: 0 20px 20px 0;
+}
+
+.validatedInput > textarea {
+	width: 100%;
+	min-height: 40px;
+
+	font-size: 22px;
+	color: white;
+
+	background-color: rgba(0,0,0,0);
+	border: 1px solid #828282;
+	box-sizing: border-box;
+}
+
+.valid > textarea {
+	border-radius: 0 0 20px 0;
+}
+
+.valid > div {
+	height: 41px;
+	width: 41px;
+
+	background: url('./assets/tick.svg'), linear-gradient(94.23deg, rgba(134, 197, 0, 0.7) 0%, rgba(154, 255, 106, 0.7) 100%);
+	border-radius: 86px;
+
+	background-position: center;
+	background-repeat: no-repeat;
+}

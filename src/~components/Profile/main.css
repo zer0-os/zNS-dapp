@@ -1,0 +1,319 @@
+/*
+ * @author Brett Collins
+ * 
+ * Search:
+ *  - Fonts
+ *  - Variables
+ *  - Default HTML Elements
+ *	- Custom HTML Elements
+ *	- Borders
+ *	- Glows / Shadows
+ *	- Effects
+ */
+
+/*
+ * Fonts
+ * -- Imports for fonts - application of fonts does not belong here
+ *
+ */
+/* @font-face {
+	font-family: 'Eurostile';
+	src: local('Eurostile'), url('../fonts/Eurostile-Reg.otf') format('opentype');
+}
+
+@font-face {
+	font-family: 'Eurostile';
+	font-weight: 500;
+	src: local('Eurostile'), url('../fonts/Eurostile-Med.otf') format('opentype');
+}
+
+@font-face {
+	font-family: 'Eurostile';
+	font-weight: 700;
+	src: local('Eurostile'), url('../fonts/Eurostile-Bol.otf') format('opentype');
+} */
+
+/* 
+ * Variables
+ * -- The design is likely to change, so let's use variables where we can
+ * to make changes a bit easier.
+ *
+ */
+:root {
+    --font-size-default: 16px;
+	--font-family: 'Eurostile', sans-serif;
+
+	--blur: blur(50px);
+	--blur-2: blur(20px);
+
+    --color-primary: #8C00FF;
+	--color-primary-lighter-2: #e5baff;
+    --color-accent-1: #3CA1FF;
+    --color-accent-1-50:rgba(60,161,255,0.5); 
+    --color-accent-1-dark: #1E5180;
+	--color-accent-1-darker: #002F5B;
+	--color-accent-1-medium-10: rgb(0,209,255,0.1);
+	--color-accent-1-light: #A1D2FF;
+	--color-accent-1-lighter: #9ED0FF;
+    --color-accent-2: #EB00FF;
+    --color-success: #3CC13B;
+    --color-warning: #F3BB1C;
+    --color-error: #F03738;
+    --color-grey: #808080;
+	--color-text-primary: #FFFFFF;;
+
+	--color-green-2: #27AE60;
+
+	--color-red: #EB5757;
+
+    --background-primary-button-fill: linear-gradient(148deg, #00407C 20.93%, #00203F 82.47%);
+    --background-secondary-button-fill: #1E5180;
+
+    --background-purple-card: #4E0084;
+    --background-purple-card-20: rgba(78,0,132,0.2);
+	--background-purple-light-20: rgba(190,96,255,0.2);
+
+	--background-field-bg: linear-gradient(94.23deg, rgba(60, 161, 255, 0.2) 0%, rgba(30, 81, 128, 0.2) 100%);
+
+	--background-blue-deck: radial-gradient(56.93% 56.93% at 50% 50%, rgba(206, 183, 255, 0) 0%, rgba(103, 79, 255, 0.2) 100%);
+    --background-blue-card: linear-gradient(92.24deg, rgba(0, 102, 255, 0.2) 0%, rgba(0, 63, 137, 0.2) 100%);
+
+    --background-primary: rgba(78, 0, 132, 0.2);
+    --background-primary-gradient: linear-gradient(92.24deg, rgba(0, 22, 55, 0.5) 0%, rgba(0, 63, 137, 0.265) 100%);
+    --background-accent-1-gradient: linear-gradient(94.23deg, rgba(0, 123, 237, 0.2) 0%, rgba(0, 83, 160, 0.2) 100%);
+
+    --box-radius: 16px;
+
+	--width-max: 1250px;
+
+    --stroke-primary-button: linear-gradient(180deg, #5F8CFF 0%, #002584 100%);
+
+    --glow-primary: drop-shadow(0px 0px 10px 0px #EB00FF);
+    --glow-text-blue: 0px 0px 10px rgba(60, 161, 255, 0.7);
+    --glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
+	--glow-text-white-big: 0px 0px 15px rgba(255, 255, 255, 1), 0px 0px 15px rgba(255, 255, 255, 1), 0px 0px 15px rgba(255, 255, 255, 1); 
+	--glow-text-blue-big: 0px 0px 15px rgba(60, 161, 255, 1), 0px 0px 15px rgba(60, 161, 255, 1), 0px 0px 15px rgba(60, 161, 255, 1);
+
+    --animation-time-short: 0.1s;
+    --animation-time-medium: 0.3s;
+    --animation-time-long: 0.7s;
+}
+
+/*
+ *
+ * Default HTML Elements 
+ *
+ */
+
+body, button, input {
+	font-family: var(--font-family);
+	letter-spacing: 0.2px;
+}
+
+body {
+	background-color: #120628;
+	/* background-image: url('../assets/zns-bg.png'); */
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	position: relative;
+	height: auto;
+	margin: 0 auto;
+	min-width: 1247px;
+	max-width: 1247px;
+	margin-top: 29px;
+	/* padding-top: 123px; */
+	/* padding-bottom: 123px; */
+
+	/* Currently the only breakpoint in Figma */
+	min-width: 1440px;
+
+	color: var(--color-text-primary);
+
+	/* Temporary */
+	-webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+h1 {
+	font-size: 22px;
+}
+
+a {
+	color: var(--color-accent-1);
+	transition: text-shadow var(--animation-time-short) ease-in-out;
+}
+
+a:hover {
+	color: var(--color-accent-1);
+	text-shadow: var(--glow-text-blue-big);
+}
+
+a.alt-link {
+	color: white; 
+}
+
+a.alt-link:hover {
+	color: white;
+	text-shadow: var(--glow-text-white-big);
+}
+
+/*
+ *
+ * Custom HTML Elements 
+ *
+ */
+
+/* .content {
+	display: flex;
+	margin-left: 180px;
+	margin-top: 106px;
+	padding: 25px;
+} */
+
+.main {
+	flex: 1;
+}
+
+.page-spacing {
+	/* position: relative; */
+
+	max-width: var(--width-max);
+	min-width: var(--width-max);
+	margin: 0 auto;
+}
+
+.no-select {
+	-webkit-user-select: none; /* Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+.glow-line {
+	position: relative;
+	height: 1px;
+	width: 100%;
+	background-color: #6E10BB;
+	border: none;
+}
+
+
+.glow-line::before {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	height: 1px;
+	width: 8px;
+	background-color: #E0BAFF;
+}
+
+.glow-line::after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	height: 1px;
+	width: 8px;
+	background-color: #E0BAFF;
+}
+
+/*
+ *
+ * Borders 
+ *
+ */
+
+.border-primary {
+	border: 1px solid #9340d0;
+  	border-collapse: separate;
+    box-shadow: 0px 0px 10px 0px rgba(235,0,255,0.4);
+}
+
+.border-pink-glow {
+	border: 1px solid #e5baff;
+	box-shadow: 0px 0px 10px 0px #8d0099;
+}
+
+.border-rounded {
+	border-radius: 16px;
+  	border-collapse: separate;
+}
+
+.border-blue {
+	border: 1px solid #88D7FF;
+}
+
+/*
+ *
+ * Glows / Shadows
+ *
+ */
+
+.glow-box-accent-2 {
+	filter: drop-shadow(0px 0px 10px var(--color-accent-2));
+}
+
+.glow-text-white {
+	text-shadow: var(--glow-text-white)
+}
+
+.glow-text-blue {
+	text-shadow: var(--glow-text-blue)
+}
+
+/*
+ *
+ * Effects
+ *
+ */
+
+/* Blurs the background of the div */
+.blur {
+	backdrop-filter: var(--blur);
+	backdrop-webkit-filter: var(--blur);
+	backdrop-moz-filter: var(--blur);
+	backdrop-o-filter: var(--blur);
+	backdrop-ms-filter: var(--blur);
+}
+
+/* 
+ *
+ * Antd Modal Fixes
+ *
+ */
+
+.ant-modal-mask {
+	backdrop-filter: var(--blur-2);
+	background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0.01) 0%, rgba(0, 0, 0, 0.01) 100%);
+}
+
+.ant-modal-content {
+	background: none;
+	box-shadow: none;
+}
+
+.ant-modal-wrap {
+}
+
+.ant-modal-body {
+	padding: 0;
+}
+
+.ant-modal {
+	/* padding-bottom: 128px; */
+	/* width: auto !important; */
+}
+
+.ant-modal-body > img {
+	max-width: 100%;
+}

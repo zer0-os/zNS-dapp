@@ -1,57 +1,26 @@
 .wallet {
 	position: relative;
-
-	padding: 7px 54px;
-
-	background: var(--background-blue-card);
-	border: 1px solid var(--color-accent-1);
-	border-radius: 32px;
-}
-
-.icon {
-	position: absolute;
-	top: 12px;
-	left: 24px;
-	width: 14px;
-	height: 24px;
-
-	background-image: url("./assets/eth.svg");
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
-}
-
-.stack {
-	display: flex;
-	flex-direction: column;
-
-	height: 32px;
-}
-
-.wallet span {
-	color: var(--color-accent-1);
-	font-size: 14px;
-	line-height: 14.4px;
-	font-weight: 400;
 }
 
 .wallet input {
-	width: 100%;
-	margin-top: 2px;
-	border-radius: 30px;
-	
-	background: none;
+	width: 362px;
+	padding: 17px 32px 13px 32px;
 
-	font-size: 16px;
-	font-weight: 400;
-	line-height: 19px;
 	text-align: left;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 21px;
+
+	background: rgba(0, 0, 0, 0.8);
+	color: #DADCDF;
+
+	border-radius: 30px;
 }
 
 .wallet button {
 	position: absolute;
-	top: 50%;
-	right: 19px;
+	top: 12px;
+	right: 27px;
 
 	padding: 0;
 	margin: 0;
@@ -63,6 +32,4 @@
 	background-position: center;
 	background-size: cover;
 	background-color: rgba(0,0,0,0);
-
-	transform: translateY(-50%);
 }

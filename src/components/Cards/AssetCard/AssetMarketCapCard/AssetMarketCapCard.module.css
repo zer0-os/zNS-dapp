@@ -1,0 +1,20 @@
+.price {
+    margin-top: 16px;
+
+    font-size: 24px;
+}
+
+.bottom {
+    margin-top: 15px;
+
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.positive {
+    color: var(--color-success);
+}
+
+.negative {
+    color: var(--color-error);
+}

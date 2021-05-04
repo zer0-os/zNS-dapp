@@ -1,0 +1,46 @@
+.SideBar {
+	height: 100vh;
+	width: 54px;
+
+	display: flex;
+	flex-direction: column;	
+	justify-content: center;
+
+	position: fixed;
+	top: 0;
+	left: 50%;
+	transform: translateX(-707px)
+}
+
+/* Navigator Styling */
+.Navigator {
+	border-radius: 27px;
+	padding: 7px 5px;
+
+	background-color: var(--background-purple-card-20);
+}
+
+.Icons {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.Icons li {
+	height: 44px;
+	width: 44px;
+
+	border-radius: 50%;
+
+	background-color: var(--color-accent-1-medium-10);
+	background-size: 50%;
+	background-position: center;
+	background-repeat: no-repeat;
+
+	cursor: pointer;
+}
+
+.Icons li:not(:first-child) {
+	margin-top: 12px;
+}

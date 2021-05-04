@@ -1,7 +1,7 @@
 .NFTCard {
     width: 388px;
+    padding: 18px 20px;
 
-    overflow: hidden;
     background-color: var(--background-purple-light-20)
 }
 
@@ -29,7 +29,7 @@
     margin-left: 8px;
 }
 
-.NFTCard h5 {
+.NFTCard > h5 {
     margin-top: 12px;
 
     color: white;
@@ -37,8 +37,9 @@
 }
 
 .NFT {
-    width: 100%;
+    width: 348px;
     height: 348px;
+    margin-top: 16px;
 
     background: var(--background-blue-card);
     background-size: cover;
@@ -46,21 +47,16 @@
     background-repeat: no-repeat;
 }
 
-.Details {
-    padding: 18px 20px 0px 20px;
-}
-
 .Foot {
     display: flex;
     justify-content: space-between;
-
-    padding: 16px 20px 18px 20px;
 }
 
 .Foot > div {
     display: flex;
     flex-direction: column;
 
+    margin-top: 16px;
 }
 
 .Foot > div:not(:first-child) {

@@ -1,0 +1,27 @@
+#ownedContainer {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: left;
+  left: 20%;
+  margin: 15px, none, 15px;
+  padding: 15px;
+  border: 1px black solid;
+  min-width: 480px;
+}
+
+.owned-btn {
+  background-color: transparent;
+  color: lightgray !important;
+  width: 100px;
+  height: 50px;
+  border: none;
+  font-size: 14px;
+  border-radius: 100px;
+  transition: 0.6s;
+  overflow: hidden;
+  cursor: pointer;
+  &:hover {
+    color: white !important;
+  }
+}

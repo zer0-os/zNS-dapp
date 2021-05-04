@@ -1,0 +1,136 @@
+.DomainTableContainer {
+	width: 100%;
+	background: var(--background-purple-card-20);
+}
+
+.DomainTable {
+	width: 100%;
+}
+
+/* Search header */
+.searchHeader {
+	display: flex;
+
+	width: 100%;
+	padding: 15px 20px;
+	
+	align-items: center;
+}
+
+.searchHeaderButtons {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.search {
+	flex-grow: 1;
+}
+
+/* Table Header */
+
+.DomainTable th {
+	color: var(--color-accent-1-light);
+	font-weight: 700;
+}
+
+/* Table */
+.DomainTable tbody {
+	font-weight: 500;
+}
+
+.DomainTable th, .DomainTable td {
+	padding: 11px;
+	vertical-align: top;
+}
+
+.DomainTable th:first-child, .DomainTable td:first-child {
+	padding-left: 30px;
+}
+
+.DomainTable th:last-child, .DomainTable td:last-child {
+	padding-right: 30px;
+}
+
+.DomainTable > tbody > tr {
+	cursor: pointer;
+	transition: background var(--animation-time-short) linear;
+}
+
+.DomainTable > tbody > tr:hover {
+	background: var(--background-purple-card-20);
+}
+
+.ticker {
+	color: var(--color-accent-1-light);
+	font-weight: 700;
+}
+
+.positive {
+	color: var(--color-green-2);
+}
+
+.negative {
+	color: var(--color-red);
+}
+
+.positive > div, .negative > div {
+	content: ' ';
+	width: 0; 
+    height: 0; 
+
+	margin-top: 4px;
+	margin-right: 4px;
+}
+
+.positive > div {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid var(--color-green-2);
+}
+
+.negative > div {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--color-red);	
+}
+
+/* Table alignments */
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.center > * {
+	margin: 0 auto;
+}
+
+.right {
+	text-align: right;
+}
+
+.right > * {
+	float: right;
+}
+
+.Loading {
+	padding: 32px;
+}
+
+.Loading > div {
+	margin: 0 auto;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border-top: 2px solid var(--color-accent-1);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

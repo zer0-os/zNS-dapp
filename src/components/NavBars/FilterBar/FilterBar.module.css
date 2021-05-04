@@ -1,0 +1,28 @@
+.FilterBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 110px;
+
+    background-color: var(--background-purple-card-20);
+
+    border-radius: var(--box-radius);
+}
+
+.FilterBar > ul {
+    display: flex;
+
+    width: 100%;
+
+    padding: 0 20px 12px 20px;
+}
+
+.FilterBar > ul > li:not(:first-child) {
+    margin-left: 28px;
+}
+
+.FilterBar > ul button {
+    padding-left: 0;
+    padding-right: 0;
+}
