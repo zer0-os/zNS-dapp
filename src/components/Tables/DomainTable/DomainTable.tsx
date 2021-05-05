@@ -25,9 +25,10 @@ type DomainTableProps = {
     isGridView: boolean;
     isRootDomain: boolean;
     style?: React.CSSProperties;
+    empty?: boolean;
 }
 
-const DomainTable: React.FC<DomainTableProps> = ({ domains, isGridView, isRootDomain, style }) => {
+const DomainTable: React.FC<DomainTableProps> = ({ domains, isGridView, isRootDomain, style, empty }) => {
 
     const history = useHistory()
 
@@ -46,8 +47,8 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isGridView, isRootDo
             <div className={styles.searchHeader}>
                 <SearchBar style={{width: 884}} />
                 <div className={styles.searchHeaderButtons}>
-                    <IconButton toggleable={true} icon={list} style={{height: 32, width: 32}} />
-                    <IconButton toggleable={true} icon={grid} style={{height: 32, width: 32}} />
+                    <IconButton toggleable={true} iconUri={list} style={{height: 32, width: 32}} />
+                    <IconButton toggleable={true} iconUri={grid} style={{height: 32, width: 32}} />
                 </div>
             </div>
             <table className={styles.DomainTable}>
@@ -64,21 +65,25 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isGridView, isRootDo
                             </tr>
                         </thead>
                         <tbody>
-                            { domains.map((d, i) => 
+                            { domains.map((d, i) =>
                                 <tr onClick={() => navigateTo(d.domainName)} key={i}>
                                     <td className={styles.left}>{i + 1}</td>
-                                    <td className={styles.left}><div style={{display: 'flex'}}><Image style={{width: 36, height: 36, marginRight: 8}} src='' /><span>{d.domainName}</span> <span className={styles.ticker}>????</span></div></td>
+                                    {/* TODO: Div can not be a child of table */}
+                                    <td className={styles.left}><div style={{display: 'flex'}}><Image style={{width: 36, height: 36, marginRight: 8}} src='' /><span>{d.domainName}</span> <span style={{paddingLeft: 6}} className={styles.ticker}>{d.domainName.substring(0, 4).toUpperCase()}</span></div></td>
                                     <td className={styles.center}>{`$${Number(d.lastBid.toFixed(2)).toLocaleString()}`}</td>
                                     <td className={styles.center}>{Number(d.numBids).toLocaleString()}</td>
                                     <td className={styles.center}>{`${Number(d.lastSalePrice.toFixed(2)).toLocaleString()} WILD`}</td>
-                                    <td className={styles.center}><FutureButton onClick={() => console.log('trade', d)}>{`$${Number(d.tradePrice.toFixed(2)).toLocaleString()}`}</FutureButton></td>
+                                    <td className={styles.center}><FutureButton glow onClick={() => console.log('trade', d)}>{`$${Number(d.tradePrice.toFixed(2)).toLocaleString()}`}</FutureButton></td>
                                 </tr>
                             ) }
                         </tbody>
                     </>
                 }
-                { !domains.length &&
+                { !domains.length && !empty &&
                     <div className={styles.Loading}><div></div></div>
+                }
+                {  empty &&
+                    <div className={styles.Empty}><span>This NFT has no children!</span></div> 
                 }
             </table>
         </div>

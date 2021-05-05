@@ -5,8 +5,9 @@ import { Link, useLocation } from 'react-router-dom'
 
 //- Web3 Imports
 import { useDomainCache } from 'lib/useDomainCache'
-import { useWeb3React } from '@web3-react/core'
+import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'
+import { useEagerConnect, useInactiveListener } from 'lib/hooks/provider-hooks';
 
 //- Library Imports
 import { randomNumber } from 'lib/Random'
@@ -16,6 +17,7 @@ import {
     AssetGraphCard,
     AssetMarketCapCard,
     AssetPriceCard,
+    ConnectToWallet,
     FutureButton,
     FilterBar,
     HorizontalScroll,
@@ -23,6 +25,7 @@ import {
     TextButton,
     TitleBar,
     NextDrop,
+    IconButton,
     Overlay,
     Profile,
     SearchBar,
@@ -36,16 +39,24 @@ type ZNSProps = {
 
 const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
+    //- Page State
+    const [ overlay, setOverlay ] = useState('')
     const [ isGridView, setIsGridView ] = useState(false)
+    const [ isLoading, setIsLoading ] = useState(true)
 
     //- Domain State
     const [ currentDomainContext, setCurrentDomainContext ] = useState(null)
     
-    //- MVP Version 
+    //- MVP Version
     const [ mvpVersion, setMvpVersion ] = useState(1)
     const mvpFilterSelect = (mvp: string) => setMvpVersion(mvp === 'MVP 1' ? 1 : 3)
 
-    //- Web3 
+    //- Web3 Wallet Data
+    const walletContext = useWeb3React<Web3Provider>()
+    const { active, deactivate } = walletContext
+    // const triedEagerConnect = useEagerConnect() // This line will try auto-connect to the last wallet
+
+    //- Web3 Domain Data 
     const { useDomain } = useDomainCache()
     const domainContext = useDomain(domain.charAt(0) === '/' ? domain.substring(1) : domain)
     const { data } = domainContext
@@ -71,25 +82,45 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                 return s
             })
             setTableData(d)
+            setIsLoading(false)
         }
     }, [ data ])
 
     useEffect(() => {
         setTableData([])
+        setIsLoading(true)
     }, [ domain ])
 
     return (
         <div className='page-spacing'>
+            { overlay.length > 0 && 
+                <Overlay onClose={() => setOverlay('')}>
+                    { overlay === 'ConnectToWallet' && <ConnectToWallet onConnect={() => setOverlay('')} /> }
+                </Overlay>
+            }
             <FilterBar onSelect={mvpFilterSelect} filters={['MVP 1', 'MVP 3']}>
             <TitleBar>
                 <div>
-                    <Link to={''}>0:/</Link>
-                    { domain.split('.').map((part, i) => 
-                        <Link to={''}>{i > 0 ? `.${part}` : part}</Link>
+                    {/* TODO: Split this into its own component */}
+                    <Link style={{textDecoration: 'none', color: 'white'}} to={''}>0://</Link>
+                    { domain.split('.').map((part, i) =>
+                        i === 0 ?
+                        <Link style={{textDecoration: 'none', color: 'white'}} to={part}>{ part.charAt(0) === '/' ? part.substring(1, part.length) : part }</Link>
+                        : 
+                        <Link style={{textDecoration: 'none', color: 'white'}} to={domain.split('.').slice(0, i + 1).join('.')}>{i > 0 ? `.${part}` : part}</Link>
                     ) }
                 </div>
                 <div>
-                    <FutureButton glow onClick={() => console.log('hello')}>Connect To Wallet</FutureButton>
+                    { !active && 
+                        <FutureButton glow onClick={() => setOverlay('ConnectToWallet')}>Connect To Wallet</FutureButton>
+                    }
+                    { active &&
+                        <> 
+                            <FutureButton glow onClick={() => console.log('hello')}>Mint New NFT</FutureButton>
+                            <IconButton onClick={() => console.log('hello')} style={{height: 32, width: 32, borderRadius: '50%'}} iconUri={'assets/dp/fake01.jpg'} />
+                            <IconButton onClick={() => console.log('open')} style={{height: 32, width: 32, borderRadius: '50%'}} iconUri={''} />
+                        </>
+                    }
                 </div>
             </TitleBar>
             </FilterBar>
@@ -130,21 +161,31 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                     />
                 </>
             }
-            {
-                !data.isNothing() && subdomains.length > 0 &&
+            { !isRoot && 
+                <PreviewCard
+                    style={{marginTop: 16}}
+                    nftImageData={'hello'}
+                    name='Brett'
+                    domain={domain}
+                    description='brett'
+                    creatorId={'## Creator ID'}
+                    ownerId={'## Owner ID'}
+                    isLoading={isLoading}
+                />
+            }
                 <DomainTable
                     isGridView={isGridView}
                     domains={tableData}
                     isRootDomain={isRoot}
                     style={{marginTop: 16}}
+                    empty={(!data.isNothing() && subdomains.length === 0)}
                 />
-            }
-            {
+            {/* {
                 !data.isNothing() && subdomains.length === 0 &&
                 <div style={{marginTop: 24, width: '100%'}}>
                     <h1 style={{textAlign: 'center'}}>This domain has no children, render NFT page here</h1>
                 </div>
-            }
+            } */}
         </div>
     )
 }

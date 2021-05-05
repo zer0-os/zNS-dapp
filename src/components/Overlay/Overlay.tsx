@@ -1,9 +1,15 @@
 import React from 'react'
 
-const Overlay = ({ close, children }) => {
+type OverlayProps = {
+	onClose: () => void;
+	children: React.ReactNode;
+}
 
-	const closeOverlay = (e) => {
-		if(e.target.classList.value.indexOf('overlay') > -1) close()
+const Overlay: React.FC<OverlayProps> = ({ onClose, children }) => {
+
+	const closeOverlay = (e: React.MouseEvent) => {
+		const target = e.target as HTMLInputElement
+		if(target.classList.value.indexOf('overlay') > -1) onClose()
 	}
 
 	return (

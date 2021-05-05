@@ -130,6 +130,12 @@
     animation: spin 1s linear infinite;
 }
 
+.Empty {
+	padding: 32px;
+	text-align: center;
+	font-weight: 700;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

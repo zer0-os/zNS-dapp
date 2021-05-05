@@ -169,6 +169,7 @@ h1 {
 .border-primary {
 	border: 1px solid var(--color-primary);
   	border-collapse: separate;
+	box-shadow: 0 0 10px 0 rgb(235 0 255 / 40%);
 }
 
 .border-rounded {
