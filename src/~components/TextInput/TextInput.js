@@ -11,6 +11,8 @@ const TextInput = (props) => {
     if(props.onChange) props.onChange(text.target.value)
   }
 
+  console.log(props.text)
+
   return (
     <>
       {props.multiline && (
@@ -22,6 +24,7 @@ const TextInput = (props) => {
             resize: props.resizable ? 'vertical' : 'none',
           }}
           placeholder={props.placeholder}
+          value={props.text}
         />
       )}
       {!props.multiline && (
@@ -31,6 +34,7 @@ const TextInput = (props) => {
           onChange={handleChange}
           style={props.style}
           placeholder={props.placeholder}
+          value={props.text}
         />
       )}
     </>
