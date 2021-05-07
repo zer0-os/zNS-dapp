@@ -20,12 +20,12 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ nftImageData, style, name, do
     return(
         <div 
             className={`${styles.PreviewCard} border-primary border-rounded blur`}
-            style={style}
+            style={style ? style : {}}
         >
             {
                 isLoading &&
-                <div>
-                    Loading
+                <div className={styles.Loading}>
+                    <div className={styles.Spinner}></div>
                 </div>
             }
             { !isLoading &&
