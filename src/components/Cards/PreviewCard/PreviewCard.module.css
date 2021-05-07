@@ -51,6 +51,7 @@
 
 .Asset > img {
     width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 
@@ -60,7 +61,7 @@
     justify-content: space-between;
 
     width: 562px;
-    margin: 10px 40px 12px 36px;
+    margin: 27px 40px 12px 36px;
 }
 
 .Body h5 {
