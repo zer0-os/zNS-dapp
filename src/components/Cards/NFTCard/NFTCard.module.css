@@ -40,11 +40,6 @@
     width: 348px;
     height: 348px;
     margin-top: 16px;
-
-    background: var(--background-blue-card);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
 
 .Foot {

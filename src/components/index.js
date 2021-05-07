@@ -23,7 +23,7 @@ export { default as AssetCard } from './Cards/AssetCard/AssetCard'
 export { default as AssetGraphCard } from './Cards/AssetCard/AssetGraphCard/AssetGraphCard'
 export { default as AssetMarketCapCard } from './Cards/AssetCard/AssetMarketCapCard/AssetMarketCapCard'
 export { default as AssetPriceCard } from './Cards/AssetCard/AssetPriceCard/AssetPriceCard'
-export { default as NFTCard } from './Cards/NFTCard/NFTCard.js'
+export { default as NFTCard } from './Cards/NFTCard/NFTCard'
 export { default as PreviewCard } from './Cards/PreviewCard/PreviewCard'
 
 //- Inputs
