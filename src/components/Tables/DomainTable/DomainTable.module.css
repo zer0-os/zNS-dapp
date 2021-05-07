@@ -24,6 +24,10 @@
 	justify-content: flex-end;
 }
 
+.searchHeaderButtons > *:not(:last-of-type) {
+	margin-right: 12px;
+}
+
 .search {
 	flex-grow: 1;
 }
@@ -41,8 +45,8 @@
 }
 
 .DomainTable th, .DomainTable td {
-	padding: 11px;
-	vertical-align: top;
+	padding: 16px 11px;
+	vertical-align: middle;
 }
 
 .DomainTable th:first-child, .DomainTable td:first-child {
@@ -139,4 +143,30 @@
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-  }
+}
+
+/* Grid */
+
+.Grid {
+	width: 100%;
+	padding-top: 11px;
+	padding-bottom: 24px;
+
+	display: grid;
+	justify-content: space-evenly;
+	grid-template-columns: repeat(3,388px);
+    grid-gap: 24px 0;
+
+
+	list-style: none;
+}
+
+.Grid > li {
+	cursor: pointer;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Grid > li:hover {
+	transform: scale(1.03);
+}
