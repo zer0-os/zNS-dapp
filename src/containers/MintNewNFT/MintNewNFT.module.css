@@ -38,12 +38,32 @@
 }
 
 .NFT {
-    height: 224px;
-    width: 224px;
+    display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 224px;
+	width: 224px;
 
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+
+	border: 1px solid #88D7FF;
+	overflow: none;
+
+	cursor: pointer;
+	transition: transform var(--animation-time-medium) ease-in-out, border-color var(--animation-time-medium) ease-in-out;
+}
+
+.NFT:hover {
+	transform: scale(1.05)
+}
+
+.NFT > img {
+	width: 100%;
+	height: 100%;
+	border-radius: inherit;
 }
 
 .Inputs {
