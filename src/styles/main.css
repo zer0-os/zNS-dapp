@@ -99,14 +99,14 @@
  *
  */
 
-body, button, input {
+body, button, input, textarea {
 	font-family: var(--font-family);
 	letter-spacing: 0.2px;
 }
 
 body {
 	background-color: #120628;
-	background-image: url('../assets/zns-bg.png');
+	background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../assets/zns-bg.png');
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -151,6 +151,7 @@ h1 {
 	max-width: var(--width-max);
 	min-width: var(--width-max);
 	margin: 0 auto;
+	padding-top: 110px;
 }
 
 .no-select {
