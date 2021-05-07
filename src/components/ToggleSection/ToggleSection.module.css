@@ -15,3 +15,11 @@
 .Header > img {
     transition: transform var(--animation-time-short) ease-in-out;
 }
+
+.Open {
+    display: block;
+}
+
+.Closed {
+    display: none;
+}
