@@ -6,10 +6,11 @@ type IconButtonProps = {
     toggleable?: boolean;
     iconUri: string;
     style?: React.CSSProperties;
+    toggled?: boolean
     onClick: () => void;
 }
 
-const IconButton: React.FC<IconButtonProps> = ({ toggleable, iconUri, style, onClick }) => {
+const IconButton: React.FC<IconButtonProps> = ({ toggleable, toggled, iconUri, style, onClick }) => {
 
     const [ selected, setSelected ] = useState(false)
 
@@ -22,7 +23,7 @@ const IconButton: React.FC<IconButtonProps> = ({ toggleable, iconUri, style, onC
         <button 
             style={style}
             onClick={handleClick}
-            className={`${styles.iconButton} ${ toggleable && selected ? styles.selected : '' }`}
+            className={`${styles.iconButton} ${ toggleable && selected || toggled ? styles.selected : '' }`}
         >
             <img src={iconUri} />
         </button>
