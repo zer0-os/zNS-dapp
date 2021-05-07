@@ -17,7 +17,7 @@ const AssetPriceCard: React.FC<AssetPriceCardProps> = ({ style, title, price }) 
             style={style}
             title={title}
         >
-            <h5 className={`${styles.price} glow-text-white`}>{`$${price.toFixed(2)}`}</h5>
+            <h5 className={`${styles.price} glow-text-white`}>{`$${Number(price.toFixed(2)).toLocaleString()}`}</h5>
         </AssetCard>
     )
 }
