@@ -67,6 +67,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
             </ul>
             <div className={WalletStyles.footer}>
                 <p>New to Ethereum?<br/><a href='https://ethereum.org/en/wallets/' target='_blank'>Learn more about wallets</a></p>
+				<h4>The Web3 part of this modal is done, which is the proof of concept. I need to press on and do the rest of the Web3 stuff before coming back to fix these styles, but they will be done ASAP</h4>
             </div>
         </div>
     )
