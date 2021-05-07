@@ -7,6 +7,10 @@
 	width: 100%;
 }
 
+.Table {
+	width: 100%;
+}
+
 /* Search header */
 .searchHeader {
 	display: flex;
@@ -35,7 +39,7 @@
 /* Table Header */
 
 .DomainTable th {
-	color: var(--color-accent-1-light);
+	color: var(--color-primary-lighter-3);
 	font-weight: 700;
 }
 
@@ -51,6 +55,8 @@
 
 .DomainTable th:first-child, .DomainTable td:first-child {
 	padding-left: 30px;
+	padding-right: 0;
+	width: 50px;
 }
 
 .DomainTable th:last-child, .DomainTable td:last-child {
@@ -135,7 +141,7 @@
 }
 
 .Empty {
-	padding: 32px;
+	padding: 32px 32px 40px 32px;
 	text-align: center;
 	font-weight: 700;
 }

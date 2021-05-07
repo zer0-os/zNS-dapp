@@ -2,10 +2,13 @@ import React from 'react'
 
 import styles from './PreviewCard.module.css'
 
-import { FutureButton } from 'components'
+import {
+    FutureButton, 
+    Image 
+} from 'components'
 
 type PreviewCardProps = {
-    nftImageData: string;
+    image: string;
     style?: React.CSSProperties;
     name: string;
     domain: string;
@@ -15,7 +18,7 @@ type PreviewCardProps = {
     isLoading: boolean;
 }
 
-const PreviewCard: React.FC<PreviewCardProps> = ({ nftImageData, style, name, domain, description, creatorId, ownerId, isLoading }) => {
+const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, description, creatorId, ownerId, isLoading }) => {
 
     return(
         <div 
@@ -32,12 +35,12 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ nftImageData, style, name, do
                 <>
                     <div 
                     className={styles.Asset}
-                    style={{backgroundImage: `url(${nftImageData})`}}
                     >
+                        <Image src={image} />
                     </div>
                     <div className={styles.Body}>
                         <div>
-                            <h5 className={'glow-text-blue'}>{name}</h5>
+                            <h5>{name ? name : domain.split('/')[1]}</h5>
                             <span className={styles.Domain}>{domain}</span>
                         </div>
                         <p>{description}</p>

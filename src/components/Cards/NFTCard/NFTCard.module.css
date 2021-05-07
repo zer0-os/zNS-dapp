@@ -1,8 +1,11 @@
 .NFTCard {
     width: 388px;
-    padding: 18px 20px;
 
     background-color: var(--background-purple-light-20)
+}
+
+.Body {
+    padding: 18px 20px;
 }
 
 .Creator {
@@ -37,9 +40,11 @@
 }
 
 .NFT {
-    width: 348px;
+    width: 100%;
     height: 348px;
     margin-top: 16px;
+    border-radius: var(--box-radius) var(--box-radius) 0 0;
+    object-fit: cover;
 }
 
 .Foot {

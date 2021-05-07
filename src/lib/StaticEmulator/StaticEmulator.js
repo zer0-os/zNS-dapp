@@ -15,8 +15,8 @@ const images = [ img1, img2, img3, img4, img5, img6, img7, img8 ]
 
 const StaticEmulator = (id) => {
     console.log(id)
+    console.log(randomIndexFromSeed(id))
     const randIndex = Math.round(randomIndexFromSeed(id))
-    console.log(randIndex)
     return images[randIndex % images.length]
 }
 

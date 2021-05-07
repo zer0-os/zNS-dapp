@@ -44,6 +44,7 @@
 	--font-family: 'Eurostile', sans-serif;
 
     --color-primary: #8C00FF;
+	--color-primary-lighter-3: #e5baff;
     --color-accent-1: #3CA1FF;
     --color-accent-1-50:rgba(60,161,255,0.5); 
     --color-accent-1-dark: #1E5180;
@@ -152,6 +153,7 @@ h1 {
 	min-width: var(--width-max);
 	margin: 0 auto;
 	padding-top: 110px;
+	padding-bottom: 110px;
 }
 
 .no-select {

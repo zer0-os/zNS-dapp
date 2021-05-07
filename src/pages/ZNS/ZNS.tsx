@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { Link, useLocation } from 'react-router-dom'
+import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
 import { useDomainCache } from 'lib/useDomainCache'
@@ -36,6 +37,15 @@ import {
     MintNewNFT
 } from 'containers'
 
+//- IPFS Config
+// TODO: Move this to a separate module
+const ipfsLib = require('ipfs-api');
+const ipfsClient = new ipfsLib({
+  host: 'ipfs.infura.io',
+  port: 5001,
+  protocol: 'https',
+});
+
 type ZNSProps = {
     domain: string;
 }
@@ -45,6 +55,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     //- Page State
     const [ overlay, setOverlay ] = useState('')
     const [ isLoading, setIsLoading ] = useState(true)
+    const [ hasLoaded, setHasLoaded ] = useState(false)
 
     //- Domain State
     const [ currentDomainContext, setCurrentDomainContext ] = useState(null)
@@ -73,20 +84,30 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     useEffect(() => {
         if(data.isNothing()) setTableData([])
         else {
-            const d = subdomains.map((d: any, i: number) => {
-                const s: any = {}
-                s.domainId = d.id
-                s.domainName = d.name
-                s.domainMetadataUri = d.metadata
-                s.lastBid = randomNumber(1, 100000, 2)
-                s.numBids = randomNumber(1, 150, 0)
-                s.lastSalePrice = randomNumber(1, 100000, 2)
-                s.tradePrice = randomNumber(1, 100000, 2)
-                return s
-            })
-            const lots = [].concat(d).concat(d).concat(d)
-            setTableData(lots)
-            setIsLoading(false)
+            // Set the domain data
+            const d = subdomains.map((d: any, i: number) => ({
+                domainId: d.id,
+                domainName: d.name,
+                domainMetadataUri: d.metadata,
+                lastBid: randomNumber(1, 100000, 2),
+                numBids: randomNumber(1, 150, 0),
+                lastSalePrice: randomNumber(1, 100000, 2),
+                tradePrice: randomNumber(1, 100000, 2),
+            }))
+            setTableData(d)
+
+            // Set the preview card data
+            if(!data.isNothing() && data.value.metadata) {
+                ipfsClient.cat(data.value.metadata.slice(21)).then((d: any) => {
+                    const nftData = JSON.parse(d)
+                    data.value.image = nftData.image
+                    data.value.name = nftData.title
+                    data.value.description = nftData.description
+                    setIsLoading(false)
+                })
+            }
+
+            setHasLoaded(true)
         }
     }, [ data ])
 
@@ -96,7 +117,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     }, [ domain ])
 
     return (
-        <div className='page-spacing'>
+        <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out'}}>
             {/* Overlays */}
             {/* TODO: Switch out overlay handling to a hook */}
             { overlay.length > 0 && 
@@ -145,6 +166,24 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
             </TitleBar>
             </FilterBar>
 
+            {/* Preview Card */}
+            <Spring from={{ opacity: 0, marginTop: -236 }} to={{ opacity: !isRoot && hasLoaded ? 1 : 0, marginTop: !isRoot && hasLoaded ? 0 : -236 }}>
+                { styles => 
+                    <animated.div style={styles}>
+                        <PreviewCard
+                            style={{marginTop: 16}}
+                            image={!data.isNothing() ? data.value.image : ''}
+                            name={!data.isNothing() ? data.value.name : 'nothing'}
+                            domain={domain}
+                            description={!data.isNothing() ? data.value.description : ''}
+                            creatorId={!data.isNothing() && data.value.minter && data.value.minter.id ? `${data.value.minter.id.substring(0, 12)}...` : ''}
+                            ownerId={!data.isNothing() ? `${data.value.owner.id.substring(0, 12)}...` : ''}
+                            isLoading={isLoading}
+                        />
+                    </animated.div>
+                }
+            </Spring>
+
             {/* Subdomain table */}
             { mvpVersion === 3 &&
                 <>
@@ -183,23 +222,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                     />
                 </>
             }
-            
-            {/* Preview Card */}
-            { !isRoot && 
-                <PreviewCard
-                    style={{marginTop: 16}}
-                    nftImageData={'hello'}
-                    name='Brett'
-                    domain={domain}
-                    description='brett'
-                    creatorId={!data.isNothing() && data.value.minter.id ? `${data.value.minter.id.substring(0, 12)}...` : ''}
-                    ownerId={!data.isNothing() ? `${data.value.owner.id.substring(0, 12)}...` : ''}
-                    isLoading={isLoading}
-                />
-            }
 
             {/* Subdomain Table */}
-            <h1 style={{marginTop: 16}}>The subdomain array is being artificially lengthened to test this view with more components - don't panic</h1>
             <DomainTable
                 domains={tableData}
                 isRootDomain={isRoot}

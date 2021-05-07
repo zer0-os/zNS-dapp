@@ -34,6 +34,9 @@
 }
 
 .Asset {
+    display: flex;
+    align-items: center;
+
     width: 398.33px;
 
     /* background-color: var(--background-purple-card); */
@@ -42,18 +45,26 @@
     background-repeat: no-repeat;
 
     border-radius: 9px 0px 0px 13px;
+
+    overflow: hidden;
+}
+
+.Asset > img {
+    width: 100%;
+    object-fit: cover;
 }
 
 .Body {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
 
     width: 562px;
     margin: 10px 40px 12px 36px;
 }
 
 .Body h5 {
-    color: var(--color-accent-1);
+    color: white;
     font-size: 24px;
 
     margin-bottom: 6px;
@@ -61,18 +72,22 @@
 
 .Domain {
     font-weight: 700;
+    color: var(--color-accent-1);
 }
 
 .Body p {
-    margin-top: 20px;
-    color: var(--color-accent-1-lighter);
+    max-height: 100px;
+    overflow-y: scroll;
+    margin-top: 16px;
+    color: white;
     line-height: 19.2px;
+    padding-bottom: 0;
 }
 
 .Members {
     display: flex;
     justify-content: space-between;
-    margin-top: 41px;
+    margin-top: 16px;
 }
 
 .Members > div {
@@ -102,7 +117,7 @@
 }
 
 .Member > span:last-of-type {
-    color: var(--color-accent-1-lighter);
+    color: var(--color-primary-lighter-3);
     margin-top: 4px;
 }
 
@@ -119,7 +134,7 @@
 /* "Last Offer" text */
 .Buy > span:first-of-type {
     margin-top: 20px;
-    color: var(--color-accent-1);
+    color: var(--color-primary-lighter-3);
 }
 
 /* Offer amount */
@@ -130,5 +145,4 @@
 
 .Buy > span > span {
     font-size: 16px;
-    color: var(--color-accent-1-lighter);
 }
