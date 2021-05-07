@@ -1,13 +1,28 @@
 .FilterBar {
+    position: fixed;
+    top: 29px;
+    height: 110px;
+    width: 1250px;
+    max-width: 1250px;
+    min-width: 1250px;
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 
-    height: 110px;
 
     background-color: var(--background-purple-card-20);
 
     border-radius: var(--box-radius);
+    z-index: 10;
+
+    transition: opacity 0.2s ease-in-out, 0.2s ease-in-out;
+    transform: translateY(0);
+}
+
+.Hidden {
+    opacity: 0;
+    transform: translateY(-100px);
 }
 
 .FilterBar > ul {
