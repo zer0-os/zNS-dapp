@@ -10,12 +10,15 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 //- Style Imports
 import WalletStyles from './Wallet.module.css'
 
+//- Component Imports
+import { FutureButton } from 'components'
+
 //- Asset Imports
-// import metamask from "./assets/metamask.png";
-// import walletConnect from "./assets/wallet-connect.png"
-// import coinbaseWallet from "./assets/coinbase-wallet.png"
-// import fortmatic from "./assets/fortmatic.png"
-// import portis from "./assets/portis.png"
+import metamaskIcon from "./assets/metamask.svg";
+import walletConnectIcon from "./assets/walletconnect.svg"
+import coinbaseWalletIcon from "./assets/coinbasewallet.svg"
+import fortmaticIcon from "./assets/fortmatic.svg"
+import portisIcon from "./assets/portis.svg"
 
 type ConnectToWalletProps = {
 	onConnect: () => void;
@@ -28,46 +31,79 @@ const connectorFromName = (name: string) => {
 	}
 }
 
+const nameFromConnector = (c: AbstractConnector) => {
+	switch(c) {
+		case injected:
+			return 'MetaMask'
+
+	}
+}
+
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 
 	const walletContext = useWeb3React<Web3Provider>()
-    const { active, connector, activate, error } = walletContext
+    const { active, connector, activate, deactivate, error } = walletContext
 
     const connectToWallet = (wallet: string) => {
 		const c = connectorFromName(wallet) as AbstractConnector
-		activate(c)
+		if(c) {
+			activate(c)
+			onConnect()
+		}
     }
 
+	const disconnect = () => {
+		deactivate()
+		onConnect()
+	}
+
 	return (
-        <div className={`${WalletStyles.connect} blur`}>
+        <div className={`${WalletStyles.connect} blur border-pink-glow`}>
             <div className={WalletStyles.header}>
-                <h3>Connect To A Wallet</h3>
+                <h3 className={`glow-text-white`}>Connect to a wallet</h3>
             </div>
+			<hr className='glow' />
             <ul>
         		<li onClick={() => connectToWallet('metamask')} className={WalletStyles.wallet}>
                 	Metamask
-                	<img src={''} />
+					<div>
+						<img src={metamaskIcon} />
+					</div>
             	</li>
         		<li onClick={() => connectToWallet('walletconnect')} className={WalletStyles.wallet}>
                 	<span>Wallet Connect</span>
-                	<img src={''} />
+					<div>
+						<img src={walletConnectIcon} />
+					</div>
             	</li>
         		<li onClick={() => connectToWallet('coinbase')} className={WalletStyles.wallet}>
                 	<span>Coinbase Wallet</span>
-                	<img src={''} />
+					<div>
+						<img src={coinbaseWalletIcon} />
+					</div>
             	</li>
         		<li onClick={() => connectToWallet('fortmatic')} className={WalletStyles.wallet}>
                 	<span>Fortmatic</span>
-                	<img src={''} />
+					<div>
+						<img src={fortmaticIcon} />
+					</div>
             	</li>
         		<li onClick={() => connectToWallet('portis')} className={WalletStyles.wallet}>
                 	<span>Portis</span>
-                	<img src={''} />
+					<div>
+						<img src={portisIcon} />
+					</div>
             	</li>
             </ul>
+			{ active && connector && 
+				<div className={WalletStyles.Disconnect}>
+					<hr className='glow' />
+					<FutureButton glow onClick={disconnect}>Disconnect { nameFromConnector(connector) }</FutureButton>
+				</div>
+			}
+			<hr className='glow' />
             <div className={WalletStyles.footer}>
                 <p>New to Ethereum?<br/><a href='https://ethereum.org/en/wallets/' target='_blank'>Learn more about wallets</a></p>
-				<h4>The Web3 part of this modal is done, which is the proof of concept. I need to press on and do the rest of the Web3 stuff before coming back to fix these styles, but they will be done ASAP</h4>
             </div>
         </div>
     )
