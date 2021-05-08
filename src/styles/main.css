@@ -66,6 +66,8 @@
     --background-primary-button-fill: linear-gradient(148deg, #00407C 20.93%, #00203F 82.47%);
     --background-secondary-button-fill: #1E5180;
 
+
+
     --background-purple-card: #4E0084;
     --background-purple-card-20: rgba(78,0,132,0.2);
 	--background-purple-light-20: rgba(190,96,255,0.2);
@@ -74,6 +76,7 @@
 
 	--background-blue-deck: radial-gradient(56.93% 56.93% at 50% 50%, rgba(206, 183, 255, 0) 0%, rgba(103, 79, 255, 0.2) 100%);
     --background-blue-card: linear-gradient(92.24deg, rgba(0, 102, 255, 0.2) 0%, rgba(0, 63, 137, 0.2) 100%);
+	--background-blue-card-wilder: radial-gradient(56.93% 56.93% at 50% 50%, rgba(206, 183, 255, 0) 0%, rgba(103, 79, 255, 0.2) 100%);
 
     --background-primary: rgba(78, 0, 132, 0.2);
     --background-primary-gradient: linear-gradient(92.24deg, rgba(0, 22, 55, 0.5) 0%, rgba(0, 63, 137, 0.265) 100%);
@@ -107,7 +110,7 @@ body, button, input, textarea {
 
 body {
 	background-color: #120628;
-	background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../assets/zns-bg.png');
+	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url('../assets/zns-bg.png');
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -127,6 +130,33 @@ body {
 
 h1 {
 	font-size: 22px;
+}
+
+hr.glow {
+	position: relative;
+	height: 1px;
+	border: none;
+	background-color: #6e10bb;
+}
+
+hr.glow::before {
+	content: " ";
+    position: absolute;
+    top: 0;
+	left: 0;
+    height: 1px;
+    width: 8px;
+    background-color: #e0baff;
+}
+
+hr.glow::after {
+	content: " ";
+    position: absolute;
+    top: 0;
+	right: 0;
+    height: 1px;
+    width: 8px;
+    background-color: #e0baff;
 }
 
 /*
@@ -182,6 +212,11 @@ h1 {
 
 .border-blue {
 	border: 1px solid #88D7FF;
+}
+
+.border-pink-glow {
+	border: 1px solid #e5baff;
+    box-shadow: 0 0 10px 0 #8d0099;
 }
 
 /*

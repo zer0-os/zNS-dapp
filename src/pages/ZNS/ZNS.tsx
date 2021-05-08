@@ -13,6 +13,9 @@ import { useEagerConnect, useInactiveListener } from 'lib/hooks/provider-hooks';
 //- Library Imports
 import { randomNumber } from 'lib/Random'
 
+//- Style Imports
+import styles from './ZNS.module.css'
+
 //- Components & Containers
 import { 
     AssetGraphCard,
@@ -53,9 +56,13 @@ type ZNSProps = {
 const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     //- Page State
-    const [ overlay, setOverlay ] = useState('')
     const [ isLoading, setIsLoading ] = useState(true)
     const [ hasLoaded, setHasLoaded ] = useState(false)
+
+    //- Overlay State
+    const [ isWalletOverlayOpen, setIsWalletOverlayOpen ] = useState(false)
+    const [ isMintOverlayOpen, setIsMintOverlayOpen ] = useState(false)
+    const [ isProfileOverlayOpen, setIsProfileOverlayOpen ] = useState(false)
 
     //- Domain State
     const [ currentDomainContext, setCurrentDomainContext ] = useState(null)
@@ -69,7 +76,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     const { account, active, deactivate } = walletContext
     const triedEagerConnect = useEagerConnect() // This line will try auto-connect to the last wallet
 
-    //- Web3 Domain Data 
+    //- Web3 Domain Data
     const { useDomain } = useDomainCache()
     const domainContext = useDomain(domain.charAt(0) === '/' ? domain.substring(1) : domain)
     const { data } = domainContext
@@ -96,7 +103,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
             }))
             setTableData(d)
 
-            // Set the preview card data
             if(!data.isNothing() && data.value.metadata) {
                 ipfsClient.cat(data.value.metadata.slice(21)).then((d: any) => {
                     const nftData = JSON.parse(d)
@@ -106,10 +112,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                     setIsLoading(false)
                 })
             }
-
             setHasLoaded(true)
         }
-    }, [ data ])
+    }, [ data, hasLoaded ])
 
     useEffect(() => {
         setTableData([])
@@ -120,12 +125,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
         <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out'}}>
             {/* Overlays */}
             {/* TODO: Switch out overlay handling to a hook */}
-            { overlay.length > 0 && 
-                <Overlay onClose={() => setOverlay('')}>
-                    { overlay === 'ConnectToWallet' && <ConnectToWallet onConnect={() => setOverlay('')} /> }
-                    { overlay === 'MintNewNFT' && <MintNewNFT onMint={() => setOverlay('')} domainName={!data.isNothing() ? data.value.name : ''} domainId={!data.isNothing() ? data.value.id : ''} /> }
-                </Overlay>
-            }
+            <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
+            <Overlay open={isMintOverlayOpen} onClose={() => setIsMintOverlayOpen(false)}><MintNewNFT onMint={() => setIsMintOverlayOpen(false)} domainName={!data.isNothing() ? data.value.name : ''} domainId={!data.isNothing() ? data.value.id : ''} /></Overlay>
+            <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile /></Overlay>
 
             {/* Nav Bar */}
             <FilterBar onSelect={mvpFilterSelect} filters={['MVP 1', 'MVP 3']}>
@@ -142,24 +144,27 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                 </div>
                 <div>
                     { !active && 
-                        <FutureButton glow onClick={() => setOverlay('ConnectToWallet')}>Connect To Wallet</FutureButton>
+                        <FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>Connect To Wallet</FutureButton>
                     }
                     { active &&
                         <> 
                             <FutureButton 
                                 glow={isRoot} 
-                                onClick={() => isRoot || ownedDomain ? setOverlay('MintNewNFT') : alert('You can only mint NFTs on domains you own')}
+                                onClick={() => isRoot || ownedDomain ? setIsMintOverlayOpen(true) : alert('You can only mint NFTs on domains you own')}
                             >Mint New NFT</FutureButton>
-                            <IconButton 
-                                onClick={() => console.log('profile')} 
+                            <IconButton
+                                onClick={() => setIsProfileOverlayOpen(true)} 
                                 style={{height: 32, width: 32, borderRadius: '50%'}} 
                                 iconUri={'assets/dp/fake01.jpg'} 
                             />
-                            <IconButton
-                                onClick={() => setOverlay('ConnectToWallet')}
-                                style={{height: 32, width: 32, borderRadius: '50%'}}
-                                iconUri={''}
-                            />
+                            <div 
+                                className={styles.Dots}
+                                onClick={() => setIsWalletOverlayOpen(true)}
+                            >
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
                         </>
                     }
                 </div>
