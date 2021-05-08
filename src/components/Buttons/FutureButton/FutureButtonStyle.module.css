@@ -15,6 +15,7 @@
 
     cursor: pointer;
 
+    transition: opacity var(--animation-time-short) ease-in-out;
     opacity: 0.6;
 }
 
