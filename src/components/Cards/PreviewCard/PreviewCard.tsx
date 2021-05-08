@@ -68,7 +68,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
                         </div>
                     </div>
                     <div className={styles.Buy}>
-                        <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>BUY</FutureButton>
+                        <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
                         <span className={`glow-text-blue`}>Last Offer</span>
                         <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span>
                     </div>
