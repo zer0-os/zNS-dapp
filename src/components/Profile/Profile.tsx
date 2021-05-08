@@ -1,16 +1,24 @@
-import React from 'react'
+//- React imports
+import React, { useState, useEffect } from 'react'
 
+//- Web Imports
+import { useDomainCache } from 'lib/useDomainCache'
+
+//- Style Imports
 import CopyInput from '../CopyInput/CopyInput.js'
-
 import ProfileStyle from './Profile.module.css'
 
+//- Container Imports
 import { Shop } from 'containers'
 
+//- Asset Imports
 import qr from './assets/qr.png'
 import eth from './assets/eth.svg'
 import dp from './assets/wilder.jpg'
 
-const Profile = (props) => {
+const Profile: React.FC = () => {
+
+	const { owned } = useDomainCache()
 
 	return (
 		<div className={`${ProfileStyle.profile} blur border-primary border-rounded`}>
