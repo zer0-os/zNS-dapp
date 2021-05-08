@@ -1,13 +1,34 @@
-import React from 'react'
+//- React Imports
+import React, { useState, useEffect } from 'react'
+
+//- Style Imports
+import styles from './Overlay.module.css'
+
 
 type OverlayProps = {
 	onClose: () => void;
-	children: React.ReactNode;
+	open?: boolean;
+	children?: React.ReactNode;
 }
 
-const Overlay: React.FC<OverlayProps> = ({ onClose, children }) => {
+const Overlay: React.FC<OverlayProps> = ({ onClose, open, children }) => {
 
 	// TODO: Some overlays should be centered, other's should be top-aligned (with some padding of course)
+
+	const [ currentChild, setCurrentChild ] = useState<React.ReactNode>(null)
+	const [ inDOM, setInDOM ] = useState<boolean>(false)
+	
+	useEffect(() => {
+		if(open) {
+			setInDOM(true)
+		} else {
+			// setTimeout(() => setInDOM(false), 1000)
+		}
+	}, [ open ])
+	
+	const removeFromDOM = (e: any) => {
+		if(e.animationName.indexOf('close') >= 0) setInDOM(false)
+	}
 
 	const closeOverlay = (e: React.MouseEvent) => {
 		const target = e.target as HTMLInputElement
@@ -16,20 +37,13 @@ const Overlay: React.FC<OverlayProps> = ({ onClose, children }) => {
 
 	return (
 		<>
-		<div onClick={closeOverlay} style={{
-			width: '100%', minHeight: '100vh', 
-			display: 'flex', alignItems: 'center', 
-			justifyContent: 'center',
-			position: 'absolute',
-			top: 0,
-			left: 0,
-			zIndex: 100,
-			paddingTop: 120,
-			paddingBottom: 120
-		}} className='blur overlay'>
-			{children}
-		</div>
-		<h1>Overlay scrolling is a little broken right now - this will be fixed</h1>
+			{ inDOM && 
+				<div onAnimationEnd={removeFromDOM} onClick={closeOverlay} className={`overlay ${styles.Overlay} ${open ? styles.Open : styles.Closed}`}>
+					<div>
+						{ children }
+					</div>
+				</div>
+			}
 		</>
 	)
 }

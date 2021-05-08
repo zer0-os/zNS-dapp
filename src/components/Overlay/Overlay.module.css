@@ -1,0 +1,53 @@
+/* width: '100%', minHeight: '100vh', 
+			display: 'flex', alignItems: 'center', 
+			justifyContent: 'center',
+			position: 'absolute',
+			top: 0,
+			left: 0,
+			zIndex: 100,
+			paddingTop: 120,
+			paddingBottom: 120 */
+
+.Overlay {
+    --speed: var(--animation-time-short);
+
+    display: flex;
+    justify-content: center;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    min-height: 100vh;
+
+    padding: 120px 0;
+    z-index: 10000;
+    opacity: 0;
+
+    background: rgba(0,0,0,0.3);
+    transition: backdrop-filter 0.2s;
+}
+
+.Open {
+    animation: open var(--speed) ease-in-out;
+    opacity: 1;
+    backdrop-filter: blur(30px) opacity(1);
+}
+
+.Closed {
+    animation: close var(--speed) ease-in-out;
+    opacity: 0;
+
+    backdrop-filter: blur(30px) opacity(0);
+}
+
+@keyframes open {
+    0% { opacity: 0 }
+    100% { opacity: 1 }
+}
+
+@keyframes close {
+    0% { opacity: 1 }
+    100% { opacity: 0 }
+}
