@@ -62,7 +62,6 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
     const [ isLoading, setIsLoading ] = useState(true)
     const [ hasMetadataLoaded, setHasMetadataLoaded ] = useState(false)
     const [ imageCount, setImageCount ] = useState(0)
-    const [ isRateLimited, setIsRateLimited ] = useState(false)
 
     //- Functions
     const navigateTo = (domain: string) => history.push(domain)
@@ -76,29 +75,19 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
         var count = 0, completed = 0
         for(var i = 0; i < domains.length; i++) {
             const domain = domains[i]
-            // If the domain doesn't have an image already loaded
-            if(isRateLimited) {
-                count++
-                domain.image = StaticEmulator(domain.domainName)
-                domain.name = domain.domainName
-                domain.description = 'lolokgdosajg'
-                if(count === domains.length) setHasMetadataLoaded(true)
-            }
-            else if(!domain.image && domain.domainMetadataUri && !isRateLimited) {
+            if(!domain.image && domain.domainMetadataUri) {
                 count++ // This is a total of how many images don't have metadata loaded in
-                if(!isRateLimited) {
-                    ipfsClient.cat(domain.domainMetadataUri.slice(21)).then((d: any) => {
-                        const data = JSON.parse(d)
-                        domain.image = data.image
-                        domain.name = data.title
-                        domain.description = data.description
-                        // If we have received all metadata for images that need it
-                        if(++completed === count && !isRateLimited) setHasMetadataLoaded(true)
-                    })
-                }
+                ipfsClient.cat(domain.domainMetadataUri.slice(21)).then((d: any) => {
+                    const data = JSON.parse(d)
+                    domain.image = data.image
+                    domain.name = data.title
+                    domain.description = data.description
+                    // If we have received all metadata for images that need it
+                    if(++completed === count) setHasMetadataLoaded(true)
+                })
             }
         }
-    }, [ domains, isRateLimited ])
+    }, [ domains ])
 
     /* Domain metadata is coming in asynchronously, so we need to
        update the rows as the data comes in */
@@ -116,7 +105,6 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
             <div className={styles.searchHeader}>
                 <SearchBar style={{width: '100%', marginRight: 16}} />
                 <div className={styles.searchHeaderButtons}>
-                    { !isRateLimited && <FutureButton style={{width: 140}} onClick={() => setIsRateLimited(true)} glow >Use Local</FutureButton> }
                     <IconButton onClick={() => setIsGridView(false)} toggled={!isGridView} iconUri={list} style={{height: 32, width: 32}} />
                     <IconButton onClick={() => setIsGridView(true)} toggled={isGridView} iconUri={grid} style={{height: 32, width: 32}} />
                 </div>
