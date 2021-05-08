@@ -1,6 +1,11 @@
 .DomainTableContainer {
 	width: 100%;
 	background: var(--background-purple-card-20);
+	overflow: hidden;
+}
+
+.Expander {
+	transition: height var(--animation-time-long) ease-in-out;
 }
 
 .DomainTable {
@@ -8,6 +13,13 @@
 }
 
 .Table {
+	width: 100%;
+}
+
+.Container {
+	position: absolute;
+	top: 62px;
+	left: 0;
 	width: 100%;
 }
 

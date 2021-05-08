@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 
 //- Component Imports
@@ -62,6 +62,10 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
     const [ isLoading, setIsLoading ] = useState(true)
     const [ hasMetadataLoaded, setHasMetadataLoaded ] = useState(false)
     const [ imageCount, setImageCount ] = useState(0)
+    const [ containerHeight, setContainerHeight ] = useState(0)
+
+    //- Refs
+    const containerRef = useRef<HTMLDivElement>(null)
 
     //- Functions
     const navigateTo = (domain: string) => history.push(domain)
@@ -89,6 +93,17 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
         }
     }, [ domains ])
 
+    useEffect(() => {
+        if(!isLoading) {
+            const el = containerRef.current
+            if(el) {
+                setContainerHeight(el.clientHeight)
+            }
+        } else {
+            setContainerHeight(0)
+        }
+    }, [ isLoading ])
+
     /* Domain metadata is coming in asynchronously, so we need to
        update the rows as the data comes in */
     const tableData: DomainTableData[] = useMemo(() => {
@@ -112,73 +127,77 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
 
             {/* Table Body */}
             <div className={styles.DomainTable}>
-                {/* Table List View */}
-                { tableData.length > 0 && !isGridView && !isLoading &&
-                    <table className={styles.DomainTable}>
-                        <>
-                            <thead>
-                                <tr>
-                                    <th className={styles.left}></th>
-                                    <th className={styles.left}>Name</th>
-                                    <th className={styles.center}>Last Bid</th>
-                                    <th className={styles.center}>No. Of Bids</th>
-                                    <th className={styles.center}>Last Sale Price</th>
-                                    <th className={styles.center}>Trade</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                { tableData.map((d, i) =>
-                                    <tr onClick={() => navigateTo(d.domainName)} key={i}>
-                                        <td className={styles.left}>{i + 1}</td>
-                                        {/* TODO: Div can not be a child of table */}
-                                        <td className={styles.left}>
-                                            <div style={{display: 'flex', alignItems: 'center'}}>
-                                                <Image 
-                                                    style={{width: 56, height: 56, marginRight: 8, marginTop: -4, borderRadius: isRootDomain ? '50%' : 'calc(var(--box-radius)/2)'}} 
-                                                    src={d.image ? d.image : ''}
-                                                />
-                                                <span>{d.domainName.split('.')[d.domainName.split('.').length - 1]}</span>
-                                                <span style={{paddingLeft: 6}} className={styles.ticker}>{d.domainName.substring(0, 4).toUpperCase()}</span>
-                                            </div>
-                                        </td>
-                                        <td className={styles.center}>{`$${Number(d.lastBid.toFixed(2)).toLocaleString()}`}</td>
-                                        <td className={styles.center}>{Number(d.numBids).toLocaleString()}</td>
-                                        <td className={styles.center}>{`${Number(d.lastSalePrice.toFixed(2)).toLocaleString()} WILD`}</td>
-                                        <td className={styles.center}><FutureButton glow onClick={() => console.log('trade', d)}>{`$${Number(d.tradePrice.toFixed(2)).toLocaleString()}`}</FutureButton></td>
+                <div className={styles.Container} ref={containerRef}>
+                    {/* Table List View */}
+                    { tableData.length > 0 && !isGridView && !isLoading &&
+                        <table className={styles.DomainTable}>
+                            <>
+                                <thead>
+                                    <tr>
+                                        <th className={styles.left}></th>
+                                        <th className={styles.left}>Name</th>
+                                        <th className={styles.center}>Last Bid</th>
+                                        <th className={styles.center}>No. Of Bids</th>
+                                        <th className={styles.center}>Last Sale Price</th>
+                                        <th className={styles.center}>Trade</th>
                                     </tr>
-                                ) }
-                            </tbody>
-                        </>
-                    </table>
-                }   
+                                </thead>
+                                <tbody>
+                                    { tableData.map((d, i) =>
+                                        <tr onClick={() => navigateTo(d.domainName)} key={i}>
+                                            <td className={styles.left}>{i + 1}</td>
+                                            {/* TODO: Div can not be a child of table */}
+                                            <td className={styles.left}>
+                                                <div style={{display: 'flex', alignItems: 'center'}}>
+                                                    <Image 
+                                                        style={{width: 56, height: 56, marginRight: 8, marginTop: -4, borderRadius: isRootDomain ? '50%' : 'calc(var(--box-radius)/2)'}} 
+                                                        src={d.image ? d.image : ''}
+                                                    />
+                                                    <span>{d.domainName.split('.')[d.domainName.split('.').length - 1]}</span>
+                                                    <span style={{paddingLeft: 6}} className={styles.ticker}>{d.domainName.substring(0, 4).toUpperCase()}</span>
+                                                </div>
+                                            </td>
+                                            <td className={styles.center}>{`$${Number(d.lastBid.toFixed(2)).toLocaleString()}`}</td>
+                                            <td className={styles.center}>{Number(d.numBids).toLocaleString()}</td>
+                                            <td className={styles.center}>{`${Number(d.lastSalePrice.toFixed(2)).toLocaleString()} WILD`}</td>
+                                            <td className={styles.center}><FutureButton glow onClick={() => console.log('trade', d)}>{`$${Number(d.tradePrice.toFixed(2)).toLocaleString()}`}</FutureButton></td>
+                                        </tr>
+                                    ) }
+                                </tbody>
+                            </>
+                        </table>
+                    }   
 
-                {/* Table Grid View */}
-                { tableData.length > 0 && isGridView && !isLoading &&
-                    <ol className={styles.Grid}>
-                        { tableData.map((d, i) => 
-                            <li onClick={() => navigateTo(d.domainName)} key={i}>
-                                <NFTCard
-                                    name={d.domainName.split('.')[d.domainName.split('.').length - 1]}
-                                    imageUri={d.image ? d.image : ''}
-                                    price={d.tradePrice}
-                                    nftOwnerId={'Owner Name'}
-                                    nftMinterId={'Minter Name'}
-                                    showCreator={true}
-                                    showOwner={true}
-                                />
-                            </li>
-                        )
-                        }
-                    </ol>
-                }
+                    {/* Table Grid View */}
+                    { tableData.length > 0 && isGridView && !isLoading &&
+                        <ol className={styles.Grid}>
+                            { tableData.map((d, i) => 
+                                <li onClick={() => navigateTo(d.domainName)} key={i}>
+                                    <NFTCard
+                                        name={d.domainName.split('.')[d.domainName.split('.').length - 1]}
+                                        imageUri={d.image ? d.image : ''}
+                                        price={d.tradePrice}
+                                        nftOwnerId={'Owner Name'}
+                                        nftMinterId={'Minter Name'}
+                                        showCreator={true}
+                                        showOwner={true}
+                                    />
+                                </li>
+                            )
+                            }
+                        </ol>
+                    }
 
-                {/* Table Placeholders */}
+                {/* Table Placeholders
                 { isLoading && !empty &&
                     <div className={styles.Loading}><div></div></div>
                 }
                 {  empty &&
                     <div className={styles.Empty}><span>This NFT has no children!</span></div> 
-                }
+                } */}
+                </div>
+
+                <div style={{height: containerHeight}} className={styles.Expander}></div>
             </div>
             
 
