@@ -7,6 +7,9 @@ import styles from './NFTCard.module.css'
 //- Component Imports
 import { Image } from 'components'
 
+//- Library Imports
+import { randomName, randomImage } from 'lib/Random'
+
 type NFTCardProps = {
     name: string;
     imageUri: string;
@@ -32,7 +35,7 @@ const NFTCard: React.FC<NFTCardProps> = ({ name, imageUri, price, nftOwnerId, nf
                         <div
                             style={{backgroundImage: `url(assets/dp/fake03.jpg)`}} 
                         ></div>
-                        <span className={`glow-text-blue`}>{nftMinterId}</span>
+                        <span className={`glow-text-blue`}>{ randomName(nftMinterId) }</span>
                     </div>
                 }
                 <h5 className={`glow-text-blue`}>{name}</h5>
@@ -48,7 +51,7 @@ const NFTCard: React.FC<NFTCardProps> = ({ name, imageUri, price, nftOwnerId, nf
                                 <div
                                 style={{backgroundImage: `url(assets/dp/fake05.jpg)`}} 
                                 ></div>
-                                <span className={`glow-text-blue`}>{nftOwnerId}</span>
+                                <span className={`glow-text-blue`}>{ randomName(nftMinterId) }</span>
                             </div>
                         </div>
                     }

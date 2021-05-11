@@ -8,10 +8,13 @@ const Image = (props: any) => {
     const load = () => setLoaded(true)
     const unload = () => setLoaded(false)
 
+
+    //TODO: Add Fade in
+
     return (
         <>
-            <img {...props} className={props.className + ' ' + styles.LazyImage} style={{...props.style, display: loaded ? 'inherit' : 'none'}} onLoad={load} src={props.src} />
-            { !loaded && <div {...props} className={props.className + ' ' + styles.Loading}><div className={styles.Spinner}></div></div> }
+            <img {...props} className={`${props.className ? props.className : ''}`} style={{...props.style, display: loaded ? 'inherit' : 'none', objectFit: 'cover'}} onLoad={load} src={props.src} />
+            { !loaded && <div {...props} className={styles.Loading}><div className={styles.Spinner}></div></div> }
         </>
     )
 }

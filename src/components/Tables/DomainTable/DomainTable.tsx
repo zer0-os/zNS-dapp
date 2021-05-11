@@ -53,9 +53,10 @@ type DomainTableProps = {
     isRootDomain: boolean;
     style?: React.CSSProperties;
     empty?: boolean;
+    mvpVersion: number;
 }
 
-const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style, empty }) => {
+const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style, empty, mvpVersion }) => {
 
     //- Page State
     const [ isGridView, setIsGridView ] = useState(false)
@@ -97,12 +98,12 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
         if(!isLoading) {
             const el = containerRef.current
             if(el) {
-                setContainerHeight(el.clientHeight)
+                setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight)
             }
         } else {
             setContainerHeight(0)
         }
-    }, [ isLoading ])
+    }, [ isLoading, isGridView ])
 
     /* Domain metadata is coming in asynchronously, so we need to
        update the rows as the data comes in */
@@ -136,9 +137,9 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
                                     <tr>
                                         <th className={styles.left}></th>
                                         <th className={styles.left}>Name</th>
-                                        <th className={styles.center}>Last Bid</th>
-                                        <th className={styles.center}>No. Of Bids</th>
-                                        <th className={styles.center}>Last Sale Price</th>
+                                        { mvpVersion === 3 && <th className={styles.center}>Last Bid</th> }
+                                        { mvpVersion === 3 && <th className={styles.center}>No. Of Bids</th> }
+                                        { mvpVersion === 3 && <th className={styles.center}>Last Sale Price</th> }
                                         <th className={styles.center}>Trade</th>
                                     </tr>
                                 </thead>
@@ -150,17 +151,17 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
                                             <td className={styles.left}>
                                                 <div style={{display: 'flex', alignItems: 'center'}}>
                                                     <Image 
-                                                        style={{width: 56, height: 56, marginRight: 8, marginTop: -4, borderRadius: isRootDomain ? '50%' : 'calc(var(--box-radius)/2)'}} 
+                                                        style={{width: 56, height: 56, marginRight: 8, marginTop: -4, borderRadius: isRootDomain ? '50%' : 'calc(var(--box-radius)/2)', objectFit: 'cover'}} 
                                                         src={d.image ? d.image : ''}
                                                     />
                                                     <span>{d.domainName.split('.')[d.domainName.split('.').length - 1]}</span>
                                                     <span style={{paddingLeft: 6}} className={styles.ticker}>{d.domainName.substring(0, 4).toUpperCase()}</span>
                                                 </div>
                                             </td>
-                                            <td className={styles.center}>{`$${Number(d.lastBid.toFixed(2)).toLocaleString()}`}</td>
-                                            <td className={styles.center}>{Number(d.numBids).toLocaleString()}</td>
-                                            <td className={styles.center}>{`${Number(d.lastSalePrice.toFixed(2)).toLocaleString()} WILD`}</td>
-                                            <td className={styles.center}><FutureButton glow onClick={() => console.log('trade', d)}>{`$${Number(d.tradePrice.toFixed(2)).toLocaleString()}`}</FutureButton></td>
+                                            { mvpVersion === 3 && <td className={styles.center}>{`$${Number(d.lastBid.toFixed(2)).toLocaleString()}`}</td> }
+                                            { mvpVersion === 3 && <td className={styles.center}>{Number(d.numBids).toLocaleString()}</td> }
+                                            { mvpVersion === 3 && <td className={styles.center}>{`${Number(d.lastSalePrice.toFixed(2)).toLocaleString()} WILD`}</td> }
+                                            <td className={styles.center}><FutureButton glow onClick={() => console.log('trade', d)}>{mvpVersion === 3 ? `$${Number(d.tradePrice.toFixed(2)).toLocaleString()}` : 'ENLIST'}</FutureButton></td>
                                         </tr>
                                     ) }
                                 </tbody>

@@ -21,6 +21,7 @@ const Overlay: React.FC<OverlayProps> = ({ onClose, open, children }) => {
 	useEffect(() => {
 		if(open) {
 			setInDOM(true)
+			if(document.body.className.indexOf('no-scroll') === -1) document.body.className += 'no-scroll'
 		} else {
 			// setTimeout(() => setInDOM(false), 1000)
 		}

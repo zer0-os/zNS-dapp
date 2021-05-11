@@ -61,8 +61,13 @@ const Shop = (props) => {
             <ul>
                 { NFTs.map(n => 
                     <li key={n.name}>
+                    { console.log(n)}
                     <NFTCard 
-                        NFT={n} 
+                        name={n.name}
+                        imageUri={n.img}
+                        price={100}
+                        nftOwnerId={'Frank'}
+                        nftMinterId={'Not Frank'}
                         showCreator={selected !== 'createdBy'}
                         showOwner={selected !== 'ownedBy'}
                     />

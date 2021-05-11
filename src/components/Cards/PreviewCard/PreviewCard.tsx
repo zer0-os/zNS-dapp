@@ -1,11 +1,19 @@
+//- React imports
 import React from 'react'
 
+//- Style Imports
 import styles from './PreviewCard.module.css'
 
+//- Library Imports
+import { randomName, randomImage } from 'lib/Random'
+
+//- Component Imports
 import {
     FutureButton, 
-    Image 
+    Image,
+    Member
 } from 'components'
+
 
 type PreviewCardProps = {
     image: string;
@@ -45,32 +53,23 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
                         </div>
                         <p>{description}</p>
                         <div className={styles.Members}>
-                            <div>
-                                <div 
-                                    className={styles.Dp}
-                                    // style={{backgroundImage: `url(${props.creator.img})`}}
-                                ></div>
-                                <div className={styles.Member}>
-                                    <span>{ creatorId }</span><br/>
-                                    <span>Creator</span>
-                                </div>
-                            </div>
-                            <div>
-                                <div 
-                                    className={styles.Dp}
-                                    // style={{backgroundImage: `url(${props.owner.img})`}}
-                                ></div>
-                                <div className={styles.Member}>
-                                    <span>{ ownerId }</span><br />
-                                    <span>Owner</span>
-                                </div>
-                            </div>
+                            {/* TODO: Switch these to Member component */}
+                            <Member
+                                name={randomName(creatorId)}
+                                image={randomImage(creatorId)}
+                                subtext={'Creator'}
+                            />
+                            <Member
+                                name={randomName(ownerId)}
+                                image={randomImage(ownerId)}
+                                subtext={'Owner'}
+                            />
                         </div>
                     </div>
                     <div className={styles.Buy}>
                         <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
-                        <span className={`glow-text-blue`}>Last Offer</span>
-                        <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span>
+                        {/* <span className={`glow-text-blue`}>Last Offer</span>
+                        <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span> */}
                     </div>
                 </>
             }

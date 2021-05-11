@@ -12,6 +12,7 @@ import { useEagerConnect, useInactiveListener } from 'lib/hooks/provider-hooks';
 
 //- Library Imports
 import { randomNumber } from 'lib/Random'
+import IPFSClient from 'lib/ipfs-client'
 
 //- Style Imports
 import styles from './ZNS.module.css'
@@ -34,20 +35,13 @@ import {
     Profile,
     SearchBar,
     PreviewCard,
-    SideBar
+    SideBar,
+    ZNALink,
 } from 'components'
 import {
-    MintNewNFT
+    MintNewNFT,
+    NFTView
 } from 'containers'
-
-//- IPFS Config
-// TODO: Move this to a separate module
-const ipfsLib = require('ipfs-api');
-const ipfsClient = new ipfsLib({
-  host: 'ipfs.infura.io',
-  port: 5001,
-  protocol: 'https',
-});
 
 type ZNSProps = {
     domain: string;
@@ -91,7 +85,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     useEffect(() => {
         if(data.isNothing()) setTableData([])
         else {
-            // Set the domain data
+            // Set the domain data for table view
             const d = subdomains.map((d: any, i: number) => ({
                 domainId: d.id,
                 domainName: d.name,
@@ -103,8 +97,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
             }))
             setTableData(d)
 
-            if(!data.isNothing() && data.value.metadata) {
-                ipfsClient.cat(data.value.metadata.slice(21)).then((d: any) => {
+            // Get the data for Preview Card
+            //- Note:
+            // We're checking subdomains here, because we want to defer the IPFS
+            // call to NFT View to prevent unneeded IPFS calls 
+            if(!data.isNothing() && data.value.subdomains.length > 0 && data.value.metadata) {
+                IPFSClient.cat(data.value.metadata.slice(21)).then((d: any) => {
                     const nftData = JSON.parse(d)
                     data.value.image = nftData.image
                     data.value.name = nftData.title
@@ -122,25 +120,19 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     }, [ domain ])
 
     return (
-        <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out'}}>
+        <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out', paddingTop: mvpVersion === 1 ? 155 : 139 }}>
             {/* Overlays */}
             {/* TODO: Switch out overlay handling to a hook */}
             <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
             <Overlay open={isMintOverlayOpen} onClose={() => setIsMintOverlayOpen(false)}><MintNewNFT onMint={() => setIsMintOverlayOpen(false)} domainName={!data.isNothing() ? data.value.name : ''} domainId={!data.isNothing() ? data.value.id : ''} /></Overlay>
-            <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile /></Overlay>
+            <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile id={account ? account : ''}/></Overlay>
 
             {/* Nav Bar */}
             <FilterBar onSelect={mvpFilterSelect} filters={['MVP 1', 'MVP 3']}>
             <TitleBar>
                 <div>
                     {/* TODO: Split this into its own component */}
-                    <Link style={{textDecoration: 'none', color: 'white'}} to={''}>0://</Link>
-                    { domain.split('.').map((part, i) =>
-                        i === 0 ?
-                        <Link style={{textDecoration: 'none', color: 'white'}} to={part}>{ part.charAt(0) === '/' ? part.substring(1, part.length) : part }</Link>
-                        : 
-                        <Link style={{textDecoration: 'none', color: 'white'}} to={domain.split('.').slice(0, i + 1).join('.')}>{i > 0 ? `.${part}` : part}</Link>
-                    ) }
+                    <ZNALink domain={domain} />
                 </div>
                 <div>
                     { !active && 
@@ -155,7 +147,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                             <IconButton
                                 onClick={() => setIsProfileOverlayOpen(true)} 
                                 style={{height: 32, width: 32, borderRadius: '50%'}} 
-                                iconUri={'assets/dp/fake01.jpg'} 
+                                iconUri={`https://picsum.photos/seed/${account}/200/300`} 
                             />
                             <div 
                                 className={styles.Dots}
@@ -171,12 +163,29 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
             </TitleBar>
             </FilterBar>
 
+                        
+
             {/* Preview Card */}
-            <Spring from={{ opacity: 0, marginTop: -236 }} to={{ opacity: !isRoot && hasLoaded ? 1 : 0, marginTop: !isRoot && hasLoaded ? 0 : -236 }}>
+            { mvpVersion === 3 &&
+                <Spring from={{ opacity: 0, marginTop: -97 }} to={{ opacity: isRoot ? 1 : 0, marginTop: isRoot ? 0 : -97 }}>
+                    { styles => 
+                        <animated.div style={styles}>
+                            <NextDrop
+                                title='Futopia'
+                                artist='Frank Wilder'
+                                date={new Date(new Date().getTime() + (24 * 60 * 60 * 1000))}
+                                style={{marginTop: 16}}
+                            />
+                        </animated.div>
+                    }
+                </Spring>
+            }
+
+            {/* Preview Card */}
+            <Spring from={{ opacity: 0, marginTop: -236 }} to={{ opacity: !isRoot && hasLoaded && subdomains.length ? 1 : 0, marginTop: !isRoot && hasLoaded && subdomains.length ? 0 : -236 }}>
                 { styles => 
                     <animated.div style={styles}>
                         <PreviewCard
-                            style={{marginTop: 16}}
                             image={!data.isNothing() ? data.value.image : ''}
                             name={!data.isNothing() ? data.value.name : 'nothing'}
                             domain={domain}
@@ -190,7 +199,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
             </Spring>
 
             {/* Subdomain table */}
-            { mvpVersion === 3 &&
+            { mvpVersion === 3 && subdomains.length > 0 &&
                 <>
                     <HorizontalScroll style={{marginTop: 16}}>
                         <AssetPriceCard 
@@ -219,22 +228,25 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                             price={randomNumber(15000, 40000, 2)}
                         />
                     </HorizontalScroll>
-                    <NextDrop
-                        title='Futopia'
-                        artist='Frank Wilder'
-                        date={new Date(new Date().getTime() + (24 * 60 * 60 * 1000))}
-                        style={{marginTop: 16}}
-                    />
                 </>
             }
 
             {/* Subdomain Table */}
-            <DomainTable
-                domains={tableData}
-                isRootDomain={isRoot}
-                style={{marginTop: 16}}
-                empty={(!data.isNothing() && subdomains.length === 0)}
-            />
+            { subdomains.length > 0 && 
+                <DomainTable
+                    domains={tableData}
+                    isRootDomain={isRoot}
+                    style={{marginTop: 16}}
+                    empty={(!data.isNothing() && subdomains.length === 0)}
+                    mvpVersion={mvpVersion}
+                />
+            }
+
+            { !data.isNothing() && subdomains.length === 0 &&
+                <NFTView
+                    domain={domain}
+                />
+            }
         </div>
     )
 }

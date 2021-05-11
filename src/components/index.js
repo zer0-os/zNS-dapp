@@ -44,11 +44,13 @@ export { default as ConnectToWallet } from './ConnectToWallet/ConnectToWallet'
 export { default as CopyInput } from './CopyInput/CopyInput.js'
 export { default as HorizontalScroll } from './HorizontalScroll/HorizontalScroll.js'
 export { default as Image } from './Image/Image'
+export { default as Member } from './Member/Member'
 export { default as Overlay } from './Overlay/Overlay'
 export { default as Profile } from './Profile/Profile'
 export { default as SearchBar } from './SearchBar/SearchBar.js'
 export { default as SideBar } from './SideBar/SideBar.js'
 export { default as ToggleSection } from './ToggleSection/ToggleSection.js'
+export { default as ZNALink } from './ZNALink/ZNALink'
 
 //- Progress Indicators
 export { default as StepBar } from './ProgressIndicators/StepBar/StepBar.js'

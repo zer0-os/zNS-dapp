@@ -28,8 +28,8 @@
 
 .body {
 	display: flex;
-	justify-content: center;
-	padding: 39px 52px 62px 60px;
+	/* justify-content: center; */
+	padding: 39px 52px 62px 0;
 
 	font-size: var(--font-size-default);
 	color: white;

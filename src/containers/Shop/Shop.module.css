@@ -10,7 +10,6 @@
 
     font-size: 24px;
     color: white;
-
 }
 
 .Sections::after {
@@ -23,6 +22,11 @@
 
     border-bottom: 1px solid #6E10BB;
     z-index: -1;
+}
+
+.Sections button {
+    font-size: 24px;
+    transition: border-bottom var(--animation-time-medium) ease-in-out;
 }
 
 .Sections button:not(:first-child) {

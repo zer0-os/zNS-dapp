@@ -72,6 +72,8 @@
 }
 
 .DomainTable th:last-child, .DomainTable td:last-child {
+	max-width: 250px;
+	width: 200px;
 	padding-right: 30px;
 }
 
