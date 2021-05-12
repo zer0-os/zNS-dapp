@@ -2,7 +2,7 @@ import { AbiCoder } from '@ethersproject/abi';
 import { keccak256 } from '@ethersproject/keccak256';
 import { BigNumber } from '@ethersproject/bignumber';
 import { ethers } from 'ethers';
-import { Hash } from 'node:crypto';
+// import { Hash } from 'node:crypto';
 
 const coder = new AbiCoder();
 
