@@ -25,6 +25,8 @@ type NFTViewProps = {
 
 const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 
+    // TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
+
     //- Notes:
     // It's worth having this component consume the domain context
     // because it needs way more data than is worth sending through props
@@ -47,7 +49,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
     const { account } = walletContext
 
     useEffect(() => {
-        if(!data.isNothing() && data.value.metadata) {
+        if(!data.isNothing() && data.value.metadata && !data.value.image) {
             setIsOwnedByYou(data.value.owner.id === account)
 
             // Get metadata

@@ -9,6 +9,8 @@
  *
  */
 
+// TODO: Change this file to TypeScript
+
 //- Banners
 export { default as NextDrop } from './Banners/NextDrop/NextDrop.js'
 
@@ -45,6 +47,8 @@ export { default as CopyInput } from './CopyInput/CopyInput.js'
 export { default as HorizontalScroll } from './HorizontalScroll/HorizontalScroll.js'
 export { default as Image } from './Image/Image'
 export { default as Member } from './Member/Member'
+export { default as Notification } from './Notification/Notification'
+export { default as NotificationDrawer } from './NotificationDrawer/NotificationDrawer'
 export { default as Overlay } from './Overlay/Overlay'
 export { default as Profile } from './Profile/Profile'
 export { default as SearchBar } from './SearchBar/SearchBar.js'

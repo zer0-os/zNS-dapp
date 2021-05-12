@@ -4,8 +4,6 @@ import HorizontalScrollStyles from './HorizontalScroll.module.css'
 
 const HorizontalScroll = (props) => {
 
-	console.log(props)
-
     return (
     	<div style={props.style} className={`${props.className ? props.className : ''} ${HorizontalScrollStyles.bar}`}>
     		{props.children}

@@ -12,7 +12,8 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 //- Library Imports
 import './lib/ipfs';
-import { DomainCacheProvider } from './lib/useDomainCache';
+import { DomainCacheProvider } from 'lib/useDomainCache';
+import NotificationProvider from 'lib/providers/NotificationProvider';
 
 //- Page Imports
 import { ZNS } from 'pages'
@@ -49,11 +50,13 @@ function App() {
 function wrappedApp() {
   return (
     <ApolloProvider client={client}>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <DomainCacheProvider>
-          <App />
-        </DomainCacheProvider>
-      </Web3ReactProvider>
+      <NotificationProvider>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <DomainCacheProvider>
+            <App />
+          </DomainCacheProvider>
+        </Web3ReactProvider>
+      </NotificationProvider>
     </ApolloProvider>
   );
 }

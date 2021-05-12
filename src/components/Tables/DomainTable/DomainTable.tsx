@@ -58,6 +58,9 @@ type DomainTableProps = {
 
 const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style, empty, mvpVersion }) => {
 
+    //- TODO: This page is rendered heaps because the domains prop is tied
+    // to the domain hook in ZNS.tsx. We need a way to prevent unnecessary re-renders
+
     //- Page State
     const [ isGridView, setIsGridView ] = useState(false)
     const [ isLoading, setIsLoading ] = useState(true)

@@ -13,6 +13,7 @@ import { useEagerConnect, useInactiveListener } from 'lib/hooks/provider-hooks';
 //- Library Imports
 import { randomNumber } from 'lib/Random'
 import IPFSClient from 'lib/ipfs-client'
+import useNotification from 'lib/hooks/useNotification'
 
 //- Style Imports
 import styles from './ZNS.module.css'
@@ -37,6 +38,7 @@ import {
     PreviewCard,
     SideBar,
     ZNALink,
+    Notification,
 } from 'components'
 import {
     MintNewNFT,
@@ -100,8 +102,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
             // Get the data for Preview Card
             //- Note:
             // We're checking subdomains here, because we want to defer the IPFS
-            // call to NFT View to prevent unneeded IPFS calls 
+            // call to NFT View to prevent unneeded IPFS calls
             if(!data.isNothing() && data.value.subdomains.length > 0 && data.value.metadata) {
+                // TODO: Maybe move this method into lib/ipfs-client.ts since we use it in a couple places
+                // TODO: Worth deferring all the metadata loading to the domain table component?
                 IPFSClient.cat(data.value.metadata.slice(21)).then((d: any) => {
                     const nftData = JSON.parse(d)
                     data.value.image = nftData.image
@@ -121,6 +125,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     return (
         <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out', paddingTop: mvpVersion === 1 ? 155 : 139 }}>
+            {/* <Notification /> */}
             {/* Overlays */}
             {/* TODO: Switch out overlay handling to a hook */}
             <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
@@ -149,6 +154,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                                 style={{height: 32, width: 32, borderRadius: '50%'}} 
                                 iconUri={`https://picsum.photos/seed/${account}/200/300`} 
                             />
+                            {/* TODO: Change the triple dot button to a component */}
                             <div 
                                 className={styles.Dots}
                                 onClick={() => setIsWalletOverlayOpen(true)}
