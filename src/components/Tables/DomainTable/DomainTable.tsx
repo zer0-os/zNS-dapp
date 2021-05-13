@@ -178,7 +178,8 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
                             { tableData.map((d, i) => 
                                 <li onClick={() => navigateTo(d.domainName)} key={i}>
                                     <NFTCard
-                                        name={d.domainName.split('.')[d.domainName.split('.').length - 1]}
+                                        name={d.name ? d.name : d.domainName }
+                                        domain={d.domainName ? d.domainName : ''}
                                         imageUri={d.image ? d.image : ''}
                                         price={d.tradePrice}
                                         nftOwnerId={'Owner Name'}

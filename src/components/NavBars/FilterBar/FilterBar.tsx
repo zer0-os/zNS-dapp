@@ -1,9 +1,15 @@
+//- React Imports
 import React, { useState, useEffect } from 'react'
 import useScrollPosition from '@react-hook/window-scroll';
 
+//- Style Imports
 import styles from './FilterBar.module.css'
 
+//- Component Imports
 import { TextButton } from 'components'
+
+//- Asset Imports
+import wilderIcon from './assets/wilder-icon.png'
 
 type FilterBarProps = {
     filters: string[];
@@ -37,6 +43,8 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onSelect, style, childre
 
     return(
         <div className={`${styles.FilterBar} blur ${hideHeader ? styles.Hidden : ''}`} style={style}>
+            {/* TODO: Move Wilder icon out of this component */}
+            <div className={styles.Wilder}><img src={wilderIcon}/></div>
             { children }
             <ul>
                 { filters.map((filter, index) => 

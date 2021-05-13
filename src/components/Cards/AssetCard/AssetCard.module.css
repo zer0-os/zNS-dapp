@@ -1,4 +1,5 @@
 .AssetCard {
+    position: relative;
     width: 295px;
     min-width: 295px;
     max-width: 295px;

@@ -10,7 +10,7 @@ type AssetCardProps = {
 
 const AssetCard: React.FC<AssetCardProps> = ({ style, title, children }) => {
     return(
-        <div style={style} className={`${styles.AssetCard} border-rounded blur`}>
+        <div style={style} className={`${styles.AssetCard} border-rounded `}>
             <div style={{display: 'flex'}}>
                 <h4 className='glow-text-blue'>{title}</h4><button className={styles.infoButton}></button>
             </div>

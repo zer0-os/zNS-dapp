@@ -20,6 +20,32 @@
     transform: translateY(0);
 }
 
+.Wilder {
+    position: absolute;
+    top: 0;
+    left: -19px;
+    height: 56px;
+    width: 56px;
+
+    background: linear-gradient(180deg, #1C4358 0%, #2A0047 100%);
+    border-radius: 50%;
+
+    transform: translateX(-100%);
+
+    cursor: pointer;
+
+    transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Wilder:hover {
+    transform: translateX(-100%) scale(1.1); 
+}
+
+.Wilder img {
+    width: 100%;
+    height: 100%;
+}
+
 .Hidden {
     opacity: 0;
     transform: translateY(-100px);

@@ -12,6 +12,7 @@ import { randomName, randomImage } from 'lib/Random'
 
 type NFTCardProps = {
     name: string;
+    domain: string;
     imageUri: string;
     price: number;
     nftOwnerId: string;
@@ -21,7 +22,7 @@ type NFTCardProps = {
     style?: React.CSSProperties;
 }
 
-const NFTCard: React.FC<NFTCardProps> = ({ name, imageUri, price, nftOwnerId, nftMinterId, showCreator, showOwner, style }) => {
+const NFTCard: React.FC<NFTCardProps> = ({ name, domain, imageUri, price, nftOwnerId, nftMinterId, showCreator, showOwner, style }) => {
     return(
         <div style={style ? style : {}} className={`${styles.NFTCard} border-rounded`}>
             <Image 
@@ -33,25 +34,26 @@ const NFTCard: React.FC<NFTCardProps> = ({ name, imageUri, price, nftOwnerId, nf
                 { showCreator && 
                     <div className={styles.Creator}>
                         <div
-                            style={{backgroundImage: `url(assets/dp/fake03.jpg)`}} 
+                            style={{backgroundImage: `url("${randomImage(nftMinterId)}")`}}
                         ></div>
                         <span className={`glow-text-blue`}>{ randomName(nftMinterId) }</span>
                     </div>
                 }
                 <h5 className={`glow-text-blue`}>{name}</h5>
+                <a>wilder.{domain}</a>
                 <div className={styles.Foot}>
                     <div>
-                        <span className={`glow-text-blue`}>Last Traded Price</span>
+                        <span>Last Traded Price</span>
                         <span className={`glow-text-blue`}>{Number(price).toLocaleString()} WILD</span>
                     </div>
                     { showOwner &&
                         <div>
-                            <span className={`glow-text-blue`}>Owned By</span>
+                            <span>Owned By</span>
                             <div className={styles.Creator}>
                                 <div
-                                style={{backgroundImage: `url(assets/dp/fake05.jpg)`}} 
+                                style={{backgroundImage: `url("${randomImage(nftOwnerId)}")`}}
                                 ></div>
-                                <span className={`glow-text-blue`}>{ randomName(nftMinterId) }</span>
+                                <span className={`glow-text-blue`}>{ randomName(nftOwnerId) }</span>
                             </div>
                         </div>
                     }

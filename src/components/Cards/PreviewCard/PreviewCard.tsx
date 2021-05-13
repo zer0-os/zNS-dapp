@@ -52,14 +52,14 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
             <>
                 <div className={styles.Preview} style={{opacity: isLoading ? 0 : 1}}>
                     <div 
-                    className={styles.Asset}
+                    className={`${styles.Asset} ${mvpVersion === 3 ? styles.MVP3Asset : ''}`}
                     >
                         <Image src={image} />
                     </div>
                     <div className={styles.Body}>
                         <div>
                             <h5>{name ? name : domain.split('/')[1]}</h5>
-                            <span className={styles.Domain}>{domain}</span>
+                            <a className={styles.Domain}>wilder.{domain.substring(1)}</a>
                             <p>{description}</p>
                         </div>
                         <div className={styles.Members}>
@@ -81,11 +81,11 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
                             <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
                         }
                         { mvpVersion === 3 && 
-                            <>
+                            <div>
                                 <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>BUY</FutureButton>
                                 <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span>
                                 <span className={`glow-text-blue`}>Last Offer</span>
-                            </>
+                            </div>
                         } 
                         
                     </div>

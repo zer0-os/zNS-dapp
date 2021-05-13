@@ -34,9 +34,15 @@
 
 .NFTCard h5 {
     margin-top: 12px;
+    margin-bottom: 8px;
 
     color: white;
     font-size: 24px;
+}
+
+.NFTCard a {
+    color: var(--color-accent-1);
+    font-weight: 700;
 }
 
 .NFT {
@@ -50,22 +56,21 @@
 .Foot {
     display: flex;
     justify-content: space-between;
+    margin-top: 32px;
 }
 
 .Foot > div {
     display: flex;
     flex-direction: column;
-
-    margin-top: 16px;
 }
 
-.Foot > div:not(:first-child) {
-    text-align: right;
+.Foot > div:not(:first-child) > span {
+    margin-left: 40px;
 }
 
 .Foot > div > span:first-child {
     font-weight: 700;
-    color: var(--color-accent-1);
+    color: var(--color-primary-lighter-3);
 
     text-transform: uppercase;
 }

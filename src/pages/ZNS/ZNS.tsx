@@ -39,6 +39,7 @@ import {
     SideBar,
     ZNALink,
     Notification,
+    NotificationDrawer,
 } from 'components'
 import {
     MintNewNFT,
@@ -63,7 +64,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     //- Domain State
     const [ currentDomainContext, setCurrentDomainContext ] = useState(null)
     
+    //- Notification State
+    const { addNotification } = useNotification()
+    
     //- MVP Version
+    // TODO: Move the MVP version handler out to a hook
     const [ mvpVersion, setMvpVersion ] = useState(1)
     const mvpFilterSelect = (mvp: string) => setMvpVersion(mvp === 'MVP 1' ? 1 : 3)
     const springAmount = mvpVersion === 3 ? 425.5 : 240
@@ -86,17 +91,20 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     //- Effects
     useEffect(() => {
+        addNotification('test notif ' + Math.random())
         if(data.isNothing()) setTableData([])
         else {
+
+        addNotification('test notif ' + Math.random())
             // Set the domain data for table view
             const d = subdomains.map((d: any, i: number) => ({
                 domainId: d.id,
                 domainName: d.name,
                 domainMetadataUri: d.metadata,
-                lastBid: randomNumber(1, 100000, 2),
+                lastBid: randomNumber(1, 10000, 2),
                 numBids: randomNumber(1, 150, 0),
-                lastSalePrice: randomNumber(1, 100000, 2),
-                tradePrice: randomNumber(1, 100000, 2),
+                lastSalePrice: randomNumber(1, 10000, 2),
+                tradePrice: randomNumber(1, 10000, 2),
             }))
             setTableData(d)
 
@@ -126,7 +134,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     return (
         <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out', paddingTop: mvpVersion === 1 ? 155 : 139 }}>
-            {/* <Notification /> */}
+            {/* <NotificationDrawer /> */}
             {/* Overlays */}
             {/* TODO: Switch out overlay handling to a hook */}
             <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
@@ -134,6 +142,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
             <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile id={account ? account : ''}/></Overlay>
 
             {/* Nav Bar */}
+            {/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
             <FilterBar onSelect={mvpFilterSelect} filters={['MVP 1', 'MVP 3']}>
             <TitleBar>
                 <div>

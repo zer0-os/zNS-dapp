@@ -71,6 +71,7 @@
 
     --background-purple-card: #4E0084;
     --background-purple-card-20: rgba(78,0,132,0.2);
+    --background-purple-card-10: rgba(78,0,132,0.1);
 	--background-purple-light-20: rgba(190,96,255,0.2);
 
 	--background-field-bg: linear-gradient(94.23deg, rgba(60, 161, 255, 0.2) 0%, rgba(30, 81, 128, 0.2) 100%);
@@ -92,6 +93,8 @@
     --glow-primary: drop-shadow(0px 0px 10px 0px #EB00FF);
     --glow-text-blue: 0px 0px 10px rgba(60, 161, 255, 0.7);
     --glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
+	--glow-text-white-big: 0px 0px 15px rgba(255, 255, 255, 1), 0px 0px 15px rgba(255, 255, 255, 1), 0px 0px 15px rgba(255, 255, 255, 1); 
+	--glow-text-blue-big: 0px 0px 15px rgba(60, 161, 255, 1), 0px 0px 15px rgba(60, 161, 255, 1), 0px 0px 15px rgba(60, 161, 255, 1);
 
     --animation-time-short: 0.1s;
     --animation-time-medium: 0.3s;
@@ -111,7 +114,7 @@ body, button, input, textarea {
 
 body {
 	background-color: #120628;
-	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url('../assets/zns-bg.png');
+	background: url('../assets/zns-bg.png');
 	background-attachment: fixed;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -163,6 +166,24 @@ hr.glow::after {
     height: 1px;
     width: 8px;
     background-color: #e0baff;
+}
+
+a {
+	transition: text-shadow var(--animation-time-short) ease-in-out;
+}
+
+a:hover {
+	color: var(--color-accent-1);
+	text-shadow: var(--glow-text-blue);
+}
+
+a.alt-link {
+	color: white; 
+}
+
+a.alt-link:hover {
+	color: white;
+	text-shadow: var(--glow-text-white-big);
 }
 
 /*
@@ -251,9 +272,9 @@ hr.glow::after {
 
 /* Blurs the background of the div */
 .blur {
-	backdrop-filter: blur(30px);
-	backdrop-webkit-filter: blur(30px);
-	backdrop-moz-filter: blur(30px);
-	backdrop-o-filter: blur(30px);
-	backdrop-ms-filter: blur(30px);
+	backdrop-filter: blur(20px);
+	backdrop-webkit-filter: blur(20px);
+	backdrop-moz-filter: blur(20px);
+	backdrop-o-filter: blur(20px);
+	backdrop-ms-filter: blur(20px);
 }
