@@ -202,6 +202,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                                 creatorId={!data.isNothing() && data.value.minter && data.value.minter.id ? `${data.value.minter.id.substring(0, 12)}...` : ''}
                                 ownerId={!data.isNothing() ? `${data.value.owner.id.substring(0, 12)}...` : ''}
                                 isLoading={isLoading}
+                                mvpVersion={mvpVersion}
                             >
                                 { mvpVersion === 3 && subdomains.length > 0 &&
                                     <>

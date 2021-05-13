@@ -148,13 +148,13 @@
 /* "Last Offer" text */
 .Buy > span:first-of-type {
     margin-top: 20px;
-    color: var(--color-primary-lighter-3);
+    font-size: 24px;
 }
 
 /* Offer amount */
 .Buy > span:last-of-type {
     margin-top: 8px;
-    font-size: 24px;
+    color: var(--color-primary-lighter-3);
 }
 
 .Buy > span > span {

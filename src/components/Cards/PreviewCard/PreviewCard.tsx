@@ -29,9 +29,10 @@ type PreviewCardProps = {
     ownerId: string;
     isLoading: boolean;
     children?: React.ReactNode;
+    mvpVersion: number;
 }
 
-const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, description, creatorId, ownerId, isLoading, children }) => {
+const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, description, creatorId, ownerId, isLoading, children, mvpVersion }) => {
 
     // TODO: Work out how the data for the asset cards should be passed in
     // Would it actually make more sense to have the bottom row of the preview card be whatever
@@ -75,10 +76,18 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
                             />
                         </div>
                     </div>
-                    <div className={styles.Buy}>
-                        <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
-                        {/* <span className={`glow-text-blue`}>Last Offer</span>
-                        <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span> */}
+                    <div className={styles.Buy} style={{alignItems: mvpVersion === 3 ? 'center' : 'flex-end'}}>
+                        { mvpVersion === 1 && 
+                            <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
+                        }
+                        { mvpVersion === 3 && 
+                            <>
+                                <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>BUY</FutureButton>
+                                <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span>
+                                <span className={`glow-text-blue`}>Last Offer</span>
+                            </>
+                        } 
+                        
                     </div>
                 </div>
                 { children &&
