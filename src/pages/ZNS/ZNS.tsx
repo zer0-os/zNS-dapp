@@ -66,6 +66,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     //- MVP Version
     const [ mvpVersion, setMvpVersion ] = useState(1)
     const mvpFilterSelect = (mvp: string) => setMvpVersion(mvp === 'MVP 1' ? 1 : 3)
+    const springAmount = mvpVersion === 3 ? 425.5 : 240
 
     //- Web3 Wallet Data
     const walletContext = useWeb3React<Web3Provider>()
@@ -188,53 +189,56 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
             }
 
             {/* Preview Card */}
-            <Spring from={{ opacity: 0, marginTop: -236 }} to={{ opacity: !isRoot && hasLoaded && subdomains.length ? 1 : 0, marginTop: !isRoot && hasLoaded && subdomains.length ? 0 : -236 }}>
-                { styles => 
-                    <animated.div style={styles}>
-                        <PreviewCard
-                            image={!data.isNothing() ? data.value.image : ''}
-                            name={!data.isNothing() ? data.value.name : 'nothing'}
-                            domain={domain}
-                            description={!data.isNothing() ? data.value.description : ''}
-                            creatorId={!data.isNothing() && data.value.minter && data.value.minter.id ? `${data.value.minter.id.substring(0, 12)}...` : ''}
-                            ownerId={!data.isNothing() ? `${data.value.owner.id.substring(0, 12)}...` : ''}
-                            isLoading={isLoading}
-                        >
-                            { mvpVersion === 3 && subdomains.length > 0 &&
-                                <>
-                                    <HorizontalScroll fade>
-                                        <AssetPriceCard 
-                                            title={`${domain.substring(1, 5).toUpperCase()} Price`}
-                                            price={randomNumber(85, 400, 2)}
-                                            change={randomNumber(-30, 30, 2)}
-                                        />
-                                        <AssetGraphCard
-                                            title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-                                        />
-                                        <AssetPriceCard 
-                                            title={`${domain.substring(1, 5).toUpperCase()} Price`}
-                                            price={randomNumber(85, 400, 2)}
-                                            change={randomNumber(-30, 30, 2)}
-                                        />
-                                        <AssetMarketCapCard 
-                                            title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
-                                            price={randomNumber(15000, 40000, 2)}
-                                        />
-                                        <AssetMarketCapCard 
-                                            title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
-                                            price={randomNumber(15000, 40000, 2)}
-                                        />
-                                        <AssetMarketCapCard 
-                                            title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
-                                            price={randomNumber(15000, 40000, 2)}
-                                        />
-                                    </HorizontalScroll>
-                                </>
-                            }
-                        </PreviewCard>
-                    </animated.div>
-                }
-            </Spring>
+            {/* TODO: This definitely needs some refactoring */}
+            { subdomains.length > 0 && 
+                <Spring from={{ opacity: 0, marginTop: -springAmount }} to={{ opacity: !isRoot && hasLoaded && subdomains.length ? 1 : 0, marginTop: !isRoot && hasLoaded && subdomains.length ? 0 : -springAmount }}>
+                    { styles => 
+                        <animated.div style={styles}>
+                            <PreviewCard
+                                image={!data.isNothing() ? data.value.image : ''}
+                                name={!data.isNothing() ? data.value.name : 'nothing'}
+                                domain={domain}
+                                description={!data.isNothing() ? data.value.description : ''}
+                                creatorId={!data.isNothing() && data.value.minter && data.value.minter.id ? `${data.value.minter.id.substring(0, 12)}...` : ''}
+                                ownerId={!data.isNothing() ? `${data.value.owner.id.substring(0, 12)}...` : ''}
+                                isLoading={isLoading}
+                            >
+                                { mvpVersion === 3 && subdomains.length > 0 &&
+                                    <>
+                                        <HorizontalScroll fade>
+                                            <AssetPriceCard 
+                                                title={`${domain.substring(1, 5).toUpperCase()} Price`}
+                                                price={randomNumber(85, 400, 2)}
+                                                change={randomNumber(-30, 30, 2)}
+                                            />
+                                            <AssetGraphCard
+                                                title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+                                            />
+                                            <AssetPriceCard 
+                                                title={`${domain.substring(1, 5).toUpperCase()} Price`}
+                                                price={randomNumber(85, 400, 2)}
+                                                change={randomNumber(-30, 30, 2)}
+                                            />
+                                            <AssetMarketCapCard 
+                                                title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                                price={randomNumber(15000, 40000, 2)}
+                                            />
+                                            <AssetMarketCapCard 
+                                                title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                                price={randomNumber(15000, 40000, 2)}
+                                            />
+                                            <AssetMarketCapCard 
+                                                title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                                price={randomNumber(15000, 40000, 2)}
+                                            />
+                                        </HorizontalScroll>
+                                    </>
+                                }
+                            </PreviewCard>
+                        </animated.div>
+                    }
+                </Spring>
+            }
 
             {/* Subdomain table */}
            
