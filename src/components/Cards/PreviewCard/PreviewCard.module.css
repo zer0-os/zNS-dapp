@@ -3,6 +3,7 @@
 }
 
 .PreviewCard {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -21,11 +22,14 @@
 }
 
 .Loading {
+    position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: var(--height);
+    height: 100%;
 }
 
 .Spinner {

@@ -48,51 +48,48 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
                     <div className={styles.Spinner}></div>
                 </div>
             }
-            { !isLoading &&
-                <>
-                    <div className={styles.Preview}>
-                        <div 
-                        className={styles.Asset}
-                        >
-                            <Image src={image} />
+            <>
+                <div className={styles.Preview} style={{opacity: isLoading ? 0 : 1}}>
+                    <div 
+                    className={styles.Asset}
+                    >
+                        <Image src={image} />
+                    </div>
+                    <div className={styles.Body}>
+                        <div>
+                            <h5>{name ? name : domain.split('/')[1]}</h5>
+                            <span className={styles.Domain}>{domain}</span>
+                            <p>{description}</p>
                         </div>
-                        <div className={styles.Body}>
-                            <div>
-                                <h5>{name ? name : domain.split('/')[1]}</h5>
-                                <span className={styles.Domain}>{domain}</span>
-                                <p>{description}</p>
-                            </div>
-                            <div className={styles.Members}>
-                                {/* TODO: Switch these to Member component */}
-                                <Member
-                                    name={randomName(creatorId)}
-                                    image={randomImage(creatorId)}
-                                    subtext={'Creator'}
-                                />
-                                <Member
-                                    name={randomName(ownerId)}
-                                    image={randomImage(ownerId)}
-                                    subtext={'Owner'}
-                                />
-                            </div>
-                        </div>
-                        <div className={styles.Buy}>
-                            <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
-                            {/* <span className={`glow-text-blue`}>Last Offer</span>
-                            <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span> */}
+                        <div className={styles.Members}>
+                            {/* TODO: Switch these to Member component */}
+                            <Member
+                                name={randomName(creatorId)}
+                                image={randomImage(creatorId)}
+                                subtext={'Creator'}
+                            />
+                            <Member
+                                name={randomName(ownerId)}
+                                image={randomImage(ownerId)}
+                                subtext={'Owner'}
+                            />
                         </div>
                     </div>
-                    { children &&
-                        <>
-                            <hr className='glow' />
-                            <div className={styles.Children}>
-                                { children }
-                            </div>
-                        </>
-                    }
-                </>
-            }
-            
+                    <div className={styles.Buy}>
+                        <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
+                        {/* <span className={`glow-text-blue`}>Last Offer</span>
+                        <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span> */}
+                    </div>
+                </div>
+                { children &&
+                    <>
+                        <hr className='glow' style={{opacity: isLoading ? 0 : 1}} />
+                        <div className={styles.Children} style={{opacity: isLoading ? 0 : 1}}>
+                            { children }
+                        </div>
+                    </>
+                }
+            </>
         </div>
     )
 }
