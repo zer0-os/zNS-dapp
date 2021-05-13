@@ -199,43 +199,45 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                             creatorId={!data.isNothing() && data.value.minter && data.value.minter.id ? `${data.value.minter.id.substring(0, 12)}...` : ''}
                             ownerId={!data.isNothing() ? `${data.value.owner.id.substring(0, 12)}...` : ''}
                             isLoading={isLoading}
-                        />
+                        >
+                            { mvpVersion === 3 && subdomains.length > 0 &&
+                                <>
+                                    <HorizontalScroll fade>
+                                        <AssetPriceCard 
+                                            title={`${domain.substring(1, 5).toUpperCase()} Price`}
+                                            price={randomNumber(85, 400, 2)}
+                                            change={randomNumber(-30, 30, 2)}
+                                        />
+                                        <AssetGraphCard
+                                            title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+                                        />
+                                        <AssetPriceCard 
+                                            title={`${domain.substring(1, 5).toUpperCase()} Price`}
+                                            price={randomNumber(85, 400, 2)}
+                                            change={randomNumber(-30, 30, 2)}
+                                        />
+                                        <AssetMarketCapCard 
+                                            title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                            price={randomNumber(15000, 40000, 2)}
+                                        />
+                                        <AssetMarketCapCard 
+                                            title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                            price={randomNumber(15000, 40000, 2)}
+                                        />
+                                        <AssetMarketCapCard 
+                                            title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                            price={randomNumber(15000, 40000, 2)}
+                                        />
+                                    </HorizontalScroll>
+                                </>
+                            }
+                        </PreviewCard>
                     </animated.div>
                 }
             </Spring>
 
             {/* Subdomain table */}
-            { mvpVersion === 3 && subdomains.length > 0 &&
-                <>
-                    <HorizontalScroll style={{marginTop: 16}}>
-                        <AssetPriceCard 
-                            title='Wild Price'
-                            price={randomNumber(85, 400, 2)}
-                            change={randomNumber(-30, 30, 2)}
-                        />
-                        <AssetGraphCard
-                            title='Wild Price'
-                        />
-                        <AssetPriceCard 
-                            title='Test Price'
-                            price={randomNumber(85, 400, 2)}
-                            change={randomNumber(-30, 30, 2)}
-                        />
-                        <AssetMarketCapCard 
-                            title='Total Test Holders'
-                            price={randomNumber(15000, 40000, 2)}
-                        />
-                        <AssetMarketCapCard 
-                            title='Total Test2 Holders'
-                            price={randomNumber(15000, 40000, 2)}
-                        />
-                        <AssetMarketCapCard 
-                            title='Total Test3 Holders'
-                            price={randomNumber(15000, 40000, 2)}
-                        />
-                    </HorizontalScroll>
-                </>
-            }
+           
 
             {/* Subdomain Table */}
             { subdomains.length > 0 && 

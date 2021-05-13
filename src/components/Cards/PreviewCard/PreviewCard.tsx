@@ -9,9 +9,13 @@ import { randomName, randomImage } from 'lib/Random'
 
 //- Component Imports
 import {
+    AssetGraphCard,
+    AssetMarketCapCard,
+    AssetPriceCard,
     FutureButton, 
     Image,
-    Member
+    Member,
+    HorizontalScroll,
 } from 'components'
 
 
@@ -24,9 +28,14 @@ type PreviewCardProps = {
     creatorId: string;
     ownerId: string;
     isLoading: boolean;
+    children?: React.ReactNode;
 }
 
-const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, description, creatorId, ownerId, isLoading }) => {
+const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, description, creatorId, ownerId, isLoading, children }) => {
+
+    // TODO: Work out how the data for the asset cards should be passed in
+    // Would it actually make more sense to have the bottom row of the preview card be whatever
+    // is passed in as a child?
 
     return(
         <div 
@@ -41,36 +50,46 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
             }
             { !isLoading &&
                 <>
-                    <div 
-                    className={styles.Asset}
-                    >
-                        <Image src={image} />
-                    </div>
-                    <div className={styles.Body}>
-                        <div>
-                            <h5>{name ? name : domain.split('/')[1]}</h5>
-                            <span className={styles.Domain}>{domain}</span>
+                    <div className={styles.Preview}>
+                        <div 
+                        className={styles.Asset}
+                        >
+                            <Image src={image} />
                         </div>
-                        <p>{description}</p>
-                        <div className={styles.Members}>
-                            {/* TODO: Switch these to Member component */}
-                            <Member
-                                name={randomName(creatorId)}
-                                image={randomImage(creatorId)}
-                                subtext={'Creator'}
-                            />
-                            <Member
-                                name={randomName(ownerId)}
-                                image={randomImage(ownerId)}
-                                subtext={'Owner'}
-                            />
+                        <div className={styles.Body}>
+                            <div>
+                                <h5>{name ? name : domain.split('/')[1]}</h5>
+                                <span className={styles.Domain}>{domain}</span>
+                                <p>{description}</p>
+                            </div>
+                            <div className={styles.Members}>
+                                {/* TODO: Switch these to Member component */}
+                                <Member
+                                    name={randomName(creatorId)}
+                                    image={randomImage(creatorId)}
+                                    subtext={'Creator'}
+                                />
+                                <Member
+                                    name={randomName(ownerId)}
+                                    image={randomImage(ownerId)}
+                                    subtext={'Owner'}
+                                />
+                            </div>
+                        </div>
+                        <div className={styles.Buy}>
+                            <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
+                            {/* <span className={`glow-text-blue`}>Last Offer</span>
+                            <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span> */}
                         </div>
                     </div>
-                    <div className={styles.Buy}>
-                        <FutureButton glow onClick={() => console.log('hello')} style={{height: 36, width: 118, borderRadius: 30}}>ENLIST</FutureButton>
-                        {/* <span className={`glow-text-blue`}>Last Offer</span>
-                        <span className={`glow-text-white`}>W1.56 <span className={`glow-text-blue`}>($8,000)</span></span> */}
-                    </div>
+                    { children &&
+                        <>
+                            <hr className='glow' />
+                            <div className={styles.Children}>
+                                { children }
+                            </div>
+                        </>
+                    }
                 </>
             }
             

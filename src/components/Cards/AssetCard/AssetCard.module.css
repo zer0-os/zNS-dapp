@@ -10,13 +10,14 @@
 }
 
 .AssetCard h4 {
-    color: var(--color-accent-1);
+    color: var(--color-primary-lighter-3);
     font-weight: 700;
 
     text-transform: uppercase;
 }
 
 .infoButton {
+    display: none;
     height: 16px;
     width: 16px;
 

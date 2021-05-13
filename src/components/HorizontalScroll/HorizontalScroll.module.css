@@ -14,3 +14,7 @@
 .bar > *:not(:first-child) {
 	margin-left: 17px;
 }
+
+.Fade {
+	/* TODO: Implement the fade */
+}

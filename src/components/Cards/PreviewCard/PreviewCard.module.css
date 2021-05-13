@@ -4,12 +4,20 @@
 
 .PreviewCard {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    height: var(--height);
+    background: var(--background-purple-card-20);
+}
+/* marginTop: 16, marginLeft: 43, marginRight: 43, marginBottom: 0 */
+.PreviewCard hr {
+    margin: 16px 43px 0px 43px;
+}
+
+.Preview {
+    display: flex;
+    width: 100%;
 
     padding: 8px;
-
-    background: var(--background-purple-card-20);
 }
 
 .Loading {
@@ -17,7 +25,7 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: var(--height);
 }
 
 .Spinner {
@@ -38,6 +46,7 @@
     align-items: center;
 
     width: 398.33px;
+    height: 220px;
 
     /* background-color: var(--background-purple-card); */
     background-size: cover;
@@ -61,13 +70,13 @@
     justify-content: space-between;
 
     width: 562px;
-    margin: 27px 40px 12px 36px;
+    margin: 8px 40px 0 36px;
 }
 
 .Body h5 {
     color: white;
     font-size: 24px;
-
+    font-weight: 400;
     margin-bottom: 6px;
 }
 
@@ -146,4 +155,8 @@
 
 .Buy > span > span {
     font-size: 16px;
+}
+
+.Children {
+    padding: 24.5px 8px 26px 8px;
 }
