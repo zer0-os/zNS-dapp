@@ -5,12 +5,8 @@
     width: 100%;
 
     padding: 15px 20px 16px 20px;
-
-    /* background: var(--background-purple-card-20); */
-    /* background: #7235A3; */
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0) 69.17%);
     
-
+    background: url('assets/new-drop-bg.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
