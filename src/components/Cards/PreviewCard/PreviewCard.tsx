@@ -90,7 +90,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
                         
                     </div>
                 </div>
-                { children &&
+                { children && mvpVersion === 3 &&
                     <>
                         <hr className='glow' style={{opacity: isLoading ? 0 : 1}} />
                         <div className={styles.Children} style={{opacity: isLoading ? 0 : 1}}>

@@ -204,37 +204,33 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                                 isLoading={isLoading}
                                 mvpVersion={mvpVersion}
                             >
-                                { mvpVersion === 3 && subdomains.length > 0 &&
-                                    <>
-                                        <HorizontalScroll fade>
-                                            <AssetPriceCard 
-                                                title={`${domain.substring(1, 5).toUpperCase()} Price`}
-                                                price={randomNumber(85, 400, 2)}
-                                                change={randomNumber(-30, 30, 2)}
-                                            />
-                                            <AssetGraphCard
-                                                title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-                                            />
-                                            <AssetPriceCard 
-                                                title={`${domain.substring(1, 5).toUpperCase()} Price`}
-                                                price={randomNumber(85, 400, 2)}
-                                                change={randomNumber(-30, 30, 2)}
-                                            />
-                                            <AssetMarketCapCard 
-                                                title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
-                                                price={randomNumber(15000, 40000, 2)}
-                                            />
-                                            <AssetMarketCapCard 
-                                                title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
-                                                price={randomNumber(15000, 40000, 2)}
-                                            />
-                                            <AssetMarketCapCard 
-                                                title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
-                                                price={randomNumber(15000, 40000, 2)}
-                                            />
-                                        </HorizontalScroll>
-                                    </>
-                                }
+                                <HorizontalScroll fade>
+                                    <AssetPriceCard 
+                                        title={`${domain.substring(1, 5).toUpperCase()} Price`}
+                                        price={randomNumber(85, 400, 2)}
+                                        change={randomNumber(-30, 30, 2)}
+                                    />
+                                    <AssetGraphCard
+                                        title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+                                    />
+                                    <AssetPriceCard 
+                                        title={`${domain.substring(1, 5).toUpperCase()} Price`}
+                                        price={randomNumber(85, 400, 2)}
+                                        change={randomNumber(-30, 30, 2)}
+                                    />
+                                    <AssetMarketCapCard 
+                                        title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                        price={randomNumber(15000, 40000, 2)}
+                                    />
+                                    <AssetMarketCapCard 
+                                        title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                        price={randomNumber(15000, 40000, 2)}
+                                    />
+                                    <AssetMarketCapCard 
+                                        title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                        price={randomNumber(15000, 40000, 2)}
+                                    />
+                                </HorizontalScroll>
                             </PreviewCard>
                         </animated.div>
                     }
