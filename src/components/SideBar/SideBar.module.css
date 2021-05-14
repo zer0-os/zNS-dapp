@@ -1,6 +1,6 @@
 .SideBar {
 	height: 100vh;
-	width: 54px;
+	width: 56px;
 
 	display: flex;
 	flex-direction: column;	
@@ -8,8 +8,8 @@
 
 	position: fixed;
 	top: 0;
-	left: 50%;
-	transform: translateX(-707px)
+
+	transform: translateX(calc(-100% - 19px));
 }
 
 /* Navigator Styling */
@@ -17,7 +17,7 @@
 	border-radius: 27px;
 	padding: 7px 5px;
 
-	background-color: var(--background-purple-card-20);
+	background-color: #4E008466;
 }
 
 .Icons {
@@ -33,7 +33,7 @@
 
 	border-radius: 50%;
 
-	background-color: var(--color-accent-1-medium-10);
+	background-color: rgba(0, 209, 255, 0.1);
 	background-size: 50%;
 	background-position: center;
 	background-repeat: no-repeat;

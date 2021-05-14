@@ -105,6 +105,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     //- Effects
     useEffect(() => {
+        // TODO: Clean this whole hook up
         if(data.isNothing()) setTableData([])
         else {
             // Set the domain data for table view
@@ -144,13 +145,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     }, [ domain ])
 
     return (
+        <>
+        {/* Overlays */}
+        {/* TODO: Switch out overlay handling to a hook */}
+        <NotificationDrawer />
+        <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
+        <Overlay open={isMintOverlayOpen} onClose={() => setIsMintOverlayOpen(false)}><MintNewNFT onMint={() => setIsMintOverlayOpen(false)} domainName={domain} domainId={!data.isNothing() ? data.value.id : ''} /></Overlay>
+        <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile id={account ? account : ''}/></Overlay>
+
+        {/* ZNS Content */}
         <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out', paddingTop: mvpVersion === 1 ? 155 : 139 }}>
-            <NotificationDrawer />
-            {/* Overlays */}
-            {/* TODO: Switch out overlay handling to a hook */}
-            <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
-            <Overlay open={isMintOverlayOpen} onClose={() => setIsMintOverlayOpen(false)}><MintNewNFT onMint={() => setIsMintOverlayOpen(false)} domainName={domain} domainId={!data.isNothing() ? data.value.id : ''} /></Overlay>
-            <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile id={account ? account : ''}/></Overlay>
+            {/* TODO: Maybe worth moving sidebar up to App.tsx depending on its functionality */}
+            <SideBar />
 
             {/* Nav Bar */}
             {/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
@@ -288,6 +294,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                 />
             }
         </div>
+        </>
     )
 }
 

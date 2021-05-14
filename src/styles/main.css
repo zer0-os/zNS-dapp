@@ -210,8 +210,7 @@ a.alt-link:hover {
 }
 
 .page-spacing {
-	/* position: relative; */
-
+	position: relative;
 	max-width: var(--width-max);
 	min-width: var(--width-max);
 	margin: 0 auto;
