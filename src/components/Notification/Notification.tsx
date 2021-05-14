@@ -6,12 +6,13 @@ import styles from './Notification.module.css'
 
 type NotificationProps = {
     text: string;
+    onClick?: () => void;
 }
 
-const Notification: React.FC<NotificationProps> = ({ text }) => {
+const Notification: React.FC<NotificationProps> = ({ text, onClick }) => {
 
     return(
-        <div className={`${styles.Notification} border-primary blur`}>
+        <div onClick={onClick} className={`${styles.Notification} blur ${onClick ? styles.Clickable : ''}`}>
             <p>{text}</p>
         </div>
     )

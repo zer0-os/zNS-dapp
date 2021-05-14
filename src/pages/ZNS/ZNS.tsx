@@ -89,13 +89,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     const ownedDomain = !data.isNothing() && data.value.owner.id === account
     const subdomains = !data.isNothing() && data.value.subdomains ? data.value.subdomains : []
 
+    useEffect(() => {
+        if(triedEagerConnect) addNotification(active ? 'Wallet connected!' : 'Wallet disconnected!')
+    }, [active])
+
     //- Effects
     useEffect(() => {
-        addNotification('test notif ' + Math.random())
         if(data.isNothing()) setTableData([])
         else {
-
-        addNotification('test notif ' + Math.random())
             // Set the domain data for table view
             const d = subdomains.map((d: any, i: number) => ({
                 domainId: d.id,
@@ -134,7 +135,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     return (
         <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out', paddingTop: mvpVersion === 1 ? 155 : 139 }}>
-            {/* <NotificationDrawer /> */}
+            <NotificationDrawer />
             {/* Overlays */}
             {/* TODO: Switch out overlay handling to a hook */}
             <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>

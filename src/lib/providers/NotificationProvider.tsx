@@ -1,8 +1,9 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 
 export const NotificationContext = React.createContext({
     notifications: [{text: ''}],
     addNotification: (text: string) => {},
+    removeNotification: (notif: Notification) => {},
 })
 
 type NotificationProviderType = {
@@ -15,24 +16,29 @@ type Notification = {
 
 const NotificationProvider: React.FC<NotificationProviderType> = ({ children }) => {
     const [ notifications, setNotifications ] = useState<Notification[]>([])
+    const [ toRemove, setToRemove ] = useState<Notification | null>(null) // Notification which has just timed out
 
     const addNotification = (text: string) => {
         const n: Notification = {text: text}
-        console.log('add', n)
-        console.log('curr', notifications)
-        console.log('result', [n].concat(notifications))
-        setNotifications([n].concat(notifications))
-        // setTimeout(() => removeNotification(n), 5000)
+        const notifs = [n].concat(notifications)
+        setNotifications(notifs)
+        setTimeout(() => setToRemove(n), 3000)
     }
 
-    const removeNotification = (n: Notification) => {
-        const notifs: Notification[] = notifications.filter(m => m == n)
+    // Remove the timed-out notification
+    useEffect(() => {
+        if(toRemove) removeNotification(toRemove)
+    }, [ toRemove ])
+
+    const removeNotification = (notif: Notification) => {
+        const notifs: Notification[] = notifications.filter(n => n.text != notif.text)
         setNotifications(notifs)
     }
 
     const contextValue = {
         notifications,
         addNotification: useCallback((text: string) => addNotification(text), [ notifications ]),
+        removeNotification: useCallback((notif: Notification) => removeNotification(notif), [ notifications ]),
     }
 
     return (

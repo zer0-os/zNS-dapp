@@ -38,6 +38,7 @@
  * -- The design is likely to change, so let's use variables where we can
  * to make changes a bit easier.
  *
+ * TODO: Would it be worth changing this to SCSS and having slightly more versatile variables?
  */
 :root {
     --font-size-default: 16px;
@@ -45,6 +46,7 @@
 
     --color-primary: #8C00FF;
 	--color-primary-lighter-3: #e5baff;
+	--color-primary-darkest: #8C00FF;
     --color-accent-1: #3CA1FF;
 	--color-accent-1-30: #9ED0FF;
     --color-accent-1-50:rgba(60,161,255,0.5); 

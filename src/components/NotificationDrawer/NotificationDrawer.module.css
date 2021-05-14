@@ -1,11 +1,16 @@
 .NotificationDrawer {
+    display: flex;
     position: fixed;
-    top: 0;
-    right: 0;
+    top: 32px;
+    right: 32px;
 
     z-index: 10000;
 
-    height: 100vh;
+    height: auto;
 
-    width: 300px;
+    width: 311px;
+}
+
+.NotificationDrawer li:not(:first-child) {
+    margin-top: 16px;
 }
