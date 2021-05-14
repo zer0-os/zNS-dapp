@@ -16,6 +16,7 @@
 .MintPreview > li {
     display: flex;
     margin-top: 34px;
+    margin-bottom: 34px;
 }
 
 .Image {
