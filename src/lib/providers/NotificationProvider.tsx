@@ -31,7 +31,7 @@ const NotificationProvider: React.FC<NotificationProviderType> = ({ children }) 
     }, [ toRemove ])
 
     const removeNotification = (notif: Notification) => {
-        const notifs: Notification[] = notifications.filter(n => n.text != notif.text)
+        const notifs: Notification[] = notifications.filter(n => n !== notif)
         setNotifications(notifs)
     }
 

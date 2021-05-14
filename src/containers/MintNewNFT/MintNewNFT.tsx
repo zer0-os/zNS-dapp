@@ -1,8 +1,9 @@
 //- React Imports
 import React, { useState, useEffect, useRef, useContext, createContext } from 'react'
 
-//- NFT Context Imports
+//- Context Imports
 import { NFTContextData, NFTContextDataDefault, NFTContext } from './NFTContext'
+import useMint from 'lib/hooks/useMint'
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'
@@ -26,6 +27,9 @@ type MintNewNFTProps = {
 const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint }) => {
 
 	// NOTE: The only domain data MintNewNFT needs is the domain ID
+
+	//- Mint Context
+	const { mint } = useMint()
 
 	//- NFT Context
 	const [ nftName, setNftName ] = useState('')
@@ -56,18 +60,21 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 	const context = useWeb3React<Web3Provider>()
 	const { account } = context // account = connected wallet ID
 
-	//- Hooks
-	useEffect(() => {
-		return clearFields // Clear all the fields on teardown
-	}, [ domainId ])
-
 	//- Functions
 	const toStep = (i: number) => {setStep(i >= steps ? steps : i)}
-	const clearFields = () => console.log('clear')
 	const submit = () => {
-		// TODO: Call middleware to mint NFT 
-		// TODO: Some sort of loading indicator 
-		onMint()
+		// Verify that all fields exist
+		const { name, ticker, story, image, dynamic } = NFTContextValue
+		if(name.length && ticker.length && story.length && image && dynamic != null) {
+			mint({
+				name: name,
+				ticker: ticker,
+				story: story,
+				image: image,
+				dynamic: dynamic
+			})
+			onMint()
+		}
 	}
 
 	return (

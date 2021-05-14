@@ -24,13 +24,17 @@ const NotificationDrawer = () => {
         removeNotification(o)
     }
 
+    useEffect(() => {
+        setVisibleNotifications([...visibleNotifications, notifications])
+    }, [ notifications ])
+
     return (
-        <div className={styles.NotificationDrawer}>
+        <div className={`${styles.NotificationDrawer} border-rounded ${!notifications.length ? styles.Hidden : ''}`}>
             <ul>
                 {
                     notifications.map((o: any) => 
-                        <li key={o.text + Math.random()}>
-                            <Notification onClick={() => remove(o)} text={o.text} />
+                        <li key={o.text + Math.random()} onClick={() => remove(o)}>
+                            { o.text }
                         </li>
                     )
                 }

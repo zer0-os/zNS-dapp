@@ -14,6 +14,7 @@ import { useEagerConnect, useInactiveListener } from 'lib/hooks/provider-hooks';
 import { randomNumber } from 'lib/Random'
 import IPFSClient from 'lib/ipfs-client'
 import useNotification from 'lib/hooks/useNotification'
+import useMint from 'lib/hooks/useMint'
 
 //- Style Imports
 import styles from './ZNS.module.css'
@@ -40,6 +41,7 @@ import {
     ZNALink,
     Notification,
     NotificationDrawer,
+    NumberButton,
 } from 'components'
 import {
     MintNewNFT,
@@ -63,6 +65,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     //- Domain State
     const [ currentDomainContext, setCurrentDomainContext ] = useState(null)
+
+    //- Minting State
+    const { minting, minted } = useMint()
     
     //- Notification State
     const { addNotification } = useNotification()
@@ -156,15 +161,24 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                     }
                     { active &&
                         <> 
+                            {/* Mint button */}
                             <FutureButton 
                                 glow={isRoot} 
                                 onClick={() => isRoot || ownedDomain ? setIsMintOverlayOpen(true) : alert('You can only mint NFTs on domains you own')}
                             >Mint New NFT</FutureButton>
+
+                            {/* Mint Progress button */}
+                            { (minting.length > 0 || minted.length > 0) &&
+                                <NumberButton rotating={minting.length > 0} number={minting.length + minted.length} onClick={() => console.log('yeet')} />
+                            }
+
+                            {/* Profile Button */}
                             <IconButton
                                 onClick={() => setIsProfileOverlayOpen(true)} 
                                 style={{height: 32, width: 32, borderRadius: '50%'}} 
                                 iconUri={`https://picsum.photos/seed/${account}/200/300`} 
                             />
+
                             {/* TODO: Change the triple dot button to a component */}
                             <div 
                                 className={styles.Dots}
