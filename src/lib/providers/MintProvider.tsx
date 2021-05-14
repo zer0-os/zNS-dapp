@@ -16,6 +16,7 @@ type MintProviderType = {
 
 type NFT = {
     name: string;
+    domain: string;
     ticker: string;
     story: string;
     image: Buffer;
@@ -32,7 +33,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
         // TODO: Add API calls here
         setMinting([...minting, nft])
         addNotification(`Started minting ${nft.name}`)
-        setTimeout(() => setFinishedMinting(nft), 5250)
+        setTimeout(() => setFinishedMinting(nft), 15000)
     }
 
     // TODO: Change this hook to run when minting finishes

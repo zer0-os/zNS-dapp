@@ -71,7 +71,8 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 				ticker: ticker,
 				story: story,
 				image: image,
-				dynamic: dynamic
+				dynamic: dynamic,
+				domain: domainName,
 			})
 			onMint()
 		}
@@ -84,7 +85,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 				<div className={styles.Header}>
 					<h1 className={`glow-text-white`}>Mint A New NFT</h1>
 					<div style={{marginBottom: 16}}>
-						<h2 className={`glow-text-white`}>0://{domainName && domainName.length ? `${domainName}.` : ``}{nftName}</h2>
+						<h2 className={`glow-text-white`}>0:/{domainName && domainName.length ? `${domainName}` : ``}{nftName}</h2>
 					</div>
 					<span>By {account && account.length ? account.substring(0, 12) : ''}...</span>
 				</div>

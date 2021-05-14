@@ -29,7 +29,7 @@ const NotificationDrawer = () => {
     }, [ notifications ])
 
     return (
-        <div className={`${styles.NotificationDrawer} border-rounded ${!notifications.length ? styles.Hidden : ''}`}>
+        <div className={`${styles.NotificationDrawer} border-rounded blur ${!notifications.length ? styles.Hidden : ''}`}>
             <ul>
                 {
                     notifications.map((o: any) => 

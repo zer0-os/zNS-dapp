@@ -31,6 +31,7 @@ import {
     DomainTable,
     TextButton,
     TitleBar,
+    Tooltip,
     NextDrop,
     IconButton,
     Overlay,
@@ -42,7 +43,9 @@ import {
     Notification,
     NotificationDrawer,
     NumberButton,
+    MintPreview,
 } from 'components'
+
 import {
     MintNewNFT,
     NFTView
@@ -53,6 +56,8 @@ type ZNSProps = {
 }
 
 const ZNS: React.FC<ZNSProps> = ({ domain }) => {
+
+    // TODO: Need to handle domains that don't exist!
 
     //- Page State
     const [ isLoading, setIsLoading ] = useState(true)
@@ -144,7 +149,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
             {/* Overlays */}
             {/* TODO: Switch out overlay handling to a hook */}
             <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
-            <Overlay open={isMintOverlayOpen} onClose={() => setIsMintOverlayOpen(false)}><MintNewNFT onMint={() => setIsMintOverlayOpen(false)} domainName={!data.isNothing() ? data.value.name : ''} domainId={!data.isNothing() ? data.value.id : ''} /></Overlay>
+            <Overlay open={isMintOverlayOpen} onClose={() => setIsMintOverlayOpen(false)}><MintNewNFT onMint={() => setIsMintOverlayOpen(false)} domainName={domain} domainId={!data.isNothing() ? data.value.id : ''} /></Overlay>
             <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile id={account ? account : ''}/></Overlay>
 
             {/* Nav Bar */}
@@ -169,7 +174,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
                             {/* Mint Progress button */}
                             { (minting.length > 0 || minted.length > 0) &&
-                                <NumberButton rotating={minting.length > 0} number={minting.length + minted.length} onClick={() => console.log('yeet')} />
+                                <Tooltip content={<MintPreview />}>
+                                    <NumberButton rotating={minting.length > 0} number={minting.length} onClick={() => console.log('yeet')} />
+                                </Tooltip>
                             }
 
                             {/* Profile Button */}

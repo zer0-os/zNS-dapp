@@ -71,6 +71,8 @@
 
 
 
+	/* TODO: Should probably find a library that lets us set 
+		opacity on HEX colours so we don't have to do this */
     --background-purple-card: #4E0084;
     --background-purple-card-20: rgba(78,0,132,0.2);
     --background-purple-card-10: rgba(78,0,132,0.1);
@@ -171,6 +173,8 @@ hr.glow::after {
 }
 
 a {
+	color: var(--color-accent-1);
+	text-decoration: none;
 	transition: text-shadow var(--animation-time-short) ease-in-out;
 }
 
