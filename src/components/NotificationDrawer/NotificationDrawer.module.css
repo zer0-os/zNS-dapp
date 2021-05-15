@@ -6,11 +6,13 @@
     width: 311px;
     height: auto;
     padding: 16px;
+    border-radius: 10px;
 
     z-index: 10000;
 
-    background: rgba(182, 181, 255, 0.3);
-    box-shadow: 0px 0px 20px rgba(152, 150, 255, 0.4);
+    background: linear-gradient(180deg, rgba(210, 209, 255, 0.75) 0%, rgba(182, 181, 255, 0.6) 100%);
+
+    box-shadow: inset 0px 0px 30px rgba(152, 150, 255, 0.4);
 
     transform: translateY(0%) translateX(-50%);
 
@@ -22,16 +24,17 @@
 }
 
 .NotificationDrawer li {
+    font-family: 'Univia', sans-serif;
     width: 100%;
 
     text-align: center;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: medium;
 
     color: #28024b;
-    -webkit-text-stroke-width: 2px;
-    -webkit-text-stroke-color: rgba(221, 178, 255, 0.2);
-    text-shadow: 0px 0px 40px #FFFFFF, 0px 0px 20px #FFFFFF;
+    text-shadow: 0px 0px 15px #FFFFFF, 0px 0px 10px #FFFFFF, 0px 0px 30px #FFFFFF;
+
+    cursor: pointer;
 }
 
 .NotificationDrawer li:not(:first-child) {

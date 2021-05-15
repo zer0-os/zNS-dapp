@@ -156,7 +156,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
         {/* ZNS Content */}
         <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out', paddingTop: mvpVersion === 1 ? 155 : 139 }}>
             {/* TODO: Maybe worth moving sidebar up to App.tsx depending on its functionality */}
-            <SideBar />
+            { mvpVersion === 3 && <SideBar /> }
 
             {/* Nav Bar */}
             {/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
@@ -181,7 +181,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                             {/* Mint Progress button */}
                             { (minting.length > 0 || minted.length > 0) &&
                                 <Tooltip content={<MintPreview />}>
-                                    <NumberButton rotating={minting.length > 0} number={minting.length} onClick={() => console.log('yeet')} />
+                                    <NumberButton rotating={minting.length > 0} number={minting.length} onClick={() => {}} />
                                 </Tooltip>
                             }
 
@@ -211,7 +211,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
             {/* Preview Card */}
             { mvpVersion === 3 &&
-                <Spring from={{ opacity: 0, marginTop: -97 }} to={{ opacity: isRoot ? 1 : 0, marginTop: isRoot ? 0 : -97 }}>
+                <Spring from={{ opacity: 0, marginTop: -231 }} to={{ opacity: isRoot ? 1 : 0, marginTop: isRoot ? 0 : -231 }}>
                     { styles => 
                         <animated.div style={styles}>
                             <NextDrop
@@ -220,6 +220,33 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                                 date={new Date(new Date().getTime() + (24 * 60 * 60 * 1000))}
                                 style={{marginTop: 16}}
                             />
+                            <HorizontalScroll style={{marginTop: 16}} fade>
+                                    <AssetPriceCard 
+                                        title={`${domain.substring(1, 5).toUpperCase()} Price`}
+                                        price={randomNumber(85, 400, 2)}
+                                        change={randomNumber(-30, 30, 2)}
+                                    />
+                                    <AssetGraphCard
+                                        title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+                                    />
+                                    <AssetPriceCard 
+                                        title={`${domain.substring(1, 5).toUpperCase()} Price`}
+                                        price={randomNumber(85, 400, 2)}
+                                        change={randomNumber(-30, 30, 2)}
+                                    />
+                                    <AssetMarketCapCard 
+                                        title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                        price={randomNumber(15000, 40000, 2)}
+                                    />
+                                    <AssetMarketCapCard 
+                                        title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                        price={randomNumber(15000, 40000, 2)}
+                                    />
+                                    <AssetMarketCapCard 
+                                        title={`Total ${domain.substring(1, 5).toUpperCase()} Holders`}
+                                        price={randomNumber(15000, 40000, 2)}
+                                    />
+                                </HorizontalScroll>
                         </animated.div>
                     }
                 </Spring>

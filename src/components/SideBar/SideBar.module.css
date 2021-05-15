@@ -28,19 +28,67 @@
 }
 
 .Icons li {
+	position: relative;
 	height: 44px;
 	width: 44px;
 
 	border-radius: 50%;
-
-	background-color: rgba(0, 209, 255, 0.1);
-	background-size: 50%;
-	background-position: center;
-	background-repeat: no-repeat;
+	background-color:#00D1FF1A;
 
 	cursor: pointer;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Icons li > img {
+	height: 100%;
+	width: 100%;
+}
+
+.Icons li:hover {
+	transform: scale(1.2);
+}
+
+.Icons li::after, .Icons li::before {
+	z-index: -5;
+}
+
+.Icons li::before {
+	content: ' ';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0px;
+	height: 0px;
+	box-shadow: 0px 0px 30px 15px rgba(0, 178, 255);
+	transform: translate(-50%, -50%);
+	transition: box-shadow var(--animation-time-medium) ease-in-out;
+}
+
+.Icons li:hover::before {
+	box-shadow: 0px 0px 25px 12px rgb(136, 219, 255);
 }
 
 .Icons li:not(:first-child) {
 	margin-top: 12px;
+}
+
+.Selected:hover {
+	transform: scale(1) !important;
+}
+
+.Selected::before {
+	box-shadow: 0px 0px 30px 20px rgba(0, 178, 255) !important;
+}
+
+.Selected::after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: -3px;
+	width: calc(100%);
+	border-radius: 50%;
+	height: 100%;
+	border-left: 3px var(--color-accent-1) solid;
+	border-right: 3px var(--color-accent-1) solid;
 }

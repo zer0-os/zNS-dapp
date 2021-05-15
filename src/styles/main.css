@@ -18,6 +18,7 @@
  */
 @font-face {
 	font-family: 'Eurostile';
+	font-weight: 400;
 	src: local('Eurostile'), url('../fonts/Eurostile-Reg.otf') format('opentype');
 }
 
@@ -111,8 +112,9 @@
  *
  */
 
-body, button, input, textarea {
+html, body, button, input, textarea {
 	font-family: var(--font-family);
+	-webkit-font-smoothing: antialiased;
 	letter-spacing: 0.2px;
 }
 

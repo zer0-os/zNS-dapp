@@ -86,6 +86,14 @@
 	background: var(--background-purple-card-20);
 }
 
+.DomainTable > tbody > tr img, .DomainTable > tbody > tr button {
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.DomainTable > tbody > tr:hover img, .DomainTable > tbody > tr:hover button {
+	transform: scale(1.1);
+}
+
 .ticker {
 	color: var(--color-accent-1-light);
 	font-weight: 700;

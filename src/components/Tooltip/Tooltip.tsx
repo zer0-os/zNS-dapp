@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 //- Style Imports
 import styles from './Tooltip.module.css'
@@ -14,17 +14,33 @@ const Tooltip: React.FC<TooltipProps> = ({ children, content }) => {
     // TODO: Make this way more generic
 
     const [ open, setOpen ] = useState(false)
+    const contentRef = useRef()
+
+    const toggle = () => {
+        setOpen(!open)
+    }
+
+    useEffect(() => {
+        if(open) {
+            window.addEventListener('click', windowClick)
+        } else {
+            window.removeEventListener('click', windowClick)
+        }
+    }, [ open] )
+
+    const windowClick = (e: SyntheticEvent) => {
+        const contains = !e.target.contains(contentRef.current)
+        if(!contains) setOpen(false)
+    }
 
     return (
         <div 
-            onMouseEnter={() => setOpen(true)}
-            onMouseLeave={() => setOpen(false)}
             className={styles.Tooltip}
         >
-            <div>
+            <div onClick={() => setOpen(!open)}>
             {children}
             </div>
-            <div onMouseEnter={() => setOpen(true)} className={`${styles.Content} ${open ? styles.Open : styles.Closed}`}>
+            <div ref={contentRef} className={`${styles.Content} ${open ? styles.Open : styles.Closed}`}>
                 {content}
             </div>
         </div>
