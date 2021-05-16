@@ -28,7 +28,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, content }) => {
         }
     }, [ open] )
 
-    const windowClick = (e: SyntheticEvent) => {
+    const windowClick = (e: any) => {
         const contains = !e.target.contains(contentRef.current)
         if(!contains) setOpen(false)
     }
