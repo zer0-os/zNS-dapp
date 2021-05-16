@@ -14,24 +14,26 @@ const Tooltip: React.FC<TooltipProps> = ({ children, content }) => {
     // TODO: Make this way more generic
 
     const [ open, setOpen ] = useState(false)
-    const contentRef = useRef()
+    // const contentRef = useRef()
 
     const toggle = () => {
         setOpen(!open)
     }
 
-    useEffect(() => {
-        if(open) {
-            window.addEventListener('click', windowClick)
-        } else {
-            window.removeEventListener('click', windowClick)
-        }
-    }, [ open] )
+    // TODO: Reimplement window clicks
 
-    const windowClick = (e: any) => {
-        const contains = !e.target.contains(contentRef.current)
-        if(!contains) setOpen(false)
-    }
+    // useEffect(() => {
+    //     if(open) {
+    //         window.addEventListener('click', windowClick)
+    //     } else {
+    //         window.removeEventListener('click', windowClick)
+    //     }
+    // }, [ open] )
+
+    // const windowClick = (e: any) => {
+        // const contains = !e.target.contains(contentRef.current)
+        // if(!contains) setOpen(false)
+    // }
 
     return (
         <div 
@@ -40,7 +42,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, content }) => {
             <div onClick={() => setOpen(!open)}>
             {children}
             </div>
-            <div ref={contentRef} className={`${styles.Content} ${open ? styles.Open : styles.Closed}`}>
+            <div className={`${styles.Content} ${open ? styles.Open : styles.Closed}`}>
                 {content}
             </div>
         </div>
