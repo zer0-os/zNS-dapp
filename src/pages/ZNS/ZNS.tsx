@@ -16,6 +16,9 @@ import IPFSClient from 'lib/ipfs-client'
 import useNotification from 'lib/hooks/useNotification'
 import useMint from 'lib/hooks/useMint'
 
+//- Type Imports
+import { EnlistDomain } from 'types/Domain'
+
 //- Style Imports
 import styles from './ZNS.module.css'
 
@@ -48,7 +51,8 @@ import {
 
 import {
     MintNewNFT,
-    NFTView
+    NFTView,
+    Enlist,
 } from 'containers'
 
 type ZNSProps = {
@@ -59,15 +63,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     // TODO: Need to handle domains that don't exist!
 
-    //- Page State
-    const [ isLoading, setIsLoading ] = useState(true)
-    const [ hasLoaded, setHasLoaded ] = useState(false)
-
-    //- Overlay State
-    const [ isWalletOverlayOpen, setIsWalletOverlayOpen ] = useState(false)
-    const [ isMintOverlayOpen, setIsMintOverlayOpen ] = useState(false)
-    const [ isProfileOverlayOpen, setIsProfileOverlayOpen ] = useState(false)
-
     //- Domain State
     const [ currentDomainContext, setCurrentDomainContext ] = useState(null)
 
@@ -76,6 +71,28 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     
     //- Notification State
     const { addNotification } = useNotification()
+
+    //- Page State
+    const [ isLoading, setIsLoading ] = useState(true)
+    const [ hasLoaded, setHasLoaded ] = useState(false)
+
+    //- Overlay State
+    const [ isWalletOverlayOpen, setIsWalletOverlayOpen ] = useState(false)
+    const [ isMintOverlayOpen, setIsMintOverlayOpen ] = useState(false)
+    const [ isProfileOverlayOpen, setIsProfileOverlayOpen ] = useState(false)
+    const [ isEnlistOverlayOpen, setIsEnlistOverlayOpen ] = useState(false)
+
+    //- Enlist Overlay
+    // TODO: Really need to make overlays more reusable - this isn't an ideal way to handle overlays with data
+    const [ enlisting, setEnlisting ] = useState<EnlistDomain>({ id: '', domainName: '', minter: '', image: '' })
+    const openEnlistOverlay = (domainId: string, domainName: string, minter: string, image: string) => {
+        setEnlisting({id: domainId, domainName: domainName, minter: minter, image: image})
+        setIsEnlistOverlayOpen(true)
+    }
+    const onEnlistSubmit = () => {
+        addNotification(`Enlisted to purchase ${enlisting.domainName}!`)
+        setIsEnlistOverlayOpen(false)
+    }
     
     //- MVP Version
     // TODO: Move the MVP version handler out to a hook
@@ -113,6 +130,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                 domainId: d.id,
                 domainName: d.name,
                 domainMetadataUri: d.metadata,
+                minter: d.minter.id,
+                owner: d.owner.id,
                 lastBid: randomNumber(1, 10000, 2),
                 numBids: randomNumber(1, 150, 0),
                 lastSalePrice: randomNumber(1, 10000, 2),
@@ -152,6 +171,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
         <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
         <Overlay open={isMintOverlayOpen} onClose={() => setIsMintOverlayOpen(false)}><MintNewNFT onMint={() => setIsMintOverlayOpen(false)} domainName={domain} domainId={!data.isNothing() ? data.value.id : ''} /></Overlay>
         <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile id={account ? account : ''}/></Overlay>
+        <Overlay open={isEnlistOverlayOpen} onClose={() => setIsEnlistOverlayOpen(false)}><Enlist onSubmit={onEnlistSubmit} domainId={enlisting.id} domainName={enlisting.domainName} minterName={enlisting.minter} image={enlisting.image} /></Overlay>
 
         {/* ZNS Content */}
         <div className='page-spacing' style={{opacity: hasLoaded ? 1 : 0, transition: 'opacity 0.2s ease-in-out', paddingTop: mvpVersion === 1 ? 155 : 139 }}>
@@ -312,6 +332,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                     style={{marginTop: 16}}
                     empty={(!data.isNothing() && subdomains.length === 0)}
                     mvpVersion={mvpVersion}
+                    onEnlist={openEnlistOverlay}
                 />
             }
 

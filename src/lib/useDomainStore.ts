@@ -57,6 +57,12 @@ export const DOMAIN_QUERY = gql`
         id
         name
         metadata
+        owner {
+          id
+        }
+        minter {
+          id
+        }
       }
       owner {
         id

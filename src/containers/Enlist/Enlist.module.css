@@ -2,7 +2,8 @@
 	width: 640px;
 	padding: 40px;
 
-	background: var(--background-purple-card-20);
+	color: white !important;
+	background: var(--background-blue-card-wilder);
 }
 
 .Header {
@@ -14,11 +15,14 @@
 }
 
 .Header h1 {
+	color: white;
 	font-size: 36px;
 	font-weight: 700;
+	margin-bottom: 0;
 }
 
 .Header h2 {
+	color: white;
 	font-size: 24px;
 }
 
@@ -29,30 +33,53 @@
 	margin-top: 24px;
 }
 
+.Enlist hr {
+	margin-top: 24px;
+}
+
 .Header > div > span {
 	margin-left: 32px;
 }
 
 .Section {
-    padding: 40px;
+	margin-top: 48px;
+}
+
+.Section > div > div:not(:first-of-type) { 
+	margin-left: 46px;
 }
 
 .NFT {
     height: 224px;
     width: 224px;
+	min-width: 224px;
 
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
+	cursor: pointer;
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.NFT > img {
+	height: 100%;
+	width: 100%;
+	border-radius: inherit;
+}
+
+.NFT:hover {
+	transform: scale(1.05);
 }
 
 .Inputs {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
-	margin-left: 24px;
+	max-width: 276px;
 }
 
 .Inputs > *:not(:first-child) {
 	margin-top: 24px;
+}
+
+.Bid {
+	font-size: 18px;
+	text-align: right;
 }

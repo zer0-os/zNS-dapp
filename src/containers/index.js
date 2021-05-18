@@ -9,7 +9,7 @@
  *
  */
 
-export { default as Enlist } from './Enlist/Enlist.js'
+export { default as Enlist } from './Enlist/Enlist'
 export { default as MintNewNFT } from './MintNewNFT/MintNewNFT'
 export { default as Shop } from './Shop/Shop.js'
 export { default as NFTView } from './NFTView/NFTView'

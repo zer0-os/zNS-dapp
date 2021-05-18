@@ -42,6 +42,8 @@ type DomainTableData = {
     image?: string;
     name?: string;
     description?: string;
+    minter: string;
+    owner: string;
     lastBid: number;
     numBids: number;
     lastSalePrice: number;
@@ -54,9 +56,10 @@ type DomainTableProps = {
     style?: React.CSSProperties;
     empty?: boolean;
     mvpVersion: number;
+    onEnlist: (domainId: string, nameName: string, minter: string, image: string) => void;
 }
 
-const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style, empty, mvpVersion }) => {
+const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style, empty, mvpVersion, onEnlist }) => {
 
     //- TODO: This page is rendered heaps because the domains prop is tied
     // to the domain hook in ZNS.tsx. We need a way to prevent unnecessary re-renders
@@ -72,7 +75,13 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
     const containerRef = useRef<HTMLDivElement>(null)
 
     //- Functions
+    // TODO: Do we want to move this functionality up to ZNS.tsx?
     const navigateTo = (domain: string) => history.push(domain)
+
+    const handleRowClick = (event: any, domain: string) => {
+        if(event.target.nodeName.toLowerCase() === 'button') return
+        navigateTo(domain)
+    }
 
     //- Hooks
     const history = useHistory()
@@ -148,7 +157,7 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
                                 </thead>
                                 <tbody>
                                     { tableData.map((d, i) =>
-                                        <tr onClick={() => navigateTo(d.domainName)} key={i}>
+                                        <tr onClick={(event: any) => handleRowClick(event, d.domainName)} key={i}>
                                             <td className={styles.left}>{i + 1}</td>
                                             {/* TODO: Div can not be a child of table */}
                                             <td className={styles.left}>
@@ -164,7 +173,28 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
                                             { mvpVersion === 3 && <td className={styles.center}>{`$${Number(d.lastBid.toFixed(2)).toLocaleString()}`}</td> }
                                             { mvpVersion === 3 && <td className={styles.center}>{Number(d.numBids).toLocaleString()}</td> }
                                             { mvpVersion === 3 && <td className={styles.center}>{`${Number(d.lastSalePrice.toFixed(2)).toLocaleString()} WILD`}</td> }
-                                            <td className={styles.center}><FutureButton glow onClick={() => console.log('trade', d)}>{mvpVersion === 3 ? `$${Number(d.tradePrice.toFixed(2)).toLocaleString()}` : 'ENLIST'}</FutureButton></td>
+
+                                            {/* Row Action Button */}
+                                            { mvpVersion === 3 && 
+                                                <td className={styles.center}>
+                                                    <FutureButton 
+                                                        glow 
+                                                        onClick={() => console.log('trade', d)}
+                                                    >
+                                                        { `$${Number(d.tradePrice.toFixed(2)).toLocaleString()}` }
+                                                    </FutureButton>
+                                                </td> 
+                                            }
+                                            { mvpVersion === 1 && 
+                                                <td className={styles.center}>
+                                                    <FutureButton 
+                                                    glow 
+                                                    onClick={() => onEnlist(d.domainId, d.domainName, d.minter, d.image ? d.image : '')}
+                                                    >
+                                                        Enlist
+                                                    </FutureButton>
+                                                </td> 
+                                            }
                                         </tr>
                                     ) }
                                 </tbody>
