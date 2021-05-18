@@ -81,18 +81,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     const [ isMintOverlayOpen, setIsMintOverlayOpen ] = useState(false)
     const [ isProfileOverlayOpen, setIsProfileOverlayOpen ] = useState(false)
     const [ isEnlistOverlayOpen, setIsEnlistOverlayOpen ] = useState(false)
-
-    //- Enlist Overlay
-    // TODO: Really need to make overlays more reusable - this isn't an ideal way to handle overlays with data
-    const [ enlisting, setEnlisting ] = useState<EnlistDomain>({ id: '', domainName: '', minter: '', image: '' })
-    const openEnlistOverlay = (domainId: string, domainName: string, minter: string, image: string) => {
-        setEnlisting({id: domainId, domainName: domainName, minter: minter, image: image})
-        setIsEnlistOverlayOpen(true)
-    }
-    const onEnlistSubmit = () => {
-        addNotification(`Enlisted to purchase ${enlisting.domainName}!`)
-        setIsEnlistOverlayOpen(false)
-    }
     
     //- MVP Version
     // TODO: Move the MVP version handler out to a hook
@@ -115,6 +103,22 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     const isRoot = !data.isNothing() && !data.value.parent
     const ownedDomain = !data.isNothing() && data.value.owner.id === account
     const subdomains = !data.isNothing() && data.value.subdomains ? data.value.subdomains : []
+
+    //- Enlist Overlay
+    // TODO: Really need to make overlays more reusable - this isn't an ideal way to handle overlays with data
+    const [ enlisting, setEnlisting ] = useState<EnlistDomain>({ id: '', domainName: '', minter: '', image: '' })
+    const enlistCurrentDomain = () => {
+        if(data.isNothing()) return
+        openEnlistOverlay(data.value.id, domain.substring(1), data.value.minter.id, data.value.image)
+    }
+    const openEnlistOverlay = (domainId: string, domainName: string, minter: string, image: string) => {
+        setEnlisting({id: domainId, domainName: domainName, minter: minter, image: image})
+        setIsEnlistOverlayOpen(true)
+    }
+    const onEnlistSubmit = () => {
+        addNotification(`Enlisted to purchase ${enlisting.domainName}!`)
+        setIsEnlistOverlayOpen(false)
+    }
 
     useEffect(() => {
         if(triedEagerConnect) addNotification(active ? 'Wallet connected!' : 'Wallet disconnected!')
@@ -280,13 +284,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                         <animated.div style={styles}>
                             <PreviewCard
                                 image={!data.isNothing() ? data.value.image : ''}
-                                name={!data.isNothing() ? data.value.name : 'nothing'}
+                                name={!data.isNothing() ? data.value.name : ''}
                                 domain={domain}
                                 description={!data.isNothing() ? data.value.description : ''}
                                 creatorId={!data.isNothing() && data.value.minter && data.value.minter.id ? `${data.value.minter.id.substring(0, 12)}...` : ''}
                                 ownerId={!data.isNothing() ? `${data.value.owner.id.substring(0, 12)}...` : ''}
                                 isLoading={isLoading}
                                 mvpVersion={mvpVersion}
+                                onButtonClick={enlistCurrentDomain}
                             >
                                 <HorizontalScroll fade>
                                     <AssetPriceCard 
