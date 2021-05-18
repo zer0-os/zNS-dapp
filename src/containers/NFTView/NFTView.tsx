@@ -108,7 +108,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
                             glow={ !isOwnedByYou }
                             onClick={() => {}}
                             style={{height: 36, borderRadius: 18}}
-                        >MAKE AN OFFER</FutureButton>
+                        >ENLIST</FutureButton>
                     </div>
                 </div>
             </div>

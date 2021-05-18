@@ -191,7 +191,7 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
                                                     glow 
                                                     onClick={() => onEnlist(d.domainId, d.domainName, d.minter, d.image ? d.image : '')}
                                                     >
-                                                        Enlist
+                                                        ENLIST 
                                                     </FutureButton>
                                                 </td> 
                                             }
