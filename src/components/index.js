@@ -41,6 +41,7 @@ export { default as TitleBar } from './NavBars/TitleBar/TitleBar'
 export { default as DomainTable } from './Tables/DomainTable/DomainTable'
 
 //- Other
+export { default as ArrowLink } from './ArrowLink/ArrowLink'
 export { default as BreadCrumb } from './BreadCrumb/BreadCrumb.js'
 export { default as ButtonTray } from './ButtonTray/ButtonTray.js'
 export { default as ConnectToWallet } from './ConnectToWallet/ConnectToWallet'

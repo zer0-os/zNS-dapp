@@ -9,6 +9,7 @@ import { randomName, randomImage } from 'lib/Random'
 
 //- Component Imports
 import {
+    ArrowLink,
     AssetGraphCard,
     AssetMarketCapCard,
     AssetPriceCard,
@@ -60,7 +61,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
                     <div className={styles.Body}>
                         <div>
                             <h5>{name ? name : domain.split('/')[1]}</h5>
-                            <a className={styles.Domain}>wilder.{domain.substring(1)}</a>
+                            <ArrowLink className={styles.Domain}>wilder.{domain.substring(1)}</ArrowLink>
                             <p>{description}</p>
                         </div>
                         <div className={styles.Members}>

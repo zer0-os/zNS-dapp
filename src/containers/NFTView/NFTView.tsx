@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core' // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider' // Wallet data
 
 //- Component Imports
-import { FutureButton, Member, Image, Overlay } from 'components'
+import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components'
 
 //- Library Imports
 import IPFSClient from 'lib/ipfs-client'
@@ -82,7 +82,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
                 <div className={styles.Info}>
                     <div>
                         <h1 className='glow-text-white'>{ name }</h1>
-                        <a>0:/{ domain }</a>
+                        <ArrowLink>0:/{ domain }</ArrowLink>
                         <div className={styles.Members}>
                             <Member 
                                 name={!data.isNothing() ? randomName(data.value.owner.id) : ''} 
