@@ -233,7 +233,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
                         
 
-            {/* Preview Card */}
+            {/* Asset Cards per MVP 3 */}
             { mvpVersion === 3 &&
                 <Spring from={{ opacity: 0, marginTop: -231 }} to={{ opacity: isRoot ? 1 : 0, marginTop: isRoot ? 0 : -231 }}>
                     { styles => 
