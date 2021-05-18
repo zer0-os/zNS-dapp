@@ -5,7 +5,7 @@ import React from 'react'
 import styles from './NFTCard.module.css'
 
 //- Component Imports
-import { Image } from 'components'
+import { ArrowLink, Image } from 'components'
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random'
@@ -40,7 +40,7 @@ const NFTCard: React.FC<NFTCardProps> = ({ name, domain, imageUri, price, nftOwn
                     </div>
                 }
                 <h5 className={`glow-text-blue`}>{name}</h5>
-                <a>wilder.{domain}</a>
+                <ArrowLink>wilder.{domain}</ArrowLink>
                 <div className={styles.Foot}>
                     <div>
                         <span>Last Traded Price</span>
