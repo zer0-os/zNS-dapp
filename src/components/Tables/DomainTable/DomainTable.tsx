@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
+import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 
 //- Component Imports
 import { 
@@ -13,6 +14,8 @@ import {
 
 //- Library Imports
 import StaticEmulator from 'lib/StaticEmulator/StaticEmulator.js';
+import IPFSClient from 'lib/ipfs-client'
+import 'lib/react-table-config.d.ts'
 
 //- Style Imports
 import styles from './DomainTable.module.css'
@@ -23,35 +26,9 @@ import graph from './assets/graph.svg'
 import grid from './assets/grid.svg'
 import list from './assets/list.svg'
 
-//- IPFS Config
-// TODO: Move IPFS client to a separate
-// TODO: ipfs-api is deprecated - upgrade to ipfs-http-client
-const ipfsLib = require('ipfs-api');
-const ipfsClient = new ipfsLib({
-  host: 'ipfs.infura.io',
-  port: 5001,
-  protocol: 'https',
-});
-
-// TODO: Table code is looking a bit messy - maybe rewrite
-
-type DomainTableData = {
-    domainId: string;
-    domainName: string;
-    domainMetadataUri: string;
-    image?: string;
-    name?: string;
-    description?: string;
-    minter: string;
-    owner: string;
-    lastBid: number;
-    numBids: number;
-    lastSalePrice: number;
-    tradePrice: number;
-}
-
+// TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
-    domains: DomainTableData[];
+    domains: any;
     isRootDomain: boolean;
     style?: React.CSSProperties;
     empty?: boolean;
@@ -59,184 +36,225 @@ type DomainTableProps = {
     onEnlist: (domainId: string, nameName: string, minter: string, image: string) => void;
 }
 
+interface RowData {
+    i: number;
+    id: string;
+    image: string;
+    name: string;
+    ticker: string;
+    lastBid: number;
+    numBids: number;
+    lastSalePrice: number;
+    tradePrice: number;
+}
+
 const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style, empty, mvpVersion, onEnlist }) => {
 
-    //- TODO: This page is rendered heaps because the domains prop is tied
-    // to the domain hook in ZNS.tsx. We need a way to prevent unnecessary re-renders
-
-    //- Page State
-    const [ isGridView, setIsGridView ] = useState(false)
-    const [ isLoading, setIsLoading ] = useState(true)
     const [ hasMetadataLoaded, setHasMetadataLoaded ] = useState(false)
-    const [ imageCount, setImageCount ] = useState(0)
+    const [ isLoading, setIsLoading ] = useState(true)
     const [ containerHeight, setContainerHeight ] = useState(0)
+    const [ searchQuery, setSearchQuery ] = useState('')
 
-    //- Refs
     const containerRef = useRef<HTMLDivElement>(null)
 
-    //- Functions
-    // TODO: Do we want to move this functionality up to ZNS.tsx?
-    const navigateTo = (domain: string) => history.push(domain)
-
-    const handleRowClick = (event: any, domain: string) => {
-        if(event.target.nodeName.toLowerCase() === 'button') return
-        navigateTo(domain)
-    }
-
-    //- Hooks
-    const history = useHistory()
-
-    // Gets metadata for each image in domain list
     useEffect(() => {
-        setHasMetadataLoaded(false)
-        var count = 0, completed = 0
-        for(var i = 0; i < domains.length; i++) {
-            const domain = domains[i]
-            if(!domain.image && domain.domainMetadataUri) {
-                count++ // This is a total of how many images don't have metadata loaded in
-                ipfsClient.cat(domain.domainMetadataUri.slice(21)).then((d: any) => {
-                    const data = JSON.parse(d)
-                    domain.image = data.image
-                    domain.name = data.title
-                    domain.description = data.description
-                    // If we have received all metadata for images that need it
-                    if(++completed === count) setHasMetadataLoaded(true)
-                })
-            }
-        }
+        setIsLoading(true)
     }, [ domains ])
 
     useEffect(() => {
         if(!isLoading) {
             const el = containerRef.current
-            if(el) {
-                setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight)
-            }
+            if(el) setContainerHeight(el.clientHeight)
         } else {
             setContainerHeight(0)
         }
-    }, [ isLoading, isGridView ])
+    }, [ isLoading, searchQuery ])
 
-    /* Domain metadata is coming in asynchronously, so we need to
-       update the rows as the data comes in */
-    const tableData: DomainTableData[] = useMemo(() => {
-        domains.length ? setIsLoading(false) : setIsLoading(true)
-        return domains
-    }, [ hasMetadataLoaded ])
+    // Gets metadata for each NFT in domain list
+    useEffect(() => {
+        setHasMetadataLoaded(false)
+        var count = 0, completed = 0
+        for(var i = 0; i < domains.length; i++) {
+            const domain = domains[i]
+            if(!domain.image && domain.metadata) {
+                count++
+                IPFSClient.cat(domain.metadata.slice(21)).then((d: any) => {
+                    const data = JSON.parse(d)
+                    domain.nft = {
+                        name: data.name,
+                        image: data.image,
+                        description: data.description,
+                    }
+                    if(++completed === count) {
+                        setHasMetadataLoaded(true)
+                    }
+                })
+            }
+        }
+        if(!count) setHasMetadataLoaded(true)
+    }, [ domains ])
 
-    return (
-        <div 
+    // Convert each domain into a RowData object
+    // Runs when metadata for current domain array has fully loaded
+    const rowData: RowData[] = useMemo(
+        () => 
+        !hasMetadataLoaded ? [] :
+        domains.map((d: any, i: number) => ({
+                i: i + 1,
+                id: d.id,
+                image: d.nft?.image,
+                name: d.name,
+                ticker: d.name.toUpperCase(),
+                lastBid: 1000,
+                numBids: 1000,
+                lastSalePrice: 1000,
+                tradePrice: 1000,
+            })
+        ),
+        [ hasMetadataLoaded ]
+    )
+
+    // Gets the data for the table
+    // TODO: This can definitely be refactored out
+    const data = useMemo<RowData[]>(() => {
+        rowData.length ? setIsLoading(false) : setIsLoading(true)
+        return rowData
+    }, [ rowData ])
+
+    const columns = useMemo<Column<RowData>[]>(
+        () => ([
+            {
+                Header: '',
+                accessor: 'i',
+                Cell: row => row.value
+            },
+            {
+                Header: () => '',
+                accessor: 'image',
+                Cell: row => <Image style={{width: 56, height: 56, marginTop: -4, borderRadius: isRootDomain ? '50%' : 'calc(var(--box-radius)/2)', objectFit: 'cover'}} src={row.value} />,
+            },
+            {
+                Header: () => <div style={{ textAlign: 'left' }}>Domain Name</div>,
+                accessor: 'name',
+                Cell: row => <div style={{ textAlign: 'left' }}>{row.value}</div>
+            },
+            {
+                Header: () => <div style={{ textAlign: 'right' }}>Last Bid</div>,
+                accessor: 'lastBid',
+                Cell: row => <div style={{ textAlign: 'right' }}>${Number(row.value.toFixed(2)).toLocaleString()}</div>
+            },
+            {
+                Header: () => <div style={{ textAlign: 'right' }}>No. Of Bids</div>,
+                accessor: 'numBids',
+                Cell: row => <div style={{ textAlign: 'right' }}>{row.value}</div>
+            },
+            {
+                Header: () => <div style={{ textAlign: 'right' }}>Last Sale Price</div>,
+                accessor: 'lastSalePrice',
+                Cell: row => <div style={{ textAlign: 'right' }}>${Number(row.value.toFixed(2)).toLocaleString()}</div>
+            },
+            {
+                Header: () => <div style={{ textAlign: 'center' }}>Trade</div>,
+                accessor: 'id',
+                Cell: row => <FutureButton style={{margin: '0 auto'}} glow onClick={() => {buttonClick(row.value)}}>ENLIST</FutureButton>
+            },
+            {
+                Header: () => <div style={{ textAlign: 'center' }}>Trade</div>,
+                accessor: 'tradePrice',
+                Cell: row => <FutureButton style={{margin: '0 auto'}} glow onClick={() => {}}>${ Number(row.value.toFixed(2)).toLocaleString() }</FutureButton>
+            },
+        ]),
+        [ mvpVersion, domains ]
+    )
+
+    // Clicks
+    const rowClick = (event: any, domain: string) => {
+        if(event.target.nodeName.toLowerCase() === 'button') return
+        navigateTo(domain)
+    }
+
+    const buttonClick = (id: string) => {
+        try {
+            // TODO: Get rid of any
+            const domain = domains.filter((d: any) => d.id === id)[0]
+            onEnlist(domain.id, domain.name, domain.minter.id, domain.nft?.image ? domain.nft.image : '')
+        } catch(e) {
+            console.error(e)
+        }
+    }
+
+    // Navigation Handling
+    const history = useHistory()
+    const navigateTo = (domain: string) => history.push(domain)
+    const initialState = mvpVersion === 1 ? { hiddenColumns: [ 'lastBid', 'numBids', 'lastSalePrice', 'tradePrice' ] } :  { hiddenColumns: [ 'id' ]}
+
+    // React-Table Hooks
+    const tableHook = useTable({ columns, data, initialState }, useFilters, useGlobalFilter)
+    const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows, setGlobalFilter } = tableHook
+
+    const search = (query: string) => {
+        setGlobalFilter(query)
+        setSearchQuery(query)
+    }
+
+    return(
+        <div
             style={style}
             className={styles.DomainTableContainer + ' border-primary border-rounded blur'}
         >
+
             {/* Table Header */}
             <div className={styles.searchHeader}>
-                <SearchBar style={{width: '100%', marginRight: 16}} />
+                <SearchBar onChange={(event: any) => search(event.target.value)} style={{width: '100%', marginRight: 16}} />
                 <div className={styles.searchHeaderButtons}>
-                    <IconButton onClick={() => setIsGridView(false)} toggled={!isGridView} iconUri={list} style={{height: 32, width: 32}} />
-                    <IconButton onClick={() => setIsGridView(true)} toggled={isGridView} iconUri={grid} style={{height: 32, width: 32}} />
+                    <IconButton onClick={() => {}} toggled={true} iconUri={list} style={{height: 32, width: 32}} />
+                    <IconButton onClick={() => {}} toggled={false} iconUri={grid} style={{height: 32, width: 32}} />
                 </div>
             </div>
 
-            {/* Table Body */}
             <div className={styles.DomainTable}>
                 <div className={styles.Container} ref={containerRef}>
-                    {/* Table List View */}
-                    { tableData.length > 0 && !isGridView && !isLoading &&
-                        <table className={styles.DomainTable}>
-                            <>
+                    {/* { data.length > 0 && !isLoading && */}
+                        <table {...getTableProps()} className={styles.DomainTable}>
                                 <thead>
-                                    <tr>
-                                        <th className={styles.left}></th>
-                                        <th className={styles.left}>Name</th>
-                                        { mvpVersion === 3 && <th className={styles.center}>Last Bid</th> }
-                                        { mvpVersion === 3 && <th className={styles.center}>No. Of Bids</th> }
-                                        { mvpVersion === 3 && <th className={styles.center}>Last Sale Price</th> }
-                                        <th className={styles.center}>Trade</th>
-                                    </tr>
+                                    {
+                                        headerGroups.map((headerGroup) => (
+                                            <tr {...headerGroup.getHeaderGroupProps()}>
+                                                {
+                                                    headerGroup.headers.map((column) => (
+                                                        <th {...column.getHeaderProps()}>
+                                                            {column.render('Header')}
+                                                        </th>
+                                                    ))
+                                                }
+                                            </tr>
+                                        ))
+                                    }
                                 </thead>
-                                <tbody>
-                                    { tableData.map((d, i) =>
-                                        <tr onClick={(event: any) => handleRowClick(event, d.domainName)} key={i}>
-                                            <td className={styles.left}>{i + 1}</td>
-                                            {/* TODO: Div can not be a child of table */}
-                                            <td className={styles.left}>
-                                                <div style={{display: 'flex', alignItems: 'center'}}>
-                                                    <Image 
-                                                        style={{width: 56, height: 56, marginRight: 8, marginTop: -4, borderRadius: isRootDomain ? '50%' : 'calc(var(--box-radius)/2)', objectFit: 'cover'}} 
-                                                        src={d.image ? d.image : ''}
-                                                    />
-                                                    <span>{d.domainName.split('.')[d.domainName.split('.').length - 1]}</span>
-                                                    <span style={{paddingLeft: 6}} className={styles.ticker}>{d.domainName.substring(0, 4).toUpperCase()}</span>
-                                                </div>
-                                            </td>
-                                            { mvpVersion === 3 && <td className={styles.center}>{`$${Number(d.lastBid.toFixed(2)).toLocaleString()}`}</td> }
-                                            { mvpVersion === 3 && <td className={styles.center}>{Number(d.numBids).toLocaleString()}</td> }
-                                            { mvpVersion === 3 && <td className={styles.center}>{`${Number(d.lastSalePrice.toFixed(2)).toLocaleString()} WILD`}</td> }
-
-                                            {/* Row Action Button */}
-                                            { mvpVersion === 3 && 
-                                                <td className={styles.center}>
-                                                    <FutureButton 
-                                                        glow 
-                                                        onClick={() => console.log('trade', d)}
-                                                    >
-                                                        { `$${Number(d.tradePrice.toFixed(2)).toLocaleString()}` }
-                                                    </FutureButton>
-                                                </td> 
-                                            }
-                                            { mvpVersion === 1 && 
-                                                <td className={styles.center}>
-                                                    <FutureButton 
-                                                    glow 
-                                                    onClick={() => onEnlist(d.domainId, d.domainName, d.minter, d.image ? d.image : '')}
-                                                    >
-                                                        ENLIST 
-                                                    </FutureButton>
-                                                </td> 
-                                            }
-                                        </tr>
-                                    ) }
+                                <tbody {...getTableBodyProps()}>
+                                    {
+                                        rows.map((row) => {
+                                        prepareRow(row)
+                                        return (
+                                                <tr onClick={(event: any) => rowClick(event, row.original.name)} {...row.getRowProps()}>
+                                                    {
+                                                        row.cells.map((cell) => (
+                                                            <td {...cell.getCellProps()}>
+                                                                { cell.render('Cell') }
+                                                            </td>
+                                                        ))
+                                                    }
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                    
                                 </tbody>
-                            </>
                         </table>
-                    }   
-
-                    {/* Table Grid View */}
-                    { tableData.length > 0 && isGridView && !isLoading &&
-                        <ol className={styles.Grid}>
-                            { tableData.map((d, i) => 
-                                <li onClick={() => navigateTo(d.domainName)} key={i}>
-                                    <NFTCard
-                                        name={d.name ? d.name : d.domainName }
-                                        domain={d.domainName ? d.domainName : ''}
-                                        imageUri={d.image ? d.image : ''}
-                                        price={d.tradePrice}
-                                        nftOwnerId={'Owner Name'}
-                                        nftMinterId={'Minter Name'}
-                                        showCreator={true}
-                                        showOwner={true}
-                                    />
-                                </li>
-                            )
-                            }
-                        </ol>
-                    }
-
-                {/* Table Placeholders
-                { isLoading && !empty &&
-                    <div className={styles.Loading}><div></div></div>
-                }
-                {  empty &&
-                    <div className={styles.Empty}><span>This NFT has no children!</span></div> 
-                } */}
+                    {/* } */}
                 </div>
-
-                <div style={{height: containerHeight}} className={styles.Expander}></div>
+                 <div style={{height: containerHeight}} className={styles.Expander}></div>
             </div>
-            
-
-            
         </div>
     )
 }

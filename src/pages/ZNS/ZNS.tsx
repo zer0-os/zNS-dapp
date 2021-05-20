@@ -130,18 +130,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
         if(data.isNothing()) setTableData([])
         else {
             // Set the domain data for table view
-            const d = subdomains.map((d: any, i: number) => ({
-                domainId: d.id,
-                domainName: d.name,
-                domainMetadataUri: d.metadata,
-                minter: d.minter.id,
-                owner: d.owner.id,
-                lastBid: randomNumber(1, 10000, 2),
-                numBids: randomNumber(1, 150, 0),
-                lastSalePrice: randomNumber(1, 10000, 2),
-                tradePrice: randomNumber(1, 10000, 2),
-            }))
-            setTableData(d)
+            setTableData(subdomains)
 
             // Get the data for Preview Card
             //- Note:

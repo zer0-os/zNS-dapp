@@ -2,6 +2,7 @@ import React from 'react'
 
 import searchBarStyles from './SearchBar.module.css'
 
+// TODO: Convert to TypeScript
 const SearchBar = (props) => {
 
     return (
@@ -9,7 +10,7 @@ const SearchBar = (props) => {
             className={searchBarStyles.searchBar + ' blur'} 
             style={props.style}
         >
-            <input type='text' placeholder='Search' />
+            <input onChange={props.onChange} type='text' placeholder='Search' />
             <button></button>
         </div>
     )

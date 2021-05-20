@@ -71,6 +71,12 @@
 	width: 50px;
 }
 
+
+.DomainTable th:nth-child(2), .DomainTable td:nth-child(2) {
+	padding-right: 0;
+	width: 56px;
+}
+
 .DomainTable th:last-child, .DomainTable td:last-child {
 	max-width: 250px;
 	width: 200px;
