@@ -41,6 +41,7 @@ interface RowData {
     id: string;
     image: string;
     name: string;
+    nftName: string;
     ticker: string;
     lastBid: number;
     numBids: number;
@@ -54,6 +55,7 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
     const [ isLoading, setIsLoading ] = useState(true)
     const [ containerHeight, setContainerHeight ] = useState(0)
     const [ searchQuery, setSearchQuery ] = useState('')
+    const [ isGridView, setIsGridView ] = useState(false)
 
     const containerRef = useRef<HTMLDivElement>(null)
 
@@ -61,14 +63,16 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
         setIsLoading(true)
     }, [ domains ])
 
+    // Resizes the table container
+    // (The animation is done in CSS)
     useEffect(() => {
         if(!isLoading) {
             const el = containerRef.current
-            if(el) setContainerHeight(el.clientHeight)
+            if(el) setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight)
         } else {
             setContainerHeight(0)
         }
-    }, [ isLoading, searchQuery ])
+    }, [ isLoading, searchQuery, isGridView ])
 
     // Gets metadata for each NFT in domain list
     useEffect(() => {
@@ -103,6 +107,7 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
                 i: i + 1,
                 id: d.id,
                 image: d.nft?.image,
+                nftName: d.nft?.name,
                 name: d.name,
                 ticker: d.name.toUpperCase(),
                 lastBid: 1000,
@@ -120,6 +125,8 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
         rowData.length ? setIsLoading(false) : setIsLoading(true)
         return rowData
     }, [ rowData ])
+
+    console.log(data)
 
     const columns = useMemo<Column<RowData>[]>(
         () => ([
@@ -207,14 +214,15 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
             <div className={styles.searchHeader}>
                 <SearchBar onChange={(event: any) => search(event.target.value)} style={{width: '100%', marginRight: 16}} />
                 <div className={styles.searchHeaderButtons}>
-                    <IconButton onClick={() => {}} toggled={true} iconUri={list} style={{height: 32, width: 32}} />
-                    <IconButton onClick={() => {}} toggled={false} iconUri={grid} style={{height: 32, width: 32}} />
+                    <IconButton onClick={() => setIsGridView(false)} toggled={!isGridView} iconUri={list} style={{height: 32, width: 32}} />
+                    <IconButton onClick={() => setIsGridView(true)} toggled={isGridView} iconUri={grid} style={{height: 32, width: 32}} />
                 </div>
             </div>
 
             <div className={styles.DomainTable}>
                 <div className={styles.Container} ref={containerRef}>
-                    {/* { data.length > 0 && !isLoading && */}
+                    {/* List View */}
+                    { !isGridView &&
                         <table {...getTableProps()} className={styles.DomainTable}>
                                 <thead>
                                     {
@@ -251,7 +259,28 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
                                     
                                 </tbody>
                         </table>
-                    {/* } */}
+                    }
+
+                    {/* Grid View */}
+                    { isGridView &&
+                        <ol className={styles.Grid}>
+                            { data.filter(d => d.name.includes(searchQuery)).map((d, i) => 
+                                <li onClick={() => navigateTo(d.name)} key={i}>
+                                    <NFTCard
+                                        name={d.nftName ? d.nftName : d.name }
+                                        domain={d ? d.name : ''}
+                                        imageUri={d.image ? d.image : ''}
+                                        price={d.tradePrice}
+                                        nftOwnerId={'Owner Name'}
+                                        nftMinterId={'Minter Name'}
+                                        showCreator={true}
+                                        showOwner={true}
+                                    />
+                                </li>
+                            )
+                            }
+                        </ol>
+                    }
                 </div>
                  <div style={{height: containerHeight}} className={styles.Expander}></div>
             </div>
