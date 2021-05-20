@@ -13,7 +13,6 @@ import {
 } from 'components'
 
 //- Library Imports
-import StaticEmulator from 'lib/StaticEmulator/StaticEmulator.js';
 import IPFSClient from 'lib/ipfs-client'
 import 'lib/react-table-config.d.ts'
 
@@ -33,6 +32,7 @@ type DomainTableProps = {
     style?: React.CSSProperties;
     empty?: boolean;
     mvpVersion: number;
+    // TODO: Is onEnlist the best way to handle enlisting?
     onEnlist: (domainId: string, nameName: string, minter: string, image: string) => void;
 }
 
@@ -125,8 +125,6 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
         rowData.length ? setIsLoading(false) : setIsLoading(true)
         return rowData
     }, [ rowData ])
-
-    console.log(data)
 
     const columns = useMemo<Column<RowData>[]>(
         () => ([
