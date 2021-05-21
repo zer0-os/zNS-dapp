@@ -18,6 +18,7 @@ import styles from './NFTView.module.css'
 
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png'
+import copyIcon from './assets/copy-icon.svg'
 
 type NFTViewProps = {
     domain: string;
@@ -47,6 +48,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
     //- Web3 Wallet Data
     const walletContext = useWeb3React<Web3Provider>()
     const { account } = walletContext
+
+    //- Functions
+    const copyContractToClipboard = () => {
+        navigator.clipboard.writeText(!data.isNothing() ? data.value.id : '')
+    }
 
     useEffect(() => {
         if(!data.isNothing() && data.value.metadata && !data.value.image) {
@@ -130,7 +136,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
                     </div>
                     <div className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}>
                         <h4>Contract Address</h4>
-                        <p className='glow-text-white'>{ !data.isNothing() && data.value.id ? data.value.id : '' }</p>
+                        <p className='glow-text-white'>
+                            <img onClick={copyContractToClipboard} className={styles.Copy} src={copyIcon} />
+                            { !data.isNothing() && data.value.id ? data.value.id : '' }
+                        </p>
                     </div>
                 </div>
             </div>

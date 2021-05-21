@@ -144,14 +144,34 @@
 }
 
 .Contract {
+    position: relative;
     display: flex;
     flex-direction: column;
 }
 
+.Copy {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    height: 32px;
+    width: 32px;
+    transform: translateY(-50%);
+
+    cursor: pointer;
+
+    transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Copy:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
 .Contract p {
+    position: relative;
     text-overflow: clip;
     font-size: 24px;
     font-weight: 700;
     word-break: break-all;
     padding: 0;
+    padding-right: 38px;
 }
