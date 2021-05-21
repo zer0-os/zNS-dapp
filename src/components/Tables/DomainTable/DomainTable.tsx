@@ -34,6 +34,9 @@ type DomainTableProps = {
     mvpVersion: number;
     // TODO: Is onEnlist the best way to handle enlisting?
     onEnlist: (domainId: string, nameName: string, minter: string, image: string) => void;
+    // TODO: Find a better way to persist grid view than with props
+    isGridView?: boolean;
+    setIsGridView?: (grid: boolean) => void;
 }
 
 interface RowData {
@@ -49,15 +52,18 @@ interface RowData {
     tradePrice: number;
 }
 
-const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style, empty, mvpVersion, onEnlist }) => {
+const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style, empty, mvpVersion, onEnlist, isGridView, setIsGridView }) => {
 
     const [ hasMetadataLoaded, setHasMetadataLoaded ] = useState(false)
     const [ isLoading, setIsLoading ] = useState(true)
     const [ containerHeight, setContainerHeight ] = useState(0)
     const [ searchQuery, setSearchQuery ] = useState('')
-    const [ isGridView, setIsGridView ] = useState(false)
 
     const containerRef = useRef<HTMLDivElement>(null)
+
+    // Functions
+    const setGrid = () => {if(setIsGridView) setIsGridView(true)}
+    const setList = () => {if(setIsGridView) setIsGridView(false)}
 
     useEffect(() => {
         setIsLoading(true)
@@ -212,8 +218,8 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
             <div className={styles.searchHeader}>
                 <SearchBar onChange={(event: any) => search(event.target.value)} style={{width: '100%', marginRight: 16}} />
                 <div className={styles.searchHeaderButtons}>
-                    <IconButton onClick={() => setIsGridView(false)} toggled={!isGridView} iconUri={list} style={{height: 32, width: 32}} />
-                    <IconButton onClick={() => setIsGridView(true)} toggled={isGridView} iconUri={grid} style={{height: 32, width: 32}} />
+                    <IconButton onClick={setList} toggled={!isGridView} iconUri={list} style={{height: 32, width: 32}} />
+                    <IconButton onClick={setGrid} toggled={isGridView} iconUri={grid} style={{height: 32, width: 32}} />
                 </div>
             </div>
 

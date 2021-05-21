@@ -76,6 +76,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     const [ isLoading, setIsLoading ] = useState(true)
     const [ hasLoaded, setHasLoaded ] = useState(false)
 
+    //- Table State
+    const [ isGridView, setIsGridView ] = useState(false)
+
     //- Overlay State
     const [ isWalletOverlayOpen, setIsWalletOverlayOpen ] = useState(false)
     const [ isMintOverlayOpen, setIsMintOverlayOpen ] = useState(false)
@@ -267,7 +270,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
             {/* Preview Card */}
             {/* TODO: This definitely needs some refactoring */}
-            { subdomains.length > 0 && 
+            { subdomains.length >= 0 && 
                 <Spring from={{ opacity: 0, marginTop: -springAmount }} to={{ opacity: !isRoot && hasLoaded && subdomains.length ? 1 : 0, marginTop: !isRoot && hasLoaded && subdomains.length ? 0 : -springAmount }}>
                     { styles => 
                         <animated.div style={styles}>
@@ -327,6 +330,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                     empty={(!data.isNothing() && subdomains.length === 0)}
                     mvpVersion={mvpVersion}
                     onEnlist={openEnlistOverlay}
+                    isGridView={isGridView}
+                    setIsGridView={setIsGridView}
                 />
             }
 
