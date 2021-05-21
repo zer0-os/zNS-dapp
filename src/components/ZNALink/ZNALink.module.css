@@ -1,10 +1,7 @@
-.ZNALink {
-
-}
-
 .ZNALink > a {
     position: relative;
     transition: all var(--animation-time-short) ease-in-out;
+    font-weight: 700;
 }
 
 .ZNALink > a::before {
