@@ -11,6 +11,8 @@ export interface NFTContextData {
 	setImage: (image: Buffer) => void;
 	dynamic: boolean;
 	setDynamic: (dynamic: boolean) => void;
+    domain: string;
+    setDomain: (domain: string) => void;
 }
 
 export const NFTContextDataDefault: NFTContextData = {
@@ -24,6 +26,8 @@ export const NFTContextDataDefault: NFTContextData = {
     setImage: () => {},
     dynamic: false,
     setDynamic: () => {},
+    domain: '',
+    setDomain: () => {}
 }
 
 export const NFTContext = React.createContext<NFTContextData>(NFTContextDataDefault);

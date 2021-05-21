@@ -10,8 +10,11 @@ import { useWeb3React } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers'
 import { useDomainCache } from 'lib/useDomainCache'
 
+//- Library Imports
+import { randomName } from 'lib/Random'
+
 //- Component Imports
-import { ValidatedInput, StepBar, ToggleSection, TextInput, FutureButton } from 'components'
+import { StepBar, ToggleSection, TextInput, FutureButton } from 'components'
 import TokenInformation from './sections/TokenInformation'
 import TokenDynamics from './sections/TokenDynamics'
 
@@ -37,6 +40,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 	const [ nftStory, setNftStory ] = useState('')
 	const [ nftImage, setNftImage ] = useState(Buffer.from(''))
 	const [ nftDynamic, setNftDynamic ] = useState(false)
+	const [ nftDomain, setNftDomain ] = useState('')
 	const NFTContextValue = {
 		name: nftName,
 		setName: setNftName,
@@ -47,7 +51,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 		image: nftImage,
 		setImage: setNftImage,
 		dynamic: nftDynamic,
-		setDynamic: setNftDynamic
+		setDynamic: setNftDynamic,
+		domain: nftDomain,
+		setDomain: setNftDomain,
 	}
 
 	//- Page State
@@ -83,16 +89,16 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 			<NFTContext.Provider value={ NFTContextValue } >
 				{/* // TODO: Pull each section out into a seperate component */}
 				<div className={styles.Header}>
-					<h1 className={`glow-text-white`}>Mint A New NFT</h1>
+					<h1 className={`glow-text-white`}>Mint "{nftName ? nftName : 'A New NFT'}"</h1>
 					<div style={{marginBottom: 16}}>
-						<h2 className={`glow-text-white`}>0:/{domainName && domainName.length ? `${domainName}` : ``}{nftName}</h2>
+						<h2 className={`glow-text-white`}>0:/{domainName && domainName.length ? `${domainName}` : ``}{nftDomain}</h2>
 					</div>
-					<span>By {account && account.length ? account.substring(0, 12) : ''}...</span>
+					<span>By {account && account.length ? randomName(account) : ''}</span>
 				</div>
 				<StepBar
 					style={{marginTop: 24}}
 					step={step}
-					steps={steps}
+					steps={['Details', 'Token Dynamics', 'Staking']}
 				/>
 				{/* TODO: Make ToggleSections unclickable if their open status depends on parent state */}
 

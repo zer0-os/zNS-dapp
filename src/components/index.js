@@ -30,8 +30,7 @@ export { default as NFTCard } from './Cards/NFTCard/NFTCard'
 export { default as PreviewCard } from './Cards/PreviewCard/PreviewCard'
 
 //- Inputs
-export { default as TextInput } from './Inputs/TextInput/TextInput.js'
-export { default as ValidatedInput } from './Inputs/ValidatedInput/ValidatedInput.js'
+export { default as TextInput } from './Inputs/TextInput/TextInput'
 
 //- NavBars
 export { default as FilterBar } from './NavBars/FilterBar/FilterBar'

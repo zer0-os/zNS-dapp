@@ -77,7 +77,7 @@ const Enlist: React.FC<EnlistProps> = ({ domainId, domainName, minterName, image
               type='number'
               placeholder={'Bid (USD)'}
               style={{height: 48}}
-              text={bidUsd}
+              text={bidUsd.toString()}
               error={errors.includes('bid')}
               onChange={(text: string) => setBidUsd(text == '' ? 0 : parseFloat(text))}
             />

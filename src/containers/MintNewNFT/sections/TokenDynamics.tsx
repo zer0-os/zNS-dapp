@@ -7,7 +7,7 @@ import { NFTContext } from '../NFTContext'
 import styles from '../MintNewNFT.module.css'
 
 //- Component Imports
-import { ValidatedInput, StepBar, ToggleSection, TextInput, FutureButton } from 'components'
+import { StepBar, ToggleSection, TextInput, FutureButton } from 'components'
 
 type TokenDynamicsProps = {
     onContinue: () => void;

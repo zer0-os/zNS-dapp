@@ -7,7 +7,7 @@ import { NFTContext } from '../NFTContext'
 import styles from '../MintNewNFT.module.css'
 
 //- Component Imports
-import { ValidatedInput, StepBar, ToggleSection, TextInput, FutureButton } from 'components'
+import { StepBar, ToggleSection, TextInput, FutureButton } from 'components'
 
 type TokenInformationProps = {
     onContinue: () => void;
@@ -16,7 +16,7 @@ type TokenInformationProps = {
 const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => { 
 
     //- NFT Data
-    const { name, setName, ticker, setTicker, story, setStory, image, setImage } = useContext(NFTContext)
+    const { name, setName, ticker, setTicker, story, setStory, image, setImage, domain, setDomain } = useContext(NFTContext)
     const [ nftImage, setNftImage ] = useState('') // Local image for image preview
 
     //- Page data
@@ -44,7 +44,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
         // Do some validation
         const errors: string[] = []
         if(!name.length) errors.push('name')
-        if(ticker.length < 4) errors.push('ticker')
+        if(!domain.length) errors.push('domain')
         if(!story.length) errors.push('story')
         if(!image.length) errors.push('image')
         setErrors(errors)
@@ -82,17 +82,17 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
                     ></input>
                     <div className={styles.Inputs}>
                         <TextInput 
-                            placeholder={'NFT Name'}
+                            placeholder={'Title'}
                             onChange={(name: string) => setName(name)}
                             text={name}
                             error={errors.includes('name')}
                         />
                         <TextInput 
-                            style={{width: 145}}
-                            placeholder={'Ticker'}
-                            onChange={(ticker: string) => setTicker(ticker.length > 4 ? ticker.substring(0, 4).toUpperCase() : ticker.toUpperCase())}
-                            text={ticker}
+                            placeholder={'Subdomain Name'}
+                            onChange={(domain: string) => setDomain(domain)}
+                            text={domain}
                             error={errors.includes('ticker')}
+                            alphanumeric
                         />
                     </div>
                 </div>
@@ -102,7 +102,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
                     style={{height: 200, marginTop: 40}}
                     onChange={(story: string) => setStory(story)}
                     text={story}
-                    error={errors.includes('story')}
+                    error={errors.includes('domain')}
                 />
             </form>
             <FutureButton 
