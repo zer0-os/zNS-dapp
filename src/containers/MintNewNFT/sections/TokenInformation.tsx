@@ -17,7 +17,7 @@ type TokenInformationProps = {
 const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => { 
 
     //- NFT Data
-    const { name, setName, ticker, setTicker, story, setStory, image, setImage, domain, setDomain } = useContext(NFTContext)
+    const { name, setName, ticker, setTicker, story, setStory, image, setImage, domain, setDomain, locked, setLocked } = useContext(NFTContext)
     const [ nftImage, setNftImage ] = useState('') // Local image for image preview
 
     //- Page data

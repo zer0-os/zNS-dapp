@@ -41,6 +41,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 	const [ nftImage, setNftImage ] = useState(Buffer.from(''))
 	const [ nftDynamic, setNftDynamic ] = useState(false)
 	const [ nftDomain, setNftDomain ] = useState('')
+	const [ nftLocked, setNftLocked ] = useState(false)
 	const NFTContextValue = {
 		name: nftName,
 		setName: setNftName,
@@ -54,6 +55,8 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 		setDynamic: setNftDynamic,
 		domain: nftDomain,
 		setDomain: setNftDomain,
+		locked: nftLocked,
+		setLocked: setNftLocked,
 	}
 
 	//- Page State

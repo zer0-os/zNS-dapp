@@ -13,6 +13,8 @@ export interface NFTContextData {
 	setDynamic: (dynamic: boolean) => void;
     domain: string;
     setDomain: (domain: string) => void;
+    locked: boolean;
+    setLocked: (locked: boolean) => void;
 }
 
 export const NFTContextDataDefault: NFTContextData = {
@@ -27,7 +29,9 @@ export const NFTContextDataDefault: NFTContextData = {
     dynamic: false,
     setDynamic: () => {},
     domain: '',
-    setDomain: () => {}
+    setDomain: () => {},
+    locked: false,
+    setLocked: () => {},
 }
 
 export const NFTContext = React.createContext<NFTContextData>(NFTContextDataDefault);
