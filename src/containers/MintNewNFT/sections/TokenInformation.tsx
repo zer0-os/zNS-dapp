@@ -1,13 +1,14 @@
 //- React Imports
 import React, { useState, useRef, useContext } from 'react'
 
+//- Local Imports
 import { NFTContext } from '../NFTContext'
 
 //- Style Imports
 import styles from '../MintNewNFT.module.css'
 
 //- Component Imports
-import { StepBar, ToggleSection, TextInput, FutureButton } from 'components'
+import { StepBar, ToggleButton, ToggleSection, TextInput, FutureButton } from 'components'
 
 type TokenInformationProps = {
     onContinue: () => void;
@@ -94,6 +95,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
                             error={errors.includes('ticker')}
                             alphanumeric
                         />
+                        <ToggleButton toggled={false} onClick={() => console.log('hello')} />
                     </div>
                 </div>
                 <TextInput 

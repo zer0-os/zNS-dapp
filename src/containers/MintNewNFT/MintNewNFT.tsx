@@ -65,6 +65,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 	// I think using Context API for account data here is worthwhile
 	const context = useWeb3React<Web3Provider>()
 	const { account } = context // account = connected wallet ID
+	console.log(account)
 
 	//- Functions
 	const toStep = (i: number) => {setStep(i >= steps ? steps : i)}
