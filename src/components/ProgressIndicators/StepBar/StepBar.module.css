@@ -2,6 +2,9 @@
     position: relative;
     width: 100%;
 
+    font-size: 12px;
+    text-align: center;
+    font-weight: 700;
 }
 
 .StepBar::after {
@@ -15,14 +18,21 @@
     z-index: -1;
 }
 
+.Placeholder {
+    opacity: 0;
+    color: var(--color-accent-1);
+    transition: opacity var(--animation-time-long) ease-in-out;
+}
+
+.Show {
+    opacity: 0.8;
+}
+
 .Bar {
     padding-bottom: 4px;
 
-    font-size: 12px;
-    text-align: center;
-    font-weight: 700;
-
+    color: var(--color-invalid);
     border-bottom: 1px solid #E0BAFF;
 
-    transition: width var(--animation-time-medium) ease-in-out;
+    transition: transform var(--animation-time-long) ease-in-out;
 }

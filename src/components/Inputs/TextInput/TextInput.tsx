@@ -5,7 +5,7 @@ import React from 'react'
 import styles from './TextInput.module.css'
 
 //- Local Imports
-import { isAlphanumeric } from './validation'
+import { isAlphanumeric, isNumber } from './validation'
 
 // TODO: Implement max characters (props.max)
 // TODO: Convert to TypeScript
@@ -20,17 +20,30 @@ type TextInputProps = {
   style?: React.CSSProperties;
   resizable?: boolean;
   alphanumeric?: boolean; // If we want only alphanumeric characters
+  numeric?: boolean;
 }
 
-const TextInput: React.FC<TextInputProps> = ({ onChange, error, placeholder, type, text, multiline, style, resizable, alphanumeric }) => {
+const TextInput: React.FC<TextInputProps> = ({ 
+    onChange, 
+    error, 
+    placeholder, 
+    type, 
+    text, 
+    multiline, 
+    style, 
+    resizable, 
+    alphanumeric, 
+    numeric 
+  }) => {
 
   const handleChange = (event: any) => {
     const newValue = event.target.value
-    if(validate(newValue) && onChange) onChange(event.target.value)
+    if(validate(newValue) && onChange) return onChange(event.target.value)
   }
 
   const validate = (str: string) => {
 	  if(alphanumeric && !isAlphanumeric(str)) return false
+    if(numeric &&  !isNumber(str)) return false
 	  return true
   }
 

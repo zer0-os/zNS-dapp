@@ -2,7 +2,7 @@
 import React, { useState, useRef, useContext } from 'react'
 
 //- Local Imports
-import { NFTContext } from '../NFTContext'
+import { TokenInformationType } from '../types'
 
 //- Style Imports
 import styles from '../MintNewNFT.module.css'
@@ -11,14 +11,31 @@ import styles from '../MintNewNFT.module.css'
 import { StepBar, ToggleButton, ToggleSection, TextInput, FutureButton } from 'components'
 
 type TokenInformationProps = {
-    onContinue: () => void;
+    token: TokenInformationType | null;
+    onContinue: (data: TokenInformationType) => void;
+    setNameHeader: (name: string) => void;
+    setDomainHeader: (domain: string) => void;
 }
 
-const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => { 
+const TokenInformation: React.FC<TokenInformationProps> = ({ token, onContinue, setNameHeader, setDomainHeader }) => { 
 
     //- NFT Data
-    const { name, setName, ticker, setTicker, story, setStory, image, setImage, domain, setDomain, locked, setLocked } = useContext(NFTContext)
-    const [ nftImage, setNftImage ] = useState('') // Local image for image preview
+    const [ previewImage, setPreviewImage ] = useState(token ? token.previewImage : '') // Local image for image preview
+    const [ name, setName ] = useState(token ? token.name : '')
+    const [ story, setStory ] = useState(token ? token.story : '')
+    const [ image, setImage ] = useState(token ? token.image : Buffer.from(''))
+    const [ domain, setDomain ] = useState(token ? token.domain : '')
+    const [ locked, setLocked ] = useState(token ? token.locked : false)
+
+    const updateName = (name: string) => {
+        setName(name)
+        setNameHeader(name)
+    }
+
+    const updateDomain = (domain: string) => {
+        setDomain(domain)
+        setDomainHeader(domain)
+    }
 
     //- Page data
     const [ errors, setErrors ] = useState<string[]>([])
@@ -31,7 +48,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
 		if (event.target.files && event.target.files[0]) {
             // Raw data for image preview
 			const reader = new FileReader();
-			reader.onload = (e: any) => e.target ? setNftImage(e.target?.result) : alert('File upload failed, please try again!')
+			reader.onload = (e: any) => e.target ? setPreviewImage(e.target?.result) : alert('File upload failed, please try again!')
 			reader.readAsDataURL(event.target.files[0]);
 
             // Uint8Array data for sending to IPFS
@@ -45,11 +62,21 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
         // Do some validation
         const errors: string[] = []
         if(!name.length) errors.push('name')
-        if(!domain.length) errors.push('domain')
         if(!story.length) errors.push('story')
         if(!image.length) errors.push('image')
-        setErrors(errors)
-        if(!errors.length) onContinue()
+        if(!domain.length) errors.push('domain')
+        // Don't continue if there's errors        
+        if(errors.length) return setErrors(errors)
+
+        const data: TokenInformationType = {
+            name: name,
+            story: story,
+            previewImage: previewImage,
+            image: image,
+            domain: domain,
+            locked: locked,
+        }
+        onContinue(data)
     }
 
     return(
@@ -61,14 +88,12 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
                         className={`${styles.NFT} border-rounded border-blue`}
                         style={{borderColor: errors.includes('image') ? 'var(--color-invalid)' : ''}}
                     >
-                        { !nftImage && 
+                        { !previewImage && 
                             <span className='glow-text-white'>Choose an Image</span>
                         }
-                        { nftImage && 
+                        { previewImage && 
                             <img
-                                src={nftImage as string}
-                                // onChange={onImageChanged}
-                                // style={{ display: nftImage ? 'inline-block' : 'none' }}
+                                src={previewImage as string}
                             />
                         }
                     </div>
@@ -84,13 +109,13 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
                     <div className={styles.Inputs}>
                         <TextInput 
                             placeholder={'Title'}
-                            onChange={(name: string) => setName(name)}
+                            onChange={(name: string) => updateName(name)}
                             text={name}
                             error={errors.includes('name')}
                         />
                         <TextInput 
                             placeholder={'Subdomain Name'}
-                            onChange={(domain: string) => setDomain(domain)}
+                            onChange={(domain: string) => updateDomain(domain)}
                             text={domain}
                             error={errors.includes('domain')}
                             alphanumeric

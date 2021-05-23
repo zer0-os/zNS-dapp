@@ -1,22 +1,34 @@
 //- React Imports
 import React, { useState, useRef, useContext } from 'react'
 
-import { NFTContext } from '../NFTContext'
-
 //- Style Imports
 import styles from '../MintNewNFT.module.css'
+
+//- Type Imports
+import { TokenDynamicType } from '../types'
 
 //- Component Imports
 import { ToggleButton, TextInput, FutureButton } from 'components'
 
 type TokenDynamicsProps = {
-    onContinue: () => void;
+    token: TokenDynamicType | null;
+    onContinue: (data: TokenDynamicType) => void;
     onBack: () => void;
 }
 
-const TokenDynamics: React.FC<TokenDynamicsProps> = ({ onContinue, onBack }) => { 
+const TokenDynamics: React.FC<TokenDynamicsProps> = ({ token, onContinue, onBack }) => { 
 
-    const { dynamic, setDynamic, ticker, setTicker } = useContext(NFTContext)
+    const [ dynamic, setDynamic ] = useState(token ? token.dynamic : false)
+    const [ ticker, setTicker ] = useState(token ? token.ticker : '')
+    const [ errors, setErrors ] = useState<string[]>([])
+
+    const pressContinue = () => {
+        if(!ticker.length || ticker.length > 4) return setErrors(['ticker'])
+        onContinue({
+            dynamic: dynamic, 
+            ticker: ticker
+        })
+    }
 
     return(
         <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
@@ -30,8 +42,9 @@ const TokenDynamics: React.FC<TokenDynamicsProps> = ({ onContinue, onBack }) => 
             <TextInput 
                 placeholder={'Ticker'}
                 onChange={(ticker: string) => setTicker(ticker.length < 4 ? ticker.toUpperCase() : ticker.toUpperCase().substring(0,4))}
-                text={ticker.toUpperCase()}
+                text={ticker}
                 style={{width: 216, marginTop: 24}}
+                error={errors.includes('ticker')}
                 alphanumeric
             />
             <div style={{display: 'flex', justifyContent: 'center', marginTop: 128}}>
@@ -42,7 +55,7 @@ const TokenDynamics: React.FC<TokenDynamicsProps> = ({ onContinue, onBack }) => 
                 >Back</FutureButton>
                 <FutureButton 
                     style={{margin: '0 auto 0 auto', height: 36, borderRadius: 18, marginLeft: 48, width: 130 }}
-                    onClick={onContinue}
+                    onClick={pressContinue}
                     glow
                 >Continue</FutureButton>
 			</div>

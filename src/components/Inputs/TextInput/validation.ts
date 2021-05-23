@@ -11,4 +11,6 @@ const isAlphanumeric = (str: string) => {
     return true
 }
 
-export { isAlphanumeric }
+const isNumber = (str: string) => !isNaN(+str)
+
+export { isAlphanumeric, isNumber }
