@@ -59,7 +59,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
                     <div 
                         onClick={openUploadDialog}
                         className={`${styles.NFT} border-rounded border-blue`}
-                        style={{borderColor: errors.includes('image') ? 'red' : ''}}
+                        style={{borderColor: errors.includes('image') ? 'var(--color-invalid)' : ''}}
                     >
                         { !nftImage && 
                             <span className='glow-text-white'>Choose an Image</span>
@@ -92,10 +92,15 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
                             placeholder={'Subdomain Name'}
                             onChange={(domain: string) => setDomain(domain)}
                             text={domain}
-                            error={errors.includes('ticker')}
+                            error={errors.includes('domain')}
                             alphanumeric
                         />
-                        <ToggleButton toggled={false} onClick={() => console.log('hello')} />
+                        <ToggleButton 
+                            toggled={locked}
+                            onClick={() => setLocked(!locked)} 
+                            style={{marginTop: 'auto', alignSelf: 'center'}}
+                            labels={['Unlocked', 'Locked']}
+                        />
                     </div>
                 </div>
                 <TextInput 
@@ -104,7 +109,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({ onContinue }) => {
                     style={{height: 200, marginTop: 40}}
                     onChange={(story: string) => setStory(story)}
                     text={story}
-                    error={errors.includes('domain')}
+                    error={errors.includes('story')}
                 />
             </form>
             <FutureButton 

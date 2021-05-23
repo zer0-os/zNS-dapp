@@ -68,7 +68,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 	// I think using Context API for account data here is worthwhile
 	const context = useWeb3React<Web3Provider>()
 	const { account } = context // account = connected wallet ID
-	console.log(account)
 
 	//- Functions
 	const toStep = (i: number) => {setStep(i >= steps ? steps : i)}
@@ -95,7 +94,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 				<div className={styles.Header}>
 					<h1 className={`glow-text-white`}>Mint "{nftName ? nftName : 'A New NFT'}"</h1>
 					<div style={{marginBottom: 16}}>
-						<h2 className={`glow-text-white`}>0:/{domainName && domainName.length ? `${domainName}` : ``}{nftDomain}</h2>
+						<h2 className={`glow-text-white`}>wilder.{domainName && domainName.length ? `${domainName.substring(1)}` : ``}{nftDomain}</h2>
 					</div>
 					<span>By {account && account.length ? randomName(account) : ''}</span>
 				</div>
@@ -107,37 +106,26 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({ domainId, domainName, onMint })
 				{/* TODO: Make ToggleSections unclickable if their open status depends on parent state */}
 
 				{/* SECTION 1: Token Information */}
-				<ToggleSection 
-					open={step === 1 ? true : undefined}
-					style={{marginTop: 51}}
-					label={'Token Information'}
-				>
+				{ step === 1 &&
 					<TokenInformation onContinue={() => toStep(2)} />
-				</ToggleSection>
+				}
 
 				{/* SECTION 2: Token Dynamics */}
-				<ToggleSection 
-					open={step === 2 ? true : undefined}
-					style={{marginTop: 51}}
-					label={'Token Dynamics'}
-				>
+				{ step === 2 && 
 					<TokenDynamics onBack={() => toStep(1)} onContinue={() => toStep(3)} />
-				</ToggleSection>
+				}
 
 				{/* SECTION 3: Staking */}
-				<ToggleSection 
-					open={step === 3}
-					style={{marginTop: 51}}
-					label={'Staking'}
-				>
-					<p style={{marginTop: 16, textAlign: 'center'}}>Middleware call not linked up - waiting for middleware to be finished</p>
-					<FutureButton 
-						style={{margin: '0 auto 0 auto', height: 36, borderRadius: 18 }}
-						onClick={submit}
-						glow
-					>Mint NFT</FutureButton>
-				</ToggleSection>
-				<p style={{marginTop: 32, textAlign: 'center'}}>These toggle sections will be animated!</p>
+				{ step === 3 &&
+					<>
+						<p style={{marginTop: 16, textAlign: 'center'}}>Middleware call not linked up - waiting for middleware to be finished</p>
+						<FutureButton 
+							style={{margin: '0 auto 0 auto', height: 36, borderRadius: 18 }}
+							onClick={submit}
+							glow
+						>Mint NFT</FutureButton>
+					</>
+				}
 			</NFTContext.Provider>
 		</div>
 	)
