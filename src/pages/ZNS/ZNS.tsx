@@ -164,7 +164,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
         {/* Overlays */}
         {/* TODO: Switch out overlay handling to a hook */}
         <NotificationDrawer />
-        <Overlay open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
+        <Overlay centered open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
         <Overlay open={isMintOverlayOpen} onClose={() => setIsMintOverlayOpen(false)}><MintNewNFT onMint={() => setIsMintOverlayOpen(false)} domainName={domain} domainId={!data.isNothing() ? data.value.id : ''} /></Overlay>
         <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile id={account ? account : ''}/></Overlay>
         <Overlay open={isEnlistOverlayOpen} onClose={() => setIsEnlistOverlayOpen(false)}><Enlist onSubmit={onEnlistSubmit} domainId={enlisting.id} domainName={enlisting.domainName} minterName={enlisting.minter} image={enlisting.image} /></Overlay>

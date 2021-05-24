@@ -9,11 +9,10 @@ type OverlayProps = {
 	onClose: () => void;
 	open?: boolean;
 	children?: React.ReactNode;
+	centered?: boolean;
 }
 
-const Overlay: React.FC<OverlayProps> = ({ onClose, open, children }) => {
-
-	// TODO: Some overlays should be centered, other's should be top-aligned (with some padding of course)
+const Overlay: React.FC<OverlayProps> = ({ onClose, open, children, centered }) => {
 
 	const [ currentChild, setCurrentChild ] = useState<React.ReactNode>(null)
 	const [ inDOM, setInDOM ] = useState<boolean>(false)
@@ -39,9 +38,10 @@ const Overlay: React.FC<OverlayProps> = ({ onClose, open, children }) => {
 	return (
 		<>
 			{ inDOM && 
-				<div onAnimationEnd={removeFromDOM} onClick={closeOverlay} className={`overlay ${styles.Overlay} ${open ? styles.Open : styles.Closed}`}>
-					<div>
+				<div onAnimationEnd={removeFromDOM} onClick={closeOverlay} className={`overlay ${styles.Overlay} ${open ? styles.Open : styles.Closed} ${centered ? styles.Centered : ''}`}>
+					<div className={`overlay`}>
 						{ children }
+						<div style={{display: centered ? 'none' : 'block', height: 64}}></div>
 					</div>
 				</div>
 			}

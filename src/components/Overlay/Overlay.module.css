@@ -20,13 +20,23 @@
 
     width: 100%;
     min-height: 100vh;
+    height: 100%;
+    overflow-y: scroll;
 
-    padding: 120px 0;
     z-index: 10000;
     opacity: 0;
 
     background: rgba(0,0,0,0.3);
     transition: backdrop-filter 0.2s;
+}
+
+.Centered {
+    align-items: center;
+}
+
+.Overlay > div {
+    padding-top: 64px;
+    padding-bottom: 64px;
 }
 
 .Open {
