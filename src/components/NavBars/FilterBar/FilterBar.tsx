@@ -1,6 +1,7 @@
 //- React Imports
 import React, { useState, useEffect } from 'react'
-import useScrollPosition from '@react-hook/window-scroll';
+import { useHistory } from 'react-router-dom'
+import useScrollPosition from '@react-hook/window-scroll'
 
 //- Style Imports
 import styles from './FilterBar.module.css'
@@ -22,7 +23,11 @@ var lastY = 0 // Just a global variable to stash last scroll position
 
 const FilterBar: React.FC<FilterBarProps> = ({ filters, onSelect, style, children }) => {
 
+    //- State
     const [ selected, setSelected ] = useState(filters.length ? filters[0] : '')
+
+    //- Hooks
+    const history = useHistory()
 
     // TODO: Move hidden header to a separate component
     const [hideHeader, setHideHeader] = useState(false)
@@ -41,10 +46,14 @@ const FilterBar: React.FC<FilterBarProps> = ({ filters, onSelect, style, childre
         onSelect(filter)
     }
 
+    const home = () => {
+        history.push('/')
+    }
+
     return(
         <div className={`${styles.FilterBar} blur ${hideHeader ? styles.Hidden : ''}`} style={style}>
             {/* TODO: Move Wilder icon out of this component */}
-            <div className={styles.Wilder}><img src={wilderIcon}/></div>
+            <div className={styles.Wilder}><img src={wilderIcon} onClick={home}/></div>
             { children }
             <ul>
                 { filters.map((filter, index) => 
