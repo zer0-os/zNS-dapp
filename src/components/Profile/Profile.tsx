@@ -24,9 +24,11 @@ import dp from './assets/wilder.jpg'
 
 type ProfileProps = {
 	id: string;
+	// TODO: Change yours
+	yours?: boolean;
 }
 
-const Profile: React.FC<ProfileProps> = ({ id }) => {
+const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 	return (
 		<div className={`${ProfileStyle.profile} blur border-primary border-rounded`}>
@@ -34,14 +36,17 @@ const Profile: React.FC<ProfileProps> = ({ id }) => {
 			<div className={ProfileStyle.body}>
 				<div>
 					<Image className={ProfileStyle.dp} src={randomImage(id)} />
-					<a className={`${ProfileStyle.endpoint} glow-text-blue`}>0://{ randomName(id).toLowerCase().split(' ').join('.') }</a>
+					<a className={`${ProfileStyle.endpoint} glow-text-blue`}>wilder.{ randomName(id).toLowerCase().split(' ').join('.') }</a>
 				</div>
 				<div>
 					<span className={`${ProfileStyle.name} glow-text-blue`}>{ randomName(id) }</span>
 					<p>Hey I’m { randomName(id) } and I like staring into the night sky and imagining myself in another galaxy. I’m so passionate about space travel that I spend the majority of my time making animated short films about it. With the magic of CGI, I can make worlds and journeys so real that I can almost taste the synthetic beef that comes out of the assembler!<br/><br/>Join me on one or all of my journeys, I welcome you aboard!</p>
+					<CopyInput value={id} />
 				</div>
 			</div>
-			<Shop />
+			{ yours && 
+				<Shop  />
+			}
 		</div>
 	)
 }

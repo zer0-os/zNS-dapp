@@ -88,11 +88,13 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
                         <div className={styles.Members}>
                             {/* TODO: Switch these to Member component */}
                             <Member
+                                id={creatorId}
                                 name={randomName(creatorId)}
                                 image={randomImage(creatorId)}
                                 subtext={'Creator'}
                             />
                             <Member
+                                id={ownerId}
                                 name={randomName(ownerId)}
                                 image={randomImage(ownerId)}
                                 subtext={'Owner'}

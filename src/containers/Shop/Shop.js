@@ -59,9 +59,8 @@ const Shop = (props) => {
                 {/* <TextButton toggleable={true}>Offers</TextButton> */}
             </div>
             <ul>
-                { NFTs.map(n => 
+                { NFTs.length > 0 && NFTs.map(n => 
                     <li key={n.name}>
-                    { console.log(n)}
                     <NFTCard 
                         name={n.name}
                         imageUri={n.img}
@@ -73,6 +72,9 @@ const Shop = (props) => {
                     />
                     </li>
                 ) }
+                { NFTs.length === 0 &&
+                    <p style={{margin: '41px auto', fontSize: 24, color: 'white', fontWeight: 700}}>No offers!</p>
+                }
             </ul>
         </div>
     )

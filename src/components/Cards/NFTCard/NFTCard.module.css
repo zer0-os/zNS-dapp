@@ -48,7 +48,6 @@
 .NFT {
     width: 100%;
     height: 348px;
-    margin-top: 16px;
     border-radius: var(--box-radius) var(--box-radius) 0 0;
     object-fit: cover;
 }

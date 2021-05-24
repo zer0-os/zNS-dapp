@@ -42,6 +42,17 @@
 
 .Info h1 {
     font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.Info h1::after {
+    content: 'holder';
+    opacity: 0;
+}
+
+/* ZNA */
+.Info span:first-of-type {
+    font-weight: 700;
 }
 
 .Members {

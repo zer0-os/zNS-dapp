@@ -157,7 +157,7 @@ const DomainTable: React.FC<DomainTableProps> = ({ domains, isRootDomain, style,
             {
                 Header: () => <div style={{ textAlign: 'right' }}>No. Of Bids</div>,
                 accessor: 'numBids',
-                Cell: row => <div style={{ textAlign: 'right' }}>{row.value}</div>
+                Cell: row => <div style={{ textAlign: 'right' }}>{Number(row.value).toLocaleString()}</div>
             },
             {
                 Header: () => <div style={{ textAlign: 'right' }}>Last Sale Price</div>,

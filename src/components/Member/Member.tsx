@@ -1,33 +1,48 @@
 //- React Imports
-import React from 'react'
+import React, { useState } from 'react'
 
 //- Component Imports
-import { Image } from 'components'
+import { Image, Overlay, Profile } from 'components'
 
 //- Style Imports
 import styles from './Member.module.css'
 
 type MemberProps = {
+    id: string;
     name: string;
     image: string;
     subtext?: string;
-
 }
 
-const Member: React.FC<MemberProps> = ({ name, image, subtext }) => {
+const Member: React.FC<MemberProps> = ({ id, name, image, subtext }) => {
+
+    const [ overlay, setOverlay ] = useState(false)
+
+    const openProfile = () => {
+        setOverlay(true)
+    }
 
     return (
-        <div className={styles.Member}>
-            <div 
-                className={styles.Image}
-            >
-                <Image src={image} />
+        <>
+            {/* TODO: Remove overlay from child */}
+            <Overlay centered open={overlay} onClose={() => setOverlay(false)}>
+                <Profile id={id} />
+            </Overlay>
+            <div className={styles.Member}>
+                <div 
+                    className={styles.Image}
+                >
+                    <Image
+                        onClick={openProfile}
+                        src={image}
+                    />
+                </div>
+                <div className={styles.Info}>
+                    <span onClick={openProfile}>{ name }</span><br/>
+                    { subtext && <span>{ subtext }</span> }
+                </div>
             </div>
-            <div className={styles.Info}>
-                <span>{ name }</span><br/>
-                { subtext && <span>{ subtext }</span> }
-            </div>
-        </div>
+        </>
     )
 }
 

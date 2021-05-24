@@ -60,7 +60,7 @@ type ZNSProps = {
 }
 
 const ZNS: React.FC<ZNSProps> = ({ domain }) => {
-    
+
     // TODO: Need to handle domains that don't exist!
 
     //- Domain State
@@ -168,7 +168,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
         <NotificationDrawer />
         <Overlay centered open={isWalletOverlayOpen} onClose={() => setIsWalletOverlayOpen(false)}><ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} /></Overlay>
         <Overlay open={isMintOverlayOpen} onClose={() => setIsMintOverlayOpen(false)}><MintNewNFT onMint={() => setIsMintOverlayOpen(false)} domainName={domain} domainId={!data.isNothing() ? data.value.id : ''} /></Overlay>
-        <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile id={account ? account : ''}/></Overlay>
+        <Overlay open={isProfileOverlayOpen} onClose={() => setIsProfileOverlayOpen(false)}><Profile yours id={account ? account : ''}/></Overlay>
         <Overlay open={isEnlistOverlayOpen} onClose={() => setIsEnlistOverlayOpen(false)}><Enlist onSubmit={onEnlistSubmit} domainId={enlisting.id} domainName={enlisting.domainName} minterName={enlisting.minter} image={enlisting.image} /></Overlay>
 
         {/* ZNS Content */}
@@ -281,8 +281,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                                 name={!data.isNothing() ? data.value.name : ''}
                                 domain={domain}
                                 description={!data.isNothing() ? data.value.description : ''}
-                                creatorId={!data.isNothing() && data.value.minter && data.value.minter.id ? `${data.value.minter.id.substring(0, 12)}...` : ''}
-                                ownerId={!data.isNothing() ? `${data.value.owner.id.substring(0, 12)}...` : ''}
+                                creatorId={!data.isNothing() && data.value.minter && data.value.minter.id ? data.value.minter.id : ''}
+                                ownerId={!data.isNothing() ? data.value.owner.id : ''}
                                 isLoading={isLoading}
                                 mvpVersion={mvpVersion}
                                 onButtonClick={enlistCurrentDomain}

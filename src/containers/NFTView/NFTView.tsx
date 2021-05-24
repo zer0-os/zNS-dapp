@@ -11,7 +11,7 @@ import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components'
 
 //- Library Imports
 import IPFSClient from 'lib/ipfs-client'
-import { randomName, randomImage } from 'lib/Random'
+import { randomName, randomImage, randomNumber } from 'lib/Random'
 
 //- Style Imports
 import styles from './NFTView.module.css'
@@ -74,7 +74,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
     return(
         <div className={styles.NFTView}>
 
-            <Overlay centered open={isImageOverlayOpen} onClose={() => setIsImageOverlayOpen(false)}><Image src={image} style={{maxWidth: 600}} /></Overlay>
+            <Overlay centered open={isImageOverlayOpen} onClose={() => setIsImageOverlayOpen(false)}>
+                <Image src={image} style={{maxHeight: '80vh', maxWidth: '80vw', objectFit: 'contain'}} />
+            </Overlay>
 
             <div className={`${styles.NFT} blur border-primary border-rounded`} style={{backgroundImage: `url(${galaxyBackground})`}}>
                 <div className={`${styles.Image} border-rounded`}>
@@ -88,13 +90,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
                 <div className={styles.Info}>
                     <div>
                         <h1 className='glow-text-white'>{ name }</h1>
-                        <ArrowLink>0:/{ domain }</ArrowLink>
+                        <span>wilder.{ domain.substring(1) }</span>
                         <div className={styles.Members}>
-                            <Member 
+                            <Member
+                                id={!data.isNothing() ? data.value.owner.id : ''}
                                 name={!data.isNothing() ? randomName(data.value.owner.id) : ''} 
                                 image={!data.isNothing() ? randomImage(data.value.owner.id) : ''} 
                                 subtext={'Owner'} />
-                            <Member 
+                            <Member
+                                id={!data.isNothing() ? data.value.minter.id : ''}
                                 name={!data.isNothing() ? randomName(data.value.minter.id) : ''} 
                                 image={!data.isNothing() ? randomImage(data.value.minter.id) : ''} 
                                 subtext={'Creator'} 
@@ -102,7 +106,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
                         </div>
                     </div>
                     <div className={styles.Price}>
-                        <span className={styles.Crypto}>250 WILD <span className={styles.Fiat}>($1,304.12)</span></span>
+                        <span className={styles.Crypto}>{ Number(2521).toLocaleString() } WILD <span className={styles.Fiat}>(${Number(1304.12).toLocaleString()})</span></span>
                     </div>
                     <div className={styles.Buttons}>
                         <FutureButton 
@@ -127,11 +131,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
                     <div className={styles.Horizontal}>
                         <div className={`${styles.Box} blur border-primary border-rounded`}>
                             <h4>Views</h4>
-                            <span className='glow-text-white'>1000</span>
+                            <span className='glow-text-white'>{ Number(1000).toLocaleString() }</span>
                         </div>
                         <div className={`${styles.Box} blur border-primary border-rounded`}>
                             <h4>Edition</h4>
-                            <span className='glow-text-white'>1 of 1</span>
+                            <span className='glow-text-white'>{ Number(1).toLocaleString() } of { Number(1).toLocaleString() }</span>
                         </div>
                     </div>
                     <div className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}>
