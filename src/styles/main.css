@@ -119,6 +119,11 @@ html, body, button, input, textarea {
 	letter-spacing: 0.2px;
 }
 
+html {
+    overflow: hidden;
+    height: 100%;
+}
+
 body {
 	background-color: #120628;
 	background: url('../assets/zns-bg.png');
@@ -127,8 +132,9 @@ body {
 	background-size: cover;
 
 	min-height: 100vh;
-	height: auto;
+	height: 100%;
 	width: 100%;
+	overflow: auto;
 	/* margin-top: 29px; */
 	/* padding-top: 123px; */
 	/* padding-bottom: 123px; */
