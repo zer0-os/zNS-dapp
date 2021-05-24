@@ -100,6 +100,13 @@
     color: white;
     line-height: 19.2px;
     padding-bottom: 0;
+
+    -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none;  /* Hide scrollbar in Firefox */
+}
+
+.Body p::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome */
 }
 
 .Members {
