@@ -32,13 +32,31 @@ type PreviewCardProps = {
     children?: React.ReactNode;
     mvpVersion: number;
     onButtonClick: () => void;
+    onImageClick?: () => void;
 }
 
-const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, description, creatorId, ownerId, isLoading, children, mvpVersion, onButtonClick }) => {
+const PreviewCard: React.FC<PreviewCardProps> = ({ 
+        image,
+        style,
+        name,
+        domain,
+        description,
+        creatorId,
+        ownerId,
+        isLoading,
+        children,
+        mvpVersion,
+        onButtonClick,
+        onImageClick
+    }) => {
 
     // TODO: Work out how the data for the asset cards should be passed in
     // Would it actually make more sense to have the bottom row of the preview card be whatever
     // is passed in as a child?
+
+    const open = () => {
+        if(onImageClick) onImageClick()
+    }
 
     return(
         <div 
@@ -56,7 +74,10 @@ const PreviewCard: React.FC<PreviewCardProps> = ({ image, style, name, domain, d
                     <div 
                     className={`${styles.Asset} ${mvpVersion === 3 ? styles.MVP3Asset : ''}`}
                     >
-                        <Image src={image} />
+                        <Image
+                            onClick={open}
+                            src={image}
+                        />
                     </div>
                     <div className={styles.Body}>
                         <div>

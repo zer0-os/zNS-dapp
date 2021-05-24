@@ -60,7 +60,7 @@ type ZNSProps = {
 }
 
 const ZNS: React.FC<ZNSProps> = ({ domain }) => {
-
+    
     // TODO: Need to handle domains that don't exist!
 
     //- Domain State
@@ -75,6 +75,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     //- Page State
     const [ isLoading, setIsLoading ] = useState(true)
     const [ hasLoaded, setHasLoaded ] = useState(false)
+    const [ isNftView, setIsNftView ] = useState(false)
 
     //- Table State
     const [ isGridView, setIsGridView ] = useState(false)
@@ -103,7 +104,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     //- Data
     const [ tableData, setTableData ] = useState([])
-    const isRoot = !data.isNothing() && !data.value.parent
+    const isRoot = domain === '/' || (!data.isNothing() && !data.value.parent)
     const ownedDomain = !data.isNothing() && data.value.owner.id === account
     const subdomains = !data.isNothing() && data.value.subdomains ? data.value.subdomains : []
 
@@ -156,6 +157,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
     useEffect(() => {
         setTableData([])
+        setIsNftView(false)
         setIsLoading(true)
     }, [ domain ])
 
@@ -270,7 +272,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
             {/* Preview Card */}
             {/* TODO: This definitely needs some refactoring */}
-            { subdomains.length >= 0 && 
+            { subdomains.length >= 0 && !isNftView && 
                 <Spring from={{ opacity: 0, marginTop: -springAmount }} to={{ opacity: !isRoot && hasLoaded && subdomains.length ? 1 : 0, marginTop: !isRoot && hasLoaded && subdomains.length ? 0 : -springAmount }}>
                     { styles => 
                         <animated.div style={styles}>
@@ -284,6 +286,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                                 isLoading={isLoading}
                                 mvpVersion={mvpVersion}
                                 onButtonClick={enlistCurrentDomain}
+                                onImageClick={() => setIsNftView(true)}
                             >
                                 <HorizontalScroll fade>
                                     <AssetPriceCard 
@@ -322,7 +325,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
            
 
             {/* Subdomain Table */}
-            { subdomains.length > 0 && 
+            { subdomains.length > 0 && !isNftView && 
                 <DomainTable
                     domains={tableData}
                     isRootDomain={isRoot}
@@ -335,7 +338,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
                 />
             }
 
-            { !data.isNothing() && subdomains.length === 0 &&
+            { !data.isNothing() && ( isNftView || subdomains.length === 0 ) &&
                 <NFTView
                     domain={domain}
                 />
