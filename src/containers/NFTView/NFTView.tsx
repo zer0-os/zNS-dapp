@@ -74,7 +74,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
     return(
         <div className={styles.NFTView}>
 
-            <Overlay open={isImageOverlayOpen} onClose={() => setIsImageOverlayOpen(false)}><Image src={image} style={{maxWidth: 600}} /></Overlay>
+            <Overlay centered open={isImageOverlayOpen} onClose={() => setIsImageOverlayOpen(false)}><Image src={image} style={{maxWidth: 600}} /></Overlay>
 
             <div className={`${styles.NFT} blur border-primary border-rounded`} style={{backgroundImage: `url(${galaxyBackground})`}}>
                 <div className={`${styles.Image} border-rounded`}>
