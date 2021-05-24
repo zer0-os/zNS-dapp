@@ -1,5 +1,6 @@
 //- React Imports
 import React, { useState, useEffect } from 'react'
+import ReactDOM from "react-dom"
 
 //- Style Imports
 import styles from './Overlay.module.css'
@@ -35,7 +36,7 @@ const Overlay: React.FC<OverlayProps> = ({ onClose, open, children, centered }) 
 		if(target.classList.value.indexOf('overlay') > -1) onClose()
 	}
 
-	return (
+	return ReactDOM.createPortal(
 		<>
 			{ inDOM && 
 				<div onAnimationEnd={removeFromDOM} onClick={closeOverlay} className={`overlay ${styles.Overlay} ${open ? styles.Open : styles.Closed} ${centered ? styles.Centered : ''}`}>
@@ -45,7 +46,8 @@ const Overlay: React.FC<OverlayProps> = ({ onClose, open, children, centered }) 
 					</div>
 				</div>
 			}
-		</>
+		</>,
+		document.querySelector("#overlay")
 	)
 }
 
