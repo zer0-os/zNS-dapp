@@ -42,7 +42,7 @@
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
     "ipfs-api": "^26.1.2",
-    "ipfs-http-client": "^49.0.4",
+    "ipfs-http-client": "^50.0.0",
     "ipfs-mini": "^1.1.5",
     "js-ipfs-fetch": "^1.4.2",
     "lodash": "^4.17.21",

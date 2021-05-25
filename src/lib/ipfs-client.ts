@@ -1,9 +1,5 @@
-const ipfsLib = require('ipfs-api');
+const { create } = require("ipfs-http-client");
 
-const ipfsClient = new ipfsLib({
-  host: 'ipfs.infura.io',
-  port: 5001,
-  protocol: 'https',
-});
+const ipfsClient = create("https://ipfs.infura.io:5001");
 
-export default ipfsClient
+export default ipfsClient;

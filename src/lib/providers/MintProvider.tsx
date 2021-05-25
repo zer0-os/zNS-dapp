@@ -1,62 +1,109 @@
 //- React Imports
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState, useCallback, useEffect } from "react";
 
 //- Hook Imports
-import useNotification from 'lib/hooks/useNotification'
+import useNotification from "lib/hooks/useNotification";
+import { useWeb3React } from "@web3-react/core";
+import { BasicController, BasicController__factory } from "types";
+import { useZnsContracts } from "lib/contracts";
+import ipfsClient from "lib/ipfs-client";
 
 export const MintContext = React.createContext({
-    minting: [{}],
-    minted: [{}],
-    mint: (nft: NFT) => {},
-})
+  minting: [{}],
+  minted: [{}],
+  mint: async (nft: NFT): Promise<void> => {},
+});
 
 type MintProviderType = {
-    children: React.ReactNode;
-}
+  children: React.ReactNode;
+};
 
 type NFT = {
-    name: string;
-    domain: string;
-    ticker: string;
-    story: string;
-    image: Buffer;
-    dynamic: boolean;
-}
+  owner: string;
+  parent: string;
+  name: string;
+  domain: string; // domain label
+  ticker: string;
+  story: string;
+  image: Buffer;
+  dynamic: boolean;
+  locked: boolean;
+};
 
 const MintProvider: React.FC<MintProviderType> = ({ children }) => {
-    const { addNotification } = useNotification()
-    const [ minting, setMinting ] = useState<NFT[]>([])
-    const [ minted, setMinted ] = useState<NFT[]>([])
-    const [ finishedMinting, setFinishedMinting ] = useState<NFT | null>(null)
+  const { addNotification } = useNotification();
+  const [minting, setMinting] = useState<NFT[]>([]);
+  const [minted, setMinted] = useState<NFT[]>([]);
+  const [finishedMinting, setFinishedMinting] = useState<NFT | null>(null);
+  const basicController = useZnsContracts()?.basicController;
 
-    const mint = (nft: NFT) => {
-        // TODO: Add API calls here
-        setMinting([...minting, nft])
-        addNotification(`Started minting ${nft.name}`)
-        setTimeout(() => setFinishedMinting(nft), 15000)
+  const mint = (nft: NFT) => {
+    if (!basicController) {
+      console.error("no controller");
+      return;
     }
 
-    // TODO: Change this hook to run when minting finishes
-    useEffect(() => {
-        if(finishedMinting) {
-            addNotification(`Finished minting ${finishedMinting.name}`)
-            setMinting(minting.filter(n => n !== finishedMinting))
-            setMinted([...minted, finishedMinting])
+    const userHasSubmitted = new Promise<void>((resolve) => {
+      const doMint = async () => {
+        try {
+          // upload image to IPFS
+          const { path: imageCid } = await ipfsClient.add(nft.image);
+
+          // upload metadata to IPFS
+          const metadataObject = {
+            name: nft.name,
+            description: nft.story,
+            image: `https://ipfs.io/ipfs/${imageCid}`,
+          };
+          const metadataAsString = JSON.stringify(metadataObject);
+          const { path: metadataCid } = await ipfsClient.add(metadataAsString);
+
+          // register subdomain
+          const tx = await basicController.registerSubdomainExtended(
+            nft.parent,
+            nft.domain,
+            nft.owner,
+            `https://ipfs.io/ipfs/${metadataCid}`,
+            0,
+            nft.locked
+          );
+
+          resolve();
+
+          setMinting([...minting, nft]);
+          addNotification(`Started minting ${nft.name}`);
+
+          await tx.wait();
+          setFinishedMinting(nft);
+        } catch (e) {
+          console.error(`failed to mint: ${e}`);
         }
-    }, [ finishedMinting ])
+      };
 
-    const contextValue = {
-        minting,
-        minted,
-        mint: (nft: NFT) => mint(nft),
+      doMint();
+    });
+
+    return userHasSubmitted;
+  };
+
+  // TODO: Change this hook to run when minting finishes
+  useEffect(() => {
+    if (finishedMinting) {
+      addNotification(`Finished minting ${finishedMinting.name}`);
+      setMinting(minting.filter((n) => n !== finishedMinting));
+      setMinted([...minted, finishedMinting]);
     }
+  }, [finishedMinting]);
 
-    return (
-        <MintContext.Provider value={contextValue}>
-            {children}
-        </MintContext.Provider>
-    )
+  const contextValue = {
+    minting,
+    minted,
+    mint: (nft: NFT) => mint(nft),
+  };
 
-}
+  return (
+    <MintContext.Provider value={contextValue}>{children}</MintContext.Provider>
+  );
+};
 
-export default MintProvider
+export default MintProvider;

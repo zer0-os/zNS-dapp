@@ -6,6 +6,7 @@ import addresses from './addresses';
 import { Maybe } from 'true-myth';
 import { chainIdToNetworkType } from './network';
 import { Registrar } from '../types/Registrar';
+import { BasicController, BasicController__factory } from 'types';
 
 export interface ContractAddresses {
   basic: string;
@@ -14,19 +15,24 @@ export interface ContractAddresses {
 
 export interface Contracts {
   registry: Registrar;
+  basicController: BasicController;
 }
 
-function useZnsContracts(): Maybe<Contracts> {
+function useZnsContracts(): Contracts | null {
   const context = useWeb3React<Web3Provider>();
   const { library, active, chainId } = context;
-  const contract = useMemo((): Maybe<Contracts> => {
-    if (!active || !library) return Maybe.nothing();
-    return Maybe.of({
+  const contract = useMemo((): Contracts | null => {
+    if (!active || !library) return null;
+    return {
       registry: Registrar__factory.connect(
         addresses[chainIdToNetworkType(chainId!)].registrar,
         library.getSigner(),
       ),
-    });
+      basicController: BasicController__factory.connect(
+        addresses[chainIdToNetworkType(chainId!)].basic,
+        library.getSigner(),
+      )
+    }
   }, [active, library, chainId]);
   return contract;
 }
