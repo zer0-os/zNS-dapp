@@ -105,8 +105,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
   const [tableData, setTableData] = useState([]);
   const isRoot = domain === "/" || (!data.isNothing() && !data.value.parent);
   const ownedDomain = !data.isNothing() && data.value.owner.id === account;
+  // @TODO: We shouldn't need to filter out non-ipfs.io metadata URIs when we reset data
   const subdomains =
-    !data.isNothing() && data.value.subdomains ? data.value.subdomains : [];
+    !data.isNothing() && 
+    data.value.subdomains ?
+    data.value.subdomains.filter(d => d.metadata && d.metadata.indexOf('ipfs.io') > -1)
+    : [];
 
   const { mint } = useMint();
 
