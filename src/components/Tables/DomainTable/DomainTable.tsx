@@ -123,9 +123,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
           if (data) {
             domain.nft = {
-              name: data.name || data.title,
-              image: data.image,
-              description: data.description,
+              // Some NFTs on the testnet don't have data populated for whatever reason
+              // @TODO: Remove the default case when there's no metadata 
+              name: data.name || data.title || '', 
+              image: data.image || '',
+              description: data.description || '',
             };
           }
 
