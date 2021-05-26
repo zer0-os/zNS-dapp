@@ -4,11 +4,11 @@
 	overflow-x: scroll;
 	width: 100%;
 	-ms-overflow-style: none;
-  	scrollbar-width: none;
+	scrollbar-width: none;
 }
 
 .bar::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 
 .bar > *:not(:first-child) {

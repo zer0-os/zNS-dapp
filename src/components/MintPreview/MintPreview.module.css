@@ -1,72 +1,76 @@
 .MintPreview {
-    width: 552px;
-    padding: 27.5px 40px;
-    
-    background: radial-gradient(56.93% 56.93% at 50% 50%, rgba(206, 183, 255, 0) 0%, rgba(103, 79, 255, 0.2) 100%),
-    linear-gradient(0deg, #000000, #000000);
+	width: 552px;
+	padding: 27.5px 40px;
+
+	background: radial-gradient(
+			56.93% 56.93% at 50% 50%,
+			rgba(206, 183, 255, 0) 0%,
+			rgba(103, 79, 255, 0.2) 100%
+		),
+		linear-gradient(0deg, #000000, #000000);
 }
 
 .MintPreview > h4 {
-    margin-bottom: 19px;
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
+	margin-bottom: 19px;
+	font-size: 24px;
+	font-weight: 700;
+	text-align: center;
 }
 
 .MintPreview > li {
-    display: flex;
-    margin-top: 34px;
-    margin-bottom: 34px;
+	display: flex;
+	margin-top: 34px;
+	margin-bottom: 34px;
 }
 
 .Image {
-    height: 200px;
-    width: 200px;
+	height: 200px;
+	width: 200px;
 
-    overflow: hidden;
+	overflow: hidden;
 }
 
 .Image > img {
-    height: 100%;
-    width: 100%;
+	height: 100%;
+	width: 100%;
 
-    object-fit: contain;
+	object-fit: contain;
 }
 
 .Info {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+	position: relative;
+	display: flex;
+	flex-direction: column;
 
-    width: 240px;
-    max-width: 240px;
-    margin-left: 32px;
+	width: 240px;
+	max-width: 240px;
+	margin-left: 32px;
 }
 
 .Info h5 {
-    font-size: 24px;
+	font-size: 24px;
 }
 
 .Info a {
-    margin-top: 12px;
+	margin-top: 12px;
 
-    font-weight: 700;
+	font-weight: 700;
 }
 
 .Info p {
-    padding: 0;
+	padding: 0;
 
-    line-height: 19px;
+	line-height: 19px;
 }
 
 .Info p:first-of-type {
-    max-height: 57px;
-    padding-top: 12px;
+	max-height: 57px;
+	padding-top: 12px;
 
-    overflow-y: scroll;
+	overflow-y: scroll;
 }
 
 .Info p:last-of-type {
-    position: absolute;
-    bottom: 0;
+	position: absolute;
+	bottom: 0;
 }

@@ -18,9 +18,13 @@ header {
 
 	width: 100%;
 
-	padding: 11px 17px; 
+	padding: 11px 17px;
 
-	background: linear-gradient(92.24deg, rgba(0, 22, 55, 0.5) 0%, rgba(0, 63, 137, 0.265) 100%);
+	background: linear-gradient(
+		92.24deg,
+		rgba(0, 22, 55, 0.5) 0%,
+		rgba(0, 63, 137, 0.265) 100%
+	);
 	border-radius: var(--box-radius);
 }
 
@@ -38,8 +42,8 @@ header {
 	/* border: 1px solid #AF4CFF; */
 	box-shadow: var(--glow-pimary);
 	box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 }
 
 .TitleBar > div {

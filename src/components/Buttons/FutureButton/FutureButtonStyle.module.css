@@ -1,248 +1,245 @@
 .futureButton {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-    height: 32px;
-    padding-top: 4px;
-    padding-left: 25px;
-    padding-right: 25px;
+	height: 32px;
+	padding-top: 4px;
+	padding-left: 25px;
+	padding-right: 25px;
 
-    background: var(--background-accent-1-gradient);
+	background: var(--background-accent-1-gradient);
 
-    border-radius: var(--box-radius);
+	border-radius: var(--box-radius);
 
-    cursor: pointer;
+	cursor: pointer;
 
-    transition: opacity var(--animation-time-short) ease-in-out;
-    opacity: 0.6;
+	transition: opacity var(--animation-time-short) ease-in-out;
+	opacity: 0.6;
 }
-
-
 
 /* 
  * Border - we need to separate it into a psuedoelement to get the glow effect 
  * This didn't quite work out as I intended it to - fix later
  */
 .futureButton:after {
-    content: ' ';
-    width: 100%;
-    height: 100%;
+	content: ' ';
+	width: 100%;
+	height: 100%;
 
-    position: absolute;
-    top: 0;
-    left: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
 
-    border-radius: inherit;
-    border-style: solid;
-    border-top-width: 0;
-    border-bottom-width: 0;
-    border-left-width: 2px;
-    border-right-width: 2px;
-    border-color: var(--color-accent-1);
+	border-radius: inherit;
+	border-style: solid;
+	border-top-width: 0;
+	border-bottom-width: 0;
+	border-left-width: 2px;
+	border-right-width: 2px;
+	border-color: var(--color-accent-1);
 
-    transition: border-color 0.3s ease-in-out;
+	transition: border-color 0.3s ease-in-out;
 
-    /* box-shadow: 0px 0px 7px -px rgba(0, 178, 255, 0.7); */
+	/* box-shadow: 0px 0px 7px -px rgba(0, 178, 255, 0.7); */
 }
 
 .content {
-    margin-left: 8px;
-    margin-right: 8px;
+	margin-left: 8px;
+	margin-right: 8px;
 
-    text-align: center;
+	text-align: center;
 
-    font-size: var(--font-size-default);
-    font-weight: 700;
+	font-size: var(--font-size-default);
+	font-weight: 700;
 
-    color: var(--color-accent-1);
-    text-shadow: var(--glow-text-blue);
-    transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+	color: var(--color-accent-1);
+	text-shadow: var(--glow-text-blue);
+	transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
 }
 
 .iconImage {
-    height: 13px;
-    width: 13px;
+	height: 13px;
+	width: 13px;
 
-    background-image: url('./arrow.svg');
-    background-size: 13px 13px;
-    background-repeat: no-repeat;
-    background-position: center;
-    border-radius: 50%;
+	background-image: url('./arrow.svg');
+	background-size: 13px 13px;
+	background-repeat: no-repeat;
+	background-position: center;
+	border-radius: 50%;
 
-    transition: filter 0.3s ease-in-out;
+	transition: filter 0.3s ease-in-out;
 }
 
 .iconImage:not(:first-of-type) {
-    transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 @keyframes expand {
-    0% {
-        opacity: 1;
-        left: 50%;
-        height: 0;
-        width: 0;
-        border-radius: 0;
-    }
-    25% {
-        /* opacity: 1; */
-        box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
-        /* top: 50%; */
-        /* left: calc(50% - 2px); */
-        
-        /* width: 1px;  */
-        /* height: 0; */
-    }
-    70% {
-        /* opacity: 1; */
-        /* top: 0; */
-        /* left: calc(50% - 2px); */
+	0% {
+		opacity: 1;
+		left: 50%;
+		height: 0;
+		width: 0;
+		border-radius: 0;
+	}
+	25% {
+		/* opacity: 1; */
+		box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
+		/* top: 50%; */
+		/* left: calc(50% - 2px); */
 
-        /* width: 1px;  */
-        /* height: 100%; */
-    }
-    100% {
-        opacity: 1;
-        box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
-        top: 0;
-        left: 0;
+		/* width: 1px;  */
+		/* height: 0; */
+	}
+	70% {
+		/* opacity: 1; */
+		/* top: 0; */
+		/* left: calc(50% - 2px); */
 
-        width: 100%;
-        height: 100%;
-        border-radius: 18px;
-    }
+		/* width: 1px;  */
+		/* height: 100%; */
+	}
+	100% {
+		opacity: 1;
+		box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
+		top: 0;
+		left: 0;
+
+		width: 100%;
+		height: 100%;
+		border-radius: 18px;
+	}
 }
 
 @keyframes shrink {
-    100% {
-        opacity: 0;
-        top: 50%; 
-        left: 50%;
-        height: 0;
-        width: 0;
-        border-radius: 0;
-    }
-    70% {
-        opacity: 1;
-        top: 50%;
-        left: calc(50% - 2px);
-        
-        width: 2px; 
-        height: 0;
-    }
-    25% {
-        opacity: 1;
-        top: 0;
-        left: calc(50% - 2px);
+	100% {
+		opacity: 0;
+		top: 50%;
+		left: 50%;
+		height: 0;
+		width: 0;
+		border-radius: 0;
+	}
+	70% {
+		opacity: 1;
+		top: 50%;
+		left: calc(50% - 2px);
 
-        width: 2px; 
-        height: 100%;
+		width: 2px;
+		height: 0;
+	}
+	25% {
+		opacity: 1;
+		top: 0;
+		left: calc(50% - 2px);
 
-        box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
-    }
-    0% {
-        opacity: 1;
-        top: 0;
-        left: 0;
+		width: 2px;
+		height: 100%;
 
-        width: 100%;
-        height: 100%;
-        border-radius: 18px;
-        box-shadow: 0px 0px 5px 5px rgba(0, 209, 255, 0.1);
-    }
+		box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
+	}
+	0% {
+		opacity: 1;
+		top: 0;
+		left: 0;
+
+		width: 100%;
+		height: 100%;
+		border-radius: 18px;
+		box-shadow: 0px 0px 5px 5px rgba(0, 209, 255, 0.1);
+	}
 }
 
 .wash {
-    position: absolute;
-    top: 50%;
-    left: 50%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
 
-    height: 0;
-    width: 0;
+	height: 0;
+	width: 0;
 
-    background: rgba(0, 209, 255, 0.1);
-    box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
+	background: rgba(0, 209, 255, 0.1);
+	box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
 
-    transition: background 0.3s ease-in-out;
+	transition: background 0.3s ease-in-out;
 
-    opacity: 0;
+	opacity: 0;
 }
 
 /* SELECTED STYLING */
 
 .selected:after {
-    border-color: white;
+	border-color: white;
 }
 
 .selected .wash {
-    transition: box-shadow 0.3s ease-in-out;
-    background: rgba(255, 255, 255, 0);
-    box-shadow: 0px 0px 20px 10px rgba(255, 255, 255, 0.3);
+	transition: box-shadow 0.3s ease-in-out;
+	background: rgba(255, 255, 255, 0);
+	box-shadow: 0px 0px 20px 10px rgba(255, 255, 255, 0.3);
 
-    opacity: 1;
-    top: 50%;
-    left: 8px;
+	opacity: 1;
+	top: 50%;
+	left: 8px;
 
-    width: calc(100% - 16px);
-    height: 0;
-    border-radius: 18px;
-    
-    animation: expand;
-    animation-play-state: paused !important;
+	width: calc(100% - 16px);
+	height: 0;
+	border-radius: 18px;
+
+	animation: expand;
+	animation-play-state: paused !important;
 }
 
 .selected {
-    background: rgba(0, 209, 255, 0.05);
-    
+	background: rgba(0, 209, 255, 0.05);
 }
 
 .selected .iconImage {
-    filter: grayscale(100%) brightness(1000%);
+	filter: grayscale(100%) brightness(1000%);
 }
 
 .selected .content {
-    color: white;
-    text-shadow: 0px 0px 7px 0px rgba(255, 255, 255, 0);
+	color: white;
+	text-shadow: 0px 0px 7px 0px rgba(255, 255, 255, 0);
 }
 
 /* HOVER STYLING */
 
 .wash.hovered {
-    animation: shrink 0.5s;
-    animation-timing-function: ease-in-out;
+	animation: shrink 0.5s;
+	animation-timing-function: ease-in-out;
 }
 
 .futureButton:hover:not(.selected) .wash {
-    animation: expand 0.2s forwards;
-    animation-timing-function: ease-in-out;
+	animation: expand 0.2s forwards;
+	animation-timing-function: ease-in-out;
 }
 
 /* Glow button */
 
 .glow {
-    background: rgba(0, 209, 255, 0.1);
-    opacity: 1;
+	background: rgba(0, 209, 255, 0.1);
+	opacity: 1;
 }
 
 .glow:after {
-    border-color: white;
+	border-color: white;
 }
 
 .glow:before {
-    content: ' ';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 0;
+	content: ' ';
+	position: absolute;
+	top: 50%;
+	left: 0;
+	width: 100%;
+	height: 0;
 
-    box-shadow: 0px 0px 40px 15px rgba(0, 178, 255, 0.5);
-    z-index: -1;
+	box-shadow: 0px 0px 40px 15px rgba(0, 178, 255, 0.5);
+	z-index: -1;
 }
 
 .glow .content {
-    color: white;
-    text-shadow: var(--glow-text-white);
+	color: white;
+	text-shadow: var(--glow-text-white);
 }

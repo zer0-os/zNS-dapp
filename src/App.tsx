@@ -1,6 +1,6 @@
 //- Global Stylesheets
-import 'styles/reset.css'
-import 'styles/main.css'
+import 'styles/reset.css';
+import 'styles/main.css';
 
 //- React Imports
 import { HashRouter, Route } from 'react-router-dom';
@@ -14,54 +14,52 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import './lib/ipfs';
 import { DomainCacheProvider } from 'lib/useDomainCache';
 import NotificationProvider from 'lib/providers/NotificationProvider';
-import MintProvider from 'lib/providers/MintProvider'
+import MintProvider from 'lib/providers/MintProvider';
 
 //- Page Imports
-import { ZNS } from 'pages'
+import { ZNS } from 'pages';
 
 // Apollo client for making subgraph queries
 const client = new ApolloClient({
-  uri: process.env.REACT_APP_SUBGRAPH_URL_42,
-  cache: new InMemoryCache(),
+	uri: process.env.REACT_APP_SUBGRAPH_URL_42,
+	cache: new InMemoryCache(),
 });
 
 // Web3 library to query
 function getLibrary(provider: any): Web3Provider {
-  const library = new Web3Provider(provider);
-  library.pollingInterval = 12000;
-  return library;
+	const library = new Web3Provider(provider);
+	library.pollingInterval = 12000;
+	return library;
 }
 
-
 function App() {
-
-  return (
-    <HashRouter>
-      <Route
-        render={({ location, match }) => (
-          <>
-            <ZNS domain={location.pathname} />
-          </>
-        )}
-      />
-    </HashRouter>
-  );
+	return (
+		<HashRouter>
+			<Route
+				render={({ location, match }) => (
+					<>
+						<ZNS domain={location.pathname} />
+					</>
+				)}
+			/>
+		</HashRouter>
+	);
 }
 
 function wrappedApp() {
-  return (
-    <ApolloProvider client={client}>
-      <NotificationProvider>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <MintProvider>
-            <DomainCacheProvider>
-              <App />
-            </DomainCacheProvider>
-          </MintProvider>
-        </Web3ReactProvider>
-      </NotificationProvider>
-    </ApolloProvider>
-  );
+	return (
+		<ApolloProvider client={client}>
+			<NotificationProvider>
+				<Web3ReactProvider getLibrary={getLibrary}>
+					<MintProvider>
+						<DomainCacheProvider>
+							<App />
+						</DomainCacheProvider>
+					</MintProvider>
+				</Web3ReactProvider>
+			</NotificationProvider>
+		</ApolloProvider>
+	);
 }
 
 export default wrappedApp;

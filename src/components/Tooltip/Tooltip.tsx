@@ -1,52 +1,49 @@
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
 
 //- Style Imports
-import styles from './Tooltip.module.css'
+import styles from './Tooltip.module.css';
 
 type TooltipProps = {
-    children: React.ReactNode;
-    content: React.ReactNode;
-}
+	children: React.ReactNode;
+	content: React.ReactNode;
+};
 
 const Tooltip: React.FC<TooltipProps> = ({ children, content }) => {
+	// TODO: Make this way more generic
 
-    // TODO: Make this way more generic
+	const [open, setOpen] = useState(false);
+	// const contentRef = useRef()
 
-    const [ open, setOpen ] = useState(false)
-    // const contentRef = useRef()
+	const toggle = () => {
+		setOpen(!open);
+	};
 
-    const toggle = () => {
-        setOpen(!open)
-    }
+	// TODO: Reimplement window clicks
 
-    // TODO: Reimplement window clicks
+	// useEffect(() => {
+	//     if(open) {
+	//         window.addEventListener('click', windowClick)
+	//     } else {
+	//         window.removeEventListener('click', windowClick)
+	//     }
+	// }, [ open] )
 
-    // useEffect(() => {
-    //     if(open) {
-    //         window.addEventListener('click', windowClick)
-    //     } else {
-    //         window.removeEventListener('click', windowClick)
-    //     }
-    // }, [ open] )
+	// const windowClick = (e: any) => {
+	// const contains = !e.target.contains(contentRef.current)
+	// if(!contains) setOpen(false)
+	// }
 
-    // const windowClick = (e: any) => {
-        // const contains = !e.target.contains(contentRef.current)
-        // if(!contains) setOpen(false)
-    // }
+	return (
+		<div className={styles.Tooltip}>
+			<div onClick={() => setOpen(!open)}>{children}</div>
+			<div
+				className={`${styles.Content} ${open ? styles.Open : styles.Closed}`}
+			>
+				{content}
+			</div>
+		</div>
+	);
+};
 
-    return (
-        <div 
-            className={styles.Tooltip}
-        >
-            <div onClick={() => setOpen(!open)}>
-            {children}
-            </div>
-            <div className={`${styles.Content} ${open ? styles.Open : styles.Closed}`}>
-                {content}
-            </div>
-        </div>
-    )
-}
-
-export default Tooltip
+export default Tooltip;

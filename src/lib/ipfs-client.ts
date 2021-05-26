@@ -1,5 +1,5 @@
-const { create } = require("ipfs-http-client");
+const { create } = require('ipfs-http-client');
 
-const ipfsClient = create("https://ipfs.infura.io:5001");
+const ipfsClient = create('https://ipfs.infura.io:5001');
 
 export default ipfsClient;

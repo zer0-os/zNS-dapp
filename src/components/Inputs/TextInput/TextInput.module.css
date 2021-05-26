@@ -1,19 +1,19 @@
 .TextInput {
-    width: 100%;
-    padding: 16.5px 24px 12.5px 24px;
+	width: 100%;
+	padding: 16.5px 24px 12.5px 24px;
 
-    border-radius: 24px;
+	border-radius: 24px;
 
-    color: white;
+	color: white;
 
-    background: var(--background-field-bg);
-    transition: border var(--animation-time-medium) ease-in-out;
+	background: var(--background-field-bg);
+	transition: border var(--animation-time-medium) ease-in-out;
 }
 
 .Error {
-    border: 1px solid var(--color-invalid);
+	border: 1px solid var(--color-invalid);
 }
 
 .TextInput::placeholder {
-    color: #dedede;
+	color: #dedede;
 }

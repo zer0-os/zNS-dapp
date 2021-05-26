@@ -1,188 +1,188 @@
 .NFTView {
-    width: 100%;
+	width: 100%;
 }
 
 .NFTView > div {
-    width: 100%;
+	width: 100%;
 }
 
 .NFT {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 
-    padding: 60px 57.5px;
+	padding: 60px 57.5px;
 }
 
 .NFT > div {
-    flex: 1;
+	flex: 1;
 }
 
 .Image {
-    transition: transform var(--animation-time-medium) ease-in-out;
-    cursor: pointer;
+	transition: transform var(--animation-time-medium) ease-in-out;
+	cursor: pointer;
 }
 
 .Image:hover {
-    transform: scale(1.03);
+	transform: scale(1.03);
 }
 
 .Image img {
-    object-fit: cover;
+	object-fit: cover;
 }
 
 .Info {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 .Info h1 {
-    font-size: 36px;
-    margin-bottom: 8px;
+	font-size: 36px;
+	margin-bottom: 8px;
 }
 
 .Info h1::after {
-    content: 'holder';
-    opacity: 0;
+	content: 'holder';
+	opacity: 0;
 }
 
 /* ZNA */
 .Info span:first-of-type {
-    font-weight: 700;
+	font-weight: 700;
 }
 
 .Members {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 
-    margin-top: 32px;
+	margin-top: 32px;
 }
 
 .Price {
-    margin: 0 auto;
+	margin: 0 auto;
 }
 
 .Crypto {
-    font-size: 40px
+	font-size: 40px;
 }
 
 .Fiat {
-    font-size: 20px;
-    color: var(--color-primary-lighter-3);
+	font-size: 20px;
+	color: var(--color-primary-lighter-3);
 }
 
 .Buttons {
-    display: flex;
-    margin: 0 auto;
+	display: flex;
+	margin: 0 auto;
 }
 
 .Buttons > *:not(:first-child) {
-    margin-left: 24px;
+	margin-left: 24px;
 }
 
 .Horizontal {
-    display: flex;
+	display: flex;
 }
 
 .Horizontal > div {
-    width: 50%;
+	width: 50%;
 }
 
 .Horizontal > div:not(:first-child) {
-    margin-left: 20.5px;
+	margin-left: 20.5px;
 }
 
 .Vertical > div:not(:first-child) {
-    margin-top: 20.5px
+	margin-top: 20.5px;
 }
 
 .Box {
-    /* height: 95.5px; */
-    padding: 20px;
+	/* height: 95.5px; */
+	padding: 20px;
 }
 
 .Box h4 {
-    margin-bottom: 8px;
-    color: var(--color-primary-lighter-3);
-    font-weight: 700;
-    text-transform: uppercase;
+	margin-bottom: 8px;
+	color: var(--color-primary-lighter-3);
+	font-weight: 700;
+	text-transform: uppercase;
 }
 
 .Box span {
-    width: 100%;
-    text-overflow: ellipsis;
-    font-size: 24px;
-    font-weight: 700;
+	width: 100%;
+	text-overflow: ellipsis;
+	font-size: 24px;
+	font-weight: 700;
 }
 
 .Story {
-    display: flex;
-    flex-direction: column;
-    height: 224.5px;
-    padding-bottom: 0;
+	display: flex;
+	flex-direction: column;
+	height: 224.5px;
+	padding-bottom: 0;
 }
 
 .Story p {
-    /* height: 100%; */
-    line-height: 20px;
-    overflow: scroll;
-    padding-right: 12px;
-    padding-bottom: 0;
+	/* height: 100%; */
+	line-height: 20px;
+	overflow: scroll;
+	padding-right: 12px;
+	padding-bottom: 0;
 }
 
 .Story p::-webkit-scrollbar-corner {
-    background: rgba(0,0,0,0);
-    height: 0;
-    width: 0;
+	background: rgba(0, 0, 0, 0);
+	height: 0;
+	width: 0;
 }
 
 .Story p::-webkit-scrollbar-track {
-    background-color: none;
+	background-color: none;
 }
-  
+
 .Story p::-webkit-scrollbar {
-    width: 6px;
-    background-color: none;
+	width: 6px;
+	background-color: none;
 }
-  
+
 .Story p::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: rgba(60,161,255, 0.2);
+	border-radius: 10px;
+	background-color: rgba(60, 161, 255, 0.2);
 }
 
 .Contract {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+	position: relative;
+	display: flex;
+	flex-direction: column;
 }
 
 .Copy {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    height: 32px;
-    width: 32px;
-    transform: translateY(-50%);
+	position: absolute;
+	top: 50%;
+	right: 0;
+	height: 32px;
+	width: 32px;
+	transform: translateY(-50%);
 
-    cursor: pointer;
+	cursor: pointer;
 
-    transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
 .Copy:hover {
-    transform: translateY(-50%) scale(1.1);
+	transform: translateY(-50%) scale(1.1);
 }
 
 .Contract p {
-    position: relative;
-    text-overflow: clip;
-    font-size: 24px;
-    font-weight: 700;
-    word-break: break-all;
-    padding: 0;
-    padding-right: 38px;
+	position: relative;
+	text-overflow: clip;
+	font-size: 24px;
+	font-weight: 700;
+	word-break: break-all;
+	padding: 0;
+	padding-right: 38px;
 }

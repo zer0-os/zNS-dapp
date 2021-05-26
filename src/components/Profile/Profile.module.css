@@ -4,7 +4,7 @@
 	height: 100%;
 	overflow-y: scroll;
 	padding: 54px;
-	color: #4D4D4D;
+	color: #4d4d4d;
 	background: var(--background-blue-deck);
 	filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.5));
 	opacity: 0.9;
@@ -54,7 +54,7 @@
 
 	filter: drop-shadow(0px 0px 40px rgba(255, 255, 255, 0.5));
 
-  	object-fit: cover;
+	object-fit: cover;
 }
 
 .endpoint {

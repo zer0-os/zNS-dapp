@@ -3,7 +3,7 @@
 	width: 56px;
 
 	display: flex;
-	flex-direction: column;	
+	flex-direction: column;
 	justify-content: center;
 
 	position: fixed;
@@ -17,7 +17,7 @@
 	border-radius: 27px;
 	padding: 7px 5px;
 
-	background-color: #4E008466;
+	background-color: #4e008466;
 }
 
 .Icons {
@@ -33,7 +33,7 @@
 	width: 44px;
 
 	border-radius: 50%;
-	background-color:#00D1FF1A;
+	background-color: #00d1ff1a;
 
 	cursor: pointer;
 
@@ -49,7 +49,8 @@
 	transform: scale(1.2);
 }
 
-.Icons li::after, .Icons li::before {
+.Icons li::after,
+.Icons li::before {
 	z-index: -5;
 }
 

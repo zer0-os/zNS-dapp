@@ -9,55 +9,63 @@
 			paddingBottom: 120 */
 
 .Overlay {
-    --speed: var(--animation-time-short);
+	--speed: var(--animation-time-short);
 
-    display: flex;
-    justify-content: center;
+	display: flex;
+	justify-content: center;
 
-    position: absolute;
-    top: 0;
-    left: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
 
-    width: 100%;
-    min-height: 100vh;
-    height: 100%;
-    overflow-y: scroll;
+	width: 100%;
+	min-height: 100vh;
+	height: 100%;
+	overflow-y: scroll;
 
-    z-index: 10000;
-    opacity: 0;
+	z-index: 10000;
+	opacity: 0;
 
-    background: rgba(0,0,0,0.3);
-    transition: backdrop-filter 0.2s;
+	background: rgba(0, 0, 0, 0.3);
+	transition: backdrop-filter 0.2s;
 }
 
 .Centered {
-    align-items: center;
+	align-items: center;
 }
 
 .Overlay > div {
-    padding-top: 64px;
-    padding-bottom: 64px;
+	padding-top: 64px;
+	padding-bottom: 64px;
 }
 
 .Open {
-    animation: open var(--speed) ease-in-out;
-    opacity: 1;
-    backdrop-filter: blur(30px) opacity(1);
+	animation: open var(--speed) ease-in-out;
+	opacity: 1;
+	backdrop-filter: blur(30px) opacity(1);
 }
 
 .Closed {
-    animation: close var(--animation-time-short) ease-in-out;
-    opacity: 0;
+	animation: close var(--animation-time-short) ease-in-out;
+	opacity: 0;
 
-    backdrop-filter: blur(30px) opacity(0);
+	backdrop-filter: blur(30px) opacity(0);
 }
 
 @keyframes open {
-    0% { opacity: 0 }
-    100% { opacity: 1 }
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 @keyframes close {
-    0% { opacity: 1 }
-    100% { opacity: 0 }
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
 }

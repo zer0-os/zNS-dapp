@@ -1,19 +1,18 @@
-import React from 'react'
+import React from 'react';
 
-import CopyInputStyle from './CopyInput.module.css'
+import CopyInputStyle from './CopyInput.module.css';
 
-import ethIcon from './assets/eth.svg'
+import ethIcon from './assets/eth.svg';
 
 const CopyInput = (props) => {
-
 	return (
 		<div style={props.style} className={CopyInputStyle.wallet}>
 			<img src={ethIcon} />
 			<span>Ethereum Address</span>
-			<input type='text' value={props.value}></input>
+			<input type="text" value={props.value}></input>
 			<button></button>
 		</div>
-	)
-}
+	);
+};
 
-export default CopyInput
+export default CopyInput;

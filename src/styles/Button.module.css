@@ -8,7 +8,7 @@
 	font-size: 16px;
 	color: white;
 
-	background-color: rgba(0,0,0,0);
+	background-color: rgba(0, 0, 0, 0);
 	box-shadow: 4px 6px 17px 0px rgba(255, 0, 0, 0.19);
 
 	/* Border */
@@ -36,16 +36,20 @@
 .trade {
 	color: white;
 	padding: 17px 20px 13px 22px;
-	background: linear-gradient(299deg, rgba(255, 0, 13, 0.26) 0%, rgba(244, 93, 100, 0.47) 100%);
-  	border-radius: 12px;
-  	min-width: 121px;
-  	border: 2px solid #f45d64;
+	background: linear-gradient(
+		299deg,
+		rgba(255, 0, 13, 0.26) 0%,
+		rgba(244, 93, 100, 0.47) 100%
+	);
+	border-radius: 12px;
+	min-width: 121px;
+	border: 2px solid #f45d64;
 }
 
 /* Table Filter Button */
 .tableFilter {
 	color: #a3a3a3;
-	background-color: rgba(0,0,0,0);
+	background-color: rgba(0, 0, 0, 0);
 	padding: 12px 23px 10px 23px;
 	border-radius: 24px;
 }
@@ -79,7 +83,11 @@
 	width: 28px;
 	height: 28px;
 	border-radius: 14px;
-	background: linear-gradient(282deg, rgba(244, 93, 100, 0.5) 0%, rgba(244, 93, 100, 0.26) 100%);
+	background: linear-gradient(
+		282deg,
+		rgba(244, 93, 100, 0.5) 0%,
+		rgba(244, 93, 100, 0.26) 100%
+	);
 }
 
 /* Accept / Decline Offer */
@@ -89,7 +97,11 @@
 	font-size: 18px;
 
 	color: white;
-	background: linear-gradient(94.23deg, rgba(0, 102, 197, 0.7) 0%, rgba(106, 183, 255, 0.7) 100%);
+	background: linear-gradient(
+		94.23deg,
+		rgba(0, 102, 197, 0.7) 0%,
+		rgba(106, 183, 255, 0.7) 100%
+	);
 	border-radius: 46px;
 }
 
@@ -99,7 +111,10 @@
 	font-size: 18px;
 
 	color: white;
-	background: radial-gradient(50% 50% at 50% 50%, rgba(107, 59, 209, 0) 0%, rgba(105, 3, 141, 0.33) 100%);
+	background: radial-gradient(
+		50% 50% at 50% 50%,
+		rgba(107, 59, 209, 0) 0%,
+		rgba(105, 3, 141, 0.33) 100%
+	);
 	border-radius: 46px;
 }
-

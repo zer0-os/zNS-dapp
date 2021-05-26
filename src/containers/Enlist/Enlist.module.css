@@ -45,13 +45,13 @@
 	margin-top: 48px;
 }
 
-.Section > div > div:not(:first-of-type) { 
+.Section > div > div:not(:first-of-type) {
 	margin-left: 46px;
 }
 
 .NFT {
-    height: 224px;
-    width: 224px;
+	height: 224px;
+	width: 224px;
 	min-width: 224px;
 
 	overflow: hidden;
