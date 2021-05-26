@@ -451,7 +451,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
         )}
 
         {!data.isNothing() && (isNftView || subdomains.length === 0) && (
-          <NFTView domain={domain} />
+          <NFTView 
+            domain={domain}
+            onEnlist={enlistCurrentDomain} 
+          />
         )}
       </div>
     </>

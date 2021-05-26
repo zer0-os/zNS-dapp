@@ -7,11 +7,10 @@ import { useWeb3React } from "@web3-react/core"; // Wallet data
 import { Web3Provider } from "@ethersproject/providers/lib/web3-provider"; // Wallet data
 
 //- Component Imports
-import { ArrowLink, FutureButton, Member, Image, Overlay } from "components";
+import { FutureButton, Member, Image, Overlay } from "components";
 
 //- Library Imports
-import IPFSClient from "lib/ipfs-client";
-import { randomName, randomImage, randomNumber } from "lib/Random";
+import { randomName, randomImage } from "lib/Random";
 
 //- Style Imports
 import styles from "./NFTView.module.css";
@@ -22,9 +21,10 @@ import copyIcon from "./assets/copy-icon.svg";
 
 type NFTViewProps = {
   domain: string;
+  onEnlist: () => void;
 };
 
-const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
+const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
   // TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
 
   //- Notes:
@@ -35,15 +35,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
   const [image, setImage] = useState<string>(""); // Image from metadata url
   const [name, setName] = useState<string>(""); // Name from metadata url
   const [description, setDescription] = useState<string>(""); // Description from metadata url
-  const [isLoading, setIsLoading] = useState<boolean>(false); // Is the data still loading?
   const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
   const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
 
   //- Web3 Domain Data
   const { useDomain } = useDomainCache();
-  const domainContext = useDomain(
-    domain.charAt(0) === "/" ? domain.substring(1) : domain
-  );
+  const domainContext = useDomain(domain.substring(1));
   const { data } = domainContext;
 
   //- Web3 Wallet Data
@@ -65,10 +62,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
         setImage(nftData.image);
         setName(nftData.title);
         setDescription(nftData.description);
-        setIsLoading(false);
       });
-    } else {
-      setIsLoading(true);
     }
   }, [data]);
 
@@ -143,7 +137,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
             </FutureButton>
             <FutureButton
               glow={!isOwnedByYou}
-              onClick={() => {}}
+              onClick={onEnlist}
               style={{ height: 36, borderRadius: 18 }}
             >
               ENLIST
@@ -182,6 +176,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
                 onClick={copyContractToClipboard}
                 className={styles.Copy}
                 src={copyIcon}
+                alt={'Copy Contract Icon'}
               />
               {!data.isNothing() && data.value.id ? data.value.id : ""}
             </p>
