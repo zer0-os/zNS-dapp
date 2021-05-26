@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef } from 'react';
 
 //- Local Imports
 import { TokenInformationType } from '../types';
@@ -8,13 +8,7 @@ import { TokenInformationType } from '../types';
 import styles from '../MintNewNFT.module.css';
 
 //- Component Imports
-import {
-	StepBar,
-	ToggleButton,
-	ToggleSection,
-	TextInput,
-	FutureButton,
-} from 'components';
+import { ToggleButton, TextInput, FutureButton } from 'components';
 
 type TokenInformationProps = {
 	token: TokenInformationType | null;
@@ -36,7 +30,6 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const [name, setName] = useState(token ? token.name : '');
 	const [story, setStory] = useState(token ? token.story : '');
 	const [image, setImage] = useState(token ? token.image : Buffer.from(''));
-	const [ticker, setTicker] = useState(token ? token.ticker : '');
 	const [domain, setDomain] = useState(token ? token.domain : '');
 	const [locked, setLocked] = useState(token ? token.locked : false);
 
@@ -93,7 +86,6 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 			image: image,
 			domain: domain,
 			locked: locked,
-			ticker: ticker,
 		};
 		onContinue(data);
 	};
@@ -114,7 +106,9 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 						{!previewImage && (
 							<span className="glow-text-white">Choose an Image</span>
 						)}
-						{previewImage && <img src={previewImage as string} />}
+						{previewImage && (
+							<img alt="NFT Preview" src={previewImage as string} />
+						)}
 					</div>
 					<input
 						style={{ display: 'none' }}

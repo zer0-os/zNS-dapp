@@ -4,7 +4,6 @@ export type TokenInformationType = {
 	name: string;
 	domain: string;
 	locked: boolean;
-	ticker: string;
 	story: string;
 };
 

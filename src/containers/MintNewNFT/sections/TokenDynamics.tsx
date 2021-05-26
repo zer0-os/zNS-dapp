@@ -1,8 +1,5 @@
 //- React Imports
-import React, { useState, useRef, useContext } from 'react';
-
-//- Style Imports
-import styles from '../MintNewNFT.module.css';
+import React, { useState } from 'react';
 
 //- Type Imports
 import { TokenDynamicType } from '../types';

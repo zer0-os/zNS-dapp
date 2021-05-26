@@ -1,11 +1,5 @@
 //- React Imports
-import React, {
-	useState,
-	useEffect,
-	useRef,
-	useContext,
-	createContext,
-} from 'react';
+import React, { useState } from 'react';
 
 //- Context Imports
 import useMint from 'lib/hooks/useMint';
@@ -13,7 +7,6 @@ import useMint from 'lib/hooks/useMint';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { useDomainCache } from 'lib/useDomainCache';
 
 //- Library Imports
 import { randomName } from 'lib/Random';
@@ -23,11 +16,10 @@ import {
 	TokenInformationType,
 	TokenDynamicType,
 	TokenStakeType,
-	TokenType,
 } from './types';
 
 //- Component Imports
-import { StepBar, ToggleSection, TextInput, FutureButton } from 'components';
+import { StepBar } from 'components';
 import TokenInformation from './sections/TokenInformation';
 import TokenDynamics from './sections/TokenDynamics';
 import Staking from './sections/Staking';
@@ -48,16 +40,8 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 }) => {
 	// NOTE: The only domain data MintNewNFT needs is the domain ID
 	// Token Data
-	const [previewImage, setPreviewImage] = useState('');
-	const [image, setImage] = useState(Buffer.from(''));
 	const [name, setName] = useState('');
 	const [domain, setDomain] = useState('');
-	const [locked, setLocked] = useState(false);
-	const [story, setStory] = useState('');
-	const [dynamic, setDynamic] = useState(false);
-	const [ticker, setTicker] = useState('');
-	const [stake, setStake] = useState(0);
-	const [currency, setCurrency] = useState('');
 
 	// Token Information Page
 	const [
@@ -118,10 +102,10 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				parent: domainId,
 				owner: account,
 				name: tokenInformation.name,
-				ticker: tokenInformation.ticker,
 				story: tokenInformation.story,
 				image: tokenInformation.image,
 				domain: tokenInformation.domain,
+				ticker: tokenDynamics.ticker,
 				dynamic: tokenDynamics.dynamic,
 				locked: tokenInformation.locked,
 			});
@@ -152,6 +136,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				style={{ marginTop: 24 }}
 				step={step}
 				steps={['Details', 'Token Dynamics', 'Staking']}
+				onNavigate={(i: number) => toStep(i)}
 			/>
 			{/* TODO: Make ToggleSections unclickable if their open status depends on parent state */}
 

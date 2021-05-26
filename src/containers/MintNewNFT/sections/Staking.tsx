@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState } from 'react';
 
 //- Type Imports
 import { TokenStakeType } from '../types';
