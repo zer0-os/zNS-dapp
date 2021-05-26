@@ -54,6 +54,8 @@
     width: 224px;
 	min-width: 224px;
 
+	overflow: hidden;
+
 	cursor: pointer;
 	transition: transform var(--animation-time-medium) ease-in-out;
 }
