@@ -18,7 +18,6 @@ const Overlay: React.FC<OverlayProps> = ({
 	children,
 	centered,
 }) => {
-	const [currentChild, setCurrentChild] = useState<React.ReactNode>(null);
 	const [inDOM, setInDOM] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -26,8 +25,6 @@ const Overlay: React.FC<OverlayProps> = ({
 			setInDOM(true);
 			if (document.body.className.indexOf('no-scroll') === -1)
 				document.body.className += 'no-scroll';
-		} else {
-			// setTimeout(() => setInDOM(false), 1000)
 		}
 	}, [open]);
 

@@ -1,8 +1,5 @@
 //- React imports
-import React, { useState, useEffect } from 'react';
-
-//- Web Imports
-import { useDomainCache } from 'lib/useDomainCache';
+import React from 'react';
 
 //- Style Imports
 import CopyInput from '../CopyInput/CopyInput.js';
@@ -16,11 +13,6 @@ import { Shop } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
-
-//- Asset Imports
-import qr from './assets/qr.png';
-import eth from './assets/eth.svg';
-import dp from './assets/wilder.jpg';
 
 type ProfileProps = {
 	id: string;

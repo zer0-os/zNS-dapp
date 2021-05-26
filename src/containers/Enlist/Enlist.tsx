@@ -1,21 +1,13 @@
-import React, { useState, FC } from 'react';
+import React, { useState } from 'react';
 
 //- Style Imports
 import styles from './Enlist.module.css';
 
 //- Component Imports
-import {
-	StepBar,
-	ToggleSection,
-	TextInput,
-	FutureButton,
-	Image,
-} from 'components';
+import { TextInput, FutureButton, Image } from 'components';
 
 //- Library Imports
 import { randomName } from 'lib/Random';
-
-const wildToUsd = 0.5; // Just a template for now
 
 type EnlistProps = {
 	domainId: string;
@@ -92,18 +84,14 @@ const Enlist: React.FC<EnlistProps> = ({
 							text={bidUsd.toString()}
 							error={errors.includes('bid')}
 							onChange={(text: string) =>
-								setBidUsd(text == '' ? 0 : parseFloat(text))
+								setBidUsd(text === '' ? 0 : parseFloat(text))
 							}
 						/>
 						<span className={styles.Bid}>
 							{Number(bidUsd.toFixed(2)).toLocaleString()} WILD
 						</span>
 					</div>
-					<div
-						className={`${styles.NFT} border-rounded`}
-						// Template NFT for now
-						// style={{ backgroundImage: `url(${image})` }}
-					>
+					<div className={`${styles.NFT} border-rounded`}>
 						<Image src={image} />
 					</div>
 				</div>

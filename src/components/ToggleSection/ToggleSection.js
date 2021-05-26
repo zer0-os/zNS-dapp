@@ -16,7 +16,7 @@ const ToggleSection = (props) => {
 	return (
 		<div style={props.style} className={styles.ToggleSection}>
 			<div className={styles.Header}>
-				<img src={arrow} style={rotateCss} />
+				<img alt="toggle arrow" src={arrow} style={rotateCss} />
 				<span className={`no-select`}>{props.label}</span>
 			</div>
 			<div

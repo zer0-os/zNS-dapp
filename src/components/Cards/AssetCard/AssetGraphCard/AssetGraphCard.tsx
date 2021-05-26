@@ -20,7 +20,7 @@ const AssetGraphCard: React.FC<AssetGraphCardProps> = ({ title, style }) => {
 				<TextButton toggleable={true}>M</TextButton>
 				<TextButton toggleable={true}>Y</TextButton>
 			</div>
-			<img className={styles.graph} src={graph} />
+			<img alt="asset graph" className={styles.graph} src={graph} />
 		</AssetCard>
 	);
 };

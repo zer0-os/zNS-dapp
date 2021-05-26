@@ -6,7 +6,7 @@ import { TextButton, NFTCard } from 'components';
 
 import NFTService from 'services/nfts.js';
 
-const Shop = (props) => {
+const Shop: React.FC = () => {
 	const loggedInAs = 'Frank Wilder';
 	const [NFTs, setNFTs] = useState(NFTService.getOwnedBy(loggedInAs));
 	const [selected, setSelected] = useState('ownedBy');
@@ -68,6 +68,7 @@ const Shop = (props) => {
 						<li key={n.name}>
 							<NFTCard
 								name={n.name}
+								domain={n.domain}
 								imageUri={n.img}
 								price={100}
 								nftOwnerId={'Frank'}

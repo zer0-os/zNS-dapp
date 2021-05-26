@@ -13,16 +13,16 @@ const SideBar: React.FC = () => {
 			<div className={`${SideBarStyles.Navigator}  border-primary blur`}>
 				<ul className={SideBarStyles.Icons}>
 					<li>
-						<img src={trendingIcon} />
+						<img alt="trending icon" src={trendingIcon} />
 					</li>
 					<li className={SideBarStyles.Selected}>
-						<img src={discoverIcon} />
+						<img alt="discover icon" src={discoverIcon} />
 					</li>
 					<li>
-						<img src={lendingIcon} />
+						<img alt="lending icon" src={lendingIcon} />
 					</li>
 					<li>
-						<img src={governanceIcon} />
+						<img alt="governance icon" src={governanceIcon} />
 					</li>
 				</ul>
 			</div>

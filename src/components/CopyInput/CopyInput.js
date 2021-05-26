@@ -7,7 +7,7 @@ import ethIcon from './assets/eth.svg';
 const CopyInput = (props) => {
 	return (
 		<div style={props.style} className={CopyInputStyle.wallet}>
-			<img src={ethIcon} />
+			<img alt="ethereum icon" src={ethIcon} />
 			<span>Ethereum Address</span>
 			<input type="text" value={props.value}></input>
 			<button></button>

@@ -4,15 +4,13 @@ import React, { useState, useEffect } from 'react';
 //- Library Imports
 import useNotification from 'lib/hooks/useNotification';
 
-//- Component Imports
-import { Notification } from 'components';
-
 //- Style Imports
 import styles from './NotificationDrawer.module.css';
 
 const NotificationDrawer = () => {
 	// TODO: Need to animate notifications coming in and out
 	// TODO: Change to useMemo
+	// TODO: Change notifications over to a portal?
 
 	const [visibleNotifications, setVisibleNotifications] = useState<any>([]);
 
@@ -25,6 +23,7 @@ const NotificationDrawer = () => {
 
 	useEffect(() => {
 		setVisibleNotifications([...visibleNotifications, notifications]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [notifications]);
 
 	return (

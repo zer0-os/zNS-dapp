@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import styles from './NextDrop.module.css';
 
 import avatar from './assets/avatar.png';
-import wilder from './assets/wilder.jpg';
 
 const NextDrop = (props) => {
 	const calculateTimeLeft = () => {
@@ -21,7 +20,6 @@ const NextDrop = (props) => {
 	};
 
 	const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-	const [year] = useState(new Date().getFullYear());
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -34,7 +32,7 @@ const NextDrop = (props) => {
 			style={{ ...props.style }}
 			className={`${styles.nextDrop} border-primary border-rounded blur`}
 		>
-			<img src={avatar} />
+			<img alt="Artist Profile" src={avatar} />
 			<div>
 				<div>
 					<h5 className="glow-text-blue">

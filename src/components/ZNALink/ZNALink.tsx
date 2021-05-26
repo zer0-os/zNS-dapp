@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import styles from './ZNALink.module.css';
 
@@ -15,7 +15,7 @@ const ZNALink: React.FC<ZNAProps> = ({ domain }) => {
 				wilder
 			</Link>
 			{domain.split('.').map((part, i) => {
-				if (part === '/') return;
+				if (part === '/') return '';
 				return i === 0 ? (
 					<Link
 						key={i}

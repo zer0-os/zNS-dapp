@@ -64,6 +64,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 				setDescription(nftData.description);
 			});
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
 
 	return (

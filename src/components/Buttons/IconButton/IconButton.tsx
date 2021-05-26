@@ -32,7 +32,7 @@ const IconButton: React.FC<IconButtonProps> = ({
 				(toggleable && selected) || toggled ? styles.selected : ''
 			}`}
 		>
-			<img src={iconUri} />
+			<img alt="clickable icon" src={iconUri} />
 		</button>
 	);
 };

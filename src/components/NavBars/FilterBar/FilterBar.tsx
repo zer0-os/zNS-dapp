@@ -1,7 +1,6 @@
 //- React Imports
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import useScrollPosition from '@react-hook/window-scroll';
 
 //- Style Imports
 import styles from './FilterBar.module.css';
@@ -61,7 +60,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 		>
 			{/* TODO: Move Wilder icon out of this component */}
 			<div className={styles.Wilder}>
-				<img src={wilderIcon} onClick={home} />
+				<img alt="home icon" src={wilderIcon} onClick={home} />
 			</div>
 			{children}
 			<ul>

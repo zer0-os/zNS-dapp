@@ -1,6 +1,3 @@
-//- React Imports
-import { useState, useEffect } from 'react';
-
 //- Style Imports
 import styles from './Notification.module.css';
 

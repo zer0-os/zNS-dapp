@@ -6,22 +6,18 @@ import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import {
 	FutureButton,
 	IconButton,
-	TextButton,
 	SearchBar,
 	Image,
 	NFTCard,
 } from 'components';
 
 //- Library Imports
-import IPFSClient from 'lib/ipfs-client';
 import 'lib/react-table-config.d.ts';
 
 //- Style Imports
 import styles from './DomainTable.module.css';
 
 //- Asset Imports
-import TemplateAsset from './assets/wilder.jpg';
-import graph from './assets/graph.svg';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
@@ -108,6 +104,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			const domain = domains[i];
 			if (!domain.image && domain.metadata) {
 				count++;
+				// eslint-disable-next-line no-loop-func
 				fetch(domain.metadata).then(async (d: Response) => {
 					if (!d.ok) {
 						console.warn(`Unable to load metadata ${domain.name}`);
@@ -158,6 +155,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						lastSalePrice: 1000,
 						tradePrice: 1000,
 				  })),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[hasMetadataLoaded],
 	);
 
@@ -248,6 +246,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				),
 			},
 		],
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[mvpVersion, domains],
 	);
 

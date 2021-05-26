@@ -154,6 +154,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	useEffect(() => {
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected!' : 'Wallet disconnected!');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
 	//- Effects
@@ -185,6 +186,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 			}
 			setHasLoaded(true);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data, hasLoaded]);
 
 	useEffect(() => {

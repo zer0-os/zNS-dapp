@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState } from 'react';
+import React from 'react';
 
 //- Style Imports
 import styles from './NumberButton.module.css';
