@@ -12,7 +12,7 @@ const Image = (props: any) => {
     //TODO: Add Fade in
 
     return (
-        <div style={{position: 'relative', width: '100%', height: '100%'}}>
+        <div style={{position: 'relative', width: '100%' }}>
             <img {...props} className={`${props.className ? props.className : ''} ${styles.Image}`} style={{opacity: loaded ? 1 : 0, objectFit: 'cover', ...props.style}} onLoad={load} src={props.src} />
             { !loaded && <div {...props} className={styles.Loading}><div className={styles.Spinner}></div></div> }
         </div>

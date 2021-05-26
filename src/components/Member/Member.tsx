@@ -12,9 +12,10 @@ type MemberProps = {
     name: string;
     image: string;
     subtext?: string;
+    showZna?: boolean;
 }
 
-const Member: React.FC<MemberProps> = ({ id, name, image, subtext }) => {
+const Member: React.FC<MemberProps> = ({ id, name, image, subtext, showZna }) => {
 
     const [ overlay, setOverlay ] = useState(false)
 
@@ -38,8 +39,9 @@ const Member: React.FC<MemberProps> = ({ id, name, image, subtext }) => {
                     />
                 </div>
                 <div className={styles.Info}>
-                    <span onClick={openProfile}>{ name }</span><br/>
-                    { subtext && <span>{ subtext }</span> }
+                    <span onClick={openProfile}>{ name }</span>
+                    { subtext && <><br/><span>{ subtext }</span></> }
+                    { showZna && <><br/><a onClick={openProfile}>wilder.{ name.toLowerCase().split(' ').join('.') }</a></> }
                 </div>
             </div>
         </>

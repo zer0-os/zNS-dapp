@@ -108,6 +108,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
                   !data.isNothing() ? randomImage(data.value.owner.id) : ""
                 }
                 subtext={"Owner"}
+                showZna
               />
               <Member
                 id={!data.isNothing() ? data.value.minter.id : ""}
@@ -116,6 +117,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
                   !data.isNothing() ? randomImage(data.value.minter.id) : ""
                 }
                 subtext={"Creator"}
+                showZna
               />
             </div>
           </div>
