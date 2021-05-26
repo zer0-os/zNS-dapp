@@ -122,14 +122,26 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
     minter: "",
     image: "",
   });
-  const enlistCurrentDomain = () => {
+  const enlistCurrentDomain = async () => {
     if (data.isNothing()) return;
-    openEnlistOverlay(
-      data.value.id,
-      domain.substring(1),
-      data.value.minter.id,
-      data.value.image
-    );
+
+    const open = () => {
+      openEnlistOverlay(
+        data.value.id,
+        domain.substring(1),
+        data.value.minter.id,
+        data.value.image
+      )
+    }
+
+    if (!data.value.image) {
+      const response: Response = await fetch(data.value.metadata);
+      const body = await response.json()
+      data.value.image = body.image
+      open()
+    } else {
+      open()
+    }
   };
   const openEnlistOverlay = (
     domainId: string,
