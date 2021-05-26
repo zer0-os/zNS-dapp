@@ -6,9 +6,15 @@ type StepBarProps = {
 	step: number;
 	steps: string[];
 	style?: React.CSSProperties;
+	onNavigate?: (i: number) => void;
 };
 
-const StepBar: React.FC<StepBarProps> = ({ step, steps, style }) => {
+const StepBar: React.FC<StepBarProps> = ({
+	step,
+	steps,
+	style,
+	onNavigate,
+}) => {
 	const translate = () =>
 		step >= steps.length
 			? (steps.length - 1) * 100 + '%'
@@ -17,7 +23,7 @@ const StepBar: React.FC<StepBarProps> = ({ step, steps, style }) => {
 	const left = (i: number) => `${(i / steps.length) * 100}%`;
 
 	const goto = (i: number) => {
-		console.log(i);
+		if (onNavigate) onNavigate(i);
 	};
 
 	const text = (step: string, i: number) =>
@@ -28,7 +34,7 @@ const StepBar: React.FC<StepBarProps> = ({ step, steps, style }) => {
 			{steps.map((s: string, i: number) => (
 				<div
 					className={`${styles.Placeholder} ${step - 1 > i ? styles.Show : ''}`}
-					onClick={() => goto(i)}
+					onClick={() => goto(i + 1)}
 					style={{ position: 'absolute', left: left(i), width: width() }}
 				>
 					{text(s, i)}

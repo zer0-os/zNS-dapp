@@ -26,6 +26,7 @@
 
 .Show {
 	opacity: 0.8;
+	cursor: pointer;
 }
 
 .Bar {
