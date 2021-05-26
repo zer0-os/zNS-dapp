@@ -1,18 +1,15 @@
 //- React Imports
 import { useState, useEffect } from 'react';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import { Link, useLocation } from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
 import { useDomainCache } from 'lib/useDomainCache';
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
+import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useEagerConnect, useInactiveListener } from 'lib/hooks/provider-hooks';
+import { useEagerConnect } from 'lib/hooks/provider-hooks';
 
 //- Library Imports
 import { randomNumber } from 'lib/Random';
-import IPFSClient from 'lib/ipfs-client';
 import useNotification from 'lib/hooks/useNotification';
 import useMint from 'lib/hooks/useMint';
 
@@ -32,25 +29,21 @@ import {
 	FilterBar,
 	HorizontalScroll,
 	DomainTable,
-	TextButton,
 	TitleBar,
 	Tooltip,
 	NextDrop,
 	IconButton,
 	Overlay,
 	Profile,
-	SearchBar,
 	PreviewCard,
 	SideBar,
 	ZNALink,
-	Notification,
 	NotificationDrawer,
 	NumberButton,
 	MintPreview,
 } from 'components';
 
 import { MintNewNFT, NFTView, Enlist } from 'containers';
-import { ethers } from 'ethers';
 
 type ZNSProps = {
 	domain: string;
@@ -58,9 +51,6 @@ type ZNSProps = {
 
 const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	// TODO: Need to handle domains that don't exist!
-
-	//- Domain State
-	const [currentDomainContext, setCurrentDomainContext] = useState(null);
 
 	//- Minting State
 	const { minting, minted } = useMint();
@@ -91,7 +81,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active, deactivate } = walletContext;
+	const { account, active } = walletContext;
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet
 
 	//- Web3 Domain Data
@@ -112,8 +102,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 					(d: any) => d.metadata && d.metadata.indexOf('ipfs.io') > -1,
 			  )
 			: [];
-
-	const { mint } = useMint();
 
 	//- Enlist Overlay
 	// TODO: Really need to make overlays more reusable - this isn't an ideal way to handle overlays with data
