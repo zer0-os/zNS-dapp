@@ -17,18 +17,16 @@ type StakingProps = {
 
 const Staking: React.FC<StakingProps> = ({ token, onContinue }) => {
 	const [amount, setAmount] = useState('');
-	const [currency, setCurrency] = useState('');
 	const [errors, setErrors] = useState<string[]>([]);
 
 	const pressContinue = () => {
 		// Validate
 		const e: string[] = [];
 		if (!amount.length) e.push('amount');
-		if (!currency.length) e.push('currency');
 		if (e.length) return setErrors(e);
 		onContinue({
 			stake: parseInt(amount),
-			currency: currency,
+			currency: 'WILD',
 		});
 	};
 

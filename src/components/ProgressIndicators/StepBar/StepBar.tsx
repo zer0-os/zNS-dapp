@@ -43,12 +43,15 @@ const StepBar: React.FC<StepBarProps> = ({
 				</div>
 			))}
 			<div
-				style={{ width: width(), transform: `translateX(${translate()})` }}
-				className={styles.Bar}
-			>
-				Step {step >= steps.length ? steps.length : step} of {steps.length}:{' '}
-				{steps[step - 1]}
-			</div>
+				style={{
+					width: width(),
+					transform: `translateX(${translate()})`,
+				}}
+				className={`${styles.Bar} ${step > steps.length ? styles.Hide : ''}`}
+				data-text={`Step ${step > steps.length ? steps.length : step} of ${
+					steps.length
+				}: ${steps[steps.length - 1]}`}
+			></div>
 		</div>
 	);
 };
