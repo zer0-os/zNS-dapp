@@ -76,7 +76,12 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 					await tx.wait();
 					setFinishedMinting(nft);
 				} catch (e) {
-					console.error(`failed to mint: ${e}`);
+					if (e.message || e.data) {
+						console.error(`failed to mint: ${e.data} : ${e.message}`);
+					}
+					console.error(e);
+
+					addNotification('Encountered an error while attempting to mint.');
 				}
 			};
 

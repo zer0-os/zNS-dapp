@@ -44,6 +44,8 @@ import {
 } from 'components';
 
 import { MintNewNFT, NFTView, Enlist } from 'containers';
+import { Maybe } from 'true-myth';
+import { DisplayDomain, DisplayParentDomain, ParentDomain } from 'lib/types';
 
 type ZNSProps = {
 	domain: string;
@@ -89,12 +91,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	const domainContext = useDomain(
 		domain.charAt(0) === '/' ? domain.substring(1) : domain,
 	);
-	const { data } = domainContext;
+
+	const data: Maybe<DisplayParentDomain> = domainContext.data;
 
 	//- Data
-	const [tableData, setTableData] = useState([]);
+	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
 	const isRoot = domain === '/' || (!data.isNothing() && !data.value.parent);
-	const ownedDomain = !data.isNothing() && data.value.owner.id === account;
+
+	let ownedDomain = false;
+	if (!data.isNothing() && account) {
+		ownedDomain = data.value.owner.id.toLowerCase() === account.toLowerCase();
+	}
+
 	// @TODO: We shouldn't need to filter out non-ipfs.io metadata URIs when we reset data
 	const subdomains =
 		!data.isNothing() && data.value.subdomains
@@ -119,7 +127,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 				data.value.id,
 				domain.substring(1),
 				data.value.minter.id,
-				data.value.image,
+				data.value.image || '',
 			);
 		};
 
@@ -266,10 +274,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 								<>
 									{/* Mint button */}
 									<FutureButton
-										glow={isRoot}
+										glow={ownedDomain}
 										onClick={
 											() => {
-												isRoot || ownedDomain
+												ownedDomain
 													? setIsMintOverlayOpen(true)
 													: alert('You can only mint NFTs on domains you own');
 											}
@@ -381,10 +389,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 						{(styles) => (
 							<animated.div style={styles}>
 								<PreviewCard
-									image={!data.isNothing() ? data.value.image : ''}
+									image={!data.isNothing() ? data.value.image || '' : ''}
 									name={!data.isNothing() ? data.value.name : ''}
 									domain={domain}
-									description={!data.isNothing() ? data.value.description : ''}
+									description={
+										!data.isNothing() ? data.value.description || '' : ''
+									}
 									creatorId={
 										!data.isNothing() &&
 										data.value.minter &&
