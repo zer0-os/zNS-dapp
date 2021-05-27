@@ -5,33 +5,14 @@ import { getAddress } from 'ethers/lib/utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
 import { getDomainId } from './domains';
+import { DisplayParentDomain, ParentDomain } from './types';
 
-export interface Domain {
-	id: string;
-	name: string;
-	parent: string;
-	subdomains: string[];
-	owner: string;
-	minter: string;
-	metadata: string;
-}
-
-interface _DomainData {
-	id: string;
-	name: string;
-	parent: string;
-	subdomains: string[];
-	owner: string;
-	minter: string;
-	metadata: string;
+interface DomainData {
+	domains: ParentDomain[];
 }
 
 interface DomainData {
-	domains: _DomainData[];
-}
-
-interface DomainData {
-	domain: _DomainData;
+	domain: ParentDomain;
 }
 
 // interface ZeroTransaction {
@@ -130,13 +111,11 @@ function useDomain(name: string) {
 		variables: { id: id },
 		fetchPolicy: 'no-cache',
 	});
-	const _domain: Maybe<any> = useMemo(() => {
+	const _domain: Maybe<DisplayParentDomain> = useMemo(() => {
 		if (dataDomain && dataDomain.domains) {
-			const test = dataDomain;
-
 			return Maybe.of({
 				...dataDomain.domains[0],
-			});
+			} as DisplayParentDomain);
 		}
 		if (errorDomain) {
 			console.error(errorDomain + 'Error');

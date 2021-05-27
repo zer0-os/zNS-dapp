@@ -18,6 +18,8 @@ import styles from './NFTView.module.css';
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
 import copyIcon from './assets/copy-icon.svg';
+import { Maybe } from 'true-myth';
+import { DisplayParentDomain } from 'lib/types';
 
 type NFTViewProps = {
 	domain: string;
@@ -41,7 +43,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	//- Web3 Domain Data
 	const { useDomain } = useDomainCache();
 	const domainContext = useDomain(domain.substring(1));
-	const { data } = domainContext;
+	const data: Maybe<DisplayParentDomain> = domainContext.data;
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
