@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 //- Context Imports
 import useMint from 'lib/hooks/useMint';
@@ -42,6 +42,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	// Token Data
 	const [name, setName] = useState('');
 	const [domain, setDomain] = useState('');
+	const containerRef = useRef<HTMLDivElement>(null);
 
 	// Token Information Page
 	const [
@@ -75,6 +76,16 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	//- Page State
 	const [step, setStep] = useState(1);
 	const steps = 3;
+
+	const [containerHeight, setContainerHeight] = useState(0);
+	useEffect(() => {
+		const el = containerRef.current;
+		if (el) {
+			const child = el.children[0];
+			if (child && child.clientHeight > 0)
+				return setContainerHeight(child.clientHeight);
+		}
+	}, [step]);
 
 	//- Web3 Wallet Data
 	// MintNewNFT is a container and needs a bit more brainpower than your standard component
@@ -135,38 +146,45 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 			<StepBar
 				style={{ marginTop: 24 }}
 				step={step}
-				steps={['Details', 'Token Dynamics', 'Staking']}
+				steps={['Details', 'Staking']}
 				onNavigate={(i: number) => toStep(i)}
 			/>
 			{/* TODO: Make ToggleSections unclickable if their open status depends on parent state */}
 
-			{/* SECTION 1: Token Information */}
-			{step === 1 && (
-				<TokenInformation
-					token={tokenInformation}
-					onContinue={(data: TokenInformationType) => getTokenInformation(data)}
-					setNameHeader={(name: string) => setName(name)}
-					setDomainHeader={(domain: string) => setDomain(domain)}
-				/>
-			)}
+			<div
+				ref={containerRef}
+				className={styles.Container}
+				style={{ height: containerHeight }}
+			>
+				{/* SECTION 1: Token Information */}
+				{step === 1 && (
+					<TokenInformation
+						token={tokenInformation}
+						onContinue={(data: TokenInformationType) =>
+							getTokenInformation(data)
+						}
+						setNameHeader={(name: string) => setName(name)}
+						setDomainHeader={(domain: string) => setDomain(domain)}
+					/>
+				)}
 
-			{/* SECTION 2: Token Dynamics */}
-			{step === 2 && (
-				<TokenDynamics
-					token={tokenDynamics}
-					onBack={() => toStep(1)}
-					onContinue={(data: TokenDynamicType) => getTokenDynamics(data)}
-				/>
-			)}
+				{/* SECTION 2: Token Dynamics */}
+				{/* {step === 2 && (
+					<TokenDynamics
+						token={tokenDynamics}
+						onBack={() => toStep(1)}
+						onContinue={(data: TokenDynamicType) => getTokenDynamics(data)}
+					/>
+				)} */}
 
-			{/* SECTION 3: Staking */}
-			{step === 3 && (
-				<Staking
-					token={tokenStake}
-					onBack={() => toStep(2)}
-					onContinue={(data: TokenStakeType) => getTokenStake(data)}
-				/>
-			)}
+				{/* SECTION 3: Staking */}
+				{step === 2 && (
+					<Staking
+						token={tokenStake}
+						onContinue={(data: TokenStakeType) => getTokenStake(data)}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };

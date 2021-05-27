@@ -20,12 +20,11 @@
 
 .Placeholder {
 	opacity: 0;
-	color: var(--color-accent-1);
 	transition: opacity var(--animation-time-long) ease-in-out;
 }
 
 .Show {
-	opacity: 0.8;
+	opacity: 1;
 	cursor: pointer;
 }
 

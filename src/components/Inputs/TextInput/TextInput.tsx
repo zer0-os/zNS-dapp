@@ -74,6 +74,7 @@ const TextInput: React.FC<TextInputProps> = ({
 					value={text ? text : ''}
 				/>
 			)}
+			{error && <span className={styles.ErrorMessage}>Hello</span>}
 		</>
 	);
 };

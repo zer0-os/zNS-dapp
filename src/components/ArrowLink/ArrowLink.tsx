@@ -9,6 +9,7 @@ type ArrowLinkProps = {
 	href?: string;
 	style?: React.CSSProperties;
 	className?: string;
+	back?: boolean;
 };
 
 const ArrowLink: React.FC<ArrowLinkProps> = ({
@@ -16,11 +17,12 @@ const ArrowLink: React.FC<ArrowLinkProps> = ({
 	href,
 	children,
 	style,
+	back,
 }) => {
 	return (
 		<a className={`${className} ${styles.Link}`} style={style} href={href}>
 			{children}{' '}
-			<div className={styles.ArrowContainer}>
+			<div className={`${styles.ArrowContainer} ${back ? styles.Back : ''}`}>
 				<div className={styles.Arrow}></div>
 			</div>
 		</a>

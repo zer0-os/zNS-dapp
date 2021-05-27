@@ -3,6 +3,7 @@
 	padding: 48px;
 
 	background: var(--background-purple-card-20);
+	overflow: hidden;
 }
 
 .Header {
@@ -33,8 +34,18 @@
 	margin-left: 32px;
 }
 
+.Container {
+	position: relative;
+	height: 542px;
+	transition: height var(--animation-time-long) ease-out;
+}
+
 .Section {
-	padding: 40px;
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	padding-top: 80px;
 }
 
 .NFT {

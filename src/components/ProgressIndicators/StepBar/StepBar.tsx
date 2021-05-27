@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ArrowLink } from 'components';
+
 import styles from './StepBar.module.css';
 
 type StepBarProps = {
@@ -30,14 +32,14 @@ const StepBar: React.FC<StepBarProps> = ({
 		`Step ${i + 1} of ${steps.length}: ${step}`;
 
 	return (
-		<div style={style} className={styles.StepBar}>
+		<div style={style} className={`${styles.StepBar} no-select`}>
 			{steps.map((s: string, i: number) => (
 				<div
 					className={`${styles.Placeholder} ${step - 1 > i ? styles.Show : ''}`}
 					onClick={() => goto(i + 1)}
 					style={{ position: 'absolute', left: left(i), width: width() }}
 				>
-					{text(s, i)}
+					<ArrowLink back>{text(s, i)}</ArrowLink>
 				</div>
 			))}
 			<div

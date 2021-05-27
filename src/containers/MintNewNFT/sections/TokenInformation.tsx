@@ -91,8 +91,8 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	};
 
 	return (
-		<>
-			<form className={styles.Section}>
+		<div className={styles.Section}>
+			<form>
 				<div style={{ display: 'flex' }}>
 					<div
 						onClick={openUploadDialog}
@@ -151,13 +151,13 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 				/>
 			</form>
 			<FutureButton
-				style={{ margin: '0 auto 0 auto', height: 36, borderRadius: 18 }}
+				style={{ margin: '80px auto 0 auto', height: 36, borderRadius: 18 }}
 				onClick={pressContinue}
 				glow
 			>
 				Continue
 			</FutureButton>
-		</>
+		</div>
 	);
 };
 
