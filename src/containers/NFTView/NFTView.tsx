@@ -20,6 +20,9 @@ import galaxyBackground from './assets/galaxy.png';
 import copyIcon from './assets/copy-icon.svg';
 import { Maybe } from 'true-myth';
 import { DisplayParentDomain } from 'lib/types';
+import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
+import addresses from 'lib/addresses';
+import { BigNumber } from 'ethers';
 
 type NFTViewProps = {
 	domain: string;
@@ -47,11 +50,19 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account } = walletContext;
+	const { account, chainId } = walletContext;
+
+	const networkType = chainIdToNetworkType(chainId!);
+	const registrarAddress = addresses[networkType].registrar;
+	const domainId = data.isNothing()
+		? ''
+		: BigNumber.from(data.value.id).toString();
+	const etherscanBaseUri = getEtherscanUri(networkType);
+	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainId}`;
 
 	//- Functions
 	const copyContractToClipboard = () => {
-		navigator.clipboard.writeText(!data.isNothing() ? data.value.id : '');
+		navigator.clipboard.writeText(etherscanLink);
 	};
 
 	useEffect(() => {
@@ -183,7 +194,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 								src={copyIcon}
 								alt={'Copy Contract Icon'}
 							/>
-							{!data.isNothing() && data.value.id ? data.value.id : ''}
+							{registrarAddress}
 						</p>
 					</div>
 				</div>

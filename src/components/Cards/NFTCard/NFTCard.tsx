@@ -53,7 +53,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 					</div>
 				)}
 				<h5 className={`glow-text-blue`}>{name}</h5>
-				<ArrowLink>wilder.{domain}</ArrowLink>
+				<ArrowLink>0://{domain}</ArrowLink>
 				<div className={styles.Foot}>
 					<div>
 						<span>Last Traded Price</span>
