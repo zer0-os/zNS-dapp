@@ -62,7 +62,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 			fetch(data.value.metadata).then(async (d: Response) => {
 				const nftData = await d.json();
 				setImage(nftData.image);
-				setName(nftData.title);
+				setName(nftData.title || nftData.name);
 				setDescription(nftData.description);
 			});
 		}

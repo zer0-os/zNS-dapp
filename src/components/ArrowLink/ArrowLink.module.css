@@ -6,13 +6,17 @@
 	margin-left: 3px;
 }
 
+.Link:hover .Back {
+	margin-left: -3px;
+}
+
 .Link:hover .ArrowContainer::after {
 	box-shadow: 0px 0px 10px 3px rgba(60, 161, 255, 1);
 }
 
 .ArrowContainer {
 	position: absolute;
-	top: 0;
+	top: -1px;
 	left: calc(100% + 5px);
 	height: 12px;
 	width: 12px;
@@ -60,6 +64,14 @@
 
 .Arrow::before {
 	transform: translateY(200%) rotate(-45deg);
+}
+
+.Back {
+	left: calc(100% + 8px);
+}
+
+.Back .Arrow {
+	transform: rotate(180deg);
 }
 
 /* .Arrow::after {

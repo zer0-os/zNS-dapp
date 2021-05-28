@@ -20,12 +20,12 @@
 
 .Placeholder {
 	opacity: 0;
-	color: var(--color-accent-1);
+	z-index: 2;
 	transition: opacity var(--animation-time-long) ease-in-out;
 }
 
 .Show {
-	opacity: 0.8;
+	opacity: 1;
 	cursor: pointer;
 }
 
@@ -35,5 +35,15 @@
 	color: var(--color-invalid);
 	border-bottom: 1px solid #e0baff;
 
-	transition: transform var(--animation-time-long) ease-in-out;
+	transition: all var(--animation-time-long) ease-in-out;
+}
+
+.Bar::after {
+	content: attr(data-text);
+}
+
+.Hide {
+	border-bottom: 1px solid rgba(0, 0, 0, 0);
+	color: rgba(0, 0, 0, 0);
+	z-index: -1;
 }

@@ -123,7 +123,7 @@
 	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
 
 	--glow-primary: drop-shadow(0px 0px 10px 0px #eb00ff);
-	--glow-text-blue: 0px 0px 10px rgba(60, 161, 255, 0.7);
+	--glow-text-blue: 0px 0px 12px rgba(60, 161, 255, 0.7);
 	--glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
 	--glow-text-white-big: 0px 0px 15px rgba(255, 255, 255, 1),
 		0px 0px 15px rgba(255, 255, 255, 1), 0px 0px 15px rgba(255, 255, 255, 1);
@@ -221,7 +221,7 @@ a {
 
 a:hover {
 	color: var(--color-accent-1);
-	text-shadow: var(--glow-text-blue);
+	text-shadow: var(--glow-text-blue), var(--glow-text-blue);
 }
 
 a.alt-link {

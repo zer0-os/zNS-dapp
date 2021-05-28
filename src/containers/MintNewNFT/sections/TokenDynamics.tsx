@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 //- Type Imports
 import { TokenDynamicType } from '../types';
 
+//- Style Imports
+import styles from '../MintNewNFT.module.css';
+
 //- Component Imports
 import { ToggleButton, TextInput, FutureButton } from 'components';
 
@@ -13,11 +16,7 @@ type TokenDynamicsProps = {
 	onBack: () => void;
 };
 
-const TokenDynamics: React.FC<TokenDynamicsProps> = ({
-	token,
-	onContinue,
-	onBack,
-}) => {
+const TokenDynamics: React.FC<TokenDynamicsProps> = ({ token, onContinue }) => {
 	const [dynamic, setDynamic] = useState(token ? token.dynamic : false);
 	const [ticker, setTicker] = useState(token ? token.ticker : '');
 	const [errors, setErrors] = useState<string[]>([]);
@@ -32,9 +31,10 @@ const TokenDynamics: React.FC<TokenDynamicsProps> = ({
 
 	return (
 		<div
+			className={styles.Section}
 			style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
 		>
-			<p style={{ marginTop: 80, fontSize: 18, lineHeight: 1.3 }}>
+			<p style={{ fontSize: 18, lineHeight: 1.3 }}>
 				Tokens in Wilder can be valued on the market automatically using a
 				bonding curve. This allows them to be bought and sold instantly, like
 				trading a currency. If you’re not sure about this option, leave it set
@@ -63,18 +63,6 @@ const TokenDynamics: React.FC<TokenDynamicsProps> = ({
 			<div
 				style={{ display: 'flex', justifyContent: 'center', marginTop: 128 }}
 			>
-				<FutureButton
-					style={{
-						margin: '0 auto 0 auto',
-						height: 36,
-						borderRadius: 18,
-						width: 130,
-					}}
-					onClick={onBack}
-					glow
-				>
-					Back
-				</FutureButton>
 				<FutureButton
 					style={{
 						margin: '0 auto 0 auto',

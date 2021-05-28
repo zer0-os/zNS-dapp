@@ -9,7 +9,7 @@ const Image = (props: any) => {
 	const load = () => setLoaded(true);
 
 	return (
-		<div style={{ position: 'relative', width: '100%' }}>
+		<div style={{ position: 'relative', width: '100%', height: '100%' }}>
 			<img
 				{...props}
 				className={`${props.className ? props.className : ''} ${styles.Image}`}

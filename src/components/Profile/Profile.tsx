@@ -28,7 +28,9 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 			{/* <h1 className={`glow-text-white`}>Profile</h1> */}
 			<div className={ProfileStyle.body}>
 				<div>
-					<Image className={ProfileStyle.dp} src={randomImage(id)} />
+					<div style={{ height: 160 }}>
+						<Image className={ProfileStyle.dp} src={randomImage(id)} />
+					</div>
 					<a className={`${ProfileStyle.endpoint} glow-text-blue`}>
 						wilder.{randomName(id).toLowerCase().split(' ').join('.')}
 					</a>
