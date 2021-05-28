@@ -20,6 +20,7 @@ import styles from './DomainTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import { getRelativeDomainPath } from 'lib/domains';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -273,7 +274,10 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	// Navigation Handling
 	const history = useHistory();
-	const navigateTo = (domain: string) => history.push(domain);
+	const navigateTo = (domain: string) => {
+		const relativeDomain = getRelativeDomainPath(domain);
+		history.push(relativeDomain);
+	};
 	const initialState =
 		mvpVersion === 1
 			? { hiddenColumns: ['lastBid', 'numBids', 'lastSalePrice', 'tradePrice'] }

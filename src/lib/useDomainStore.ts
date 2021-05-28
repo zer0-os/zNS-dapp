@@ -22,9 +22,6 @@ interface DomainData {
 //   pending: boolean;
 //   nonce: number;
 // }
-export const zeroAddress: any =
-	'0x0000000000000000000000000000000000000000000000000000000000000000';
-
 export const DOMAIN_QUERY = gql`
 	query Domain($id: ID!) {
 		domains(where: { id: $id }) {
