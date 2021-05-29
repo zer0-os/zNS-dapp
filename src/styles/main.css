@@ -151,6 +151,11 @@ textarea {
 	letter-spacing: 0.2px;
 }
 
+input,
+textarea {
+	font-size: 1em;
+}
+
 html {
 	overflow: hidden;
 	height: 100%;
