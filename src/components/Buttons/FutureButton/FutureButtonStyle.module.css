@@ -243,3 +243,28 @@
 	color: white;
 	text-shadow: var(--glow-text-white);
 }
+
+.Loading {
+	padding-top: 0;
+}
+
+.Spinner {
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	border-top: 2px solid var(--color-accent-1);
+	animation: spin 1s linear infinite;
+}
+
+.glow .Spinner {
+	border-top: 2px solid white;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
