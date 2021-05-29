@@ -107,6 +107,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 		domain.charAt(0) === '/' ? domain.substring(1) : domain,
 	);
 
+	useEffect(() => {
+		domainContext.refetchDomain();
+	}, [minted]);
+
 	const data: Maybe<DisplayParentDomain> = domainContext.data;
 
 	//- Data
