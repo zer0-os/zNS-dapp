@@ -22,9 +22,42 @@ interface DomainData {
 //   pending: boolean;
 //   nonce: number;
 // }
-export const DOMAIN_QUERY = gql`
+export const domainByIdQuery = gql`
 	query Domain($id: ID!) {
 		domains(where: { id: $id }) {
+			id
+			name
+			parent {
+				id
+				name
+			}
+			subdomains {
+				id
+				name
+				metadata
+				owner {
+					id
+				}
+				minter {
+					id
+				}
+			}
+			owner {
+				id
+			}
+			minter {
+				id
+			}
+			lockedBy
+			isLocked
+			metadata
+		}
+	}
+`;
+
+export const domainNameSearchQuery = gql`
+	query Domain($name: String!) {
+		domains(where: { name_contains: $name }) {
 			id
 			name
 			parent {
@@ -98,16 +131,35 @@ type QueryArgs = Partial<Record<string, any>>;
 
 type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
-function useDomain(name: string) {
-	const id = getDomainId(name);
+export function useQueryDomainsNameContain(pattern: string) {
+	const query = useQuery<DomainData>(domainNameSearchQuery, {
+		variables: { name: pattern },
+		fetchPolicy: 'no-cache',
+	});
+
+	return query;
+}
+
+export function useQueryForDomainById(id: string) {
 	const {
 		data: dataDomain,
 		error: errorDomain,
 		refetch: refetchDomain,
-	} = useQuery<DomainData>(DOMAIN_QUERY, {
+	} = useQuery<DomainData>(domainByIdQuery, {
 		variables: { id: id },
 		fetchPolicy: 'no-cache',
 	});
+
+	return {
+		dataDomain,
+		errorDomain,
+		refetchDomain,
+	};
+}
+
+function useDomain(name: string) {
+	const id = getDomainId(name);
+	const { dataDomain, errorDomain, refetchDomain } = useQueryForDomainById(id);
 	const _domain: Maybe<DisplayParentDomain> = useMemo(() => {
 		if (dataDomain && dataDomain.domains) {
 			return Maybe.of({

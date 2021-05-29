@@ -45,7 +45,8 @@ import {
 
 import { MintNewNFT, NFTView, Enlist } from 'containers';
 import { Maybe } from 'true-myth';
-import { DisplayDomain, DisplayParentDomain, ParentDomain } from 'lib/types';
+import { DisplayDomain, DisplayParentDomain } from 'lib/types';
+import { useDomainSearch } from 'lib/useDomainSearch';
 
 type ZNSProps = {
 	domain: string;
@@ -73,6 +74,20 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
 	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
 	const [isEnlistOverlayOpen, setIsEnlistOverlayOpen] = useState(false);
+
+	const domainSearch = useDomainSearch();
+
+	// dummy search
+	useEffect(() => {
+		domainSearch.setPattern('zachary');
+	}, []);
+
+	// react to search result changes
+	useEffect(() => {
+		console.log(`Search Results:`);
+		console.log(domainSearch.exactMatch);
+		console.log(domainSearch.matches);
+	}, [domainSearch.matches, domainSearch.exactMatch]);
 
 	//- MVP Version
 	// TODO: Move the MVP version handler out to a hook
