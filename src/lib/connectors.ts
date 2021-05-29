@@ -12,7 +12,7 @@ import { PortisConnector } from '@web3-react/portis-connector';
 import { TorusConnector } from '@web3-react/torus-connector';
 
 const POLLING_INTERVAL = 12000;
-const RPC_URLS: { [chainId: number]: string } = {
+export const RPC_URLS: { [chainId: number]: string } = {
 	1: process.env.REACT_APP_RPC_URL_1 as string,
 	// 4: process.env.REACT_APP_RPC_URL_4 as string,
 	42: process.env.REACT_APP_RPC_URL_42 as string,
@@ -27,16 +27,19 @@ export const network = new Network({
 	defaultChainId: 1,
 });
 
-export const walletconnect = new WalletConnectConnector({
-	rpc: { 1: RPC_URLS[1] },
-	bridge: 'https://bridge.walletconnect.org',
-	qrcode: true,
-	pollingInterval: POLLING_INTERVAL,
-});
+export const createWalletConnectConnector = () => {
+	return new WalletConnectConnector({
+		rpc: { 1: RPC_URLS[1], 42: RPC_URLS[42] },
+		bridge: 'https://bridge.walletconnect.org',
+		qrcode: true,
+		pollingInterval: POLLING_INTERVAL,
+		supportedChainIds: [1, 42],
+	});
+};
 
 export const walletlink = new WalletLinkConnector({
 	url: RPC_URLS[1],
-	appName: 'web3-react example',
+	appName: 'Wilder World',
 });
 
 export const ledger = new LedgerConnector({

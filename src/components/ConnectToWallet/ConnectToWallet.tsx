@@ -6,11 +6,10 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
 import {
 	injected,
-	walletconnect,
 	walletlink,
 	fortmatic,
 	portis,
-	network,
+	createWalletConnectConnector,
 } from 'lib/connectors';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 
@@ -26,16 +25,32 @@ import walletConnectIcon from './assets/walletconnect.svg';
 import coinbaseWalletIcon from './assets/coinbasewallet.svg';
 import fortmaticIcon from './assets/fortmatic.svg';
 import portisIcon from './assets/portis.svg';
+import useNotification from 'lib/hooks/useNotification';
 
 type ConnectToWalletProps = {
 	onConnect: () => void;
 };
 
+const nameToConnector: { [key: string]: AbstractConnector } = {
+	metamask: injected,
+	coinbase: walletlink,
+	fortmatic: fortmatic,
+	portis: portis,
+};
+
 const connectorFromName = (name: string) => {
-	switch (name) {
-		case 'metamask':
-			return injected;
+	if (name == 'walletconnect') {
+		return createWalletConnectConnector();
 	}
+
+	const connector = nameToConnector[name];
+
+	if (!connector) {
+		console.error(`invalid connector ${name}`);
+		return null;
+	}
+
+	return connector;
 };
 
 const nameFromConnector = (c: AbstractConnector) => {
@@ -43,16 +58,25 @@ const nameFromConnector = (c: AbstractConnector) => {
 		case injected:
 			return 'MetaMask';
 	}
+
+	return 'Wallet';
 };
 
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { active, connector, activate, deactivate, error } = walletContext;
 
-	const connectToWallet = (wallet: string) => {
+	//- Notification State
+	const { addNotification } = useNotification();
+
+	const connectToWallet = async (wallet: string) => {
 		const c = connectorFromName(wallet) as AbstractConnector;
 		if (c) {
-			activate(c);
+			await activate(c, async (e: Error) => {
+				addNotification(`Failed to connect to wallet`);
+				console.error(`Encounter error while connecting to ${wallet}`);
+				console.error(e);
+			});
 			onConnect();
 		}
 	};

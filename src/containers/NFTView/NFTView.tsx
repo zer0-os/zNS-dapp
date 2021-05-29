@@ -23,6 +23,7 @@ import { DisplayParentDomain } from 'lib/types';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import addresses from 'lib/addresses';
 import { BigNumber } from 'ethers';
+import { useZnsContracts } from 'lib/contracts';
 
 type NFTViewProps = {
 	domain: string;
@@ -53,7 +54,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	const { account, chainId } = walletContext;
 
 	const networkType = chainIdToNetworkType(chainId!);
-	const registrarAddress = addresses[networkType].registrar;
+	const contracts = useZnsContracts();
+	const registrarAddress = contracts ? contracts.registry.address : '';
 	const domainId = data.isNothing()
 		? ''
 		: BigNumber.from(data.value.id).toString();
