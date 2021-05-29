@@ -31,7 +31,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const [story, setStory] = useState(token ? token.story : '');
 	const [image, setImage] = useState(token ? token.image : Buffer.from(''));
 	const [domain, setDomain] = useState(token ? token.domain : '');
-	const [locked, setLocked] = useState(token ? token.locked : false);
+	const [locked, setLocked] = useState(token ? token.locked : true);
 
 	const updateName = (name: string) => {
 		setName(name);
@@ -133,12 +133,12 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							error={errors.includes('domain')}
 							alphanumeric
 						/>
-						<ToggleButton
+						{/* <ToggleButton
 							toggled={locked}
 							onClick={() => setLocked(!locked)}
 							style={{ marginTop: 'auto', alignSelf: 'center' }}
 							labels={['Unlocked', 'Locked']}
-						/>
+						/> */}
 					</div>
 				</div>
 				<TextInput

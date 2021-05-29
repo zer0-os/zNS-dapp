@@ -11,6 +11,13 @@ import {
 //- Style Imports
 import styles from '../MintNewNFT.module.css';
 
+//- Asset Imports
+import graphIcon from './assets/graph.svg';
+import handIcon from './assets/hand.svg';
+import storyIcon from './assets/story.svg';
+import tickerIcon from './assets/ticker.svg';
+import addressIcon from './assets/address.svg';
+
 //- Component Imports
 import { FutureButton } from 'components';
 
@@ -19,6 +26,8 @@ type SummaryProps = {
 	dynamic: TokenDynamicType | null;
 	staking: TokenStakeType | null;
 	onContinue: () => void;
+	isMintLoading: boolean;
+	domain: string;
 };
 
 const Summary: React.FC<SummaryProps> = ({
@@ -26,6 +35,8 @@ const Summary: React.FC<SummaryProps> = ({
 	dynamic,
 	staking,
 	onContinue,
+	isMintLoading,
+	domain,
 }) => {
 	if (!token || !staking) return <></>;
 
@@ -33,17 +44,26 @@ const Summary: React.FC<SummaryProps> = ({
 		<div className={styles.Section}>
 			<div className={styles.Summary}>
 				<div className={`${styles.NFT} border-rounded border-blue`}>
-					<img src={token.previewImage} />
+					<img alt="nft preview" src={token.previewImage} />
 				</div>
 				<div style={{ marginLeft: 16 }}>
 					<h2>Summary</h2>
 					<ul>
-						<li className={styles.Name}>{token.name}</li>
-						<li>{token.domain}</li>
-						<li>{token.story}</li>
+						<li className={styles.Name}>
+							<img src={tickerIcon} />
+							{token.name}
+						</li>
 						<li>
-							{staking.stake}{' '}
-							<span style={{ fontWeight: 700 }}>{staking.currency}</span>
+							<img src={addressIcon} />
+							wilder.{domain.substring(1)}.{token.domain}
+						</li>
+						<li>
+							<img src={storyIcon} />
+							{token.story}
+						</li>
+						<li>
+							<img src={handIcon} />
+							{staking.stake} {staking.currency}
 						</li>
 					</ul>
 				</div>
@@ -57,7 +77,8 @@ const Summary: React.FC<SummaryProps> = ({
 						width: 130,
 					}}
 					onClick={onContinue}
-					glow
+					loading={isMintLoading}
+					glow={true}
 				>
 					MINT
 				</FutureButton>

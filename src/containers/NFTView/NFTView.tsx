@@ -11,6 +11,7 @@ import { FutureButton, Member, Image, Overlay } from 'components';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
+import useNotification from 'lib/hooks/useNotification';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -36,6 +37,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	//- Notes:
 	// It's worth having this component consume the domain context
 	// because it needs way more data than is worth sending through props
+
+	const { addNotification } = useNotification();
 
 	//- Page State
 	const [image, setImage] = useState<string>(''); // Image from metadata url
@@ -64,6 +67,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 
 	//- Functions
 	const copyContractToClipboard = () => {
+		addNotification('Copied address to clipboard!');
 		navigator.clipboard.writeText(etherscanLink);
 	};
 

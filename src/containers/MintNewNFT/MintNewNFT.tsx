@@ -43,6 +43,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	// Token Data
 	const [name, setName] = useState('');
 	const [domain, setDomain] = useState('');
+	const [isMintLoading, setIsMintLoading] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	// Token Information Page
@@ -98,36 +99,35 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		setStep(i);
 	};
 	const submit = () => {
-		if (!account) {
-			console.log('no account connected');
-			return;
-		}
-
-		if (!tokenInformation || !tokenStake) {
-			return;
-		}
+		setIsMintLoading(true);
+		if (!account) return setIsMintLoading(false);
+		if (!tokenInformation || !tokenStake) return setIsMintLoading(false);
 
 		const doSubmit = async () => {
 			// Verify that all fields exist
-			const hasSubmitMint = mint({
-				parent: domainId,
-				owner: account,
-				name: tokenInformation.name,
-				story: tokenInformation.story,
-				image: tokenInformation.image,
-				domain: tokenInformation.domain,
-				// @TODO Reimplement ticker when we enable dynamic tokens
-				ticker:
-					tokenDynamics && tokenDynamics.ticker ? tokenDynamics.ticker : '',
-				dynamic:
-					tokenDynamics && tokenDynamics.dynamic
-						? tokenDynamics.dynamic
-						: false,
-				locked: tokenInformation.locked,
-			});
-
-			await hasSubmitMint;
-			onMint();
+			try {
+				const hasSubmitMint = mint({
+					parent: domainId,
+					owner: account,
+					name: tokenInformation.name,
+					story: tokenInformation.story,
+					image: tokenInformation.image,
+					domain: tokenInformation.domain,
+					zna: domainName,
+					// @TODO Reimplement ticker when we enable dynamic tokens
+					ticker:
+						tokenDynamics && tokenDynamics.ticker ? tokenDynamics.ticker : '',
+					dynamic:
+						tokenDynamics && tokenDynamics.dynamic
+							? tokenDynamics.dynamic
+							: false,
+					locked: tokenInformation.locked,
+				});
+				await hasSubmitMint;
+				onMint();
+			} catch (e) {
+				setIsMintLoading(false);
+			}
 		};
 
 		doSubmit();
@@ -135,6 +135,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 
 	return (
 		<div className={`${styles.MintNewNFT} blur border-rounded border-primary`}>
+			{isMintLoading && <div className={styles.Blocker}></div>}
 			{/* // TODO: Pull each section out into a seperate component */}
 			<div className={styles.Header}>
 				<h1 className={`glow-text-white`}>
@@ -142,7 +143,8 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				</h1>
 				<div style={{ marginBottom: 8 }}>
 					<h2 className={`glow-text-white`}>
-						wilder.{domain && domain.length ? `${domainName.substring(1)}` : ``}
+						wilder.
+						{domain && domain.length ? `${domainName.substring(1)}.` : ``}
 						{domain}
 					</h2>
 				</div>
@@ -197,6 +199,8 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						dynamic={tokenDynamics}
 						staking={tokenStake}
 						onContinue={submit}
+						isMintLoading={isMintLoading}
+						domain={domainName}
 					/>
 				)}
 			</div>

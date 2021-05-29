@@ -21,6 +21,7 @@ type MintProviderType = {
 type NFT = {
 	owner: string;
 	parent: string;
+	zna: string;
 	name: string;
 	domain: string; // domain label
 	ticker: string;
@@ -43,7 +44,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 			return;
 		}
 
-		const userHasSubmitted = new Promise<void>((resolve) => {
+		const userHasSubmitted = new Promise<void>((resolve, reject) => {
 			const doMint = async () => {
 				try {
 					// upload image to IPFS
@@ -81,6 +82,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 					}
 					console.error(e);
 
+					reject();
 					addNotification('Encountered an error while attempting to mint.');
 				}
 			};

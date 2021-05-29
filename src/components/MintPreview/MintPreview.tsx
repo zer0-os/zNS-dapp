@@ -19,19 +19,18 @@ const MintPreview = () => {
 			<hr className="glow" />
 			<li key={`${nft.name}${Math.random()}`}>
 				<div className={`${styles.Image} border-rounded`}>
-					<Image
-						src={`data:image/png;base64,${nft.image.toString('base64')}`}
-					/>
+					<Link to={`${nft.zna}.${nft.domain}`}>
+						<Image
+							src={`data:image/png;base64,${nft.image.toString('base64')}`}
+						/>
+					</Link>
 				</div>
 				<div className={styles.Info}>
 					<h5 className="glow-text-blue">{nft.name}</h5>
 
 					{minted && (
-						<Link to={nft.domain.substring(1) + nft.name}>
-							{nft.domain.length === 1
-								? 'wilder.'
-								: `wilder.${nft.domain.substring(1)}`}
-							{nft.name}
+						<Link to={`${nft.zna}.${nft.domain}`}>
+							wilder.{nft.zna.substring(1)}.{nft.domain}
 						</Link>
 					)}
 
@@ -46,13 +45,8 @@ const MintPreview = () => {
 
 					<p>{nft.story}</p>
 					{minted && (
-						<p style={{ color: 'var(--color-success)' }}>Minting completed!</p>
-					)}
-					{!minted && (
-						<p>
-							Minting...
-							<br />
-							appx 3 minutes remaining
+						<p style={{ color: 'var(--color-success)', fontWeight: 700 }}>
+							Minting completed!
 						</p>
 					)}
 				</div>
