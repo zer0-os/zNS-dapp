@@ -50,7 +50,10 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	const history = useHistory();
 	const searchInput = useRef(null);
 
-	const config = { smallestSearchQuery: 2 };
+	const config = {
+		smallestSearchQuery: 2,
+		isExactMatchEnabled: false,
+	};
 
 	const [searchQuery, setSearchQuery] = useState('');
 
@@ -69,11 +72,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		setTimeout(() => {
 			setIsSearchActive(false);
 			setSearchQuery('');
-		}, 0);
-	};
-
-	const rowClick = (event: any) => {
-		console.log(event);
+		}, 120);
 	};
 
 	const go = (to: string) => {
@@ -131,10 +130,24 @@ const TitleBar: React.FC<TitleBarProps> = ({
 			{isSearchActive && (
 				<ul className={`${styles.SearchResults} blur border-primary`}>
 					{/* @TODO: Implement exact domain properly */}
+					{config.isExactMatchEnabled && domainSearch?.exactMatch?.name && (
+						<li
+							className={styles.ExactMatch}
+							key={domainSearch.exactMatch.name}
+							onClick={() => go(domainSearch?.exactMatch?.name || '')}
+						>
+							{
+								domainSearch.exactMatch.name.split('.')[
+									domainSearch.exactMatch.name.split('.').length - 1
+								]
+							}{' '}
+							<span>{domainSearch.exactMatch.name}</span>
+						</li>
+					)}
 					{domainSearch?.matches
 						?.filter((d) => d.name.length > 1)
 						.map((s) => (
-							<li onClick={rowClick}>
+							<li onClick={() => go(s.name)} key={s.name}>
 								{s.name.split('.')[s.name.split('.').length - 1]}
 								<span>{s.name}</span>
 							</li>
