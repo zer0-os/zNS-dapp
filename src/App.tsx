@@ -6,7 +6,7 @@ import 'styles/main.css';
 import { HashRouter, Route } from 'react-router-dom';
 
 //- Web3 Imports
-import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
+import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 

@@ -8,6 +8,8 @@ type IconButtonProps = {
 	style?: React.CSSProperties;
 	toggled?: boolean;
 	onClick: () => void;
+	alt?: string;
+	disabled?: boolean;
 };
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -16,10 +18,15 @@ const IconButton: React.FC<IconButtonProps> = ({
 	iconUri,
 	style,
 	onClick,
+	alt,
+	disabled,
 }) => {
 	const [selected, setSelected] = useState(false);
 
+	const altText = alt || 'clickable icon';
+
 	const handleClick = () => {
+		if (disabled) return;
 		setSelected(!selected);
 		if (onClick) onClick();
 	};
@@ -30,9 +37,9 @@ const IconButton: React.FC<IconButtonProps> = ({
 			onClick={handleClick}
 			className={`${styles.iconButton} ${
 				(toggleable && selected) || toggled ? styles.selected : ''
-			}`}
+			} ${disabled ? styles.Disabled : ''}`}
 		>
-			<img alt="clickable icon" src={iconUri} />
+			<img alt={altText} src={iconUri} />
 		</button>
 	);
 };

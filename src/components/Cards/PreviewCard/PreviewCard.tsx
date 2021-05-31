@@ -70,7 +70,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 						<div>
 							<h5>{name ? name : domain.split('/')[1]}</h5>
 							<ArrowLink className={styles.Domain}>
-								wilder.{domain.substring(1)}
+								0://wilder.{domain.substring(1)}
 							</ArrowLink>
 							<p>{description}</p>
 						</div>

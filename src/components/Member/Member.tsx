@@ -50,7 +50,7 @@ const Member: React.FC<MemberProps> = ({
 						<>
 							<br />
 							<a onClick={openProfile}>
-								wilder.{name.toLowerCase().split(' ').join('.')}
+								0://wilder.{name.toLowerCase().split(' ').join('.')}
 							</a>
 						</>
 					)}

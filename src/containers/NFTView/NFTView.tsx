@@ -119,7 +119,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 				<div className={styles.Info}>
 					<div>
 						<h1 className="glow-text-white">{name}</h1>
-						<span>wilder.{domain.substring(1)}</span>
+						<span>0://wilder.{domain.substring(1)}</span>
 						<div className={styles.Members}>
 							<Member
 								id={!data.isNothing() ? data.value.owner.id : ''}

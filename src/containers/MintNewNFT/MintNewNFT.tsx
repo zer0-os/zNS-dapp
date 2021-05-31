@@ -143,7 +143,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				</h1>
 				<div style={{ marginBottom: 8 }}>
 					<h2 className={`glow-text-white`}>
-						wilder.
+						0://wilder.
 						{domain && domain.length ? `${domainName.substring(1)}.` : ``}
 						{domain}
 					</h2>

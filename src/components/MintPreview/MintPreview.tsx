@@ -30,15 +30,15 @@ const MintPreview = () => {
 
 					{minted && (
 						<Link to={`${nft.zna}.${nft.domain}`}>
-							wilder.{nft.zna.substring(1)}.{nft.domain}
+							0://wilder.{nft.zna.substring(1)}.{nft.domain}
 						</Link>
 					)}
 
 					{!minted && (
 						<a style={{ color: 'var(--color-grey)' }}>
 							{nft.domain.length === 1
-								? 'wilder.'
-								: `wilder.${nft.domain.substring(1)}`}
+								? '0://wilder.'
+								: `0://wilder.${nft.domain.substring(1)}`}
 							{nft.name}
 						</a>
 					)}

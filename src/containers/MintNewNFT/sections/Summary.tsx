@@ -55,7 +55,7 @@ const Summary: React.FC<SummaryProps> = ({
 						</li>
 						<li>
 							<img src={addressIcon} />
-							wilder.{domain.substring(1)}.{token.domain}
+							0://wilder.{domain.substring(1)}.{token.domain}
 						</li>
 						<li>
 							<img src={storyIcon} />

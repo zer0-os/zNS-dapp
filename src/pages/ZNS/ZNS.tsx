@@ -1,6 +1,7 @@
 //- React Imports
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
+import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
 import { useDomainCache } from 'lib/useDomainCache';
@@ -15,6 +16,10 @@ import useMint from 'lib/hooks/useMint';
 
 //- Type Imports
 import { EnlistDomain } from 'types/Domain';
+
+//- Icon Imports
+import arrowForwardIcon from 'assets/arrow-forward.svg';
+import arrowBackIcon from 'assets/arrow-back.svg';
 
 //- Style Imports
 import styles from './ZNS.module.css';
@@ -55,6 +60,29 @@ type ZNSProps = {
 const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	// TODO: Need to handle domains that don't exist!
 
+	//- Browser Navigation State
+	const history = useHistory();
+	const backCount = useRef(0);
+	const pageHistory = useRef<string[]>([]);
+	const isBackDisabled = pageHistory.current.length <= 1;
+	const isForwardDisabled = backCount.current === 0;
+
+	const back = () => {
+		pageHistory.current.pop();
+		pageHistory.current.pop();
+		backCount.current++;
+		history.goBack();
+	};
+
+	const forward = () => {
+		backCount.current--;
+		history.goForward();
+	};
+
+	useEffect(() => {
+		pageHistory.current = pageHistory.current.concat([domain]);
+	}, [domain]);
+
 	//- Minting State
 	const { minting, minted } = useMint();
 
@@ -84,9 +112,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
 	// react to search result changes
 	useEffect(() => {
-		console.log(`Search Results:`);
-		console.log(domainSearch.exactMatch);
-		console.log(domainSearch.matches);
+		// console.log(`Search Results:`);
+		// console.log(domainSearch.exactMatch);
+		// console.log(domainSearch.matches);
 	}, [domainSearch.matches, domainSearch.exactMatch]);
 
 	//- MVP Version
@@ -245,6 +273,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 				/>
 			</Overlay>
 			<Overlay
+				centered
 				open={isProfileOverlayOpen}
 				onClose={() => setIsProfileOverlayOpen(false)}
 			>
@@ -280,8 +309,22 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 				<FilterBar onSelect={mvpFilterSelect} filters={['MVP 1', 'MVP 3']}>
 					<TitleBar>
 						<div>
+							<IconButton
+								iconUri={arrowBackIcon}
+								onClick={back}
+								style={{ height: 32, width: 32 }}
+								disabled={isBackDisabled}
+								alt={'back'}
+							/>
+							<IconButton
+								iconUri={arrowForwardIcon}
+								onClick={forward}
+								style={{ height: 32, width: 32, marginLeft: 4 }}
+								disabled={isForwardDisabled}
+								alt={'forward'}
+							/>
 							{/* TODO: Split this into its own component */}
-							<ZNALink domain={domain} />
+							<ZNALink style={{ marginLeft: 16 }} domain={domain} />
 						</div>
 						<div>
 							{!active && (
@@ -470,20 +513,32 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
 				{/* Subdomain Table */}
 				{subdomains.length > 0 && !isNftView && (
-					<DomainTable
-						domains={tableData}
-						isRootDomain={isRoot}
-						style={{ marginTop: 16 }}
-						empty={!data.isNothing() && subdomains.length === 0}
-						mvpVersion={mvpVersion}
-						onEnlist={openEnlistOverlay}
-						isGridView={isGridView}
-						setIsGridView={setIsGridView}
-					/>
+					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
+						{(styles) => (
+							<animated.div style={styles}>
+								<DomainTable
+									domains={tableData}
+									isRootDomain={isRoot}
+									style={{ marginTop: 16 }}
+									empty={!data.isNothing() && subdomains.length === 0}
+									mvpVersion={mvpVersion}
+									onEnlist={openEnlistOverlay}
+									isGridView={isGridView}
+									setIsGridView={setIsGridView}
+								/>
+							</animated.div>
+						)}
+					</Spring>
 				)}
 
 				{!data.isNothing() && (isNftView || subdomains.length === 0) && (
-					<NFTView domain={domain} onEnlist={enlistCurrentDomain} />
+					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
+						{(styles) => (
+							<animated.div style={styles}>
+								<NFTView domain={domain} onEnlist={enlistCurrentDomain} />
+							</animated.div>
+						)}
+					</Spring>
 				)}
 			</div>
 		</>

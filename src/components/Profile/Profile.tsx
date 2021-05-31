@@ -32,7 +32,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 						<Image className={ProfileStyle.dp} src={randomImage(id)} />
 					</div>
 					<a className={`${ProfileStyle.endpoint} glow-text-blue`}>
-						wilder.{randomName(id).toLowerCase().split(' ').join('.')}
+						0://wilder.{randomName(id).toLowerCase().split(' ').join('.')}
 					</a>
 				</div>
 				<div>
@@ -53,7 +53,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			{yours && <Shop />}
+			{/* {yours && <Shop />} */}
 		</div>
 	);
 };

@@ -6,13 +6,14 @@ import styles from './ZNALink.module.css';
 
 type ZNAProps = {
 	domain: string;
+	style?: React.CSSProperties;
 };
 
-const ZNALink: React.FC<ZNAProps> = ({ domain }) => {
+const ZNALink: React.FC<ZNAProps> = ({ domain, style }) => {
 	return (
-		<div className={styles.ZNALink}>
+		<div className={styles.ZNALink} style={style}>
 			<Link style={{ textDecoration: 'none', color: 'white' }} to={''}>
-				wilder
+				0://wilder
 			</Link>
 			{domain.split('.').map((part, i) => {
 				if (part === '/') return '';
