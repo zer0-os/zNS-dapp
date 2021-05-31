@@ -48,7 +48,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 }) => {
 	const domainSearch = useDomainSearch();
 	const history = useHistory();
-	const searchInput = useRef(null);
+	const searchInput = useRef<HTMLInputElement>(null);
 
 	const config = {
 		smallestSearchQuery: 2,
@@ -59,8 +59,8 @@ const TitleBar: React.FC<TitleBarProps> = ({
 
 	// Input Key Presses
 	const onSearchChange = (event: any) => setSearchQuery(event.target.value);
-	const checkEscape = (event: SynheticEvent) => {
-		if (event.which === 27) searchInput.current.blur();
+	const checkEscape = (event: any) => {
+		if (event.which === 27) searchInput?.current?.blur();
 	};
 
 	const openSearch = () => {
