@@ -17,10 +17,6 @@ import useMint from 'lib/hooks/useMint';
 //- Type Imports
 import { EnlistDomain } from 'types/Domain';
 
-//- Icon Imports
-import arrowForwardIcon from 'assets/arrow-forward.svg';
-import arrowBackIcon from 'assets/arrow-back.svg';
-
 //- Style Imports
 import styles from './ZNS.module.css';
 
@@ -42,7 +38,6 @@ import {
 	Profile,
 	PreviewCard,
 	SideBar,
-	ZNALink,
 	NotificationDrawer,
 	NumberButton,
 	MintPreview,
@@ -51,7 +46,6 @@ import {
 import { MintNewNFT, NFTView, Enlist } from 'containers';
 import { Maybe } from 'true-myth';
 import { DisplayDomain, DisplayParentDomain } from 'lib/types';
-import { useDomainSearch } from 'lib/useDomainSearch';
 
 type ZNSProps = {
 	domain: string;
@@ -64,8 +58,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	const history = useHistory();
 	const backCount = useRef(0);
 	const pageHistory = useRef<string[]>([]);
-	const isBackDisabled = pageHistory.current.length <= 1;
-	const isForwardDisabled = backCount.current === 0;
+	const canGoBack = pageHistory.current.length > 1;
+	const canGoForward = backCount.current > 0;
 
 	const back = () => {
 		pageHistory.current.pop();
@@ -102,20 +96,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
 	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
 	const [isEnlistOverlayOpen, setIsEnlistOverlayOpen] = useState(false);
-
-	const domainSearch = useDomainSearch();
-
-	// dummy search
-	useEffect(() => {
-		domainSearch.setPattern('zachary');
-	}, []);
-
-	// react to search result changes
-	useEffect(() => {
-		// console.log(`Search Results:`);
-		// console.log(domainSearch.exactMatch);
-		// console.log(domainSearch.matches);
-	}, [domainSearch.matches, domainSearch.exactMatch]);
+	const [isSearchActive, setIsSearchActive] = useState(false);
 
 	//- MVP Version
 	// TODO: Move the MVP version handler out to a hook
@@ -255,6 +236,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 			{/* Overlays */}
 			{/* TODO: Switch out overlay handling to a hook */}
 			<NotificationDrawer />
+			<Overlay open={isSearchActive} onClose={() => {}}>
+				<></>
+			</Overlay>
 			<Overlay
 				centered
 				open={isWalletOverlayOpen}
@@ -306,26 +290,20 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
 				{/* Nav Bar */}
 				{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
-				<FilterBar onSelect={mvpFilterSelect} filters={['MVP 1', 'MVP 3']}>
-					<TitleBar>
-						<div>
-							<IconButton
-								iconUri={arrowBackIcon}
-								onClick={back}
-								style={{ height: 32, width: 32 }}
-								disabled={isBackDisabled}
-								alt={'back'}
-							/>
-							<IconButton
-								iconUri={arrowForwardIcon}
-								onClick={forward}
-								style={{ height: 32, width: 32, marginLeft: 4 }}
-								disabled={isForwardDisabled}
-								alt={'forward'}
-							/>
-							{/* TODO: Split this into its own component */}
-							<ZNALink style={{ marginLeft: 16 }} domain={domain} />
-						</div>
+				<FilterBar
+					style={{ zIndex: isSearchActive ? 10000 : 10 }}
+					onSelect={mvpFilterSelect}
+					filters={['MVP 1', 'MVP 3']}
+				>
+					<TitleBar
+						domain={domain}
+						canGoBack={canGoBack}
+						canGoForward={canGoForward}
+						onBack={back}
+						onForward={forward}
+						isSearchActive={isSearchActive}
+						setIsSearchActive={setIsSearchActive}
+					>
 						<div>
 							{!active && (
 								<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>

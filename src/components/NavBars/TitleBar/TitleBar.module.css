@@ -15,10 +15,9 @@ header {
 .TitleBar {
 	position: relative;
 	display: flex;
+	flex-direction: column;
 
 	width: 100%;
-
-	padding: 11px 17px;
 
 	background: linear-gradient(
 		92.24deg,
@@ -28,7 +27,12 @@ header {
 	border-radius: var(--box-radius);
 }
 
-.TitleBar::after {
+.Bar {
+	display: flex;
+	padding: 11px 17px;
+}
+
+.Bar::after {
 	content: ' ';
 	position: absolute;
 	top: 0;
@@ -46,28 +50,67 @@ header {
 	-webkit-box-sizing: border-box;
 }
 
-.TitleBar > div {
+.Bar > div {
 	flex: 1;
 	flex-grow: 1;
 	display: flex;
 	align-items: center;
 }
 
-.TitleBar > div > * {
+.Bar > div > * {
 	/* Maybe not the best solution long term but works for now
 	until we have other breakpoints designed */
 	flex-shrink: 0;
 }
 
-.TitleBar > div:not(:first-child) {
+.Bar > div:not(:first-child) {
 	/*padding-top 11px;*/
 	/*padding-bottom: 1px;*/
 }
 
-.TitleBar > div:nth-child(2) {
+.Bar > div:nth-child(2) {
 	justify-content: flex-end;
 }
 
-.TitleBar > div:nth-child(2) > *:not(:last-child) {
+.Bar > div:nth-child(2) > *:not(:last-child) {
 	margin-right: 10px;
+}
+
+/* Search Styling */
+
+.Search {
+	width: 100%;
+	margin-left: 16px;
+
+	background: none;
+	color: white;
+	font-weight: bold;
+}
+
+.SearchResults {
+	width: 100%;
+}
+
+.SearchResults li {
+	width: 100%;
+	padding: 17px 17px 17px 101px;
+
+	cursor: pointer;
+
+	/* transition: all var(--animation-time-short) ease-in-out; */
+}
+
+.SearchResults li span {
+	display: inline-block;
+	margin-left: 8px;
+	font-size: 14px;
+	color: var(--color-accent-1);
+}
+
+.SearchResults li:hover {
+	background: var(--background-purple-card-20);
+}
+
+.SearchResults .ExactMatch {
+	font-weight: bold;
 }
