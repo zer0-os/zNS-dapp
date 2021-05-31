@@ -234,7 +234,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	return (
 		<>
 			{/* Overlays */}
-			{/* TODO: Switch out overlay handling to a hook */}
 			<NotificationDrawer />
 			<Overlay open={isSearchActive} onClose={() => {}}>
 				<></>
@@ -291,9 +290,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 				{/* Nav Bar */}
 				{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
 				<FilterBar
-					style={{ zIndex: isSearchActive ? 10000 : 10 }}
+					style={
+						isSearchActive
+							? { zIndex: isSearchActive ? 10000 : 10, background: 'none' }
+							: {}
+					}
 					onSelect={mvpFilterSelect}
-					filters={['MVP 1', 'MVP 3']}
+					filters={!isSearchActive ? ['MVP 1', 'MVP 3'] : []}
 				>
 					<TitleBar
 						domain={domain}
@@ -310,7 +313,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 									Connect To Wallet
 								</FutureButton>
 							)}
-							{active && (
+							{active && !isSearchActive && (
 								<>
 									{/* Mint button */}
 									<FutureButton

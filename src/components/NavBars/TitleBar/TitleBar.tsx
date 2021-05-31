@@ -1,9 +1,9 @@
 //- React Imports
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Component Imports
-import { IconButton, ZNALink, Overlay } from 'components';
+import { IconButton, ZNALink } from 'components';
 
 //- Library Imports
 import { useDomainSearch } from 'lib/useDomainSearch';
@@ -48,29 +48,35 @@ const TitleBar: React.FC<TitleBarProps> = ({
 }) => {
 	const domainSearch = useDomainSearch();
 	const history = useHistory();
+	const searchInput = useRef(null);
 
-	const config = {
-		smallestSearchQuery: 2,
-		isExactMatchEnabled: false,
-	};
+	const config = { smallestSearchQuery: 2 };
 
 	const [searchQuery, setSearchQuery] = useState('');
 
+	// Input Key Presses
 	const onSearchChange = (event: any) => setSearchQuery(event.target.value);
+	const checkEscape = (event: SynheticEvent) => {
+		if (event.which === 27) searchInput.current.blur();
+	};
 
 	const openSearch = () => {
-		setSearchQuery('');
 		setIsSearchActive(true);
 	};
 	const closeSearch = () => {
+		// Search is disappearing before the click registers
+		// Set a little timeout so the row click registers before de-rendering
 		setTimeout(() => {
 			setIsSearchActive(false);
 			setSearchQuery('');
-		}, 100);
+		}, 0);
+	};
+
+	const rowClick = (event: any) => {
+		console.log(event);
 	};
 
 	const go = (to: string) => {
-		console.log('to');
 		const relativeDomain = getRelativeDomainPath(to);
 		history.push(relativeDomain);
 	};
@@ -112,40 +118,30 @@ const TitleBar: React.FC<TitleBarProps> = ({
 					<input
 						className={styles.Search}
 						onChange={onSearchChange}
+						onKeyUp={checkEscape}
 						value={searchQuery}
 						type="text"
 						onFocus={openSearch}
 						onBlur={closeSearch}
+						ref={searchInput}
 					/>
 				</div>
 				{children}
 			</div>
-			{isSearchActive && searchQuery.length >= config.smallestSearchQuery && (
-				<ul className={styles.SearchResults}>
+			{isSearchActive && (
+				<ul className={`${styles.SearchResults} blur border-primary`}>
 					{/* @TODO: Implement exact domain properly */}
-					{config.isExactMatchEnabled && domainSearch?.exactMatch?.name && (
-						<li
-							className={styles.ExactMatch}
-							key={domainSearch.exactMatch.name}
-							onClick={() => go(domainSearch?.exactMatch?.name || '')}
-						>
-							{
-								domainSearch.exactMatch.name.split('.')[
-									domainSearch.exactMatch.name.split('.').length - 1
-								]
-							}{' '}
-							<span>{domainSearch.exactMatch.name}</span>
-						</li>
-					)}
 					{domainSearch?.matches
 						?.filter((d) => d.name.length > 1)
-						.slice(0, 9)
 						.map((s) => (
-							<li onClick={() => go(s.name)} key={s.name}>
+							<li onClick={rowClick}>
 								{s.name.split('.')[s.name.split('.').length - 1]}
 								<span>{s.name}</span>
 							</li>
 						))}
+					{domainSearch.matches?.length === 0 && (
+						<li>Type to search domains!</li>
+					)}
 				</ul>
 			)}
 		</nav>
