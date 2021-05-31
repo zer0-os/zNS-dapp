@@ -1,0 +1,44 @@
+.nextDrop {
+	display: flex;
+	align-items: center;
+
+	width: 100%;
+
+	padding: 15px 20px 16px 20px;
+
+	background: url('assets/new-drop-bg.png');
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.nextDrop > img {
+	height: 64px;
+	width: 64px;
+
+	margin-right: 12px;
+
+	border-radius: 50%;
+}
+
+.nextDrop h5 {
+	font-size: 24px;
+	font-weight: 700;
+
+	color: var(--color-accent-1);
+}
+
+.nextDrop h5 > span {
+	color: #9dd0ff;
+}
+
+.nextDrop p {
+	margin-top: 12px;
+	padding-bottom: 0;
+
+	font-weight: 700;
+}
+
+.nextDrop p > span {
+	color: var(--color-accent-1);
+}

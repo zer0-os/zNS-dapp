@@ -1,0 +1,95 @@
+.SideBar {
+	height: 100vh;
+	width: 56px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	position: fixed;
+	top: 0;
+
+	transform: translateX(calc(-100% - 19px));
+}
+
+/* Navigator Styling */
+.Navigator {
+	border-radius: 27px;
+	padding: 7px 5px;
+
+	background-color: #4e008466;
+}
+
+.Icons {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.Icons li {
+	position: relative;
+	height: 44px;
+	width: 44px;
+
+	border-radius: 50%;
+	background-color: #00d1ff1a;
+
+	cursor: pointer;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Icons li > img {
+	height: 100%;
+	width: 100%;
+}
+
+.Icons li:hover {
+	transform: scale(1.2);
+}
+
+.Icons li::after,
+.Icons li::before {
+	z-index: -5;
+}
+
+.Icons li::before {
+	content: ' ';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0px;
+	height: 0px;
+	box-shadow: 0px 0px 30px 15px rgba(0, 178, 255);
+	transform: translate(-50%, -50%);
+	transition: box-shadow var(--animation-time-medium) ease-in-out;
+}
+
+.Icons li:hover::before {
+	box-shadow: 0px 0px 25px 12px rgb(136, 219, 255);
+}
+
+.Icons li:not(:first-child) {
+	margin-top: 12px;
+}
+
+.Selected:hover {
+	transform: scale(1) !important;
+}
+
+.Selected::before {
+	box-shadow: 0px 0px 30px 20px rgba(0, 178, 255) !important;
+}
+
+.Selected::after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: -3px;
+	width: calc(100%);
+	border-radius: 50%;
+	height: 100%;
+	border-left: 3px var(--color-accent-1) solid;
+	border-right: 3px var(--color-accent-1) solid;
+}

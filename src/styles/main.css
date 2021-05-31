@@ -1,0 +1,332 @@
+/*
+ * @author Brett Collins
+ * 
+ * Search:
+ *  - Fonts
+ *  - Variables
+ *  - Default HTML Elements
+ *	- Custom HTML Elements
+ *	- Borders
+ *	- Glows / Shadows
+ *	- Effects
+ */
+
+/*
+ * Fonts
+ * -- Imports for fonts - application of fonts does not belong here
+ *
+ */
+@font-face {
+	font-family: 'Eurostile';
+	font-weight: 400;
+	src: local('Eurostile'), url('../fonts/Eurostile-Reg.otf') format('opentype');
+}
+
+@font-face {
+	font-family: 'Eurostile';
+	font-weight: 500;
+	src: local('Eurostile'), url('../fonts/Eurostile-Med.otf') format('opentype');
+}
+
+@font-face {
+	font-family: 'Eurostile';
+	font-weight: 700;
+	src: local('Eurostile'), url('../fonts/Eurostile-Bol.otf') format('opentype');
+}
+
+/* 
+ * Variables
+ * -- The design is likely to change, so let's use variables where we can
+ * to make changes a bit easier.
+ *
+ * TODO: Would it be worth changing this to SCSS and having slightly more versatile variables?
+ */
+:root {
+	--font-size-default: 16px;
+	--font-family: 'Eurostile', sans-serif;
+
+	--color-primary: #8c00ff;
+	--color-primary-lighter-3: #e5baff;
+	--color-primary-darkest: #8c00ff;
+	--color-accent-1: #3ca1ff;
+	--color-accent-1-30: #9ed0ff;
+	--color-accent-1-50: rgba(60, 161, 255, 0.5);
+	--color-accent-1-dark: #1e5180;
+	--color-accent-1-darker: #002f5b;
+	--color-accent-1-medium-10: rgb(0, 209, 255, 0.1);
+	--color-accent-1-light: #a1d2ff;
+	--color-accent-1-lighter: #9ed0ff;
+	--color-accent-2: #eb00ff;
+	--color-success: #3cc13b;
+	--color-warning: #f3bb1c;
+	--color-error: #f03738;
+	--color-invalid: #d379ff;
+	--color-grey: #808080;
+	--color-text-primary: #ffffff;
+
+	--color-green-2: #27ae60;
+
+	--color-red: #eb5757;
+
+	--background-primary-button-fill: linear-gradient(
+		148deg,
+		#00407c 20.93%,
+		#00203f 82.47%
+	);
+	--background-secondary-button-fill: #1e5180;
+
+	/* TODO: Should probably find a library that lets us set 
+		opacity on HEX colours so we don't have to do this */
+	--background-purple-card: #4e0084;
+	--background-purple-card-50: rgba(78, 0, 132, 0.5);
+	--background-purple-card-20: rgba(78, 0, 132, 0.2);
+	--background-purple-card-10: rgba(78, 0, 132, 0.1);
+	--background-purple-light-20: rgba(190, 96, 255, 0.2);
+
+	--background-field-bg: linear-gradient(
+		94.23deg,
+		rgba(60, 161, 255, 0.2) 0%,
+		rgba(30, 81, 128, 0.2) 100%
+	);
+
+	--background-blue-deck: radial-gradient(
+		56.93% 56.93% at 50% 50%,
+		rgba(206, 183, 255, 0) 0%,
+		rgba(103, 79, 255, 0.2) 100%
+	);
+	--background-blue-card: linear-gradient(
+		92.24deg,
+		rgba(0, 102, 255, 0.2) 0%,
+		rgba(0, 63, 137, 0.2) 100%
+	);
+	--background-blue-card-wilder: radial-gradient(
+		56.93% 56.93% at 50% 50%,
+		rgba(206, 183, 255, 0) 0%,
+		rgba(103, 79, 255, 0.2) 100%
+	);
+
+	--background-primary: rgba(78, 0, 132, 0.2);
+	--background-primary-gradient: linear-gradient(
+		92.24deg,
+		rgba(0, 22, 55, 0.5) 0%,
+		rgba(0, 63, 137, 0.265) 100%
+	);
+	--background-accent-1-gradient: linear-gradient(
+		94.23deg,
+		rgba(0, 123, 237, 0.2) 0%,
+		rgba(0, 83, 160, 0.2) 100%
+	);
+
+	--box-radius: 16px;
+
+	--width-max: 1250px;
+
+	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
+
+	--glow-primary: drop-shadow(0px 0px 10px 0px #eb00ff);
+	--glow-text-blue: 0px 0px 12px rgba(60, 161, 255, 0.7);
+	--glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
+	--glow-text-white-big: 0px 0px 15px rgba(255, 255, 255, 1),
+		0px 0px 15px rgba(255, 255, 255, 1), 0px 0px 15px rgba(255, 255, 255, 1);
+	--glow-text-blue-big: 0px 0px 15px rgba(60, 161, 255, 1),
+		0px 0px 15px rgba(60, 161, 255, 1), 0px 0px 15px rgba(60, 161, 255, 1);
+
+	--animation-time-short: 0.1s;
+	--animation-time-medium: 0.3s;
+	--animation-time-long: 0.7s;
+}
+
+/*
+ *
+ * Default HTML Elements 
+ *
+ */
+
+html,
+body,
+button,
+input,
+textarea {
+	font-family: var(--font-family);
+	-webkit-font-smoothing: antialiased;
+	letter-spacing: 0.2px;
+}
+
+input,
+textarea {
+	font-size: 1em;
+}
+
+html {
+	overflow: hidden;
+	height: 100%;
+}
+
+body {
+	background-color: #120628;
+	background: url('../assets/zns-bg.png');
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	min-height: 100vh;
+	height: 100%;
+	width: 100%;
+	overflow: auto;
+	/* margin-top: 29px; */
+	/* padding-top: 123px; */
+	/* padding-bottom: 123px; */
+
+	/* Currently the only breakpoint in Figma */
+	min-width: 1440px;
+
+	color: var(--color-text-primary);
+}
+
+/* body.no-scroll {
+	overflow: hidden;
+    position: fixed;
+} */
+
+h1 {
+	font-size: 22px;
+}
+
+hr.glow {
+	position: relative;
+	height: 1px;
+	border: none;
+	background-color: #6e10bb;
+}
+
+hr.glow::before {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 1px;
+	width: 8px;
+	background-color: #e0baff;
+}
+
+hr.glow::after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 1px;
+	width: 8px;
+	background-color: #e0baff;
+}
+
+a {
+	color: var(--color-accent-1);
+	text-decoration: none;
+	transition: text-shadow var(--animation-time-short) ease-in-out;
+}
+
+a:hover {
+	color: var(--color-accent-1);
+	text-shadow: var(--glow-text-blue), var(--glow-text-blue);
+}
+
+a.alt-link {
+	color: white;
+}
+
+a.alt-link:hover {
+	color: white;
+	text-shadow: var(--glow-text-white-big);
+}
+
+/*
+ *
+ * Custom HTML Elements 
+ *
+ */
+
+.content {
+	display: flex;
+	margin-left: 180px;
+	margin-top: 106px;
+	padding: 25px;
+}
+
+.main {
+	flex: 1;
+}
+
+.page-spacing {
+	/* position: relative; */
+	max-width: var(--width-max);
+	min-width: var(--width-max);
+	margin: 0 auto;
+	padding-top: 126px;
+	padding-bottom: 110px;
+}
+
+.no-select {
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+/*
+ *
+ * Borders 
+ *
+ */
+
+.border-primary {
+	border: 1px solid #c680ff;
+	border-collapse: separate;
+	box-shadow: 0 0 10px 0 rgb(235 0 255 / 40%);
+}
+
+.border-rounded {
+	border-radius: 16px;
+	border-collapse: separate;
+}
+
+.border-blue {
+	border: 1px solid #88d7ff;
+}
+
+.border-pink-glow {
+	border: 1px solid #e5baff;
+	box-shadow: 0 0 10px 0 #8d0099;
+}
+
+/*
+ *
+ * Glows / Shadows
+ *
+ */
+
+.glow-box-accent-2 {
+	filter: drop-shadow(0px 0px 10px var(--color-accent-2));
+}
+
+.glow-text-white {
+	text-shadow: var(--glow-text-white);
+}
+
+.glow-text-blue {
+	text-shadow: var(--glow-text-blue);
+}
+
+/*
+ *
+ * Effects
+ *
+ */
+
+/* Blurs the background of the div */
+.blur {
+	backdrop-filter: blur(20px);
+	backdrop-webkit-filter: blur(20px);
+	backdrop-moz-filter: blur(20px);
+	backdrop-o-filter: blur(20px);
+	backdrop-ms-filter: blur(20px);
+}

@@ -8,27 +8,27 @@ import { BasicController } from '../types/BasicController';
 import { BasicController__factory } from '../types';
 
 export interface ContractAddresses {
-  basic: string;
-  registrar: string;
+	basic: string;
+	registrar: string;
 }
 
 export interface Contract {
-  basic: BasicController;
+	basic: BasicController;
 }
 
 function useZnsBasicContracts(): Maybe<Contract> {
-  const context = useWeb3React<Web3Provider>();
-  const { library, active, chainId } = context;
-  const contracts = useMemo((): Maybe<Contract> => {
-    if (!active || !library) return Maybe.nothing();
-    return Maybe.of({
-      basic: BasicController__factory.connect(
-        addresses[chainIdToNetworkType(chainId!)].basic,
-        library.getSigner(),
-      ),
-    });
-  }, [active, library, chainId]);
-  return contracts;
+	const context = useWeb3React<Web3Provider>();
+	const { library, active, chainId } = context;
+	const contracts = useMemo((): Maybe<Contract> => {
+		if (!active || !library) return Maybe.nothing();
+		return Maybe.of({
+			basic: BasicController__factory.connect(
+				addresses[chainIdToNetworkType(chainId!)].basic,
+				library.getSigner(),
+			),
+		});
+	}, [active, library, chainId]);
+	return contracts;
 }
 
 export { useZnsBasicContracts };

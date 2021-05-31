@@ -1,10 +1,13 @@
 .profile {
 	width: 1320px;
 	min-width: 1320px;
+	/* height: 100%; */
+	overflow-y: scroll;
 	padding: 54px;
-	color: #4D4D4D;
+	color: #4d4d4d;
 	background: var(--background-blue-deck);
 	filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.5));
+	opacity: 0.9;
 }
 
 .profile h1 {
@@ -27,6 +30,7 @@
 
 .body {
 	display: flex;
+	/* justify-content: center; */
 	padding: 39px 52px 62px 0;
 
 	font-size: var(--font-size-default);
@@ -47,23 +51,16 @@
 	margin: 0 auto;
 
 	border-radius: 50%;
-	border: 1px solid #d28bff;
 
 	filter: drop-shadow(0px 0px 40px rgba(255, 255, 255, 0.5));
 
-  	object-fit: cover;
+	object-fit: cover;
 }
 
 .endpoint {
 	margin-top: 16px;
 
-	color: var(--color-accent-1);
-	font-weight: 700;
-}
-
-.endpoint:hover {
-	color: var(--color-accent-1);
-	text-shadow: var(--glow-text-blue-big)
+	color: white;
 }
 
 /* DP section */
@@ -72,6 +69,7 @@
 	flex-direction: column;
 	align-items: center;
 
+	width: 176px;
 }
 
 /* Profile paragraph */

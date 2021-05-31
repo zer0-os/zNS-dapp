@@ -1,63 +1,41 @@
-import { AbiCoder } from '@ethersproject/abi';
-import { keccak256 } from '@ethersproject/keccak256';
-import { BigNumber } from '@ethersproject/bignumber';
 import { ethers } from 'ethers';
-import { Hash } from 'node:crypto';
 
-const coder = new AbiCoder();
+export const rootDomainName = 'wilder';
+export const rootDomainId =
+	'0x196c0a1e30004b9998c97b363e44f1f4e97497e59d52ad151208e9393d70bb3b';
 
-const zeroBytes32 = '0x0';
-
-function hash(x: any) {
-  return keccak256(x);
-}
-
-const getDomainId = (name: string): string => {
-  if (name === '' || undefined || null) {
-    return ethers.constants.HashZero;
-  }
-
-  const domains = name.split('.');
-
-  const getSubnodeHash = (parentHash: string, labelHash: string): string => {
-    const calculatedHash = ethers.utils.keccak256(
-      ethers.utils.defaultAbiCoder.encode(
-        ['bytes32', 'bytes32'],
-        [ethers.utils.arrayify(parentHash), ethers.utils.arrayify(labelHash)],
-      ),
-    );
-
-    return calculatedHash;
-  };
-  let hashReturn = ethers.constants.HashZero;
-  for (let i = 0; i < domains.length; i++) {
-    if (i === 0) {
-      hashReturn = getSubnodeHash(hashReturn, ethers.utils.id(domains[0]));
-    } else {
-      hashReturn = getSubnodeHash(hashReturn, ethers.utils.id(domains[i]));
-    }
-  }
-  return hashReturn;
-  //
-
-  // const parentDomain = domains[0];
-  // const subDomains = domains[1];
-  // return keccak256(
-  //   keccak256(ethers.utils.toUtf8Bytes(parentDomain) + getDomainId(subDomains)),
-  // );
+export const hash = (x: string): string => {
+	const hash = ethers.utils.id(x);
+	return hash;
 };
 
-// const getHash = (parentHash: string, labelHash: string): string => {
-//   const calculatedHash = ethers.utils.keccak256(
-//     coder.encode(
-//       ['bytes32', 'bytes32'],
-//       [ethers.utils.arrayify(parentHash), ethers.utils.arrayify(labelHash)],
-//     ),
-//   );
+const getSubnodeHash = (parentHash: string, labelHash: string): string => {
+	const calculatedHash = ethers.utils.keccak256(
+		ethers.utils.defaultAbiCoder.encode(
+			['bytes32', 'bytes32'],
+			[ethers.utils.arrayify(parentHash), ethers.utils.arrayify(labelHash)],
+		),
+	);
 
-//   return calculatedHash;
-// };
+	return calculatedHash;
+};
 
-export { getDomainId };
+export const getDomainId = (name: string): string => {
+	let hashReturn = rootDomainId;
 
-//
+	if (name === '' || undefined || null) {
+		return hashReturn;
+	}
+
+	const domains = name.split('.');
+	for (let i = 0; i < domains.length; i++) {
+		hashReturn = getSubnodeHash(hashReturn, ethers.utils.id(domains[i]));
+	}
+	return hashReturn;
+};
+
+export const getRelativeDomainPath = (domain: string): string => {
+	const fixedPath = domain.replace(`${rootDomainName}.`, '');
+
+	return fixedPath;
+};
