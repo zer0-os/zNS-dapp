@@ -3,7 +3,7 @@ import React from 'react';
 
 //- Web3 Imports
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useWeb3React, UnsupportedChainIdError } from '@web3-react/core';
+import { useWeb3React } from '@web3-react/core';
 import {
 	injected,
 	walletlink,
@@ -39,7 +39,7 @@ const nameToConnector: { [key: string]: AbstractConnector } = {
 };
 
 const connectorFromName = (name: string) => {
-	if (name == 'walletconnect') {
+	if (name === 'walletconnect') {
 		return createWalletConnectConnector();
 	}
 
@@ -64,7 +64,7 @@ const nameFromConnector = (c: AbstractConnector) => {
 
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const walletContext = useWeb3React<Web3Provider>();
-	const { active, connector, activate, deactivate, error } = walletContext;
+	const { active, connector, activate, deactivate } = walletContext;
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -99,7 +99,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					Metamask
 					<div>
-						<img src={metamaskIcon} />
+						<img alt="metamask" src={metamaskIcon} />
 					</div>
 				</li>
 				<li
@@ -108,7 +108,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					<span>Wallet Connect</span>
 					<div>
-						<img src={walletConnectIcon} />
+						<img alt="wallet connect" src={walletConnectIcon} />
 					</div>
 				</li>
 				<li
@@ -117,7 +117,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					<span>Coinbase Wallet</span>
 					<div>
-						<img src={coinbaseWalletIcon} />
+						<img alt="coinbase wallet" src={coinbaseWalletIcon} />
 					</div>
 				</li>
 				<li
@@ -126,7 +126,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					<span>Fortmatic</span>
 					<div>
-						<img src={fortmaticIcon} />
+						<img alt="fortmatic" src={fortmaticIcon} />
 					</div>
 				</li>
 				<li
@@ -135,7 +135,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					<span>Portis</span>
 					<div>
-						<img src={portisIcon} />
+						<img alt="portis" src={portisIcon} />
 					</div>
 				</li>
 			</ul>
@@ -152,7 +152,11 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				<p>
 					New to Ethereum?
 					<br />
-					<a href="https://ethereum.org/en/wallets/" target="_blank">
+					<a
+						rel="noreferrer"
+						href="https://ethereum.org/en/wallets/"
+						target="_blank"
+					>
 						Learn more about wallets
 					</a>
 				</p>

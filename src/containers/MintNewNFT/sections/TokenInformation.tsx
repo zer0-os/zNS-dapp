@@ -8,7 +8,7 @@ import { TokenInformationType } from '../types';
 import styles from '../MintNewNFT.module.css';
 
 //- Component Imports
-import { ToggleButton, TextInput, FutureButton } from 'components';
+import { TextInput, FutureButton } from 'components';
 
 type TokenInformationProps = {
 	token: TokenInformationType | null;
@@ -31,7 +31,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const [story, setStory] = useState(token ? token.story : '');
 	const [image, setImage] = useState(token ? token.image : Buffer.from(''));
 	const [domain, setDomain] = useState(token ? token.domain : '');
-	const [locked, setLocked] = useState(token ? token.locked : true);
+	const [locked] = useState(token ? token.locked : true);
 
 	const updateName = (name: string) => {
 		setName(name);

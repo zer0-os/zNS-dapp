@@ -35,12 +35,12 @@ const MintPreview = () => {
 					)}
 
 					{!minted && (
-						<a style={{ color: 'var(--color-grey)' }}>
+						<span style={{ color: 'var(--color-grey)', fontWeight: 700 }}>
 							{nft.domain.length === 1
 								? '0://wilder.'
 								: `0://wilder.${nft.domain.substring(1)}`}
 							{nft.name}
-						</a>
+						</span>
 					)}
 
 					<p>{nft.story}</p>

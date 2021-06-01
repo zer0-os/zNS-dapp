@@ -49,9 +49,9 @@ const Member: React.FC<MemberProps> = ({
 					{showZna && (
 						<>
 							<br />
-							<a onClick={openProfile}>
+							<button className="text-button" onClick={openProfile}>
 								0://wilder.{name.toLowerCase().split(' ').join('.')}
-							</a>
+							</button>
 						</>
 					)}
 				</div>

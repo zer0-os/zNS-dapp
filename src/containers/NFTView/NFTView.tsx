@@ -22,7 +22,6 @@ import copyIcon from './assets/copy-icon.svg';
 import { Maybe } from 'true-myth';
 import { DisplayParentDomain } from 'lib/types';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import addresses from 'lib/addresses';
 import { BigNumber } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
 

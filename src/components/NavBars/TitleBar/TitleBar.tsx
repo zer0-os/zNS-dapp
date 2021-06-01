@@ -16,15 +16,9 @@ import arrowBackIcon from 'assets/arrow-back.svg';
 //- Style Imports
 import styles from './TitleBar.module.css';
 
-type SearchResult = {
-	name: string;
-	domain: string;
-};
-
 type TitleBarProps = {
 	style?: React.CSSProperties;
 	children: React.ReactNode;
-	// searchResults?: SearchResult[];
 	canGoBack: boolean;
 	onBack: () => void;
 	canGoForward: boolean;
@@ -37,7 +31,6 @@ type TitleBarProps = {
 const TitleBar: React.FC<TitleBarProps> = ({
 	style,
 	children,
-	// searchResults,
 	canGoBack,
 	onBack,
 	canGoForward,
@@ -86,10 +79,11 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		if (searchQuery.length >= config.smallestSearchQuery)
 			domainSearch.setPattern(searchQuery);
 		else domainSearch.setPattern('?');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchQuery]);
 
 	return (
-		<nav
+		<div
 			className={`${styles.TitleBar} ${
 				isSearchActive ? styles.Searching : ''
 			} border-primary`}
@@ -146,18 +140,18 @@ const TitleBar: React.FC<TitleBarProps> = ({
 					)}
 					{domainSearch?.matches
 						?.filter((d) => d.name.length > 1)
-						.map((s) => (
-							<li onClick={() => go(s.name)} key={s.name}>
+						.map((s, i) => (
+							<li onClick={() => go(s.name)} key={i + s.name}>
 								{s.name.split('.')[s.name.split('.').length - 1]}
 								<span>{s.name}</span>
 							</li>
 						))}
 					{domainSearch.matches?.length === 0 && (
-						<li>Type to search domains!</li>
+						<li key={'type'}>Type to search domains!</li>
 					)}
 				</ul>
 			)}
-		</nav>
+		</div>
 	);
 };
 

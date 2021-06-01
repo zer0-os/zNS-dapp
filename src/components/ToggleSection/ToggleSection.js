@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
 import styles from './ToggleSection.module.css';
 
@@ -10,8 +10,6 @@ const ToggleSection = (props) => {
 	const rotateCss = {
 		transform: props.open ? 'rotate(90deg)' : 'rotate(0deg)',
 	};
-
-	// const toggle = () => setOpen(props.open != undefined ? props.open : !isOpen)
 
 	return (
 		<div style={props.style} className={styles.ToggleSection}>

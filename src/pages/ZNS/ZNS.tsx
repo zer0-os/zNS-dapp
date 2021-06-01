@@ -118,6 +118,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 
 	useEffect(() => {
 		domainContext.refetchDomain();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [minted]);
 
 	const data: Maybe<DisplayParentDomain> = domainContext.data;
@@ -235,45 +236,44 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 		<>
 			{/* Overlays */}
 			<NotificationDrawer />
-			<Overlay open={isSearchActive} onClose={() => {}}>
-				<></>
-			</Overlay>
-			<Overlay
-				centered
-				open={isWalletOverlayOpen}
-				onClose={() => setIsWalletOverlayOpen(false)}
-			>
-				<ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} />
-			</Overlay>
-			<Overlay
-				open={isMintOverlayOpen}
-				onClose={() => setIsMintOverlayOpen(false)}
-			>
-				<MintNewNFT
-					onMint={() => setIsMintOverlayOpen(false)}
-					domainName={domain}
-					domainId={!data.isNothing() ? data.value.id : ''}
-				/>
-			</Overlay>
-			<Overlay
-				centered
-				open={isProfileOverlayOpen}
-				onClose={() => setIsProfileOverlayOpen(false)}
-			>
-				<Profile yours id={account ? account : ''} />
-			</Overlay>
-			<Overlay
-				open={isEnlistOverlayOpen}
-				onClose={() => setIsEnlistOverlayOpen(false)}
-			>
-				<Enlist
-					onSubmit={onEnlistSubmit}
-					domainId={enlisting.id}
-					domainName={enlisting.domainName}
-					minterName={enlisting.minter}
-					image={enlisting.image}
-				/>
-			</Overlay>
+			{isSearchActive && (
+				<Overlay open onClose={() => {}}>
+					<></>
+				</Overlay>
+			)}
+			{isWalletOverlayOpen && (
+				<Overlay centered open onClose={() => setIsWalletOverlayOpen(false)}>
+					<ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} />
+				</Overlay>
+			)}
+			{isMintOverlayOpen && (
+				<Overlay open onClose={() => setIsMintOverlayOpen(false)}>
+					<MintNewNFT
+						onMint={() => setIsMintOverlayOpen(false)}
+						domainName={domain}
+						domainId={!data.isNothing() ? data.value.id : ''}
+					/>
+				</Overlay>
+			)}
+			{isProfileOverlayOpen && (
+				<Overlay centered open onClose={() => setIsProfileOverlayOpen(false)}>
+					<Profile yours id={account ? account : ''} />
+				</Overlay>
+			)}
+			{isEnlistOverlayOpen && (
+				<Overlay
+					open={isEnlistOverlayOpen}
+					onClose={() => setIsEnlistOverlayOpen(false)}
+				>
+					<Enlist
+						onSubmit={onEnlistSubmit}
+						domainId={enlisting.id}
+						domainName={enlisting.domainName}
+						minterName={enlisting.minter}
+						image={enlisting.image}
+					/>
+				</Overlay>
+			)}
 
 			{/* ZNS Content */}
 			<div
@@ -284,9 +284,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 					paddingTop: mvpVersion === 1 ? 155 : 139,
 				}}
 			>
-				{/* TODO: Maybe worth moving sidebar up to App.tsx depending on its functionality */}
-				{mvpVersion === 3 && <SideBar />}
-
 				{/* Nav Bar */}
 				{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
 				<FilterBar
@@ -365,6 +362,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 						</div>
 					</TitleBar>
 				</FilterBar>
+
+				{/* TODO: Maybe worth moving sidebar up to App.tsx depending on its functionality */}
+				{mvpVersion === 3 && <SideBar />}
 
 				{/* Asset Cards per MVP 3 */}
 				{mvpVersion === 3 && (

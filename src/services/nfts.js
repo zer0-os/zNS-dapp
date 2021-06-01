@@ -52,4 +52,6 @@ const getAll = () => nfts;
 const getOwnedBy = (user) => nfts.filter((n) => n.owner.name === user);
 const getCreatedBy = (user) => nfts.filter((n) => n.creator.name === user);
 
-export default { getAll, getOwnedBy, getCreatedBy };
+const NFTs = { getAll, getOwnedBy, getCreatedBy };
+
+export default NFTs;

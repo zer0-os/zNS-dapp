@@ -12,7 +12,6 @@ import {
 import styles from '../MintNewNFT.module.css';
 
 //- Asset Imports
-import graphIcon from './assets/graph.svg';
 import handIcon from './assets/hand.svg';
 import storyIcon from './assets/story.svg';
 import tickerIcon from './assets/ticker.svg';
@@ -23,7 +22,7 @@ import { FutureButton } from 'components';
 
 type SummaryProps = {
 	token: TokenInformationType | null;
-	dynamic: TokenDynamicType | null;
+	dynamic?: TokenDynamicType | null;
 	staking: TokenStakeType | null;
 	onContinue: () => void;
 	isMintLoading: boolean;
@@ -50,19 +49,19 @@ const Summary: React.FC<SummaryProps> = ({
 					<h2>Summary</h2>
 					<ul>
 						<li className={styles.Name}>
-							<img src={tickerIcon} />
+							<img alt="name icon" src={tickerIcon} />
 							{token.name}
 						</li>
 						<li>
-							<img src={addressIcon} />
+							<img alt="address icon" src={addressIcon} />
 							0://wilder.{domain.substring(1)}.{token.domain}
 						</li>
 						<li>
-							<img src={storyIcon} />
+							<img alt="story icon" src={storyIcon} />
 							{token.story}
 						</li>
 						<li>
-							<img src={handIcon} />
+							<img alt="stake icon" src={handIcon} />
 							{staking.stake} {staking.currency}
 						</li>
 					</ul>

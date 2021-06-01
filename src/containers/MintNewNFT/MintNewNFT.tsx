@@ -14,14 +14,14 @@ import { randomName } from 'lib/Random';
 //- Type Imports
 import {
 	TokenInformationType,
-	TokenDynamicType,
+	// TokenDynamicType,
 	TokenStakeType,
 } from './types';
 
 //- Component Imports
 import { StepBar } from 'components';
 import TokenInformation from './sections/TokenInformation';
-import TokenDynamics from './sections/TokenDynamics';
+// import TokenDynamics from './sections/TokenDynamics';
 import Staking from './sections/Staking';
 import Summary from './sections/Summary';
 
@@ -57,13 +57,13 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	};
 
 	// Token Dynamics Page
-	const [tokenDynamics, setTokenDynamics] = useState<TokenDynamicType | null>(
-		null,
-	);
-	const getTokenDynamics = (data: TokenDynamicType) => {
-		setTokenDynamics(data);
-		setStep(3);
-	};
+	// const [tokenDynamics, setTokenDynamics] = useState<TokenDynamicType | null>(
+	// 	null,
+	// );
+	// const getTokenDynamics = (data: TokenDynamicType) => {
+	// 	setTokenDynamics(data);
+	// 	setStep(3);
+	// };
 
 	// Stake Page
 	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
@@ -115,12 +115,8 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					domain: tokenInformation.domain,
 					zna: domainName,
 					// @TODO Reimplement ticker when we enable dynamic tokens
-					ticker:
-						tokenDynamics && tokenDynamics.ticker ? tokenDynamics.ticker : '',
-					dynamic:
-						tokenDynamics && tokenDynamics.dynamic
-							? tokenDynamics.dynamic
-							: false,
+					ticker: '',
+					dynamic: false,
 					locked: tokenInformation.locked,
 				});
 				await hasSubmitMint;
@@ -196,7 +192,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				{step === 3 && (
 					<Summary
 						token={tokenInformation}
-						dynamic={tokenDynamics}
+						// dynamic={}
 						staking={tokenStake}
 						onContinue={submit}
 						isMintLoading={isMintLoading}
