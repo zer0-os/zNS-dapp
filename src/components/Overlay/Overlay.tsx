@@ -26,6 +26,9 @@ const Overlay: React.FC<OverlayProps> = ({
 			if (document.body.className.indexOf('no-scroll') === -1)
 				document.body.className += 'no-scroll';
 		}
+		return () => {
+			document.body.classList.remove('no-scroll');
+		};
 	}, [open]);
 
 	const removeFromDOM = (e: any) => {
