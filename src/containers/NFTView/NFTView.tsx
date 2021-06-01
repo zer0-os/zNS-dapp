@@ -40,6 +40,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	const { addNotification } = useNotification();
 
 	//- Page State
+	const [zna, setZna] = useState('');
 	const [image, setImage] = useState<string>(''); // Image from metadata url
 	const [name, setName] = useState<string>(''); // Name from metadata url
 	const [description, setDescription] = useState<string>(''); // Description from metadata url
@@ -77,6 +78,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 			// Get metadata
 			fetch(data.value.metadata).then(async (d: Response) => {
 				const nftData = await d.json();
+				setZna(domain);
 				setImage(nftData.image);
 				setName(nftData.title || nftData.name);
 				setDescription(nftData.description);
@@ -118,7 +120,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 				<div className={styles.Info}>
 					<div>
 						<h1 className="glow-text-white">{name}</h1>
-						<span>0://wilder.{domain.substring(1)}</span>
+						<span>
+							{zna.length > 0 ? `0://wilder.${zna.substring(1)}` : ''}
+						</span>
 						<div className={styles.Members}>
 							<Member
 								id={!data.isNothing() ? data.value.owner.id : ''}
