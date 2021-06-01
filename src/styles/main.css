@@ -157,11 +157,6 @@ textarea {
 	font-size: 1em;
 }
 
-html {
-	overflow: hidden;
-	height: 100%;
-}
-
 body {
 	background-color: #120628;
 	background: url('../assets/zns-bg.png');
@@ -170,23 +165,17 @@ body {
 	background-size: cover;
 
 	min-height: 100vh;
-	height: 100%;
+	min-width: 1248px;
 	width: 100%;
 	overflow: auto;
-	/* margin-top: 29px; */
-	/* padding-top: 123px; */
-	/* padding-bottom: 123px; */
-
-	/* Currently the only breakpoint in Figma */
-	min-width: 1440px;
 
 	color: var(--color-text-primary);
 }
 
-/* body.no-scroll {
+body.no-scroll {
+	height: 100%;
 	overflow: hidden;
-    position: fixed;
-} */
+}
 
 h1 {
 	font-size: 22px;
@@ -219,13 +208,15 @@ hr.glow::after {
 	background-color: #e0baff;
 }
 
-a {
+a,
+button.text-button {
 	color: var(--color-accent-1);
 	text-decoration: none;
 	transition: text-shadow var(--animation-time-short) ease-in-out;
 }
 
-a:hover {
+a:hover,
+button.text-button:hover {
 	color: var(--color-accent-1);
 	text-shadow: var(--glow-text-blue), var(--glow-text-blue);
 }
@@ -237,6 +228,13 @@ a.alt-link {
 a.alt-link:hover {
 	color: white;
 	text-shadow: var(--glow-text-white-big);
+}
+
+button.text-button {
+	background: none;
+	padding: 0;
+	font-weight: 700;
+	font-size: 16px;
 }
 
 /*
