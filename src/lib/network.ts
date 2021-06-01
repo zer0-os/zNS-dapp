@@ -6,6 +6,8 @@ export enum NETWORK_TYPES {
 	KOVAN = 'KOVAN',
 }
 
+export const defaultNetworkId = 42;
+
 export const getEtherscanUri = (networkType: NETWORK_TYPES): string => {
 	let prefix = '';
 	switch (networkType) {
