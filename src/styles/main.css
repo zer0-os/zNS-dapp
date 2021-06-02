@@ -9,6 +9,7 @@
  *	- Borders
  *	- Glows / Shadows
  *	- Effects
+ *  - Media Queries
  */
 
 /*
@@ -119,7 +120,8 @@
 
 	--box-radius: 16px;
 
-	--width-max: 1250px;
+	--width-max: 1282px;
+	--width-min: 1032px;
 
 	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
 
@@ -165,7 +167,6 @@ body {
 	background-size: cover;
 
 	min-height: 100vh;
-	min-width: 1248px;
 	width: 100%;
 	overflow: auto;
 
@@ -243,6 +244,10 @@ button.text-button {
  *
  */
 
+#breakpointMessage {
+	display: none;
+}
+
 .content {
 	display: flex;
 	margin-left: 180px;
@@ -254,13 +259,25 @@ button.text-button {
 	flex: 1;
 }
 
+nav {
+	width: calc(100% - 64px) !important;
+	max-width: calc(var(--width-max) - 64px);
+}
+
 .page-spacing {
-	/* position: relative; */
+	position: relative;
+	width: 100%;
 	max-width: var(--width-max);
-	min-width: var(--width-max);
+	min-width: var(--width-min);
 	margin: 0 auto;
 	padding-top: 126px;
 	padding-bottom: 110px;
+	padding-left: 32px;
+	padding-right: 32px;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .no-select {
@@ -327,4 +344,36 @@ button.text-button {
 	backdrop-moz-filter: blur(20px);
 	backdrop-o-filter: blur(20px);
 	backdrop-ms-filter: blur(20px);
+}
+
+/*
+ *
+ * Media Queries 
+ *
+ */
+@media only screen and (max-width: 1032px) {
+	#root {
+		opacity: 0;
+	}
+
+	#overlay {
+		display: none;
+	}
+
+	#breakpointMessage {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		padding: 32px;
+
+		display: flex !important;
+		align-items: center;
+		justify-content: center;
+
+		font-weight: 700;
+		text-align: center;
+		line-height: 22px;
+	}
 }
