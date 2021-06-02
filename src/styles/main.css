@@ -121,7 +121,7 @@
 	--box-radius: 16px;
 
 	--width-max: 1282px;
-	--width-min: 1032px;
+	--width-min: 500px;
 
 	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
 
@@ -351,7 +351,7 @@ nav {
  * Media Queries 
  *
  */
-@media only screen and (max-width: 1032px) {
+@media only screen and (max-width: 660px) {
 	#root {
 		opacity: 0;
 	}
