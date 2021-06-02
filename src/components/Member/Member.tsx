@@ -1,5 +1,6 @@
 //- React Imports
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 //- Component Imports
 import { Image, Overlay, Profile } from 'components';
@@ -22,24 +23,26 @@ const Member: React.FC<MemberProps> = ({
 	subtext,
 	showZna,
 }) => {
-	const [overlay, setOverlay] = useState(false);
-
-	const openProfile = () => {
-		setOverlay(true);
-	};
+	const open = () => {};
 
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
-			<Overlay centered open={overlay} onClose={() => setOverlay(false)}>
-				<Profile id={id} />
-			</Overlay>
 			<div className={styles.Member}>
-				<div className={styles.Image}>
+				{/* <div className={styles.Image}>
 					<Image onClick={openProfile} src={image} />
-				</div>
+				</div> */}
 				<div className={styles.Info}>
-					<span onClick={openProfile}>{name}</span>
+					<span>
+						<a
+							href={'https://etherscan.io/address/' + id}
+							className={'alt-link'}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{id.substring(0, 4)}...{id.substring(id.length - 4)}
+						</a>
+					</span>
 					{subtext && (
 						<>
 							<br />
@@ -49,7 +52,7 @@ const Member: React.FC<MemberProps> = ({
 					{showZna && (
 						<>
 							<br />
-							<button className="text-button" onClick={openProfile}>
+							<button className="text-button">
 								0://wilder.{name.toLowerCase().split(' ').join('.')}
 							</button>
 						</>
