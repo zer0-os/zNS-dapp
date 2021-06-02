@@ -8,9 +8,6 @@ import useMint from 'lib/hooks/useMint';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
-//- Library Imports
-import { randomName } from 'lib/Random';
-
 //- Type Imports
 import {
 	TokenInformationType,
@@ -86,7 +83,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 			if (child && child.clientHeight > 0)
 				return setContainerHeight(child.clientHeight);
 		}
-	}, [step]);
+	}, [step, isMintLoading]);
 
 	//- Web3 Wallet Data
 	// MintNewNFT is a container and needs a bit more brainpower than your standard component
@@ -144,7 +141,14 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						{domain}
 					</h2>
 				</div>
-				<span>By {account && account.length ? randomName(account) : ''}</span>
+				<span>
+					By{' '}
+					{account && account.length
+						? account.substring(0, 4) +
+						  '...' +
+						  account.substring(account.length - 4)
+						: ''}
+				</span>
 			</div>
 			<StepBar
 				style={{ marginTop: 24 }}

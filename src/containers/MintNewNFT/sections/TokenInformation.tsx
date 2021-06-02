@@ -104,7 +104,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 						}}
 					>
 						{!previewImage && (
-							<span className="glow-text-white">Choose an Image</span>
+							<span className="glow-text-white">Choose Media</span>
 						)}
 						{previewImage && (
 							<img alt="NFT Preview" src={previewImage as string} />

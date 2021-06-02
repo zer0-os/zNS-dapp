@@ -67,10 +67,22 @@ const Summary: React.FC<SummaryProps> = ({
 					</ul>
 				</div>
 			</div>
-			<div style={{ display: 'flex', justifyContent: 'center', marginTop: 80 }}>
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					marginTop: 80,
+				}}
+			>
+				{isMintLoading && (
+					<p style={{ fontWeight: 700 }}>
+						Things are working behind the scenes - please wait
+					</p>
+				)}
 				<FutureButton
 					style={{
-						margin: '0 auto 0 auto',
+						margin: '8px auto 0 auto',
 						height: 36,
 						borderRadius: 18,
 						width: 130,
