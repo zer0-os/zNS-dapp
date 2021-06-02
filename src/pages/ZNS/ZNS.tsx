@@ -13,9 +13,12 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { randomNumber } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
 import useMint from 'lib/hooks/useMint';
+import useEnlist from 'lib/hooks/useEnlist';
+import { getMetadata } from 'lib/metadata';
 
 //- Type Imports
 import { EnlistDomain } from 'types/Domain';
+import { Metadata, DisplayDomain, DisplayParentDomain } from 'lib/types';
 
 //- Style Imports
 import styles from './ZNS.module.css';
@@ -45,14 +48,38 @@ import {
 
 import { MintNewNFT, NFTView, Enlist } from 'containers';
 import { Maybe } from 'true-myth';
-import { DisplayDomain, DisplayParentDomain } from 'lib/types';
+
+// MVP VERSION FLAG
+let mvpVersion = 1;
 
 type ZNSProps = {
 	domain: string;
 };
 
 const ZNS: React.FC<ZNSProps> = ({ domain }) => {
+	console.log('re-render zns');
 	// TODO: Need to handle domains that don't exist!
+
+	///////////////////
+	// Web3 Handling //
+	///////////////////
+
+	//- Wallet Data
+	const walletContext = useWeb3React<Web3Provider>();
+	const { account, active } = walletContext;
+	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet
+
+	//- Domain Data
+	const { useDomain } = useDomainCache();
+	const domainContext = useDomain(domain.substring(1));
+	const data: Maybe<DisplayParentDomain> = domainContext.data;
+	const [previewMetadata, setPreviewMetadata] = useState<Metadata | undefined>(
+		undefined,
+	);
+
+	////////////////////////
+	// Browser Navigation //
+	////////////////////////
 
 	//- Browser Navigation State
 	const history = useHistory();
@@ -61,24 +88,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	const canGoBack = pageHistory.current.length > 1;
 	const canGoForward = backCount.current > 0;
 
-	const back = () => {
-		pageHistory.current.pop();
-		pageHistory.current.pop();
-		backCount.current++;
-		history.goBack();
-	};
-
-	const forward = () => {
-		backCount.current--;
-		history.goForward();
-	};
-
-	useEffect(() => {
-		pageHistory.current = pageHistory.current.concat([domain]);
-	}, [domain]);
-
 	//- Minting State
 	const { minting, minted } = useMint();
+	const { enlisting, enlist, clear } = useEnlist();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -95,33 +107,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 	const [isWalletOverlayOpen, setIsWalletOverlayOpen] = useState(false);
 	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
 	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
-	const [isEnlistOverlayOpen, setIsEnlistOverlayOpen] = useState(false);
 	const [isSearchActive, setIsSearchActive] = useState(false);
 
 	//- MVP Version
 	// TODO: Move the MVP version handler out to a hook
-	const [mvpVersion, setMvpVersion] = useState(1);
-	const mvpFilterSelect = (mvp: string) =>
-		setMvpVersion(mvp === 'MVP 1' ? 1 : 3);
 	const springAmount = mvpVersion === 3 ? 425.5 : 240;
-
-	//- Web3 Wallet Data
-	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active } = walletContext;
-	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet
-
-	//- Web3 Domain Data
-	const { useDomain } = useDomainCache();
-	const domainContext = useDomain(
-		domain.charAt(0) === '/' ? domain.substring(1) : domain,
-	);
-
-	useEffect(() => {
-		domainContext.refetchDomain();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [minted]);
-
-	const data: Maybe<DisplayParentDomain> = domainContext.data;
 
 	//- Data
 	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
@@ -140,53 +130,44 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 			  )
 			: [];
 
+	///////////////
+	// Functions //
+	///////////////
+
+	// Go back through page history
+	const back = () => {
+		pageHistory.current.pop();
+		pageHistory.current.pop();
+		backCount.current++;
+		history.goBack();
+	};
+
+	// Go forward through page history
+	const forward = () => {
+		backCount.current--;
+		history.goForward();
+	};
+
 	//- Enlist Overlay
 	// TODO: Really need to make overlays more reusable - this isn't an ideal way to handle overlays with data
-	const [enlisting, setEnlisting] = useState<EnlistDomain>({
-		id: '',
-		domainName: '',
-		minter: '',
-		image: '',
-	});
 	const enlistCurrentDomain = async () => {
 		if (data.isNothing()) return;
+		enlist(data.value);
+		// console.log(data.value);
+	};
 
-		const open = () => {
-			openEnlistOverlay(
-				data.value.id,
-				domain.substring(1),
-				data.value.minter.id,
-				data.value.image || '',
-			);
-		};
+	/////////////
+	// Effects //
+	/////////////
 
-		if (!data.value.image) {
-			const response: Response = await fetch(data.value.metadata);
-			const body = await response.json();
-			data.value.image = body.image;
-			open();
-		} else {
-			open();
-		}
-	};
-	const openEnlistOverlay = (
-		domainId: string,
-		domainName: string,
-		minter: string,
-		image: string,
-	) => {
-		setEnlisting({
-			id: domainId,
-			domainName: domainName,
-			minter: minter,
-			image: image,
-		});
-		setIsEnlistOverlayOpen(true);
-	};
-	const onEnlistSubmit = () => {
-		addNotification(`Enlisted to purchase ${enlisting.domainName}!`);
-		setIsEnlistOverlayOpen(false);
-	};
+	useEffect(() => {
+		pageHistory.current = pageHistory.current.concat([domain]);
+	}, [domain]);
+
+	useEffect(() => {
+		domainContext.refetchDomain();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [minted]);
 
 	useEffect(() => {
 		if (triedEagerConnect)
@@ -202,25 +183,23 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 			// Set the domain data for table view
 			setTableData(subdomains);
 
-			// Get the data for Preview Card
+			const shouldGetMetadata =
+				data.isJust() &&
+				data.value.subdomains.length > 0 &&
+				data.value.metadata;
+
 			//- Note:
 			// We're checking subdomains here, because we want to defer the IPFS
 			// call to NFT View to prevent unneeded IPFS calls
-			if (
-				!data.isNothing() &&
-				data.value.subdomains.length > 0 &&
-				data.value.metadata
-			) {
-				// TODO: Maybe move this method into lib/ipfs-client.ts since we use it in a couple places
-				// TODO: Worth deferring all the metadata loading to the domain table component?
-				fetch(data.value.metadata).then(async (d: Response) => {
-					const nftData = await d.json();
-					data.value.image = nftData.image;
-					data.value.name = nftData.title;
-					data.value.description = nftData.description;
+			// Get the data for Preview Card
+			if (shouldGetMetadata) {
+				getMetadata(data.value.metadata).then((d) => {
+					if (!d) return;
+					setPreviewMetadata(d);
 					setIsLoading(false);
 				});
 			}
+
 			setHasLoaded(true);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -255,23 +234,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 					/>
 				</Overlay>
 			)}
-			{isProfileOverlayOpen && (
+			{mvpVersion === 3 && isProfileOverlayOpen && (
 				<Overlay centered open onClose={() => setIsProfileOverlayOpen(false)}>
 					<Profile yours id={account ? account : ''} />
 				</Overlay>
 			)}
-			{isEnlistOverlayOpen && (
-				<Overlay
-					open={isEnlistOverlayOpen}
-					onClose={() => setIsEnlistOverlayOpen(false)}
-				>
-					<Enlist
-						onSubmit={onEnlistSubmit}
-						domainId={enlisting.id}
-						domainName={enlisting.domainName}
-						minterName={enlisting.minter}
-						image={enlisting.image}
-					/>
+			{enlisting != undefined && (
+				<Overlay open onClose={clear}>
+					<Enlist onSubmit={() => {}} />
 				</Overlay>
 			)}
 
@@ -292,8 +262,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 							? { zIndex: isSearchActive ? 10000 : 10, background: 'none' }
 							: {}
 					}
-					onSelect={mvpFilterSelect}
-					filters={!isSearchActive ? ['MVP 1', 'MVP 3'] : []}
+					onSelect={() => {}}
+					filters={!isSearchActive ? ['Everything'] : []}
 				>
 					<TitleBar
 						domain={domain}
@@ -315,17 +285,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 									{/* Mint button */}
 									<FutureButton
 										glow={ownedDomain}
-										onClick={
-											() => {
-												ownedDomain
-													? setIsMintOverlayOpen(true)
-													: alert('You can only mint NFTs on domains you own');
-											}
-
-											// isRoot || ownedDomain
-											//   ? setIsMintOverlayOpen(true)
-											//   : alert("You can only mint NFTs on domains you own")
-										}
+										onClick={() => {
+											ownedDomain
+												? setIsMintOverlayOpen(true)
+												: alert('You can only mint NFTs on domains you own');
+										}}
 									>
 										Mint New NFT
 									</FutureButton>
@@ -342,11 +306,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 									)}
 
 									{/* Profile Button */}
-									<IconButton
-										onClick={() => setIsProfileOverlayOpen(true)}
-										style={{ height: 32, width: 32, borderRadius: '50%' }}
-										iconUri={`https://picsum.photos/seed/${account}/200/300`}
-									/>
+									{mvpVersion === 3 && (
+										<IconButton
+											onClick={() => setIsProfileOverlayOpen(true)}
+											style={{ height: 32, width: 32, borderRadius: '50%' }}
+											iconUri={`https://picsum.photos/seed/${account}/200/300`}
+										/>
+									)}
 
 									{/* TODO: Change the triple dot button to a component */}
 									<div
@@ -432,12 +398,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 						{(styles) => (
 							<animated.div style={styles}>
 								<PreviewCard
-									image={!data.isNothing() ? data.value.image || '' : ''}
-									name={!data.isNothing() ? data.value.name : ''}
+									image={previewMetadata?.image || ''}
+									name={previewMetadata?.title || ''}
 									domain={domain}
-									description={
-										!data.isNothing() ? data.value.description || '' : ''
-									}
+									description={previewMetadata?.description || ''}
 									creatorId={
 										!data.isNothing() &&
 										data.value.minter &&
@@ -503,7 +467,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 									style={{ marginTop: 16 }}
 									empty={!data.isNothing() && subdomains.length === 0}
 									mvpVersion={mvpVersion}
-									onEnlist={openEnlistOverlay}
 									isGridView={isGridView}
 									setIsGridView={setIsGridView}
 								/>

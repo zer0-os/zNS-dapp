@@ -15,6 +15,7 @@ import './lib/ipfs';
 import { DomainCacheProvider } from 'lib/useDomainCache';
 import NotificationProvider from 'lib/providers/NotificationProvider';
 import MintProvider from 'lib/providers/MintProvider';
+import EnlistProvider from 'lib/providers/EnlistProvider';
 
 //- Page Imports
 import { ZNS } from 'pages';
@@ -52,9 +53,11 @@ function wrappedApp() {
 			<NotificationProvider>
 				<Web3ReactProvider getLibrary={getLibrary}>
 					<MintProvider>
-						<DomainCacheProvider>
-							<App />
-						</DomainCacheProvider>
+						<EnlistProvider>
+							<DomainCacheProvider>
+								<App />
+							</DomainCacheProvider>
+						</EnlistProvider>
 					</MintProvider>
 				</Web3ReactProvider>
 			</NotificationProvider>

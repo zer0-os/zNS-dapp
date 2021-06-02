@@ -228,7 +228,7 @@ a.alt-link {
 
 a.alt-link:hover {
 	color: white;
-	text-shadow: var(--glow-text-white-big);
+	text-shadow: var(--glow-text-white);
 }
 
 button.text-button {
