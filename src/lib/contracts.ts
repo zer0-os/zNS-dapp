@@ -3,9 +3,10 @@ import { Registrar__factory } from '../types/factories/Registrar__factory';
 import { useWeb3React } from '@web3-react/core';
 import { useMemo } from 'react';
 import addresses from './addresses';
-import { chainIdToNetworkType } from './network';
+import { chainIdToNetworkType, defaultNetworkId } from './network';
 import { Registrar } from '../types/Registrar';
 import { BasicController, BasicController__factory } from 'types';
+import * as ethers from 'ethers';
 
 export interface ContractAddresses {
 	basic: string;
@@ -21,13 +22,21 @@ function useZnsContracts(): Contracts | null {
 	const context = useWeb3React<Web3Provider>();
 	const { library, active, chainId } = context;
 	const contract = useMemo((): Contracts | null => {
-		if (!active || !library) return null;
-		if (!chainId) {
-			console.error(`No chainid detected;`);
-			return null;
-		}
+		let contracts;
+		let signer: ethers.VoidSigner | ethers.Signer = new ethers.VoidSigner(
+			ethers.constants.AddressZero,
+		);
+		if (!library) {
+			contracts = addresses[chainIdToNetworkType(defaultNetworkId)];
+		} else {
+			if (!chainId) {
+				console.error(`No chainid detected;`);
+				return null;
+			}
 
-		const contracts = addresses[chainIdToNetworkType(chainId)];
+			contracts = addresses[chainIdToNetworkType(chainId)];
+			signer = library.getSigner();
+		}
 
 		if (!contracts) {
 			console.error(`chain not supported`);
@@ -35,13 +44,10 @@ function useZnsContracts(): Contracts | null {
 		}
 
 		return {
-			registry: Registrar__factory.connect(
-				contracts.registrar,
-				library.getSigner(),
-			),
+			registry: Registrar__factory.connect(contracts.registrar, signer),
 			basicController: BasicController__factory.connect(
 				contracts.basic,
-				library.getSigner(),
+				signer,
 			),
 		};
 	}, [active, library, chainId]);
