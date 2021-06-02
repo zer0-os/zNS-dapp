@@ -12,8 +12,9 @@ type ZNAProps = {
 const ZNALink: React.FC<ZNAProps> = ({ domain, style }) => {
 	return (
 		<div className={styles.ZNALink} style={style}>
+			<span style={{ cursor: 'default', fontWeight: 700 }}>0://</span>
 			<Link style={{ textDecoration: 'none', color: 'white' }} to={''}>
-				0://wilder
+				wilder
 			</Link>
 			{domain.split('.').map((part, i) => {
 				if (part === '/') return '';
