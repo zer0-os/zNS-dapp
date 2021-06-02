@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 
 //- Component Imports
-import { FutureButton, Member, Image, Overlay } from 'components';
+import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
@@ -202,8 +202,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 								src={copyIcon}
 								alt={'Copy Contract Icon'}
 							/>
-							{registrarAddress}
+							{domainId}
 						</p>
+						<ArrowLink
+							style={{
+								marginTop: 8,
+								width: 140,
+								fontWeight: 700,
+							}}
+							href={etherscanLink}
+						>
+							View on Etherscan
+						</ArrowLink>
 					</div>
 				</div>
 			</div>

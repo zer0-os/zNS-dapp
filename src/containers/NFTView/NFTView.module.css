@@ -167,8 +167,8 @@
 	position: absolute;
 	top: 50%;
 	right: 0;
-	height: 32px;
-	width: 32px;
+	height: 24px;
+	width: 24px;
 	transform: translateY(-50%);
 
 	cursor: pointer;
@@ -183,8 +183,9 @@
 .Contract p {
 	position: relative;
 	text-overflow: clip;
-	font-size: 24px;
+	font-size: 16px;
 	font-weight: 700;
+	line-height: 21px;
 	word-break: break-all;
 	padding: 0;
 	padding-right: 38px;
