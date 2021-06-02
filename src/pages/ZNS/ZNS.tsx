@@ -242,7 +242,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 				</Overlay>
 			)}
 			{enlisting !== undefined && (
-				<Overlay open onClose={clear}>
+				<Overlay centered open onClose={clear}>
 					<Enlist onSubmit={() => {}} />
 				</Overlay>
 			)}
