@@ -142,14 +142,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 							/>
 						</div>
 					</div>
-					<div className={styles.Price}>
+					{/* Price data doesn't exist yet */}
+					{/* <div className={styles.Price}>
 						<span className={styles.Crypto}>
 							{Number(2521).toLocaleString()} WILD{' '}
 							<span className={styles.Fiat}>
 								(${Number(1304.12).toLocaleString()})
 							</span>
 						</span>
-					</div>
+					</div> */}
 					<div className={styles.Buttons}>
 						<FutureButton
 							glow={isOwnedByYou}
@@ -176,7 +177,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 					<p>{description}</p>
 				</div>
 				<div className={styles.Vertical}>
-					<div className={styles.Horizontal}>
+					{/* <div className={styles.Horizontal}>
 						<div className={`${styles.Box} blur border-primary border-rounded`}>
 							<h4>Views</h4>
 							<span className="glow-text-white">
@@ -189,7 +190,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 								{Number(1).toLocaleString()} of {Number(1).toLocaleString()}
 							</span>
 						</div>
-					</div>
+					</div> */}
 					<div
 						className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 					>
