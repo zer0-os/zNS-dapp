@@ -50,6 +50,7 @@ function useZnsContracts(): Contracts | null {
 				signer,
 			),
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active, library, chainId]);
 	return contract;
 }

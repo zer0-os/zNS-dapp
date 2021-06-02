@@ -1,9 +1,5 @@
 //- React Imports
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
-//- Component Imports
-import { Image, Overlay, Profile } from 'components';
+import React from 'react';
 
 //- Style Imports
 import styles from './Member.module.css';
@@ -23,8 +19,6 @@ const Member: React.FC<MemberProps> = ({
 	subtext,
 	showZna,
 }) => {
-	const open = () => {};
-
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}

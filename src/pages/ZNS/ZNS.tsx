@@ -17,7 +17,6 @@ import useEnlist from 'lib/hooks/useEnlist';
 import { getMetadata } from 'lib/metadata';
 
 //- Type Imports
-import { EnlistDomain } from 'types/Domain';
 import { Metadata, DisplayDomain, DisplayParentDomain } from 'lib/types';
 
 //- Style Imports
@@ -49,16 +48,15 @@ import {
 import { MintNewNFT, NFTView, Enlist } from 'containers';
 import { Maybe } from 'true-myth';
 
-// MVP VERSION FLAG
-let mvpVersion = 1;
-
 type ZNSProps = {
 	domain: string;
+	version?: number;
 };
 
-const ZNS: React.FC<ZNSProps> = ({ domain }) => {
-	console.log('re-render zns');
+const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	// TODO: Need to handle domains that don't exist!
+
+	const mvpVersion = version || 1;
 
 	///////////////////
 	// Web3 Handling //
@@ -211,6 +209,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 		setIsLoading(true);
 	}, [domain]);
 
+	////////////
+	// RENDER //
+	////////////
+
 	return (
 		<>
 			{/* Overlays */}
@@ -239,7 +241,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 					<Profile yours id={account ? account : ''} />
 				</Overlay>
 			)}
-			{enlisting != undefined && (
+			{enlisting !== undefined && (
 				<Overlay open onClose={clear}>
 					<Enlist onSubmit={() => {}} />
 				</Overlay>
@@ -415,39 +417,41 @@ const ZNS: React.FC<ZNSProps> = ({ domain }) => {
 									onButtonClick={enlistCurrentDomain}
 									onImageClick={() => setIsNftView(true)}
 								>
-									<HorizontalScroll fade>
-										<AssetPriceCard
-											title={`${domain.substring(1, 5).toUpperCase()} Price`}
-											price={randomNumber(85, 400, 2)}
-											change={randomNumber(-30, 30, 2)}
-										/>
-										<AssetGraphCard
-											title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-										/>
-										<AssetPriceCard
-											title={`${domain.substring(1, 5).toUpperCase()} Price`}
-											price={randomNumber(85, 400, 2)}
-											change={randomNumber(-30, 30, 2)}
-										/>
-										<AssetMarketCapCard
-											title={`Total ${domain
-												.substring(1, 5)
-												.toUpperCase()} Holders`}
-											price={randomNumber(15000, 40000, 2)}
-										/>
-										<AssetMarketCapCard
-											title={`Total ${domain
-												.substring(1, 5)
-												.toUpperCase()} Holders`}
-											price={randomNumber(15000, 40000, 2)}
-										/>
-										<AssetMarketCapCard
-											title={`Total ${domain
-												.substring(1, 5)
-												.toUpperCase()} Holders`}
-											price={randomNumber(15000, 40000, 2)}
-										/>
-									</HorizontalScroll>
+									{mvpVersion === 3 && (
+										<HorizontalScroll fade>
+											<AssetPriceCard
+												title={`${domain.substring(1, 5).toUpperCase()} Price`}
+												price={randomNumber(85, 400, 2)}
+												change={randomNumber(-30, 30, 2)}
+											/>
+											<AssetGraphCard
+												title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+											/>
+											<AssetPriceCard
+												title={`${domain.substring(1, 5).toUpperCase()} Price`}
+												price={randomNumber(85, 400, 2)}
+												change={randomNumber(-30, 30, 2)}
+											/>
+											<AssetMarketCapCard
+												title={`Total ${domain
+													.substring(1, 5)
+													.toUpperCase()} Holders`}
+												price={randomNumber(15000, 40000, 2)}
+											/>
+											<AssetMarketCapCard
+												title={`Total ${domain
+													.substring(1, 5)
+													.toUpperCase()} Holders`}
+												price={randomNumber(15000, 40000, 2)}
+											/>
+											<AssetMarketCapCard
+												title={`Total ${domain
+													.substring(1, 5)
+													.toUpperCase()} Holders`}
+												price={randomNumber(15000, 40000, 2)}
+											/>
+										</HorizontalScroll>
+									)}
 								</PreviewCard>
 							</animated.div>
 						)}
