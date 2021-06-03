@@ -82,7 +82,8 @@
 	transform: scale(1.05);
 }
 
-.NFT > img {
+.NFT > img,
+.NFT > video {
 	width: 100%;
 	height: 100%;
 	border-radius: inherit;

@@ -106,8 +106,11 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 						{!previewImage && (
 							<span className="glow-text-white">Choose Media</span>
 						)}
-						{previewImage && (
+						{previewImage && previewImage.indexOf('image/') > -1 && (
 							<img alt="NFT Preview" src={previewImage as string} />
+						)}
+						{previewImage && previewImage.indexOf('video/') > -1 && (
+							<video controls src={previewImage as string} />
 						)}
 					</div>
 					<input

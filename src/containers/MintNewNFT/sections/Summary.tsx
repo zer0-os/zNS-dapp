@@ -43,7 +43,12 @@ const Summary: React.FC<SummaryProps> = ({
 		<div className={styles.Section}>
 			<div className={styles.Summary}>
 				<div className={`${styles.NFT} border-rounded border-blue`}>
-					<img alt="nft preview" src={token.previewImage} />
+					{token.previewImage.indexOf('image/') > -1 && (
+						<img alt="nft preview" src={token.previewImage} />
+					)}
+					{token.previewImage.indexOf('video/') > -1 && (
+						<video controls src={token.previewImage} />
+					)}
 				</div>
 				<div style={{ marginLeft: 16 }}>
 					<h2>Summary</h2>
