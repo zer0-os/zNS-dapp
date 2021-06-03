@@ -103,6 +103,15 @@ header {
 	border-top: 0px solid white !important;
 	border-radius: 0 0 var(--box-radius) var(--box-radius);
 	box-shadow: none;
+
+	overflow: hidden;
+}
+
+.SearchResults ul {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
 }
 
 .SearchResults li {
@@ -127,4 +136,8 @@ header {
 
 .SearchResults .ExactMatch {
 	font-weight: bold;
+}
+
+.GrowContainer {
+	transition: height var(--animation-time-long) ease-in-out;
 }
