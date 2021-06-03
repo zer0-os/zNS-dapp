@@ -1,0 +1,31 @@
+.AssetCard {
+	position: relative;
+	width: 295px;
+	min-width: 295px;
+	max-width: 295px;
+	height: 118px;
+
+	padding: 18px 20px 22.5px;
+
+	background: var(--background-purple-card-20);
+}
+
+.AssetCard h4 {
+	color: var(--color-primary-lighter-3);
+	font-weight: 700;
+
+	text-transform: uppercase;
+}
+
+.infoButton {
+	display: none;
+	height: 16px;
+	width: 16px;
+
+	margin-left: 8px;
+	margin-top: -1px;
+
+	background-color: var(--color-accent-1-darker);
+
+	border-radius: 50%;
+}

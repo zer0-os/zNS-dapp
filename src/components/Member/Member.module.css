@@ -1,0 +1,35 @@
+.Member {
+	display: flex;
+}
+
+.Image {
+	height: 32px;
+	width: 32px;
+	border-radius: 50%;
+	/* background-color: rgba(0,0,0,0.5); */
+	overflow: hidden;
+	cursor: pointer;
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Image:hover {
+	transform: scale(1.1);
+}
+
+.Image > * {
+	height: 100%;
+	width: 100%;
+}
+
+.Info {
+	margin-top: 4px;
+	font-weight: 700;
+}
+
+.Info > span:first-of-type {
+	cursor: pointer;
+}
+
+.Info > span:last-of-type {
+	color: var(--color-primary-lighter-3);
+}

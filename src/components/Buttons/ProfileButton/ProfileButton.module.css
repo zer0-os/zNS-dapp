@@ -1,0 +1,49 @@
+.ProfileButton {
+	position: relative;
+	padding: 0;
+
+	height: 32px;
+	width: 32px;
+
+	color: var(--color-accent-1);
+	background-color: rgba(0, 0, 0, 0);
+
+	border-radius: 50%;
+
+	transition: background-color var(--animation-time-short) ease-in-out;
+}
+
+.ProfileButton > img {
+	height: 100%;
+	width: 100%;
+}
+
+.ProfileButton::after {
+	content: ' ';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	height: 0px;
+	width: 0px;
+	border-radius: var(--box-radius);
+
+	transition: box-shadow var(--animation-time-short) ease-in-out;
+}
+
+.ProfileButton:hover {
+	text-shadow: var(--glow-text-blue);
+}
+
+.ProfileButton:hover {
+	text-shadow: var(--glow-text-blue);
+	background-color: rgba(255, 255, 255, 0.02);
+}
+
+.Selected {
+	color: white;
+	background-color: rgba(255, 255, 255, 0.02);
+}
+
+.Selected:after {
+	box-shadow: 0px 0px 17px 12px rgba(255, 255, 255, 0.5);
+}

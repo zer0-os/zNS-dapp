@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "target": "es5",
     "lib": [
       "dom",
@@ -20,7 +21,15 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "exclude": [
+    "src/~components",
+  ],
   "include": [
     "src"
-  ]
+  ],
+  "watchOptions": {
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "fallbackPolling": "dynamicPriority"
+  }
 }

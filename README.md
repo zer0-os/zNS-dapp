@@ -1,7 +1,35 @@
 # Zer0 Namespace Dapp
 
-## .env
-Set `REACT_APP_RPC_URL_1` and `REACT_APP_RPC_URL_4` to a mainnet and rinkeby rpc node url respectively.
+## Developing Locally
+
+Add a `.env` file to the base of the repository, replacing the brackets with the appropriate values:
+
+```
+REACT_APP_RPC_URL_1=https://mainnet.infura.io/v3/[someMainnetNode]
+REACT_APP_RPC_URL_42=https://kovan.infura.io/v3/[someKovanNode]
+REACT_APP_SUBGRAPH_URL_42=https://api.thegraph.com/subgraphs/name/[subgraphLocation]
+REACT_APP_DEFAULT_NETWORK=42
+```
+
+Run [Node Version Manager](https://github.com/nvm-sh/nvm) to use the supported version of Node, ensuring it is installed on your system:
+
+```
+nvm use
+```
+
+Then, run the following to install the packages:
+
+```
+npm install
+```
+
+Finally, start the development server:
+
+```
+npm start
+```
+
+# Default React Docs
 
 ## Available Scripts
 
@@ -39,4 +67,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-

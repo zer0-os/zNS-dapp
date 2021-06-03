@@ -1,0 +1,14 @@
+.graph {
+	position: absolute;
+	bottom: 15px;
+	left: 0;
+
+	width: 100%;
+}
+
+.filters {
+	position: absolute;
+	display: flex;
+	top: 21px;
+	right: 15px;
+}

@@ -2,409 +2,333 @@ import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
-import { domain } from 'process';
-import { Children, useCallback, useEffect, useMemo, useState } from 'react';
+import { data } from 'jquery';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
-import { string } from 'zod';
-import Owned from '../components/topbar/shop/owned';
 import { getDomainId } from './domains';
+import { DisplayParentDomain, ParentDomain } from './types';
 
-export interface Domain {
-  id: string;
-  domain: string;
-  children: string[];
-  owner: string;
-  controller: string;
-  parent: string;
-  image: string;
-  resolver: string;
-  timeCreated: number;
-  approval: Maybe<string>;
-}
-
-interface _DomainData {
-  id: string;
-  domain: string;
-  owner: string;
-  parent: string;
-  controller: string;
-  image: string;
-  timeCreated: number;
-  resolver: string;
-  approval?: string;
-}
-
-interface DomainsData {
-  domains: _DomainData[];
+interface DomainData {
+	domains: ParentDomain[];
 }
 
 interface DomainData {
-  domain: _DomainData;
+	domain: ParentDomain;
 }
 
-interface ZeroTransaction {
-  txHash: string;
-  method: string;
-  description: string;
-  pending: boolean;
-  nonce: number;
-}
-export const zeroAddress: any =
-  '0x0000000000000000000000000000000000000000000000000000000000000000';
-// TODO: turn queries into fragments
-const domainQuery = gql`
-  query Domain($id: ID!) {
-    domain(id: $id) {
-      id
-      domain
-      approval
-      parent
-      owner
-      controller
-      image
-      resolver
-      timeCreated
-    }
-  }
+// interface ZeroTransaction {
+//   txHash: string;
+//   method: string;
+//   description: string;
+//   pending: boolean;
+//   nonce: number;
+// }
+export const domainByIdQuery = gql`
+	query Domain($id: ID!) {
+		domains(where: { id: $id }) {
+			id
+			name
+			parent {
+				id
+				name
+			}
+			subdomains {
+				id
+				name
+				metadata
+				owner {
+					id
+				}
+				minter {
+					id
+				}
+			}
+			owner {
+				id
+			}
+			minter {
+				id
+			}
+			lockedBy
+			isLocked
+			metadata
+		}
+	}
 `;
 
-const childrenQuery = gql`
-  query ChildrenDomains($parent: Bytes!) {
-    domains(where: { parent: $parent }) {
-      id
-      domain
-      approval
-      parent
-      owner
-      controller
-      image
-      timeCreated
-      resolver
-    }
-  }
+export const domainNameSearchQuery = gql`
+	query Domain($name: String!) {
+		domains(where: { name_contains: $name }) {
+			id
+			name
+			parent {
+				id
+				name
+			}
+			subdomains {
+				id
+				name
+				metadata
+				owner {
+					id
+				}
+				minter {
+					id
+				}
+			}
+			owner {
+				id
+			}
+			minter {
+				id
+			}
+			lockedBy
+			isLocked
+			metadata
+		}
+	}
 `;
 
-const ownedDomainsQuery = gql`
-  query OwnedDomains($owner: Bytes!) {
-    domains(where: { owner: $owner }) {
-      id
-      domain
-      approval
-      parent
-      owner
-      controller
-      timeCreated
-      image
-      resolver
-    }
-  }
+export const CHILDREN_QUERY = gql`
+	query ChildrenDomains($id: ID!) {
+		domains(where: { parent: $parent }) {
+			id
+			name
+			subdomains
+			owner
+			minter
+			lockedBy
+			isLocked
+		}
+	}
 `;
 
-const approvalQuery = gql`
-  query ApprovedDomains($approval: Bytes!) {
-    domains(where: { approval: $approval }) {
-      id
-      domain
-      approval
-      parent
-      owner
-      controller
-      timeCreated
-      image
-      resolver
-    }
-  }
+export const OWNED_DOMAIN_QUERY = gql`
+	query OwnedDomains($owner: Bytes!) {
+		domains(where: { owner: $owner }) {
+			id
+			name
+			parent
+			subdomains
+			owner
+			minter
+			lockedBy
+			isLocked
+		}
+	}
 `;
 
-const childTimestampQuery = gql`
-  query ChildDomains($parent: Bytes!) {
-    domains(
-      where: { owner: $owner }
-      orderBy: timeCreated
-      orderDirection: desc
-    ) {
-      id
-      domain
-      approval
-      parent
-      owner
-      controller
-      image
-      timeCreated
-      resolver
-    }
-  }
+const ALL_DOMAIN_QUERY = gql`
+	query allDomain($id: ID!) {
+		domains(where: { id: $id }) {
+			id
+			parent
+			name
+		}
+	}
 `;
 
-const allDomainsQuery = gql`
-  query Domain($id: ID!) {
-    domains(where: { parent: $parent }) {
-      id
-      parent
-      domain
-    }
-  }
-`;
-
-type QueryArgs = Partial<Record<string, any>> | undefined;
+type QueryArgs = Partial<Record<string, any>>;
 
 type RefetchQuery<T> = (variables?: QueryArgs) => Promise<ApolloQueryResult<T>>;
 
-function useDomain(domain: string) {
-  const id = getDomainId(domain);
-  const {
-    error: errorDomain,
-    data: dataDomain,
-    refetch: refetchDomain,
-  } = useQuery<DomainData>(domainQuery, {
-    variables: { id },
-  });
+export function useQueryDomainsNameContain(pattern: string) {
+	const query = useQuery<DomainData>(domainNameSearchQuery, {
+		variables: { name: pattern },
+		fetchPolicy: 'no-cache',
+	});
 
-  const {
-    error: errorChildren,
-    data: dataChildren,
-    refetch: refetchChildren,
-  } = useQuery<DomainsData>(childrenQuery, {
-    variables: { parent: id },
-  });
+	return query;
+}
 
-  const _domain: Maybe<Domain> = useMemo(() => {
-    console.log('domain!', dataDomain);
-    if (errorDomain) {
-      // TODO: maybe throw?
-      console.error(errorDomain);
-    }
-    if (errorChildren) {
-      console.error(errorChildren);
-    }
-    if (dataDomain && dataDomain.domain) {
-      const children =
-        dataChildren &&
-        dataChildren.domains[0] &&
-        dataChildren.domains[0].parent === id
-          ? dataChildren.domains.map((d) => d.domain)
-          : //.filter((d) => d !== 'ROOT')
-            [];
-      return Maybe.of({
-        ...dataDomain.domain,
-        approval: dataDomain.domain.approval
-          ? Maybe.of(dataDomain.domain.approval)
-          : Maybe.nothing(),
-        owner: getAddress(dataDomain.domain.owner),
-        parent: dataDomain.domain.parent,
+export function useQueryForDomainById(id: string) {
+	const {
+		data: dataDomain,
+		error: errorDomain,
+		refetch: refetchDomain,
+	} = useQuery<DomainData>(domainByIdQuery, {
+		variables: { id: id },
+		fetchPolicy: 'no-cache',
+	});
 
-        resolver: dataDomain.domain.resolver,
-        image: dataDomain.domain.image,
-        children,
-        controller: getAddress(dataDomain.domain.controller),
-      });
-    }
-    return Maybe.nothing();
-  }, [dataDomain, errorDomain, dataChildren, dataDomain, errorChildren]);
+	return {
+		dataDomain,
+		errorDomain,
+		refetchDomain,
+	};
+}
 
-  const refetch = useCallback(
-    (domainId?: string) =>
-      Promise.all([
-        refetchDomain({ variables: { id: domainId } }),
-        refetchChildren({ variables: { parent: domainId } }),
-      ]),
-    [refetchChildren, refetchDomain],
-  );
+function useDomain(name: string) {
+	const id = getDomainId(name);
+	const { dataDomain, errorDomain, refetchDomain } = useQueryForDomainById(id);
+	const _domain: Maybe<DisplayParentDomain> = useMemo(() => {
+		if (dataDomain && dataDomain.domains && dataDomain.domains.length > 0) {
+			return Maybe.of({
+				...dataDomain.domains[0],
+			} as DisplayParentDomain);
+		}
+		if (errorDomain) {
+			console.error(errorDomain + 'Error');
+		}
+		return Maybe.nothing();
+	}, [dataDomain, errorDomain]);
 
-  return { domain: _domain, refetchDomain: refetch };
+	const refetch = useCallback(
+		(domainId?: string) =>
+			Promise.all([
+				refetchDomain({ variables: { id: domainId } }),
+				// refetchChildren(<any>{ variables: { parent: domainId } }),
+			]),
+
+		[refetchDomain],
+	);
+	// console.log(JSON.stringify(dataDomain) + 'return function');
+	return { data: _domain, refetchDomain: refetch! };
 }
 
 function useOwnedDomains(): {
-  owned: Maybe<Domain[]>;
-  refetchOwned: RefetchQuery<DomainsData>;
+	owned: Maybe<any[]>;
+	refetchOwned: RefetchQuery<any>;
 } {
-  const context = useWeb3React<Web3Provider>();
-  const { library, account, active, chainId } = context;
-  const [getOwned, { data, refetch, error }] = useLazyQuery<DomainsData>(
-    ownedDomainsQuery,
-    {
-      variables: { owner: account },
-    },
-  );
+	const context = useWeb3React<Web3Provider>();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const { account } = context;
+	const [getOwned, { data, refetch, error }] = useLazyQuery<any>(
+		OWNED_DOMAIN_QUERY,
+		{
+			variables: { owner: account },
+		},
+	);
 
-  const owned: Maybe<Domain[]> = useMemo(() => {
-    if (error) {
-      // TODO: maybe throw?
-      console.error(error);
-    }
-    if (data) {
-      return Maybe.of(
-        data.domains.map((d) => ({
-          ...d,
-          approval: d.approval ? Maybe.of(d.approval) : Maybe.nothing(),
-          owner: getAddress(d.owner),
-          parent: d.parent,
-          children: [],
-          controller: getAddress(d.controller),
-        })),
-      );
-    }
-    return Maybe.nothing();
-  }, [data, account]);
+	const owned: Maybe<any[]> = useMemo(() => {
+		if (error) {
+			// TODO: maybe throw?
+			console.error(error);
+		}
+		if (data) {
+			return Maybe.of(
+				data.domains.map((d: any) => ({
+					...d,
+					owner: getAddress(d.owner),
+					parent: d.parent,
+					subdomains: [],
 
-  useEffect(() => {
-    if (refetch) {
-      refetch({ variables: { owner: account } });
-    } else if (account) {
-      getOwned({ variables: { owner: account } });
-    }
-  }, [getOwned, refetch]);
+					metadata: d.metadata,
+				})),
+			);
+		}
+		return Maybe.nothing();
+	}, [error, data]);
 
-  console.log('usedomain list', owned);
+	useEffect(() => {
+		if (refetch) {
+			refetch({ variables: { owner: account } });
+		} else if (account) {
+			getOwned({ variables: { owner: account } });
+		}
+	}, [account, getOwned, refetch]);
 
-  useEffect(() => {
-    if (refetch) {
-      refetch({ variables: { owner: account } });
-    } else if (account) {
-      getOwned({ variables: { owner: account } });
-    }
-  }, [account]);
+	//console.log('usedomain list', owned);
 
-  return { owned, refetchOwned: refetch! };
+	useEffect(() => {
+		if (refetch) {
+			refetch({ variables: { owner: account } });
+		} else if (account) {
+			getOwned({ variables: { owner: account } });
+		}
+	}, [account, getOwned, refetch]);
+
+	return { owned, refetchOwned: refetch! };
 }
 
-function useIncomingApprovals(): {
-  incomingApprovals: Maybe<Domain[]>;
-  refetchIncomingApprovals: RefetchQuery<DomainsData>;
-} {
-  const context = useWeb3React<Web3Provider>();
-  const { account } = context;
-  const [
-    getIncomingApprovals,
-    { data, refetch, error },
-  ] = useLazyQuery<DomainsData>(approvalQuery, {
-    variables: { approval: account },
-  });
-
-  const incomingApprovals: Maybe<Domain[]> = useMemo(() => {
-    if (error) {
-      // TODO: maybe throw?
-      console.error(error);
-    }
-    if (data) {
-      return Maybe.of(
-        data.domains.map((d) => ({
-          ...d,
-          approval: d.approval ? Maybe.of(d.approval) : Maybe.nothing(),
-          owner: getAddress(d.owner),
-          parent: d.parent,
-          children: [],
-          controller: getAddress(d.controller),
-        })),
-      );
-    }
-    return Maybe.nothing();
-  }, [data, account]);
-
-  useEffect(() => {
-    if (refetch) {
-      refetch({ variables: { to: account } });
-    } else if (account) {
-      getIncomingApprovals({ variables: { to: account } });
-    }
-  }, [account, refetch, getIncomingApprovals]);
-
-  return { incomingApprovals, refetchIncomingApprovals: refetch! };
-}
 // maybe fx
 function useAllDomains(
-  domain: string,
+	domain: string,
 ): {
-  _allDomains: Maybe<Domain[]>;
-  refetchAllDomains: RefetchQuery<DomainsData>;
+	_allDomains: Maybe<any[]>;
+	refetchAllDomains: RefetchQuery<any>;
 } {
-  const id = getDomainId(domain);
-  // const context = useWeb3React<Web3Provider>();
-  // const { account } = context;
-  const [getAllDomains, { data, refetch, error }] = useLazyQuery<DomainsData>(
-    allDomainsQuery,
-    {
-      variables: { id },
-    },
-  );
+	const id = getDomainId(domain);
+	// const context = useWeb3React<Web3Provider>();
+	// const { account } = context;
+	const [getAllDomains, { data, refetch, error }] = useLazyQuery<any>(
+		ALL_DOMAIN_QUERY,
+		{
+			variables: { id },
+		},
+	);
 
-  const _allDomains: Maybe<Domain[]> = useMemo(() => {
-    if (error) {
-      // TODO: maybe throw?
-      console.error(error);
-    }
-    if (data) {
-      return Maybe.of(
-        data.domains.map((d) => ({
-          ...d,
-          approval: d.approval ? Maybe.of(d.approval) : Maybe.nothing(),
-          owner: getAddress(d.owner),
-          parent: d.parent,
-          children: [],
-          controller: getAddress(d.controller),
-        })),
-      );
-    }
-    return Maybe.nothing();
-  }, [data]);
+	const _allDomains: Maybe<any[]> = useMemo(() => {
+		if (error) {
+			// TODO: maybe throw?
+			console.error(error);
+		}
+		if (data) {
+			return Maybe.of(
+				data.domains.map((d: any) => ({
+					...d,
+					owner: getAddress(d.owner),
+					name: d.name,
+				})),
+			);
+		}
+		return Maybe.nothing();
+	}, [data, error]);
 
-  useEffect(() => {
-    if (refetch) {
-      refetch({ variables: { to: id } });
-    } else if (domain) {
-      getAllDomains({ variables: { to: id } });
-    }
-  }, [domain]);
+	useEffect(() => {
+		if (refetch) {
+			refetch({ variables: { to: id } });
+		} else if (domain) {
+			getAllDomains({ variables: { to: id } });
+		}
+	}, [domain, getAllDomains, id, refetch]);
 
-  return { _allDomains, refetchAllDomains: refetch! };
+	return { _allDomains, refetchAllDomains: refetch! };
 }
 
 const useDomainStore = () => {
-  const owned = useOwnedDomains();
-  const incomingApprovals = useIncomingApprovals();
-  const [transactions, setTransactions] = useState<ZeroTransaction[]>([]);
+	const owned = useOwnedDomains();
+	const [transactions, setTransactions] = useState<any[]>([]);
 
-  const pushTransaction = useCallback(
-    (tx: ZeroTransaction) => {
-      setTransactions(
-        transactions.filter((_tx) => _tx.nonce !== tx.nonce).concat(tx),
-      );
-    },
-    [transactions, setTransactions],
-  );
+	const pushTransaction = useCallback(
+		(tx: any) => {
+			setTransactions(
+				transactions.filter((_tx) => _tx.nonce !== tx.nonce).concat(tx),
+			);
+		},
+		[transactions, setTransactions],
+	);
 
-  const updateTransaction = useCallback(
-    (tx: ZeroTransaction) => {
-      const txIndex = transactions.findIndex((_tx) => _tx.txHash === tx.txHash);
-      if (txIndex < 0) {
-        console.error(
-          `updateTransaction: could not find transaction ${tx.txHash}`,
-        );
-        return;
-      }
-      transactions[txIndex] = tx;
-      setTransactions(transactions);
-    },
-    [transactions, setTransactions],
-  );
+	const updateTransaction = useCallback(
+		(tx: any) => {
+			const txIndex = transactions.findIndex((_tx) => _tx.txHash === tx.txHash);
+			if (txIndex < 0) {
+				console.error(
+					`updateTransaction: could not find transaction ${tx.txHash}`,
+				);
+				return;
+			}
+			transactions[txIndex] = tx;
+			setTransactions(transactions);
+		},
+		[transactions, setTransactions],
+	);
 
-  return {
-    useDomain,
-    useIncomingApprovals,
-    useAllDomains,
-
-    ...owned,
-    ...incomingApprovals,
-    pushTransaction,
-    updateTransaction,
-    transactions,
-  };
+	return {
+		useDomain,
+		useAllDomains,
+		...owned,
+		pushTransaction,
+		updateTransaction,
+		transactions,
+	};
 };
 
 export type DomainStoreContext = ReturnType<typeof useDomainStore>;
 
 export type DomainContext = ReturnType<typeof useDomain>;
 
-export type IncomingApprovalsContext = ReturnType<typeof useIncomingApprovals>;
-
 export { useDomainStore };
+// function subdomains(subdomains: any, arg1: string) {
+//   throw new Error('Function not implemented.');
+// }

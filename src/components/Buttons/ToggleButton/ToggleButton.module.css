@@ -1,0 +1,73 @@
+.Container {
+	display: flex;
+	align-items: center;
+}
+
+.Container > *:not(:first-child) {
+	margin-left: 16px;
+}
+
+.Toggle {
+	--toggle-dimension: 48px;
+
+	position: relative;
+	width: var(--toggle-dimension);
+	height: calc(var(--toggle-dimension) / 2);
+
+	border-radius: 12px;
+	border: 1px solid var(--color-accent-1);
+	background: linear-gradient(
+		94.23deg,
+		rgba(60, 161, 255, 0.2) 0%,
+		rgba(30, 81, 128, 0.2) 100%
+	);
+
+	cursor: pointer;
+}
+
+.Toggle > div {
+	position: absolute;
+	top: -1px;
+	left: -1px;
+
+	height: calc(var(--toggle-dimension) / 2);
+	width: calc(var(--toggle-dimension) / 2);
+	border-radius: 50%;
+
+	box-shadow: 0px 0px 20px 0px #3ca1ffcc;
+	background: #3ca1ff80;
+
+	background: var(--color-accent-1);
+
+	transition: left var(--animation-time-medium) ease-in-out;
+}
+
+.On {
+	font-weight: 700;
+	text-shadow: var(--glow-text-white);
+	color: white !important;
+}
+
+.On > div {
+	top: -1px;
+	left: calc(100% - (var(--toggle-dimension) / 2));
+}
+
+.Container > span {
+	color: #808080;
+	transition: all var(--animation-time-short) ease-in-out;
+	cursor: pointer;
+}
+
+.Container > span::before {
+	display: block;
+	content: attr(title);
+	font-weight: bold;
+	height: 0;
+	overflow: hidden;
+	visibility: hidden;
+}
+
+.Container > span:not(.On):hover {
+	text-shadow: var(--glow-text-white);
+}

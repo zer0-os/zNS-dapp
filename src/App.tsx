@@ -1,112 +1,65 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
-import './App.scss';
-import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
+//- Global Stylesheets
+import 'styles/reset.css';
+import 'styles/main.css';
+
+//- React Imports
+import { HashRouter, Route } from 'react-router-dom';
+
+//- Web3 Imports
+import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import './lib/ipfs';
-import Wallet from './components/topbar/wallet';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import Subdomains from './components/table/child-view';
-import Owned from './components/topbar/shop/owned';
-import { domainCacheContext, DomainCacheProvider } from './lib/useDomainCache';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import { PoweroffOutlined } from '@ant-design/icons';
-import { Layout, Menu, Modal } from 'antd';
-import Create from './components/topbar/create';
-import Topbar from './components/topbar/topbar';
-import DomainsGlobal from './components/table/domains-global';
-import TopbarGlobal from './components/topbar/topbar-global';
-import Sidebar from './components/sidebar';
 
-const client = new ApolloClient({
-  uri: process.env.REACT_APP_SUBGRAPH_URL_4,
-  cache: new InMemoryCache(),
-});
+//- Library Imports
+import { DomainCacheProvider } from 'lib/useDomainCache';
+import NotificationProvider from 'lib/providers/NotificationProvider';
+import MintProvider from 'lib/providers/MintProvider';
+import EnlistProvider from 'lib/providers/EnlistProvider';
+import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
+import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 
+//- Page Imports
+import { ZNS } from 'pages';
+
+// Web3 library to query
 function getLibrary(provider: any): Web3Provider {
-  const library = new Web3Provider(provider);
-  library.pollingInterval = 12000;
-  return library;
+	const library = new Web3Provider(provider);
+	library.pollingInterval = 12000;
+	return library;
 }
+
 function App() {
-  const context = useWeb3React<Web3Provider>();
-  const {
-    connector,
-    library,
-    chainId,
-    account,
-    activate,
-    deactivate,
-    active,
-    error,
-  } = context;
-
-  return (
-    <Router>
-      <Sidebar />
-      <div className="sideFadeRight"></div>
-      <Route
-        render={({ location, match }) => (
-          <>
-            <Switch>
-              <Route path="/:id">
-                {/* defaults to the LOCAL NETWORKS page */}
-                <TopbarGlobal
-                  domain={
-                    // location.pathname.substring(1)
-                    'ROOT'
-                  }
-                />
-                <Subdomains
-                  //regex: removes trailing /, then replaces / with .
-                  /*
-                  location.pathname
-                    .substring(1)
-                    .replace(/\/+$/, '')
-                    .replace(/\//, '.')
-                  */
-                  domain={location.pathname.substring(1)}
-                />
-              </Route>
-              <Route path="/">
-                <TopbarGlobal
-                  domain={
-                    // location.pathname.substring(1)
-                    'ROOT'
-                  }
-                />
-
-                {/* defaults to the GLOBAL NETWORKS page */}
-                {/* <h1>
-                  <Subdomains
-                    domain={location.pathname
-                      .substring(1)
-                      .replace(/\/+$/, '')
-                      .replace(/\//, '.')}
-                  />
-                </h1> */}
-                {/* TODO: move to styling file */}
-                <DomainsGlobal domain={'ROOT'} />
-                {/* <Subdomains domain={'ROOT'} /> */}
-              </Route>
-            </Switch>
-          </>
-        )}
-      />
-    </Router>
-  );
+	return (
+		<HashRouter>
+			<Route
+				render={({ location, match }) => (
+					<>
+						<ZNS domain={location.pathname} />
+					</>
+				)}
+			/>
+		</HashRouter>
+	);
 }
 
 function wrappedApp() {
-  return (
-    <ApolloProvider client={client}>
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <DomainCacheProvider>
-          <App />
-        </DomainCacheProvider>
-      </Web3ReactProvider>
-    </ApolloProvider>
-  );
+	return (
+		<ChainSelectorProvider>
+			<SubgraphProvider>
+				<NotificationProvider>
+					<Web3ReactProvider getLibrary={getLibrary}>
+						<MintProvider>
+							<EnlistProvider>
+								<DomainCacheProvider>
+									<App />
+								</DomainCacheProvider>
+							</EnlistProvider>
+						</MintProvider>
+					</Web3ReactProvider>
+				</NotificationProvider>
+			</SubgraphProvider>
+		</ChainSelectorProvider>
+	);
 }
 
 export default wrappedApp;

@@ -1,0 +1,51 @@
+.Notification {
+	top: 24px;
+	right: 32px;
+
+	display: flex;
+	align-items: center;
+
+	min-width: 200px;
+	max-width: 400px;
+	width: 100%;
+	padding: 16px 32px 14px 32px;
+	border-radius: var(--box-radius);
+
+	background: rgba(182, 181, 255, 0.3);
+	box-shadow: 0px 0px 20px rgba(152, 150, 255, 0.4);
+	opacity: 1;
+
+	transform: translateX(0) scale(1);
+
+	z-index: 10000;
+
+	transition: transform var(--animation-time-medium) ease-in-out,
+		opacity var(--animation-time-medium) ease-in-out;
+}
+
+.Notification p {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+
+	font-size: 18px;
+	text-align: center;
+
+	color: #28024b;
+	-webkit-text-stroke-width: 2px;
+	-webkit-text-stroke-color: rgba(221, 178, 255, 0.2);
+	text-shadow: 0px 0px 40px #ffffff, 0px 0px 20px #ffffff;
+}
+
+.Hidden {
+	transform: translateX(calc(100% + 48px)) scale(0.7);
+	/* opacity: 0; */
+}
+
+.Clickable {
+	cursor: pointer;
+}
+
+.Clickable:hover {
+	transform: scale(1.05);
+}

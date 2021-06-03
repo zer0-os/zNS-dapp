@@ -1,0 +1,49 @@
+.StepBar {
+	position: relative;
+	width: 100%;
+
+	font-size: 12px;
+	text-align: center;
+	font-weight: 700;
+}
+
+.StepBar::after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-bottom: 1px solid #6e10bb;
+	z-index: -1;
+}
+
+.Placeholder {
+	opacity: 0;
+	z-index: 2;
+	transition: opacity var(--animation-time-long) ease-in-out;
+}
+
+.Show {
+	opacity: 1;
+	cursor: pointer;
+}
+
+.Bar {
+	padding-bottom: 4px;
+
+	color: var(--color-invalid);
+	border-bottom: 1px solid #e0baff;
+
+	transition: all var(--animation-time-long) ease-in-out;
+}
+
+.Bar::after {
+	content: attr(data-text);
+}
+
+.Hide {
+	border-bottom: 1px solid rgba(0, 0, 0, 0);
+	color: rgba(0, 0, 0, 0);
+	z-index: -1;
+}

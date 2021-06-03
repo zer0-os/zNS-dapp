@@ -1,0 +1,43 @@
+.NotificationDrawer {
+	display: flex;
+	position: fixed;
+	top: 9px;
+	left: 50%;
+	width: 311px;
+	height: auto;
+	padding: 16px;
+	border-radius: 10px;
+
+	z-index: 10000;
+
+	background: var(--background-purple-card-20);
+
+	transform: translateY(0%) translateX(-50%);
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.NotificationDrawer ul {
+	width: 100%;
+}
+
+.NotificationDrawer li {
+	font-family: 'Univia', sans-serif;
+	width: 100%;
+
+	text-align: center;
+	font-size: 18px;
+	font-weight: medium;
+
+	color: white;
+
+	cursor: pointer;
+}
+
+.NotificationDrawer li:not(:first-child) {
+	margin-top: 16px;
+}
+
+.Hidden {
+	transform: translateY(calc(-100% - 32px)) translateX(-50%);
+}
