@@ -13,6 +13,7 @@ import { isAlphanumeric, isNumber } from './validation';
 type TextInputProps = {
 	onChange: (text: string) => void;
 	error?: boolean;
+	errorText?: string;
 	placeholder?: string;
 	type?: string;
 	text?: string;
@@ -26,6 +27,7 @@ type TextInputProps = {
 const TextInput: React.FC<TextInputProps> = ({
 	onChange,
 	error,
+	errorText,
 	placeholder,
 	type,
 	text,
@@ -47,7 +49,7 @@ const TextInput: React.FC<TextInputProps> = ({
 	};
 
 	return (
-		<>
+		<div className={styles.Container}>
 			{multiline && (
 				<textarea
 					className={`${styles.TextInput} border-blue ${
@@ -74,8 +76,10 @@ const TextInput: React.FC<TextInputProps> = ({
 					value={text ? text : ''}
 				/>
 			)}
-			{error && <span className={styles.ErrorMessage}>Hello</span>}
-		</>
+			{error && errorText && (
+				<span className={styles.ErrorMessage}>{errorText}</span>
+			)}
+		</div>
 	);
 };
 
