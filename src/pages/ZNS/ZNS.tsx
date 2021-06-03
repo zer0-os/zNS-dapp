@@ -290,7 +290,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 										onClick={() => {
 											ownedDomain
 												? setIsMintOverlayOpen(true)
-												: alert('You can only mint NFTs on domains you own');
+												: addNotification(
+														'You can only mint NFTs on domains you own',
+												  );
 										}}
 									>
 										Mint New NFT

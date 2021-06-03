@@ -12,14 +12,14 @@ import { Web3Provider } from '@ethersproject/providers';
 import {
 	TokenInformationType,
 	// TokenDynamicType,
-	TokenStakeType,
+	// TokenStakeType,
 } from './types';
 
 //- Component Imports
-import { StepBar } from 'components';
+// import { StepBar } from 'components';
 import TokenInformation from './sections/TokenInformation';
 // import TokenDynamics from './sections/TokenDynamics';
-import Staking from './sections/Staking';
+// import Staking from './sections/Staking';
 import Summary from './sections/Summary';
 
 //- Style Imports
@@ -63,11 +63,11 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	// };
 
 	// Stake Page
-	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
-	const getTokenStake = (data: TokenStakeType) => {
-		setTokenStake(data);
-		setStep(3);
-	};
+	// const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
+	// const getTokenStake = (data: TokenStakeType) => {
+	// 	setTokenStake(data);
+	// 	setStep(3);
+	// };
 
 	//- Mint Context
 	const { mint } = useMint();
@@ -92,13 +92,13 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const { account } = context; // account = connected wallet ID
 
 	//- Functions
-	const toStep = (i: number) => {
-		setStep(i);
-	};
+	// const toStep = (i: number) => {
+	// 	setStep(i);
+	// };
 	const submit = () => {
 		setIsMintLoading(true);
 		if (!account) return setIsMintLoading(false);
-		if (!tokenInformation || !tokenStake) return setIsMintLoading(false);
+		if (!tokenInformation) return setIsMintLoading(false);
 
 		const doSubmit = async () => {
 			// Verify that all fields exist
@@ -150,12 +150,12 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						: ''}
 				</span>
 			</div>
-			<StepBar
+			{/* <StepBar
 				style={{ marginTop: 24 }}
 				step={step}
-				steps={['Details', 'Staking']}
+				steps={['Details']}
 				onNavigate={(i: number) => toStep(i)}
-			/>
+			/> */}
 			{/* TODO: Make ToggleSections unclickable if their open status depends on parent state */}
 
 			<div
@@ -186,18 +186,18 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				)} */}
 
 				{/* SECTION 3: Staking */}
-				{step === 2 && (
+				{/* {step === 2 && (
 					<Staking
 						token={tokenStake}
 						onContinue={(data: TokenStakeType) => getTokenStake(data)}
 					/>
-				)}
+				)} */}
 
-				{step === 3 && (
+				{step === 2 && (
 					<Summary
 						token={tokenInformation}
 						// dynamic={}
-						staking={tokenStake}
+						// staking={tokenStake}
 						onContinue={submit}
 						isMintLoading={isMintLoading}
 						domain={domainName}

@@ -112,9 +112,9 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 					</div>
 					<input
 						style={{ display: 'none' }}
-						accept="image/*"
+						accept="image/*,video/mp4"
 						multiple={false}
-						name={'image'}
+						name={'media'}
 						type="file"
 						onChange={onImageChanged}
 						ref={inputFile}
@@ -125,12 +125,14 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							onChange={(name: string) => updateName(name)}
 							text={name}
 							error={errors.includes('name')}
+							errorText={'A title is required'}
 						/>
 						<TextInput
 							placeholder={'Subdomain Name'}
 							onChange={(domain: string) => updateDomain(domain)}
 							text={domain}
 							error={errors.includes('domain')}
+							errorText={'A domain is required'}
 							alphanumeric
 						/>
 						{/* <ToggleButton
@@ -148,6 +150,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 					onChange={(story: string) => setStory(story)}
 					text={story}
 					error={errors.includes('story')}
+					errorText={'A story is required'}
 				/>
 			</form>
 			<FutureButton

@@ -23,7 +23,7 @@ import { FutureButton } from 'components';
 type SummaryProps = {
 	token: TokenInformationType | null;
 	dynamic?: TokenDynamicType | null;
-	staking: TokenStakeType | null;
+	staking?: TokenStakeType | null;
 	onContinue: () => void;
 	isMintLoading: boolean;
 	domain: string;
@@ -37,7 +37,7 @@ const Summary: React.FC<SummaryProps> = ({
 	isMintLoading,
 	domain,
 }) => {
-	if (!token || !staking) return <></>;
+	if (!token) return <></>;
 
 	return (
 		<div className={styles.Section}>
@@ -60,10 +60,12 @@ const Summary: React.FC<SummaryProps> = ({
 							<img alt="story icon" src={storyIcon} />
 							{token.story}
 						</li>
-						<li>
-							<img alt="stake icon" src={handIcon} />
-							{staking.stake} {staking.currency}
-						</li>
+						{staking && (
+							<li>
+								<img alt="stake icon" src={handIcon} />
+								{staking.stake} {staking.currency}
+							</li>
+						)}
 					</ul>
 				</div>
 			</div>

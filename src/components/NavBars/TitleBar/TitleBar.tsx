@@ -86,6 +86,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		else domainSearch.setPattern('?');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		if (searchQuery.length === 0) setSearchText('Type to search!');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchQuery]);
 
 	useEffect(() => {
@@ -98,6 +99,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		return () => {
 			setContainerHeight(50);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [domainSearch.matches]);
 
 	return (
