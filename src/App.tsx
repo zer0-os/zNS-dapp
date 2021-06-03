@@ -15,15 +15,11 @@ import { DomainCacheProvider } from 'lib/useDomainCache';
 import NotificationProvider from 'lib/providers/NotificationProvider';
 import MintProvider from 'lib/providers/MintProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
+import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
+import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 
 //- Page Imports
 import { ZNS } from 'pages';
-
-// Apollo client for making subgraph queries
-const client = new ApolloClient({
-	uri: process.env.REACT_APP_SUBGRAPH_URL_42,
-	cache: new InMemoryCache(),
-});
 
 // Web3 library to query
 function getLibrary(provider: any): Web3Provider {
@@ -48,19 +44,21 @@ function App() {
 
 function wrappedApp() {
 	return (
-		<ApolloProvider client={client}>
-			<NotificationProvider>
-				<Web3ReactProvider getLibrary={getLibrary}>
-					<MintProvider>
-						<EnlistProvider>
-							<DomainCacheProvider>
-								<App />
-							</DomainCacheProvider>
-						</EnlistProvider>
-					</MintProvider>
-				</Web3ReactProvider>
-			</NotificationProvider>
-		</ApolloProvider>
+		<ChainSelectorProvider>
+			<SubgraphProvider>
+				<NotificationProvider>
+					<Web3ReactProvider getLibrary={getLibrary}>
+						<MintProvider>
+							<EnlistProvider>
+								<DomainCacheProvider>
+									<App />
+								</DomainCacheProvider>
+							</EnlistProvider>
+						</MintProvider>
+					</Web3ReactProvider>
+				</NotificationProvider>
+			</SubgraphProvider>
+		</ChainSelectorProvider>
 	);
 }
 

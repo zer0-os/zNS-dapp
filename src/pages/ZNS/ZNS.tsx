@@ -47,6 +47,8 @@ import {
 
 import { MintNewNFT, NFTView, Enlist } from 'containers';
 import { Maybe } from 'true-myth';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
+import React from 'react';
 
 type ZNSProps = {
 	domain: string;
@@ -64,8 +66,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active } = walletContext;
+	const { account, active, chainId } = walletContext;
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet
+
+	//- Chain Selection (@todo: refactor to provider)
+	const chainSelector = useChainSelector();
+	React.useEffect(() => {
+		if (chainId && chainSelector.selectedChain != chainId) {
+			chainSelector.selectChain(chainId);
+		}
+	}, [chainId]);
 
 	//- Domain Data
 	const { useDomain } = useDomainCache();
@@ -85,6 +95,19 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	const pageHistory = useRef<string[]>([]);
 	const canGoBack = pageHistory.current.length > 1;
 	const canGoForward = backCount.current > 0;
+
+	// Force to go back to home if invalid domain
+	React.useEffect(() => {
+		if (data.isNothing()) {
+			history.push('/');
+			return;
+		}
+
+		if (!data.isNothing() && data.value === undefined) {
+			history.push('/');
+			return;
+		}
+	}, [data]);
 
 	//- Minting State
 	const { minting, minted } = useMint();
