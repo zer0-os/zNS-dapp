@@ -44,9 +44,9 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	const searchInput = useRef<HTMLInputElement>(null);
 	const [searchText, setSearchText] = useState('Type to search!');
 
-	const [containerHeight, setContainerHeight] = useState<number>(0);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const listRef = useRef<HTMLUListElement>(null);
+	const [containerHeight, setContainerHeight] = useState<number>(50);
 
 	const config = {
 		smallestSearchQuery: 2,
@@ -94,6 +94,10 @@ const TitleBar: React.FC<TitleBarProps> = ({
 
 		if (domainSearch?.matches?.length === 0 && searchQuery.length > 0)
 			setSearchText('No results!');
+
+		return () => {
+			setContainerHeight(50);
+		};
 	}, [domainSearch.matches]);
 
 	return (
@@ -129,7 +133,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 						value={searchQuery}
 						type="text"
 						onFocus={openSearch}
-						// onBlur={closeSearch}
+						onBlur={closeSearch}
 						ref={searchInput}
 					/>
 				</div>
