@@ -6,6 +6,10 @@ export enum NETWORK_TYPES {
 	KOVAN = 'KOVAN',
 }
 
+export const defaultNetworkId: number = Number(
+	process.env.DEFAULT_NETWORK ?? 42,
+);
+
 export const getEtherscanUri = (networkType: NETWORK_TYPES): string => {
 	let prefix = '';
 	switch (networkType) {
@@ -23,7 +27,12 @@ export const getEtherscanUri = (networkType: NETWORK_TYPES): string => {
 	return uri;
 };
 
-export const chainIdToNetworkType = (chainId: number): NETWORK_TYPES => {
+export const chainIdToNetworkType = (
+	chainId: number | undefined,
+): NETWORK_TYPES => {
+	if (!chainId) {
+		chainId = defaultNetworkId;
+	}
 	switch (chainId) {
 		case 1:
 			return NETWORK_TYPES.MAINNET;

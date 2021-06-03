@@ -35,6 +35,7 @@ const StepBar: React.FC<StepBarProps> = ({
 		<div style={style} className={`${styles.StepBar} no-select`}>
 			{steps.map((s: string, i: number) => (
 				<div
+					key={i + s}
 					className={`${styles.Placeholder} ${step - 1 > i ? styles.Show : ''}`}
 					onClick={() => goto(i + 1)}
 					style={{ position: 'absolute', left: left(i), width: width() }}

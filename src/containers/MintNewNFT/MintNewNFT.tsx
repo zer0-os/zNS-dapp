@@ -8,21 +8,18 @@ import useMint from 'lib/hooks/useMint';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
-//- Library Imports
-import { randomName } from 'lib/Random';
-
 //- Type Imports
 import {
 	TokenInformationType,
-	TokenDynamicType,
-	TokenStakeType,
+	// TokenDynamicType,
+	// TokenStakeType,
 } from './types';
 
 //- Component Imports
-import { StepBar } from 'components';
+// import { StepBar } from 'components';
 import TokenInformation from './sections/TokenInformation';
-import TokenDynamics from './sections/TokenDynamics';
-import Staking from './sections/Staking';
+// import TokenDynamics from './sections/TokenDynamics';
+// import Staking from './sections/Staking';
 import Summary from './sections/Summary';
 
 //- Style Imports
@@ -57,20 +54,20 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	};
 
 	// Token Dynamics Page
-	const [tokenDynamics, setTokenDynamics] = useState<TokenDynamicType | null>(
-		null,
-	);
-	const getTokenDynamics = (data: TokenDynamicType) => {
-		setTokenDynamics(data);
-		setStep(3);
-	};
+	// const [tokenDynamics, setTokenDynamics] = useState<TokenDynamicType | null>(
+	// 	null,
+	// );
+	// const getTokenDynamics = (data: TokenDynamicType) => {
+	// 	setTokenDynamics(data);
+	// 	setStep(3);
+	// };
 
 	// Stake Page
-	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
-	const getTokenStake = (data: TokenStakeType) => {
-		setTokenStake(data);
-		setStep(3);
-	};
+	// const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
+	// const getTokenStake = (data: TokenStakeType) => {
+	// 	setTokenStake(data);
+	// 	setStep(3);
+	// };
 
 	//- Mint Context
 	const { mint } = useMint();
@@ -86,7 +83,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 			if (child && child.clientHeight > 0)
 				return setContainerHeight(child.clientHeight);
 		}
-	}, [step]);
+	}, [step, isMintLoading]);
 
 	//- Web3 Wallet Data
 	// MintNewNFT is a container and needs a bit more brainpower than your standard component
@@ -95,13 +92,13 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const { account } = context; // account = connected wallet ID
 
 	//- Functions
-	const toStep = (i: number) => {
-		setStep(i);
-	};
+	// const toStep = (i: number) => {
+	// 	setStep(i);
+	// };
 	const submit = () => {
 		setIsMintLoading(true);
 		if (!account) return setIsMintLoading(false);
-		if (!tokenInformation || !tokenStake) return setIsMintLoading(false);
+		if (!tokenInformation) return setIsMintLoading(false);
 
 		const doSubmit = async () => {
 			// Verify that all fields exist
@@ -115,12 +112,8 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					domain: tokenInformation.domain,
 					zna: domainName,
 					// @TODO Reimplement ticker when we enable dynamic tokens
-					ticker:
-						tokenDynamics && tokenDynamics.ticker ? tokenDynamics.ticker : '',
-					dynamic:
-						tokenDynamics && tokenDynamics.dynamic
-							? tokenDynamics.dynamic
-							: false,
+					ticker: '',
+					dynamic: false,
 					locked: tokenInformation.locked,
 				});
 				await hasSubmitMint;
@@ -148,14 +141,21 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						{domain}
 					</h2>
 				</div>
-				<span>By {account && account.length ? randomName(account) : ''}</span>
+				<span>
+					By{' '}
+					{account && account.length
+						? account.substring(0, 4) +
+						  '...' +
+						  account.substring(account.length - 4)
+						: ''}
+				</span>
 			</div>
-			<StepBar
+			{/* <StepBar
 				style={{ marginTop: 24 }}
 				step={step}
-				steps={['Details', 'Staking']}
+				steps={['Details']}
 				onNavigate={(i: number) => toStep(i)}
-			/>
+			/> */}
 			{/* TODO: Make ToggleSections unclickable if their open status depends on parent state */}
 
 			<div
@@ -186,18 +186,18 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				)} */}
 
 				{/* SECTION 3: Staking */}
-				{step === 2 && (
+				{/* {step === 2 && (
 					<Staking
 						token={tokenStake}
 						onContinue={(data: TokenStakeType) => getTokenStake(data)}
 					/>
-				)}
+				)} */}
 
-				{step === 3 && (
+				{step === 2 && (
 					<Summary
 						token={tokenInformation}
-						dynamic={tokenDynamics}
-						staking={tokenStake}
+						// dynamic={}
+						// staking={tokenStake}
 						onContinue={submit}
 						isMintLoading={isMintLoading}
 						domain={domainName}

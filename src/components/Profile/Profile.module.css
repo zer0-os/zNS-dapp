@@ -1,7 +1,5 @@
 .profile {
-	width: 1320px;
-	min-width: 1320px;
-	/* height: 100%; */
+	width: 100%;
 	overflow-y: scroll;
 	padding: 54px;
 	color: #4d4d4d;

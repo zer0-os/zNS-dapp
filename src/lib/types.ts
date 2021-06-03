@@ -1,3 +1,5 @@
+// Types
+
 export interface Account {
 	id: string;
 }
@@ -9,6 +11,12 @@ export interface Domain {
 	owner: Account;
 	minter: Account;
 	metadata: string;
+}
+
+export interface Metadata {
+	title: string;
+	description: string;
+	image: string;
 }
 
 export interface ParentDomain extends Domain {
@@ -25,3 +33,18 @@ export interface DisplayDomain extends Domain {
 export interface DisplayParentDomain extends DisplayDomain {
 	subdomains: DisplayDomain[];
 }
+
+// Defaults
+
+export const DefaultDomain: Domain = {
+	id: '',
+	name: '',
+	parent: '',
+	owner: {
+		id: '',
+	},
+	minter: {
+		id: '',
+	},
+	metadata: '',
+};

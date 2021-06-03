@@ -20,7 +20,13 @@ const ArrowLink: React.FC<ArrowLinkProps> = ({
 	back,
 }) => {
 	return (
-		<a className={`${className} ${styles.Link}`} style={style} href={href}>
+		<a
+			className={`${className} ${styles.Link}`}
+			style={style}
+			href={href}
+			target="_blank"
+			rel="noreferrer"
+		>
 			{children}{' '}
 			<div className={`${styles.ArrowContainer} ${back ? styles.Back : ''}`}>
 				<div className={styles.Arrow}></div>

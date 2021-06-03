@@ -35,14 +35,15 @@ const FilterBar: React.FC<FilterBarProps> = ({
 	// TODO: Move hidden header to a separate component
 	const [hideHeader, setHideHeader] = useState(false);
 	const handleScroll = () => {
-		const hide = window.pageYOffset > 100 && window.pageYOffset > lastY;
+		const hide = window.pageYOffset > 60 && window.pageYOffset > lastY;
 		lastY = window.pageYOffset;
 		setHideHeader(hide);
 	};
+
 	useEffect(() => {
 		window.addEventListener('scroll', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
-	}, [hideHeader]);
+	}, []);
 
 	const select = (filter: string) => {
 		setSelected(filter);
@@ -54,7 +55,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 	};
 
 	return (
-		<div
+		<nav
 			className={`${styles.FilterBar} blur ${hideHeader ? styles.Hidden : ''}`}
 			style={style}
 		>
@@ -75,7 +76,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 					</li>
 				))}
 			</ul>
-		</div>
+		</nav>
 	);
 };
 

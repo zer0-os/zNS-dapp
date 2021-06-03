@@ -1,10 +1,8 @@
 //- React Imports
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
-import { useWeb3React } from '@web3-react/core';
-import { BasicController, BasicController__factory } from 'types';
 import { useZnsContracts } from 'lib/contracts';
 import ipfsClient from 'lib/ipfs-client';
 
@@ -100,6 +98,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 			setMinting(minting.filter((n) => n !== finishedMinting));
 			setMinted([...minted, finishedMinting]);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [finishedMinting]);
 
 	const contextValue = {

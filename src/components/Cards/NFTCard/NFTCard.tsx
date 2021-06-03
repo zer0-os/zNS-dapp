@@ -7,9 +7,6 @@ import styles from './NFTCard.module.css';
 //- Component Imports
 import { ArrowLink, Image } from 'components';
 
-//- Library Imports
-import { randomName, randomImage } from 'lib/Random';
-
 type NFTCardProps = {
 	name: string;
 	domain: string;
@@ -44,17 +41,17 @@ const NFTCard: React.FC<NFTCardProps> = ({
 				src={imageUri ? imageUri : ''}
 			/>
 			<div className={styles.Body}>
-				{showCreator && (
+				{/* {showCreator && (
 					<div className={styles.Creator}>
 						<div
 							style={{ backgroundImage: `url("${randomImage(nftMinterId)}")` }}
 						></div>
-						<span className={`glow-text-blue`}>{randomName(nftMinterId)}</span>
+						<span className={`glow-text-blue`}>{nftMinterId}</span>
 					</div>
-				)}
+				)} */}
 				<h5 className={`glow-text-blue`}>{name}</h5>
 				<ArrowLink>0://{domain}</ArrowLink>
-				<div className={styles.Foot}>
+				{/* <div className={styles.Foot}>
 					<div>
 						<span>Last Traded Price</span>
 						<span className={`glow-text-blue`}>
@@ -70,13 +67,11 @@ const NFTCard: React.FC<NFTCardProps> = ({
 										backgroundImage: `url("${randomImage(nftOwnerId)}")`,
 									}}
 								></div>
-								<span className={`glow-text-blue`}>
-									{randomName(nftOwnerId)}
-								</span>
+								<span className={`glow-text-blue`}>{nftOwnerId}</span>
 							</div>
 						</div>
 					)}
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

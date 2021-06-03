@@ -13,6 +13,10 @@ import {
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
+import useEnlist from 'lib/hooks/useEnlist';
+import { getRelativeDomainPath } from 'lib/domains';
+import { Domain, Metadata } from 'lib/types';
+import { getMetadata } from 'lib/metadata';
 
 //- Style Imports
 import styles from './DomainTable.module.css';
@@ -20,7 +24,6 @@ import styles from './DomainTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
-import { getRelativeDomainPath } from 'lib/domains';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -29,16 +32,14 @@ type DomainTableProps = {
 	style?: React.CSSProperties;
 	empty?: boolean;
 	mvpVersion: number;
-	// TODO: Is onEnlist the best way to handle enlisting?
-	onEnlist: (
-		domainId: string,
-		nameName: string,
-		minter: string,
-		image: string,
-	) => void;
 	// TODO: Find a better way to persist grid view than with props
 	isGridView?: boolean;
 	setIsGridView?: (grid: boolean) => void;
+};
+
+type DomainData = {
+	domain: Domain;
+	metadata: Metadata;
 };
 
 interface RowData {
@@ -61,14 +62,17 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	style,
 	empty,
 	mvpVersion,
-	onEnlist,
 	isGridView,
 	setIsGridView,
 }) => {
+	const { enlist } = useEnlist();
+
 	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
+
+	const [loadedDomains, setLoadedDomains] = useState<DomainData[]>([]);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -79,6 +83,32 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const setList = () => {
 		if (setIsGridView) setIsGridView(false);
 	};
+
+	// Clicks
+	const rowClick = (event: any, domain: string) => {
+		if (event.target.nodeName.toLowerCase() === 'button') return;
+		navigateTo(domain);
+	};
+
+	const buttonClick = (id: string) => {
+		try {
+			// TODO: Get rid of any
+			const domain = domains.filter((d: any) => d.id === id)[0];
+			enlist(domain);
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const handleResize = () => {
+		if (window.innerWidth < 1282) setList();
+	};
+
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		return () => window.removeEventListener('resize', handleResize);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -98,6 +128,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	// Gets metadata for each NFT in domain list
 	useEffect(() => {
+		const loaded: DomainData[] = [];
 		setHasMetadataLoaded(false);
 		var count = 0,
 			completed = 0;
@@ -105,31 +136,13 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			const domain = domains[i];
 			if (!domain.image && domain.metadata) {
 				count++;
+
 				// eslint-disable-next-line no-loop-func
-				fetch(domain.metadata).then(async (d: Response) => {
-					if (!d.ok) {
-						console.warn(`Unable to load metadata ${domain.name}`);
-						return;
-					}
-					let data: any;
-
-					try {
-						data = await d.json();
-					} catch (e) {
-						console.warn(`unable to parse metadata json`);
-					}
-
-					if (data) {
-						domain.nft = {
-							// Some NFTs on the testnet don't have data populated for whatever reason
-							// @TODO: Remove the default case when there's no metadata
-							name: data.name || data.title || '',
-							image: data.image || '',
-							description: data.description || '',
-						};
-					}
-
+				getMetadata(domain.metadata).then((metadata) => {
+					if (!metadata) return;
+					loaded.push({ domain: domain, metadata: metadata });
 					if (++completed === count) {
+						setLoadedDomains(loaded);
 						setHasMetadataLoaded(true);
 					}
 				});
@@ -144,13 +157,13 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		() =>
 			!hasMetadataLoaded
 				? []
-				: domains.map((d: any, i: number) => ({
+				: loadedDomains.map((d: any, i: number) => ({
 						i: i + 1,
-						id: d.id,
-						image: d.nft?.image,
-						nftName: d.nft?.name,
-						name: d.name,
-						ticker: d.name.toUpperCase(),
+						id: d.domain.id,
+						image: d.metadata.image,
+						nftName: d.metadata.name,
+						name: d.domain.name,
+						ticker: d.domain.name.toUpperCase(),
 						lastBid: 1000,
 						numBids: 1000,
 						lastSalePrice: 1000,
@@ -250,27 +263,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[mvpVersion, domains],
 	);
-
-	// Clicks
-	const rowClick = (event: any, domain: string) => {
-		if (event.target.nodeName.toLowerCase() === 'button') return;
-		navigateTo(domain);
-	};
-
-	const buttonClick = (id: string) => {
-		try {
-			// TODO: Get rid of any
-			const domain = domains.filter((d: any) => d.id === id)[0];
-			onEnlist(
-				domain.id,
-				domain.name,
-				domain.minter.id,
-				domain.nft?.image ? domain.nft.image : '',
-			);
-		} catch (e) {
-			console.error(e);
-		}
-	};
 
 	// Navigation Handling
 	const history = useHistory();

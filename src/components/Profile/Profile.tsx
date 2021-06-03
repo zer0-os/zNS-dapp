@@ -8,9 +8,6 @@ import ProfileStyle from './Profile.module.css';
 //- Component Imports
 import { Image } from 'components';
 
-//- Container Imports
-import { Shop } from 'containers';
-
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 
@@ -31,9 +28,9 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<div style={{ height: 160 }}>
 						<Image className={ProfileStyle.dp} src={randomImage(id)} />
 					</div>
-					<a className={`${ProfileStyle.endpoint} glow-text-blue`}>
+					<span className={`${ProfileStyle.endpoint} glow-text-blue`}>
 						0://wilder.{randomName(id).toLowerCase().split(' ').join('.')}
-					</a>
+					</span>
 				</div>
 				<div>
 					<span className={`${ProfileStyle.name} glow-text-blue`}>
@@ -53,7 +50,6 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			{/* {yours && <Shop />} */}
 		</div>
 	);
 };

@@ -8,15 +8,18 @@ type NumberButtonProps = {
 	number: number;
 	onClick: () => void;
 	rotating?: boolean;
+	style?: React.CSSProperties;
 };
 
 const NumberButton: React.FC<NumberButtonProps> = ({
 	number,
 	onClick,
 	rotating,
+	style,
 }) => {
 	return (
 		<button
+			style={style}
 			onClick={onClick}
 			className={`${styles.NumberButton} ${rotating ? styles.Rotating : ''}`}
 		>

@@ -17,3 +17,13 @@
 .TextInput::placeholder {
 	color: #dedede;
 }
+
+.ErrorMessage {
+	display: block;
+	margin-top: 12px;
+
+	color: var(--color-invalid);
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+}

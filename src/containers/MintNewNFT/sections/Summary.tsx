@@ -12,7 +12,6 @@ import {
 import styles from '../MintNewNFT.module.css';
 
 //- Asset Imports
-import graphIcon from './assets/graph.svg';
 import handIcon from './assets/hand.svg';
 import storyIcon from './assets/story.svg';
 import tickerIcon from './assets/ticker.svg';
@@ -23,8 +22,8 @@ import { FutureButton } from 'components';
 
 type SummaryProps = {
 	token: TokenInformationType | null;
-	dynamic: TokenDynamicType | null;
-	staking: TokenStakeType | null;
+	dynamic?: TokenDynamicType | null;
+	staking?: TokenStakeType | null;
 	onContinue: () => void;
 	isMintLoading: boolean;
 	domain: string;
@@ -38,40 +37,59 @@ const Summary: React.FC<SummaryProps> = ({
 	isMintLoading,
 	domain,
 }) => {
-	if (!token || !staking) return <></>;
+	if (!token) return <></>;
 
 	return (
 		<div className={styles.Section}>
 			<div className={styles.Summary}>
 				<div className={`${styles.NFT} border-rounded border-blue`}>
-					<img alt="nft preview" src={token.previewImage} />
+					{token.previewImage.indexOf('image/') > -1 && (
+						<img alt="nft preview" src={token.previewImage} />
+					)}
+					{token.previewImage.indexOf('video/') > -1 && (
+						<video controls src={token.previewImage} />
+					)}
 				</div>
 				<div style={{ marginLeft: 16 }}>
 					<h2>Summary</h2>
 					<ul>
 						<li className={styles.Name}>
-							<img src={tickerIcon} />
+							<img alt="name icon" src={tickerIcon} />
 							{token.name}
 						</li>
 						<li>
-							<img src={addressIcon} />
+							<img alt="address icon" src={addressIcon} />
 							0://wilder.{domain.substring(1)}.{token.domain}
 						</li>
 						<li>
-							<img src={storyIcon} />
+							<img alt="story icon" src={storyIcon} />
 							{token.story}
 						</li>
-						<li>
-							<img src={handIcon} />
-							{staking.stake} {staking.currency}
-						</li>
+						{staking && (
+							<li>
+								<img alt="stake icon" src={handIcon} />
+								{staking.stake} {staking.currency}
+							</li>
+						)}
 					</ul>
 				</div>
 			</div>
-			<div style={{ display: 'flex', justifyContent: 'center', marginTop: 80 }}>
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					alignItems: 'center',
+					marginTop: 80,
+				}}
+			>
+				{isMintLoading && (
+					<p style={{ fontWeight: 700 }}>
+						Things are working behind the scenes - please wait
+					</p>
+				)}
 				<FutureButton
 					style={{
-						margin: '0 auto 0 auto',
+						margin: '8px auto 0 auto',
 						height: 36,
 						borderRadius: 18,
 						width: 130,

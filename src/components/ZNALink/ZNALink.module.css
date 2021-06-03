@@ -5,7 +5,7 @@
 }
 
 .ZNALink > a::before {
-	transition: all var(--animation-time-short) ease-in-out;
+	transition: opacity var(--animation-time-medium) ease-in-out;
 	content: ' ';
 	position: absolute;
 	top: 50%;
@@ -13,11 +13,16 @@
 	-webkit-transform: translate(-50%);
 	transform: translate(-50%);
 	width: calc(100% - 16px);
+	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.3);
+	opacity: 0;
+}
+
+.ZNALink > a:last-of-type::before {
+	opacity: 1;
 }
 
 .ZNALink > a:not(:last-child):hover::before {
-	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.3);
-	z-index: -1;
+	opacity: 1;
 }
 
 .ZNALink > a:not(:last-child):hover {

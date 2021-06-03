@@ -9,6 +9,7 @@
  *	- Borders
  *	- Glows / Shadows
  *	- Effects
+ *  - Media Queries
  */
 
 /*
@@ -119,7 +120,8 @@
 
 	--box-radius: 16px;
 
-	--width-max: 1250px;
+	--width-max: 1282px;
+	--width-min: 500px;
 
 	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
 
@@ -157,11 +159,6 @@ textarea {
 	font-size: 1em;
 }
 
-html {
-	overflow: hidden;
-	height: 100%;
-}
-
 body {
 	background-color: #120628;
 	background: url('../assets/zns-bg.png');
@@ -170,23 +167,16 @@ body {
 	background-size: cover;
 
 	min-height: 100vh;
-	height: 100%;
 	width: 100%;
 	overflow: auto;
-	/* margin-top: 29px; */
-	/* padding-top: 123px; */
-	/* padding-bottom: 123px; */
-
-	/* Currently the only breakpoint in Figma */
-	min-width: 1440px;
 
 	color: var(--color-text-primary);
 }
 
-/* body.no-scroll {
+body.no-scroll {
+	height: 100%;
 	overflow: hidden;
-    position: fixed;
-} */
+}
 
 h1 {
 	font-size: 22px;
@@ -219,13 +209,15 @@ hr.glow::after {
 	background-color: #e0baff;
 }
 
-a {
+a,
+button.text-button {
 	color: var(--color-accent-1);
 	text-decoration: none;
 	transition: text-shadow var(--animation-time-short) ease-in-out;
 }
 
-a:hover {
+a:hover,
+button.text-button:hover {
 	color: var(--color-accent-1);
 	text-shadow: var(--glow-text-blue), var(--glow-text-blue);
 }
@@ -236,7 +228,14 @@ a.alt-link {
 
 a.alt-link:hover {
 	color: white;
-	text-shadow: var(--glow-text-white-big);
+	text-shadow: var(--glow-text-white);
+}
+
+button.text-button {
+	background: none;
+	padding: 0;
+	font-weight: 700;
+	font-size: 16px;
 }
 
 /*
@@ -244,6 +243,10 @@ a.alt-link:hover {
  * Custom HTML Elements 
  *
  */
+
+#breakpointMessage {
+	display: none;
+}
 
 .content {
 	display: flex;
@@ -256,13 +259,25 @@ a.alt-link:hover {
 	flex: 1;
 }
 
+nav {
+	width: calc(100% - 64px) !important;
+	max-width: calc(var(--width-max) - 64px);
+}
+
 .page-spacing {
-	/* position: relative; */
+	position: relative;
+	width: 100%;
 	max-width: var(--width-max);
-	min-width: var(--width-max);
+	min-width: var(--width-min);
 	margin: 0 auto;
 	padding-top: 126px;
 	padding-bottom: 110px;
+	padding-left: 32px;
+	padding-right: 32px;
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .no-select {
@@ -329,4 +344,36 @@ a.alt-link:hover {
 	backdrop-moz-filter: blur(20px);
 	backdrop-o-filter: blur(20px);
 	backdrop-ms-filter: blur(20px);
+}
+
+/*
+ *
+ * Media Queries 
+ *
+ */
+@media only screen and (max-width: 660px) {
+	#root {
+		opacity: 0;
+	}
+
+	#overlay {
+		display: none;
+	}
+
+	#breakpointMessage {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		padding: 32px;
+
+		display: flex !important;
+		align-items: center;
+		justify-content: center;
+
+		font-weight: 700;
+		text-align: center;
+		line-height: 22px;
+	}
 }

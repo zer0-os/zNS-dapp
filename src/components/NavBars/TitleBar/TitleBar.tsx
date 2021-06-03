@@ -16,15 +16,9 @@ import arrowBackIcon from 'assets/arrow-back.svg';
 //- Style Imports
 import styles from './TitleBar.module.css';
 
-type SearchResult = {
-	name: string;
-	domain: string;
-};
-
 type TitleBarProps = {
 	style?: React.CSSProperties;
 	children: React.ReactNode;
-	// searchResults?: SearchResult[];
 	canGoBack: boolean;
 	onBack: () => void;
 	canGoForward: boolean;
@@ -37,7 +31,6 @@ type TitleBarProps = {
 const TitleBar: React.FC<TitleBarProps> = ({
 	style,
 	children,
-	// searchResults,
 	canGoBack,
 	onBack,
 	canGoForward,
@@ -49,6 +42,11 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	const domainSearch = useDomainSearch();
 	const history = useHistory();
 	const searchInput = useRef<HTMLInputElement>(null);
+	const [searchText, setSearchText] = useState('Type to search!');
+
+	const containerRef = useRef<HTMLDivElement>(null);
+	const listRef = useRef<HTMLUListElement>(null);
+	const [containerHeight, setContainerHeight] = useState<number>(50);
 
 	const config = {
 		smallestSearchQuery: 2,
@@ -86,10 +84,26 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		if (searchQuery.length >= config.smallestSearchQuery)
 			domainSearch.setPattern(searchQuery);
 		else domainSearch.setPattern('?');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		if (searchQuery.length === 0) setSearchText('Type to search!');
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchQuery]);
 
+	useEffect(() => {
+		const height = listRef?.current?.clientHeight;
+		if (height) setContainerHeight(height);
+
+		if (domainSearch?.matches?.length === 0 && searchQuery.length > 0)
+			setSearchText('No results!');
+
+		return () => {
+			setContainerHeight(50);
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [domainSearch.matches]);
+
 	return (
-		<nav
+		<div
 			className={`${styles.TitleBar} ${
 				isSearchActive ? styles.Searching : ''
 			} border-primary`}
@@ -128,36 +142,43 @@ const TitleBar: React.FC<TitleBarProps> = ({
 				{children}
 			</div>
 			{isSearchActive && (
-				<ul className={`${styles.SearchResults} blur border-primary`}>
-					{/* @TODO: Implement exact domain properly */}
-					{config.isExactMatchEnabled && domainSearch?.exactMatch?.name && (
-						<li
-							className={styles.ExactMatch}
-							key={domainSearch.exactMatch.name}
-							onClick={() => go(domainSearch?.exactMatch?.name || '')}
-						>
-							{
-								domainSearch.exactMatch.name.split('.')[
-									domainSearch.exactMatch.name.split('.').length - 1
-								]
-							}{' '}
-							<span>{domainSearch.exactMatch.name}</span>
-						</li>
-					)}
-					{domainSearch?.matches
-						?.filter((d) => d.name.length > 1)
-						.map((s) => (
-							<li onClick={() => go(s.name)} key={s.name}>
-								{s.name.split('.')[s.name.split('.').length - 1]}
-								<span>{s.name}</span>
+				<div className={`${styles.SearchResults} blur border-primary`}>
+					<ul ref={listRef}>
+						{/* @TODO: Implement exact domain properly */}
+						{config.isExactMatchEnabled && domainSearch?.exactMatch?.name && (
+							<li
+								className={styles.ExactMatch}
+								key={domainSearch.exactMatch.name}
+								onClick={() => go(domainSearch?.exactMatch?.name || '')}
+							>
+								{
+									domainSearch.exactMatch.name.split('.')[
+										domainSearch.exactMatch.name.split('.').length - 1
+									]
+								}{' '}
+								<span>{domainSearch.exactMatch.name}</span>
 							</li>
-						))}
-					{domainSearch.matches?.length === 0 && (
-						<li>Type to search domains!</li>
-					)}
-				</ul>
+						)}
+						{domainSearch?.matches
+							?.filter((d) => d.name.length > 1)
+							.map((s, i) => (
+								<li onClick={() => go(s.name)} key={i + s.name}>
+									{s.name.split('.')[s.name.split('.').length - 1]}
+									<span>{s.name}</span>
+								</li>
+							))}
+						{domainSearch.matches?.length === 0 && (
+							<li key={'type'}>{searchText}</li>
+						)}
+					</ul>
+					<div
+						ref={containerRef}
+						className={styles.GrowContainer}
+						style={{ width: '100%', height: containerHeight }}
+					></div>
+				</div>
 			)}
-		</nav>
+		</div>
 	);
 };
 

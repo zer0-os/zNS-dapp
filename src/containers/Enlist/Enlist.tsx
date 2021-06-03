@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //- Style Imports
 import styles from './Enlist.module.css';
@@ -7,24 +7,19 @@ import styles from './Enlist.module.css';
 import { TextInput, FutureButton, Image } from 'components';
 
 //- Library Imports
-import { randomName } from 'lib/Random';
+import { getMetadata } from 'lib/metadata';
+import useEnlist from 'lib/hooks/useEnlist';
+import { EnlistSubmitParams } from 'lib/providers/EnlistProvider';
 
 type EnlistProps = {
-	domainId: string;
-	domainName: string;
-	minterName: string;
-	image: string;
 	onSubmit: () => void;
 };
 
-const Enlist: React.FC<EnlistProps> = ({
-	domainId,
-	domainName,
-	minterName,
-	image,
-	onSubmit,
-}) => {
+const Enlist: React.FC<EnlistProps> = ({ onSubmit }) => {
+	const { enlisting, submit } = useEnlist();
+
 	// State
+	const [image, setImage] = useState('');
 	const [emailAddress, setEmailAddress] = useState('');
 	const [reasonForPurchase, setReasonForPurchase] = useState('');
 	const [bidUsd, setBidUsd] = useState(0);
@@ -38,23 +33,41 @@ const Enlist: React.FC<EnlistProps> = ({
 	const valid =
 		isEmail(emailAddress) && reasonForPurchase.length > 0 && bidUsd > 0;
 
-	const submit = () => {
+	const clickSubmit = async () => {
 		// Do some validation here
 		const e = [];
 		if (!isEmail(emailAddress)) e.push('email');
 		if (reasonForPurchase.length <= 0) e.push('reason');
 		if (bidUsd <= 0) e.push('bid');
 		setErrors(e);
-		if (e.length === 0) onSubmit();
+
+		if (e.length === 0) {
+			const params: EnlistSubmitParams = {
+				email: emailAddress,
+				reason: reasonForPurchase,
+				bid: bidUsd,
+			};
+
+			await submit(params);
+			onSubmit();
+		}
 	};
+
+	useEffect(() => {
+		if (!enlisting || !enlisting.metadata) return;
+
+		getMetadata(enlisting.metadata).then((metadata) => {
+			if (!metadata) return;
+			setImage(metadata.image);
+		});
+	}, [enlisting]);
 
 	return (
 		<div className={`${styles.Enlist} blur border-rounded border-primary`}>
 			<div className={styles.Header}>
 				<h1 className={`glow-text-white`}>Enlist To Purchase</h1>
 				<div>
-					<h2 className={`glow-text-white`}>0://{domainName}</h2>
-					<span>By {randomName(minterName)}</span>
+					<h2 className={`glow-text-white`}>0://{enlisting?.name || ''}</h2>
 				</div>
 			</div>
 			<hr className="glow" />
@@ -104,7 +117,7 @@ const Enlist: React.FC<EnlistProps> = ({
 					textTransform: 'uppercase',
 					margin: '47px auto 0 auto',
 				}}
-				onClick={submit}
+				onClick={clickSubmit}
 			>
 				Submit
 			</FutureButton>

@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 
 //- Component Imports
-import { FutureButton, Member, Image, Overlay } from 'components';
+import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
@@ -22,7 +22,6 @@ import copyIcon from './assets/copy-icon.svg';
 import { Maybe } from 'true-myth';
 import { DisplayParentDomain } from 'lib/types';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import addresses from 'lib/addresses';
 import { BigNumber } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
 
@@ -41,6 +40,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	const { addNotification } = useNotification();
 
 	//- Page State
+	const [zna, setZna] = useState('');
 	const [image, setImage] = useState<string>(''); // Image from metadata url
 	const [name, setName] = useState<string>(''); // Name from metadata url
 	const [description, setDescription] = useState<string>(''); // Description from metadata url
@@ -56,7 +56,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account, chainId } = walletContext;
 
-	const networkType = chainIdToNetworkType(chainId!);
+	const networkType = chainIdToNetworkType(chainId);
 	const contracts = useZnsContracts();
 	const registrarAddress = contracts ? contracts.registry.address : '';
 	const domainId = data.isNothing()
@@ -68,7 +68,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	//- Functions
 	const copyContractToClipboard = () => {
 		addNotification('Copied address to clipboard!');
-		navigator.clipboard.writeText(etherscanLink);
+		navigator.clipboard.writeText(domainId);
 	};
 
 	useEffect(() => {
@@ -78,6 +78,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 			// Get metadata
 			fetch(data.value.metadata).then(async (d: Response) => {
 				const nftData = await d.json();
+				setZna(domain);
 				setImage(nftData.image);
 				setName(nftData.title || nftData.name);
 				setDescription(nftData.description);
@@ -106,7 +107,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 				<div className={`${styles.Image} border-rounded`}>
 					<Image
 						style={{
-							width: 505,
 							height: 422,
 							borderRadius: 10,
 							borderWidth: 2,
@@ -119,7 +119,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 				<div className={styles.Info}>
 					<div>
 						<h1 className="glow-text-white">{name}</h1>
-						<span>0://wilder.{domain.substring(1)}</span>
+						<span>
+							{zna.length > 0 ? `0://wilder.${zna.substring(1)}` : ''}
+						</span>
 						<div className={styles.Members}>
 							<Member
 								id={!data.isNothing() ? data.value.owner.id : ''}
@@ -128,7 +130,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 									!data.isNothing() ? randomImage(data.value.owner.id) : ''
 								}
 								subtext={'Owner'}
-								showZna
 							/>
 							<Member
 								id={!data.isNothing() ? data.value.minter.id : ''}
@@ -137,18 +138,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 									!data.isNothing() ? randomImage(data.value.minter.id) : ''
 								}
 								subtext={'Creator'}
-								showZna
 							/>
 						</div>
 					</div>
-					<div className={styles.Price}>
+					{/* Price data doesn't exist yet */}
+					{/* <div className={styles.Price}>
 						<span className={styles.Crypto}>
 							{Number(2521).toLocaleString()} WILD{' '}
 							<span className={styles.Fiat}>
 								(${Number(1304.12).toLocaleString()})
 							</span>
 						</span>
-					</div>
+					</div> */}
 					<div className={styles.Buttons}>
 						<FutureButton
 							glow={isOwnedByYou}
@@ -175,7 +176,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 					<p>{description}</p>
 				</div>
 				<div className={styles.Vertical}>
-					<div className={styles.Horizontal}>
+					{/* <div className={styles.Horizontal}>
 						<div className={`${styles.Box} blur border-primary border-rounded`}>
 							<h4>Views</h4>
 							<span className="glow-text-white">
@@ -188,11 +189,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 								{Number(1).toLocaleString()} of {Number(1).toLocaleString()}
 							</span>
 						</div>
-					</div>
+					</div> */}
 					<div
 						className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 					>
-						<h4>Contract Address</h4>
+						<h4>Token Id</h4>
 						<p className="glow-text-white">
 							<img
 								onClick={copyContractToClipboard}
@@ -200,8 +201,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 								src={copyIcon}
 								alt={'Copy Contract Icon'}
 							/>
-							{registrarAddress}
+							{domainId}
 						</p>
+						<ArrowLink
+							style={{
+								marginTop: 8,
+								width: 140,
+								fontWeight: 700,
+							}}
+							href={etherscanLink}
+						>
+							View on Etherscan
+						</ArrowLink>
 					</div>
 				</div>
 			</div>

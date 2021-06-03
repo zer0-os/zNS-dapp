@@ -38,6 +38,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+	margin-left: 32px;
 }
 
 .Info h1 {
@@ -57,9 +58,11 @@
 
 .Members {
 	display: flex;
-	justify-content: space-between;
-
 	margin-top: 32px;
+}
+
+.Members > *:not(:first-child) {
+	margin-left: 64px;
 }
 
 .Price {
@@ -164,8 +167,8 @@
 	position: absolute;
 	top: 50%;
 	right: 0;
-	height: 32px;
-	width: 32px;
+	height: 24px;
+	width: 24px;
 	transform: translateY(-50%);
 
 	cursor: pointer;
@@ -180,9 +183,74 @@
 .Contract p {
 	position: relative;
 	text-overflow: clip;
-	font-size: 24px;
+	font-size: 16px;
 	font-weight: 700;
+	line-height: 21px;
 	word-break: break-all;
 	padding: 0;
 	padding-right: 38px;
+}
+
+@media only screen and (max-width: 1100px) {
+	.Crypto {
+		font-size: 32px;
+	}
+
+	.Buttons {
+		flex-direction: column;
+	}
+
+	.Buttons button {
+		margin-left: 0 !important;
+	}
+
+	.Buttons button:not(:first-child) {
+		margin-top: 24px;
+	}
+}
+
+@media only screen and (max-width: 960px) {
+	.NFT {
+		padding: 32px;
+	}
+}
+
+@media only screen and (max-width: 760px) {
+	.NFT {
+		flex-direction: column;
+	}
+
+	.Info {
+		margin-left: 0;
+		margin-top: 24px;
+	}
+
+	.Buttons {
+		flex-direction: row;
+		margin-top: 32px;
+	}
+
+	.Buttons > * {
+		margin-top: 0 !important;
+	}
+
+	.Buttons > *:not(:first-child) {
+		margin-left: 32px !important;
+	}
+
+	.Horizontal {
+		flex-direction: column;
+	}
+
+	.Horizontal > div {
+		width: 100%;
+	}
+
+	.Horizontal > div:not(:first-child) {
+		margin-top: 20px;
+	}
+
+	.Vertical {
+		margin-left: 0 !important;
+	}
 }

@@ -8,7 +8,7 @@ import { TokenInformationType } from '../types';
 import styles from '../MintNewNFT.module.css';
 
 //- Component Imports
-import { ToggleButton, TextInput, FutureButton } from 'components';
+import { TextInput, FutureButton } from 'components';
 
 type TokenInformationProps = {
 	token: TokenInformationType | null;
@@ -31,7 +31,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const [story, setStory] = useState(token ? token.story : '');
 	const [image, setImage] = useState(token ? token.image : Buffer.from(''));
 	const [domain, setDomain] = useState(token ? token.domain : '');
-	const [locked, setLocked] = useState(token ? token.locked : true);
+	const [locked] = useState(token ? token.locked : true);
 
 	const updateName = (name: string) => {
 		setName(name);
@@ -104,17 +104,20 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 						}}
 					>
 						{!previewImage && (
-							<span className="glow-text-white">Choose an Image</span>
+							<span className="glow-text-white">Choose Media</span>
 						)}
-						{previewImage && (
+						{previewImage && previewImage.indexOf('image/') > -1 && (
 							<img alt="NFT Preview" src={previewImage as string} />
+						)}
+						{previewImage && previewImage.indexOf('video/') > -1 && (
+							<video controls src={previewImage as string} />
 						)}
 					</div>
 					<input
 						style={{ display: 'none' }}
-						accept="image/*"
+						accept="image/*,video/mp4"
 						multiple={false}
-						name={'image'}
+						name={'media'}
 						type="file"
 						onChange={onImageChanged}
 						ref={inputFile}
@@ -125,12 +128,14 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							onChange={(name: string) => updateName(name)}
 							text={name}
 							error={errors.includes('name')}
+							errorText={'A title is required'}
 						/>
 						<TextInput
 							placeholder={'Subdomain Name'}
 							onChange={(domain: string) => updateDomain(domain)}
 							text={domain}
 							error={errors.includes('domain')}
+							errorText={'A domain is required'}
 							alphanumeric
 						/>
 						{/* <ToggleButton
@@ -148,6 +153,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 					onChange={(story: string) => setStory(story)}
 					text={story}
 					error={errors.includes('story')}
+					errorText={'A story is required'}
 				/>
 			</form>
 			<FutureButton

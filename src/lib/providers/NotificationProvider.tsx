@@ -30,6 +30,7 @@ const NotificationProvider: React.FC<NotificationProviderType> = ({
 	// Remove the timed-out notification
 	useEffect(() => {
 		if (toRemove) removeNotification(toRemove);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [toRemove]);
 
 	const removeNotification = (notif: Notification) => {
@@ -41,10 +42,12 @@ const NotificationProvider: React.FC<NotificationProviderType> = ({
 		notifications,
 		addNotification: useCallback(
 			(text: string) => addNotification(text),
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 			[notifications],
 		),
 		removeNotification: useCallback(
 			(notif: Notification) => removeNotification(notif),
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 			[notifications],
 		),
 	};
