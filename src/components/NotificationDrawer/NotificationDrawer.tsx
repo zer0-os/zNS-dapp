@@ -28,7 +28,7 @@ const NotificationDrawer = () => {
 
 	return (
 		<div
-			className={`${styles.NotificationDrawer} blur ${
+			className={`${styles.NotificationDrawer} blur  border-primary ${
 				!notifications.length ? styles.Hidden : ''
 			}`}
 		>
