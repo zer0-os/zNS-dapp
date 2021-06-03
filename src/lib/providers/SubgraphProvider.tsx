@@ -29,7 +29,6 @@ export const SubgraphProvider: React.FC<SubgraphContextProviderType> = ({
 	const chainSelector = useChainSelector();
 
 	const apolloClient = React.useMemo(() => {
-		console.log(`chain id is ${chainSelector.selectedChain}`);
 		return new ApolloClient({
 			uri: chainIdToSubgraph(chainSelector.selectedChain),
 			cache: new InMemoryCache(),

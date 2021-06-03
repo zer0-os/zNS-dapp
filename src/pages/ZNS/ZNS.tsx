@@ -96,6 +96,19 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	const canGoBack = pageHistory.current.length > 1;
 	const canGoForward = backCount.current > 0;
 
+	// Force to go back to home if invalid domain
+	React.useEffect(() => {
+		if (data.isNothing()) {
+			history.push('/');
+			return;
+		}
+
+		if (!data.isNothing() && data.value === undefined) {
+			history.push('/');
+			return;
+		}
+	}, [data]);
+
 	//- Minting State
 	const { minting, minted } = useMint();
 	const { enlisting, enlist, clear } = useEnlist();

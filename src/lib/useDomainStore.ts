@@ -2,6 +2,7 @@ import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
+import { data } from 'jquery';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
 import { getDomainId } from './domains';
@@ -161,7 +162,7 @@ function useDomain(name: string) {
 	const id = getDomainId(name);
 	const { dataDomain, errorDomain, refetchDomain } = useQueryForDomainById(id);
 	const _domain: Maybe<DisplayParentDomain> = useMemo(() => {
-		if (dataDomain && dataDomain.domains) {
+		if (dataDomain && dataDomain.domains && dataDomain.domains.length > 0) {
 			return Maybe.of({
 				...dataDomain.domains[0],
 			} as DisplayParentDomain);
@@ -241,7 +242,9 @@ function useOwnedDomains(): {
 }
 
 // maybe fx
-function useAllDomains(domain: string): {
+function useAllDomains(
+	domain: string,
+): {
 	_allDomains: Maybe<any[]>;
 	refetchAllDomains: RefetchQuery<any>;
 } {
