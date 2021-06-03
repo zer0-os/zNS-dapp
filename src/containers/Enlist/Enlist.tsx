@@ -9,6 +9,7 @@ import { TextInput, FutureButton, Image } from 'components';
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
 import useEnlist from 'lib/hooks/useEnlist';
+import { EnlistSubmitParams } from 'lib/providers/EnlistProvider';
 
 type EnlistProps = {
 	onSubmit: () => void;
@@ -32,15 +33,22 @@ const Enlist: React.FC<EnlistProps> = ({ onSubmit }) => {
 	const valid =
 		isEmail(emailAddress) && reasonForPurchase.length > 0 && bidUsd > 0;
 
-	const clickSubmit = () => {
+	const clickSubmit = async () => {
 		// Do some validation here
 		const e = [];
 		if (!isEmail(emailAddress)) e.push('email');
 		if (reasonForPurchase.length <= 0) e.push('reason');
 		if (bidUsd <= 0) e.push('bid');
 		setErrors(e);
+
 		if (e.length === 0) {
-			submit();
+			const params: EnlistSubmitParams = {
+				email: emailAddress,
+				reason: reasonForPurchase,
+				bid: bidUsd,
+			};
+
+			await submit(params);
 			onSubmit();
 		}
 	};
