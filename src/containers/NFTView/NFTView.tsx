@@ -56,7 +56,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account, chainId } = walletContext;
 
-	const networkType = chainIdToNetworkType(chainId!);
+	const networkType = chainIdToNetworkType(chainId);
 	const contracts = useZnsContracts();
 	const registrarAddress = contracts ? contracts.registry.address : '';
 	const domainId = data.isNothing()
@@ -68,7 +68,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	//- Functions
 	const copyContractToClipboard = () => {
 		addNotification('Copied address to clipboard!');
-		navigator.clipboard.writeText(etherscanLink);
+		navigator.clipboard.writeText(domainId);
 	};
 
 	useEffect(() => {
@@ -193,7 +193,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 					<div
 						className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 					>
-						<h4>Contract Address</h4>
+						<h4>Token Id</h4>
 						<p className="glow-text-white">
 							<img
 								onClick={copyContractToClipboard}

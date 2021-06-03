@@ -11,7 +11,6 @@ import { Web3Provider } from '@ethersproject/providers';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 //- Library Imports
-import './lib/ipfs';
 import { DomainCacheProvider } from 'lib/useDomainCache';
 import NotificationProvider from 'lib/providers/NotificationProvider';
 import MintProvider from 'lib/providers/MintProvider';
