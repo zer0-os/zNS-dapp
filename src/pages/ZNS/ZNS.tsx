@@ -48,6 +48,7 @@ import {
 import { MintNewNFT, NFTView, Enlist } from 'containers';
 import { Maybe } from 'true-myth';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
+import React from 'react';
 
 type ZNSProps = {
 	domain: string;
@@ -65,17 +66,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active } = walletContext;
+	const { account, active, chainId } = walletContext;
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet
 
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
-	if (
-		walletContext.chainId &&
-		chainSelector.selectedChain != walletContext.chainId
-	) {
-		chainSelector.selectChain(walletContext.chainId);
-	}
+	React.useEffect(() => {
+		if (chainId && chainSelector.selectedChain != chainId) {
+			chainSelector.selectChain(chainId);
+		}
+	}, [chainId]);
 
 	//- Domain Data
 	const { useDomain } = useDomainCache();

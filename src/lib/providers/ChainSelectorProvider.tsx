@@ -21,7 +21,9 @@ export const ChainSelectorProvider: React.FC<ChainSelectorProviderType> = ({
 }) => {
 	const [selectedChain, setSelectedChain] = useState(defaultNetworkId);
 
-	const selectChain = (id: number) => {};
+	const selectChain = (id: number) => {
+		setSelectedChain(id);
+	};
 
 	const contextValue = {
 		selectedChain,

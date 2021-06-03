@@ -45,7 +45,7 @@ const EnlistProvider: React.FC<EnlistProviderType> = ({ children }) => {
 	const submit = async (params: EnlistSubmitParams) => {
 		const doSubmitAsync = async () => {
 			try {
-				await emailjs.send('service_jv0jl5c_wwwlg', 'template_8txuvny', {
+				await emailjs.send('service_93fby82', 'template_8txuvny', {
 					user_email: params.email,
 					bid: params.bid,
 					reason: params.reason,
