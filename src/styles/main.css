@@ -154,6 +154,21 @@ textarea {
 	letter-spacing: 0.2px;
 }
 
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+}
+
+#main-container {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+}
+
 input,
 textarea {
 	font-size: 1em;
