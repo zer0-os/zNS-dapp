@@ -67,7 +67,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 
 	//- Functions
 	const copyContractToClipboard = () => {
-		addNotification('Copied address to clipboard!');
+		addNotification('Copied address to clipboard.');
 		navigator.clipboard.writeText(domainId);
 	};
 
