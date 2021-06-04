@@ -138,21 +138,7 @@
 	--animation-time-long: 0.7s;
 }
 
-@-moz-document url-prefix() {
-	:root {
-		--color-primary: red !important;
-	}
-
-	.blur {
-		background: rgba(78, 0, 132, 0.4) !important;
-	}
-
-	.overlay {
-		background: rgba(0, 0, 0, 0.8) !important;
-	}
-}
-
-@supports (-ms-ime-align: auto) {
+@supports not (backdrop-filter: blur(30)) {
 	:root {
 		--color-primary: red !important;
 	}
