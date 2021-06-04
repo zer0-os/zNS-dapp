@@ -7,7 +7,7 @@ export enum NETWORK_TYPES {
 }
 
 export const defaultNetworkId: number = Number(
-	process.env.DEFAULT_NETWORK ?? 42,
+	process.env.REACT_APP_DEFAULT_NETWORK ?? 42,
 );
 
 export const getEtherscanUri = (networkType: NETWORK_TYPES): string => {
