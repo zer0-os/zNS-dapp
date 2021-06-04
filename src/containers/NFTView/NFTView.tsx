@@ -175,8 +175,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 					<h4>Story</h4>
 					<p>{description}</p>
 				</div>
-				<div className={styles.Vertical}>
-					{/* <div className={styles.Horizontal}>
+				{/* <div className={styles.Horizontal}>
 						<div className={`${styles.Box} blur border-primary border-rounded`}>
 							<h4>Views</h4>
 							<span className="glow-text-white">
@@ -190,30 +189,29 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 							</span>
 						</div>
 					</div> */}
-					<div
-						className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+				<div
+					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+				>
+					<h4>Token Id</h4>
+					<p className="glow-text-white">
+						<img
+							onClick={copyContractToClipboard}
+							className={styles.Copy}
+							src={copyIcon}
+							alt={'Copy Contract Icon'}
+						/>
+						{domainId}
+					</p>
+					<ArrowLink
+						style={{
+							marginTop: 8,
+							width: 140,
+							fontWeight: 700,
+						}}
+						href={etherscanLink}
 					>
-						<h4>Token Id</h4>
-						<p className="glow-text-white">
-							<img
-								onClick={copyContractToClipboard}
-								className={styles.Copy}
-								src={copyIcon}
-								alt={'Copy Contract Icon'}
-							/>
-							{domainId}
-						</p>
-						<ArrowLink
-							style={{
-								marginTop: 8,
-								width: 140,
-								fontWeight: 700,
-							}}
-							href={etherscanLink}
-						>
-							View on Etherscan
-						</ArrowLink>
-					</div>
+						View on Etherscan
+					</ArrowLink>
 				</div>
 			</div>
 			<div></div>

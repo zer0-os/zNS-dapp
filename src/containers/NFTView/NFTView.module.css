@@ -123,9 +123,10 @@
 }
 
 .Story {
+	position: relative;
 	display: flex;
+	flex: 1;
 	flex-direction: column;
-	height: 224.5px;
 	padding-bottom: 0;
 }
 
@@ -135,6 +136,11 @@
 	overflow: scroll;
 	padding-right: 12px;
 	padding-bottom: 0;
+
+	position: absolute;
+	top: 48px;
+	max-height: calc(100% - 48px);
+	margin-right: 8px;
 }
 
 .Story p::-webkit-scrollbar-corner {
@@ -247,10 +253,14 @@
 	}
 
 	.Horizontal > div:not(:first-child) {
+		margin-left: 0;
 		margin-top: 20px;
 	}
 
-	.Vertical {
-		margin-left: 0 !important;
+	.Story p {
+		top: 0;
+		position: relative;
+		display: block;
+		max-height: 200px;
 	}
 }
