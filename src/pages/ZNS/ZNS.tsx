@@ -264,7 +264,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 							? { zIndex: isSearchActive ? 10000 : 10, background: 'none' }
 							: {}
 					}
-					onSelect={() => {}}
+					onSelect={() => {
+						history.push('/');
+					}}
 					filters={!isSearchActive ? ['Everything'] : []}
 				>
 					<TitleBar
