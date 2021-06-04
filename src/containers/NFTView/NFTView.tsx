@@ -96,7 +96,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 			>
 				<Image
 					src={image}
-					style={{ maxHeight: '80vh', maxWidth: '80vw', objectFit: 'contain' }}
+					style={{
+						width: 'auto',
+						maxHeight: '80vh',
+						maxWidth: '80vw',
+						objectFit: 'contain',
+					}}
 				/>
 			</Overlay>
 
