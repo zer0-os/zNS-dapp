@@ -138,6 +138,20 @@
 	--animation-time-long: 0.7s;
 }
 
+@supports not (backdrop-filter: blur(30)) {
+	:root {
+		--color-primary: red !important;
+	}
+
+	.blur {
+		background: rgba(78, 0, 132, 0.4) !important;
+	}
+
+	.overlay {
+		background: rgba(0, 0, 0, 0.8) !important;
+	}
+}
+
 /*
  *
  * Default HTML Elements 
@@ -154,9 +168,34 @@ textarea {
 	letter-spacing: 0.2px;
 }
 
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+}
+
+#main-container {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+}
+
 input,
 textarea {
 	font-size: 1em;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type='number'] {
+	-moz-appearance: textfield;
 }
 
 body {

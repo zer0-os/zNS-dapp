@@ -70,7 +70,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 					resolve();
 
 					setMinting([...minting, nft]);
-					addNotification(`Started minting ${nft.name}`);
+					addNotification(`Started minting ${nft.name}.`);
 
 					await tx.wait();
 					setFinishedMinting(nft);
@@ -94,7 +94,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 	// TODO: Change this hook to run when minting finishes
 	useEffect(() => {
 		if (finishedMinting) {
-			addNotification(`Finished minting ${finishedMinting.name}`);
+			addNotification(`Finished minting ${finishedMinting.name}.`);
 			setMinting(minting.filter((n) => n !== finishedMinting));
 			setMinted([...minted, finishedMinting]);
 		}

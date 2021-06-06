@@ -12,7 +12,7 @@ type ZNAProps = {
 const ZNALink: React.FC<ZNAProps> = ({ domain, style }) => {
 	return (
 		<div className={styles.ZNALink} style={style}>
-			<span style={{ cursor: 'default', opacity: 0.5 }}>0://</span>
+			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
 			<Link style={{ textDecoration: 'none', color: 'white' }} to={''}>
 				wilder
 			</Link>

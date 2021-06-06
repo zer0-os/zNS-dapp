@@ -192,7 +192,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	useEffect(() => {
 		if (triedEagerConnect)
-			addNotification(active ? 'Wallet connected!' : 'Wallet disconnected!');
+			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
@@ -287,7 +287,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 							? { zIndex: isSearchActive ? 10000 : 10, background: 'none' }
 							: {}
 					}
-					onSelect={() => {}}
+					onSelect={() => {
+						history.push('/');
+					}}
 					filters={!isSearchActive ? ['Everything'] : []}
 				>
 					<TitleBar
