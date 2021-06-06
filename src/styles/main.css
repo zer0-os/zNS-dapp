@@ -138,20 +138,6 @@
 	--animation-time-long: 0.7s;
 }
 
-@supports not (backdrop-filter: blur(30)) {
-	:root {
-		--color-primary: red !important;
-	}
-
-	.blur {
-		background: rgba(78, 0, 132, 0.4) !important;
-	}
-
-	.overlay {
-		background: rgba(0, 0, 0, 0.8) !important;
-	}
-}
-
 /*
  *
  * Default HTML Elements 
@@ -414,5 +400,23 @@ nav {
 		font-weight: 700;
 		text-align: center;
 		line-height: 22px;
+	}
+}
+
+/*
+ *
+ * Polyfills
+ *
+ */
+
+@supports not (
+	(-webkit-backdrop-filter: blur(20em)) or (backdrop-filter: blur(2em))
+) {
+	.blur {
+		background: rgba(78, 0, 132, 0.4) !important;
+	}
+
+	#overlay > .overlay {
+		background: rgba(0, 0, 0, 0.8) !important;
 	}
 }
