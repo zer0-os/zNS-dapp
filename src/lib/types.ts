@@ -34,6 +34,30 @@ export interface DisplayParentDomain extends DisplayDomain {
 	subdomains: DisplayDomain[];
 }
 
+// Parameters to create an NFT
+export interface NftParams {
+	owner: string;
+	parent: string;
+	zna: string;
+	name: string;
+	domain: string; // domain label
+	ticker: string;
+	story: string;
+	image: Buffer;
+	dynamic: boolean;
+	locked: boolean;
+}
+
+// The contents of a Domain Request file that has been uploaded to IPFS
+export interface DomainRequestContents {
+	parent: string;
+	domain: string; // domain label
+	requestor: string;
+	stakeAmount: string;
+	metadata: string; // uri to metadata
+	locked: boolean;
+}
+
 // Defaults
 
 export const DefaultDomain: Domain = {
