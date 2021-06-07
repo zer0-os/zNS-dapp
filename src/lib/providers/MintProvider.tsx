@@ -4,39 +4,29 @@ import React, { useState, useEffect } from 'react';
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
 import { useZnsContracts } from 'lib/contracts';
-import ipfsClient from 'lib/ipfs-client';
+import { createDomainMetadata } from 'lib/utils';
+import { NftParams } from 'lib/types';
 
 export const MintContext = React.createContext({
 	minting: [{}],
 	minted: [{}],
-	mint: (nft: NFT) => {},
+	mint: (nft: NftParams) => {},
 });
 
 type MintProviderType = {
 	children: React.ReactNode;
 };
 
-type NFT = {
-	owner: string;
-	parent: string;
-	zna: string;
-	name: string;
-	domain: string; // domain label
-	ticker: string;
-	story: string;
-	image: Buffer;
-	dynamic: boolean;
-	locked: boolean;
-};
-
 const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 	const { addNotification } = useNotification();
-	const [minting, setMinting] = useState<NFT[]>([]);
-	const [minted, setMinted] = useState<NFT[]>([]);
-	const [finishedMinting, setFinishedMinting] = useState<NFT | null>(null);
+	const [minting, setMinting] = useState<NftParams[]>([]);
+	const [minted, setMinted] = useState<NftParams[]>([]);
+	const [finishedMinting, setFinishedMinting] = useState<NftParams | null>(
+		null,
+	);
 	const basicController = useZnsContracts()?.basicController;
 
-	const mint = (nft: NFT) => {
+	const mint = (nft: NftParams) => {
 		if (!basicController) {
 			console.error('no controller');
 			return;
@@ -45,24 +35,19 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		const userHasSubmitted = new Promise<void>((resolve, reject) => {
 			const doMint = async () => {
 				try {
-					// upload image to IPFS
-					const { path: imageCid } = await ipfsClient.add(nft.image);
-
-					// upload metadata to IPFS
-					const metadataObject = {
+					// get metadata uri
+					const metadataUri = await createDomainMetadata({
+						image: nft.image,
 						name: nft.name,
-						description: nft.story,
-						image: `https://ipfs.io/ipfs/${imageCid}`,
-					};
-					const metadataAsString = JSON.stringify(metadataObject);
-					const { path: metadataCid } = await ipfsClient.add(metadataAsString);
+						story: nft.story,
+					});
 
 					// register subdomain
 					const tx = await basicController.registerSubdomainExtended(
 						nft.parent,
 						nft.domain,
 						nft.owner,
-						`https://ipfs.io/ipfs/${metadataCid}`,
+						metadataUri,
 						0,
 						nft.locked,
 					);
@@ -104,7 +89,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 	const contextValue = {
 		minting,
 		minted,
-		mint: (nft: NFT) => mint(nft),
+		mint: (nft: NftParams) => mint(nft),
 	};
 
 	return (
