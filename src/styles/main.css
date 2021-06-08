@@ -232,7 +232,7 @@ a,
 button.text-button {
 	color: var(--color-accent-1);
 	text-decoration: none;
-	transition: text-shadow 1s ease-in-out;
+	transition: text-shadow var(--animation-time-short) ease-in-out;
 }
 
 a:hover,
