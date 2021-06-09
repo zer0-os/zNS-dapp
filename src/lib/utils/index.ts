@@ -37,3 +37,14 @@ export const uploadToIPFS = async (data: string | Buffer) => {
 	const uri = `https://ipfs.io/ipfs/${path}`;
 	return uri;
 };
+
+export async function tryTransaction<T>(func: () => Promise<T>, msg: string) {
+	try {
+		return await func();
+	} catch (e) {
+		if (e.message || e.data) {
+			throw Error(`Failed to ${msg}: ${e.data} ${e.message}`);
+		}
+		throw Error(`Failed to ${msg}: ${e}`);
+	}
+}

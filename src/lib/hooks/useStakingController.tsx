@@ -1,5 +1,5 @@
 import { useZnsContracts } from 'lib/contracts';
-import { createDomainMetadata, uploadToIPFS } from 'lib/utils';
+import { createDomainMetadata, tryFunction, uploadToIPFS } from 'lib/utils';
 import { DomainRequestContents, NftParams } from 'lib/types';
 import { ethers } from 'ethers';
 export interface DomainRequestParams {
@@ -8,60 +8,106 @@ export interface DomainRequestParams {
 	nft: NftParams;
 }
 
-export function useStakingController() {
+export interface FulfillRequestParams {
+	requestId: string;
+	metadataUri: string;
+	locked: boolean;
+}
+
+export interface FulfillRequestExtendedParams {
+	requestId: string;
+	nft: NftParams;
+}
+
+interface StakingControllerHooks {
+	placeRequest: (
+		params: DomainRequestParams,
+	) => Promise<ethers.ContractTransaction>;
+	approveRequest: (requestId: string) => Promise<ethers.ContractTransaction>;
+	fulfillRequest: (
+		params: FulfillRequestParams,
+	) => Promise<ethers.ContractTransaction>;
+}
+
+export function useStakingController(): StakingControllerHooks {
 	const stakingController = useZnsContracts()?.stakingController;
 
-	const request = async (params: DomainRequestParams) => {
-		if (!stakingController) {
-			console.error(`no controller`);
-			return;
-		}
-
-		const doRequest = async () => {
-			try {
-				// Create the intended metadata
-				const intendedMetadata = await createDomainMetadata({
-					image: params.nft.image,
-					name: params.nft.name,
-					story: params.nft.story,
-				});
-
-				// Upload the request data to IPFS
-				const fullRequestData: DomainRequestContents = {
-					parent: params.nft.parent,
-					domain: params.nft.domain,
-					requestor: params.requestor,
-					stakeAmount: params.stakeAmount,
-					metadata: intendedMetadata,
-					locked: params.nft.locked,
-				};
-
-				const domainRequestUri = await uploadToIPFS(
-					JSON.stringify(fullRequestData),
-				);
-
-				// Convert to wei (assumes 18 decimals places on token)
-				const offeredAmountInWei = ethers.utils.parseEther(params.stakeAmount);
-
-				// Place the request for the domain
-				const tx = await stakingController.placeDomainRequest(
-					params.nft.parent,
-					offeredAmountInWei,
-					params.nft.name,
-					domainRequestUri,
-				);
-
-				return tx;
-			} catch (e) {
-				if (e.message || e.data) {
-					console.error(`failed to request: ${e.data} : ${e.message}`);
-				}
-				console.error(e);
+	const placeRequest = async (params: DomainRequestParams) => {
+		const tx = await tryFunction(async () => {
+			if (!stakingController) {
+				throw Error(`no controller`);
 			}
-		};
 
-		doRequest();
+			// Create the intended metadata
+			const intendedMetadata = await createDomainMetadata({
+				image: params.nft.image,
+				name: params.nft.name,
+				story: params.nft.story,
+			});
+
+			// Upload the request data to IPFS
+			const fullRequestData: DomainRequestContents = {
+				parent: params.nft.parent,
+				domain: params.nft.domain,
+				requestor: params.requestor,
+				stakeAmount: params.stakeAmount,
+				metadata: intendedMetadata,
+				locked: params.nft.locked,
+			};
+
+			const domainRequestUri = await uploadToIPFS(
+				JSON.stringify(fullRequestData),
+			);
+
+			// Convert to wei (assumes 18 decimals places on token)
+			const offeredAmountInWei = ethers.utils.parseEther(params.stakeAmount);
+
+			// Place the request for the domain
+			const tx = await stakingController.placeDomainRequest(
+				params.nft.parent,
+				offeredAmountInWei,
+				params.nft.name,
+				domainRequestUri,
+			);
+
+			return tx;
+		}, `place request`);
+
+		return tx;
 	};
 
-	return { request };
+	const approveRequest = async (requestId: string) => {
+		const tx = await tryFunction(async () => {
+			if (!stakingController) {
+				throw Error(`no controller`);
+			}
+
+			const tx = await stakingController.approveDomainRequest(requestId);
+
+			return tx;
+		}, 'approve request');
+
+		return tx;
+	};
+
+	const fulfillRequest = async (params: FulfillRequestParams) => {
+		const tx = await tryFunction(async () => {
+			if (!stakingController) {
+				throw Error(`no controller`);
+			}
+
+			const tx = await stakingController.fulfillDomainRequest(
+				params.requestId,
+				0,
+				params.metadataUri,
+				params.locked,
+			);
+
+			return tx;
+		}, 'fulfill request');
+
+		return tx;
+	};
+
+	return { placeRequest, approveRequest, fulfillRequest };
 }
