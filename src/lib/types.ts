@@ -25,6 +25,20 @@ export interface ParentDomain extends Domain {
 
 export interface SubDomain extends Domain {}
 
+export interface DomainRequest {
+	id: string;
+	parent: Domain;
+	offeredAmount: string;
+	requestUri: string;
+	label: string;
+	domain: string;
+	requestor: Account;
+	nonce: string;
+	approved: boolean;
+	fulfilled: boolean;
+	timestamp: string;
+}
+
 export interface DisplayDomain extends Domain {
 	image: string | undefined;
 	description: string | undefined;

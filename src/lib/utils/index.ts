@@ -38,7 +38,7 @@ export const uploadToIPFS = async (data: string | Buffer) => {
 	return uri;
 };
 
-export async function tryTransaction<T>(func: () => Promise<T>, msg: string) {
+export async function tryFunction<T>(func: () => Promise<T>, msg: string) {
 	try {
 		return await func();
 	} catch (e) {
