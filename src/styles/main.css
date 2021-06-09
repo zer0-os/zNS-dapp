@@ -185,12 +185,6 @@ input[type='number'] {
 }
 
 body {
-	background-color: #120628;
-	background: url('../assets/zns-bg.png');
-	background-attachment: fixed;
-	background-repeat: no-repeat;
-	background-size: cover;
-
 	min-height: 100vh;
 	width: 100%;
 	overflow: auto;
@@ -271,6 +265,23 @@ button.text-button {
 
 #breakpointMessage {
 	display: none;
+}
+
+#backgroundImage {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	opacity: 0;
+	z-index: -1;
+
+	transition: all var(--animation-time-long) ease-in-out;
 }
 
 .content {
