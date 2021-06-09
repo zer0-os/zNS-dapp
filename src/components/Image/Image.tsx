@@ -44,7 +44,7 @@ const Image = (props: any) => {
 					{...props}
 					className={`${props.className ? props.className : ''} ${
 						styles.Image
-					}`}
+					} ${styles.Video}`}
 					style={{
 						opacity: loaded ? 1 : 0,
 						objectFit: 'cover',
