@@ -15,6 +15,7 @@ import useNotification from 'lib/hooks/useNotification';
 import useMint from 'lib/hooks/useMint';
 import useEnlist from 'lib/hooks/useEnlist';
 import { getMetadata } from 'lib/metadata';
+import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Type Imports
 import { Metadata, DisplayDomain, DisplayParentDomain } from 'lib/types';
@@ -58,7 +59,7 @@ type ZNSProps = {
 const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	// TODO: Need to handle domains that don't exist!
 
-	const mvpVersion = version || 1;
+	const { mvpVersion } = useMvpVersion();
 
 	///////////////////
 	// Web3 Handling //
@@ -127,7 +128,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Overlay State
 	const [isWalletOverlayOpen, setIsWalletOverlayOpen] = useState(false);
 	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
-	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
+	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(true);
 	const [isSearchActive, setIsSearchActive] = useState(false);
 
 	//- MVP Version
@@ -259,7 +260,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 					/>
 				</Overlay>
 			)}
-			{mvpVersion === 3 && isProfileOverlayOpen && (
+			{isProfileOverlayOpen && (
 				<Overlay centered open onClose={() => setIsProfileOverlayOpen(false)}>
 					<Profile yours id={account ? account : ''} />
 				</Overlay>
@@ -497,7 +498,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									isRootDomain={isRoot}
 									style={{ marginTop: 16 }}
 									empty={!data.isNothing() && subdomains.length === 0}
-									mvpVersion={mvpVersion}
 									isGridView={isGridView}
 									setIsGridView={setIsGridView}
 								/>
