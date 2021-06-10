@@ -39,6 +39,7 @@ export { default as TitleBar } from './NavBars/TitleBar/TitleBar';
 
 //- Tables
 export { default as DomainTable } from './Tables/DomainTable/DomainTable';
+export { default as RequestTable } from './Tables/RequestTable/RequestTable';
 
 //- Other
 export { default as ArrowLink } from './ArrowLink/ArrowLink';

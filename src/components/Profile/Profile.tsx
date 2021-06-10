@@ -6,10 +6,13 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import { Image } from 'components';
+import { Image, RequestTable } from 'components';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
+
+//- Mock
+import mock from './mock.json';
 
 type ProfileProps = {
 	id: string;
@@ -50,6 +53,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
+			<RequestTable requests={mock} />
 		</div>
 	);
 };

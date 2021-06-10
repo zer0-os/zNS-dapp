@@ -1,0 +1,224 @@
+.RequestTableContainer {
+	width: 100%;
+	overflow: hidden;
+	color: white;
+}
+
+.RequestTable {
+	position: relative;
+}
+
+.Expander {
+	transition: height var(--animation-time-long) ease-in-out;
+}
+
+.RequestTable {
+	width: 100%;
+}
+
+.Table {
+	width: 100%;
+}
+
+.Container {
+	position: absolute;
+	left: 0;
+	width: 100%;
+}
+
+/* Search header */
+.searchHeader {
+	display: flex;
+
+	width: 100%;
+	padding: 15px 20px;
+
+	align-items: center;
+}
+
+.searchHeaderButtons {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.searchHeaderButtons > *:not(:last-of-type) {
+	margin-right: 12px;
+}
+
+.search {
+	flex-grow: 1;
+}
+
+/* Table Header */
+
+.RequestTable th {
+	color: var(--color-primary-lighter-3);
+	font-weight: 700;
+}
+
+/* Table */
+.RequestTable tbody {
+	font-weight: 500;
+}
+
+.RequestTable th,
+.RequestTable td {
+	padding: 16px 11px;
+	vertical-align: middle;
+}
+
+.RequestTable th:first-child,
+.RequestTable td:first-child {
+	padding-left: 30px;
+	padding-right: 0;
+	width: 50px;
+}
+
+.RequestTable th:nth-child(2),
+.RequestTable td:nth-child(2) {
+	padding-right: 0;
+	width: 56px;
+}
+
+.RequestTable th:last-child,
+.RequestTable td:last-child {
+	max-width: 250px;
+	width: 200px;
+	padding-right: 30px;
+}
+
+.RequestTable > tbody > tr {
+	cursor: pointer;
+	transition: background var(--animation-time-short) linear;
+}
+
+.RequestTable > tbody > tr:hover {
+	background: var(--background-purple-card-20);
+}
+
+.RequestTable > tbody > tr img,
+.RequestTable > tbody > tr button {
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.RequestTable > tbody > tr:hover img,
+.RequestTable > tbody > tr:hover button {
+	transform: scale(1.1);
+}
+
+.ticker {
+	color: var(--color-accent-1-light);
+	font-weight: 700;
+}
+
+.positive {
+	color: var(--color-green-2);
+}
+
+.negative {
+	color: var(--color-red);
+}
+
+.positive > div,
+.negative > div {
+	content: ' ';
+	width: 0;
+	height: 0;
+
+	margin-top: 4px;
+	margin-right: 4px;
+}
+
+.positive > div {
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-bottom: 5px solid var(--color-green-2);
+}
+
+.negative > div {
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 5px solid var(--color-red);
+}
+
+/* Table alignments */
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.center > * {
+	margin: 0 auto;
+}
+
+.right {
+	text-align: right;
+}
+
+.right > * {
+	float: right;
+}
+
+.Loading {
+	padding: 32px;
+}
+
+.Loading > div {
+	margin: 0 auto;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	border-top: 2px solid var(--color-accent-1);
+	animation: spin 1s linear infinite;
+}
+
+.Empty {
+	padding: 32px 32px 40px 32px;
+	text-align: center;
+	font-weight: 700;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* Grid */
+
+.Grid {
+	width: 100%;
+	padding-top: 11px;
+	padding-bottom: 24px;
+
+	display: grid;
+	justify-content: space-evenly;
+	grid-template-columns: repeat(3, 388px);
+	grid-gap: 24px 0;
+
+	list-style: none;
+}
+
+.Grid > li {
+	cursor: pointer;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Grid > li:hover {
+	transform: scale(1.03);
+}
+
+@media only screen and (max-width: 1282px) {
+	.searchHeaderButtons {
+		display: none;
+	}
+}
