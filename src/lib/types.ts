@@ -25,6 +25,20 @@ export interface ParentDomain extends Domain {
 
 export interface SubDomain extends Domain {}
 
+export interface DomainRequest {
+	id: string;
+	parent: Domain;
+	offeredAmount: string;
+	requestUri: string;
+	label: string;
+	domain: string;
+	requestor: Account;
+	nonce: string;
+	approved: boolean;
+	fulfilled: boolean;
+	timestamp: string;
+}
+
 export interface DisplayDomain extends Domain {
 	image: string | undefined;
 	description: string | undefined;
@@ -32,6 +46,30 @@ export interface DisplayDomain extends Domain {
 
 export interface DisplayParentDomain extends DisplayDomain {
 	subdomains: DisplayDomain[];
+}
+
+// Parameters to create an NFT
+export interface NftParams {
+	owner: string;
+	parent: string;
+	zna: string;
+	name: string;
+	domain: string; // domain label
+	ticker: string;
+	story: string;
+	image: Buffer;
+	dynamic: boolean;
+	locked: boolean;
+}
+
+// The contents of a Domain Request file that has been uploaded to IPFS
+export interface DomainRequestContents {
+	parent: string;
+	domain: string; // domain label
+	requestor: string;
+	stakeAmount: string;
+	metadata: string; // uri to metadata
+	locked: boolean;
 }
 
 // Defaults

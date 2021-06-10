@@ -1,11 +1,20 @@
 //- React Imports
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import {
+	ApolloClient,
+	ApolloProvider,
+	InMemoryCache,
+	NormalizedCacheObject,
+} from '@apollo/client';
 import React from 'react';
 import { useChainSelector } from './ChainSelectorProvider';
 
-type context = {};
+interface context {
+	client: ApolloClient<NormalizedCacheObject> | undefined;
+}
 
-const SubgraphContext = React.createContext<context>({});
+const SubgraphContext = React.createContext<context>({
+	client: undefined,
+});
 
 type SubgraphContextProviderType = {
 	children: React.ReactNode;
@@ -35,7 +44,9 @@ export const SubgraphProvider: React.FC<SubgraphContextProviderType> = ({
 		});
 	}, [chainSelector.selectedChain]);
 
-	const contextValue = {};
+	const contextValue = {
+		client: apolloClient,
+	};
 
 	return (
 		<SubgraphContext.Provider value={contextValue}>
