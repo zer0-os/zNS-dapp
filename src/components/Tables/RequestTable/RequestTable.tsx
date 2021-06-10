@@ -2,20 +2,20 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 
 //- Component Imports
-import { SearchBar, IconButton, NFTCard, Member } from 'components';
+import { SearchBar, IconButton, Member } from 'components';
 
 //- Library Imports
 import styles from './RequestTable.module.css';
 
 //- Type Imports
-import { Request } from 'lib/types';
+import { DomainRequestContents } from 'lib/types';
 
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
 type RequestTableProps = {
-	requests: Request[];
+	requests: DomainRequestContents[];
 	style?: React.CSSProperties;
 };
 
@@ -24,8 +24,8 @@ const DomainTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0);
 
-	const rowData: Request[] = useMemo(() => requests, [requests]);
-	const data = useMemo<Request[]>(() => rowData, [rowData]);
+	const rowData: DomainRequestContents[] = useMemo(() => requests, [requests]);
+	const data = useMemo<DomainRequestContents[]>(() => rowData, [rowData]);
 
 	const [isGridView, setIsGridView] = useState(false);
 
@@ -42,7 +42,7 @@ const DomainTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
 	}, [rowData]);
 
-	const columns = useMemo<Column<Request>[]>(
+	const columns = useMemo<Column<DomainRequestContents>[]>(
 		() => [
 			{
 				id: 'index',
@@ -52,20 +52,39 @@ const DomainTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 				Header: 'Creator',
 				id: 'creator',
 				accessor: (d: any) => (
-					<Member id={d.creator.id} name={'Hello'} image={'hello'} />
+					<Member id={d.requestor} name={'Hello'} image={'hello'} />
 				),
 			},
 			{
 				Header: 'Creator',
 				id: 'artwork',
-				accessor: (d: any) => <></>,
+				accessor: (d: any) => <>0://wilder.{d.domain}</>,
+			},
+			{
+				Header: 'Request Date',
+				id: 'date',
+				accessor: (d: any) => <span>13.03.2021 08:22</span>,
+			},
+			{
+				Header: 'Staked Tokens',
+				id: 'stake',
+				accessor: (d: any) => <span>{d.stakeAmount} WILD</span>,
+			},
+			{
+				id: 'accepted',
+				accessor: (d: any) => (
+					<>
+						{d.accepted && <span>accepted</span>}
+						{!d.accepted && <span>not accepted</span>}
+					</>
+				),
 			},
 		],
 		[rowData],
 	);
 
 	// React-Table Hooks
-	const tableHook = useTable<Request>(
+	const tableHook = useTable<DomainRequestContents>(
 		{ columns, data },
 		useFilters,
 		useGlobalFilter,

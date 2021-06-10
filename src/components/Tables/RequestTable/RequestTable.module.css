@@ -69,26 +69,6 @@
 	vertical-align: middle;
 }
 
-.RequestTable th:first-child,
-.RequestTable td:first-child {
-	padding-left: 30px;
-	padding-right: 0;
-	width: 50px;
-}
-
-.RequestTable th:nth-child(2),
-.RequestTable td:nth-child(2) {
-	padding-right: 0;
-	width: 56px;
-}
-
-.RequestTable th:last-child,
-.RequestTable td:last-child {
-	max-width: 250px;
-	width: 200px;
-	padding-right: 30px;
-}
-
 .RequestTable > tbody > tr {
 	cursor: pointer;
 	transition: background var(--animation-time-short) linear;
