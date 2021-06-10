@@ -49,7 +49,9 @@ const Member: React.FC<MemberProps> = ({
 							rel="noreferrer"
 						>
 							{mvpVersion === 3
-								? randomName(id)
+								? id.indexOf('0x') === 0
+									? randomName(id)
+									: name
 								: `${id.substring(0, 4)}...${id.substring(id.length - 4)}`}
 						</a>
 					</span>

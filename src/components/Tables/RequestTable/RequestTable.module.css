@@ -1,11 +1,13 @@
 .RequestTableContainer {
 	width: 100%;
-	overflow: hidden;
 	color: white;
 }
 
 .RequestTable {
 	position: relative;
+
+	table-layout: fixed;
+	border-collapse: collapse;
 }
 
 .Expander {
@@ -83,9 +85,15 @@
 	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
-.RequestTable > tbody > tr:hover img,
+.RequestTable > tbody > tr:hover > td > img,
 .RequestTable > tbody > tr:hover button {
 	transform: scale(1.1);
+}
+
+.RequestTable tbody tr td:first-of-type,
+.RequestTable > thead tr th:first-of-type {
+	padding-left: 23px;
+	width: 50px;
 }
 
 .ticker {
@@ -93,34 +101,19 @@
 	font-weight: 700;
 }
 
-.positive {
-	color: var(--color-green-2);
+.Accepted span {
+	display: inline-block;
+	width: 100%;
+
+	text-align: center;
 }
 
-.negative {
-	color: var(--color-red);
+.Accepted span:first-of-type {
+	color: var(--color-accent-1);
 }
 
-.positive > div,
-.negative > div {
-	content: ' ';
-	width: 0;
-	height: 0;
-
-	margin-top: 4px;
-	margin-right: 4px;
-}
-
-.positive > div {
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	border-bottom: 5px solid var(--color-green-2);
-}
-
-.negative > div {
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	border-top: 5px solid var(--color-red);
+.Accepted span:not(:first-of-type) {
+	margin-top: 8px;
 }
 
 /* Table alignments */

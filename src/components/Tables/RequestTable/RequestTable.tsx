@@ -2,13 +2,18 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 
 //- Component Imports
-import { SearchBar, IconButton, Member } from 'components';
+import { SearchBar, IconButton, Member, FutureButton } from 'components';
 
 //- Library Imports
-import styles from './RequestTable.module.css';
+import useMvpVersion from 'lib/hooks/useMvpVersion';
+import { getMetadata } from 'lib/metadata';
+import { randomImage } from 'lib/Random';
 
 //- Type Imports
 import { DomainRequestContents } from 'lib/types';
+
+//- Style Imports
+import styles from './RequestTable.module.css';
 
 //- Asset Imports
 import grid from './assets/grid.svg';
@@ -19,64 +24,124 @@ type RequestTableProps = {
 	style?: React.CSSProperties;
 };
 
+interface RequestTableData extends DomainRequestContents {
+	image?: string;
+	title?: string;
+}
+
 // @TODO: Create a `Domain` type for `domains`
-const DomainTable: React.FC<RequestTableProps> = ({ requests, style }) => {
+const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
+	const { mvpVersion } = useMvpVersion();
+
+	// State/Refs
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0);
-
-	const rowData: DomainRequestContents[] = useMemo(() => requests, [requests]);
-	const data = useMemo<DomainRequestContents[]>(() => rowData, [rowData]);
-
 	const [isGridView, setIsGridView] = useState(false);
-
 	const setList = () => setIsGridView(false);
 	const setGrid = () => setIsGridView(true);
 
-	const search = (query: string) => {
-		console.log(query);
-	};
+	const [loadedRequests, setLoadedRequests] = useState<
+		RequestTableData[] | undefined
+	>(undefined);
+
+	// Table Data
+	const rowData: RequestTableData[] = useMemo(() => requests, [requests]);
+	const data = useMemo<RequestTableData[]>(() => rowData, [rowData]);
+
+	// Functions
+	// Placeholder for now!
+	const search = (query: string) => console.log('search', query);
+	const accept = (domainName: string) => console.log('accept', domainName);
+
+	// Effects
+
+	useEffect(() => {
+		var count = 0;
+		var total = rowData.filter((d: any) => d.metadata).length;
+		for (var i = 0; i < rowData.length; i++) {
+			const row = rowData[i];
+			if (row.metadata) continue;
+			getMetadata(row.metadata).then((d) => {
+				if (!row || !d || !d.image || !d.title)
+					return console.warn('Invalid metadata for domain ' + row.domain);
+				row.image = d.image;
+				row.title = d.title;
+				if (++count === total) {
+					setLoadedRequests(rowData);
+				}
+			});
+		}
+	}, [rowData, mvpVersion]);
 
 	useEffect(() => {
 		const el = containerRef.current;
 		if (el)
 			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-	}, [rowData]);
+	}, [rowData, mvpVersion]);
 
-	const columns = useMemo<Column<DomainRequestContents>[]>(
+	const columns = useMemo<Column<RequestTableData>[]>(
 		() => [
 			{
 				id: 'index',
 				accessor: (d: any, i: any) => <span>{i + 1}</span>,
 			},
 			{
-				Header: 'Creator',
+				Header: () => <div className={styles.left}>Creator</div>,
 				id: 'creator',
 				accessor: (d: any) => (
-					<Member id={d.requestor} name={'Hello'} image={'hello'} />
+					<Member
+						id={d.requestor}
+						name={'Hello'}
+						image={randomImage(d.requestor)}
+						subtext={'hello'}
+					/>
 				),
 			},
 			{
-				Header: 'Creator',
+				Header: () => <div className={styles.left}>Artwork Info</div>,
 				id: 'artwork',
-				accessor: (d: any) => <>0://wilder.{d.domain}</>,
+				accessor: (d: any) => (
+					<Member
+						id={d.domain}
+						name={d.title ? d.title : ''}
+						image={d.image ? d.image : ''}
+						subtext={d.title ? `0://${d.domain}` : ''}
+					/>
+				),
 			},
 			{
-				Header: 'Request Date',
+				Header: () => <div className={styles.left}>Request Date</div>,
 				id: 'date',
-				accessor: (d: any) => <span>13.03.2021 08:22</span>,
+				accessor: (d: any) => (
+					<div className={styles.left}>13.03.2021 08:22</div>
+				),
 			},
 			{
-				Header: 'Staked Tokens',
+				Header: () => <div className={styles.right}>Staked Tokens</div>,
 				id: 'stake',
-				accessor: (d: any) => <span>{d.stakeAmount} WILD</span>,
+				accessor: (d: any) => (
+					<div className={styles.right}>
+						{parseFloat(d.stakeAmount).toLocaleString()} WILD
+					</div>
+				),
 			},
 			{
 				id: 'accepted',
 				accessor: (d: any) => (
-					<>
-						{d.accepted && <span>accepted</span>}
-						{!d.accepted && <span>not accepted</span>}
-					</>
+					<div className={styles.center}>
+						{d.accepted && (
+							<div className={styles.Accepted}>
+								<span>Accepted</span>
+								<br />
+								<span>13.03.2021 08:22</span>
+							</div>
+						)}
+						{!d.accepted && (
+							<FutureButton glow onClick={() => accept(d.domain)}>
+								ACCEPT
+							</FutureButton>
+						)}
+					</div>
 				),
 			},
 		],
@@ -84,7 +149,7 @@ const DomainTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 	);
 
 	// React-Table Hooks
-	const tableHook = useTable<DomainRequestContents>(
+	const tableHook = useTable<RequestTableData>(
 		{ columns, data },
 		useFilters,
 		useGlobalFilter,
@@ -171,4 +236,4 @@ const DomainTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 	);
 };
 
-export default DomainTable;
+export default RequestTable;

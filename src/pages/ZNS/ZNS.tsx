@@ -1,4 +1,5 @@
 //- React Imports
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
 import { useHistory } from 'react-router-dom';
@@ -10,6 +11,8 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
 
 //- Library Imports
+import { Maybe } from 'true-myth';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { randomNumber } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
 import useMint from 'lib/hooks/useMint';
@@ -22,6 +25,9 @@ import { Metadata, DisplayDomain, DisplayParentDomain } from 'lib/types';
 
 //- Style Imports
 import styles from './ZNS.module.css';
+
+//- Icon Imports
+import userIcon from 'assets/user.svg';
 
 //- Components & Containers
 import {
@@ -47,9 +53,6 @@ import {
 } from 'components';
 
 import { MintNewNFT, NFTView, Enlist } from 'containers';
-import { Maybe } from 'true-myth';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-import React from 'react';
 
 type ZNSProps = {
 	domain: string;
@@ -128,7 +131,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Overlay State
 	const [isWalletOverlayOpen, setIsWalletOverlayOpen] = useState(false);
 	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
-	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(true);
+	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
 	const [isSearchActive, setIsSearchActive] = useState(false);
 
 	//- MVP Version
@@ -336,13 +339,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									)}
 
 									{/* Profile Button */}
-									{mvpVersion === 3 && (
-										<IconButton
-											onClick={() => setIsProfileOverlayOpen(true)}
-											style={{ height: 32, width: 32, borderRadius: '50%' }}
-											iconUri={`https://picsum.photos/seed/${account}/200/300`}
-										/>
-									)}
+									<IconButton
+										onClick={() => setIsProfileOverlayOpen(true)}
+										style={{ height: 32, width: 32, borderRadius: '50%' }}
+										iconUri={
+											mvpVersion === 3
+												? `https://picsum.photos/seed/${account}/200/300`
+												: userIcon
+										}
+									/>
 
 									{/* TODO: Change the triple dot button to a component */}
 									<div
