@@ -9,6 +9,7 @@ import styles from './Member.module.css';
 
 //- Library Imports
 import useMvpVersion from 'lib/hooks/useMvpVersion';
+import { randomName } from 'lib/Random';
 
 type MemberProps = {
 	id: string;
@@ -47,7 +48,9 @@ const Member: React.FC<MemberProps> = ({
 							target="_blank"
 							rel="noreferrer"
 						>
-							{id.substring(0, 4)}...{id.substring(id.length - 4)}
+							{mvpVersion === 3
+								? randomName(id)
+								: `${id.substring(0, 4)}...${id.substring(id.length - 4)}`}
 						</a>
 					</span>
 					{subtext && (
