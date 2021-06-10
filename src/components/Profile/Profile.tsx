@@ -27,16 +27,19 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 		>
 			{/* <h1 className={`glow-text-white`}>Profile</h1> */}
 			<div className={ProfileStyle.body}>
-				<div>
+				{/* Hide DP for now */}
+				{/* <div>
 					<div style={{ height: 160 }}>
 						<Image className={ProfileStyle.dp} src={randomImage(id)} />
 					</div>
 					<span className={`${ProfileStyle.endpoint} glow-text-blue`}>
 						0://wilder.{randomName(id).toLowerCase().split(' ').join('.')}
 					</span>
-				</div>
+				</div> */}
+
 				<div>
-					<span className={`${ProfileStyle.name} glow-text-blue`}>
+					{/* Hide profile data for now */}
+					{/* <span className={`${ProfileStyle.name} glow-text-blue`}>
 						{randomName(id)}
 					</span>
 					<p>
@@ -49,7 +52,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 						<br />
 						<br />
 						Join me on one or all of my journeys, I welcome you aboard!
-					</p>
+					</p> */}
 					<CopyInput value={id} />
 				</div>
 			</div>
