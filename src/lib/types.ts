@@ -34,6 +34,16 @@ export interface DisplayParentDomain extends DisplayDomain {
 	subdomains: DisplayDomain[];
 }
 
+// Temporarily in here while we sort middleware
+export interface Request {
+	creator: Account;
+	domain: Domain;
+	date: string;
+	stakeAmount: number;
+	stakeCurrency: string;
+	accepted: boolean;
+}
+
 // Defaults
 
 export const DefaultDomain: Domain = {
