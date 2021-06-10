@@ -201,6 +201,10 @@ h1 {
 	font-size: 22px;
 }
 
+th {
+	text-transform: uppercase;
+}
+
 hr.glow {
 	position: relative;
 	height: 1px;
