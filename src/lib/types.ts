@@ -68,6 +68,7 @@ export interface DomainRequestContents {
 	domain: string; // domain label
 	requestor: string;
 	stakeAmount: string;
+	stakeCurrency: string;
 	metadata: string; // uri to metadata
 	locked: boolean;
 }

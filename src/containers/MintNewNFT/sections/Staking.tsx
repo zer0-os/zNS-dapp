@@ -25,7 +25,7 @@ const Staking: React.FC<StakingProps> = ({ token, onContinue }) => {
 		if (!amount.length) e.push('amount');
 		if (e.length) return setErrors(e);
 		onContinue({
-			stake: parseInt(amount),
+			amount: parseInt(amount),
 			currency: 'WILD',
 		});
 	};
@@ -36,11 +36,9 @@ const Staking: React.FC<StakingProps> = ({ token, onContinue }) => {
 			style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
 		>
 			<p style={{ fontSize: 18, lineHeight: 1.3 }}>
-				In order to reserve space for your token in Wilder, you’ll need to put
-				up some capital. You can bid what you think is a reasonable amount; if
-				the owner accepts your offer, the transaction will proceed
-				automatically. If your offer is rejected, the transaction will be
-				cancelled.
+				In order to mint this token in Wilder, you’ll need to put up some
+				capital. You can bid what you think is a reasonable amount; if the owner
+				accepts your offer, you will be able to create the token.
 			</p>
 			<div style={{ margin: '0 auto', position: 'relative' }}>
 				<TextInput

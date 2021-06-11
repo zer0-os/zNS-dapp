@@ -65,3 +65,8 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 };
 
 export default MintProvider;
+
+export function useMintProvider() {
+	const { minting, mint, minted } = React.useContext(MintContext);
+	return { minting, mint, minted };
+}
