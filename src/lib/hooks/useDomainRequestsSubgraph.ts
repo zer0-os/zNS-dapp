@@ -82,7 +82,7 @@ export function useRequestsForOwnedDomains(account: string | undefined) {
 	React.useEffect(() => {
 		if (account) {
 			getOwned({
-				variables: { owner: account },
+				variables: { owner: account.toLocaleLowerCase() },
 			});
 		}
 	}, [getOwned, account]);
@@ -114,7 +114,9 @@ const requestsByRequestorQuery = gql`
 				owner {
 					id
 				}
-				minter
+				minter {
+					id
+				}
 				metadata
 			}
 			offeredAmount
@@ -140,7 +142,7 @@ export function useRequestsMadeByAccount(account: string | undefined) {
 	React.useEffect(() => {
 		if (account) {
 			getOwned({
-				variables: { requestor: account },
+				variables: { requestor: account.toLocaleLowerCase() },
 			});
 		}
 	}, [getOwned, account]);
