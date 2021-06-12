@@ -5,17 +5,19 @@ import { useMemo } from 'react';
 import addresses from './addresses';
 import { chainIdToNetworkType, defaultNetworkId } from './network';
 import { Registrar } from '../types/Registrar';
-import { BasicController, BasicController__factory } from 'types';
+import { BasicController, BasicController__factory, StakingController, StakingController__factory } from 'types';
 import * as ethers from 'ethers';
 
 export interface ContractAddresses {
 	basic: string;
 	registrar: string;
+	staking: string;
 }
 
 export interface Contracts {
 	registry: Registrar;
 	basicController: BasicController;
+	stakingController: StakingController;
 }
 
 function useZnsContracts(): Contracts | null {
@@ -49,6 +51,10 @@ function useZnsContracts(): Contracts | null {
 				contracts.basic,
 				signer,
 			),
+			stakingController: StakingController__factory.connect(
+				contracts.staking,
+				signer
+			)
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active, library, chainId]);

@@ -8,7 +8,7 @@ import styles from './PreviewCard.module.css';
 import { randomName, randomImage } from 'lib/Random';
 
 //- Component Imports
-import { ArrowLink, FutureButton, Image, Member } from 'components';
+import { FutureButton, Image, Member } from 'components';
 
 type PreviewCardProps = {
 	image: string;
@@ -69,9 +69,9 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 					<div className={styles.Body}>
 						<div>
 							<h5>{name ? name : domain.split('/')[1]}</h5>
-							<ArrowLink className={styles.Domain}>
+							<span className={styles.Domain}>
 								0://wilder.{domain.substring(1)}
-							</ArrowLink>
+							</span>
 							<p>{description}</p>
 						</div>
 						<div className={styles.Members}>

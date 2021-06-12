@@ -10,7 +10,7 @@ const CopyInput = (props) => {
 	const { addNotification } = useNotification();
 
 	const copyContractToClipboard = () => {
-		addNotification('Copied address to clipboard!');
+		addNotification('Copied address to clipboard.');
 		navigator.clipboard.writeText(props.value);
 	};
 

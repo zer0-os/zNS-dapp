@@ -4,6 +4,10 @@
 	overflow: hidden;
 }
 
+.DomainTable {
+	position: relative;
+}
+
 .Expander {
 	transition: height var(--animation-time-long) ease-in-out;
 }
@@ -18,7 +22,6 @@
 
 .Container {
 	position: absolute;
-	top: 62px;
 	left: 0;
 	width: 100%;
 }

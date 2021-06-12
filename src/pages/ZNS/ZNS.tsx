@@ -12,7 +12,7 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 //- Library Imports
 import { randomNumber } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
-import useMint from 'lib/hooks/useMint';
+import { useMintProvider } from 'lib/providers/MintProvider';
 import useEnlist from 'lib/hooks/useEnlist';
 import { getMetadata } from 'lib/metadata';
 
@@ -110,7 +110,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	}, [data]);
 
 	//- Minting State
-	const { minting, minted } = useMint();
+	const { minting, minted } = useMintProvider();
 	const { enlisting, enlist, clear } = useEnlist();
 
 	//- Notification State
@@ -192,7 +192,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	useEffect(() => {
 		if (triedEagerConnect)
-			addNotification(active ? 'Wallet connected!' : 'Wallet disconnected!');
+			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
@@ -256,6 +256,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 						onMint={() => setIsMintOverlayOpen(false)}
 						domainName={domain}
 						domainId={!data.isNothing() ? data.value.id : ''}
+						domainOwner={!data.isNothing() ? data.value.owner.id : ''}
 					/>
 				</Overlay>
 			)}
@@ -287,7 +288,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 							? { zIndex: isSearchActive ? 10000 : 10, background: 'none' }
 							: {}
 					}
-					onSelect={() => {}}
+					onSelect={() => {
+						history.push('/');
+					}}
 					filters={!isSearchActive ? ['Everything'] : []}
 				>
 					<TitleBar
@@ -309,13 +312,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 								<>
 									{/* Mint button */}
 									<FutureButton
-										glow={ownedDomain}
+										glow={account != null}
 										onClick={() => {
-											ownedDomain
+											account != null
 												? setIsMintOverlayOpen(true)
-												: addNotification(
-														'You can only mint NFTs on domains you own',
-												  );
+												: addNotification('Please connect your wallet.');
 										}}
 									>
 										Mint New NFT
