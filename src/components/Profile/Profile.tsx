@@ -11,6 +11,11 @@ import { Image, RequestTable } from 'components';
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
+import { useStakingController } from 'lib/hooks/useStakingController';
+import {
+	useRequestsMadeByAccount,
+	useRequestsForOwnedDomains,
+} from 'lib/hooks/useDomainRequestsSubgraph';
 
 //- Mock
 import mock from './mock.json';
@@ -23,6 +28,8 @@ type ProfileProps = {
 
 const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	const { mvpVersion } = useMvpVersion();
+
+	const { requests } = useRequestsMadeByAccount(id);
 
 	return (
 		<div

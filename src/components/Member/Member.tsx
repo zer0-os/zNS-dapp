@@ -49,21 +49,17 @@ const Member: React.FC<MemberProps> = ({
 							rel="noreferrer"
 						>
 							{mvpVersion === 3
-								? id.indexOf('0x') === 0
-									? randomName(id)
-									: name
+								? randomName(id)
 								: `${id.substring(0, 4)}...${id.substring(id.length - 4)}`}
 						</a>
 					</span>
 					{subtext && (
 						<>
-							<br />
 							<span>{subtext}</span>
 						</>
 					)}
 					{showZna && (
 						<>
-							<br />
 							<button className="text-button">
 								0://wilder.{name.toLowerCase().split(' ').join('.')}
 							</button>

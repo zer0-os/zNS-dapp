@@ -43,6 +43,7 @@ export { default as RequestTable } from './Tables/RequestTable/RequestTable';
 
 //- Other
 export { default as ArrowLink } from './ArrowLink/ArrowLink';
+export { default as Artwork } from './Artwork/Artwork';
 export { default as ButtonTray } from './ButtonTray/ButtonTray.js';
 export { default as ConnectToWallet } from './ConnectToWallet/ConnectToWallet';
 export { default as CopyInput } from './CopyInput/CopyInput.js';

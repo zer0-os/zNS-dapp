@@ -2,12 +2,18 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 
 //- Component Imports
-import { SearchBar, IconButton, Member, FutureButton } from 'components';
+import {
+	Artwork,
+	SearchBar,
+	IconButton,
+	Member,
+	FutureButton,
+} from 'components';
 
 //- Library Imports
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { getMetadata } from 'lib/metadata';
-import { randomImage } from 'lib/Random';
+import { randomImage, randomName } from 'lib/Random';
 
 //- Type Imports
 import { DomainRequestContents } from 'lib/types';
@@ -45,7 +51,9 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 	>(undefined);
 
 	// Table Data
-	const rowData: RequestTableData[] = useMemo(() => requests, [requests]);
+	const rowData: RequestTableData[] = useMemo(() => loadedRequests || [], [
+		loadedRequests,
+	]);
 	const data = useMemo<RequestTableData[]>(() => rowData, [rowData]);
 
 	// Functions
@@ -57,17 +65,18 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 
 	useEffect(() => {
 		var count = 0;
-		var total = rowData.filter((d: any) => d.metadata).length;
-		for (var i = 0; i < rowData.length; i++) {
-			const row = rowData[i];
-			if (row.metadata) continue;
+		var total = requests.filter((d: any) => d.metadata).length;
+		for (var i = 0; i < requests.length; i++) {
+			const row = requests[i] as RequestTableData;
+			if (!row.metadata) continue;
+			// eslint-disable-next-line no-loop-func
 			getMetadata(row.metadata).then((d) => {
 				if (!row || !d || !d.image || !d.title)
 					return console.warn('Invalid metadata for domain ' + row.domain);
 				row.image = d.image;
 				row.title = d.title;
 				if (++count === total) {
-					setLoadedRequests(rowData);
+					setLoadedRequests(requests);
 				}
 			});
 		}
@@ -93,21 +102,28 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 						id={d.requestor}
 						name={'Hello'}
 						image={randomImage(d.requestor)}
-						subtext={'hello'}
+						subtext={
+							mvpVersion === 3
+								? randomName(d.requestor).substring(0, 3).toUpperCase()
+								: ''
+						}
 					/>
 				),
 			},
 			{
 				Header: () => <div className={styles.left}>Artwork Info</div>,
 				id: 'artwork',
-				accessor: (d: any) => (
-					<Member
-						id={d.domain}
-						name={d.title ? d.title : ''}
-						image={d.image ? d.image : ''}
-						subtext={d.title ? `0://${d.domain}` : ''}
-					/>
-				),
+				accessor: (d: any) =>
+					d.image ? (
+						<Artwork
+							id={d.domain}
+							name={d.title ? d.title : ''}
+							image={d.image ? d.image : ''}
+							domain={d.title ? `0://${d.domain}` : ''}
+						/>
+					) : (
+						<></>
+					),
 			},
 			{
 				Header: () => <div className={styles.left}>Request Date</div>,

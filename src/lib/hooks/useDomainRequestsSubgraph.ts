@@ -53,7 +53,7 @@ interface RequestsForOwner {
 
 const requestsForDomainsByOwner = gql`
 	query DomainRequests($owner: ID!) {
-		domains(where: {owner: $owner}}) {
+		domains(where: { owner: $owner }) {
 			id
 			name
 			requests {
