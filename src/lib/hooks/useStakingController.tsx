@@ -5,6 +5,7 @@ import { ethers } from 'ethers';
 export interface DomainRequestParams {
 	requestor: string;
 	stakeAmount: string;
+	stakeCurrency: string;
 	nft: NftParams;
 }
 
@@ -51,6 +52,7 @@ export function useStakingController(): StakingControllerHooks {
 				domain: params.nft.domain,
 				requestor: params.requestor,
 				stakeAmount: params.stakeAmount,
+				stakeCurrency: params.stakeCurrency,
 				metadata: intendedMetadata,
 				locked: params.nft.locked,
 			};

@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 import { Image } from 'components';
 
 //- Hook Imports
-import useMint from 'lib/hooks/useMint';
+import { useMintProvider } from 'lib/providers/MintProvider';
 
 //- Style Imports
 import styles from './MintPreview.module.css';
 
 const MintPreview = () => {
-	const { minting, minted } = useMint();
+	const { minting, minted } = useMintProvider();
 
 	const nft = (nft: any, minted: boolean) => (
 		<>
