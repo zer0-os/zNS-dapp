@@ -15,7 +15,7 @@ import { Maybe } from 'true-myth';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { randomNumber } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
-import useMint from 'lib/hooks/useMint';
+import { useMintProvider } from 'lib/providers/MintProvider';
 import useEnlist from 'lib/hooks/useEnlist';
 import { getMetadata } from 'lib/metadata';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
@@ -114,7 +114,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	}, [data]);
 
 	//- Minting State
-	const { minting, minted } = useMint();
+	const { minting, minted } = useMintProvider();
 	const { enlisting, enlist, clear } = useEnlist();
 
 	//- Notification State
@@ -260,6 +260,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 						onMint={() => setIsMintOverlayOpen(false)}
 						domainName={domain}
 						domainId={!data.isNothing() ? data.value.id : ''}
+						domainOwner={!data.isNothing() ? data.value.owner.id : ''}
 					/>
 				</Overlay>
 			)}
@@ -315,13 +316,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 								<>
 									{/* Mint button */}
 									<FutureButton
-										glow={ownedDomain}
+										glow={account != null}
 										onClick={() => {
-											ownedDomain
+											account != null
 												? setIsMintOverlayOpen(true)
-												: addNotification(
-														'You can only mint NFTs on domains you own',
-												  );
+												: addNotification('Please connect your wallet.');
 										}}
 									>
 										Mint New NFT

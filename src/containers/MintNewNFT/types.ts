@@ -13,7 +13,7 @@ export type TokenDynamicType = {
 };
 
 export type TokenStakeType = {
-	stake: number;
+	amount: number;
 	currency: string;
 };
 

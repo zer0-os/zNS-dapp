@@ -23,6 +23,8 @@ import backgroundImage from 'assets/zns-bg.png';
 
 //- Page Imports
 import { ZNS } from 'pages';
+import React from 'react';
+import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
 
 // Web3 library to query
 function getLibrary(provider: any): Web3Provider {
@@ -68,13 +70,15 @@ function wrappedApp() {
 					<Web3ReactProvider getLibrary={getLibrary}>
 						{/* Our Hooks */}
 						<MvpVersionProvider>
-							<MintProvider>
-								<EnlistProvider>
-									<DomainCacheProvider>
-										<App />
-									</DomainCacheProvider>
-								</EnlistProvider>
-							</MintProvider>
+							<StakingRequestProvider>
+								<MintProvider>
+									<EnlistProvider>
+										<DomainCacheProvider>
+											<App />
+										</DomainCacheProvider>
+									</EnlistProvider>
+								</MintProvider>
+							</StakingRequestProvider>
 						</MvpVersionProvider>
 					</Web3ReactProvider>
 				</NotificationProvider>

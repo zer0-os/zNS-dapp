@@ -68,7 +68,7 @@ const Summary: React.FC<SummaryProps> = ({
 						{staking && (
 							<li>
 								<img alt="stake icon" src={handIcon} />
-								{staking.stake} {staking.currency}
+								{staking.amount} {staking.currency}
 							</li>
 						)}
 					</ul>

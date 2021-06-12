@@ -4,6 +4,7 @@
 		"domain": "wilder.leopard",
 		"requestor": "0x35888ad3f1c0b39244bb54746b96ee84a5d97a53",
 		"stakeAmount": "53201.538",
+		"stakeCurrency": "WILD",
 		"metadata": "https://ipfs.io/ipfs/QmSu7nMjTVfig7SSvQDFWiEcAemgNcx8gCNRJsVfEsvJzE",
 		"locked": true,
 		"accepted": false
@@ -13,6 +14,7 @@
 		"domain": "wilder.brett",
 		"requestor": "0x6321632153216321632153325",
 		"stakeAmount": "302195",
+		"stakeCurrency": "WILD",
 		"metadata": "https://ipfs.io/ipfs/QmZcoujeKgb7qZa1icxNo4JoiCGyv9c9GBGSNEwsQe8bZP",
 		"locked": true,
 		"accepted": true
