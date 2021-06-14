@@ -86,7 +86,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	// Clicks
 	const rowClick = (event: any, domain: string) => {
-		if (event.target.nodeName.toLowerCase() === 'button') return;
+		// @TODO Decouple this line from classname
+		if (event.target.className.indexOf('FutureButton') >= 0) return;
 		navigateTo(domain);
 	};
 
