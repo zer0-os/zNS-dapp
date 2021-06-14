@@ -29,20 +29,23 @@ const FilterBar: React.FC<FilterBarProps> = ({
 	//- State
 	const [selected, setSelected] = useState(filters.length ? filters[0] : '');
 
+	//- Data
+	const body = document.getElementsByTagName('body')[0];
+
 	//- Hooks
 	const history = useHistory();
 
 	// TODO: Move hidden header to a separate component
 	const [hideHeader, setHideHeader] = useState(false);
 	const handleScroll = () => {
-		const hide = window.pageYOffset > 60 && window.pageYOffset > lastY;
-		lastY = window.pageYOffset;
+		const hide = body.scrollTop > 60 && body.scrollTop > lastY;
+		lastY = body.scrollTop;
 		setHideHeader(hide);
 	};
 
 	useEffect(() => {
-		window.addEventListener('scroll', handleScroll);
-		return () => window.removeEventListener('scroll', handleScroll);
+		body.addEventListener('scroll', handleScroll);
+		return () => body.removeEventListener('scroll', handleScroll);
 	}, []);
 
 	const select = (filter: string) => {
