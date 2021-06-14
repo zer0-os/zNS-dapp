@@ -17,6 +17,7 @@ type MemberProps = {
 	image: string;
 	subtext?: string;
 	showZna?: boolean;
+	style?: React.CSSProperties;
 };
 
 const Member: React.FC<MemberProps> = ({
@@ -25,13 +26,14 @@ const Member: React.FC<MemberProps> = ({
 	image,
 	subtext,
 	showZna,
+	style,
 }) => {
 	const { mvpVersion } = useMvpVersion();
 
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
-			<div className={styles.Member}>
+			<div style={style} className={styles.Member}>
 				{mvpVersion === 3 && (
 					<div className={styles.Image}>
 						<Image
