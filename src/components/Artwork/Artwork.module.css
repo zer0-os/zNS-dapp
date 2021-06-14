@@ -15,6 +15,13 @@
 	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
+.Domain {
+	display: block;
+	margin-top: 4px;
+	font-weight: 700;
+	color: var(--color-primary-lighter-3);
+}
+
 .Image:hover {
 	transform: scale(1.1);
 }
@@ -29,15 +36,8 @@
 	font-weight: 700;
 }
 
-.Info > span {
+.Title {
 	display: block;
 	font-weight: 400;
 	cursor: pointer;
-}
-
-.Info > a {
-	display: block;
-	margin-top: 4px;
-	font-weight: 700;
-	color: var(--color-primary-lighter-3);
 }

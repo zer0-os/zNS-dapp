@@ -15,9 +15,16 @@ type ArtworkProps = {
 	name: string;
 	image: string;
 	domain: string;
+	pending?: boolean;
 };
 
-const Artwork: React.FC<ArtworkProps> = ({ id, name, image, domain }) => {
+const Artwork: React.FC<ArtworkProps> = ({
+	id,
+	name,
+	image,
+	domain,
+	pending,
+}) => {
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
@@ -29,10 +36,13 @@ const Artwork: React.FC<ArtworkProps> = ({ id, name, image, domain }) => {
 					/>
 				</div>
 				<div className={styles.Info}>
-					<span>{name}</span>
-					<a target="_blank" rel="noreferrer">
-						{domain}
-					</a>
+					<span className={styles.Title}>{name}</span>
+					{!pending && (
+						<a className={styles.Domain} target="_blank" rel="noreferrer">
+							{domain}
+						</a>
+					)}
+					{pending && <span className={styles.Domain}>{domain}</span>}
 				</div>
 			</div>
 		</>
