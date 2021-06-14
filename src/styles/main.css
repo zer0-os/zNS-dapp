@@ -271,6 +271,13 @@ button.text-button {
 	display: none;
 }
 
+#overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100000;
+}
+
 #backgroundImage {
 	position: absolute;
 	top: 0;
