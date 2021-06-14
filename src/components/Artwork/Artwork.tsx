@@ -28,7 +28,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
-			<div className={styles.Artwork}>
+			<div className={`${styles.Artwork} ${styles.Pending}`}>
 				<div className={styles.Image}>
 					<Image
 						onClick={() => console.warn('Member clicks not yet implemented')}
@@ -36,7 +36,12 @@ const Artwork: React.FC<ArtworkProps> = ({
 					/>
 				</div>
 				<div className={styles.Info}>
-					<span className={styles.Title}>{name}</span>
+					<span
+						style={{ cursor: pending ? 'default' : 'pointer' }}
+						className={styles.Title}
+					>
+						{name}
+					</span>
 					{!pending && (
 						<a className={styles.Domain} target="_blank" rel="noreferrer">
 							{domain}
