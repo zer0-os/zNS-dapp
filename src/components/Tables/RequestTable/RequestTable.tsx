@@ -63,9 +63,16 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	>();
 
 	// Table Data
-	const rowData: DisplayDomainRequest[] = useMemo(() => loadedRequests || [], [
-		loadedRequests,
-	]);
+	const rowData: DisplayDomainRequest[] = useMemo(() => {
+		if (searchQuery.length && loadedRequests && loadedRequests.length) {
+			return loadedRequests.filter((r) => {
+				if (!r || !r.title) return false;
+				const s = (r.title + r.domainName).toLowerCase();
+				return s.indexOf(searchQuery.toLowerCase()) > -1;
+			});
+		}
+		return loadedRequests || [];
+	}, [loadedRequests, searchQuery]);
 	const data = useMemo<DisplayDomainRequest[]>(() => rowData, [rowData]);
 
 	///////////////
@@ -75,11 +82,15 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const setList = () => setIsGridView(false);
 	const setGrid = () => setIsGridView(true);
 
-	const accept = (domainName: string) => {
+	const view = (domainName: string) => {
 		if (loadedRequests) {
 			const r = loadedRequests?.filter((d) => d.domainName === domainName)[0];
 			setViewing(r);
 		}
+	};
+
+	const onAccept = () => {
+		setViewing(undefined);
 	};
 
 	/////////////
@@ -140,7 +151,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			},
 			{
 				Header: () => <div className={styles.left}>Artwork Info</div>,
-				id: 'artwork',
+				id: 'title',
 				accessor: (d: any) =>
 					d.image ? (
 						<Artwork
@@ -148,6 +159,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 							name={d.title ? d.title : ''}
 							image={d.image ? d.image : ''}
 							domain={d.domainName ? `0://${d.domainName}` : ''}
+							pending
 						/>
 					) : (
 						<></>
@@ -162,8 +174,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			},
 			{
 				Header: () => <div className={styles.right}>Staked Tokens</div>,
-				id: 'stake',
-				accessor: (d: any) => (
+				id: 'stakeAmount',
+				accessor: (d) => (
 					<div className={styles.right}>
 						{Number(ethers.utils.formatEther(d.stakeAmount)).toLocaleString()}{' '}
 						WILD
@@ -185,7 +197,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
 								glow
-								onClick={() => accept(d.domainName)}
+								onClick={() => view(d.domainName)}
 							>
 								View Offer
 							</FutureButton>
@@ -213,7 +225,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	} = tableHook;
 
 	const search = (query: string) => {
-		setGlobalFilter(query);
 		setSearchQuery(query);
 	};
 
@@ -227,7 +238,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						setViewing(undefined);
 					}}
 				>
-					<Request yours={yours} request={viewing} />
+					<Request onAccept={onAccept} yours={yours} request={viewing} />
 				</Overlay>
 			)}
 			{/* Table Header */}
