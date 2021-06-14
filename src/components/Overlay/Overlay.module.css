@@ -25,12 +25,12 @@
 	width: 100%;
 }
 
-.Container > * {
-	margin: 0 auto;
-}
-
 .FullScreen > div {
 	height: 100%;
+}
+
+.Container > * {
+	margin: 0 auto;
 }
 
 .Centered {
@@ -39,6 +39,10 @@
 
 .Centered > div > div {
 	margin: 0 auto;
+}
+
+.Image {
+	text-align: center;
 }
 
 .Overlay > div {

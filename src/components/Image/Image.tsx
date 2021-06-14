@@ -20,7 +20,13 @@ const Image = (props: any) => {
 	return (
 		<div
 			ref={containerRef}
-			style={{ position: 'relative', width: '100%', height: '100%' }}
+			style={{
+				position: 'relative',
+				width: '100%',
+				height: '100%',
+				display: 'inline-block',
+				...props.style,
+			}}
 		>
 			{!tryVideo && (
 				<img

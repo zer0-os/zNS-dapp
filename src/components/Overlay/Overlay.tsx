@@ -11,6 +11,7 @@ type OverlayProps = {
 	children?: React.ReactNode;
 	centered?: boolean;
 	nested?: boolean;
+	img?: boolean;
 	fullScreen?: boolean;
 };
 
@@ -19,6 +20,7 @@ const Overlay: React.FC<OverlayProps> = ({
 	open,
 	children,
 	centered,
+	img,
 	nested,
 	fullScreen,
 }) => {
@@ -89,7 +91,7 @@ const Overlay: React.FC<OverlayProps> = ({
 			} ${centered ? styles.Centered : ''}
 			${fullScreen ? styles.FullScreen : ''}`}
 		>
-			<div className={`overlay ${styles.Container}`}>
+			<div className={`overlay ${styles.Container} ${img ? styles.Image : ''}`}>
 				{children}
 				<div style={{ display: centered ? 'none' : 'block', height: 64 }}></div>
 			</div>
