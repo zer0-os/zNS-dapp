@@ -10,6 +10,7 @@ import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { randomName, randomImage } from 'lib/Random';
 import { ethers } from 'ethers';
 import { tokenToUsd } from 'lib/coingecko';
+import { useStakingController } from 'lib/hooks/useStakingController';
 
 //- Style Imports
 import styles from './Request.module.css';
@@ -23,12 +24,24 @@ import galaxyBackground from './assets/galaxy.png';
 type RequestProps = {
 	request: DisplayDomainRequest;
 	yours?: boolean;
+	onAccept: () => void;
 };
 
-const Request: React.FC<RequestProps> = ({ request, yours }) => {
+const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
+	////////////////////
+	// Imported Hooks //
+	////////////////////
+
+	const { approveRequest } = useStakingController();
 	const { mvpVersion } = useMvpVersion();
+
+	///////////
+	// State //
+	///////////
+
 	const [stake, setStake] = useState(0);
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+	const [hasAccepted, setHasAccepted] = useState(true);
 
 	const tokenAmount = Number(ethers.utils.formatEther(request.stakeAmount));
 
@@ -36,13 +49,16 @@ const Request: React.FC<RequestProps> = ({ request, yours }) => {
 		setStake(d as number);
 	});
 
-	const accept = () => {
-		console.log('accept');
-	};
+	const accept = () => setHasAccepted(true);
 
 	const deny = () => {
 		console.log('deny');
 	};
+
+	const confirm = () => {
+		if (onAccept) onAccept();
+	};
+	const cancel = () => setHasAccepted(false);
 
 	const preview = () => setIsLightboxOpen(true);
 
@@ -72,13 +88,45 @@ const Request: React.FC<RequestProps> = ({ request, yours }) => {
 					</div>
 				</Overlay>
 			)}
+			{hasAccepted && (
+				<Overlay centered open onClose={() => setHasAccepted(false)}>
+					<div
+						className={`${styles.Confirmation} blur border-primary border-rounded`}
+					>
+						<h2 className="glow-text-white">Are you sure?</h2>
+						<hr className="glow" />
+						<p>
+							This NFT is about to be seared upon the Blockchain. There’s no
+							going back.
+						</p>
+						<div className={styles.Buttons}>
+							<FutureButton
+								style={{ textTransform: 'uppercase' }}
+								alt
+								glow
+								onClick={cancel}
+							>
+								Cancel
+							</FutureButton>
+							<FutureButton
+								style={{ textTransform: 'uppercase' }}
+								glow
+								onClick={confirm}
+							>
+								Confirm
+							</FutureButton>
+						</div>
+					</div>
+				</Overlay>
+			)}
+
 			<div className={styles.Image}>
 				<Image src={request.image} onClick={preview} />
 			</div>
 			<div className={styles.Info}>
 				<div>
 					<h1 className="glow-text-white">{request.title}</h1>
-					<span>0://{request.domainName}</span>
+					<span className={styles.Domain}>0://{request.domainName}</span>
 					<Member
 						style={{ marginTop: 16 }}
 						id={request.requestor}
@@ -99,7 +147,7 @@ const Request: React.FC<RequestProps> = ({ request, yours }) => {
 					>
 						Stake Offer
 					</span>
-					<div className={styles.Offer} style={{ opacity: stake ? 1 : 0 }}>
+					<div className={styles.Offer}>
 						<span>
 							{tokenAmount.toLocaleString()} {request.stakeCurrency}
 						</span>

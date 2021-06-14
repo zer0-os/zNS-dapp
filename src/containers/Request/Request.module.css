@@ -59,6 +59,10 @@
 	font-size: 36px;
 }
 
+.Domain {
+	font-weight: 700;
+}
+
 .Offer {
 	margin-top: 16px;
 }
@@ -86,27 +90,31 @@
 	margin-left: 16px;
 }
 
-.Grid {
-	width: 100%;
-	padding-top: 11px;
-	padding-bottom: 24px;
-
-	display: grid;
-	justify-content: space-evenly;
-	grid-template-columns: repeat(3, 388px);
-	grid-gap: 24px 0;
-
-	list-style: none;
+.Confirmation {
+	width: 588px;
+	padding: 32px 40px 40px 40px;
 }
 
-.Grid > li {
-	cursor: pointer;
-
-	transition: transform var(--animation-time-medium) ease-in-out;
+.Confirmation h2 {
+	font-size: 36px;
+	font-weight: 700;
+	text-align: center;
 }
 
-.Grid > li:hover {
-	transform: scale(1.03);
+.Confirmation hr {
+	margin-top: 34px;
+	margin-bottom: 42px;
+}
+
+.Confirmation p {
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 28.8px;
+	text-align: center;
+}
+
+.Confirmation .Buttons {
+	justify-content: center;
 }
 
 @media only screen and (max-width: 1200px) {
