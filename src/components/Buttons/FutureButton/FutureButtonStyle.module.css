@@ -22,7 +22,7 @@
 	padding-left: 25px;
 	padding-right: 25px;
 
-	background: none;
+	background: var(--bg);
 
 	border-radius: var(--box-radius);
 
