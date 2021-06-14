@@ -25,6 +25,10 @@
 	width: 100%;
 }
 
+.Container > * {
+	margin: 0 auto;
+}
+
 .FullScreen > div {
 	height: 100%;
 }

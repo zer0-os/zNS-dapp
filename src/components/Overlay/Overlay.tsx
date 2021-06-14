@@ -89,7 +89,7 @@ const Overlay: React.FC<OverlayProps> = ({
 			} ${centered ? styles.Centered : ''}
 			${fullScreen ? styles.FullScreen : ''}`}
 		>
-			<div className={`overlay`}>
+			<div className={`overlay ${styles.Container}`}>
 				{children}
 				<div style={{ display: centered ? 'none' : 'block', height: 64 }}></div>
 			</div>
