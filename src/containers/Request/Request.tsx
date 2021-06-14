@@ -54,18 +54,22 @@ const Request: React.FC<RequestProps> = ({ request, yours }) => {
 			{isLightboxOpen && (
 				<Overlay
 					centered
+					img
 					open={isLightboxOpen}
 					onClose={() => setIsLightboxOpen(false)}
 				>
-					<Image
-						src={request.image}
-						style={{
-							width: 'auto',
-							maxHeight: '80vh',
-							maxWidth: '80vw',
-							objectFit: 'contain',
-						}}
-					/>
+					<div>
+						<Image
+							src={request.image}
+							style={{
+								width: 'auto',
+								maxHeight: '80vh',
+								maxWidth: '80vw',
+								objectFit: 'contain',
+								textAlign: 'center',
+							}}
+						/>
+					</div>
 				</Overlay>
 			)}
 			<div className={styles.Image}>

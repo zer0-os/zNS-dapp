@@ -91,6 +91,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 		<div className={styles.NFTView}>
 			<Overlay
 				centered
+				img
 				open={isImageOverlayOpen}
 				onClose={() => setIsImageOverlayOpen(false)}
 			>
@@ -101,6 +102,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 						maxHeight: '80vh',
 						maxWidth: '80vw',
 						objectFit: 'contain',
+						textAlign: 'center',
 					}}
 				/>
 			</Overlay>
