@@ -73,6 +73,12 @@ export interface DomainRequestContents {
 	locked: boolean;
 }
 
+export interface DisplayDomainRequest extends DomainRequestContents {
+	image?: string;
+	title?: string;
+	domainName?: string;
+}
+
 // Defaults
 
 export const DefaultDomain: Domain = {

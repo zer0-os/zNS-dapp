@@ -1,0 +1,145 @@
+.Request {
+	display: flex;
+
+	max-width: 1250px;
+	min-height: 542px;
+
+	padding: 8px;
+
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+.Image {
+	width: 543px;
+	max-width: 543px;
+	border-radius: var(--box-radius);
+	overflow: hidden;
+	cursor: pointer;
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Image:hover {
+	transform: scale(1.01);
+}
+
+.Image > * {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+}
+
+.Info {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	padding: 32px 0;
+}
+
+.Info h1 {
+	font-size: 36px;
+	font-weight: 700;
+}
+
+.Info > div:first-of-type > span:first-of-type {
+	display: inline-block;
+	margin-top: 4px;
+}
+
+.Info > div {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.Info > h1 {
+	font-size: 36px;
+}
+
+.Offer {
+	margin-top: 16px;
+}
+
+.Offer > span {
+	display: inline-block;
+}
+
+.Offer > span:first-of-type {
+	font-size: 40px;
+}
+
+.Offer > span:last-of-type {
+	font-size: 24px;
+	color: var(--color-primary-lighter-3);
+	margin-left: 16px;
+}
+
+.Buttons {
+	display: flex;
+	margin-top: 32px;
+}
+
+.Buttons > button:not(:first-child) {
+	margin-left: 16px;
+}
+
+.Grid {
+	width: 100%;
+	padding-top: 11px;
+	padding-bottom: 24px;
+
+	display: grid;
+	justify-content: space-evenly;
+	grid-template-columns: repeat(3, 388px);
+	grid-gap: 24px 0;
+
+	list-style: none;
+}
+
+.Grid > li {
+	cursor: pointer;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Grid > li:hover {
+	transform: scale(1.03);
+}
+
+@media only screen and (max-width: 1200px) {
+	.Info {
+		width: 50%;
+	}
+
+	.Image {
+		width: 40%;
+	}
+}
+
+@media only screen and (max-width: 860px) {
+	.Request {
+		flex-direction: column;
+	}
+
+	.Request > div {
+		width: 100%;
+	}
+
+	.Image {
+		max-width: 100%;
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 650px) {
+	.Image {
+		max-height: 200px;
+	}
+
+	.Offer > span {
+		font-size: 24px !important;
+	}
+}

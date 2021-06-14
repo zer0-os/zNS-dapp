@@ -8,15 +8,19 @@ import {
 	IconButton,
 	Member,
 	FutureButton,
+	Overlay,
+	NFTCard,
 } from 'components';
+import { Request } from 'containers';
 
 //- Library Imports
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { getMetadata } from 'lib/metadata';
 import { randomImage, randomName } from 'lib/Random';
+import { ethers } from 'ethers';
 
 //- Type Imports
-import { DomainRequestContents } from 'lib/types';
+import { DomainRequestContents, DisplayDomainRequest } from 'lib/types';
 
 //- Style Imports
 import styles from './RequestTable.module.css';
@@ -28,6 +32,7 @@ import list from './assets/list.svg';
 type RequestTableProps = {
 	requests: DomainRequestContents[];
 	style?: React.CSSProperties;
+	yours?: boolean;
 };
 
 interface RequestTableData extends DomainRequestContents {
@@ -36,38 +41,61 @@ interface RequestTableData extends DomainRequestContents {
 }
 
 // @TODO: Create a `Domain` type for `domains`
-const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
+const RequestTable: React.FC<RequestTableProps> = ({
+	requests,
+	style,
+	yours,
+}) => {
 	const { mvpVersion } = useMvpVersion();
 
-	// State/Refs
+	//////////////////
+	// State / Refs //
+	//////////////////
+
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [isGridView, setIsGridView] = useState(false);
+	const [searchQuery, setSearchQuery] = useState('');
+	const [viewing, setViewing] = useState<DisplayDomainRequest | undefined>();
+
+	const [loadedRequests, setLoadedRequests] = useState<
+		DisplayDomainRequest[] | undefined
+	>();
+
+	// Table Data
+	const rowData: DisplayDomainRequest[] = useMemo(() => loadedRequests || [], [
+		loadedRequests,
+	]);
+	const data = useMemo<DisplayDomainRequest[]>(() => rowData, [rowData]);
+
+	///////////////
+	// Functions //
+	///////////////
+
 	const setList = () => setIsGridView(false);
 	const setGrid = () => setIsGridView(true);
 
-	const [loadedRequests, setLoadedRequests] = useState<
-		RequestTableData[] | undefined
-	>(undefined);
+	const accept = (domainName: string) => {
+		if (loadedRequests) {
+			const r = loadedRequests?.filter((d) => d.domainName === domainName)[0];
+			setViewing(r);
+		}
+	};
 
-	// Table Data
-	const rowData: RequestTableData[] = useMemo(() => loadedRequests || [], [
-		loadedRequests,
-	]);
-	const data = useMemo<RequestTableData[]>(() => rowData, [rowData]);
-
-	// Functions
-	// Placeholder for now!
-	const search = (query: string) => console.log('search', query);
-	const accept = (domainName: string) => console.log('accept', domainName);
-
-	// Effects
+	/////////////
+	// Effects //
+	/////////////
 
 	useEffect(() => {
+		if (requests.length === 0) {
+			setLoadedRequests([]);
+			return;
+		}
+
 		var count = 0;
 		var total = requests.filter((d: any) => d.metadata).length;
 		for (var i = 0; i < requests.length; i++) {
-			const row = requests[i] as RequestTableData;
+			const row = requests[i] as DisplayDomainRequest;
 			if (!row.metadata) continue;
 			// eslint-disable-next-line no-loop-func
 			getMetadata(row.metadata).then((d) => {
@@ -80,15 +108,15 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 				}
 			});
 		}
-	}, [rowData, mvpVersion]);
+	}, [requests, mvpVersion]);
 
 	useEffect(() => {
 		const el = containerRef.current;
 		if (el)
 			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-	}, [rowData, mvpVersion]);
+	}, [rowData, requests, mvpVersion]);
 
-	const columns = useMemo<Column<RequestTableData>[]>(
+	const columns = useMemo<Column<DisplayDomainRequest>[]>(
 		() => [
 			{
 				id: 'index',
@@ -119,7 +147,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 							id={d.domain}
 							name={d.title ? d.title : ''}
 							image={d.image ? d.image : ''}
-							domain={d.title ? `0://${d.domain}` : ''}
+							domain={d.domainName ? `0://${d.domainName}` : ''}
 						/>
 					) : (
 						<></>
@@ -137,7 +165,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 				id: 'stake',
 				accessor: (d: any) => (
 					<div className={styles.right}>
-						{parseFloat(d.stakeAmount).toLocaleString()} WILD
+						{Number(ethers.utils.formatEther(d.stakeAmount)).toLocaleString()}{' '}
+						WILD
 					</div>
 				),
 			},
@@ -153,8 +182,12 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 							</div>
 						)}
 						{!d.accepted && (
-							<FutureButton glow onClick={() => accept(d.domain)}>
-								ACCEPT
+							<FutureButton
+								style={{ textTransform: 'uppercase' }}
+								glow
+								onClick={() => accept(d.domainName)}
+							>
+								View Offer
 							</FutureButton>
 						)}
 					</div>
@@ -165,7 +198,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 	);
 
 	// React-Table Hooks
-	const tableHook = useTable<RequestTableData>(
+	const tableHook = useTable<DisplayDomainRequest>(
 		{ columns, data },
 		useFilters,
 		useGlobalFilter,
@@ -179,8 +212,24 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 		setGlobalFilter,
 	} = tableHook;
 
+	const search = (query: string) => {
+		setGlobalFilter(query);
+		setSearchQuery(query);
+	};
+
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
+			{viewing && (
+				<Overlay
+					centered
+					open
+					onClose={() => {
+						setViewing(undefined);
+					}}
+				>
+					<Request yours={yours} request={viewing} />
+				</Overlay>
+			)}
 			{/* Table Header */}
 			<div className={styles.searchHeader}>
 				<SearchBar
@@ -188,7 +237,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 					style={{ width: '100%', marginRight: 16 }}
 				/>
 				<div className={styles.searchHeaderButtons}>
-					<IconButton
+					{/* <IconButton
 						onClick={setList}
 						toggled={!isGridView}
 						iconUri={list}
@@ -199,7 +248,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 						toggled={isGridView}
 						iconUri={grid}
 						style={{ height: 32, width: 32 }}
-					/>
+					/> */}
 				</div>
 			</div>
 
@@ -235,13 +284,24 @@ const RequestTable: React.FC<RequestTableProps> = ({ requests, style }) => {
 					)}
 
 					{/* Grid View */}
-					{isGridView && (
+					{/* {isGridView && (
 						<ol className={styles.Grid}>
 							{data.map((d, i) => (
-								<li key={i}></li>
+								<li key={i}>
+									<NFTCard
+										name={d.title || ''}
+										domain={d.domainName || ''}
+										imageUri={d.image || ''}
+										price={100}
+										nftOwnerId={d.requestor}
+										nftMinterId={d.requestor}
+										showCreator
+										showOwner
+									/>
+								</li>
 							))}
 						</ol>
-					)}
+					)} */}
 				</div>
 				<div
 					style={{ height: containerHeight }}

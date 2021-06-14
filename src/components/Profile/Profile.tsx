@@ -1,24 +1,30 @@
 //- React imports
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 //- Style Imports
 import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import { Image, RequestTable } from 'components';
+import {
+	FutureButton,
+	Image,
+	RequestTable,
+	TextButton,
+	Overlay,
+} from 'components';
+import { Request } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
-import { useStakingController } from 'lib/hooks/useStakingController';
 import {
 	useRequestsMadeByAccount,
 	useRequestsForOwnedDomains,
 } from 'lib/hooks/useDomainRequestsSubgraph';
 
-//- Mock
-import mock from './mock.json';
+//- Type Imports
+import { DisplayDomainRequest, DomainRequest } from 'lib/types';
 
 type ProfileProps = {
 	id: string;
@@ -29,17 +35,83 @@ type ProfileProps = {
 const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	const { mvpVersion } = useMvpVersion();
 
-	const { requests } = useRequestsMadeByAccount(id);
+	const yourRequests = useRequestsMadeByAccount(id).requests;
+	const requestsForYou = useRequestsForOwnedDomains(id).requests;
+	const [requestData, setRequestData] = useState<DisplayDomainRequest[]>([]);
+
+	const [selected, setSelected] = useState('requestsFor');
+
+	const selectedCss = {
+		borderBottom: '1px solid #E0BAFF',
+		fontWeight: 400,
+	};
+
+	const defaultCss = {
+		fontWeight: 400,
+		color: 'white',
+	};
+
+	///////////////
+	// Functions //
+	///////////////
+
+	const requestsBy = () => {
+		setSelected('requestsBy');
+	};
+	const requestsFor = () => {
+		setSelected('requestsFor');
+	};
+
+	/////////////
+	// Effects //
+	/////////////
+
+	useEffect(() => {
+		let requests: DomainRequest[];
+		if (selected === 'requestsBy') {
+			requests = yourRequests?.domainRequests || [];
+		} else {
+			const r = requestsForYou?.domains.map((d) => d.requests);
+			if (r && r.length) requests = r.reduce((a, b) => a.concat(b));
+			else requests = [];
+		}
+
+		if (!requests) return;
+
+		if (!requests.length) {
+			setRequestData([]);
+		}
+
+		if (requests.length) {
+			// Store Request Contents data
+			const data: DisplayDomainRequest[] = [];
+			// Get request contents from IPFS
+			const fetchableRequest = requests.filter((d) => d.requestUri);
+
+			for (var i = 0; i < fetchableRequest.length; i++) {
+				const r = fetchableRequest[i];
+				fetch(r.requestUri)
+					.then((d) => d.json())
+					.then((d) => {
+						d.domainName = r.domain;
+						data.push(d);
+						if (data.length === fetchableRequest.length) {
+							setRequestData(data);
+						}
+					});
+			}
+		}
+	}, [selected]);
 
 	return (
 		<div
 			className={`${ProfileStyle.profile} blur border-primary border-rounded`}
 		>
-			{/* <h1 className={`glow-text-white`}>Profile</h1> */}
+			<h1 className={`glow-text-white`}>Profile</h1>
 			<div className={ProfileStyle.body}>
 				{/* Hide DP for now */}
 				{mvpVersion === 3 && (
-					<div>
+					<div className={ProfileStyle.First}>
 						<div style={{ height: 160 }}>
 							<Image className={ProfileStyle.dp} src={randomImage(id)} />
 						</div>
@@ -49,7 +121,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					</div>
 				)}
 
-				<div>
+				<div className={ProfileStyle.Second}>
 					{/* Hide profile data for now */}
 					{mvpVersion === 3 && (
 						<>
@@ -72,7 +144,24 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<RequestTable requests={mock} />
+			<div className={ProfileStyle.Sections}>
+				<TextButton
+					onClick={requestsFor}
+					selected={selected === 'requestsFor'}
+					style={selected === 'requestsFor' ? selectedCss : defaultCss}
+				>
+					Offers Made To You
+				</TextButton>
+				<TextButton
+					onClick={requestsBy}
+					selected={selected === 'requestsBy'}
+					style={selected === 'requestsBy' ? selectedCss : defaultCss}
+				>
+					Offers You've Made
+				</TextButton>
+				{/* <TextButton toggleable={true}>Offers</TextButton> */}
+			</div>
+			<RequestTable yours={selected === 'requestsBy'} requests={requestData} />
 		</div>
 	);
 };

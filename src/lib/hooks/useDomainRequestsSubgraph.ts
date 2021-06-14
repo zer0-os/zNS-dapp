@@ -3,7 +3,7 @@ import React from 'react';
 import { DomainRequest } from '../types';
 
 interface RequestsForDomain {
-	requests: DomainRequest[];
+	domainRequests: DomainRequest[];
 }
 
 const requestsByParentQuery = gql`

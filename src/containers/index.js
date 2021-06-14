@@ -13,3 +13,4 @@ export { default as Enlist } from './Enlist/Enlist';
 export { default as MintNewNFT } from './MintNewNFT/MintNewNFT';
 export { default as Shop } from './Shop/Shop';
 export { default as NFTView } from './NFTView/NFTView';
+export { default as Request } from './Request/Request';
