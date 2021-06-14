@@ -265,7 +265,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 				</Overlay>
 			)}
 			{isProfileOverlayOpen && (
-				<Overlay centered open onClose={() => setIsProfileOverlayOpen(false)}>
+				<Overlay
+					fullScreen
+					centered
+					open
+					onClose={() => setIsProfileOverlayOpen(false)}
+				>
 					<Profile yours id={account ? account : ''} />
 				</Overlay>
 			)}
