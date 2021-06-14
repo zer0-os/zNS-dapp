@@ -9,6 +9,7 @@ type FutureButtonProps = {
 	children: React.ReactNode;
 	glow?: boolean;
 	loading?: boolean;
+	alt?: boolean;
 };
 
 // @TODO Should make glow the default state since it's much more prevalent in the design
@@ -19,6 +20,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	children,
 	glow,
 	loading,
+	alt,
 }) => {
 	const [hasHovered, setHovered] = useState(false);
 	const [isSelected, setSelected] = useState(false);
@@ -37,7 +39,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 		<button
 			className={`${styles.futureButton} ${isSelected ? styles.selected : ''} ${
 				glow ? styles.glow : ''
-			} ${loading ? styles.Loading : ''}`}
+			} ${loading ? styles.Loading : ''} ${alt ? styles.Alt : ''} `}
 			onMouseEnter={handleHover}
 			onMouseUp={handleClick}
 			style={style}

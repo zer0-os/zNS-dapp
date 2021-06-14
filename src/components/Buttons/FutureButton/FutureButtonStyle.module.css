@@ -1,3 +1,16 @@
+/* Set up some variables */
+.futureButton {
+	--bg: var(--background-accent-1-gradient);
+	--box-shadow: rgba(0, 209, 255, 0.1);
+	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
+}
+
+.Alt {
+	--bg: #ff43b440;
+	--box-shadow: rgba(255, 67, 180, 0.25);
+	--box-shadow-heavy: rgba(255, 67, 180, 0.25);
+}
+
 .futureButton {
 	position: relative;
 	display: flex;
@@ -9,7 +22,7 @@
 	padding-left: 25px;
 	padding-right: 25px;
 
-	background: var(--background-accent-1-gradient);
+	background: none;
 
 	border-radius: var(--box-radius);
 
@@ -48,6 +61,7 @@
 .content {
 	margin-left: 8px;
 	margin-right: 8px;
+	z-index: 2;
 
 	text-align: center;
 
@@ -85,25 +99,11 @@
 		border-radius: 0;
 	}
 	25% {
-		/* opacity: 1; */
-		box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
-		/* top: 50%; */
-		/* left: calc(50% - 2px); */
-
-		/* width: 1px;  */
-		/* height: 0; */
-	}
-	70% {
-		/* opacity: 1; */
-		/* top: 0; */
-		/* left: calc(50% - 2px); */
-
-		/* width: 1px;  */
-		/* height: 100%; */
+		box-shadow: 0px 0px 10px 5px var(--box-shadow);
 	}
 	100% {
 		opacity: 1;
-		box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
+		box-shadow: 0px 0px 10px 5px var(--box-shadow);
 		top: 0;
 		left: 0;
 
@@ -138,7 +138,7 @@
 		width: 2px;
 		height: 100%;
 
-		box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
+		box-shadow: 0px 0px 10px 5px var(--box-shadow);
 	}
 	0% {
 		opacity: 1;
@@ -148,7 +148,7 @@
 		width: 100%;
 		height: 100%;
 		border-radius: 18px;
-		box-shadow: 0px 0px 5px 5px rgba(0, 209, 255, 0.1);
+		box-shadow: 0px 0px 5px 5px var(--box-shadow);
 	}
 }
 
@@ -160,12 +160,13 @@
 	height: 0;
 	width: 0;
 
-	background: rgba(0, 209, 255, 0.1);
-	box-shadow: 0px 0px 10px 5px rgba(0, 209, 255, 0.1);
+	background: var(--box-shadow);
+	box-shadow: 0px 0px 10px 5px var(--box-shadow);
 
 	transition: background 0.3s ease-in-out;
 
 	opacity: 0;
+	z-index: 0;
 }
 
 /* SELECTED STYLING */
@@ -219,7 +220,7 @@
 /* Glow button */
 
 .glow {
-	background: rgba(0, 209, 255, 0.1);
+	background: var(--bg);
 	opacity: 1;
 }
 
@@ -235,7 +236,7 @@
 	width: 100%;
 	height: 0;
 
-	box-shadow: 0px 0px 40px 15px rgba(0, 178, 255, 0.5);
+	box-shadow: 0px 0px 40px 15px var(--box-shadow-heavy);
 	z-index: -1;
 }
 
