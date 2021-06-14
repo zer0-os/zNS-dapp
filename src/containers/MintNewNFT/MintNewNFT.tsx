@@ -157,9 +157,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				locked: tokenInformation.locked,
 			},
 			requestor: account,
-			stakeAmount: ethers.utils
-				.parseEther(tokenStake.amount.toString())
-				.toString(),
+			stakeAmount: tokenStake.amount.toString(),
 			stakeCurrency: tokenStake.currency,
 		});
 

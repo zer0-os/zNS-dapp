@@ -68,7 +68,7 @@ export function useStakingController(): StakingControllerHooks {
 			const tx = await stakingController.placeDomainRequest(
 				params.nft.parent,
 				offeredAmountInWei,
-				params.nft.name,
+				params.nft.domain,
 				domainRequestUri,
 			);
 
