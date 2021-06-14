@@ -20,7 +20,11 @@ import { randomImage, randomName } from 'lib/Random';
 import { ethers } from 'ethers';
 
 //- Type Imports
-import { DomainRequestContents, DisplayDomainRequest } from 'lib/types';
+import {
+	DomainRequestContents,
+	DisplayDomainRequestAndContents,
+	DomainRequestAndContents,
+} from 'lib/types';
 
 //- Style Imports
 import styles from './RequestTable.module.css';
@@ -30,12 +34,12 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
 type RequestTableProps = {
-	requests: DomainRequestContents[];
+	requests: DomainRequestAndContents[];
 	style?: React.CSSProperties;
 	yours?: boolean;
 };
 
-interface RequestTableData extends DomainRequestContents {
+interface RequestTableData extends DisplayDomainRequestAndContents {
 	image?: string;
 	title?: string;
 }
@@ -56,24 +60,24 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [isGridView, setIsGridView] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
-	const [viewing, setViewing] = useState<DisplayDomainRequest | undefined>();
-
-	const [loadedRequests, setLoadedRequests] = useState<
-		DisplayDomainRequest[] | undefined
+	const [viewing, setViewing] = useState<
+		DisplayDomainRequestAndContents | undefined
 	>();
 
+	const [loadedRequests, setLoadedRequests] = useState<
+		DisplayDomainRequestAndContents[]
+	>([]);
+
 	// Table Data
-	const rowData: DisplayDomainRequest[] = useMemo(() => {
+	const displayData: DisplayDomainRequestAndContents[] = useMemo(() => {
 		if (searchQuery.length && loadedRequests && loadedRequests.length) {
 			return loadedRequests.filter((r) => {
-				if (!r || !r.title) return false;
-				const s = (r.title + r.domainName).toLowerCase();
+				const s = (r.metadata.title + r.request.domain).toLowerCase();
 				return s.indexOf(searchQuery.toLowerCase()) > -1;
 			});
 		}
 		return loadedRequests || [];
 	}, [loadedRequests, searchQuery]);
-	const data = useMemo<DisplayDomainRequest[]>(() => rowData, [rowData]);
 
 	///////////////
 	// Functions //
@@ -84,7 +88,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const view = (domainName: string) => {
 		if (loadedRequests) {
-			const r = loadedRequests?.filter((d) => d.domainName === domainName)[0];
+			const r = loadedRequests?.filter(
+				(d) => d.request.domain === domainName,
+			)[0];
 			setViewing(r);
 		}
 	};
@@ -103,21 +109,36 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			return;
 		}
 
-		var count = 0;
-		var total = requests.filter((d: any) => d.metadata).length;
-		for (var i = 0; i < requests.length; i++) {
-			const row = requests[i] as DisplayDomainRequest;
-			if (!row.metadata) continue;
-			// eslint-disable-next-line no-loop-func
-			getMetadata(row.metadata).then((d) => {
-				if (!row || !d || !d.image || !d.title)
-					return console.warn('Invalid metadata for domain ' + row.domain);
-				row.image = d.image;
-				row.title = d.title;
-				if (++count === total) {
-					setLoadedRequests(requests);
+		let finishedCount = 0;
+
+		const completedLoading: DisplayDomainRequestAndContents[] = [];
+
+		for (let i = 0; i < requests.length; i++) {
+			const doGetMetadata = async () => {
+				const request = requests[i] as DisplayDomainRequestAndContents;
+
+				const metadata = await getMetadata(request.contents.metadata);
+				if (metadata) {
+					const displayRequest: DisplayDomainRequestAndContents = {
+						...request,
+						metadata,
+					};
+
+					completedLoading.push(displayRequest);
+				} else {
+					console.warn(
+						'Unable to fetch metadata for domain ' + request.contents.domain,
+					);
 				}
-			});
+
+				++finishedCount;
+
+				if (finishedCount === requests.length) {
+					setLoadedRequests(completedLoading);
+				}
+			};
+
+			doGetMetadata();
 		}
 	}, [requests, mvpVersion]);
 
@@ -125,25 +146,29 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		const el = containerRef.current;
 		if (el)
 			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-	}, [rowData, requests, mvpVersion]);
+	}, [displayData, requests, mvpVersion]);
 
-	const columns = useMemo<Column<DisplayDomainRequest>[]>(
+	const columns = useMemo<Column<DisplayDomainRequestAndContents>[]>(
 		() => [
 			{
 				id: 'index',
-				accessor: (d: any, i: any) => <span>{i + 1}</span>,
+				accessor: (d: DisplayDomainRequestAndContents, i: number) => (
+					<span>{i + 1}</span>
+				),
 			},
 			{
 				Header: () => <div className={styles.left}>Creator</div>,
 				id: 'creator',
-				accessor: (d: any) => (
+				accessor: (d: DisplayDomainRequestAndContents) => (
 					<Member
-						id={d.requestor}
+						id={d.request.requestor.id}
 						name={'Hello'}
-						image={randomImage(d.requestor)}
+						image={randomImage(d.request.requestor.id)}
 						subtext={
 							mvpVersion === 3
-								? randomName(d.requestor).substring(0, 3).toUpperCase()
+								? randomName(d.request.requestor.id)
+										.substring(0, 3)
+										.toUpperCase()
 								: ''
 						}
 					/>
@@ -152,13 +177,13 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			{
 				Header: () => <div className={styles.left}>Artwork Info</div>,
 				id: 'title',
-				accessor: (d: any) =>
-					d.image ? (
+				accessor: (d: DisplayDomainRequestAndContents) =>
+					d.metadata.image ? (
 						<Artwork
-							id={d.domain}
-							name={d.title ? d.title : ''}
-							image={d.image ? d.image : ''}
-							domain={d.domainName ? `0://${d.domainName}` : ''}
+							id={d.request.domain}
+							name={d.metadata.title ?? ''}
+							image={d.metadata.image ?? ''}
+							domain={d.request.domain ? `0://${d.request.domain}` : ''}
 							pending
 						/>
 					) : (
@@ -168,36 +193,40 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			{
 				Header: () => <div className={styles.left}>Request Date</div>,
 				id: 'date',
-				accessor: (d: any) => (
-					<div className={styles.left}>13.03.2021 08:22</div>
-				),
+				accessor: (d: DisplayDomainRequestAndContents) => {
+					const date = new Date(Number(d.request.timestamp) * 1000);
+					const humanDate = date.toLocaleString();
+					return <div className={styles.left}>{humanDate}</div>;
+				},
 			},
 			{
 				Header: () => <div className={styles.right}>Staked Tokens</div>,
 				id: 'stakeAmount',
-				accessor: (d) => (
+				accessor: (d: DisplayDomainRequestAndContents) => (
 					<div className={styles.right}>
-						{Number(ethers.utils.formatEther(d.stakeAmount)).toLocaleString()}{' '}
+						{Number(
+							ethers.utils.formatEther(d.request.offeredAmount),
+						).toLocaleString()}{' '}
 						WILD
 					</div>
 				),
 			},
 			{
 				id: 'accepted',
-				accessor: (d: any) => (
+				accessor: (d: DisplayDomainRequestAndContents) => (
 					<div className={styles.center}>
-						{d.accepted && (
+						{d.request.approved && (
 							<div className={styles.Accepted}>
 								<span>Accepted</span>
 								<br />
 								<span>13.03.2021 08:22</span>
 							</div>
 						)}
-						{!d.accepted && (
+						{!d.request.approved && (
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
 								glow
-								onClick={() => view(d.domainName)}
+								onClick={() => view(d.request.domain)}
 							>
 								View Offer
 							</FutureButton>
@@ -206,12 +235,12 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				),
 			},
 		],
-		[rowData],
+		[displayData],
 	);
 
 	// React-Table Hooks
-	const tableHook = useTable<DisplayDomainRequest>(
-		{ columns, data },
+	const tableHook = useTable<DisplayDomainRequestAndContents>(
+		{ columns, data: displayData },
 		useFilters,
 		useGlobalFilter,
 	);

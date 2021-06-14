@@ -24,7 +24,11 @@ import {
 } from 'lib/hooks/useDomainRequestsSubgraph';
 
 //- Type Imports
-import { DisplayDomainRequest, DomainRequest } from 'lib/types';
+import {
+	DomainRequest,
+	DomainRequestAndContents,
+	DomainRequestContents,
+} from 'lib/types';
 
 type ProfileProps = {
 	id: string;
@@ -37,7 +41,9 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 	const yourRequests = useRequestsMadeByAccount(id).requests;
 	const requestsForYou = useRequestsForOwnedDomains(id).requests;
-	const [requestData, setRequestData] = useState<DisplayDomainRequest[]>([]);
+	const [requestData, setRequestData] = useState<DomainRequestAndContents[]>(
+		[],
+	);
 
 	const [selected, setSelected] = useState('requestsFor');
 
@@ -84,24 +90,40 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 		if (requests.length) {
 			// Store Request Contents data
-			const data: DisplayDomainRequest[] = [];
+			const data: DomainRequestAndContents[] = [];
 			// Get request contents from IPFS
-			const fetchableRequest = requests.filter((d) => d.requestUri);
+			const requestsToFetch = requests.filter((d) => d.requestUri);
 
-			for (var i = 0; i < fetchableRequest.length; i++) {
-				const r = fetchableRequest[i];
-				fetch(r.requestUri)
-					.then((d) => d.json())
-					.then((d) => {
-						d.domainName = r.domain;
-						data.push(d);
-						if (data.length === fetchableRequest.length) {
-							setRequestData(data);
-						}
-					});
+			let finishedCount = 0;
+			for (let i = 0; i < requestsToFetch.length; i++) {
+				const doFetch = async () => {
+					const request = requestsToFetch[i];
+					try {
+						const res = await fetch(request.requestUri);
+						const contents: DomainRequestContents = await res.json();
+						const display: DomainRequestAndContents = {
+							contents,
+							request,
+						};
+						data.push(display);
+					} catch (e) {
+						console.error(
+							`Failed to fetch domain request contents for request id: ${request.domain} `,
+						);
+						console.debug(e);
+					}
+
+					++finishedCount;
+
+					if (finishedCount === requestsToFetch.length) {
+						setRequestData(data);
+					}
+				};
+
+				doFetch();
 			}
 		}
-	}, [selected]);
+	}, [selected, yourRequests, requestsForYou]);
 
 	return (
 		<div

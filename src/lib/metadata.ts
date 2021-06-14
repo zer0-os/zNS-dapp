@@ -22,6 +22,10 @@ export async function getMetadata(
 			image: data.image,
 		} as Metadata;
 
+		if (!metadata.title || !metadata.description || !metadata.image) {
+			throw Error();
+		}
+
 		memoryCache[metadataUrl] = metadata;
 
 		return metadata;
