@@ -132,7 +132,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Overlay State
 	const [isWalletOverlayOpen, setIsWalletOverlayOpen] = useState(false);
 	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
-	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(true);
+	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
 	const [isSearchActive, setIsSearchActive] = useState(false);
 
 	//- MVP Version
