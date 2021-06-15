@@ -36,7 +36,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 
-	padding: 32px 0;
+	padding: 32px 48px;
 }
 
 .Info h1 {
@@ -65,10 +65,11 @@
 
 .Offer {
 	margin-top: 16px;
+	text-align: center;
 }
 
 .Offer > span {
-	display: inline-block;
+	display: inline;
 }
 
 .Offer > span:first-of-type {
@@ -140,14 +141,14 @@
 		max-width: 100%;
 		width: 100%;
 	}
+
+	.Offer > span {
+		font-size: 24px !important;
+	}
 }
 
 @media only screen and (max-width: 650px) {
 	.Image {
 		max-height: 200px;
-	}
-
-	.Offer > span {
-		font-size: 24px !important;
 	}
 }

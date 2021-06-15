@@ -24,7 +24,7 @@ import galaxyBackground from './assets/galaxy.png';
 type RequestProps = {
 	request: DisplayDomainRequestAndContents;
 	yours?: boolean;
-	onAccept: () => void;
+	onAccept: (id: string) => void;
 };
 
 const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
@@ -54,15 +54,11 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 	}, []);
 
 	const accept = () => setHasAccepted(true);
-
-	const deny = () => {
-		console.log('deny');
-	};
+	const cancel = () => setHasAccepted(false);
 
 	const confirm = () => {
-		if (onAccept) onAccept();
+		if (onAccept) onAccept(request.request.id);
 	};
-	const cancel = () => setHasAccepted(false);
 
 	const preview = () => setIsLightboxOpen(true);
 
@@ -166,9 +162,9 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 								style={{ textTransform: 'uppercase' }}
 								alt
 								glow
-								onClick={deny}
+								onClick={cancel}
 							>
-								Deny
+								Cancel
 							</FutureButton>
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
