@@ -41,7 +41,7 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 
 	const [stake, setStake] = useState(0);
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-	const [hasAccepted, setHasAccepted] = useState(true);
+	const [hasAccepted, setHasAccepted] = useState(false);
 
 	const tokenAmount = Number(ethers.utils.formatEther(request.stakeAmount));
 
