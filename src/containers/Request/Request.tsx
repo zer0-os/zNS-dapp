@@ -89,7 +89,7 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 				</Overlay>
 			)}
 			{hasAccepted && (
-				<Overlay centered open onClose={() => setHasAccepted(false)}>
+				<Overlay centered open onClose={() => {}}>
 					<div
 						className={`${styles.Confirmation} blur border-primary border-rounded`}
 					>
@@ -100,14 +100,6 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 							going back.
 						</p>
 						<div className={styles.Buttons}>
-							<FutureButton
-								style={{ textTransform: 'uppercase' }}
-								alt
-								glow
-								onClick={cancel}
-							>
-								Cancel
-							</FutureButton>
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
 								glow
