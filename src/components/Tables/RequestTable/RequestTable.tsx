@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 
@@ -24,7 +25,6 @@ import { useStakingController } from 'lib/hooks/useStakingController';
 
 //- Type Imports
 import {
-	DomainRequestContents,
 	DisplayDomainRequestAndContents,
 	DomainRequestAndContents,
 } from 'lib/types';
@@ -42,12 +42,6 @@ type RequestTableProps = {
 	yours?: boolean;
 };
 
-interface RequestTableData extends DisplayDomainRequestAndContents {
-	image?: string;
-	title?: string;
-}
-
-// @TODO: Create a `Domain` type for `domains`
 const RequestTable: React.FC<RequestTableProps> = ({
 	requests,
 	style,
@@ -70,13 +64,116 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState<any>({});
+
+	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DisplayDomainRequestAndContents | undefined
 	>();
 
+	// The requests that we have loaded (pulled from chain and grabbed metadata from IFPS)
 	const [loadedRequests, setLoadedRequests] = useState<
 		DisplayDomainRequestAndContents[]
 	>([]);
+
+	///////////////
+	// Functions //
+	///////////////
+
+	// Disables grid view when we hit a certain breakpoint
+	const handleResize = () => {
+		if (window.innerWidth < 1416) {
+			setList();
+			setIsGridViewToggleable(false);
+		} else {
+			setIsGridViewToggleable(true);
+		}
+	};
+
+	const setList = () => setIsGridView(false); // Opens list view
+	const setGrid = () => setIsGridView(true); // Opens grid view
+
+	const dateFromTimestamp = (timestamp: string) =>
+		new Date(Number(timestamp) * 1000).toLocaleString();
+
+	// Opens a request in the request modal
+	const view = (domainName: string) => {
+		if (loadedRequests) {
+			const r = loadedRequests?.filter(
+				(d) => d.request.domain === domainName,
+			)[0];
+			setViewing(r);
+		}
+	};
+
+	/* Calls the middleware for approving a request
+		 This is passed to the Request modal */
+	const onAccept = async (id: string) => {
+		try {
+			await approveRequest(id);
+			setViewing(undefined);
+		} catch (e) {
+			// Catch thrown when user rejects transaction
+			console.error(e);
+		}
+	};
+
+	/* Sets some search parameters 
+		 There's a hook listening to each of these variables */
+	const search = (query: string) => setSearchQuery(query);
+	const filterByStatus = (filter: string) => setStatusFilter(filter);
+
+	/////////////
+	// Effects //
+	/////////////
+
+	// Listen for window resizes and handle them
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		handleResize();
+		return () => window.removeEventListener('resize', handleResize);
+	}, []);
+
+	useEffect(() => {
+		if (requests.length === 0) return setLoadedRequests([]);
+
+		let finishedCount = 0; // Count of requests we have pulled data for
+		const completedLoading: DisplayDomainRequestAndContents[] = []; // Requests that have finished loading
+
+		/* Loop through each request, 
+			 pull the data from IPFS, 
+			 stash it in completedLoading,
+			 update table data when completed */
+		for (let i = 0; i < requests.length; i++) {
+			// eslint-disable-next-line no-loop-func
+			const doGetMetadata = async () => {
+				const request = requests[i] as DisplayDomainRequestAndContents;
+				const metadata = await getMetadata(request.contents.metadata);
+
+				if (metadata) {
+					const displayRequest: DisplayDomainRequestAndContents = {
+						...request,
+						metadata,
+					};
+
+					completedLoading.push(displayRequest);
+				} else {
+					console.warn(
+						`Unable to fetch metadata for domain: ${request.contents.domain}`,
+					);
+				}
+
+				if (++finishedCount === requests.length) {
+					setLoadedRequests(completedLoading);
+				}
+			};
+
+			doGetMetadata();
+		}
+	}, [requests, mvpVersion]);
+
+	/////////////////
+	// React-Table //
+	/////////////////
 
 	// Table Data
 	const displayData: DisplayDomainRequestAndContents[] = useMemo(() => {
@@ -105,108 +202,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		return loadedRequests || [];
 	}, [loadedRequests, searchQuery, statusFilter]);
 
-	const handleResize = () => {
-		if (window.innerWidth < 1416) {
-			setList();
-			setIsGridViewToggleable(false);
-		} else {
-			setIsGridViewToggleable(true);
-		}
-	};
-
-	useEffect(() => {
-		window.addEventListener('resize', handleResize);
-		handleResize();
-		return () => window.removeEventListener('resize', handleResize);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	///////////////
-	// Functions //
-	///////////////
-
-	const setList = () => setIsGridView(false);
-	const setGrid = () => setIsGridView(true);
-	const dateFromTimestamp = (timestamp: string) =>
-		new Date(Number(timestamp) * 1000).toLocaleString();
-
-	const view = (domainName: string) => {
-		if (loadedRequests) {
-			const r = loadedRequests?.filter(
-				(d) => d.request.domain === domainName,
-			)[0];
-			setViewing(r);
-		}
-	};
-
-	const onAccept = async (id: string) => {
-		try {
-			const t = await approveRequest(id);
-			setViewing(undefined);
-		} catch (e) {
-			// Catch thrown when user rejects transaction
-			console.error(e);
-		}
-	};
-
-	const search = (query: string) => {
-		setSearchQuery(query);
-	};
-
-	const filterByStatus = (filter: string) => {
-		setStatusFilter(filter);
-	};
-
-	/////////////
-	// Effects //
-	/////////////
-
-	useEffect(() => {
-		if (requests.length === 0) {
-			setLoadedRequests([]);
-			return;
-		}
-
-		let finishedCount = 0;
-
-		const completedLoading: DisplayDomainRequestAndContents[] = [];
-
-		for (let i = 0; i < requests.length; i++) {
-			// eslint-disable-next-line no-loop-func
-			const doGetMetadata = async () => {
-				const request = requests[i] as DisplayDomainRequestAndContents;
-
-				const metadata = await getMetadata(request.contents.metadata);
-				if (metadata) {
-					const displayRequest: DisplayDomainRequestAndContents = {
-						...request,
-						metadata,
-					};
-
-					completedLoading.push(displayRequest);
-				} else {
-					console.warn(
-						'Unable to fetch metadata for domain ' + request.contents.domain,
-					);
-				}
-
-				++finishedCount;
-
-				if (finishedCount === requests.length) {
-					setLoadedRequests(completedLoading);
-				}
-			};
-
-			doGetMetadata();
-		}
-	}, [requests, mvpVersion]);
-
-	useEffect(() => {
-		const el = containerRef.current;
-		if (el)
-			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-	}, [displayData, requests, mvpVersion, isGridView]);
-
+	// Column Setup
 	const columns = useMemo<Column<DisplayDomainRequestAndContents>[]>(
 		() => [
 			{
@@ -236,18 +232,15 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			{
 				Header: () => <div className={styles.left}>Artwork Info</div>,
 				id: 'title',
-				accessor: (d: DisplayDomainRequestAndContents) =>
-					d.metadata.image ? (
-						<Artwork
-							id={d.request.domain}
-							name={d.metadata.title ?? ''}
-							image={d.metadata.image ?? ''}
-							domain={d.request.domain ? `0://${d.request.domain}` : ''}
-							pending
-						/>
-					) : (
-						<></>
-					),
+				accessor: (d: DisplayDomainRequestAndContents) => (
+					<Artwork
+						id={d.request.domain}
+						name={d.metadata.title ?? ''}
+						image={d.metadata.image ?? ''}
+						domain={d.request.domain ? `0://${d.request.domain}` : ''}
+						pending
+					/>
+				),
 			},
 			{
 				Header: () => <div className={styles.left}>Request Date</div>,
@@ -299,7 +292,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		[displayData],
 	);
 
-	// React-Table Hooks
+	// React-Table Config
 	const tableHook = useTable<DisplayDomainRequestAndContents>(
 		{ columns, data: displayData },
 		useFilters,
@@ -311,8 +304,14 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		headerGroups,
 		prepareRow,
 		rows,
-		setGlobalFilter,
 	} = tableHook;
+
+	// @TODO Remove this functionality - it's legacy from DomainTable
+	useEffect(() => {
+		const el = containerRef.current;
+		if (el)
+			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
+	}, [displayData, requests, mvpVersion, isGridView]);
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
@@ -480,6 +479,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						</ol>
 					)}
 				</div>
+
+				{/* Expander for animating height (@TODO Remove this functionality) */}
 				<div
 					style={{ height: containerHeight }}
 					className={styles.Expander}
