@@ -18,7 +18,7 @@ import {
 } from './types';
 
 //- Component Imports
-// import { StepBar } from 'components';
+import { StepBar } from 'components';
 import TokenInformation from './sections/TokenInformation';
 // import TokenDynamics from './sections/TokenDynamics';
 import Staking from './sections/Staking';
@@ -76,6 +76,17 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const mint = useMintProvider();
 	const staking = useStakingProvider();
 
+	//- Web3 Wallet Data
+	// MintNewNFT is a container and needs a bit more brainpower than your standard component
+	// I think using Context API for account data here is worthwhile
+	const context = useWeb3React<Web3Provider>();
+	const { account } = context; // account = connected wallet ID
+
+	let isOwner = false;
+	if (account) {
+		isOwner = account.toLowerCase() === domainOwner.toLowerCase();
+	}
+
 	//- Page State
 	const [step, setStep] = useState(MintState.DomainDetails);
 
@@ -88,17 +99,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				return setContainerHeight(child.clientHeight);
 		}
 	}, [step, isMintLoading]);
-
-	//- Web3 Wallet Data
-	// MintNewNFT is a container and needs a bit more brainpower than your standard component
-	// I think using Context API for account data here is worthwhile
-	const context = useWeb3React<Web3Provider>();
-	const { account } = context; // account = connected wallet ID
-
-	let isOwner = false;
-	if (account) {
-		isOwner = account.toLowerCase() === domainOwner.toLowerCase();
-	}
 
 	//- Functions
 	const getTokenStake = (data: TokenStakeType) => {
@@ -208,12 +208,12 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						: ''}
 				</span>
 			</div>
-			{/* <StepBar
+			<StepBar
 				style={{ marginTop: 24 }}
-				step={step}
-				steps={['Details']}
-				onNavigate={(i: number) => toStep(i)}
-			/> */}
+				step={step + 1}
+				steps={['Details', 'Stake']}
+				onNavigate={(i: number) => setStep(i)}
+			/>
 			{/* TODO: Make ToggleSections unclickable if their open status depends on parent state */}
 
 			<div
