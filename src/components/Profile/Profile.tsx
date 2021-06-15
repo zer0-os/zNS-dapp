@@ -30,7 +30,15 @@ type ProfileProps = {
 };
 
 const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
+	//////////////////
+	// Custom Hooks //
+	//////////////////
+
 	const { mvpVersion } = useMvpVersion();
+
+	//////////////////
+	// State / Data //
+	//////////////////
 
 	const yourRequests = useRequestsMadeByAccount(id).requests;
 	const requestsForYou = useRequestsForOwnedDomains(id).requests;
@@ -38,8 +46,13 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 		[],
 	);
 
-	const [selected, setSelected] = useState('requestsFor');
+	const [selected, setSelected] = useState('requestsFor'); // Which tab is selected
 
+	////////////
+	// Styles //
+	////////////
+
+	// @TODO Move these out to the style module
 	const selectedCss = {
 		borderBottom: '1px solid #E0BAFF',
 		fontWeight: 400,
@@ -65,7 +78,10 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	// Effects //
 	/////////////
 
+	// Get all requests data from IPFS and hooks
 	useEffect(() => {
+		setRequestData([]); // Empty the request table between loads
+
 		let requests: DomainRequest[];
 		if (selected === 'requestsBy') {
 			requests = yourRequests?.domainRequests || [];
@@ -154,7 +170,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 								<br />
 								<br />
 								Join me on one or all of my journeys, I welcome you aboard!
-							</p>{' '}
+							</p>
 						</>
 					)}
 					<CopyInput value={id} />
