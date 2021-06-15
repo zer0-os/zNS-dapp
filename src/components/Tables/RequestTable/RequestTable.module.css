@@ -189,9 +189,3 @@
 .Grid > li:hover {
 	transform: scale(1.03);
 }
-
-@media only screen and (max-width: 1282px) {
-	.searchHeaderButtons {
-		display: none;
-	}
-}

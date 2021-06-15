@@ -67,6 +67,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [isGridView, setIsGridView] = useState(false);
+	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState<any>({});
 	const [viewing, setViewing] = useState<
@@ -103,6 +104,22 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		}
 		return loadedRequests || [];
 	}, [loadedRequests, searchQuery, statusFilter]);
+
+	const handleResize = () => {
+		if (window.innerWidth < 1416) {
+			setList();
+			setIsGridViewToggleable(false);
+		} else {
+			setIsGridViewToggleable(true);
+		}
+	};
+
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		handleResize();
+		return () => window.removeEventListener('resize', handleResize);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	///////////////
 	// Functions //
@@ -329,18 +346,22 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					>
 						<FilterButton onClick={() => {}} />
 					</OptionDropdown>
-					<IconButton
-						onClick={setList}
-						toggled={!isGridView}
-						iconUri={list}
-						style={{ height: 32, width: 32 }}
-					/>
-					<IconButton
-						onClick={setGrid}
-						toggled={isGridView}
-						iconUri={grid}
-						style={{ height: 32, width: 32 }}
-					/>
+					{isGridViewToggleable && (
+						<>
+							<IconButton
+								onClick={setList}
+								toggled={!isGridView}
+								iconUri={list}
+								style={{ height: 32, width: 32 }}
+							/>
+							<IconButton
+								onClick={setGrid}
+								toggled={isGridView}
+								iconUri={grid}
+								style={{ height: 32, width: 32 }}
+							/>
+						</>
+					)}
 				</div>
 			</div>
 
