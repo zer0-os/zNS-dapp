@@ -1,6 +1,7 @@
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import React from 'react';
 import { DomainRequest } from '../types';
+import { useRefreshToken } from './useRefreshToken';
 
 interface RequestsForDomain {
 	domainRequests: DomainRequest[];
@@ -75,17 +76,23 @@ const requestsForDomainsByOwner = gql`
 `;
 
 export function useRequestsForOwnedDomains(account: string | undefined) {
-	const [getOwned, { data, error }] = useLazyQuery<RequestsForOwner>(
-		requestsForDomainsByOwner,
-	);
+	const refreshToken = useRefreshToken();
+	const [
+		getOwned,
+		{ data, error, refetch, called },
+	] = useLazyQuery<RequestsForOwner>(requestsForDomainsByOwner);
 
 	React.useEffect(() => {
 		if (account) {
-			getOwned({
-				variables: { owner: account.toLocaleLowerCase() },
-			});
+			if (called && refetch) {
+				refetch();
+			} else {
+				getOwned({
+					variables: { owner: account.toLocaleLowerCase() },
+				});
+			}
 		}
-	}, [getOwned, account]);
+	}, [getOwned, account, refreshToken, called, refetch]);
 
 	const requests: RequestsForOwner | undefined = React.useMemo(() => {
 		if (error) {
@@ -97,7 +104,7 @@ export function useRequestsForOwnedDomains(account: string | undefined) {
 		}
 	}, [error, data]);
 
-	return { requests };
+	return { requests, refresh: refreshToken.refresh };
 }
 
 interface RequestsForDomain {
@@ -135,17 +142,23 @@ const requestsByRequestorQuery = gql`
 `;
 
 export function useRequestsMadeByAccount(account: string | undefined) {
-	const [getOwned, { data, error }] = useLazyQuery<RequestsForDomain>(
-		requestsByRequestorQuery,
-	);
+	const refreshToken = useRefreshToken();
+	const [
+		getOwned,
+		{ data, error, refetch, called },
+	] = useLazyQuery<RequestsForDomain>(requestsByRequestorQuery);
 
 	React.useEffect(() => {
 		if (account) {
-			getOwned({
-				variables: { requestor: account.toLocaleLowerCase() },
-			});
+			if (called && refetch) {
+				refetch();
+			} else {
+				getOwned({
+					variables: { requestor: account.toLocaleLowerCase() },
+				});
+			}
 		}
-	}, [getOwned, account]);
+	}, [getOwned, account, refreshToken, called, refetch]);
 
 	const requests: RequestsForDomain | undefined = React.useMemo(() => {
 		if (error) {
@@ -157,5 +170,5 @@ export function useRequestsMadeByAccount(account: string | undefined) {
 		}
 	}, [error, data]);
 
-	return { requests };
+	return { requests, refresh: refreshToken.refresh };
 }

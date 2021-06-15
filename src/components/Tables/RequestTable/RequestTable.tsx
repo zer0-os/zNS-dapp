@@ -21,7 +21,7 @@ import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { getMetadata } from 'lib/metadata';
 import { randomImage, randomName } from 'lib/Random';
 import { ethers } from 'ethers';
-import { useStakingController } from 'lib/hooks/useStakingController';
+import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 
 //- Type Imports
 import {
@@ -52,7 +52,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	//////////////////
 
 	const { mvpVersion } = useMvpVersion();
-	const { approveRequest } = useStakingController();
+	const staking = useStakingProvider();
 
 	//////////////////
 	// State / Refs //
@@ -107,9 +107,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	/* Calls the middleware for approving a request
 		 This is passed to the Request modal */
-	const onAccept = async (id: string) => {
+	const onAccept = async (request: DomainRequestAndContents) => {
 		try {
-			await approveRequest(id);
+			await staking.approveRequest(request);
 			setViewing(undefined);
 		} catch (e) {
 			// Catch thrown when user rejects transaction

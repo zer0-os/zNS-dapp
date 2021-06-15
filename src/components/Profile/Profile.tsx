@@ -15,6 +15,7 @@ import {
 	useRequestsMadeByAccount,
 	useRequestsForOwnedDomains,
 } from 'lib/hooks/useDomainRequestsSubgraph';
+import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 
 //- Type Imports
 import {
@@ -36,12 +37,14 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 	const { mvpVersion } = useMvpVersion();
 
+	const staking = useStakingProvider();
+
 	//////////////////
 	// State / Data //
 	//////////////////
 
-	const yourRequests = useRequestsMadeByAccount(id).requests;
-	const requestsForYou = useRequestsForOwnedDomains(id).requests;
+	const yourRequests = useRequestsMadeByAccount(id);
+	const requestsForYou = useRequestsForOwnedDomains(id);
 	const [requestData, setRequestData] = useState<DomainRequestAndContents[]>(
 		[],
 	);
@@ -78,15 +81,31 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	// Effects //
 	/////////////
 
+	// Refresh data 5 seconds after a request is approved
+	// This is hopefully enough time for the subgraph to update
+	React.useEffect(() => {
+		let isSubscribed = true;
+		setTimeout(() => {
+			if (isSubscribed) {
+				yourRequests.refresh();
+				requestsForYou.refresh();
+			}
+		}, 5000);
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [staking.approved]);
+
 	// Get all requests data from IPFS and hooks
 	useEffect(() => {
 		setRequestData([]); // Empty the request table between loads
 
 		let requests: DomainRequest[];
 		if (selected === 'requestsBy') {
-			requests = yourRequests?.domainRequests || [];
+			requests = yourRequests.requests?.domainRequests || [];
 		} else {
-			const r = requestsForYou?.domains.map((d) => d.requests);
+			const r = requestsForYou.requests?.domains.map((d) => d.requests);
 			if (r && r.length) requests = r.reduce((a, b) => a.concat(b));
 			else requests = [];
 		}
@@ -133,7 +152,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 				doFetch();
 			}
 		}
-	}, [selected, yourRequests, requestsForYou]);
+	}, [selected, yourRequests.requests, requestsForYou.requests]);
 
 	return (
 		<div

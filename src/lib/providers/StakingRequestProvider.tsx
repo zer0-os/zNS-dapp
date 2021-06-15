@@ -7,12 +7,32 @@ import {
 	DomainRequestParams,
 	useStakingController,
 } from 'lib/hooks/useStakingController';
+import { DomainRequestAndContents } from 'lib/types';
+import { ethers } from 'ethers';
 
-export const StakingRequestContext = React.createContext({
-	requesting: [{}],
-	requested: [{}],
-	placeRequest: async (params: DomainRequestParams) => {},
-});
+interface StakingRequestProviderContext {
+	requesting: DomainRequestParams[];
+	requested: DomainRequestParams[];
+	placeRequest: (
+		params: DomainRequestParams,
+	) => Promise<ethers.ContractTransaction | void>;
+	approving: DomainRequestAndContents[];
+	approved: DomainRequestAndContents[];
+	approveRequest: (
+		params: DomainRequestAndContents,
+	) => Promise<ethers.ContractTransaction | void>;
+}
+
+export const StakingRequestContext = React.createContext<StakingRequestProviderContext>(
+	{
+		requesting: [],
+		requested: [],
+		placeRequest: async (params: DomainRequestParams) => {},
+		approving: [],
+		approved: [],
+		approveRequest: async (params: DomainRequestAndContents) => {},
+	},
+);
 
 type StakingRequestProviderType = {
 	children: React.ReactNode;
@@ -22,12 +42,13 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 	children,
 }) => {
 	const { addNotification } = useNotification();
+
 	const [requesting, setRequesting] = useState<DomainRequestParams[]>([]);
 	const [requested, setRequested] = useState<DomainRequestParams[]>([]);
-	const [
-		finishedRequesting,
-		setFinishedRequesting,
-	] = useState<DomainRequestParams | null>(null);
+
+	const [approving, setApproving] = useState<DomainRequestAndContents[]>([]);
+	const [approved, setApproved] = useState<DomainRequestAndContents[]>([]);
+
 	const stakingController = useStakingController();
 
 	const placeRequest = async (params: DomainRequestParams) => {
@@ -44,28 +65,55 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 
 		const finishStakingRequesting = async () => {
 			await tx.wait();
-			setFinishedRequesting(params);
+
+			addNotification(
+				`Successfully placed request to mint ${params.nft.name}.`,
+			);
+			setRequesting(requesting.filter((n) => n !== params));
+			requested.push(params);
+			setRequested(requested);
 		};
 
 		finishStakingRequesting();
+
+		return tx;
 	};
 
-	// TODO: Change this hook to run when minting finishes
-	useEffect(() => {
-		if (finishedRequesting) {
+	const approveRequest = async (params: DomainRequestAndContents) => {
+		const tx = await stakingController.approveRequest(params.request.id);
+		if (!tx) {
 			addNotification(
-				`Successfully placed request to mint ${finishedRequesting.nft.name}.`,
+				'Encountered an error while attempting to approve request.',
 			);
-			setRequesting(requesting.filter((n) => n !== finishedRequesting));
-			setRequested([...requested, finishedRequesting]);
+			return;
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [finishedRequesting]);
+
+		addNotification(`Approving request to mint ${params.contents.domain}`);
+		setApproved([...approving, params]);
+
+		const waitForTx = async () => {
+			await tx.wait();
+
+			addNotification(
+				`Successfully approved request to mint ${params.contents.domain}.`,
+			);
+			setApproving(approving.filter((n) => n !== params));
+			approved.push(params);
+			setApproved(approved);
+		};
+
+		waitForTx();
+
+		return tx;
+	};
 
 	const contextValue = {
 		requesting,
 		requested,
 		placeRequest,
+		approving,
+		approved,
+		approveRequest,
 	};
 
 	return (
@@ -78,8 +126,6 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 export default StakingRequestProvider;
 
 export const useStakingProvider = () => {
-	const { requesting, requested, placeRequest } = React.useContext(
-		StakingRequestContext,
-	);
-	return { requesting, requested, placeRequest };
+	const context = React.useContext(StakingRequestContext);
+	return context;
 };

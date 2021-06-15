@@ -14,7 +14,10 @@ import { tokenToUsd } from 'lib/coingecko';
 import styles from './Request.module.css';
 
 //- Type Imports
-import { DisplayDomainRequestAndContents } from 'lib/types';
+import {
+	DisplayDomainRequestAndContents,
+	DomainRequestAndContents,
+} from 'lib/types';
 
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
@@ -23,7 +26,7 @@ type RequestProps = {
 	request: DisplayDomainRequestAndContents;
 	// @TODO Change 'yours' to 'showActionButtons'
 	yours?: boolean;
-	onAccept: (id: string) => void;
+	onAccept: (request: DomainRequestAndContents) => void;
 };
 
 const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
@@ -54,7 +57,7 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 	const cancel = () => setHasAccepted(false);
 	const preview = () => setIsLightboxOpen(true);
 	const confirm = () => {
-		if (onAccept) onAccept(request.request.id);
+		if (onAccept) onAccept(request);
 	};
 
 	/////////////
@@ -104,9 +107,11 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 						<h2 className="glow-text-white">Are you sure?</h2>
 						<hr className="glow" />
 						<p>
-							This NFT is about to be seared upon the Blockchain. There’s no
-							going back.
+							{yours
+								? 'This NFT is about to be seared upon the Blockchain.'
+								: `This will approve the request for another user to mint 0://${request.request.domain}`}
 						</p>
+						<p>There's no going back.</p>
 						<div className={styles.Buttons}>
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
