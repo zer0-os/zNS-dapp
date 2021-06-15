@@ -7,7 +7,9 @@ import {
 	SearchBar,
 	IconButton,
 	Member,
+	FilterButton,
 	FutureButton,
+	OptionDropdown,
 	Overlay,
 	NFTCard,
 } from 'components';
@@ -18,6 +20,7 @@ import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { getMetadata } from 'lib/metadata';
 import { randomImage, randomName } from 'lib/Random';
 import { ethers } from 'ethers';
+import { useStakingController } from 'lib/hooks/useStakingController';
 
 //- Type Imports
 import {
@@ -50,7 +53,12 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	style,
 	yours,
 }) => {
+	//////////////////
+	// Custom Hooks //
+	//////////////////
+
 	const { mvpVersion } = useMvpVersion();
+	const { approveRequest } = useStakingController();
 
 	//////////////////
 	// State / Refs //
@@ -60,6 +68,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [isGridView, setIsGridView] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
+	const [statusFilter, setStatusFilter] = useState<any>({});
 	const [viewing, setViewing] = useState<
 		DisplayDomainRequestAndContents | undefined
 	>();
@@ -70,14 +79,30 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	// Table Data
 	const displayData: DisplayDomainRequestAndContents[] = useMemo(() => {
-		if (searchQuery.length && loadedRequests && loadedRequests.length) {
-			return loadedRequests.filter((r) => {
-				const s = (r.metadata.title + r.request.domain).toLowerCase();
-				return s.indexOf(searchQuery.toLowerCase()) > -1;
-			});
+		if (
+			(searchQuery.length || statusFilter.length) &&
+			loadedRequests &&
+			loadedRequests.length
+		) {
+			var filtered = loadedRequests;
+
+			// Filter per search string
+			if (searchQuery.length) {
+				filtered = filtered.filter((r) => {
+					const s = (r.metadata.title + r.request.domain).toLowerCase();
+					return s.indexOf(searchQuery.toLowerCase()) > -1;
+				});
+			}
+
+			// Filter per status
+			if (statusFilter.length) {
+				const approved = statusFilter === 'Accepted';
+				filtered = filtered.filter((r) => r.request.approved === approved);
+			}
+			return filtered;
 		}
 		return loadedRequests || [];
-	}, [loadedRequests, searchQuery]);
+	}, [loadedRequests, searchQuery, statusFilter]);
 
 	///////////////
 	// Functions //
@@ -85,6 +110,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const setList = () => setIsGridView(false);
 	const setGrid = () => setIsGridView(true);
+	const dateFromTimestamp = (timestamp: string) =>
+		new Date(Number(timestamp) * 1000).toLocaleString();
 
 	const view = (domainName: string) => {
 		if (loadedRequests) {
@@ -95,8 +122,22 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		}
 	};
 
-	const onAccept = () => {
-		setViewing(undefined);
+	const onAccept = async (id: string) => {
+		try {
+			const t = await approveRequest(id);
+			setViewing(undefined);
+		} catch (e) {
+			// Catch thrown when user rejects transaction
+			console.error(e);
+		}
+	};
+
+	const search = (query: string) => {
+		setSearchQuery(query);
+	};
+
+	const filterByStatus = (filter: string) => {
+		setStatusFilter(filter);
 	};
 
 	/////////////
@@ -114,6 +155,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		const completedLoading: DisplayDomainRequestAndContents[] = [];
 
 		for (let i = 0; i < requests.length; i++) {
+			// eslint-disable-next-line no-loop-func
 			const doGetMetadata = async () => {
 				const request = requests[i] as DisplayDomainRequestAndContents;
 
@@ -146,7 +188,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		const el = containerRef.current;
 		if (el)
 			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-	}, [displayData, requests, mvpVersion]);
+	}, [displayData, requests, mvpVersion, isGridView]);
 
 	const columns = useMemo<Column<DisplayDomainRequestAndContents>[]>(
 		() => [
@@ -162,7 +204,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				accessor: (d: DisplayDomainRequestAndContents) => (
 					<Member
 						id={d.request.requestor.id}
-						name={'Hello'}
+						name={'requestor'}
 						image={randomImage(d.request.requestor.id)}
 						subtext={
 							mvpVersion === 3
@@ -194,9 +236,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				Header: () => <div className={styles.left}>Request Date</div>,
 				id: 'date',
 				accessor: (d: DisplayDomainRequestAndContents) => {
-					const date = new Date(Number(d.request.timestamp) * 1000);
-					const humanDate = date.toLocaleString();
-					return <div className={styles.left}>{humanDate}</div>;
+					return (
+						<div className={styles.left}>
+							{dateFromTimestamp(d.request.timestamp)}
+						</div>
+					);
 				},
 			},
 			{
@@ -253,12 +297,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		setGlobalFilter,
 	} = tableHook;
 
-	const search = (query: string) => {
-		setSearchQuery(query);
-	};
-
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
+			{/* Viewing overlay */}
 			{viewing && (
 				<Overlay
 					centered
@@ -267,9 +308,14 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						setViewing(undefined);
 					}}
 				>
-					<Request onAccept={onAccept} yours={yours} request={viewing} />
+					<Request
+						onAccept={onAccept}
+						yours={yours || viewing.request.approved}
+						request={viewing}
+					/>
 				</Overlay>
 			)}
+
 			{/* Table Header */}
 			<div className={styles.searchHeader}>
 				<SearchBar
@@ -277,7 +323,13 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					style={{ width: '100%', marginRight: 16 }}
 				/>
 				<div className={styles.searchHeaderButtons}>
-					{/* <IconButton
+					<OptionDropdown
+						onSelect={filterByStatus}
+						options={['Open Requests', 'Accepted']}
+					>
+						<FilterButton onClick={() => {}} />
+					</OptionDropdown>
+					<IconButton
 						onClick={setList}
 						toggled={!isGridView}
 						iconUri={list}
@@ -288,10 +340,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						toggled={isGridView}
 						iconUri={grid}
 						style={{ height: 32, width: 32 }}
-					/> */}
+					/>
 				</div>
 			</div>
 
+			{/* Standard React-Table setup */}
 			<div className={styles.RequestTable}>
 				<div className={styles.Container} ref={containerRef}>
 					{/* List View */}
@@ -312,7 +365,10 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								{rows.map((row) => {
 									prepareRow(row);
 									return (
-										<tr {...row.getRowProps()}>
+										<tr
+											onClick={() => view(row.original.request.domain)}
+											{...row.getRowProps()}
+										>
 											{row.cells.map((cell) => (
 												<td {...cell.getCellProps()}>{cell.render('Cell')}</td>
 											))}
@@ -324,24 +380,82 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					)}
 
 					{/* Grid View */}
-					{/* {isGridView && (
+					{isGridView && (
 						<ol className={styles.Grid}>
-							{data.map((d, i) => (
-								<li key={i}>
+							{displayData.map((d, i) => (
+								<li key={i} onClick={() => view(d.request.domain)}>
 									<NFTCard
-										name={d.title || ''}
-										domain={d.domainName || ''}
-										imageUri={d.image || ''}
+										name={d.metadata.title || ''}
+										domain={d.request.domain || ''}
+										imageUri={d.metadata.image || ''}
 										price={100}
-										nftOwnerId={d.requestor}
-										nftMinterId={d.requestor}
+										nftOwnerId={d.contents.requestor}
+										nftMinterId={d.contents.requestor}
 										showCreator
 										showOwner
-									/>
+										style={{ width: 380 }}
+									>
+										{/* @TODO Refactor this horrific section */}
+										<div
+											style={{
+												display: 'flex',
+												flexDirection: 'column',
+												alignItems: 'center',
+												marginTop: 32,
+											}}
+										>
+											<span
+												style={{
+													display: 'inline-block',
+													fontWeight: 700,
+													color: 'var(--color-primary-lighter-3)',
+													textTransform: 'uppercase',
+													fontSize: 14,
+													marginTop: 4,
+												}}
+											>
+												Offer {d.request.approved ? 'Accepted' : 'Made'}
+											</span>
+											<span
+												className="glow-text-blue"
+												style={{
+													display: 'inline-block',
+													fontWeight: 700,
+													fontSize: 24,
+													marginTop: 4,
+												}}
+											>
+												{Number(
+													ethers.utils.formatEther(d.request.offeredAmount),
+												).toLocaleString()}{' '}
+												WILD
+											</span>
+											<span
+												style={{
+													display: 'inline-block',
+													fontSize: 12,
+													marginTop: 4,
+												}}
+											>
+												{dateFromTimestamp(d.request.timestamp)}
+											</span>
+											<FutureButton
+												style={{
+													maxWidth: 200,
+													marginTop: 24,
+													textTransform: 'uppercase',
+												}}
+												glow
+												onClick={() => view(d.request.domain)}
+											>
+												View Offer
+											</FutureButton>
+										</div>
+									</NFTCard>
 								</li>
 							))}
 						</ol>
-					)} */}
+					)}
 				</div>
 				<div
 					style={{ height: containerHeight }}
