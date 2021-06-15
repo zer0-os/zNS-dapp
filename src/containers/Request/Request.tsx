@@ -1,6 +1,5 @@
 //- React Imports
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 
 //- Component Imports
 import { FutureButton, Image, Member, Overlay } from 'components';
@@ -10,7 +9,6 @@ import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { randomName, randomImage } from 'lib/Random';
 import { ethers } from 'ethers';
 import { tokenToUsd } from 'lib/coingecko';
-import { useStakingController } from 'lib/hooks/useStakingController';
 
 //- Style Imports
 import styles from './Request.module.css';
@@ -23,6 +21,7 @@ import galaxyBackground from './assets/galaxy.png';
 
 type RequestProps = {
 	request: DisplayDomainRequestAndContents;
+	// @TODO Change 'yours' to 'showActionButtons'
 	yours?: boolean;
 	onAccept: (id: string) => void;
 };
@@ -32,20 +31,35 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 	// Imported Hooks //
 	////////////////////
 
-	const { approveRequest } = useStakingController();
 	const { mvpVersion } = useMvpVersion();
 
 	///////////
 	// State //
 	///////////
 
-	const [stake, setStake] = useState(0);
-	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-	const [hasAccepted, setHasAccepted] = useState(false);
+	const [stake, setStake] = useState(0); // Stake in USD (as state because API call is async)
+	const [isLightboxOpen, setIsLightboxOpen] = useState(false); // Toggle image lightbox
+	const [hasAccepted, setHasAccepted] = useState(false); // Toggle confirmation overlay
 
+	// Token offer in correct format
 	const tokenAmount = Number(
 		ethers.utils.formatEther(request.request.offeredAmount),
 	);
+
+	///////////////
+	// Functions //
+	///////////////
+
+	const accept = () => setHasAccepted(true);
+	const cancel = () => setHasAccepted(false);
+	const preview = () => setIsLightboxOpen(true);
+	const confirm = () => {
+		if (onAccept) onAccept(request.request.id);
+	};
+
+	/////////////
+	// Effects //
+	/////////////
 
 	React.useEffect(() => {
 		tokenToUsd('wilder-world').then((d) => {
@@ -53,20 +67,12 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 		});
 	}, []);
 
-	const accept = () => setHasAccepted(true);
-	const cancel = () => setHasAccepted(false);
-
-	const confirm = () => {
-		if (onAccept) onAccept(request.request.id);
-	};
-
-	const preview = () => setIsLightboxOpen(true);
-
 	return (
 		<div
 			style={{ backgroundImage: `url(${galaxyBackground})` }}
 			className={`${styles.Request} border-primary border-rounded`}
 		>
+			{/* Image Lightbox */}
 			{isLightboxOpen && (
 				<Overlay
 					centered
@@ -88,6 +94,8 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 					</div>
 				</Overlay>
 			)}
+
+			{/* Confirmation Overlay */}
 			{hasAccepted && (
 				<Overlay centered open onClose={() => {}}>
 					<div
@@ -102,6 +110,14 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 						<div className={styles.Buttons}>
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
+								alt
+								glow
+								onClick={cancel}
+							>
+								Cancel
+							</FutureButton>
+							<FutureButton
+								style={{ textTransform: 'uppercase' }}
 								glow
 								onClick={confirm}
 							>
@@ -112,9 +128,12 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 				</Overlay>
 			)}
 
+			{/* Preview Image (Clickable) */}
 			<div className={styles.Image}>
 				<Image src={request.metadata.image} onClick={preview} />
 			</div>
+
+			{/* Requested Domain Info (Name, description, etc.) */}
 			<div className={styles.Info}>
 				<div>
 					<h1 className="glow-text-white">{request.metadata.title}</h1>
@@ -129,6 +148,8 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 					/>
 				</div>
 				<div>{request.metadata.description}</div>
+
+				{/* Stake Info */}
 				<div>
 					<span
 						style={{
@@ -148,16 +169,10 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 							${Number((tokenAmount * stake).toFixed(2)).toLocaleString()} USD
 						</span>
 					</div>
+
+					{/* Action Buttons */}
 					{!yours && (
 						<div className={styles.Buttons}>
-							<FutureButton
-								style={{ textTransform: 'uppercase' }}
-								alt
-								glow
-								onClick={cancel}
-							>
-								Cancel
-							</FutureButton>
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
 								glow
