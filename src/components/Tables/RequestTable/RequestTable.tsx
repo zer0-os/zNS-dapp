@@ -429,7 +429,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 												style={{
 													display: 'inline-block',
 													fontWeight: 700,
-													color: 'var(--color-primary-lighter-3)',
+													color: d.request.approved
+														? 'var(--color-success)'
+														: 'var(--color-primary-lighter-3)',
 													textTransform: 'uppercase',
 													fontSize: 14,
 													marginTop: 4,
