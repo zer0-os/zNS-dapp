@@ -197,9 +197,16 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				const approved = statusFilter === 'Accepted';
 				filtered = filtered.filter((r) => r.request.approved === approved);
 			}
-			return filtered;
+			// @TODO Move sorting to React-Table built-in sorting
+			return filtered.sort(
+				(a, b) => Number(b.request.timestamp) - Number(a.request.timestamp),
+			);
 		}
-		return loadedRequests || [];
+		return (
+			loadedRequests.sort(
+				(a, b) => Number(b.request.timestamp) - Number(a.request.timestamp),
+			) || []
+		);
 	}, [loadedRequests, searchQuery, statusFilter]);
 
 	// Column Setup
