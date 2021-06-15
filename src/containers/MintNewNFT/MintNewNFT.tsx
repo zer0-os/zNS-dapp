@@ -110,7 +110,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		setTokenInformation(data);
 
 		if (isOwner) {
-			setStep(MintState.DomainDetails);
+			setStep(MintState.Summary);
 		} else {
 			setStep(MintState.Staking);
 		}
@@ -194,9 +194,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				</h1>
 				<div style={{ marginBottom: 8 }}>
 					<h2 className={`glow-text-white`}>
-						0://{rootDomainName}.
-						{domain && domain.length ? `${domainName.substring(1)}.` : ``}
-						{domain}
+						0://{rootDomainName}.{`${domainName.substring(1)}.${domain || ''}`}
 					</h2>
 				</div>
 				<span>
@@ -211,10 +209,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 			<StepBar
 				style={{ marginTop: 24 }}
 				step={step + 1}
-				steps={['Details', 'Stake']}
+				steps={isOwner ? ['Details'] : ['Details', 'Stake']}
 				onNavigate={(i: number) => setStep(i)}
 			/>
-			{/* TODO: Make ToggleSections unclickable if their open status depends on parent state */}
 
 			<div
 				ref={containerRef}

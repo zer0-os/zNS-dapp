@@ -25,7 +25,7 @@ const Staking: React.FC<StakingProps> = ({ token, onContinue }) => {
 		if (!amount.length) e.push('amount');
 		if (e.length) return setErrors(e);
 		onContinue({
-			amount: parseInt(amount),
+			amount: parseFloat(amount),
 			currency: 'WILD',
 		});
 	};
