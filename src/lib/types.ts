@@ -73,10 +73,14 @@ export interface DomainRequestContents {
 	locked: boolean;
 }
 
-export interface DisplayDomainRequest extends DomainRequestContents {
-	image?: string;
-	title?: string;
-	domainName?: string;
+export interface DomainRequestAndContents {
+	request: DomainRequest;
+	contents: DomainRequestContents;
+}
+
+export interface DisplayDomainRequestAndContents
+	extends DomainRequestAndContents {
+	metadata: Metadata;
 }
 
 // Defaults

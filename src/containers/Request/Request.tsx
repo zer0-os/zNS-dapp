@@ -16,13 +16,13 @@ import { useStakingController } from 'lib/hooks/useStakingController';
 import styles from './Request.module.css';
 
 //- Type Imports
-import { DisplayDomainRequest } from 'lib/types';
+import { DisplayDomainRequestAndContents } from 'lib/types';
 
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
 
 type RequestProps = {
-	request: DisplayDomainRequest;
+	request: DisplayDomainRequestAndContents;
 	yours?: boolean;
 	onAccept: () => void;
 };
@@ -43,11 +43,15 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 	const [hasAccepted, setHasAccepted] = useState(false);
 
-	const tokenAmount = Number(ethers.utils.formatEther(request.stakeAmount));
+	const tokenAmount = Number(
+		ethers.utils.formatEther(request.request.offeredAmount),
+	);
 
-	tokenToUsd('wilder-world').then((d) => {
-		setStake(d as number);
-	});
+	React.useEffect(() => {
+		tokenToUsd('wilder-world').then((d) => {
+			setStake(d as number);
+		});
+	}, []);
 
 	const accept = () => setHasAccepted(true);
 
@@ -76,7 +80,7 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 				>
 					<div>
 						<Image
-							src={request.image}
+							src={request.metadata.image}
 							style={{
 								width: 'auto',
 								maxHeight: '80vh',
@@ -121,21 +125,22 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 			)}
 
 			<div className={styles.Image}>
-				<Image src={request.image} onClick={preview} />
+				<Image src={request.metadata.image} onClick={preview} />
 			</div>
 			<div className={styles.Info}>
 				<div>
-					<h1 className="glow-text-white">{request.title}</h1>
-					<span className={styles.Domain}>0://{request.domainName}</span>
+					<h1 className="glow-text-white">{request.metadata.title}</h1>
+					<span className={styles.Domain}>0://{request.request.domain}</span>
 					<Member
 						style={{ marginTop: 16 }}
-						id={request.requestor}
-						name={randomName(request.requestor)}
-						image={randomImage(request.requestor)}
+						id={request.request.requestor.id}
+						name={randomName(request.request.requestor.id)}
+						image={randomImage(request.request.requestor.id)}
 						showZna={mvpVersion === 3}
 						subtext={'Creator'}
 					/>
 				</div>
+				<div>{request.metadata.description}</div>
 				<div>
 					<span
 						style={{
@@ -149,7 +154,7 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 					</span>
 					<div className={styles.Offer}>
 						<span>
-							{tokenAmount.toLocaleString()} {request.stakeCurrency}
+							{tokenAmount.toLocaleString()} {request.contents.stakeCurrency}
 						</span>
 						<span>
 							${Number((tokenAmount * stake).toFixed(2)).toLocaleString()} USD

@@ -68,7 +68,7 @@ function wrappedApp() {
 			<SubgraphProvider>
 				<NotificationProvider>
 					<Web3ReactProvider getLibrary={getLibrary}>
-						{/* Our Hooks */}
+						{/* Our Hooks  */}
 						<MvpVersionProvider>
 							<StakingRequestProvider>
 								<MintProvider>
