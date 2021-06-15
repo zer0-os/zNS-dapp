@@ -33,7 +33,7 @@
 	display: flex;
 
 	width: 100%;
-	padding: 15px 20px;
+	padding: 15px 0;
 
 	align-items: center;
 }
@@ -45,7 +45,7 @@
 	justify-content: flex-end;
 }
 
-.searchHeaderButtons > *:not(:last-of-type) {
+.searchHeaderButtons > *:not(:last-child) {
 	margin-right: 12px;
 }
 
@@ -72,7 +72,7 @@
 }
 
 .RequestTable > tbody > tr {
-	/* cursor: pointer; */
+	cursor: pointer;
 	transition: background var(--animation-time-short) linear;
 }
 
