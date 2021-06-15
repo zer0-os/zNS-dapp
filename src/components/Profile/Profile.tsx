@@ -6,14 +6,7 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import {
-	FutureButton,
-	Image,
-	RequestTable,
-	TextButton,
-	Overlay,
-} from 'components';
-import { Request } from 'containers';
+import { Image, RequestTable, TextButton } from 'components';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
@@ -96,6 +89,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 			let finishedCount = 0;
 			for (let i = 0; i < requestsToFetch.length; i++) {
+				// eslint-disable-next-line no-loop-func
 				const doFetch = async () => {
 					const request = requestsToFetch[i];
 					try {

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
@@ -76,7 +77,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
 	React.useEffect(() => {
-		if (chainId && chainSelector.selectedChain != chainId) {
+		if (chainId && chainSelector.selectedChain !== chainId) {
 			chainSelector.selectChain(chainId);
 		}
 	}, [chainId]);
@@ -141,11 +142,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Data
 	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
 	const isRoot = domain === '/' || (!data.isNothing() && !data.value.parent);
-
-	let ownedDomain = false;
-	if (!data.isNothing() && account) {
-		ownedDomain = data.value.owner.id.toLowerCase() === account.toLowerCase();
-	}
 
 	// @TODO: We shouldn't need to filter out non-ipfs.io metadata URIs when we reset data
 	const subdomains =

@@ -14,7 +14,7 @@ type FilterButtonProps = {
 const FilterButton: React.FC<FilterButtonProps> = ({ onClick }) => {
 	return (
 		<button className={`${styles.Button} glow-text-white`} onClick={onClick}>
-			<img src={icon} />
+			<img alt="filter" src={icon} />
 			<span>Filters</span>
 		</button>
 	);

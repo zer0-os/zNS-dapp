@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { ethers } from 'ethers';
 
 //- Providers
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';

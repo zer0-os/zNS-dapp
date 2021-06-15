@@ -46,6 +46,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 	useEffect(() => {
 		body.addEventListener('scroll', handleScroll);
 		return () => body.removeEventListener('scroll', handleScroll);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const select = (filter: string) => {

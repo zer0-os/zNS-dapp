@@ -1,14 +1,12 @@
 //- React Imports
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 //- Component Imports
 import { Image } from 'components';
 
 //- Style Imports
 import styles from './Artwork.module.css';
-
-//- Library Imports
-import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 type ArtworkProps = {
 	id: string;
@@ -43,9 +41,14 @@ const Artwork: React.FC<ArtworkProps> = ({
 						{name}
 					</span>
 					{!pending && (
-						<a className={styles.Domain} target="_blank" rel="noreferrer">
+						<Link
+							className={styles.Domain}
+							to={domain}
+							target="_blank"
+							rel="noreferrer"
+						>
 							{domain}
-						</a>
+						</Link>
 					)}
 					{pending && <span className={styles.Domain}>{domain}</span>}
 				</div>
