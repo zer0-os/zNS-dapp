@@ -95,7 +95,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [staking.approved]);
+	}, [staking.approved, yourRequests, requestsForYou]);
 
 	// Get all requests data from IPFS and hooks
 	useEffect(() => {
