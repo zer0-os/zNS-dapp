@@ -14,6 +14,7 @@ import { DomainCacheProvider } from 'lib/useDomainCache';
 import NotificationProvider from 'lib/providers/NotificationProvider';
 import MintProvider from 'lib/providers/MintProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
+import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 
@@ -62,19 +63,23 @@ function App() {
 
 function wrappedApp() {
 	return (
+		// Web3 Library Hooks
 		<ChainSelectorProvider>
 			<SubgraphProvider>
 				<NotificationProvider>
 					<Web3ReactProvider getLibrary={getLibrary}>
-						<StakingRequestProvider>
-							<MintProvider>
-								<EnlistProvider>
-									<DomainCacheProvider>
-										<App />
-									</DomainCacheProvider>
-								</EnlistProvider>
-							</MintProvider>
-						</StakingRequestProvider>
+						{/* Our Hooks  */}
+						<MvpVersionProvider>
+							<StakingRequestProvider>
+								<MintProvider>
+									<EnlistProvider>
+										<DomainCacheProvider>
+											<App />
+										</DomainCacheProvider>
+									</EnlistProvider>
+								</MintProvider>
+							</StakingRequestProvider>
+						</MvpVersionProvider>
 					</Web3ReactProvider>
 				</NotificationProvider>
 			</SubgraphProvider>

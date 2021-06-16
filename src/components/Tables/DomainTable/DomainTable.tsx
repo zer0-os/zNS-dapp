@@ -17,6 +17,7 @@ import useEnlist from 'lib/hooks/useEnlist';
 import { getRelativeDomainPath } from 'lib/domains';
 import { Domain, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
+import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Style Imports
 import styles from './DomainTable.module.css';
@@ -31,7 +32,6 @@ type DomainTableProps = {
 	isRootDomain: boolean;
 	style?: React.CSSProperties;
 	empty?: boolean;
-	mvpVersion: number;
 	// TODO: Find a better way to persist grid view than with props
 	isGridView?: boolean;
 	setIsGridView?: (grid: boolean) => void;
@@ -61,11 +61,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	isRootDomain,
 	style,
 	empty,
-	mvpVersion,
 	isGridView,
 	setIsGridView,
 }) => {
 	const { enlist } = useEnlist();
+	const { mvpVersion } = useMvpVersion();
 
 	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
@@ -86,7 +86,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	// Clicks
 	const rowClick = (event: any, domain: string) => {
-		if (event.target.nodeName.toLowerCase() === 'button') return;
+		// @TODO Decouple this line from classname
+		if (event.target.className.indexOf('FutureButton') >= 0) return;
 		navigateTo(domain);
 	};
 

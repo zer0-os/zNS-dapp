@@ -1,0 +1,47 @@
+.Artwork {
+	display: flex;
+}
+
+.Pending * {
+	cursor: default;
+}
+
+.Image {
+	height: 40px;
+	width: 40px;
+	min-height: 40px;
+	min-width: 40px;
+	border-radius: 50%;
+	margin-right: 12px;
+	/* background-color: rgba(0,0,0,0.5); */
+	overflow: hidden;
+	cursor: pointer;
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Domain {
+	display: block;
+	margin-top: 4px;
+	font-weight: 700;
+	color: var(--color-primary-lighter-3);
+}
+
+.Image:hover {
+	transform: scale(1.1);
+}
+
+.Image > * {
+	height: 100%;
+	width: 100%;
+}
+
+.Info {
+	margin-top: 4px;
+	font-weight: 700;
+}
+
+.Title {
+	display: block;
+	font-weight: 400;
+	cursor: pointer;
+}

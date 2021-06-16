@@ -1,0 +1,191 @@
+.RequestTableContainer {
+	width: 100%;
+	color: white;
+}
+
+.RequestTable {
+	position: relative;
+
+	/* table-layout: fixed; */
+	border-collapse: collapse;
+}
+
+.Expander {
+	transition: height var(--animation-time-long) ease-in-out;
+}
+
+.RequestTable {
+	width: 100%;
+}
+
+.Table {
+	width: 100%;
+}
+
+.Container {
+	position: absolute;
+	left: 0;
+	width: 100%;
+}
+
+/* Search header */
+.searchHeader {
+	display: flex;
+
+	width: 100%;
+	padding: 15px 0;
+
+	align-items: center;
+}
+
+.searchHeaderButtons {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.searchHeaderButtons > *:not(:last-child) {
+	margin-right: 12px;
+}
+
+.search {
+	flex-grow: 1;
+}
+
+/* Table Header */
+
+.RequestTable th {
+	color: var(--color-primary-lighter-3);
+	font-weight: 700;
+}
+
+/* Table */
+.RequestTable tbody {
+	font-weight: 400;
+}
+
+.RequestTable th,
+.RequestTable td {
+	padding: 16px 11px;
+	vertical-align: middle;
+}
+
+.RequestTable > tbody > tr {
+	cursor: pointer;
+	transition: background var(--animation-time-short) linear;
+}
+
+.RequestTable > tbody > tr:hover {
+	background: var(--background-purple-card-20);
+}
+
+.RequestTable > tbody > tr img,
+.RequestTable > tbody > tr button {
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.RequestTable > tbody > tr:hover > td > img,
+.RequestTable > tbody > tr:hover button {
+	transform: scale(1.1);
+}
+
+.RequestTable tbody tr td:first-of-type,
+.RequestTable > thead tr th:first-of-type {
+	padding-left: 23px;
+	width: 50px;
+}
+
+.ticker {
+	color: var(--color-accent-1-light);
+	font-weight: 700;
+}
+
+.Accepted span {
+	display: inline-block;
+	width: 100%;
+
+	text-align: center;
+}
+
+.Accepted span:first-of-type {
+	color: var(--color-accent-1);
+}
+
+.Accepted span:not(:first-of-type) {
+	margin-top: 8px;
+}
+
+/* Table alignments */
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.center > * {
+	margin: 0 auto;
+}
+
+.right {
+	text-align: right;
+}
+
+.right > * {
+	float: right;
+}
+
+.Loading {
+	padding: 32px;
+}
+
+.Loading > div {
+	margin: 0 auto;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	border-top: 2px solid var(--color-accent-1);
+	animation: spin 1s linear infinite;
+}
+
+.Empty {
+	padding: 32px 32px 40px 32px;
+	text-align: center;
+	font-weight: 700;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* Grid */
+
+.Grid {
+	width: 100%;
+	padding-top: 11px;
+	padding-bottom: 24px;
+
+	display: grid;
+	justify-content: space-between;
+	grid-template-columns: repeat(3, 380px);
+	grid-gap: 24px 0;
+
+	list-style: none;
+}
+
+.Grid > li {
+	cursor: pointer;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Grid > li:hover {
+	transform: scale(1.03);
+}

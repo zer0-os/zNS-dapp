@@ -201,6 +201,10 @@ h1 {
 	font-size: 22px;
 }
 
+th {
+	text-transform: uppercase;
+}
+
 hr.glow {
 	position: relative;
 	height: 1px;
@@ -265,6 +269,13 @@ button.text-button {
 
 #breakpointMessage {
 	display: none;
+}
+
+#overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100000;
 }
 
 #backgroundImage {
@@ -427,7 +438,7 @@ nav {
 		background: rgba(78, 0, 132, 0.4) !important;
 	}
 
-	#overlay > .overlay {
-		background: rgba(0, 0, 0, 0.8) !important;
+	.overlay {
+		background: rgba(0, 0, 0, 0.4) !important;
 	}
 }

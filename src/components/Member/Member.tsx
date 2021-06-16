@@ -1,8 +1,15 @@
 //- React Imports
 import React from 'react';
 
+//- Component Imports
+import { Image } from 'components';
+
 //- Style Imports
 import styles from './Member.module.css';
+
+//- Library Imports
+import useMvpVersion from 'lib/hooks/useMvpVersion';
+import { randomName } from 'lib/Random';
 
 type MemberProps = {
 	id: string;
@@ -10,6 +17,7 @@ type MemberProps = {
 	image: string;
 	subtext?: string;
 	showZna?: boolean;
+	style?: React.CSSProperties;
 };
 
 const Member: React.FC<MemberProps> = ({
@@ -18,14 +26,22 @@ const Member: React.FC<MemberProps> = ({
 	image,
 	subtext,
 	showZna,
+	style,
 }) => {
+	const { mvpVersion } = useMvpVersion();
+
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
-			<div className={styles.Member}>
-				{/* <div className={styles.Image}>
-					<Image onClick={openProfile} src={image} />
-				</div> */}
+			<div style={style} className={styles.Member}>
+				{mvpVersion === 3 && (
+					<div className={styles.Image}>
+						<Image
+							onClick={() => console.warn('Member clicks not yet implemented')}
+							src={image}
+						/>
+					</div>
+				)}
 				<div className={styles.Info}>
 					<span>
 						<a
@@ -34,18 +50,18 @@ const Member: React.FC<MemberProps> = ({
 							target="_blank"
 							rel="noreferrer"
 						>
-							{id.substring(0, 4)}...{id.substring(id.length - 4)}
+							{mvpVersion === 3
+								? randomName(id)
+								: `${id.substring(0, 4)}...${id.substring(id.length - 4)}`}
 						</a>
 					</span>
 					{subtext && (
 						<>
-							<br />
 							<span>{subtext}</span>
 						</>
 					)}
 					{showZna && (
 						<>
-							<br />
 							<button className="text-button">
 								0://wilder.{name.toLowerCase().split(' ').join('.')}
 							</button>

@@ -17,6 +17,7 @@ type NFTCardProps = {
 	showCreator?: boolean;
 	showOwner?: boolean;
 	style?: React.CSSProperties;
+	children?: React.ReactNode;
 };
 
 const NFTCard: React.FC<NFTCardProps> = ({
@@ -25,6 +26,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	imageUri,
 	price,
 	nftOwnerId,
+	children,
 	nftMinterId,
 	showCreator,
 	showOwner,
@@ -72,6 +74,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 						</div>
 					)}
 				</div> */}
+				{children}
 			</div>
 		</div>
 	);

@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { ethers } from 'ethers';
 
 //- Providers
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
@@ -18,7 +17,7 @@ import {
 } from './types';
 
 //- Component Imports
-// import { StepBar } from 'components';
+import { StepBar } from 'components';
 import TokenInformation from './sections/TokenInformation';
 // import TokenDynamics from './sections/TokenDynamics';
 import Staking from './sections/Staking';
@@ -76,6 +75,17 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const mint = useMintProvider();
 	const staking = useStakingProvider();
 
+	//- Web3 Wallet Data
+	// MintNewNFT is a container and needs a bit more brainpower than your standard component
+	// I think using Context API for account data here is worthwhile
+	const context = useWeb3React<Web3Provider>();
+	const { account } = context; // account = connected wallet ID
+
+	let isOwner = false;
+	if (account) {
+		isOwner = account.toLowerCase() === domainOwner.toLowerCase();
+	}
+
 	//- Page State
 	const [step, setStep] = useState(MintState.DomainDetails);
 
@@ -89,17 +99,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		}
 	}, [step, isMintLoading]);
 
-	//- Web3 Wallet Data
-	// MintNewNFT is a container and needs a bit more brainpower than your standard component
-	// I think using Context API for account data here is worthwhile
-	const context = useWeb3React<Web3Provider>();
-	const { account } = context; // account = connected wallet ID
-
-	let isOwner = false;
-	if (account) {
-		isOwner = account.toLowerCase() === domainOwner.toLowerCase();
-	}
-
 	//- Functions
 	const getTokenStake = (data: TokenStakeType) => {
 		setTokenStake(data);
@@ -110,7 +109,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		setTokenInformation(data);
 
 		if (isOwner) {
-			setStep(MintState.DomainDetails);
+			setStep(MintState.Summary);
 		} else {
 			setStep(MintState.Staking);
 		}
@@ -157,9 +156,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				locked: tokenInformation.locked,
 			},
 			requestor: account,
-			stakeAmount: ethers.utils
-				.parseEther(tokenStake.amount.toString())
-				.toString(),
+			stakeAmount: tokenStake.amount.toString(),
 			stakeCurrency: tokenStake.currency,
 		});
 
@@ -196,9 +193,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				</h1>
 				<div style={{ marginBottom: 8 }}>
 					<h2 className={`glow-text-white`}>
-						0://{rootDomainName}.
-						{domain && domain.length ? `${domainName.substring(1)}.` : ``}
-						{domain}
+						0://{rootDomainName}.{`${domainName.substring(1)}.${domain || ''}`}
 					</h2>
 				</div>
 				<span>
@@ -210,13 +205,12 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						: ''}
 				</span>
 			</div>
-			{/* <StepBar
+			<StepBar
 				style={{ marginTop: 24 }}
-				step={step}
-				steps={['Details']}
-				onNavigate={(i: number) => toStep(i)}
-			/> */}
-			{/* TODO: Make ToggleSections unclickable if their open status depends on parent state */}
+				step={step + 1}
+				steps={isOwner ? ['Details'] : ['Details', 'Stake']}
+				onNavigate={(i: number) => setStep(i)}
+			/>
 
 			<div
 				ref={containerRef}

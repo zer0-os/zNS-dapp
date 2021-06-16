@@ -37,7 +37,7 @@ const StepBar: React.FC<StepBarProps> = ({
 				<div
 					key={i + s}
 					className={`${styles.Placeholder} ${step - 1 > i ? styles.Show : ''}`}
-					onClick={() => goto(i + 1)}
+					onClick={() => goto(i)}
 					style={{ position: 'absolute', left: left(i), width: width() }}
 				>
 					<ArrowLink back>{text(s, i)}</ArrowLink>
@@ -51,7 +51,7 @@ const StepBar: React.FC<StepBarProps> = ({
 				className={`${styles.Bar} ${step > steps.length ? styles.Hide : ''}`}
 				data-text={`Step ${step > steps.length ? steps.length : step} of ${
 					steps.length
-				}: ${steps[steps.length - 1]}`}
+				}: ${steps[step - 1] || steps[steps.length - 1]}`}
 			></div>
 		</div>
 	);

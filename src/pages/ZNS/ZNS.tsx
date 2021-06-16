@@ -1,4 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
+import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
 import { useHistory } from 'react-router-dom';
@@ -10,17 +12,23 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
 
 //- Library Imports
+import { Maybe } from 'true-myth';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { randomNumber } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
 import useEnlist from 'lib/hooks/useEnlist';
 import { getMetadata } from 'lib/metadata';
+import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Type Imports
 import { Metadata, DisplayDomain, DisplayParentDomain } from 'lib/types';
 
 //- Style Imports
 import styles from './ZNS.module.css';
+
+//- Icon Imports
+import userIcon from 'assets/user.svg';
 
 //- Components & Containers
 import {
@@ -46,9 +54,6 @@ import {
 } from 'components';
 
 import { MintNewNFT, NFTView, Enlist } from 'containers';
-import { Maybe } from 'true-myth';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-import React from 'react';
 
 type ZNSProps = {
 	domain: string;
@@ -58,7 +63,7 @@ type ZNSProps = {
 const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	// TODO: Need to handle domains that don't exist!
 
-	const mvpVersion = version || 1;
+	const { mvpVersion } = useMvpVersion();
 
 	///////////////////
 	// Web3 Handling //
@@ -72,7 +77,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
 	React.useEffect(() => {
-		if (chainId && chainSelector.selectedChain != chainId) {
+		if (chainId && chainSelector.selectedChain !== chainId) {
 			chainSelector.selectChain(chainId);
 		}
 	}, [chainId]);
@@ -137,11 +142,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Data
 	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
 	const isRoot = domain === '/' || (!data.isNothing() && !data.value.parent);
-
-	let ownedDomain = false;
-	if (!data.isNothing() && account) {
-		ownedDomain = data.value.owner.id.toLowerCase() === account.toLowerCase();
-	}
 
 	// @TODO: We shouldn't need to filter out non-ipfs.io metadata URIs when we reset data
 	const subdomains =
@@ -260,8 +260,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 					/>
 				</Overlay>
 			)}
-			{mvpVersion === 3 && isProfileOverlayOpen && (
-				<Overlay centered open onClose={() => setIsProfileOverlayOpen(false)}>
+			{isProfileOverlayOpen && (
+				<Overlay
+					fullScreen
+					centered
+					open
+					onClose={() => setIsProfileOverlayOpen(false)}
+				>
 					<Profile yours id={account ? account : ''} />
 				</Overlay>
 			)}
@@ -334,13 +339,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									)}
 
 									{/* Profile Button */}
-									{mvpVersion === 3 && (
-										<IconButton
-											onClick={() => setIsProfileOverlayOpen(true)}
-											style={{ height: 32, width: 32, borderRadius: '50%' }}
-											iconUri={`https://picsum.photos/seed/${account}/200/300`}
-										/>
-									)}
+									<IconButton
+										onClick={() => setIsProfileOverlayOpen(true)}
+										style={{ height: 32, width: 32, borderRadius: '50%' }}
+										iconUri={
+											mvpVersion === 3
+												? `https://picsum.photos/seed/${account}/200/300`
+												: userIcon
+										}
+									/>
 
 									{/* TODO: Change the triple dot button to a component */}
 									<div
@@ -496,7 +503,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									isRootDomain={isRoot}
 									style={{ marginTop: 16 }}
 									empty={!data.isNothing() && subdomains.length === 0}
-									mvpVersion={mvpVersion}
 									isGridView={isGridView}
 									setIsGridView={setIsGridView}
 								/>

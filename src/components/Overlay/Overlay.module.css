@@ -13,20 +13,41 @@
 	height: 100%;
 	overflow-y: scroll;
 
-	z-index: 10000;
+	z-index: 9000;
 	opacity: 0;
 
 	background: rgba(0, 0, 0, 0.3);
 	transition: backdrop-filter 0.2s;
 }
 
+.FullScreen {
+	height: 100%;
+	width: 100%;
+}
+
+.FullScreen > div {
+	height: 100%;
+}
+
+.Container > * {
+	margin: 0 auto;
+}
+
 .Centered {
 	align-items: center;
 }
 
+.Centered > div > div {
+	margin: 0 auto;
+}
+
+.Image {
+	text-align: center;
+}
+
 .Overlay > div {
-	padding-top: 64px;
-	padding-bottom: 64px;
+	padding: 64px;
+	width: 100%;
 }
 
 .Open {

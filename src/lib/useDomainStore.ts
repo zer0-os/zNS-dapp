@@ -2,7 +2,6 @@ import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
-import { data } from 'jquery';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Maybe } from 'true-myth';
 import { getDomainId } from './domains';

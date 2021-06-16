@@ -1,16 +1,26 @@
 .profile {
 	width: 100%;
+	height: 100%;
 	overflow-y: scroll;
 	padding: 54px;
 	color: #4d4d4d;
 	background: var(--background-blue-deck);
 	filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.5));
 	opacity: 0.9;
+	max-width: var(--width-max);
 }
 
 .profile h1 {
 	font-size: 24px;
 	color: white;
+}
+
+.AcceptRequest {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
 }
 
 .header {
@@ -62,7 +72,7 @@
 }
 
 /* DP section */
-.body > div:nth-child(1) {
+.First {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -71,7 +81,7 @@
 }
 
 /* Profile paragraph */
-.body > div:nth-child(2) {
+.Second {
 	width: 515px;
 	margin-left: 57px;
 
@@ -80,4 +90,35 @@
 
 .body > div:nth-child(2) > p {
 	margin-top: 16px;
+}
+
+.Sections {
+	position: relative;
+	display: flex;
+
+	width: 100%;
+
+	font-size: 24px;
+	color: white;
+}
+
+.Sections::after {
+	content: ' ';
+	position: absolute;
+	top: 0.25px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+
+	border-bottom: 1px solid #6e10bb;
+	z-index: -1;
+}
+
+.Sections button {
+	font-size: 24px;
+	transition: border-bottom var(--animation-time-medium) ease-in-out;
+}
+
+.Sections button:not(:first-child) {
+	margin-left: 40px;
 }

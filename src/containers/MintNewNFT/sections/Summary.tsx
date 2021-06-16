@@ -61,9 +61,18 @@ const Summary: React.FC<SummaryProps> = ({
 							<img alt="address icon" src={addressIcon} />
 							0://wilder.{domain.substring(1)}.{token.domain}
 						</li>
-						<li>
+						<li style={{ maxHeight: 200, overflowY: 'scroll' }}>
 							<img alt="story icon" src={storyIcon} />
-							{token.story}
+							<p
+								style={{
+									padding: 0,
+									paddingRight: 12,
+									maxHeight: 200,
+									overflowY: 'scroll',
+								}}
+							>
+								{token.story}
+							</p>
 						</li>
 						{staking && (
 							<li>
