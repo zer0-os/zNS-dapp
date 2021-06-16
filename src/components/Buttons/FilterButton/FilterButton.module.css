@@ -23,4 +23,5 @@
 .Button > span {
 	display: inline-block;
 	margin-top: 4px;
+	white-space: nowrap;
 }

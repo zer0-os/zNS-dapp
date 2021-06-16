@@ -63,7 +63,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [isGridView, setIsGridView] = useState(false);
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
 	const [searchQuery, setSearchQuery] = useState('');
-	const [statusFilter, setStatusFilter] = useState<any>({});
+	const [statusFilter, setStatusFilter] = useState('');
 
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
@@ -178,7 +178,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// Table Data
 	const displayData: DisplayDomainRequestAndContents[] = useMemo(() => {
 		if (
-			(searchQuery.length || statusFilter.length) &&
+			(searchQuery.length || (statusFilter.length && statusFilter !== 'All')) &&
 			loadedRequests &&
 			loadedRequests.length
 		) {
@@ -193,7 +193,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			}
 
 			// Filter per status
-			if (statusFilter.length) {
+			if (statusFilter.length && statusFilter !== 'All') {
 				const approved = statusFilter === 'Accepted';
 				filtered = filtered.filter((r) => r.request.approved === approved);
 			}
@@ -348,9 +348,12 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				<div className={styles.searchHeaderButtons}>
 					<OptionDropdown
 						onSelect={filterByStatus}
-						options={['Open Requests', 'Accepted']}
+						options={['All', 'Open Requests', 'Accepted']}
+						drawerStyle={{ width: 179 }}
 					>
-						<FilterButton onClick={() => {}} />
+						<FilterButton onClick={() => {}}>
+							{statusFilter || 'All'}
+						</FilterButton>
 					</OptionDropdown>
 					{isGridViewToggleable && (
 						<>

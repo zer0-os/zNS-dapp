@@ -8,12 +8,14 @@ type OptionDropdownProps = {
 	options: string[];
 	onSelect: (selection: string) => void;
 	children: React.ReactNode;
+	drawerStyle?: React.CSSProperties;
 };
 
 const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	options,
 	onSelect,
 	children,
+	drawerStyle,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [selected, setSelected] = useState('');
@@ -24,13 +26,8 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	};
 
 	const select = (option: string) => {
-		if (option === selected) {
-			setSelected('');
-			onSelect('');
-		} else {
-			setSelected(option);
-			onSelect(option);
-		}
+		setSelected(option);
+		onSelect(option);
 		close();
 	};
 
@@ -48,7 +45,7 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 				{children}
 			</div>
 			{isOpen && (
-				<ul className={styles.Drawer}>
+				<ul style={drawerStyle} className={styles.Drawer}>
 					{options.map((o) => (
 						<li
 							className={selected === o ? styles.Selected : ''}

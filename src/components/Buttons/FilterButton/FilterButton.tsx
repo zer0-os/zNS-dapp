@@ -9,13 +9,14 @@ import icon from './assets/icon.svg';
 
 type FilterButtonProps = {
 	onClick: () => void;
+	children?: React.ReactNode;
 };
 
-const FilterButton: React.FC<FilterButtonProps> = ({ onClick }) => {
+const FilterButton: React.FC<FilterButtonProps> = ({ onClick, children }) => {
 	return (
 		<button className={`${styles.Button} glow-text-white`} onClick={onClick}>
 			<img alt="filter" src={icon} />
-			<span>Filters</span>
+			<span>{children}</span>
 		</button>
 	);
 };
