@@ -152,7 +152,7 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 						subtext={'Creator'}
 					/>
 				</div>
-				<div>{request.metadata.description}</div>
+				<div className={styles.Story}>{request.metadata.description}</div>
 
 				{/* Stake Info */}
 				<div>

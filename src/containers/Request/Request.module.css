@@ -64,6 +64,12 @@
 	font-weight: 700;
 }
 
+.Story {
+	max-height: 150px;
+	overflow-y: scroll;
+	padding-right: 12px;
+}
+
 .Offer {
 	margin-top: 16px;
 	text-align: center;
