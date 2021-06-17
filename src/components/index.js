@@ -39,6 +39,7 @@ export { default as TextInput } from './Inputs/TextInput/TextInput';
 
 //- NavBars
 export { default as FilterBar } from './NavBars/FilterBar/FilterBar';
+export { default as TabBar } from './NavBars/TabBar/TabBar';
 export { default as TitleBar } from './NavBars/TitleBar/TitleBar';
 
 //- Tables

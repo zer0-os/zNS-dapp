@@ -6,7 +6,7 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import { Image, RequestTable, TextButton } from 'components';
+import { Image, RequestTable, TabBar } from 'components';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
@@ -51,21 +51,6 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 	const [selected, setSelected] = useState('requestsFor'); // Which tab is selected
 
-	////////////
-	// Styles //
-	////////////
-
-	// @TODO Move these out to the style module
-	const selectedCss = {
-		borderBottom: '1px solid #E0BAFF',
-		fontWeight: 400,
-	};
-
-	const defaultCss = {
-		fontWeight: 400,
-		color: 'white',
-	};
-
 	///////////////
 	// Functions //
 	///////////////
@@ -75,6 +60,10 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	};
 	const requestsFor = () => {
 		setSelected('requestsFor');
+	};
+
+	const select = (option: string) => {
+		setSelected(option);
 	};
 
 	/////////////
@@ -101,8 +90,11 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	useEffect(() => {
 		setRequestData([]); // Empty the request table between loads
 
+		if (selected !== `Offers You've Made` && selected !== `Offers Made To You`)
+			return;
+
 		let requests: DomainRequest[];
-		if (selected === 'requestsBy') {
+		if (selected === `Offers You've Made`) {
 			requests = yourRequests.requests?.domainRequests || [];
 		} else {
 			const r = requestsForYou.requests?.domains.map((d) => d.requests);
@@ -195,24 +187,22 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<div className={ProfileStyle.Sections}>
-				<TextButton
-					onClick={requestsFor}
-					selected={selected === 'requestsFor'}
-					style={selected === 'requestsFor' ? selectedCss : defaultCss}
-				>
-					Offers Made To You
-				</TextButton>
-				<TextButton
-					onClick={requestsBy}
-					selected={selected === 'requestsBy'}
-					style={selected === 'requestsBy' ? selectedCss : defaultCss}
-				>
-					Offers You've Made
-				</TextButton>
-				{/* <TextButton toggleable={true}>Offers</TextButton> */}
-			</div>
-			<RequestTable yours={selected === 'requestsBy'} requests={requestData} />
+			<TabBar
+				tabs={[
+					// `NFTs You've Made`,
+					// `NFTs You’ve Made`,
+					`Offers Made To You`,
+					`Offers You've Made`,
+				]}
+				onSelect={select}
+			/>
+			{(selected === `Offers Made To You` ||
+				selected === `Offers You've Made`) && (
+				<RequestTable
+					yours={selected === `Offers You've Made`}
+					requests={requestData}
+				/>
+			)}
 		</div>
 	);
 };
