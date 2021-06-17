@@ -22,6 +22,7 @@ import { getMetadata } from 'lib/metadata';
 import { randomImage, randomName } from 'lib/Random';
 import { ethers } from 'ethers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
+import { useStakingController } from 'lib/hooks/useStakingController';
 
 //- Type Imports
 import {
@@ -53,6 +54,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const { mvpVersion } = useMvpVersion();
 	const staking = useStakingProvider();
+	const { fulfillRequest } = useStakingController();
 
 	//////////////////
 	// State / Refs //
@@ -107,7 +109,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	/* Calls the middleware for approving a request
 		 This is passed to the Request modal */
-	const onAccept = async (request: DomainRequestAndContents) => {
+	const onApprove = async (request: DomainRequestAndContents) => {
 		try {
 			await staking.approveRequest(request);
 			setViewing(undefined);
@@ -115,6 +117,13 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			// Catch thrown when user rejects transaction
 			console.error(e);
 		}
+	};
+
+	const onFulfill = async (request: DomainRequestAndContents) => {
+		console.log('Fulfill', request);
+		// try {
+		// 	await fulfillRequest()
+		// }
 	};
 
 	/* Sets some search parameters 
@@ -276,13 +285,33 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				id: 'accepted',
 				accessor: (d: DisplayDomainRequestAndContents) => (
 					<div className={styles.center}>
-						{d.request.approved && (
+						{/*  */}
+						{d.request.approved && !yours && (
 							<div className={styles.Accepted}>
 								<span>Accepted</span>
 								<br />
-								<span>13.03.2021 08:22</span>
+								<span>{dateFromTimestamp(d.request.timestamp)}</span>
 							</div>
 						)}
+						{/* Is Fulfilled */}
+						{d.request.fulfilled && (
+							<div className={styles.Accepted}>
+								<span>Fulfilled</span>
+								<br />
+								<span>{dateFromTimestamp(d.request.timestamp)}</span>
+							</div>
+						)}
+						{/* Needs Fulfilling */}
+						{d.request.approved && yours && !d.request.fulfilled && (
+							<FutureButton
+								style={{ textTransform: 'uppercase' }}
+								glow
+								onClick={() => view(d.request.domain)}
+							>
+								Fulfill
+							</FutureButton>
+						)}
+						{/* Needs Approving */}
 						{!d.request.approved && (
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
@@ -332,7 +361,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					}}
 				>
 					<Request
-						onAccept={onAccept}
+						onApprove={onApprove}
+						onFulfill={onFulfill}
 						yours={yours || viewing.request.approved}
 						request={viewing}
 					/>
