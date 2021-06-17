@@ -57,7 +57,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const { mvpVersion } = useMvpVersion();
 	const staking = useStakingProvider();
-	const { fulfillRequest } = useStakingController();
 	const { addNotification } = useNotification();
 
 	//////////////////
