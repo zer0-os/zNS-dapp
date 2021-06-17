@@ -22,7 +22,7 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	//////////////////
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [selected, setSelected] = useState('');
+	const [selected, setSelected] = useState(options[0] || '');
 	const wrapperRef = useRef<HTMLUListElement>(null);
 
 	///////////////
@@ -75,7 +75,11 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 				{children}
 			</div>
 			{isOpen && (
-				<ul ref={wrapperRef} style={drawerStyle} className={styles.Drawer}>
+				<ul
+					ref={wrapperRef}
+					style={drawerStyle}
+					className={`${styles.Drawer} blur`}
+				>
 					{options.map((o) => (
 						<li
 							className={selected === o ? styles.Selected : ''}
