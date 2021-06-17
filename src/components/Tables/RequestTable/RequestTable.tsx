@@ -23,6 +23,7 @@ import { randomImage, randomName } from 'lib/Random';
 import { ethers } from 'ethers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useStakingController } from 'lib/hooks/useStakingController';
+import useNotification from 'lib/hooks/useNotification';
 
 //- Type Imports
 import {
@@ -57,6 +58,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const { mvpVersion } = useMvpVersion();
 	const staking = useStakingProvider();
 	const { fulfillRequest } = useStakingController();
+	const { addNotification } = useNotification();
 
 	//////////////////
 	// State / Refs //
@@ -123,6 +125,10 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
 		console.log('Fulfill', request);
+		addNotification(
+			'Fulfillment not linked up to back-end yet - should be a simple one liner once middleware is good to go',
+		);
+		setViewing(undefined);
 	};
 
 	/* Sets some search parameters 
