@@ -36,7 +36,6 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	//////////////////
 
 	const { mvpVersion } = useMvpVersion();
-
 	const staking = useStakingProvider();
 
 	//////////////////
@@ -50,17 +49,11 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	);
 
 	const [selected, setSelected] = useState(`Offers Made To You`); // Which tab is selected
+	const [isRequestTableLoading, setIsRequestTableLoading] = useState(false);
 
 	///////////////
 	// Functions //
 	///////////////
-
-	const requestsBy = () => {
-		setSelected('requestsBy');
-	};
-	const requestsFor = () => {
-		setSelected('requestsFor');
-	};
 
 	const select = (option: string) => {
 		setSelected(option);
@@ -88,10 +81,10 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 	// Get all requests data from IPFS and hooks
 	useEffect(() => {
-		setRequestData([]); // Empty the request table between loads
-
 		if (selected !== `Offers You've Made` && selected !== `Offers Made To You`)
 			return;
+
+		setIsRequestTableLoading(true);
 
 		let requests: DomainRequest[];
 		if (selected === `Offers You've Made`) {
@@ -106,6 +99,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 		if (!requests.length) {
 			setRequestData([]);
+			setIsRequestTableLoading(false);
 		}
 
 		if (requests.length) {
@@ -138,6 +132,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 					if (finishedCount === requestsToFetch.length) {
 						setRequestData(data);
+						setIsRequestTableLoading(false);
 					}
 				};
 
@@ -201,6 +196,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 				<RequestTable
 					yours={selected === `Offers You've Made`}
 					requests={requestData}
+					isLoading={isRequestTableLoading}
 				/>
 			)}
 		</div>

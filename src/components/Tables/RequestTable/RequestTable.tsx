@@ -41,12 +41,14 @@ type RequestTableProps = {
 	requests: DomainRequestAndContents[];
 	style?: React.CSSProperties;
 	yours?: boolean;
+	isLoading?: boolean;
 };
 
 const RequestTable: React.FC<RequestTableProps> = ({
 	requests,
 	style,
 	yours,
+	isLoading,
 }) => {
 	//////////////////
 	// Custom Hooks //
@@ -121,9 +123,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
 		console.log('Fulfill', request);
-		// try {
-		// 	await fulfillRequest()
-		// }
 	};
 
 	/* Sets some search parameters 
@@ -422,19 +421,22 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								))}
 							</thead>
 							<tbody {...getTableBodyProps()}>
-								{rows.map((row) => {
-									prepareRow(row);
-									return (
-										<tr
-											onClick={() => view(row.original.request.domain)}
-											{...row.getRowProps()}
-										>
-											{row.cells.map((cell) => (
-												<td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-											))}
-										</tr>
-									);
-								})}
+								{!isLoading &&
+									rows.map((row) => {
+										prepareRow(row);
+										return (
+											<tr
+												onClick={() => view(row.original.request.domain)}
+												{...row.getRowProps()}
+											>
+												{row.cells.map((cell) => (
+													<td {...cell.getCellProps()}>
+														{cell.render('Cell')}
+													</td>
+												))}
+											</tr>
+										);
+									})}
 							</tbody>
 						</table>
 					)}
@@ -517,6 +519,23 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								</li>
 							))}
 						</ol>
+					)}
+
+					{/* No Search Results Message */}
+					{!isLoading &&
+						(searchQuery.length > 0 || statusFilter.length > 0) &&
+						displayData.length === 0 && (
+							<p className={styles.Message}>No results!</p>
+						)}
+
+					{/* Data Loading Message */}
+					{isLoading && (
+						<p className={styles.Message}>Loading Domain Requests</p>
+					)}
+
+					{/* Empty Table Message */}
+					{!isLoading && requests.length === 0 && (
+						<p className={styles.Message}>Nothing here!</p>
 					)}
 				</div>
 
