@@ -49,7 +49,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 		[],
 	);
 
-	const [selected, setSelected] = useState('requestsFor'); // Which tab is selected
+	const [selected, setSelected] = useState(`Offers Made To You`); // Which tab is selected
 
 	///////////////
 	// Functions //
