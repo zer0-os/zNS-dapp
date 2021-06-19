@@ -8,6 +8,8 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 
 //- Component Imports
 import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components';
+// @zach
+// import { TransferOwnership } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
@@ -47,6 +49,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
 
+	// @zach
+	// Overlay state to control rendering of transfer ownership modal
+	const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
+
 	//- Web3 Domain Data
 	const { useDomain } = useDomainCache();
 	const domainContext = useDomain(domain.substring(1));
@@ -71,6 +77,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 		navigator.clipboard.writeText(domainId);
 	};
 
+	const transferOwnership = () => setIsTransferModalOpen(isOwnedByYou);
+
 	useEffect(() => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
 			setIsOwnedByYou(data.value.owner.id === account);
@@ -89,6 +97,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 
 	return (
 		<div className={styles.NFTView}>
+			{/* Transfer Ownership Modal */}
+			<Overlay
+				open={isTransferModalOpen}
+				onClose={() => setIsTransferModalOpen(false)}
+			>
+				{/* @zach modal in here */}
+				{/* <TransferOwnership /> */}
+			</Overlay>
+
+			{/* Image Lightbox */}
 			<Overlay
 				centered
 				img
@@ -160,7 +178,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 					<div className={styles.Buttons}>
 						<FutureButton
 							glow={isOwnedByYou}
-							onClick={() => {}}
+							onClick={transferOwnership}
 							style={{ height: 36, borderRadius: 18 }}
 						>
 							Transfer Ownership
