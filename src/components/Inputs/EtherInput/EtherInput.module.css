@@ -1,0 +1,137 @@
+.TextInput {
+	width: 100%;
+	padding: 16.5px 0px 12.5px 24px;
+
+	border-radius: 24px;
+
+	color: white;
+
+	background: var(--background-field-bg);
+	transition: border var(--animation-time-medium) ease-in-out;
+}
+
+.Error {
+	border: 1px solid var(--color-invalid);
+}
+
+.TextInput::placeholder {
+	color: #dedede;
+}
+
+.ErrorMessage {
+	display: block;
+	margin-top: 12px;
+
+	color: var(--color-invalid);
+	font-size: 14px;
+	font-weight: 700;
+	text-align: center;
+}
+
+/*- Text Input Title Style -*/
+
+.title {
+	position: relative;
+}
+
+.title > img {
+	position: absolute;
+	top: 50%;
+	left: 24px;
+
+	transform: translateY(-50%);
+
+	height: 24px;
+}
+
+.title > span {
+	position: absolute;
+	top: 10px;
+	left: 25px;
+	color: var(--color-grey-lighter);
+	font-size: 12px;
+}
+
+.title input {
+	width: 100%;
+	padding: 22.5px 0px 6.5px 24px;
+
+	text-align: left;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 19.2px;
+
+	background: linear-gradient(
+		94.23deg,
+		rgba(60, 161, 255, 0.2) 0%,
+		rgba(30, 81, 128, 0.2) 100%
+	);
+	color: #dadcdf;
+	border: 1px solid #88d7ff;
+
+	border-radius: 30px;
+}
+
+.title button {
+	position: absolute;
+	top: 12px;
+	right: 27px;
+
+	padding: 0;
+	margin: 0;
+
+	height: 26px;
+	width: 26px;
+
+	background-image: url('./assets/copy-icon.svg');
+	background-position: center;
+	background-size: cover;
+	background-color: rgba(0, 0, 0, 0);
+
+	transition: transform var(--animation-time-short) ease-in-out;
+}
+
+.title button:hover {
+	transform: scale(1.1);
+}
+
+/*- Text Input EthLogo Style -*/
+
+.ethlogo {
+	position: relative;
+}
+
+.ethlogo > img {
+	position: absolute;
+	top: 50%;
+	left: 24px;
+
+	transform: translateY(-50%);
+
+	height: 24px;
+}
+
+.ethlogo input {
+	width: 100%;
+	padding-left: 54px;
+
+	text-align: left;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 19.2px;
+
+	background: linear-gradient(
+		94.23deg,
+		rgba(60, 161, 255, 0.2) 0%,
+		rgba(30, 81, 128, 0.2) 100%
+	);
+	color: #dadcdf;
+	border: 1px solid #88d7ff;
+
+	border-radius: 30px;
+}
+
+.ethlogo > span {
+	top: 10px;
+	left: 55px;
+}
