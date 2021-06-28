@@ -123,11 +123,13 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
-		console.log('Fulfill', request);
-		addNotification(
-			'Fulfillment not linked up to back-end yet - should be a simple one liner once middleware is good to go',
-		);
-		setViewing(undefined);
+		try {
+			await staking.fulfillRequest(request);
+			setViewing(undefined);
+		} catch (e) {
+			// Catch thrown when user rejects transaction
+			console.error(e);
+		}
 	};
 
 	/* Sets some search parameters 

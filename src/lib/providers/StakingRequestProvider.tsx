@@ -21,6 +21,11 @@ interface StakingRequestProviderContext {
 	approveRequest: (
 		params: DomainRequestAndContents,
 	) => Promise<ethers.ContractTransaction | void>;
+	fulfilling: DomainRequestAndContents[];
+	fulfilled: DomainRequestAndContents[];
+	fulfillRequest: (
+		params: DomainRequestAndContents,
+	) => Promise<ethers.ContractTransaction | void>;
 }
 
 export const StakingRequestContext = React.createContext<StakingRequestProviderContext>(
@@ -31,6 +36,9 @@ export const StakingRequestContext = React.createContext<StakingRequestProviderC
 		approving: [],
 		approved: [],
 		approveRequest: async (params: DomainRequestAndContents) => {},
+		fulfilling: [],
+		fulfilled: [],
+		fulfillRequest: async (params: DomainRequestAndContents) => {},
 	},
 );
 
@@ -48,6 +56,9 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 
 	const [approving, setApproving] = useState<DomainRequestAndContents[]>([]);
 	const [approved, setApproved] = useState<DomainRequestAndContents[]>([]);
+
+	const [fulfilling, setFulfilling] = useState<DomainRequestAndContents[]>([]);
+	const [fulfilled, setFulfilled] = useState<DomainRequestAndContents[]>([]);
 
 	const stakingController = useStakingController();
 
@@ -107,6 +118,37 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 		return tx;
 	};
 
+	const fulfillRequest = async (params: DomainRequestAndContents) => {
+		const tx = await stakingController.fulfillRequest({
+			requestId: params.request.id,
+			metadataUri: params.contents.metadata,
+			locked: true,
+		});
+
+		if (!tx) {
+			addNotification(
+				'Encountered an error while attempting to fulfill request.',
+			);
+			return;
+		}
+
+		addNotification(`Minting ${params.contents.domain}`);
+		setFulfilling([...fulfilling, params]);
+
+		const waitForTx = async () => {
+			await tx.wait();
+
+			addNotification(`Successfully minted ${params.contents.domain}.`);
+			setFulfilling(fulfilling.filter((n) => n !== params));
+			fulfilled.push(params);
+			setFulfilled(fulfilled);
+		};
+
+		waitForTx();
+
+		return tx;
+	};
+
 	const contextValue = {
 		requesting,
 		requested,
@@ -114,6 +156,9 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 		approving,
 		approved,
 		approveRequest,
+		fulfilling,
+		fulfilled,
+		fulfillRequest,
 	};
 
 	return (
