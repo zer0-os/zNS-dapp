@@ -13,6 +13,7 @@ import {
 	OptionDropdown,
 	Overlay,
 	NFTCard,
+	Confirmation,
 } from 'components';
 import { Request } from 'containers';
 
@@ -20,9 +21,8 @@ import { Request } from 'containers';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { getMetadata } from 'lib/metadata';
 import { randomImage, randomName } from 'lib/Random';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
-import { useStakingController } from 'lib/hooks/useStakingController';
 import useNotification from 'lib/hooks/useNotification';
 
 //- Type Imports
@@ -37,6 +37,8 @@ import styles from './RequestTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import { useZnsContracts } from 'lib/contracts';
+import { useWeb3React } from '@web3-react/core';
 
 type RequestTableProps = {
 	requests: DomainRequestAndContents[];
@@ -54,9 +56,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	//////////////////
 	// Custom Hooks //
 	//////////////////
-
+	const { account } = useWeb3React();
 	const { mvpVersion } = useMvpVersion();
 	const staking = useStakingProvider();
+	const znsContracts = useZnsContracts()!;
+	const wildToken = znsContracts.wildToken;
 	const { addNotification } = useNotification();
 
 	//////////////////
@@ -73,6 +77,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DisplayDomainRequestAndContents | undefined
+	>();
+
+	// The Token that we need to approve the staking controller to transfer
+	const [approveTokenTransfer, setApproveTokenTransfer] = useState<
+		string | undefined
 	>();
 
 	// The requests that we have loaded (pulled from chain and grabbed metadata from IFPS)
@@ -122,7 +131,32 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		}
 	};
 
+	/**
+	 * Creates Transaction to approve the Staking Controller to transfer
+	 * tokens on behalf of the user.
+	 */
+	const onApproveTokenTransfer = async () => {
+		try {
+			await wildToken.approve(
+				znsContracts.stakingController.address,
+				ethers.constants.MaxUint256,
+			);
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
 	const onFulfill = async (request: DomainRequestAndContents) => {
+		const allowance = await wildToken.allowance(
+			account!,
+			znsContracts.stakingController.address,
+		);
+
+		if (allowance.lt(request.request.offeredAmount)) {
+			setApproveTokenTransfer(wildToken.address);
+			return;
+		}
+
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
@@ -372,6 +406,31 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						yours={yours || viewing.request.approved}
 						request={viewing}
 					/>
+				</Overlay>
+			)}
+			{/* Approve Token Transfer Overlay */}
+			{approveTokenTransfer && (
+				<Overlay
+					centered
+					open
+					onClose={() => {
+						setApproveTokenTransfer(undefined);
+					}}
+				>
+					<Confirmation
+						title={'Approve Token Transfer'}
+						onConfirm={() => {
+							onApproveTokenTransfer();
+						}}
+						onCancel={() => {
+							setApproveTokenTransfer(undefined);
+						}}
+					>
+						<p>
+							You must approve zNS to transfer your WILD tokens before minting
+							this domain.
+						</p>
+					</Confirmation>
 				</Overlay>
 			)}
 
