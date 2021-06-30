@@ -51,9 +51,13 @@ import {
 	NotificationDrawer,
 	NumberButton,
 	MintPreview,
+	TransferPreview
 } from 'components';
 
-import { MintNewNFT, NFTView, Enlist } from 'containers';
+import { MintNewNFT, NFTView, Enlist, TransferOwnership } from 'containers';
+
+//- Library Imports
+import { useTransferProvider } from 'lib/providers/TransferProvider';
 
 type ZNSProps = {
 	domain: string;
@@ -117,6 +121,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Minting State
 	const { minting, minted } = useMintProvider();
 	const { enlisting, enlist, clear } = useEnlist();
+	const { transferring } = useTransferProvider();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -134,6 +139,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
 	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
 	const [isSearchActive, setIsSearchActive] = useState(false);
+	const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
 
 	//- MVP Version
 	// TODO: Move the MVP version handler out to a hook
@@ -204,10 +210,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 			// Set the domain data for table view
 			setTableData(subdomains);
 
-			const shouldGetMetadata =
-				data.isJust() &&
-				data.value.subdomains.length > 0 &&
-				data.value.metadata;
+			// todo: optimise. same metadata call in NFTView.tsx:80
+			const shouldGetMetadata = data.isJust() && data.value.metadata;
 
 			//- Note:
 			// We're checking subdomains here, because we want to defer the IPFS
@@ -275,6 +279,19 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 					<Enlist onSubmit={() => {}} />
 				</Overlay>
 			)}
+			{isTransferModalOpen && (
+				<TransferOwnership
+					image={previewMetadata?.image || ''}
+					name={previewMetadata?.title || ''}
+					domain={domain}
+					onModalChange={(value) => setIsTransferModalOpen(value)}
+					creatorId={
+						!data.isNothing() && data.value.minter && data.value.minter.id
+							? data.value.minter.id
+							: ''
+					}
+				/>
+			)}
 
 			{/* ZNS Content */}
 			<div
@@ -333,6 +350,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 											<NumberButton
 												rotating={minting.length > 0}
 												number={minting.length}
+												onClick={() => {}}
+											/>
+										</Tooltip>
+									)}
+
+									{/* Transfer Progress button */}
+									{(transferring.length > 0) && (
+										<Tooltip content={<TransferPreview />}>
+											<NumberButton
+												rotating={transferring.length > 0}
+												number={transferring.length}
 												onClick={() => {}}
 											/>
 										</Tooltip>
@@ -491,8 +519,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 					</Spring>
 				)}
 
-				{/* Subdomain table */}
-
 				{/* Subdomain Table */}
 				{subdomains.length > 0 && !isNftView && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
@@ -515,7 +541,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 						{(styles) => (
 							<animated.div style={styles}>
-								<NFTView domain={domain} onEnlist={enlistCurrentDomain} />
+								<NFTView
+									domain={domain}
+									onEnlist={enlistCurrentDomain}
+									onTransfer={() => setIsTransferModalOpen(true)}
+								/>
 							</animated.div>
 						)}
 					</Spring>

@@ -56,6 +56,7 @@ export { default as HorizontalScroll } from './HorizontalScroll/HorizontalScroll
 export { default as Image } from './Image/Image';
 export { default as Member } from './Member/Member';
 export { default as MintPreview } from './MintPreview/MintPreview';
+export { default as TransferPreview } from './TransferPreview/TransferPreview';
 export { default as Notification } from './Notification/Notification';
 export { default as NotificationDrawer } from './NotificationDrawer/NotificationDrawer';
 export { default as Overlay } from './Overlay/Overlay';

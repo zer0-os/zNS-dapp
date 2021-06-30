@@ -14,6 +14,7 @@ import { DomainCacheProvider } from 'lib/useDomainCache';
 import NotificationProvider from 'lib/providers/NotificationProvider';
 import MintProvider from 'lib/providers/MintProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
+import TransferProvider from './lib/providers/TransferProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
@@ -73,9 +74,11 @@ function wrappedApp() {
 							<StakingRequestProvider>
 								<MintProvider>
 									<EnlistProvider>
-										<DomainCacheProvider>
-											<App />
-										</DomainCacheProvider>
+										<TransferProvider>
+											<DomainCacheProvider>
+												<App />
+											</DomainCacheProvider>
+										</TransferProvider>
 									</EnlistProvider>
 								</MintProvider>
 							</StakingRequestProvider>
