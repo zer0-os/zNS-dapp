@@ -84,6 +84,7 @@ const EtherInput: React.FC<TextInputProps> = ({
 						className={`${styles.TextInput} border-blue ${
 							error ? styles.Error : ''
 						}`}
+						maxLength={42}
 						onChange={handleChange}
 						style={style}
 						placeholder={placeholder}
