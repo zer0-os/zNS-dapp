@@ -1,6 +1,6 @@
 /*
  * @author Brett Collins
- * 
+ *
  * Search:
  *  - Fonts
  *  - Variables
@@ -35,7 +35,7 @@
 	src: local('Eurostile'), url('../fonts/Eurostile-Bol.otf') format('opentype');
 }
 
-/* 
+/*
  * Variables
  * -- The design is likely to change, so let's use variables where we can
  * to make changes a bit easier.
@@ -76,7 +76,7 @@
 	);
 	--background-secondary-button-fill: #1e5180;
 
-	/* TODO: Should probably find a library that lets us set 
+	/* TODO: Should probably find a library that lets us set
 		opacity on HEX colours so we don't have to do this */
 	--background-purple-card: #4e0084;
 	--background-purple-card-50: rgba(78, 0, 132, 0.5);
@@ -126,7 +126,7 @@
 	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
 
 	--glow-primary: drop-shadow(0px 0px 10px 0px #eb00ff);
-	--glow-text-blue: 0px 0px 12px rgba(60, 161, 255, 0.7);
+	--glow-text-blue: 0px 0px 10px rgba(60, 161, 255, 0.7);
 	--glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
 	--glow-text-white-big: 0px 0px 15px rgba(255, 255, 255, 1),
 		0px 0px 15px rgba(255, 255, 255, 1), 0px 0px 15px rgba(255, 255, 255, 1);
@@ -140,7 +140,7 @@
 
 /*
  *
- * Default HTML Elements 
+ * Default HTML Elements
  *
  */
 
@@ -263,7 +263,7 @@ button.text-button {
 
 /*
  *
- * Custom HTML Elements 
+ * Custom HTML Elements
  *
  */
 
@@ -336,7 +336,7 @@ nav {
 
 /*
  *
- * Borders 
+ * Borders
  *
  */
 
@@ -395,7 +395,7 @@ nav {
 
 /*
  *
- * Media Queries 
+ * Media Queries
  *
  */
 @media only screen and (max-width: 660px) {
