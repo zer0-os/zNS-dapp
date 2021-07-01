@@ -162,7 +162,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist, onTransfer }) => {
 					<div className={styles.Buttons}>
 						<FutureButton
 							glow={isOwnedByYou}
-							onClick={onTransfer}
+							onClick={() => isOwnedByYou && onTransfer()}
 							style={{ height: 36, borderRadius: 18 }}
 						>
 							Transfer Ownership
