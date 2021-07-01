@@ -35,7 +35,6 @@ const TransferProvider: React.FC<TransferProviderType> = ({ children }) => {
 		console.log(params);
 		addNotification(`Started transfer`);
 		setTransferring([...transferring, params]);
-		// todo: close modal
 
 		const finishTransferring = async () => {
 			setFinishedTransferring(params);
