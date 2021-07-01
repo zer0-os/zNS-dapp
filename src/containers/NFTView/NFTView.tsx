@@ -170,7 +170,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 							onClick={onEnlist}
 							style={{ height: 36, borderRadius: 18 }}
 						>
-							ENLIST
+							WAITLIST
 						</FutureButton>
 					</div>
 				</div>

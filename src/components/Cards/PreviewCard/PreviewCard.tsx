@@ -100,7 +100,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 								onClick={onButtonClick}
 								style={{ height: 36, width: 118, borderRadius: 30 }}
 							>
-								ENLIST
+								WAITLIST
 							</FutureButton>
 						)}
 						{mvpVersion === 3 && (
