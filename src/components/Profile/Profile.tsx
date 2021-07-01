@@ -58,10 +58,13 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	// @TODO Move these out to the style module
 	const selectedCss = {
 		borderBottom: '1px solid #E0BAFF',
+		marginBottom: '-1px',
 		fontWeight: 400,
 	};
 
 	const defaultCss = {
+		borderBottom: '1px solid transparent',
+		marginBottom: '-1px',
 		fontWeight: 400,
 		color: 'white',
 	};

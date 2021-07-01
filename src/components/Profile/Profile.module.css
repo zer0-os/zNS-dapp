@@ -52,6 +52,10 @@
 	color: white;
 }
 
+.Sections > button {
+	transition: border-bottom var(--animation-time-medium) ease-in-out;
+}
+
 .dp {
 	width: 160px;
 	height: 160px;
