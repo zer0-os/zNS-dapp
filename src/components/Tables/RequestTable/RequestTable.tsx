@@ -18,10 +18,14 @@ import { Request } from 'containers';
 
 //- Library Imports
 import useMvpVersion from 'lib/hooks/useMvpVersion';
-import { getMetadata } from 'lib/metadata';
 import { randomImage, randomName } from 'lib/Random';
+import { getRequestData } from './data';
 import { ethers } from 'ethers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
+import {
+	useRequestsMadeByAccount,
+	useRequestsForOwnedDomains,
+} from 'lib/hooks/useDomainRequestsSubgraph';
 
 //- Type Imports
 import {
@@ -37,16 +41,11 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
 type RequestTableProps = {
-	requests: DomainRequestAndContents[];
 	style?: React.CSSProperties;
-	yours?: boolean;
+	userId: string;
 };
 
-const RequestTable: React.FC<RequestTableProps> = ({
-	requests,
-	style,
-	yours,
-}) => {
+const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	//////////////////
 	// Custom Hooks //
 	//////////////////
@@ -64,6 +63,10 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
+	const [domainFilter, setDomainFilter] = useState('');
+
+	const yourRequests = useRequestsMadeByAccount(userId);
+	const requestsForYou = useRequestsForOwnedDomains(userId);
 
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
@@ -121,6 +124,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		 There's a hook listening to each of these variables */
 	const search = (query: string) => setSearchQuery(query);
 	const filterByStatus = (filter: string) => setStatusFilter(filter);
+	const filterByDomain = (filter: string) => setDomainFilter(filter);
 
 	/////////////
 	// Effects //
@@ -134,42 +138,29 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	}, []);
 
 	useEffect(() => {
+		const i = yourRequests.requests?.domainRequests || [];
+		const j =
+			requestsForYou.requests?.domains.map((d) => d.requests).flat() || [];
+
+		var requests = [];
+		if (domainFilter === 'All Domains') {
+			requests = i.concat(j);
+		} else if (domainFilter === 'Your Domains') {
+			requests = i;
+		} else {
+			requests = j;
+		}
+
 		if (requests.length === 0) return setLoadedRequests([]);
 
-		let finishedCount = 0; // Count of requests we have pulled data for
-		const completedLoading: DisplayDomainRequestAndContents[] = []; // Requests that have finished loading
-
-		/* Loop through each request, 
-			 pull the data from IPFS, 
-			 stash it in completedLoading,
-			 update table data when completed */
-		for (let i = 0; i < requests.length; i++) {
-			// eslint-disable-next-line no-loop-func
-			const doGetMetadata = async () => {
-				const request = requests[i] as DisplayDomainRequestAndContents;
-				const metadata = await getMetadata(request.contents.metadata);
-
-				if (metadata) {
-					const displayRequest: DisplayDomainRequestAndContents = {
-						...request,
-						metadata,
-					};
-
-					completedLoading.push(displayRequest);
-				} else {
-					console.warn(
-						`Unable to fetch metadata for domain: ${request.contents.domain}`,
-					);
-				}
-
-				if (++finishedCount === requests.length) {
-					setLoadedRequests(completedLoading);
-				}
-			};
-
-			doGetMetadata();
-		}
-	}, [requests, mvpVersion]);
+		getRequestData(requests).then((d: any) => {
+			if (d) {
+				setLoadedRequests(d);
+			} else {
+				console.error('Failed to retrieve request data');
+			}
+		});
+	}, [yourRequests.requests, requestsForYou.requests, domainFilter]);
 
 	/////////////////
 	// React-Table //
@@ -178,7 +169,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// Table Data
 	const displayData: DisplayDomainRequestAndContents[] = useMemo(() => {
 		if (
-			(searchQuery.length || (statusFilter.length && statusFilter !== 'All')) &&
+			(searchQuery.length ||
+				(statusFilter.length && statusFilter !== 'All Statuses')) &&
 			loadedRequests &&
 			loadedRequests.length
 		) {
@@ -193,10 +185,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			}
 
 			// Filter per status
-			if (statusFilter.length && statusFilter !== 'All') {
+			if (statusFilter.length && statusFilter !== 'All Statuses') {
 				const approved = statusFilter === 'Accepted';
 				filtered = filtered.filter((r) => r.request.approved === approved);
 			}
+
 			// @TODO Move sorting to React-Table built-in sorting
 			return filtered.sort(
 				(a, b) => Number(b.request.timestamp) - Number(a.request.timestamp),
@@ -255,7 +248,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				accessor: (d: DisplayDomainRequestAndContents) => {
 					return (
 						<div className={styles.left}>
-							{dateFromTimestamp(d.request.timestamp)}
+							{dateFromTimestamp(d.request.timestamp).split(',')[0]}
 						</div>
 					);
 				},
@@ -318,7 +311,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		const el = containerRef.current;
 		if (el)
 			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-	}, [displayData, requests, mvpVersion, isGridView]);
+	}, [displayData, mvpVersion, isGridView]);
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
@@ -331,11 +324,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						setViewing(undefined);
 					}}
 				>
-					<Request
-						onAccept={onAccept}
-						yours={yours || viewing.request.approved}
-						request={viewing}
-					/>
+					<Request onAccept={onAccept} request={viewing} />
 				</Overlay>
 			)}
 
@@ -347,12 +336,21 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				/>
 				<div className={styles.searchHeaderButtons}>
 					<OptionDropdown
-						onSelect={filterByStatus}
-						options={['All', 'Open Requests', 'Accepted']}
+						onSelect={filterByDomain}
+						options={['All Domains', 'Your Domains', 'Your Requests']}
 						drawerStyle={{ width: 179 }}
 					>
 						<FilterButton onClick={() => {}}>
-							{statusFilter || 'All'}
+							{domainFilter || 'All Domains'}
+						</FilterButton>
+					</OptionDropdown>
+					<OptionDropdown
+						onSelect={filterByStatus}
+						options={['All Statuses', 'Open Requests', 'Accepted']}
+						drawerStyle={{ width: 179 }}
+					>
+						<FilterButton onClick={() => {}}>
+							{statusFilter || 'All Statuses'}
 						</FilterButton>
 					</OptionDropdown>
 					{isGridViewToggleable && (

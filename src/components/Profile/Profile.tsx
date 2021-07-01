@@ -30,6 +30,10 @@ type ProfileProps = {
 	yours?: boolean;
 };
 
+enum Tabs {
+	Offers,
+}
+
 const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	//////////////////
 	// Custom Hooks //
@@ -49,7 +53,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 		[],
 	);
 
-	const [selected, setSelected] = useState('requestsFor'); // Which tab is selected
+	const [selected, setSelected] = useState(Tabs.Offers); // Which tab is selected
 
 	////////////
 	// Styles //
@@ -73,11 +77,8 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	// Functions //
 	///////////////
 
-	const requestsBy = () => {
-		setSelected('requestsBy');
-	};
-	const requestsFor = () => {
-		setSelected('requestsFor');
+	const offers = () => {
+		setSelected(Tabs.Offers);
 	};
 
 	/////////////
@@ -104,14 +105,11 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	useEffect(() => {
 		setRequestData([]); // Empty the request table between loads
 
-		let requests: DomainRequest[];
-		if (selected === 'requestsBy') {
-			requests = yourRequests.requests?.domainRequests || [];
-		} else {
-			const r = requestsForYou.requests?.domains.map((d) => d.requests);
-			if (r && r.length) requests = r.reduce((a, b) => a.concat(b));
-			else requests = [];
-		}
+		// Prepare request array
+		const i = yourRequests.requests?.domainRequests || [];
+		const j =
+			requestsForYou.requests?.domains.map((d) => d.requests).flat() || [];
+		const requests = i.concat(j);
 
 		if (!requests) return;
 
@@ -200,22 +198,15 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 			</div>
 			<div className={ProfileStyle.Sections}>
 				<TextButton
-					onClick={requestsFor}
-					selected={selected === 'requestsFor'}
-					style={selected === 'requestsFor' ? selectedCss : defaultCss}
+					onClick={offers}
+					selected={selected === Tabs.Offers}
+					style={selected === Tabs.Offers ? selectedCss : defaultCss}
 				>
-					Offers Made To You
-				</TextButton>
-				<TextButton
-					onClick={requestsBy}
-					selected={selected === 'requestsBy'}
-					style={selected === 'requestsBy' ? selectedCss : defaultCss}
-				>
-					Offers You've Made
+					Offers
 				</TextButton>
 				{/* <TextButton toggleable={true}>Offers</TextButton> */}
 			</div>
-			<RequestTable yours={selected === 'requestsBy'} requests={requestData} />
+			<RequestTable userId={id} />
 		</div>
 	);
 };
