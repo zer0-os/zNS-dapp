@@ -22,7 +22,7 @@ const Enlist: React.FC<EnlistProps> = ({ onSubmit }) => {
 	const [image, setImage] = useState('');
 	const [emailAddress, setEmailAddress] = useState('');
 	const [reasonForPurchase, setReasonForPurchase] = useState('');
-	const [bidUsd, setBidUsd] = useState(0);
+	const [bidUsd, setBidUsd] = useState('');
 	const [errors, setErrors] = useState<string[]>([]);
 
 	// Form validation
@@ -31,21 +31,24 @@ const Enlist: React.FC<EnlistProps> = ({ onSubmit }) => {
 			String(text).toLowerCase(),
 		);
 	const valid =
-		isEmail(emailAddress) && reasonForPurchase.length > 0 && bidUsd > 0;
+		isEmail(emailAddress) &&
+		reasonForPurchase.length > 0 &&
+		bidUsd.length > 0 &&
+		parseFloat(bidUsd) > 0;
 
 	const clickSubmit = async () => {
 		// Do some validation here
 		const e = [];
 		if (!isEmail(emailAddress)) e.push('email');
 		if (reasonForPurchase.length <= 0) e.push('reason');
-		if (bidUsd <= 0) e.push('bid');
+		if (bidUsd.length > 0 && parseFloat(bidUsd) > 0) e.push('bid');
 		setErrors(e);
 
 		if (e.length === 0) {
 			const params: EnlistSubmitParams = {
 				email: emailAddress,
 				reason: reasonForPurchase,
-				bid: bidUsd,
+				bid: parseFloat(bidUsd),
 			};
 
 			await submit(params);
@@ -91,18 +94,13 @@ const Enlist: React.FC<EnlistProps> = ({ onSubmit }) => {
 							onChange={(text: string) => setReasonForPurchase(text)}
 						/>
 						<TextInput
-							type="number"
-							placeholder={'Bid (USD)'}
+							placeholder={'Offer (WILD)'}
+							onChange={(amount: string) => setBidUsd(amount)}
+							text={bidUsd}
 							style={{ height: 48 }}
-							text={bidUsd.toString()}
 							error={errors.includes('bid')}
-							onChange={(text: string) =>
-								setBidUsd(text === '' ? 0 : parseFloat(text))
-							}
+							numeric
 						/>
-						<span className={styles.Bid}>
-							{Number(bidUsd.toFixed(2)).toLocaleString()} WILD
-						</span>
 					</div>
 					<div className={`${styles.NFT} border-rounded`}>
 						<Image src={image} />
