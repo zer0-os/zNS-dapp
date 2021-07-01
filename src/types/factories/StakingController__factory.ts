@@ -101,7 +101,7 @@ const _abi = [
         type: "string",
       },
       {
-        indexed: true,
+        indexed: false,
         internalType: "string",
         name: "name",
         type: "string",

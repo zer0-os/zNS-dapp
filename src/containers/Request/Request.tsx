@@ -24,12 +24,18 @@ import galaxyBackground from './assets/galaxy.png';
 
 type RequestProps = {
 	request: DisplayDomainRequestAndContents;
-	// @TODO Change 'yours' to 'showActionButtons'
+	// @TODO Change 'yours' to 'sentByYou'
 	yours?: boolean;
-	onAccept: (request: DomainRequestAndContents) => void;
+	onApprove: (request: DomainRequestAndContents) => void;
+	onFulfill: (request: DomainRequestAndContents) => void;
 };
 
-const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
+const Request: React.FC<RequestProps> = ({
+	request,
+	yours,
+	onApprove,
+	onFulfill,
+}) => {
 	////////////////////
 	// Imported Hooks //
 	////////////////////
@@ -42,7 +48,9 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 
 	const [stake, setStake] = useState(0); // Stake in USD (as state because API call is async)
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false); // Toggle image lightbox
-	const [hasAccepted, setHasAccepted] = useState(false); // Toggle confirmation overlay
+	const [isModalOpen, setIsModalOpen] = useState(false); // Toggle confirmation overlay
+	const isFulfilling =
+		yours && request.request.approved && !request.request.fulfilled;
 
 	// Token offer in correct format
 	const tokenAmount = Number(
@@ -53,11 +61,12 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 	// Functions //
 	///////////////
 
-	const accept = () => setHasAccepted(true);
-	const cancel = () => setHasAccepted(false);
+	const openModal = () => setIsModalOpen(true);
+	const closeModal = () => setIsModalOpen(false);
 	const preview = () => setIsLightboxOpen(true);
 	const confirm = () => {
-		if (onAccept) onAccept(request);
+		if (isFulfilling && onFulfill) onFulfill(request);
+		else if (!isFulfilling && onApprove) onApprove(request);
 	};
 
 	/////////////
@@ -99,8 +108,8 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 			)}
 
 			{/* Confirmation Overlay */}
-			{hasAccepted && (
-				<Overlay centered open onClose={() => {}}>
+			{isModalOpen && (
+				<Overlay centered open onClose={closeModal}>
 					<div
 						className={`${styles.Confirmation} blur border-primary border-rounded`}
 					>
@@ -117,7 +126,7 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 								style={{ textTransform: 'uppercase' }}
 								alt
 								glow
-								onClick={cancel}
+								onClick={closeModal}
 							>
 								Cancel
 							</FutureButton>
@@ -126,7 +135,7 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 								glow
 								onClick={confirm}
 							>
-								Confirm
+								Continue
 							</FutureButton>
 						</div>
 					</div>
@@ -176,14 +185,29 @@ const Request: React.FC<RequestProps> = ({ request, yours, onAccept }) => {
 					</div>
 
 					{/* Action Buttons */}
-					{!yours && (
+
+					{/* Fulfill */}
+					{yours && request.request.approved && !request.request.fulfilled && (
 						<div className={styles.Buttons}>
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
 								glow
-								onClick={accept}
+								onClick={openModal}
 							>
-								Accept
+								Fulfill
+							</FutureButton>
+						</div>
+					)}
+
+					{/* Approve */}
+					{!yours && !request.request.approved && (
+						<div className={styles.Buttons}>
+							<FutureButton
+								style={{ textTransform: 'uppercase' }}
+								glow
+								onClick={openModal}
+							>
+								Approve
 							</FutureButton>
 						</div>
 					)}

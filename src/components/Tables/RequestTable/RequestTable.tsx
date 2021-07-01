@@ -13,6 +13,7 @@ import {
 	OptionDropdown,
 	Overlay,
 	NFTCard,
+	Confirmation,
 } from 'components';
 import { Request } from 'containers';
 
@@ -20,12 +21,13 @@ import { Request } from 'containers';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { randomImage, randomName } from 'lib/Random';
 import { getRequestData } from './data';
-import { ethers } from 'ethers';
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import {
 	useRequestsMadeByAccount,
 	useRequestsForOwnedDomains,
 } from 'lib/hooks/useDomainRequestsSubgraph';
+import { BigNumber, ethers } from 'ethers';
+import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
+import useNotification from 'lib/hooks/useNotification';
 
 //- Type Imports
 import {
@@ -39,6 +41,8 @@ import styles from './RequestTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import { useZnsContracts } from 'lib/contracts';
+import { useWeb3React } from '@web3-react/core';
 
 type RequestTableProps = {
 	style?: React.CSSProperties;
@@ -49,9 +53,12 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	//////////////////
 	// Custom Hooks //
 	//////////////////
-
+	const { account } = useWeb3React();
 	const { mvpVersion } = useMvpVersion();
 	const staking = useStakingProvider();
+	const znsContracts = useZnsContracts()!;
+	const wildToken = znsContracts.wildToken;
+	const { addNotification } = useNotification();
 
 	//////////////////
 	// State / Refs //
@@ -64,6 +71,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
 	const [domainFilter, setDomainFilter] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
 	const yourRequests = useRequestsMadeByAccount(userId);
 	const requestsForYou = useRequestsForOwnedDomains(userId);
@@ -71,6 +79,11 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DisplayDomainRequestAndContents | undefined
+	>();
+
+	// The Token that we need to approve the staking controller to transfer
+	const [approveTokenTransfer, setApproveTokenTransfer] = useState<
+		string | undefined
 	>();
 
 	// The requests that we have loaded (pulled from chain and grabbed metadata from IFPS)
@@ -110,9 +123,44 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 
 	/* Calls the middleware for approving a request
 		 This is passed to the Request modal */
-	const onAccept = async (request: DomainRequestAndContents) => {
+	const onApprove = async (request: DomainRequestAndContents) => {
 		try {
 			await staking.approveRequest(request);
+			setViewing(undefined);
+		} catch (e) {
+			// Catch thrown when user rejects transaction
+			console.error(e);
+		}
+	};
+
+	/**
+	 * Creates Transaction to approve the Staking Controller to transfer
+	 * tokens on behalf of the user.
+	 */
+	const onApproveTokenTransfer = async () => {
+		try {
+			await wildToken.approve(
+				znsContracts.stakingController.address,
+				ethers.constants.MaxUint256,
+			);
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const onFulfill = async (request: DomainRequestAndContents) => {
+		const allowance = await wildToken.allowance(
+			account!,
+			znsContracts.stakingController.address,
+		);
+
+		if (allowance.lt(request.request.offeredAmount)) {
+			setApproveTokenTransfer(wildToken.address);
+			return;
+		}
+
+		try {
+			await staking.fulfillRequest(request);
 			setViewing(undefined);
 		} catch (e) {
 			// Catch thrown when user rejects transaction
@@ -130,6 +178,22 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	// Effects //
 	/////////////
 
+	// Refresh data 5 seconds after a request is approved
+	// This is hopefully enough time for the subgraph to update
+	React.useEffect(() => {
+		let isSubscribed = true;
+		setTimeout(() => {
+			if (isSubscribed) {
+				yourRequests.refresh();
+				requestsForYou.refresh();
+			}
+		}, 5000);
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [staking.approved, yourRequests, requestsForYou]);
+
 	// Listen for window resizes and handle them
 	useEffect(() => {
 		window.addEventListener('resize', handleResize);
@@ -146,9 +210,9 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 		if (domainFilter === 'All Domains') {
 			requests = i.concat(j);
 		} else if (domainFilter === 'Your Domains') {
-			requests = i;
-		} else {
 			requests = j;
+		} else {
+			requests = i;
 		}
 
 		if (requests.length === 0) return setLoadedRequests([]);
@@ -269,13 +333,40 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 				id: 'accepted',
 				accessor: (d: DisplayDomainRequestAndContents) => (
 					<div className={styles.center}>
-						{d.request.approved && (
+						{/* Fulfilled domain requests */}
+						{d.request.fulfilled && (
 							<div className={styles.Accepted}>
-								<span>Accepted</span>
+								<span>Fulfilled</span>
 								<br />
-								<span>13.03.2021 08:22</span>
+								<span>{dateFromTimestamp(d.request.timestamp)}</span>
 							</div>
 						)}
+
+						{/* Your request - approved */}
+						{d.request.approved &&
+							!d.request.fulfilled &&
+							d.contents.requestor === userId && (
+								<FutureButton
+									style={{ textTransform: 'uppercase' }}
+									glow
+									onClick={() => view(d.request.domain)}
+								>
+									{console.log(d)}
+									Fulfill
+								</FutureButton>
+							)}
+
+						{d.request.approved &&
+							!d.request.fulfilled &&
+							d.contents.requestor !== userId && (
+								<div className={styles.Accepted}>
+									<span>Accepted</span>
+									<br />
+									<span>{dateFromTimestamp(d.request.timestamp)}</span>
+								</div>
+							)}
+
+						{/* Needs Approving */}
 						{!d.request.approved && (
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
@@ -324,7 +415,37 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 						setViewing(undefined);
 					}}
 				>
-					<Request onAccept={onAccept} request={viewing} />
+					<Request
+						onApprove={onApprove}
+						onFulfill={onFulfill}
+						request={viewing}
+						yours={viewing.contents.requestor === userId}
+					/>
+				</Overlay>
+			)}
+			{/* Approve Token Transfer Overlay */}
+			{approveTokenTransfer && (
+				<Overlay
+					centered
+					open
+					onClose={() => {
+						setApproveTokenTransfer(undefined);
+					}}
+				>
+					<Confirmation
+						title={'Approve Token Transfer'}
+						onConfirm={() => {
+							onApproveTokenTransfer();
+						}}
+						onCancel={() => {
+							setApproveTokenTransfer(undefined);
+						}}
+					>
+						<p>
+							You must approve zNS to transfer your WILD tokens before minting
+							this domain.
+						</p>
+					</Confirmation>
 				</Overlay>
 			)}
 
@@ -390,19 +511,22 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 								))}
 							</thead>
 							<tbody {...getTableBodyProps()}>
-								{rows.map((row) => {
-									prepareRow(row);
-									return (
-										<tr
-											onClick={() => view(row.original.request.domain)}
-											{...row.getRowProps()}
-										>
-											{row.cells.map((cell) => (
-												<td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-											))}
-										</tr>
-									);
-								})}
+								{!isLoading &&
+									rows.map((row) => {
+										prepareRow(row);
+										return (
+											<tr
+												onClick={() => view(row.original.request.domain)}
+												{...row.getRowProps()}
+											>
+												{row.cells.map((cell) => (
+													<td {...cell.getCellProps()}>
+														{cell.render('Cell')}
+													</td>
+												))}
+											</tr>
+										);
+									})}
 							</tbody>
 						</table>
 					)}
@@ -486,6 +610,23 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 							))}
 						</ol>
 					)}
+
+					{/* No Search Results Message */}
+					{!isLoading &&
+						(searchQuery.length > 0 || statusFilter.length > 0) &&
+						displayData.length === 0 && (
+							<p className={styles.Message}>No results!</p>
+						)}
+
+					{/* Data Loading Message */}
+					{isLoading && (
+						<p className={styles.Message}>Loading Domain Requests</p>
+					)}
+
+					{/* Empty Table Message */}
+					{/* {!isLoading && requests.length === 0 && (
+						<p className={styles.Message}>Nothing here!</p>
+					)} */}
 				</div>
 
 				{/* Expander for animating height (@TODO Remove this functionality) */}

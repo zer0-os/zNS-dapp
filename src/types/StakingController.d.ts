@@ -568,7 +568,7 @@ export class StakingController extends Contract {
       requestId: BigNumberish | null,
       offeredAmount: null,
       requestUri: null,
-      name: string | null,
+      name: null,
       requestor: null,
       domainNonce: null
     ): EventFilter;

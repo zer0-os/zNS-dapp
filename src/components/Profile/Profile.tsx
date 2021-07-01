@@ -6,33 +6,17 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import { Image, RequestTable, TextButton } from 'components';
+import { Image, RequestTable, TabBar } from 'components';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
-import {
-	useRequestsMadeByAccount,
-	useRequestsForOwnedDomains,
-} from 'lib/hooks/useDomainRequestsSubgraph';
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
-
-//- Type Imports
-import {
-	DomainRequest,
-	DomainRequestAndContents,
-	DomainRequestContents,
-} from 'lib/types';
 
 type ProfileProps = {
 	id: string;
 	// TODO: Change yours
 	yours?: boolean;
 };
-
-enum Tabs {
-	Offers,
-}
 
 const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	//////////////////
@@ -41,119 +25,23 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 	const { mvpVersion } = useMvpVersion();
 
-	const staking = useStakingProvider();
-
 	//////////////////
 	// State / Data //
 	//////////////////
 
-	const yourRequests = useRequestsMadeByAccount(id);
-	const requestsForYou = useRequestsForOwnedDomains(id);
-	const [requestData, setRequestData] = useState<DomainRequestAndContents[]>(
-		[],
-	);
-
-	const [selected, setSelected] = useState(Tabs.Offers); // Which tab is selected
-
-	////////////
-	// Styles //
-	////////////
-
-	// @TODO Move these out to the style module
-	const selectedCss = {
-		borderBottom: '1px solid #E0BAFF',
-		marginBottom: '-1px',
-		fontWeight: 400,
-	};
-
-	const defaultCss = {
-		borderBottom: '1px solid transparent',
-		marginBottom: '-1px',
-		fontWeight: 400,
-		color: 'white',
-	};
+	const [selected, setSelected] = useState(`Offers`); // Which tab is selected
 
 	///////////////
 	// Functions //
 	///////////////
 
-	const offers = () => {
-		setSelected(Tabs.Offers);
+	const select = (option: string) => {
+		setSelected(option);
 	};
 
 	/////////////
 	// Effects //
 	/////////////
-
-	// Refresh data 5 seconds after a request is approved
-	// This is hopefully enough time for the subgraph to update
-	React.useEffect(() => {
-		let isSubscribed = true;
-		setTimeout(() => {
-			if (isSubscribed) {
-				yourRequests.refresh();
-				requestsForYou.refresh();
-			}
-		}, 5000);
-
-		return () => {
-			isSubscribed = false;
-		};
-	}, [staking.approved, yourRequests, requestsForYou]);
-
-	// Get all requests data from IPFS and hooks
-	useEffect(() => {
-		setRequestData([]); // Empty the request table between loads
-
-		// Prepare request array
-		const i = yourRequests.requests?.domainRequests || [];
-		const j =
-			requestsForYou.requests?.domains.map((d) => d.requests).flat() || [];
-		const requests = i.concat(j);
-
-		if (!requests) return;
-
-		if (!requests.length) {
-			setRequestData([]);
-		}
-
-		if (requests.length) {
-			// Store Request Contents data
-			const data: DomainRequestAndContents[] = [];
-			// Get request contents from IPFS
-			const requestsToFetch = requests.filter((d) => d.requestUri);
-
-			let finishedCount = 0;
-			for (let i = 0; i < requestsToFetch.length; i++) {
-				// eslint-disable-next-line no-loop-func
-				const doFetch = async () => {
-					const request = requestsToFetch[i];
-					try {
-						const res = await fetch(request.requestUri);
-						const contents: DomainRequestContents = await res.json();
-						const display: DomainRequestAndContents = {
-							contents,
-							request,
-						};
-						data.push(display);
-					} catch (e) {
-						console.error(
-							`Failed to fetch domain request contents for request id: ${request.domain} `,
-						);
-						console.debug(e);
-					}
-
-					++finishedCount;
-
-					if (finishedCount === requestsToFetch.length) {
-						setRequestData(data);
-					}
-				};
-
-				doFetch();
-			}
-		}
-	}, [selected, yourRequests.requests, requestsForYou.requests]);
 
 	return (
 		<div
@@ -196,17 +84,8 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<div className={ProfileStyle.Sections}>
-				<TextButton
-					onClick={offers}
-					selected={selected === Tabs.Offers}
-					style={selected === Tabs.Offers ? selectedCss : defaultCss}
-				>
-					Offers
-				</TextButton>
-				{/* <TextButton toggleable={true}>Offers</TextButton> */}
-			</div>
-			<RequestTable userId={id} />
+			<TabBar tabs={['Offers']} onSelect={select} />
+			{selected === 'Offers' && <RequestTable userId={id} />}
 		</div>
 	);
 };
