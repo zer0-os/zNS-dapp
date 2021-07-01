@@ -65,7 +65,7 @@ const Enlist: React.FC<EnlistProps> = ({ onSubmit }) => {
 	return (
 		<div className={`${styles.Enlist} blur border-rounded border-primary`}>
 			<div className={styles.Header}>
-				<h1 className={`glow-text-white`}>Enlist To Purchase</h1>
+				<h1 className={`glow-text-white`}>Join Waitlist</h1>
 				<div>
 					<h2 className={`glow-text-white`}>0://{enlisting?.name || ''}</h2>
 				</div>

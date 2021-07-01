@@ -247,7 +247,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							buttonClick(row.value);
 						}}
 					>
-						ENLIST
+						WAITLIST
 					</FutureButton>
 				),
 			},
