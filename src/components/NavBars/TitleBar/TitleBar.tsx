@@ -42,7 +42,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	const domainSearch = useDomainSearch();
 	const history = useHistory();
 	const searchInput = useRef<HTMLInputElement>(null);
-	const [searchText, setSearchText] = useState('Type to search!');
+	const [searchText, setSearchText] = useState('');
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const listRef = useRef<HTMLUListElement>(null);
@@ -85,7 +85,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 			domainSearch.setPattern(searchQuery);
 		else domainSearch.setPattern('?');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		if (searchQuery.length === 0) setSearchText('Type to search!');
+		// if (searchQuery.length === 0) setSearchText('Type to search!');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchQuery]);
 
@@ -94,7 +94,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		if (height) setContainerHeight(height);
 
 		if (domainSearch?.matches?.length === 0 && searchQuery.length > 0)
-			setSearchText('No results!');
+			setSearchText('No results');
 
 		return () => {
 			setContainerHeight(50);
@@ -167,9 +167,9 @@ const TitleBar: React.FC<TitleBarProps> = ({
 									<span>{s.name}</span>
 								</li>
 							))}
-						{domainSearch.matches?.length === 0 && (
+						{/* {searchText.length > 0 && domainSearch.matches?.length === 0 && (
 							<li key={'type'}>{searchText}</li>
-						)}
+						)} */}
 					</ul>
 					<div
 						ref={containerRef}
