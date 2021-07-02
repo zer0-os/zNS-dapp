@@ -46,7 +46,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const listRef = useRef<HTMLUListElement>(null);
-	const [containerHeight, setContainerHeight] = useState<number>(50);
+	const [containerHeight, setContainerHeight] = useState<number>(0);
 
 	const config = {
 		smallestSearchQuery: 2,
@@ -85,16 +85,19 @@ const TitleBar: React.FC<TitleBarProps> = ({
 			domainSearch.setPattern(searchQuery);
 		else domainSearch.setPattern('?');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		// if (searchQuery.length === 0) setSearchText('Type to search!');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchQuery]);
 
 	useEffect(() => {
 		const height = listRef?.current?.clientHeight;
 		if (height) setContainerHeight(height);
 
-		if (domainSearch?.matches?.length === 0 && searchQuery.length > 0)
+		if (searchQuery.length === 0) {
+			setContainerHeight(0);
+		}
+
+		if (domainSearch?.matches?.length === 0 && searchQuery.length > 0) {
 			setSearchText('No results');
+		}
 
 		return () => {
 			setContainerHeight(50);
@@ -104,9 +107,10 @@ const TitleBar: React.FC<TitleBarProps> = ({
 
 	return (
 		<div
-			className={`${styles.TitleBar} ${
-				isSearchActive ? styles.Searching : ''
-			} border-primary`}
+			className={`
+			${styles.TitleBar} 
+			${isSearchActive ? styles.Searching : ''}
+			border-primary`}
 		>
 			<div className={styles.Bar}>
 				<div className={styles.Navigation}>
@@ -137,12 +141,13 @@ const TitleBar: React.FC<TitleBarProps> = ({
 						onFocus={openSearch}
 						onBlur={closeSearch}
 						ref={searchInput}
+						placeholder={isSearchActive ? 'Type to search' : ''}
 					/>
 				</div>
 				{children}
 			</div>
 			{isSearchActive && (
-				<div className={`${styles.SearchResults} blur border-primary`}>
+				<div className={`${styles.SearchResults} blur`}>
 					<ul ref={listRef}>
 						{/* @TODO: Implement exact domain properly */}
 						{config.isExactMatchEnabled && domainSearch?.exactMatch?.name && (
@@ -167,14 +172,14 @@ const TitleBar: React.FC<TitleBarProps> = ({
 									<span>{s.name}</span>
 								</li>
 							))}
-						{/* {searchText.length > 0 && domainSearch.matches?.length === 0 && (
+						{searchText.length > 0 && domainSearch.matches?.length === 0 && (
 							<li key={'type'}>{searchText}</li>
-						)} */}
+						)}
 					</ul>
 					<div
 						ref={containerRef}
 						className={styles.GrowContainer}
-						style={{ width: '100%', height: containerHeight }}
+						style={{ height: containerHeight }}
 					></div>
 				</div>
 			)}
