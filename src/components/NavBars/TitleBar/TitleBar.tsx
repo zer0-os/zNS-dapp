@@ -43,6 +43,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	const history = useHistory();
 	const searchInput = useRef<HTMLInputElement>(null);
 	const [searchText, setSearchText] = useState('');
+	const [isSearchInputHovered, setIsSearchInputHovered] = useState(false);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const listRef = useRef<HTMLUListElement>(null);
@@ -65,12 +66,16 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		setIsSearchActive(true);
 	};
 	const closeSearch = () => {
+		setContainerHeight(0);
 		// Search is disappearing before the click registers
 		// Set a little timeout so the row click registers before de-rendering
-		setTimeout(() => {
-			setIsSearchActive(false);
-			setSearchQuery('');
-		}, 120);
+		setTimeout(
+			() => {
+				setIsSearchActive(false);
+				setSearchQuery('');
+			},
+			containerHeight === 0 ? 0 : 750,
+		);
 	};
 
 	const go = (to: string) => {
@@ -108,8 +113,9 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	return (
 		<div
 			className={`
-			${styles.TitleBar} 
+			${styles.TitleBar}
 			${isSearchActive ? styles.Searching : ''}
+			${isSearchInputHovered ? styles.Hovered : ''}
 			border-primary`}
 		>
 			<div className={styles.Bar}>
@@ -130,7 +136,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 					/>
 					{/* TODO: Split this into its own component */}
 					{!isSearchActive && (
-						<ZNALink style={{ marginLeft: 16 }} domain={domain} />
+						<ZNALink style={{ marginLeft: 16, marginTop: 3 }} domain={domain} />
 					)}
 					<input
 						className={styles.Search}
@@ -140,6 +146,8 @@ const TitleBar: React.FC<TitleBarProps> = ({
 						type="text"
 						onFocus={openSearch}
 						onBlur={closeSearch}
+						onMouseEnter={() => setIsSearchInputHovered(true)}
+						onMouseLeave={() => setIsSearchInputHovered(false)}
 						ref={searchInput}
 						placeholder={isSearchActive ? 'Type to search' : ''}
 					/>

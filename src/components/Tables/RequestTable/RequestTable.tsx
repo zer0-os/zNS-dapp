@@ -25,9 +25,8 @@ import {
 	useRequestsMadeByAccount,
 	useRequestsForOwnedDomains,
 } from 'lib/hooks/useDomainRequestsSubgraph';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
-import useNotification from 'lib/hooks/useNotification';
 
 //- Type Imports
 import {
@@ -57,24 +56,26 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	const { mvpVersion } = useMvpVersion();
 	const staking = useStakingProvider();
 	const znsContracts = useZnsContracts()!;
+	const yourRequests = useRequestsMadeByAccount(userId);
+	const requestsForYou = useRequestsForOwnedDomains(userId);
 	const wildToken = znsContracts.wildToken;
-	const { addNotification } = useNotification();
 
 	//////////////////
 	// State / Refs //
 	//////////////////
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const [containerHeight, setContainerHeight] = useState(0);
+	const [containerHeight, setContainerHeight] = useState(0); // Not needed anymore?
+
 	const [isGridView, setIsGridView] = useState(false);
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
+
+	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
 	const [domainFilter, setDomainFilter] = useState('');
-	const [isLoading, setIsLoading] = useState(false);
 
-	const yourRequests = useRequestsMadeByAccount(userId);
-	const requestsForYou = useRequestsForOwnedDomains(userId);
+	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
@@ -216,7 +217,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 		}
 
 		if (requests.length === 0) return setLoadedRequests([]);
-
 		getRequestData(requests).then((d: any) => {
 			if (d) {
 				setLoadedRequests(d);
@@ -351,7 +351,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 									glow
 									onClick={() => view(d.request.domain)}
 								>
-									{console.log(d)}
 									Fulfill
 								</FutureButton>
 							)}
@@ -396,13 +395,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 		prepareRow,
 		rows,
 	} = tableHook;
-
-	// @TODO Remove this functionality - it's legacy from DomainTable
-	useEffect(() => {
-		const el = containerRef.current;
-		if (el)
-			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-	}, [displayData, mvpVersion, isGridView]);
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>

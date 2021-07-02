@@ -19,16 +19,30 @@ header {
 
 	width: 100%;
 
-	background: linear-gradient(
-		92.24deg,
-		rgba(0, 22, 55, 0.5) 0%,
-		rgba(0, 63, 137, 0.265) 100%
-	);
+	background-color: rgba(0, 63, 137, 0.265);
 	border-radius: var(--box-radius);
+
+	overflow: none;
+
+	transition: background-color var(--animation-time-medium) ease-in-out,
+		border var(--animation-time-medium) ease-in-out,
+		box-shadow var(--animation-time-medium) ease-in-out;
+}
+
+.Hovered {
+	background-color: rgba(0, 63, 137, 0.4);
+	box-shadow: 0 0 20px 0 rgb(235 0 255 / 40%);
+}
+
+.Searching {
+	background-color: rgba(0, 63, 137, 0.4);
+	box-shadow: 0 0 20px 0 rgb(235 0 255 / 40%);
 }
 
 .Bar {
+	position: relative;
 	display: flex;
+	justify-content: space-between;
 	padding: 11px 17px;
 }
 
@@ -73,6 +87,8 @@ header {
 }
 
 .Bar > div:nth-child(2) {
+	flex: 1;
+	flex-grow: 0 0;
 	justify-content: flex-end;
 }
 
@@ -82,18 +98,26 @@ header {
 
 /* Search Styling */
 
+.Navigation {
+	flex: 1;
+}
+
 .Navigation > input {
 	background: none;
-	margin-left: 2px;
-	max-width: 200px;
+	margin-left: 16px;
+	margin-top: 3px;
 
-	border-bottom: 1px solid transparent;
-	transition: border-bottom var(--animation-time-medium) ease-in-out;
+	/* border-bottom: 1px solid transparent; */
+	/* transition: border-bottom var(--animation-time-medium) ease-in-out; */
 }
 
 .Navigation > input:hover {
 	background: none;
-	border-bottom: 1px solid var(--color-accent-1);
+	/* border-bottom: 1px solid var(--color-accent-1); */
+}
+
+.Navigation > input::placeholder {
+	color: #e5baff70;
 }
 
 .Searching {
@@ -102,7 +126,7 @@ header {
 }
 
 .Searching .Navigation > input {
-	border-bottom: 1px solid var(--color-accent-1);
+	/* border-bottom: 1px solid var(--color-accent-1); */
 	transition: none;
 	width: 100%;
 }
@@ -128,19 +152,19 @@ header {
 	border-radius: 0 0 var(--box-radius) var(--box-radius);
 	box-shadow: none;
 
-	overflow: hidden;
+	overflow: scroll;
+	max-height: 80vh;
 }
 
 .SearchResults ul {
 	position: absolute;
-	top: 0;
 	left: 0;
 	width: 100%;
 }
 
 .SearchResults li {
 	width: 100%;
-	padding: 17px 17px 17px 101px;
+	padding: 17px 17px 17px 103px;
 
 	cursor: pointer;
 

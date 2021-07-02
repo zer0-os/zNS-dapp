@@ -240,13 +240,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 		<>
 			{/* Overlays */}
 			<NotificationDrawer />
-			{isSearchActive && (
-				<Overlay open onClose={() => {}}>
-					<></>
-				</Overlay>
-			)}
+			<Overlay style={{ zIndex: 0 }} open={isSearchActive} onClose={() => {}}>
+				<></>
+			</Overlay>
 			{isWalletOverlayOpen && (
-				<Overlay centered open onClose={() => setIsWalletOverlayOpen(false)}>
+				<Overlay
+					centered
+					open={isWalletOverlayOpen}
+					onClose={() => setIsWalletOverlayOpen(false)}
+				>
 					<ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} />
 				</Overlay>
 			)}
