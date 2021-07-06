@@ -10,6 +10,7 @@
  */
 
 export { default as Enlist } from './Enlist/Enlist';
+export { default as MakeABid } from './MakeABid/MakeABid';
 export { default as MintNewNFT } from './MintNewNFT/MintNewNFT';
 export { default as Shop } from './Shop/Shop';
 export { default as NFTView } from './NFTView/NFTView';

@@ -49,7 +49,7 @@ const TextInput: React.FC<TextInputProps> = ({
 	};
 
 	return (
-		<div className={styles.Container}>
+		<>
 			{multiline && (
 				<textarea
 					className={`${styles.TextInput} border-blue ${
@@ -79,7 +79,7 @@ const TextInput: React.FC<TextInputProps> = ({
 			{error && errorText && (
 				<span className={styles.ErrorMessage}>{errorText}</span>
 			)}
-		</div>
+		</>
 	);
 };
 

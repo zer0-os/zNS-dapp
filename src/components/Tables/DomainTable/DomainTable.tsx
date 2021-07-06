@@ -9,13 +9,14 @@ import {
 	SearchBar,
 	Image,
 	NFTCard,
+	Overlay,
 } from 'components';
+import { MakeABid } from 'containers';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
-import useEnlist from 'lib/hooks/useEnlist';
 import { getRelativeDomainPath } from 'lib/domains';
-import { Domain, Metadata } from 'lib/types';
+import { DisplayDomain, Domain, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 
@@ -28,7 +29,7 @@ import list from './assets/list.svg';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
-	domains: any;
+	domains: DisplayDomain[];
 	isRootDomain: boolean;
 	style?: React.CSSProperties;
 	empty?: boolean;
@@ -49,10 +50,14 @@ interface RowData {
 	name: string;
 	nftName: string;
 	ticker: string;
-	lastBid: number;
+	highestBid: number;
 	numBids: number;
 	lastSalePrice: number;
 	tradePrice: number;
+}
+
+enum Modals {
+	Bid,
 }
 
 // @TODO: Create a `Domain` type for `domains`
@@ -64,7 +69,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	isGridView,
 	setIsGridView,
 }) => {
-	const { enlist } = useEnlist();
 	const { mvpVersion } = useMvpVersion();
 
 	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
@@ -72,19 +76,26 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
 
+	const [modal, setModal] = useState<Modals | undefined>();
+	const [biddingOn, setBiddingOn] = useState<DisplayDomain | undefined>();
+
 	const [loadedDomains, setLoadedDomains] = useState<DomainData[]>([]);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	// Functions
-	const setGrid = () => {
-		if (setIsGridView) setIsGridView(true);
-	};
-	const setList = () => {
-		if (setIsGridView) setIsGridView(false);
-	};
+	///////////////
+	// Functions //
+	///////////////
 
-	// Clicks
+	// Table views
+	const setGrid = () => setIsGridView && setIsGridView(true);
+	const setList = () => setIsGridView && setIsGridView(false);
+
+	// Modals
+	const openBidModal = () => setModal(Modals.Bid);
+	const closeModal = () => setModal(undefined);
+
+	//Click handlers
 	const rowClick = (event: any, domain: string) => {
 		// @TODO Decouple this line from classname
 		if (event.target.className.indexOf('FutureButton') >= 0) return;
@@ -93,9 +104,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	const buttonClick = (id: string) => {
 		try {
-			// TODO: Get rid of any
-			const domain = domains.filter((d: any) => d.id === id)[0];
-			enlist(domain);
+			const domain = domains.filter((d: DisplayDomain) => d.id === id)[0];
+			setBiddingOn(domain);
+			openBidModal();
 		} catch (e) {
 			console.error(e);
 		}
@@ -104,6 +115,10 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const handleResize = () => {
 		if (window.innerWidth < 1282) setList();
 	};
+
+	/////////////
+	// Effects //
+	/////////////
 
 	useEffect(() => {
 		window.addEventListener('resize', handleResize);
@@ -152,6 +167,10 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		if (!count) setHasMetadataLoaded(true);
 	}, [domains]);
 
+	/////////////////
+	// React Table //
+	/////////////////
+
 	// Convert each domain into a RowData object
 	// Runs when metadata for current domain array has fully loaded
 	const rowData: RowData[] = useMemo(
@@ -165,7 +184,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						nftName: d.metadata.name,
 						name: d.domain.name,
 						ticker: d.domain.name.toUpperCase(),
-						lastBid: 1000,
+						highestBid: 1000,
 						numBids: 1000,
 						lastSalePrice: 1000,
 						tradePrice: 1000,
@@ -210,16 +229,16 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				Cell: (row) => <div style={{ textAlign: 'left' }}>{row.value}</div>,
 			},
 			{
-				Header: () => <div style={{ textAlign: 'right' }}>Last Bid</div>,
-				accessor: 'lastBid',
+				Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
+				accessor: 'highestBid',
 				Cell: (row) => (
 					<div style={{ textAlign: 'right' }}>
-						${Number(row.value.toFixed(2)).toLocaleString()}
+						{Number(row.value.toFixed(2)).toLocaleString()} WILD
 					</div>
 				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'right' }}>No. Of Bids</div>,
+				Header: () => <div style={{ textAlign: 'right' }}>Number Of Bids</div>,
 				accessor: 'numBids',
 				Cell: (row) => (
 					<div style={{ textAlign: 'right' }}>
@@ -232,7 +251,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				accessor: 'lastSalePrice',
 				Cell: (row) => (
 					<div style={{ textAlign: 'right' }}>
-						${Number(row.value.toFixed(2)).toLocaleString()}
+						{Number(row.value.toFixed(2)).toLocaleString()} WILD
 					</div>
 				),
 			},
@@ -252,11 +271,16 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'center' }}>Trade</div>,
-				accessor: 'tradePrice',
+				Header: () => <div style={{ textAlign: 'center' }}>Bid</div>,
+				id: 'tradePrice',
+				accessor: 'id',
 				Cell: (row) => (
-					<FutureButton style={{ margin: '0 auto' }} glow onClick={() => {}}>
-						${Number(row.value.toFixed(2)).toLocaleString()}
+					<FutureButton
+						style={{ margin: '0 auto', textTransform: 'uppercase' }}
+						glow
+						onClick={() => buttonClick(row.value)}
+					>
+						Make A Bid
 					</FutureButton>
 				),
 			},
@@ -271,10 +295,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		const relativeDomain = getRelativeDomainPath(domain);
 		history.push(relativeDomain);
 	};
-	const initialState =
-		mvpVersion === 1
-			? { hiddenColumns: ['lastBid', 'numBids', 'lastSalePrice', 'tradePrice'] }
-			: { hiddenColumns: ['id'] };
+	const initialState = { hiddenColumns: ['id'] };
 
 	// React-Table Hooks
 	const tableHook = useTable(
@@ -296,99 +317,118 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		setSearchQuery(query);
 	};
 
-	return (
-		<div
-			style={style}
-			className={
-				styles.DomainTableContainer + ' border-primary border-rounded blur'
-			}
-		>
-			{/* Table Header */}
-			<div className={styles.searchHeader}>
-				<SearchBar
-					onChange={(event: any) => search(event.target.value)}
-					style={{ width: '100%', marginRight: 16 }}
-				/>
-				<div className={styles.searchHeaderButtons}>
-					<IconButton
-						onClick={setList}
-						toggled={!isGridView}
-						iconUri={list}
-						style={{ height: 32, width: 32 }}
-					/>
-					<IconButton
-						onClick={setGrid}
-						toggled={isGridView}
-						iconUri={grid}
-						style={{ height: 32, width: 32 }}
-					/>
-				</div>
-			</div>
+	/////////////////////
+	// React Fragments //
+	/////////////////////
 
-			<div className={styles.DomainTable}>
-				<div className={styles.Container} ref={containerRef}>
-					{/* List View */}
-					{!isGridView && (
-						<table {...getTableProps()} className={styles.DomainTable}>
-							<thead>
-								{headerGroups.map((headerGroup) => (
-									<tr {...headerGroup.getHeaderGroupProps()}>
-										{headerGroup.headers.map((column) => (
-											<th {...column.getHeaderProps()}>
-												{column.render('Header')}
-											</th>
-										))}
-									</tr>
-								))}
-							</thead>
-							<tbody {...getTableBodyProps()}>
-								{rows.map((row) => {
-									prepareRow(row);
-									return (
-										<tr
-											onClick={(event: any) =>
-												rowClick(event, row.original.name)
-											}
-											{...row.getRowProps()}
-										>
-											{row.cells.map((cell) => (
-												<td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+	const overlays = () => (
+		<Overlay onClose={closeModal} centered open={modal === Modals.Bid}>
+			<MakeABid domain={biddingOn!} onBid={closeModal} />
+		</Overlay>
+	);
+
+	////////////
+	// Render //
+	////////////
+
+	return (
+		<>
+			{overlays()}
+			<div
+				style={style}
+				className={
+					styles.DomainTableContainer + ' border-primary border-rounded blur'
+				}
+			>
+				{/* Table Header */}
+				<div className={styles.searchHeader}>
+					<SearchBar
+						onChange={(event: any) => search(event.target.value)}
+						style={{ width: '100%', marginRight: 16 }}
+					/>
+					<div className={styles.searchHeaderButtons}>
+						<IconButton
+							onClick={setList}
+							toggled={!isGridView}
+							iconUri={list}
+							style={{ height: 32, width: 32 }}
+						/>
+						<IconButton
+							onClick={setGrid}
+							toggled={isGridView}
+							iconUri={grid}
+							style={{ height: 32, width: 32 }}
+						/>
+					</div>
+				</div>
+
+				<div className={styles.DomainTable}>
+					<div className={styles.Container} ref={containerRef}>
+						{/* List View */}
+						{!isGridView && (
+							<table {...getTableProps()} className={styles.DomainTable}>
+								<thead>
+									{headerGroups.map((headerGroup) => (
+										<tr {...headerGroup.getHeaderGroupProps()}>
+											{headerGroup.headers.map((column) => (
+												<th {...column.getHeaderProps()}>
+													{column.render('Header')}
+												</th>
 											))}
 										</tr>
-									);
-								})}
-							</tbody>
-						</table>
-					)}
+									))}
+								</thead>
+								<tbody {...getTableBodyProps()}>
+									{rows.map((row) => {
+										prepareRow(row);
+										return (
+											<tr
+												onClick={(event: any) =>
+													rowClick(event, row.original.name)
+												}
+												{...row.getRowProps()}
+											>
+												{row.cells.map((cell) => (
+													<td {...cell.getCellProps()}>
+														{cell.render('Cell')}
+													</td>
+												))}
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						)}
 
-					{/* Grid View */}
-					{isGridView && (
-						<ol className={styles.Grid}>
-							{data
-								.filter((d) => d.name.includes(searchQuery))
-								.map((d, i) => (
-									<li onClick={() => navigateTo(d.name)} key={i}>
-										<NFTCard
-											name={d.nftName ? d.nftName : d.name}
-											domain={d ? d.name : ''}
-											imageUri={d.image ? d.image : ''}
-											price={d.tradePrice}
-											nftOwnerId={'Owner Name'}
-											nftMinterId={'Minter Name'}
-											showCreator={true}
-											showOwner={true}
-										/>
-									</li>
-								))}
-						</ol>
-					)}
+						{/* Grid View */}
+						{isGridView && (
+							<ol className={styles.Grid}>
+								{data
+									.filter((d) => d.name.includes(searchQuery))
+									.map((d, i) => (
+										<li onClick={() => navigateTo(d.name)} key={i}>
+											<NFTCard
+												name={d.nftName ? d.nftName : d.name}
+												domain={d ? d.name : ''}
+												imageUri={d.image ? d.image : ''}
+												price={d.tradePrice}
+												nftOwnerId={'Owner Name'}
+												nftMinterId={'Minter Name'}
+												showCreator={true}
+												showOwner={true}
+											/>
+										</li>
+									))}
+							</ol>
+						)}
+					</div>
+					<div
+						style={{ height: containerHeight }}
+						className={styles.Expander}
+					></div>
 				</div>
-				<div
-					style={{ height: containerHeight }}
-					className={styles.Expander}
-				></div>
 			</div>
-		</div>
+		</>
 	);
 };
 

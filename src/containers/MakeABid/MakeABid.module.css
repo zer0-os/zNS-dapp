@@ -1,0 +1,101 @@
+.Container {
+	width: 640px;
+	padding: 40px;
+
+	color: white !important;
+	background: var(--background-blue-card-wilder);
+}
+
+.Header {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	width: 100%;
+}
+
+.Header h1 {
+	color: white;
+	font-size: 36px;
+	font-weight: 700;
+	margin-bottom: 40px;
+}
+
+.Container h2 {
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 28px;
+}
+
+.Section {
+	margin-top: 40px;
+	margin-bottom: 56px;
+}
+
+.Section > div:nth-of-type(2) {
+	margin-left: 12px;
+}
+
+.NFT {
+	cursor: pointer;
+	height: 224px;
+	margin-right: 12px;
+	min-width: 224px;
+
+	overflow: hidden;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+	width: 224px;
+}
+
+.NFT > img {
+	border-radius: inherit;
+	height: 100%;
+	width: 100%;
+}
+
+.NFT:hover {
+	transform: scale(1.05);
+}
+
+.Details {
+	margin-left: 12px;
+}
+
+.Price {
+	margin: 24px 0;
+}
+
+.Price h3 {
+	color: var(--color-primary-lighter-3);
+	font-size: 14px;
+	font-weight: 700;
+	margin-bottom: 4px;
+}
+
+.Price span:first-of-type {
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.Price span:nth-of-type(2) {
+	font-size: 14px;
+	font-weight: 700;
+}
+
+.InputWrapper {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 40px;
+}
+
+.InputWrapper p {
+	font-size: 18px;
+	font-weight: 400;
+	margin-bottom: 16px;
+	text-align: center;
+}
+
+.Inputs {
+	width: 100%;
+}
