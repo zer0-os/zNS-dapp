@@ -6,7 +6,7 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import { Image, RequestTable, TabBar } from 'components';
+import { Image, RequestTable, TabBar, BidTable } from 'components';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
@@ -84,8 +84,9 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<TabBar tabs={['Offers']} onSelect={select} />
+			<TabBar tabs={['Offers', 'Bids']} onSelect={select} />
 			{selected === 'Offers' && <RequestTable userId={id} />}
+			{selected === 'Bids' && <BidTable userId={id} />}
 		</div>
 	);
 };
