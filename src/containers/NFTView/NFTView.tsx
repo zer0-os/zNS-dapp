@@ -12,6 +12,7 @@ import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components';
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
+import { getBidsForNft } from 'lib/zAuction';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -74,6 +75,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	useEffect(() => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
 			setIsOwnedByYou(data.value.owner.id === account);
+
+			// Get bid data
+			// @durien
+			const nftId = '???';
+			getBidsForNft(nftId);
 
 			// Get metadata
 			fetch(data.value.metadata).then(async (d: Response) => {
