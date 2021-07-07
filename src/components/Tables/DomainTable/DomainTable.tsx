@@ -156,6 +156,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				// eslint-disable-next-line no-loop-func
 				getMetadata(domain.metadata).then((metadata) => {
 					if (!metadata) return;
+					domain.title = metadata.title;
+					domain.image = metadata.image;
+					domain.description = metadata.description;
 					loaded.push({ domain: domain, metadata: metadata });
 					if (++completed === count) {
 						setLoadedDomains(loaded);

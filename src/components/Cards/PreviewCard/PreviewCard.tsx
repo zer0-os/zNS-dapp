@@ -98,9 +98,9 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							<FutureButton
 								glow
 								onClick={onButtonClick}
-								style={{ height: 36, width: 118, borderRadius: 30 }}
+								style={{ height: 36, width: 160, borderRadius: 30 }}
 							>
-								WAITLIST
+								MAKE A BID
 							</FutureButton>
 						)}
 						{mvpVersion === 3 && (

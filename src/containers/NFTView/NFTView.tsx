@@ -8,11 +8,12 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 
 //- Component Imports
 import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components';
+import { MakeABid } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
-import { getBidsForNft, placeBid, encodeBid } from 'lib/zAuction';
+import { encodeBid } from 'lib/zAuction';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -28,10 +29,9 @@ import { useZnsContracts } from 'lib/contracts';
 
 type NFTViewProps = {
 	domain: string;
-	onEnlist: () => void;
 };
 
-const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
+const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
 
 	//- Notes:
@@ -47,6 +47,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	const [description, setDescription] = useState<string>(''); // Description from metadata url
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
+	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
 
 	//- Web3 Domain Data
 	const { useDomain } = useDomainCache();
@@ -71,6 +72,13 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 		addNotification('Copied address to clipboard.');
 		navigator.clipboard.writeText(domainId);
 	};
+
+	const openBidOverlay = () => {
+		if (data.isNothing()) return;
+		setIsBidOverlayOpen(true);
+	};
+
+	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
 	useEffect(() => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
@@ -111,6 +119,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 					}}
 				/>
 			</Overlay>
+
+			{data.isJust() && (
+				<Overlay onClose={closeBidOverlay} centered open={isBidOverlayOpen}>
+					<MakeABid domain={data.value} onBid={closeBidOverlay} />
+				</Overlay>
+			)}
 
 			<div
 				className={`${styles.NFT} blur border-primary border-rounded`}
@@ -172,10 +186,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 						</FutureButton>
 						<FutureButton
 							glow={!isOwnedByYou}
-							onClick={onEnlist}
+							onClick={openBidOverlay}
 							style={{ height: 36, borderRadius: 18 }}
 						>
-							WAITLIST
+							Make A Bid
 						</FutureButton>
 					</div>
 				</div>

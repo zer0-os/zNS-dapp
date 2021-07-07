@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 
 //- Component Imports
@@ -17,8 +17,9 @@ import { Request } from 'containers';
 
 //- Library Imports
 import { randomImage, randomName } from 'lib/Random';
-import { DisplayDomain } from 'lib/types';
+import { DisplayDomain, Bid } from 'lib/types';
 import { ethers } from 'ethers';
+import { useBidProvider } from 'lib/providers/BidProvider';
 
 //- Style Imports
 import styles from './BidTable.module.css';
@@ -32,6 +33,8 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	//////////////////
 	// State / Refs //
 	//////////////////
+
+	const { getBidsForYourDomains, getYourBids } = useBidProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0); // Not needed anymore?
@@ -47,7 +50,27 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	// Data //
 	//////////
 
-	const displayData = [{}, {}, {}, {}];
+	const [displayData, setDisplayData] = useState<Bid[]>([]);
+	useEffect(() => {
+		// @ zachary
+		// this table is a bit weird - need to get
+		// domain data for each bid. ill try get to this one
+
+		const get = async () => {
+			try {
+				const allBids = await Promise.all([
+					getBidsForYourDomains(),
+					getYourBids(),
+				]);
+				const flat = allBids.flat();
+				if (flat) setDisplayData(flat as Bid[]);
+				else setDisplayData([]);
+			} catch (e) {
+				console.error('Failed to retrieve bid data');
+			}
+		};
+		get();
+	}, []);
 
 	///////////////
 	// Functions //
@@ -114,13 +137,8 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 		useFilters,
 		useGlobalFilter,
 	);
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		prepareRow,
-		rows,
-	} = tableHook;
+	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
+		tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>

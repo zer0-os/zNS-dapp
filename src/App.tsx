@@ -13,6 +13,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { DomainCacheProvider } from 'lib/useDomainCache';
 import NotificationProvider from 'lib/providers/NotificationProvider';
 import MintProvider from 'lib/providers/MintProvider';
+import BidProvider from 'lib/providers/BidProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
@@ -70,15 +71,17 @@ function wrappedApp() {
 					<Web3ReactProvider getLibrary={getLibrary}>
 						{/* Our Hooks  */}
 						<MvpVersionProvider>
-							<StakingRequestProvider>
-								<MintProvider>
-									<EnlistProvider>
-										<DomainCacheProvider>
-											<App />
-										</DomainCacheProvider>
-									</EnlistProvider>
-								</MintProvider>
-							</StakingRequestProvider>
+							<BidProvider>
+								<StakingRequestProvider>
+									<MintProvider>
+										<EnlistProvider>
+											<DomainCacheProvider>
+												<App />
+											</DomainCacheProvider>
+										</EnlistProvider>
+									</MintProvider>
+								</StakingRequestProvider>
+							</BidProvider>
 						</MvpVersionProvider>
 					</Web3ReactProvider>
 				</NotificationProvider>

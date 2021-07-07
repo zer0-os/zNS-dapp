@@ -1,9 +1,12 @@
 //- React Imports
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //- Library Imports
-import { DisplayDomain } from 'lib/types';
+import { Domain, Metadata, Bid, Encoded } from 'lib/types';
 import { randomImage, randomName } from 'lib/Random';
+import { useBidProvider } from 'lib/providers/BidProvider';
+import { getMetadata } from 'lib/metadata';
+import { wildToUsd } from 'lib/coingecko';
 
 //- Component Imports
 import { FutureButton, Image, TextInput, Member } from 'components';
@@ -12,27 +15,63 @@ import { FutureButton, Image, TextInput, Member } from 'components';
 import styles from './MakeABid.module.css';
 
 type MakeABidProps = {
-	domain: any;
+	domain: Domain;
 	onBid: () => void;
 };
 
 const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
+	const { getBidsForDomain, placeBid } = useBidProvider();
+
 	///////////
 	// State //
 	///////////
 
 	const [bid, setBid] = useState<string>('');
+	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
+	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
+		number | undefined
+	>();
+	const [isBidPending, setIsBidPending] = useState(false);
+	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 
 	///////////////
 	// Functions //
 	///////////////
 
-	const makeBid = () => {
-		console.log('Making bid for ' + bid + ' WILD');
-		if (onBid) onBid();
+	const makeBid = async () => {
+		if (!Number(bid)) return;
+		setIsBidPending(true);
+		// @zachary calling the place bid hook here
+		const bidData = await placeBid(domain, Number(bid));
+		setIsBidPending(false);
+		if (bidData) onBid();
 	};
 
-	// Need to plug into the bid middleware
+	const getCurrentHighestBid = async () => {
+		// Get highest bid
+		const allBids = await getBidsForDomain(domain);
+		if (!allBids) return;
+		const max = allBids.reduce(function (prev, current) {
+			return prev.amount > current.amount ? prev : current;
+		});
+		setCurrentHighestBid(max);
+
+		// USD conversion
+		const bidUsd = await wildToUsd(max.amount);
+		setCurrentHighestBidUsd(bidUsd);
+	};
+
+	/////////////
+	// Effects //
+	/////////////
+
+	useEffect(() => {
+		getMetadata(domain.metadata).then((metadata: Metadata | undefined) => {
+			if (!metadata) return;
+			setDomainMetadata(metadata);
+			getCurrentHighestBid();
+		});
+	}, [domain]);
 
 	/////////////////////
 	// React Fragments //
@@ -49,19 +88,41 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const nft = () => (
 		<div className={styles.NFT}>
-			<Image src={`https://picsum.photos/seed/testing/300/300`} />
+			<Image src={domainMetadata?.image} />
 		</div>
+	);
+
+	const highestBid = () => (
+		<>
+			{currentHighestBid && (
+				<>
+					<span className="glow-text-white">
+						{/* @todo change dp amount */}
+						{currentHighestBid.amount.toFixed(2)} WILD
+					</span>{' '}
+					{currentHighestBidUsd && (
+						<span className="glow-text-white">
+							(${currentHighestBidUsd.toFixed(2)} USD)
+						</span>
+					)}
+				</>
+			)}
+			{!currentHighestBid && (
+				<>
+					<span className="glow-text-white">Loading bid data</span>
+				</>
+			)}
+		</>
 	);
 
 	const details = () => (
 		<div className={styles.Details}>
-			<h2 className="glow-text-white">{domain.name}</h2>
-			<span>0://wilder.hello</span>
+			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
+			<span>0://{domain.name}</span>
 
 			<div className={styles.Price}>
 				<h3 className="glow-text-blue">Highest Bid</h3>
-				<span className="glow-text-white">1.56 WILD</span>{' '}
-				<span className="glow-text-white">($8000)</span>
+				{highestBid()}
 			</div>
 			<Member
 				id={'53215321632163216321'}
@@ -103,6 +164,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					textTransform: 'uppercase',
 					margin: '0 auto',
 				}}
+				loading={isBidPending}
 				onClick={makeBid}
 			>
 				Place Bid
