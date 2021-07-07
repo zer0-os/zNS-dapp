@@ -516,10 +516,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 						{(styles) => (
 							<animated.div style={styles}>
-								<NFTView
-									domain={domain}
-									onEnlist={() => console.warn('NFT enlist deprecated')}
-								/>
+								<NFTView domain={domain} />
 							</animated.div>
 						)}
 					</Spring>
