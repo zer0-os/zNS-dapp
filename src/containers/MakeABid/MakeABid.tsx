@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 //- Library Imports
-import { Domain, Metadata, Bid, Encoded } from 'lib/types';
+import { Domain, Metadata, Bid } from 'lib/types';
 import { randomImage, randomName } from 'lib/Random';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
