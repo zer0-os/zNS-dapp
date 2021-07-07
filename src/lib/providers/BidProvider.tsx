@@ -2,13 +2,15 @@
 import React, { useState, useEffect } from 'react';
 
 //- Library Imports
-import { Domain, Bid, Encoded } from 'lib/types';
+import { Domain, Bid } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
-import { encodeBid } from 'lib/zAuction';
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
+
+import * as zAuction from '../zAuction';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
+import { useWeb3React } from '@web3-react/core';
 
 export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
@@ -47,7 +49,7 @@ const getMock = (amount: number) => {
 	[...Array(amount)].forEach((a: any) => {
 		mockBids.push({
 			amount: Math.random() * 10000,
-			bidderId: `0x${Math.floor(Math.random() * 100000000000000000)}`,
+			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			date: randomDate(),
 		});
 	});
@@ -62,9 +64,9 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	// Hooks & State & Data //
 	//////////////////////////
 
+	const context = useWeb3React();
 	const { addNotification } = useNotification();
 	const contracts = useZnsContracts();
-	const registrarAddress = contracts ? contracts.registry.address : '';
 
 	const getBidsForYourDomains = async () => {
 		try {
@@ -81,6 +83,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		try {
 			// @zachary
 			// return bids placed by user or undefined
+			// @TODO: Extend zAuction API to support this operation
 			const mockBids = getMock(5);
 			return mockBids;
 		} catch (e) {
@@ -90,10 +93,24 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 	const getBidsForDomain = async (domain: Domain) => {
 		try {
-			// @zachary
-			// return bid array or undefined
-			const mockBids = getMock(5);
-			return mockBids;
+			const bids = await zAuction.getBidsForNft(
+				contracts!.registry.address,
+				domain.id,
+			);
+
+			const displayBids = bids.map((e) => {
+				const amount = Number(ethers.utils.formatEther(e.bidAmount));
+
+				return {
+					bidderAccount: e.bidder,
+					amount,
+					date: new Date(), // not supported by zAuction
+				} as Bid;
+			});
+
+			// @TODO: Add filtering expired/invalid bids out
+
+			return displayBids;
 		} catch (e) {
 			console.error('Failed to retrive bids for domain ' + domain);
 			return;
@@ -103,7 +120,12 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const placeBid = async (domain: Domain, bid: number) => {
 		// Replace with bid functionality
 		try {
-			const data = await _getEncodedData(domain.id);
+			await zAuction.placeBid(
+				context.library!,
+				contracts!.registry.address,
+				domain.id,
+				ethers.utils.parseEther(bid.toString()).toString(),
+			);
 
 			// @zachary
 			// return bid data or undefined
@@ -114,12 +136,6 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			console.error(e);
 			return;
 		}
-	};
-
-	const _getEncodedData = async (domainId: string) => {
-		const tokenId = BigNumber.from(domainId).toString();
-		const encoded = await encodeBid(registrarAddress, tokenId);
-		return encoded;
 	};
 
 	const contextValue = {
@@ -137,7 +153,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 export default BidProvider;
 
 export function useBidProvider() {
-	const { getBidsForDomain, getBidsForYourDomains, getYourBids, placeBid } =
-		React.useContext(BidContext);
+	const {
+		getBidsForDomain,
+		getBidsForYourDomains,
+		getYourBids,
+		placeBid,
+	} = React.useContext(BidContext);
 	return { getBidsForDomain, getBidsForYourDomains, getYourBids, placeBid };
 }

@@ -1,46 +1,127 @@
+import { ethers } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
 
-const bidEndpoint = 'https://zproxy.ilios.dev/api/bid/';
-const bidsEndpoint = 'https://zproxy.ilios.dev/api/bids/';
+const apiEndpoint = 'https://zproxy.ilios.dev/api';
 
-export const getBidsForNft = (nftId: string) => {
-	return new Promise((resolve, reject) => {
-		if (!nftId.length) reject('Did not provide NFT address');
-		// @todo
-		return;
+const encodeBidEndpoint = `${apiEndpoint}/bid/`;
+const bidsEndpoint = `${apiEndpoint}/bids/`;
+
+interface BidsDto {
+	bidder: string;
+	bidAmount: string;
+	bidMessage: string;
+	startBlock: string;
+	expireBlock: string;
+}
+
+interface BidPayloadPostInterface {
+	bidAmount: string;
+	tokenId: string;
+	contractAddress: string;
+	minimumBid: string;
+	startBlock: string;
+	expireBlock: string;
+}
+
+interface CreateBidDto {
+	payload: string;
+	auctionId: number;
+	nftId: string;
+}
+
+interface BidPostInterface {
+	account: string;
+	auctionId: string;
+	tokenId: string;
+	contractAddress: string;
+	bidAmount: string;
+	bidMessage: string;
+	minimumBid: string;
+	startBlock: string;
+	expireBlock: string;
+	signedMessage: string;
+}
+
+function getNftId(contract: string, tokenId: string) {
+	const idString = contract + tokenId;
+	const idStringBytes = ethers.utils.toUtf8Bytes(idString);
+	const nftId = ethers.utils.keccak256(idStringBytes);
+	return nftId;
+}
+
+export async function getBidsForNft(contract: string, tokenId: string) {
+	const nftId = getNftId(contract, tokenId);
+
+	const response = await fetch(`${bidsEndpoint}${nftId}`, {
+		method: 'GET',
 	});
-};
 
-export const placeBid = (nftId: string, amount: number) => {
-	return new Promise((resolve, reject) => {
-		if (!nftId.length || amount <= 0) return reject('Invalid values');
-		// @todo
-		return;
-	});
-};
+	const bids = (await response.json()) as BidsDto[];
 
-export async function encodeBid(
-	contractAddress: string,
-	tokenId: string,
-): Promise<any | undefined> {
-	try {
-		if (!contractAddress.length || !tokenId.length) return;
-		const response = await fetch(bidEndpoint, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				bidAmount: '100',
-				contractAddress: contractAddress,
-				tokenId: tokenId,
-				minimumBid: '0',
-				startBlock: '0',
-				expireBlock: '99999999999',
-			}),
-		});
-		const data = await response.json();
-		return data;
-	} catch (e) {
-		console.error('Failed to retrieve data for ' + tokenId);
-		return;
+	return bids;
+}
+
+async function encodeBid(bid: BidPayloadPostInterface): Promise<CreateBidDto> {
+	if (!ethers.utils.isAddress(bid.contractAddress)) {
+		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
+
+	const response = await fetch(encodeBidEndpoint, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(bid),
+	});
+
+	const data = (await response.json()) as CreateBidDto;
+	return data;
+}
+
+async function sendBid(nftId: string, bid: BidPostInterface) {
+	if (!ethers.utils.isAddress(bid.contractAddress)) {
+		throw Error(`Invalid contract address ${bid.contractAddress}`);
+	}
+
+	await fetch(`${bidsEndpoint}${nftId}`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(bid),
+	});
+}
+
+export async function placeBid(
+	provider: ethers.providers.Web3Provider,
+	contract: string,
+	tokenId: string,
+	amount: string,
+) {
+	const signer = provider.getSigner();
+	const minimumBid = '0';
+	const startBlock = '0';
+	const expireBlock = '999999999999';
+
+	const bidData = await encodeBid({
+		contractAddress: contract,
+		tokenId,
+		bidAmount: amount,
+		minimumBid,
+		startBlock,
+		expireBlock,
+	});
+
+	const signedBid = await signer.signMessage(
+		ethers.utils.arrayify(bidData.payload),
+	);
+
+	await sendBid(bidData.nftId, {
+		account: await provider.getSigner().getAddress(),
+		auctionId: bidData.auctionId.toString(),
+		tokenId,
+		contractAddress: contract,
+		bidAmount: amount,
+		bidMessage: bidData.payload,
+		minimumBid,
+		startBlock,
+		expireBlock,
+		signedMessage: signedBid,
+	});
 }

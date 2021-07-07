@@ -104,12 +104,6 @@ export const DefaultDomain: Domain = {
 
 export type Bid = {
 	amount: number;
-	bidderId: string;
+	bidderAccount: string;
 	date: Date;
-};
-
-export type Encoded = {
-	auctionId: number;
-	nftId: string;
-	payload: string;
 };
