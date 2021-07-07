@@ -13,7 +13,8 @@ import { MakeABid } from 'containers';
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
-import { encodeBid } from 'lib/zAuction';
+import { useBidProvider } from 'lib/providers/BidProvider';
+import { wildToUsd } from 'lib/coingecko';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -22,10 +23,11 @@ import styles from './NFTView.module.css';
 import galaxyBackground from './assets/galaxy.png';
 import copyIcon from './assets/copy-icon.svg';
 import { Maybe } from 'true-myth';
-import { DisplayParentDomain } from 'lib/types';
+import { DisplayParentDomain, Bid } from 'lib/types';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { BigNumber } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
+const moment = require('moment');
 
 type NFTViewProps = {
 	domain: string;
@@ -48,11 +50,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
+	const [bids, setBids] = useState<Bid[]>([]);
+	const [highestBid, setHighestBid] = useState<Bid | undefined>();
+	const [highestBidUsd, setHighestBidUsd] = useState<number | undefined>();
 
 	//- Web3 Domain Data
 	const { useDomain } = useDomainCache();
 	const domainContext = useDomain(domain.substring(1));
 	const data: Maybe<DisplayParentDomain> = domainContext.data;
+	const { getBidsForDomain } = useBidProvider();
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -84,9 +90,21 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
 			setIsOwnedByYou(data.value.owner.id === account);
 
-			// Get bid data
-			// const num = BigNumber.from(domainId);
-			encodeBid(registrarAddress, domainId);
+			getBidsForDomain(data.value).then(async (bids) => {
+				if (!bids || !bids.length) return;
+				try {
+					setBids(bids);
+					const max = bids.reduce(function (prev, current) {
+						return prev.amount > current.amount ? prev : current;
+					});
+					setHighestBid(max);
+
+					const bidUsd = await wildToUsd(max.amount);
+					setHighestBidUsd(bidUsd);
+				} catch (e) {
+					console.error('Failed to retrive bid data');
+				}
+			});
 
 			// Get metadata
 			fetch(data.value.metadata).then(async (d: Response) => {
@@ -100,8 +118,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
 
-	return (
-		<div className={styles.NFTView}>
+	/////////////////////
+	// React Fragments //
+	/////////////////////
+
+	const overlays = () => (
+		<>
 			<Overlay
 				centered
 				img
@@ -125,7 +147,76 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					<MakeABid domain={data.value} onBid={closeBidOverlay} />
 				</Overlay>
 			)}
+		</>
+	);
 
+	const price = () => (
+		<>
+			{highestBid && (
+				<div className={styles.Price}>
+					<h2 className="glow-text-blue">Highest Bid</h2>
+					<span className={styles.Crypto}>
+						{Number(highestBid.amount.toFixed(2)).toLocaleString()} WILD{' '}
+						{highestBidUsd && (
+							<span className={styles.Fiat}>
+								(${Number(highestBidUsd.toFixed(2)).toLocaleString()})
+							</span>
+						)}
+					</span>
+				</div>
+			)}
+		</>
+	);
+
+	const history = () => (
+		<section
+			className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
+		>
+			<h4>History</h4>
+			<ul>
+				{bids.map((bid: Bid) =>
+					historyItem(bid.bidderId, bid.amount, bid.date),
+				)}
+			</ul>
+		</section>
+	);
+
+	const historyItem = (bidderId: string, amount: number, date: Date) => (
+		<li className={styles.Bid} key={date.toString()}>
+			<div>
+				<b>{bidderId}</b> bidded{' '}
+				<b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
+			</div>
+			<div>{moment(date).fromNow()}</div>
+		</li>
+	);
+
+	const actionButtons = () => (
+		<div className={styles.Buttons}>
+			<FutureButton
+				glow={isOwnedByYou}
+				onClick={() => {}}
+				style={{ height: 36, borderRadius: 18 }}
+			>
+				Transfer Ownership
+			</FutureButton>
+			<FutureButton
+				glow={!isOwnedByYou}
+				onClick={openBidOverlay}
+				style={{ height: 36, borderRadius: 18 }}
+			>
+				Make A Bid
+			</FutureButton>
+		</div>
+	);
+
+	////////////
+	// Render //
+	////////////
+
+	return (
+		<div className={styles.NFTView}>
+			{overlays()}
 			<div
 				className={`${styles.NFT} blur border-primary border-rounded`}
 				style={{ backgroundImage: `url(${galaxyBackground})` }}
@@ -167,31 +258,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 							/>
 						</div>
 					</div>
-					{/* Price data doesn't exist yet */}
-					{/* <div className={styles.Price}>
-						<span className={styles.Crypto}>
-							{Number(2521).toLocaleString()} WILD{' '}
-							<span className={styles.Fiat}>
-								(${Number(1304.12).toLocaleString()})
-							</span>
-						</span>
-					</div> */}
-					<div className={styles.Buttons}>
-						<FutureButton
-							glow={isOwnedByYou}
-							onClick={() => {}}
-							style={{ height: 36, borderRadius: 18 }}
-						>
-							Transfer Ownership
-						</FutureButton>
-						<FutureButton
-							glow={!isOwnedByYou}
-							onClick={openBidOverlay}
-							style={{ height: 36, borderRadius: 18 }}
-						>
-							Make A Bid
-						</FutureButton>
-					</div>
+					{price()}
+					{actionButtons()}
 				</div>
 			</div>
 			<div className={styles.Horizontal} style={{ marginTop: 20 }}>
@@ -240,7 +308,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					</ArrowLink>
 				</div>
 			</div>
-			<div></div>
+			{history()}
 		</div>
 	);
 };

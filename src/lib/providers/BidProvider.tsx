@@ -51,7 +51,10 @@ const getMock = (amount: number) => {
 			date: randomDate(),
 		});
 	});
-	return mockBids;
+	// Sort by recent
+	return mockBids.sort((a, b) => {
+		return b.date.valueOf() - a.date.valueOf();
+	});
 };
 
 const BidProvider: React.FC<BidProviderType> = ({ children }) => {

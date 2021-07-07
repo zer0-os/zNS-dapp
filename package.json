@@ -47,6 +47,7 @@
 		"ipfs-mini": "^1.1.5",
 		"js-ipfs-fetch": "^1.4.2",
 		"lodash": "^4.17.21",
+		"moment": "^2.29.1",
 		"node-random-name": "^1.0.1",
 		"node-sass": "^4.14.1",
 		"react": "^17.0.2",
