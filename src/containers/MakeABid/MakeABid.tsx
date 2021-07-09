@@ -31,6 +31,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
 		number | undefined
 	>();
+	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [isBidPending, setIsBidPending] = useState(false);
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 
@@ -50,6 +51,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const getCurrentHighestBid = async () => {
 		// Get highest bid
 		const allBids = await getBidsForDomain(domain);
+		setHasBidDataLoaded(true);
 		if (!allBids) return;
 		const max = allBids.reduce(function (prev, current) {
 			return prev.amount > current.amount ? prev : current;
@@ -94,7 +96,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const highestBid = () => (
 		<>
-			{currentHighestBid && (
+			{hasBidDataLoaded && currentHighestBid && (
 				<>
 					<span className="glow-text-white">
 						{/* @todo change dp amount */}
@@ -107,9 +109,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					)}
 				</>
 			)}
-			{!currentHighestBid && (
+			{hasBidDataLoaded && !currentHighestBid && (
 				<>
-					<span className="glow-text-white">Loading bid data</span>
+					<span className="glow-text-white">No bids found</span>
+				</>
+			)}
+			{!hasBidDataLoaded && (
+				<>
+					<span className="glow-text-white">Loading...</span>
 				</>
 			)}
 		</>
