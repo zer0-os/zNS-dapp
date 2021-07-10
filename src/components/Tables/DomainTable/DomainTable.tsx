@@ -214,22 +214,17 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				id: 'highestBid',
 				accessor: (data: DomainData) => (
 					<div style={{ textAlign: 'right' }}>
-						{data.bids.length > 0 && (
-							<>
-								{Number(
-									Math.max
-										.apply(
-											Math,
-											data.bids.map(function (o: any) {
-												return o.amount;
-											}),
-										)
-										.toFixed(2),
-								).toLocaleString()}{' '}
-								WILD
-							</>
-						)}
-						{data.bids.length === 0 && <>Loading...</>}
+						{Number(
+							Math.max
+								.apply(
+									Math,
+									data.bids.map(function (o: any) {
+										return o.amount;
+									}),
+								)
+								.toFixed(2),
+						).toLocaleString()}{' '}
+						WILD
 					</div>
 				),
 			},
@@ -238,10 +233,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				id: 'numBids',
 				accessor: (data: DomainData) => (
 					<div style={{ textAlign: 'right' }}>
-						{data.bids.length > 0 && (
-							<>{Number(data.bids.length).toLocaleString()}</>
-						)}
-						{data.bids.length === 0 && <>Loading...</>}
+						{Number(data.bids.length).toLocaleString()}
 					</div>
 				),
 			},
@@ -250,12 +242,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				id: 'lastSalePrice',
 				accessor: (data: DomainData) => (
 					<div style={{ textAlign: 'right' }}>
-						{data.bids.length > 0 && (
-							<>
-								{Number(data.bids[0].amount.toFixed(2)).toLocaleString()} WILD
-							</>
-						)}
-						{data.bids.length === 0 && <>Loading...</>}
+						{Number(data.bids[0].amount.toFixed(2)).toLocaleString()} WILD
 					</div>
 				),
 			},
