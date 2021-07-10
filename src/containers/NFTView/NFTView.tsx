@@ -13,7 +13,7 @@ import { MakeABid } from 'containers';
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { asyncGetMock, useBidProvider } from 'lib/providers/BidProvider';
 import { wildToUsd } from 'lib/coingecko';
 
 //- Style Imports
@@ -90,7 +90,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
 			setIsOwnedByYou(data.value.owner.id === account);
 
-			getBidsForDomain(data.value).then(async (bids) => {
+			asyncGetMock(Math.floor(Math.random() * 10), 1200).then(async (bids) => {
 				if (!bids || !bids.length) return;
 				try {
 					setBids(bids);
