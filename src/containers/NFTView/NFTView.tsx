@@ -187,7 +187,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 				<b>{account}</b> bidded{' '}
 				<b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
 			</div>
-			<div>{moment(date).fromNow()}</div>
 		</li>
 	);
 
