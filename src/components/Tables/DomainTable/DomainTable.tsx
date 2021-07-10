@@ -18,6 +18,7 @@ import 'lib/react-table-config.d.ts';
 import { getRelativeDomainPath } from 'lib/domains';
 import { DisplayDomain, Domain, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
+import { asyncGetMock } from 'lib/providers/BidProvider';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Style Imports
@@ -41,26 +42,13 @@ type DomainTableProps = {
 type DomainData = {
 	domain: Domain;
 	metadata: Metadata;
+	bids: any | undefined;
 };
-
-interface RowData {
-	i: number;
-	id: string;
-	image: string;
-	name: string;
-	nftName: string;
-	ticker: string;
-	highestBid: number;
-	numBids: number;
-	lastSalePrice: number;
-	tradePrice: number;
-}
 
 enum Modals {
 	Bid,
 }
 
-// @TODO: Create a `Domain` type for `domains`
 const DomainTable: React.FC<DomainTableProps> = ({
 	domains,
 	isRootDomain,
@@ -72,7 +60,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const { mvpVersion } = useMvpVersion();
 
 	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
+	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
+
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
 
@@ -148,25 +138,33 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		setHasMetadataLoaded(false);
 		var count = 0,
 			completed = 0;
-		for (var i = 0; i < domains.length; i++) {
-			const domain = domains[i];
-			if (!domain.image && domain.metadata) {
-				count++;
 
-				// eslint-disable-next-line no-loop-func
-				getMetadata(domain.metadata).then((metadata) => {
-					if (!metadata) return;
-					domain.title = metadata.title;
-					domain.image = metadata.image;
-					domain.description = metadata.description;
-					loaded.push({ domain: domain, metadata: metadata });
-					if (++completed === count) {
-						setLoadedDomains(loaded);
-						setHasMetadataLoaded(true);
-					}
-				});
-			}
+		const getData = async (domain: DisplayDomain) => {
+			try {
+				const [metadata, bids] = await Promise.all([
+					getMetadata(domain.metadata),
+					asyncGetMock(
+						Math.floor(Math.random() * 100),
+						Math.floor(Math.random() * 1000),
+					),
+				]);
+
+				if (!metadata) return;
+
+				loaded.push({ domain: domain, metadata: metadata, bids: bids || [] });
+				if (++completed === count) {
+					setLoadedDomains(loaded);
+					setHasMetadataLoaded(true);
+				}
+			} catch (e) {}
+		};
+
+		for (var i = 0; i < domains.length; i++) {
+			if (!domains[i].metadata) return;
+			count++;
+			getData(domains[i]);
 		}
+
 		if (!count) setHasMetadataLoaded(true);
 	}, [domains]);
 
@@ -174,46 +172,24 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	// React Table //
 	/////////////////
 
-	// Convert each domain into a RowData object
-	// Runs when metadata for current domain array has fully loaded
-	const rowData: RowData[] = useMemo(
-		() =>
-			!hasMetadataLoaded
-				? []
-				: loadedDomains.map((d: any, i: number) => ({
-						i: i + 1,
-						id: d.domain.id,
-						image: d.metadata.image,
-						nftName: d.metadata.name,
-						name: d.domain.name,
-						ticker: d.domain.name.toUpperCase(),
-						highestBid: 1000,
-						numBids: 1000,
-						lastSalePrice: 1000,
-						tradePrice: 1000,
-				  })),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[hasMetadataLoaded],
-	);
-
 	// Gets the data for the table
 	// TODO: This can definitely be refactored out
-	const data = useMemo<RowData[]>(() => {
-		rowData.length ? setIsLoading(false) : setIsLoading(true);
-		return rowData;
-	}, [rowData]);
+	const data = useMemo<DomainData[]>(() => {
+		loadedDomains.length ? setIsLoading(false) : setIsLoading(true);
+		return loadedDomains;
+	}, [loadedDomains, hasBidDataLoaded]);
 
-	const columns = useMemo<Column<RowData>[]>(
+	const columns = useMemo<Column<DomainData>[]>(
 		() => [
 			{
 				Header: '',
-				accessor: 'i',
-				Cell: (row) => row.value,
+				id: 'index',
+				accessor: (data: DomainData, i: number) => i + 1,
 			},
 			{
 				Header: () => '',
-				accessor: 'image',
-				Cell: (row) => (
+				id: 'image',
+				accessor: (data: DomainData) => (
 					<Image
 						style={{
 							width: 56,
@@ -222,51 +198,76 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							objectFit: 'cover',
 							display: 'block',
 						}}
-						src={row.value}
+						src={data.metadata.image}
 					/>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'left' }}>Domain Name</div>,
-				accessor: 'name',
-				Cell: (row) => <div style={{ textAlign: 'left' }}>{row.value}</div>,
+				id: 'domainName',
+				accessor: (data: DomainData) => (
+					<div style={{ textAlign: 'left' }}>{data.domain.name}</div>
+				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
-				accessor: 'highestBid',
-				Cell: (row) => (
+				id: 'highestBid',
+				accessor: (data: DomainData) => (
 					<div style={{ textAlign: 'right' }}>
-						{Number(row.value.toFixed(2)).toLocaleString()} WILD
+						{data.bids.length > 0 && (
+							<>
+								{Number(
+									Math.max
+										.apply(
+											Math,
+											data.bids.map(function (o: any) {
+												return o.amount;
+											}),
+										)
+										.toFixed(2),
+								).toLocaleString()}{' '}
+								WILD
+							</>
+						)}
+						{data.bids.length === 0 && <>Loading...</>}
 					</div>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'right' }}>Number Of Bids</div>,
-				accessor: 'numBids',
-				Cell: (row) => (
+				id: 'numBids',
+				accessor: (data: DomainData) => (
 					<div style={{ textAlign: 'right' }}>
-						{Number(row.value).toLocaleString()}
+						{data.bids.length > 0 && (
+							<>{Number(data.bids.length).toLocaleString()}</>
+						)}
+						{data.bids.length === 0 && <>Loading...</>}
 					</div>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'right' }}>Last Sale Price</div>,
-				accessor: 'lastSalePrice',
-				Cell: (row) => (
+				id: 'lastSalePrice',
+				accessor: (data: DomainData) => (
 					<div style={{ textAlign: 'right' }}>
-						{Number(row.value.toFixed(2)).toLocaleString()} WILD
+						{data.bids.length > 0 && (
+							<>
+								{Number(data.bids[0].amount.toFixed(2)).toLocaleString()} WILD
+							</>
+						)}
+						{data.bids.length === 0 && <>Loading...</>}
 					</div>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'center' }}>Trade</div>,
-				accessor: 'id',
-				Cell: (row) => (
+				id: 'waitlist',
+				accessor: (data: DomainData) => (
 					<FutureButton
 						style={{ margin: '0 auto' }}
 						glow
 						onClick={() => {
-							buttonClick(row.value);
+							buttonClick(data.domain.id);
 						}}
 					>
 						WAITLIST
@@ -275,13 +276,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			},
 			{
 				Header: () => <div style={{ textAlign: 'center' }}>Bid</div>,
-				id: 'tradePrice',
-				accessor: 'id',
-				Cell: (row) => (
+				id: 'bid',
+				accessor: (data: DomainData) => (
 					<FutureButton
 						style={{ margin: '0 auto', textTransform: 'uppercase' }}
 						glow
-						onClick={() => buttonClick(row.value)}
+						onClick={() => buttonClick(data.domain.id)}
 					>
 						Make A Bid
 					</FutureButton>
@@ -298,7 +298,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		const relativeDomain = getRelativeDomainPath(domain);
 		history.push(relativeDomain);
 	};
-	const initialState = { hiddenColumns: ['id'] };
+	const initialState = { hiddenColumns: ['waitlist'] };
 
 	// React-Table Hooks
 	const tableHook = useTable(
@@ -387,7 +387,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 										return (
 											<tr
 												onClick={(event: any) =>
-													rowClick(event, row.original.name)
+													rowClick(event, row.original.domain.name)
 												}
 												{...row.getRowProps()}
 											>
@@ -407,14 +407,14 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						{isGridView && (
 							<ol className={styles.Grid}>
 								{data
-									.filter((d) => d.name.includes(searchQuery))
+									.filter((d) => d.domain.name.includes(searchQuery))
 									.map((d, i) => (
-										<li onClick={() => navigateTo(d.name)} key={i}>
+										<li onClick={() => navigateTo(d.domain.name)} key={i}>
 											<NFTCard
-												name={d.nftName ? d.nftName : d.name}
-												domain={d ? d.name : ''}
-												imageUri={d.image ? d.image : ''}
-												price={d.tradePrice}
+												name={d.metadata.title || d.domain.name || ''}
+												domain={d.domain.name || ''}
+												imageUri={d.metadata.image || ''}
+												price={d.bids[0].amount || 0}
 												nftOwnerId={'Owner Name'}
 												nftMinterId={'Minter Name'}
 												showCreator={true}
