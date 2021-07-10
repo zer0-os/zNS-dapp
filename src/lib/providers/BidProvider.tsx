@@ -44,7 +44,7 @@ const randomDate = () => {
 };
 
 // Create some mock bids
-const getMock = (amount: number) => {
+export const getMock = (amount: number) => {
 	const mockBids: Bid[] = [];
 	[...Array(amount)].forEach((a: any) => {
 		mockBids.push({
@@ -57,6 +57,11 @@ const getMock = (amount: number) => {
 	return mockBids.sort((a, b) => {
 		return b.date.valueOf() - a.date.valueOf();
 	});
+};
+
+export const asyncGetMock = async (amount: number, timeout: number) => {
+	await new Promise((resolve) => setTimeout(resolve, timeout));
+	return getMock(amount);
 };
 
 const BidProvider: React.FC<BidProviderType> = ({ children }) => {
@@ -112,7 +117,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 			return displayBids;
 		} catch (e) {
-			console.error('Failed to retrive bids for domain ' + domain);
+			console.error('Failed to retrive bids for domain ' + domain.id);
 			return;
 		}
 	};
@@ -153,11 +158,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 export default BidProvider;
 
 export function useBidProvider() {
-	const {
-		getBidsForDomain,
-		getBidsForYourDomains,
-		getYourBids,
-		placeBid,
-	} = React.useContext(BidContext);
+	const { getBidsForDomain, getBidsForYourDomains, getYourBids, placeBid } =
+		React.useContext(BidContext);
 	return { getBidsForDomain, getBidsForYourDomains, getYourBids, placeBid };
 }
