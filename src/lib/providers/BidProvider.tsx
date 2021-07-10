@@ -59,7 +59,7 @@ export const getMock = (amount: number) => {
 	});
 };
 
-export const asyncGetMock = async (amount: number, timeout: number) => {
+const asyncGetMock = async (amount: number, timeout: number) => {
 	await new Promise((resolve) => setTimeout(resolve, timeout));
 	return getMock(amount);
 };
@@ -97,6 +97,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	};
 
 	const getBidsForDomain = async (domain: Domain) => {
+		// Return mock until API is working
+		const bids = await asyncGetMock(
+			Math.floor(Math.random() * 10) + 1,
+			Math.floor(Math.random() * 100) + 1200,
+		);
+		return bids;
+
 		try {
 			const bids = await zAuction.getBidsForNft(
 				contracts!.registry.address,

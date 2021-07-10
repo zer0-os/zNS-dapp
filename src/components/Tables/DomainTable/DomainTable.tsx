@@ -18,7 +18,7 @@ import 'lib/react-table-config.d.ts';
 import { getRelativeDomainPath } from 'lib/domains';
 import { DisplayDomain, Domain, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
-import { asyncGetMock } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/providers/BidProvider';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Style Imports
@@ -58,6 +58,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	setIsGridView,
 }) => {
 	const { mvpVersion } = useMvpVersion();
+	const { getBidsForDomain } = useBidProvider();
 
 	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
@@ -143,10 +144,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			try {
 				const [metadata, bids] = await Promise.all([
 					getMetadata(domain.metadata),
-					asyncGetMock(
-						Math.floor(Math.random() * 100),
-						Math.floor(Math.random() * 1000),
-					),
+					getBidsForDomain(domain),
 				]);
 
 				if (!metadata) return;
