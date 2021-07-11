@@ -11,6 +11,7 @@ import {
 	Image,
 	OptionDropdown,
 	Overlay,
+	Member,
 	SearchBar,
 } from 'components';
 import { Request } from 'containers';
@@ -29,12 +30,16 @@ type BidTableProps = {
 	userId: string;
 };
 
+enum Modals {
+	Accept,
+}
+
 const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	//////////////////
 	// State / Refs //
 	//////////////////
 
-	const { getBidsForYourDomains, getYourBids } = useBidProvider();
+	const { acceptBid, getBidsForYourDomains, getYourBids } = useBidProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0); // Not needed anymore?
@@ -45,11 +50,15 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	const [domainFilter, setDomainFilter] = useState('');
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
+	const [modal, setModal] = useState<Modals | undefined>();
+	const [acceptingBid, setAcceptingBid] = useState<Bid | undefined>();
 
 	//////////
 	// Data //
 	//////////
 
+	const [bidsOnYourDomains, setBidsOnYourDomains] = useState<Bid[]>([]);
+	const [yourBids, setYourBids] = useState<Bid[]>([]);
 	const [displayData, setDisplayData] = useState<Bid[]>([]);
 	useEffect(() => {
 		// @ zachary
@@ -62,6 +71,8 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 					getBidsForYourDomains(),
 					getYourBids(),
 				]);
+				setBidsOnYourDomains(allBids[0] || []);
+				setYourBids(allBids[1] || []);
 				const flat = allBids.flat();
 				if (flat) setDisplayData(flat as Bid[]);
 				else setDisplayData([]);
@@ -82,9 +93,22 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	const filterByStatus = (filter: string) => console.log(filter);
 	const filterByDomain = (filter: string) => console.log(filter);
 
-	/////////////
-	// Effects //
-	/////////////
+	const closeModal = () => setModal(undefined);
+
+	const clickAcceptButton = (bid: Bid) => {
+		setAcceptingBid(bid);
+	};
+
+	const acceptBidConfirmed = () => {
+		setAcceptingBid(undefined);
+	};
+
+	const randomString = () => {
+		return Math.random()
+			.toString(36)
+			.replace(/[^a-z]+/g, '')
+			.substr(0, 5);
+	};
 
 	/////////////////
 	// React-Table //
@@ -98,33 +122,52 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 				accessor: 'domain',
 				Cell: () => (
 					<Artwork
-						id={'lorem'}
-						name={'lorem'}
+						id={randomString()}
+						name={randomString()}
 						image={'picsum.photos/seed/lorem/100/100'}
-						domain={'0://lorem.ipsum'}
+						domain={`0://${randomString()}.${randomString()}`}
 						pending
 					/>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
-				accessor: 'highestBid',
-				Cell: () => <div style={{ textAlign: 'right' }}>1000 WILD</div>,
+				accessor: 'amount',
+				Cell: (row) => (
+					<div style={{ textAlign: 'right' }}>{row.value} WILD</div>
+				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'right' }}>Number Of Bids</div>,
-				accessor: 'numBids',
-				Cell: () => <div style={{ textAlign: 'right' }}>500</div>,
+				Header: () => <div style={{ textAlign: 'right' }}>Bidder</div>,
+				accessor: 'bidderAccount',
+				Cell: (row) => (
+					<div
+						style={{
+							textAlign: 'right',
+							display: 'flex',
+							justifyContent: 'flex-end',
+						}}
+					>
+						<Member
+							id={row.value}
+							name={randomName(row.value)}
+							image={randomImage(row.value)}
+						/>
+					</div>
+				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'right' }}>Last Sale Price</div>,
-				accessor: 'lastSalePrice',
-				Cell: () => <div style={{ textAlign: 'right' }}>1000 WILD</div>,
-			},
-			{
-				Header: () => <div style={{ textAlign: 'right' }}>Your Bid</div>,
-				accessor: 'yourBid',
-				Cell: () => <div style={{ textAlign: 'right' }}>1500 WILD</div>,
+				Header: () => <div style={{ textAlign: 'center' }}>Accept Bid</div>,
+				id: 'bid',
+				accessor: (bid: Bid) => (
+					<FutureButton
+						style={{ margin: '0 auto', textTransform: 'uppercase' }}
+						glow
+						onClick={() => clickAcceptButton(bid)}
+					>
+						Accept Bid
+					</FutureButton>
+				),
 			},
 		],
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -140,8 +183,31 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
 		tableHook;
 
+	///////////////
+	// Fragments //
+	///////////////
+
+	const modals = () => (
+		<>
+			<Overlay onClose={closeModal} centered open={acceptingBid !== undefined}>
+				<Confirmation
+					title={'Accept bid?'}
+					onConfirm={acceptBidConfirmed}
+					onCancel={closeModal}
+				>
+					<p>Some description here about what happens when you accept a bid</p>
+				</Confirmation>
+			</Overlay>
+		</>
+	);
+
+	////////////
+	// Render //
+	////////////
+
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
+			{modals()}
 			{/* Table Header */}
 			<div className={styles.searchHeader}>
 				<SearchBar
@@ -149,15 +215,6 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 					style={{ width: '100%', marginRight: 16 }}
 				/>
 				<div className={styles.searchHeaderButtons}>
-					<OptionDropdown
-						onSelect={filterByDomain}
-						options={['All Domains', 'Your Domains', 'Your Bids']}
-						drawerStyle={{ width: 179 }}
-					>
-						<FilterButton onClick={() => {}}>
-							{domainFilter || 'All Domains'}
-						</FilterButton>
-					</OptionDropdown>
 					<OptionDropdown
 						onSelect={filterByStatus}
 						options={['All Statuses', 'Pending Bids', 'Accepted Bids']}

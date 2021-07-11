@@ -25,6 +25,9 @@ export const BidContext = React.createContext({
 	placeBid: async (domain: Domain, bid: number): Promise<Bid | undefined> => {
 		return;
 	},
+	acceptBid: async (bidId: string): Promise<void> => {
+		return;
+	},
 });
 
 type BidProviderType = {
@@ -72,6 +75,17 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const context = useWeb3React();
 	const { addNotification } = useNotification();
 	const contracts = useZnsContracts();
+
+	const acceptBid = async (bidId: string) => {
+		try {
+			await new Promise((resolve) => setTimeout(resolve, 2000));
+			addNotification(`Bid accepted`);
+			return;
+		} catch (e) {
+			console.error(e);
+			return;
+		}
+	};
 
 	const getBidsForYourDomains = async () => {
 		try {
@@ -152,6 +166,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	};
 
 	const contextValue = {
+		acceptBid,
 		getBidsForDomain,
 		getBidsForYourDomains,
 		getYourBids,
@@ -166,7 +181,18 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 export default BidProvider;
 
 export function useBidProvider() {
-	const { getBidsForDomain, getBidsForYourDomains, getYourBids, placeBid } =
-		React.useContext(BidContext);
-	return { getBidsForDomain, getBidsForYourDomains, getYourBids, placeBid };
+	const {
+		acceptBid,
+		getBidsForDomain,
+		getBidsForYourDomains,
+		getYourBids,
+		placeBid,
+	} = React.useContext(BidContext);
+	return {
+		acceptBid,
+		getBidsForDomain,
+		getBidsForYourDomains,
+		getYourBids,
+		placeBid,
+	};
 }
