@@ -18,7 +18,7 @@ import styles from './MakeABid.module.css';
 
 type MakeABidProps = {
 	domain: Domain;
-	onBid: () => void;
+	onBid: (bid: Bid) => void;
 };
 
 const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
@@ -58,7 +58,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		setIsBidPending(false);
 		if (bidData) {
 			navigateTo(domain.name);
-			onBid();
+			onBid(bidData);
 		}
 	};
 
