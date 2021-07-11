@@ -99,3 +99,9 @@
 .Inputs {
 	width: 100%;
 }
+
+.Estimate {
+	font-weight: 700;
+	color: var(--color-primary-lighter-3);
+	margin: 16px auto 0 auto;
+}

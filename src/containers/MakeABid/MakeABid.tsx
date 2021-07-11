@@ -9,6 +9,7 @@ import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
 import { wildToUsd } from 'lib/coingecko';
 import { getRelativeDomainPath } from 'lib/domains';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 
 //- Component Imports
 import { FutureButton, Image, TextInput, Member } from 'components';
@@ -27,6 +28,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	// React-router-dom
 	const history = useHistory();
+
+	// Wild to usd
+	const { wildPriceUsd } = useCurrencyProvider();
 
 	///////////
 	// State //
@@ -71,10 +75,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			return prev.amount > current.amount ? prev : current;
 		});
 		setCurrentHighestBid(max);
-
-		// USD conversion
-		const bidUsd = await wildToUsd(max.amount);
-		setCurrentHighestBidUsd(bidUsd);
+		setCurrentHighestBidUsd(max.amount * wildPriceUsd);
 	};
 
 	/////////////
@@ -87,7 +88,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			setDomainMetadata(metadata);
 			getCurrentHighestBid();
 		});
-	}, [domain]);
+	}, [domain, wildPriceUsd]);
 
 	/////////////////////
 	// React Fragments //
@@ -154,6 +155,15 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		</div>
 	);
 
+	const estimation = () => {
+		const isBidValid = !Number.isNaN(parseInt(bid));
+		const bidString = isBidValid
+			? Number((parseInt(bid) * wildPriceUsd).toFixed(2)).toLocaleString()
+			: '0';
+
+		return <span className={styles.Estimate}>${bidString} USD</span>;
+	};
+
 	return (
 		<div className={`${styles.Container} border-primary border-rounded blur`}>
 			{header()}
@@ -175,6 +185,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					text={bid}
 					style={{ width: 268, margin: '0 auto' }}
 				/>
+				{estimation()}
 			</div>
 
 			<FutureButton
