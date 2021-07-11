@@ -15,6 +15,7 @@ import { randomName, randomImage } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { wildToUsd } from 'lib/coingecko';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -41,6 +42,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	// because it needs way more data than is worth sending through props
 
 	const { addNotification } = useNotification();
+	const { wildPriceUsd } = useCurrencyProvider();
 
 	//- Page State
 	const [zna, setZna] = useState('');
@@ -86,6 +88,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
+	const onBid = async (bid: Bid) => {
+		// @todo switch this to live data
+		// should refresh on bid rather than add mock data
+		setBids([...bids, bid]);
+		setHighestBid(bid);
+		closeBidOverlay();
+		const bidUsd = await wildToUsd(bid.amount);
+		setHighestBidUsd(bidUsd);
+	};
+
 	useEffect(() => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
 			setIsOwnedByYou(data.value.owner.id === account);
@@ -98,9 +110,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 						return prev.amount > current.amount ? prev : current;
 					});
 					setHighestBid(max);
-
-					const bidUsd = await wildToUsd(max.amount);
-					setHighestBidUsd(bidUsd);
+					setHighestBidUsd(max.amount * wildPriceUsd);
 				} catch (e) {
 					console.error('Failed to retrive bid data');
 				}
@@ -144,7 +154,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 
 			{data.isJust() && (
 				<Overlay onClose={closeBidOverlay} centered open={isBidOverlayOpen}>
-					<MakeABid domain={data.value} onBid={closeBidOverlay} />
+					<MakeABid domain={data.value} onBid={onBid} />
 				</Overlay>
 			)}
 		</>
@@ -268,20 +278,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					<h4>Story</h4>
 					<p>{description}</p>
 				</div>
-				{/* <div className={styles.Horizontal}>
-						<div className={`${styles.Box} blur border-primary border-rounded`}>
-							<h4>Views</h4>
-							<span className="glow-text-white">
-								{Number(1000).toLocaleString()}
-							</span>
-						</div>
-						<div className={`${styles.Box} blur border-primary border-rounded`}>
-							<h4>Edition</h4>
-							<span className="glow-text-white">
-								{Number(1).toLocaleString()} of {Number(1).toLocaleString()}
-							</span>
-						</div>
-					</div> */}
 				<div
 					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 				>
