@@ -77,7 +77,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		try {
 			// @zachary
 			// return bids from owned domains or undefined
-			const mockBids = getMock(5);
+			const mockBids = await asyncGetMock(5, 150);
 			return mockBids;
 		} catch (e) {
 			console.error("Failed to retrieve bids for user's domains");
@@ -89,7 +89,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			// @zachary
 			// return bids placed by user or undefined
 			// @TODO: Extend zAuction API to support this operation
-			const mockBids = getMock(5);
+			const mockBids = await asyncGetMock(5, 150);
 			return mockBids;
 		} catch (e) {
 			console.error("Failed to retrieve bids for user's domains");
@@ -98,11 +98,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 	const getBidsForDomain = async (domain: Domain) => {
 		// Return mock until API is working
-		const bids = await asyncGetMock(
-			Math.floor(Math.random() * 10) + 1,
-			Math.floor(Math.random() * 100) + 1200,
-		);
-		return bids;
+		// const bids = await asyncGetMock(
+		// 	Math.floor(Math.random() * 10) + 1,
+		// 	Math.floor(Math.random() * 100) + 1200,
+		// );
+		// return bids;
 
 		try {
 			const bids = await zAuction.getBidsForNft(
@@ -110,22 +110,25 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				domain.id,
 			);
 
-			const displayBids = bids.map((e) => {
-				const amount = Number(ethers.utils.formatEther(e.bidAmount));
+			try {
+				const displayBids = bids.map((e) => {
+					const amount = Number(ethers.utils.formatEther(e.bidAmount));
 
-				return {
-					bidderAccount: e.bidder,
-					amount,
-					date: new Date(), // not supported by zAuction
-				} as Bid;
-			});
+					return {
+						bidderAccount: e.bidder,
+						amount,
+						date: new Date(), // not supported by zAuction
+					} as Bid;
+				});
 
-			// @TODO: Add filtering expired/invalid bids out
-
-			return displayBids;
+				// @TODO: Add filtering expired/invalid bids out
+				return displayBids;
+			} catch (e) {
+				return [];
+			}
 		} catch (e) {
 			console.error('Failed to retrive bids for domain ' + domain.id);
-			return;
+			return [];
 		}
 	};
 
@@ -139,8 +142,6 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				ethers.utils.parseEther(bid.toString()).toString(),
 			);
 
-			// @zachary
-			// return bid data or undefined
 			addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
 			const mockBids = getMock(1);
 			return mockBids[0];
