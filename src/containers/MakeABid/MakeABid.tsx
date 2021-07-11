@@ -1,5 +1,6 @@
 //- React Imports
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 //- Library Imports
 import { Domain, Metadata, Bid } from 'lib/types';
@@ -7,6 +8,7 @@ import { randomImage, randomName } from 'lib/Random';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
 import { wildToUsd } from 'lib/coingecko';
+import { getRelativeDomainPath } from 'lib/domains';
 
 //- Component Imports
 import { FutureButton, Image, TextInput, Member } from 'components';
@@ -20,7 +22,11 @@ type MakeABidProps = {
 };
 
 const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
+	//- Bid hooks
 	const { getBidsForDomain, placeBid } = useBidProvider();
+
+	// React-router-dom
+	const history = useHistory();
 
 	///////////
 	// State //
@@ -39,20 +45,28 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	// Functions //
 	///////////////
 
+	const navigateTo = (domain: string) => {
+		const relativeDomain = getRelativeDomainPath(domain);
+		history.push(relativeDomain);
+	};
+
 	const makeBid = async () => {
 		if (!Number(bid)) return;
 		setIsBidPending(true);
 		// @zachary calling the place bid hook here
 		const bidData = await placeBid(domain, Number(bid));
 		setIsBidPending(false);
-		if (bidData) onBid();
+		if (bidData) {
+			navigateTo(domain.name);
+			onBid();
+		}
 	};
 
 	const getCurrentHighestBid = async () => {
 		// Get highest bid
 		const allBids = await getBidsForDomain(domain);
 		setHasBidDataLoaded(true);
-		if (!allBids) return;
+		if (!allBids || allBids.length === 0) return;
 		const max = allBids.reduce(function (prev, current) {
 			return prev.amount > current.amount ? prev : current;
 		});
