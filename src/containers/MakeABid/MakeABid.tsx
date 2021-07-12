@@ -7,12 +7,18 @@ import { Domain, Metadata, Bid } from 'lib/types';
 import { randomImage, randomName } from 'lib/Random';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
-import { wildToUsd } from 'lib/coingecko';
 import { getRelativeDomainPath } from 'lib/domains';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 
 //- Component Imports
-import { FutureButton, Image, TextInput, Member } from 'components';
+import {
+	StepBar,
+	FutureButton,
+	TextButton,
+	Image,
+	TextInput,
+	Member,
+} from 'components';
 
 //- Style Imports
 import styles from './MakeABid.module.css';
@@ -21,6 +27,11 @@ type MakeABidProps = {
 	domain: Domain;
 	onBid: (bid: Bid) => void;
 };
+
+enum Steps {
+	Approve,
+	Bid,
+}
 
 const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	//- Bid hooks
@@ -36,6 +47,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	// State //
 	///////////
 
+	const [step, setStep] = useState<Steps>(Steps.Approve);
 	const [bid, setBid] = useState<string>('');
 	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
 	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
@@ -44,6 +56,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [isBidPending, setIsBidPending] = useState(false);
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
+	const [error, setError] = useState('');
+
+	// @zachary balance here
+	const wildBalance = 8000;
 
 	///////////////
 	// Functions //
@@ -54,11 +70,25 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		history.push(relativeDomain);
 	};
 
+	const approveZAuction = () => {
+		// @zachary zAuction approval here
+		console.log('Approve zAuction');
+	};
+
 	const makeBid = async () => {
-		if (!Number(bid)) return;
+		// Validate bid
+		if (!Number(bid) || !currentHighestBid) return;
+		const bidAmount = Number(bid);
+		if (bidAmount <= currentHighestBid.amount)
+			return setError('Your bid must be higher than the current highest');
+
+		setError('');
+
+		// Send bid to hook
 		setIsBidPending(true);
-		// @zachary calling the place bid hook here
-		const bidData = await placeBid(domain, Number(bid));
+		const bidData = await placeBid(domain, bidAmount);
+
+		// When bid transaction finished
 		setIsBidPending(false);
 		if (bidData) {
 			navigateTo(domain.name);
@@ -99,7 +129,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			<div className={styles.Header}>
 				<h1 className={`glow-text-white`}>Place A Bid</h1>
 			</div>
-			<hr className="glow" />
 		</>
 	);
 
@@ -141,7 +170,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		<div className={styles.Details}>
 			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
 			<span>0://{domain.name}</span>
-
 			<div className={styles.Price}>
 				<h3 className="glow-text-blue">Highest Bid</h3>
 				{highestBid()}
@@ -164,10 +192,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		return <span className={styles.Estimate}>${bidString} USD</span>;
 	};
 
-	return (
-		<div className={`${styles.Container} border-primary border-rounded blur`}>
-			{header()}
-
+	const bidStep = () => (
+		<>
 			<div
 				className={styles.Section}
 				style={{ display: 'flex', padding: '0 37.5px' }}
@@ -175,32 +201,100 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				{nft()}
 				{details()}
 			</div>
-
 			<div className={styles.InputWrapper}>
-				<p className="glow-text-blue">Enter the amount you wish to bid:</p>
-				<TextInput
-					onChange={(text: string) => setBid(text)}
-					placeholder="Bid amount (WILD)"
-					numeric
-					text={bid}
-					style={{ width: 268, margin: '0 auto' }}
-				/>
-				{estimation()}
+				{wildBalance > (currentHighestBid?.amount || 0) && (
+					<>
+						<p className="glow-text-blue">Enter the amount you wish to bid:</p>
+						<TextInput
+							onChange={(text: string) => setBid(text)}
+							placeholder="Bid amount (WILD)"
+							error={error.length > 0}
+							errorText={error}
+							numeric
+							text={bid}
+							style={{ width: 268, margin: '0 auto' }}
+						/>
+						{estimation()}
+						<FutureButton
+							glow
+							style={{
+								height: 36,
+								borderRadius: 18,
+								textTransform: 'uppercase',
+								margin: '32px auto 0 auto',
+							}}
+							loading={isBidPending}
+							onClick={makeBid}
+						>
+							Place Bid
+						</FutureButton>
+					</>
+				)}
+				{wildBalance <= (currentHighestBid?.amount || 0) && (
+					<p className={styles.Error}>
+						You don't have enough WILD to bid on this NFT
+					</p>
+				)}
 			</div>
+		</>
+	);
 
-			<FutureButton
-				glow
+	const approveStep = () => {
+		return (
+			<div
+				className={styles.Section}
 				style={{
-					height: 36,
-					borderRadius: 18,
-					textTransform: 'uppercase',
-					margin: '0 auto',
+					display: 'flex',
+					flexDirection: 'column',
+					padding: '0 37.5px',
 				}}
-				loading={isBidPending}
-				onClick={makeBid}
 			>
-				Place Bid
-			</FutureButton>
+				<p style={{ lineHeight: '21px' }}>
+					Before placing bids, you need to allow zAuction to perform
+					transactions through your wallet. At this stage, we can't check if you
+					have already approved or not. If you haven't previously approved
+					zAuction, please use the button below. If you have, just hit
+					'Continue'.
+				</p>
+				<FutureButton
+					glow
+					alt
+					style={{
+						height: 36,
+						borderRadius: 18,
+						textTransform: 'uppercase',
+						margin: '48px auto 0 auto',
+					}}
+					onClick={approveZAuction}
+				>
+					Approve zAuction
+				</FutureButton>
+				<FutureButton
+					glow
+					style={{
+						height: 36,
+						borderRadius: 18,
+						textTransform: 'uppercase',
+						margin: '48px auto 0 auto',
+					}}
+					onClick={() => setStep(Steps.Bid)}
+				>
+					Continue
+				</FutureButton>
+			</div>
+		);
+	};
+
+	return (
+		<div className={`${styles.Container} border-primary border-rounded blur`}>
+			{header()}
+			<StepBar
+				step={step + 1}
+				steps={['Approve zAuction', 'Place A Bid']}
+				onNavigate={(i: number) => setStep(i)}
+			/>
+			{step === Steps.Approve && approveStep()}
+			{step === Steps.Bid && bidStep()}
 		</div>
 	);
 };
