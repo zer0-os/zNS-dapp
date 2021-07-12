@@ -59,7 +59,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [error, setError] = useState('');
 
 	// @zachary balance here
-	const wildBalance = 10520;
+	const wildBalance = 15635.29;
 
 	///////////////
 	// Functions //
@@ -84,7 +84,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			return setError('Your bid must be higher than the current highest');
 
 		if (bidAmount > wildBalance)
-			return setError('You have insufficient WILD for this bid');
+			return setError('You have insufficient WILD to make this bid');
 
 		setError('');
 
@@ -195,7 +195,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 		return (
 			<>
-				<span className={styles.Estimate}>${bidString} USD</span>
+				<span className={styles.Estimate}>Approx. ${bidString} USD</span>
 			</>
 		);
 	};
@@ -242,9 +242,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					</>
 				)}
 				{wildBalance <= (currentHighestBid?.amount || 0) && (
-					<p className={styles.Error}>
-						You don't have enough WILD to bid on this NFT
-					</p>
+					<>
+						<p className={styles.Error}>
+							You don't have enough WILD to bid on this NFT
+						</p>
+						<span className={styles.Estimate}>
+							Your Balance: {Number(wildBalance).toLocaleString()} WILD
+						</span>
+					</>
 				)}
 			</div>
 		</>
