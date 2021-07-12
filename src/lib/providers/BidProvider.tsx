@@ -112,11 +112,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 	const getBidsForDomain = async (domain: Domain) => {
 		// Return mock until API is working
-		// const bids = await asyncGetMock(
-		// 	Math.floor(Math.random() * 10) + 1,
-		// 	Math.floor(Math.random() * 100) + 1200,
-		// );
-		// return bids;
+		const bids = await asyncGetMock(
+			Math.floor(Math.random() * 10) + 1,
+			Math.floor(Math.random() * 100) + 1200,
+		);
+		return bids;
 
 		try {
 			const bids = await zAuction.getBidsForNft(

@@ -305,7 +305,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 						textTransform: 'uppercase',
 						margin: '48px auto 0 auto',
 					}}
-					onClick={() => setStep(Steps.Bid)}
+					onClick={makeBid}
 				>
 					Place Bid
 				</FutureButton>
