@@ -59,7 +59,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [error, setError] = useState('');
 
 	// @zachary balance here
-	const wildBalance = 8000;
+	const wildBalance = 10520;
 
 	///////////////
 	// Functions //
@@ -77,10 +77,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const makeBid = async () => {
 		// Validate bid
-		if (!Number(bid) || !currentHighestBid) return;
+		if (!Number(bid) || !currentHighestBid)
+			return setError('Invalid bid amount');
 		const bidAmount = Number(bid);
 		if (bidAmount <= currentHighestBid.amount)
 			return setError('Your bid must be higher than the current highest');
+
+		if (bidAmount > wildBalance)
+			return setError('You have insufficient WILD for this bid');
 
 		setError('');
 
@@ -189,7 +193,11 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			? Number((parseInt(bid) * wildPriceUsd).toFixed(2)).toLocaleString()
 			: '0';
 
-		return <span className={styles.Estimate}>${bidString} USD</span>;
+		return (
+			<>
+				<span className={styles.Estimate}>${bidString} USD</span>
+			</>
+		);
 	};
 
 	const bidStep = () => (
@@ -205,6 +213,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				{wildBalance > (currentHighestBid?.amount || 0) && (
 					<>
 						<p className="glow-text-blue">Enter the amount you wish to bid:</p>
+						<span style={{ marginBottom: 8 }} className={styles.Estimate}>
+							Your Balance: {Number(wildBalance).toLocaleString()} WILD
+						</span>
 						<TextInput
 							onChange={(text: string) => setBid(text)}
 							placeholder="Bid amount (WILD)"
