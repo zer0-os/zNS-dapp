@@ -105,12 +105,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 			getBidsForDomain(data.value).then(async (bids) => {
 				if (!bids || !bids.length) return;
 				try {
-					setBids(bids);
-					const max = bids.reduce(function (prev, current) {
-						return prev.amount > current.amount ? prev : current;
-					});
-					setHighestBid(max);
-					setHighestBidUsd(max.amount * wildPriceUsd);
+					const sorted = bids.sort((a, b) => b.amount - a.amount);
+					setBids(sorted);
+					setHighestBid(sorted[0]);
+					setHighestBidUsd(sorted[0].amount * wildPriceUsd);
 				} catch (e) {
 					console.error('Failed to retrive bid data');
 				}
@@ -194,8 +192,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	const historyItem = (account: string, amount: number, date: Date) => (
 		<li className={styles.Bid} key={date.toString()}>
 			<div>
-				<b>{account}</b> bidded{' '}
-				<b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
+				<b>
+					<a
+						className="alt-link"
+						href={`https://etherscan.io/${account}`}
+						target="_blank"
+						rel="noreferrer"
+					>{`${account.substring(0, 4)}...${account.substring(
+						account.length - 4,
+					)}`}</a>
+				</b>{' '}
+				bidded <b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
 			</div>
 		</li>
 	);
