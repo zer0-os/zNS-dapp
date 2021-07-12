@@ -29,8 +29,8 @@ type MakeABidProps = {
 };
 
 enum Steps {
-	Approve,
 	Bid,
+	Approve,
 }
 
 const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
@@ -47,7 +47,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	// State //
 	///////////
 
-	const [step, setStep] = useState<Steps>(Steps.Approve);
+	const [step, setStep] = useState<Steps>(Steps.Bid);
 	const [bid, setBid] = useState<string>('');
 	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
 	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
@@ -60,6 +60,11 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	// @zachary balance here
 	const wildBalance = 15635.29;
+	const isBidValid =
+		(Number(bid) &&
+			Number(bid) <= wildBalance &&
+			Number(bid) > 0 &&
+			Number(bid) > (currentHighestBid?.amount || 0)) === true;
 
 	///////////////
 	// Functions //
@@ -75,10 +80,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		console.log('Approve zAuction');
 	};
 
-	const makeBid = async () => {
+	const continueBid = () => {
 		// Validate bid
-		if (!Number(bid) || !currentHighestBid)
-			return setError('Invalid bid amount');
+		if (!Number(bid) || !currentHighestBid) return setError('Invalid bid');
 		const bidAmount = Number(bid);
 		if (bidAmount <= currentHighestBid.amount)
 			return setError('Your bid must be higher than the current highest');
@@ -87,6 +91,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			return setError('You have insufficient WILD to make this bid');
 
 		setError('');
+
+		setStep(Steps.Approve);
+	};
+
+	const makeBid = async () => {
+		// Get bid
+		if (!Number(bid) || !currentHighestBid) return;
+		const bidAmount = Number(bid);
 
 		// Send bid to hook
 		setIsBidPending(true);
@@ -227,7 +239,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 						/>
 						{estimation()}
 						<FutureButton
-							glow
 							style={{
 								height: 36,
 								borderRadius: 18,
@@ -235,9 +246,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 								margin: '32px auto 0 auto',
 							}}
 							loading={isBidPending}
-							onClick={makeBid}
+							onClick={continueBid}
+							glow={isBidValid}
 						>
-							Place Bid
+							Continue
 						</FutureButton>
 					</>
 				)}
@@ -295,7 +307,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					}}
 					onClick={() => setStep(Steps.Bid)}
 				>
-					Continue
+					Place Bid
 				</FutureButton>
 			</div>
 		);
@@ -306,11 +318,11 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			{header()}
 			<StepBar
 				step={step + 1}
-				steps={['Approve zAuction', 'Place A Bid']}
+				steps={['Place A Bid', 'Approve zAuction']}
 				onNavigate={(i: number) => setStep(i)}
 			/>
-			{step === Steps.Approve && approveStep()}
 			{step === Steps.Bid && bidStep()}
+			{step === Steps.Approve && approveStep()}
 		</div>
 	);
 };
