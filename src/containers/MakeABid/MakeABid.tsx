@@ -70,12 +70,11 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const { account, chainId } = walletContext;
 	const zAuctionAddress = addresses[chainIdToNetworkType(chainId)].zAuction;
 	const wildContract: ERC20 = useZnsContracts()!.wildToken;
-	
+
 	const getBalance = wildContract
 		.balanceOf(account!)
 		.then(function (balanceWei) {
-			const stringWei = ethers.utils.formatEther(balanceWei);
-			setWildBalance(parseInt(stringWei, 10));
+			setWildBalance(parseInt(ethers.utils.formatEther(balanceWei), 10));
 		});
 
 	const isBidValid =
