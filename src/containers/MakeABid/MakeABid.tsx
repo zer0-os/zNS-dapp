@@ -15,6 +15,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 import { ERC20 } from 'types';
 import addresses from 'lib/addresses';
+import { chainIdToNetworkType } from 'lib/network';
 //- Component Imports
 import {
 	StepBar,
@@ -27,7 +28,6 @@ import {
 
 //- Style Imports
 import styles from './MakeABid.module.css';
-import { chainIdToNetworkType } from 'lib/network';
 
 type MakeABidProps = {
 	domain: Domain;
