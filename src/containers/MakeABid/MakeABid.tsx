@@ -14,6 +14,7 @@ import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 import { ERC20 } from 'types';
+import addresses from 'lib/addresses';
 //- Component Imports
 import {
 	StepBar,
@@ -26,6 +27,7 @@ import {
 
 //- Style Imports
 import styles from './MakeABid.module.css';
+import { chainIdToNetworkType } from 'lib/network';
 
 type MakeABidProps = {
 	domain: Domain;
@@ -66,13 +68,15 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account, chainId } = walletContext;
+	const zAuctionAddress = addresses[chainIdToNetworkType(chainId)].zAuction;
 
 	// @zachary balance here
 	const wildContract: ERC20 = useZnsContracts()!.wildToken;
-	const getBalance = wildContract.balanceOf(account!)
+	const getBalance = wildContract
+		.balanceOf(account!)
 		.then(function (balanceWei) {
 			const stringWei = ethers.utils.formatEther(balanceWei);
-			setWildBalance(parseInt(stringWei,10))
+			setWildBalance(parseInt(stringWei, 10));
 		});
 
 	const isBidValid =
@@ -92,6 +96,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const approveZAuction = () => {
 		// @zachary zAuction approval here
+		const getApproved = wildContract.approve(
+			zAuctionAddress,
+			ethers.constants.MaxUint256,
+		);
 		console.log('Approve zAuction');
 	};
 
