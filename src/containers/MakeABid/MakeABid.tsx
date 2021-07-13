@@ -70,6 +70,13 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const { account, chainId } = walletContext;
 	const zAuctionAddress = addresses[chainIdToNetworkType(chainId)].zAuction;
 	const wildContract: ERC20 = useZnsContracts()!.wildToken;
+	
+	const getBalance = wildContract
+		.balanceOf(account!)
+		.then(function (balanceWei) {
+			const stringWei = ethers.utils.formatEther(balanceWei);
+			setWildBalance(parseInt(stringWei, 10));
+		});
 
 	const isBidValid =
 		(Number(bid) &&
@@ -80,13 +87,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	///////////////
 	// Functions //
 	///////////////
-
-	const getBalance = () => {
-		wildContract.balanceOf(account!).then(function (balanceWei) {
-			const stringWei = ethers.utils.formatEther(balanceWei);
-			setWildBalance(parseInt(stringWei, 10));
-		});
-	};
 
 	const navigateTo = (domain: string) => {
 		const relativeDomain = getRelativeDomainPath(domain);
