@@ -70,14 +70,13 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const { account, chainId } = walletContext;
 	const zAuctionAddress = addresses[chainIdToNetworkType(chainId)].zAuction;
 
-	// @zachary balance here
 	const wildContract: ERC20 = useZnsContracts()!.wildToken;
-	const getBalance = wildContract
-		.balanceOf(account!)
-		.then(function (balanceWei) {
+	const getBalance = () => {
+		wildContract.balanceOf(account!).then(function (balanceWei) {
 			const stringWei = ethers.utils.formatEther(balanceWei);
 			setWildBalance(parseInt(stringWei, 10));
 		});
+	};
 
 	const isBidValid =
 		(Number(bid) &&
@@ -95,12 +94,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	};
 
 	const approveZAuction = () => {
-		// @zachary zAuction approval here
-		const getApproved = wildContract.approve(
-			zAuctionAddress,
-			ethers.constants.MaxUint256,
-		);
-		console.log('Approve zAuction');
+		wildContract.approve(zAuctionAddress, ethers.constants.MaxUint256);
 	};
 
 	const continueBid = () => {
