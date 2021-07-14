@@ -1,7 +1,9 @@
 //- React Imports
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-
+//- Web3 Imports
+import { useWeb3React } from '@web3-react/core'; // Wallet data
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 //- Library Imports
 import { Domain, Metadata, Bid } from 'lib/types';
 import { randomImage, randomName } from 'lib/Random';
@@ -9,7 +11,11 @@ import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
 import { getRelativeDomainPath } from 'lib/domains';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
-
+import { useZnsContracts } from 'lib/contracts';
+import { ethers } from 'ethers';
+import { ERC20 } from 'types';
+import addresses from 'lib/addresses';
+import { chainIdToNetworkType } from 'lib/network';
 //- Component Imports
 import {
 	StepBar,
@@ -57,9 +63,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [isBidPending, setIsBidPending] = useState(false);
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
+	const [wildBalance, setWildBalance] = useState(0);
 
-	// @zachary balance here
-	const wildBalance = 15635.29;
+	//- Web3 Wallet Data
+	const walletContext = useWeb3React<Web3Provider>();
+	const { account, chainId } = walletContext;
+	const zAuctionAddress = addresses[chainIdToNetworkType(chainId)].zAuction;
+	const wildContract: ERC20 = useZnsContracts()!.wildToken;
+
 	const isBidValid =
 		(Number(bid) &&
 			Number(bid) <= wildBalance &&
@@ -76,8 +87,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	};
 
 	const approveZAuction = () => {
-		// @zachary zAuction approval here
-		console.log('Approve zAuction');
+		wildContract.approve(zAuctionAddress, ethers.constants.MaxUint256);
 	};
 
 	const continueBid = () => {
@@ -127,6 +137,18 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	/////////////
 	// Effects //
 	/////////////
+	
+	React.useEffect(() => {
+		if (!account) {
+			return; 
+		}
+
+		const fetchTokenBalance = async () => {
+			const balance = await wildContract.balanceOf(account);
+			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
+		}
+		fetchTokenBalance();
+	}, [wildContract, account]);
 
 	useEffect(() => {
 		getMetadata(domain.metadata).then((metadata: Metadata | undefined) => {

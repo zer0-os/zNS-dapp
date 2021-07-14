@@ -20,6 +20,7 @@ export interface ContractAddresses {
 	registrar: string;
 	staking: string;
 	wildToken: string;
+	zAuction: string;
 }
 
 export interface Contracts {
