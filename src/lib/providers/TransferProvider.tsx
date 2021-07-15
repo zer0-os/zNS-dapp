@@ -32,21 +32,17 @@ const TransferProvider: React.FC<TransferProviderType> = ({ children }) => {
 	] = useState<TransferSubmitParams | null>(null);
 
 	const submit = async (params: TransferSubmitParams) => {
-		console.log(params);
 		addNotification(`Started transfer`);
 		setTransferring([...transferring, params]);
 
-		const finishTransferring = async () => {
+		// TODO: Back end transfer request.
+		const transfer = async () => {
 			setFinishedTransferring(params);
 		};
 
-		// TODO
-		setTimeout(() => {
-			finishTransferring();
-		}, 20 * 1000);
+		await transfer();
 	};
 
-	/* todo: Taken from MintProvider*/
 	useEffect(() => {
 		if (finishedTransferring) {
 			addNotification(`Ownership of "${finishedTransferring.name}" has been transferred`);

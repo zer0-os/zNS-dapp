@@ -58,18 +58,6 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 
 	const confirm = () => submitTransfer();
 
-	// Todo
-	/*
-		useEffect(() => {
-			if (!transferring || !transferring.metadata) return;
-
-			getMetadata(transferring.metadata).then((metadata) => {
-				if (!metadata) return;
-				setImage(metadata.image);
-			});
-		}, [transferring]);
-	*/
-
 	return (
 		<div>
 			{/* Confirmation Overlay */}
