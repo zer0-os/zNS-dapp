@@ -9,7 +9,7 @@ import { tryFunction} from 'lib/utils';
 
  export interface ForAllApprovalParams {
 	operator: string;
-	bool: boolean;
+	approved: boolean;
 }
 
 interface ApproveNFTHook {
@@ -52,7 +52,7 @@ export function useApprovals(): ApproveNFTHook {
 			// Send the Approval for All
 			const tx = await registry.setApprovalForAll(
 				params.operator,
-				params.bool,
+				params.approved,
 			);
 
 			return tx;
