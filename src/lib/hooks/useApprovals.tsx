@@ -1,41 +1,37 @@
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
-import { tryFunction} from 'lib/utils';
+import { tryFunction } from 'lib/utils';
 
- export interface SingleApprovalParams {
+export interface SingleApprovalParams {
 	operator: string;
 	tokenId: number;
 }
 
- export interface ForAllApprovalParams {
+export interface ForAllApprovalParams {
 	operator: string;
 	approved: boolean;
 }
 
 interface ApproveNFTHook {
-	sendSingleApproval: (
+	approveSingleToken: (
 		params: SingleApprovalParams,
 	) => Promise<ethers.ContractTransaction>;
-	sendApprovalForAll: (
+	approveAllTokens: (
 		params: ForAllApprovalParams,
 	) => Promise<ethers.ContractTransaction>;
 }
 
 export function useApprovals(): ApproveNFTHook {
-    
 	const registry = useZnsContracts()?.registry;
 
-	const sendSingleApproval = async (params: SingleApprovalParams) => {
+	const approveSingleToken = async (params: SingleApprovalParams) => {
 		const tx = await tryFunction(async () => {
 			if (!registry) {
 				throw Error(`no registry`);
 			}
 
 			// Send the Approval for a single NFT
-			const tx = await registry.approve(
-				params.operator,
-				params.tokenId,
-			);
+			const tx = await registry.approve(params.operator, params.tokenId);
 
 			return tx;
 		}, `Send Single Approval`);
@@ -43,7 +39,7 @@ export function useApprovals(): ApproveNFTHook {
 		return tx;
 	};
 
-	const sendApprovalForAll = async (params: ForAllApprovalParams) => {
+	const approveAllTokens = async (params: ForAllApprovalParams) => {
 		const tx = await tryFunction(async () => {
 			if (!registry) {
 				throw Error(`no registry`);
@@ -61,5 +57,5 @@ export function useApprovals(): ApproveNFTHook {
 		return tx;
 	};
 
-	return { sendSingleApproval , sendApprovalForAll };
+	return { approveSingleToken, approveAllTokens };
 }
