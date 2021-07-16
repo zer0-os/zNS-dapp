@@ -59,11 +59,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
 		number | undefined
 	>();
-	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
-	const [isBidPending, setIsBidPending] = useState(false);
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
 	const [wildBalance, setWildBalance] = useState(0);
+
+	// Loading States
+	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
+	const [isBidPending, setIsBidPending] = useState(false);
+	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -111,11 +114,11 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		const bidAmount = Number(bid);
 
 		// Send bid to hook
-		setIsBidPending(true);
+		setIsMetamaskWaiting(true);
 		const bidData = await placeBid(domain, bidAmount);
+		console.log('done');
+		setIsMetamaskWaiting(false);
 
-		// When bid transaction finished
-		setIsBidPending(false);
 		navigateTo(domain.name);
 		onBid();
 	};
@@ -123,6 +126,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const getCurrentHighestBid = async () => {
 		// Get highest bid
 		const allBids = await getBidsForDomain(domain);
+		console.log(allBids);
 		setHasBidDataLoaded(true);
 		if (!allBids || allBids.length === 0) return;
 		const max = allBids.reduce(function (prev, current) {
@@ -297,38 +301,45 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					padding: '0 37.5px',
 				}}
 			>
-				<p style={{ lineHeight: '21px' }}>
-					Before placing bids, you need to allow zAuction to perform
-					transactions through your wallet. At this stage, we can't check if you
-					have already approved or not. If you haven't previously approved
-					zAuction, please use the button below. If you have, just hit
-					'Continue'.
-				</p>
-				<FutureButton
-					glow
-					alt
-					style={{
-						height: 36,
-						borderRadius: 18,
-						textTransform: 'uppercase',
-						margin: '48px auto 0 auto',
-					}}
-					onClick={approveZAuction}
-				>
-					Approve zAuction
-				</FutureButton>
-				<FutureButton
-					glow
-					style={{
-						height: 36,
-						borderRadius: 18,
-						textTransform: 'uppercase',
-						margin: '48px auto 0 auto',
-					}}
-					onClick={makeBid}
-				>
-					Place Bid
-				</FutureButton>
+				{!isMetamaskWaiting && (
+					<>
+						<p style={{ lineHeight: '21px' }}>
+							Before placing bids, you need to allow zAuction to perform
+							transactions through your wallet. At this stage, we can't check if
+							you have already approved or not. If you haven't previously
+							approved zAuction, please use the button below. If you have, just
+							hit 'Continue'.
+						</p>
+						<FutureButton
+							glow
+							alt
+							style={{
+								height: 36,
+								borderRadius: 18,
+								textTransform: 'uppercase',
+								margin: '48px auto 0 auto',
+							}}
+							onClick={approveZAuction}
+						>
+							Approve zAuction
+						</FutureButton>
+						<FutureButton
+							glow
+							style={{
+								height: 36,
+								borderRadius: 18,
+								textTransform: 'uppercase',
+								margin: '48px auto 0 auto',
+							}}
+							onClick={makeBid}
+						>
+							Place Bid
+						</FutureButton>
+					</>
+				)}
+				{isMetamaskWaiting && (
+					<h2 className={styles.Wait}>Hold tight while we process your bid</h2>
+				)}
 			</div>
 		);
 	};

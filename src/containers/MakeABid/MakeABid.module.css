@@ -121,3 +121,7 @@
 	font-weight: 700 !important;
 	color: var(--color-primary-lighter-3);
 }
+
+.Wait {
+	text-align: center;
+}
