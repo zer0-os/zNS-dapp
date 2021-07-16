@@ -106,4 +106,5 @@ export type Bid = {
 	amount: number;
 	bidderAccount: string;
 	date: Date;
+	tokenId?: string;
 };
