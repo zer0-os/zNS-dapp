@@ -307,11 +307,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				{!isMetamaskWaiting && (
 					<>
 						<p style={{ lineHeight: '21px' }}>
-							Before placing bids, you need to allow zAuction to perform
-							transactions through your wallet. At this stage, we can't check if
-							you have already approved or not. If you haven't previously
-							approved zAuction, please use the button below. If you have, just
-							hit 'Continue'.
+							Before placing bids, you need to approve zAuction to access your
+							WILD tokens in case your bid is accepted.
 						</p>
 						<FutureButton
 							glow
