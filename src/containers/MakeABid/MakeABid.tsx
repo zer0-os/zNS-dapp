@@ -116,7 +116,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		// Send bid to hook
 		setIsMetamaskWaiting(true);
 		const bidData = await placeBid(domain, bidAmount);
-		console.log('done');
 		setIsMetamaskWaiting(false);
 
 		navigateTo(domain.name);
@@ -126,7 +125,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const getCurrentHighestBid = async () => {
 		// Get highest bid
 		const allBids = await getBidsForDomain(domain);
-		console.log(allBids);
 		setHasBidDataLoaded(true);
 		if (!allBids || allBids.length === 0) return;
 		const max = allBids.reduce(function (prev, current) {
