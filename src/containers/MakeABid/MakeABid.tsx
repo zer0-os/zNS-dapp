@@ -211,9 +211,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				{highestBid()}
 			</div>
 			<Member
-				id={'53215321632163216321'}
-				name={randomName('63216321632163216')}
-				image={randomImage('3216321632163216312')}
+				id={currentHighestBid?.bidderAccount || ''}
+				name={'not yet implemented'}
+				image={'not yet implemented'}
 				subtext={'Creator'}
 			/>
 		</div>
