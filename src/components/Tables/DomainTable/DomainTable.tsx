@@ -294,7 +294,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		const relativeDomain = getRelativeDomainPath(domain);
 		history.push(relativeDomain);
 	};
-	const initialState = { hiddenColumns: ['waitlist'] };
+	const initialState = { hiddenColumns: ['waitlist', 'lastSalePrice'] };
 
 	// React-Table Hooks
 	const tableHook = useTable(
