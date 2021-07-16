@@ -14,8 +14,6 @@ import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 import { ERC20 } from 'types';
-import addresses from 'lib/addresses';
-import { chainIdToNetworkType } from 'lib/network';
 //- Component Imports
 import {
 	StepBar,
@@ -71,7 +69,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account, chainId } = walletContext;
-	const zAuctionAddress = addresses[chainIdToNetworkType(chainId)].zAuction;
+	const zAuctionAddress = useZnsContracts()!.zAuction.address;
 	const wildContract: ERC20 = useZnsContracts()!.wildToken;
 
 	const isBidValid =
