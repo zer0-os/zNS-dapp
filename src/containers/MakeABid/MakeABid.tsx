@@ -31,7 +31,7 @@ import styles from './MakeABid.module.css';
 
 type MakeABidProps = {
 	domain: Domain;
-	onBid: (bid: Bid) => void;
+	onBid: () => void;
 };
 
 enum Steps {
@@ -92,9 +92,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const continueBid = () => {
 		// Validate bid
-		if (!Number(bid) || !currentHighestBid) return setError('Invalid bid');
+		if (!Number(bid)) return setError('Invalid bid');
 		const bidAmount = Number(bid);
-		if (bidAmount <= currentHighestBid.amount)
+		if (bidAmount <= (currentHighestBid?.amount || 0))
 			return setError('Your bid must be higher than the current highest');
 
 		if (bidAmount > wildBalance)
@@ -107,7 +107,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const makeBid = async () => {
 		// Get bid
-		if (!Number(bid) || !currentHighestBid) return;
+		if (!Number(bid)) return;
 		const bidAmount = Number(bid);
 
 		// Send bid to hook
@@ -116,10 +116,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 		// When bid transaction finished
 		setIsBidPending(false);
-		if (bidData) {
-			navigateTo(domain.name);
-			onBid(bidData);
-		}
+		navigateTo(domain.name);
+		onBid();
 	};
 
 	const getCurrentHighestBid = async () => {
@@ -137,16 +135,16 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	/////////////
 	// Effects //
 	/////////////
-	
+
 	React.useEffect(() => {
 		if (!account) {
-			return; 
+			return;
 		}
 
 		const fetchTokenBalance = async () => {
 			const balance = await wildContract.balanceOf(account);
 			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
-		}
+		};
 		fetchTokenBalance();
 	}, [wildContract, account]);
 

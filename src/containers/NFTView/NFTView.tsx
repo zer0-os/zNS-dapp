@@ -88,14 +88,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
-	const onBid = async (bid: Bid) => {
+	const onBid = async () => {
 		// @todo switch this to live data
 		// should refresh on bid rather than add mock data
-		setBids([...bids, bid]);
-		setHighestBid(bid);
 		closeBidOverlay();
-		const bidUsd = await wildToUsd(bid.amount);
-		setHighestBidUsd(bidUsd);
 	};
 
 	useEffect(() => {
@@ -183,7 +179,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 			<h4>History</h4>
 			<ul>
 				{bids.map((bid: Bid) =>
-					historyItem(bid.bidderAccount, bid.amount, bid.date),
+					historyItem('0x930259032', bid.amount, bid.date),
 				)}
 			</ul>
 		</section>

@@ -22,7 +22,7 @@ export const BidContext = React.createContext({
 	getYourBids: async (): Promise<Bid[] | undefined> => {
 		return;
 	},
-	placeBid: async (domain: Domain, bid: number): Promise<Bid | undefined> => {
+	placeBid: async (domain: Domain, bid: number) => {
 		return;
 	},
 	acceptBid: async (bidId: string): Promise<void> => {
@@ -111,13 +111,6 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	};
 
 	const getBidsForDomain = async (domain: Domain) => {
-		// Return mock until API is working
-		const bids = await asyncGetMock(
-			Math.floor(Math.random() * 10) + 1,
-			Math.floor(Math.random() * 100) + 1200,
-		);
-		return bids;
-
 		try {
 			const bids = await zAuction.getBidsForNft(
 				contracts!.registry.address,
@@ -149,19 +142,15 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const placeBid = async (domain: Domain, bid: number) => {
 		// Replace with bid functionality
 		try {
-			await zAuction.placeBid(
+			const r = await zAuction.placeBid(
 				context.library!,
 				contracts!.registry.address,
 				domain.id,
 				ethers.utils.parseEther(bid.toString()).toString(),
 			);
-
 			addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
-			const mockBids = getMock(1);
-			return mockBids[0];
 		} catch (e) {
 			console.error(e);
-			return;
 		}
 	};
 
