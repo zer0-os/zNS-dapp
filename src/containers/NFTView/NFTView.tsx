@@ -82,7 +82,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	};
 
 	const openBidOverlay = () => {
-		if (data.isNothing()) return;
+		if (data.isNothing() || isOwnedByYou) return;
 		setIsBidOverlayOpen(true);
 	};
 
