@@ -37,6 +37,7 @@ type DomainTableProps = {
 	// TODO: Find a better way to persist grid view than with props
 	isGridView?: boolean;
 	setIsGridView?: (grid: boolean) => void;
+	userId?: string;
 };
 
 type DomainData = {
@@ -56,6 +57,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	empty,
 	isGridView,
 	setIsGridView,
+	userId,
 }) => {
 	const { mvpVersion } = useMvpVersion();
 	const { getBidsForDomain } = useBidProvider();
@@ -93,11 +95,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		navigateTo(domain);
 	};
 
-	const buttonClick = (id: string) => {
+	const buttonClick = (data: DomainData) => {
 		try {
-			const domain = domains.filter((d: DisplayDomain) => d.id === id)[0];
-			setBiddingOn(domain);
-			openBidModal();
+			if (data.domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
+				setBiddingOn(data.domain as DisplayDomain);
+				openBidModal();
+			}
 		} catch (e) {
 			console.error(e);
 		}
@@ -261,9 +264,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					<FutureButton
 						style={{ margin: '0 auto' }}
 						glow
-						onClick={() => {
-							buttonClick(data.domain.id);
-						}}
+						onClick={() => buttonClick(data)}
 					>
 						WAITLIST
 					</FutureButton>
@@ -275,8 +276,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				accessor: (data: DomainData) => (
 					<FutureButton
 						style={{ margin: '0 auto', textTransform: 'uppercase' }}
-						glow
-						onClick={() => buttonClick(data.domain.id)}
+						glow={data.domain.owner.id?.toLowerCase() !== userId?.toLowerCase()}
+						onClick={() => buttonClick(data)}
 					>
 						Make A Bid
 					</FutureButton>
