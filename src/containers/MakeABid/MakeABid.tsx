@@ -91,6 +91,11 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		wildContract.approve(zAuctionAddress, ethers.constants.MaxUint256);
 	};
 
+	const formSubmit = (event: React.FormEvent) => {
+		event.preventDefault();
+		continueBid();
+	};
+
 	const continueBid = () => {
 		// Validate bid
 		if (!Number(bid)) return setError('Invalid bid');
@@ -248,15 +253,17 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 						<span style={{ marginBottom: 8 }} className={styles.Estimate}>
 							Your Balance: {Number(wildBalance).toLocaleString()} WILD
 						</span>
-						<TextInput
-							onChange={(text: string) => setBid(text)}
-							placeholder="Bid amount (WILD)"
-							error={error.length > 0}
-							errorText={error}
-							numeric
-							text={bid}
-							style={{ width: 268, margin: '0 auto' }}
-						/>
+						<form onSubmit={formSubmit}>
+							<TextInput
+								onChange={(text: string) => setBid(text)}
+								placeholder="Bid amount (WILD)"
+								error={error.length > 0}
+								errorText={error}
+								numeric
+								text={bid}
+								style={{ width: 268, margin: '0 auto' }}
+							/>
+						</form>
 						{estimation()}
 						<FutureButton
 							style={{

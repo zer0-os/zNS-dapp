@@ -96,6 +96,11 @@
 	text-align: center;
 }
 
+.InputWrapper form {
+	display: flex;
+	justify-content: center;
+}
+
 .Inputs {
 	width: 100%;
 }
