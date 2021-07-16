@@ -136,7 +136,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 					const amount = Number(ethers.utils.formatEther(e.bidAmount));
 
 					return {
-						bidderAccount: e.bidder,
+						bidderAccount: e.account,
 						amount,
 						date: new Date(), // not supported by zAuction
 					} as Bid;

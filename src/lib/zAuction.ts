@@ -8,7 +8,7 @@ const bidsEndpoint = `${apiEndpoint}/bids/`;
 const accountBidsEndpoint = `${bidsEndpoint}accounts/`;
 
 interface BidsDto {
-	bidder: string;
+	account: string;
 	bidAmount: string;
 	bidMessage: string;
 	startBlock: string;
