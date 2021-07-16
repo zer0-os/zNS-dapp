@@ -16,6 +16,7 @@ interface NftIdBidsDto {
 	startBlock: string,
 	expireBlock: string,
 }
+
 interface AccountBidsDto {
 	signedMessage: string,
 	auctionId: string,
