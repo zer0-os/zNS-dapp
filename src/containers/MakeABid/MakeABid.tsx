@@ -336,7 +336,12 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					</>
 				)}
 				{isMetamaskWaiting && (
-					<h2 className={styles.Wait}>Hold tight while we process your bid</h2>
+					<>
+						<div className={styles.Loading}>
+							<div className={styles.Spinner}></div>
+						</div>
+						<p className={styles.Wait}>Hold tight while we process your bid</p>
+					</>
 				)}
 			</div>
 		);
