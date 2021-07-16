@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useDomainCache } from 'lib/useDomainCache'; // Domain data
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
+import { useHistory } from 'react-router';
 
 //- Component Imports
 import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components';
@@ -43,6 +44,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
+	const router = useHistory();
 
 	//- Page State
 	const [zna, setZna] = useState('');
@@ -91,15 +93,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	const onBid = async () => {
 		// @todo switch this to live data
 		// should refresh on bid rather than add mock data
+		getBids();
 		closeBidOverlay();
 	};
 
-	useEffect(() => {
+	const getBids = async () => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
-			setIsOwnedByYou(
-				data.value.owner.id.toLowerCase() === account?.toLowerCase(),
-			);
-
 			getBidsForDomain(data.value).then(async (bids) => {
 				if (!bids || !bids.length) return;
 				try {
@@ -111,6 +110,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					console.error('Failed to retrive bid data');
 				}
 			});
+		}
+	};
+
+	useEffect(() => {
+		if (!data.isNothing() && data.value.metadata && !data.value.image) {
+			setIsOwnedByYou(
+				data.value.owner.id.toLowerCase() === account?.toLowerCase(),
+			);
+
+			getBids();
 
 			// Get metadata
 			fetch(data.value.metadata).then(async (d: Response) => {
