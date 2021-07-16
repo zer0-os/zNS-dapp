@@ -16,10 +16,10 @@ export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
 		return;
 	},
-	getBidsForYourDomains: async (): Promise<Bid[] | undefined> => {
+	getBidsForAccount: async (id: string): Promise<Bid[] | undefined> => {
 		return;
 	},
-	getYourBids: async (): Promise<Bid[] | undefined> => {
+	getBidsForYourDomains: async (): Promise<Bid[] | undefined> => {
 		return;
 	},
 	placeBid: async (domain: Domain, bid: number) => {
@@ -98,15 +98,29 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		}
 	};
 
-	const getYourBids = async () => {
+	const getBidsForAccount = async (id: string) => {
 		try {
-			// @zachary
-			// return bids placed by user or undefined
-			// @TODO: Extend zAuction API to support this operation
-			const mockBids = await asyncGetMock(5, 150);
-			return mockBids;
+			const bids = await zAuction.getBidsForAccount(id);
+
+			try {
+				const displayBids = bids.map((e) => {
+					const amount = Number(ethers.utils.formatEther(e.bidAmount));
+
+					return {
+						bidderAccount: id,
+						amount,
+						date: new Date(), // not supported by zAuction
+						tokenId: e.tokenId,
+					} as Bid;
+				});
+
+				return displayBids;
+			} catch (e) {
+				console.error('Failed to retrieve bids for user ' + id);
+			}
 		} catch (e) {
-			console.error("Failed to retrieve bids for user's domains");
+			console.error('Failed to retrieve bids for user ' + id);
+			return [];
 		}
 	};
 
@@ -156,9 +170,9 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 	const contextValue = {
 		acceptBid,
+		getBidsForAccount,
 		getBidsForDomain,
 		getBidsForYourDomains,
-		getYourBids,
 		placeBid,
 	};
 
@@ -172,16 +186,16 @@ export default BidProvider;
 export function useBidProvider() {
 	const {
 		acceptBid,
+		getBidsForAccount,
 		getBidsForDomain,
 		getBidsForYourDomains,
-		getYourBids,
 		placeBid,
 	} = React.useContext(BidContext);
 	return {
 		acceptBid,
+		getBidsForAccount,
 		getBidsForDomain,
 		getBidsForYourDomains,
-		getYourBids,
 		placeBid,
 	};
 }
