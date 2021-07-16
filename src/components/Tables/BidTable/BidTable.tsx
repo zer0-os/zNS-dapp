@@ -28,6 +28,8 @@ import styles from './BidTable.module.css';
 type BidTableProps = {
 	style?: React.CSSProperties;
 	userId: string;
+	usersBids?: boolean;
+	usersDomains?: boolean;
 };
 
 enum Modals {
@@ -39,7 +41,8 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	// State / Refs //
 	//////////////////
 
-	const { acceptBid, getBidsForYourDomains, getYourBids } = useBidProvider();
+	const { acceptBid, getBidsForYourDomains, getBidsForAccount } =
+		useBidProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0); // Not needed anymore?
@@ -67,15 +70,15 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 
 		const get = async () => {
 			try {
-				const allBids = await Promise.all([
-					getBidsForYourDomains(),
-					getYourBids(),
-				]);
-				setBidsOnYourDomains(allBids[0] || []);
-				setYourBids(allBids[1] || []);
+				const allBids = (await Promise.all([
+					getBidsForAccount(userId),
+					// @todo Add promise to get bids for owned domains
+				])) as Bid[][];
+				setYourBids(allBids[0]);
 				const flat = allBids.flat();
 				if (flat) setDisplayData(flat as Bid[]);
-				else setDisplayData([]);
+				else setDisplayData(flat);
+				return;
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
@@ -131,7 +134,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
+				Header: () => <div style={{ textAlign: 'right' }}>Highest</div>,
 				accessor: 'amount',
 				Cell: (row) => (
 					<div style={{ textAlign: 'right' }}>{row.value} WILD</div>
