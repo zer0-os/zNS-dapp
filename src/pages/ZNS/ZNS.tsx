@@ -506,6 +506,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									empty={!data.isNothing() && subdomains.length === 0}
 									isGridView={isGridView}
 									setIsGridView={setIsGridView}
+									userId={account as string}
 								/>
 							</animated.div>
 						)}
