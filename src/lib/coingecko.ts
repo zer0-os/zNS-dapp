@@ -31,7 +31,7 @@ export const wildToUsd = async (amount: number) => {
 			const response = await fetch(
 				`https://api.coingecko.com/api/v3/simple/price?ids=wilder-world&vs_currencies=usd`,
 			);
-			price = (await response.json())['wilder-world'].usd;
+			price = (await response.json())['wilder-world'].usd as number;
 			wildTokenPriceCache = price;
 		}
 
