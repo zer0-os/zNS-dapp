@@ -14,11 +14,11 @@ export interface AcceptBidParams {
 	expireBlock: number;
 }
 
-interface StakingControllerHooks {
+interface ZauctionContractHook {
 	acceptBid: (params: AcceptBidParams) => Promise<ethers.ContractTransaction>;
 }
 
-export function useAcceptBid(): StakingControllerHooks {
+export function useZAuctionContract (): ZauctionContractHook {
 	const zAuctionContract = useZnsContracts()?.zAuction;
 
 	const acceptBid = async (params: AcceptBidParams) => {
@@ -34,7 +34,7 @@ export function useAcceptBid(): StakingControllerHooks {
 				params.bid,
 				params.nftAddress,
 				params.tokenId,
-                params.minBid,
+				params.minBid,
 				params.startBlock,
 				params.expireBlock,
 			);
