@@ -196,7 +196,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 				<b>
 					<a
 						className="alt-link"
-						href={`https://etherscan.io/${account}`}
+						href={`https://etherscan.io/address/${account}`}
 						target="_blank"
 						rel="noreferrer"
 					>{`${account.substring(0, 4)}...${account.substring(
