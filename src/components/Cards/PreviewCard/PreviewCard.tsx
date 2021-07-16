@@ -11,37 +11,44 @@ import { randomName, randomImage } from 'lib/Random';
 import { FutureButton, Image, Member } from 'components';
 
 type PreviewCardProps = {
-	image: string;
-	style?: React.CSSProperties;
-	name: string;
-	domain: string;
-	description: string;
-	creatorId: string;
-	ownerId: string;
-	isLoading: boolean;
 	children?: React.ReactNode;
+	creatorId: string;
+	description: string;
+	disabled?: boolean;
+	domain: string;
+	image: string;
+	isLoading: boolean;
 	mvpVersion: number;
+	name: string;
 	onButtonClick: () => void;
 	onImageClick?: () => void;
+	ownerId: string;
+	style?: React.CSSProperties;
 };
 
 const PreviewCard: React.FC<PreviewCardProps> = ({
-	image,
-	style,
-	name,
-	domain,
-	description,
-	creatorId,
-	ownerId,
-	isLoading,
 	children,
+	creatorId,
+	description,
+	disabled,
+	domain,
+	image,
+	isLoading,
 	mvpVersion,
+	name,
 	onButtonClick,
 	onImageClick,
+	ownerId,
+	style,
 }) => {
 	// TODO: Work out how the data for the asset cards should be passed in
 	// Would it actually make more sense to have the bottom row of the preview card be whatever
 	// is passed in as a child?
+
+	const buttonClick = () => {
+		if (disabled || !onButtonClick) return;
+		onButtonClick();
+	};
 
 	const open = () => {
 		if (onImageClick) onImageClick();
@@ -96,8 +103,8 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 					>
 						{mvpVersion === 1 && (
 							<FutureButton
-								glow
-								onClick={onButtonClick}
+								glow={disabled !== true}
+								onClick={buttonClick}
 								style={{ height: 36, width: 160, borderRadius: 30 }}
 							>
 								MAKE A BID
@@ -107,7 +114,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							<div>
 								<FutureButton
 									glow
-									onClick={onButtonClick}
+									onClick={buttonClick}
 									style={{ height: 36, width: 118, borderRadius: 30 }}
 								>
 									BUY

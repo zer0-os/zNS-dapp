@@ -445,6 +445,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 											? data.value.minter.id
 											: ''
 									}
+									disabled={
+										data.isJust() &&
+										data?.value?.owner?.id.toLowerCase() ===
+											account?.toLowerCase()
+									}
 									ownerId={!data.isNothing() ? data.value.owner.id : ''}
 									isLoading={isLoading}
 									mvpVersion={mvpVersion}
