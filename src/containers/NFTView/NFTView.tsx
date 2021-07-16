@@ -178,15 +178,20 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		>
 			<h4>History</h4>
 			<ul>
-				{bids.map((bid: Bid) =>
-					historyItem('0x930259032', bid.amount, bid.date),
+				{bids.map((bid: Bid, i: number) =>
+					historyItem(bid.bidderAccount, bid.amount, bid.date, i),
 				)}
 			</ul>
 		</section>
 	);
 
-	const historyItem = (account: string, amount: number, date: Date) => (
-		<li className={styles.Bid} key={date.toString()}>
+	const historyItem = (
+		account: string,
+		amount: number,
+		date: Date,
+		i: number,
+	) => (
+		<li className={styles.Bid} key={i}>
 			<div>
 				<b>
 					<a
