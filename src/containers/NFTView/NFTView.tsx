@@ -96,7 +96,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 
 	useEffect(() => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
-			setIsOwnedByYou(data.value.owner.id === account);
+			setIsOwnedByYou(
+				data.value.owner.id.toLowerCase() === account?.toLowerCase(),
+			);
 
 			getBidsForDomain(data.value).then(async (bids) => {
 				if (!bids || !bids.length) return;
