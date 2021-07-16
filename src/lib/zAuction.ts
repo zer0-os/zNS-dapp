@@ -7,13 +7,24 @@ const encodeBidEndpoint = `${apiEndpoint}/bid/`;
 const bidsEndpoint = `${apiEndpoint}/bids/`;
 const accountBidsEndpoint = `${bidsEndpoint}accounts/`;
 
-interface BidsDto {
-	account: string;
-	bidAmount: string;
-	bidMessage: string;
-	startBlock: string;
-	expireBlock: string;
-	tokenId: string;
+interface NftIdBidsDto {
+	account: string,
+	signedMessage: string,
+	auctionId: string,
+	bidAmount: string,
+	minimumBid: string,
+	startBlock: string,
+	expireBlock: string,
+}
+interface AccountBidsDto {
+	signedMessage: string,
+	auctionId: string,
+	bidAmount: string,
+	contractAddress: string,
+	tokenId: string,
+	minimumBid: string,
+	startBlock: string,
+	expireBlock: string,
 }
 
 interface BidPayloadPostInterface {
@@ -58,14 +69,14 @@ export async function getBidsForNft(contract: string, tokenId: string) {
 		method: 'GET',
 	});
 
-	const bids = (await response.json()) as BidsDto[];
+	const bids = (await response.json()) as NftIdBidsDto[];
 
 	return bids;
 }
 
 export async function getBidsForAccount(id: string) {
 	const response = await fetch(accountBidsEndpoint + id);
-	const bids = (await response.json()) as BidsDto[];
+	const bids = (await response.json()) as AccountBidsDto[];
 	return bids;
 }
 
