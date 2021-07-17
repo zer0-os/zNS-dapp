@@ -12,6 +12,15 @@ export interface ForAllApprovalParams {
 	approved: boolean;
 }
 
+export interface GetTokenOperatorParams {
+	tokenId: number;
+}
+
+export interface IsApprovedForAllTokensParams {
+	owner: string;
+	operator: string;
+}
+
 interface ApproveNFTHook {
 	approveSingleToken: (
 		params: SingleApprovalParams,
@@ -19,6 +28,10 @@ interface ApproveNFTHook {
 	approveAllTokens: (
 		params: ForAllApprovalParams,
 	) => Promise<ethers.ContractTransaction>;
+	getTokenOperator: (params: GetTokenOperatorParams) => Promise<string>;
+	isApprovedForAllTokens: (
+		params: IsApprovedForAllTokensParams,
+	) => Promise<boolean>;
 }
 
 export function useApprovals(): ApproveNFTHook {
@@ -30,7 +43,6 @@ export function useApprovals(): ApproveNFTHook {
 				throw Error(`no registry`);
 			}
 
-			// Send the Approval for a single NFT
 			const tx = await registry.approve(params.operator, params.tokenId);
 
 			return tx;
@@ -45,7 +57,6 @@ export function useApprovals(): ApproveNFTHook {
 				throw Error(`no registry`);
 			}
 
-			// Send the Approval for All
 			const tx = await registry.setApprovalForAll(
 				params.operator,
 				params.approved,
@@ -57,5 +68,30 @@ export function useApprovals(): ApproveNFTHook {
 		return tx;
 	};
 
-	return { approveSingleToken, approveAllTokens };
+	const getTokenOperator = async (params: GetTokenOperatorParams) => {
+		if (!registry) {
+			throw Error(`no registry`);
+		}
+
+		const tx = await registry.getApproved(params.tokenId);
+		return tx;
+	};
+
+	const isApprovedForAllTokens = async (
+		params: IsApprovedForAllTokensParams,
+	) => {
+		if (!registry) {
+			throw Error(`no registry`);
+		}
+
+		const tx = await registry.isApprovedForAll(params.owner, params.operator);
+		return tx;
+	};
+
+	return {
+		approveSingleToken,
+		approveAllTokens,
+		getTokenOperator,
+		isApprovedForAllTokens,
+	};
 }
