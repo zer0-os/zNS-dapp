@@ -178,7 +178,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const checkAllowance = async () => {
 		const allowance = await wildContract.allowance(account!, zAuctionAddress);
-		const needsApproving = allowance.lt(Number(bid));
+		const bidAsWei = ethers.utils.parseEther(bid).toString();
+		const needsApproving = allowance.lt(bidAsWei);
 		setHasApprovedTokenTransfer(!needsApproving);
 	};
 
