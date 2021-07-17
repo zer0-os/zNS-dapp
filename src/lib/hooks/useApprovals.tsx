@@ -69,22 +69,30 @@ export function useApprovals(): ApproveNFTHook {
 	};
 
 	const getTokenOperator = async (params: GetTokenOperatorParams) => {
-		if (!registry) {
-			throw Error(`no registry`);
-		}
+		const tx = await tryFunction(async () => {
+			if (!registry) {
+				throw Error(`no registry`);
+			}
 
-		const tx = await registry.getApproved(params.tokenId);
+			const tx = await registry.getApproved(params.tokenId);
+			return tx;
+		}, `Send check for approved operator`);
+
 		return tx;
 	};
 
 	const isApprovedForAllTokens = async (
 		params: IsApprovedForAllTokensParams,
 	) => {
-		if (!registry) {
-			throw Error(`no registry`);
-		}
+		const tx = await tryFunction(async () => {
+			if (!registry) {
+				throw Error(`no registry`);
+			}
 
-		const tx = await registry.isApprovedForAll(params.owner, params.operator);
+			const tx = await registry.isApprovedForAll(params.owner, params.operator);
+			return tx;
+		}, `Send check for approved operator for all tokens`);
+
 		return tx;
 	};
 
