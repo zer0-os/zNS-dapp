@@ -101,7 +101,12 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		try {
 			setIsApprovalInProgress(true);
 			// @zachary - need to know here when the approval is finished
-			await wildContract.approve(zAuctionAddress, ethers.constants.MaxUint256);
+			const tx = await wildContract.approve(
+				zAuctionAddress,
+				ethers.constants.MaxUint256,
+			);
+			await tx.wait();
+			setHasApprovedTokenTransfer(true);
 			setIsApprovalInProgress(false);
 		} catch (e) {
 			console.warn('zAuction approval failed');
