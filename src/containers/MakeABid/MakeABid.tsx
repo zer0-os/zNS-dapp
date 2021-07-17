@@ -60,6 +60,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
 	const [wildBalance, setWildBalance] = useState(0);
+	const [hasApproveTokenTransfer, setHasApprovedTokenTransfer] =
+		useState(false);
+	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
 
 	// Loading States
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
@@ -69,8 +72,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account, chainId } = walletContext;
-	const zAuctionAddress = useZnsContracts()!.zAuction.address;
-	const wildContract: ERC20 = useZnsContracts()!.wildToken;
+
+	const znsContracts = useZnsContracts()!;
+	const zAuctionAddress = znsContracts.zAuction.address;
+	const wildContract: ERC20 = znsContracts.wildToken;
 
 	const isBidValid =
 		(Number(bid) &&
@@ -87,16 +92,24 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		history.push(relativeDomain);
 	};
 
-	const approveZAuction = () => {
-		wildContract.approve(zAuctionAddress, ethers.constants.MaxUint256);
-	};
-
 	const formSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
 		continueBid();
 	};
 
-	const continueBid = () => {
+	const approveZAuction = async () => {
+		try {
+			setIsApprovalInProgress(true);
+			// @zachary - need to know here when the approval is finished
+			await wildContract.approve(zAuctionAddress, ethers.constants.MaxUint256);
+			setIsApprovalInProgress(false);
+		} catch (e) {
+			console.warn('zAuction approval failed');
+			setIsApprovalInProgress(false);
+		}
+	};
+
+	const continueBid = async () => {
 		// Validate bid
 		if (!Number(bid)) return setError('Invalid bid');
 		const bidAmount = Number(bid);
@@ -106,8 +119,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		if (bidAmount > wildBalance)
 			return setError('You have insufficient WILD to make this bid');
 
+		await checkAllowance();
 		setError('');
-
 		setStep(Steps.Approve);
 	};
 
@@ -118,11 +131,16 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 		// Send bid to hook
 		setIsMetamaskWaiting(true);
-		const bidData = await placeBid(domain, bidAmount);
+		try {
+			const bidSuccess = await placeBid(domain, bidAmount);
+			if (bidSuccess === true) {
+				navigateTo(domain.name);
+				onBid();
+			}
+		} catch (e) {
+			console.warn('Failed to place bid');
+		}
 		setIsMetamaskWaiting(false);
-
-		navigateTo(domain.name);
-		onBid();
 	};
 
 	const getCurrentHighestBid = async () => {
@@ -141,7 +159,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	// Effects //
 	/////////////
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (!account) {
 			return;
 		}
@@ -152,6 +170,18 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		};
 		fetchTokenBalance();
 	}, [wildContract, account]);
+
+	const checkAllowance = async () => {
+		const allowance = await wildContract.allowance(account!, zAuctionAddress);
+		const needsApproving = allowance.lt(Number(bid));
+		setHasApprovedTokenTransfer(!needsApproving);
+	};
+
+	useEffect(() => {
+		if (step === Steps.Approve && Number(bid) && !isApprovalInProgress) {
+			checkAllowance();
+		}
+	}, [wildContract, account, step, isApprovalInProgress]);
 
 	useEffect(() => {
 		getMetadata(domain.metadata).then((metadata: Metadata | undefined) => {
@@ -304,37 +334,49 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					padding: '0 37.5px',
 				}}
 			>
-				{!isMetamaskWaiting && (
+				{!isMetamaskWaiting && !isApprovalInProgress && (
 					<>
-						<p style={{ lineHeight: '21px' }}>
-							Before placing bids, you need to approve zAuction to access your
-							WILD tokens in case your bid is accepted.
-						</p>
-						<FutureButton
-							glow
-							alt
-							style={{
-								height: 36,
-								borderRadius: 18,
-								textTransform: 'uppercase',
-								margin: '48px auto 0 auto',
-							}}
-							onClick={approveZAuction}
-						>
-							Approve zAuction
-						</FutureButton>
-						<FutureButton
-							glow
-							style={{
-								height: 36,
-								borderRadius: 18,
-								textTransform: 'uppercase',
-								margin: '48px auto 0 auto',
-							}}
-							onClick={makeBid}
-						>
-							Place Bid
-						</FutureButton>
+						{!hasApproveTokenTransfer && (
+							<>
+								<p style={{ lineHeight: '21px' }}>
+									Before placing bids, you need to approve zAuction to access
+									your WILD tokens in case your bid is accepted.
+								</p>
+								<FutureButton
+									glow
+									alt
+									style={{
+										height: 36,
+										borderRadius: 18,
+										textTransform: 'uppercase',
+										margin: '16px auto 0 auto',
+									}}
+									onClick={approveZAuction}
+								>
+									Approve zAuction
+								</FutureButton>
+							</>
+						)}
+						{hasApproveTokenTransfer && (
+							<>
+								<p>
+									zAuction is approved to access your WILD tokens should your
+									bid be accepted.
+								</p>
+								<FutureButton
+									glow
+									style={{
+										height: 36,
+										borderRadius: 18,
+										textTransform: 'uppercase',
+										margin: '16px auto 0 auto',
+									}}
+									onClick={makeBid}
+								>
+									Place Bid
+								</FutureButton>
+							</>
+						)}
 					</>
 				)}
 				{isMetamaskWaiting && (
@@ -343,6 +385,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 							<div className={styles.Spinner}></div>
 						</div>
 						<p className={styles.Wait}>Hold tight while we process your bid</p>
+					</>
+				)}
+				{isApprovalInProgress && (
+					<>
+						<div className={styles.Loading}>
+							<div className={styles.Spinner}></div>
+						</div>
+						<p className={styles.Wait}>zAuction approval in progress</p>
 					</>
 				)}
 			</div>

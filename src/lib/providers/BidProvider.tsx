@@ -22,7 +22,10 @@ export const BidContext = React.createContext({
 	getBidsForYourDomains: async (): Promise<Bid[] | undefined> => {
 		return;
 	},
-	placeBid: async (domain: Domain, bid: number) => {
+	placeBid: async (
+		domain: Domain,
+		bid: number,
+	): Promise<boolean | undefined> => {
 		return;
 	},
 	acceptBid: async (bidId: string): Promise<void> => {
@@ -156,15 +159,17 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const placeBid = async (domain: Domain, bid: number) => {
 		// Replace with bid functionality
 		try {
-			const r = await zAuction.placeBid(
+			await zAuction.placeBid(
 				context.library!,
 				contracts!.registry.address,
 				domain.id,
 				ethers.utils.parseEther(bid.toString()).toString(),
 			);
 			addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
+			return true;
 		} catch (e) {
 			console.error(e);
+			return;
 		}
 	};
 
