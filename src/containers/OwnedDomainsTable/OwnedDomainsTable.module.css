@@ -1,12 +1,12 @@
 .Reset {
-	background: none;
-	border: none;
-	box-shadow: none;
-	backdrop-filter: none;
-	overflow: visible;
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	backdrop-filter: none !important;
+	overflow: visible !important;
 }
 
 .Reset > div:first-of-type {
-	padding-left: 0;
-	padding-right: 0;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
 }
