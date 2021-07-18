@@ -7,6 +7,7 @@ import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
 import { Image, RequestTable, TabBar } from 'components';
+import { OwnedDomainsTable } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
@@ -29,7 +30,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	// State / Data //
 	//////////////////
 
-	const [selected, setSelected] = useState(`Offers`); // Which tab is selected
+	const [selected, setSelected] = useState(`Your Domains`); // Which tab is selected
 
 	///////////////
 	// Functions //
@@ -84,7 +85,8 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<TabBar tabs={['Offers']} onSelect={select} />
+			<TabBar tabs={['Your Domains', 'Offers']} onSelect={select} />
+			{selected === 'Your Domains' && <OwnedDomainsTable />}
 			{selected === 'Offers' && <RequestTable userId={id} />}
 		</div>
 	);

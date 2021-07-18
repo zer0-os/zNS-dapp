@@ -28,6 +28,7 @@ import list from './assets/list.svg';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
+	className?: string;
 	domains: any;
 	isRootDomain: boolean;
 	style?: React.CSSProperties;
@@ -57,6 +58,7 @@ interface RowData {
 
 // @TODO: Create a `Domain` type for `domains`
 const DomainTable: React.FC<DomainTableProps> = ({
+	className,
 	domains,
 	isRootDomain,
 	style,
@@ -299,9 +301,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	return (
 		<div
 			style={style}
-			className={
-				styles.DomainTableContainer + ' border-primary border-rounded blur'
-			}
+			className={`${
+				styles.DomainTableContainer
+			} border-primary border-rounded blur ${className || ''}`}
 		>
 			{/* Table Header */}
 			<div className={styles.searchHeader}>
