@@ -16,7 +16,7 @@
 	z-index: 9000;
 	opacity: 0;
 
-	background: rgba(0, 0, 0, 0.3);
+	background: rgba(0, 0, 0, 0.7);
 	transition: backdrop-filter 0.2s;
 }
 
@@ -53,14 +53,16 @@
 .Open {
 	animation: open var(--speed) ease-in-out;
 	opacity: 1;
-	backdrop-filter: blur(30px) opacity(1);
+	/* @todo temporarily disabled backdrop blur for performance */
+	/* backdrop-filter: blur(30px) opacity(1); */
 }
 
 .Closed {
 	animation: close var(--animation-time-short) ease-in-out;
 	opacity: 0;
 
-	backdrop-filter: blur(30px) opacity(0);
+	/* @todo temporarily disabled backdrop blur for performance */
+	/* backdrop-filter: blur(30px) opacity(0); */
 }
 
 @keyframes open {

@@ -6,7 +6,7 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import { Image, RequestTable, TabBar } from 'components';
+import { BidTable, Image, RequestTable, TabBar } from 'components';
 import { OwnedDomainsTable } from 'containers';
 
 //- Library Imports
@@ -88,6 +88,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 			<TabBar tabs={['Your Domains', 'Offers']} onSelect={select} />
 			{selected === 'Your Domains' && <OwnedDomainsTable />}
 			{selected === 'Offers' && <RequestTable userId={id} />}
+			{selected === 'Bids' && <BidTable userId={id} />}
 		</div>
 	);
 };

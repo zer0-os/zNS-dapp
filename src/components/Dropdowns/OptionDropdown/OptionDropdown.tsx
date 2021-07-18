@@ -63,7 +63,6 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 
 	// Adds window click listener when opened, removes it when closed
 	useEffect(() => {
-		console.log('setup');
 		if (isOpen) window.addEventListener('click', toggleWindow);
 		else window.removeEventListener('click', toggleWindow);
 		return () => window.removeEventListener('click', toggleWindow);

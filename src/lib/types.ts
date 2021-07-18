@@ -42,6 +42,7 @@ export interface DomainRequest {
 export interface DisplayDomain extends Domain {
 	image: string | undefined;
 	description: string | undefined;
+	title: string | undefined;
 }
 
 export interface DisplayParentDomain extends DisplayDomain {
@@ -96,4 +97,14 @@ export const DefaultDomain: Domain = {
 		id: '',
 	},
 	metadata: '',
+};
+
+// @zachary change these types
+// to reflect real data (its mock at the moment)
+
+export type Bid = {
+	amount: number;
+	bidderAccount: string;
+	date: Date;
+	tokenId?: string;
 };

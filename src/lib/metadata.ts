@@ -1,4 +1,4 @@
-import { Metadata } from './types';
+import { Metadata, DisplayDomain } from './types';
 
 interface MetadataCache {
 	[url: string]: Metadata | undefined;

@@ -1,18 +1,20 @@
-.DomainTableContainer {
+.RequestTableContainer {
 	width: 100%;
-	background: var(--background-purple-card-20);
-	overflow: hidden;
+	color: white;
 }
 
-.DomainTable {
+.RequestTable {
 	position: relative;
+
+	/* table-layout: fixed; */
+	border-collapse: collapse;
 }
 
 .Expander {
 	transition: height var(--animation-time-long) ease-in-out;
 }
 
-.DomainTable {
+.RequestTable {
 	width: 100%;
 }
 
@@ -31,7 +33,7 @@
 	display: flex;
 
 	width: 100%;
-	padding: 15px 20px;
+	padding: 15px 0;
 
 	align-items: center;
 }
@@ -43,7 +45,7 @@
 	justify-content: flex-end;
 }
 
-.searchHeaderButtons > *:not(:last-of-type) {
+.searchHeaderButtons > *:not(:last-child) {
 	margin-right: 12px;
 }
 
@@ -53,57 +55,45 @@
 
 /* Table Header */
 
-.DomainTable th {
+.RequestTable th {
 	color: var(--color-primary-lighter-3);
 	font-weight: 700;
 }
 
 /* Table */
-.DomainTable tbody {
-	font-weight: 500;
+.RequestTable tbody {
+	font-weight: 400;
 }
 
-.DomainTable th,
-.DomainTable td {
+.RequestTable th,
+.RequestTable td {
 	padding: 16px 11px;
 	vertical-align: middle;
 }
 
-.DomainTable th:first-child,
-.DomainTable td:first-child {
-	padding-left: 30px;
-	padding-right: 0;
-	width: 50px;
-}
-
-.DomainTable th:nth-child(2),
-.DomainTable td:nth-child(2) {
-	padding-right: 0;
-	width: 56px;
-}
-
-.DomainTable th:last-child,
-.DomainTable td:last-child {
-	padding-right: 30px;
-}
-
-.DomainTable > tbody > tr {
+.RequestTable > tbody > tr {
 	cursor: pointer;
 	transition: background var(--animation-time-short) linear;
 }
 
-.DomainTable > tbody > tr:hover {
+.RequestTable > tbody > tr:hover {
 	background: var(--background-purple-card-20);
 }
 
-.DomainTable > tbody > tr img,
-.DomainTable > tbody > tr button {
+.RequestTable > tbody > tr img,
+.RequestTable > tbody > tr button {
 	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
-.DomainTable > tbody > tr:hover img,
-.DomainTable > tbody > tr:hover button {
+.RequestTable > tbody > tr:hover > td > img,
+.RequestTable > tbody > tr:hover button {
 	transform: scale(1.1);
+}
+
+.RequestTable tbody tr td:first-of-type,
+.RequestTable > thead tr th:first-of-type {
+	padding-left: 23px;
+	width: 50px;
 }
 
 .ticker {
@@ -111,34 +101,19 @@
 	font-weight: 700;
 }
 
-.positive {
-	color: var(--color-green-2);
+.Accepted span {
+	display: inline-block;
+	width: 100%;
+
+	text-align: center;
 }
 
-.negative {
-	color: var(--color-red);
+.Accepted span:first-of-type {
+	color: var(--color-accent-1);
 }
 
-.positive > div,
-.negative > div {
-	content: ' ';
-	width: 0;
-	height: 0;
-
-	margin-top: 4px;
-	margin-right: 4px;
-}
-
-.positive > div {
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	border-bottom: 5px solid var(--color-green-2);
-}
-
-.negative > div {
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	border-top: 5px solid var(--color-red);
+.Accepted span:not(:first-of-type) {
+	margin-top: 8px;
 }
 
 /* Table alignments */
@@ -175,7 +150,7 @@
 	animation: spin 1s linear infinite;
 }
 
-.Empty {
+.Message {
 	padding: 32px 32px 40px 32px;
 	text-align: center;
 	font-weight: 700;
@@ -198,8 +173,8 @@
 	padding-bottom: 24px;
 
 	display: grid;
-	justify-content: space-evenly;
-	grid-template-columns: repeat(3, 388px);
+	justify-content: space-between;
+	grid-template-columns: repeat(3, 380px);
 	grid-gap: 24px 0;
 
 	list-style: none;
@@ -213,10 +188,4 @@
 
 .Grid > li:hover {
 	transform: scale(1.03);
-}
-
-@media only screen and (max-width: 1282px) {
-	.searchHeaderButtons {
-		display: none;
-	}
 }

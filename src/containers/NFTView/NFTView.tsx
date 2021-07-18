@@ -5,13 +5,18 @@ import React, { useState, useEffect } from 'react';
 import { useDomainCache } from 'lib/useDomainCache'; // Domain data
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
+import { useHistory } from 'react-router';
 
 //- Component Imports
 import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components';
+import { MakeABid } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
+import { useBidProvider } from 'lib/providers/BidProvider';
+import { wildToUsd } from 'lib/coingecko';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -20,17 +25,17 @@ import styles from './NFTView.module.css';
 import galaxyBackground from './assets/galaxy.png';
 import copyIcon from './assets/copy-icon.svg';
 import { Maybe } from 'true-myth';
-import { DisplayParentDomain } from 'lib/types';
+import { DisplayParentDomain, Bid } from 'lib/types';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { BigNumber } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
+const moment = require('moment');
 
 type NFTViewProps = {
 	domain: string;
-	onEnlist: () => void;
 };
 
-const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
+const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
 
 	//- Notes:
@@ -38,6 +43,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	// because it needs way more data than is worth sending through props
 
 	const { addNotification } = useNotification();
+	const { wildPriceUsd } = useCurrencyProvider();
+	const router = useHistory();
 
 	//- Page State
 	const [zna, setZna] = useState('');
@@ -46,11 +53,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 	const [description, setDescription] = useState<string>(''); // Description from metadata url
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
+	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
+	const [bids, setBids] = useState<Bid[]>([]);
+	const [highestBid, setHighestBid] = useState<Bid | undefined>();
+	const [highestBidUsd, setHighestBidUsd] = useState<number | undefined>();
 
 	//- Web3 Domain Data
 	const { useDomain } = useDomainCache();
 	const domainContext = useDomain(domain.substring(1));
 	const data: Maybe<DisplayParentDomain> = domainContext.data;
+	const { getBidsForDomain } = useBidProvider();
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -71,9 +83,43 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 		navigator.clipboard.writeText(domainId);
 	};
 
+	const openBidOverlay = () => {
+		if (data.isNothing() || isOwnedByYou) return;
+		setIsBidOverlayOpen(true);
+	};
+
+	const closeBidOverlay = () => setIsBidOverlayOpen(false);
+
+	const onBid = async () => {
+		// @todo switch this to live data
+		// should refresh on bid rather than add mock data
+		getBids();
+		closeBidOverlay();
+	};
+
+	const getBids = async () => {
+		if (!data.isNothing() && data.value.metadata && !data.value.image) {
+			getBidsForDomain(data.value).then(async (bids) => {
+				if (!bids || !bids.length) return;
+				try {
+					const sorted = bids.sort((a, b) => b.amount - a.amount);
+					setBids(sorted);
+					setHighestBid(sorted[0]);
+					setHighestBidUsd(sorted[0].amount * wildPriceUsd);
+				} catch (e) {
+					console.error('Failed to retrive bid data');
+				}
+			});
+		}
+	};
+
 	useEffect(() => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
-			setIsOwnedByYou(data.value.owner.id === account);
+			setIsOwnedByYou(
+				data.value.owner.id.toLowerCase() === account?.toLowerCase(),
+			);
+
+			getBids();
 
 			// Get metadata
 			fetch(data.value.metadata).then(async (d: Response) => {
@@ -87,8 +133,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [data]);
 
-	return (
-		<div className={styles.NFTView}>
+	/////////////////////
+	// React Fragments //
+	/////////////////////
+
+	const overlays = () => (
+		<>
 			<Overlay
 				centered
 				img
@@ -107,6 +157,94 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 				/>
 			</Overlay>
 
+			{data.isJust() && (
+				<Overlay onClose={closeBidOverlay} centered open={isBidOverlayOpen}>
+					<MakeABid domain={data.value} onBid={onBid} />
+				</Overlay>
+			)}
+		</>
+	);
+
+	const price = () => (
+		<>
+			{highestBid && (
+				<div className={styles.Price}>
+					<h2 className="glow-text-blue">Highest Bid</h2>
+					<span className={styles.Crypto}>
+						{Number(highestBid.amount.toFixed(2)).toLocaleString()} WILD{' '}
+						{highestBidUsd && (
+							<span className={styles.Fiat}>
+								(${Number(highestBidUsd.toFixed(2)).toLocaleString()})
+							</span>
+						)}
+					</span>
+				</div>
+			)}
+		</>
+	);
+
+	const history = () => (
+		<section
+			className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
+		>
+			<h4>History</h4>
+			<ul>
+				{bids.map((bid: Bid, i: number) =>
+					historyItem(bid.bidderAccount, bid.amount, bid.date, i),
+				)}
+			</ul>
+		</section>
+	);
+
+	const historyItem = (
+		account: string,
+		amount: number,
+		date: Date,
+		i: number,
+	) => (
+		<li className={styles.Bid} key={i}>
+			<div>
+				<b>
+					<a
+						className="alt-link"
+						href={`https://etherscan.io/address/${account}`}
+						target="_blank"
+						rel="noreferrer"
+					>{`${account.substring(0, 4)}...${account.substring(
+						account.length - 4,
+					)}`}</a>
+				</b>{' '}
+				bidded <b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
+			</div>
+		</li>
+	);
+
+	const actionButtons = () => (
+		<div className={styles.Buttons}>
+			<FutureButton
+				glow={isOwnedByYou}
+				onClick={() => {}}
+				style={{ height: 36, borderRadius: 18 }}
+			>
+				Transfer Ownership
+			</FutureButton>
+			<FutureButton
+				glow={!isOwnedByYou}
+				onClick={openBidOverlay}
+				style={{ height: 36, borderRadius: 18 }}
+			>
+				Make A Bid
+			</FutureButton>
+		</div>
+	);
+
+	////////////
+	// Render //
+	////////////
+
+	return (
+		<div className={styles.NFTView}>
+			{overlays()}
 			<div
 				className={`${styles.NFT} blur border-primary border-rounded`}
 				style={{ backgroundImage: `url(${galaxyBackground})` }}
@@ -148,31 +286,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 							/>
 						</div>
 					</div>
-					{/* Price data doesn't exist yet */}
-					{/* <div className={styles.Price}>
-						<span className={styles.Crypto}>
-							{Number(2521).toLocaleString()} WILD{' '}
-							<span className={styles.Fiat}>
-								(${Number(1304.12).toLocaleString()})
-							</span>
-						</span>
-					</div> */}
-					<div className={styles.Buttons}>
-						<FutureButton
-							glow={isOwnedByYou}
-							onClick={() => {}}
-							style={{ height: 36, borderRadius: 18 }}
-						>
-							Transfer Ownership
-						</FutureButton>
-						<FutureButton
-							glow={!isOwnedByYou}
-							onClick={onEnlist}
-							style={{ height: 36, borderRadius: 18 }}
-						>
-							WAITLIST
-						</FutureButton>
-					</div>
+					{price()}
+					{actionButtons()}
 				</div>
 			</div>
 			<div className={styles.Horizontal} style={{ marginTop: 20 }}>
@@ -182,20 +297,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 					<h4>Story</h4>
 					<p>{description}</p>
 				</div>
-				{/* <div className={styles.Horizontal}>
-						<div className={`${styles.Box} blur border-primary border-rounded`}>
-							<h4>Views</h4>
-							<span className="glow-text-white">
-								{Number(1000).toLocaleString()}
-							</span>
-						</div>
-						<div className={`${styles.Box} blur border-primary border-rounded`}>
-							<h4>Edition</h4>
-							<span className="glow-text-white">
-								{Number(1).toLocaleString()} of {Number(1).toLocaleString()}
-							</span>
-						</div>
-					</div> */}
 				<div
 					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 				>
@@ -221,7 +322,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onEnlist }) => {
 					</ArrowLink>
 				</div>
 			</div>
-			<div></div>
+			{history()}
 		</div>
 	);
 };
