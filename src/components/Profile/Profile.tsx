@@ -40,6 +40,10 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 		setSelected(option);
 	};
 
+	const navigateToDomain = (domain: string) => {
+		console.log(domain);
+	};
+
 	/////////////
 	// Effects //
 	/////////////
@@ -87,7 +91,9 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 			</div>
 			<TabBar tabs={['Your Domains', 'Offers']} onSelect={select} />
 			{selected === 'Your Domains' && <OwnedDomainsTable />}
-			{selected === 'Offers' && <RequestTable userId={id} />}
+			{selected === 'Offers' && (
+				<RequestTable onNavigate={navigateToDomain} userId={id} />
+			)}
 			{selected === 'Bids' && <BidTable userId={id} />}
 		</div>
 	);

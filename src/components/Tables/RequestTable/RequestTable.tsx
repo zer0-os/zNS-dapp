@@ -46,9 +46,14 @@ import { useWeb3React } from '@web3-react/core';
 type RequestTableProps = {
 	style?: React.CSSProperties;
 	userId: string;
+	onNavigate: (domain: string) => void;
 };
 
-const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
+const RequestTable: React.FC<RequestTableProps> = ({
+	style,
+	userId,
+	onNavigate,
+}) => {
 	//////////////////
 	// Custom Hooks //
 	//////////////////
@@ -388,13 +393,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 		useFilters,
 		useGlobalFilter,
 	);
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		prepareRow,
-		rows,
-	} = tableHook;
+	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
+		tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
@@ -410,6 +410,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 					<Request
 						onApprove={onApprove}
 						onFulfill={onFulfill}
+						onNavigate={onNavigate}
 						request={viewing}
 						yours={viewing.contents.requestor === userId}
 					/>
