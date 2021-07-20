@@ -93,11 +93,30 @@ export const CHILDREN_QUERY = gql`
 		domains(where: { parent: $parent }) {
 			id
 			name
-			subdomains
-			owner
-			minter
+			parent {
+				id
+				name
+			}
+			subdomains {
+				id
+				name
+				metadata
+				owner {
+					id
+				}
+				minter {
+					id
+				}
+			}
+			owner {
+				id
+			}
+			minter {
+				id
+			}
 			lockedBy
 			isLocked
+			metadata
 		}
 	}
 `;
@@ -107,12 +126,30 @@ export const OWNED_DOMAIN_QUERY = gql`
 		domains(where: { owner: $owner }) {
 			id
 			name
-			parent
-			subdomains
-			owner
-			minter
+			parent {
+				id
+				name
+			}
+			subdomains {
+				id
+				name
+				metadata
+				owner {
+					id
+				}
+				minter {
+					id
+				}
+			}
+			owner {
+				id
+			}
+			minter {
+				id
+			}
 			lockedBy
 			isLocked
+			metadata
 		}
 	}
 `;
@@ -187,33 +224,33 @@ function useDomain(name: string) {
 
 function useOwnedDomains(): {
 	owned: Maybe<any[]>;
-	refetchOwned: RefetchQuery<any>;
+	refetchOwned: () => void;
 } {
 	const context = useWeb3React<Web3Provider>();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { account } = context;
-	const [getOwned, { data, refetch, error }] = useLazyQuery<any>(
+	const accountNormalized = account?.toLowerCase();
+
+	const [getOwned, { data, refetch, error }] = useLazyQuery<DomainData>(
 		OWNED_DOMAIN_QUERY,
 		{
-			variables: { owner: account },
+			variables: { owner: accountNormalized },
 		},
 	);
 
-	const owned: Maybe<any[]> = useMemo(() => {
+	const owned: Maybe<DisplayParentDomain[]> = useMemo(() => {
 		if (error) {
 			// TODO: maybe throw?
 			console.error(error);
 		}
 		if (data) {
-			return Maybe.of(
-				data.domains.map((d: any) => ({
-					...d,
-					owner: getAddress(d.owner),
-					parent: d.parent,
-					subdomains: [],
-
-					metadata: d.metadata,
-				})),
+			console.log(data.domains);
+			return Maybe.of<DisplayParentDomain[]>(
+				data.domains.map((d: ParentDomain) => {
+					return {
+						...d
+					} as DisplayParentDomain;
+				}),
 			);
 		}
 		return Maybe.nothing();
@@ -221,23 +258,21 @@ function useOwnedDomains(): {
 
 	useEffect(() => {
 		if (refetch) {
-			refetch({ variables: { owner: account } });
+			refetch({ variables: { owner: accountNormalized } });
 		} else if (account) {
-			getOwned({ variables: { owner: account } });
+			getOwned({ variables: { owner: accountNormalized } });
 		}
 	}, [account, getOwned, refetch]);
 
-	//console.log('usedomain list', owned);
-
-	useEffect(() => {
+	const refresh = () => {
 		if (refetch) {
-			refetch({ variables: { owner: account } });
+			refetch({ variables: { owner: accountNormalized } });
 		} else if (account) {
-			getOwned({ variables: { owner: account } });
+			getOwned({ variables: { owner: accountNormalized } });
 		}
-	}, [account, getOwned, refetch]);
+	}
 
-	return { owned, refetchOwned: refetch! };
+	return { owned, refetchOwned: refresh };
 }
 
 // maybe fx
