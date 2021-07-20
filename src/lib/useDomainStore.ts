@@ -1,4 +1,12 @@
-import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
+import {
+	ApolloClient,
+	ApolloQueryResult,
+	gql,
+	NormalizedCacheObject,
+	QueryOptions,
+	useLazyQuery,
+	useQuery,
+} from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
@@ -331,3 +339,18 @@ export { useDomainStore };
 // function subdomains(subdomains: any, arg1: string) {
 //   throw new Error('Function not implemented.');
 // }
+
+export const getDomainData = async (
+	domainId: string,
+	client: ApolloClient<NormalizedCacheObject> | undefined,
+): Promise<ApolloQueryResult<DomainData> | undefined> => {
+	const options: QueryOptions = {
+		query: domainByIdQuery,
+		variables: { Id: domainId },
+		fetchPolicy: 'no-cache',
+	};
+
+	const tx = await client?.query(options);
+
+	return tx;
+};
