@@ -54,3 +54,8 @@ export const SubgraphProvider: React.FC<SubgraphContextProviderType> = ({
 		</SubgraphContext.Provider>
 	);
 };
+
+export function useSubgraphProvider() {
+	const { client } = React.useContext(SubgraphContext);
+	return { client };
+}
