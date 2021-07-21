@@ -346,7 +346,7 @@ export const getDomainData = async (
 ): Promise<ApolloQueryResult<DomainData> | undefined> => {
 	const options: QueryOptions = {
 		query: domainByIdQuery,
-		variables: { Id: domainId },
+		variables: { id: domainId },
 		fetchPolicy: 'no-cache',
 	};
 
