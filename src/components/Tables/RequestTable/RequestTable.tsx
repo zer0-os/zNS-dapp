@@ -236,7 +236,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 
 		//below it will await for a data fetch for the provided id in the first argument, calling the apolloClientInstance we created
 		const tx = await getDomainData("0x4af784d213e0b2ac71d9d35cc2f0792469e21f78ad13d0b776be2da504c143a1", apolloClientInstance.client)
-		console.log("your data fetch number " + i + " is: " + tx)
+		console.log("your data fetch number " + i + " is: ")
+		console.log(tx)
 		}
 
 		domainDataFetch()
