@@ -89,7 +89,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<TabBar tabs={['Your Domains', 'Offers']} onSelect={select} />
+			<TabBar tabs={['Your Domains', 'Offers', 'Bids']} onSelect={select} />
 			{selected === 'Your Domains' && <OwnedDomainsTable />}
 			{selected === 'Offers' && (
 				<RequestTable onNavigate={navigateToDomain} userId={id} />
