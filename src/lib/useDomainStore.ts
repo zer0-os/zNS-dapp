@@ -342,7 +342,7 @@ export { useDomainStore };
 
 export const getDomainData = async (
 	domainId: string,
-	client: ApolloClient<NormalizedCacheObject> | undefined,
+	client: ApolloClient<NormalizedCacheObject>,
 ): Promise<ApolloQueryResult<DomainData> | undefined> => {
 	const options: QueryOptions = {
 		query: domainByIdQuery,
