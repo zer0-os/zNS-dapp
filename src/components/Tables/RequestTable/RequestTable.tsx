@@ -42,6 +42,8 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
 import { useWeb3React } from '@web3-react/core';
+import { getDomainData } from 'lib/useDomainStore';
+import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
 
 type RequestTableProps = {
 	style?: React.CSSProperties;
@@ -60,6 +62,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	const requestsForYou = useRequestsForOwnedDomains(userId);
 	const wildToken = znsContracts.wildToken;
 
+	const apolloClientInstance = useSubgraphProvider()
+
 	//////////////////
 	// State / Refs //
 	//////////////////
@@ -76,7 +80,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	const [domainFilter, setDomainFilter] = useState('');
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
-
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DisplayDomainRequestAndContents | undefined
@@ -225,6 +228,18 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 			}
 		});
 	}, [yourRequests.requests, requestsForYou.requests, domainFilter]);
+
+	//sample effect to check that the function fetchs the domain data of an example id
+	useEffect(() => {
+		const domainDataFetch = async () => {
+		for(let i = 0; i<5;i++){ //hardcoded for to check that it calls good in a loop
+
+		//below it will await for a data fetch for the provided id in the first argument, calling the apolloClientInstance we created
+		const tx = await getDomainData("0x4af784d213e0b2ac71d9d35cc2f0792469e21f78ad13d0b776be2da504c143a1", apolloClientInstance.client)
+		console.log("your data fetch number " + i + " is: " + tx)
+		}
+	}
+	}, []);
 
 	/////////////////
 	// React-Table //
