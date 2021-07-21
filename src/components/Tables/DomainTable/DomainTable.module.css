@@ -89,6 +89,7 @@
 
 .DomainTable > tbody > tr {
 	cursor: pointer;
+	color: white;
 	transition: background var(--animation-time-short) linear;
 }
 

@@ -338,8 +338,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			<div
 				style={style}
 				className={`${
-				styles.DomainTableContainer
-			} border-primary border-rounded blur ${className || ''}`}
+					styles.DomainTableContainer
+				} border-primary border-rounded blur ${className || ''}`}
 			>
 				{/* Table Header */}
 				<div className={styles.searchHeader}>
