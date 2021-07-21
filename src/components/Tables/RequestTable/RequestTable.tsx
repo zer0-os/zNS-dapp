@@ -238,6 +238,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 		const tx = await getDomainData("0x4af784d213e0b2ac71d9d35cc2f0792469e21f78ad13d0b776be2da504c143a1", apolloClientInstance.client)
 		console.log("your data fetch number " + i + " is: " + tx)
 		}
+
+		domainDataFetch()
 	}
 	}, []);
 
