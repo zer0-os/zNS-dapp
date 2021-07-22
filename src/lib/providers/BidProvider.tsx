@@ -5,12 +5,14 @@ import React, { useState, useEffect } from 'react';
 import { Domain, Bid } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
 import { BigNumber, ethers } from 'ethers';
+import { AcceptBidParams } from 'lib/hooks/useZAuctionContract';
 
 import * as zAuction from '../zAuction';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
 import { useWeb3React } from '@web3-react/core';
+import { useZAuctionContract } from 'lib/hooks/useZAuctionContract';
 
 export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
@@ -28,7 +30,7 @@ export const BidContext = React.createContext({
 	): Promise<boolean | undefined> => {
 		return;
 	},
-	acceptBid: async (bidId: string): Promise<void> => {
+	acceptBid: async (bidId: Bid): Promise<void> => {
 		return;
 	},
 });
@@ -57,6 +59,13 @@ export const getMock = (amount: number) => {
 			amount: Math.random() * 10000,
 			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			date: randomDate(),
+			tokenId: `0x${Math.floor(Math.random() * 100000000000000000)}`,
+			auctionId: Math.random() * 10000,
+			nftAddress: `0x${Math.floor(Math.random() * 100000000000000000)}`,
+			minBid: 0,
+			startBlock: 0,
+			expireBlock: 999999999999,
+			signature: `0x${Math.floor(Math.random() * 100000000000000000)}`
 		});
 	});
 	// Sort by recent
@@ -79,9 +88,21 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const { addNotification } = useNotification();
 	const contracts = useZnsContracts();
 
-	const acceptBid = async (bidId: string) => {
+	const acceptBid = async (bidData: Bid) => { //thing is, this needs to accept Bid object with all the data it needs, then populate an object with all, and send that
 		try {
-			await new Promise((resolve) => setTimeout(resolve, 2000));
+			const bidParams: AcceptBidParams = {
+				signature: bidData.signature,
+				auctionId: bidData.auctionId, 
+				bidder: bidData.bidderAccount,
+				bid: bidData.amount,
+				nftAddress: bidData.nftAddress, 
+				tokenId: parseInt(bidData.tokenId),
+				minBid: bidData.minBid, 
+				startBlock: bidData.startBlock, 
+				expireBlock: bidData.expireBlock, 
+			};
+
+			await useZAuctionContract().acceptBid(bidParams);
 			addNotification(`Bid accepted`);
 			return;
 		} catch (e) {

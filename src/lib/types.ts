@@ -1,5 +1,7 @@
 // Types
 
+import { ethers } from 'ethers';
+
 export interface Account {
 	id: string;
 }
@@ -106,5 +108,12 @@ export type Bid = {
 	amount: number;
 	bidderAccount: string;
 	date: Date;
-	tokenId?: string;
+	tokenId: string;
+
+	signature: ethers.BytesLike;
+	auctionId: number;
+	nftAddress: string;
+	minBid: number;
+	startBlock: number;
+	expireBlock: number;
 };
