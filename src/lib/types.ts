@@ -110,7 +110,7 @@ export type Bid = {
 	date: Date;
 	tokenId: string;
 
-	signature: ethers.BytesLike;
+	signature: ethers.utils.BytesLike;
 	auctionId: number;
 	nftAddress: string;
 	minBid: number;
