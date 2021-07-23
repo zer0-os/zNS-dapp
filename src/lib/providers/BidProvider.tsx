@@ -122,6 +122,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	};
 
 	const getBidsForAccount = async (id: string) => {
+
+		if (!zAuctionContract) {
+			throw Error(`no contract`);
+		}
+
 		try {
 			const bids = await zAuction.getBidsForAccount(id);
 
