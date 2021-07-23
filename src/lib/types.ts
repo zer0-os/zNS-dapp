@@ -108,3 +108,8 @@ export type Bid = {
 	date: Date;
 	tokenId?: string;
 };
+
+export type DomainHighestBid = {
+	domain: Domain;
+	bid: Bid;
+};
