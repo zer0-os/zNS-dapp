@@ -147,10 +147,10 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	};
 
 	//this will receive either DTOs, and will populate the parameters with the correct data
-	function getBidParameters (DTO: any, a: string, isAccountDTO: boolean): Bid {
+	function getBidParameters (DTO: any, missingString: string, isAccountDTO: boolean): Bid {
 
-		const bidderAccount = isAccountDTO ? a : DTO.account;
-		const tokenId = isAccountDTO ? DTO.tokenId : a;
+		const bidderAccount = isAccountDTO ? missingString : DTO.account;
+		const tokenId = isAccountDTO ? DTO.tokenId : missingString;
 		const nftAddress = isAccountDTO ? DTO.contractAddress : contracts!.registry.address;
 
 		return {
