@@ -5,14 +5,25 @@ import React, { useState, useEffect } from 'react';
 import { Domain, Bid } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
 import { BigNumber, ethers } from 'ethers';
-import { AcceptBidParams } from 'lib/hooks/useZAuctionContract';
 
 import * as zAuction from '../zAuction';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
 import { useWeb3React } from '@web3-react/core';
-import { useZAuctionContract } from 'lib/hooks/useZAuctionContract';
+
+
+export interface AcceptBidParams {
+	signature: ethers.utils.BytesLike;
+	auctionId: number;
+	bidder: string;
+	bid: number;
+	nftAddress: string;
+	tokenId: number;
+	minBid: number;
+	startBlock: number;
+	expireBlock: number;
+}
 
 export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
@@ -30,7 +41,7 @@ export const BidContext = React.createContext({
 	): Promise<boolean | undefined> => {
 		return;
 	},
-	acceptBid: async (bidId: Bid): Promise<void> => {
+	acceptBid: async (bidId: Bid): Promise<ethers.ContractTransaction | undefined > => {
 		return;
 	},
 });
@@ -55,7 +66,7 @@ const randomDate = () => {
 export const getMock = (amount: number) => {
 	const mockBids: Bid[] = [];
 	[...Array(amount)].forEach((a: any) => {
-		mockBids.push({
+		mockBids.push({ //random fake mock data
 			amount: Math.random() * 10000,
 			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			date: randomDate(),
@@ -87,9 +98,14 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const context = useWeb3React();
 	const { addNotification } = useNotification();
 	const contracts = useZnsContracts();
+	const zAuctionContract = useZnsContracts()?.zAuction;
 
-	const acceptBid = async (bidData: Bid) => { //thing is, this needs to accept Bid object with all the data it needs, then populate an object with all, and send that
+	const acceptBid = async (bidData: Bid) => { 
+
 		try {
+
+			//populates an AcceptBidParams object with correct types
+
 			const bidParams: AcceptBidParams = {
 				signature: bidData.signature,
 				auctionId: bidData.auctionId, 
@@ -102,9 +118,18 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				expireBlock: bidData.expireBlock, 
 			};
 
-			await useZAuctionContract().acceptBid(bidParams);
-			addNotification(`Bid accepted`);
-			return;
+			const tx = await zAuctionContract?.acceptBid(
+				bidParams.signature,
+				bidParams.auctionId,
+				bidParams.bidder,
+				bidParams.bid,
+				bidParams.nftAddress,
+				bidParams.tokenId,
+				bidParams.minBid,
+				bidParams.startBlock,
+				bidParams.expireBlock,
+			);
+			return tx;
 		} catch (e) {
 			console.error(e);
 			return;
