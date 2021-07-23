@@ -135,7 +135,8 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			);
 
 			try {
-				const displayBids = bids.map((e) => {
+				// @todo remove any type
+				const displayBids = bids.map((e: any) => {
 					const amount = Number(ethers.utils.formatEther(e.bidAmount));
 
 					return {

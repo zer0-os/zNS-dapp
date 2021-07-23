@@ -84,7 +84,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<TabBar tabs={['Offers']} onSelect={select} />
+			<TabBar tabs={['Offers', 'Bids']} onSelect={select} />
 			{selected === 'Offers' && <RequestTable userId={id} />}
 			{selected === 'Bids' && <BidTable userId={id} />}
 		</div>
