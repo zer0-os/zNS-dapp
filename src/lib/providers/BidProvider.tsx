@@ -31,7 +31,7 @@ export const BidContext = React.createContext({
 	): Promise<boolean | undefined> => {
 		return;
 	},
-	acceptBid: async (bidId: string): Promise<void> => {
+	acceptBid: async (nftId: string, amount: number): Promise<void> => {
 		return;
 	},
 });
@@ -82,7 +82,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const { addNotification } = useNotification();
 	const contracts = useZnsContracts();
 
-	const acceptBid = async (bidId: string) => {
+	const acceptBid = async (nftId: string, amount: number) => {
 		try {
 			await new Promise((resolve) => setTimeout(resolve, 2000));
 			addNotification(`Bid accepted`);

@@ -13,6 +13,7 @@ import {
 	OptionDropdown,
 	Overlay,
 	NFTCard,
+	Spinner,
 	Confirmation,
 } from 'components';
 import { Request } from 'containers';
@@ -211,6 +212,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	}, []);
 
 	useEffect(() => {
+		setIsLoading(true);
 		const i = yourRequests.requests?.domainRequests || [];
 		const j =
 			requestsForYou.requests?.domains.map((d) => d.requests).flat() || [];
@@ -231,6 +233,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			} else {
 				console.error('Failed to retrieve request data');
 			}
+			setIsLoading(false);
 		});
 	}, [yourRequests.requests, requestsForYou.requests, domainFilter]);
 
@@ -446,54 +449,56 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			)}
 
 			{/* Table Header */}
-			<div className={styles.searchHeader}>
-				<SearchBar
-					onChange={(event: any) => search(event.target.value)}
-					style={{ width: '100%', marginRight: 16 }}
-				/>
-				<div className={styles.searchHeaderButtons}>
-					<OptionDropdown
-						onSelect={filterByDomain}
-						options={['All Domains', 'Your Domains', 'Your Requests']}
-						drawerStyle={{ width: 179 }}
-					>
-						<FilterButton onClick={() => {}}>
-							{domainFilter || 'All Domains'}
-						</FilterButton>
-					</OptionDropdown>
-					<OptionDropdown
-						onSelect={filterByStatus}
-						options={['All Statuses', 'Open Requests', 'Accepted']}
-						drawerStyle={{ width: 179 }}
-					>
-						<FilterButton onClick={() => {}}>
-							{statusFilter || 'All Statuses'}
-						</FilterButton>
-					</OptionDropdown>
-					{isGridViewToggleable && (
-						<>
-							<IconButton
-								onClick={setList}
-								toggled={!isGridView}
-								iconUri={list}
-								style={{ height: 32, width: 32 }}
-							/>
-							<IconButton
-								onClick={setGrid}
-								toggled={isGridView}
-								iconUri={grid}
-								style={{ height: 32, width: 32 }}
-							/>
-						</>
-					)}
+			{!isLoading && (
+				<div className={styles.searchHeader}>
+					<SearchBar
+						onChange={(event: any) => search(event.target.value)}
+						style={{ width: '100%', marginRight: 16 }}
+					/>
+					<div className={styles.searchHeaderButtons}>
+						<OptionDropdown
+							onSelect={filterByDomain}
+							options={['All Domains', 'Your Domains', 'Your Requests']}
+							drawerStyle={{ width: 179 }}
+						>
+							<FilterButton onClick={() => {}}>
+								{domainFilter || 'All Domains'}
+							</FilterButton>
+						</OptionDropdown>
+						<OptionDropdown
+							onSelect={filterByStatus}
+							options={['All Statuses', 'Open Requests', 'Accepted']}
+							drawerStyle={{ width: 179 }}
+						>
+							<FilterButton onClick={() => {}}>
+								{statusFilter || 'All Statuses'}
+							</FilterButton>
+						</OptionDropdown>
+						{isGridViewToggleable && (
+							<>
+								<IconButton
+									onClick={setList}
+									toggled={!isGridView}
+									iconUri={list}
+									style={{ height: 32, width: 32 }}
+								/>
+								<IconButton
+									onClick={setGrid}
+									toggled={isGridView}
+									iconUri={grid}
+									style={{ height: 32, width: 32 }}
+								/>
+							</>
+						)}
+					</div>
 				</div>
-			</div>
+			)}
 
 			{/* Standard React-Table setup */}
 			<div className={styles.RequestTable}>
 				<div className={styles.Container} ref={containerRef}>
 					{/* List View */}
-					{!isGridView && (
+					{!isLoading && !isGridView && (
 						<table {...getTableProps()} className={styles.RequestTable}>
 							<thead>
 								{headerGroups.map((headerGroup) => (
@@ -528,7 +533,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					)}
 
 					{/* Grid View */}
-					{isGridView && (
+					{!isLoading && isGridView && (
 						<ol className={styles.Grid}>
 							{displayData.map((d, i) => (
 								<li key={i} onClick={() => view(d.request.domain)}>
@@ -616,7 +621,12 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 					{/* Data Loading Message */}
 					{isLoading && (
-						<p className={styles.Message}>Loading Domain Requests</p>
+						<>
+							<p style={{ paddingBottom: 16 }} className={styles.Message}>
+								Loading Your Offers
+							</p>
+							<Spinner style={{ margin: '0 auto' }} />
+						</>
 					)}
 
 					{/* Empty Table Message */}
