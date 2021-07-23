@@ -108,7 +108,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			);
 
 			return tx;
-		}, 'approve request');
+		}, 'accept bid');
 
 		return tx;
 	};
