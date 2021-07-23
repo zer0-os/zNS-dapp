@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 //- Type Imports
 import { TokenStakeType } from '../types';
@@ -11,24 +11,47 @@ import styles from '../MintNewNFT.module.css';
 import { TextInput, FutureButton } from 'components';
 
 type StakingProps = {
+	balance: number | undefined;
 	token: TokenStakeType | null;
 	onContinue: (data: TokenStakeType) => void;
 };
 
-const Staking: React.FC<StakingProps> = ({ token, onContinue }) => {
+const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 	const [amount, setAmount] = useState('');
-	const [errors, setErrors] = useState<string[]>([]);
+	const [error, setError] = useState<string | undefined>();
+	const [isValid, setIsValid] = useState<boolean>(false);
 
 	const pressContinue = () => {
 		// Validate
 		const e: string[] = [];
-		if (!amount.length) e.push('amount');
-		if (e.length) return setErrors(e);
+		const stake = Number(amount);
+		if (!amount.length || stake == undefined || stake === 0)
+			return setError('Please provide a stake amount');
+		if (balance && stake > balance) return setError('Insufficient balance');
 		onContinue({
 			amount: parseFloat(amount),
 			currency: 'WILD',
 		});
 	};
+
+	useEffect(() => {
+		const stake = Number(amount);
+		const valid =
+			stake != undefined &&
+			balance != undefined &&
+			stake <= balance &&
+			stake > 0;
+		setIsValid(valid);
+	}, [amount]);
+
+	const balanceIndicator = () => (
+		<>
+			<span style={{ marginBottom: 8 }} className={styles.Estimate}>
+				{balance && <>Your Balance: {Number(balance).toLocaleString()} WILD</>}
+				{!balance && <>Your Balance: Loading...</>}
+			</span>
+		</>
+	);
 
 	return (
 		<div
@@ -40,25 +63,17 @@ const Staking: React.FC<StakingProps> = ({ token, onContinue }) => {
 				capital. You can bid what you think is a reasonable amount; if the owner
 				accepts your offer, you will be able to create the token.
 			</p>
+			{balanceIndicator()}
 			<div style={{ margin: '0 auto', position: 'relative' }}>
 				<TextInput
-					placeholder={'Amount'}
+					placeholder={'Stake amount (WILD)'}
 					onChange={(amount: string) => setAmount(amount)}
 					text={amount}
 					style={{ width: '215px' }}
-					error={errors.includes('amount')}
+					error={error != undefined}
+					errorText={error}
 					numeric
 				/>
-				<span
-					style={{
-						position: 'absolute',
-						top: '50%',
-						left: 'calc(100% + 16px)',
-						transform: 'translateY(-50%)',
-					}}
-				>
-					WILD
-				</span>
 			</div>
 			<div style={{ display: 'flex', justifyContent: 'center', marginTop: 80 }}>
 				<FutureButton
@@ -69,7 +84,7 @@ const Staking: React.FC<StakingProps> = ({ token, onContinue }) => {
 						width: 130,
 					}}
 					onClick={pressContinue}
-					glow
+					glow={isValid}
 				>
 					Continue
 				</FutureButton>

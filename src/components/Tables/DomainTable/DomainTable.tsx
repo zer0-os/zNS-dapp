@@ -30,6 +30,7 @@ import list from './assets/list.svg';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
+	className?: string;
 	domains: DisplayDomain[];
 	isRootDomain: boolean;
 	style?: React.CSSProperties;
@@ -51,6 +52,7 @@ enum Modals {
 }
 
 const DomainTable: React.FC<DomainTableProps> = ({
+	className,
 	domains,
 	isRootDomain,
 	style,
@@ -335,9 +337,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			{overlays()}
 			<div
 				style={style}
-				className={
-					styles.DomainTableContainer + ' border-primary border-rounded blur'
-				}
+				className={`${
+					styles.DomainTableContainer
+				} border-primary border-rounded blur ${className || ''}`}
 			>
 				{/* Table Header */}
 				<div className={styles.searchHeader}>

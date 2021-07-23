@@ -21,7 +21,7 @@ import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 
 //- Asset Imports
-import backgroundImage from 'assets/zns-bg.png';
+import backgroundImage from 'assets/background.jpg';
 
 //- Page Imports
 import { ZNS } from 'pages';
