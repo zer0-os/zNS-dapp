@@ -13,18 +13,6 @@ import useNotification from 'lib/hooks/useNotification';
 import { useWeb3React } from '@web3-react/core';
 
 
-export interface AcceptBidParams {
-	signature: ethers.utils.BytesLike;
-	auctionId: number;
-	bidderAccount: string;
-	amount: number;
-	nftAddress: string;
-	tokenId: number;
-	minBid: number;
-	startBlock: number;
-	expireBlock: number;
-}
-
 export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
 		return;
