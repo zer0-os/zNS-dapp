@@ -133,7 +133,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				const displayBids = bids.map((e) => {
 					const amount = Number(ethers.utils.formatEther(e.bidAmount));
 
-					return getBidParameters(e, id);
+					return getBidParameters(e, undefined, id);
 				});
 
 				return displayBids;
@@ -149,22 +149,23 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	//this will receive either DTOs, and will populate the parameters with the correct data
 	function getBidParameters(
 		DTO: NftIdBidsDto | AccountBidsDto,
-		missingString: string,
+		idToken: string | undefined,
+		account: string | undefined,
 	): Bid {
 		const bidderAccount =
 			(DTO as NftIdBidsDto).account !== undefined //if account its defined, its a NftIdBidsDto, if not its a AccountBidsDto
 				? (DTO as NftIdBidsDto).account
-				: missingString;
+				: account!;
 		const tokenId =
 			(DTO as NftIdBidsDto).account !== undefined
-				? missingString
+				? idToken!
 				: (DTO as AccountBidsDto).tokenId;
 		const nftAddress =
 			(DTO as NftIdBidsDto).account !== undefined
 				? contracts!.registry.address
 				: (DTO as AccountBidsDto).contractAddress;
 
-		const amount = Number(ethers.utils.formatEther(DTO.bidAmount))
+		const amount = Number(ethers.utils.formatEther(DTO.bidAmount));
 
 		return {
 			bidderAccount,
@@ -189,7 +190,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 			try {
 				const displayBids = bids.map((e) => {
-					return getBidParameters(e, domain.id);
+					return getBidParameters(e, domain.id, undefined);
 				});
 
 				// @TODO: Add filtering expired/invalid bids out
