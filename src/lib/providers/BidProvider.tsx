@@ -133,7 +133,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				const displayBids = bids.map((e) => {
 					const amount = Number(ethers.utils.formatEther(e.bidAmount));
 
-					return getBidParameters(e,id,true)
+					return getBidParameters(e, id);
 				});
 
 				return displayBids;
@@ -147,11 +147,22 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	};
 
 	//this will receive either DTOs, and will populate the parameters with the correct data
-	function getBidParameters (DTO: any, missingString: string, isAccountDTO: boolean): Bid {
-
-		const bidderAccount = isAccountDTO ? missingString : DTO.account;
-		const tokenId = isAccountDTO ? DTO.tokenId : missingString;
-		const nftAddress = isAccountDTO ? DTO.contractAddress : contracts!.registry.address;
+	function getBidParameters(
+		DTO: NftIdBidsDto | AccountBidsDto,
+		missingString: string,
+	): Bid {
+		const bidderAccount =
+			(DTO as NftIdBidsDto).account !== undefined //if account its defined, its a NftIdBidsDto, if not its a AccountBidsDto
+				? (DTO as NftIdBidsDto).account
+				: missingString;
+		const tokenId =
+			(DTO as NftIdBidsDto).account !== undefined
+				? missingString
+				: (DTO as AccountBidsDto).tokenId;
+		const nftAddress =
+			(DTO as NftIdBidsDto).account !== undefined
+				? contracts!.registry.address
+				: (DTO as AccountBidsDto).contractAddress;
 
 		return {
 			bidderAccount,
@@ -160,11 +171,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			tokenId,
 			signature: DTO.signedMessage,
 			auctionId: DTO.auctionId,
-			nftAddress, 
+			nftAddress,
 			minBid: DTO.minimumBid,
 			startBlock: DTO.startBlock,
 			expireBlock: DTO.expireBlock,
-		}
+		};
 	}
 
 	const getBidsForDomain = async (domain: Domain) => {
@@ -176,7 +187,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 			try {
 				const displayBids = bids.map((e) => {
-					return getBidParameters(e,domain.id,false)
+					return getBidParameters(e, domain.id);
 				});
 
 				// @TODO: Add filtering expired/invalid bids out
