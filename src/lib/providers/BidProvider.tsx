@@ -58,7 +58,7 @@ export const getMock = (amount: number) => {
 			amount: Math.random() * 10000,
 			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			date: randomDate(),
-			tokenId: parseInt(`0x${Math.floor(Math.random() * 100000000000000000)}`),
+			tokenId: Math.random() * 10000,
 			auctionId: Math.random() * 10000,
 			nftAddress: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			minBid: 0,
