@@ -229,25 +229,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 		});
 	}, [yourRequests.requests, requestsForYou.requests, domainFilter]);
 
-	//sample effect to check that the function fetchs the domain data of an example id
-	useEffect(() => {
-		const domainDataFetch = async () => {
-			for (let i = 0; i < 5; i++) {
-				//hardcoded for to check that it calls good in a loop
-
-				//below it will await for a data fetch for the provided id in the first argument, calling the apolloClientInstance we created
-				const tx = await getDomainData(
-					'0x4af784d213e0b2ac71d9d35cc2f0792469e21f78ad13d0b776be2da504c143a1',
-					apolloClientInstance.client,
-				);
-				console.log('your data fetch number ' + i + ' is: ');
-				console.log(tx);
-			}
-
-			domainDataFetch();
-		};
-	}, []);
-
 	/////////////////
 	// React-Table //
 	/////////////////

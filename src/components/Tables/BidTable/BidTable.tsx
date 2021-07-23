@@ -18,9 +18,11 @@ import { Request } from 'containers';
 
 //- Library Imports
 import { randomImage, randomName } from 'lib/Random';
-import { DisplayDomain, Bid } from 'lib/types';
+import { DisplayDomain, Bid, Domain } from 'lib/types';
 import { ethers } from 'ethers';
 import { useBidProvider } from 'lib/providers/BidProvider';
+import { getDomainData } from 'lib/useDomainStore';
+import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
 
 //- Style Imports
 import styles from './BidTable.module.css';
@@ -30,6 +32,11 @@ type BidTableProps = {
 	userId: string;
 	usersBids?: boolean;
 	usersDomains?: boolean;
+};
+
+type BidTableData = {
+	bid: Bid;
+	domain: Domain;
 };
 
 enum Modals {
@@ -43,6 +50,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 
 	const { acceptBid, getBidsForYourDomains, getBidsForAccount } =
 		useBidProvider();
+	const apolloClientInstance = useSubgraphProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0); // Not needed anymore?
@@ -60,9 +68,11 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	// Data //
 	//////////
 
-	const [bidsOnYourDomains, setBidsOnYourDomains] = useState<Bid[]>([]);
-	const [yourBids, setYourBids] = useState<Bid[]>([]);
-	const [displayData, setDisplayData] = useState<Bid[]>([]);
+	const [bidsOnYourDomains, setBidsOnYourDomains] = useState<BidTableData[]>(
+		[],
+	);
+	const [yourBids, setYourBids] = useState<BidTableData[]>([]);
+	const [displayData, setDisplayData] = useState<BidTableData[]>([]);
 	useEffect(() => {
 		// @ zachary
 		// this table is a bit weird - need to get
@@ -74,10 +84,24 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 					getBidsForAccount(userId),
 					// @todo Add promise to get bids for owned domains
 				])) as Bid[][];
-				setYourBids(allBids[0]);
-				const flat = allBids.flat();
-				if (flat) setDisplayData(flat as Bid[]);
-				else setDisplayData(flat);
+
+				// Domain data from bid API response
+				const yours = allBids[0];
+				const promises: Promise<any>[] = [];
+				yours.forEach((bid: Bid) => promises.push(fetchDomainData(bid)));
+				const domains = await Promise.all(promises);
+				const bidsWithDomains: any[] = [];
+				yours.forEach((bid: Bid) => {
+					bidsWithDomains.push({
+						bid: bid,
+						domain: domains.filter((d: any) => d.id === bid.tokenId)[0],
+					});
+				});
+
+				setYourBids(bidsWithDomains);
+				// const flat = allBids.flat();
+				if (bidsWithDomains.length) setDisplayData(bidsWithDomains);
+				else setDisplayData([]);
 				return;
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
@@ -113,6 +137,18 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 			.substr(0, 5);
 	};
 
+	const fetchDomainData = async (bid: Bid) => {
+		try {
+			if (!bid.tokenId) return;
+			const tx = await getDomainData(bid.tokenId, apolloClientInstance.client);
+			return tx!.data.domains[0];
+		} catch (e: any) {
+			// @todo replace any
+			console.error(e);
+			return;
+		}
+	};
+
 	/////////////////
 	// React-Table //
 	/////////////////
@@ -122,13 +158,12 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 		() => [
 			{
 				Header: () => <div style={{ textAlign: 'left' }}>Domain</div>,
-				accessor: 'domain',
-				Cell: () => (
+				id: 'domain',
+				accessor: (bid: BidTableData) => (
 					<Artwork
-						id={randomString()}
-						name={randomString()}
-						image={'picsum.photos/seed/lorem/100/100'}
-						domain={`0://${randomString()}.${randomString()}`}
+						id={bid.domain.id}
+						domain={bid.domain.name}
+						metadataUrl={bid.domain.metadata}
 						pending
 					/>
 				),
@@ -142,8 +177,8 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 			},
 			{
 				Header: () => <div style={{ textAlign: 'right' }}>Bidder</div>,
-				accessor: 'bidderAccount',
-				Cell: (row) => (
+				id: 'bidder',
+				accessor: (bid: BidTableData) => (
 					<div
 						style={{
 							textAlign: 'right',
@@ -152,9 +187,9 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 						}}
 					>
 						<Member
-							id={row.value}
-							name={randomName(row.value)}
-							image={randomImage(row.value)}
+							id={bid.bid.bidderAccount}
+							name={bid.bid.bidderAccount}
+							image={bid.bid.bidderAccount}
 						/>
 					</div>
 				),
@@ -162,11 +197,11 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 			{
 				Header: () => <div style={{ textAlign: 'center' }}>Accept Bid</div>,
 				id: 'bid',
-				accessor: (bid: Bid) => (
+				accessor: (bid: BidTableData) => (
 					<FutureButton
 						style={{ margin: '0 auto', textTransform: 'uppercase' }}
 						glow
-						onClick={() => clickAcceptButton(bid)}
+						onClick={() => clickAcceptButton(bid.bid)}
 					>
 						Accept Bid
 					</FutureButton>
