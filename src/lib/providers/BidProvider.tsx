@@ -96,7 +96,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				bidData.signature,
 				bidData.auctionId,
 				bidData.bidderAccount,
-				bidData.amount,
+				bidData.amount, //assumes that the user sends the correct wei format value
 				bidData.nftAddress,
 				bidData.tokenId,
 				bidData.minBid,
@@ -133,13 +133,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 						bidderAccount: id,
 						amount,
 						date: new Date(), // not supported by zAuction
-						tokenId: parseInt(e.tokenId),
+						tokenId: Number(e.tokenId),
 						signature: e.signedMessage,
-						auctionId: parseInt(e.auctionId), 
+						auctionId: Number(e.auctionId), 
 						nftAddress: e.contractAddress, 
-						minBid: parseInt(e.minimumBid), 
-						startBlock: parseInt(e.startBlock), 
-						expireBlock: parseInt(e.expireBlock), 
+						minBid: Number(e.minimumBid), 
+						startBlock: Number(e.startBlock), 
+						expireBlock: Number(e.expireBlock), 
 					} as Bid;
 				});
 
@@ -168,13 +168,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 						bidderAccount: e.account,
 						amount,
 						date: new Date(), // not supported by zAuction
-						tokenId: parseInt(domain.id),
+						tokenId: Number(domain.id),
 						signature: e.signedMessage,
-						auctionId: parseInt(e.auctionId), 
+						auctionId: Number(e.auctionId), 
 						nftAddress: contracts!.registry.address, 
-						minBid: parseInt(e.minimumBid), 
-						startBlock: parseInt(e.startBlock), 
-						expireBlock: parseInt(e.expireBlock), 
+						minBid: Number(e.minimumBid), 
+						startBlock: Number(e.startBlock), 
+						expireBlock: Number(e.expireBlock), 
 					} as Bid;
 				});
 
