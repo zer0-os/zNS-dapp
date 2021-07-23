@@ -164,9 +164,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				? contracts!.registry.address
 				: (DTO as AccountBidsDto).contractAddress;
 
+		const amount = Number(ethers.utils.formatEther(DTO.bidAmount))
+
 		return {
 			bidderAccount,
-			amount: Number(ethers.utils.formatEther(DTO.bidAmount)),
+			amount,
 			date: new Date(), // not supported by zAuction
 			tokenId,
 			signature: DTO.signedMessage,
