@@ -66,7 +66,7 @@ const randomDate = () => {
 export const getMock = (amount: number) => {
 	const mockBids: Bid[] = [];
 	[...Array(amount)].forEach((a: any) => {
-		mockBids.push({ //random fake mock data
+		mockBids.push({ 
 			amount: Math.random() * 10000,
 			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			date: randomDate(),
@@ -183,7 +183,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 						tokenId: parseInt(domain.id),
 						signature: e.signedMessage,
 						auctionId: parseInt(e.auctionId), 
-						nftAddress: contracts!.registry.address, //hmmm.... idk if its this really
+						nftAddress: contracts!.registry.address, 
 						minBid: parseInt(e.minimumBid), 
 						startBlock: parseInt(e.startBlock), 
 						expireBlock: parseInt(e.expireBlock), 
