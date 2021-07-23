@@ -16,7 +16,7 @@ import { MakeABid } from 'containers';
 //- Library Imports
 import 'lib/react-table-config.d.ts';
 import { getRelativeDomainPath } from 'lib/domains';
-import { DisplayDomain, Domain, Metadata } from 'lib/types';
+import { DisplayDomain, Domain, DomainHighestBid, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
@@ -32,12 +32,14 @@ import list from './assets/list.svg';
 type DomainTableProps = {
 	className?: string;
 	domains: DisplayDomain[];
-	isRootDomain: boolean;
-	style?: React.CSSProperties;
 	empty?: boolean;
-	// TODO: Find a better way to persist grid view than with props
 	isGridView?: boolean;
+	isRootDomain: boolean;
+	onRowButtonClick?: (domain: DomainHighestBid) => void;
+	rowButtonText?: string;
+	// TODO: Find a better way to persist grid view than with props
 	setIsGridView?: (grid: boolean) => void;
+	style?: React.CSSProperties;
 	userId?: string;
 };
 
@@ -54,15 +56,17 @@ enum Modals {
 const DomainTable: React.FC<DomainTableProps> = ({
 	className,
 	domains,
-	isRootDomain,
-	style,
 	empty,
 	isGridView,
+	isRootDomain,
+	onRowButtonClick,
+	rowButtonText,
 	setIsGridView,
+	style,
 	userId,
 }) => {
 	const { mvpVersion } = useMvpVersion();
-	const { getBidsForDomain } = useBidProvider();
+	const { getBidsForDomain, getBidsFromDomainIds } = useBidProvider();
 
 	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
@@ -98,6 +102,17 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	};
 
 	const buttonClick = (data: DomainData) => {
+		// @todo refactor this into a more generic component
+		if (onRowButtonClick) {
+			// @todo the above assumes the bids come in ascending order
+			onRowButtonClick({
+				domain: data.domain,
+				bid: data.bids[data.bids.length - 1],
+			});
+			return;
+		}
+
+		// Default behaviour
 		try {
 			if (data.domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
 				setBiddingOn(data.domain as DisplayDomain);
@@ -111,6 +126,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const handleResize = () => {
 		if (window.innerWidth < 1282) setList();
 	};
+
+	const getData = () => {};
 
 	/////////////
 	// Effects //
@@ -145,6 +162,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		var count = 0,
 			completed = 0;
 
+		// Get metadata
 		const getData = async (domain: DisplayDomain) => {
 			try {
 				const [metadata, bids] = await Promise.all([
@@ -281,7 +299,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						glow={data.domain.owner.id?.toLowerCase() !== userId?.toLowerCase()}
 						onClick={() => buttonClick(data)}
 					>
-						Make A Bid
+						{rowButtonText || 'Make A Bid'}
 					</FutureButton>
 				),
 			},
