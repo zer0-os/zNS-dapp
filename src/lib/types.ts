@@ -108,7 +108,7 @@ export type Bid = {
 	amount: number;
 	bidderAccount: string;
 	date: Date;
-	tokenId: string;
+	tokenId: number;
 
 	signature: ethers.utils.BytesLike;
 	auctionId: number;

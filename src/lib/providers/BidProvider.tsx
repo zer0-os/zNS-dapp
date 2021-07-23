@@ -16,8 +16,8 @@ import { useWeb3React } from '@web3-react/core';
 export interface AcceptBidParams {
 	signature: ethers.utils.BytesLike;
 	auctionId: number;
-	bidder: string;
-	bid: number;
+	bidderAccount: string;
+	amount: number;
 	nftAddress: string;
 	tokenId: number;
 	minBid: number;
@@ -70,7 +70,7 @@ export const getMock = (amount: number) => {
 			amount: Math.random() * 10000,
 			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			date: randomDate(),
-			tokenId: `0x${Math.floor(Math.random() * 100000000000000000)}`,
+			tokenId: parseInt(`0x${Math.floor(Math.random() * 100000000000000000)}`),
 			auctionId: Math.random() * 10000,
 			nftAddress: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			minBid: 0,
@@ -104,30 +104,16 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 		try {
 
-			//populates an AcceptBidParams object with correct types
-
-			const bidParams: AcceptBidParams = {
-				signature: bidData.signature,
-				auctionId: bidData.auctionId, 
-				bidder: bidData.bidderAccount,
-				bid: bidData.amount,
-				nftAddress: bidData.nftAddress, 
-				tokenId: parseInt(bidData.tokenId),
-				minBid: bidData.minBid, 
-				startBlock: bidData.startBlock, 
-				expireBlock: bidData.expireBlock, 
-			};
-
 			const tx = await zAuctionContract?.acceptBid(
-				bidParams.signature,
-				bidParams.auctionId,
-				bidParams.bidder,
-				bidParams.bid,
-				bidParams.nftAddress,
-				bidParams.tokenId,
-				bidParams.minBid,
-				bidParams.startBlock,
-				bidParams.expireBlock,
+				bidData.signature,
+				bidData.auctionId,
+				bidData.bidderAccount,
+				bidData.amount,
+				bidData.nftAddress,
+				bidData.tokenId,
+				bidData.minBid,
+				bidData.startBlock,
+				bidData.expireBlock,
 			);
 			return tx;
 		} catch (e) {
@@ -159,7 +145,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 						bidderAccount: id,
 						amount,
 						date: new Date(), // not supported by zAuction
-						tokenId: e.tokenId,
+						tokenId: parseInt(e.tokenId),
+						signature: e.signedMessage,
+						auctionId: parseInt(e.auctionId), 
+						nftAddress: e.contractAddress, 
+						minBid: parseInt(e.minimumBid), 
+						startBlock: parseInt(e.startBlock), 
+						expireBlock: parseInt(e.expireBlock), 
 					} as Bid;
 				});
 
@@ -188,6 +180,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 						bidderAccount: e.account,
 						amount,
 						date: new Date(), // not supported by zAuction
+						tokenId: parseInt(domain.id),
+						signature: e.signedMessage,
+						auctionId: parseInt(e.auctionId), 
+						nftAddress: contracts!.registry.address, //hmmm.... idk if its this really
+						minBid: parseInt(e.minimumBid), 
+						startBlock: parseInt(e.startBlock), 
+						expireBlock: parseInt(e.expireBlock), 
 					} as Bid;
 				});
 
