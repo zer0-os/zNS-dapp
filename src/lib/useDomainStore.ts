@@ -252,11 +252,10 @@ function useOwnedDomains(): {
 			console.error(error);
 		}
 		if (data) {
-			console.log(data.domains);
 			return Maybe.of<DisplayParentDomain[]>(
 				data.domains.map((d: ParentDomain) => {
 					return {
-						...d
+						...d,
 					} as DisplayParentDomain;
 				}),
 			);
@@ -278,15 +277,13 @@ function useOwnedDomains(): {
 		} else if (account) {
 			getOwned({ variables: { owner: accountNormalized } });
 		}
-	}
+	};
 
 	return { owned, refetchOwned: refresh };
 }
 
 // maybe fx
-function useAllDomains(
-	domain: string,
-): {
+function useAllDomains(domain: string): {
 	_allDomains: Maybe<any[]>;
 	refetchAllDomains: RefetchQuery<any>;
 } {
