@@ -22,6 +22,9 @@ export const BidContext = React.createContext({
 	getBidsForYourDomains: async (): Promise<Bid[] | undefined> => {
 		return;
 	},
+	getBidsFromDomainIds: async (ids: string[]): Promise<Bid[] | undefined> => {
+		return;
+	},
 	placeBid: async (
 		domain: Domain,
 		bid: number,
@@ -127,6 +130,30 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		}
 	};
 
+	const getBidsFromDomainIds = async (ids: string[]) => {
+		try {
+			const bids = await zAuction.getBidsForNftIds(ids);
+			try {
+				// @todo remove any type
+				const displayBids = bids.map((e: any) => {
+					const amount = Number(ethers.utils.formatEther(e.bidAmount));
+
+					return {
+						bidderAccount: e.account,
+						amount,
+						date: new Date(), // not supported by zAuction
+					} as Bid;
+				});
+				return displayBids;
+			} catch (e) {
+				return [];
+			}
+		} catch (e) {
+			console.error(e);
+			return [];
+		}
+	};
+
 	const getBidsForDomain = async (domain: Domain) => {
 		try {
 			const bids = await zAuction.getBidsForNft(
@@ -179,6 +206,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		getBidsForAccount,
 		getBidsForDomain,
 		getBidsForYourDomains,
+		getBidsFromDomainIds,
 		placeBid,
 	};
 
@@ -195,6 +223,7 @@ export function useBidProvider() {
 		getBidsForAccount,
 		getBidsForDomain,
 		getBidsForYourDomains,
+		getBidsFromDomainIds,
 		placeBid,
 	} = React.useContext(BidContext);
 	return {
@@ -202,6 +231,7 @@ export function useBidProvider() {
 		getBidsForAccount,
 		getBidsForDomain,
 		getBidsForYourDomains,
+		getBidsFromDomainIds,
 		placeBid,
 	};
 }
