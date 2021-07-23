@@ -7,7 +7,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		basic: '0xa05Ae774Da859943B7B859cd2A6aD9F5f1651d6a',
 		staking: '0x79135dd59346BBf06Ccf40978ACaC570d92eefBa',
 		wildToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
-		zAuction: '0x4d626cE2e7562a04D83780251B9f8191A123a57e', // fake
+		zAuction: '0x8d63253c54B7D4Ac44A93636B7F5f94Ab63E6e39',
 	},
 	[NETWORK_TYPES.KOVAN]: {
 		registrar: '0x7293c267cA90FEdD32c67AEf52fB3416903A24B3',
