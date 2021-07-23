@@ -11,6 +11,7 @@ import * as zAuction from '../zAuction';
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
 import { useWeb3React } from '@web3-react/core';
+import { AccountBidsDto, NftIdBidsDto } from '../zAuction';
 
 export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
@@ -132,18 +133,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				const displayBids = bids.map((e) => {
 					const amount = Number(ethers.utils.formatEther(e.bidAmount));
 
-					return {
-						bidderAccount: id,
-						amount,
-						date: new Date(), // not supported by zAuction
-						tokenId: e.tokenId,
-						signature: e.signedMessage,
-						auctionId: e.auctionId,
-						nftAddress: e.contractAddress,
-						minBid: e.minimumBid,
-						startBlock: e.startBlock,
-						expireBlock: e.expireBlock,
-					} as Bid;
+					return getBidParameters(e,id,true)
 				});
 
 				return displayBids;
@@ -156,6 +146,27 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		}
 	};
 
+	//this will receive either DTOs, and will populate the parameters with the correct data
+	function getBidParameters (DTO: any, a: string, isAccountDTO: boolean): Bid {
+
+		const bidderAccount = isAccountDTO ? a : DTO.account;
+		const tokenId = isAccountDTO ? DTO.tokenId : a;
+		const nftAddress = isAccountDTO ? DTO.contractAddress : contracts!.registry.address;
+
+		return {
+			bidderAccount,
+			amount: Number(ethers.utils.formatEther(DTO.bidAmount)),
+			date: new Date(), // not supported by zAuction
+			tokenId,
+			signature: DTO.signedMessage,
+			auctionId: DTO.auctionId,
+			nftAddress, 
+			minBid: DTO.minimumBid,
+			startBlock: DTO.startBlock,
+			expireBlock: DTO.expireBlock,
+		}
+	}
+
 	const getBidsForDomain = async (domain: Domain) => {
 		try {
 			const bids = await zAuction.getBidsForNft(
@@ -165,20 +176,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 			try {
 				const displayBids = bids.map((e) => {
-					const amount = Number(ethers.utils.formatEther(e.bidAmount));
-
-					return {
-						bidderAccount: e.account,
-						amount,
-						date: new Date(), // not supported by zAuction
-						tokenId: domain.id,
-						signature: e.signedMessage,
-						auctionId: e.auctionId,
-						nftAddress: contracts!.registry.address,
-						minBid: e.minimumBid,
-						startBlock: e.startBlock,
-						expireBlock: e.expireBlock,
-					} as Bid;
+					return getBidParameters(e,domain.id,false)
 				});
 
 				// @TODO: Add filtering expired/invalid bids out
