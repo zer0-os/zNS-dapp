@@ -5,13 +5,12 @@ import React, { useState, useEffect } from 'react';
 import { Domain, Bid } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
 import { BigNumber, ethers } from 'ethers';
-
+import { tryFunction } from 'lib/utils';
 import * as zAuction from '../zAuction';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
 import { useWeb3React } from '@web3-react/core';
-
 
 export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
@@ -29,7 +28,9 @@ export const BidContext = React.createContext({
 	): Promise<boolean | undefined> => {
 		return;
 	},
-	acceptBid: async (bidId: Bid): Promise<ethers.ContractTransaction | undefined > => {
+	acceptBid: async (
+		bidId: Bid,
+	): Promise<ethers.ContractTransaction | undefined> => {
 		return;
 	},
 });
@@ -54,17 +55,17 @@ const randomDate = () => {
 export const getMock = (amount: number) => {
 	const mockBids: Bid[] = [];
 	[...Array(amount)].forEach((a: any) => {
-		mockBids.push({ 
+		mockBids.push({
 			amount: Math.random() * 10000,
 			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			date: randomDate(),
-			tokenId: Math.random() * 10000,
-			auctionId: Math.random() * 10000,
+			tokenId: `${Math.random() * 10000}`,
+			auctionId: `${Math.random() * 10000}`,
 			nftAddress: `0x${Math.floor(Math.random() * 100000000000000000)}`,
-			minBid: 0,
-			startBlock: 0,
-			expireBlock: 999999999999,
-			signature: `0x${Math.floor(Math.random() * 100000000000000000)}`
+			minBid: `0`,
+			startBlock: `0`,
+			expireBlock: `999999999999`,
+			signature: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 		});
 	});
 	// Sort by recent
@@ -88,29 +89,28 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const contracts = useZnsContracts();
 	const zAuctionContract = useZnsContracts()?.zAuction;
 
-	const acceptBid = async (bidData: Bid) => { 
-		
-		if (!zAuctionContract) {
-			throw Error(`no contract`);
-		}
-		try {
+	const acceptBid = async (bidData: Bid) => {
+		const tx = await tryFunction(async () => {
+			if (!zAuctionContract) {
+				throw Error(`no contract`);
+			}
 
-			const tx = await zAuctionContract?.acceptBid(
+			const tx = await zAuctionContract.acceptBid(
 				bidData.signature,
 				bidData.auctionId,
 				bidData.bidderAccount,
-				bidData.amount, //assumes that the user sends the correct wei format value
+				bidData.amount,
 				bidData.nftAddress,
 				bidData.tokenId,
 				bidData.minBid,
 				bidData.startBlock,
 				bidData.expireBlock,
 			);
+
 			return tx;
-		} catch (e) {
-			console.error(e);
-			return;
-		}
+		}, 'approve request');
+
+		return tx;
 	};
 
 	const getBidsForYourDomains = async () => {
@@ -125,7 +125,6 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	};
 
 	const getBidsForAccount = async (id: string) => {
-
 		try {
 			const bids = await zAuction.getBidsForAccount(id);
 
@@ -137,13 +136,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 						bidderAccount: id,
 						amount,
 						date: new Date(), // not supported by zAuction
-						tokenId: Number(e.tokenId),
+						tokenId: e.tokenId,
 						signature: e.signedMessage,
-						auctionId: Number(e.auctionId), 
-						nftAddress: e.contractAddress, 
-						minBid: Number(e.minimumBid), 
-						startBlock: Number(e.startBlock), 
-						expireBlock: Number(e.expireBlock), 
+						auctionId: e.auctionId,
+						nftAddress: e.contractAddress,
+						minBid: e.minimumBid,
+						startBlock: e.startBlock,
+						expireBlock: e.expireBlock,
 					} as Bid;
 				});
 
@@ -172,13 +171,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 						bidderAccount: e.account,
 						amount,
 						date: new Date(), // not supported by zAuction
-						tokenId: Number(domain.id),
+						tokenId: domain.id,
 						signature: e.signedMessage,
-						auctionId: Number(e.auctionId), 
-						nftAddress: contracts!.registry.address, 
-						minBid: Number(e.minimumBid), 
-						startBlock: Number(e.startBlock), 
-						expireBlock: Number(e.expireBlock), 
+						auctionId: e.auctionId,
+						nftAddress: contracts!.registry.address,
+						minBid: e.minimumBid,
+						startBlock: e.startBlock,
+						expireBlock: e.expireBlock,
 					} as Bid;
 				});
 
