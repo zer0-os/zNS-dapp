@@ -112,7 +112,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 			setIsLoading(false);
 		};
 		get();
-	}, []);
+	}, [userId]);
 
 	///////////////
 	// Functions //

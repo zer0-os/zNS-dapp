@@ -196,7 +196,10 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			getData(domains[i]);
 		}
 
-		if (!count) setHasMetadataLoaded(true);
+		if (!count) {
+			setHasMetadataLoaded(true);
+			setIsLoading(false);
+		}
 	}, [domains]);
 
 	useEffect(() => {
