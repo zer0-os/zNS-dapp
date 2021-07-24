@@ -11,6 +11,7 @@ import {
 	SearchBar,
 	Spinner,
 } from 'components';
+import { MakeABid } from 'containers';
 
 //- Library Imports
 import { Bid, Domain } from 'lib/types';
@@ -58,6 +59,8 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	const [statusFilter, setStatusFilter] = useState('');
 	const [domainFilter, setDomainFilter] = useState('');
 
+	const [bidTrigger, setBidTrigger] = useState(0);
+	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 	const [modal, setModal] = useState<Modals | undefined>();
 	const [acceptingBid, setAcceptingBid] = useState<Bid | undefined>();
@@ -112,7 +115,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 			setIsLoading(false);
 		};
 		get();
-	}, [userId]);
+	}, [userId, bidTrigger]);
 
 	///////////////
 	// Functions //
@@ -124,9 +127,17 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 
 	const closeModal = () => setModal(undefined);
 
-	const clickAcceptButton = (bid: Bid) => {
-		setAcceptingBid(bid);
+	const makeABid = (domain: Domain) => {
+		setBiddingOn(domain);
 	};
+
+	// @todo less hacky way to do this
+	const hasBidded = () => {
+		setBidTrigger(bidTrigger + 1);
+		setBiddingOn(undefined);
+	};
+
+	const cancelBid = () => setBiddingOn(undefined);
 
 	const acceptBidConfirmed = () => {
 		setAcceptingBid(undefined);
@@ -200,14 +211,14 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 									textAlign: 'center',
 								}}
 							>
-								You lead
+								You lead bidding
 							</div>
 						)}
 						{bid.highestBid.bidderAccount !== bid.bid.bidderAccount && (
 							<FutureButton
 								style={{ margin: '0 auto', textTransform: 'uppercase' }}
 								glow
-								onClick={() => clickAcceptButton(bid.bid)}
+								onClick={() => makeABid(bid.domain)}
 							>
 								Make A Bid
 							</FutureButton>
@@ -241,6 +252,11 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
+			{biddingOn !== undefined && (
+				<Overlay onClose={cancelBid} centered open={biddingOn !== undefined}>
+					<MakeABid domain={biddingOn!} onBid={hasBidded} />
+				</Overlay>
+			)}
 			{/* Table Header */}
 			{!isLoading && (
 				<div className={styles.searchHeader}>
