@@ -1,5 +1,7 @@
 // Types
 
+import { ethers } from 'ethers';
+
 export interface Account {
 	id: string;
 }
@@ -106,7 +108,14 @@ export type Bid = {
 	amount: number;
 	bidderAccount: string;
 	date: Date;
-	tokenId?: string;
+	tokenId: string;
+
+	signature: ethers.utils.BytesLike;
+	auctionId: string;
+	nftAddress: string;
+	minBid: string;
+	startBlock: string;
+	expireBlock: string;
 };
 
 export type DomainHighestBid = {

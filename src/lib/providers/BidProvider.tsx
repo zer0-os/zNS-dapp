@@ -5,12 +5,13 @@ import React, { useState, useEffect } from 'react';
 import { Domain, Bid } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
 import { BigNumber, ethers } from 'ethers';
-
+import { tryFunction } from 'lib/utils';
 import * as zAuction from '../zAuction';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
 import { useWeb3React } from '@web3-react/core';
+import { AccountBidsDto, NftIdBidsDto } from '../zAuction';
 
 export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
@@ -22,16 +23,15 @@ export const BidContext = React.createContext({
 	getBidsForYourDomains: async (): Promise<Bid[] | undefined> => {
 		return;
 	},
-	getBidsFromDomainIds: async (ids: string[]): Promise<Bid[] | undefined> => {
-		return;
-	},
 	placeBid: async (
 		domain: Domain,
 		bid: number,
 	): Promise<boolean | undefined> => {
 		return;
 	},
-	acceptBid: async (nftId: string, amount: number): Promise<void> => {
+	acceptBid: async (
+		bidId: Bid,
+	): Promise<ethers.ContractTransaction | undefined> => {
 		return;
 	},
 });
@@ -60,6 +60,13 @@ export const getMock = (amount: number) => {
 			amount: Math.random() * 10000,
 			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			date: randomDate(),
+			tokenId: `${Math.random() * 10000}`,
+			auctionId: `${Math.random() * 10000}`,
+			nftAddress: `0x${Math.floor(Math.random() * 100000000000000000)}`,
+			minBid: `0`,
+			startBlock: `0`,
+			expireBlock: `999999999999`,
+			signature: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 		});
 	});
 	// Sort by recent
@@ -81,16 +88,30 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const context = useWeb3React();
 	const { addNotification } = useNotification();
 	const contracts = useZnsContracts();
+	const zAuctionContract = useZnsContracts()?.zAuction;
 
-	const acceptBid = async (nftId: string, amount: number) => {
-		try {
-			await new Promise((resolve) => setTimeout(resolve, 2000));
-			addNotification(`Bid accepted`);
-			return;
-		} catch (e) {
-			console.error(e);
-			return;
-		}
+	const acceptBid = async (bidData: Bid) => {
+		const tx = await tryFunction(async () => {
+			if (!zAuctionContract) {
+				throw Error(`no contract`);
+			}
+
+			const tx = await zAuctionContract.acceptBid(
+				bidData.signature,
+				bidData.auctionId,
+				bidData.bidderAccount,
+				bidData.amount,
+				bidData.nftAddress,
+				bidData.tokenId,
+				bidData.minBid,
+				bidData.startBlock,
+				bidData.expireBlock,
+			);
+
+			return tx;
+		}, 'accept bid');
+
+		return tx;
 	};
 
 	const getBidsForYourDomains = async () => {
@@ -112,12 +133,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				const displayBids = bids.map((e) => {
 					const amount = Number(ethers.utils.formatEther(e.bidAmount));
 
-					return {
-						bidderAccount: id,
-						amount,
-						date: new Date(), // not supported by zAuction
-						tokenId: e.tokenId,
-					} as Bid;
+					return getBidParameters(e, undefined, id);
 				});
 
 				return displayBids;
@@ -130,29 +146,40 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		}
 	};
 
-	const getBidsFromDomainIds = async (ids: string[]) => {
-		try {
-			const bids = await zAuction.getBidsForNftIds(ids);
-			try {
-				// @todo remove any type
-				const displayBids = bids.map((e: any) => {
-					const amount = Number(ethers.utils.formatEther(e.bidAmount));
+	//this will receive either DTOs, and will populate the parameters with the correct data
+	function getBidParameters(
+		DTO: NftIdBidsDto | AccountBidsDto,
+		idToken: string | undefined,
+		account: string | undefined,
+	): Bid {
+		const bidderAccount =
+			(DTO as NftIdBidsDto).account !== undefined //if account its defined, its a NftIdBidsDto, if not its a AccountBidsDto
+				? (DTO as NftIdBidsDto).account
+				: account!;
+		const tokenId =
+			(DTO as NftIdBidsDto).account !== undefined
+				? idToken!
+				: (DTO as AccountBidsDto).tokenId;
+		const nftAddress =
+			(DTO as NftIdBidsDto).account !== undefined
+				? contracts!.registry.address
+				: (DTO as AccountBidsDto).contractAddress;
 
-					return {
-						bidderAccount: e.account,
-						amount,
-						date: new Date(), // not supported by zAuction
-					} as Bid;
-				});
-				return displayBids;
-			} catch (e) {
-				return [];
-			}
-		} catch (e) {
-			console.error(e);
-			return [];
-		}
-	};
+		const amount = Number(ethers.utils.formatEther(DTO.bidAmount));
+
+		return {
+			bidderAccount,
+			amount,
+			date: new Date(), // not supported by zAuction
+			tokenId,
+			signature: DTO.signedMessage,
+			auctionId: DTO.auctionId,
+			nftAddress,
+			minBid: DTO.minimumBid,
+			startBlock: DTO.startBlock,
+			expireBlock: DTO.expireBlock,
+		};
+	}
 
 	const getBidsForDomain = async (domain: Domain) => {
 		try {
@@ -162,15 +189,8 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			);
 
 			try {
-				// @todo remove any type
-				const displayBids = bids.map((e: any) => {
-					const amount = Number(ethers.utils.formatEther(e.bidAmount));
-
-					return {
-						bidderAccount: e.account,
-						amount,
-						date: new Date(), // not supported by zAuction
-					} as Bid;
+				const displayBids = bids.map((e) => {
+					return getBidParameters(e, domain.id, undefined);
 				});
 
 				// @TODO: Add filtering expired/invalid bids out
@@ -206,7 +226,6 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		getBidsForAccount,
 		getBidsForDomain,
 		getBidsForYourDomains,
-		getBidsFromDomainIds,
 		placeBid,
 	};
 
@@ -223,7 +242,6 @@ export function useBidProvider() {
 		getBidsForAccount,
 		getBidsForDomain,
 		getBidsForYourDomains,
-		getBidsFromDomainIds,
 		placeBid,
 	} = React.useContext(BidContext);
 	return {
@@ -231,7 +249,6 @@ export function useBidProvider() {
 		getBidsForAccount,
 		getBidsForDomain,
 		getBidsForYourDomains,
-		getBidsFromDomainIds,
 		placeBid,
 	};
 }

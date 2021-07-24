@@ -85,13 +85,6 @@ function getNftId(contract: string, tokenId: string) {
 	return nftId;
 }
 
-export async function getBidsForNftIds(tokenIds: string[]) {
-	console.log(bidListEndpoint + tokenIds.join('&'));
-	const response = await fetch(bidListEndpoint + tokenIds.join('&'));
-	const bids = (await response.json()).bids as NftIdBidsDto[];
-	return bids;
-}
-
 export async function getBidsForNft(contract: string, tokenId: string) {
 	const nftId = getNftId(contract, tokenId);
 

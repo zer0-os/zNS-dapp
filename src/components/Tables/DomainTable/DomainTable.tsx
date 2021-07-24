@@ -72,7 +72,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	userId,
 }) => {
 	const { mvpVersion } = useMvpVersion();
-	const { getBidsForDomain, getBidsFromDomainIds } = useBidProvider();
+	const { getBidsForDomain } = useBidProvider();
 
 	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
