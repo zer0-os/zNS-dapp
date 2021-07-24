@@ -1,7 +1,8 @@
 import { ethers } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 
-const apiEndpoint = 'https://zproxy.ilios.dev/api';
+const apiEndpoint = getApiEndpoint();//'https://zproxy.ilios.dev/api';
 
 const encodeBidEndpoint = `${apiEndpoint}/bid/`;
 const bidsEndpoint = `${apiEndpoint}/bids/`;
@@ -49,11 +50,31 @@ interface BidPostInterface {
 	tokenId: string;
 	contractAddress: string;
 	bidAmount: string;
-	bidMessage: string;
 	minimumBid: string;
 	startBlock: string;
 	expireBlock: string;
 	signedMessage: string;
+}
+
+interface BidAcceptInterface {
+	signedMessage: string;
+	auctionId: string;
+	account: string;
+	bidAmount: string;
+	contractAddress: string;
+	tokenId: string;
+	minimumBid: string;
+	startBlock: string;
+	expireBlock: string;
+}
+
+function getApiEndpoint() {
+	let chain = useChainSelector().selectedChain;
+	switch (chain) {
+		case 1: return "https://zproxy.ilios.main/api";
+		case 42: return "https://zproxy.ilios.dev/api";
+		default: return "Unsupported Chain";
+	}
 }
 
 function getNftId(contract: string, tokenId: string) {
