@@ -43,7 +43,7 @@ const OwnedDomainTables = () => {
 	const acceptBidConfirmed = async () => {
 		if (!acceptingBid) return;
 		setIsAccepting(true);
-		await acceptBid(acceptingBid.domain.id, acceptingBid.bid.amount);
+		await acceptBid(acceptingBid.bid);
 		setIsAccepting(false);
 		setAcceptingBid(undefined);
 	};
