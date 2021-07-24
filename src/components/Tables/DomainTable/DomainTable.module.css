@@ -89,11 +89,12 @@
 
 .DomainTable > tbody > tr {
 	cursor: pointer;
+	color: white;
 	transition: background var(--animation-time-short) linear;
 }
 
 .DomainTable > tbody > tr:hover {
-	background: var(--background-purple-card-20);
+	background: var(--color-background-alt-50);
 }
 
 .DomainTable > tbody > tr img,

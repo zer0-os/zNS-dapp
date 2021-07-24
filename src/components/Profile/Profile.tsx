@@ -6,7 +6,8 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import { Image, RequestTable, TabBar, BidTable } from 'components';
+import { BidTable, Image, RequestTable, TabBar } from 'components';
+import { OwnedDomainsTable } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
@@ -29,7 +30,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	// State / Data //
 	//////////////////
 
-	const [selected, setSelected] = useState(`Offers`); // Which tab is selected
+	const [selected, setSelected] = useState(`Your Domains`); // Which tab is selected
 
 	///////////////
 	// Functions //
@@ -37,6 +38,10 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 
 	const select = (option: string) => {
 		setSelected(option);
+	};
+
+	const navigateToDomain = (domain: string) => {
+		console.log(domain);
 	};
 
 	/////////////
@@ -84,9 +89,15 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<TabBar tabs={['Offers', 'Bids']} onSelect={select} />
-			{selected === 'Offers' && <RequestTable userId={id} />}
-			{selected === 'Bids' && <BidTable userId={id} />}
+			<TabBar
+				tabs={['Your Domains', 'Your Bids', 'Offers']}
+				onSelect={select}
+			/>
+			{selected === 'Your Domains' && <OwnedDomainsTable />}
+			{selected === 'Offers' && (
+				<RequestTable onNavigate={navigateToDomain} userId={id} />
+			)}
+			{selected === 'Your Bids' && <BidTable userId={id} />}
 		</div>
 	);
 };

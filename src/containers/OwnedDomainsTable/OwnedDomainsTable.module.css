@@ -1,0 +1,19 @@
+.Reset {
+	background: none !important;
+	border: none !important;
+	box-shadow: none !important;
+	backdrop-filter: none !important;
+	overflow: visible !important;
+}
+
+.Reset > div:first-of-type {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.Message {
+	padding: 32px 32px 8px 32px;
+	text-align: center;
+	font-weight: 700;
+	color: white;
+}

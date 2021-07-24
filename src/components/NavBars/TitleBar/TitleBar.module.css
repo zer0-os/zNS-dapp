@@ -19,7 +19,7 @@ header {
 
 	width: 100%;
 
-	background-color: rgba(0, 63, 137, 0.265);
+	background: var(--color-background);
 	border-radius: var(--box-radius);
 
 	overflow: none;
@@ -30,12 +30,12 @@ header {
 }
 
 .Hovered {
-	background-color: rgba(0, 63, 137, 0.4);
+	/* background-color: rgba(0, 63, 137, 0.4); */
 	box-shadow: 0 0 20px 0 rgb(235 0 255 / 40%);
 }
 
 .Searching {
-	background-color: rgba(0, 63, 137, 0.4);
+	/* background-color: rgba(0, 63, 137, 0.4); */
 	box-shadow: 0 0 20px 0 rgb(235 0 255 / 40%);
 }
 

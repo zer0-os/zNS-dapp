@@ -16,7 +16,7 @@ import { MakeABid } from 'containers';
 //- Library Imports
 import 'lib/react-table-config.d.ts';
 import { getRelativeDomainPath } from 'lib/domains';
-import { DisplayDomain, Domain, Metadata } from 'lib/types';
+import { DisplayDomain, Domain, DomainHighestBid, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
@@ -30,13 +30,19 @@ import list from './assets/list.svg';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
+	className?: string;
 	domains: DisplayDomain[];
-	isRootDomain: boolean;
-	style?: React.CSSProperties;
 	empty?: boolean;
-	// TODO: Find a better way to persist grid view than with props
+	isButtonActive?: (row: any) => boolean;
 	isGridView?: boolean;
+	isRootDomain: boolean;
+	onLoad?: () => void;
+	onRowButtonClick?: (domain: DomainHighestBid) => void;
+	onRowClick?: (domain: Domain) => void;
+	rowButtonText?: string;
+	// TODO: Find a better way to persist grid view than with props
 	setIsGridView?: (grid: boolean) => void;
+	style?: React.CSSProperties;
 	userId?: string;
 };
 
@@ -51,16 +57,22 @@ enum Modals {
 }
 
 const DomainTable: React.FC<DomainTableProps> = ({
+	className,
 	domains,
-	isRootDomain,
-	style,
 	empty,
+	isButtonActive,
 	isGridView,
+	isRootDomain,
+	onLoad,
+	onRowButtonClick,
+	onRowClick,
+	rowButtonText,
 	setIsGridView,
+	style,
 	userId,
 }) => {
 	const { mvpVersion } = useMvpVersion();
-	const { getBidsForDomain } = useBidProvider();
+	const { getBidsForDomain, getBidsFromDomainIds } = useBidProvider();
 
 	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
@@ -89,13 +101,28 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const closeModal = () => setModal(undefined);
 
 	//Click handlers
-	const rowClick = (event: any, domain: string) => {
+	const rowClick = (event: any, domain: Domain) => {
+		if (onRowClick) {
+			onRowClick(domain);
+			return;
+		}
 		// @TODO Decouple this line from classname
 		if (event.target.className.indexOf('FutureButton') >= 0) return;
-		navigateTo(domain);
+		navigateTo(domain.name);
 	};
 
 	const buttonClick = (data: DomainData) => {
+		// @todo refactor this into a more generic component
+		if (onRowButtonClick) {
+			// @todo the above assumes the bids come in ascending order
+			onRowButtonClick({
+				domain: data.domain,
+				bid: data.bids[data.bids.length - 1],
+			});
+			return;
+		}
+
+		// Default behaviour
 		try {
 			if (data.domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
 				setBiddingOn(data.domain as DisplayDomain);
@@ -109,6 +136,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const handleResize = () => {
 		if (window.innerWidth < 1282) setList();
 	};
+
+	const getData = () => {};
 
 	/////////////
 	// Effects //
@@ -143,6 +172,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		var count = 0,
 			completed = 0;
 
+		// Get metadata
 		const getData = async (domain: DisplayDomain) => {
 			try {
 				const [metadata, bids] = await Promise.all([
@@ -168,6 +198,10 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 		if (!count) setHasMetadataLoaded(true);
 	}, [domains]);
+
+	useEffect(() => {
+		if (!isLoading && onLoad) onLoad();
+	}, [isLoading]);
 
 	/////////////////
 	// React Table //
@@ -271,17 +305,30 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'center' }}>Bid</div>,
 				id: 'bid',
-				accessor: (data: DomainData) => (
-					<FutureButton
-						style={{ margin: '0 auto', textTransform: 'uppercase' }}
-						glow={data.domain.owner.id?.toLowerCase() !== userId?.toLowerCase()}
-						onClick={() => buttonClick(data)}
-					>
-						Make A Bid
-					</FutureButton>
-				),
+				accessor: (data: DomainData) => {
+					// @todo this is a temporary fix
+					const shouldGlow = rowButtonText
+						? data.bids.length > 0
+						: data.domain.owner.id?.toLowerCase() !== userId?.toLowerCase();
+
+					return (
+						<>
+							{rowButtonText && !shouldGlow && (
+								<div style={{ textAlign: 'center', opacity: 0.7 }}>No bids</div>
+							)}
+							{(!rowButtonText || shouldGlow) && (
+								<FutureButton
+									style={{ margin: '0 auto', textTransform: 'uppercase' }}
+									glow={shouldGlow}
+									onClick={() => buttonClick(data)}
+								>
+									{rowButtonText || 'Make A Bid'}
+								</FutureButton>
+							)}
+						</>
+					);
+				},
 			},
 		],
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -335,9 +382,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			{overlays()}
 			<div
 				style={style}
-				className={
-					styles.DomainTableContainer + ' border-primary border-rounded blur'
-				}
+				className={`${
+					styles.DomainTableContainer
+				} border-primary border-rounded blur ${className || ''}`}
 			>
 				{/* Table Header */}
 				<div className={styles.searchHeader}>
@@ -383,7 +430,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 										return (
 											<tr
 												onClick={(event: any) =>
-													rowClick(event, row.original.domain.name)
+													rowClick(event, row.original.domain)
 												}
 												{...row.getRowProps()}
 											>

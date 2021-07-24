@@ -6,39 +6,50 @@ import React from 'react';
 import styles from './Confirmation.module.css';
 
 type ConfirmationProps = {
-	onConfirm: () => void;
-	onCancel: () => void;
-	title?: string;
 	cancelText?: string;
-	confirmText?: string;
 	children?: React.ReactNode;
+	confirmText?: string;
+	hideButtons?: boolean;
+	onCancel: () => void;
+	onConfirm: () => void;
+	title?: string;
 };
 
-const Confirmation: React.FC<ConfirmationProps> = (props) => {
+const Confirmation: React.FC<ConfirmationProps> = ({
+	cancelText,
+	children,
+	confirmText,
+	hideButtons,
+	onCancel,
+	onConfirm,
+	title,
+}) => {
 	return (
 		<div
 			className={`${styles.Confirmation} blur border-primary border-rounded`}
 		>
-			<h2 className="glow-text-white">{props.title ?? 'Are you sure?'}</h2>
+			<h2 className="glow-text-white">{title ?? 'Are you sure?'}</h2>
 			<hr className="glow" />
-			{props.children}
-			<div className={styles.Buttons}>
-				<FutureButton
-					style={{ textTransform: 'uppercase' }}
-					alt
-					glow
-					onClick={props.onCancel}
-				>
-					{props.cancelText ?? 'Cancel'}
-				</FutureButton>
-				<FutureButton
-					style={{ textTransform: 'uppercase' }}
-					glow
-					onClick={props.onConfirm}
-				>
-					{props.confirmText ?? 'Continue'}
-				</FutureButton>
-			</div>
+			{children}
+			{!hideButtons && (
+				<div className={styles.Buttons}>
+					<FutureButton
+						style={{ textTransform: 'uppercase' }}
+						alt
+						glow
+						onClick={onCancel}
+					>
+						{cancelText ?? 'Cancel'}
+					</FutureButton>
+					<FutureButton
+						style={{ textTransform: 'uppercase' }}
+						glow
+						onClick={onConfirm}
+					>
+						{confirmText ?? 'Continue'}
+					</FutureButton>
+				</div>
+			)}
 		</div>
 	);
 };

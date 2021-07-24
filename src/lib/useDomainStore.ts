@@ -1,4 +1,12 @@
-import { ApolloQueryResult, gql, useLazyQuery, useQuery } from '@apollo/client';
+import {
+	ApolloClient,
+	ApolloQueryResult,
+	gql,
+	NormalizedCacheObject,
+	QueryOptions,
+	useLazyQuery,
+	useQuery,
+} from '@apollo/client';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { getAddress } from 'ethers/lib/utils';
@@ -93,11 +101,30 @@ export const CHILDREN_QUERY = gql`
 		domains(where: { parent: $parent }) {
 			id
 			name
-			subdomains
-			owner
-			minter
+			parent {
+				id
+				name
+			}
+			subdomains {
+				id
+				name
+				metadata
+				owner {
+					id
+				}
+				minter {
+					id
+				}
+			}
+			owner {
+				id
+			}
+			minter {
+				id
+			}
 			lockedBy
 			isLocked
+			metadata
 		}
 	}
 `;
@@ -107,12 +134,30 @@ export const OWNED_DOMAIN_QUERY = gql`
 		domains(where: { owner: $owner }) {
 			id
 			name
-			parent
-			subdomains
-			owner
-			minter
+			parent {
+				id
+				name
+			}
+			subdomains {
+				id
+				name
+				metadata
+				owner {
+					id
+				}
+				minter {
+					id
+				}
+			}
+			owner {
+				id
+			}
+			minter {
+				id
+			}
 			lockedBy
 			isLocked
+			metadata
 		}
 	}
 `;
@@ -187,33 +232,32 @@ function useDomain(name: string) {
 
 function useOwnedDomains(): {
 	owned: Maybe<any[]>;
-	refetchOwned: RefetchQuery<any>;
+	refetchOwned: () => void;
 } {
 	const context = useWeb3React<Web3Provider>();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { account } = context;
-	const [getOwned, { data, refetch, error }] = useLazyQuery<any>(
+	const accountNormalized = account?.toLowerCase();
+
+	const [getOwned, { data, refetch, error }] = useLazyQuery<DomainData>(
 		OWNED_DOMAIN_QUERY,
 		{
-			variables: { owner: account },
+			variables: { owner: accountNormalized },
 		},
 	);
 
-	const owned: Maybe<any[]> = useMemo(() => {
+	const owned: Maybe<DisplayParentDomain[]> = useMemo(() => {
 		if (error) {
 			// TODO: maybe throw?
 			console.error(error);
 		}
 		if (data) {
-			return Maybe.of(
-				data.domains.map((d: any) => ({
-					...d,
-					owner: getAddress(d.owner),
-					parent: d.parent,
-					subdomains: [],
-
-					metadata: d.metadata,
-				})),
+			return Maybe.of<DisplayParentDomain[]>(
+				data.domains.map((d: ParentDomain) => {
+					return {
+						...d,
+					} as DisplayParentDomain;
+				}),
 			);
 		}
 		return Maybe.nothing();
@@ -221,29 +265,25 @@ function useOwnedDomains(): {
 
 	useEffect(() => {
 		if (refetch) {
-			refetch({ variables: { owner: account } });
+			refetch({ variables: { owner: accountNormalized } });
 		} else if (account) {
-			getOwned({ variables: { owner: account } });
+			getOwned({ variables: { owner: accountNormalized } });
 		}
 	}, [account, getOwned, refetch]);
 
-	//console.log('usedomain list', owned);
-
-	useEffect(() => {
+	const refresh = () => {
 		if (refetch) {
-			refetch({ variables: { owner: account } });
+			refetch({ variables: { owner: accountNormalized } });
 		} else if (account) {
-			getOwned({ variables: { owner: account } });
+			getOwned({ variables: { owner: accountNormalized } });
 		}
-	}, [account, getOwned, refetch]);
+	};
 
-	return { owned, refetchOwned: refetch! };
+	return { owned, refetchOwned: refresh };
 }
 
 // maybe fx
-function useAllDomains(
-	domain: string,
-): {
+function useAllDomains(domain: string): {
 	_allDomains: Maybe<any[]>;
 	refetchAllDomains: RefetchQuery<any>;
 } {
@@ -331,3 +371,18 @@ export { useDomainStore };
 // function subdomains(subdomains: any, arg1: string) {
 //   throw new Error('Function not implemented.');
 // }
+
+export const getDomainData = async (
+	domainId: string,
+	client: ApolloClient<NormalizedCacheObject> | undefined,
+): Promise<ApolloQueryResult<DomainData> | undefined> => {
+	const options: QueryOptions = {
+		query: domainByIdQuery,
+		variables: { id: domainId },
+		fetchPolicy: 'no-cache',
+	};
+
+	const tx = await client?.query(options);
+
+	return tx;
+};
