@@ -74,9 +74,12 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 		const get = async () => {
 			setIsLoading(true);
 			try {
+				// @ todo this is in serious need of a rewrite
+
 				// Get bids from API
 				const bids = await getBidsForAccount(userId);
 				if (!bids) return;
+				const sortedBids = bids.sort((a: Bid, b: Bid) => b.amount - a.amount);
 
 				// Get domain data from returned NFT IDs
 				const getDomainPromises: Promise<any>[] = [];
@@ -84,31 +87,26 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 					getDomainPromises.push(fetchDomainData(bid)),
 				);
 				const domainsWithBids = await Promise.all(getDomainPromises);
+				const uniqueDomains = [...Array.from(new Set(domainsWithBids))];
 
-				// Get the highest bids for each domain
-				const highestBids = [];
-				// @todo write an algorithm that doesn't depend on bids arriving
-				// in ascending order
-				for (var i = 0; i < bids.length - 1; i++) {
-					const bid = bids[i];
-					const nextBid = bids[i + 1];
-					if (!nextBid || bid.tokenId !== nextBid.tokenId) {
-						highestBids.push({
-							bid: bid,
-							domain: domainsWithBids.filter(
-								(d: Domain) => d.id === bid.tokenId,
-							)[0],
-						});
-					}
-				}
+				const yourBidData: BidTableData[] = [];
+				uniqueDomains.forEach((domain: Domain) => {
+					const yourHighestBid = sortedBids.filter(
+						(bid: Bid) => bid.tokenId === domain.id,
+					)[0];
+					yourBidData.push({
+						domain,
+						bid: yourHighestBid,
+					});
+				});
 
-				const getAllBidsPromises: Promise<any>[] = [];
-				highestBids.forEach((bid: BidTableData) =>
-					getAllBidsPromises.push(fetchBids(bid)),
+				const allBidDataPromises: Promise<any>[] = [];
+				yourBidData.forEach((data: BidTableData) =>
+					allBidDataPromises.push(fetchBids(data)),
 				);
-				const allBids = await Promise.all(getAllBidsPromises);
+				const allBidData = await Promise.all(allBidDataPromises);
 
-				setDisplayData(allBids);
+				setDisplayData(allBidData);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
