@@ -71,7 +71,7 @@ interface BidAcceptInterface {
 
 function getApiEndpoint() {
 	// const chainSelector = useChainSelector();
-	let chain = 1; //useChainSelector().selectedChain;
+	let chain = 42; //useChainSelector().selectedChain;
 	switch (chain) {
 		case 1:
 			return 'https://zproduction.ilios.dev/api';
