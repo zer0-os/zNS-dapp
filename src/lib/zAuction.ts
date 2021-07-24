@@ -2,14 +2,14 @@ import { ethers } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 
-const apiEndpoint = getApiEndpoint();//'https://zproxy.ilios.dev/api';
+const apiEndpoint = getApiEndpoint(); //'https://zproxy.ilios.dev/api';
 
 const encodeBidEndpoint = `${apiEndpoint}/bid/`;
 const bidsEndpoint = `${apiEndpoint}/bids/`;
 const bidListEndpoint = `${bidsEndpoint}lists?`;
 const accountBidsEndpoint = `${bidsEndpoint}accounts/`;
 
-interface NftIdBidsDto {
+export interface NftIdBidsDto {
 	account: string;
 	signedMessage: string;
 	auctionId: string;
@@ -19,7 +19,7 @@ interface NftIdBidsDto {
 	expireBlock: string;
 }
 
-interface AccountBidsDto {
+export interface AccountBidsDto {
 	signedMessage: string;
 	auctionId: string;
 	bidAmount: string;
@@ -70,11 +70,15 @@ interface BidAcceptInterface {
 }
 
 function getApiEndpoint() {
-	let chain = 0; //useChainSelector().selectedChain;
+	// const chainSelector = useChainSelector();
+	let chain = 1; //useChainSelector().selectedChain;
 	switch (chain) {
-		case 1: return "https://zproduction.ilios.dev/api";
-		case 42: return "https://zproxy.ilios.dev/api";
-		default: return "Unsupported Chain";
+		case 1:
+			return 'https://zproduction.ilios.dev/api';
+		case 42:
+			return 'https://zproxy.ilios.dev/api';
+		default:
+			return 'Unsupported Chain';
 	}
 }
 
