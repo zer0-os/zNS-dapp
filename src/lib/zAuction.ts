@@ -70,9 +70,9 @@ interface BidAcceptInterface {
 }
 
 function getApiEndpoint() {
-	let chain = useChainSelector().selectedChain;
+	let chain = 0; //useChainSelector().selectedChain;
 	switch (chain) {
-		case 1: return "https://zproxy.ilios.main/api";
+		case 1: return "https://zproduction.ilios.dev/api";
 		case 42: return "https://zproxy.ilios.dev/api";
 		default: return "Unsupported Chain";
 	}
@@ -167,7 +167,6 @@ export async function placeBid(
 		tokenId,
 		contractAddress: contract,
 		bidAmount: amount,
-		bidMessage: bidData.payload,
 		minimumBid,
 		startBlock,
 		expireBlock,
