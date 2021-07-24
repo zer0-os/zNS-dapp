@@ -170,6 +170,9 @@ body {
 	overflow: auto;
 
 	color: var(--color-text-primary);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 body.no-scroll {
