@@ -3,7 +3,10 @@ import React from 'react';
 
 // Library Imports
 import { useDomainCache } from 'lib/useDomainCache';
+import { useZnsContracts } from 'lib/contracts';
 import { useBidProvider } from 'lib/providers/BidProvider';
+import { useApprovals } from 'lib/hooks/useApprovals';
+import { useWeb3React } from '@web3-react/core';
 
 // Type Imports
 import { Bid, Domain, DomainHighestBid } from 'lib/types';
@@ -20,20 +23,67 @@ type AcceptBidModalData = {
 };
 
 const OwnedDomainTables = () => {
-	const { acceptBid } = useBidProvider();
+	//////////////////
+	// State & Data //
+	//////////////////
 
+	// Wallet Integrations
+	const { account } = useWeb3React();
+	const { owned } = useDomainCache();
+
+	// zAuction Integrations
+	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
+	const znsContracts = useZnsContracts()!;
+	const { acceptBid } = useBidProvider();
+	const wildToken = znsContracts.wildToken;
+	const zAuctionAddress = znsContracts.zAuction.address;
+
+	// State
 	const [isTableLoading, setIsTableLoading] = React.useState(true);
+	const [tokensApproved, setTokensApproved] = React.useState<
+		boolean | undefined
+	>();
 	const [isAccepting, setIsAccepting] = React.useState(false);
 	const [isGridView, setIsGridView] = React.useState(false);
 	const [acceptingBid, setAcceptingBid] = React.useState<
 		AcceptBidModalData | undefined
 	>();
 
-	const { owned } = useDomainCache();
+	///////////////
+	// Functions //
+	///////////////
 
-	const viewBid = (domain: DomainHighestBid) => {
-		if (!domain.bid) return;
+	const viewBid = async (domain: DomainHighestBid) => {
+		if (!domain.bid || !account) return;
 		setAcceptingBid(domain);
+
+		const shouldApprove = !(await isApproved());
+		setTokensApproved(!shouldApprove);
+		if (shouldApprove) {
+			try {
+				const approvedSuccess = await approve();
+				if (approvedSuccess) throw Error('failed to approve');
+				setTokensApproved(true);
+			} catch (e: any) {
+				closeBid();
+			}
+		}
+	};
+
+	const isApproved = async () => {
+		const approved = await isApprovedForAllTokens({
+			owner: account as string,
+			operator: zAuctionAddress,
+		});
+		return approved;
+	};
+
+	const approve = async () => {
+		const approved = await approveAllTokens({
+			operator: zAuctionAddress,
+			approved: true,
+		});
+		return approved;
 	};
 
 	const closeBid = () => {
@@ -60,7 +110,31 @@ const OwnedDomainTables = () => {
 
 	if (owned.isNothing()) return <></>;
 
-	const modals = () => {};
+	/////////////////////
+	// React Fragments //
+	/////////////////////
+
+	const canPlaceBid = () => (
+		<p>
+			{acceptingBid!.bid.amount} WILD for {acceptingBid!.domain.name}
+		</p>
+	);
+
+	const loadingState = () => <Spinner style={{ margin: '8px auto' }} />;
+
+	const bidPending = () => (
+		<>
+			<p>Pending</p>
+			<Spinner style={{ margin: '8px auto' }} />
+		</>
+	);
+
+	const approving = () => (
+		<>
+			<p>Your wallet needs to approve zAuction to accept this bid</p>
+			<Spinner style={{ margin: '8px auto' }} />
+		</>
+	);
 
 	return (
 		<>
@@ -70,19 +144,12 @@ const OwnedDomainTables = () => {
 						title={`Accept bid`}
 						onConfirm={acceptBidConfirmed}
 						onCancel={closeBid}
-						hideButtons={isAccepting}
+						hideButtons={tokensApproved !== true || isAccepting}
 					>
-						{!isAccepting && (
-							<p>
-								{acceptingBid.bid.amount} WILD for {acceptingBid.domain.name}
-							</p>
-						)}
-						{isAccepting && (
-							<>
-								<p>Pending</p>
-								<Spinner style={{ margin: '8px auto' }} />
-							</>
-						)}
+						{tokensApproved === undefined && loadingState()}
+						{tokensApproved === false && approving()}
+						{tokensApproved && !isAccepting && canPlaceBid()}
+						{tokensApproved && isAccepting && bidPending()}
 					</Confirmation>
 				</Overlay>
 			)}
