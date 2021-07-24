@@ -335,7 +335,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			},
 		],
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[mvpVersion, domains],
+		[mvpVersion, domains, userId],
 	);
 
 	// Navigation Handling
