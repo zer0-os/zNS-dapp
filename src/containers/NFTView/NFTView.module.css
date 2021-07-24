@@ -114,6 +114,7 @@
 .Box {
 	/* height: 95.5px; */
 	padding: 20px;
+	background: var(--color-background);
 }
 
 .Box h4 {

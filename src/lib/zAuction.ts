@@ -5,27 +5,28 @@ const apiEndpoint = 'https://zproxy.ilios.dev/api';
 
 const encodeBidEndpoint = `${apiEndpoint}/bid/`;
 const bidsEndpoint = `${apiEndpoint}/bids/`;
+const bidListEndpoint = `${bidsEndpoint}lists?`;
 const accountBidsEndpoint = `${bidsEndpoint}accounts/`;
 
 interface NftIdBidsDto {
-	account: string,
-	signedMessage: string,
-	auctionId: string,
-	bidAmount: string,
-	minimumBid: string,
-	startBlock: string,
-	expireBlock: string,
+	account: string;
+	signedMessage: string;
+	auctionId: string;
+	bidAmount: string;
+	minimumBid: string;
+	startBlock: string;
+	expireBlock: string;
 }
 
 interface AccountBidsDto {
-	signedMessage: string,
-	auctionId: string,
-	bidAmount: string,
-	contractAddress: string,
-	tokenId: string,
-	minimumBid: string,
-	startBlock: string,
-	expireBlock: string,
+	signedMessage: string;
+	auctionId: string;
+	bidAmount: string;
+	contractAddress: string;
+	tokenId: string;
+	minimumBid: string;
+	startBlock: string;
+	expireBlock: string;
 }
 
 interface BidPayloadPostInterface {
@@ -70,7 +71,7 @@ export async function getBidsForNft(contract: string, tokenId: string) {
 		method: 'GET',
 	});
 
-	const bids = (await response.json()) as NftIdBidsDto[];
+	const bids = (await response.json()).bids as NftIdBidsDto[];
 
 	return bids;
 }

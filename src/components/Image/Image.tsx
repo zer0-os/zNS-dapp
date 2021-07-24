@@ -11,7 +11,7 @@ const Image = (props: any) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	const load = () => setLoaded(true);
-	const err = () => {
+	const err = (e: any) => {
 		if (props.src) {
 			setTryVideo(true);
 		}

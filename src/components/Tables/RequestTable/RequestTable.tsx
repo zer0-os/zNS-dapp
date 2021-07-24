@@ -13,6 +13,7 @@ import {
 	OptionDropdown,
 	Overlay,
 	NFTCard,
+	Spinner,
 	Confirmation,
 } from 'components';
 import { Request } from 'containers';
@@ -42,13 +43,20 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
 import { useWeb3React } from '@web3-react/core';
+import { getDomainData } from 'lib/useDomainStore';
+import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
 
 type RequestTableProps = {
 	style?: React.CSSProperties;
 	userId: string;
+	onNavigate: (domain: string) => void;
 };
 
-const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
+const RequestTable: React.FC<RequestTableProps> = ({
+	style,
+	userId,
+	onNavigate,
+}) => {
 	//////////////////
 	// Custom Hooks //
 	//////////////////
@@ -59,6 +67,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	const yourRequests = useRequestsMadeByAccount(userId);
 	const requestsForYou = useRequestsForOwnedDomains(userId);
 	const wildToken = znsContracts.wildToken;
+
+	const apolloClientInstance = useSubgraphProvider();
 
 	//////////////////
 	// State / Refs //
@@ -76,7 +86,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	const [domainFilter, setDomainFilter] = useState('');
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
-
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DisplayDomainRequestAndContents | undefined
@@ -203,6 +212,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 	}, []);
 
 	useEffect(() => {
+		setIsLoading(true);
 		const i = yourRequests.requests?.domainRequests || [];
 		const j =
 			requestsForYou.requests?.domains.map((d) => d.requests).flat() || [];
@@ -223,6 +233,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 			} else {
 				console.error('Failed to retrieve request data');
 			}
+			setIsLoading(false);
 		});
 	}, [yourRequests.requests, requestsForYou.requests, domainFilter]);
 
@@ -388,13 +399,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 		useFilters,
 		useGlobalFilter,
 	);
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		prepareRow,
-		rows,
-	} = tableHook;
+	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
+		tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
@@ -410,6 +416,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 					<Request
 						onApprove={onApprove}
 						onFulfill={onFulfill}
+						onNavigate={onNavigate}
 						request={viewing}
 						yours={viewing.contents.requestor === userId}
 					/>
@@ -442,54 +449,56 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 			)}
 
 			{/* Table Header */}
-			<div className={styles.searchHeader}>
-				<SearchBar
-					onChange={(event: any) => search(event.target.value)}
-					style={{ width: '100%', marginRight: 16 }}
-				/>
-				<div className={styles.searchHeaderButtons}>
-					<OptionDropdown
-						onSelect={filterByDomain}
-						options={['All Domains', 'Your Domains', 'Your Requests']}
-						drawerStyle={{ width: 179 }}
-					>
-						<FilterButton onClick={() => {}}>
-							{domainFilter || 'All Domains'}
-						</FilterButton>
-					</OptionDropdown>
-					<OptionDropdown
-						onSelect={filterByStatus}
-						options={['All Statuses', 'Open Requests', 'Accepted']}
-						drawerStyle={{ width: 179 }}
-					>
-						<FilterButton onClick={() => {}}>
-							{statusFilter || 'All Statuses'}
-						</FilterButton>
-					</OptionDropdown>
-					{isGridViewToggleable && (
-						<>
-							<IconButton
-								onClick={setList}
-								toggled={!isGridView}
-								iconUri={list}
-								style={{ height: 32, width: 32 }}
-							/>
-							<IconButton
-								onClick={setGrid}
-								toggled={isGridView}
-								iconUri={grid}
-								style={{ height: 32, width: 32 }}
-							/>
-						</>
-					)}
+			{!isLoading && (
+				<div className={styles.searchHeader}>
+					<SearchBar
+						onChange={(event: any) => search(event.target.value)}
+						style={{ width: '100%', marginRight: 16 }}
+					/>
+					<div className={styles.searchHeaderButtons}>
+						<OptionDropdown
+							onSelect={filterByDomain}
+							options={['All Domains', 'Your Domains', 'Your Requests']}
+							drawerStyle={{ width: 179 }}
+						>
+							<FilterButton onClick={() => {}}>
+								{domainFilter || 'All Domains'}
+							</FilterButton>
+						</OptionDropdown>
+						<OptionDropdown
+							onSelect={filterByStatus}
+							options={['All Statuses', 'Open Requests', 'Accepted']}
+							drawerStyle={{ width: 179 }}
+						>
+							<FilterButton onClick={() => {}}>
+								{statusFilter || 'All Statuses'}
+							</FilterButton>
+						</OptionDropdown>
+						{isGridViewToggleable && (
+							<>
+								<IconButton
+									onClick={setList}
+									toggled={!isGridView}
+									iconUri={list}
+									style={{ height: 32, width: 32 }}
+								/>
+								<IconButton
+									onClick={setGrid}
+									toggled={isGridView}
+									iconUri={grid}
+									style={{ height: 32, width: 32 }}
+								/>
+							</>
+						)}
+					</div>
 				</div>
-			</div>
+			)}
 
 			{/* Standard React-Table setup */}
 			<div className={styles.RequestTable}>
 				<div className={styles.Container} ref={containerRef}>
 					{/* List View */}
-					{!isGridView && (
+					{!isLoading && !isGridView && (
 						<table {...getTableProps()} className={styles.RequestTable}>
 							<thead>
 								{headerGroups.map((headerGroup) => (
@@ -524,7 +533,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 					)}
 
 					{/* Grid View */}
-					{isGridView && (
+					{!isLoading && isGridView && (
 						<ol className={styles.Grid}>
 							{displayData.map((d, i) => (
 								<li key={i} onClick={() => view(d.request.domain)}>
@@ -612,7 +621,12 @@ const RequestTable: React.FC<RequestTableProps> = ({ style, userId }) => {
 
 					{/* Data Loading Message */}
 					{isLoading && (
-						<p className={styles.Message}>Loading Domain Requests</p>
+						<>
+							<p style={{ paddingBottom: 16 }} className={styles.Message}>
+								Loading Your Offers
+							</p>
+							<Spinner style={{ margin: '0 auto' }} />
+						</>
 					)}
 
 					{/* Empty Table Message */}

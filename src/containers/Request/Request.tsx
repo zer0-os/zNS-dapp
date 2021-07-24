@@ -28,6 +28,7 @@ type RequestProps = {
 	yours?: boolean;
 	onApprove: (request: DomainRequestAndContents) => void;
 	onFulfill: (request: DomainRequestAndContents) => void;
+	onNavigate: (domain: string) => void;
 };
 
 const Request: React.FC<RequestProps> = ({
@@ -35,6 +36,7 @@ const Request: React.FC<RequestProps> = ({
 	yours,
 	onApprove,
 	onFulfill,
+	onNavigate,
 }) => {
 	////////////////////
 	// Imported Hooks //
@@ -67,6 +69,9 @@ const Request: React.FC<RequestProps> = ({
 	const confirm = () => {
 		if (isFulfilling && onFulfill) onFulfill(request);
 		else if (!isFulfilling && onApprove) onApprove(request);
+	};
+	const navigate = () => {
+		if (onNavigate) onNavigate(request.request.domain);
 	};
 
 	/////////////
@@ -195,6 +200,18 @@ const Request: React.FC<RequestProps> = ({
 								onClick={openModal}
 							>
 								Fulfill
+							</FutureButton>
+						</div>
+					)}
+
+					{yours && request.request.approved && request.request.fulfilled && (
+						<div className={styles.Buttons}>
+							<FutureButton
+								style={{ textTransform: 'uppercase' }}
+								glow
+								onClick={navigate}
+							>
+								View in ZNS
 							</FutureButton>
 						</div>
 					)}

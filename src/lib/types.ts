@@ -117,3 +117,8 @@ export type Bid = {
 	startBlock: string;
 	expireBlock: string;
 };
+
+export type DomainHighestBid = {
+	domain: Domain;
+	bid: Bid;
+};
