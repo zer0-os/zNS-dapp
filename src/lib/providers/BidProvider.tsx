@@ -12,6 +12,8 @@ import * as zAuction from '../zAuction';
 import useNotification from 'lib/hooks/useNotification';
 import { useWeb3React } from '@web3-react/core';
 import { AccountBidsDto, NftIdBidsDto } from '../zAuction';
+import { useZAuctionAPI } from 'lib/hooks/useZAuctionAPI';
+import { useChainSelector } from './ChainSelectorProvider';
 
 export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
@@ -89,6 +91,8 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const { addNotification } = useNotification();
 	const contracts = useZnsContracts();
 	const zAuctionContract = useZnsContracts()?.zAuction;
+	const chainSelector = useChainSelector()
+	const apiEndpoint = useZAuctionAPI(chainSelector.selectedChain)
 
 	const acceptBid = async (bidData: Bid) => {
 		const tx = await tryFunction(async () => {
