@@ -96,11 +96,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				throw Error(`no contract`);
 			}
 
+			const amountInWei = ethers.utils.parseEther(bidData.amount.toString());
+
 			const tx = await zAuctionContract.acceptBid(
 				bidData.signature,
 				bidData.auctionId,
 				bidData.bidderAccount,
-				bidData.amount,
+				amountInWei,
 				bidData.nftAddress,
 				bidData.tokenId,
 				bidData.minBid,
