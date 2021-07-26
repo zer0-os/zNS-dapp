@@ -14,7 +14,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		basic: '0x7EB6D0E8c91F6e88bf029138FDf0d04Fb78E43a4',
 		staking: '0xC6E3a8eD83eFdA986Eab9EfA4286fb031333448f',
 		wildToken: '0x279D6D836e75947F2aC9F66f893C4297B6Ba9e44',
-		zAuction: '0x07486893c640bEA537B314104315747AAb759fd2',
+		zAuction: '0xEaaAc61b730F34228D8b269d84F3ccc6676EF730',
 	},
 } as any;
 
