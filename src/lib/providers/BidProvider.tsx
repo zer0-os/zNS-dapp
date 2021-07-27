@@ -134,7 +134,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			throw Error(`no api endpoint`);
 		}
 		try {
-			const bids = await zAuction.getBidsForAccount(baseApiUri!, id);
+			const bids = await zAuction.getBidsForAccount(baseApiUri, id);
 
 			try {
 				const displayBids = bids.map((e) => {
@@ -192,7 +192,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		}
 		try {
 			const bids = await zAuction.getBidsForNft(
-				baseApiUri!,
+				baseApiUri,
 				contracts!.registry.address,
 				domain.id,
 			);
@@ -220,7 +220,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		// Replace with bid functionality
 		try {
 			await zAuction.placeBid(
-				baseApiUri!,
+				baseApiUri,
 				context.library!,
 				contracts!.registry.address,
 				domain.id,
