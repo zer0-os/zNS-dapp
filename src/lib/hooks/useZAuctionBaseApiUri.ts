@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 //the hook that returns the useZauctionAPI with the api endpoint that match with the selected chain
 
-export function useZAuctionAPI(chain: number): string {
-	const [api, setApi] = useState('Unsupported Chain');
+export function useZAuctionBaseApiUri(chain: number): string | undefined {
+	const [api, setApi] = useState<string | undefined>();
 
 	React.useEffect(() => {
 		function getApiEndpoint() {
