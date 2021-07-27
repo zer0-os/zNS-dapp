@@ -48,18 +48,6 @@ interface BidPostInterface {
 	signedMessage: string;
 }
 
-interface BidAcceptInterface {
-	signedMessage: string;
-	auctionId: string;
-	account: string;
-	bidAmount: string;
-	contractAddress: string;
-	tokenId: string;
-	minimumBid: string;
-	startBlock: string;
-	expireBlock: string;
-}
-
 function setApiEndpoints(apiName: string) {
 	const encodeBidEndpoint = `${apiName}/bid/`;
 	const bidsEndpoint = `${apiName}/bids/`;

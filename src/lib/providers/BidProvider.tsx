@@ -1,10 +1,10 @@
 //- React Imports
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 //- Library Imports
 import { Domain, Bid } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { tryFunction } from 'lib/utils';
 import * as zAuction from '../zAuction';
 
@@ -135,8 +135,6 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 			try {
 				const displayBids = bids.map((e) => {
-					const amount = Number(ethers.utils.formatEther(e.bidAmount));
-
 					return getBidParameters(e, undefined, id);
 				});
 
