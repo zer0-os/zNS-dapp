@@ -1,4 +1,3 @@
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import React, { useState } from 'react';
 
 //the hook that returns the useZauctionAPI with the api endpoint that match with the selected chain
