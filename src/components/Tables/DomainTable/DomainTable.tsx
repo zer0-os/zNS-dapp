@@ -16,7 +16,13 @@ import { MakeABid } from 'containers';
 //- Library Imports
 import 'lib/react-table-config.d.ts';
 import { getRelativeDomainPath } from 'lib/domains';
-import { DisplayDomain, Domain, DomainHighestBid, Metadata } from 'lib/types';
+import {
+	Bid,
+	DisplayDomain,
+	Domain,
+	DomainHighestBid,
+	Metadata,
+} from 'lib/types';
 import { getMetadata } from 'lib/metadata';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
@@ -49,7 +55,7 @@ type DomainTableProps = {
 type DomainData = {
 	domain: Domain;
 	metadata: Metadata;
-	bids: any | undefined;
+	bids: Bid[];
 };
 
 enum Modals {
