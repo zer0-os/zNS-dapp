@@ -1,6 +1,4 @@
 import { ethers } from 'ethers';
-import { useZnsContracts } from 'lib/contracts';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 
 export interface NftIdBidsDto {
 	account: string;
