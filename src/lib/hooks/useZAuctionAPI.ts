@@ -17,8 +17,7 @@ export function useZAuctionAPI(chain: number): string {
 			}
 		}
 
-		const apiEndpointName: string = getApiEndpoint();
-		setApi(apiEndpointName);
+		setApi(getApiEndpoint());
 	}, [chain]);
 
 	return api;
