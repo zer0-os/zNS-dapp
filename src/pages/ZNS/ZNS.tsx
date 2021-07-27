@@ -104,11 +104,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	// Force to go back to home if invalid domain
 	React.useEffect(() => {
 		if (data.isNothing()) {
+			console.log(`invalid domain, returning to home`);
 			history.push('/');
 			return;
 		}
 
 		if (!data.isNothing() && data.value === undefined) {
+			console.log(`invalid domain data, returning to home`);
 			history.push('/');
 			return;
 		}

@@ -202,7 +202,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		return () => {
 			isSubscribed = false;
 		};
-	}, [staking.approved, yourRequests, requestsForYou]);
+	}, [staking.approved]);
 
 	// Listen for window resizes and handle them
 	useEffect(() => {
@@ -226,7 +226,12 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			requests = i;
 		}
 
-		if (requests.length === 0) return setLoadedRequests([]);
+		if (requests.length === 0) {
+			setLoadedRequests([]);
+			setIsLoading(false);
+			return;
+		}
+
 		getRequestData(requests).then((d: any) => {
 			if (d) {
 				setLoadedRequests(d);
@@ -399,8 +404,13 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		useFilters,
 		useGlobalFilter,
 	);
-	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
-		tableHook;
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		prepareRow,
+		rows,
+	} = tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>

@@ -34,7 +34,9 @@ export const getRequestData = (requests: DomainRequest[]) => {
 						loadedRequests.push(displayRequest);
 					}
 				} catch (e) {
-					console.error('Failed to retrieve request data');
+					console.error(
+						`Failed to retrieve request data of ${request.id} (${request.requestUri})`,
+					);
 				}
 
 				if (++counted === requestsToFetch.length) {

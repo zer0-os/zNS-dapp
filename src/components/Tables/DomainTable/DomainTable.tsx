@@ -169,8 +169,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		const loaded: DomainData[] = [];
 		setHasMetadataLoaded(false);
-		var count = 0,
-			completed = 0;
+		let count = 0;
+		let completed = 0;
 
 		// Get metadata
 		const getData = async (domain: DisplayDomain) => {
@@ -180,18 +180,28 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					getBidsForDomain(domain),
 				]);
 
-				if (!metadata) return;
+				completed++;
+
+				if (!metadata) {
+					console.log(`found no metadata for ${domain.id}`);
+					return;
+				}
 
 				loaded.push({ domain: domain, metadata: metadata, bids: bids || [] });
-				if (++completed === count) {
+
+				if (completed === count) {
 					setLoadedDomains(loaded);
 					setHasMetadataLoaded(true);
+					setIsLoading(false);
+					if (onLoad) {
+						onLoad();
+					}
 				}
 			} catch (e) {}
 		};
 
-		for (var i = 0; i < domains.length; i++) {
-			if (!domains[i].metadata) return;
+		for (let i = 0; i < domains.length; i++) {
+			if (!domains[i].metadata) continue;
 			count++;
 			getData(domains[i]);
 		}
@@ -210,12 +220,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	// React Table //
 	/////////////////
 
-	// Gets the data for the table
-	// TODO: This can definitely be refactored out
-	const data = useMemo<DomainData[]>(() => {
-		loadedDomains.length ? setIsLoading(false) : setIsLoading(true);
-		return loadedDomains;
-	}, [loadedDomains, hasBidDataLoaded]);
+	const data = loadedDomains;
 
 	const columns = useMemo<Column<DomainData>[]>(
 		() => [
