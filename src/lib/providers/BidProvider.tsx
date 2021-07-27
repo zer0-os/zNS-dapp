@@ -131,7 +131,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 	const getBidsForAccount = async (id: string) => {
 		try {
-			const bids = await zAuction.getBidsForAccount(id);
+			const bids = await zAuction.getBidsForAccount(id,apiEndpoint);
 
 			try {
 				const displayBids = bids.map((e) => {
@@ -190,6 +190,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			const bids = await zAuction.getBidsForNft(
 				contracts!.registry.address,
 				domain.id,
+				apiEndpoint
 			);
 
 			try {
@@ -216,6 +217,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				contracts!.registry.address,
 				domain.id,
 				ethers.utils.parseEther(bid.toString()).toString(),
+				apiEndpoint
 			);
 			addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
 			return true;
