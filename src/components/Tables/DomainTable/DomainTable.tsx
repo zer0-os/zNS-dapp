@@ -39,6 +39,7 @@ type DomainTableProps = {
 	className?: string;
 	domains: DisplayDomain[];
 	empty?: boolean;
+	hideOwnBids?: boolean;
 	isButtonActive?: (row: any) => boolean;
 	isGridView?: boolean;
 	isRootDomain: boolean;
@@ -66,6 +67,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	className,
 	domains,
 	empty,
+	hideOwnBids,
 	isButtonActive,
 	isGridView,
 	isRootDomain,
@@ -193,7 +195,19 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					return;
 				}
 
-				loaded.push({ domain: domain, metadata: metadata, bids: bids || [] });
+				// Filter out user's bids if configured to do so
+				let filteredBids;
+				if (hideOwnBids) {
+					filteredBids = bids?.filter(
+						(bid: Bid) => bid.bidderAccount !== userId,
+					);
+				}
+
+				loaded.push({
+					domain: domain,
+					metadata: metadata,
+					bids: filteredBids || bids || [],
+				});
 
 				if (completed === count) {
 					setLoadedDomains(loaded);
