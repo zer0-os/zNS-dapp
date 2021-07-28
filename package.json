@@ -64,7 +64,8 @@
 		"eject": "react-scripts eject",
 		"typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
 		"lint": "eslint src --ext .ts",
-		"apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql "
+		"apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql ",
+		"prettier": "prettier --write ./src/**/*.ts && prettier --write ./src/**/*.tsx"
 	},
 	"eslintConfig": {
 		"extends": [

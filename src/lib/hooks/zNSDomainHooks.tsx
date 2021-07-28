@@ -1,5 +1,10 @@
 import { DocumentNode, OperationVariables, useQuery } from '@apollo/client';
-import { DomainQueryResult, DomainsQueryResult, Maybe, ParentDomain } from 'lib/types';
+import {
+	DomainQueryResult,
+	DomainsQueryResult,
+	Maybe,
+	ParentDomain,
+} from 'lib/types';
 import { getDomainId } from 'lib/utils';
 
 import { queries } from '../zns';
@@ -39,9 +44,8 @@ export function useDomainByNameQuery(domainName: string) {
 
 export function useDomainsOwnedByUserQuery(account: string) {
 	const query = useQueryHook<DomainsQueryResult>(queries.ownedByAccountQuery, {
-		owner: account
+		owner: account,
 	});
 
 	return query;
 }
-

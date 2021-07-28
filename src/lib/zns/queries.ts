@@ -1,36 +1,36 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const byIdQuery = gql`
-query Domain($id: ID!) {
-  domain(id: $id) {
-    id
-    name
-    parent {
-      id
-      name
-    }
-    subdomains {
-      id
-      name
-      metadata
-      owner {
-        id
-      }
-      minter {
-        id
-      }
-    }
-    owner {
-      id
-    }
-    minter {
-      id
-    }
-    lockedBy
-    isLocked
-    metadata
-  }
-}
+	query Domain($id: ID!) {
+		domain(id: $id) {
+			id
+			name
+			parent {
+				id
+				name
+			}
+			subdomains {
+				id
+				name
+				metadata
+				owner {
+					id
+				}
+				minter {
+					id
+				}
+			}
+			owner {
+				id
+			}
+			minter {
+				id
+			}
+			lockedBy
+			isLocked
+			metadata
+		}
+	}
 `;
 
 export const byNameQuery = gql`

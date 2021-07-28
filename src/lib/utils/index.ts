@@ -1,6 +1,6 @@
 import ipfsClient from 'lib/ipfs-client';
 
-export * from "./domains";
+export * from './domains';
 
 interface DomainMetadataParams {
 	image: Buffer;

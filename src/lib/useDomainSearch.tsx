@@ -1,7 +1,10 @@
 import React from 'react';
 import { getDomainId, rootDomainName } from './utils/domains';
 import { DisplayParentDomain, ParentDomain } from './types';
-import { useDomainByIdQuery, useDomainsByNameContainsQuery } from './hooks/zNSDomainHooks';
+import {
+	useDomainByIdQuery,
+	useDomainsByNameContainsQuery,
+} from './hooks/zNSDomainHooks';
 
 interface DomainSearch {
 	exactMatch?: DisplayParentDomain;
@@ -22,7 +25,9 @@ export function useDomainSearch() {
 	const exactDomain = byIdQuery.data;
 
 	// `id` is already relative but we need to search relative
-	const byNameContainsQuery = useDomainsByNameContainsQuery(`${rootDomainName}.%${pattern}`);
+	const byNameContainsQuery = useDomainsByNameContainsQuery(
+		`${rootDomainName}.%${pattern}`,
+	);
 	const fuzzyMatch = byNameContainsQuery.data;
 
 	React.useEffect(() => {

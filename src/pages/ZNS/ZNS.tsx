@@ -141,7 +141,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	//- Data
 	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
-	const isRoot: boolean = domain === '/' || (znsDomain.domain ? !znsDomain.domain.parent : false);
+	const isRoot: boolean =
+		domain === '/' || (znsDomain.domain ? !znsDomain.domain.parent : false);
 
 	// @TODO: We shouldn't need to filter out non-ipfs.io metadata URIs when we reset data
 	const subdomains =
@@ -446,7 +447,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									}
 									disabled={
 										znsDomain.domain?.owner?.id.toLowerCase() ===
-											account?.toLowerCase()
+										account?.toLowerCase()
 									}
 									ownerId={znsDomain.domain ? znsDomain.domain.owner.id : ''}
 									isLoading={isLoading}
@@ -506,7 +507,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									domains={tableData}
 									isRootDomain={isRoot}
 									style={{ marginTop: 16 }}
-									empty={(znsDomain.domain && subdomains.length === 0) as boolean}
+									empty={
+										(znsDomain.domain && subdomains.length === 0) as boolean
+									}
 									isGridView={isGridView}
 									setIsGridView={setIsGridView}
 									userId={account as string}

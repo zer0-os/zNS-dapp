@@ -60,9 +60,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
 	const [wildBalance, setWildBalance] = useState(0);
-	const [hasApproveTokenTransfer, setHasApprovedTokenTransfer] = useState(
-		false,
-	);
+	const [hasApproveTokenTransfer, setHasApprovedTokenTransfer] =
+		useState(false);
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
 
 	// Loading States

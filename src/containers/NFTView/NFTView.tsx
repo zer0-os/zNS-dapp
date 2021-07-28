@@ -97,7 +97,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	};
 
 	const getBids = async () => {
-		if (znsDomain.domain && znsDomain.domain.metadata && !znsDomain.domain.image) {
+		if (
+			znsDomain.domain &&
+			znsDomain.domain.metadata &&
+			!znsDomain.domain.image
+		) {
 			getBidsForDomain(znsDomain.domain).then(async (bids) => {
 				if (!bids || !bids.length) return;
 				try {
@@ -113,12 +117,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	};
 
 	useEffect(() => {
-		if (znsDomain.domain && znsDomain.domain.metadata && !znsDomain.domain.image) {
-			setIsOwnedByYou(znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase());
+		if (
+			znsDomain.domain &&
+			znsDomain.domain.metadata &&
+			!znsDomain.domain.image
+		) {
+			setIsOwnedByYou(
+				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
+			);
 
 			getBids();
-
-			
 
 			// Get metadata
 			// fetch(znsDomain.domain.metadata).then(async (d: Response) => {
@@ -145,7 +153,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 				onClose={() => setIsImageOverlayOpen(false)}
 			>
 				<Image
-					src={znsDomain.domain?.image ?? ""}
+					src={znsDomain.domain?.image ?? ''}
 					style={{
 						width: 'auto',
 						maxHeight: '80vh',
@@ -256,27 +264,37 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 							borderWidth: 2,
 						}}
 						className="border-primary border-radius"
-						src={znsDomain.domain?.image ?? ""}
+						src={znsDomain.domain?.image ?? ''}
 						onClick={() => setIsImageOverlayOpen(true)}
 					/>
 				</div>
 				<div className={styles.Info}>
 					<div>
-						<h1 className="glow-text-white">{znsDomain.domain?.name ?? ""}</h1>
+						<h1 className="glow-text-white">{znsDomain.domain?.name ?? ''}</h1>
 						<span>
 							{zna.length > 0 ? `0://wilder.${zna.substring(1)}` : ''}
 						</span>
 						<div className={styles.Members}>
 							<Member
 								id={znsDomain.domain ? znsDomain.domain.owner.id : ''}
-								name={znsDomain.domain ? randomName(znsDomain.domain.owner.id) : ''}
-								image={znsDomain.domain ? randomImage(znsDomain.domain.owner.id) : ''}
+								name={
+									znsDomain.domain ? randomName(znsDomain.domain.owner.id) : ''
+								}
+								image={
+									znsDomain.domain ? randomImage(znsDomain.domain.owner.id) : ''
+								}
 								subtext={'Owner'}
 							/>
 							<Member
 								id={znsDomain.domain ? znsDomain.domain.minter.id : ''}
-								name={znsDomain.domain ? randomName(znsDomain.domain.minter.id) : ''}
-								image={znsDomain.domain ? randomImage(znsDomain.domain.minter.id) : ''}
+								name={
+									znsDomain.domain ? randomName(znsDomain.domain.minter.id) : ''
+								}
+								image={
+									znsDomain.domain
+										? randomImage(znsDomain.domain.minter.id)
+										: ''
+								}
 								subtext={'Creator'}
 							/>
 						</div>
@@ -290,7 +308,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					className={`${styles.Box} ${styles.Story} blur border-primary border-rounded`}
 				>
 					<h4>Story</h4>
-					<p>{znsDomain.domain?.description ?? ""}</p>
+					<p>{znsDomain.domain?.description ?? ''}</p>
 				</div>
 				<div
 					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}

@@ -27,7 +27,7 @@ export interface ParentDomain extends Domain {
 	subdomains: SubDomain[];
 }
 
-export interface SubDomain extends Domain { }
+export interface SubDomain extends Domain {}
 
 export interface DomainRequest {
 	id: string;

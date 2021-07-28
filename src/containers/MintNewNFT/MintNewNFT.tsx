@@ -82,10 +82,8 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	const [
-		tokenInformation,
-		setTokenInformation,
-	] = useState<TokenInformationType | null>(null);
+	const [tokenInformation, setTokenInformation] =
+		useState<TokenInformationType | null>(null);
 	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
 	const [step, setStep] = useState(MintState.DomainDetails);
 

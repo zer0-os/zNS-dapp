@@ -16,7 +16,7 @@ import { MakeABid } from 'containers';
 //- Library Imports
 import { Bid, Domain } from 'lib/types';
 import { useBidProvider } from 'lib/providers/BidProvider';
-import { useZNSDomains  } from 'lib/providers/ZNSDomainProvider';
+import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
 
 //- Style Imports
 import styles from './BidTable.module.css';

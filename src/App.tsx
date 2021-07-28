@@ -78,7 +78,7 @@ function wrappedApp() {
 										<StakingRequestProvider>
 											<MintProvider>
 												<EnlistProvider>
-														<App />
+													<App />
 												</EnlistProvider>
 											</MintProvider>
 										</StakingRequestProvider>

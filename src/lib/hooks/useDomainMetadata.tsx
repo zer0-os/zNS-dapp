@@ -4,32 +4,31 @@ import { Maybe, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
 
 export function useDomainMetadata(metadataUri: Maybe<string>) {
-  const [metadata, setMetadata] = React.useState<Maybe<Metadata>>(null);
+	const [metadata, setMetadata] = React.useState<Maybe<Metadata>>(null);
 
-  React.useEffect(() => {
-    let isSubscribed = true;
+	React.useEffect(() => {
+		let isSubscribed = true;
 
-    if (!metadataUri) {
-      return;
-    }
+		if (!metadataUri) {
+			return;
+		}
 
-    setMetadata(null);
+		setMetadata(null);
 
-    const fetchMetadata = async () => {
-      const metadata = await getMetadata(metadataUri);
+		const fetchMetadata = async () => {
+			const metadata = await getMetadata(metadataUri);
 
-      if (isSubscribed) {
-        setMetadata(metadata);
-      }
-    }
+			if (isSubscribed) {
+				setMetadata(metadata);
+			}
+		};
 
-    fetchMetadata();
+		fetchMetadata();
 
-    return () => {
-      isSubscribed = false;
-    }
+		return () => {
+			isSubscribed = false;
+		};
+	}, [metadataUri]);
 
-  }, [metadataUri]);
-
-  return metadata;
+	return metadata;
 }
