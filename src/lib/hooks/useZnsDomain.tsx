@@ -1,4 +1,4 @@
-import { useDomainMetadata } from "lib/providers/DomainMetadataProvider";
+import { useDomainMetadata } from "lib/hooks/useDomainMetadata";
 import { DisplayParentDomain, Maybe } from "lib/types";
 import React from "react";
 import { useDomainByIdQuery } from "./zNSDomainHooks"
