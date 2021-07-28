@@ -200,7 +200,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 						account.length - 4,
 					)}`}</a>
 				</b>{' '}
-				bidded <b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
+				bid <b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
 			</div>
 		</li>
 	);
