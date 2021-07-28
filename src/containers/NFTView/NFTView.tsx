@@ -14,7 +14,6 @@ import { MakeABid } from 'containers';
 import { randomName, randomImage } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
 import { useBidProvider } from 'lib/providers/BidProvider';
-import { wildToUsd } from 'lib/coingecko';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 
 //- Style Imports
@@ -23,11 +22,9 @@ import styles from './NFTView.module.css';
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
 import copyIcon from './assets/copy-icon.svg';
-import { DisplayParentDomain, Bid, Maybe, ParentDomain } from 'lib/types';
+import { Bid } from 'lib/types';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import { BigNumber } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
-import { useDomainByNameQuery } from 'lib/hooks/zNSDomainHooks';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 const moment = require('moment');
@@ -37,21 +34,12 @@ type NFTViewProps = {
 };
 
 const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
-	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
 
 	//- Notes:
-	// It's worth having this component consume the domain context
-	// because it needs way more data than is worth sending through props
-
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
-	const router = useHistory();
 
 	//- Page State
-	const [zna, setZna] = useState('');
-	// const [image, setImage] = useState<string>(''); // Image from metadata url
-	// const [name, setName] = useState<string>(''); // Name from metadata url
-	// const [description, setDescription] = useState<string>(''); // Description from metadata url
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
@@ -110,7 +98,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					setHighestBid(sorted[0]);
 					setHighestBidUsd(sorted[0].amount * wildPriceUsd);
 				} catch (e) {
-					console.error('Failed to retrive bid data');
+					console.error('Failed to retrieve bid data');
 				}
 			});
 		}
@@ -127,15 +115,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 			);
 
 			getBids();
-
-			// Get metadata
-			// fetch(znsDomain.domain.metadata).then(async (d: Response) => {
-			// 	const nftData = await d.json();
-			// 	setZna(domain);
-			// 	setImage(nftData.image);
-			// 	setName(nftData.title || nftData.name);
-			// 	setDescription(nftData.description);
-			// });
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain.domain]);
@@ -272,7 +251,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					<div>
 						<h1 className="glow-text-white">{znsDomain.domain?.name ?? ''}</h1>
 						<span>
-							{zna.length > 0 ? `0://wilder.${zna.substring(1)}` : ''}
+							{domain.length > 0 ? `0://wilder.${domain.substring(1)}` : ''}
 						</span>
 						<div className={styles.Members}>
 							<Member
