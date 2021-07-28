@@ -268,7 +268,7 @@ function useOwnedDomains(): {
 			);
 		}
 		return Maybe.nothing();
-	}, [error, data]);
+	}, [error, data, account]);
 
 	useEffect(() => {
 		if (refetch) {
