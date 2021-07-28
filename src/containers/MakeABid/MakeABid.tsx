@@ -223,7 +223,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 						{/* @todo change dp amount */}
 						{currentHighestBid.amount.toFixed(2)} WILD
 					</span>{' '}
-					{currentHighestBidUsd && (
+					{currentHighestBidUsd && currentHighestBidUsd > 0 && (
 						<span className="glow-text-white">
 							(${currentHighestBidUsd.toFixed(2)} USD)
 						</span>
