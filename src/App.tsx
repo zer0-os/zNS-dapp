@@ -10,7 +10,6 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
 //- Library Imports
-import { DomainCacheProvider } from 'lib/useDomainCache';
 import NotificationProvider from 'lib/providers/NotificationProvider';
 import MintProvider from 'lib/providers/MintProvider';
 import BidProvider from 'lib/providers/BidProvider';
@@ -27,6 +26,7 @@ import backgroundImage from 'assets/background.jpg';
 import { ZNS } from 'pages';
 import React from 'react';
 import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
+import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
 
 // Web3 library to query
 function getLibrary(provider: any): Web3Provider {
@@ -71,21 +71,21 @@ function wrappedApp() {
 				<NotificationProvider>
 					<Web3ReactProvider getLibrary={getLibrary}>
 						{/* Our Hooks  */}
-						<MvpVersionProvider>
-							<CurrencyProvider>
-								<BidProvider>
-									<StakingRequestProvider>
-										<MintProvider>
-											<EnlistProvider>
-												<DomainCacheProvider>
-													<App />
-												</DomainCacheProvider>
-											</EnlistProvider>
-										</MintProvider>
-									</StakingRequestProvider>
-								</BidProvider>
-							</CurrencyProvider>
-						</MvpVersionProvider>
+						<ZNSDomainsProvider>
+							<MvpVersionProvider>
+								<CurrencyProvider>
+									<BidProvider>
+										<StakingRequestProvider>
+											<MintProvider>
+												<EnlistProvider>
+														<App />
+												</EnlistProvider>
+											</MintProvider>
+										</StakingRequestProvider>
+									</BidProvider>
+								</CurrencyProvider>
+							</MvpVersionProvider>
+						</ZNSDomainsProvider>
 					</Web3ReactProvider>
 				</NotificationProvider>
 			</SubgraphProvider>

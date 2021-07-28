@@ -9,7 +9,7 @@ import { Domain, Metadata, Bid } from 'lib/types';
 import { randomImage, randomName } from 'lib/Random';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
-import { getRelativeDomainPath } from 'lib/domains';
+import { getRelativeDomainPath } from 'lib/utils/domains';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
@@ -60,8 +60,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
 	const [wildBalance, setWildBalance] = useState(0);
-	const [hasApproveTokenTransfer, setHasApprovedTokenTransfer] =
-		useState(false);
+	const [hasApproveTokenTransfer, setHasApprovedTokenTransfer] = useState(
+		false,
+	);
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
 
 	// Loading States

@@ -28,7 +28,7 @@ import Summary from './sections/Summary';
 
 //- Style Imports
 import styles from './MintNewNFT.module.css';
-import { rootDomainName } from 'lib/domains';
+import { rootDomainName } from 'lib/utils/domains';
 
 type MintNewNFTProps = {
 	domainId: string; // Blockchain ID of the domain we're minting to
@@ -82,8 +82,10 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	const [tokenInformation, setTokenInformation] =
-		useState<TokenInformationType | null>(null);
+	const [
+		tokenInformation,
+		setTokenInformation,
+	] = useState<TokenInformationType | null>(null);
 	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
 	const [step, setStep] = useState(MintState.DomainDetails);
 

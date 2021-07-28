@@ -43,7 +43,6 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
 import { useWeb3React } from '@web3-react/core';
-import { getDomainData } from 'lib/useDomainStore';
 import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
 
 type RequestTableProps = {
@@ -67,8 +66,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const yourRequests = useRequestsMadeByAccount(userId);
 	const requestsForYou = useRequestsForOwnedDomains(userId);
 	const wildToken = znsContracts.wildToken;
-
-	const apolloClientInstance = useSubgraphProvider();
 
 	//////////////////
 	// State / Refs //

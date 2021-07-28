@@ -9,12 +9,13 @@ import { randomName, randomImage } from 'lib/Random';
 
 //- Component Imports
 import { FutureButton, Image, Member } from 'components';
+import { Maybe } from 'lib/types';
 
 type PreviewCardProps = {
 	children?: React.ReactNode;
 	creatorId: string;
 	description: string;
-	disabled?: boolean;
+	disabled: Maybe<boolean>;
 	domain: string;
 	image: string;
 	isLoading: boolean;

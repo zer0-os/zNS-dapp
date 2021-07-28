@@ -16,8 +16,7 @@ import { MakeABid } from 'containers';
 //- Library Imports
 import { Bid, Domain } from 'lib/types';
 import { useBidProvider } from 'lib/providers/BidProvider';
-import { getDomainData } from 'lib/useDomainStore';
-import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
+import { useZNSDomains  } from 'lib/providers/ZNSDomainProvider';
 
 //- Style Imports
 import styles from './BidTable.module.css';
@@ -50,7 +49,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	//////////////////
 
 	const { getBidsForAccount, getBidsForDomain } = useBidProvider();
-	const apolloClientInstance = useSubgraphProvider();
+	const znsDomains = useZNSDomains();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -144,8 +143,8 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	const fetchDomainData = async (bid: Bid) => {
 		try {
 			if (!bid.tokenId) return;
-			const tx = await getDomainData(bid.tokenId, apolloClientInstance.client);
-			return tx!.data.domains[0];
+			const tx = await znsDomains.getDomainData(bid.tokenId);
+			return tx!.data.domain;
 		} catch (e: any) {
 			// @todo replace any
 			console.error(e);
