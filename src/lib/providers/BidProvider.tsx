@@ -1,10 +1,10 @@
 //- React Imports
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 //- Library Imports
 import { Domain, Bid } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { tryFunction } from 'lib/utils';
 import * as zAuction from '../zAuction';
 
@@ -12,6 +12,8 @@ import * as zAuction from '../zAuction';
 import useNotification from 'lib/hooks/useNotification';
 import { useWeb3React } from '@web3-react/core';
 import { AccountBidsDto, NftIdBidsDto } from '../zAuction';
+import { useZAuctionBaseApiUri } from 'lib/hooks/useZAuctionBaseApiUri';
+import { useChainSelector } from './ChainSelectorProvider';
 
 export const BidContext = React.createContext({
 	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
@@ -89,6 +91,8 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	const { addNotification } = useNotification();
 	const contracts = useZnsContracts();
 	const zAuctionContract = useZnsContracts()?.zAuction;
+	const chainSelector = useChainSelector();
+	const baseApiUri = useZAuctionBaseApiUri(chainSelector.selectedChain);
 
 	const acceptBid = async (bidData: Bid) => {
 		const tx = await tryFunction(async () => {
@@ -128,13 +132,14 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	};
 
 	const getBidsForAccount = async (id: string) => {
+		if (baseApiUri === undefined) {
+			throw Error(`no api endpoint`);
+		}
 		try {
-			const bids = await zAuction.getBidsForAccount(id);
+			const bids = await zAuction.getBidsForAccount(baseApiUri, id);
 
 			try {
 				const displayBids = bids.map((e) => {
-					const amount = Number(ethers.utils.formatEther(e.bidAmount));
-
 					return getBidParameters(e, undefined, id);
 				});
 
@@ -184,8 +189,12 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	}
 
 	const getBidsForDomain = async (domain: Domain) => {
+		if (baseApiUri === undefined) {
+			throw Error(`no api endpoint`);
+		}
 		try {
 			const bids = await zAuction.getBidsForNft(
+				baseApiUri,
 				contracts!.registry.address,
 				domain.id,
 			);
@@ -207,9 +216,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	};
 
 	const placeBid = async (domain: Domain, bid: number) => {
+		if (baseApiUri === undefined) {
+			throw Error(`no api endpoint`);
+		}
 		// Replace with bid functionality
 		try {
 			await zAuction.placeBid(
+				baseApiUri,
 				context.library!,
 				contracts!.registry.address,
 				domain.id,
