@@ -34,7 +34,6 @@ type NFTViewProps = {
 };
 
 const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
-
 	//- Notes:
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
