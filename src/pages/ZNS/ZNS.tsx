@@ -86,6 +86,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	const { useDomain } = useDomainCache();
 	const domainContext = useDomain(domain.substring(1));
 	const data: Maybe<DisplayParentDomain> = domainContext.data;
+	const loading = domainContext.loading;
 	const [previewMetadata, setPreviewMetadata] = useState<Metadata | undefined>(
 		undefined,
 	);
@@ -103,6 +104,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	// Force to go back to home if invalid domain
 	React.useEffect(() => {
+		if(loading === false){
 		if (data.isNothing()) {
 			console.log(`invalid domain, returning to home`);
 			history.push('/');
@@ -114,7 +116,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 			history.push('/');
 			return;
 		}
-	}, [data]);
+	}
+	}, [data,loading]);
 
 	//- Minting State
 	const { minting, minted } = useMintProvider();

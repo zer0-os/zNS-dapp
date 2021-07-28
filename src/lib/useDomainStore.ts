@@ -190,6 +190,7 @@ export function useQueryForDomainById(id: string) {
 		data: dataDomain,
 		error: errorDomain,
 		refetch: refetchDomain,
+		loading: loading,
 	} = useQuery<DomainData>(domainByIdQuery, {
 		variables: { id: id },
 		fetchPolicy: 'no-cache',
@@ -199,12 +200,18 @@ export function useQueryForDomainById(id: string) {
 		dataDomain,
 		errorDomain,
 		refetchDomain,
+		loading,
 	};
 }
 
 function useDomain(name: string) {
 	const id = getDomainId(name);
-	const { dataDomain, errorDomain, refetchDomain } = useQueryForDomainById(id);
+	const {
+		dataDomain,
+		errorDomain,
+		refetchDomain,
+		loading,
+	} = useQueryForDomainById(id);
 	const _domain: Maybe<DisplayParentDomain> = useMemo(() => {
 		if (dataDomain && dataDomain.domains && dataDomain.domains.length > 0) {
 			return Maybe.of({
@@ -227,7 +234,7 @@ function useDomain(name: string) {
 		[refetchDomain],
 	);
 	// console.log(JSON.stringify(dataDomain) + 'return function');
-	return { data: _domain, refetchDomain: refetch! };
+	return { data: _domain, refetchDomain: refetch!, loading };
 }
 
 function useOwnedDomains(): {
@@ -283,7 +290,9 @@ function useOwnedDomains(): {
 }
 
 // maybe fx
-function useAllDomains(domain: string): {
+function useAllDomains(
+	domain: string,
+): {
 	_allDomains: Maybe<any[]>;
 	refetchAllDomains: RefetchQuery<any>;
 } {
