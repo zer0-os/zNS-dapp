@@ -77,10 +77,9 @@ const requestsForDomainsByOwner = gql`
 
 export function useRequestsForOwnedDomains(account: string | undefined) {
 	const refreshToken = useRefreshToken();
-	const [
-		getOwned,
-		{ data, error, refetch },
-	] = useLazyQuery<RequestsForOwner>(requestsForDomainsByOwner);
+	const [getOwned, { data, error, refetch }] = useLazyQuery<RequestsForOwner>(
+		requestsForDomainsByOwner,
+	);
 
 	React.useEffect(() => {
 		if (account) {
@@ -143,10 +142,9 @@ const requestsByRequestorQuery = gql`
 
 export function useRequestsMadeByAccount(account: string | undefined) {
 	const refreshToken = useRefreshToken();
-	const [
-		getOwned,
-		{ data, error, refetch },
-	] = useLazyQuery<RequestsForDomain>(requestsByRequestorQuery);
+	const [getOwned, { data, error, refetch }] = useLazyQuery<RequestsForDomain>(
+		requestsByRequestorQuery,
+	);
 
 	React.useEffect(() => {
 		if (account) {
