@@ -209,8 +209,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					bids: filteredBids || bids || [],
 				});
 
+				setLoadedDomains(loaded); //load on every fetch instead of the last one 
+				
 				if (completed === count) {
-					setLoadedDomains(loaded);
 					setHasMetadataLoaded(true);
 					setIsLoading(false);
 					if (onLoad) {
@@ -230,7 +231,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			setHasMetadataLoaded(true);
 			setIsLoading(false);
 		}
-	}, [domains]);
+	}, [domains.length]); //this was [domains], but that way it triggers a weird bug where the page re render and load bad data
 
 	useEffect(() => {
 		if (!isLoading && onLoad) onLoad();
@@ -240,8 +241,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	// React Table //
 	/////////////////
 
-	const data = loadedDomains;
-
+	const data = React.useMemo(() => loadedDomains, [loadedDomains.length]);
 	const columns = useMemo<Column<DomainData>[]>(
 		() => [
 			{
@@ -360,7 +360,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			},
 		],
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[mvpVersion, domains, userId],
+		[mvpVersion, domains, userId,data.length],
 	);
 
 	// Navigation Handling
