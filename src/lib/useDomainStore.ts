@@ -255,9 +255,7 @@ function useOwnedDomains(): {
 	);
 
 	useEffect(() => {
-		if (refetch) {
-			getOwned({ variables: { owner: accountNormalized } });
-		} else if (account) {
+		if (refetch || account) {
 			getOwned({ variables: { owner: accountNormalized } });
 		}
 	}, [accountNormalized, getOwned, refetch]);
@@ -280,12 +278,8 @@ function useOwnedDomains(): {
 	}, [error, data, accountNormalized]);
 
 	const refresh = () => {
-		if (refetch) {
+		if (refetch || account) {
 			getOwned({ variables: { owner: accountNormalized } });
-			console.log('refresh refetch');
-		} else if (account) {
-			getOwned({ variables: { owner: accountNormalized } });
-			console.log('refresh getOwned');
 		}
 	};
 
