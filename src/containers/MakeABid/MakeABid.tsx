@@ -447,7 +447,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				<>
 					{hasApprovedTokenTransfer && (
 						<>
-							<p>zAuction is approved, you may now place your bid</p>
+							<p style={{ textAlign: 'center', marginTop: 16 }}>
+								You are about to place a {Number(bid).toLocaleString()} WILD bid
+								for 0://{domain.name}
+							</p>
 							<FutureButton
 								glow
 								style={{
@@ -469,7 +472,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					<div className={styles.Loading}>
 						<div className={styles.Spinner}></div>
 					</div>
-					<p className={styles.Wait}>Hold tight while we process your bid</p>
+					<p className={styles.Wait}>Processing bid</p>
 				</>
 			)}
 		</div>
