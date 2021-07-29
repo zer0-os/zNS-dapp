@@ -8,7 +8,7 @@ import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
 
 // Type Imports
-import { Bid, Domain, DomainData } from 'lib/types';
+import { Bid, Domain, DomainData, ParentDomain } from 'lib/types';
 
 // Style Imports
 import styles from './OwnedDomainsTable.module.css';
@@ -208,7 +208,7 @@ const OwnedDomainTables = () => {
 			)}
 			<DomainTable
 				className={styles.Reset}
-				domains={owned.sort((a: any, b: any) => a.name - b.name)}
+				domains={owned.sort((a: ParentDomain, b: ParentDomain) => (a.name > b.name ? -1 : 1))}
 				hideOwnBids
 				isButtonActive={isButtonActive}
 				isRootDomain={false}
