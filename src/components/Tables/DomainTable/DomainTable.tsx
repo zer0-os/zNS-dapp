@@ -93,6 +93,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [biddingOn, setBiddingOn] = useState<DisplayDomain | undefined>();
 
 	const [loadedDomains, setLoadedDomains] = useState<DomainData[]>([]);
+	const [lastDomains,setLastDomains] = useState<Domain[]>()
+	const [domainsChanged,setDomainsChanged] = useState(true)
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -221,21 +223,32 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			} catch (e) {}
 		};
 
-		for (let i = 0; i < domains.length; i++) {
+		for (let i = loadedDomains.length; i < domains.length; i++) {
 			if (!domains[i].metadata) continue;
 			count++;
 			getData(domains[i]);
 		}
 
+		console.log("entered")
+		console.log(domains)
 		if (!count) {
 			setHasMetadataLoaded(true);
 			setIsLoading(false);
 		}
-	}, [domains.length]); //this was [domains], but that way it triggers a weird bug where the page re render and load bad data
+	}, [domainsChanged]); //this was [domains], but that way it triggers a weird bug where the page re render and fetch bad
 
 	useEffect(() => {
 		if (!isLoading && onLoad) onLoad();
 	}, [isLoading]);
+
+	useEffect(() => {
+		if(domains !== lastDomains || lastDomains === undefined){
+			setDomainsChanged(true) //triggers refetch
+			setDomainsChanged(false)
+			setLastDomains(domains)
+		}
+		
+	}, [domains]);
 
 	/////////////////
 	// React Table //
