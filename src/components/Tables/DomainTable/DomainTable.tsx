@@ -176,23 +176,16 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	// Gets metadata for each NFT in domain list
 	useEffect(() => {
 		let loaded: DomainData[] = [];
-		let count = 0;
-		let completed = 0;
-
 		
 		// Get metadata
 		const getData = async (domain: Domain[]) => {
 			try {
 				for (let i = 0; i < domains.length; i++) {
 
-					
-					
 					const [metadata, bids] = await Promise.all([
 						getMetadata(domain[i].metadata),
 						getBidsForDomain(domain[i]),
 					]);
-
-					completed++;
 
 					if (!metadata) {
 						console.log(`found no metadata for ${domain[i].id}`);
