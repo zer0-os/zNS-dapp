@@ -145,8 +145,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		if (window.innerWidth < 1282) setList();
 	};
 
-	const getData = () => {};
-
 	/////////////
 	// Effects //
 	/////////////
@@ -176,12 +174,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	// Gets metadata for each NFT in domain list
 	useEffect(() => {
 		let loaded: DomainData[] = [];
-		
+
 		// Get metadata
 		const getData = async (domain: Domain[]) => {
 			try {
 				for (let i = 0; i < domains.length; i++) {
-
 					const [metadata, bids] = await Promise.all([
 						getMetadata(domain[i].metadata),
 						getBidsForDomain(domain[i]),
@@ -208,10 +205,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					});
 
 					setLoadedDomains(loaded); //load on every fetch instead of the last one
-
-					setIsLoading(true)
-					setIsLoading(false)
-
+					setIsLoading(true);
+					setIsLoading(false);
 
 					if (onLoad) {
 						onLoad();
