@@ -37,6 +37,7 @@ type MakeABidProps = {
 enum Steps {
 	Bid,
 	Approve,
+	Confirm,
 }
 
 const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
@@ -64,14 +65,16 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
 	const [wildBalance, setWildBalance] = useState(0);
-	const [hasApprovedTokenTransfer, setHasApprovedTokenTransfer] =
-		useState(false);
+	const [hasApprovedTokenTransfer, setHasApprovedTokenTransfer] = useState<
+		boolean | undefined
+	>();
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
 	const [isAllBidsModalOpen, setIsAllBidsModalOpen] = useState(false);
 
 	// Loading States
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [isBidPending, setIsBidPending] = useState(false);
+	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
 	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
 
 	//- Web3 Wallet Data
@@ -105,7 +108,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const approveZAuction = async () => {
 		try {
 			setIsApprovalInProgress(true);
-			// @zachary - need to know here when the approval is finished
 			const tx = await wildContract.approve(
 				zAuctionAddress,
 				ethers.constants.MaxUint256,
@@ -128,7 +130,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		if (bidAmount > wildBalance)
 			return setError('You have insufficient WILD to make this bid');
 
-		await checkAllowance();
 		setError('');
 		setStep(Steps.Approve);
 	};
@@ -165,6 +166,22 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		setCurrentHighestBidUsd(max.amount * wildPriceUsd);
 	};
 
+	const checkAllowance = async () => {
+		setIsCheckingAllowance(true);
+		const allowance = await wildContract.allowance(account!, zAuctionAddress);
+		const bidAsWei = ethers.utils.parseEther(bid).toString();
+		const needsApproving = allowance.lt(bidAsWei);
+
+		await new Promise((r) => setTimeout(r, 1500)); // Add a timeout so we can show the user a message for UX
+		if (hasApprovedTokenTransfer) {
+			setIsCheckingAllowance(false);
+			setStep(Steps.Confirm);
+		} else {
+			setIsCheckingAllowance(false);
+			setHasApprovedTokenTransfer(!needsApproving);
+		}
+	};
+
 	/////////////
 	// Effects //
 	/////////////
@@ -174,6 +191,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			return;
 		}
 
+		setStep(Steps.Bid); // Reset to start of flow if account changes
+		setHasApprovedTokenTransfer(undefined);
+
 		const fetchTokenBalance = async () => {
 			const balance = await wildContract.balanceOf(account);
 			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
@@ -181,18 +201,17 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		fetchTokenBalance();
 	}, [wildContract, account]);
 
-	const checkAllowance = async () => {
-		const allowance = await wildContract.allowance(account!, zAuctionAddress);
-		const bidAsWei = ethers.utils.parseEther(bid).toString();
-		const needsApproving = allowance.lt(bidAsWei);
-		setHasApprovedTokenTransfer(!needsApproving);
-	};
+	useEffect(() => {
+		if (hasApprovedTokenTransfer && step === Steps.Approve) {
+			setStep(Steps.Confirm);
+		}
+	}, [hasApprovedTokenTransfer]);
 
 	useEffect(() => {
-		if (step === Steps.Approve && Number(bid) && !isApprovalInProgress) {
+		if (step === Steps.Approve) {
 			checkAllowance();
 		}
-	}, [wildContract, account, step, isApprovalInProgress]);
+	}, [step]);
 
 	useEffect(() => {
 		getMetadata(domain.metadata).then((metadata: Metadata | undefined) => {
@@ -362,7 +381,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					padding: '0 37.5px',
 				}}
 			>
-				{!isMetamaskWaiting && !isApprovalInProgress && (
+				{!isMetamaskWaiting && !isApprovalInProgress && !isCheckingAllowance && (
 					<>
 						{!hasApprovedTokenTransfer && (
 							<>
@@ -385,26 +404,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 								</FutureButton>
 							</>
 						)}
-						{hasApprovedTokenTransfer && (
-							<>
-								<p>
-									zAuction is approved to access your WILD tokens should your
-									bid be accepted.
-								</p>
-								<FutureButton
-									glow
-									style={{
-										height: 36,
-										borderRadius: 18,
-										textTransform: 'uppercase',
-										margin: '16px auto 0 auto',
-									}}
-									onClick={makeBid}
-								>
-									Place Bid
-								</FutureButton>
-							</>
-						)}
+					</>
+				)}
+				{isCheckingAllowance && (
+					<>
+						<div className={styles.Loading}>
+							<div className={styles.Spinner}></div>
+						</div>
+						<p className={styles.Wait}>Checking status of zAuction approval</p>
 					</>
 				)}
 				{isMetamaskWaiting && (
@@ -427,16 +434,58 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		);
 	};
 
+	const confirmStep = () => (
+		<div
+			className={styles.Section}
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+				padding: '0 37.5px',
+			}}
+		>
+			{!isMetamaskWaiting && (
+				<>
+					{hasApprovedTokenTransfer && (
+						<>
+							<p>zAuction is approved, you may now place your bid</p>
+							<FutureButton
+								glow
+								style={{
+									height: 36,
+									borderRadius: 18,
+									textTransform: 'uppercase',
+									margin: '16px auto 0 auto',
+								}}
+								onClick={makeBid}
+							>
+								Place Bid
+							</FutureButton>
+						</>
+					)}
+				</>
+			)}
+			{isMetamaskWaiting && (
+				<>
+					<div className={styles.Loading}>
+						<div className={styles.Spinner}></div>
+					</div>
+					<p className={styles.Wait}>Hold tight while we process your bid</p>
+				</>
+			)}
+		</div>
+	);
+
 	return (
 		<div className={`${styles.Container} border-primary border-rounded blur`}>
 			{header()}
 			<StepBar
 				step={step + 1}
-				steps={['Place A Bid', 'Approve zAuction']}
+				steps={['Choose Bid', 'Approve', 'Confirm Bid']}
 				onNavigate={(i: number) => setStep(i)}
 			/>
 			{step === Steps.Bid && bidStep()}
 			{step === Steps.Approve && approveStep()}
+			{step === Steps.Confirm && confirmStep()}
 		</div>
 	);
 };
