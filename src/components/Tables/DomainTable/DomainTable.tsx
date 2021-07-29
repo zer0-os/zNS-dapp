@@ -82,8 +82,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const { mvpVersion } = useMvpVersion();
 	const { getBidsForDomain } = useBidProvider();
 
-	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
-	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const [containerHeight, setContainerHeight] = useState(0);
@@ -93,8 +91,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [biddingOn, setBiddingOn] = useState<DisplayDomain | undefined>();
 
 	const [loadedDomains, setLoadedDomains] = useState<DomainData[]>([]);
-	const [lastDomains,setLastDomains] = useState<Domain[]>()
-	const [domainsChanged,setDomainsChanged] = useState(true)
+	const [lastDomains, setLastDomains] = useState<Domain[]>();
+	const [domainsChanged, setDomainsChanged] = useState(true);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -161,7 +159,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	useEffect(() => {
 		setIsLoading(true);
-	}, [domains]);
+	}, [domainsChanged]);
 
 	// Resizes the table container
 	// (The animation is done in CSS)
@@ -177,64 +175,58 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	// Gets metadata for each NFT in domain list
 	useEffect(() => {
-		const loaded: DomainData[] = [];
-		setHasMetadataLoaded(false);
+		let loaded: DomainData[] = [];
 		let count = 0;
 		let completed = 0;
 
+		
 		// Get metadata
-		const getData = async (domain: Domain) => {
+		const getData = async (domain: Domain[]) => {
 			try {
-				const [metadata, bids] = await Promise.all([
-					getMetadata(domain.metadata),
-					getBidsForDomain(domain),
-				]);
+				for (let i = 0; i < domains.length; i++) {
 
-				completed++;
+					
+					
+					const [metadata, bids] = await Promise.all([
+						getMetadata(domain[i].metadata),
+						getBidsForDomain(domain[i]),
+					]);
 
-				if (!metadata) {
-					console.log(`found no metadata for ${domain.id}`);
-					return;
-				}
+					completed++;
 
-				// Filter out user's bids if configured to do so
-				let filteredBids;
-				if (hideOwnBids) {
-					filteredBids = bids?.filter(
-						(bid: Bid) => bid.bidderAccount !== userId,
-					);
-				}
+					if (!metadata) {
+						console.log(`found no metadata for ${domain[i].id}`);
+						return;
+					}
 
-				loaded.push({
-					domain: domain,
-					metadata: metadata,
-					bids: filteredBids || bids || [],
-				});
+					// Filter out user's bids if configured to do so
+					let filteredBids;
+					if (hideOwnBids) {
+						filteredBids = bids?.filter(
+							(bid: Bid) => bid.bidderAccount !== userId,
+						);
+					}
 
-				setLoadedDomains(loaded); //load on every fetch instead of the last one 
-				
-				if (completed === count) {
-					setHasMetadataLoaded(true);
-					setIsLoading(false);
+					loaded = loadedDomains;
+					loaded.push({
+						domain: domain[i],
+						metadata: metadata,
+						bids: filteredBids || bids || [],
+					});
+
+					setLoadedDomains(loaded); //load on every fetch instead of the last one
+
+					setIsLoading(true)
+					setIsLoading(false)
+
+
 					if (onLoad) {
 						onLoad();
 					}
 				}
 			} catch (e) {}
 		};
-
-		for (let i = loadedDomains.length; i < domains.length; i++) {
-			if (!domains[i].metadata) continue;
-			count++;
-			getData(domains[i]);
-		}
-
-		console.log("entered")
-		console.log(domains)
-		if (!count) {
-			setHasMetadataLoaded(true);
-			setIsLoading(false);
-		}
+		getData(domains);
 	}, [domainsChanged]); //this was [domains], but that way it triggers a weird bug where the page re render and fetch bad
 
 	useEffect(() => {
@@ -242,12 +234,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	}, [isLoading]);
 
 	useEffect(() => {
-		if(domains !== lastDomains || lastDomains === undefined){
-			setDomainsChanged(true) //triggers refetch
-			setDomainsChanged(false)
-			setLastDomains(domains)
+		if (domains !== lastDomains || lastDomains === undefined) {
+			setDomainsChanged(true); //triggers refetch
+			setDomainsChanged(false);
+			setLastDomains(domains);
 		}
-		
 	}, [domains]);
 
 	/////////////////
@@ -373,7 +364,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			},
 		],
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[mvpVersion, domains, userId,data.length],
+		[mvpVersion, domains, userId, data.length],
 	);
 
 	// Navigation Handling
