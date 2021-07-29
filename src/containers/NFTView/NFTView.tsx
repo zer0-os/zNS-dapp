@@ -8,7 +8,14 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 import { useHistory } from 'react-router';
 
 //- Component Imports
-import { ArrowLink, FutureButton, Member, Image, Overlay } from 'components';
+import {
+	ArrowLink,
+	FutureButton,
+	Member,
+	Image,
+	Overlay,
+	Spinner,
+} from 'components';
 import { MakeABid } from 'containers';
 
 //- Library Imports
@@ -54,7 +61,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
-	const [bids, setBids] = useState<Bid[]>([]);
+	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [highestBid, setHighestBid] = useState<Bid | undefined>();
 	const [highestBidUsd, setHighestBidUsd] = useState<number | undefined>();
 
@@ -100,7 +107,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	const getBids = async () => {
 		if (!data.isNothing() && data.value.metadata && !data.value.image) {
 			getBidsForDomain(data.value).then(async (bids) => {
-				if (!bids || !bids.length) return;
+				if (!bids) return;
 				try {
 					const sorted = bids.sort((a, b) => b.amount - a.amount);
 					setBids(sorted);
@@ -188,11 +195,22 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 			className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
 		>
 			<h4>History</h4>
-			<ul>
-				{bids.map((bid: Bid, i: number) =>
-					historyItem(bid.bidderAccount, bid.amount, bid.date, i),
-				)}
-			</ul>
+			{!bids && (
+				<div className={styles.Loading}>
+					<Spinner />
+					<span>Loading bid history</span>
+				</div>
+			)}
+			{bids && bids.length === 0 && (
+				<span style={{ marginTop: 23, display: 'block' }}>No bids</span>
+			)}
+			{bids && bids.length > 0 && (
+				<ul>
+					{bids?.map((bid: Bid, i: number) =>
+						historyItem(bid.bidderAccount, bid.amount, bid.date, i),
+					)}
+				</ul>
+			)}
 		</section>
 	);
 

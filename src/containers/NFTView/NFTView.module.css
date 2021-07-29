@@ -210,6 +210,22 @@
 	margin-top: 24px;
 }
 
+.History span {
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.History .Loading span {
+	margin-left: 16px;
+}
+
+.History .Loading {
+	display: flex;
+	align-items: center;
+	margin-top: 19px;
+	margin-bottom: -3px;
+}
+
 .Bid {
 	display: flex;
 	justify-content: space-between;
