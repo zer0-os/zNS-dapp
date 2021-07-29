@@ -83,10 +83,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const wildContract: ERC20 = znsContracts.wildToken;
 
 	const isBidValid =
-		(Number(bid) &&
-			Number(bid) <= wildBalance &&
-			Number(bid) > 0 &&
-			Number(bid) > (currentHighestBid?.amount || 0)) === true;
+		(Number(bid) && Number(bid) <= wildBalance && Number(bid) > 0) === true;
 
 	///////////////
 	// Functions //
@@ -124,10 +121,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const continueBid = async () => {
 		// Validate bid
-		if (!Number(bid)) return setError('Invalid bid');
 		const bidAmount = Number(bid);
-		if (bidAmount <= (currentHighestBid?.amount || 0))
-			return setError('Your bid must be higher than the current highest');
+		if (!bidAmount) return setError('Invalid bid');
+		if (bidAmount <= 0) return setError('Invalid bid');
 
 		if (bidAmount > wildBalance)
 			return setError('You have insufficient WILD to make this bid');
@@ -139,8 +135,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const makeBid = async () => {
 		// Get bid
-		if (!Number(bid)) return;
 		const bidAmount = Number(bid);
+		if (!bidAmount) return;
 
 		// Send bid to hook
 		setIsMetamaskWaiting(true);
