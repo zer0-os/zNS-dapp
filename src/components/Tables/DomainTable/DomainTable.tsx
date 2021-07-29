@@ -22,6 +22,7 @@ import {
 	Domain,
 	DomainHighestBid,
 	Metadata,
+	DomainData,
 } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
 import { useBidProvider } from 'lib/providers/BidProvider';
@@ -44,19 +45,13 @@ type DomainTableProps = {
 	isGridView?: boolean;
 	isRootDomain: boolean;
 	onLoad?: () => void;
-	onRowButtonClick?: (domain: DomainHighestBid) => void;
+	onRowButtonClick?: (domain: DomainData) => void;
 	onRowClick?: (domain: Domain) => void;
 	rowButtonText?: string;
 	// TODO: Find a better way to persist grid view than with props
 	setIsGridView?: (grid: boolean) => void;
 	style?: React.CSSProperties;
 	userId?: string;
-};
-
-type DomainData = {
-	domain: Domain;
-	metadata: Metadata;
-	bids: Bid[];
 };
 
 enum Modals {
@@ -123,10 +118,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		// @todo refactor this into a more generic component
 		if (onRowButtonClick) {
 			// @todo the above assumes the bids come in ascending order
-			onRowButtonClick({
-				domain: data.domain,
-				bid: data.bids[data.bids.length - 1],
-			});
+			onRowButtonClick(data);
 			return;
 		}
 

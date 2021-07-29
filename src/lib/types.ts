@@ -41,6 +41,12 @@ export interface DomainRequest {
 	timestamp: string;
 }
 
+export type DomainData = {
+	domain: Domain;
+	metadata: Metadata;
+	bids: Bid[];
+};
+
 export interface DisplayDomain extends Domain {
 	image: string | undefined;
 	description: string | undefined;

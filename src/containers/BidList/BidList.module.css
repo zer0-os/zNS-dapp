@@ -5,12 +5,16 @@
 	width: 400px;
 	min-width: 400px;
 	max-width: 400px;
-	max-height: 500px;
-	padding: 24px;
+	max-height: 80vh;
 
 	background: var(--color-background);
 
 	overflow: hidden;
+}
+
+.Header {
+	padding: 24px;
+	padding-bottom: 0;
 }
 
 .Container h4 {
@@ -25,20 +29,37 @@
 }
 
 .Container ul {
-	margin-top: 24px;
-	overflow: scroll;
 	height: 100%;
 	max-height: 100%;
+	padding-top: 24px;
+	padding-bottom: 24px;
+
+	overflow-y: scroll;
+	overflow-x: visible;
 }
 
 .Bid {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	padding: 12px 24px;
+	overflow: visible;
 }
 
-.Bid:not(:first-child) {
-	margin-top: 24px;
+.Bid button {
+	margin-left: auto;
+	opacity: 0.3;
+	transition: transform var(--animation-time-short) ease-in-out,
+		opacity var(--animation-time-short) ease-in-out;
+}
+
+.Bid:hover {
+	background: var(--color-background-alt-50);
+}
+
+.Bid:hover button {
+	opacity: 1;
+	transform: scale(1.05);
 }
 
 .Bid > label {

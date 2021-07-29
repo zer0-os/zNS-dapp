@@ -1,21 +1,46 @@
+// React Imports
 import React from 'react';
 
+// Style Imports
 import styles from './BidList.module.css';
 
+// Component Imports
+import { FutureButton } from 'components';
+
+// Type Imports
 import { Bid } from 'lib/types';
 
 type BidListProps = {
 	bids: Bid[];
+	onAccept?: (bid: Bid) => void;
 	wildPriceUsd?: number;
 };
 
-const BidList: React.FC<BidListProps> = ({ bids, wildPriceUsd }) => {
+const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
+	//////////////////
+	// Data & State //
+	//////////////////
+
 	const sorted = bids.sort((a: Bid, b: Bid) => b.amount - a.amount);
+
+	///////////////
+	// Functions //
+	///////////////
+
+	const accept = (bid: Bid) => {
+		if (onAccept) onAccept(bid);
+	};
+
+	////////////
+	// Render //
+	////////////
 
 	return (
 		<aside className={`${styles.Container} border-rounded border-primary`}>
-			<h4>All bids</h4>
-			<hr className="glow" />
+			<div className={styles.Header}>
+				<h4>All bids</h4>
+				<hr className="glow" />
+			</div>
 			<ul>
 				{sorted.map((bid: Bid, i: number) => (
 					<li key={bid.auctionId} className={styles.Bid}>
@@ -43,6 +68,11 @@ const BidList: React.FC<BidListProps> = ({ bids, wildPriceUsd }) => {
 								</a>
 							</span>
 						</div>
+						{onAccept !== undefined && (
+							<FutureButton glow onClick={() => accept(bid)}>
+								Accept
+							</FutureButton>
+						)}
 					</li>
 				))}
 			</ul>
