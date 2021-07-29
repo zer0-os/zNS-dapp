@@ -9,6 +9,7 @@
  *
  */
 
+export { default as BidList } from './BidList/BidList';
 export { default as Enlist } from './Enlist/Enlist';
 export { default as MakeABid } from './MakeABid/MakeABid';
 export { default as MintNewNFT } from './MintNewNFT/MintNewNFT';

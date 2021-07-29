@@ -22,7 +22,9 @@ import {
 	Image,
 	TextInput,
 	Member,
+	Overlay,
 } from 'components';
+import { BidList } from 'containers';
 
 //- Style Imports
 import styles from './MakeABid.module.css';
@@ -53,6 +55,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const [step, setStep] = useState<Steps>(Steps.Bid);
 	const [bid, setBid] = useState<string>('');
+
+	const [bids, setBids] = useState<Bid[] | undefined>([]);
 	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
 	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
 		number | undefined
@@ -63,6 +67,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [hasApproveTokenTransfer, setHasApprovedTokenTransfer] =
 		useState(false);
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
+	const [isAllBidsModalOpen, setIsAllBidsModalOpen] = useState(false);
 
 	// Loading States
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
@@ -91,6 +96,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		const relativeDomain = getRelativeDomainPath(domain);
 		history.push(relativeDomain);
 	};
+
+	const showAllBidsModal = () => setIsAllBidsModalOpen(true);
+	const hideAllBidsModal = () => setIsAllBidsModalOpen(false);
 
 	const formSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
@@ -156,6 +164,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		const max = allBids.reduce(function (prev, current) {
 			return prev.amount > current.amount ? prev : current;
 		});
+		setBids(allBids);
 		setCurrentHighestBid(max);
 		setCurrentHighestBidUsd(max.amount * wildPriceUsd);
 	};
@@ -201,6 +210,16 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	// React Fragments //
 	/////////////////////
 
+	const modals = () => (
+		<>
+			{isAllBidsModalOpen && bids !== undefined && (
+				<Overlay open onClose={hideAllBidsModal} centered>
+					<BidList bids={bids} wildPriceUsd={wildPriceUsd} />
+				</Overlay>
+			)}
+		</>
+	);
+
 	const header = () => (
 		<>
 			<div className={styles.Header}>
@@ -221,12 +240,17 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				<>
 					<span className="glow-text-white">
 						{/* @todo change dp amount */}
-						{currentHighestBid.amount.toFixed(2)} WILD
+						{currentHighestBid.amount.toFixed(2).toLocaleString()} WILD
 					</span>{' '}
 					{currentHighestBidUsd && currentHighestBidUsd > 0 && (
 						<span className="glow-text-white">
-							(${currentHighestBidUsd.toFixed(2)} USD)
+							(${currentHighestBidUsd.toFixed(2).toLocaleString()} USD)
 						</span>
+					)}
+					{bids !== undefined && bids.length > 0 && (
+						<TextButton onClick={showAllBidsModal} className={styles.ViewAll}>
+							View all bids
+						</TextButton>
 					)}
 				</>
 			)}
@@ -275,6 +299,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const bidStep = () => (
 		<>
+			{modals()}
 			<div
 				className={styles.Section}
 				style={{ display: 'flex', padding: '0 37.5px' }}
