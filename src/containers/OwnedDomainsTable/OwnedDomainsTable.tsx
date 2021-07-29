@@ -1,5 +1,5 @@
 // React Imports
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // Library Imports
 import { useDomainCache } from 'lib/useDomainCache';
@@ -30,7 +30,6 @@ const OwnedDomainTables = () => {
 	// Wallet Integrations
 	const { account } = useWeb3React();
 	const { owned } = useDomainCache();
-
 	// zAuction Integrations
 	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
 	const znsContracts = useZnsContracts()!;
@@ -108,7 +107,12 @@ const OwnedDomainTables = () => {
 		setIsTableLoading(false);
 	};
 
+	useEffect(() => {
+		setIsTableLoading(true)
+	}, [owned]);
+
 	if (owned.isNothing()) return <></>;
+	if (owned.value.length === 0) return <></>;
 
 	/////////////////////
 	// React Fragments //

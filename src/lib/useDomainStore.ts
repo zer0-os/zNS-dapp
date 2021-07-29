@@ -245,6 +245,7 @@ function useOwnedDomains(): {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const { account } = context;
 	const accountNormalized = account?.toLowerCase();
+	console.log(accountNormalized);
 
 	const [getOwned, { data, refetch, error }] = useLazyQuery<DomainData>(
 		OWNED_DOMAIN_QUERY,
@@ -252,6 +253,14 @@ function useOwnedDomains(): {
 			variables: { owner: accountNormalized },
 		},
 	);
+
+	useEffect(() => {
+		if (refetch) {
+			getOwned({ variables: { owner: accountNormalized } });
+		} else if (account) {
+			getOwned({ variables: { owner: accountNormalized } });
+		}
+	}, [accountNormalized, getOwned, refetch]);
 
 	const owned: Maybe<DisplayParentDomain[]> = useMemo(() => {
 		if (error) {
@@ -268,21 +277,15 @@ function useOwnedDomains(): {
 			);
 		}
 		return Maybe.nothing();
-	}, [error, data, account]);
-
-	useEffect(() => {
-		if (refetch) {
-			refetch({ variables: { owner: accountNormalized } });
-		} else if (account) {
-			getOwned({ variables: { owner: accountNormalized } });
-		}
-	}, [account, getOwned, refetch]);
+	}, [error, data, accountNormalized]);
 
 	const refresh = () => {
 		if (refetch) {
-			refetch({ variables: { owner: accountNormalized } });
+			getOwned({ variables: { owner: accountNormalized } });
+			console.log('refresh refetch');
 		} else if (account) {
 			getOwned({ variables: { owner: accountNormalized } });
+			console.log('refresh getOwned');
 		}
 	};
 
