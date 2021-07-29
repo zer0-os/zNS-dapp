@@ -64,7 +64,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
 	const [wildBalance, setWildBalance] = useState(0);
-	const [hasApproveTokenTransfer, setHasApprovedTokenTransfer] =
+	const [hasApprovedTokenTransfer, setHasApprovedTokenTransfer] =
 		useState(false);
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
 	const [isAllBidsModalOpen, setIsAllBidsModalOpen] = useState(false);
@@ -364,7 +364,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			>
 				{!isMetamaskWaiting && !isApprovalInProgress && (
 					<>
-						{!hasApproveTokenTransfer && (
+						{!hasApprovedTokenTransfer && (
 							<>
 								<p style={{ lineHeight: '21px' }}>
 									Before placing bids, you need to approve zAuction to access
@@ -385,7 +385,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 								</FutureButton>
 							</>
 						)}
-						{hasApproveTokenTransfer && (
+						{hasApprovedTokenTransfer && (
 							<>
 								<p>
 									zAuction is approved to access your WILD tokens should your
