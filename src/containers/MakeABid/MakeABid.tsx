@@ -447,7 +447,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				<>
 					{hasApprovedTokenTransfer && (
 						<>
-							<p style={{ textAlign: 'center', marginTop: 16 }}>
+							<p style={{ textAlign: 'center', marginTop: 24 }}>
 								You are about to place a{' '}
 								<b className="glow-text-white">
 									{Number(bid).toLocaleString()} WILD
@@ -457,7 +457,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 							<FutureButton
 								glow
 								style={{
-									marginTop: 24,
 									height: 36,
 									borderRadius: 18,
 									textTransform: 'uppercase',
