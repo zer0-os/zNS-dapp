@@ -15,7 +15,7 @@ import { MakeABid } from 'containers';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
-import { getRelativeDomainPath } from 'lib/domains';
+import { getRelativeDomainPath } from 'lib/utils/domains';
 import {
 	Bid,
 	DisplayDomain,
@@ -38,7 +38,7 @@ import list from './assets/list.svg';
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
 	className?: string;
-	domains: DisplayDomain[];
+	domains: Domain[];
 	empty?: boolean;
 	hideOwnBids?: boolean;
 	isButtonActive?: (row: any) => boolean;
@@ -173,7 +173,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		let completed = 0;
 
 		// Get metadata
-		const getData = async (domain: DisplayDomain) => {
+		const getData = async (domain: Domain) => {
 			try {
 				const [metadata, bids] = await Promise.all([
 					getMetadata(domain.metadata),

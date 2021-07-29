@@ -7,7 +7,7 @@ import { IconButton, ZNALink } from 'components';
 
 //- Library Imports
 import { useDomainSearch } from 'lib/useDomainSearch';
-import { getRelativeDomainPath } from 'lib/domains';
+import { getRelativeDomainPath } from 'lib/utils/domains';
 
 //- Asset Imports
 import arrowForwardIcon from 'assets/arrow-forward.svg';

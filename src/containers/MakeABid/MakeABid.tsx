@@ -9,7 +9,7 @@ import { Domain, Metadata, Bid } from 'lib/types';
 import { randomImage, randomName } from 'lib/Random';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
-import { getRelativeDomainPath } from 'lib/domains';
+import { getRelativeDomainPath } from 'lib/utils/domains';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';

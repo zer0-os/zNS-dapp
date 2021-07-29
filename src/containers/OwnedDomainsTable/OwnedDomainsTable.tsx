@@ -2,7 +2,6 @@
 import React from 'react';
 
 // Library Imports
-import { useDomainCache } from 'lib/useDomainCache';
 import { useZnsContracts } from 'lib/contracts';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { useApprovals } from 'lib/hooks/useApprovals';
@@ -17,6 +16,7 @@ import styles from './OwnedDomainsTable.module.css';
 // Component Imports
 import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
 import { BidList } from 'containers';
+import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -30,7 +30,9 @@ const OwnedDomainTables = () => {
 
 	// Wallet Integrations
 	const { account } = useWeb3React();
-	const { owned } = useDomainCache();
+
+	const ownedQuery = useDomainsOwnedByUserQuery(account!);
+	const owned = ownedQuery.data?.domains;
 
 	// zAuction Integrations
 	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
@@ -119,7 +121,7 @@ const OwnedDomainTables = () => {
 		setIsTableLoading(false);
 	};
 
-	if (owned.isNothing()) return <></>;
+	if (!owned) return <></>;
 
 	/////////////////////
 	// React Fragments //
@@ -206,7 +208,7 @@ const OwnedDomainTables = () => {
 			)}
 			<DomainTable
 				className={styles.Reset}
-				domains={owned.value.sort((a: any, b: any) => a.name - b.name)}
+				domains={owned.sort((a: any, b: any) => a.name - b.name)}
 				hideOwnBids
 				isButtonActive={isButtonActive}
 				isRootDomain={false}

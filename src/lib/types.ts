@@ -2,6 +2,8 @@
 
 import { ethers } from 'ethers';
 
+export type Maybe<T> = T | undefined | null;
+
 export interface Account {
 	id: string;
 }
@@ -48,9 +50,9 @@ export type DomainData = {
 };
 
 export interface DisplayDomain extends Domain {
-	image: string | undefined;
-	description: string | undefined;
-	title: string | undefined;
+	image: Maybe<string>;
+	description: Maybe<string>;
+	title: Maybe<string>;
 }
 
 export interface DisplayParentDomain extends DisplayDomain {
@@ -128,3 +130,11 @@ export type DomainHighestBid = {
 	domain: Domain;
 	bid: Bid;
 };
+
+export interface DomainsQueryResult {
+	domains: ParentDomain[];
+}
+
+export interface DomainQueryResult {
+	domain: Maybe<ParentDomain>;
+}

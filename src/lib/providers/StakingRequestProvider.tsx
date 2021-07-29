@@ -28,8 +28,8 @@ interface StakingRequestProviderContext {
 	) => Promise<ethers.ContractTransaction | void>;
 }
 
-export const StakingRequestContext = React.createContext<StakingRequestProviderContext>(
-	{
+export const StakingRequestContext =
+	React.createContext<StakingRequestProviderContext>({
 		requesting: [],
 		requested: [],
 		placeRequest: async (params: DomainRequestParams) => {},
@@ -39,8 +39,7 @@ export const StakingRequestContext = React.createContext<StakingRequestProviderC
 		fulfilling: [],
 		fulfilled: [],
 		fulfillRequest: async (params: DomainRequestAndContents) => {},
-	},
-);
+	});
 
 type StakingRequestProviderType = {
 	children: React.ReactNode;
