@@ -255,12 +255,12 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				<>
 					<span className="glow-text-white">
 						{/* @todo change dp amount */}
-						{currentHighestBid.amount.toFixed(2).toLocaleString()} WILD
+						{Number(currentHighestBid.amount).toLocaleString()} WILD
 					</span>
 					<br />
 					{currentHighestBidUsd && currentHighestBidUsd > 0 && (
 						<span className="glow-text-white">
-							(${currentHighestBidUsd.toFixed(2).toLocaleString()} USD)
+							(${Number(currentHighestBidUsd.toFixed(2)).toLocaleString()} USD)
 						</span>
 					)}
 					{bids !== undefined && bids.length > 0 && (
