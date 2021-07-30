@@ -52,7 +52,7 @@ function getApiEndpoints(baseApiUri: string) {
 	const encodeBidEndpoint = `${baseApiUri}/bid/`;
 	const bidsEndpoint = `${baseApiUri}/bids/`;
 	const bidListEndpoint = `${baseApiUri}/lists?`;
-	const accountBidsEndpoint = `${baseApiUri}/accounts/`;
+	const accountBidsEndpoint = `${bidsEndpoint}accounts/`;
 
 	return {
 		encodeBidEndpoint,
