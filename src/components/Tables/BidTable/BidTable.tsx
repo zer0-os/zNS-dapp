@@ -90,6 +90,10 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 
 				const yourBidData: BidTableData[] = [];
 				uniqueDomains.forEach((domain: Domain) => {
+					if (domain.owner.id.toLowerCase() === userId.toLowerCase()) {
+						return;
+					}
+
 					const yourHighestBid = sortedBids.filter(
 						(bid: Bid) => bid.tokenId === domain.id,
 					)[0];
