@@ -1,4 +1,5 @@
 import { ethers } from 'ethers';
+import { createTimeCache } from './utils/timeCache';
 
 export interface NftIdBidsDto {
 	account: string;
@@ -69,27 +70,64 @@ function getNftId(contract: string, tokenId: string) {
 	return nftId;
 }
 
+const cacheExpiration = 60 * 1000; // 60 seconds
+
+const getBidsForNftCache = createTimeCache<NftIdBidsDto[]>(cacheExpiration);
+
+const cacheKeyForNftBids = (baseApiUri: string, nftId: string) => {
+	return `${baseApiUri}|${nftId}`;
+}
+
 export async function getBidsForNft(
 	baseApiUri: string,
 	contract: string,
 	tokenId: string,
-) {
+): Promise<NftIdBidsDto[]> {
 	const nftId = getNftId(contract, tokenId);
-	let endpoints = getApiEndpoints(baseApiUri);
+	const cacheKey = cacheKeyForNftBids(baseApiUri, nftId);
+
+	if (getBidsForNftCache.exists(cacheKey)) {
+		return getBidsForNftCache.get(cacheKey);
+	}
+
+	const endpoints = getApiEndpoints(baseApiUri);
+
 	const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
 		method: 'GET',
 	});
 
 	const bids = (await response.json()).bids as NftIdBidsDto[];
 
+	getBidsForNftCache.put(cacheKey, bids);
+
 	return bids;
 }
 
+const getBidsForAccountCache = createTimeCache<AccountBidsDto[]>(cacheExpiration);
+
+const cacheKeyForAccountBids = (baseApiUri: string, account: string) => {
+	return `${baseApiUri}|${account}`;
+}
+
 export async function getBidsForAccount(baseApiUri: string, id: string) {
-	let endpoints = getApiEndpoints(baseApiUri);
+	const cacheKey = cacheKeyForAccountBids(baseApiUri, id);
+
+	if (getBidsForAccountCache.exists(cacheKey)) {
+		return getBidsForAccountCache.get(cacheKey);
+	}
+
+	const endpoints = getApiEndpoints(baseApiUri);
 	const response = await fetch(`${endpoints.accountBidsEndpoint}${id}`);
 	const bids = (await response.json()) as AccountBidsDto[];
+
+	getBidsForAccountCache.put(cacheKey, bids);
+
 	return bids;
+}
+
+export function clearCache() {
+	getBidsForNftCache.clear();
+	getBidsForAccountCache.clear();
 }
 
 async function encodeBid(
@@ -147,12 +185,14 @@ export async function placeBid(
 		expireBlock,
 	});
 
+	const account = await provider.getSigner().getAddress();
+
 	const signedBid = await signer.signMessage(
 		ethers.utils.arrayify(bidData.payload),
 	);
 
 	await sendBid(baseApiUri, bidData.nftId, {
-		account: await provider.getSigner().getAddress(),
+		account,
 		auctionId: bidData.auctionId.toString(),
 		tokenId,
 		contractAddress: contract,
@@ -162,4 +202,13 @@ export async function placeBid(
 		expireBlock,
 		signedMessage: signedBid,
 	});
+
+	// clear out cache for that NFT and the user's bids
+	{
+		const bidsCacheKey = cacheKeyForNftBids(baseApiUri, bidData.nftId);
+		getBidsForNftCache.clearKey(bidsCacheKey);
+
+		const accountCacheKey = cacheKeyForAccountBids(baseApiUri, account);
+		getBidsForAccountCache.clearKey(accountCacheKey);
+	}
 }
