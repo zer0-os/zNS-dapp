@@ -135,31 +135,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	const [isSearchActive, setIsSearchActive] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
 
-	React.useEffect(() => {
-		const doThing = async () => {
-			try {
-				const res = await fetch("https://zns-backend.netlify.app/.netlify/functions/uploadMetadata", {
-					method: "POST",
-					body: JSON.stringify({
-						metadata: {
-							image: "test",
-							title: "test",
-							story: "test"
-						}
-					})
-				});
-	
-				console.log(res);
-			} catch (e) {
-				console.error(e);
-			}
-		}
-
-		doThing();
-		
-		
-	}, [])
-
 	//- MVP Version
 	// TODO: Move the MVP version handler out to a hook
 	const springAmount = mvpVersion === 3 ? 425.5 : 240;
@@ -529,7 +504,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 						{(styles) => (
 							<animated.div style={styles}>
 								<DomainTable
-									domains={tableData}
+									domains={tableData.sort((a, b) => a.name < b.name ? -1 : 1)}
 									isRootDomain={isRoot}
 									style={{ marginTop: 16 }}
 									empty={
