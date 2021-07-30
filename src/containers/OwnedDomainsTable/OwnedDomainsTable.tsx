@@ -219,6 +219,7 @@ const OwnedDomainTables = () => {
 				onRowClick={rowClick}
 				isGridView={isGridView}
 				setIsGridView={(grid: boolean) => setIsGridView(grid)}
+				userId={account || undefined}
 				style={{ display: isTableLoading ? 'none' : 'inline-block' }}
 			/>
 		</>

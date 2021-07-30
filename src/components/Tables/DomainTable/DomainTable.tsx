@@ -187,13 +187,10 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					return;
 				}
 
-				// Filter out user's bids if configured to do so
-				let filteredBids;
-				if (hideOwnBids) {
-					filteredBids = bids?.filter(
-						(bid: Bid) => bid.bidderAccount !== userId,
-					);
-				}
+				const filteredBids = bids?.filter(
+					(bid: Bid) =>
+						bid.bidderAccount.toLowerCase() !== userId!.toLowerCase(),
+				);
 
 				loaded.push({
 					domain: domain,
