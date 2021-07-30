@@ -6,13 +6,13 @@ interface DomainMetadataParams {
 	story: string;
 }
 
-interface UploadResponseInterface {
+interface UploadResponseDTO {
 	fleekHash: string;
 	hash: string;
 	url: string;
 }
 
-const apiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/upload`;
+const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/upload`;
 
 /**
  * Creates and uploads a domains metadata to IPFS
@@ -23,11 +23,11 @@ const apiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/upload`;
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	// upload image to http backend
 
-	const imageResponse = await fetch(apiEndpoint, {
+	const imageResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
 		body: JSON.stringify(params),
 	});
-	const image = (await imageResponse.json()) as UploadResponseInterface;
+	const image = (await imageResponse.json()) as UploadResponseDTO;
 
 	// upload metadata to IPFS
 	const metadataObject = {
@@ -37,11 +37,11 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	};
 	const metadataAsString = JSON.stringify(metadataObject);
 
-	const metadataResponse = await fetch(apiEndpoint, {
+	const metadataResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
 		body: metadataAsString,
 	});
-	const metadata = (await metadataResponse.json()) as UploadResponseInterface;
+	const metadata = (await metadataResponse.json()) as UploadResponseDTO;
 
 	return metadata.url;
 };
@@ -52,11 +52,11 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
  * @returns Uri to uploaded data
  */
 export const uploadToIPFS = async (data: string | Buffer) => {
-	const uploadedResponse = await fetch(apiEndpoint, {
+	const uploadedResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
 		body: data,
 	});
-	const uploaded = (await uploadedResponse.json()) as UploadResponseInterface;
+	const uploaded = (await uploadedResponse.json()) as UploadResponseDTO;
 	return uploaded.url;
 };
 
