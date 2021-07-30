@@ -1,5 +1,3 @@
-import ipfsClient from 'lib/ipfs-client';
-
 export * from './domains';
 
 interface DomainMetadataParams {
@@ -8,25 +6,44 @@ interface DomainMetadataParams {
 	story: string;
 }
 
+interface UploadResponseInterface {
+	fleekHash: string;
+	hash: string;
+	url: string;
+}
+
+const apiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/upload`;
+
 /**
  * Creates and uploads a domains metadata to IPFS
  * @param params Metadata parameters
  * @returns URI to the created Metadata
  */
+
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
-	// upload image to IPFS
-	const { path: imageCid } = await ipfsClient.add(params.image);
+	// upload image to http backend
+
+	const imageResponse = await fetch(apiEndpoint, {
+		method: 'POST',
+		body: JSON.stringify(params),
+	});
+	const image = (await imageResponse.json()) as UploadResponseInterface;
 
 	// upload metadata to IPFS
 	const metadataObject = {
 		name: params.name,
 		description: params.story,
-		image: `https://ipfs.io/ipfs/${imageCid}`,
+		image: image.url,
 	};
 	const metadataAsString = JSON.stringify(metadataObject);
-	const { path: metadataCid } = await ipfsClient.add(metadataAsString);
 
-	return `https://ipfs.io/ipfs/${metadataCid}`;
+	const metadataResponse = await fetch(apiEndpoint, {
+		method: 'POST',
+		body: metadataAsString,
+	});
+	const metadata = (await metadataResponse.json()) as UploadResponseInterface;
+
+	return metadata.url;
 };
 
 /**
@@ -35,9 +52,12 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
  * @returns Uri to uploaded data
  */
 export const uploadToIPFS = async (data: string | Buffer) => {
-	const { path } = await ipfsClient.add(data);
-	const uri = `https://ipfs.io/ipfs/${path}`;
-	return uri;
+	const uploadedResponse = await fetch(apiEndpoint, {
+		method: 'POST',
+		body: data,
+	});
+	const uploaded = (await uploadedResponse.json()) as UploadResponseInterface;
+	return uploaded.url;
 };
 
 export async function tryFunction<T>(func: () => Promise<T>, msg: string) {
