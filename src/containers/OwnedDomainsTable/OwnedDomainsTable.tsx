@@ -208,7 +208,7 @@ const OwnedDomainTables = () => {
 			)}
 			<DomainTable
 				className={styles.Reset}
-				domains={owned.sort((a: ParentDomain, b: ParentDomain) => (a.name > b.name ? -1 : 1))}
+				domains={owned}
 				hideOwnBids
 				isButtonActive={isButtonActive}
 				isRootDomain={false}
