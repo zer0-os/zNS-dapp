@@ -61,7 +61,9 @@ type ZNSProps = {
 	isNftView?: boolean;
 };
 
-const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
+// @TODO: Rewrite this whole page
+
+const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	// TODO: Need to handle domains that don't exist!
 
 	const { mvpVersion } = useMvpVersion();
@@ -124,6 +126,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
 	//- Page State
 	const [isLoading, setIsLoading] = useState(true);
 	const [hasLoaded, setHasLoaded] = useState(false);
+	const [isNftView, setIsNftView] = useState(nftView);
 
 	//- Table State
 	const [isGridView, setIsGridView] = useState(false);
@@ -190,10 +193,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
 		pageHistory.current = pageHistory.current.concat([domain]);
 	}, [domain]);
 
-	// useEffect(() => {
-	// 	domainContext.refetchDomain();
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, [minted]);
+	// Respond to ?view query param change
+	useEffect(() => setIsNftView(nftView), [nftView]);
 
 	useEffect(() => {
 		if (triedEagerConnect)
@@ -207,6 +208,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
 		if (!znsDomain.domain) setTableData([]);
 		else {
 			// Set the domain data for table view
+			setIsNftView(nftView || subdomains.length === 0);
 			setTableData(subdomains);
 
 			const shouldGetMetadata =
@@ -214,10 +216,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
 				znsDomain.domain.subdomains.length > 0 &&
 				znsDomain.domain.metadata;
 
-			//- Note:
-			// We're checking subdomains here, because we want to defer the IPFS
-			// call to NFT View to prevent unneeded IPFS calls
-			// Get the data for Preview Card
 			if (shouldGetMetadata) {
 				getMetadata(znsDomain.domain.metadata).then((d) => {
 					if (!d) return;
@@ -239,6 +237,103 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
 	////////////
 	// RENDER //
 	////////////
+
+	const previewCard = () => (
+		<>
+			{/* Preview Card */}
+			{/* TODO: This definitely needs some refactoring */}
+			{(isLoading || subdomains.length >= 0) && !isNftView && (
+				<Spring
+					from={{ opacity: 0, marginTop: -springAmount }}
+					to={
+						!isRoot && (isLoading || subdomains.length >= 0) && !isNftView
+							? { opacity: 1, marginTop: 0 }
+							: { opacity: 0, marginTop: -springAmount }
+					}
+				>
+					{(styles) => (
+						<animated.div style={styles}>
+							<PreviewCard
+								image={previewMetadata?.image || ''}
+								name={previewMetadata?.title || ''}
+								domain={domain}
+								description={previewMetadata?.description || ''}
+								creatorId={znsDomain?.domain?.minter?.id || ''}
+								disabled={
+									znsDomain.domain?.owner?.id.toLowerCase() ===
+									account?.toLowerCase()
+								}
+								ownerId={znsDomain?.domain?.owner?.id || ''}
+								isLoading={isLoading}
+								mvpVersion={mvpVersion}
+								onButtonClick={openBidOverlay}
+								onImageClick={() => {}}
+							>
+								{mvpVersion === 3 && (
+									<HorizontalScroll fade>
+										<AssetPriceCard
+											title={`${domain.substring(1, 5).toUpperCase()} Price`}
+											price={randomNumber(85, 400, 2)}
+											change={randomNumber(-30, 30, 2)}
+										/>
+										<AssetGraphCard
+											title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+										/>
+										<AssetPriceCard
+											title={`${domain.substring(1, 5).toUpperCase()} Price`}
+											price={randomNumber(85, 400, 2)}
+											change={randomNumber(-30, 30, 2)}
+										/>
+										<AssetMarketCapCard
+											title={`Total ${domain
+												.substring(1, 5)
+												.toUpperCase()} Holders`}
+											price={randomNumber(15000, 40000, 2)}
+										/>
+										<AssetMarketCapCard
+											title={`Total ${domain
+												.substring(1, 5)
+												.toUpperCase()} Holders`}
+											price={randomNumber(15000, 40000, 2)}
+										/>
+										<AssetMarketCapCard
+											title={`Total ${domain
+												.substring(1, 5)
+												.toUpperCase()} Holders`}
+											price={randomNumber(15000, 40000, 2)}
+										/>
+									</HorizontalScroll>
+								)}
+							</PreviewCard>
+						</animated.div>
+					)}
+				</Spring>
+			)}
+		</>
+	);
+
+	const subdomainTable = () => (
+		<>
+			{/* Subdomain Table */}
+			{(isLoading || (!isLoading && subdomains.length > 0)) && !isNftView && (
+				<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
+					{(styles) => (
+						<animated.div style={styles}>
+							<DomainTable
+								domains={tableData.sort((a, b) => (a.name < b.name ? -1 : 1))}
+								isRootDomain={isRoot}
+								style={{ marginTop: 16 }}
+								empty={(znsDomain.domain && subdomains.length === 0) as boolean}
+								isGridView={isGridView}
+								setIsGridView={setIsGridView}
+								userId={account as string}
+							/>
+						</animated.div>
+					)}
+				</Spring>
+			)}
+		</>
+	);
 
 	return (
 		<>
@@ -427,107 +522,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
 					</Spring>
 				)}
 
-				{/* Preview Card */}
-				{/* TODO: This definitely needs some refactoring */}
-				{(isLoading || subdomains.length >= 0) && !isNftView && (
-					<Spring
-						from={{ opacity: 0, marginTop: -springAmount }}
-						to={{
-							opacity: !isRoot && hasLoaded && subdomains.length ? 1 : 0,
-							marginTop:
-								!isRoot && hasLoaded && subdomains.length ? 0 : -springAmount,
-						}}
-					>
-						{(styles) => (
-							<animated.div style={styles}>
-								<PreviewCard
-									image={previewMetadata?.image || ''}
-									name={previewMetadata?.title || ''}
-									domain={domain}
-									description={previewMetadata?.description || ''}
-									creatorId={
-										znsDomain.domain &&
-										znsDomain.domain.minter &&
-										znsDomain.domain.minter.id
-											? znsDomain.domain.minter.id
-											: ''
-									}
-									disabled={
-										znsDomain.domain?.owner?.id.toLowerCase() ===
-										account?.toLowerCase()
-									}
-									ownerId={znsDomain.domain ? znsDomain.domain.owner.id : ''}
-									isLoading={isLoading}
-									mvpVersion={mvpVersion}
-									onButtonClick={openBidOverlay}
-									onImageClick={() => {}}
-								>
-									{mvpVersion === 3 && (
-										<HorizontalScroll fade>
-											<AssetPriceCard
-												title={`${domain.substring(1, 5).toUpperCase()} Price`}
-												price={randomNumber(85, 400, 2)}
-												change={randomNumber(-30, 30, 2)}
-											/>
-											<AssetGraphCard
-												title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-											/>
-											<AssetPriceCard
-												title={`${domain.substring(1, 5).toUpperCase()} Price`}
-												price={randomNumber(85, 400, 2)}
-												change={randomNumber(-30, 30, 2)}
-											/>
-											<AssetMarketCapCard
-												title={`Total ${domain
-													.substring(1, 5)
-													.toUpperCase()} Holders`}
-												price={randomNumber(15000, 40000, 2)}
-											/>
-											<AssetMarketCapCard
-												title={`Total ${domain
-													.substring(1, 5)
-													.toUpperCase()} Holders`}
-												price={randomNumber(15000, 40000, 2)}
-											/>
-											<AssetMarketCapCard
-												title={`Total ${domain
-													.substring(1, 5)
-													.toUpperCase()} Holders`}
-												price={randomNumber(15000, 40000, 2)}
-											/>
-										</HorizontalScroll>
-									)}
-								</PreviewCard>
-							</animated.div>
-						)}
-					</Spring>
-				)}
-
-				{/* Subdomain table */}
-
-				{/* Subdomain Table */}
-				{isLoading ||
-					(!isLoading && subdomains.length > 0 && (
-						<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
-							{(styles) => (
-								<animated.div style={styles}>
-									<DomainTable
-										domains={tableData.sort((a, b) =>
-											a.name < b.name ? -1 : 1,
-										)}
-										isRootDomain={isRoot}
-										style={{ marginTop: 16 }}
-										empty={
-											(znsDomain.domain && subdomains.length === 0) as boolean
-										}
-										isGridView={isGridView}
-										setIsGridView={setIsGridView}
-										userId={account as string}
-									/>
-								</animated.div>
-							)}
-						</Spring>
-					))}
+				{previewCard()}
+				{subdomainTable()}
 
 				{znsDomain.domain && (isNftView || subdomains.length === 0) && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
