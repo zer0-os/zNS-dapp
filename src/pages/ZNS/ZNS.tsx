@@ -427,7 +427,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										loading={isOwnedByUser === undefined}
 									>
 										{isOwnedByUser === true && 'MINT NFT'}
-										{isOwnedByUser === false && 'STAKE NFT'}
+										{isOwnedByUser === false && 'REQUEST TO MINT NFT'}
 									</FutureButton>
 
 									{/* Mint Progress button */}
