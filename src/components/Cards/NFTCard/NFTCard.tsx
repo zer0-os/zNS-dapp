@@ -39,7 +39,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 		>
 			<Image
 				className={styles.NFT}
-				style={{ height: 348 }}
+				style={{ height: 348, objectFit: 'contain' }}
 				src={imageUri ? imageUri : ''}
 			/>
 			<div className={styles.Body}>
