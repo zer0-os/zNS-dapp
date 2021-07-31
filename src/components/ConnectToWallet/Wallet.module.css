@@ -87,6 +87,12 @@
 	background-color: rgba(0, 209, 255, 0.1);
 }
 
+.wallet > div > div {
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+}
+
 .wallet img {
 	height: 36px;
 	width: 36px;
