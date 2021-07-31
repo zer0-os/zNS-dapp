@@ -53,11 +53,16 @@ function App() {
 	return (
 		<HashRouter>
 			<Route
-				render={({ location, match }) => (
-					<>
-						<ZNS domain={location.pathname} />
-					</>
-				)}
+				render={({ location, match }) => {
+					return (
+						<>
+							<ZNS
+								domain={location.pathname}
+								isNftView={location.search === '?view'}
+							/>
+						</>
+					);
+				}}
 			/>
 		</HashRouter>
 	);

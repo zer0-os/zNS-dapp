@@ -58,9 +58,10 @@ import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 type ZNSProps = {
 	domain: string;
 	version?: number;
+	isNftView?: boolean;
 };
 
-const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
+const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
 	// TODO: Need to handle domains that don't exist!
 
 	const { mvpVersion } = useMvpVersion();
@@ -123,7 +124,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Page State
 	const [isLoading, setIsLoading] = useState(true);
 	const [hasLoaded, setHasLoaded] = useState(false);
-	const [isNftView, setIsNftView] = useState(false);
 
 	//- Table State
 	const [isGridView, setIsGridView] = useState(false);
@@ -233,7 +233,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	useEffect(() => {
 		setTableData([]);
-		setIsNftView(false);
 		setIsLoading(true);
 	}, [domain]);
 
@@ -461,7 +460,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									isLoading={isLoading}
 									mvpVersion={mvpVersion}
 									onButtonClick={openBidOverlay}
-									onImageClick={() => setIsNftView(true)}
+									onImageClick={() => {}}
 								>
 									{mvpVersion === 3 && (
 										<HorizontalScroll fade>
