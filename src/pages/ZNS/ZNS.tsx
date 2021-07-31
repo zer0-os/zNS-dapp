@@ -325,7 +325,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 												: addNotification('Please connect your wallet.');
 										}}
 									>
-										Mint New NFT
+										Mint NFT
 									</FutureButton>
 
 									{/* Mint Progress button */}
@@ -504,7 +504,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 						{(styles) => (
 							<animated.div style={styles}>
 								<DomainTable
-									domains={tableData.sort((a, b) => a.name < b.name ? -1 : 1)}
+									domains={tableData.sort((a, b) => (a.name < b.name ? -1 : 1))}
 									isRootDomain={isRoot}
 									style={{ marginTop: 16 }}
 									empty={
