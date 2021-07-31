@@ -14,6 +14,7 @@ export async function getMetadata(
 			return memoryCache[metadataUrl];
 		}
 
+		await new Promise((r) => setTimeout(r, 1500));
 		return {
 			title: 'mock title',
 			description: 'mock description',
