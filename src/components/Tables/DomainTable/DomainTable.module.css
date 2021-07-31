@@ -12,6 +12,10 @@
 	transition: height var(--animation-time-long) ease-in-out;
 }
 
+.Empty {
+	text-align: center;
+}
+
 .DomainTable {
 	width: 100%;
 }

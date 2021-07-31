@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
+import { Spring, animated } from 'react-spring';
 
 //- Component Imports
 import {
@@ -163,7 +164,16 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		} else {
 			setContainerHeight(0);
 		}
-	}, [isLoading, searchQuery, isGridView]);
+	}, [isLoading, searchQuery, isGridView, loadedDomains]);
+
+	const finishLoad = (domains: DomainData[]) => {
+		setLoadedDomains(domains);
+		setHasMetadataLoaded(true);
+		setIsLoading(false);
+		if (onLoad) {
+			onLoad();
+		}
+	};
 
 	// Gets metadata for each NFT in domain list
 	useEffect(() => {
@@ -172,6 +182,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		let count = 0;
 		let completed = 0;
 
+		if (domains.length === 0) return finishLoad([]);
 		// Get metadata
 		const getData = async (domain: Domain) => {
 			try {
@@ -199,12 +210,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				});
 
 				if (completed === count) {
-					setLoadedDomains(loaded);
-					setHasMetadataLoaded(true);
-					setIsLoading(false);
-					if (onLoad) {
-						onLoad();
-					}
+					finishLoad(loaded);
 				}
 			} catch (e) {}
 		};
@@ -431,7 +437,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				<div className={styles.DomainTable}>
 					<div className={styles.Container} ref={containerRef}>
 						{/* List View */}
-						{!isGridView && (
+						{!empty && !isGridView && (
 							<table {...getTableProps()} className={styles.DomainTable}>
 								<thead>
 									{headerGroups.map((headerGroup) => (
@@ -467,7 +473,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						)}
 
 						{/* Grid View */}
-						{isGridView && (
+						{!empty && isGridView && (
 							<ol className={styles.Grid}>
 								{data
 									.filter((d) => d.domain.name.includes(searchQuery))
@@ -487,11 +493,17 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									))}
 							</ol>
 						)}
+
+						{empty && <p className={styles.Empty}>No domains found</p>}
 					</div>
-					<div
-						style={{ height: containerHeight }}
-						className={styles.Expander}
-					></div>
+
+					<Spring to={{ height: containerHeight }}>
+						{(styles) => (
+							<animated.div style={styles}>
+								<div></div>
+							</animated.div>
+						)}
+					</Spring>
 				</div>
 			</div>
 		</>
