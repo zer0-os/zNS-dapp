@@ -429,7 +429,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
 
 				{/* Preview Card */}
 				{/* TODO: This definitely needs some refactoring */}
-				{subdomains.length >= 0 && !isNftView && (
+				{(isLoading || subdomains.length >= 0) && !isNftView && (
 					<Spring
 						from={{ opacity: 0, marginTop: -springAmount }}
 						to={{
@@ -506,25 +506,28 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView }) => {
 				{/* Subdomain table */}
 
 				{/* Subdomain Table */}
-				{subdomains.length > 0 && !isNftView && (
-					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
-						{(styles) => (
-							<animated.div style={styles}>
-								<DomainTable
-									domains={tableData.sort((a, b) => (a.name < b.name ? -1 : 1))}
-									isRootDomain={isRoot}
-									style={{ marginTop: 16 }}
-									empty={
-										(znsDomain.domain && subdomains.length === 0) as boolean
-									}
-									isGridView={isGridView}
-									setIsGridView={setIsGridView}
-									userId={account as string}
-								/>
-							</animated.div>
-						)}
-					</Spring>
-				)}
+				{isLoading ||
+					(!isLoading && subdomains.length > 0 && (
+						<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
+							{(styles) => (
+								<animated.div style={styles}>
+									<DomainTable
+										domains={tableData.sort((a, b) =>
+											a.name < b.name ? -1 : 1,
+										)}
+										isRootDomain={isRoot}
+										style={{ marginTop: 16 }}
+										empty={
+											(znsDomain.domain && subdomains.length === 0) as boolean
+										}
+										isGridView={isGridView}
+										setIsGridView={setIsGridView}
+										userId={account as string}
+									/>
+								</animated.div>
+							)}
+						</Spring>
+					))}
 
 				{znsDomain.domain && (isNftView || subdomains.length === 0) && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
