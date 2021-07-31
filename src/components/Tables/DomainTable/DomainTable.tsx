@@ -336,7 +336,10 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							)}
 							{(!rowButtonText || shouldGlow) && (
 								<FutureButton
-									style={{ margin: '0 auto', textTransform: 'uppercase' }}
+									style={{
+										marginLeft: 'auto',
+										textTransform: 'uppercase',
+									}}
 									glow={shouldGlow}
 									onClick={() => buttonClick(data)}
 								>
