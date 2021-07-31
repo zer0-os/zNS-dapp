@@ -1,10 +1,6 @@
 /* Set up some variables */
 .futureButton {
-	--bg: linear-gradient(
-		90deg,
-		rgba(82, 87, 255, 0.25) 0%,
-		rgba(82, 203, 255, 0.25) 100%
-	);
+	--bg: var(--background-accent-1-gradient);
 
 	--box-shadow: rgba(0, 209, 255, 0.1);
 	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
