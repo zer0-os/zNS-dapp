@@ -212,7 +212,6 @@ const OwnedDomainTables = () => {
 				hideOwnBids
 				isButtonActive={isButtonActive}
 				isRootDomain={false}
-				empty={true}
 				rowButtonText={'View Bids'}
 				onLoad={tableLoaded}
 				onRowButtonClick={viewBid}
