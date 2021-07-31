@@ -144,6 +144,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	const isRoot: boolean =
 		domain === '/' || (znsDomain.domain ? !znsDomain.domain.parent : false);
 
+	let isOwnedByUser;
+	if (account && znsDomain?.domain?.owner?.id) {
+		isOwnedByUser =
+			account.toLowerCase() === znsDomain.domain.owner.id.toLowerCase();
+	}
+
 	// @TODO: We shouldn't need to filter out non-ipfs.io metadata URIs when we reset data
 	const subdomains =
 		znsDomain.domain && znsDomain.domain.subdomains
@@ -324,8 +330,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 												? setIsMintOverlayOpen(true)
 												: addNotification('Please connect your wallet.');
 										}}
+										loading={isOwnedByUser === undefined}
 									>
-										Mint NFT
+										{isOwnedByUser === true && 'Mint NFT'}
+										{isOwnedByUser === false && 'Stake NFT'}
 									</FutureButton>
 
 									{/* Mint Progress button */}
