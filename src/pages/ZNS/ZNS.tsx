@@ -317,7 +317,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 						<div>
 							{!active && (
 								<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
-									Connect To Wallet
+									Connect Wallet
 								</FutureButton>
 							)}
 							{active && !isSearchActive && (
