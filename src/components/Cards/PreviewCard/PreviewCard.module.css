@@ -85,6 +85,7 @@
 	overflow: hidden;
 	transition: transform var(--animation-time-medium) ease-in-out;
 	border-radius: 9px 0px 0px 13px;
+	z-index: 2;
 }
 
 .Body {
@@ -94,6 +95,7 @@
 	justify-content: space-between;
 
 	margin: 19px 0 0 24px;
+	padding-right: 48px;
 }
 
 .Body h5 {
