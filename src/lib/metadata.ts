@@ -14,21 +14,31 @@ export async function getMetadata(
 			return memoryCache[metadataUrl];
 		}
 
-		const response = await fetch(metadataUrl);
-		const data = await response.json();
-		const metadata = {
-			title: data.name || data.title,
-			description: data.description,
-			image: data.image,
-		} as Metadata;
+		return {
+			title: 'mock title',
+			description: 'mock description',
+			image: `https://picsum.photos/seed/${metadataUrl.substring(
+				21,
+			)}/${Math.floor(Math.random() * 1000)}/${Math.floor(
+				Math.random() * 1000,
+			)}`,
+		};
 
-		if (!metadata.title || !metadata.description || !metadata.image) {
-			throw Error();
-		}
+		// const response = await fetch(metadataUrl);
+		// const data = await response.json();
+		// const metadata = {
+		// 	title: data.name || data.title,
+		// 	description: data.description,
+		// 	image: data.image,
+		// } as Metadata;
 
-		memoryCache[metadataUrl] = metadata;
+		// if (!metadata.title || !metadata.description || !metadata.image) {
+		// 	throw Error();
+		// }
 
-		return metadata;
+		// memoryCache[metadataUrl] = metadata;
+
+		// return metadata;
 	} catch (e) {
 		console.error('Failed to retrieve metadata from ' + metadataUrl);
 		return;
