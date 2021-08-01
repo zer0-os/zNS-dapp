@@ -178,12 +178,21 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					getBidsForDomain(domain),
 				]);
 
+				completed++;
+
+				if (completed === domains.length) {
+					setIsSubscribed(false);
+					if (onLoad) {
+						onLoad();
+					}
+				}
+
 				if (!metadata) {
 					console.log(`found no metadata for ${domain.id}`);
 					return;
 				}
 
-				completed++;
+
 
 				// Filter out user's bids if configured to do so
 				let filteredBids;
@@ -203,12 +212,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 				setData(loaded);
 
-				if (completed === domains.length) {
-					setIsSubscribed(false);
-					if (onLoad) {
-						onLoad();
-					}
-				}
+
 			} catch (e) {}
 		};
 
