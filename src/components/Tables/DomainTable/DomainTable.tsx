@@ -81,20 +81,17 @@ const DomainTable: React.FC<DomainTableProps> = ({
 }) => {
 	const { mvpVersion } = useMvpVersion();
 	const { getBidsForDomain } = useBidProvider();
-
 	const [isLoading, setIsLoading] = useState(true);
-
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
-
 	const [modal, setModal] = useState<Modals | undefined>();
 	const [biddingOn, setBiddingOn] = useState<DisplayDomain | undefined>();
-
 	const [data, setData] = useState<DomainData[]>([]);
 	const [tableData, setTableData] = useState<DomainData[]>([]);
 	const [isSubscribed, setIsSubscribed] = useState(false);
-	const containerRef = useRef<HTMLDivElement>(null);
 
+	const containerRef = useRef<HTMLDivElement>(null);
+	const chunkLength = 5;
 	///////////////
 	// Functions //
 	///////////////
@@ -235,9 +232,13 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	const feed = () => {
 		let cachedData = tableData; //last data feeded
+
+		let lengthDiff = data.length - cachedData.length
+		let feetIteration =  lengthDiff < chunkLength ? lengthDiff : chunkLength //how many data we need to feed, based on the fetched data we have
+		
 		for (
 			let i = cachedData.length;
-			i < 5;
+			i < feetIteration;
 			i++ //adds new chunk of 5 domains
 		)
 			cachedData.push(data[i]);
