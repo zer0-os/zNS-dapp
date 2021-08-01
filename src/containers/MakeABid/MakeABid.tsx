@@ -245,7 +245,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const nft = () => (
 		<div className={styles.NFT}>
-			<Image src={domainMetadata?.image} />
+			<Image
+				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
+				src={domainMetadata?.image}
+			/>
 		</div>
 	);
 

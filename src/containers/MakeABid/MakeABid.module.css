@@ -37,28 +37,32 @@
 }
 
 .NFT {
+	position: relative;
 	cursor: pointer;
-	height: 224px;
+	min-height: 224px;
+	flex-basis: 0;
+	flex-grow: 1;
 	margin-right: 12px;
 	min-width: 224px;
 
-	overflow: hidden;
+	background: rgba(255, 255, 255, 0.05);
 
-	transition: transform var(--animation-time-medium) ease-in-out;
 	width: 224px;
 }
 
-.NFT > img {
+.NFT img {
 	border-radius: inherit;
 	height: 100%;
 	width: 100%;
+	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
-.NFT:hover {
+.NFT:hover img {
 	transform: scale(1.05);
 }
 
 .Details {
+	flex: 1;
 	margin-left: 12px;
 }
 
