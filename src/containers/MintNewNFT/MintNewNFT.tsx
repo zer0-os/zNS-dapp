@@ -109,7 +109,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		const fetchTokenBalance = async () => {
 			const balance = await wildContract.balanceOf(account);
 			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
-			console.log(parseInt(ethers.utils.formatEther(balance), 10));
 		};
 		fetchTokenBalance();
 	}, [wildContract, account]);
