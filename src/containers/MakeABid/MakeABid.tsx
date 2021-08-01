@@ -9,6 +9,7 @@ import { Domain, Metadata, Bid } from 'lib/types';
 import { randomImage, randomName } from 'lib/Random';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
+import { toFiat } from 'lib/currency';
 import { getRelativeDomainPath } from 'lib/utils/domains';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { useZnsContracts } from 'lib/contracts';
@@ -263,7 +264,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					<br />
 					{currentHighestBidUsd && currentHighestBidUsd > 0 && (
 						<span className="glow-text-white">
-							(${Number(currentHighestBidUsd.toFixed(2)).toLocaleString()} USD)
+							(${toFiat(currentHighestBidUsd)} USD)
 						</span>
 					)}
 					{bids !== undefined && bids.length > 0 && (

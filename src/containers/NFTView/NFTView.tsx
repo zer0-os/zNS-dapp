@@ -22,6 +22,7 @@ import { randomName, randomImage } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import { toFiat } from 'lib/currency';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -165,9 +166,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					<span className={styles.Crypto}>
 						{Number(highestBid.amount.toFixed(2)).toLocaleString()} WILD{' '}
 						{highestBidUsd && (
-							<span className={styles.Fiat}>
-								(${Number(highestBidUsd.toFixed(2)).toLocaleString()})
-							</span>
+							<span className={styles.Fiat}>(${toFiat(highestBidUsd)})</span>
 						)}
 					</span>
 				</div>
