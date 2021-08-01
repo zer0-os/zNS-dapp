@@ -91,8 +91,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [biddingOn, setBiddingOn] = useState<DisplayDomain | undefined>();
 
 	const [data, setData] = useState<DomainData[]>([]);
-	const [lastDomains, setLastDomains] = useState<Domain[]>();
-	const [domainsChanged, setDomainsChanged] = useState(true);
+	const [tableData, setTableData] = useState<DomainData[]>([]);
+	const [isSubscribed, setIsSubscribed] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	///////////////
@@ -156,54 +156,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	useEffect(() => {
 		setIsLoading(true);
-	}, [domainsChanged]);
-
-	// Gets metadata for each NFT in domain list
-	useEffect(() => {
-		const loaded: DomainData[] = [];
-
-		// Get metadata
-		const getData = async (domain: Domain) => {
-			try {
-				const [metadata, bids] = await Promise.all([
-					getMetadata(domain.metadata),
-					getBidsForDomain(domain),
-				]);
-
-				if (!metadata) {
-					console.log(`found no metadata for ${domain.id}`);
-					return;
-				}
-
-				// Filter out user's bids if configured to do so
-				let filteredBids;
-				if (hideOwnBids) {
-					filteredBids = bids?.filter(
-						(bid: Bid) => bid.bidderAccount !== userId,
-					);
-				}
-
-				loaded.push({
-					domain: domain,
-					metadata: metadata,
-					bids: filteredBids || bids || [],
-				});
-
-				setData(loaded);
-				setIsLoading(true); //we trigger here the resize on every new fetch
-				setIsLoading(false);
-				
-				if (onLoad) {
-					onLoad();
-				}
-			} catch (e) {}
-		};
-
-		for (let i = 0; i < domains.length; i++) {
-			if (!domains[i].metadata) continue;
-			getData(domains[i]);
-		}
-	}, [domainsChanged]);
+	}, [domains]);
 
 	// Resizes the table container
 	// (The animation is done in CSS)
@@ -217,33 +170,113 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		}
 	}, [isLoading, searchQuery, isGridView]);
 
+	// Gets metadata for each NFT in domain list
 	useEffect(() => {
-		if (domains !== lastDomains || lastDomains === undefined) {
-			setDomainsChanged(true); //triggers refetch
-			setDomainsChanged(false);
-			setLastDomains(domains);
+		// Get metadata
+		let completed = 0;
+		const getData = async (domain: Domain) => {
+			try {
+				const [metadata, bids] = await Promise.all([
+					getMetadata(domain.metadata),
+					getBidsForDomain(domain),
+				]);
+
+				if (!metadata) {
+					console.log(`found no metadata for ${domain.id}`);
+					return;
+				}
+
+				completed++;
+
+				// Filter out user's bids if configured to do so
+				let filteredBids;
+				if (hideOwnBids) {
+					filteredBids = bids?.filter(
+						(bid: Bid) => bid.bidderAccount !== userId,
+					);
+				}
+
+				const loaded = data;
+
+				loaded.push({
+					domain: domain,
+					metadata: metadata,
+					bids: filteredBids || bids || [],
+				});
+
+				setData(loaded);
+
+				setIsLoading(true)
+				setIsLoading(false)
+				setIsLoading(true)
+				setIsLoading(false)
+				setIsLoading(true)
+				setIsLoading(false)
+				setIsLoading(true)
+				setIsLoading(false)
+				
+
+				if (completed === domains.length) {
+					setIsSubscribed(false);
+					if (onLoad) {
+						onLoad();
+					}
+				}
+
+			} catch (e) {}
+		};
+
+		if (isSubscribed === false  && domains.length!){ //if finished before call to all asyncs fetches, and the domains exist
+			setIsSubscribed(true)
+			for (let i = 0; i < domains.length; i++) {
+				if (!domains[i].metadata) continue;
+				getData(domains[i]);
+			}
 		}
+			
 	}, [domains]);
 
 	useEffect(() => {
 		if (!isLoading && onLoad) onLoad();
 	}, [isLoading]);
 
+	useEffect(() => {
+		if (data.length > 3) 
+		feed()
+	}, [isSubscribed]);
+
+    /////////////////////
+	///// Functions /////
+	/////////////////////
+
+	const feed = () => {
+		let cachedData = tableData; //last data feeded
+		for (
+			let i = cachedData.length;
+			i < 5;
+			i++ //adds new chunk of 5 domains
+		)
+			cachedData.push(data[i]);
+
+		setTableData(cachedData); //replace last data feeded with new
+	};
+
 	/////////////////
 	// React Table //
 	/////////////////
+
 
 	const columns = useMemo<Column<DomainData>[]>(
 		() => [
 			{
 				Header: '',
 				id: 'index',
-				accessor: (data: DomainData, i: number) => i + 1,
+				accessor: (tableData: DomainData, i: number) => i + 1,
 			},
 			{
 				Header: () => '',
 				id: 'image',
-				accessor: (data: DomainData) => (
+				accessor: (tableData: DomainData) => (
 					<Image
 						style={{
 							width: 56,
@@ -252,29 +285,29 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							objectFit: 'cover',
 							display: 'block',
 						}}
-						src={data.metadata.image}
+						src={tableData.metadata.image}
 					/>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'left' }}>Domain Name</div>,
 				id: 'domainName',
-				accessor: (data: DomainData) => (
-					<div style={{ textAlign: 'left' }}>{data.domain.name}</div>
+				accessor: (tableData: DomainData) => (
+					<div style={{ textAlign: 'left' }}>{tableData.domain.name}</div>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
 				id: 'highestBid',
-				accessor: (data: DomainData) => (
+				accessor: (tableData: DomainData) => (
 					<div style={{ textAlign: 'right' }}>
-						{data.bids.length > 0 && (
+						{tableData.bids.length > 0 && (
 							<>
 								{Number(
 									Math.max
 										.apply(
 											Math,
-											data.bids.map(function (o: any) {
+											tableData.bids.map(function (o: any) {
 												return o.amount;
 											}),
 										)
@@ -283,41 +316,42 @@ const DomainTable: React.FC<DomainTableProps> = ({
 								WILD
 							</>
 						)}
-						{data.bids.length === 0 && 0}
+						{tableData.bids.length === 0 && 0}
 					</div>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'right' }}>Number Of Bids</div>,
 				id: 'numBids',
-				accessor: (data: DomainData) => (
+				accessor: (tableData: DomainData) => (
 					<div style={{ textAlign: 'right' }}>
-						{Number(data.bids.length).toLocaleString()}
+						{Number(tableData.bids.length).toLocaleString()}
 					</div>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'right' }}>Last Sale Price</div>,
 				id: 'lastSalePrice',
-				accessor: (data: DomainData) => (
+				accessor: (tableData: DomainData) => (
 					<div style={{ textAlign: 'right' }}>
-						{data.bids.length > 0 && (
+						{tableData.bids.length > 0 && (
 							<>
-								{Number(data.bids[0].amount.toFixed(2)).toLocaleString()} WILD
+								{Number(tableData.bids[0].amount.toFixed(2)).toLocaleString()}{' '}
+								WILD
 							</>
 						)}
-						{data.bids.length === 0 && <>-</>}
+						{tableData.bids.length === 0 && <>-</>}
 					</div>
 				),
 			},
 			{
 				Header: () => <div style={{ textAlign: 'center' }}>Trade</div>,
 				id: 'waitlist',
-				accessor: (data: DomainData) => (
+				accessor: (tableData: DomainData) => (
 					<FutureButton
 						style={{ margin: '0 auto' }}
 						glow
-						onClick={() => buttonClick(data)}
+						onClick={() => buttonClick(tableData)}
 					>
 						WAITLIST
 					</FutureButton>
@@ -325,11 +359,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			},
 			{
 				id: 'bid',
-				accessor: (data: DomainData) => {
+				accessor: (tableData: DomainData) => {
 					// @todo this is a temporary fix
 					const shouldGlow = rowButtonText
-						? data.bids.length > 0
-						: data.domain.owner.id?.toLowerCase() !== userId?.toLowerCase();
+						? tableData.bids.length > 0
+						: tableData.domain.owner.id?.toLowerCase() !==
+						  userId?.toLowerCase();
 
 					return (
 						<>
@@ -340,7 +375,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 								<FutureButton
 									style={{ margin: '0 auto', textTransform: 'uppercase' }}
 									glow={shouldGlow}
-									onClick={() => buttonClick(data)}
+									onClick={() => buttonClick(tableData)}
 								>
 									{rowButtonText || 'Make A Bid'}
 								</FutureButton>
@@ -351,7 +386,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			},
 		],
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[mvpVersion, domains, userId, data.length],
+		[mvpVersion, domains, userId, tableData], //when new data its feeded, it rebuilds the table
 	);
 
 	// Navigation Handling
