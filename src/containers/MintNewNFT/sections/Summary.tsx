@@ -37,6 +37,10 @@ const Summary: React.FC<SummaryProps> = ({
 	isMintLoading,
 	domain,
 }) => {
+	let parentDomain;
+	if (domain.substring(1).length > 0) parentDomain = domain.substring(1) + '.';
+	else parentDomain = domain.substring(1);
+
 	if (!token) return <></>;
 
 	return (
@@ -63,7 +67,8 @@ const Summary: React.FC<SummaryProps> = ({
 							<div className={styles.Icon}>
 								<Image alt="address icon" src={addressIcon} />
 							</div>
-							0://wilder.{domain.substring(1)}.{token.domain}
+							0://wilder.{parentDomain}
+							{token.domain}
 						</li>
 						<li style={{ maxHeight: 200, overflowY: 'scroll' }}>
 							<div className={styles.Icon}>
