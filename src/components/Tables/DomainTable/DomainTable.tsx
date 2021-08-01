@@ -212,25 +212,24 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						onLoad();
 					}
 				}
-
 			} catch (e) {}
 		};
 
-		if (isSubscribed === false  && domains.length!){ //if finished before call to all asyncs fetches, and the domains exist
-			setIsSubscribed(true)
+		if (isSubscribed === false && domains.length!) {
+			//if finished before call to all asyncs fetches, and the domains exist
+			setIsSubscribed(true);
 			for (let i = 0; i < domains.length; i++) {
 				if (!domains[i].metadata) continue;
 				getData(domains[i]);
 			}
 		}
-			
 	}, [domains]);
 
 	useEffect(() => {
 		if (!isLoading && onLoad) onLoad();
 	}, [isLoading]);
 
-    /////////////////////
+	/////////////////////
 	///// Functions /////
 	/////////////////////
 
@@ -249,7 +248,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	/////////////////
 	// React Table //
 	/////////////////
-
 
 	const columns = useMemo<Column<DomainData>[]>(
 		() => [
