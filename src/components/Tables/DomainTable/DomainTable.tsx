@@ -212,7 +212,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			} catch (e) {}
 		};
 
-		if (isSubscribed === false && domains.length!) {
+		if (isSubscribed === false && domains.length > 0) {
 			//if finished before call to all asyncs fetches, and the domains exist
 			setIsSubscribed(true);
 			for (let i = 0; i < domains.length; i++) {
