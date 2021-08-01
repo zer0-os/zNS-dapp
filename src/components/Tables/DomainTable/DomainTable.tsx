@@ -255,6 +255,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							borderRadius: isRootDomain ? '50%' : 'calc(var(--box-radius)/2)',
 							objectFit: 'cover',
 							display: 'block',
+							zIndex: 2,
 						}}
 						src={data.metadata.image}
 					/>
