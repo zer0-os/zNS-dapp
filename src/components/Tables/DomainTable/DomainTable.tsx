@@ -206,16 +206,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 				setData(loaded);
 
-				setIsLoading(true)
-				setIsLoading(false)
-				setIsLoading(true)
-				setIsLoading(false)
-				setIsLoading(true)
-				setIsLoading(false)
-				setIsLoading(true)
-				setIsLoading(false)
-				
-
 				if (completed === domains.length) {
 					setIsSubscribed(false);
 					if (onLoad) {
@@ -239,11 +229,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		if (!isLoading && onLoad) onLoad();
 	}, [isLoading]);
-
-	useEffect(() => {
-		if (data.length > 3) 
-		feed()
-	}, [isSubscribed]);
 
     /////////////////////
 	///// Functions /////
