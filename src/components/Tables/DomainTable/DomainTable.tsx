@@ -88,6 +88,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [biddingOn, setBiddingOn] = useState<DisplayDomain | undefined>();
 	const [fetchedData, setFetchedData] = useState<DomainData[]>([]);
 	const [tableData, setTableData] = useState<DomainData[]>([]);
+	const [resizeTrigger, setResizeTrigger] = useState(false);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const chunkLength = 5; //this is the max length of the chunk you want to feed into table when calling Feed()
@@ -164,13 +165,13 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		} else {
 			setContainerHeight(0);
 		}
-	}, [isLoading, searchQuery, isGridView]);
+	}, [isLoading, searchQuery, isGridView, resizeTrigger]);
 
 	// Gets metadata for each NFT in domain list
 	useEffect(() => {
 		// Get metadata
 		let completed = 0;
-		let isSubscribed = true
+		let isSubscribed = true;
 		const getData = async (domain: Domain) => {
 			try {
 				const [metadata, bids] = await Promise.all([
@@ -200,7 +201,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				}
 
 				const loaded = fetchedData;
-				console.log("fetched")
 
 				loaded.push({
 					domain: domain,
@@ -210,7 +210,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 				setFetchedData(loaded);
 
-
+				if (completed === chunkLength) { //feed first chunk
+					feed()
+				}
 			} catch (e) {}
 		};
 
@@ -235,30 +237,28 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	/////////////////////
 
 	//function for Brett to test with new UI changes
+	//this will be called when user reachs the bottom of the page, and will be called when we have the first chunk loaded
 
 	const feed = () => {
-		const cachedData = tableData; //last data feeded
+		setIsLoading(false);
 
-		const lengthDiff = fetchedData.length - cachedData.length
-		const feedIteration =  lengthDiff < chunkLength ? lengthDiff : chunkLength //how many data we need to feed, based on the fetched data we have
-		
-		for (
-			let i = cachedData.length;
-			i < feedIteration;
-			i++ 
-		){
+		const cachedData = tableData; //last data feeded
+		const lengthDiff = fetchedData.length - cachedData.length;
+		const feedIteration = lengthDiff < chunkLength ? lengthDiff : chunkLength; //how many data we need to feed, based on the fetched data we have
+		for (let i = cachedData.length; i < feedIteration; i++) {
 			cachedData.push(fetchedData[i]);
 		}
-			
-
 		setTableData(cachedData); //replace last data feeded with new
+
+		setResizeTrigger(true);
+		setResizeTrigger(false); //trigger resize after feed
 	};
 
 	/////////////////
 	// React Table //
 	/////////////////
 
-	const data = React.useMemo(() => tableData, [tableData]);
+	const data = React.useMemo(() => tableData, [tableData.length]); //if you feed then the data of the table changes
 
 	const columns = useMemo<Column<DomainData>[]>(
 		() => [
@@ -380,7 +380,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			},
 		],
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[mvpVersion, domains, userId, tableData], //when new data its feeded, it rebuilds the table
+		[mvpVersion, domains, userId, tableData.length], //when new data its feeded, it rebuilds the table
 	);
 
 	// Navigation Handling
