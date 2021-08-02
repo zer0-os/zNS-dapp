@@ -86,12 +86,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [searchQuery, setSearchQuery] = useState('');
 	const [modal, setModal] = useState<Modals | undefined>();
 	const [biddingOn, setBiddingOn] = useState<DisplayDomain | undefined>();
-	const [data, setData] = useState<DomainData[]>([]);
+	const [fetchedData, setFetchedData] = useState<DomainData[]>([]);
 	const [tableData, setTableData] = useState<DomainData[]>([]);
-	const [isSubscribed, setIsSubscribed] = useState(false);
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const chunkLength = 5;
+	const chunkLength = 5; //this is the max length of the chunk you want to feed into table when calling Feed()
 	///////////////
 	// Functions //
 	///////////////
@@ -171,6 +170,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		// Get metadata
 		let completed = 0;
+		let isSubscribed = true
 		const getData = async (domain: Domain) => {
 			try {
 				const [metadata, bids] = await Promise.all([
@@ -181,7 +181,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				completed++;
 
 				if (completed === domains.length) {
-					setIsSubscribed(false);
 					if (onLoad) {
 						onLoad();
 					}
@@ -192,8 +191,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					return;
 				}
 
-
-
 				// Filter out user's bids if configured to do so
 				let filteredBids;
 				if (hideOwnBids) {
@@ -202,7 +199,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					);
 				}
 
-				const loaded = data;
+				const loaded = fetchedData;
+				console.log("fetched")
 
 				loaded.push({
 					domain: domain,
@@ -210,20 +208,22 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					bids: filteredBids || bids || [],
 				});
 
-				setData(loaded);
+				setFetchedData(loaded);
 
 
 			} catch (e) {}
 		};
 
-		if (isSubscribed === false && domains.length > 0) {
-			//if finished before call to all asyncs fetches, and the domains exist
-			setIsSubscribed(true);
+		if (domains.length > 0) {
 			for (let i = 0; i < domains.length; i++) {
 				if (!domains[i].metadata) continue;
 				getData(domains[i]);
 			}
 		}
+
+		return () => {
+			isSubscribed = false;
+		};
 	}, [domains]);
 
 	useEffect(() => {
@@ -234,18 +234,22 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	///// Functions /////
 	/////////////////////
 
-	const feed = () => {
-		let cachedData = tableData; //last data feeded
+	//function for Brett to test with new UI changes
 
-		let lengthDiff = data.length - cachedData.length
-		let feetIteration =  lengthDiff < chunkLength ? lengthDiff : chunkLength //how many data we need to feed, based on the fetched data we have
+	const feed = () => {
+		const cachedData = tableData; //last data feeded
+
+		const lengthDiff = fetchedData.length - cachedData.length
+		const feedIteration =  lengthDiff < chunkLength ? lengthDiff : chunkLength //how many data we need to feed, based on the fetched data we have
 		
 		for (
 			let i = cachedData.length;
-			i < feetIteration;
-			i++ //adds new chunk of 5 domains
-		)
-			cachedData.push(data[i]);
+			i < feedIteration;
+			i++ 
+		){
+			cachedData.push(fetchedData[i]);
+		}
+			
 
 		setTableData(cachedData); //replace last data feeded with new
 	};
@@ -253,6 +257,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	/////////////////
 	// React Table //
 	/////////////////
+
+	const data = React.useMemo(() => tableData, [tableData]);
 
 	const columns = useMemo<Column<DomainData>[]>(
 		() => [
