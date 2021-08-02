@@ -155,11 +155,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		setIsLoading(true);
 	}, [domains]);
 
-	useEffect(() => {
-		console.log('domains changes');
-		console.log(domains);
-	}, [domains]);
-
 	// Resizes the table container
 	// (The animation is done in CSS)
 	useEffect(() => {
