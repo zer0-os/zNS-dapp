@@ -171,7 +171,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		// Get metadata
 		let completed = 0;
-		let isSubscribed = true;
+
 		const getData = async (domain: Domain) => {
 			try {
 				const [metadata, bids] = await Promise.all([
@@ -223,9 +223,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			}
 		}
 
-		return () => {
-			isSubscribed = false;
-		};
 	}, [domains]);
 
 	useEffect(() => {
