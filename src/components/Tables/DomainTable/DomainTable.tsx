@@ -91,7 +91,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [resizeTrigger, setResizeTrigger] = useState(false);
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const firstChunkLength = 5; //this is the length of the first chunk page will load when fetched
+	const firstChunkLength = 5; //this is the length of the first chunk that needs to be feeded as soon as fetched
 	///////////////
 	// Functions //
 	///////////////
@@ -156,8 +156,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	}, [domains]);
 
 	useEffect(() => {
-		console.log("domains changes")
-		console.log(domains)
+		console.log('domains changes');
+		console.log(domains);
 	}, [domains]);
 
 	// Resizes the table container
@@ -175,6 +175,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	// Gets metadata for each NFT in domain list
 	useEffect(() => {
 		// Get metadata
+		setTableData([]); //reset data when domains changes
+		setFetchedData([]);
 		let completed = 0;
 		const getData = async (domain: Domain) => {
 			try {
@@ -212,23 +214,20 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					bids: filteredBids || bids || [],
 				});
 
-				if(completed <= firstChunkLength) //first chunk will be feeded as soon as its fetched
-				feed()
+				if (completed <= firstChunkLength)
+					//first chunk will be feeded as soon as its fetched
+					feed();
 
 				setFetchedData(loaded);
-
 			} catch (e) {}
 		};
 
 		if (domains.length > 0) {
-			setTableData([]) //reset data when domains changes
-			setFetchedData([])
 			for (let i = 0; i < domains.length; i++) {
 				if (!domains[i].metadata) continue;
 				getData(domains[i]);
 			}
 		}
-
 	}, [domains]); //@todo: page will change 3 times the domains at start, need to fix that
 
 	useEffect(() => {
@@ -239,9 +238,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	///// Functions /////
 	/////////////////////
 
-	//function for Brett to test with new UI changes
-	//this will be called when user reachs the bottom of the page, and will be called when we have the first chunk loaded
-	//on every call it feed one domain
+	//Function for Brett to test with new UI changes
+	//This will be called when user reachs the bottom of the page, and will be called until we have the first chunk loadedat start
+	//On each call it feed one domain
 
 	const feed = () => {
 		setIsLoading(false);
