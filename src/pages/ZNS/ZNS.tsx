@@ -121,7 +121,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Minting State
 	const { minting, minted } = useMintProvider();
 	const { enlisting, enlist, clear } = useEnlist();
-	const { transferring } = useTransferProvider();
+	const { transferring, transferred } = useTransferProvider();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -193,13 +193,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	useEffect(() => {
 		domainContext.refetchDomain();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [minted]);
+		// TODO: Should reload domain when transferred to get new owner
+	}, [minted, transferred]);
 
 	useEffect(() => {
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
 	//- Effects
@@ -283,11 +282,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 				<TransferOwnership
 					image={previewMetadata?.image || ''}
 					name={previewMetadata?.title || ''}
-					domain={domain}
+					domainName={domain}
+					domainId={!data.isNothing() ? data.value.id : ''}
 					onModalChange={(value) => setIsTransferModalOpen(value)}
 					creatorId={
-						!data.isNothing() && data.value.minter && data.value.minter.id
+						!data.isNothing() && data.value?.minter?.id
 							? data.value.minter.id
+							: ''
+					}
+					ownerId={
+						!data.isNothing() && data.value?.owner?.id
+							? data.value.owner.id
 							: ''
 					}
 				/>
@@ -356,7 +361,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									)}
 
 									{/* Transfer Progress button */}
-									{(transferring.length > 0) && (
+									{transferring.length > 0 && (
 										<Tooltip content={<TransferPreview />}>
 											<NumberButton
 												rotating={transferring.length > 0}

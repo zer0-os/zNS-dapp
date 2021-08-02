@@ -19,15 +19,15 @@ const TransferPreview = () => {
 			<hr className="glow" />
 			<div>
 				<div className={`${styles.Image} border-rounded`}>
-					<Link to={`${nft.domain}`}>
+					<Link to={`${nft.domainName}`}>
 						<Image src={nft.image} />
 					</Link>
 				</div>
 				<div className={styles.Info}>
 					<h5 className="glow-text-blue">{nft.name}</h5>
 
-					<Link style={{ color: 'white' }} to={`${nft.domain}`}>
-						{nft.domain.substring(1)}
+					<Link style={{ color: 'white' }} to={`${nft.domainName}`}>
+						{nft.domainName.substring(1)}
 					</Link>
 
 					<p>is being transferred to:</p>

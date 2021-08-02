@@ -17,16 +17,20 @@ import { Member } from '../../components';
 type TransferOwnershipProps = {
 	name: string;
 	image: string;
-	domain: string;
+	domainName: string;
+	domainId: string;
 	creatorId: string;
+	ownerId: string;
 	onModalChange: (arg: boolean) => void;
 };
 
 const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 	image,
 	name,
-	domain,
+	domainName,
+	domainId,
 	creatorId,
+	ownerId,
 	onModalChange,
 }) => {
 	// State
@@ -34,7 +38,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 	const [hasAccepted, setHasAccepted] = useState(false); // Toggle confirmation overlay
 
 	// Provider
-	const { submit } = useTransferProvider();
+	const { transferRequest } = useTransferProvider();
 
 	// Form validation
 	const isEthAddress = (text: string) =>
@@ -47,12 +51,14 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 	const submitTransfer = () => {
 		onModalChange(false);
 
-		submit({
+		transferRequest({
 			name,
 			image,
-			domain,
+			domainName,
+			domainId,
+			ownerId,
 			creatorId,
-			walletAddress
+			walletAddress,
 		});
 	};
 
@@ -67,7 +73,10 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 				>
 					<h2 className="glow-text-white">Are You Sure?</h2>
 					<hr className="glow" />
-					<p>This transaction is about to be seared upon the Blockchain. There’s no going back.</p>
+					<p>
+						This transaction is about to be seared upon the Blockchain. There’s
+						no going back.
+					</p>
 					<div className={styles.Buttons}>
 						<FutureButton
 							style={{ textTransform: 'uppercase' }}
@@ -88,10 +97,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 				</div>
 			</Overlay>
 
-			<Overlay
-				open={!hasAccepted}
-				onClose={() => onModalChange(false)}
-			>
+			<Overlay open={!hasAccepted} onClose={() => onModalChange(false)}>
 				<div
 					className={`${styles.TransferOwnership} blur border-rounded border-primary`}
 				>
@@ -112,7 +118,9 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 						<div className={styles.Details}>
 							<h2 className="glow-text-white">{name}</h2>
 							<span>
-								{domain.length > 0 ? `0://wilder.${domain.substring(1)}` : ''}
+								{domainName.length > 0
+									? `0://wilder.${domainName.substring(1)}`
+									: ''}
 							</span>
 
 							<div className={styles.Price}>

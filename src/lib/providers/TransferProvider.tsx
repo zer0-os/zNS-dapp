@@ -1,12 +1,21 @@
 //- React Imports
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 //- Type Imports
 import useNotification from 'lib/hooks/useNotification';
 
+//- Lib
+import { useZnsContracts } from 'lib/contracts';
+
+//- Web3 Imports
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+
 export interface TransferSubmitParams {
 	name: string;
-	domain: string; // domain label
+	domainId: string;
+	domainName: string;
+	ownerId: string;
 	image: string;
 	creatorId: string;
 	walletAddress: string;
@@ -15,7 +24,7 @@ export interface TransferSubmitParams {
 export const TransferContext = React.createContext({
 	transferring: [{}],
 	transferred: [{}],
-	submit: (params: TransferSubmitParams) => {},
+	transferRequest: (params: TransferSubmitParams) => {},
 });
 
 type TransferProviderType = {
@@ -26,36 +35,52 @@ const TransferProvider: React.FC<TransferProviderType> = ({ children }) => {
 	const { addNotification } = useNotification();
 	const [transferring, setTransferring] = useState<TransferSubmitParams[]>([]);
 	const [transferred, setTransferred] = useState<TransferSubmitParams[]>([]);
-	const [
-		finishedTransferring,
-		setFinishedTransferring,
-	] = useState<TransferSubmitParams | null>(null);
 
-	const submit = async (params: TransferSubmitParams) => {
-		addNotification(`Started transfer`);
-		setTransferring([...transferring, params]);
+	const registryContract = useZnsContracts()!.registry;
+	//- Web3 Wallet Data
+	const walletContext = useWeb3React<Web3Provider>();
+	const { account } = walletContext;
 
-		// TODO: Back end transfer request.
-		const transfer = async () => {
-			setFinishedTransferring(params);
-		};
-
-		await transfer();
-	};
-
-	useEffect(() => {
-		if (finishedTransferring) {
-			addNotification(`Ownership of "${finishedTransferring.name}" has been transferred`);
-			setTransferring(transferring.filter((n) => n !== finishedTransferring));
-			setTransferred([...transferred, finishedTransferring]);
+	const transferRequest = async (params: TransferSubmitParams) => {
+		if (!account) {
+			console.error('No wallet detected');
+			return;
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [finishedTransferring]);
+		if (account.toLowerCase() !== params.ownerId.toLowerCase()) {
+			console.error('You are not the owner');
+			return;
+		}
+
+		try {
+			const tx = await registryContract.transferFrom(
+				account,
+				params.walletAddress,
+				params.domainId,
+			);
+
+			addNotification(`Started transfer`);
+			setTransferring([...transferring, params]);
+
+			tx.wait()
+				.then(async (r) => {
+					addNotification(`Ownership of "${params.name}" has been transferred`);
+					setTransferring(transferring.filter((n) => n !== params));
+					setTransferred([...transferred, params]);
+				})
+				.catch((e) => {
+					console.log(e);
+				});
+
+			return tx;
+		} catch (err) {
+			addNotification('Encountered an error while attempting to transfer.');
+		}
+	};
 
 	const contextValue = {
 		transferring,
 		transferred,
-		submit
+		transferRequest
 	};
 
 	return (
@@ -68,6 +93,6 @@ const TransferProvider: React.FC<TransferProviderType> = ({ children }) => {
 export default TransferProvider;
 
 export function useTransferProvider() {
-	const { transferring, submit, transferred } = React.useContext(TransferContext);
-	return { transferring, submit, transferred };
+	const { transferring, transferRequest, transferred } = React.useContext(TransferContext);
+	return { transferring, transferRequest, transferred };
 }
