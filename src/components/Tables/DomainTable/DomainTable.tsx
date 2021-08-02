@@ -91,7 +91,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [resizeTrigger, setResizeTrigger] = useState(false);
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const chunkLength = 5; //this is the max length of the chunk you want to feed into table when calling Feed()
+	const firstChunkLength = 5; //this is the length of the first chunk page will load when fetched
 	///////////////
 	// Functions //
 	///////////////
@@ -155,6 +155,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		setIsLoading(true);
 	}, [domains]);
 
+	useEffect(() => {
+		console.log("domains changes")
+		console.log(domains)
+	}, [domains]);
+
 	// Resizes the table container
 	// (The animation is done in CSS)
 	useEffect(() => {
@@ -171,7 +176,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		// Get metadata
 		let completed = 0;
-
 		const getData = async (domain: Domain) => {
 			try {
 				const [metadata, bids] = await Promise.all([
@@ -208,22 +212,24 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					bids: filteredBids || bids || [],
 				});
 
+				if(completed <= firstChunkLength) //first chunk will be feeded as soon as its fetched
+				feed()
+
 				setFetchedData(loaded);
 
-				if (completed === chunkLength) { //feed first chunk
-					feed()
-				}
 			} catch (e) {}
 		};
 
 		if (domains.length > 0) {
+			setTableData([]) //reset data when domains changes
+			setFetchedData([])
 			for (let i = 0; i < domains.length; i++) {
 				if (!domains[i].metadata) continue;
 				getData(domains[i]);
 			}
 		}
 
-	}, [domains]);
+	}, [domains]); //@todo: page will change 3 times the domains at start, need to fix that
 
 	useEffect(() => {
 		if (!isLoading && onLoad) onLoad();
@@ -235,16 +241,15 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	//function for Brett to test with new UI changes
 	//this will be called when user reachs the bottom of the page, and will be called when we have the first chunk loaded
+	//on every call it feed one domain
 
 	const feed = () => {
 		setIsLoading(false);
 
 		const cachedData = tableData; //last data feeded
-		const lengthDiff = fetchedData.length - cachedData.length;
-		const feedIteration = lengthDiff < chunkLength ? lengthDiff : chunkLength; //how many data we need to feed, based on the fetched data we have
-		for (let i = cachedData.length; i < feedIteration; i++) {
-			cachedData.push(fetchedData[i]);
-		}
+
+		cachedData.push(fetchedData[cachedData.length]);
+
 		setTableData(cachedData); //replace last data feeded with new
 
 		setResizeTrigger(true);
