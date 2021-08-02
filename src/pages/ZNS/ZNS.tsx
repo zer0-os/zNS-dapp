@@ -20,7 +20,12 @@ import { getMetadata } from 'lib/metadata';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Type Imports
-import { Metadata, DisplayDomain, DisplayParentDomain } from 'lib/types';
+import {
+	Metadata,
+	DisplayDomain,
+	DisplayParentDomain,
+	NftParams,
+} from 'lib/types';
 
 //- Style Imports
 import styles from './ZNS.module.css';
@@ -192,6 +197,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	useEffect(() => {
 		pageHistory.current = pageHistory.current.concat([domain]);
 	}, [domain]);
+
+	useEffect(() => {
+		try {
+			const d = minted[minted.length - 1] as NftParams;
+			const newDomain = `${d.zna === '/' ? d.zna : d.zna + '.'}${d.domain}`;
+			history.push(newDomain);
+		} catch (e) {
+			console.error('Failed to find newly minted zNA');
+		}
+	}, [minted]);
 
 	// Respond to ?view query param change
 	useEffect(() => setIsNftView(nftView), [nftView]);
