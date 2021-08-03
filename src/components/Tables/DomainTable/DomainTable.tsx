@@ -12,6 +12,7 @@ import {
 } from 'components';
 import { MakeABid } from 'containers';
 import HighestBid from './HighestBid';
+import NumBids from './NumBids';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
@@ -160,10 +161,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	useEffect(() => {
-		setIsLoading(false);
-	}, [domains]);
-
 	// Resizes the table container
 	// (The animation is done in CSS)
 	useEffect(() => {
@@ -177,8 +174,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	}, [isLoading, searchQuery, isGridView, domains]);
 
 	useEffect(() => {
-		if (!isLoading && onLoad) onLoad();
-	}, [isLoading]);
+		setIsLoading(false);
+	}, [domains]);
 
 	/////////////////
 	// React Table //
@@ -209,7 +206,16 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				id: 'highestBid',
 				accessor: (domain: Domain) => (
 					<div style={{ textAlign: 'right' }}>
-						<HighestBid domainId={domain.id} />
+						<HighestBid domain={domain} />
+					</div>
+				),
+			},
+			{
+				Header: () => <div style={{ textAlign: 'right' }}>Num. Bids</div>,
+				id: 'numBids',
+				accessor: (domain: Domain) => (
+					<div style={{ textAlign: 'right' }}>
+						<NumBids domain={domain} />
 					</div>
 				),
 			},
