@@ -8,11 +8,10 @@ import {
 	FutureButton,
 	IconButton,
 	SearchBar,
-	Image,
-	NFTCard,
 	Overlay,
 } from 'components';
 import { MakeABid } from 'containers';
+import HighestBid from './HighestBid';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
@@ -24,8 +23,6 @@ import {
 	DomainHighestBid,
 	Metadata,
 } from 'lib/types';
-import { getMetadata } from 'lib/metadata';
-import { useBidProvider } from 'lib/providers/BidProvider';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Style Imports
@@ -81,10 +78,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	userId,
 }) => {
 	const { mvpVersion } = useMvpVersion();
-	const { getBidsForDomain } = useBidProvider();
-
-	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
-	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 
 	const [containerHeight, setContainerHeight] = useState(0);
@@ -92,8 +85,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	const [modal, setModal] = useState<Modals | undefined>();
 	const [biddingOn, setBiddingOn] = useState<DisplayDomain | undefined>();
-
-	const [loadedDomains, setLoadedDomains] = useState<DomainData[]>([]);
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -217,7 +208,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
 				id: 'highestBid',
 				accessor: (domain: Domain) => (
-					<div style={{ textAlign: 'right' }}></div>
+					<div style={{ textAlign: 'right' }}>
+						<HighestBid domainId={domain.id} />
+					</div>
 				),
 			},
 		],
