@@ -49,6 +49,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 			<div className={`${styles.Artwork} ${styles.Pending}`}>
 				<div className={styles.Image}>
 					<Image
+						style={{ zIndex: 2 }}
 						onClick={() => console.warn('Member clicks not yet implemented')}
 						src={image || metadata?.image || ''}
 					/>
