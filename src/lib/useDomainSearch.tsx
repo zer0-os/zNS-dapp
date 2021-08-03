@@ -1,10 +1,10 @@
 import React from 'react';
-import { getDomainId, rootDomainName } from './domains';
+import { getDomainId, rootDomainName } from './utils/domains';
 import { DisplayParentDomain, ParentDomain } from './types';
 import {
-	useQueryDomainsNameContain,
-	useQueryForDomainById,
-} from './useDomainStore';
+	useDomainByIdQuery,
+	useDomainsByNameContainsQuery,
+} from './hooks/zNSDomainHooks';
 
 interface DomainSearch {
 	exactMatch?: DisplayParentDomain;
@@ -14,42 +14,45 @@ interface DomainSearch {
 
 export function useDomainSearch() {
 	const [pattern, setPattern] = React.useState('');
-	const [exactMatch, setExactMatch] =
-		React.useState<DisplayParentDomain | undefined>(undefined);
+	const [exactMatch, setExactMatch] = React.useState<
+		DisplayParentDomain | undefined
+	>(undefined);
 	const [matches, setMatches] = React.useState<DisplayParentDomain[]>([]);
 
 	const id = getDomainId(pattern);
 
-	const { dataDomain: exactData } = useQueryForDomainById(id);
+	const byIdQuery = useDomainByIdQuery(id);
+	const exactDomain = byIdQuery.data;
 
 	// `id` is already relative but we need to search relative
-	const { data: matchesData } = useQueryDomainsNameContain(
+	const byNameContainsQuery = useDomainsByNameContainsQuery(
 		`${rootDomainName}.%${pattern}`,
 	);
+	const fuzzyMatch = byNameContainsQuery.data;
 
 	React.useEffect(() => {
 		let exactMatch: DisplayParentDomain | undefined = undefined;
 
-		if (exactData && exactData.domains) {
+		if (exactDomain && exactDomain.domain) {
 			exactMatch = {
-				...exactData.domains[0],
+				...exactDomain.domain,
 			} as DisplayParentDomain;
 		}
 
 		setExactMatch(exactMatch);
-	}, [exactData]);
+	}, [exactDomain]);
 
 	React.useEffect(() => {
 		let matches: DisplayParentDomain[] = [];
 
-		if (matchesData && matchesData.domains) {
-			matches = matchesData.domains.map((e: ParentDomain) => {
+		if (fuzzyMatch && fuzzyMatch.domains) {
+			matches = fuzzyMatch.domains.map((e: ParentDomain) => {
 				return { ...e } as DisplayParentDomain;
 			});
 		}
 
 		setMatches(matches);
-	}, [matchesData]);
+	}, [fuzzyMatch]);
 
 	return {
 		exactMatch,

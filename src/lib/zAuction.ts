@@ -1,13 +1,4 @@
 import { ethers } from 'ethers';
-import { useZnsContracts } from 'lib/contracts';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-
-const apiEndpoint = getApiEndpoint(); //'https://zproxy.ilios.dev/api';
-
-const encodeBidEndpoint = `${apiEndpoint}/bid/`;
-const bidsEndpoint = `${apiEndpoint}/bids/`;
-const bidListEndpoint = `${bidsEndpoint}lists?`;
-const accountBidsEndpoint = `${bidsEndpoint}accounts/`;
 
 export interface NftIdBidsDto {
 	account: string;
@@ -59,29 +50,18 @@ interface BidPostInterface {
 	signedMessage: string;
 }
 
-interface BidAcceptInterface {
-	signedMessage: string;
-	auctionId: string;
-	account: string;
-	bidAmount: string;
-	contractAddress: string;
-	tokenId: string;
-	minimumBid: string;
-	startBlock: string;
-	expireBlock: string;
-}
+function getApiEndpoints(baseApiUri: string) {
+	const encodeBidEndpoint = `${baseApiUri}/bid/`;
+	const bidsEndpoint = `${baseApiUri}/bids/`;
+	const bidListEndpoint = `${baseApiUri}lists?`;
+	const accountBidsEndpoint = `${baseApiUri}accounts/`;
 
-function getApiEndpoint() {
-	// const chainSelector = useChainSelector();
-	let chain = 42; //useChainSelector().selectedChain;
-	switch (chain) {
-		case 1:
-			return 'https://zproduction.ilios.dev/api';
-		case 42:
-			return 'https://zproxy.ilios.dev/api';
-		default:
-			return 'Unsupported Chain';
-	}
+	return {
+		encodeBidEndpoint,
+		bidsEndpoint,
+		bidListEndpoint,
+		accountBidsEndpoint,
+	};
 }
 
 function getNftId(contract: string, tokenId: string) {
@@ -91,10 +71,14 @@ function getNftId(contract: string, tokenId: string) {
 	return nftId;
 }
 
-export async function getBidsForNft(contract: string, tokenId: string) {
+export async function getBidsForNft(
+	baseApiUri: string,
+	contract: string,
+	tokenId: string,
+) {
 	const nftId = getNftId(contract, tokenId);
-
-	const response = await fetch(`${bidsEndpoint}${nftId}`, {
+	let endpoints = getApiEndpoints(baseApiUri);
+	const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
 		method: 'GET',
 	});
 
@@ -103,18 +87,22 @@ export async function getBidsForNft(contract: string, tokenId: string) {
 	return bids;
 }
 
-export async function getBidsForAccount(id: string) {
-	const response = await fetch(accountBidsEndpoint + id);
+export async function getBidsForAccount(baseApiUri: string, id: string) {
+	let endpoints = getApiEndpoints(baseApiUri);
+	const response = await fetch(endpoints.accountBidsEndpoint + id);
 	const bids = (await response.json()) as AccountBidsDto[];
 	return bids;
 }
 
-async function encodeBid(bid: BidPayloadPostInterface): Promise<CreateBidDto> {
+async function encodeBid(
+	baseApiUri: string,
+	bid: BidPayloadPostInterface,
+): Promise<CreateBidDto> {
 	if (!ethers.utils.isAddress(bid.contractAddress)) {
 		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
-
-	const response = await fetch(encodeBidEndpoint, {
+	let endpoints = getApiEndpoints(baseApiUri);
+	const response = await fetch(endpoints.encodeBidEndpoint, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(bid),
@@ -124,12 +112,16 @@ async function encodeBid(bid: BidPayloadPostInterface): Promise<CreateBidDto> {
 	return data;
 }
 
-async function sendBid(nftId: string, bid: BidPostInterface) {
+async function sendBid(
+	baseApiUri: string,
+	nftId: string,
+	bid: BidPostInterface,
+) {
 	if (!ethers.utils.isAddress(bid.contractAddress)) {
 		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
-
-	await fetch(`${bidsEndpoint}${nftId}`, {
+	let endpoints = getApiEndpoints(baseApiUri);
+	await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(bid),
@@ -137,6 +129,7 @@ async function sendBid(nftId: string, bid: BidPostInterface) {
 }
 
 export async function placeBid(
+	baseApiUri: string,
 	provider: ethers.providers.Web3Provider,
 	contract: string,
 	tokenId: string,
@@ -147,7 +140,7 @@ export async function placeBid(
 	const startBlock = '0';
 	const expireBlock = '999999999999';
 
-	const bidData = await encodeBid({
+	const bidData = await encodeBid(baseApiUri, {
 		contractAddress: contract,
 		tokenId,
 		bidAmount: amount,
@@ -160,7 +153,7 @@ export async function placeBid(
 		ethers.utils.arrayify(bidData.payload),
 	);
 
-	await sendBid(bidData.nftId, {
+	await sendBid(baseApiUri, bidData.nftId, {
 		account: await provider.getSigner().getAddress(),
 		auctionId: bidData.auctionId.toString(),
 		tokenId,

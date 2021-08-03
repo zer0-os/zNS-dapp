@@ -6,13 +6,11 @@ import { Spring, animated } from 'react-spring';
 import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
-import { useDomainCache } from 'lib/useDomainCache';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
 
 //- Library Imports
-import { Maybe } from 'true-myth';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { randomNumber } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
@@ -54,6 +52,8 @@ import {
 } from 'components';
 
 import { MintNewNFT, NFTView, MakeABid } from 'containers';
+import { getDomainId } from 'lib/utils';
+import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 
 type ZNSProps = {
 	domain: string;
@@ -83,9 +83,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	}, [chainId]);
 
 	//- Domain Data
-	const { useDomain } = useDomainCache();
-	const domainContext = useDomain(domain.substring(1));
-	const data: Maybe<DisplayParentDomain> = domainContext.data;
+	const domainId = getDomainId(domain.substring(1));
+	const znsDomain = useZnsDomain(domainId);
+	const loading = znsDomain.loading;
+
 	const [previewMetadata, setPreviewMetadata] = useState<Metadata | undefined>(
 		undefined,
 	);
@@ -103,16 +104,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	// Force to go back to home if invalid domain
 	React.useEffect(() => {
-		if (data.isNothing()) {
-			history.push('/');
-			return;
+		if (!loading) {
+			if (!znsDomain.domain) {
+				console.log(`invalid domain, returning to home`);
+				history.push('/');
+				return;
+			}
 		}
-
-		if (!data.isNothing() && data.value === undefined) {
-			history.push('/');
-			return;
-		}
-	}, [data]);
+	}, [znsDomain.domain, loading]);
 
 	//- Minting State
 	const { minting, minted } = useMintProvider();
@@ -142,12 +141,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	//- Data
 	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
-	const isRoot = domain === '/' || (!data.isNothing() && !data.value.parent);
+	const isRoot: boolean =
+		domain === '/' || (znsDomain.domain ? !znsDomain.domain.parent : false);
 
 	// @TODO: We shouldn't need to filter out non-ipfs.io metadata URIs when we reset data
 	const subdomains =
-		!data.isNothing() && data.value.subdomains
-			? data.value.subdomains.filter(
+		znsDomain.domain && znsDomain.domain.subdomains
+			? znsDomain.domain.subdomains.filter(
 					(d: any) => d.metadata && d.metadata.indexOf('ipfs.io') > -1,
 			  )
 			: [];
@@ -171,7 +171,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	};
 
 	const openBidOverlay = () => {
-		if (data.isNothing()) return;
+		if (!znsDomain.domain) return;
 		setIsBidOverlayOpen(true);
 	};
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
@@ -184,10 +184,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 		pageHistory.current = pageHistory.current.concat([domain]);
 	}, [domain]);
 
-	useEffect(() => {
-		domainContext.refetchDomain();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [minted]);
+	// useEffect(() => {
+	// 	domainContext.refetchDomain();
+	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
+	// }, [minted]);
 
 	useEffect(() => {
 		if (triedEagerConnect)
@@ -198,22 +198,22 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	//- Effects
 	useEffect(() => {
 		// TODO: Clean this whole hook up
-		if (data.isNothing()) setTableData([]);
+		if (!znsDomain.domain) setTableData([]);
 		else {
 			// Set the domain data for table view
 			setTableData(subdomains);
 
 			const shouldGetMetadata =
-				data.isJust() &&
-				data.value.subdomains.length > 0 &&
-				data.value.metadata;
+				znsDomain.domain &&
+				znsDomain.domain.subdomains.length > 0 &&
+				znsDomain.domain.metadata;
 
 			//- Note:
 			// We're checking subdomains here, because we want to defer the IPFS
 			// call to NFT View to prevent unneeded IPFS calls
 			// Get the data for Preview Card
 			if (shouldGetMetadata) {
-				getMetadata(data.value.metadata).then((d) => {
+				getMetadata(znsDomain.domain.metadata).then((d) => {
 					if (!d) return;
 					setPreviewMetadata(d);
 					setIsLoading(false);
@@ -223,7 +223,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 			setHasLoaded(true);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data, hasLoaded]);
+	}, [znsDomain.domain, hasLoaded]);
 
 	useEffect(() => {
 		setTableData([]);
@@ -239,9 +239,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 		<>
 			{/* Overlays */}
 			<NotificationDrawer />
-			{data.isJust() && (
+			{znsDomain.domain && (
 				<Overlay onClose={closeBidOverlay} centered open={isBidOverlayOpen}>
-					<MakeABid domain={data.value} onBid={closeBidOverlay} />
+					<MakeABid domain={znsDomain.domain} onBid={closeBidOverlay} />
 				</Overlay>
 			)}
 			<Overlay style={{ zIndex: 0 }} open={isSearchActive} onClose={() => {}}>
@@ -261,8 +261,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 					<MintNewNFT
 						onMint={() => setIsMintOverlayOpen(false)}
 						domainName={domain}
-						domainId={!data.isNothing() ? data.value.id : ''}
-						domainOwner={!data.isNothing() ? data.value.owner.id : ''}
+						domainId={znsDomain.domain ? znsDomain.domain.id : ''}
+						domainOwner={znsDomain.domain ? znsDomain.domain.owner.id : ''}
 					/>
 				</Overlay>
 			)}
@@ -439,18 +439,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									domain={domain}
 									description={previewMetadata?.description || ''}
 									creatorId={
-										!data.isNothing() &&
-										data.value.minter &&
-										data.value.minter.id
-											? data.value.minter.id
+										znsDomain.domain &&
+										znsDomain.domain.minter &&
+										znsDomain.domain.minter.id
+											? znsDomain.domain.minter.id
 											: ''
 									}
 									disabled={
-										data.isJust() &&
-										data?.value?.owner?.id.toLowerCase() ===
-											account?.toLowerCase()
+										znsDomain.domain?.owner?.id.toLowerCase() ===
+										account?.toLowerCase()
 									}
-									ownerId={!data.isNothing() ? data.value.owner.id : ''}
+									ownerId={znsDomain.domain ? znsDomain.domain.owner.id : ''}
 									isLoading={isLoading}
 									mvpVersion={mvpVersion}
 									onButtonClick={openBidOverlay}
@@ -508,7 +507,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									domains={tableData}
 									isRootDomain={isRoot}
 									style={{ marginTop: 16 }}
-									empty={!data.isNothing() && subdomains.length === 0}
+									empty={
+										(znsDomain.domain && subdomains.length === 0) as boolean
+									}
 									isGridView={isGridView}
 									setIsGridView={setIsGridView}
 									userId={account as string}
@@ -518,7 +519,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 					</Spring>
 				)}
 
-				{!data.isNothing() && (isNftView || subdomains.length === 0) && (
+				{znsDomain.domain && (isNftView || subdomains.length === 0) && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 						{(styles) => (
 							<animated.div style={styles}>

@@ -77,14 +77,13 @@ const requestsForDomainsByOwner = gql`
 
 export function useRequestsForOwnedDomains(account: string | undefined) {
 	const refreshToken = useRefreshToken();
-	const [
-		getOwned,
-		{ data, error, refetch, called },
-	] = useLazyQuery<RequestsForOwner>(requestsForDomainsByOwner);
+	const [getOwned, { data, error, refetch }] = useLazyQuery<RequestsForOwner>(
+		requestsForDomainsByOwner,
+	);
 
 	React.useEffect(() => {
 		if (account) {
-			if (called && refetch) {
+			if (refetch) {
 				refetch();
 			} else {
 				getOwned({
@@ -92,7 +91,7 @@ export function useRequestsForOwnedDomains(account: string | undefined) {
 				});
 			}
 		}
-	}, [getOwned, account, refreshToken, called, refetch]);
+	}, [getOwned, account, refreshToken.shouldRefresh, refetch]);
 
 	const requests: RequestsForOwner | undefined = React.useMemo(() => {
 		if (error) {
@@ -143,14 +142,13 @@ const requestsByRequestorQuery = gql`
 
 export function useRequestsMadeByAccount(account: string | undefined) {
 	const refreshToken = useRefreshToken();
-	const [
-		getOwned,
-		{ data, error, refetch, called },
-	] = useLazyQuery<RequestsForDomain>(requestsByRequestorQuery);
+	const [getOwned, { data, error, refetch }] = useLazyQuery<RequestsForDomain>(
+		requestsByRequestorQuery,
+	);
 
 	React.useEffect(() => {
 		if (account) {
-			if (called && refetch) {
+			if (refetch) {
 				refetch();
 			} else {
 				getOwned({
@@ -158,7 +156,7 @@ export function useRequestsMadeByAccount(account: string | undefined) {
 				});
 			}
 		}
-	}, [getOwned, account, refreshToken, called, refetch]);
+	}, [getOwned, account, refreshToken.shouldRefresh, refetch]);
 
 	const requests: RequestsForDomain | undefined = React.useMemo(() => {
 		if (error) {

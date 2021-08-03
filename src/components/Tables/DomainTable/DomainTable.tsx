@@ -15,8 +15,14 @@ import { MakeABid } from 'containers';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
-import { getRelativeDomainPath } from 'lib/domains';
-import { DisplayDomain, Domain, DomainHighestBid, Metadata } from 'lib/types';
+import { getRelativeDomainPath } from 'lib/utils/domains';
+import {
+	Bid,
+	DisplayDomain,
+	Domain,
+	DomainHighestBid,
+	Metadata,
+} from 'lib/types';
 import { getMetadata } from 'lib/metadata';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
@@ -31,8 +37,9 @@ import list from './assets/list.svg';
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
 	className?: string;
-	domains: DisplayDomain[];
+	domains: Domain[];
 	empty?: boolean;
+	hideOwnBids?: boolean;
 	isButtonActive?: (row: any) => boolean;
 	isGridView?: boolean;
 	isRootDomain: boolean;
@@ -49,7 +56,7 @@ type DomainTableProps = {
 type DomainData = {
 	domain: Domain;
 	metadata: Metadata;
-	bids: any | undefined;
+	bids: Bid[];
 };
 
 enum Modals {
@@ -60,6 +67,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	className,
 	domains,
 	empty,
+	hideOwnBids,
 	isButtonActive,
 	isGridView,
 	isRootDomain,
@@ -169,29 +177,51 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		const loaded: DomainData[] = [];
 		setHasMetadataLoaded(false);
-		var count = 0,
-			completed = 0;
+		let count = 0;
+		let completed = 0;
 
 		// Get metadata
-		const getData = async (domain: DisplayDomain) => {
+		const getData = async (domain: Domain) => {
 			try {
 				const [metadata, bids] = await Promise.all([
 					getMetadata(domain.metadata),
 					getBidsForDomain(domain),
 				]);
 
-				if (!metadata) return;
+				completed++;
 
-				loaded.push({ domain: domain, metadata: metadata, bids: bids || [] });
-				if (++completed === count) {
+				if (!metadata) {
+					console.log(`found no metadata for ${domain.id}`);
+					return;
+				}
+
+				// Filter out user's bids if configured to do so
+				let filteredBids;
+				if (hideOwnBids) {
+					filteredBids = bids?.filter(
+						(bid: Bid) => bid.bidderAccount !== userId,
+					);
+				}
+
+				loaded.push({
+					domain: domain,
+					metadata: metadata,
+					bids: filteredBids || bids || [],
+				});
+
+				if (completed === count) {
 					setLoadedDomains(loaded);
 					setHasMetadataLoaded(true);
+					setIsLoading(false);
+					if (onLoad) {
+						onLoad();
+					}
 				}
 			} catch (e) {}
 		};
 
-		for (var i = 0; i < domains.length; i++) {
-			if (!domains[i].metadata) return;
+		for (let i = 0; i < domains.length; i++) {
+			if (!domains[i].metadata) continue;
 			count++;
 			getData(domains[i]);
 		}
@@ -210,12 +240,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	// React Table //
 	/////////////////
 
-	// Gets the data for the table
-	// TODO: This can definitely be refactored out
-	const data = useMemo<DomainData[]>(() => {
-		loadedDomains.length ? setIsLoading(false) : setIsLoading(true);
-		return loadedDomains;
-	}, [loadedDomains, hasBidDataLoaded]);
+	const data = loadedDomains;
 
 	const columns = useMemo<Column<DomainData>[]>(
 		() => [

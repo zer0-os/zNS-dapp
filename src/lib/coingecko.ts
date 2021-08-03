@@ -1,4 +1,3 @@
-
 const tokenToUsdCache: { [token: string]: any | undefined } = {};
 
 export const tokenToUsd = async (token: string) => {
