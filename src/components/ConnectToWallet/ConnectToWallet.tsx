@@ -72,6 +72,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const connectToWallet = async (wallet: string) => {
 		const c = connectorFromName(wallet) as AbstractConnector;
 		if (c) {
+			localStorage.setItem("disconnected","false") //set the state to disconnected
 			await activate(c, async (e: Error) => {
 				addNotification(`Failed to connect to wallet.`);
 				console.error(`Encounter error while connecting to ${wallet}.`);
@@ -81,8 +82,13 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		}
 	};
 
+	//here needs to be stored the state or relay of the disconnect on the localStorage, 
+	//then in the mount or constructor this needs to chef if its connected, 
+	//if its connected, then disconnect at start
+
 	const disconnect = () => {
 		deactivate();
+		localStorage.setItem("disconnected","true") //set the state to disconnected
 		onConnect();
 	};
 
