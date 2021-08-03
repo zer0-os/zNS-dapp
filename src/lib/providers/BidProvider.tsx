@@ -193,11 +193,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			throw Error(`no api endpoint`);
 		}
 		try {
-			const bids = await zAuction.getBidsForNft(
+			const bids = (await zAuction.getBidsForNft(
 				baseApiUri,
 				contracts!.registry.address,
 				domain.id,
-			);
+			)) as NftIdBidsDto[];
 
 			try {
 				const displayBids = bids.map((e) => {
