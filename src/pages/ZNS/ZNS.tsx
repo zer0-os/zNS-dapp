@@ -144,14 +144,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	const isRoot: boolean =
 		domain === '/' || (znsDomain.domain ? !znsDomain.domain.parent : false);
 
-	// @TODO: We shouldn't need to filter out non-ipfs.io metadata URIs when we reset data
-	const subdomains =
-		znsDomain.domain && znsDomain.domain.subdomains
-			? znsDomain.domain.subdomains.filter(
-					(d: any) => d.metadata && d.metadata.indexOf('ipfs.io') > -1,
-			  )
-			: [];
-
 	///////////////
 	// Functions //
 	///////////////
@@ -201,7 +193,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 		if (!znsDomain.domain) setTableData([]);
 		else {
 			// Set the domain data for table view
-			setTableData(subdomains);
+			setTableData(znsDomain.domain.subdomains);
 
 			const shouldGetMetadata =
 				znsDomain.domain &&
@@ -422,13 +414,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 				{/* Preview Card */}
 				{/* TODO: This definitely needs some refactoring */}
-				{subdomains.length >= 0 && !isNftView && (
+				{tableData.length >= 0 && !isNftView && (
 					<Spring
 						from={{ opacity: 0, marginTop: -springAmount }}
 						to={{
-							opacity: !isRoot && hasLoaded && subdomains.length ? 1 : 0,
+							opacity: !isRoot && hasLoaded && tableData.length ? 1 : 0,
 							marginTop:
-								!isRoot && hasLoaded && subdomains.length ? 0 : -springAmount,
+								!isRoot && hasLoaded && tableData.length ? 0 : -springAmount,
 						}}
 					>
 						{(styles) => (
@@ -499,7 +491,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 				{/* Subdomain table */}
 
 				{/* Subdomain Table */}
-				{subdomains.length > 0 && !isNftView && (
+				{tableData.length > 0 && !isNftView && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 						{(styles) => (
 							<animated.div style={styles}>
@@ -508,7 +500,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 									isRootDomain={isRoot}
 									style={{ marginTop: 16 }}
 									empty={
-										(znsDomain.domain && subdomains.length === 0) as boolean
+										(znsDomain.domain && tableData.length === 0) as boolean
 									}
 									isGridView={isGridView}
 									setIsGridView={setIsGridView}
@@ -519,7 +511,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 					</Spring>
 				)}
 
-				{znsDomain.domain && (isNftView || subdomains.length === 0) && (
+				{znsDomain.domain && (isNftView || tableData.length === 0) && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 						{(styles) => (
 							<animated.div style={styles}>
