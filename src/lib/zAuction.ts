@@ -1,4 +1,6 @@
 import { ethers } from 'ethers';
+import { Bid } from 'lib/types';
+import { Observable, lastValueFrom } from 'rxjs';
 
 export interface NftIdBidsDto {
 	account: string;
@@ -62,6 +64,13 @@ function getApiEndpoints(baseApiUri: string) {
 	};
 }
 
+type ApiCall = {
+	nftId: string;
+	observable: any;
+};
+
+const pendingApiCalls: ApiCall[] = [];
+
 function getNftId(contract: string, tokenId: string) {
 	const idString = contract + tokenId;
 	const idStringBytes = ethers.utils.toUtf8Bytes(idString);
@@ -75,14 +84,53 @@ export async function getBidsForNft(
 	tokenId: string,
 ) {
 	const nftId = getNftId(contract, tokenId);
-	let endpoints = getApiEndpoints(baseApiUri);
-	const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
-		method: 'GET',
-	});
 
-	const bids = (await response.json()).bids as NftIdBidsDto[];
+	// Check if there's a pending API call for this NFT's bid data
+	const pendingResponses = pendingApiCalls.filter(
+		(x: ApiCall) => x.nftId === nftId,
+	);
+	const hasPendingResponse = pendingResponses.length > 0;
 
-	return bids;
+	if (hasPendingResponse) {
+		// Subscribe to the resolve of the outstanding API call
+		const pendingResponse = pendingResponses[0];
+		const bids = (await lastValueFrom(
+			pendingResponse.observable,
+		)) as NftIdBidsDto[];
+		return bids;
+	} else {
+		// Create an observable
+		const apiCallObservable = new Observable((observer: any) => {
+			const failed = () => {
+				observer.next([]);
+				observer.complete();
+			};
+			try {
+				const endpoints = getApiEndpoints(baseApiUri);
+				fetch(`${endpoints.bidsEndpoint}${nftId}`, {
+					method: 'GET',
+				})
+					.then((response: any) => response.json())
+					.catch(failed)
+					.then((bids: any) => {
+						observer.next(bids.bids);
+						observer.complete();
+					})
+					.catch(failed);
+			} catch {
+				failed();
+			}
+		});
+
+		const apiCall = { nftId, observable: apiCallObservable };
+		pendingApiCalls.push(apiCall);
+		const bids = (await lastValueFrom(apiCallObservable)) as NftIdBidsDto[];
+
+		// Remove from pending API call list
+		pendingApiCalls.splice(pendingApiCalls.indexOf(apiCall), 1);
+
+		return bids;
+	}
 }
 
 export async function getBidsForAccount(baseApiUri: string, id: string) {
