@@ -197,7 +197,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 		
 	if(disconnectState === "true" && active!){
 		deactivate();
-		console.log("disconnected when refresh")
 	}
 
 	}, [active]);
