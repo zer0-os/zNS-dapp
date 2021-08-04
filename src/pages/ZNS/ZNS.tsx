@@ -79,8 +79,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 		.find((row) => row.startsWith('disconnected='))
 		?.split('=')[1];
 
-	console.log('tu cookie es: ' + disconnectState);
-
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
 	React.useEffect(() => {
