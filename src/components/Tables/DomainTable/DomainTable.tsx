@@ -138,19 +138,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		if (window.innerWidth < 1282) setList();
 	};
 
-	const getData = () => {};
-
-	const getBidData = async (domain: Domain) => {
-		// console.log(domain);
-		return [];
-	};
-
-	const getHighestBid = async (domain: Domain) => {
-		setTimeout(() => ({ amount: 5 }), 1000);
-		// console.log(domain);
-		// return { amount: 5 };
-	};
-
 	/////////////
 	// Effects //
 	/////////////

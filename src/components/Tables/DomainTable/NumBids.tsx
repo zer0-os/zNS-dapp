@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { useBidProvider } from 'lib/providers/BidProvider';
 
@@ -11,20 +11,35 @@ type NumBidsProps = {
 };
 
 const NumBids: React.FC<NumBidsProps> = ({ domain }) => {
+	let isMounted = useRef(false);
 	const { getBidsForDomain } = useBidProvider();
 	const [numBids, setNumBids] = useState<number | undefined>();
+	const [didApiCallFail, setDidApiCallFail] = useState<boolean>(false);
 
 	const getBids = async () => {
 		const bids = await getBidsForDomain(domain);
-		if (!bids || bids.length === 0) return;
-		setNumBids(bids.length);
+		if (!isMounted.current) return;
+		if (!bids) setDidApiCallFail(true);
+		else setNumBids(bids.length);
 	};
 
 	useEffect(() => {
+		isMounted.current = true;
 		getBids();
+		return () => {
+			isMounted.current = false;
+		};
 	}, []);
 
-	return <>{numBids ?? <Spinner style={{ marginLeft: 'auto' }} />}</>;
+	return (
+		<>
+			{didApiCallFail && <>Failed to retrieve</>}
+			{numBids && <>{numBids}</>}
+			{numBids === undefined && !didApiCallFail && (
+				<Spinner style={{ marginLeft: 'auto' }} />
+			)}
+		</>
+	);
 };
 
 export default NumBids;

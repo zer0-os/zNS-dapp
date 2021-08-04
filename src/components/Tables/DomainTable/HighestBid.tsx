@@ -1,31 +1,46 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { useBidProvider } from 'lib/providers/BidProvider';
 
 import { Spinner } from 'components';
 
-import { Bid, Domain } from 'lib/types';
+import { Domain } from 'lib/types';
 
 type HighestBidProps = {
 	domain: Domain;
 };
 
 const HighestBid: React.FC<HighestBidProps> = ({ domain }) => {
+	let isMounted = useRef(false);
 	const { getBidsForDomain } = useBidProvider();
-	const [highestBid, setHighestBid] = useState<Bid | undefined>();
+	const [highestBid, setHighestBid] = useState<number | undefined>();
+	const [didApiCallFail, setDidApiCallFail] = useState<boolean>(false);
 
 	const getBids = async () => {
 		const bids = await getBidsForDomain(domain);
-		if (!bids || bids.length === 0) return;
-		setHighestBid(bids[0]);
+		if (!isMounted.current) return;
+		if (!bids) setDidApiCallFail(true);
+		else if (bids.length === 0) setHighestBid(0);
+		else setHighestBid(bids[0].amount);
 	};
 
 	useEffect(() => {
+		isMounted.current = true;
 		getBids();
+		return () => {
+			isMounted.current = false;
+		};
 	}, []);
 
 	return (
-		<>{highestBid?.amount ?? <Spinner style={{ marginLeft: 'auto' }} />}</>
+		<>
+			{didApiCallFail && <>Failed to retrieve</>}
+			{highestBid === 0 && <>-</>}
+			{highestBid !== undefined && highestBid > 0 && <>{highestBid} WILD</>}
+			{highestBid === undefined && !didApiCallFail && (
+				<Spinner style={{ marginLeft: 'auto' }} />
+			)}
+		</>
 	);
 };
 

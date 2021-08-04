@@ -207,11 +207,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				// @TODO: Add filtering expired/invalid bids out
 				return displayBids;
 			} catch (e) {
-				return [];
+				return;
 			}
 		} catch (e) {
 			console.error('Failed to retrive bids for domain ' + domain.id);
-			return [];
+			return;
 		}
 	};
 
