@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { Bid } from 'lib/types';
+import { Mutex } from 'async-mutex';
 
 export interface NftIdBidsDto {
 	account: string;
@@ -63,19 +63,28 @@ function getApiEndpoints(baseApiUri: string) {
 	};
 }
 
-type ApiCall = {
-	nftId: string;
-	observers: any;
-};
-
-const pendingApiCalls: ApiCall[] = [];
-
 function getNftId(contract: string, tokenId: string) {
 	const idString = contract + tokenId;
 	const idStringBytes = ethers.utils.toUtf8Bytes(idString);
 	const nftId = ethers.utils.keccak256(idStringBytes);
 	return nftId;
 }
+
+//
+// Getting bids for a specified NFT
+// @todo this is messy - rewrite
+//
+
+type ApiCall = {
+	nftId: string;
+	observers: any;
+};
+
+const pendingApiCalls: ApiCall[] = [];
+const pendingApiCallsLock = new Mutex();
+
+const removeApiCallFromPending = (apiCall: ApiCall) =>
+	pendingApiCalls.splice(pendingApiCalls.indexOf(apiCall), 1);
 
 export async function getBidsForNft(
 	baseApiUri: string,
@@ -85,34 +94,47 @@ export async function getBidsForNft(
 	const nftId = getNftId(contract, tokenId);
 
 	// Check if there's a pending API call for this NFT's bid data
-	const pendingResponses = pendingApiCalls.filter(
-		(x: ApiCall) => x.nftId === nftId,
-	);
+	const release = await pendingApiCallsLock.acquire();
+	const pendingResponses = pendingApiCalls.filter((x) => x.nftId === nftId);
 	const hasPendingResponse = pendingResponses.length > 0;
 
 	if (hasPendingResponse) {
 		// Subscribe to the resolve of the outstanding API call
 		const pendingResponse = pendingResponses[0];
-		const bids = await new Promise((resolve, reject) => {
+		const bids = await new Promise(async (resolve, reject) => {
+			// let release = await pendingApiCallsLock.acquire();
 			pendingResponse.observers.push(resolve);
+			release();
 		});
 		return bids;
 	} else {
+		// Add API call to pending calls,
 		const apiCall = { nftId, observers: [] };
-		pendingApiCalls.push(apiCall);
+		try {
+			// Add the API call to the pending array
+			pendingApiCalls.push(apiCall);
+			release();
 
-		// Create an observable
-		const endpoints = getApiEndpoints(baseApiUri);
-		const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
-			method: 'GET',
-		});
-		const bids = (await response.json()).bids as NftIdBidsDto[];
-		apiCall.observers.forEach((observer: any) => observer(bids));
+			// Make the API call
+			const endpoints = getApiEndpoints(baseApiUri);
+			const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
+				method: 'GET',
+			});
+			const data = await response.json();
+			const bids = data.bids !== undefined ? (data.bids as NftIdBidsDto[]) : [];
 
-		// Remove from pending API call list
-		pendingApiCalls.splice(pendingApiCalls.indexOf(apiCall), 1);
+			// Call resolve of all observers, then remove from pending
+			apiCall.observers.forEach((observer: any) => observer(bids));
+			removeApiCallFromPending(apiCall);
 
-		return bids;
+			return bids;
+		} catch {
+			// Clean up the array if anything failed
+			let release = await pendingApiCallsLock.acquire();
+			removeApiCallFromPending(apiCall);
+			release();
+			return;
+		}
 	}
 }
 
