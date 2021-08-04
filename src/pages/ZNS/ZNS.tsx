@@ -71,13 +71,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active, chainId, deactivate } = walletContext;
-	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet
-
-	const disconnectState = document.cookie
-		.split('; ')
-		.find((row) => row.startsWith('disconnected='))
-		?.split('=')[1];
+	const { account, active, chainId } = walletContext;
+	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
 
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
@@ -198,10 +193,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-
-		if (disconnectState === 'yes' && active!) {
-			deactivate();
-		}
 	}, [active]);
 
 	//- Effects

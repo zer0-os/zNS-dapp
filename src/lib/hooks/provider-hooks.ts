@@ -9,15 +9,17 @@ export function useEagerConnect() {
 	const [tried, setTried] = useState(false);
 
 	useEffect(() => {
-		injected.isAuthorized().then((isAuthorized: boolean) => {
-			if (isAuthorized) {
-				activate(injected, undefined, true).catch(() => {
+		if (localStorage.getItem('chosenWallet')) {
+			injected.isAuthorized().then((isAuthorized: boolean) => {
+				if (isAuthorized) {
+					activate(injected, undefined, true).catch(() => {
+						setTried(true);
+					});
+				} else {
 					setTried(true);
-				});
-			} else {
-				setTried(true);
-			}
-		});
+				}
+			});
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // intentionally only running on mount (make sure it's only mounted once :))
 

@@ -72,8 +72,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const connectToWallet = async (wallet: string) => {
 		const c = connectorFromName(wallet) as AbstractConnector;
 		if (c) {
-			document.cookie =
-				'disconnected=no; expires=Fri, 31 Dec 9999 23:59:59 GMT;';
+			localStorage.setItem('chosenWallet', 'yes');
 			await activate(c, async (e: Error) => {
 				addNotification(`Failed to connect to wallet.`);
 				console.error(`Encounter error while connecting to ${wallet}.`);
@@ -89,9 +88,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 
 	const disconnect = () => {
 		deactivate();
-		document.cookie =
-			'disconnected=yes; expires=Fri, 31 Dec 9999 23:59:59 GMT;';
-
+		localStorage.removeItem('chosenWallet');
 		onConnect();
 	};
 
