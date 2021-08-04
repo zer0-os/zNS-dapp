@@ -25,6 +25,7 @@ import {
 	Metadata,
 } from 'lib/types';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
+import { useBidProvider } from 'lib/providers/BidProvider';
 
 //- Style Imports
 import styles from './DomainTable.module.css';
@@ -32,6 +33,7 @@ import styles from './DomainTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import { domain } from 'process';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -54,7 +56,6 @@ type DomainTableProps = {
 
 type DomainData = {
 	domain: Domain;
-	metadata: Metadata;
 	bids: Bid[];
 };
 
@@ -79,15 +80,18 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	userId,
 }) => {
 	const { mvpVersion } = useMvpVersion();
-	const [isLoading, setIsLoading] = useState(true);
+	const { getBidsForDomain } = useBidProvider();
 
+	const containerRef = useRef<HTMLDivElement>(null);
+	const [isLoading, setIsLoading] = useState(true);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
 
 	const [modal, setModal] = useState<Modals | undefined>();
-	const [biddingOn, setBiddingOn] = useState<DisplayDomain | undefined>();
 
-	const containerRef = useRef<HTMLDivElement>(null);
+	// Data state
+	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
+	const [allBidData, setAllBidData] = useState<DomainData[] | undefined>();
 
 	///////////////
 	// Functions //
@@ -112,21 +116,28 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		navigateTo(domain.name);
 	};
 
-	const buttonClick = (data: DomainData) => {
+	const buttonClick = (domain: Domain) => {
 		// @todo refactor this into a more generic component
 		if (onRowButtonClick) {
 			// @todo the above assumes the bids come in ascending order
-			onRowButtonClick({
-				domain: data.domain,
-				bid: data.bids[data.bids.length - 1],
-			});
+			try {
+				const bid = allBidData?.filter(
+					(data: DomainData) => data.domain.id === domain.id,
+				)[0].bids[0];
+				if (bid === undefined) return;
+				onRowButtonClick({
+					domain: domain,
+					bid: bid,
+				});
+			} catch {
+				console.warn('No bids found for domain ', domain.name);
+			}
 			return;
 		}
-
 		// Default behaviour
 		try {
-			if (data.domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
-				setBiddingOn(data.domain as DisplayDomain);
+			if (domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
+				setBiddingOn(domain);
 				openBidModal();
 			}
 		} catch (e) {
@@ -136,6 +147,19 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	const handleResize = () => {
 		if (window.innerWidth < 1282) setList();
+	};
+
+	const getAllBids = () => {
+		// Get bids for all the domains, and add to the state object
+		const allBids: DomainData[] = [];
+		var checked = 0;
+		domains.forEach(async (domain: Domain) => {
+			const bids = await getBidsForDomain(domain);
+			if (bids && bids.length) allBids.push({ domain, bids });
+			if (++checked === domains.length) {
+				setAllBidData(allBids);
+			}
+		});
 	};
 
 	/////////////
@@ -162,6 +186,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	useEffect(() => {
 		setIsLoading(false);
+		if (domains.length > 0) getAllBids();
 	}, [domains]);
 
 	/////////////////
@@ -205,6 +230,27 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						<NumBids domain={domain} />
 					</div>
 				),
+			},
+			{
+				id: 'bid',
+				accessor: (domain: Domain) => {
+					const shouldGlow =
+						userId?.toLowerCase() !== domain.owner.id.toLowerCase();
+
+					return (
+						<>
+							{!rowButtonText && (
+								<FutureButton
+									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
+									glow={shouldGlow}
+									onClick={() => buttonClick(domain)}
+								>
+									{rowButtonText || 'Make A Bid'}
+								</FutureButton>
+							)}
+						</>
+					);
+				},
 			},
 		],
 		[domains],
