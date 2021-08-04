@@ -73,7 +73,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account, active, chainId, deactivate } = walletContext;
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet
-	const disconnectState = localStorage.getItem('disconnected');
+
+	const disconnectState = document.cookie
+		.split('; ')
+		.find((row) => row.startsWith('disconnected='))
+		?.split('=')[1];
+
+	console.log('tu cookie es: ' + disconnectState);
 
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
