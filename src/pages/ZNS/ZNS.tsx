@@ -314,11 +314,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 							{!active && localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
 									<>
-										<p style={{ paddingBottom: 16 }} className={styles.Message}>
-											Loading Your Bids
+										<p
+											style={{
+												display: 'inline-block',
+												width: '100%',
+												paddingBottom: 16,
+											}}
+											className={styles.Message}
+										>
+											Reconnecting
 										</p>
 
-										<Spinner style={{ margin: '0 auto' }} />
+										<Spinner style={{ paddingBottom: 16 }} />
 									</>
 								</FutureButton>
 							)}
