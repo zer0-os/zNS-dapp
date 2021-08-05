@@ -38,7 +38,7 @@ const nameToConnector: { [key: string]: AbstractConnector } = {
 	portis: portis,
 };
 
-const connectorFromName = (name: string) => {
+export const connectorFromName = (name: string) => {
 	if (name === 'walletconnect') {
 		return createWalletConnectConnector();
 	}
@@ -77,7 +77,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				console.error(`Encounter error while connecting to ${wallet}.`);
 				console.error(e);
 			});
-			localStorage.setItem('chosenWallet', 'yes');
+			localStorage.setItem('chosenWallet', wallet);
 			onConnect();
 		}
 	};
