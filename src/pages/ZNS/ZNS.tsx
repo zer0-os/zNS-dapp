@@ -313,20 +313,38 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 							{/* Here needs to check if a chosenWallet pesist on cold storage, if true it will display loading button until connected its confirmed, but still trigger the overlay*/}
 							{!active && localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
-									<>
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'center',
+											verticalAlign: 'center',
+											alignItems: 'center',
+											paddingBottom: '5px',
+										}}
+									>
+										<div
+											style={{
+												display: 'inline-block',
+												width: '10%',
+												margin: '0px',
+												padding: '0px',
+											}}
+										>
+											<Spinner />
+										</div>
 										<p
 											style={{
 												display: 'inline-block',
-												width: '100%',
-												paddingBottom: 16,
+												width: '90%',
+												verticalAlign: 'center',
+												height: '18px',
+												marginLeft: '15px',
 											}}
 											className={styles.Message}
 										>
-											Reconnecting
+											Reconnecting to {localStorage.getItem('chosenWallet')}
 										</p>
-
-										<Spinner style={{ paddingBottom: 16 }} />
-									</>
+									</div>
 								</FutureButton>
 							)}
 							{!active && !localStorage.getItem('chosenWallet') && (
