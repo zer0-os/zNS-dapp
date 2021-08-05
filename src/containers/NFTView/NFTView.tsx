@@ -109,7 +109,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 			!znsDomain.domain.image
 		) {
 			getBidsForDomain(znsDomain.domain).then(async (bids) => {
-				if (!bids || !bids.length) return;
+				if (!bids || !bids.length) {
+					return setBids([]);
+				}
 				try {
 					const sorted = bids.sort((a, b) => b.amount - a.amount);
 					if (!isMounted.current) return;
