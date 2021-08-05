@@ -55,12 +55,14 @@ const Artwork: React.FC<ArtworkProps> = ({
 					/>
 				</div>
 				<div className={styles.Info}>
-					<span
-						style={{ cursor: pending ? 'default' : 'pointer' }}
-						className={styles.Title}
-					>
-						{name || metadata?.title || ' '}
-					</span>
+					{(name || metadata?.title) && (
+						<span
+							style={{ cursor: pending ? 'default' : 'pointer' }}
+							className={styles.Title}
+						>
+							{name || metadata?.title || ' '}
+						</span>
+					)}
 					{!pending && (
 						<Link
 							className={styles.Domain}
