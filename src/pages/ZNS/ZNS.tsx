@@ -310,11 +310,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 						setIsSearchActive={setIsSearchActive}
 					>
 						<div>
-							{/* Here needs to check if a chosenWallet pesist on cold storage, if true it will display loading button until connected its confirmed, but sill trigger the overlay*/}
+							{/* Here needs to check if a chosenWallet pesist on cold storage, if true it will display loading button until connected its confirmed, but still trigger the overlay*/}
 							{!active && localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
 									<>
-										<p style={{ paddingBottom: 5 }} className={styles.Message}>
+										<p style={{ paddingBottom: 16 }} className={styles.Message}>
 											Loading Your Bids
 										</p>
 
