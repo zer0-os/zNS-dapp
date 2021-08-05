@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
@@ -76,6 +77,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	style,
 	userId,
 }) => {
+	const isMounted = useRef(false);
 	const { mvpVersion } = useMvpVersion();
 	const { getBidsForDomain } = useBidProvider();
 
@@ -134,6 +136,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		// Default behaviour
 		try {
 			if (domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
+				if (!isMounted.current) return;
 				setBiddingOn(domain);
 				openBidModal();
 			}
@@ -154,6 +157,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			const bids = await getBidsForDomain(domain);
 			if (bids && bids.length) allBids.push({ domain, bids });
 			if (++checked === domains.length) {
+				if (!isMounted.current) return;
 				setAllBidData(allBids);
 			}
 		});
@@ -164,9 +168,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	/////////////
 
 	useEffect(() => {
+		isMounted.current = true;
 		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		return () => {
+			isMounted.current = false;
+			window.removeEventListener('resize', handleResize);
+		};
 	}, []);
 
 	// Resizes the table container
@@ -174,14 +181,18 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		if (!isLoading) {
 			const el = containerRef.current;
-			if (el)
+			if (el) {
+				if (!isMounted.current) return;
 				setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
+			}
 		} else {
+			if (!isMounted.current) return;
 			setContainerHeight(0);
 		}
 	}, [isLoading, searchQuery, isGridView, domains]);
 
 	useEffect(() => {
+		if (!isMounted.current) return;
 		setIsLoading(false);
 		if (domains.length > 0) getAllBids();
 	}, [domains]);
@@ -277,6 +288,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	} = tableHook;
 
 	const search = (query: string) => {
+		if (!isMounted.current) return;
 		setGlobalFilter(query);
 		setSearchQuery(query);
 	};
