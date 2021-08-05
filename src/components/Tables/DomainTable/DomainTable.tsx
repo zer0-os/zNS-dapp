@@ -213,11 +213,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			{
 				Header: () => <div style={{ textAlign: 'left' }}>Domain</div>,
 				id: 'image',
-				accessor: (data: Domain) => (
+				accessor: ({ name }) => name,
+				Cell: (row: any) => (
 					<Artwork
-						domain={data.name}
-						metadataUrl={data.metadata}
-						id={data.id}
+						domain={row.row.original.name}
+						metadataUrl={row.row.original.metadata}
+						id={row.row.original.id}
 					/>
 				),
 			},
@@ -319,6 +320,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				{/* Table Header */}
 				<div className={styles.searchHeader}>
 					<SearchBar
+						placeholder="Search by domain name"
 						onChange={(event: any) => search(event.target.value)}
 						style={{ width: '100%', marginRight: 16 }}
 					/>
