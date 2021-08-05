@@ -49,6 +49,7 @@ import {
 	NotificationDrawer,
 	NumberButton,
 	MintPreview,
+	Spinner,
 } from 'components';
 
 import { MintNewNFT, NFTView, MakeABid } from 'containers';
@@ -309,7 +310,19 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 						setIsSearchActive={setIsSearchActive}
 					>
 						<div>
-							{!active && (
+							{/* Here needs to check if a chosenWallet pesist on cold storage, if true it will display loading button until connected its confirmed, but sill trigger the overlay*/}
+							{!active && localStorage.getItem('chosenWallet') && (
+								<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
+									<>
+										<p style={{ paddingBottom: 5 }} className={styles.Message}>
+											Loading Your Bids
+										</p>
+
+										<Spinner style={{ margin: '0 auto' }} />
+									</>
+								</FutureButton>
+							)}
+							{!active && !localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
 									Connect To Wallet
 								</FutureButton>
