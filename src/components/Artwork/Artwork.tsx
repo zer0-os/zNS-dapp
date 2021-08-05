@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 //- Component Imports
@@ -31,13 +31,15 @@ const Artwork: React.FC<ArtworkProps> = ({
 	name,
 	pending,
 }) => {
+	const isMounted = useRef(false);
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
 
 	useEffect(() => {
+		isMounted.current = true;
 		if (metadataUrl) {
-			getMetadata(metadataUrl).then((m: Metadata | undefined) =>
-				setMetadata(m),
-			);
+			getMetadata(metadataUrl).then((m: Metadata | undefined) => {
+				if (isMounted.current === true) setMetadata(m);
+			});
 		}
 	}, []);
 
@@ -47,6 +49,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 			<div className={`${styles.Artwork} ${styles.Pending}`}>
 				<div className={styles.Image}>
 					<Image
+						style={{ zIndex: 2 }}
 						onClick={() => console.warn('Member clicks not yet implemented')}
 						src={image || metadata?.image || ''}
 					/>

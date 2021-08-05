@@ -151,20 +151,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
 	const isRoot: boolean =
 		domain === '/' || (znsDomain.domain ? !znsDomain.domain.parent : false);
-
-	let isOwnedByUser;
-	if (account && znsDomain?.domain?.owner?.id) {
-		isOwnedByUser =
-			account.toLowerCase() === znsDomain.domain.owner.id.toLowerCase();
-	}
-
-	// @TODO: We shouldn't need to filter out non-ipfs.io metadata URIs when we reset data
-	const subdomains =
-		znsDomain.domain && znsDomain.domain.subdomains
-			? znsDomain.domain.subdomains.filter(
-					(d: any) => d.metadata && d.metadata.indexOf('ipfs.io') > -1,
-			  )
-			: [];
+	const isOwnedByUser: boolean =
+		znsDomain?.domain?.owner?.id.toLowerCase() === account?.toLowerCase();
 
 	///////////////
 	// Functions //
@@ -223,8 +211,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		if (!znsDomain.domain) setTableData([]);
 		else {
 			// Set the domain data for table view
-			setIsNftView(nftView || subdomains.length === 0);
-			setTableData(subdomains);
+			setIsNftView(nftView || tableData?.length === 0);
+			setTableData(znsDomain.domain.subdomains);
 
 			const shouldGetMetadata =
 				znsDomain.domain &&
@@ -257,11 +245,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		<>
 			{/* Preview Card */}
 			{/* TODO: This definitely needs some refactoring */}
-			{(isLoading || subdomains.length >= 0) && !isNftView && (
+			{(isLoading || tableData.length >= 0) && !isNftView && (
 				<Spring
 					from={{ opacity: 0, marginTop: -springAmount }}
 					to={
-						!isRoot && (isLoading || subdomains.length >= 0) && !isNftView
+						!isRoot && (isLoading || tableData.length >= 0) && !isNftView
 							? { opacity: 1, marginTop: 0 }
 							: { opacity: 0, marginTop: -springAmount }
 					}
@@ -330,15 +318,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const subdomainTable = () => (
 		<>
 			{/* Subdomain Table */}
-			{(isLoading || (!isLoading && subdomains.length > 0)) && !isNftView && (
+			{(isLoading || (!isLoading && tableData.length > 0)) && !isNftView && (
 				<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 					{(styles) => (
 						<animated.div style={styles}>
 							<DomainTable
-								domains={tableData.sort((a, b) => (a.name < b.name ? -1 : 1))}
+								domains={tableData
+									.slice()
+									.sort((a, b) => (a.name < b.name ? -1 : 1))}
 								isRootDomain={isRoot}
 								style={{ marginTop: 16 }}
-								empty={(znsDomain.domain && subdomains.length === 0) as boolean}
+								empty={(znsDomain.domain && tableData.length === 0) as boolean}
 								isGridView={isGridView}
 								setIsGridView={setIsGridView}
 								userId={account as string}
@@ -439,7 +429,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 												? setIsMintOverlayOpen(true)
 												: addNotification('Please connect your wallet.');
 										}}
-										loading={isOwnedByUser === undefined}
+										loading={loading}
 									>
 										{isOwnedByUser === true && 'MINT NFT'}
 										{isOwnedByUser === false && 'REQUEST TO MINT NFT'}
@@ -540,7 +530,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				{previewCard()}
 				{subdomainTable()}
 
-				{znsDomain.domain && (isNftView || subdomains.length === 0) && (
+				{znsDomain.domain && (isNftView || tableData.length === 0) && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 						{(styles) => (
 							<animated.div style={styles}>

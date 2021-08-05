@@ -45,7 +45,6 @@ export interface DomainRequest {
 
 export type DomainData = {
 	domain: Domain;
-	metadata: Metadata;
 	bids: Bid[];
 };
 
