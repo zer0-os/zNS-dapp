@@ -218,7 +218,13 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	// Fragments //
 	///////////////
 
-	// @todo break render into pure fragments
+	const domainString = () => {
+		const parentDomain =
+			domainName.length > 1 ? `.${domainName.substring(1)}` : '';
+		const newDomain = domain.length > 0 ? `.${domain}` : '';
+		const str = `0://${rootDomainName}${parentDomain}${newDomain}`;
+		return <>{str}</>;
+	};
 
 	////////////
 	// Render //
@@ -233,9 +239,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					{isOwner ? 'Mint' : 'Request to Mint'} "{name ? name : 'A New NFT'}"
 				</h1>
 				<div style={{ marginBottom: 8 }}>
-					<h2 className={`glow-text-white`}>
-						0://{rootDomainName}.{`${domainName.substring(1)}${domain || ''}`}
-					</h2>
+					<h2 className={`glow-text-white`}>{domainString()}</h2>
 				</div>
 				<span>
 					By{' '}

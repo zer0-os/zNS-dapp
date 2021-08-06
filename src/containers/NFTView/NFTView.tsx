@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
@@ -42,7 +42,7 @@ type NFTViewProps = {
 };
 
 const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
-	//- Notes:
+	const isMounted = useRef(false);
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
 
@@ -78,8 +78,19 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 	};
 
 	const openBidOverlay = () => {
+		if (!isMounted.current) return;
 		if (!znsDomain.domain || isOwnedByYou) return;
 		setIsBidOverlayOpen(true);
+	};
+
+	const openImageOverlay = () => {
+		if (!isMounted.current) return;
+		setIsImageOverlayOpen(true);
+	};
+
+	const closeImageOverlay = () => {
+		if (!isMounted.current) return;
+		setIsImageOverlayOpen(false);
 	};
 
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
@@ -98,9 +109,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 			!znsDomain.domain.image
 		) {
 			getBidsForDomain(znsDomain.domain).then(async (bids) => {
-				if (!bids || !bids.length) return;
+				if (!bids || !bids.length) {
+					return setBids([]);
+				}
 				try {
 					const sorted = bids.sort((a, b) => b.amount - a.amount);
+					if (!isMounted.current) return;
 					setBids(sorted);
 					setHighestBid(sorted[0]);
 					setHighestBidUsd(sorted[0].amount * wildPriceUsd);
@@ -111,12 +125,25 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		}
 	};
 
+	/////////////
+	// Effects //
+	/////////////
+
 	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	});
+
+	useEffect(() => {
+		if (!isMounted.current) return;
 		if (
 			znsDomain.domain &&
 			znsDomain.domain.metadata &&
 			!znsDomain.domain.image
 		) {
+			if (!isMounted.current) return;
 			setIsOwnedByYou(
 				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
 			);
@@ -136,7 +163,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 				centered
 				img
 				open={isImageOverlayOpen}
-				onClose={() => setIsImageOverlayOpen(false)}
+				onClose={closeImageOverlay}
 			>
 				<Image
 					src={znsDomain.domain?.image ?? ''}
@@ -260,7 +287,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 						}}
 						className="border-primary border-radius"
 						src={znsDomain.domain?.image ?? ''}
-						onClick={() => setIsImageOverlayOpen(true)}
+						onClick={openImageOverlay}
 					/>
 				</div>
 				<div className={styles.Info}>
