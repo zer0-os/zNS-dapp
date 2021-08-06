@@ -20,14 +20,15 @@ export interface Domain {
 export interface Metadata {
 	title: string;
 	description: string;
-	image: string;
+	image: string; // One of: Image, Video, 3d Model
+	previewImage?: string; // One of: Image, Video
 }
 
 export interface ParentDomain extends Domain {
 	subdomains: SubDomain[];
 }
 
-export interface SubDomain extends Domain {}
+export interface SubDomain extends Domain { }
 
 export interface DomainRequest {
 	id: string;
