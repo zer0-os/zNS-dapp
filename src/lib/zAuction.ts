@@ -10,16 +10,6 @@ export interface NftIdBidsDto {
 	expireBlock: string;
 }
 
-interface NftIdBidsAtListDto {
-	account: string;
-	auctionId: string;
-	bidAmount: string;
-	expireBlock: string;
-	minimumBid: string;
-	signedMessage: string;
-	startBlock: string;
-}
-
 export interface AccountBidsDto {
 	signedMessage: string;
 	auctionId: string;
@@ -48,7 +38,7 @@ interface CreateBidDto {
 }
 
 interface BidsListResponseDto {
-	bids: NftIdBidsAtListDto[];
+	bids: NftIdBidsDto[];
 	contractAddress: string;
 	tokenId: string;
 }
@@ -126,7 +116,7 @@ export async function getBidsListForNfts(
 
 	const jsonResponse = (await response.json()) as BidsListResponseDto[]; //awaits the json of the response
 
-	const bidsListMap = new Map <string, NftIdBidsAtListDto[]>(); //mapping of tokenId as key and returned bids as value
+	const bidsListMap = new Map <string, NftIdBidsDto[]>(); //mapping of tokenId as key and returned bids as value
 
 	for (let i = 0; i < tokenId.length; i++) { //populate the map with the data for every user
 		bidsListMap.set(jsonResponse[i].tokenId, jsonResponse[i].bids);
