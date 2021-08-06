@@ -11,7 +11,7 @@ export interface NftIdBidsDto {
 	date: string;
 }
 
-export interface NftIdBidsListsDto {
+export interface NftIdBidsOfListsDto {
 	account: string;
 	signedMessage: string;
 	auctionId: string;
