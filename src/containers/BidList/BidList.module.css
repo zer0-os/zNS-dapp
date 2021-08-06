@@ -34,7 +34,7 @@
 	padding-top: 24px;
 	padding-bottom: 24px;
 
-	overflow-y: scroll;
+	overflow-y: auto;
 	overflow-x: visible;
 }
 

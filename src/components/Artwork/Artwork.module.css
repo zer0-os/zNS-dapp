@@ -36,12 +36,18 @@
 }
 
 .Info {
-	margin-top: 4px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
 	font-weight: 700;
+}
+
+.Info > *:first-child {
+	color: white;
+	font-weight: 400;
 }
 
 .Title {
 	display: block;
-	font-weight: 400;
 	cursor: pointer;
 }

@@ -17,9 +17,10 @@ type ProfileProps = {
 	id: string;
 	// TODO: Change yours
 	yours?: boolean;
+	onNavigate: (to: string) => void;
 };
 
-const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
+const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 	//////////////////
 	// Custom Hooks //
 	//////////////////
@@ -41,7 +42,9 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 	};
 
 	const navigateToDomain = (domain: string) => {
-		console.log(domain);
+		const d =
+			domain.indexOf('wilder.') === 0 ? domain.split('wilder.')[1] : domain;
+		if (onNavigate) onNavigate(d);
 	};
 
 	/////////////
@@ -93,11 +96,15 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 				tabs={['Your Domains', 'Your Bids', 'Offers']}
 				onSelect={select}
 			/>
-			{selected === 'Your Domains' && <OwnedDomainsTable />}
+			{selected === 'Your Domains' && (
+				<OwnedDomainsTable onNavigate={navigateToDomain} />
+			)}
 			{selected === 'Offers' && (
 				<RequestTable onNavigate={navigateToDomain} userId={id} />
 			)}
-			{selected === 'Your Bids' && <BidTable userId={id} />}
+			{selected === 'Your Bids' && (
+				<BidTable userId={id} onNavigate={navigateToDomain} />
+			)}
 		</div>
 	);
 };

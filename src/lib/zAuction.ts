@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 import { createTimeCache } from './utils/timeCache';
+import { Mutex } from 'async-mutex';
 
 export interface NftIdBidsDto {
 	account: string;
@@ -9,6 +10,7 @@ export interface NftIdBidsDto {
 	minimumBid: string;
 	startBlock: string;
 	expireBlock: string;
+	date: string;
 }
 
 export interface AccountBidsDto {
@@ -20,6 +22,7 @@ export interface AccountBidsDto {
 	minimumBid: string;
 	startBlock: string;
 	expireBlock: string;
+	date: string;
 }
 
 interface BidPayloadPostInterface {
@@ -76,13 +79,28 @@ const getBidsForNftCache = createTimeCache<NftIdBidsDto[]>(cacheExpiration);
 
 const cacheKeyForNftBids = (baseApiUri: string, nftId: string) => {
 	return `${baseApiUri}|${nftId}`;
-}
+};
+//
+// Getting bids for a specified NFT
+// @todo this is messy - rewrite
+//
+
+type ApiCall = {
+	nftId: string;
+	observers: any;
+};
+
+const pendingApiCalls: ApiCall[] = [];
+const pendingApiCallsLock = new Mutex();
+
+const removeApiCallFromPending = (apiCall: ApiCall) =>
+	pendingApiCalls.splice(pendingApiCalls.indexOf(apiCall), 1);
 
 export async function getBidsForNft(
 	baseApiUri: string,
 	contract: string,
 	tokenId: string,
-): Promise<NftIdBidsDto[]> {
+): Promise<NftIdBidsDto[] | undefined> {
 	const nftId = getNftId(contract, tokenId);
 	const cacheKey = cacheKeyForNftBids(baseApiUri, nftId);
 
@@ -90,24 +108,58 @@ export async function getBidsForNft(
 		return getBidsForNftCache.get(cacheKey);
 	}
 
-	const endpoints = getApiEndpoints(baseApiUri);
+	// Check if there's a pending API call for this NFT's bid data
+	const release = await pendingApiCallsLock.acquire();
+	const pendingResponses = pendingApiCalls.filter((x) => x.nftId === nftId);
+	const hasPendingResponse = pendingResponses.length > 0;
 
-	const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
-		method: 'GET',
-	});
+	if (hasPendingResponse) {
+		// Subscribe to the resolve of the outstanding API call
+		const pendingResponse = pendingResponses[0];
+		const bids = await new Promise(async (resolve, reject) => {
+			// let release = await pendingApiCallsLock.acquire();
+			pendingResponse.observers.push(resolve);
+			release();
+		});
+		return bids as NftIdBidsDto[];
+	} else {
+		// Add API call to pending calls,
+		const apiCall = { nftId, observers: [] };
+		try {
+			// Add the API call to the pending array
+			pendingApiCalls.push(apiCall);
+			release();
 
-	const bids = (await response.json()).bids as NftIdBidsDto[];
+			// Make the API call
+			const endpoints = getApiEndpoints(baseApiUri);
+			const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
+				method: 'GET',
+			});
+			const data = await response.json();
+			const bids = data.bids !== undefined ? (data.bids as NftIdBidsDto[]) : [];
 
-	getBidsForNftCache.put(cacheKey, bids);
+			// Call resolve of all observers, then remove from pending
+			apiCall.observers.forEach((observer: any) => observer(bids));
+			removeApiCallFromPending(apiCall);
 
-	return bids;
+			return bids as NftIdBidsDto[];
+		} catch {
+			// Clean up the array if anything failed
+			let release = await pendingApiCallsLock.acquire();
+			apiCall.observers.forEach((observer: any) => observer(undefined));
+			removeApiCallFromPending(apiCall);
+			release();
+			return;
+		}
+	}
 }
 
-const getBidsForAccountCache = createTimeCache<AccountBidsDto[]>(cacheExpiration);
+const getBidsForAccountCache =
+	createTimeCache<AccountBidsDto[]>(cacheExpiration);
 
 const cacheKeyForAccountBids = (baseApiUri: string, account: string) => {
 	return `${baseApiUri}|${account}`;
-}
+};
 
 export async function getBidsForAccount(baseApiUri: string, id: string) {
 	const cacheKey = cacheKeyForAccountBids(baseApiUri, id);
