@@ -25,6 +25,7 @@ import {
 	DisplayDomain,
 	DisplayParentDomain,
 	NftParams,
+	Domain,
 } from 'lib/types';
 
 //- Style Imports
@@ -348,6 +349,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 								isGridView={isGridView}
 								setIsGridView={setIsGridView}
 								userId={account as string}
+								onRowClick={(domain: Domain) =>
+									navigate(domain.name.split('wilder.')[1])
+								}
 							/>
 						</animated.div>
 					)}
