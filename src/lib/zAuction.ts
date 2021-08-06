@@ -126,14 +126,13 @@ export async function getBidsListForNfts(
 
 	const jsonResponse = (await response.json()) as BidsListResponseDto[]; //awaits the json of the response
 
-	const bidsList = new Map <string, NftIdBidsAtListDto[]>(); //mapping of tokenId as key and returned bids as value
+	const bidsListMap = new Map <string, NftIdBidsAtListDto[]>(); //mapping of tokenId as key and returned bids as value
 
 	for (let i = 0; i < tokenId.length; i++) { //populate the map with the data for every user
-		// it builds the array of nftIds strings
-		bidsList.set(jsonResponse[i].tokenId, jsonResponse[i].bids);
+		bidsListMap.set(jsonResponse[i].tokenId, jsonResponse[i].bids);
 	}
 
-	return bidsList;
+	return bidsListMap;
 }
 
 export async function getBidsForAccount(baseApiUri: string, id: string) {
