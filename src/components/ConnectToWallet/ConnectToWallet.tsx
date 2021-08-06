@@ -65,7 +65,7 @@ const nameFromConnector = (c: AbstractConnector) => {
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { active, connector, activate, deactivate } = walletContext;
-	const [isLoading, setIsLoading] = useState(false); //state for the loading spinner
+	const [isLoading, setIsLoading] = useState(false); //state for trigger the loading spinner
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -94,43 +94,6 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		localStorage.removeItem('chosenWallet');
 		onConnect();
 	};
-
-	/*
-	<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
-									<div
-										style={{
-											display: 'flex',
-											justifyContent: 'center',
-											verticalAlign: 'center',
-											alignItems: 'center',
-											paddingBottom: '5px',
-										}}
-									>
-										<div
-											style={{
-												display: 'inline-block',
-												width: '10%',
-												margin: '0px',
-												padding: '0px',
-											}}
-										>
-											<Spinner />
-										</div>
-										<p
-											style={{
-												display: 'inline-block',
-												width: '90%',
-												verticalAlign: 'center',
-												height: '18px',
-												marginLeft: '15px',
-											}}
-											className={styles.Message}
-										>
-											Reconnecting to {localStorage.getItem('chosenWallet')}
-										</p>
-									</div>
-								</FutureButton>
-								*/
 
 	return (
 		<div className={`${WalletStyles.connect} blur border-pink-glow`}>
