@@ -53,7 +53,7 @@ interface BidPostInterface {
 function getApiEndpoints(baseApiUri: string) {
 	const encodeBidEndpoint = `${baseApiUri}/bid/`;
 	const bidsEndpoint = `${baseApiUri}/bids/`;
-	const bidListEndpoint = `${baseApiUri}lists?`;
+	const bidListEndpoint = `${baseApiUri}/bids/list`;
 	const accountBidsEndpoint = `${baseApiUri}accounts/`;
 
 	return {
@@ -85,6 +85,39 @@ export async function getBidsForNft(
 	const bids = (await response.json()).bids as NftIdBidsDto[];
 
 	return bids;
+}
+
+export async function getBidsListForNft(
+	baseApiUri: string,
+	contract: string[],
+	tokenId: string[],
+) {
+	const nftIdsArray: string[] = [];
+	const bidLists: string[] = [];
+
+	for (let i = 0; i < tokenId.length; i++) {
+		// it builds the array of nftIds strings
+		nftIdsArray.push(getNftId(contract[i], tokenId[i]));
+	}
+
+	const nftIdsBody = { nftIds: nftIdsArray }; //builds the correct body to send
+
+	let endpoints = getApiEndpoints(baseApiUri);
+
+	const response = await fetch(endpoints.bidListEndpoint, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(nftIdsBody),
+	});
+
+	const jsonResponse = await response.json(); //awaits the json of the response
+
+	for (let i = 0; i < tokenId.length; i++) {
+		//builds an array of only bids lists
+		bidLists.push(jsonResponse[i].bids);
+	}
+
+	return bidLists;
 }
 
 export async function getBidsForAccount(baseApiUri: string, id: string) {
