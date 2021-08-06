@@ -190,7 +190,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 					</li>
 				</ul>
 			)}
-			{active && connector && (
+			{active && connector && !isLoading && (
 				<div className={WalletStyles.Disconnect}>
 					<hr className="glow" />
 					<FutureButton glow onClick={disconnect}>
