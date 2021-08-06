@@ -26,6 +26,7 @@ type BidTableProps = {
 	userId: string;
 	usersBids?: boolean;
 	usersDomains?: boolean;
+	onNavigate?: (to: string) => void;
 };
 
 type BidTableData = {
@@ -43,7 +44,7 @@ enum Modals {
 	Accept,
 }
 
-const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
+const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 	//////////////////
 	// State / Refs //
 	//////////////////
@@ -125,6 +126,18 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	/* Sets some search parameters
 		 There's a hook listening to each of these variables */
 	const search = (query: string) => setSearchQuery(query);
+
+	const rowClick = (
+		event: React.MouseEvent<HTMLTableRowElement, MouseEvent>,
+		to: string,
+	) => {
+		const wasButtonPress = (event.target as HTMLElement).className
+			.toLowerCase()
+			.includes('future');
+		if (wasButtonPress) return false;
+		// @todo fix this when we switch away from wilder. root
+		if (onNavigate) onNavigate(to);
+	};
 
 	const closeModal = () => setModal(undefined);
 
@@ -291,7 +304,9 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 										prepareRow(row);
 										return (
 											<tr
-												onClick={() => console.log('Row click')}
+												onClick={(event) =>
+													rowClick(event, row.original.domain.name)
+												}
 												{...row.getRowProps()}
 											>
 												{row.cells.map((cell) => (
