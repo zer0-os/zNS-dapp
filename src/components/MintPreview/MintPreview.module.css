@@ -80,7 +80,7 @@
 	max-height: 70px;
 	margin-top: 12px;
 
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .Info p:last-of-type {

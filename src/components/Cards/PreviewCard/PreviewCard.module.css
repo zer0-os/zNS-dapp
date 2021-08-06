@@ -111,7 +111,7 @@
 
 .Body p {
 	max-height: 70px;
-	overflow-y: scroll;
+	overflow-y: auto;
 	margin-top: 16px;
 	color: white;
 	line-height: 19.2px;
