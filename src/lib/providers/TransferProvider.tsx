@@ -61,15 +61,16 @@ const TransferProvider: React.FC<TransferProviderType> = ({ children }) => {
 			addNotification(`Started transfer`);
 			setTransferring([...transferring, params]);
 
-			tx.wait()
-				.then(async (r) => {
-					addNotification(`Ownership of "${params.name}" has been transferred`);
-					setTransferring(transferring.filter((n) => n !== params));
-					setTransferred([...transferred, params]);
-				})
-				.catch((e) => {
-					console.log(e);
-				});
+			// TODO: receiver needs to accept before we execute transfer
+
+			const finishTransfer = async () => {
+				await tx.wait();
+				addNotification(`Ownership of "${params.name}" has been transferred`);
+				setTransferring(transferring.filter((n) => n !== params));
+				setTransferred([...transferred, params]);
+			};
+
+			finishTransfer();
 
 			return tx;
 		} catch (err) {
