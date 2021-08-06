@@ -106,13 +106,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	//Click handlers
 	const rowClick = (event: any, domain: Domain) => {
+		if (event.target.className.indexOf('FutureButton') >= 0) return;
 		if (onRowClick) {
 			onRowClick(domain);
 			return;
 		}
-		// @TODO Decouple this line from classname
-		if (event.target.className.indexOf('FutureButton') >= 0) return;
-		navigateTo(domain.name);
 	};
 
 	const buttonClick = (domain: Domain) => {
@@ -266,11 +264,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	);
 
 	// Navigation Handling
-	const history = useHistory();
-	const navigateTo = (domain: string) => {
-		const relativeDomain = getRelativeDomainPath(domain);
-		history.push(relativeDomain);
-	};
 	const initialState = { hiddenColumns: ['waitlist', 'lastSalePrice'] };
 
 	// React-Table Hooks

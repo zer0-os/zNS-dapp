@@ -23,7 +23,11 @@ type AcceptBidModalData = {
 	bid: Bid;
 };
 
-const OwnedDomainTables = () => {
+type OwnedDomainTableProps = {
+	onNavigate?: (to: string) => void;
+};
+
+const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -111,7 +115,9 @@ const OwnedDomainTables = () => {
 		setAcceptingBid(undefined);
 	};
 
-	const rowClick = (domain: Domain) => {};
+	const rowClick = (domain: Domain) => {
+		if (onNavigate) onNavigate(domain.name);
+	};
 
 	const isButtonActive = (row: any[]) => {
 		return row.length > 0;

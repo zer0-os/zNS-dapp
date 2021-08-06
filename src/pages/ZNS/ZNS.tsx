@@ -178,6 +178,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	};
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
+	const navigate = (to: string) => {
+		history.push(to);
+		// @todo rewrite
+		if (isProfileOverlayOpen) setIsProfileOverlayOpen(false);
+	};
+
 	/////////////
 	// Effects //
 	/////////////
@@ -378,7 +384,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					open
 					onClose={() => setIsProfileOverlayOpen(false)}
 				>
-					<Profile yours id={account ? account : ''} />
+					<Profile yours id={account ? account : ''} onNavigate={navigate} />
 				</Overlay>
 			)}
 
