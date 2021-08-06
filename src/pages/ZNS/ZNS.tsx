@@ -107,8 +107,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const history = useHistory();
 	const backCount = useRef(0);
 	const pageHistory = useRef<string[]>([]);
+	const [forwardDomain, setForwardDomain] = useState<string | undefined>();
+	const lastDomain = useRef<string>();
 	const canGoBack = pageHistory.current.length > 1;
-	const canGoForward = backCount.current > 0;
+	const canGoForward = !!forwardDomain;
 
 	// Force to go back to home if invalid domain
 	React.useEffect(() => {
@@ -168,8 +170,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	// Go forward through page history
 	const forward = () => {
-		backCount.current--;
-		history.goForward();
+		if (forwardDomain) history.push(forwardDomain);
+		setForwardDomain(undefined);
 	};
 
 	const openBidOverlay = () => {
@@ -183,6 +185,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	/////////////
 
 	useEffect(() => {
+		if (lastDomain.current) {
+			if (lastDomain.current.length > domain.length) {
+				setForwardDomain(lastDomain.current);
+			} else {
+				setForwardDomain(undefined);
+			}
+		}
+		lastDomain.current = domain;
 		pageHistory.current = pageHistory.current.concat([domain]);
 	}, [domain]);
 
