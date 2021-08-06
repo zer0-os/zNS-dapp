@@ -1,5 +1,5 @@
 //- React Imports
-import React from 'react';
+import React, { useState } from 'react';
 
 //- Web3 Imports
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
@@ -17,7 +17,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import WalletStyles from './Wallet.module.css';
 
 //- Component Imports
-import { FutureButton } from 'components';
+import { FutureButton, Spinner } from 'components';
 
 //- Asset Imports
 import metamaskIcon from './assets/metamask.svg';
@@ -65,11 +65,13 @@ const nameFromConnector = (c: AbstractConnector) => {
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { active, connector, activate, deactivate } = walletContext;
+	const [isLoading, setIsLoading] = useState(false); //state for the loading spinner
 
 	//- Notification State
 	const { addNotification } = useNotification();
 
 	const connectToWallet = async (wallet: string) => {
+		setIsLoading(true);
 		const c = connectorFromName(wallet) as AbstractConnector;
 		if (c) {
 			await activate(c, async (e: Error) => {
@@ -78,6 +80,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				console.error(e);
 			});
 			localStorage.setItem('chosenWallet', wallet);
+			setIsLoading(false);
 			onConnect();
 		}
 	};
@@ -92,59 +95,138 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		onConnect();
 	};
 
+	/*
+	<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'center',
+											verticalAlign: 'center',
+											alignItems: 'center',
+											paddingBottom: '5px',
+										}}
+									>
+										<div
+											style={{
+												display: 'inline-block',
+												width: '10%',
+												margin: '0px',
+												padding: '0px',
+											}}
+										>
+											<Spinner />
+										</div>
+										<p
+											style={{
+												display: 'inline-block',
+												width: '90%',
+												verticalAlign: 'center',
+												height: '18px',
+												marginLeft: '15px',
+											}}
+											className={styles.Message}
+										>
+											Reconnecting to {localStorage.getItem('chosenWallet')}
+										</p>
+									</div>
+								</FutureButton>
+								*/
+
 	return (
 		<div className={`${WalletStyles.connect} blur border-pink-glow`}>
 			<div className={WalletStyles.header}>
 				<h3 className={`glow-text-white`}>Connect to a wallet</h3>
 			</div>
 			<hr className="glow" />
-			<ul>
-				<li
-					onClick={() => connectToWallet('metamask')}
-					className={WalletStyles.wallet}
-				>
-					Metamask
-					<div>
-						<img alt="metamask" src={metamaskIcon} />
-					</div>
-				</li>
-				<li
-					onClick={() => connectToWallet('walletconnect')}
-					className={WalletStyles.wallet}
-				>
-					<span>Wallet Connect</span>
-					<div>
-						<img alt="wallet connect" src={walletConnectIcon} />
-					</div>
-				</li>
-				<li
-					onClick={() => connectToWallet('coinbase')}
-					className={WalletStyles.wallet}
-				>
-					<span>Coinbase Wallet</span>
-					<div>
-						<img alt="coinbase wallet" src={coinbaseWalletIcon} />
-					</div>
-				</li>
-				<li
-					onClick={() => connectToWallet('fortmatic')}
-					className={WalletStyles.wallet}
-				>
-					<span>Fortmatic</span>
-					<div>
-						<img alt="fortmatic" src={fortmaticIcon} />
-					</div>
-				</li>
-				<li
-					onClick={() => connectToWallet('portis')}
-					className={WalletStyles.wallet}
-				>
-					<span>Portis</span>
-					<div>
-						<img alt="portis" src={portisIcon} />
-					</div>
-				</li>
-			</ul>
+
+			{isLoading && (
+				<div className={WalletStyles.Disconnect}>
+					<hr className="glow" />
+					<FutureButton glow onClick={() => disconnect}>
+						<div
+							style={{
+								display: 'flex',
+								justifyContent: 'center',
+								verticalAlign: 'center',
+								alignItems: 'center',
+								paddingBottom: '5px',
+							}}
+						>
+							<div
+								style={{
+									display: 'inline-block',
+									width: '10%',
+									margin: '0px',
+									padding: '0px',
+								}}
+							>
+								<Spinner />
+							</div>
+							<p
+								style={{
+									display: 'inline-block',
+									width: '90%',
+									verticalAlign: 'center',
+									height: '18px',
+									marginLeft: '24px',
+								}}
+							>
+								Connecting
+							</p>
+						</div>
+					</FutureButton>
+				</div>
+			)}
+
+			{!isLoading && (
+				<ul>
+					<li
+						onClick={() => connectToWallet('metamask')}
+						className={WalletStyles.wallet}
+					>
+						Metamask
+						<div>
+							<img alt="metamask" src={metamaskIcon} />
+						</div>
+					</li>
+					<li
+						onClick={() => connectToWallet('walletconnect')}
+						className={WalletStyles.wallet}
+					>
+						<span>Wallet Connect</span>
+						<div>
+							<img alt="wallet connect" src={walletConnectIcon} />
+						</div>
+					</li>
+					<li
+						onClick={() => connectToWallet('coinbase')}
+						className={WalletStyles.wallet}
+					>
+						<span>Coinbase Wallet</span>
+						<div>
+							<img alt="coinbase wallet" src={coinbaseWalletIcon} />
+						</div>
+					</li>
+					<li
+						onClick={() => connectToWallet('fortmatic')}
+						className={WalletStyles.wallet}
+					>
+						<span>Fortmatic</span>
+						<div>
+							<img alt="fortmatic" src={fortmaticIcon} />
+						</div>
+					</li>
+					<li
+						onClick={() => connectToWallet('portis')}
+						className={WalletStyles.wallet}
+					>
+						<span>Portis</span>
+						<div>
+							<img alt="portis" src={portisIcon} />
+						</div>
+					</li>
+				</ul>
+			)}
 			{active && connector && (
 				<div className={WalletStyles.Disconnect}>
 					<hr className="glow" />
