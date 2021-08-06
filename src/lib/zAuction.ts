@@ -93,7 +93,7 @@ export async function getBidsListForNft(
 	tokenId: string[],
 ) {
 	const nftIdsArray: string[] = [];
-	const bidLists: string[] = [];
+	const bidsList: string[] = [];
 
 	for (let i = 0; i < tokenId.length; i++) {
 		// it builds the array of nftIds strings
@@ -113,11 +113,11 @@ export async function getBidsListForNft(
 	const jsonResponse = await response.json(); //awaits the json of the response
 
 	for (let i = 0; i < tokenId.length; i++) {
-		//builds an array of only bids lists
-		bidLists.push(jsonResponse[i].bids);
+		//builds an array of only bid lists
+		bidsList.push(jsonResponse[i].bids);
 	}
 
-	return bidLists;
+	return bidsList;
 }
 
 export async function getBidsForAccount(baseApiUri: string, id: string) {
