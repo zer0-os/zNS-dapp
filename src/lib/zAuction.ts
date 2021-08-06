@@ -38,6 +38,10 @@ interface CreateBidDto {
 	nftId: string;
 }
 
+interface BidsListDto {
+	bids: string[]
+}
+
 interface BidPostInterface {
 	account: string;
 	auctionId: string;
@@ -77,7 +81,7 @@ export async function getBidsForNft(
 	tokenId: string,
 ) {
 	const nftId = getNftId(contract, tokenId);
-	let endpoints = getApiEndpoints(baseApiUri);
+	const endpoints = getApiEndpoints(baseApiUri);
 	const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
 		method: 'GET',
 	});
@@ -89,20 +93,20 @@ export async function getBidsForNft(
 
 export async function getBidsListForNfts(
 	baseApiUri: string,
-	contract: string[],
+	contract: string,
 	tokenId: string[],
 ) {
 	const nftIdsArray: string[] = [];
-	const bidsList: string[] = [];
+	const bidsList: BidsListDto[] = [];
 
 	for (let i = 0; i < tokenId.length; i++) {
 		// it builds the array of nftIds strings
-		nftIdsArray.push(getNftId(contract[i], tokenId[i]));
+		nftIdsArray.push(getNftId(contract, tokenId[i]));
 	}
 
 	const nftIdsBody = { nftIds: nftIdsArray }; //builds the correct body to send
 
-	let endpoints = getApiEndpoints(baseApiUri);
+	const endpoints = getApiEndpoints(baseApiUri);
 
 	const response = await fetch(endpoints.bidListEndpoint, {
 		method: 'POST',
