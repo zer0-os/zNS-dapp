@@ -105,7 +105,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 			{isLoading && (
 				<div className={WalletStyles.Disconnect}>
 					<hr className="glow" />
-					<FutureButton glow onClick={() => disconnect}>
+					<FutureButton glow onClick={() => {}}>
 						<div
 							style={{
 								display: 'flex',
