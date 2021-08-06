@@ -87,7 +87,7 @@ export async function getBidsForNft(
 	return bids;
 }
 
-export async function getBidsListForNft(
+export async function getBidsListForNfts(
 	baseApiUri: string,
 	contract: string[],
 	tokenId: string[],
