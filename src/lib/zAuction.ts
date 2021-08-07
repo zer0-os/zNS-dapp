@@ -131,7 +131,6 @@ export async function getBidsListForNfts(
 	const bidsMap = {} as TokenBids; //mapping of tokenId as key and returned bids as value
 
 	jsonResponse.map(function (dto: any) {
-		console.log('1');
 		bidsMap[dto.tokenId] = dto.bids;
 	});
 
