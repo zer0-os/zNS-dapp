@@ -48,6 +48,10 @@ interface CreateBidDto {
 	nftId: string;
 }
 
+interface TokenBids {
+	[tokenId: string]: NftBidDto[] | undefined
+   }
+
 interface BidsListResponseDto {
 	bids: NftBidDto[];
 	contractAddress: string;
@@ -106,34 +110,35 @@ export async function getBidsForNft(
 export async function getBidsListForNfts(
 	baseApiUri: string,
 	contract: string,
-	tokenId: string[],
+	tokenIds: string[],
 ) {
-	const nftIdsArray: string[] = [];
 
-	for (let i = 0; i < tokenId.length; i++) {
-		// it builds the array of nftIds strings
-		nftIdsArray.push(getNftId(contract, tokenId[i]));
-	}
+	const nftIds: string[] = tokenIds.map(function (id: any) {
+		return getNftId(contract, id);
+	})
 
-	const nftIdsBody = { nftIds: nftIdsArray }; //builds the correct body to send
+	console.log(nftIds)
+
+	const requestBody = { nftIds: nftIds }; //builds the correct body to send
 
 	const endpoints = getApiEndpoints(baseApiUri);
 
 	const response = await fetch(endpoints.bidListEndpoint, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(nftIdsBody),
+		body: JSON.stringify(requestBody),
 	});
 
 	const jsonResponse = (await response.json()) as BidsListResponseDto[]; //awaits the json of the response
 
-	const bidsListMap = new Map <string, NftBidDto[]>(); //mapping of tokenId as key and returned bids as value
+	 const bidsMap = {} as TokenBids; //mapping of tokenId as key and returned bids as value
 
-	for (let i = 0; i < tokenId.length; i++) { //populate the map with the data for every user
-		bidsListMap.set(jsonResponse[i].tokenId, jsonResponse[i].bids);
-	}
-
-	return bidsListMap;
+	jsonResponse.map(function (dto: any) {
+		console.log("1")
+		bidsMap[dto.tokenId] = dto.bids
+	})
+	console.log(bidsMap)
+	return bidsMap;
 }
 
 export async function getBidsForAccount(baseApiUri: string, id: string) {
