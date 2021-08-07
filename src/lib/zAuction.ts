@@ -49,8 +49,8 @@ interface CreateBidDto {
 }
 
 interface TokenBids {
-	[tokenId: string]: NftBidDto[] | undefined
-   }
+	[tokenId: string]: NftBidDto[] | undefined;
+}
 
 interface BidsListResponseDto {
 	bids: NftBidDto[];
@@ -112,12 +112,9 @@ export async function getBidsListForNfts(
 	contract: string,
 	tokenIds: string[],
 ) {
-
 	const nftIds: string[] = tokenIds.map(function (id: any) {
 		return getNftId(contract, id);
-	})
-
-	console.log(nftIds)
+	});
 
 	const requestBody = { nftIds: nftIds }; //builds the correct body to send
 
@@ -131,13 +128,13 @@ export async function getBidsListForNfts(
 
 	const jsonResponse = (await response.json()) as BidsListResponseDto[]; //awaits the json of the response
 
-	 const bidsMap = {} as TokenBids; //mapping of tokenId as key and returned bids as value
+	const bidsMap = {} as TokenBids; //mapping of tokenId as key and returned bids as value
 
 	jsonResponse.map(function (dto: any) {
-		console.log("1")
-		bidsMap[dto.tokenId] = dto.bids
-	})
-	console.log(bidsMap)
+		console.log('1');
+		bidsMap[dto.tokenId] = dto.bids;
+	});
+
 	return bidsMap;
 }
 
