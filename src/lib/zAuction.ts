@@ -112,7 +112,7 @@ export async function getBidsListForNfts(
 	contract: string,
 	tokenIds: string[],
 ) {
-	const nftIds: string[] = tokenIds.map(function (id: any) {
+	const nftIds: string[] = tokenIds.map(function (id: string) {
 		return getNftId(contract, id);
 	});
 
