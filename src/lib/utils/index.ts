@@ -20,29 +20,45 @@ const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/up
  * @param params Metadata parameters
  * @returns URI to the created Metadata
  */
-
-export const createDomainMetadata = async (params: DomainMetadataParams) => {
-	// upload image to http backend
-
-	const previewImageResponse = await fetch(uploadApiEndpoint, {
-		method: 'POST',
-		body: JSON.stringify(params.previewImage),
-	});
-	const previewImage = (await previewImageResponse.json()) as UploadResponseDTO;
-
+const getMetadataObject = async (params: DomainMetadataParams) => {
+	// upload images to http backend
 	const imageResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
 		body: JSON.stringify(params.image),
 	});
 	const image = (await imageResponse.json()) as UploadResponseDTO;
 
+	if (params.previewImage!) {
+		//if params has the optional preview image it builds metadata with it
+		const previewImageResponse = await fetch(uploadApiEndpoint, {
+			method: 'POST',
+			body: JSON.stringify(params.previewImage),
+		});
+		const previewImage =
+			(await previewImageResponse.json()) as UploadResponseDTO;
+
+		const metadataObject = {
+			name: params.name,
+			description: params.story,
+			image: image.url,
+			previewImage: previewImage.url,
+		};
+
+		return metadataObject;
+	} else {
+		const metadataObject = {
+			name: params.name,
+			description: params.story,
+			image: image.url,
+		};
+
+		return metadataObject;
+	}
+};
+
+export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	// upload metadata to IPFS
-	const metadataObject = {
-		name: params.name,
-		description: params.story,
-		image: image.url,
-		previewImage: previewImage.url
-	};
+	const metadataObject = await getMetadataObject(params);
 	const metadataAsString = JSON.stringify(metadataObject);
 
 	const metadataResponse = await fetch(uploadApiEndpoint, {
