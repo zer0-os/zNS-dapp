@@ -1,6 +1,7 @@
 export * from './domains';
 
 interface DomainMetadataParams {
+	previewImage: Buffer;
 	image: Buffer;
 	name: string;
 	story: string;
@@ -23,6 +24,12 @@ const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/up
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	// upload image to http backend
 
+	const previewImageResponse = await fetch(uploadApiEndpoint, {
+		method: 'POST',
+		body: JSON.stringify(params.previewImage),
+	});
+	const previewImage = (await previewImageResponse.json()) as UploadResponseDTO;
+
 	const imageResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
 		body: JSON.stringify(params.image),
@@ -34,6 +41,7 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
 		name: params.name,
 		description: params.story,
 		image: image.url,
+		previewImage: previewImage.url
 	};
 	const metadataAsString = JSON.stringify(metadataObject);
 

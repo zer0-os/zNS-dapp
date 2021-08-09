@@ -69,6 +69,7 @@ export interface NftParams {
 	ticker: string;
 	story: string;
 	image: Buffer;
+	previewImage: Buffer;
 	dynamic: boolean;
 	locked: boolean;
 }
