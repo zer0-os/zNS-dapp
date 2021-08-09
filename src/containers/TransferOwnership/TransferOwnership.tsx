@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styles from './TransferOwnership.module.css';
 
 //- Component Imports
-import { Overlay, EtherInput, FutureButton, Image } from 'components';
+import { EtherInput, FutureButton, Image, Overlay } from 'components';
 
 //- Library Imports
 /*
@@ -36,6 +36,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 	// State
 	const [walletAddress, setWalletAddress] = useState('');
 	const [hasAccepted, setHasAccepted] = useState(false); // Toggle confirmation overlay
+	const [isLoading, setIsLoading] = useState(false);
 
 	// Provider
 	const { transferRequest } = useTransferProvider();
@@ -48,21 +49,24 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 	const accept = () => setHasAccepted(true);
 	const cancel = () => setHasAccepted(false);
 
-	const submitTransfer = () => {
-		onModalChange(false);
+	const submitTransfer = async () => {
+		setIsLoading(true);
 
-		transferRequest({
-			name,
-			image,
-			domainName,
-			domainId,
-			ownerId,
-			creatorId,
-			walletAddress,
-		});
+		try {
+			await transferRequest({
+				name,
+				image,
+				domainName,
+				domainId,
+				ownerId,
+				creatorId,
+				walletAddress,
+			});
+
+			onModalChange(false);
+		} catch (err) {}
+		setIsLoading(false);
 	};
-
-	const confirm = () => submitTransfer();
 
 	return (
 		<div>
@@ -77,19 +81,23 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 						This transaction is about to be seared upon the Blockchain. There’s
 						no going back.
 					</p>
+					{isLoading && <p>Transaction pending user confirmation.</p>}
 					<div className={styles.Buttons}>
+						{!isLoading && (
+							<FutureButton
+								style={{ textTransform: 'uppercase' }}
+								alt
+								glow
+								onClick={cancel}
+							>
+								Cancel
+							</FutureButton>
+						)}
 						<FutureButton
 							style={{ textTransform: 'uppercase' }}
-							alt
 							glow
-							onClick={cancel}
-						>
-							Cancel
-						</FutureButton>
-						<FutureButton
-							style={{ textTransform: 'uppercase' }}
-							glow
-							onClick={confirm}
+							loading={isLoading}
+							onClick={submitTransfer}
 						>
 							Transfer
 						</FutureButton>
