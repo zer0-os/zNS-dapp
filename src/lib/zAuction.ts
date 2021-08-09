@@ -11,6 +11,16 @@ export interface NftIdBidsDto {
 	date: string;
 }
 
+export interface NftBidDto {
+	account: string;
+	signedMessage: string;
+	auctionId: string;
+	bidAmount: string;
+	minimumBid: string;
+	startBlock: string;
+	expireBlock: string;
+}
+
 export interface AccountBidsDto {
 	signedMessage: string;
 	auctionId: string;
@@ -38,6 +48,16 @@ interface CreateBidDto {
 	nftId: string;
 }
 
+interface TokenBids {
+	[tokenId: string]: NftBidDto[] | undefined;
+}
+
+interface BidsListResponseDto {
+	bids: NftBidDto[];
+	contractAddress: string;
+	tokenId: string;
+}
+
 interface BidPostInterface {
 	account: string;
 	auctionId: string;
@@ -53,7 +73,7 @@ interface BidPostInterface {
 function getApiEndpoints(baseApiUri: string) {
 	const encodeBidEndpoint = `${baseApiUri}/bid/`;
 	const bidsEndpoint = `${baseApiUri}/bids/`;
-	const bidListEndpoint = `${baseApiUri}lists?`;
+	const bidListEndpoint = `${baseApiUri}/bids/list`;
 	const accountBidsEndpoint = `${baseApiUri}accounts/`;
 
 	return {
@@ -77,7 +97,7 @@ export async function getBidsForNft(
 	tokenId: string,
 ) {
 	const nftId = getNftId(contract, tokenId);
-	let endpoints = getApiEndpoints(baseApiUri);
+	const endpoints = getApiEndpoints(baseApiUri);
 	const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
 		method: 'GET',
 	});
@@ -87,8 +107,38 @@ export async function getBidsForNft(
 	return bids;
 }
 
+export async function getBidsListForNfts(
+	baseApiUri: string,
+	contract: string,
+	tokenIds: string[],
+) {
+	const nftIds: string[] = tokenIds.map(function (id: string) {
+		return getNftId(contract, id);
+	});
+
+	const requestBody = { nftIds: nftIds }; //builds the correct body to send
+
+	const endpoints = getApiEndpoints(baseApiUri);
+
+	const response = await fetch(endpoints.bidListEndpoint, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(requestBody),
+	});
+
+	const jsonResponse = (await response.json()) as BidsListResponseDto[]; //awaits the json of the response
+
+	const bidsMap = {} as TokenBids; //mapping of tokenId as key and returned bids as value
+
+	jsonResponse.forEach(function (dto: BidsListResponseDto) {
+		bidsMap[dto.tokenId] = dto.bids;
+	});
+
+	return bidsMap;
+}
+
 export async function getBidsForAccount(baseApiUri: string, id: string) {
-	let endpoints = getApiEndpoints(baseApiUri);
+	const endpoints = getApiEndpoints(baseApiUri);
 	const response = await fetch(endpoints.accountBidsEndpoint + id);
 	const bids = (await response.json()) as AccountBidsDto[];
 	return bids;
@@ -101,7 +151,7 @@ async function encodeBid(
 	if (!ethers.utils.isAddress(bid.contractAddress)) {
 		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
-	let endpoints = getApiEndpoints(baseApiUri);
+	const endpoints = getApiEndpoints(baseApiUri);
 	const response = await fetch(endpoints.encodeBidEndpoint, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -120,7 +170,7 @@ async function sendBid(
 	if (!ethers.utils.isAddress(bid.contractAddress)) {
 		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
-	let endpoints = getApiEndpoints(baseApiUri);
+	const endpoints = getApiEndpoints(baseApiUri);
 	await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
