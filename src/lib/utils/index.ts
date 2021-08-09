@@ -1,7 +1,7 @@
 export * from './domains';
 
 interface DomainMetadataParams {
-	previewImage: Buffer;
+	previewImage?: Buffer;
 	image: Buffer;
 	name: string;
 	story: string;
