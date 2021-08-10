@@ -183,6 +183,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				if (!isMounted.current) return;
 				setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
 			}
+			if (onLoad) onLoad();
 		} else {
 			if (!isMounted.current) return;
 			setContainerHeight(0);
