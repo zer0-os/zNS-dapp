@@ -7,6 +7,13 @@ interface DomainMetadataParams {
 	story: string;
 }
 
+interface MetadataObject {
+	previewImageUri?: string;
+	imageUri: string;
+	name: string;
+	description: string;
+}
+
 interface UploadResponseDTO {
 	fleekHash: string;
 	hash: string;
@@ -20,7 +27,7 @@ const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/up
  * @param params Metadata parameters
  * @returns URI to the created Metadata
  */
-const getMetadataObject = async (params: DomainMetadataParams) => {
+const uploadMetadata = async (params: DomainMetadataParams) => {
 	// upload images to http backend
 	const imageResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
@@ -28,7 +35,13 @@ const getMetadataObject = async (params: DomainMetadataParams) => {
 	});
 	const image = (await imageResponse.json()) as UploadResponseDTO;
 
-	if (params.previewImage!) {
+	let metadataObject: MetadataObject = {
+		name: params.name,
+		description: params.story,
+		imageUri: image.url,
+	};
+
+	if (params.previewImage) {
 		//if params has the optional preview image it builds metadata with it
 		const previewImageResponse = await fetch(uploadApiEndpoint, {
 			method: 'POST',
@@ -36,29 +49,16 @@ const getMetadataObject = async (params: DomainMetadataParams) => {
 		});
 		const previewImage =
 			(await previewImageResponse.json()) as UploadResponseDTO;
-
-		const metadataObject = {
-			name: params.name,
-			description: params.story,
-			image: image.url,
-			previewImage: previewImage.url,
-		};
-
-		return metadataObject;
-	} else {
-		const metadataObject = {
-			name: params.name,
-			description: params.story,
-			image: image.url,
-		};
-
+		metadataObject.previewImageUri = previewImage.url;
 		return metadataObject;
 	}
+
+	return metadataObject;
 };
 
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	// upload metadata to IPFS
-	const metadataObject = await getMetadataObject(params);
+	const metadataObject = await uploadMetadata(params);
 	const metadataAsString = JSON.stringify(metadataObject);
 
 	const metadataResponse = await fetch(uploadApiEndpoint, {
