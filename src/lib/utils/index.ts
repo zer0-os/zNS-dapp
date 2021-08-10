@@ -23,10 +23,10 @@ const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/up
  * @returns URI to the created Metadata
  */
 
-const uploadImage = async (image: Buffer) => {
+const uploadImage = async (imageToUpload: Buffer) => {
 	const imageResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
-		body: JSON.stringify(image),
+		body: JSON.stringify(imageToUpload),
 	});
 	const imageUploaded = (await imageResponse.json()) as UploadResponseDTO;
 	return imageUploaded;
