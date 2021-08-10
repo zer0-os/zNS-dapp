@@ -316,9 +316,10 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					<SearchBar
 						placeholder="Search by domain name"
 						onChange={(event: any) => search(event.target.value)}
-						style={{ width: '100%', marginRight: 16 }}
+						style={{ width: '100%' }}
 					/>
-					<div className={styles.searchHeaderButtons}>
+					{/* @todo re-enable grid view */}
+					{/* <div className={styles.searchHeaderButtons}>
 						<IconButton
 							onClick={setList}
 							toggled={!isGridView}
@@ -331,7 +332,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							iconUri={grid}
 							style={{ height: 32, width: 32 }}
 						/>
-					</div>
+					</div> */}
 				</div>
 
 				<div className={styles.DomainTable}>
@@ -371,14 +372,15 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						)}
 
 						{/* Grid View */}
-						{!empty && isGridView && (
+						{/* @todo re-enable grid view */}
+						{/* {!empty && isGridView && (
 							<ol className={styles.Grid}>
-								{/* {data
+								{data
 									.filter((d) => d.name.includes(searchQuery))
 									.map((d, i) => (
 										<li onClick={() => navigateTo(d.name)} key={i}>
 											<NFTCard
-												name={d.metadata.title || d.name || ''}
+												name={d.name}
 												domain={d.domain.name || ''}
 												imageUri={d.metadata.image || ''}
 												price={d.bids[0]?.amount || 0}
@@ -388,9 +390,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 												showOwner={true}
 											/>
 										</li>
-									))} */}
+									))}
 							</ol>
-						)}
+						)} */}
 
 						{empty && <p className={styles.Empty}>No domains found</p>}
 					</div>

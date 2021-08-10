@@ -277,6 +277,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 					<SearchBar
 						onChange={(event: any) => search(event.target.value)}
 						style={{ width: '100%', marginRight: 16 }}
+						placeholder="Search by domain name"
 					/>
 				</div>
 			)}

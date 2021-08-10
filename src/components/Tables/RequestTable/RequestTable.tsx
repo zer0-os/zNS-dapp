@@ -456,6 +456,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					<SearchBar
 						onChange={(event: any) => search(event.target.value)}
 						style={{ width: '100%', marginRight: 16 }}
+						placeholder="Search by domain name"
 					/>
 					<div className={styles.searchHeaderButtons}>
 						<OptionDropdown
@@ -476,7 +477,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								{statusFilter || 'All Statuses'}
 							</FilterButton>
 						</OptionDropdown>
-						{isGridViewToggleable && (
+						{/* {isGridViewToggleable && (
 							<>
 								<IconButton
 									onClick={setList}
@@ -491,7 +492,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 									style={{ height: 32, width: 32 }}
 								/>
 							</>
-						)}
+						)} */}
 					</div>
 				</div>
 			)}
@@ -535,7 +536,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					)}
 
 					{/* Grid View */}
-					{!isLoading && isGridView && (
+					{/* @todo re-enable grid view */}
+					{/* {!isLoading && isGridView && (
 						<ol className={styles.Grid}>
 							{displayData.map((d, i) => (
 								<li key={i} onClick={() => view(d.request.domain)}>
@@ -550,7 +552,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 										showOwner
 										style={{ width: 380 }}
 									>
-										{/* @TODO Refactor this horrific section */}
 										<div
 											style={{
 												display: 'flex',
@@ -612,7 +613,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								</li>
 							))}
 						</ol>
-					)}
+					)} */}
 
 					{/* No Search Results Message */}
 					{!isLoading &&
