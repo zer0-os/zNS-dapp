@@ -14,20 +14,8 @@ export function useEagerConnect() {
 		const wallet = localStorage.getItem('chosenWallet');
 
 		const reConnectToWallet = async (wallet: string) => {
-			const c = connectorFromName(wallet) as AbstractConnector;
-			if (c) {
-				await activate(c, async (e: Error) => {
-					localStorage.removeItem('chosenWallet');
-					console.error(`Encounter error while connecting to ${wallet}.`);
-					console.error(e);
-				});
-				setTried(true);
-			}
-		};
-
-		if (wallet) {
 			if (wallet === 'metamask') {
-				injected.isAuthorized().then((isAuthorized: boolean) => {
+				await injected.isAuthorized().then((isAuthorized: boolean) => {
 					if (isAuthorized) {
 						activate(injected, undefined, true).catch(() => {
 							setTried(true);
@@ -37,9 +25,20 @@ export function useEagerConnect() {
 					}
 				});
 			} else {
-				reConnectToWallet(wallet);
+				const c = connectorFromName(wallet) as AbstractConnector;
+				if (c) {
+					await activate(c, async (e: Error) => {
+						localStorage.removeItem('chosenWallet');
+						console.error(`Encounter error while connecting to ${wallet}.`);
+						console.error(e);
+					});
+					setTried(true);
+				}
 			}
-		}
+		};
+
+		if (wallet) reConnectToWallet(wallet);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // intentionally only running on mount (make sure it's only mounted once :))
 
