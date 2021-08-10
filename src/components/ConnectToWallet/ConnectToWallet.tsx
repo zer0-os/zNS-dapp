@@ -74,12 +74,16 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		setIsLoading(true);
 		const c = connectorFromName(wallet) as AbstractConnector;
 		if (c) {
+			const previousWallet = localStorage.getItem('chosenWallet')
+			localStorage.setItem('chosenWallet', wallet);
 			await activate(c, async (e: Error) => {
 				addNotification(`Failed to connect to wallet.`);
+				localStorage.removeItem('chosenWallet');
+				if(previousWallet)
+				localStorage.setItem('chosenWallet', previousWallet);
 				console.error(`Encounter error while connecting to ${wallet}.`);
 				console.error(e);
 			});
-			localStorage.setItem('chosenWallet', wallet);
 			setIsLoading(false);
 			onConnect();
 		}

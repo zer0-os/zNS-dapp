@@ -342,7 +342,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 											}}
 											className={styles.Message}
 										>
-											Reconnecting to {localStorage.getItem('chosenWallet')}
+											Trying to connect {localStorage.getItem('chosenWallet')}
 										</p>
 									</div>
 								</FutureButton>

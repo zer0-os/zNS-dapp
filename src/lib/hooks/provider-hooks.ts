@@ -26,8 +26,10 @@ export function useEagerConnect() {
 			} else {
 				const c = connectorFromName(wallet) as AbstractConnector;
 				activate(c, async (e: Error) => {
+					localStorage.removeItem('chosenWallet');
 					console.error(`Encounter error while connecting to ${wallet}.`);
 					console.error(e);
+					setTried(false); //this will trigger the button render change on zns.tsx
 				});
 				setTried(true);
 			}
