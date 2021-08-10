@@ -12,6 +12,19 @@ export function useEagerConnect() {
 
 	useEffect(() => {
 		const wallet = localStorage.getItem('chosenWallet');
+
+		const connectToWallet = async (wallet: string) => {
+			const c = connectorFromName(wallet) as AbstractConnector;
+			if (c) {
+				await activate(c, async (e: Error) => {
+					localStorage.removeItem('chosenWallet');
+					console.error(`Encounter error while connecting to ${wallet}.`);
+					console.error(e);
+				});
+				setTried(true);
+			}
+		};
+
 		if (wallet) {
 			if (wallet === 'metamask') {
 				injected.isAuthorized().then((isAuthorized: boolean) => {
@@ -24,14 +37,7 @@ export function useEagerConnect() {
 					}
 				});
 			} else {
-				const c = connectorFromName(wallet) as AbstractConnector;
-				activate(c, async (e: Error) => {
-					localStorage.removeItem('chosenWallet');
-					console.error(`Encounter error while connecting to ${wallet}.`);
-					console.error(e);
-					setTried(false); //this will trigger the button render change on zns.tsx
-				});
-				setTried(true);
+				connectToWallet(wallet);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
