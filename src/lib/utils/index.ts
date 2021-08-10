@@ -23,18 +23,18 @@ const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/up
  * @returns URI to the created Metadata
  */
 
-const uploadImage = async (imageToUpload: Buffer) => {
-	const imageResponse = await fetch(uploadApiEndpoint, {
+const uploadData = async (dataToUpload: string | Buffer) => {
+	const dataResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
-		body: JSON.stringify(imageToUpload),
+		body: JSON.stringify(dataToUpload),
 	});
-	const imageUploaded = (await imageResponse.json()) as UploadResponseDTO;
-	return imageUploaded;
+	const dataUploaded = (await dataResponse.json()) as UploadResponseDTO;
+	return dataUploaded;
 };
 
 const uploadMetadata = async (params: DomainMetadataParams) => {
 	// upload images to http backend
-	const image = await uploadImage(params.image);
+	const image = await uploadData(params.image);
 
 	let metadataObject: Metadata = {
 		title: params.name,
@@ -44,7 +44,7 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
 
 	if (params.previewImage) {
 		//if params has the optional preview image it builds metadata with it
-		const previewImage = await uploadImage(params.previewImage);
+		const previewImage = await uploadData(params.previewImage);
 		metadataObject.previewImage = previewImage.url;
 	}
 
@@ -56,11 +56,7 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	const metadataObject = await uploadMetadata(params);
 	const metadataAsString = JSON.stringify(metadataObject);
 
-	const metadataResponse = await fetch(uploadApiEndpoint, {
-		method: 'POST',
-		body: metadataAsString,
-	});
-	const metadata = (await metadataResponse.json()) as UploadResponseDTO;
+	const metadata = await uploadData(metadataAsString);
 
 	return metadata.url;
 };
@@ -71,11 +67,7 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
  * @returns Uri to uploaded data
  */
 export const uploadToIPFS = async (data: string | Buffer) => {
-	const uploadedResponse = await fetch(uploadApiEndpoint, {
-		method: 'POST',
-		body: data,
-	});
-	const uploaded = (await uploadedResponse.json()) as UploadResponseDTO;
+	const uploaded = await uploadData(data);
 	return uploaded.url;
 };
 
