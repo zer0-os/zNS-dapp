@@ -25,7 +25,7 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
 
 	const imageResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
-		body: JSON.stringify(params.image),
+		body: params.image,
 	});
 	const image = (await imageResponse.json()) as UploadResponseDTO;
 
