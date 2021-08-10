@@ -23,7 +23,7 @@ const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/up
  * @returns URI to the created Metadata
  */
 
-const uploadData = async (dataToUpload: string | Buffer) => {
+const uploadData = async (dataToUpload: string | Buffer | Metadata) => {
 	const dataResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
 		body: JSON.stringify(dataToUpload),
@@ -54,9 +54,7 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	// upload metadata to IPFS
 	const metadataObject = await uploadMetadata(params);
-	const metadataAsString = JSON.stringify(metadataObject);
-
-	const metadata = await uploadData(metadataAsString);
+	const metadata = await uploadData(metadataObject);
 
 	return metadata.url;
 };
