@@ -10,6 +10,7 @@ export interface NftIdBidsDto {
 	minimumBid: string;
 	startBlock: string;
 	expireBlock: string;
+	date: string;
 }
 
 export interface AccountBidsDto {
@@ -21,6 +22,7 @@ export interface AccountBidsDto {
 	minimumBid: string;
 	startBlock: string;
 	expireBlock: string;
+	date: string;
 }
 
 interface BidPayloadPostInterface {
