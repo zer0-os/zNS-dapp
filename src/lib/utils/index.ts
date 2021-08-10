@@ -1,3 +1,5 @@
+import { Metadata } from 'lib/types';
+
 export * from './domains';
 
 interface DomainMetadataParams {
@@ -5,13 +7,6 @@ interface DomainMetadataParams {
 	image: Buffer;
 	name: string;
 	story: string;
-}
-
-interface MetadataObject {
-	previewImageUri?: string;
-	imageUri: string;
-	name: string;
-	description: string;
 }
 
 interface UploadResponseDTO {
@@ -27,30 +22,30 @@ const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/up
  * @param params Metadata parameters
  * @returns URI to the created Metadata
  */
-const uploadMetadata = async (params: DomainMetadataParams) => {
-	// upload images to http backend
+
+const uploadImage = async (image: Buffer) => {
 	const imageResponse = await fetch(uploadApiEndpoint, {
 		method: 'POST',
-		body: JSON.stringify(params.image),
+		body: JSON.stringify(image),
 	});
-	const image = (await imageResponse.json()) as UploadResponseDTO;
+	const imageUploaded = (await imageResponse.json()) as UploadResponseDTO;
+	return imageUploaded;
+};
 
-	let metadataObject: MetadataObject = {
-		name: params.name,
+const uploadMetadata = async (params: DomainMetadataParams) => {
+	// upload images to http backend
+	const image = await uploadImage(params.image);
+
+	let metadataObject: Metadata = {
+		title: params.name,
 		description: params.story,
-		imageUri: image.url,
+		image: image.url,
 	};
 
 	if (params.previewImage) {
 		//if params has the optional preview image it builds metadata with it
-		const previewImageResponse = await fetch(uploadApiEndpoint, {
-			method: 'POST',
-			body: JSON.stringify(params.previewImage),
-		});
-		const previewImage =
-			(await previewImageResponse.json()) as UploadResponseDTO;
-		metadataObject.previewImageUri = previewImage.url;
-		return metadataObject;
+		const previewImage = await uploadImage(params.previewImage);
+		metadataObject.previewImage = previewImage.url;
 	}
 
 	return metadataObject;
