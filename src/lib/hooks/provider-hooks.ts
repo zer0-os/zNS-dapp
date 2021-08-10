@@ -13,7 +13,7 @@ export function useEagerConnect() {
 	useEffect(() => {
 		const wallet = localStorage.getItem('chosenWallet');
 
-		const connectToWallet = async (wallet: string) => {
+		const reConnectToWallet = async (wallet: string) => {
 			const c = connectorFromName(wallet) as AbstractConnector;
 			if (c) {
 				await activate(c, async (e: Error) => {
@@ -37,7 +37,7 @@ export function useEagerConnect() {
 					}
 				});
 			} else {
-				connectToWallet(wallet);
+				reConnectToWallet(wallet);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
