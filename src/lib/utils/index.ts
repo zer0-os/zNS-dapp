@@ -54,7 +54,8 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	// upload metadata to IPFS
 	const metadataObject = await uploadMetadata(params);
-	const metadata = await uploadData(JSON.stringify(metadataObject));
+	const metadataAsString = JSON.stringify(metadataObject);
+	const metadata = await uploadData(metadataAsString);
 
 	return metadata.url;
 };
