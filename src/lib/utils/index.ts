@@ -36,7 +36,7 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
 	// upload images to http backend
 	const image = await uploadData(params.image);
 
-	let metadataObject: Metadata = {
+	const metadataObject: Metadata = {
 		title: params.name,
 		description: params.story,
 		image: image.url,
