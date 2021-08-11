@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 //- Local Imports
 import { TokenInformationType } from '../types';
@@ -13,6 +13,7 @@ import { TextInput, FutureButton } from 'components';
 type TokenInformationProps = {
 	token: TokenInformationType | null;
 	onContinue: (data: TokenInformationType) => void;
+	onResize: () => void;
 	setNameHeader: (name: string) => void;
 	setDomainHeader: (domain: string) => void;
 };
@@ -20,18 +21,25 @@ type TokenInformationProps = {
 const TokenInformation: React.FC<TokenInformationProps> = ({
 	token,
 	onContinue,
+	onResize,
 	setNameHeader,
 	setDomainHeader,
 }) => {
-	//- NFT Data
-	const [previewImage, setPreviewImage] = useState(
-		token ? token.previewImage : '',
-	); // Local image for image preview
+	//////////////////
+	// State & Data //
+	//////////////////
+
+	const [previewImage, setPreviewImage] = useState(token?.previewImage ?? '');
 	const [name, setName] = useState(token ? token.name : '');
 	const [story, setStory] = useState(token ? token.story : '');
 	const [image, setImage] = useState(token ? token.image : Buffer.from(''));
 	const [domain, setDomain] = useState(token ? token.domain : '');
 	const [locked] = useState(token ? token.locked : true);
+	const [errors, setErrors] = useState<string[]>([]);
+
+	///////////////
+	// Functions //
+	///////////////
 
 	const updateName = (name: string) => {
 		setName(name);
@@ -42,9 +50,6 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 		setDomain(domain);
 		setDomainHeader(domain);
 	};
-
-	//- Page data
-	const [errors, setErrors] = useState<string[]>([]);
 
 	//- Image Upload Handling
 	// TODO: Split image uploads into a new component
@@ -89,6 +94,18 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 		};
 		onContinue(data);
 	};
+
+	/////////////
+	// Effects //
+	/////////////
+
+	useEffect(() => {
+		if (onResize) onResize();
+	}, [errors, story]);
+
+	////////////
+	// Render //
+	////////////
 
 	return (
 		<div className={styles.Section}>
@@ -147,9 +164,10 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 					</div>
 				</div>
 				<TextInput
-					multiline={true}
+					autosize
+					multiline
 					placeholder={'Story (400 characters max)'}
-					style={{ height: 200, marginTop: 40 }}
+					style={{ marginTop: 40 }}
 					onChange={(story: string) => setStory(story)}
 					text={story}
 					error={errors.includes('story')}

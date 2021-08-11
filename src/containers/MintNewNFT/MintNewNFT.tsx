@@ -114,17 +114,21 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	}, [wildContract, account]);
 
 	useEffect(() => {
+		resize();
+	}, [step, isMintLoading]);
+
+	///////////////
+	// Functions //
+	///////////////
+
+	const resize = () => {
 		const el = containerRef.current;
 		if (el) {
 			const child = el.children[0];
 			if (child && child.clientHeight > 0)
 				return setContainerHeight(child.clientHeight);
 		}
-	}, [step, isMintLoading]);
-
-	///////////////
-	// Functions //
-	///////////////
+	};
 
 	// Sets the token stake data from the token stake section
 	const getTokenStake = (data: TokenStakeType) => {
@@ -269,6 +273,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						onContinue={(data: TokenInformationType) =>
 							getTokenInformation(data)
 						}
+						onResize={resize}
 						setNameHeader={(name: string) => setName(name)}
 						setDomainHeader={(domain: string) => setDomain(domain)}
 					/>
