@@ -1,23 +1,34 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
+import { Spring, animated } from 'react-spring';
 
 //- Component Imports
 import {
+	Artwork,
 	FutureButton,
 	IconButton,
 	SearchBar,
-	Image,
-	NFTCard,
+	Overlay,
 } from 'components';
+import { MakeABid } from 'containers';
+import HighestBid from './HighestBid';
+import NumBids from './NumBids';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
-import useEnlist from 'lib/hooks/useEnlist';
-import { getRelativeDomainPath } from 'lib/domains';
-import { Domain, Metadata } from 'lib/types';
-import { getMetadata } from 'lib/metadata';
+import { getRelativeDomainPath } from 'lib/utils/domains';
+import {
+	Bid,
+	DisplayDomain,
+	Domain,
+	DomainHighestBid,
+	Metadata,
+	DomainData,
+} from 'lib/types';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
+import { useBidProvider } from 'lib/providers/BidProvider';
 
 //- Style Imports
 import styles from './DomainTable.module.css';
@@ -25,77 +36,108 @@ import styles from './DomainTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import { domain } from 'process';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
-	domains: any;
-	isRootDomain: boolean;
-	style?: React.CSSProperties;
+	className?: string;
+	domains: Domain[];
 	empty?: boolean;
-	// TODO: Find a better way to persist grid view than with props
+	hideOwnBids?: boolean;
+	isButtonActive?: (row: any) => boolean;
 	isGridView?: boolean;
+	isRootDomain: boolean;
+	onLoad?: () => void;
+	onRowButtonClick?: (domain: DomainData) => void;
+	onRowClick?: (domain: Domain) => void;
+	rowButtonText?: string;
+	// TODO: Find a better way to persist grid view than with props
 	setIsGridView?: (grid: boolean) => void;
+	style?: React.CSSProperties;
+	userId?: string;
 };
 
-type DomainData = {
-	domain: Domain;
-	metadata: Metadata;
-};
-
-interface RowData {
-	i: number;
-	id: string;
-	image: string;
-	name: string;
-	nftName: string;
-	ticker: string;
-	lastBid: number;
-	numBids: number;
-	lastSalePrice: number;
-	tradePrice: number;
+enum Modals {
+	Bid,
 }
 
-// @TODO: Create a `Domain` type for `domains`
 const DomainTable: React.FC<DomainTableProps> = ({
+	className,
 	domains,
-	isRootDomain,
-	style,
 	empty,
+	hideOwnBids,
+	isButtonActive,
 	isGridView,
+	isRootDomain,
+	onLoad,
+	onRowButtonClick,
+	onRowClick,
+	rowButtonText,
 	setIsGridView,
+	style,
+	userId,
 }) => {
-	const { enlist } = useEnlist();
+	const isMounted = useRef(false);
 	const { mvpVersion } = useMvpVersion();
+	const { getBidsForDomain } = useBidProvider();
 
-	const [hasMetadataLoaded, setHasMetadataLoaded] = useState(false);
+	const containerRef = useRef<HTMLDivElement>(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
 
-	const [loadedDomains, setLoadedDomains] = useState<DomainData[]>([]);
+	const [modal, setModal] = useState<Modals | undefined>();
 
-	const containerRef = useRef<HTMLDivElement>(null);
+	// Data state
+	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
+	const [allBidData, setAllBidData] = useState<DomainData[] | undefined>();
 
-	// Functions
-	const setGrid = () => {
-		if (setIsGridView) setIsGridView(true);
-	};
-	const setList = () => {
-		if (setIsGridView) setIsGridView(false);
-	};
+	///////////////
+	// Functions //
+	///////////////
 
-	// Clicks
-	const rowClick = (event: any, domain: string) => {
-		// @TODO Decouple this line from classname
+	// Table views
+	const setGrid = () => setIsGridView && setIsGridView(true);
+	const setList = () => setIsGridView && setIsGridView(false);
+
+	// Modals
+	const openBidModal = () => setModal(Modals.Bid);
+	const closeModal = () => setModal(undefined);
+
+	//Click handlers
+	const rowClick = (event: any, domain: Domain) => {
 		if (event.target.className.indexOf('FutureButton') >= 0) return;
-		navigateTo(domain);
+		if (onRowClick) {
+			onRowClick(domain);
+			return;
+		}
 	};
 
-	const buttonClick = (id: string) => {
+	const buttonClick = (domain: Domain) => {
+		// @todo refactor this into a more generic component
+		if (onRowButtonClick) {
+			// @todo the above assumes the bids come in ascending order
+			try {
+				// const bid = allBidData?.filter(
+				// 	(data: DomainData) => data.domain.id === domain.id,
+				// )[0].bids[0];
+				// if (bid === undefined) return;
+				// onRowButtonClick({
+				// 	domain: domain,
+				// 	bid: bid,
+				// });
+			} catch {
+				console.warn('No bids found for domain ', domain.name);
+			}
+			return;
+		}
+		// Default behaviour
 		try {
-			// TODO: Get rid of any
-			const domain = domains.filter((d: any) => d.id === id)[0];
-			enlist(domain);
+			if (domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
+				if (!isMounted.current) return;
+				setBiddingOn(domain);
+				openBidModal();
+			}
 		} catch (e) {
 			console.error(e);
 		}
@@ -105,176 +147,125 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		if (window.innerWidth < 1282) setList();
 	};
 
-	useEffect(() => {
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	const getAllBids = () => {
+		// Get bids for all the domains, and add to the state object
+		const allBids: DomainData[] = [];
+		var checked = 0;
+		domains.forEach(async (domain: Domain) => {
+			const bids = await getBidsForDomain(domain);
+			if (bids && bids.length) allBids.push({ domain, bids });
+			if (++checked === domains.length) {
+				if (!isMounted.current) return;
+				setAllBidData(allBids);
+			}
+		});
+	};
+
+	/////////////
+	// Effects //
+	/////////////
 
 	useEffect(() => {
-		setIsLoading(true);
-	}, [domains]);
+		isMounted.current = true;
+		window.addEventListener('resize', handleResize);
+		return () => {
+			isMounted.current = false;
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	// Resizes the table container
 	// (The animation is done in CSS)
 	useEffect(() => {
 		if (!isLoading) {
 			const el = containerRef.current;
-			if (el)
+			if (el) {
+				if (!isMounted.current) return;
 				setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
+			}
+			if (onLoad) onLoad();
 		} else {
+			if (!isMounted.current) return;
 			setContainerHeight(0);
 		}
-	}, [isLoading, searchQuery, isGridView]);
+	}, [isLoading, searchQuery, isGridView, domains]);
 
-	// Gets metadata for each NFT in domain list
 	useEffect(() => {
-		const loaded: DomainData[] = [];
-		setHasMetadataLoaded(false);
-		var count = 0,
-			completed = 0;
-		for (var i = 0; i < domains.length; i++) {
-			const domain = domains[i];
-			if (!domain.image && domain.metadata) {
-				count++;
-
-				// eslint-disable-next-line no-loop-func
-				getMetadata(domain.metadata).then((metadata) => {
-					if (!metadata) return;
-					loaded.push({ domain: domain, metadata: metadata });
-					if (++completed === count) {
-						setLoadedDomains(loaded);
-						setHasMetadataLoaded(true);
-					}
-				});
-			}
-		}
-		if (!count) setHasMetadataLoaded(true);
+		if (!isMounted.current) return;
+		setIsLoading(false);
+		if (domains.length > 0) getAllBids();
 	}, [domains]);
 
-	// Convert each domain into a RowData object
-	// Runs when metadata for current domain array has fully loaded
-	const rowData: RowData[] = useMemo(
-		() =>
-			!hasMetadataLoaded
-				? []
-				: loadedDomains.map((d: any, i: number) => ({
-						i: i + 1,
-						id: d.domain.id,
-						image: d.metadata.image,
-						nftName: d.metadata.name,
-						name: d.domain.name,
-						ticker: d.domain.name.toUpperCase(),
-						lastBid: 1000,
-						numBids: 1000,
-						lastSalePrice: 1000,
-						tradePrice: 1000,
-				  })),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[hasMetadataLoaded],
-	);
+	/////////////////
+	// React Table //
+	/////////////////
 
-	// Gets the data for the table
-	// TODO: This can definitely be refactored out
-	const data = useMemo<RowData[]>(() => {
-		rowData.length ? setIsLoading(false) : setIsLoading(true);
-		return rowData;
-	}, [rowData]);
+	const data = domains;
 
-	const columns = useMemo<Column<RowData>[]>(
+	const columns = useMemo<Column<Domain>[]>(
 		() => [
 			{
 				Header: '',
-				accessor: 'i',
-				Cell: (row) => row.value,
+				id: 'index',
+				accessor: (data: Domain, i: number) => i + 1,
 			},
 			{
-				Header: () => '',
-				accessor: 'image',
-				Cell: (row) => (
-					<Image
-						style={{
-							width: 56,
-							height: 56,
-							marginTop: -4,
-							borderRadius: isRootDomain ? '50%' : 'calc(var(--box-radius)/2)',
-							objectFit: 'cover',
-						}}
-						src={row.value}
+				Header: () => <div style={{ textAlign: 'left' }}>Domain</div>,
+				id: 'image',
+				accessor: ({ name }) => name,
+				Cell: (row: any) => (
+					<Artwork
+						domain={row.row.original.name}
+						metadataUrl={row.row.original.metadata}
+						id={row.row.original.id}
 					/>
 				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'left' }}>Domain Name</div>,
-				accessor: 'name',
-				Cell: (row) => <div style={{ textAlign: 'left' }}>{row.value}</div>,
-			},
-			{
-				Header: () => <div style={{ textAlign: 'right' }}>Last Bid</div>,
-				accessor: 'lastBid',
-				Cell: (row) => (
+				Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
+				id: 'highestBid',
+				accessor: (domain: Domain) => (
 					<div style={{ textAlign: 'right' }}>
-						${Number(row.value.toFixed(2)).toLocaleString()}
+						<HighestBid domain={domain} />
 					</div>
 				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'right' }}>No. Of Bids</div>,
-				accessor: 'numBids',
-				Cell: (row) => (
+				Header: () => <div style={{ textAlign: 'right' }}>Num. Bids</div>,
+				id: 'numBids',
+				accessor: (domain: Domain) => (
 					<div style={{ textAlign: 'right' }}>
-						{Number(row.value).toLocaleString()}
+						<NumBids domain={domain} />
 					</div>
 				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'right' }}>Last Sale Price</div>,
-				accessor: 'lastSalePrice',
-				Cell: (row) => (
-					<div style={{ textAlign: 'right' }}>
-						${Number(row.value.toFixed(2)).toLocaleString()}
-					</div>
-				),
-			},
-			{
-				Header: () => <div style={{ textAlign: 'center' }}>Trade</div>,
-				accessor: 'id',
-				Cell: (row) => (
-					<FutureButton
-						style={{ margin: '0 auto' }}
-						glow
-						onClick={() => {
-							buttonClick(row.value);
-						}}
-					>
-						ENLIST
-					</FutureButton>
-				),
-			},
-			{
-				Header: () => <div style={{ textAlign: 'center' }}>Trade</div>,
-				accessor: 'tradePrice',
-				Cell: (row) => (
-					<FutureButton style={{ margin: '0 auto' }} glow onClick={() => {}}>
-						${Number(row.value.toFixed(2)).toLocaleString()}
-					</FutureButton>
-				),
+				id: 'bid',
+				accessor: (domain: Domain) => {
+					const shouldGlow =
+						userId?.toLowerCase() !== domain.owner.id.toLowerCase();
+
+					return (
+						<>
+							{!rowButtonText && (
+								<FutureButton
+									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
+									glow={shouldGlow}
+									onClick={() => buttonClick(domain)}
+								>
+									{rowButtonText || 'Make A Bid'}
+								</FutureButton>
+							)}
+						</>
+					);
+				},
 			},
 		],
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[mvpVersion, domains],
+		[domains],
 	);
 
 	// Navigation Handling
-	const history = useHistory();
-	const navigateTo = (domain: string) => {
-		const relativeDomain = getRelativeDomainPath(domain);
-		history.push(relativeDomain);
-	};
-	const initialState =
-		mvpVersion === 1
-			? { hiddenColumns: ['lastBid', 'numBids', 'lastSalePrice', 'tradePrice'] }
-			: { hiddenColumns: ['id'] };
+	const initialState = { hiddenColumns: ['waitlist', 'lastSalePrice'] };
 
 	// React-Table Hooks
 	const tableHook = useTable(
@@ -292,103 +283,130 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	} = tableHook;
 
 	const search = (query: string) => {
+		if (!isMounted.current) return;
 		setGlobalFilter(query);
 		setSearchQuery(query);
 	};
 
-	return (
-		<div
-			style={style}
-			className={
-				styles.DomainTableContainer + ' border-primary border-rounded blur'
-			}
-		>
-			{/* Table Header */}
-			<div className={styles.searchHeader}>
-				<SearchBar
-					onChange={(event: any) => search(event.target.value)}
-					style={{ width: '100%', marginRight: 16 }}
-				/>
-				<div className={styles.searchHeaderButtons}>
-					<IconButton
-						onClick={setList}
-						toggled={!isGridView}
-						iconUri={list}
-						style={{ height: 32, width: 32 }}
-					/>
-					<IconButton
-						onClick={setGrid}
-						toggled={isGridView}
-						iconUri={grid}
-						style={{ height: 32, width: 32 }}
-					/>
-				</div>
-			</div>
+	/////////////////////
+	// React Fragments //
+	/////////////////////
 
-			<div className={styles.DomainTable}>
-				<div className={styles.Container} ref={containerRef}>
-					{/* List View */}
-					{!isGridView && (
-						<table {...getTableProps()} className={styles.DomainTable}>
-							<thead>
-								{headerGroups.map((headerGroup) => (
-									<tr {...headerGroup.getHeaderGroupProps()}>
-										{headerGroup.headers.map((column) => (
-											<th {...column.getHeaderProps()}>
-												{column.render('Header')}
-											</th>
-										))}
-									</tr>
-								))}
-							</thead>
-							<tbody {...getTableBodyProps()}>
-								{rows.map((row) => {
-									prepareRow(row);
-									return (
-										<tr
-											onClick={(event: any) =>
-												rowClick(event, row.original.name)
-											}
-											{...row.getRowProps()}
-										>
-											{row.cells.map((cell) => (
-												<td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+	const overlays = () => (
+		<Overlay onClose={closeModal} centered open={modal === Modals.Bid}>
+			<MakeABid domain={biddingOn!} onBid={closeModal} />
+		</Overlay>
+	);
+
+	////////////
+	// Render //
+	////////////
+
+	return (
+		<>
+			{overlays()}
+			<div
+				style={style}
+				className={`${
+					styles.DomainTableContainer
+				} border-primary border-rounded blur ${className || ''}`}
+			>
+				{/* Table Header */}
+				<div className={styles.searchHeader}>
+					<SearchBar
+						placeholder="Search by domain name"
+						onChange={(event: any) => search(event.target.value)}
+						style={{ width: '100%' }}
+					/>
+					{/* @todo re-enable grid view */}
+					{/* <div className={styles.searchHeaderButtons}>
+						<IconButton
+							onClick={setList}
+							toggled={!isGridView}
+							iconUri={list}
+							style={{ height: 32, width: 32 }}
+						/>
+						<IconButton
+							onClick={setGrid}
+							toggled={isGridView}
+							iconUri={grid}
+							style={{ height: 32, width: 32 }}
+						/>
+					</div> */}
+				</div>
+
+				<div className={styles.DomainTable}>
+					<div className={styles.Container} ref={containerRef}>
+						{/* List View */}
+						{!empty && !isGridView && (
+							<table {...getTableProps()} className={styles.DomainTable}>
+								<thead>
+									{headerGroups.map((headerGroup) => (
+										<tr {...headerGroup.getHeaderGroupProps()}>
+											{headerGroup.headers.map((column) => (
+												<th {...column.getHeaderProps()}>
+													{column.render('Header')}
+												</th>
 											))}
 										</tr>
-									);
-								})}
-							</tbody>
-						</table>
-					)}
+									))}
+								</thead>
+								<tbody {...getTableBodyProps()}>
+									{rows.map((row) => {
+										prepareRow(row);
+										return (
+											<tr
+												onClick={(event: any) => rowClick(event, row.original)}
+												{...row.getRowProps()}
+											>
+												{row.cells.map((cell) => (
+													<td {...cell.getCellProps()}>
+														{cell.render('Cell')}
+													</td>
+												))}
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+						)}
 
-					{/* Grid View */}
-					{isGridView && (
-						<ol className={styles.Grid}>
-							{data
-								.filter((d) => d.name.includes(searchQuery))
-								.map((d, i) => (
-									<li onClick={() => navigateTo(d.name)} key={i}>
-										<NFTCard
-											name={d.nftName ? d.nftName : d.name}
-											domain={d ? d.name : ''}
-											imageUri={d.image ? d.image : ''}
-											price={d.tradePrice}
-											nftOwnerId={'Owner Name'}
-											nftMinterId={'Minter Name'}
-											showCreator={true}
-											showOwner={true}
-										/>
-									</li>
-								))}
-						</ol>
-					)}
+						{/* Grid View */}
+						{/* @todo re-enable grid view */}
+						{/* {!empty && isGridView && (
+							<ol className={styles.Grid}>
+								{data
+									.filter((d) => d.name.includes(searchQuery))
+									.map((d, i) => (
+										<li onClick={() => navigateTo(d.name)} key={i}>
+											<NFTCard
+												name={d.name}
+												domain={d.domain.name || ''}
+												imageUri={d.metadata.image || ''}
+												price={d.bids[0]?.amount || 0}
+												nftOwnerId={'Owner Name'}
+												nftMinterId={'Minter Name'}
+												showCreator={true}
+												showOwner={true}
+											/>
+										</li>
+									))}
+							</ol>
+						)} */}
+
+						{empty && <p className={styles.Empty}>No domains found</p>}
+					</div>
+
+					<Spring to={{ height: containerHeight }}>
+						{(styles) => (
+							<animated.div style={styles}>
+								<div></div>
+							</animated.div>
+						)}
+					</Spring>
 				</div>
-				<div
-					style={{ height: containerHeight }}
-					className={styles.Expander}
-				></div>
 			</div>
-		</div>
+		</>
 	);
 };
 

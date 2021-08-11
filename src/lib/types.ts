@@ -1,5 +1,9 @@
 // Types
 
+import { ethers } from 'ethers';
+
+export type Maybe<T> = T | undefined | null;
+
 export interface Account {
 	id: string;
 }
@@ -39,9 +43,15 @@ export interface DomainRequest {
 	timestamp: string;
 }
 
+export type DomainData = {
+	domain: Domain;
+	bids: Bid[];
+};
+
 export interface DisplayDomain extends Domain {
-	image: string | undefined;
-	description: string | undefined;
+	image: Maybe<string>;
+	description: Maybe<string>;
+	title: Maybe<string>;
 }
 
 export interface DisplayParentDomain extends DisplayDomain {
@@ -97,3 +107,33 @@ export const DefaultDomain: Domain = {
 	},
 	metadata: '',
 };
+
+// @zachary change these types
+// to reflect real data (its mock at the moment)
+
+export type Bid = {
+	amount: number;
+	bidderAccount: string;
+	date: Date;
+	tokenId: string;
+
+	signature: ethers.utils.BytesLike;
+	auctionId: string;
+	nftAddress: string;
+	minBid: string;
+	startBlock: string;
+	expireBlock: string;
+};
+
+export type DomainHighestBid = {
+	domain: Domain;
+	bid: Bid;
+};
+
+export interface DomainsQueryResult {
+	domains: ParentDomain[];
+}
+
+export interface DomainQueryResult {
+	domain: Maybe<ParentDomain>;
+}

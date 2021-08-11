@@ -10,21 +10,23 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
 //- Library Imports
-import { DomainCacheProvider } from 'lib/useDomainCache';
 import NotificationProvider from 'lib/providers/NotificationProvider';
 import MintProvider from 'lib/providers/MintProvider';
+import BidProvider from 'lib/providers/BidProvider';
+import CurrencyProvider from 'lib/providers/CurrencyProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 
 //- Asset Imports
-import backgroundImage from 'assets/zns-bg.png';
+import backgroundImage from 'assets/background.jpg';
 
 //- Page Imports
 import { ZNS } from 'pages';
 import React from 'react';
 import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
+import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
 
 // Web3 library to query
 function getLibrary(provider: any): Web3Provider {
@@ -51,11 +53,16 @@ function App() {
 	return (
 		<HashRouter>
 			<Route
-				render={({ location, match }) => (
-					<>
-						<ZNS domain={location.pathname} />
-					</>
-				)}
+				render={({ location, match }) => {
+					return (
+						<>
+							<ZNS
+								domain={location.pathname}
+								isNftView={location.search === '?view'}
+							/>
+						</>
+					);
+				}}
 			/>
 		</HashRouter>
 	);
@@ -69,17 +76,21 @@ function wrappedApp() {
 				<NotificationProvider>
 					<Web3ReactProvider getLibrary={getLibrary}>
 						{/* Our Hooks  */}
-						<MvpVersionProvider>
-							<StakingRequestProvider>
-								<MintProvider>
-									<EnlistProvider>
-										<DomainCacheProvider>
-											<App />
-										</DomainCacheProvider>
-									</EnlistProvider>
-								</MintProvider>
-							</StakingRequestProvider>
-						</MvpVersionProvider>
+						<ZNSDomainsProvider>
+							<MvpVersionProvider>
+								<CurrencyProvider>
+									<BidProvider>
+										<StakingRequestProvider>
+											<MintProvider>
+												<EnlistProvider>
+													<App />
+												</EnlistProvider>
+											</MintProvider>
+										</StakingRequestProvider>
+									</BidProvider>
+								</CurrencyProvider>
+							</MvpVersionProvider>
+						</ZNSDomainsProvider>
 					</Web3ReactProvider>
 				</NotificationProvider>
 			</SubgraphProvider>

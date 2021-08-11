@@ -65,6 +65,11 @@
 	--color-grey: #808080;
 	--color-text-primary: #ffffff;
 
+	--color-background: rgb(16, 5, 46);
+	--color-background-50: rgba(16, 5, 46, 0.5);
+	--color-background-alt: rgb(29, 12, 74);
+	--color-background-alt-50: rgba(29, 21, 74, 0.5);
+
 	--color-green-2: #27ae60;
 
 	--color-red: #eb5757;
@@ -78,45 +83,20 @@
 
 	/* TODO: Should probably find a library that lets us set 
 		opacity on HEX colours so we don't have to do this */
-	--background-purple-card: #4e0084;
-	--background-purple-card-50: rgba(78, 0, 132, 0.5);
-	--background-purple-card-20: rgba(78, 0, 132, 0.2);
-	--background-purple-card-10: rgba(78, 0, 132, 0.1);
-	--background-purple-light-20: rgba(190, 96, 255, 0.2);
+	--background-purple-card: var(--color-background);
+	--background-purple-card-50: var(--color-background);
+	--background-purple-card-20: var(--color-background);
+	--background-purple-card-10: var(--color-background);
+	--background-purple-light-20: var(--color-background);
 
-	--background-field-bg: linear-gradient(
-		94.23deg,
-		rgba(60, 161, 255, 0.2) 0%,
-		rgba(30, 81, 128, 0.2) 100%
-	);
+	--background-field-bg: var(--color-background);
+	--background-blue-deck: var(--color-background);
+	--background-blue-card: var(--color-background);
+	--background-blue-card-wilder: var(--color-background);
 
-	--background-blue-deck: radial-gradient(
-		56.93% 56.93% at 50% 50%,
-		rgba(206, 183, 255, 0) 0%,
-		rgba(103, 79, 255, 0.2) 100%
-	);
-	--background-blue-card: linear-gradient(
-		92.24deg,
-		rgba(0, 102, 255, 0.2) 0%,
-		rgba(0, 63, 137, 0.2) 100%
-	);
-	--background-blue-card-wilder: radial-gradient(
-		56.93% 56.93% at 50% 50%,
-		rgba(206, 183, 255, 0) 0%,
-		rgba(103, 79, 255, 0.2) 100%
-	);
-
-	--background-primary: rgba(78, 0, 132, 0.2);
-	--background-primary-gradient: linear-gradient(
-		92.24deg,
-		rgba(0, 22, 55, 0.5) 0%,
-		rgba(0, 63, 137, 0.265) 100%
-	);
-	--background-accent-1-gradient: linear-gradient(
-		94.23deg,
-		rgba(0, 123, 237, 0.2) 0%,
-		rgba(0, 83, 160, 0.2) 100%
-	);
+	--background-primary: var(--color-background);
+	--background-primary-gradient: var(--color-background);
+	--background-accent-1-gradient: var(--color-background);
 
 	--box-radius: 16px;
 
@@ -190,6 +170,9 @@ body {
 	overflow: auto;
 
 	color: var(--color-text-primary);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 body.no-scroll {
@@ -259,6 +242,39 @@ button.text-button {
 	padding: 0;
 	font-weight: 700;
 	font-size: 16px;
+}
+
+button {
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+*::-webkit-scrollbar-corner {
+	background: rgba(0, 0, 0, 0);
+	height: 0;
+	width: 0;
+}
+
+*::-webkit-scrollbar-track {
+	background-color: none;
+}
+
+*::-webkit-scrollbar {
+	width: 6px;
+	background-color: none;
+}
+
+*::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: rgba(60, 161, 255, 0.2);
 }
 
 /*
@@ -341,9 +357,10 @@ nav {
  */
 
 .border-primary {
-	border: 1px solid #c680ff;
+	border: 1px solid #af4cff67;
+
 	border-collapse: separate;
-	box-shadow: 0 0 10px 0 rgb(235 0 255 / 40%);
+	box-shadow: 0px 0px 16px 0px #c41dff33;
 }
 
 .border-rounded {
@@ -385,12 +402,13 @@ nav {
  */
 
 /* Blurs the background of the div */
+/* @todo deprecated, remove */
 .blur {
-	backdrop-filter: blur(20px);
+	/* backdrop-filter: blur(20px);
 	backdrop-webkit-filter: blur(20px);
 	backdrop-moz-filter: blur(20px);
 	backdrop-o-filter: blur(20px);
-	backdrop-ms-filter: blur(20px);
+	backdrop-ms-filter: blur(20px); */
 }
 
 /*

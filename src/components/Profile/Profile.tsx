@@ -6,153 +6,50 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import { Image, RequestTable, TextButton } from 'components';
+import { BidTable, Image, RequestTable, TabBar } from 'components';
+import { OwnedDomainsTable } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
-import {
-	useRequestsMadeByAccount,
-	useRequestsForOwnedDomains,
-} from 'lib/hooks/useDomainRequestsSubgraph';
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
-
-//- Type Imports
-import {
-	DomainRequest,
-	DomainRequestAndContents,
-	DomainRequestContents,
-} from 'lib/types';
 
 type ProfileProps = {
 	id: string;
 	// TODO: Change yours
 	yours?: boolean;
+	onNavigate: (to: string) => void;
 };
 
-const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
+const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 	//////////////////
 	// Custom Hooks //
 	//////////////////
 
 	const { mvpVersion } = useMvpVersion();
 
-	const staking = useStakingProvider();
-
 	//////////////////
 	// State / Data //
 	//////////////////
 
-	const yourRequests = useRequestsMadeByAccount(id);
-	const requestsForYou = useRequestsForOwnedDomains(id);
-	const [requestData, setRequestData] = useState<DomainRequestAndContents[]>(
-		[],
-	);
-
-	const [selected, setSelected] = useState('requestsFor'); // Which tab is selected
-
-	////////////
-	// Styles //
-	////////////
-
-	// @TODO Move these out to the style module
-	const selectedCss = {
-		borderBottom: '1px solid #E0BAFF',
-		fontWeight: 400,
-	};
-
-	const defaultCss = {
-		fontWeight: 400,
-		color: 'white',
-	};
+	const [selected, setSelected] = useState(`Your Domains`); // Which tab is selected
 
 	///////////////
 	// Functions //
 	///////////////
 
-	const requestsBy = () => {
-		setSelected('requestsBy');
+	const select = (option: string) => {
+		setSelected(option);
 	};
-	const requestsFor = () => {
-		setSelected('requestsFor');
+
+	const navigateToDomain = (domain: string) => {
+		const d =
+			domain.indexOf('wilder.') === 0 ? domain.split('wilder.')[1] : domain;
+		if (onNavigate) onNavigate(d);
 	};
 
 	/////////////
 	// Effects //
 	/////////////
-
-	// Refresh data 5 seconds after a request is approved
-	// This is hopefully enough time for the subgraph to update
-	React.useEffect(() => {
-		let isSubscribed = true;
-		setTimeout(() => {
-			if (isSubscribed) {
-				yourRequests.refresh();
-				requestsForYou.refresh();
-			}
-		}, 5000);
-
-		return () => {
-			isSubscribed = false;
-		};
-	}, [staking.approved, yourRequests, requestsForYou]);
-
-	// Get all requests data from IPFS and hooks
-	useEffect(() => {
-		setRequestData([]); // Empty the request table between loads
-
-		let requests: DomainRequest[];
-		if (selected === 'requestsBy') {
-			requests = yourRequests.requests?.domainRequests || [];
-		} else {
-			const r = requestsForYou.requests?.domains.map((d) => d.requests);
-			if (r && r.length) requests = r.reduce((a, b) => a.concat(b));
-			else requests = [];
-		}
-
-		if (!requests) return;
-
-		if (!requests.length) {
-			setRequestData([]);
-		}
-
-		if (requests.length) {
-			// Store Request Contents data
-			const data: DomainRequestAndContents[] = [];
-			// Get request contents from IPFS
-			const requestsToFetch = requests.filter((d) => d.requestUri);
-
-			let finishedCount = 0;
-			for (let i = 0; i < requestsToFetch.length; i++) {
-				// eslint-disable-next-line no-loop-func
-				const doFetch = async () => {
-					const request = requestsToFetch[i];
-					try {
-						const res = await fetch(request.requestUri);
-						const contents: DomainRequestContents = await res.json();
-						const display: DomainRequestAndContents = {
-							contents,
-							request,
-						};
-						data.push(display);
-					} catch (e) {
-						console.error(
-							`Failed to fetch domain request contents for request id: ${request.domain} `,
-						);
-						console.debug(e);
-					}
-
-					++finishedCount;
-
-					if (finishedCount === requestsToFetch.length) {
-						setRequestData(data);
-					}
-				};
-
-				doFetch();
-			}
-		}
-	}, [selected, yourRequests.requests, requestsForYou.requests]);
 
 	return (
 		<div
@@ -195,24 +92,19 @@ const Profile: React.FC<ProfileProps> = ({ id, yours }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<div className={ProfileStyle.Sections}>
-				<TextButton
-					onClick={requestsFor}
-					selected={selected === 'requestsFor'}
-					style={selected === 'requestsFor' ? selectedCss : defaultCss}
-				>
-					Offers Made To You
-				</TextButton>
-				<TextButton
-					onClick={requestsBy}
-					selected={selected === 'requestsBy'}
-					style={selected === 'requestsBy' ? selectedCss : defaultCss}
-				>
-					Offers You've Made
-				</TextButton>
-				{/* <TextButton toggleable={true}>Offers</TextButton> */}
-			</div>
-			<RequestTable yours={selected === 'requestsBy'} requests={requestData} />
+			<TabBar
+				tabs={['Your Domains', 'Your Bids', 'Offers']}
+				onSelect={select}
+			/>
+			{selected === 'Your Domains' && (
+				<OwnedDomainsTable onNavigate={navigateToDomain} />
+			)}
+			{selected === 'Offers' && (
+				<RequestTable onNavigate={navigateToDomain} userId={id} />
+			)}
+			{selected === 'Your Bids' && (
+				<BidTable userId={id} onNavigate={navigateToDomain} />
+			)}
 		</div>
 	);
 };

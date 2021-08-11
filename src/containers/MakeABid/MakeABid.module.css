@@ -1,0 +1,169 @@
+.Container {
+	width: 640px;
+	padding: 40px;
+
+	color: white !important;
+	background: var(--background-blue-card-wilder);
+}
+
+.Header {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	width: 100%;
+}
+
+.Header h1 {
+	color: white;
+	font-size: 36px;
+	font-weight: 700;
+	margin-bottom: 40px;
+}
+
+.Container h2 {
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 28px;
+}
+
+.Section {
+	margin-top: 40px;
+	margin-bottom: 56px;
+}
+
+.Section > div:nth-of-type(2) {
+	margin-left: 12px;
+}
+
+.NFT {
+	position: relative;
+	cursor: pointer;
+	min-height: 224px;
+	flex-basis: 0;
+	flex-grow: 1;
+	margin-right: 12px;
+	min-width: 224px;
+
+	background: rgba(255, 255, 255, 0.05);
+
+	width: 224px;
+}
+
+.NFT img {
+	border-radius: inherit;
+	height: 100%;
+	width: 100%;
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.NFT:hover img {
+	transform: scale(1.05);
+}
+
+.Details {
+	flex: 1;
+	margin-left: 12px;
+}
+
+.Price {
+	margin: 24px 0;
+}
+
+.Price h3 {
+	color: var(--color-primary-lighter-3);
+	font-size: 14px;
+	font-weight: 700;
+	margin-bottom: 4px;
+}
+
+.Price span:first-of-type {
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.Price span:nth-of-type(2) {
+	font-size: 14px;
+	font-weight: 700;
+}
+
+.ViewAll {
+	display: block;
+	margin-top: 24px;
+	padding: 0;
+	font-size: 16px;
+}
+
+.InputWrapper {
+	display: flex;
+	flex-direction: column;
+}
+
+.InputWrapper p {
+	margin: 0;
+	padding: 0;
+	font-size: 18px;
+	font-weight: 400;
+	text-align: center;
+}
+
+.InputWrapper form {
+	display: flex;
+	flex-direction: column;
+}
+
+.Inputs {
+	width: 100%;
+}
+
+.Estimate {
+	font-weight: 700;
+	color: var(--color-primary-lighter-3);
+	margin: 16px auto 0 auto;
+}
+
+.Authorize {
+	padding: 16px;
+	background: none;
+	border: 1px solid var(--color-accent-1);
+	border-radius: 50%;
+	width: 150px;
+	height: 150px;
+	color: var(--color-accent-1);
+}
+
+.Error {
+	padding: 0;
+	font-weight: 700 !important;
+	color: var(--color-primary-lighter-3);
+}
+
+.Wait {
+	padding: 0;
+	text-align: center;
+}
+
+.Loading {
+	margin: 32px auto;
+}
+
+.Spinner {
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	border-top: 2px solid var(--color-accent-1);
+	animation: spin 1s linear infinite;
+}
+
+.glow .Spinner {
+	border-top: 2px solid white;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

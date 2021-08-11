@@ -15,21 +15,26 @@ const Tooltip: React.FC<TooltipProps> = ({ children, content }) => {
 	const [open, setOpen] = useState(false);
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
+	const toggle = () => {
+		setOpen(!open);
+	};
+
 	const toggleWindow = (event: Event) => {
 		const t = event.target as HTMLElement;
 		const w = wrapperRef.current;
 		if (!t || !w) return;
-		setOpen(w.contains(t));
+		if (!w.contains(t)) setOpen(false);
 	};
 
 	useEffect(() => {
 		if (open) window.addEventListener('click', toggleWindow);
+		else window.removeEventListener('click', toggleWindow);
 		return () => window.removeEventListener('click', toggleWindow);
 	}, [open]);
 
 	return (
 		<div ref={wrapperRef} className={styles.Tooltip}>
-			<div onClick={() => setOpen(!open)}>{children}</div>
+			<div onClick={toggle}>{children}</div>
 			<div
 				className={`${styles.Content} ${open ? styles.Open : styles.Closed}`}
 			>

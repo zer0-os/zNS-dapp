@@ -1,0 +1,54 @@
+.Bar {
+	position: relative;
+	width: 100%;
+}
+
+.Bar ul {
+	display: flex;
+}
+
+.Tab button {
+	font-size: 24px;
+	color: var(--color-grey);
+	background: none;
+	/* transition: font-weight var(--animation-time-medium) ease-in-out; */
+}
+
+.Tab button::after {
+	display: block;
+	content: attr(title);
+	font-weight: bold;
+	height: 1px;
+	color: transparent;
+	overflow: hidden;
+	visibility: hidden;
+}
+
+.Selected button {
+	color: white;
+	font-weight: 700;
+	text-shadow: var(--glow-text-white);
+	transform: scale(0.97);
+	transition: text-shadow var(--animation-time-medium) ease-in-out,
+		color var(--animation-time-short) ease-in-out;
+}
+
+.Tab:not(:last-child) {
+	margin-right: 40px;
+}
+
+.Bar hr {
+	margin-top: 4px;
+}
+
+.Slider {
+	position: absolute;
+	top: calc(100% - 1px);
+	height: 0px;
+	box-shadow: 0px 0px 5px 0px #eb00ff;
+	border: 1px solid #e0baff;
+	z-index: 1;
+	left: 0;
+	transition: left var(--animation-time-medium) ease-in-out,
+		width var(--animation-time-medium) ease-in-out;
+}

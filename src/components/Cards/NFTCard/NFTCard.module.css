@@ -1,7 +1,7 @@
 .NFTCard {
 	width: 388px;
 
-	background-color: var(--background-purple-light-20);
+	background-color: var(--color-background-alt);
 }
 
 .Body {
@@ -45,9 +45,9 @@
 
 .NFT {
 	width: 100%;
-	height: 348px;
+	height: 450px;
 	border-radius: var(--box-radius) var(--box-radius) 0 0;
-	object-fit: cover;
+	background: rgba(0, 0, 0, 0.3);
 }
 
 .Foot {

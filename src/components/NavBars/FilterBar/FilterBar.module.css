@@ -10,7 +10,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 
-	background-color: var(--background-purple-card-20);
+	background-color: var(--color-background-alt);
 
 	border-radius: var(--box-radius);
 	z-index: 5;
