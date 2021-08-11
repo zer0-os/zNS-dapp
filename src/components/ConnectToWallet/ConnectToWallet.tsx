@@ -101,22 +101,18 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 			switch (wallet) {
 				case 'coinbase': {
 					walletlink.close();
-					console.log(wallet);
 					break;
 				}
 				case 'walletconnect': {
 					localStorage.clear()
-					console.log(wallet);
 					break;
 				}
 				case 'portis': {
 					portis.close();
-					console.log(wallet);
 					break;
 				}
 				case 'fortmatic': {
 					fortmatic.close();
-					console.log(wallet);
 					break;
 				}
 
