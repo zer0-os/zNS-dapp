@@ -200,11 +200,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	}, [active]);
 
 	useEffect(() => {
-		if(!active && !isWalletOverlayOpen)
-			localStorage.clear();
-
+		if (!active && !isWalletOverlayOpen) localStorage.clear();
 	}, [isWalletOverlayOpen]);
-
 
 	//- Effects
 	useEffect(() => {
