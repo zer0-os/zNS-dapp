@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import { createTimeCache } from './utils/timeCache';
 import { Mutex } from 'async-mutex';
+import { Maybe } from './types';
 
 
 export interface BidDto {
@@ -71,21 +72,24 @@ const getBidsForNftCache = createTimeCache<BidDto[]>(cacheExpiration);
 const cacheKeyForNftBids = (baseApiUri: string, nftId: string) => {
 	return `${baseApiUri}|${nftId}`;
 };
-//
-// Getting bids for a specified NFT
-// @todo this is messy - rewrite
-//
 
-type ApiCall = {
+interface ApiCallObserver<T> {
+	resolve: (result: T) => void;
+	reject: (reason?: string) => void;
+}
+
+interface ApiCall<T> {
 	nftId: string;
-	observers: any;
+	observers: ApiCallObserver<T>[];
+	lock: Mutex;
 };
 
-const pendingApiCalls: ApiCall[] = [];
-const pendingApiCallsLock = new Mutex();
+const getBidsForNftApiCalls: ApiCall<BidDto[]>[] = [];
+const getBidsForNftApiCallsLock: Mutex = new Mutex();
 
-const removeApiCallFromPending = (apiCall: ApiCall) =>
-	pendingApiCalls.splice(pendingApiCalls.indexOf(apiCall), 1);
+const removeGetBidsForNftApiCalls = (apiCall: ApiCall<BidDto[]>) => {
+	getBidsForNftApiCalls.splice(getBidsForNftApiCalls.indexOf(apiCall), 1);
+}
 
 export async function getBidsForNft(
 	baseApiUri: string,
@@ -100,27 +104,35 @@ export async function getBidsForNft(
 	}
 
 	// Check if there's a pending API call for this NFT's bid data
-	const release = await pendingApiCallsLock.acquire();
-	const pendingResponses = pendingApiCalls.filter((x) => x.nftId === nftId);
+	let releaseApiCallsLock = await getBidsForNftApiCallsLock.acquire();
+	const pendingResponses = getBidsForNftApiCalls.filter((x) => x.nftId === nftId);
 	const hasPendingResponse = pendingResponses.length > 0;
 
 	if (hasPendingResponse) {
+		const releaseObserversLock = await pendingResponses[0].lock.acquire();
+		releaseApiCallsLock();
+
 		// Subscribe to the resolve of the outstanding API call
 		const pendingResponse = pendingResponses[0];
 		const bids = await new Promise(async (resolve, reject) => {
 			// let release = await pendingApiCallsLock.acquire();
-			pendingResponse.observers.push(resolve);
-			release();
+			pendingResponse.observers.push({ resolve, reject });
+			releaseObserversLock();
 		});
 		return bids as BidDto[];
 	} else {
-		// Add API call to pending calls,
-		const apiCall = { nftId, observers: [] };
-		try {
-			// Add the API call to the pending array
-			pendingApiCalls.push(apiCall);
-			release();
 
+		// Add API call to pending calls,
+		const apiCall = { nftId, observers: [], lock: new Mutex() } as ApiCall<BidDto[]>;
+
+		// Add the API call to the pending array
+		getBidsForNftApiCalls.push(apiCall);
+		releaseApiCallsLock();
+
+		let bids: Maybe<BidDto[]>;
+		let error: Maybe<string>;
+
+		try {
 			// Make the API call
 			const endpoints = getApiEndpoints(baseApiUri);
 			const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
@@ -128,21 +140,37 @@ export async function getBidsForNft(
 			});
 			const data = await response.json();
 			const bids = data !== undefined ? (data as BidDto[]) : [];
+			getBidsForNftCache.put(cacheKey, bids);
 
-			// Call resolve of all observers, then remove from pending
-			apiCall.observers.forEach((observer: any) => observer(bids));
-			removeApiCallFromPending(apiCall);
-
-			return bids as BidDto[];
 		} catch (e) {
-			// Clean up the array if anything failed
-			let release = await pendingApiCallsLock.acquire();
-			apiCall.observers.forEach((observer: any) => observer(undefined));
-			removeApiCallFromPending(apiCall);
-			release();
-
-			throw Error(e);
+			error = `Failed to fetch bids for nft: ${e}`;
 		}
+
+		const releaseApiCallInstanceLock = await apiCall.lock.acquire();
+		apiCall.observers.forEach(observer => {
+			if (bids) {
+				observer.resolve(bids);
+				return;
+			}
+
+			if (error) {
+				observer.reject(error);
+				return;
+			}
+
+			observer.reject(`invalid state`)
+		});
+		releaseApiCallInstanceLock();
+
+		releaseApiCallsLock = await getBidsForNftApiCallsLock.acquire();
+		removeGetBidsForNftApiCalls(apiCall);
+		releaseApiCallsLock();
+
+		if (error) {
+			throw Error(error);
+		}
+
+		return bids as BidDto[];
 	}
 }
 
