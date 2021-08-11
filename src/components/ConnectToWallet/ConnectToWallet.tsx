@@ -89,10 +89,6 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		}
 	};
 
-	//here needs to be stored the state or relay of the disconnect on the localStorage,
-	//then in the mount or constructor this needs to chef if its connected,
-	//if its connected, then disconnect at start
-
 	const disconnect = () => {
 		const wallet = localStorage.getItem('chosenWallet');
 		if (wallet) {
