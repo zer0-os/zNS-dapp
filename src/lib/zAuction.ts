@@ -2,7 +2,8 @@ import { ethers } from 'ethers';
 import { createTimeCache } from './utils/timeCache';
 import { Mutex } from 'async-mutex';
 
-export interface NftIdBidsDto {
+
+export interface BidDto {
 	account: string;
 	signedMessage: string;
 	auctionId: string;
@@ -10,19 +11,9 @@ export interface NftIdBidsDto {
 	minimumBid: string;
 	startBlock: string;
 	expireBlock: string;
-	date: string;
-}
-
-export interface AccountBidsDto {
-	signedMessage: string;
-	auctionId: string;
-	bidAmount: string;
-	contractAddress: string;
+	date: number;
 	tokenId: string;
-	minimumBid: string;
-	startBlock: string;
-	expireBlock: string;
-	date: string;
+	contractAddress: string;
 }
 
 interface BidPayloadPostInterface {
@@ -75,7 +66,7 @@ function getNftId(contract: string, tokenId: string) {
 
 const cacheExpiration = 60 * 1000; // 60 seconds
 
-const getBidsForNftCache = createTimeCache<NftIdBidsDto[]>(cacheExpiration);
+const getBidsForNftCache = createTimeCache<BidDto[]>(cacheExpiration);
 
 const cacheKeyForNftBids = (baseApiUri: string, nftId: string) => {
 	return `${baseApiUri}|${nftId}`;
@@ -100,7 +91,7 @@ export async function getBidsForNft(
 	baseApiUri: string,
 	contract: string,
 	tokenId: string,
-): Promise<NftIdBidsDto[] | undefined> {
+): Promise<BidDto[]> {
 	const nftId = getNftId(contract, tokenId);
 	const cacheKey = cacheKeyForNftBids(baseApiUri, nftId);
 
@@ -121,7 +112,7 @@ export async function getBidsForNft(
 			pendingResponse.observers.push(resolve);
 			release();
 		});
-		return bids as NftIdBidsDto[];
+		return bids as BidDto[];
 	} else {
 		// Add API call to pending calls,
 		const apiCall = { nftId, observers: [] };
@@ -136,26 +127,27 @@ export async function getBidsForNft(
 				method: 'GET',
 			});
 			const data = await response.json();
-			const bids = data !== undefined ? (data as NftIdBidsDto[]) : [];
+			const bids = data !== undefined ? (data as BidDto[]) : [];
 
 			// Call resolve of all observers, then remove from pending
 			apiCall.observers.forEach((observer: any) => observer(bids));
 			removeApiCallFromPending(apiCall);
 
-			return bids as NftIdBidsDto[];
-		} catch {
+			return bids as BidDto[];
+		} catch (e) {
 			// Clean up the array if anything failed
 			let release = await pendingApiCallsLock.acquire();
 			apiCall.observers.forEach((observer: any) => observer(undefined));
 			removeApiCallFromPending(apiCall);
 			release();
-			return;
+
+			throw Error(e);
 		}
 	}
 }
 
 const getBidsForAccountCache =
-	createTimeCache<AccountBidsDto[]>(cacheExpiration);
+	createTimeCache<BidDto[]>(cacheExpiration);
 
 const cacheKeyForAccountBids = (baseApiUri: string, account: string) => {
 	return `${baseApiUri}|${account}`;
@@ -170,7 +162,7 @@ export async function getBidsForAccount(baseApiUri: string, id: string) {
 
 	const endpoints = getApiEndpoints(baseApiUri);
 	const response = await fetch(`${endpoints.accountBidsEndpoint}${id}`);
-	const bids = (await response.json()) as AccountBidsDto[];
+	const bids = (await response.json()) as BidDto[];
 
 	getBidsForAccountCache.put(cacheKey, bids);
 

@@ -231,8 +231,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		</section>
 	);
 
-	console.log(bids);
-
 	const historyItem = (
 		account: string,
 		amount: number,
