@@ -62,9 +62,8 @@
 	transform: scale(1.05);
 }
 
-.Bid > label {
-	width: 24px;
-	text-align: center;
+.Bid label {
+	font-size: 12px;
 }
 
 .Bid > div {
@@ -73,10 +72,11 @@
 	margin-left: 24px;
 }
 
-.Bid > div > span:first-child {
+.Bid > div > span:first-of-type {
+	margin-top: 6px;
 	font-weight: bold;
 }
 
-.Bid > div > span:not(:first-child) {
+.Bid > div > span:not(:first-of-type) {
 	margin-top: 6px;
 }
