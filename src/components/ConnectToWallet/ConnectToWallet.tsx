@@ -98,7 +98,33 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		if (wallet) {
 			//if has a wallet connected, instead of just deactivate, close connection too
 			deactivate();
-			localStorage.clear();
+			switch (wallet) {
+				case 'coinbase': {
+					walletlink.close();
+					console.log(wallet);
+					break;
+				}
+				case 'walletconnect': {
+					localStorage.clear()
+					console.log(wallet);
+					break;
+				}
+				case 'portis': {
+					portis.close();
+					console.log(wallet);
+					break;
+				}
+				case 'fortmatic': {
+					fortmatic.close();
+					console.log(wallet);
+					break;
+				}
+
+				default:
+					break;
+			}
+
+			localStorage.removeItem('chosenWallet');
 		}
 		onConnect();
 	};
