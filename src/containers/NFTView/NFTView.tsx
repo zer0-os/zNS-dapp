@@ -39,9 +39,16 @@ const moment = require('moment');
 
 type NFTViewProps = {
 	domain: string;
+	onTransfer: () => void;
 };
 
-const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
+const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
+	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
+
+	//- Notes:
+	// It's worth having this component consume the domain context
+	// because it needs way more data than is worth sending through props
+
 	const isMounted = useRef(false);
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
@@ -156,10 +163,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain.domain]);
 
-	/////////////////////
-	// React Fragments //
-	/////////////////////
-
 	const overlays = () => (
 		<>
 			<Overlay
@@ -261,7 +264,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		<div className={styles.Buttons}>
 			<FutureButton
 				glow={isOwnedByYou}
-				onClick={() => {}}
+				onClick={() => isOwnedByYou && onTransfer()}
 				style={{ height: 36, borderRadius: 18 }}
 			>
 				Transfer Ownership

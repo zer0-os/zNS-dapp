@@ -15,6 +15,7 @@ import MintProvider from 'lib/providers/MintProvider';
 import BidProvider from 'lib/providers/BidProvider';
 import CurrencyProvider from 'lib/providers/CurrencyProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
+import TransferProvider from './lib/providers/TransferProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
@@ -80,13 +81,15 @@ function wrappedApp() {
 							<MvpVersionProvider>
 								<CurrencyProvider>
 									<BidProvider>
-										<StakingRequestProvider>
-											<MintProvider>
-												<EnlistProvider>
-													<App />
-												</EnlistProvider>
-											</MintProvider>
-										</StakingRequestProvider>
+										<TransferProvider>
+											<StakingRequestProvider>
+												<MintProvider>
+													<EnlistProvider>
+														<App />
+													</EnlistProvider>
+												</MintProvider>
+											</StakingRequestProvider>
+										</TransferProvider>
 									</BidProvider>
 								</CurrencyProvider>
 							</MvpVersionProvider>

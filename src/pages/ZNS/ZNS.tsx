@@ -55,9 +55,12 @@ import {
 	NotificationDrawer,
 	NumberButton,
 	MintPreview,
+	TransferPreview,
 } from 'components';
 
-import { MintNewNFT, NFTView, MakeABid } from 'containers';
+//- Library Imports
+import { useTransferProvider } from 'lib/providers/TransferProvider';
+import { MintNewNFT, NFTView, MakeABid, TransferOwnership } from 'containers';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 
@@ -127,6 +130,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Minting State
 	const { minting, minted } = useMintProvider();
 	const { enlisting, enlist, clear } = useEnlist();
+	const { transferring, transferred } = useTransferProvider();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -144,6 +148,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
 	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
 	const [isSearchActive, setIsSearchActive] = useState(false);
+	const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
 
 	//- MVP Version
@@ -219,7 +224,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	useEffect(() => {
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
 	//- Effects
@@ -401,6 +405,25 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					<Profile yours id={account ? account : ''} onNavigate={navigate} />
 				</Overlay>
 			)}
+			{isTransferModalOpen && (
+				<TransferOwnership
+					image={previewMetadata?.image || ''}
+					name={previewMetadata?.title || ''}
+					domainName={domain}
+					domainId={znsDomain.domain ? znsDomain.domain.id : ''}
+					onModalChange={(value) => setIsTransferModalOpen(value)}
+					creatorId={
+						znsDomain.domain && znsDomain.domain.minter.id
+							? znsDomain.domain.minter.id
+							: ''
+					}
+					ownerId={
+						znsDomain.domain && znsDomain.domain.owner.id
+							? znsDomain.domain.owner.id
+							: ''
+					}
+				/>
+			)}
 
 			{/* ZNS Content */}
 			<div
@@ -461,6 +484,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={minting.length > 0}
 												number={minting.length}
+												onClick={() => {}}
+											/>
+										</Tooltip>
+									)}
+
+									{/* Transfer Progress button */}
+									{transferring.length > 0 && (
+										<Tooltip content={<TransferPreview />}>
+											<NumberButton
+												rotating={transferring.length > 0}
+												number={transferring.length}
 												onClick={() => {}}
 											/>
 										</Tooltip>
@@ -554,7 +588,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 						{(styles) => (
 							<animated.div style={styles}>
-								<NFTView domain={domain} />
+								<NFTView
+									domain={domain}
+									onTransfer={() => setIsTransferModalOpen(true)}
+								/>
 							</animated.div>
 						)}
 					</Spring>
