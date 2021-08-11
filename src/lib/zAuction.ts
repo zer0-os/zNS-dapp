@@ -147,6 +147,10 @@ export async function getBidsForNft(
 		error = `Failed to fetch bids for nft: ${e}`;
 	}
 
+	releaseApiCallsLock = await getBidsForNftApiCallsLock.acquire();
+	removeGetBidsForNftApiCalls(cacheKey);
+	releaseApiCallsLock();
+
 	const releaseApiCallInstanceLock = await apiCall.lock.acquire();
 	apiCall.observers.forEach(observer => {
 		if (bids) {
@@ -162,10 +166,6 @@ export async function getBidsForNft(
 		observer.reject(`invalid state`)
 	});
 	releaseApiCallInstanceLock();
-
-	releaseApiCallsLock = await getBidsForNftApiCallsLock.acquire();
-	removeGetBidsForNftApiCalls(cacheKey);
-	releaseApiCallsLock();
 
 	if (error) {
 		throw Error(error);
