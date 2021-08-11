@@ -136,7 +136,7 @@ export async function getBidsForNft(
 				method: 'GET',
 			});
 			const data = await response.json();
-			const bids = data.bids !== undefined ? (data.bids as NftIdBidsDto[]) : [];
+			const bids = data !== undefined ? (data as NftIdBidsDto[]) : [];
 
 			// Call resolve of all observers, then remove from pending
 			apiCall.observers.forEach((observer: any) => observer(bids));
@@ -202,14 +202,13 @@ async function encodeBid(
 
 async function sendBid(
 	baseApiUri: string,
-	nftId: string,
 	bid: BidPostInterface,
 ) {
 	if (!ethers.utils.isAddress(bid.contractAddress)) {
 		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
 	let endpoints = getApiEndpoints(baseApiUri);
-	await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
+	await fetch(`${endpoints.bidsEndpoint}`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(bid),
@@ -243,7 +242,7 @@ export async function placeBid(
 		ethers.utils.arrayify(bidData.payload),
 	);
 
-	await sendBid(baseApiUri, bidData.nftId, {
+	await sendBid(baseApiUri, {
 		account,
 		auctionId: bidData.auctionId.toString(),
 		tokenId,
