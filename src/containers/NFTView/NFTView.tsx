@@ -73,7 +73,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 
 	//- Functions
 	const copyContractToClipboard = () => {
-		addNotification('Copied token id to clipboard.');
+		addNotification('Copied Token ID to clipboard.');
 		navigator.clipboard.writeText(domainId);
 	};
 
@@ -113,7 +113,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					return setBids([]);
 				}
 				try {
-					const sorted = bids.sort((a, b) => b.amount - a.amount);
+					const sorted = bids.sort(
+						(a, b) => b.date.getTime() - a.date.getTime(),
+					);
+					console.log(sorted);
 					if (!isMounted.current) return;
 					setBids(sorted);
 					setHighestBid(sorted[0]);
@@ -225,6 +228,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		</section>
 	);
 
+	console.log(bids);
+
 	const historyItem = (
 		account: string,
 		amount: number,
@@ -243,7 +248,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 						account.length - 4,
 					)}`}</a>
 				</b>{' '}
-				bid <b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
+				made an offer of{' '}
+				<b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
+			</div>
+			<div>
+				<b>{moment(date).fromNow()}</b>
 			</div>
 		</li>
 	);
