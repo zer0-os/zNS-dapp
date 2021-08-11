@@ -120,6 +120,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 					break;
 			}
 
+			if(wallet !== "walletconnect") //if walletconnect it will clear localStorage before this
 			localStorage.removeItem('chosenWallet');
 		}
 		onConnect();
