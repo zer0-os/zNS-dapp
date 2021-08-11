@@ -13,6 +13,7 @@ type OverlayProps = {
 	nested?: boolean;
 	img?: boolean;
 	fullScreen?: boolean;
+	style?: React.CSSProperties;
 };
 
 const Overlay: React.FC<OverlayProps> = ({
@@ -23,6 +24,7 @@ const Overlay: React.FC<OverlayProps> = ({
 	img,
 	nested,
 	fullScreen,
+	style,
 }) => {
 	const [inDOM, setInDOM] = useState<boolean>(false);
 	const [domId, setDomId] = useState('');
@@ -86,6 +88,7 @@ const Overlay: React.FC<OverlayProps> = ({
 		<div
 			onAnimationEnd={removeFromDOM}
 			onClick={closeOverlay}
+			style={style}
 			className={`overlay ${styles.Overlay} ${
 				open ? styles.Open : styles.Closed
 			} ${centered ? styles.Centered : ''}

@@ -5,19 +5,32 @@ import { useMemo } from 'react';
 import addresses from './addresses';
 import { chainIdToNetworkType, defaultNetworkId } from './network';
 import { Registrar } from '../types/Registrar';
-import { BasicController, BasicController__factory, StakingController, StakingController__factory } from 'types';
+import {
+	BasicController,
+	BasicController__factory,
+	ERC20,
+	ERC20__factory,
+	StakingController,
+	StakingController__factory,
+	ZauctionSupportingZNS,
+	ZauctionSupportingZNS__factory,
+} from 'types';
 import * as ethers from 'ethers';
 
 export interface ContractAddresses {
 	basic: string;
 	registrar: string;
 	staking: string;
+	wildToken: string;
+	zAuction: string;
 }
 
 export interface Contracts {
 	registry: Registrar;
 	basicController: BasicController;
 	stakingController: StakingController;
+	wildToken: ERC20;
+	zAuction: ZauctionSupportingZNS;
 }
 
 function useZnsContracts(): Contracts | null {
@@ -53,8 +66,13 @@ function useZnsContracts(): Contracts | null {
 			),
 			stakingController: StakingController__factory.connect(
 				contracts.staking,
-				signer
-			)
+				signer,
+			),
+			wildToken: ERC20__factory.connect(contracts.wildToken, signer),
+			zAuction: ZauctionSupportingZNS__factory.connect(
+				contracts.zAuction,
+				signer,
+			),
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active, library, chainId]);

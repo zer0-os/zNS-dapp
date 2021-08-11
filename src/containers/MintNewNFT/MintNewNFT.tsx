@@ -4,12 +4,15 @@ import React, { useState, useRef, useEffect } from 'react';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
 
 //- Providers
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useMintProvider } from 'lib/providers/MintProvider';
+import { useZnsContracts } from 'lib/contracts';
 
 //- Type Imports
+import { ERC20 } from 'types';
 import {
 	TokenInformationType,
 	// TokenDynamicType,
@@ -25,7 +28,7 @@ import Summary from './sections/Summary';
 
 //- Style Imports
 import styles from './MintNewNFT.module.css';
-import { rootDomainName } from 'lib/domains';
+import { rootDomainName } from 'lib/utils/domains';
 
 type MintNewNFTProps = {
 	domainId: string; // Blockchain ID of the domain we're minting to
@@ -46,19 +49,45 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	onMint,
 	domainOwner,
 }) => {
+	//////////
+	// Web3 //
+	//////////
+
+	// Context
+	const context = useWeb3React<Web3Provider>();
+	const { account } = context; // account = connected wallet ID
+
+	// WILD Balance
+	const znsContracts = useZnsContracts()!;
+	const wildContract: ERC20 = znsContracts.wildToken;
+
+	// Mint/Staking Hooks
+	const mint = useMintProvider();
+	const staking = useStakingProvider();
+
+	// @todo refactor into useEffect so we don't have to calculate each render
+	let isOwner = account && account.toLowerCase() === domainOwner.toLowerCase();
+
+	//////////////////
+	// State & Data //
+	//////////////////
+
 	// NOTE: The only domain data MintNewNFT needs is the domain ID
 	// Token Data
 	const [name, setName] = useState('');
 	const [domain, setDomain] = useState('');
 	const [isMintLoading, setIsMintLoading] = useState(false);
+	const [wildBalance, setWildBalance] = useState<number | undefined>();
+	const [containerHeight, setContainerHeight] = useState(0);
+
 	const containerRef = useRef<HTMLDivElement>(null);
 
-	// Token Information Page
-	const [
-		tokenInformation,
-		setTokenInformation,
-	] = useState<TokenInformationType | null>(null);
+	const [tokenInformation, setTokenInformation] =
+		useState<TokenInformationType | null>(null);
+	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
+	const [step, setStep] = useState(MintState.DomainDetails);
 
+	// @todo reimplement for later releases
 	// Token Dynamics Page
 	// const [tokenDynamics, setTokenDynamics] = useState<TokenDynamicType | null>(
 	// 	null,
@@ -68,43 +97,46 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	// 	setStep(3);
 	// };
 
-	// Stake Page
-	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
+	/////////////
+	// Effects //
+	/////////////
 
-	//- Mint / Staking Providers
-	const mint = useMintProvider();
-	const staking = useStakingProvider();
-
-	//- Web3 Wallet Data
-	// MintNewNFT is a container and needs a bit more brainpower than your standard component
-	// I think using Context API for account data here is worthwhile
-	const context = useWeb3React<Web3Provider>();
-	const { account } = context; // account = connected wallet ID
-
-	let isOwner = false;
-	if (account) {
-		isOwner = account.toLowerCase() === domainOwner.toLowerCase();
-	}
-
-	//- Page State
-	const [step, setStep] = useState(MintState.DomainDetails);
-
-	const [containerHeight, setContainerHeight] = useState(0);
 	useEffect(() => {
+		if (!account) {
+			return;
+		}
+
+		const fetchTokenBalance = async () => {
+			const balance = await wildContract.balanceOf(account);
+			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
+		};
+		fetchTokenBalance();
+	}, [wildContract, account]);
+
+	useEffect(() => {
+		resize();
+	}, [step, isMintLoading]);
+
+	///////////////
+	// Functions //
+	///////////////
+
+	const resize = () => {
 		const el = containerRef.current;
 		if (el) {
 			const child = el.children[0];
 			if (child && child.clientHeight > 0)
 				return setContainerHeight(child.clientHeight);
 		}
-	}, [step, isMintLoading]);
+	};
 
-	//- Functions
+	// Sets the token stake data from the token stake section
 	const getTokenStake = (data: TokenStakeType) => {
 		setTokenStake(data);
 		setStep(MintState.Summary);
 	};
 
+	// Sets the token information data from token information section
 	const getTokenInformation = (data: TokenInformationType) => {
 		setTokenInformation(data);
 
@@ -115,6 +147,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		}
 	};
 
+	// Mints NFT through user's wallet
 	const submitMint = async () => {
 		if (!account) return setIsMintLoading(false);
 		if (!tokenInformation) return setIsMintLoading(false);
@@ -136,6 +169,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		return hasSubmitMint;
 	};
 
+	// Submits stake request through user's wallet
 	const submitRequest = async () => {
 		if (!account) return setIsMintLoading(false);
 		if (!tokenInformation) return setIsMintLoading(false);
@@ -163,6 +197,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		return hasSubmitRequest;
 	};
 
+	// Start submit process - call function for minting or requesting
 	const submit = () => {
 		setIsMintLoading(true);
 
@@ -183,6 +218,22 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		doSubmit();
 	};
 
+	///////////////
+	// Fragments //
+	///////////////
+
+	const domainString = () => {
+		const parentDomain =
+			domainName.length > 1 ? `.${domainName.substring(1)}` : '';
+		const newDomain = domain.length > 0 ? `.${domain}` : '';
+		const str = `0://${rootDomainName}${parentDomain}${newDomain}`;
+		return <>{str}</>;
+	};
+
+	////////////
+	// Render //
+	////////////
+
 	return (
 		<div className={`${styles.MintNewNFT} blur border-rounded border-primary`}>
 			{isMintLoading && <div className={styles.Blocker}></div>}
@@ -192,9 +243,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					{isOwner ? 'Mint' : 'Request to Mint'} "{name ? name : 'A New NFT'}"
 				</h1>
 				<div style={{ marginBottom: 8 }}>
-					<h2 className={`glow-text-white`}>
-						0://{rootDomainName}.{`${domainName.substring(1)}.${domain || ''}`}
-					</h2>
+					<h2 className={`glow-text-white`}>{domainString()}</h2>
 				</div>
 				<span>
 					By{' '}
@@ -224,6 +273,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						onContinue={(data: TokenInformationType) =>
 							getTokenInformation(data)
 						}
+						onResize={resize}
 						setNameHeader={(name: string) => setName(name)}
 						setDomainHeader={(domain: string) => setDomain(domain)}
 					/>
@@ -242,6 +292,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				{/* SECTION 3: Staking */}
 				{step === MintState.Staking && (
 					<Staking
+						balance={wildBalance}
 						token={tokenStake}
 						onContinue={(data: TokenStakeType) => getTokenStake(data)}
 					/>

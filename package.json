@@ -35,12 +35,16 @@
 		"@web3-react/walletconnect-connector": "^6.2.0",
 		"@web3-react/walletlink-connector": "^6.1.9",
 		"apollo": "^2.32.5",
+		"autosize": "^5.0.1",
+		"big-integer": "^1.6.48",
+		"dayjs": "^1.10.4",
 		"emailjs-com": "^2.6.4",
 		"ethers": "^5.1.0",
 		"graphql": "^15.5.0",
 		"graphql-tag": "^2.11.0",
 		"ipfs-http-client": "^50.0.0",
 		"lodash": "^4.17.21",
+		"moment": "^2.29.1",
 		"node-random-name": "^1.0.1",
 		"react": "^17.0.2",
 		"react-clipboard.js": "^2.0.16",
@@ -51,7 +55,6 @@
 		"react-spring": "^9.1.2",
 		"react-table": "^7.6.3",
 		"react-window": "^1.8.6",
-		"true-myth": "^4.1.1",
 		"typescript": "^4.2.3",
 		"web-vitals": "^1.1.1"
 	},
@@ -62,7 +65,8 @@
 		"eject": "react-scripts eject",
 		"typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
 		"lint": "eslint src --ext .ts",
-		"apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql "
+		"apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql ",
+		"prettier": "prettier --write ./src/**/*.ts && prettier --write ./src/**/*.tsx"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -89,6 +93,7 @@
 		"@graphql-codegen/typescript-operations": "1.17.15",
 		"@graphql-codegen/typescript-react-apollo": "2.2.3",
 		"@typechain/ethers-v5": "^5.0.0",
+		"@types/autosize": "^4.0.0",
 		"@types/clipboard": "^2.0.1",
 		"@types/graphql": "^14.5.0",
 		"@types/jest": "^26.0.22",

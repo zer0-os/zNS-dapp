@@ -71,7 +71,7 @@
 	background-repeat: no-repeat;
 
 	border: 1px solid #88d7ff;
-	overflow: none;
+	overflow: hidden;
 
 	cursor: pointer;
 	transition: transform var(--animation-time-medium) ease-in-out,
@@ -116,15 +116,21 @@
 	margin-top: 12px;
 }
 
-.Summary li img {
-	content: ' ';
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 24px;
-	width: 24px;
+.Icon > div {
+	content: ' ' !important;
+	position: absolute !important;
+	top: 0 !important;
+	left: 0 !important;
+	height: 24px !important;
+	width: 24px !important;
 }
 
 .Name {
 	font-weight: 700;
+}
+
+.Estimate {
+	font-weight: 700;
+	color: var(--color-primary-lighter-3);
+	margin: 16px auto 0 auto;
 }

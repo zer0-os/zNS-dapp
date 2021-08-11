@@ -1,12 +1,13 @@
 /* Set up some variables */
 .futureButton {
 	--bg: var(--background-accent-1-gradient);
+
 	--box-shadow: rgba(0, 209, 255, 0.1);
 	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
 }
 
 .Alt {
-	--bg: #ff43b440;
+	--bg: #ff43b410;
 	--box-shadow: rgba(255, 67, 180, 0.25);
 	--box-shadow-heavy: rgba(255, 67, 180, 0.25);
 }
@@ -18,7 +19,7 @@
 	align-items: center;
 
 	height: 32px;
-	padding-top: 4px;
+	padding-top: 5px;
 	padding-left: 25px;
 	padding-right: 25px;
 
@@ -27,6 +28,8 @@
 	border-radius: var(--box-radius);
 
 	cursor: pointer;
+
+	text-transform: uppercase;
 
 	transition: opacity var(--animation-time-short) ease-in-out;
 	opacity: 0.6;
@@ -43,7 +46,7 @@
 
 	position: absolute;
 	top: 0;
-	left: 0;
+	left: -1;
 
 	border-radius: inherit;
 	border-style: solid;

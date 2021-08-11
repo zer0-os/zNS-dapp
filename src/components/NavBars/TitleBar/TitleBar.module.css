@@ -19,16 +19,30 @@ header {
 
 	width: 100%;
 
-	background: linear-gradient(
-		92.24deg,
-		rgba(0, 22, 55, 0.5) 0%,
-		rgba(0, 63, 137, 0.265) 100%
-	);
+	background: var(--color-background);
 	border-radius: var(--box-radius);
+
+	overflow: none;
+
+	transition: background-color var(--animation-time-medium) ease-in-out,
+		border var(--animation-time-medium) ease-in-out,
+		box-shadow var(--animation-time-medium) ease-in-out;
+}
+
+.Hovered {
+	/* background-color: rgba(0, 63, 137, 0.4); */
+	box-shadow: 0 0 20px 0 rgb(235 0 255 / 40%);
+}
+
+.Searching {
+	/* background-color: rgba(0, 63, 137, 0.4); */
+	box-shadow: 0 0 20px 0 rgb(235 0 255 / 40%);
 }
 
 .Bar {
+	position: relative;
 	display: flex;
+	justify-content: space-between;
 	padding: 11px 17px;
 }
 
@@ -63,12 +77,18 @@ header {
 	flex-shrink: 0;
 }
 
-.Bar > div:not(:first-child) {
-	/*padding-top 11px;*/
-	/*padding-bottom: 1px;*/
+.Searching .Bar > div:nth-child(2) {
+	display: none;
+}
+
+.Searching .Search {
+	flex: 1;
+	max-width: 100%;
 }
 
 .Bar > div:nth-child(2) {
+	flex: 1;
+	flex-grow: 0 0;
 	justify-content: flex-end;
 }
 
@@ -78,10 +98,37 @@ header {
 
 /* Search Styling */
 
+.Navigation {
+	flex: 1;
+}
+
+.Navigation > input {
+	background: none;
+	margin-left: 16px;
+	margin-top: 3px;
+
+	/* border-bottom: 1px solid transparent; */
+	/* transition: border-bottom var(--animation-time-medium) ease-in-out; */
+}
+
+.Navigation > input:hover {
+	background: none;
+	/* border-bottom: 1px solid var(--color-accent-1); */
+}
+
+.Navigation > input::placeholder {
+	color: #e5baff70;
+}
+
 .Searching {
-	border-radius: var(--box-radius) var(--box-radius) 0 0;
-	border-bottom-width: 0;
+	border-radius: var(--box-radius);
 	box-shadow: none;
+}
+
+.Searching .Navigation > input {
+	/* border-bottom: 1px solid var(--color-accent-1); */
+	transition: none;
+	width: 100%;
 }
 
 .Search {
@@ -93,30 +140,31 @@ header {
 	font-weight: bold;
 }
 
+.Search::placeholder {
+	font-weight: 400;
+}
+
 .SearchResults {
-	position: absolute;
-	top: 100%;
-	left: -1px;
 	width: calc(100% + 2px);
-	background: inherit;
+	/* background: inherit; */
 
 	border-top: 0px solid white !important;
 	border-radius: 0 0 var(--box-radius) var(--box-radius);
 	box-shadow: none;
 
-	overflow: hidden;
+	overflow: scroll;
+	max-height: 80vh;
 }
 
 .SearchResults ul {
 	position: absolute;
-	top: 0;
 	left: 0;
 	width: 100%;
 }
 
 .SearchResults li {
 	width: 100%;
-	padding: 17px 17px 17px 101px;
+	padding: 17px 17px 17px 103px;
 
 	cursor: pointer;
 

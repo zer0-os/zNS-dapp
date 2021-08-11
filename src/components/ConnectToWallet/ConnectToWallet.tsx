@@ -17,7 +17,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import WalletStyles from './Wallet.module.css';
 
 //- Component Imports
-import { FutureButton } from 'components';
+import { FutureButton, Image } from 'components';
 
 //- Asset Imports
 import metamaskIcon from './assets/metamask.svg';
@@ -87,7 +87,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	};
 
 	return (
-		<div className={`${WalletStyles.connect} blur border-pink-glow`}>
+		<div className={`${WalletStyles.connect} border-primary`}>
 			<div className={WalletStyles.header}>
 				<h3 className={`glow-text-white`}>Connect to a wallet</h3>
 			</div>
@@ -99,7 +99,11 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					Metamask
 					<div>
-						<img alt="metamask" src={metamaskIcon} />
+						<Image
+							style={{ height: 36, width: 36 }}
+							alt="metamask"
+							src={metamaskIcon}
+						/>
 					</div>
 				</li>
 				<li
@@ -108,7 +112,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					<span>Wallet Connect</span>
 					<div>
-						<img alt="wallet connect" src={walletConnectIcon} />
+						<Image alt="wallet connect" src={walletConnectIcon} />
 					</div>
 				</li>
 				<li
@@ -117,7 +121,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					<span>Coinbase Wallet</span>
 					<div>
-						<img alt="coinbase wallet" src={coinbaseWalletIcon} />
+						<Image alt="coinbase wallet" src={coinbaseWalletIcon} />
 					</div>
 				</li>
 				<li
@@ -126,7 +130,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					<span>Fortmatic</span>
 					<div>
-						<img alt="fortmatic" src={fortmaticIcon} />
+						<Image alt="fortmatic" src={fortmaticIcon} />
 					</div>
 				</li>
 				<li
@@ -135,7 +139,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				>
 					<span>Portis</span>
 					<div>
-						<img alt="portis" src={portisIcon} />
+						<Image alt="portis" src={portisIcon} />
 					</div>
 				</li>
 			</ul>

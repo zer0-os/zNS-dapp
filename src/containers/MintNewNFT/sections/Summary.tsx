@@ -18,7 +18,7 @@ import tickerIcon from './assets/ticker.svg';
 import addressIcon from './assets/address.svg';
 
 //- Component Imports
-import { FutureButton } from 'components';
+import { FutureButton, Image } from 'components';
 
 type SummaryProps = {
 	token: TokenInformationType | null;
@@ -37,6 +37,10 @@ const Summary: React.FC<SummaryProps> = ({
 	isMintLoading,
 	domain,
 }) => {
+	let parentDomain;
+	if (domain.substring(1).length > 0) parentDomain = domain.substring(1) + '.';
+	else parentDomain = domain.substring(1);
+
 	if (!token) return <></>;
 
 	return (
@@ -44,7 +48,7 @@ const Summary: React.FC<SummaryProps> = ({
 			<div className={styles.Summary}>
 				<div className={`${styles.NFT} border-rounded border-blue`}>
 					{token.previewImage.indexOf('image/') > -1 && (
-						<img alt="nft preview" src={token.previewImage} />
+						<Image alt="nft preview" src={token.previewImage} />
 					)}
 					{token.previewImage.indexOf('video/') > -1 && (
 						<video controls src={token.previewImage} />
@@ -54,15 +58,22 @@ const Summary: React.FC<SummaryProps> = ({
 					<h2>Summary</h2>
 					<ul>
 						<li className={styles.Name}>
-							<img alt="name icon" src={tickerIcon} />
+							<div className={styles.Icon}>
+								<Image alt="name icon" src={tickerIcon} />
+							</div>
 							{token.name}
 						</li>
 						<li>
-							<img alt="address icon" src={addressIcon} />
-							0://wilder.{domain.substring(1)}.{token.domain}
+							<div className={styles.Icon}>
+								<Image alt="address icon" src={addressIcon} />
+							</div>
+							0://wilder.{parentDomain}
+							{token.domain}
 						</li>
 						<li style={{ maxHeight: 200, overflowY: 'scroll' }}>
-							<img alt="story icon" src={storyIcon} />
+							<div className={styles.Icon}>
+								<Image alt="story icon" src={storyIcon} />
+							</div>
 							<p
 								style={{
 									padding: 0,
@@ -76,7 +87,9 @@ const Summary: React.FC<SummaryProps> = ({
 						</li>
 						{staking && (
 							<li>
-								<img alt="stake icon" src={handIcon} />
+								<div className={styles.Icon}>
+									<Image alt="stake icon" src={handIcon} />
+								</div>
 								{staking.amount} {staking.currency}
 							</li>
 						)}

@@ -13,13 +13,19 @@ import {
 	OptionDropdown,
 	Overlay,
 	NFTCard,
+	Spinner,
+	Confirmation,
 } from 'components';
 import { Request } from 'containers';
 
 //- Library Imports
 import useMvpVersion from 'lib/hooks/useMvpVersion';
-import { getMetadata } from 'lib/metadata';
 import { randomImage, randomName } from 'lib/Random';
+import { getRequestData } from './data';
+import {
+	useRequestsMadeByAccount,
+	useRequestsForOwnedDomains,
+} from 'lib/hooks/useDomainRequestsSubgraph';
 import { ethers } from 'ethers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 
@@ -35,39 +41,56 @@ import styles from './RequestTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import { useZnsContracts } from 'lib/contracts';
+import { useWeb3React } from '@web3-react/core';
+import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
 
 type RequestTableProps = {
-	requests: DomainRequestAndContents[];
 	style?: React.CSSProperties;
-	yours?: boolean;
+	userId: string;
+	onNavigate: (domain: string) => void;
 };
 
 const RequestTable: React.FC<RequestTableProps> = ({
-	requests,
 	style,
-	yours,
+	userId,
+	onNavigate,
 }) => {
 	//////////////////
 	// Custom Hooks //
 	//////////////////
-
+	const { account } = useWeb3React();
 	const { mvpVersion } = useMvpVersion();
 	const staking = useStakingProvider();
+	const znsContracts = useZnsContracts()!;
+	const yourRequests = useRequestsMadeByAccount(userId);
+	const requestsForYou = useRequestsForOwnedDomains(userId);
+	const wildToken = znsContracts.wildToken;
 
 	//////////////////
 	// State / Refs //
 	//////////////////
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const [containerHeight, setContainerHeight] = useState(0);
+	const [containerHeight, setContainerHeight] = useState(0); // Not needed anymore?
+
 	const [isGridView, setIsGridView] = useState(false);
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
+
+	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
+	const [domainFilter, setDomainFilter] = useState('');
 
+	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DisplayDomainRequestAndContents | undefined
+	>();
+
+	// The Token that we need to approve the staking controller to transfer
+	const [approveTokenTransfer, setApproveTokenTransfer] = useState<
+		string | undefined
 	>();
 
 	// The requests that we have loaded (pulled from chain and grabbed metadata from IFPS)
@@ -107,9 +130,44 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	/* Calls the middleware for approving a request
 		 This is passed to the Request modal */
-	const onAccept = async (request: DomainRequestAndContents) => {
+	const onApprove = async (request: DomainRequestAndContents) => {
 		try {
 			await staking.approveRequest(request);
+			setViewing(undefined);
+		} catch (e) {
+			// Catch thrown when user rejects transaction
+			console.error(e);
+		}
+	};
+
+	/**
+	 * Creates Transaction to approve the Staking Controller to transfer
+	 * tokens on behalf of the user.
+	 */
+	const onApproveTokenTransfer = async () => {
+		try {
+			await wildToken.approve(
+				znsContracts.stakingController.address,
+				ethers.constants.MaxUint256,
+			);
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const onFulfill = async (request: DomainRequestAndContents) => {
+		const allowance = await wildToken.allowance(
+			account!,
+			znsContracts.stakingController.address,
+		);
+
+		if (allowance.lt(request.request.offeredAmount)) {
+			setApproveTokenTransfer(wildToken.address);
+			return;
+		}
+
+		try {
+			await staking.fulfillRequest(request);
 			setViewing(undefined);
 		} catch (e) {
 			// Catch thrown when user rejects transaction
@@ -121,10 +179,27 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		 There's a hook listening to each of these variables */
 	const search = (query: string) => setSearchQuery(query);
 	const filterByStatus = (filter: string) => setStatusFilter(filter);
+	const filterByDomain = (filter: string) => setDomainFilter(filter);
 
 	/////////////
 	// Effects //
 	/////////////
+
+	// Refresh data 5 seconds after a request is approved
+	// This is hopefully enough time for the subgraph to update
+	React.useEffect(() => {
+		let isSubscribed = true;
+		setTimeout(() => {
+			if (isSubscribed) {
+				yourRequests.refresh();
+				requestsForYou.refresh();
+			}
+		}, 5000);
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [staking.approved]);
 
 	// Listen for window resizes and handle them
 	useEffect(() => {
@@ -134,42 +209,35 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	}, []);
 
 	useEffect(() => {
-		if (requests.length === 0) return setLoadedRequests([]);
+		setIsLoading(true);
+		const i = yourRequests.requests?.domainRequests || [];
+		const j =
+			requestsForYou.requests?.domains.map((d) => d.requests).flat() || [];
 
-		let finishedCount = 0; // Count of requests we have pulled data for
-		const completedLoading: DisplayDomainRequestAndContents[] = []; // Requests that have finished loading
-
-		/* Loop through each request, 
-			 pull the data from IPFS, 
-			 stash it in completedLoading,
-			 update table data when completed */
-		for (let i = 0; i < requests.length; i++) {
-			// eslint-disable-next-line no-loop-func
-			const doGetMetadata = async () => {
-				const request = requests[i] as DisplayDomainRequestAndContents;
-				const metadata = await getMetadata(request.contents.metadata);
-
-				if (metadata) {
-					const displayRequest: DisplayDomainRequestAndContents = {
-						...request,
-						metadata,
-					};
-
-					completedLoading.push(displayRequest);
-				} else {
-					console.warn(
-						`Unable to fetch metadata for domain: ${request.contents.domain}`,
-					);
-				}
-
-				if (++finishedCount === requests.length) {
-					setLoadedRequests(completedLoading);
-				}
-			};
-
-			doGetMetadata();
+		var requests = [];
+		if (domainFilter === 'All Domains') {
+			requests = i.concat(j);
+		} else if (domainFilter === 'Your Domains') {
+			requests = j;
+		} else {
+			requests = i;
 		}
-	}, [requests, mvpVersion]);
+
+		if (requests.length === 0) {
+			setLoadedRequests([]);
+			setIsLoading(false);
+			return;
+		}
+
+		getRequestData(requests).then((d: any) => {
+			if (d) {
+				setLoadedRequests(d);
+			} else {
+				console.error('Failed to retrieve request data');
+			}
+			setIsLoading(false);
+		});
+	}, [yourRequests.requests, requestsForYou.requests, domainFilter]);
 
 	/////////////////
 	// React-Table //
@@ -178,7 +246,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// Table Data
 	const displayData: DisplayDomainRequestAndContents[] = useMemo(() => {
 		if (
-			(searchQuery.length || (statusFilter.length && statusFilter !== 'All')) &&
+			(searchQuery.length ||
+				(statusFilter.length && statusFilter !== 'All Statuses')) &&
 			loadedRequests &&
 			loadedRequests.length
 		) {
@@ -193,10 +262,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			}
 
 			// Filter per status
-			if (statusFilter.length && statusFilter !== 'All') {
+			if (statusFilter.length && statusFilter !== 'All Statuses') {
 				const approved = statusFilter === 'Accepted';
 				filtered = filtered.filter((r) => r.request.approved === approved);
 			}
+
 			// @TODO Move sorting to React-Table built-in sorting
 			return filtered.sort(
 				(a, b) => Number(b.request.timestamp) - Number(a.request.timestamp),
@@ -255,7 +325,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				accessor: (d: DisplayDomainRequestAndContents) => {
 					return (
 						<div className={styles.left}>
-							{dateFromTimestamp(d.request.timestamp)}
+							{dateFromTimestamp(d.request.timestamp).split(',')[0]}
 						</div>
 					);
 				},
@@ -276,13 +346,39 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				id: 'accepted',
 				accessor: (d: DisplayDomainRequestAndContents) => (
 					<div className={styles.center}>
-						{d.request.approved && (
+						{/* Fulfilled domain requests */}
+						{d.request.fulfilled && (
 							<div className={styles.Accepted}>
-								<span>Accepted</span>
+								<span>Fulfilled</span>
 								<br />
-								<span>13.03.2021 08:22</span>
+								<span>{dateFromTimestamp(d.request.timestamp)}</span>
 							</div>
 						)}
+
+						{/* Your request - approved */}
+						{d.request.approved &&
+							!d.request.fulfilled &&
+							d.contents.requestor === userId && (
+								<FutureButton
+									style={{ textTransform: 'uppercase' }}
+									glow
+									onClick={() => view(d.request.domain)}
+								>
+									Fulfill
+								</FutureButton>
+							)}
+
+						{d.request.approved &&
+							!d.request.fulfilled &&
+							d.contents.requestor !== userId && (
+								<div className={styles.Accepted}>
+									<span>Accepted</span>
+									<br />
+									<span>{dateFromTimestamp(d.request.timestamp)}</span>
+								</div>
+							)}
+
+						{/* Needs Approving */}
 						{!d.request.approved && (
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
@@ -305,20 +401,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		useFilters,
 		useGlobalFilter,
 	);
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		prepareRow,
-		rows,
-	} = tableHook;
-
-	// @TODO Remove this functionality - it's legacy from DomainTable
-	useEffect(() => {
-		const el = containerRef.current;
-		if (el)
-			setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-	}, [displayData, requests, mvpVersion, isGridView]);
+	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
+		tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
@@ -332,53 +416,92 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					}}
 				>
 					<Request
-						onAccept={onAccept}
-						yours={yours || viewing.request.approved}
+						onApprove={onApprove}
+						onFulfill={onFulfill}
+						onNavigate={onNavigate}
 						request={viewing}
+						yours={viewing.contents.requestor === userId}
 					/>
+				</Overlay>
+			)}
+			{/* Approve Token Transfer Overlay */}
+			{approveTokenTransfer && (
+				<Overlay
+					centered
+					open
+					onClose={() => {
+						setApproveTokenTransfer(undefined);
+					}}
+				>
+					<Confirmation
+						title={'Approve Token Transfer'}
+						onConfirm={() => {
+							onApproveTokenTransfer();
+						}}
+						onCancel={() => {
+							setApproveTokenTransfer(undefined);
+						}}
+					>
+						<p>
+							You must approve zNS to transfer your WILD tokens before minting
+							this domain.
+						</p>
+					</Confirmation>
 				</Overlay>
 			)}
 
 			{/* Table Header */}
-			<div className={styles.searchHeader}>
-				<SearchBar
-					onChange={(event: any) => search(event.target.value)}
-					style={{ width: '100%', marginRight: 16 }}
-				/>
-				<div className={styles.searchHeaderButtons}>
-					<OptionDropdown
-						onSelect={filterByStatus}
-						options={['All', 'Open Requests', 'Accepted']}
-						drawerStyle={{ width: 179 }}
-					>
-						<FilterButton onClick={() => {}}>
-							{statusFilter || 'All'}
-						</FilterButton>
-					</OptionDropdown>
-					{isGridViewToggleable && (
-						<>
-							<IconButton
-								onClick={setList}
-								toggled={!isGridView}
-								iconUri={list}
-								style={{ height: 32, width: 32 }}
-							/>
-							<IconButton
-								onClick={setGrid}
-								toggled={isGridView}
-								iconUri={grid}
-								style={{ height: 32, width: 32 }}
-							/>
-						</>
-					)}
+			{!isLoading && (
+				<div className={styles.searchHeader}>
+					<SearchBar
+						onChange={(event: any) => search(event.target.value)}
+						style={{ width: '100%', marginRight: 16 }}
+						placeholder="Search by domain name"
+					/>
+					<div className={styles.searchHeaderButtons}>
+						<OptionDropdown
+							onSelect={filterByDomain}
+							options={['All Domains', 'Your Domains', 'Your Requests']}
+							drawerStyle={{ width: 179 }}
+						>
+							<FilterButton onClick={() => {}}>
+								{domainFilter || 'All Domains'}
+							</FilterButton>
+						</OptionDropdown>
+						<OptionDropdown
+							onSelect={filterByStatus}
+							options={['All Statuses', 'Open Requests', 'Accepted']}
+							drawerStyle={{ width: 179 }}
+						>
+							<FilterButton onClick={() => {}}>
+								{statusFilter || 'All Statuses'}
+							</FilterButton>
+						</OptionDropdown>
+						{/* {isGridViewToggleable && (
+							<>
+								<IconButton
+									onClick={setList}
+									toggled={!isGridView}
+									iconUri={list}
+									style={{ height: 32, width: 32 }}
+								/>
+								<IconButton
+									onClick={setGrid}
+									toggled={isGridView}
+									iconUri={grid}
+									style={{ height: 32, width: 32 }}
+								/>
+							</>
+						)} */}
+					</div>
 				</div>
-			</div>
+			)}
 
 			{/* Standard React-Table setup */}
 			<div className={styles.RequestTable}>
 				<div className={styles.Container} ref={containerRef}>
 					{/* List View */}
-					{!isGridView && (
+					{!isLoading && !isGridView && (
 						<table {...getTableProps()} className={styles.RequestTable}>
 							<thead>
 								{headerGroups.map((headerGroup) => (
@@ -392,25 +515,29 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								))}
 							</thead>
 							<tbody {...getTableBodyProps()}>
-								{rows.map((row) => {
-									prepareRow(row);
-									return (
-										<tr
-											onClick={() => view(row.original.request.domain)}
-											{...row.getRowProps()}
-										>
-											{row.cells.map((cell) => (
-												<td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-											))}
-										</tr>
-									);
-								})}
+								{!isLoading &&
+									rows.map((row) => {
+										prepareRow(row);
+										return (
+											<tr
+												onClick={() => view(row.original.request.domain)}
+												{...row.getRowProps()}
+											>
+												{row.cells.map((cell) => (
+													<td {...cell.getCellProps()}>
+														{cell.render('Cell')}
+													</td>
+												))}
+											</tr>
+										);
+									})}
 							</tbody>
 						</table>
 					)}
 
 					{/* Grid View */}
-					{isGridView && (
+					{/* @todo re-enable grid view */}
+					{/* {!isLoading && isGridView && (
 						<ol className={styles.Grid}>
 							{displayData.map((d, i) => (
 								<li key={i} onClick={() => view(d.request.domain)}>
@@ -425,7 +552,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 										showOwner
 										style={{ width: 380 }}
 									>
-										{/* @TODO Refactor this horrific section */}
 										<div
 											style={{
 												display: 'flex',
@@ -487,7 +613,29 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								</li>
 							))}
 						</ol>
+					)} */}
+
+					{/* No Search Results Message */}
+					{!isLoading &&
+						(searchQuery.length > 0 || statusFilter.length > 0) &&
+						displayData.length === 0 && (
+							<p className={styles.Message}>No results!</p>
+						)}
+
+					{/* Data Loading Message */}
+					{isLoading && (
+						<>
+							<p style={{ paddingBottom: 16 }} className={styles.Message}>
+								Loading Your Offers
+							</p>
+							<Spinner style={{ margin: '0 auto' }} />
+						</>
 					)}
+
+					{/* Empty Table Message */}
+					{/* {!isLoading && requests.length === 0 && (
+						<p className={styles.Message}>Nothing here!</p>
+					)} */}
 				</div>
 
 				{/* Expander for animating height (@TODO Remove this functionality) */}

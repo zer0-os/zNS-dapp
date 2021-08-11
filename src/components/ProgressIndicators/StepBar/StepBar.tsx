@@ -25,6 +25,7 @@ const StepBar: React.FC<StepBarProps> = ({
 	const left = (i: number) => `${(i / steps.length) * 100}%`;
 
 	const goto = (i: number) => {
+		if (step - 1 < i) return;
 		if (onNavigate) onNavigate(i);
 	};
 
@@ -33,16 +34,27 @@ const StepBar: React.FC<StepBarProps> = ({
 
 	return (
 		<div style={style} className={`${styles.StepBar} no-select`}>
-			{steps.map((s: string, i: number) => (
-				<div
-					key={i + s}
-					className={`${styles.Placeholder} ${step - 1 > i ? styles.Show : ''}`}
-					onClick={() => goto(i)}
-					style={{ position: 'absolute', left: left(i), width: width() }}
-				>
-					<ArrowLink back>{text(s, i)}</ArrowLink>
-				</div>
-			))}
+			{steps.map((s: string, i: number) => {
+				const isVisible = step - 1 > i;
+				const cursor = isVisible ? 'pointer' : 'default';
+				return (
+					<div
+						key={i + s}
+						className={`${styles.Placeholder} ${isVisible ? styles.Show : ''}`}
+						onClick={() => goto(i)}
+						style={{
+							position: 'absolute',
+							left: left(i),
+							width: width(),
+							cursor: cursor,
+						}}
+					>
+						<ArrowLink style={{ cursor: cursor }} back>
+							{text(s, i)}
+						</ArrowLink>
+					</div>
+				);
+			})}
 			<div
 				style={{
 					width: width(),
