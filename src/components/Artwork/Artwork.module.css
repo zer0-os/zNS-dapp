@@ -45,6 +45,7 @@
 .Info > *:first-child {
 	color: white;
 	font-weight: 400;
+	margin-top: 4px;
 }
 
 .Title {

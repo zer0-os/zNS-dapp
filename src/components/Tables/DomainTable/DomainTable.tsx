@@ -216,6 +216,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				Cell: (row: any) => (
 					<Artwork
 						domain={row.row.original.name}
+						disableInteraction
 						metadataUrl={row.row.original.metadata}
 						id={row.row.original.id}
 					/>

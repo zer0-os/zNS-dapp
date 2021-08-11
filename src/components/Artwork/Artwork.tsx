@@ -16,6 +16,7 @@ import styles from './Artwork.module.css';
 
 type ArtworkProps = {
 	domain: string;
+	disableInteraction?: boolean;
 	id: string;
 	image?: string;
 	metadataUrl?: string;
@@ -25,6 +26,7 @@ type ArtworkProps = {
 
 const Artwork: React.FC<ArtworkProps> = ({
 	domain,
+	disableInteraction,
 	id,
 	image,
 	metadataUrl,
@@ -48,11 +50,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 			{/* TODO: Remove overlay from child */}
 			<div className={`${styles.Artwork} ${styles.Pending}`}>
 				<div className={styles.Image}>
-					<Image
-						style={{ zIndex: 2 }}
-						onClick={() => console.warn('Member clicks not yet implemented')}
-						src={image || metadata?.image || ''}
-					/>
+					<Image style={{ zIndex: 2 }} src={image || metadata?.image || ''} />
 				</div>
 				<div className={styles.Info}>
 					{(name || metadata?.title) && (
@@ -64,14 +62,21 @@ const Artwork: React.FC<ArtworkProps> = ({
 						</span>
 					)}
 					{!pending && (
-						<Link
-							className={styles.Domain}
-							to={domain}
-							target="_blank"
-							rel="noreferrer"
-						>
-							{domain}
-						</Link>
+						<>
+							{disableInteraction && (
+								<span className={styles.Domain}>{domain}</span>
+							)}
+							{!disableInteraction && (
+								<Link
+									className={styles.Domain}
+									to={domain.split('wilder.')[1]}
+									target="_blank"
+									rel="noreferrer"
+								>
+									{domain}
+								</Link>
+							)}
+						</>
 					)}
 					{pending && <span className={styles.Domain}>{domain}</span>}
 				</div>
