@@ -70,6 +70,7 @@ export { default as ToggleSection } from './ToggleSection/ToggleSection.js';
 export { default as Tooltip } from './Tooltip/Tooltip';
 export { default as ZNALink } from './ZNALink/ZNALink';
 export { default as Confirmation } from './Confirmation/Confirmation';
+export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator';
 
 //- Progress Indicators
 export { default as StepBar } from './ProgressIndicators/StepBar/StepBar';
