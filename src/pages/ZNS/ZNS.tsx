@@ -199,10 +199,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
-	useEffect(() => {
-		if (!active && !isWalletOverlayOpen) localStorage.clear();
-	}, [isWalletOverlayOpen]);
-
 	//- Effects
 	useEffect(() => {
 		// TODO: Clean this whole hook up
