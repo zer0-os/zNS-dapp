@@ -191,6 +191,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	// }, [minted]);
 
 	useEffect(() => {
+		if (localStorage.getItem('chosenWallet') === 'walletconnect' && !active)
+			//wallet connect wont do this automatically if session its ended
+			localStorage.clear();
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -310,7 +313,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 						setIsSearchActive={setIsSearchActive}
 					>
 						<div>
-							{/* Here needs to check if a chosenWallet pesist on cold storage, if true it will display loading button until connected its confirmed, but still trigger the overlay*/}
 							{!active && localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
 									<div

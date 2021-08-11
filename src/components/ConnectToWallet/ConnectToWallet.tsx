@@ -73,17 +73,31 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const connectToWallet = async (wallet: string) => {
 		setIsLoading(true);
 		const c = connectorFromName(wallet) as AbstractConnector;
+
 		if (c) {
 			const previousWallet = localStorage.getItem('chosenWallet');
 			localStorage.setItem('chosenWallet', wallet);
+
+			if (wallet === 'portis') {
+				//if user tries to connect portis, we need a timeout, portis will keep trying forever
+				setTimeout(() => {
+					if (!active) {
+						//if user isnt connected
+						disconnect();
+						window.location.reload(); //page needs to reload to cancel all the portis overlays
+					}
+				}, 60000);
+			}
+
 			await activate(c, async (e: Error) => {
 				addNotification(`Failed to connect to wallet.`);
 				localStorage.removeItem('chosenWallet');
 				if (previousWallet)
-					localStorage.setItem('chosenWallet', previousWallet);
+					localStorage.setItem('chosenWallet', previousWallet); //if user was connected, key keeps the same
 				console.error(`Encounter error while connecting to ${wallet}.`);
 				console.error(e);
 			});
+
 			setIsLoading(false);
 			onConnect();
 		}
@@ -92,15 +106,11 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const disconnect = () => {
 		const wallet = localStorage.getItem('chosenWallet');
 		if (wallet) {
-			//if has a wallet connected, instead of just deactivate, close connection too
 			deactivate();
+			//if has a wallet connected, instead of just deactivate, close connection too
 			switch (wallet) {
 				case 'coinbase': {
 					walletlink.close();
-					break;
-				}
-				case 'walletconnect': {
-					localStorage.clear()
 					break;
 				}
 				case 'portis': {
@@ -111,13 +121,11 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 					fortmatic.close();
 					break;
 				}
-
 				default:
 					break;
 			}
 
-			if(wallet !== "walletconnect") //if walletconnect it will clear localStorage before this
-			localStorage.removeItem('chosenWallet');
+			localStorage.clear(); //if walletconnect its the wallet it will close connection from dApp
 		}
 		onConnect();
 	};
