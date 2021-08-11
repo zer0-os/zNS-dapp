@@ -177,7 +177,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		return {
 			bidderAccount,
 			amount,
-			date: new Date(), // not supported by zAuction
+			date: new Date(DTO.date),
 			tokenId,
 			signature: DTO.signedMessage,
 			auctionId: DTO.auctionId,
