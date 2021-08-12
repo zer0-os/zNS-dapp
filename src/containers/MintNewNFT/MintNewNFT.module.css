@@ -26,6 +26,8 @@
 .Header h1 {
 	font-size: 36px;
 	font-weight: 700;
+	text-align: center;
+	overflow-wrap: anywhere;
 }
 
 .Header h2 {
@@ -35,6 +37,8 @@
 .Header > div {
 	display: flex;
 	align-items: center;
+	text-align: center;
+	overflow-wrap: anywhere;
 
 	margin-top: 8px;
 }
@@ -71,7 +75,7 @@
 	background-repeat: no-repeat;
 
 	border: 1px solid #88d7ff;
-	overflow: none;
+	overflow: hidden;
 
 	cursor: pointer;
 	transition: transform var(--animation-time-medium) ease-in-out,
@@ -97,7 +101,7 @@
 	margin-left: 24px;
 }
 
-.Inputs > *:not(:first-child) {
+.Inputs > input:not(:first-child) {
 	margin-top: 24px;
 }
 
@@ -114,15 +118,16 @@
 	padding-top: 8px;
 	padding-left: 40px;
 	margin-top: 12px;
+	overflow-wrap: anywhere;
 }
 
-.Summary li img {
-	content: ' ';
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 24px;
-	width: 24px;
+.Icon > div {
+	content: ' ' !important;
+	position: absolute !important;
+	top: 0 !important;
+	left: 0 !important;
+	height: 24px !important;
+	width: 24px !important;
 }
 
 .Name {

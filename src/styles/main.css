@@ -1,6 +1,6 @@
 /*
  * @author Brett Collins
- * 
+ *
  * Search:
  *  - Fonts
  *  - Variables
@@ -35,7 +35,7 @@
 	src: local('Eurostile'), url('../fonts/Eurostile-Bol.otf') format('opentype');
 }
 
-/* 
+/*
  * Variables
  * -- The design is likely to change, so let's use variables where we can
  * to make changes a bit easier.
@@ -81,7 +81,7 @@
 	);
 	--background-secondary-button-fill: #1e5180;
 
-	/* TODO: Should probably find a library that lets us set 
+	/* TODO: Should probably find a library that lets us set
 		opacity on HEX colours so we don't have to do this */
 	--background-purple-card: var(--color-background);
 	--background-purple-card-50: var(--color-background);
@@ -106,7 +106,7 @@
 	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
 
 	--glow-primary: drop-shadow(0px 0px 10px 0px #eb00ff);
-	--glow-text-blue: 0px 0px 12px rgba(60, 161, 255, 0.7);
+	--glow-text-blue: 0px 0px 10px rgba(60, 161, 255, 0.7);
 	--glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
 	--glow-text-white-big: 0px 0px 15px rgba(255, 255, 255, 1),
 		0px 0px 15px rgba(255, 255, 255, 1), 0px 0px 15px rgba(255, 255, 255, 1);
@@ -120,7 +120,7 @@
 
 /*
  *
- * Default HTML Elements 
+ * Default HTML Elements
  *
  */
 
@@ -244,9 +244,42 @@ button.text-button {
 	font-size: 16px;
 }
 
+button {
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+*::-webkit-scrollbar-corner {
+	background: rgba(0, 0, 0, 0);
+	height: 0;
+	width: 0;
+}
+
+*::-webkit-scrollbar-track {
+	background-color: none;
+}
+
+*::-webkit-scrollbar {
+	width: 6px;
+	background-color: none;
+}
+
+*::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: rgba(60, 161, 255, 0.2);
+}
+
 /*
  *
- * Custom HTML Elements 
+ * Custom HTML Elements
  *
  */
 
@@ -319,7 +352,7 @@ nav {
 
 /*
  *
- * Borders 
+ * Borders
  *
  */
 
@@ -380,7 +413,7 @@ nav {
 
 /*
  *
- * Media Queries 
+ * Media Queries
  *
  */
 @media only screen and (max-width: 660px) {

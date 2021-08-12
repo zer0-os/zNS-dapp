@@ -124,7 +124,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	};
 
 	return (
-		<div className={`${WalletStyles.connect} blur border-pink-glow`}>
+		<div className={`${WalletStyles.connect} border-primary`}>
 			<div className={WalletStyles.header}>
 				<h3 className={`glow-text-white`}>Connect to a wallet</h3>
 			</div>

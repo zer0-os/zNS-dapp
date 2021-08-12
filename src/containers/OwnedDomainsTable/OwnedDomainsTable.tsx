@@ -8,13 +8,14 @@ import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
 
 // Type Imports
-import { Bid, Domain, DomainHighestBid } from 'lib/types';
+import { Bid, Domain, DomainData, ParentDomain } from 'lib/types';
 
 // Style Imports
 import styles from './OwnedDomainsTable.module.css';
 
 // Component Imports
 import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
+import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 
 type AcceptBidModalData = {
@@ -22,7 +23,11 @@ type AcceptBidModalData = {
 	bid: Bid;
 };
 
-const OwnedDomainTables = () => {
+type OwnedDomainTableProps = {
+	onNavigate?: (to: string) => void;
+};
+
+const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -50,14 +55,24 @@ const OwnedDomainTables = () => {
 	const [acceptingBid, setAcceptingBid] = React.useState<
 		AcceptBidModalData | undefined
 	>();
+	const [viewingDomain, setViewingDomain] = React.useState<
+		DomainData | undefined
+	>();
 
 	///////////////
 	// Functions //
 	///////////////
 
-	const viewBid = async (domain: DomainHighestBid) => {
-		if (!domain.bid || !account) return;
-		setAcceptingBid(domain);
+	const viewBid = async (domain: DomainData) => {
+		setViewingDomain(domain);
+	};
+
+	const accept = async (bid: Bid) => {
+		if (!viewingDomain?.domain || !bid) return;
+		setAcceptingBid({
+			domain: viewingDomain.domain,
+			bid: bid,
+		});
 
 		const shouldApprove = !(await isApproved());
 		setTokensApproved(!shouldApprove);
@@ -88,9 +103,9 @@ const OwnedDomainTables = () => {
 		return approved;
 	};
 
-	const closeBid = () => {
-		setAcceptingBid(undefined);
-	};
+	const closeBid = () => setAcceptingBid(undefined);
+
+	const closeDomain = () => setViewingDomain(undefined);
 
 	const acceptBidConfirmed = async () => {
 		if (!acceptingBid) return;
@@ -100,7 +115,9 @@ const OwnedDomainTables = () => {
 		setAcceptingBid(undefined);
 	};
 
-	const rowClick = (domain: Domain) => {};
+	const rowClick = (domain: Domain) => {
+		if (onNavigate) onNavigate(domain.name);
+	};
 
 	const isButtonActive = (row: any[]) => {
 		return row.length > 0;
@@ -116,11 +133,34 @@ const OwnedDomainTables = () => {
 	// React Fragments //
 	/////////////////////
 
-	const canPlaceBid = () => (
-		<p>
-			{acceptingBid!.bid.amount} WILD for {acceptingBid!.domain.name}
-		</p>
-	);
+	const canPlaceBid = () => {
+		const id = acceptingBid!.bid.bidderAccount;
+		return (
+			<p style={{ fontSize: 16, fontWeight: 400, lineHeight: '21px' }}>
+				Are you sure you want to accept the bid of{' '}
+				<b className="glow-text-white">
+					{acceptingBid!.bid.amount.toLocaleString()} WILD
+				</b>{' '}
+				tokens by{' '}
+				<b>
+					<a
+						className="alt-link"
+						href={`https://etherscan.io/address/${id}`}
+						target="_blank"
+						rel="noreferrer"
+					>
+						{id.substring(0, 4)}...{id.substring(id.length - 4)}
+					</a>
+				</b>
+				? You will receive{' '}
+				<b className="glow-text-white">
+					{acceptingBid!.bid.amount.toLocaleString()} WILD
+				</b>{' '}
+				tokens in exchange for ownership of{' '}
+				<b className="glow-text-white">0://{acceptingBid!.domain.name}</b>
+			</p>
+		);
+	};
 
 	const loadingState = () => <Spinner style={{ margin: '8px auto' }} />;
 
@@ -138,7 +178,7 @@ const OwnedDomainTables = () => {
 		</>
 	);
 
-	return (
+	const overlays = () => (
 		<>
 			{acceptingBid !== undefined && (
 				<Overlay onClose={closeBid} centered open>
@@ -155,6 +195,17 @@ const OwnedDomainTables = () => {
 					</Confirmation>
 				</Overlay>
 			)}
+			{viewingDomain !== undefined && (
+				<Overlay onClose={closeDomain} centered open>
+					<BidList bids={viewingDomain.bids} onAccept={accept} />
+				</Overlay>
+			)}
+		</>
+	);
+
+	return (
+		<>
+			{overlays()}
 			{isTableLoading && (
 				<>
 					<p className={styles.Message}>Loading Your Domains</p>
@@ -163,17 +214,17 @@ const OwnedDomainTables = () => {
 			)}
 			<DomainTable
 				className={styles.Reset}
-				domains={owned.sort((a: any, b: any) => a.name - b.name)}
+				domains={owned}
 				hideOwnBids
 				isButtonActive={isButtonActive}
 				isRootDomain={false}
-				empty={true}
-				rowButtonText={'Accept Bid'}
+				rowButtonText={'View Bids'}
 				onLoad={tableLoaded}
 				onRowButtonClick={viewBid}
 				onRowClick={rowClick}
 				isGridView={isGridView}
 				setIsGridView={(grid: boolean) => setIsGridView(grid)}
+				userId={account || undefined}
 				style={{ display: isTableLoading ? 'none' : 'inline-block' }}
 			/>
 		</>

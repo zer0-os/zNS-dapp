@@ -1,7 +1,7 @@
 .profile {
 	width: 100%;
 	height: 100%;
-	overflow-y: scroll;
+	overflow-y: auto;
 	padding: 54px;
 	color: #4d4d4d;
 	background: var(--background-blue-deck);
@@ -85,7 +85,7 @@
 
 /* Profile paragraph */
 .Second {
-	width: 515px;
+	width: 550px;
 	margin-left: 57px;
 
 	line-height: 22px;

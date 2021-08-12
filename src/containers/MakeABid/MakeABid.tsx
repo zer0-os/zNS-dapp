@@ -6,9 +6,9 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 //- Library Imports
 import { Domain, Metadata, Bid } from 'lib/types';
-import { randomImage, randomName } from 'lib/Random';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
+import { toFiat } from 'lib/currency';
 import { getRelativeDomainPath } from 'lib/utils/domains';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { useZnsContracts } from 'lib/contracts';
@@ -22,7 +22,11 @@ import {
 	Image,
 	TextInput,
 	Member,
+	Overlay,
+	LoadingIndicator,
+	Spinner,
 } from 'components';
+import { BidList } from 'containers';
 
 //- Style Imports
 import styles from './MakeABid.module.css';
@@ -35,6 +39,7 @@ type MakeABidProps = {
 enum Steps {
 	Bid,
 	Approve,
+	Confirm,
 }
 
 const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
@@ -53,21 +58,27 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const [step, setStep] = useState<Steps>(Steps.Bid);
 	const [bid, setBid] = useState<string>('');
+
+	const [bids, setBids] = useState<Bid[] | undefined>([]);
 	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
 	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
 		number | undefined
 	>();
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
-	const [wildBalance, setWildBalance] = useState(0);
-	const [hasApproveTokenTransfer, setHasApprovedTokenTransfer] =
-		useState(false);
+	const [wildBalance, setWildBalance] = useState<number | undefined>();
+	const [hasApprovedTokenTransfer, setHasApprovedTokenTransfer] = useState<
+		boolean | undefined
+	>();
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
+	const [isAllBidsModalOpen, setIsAllBidsModalOpen] = useState(false);
 
 	// Loading States
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [isBidPending, setIsBidPending] = useState(false);
+	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
 	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
+	const [statusText, setStatusText] = useState<string>('Processing bid');
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -79,9 +90,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const isBidValid =
 		(Number(bid) &&
+			wildBalance &&
 			Number(bid) <= wildBalance &&
-			Number(bid) > 0 &&
-			Number(bid) > (currentHighestBid?.amount || 0)) === true;
+			Number(bid) > 0) === true;
 
 	///////////////
 	// Functions //
@@ -92,6 +103,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		history.push(relativeDomain);
 	};
 
+	const showAllBidsModal = () => setIsAllBidsModalOpen(true);
+	const hideAllBidsModal = () => setIsAllBidsModalOpen(false);
+
 	const formSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
 		continueBid();
@@ -100,7 +114,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const approveZAuction = async () => {
 		try {
 			setIsApprovalInProgress(true);
-			// @zachary - need to know here when the approval is finished
 			const tx = await wildContract.approve(
 				zAuctionAddress,
 				ethers.constants.MaxUint256,
@@ -116,48 +129,51 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const continueBid = async () => {
 		// Validate bid
-		if (!Number(bid)) return setError('Invalid bid');
 		const bidAmount = Number(bid);
-		if (bidAmount <= (currentHighestBid?.amount || 0))
-			return setError('Your bid must be higher than the current highest');
+		if (!bidAmount) return setError('Invalid bid');
+		if (bidAmount <= 0) return setError('Invalid bid');
 
-		if (bidAmount > wildBalance)
+		if (wildBalance && bidAmount > wildBalance)
 			return setError('You have insufficient WILD to make this bid');
 
-		await checkAllowance();
 		setError('');
 		setStep(Steps.Approve);
 	};
 
 	const makeBid = async () => {
 		// Get bid
-		if (!Number(bid)) return;
 		const bidAmount = Number(bid);
+		if (!bidAmount) return;
+
+		const onStep = (status: string) => {
+			setStatusText(status);
+		};
 
 		// Send bid to hook
 		setIsMetamaskWaiting(true);
+		setError('');
 		try {
-			const bidSuccess = await placeBid(domain, bidAmount);
-			if (bidSuccess === true) {
-				navigateTo(domain.name);
-				onBid();
-			}
+			await placeBid(domain, bidAmount, onStep);
+			onBid();
 		} catch (e) {
-			console.warn('Failed to place bid');
+			setError(e && (e.toString() ?? ''));
 		}
-		setIsMetamaskWaiting(false);
 	};
 
-	const getCurrentHighestBid = async () => {
-		// Get highest bid
-		const allBids = await getBidsForDomain(domain);
-		setHasBidDataLoaded(true);
-		if (!allBids || allBids.length === 0) return;
-		const max = allBids.reduce(function (prev, current) {
-			return prev.amount > current.amount ? prev : current;
-		});
-		setCurrentHighestBid(max);
-		setCurrentHighestBidUsd(max.amount * wildPriceUsd);
+	const checkAllowance = async () => {
+		setIsCheckingAllowance(true);
+		const allowance = await wildContract.allowance(account!, zAuctionAddress);
+		const bidAsWei = ethers.utils.parseEther(bid).toString();
+		const needsApproving = allowance.lt(bidAsWei);
+
+		await new Promise((r) => setTimeout(r, 500)); // Add a timeout so we can show the user a message for UX
+		if (hasApprovedTokenTransfer) {
+			setIsCheckingAllowance(false);
+			setStep(Steps.Confirm);
+		} else {
+			setIsCheckingAllowance(false);
+			setHasApprovedTokenTransfer(!needsApproving);
+		}
 	};
 
 	/////////////
@@ -169,6 +185,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			return;
 		}
 
+		setIsMetamaskWaiting(false);
+		setStep(Steps.Bid); // Reset to start of flow if account changes
+		setHasApprovedTokenTransfer(undefined);
+
 		const fetchTokenBalance = async () => {
 			const balance = await wildContract.balanceOf(account);
 			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
@@ -176,30 +196,77 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		fetchTokenBalance();
 	}, [wildContract, account]);
 
-	const checkAllowance = async () => {
-		const allowance = await wildContract.allowance(account!, zAuctionAddress);
-		const bidAsWei = ethers.utils.parseEther(bid).toString();
-		const needsApproving = allowance.lt(bidAsWei);
-		setHasApprovedTokenTransfer(!needsApproving);
-	};
+	useEffect(() => {
+		if (hasApprovedTokenTransfer && step === Steps.Approve) {
+			setStep(Steps.Confirm);
+		}
+	}, [hasApprovedTokenTransfer]);
 
 	useEffect(() => {
-		if (step === Steps.Approve && Number(bid) && !isApprovalInProgress) {
+		if (step === Steps.Approve) {
 			checkAllowance();
 		}
-	}, [wildContract, account, step, isApprovalInProgress]);
+	}, [step]);
 
 	useEffect(() => {
-		getMetadata(domain.metadata).then((metadata: Metadata | undefined) => {
+		let isSubscribed = true;
+
+		const loadDomainData = async () => {
+			const metadata = await getMetadata(domain.metadata);
 			if (!metadata) return;
-			setDomainMetadata(metadata);
-			getCurrentHighestBid();
-		});
+
+			if (isSubscribed) {
+				setDomainMetadata(metadata);
+			}
+		};
+
+		loadDomainData();
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [domain, wildPriceUsd]);
+
+	useEffect(() => {
+		let isSubscribed = true;
+
+		const getCurrentHighestBid = async () => {
+			// Get highest bid
+			const allBids = await getBidsForDomain(domain);
+
+			if (!allBids || allBids.length === 0) return;
+			const highestBid = allBids.reduce(function (prev, current) {
+				return prev.amount > current.amount ? prev : current;
+			});
+
+			if (isSubscribed) {
+				setHasBidDataLoaded(true);
+				setBids(allBids);
+				setCurrentHighestBid(highestBid);
+				setCurrentHighestBidUsd(highestBid.amount * wildPriceUsd);
+			}
+		};
+
+		getCurrentHighestBid();
+
+		return () => {
+			isSubscribed = false;
+		};
 	}, [domain, wildPriceUsd]);
 
 	/////////////////////
 	// React Fragments //
 	/////////////////////
+
+	const modals = () => (
+		<>
+			{isAllBidsModalOpen && bids !== undefined && (
+				<Overlay open onClose={hideAllBidsModal} centered>
+					<BidList bids={bids} wildPriceUsd={wildPriceUsd} />
+				</Overlay>
+			)}
+		</>
+	);
 
 	const header = () => (
 		<>
@@ -211,37 +278,50 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const nft = () => (
 		<div className={styles.NFT}>
-			<Image src={domainMetadata?.image} />
+			<Image
+				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
+				src={domainMetadata?.image}
+			/>
 		</div>
 	);
 
-	const highestBid = () => (
-		<>
-			{hasBidDataLoaded && currentHighestBid && (
+	const highestBid = () => {
+		const hasBids = bids !== undefined && bids.length > 0;
+
+		// @todo in serious need of tidy-up
+		return (
+			<>
 				<>
-					<span className="glow-text-white">
+					<span className={hasBids ? 'glow-text-white' : ''}>
 						{/* @todo change dp amount */}
-						{currentHighestBid.amount.toFixed(2)} WILD
-					</span>{' '}
-					{currentHighestBidUsd && (
+						{!hasBidDataLoaded && <>Loading bids...</>}
+						{hasBids && currentHighestBid && (
+							<>{Number(currentHighestBid.amount).toLocaleString()} WILD</>
+						)}
+						{hasBidDataLoaded && !currentHighestBid && (
+							<span className="glow-text-white">No bids found</span>
+						)}
+					</span>
+					<br />
+					{currentHighestBidUsd && currentHighestBidUsd > 0 && (
 						<span className="glow-text-white">
-							(${currentHighestBidUsd.toFixed(2)} USD)
+							(${toFiat(currentHighestBidUsd)} USD)
 						</span>
 					)}
+					<TextButton
+						style={{
+							opacity: hasBids ? 1 : 0.5,
+							cursor: hasBids ? 'pointer' : 'default',
+						}}
+						onClick={hasBids ? showAllBidsModal : () => {}}
+						className={styles.ViewAll}
+					>
+						View all bids
+					</TextButton>
 				</>
-			)}
-			{hasBidDataLoaded && !currentHighestBid && (
-				<>
-					<span className="glow-text-white">No bids found</span>
-				</>
-			)}
-			{!hasBidDataLoaded && (
-				<>
-					<span className="glow-text-white">Loading...</span>
-				</>
-			)}
-		</>
-	);
+			</>
+		);
+	};
 
 	const details = () => (
 		<div className={styles.Details}>
@@ -252,9 +332,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				{highestBid()}
 			</div>
 			<Member
-				id={currentHighestBid?.bidderAccount || ''}
-				name={'not yet implemented'}
-				image={'not yet implemented'}
+				id={domain?.minter?.id || ''}
+				name={''}
+				image={''}
 				subtext={'Creator'}
 			/>
 		</div>
@@ -275,6 +355,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const bidStep = () => (
 		<>
+			{modals()}
 			<div
 				className={styles.Section}
 				style={{ display: 'flex', padding: '0 37.5px' }}
@@ -283,7 +364,12 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				{details()}
 			</div>
 			<div className={styles.InputWrapper}>
-				{wildBalance > (currentHighestBid?.amount || 0) && (
+				{wildBalance === undefined && (
+					<>
+						<LoadingIndicator text="Checking WILD Balance" />
+					</>
+				)}
+				{wildBalance && wildBalance > (currentHighestBid?.amount || 0) && (
 					<>
 						<p className="glow-text-blue">Enter the amount you wish to bid:</p>
 						<span style={{ marginBottom: 8 }} className={styles.Estimate}>
@@ -316,7 +402,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 						</FutureButton>
 					</>
 				)}
-				{wildBalance <= (currentHighestBid?.amount || 0) && (
+				{wildBalance && wildBalance <= (currentHighestBid?.amount || 0) && (
 					<>
 						<p className={styles.Error}>
 							You don't have enough WILD to bid on this NFT
@@ -340,9 +426,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					padding: '0 37.5px',
 				}}
 			>
-				{!isMetamaskWaiting && !isApprovalInProgress && (
+				{!isMetamaskWaiting && !isApprovalInProgress && !isCheckingAllowance && (
 					<>
-						{!hasApproveTokenTransfer && (
+						{!hasApprovedTokenTransfer && (
 							<>
 								<p style={{ lineHeight: '21px' }}>
 									Before placing bids, you need to approve zAuction to access
@@ -363,58 +449,99 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 								</FutureButton>
 							</>
 						)}
-						{hasApproveTokenTransfer && (
-							<>
-								<p>
-									zAuction is approved to access your WILD tokens should your
-									bid be accepted.
-								</p>
-								<FutureButton
-									glow
-									style={{
-										height: 36,
-										borderRadius: 18,
-										textTransform: 'uppercase',
-										margin: '16px auto 0 auto',
-									}}
-									onClick={makeBid}
-								>
-									Place Bid
-								</FutureButton>
-							</>
-						)}
+					</>
+				)}
+				{isCheckingAllowance && (
+					<>
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="Checking status of zAuction approval"
+						/>
 					</>
 				)}
 				{isMetamaskWaiting && (
 					<>
-						<div className={styles.Loading}>
-							<div className={styles.Spinner}></div>
-						</div>
-						<p className={styles.Wait}>Hold tight while we process your bid</p>
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="Hold tight while we process your bid"
+						/>
 					</>
 				)}
 				{isApprovalInProgress && (
 					<>
-						<div className={styles.Loading}>
-							<div className={styles.Spinner}></div>
-						</div>
-						<p className={styles.Wait}>zAuction approval in progress</p>
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="zAuction approval in progress"
+						/>
 					</>
 				)}
 			</div>
 		);
 	};
 
+	const confirmStep = () => (
+		<div
+			className={styles.Section}
+			style={{
+				display: 'flex',
+				flexDirection: 'column',
+				padding: '0 37.5px',
+			}}
+		>
+			{!isMetamaskWaiting && (
+				<>
+					{hasApprovedTokenTransfer && (
+						<>
+							<p style={{ textAlign: 'center', marginTop: 24 }}>
+								You are about to place a{' '}
+								<b className="glow-text-white">
+									{Number(bid).toLocaleString()} WILD
+								</b>{' '}
+								bid for <b className="glow-text-white">0://{domain.name}</b>
+							</p>
+							<FutureButton
+								glow
+								style={{
+									height: 36,
+									borderRadius: 18,
+									textTransform: 'uppercase',
+									margin: '16px auto 0 auto',
+								}}
+								onClick={makeBid}
+							>
+								Place Bid
+							</FutureButton>
+						</>
+					)}
+				</>
+			)}
+			{isMetamaskWaiting && (
+				<>
+					<LoadingIndicator style={{ marginTop: 24 }} text="Processing bid" />
+				</>
+			)}
+			{error && (
+				<p
+					className={styles.Error}
+					style={{ textAlign: 'center', marginTop: 24 }}
+				>
+					{error}
+				</p>
+			)}
+		</div>
+	);
+
 	return (
 		<div className={`${styles.Container} border-primary border-rounded blur`}>
 			{header()}
 			<StepBar
 				step={step + 1}
-				steps={['Place A Bid', 'Approve zAuction']}
+				steps={['Choose Bid', 'Approve', 'Confirm Bid']}
 				onNavigate={(i: number) => setStep(i)}
 			/>
 			{step === Steps.Bid && bidStep()}
 			{step === Steps.Approve && approveStep()}
+			{step === Steps.Confirm && confirmStep()}
 		</div>
 	);
 };
