@@ -55,8 +55,8 @@ const NumBids: React.FC<NumBidsProps> = ({ domain, refreshKey }) => {
 		displayElement = <Spinner style={{ marginLeft: 'auto' }} />;
 	} else if (didApiCallFail) {
 		displayElement = <>Failed to retrieve</>;
-	} else if (numBids) {
-		displayElement = <>{numBids}</>;
+	} else {
+		displayElement = <>{numBids || 0}</>;
 	}
 
 	return <>{displayElement}</>;
