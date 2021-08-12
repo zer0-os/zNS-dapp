@@ -84,7 +84,6 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				localStorage.removeItem('chosenWallet');
 				console.error(`Encounter error while connecting to ${wallet}.`);
 				console.error(e);
-				window.location.reload();
 			});
 
 			setIsLoading(false);
