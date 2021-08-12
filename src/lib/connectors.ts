@@ -61,8 +61,8 @@ export const frame = new FrameConnector({ supportedChainIds: [1] });
 export const authereum = new AuthereumConnector({ chainId: 42 });
 
 export const fortmatic = new FortmaticConnector({
-	apiKey: process.env.FORTMATIC_API_KEY as string,
-	chainId: 42,
+	apiKey: process.env.REACT_APP_FORTMATIC_API_KEY_MAIN as string,
+	chainId: 1,
 });
 
 export const magic = new MagicConnector({
@@ -72,7 +72,7 @@ export const magic = new MagicConnector({
 });
 
 export const portis = new PortisConnector({
-	dAppId: process.env.PORTIS_DAPP_ID as string,
+	dAppId: process.env.REACT_APP_PORTIS_DAPP_ID as string,
 	networks: [1, 100],
 });
 
