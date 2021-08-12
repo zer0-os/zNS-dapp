@@ -6,7 +6,6 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 //- Library Imports
 import { Domain, Metadata, Bid } from 'lib/types';
-import { randomImage, randomName } from 'lib/Random';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
 import { toFiat } from 'lib/currency';
@@ -145,26 +144,12 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		try {
 			const bidSuccess = await placeBid(domain, bidAmount);
 			if (bidSuccess === true) {
-				navigateTo(domain.name);
 				onBid();
 			}
 		} catch (e) {
 			console.warn('Failed to place bid');
 		}
 		setIsMetamaskWaiting(false);
-	};
-
-	const getCurrentHighestBid = async () => {
-		// Get highest bid
-		const allBids = await getBidsForDomain(domain);
-		setHasBidDataLoaded(true);
-		if (!allBids || allBids.length === 0) return;
-		const max = allBids.reduce(function (prev, current) {
-			return prev.amount > current.amount ? prev : current;
-		});
-		setBids(allBids);
-		setCurrentHighestBid(max);
-		setCurrentHighestBidUsd(max.amount * wildPriceUsd);
 	};
 
 	const checkAllowance = async () => {
@@ -215,11 +200,49 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	}, [step]);
 
 	useEffect(() => {
-		getMetadata(domain.metadata).then((metadata: Metadata | undefined) => {
+		let isSubscribed = true;
+
+		const loadDomainData = async () => {
+			const metadata = await getMetadata(domain.metadata);
 			if (!metadata) return;
-			setDomainMetadata(metadata);
-			getCurrentHighestBid();
-		});
+
+			if (isSubscribed) {
+				setDomainMetadata(metadata);
+			}
+		};
+
+		loadDomainData();
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [domain, wildPriceUsd]);
+
+	useEffect(() => {
+		let isSubscribed = true;
+
+		const getCurrentHighestBid = async () => {
+			// Get highest bid
+			const allBids = await getBidsForDomain(domain);
+
+			if (!allBids || allBids.length === 0) return;
+			const highestBid = allBids.reduce(function (prev, current) {
+				return prev.amount > current.amount ? prev : current;
+			});
+
+			if (isSubscribed) {
+				setHasBidDataLoaded(true);
+				setBids(allBids);
+				setCurrentHighestBid(highestBid);
+				setCurrentHighestBidUsd(highestBid.amount * wildPriceUsd);
+			}
+		};
+
+		getCurrentHighestBid();
+
+		return () => {
+			isSubscribed = false;
+		};
 	}, [domain, wildPriceUsd]);
 
 	/////////////////////
