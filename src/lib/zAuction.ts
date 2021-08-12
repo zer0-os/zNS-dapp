@@ -240,38 +240,76 @@ export async function placeBid(
 	contract: string,
 	tokenId: string,
 	amount: string,
+	onStep: (status: string) => void
 ) {
 	const signer = provider.getSigner();
 	const minimumBid = '0';
 	const startBlock = '0';
 	const expireBlock = '999999999999';
 
-	const bidData = await encodeBid(baseApiUri, {
-		contractAddress: contract,
-		tokenId,
-		bidAmount: amount,
-		minimumBid,
-		startBlock,
-		expireBlock,
-	});
+	onStep("Generating bid...");
+
+	let bidData: Maybe<CreateBidDto>;
+
+	try {
+		bidData = await encodeBid(baseApiUri, {
+			contractAddress: contract,
+			tokenId,
+			bidAmount: amount,
+			minimumBid,
+			startBlock,
+			expireBlock,
+		});
+	} catch (e) {
+		console.error(e);
+		throw Error(`Failed to generate bid.`);
+	}
 
 	const account = await provider.getSigner().getAddress();
 
-	const signedBid = await signer.signMessage(
-		ethers.utils.arrayify(bidData.payload),
-	);
+	onStep("Waiting for bid to be signed by wallet...");
 
-	await sendBid(baseApiUri, {
-		account,
-		auctionId: bidData.auctionId.toString(),
-		tokenId,
-		contractAddress: contract,
-		bidAmount: amount,
-		minimumBid,
-		startBlock,
-		expireBlock,
-		signedMessage: signedBid,
-	});
+	let signedBid: Maybe<string>;
+
+	try {
+		signedBid = await signer.signMessage(
+			ethers.utils.arrayify(bidData.payload),
+		);
+	} catch (e) {
+		console.error(e);
+		throw Error(`Bid was not signed by wallet.`)
+	}
+
+	onStep("Submitting bid...");
+
+	let finishedSending = false;
+
+	setTimeout(() => {
+		if (finishedSending) {
+			return;
+		}
+
+		onStep("Validating bid...");
+	}, 1500);
+
+	try {
+		await sendBid(baseApiUri, {
+			account,
+			auctionId: bidData.auctionId.toString(),
+			tokenId,
+			contractAddress: contract,
+			bidAmount: amount,
+			minimumBid,
+			startBlock,
+			expireBlock,
+			signedMessage: signedBid,
+		});
+	} catch (e) {
+		console.error(e);
+		throw Error(`Failed to submit bid.`);
+	}
+
+	finishedSending = true;
 
 	// clear out cache for that NFT and the user's bids
 	{

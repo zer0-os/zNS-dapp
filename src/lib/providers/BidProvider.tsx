@@ -27,7 +27,8 @@ export const BidContext = React.createContext({
 	placeBid: async (
 		domain: Domain,
 		bid: number,
-	): Promise<boolean | undefined> => {
+		onStep: (step: string) => void,
+	): Promise<void> => {
 		return;
 	},
 	acceptBid: async (
@@ -208,25 +209,24 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		}
 	};
 
-	const placeBid = async (domain: Domain, bid: number) => {
+	const placeBid = async (
+		domain: Domain,
+		bid: number,
+		onStep: (status: string) => void,
+	) => {
 		if (baseApiUri === undefined) {
 			throw Error(`no api endpoint`);
 		}
-		// Replace with bid functionality
-		try {
-			await zAuction.placeBid(
-				baseApiUri,
-				context.library!,
-				contracts!.registry.address,
-				domain.id,
-				ethers.utils.parseEther(bid.toString()).toString(),
-			);
-			addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
-			return true;
-		} catch (e) {
-			console.error(e);
-			return;
-		}
+
+		await zAuction.placeBid(
+			baseApiUri,
+			context.library!,
+			contracts!.registry.address,
+			domain.id,
+			ethers.utils.parseEther(bid.toString()).toString(),
+			onStep,
+		);
+		addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
 	};
 
 	const contextValue = {
