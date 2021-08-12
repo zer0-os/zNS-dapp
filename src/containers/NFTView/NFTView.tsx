@@ -39,9 +39,16 @@ const moment = require('moment');
 
 type NFTViewProps = {
 	domain: string;
+	onTransfer: () => void;
 };
 
-const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
+const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
+	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
+
+	//- Notes:
+	// It's worth having this component consume the domain context
+	// because it needs way more data than is worth sending through props
+
 	const isMounted = useRef(false);
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
@@ -73,7 +80,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 
 	//- Functions
 	const copyContractToClipboard = () => {
-		addNotification('Copied token id to clipboard.');
+		addNotification('Copied Token ID to clipboard.');
 		navigator.clipboard.writeText(domainId);
 	};
 
@@ -113,7 +120,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 					return setBids([]);
 				}
 				try {
-					const sorted = bids.sort((a, b) => b.amount - a.amount);
+					const sorted = bids.sort(
+						(a, b) => b.date.getTime() - a.date.getTime(),
+					);
 					if (!isMounted.current) return;
 					setBids(sorted);
 					setHighestBid(sorted[0]);
@@ -152,10 +161,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain.domain]);
-
-	/////////////////////
-	// React Fragments //
-	/////////////////////
 
 	const overlays = () => (
 		<>
@@ -243,7 +248,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 						account.length - 4,
 					)}`}</a>
 				</b>{' '}
-				bid <b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
+				made an offer of{' '}
+				<b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
+			</div>
+			<div>
+				<b>{moment(date).fromNow()}</b>
 			</div>
 		</li>
 	);
@@ -252,7 +261,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain }) => {
 		<div className={styles.Buttons}>
 			<FutureButton
 				glow={isOwnedByYou}
-				onClick={() => {}}
+				onClick={() => isOwnedByYou && onTransfer()}
 				style={{ height: 36, borderRadius: 18 }}
 			>
 				Transfer Ownership

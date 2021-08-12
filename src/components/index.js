@@ -35,6 +35,7 @@ export { default as PreviewCard } from './Cards/PreviewCard/PreviewCard';
 export { default as OptionDropdown } from './Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Inputs
+export { default as EtherInput } from './Inputs/EtherInput/EtherInput';
 export { default as TextInput } from './Inputs/TextInput/TextInput';
 
 //- NavBars
@@ -57,6 +58,7 @@ export { default as HorizontalScroll } from './HorizontalScroll/HorizontalScroll
 export { default as Image } from './Image/Image';
 export { default as Member } from './Member/Member';
 export { default as MintPreview } from './MintPreview/MintPreview';
+export { default as TransferPreview } from './TransferPreview/TransferPreview';
 export { default as Notification } from './Notification/Notification';
 export { default as NotificationDrawer } from './NotificationDrawer/NotificationDrawer';
 export { default as Overlay } from './Overlay/Overlay';

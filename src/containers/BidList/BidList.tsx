@@ -10,6 +10,8 @@ import { FutureButton } from 'components';
 // Type Imports
 import { Bid } from 'lib/types';
 
+const moment = require('moment');
+
 type BidListProps = {
 	bids: Bid[];
 	onAccept?: (bid: Bid) => void;
@@ -21,7 +23,9 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 	// Data & State //
 	//////////////////
 
-	const sorted = bids.sort((a: Bid, b: Bid) => b.amount - a.amount);
+	const sorted = bids
+		.slice()
+		.sort((a: Bid, b: Bid) => b.date.getTime() - a.date.getTime());
 
 	///////////////
 	// Functions //
@@ -44,8 +48,8 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 			<ul>
 				{sorted.map((bid: Bid, i: number) => (
 					<li key={bid.auctionId} className={styles.Bid}>
-						<label>{i + 1}</label>
 						<div>
+							<label>{moment(bid.date).fromNow()}</label>
 							<span>
 								{bid.amount.toLocaleString()} WILD{' '}
 								{wildPriceUsd && (

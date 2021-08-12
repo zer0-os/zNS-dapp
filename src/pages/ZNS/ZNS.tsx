@@ -25,6 +25,7 @@ import {
 	DisplayDomain,
 	DisplayParentDomain,
 	NftParams,
+	Domain,
 } from 'lib/types';
 
 //- Style Imports
@@ -54,9 +55,12 @@ import {
 	NotificationDrawer,
 	NumberButton,
 	MintPreview,
+	TransferPreview,
 } from 'components';
 
-import { MintNewNFT, NFTView, MakeABid } from 'containers';
+//- Library Imports
+import { useTransferProvider } from 'lib/providers/TransferProvider';
+import { MintNewNFT, NFTView, MakeABid, TransferOwnership } from 'containers';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 
@@ -107,8 +111,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const history = useHistory();
 	const backCount = useRef(0);
 	const pageHistory = useRef<string[]>([]);
+	const [forwardDomain, setForwardDomain] = useState<string | undefined>();
+	const lastDomain = useRef<string>();
 	const canGoBack = pageHistory.current.length > 1;
-	const canGoForward = backCount.current > 0;
+	const canGoForward = !!forwardDomain;
 
 	// Force to go back to home if invalid domain
 	React.useEffect(() => {
@@ -124,6 +130,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Minting State
 	const { minting, minted } = useMintProvider();
 	const { enlisting, enlist, clear } = useEnlist();
+	const { transferring, transferred } = useTransferProvider();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -141,6 +148,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
 	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
 	const [isSearchActive, setIsSearchActive] = useState(false);
+	const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
 
 	//- MVP Version
@@ -168,8 +176,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	// Go forward through page history
 	const forward = () => {
-		backCount.current--;
-		history.goForward();
+		if (forwardDomain) history.push(forwardDomain);
+		setForwardDomain(undefined);
 	};
 
 	const openBidOverlay = () => {
@@ -178,11 +186,25 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	};
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
+	const navigate = (to: string) => {
+		history.push(to);
+		// @todo rewrite
+		if (isProfileOverlayOpen) setIsProfileOverlayOpen(false);
+	};
+
 	/////////////
 	// Effects //
 	/////////////
 
 	useEffect(() => {
+		if (lastDomain.current) {
+			if (lastDomain.current.length > domain.length) {
+				setForwardDomain(lastDomain.current);
+			} else {
+				setForwardDomain(undefined);
+			}
+		}
+		lastDomain.current = domain;
 		pageHistory.current = pageHistory.current.concat([domain]);
 	}, [domain]);
 
@@ -202,7 +224,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	useEffect(() => {
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
 	//- Effects
@@ -332,6 +353,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 								isGridView={isGridView}
 								setIsGridView={setIsGridView}
 								userId={account as string}
+								onRowClick={(domain: Domain) =>
+									navigate(domain.name.split('wilder.')[1])
+								}
 							/>
 						</animated.div>
 					)}
@@ -378,8 +402,27 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					open
 					onClose={() => setIsProfileOverlayOpen(false)}
 				>
-					<Profile yours id={account ? account : ''} />
+					<Profile yours id={account ? account : ''} onNavigate={navigate} />
 				</Overlay>
+			)}
+			{isTransferModalOpen && (
+				<TransferOwnership
+					image={previewMetadata?.image || ''}
+					name={previewMetadata?.title || ''}
+					domainName={domain}
+					domainId={znsDomain.domain ? znsDomain.domain.id : ''}
+					onModalChange={(value) => setIsTransferModalOpen(value)}
+					creatorId={
+						znsDomain.domain && znsDomain.domain.minter.id
+							? znsDomain.domain.minter.id
+							: ''
+					}
+					ownerId={
+						znsDomain.domain && znsDomain.domain.owner.id
+							? znsDomain.domain.owner.id
+							: ''
+					}
+				/>
 			)}
 
 			{/* ZNS Content */}
@@ -441,6 +484,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={minting.length > 0}
 												number={minting.length}
+												onClick={() => {}}
+											/>
+										</Tooltip>
+									)}
+
+									{/* Transfer Progress button */}
+									{transferring.length > 0 && (
+										<Tooltip content={<TransferPreview />}>
+											<NumberButton
+												rotating={transferring.length > 0}
+												number={transferring.length}
 												onClick={() => {}}
 											/>
 										</Tooltip>
@@ -534,7 +588,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 						{(styles) => (
 							<animated.div style={styles}>
-								<NFTView domain={domain} />
+								<NFTView
+									domain={domain}
+									onTransfer={() => setIsTransferModalOpen(true)}
+								/>
 							</animated.div>
 						)}
 					</Spring>

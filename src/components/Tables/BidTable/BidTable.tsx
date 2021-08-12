@@ -14,7 +14,7 @@ import {
 import { MakeABid } from 'containers';
 
 //- Library Imports
-import { Bid, Domain } from 'lib/types';
+import { Bid, Domain, Maybe, ParentDomain } from 'lib/types';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
 
@@ -26,6 +26,7 @@ type BidTableProps = {
 	userId: string;
 	usersBids?: boolean;
 	usersDomains?: boolean;
+	onNavigate?: (to: string) => void;
 };
 
 type BidTableData = {
@@ -43,7 +44,7 @@ enum Modals {
 	Accept,
 }
 
-const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
+const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 	//////////////////
 	// State / Refs //
 	//////////////////
@@ -77,11 +78,12 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 
 				// Get bids from API
 				const bids = await getBidsForAccount(userId);
+
 				if (!bids) return;
 				const sortedBids = bids.sort((a: Bid, b: Bid) => b.amount - a.amount);
 
 				// Get domain data from returned NFT IDs
-				const getDomainPromises: Promise<any>[] = [];
+				const getDomainPromises: Promise<Maybe<ParentDomain>>[] = [];
 				bids.forEach((bid: Bid) =>
 					getDomainPromises.push(fetchDomainData(bid)),
 				);
@@ -89,7 +91,11 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 				const uniqueDomains = [...Array.from(new Set(domainsWithBids))];
 
 				const yourBidData: BidTableData[] = [];
-				uniqueDomains.forEach((domain: Domain) => {
+				uniqueDomains.forEach((domain: Maybe<Domain>) => {
+					if (!domain) {
+						return;
+					}
+
 					if (domain.owner.id.toLowerCase() === userId.toLowerCase()) {
 						return;
 					}
@@ -111,6 +117,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 
 				setDisplayData(allBidData);
 			} catch (e) {
+				console.error(e);
 				console.error('Failed to retrieve bid data');
 			}
 			setIsLoading(false);
@@ -125,6 +132,18 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 	/* Sets some search parameters
 		 There's a hook listening to each of these variables */
 	const search = (query: string) => setSearchQuery(query);
+
+	const rowClick = (
+		event: React.MouseEvent<HTMLTableRowElement, MouseEvent>,
+		to: string,
+	) => {
+		const wasButtonPress = (event.target as HTMLElement).className
+			.toLowerCase()
+			.includes('future');
+		if (wasButtonPress) return false;
+		// @todo fix this when we switch away from wilder. root
+		if (onNavigate) onNavigate(to);
+	};
 
 	const closeModal = () => setModal(undefined);
 
@@ -264,6 +283,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 					<SearchBar
 						onChange={(event: any) => search(event.target.value)}
 						style={{ width: '100%', marginRight: 16 }}
+						placeholder="Search by domain name"
 					/>
 				</div>
 			)}
@@ -291,7 +311,9 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId }) => {
 										prepareRow(row);
 										return (
 											<tr
-												onClick={() => console.log('Row click')}
+												onClick={(event) =>
+													rowClick(event, row.original.domain.name)
+												}
 												{...row.getRowProps()}
 											>
 												{row.cells.map((cell) => (

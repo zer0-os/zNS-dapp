@@ -1,20 +1,17 @@
 //- React Imports
-import React, { useRef, useEffect } from 'react';
-
-//- Library Imports
-import autoHeight from 'autosize';
+import React from 'react';
 
 //- Style Imports
-import styles from './TextInput.module.css';
+import styles from './EtherInput.module.css';
 
 //- Local Imports
 import { isAlphanumeric, isNumber } from './validation';
 
+import ethIcon from './assets/eth.svg';
+
 // TODO: Implement max characters (props.max)
-// TODO: Convert to TypeScript
 
 type TextInputProps = {
-	autosize?: boolean;
 	onChange: (text: string) => void;
 	error?: boolean;
 	errorText?: string;
@@ -26,10 +23,12 @@ type TextInputProps = {
 	resizable?: boolean;
 	alphanumeric?: boolean; // If we want only alphanumeric characters
 	numeric?: boolean;
+
+	ethlogo?: boolean;
+	title?: boolean;
 };
 
-const TextInput: React.FC<TextInputProps> = ({
-	autosize,
+const EtherInput: React.FC<TextInputProps> = ({
 	onChange,
 	error,
 	errorText,
@@ -41,17 +40,9 @@ const TextInput: React.FC<TextInputProps> = ({
 	resizable,
 	alphanumeric,
 	numeric,
+	ethlogo,
+	title,
 }) => {
-	//////////////////
-	// State & Data //
-	//////////////////
-
-	const textArea = useRef<HTMLTextAreaElement>(null);
-
-	///////////////
-	// Functions //
-	///////////////
-
 	const handleChange = (event: any) => {
 		const newValue = event.target.value;
 		if (validate(newValue) && onChange) return onChange(event.target.value);
@@ -63,28 +54,18 @@ const TextInput: React.FC<TextInputProps> = ({
 		return true;
 	};
 
-	/////////////
-	// Effects //
-	/////////////
-
-	useEffect(() => {
-		if (multiline && autosize && textArea.current) {
-			autoHeight(textArea.current);
-		}
-	}, []);
-
-	////////////
-	// Render //
-	////////////
-
 	return (
-		<>
+		<div
+			className={`${styles.Container} 
+						${ethlogo ? styles.ethlogo : ''}
+						${text ? styles.title : ''}
+						`}
+		>
 			{multiline && (
 				<textarea
 					className={`${styles.TextInput} border-blue ${
 						error ? styles.Error : ''
 					}`}
-					ref={textArea}
 					onChange={handleChange}
 					style={{
 						...style,
@@ -95,22 +76,27 @@ const TextInput: React.FC<TextInputProps> = ({
 				/>
 			)}
 			{!multiline && (
-				<input
-					type={type ? type : ''}
-					className={`${styles.TextInput} border-blue ${
-						error ? styles.Error : ''
-					}`}
-					onChange={handleChange}
-					style={style}
-					placeholder={placeholder}
-					value={text ? text : ''}
-				/>
+				<>
+					{ethlogo && <img alt="ethereum icon" src={ethIcon} />}
+					{text && <span>{placeholder}</span>}
+					<input
+						type={type ? type : ''}
+						className={`${styles.TextInput} border-blue ${
+							error ? styles.Error : ''
+						}`}
+						maxLength={42}
+						onChange={handleChange}
+						style={style}
+						placeholder={placeholder}
+						value={text ? text : ''}
+					/>
+				</>
 			)}
 			{error && errorText && (
 				<span className={styles.ErrorMessage}>{errorText}</span>
 			)}
-		</>
+		</div>
 	);
 };
 
-export default TextInput;
+export default EtherInput;

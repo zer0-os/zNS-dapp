@@ -1,8 +1,10 @@
 import { ethers } from 'ethers';
 import { createTimeCache } from './utils/timeCache';
 import { Mutex } from 'async-mutex';
+import { Maybe } from './types';
 
-export interface NftIdBidsDto {
+
+export interface BidDto {
 	account: string;
 	signedMessage: string;
 	auctionId: string;
@@ -10,17 +12,9 @@ export interface NftIdBidsDto {
 	minimumBid: string;
 	startBlock: string;
 	expireBlock: string;
-}
-
-export interface AccountBidsDto {
-	signedMessage: string;
-	auctionId: string;
-	bidAmount: string;
-	contractAddress: string;
+	date: number;
 	tokenId: string;
-	minimumBid: string;
-	startBlock: string;
-	expireBlock: string;
+	contractAddress: string;
 }
 
 interface BidPayloadPostInterface {
@@ -73,32 +67,39 @@ function getNftId(contract: string, tokenId: string) {
 
 const cacheExpiration = 60 * 1000; // 60 seconds
 
-const getBidsForNftCache = createTimeCache<NftIdBidsDto[]>(cacheExpiration);
+const getBidsForNftCache = createTimeCache<BidDto[]>(cacheExpiration);
 
 const cacheKeyForNftBids = (baseApiUri: string, nftId: string) => {
 	return `${baseApiUri}|${nftId}`;
 };
-//
-// Getting bids for a specified NFT
-// @todo this is messy - rewrite
-//
 
-type ApiCall = {
+interface ApiCallObserver<T> {
+	resolve: (result: T) => void;
+	reject: (reason?: string) => void;
+}
+
+interface ApiCall<T> {
 	nftId: string;
-	observers: any;
+	observers: ApiCallObserver<T>[];
+	lock: Mutex;
 };
 
-const pendingApiCalls: ApiCall[] = [];
-const pendingApiCallsLock = new Mutex();
+interface ApiCalls<T> {
+	[key: string]: ApiCall<T> | undefined;
+}
 
-const removeApiCallFromPending = (apiCall: ApiCall) =>
-	pendingApiCalls.splice(pendingApiCalls.indexOf(apiCall), 1);
+const getBidsForNftApiCalls: ApiCalls<BidDto[]> = {};
+const getBidsForNftApiCallsLock: Mutex = new Mutex();
+
+const removeGetBidsForNftApiCalls = (key: string) => {
+	getBidsForNftApiCalls[key] = undefined;
+}
 
 export async function getBidsForNft(
 	baseApiUri: string,
 	contract: string,
 	tokenId: string,
-): Promise<NftIdBidsDto[] | undefined> {
+): Promise<BidDto[]> {
 	const nftId = getNftId(contract, tokenId);
 	const cacheKey = cacheKeyForNftBids(baseApiUri, nftId);
 
@@ -107,53 +108,73 @@ export async function getBidsForNft(
 	}
 
 	// Check if there's a pending API call for this NFT's bid data
-	const release = await pendingApiCallsLock.acquire();
-	const pendingResponses = pendingApiCalls.filter((x) => x.nftId === nftId);
-	const hasPendingResponse = pendingResponses.length > 0;
+	let releaseApiCallsLock = await getBidsForNftApiCallsLock.acquire();
+	const pendingResponse = getBidsForNftApiCalls[cacheKey];
 
-	if (hasPendingResponse) {
+	if (pendingResponse) {
+		const releaseObserversLock = await pendingResponse.lock.acquire();
+		releaseApiCallsLock();
+
 		// Subscribe to the resolve of the outstanding API call
-		const pendingResponse = pendingResponses[0];
-		const bids = await new Promise(async (resolve, reject) => {
-			// let release = await pendingApiCallsLock.acquire();
-			pendingResponse.observers.push(resolve);
-			release();
+		const bids = await new Promise<BidDto[]>(async (resolve, reject) => {
+			pendingResponse.observers.push({ resolve, reject });
+			releaseObserversLock();
 		});
-		return bids as NftIdBidsDto[];
-	} else {
-		// Add API call to pending calls,
-		const apiCall = { nftId, observers: [] };
-		try {
-			// Add the API call to the pending array
-			pendingApiCalls.push(apiCall);
-			release();
 
-			// Make the API call
-			const endpoints = getApiEndpoints(baseApiUri);
-			const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
-				method: 'GET',
-			});
-			const data = await response.json();
-			const bids = data.bids !== undefined ? (data.bids as NftIdBidsDto[]) : [];
+		return bids;
+	}
 
-			// Call resolve of all observers, then remove from pending
-			apiCall.observers.forEach((observer: any) => observer(bids));
-			removeApiCallFromPending(apiCall);
+	// Add API call to pending calls,
+	const apiCall = { nftId, observers: [], lock: new Mutex() } as ApiCall<BidDto[]>;
+	getBidsForNftApiCalls[cacheKey] = apiCall;
+	releaseApiCallsLock();
 
-			return bids as NftIdBidsDto[];
-		} catch {
-			// Clean up the array if anything failed
-			let release = await pendingApiCallsLock.acquire();
-			apiCall.observers.forEach((observer: any) => observer(undefined));
-			removeApiCallFromPending(apiCall);
-			release();
+
+	let bids: BidDto[] | undefined;
+	let error: Maybe<string>;
+
+	try {
+		// Make the API call
+		const endpoints = getApiEndpoints(baseApiUri);
+		const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
+			method: 'GET',
+		});
+		const data = await response.json();
+		bids = data !== undefined ? (data as BidDto[]) : [];
+		getBidsForNftCache.put(cacheKey, bids);
+	} catch (e) {
+		error = `Failed to fetch bids for nft: ${e}`;
+	}
+
+	releaseApiCallsLock = await getBidsForNftApiCallsLock.acquire();
+	removeGetBidsForNftApiCalls(cacheKey);
+	releaseApiCallsLock();
+
+	const releaseApiCallInstanceLock = await apiCall.lock.acquire();
+	apiCall.observers.forEach(observer => {
+		if (error) {
+			observer.reject(error);
 			return;
 		}
+
+		if (bids === undefined) {
+			observer.reject("undefined bids");
+			return;
+		}
+
+		observer.resolve(bids);
+	});
+	releaseApiCallInstanceLock();
+
+	if (error) {
+		throw Error(error);
 	}
+
+	return bids as BidDto[];
 }
 
 const getBidsForAccountCache =
-	createTimeCache<AccountBidsDto[]>(cacheExpiration);
+	createTimeCache<BidDto[]>(cacheExpiration);
 
 const cacheKeyForAccountBids = (baseApiUri: string, account: string) => {
 	return `${baseApiUri}|${account}`;
@@ -168,7 +189,7 @@ export async function getBidsForAccount(baseApiUri: string, id: string) {
 
 	const endpoints = getApiEndpoints(baseApiUri);
 	const response = await fetch(`${endpoints.accountBidsEndpoint}${id}`);
-	const bids = (await response.json()) as AccountBidsDto[];
+	const bids = (await response.json()) as BidDto[];
 
 	getBidsForAccountCache.put(cacheKey, bids);
 
@@ -200,14 +221,13 @@ async function encodeBid(
 
 async function sendBid(
 	baseApiUri: string,
-	nftId: string,
 	bid: BidPostInterface,
 ) {
 	if (!ethers.utils.isAddress(bid.contractAddress)) {
 		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
 	let endpoints = getApiEndpoints(baseApiUri);
-	await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
+	await fetch(`${endpoints.bidsEndpoint}`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(bid),
@@ -241,7 +261,7 @@ export async function placeBid(
 		ethers.utils.arrayify(bidData.payload),
 	);
 
-	await sendBid(baseApiUri, bidData.nftId, {
+	await sendBid(baseApiUri, {
 		account,
 		auctionId: bidData.auctionId.toString(),
 		tokenId,
