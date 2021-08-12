@@ -29,7 +29,7 @@ export { default as AssetGraphCard } from './Cards/AssetCard/AssetGraphCard/Asse
 export { default as AssetMarketCapCard } from './Cards/AssetCard/AssetMarketCapCard/AssetMarketCapCard';
 export { default as AssetPriceCard } from './Cards/AssetCard/AssetPriceCard/AssetPriceCard';
 export { default as NFTCard } from './Cards/NFTCard/NFTCard';
-export { default as PreviewCard } from './Cards/PreviewCard/PreviewCard';
+export { default as PreviewCard } from './Cards/PreviewCard';
 
 //- Dropdowns
 export { default as OptionDropdown } from './Dropdowns/OptionDropdown/OptionDropdown';
