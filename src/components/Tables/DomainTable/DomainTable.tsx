@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import { Spring, animated } from 'react-spring';
 
@@ -18,15 +17,7 @@ import NumBids from './NumBids';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
-import { getRelativeDomainPath } from 'lib/utils/domains';
-import {
-	Bid,
-	DisplayDomain,
-	Domain,
-	DomainHighestBid,
-	Metadata,
-	DomainData,
-} from 'lib/types';
+import { Domain, DomainData } from 'lib/types';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { useBidProvider } from 'lib/providers/BidProvider';
 
@@ -400,11 +391,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					</div>
 
 					<Spring to={{ height: containerHeight }}>
-						{(styles) => (
-							<animated.div style={styles}>
-								<div></div>
-							</animated.div>
-						)}
+						{(styles) => <animated.div style={styles}></animated.div>}
 					</Spring>
 				</div>
 			</div>
