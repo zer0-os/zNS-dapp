@@ -97,7 +97,7 @@
 	margin-left: 24px;
 }
 
-.Inputs > *:not(:first-child) {
+.Inputs > input:not(:first-child) {
 	margin-top: 24px;
 }
 
