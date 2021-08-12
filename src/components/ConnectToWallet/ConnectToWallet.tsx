@@ -92,6 +92,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	};
 
 	const closeSession = (wallet: string) => {
+		deactivate();
 		//if has a wallet connected, instead of just deactivate, close connection too
 		switch (wallet) {
 			case 'coinbase': {
@@ -117,7 +118,6 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	};
 
 	const disconnect = () => {
-		deactivate();
 		const wallet = localStorage.getItem('chosenWallet');
 		if (wallet) closeSession(wallet);
 		onConnect();
