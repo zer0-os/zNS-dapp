@@ -81,10 +81,10 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 
 			await activate(c, async (e: Error) => {
 				addNotification(`Failed to connect to wallet.`);
-				localStorage.removeItem('chosenWallet')
+				localStorage.removeItem('chosenWallet');
 				console.error(`Encounter error while connecting to ${wallet}.`);
 				console.error(e);
-				window.location.reload()
+				window.location.reload();
 			});
 
 			setIsLoading(false);
@@ -107,11 +107,14 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				fortmatic.close();
 				break;
 			}
+			case 'walletconnect': {
+				localStorage.removeItem('walletconnect'); //session info of walletconnect
+				break;
+			}
 			default:
 				break;
 		}
-
-		localStorage.clear();
+		localStorage.removeItem('chosenWallet');
 	};
 
 	const disconnect = () => {

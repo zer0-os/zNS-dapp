@@ -12,7 +12,6 @@ export function useEagerConnect() {
 
 	useEffect(() => {
 		const wallet = localStorage.getItem('chosenWallet');
-
 		const reConnectToWallet = async (wallet: string) => {
 			if (wallet === 'metamask') {
 				await injected.isAuthorized().then((isAuthorized: boolean) => {
@@ -28,7 +27,9 @@ export function useEagerConnect() {
 				const c = connectorFromName(wallet) as AbstractConnector;
 				if (c) {
 					await activate(c, async (e: Error) => {
-						localStorage.clear(); //if fails remove wallet key
+						localStorage.removeItem('chosenWallet');
+						if (wallet === 'walletconnect')
+							localStorage.removeItem('walletconnect'); //session info of walletconnect
 						console.error(`Encounter error while connecting to ${wallet}.`);
 						console.error(e);
 					});
