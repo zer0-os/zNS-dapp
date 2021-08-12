@@ -191,13 +191,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version }) => {
 	// }, [minted]);
 
 	useEffect(() => {
-		//wallet connect wont do this automatically if session its ended
+		//wallet connect wont do this automatically if session its ended from phone
 		if (
 			localStorage.getItem('chosenWallet') === 'walletconnect' &&
 			!active &&
 			triedEagerConnect
-		)
+		){
 			localStorage.removeItem('walletconnect');
+			localStorage.removeItem('chosenWallet');
+		}
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
 		// eslint-disable-next-line react-hooks/exhaustive-deps
