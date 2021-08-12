@@ -221,18 +221,22 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		}
 		// Replace with bid functionality
 		try {
-			await zAuction.placeBid(
+			const txSuccess = await zAuction.placeBid(
 				baseApiUri,
 				context.library!,
 				contracts!.registry.address,
 				domain.id,
 				ethers.utils.parseEther(bid.toString()).toString(),
 			);
-			addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
-			return true;
+			if (txSuccess) {
+				addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
+			} else {
+				addNotification(`Bid failed - please try again`);
+			}
+			return txSuccess;
 		} catch (e) {
 			console.error(e);
-			return;
+			return false;
 		}
 	};
 

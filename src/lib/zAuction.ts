@@ -204,16 +204,22 @@ async function sendBid(
 	baseApiUri: string,
 	nftId: string,
 	bid: BidPostInterface,
-) {
+): Promise<boolean> {
 	if (!ethers.utils.isAddress(bid.contractAddress)) {
 		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
 	let endpoints = getApiEndpoints(baseApiUri);
-	await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(bid),
-	});
+	try {
+		const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(bid),
+		});
+		if (response.status === 200) return true;
+		else return false;
+	} catch {
+		return false;
+	}
 }
 
 export async function placeBid(
@@ -222,7 +228,7 @@ export async function placeBid(
 	contract: string,
 	tokenId: string,
 	amount: string,
-) {
+): Promise<boolean | undefined> {
 	const signer = provider.getSigner();
 	const minimumBid = '0';
 	const startBlock = '0';
@@ -243,7 +249,7 @@ export async function placeBid(
 		ethers.utils.arrayify(bidData.payload),
 	);
 
-	await sendBid(baseApiUri, bidData.nftId, {
+	const success = await sendBid(baseApiUri, bidData.nftId, {
 		account,
 		auctionId: bidData.auctionId.toString(),
 		tokenId,
@@ -263,4 +269,5 @@ export async function placeBid(
 		const accountCacheKey = cacheKeyForAccountBids(baseApiUri, account);
 		getBidsForAccountCache.clearKey(accountCacheKey);
 	}
+	return success;
 }

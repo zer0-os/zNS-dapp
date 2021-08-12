@@ -147,14 +147,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 		// Send bid to hook
 		setIsMetamaskWaiting(true);
-		try {
-			const bidSuccess = await placeBid(domain, bidAmount);
-			if (bidSuccess === true) {
-				navigateTo(domain.name + '?view');
-				onBid();
-			}
-		} catch (e) {
-			console.warn('Failed to place bid');
+		const bidSuccess = await placeBid(domain, bidAmount);
+		if (bidSuccess === true) {
+			navigateTo(domain.name + '?view');
+			onBid();
 		}
 		setIsMetamaskWaiting(false);
 	};
