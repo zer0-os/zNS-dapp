@@ -6,7 +6,6 @@ import styles from './PreviewCard.module.css';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
-import { useHistory } from 'react-router-dom';
 
 //- Component Imports
 import { FutureButton, Image, Member, Overlay } from 'components';
@@ -22,8 +21,10 @@ type PreviewCardProps = {
 	isLoading: boolean;
 	mvpVersion: number;
 	name: string;
-	onButtonClick: () => void;
+	onClickImage?: () => void;
 	onImageClick?: () => void;
+	onMakeBid?: () => void;
+	onViewDomain?: () => void;
 	ownerId: string;
 	style?: React.CSSProperties;
 };
@@ -38,8 +39,10 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	isLoading,
 	mvpVersion,
 	name,
-	onButtonClick,
+	onClickImage,
 	onImageClick,
+	onMakeBid,
+	onViewDomain,
 	ownerId,
 	style,
 }) => {
@@ -47,51 +50,26 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	// State & Data //
 	//////////////////
 
-	const history = useHistory();
-	const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-
 	///////////////
 	// Functions //
 	///////////////
 
-	const buttonClick = () => {
-		if (disabled || !onButtonClick) return;
-		onButtonClick();
+	const makeBid = () => {
+		if (disabled || !onMakeBid) return;
+		onMakeBid();
 	};
 
 	const openNftView = () => {
-		history.push({
-			pathname: domain,
-			search: '?view',
-		});
+		if (onViewDomain) onViewDomain();
 	};
 
-	const openImagePreview = () => {
-		setIsPreviewOpen(true);
-	};
-
-	const closeImagePreview = () => {
-		setIsPreviewOpen(false);
+	const clickImage = () => {
+		if (onClickImage) onClickImage();
 	};
 
 	///////////////
 	// Fragments //
 	///////////////
-
-	const modals = () => (
-		<Overlay centered img open={isPreviewOpen} onClose={closeImagePreview}>
-			<Image
-				src={image ?? ''}
-				style={{
-					width: 'auto',
-					maxHeight: '80vh',
-					maxWidth: '80vw',
-					objectFit: 'contain',
-					textAlign: 'center',
-				}}
-			/>
-		</Overlay>
-	);
 
 	const body = () => (
 		<div className={styles.Body}>
@@ -122,7 +100,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
-					<FutureButton glow={disabled !== true} onClick={buttonClick}>
+					<FutureButton glow={disabled !== true} onClick={makeBid}>
 						MAKE A BID
 					</FutureButton>
 					<FutureButton
@@ -139,7 +117,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 				<div>
 					<FutureButton
 						glow
-						onClick={buttonClick}
+						onClick={makeBid}
 						style={{ height: 36, width: 118, borderRadius: 30 }}
 					>
 						BUY
@@ -159,7 +137,6 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 
 	return (
 		<>
-			{modals()}
 			<div
 				className={`${styles.PreviewCard} border-primary border-rounded blur`}
 				style={style ? style : {}}
@@ -178,7 +155,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							className={`${styles.Asset} ${
 								mvpVersion === 3 ? styles.MVP3Asset : ''
 							}`}
-							onClick={openImagePreview}
+							onClick={clickImage}
 						>
 							<Image style={{ objectFit: 'contain' }} src={image} />
 						</div>

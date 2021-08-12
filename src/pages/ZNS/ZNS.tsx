@@ -64,6 +64,14 @@ type ZNSProps = {
 	isNftView?: boolean;
 };
 
+enum Modal {
+	Bid,
+	Mint,
+	Profile,
+	Transfer,
+	Wallet,
+}
+
 // @TODO: Rewrite this whole page
 
 const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
@@ -93,10 +101,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const znsDomain = useZnsDomain(domainId);
 	const loading = znsDomain.loading;
 
-	const [previewMetadata, setPreviewMetadata] = useState<Metadata | undefined>(
-		undefined,
-	);
-
 	////////////////////////
 	// Browser Navigation //
 	////////////////////////
@@ -123,14 +127,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Minting State
 	const { minting, minted } = useMintProvider();
-	const { enlisting, enlist, clear } = useEnlist();
 	const { transferring, transferred } = useTransferProvider();
 
 	//- Notification State
 	const { addNotification } = useNotification();
 
 	//- Page State
-	const [isLoading, setIsLoading] = useState(true);
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
@@ -139,12 +141,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [isGridView, setIsGridView] = useState(false);
 
 	//- Overlay State
-	const [isWalletOverlayOpen, setIsWalletOverlayOpen] = useState(false);
-	const [isMintOverlayOpen, setIsMintOverlayOpen] = useState(false);
-	const [isProfileOverlayOpen, setIsProfileOverlayOpen] = useState(false);
+	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
-	const [isTransferModalOpen, setIsTransferModalOpen] = useState(false);
-	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
+	const [isTransferModalOpen, setIsTransferModalOpen] = useState(false); // @todo refactor out?
 
 	//- MVP Version
 	// TODO: Move the MVP version handler out to a hook
@@ -175,22 +174,30 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		setForwardDomain(undefined);
 	};
 
+	/////////////////////
+	// Overlay Toggles //
+	/////////////////////
+
+	const closeModal = () => setModal(undefined);
+	const openMint = () => setModal(Modal.Mint);
+	const openProfile = () => setModal(Modal.Profile);
+	const openWallet = () => setModal(Modal.Wallet);
 	const openBidOverlay = () => {
 		if (!znsDomain.domain) return;
-		setIsBidOverlayOpen(true);
+		setModal(Modal.Bid);
 	};
-	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
 	const navigate = (to: string) => {
 		history.push(to);
 		// @todo rewrite
-		if (isProfileOverlayOpen) setIsProfileOverlayOpen(false);
+		if (modal) closeModal();
 	};
 
 	/////////////
 	// Effects //
 	/////////////
 
+	/* Handles the back/forward history */
 	useEffect(() => {
 		if (lastDomain.current) {
 			if (lastDomain.current.length > domain.length) {
@@ -203,10 +210,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		pageHistory.current = pageHistory.current.concat([domain]);
 	}, [domain]);
 
+	/* WIP */
 	useEffect(() => {
 		setShowDomainTable(!isNftView);
 	}, [isNftView]);
 
+	/* Also WIP */
+	useEffect(() => {
+		setIsNftView(nftView === true);
+	}, [nftView]);
+
+	/* Find the freshly minted NFT */
 	useEffect(() => {
 		try {
 			const d = minted[minted.length - 1] as NftParams;
@@ -218,16 +232,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		}
 	}, [minted]);
 
+	/* Handle notification for wallet changes */
 	useEffect(() => {
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
 	}, [active]);
 
-	useEffect(() => {
-		setIsNftView(nftView === true);
-	}, [nftView]);
-
-	//- Effects
 	useEffect(() => {
 		// TODO: Clean this whole hook up
 		if (!znsDomain.domain) setTableData([]);
@@ -235,33 +245,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			// Set the domain data for table view
 			setIsNftView(nftView === true || tableData?.length === 0);
 			setTableData(znsDomain.domain.subdomains);
-
-			const shouldGetMetadata =
-				znsDomain.domain &&
-				znsDomain.domain.subdomains.length > 0 &&
-				znsDomain.domain.metadata;
-
-			if (shouldGetMetadata) {
-				getMetadata(znsDomain.domain.metadata).then((d) => {
-					if (!d) return;
-					setPreviewMetadata(d);
-					setIsLoading(false);
-				});
-			}
-
 			setHasLoaded(true);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain.domain, hasLoaded]);
 
-	useEffect(() => {
-		setTableData([]);
-		setIsLoading(true);
-	}, [domain]);
-
-	////////////
-	// RENDER //
-	////////////
+	/////////////////////
+	// React Fragments //
+	/////////////////////
 
 	const previewCard = () => (
 		<>
@@ -270,7 +260,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			<Spring
 				from={{ opacity: 0, marginTop: -springAmount }}
 				to={
-					!isRoot && (isLoading || tableData.length >= 0) && !isNftView
+					!isRoot && (znsDomain.loading || tableData.length >= 0) && !isNftView
 						? { opacity: 1, marginTop: 0 }
 						: { opacity: 0, marginTop: -springAmount }
 				}
@@ -278,17 +268,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				{(styles) => (
 					<animated.div style={styles}>
 						<PreviewCard
-							image={previewMetadata?.image || ''}
-							name={previewMetadata?.title || ''}
 							domain={domain}
-							description={previewMetadata?.description || ''}
+							metadataUrl={znsDomain?.domain?.metadata}
 							creatorId={znsDomain?.domain?.minter?.id || ''}
 							disabled={
 								znsDomain.domain?.owner?.id.toLowerCase() ===
 								account?.toLowerCase()
 							}
 							ownerId={znsDomain?.domain?.owner?.id || ''}
-							isLoading={isLoading}
 							mvpVersion={mvpVersion}
 							onButtonClick={openBidOverlay}
 							onImageClick={() => {}}
@@ -355,31 +342,27 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		</>
 	);
 
-	return (
+	const modals = () => (
 		<>
 			{/* Overlays */}
 			<NotificationDrawer />
 			{znsDomain.domain && (
-				<Overlay onClose={closeBidOverlay} centered open={isBidOverlayOpen}>
-					<MakeABid domain={znsDomain.domain} onBid={closeBidOverlay} />
+				<Overlay onClose={closeModal} centered open={modal === Modal.Bid}>
+					<MakeABid domain={znsDomain.domain} onBid={closeModal} />
 				</Overlay>
 			)}
 			<Overlay style={{ zIndex: 0 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
-			{isWalletOverlayOpen && (
-				<Overlay
-					centered
-					open={isWalletOverlayOpen}
-					onClose={() => setIsWalletOverlayOpen(false)}
-				>
-					<ConnectToWallet onConnect={() => setIsWalletOverlayOpen(false)} />
+			{modal === Modal.Wallet && (
+				<Overlay centered open={modal === Modal.Wallet} onClose={closeModal}>
+					<ConnectToWallet onConnect={closeModal} />
 				</Overlay>
 			)}
-			{isMintOverlayOpen && (
-				<Overlay open onClose={() => setIsMintOverlayOpen(false)}>
+			{modal === Modal.Mint && (
+				<Overlay open onClose={closeModal}>
 					<MintNewNFT
-						onMint={() => setIsMintOverlayOpen(false)}
+						onMint={closeModal}
 						domainName={domain}
 						domainId={znsDomain.domain ? znsDomain.domain.id : ''}
 						domainOwner={znsDomain.domain ? znsDomain.domain.owner.id : ''}
@@ -391,22 +374,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					/>
 				</Overlay>
 			)}
-			{isProfileOverlayOpen && (
-				<Overlay
-					fullScreen
-					centered
-					open
-					onClose={() => setIsProfileOverlayOpen(false)}
-				>
+			{modal === Modal.Profile && (
+				<Overlay fullScreen centered open onClose={closeModal}>
 					<Profile yours id={account ? account : ''} onNavigate={navigate} />
 				</Overlay>
 			)}
-			{isTransferModalOpen && (
+			{modal === Modal.Transfer && (
 				<TransferOwnership
-					image={previewMetadata?.image || ''}
-					name={previewMetadata?.title || ''}
+					metadataUrl={znsDomain.domain?.metadata ?? ''}
 					domainName={domain}
-					domainId={znsDomain.domain ? znsDomain.domain.id : ''}
+					domainId={znsDomain.domain?.id ?? ''}
 					onModalChange={(value) => setIsTransferModalOpen(value)}
 					creatorId={
 						znsDomain.domain && znsDomain.domain.minter.id
@@ -420,7 +397,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					}
 				/>
 			)}
+		</>
+	);
 
+	////////////
+	// Render //
+	////////////
+
+	return (
+		<>
+			{modals()}
 			{/* ZNS Content */}
 			<div
 				className="page-spacing"
@@ -454,7 +440,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					>
 						<div>
 							{!active && (
-								<FutureButton glow onClick={() => setIsWalletOverlayOpen(true)}>
+								<FutureButton glow onClick={openWallet}>
 									Connect Wallet
 								</FutureButton>
 							)}
@@ -465,7 +451,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										glow={account != null}
 										onClick={() => {
 											account != null
-												? setIsMintOverlayOpen(true)
+												? openMint()
 												: addNotification('Please connect your wallet.');
 										}}
 										loading={loading}
@@ -498,7 +484,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 									{/* Profile Button */}
 									<IconButton
-										onClick={() => setIsProfileOverlayOpen(true)}
+										onClick={openProfile}
 										style={{ height: 32, width: 32, borderRadius: '50%' }}
 										iconUri={
 											mvpVersion === 3
@@ -508,10 +494,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 									/>
 
 									{/* TODO: Change the triple dot button to a component */}
-									<div
-										className={styles.Dots}
-										onClick={() => setIsWalletOverlayOpen(true)}
-									>
+									<div className={styles.Dots} onClick={openWallet}>
 										<div></div>
 										<div></div>
 										<div></div>
