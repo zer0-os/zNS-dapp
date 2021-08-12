@@ -11,6 +11,7 @@ import styles from '../MintNewNFT.module.css';
 import { TextInput, FutureButton } from 'components';
 
 type TokenInformationProps = {
+	existingSubdomains: string[];
 	token: TokenInformationType | null;
 	onContinue: (data: TokenInformationType) => void;
 	onResize: () => void;
@@ -18,7 +19,13 @@ type TokenInformationProps = {
 	setDomainHeader: (domain: string) => void;
 };
 
+type Error = {
+	id: string;
+	text: string;
+};
+
 const TokenInformation: React.FC<TokenInformationProps> = ({
+	existingSubdomains,
 	token,
 	onContinue,
 	onResize,
@@ -35,7 +42,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const [image, setImage] = useState(token ? token.image : Buffer.from(''));
 	const [domain, setDomain] = useState(token ? token.domain : '');
 	const [locked] = useState(token ? token.locked : true);
-	const [errors, setErrors] = useState<string[]>([]);
+	const [errors, setErrors] = useState<Error[]>([]);
 
 	///////////////
 	// Functions //
@@ -49,6 +56,15 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const updateDomain = (domain: string) => {
 		setDomain(domain);
 		setDomainHeader(domain);
+	};
+
+	const hasError = (id: string) => {
+		return true;
+	};
+
+	const errorText = (id: string) => {
+		const errs = errors.filter((err: Error) => err.id === id);
+		return errs[errs.length - 1]?.text || '';
 	};
 
 	//- Image Upload Handling
@@ -76,11 +92,14 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 
 	const pressContinue = () => {
 		// Do some validation
-		const errors: string[] = [];
-		if (!name.length) errors.push('name');
-		if (!story.length) errors.push('story');
-		if (!image.length) errors.push('image');
-		if (!domain.length) errors.push('domain');
+		const errors: Error[] = [];
+		if (!name.length) errors.push({ id: 'name', text: 'NFT name is required' });
+		if (!story.length) errors.push({ id: 'story', text: 'Story is required' });
+		if (!image.length) errors.push({ id: 'image', text: 'Media is required' });
+		if (!domain.length)
+			errors.push({ id: 'domain', text: 'Domain name is required' });
+		if (existingSubdomains.includes(domain))
+			errors.push({ id: 'domain', text: 'Domain name already exists' });
 		// Don't continue if there's errors
 		if (errors.length) return setErrors(errors);
 
@@ -115,9 +134,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 						onClick={openUploadDialog}
 						className={`${styles.NFT} border-rounded border-blue`}
 						style={{
-							borderColor: errors.includes('image')
-								? 'var(--color-invalid)'
-								: '',
+							borderColor: hasError('image') ? 'var(--color-invalid)' : '',
 						}}
 					>
 						{!previewImage && (
@@ -144,15 +161,15 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							placeholder={'Title'}
 							onChange={(name: string) => updateName(name)}
 							text={name}
-							error={errors.includes('name')}
-							errorText={'A title is required'}
+							error={hasError('name')}
+							errorText={errorText('name')}
 						/>
 						<TextInput
 							placeholder={'Subdomain Name'}
 							onChange={(domain: string) => updateDomain(domain)}
 							text={domain}
-							error={errors.includes('domain')}
-							errorText={'A domain is required'}
+							error={hasError('domain')}
+							errorText={errorText('domain')}
 							alphanumeric
 						/>
 						{/* <ToggleButton
@@ -170,8 +187,8 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 					style={{ marginTop: 40 }}
 					onChange={(story: string) => setStory(story)}
 					text={story}
-					error={errors.includes('story')}
-					errorText={'A story is required'}
+					error={hasError('story')}
+					errorText={errorText('story')}
 				/>
 			</form>
 			<FutureButton

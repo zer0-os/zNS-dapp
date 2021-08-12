@@ -393,6 +393,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						domainName={domain}
 						domainId={znsDomain.domain ? znsDomain.domain.id : ''}
 						domainOwner={znsDomain.domain ? znsDomain.domain.owner.id : ''}
+						subdomains={
+							(znsDomain.domain?.subdomains?.map(
+								(sub: any) => sub.name,
+							) as string[]) || []
+						}
 					/>
 				</Overlay>
 			)}
