@@ -14,7 +14,7 @@ import {
 import { MakeABid } from 'containers';
 
 //- Library Imports
-import { Bid, Domain } from 'lib/types';
+import { Bid, Domain, Maybe, ParentDomain } from 'lib/types';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
 
@@ -78,11 +78,12 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 
 				// Get bids from API
 				const bids = await getBidsForAccount(userId);
+
 				if (!bids) return;
 				const sortedBids = bids.sort((a: Bid, b: Bid) => b.amount - a.amount);
 
 				// Get domain data from returned NFT IDs
-				const getDomainPromises: Promise<any>[] = [];
+				const getDomainPromises: Promise<Maybe<ParentDomain>>[] = [];
 				bids.forEach((bid: Bid) =>
 					getDomainPromises.push(fetchDomainData(bid)),
 				);
@@ -90,7 +91,11 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 				const uniqueDomains = [...Array.from(new Set(domainsWithBids))];
 
 				const yourBidData: BidTableData[] = [];
-				uniqueDomains.forEach((domain: Domain) => {
+				uniqueDomains.forEach((domain: Maybe<Domain>) => {
+					if (!domain) {
+						return;
+					}
+
 					if (domain.owner.id.toLowerCase() === userId.toLowerCase()) {
 						return;
 					}
@@ -112,6 +117,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 
 				setDisplayData(allBidData);
 			} catch (e) {
+				console.error(e);
 				console.error('Failed to retrieve bid data');
 			}
 			setIsLoading(false);

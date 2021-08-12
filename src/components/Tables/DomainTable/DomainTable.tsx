@@ -28,6 +28,7 @@ import styles from './DomainTable.module.css';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { domain } from 'process';
+import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -81,7 +82,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	// Data state
 	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
-	const [allBidData, setAllBidData] = useState<DomainData[] | undefined>();
+
+	const [domainToRefresh, setDomainToRefresh] = useState<string>('');
 
 	///////////////
 	// Functions //
@@ -105,23 +107,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	};
 
 	const buttonClick = (domain: Domain) => {
-		// @todo refactor this into a more generic component
-		if (onRowButtonClick) {
-			// @todo the above assumes the bids come in ascending order
-			try {
-				// const bid = allBidData?.filter(
-				// 	(data: DomainData) => data.domain.id === domain.id,
-				// )[0].bids[0];
-				// if (bid === undefined) return;
-				// onRowButtonClick({
-				// 	domain: domain,
-				// 	bid: bid,
-				// });
-			} catch {
-				console.warn('No bids found for domain ', domain.name);
-			}
-			return;
-		}
 		// Default behaviour
 		try {
 			if (domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
@@ -138,18 +123,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		if (window.innerWidth < 1282) setList();
 	};
 
-	const getAllBids = () => {
-		// Get bids for all the domains, and add to the state object
-		const allBids: DomainData[] = [];
-		var checked = 0;
-		domains.forEach(async (domain: Domain) => {
-			const bids = await getBidsForDomain(domain);
-			if (bids && bids.length) allBids.push({ domain, bids });
-			if (++checked === domains.length) {
-				if (!isMounted.current) return;
-				setAllBidData(allBids);
-			}
-		});
+	const onBid = async () => {
+		closeModal();
+
+		if (biddingOn && isMounted.current) {
+			setDomainToRefresh(biddingOn.id);
+		}
 	};
 
 	/////////////
@@ -184,7 +163,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		if (!isMounted.current) return;
 		setIsLoading(false);
-		if (domains.length > 0) getAllBids();
 	}, [domains]);
 
 	/////////////////
@@ -219,7 +197,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				id: 'highestBid',
 				accessor: (domain: Domain) => (
 					<div style={{ textAlign: 'right' }}>
-						<HighestBid domain={domain} />
+						<HighestBid domain={domain} refreshKey={domainToRefresh} />
 					</div>
 				),
 			},
@@ -228,7 +206,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				id: 'numBids',
 				accessor: (domain: Domain) => (
 					<div style={{ textAlign: 'right' }}>
-						<NumBids domain={domain} />
+						<NumBids domain={domain} refreshKey={domainToRefresh} />
 					</div>
 				),
 			},
@@ -287,7 +265,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	const overlays = () => (
 		<Overlay onClose={closeModal} centered open={modal === Modals.Bid}>
-			<MakeABid domain={biddingOn!} onBid={closeModal} />
+			<MakeABid domain={biddingOn!} onBid={onBid} />
 		</Overlay>
 	);
 

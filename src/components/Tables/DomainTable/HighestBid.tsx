@@ -8,20 +8,32 @@ import { Domain } from 'lib/types';
 
 type HighestBidProps = {
 	domain: Domain;
+	refreshKey: string;
 };
 
-const HighestBid: React.FC<HighestBidProps> = ({ domain }) => {
+const HighestBid: React.FC<HighestBidProps> = ({ domain, refreshKey }) => {
 	let isMounted = useRef(false);
 	const { getBidsForDomain } = useBidProvider();
 	const [highestBid, setHighestBid] = useState<number | undefined>();
 	const [didApiCallFail, setDidApiCallFail] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const getBids = async () => {
 		const bids = await getBidsForDomain(domain);
 		if (!isMounted.current) return;
-		if (!bids) setDidApiCallFail(true);
-		else if (bids.length === 0) setHighestBid(0);
-		else setHighestBid(bids[0].amount);
+
+		setIsLoading(false);
+
+		if (!bids) {
+			setDidApiCallFail(true);
+			return;
+		}
+
+		if (bids.length === 0) {
+			setHighestBid(0);
+		} else {
+			setHighestBid(bids[0].amount);
+		}
 	};
 
 	useEffect(() => {
@@ -32,16 +44,26 @@ const HighestBid: React.FC<HighestBidProps> = ({ domain }) => {
 		};
 	}, []);
 
-	return (
-		<>
-			{didApiCallFail && <>Failed to retrieve</>}
-			{highestBid === 0 && <>-</>}
-			{highestBid !== undefined && highestBid > 0 && <>{highestBid} WILD</>}
-			{highestBid === undefined && !didApiCallFail && (
-				<Spinner style={{ marginLeft: 'auto' }} />
-			)}
-		</>
-	);
+	useEffect(() => {
+		if (refreshKey === domain.id) {
+			setIsLoading(true);
+			getBids();
+		}
+	}, [refreshKey]);
+
+	let displayElement: React.ReactFragment = <></>;
+
+	if (isLoading) {
+		displayElement = <Spinner style={{ marginLeft: 'auto' }} />;
+	} else if (didApiCallFail) {
+		displayElement = <>Failed to retrieve</>;
+	} else if (highestBid === 0) {
+		displayElement = <>-</>;
+	} else if (highestBid && highestBid > 0) {
+		displayElement = <>{highestBid} WILD</>;
+	}
+
+	return <>{displayElement}</>;
 };
 
 export default HighestBid;

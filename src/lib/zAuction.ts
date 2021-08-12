@@ -1,8 +1,9 @@
 import { ethers } from 'ethers';
 import { createTimeCache } from './utils/timeCache';
 import { Mutex } from 'async-mutex';
+import { Maybe } from './types';
 
-export interface NftIdBidsDto {
+export interface BidDto {
 	account: string;
 	signedMessage: string;
 	auctionId: string;
@@ -10,19 +11,9 @@ export interface NftIdBidsDto {
 	minimumBid: string;
 	startBlock: string;
 	expireBlock: string;
-	date: string;
-}
-
-export interface AccountBidsDto {
-	signedMessage: string;
-	auctionId: string;
-	bidAmount: string;
-	contractAddress: string;
+	date: number;
 	tokenId: string;
-	minimumBid: string;
-	startBlock: string;
-	expireBlock: string;
-	date: string;
+	contractAddress: string;
 }
 
 interface BidPayloadPostInterface {
@@ -53,10 +44,10 @@ interface BidPostInterface {
 }
 
 function getApiEndpoints(baseApiUri: string) {
-	const encodeBidEndpoint = `${baseApiUri}/bid/`;
-	const bidsEndpoint = `${baseApiUri}/bids/`;
-	const bidListEndpoint = `${baseApiUri}/lists?`;
-	const accountBidsEndpoint = `${bidsEndpoint}accounts/`;
+	const encodeBidEndpoint = `${baseApiUri}/bid`;
+	const bidsEndpoint = `${baseApiUri}/bids`;
+	const bidListEndpoint = `${bidsEndpoint}/list`;
+	const accountBidsEndpoint = `${bidsEndpoint}/accounts/`;
 
 	return {
 		encodeBidEndpoint,
@@ -75,32 +66,39 @@ function getNftId(contract: string, tokenId: string) {
 
 const cacheExpiration = 60 * 1000; // 60 seconds
 
-const getBidsForNftCache = createTimeCache<NftIdBidsDto[]>(cacheExpiration);
+const getBidsForNftCache = createTimeCache<BidDto[]>(cacheExpiration);
 
 const cacheKeyForNftBids = (baseApiUri: string, nftId: string) => {
 	return `${baseApiUri}|${nftId}`;
 };
-//
-// Getting bids for a specified NFT
-// @todo this is messy - rewrite
-//
 
-type ApiCall = {
+interface ApiCallObserver<T> {
+	resolve: (result: T) => void;
+	reject: (reason?: string) => void;
+}
+
+interface ApiCall<T> {
 	nftId: string;
-	observers: any;
+	observers: ApiCallObserver<T>[];
+	lock: Mutex;
+}
+
+interface ApiCalls<T> {
+	[key: string]: ApiCall<T> | undefined;
+}
+
+const getBidsForNftApiCalls: ApiCalls<BidDto[]> = {};
+const getBidsForNftApiCallsLock: Mutex = new Mutex();
+
+const removeGetBidsForNftApiCalls = (key: string) => {
+	getBidsForNftApiCalls[key] = undefined;
 };
-
-const pendingApiCalls: ApiCall[] = [];
-const pendingApiCallsLock = new Mutex();
-
-const removeApiCallFromPending = (apiCall: ApiCall) =>
-	pendingApiCalls.splice(pendingApiCalls.indexOf(apiCall), 1);
 
 export async function getBidsForNft(
 	baseApiUri: string,
 	contract: string,
 	tokenId: string,
-): Promise<NftIdBidsDto[] | undefined> {
+): Promise<BidDto[]> {
 	const nftId = getNftId(contract, tokenId);
 	const cacheKey = cacheKeyForNftBids(baseApiUri, nftId);
 
@@ -109,53 +107,73 @@ export async function getBidsForNft(
 	}
 
 	// Check if there's a pending API call for this NFT's bid data
-	const release = await pendingApiCallsLock.acquire();
-	const pendingResponses = pendingApiCalls.filter((x) => x.nftId === nftId);
-	const hasPendingResponse = pendingResponses.length > 0;
+	let releaseApiCallsLock = await getBidsForNftApiCallsLock.acquire();
+	const pendingResponse = getBidsForNftApiCalls[cacheKey];
 
-	if (hasPendingResponse) {
+	if (pendingResponse) {
+		const releaseObserversLock = await pendingResponse.lock.acquire();
+		releaseApiCallsLock();
+
 		// Subscribe to the resolve of the outstanding API call
-		const pendingResponse = pendingResponses[0];
-		const bids = await new Promise(async (resolve, reject) => {
-			// let release = await pendingApiCallsLock.acquire();
-			pendingResponse.observers.push(resolve);
-			release();
+		const bids = await new Promise<BidDto[]>(async (resolve, reject) => {
+			pendingResponse.observers.push({ resolve, reject });
+			releaseObserversLock();
 		});
-		return bids as NftIdBidsDto[];
-	} else {
-		// Add API call to pending calls,
-		const apiCall = { nftId, observers: [] };
-		try {
-			// Add the API call to the pending array
-			pendingApiCalls.push(apiCall);
-			release();
 
-			// Make the API call
-			const endpoints = getApiEndpoints(baseApiUri);
-			const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
-				method: 'GET',
-			});
-			const data = await response.json();
-			const bids = data.bids !== undefined ? (data.bids as NftIdBidsDto[]) : [];
+		return bids;
+	}
 
-			// Call resolve of all observers, then remove from pending
-			apiCall.observers.forEach((observer: any) => observer(bids));
-			removeApiCallFromPending(apiCall);
+	// Add API call to pending calls,
+	const apiCall = { nftId, observers: [], lock: new Mutex() } as ApiCall<
+		BidDto[]
+	>;
+	getBidsForNftApiCalls[cacheKey] = apiCall;
+	releaseApiCallsLock();
 
-			return bids as NftIdBidsDto[];
-		} catch {
-			// Clean up the array if anything failed
-			let release = await pendingApiCallsLock.acquire();
-			apiCall.observers.forEach((observer: any) => observer(undefined));
-			removeApiCallFromPending(apiCall);
-			release();
+	let bids: BidDto[] | undefined;
+	let error: Maybe<string>;
+
+	try {
+		// Make the API call
+		const endpoints = getApiEndpoints(baseApiUri);
+		const response = await fetch(`${endpoints.bidsEndpoint}/${nftId}`, {
+			method: 'GET',
+		});
+		const data = await response.json();
+		bids = data !== undefined ? (data as BidDto[]) : [];
+		getBidsForNftCache.put(cacheKey, bids);
+	} catch (e) {
+		error = `Failed to fetch bids for nft: ${e}`;
+	}
+
+	releaseApiCallsLock = await getBidsForNftApiCallsLock.acquire();
+	removeGetBidsForNftApiCalls(cacheKey);
+	releaseApiCallsLock();
+
+	const releaseApiCallInstanceLock = await apiCall.lock.acquire();
+	apiCall.observers.forEach((observer) => {
+		if (error) {
+			observer.reject(error);
 			return;
 		}
+
+		if (bids === undefined) {
+			observer.reject('undefined bids');
+			return;
+		}
+
+		observer.resolve(bids);
+	});
+	releaseApiCallInstanceLock();
+
+	if (error) {
+		throw Error(error);
 	}
+
+	return bids as BidDto[];
 }
 
-const getBidsForAccountCache =
-	createTimeCache<AccountBidsDto[]>(cacheExpiration);
+const getBidsForAccountCache = createTimeCache<BidDto[]>(cacheExpiration);
 
 const cacheKeyForAccountBids = (baseApiUri: string, account: string) => {
 	return `${baseApiUri}|${account}`;
@@ -170,7 +188,7 @@ export async function getBidsForAccount(baseApiUri: string, id: string) {
 
 	const endpoints = getApiEndpoints(baseApiUri);
 	const response = await fetch(`${endpoints.accountBidsEndpoint}${id}`);
-	const bids = (await response.json()) as AccountBidsDto[];
+	const bids = (await response.json()) as BidDto[];
 
 	getBidsForAccountCache.put(cacheKey, bids);
 
@@ -200,26 +218,16 @@ async function encodeBid(
 	return data;
 }
 
-async function sendBid(
-	baseApiUri: string,
-	nftId: string,
-	bid: BidPostInterface,
-): Promise<boolean> {
+async function sendBid(baseApiUri: string, bid: BidPostInterface) {
 	if (!ethers.utils.isAddress(bid.contractAddress)) {
 		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
 	let endpoints = getApiEndpoints(baseApiUri);
-	try {
-		const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(bid),
-		});
-		if (response.status === 200) return true;
-		else return false;
-	} catch {
-		return false;
-	}
+	await fetch(`${endpoints.bidsEndpoint}`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(bid),
+	});
 }
 
 export async function placeBid(
@@ -228,38 +236,76 @@ export async function placeBid(
 	contract: string,
 	tokenId: string,
 	amount: string,
-): Promise<boolean | undefined> {
+	onStep: (status: string) => void,
+) {
 	const signer = provider.getSigner();
 	const minimumBid = '0';
 	const startBlock = '0';
 	const expireBlock = '999999999999';
 
-	const bidData = await encodeBid(baseApiUri, {
-		contractAddress: contract,
-		tokenId,
-		bidAmount: amount,
-		minimumBid,
-		startBlock,
-		expireBlock,
-	});
+	onStep('Generating bid...');
+
+	let bidData: Maybe<CreateBidDto>;
+
+	try {
+		bidData = await encodeBid(baseApiUri, {
+			contractAddress: contract,
+			tokenId,
+			bidAmount: amount,
+			minimumBid,
+			startBlock,
+			expireBlock,
+		});
+	} catch (e) {
+		console.error(e);
+		throw Error(`Failed to generate bid.`);
+	}
 
 	const account = await provider.getSigner().getAddress();
 
-	const signedBid = await signer.signMessage(
-		ethers.utils.arrayify(bidData.payload),
-	);
+	onStep('Waiting for bid to be signed by wallet...');
 
-	const success = await sendBid(baseApiUri, bidData.nftId, {
-		account,
-		auctionId: bidData.auctionId.toString(),
-		tokenId,
-		contractAddress: contract,
-		bidAmount: amount,
-		minimumBid,
-		startBlock,
-		expireBlock,
-		signedMessage: signedBid,
-	});
+	let signedBid: Maybe<string>;
+
+	try {
+		signedBid = await signer.signMessage(
+			ethers.utils.arrayify(bidData.payload),
+		);
+	} catch (e) {
+		console.error(e);
+		throw Error(`Bid was not signed by wallet.`);
+	}
+
+	onStep('Submitting bid...');
+
+	let finishedSending = false;
+
+	setTimeout(() => {
+		if (finishedSending) {
+			return;
+		}
+
+		onStep('Validating bid...');
+	}, 1500);
+
+	try {
+		await sendBid(baseApiUri, {
+			account,
+			auctionId: bidData.auctionId.toString(),
+			tokenId,
+			contractAddress: contract,
+			bidAmount: amount,
+			minimumBid,
+			startBlock,
+			expireBlock,
+			signedMessage: signedBid,
+		});
+	} catch (e) {
+		console.error(e);
+		throw Error(`Failed to submit bid.`);
+	}
+
+	finishedSending = true;
 
 	// clear out cache for that NFT and the user's bids
 	{
@@ -269,5 +315,4 @@ export async function placeBid(
 		const accountCacheKey = cacheKeyForAccountBids(baseApiUri, account);
 		getBidsForAccountCache.clearKey(accountCacheKey);
 	}
-	return success;
 }

@@ -6,7 +6,6 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 //- Library Imports
 import { Domain, Metadata, Bid } from 'lib/types';
-import { randomImage, randomName } from 'lib/Random';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
 import { toFiat } from 'lib/currency';
@@ -79,6 +78,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [isBidPending, setIsBidPending] = useState(false);
 	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
 	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
+	const [statusText, setStatusText] = useState<string>('Processing bid');
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -145,27 +145,19 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		const bidAmount = Number(bid);
 		if (!bidAmount) return;
 
+		const onStep = (status: string) => {
+			setStatusText(status);
+		};
+
 		// Send bid to hook
 		setIsMetamaskWaiting(true);
-		const bidSuccess = await placeBid(domain, bidAmount);
-		if (bidSuccess === true) {
-			navigateTo(domain.name + '?view');
+		setError('');
+		try {
+			await placeBid(domain, bidAmount, onStep);
 			onBid();
+		} catch (e) {
+			setError(e && (e.toString() ?? ''));
 		}
-		setIsMetamaskWaiting(false);
-	};
-
-	const getCurrentHighestBid = async () => {
-		// Get highest bid
-		const allBids = await getBidsForDomain(domain);
-		setHasBidDataLoaded(true);
-		if (!allBids || allBids.length === 0) return;
-		const max = allBids.reduce(function (prev, current) {
-			return prev.amount > current.amount ? prev : current;
-		});
-		setBids(allBids);
-		setCurrentHighestBid(max);
-		setCurrentHighestBidUsd(max.amount * wildPriceUsd);
 	};
 
 	const checkAllowance = async () => {
@@ -193,6 +185,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			return;
 		}
 
+		setIsMetamaskWaiting(false);
 		setStep(Steps.Bid); // Reset to start of flow if account changes
 		setHasApprovedTokenTransfer(undefined);
 
@@ -216,11 +209,49 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	}, [step]);
 
 	useEffect(() => {
-		getMetadata(domain.metadata).then((metadata: Metadata | undefined) => {
+		let isSubscribed = true;
+
+		const loadDomainData = async () => {
+			const metadata = await getMetadata(domain.metadata);
 			if (!metadata) return;
-			setDomainMetadata(metadata);
-			getCurrentHighestBid();
-		});
+
+			if (isSubscribed) {
+				setDomainMetadata(metadata);
+			}
+		};
+
+		loadDomainData();
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [domain, wildPriceUsd]);
+
+	useEffect(() => {
+		let isSubscribed = true;
+
+		const getCurrentHighestBid = async () => {
+			// Get highest bid
+			const allBids = await getBidsForDomain(domain);
+
+			if (!allBids || allBids.length === 0) return;
+			const highestBid = allBids.reduce(function (prev, current) {
+				return prev.amount > current.amount ? prev : current;
+			});
+
+			if (isSubscribed) {
+				setHasBidDataLoaded(true);
+				setBids(allBids);
+				setCurrentHighestBid(highestBid);
+				setCurrentHighestBidUsd(highestBid.amount * wildPriceUsd);
+			}
+		};
+
+		getCurrentHighestBid();
+
+		return () => {
+			isSubscribed = false;
+		};
 	}, [domain, wildPriceUsd]);
 
 	/////////////////////
@@ -488,6 +519,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				<>
 					<LoadingIndicator style={{ marginTop: 24 }} text="Processing bid" />
 				</>
+			)}
+			{error && (
+				<p
+					className={styles.Error}
+					style={{ textAlign: 'center', marginTop: 24 }}
+				>
+					{error}
+				</p>
 			)}
 		</div>
 	);

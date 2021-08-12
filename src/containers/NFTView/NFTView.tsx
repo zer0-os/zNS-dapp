@@ -110,27 +110,22 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	};
 
 	const getBids = async () => {
-		if (
-			znsDomain.domain &&
-			znsDomain.domain.metadata &&
-			!znsDomain.domain.image
-		) {
-			getBidsForDomain(znsDomain.domain).then(async (bids) => {
-				if (!bids || !bids.length) {
-					return setBids([]);
-				}
-				try {
-					const sorted = bids.sort(
-						(a, b) => b.date.getTime() - a.date.getTime(),
-					);
-					if (!isMounted.current) return;
-					setBids(sorted);
-					setHighestBid(sorted[0]);
-					setHighestBidUsd(sorted[0].amount * wildPriceUsd);
-				} catch (e) {
-					console.error('Failed to retrieve bid data');
-				}
-			});
+		if (znsDomain.domain) {
+			const bids = await getBidsForDomain(znsDomain.domain);
+
+			if (!bids || !bids.length) {
+				setBids([]);
+				return;
+			}
+			try {
+				const sorted = bids.sort((a, b) => b.date.getTime() - a.date.getTime());
+				if (!isMounted.current) return;
+				setBids(sorted);
+				setHighestBid(sorted[0]);
+				setHighestBidUsd(sorted[0].amount * wildPriceUsd);
+			} catch (e) {
+				console.error('Failed to retrieve bid data');
+			}
 		}
 	};
 
