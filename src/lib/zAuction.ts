@@ -45,9 +45,9 @@ interface BidPostInterface {
 }
 
 function getApiEndpoints(baseApiUri: string) {
-	const encodeBidEndpoint = `${baseApiUri}/bid/`;
-	const bidsEndpoint = `${baseApiUri}/bids/`;
-	const bidListEndpoint = `${baseApiUri}/lists?`;
+	const encodeBidEndpoint = `${baseApiUri}/bid`;
+	const bidsEndpoint = `${baseApiUri}/bids`;
+	const bidListEndpoint = `${bidsEndpoint}/list?`;
 	const accountBidsEndpoint = `${bidsEndpoint}accounts/`;
 
 	return {
@@ -136,7 +136,7 @@ export async function getBidsForNft(
 	try {
 		// Make the API call
 		const endpoints = getApiEndpoints(baseApiUri);
-		const response = await fetch(`${endpoints.bidsEndpoint}${nftId}`, {
+		const response = await fetch(`${endpoints.bidsEndpoint}/${nftId}`, {
 			method: 'GET',
 		});
 		const data = await response.json();
