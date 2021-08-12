@@ -203,7 +203,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				return;
 			}
 		} catch (e) {
-			console.error('Failed to retrive bids for domain ' + domain.id);
+			console.error(`Failed to retrieve bids for ${domain.id}: ${e}`);
 			return;
 		}
 	};
