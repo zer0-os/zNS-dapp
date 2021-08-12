@@ -76,6 +76,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [isBidPending, setIsBidPending] = useState(false);
 	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
 	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
+	const [statusText, setStatusText] = useState<string>('Processing bid');
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -139,17 +140,19 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		const bidAmount = Number(bid);
 		if (!bidAmount) return;
 
+		const onStep = (status: string) => {
+			setStatusText(status);
+		};
+
 		// Send bid to hook
 		setIsMetamaskWaiting(true);
+		setError('');
 		try {
-			const bidSuccess = await placeBid(domain, bidAmount);
-			if (bidSuccess === true) {
-				onBid();
-			}
+			await placeBid(domain, bidAmount, onStep);
+			onBid();
 		} catch (e) {
-			console.warn('Failed to place bid');
+			setError(e && (e.toString() ?? ''));
 		}
-		setIsMetamaskWaiting(false);
 	};
 
 	const checkAllowance = async () => {
@@ -177,6 +180,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			return;
 		}
 
+		setIsMetamaskWaiting(false);
 		setStep(Steps.Bid); // Reset to start of flow if account changes
 		setHasApprovedTokenTransfer(undefined);
 
@@ -502,8 +506,16 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					<div className={styles.Loading}>
 						<div className={styles.Spinner}></div>
 					</div>
-					<p className={styles.Wait}>Processing bid</p>
+					<p className={styles.Wait}>{statusText}</p>
 				</>
+			)}
+			{error && (
+				<p
+					className={styles.Error}
+					style={{ textAlign: 'center', marginTop: 24 }}
+				>
+					{error}
+				</p>
 			)}
 		</div>
 	);
