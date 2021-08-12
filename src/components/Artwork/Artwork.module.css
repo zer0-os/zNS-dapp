@@ -40,6 +40,7 @@
 	justify-content: center;
 	flex-direction: column;
 	font-weight: 700;
+	max-width: inherit;
 }
 
 .Info > *:first-child {
@@ -51,4 +52,13 @@
 .Title {
 	display: block;
 	cursor: pointer;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.Domain {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

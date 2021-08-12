@@ -219,6 +219,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						disableInteraction
 						metadataUrl={row.row.original.metadata}
 						id={row.row.original.id}
+						style={{ maxWidth: 200 }}
 					/>
 				),
 			},

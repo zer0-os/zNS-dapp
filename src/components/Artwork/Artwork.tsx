@@ -22,6 +22,7 @@ type ArtworkProps = {
 	metadataUrl?: string;
 	name?: string;
 	pending?: boolean;
+	style?: React.CSSProperties;
 };
 
 const Artwork: React.FC<ArtworkProps> = ({
@@ -32,23 +33,37 @@ const Artwork: React.FC<ArtworkProps> = ({
 	metadataUrl,
 	name,
 	pending,
+	style,
 }) => {
 	const isMounted = useRef(false);
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
+	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 
 	useEffect(() => {
+		// Get metadata
 		isMounted.current = true;
 		if (metadataUrl) {
 			getMetadata(metadataUrl).then((m: Metadata | undefined) => {
 				if (isMounted.current === true) setMetadata(m);
 			});
 		}
+
+		// Truncate
+		if (domain.length > 30) {
+			const split = domain.split('.');
+			if (isMounted.current === true)
+				setTruncatedDomain('wilder...' + split[split.length - 1]);
+		}
+
+		return () => {
+			isMounted.current = false;
+		};
 	}, []);
 
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
-			<div className={`${styles.Artwork} ${styles.Pending}`}>
+			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
 				<div className={styles.Image}>
 					<Image style={{ zIndex: 2 }} src={image || metadata?.image || ''} />
 				</div>
@@ -58,13 +73,15 @@ const Artwork: React.FC<ArtworkProps> = ({
 							style={{ cursor: pending ? 'default' : 'pointer' }}
 							className={styles.Title}
 						>
-							{name || metadata?.title || ' '}
+							{metadata?.title || name}
 						</span>
 					)}
 					{!pending && (
 						<>
 							{disableInteraction && (
-								<span className={styles.Domain}>{domain}</span>
+								<span className={styles.Domain}>
+									{truncatedDomain || domain}
+								</span>
 							)}
 							{!disableInteraction && (
 								<Link
@@ -73,7 +90,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 									target="_blank"
 									rel="noreferrer"
 								>
-									{domain}
+									{truncatedDomain || domain}
 								</Link>
 							)}
 						</>
