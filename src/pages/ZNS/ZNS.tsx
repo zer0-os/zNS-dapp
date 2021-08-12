@@ -135,7 +135,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Page State
 	const [hasLoaded, setHasLoaded] = useState(false);
-	const [connecting, setConnecting] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
 
@@ -182,13 +181,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	const closeModal = () => {
 		setModal(undefined);
-		setConnecting(false)
 	}
 	const openMint = () => setModal(Modal.Mint);
 	const openProfile = () => setModal(Modal.Profile);
 	const openWallet = () => {
 		setModal(Modal.Wallet);
-		setConnecting(true)
 	}
 	const openBidOverlay = () => {
 		if (!znsDomain.domain) return;
@@ -457,7 +454,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					>
 						
 						<div>
-						{!account && localStorage.getItem('chosenWallet') && connecting &&(
+						{!account && localStorage.getItem('chosenWallet') &&(
 								<FutureButton glow onClick={() => openWallet()}>
 									<div
 										style={{
@@ -493,7 +490,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 									</div>
 								</FutureButton>
 							)}
-							{!account && !localStorage.getItem('chosenWallet') &&  !connecting && (
+							{!account && !localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={openWallet}>
 									Connect Wallet
 								</FutureButton>
