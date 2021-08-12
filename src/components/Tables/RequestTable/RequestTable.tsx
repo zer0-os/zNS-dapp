@@ -80,7 +80,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
-	const [domainFilter, setDomainFilter] = useState('');
+	const [domainFilter, setDomainFilter] = useState('All Domains');
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 	// The request we're viewing in the request modal
