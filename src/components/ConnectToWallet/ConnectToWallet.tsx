@@ -75,12 +75,13 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		const c = connectorFromName(wallet) as AbstractConnector;
 
 		if (c) {
-			localStorage.clear()
+			const previousWallet = localStorage.getItem('chosenWallet');
+			if (previousWallet) closeSession(previousWallet);
 			localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to connect
 
 			await activate(c, async (e: Error) => {
 				addNotification(`Failed to connect to wallet.`);
-				localStorage.clear(); //if fails remove wallet key
+				localStorage.removeItem('chosenWallet')
 				console.error(`Encounter error while connecting to ${wallet}.`);
 				console.error(e);
 			});
@@ -90,30 +91,32 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		}
 	};
 
+	const closeSession = (wallet: string) => {
+		//if has a wallet connected, instead of just deactivate, close connection too
+		switch (wallet) {
+			case 'coinbase': {
+				walletlink.close();
+				break;
+			}
+			case 'portis': {
+				portis.close();
+				break;
+			}
+			case 'fortmatic': {
+				fortmatic.close();
+				break;
+			}
+			default:
+				break;
+		}
+
+		localStorage.clear();
+	};
+
 	const disconnect = () => {
 		deactivate();
 		const wallet = localStorage.getItem('chosenWallet');
-		if (wallet) {
-			//if has a wallet connected, instead of just deactivate, close connection too
-			switch (wallet) {
-				case 'coinbase': {
-					walletlink.close();
-					break;
-				}
-				case 'portis': {
-					portis.close();
-					break;
-				}
-				case 'fortmatic': {
-					fortmatic.close();
-					break;
-				}
-				default:
-					break;
-			}
-
-			localStorage.clear(); //if walletconnect its the wallet it will close connection from dApp
-		}
+		if (wallet) closeSession(wallet);
 		onConnect();
 	};
 
