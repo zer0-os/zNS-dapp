@@ -59,7 +59,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	};
 
 	const hasError = (id: string) => {
-		return true;
+		return errors.filter((err: Error) => err.id === id).length > 0;
 	};
 
 	const errorText = (id: string) => {
