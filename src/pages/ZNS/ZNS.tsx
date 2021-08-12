@@ -212,7 +212,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		try {
 			const d = minted[minted.length - 1] as NftParams;
 			const newDomain = `${d.zna === '/' ? d.zna : d.zna + '.'}${d.domain}`;
-			history.push(newDomain);
+			// Temporarily disabled
+			// history.push(newDomain);
 		} catch (e) {
 			console.error('Failed to find newly minted zNA');
 		}
