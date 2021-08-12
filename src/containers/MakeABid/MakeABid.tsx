@@ -426,17 +426,26 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				)}
 				{isCheckingAllowance && (
 					<>
-						<LoadingIndicator text="Checking status of zAuction approval" />
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="Checking status of zAuction approval"
+						/>
 					</>
 				)}
 				{isMetamaskWaiting && (
 					<>
-						<LoadingIndicator text="Hold tight while we process your bid" />
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="Hold tight while we process your bid"
+						/>
 					</>
 				)}
 				{isApprovalInProgress && (
 					<>
-						<LoadingIndicator text="zAuction approval in progress" />
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="zAuction approval in progress"
+						/>
 					</>
 				)}
 			</div>
@@ -481,10 +490,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			)}
 			{isMetamaskWaiting && (
 				<>
-					<div className={styles.Loading}>
-						<div className={styles.Spinner}></div>
-					</div>
-					<p className={styles.Wait}>Processing bid</p>
+					<LoadingIndicator style={{ marginTop: 24 }} text="Processing bid" />
 				</>
 			)}
 		</div>

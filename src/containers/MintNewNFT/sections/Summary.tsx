@@ -18,7 +18,7 @@ import tickerIcon from './assets/ticker.svg';
 import addressIcon from './assets/address.svg';
 
 //- Component Imports
-import { FutureButton, Image } from 'components';
+import { FutureButton, Image, LoadingIndicator } from 'components';
 
 type SummaryProps = {
 	token: TokenInformationType | null;
@@ -104,24 +104,21 @@ const Summary: React.FC<SummaryProps> = ({
 					marginTop: 80,
 				}}
 			>
-				{isMintLoading && (
-					<p style={{ fontWeight: 700 }}>
-						Things are working behind the scenes - please wait
-					</p>
+				{!isMintLoading && (
+					<FutureButton
+						style={{
+							margin: '8px auto 0 auto',
+							height: 36,
+							borderRadius: 18,
+							width: 130,
+						}}
+						onClick={onContinue}
+						glow={true}
+					>
+						MINT
+					</FutureButton>
 				)}
-				<FutureButton
-					style={{
-						margin: '8px auto 0 auto',
-						height: 36,
-						borderRadius: 18,
-						width: 130,
-					}}
-					onClick={onContinue}
-					loading={isMintLoading}
-					glow={true}
-				>
-					MINT
-				</FutureButton>
+				{isMintLoading && <LoadingIndicator text="Minting in progress" />}
 			</div>
 		</div>
 	);
