@@ -116,12 +116,12 @@ export async function getBidsForNft(
 		releaseApiCallsLock();
 
 		// Subscribe to the resolve of the outstanding API call
-		const bids = await new Promise(async (resolve, reject) => {
+		const bids = await new Promise<BidDto[]>(async (resolve, reject) => {
 			pendingResponse.observers.push({ resolve, reject });
 			releaseObserversLock();
 		});
 
-		return bids as BidDto[];
+		return bids;
 	}
 
 	// Add API call to pending calls,
@@ -130,7 +130,7 @@ export async function getBidsForNft(
 	releaseApiCallsLock();
 
 
-	let bids: Maybe<BidDto[]>;
+	let bids: BidDto[] | undefined;
 	let error: Maybe<string>;
 
 	try {
@@ -140,9 +140,8 @@ export async function getBidsForNft(
 			method: 'GET',
 		});
 		const data = await response.json();
-		const bids = data !== undefined ? (data as BidDto[]) : [];
+		bids = data !== undefined ? (data as BidDto[]) : [];
 		getBidsForNftCache.put(cacheKey, bids);
-
 	} catch (e) {
 		error = `Failed to fetch bids for nft: ${e}`;
 	}
@@ -153,17 +152,17 @@ export async function getBidsForNft(
 
 	const releaseApiCallInstanceLock = await apiCall.lock.acquire();
 	apiCall.observers.forEach(observer => {
-		if (bids) {
-			observer.resolve(bids);
-			return;
-		}
-
 		if (error) {
 			observer.reject(error);
 			return;
 		}
 
-		observer.reject(`invalid state`)
+		if (bids === undefined) {
+			observer.reject("undefined bids");
+			return;
+		}
+
+		observer.resolve(bids);
 	});
 	releaseApiCallInstanceLock();
 
