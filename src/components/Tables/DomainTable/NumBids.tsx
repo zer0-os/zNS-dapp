@@ -8,19 +8,30 @@ import { Domain } from 'lib/types';
 
 type NumBidsProps = {
 	domain: Domain;
+	refreshKey: string;
 };
 
-const NumBids: React.FC<NumBidsProps> = ({ domain }) => {
+const NumBids: React.FC<NumBidsProps> = ({ domain, refreshKey }) => {
 	let isMounted = useRef(false);
 	const { getBidsForDomain } = useBidProvider();
 	const [numBids, setNumBids] = useState<number | undefined>();
 	const [didApiCallFail, setDidApiCallFail] = useState<boolean>(false);
 
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+
 	const getBids = async () => {
 		const bids = await getBidsForDomain(domain);
+
 		if (!isMounted.current) return;
-		if (!bids) setDidApiCallFail(true);
-		else setNumBids(bids.length);
+
+		setIsLoading(false);
+
+		if (!bids) {
+			setDidApiCallFail(true);
+			return;
+		}
+
+		setNumBids(bids.length);
 	};
 
 	useEffect(() => {
@@ -29,17 +40,26 @@ const NumBids: React.FC<NumBidsProps> = ({ domain }) => {
 		return () => {
 			isMounted.current = false;
 		};
-	}, []);
+	}, [refreshKey]);
 
-	return (
-		<>
-			{didApiCallFail && <>Failed to retrieve</>}
-			{numBids && <>{numBids}</>}
-			{numBids === undefined && !didApiCallFail && (
-				<Spinner style={{ marginLeft: 'auto' }} />
-			)}
-		</>
-	);
+	useEffect(() => {
+		if (refreshKey === domain.id) {
+			setIsLoading(true);
+			getBids();
+		}
+	}, [refreshKey]);
+
+	let displayElement: React.ReactFragment = <></>;
+
+	if (isLoading) {
+		displayElement = <Spinner style={{ marginLeft: 'auto' }} />;
+	} else if (didApiCallFail) {
+		displayElement = <>Failed to retrieve</>;
+	} else if (numBids) {
+		displayElement = <>{numBids}</>;
+	}
+
+	return <>{displayElement}</>;
 };
 
 export default NumBids;
