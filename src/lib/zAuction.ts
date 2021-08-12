@@ -47,8 +47,8 @@ interface BidPostInterface {
 function getApiEndpoints(baseApiUri: string) {
 	const encodeBidEndpoint = `${baseApiUri}/bid`;
 	const bidsEndpoint = `${baseApiUri}/bids`;
-	const bidListEndpoint = `${bidsEndpoint}/list?`;
-	const accountBidsEndpoint = `${bidsEndpoint}accounts/`;
+	const bidListEndpoint = `${bidsEndpoint}/list`;
+	const accountBidsEndpoint = `${bidsEndpoint}/accounts/`;
 
 	return {
 		encodeBidEndpoint,
