@@ -50,6 +50,7 @@ import {
 	NumberButton,
 	MintPreview,
 	TransferPreview,
+	Spinner,
 } from 'components';
 
 //- Library Imports
@@ -86,7 +87,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account, active, chainId } = walletContext;
-	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet
+	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
 
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
@@ -134,6 +135,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Page State
 	const [hasLoaded, setHasLoaded] = useState(false);
+	const [connecting, setConnecting] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
 
@@ -178,10 +180,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	// Overlay Toggles //
 	/////////////////////
 
-	const closeModal = () => setModal(undefined);
+	const closeModal = () => {
+		setModal(undefined);
+		setConnecting(false)
+	}
 	const openMint = () => setModal(Modal.Mint);
 	const openProfile = () => setModal(Modal.Profile);
-	const openWallet = () => setModal(Modal.Wallet);
+	const openWallet = () => {
+		setModal(Modal.Wallet);
+		setConnecting(true)
+	}
 	const openBidOverlay = () => {
 		if (!znsDomain.domain) return;
 		setModal(Modal.Bid);
@@ -234,6 +242,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	/* Handle notification for wallet changes */
 	useEffect(() => {
+		//wallet connect wont do this automatically if session its ended from phone
+		if (
+			localStorage.getItem('chosenWallet') === 'walletconnect' &&
+			!active &&
+			triedEagerConnect
+		) {
+			localStorage.removeItem('walletconnect');
+			localStorage.removeItem('chosenWallet');
+		}
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
 	}, [active]);
@@ -438,13 +455,50 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						isSearchActive={isSearchActive}
 						setIsSearchActive={setIsSearchActive}
 					>
+						
 						<div>
-							{!active && (
+						{!account && localStorage.getItem('chosenWallet') && connecting &&(
+								<FutureButton glow onClick={() => openWallet()}>
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'center',
+											verticalAlign: 'center',
+											alignItems: 'center',
+											paddingBottom: '5px',
+										}}
+									>
+										<div
+											style={{
+												display: 'inline-block',
+												width: '10%',
+												margin: '0px',
+												padding: '0px',
+											}}
+										>
+											<Spinner />
+										</div>
+										<p
+											style={{
+												display: 'inline-block',
+												width: '90%',
+												verticalAlign: 'center',
+												height: '18px',
+												marginLeft: '15px',
+											}}
+											className={styles.Message}
+										>
+											Trying to connect {localStorage.getItem('chosenWallet')}
+										</p>
+									</div>
+								</FutureButton>
+							)}
+							{!account && !localStorage.getItem('chosenWallet') &&  !connecting && (
 								<FutureButton glow onClick={openWallet}>
 									Connect Wallet
 								</FutureButton>
 							)}
-							{active && !isSearchActive && (
+							{account && !isSearchActive && (
 								<>
 									{/* Mint button */}
 									<FutureButton

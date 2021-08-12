@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
 import { injected } from '../connectors';
+import { connectorFromName } from 'components/ConnectToWallet/ConnectToWallet';
+import { AbstractConnector } from '@web3-react/abstract-connector';
 
 export function useEagerConnect() {
 	const { activate, active } = useWeb3React();
@@ -9,15 +11,35 @@ export function useEagerConnect() {
 	const [tried, setTried] = useState(false);
 
 	useEffect(() => {
-		injected.isAuthorized().then((isAuthorized: boolean) => {
-			if (isAuthorized) {
-				activate(injected, undefined, true).catch(() => {
-					setTried(true);
+		const wallet = localStorage.getItem('chosenWallet');
+		const reConnectToWallet = async (wallet: string) => {
+			if (wallet === 'metamask') {
+				await injected.isAuthorized().then((isAuthorized: boolean) => {
+					if (isAuthorized) {
+						activate(injected, undefined, true).catch(() => {
+							setTried(true);
+						});
+					} else {
+						setTried(true);
+					}
 				});
 			} else {
-				setTried(true);
+				const c = connectorFromName(wallet) as AbstractConnector;
+				if (c) {
+					await activate(c, async (e: Error) => {
+						localStorage.removeItem('chosenWallet');
+						if (wallet === 'walletconnect')
+							localStorage.removeItem('walletconnect'); //session info of walletconnect
+						console.error(`Encounter error while connecting to ${wallet}.`);
+						console.error(e);
+					});
+					setTried(true);
+				}
 			}
-		});
+		};
+
+		if (wallet) reConnectToWallet(wallet); //if was connected to a wallet
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // intentionally only running on mount (make sure it's only mounted once :))
 
