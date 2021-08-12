@@ -78,6 +78,16 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 			const previousWallet = localStorage.getItem('chosenWallet');
 			localStorage.setItem('chosenWallet', wallet);
 
+			setTimeout(() => {
+				//timeout to reload if wallets isnt connected after 30 seconds
+				if (!active && localStorage.getItem('chosenWallet') === 'portis') {
+					//if portis connect request got stuck
+					//if user isnt connected when time ends
+					localStorage.clear(); //dont reconnect next time
+					window.location.reload();
+				}
+			}, 30000);
+
 			await activate(c, async (e: Error) => {
 				addNotification(`Failed to connect to wallet.`);
 				localStorage.removeItem('chosenWallet');
