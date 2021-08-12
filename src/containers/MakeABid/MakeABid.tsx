@@ -150,7 +150,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		try {
 			const bidSuccess = await placeBid(domain, bidAmount);
 			if (bidSuccess === true) {
-				navigateTo(domain.name);
+				navigateTo(domain.name + '?view');
 				onBid();
 			}
 		} catch (e) {
