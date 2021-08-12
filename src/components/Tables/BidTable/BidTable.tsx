@@ -117,7 +117,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 
 				setDisplayData(allBidData);
 			} catch (e) {
-				console.log(e);
+				console.error(e);
 				console.error('Failed to retrieve bid data');
 			}
 			setIsLoading(false);
@@ -165,7 +165,6 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 
 	const fetchDomainData = async (bid: Bid) => {
 		try {
-			console.log(bid);
 			if (!bid.tokenId) return;
 			const tx = await znsDomains.getDomainData(bid.tokenId);
 			return tx!.data.domain;

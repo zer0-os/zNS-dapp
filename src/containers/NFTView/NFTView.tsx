@@ -123,7 +123,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					const sorted = bids.sort(
 						(a, b) => b.date.getTime() - a.date.getTime(),
 					);
-					console.log(sorted);
 					if (!isMounted.current) return;
 					setBids(sorted);
 					setHighestBid(sorted[0]);
