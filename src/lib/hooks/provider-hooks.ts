@@ -28,7 +28,7 @@ export function useEagerConnect() {
 				const c = connectorFromName(wallet) as AbstractConnector;
 				if (c) {
 					await activate(c, async (e: Error) => {
-						localStorage.removeItem('chosenWallet'); //if fails removes wallet key
+						localStorage.clear(); //if fails remove wallet key
 						console.error(`Encounter error while connecting to ${wallet}.`);
 						console.error(e);
 					});
