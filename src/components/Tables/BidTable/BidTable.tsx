@@ -80,7 +80,9 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 				const bids = await getBidsForAccount(userId);
 
 				if (!bids) return;
-				const sortedBids = bids.sort((a: Bid, b: Bid) => b.amount - a.amount);
+				const sortedBids = bids.sort(
+					(a: Bid, b: Bid) => b.date.getTime() - a.date.getTime(),
+				);
 
 				// Get domain data from returned NFT IDs
 				const getDomainPromises: Promise<Maybe<ParentDomain>>[] = [];
@@ -100,12 +102,12 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 						return;
 					}
 
-					const yourHighestBid = sortedBids.filter(
+					const yourBids = sortedBids.filter(
 						(bid: Bid) => bid.tokenId === domain.id,
-					)[0];
-					yourBidData.push({
-						domain,
-						bid: yourHighestBid,
+					);
+
+					yourBids.forEach((bid: Bid) => {
+						yourBidData.push({ domain, bid });
 					});
 				});
 
@@ -223,25 +225,25 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 				id: 'bid',
 				accessor: (bid: BidTableDataWithHighest) => (
 					<>
-						{bid.highestBid.bidderAccount === bid.bid.bidderAccount && (
+						{bid.highestBid.signature === bid.bid.signature && (
 							<div
 								style={{
-									margin: '0 auto',
 									color: 'var(--color-success)',
-									textAlign: 'center',
+									textAlign: 'right',
 								}}
 							>
-								You lead bidding
+								Leading
 							</div>
 						)}
-						{bid.highestBid.bidderAccount !== bid.bid.bidderAccount && (
-							<FutureButton
-								style={{ margin: '0 auto', textTransform: 'uppercase' }}
-								glow
-								onClick={() => makeABid(bid.domain)}
+						{bid.highestBid.signature !== bid.bid.signature && (
+							<div
+								style={{
+									color: 'var(--color-error)',
+									textAlign: 'right',
+								}}
 							>
-								Make A Bid
-							</FutureButton>
+								Outbid
+							</div>
 						)}
 					</>
 				),

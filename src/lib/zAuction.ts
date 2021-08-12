@@ -3,7 +3,6 @@ import { createTimeCache } from './utils/timeCache';
 import { Mutex } from 'async-mutex';
 import { Maybe } from './types';
 
-
 export interface BidDto {
 	account: string;
 	signedMessage: string;
@@ -82,7 +81,7 @@ interface ApiCall<T> {
 	nftId: string;
 	observers: ApiCallObserver<T>[];
 	lock: Mutex;
-};
+}
 
 interface ApiCalls<T> {
 	[key: string]: ApiCall<T> | undefined;
@@ -93,7 +92,7 @@ const getBidsForNftApiCallsLock: Mutex = new Mutex();
 
 const removeGetBidsForNftApiCalls = (key: string) => {
 	getBidsForNftApiCalls[key] = undefined;
-}
+};
 
 export async function getBidsForNft(
 	baseApiUri: string,
@@ -125,10 +124,11 @@ export async function getBidsForNft(
 	}
 
 	// Add API call to pending calls,
-	const apiCall = { nftId, observers: [], lock: new Mutex() } as ApiCall<BidDto[]>;
+	const apiCall = { nftId, observers: [], lock: new Mutex() } as ApiCall<
+		BidDto[]
+	>;
 	getBidsForNftApiCalls[cacheKey] = apiCall;
 	releaseApiCallsLock();
-
 
 	let bids: BidDto[] | undefined;
 	let error: Maybe<string>;
@@ -151,14 +151,14 @@ export async function getBidsForNft(
 	releaseApiCallsLock();
 
 	const releaseApiCallInstanceLock = await apiCall.lock.acquire();
-	apiCall.observers.forEach(observer => {
+	apiCall.observers.forEach((observer) => {
 		if (error) {
 			observer.reject(error);
 			return;
 		}
 
 		if (bids === undefined) {
-			observer.reject("undefined bids");
+			observer.reject('undefined bids');
 			return;
 		}
 
@@ -173,8 +173,7 @@ export async function getBidsForNft(
 	return bids as BidDto[];
 }
 
-const getBidsForAccountCache =
-	createTimeCache<BidDto[]>(cacheExpiration);
+const getBidsForAccountCache = createTimeCache<BidDto[]>(cacheExpiration);
 
 const cacheKeyForAccountBids = (baseApiUri: string, account: string) => {
 	return `${baseApiUri}|${account}`;
@@ -219,10 +218,7 @@ async function encodeBid(
 	return data;
 }
 
-async function sendBid(
-	baseApiUri: string,
-	bid: BidPostInterface,
-) {
+async function sendBid(baseApiUri: string, bid: BidPostInterface) {
 	if (!ethers.utils.isAddress(bid.contractAddress)) {
 		throw Error(`Invalid contract address ${bid.contractAddress}`);
 	}
@@ -240,14 +236,14 @@ export async function placeBid(
 	contract: string,
 	tokenId: string,
 	amount: string,
-	onStep: (status: string) => void
+	onStep: (status: string) => void,
 ) {
 	const signer = provider.getSigner();
 	const minimumBid = '0';
 	const startBlock = '0';
 	const expireBlock = '999999999999';
 
-	onStep("Generating bid...");
+	onStep('Generating bid...');
 
 	let bidData: Maybe<CreateBidDto>;
 
@@ -267,7 +263,7 @@ export async function placeBid(
 
 	const account = await provider.getSigner().getAddress();
 
-	onStep("Waiting for bid to be signed by wallet...");
+	onStep('Waiting for bid to be signed by wallet...');
 
 	let signedBid: Maybe<string>;
 
@@ -277,10 +273,10 @@ export async function placeBid(
 		);
 	} catch (e) {
 		console.error(e);
-		throw Error(`Bid was not signed by wallet.`)
+		throw Error(`Bid was not signed by wallet.`);
 	}
 
-	onStep("Submitting bid...");
+	onStep('Submitting bid...');
 
 	let finishedSending = false;
 
@@ -289,7 +285,7 @@ export async function placeBid(
 			return;
 		}
 
-		onStep("Validating bid...");
+		onStep('Validating bid...');
 	}, 1500);
 
 	try {

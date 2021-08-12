@@ -23,6 +23,8 @@ import {
 	TextInput,
 	Member,
 	Overlay,
+	LoadingIndicator,
+	Spinner,
 } from 'components';
 import { BidList } from 'containers';
 
@@ -64,7 +66,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	>();
 	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
-	const [wildBalance, setWildBalance] = useState(0);
+	const [wildBalance, setWildBalance] = useState<number | undefined>();
 	const [hasApprovedTokenTransfer, setHasApprovedTokenTransfer] = useState<
 		boolean | undefined
 	>();
@@ -87,7 +89,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const wildContract: ERC20 = znsContracts.wildToken;
 
 	const isBidValid =
-		(Number(bid) && Number(bid) <= wildBalance && Number(bid) > 0) === true;
+		(Number(bid) &&
+			wildBalance &&
+			Number(bid) <= wildBalance &&
+			Number(bid) > 0) === true;
 
 	///////////////
 	// Functions //
@@ -128,7 +133,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		if (!bidAmount) return setError('Invalid bid');
 		if (bidAmount <= 0) return setError('Invalid bid');
 
-		if (bidAmount > wildBalance)
+		if (wildBalance && bidAmount > wildBalance)
 			return setError('You have insufficient WILD to make this bid');
 
 		setError('');
@@ -161,7 +166,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		const bidAsWei = ethers.utils.parseEther(bid).toString();
 		const needsApproving = allowance.lt(bidAsWei);
 
-		await new Promise((r) => setTimeout(r, 1500)); // Add a timeout so we can show the user a message for UX
+		await new Promise((r) => setTimeout(r, 500)); // Add a timeout so we can show the user a message for UX
 		if (hasApprovedTokenTransfer) {
 			setIsCheckingAllowance(false);
 			setStep(Steps.Confirm);
@@ -280,13 +285,22 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		</div>
 	);
 
-	const highestBid = () => (
-		<>
-			{hasBidDataLoaded && currentHighestBid && (
+	const highestBid = () => {
+		const hasBids = bids !== undefined && bids.length > 0;
+
+		// @todo in serious need of tidy-up
+		return (
+			<>
 				<>
-					<span className="glow-text-white">
+					<span className={hasBids ? 'glow-text-white' : ''}>
 						{/* @todo change dp amount */}
-						{Number(currentHighestBid.amount).toLocaleString()} WILD
+						{!hasBidDataLoaded && <>Loading bids...</>}
+						{hasBids && currentHighestBid && (
+							<>{Number(currentHighestBid.amount).toLocaleString()} WILD</>
+						)}
+						{hasBidDataLoaded && !currentHighestBid && (
+							<span className="glow-text-white">No bids found</span>
+						)}
 					</span>
 					<br />
 					{currentHighestBidUsd && currentHighestBidUsd > 0 && (
@@ -294,25 +308,20 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 							(${toFiat(currentHighestBidUsd)} USD)
 						</span>
 					)}
-					{bids !== undefined && bids.length > 0 && (
-						<TextButton onClick={showAllBidsModal} className={styles.ViewAll}>
-							View all bids
-						</TextButton>
-					)}
+					<TextButton
+						style={{
+							opacity: hasBids ? 1 : 0.5,
+							cursor: hasBids ? 'pointer' : 'default',
+						}}
+						onClick={hasBids ? showAllBidsModal : () => {}}
+						className={styles.ViewAll}
+					>
+						View all bids
+					</TextButton>
 				</>
-			)}
-			{hasBidDataLoaded && !currentHighestBid && (
-				<>
-					<span className="glow-text-white">No bids found</span>
-				</>
-			)}
-			{!hasBidDataLoaded && (
-				<>
-					<span className="glow-text-white">Loading...</span>
-				</>
-			)}
-		</>
-	);
+			</>
+		);
+	};
 
 	const details = () => (
 		<div className={styles.Details}>
@@ -323,9 +332,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				{highestBid()}
 			</div>
 			<Member
-				id={currentHighestBid?.bidderAccount || ''}
-				name={'not yet implemented'}
-				image={'not yet implemented'}
+				id={domain?.minter?.id || ''}
+				name={''}
+				image={''}
 				subtext={'Creator'}
 			/>
 		</div>
@@ -355,7 +364,12 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				{details()}
 			</div>
 			<div className={styles.InputWrapper}>
-				{wildBalance > (currentHighestBid?.amount || 0) && (
+				{wildBalance === undefined && (
+					<>
+						<LoadingIndicator text="Checking WILD Balance" />
+					</>
+				)}
+				{wildBalance && wildBalance > (currentHighestBid?.amount || 0) && (
 					<>
 						<p className="glow-text-blue">Enter the amount you wish to bid:</p>
 						<span style={{ marginBottom: 8 }} className={styles.Estimate}>
@@ -388,7 +402,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 						</FutureButton>
 					</>
 				)}
-				{wildBalance <= (currentHighestBid?.amount || 0) && (
+				{wildBalance && wildBalance <= (currentHighestBid?.amount || 0) && (
 					<>
 						<p className={styles.Error}>
 							You don't have enough WILD to bid on this NFT
@@ -439,26 +453,26 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				)}
 				{isCheckingAllowance && (
 					<>
-						<div className={styles.Loading}>
-							<div className={styles.Spinner}></div>
-						</div>
-						<p className={styles.Wait}>Checking status of zAuction approval</p>
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="Checking status of zAuction approval"
+						/>
 					</>
 				)}
 				{isMetamaskWaiting && (
 					<>
-						<div className={styles.Loading}>
-							<div className={styles.Spinner}></div>
-						</div>
-						<p className={styles.Wait}>Hold tight while we process your bid</p>
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="Hold tight while we process your bid"
+						/>
 					</>
 				)}
 				{isApprovalInProgress && (
 					<>
-						<div className={styles.Loading}>
-							<div className={styles.Spinner}></div>
-						</div>
-						<p className={styles.Wait}>zAuction approval in progress</p>
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="zAuction approval in progress"
+						/>
 					</>
 				)}
 			</div>
@@ -503,10 +517,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			)}
 			{isMetamaskWaiting && (
 				<>
-					<div className={styles.Loading}>
-						<div className={styles.Spinner}></div>
-					</div>
-					<p className={styles.Wait}>{statusText}</p>
+					<LoadingIndicator style={{ marginTop: 24 }} text="Processing bid" />
 				</>
 			)}
 			{error && (

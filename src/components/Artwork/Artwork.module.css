@@ -40,14 +40,25 @@
 	justify-content: center;
 	flex-direction: column;
 	font-weight: 700;
+	max-width: inherit;
 }
 
 .Info > *:first-child {
 	color: white;
 	font-weight: 400;
+	margin-top: 4px;
 }
 
 .Title {
 	display: block;
 	cursor: pointer;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.Domain {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

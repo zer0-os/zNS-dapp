@@ -26,6 +26,8 @@
 .Header h1 {
 	font-size: 36px;
 	font-weight: 700;
+	text-align: center;
+	overflow-wrap: anywhere;
 }
 
 .Header h2 {
@@ -35,6 +37,8 @@
 .Header > div {
 	display: flex;
 	align-items: center;
+	text-align: center;
+	overflow-wrap: anywhere;
 
 	margin-top: 8px;
 }
@@ -97,7 +101,7 @@
 	margin-left: 24px;
 }
 
-.Inputs > *:not(:first-child) {
+.Inputs > input:not(:first-child) {
 	margin-top: 24px;
 }
 
@@ -114,6 +118,7 @@
 	padding-top: 8px;
 	padding-left: 40px;
 	margin-top: 12px;
+	overflow-wrap: anywhere;
 }
 
 .Icon > div {

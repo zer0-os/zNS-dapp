@@ -69,7 +69,6 @@
 .Bid > div {
 	display: flex;
 	flex-direction: column;
-	margin-left: 24px;
 }
 
 .Bid > div > span:first-of-type {
