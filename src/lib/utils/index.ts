@@ -12,7 +12,7 @@ interface UploadResponseDTO {
 	url: string;
 }
 
-const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/upload`;
+const uploadApiEndpoint = `https://zns-backend.herokuapp.com/api/upload`;
 
 /**
  * Creates and uploads a domains metadata to IPFS
