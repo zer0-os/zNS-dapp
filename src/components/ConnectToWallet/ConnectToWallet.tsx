@@ -81,6 +81,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 
 			await activate(c, async (e: Error) => {
 				addNotification(`Failed to connect to wallet.`);
+				window.location.reload()
 				localStorage.removeItem('chosenWallet')
 				console.error(`Encounter error while connecting to ${wallet}.`);
 				console.error(e);
