@@ -27,20 +27,6 @@ export function useEagerConnect() {
 			} else {
 				const c = connectorFromName(wallet) as AbstractConnector;
 				if (c) {
-					if (wallet === 'portis') {
-						setTimeout(() => {
-							//timeout to reload if wallets isnt connected after 30 seconds
-							if (
-								!active &&
-								localStorage.getItem('chosenWallet') === 'portis'
-							) {
-								//if portis connect request got stuck
-								//if user isnt connected when time ends
-								localStorage.clear(); //dont reconnect next time
-								window.location.reload();
-							}
-						}, 30000);
-					}
 					await activate(c, async (e: Error) => {
 						localStorage.removeItem('chosenWallet');
 						console.error(`Encounter error while connecting to ${wallet}.`);
