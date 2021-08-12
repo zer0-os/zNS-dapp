@@ -1,6 +1,7 @@
 //- React Imports
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Spring, animated } from 'react-spring';
 
 //- Component Imports
 import { Image } from 'components';
@@ -36,15 +37,26 @@ const Artwork: React.FC<ArtworkProps> = ({
 	style,
 }) => {
 	const isMounted = useRef(false);
+	const loadTime = useRef<Date | undefined>();
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
 	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
+	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
 
 	useEffect(() => {
 		// Get metadata
 		isMounted.current = true;
+		if (!loadTime.current) loadTime.current = new Date();
 		if (metadataUrl) {
 			getMetadata(metadataUrl).then((m: Metadata | undefined) => {
-				if (isMounted.current === true) setMetadata(m);
+				if (loadTime.current) {
+					// If the metadata was loaded fast it was probably
+					// from cache, so we should just skip the animation
+					const loadedInMs = new Date().getTime() - loadTime.current.getTime();
+					setShouldAnimate(loadedInMs > 60);
+				}
+				if (isMounted.current === true) {
+					setMetadata(m);
+				}
 			});
 		}
 
@@ -68,7 +80,24 @@ const Artwork: React.FC<ArtworkProps> = ({
 					<Image style={{ zIndex: 2 }} src={image || metadata?.image || ''} />
 				</div>
 				<div className={styles.Info}>
-					{(name || metadata?.title) && (
+					{shouldAnimate && (metadata?.title || name) && (
+						<Spring
+							from={{ maxHeight: 0, opacity: 0 }}
+							to={{ maxHeight: 18, opacity: 1 }}
+						>
+							{(animatedStyles) => (
+								<animated.div style={animatedStyles}>
+									<span
+										style={{ cursor: pending ? 'default' : 'pointer' }}
+										className={styles.Title}
+									>
+										{metadata?.title || name}
+									</span>
+								</animated.div>
+							)}
+						</Spring>
+					)}
+					{!shouldAnimate && metadata?.title && (
 						<span
 							style={{ cursor: pending ? 'default' : 'pointer' }}
 							className={styles.Title}
