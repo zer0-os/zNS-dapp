@@ -30,10 +30,7 @@ import { ethers } from 'ethers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 
 //- Type Imports
-import {
-	DisplayDomainRequestAndContents,
-	DomainRequestAndContents,
-} from 'lib/types';
+import { DomainRequestAndContents } from 'lib/types';
 
 //- Style Imports
 import styles from './RequestTable.module.css';
@@ -85,7 +82,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
-		DisplayDomainRequestAndContents | undefined
+		DomainRequestAndContents | undefined
 	>();
 
 	// The Token that we need to approve the staking controller to transfer
@@ -95,7 +92,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	// The requests that we have loaded (pulled from chain and grabbed metadata from IFPS)
 	const [loadedRequests, setLoadedRequests] = useState<
-		DisplayDomainRequestAndContents[]
+		DomainRequestAndContents[]
 	>([]);
 
 	///////////////
@@ -191,7 +188,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		let isSubscribed = true;
 		setTimeout(() => {
 			if (isSubscribed) {
-				yourRequests.refresh();
 				requestsForYou.refresh();
 			}
 		}, 5000);
@@ -244,7 +240,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	/////////////////
 
 	// Table Data
-	const displayData: DisplayDomainRequestAndContents[] = useMemo(() => {
+	const displayData: DomainRequestAndContents[] = useMemo(() => {
 		if (
 			(searchQuery.length ||
 				(statusFilter.length && statusFilter !== 'All Statuses')) &&
@@ -256,7 +252,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			// Filter per search string
 			if (searchQuery.length) {
 				filtered = filtered.filter((r) => {
-					const s = (r.metadata.title + r.request.domain).toLowerCase();
+					const s = r.request.domain.toLowerCase();
 					return s.indexOf(searchQuery.toLowerCase()) > -1;
 				});
 			}
@@ -280,22 +276,22 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	}, [loadedRequests, searchQuery, statusFilter]);
 
 	// Column Setup
-	const columns = useMemo<Column<DisplayDomainRequestAndContents>[]>(
+	const columns = useMemo<Column<DomainRequestAndContents>[]>(
 		() => [
 			{
 				id: 'index',
-				accessor: (d: DisplayDomainRequestAndContents, i: number) => (
+				accessor: (d: DomainRequestAndContents, i: number) => (
 					<span>{i + 1}</span>
 				),
 			},
 			{
 				Header: () => <div className={styles.left}>Creator</div>,
 				id: 'creator',
-				accessor: (d: DisplayDomainRequestAndContents) => (
+				accessor: (d: DomainRequestAndContents) => (
 					<Member
 						id={d.request.requestor.id}
-						name={'requestor'}
-						image={randomImage(d.request.requestor.id)}
+						name={''}
+						image={''}
 						subtext={
 							mvpVersion === 3
 								? randomName(d.request.requestor.id)
@@ -309,11 +305,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			{
 				Header: () => <div className={styles.left}>Artwork Info</div>,
 				id: 'title',
-				accessor: (d: DisplayDomainRequestAndContents) => (
+				accessor: (d: DomainRequestAndContents) => (
 					<Artwork
 						id={d.request.domain}
-						name={d.metadata.title ?? ''}
-						image={d.metadata.image ?? ''}
+						disableInteraction
+						metadataUrl={d.contents.metadata}
 						domain={d.request.domain ? `0://${d.request.domain}` : ''}
 						pending
 					/>
@@ -322,7 +318,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			{
 				Header: () => <div className={styles.left}>Request Date</div>,
 				id: 'date',
-				accessor: (d: DisplayDomainRequestAndContents) => {
+				accessor: (d: DomainRequestAndContents) => {
 					return (
 						<div className={styles.left}>
 							{dateFromTimestamp(d.request.timestamp).split(',')[0]}
@@ -333,7 +329,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			{
 				Header: () => <div className={styles.right}>Staked Tokens</div>,
 				id: 'stakeAmount',
-				accessor: (d: DisplayDomainRequestAndContents) => (
+				accessor: (d: DomainRequestAndContents) => (
 					<div className={styles.right}>
 						{Number(
 							ethers.utils.formatEther(d.request.offeredAmount),
@@ -344,7 +340,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			},
 			{
 				id: 'accepted',
-				accessor: (d: DisplayDomainRequestAndContents) => (
+				accessor: (d: DomainRequestAndContents) => (
 					<div className={styles.center}>
 						{/* Fulfilled domain requests */}
 						{d.request.fulfilled && (
@@ -396,7 +392,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	);
 
 	// React-Table Config
-	const tableHook = useTable<DisplayDomainRequestAndContents>(
+	const tableHook = useTable<DomainRequestAndContents>(
 		{ columns, data: displayData },
 		useFilters,
 		useGlobalFilter,
