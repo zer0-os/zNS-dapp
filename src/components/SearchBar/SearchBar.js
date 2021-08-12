@@ -6,11 +6,7 @@ import searchBarStyles from './SearchBar.module.css';
 const SearchBar = (props) => {
 	return (
 		<div className={searchBarStyles.searchBar + ' blur'} style={props.style}>
-			<input
-				onChange={props.onChange}
-				type="text"
-				placeholder={props.placeholder ? props.placeholder : 'Search'}
-			/>
+			<input onChange={props.onChange} type="text" placeholder="Search" />
 			<button></button>
 		</div>
 	);

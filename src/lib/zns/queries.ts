@@ -101,7 +101,7 @@ export const childDomainsQuery = gql`
 
 export const ownedByAccountQuery = gql`
 	query OwnedDomains($owner: Bytes!) {
-		domains(where: { name_not: null, owner: $owner }) {
+		domains(where: { owner: $owner }) {
 			id
 			name
 			parent {

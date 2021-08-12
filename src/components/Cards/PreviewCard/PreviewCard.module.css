@@ -57,7 +57,6 @@
 	height: 220px;
 
 	/* background-color: var(--background-purple-card); */
-	background: rgba(255, 255, 255, 0.05);
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -65,9 +64,13 @@
 	border-radius: 9px 0px 0px 13px;
 
 	cursor: pointer;
+
+	overflow: hidden;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
-.Asset:hover > div {
+.Asset:hover {
 	transform: scale(1.02);
 }
 
@@ -81,21 +84,13 @@
 	object-fit: cover;
 }
 
-.Asset > div {
-	overflow: hidden;
-	transition: transform var(--animation-time-medium) ease-in-out;
-	border-radius: 9px 0px 0px 13px;
-	z-index: 2;
-}
-
 .Body {
 	display: flex;
-	flex: 1;
 	flex-direction: column;
 	justify-content: space-between;
 
+	width: 562px;
 	margin: 19px 0 0 24px;
-	padding-right: 48px;
 }
 
 .Body h5 {
@@ -111,7 +106,7 @@
 
 .Body p {
 	max-height: 70px;
-	overflow-y: auto;
+	overflow-y: scroll;
 	margin-top: 16px;
 	color: white;
 	line-height: 19.2px;
@@ -164,6 +159,7 @@
 .Buy {
 	display: flex;
 	flex-direction: column;
+	align-items: flex-end;
 	justify-content: center;
 
 	margin-left: auto;

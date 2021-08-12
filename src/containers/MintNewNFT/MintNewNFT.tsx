@@ -35,7 +35,6 @@ type MintNewNFTProps = {
 	domainName: string; // The name of the domain we're minting to, i.e. wilder.world
 	domainOwner: string; // account that owns the domain we're minting to (parent)
 	onMint: () => void;
-	subdomains: string[];
 };
 
 enum MintState {
@@ -49,7 +48,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	domainName,
 	onMint,
 	domainOwner,
-	subdomains,
 }) => {
 	//////////
 	// Web3 //
@@ -81,9 +79,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const [isMintLoading, setIsMintLoading] = useState(false);
 	const [wildBalance, setWildBalance] = useState<number | undefined>();
 	const [containerHeight, setContainerHeight] = useState(0);
-	const [existingSubdomains, setExistingSubdomains] = useState<
-		string[] | undefined
-	>();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -114,45 +109,23 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		const fetchTokenBalance = async () => {
 			const balance = await wildContract.balanceOf(account);
 			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
+			console.log(parseInt(ethers.utils.formatEther(balance), 10));
 		};
 		fetchTokenBalance();
 	}, [wildContract, account]);
 
 	useEffect(() => {
-		resize();
-	}, [step, isMintLoading]);
-
-	useEffect(() => {
-		const parent = domainName.substring(1);
-		let existingNames;
-		if (!parent.length) {
-			existingNames = subdomains.map((sub: string) => {
-				const split = sub.split('wilder.');
-				return split[split.length - 1];
-			});
-		} else {
-			existingNames = subdomains.map((sub: string) => {
-				const split = sub.split(domainName.substring(1));
-				const dot = split[split.length - 1].split('.');
-				console.log(dot[dot.length - 1]);
-				return dot[dot.length - 1];
-			});
-		}
-		setExistingSubdomains(existingNames);
-	}, [domainName, subdomains]);
-
-	///////////////
-	// Functions //
-	///////////////
-
-	const resize = () => {
 		const el = containerRef.current;
 		if (el) {
 			const child = el.children[0];
 			if (child && child.clientHeight > 0)
 				return setContainerHeight(child.clientHeight);
 		}
-	};
+	}, [step, isMintLoading]);
+
+	///////////////
+	// Functions //
+	///////////////
 
 	// Sets the token stake data from the token stake section
 	const getTokenStake = (data: TokenStakeType) => {
@@ -246,13 +219,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	// Fragments //
 	///////////////
 
-	const domainString = () => {
-		const parentDomain =
-			domainName.length > 1 ? `.${domainName.substring(1)}` : '';
-		const newDomain = domain.length > 0 ? `.${domain}` : '';
-		const str = `0://${rootDomainName}${parentDomain}${newDomain}`;
-		return <>{str}</>;
-	};
+	// @todo break render into pure fragments
 
 	////////////
 	// Render //
@@ -267,7 +234,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					{isOwner ? 'Mint' : 'Request to Mint'} "{name ? name : 'A New NFT'}"
 				</h1>
 				<div style={{ marginBottom: 8 }}>
-					<h2 className={`glow-text-white`}>{domainString()}</h2>
+					<h2 className={`glow-text-white`}>
+						0://{rootDomainName}.{`${domainName.substring(1)}${domain || ''}`}
+					</h2>
 				</div>
 				<span>
 					By{' '}
@@ -293,12 +262,10 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				{/* SECTION 1: Token Information */}
 				{step === MintState.DomainDetails && (
 					<TokenInformation
-						existingSubdomains={existingSubdomains || []}
 						token={tokenInformation}
 						onContinue={(data: TokenInformationType) =>
 							getTokenInformation(data)
 						}
-						onResize={resize}
 						setNameHeader={(name: string) => setName(name)}
 						setDomainHeader={(domain: string) => setDomain(domain)}
 					/>

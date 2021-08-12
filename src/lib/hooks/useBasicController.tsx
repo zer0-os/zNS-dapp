@@ -14,7 +14,6 @@ export function useBasicController() {
 		try {
 			// get metadata uri
 			const metadataUri = await createDomainMetadata({
-				previewImage: params.previewImage,
 				image: params.image,
 				name: params.name,
 				story: params.story,

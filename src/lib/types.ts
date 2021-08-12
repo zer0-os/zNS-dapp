@@ -20,15 +20,14 @@ export interface Domain {
 export interface Metadata {
 	title: string;
 	description: string;
-	image: string; // One of: Image, Video, 3d Model
-	previewImage?: string; // One of: Image, Video
+	image: string;
 }
 
 export interface ParentDomain extends Domain {
 	subdomains: SubDomain[];
 }
 
-export interface SubDomain extends Domain { }
+export interface SubDomain extends Domain {}
 
 export interface DomainRequest {
 	id: string;
@@ -43,11 +42,6 @@ export interface DomainRequest {
 	fulfilled: boolean;
 	timestamp: string;
 }
-
-export type DomainData = {
-	domain: Domain;
-	bids: Bid[];
-};
 
 export interface DisplayDomain extends Domain {
 	image: Maybe<string>;
@@ -69,7 +63,6 @@ export interface NftParams {
 	ticker: string;
 	story: string;
 	image: Buffer;
-	previewImage?: Buffer;
 	dynamic: boolean;
 	locked: boolean;
 }

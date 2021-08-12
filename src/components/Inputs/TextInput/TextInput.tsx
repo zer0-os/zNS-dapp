@@ -1,8 +1,5 @@
 //- React Imports
-import React, { useRef, useEffect } from 'react';
-
-//- Library Imports
-import autoHeight from 'autosize';
+import React from 'react';
 
 //- Style Imports
 import styles from './TextInput.module.css';
@@ -14,7 +11,6 @@ import { isAlphanumeric, isNumber } from './validation';
 // TODO: Convert to TypeScript
 
 type TextInputProps = {
-	autosize?: boolean;
 	onChange: (text: string) => void;
 	error?: boolean;
 	errorText?: string;
@@ -29,7 +25,6 @@ type TextInputProps = {
 };
 
 const TextInput: React.FC<TextInputProps> = ({
-	autosize,
 	onChange,
 	error,
 	errorText,
@@ -42,16 +37,6 @@ const TextInput: React.FC<TextInputProps> = ({
 	alphanumeric,
 	numeric,
 }) => {
-	//////////////////
-	// State & Data //
-	//////////////////
-
-	const textArea = useRef<HTMLTextAreaElement>(null);
-
-	///////////////
-	// Functions //
-	///////////////
-
 	const handleChange = (event: any) => {
 		const newValue = event.target.value;
 		if (validate(newValue) && onChange) return onChange(event.target.value);
@@ -63,20 +48,6 @@ const TextInput: React.FC<TextInputProps> = ({
 		return true;
 	};
 
-	/////////////
-	// Effects //
-	/////////////
-
-	useEffect(() => {
-		if (multiline && autosize && textArea.current) {
-			autoHeight(textArea.current);
-		}
-	}, []);
-
-	////////////
-	// Render //
-	////////////
-
 	return (
 		<>
 			{multiline && (
@@ -84,7 +55,6 @@ const TextInput: React.FC<TextInputProps> = ({
 					className={`${styles.TextInput} border-blue ${
 						error ? styles.Error : ''
 					}`}
-					ref={textArea}
 					onChange={handleChange}
 					style={{
 						...style,

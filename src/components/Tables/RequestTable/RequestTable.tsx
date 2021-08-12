@@ -30,7 +30,10 @@ import { ethers } from 'ethers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 
 //- Type Imports
-import { DomainRequestAndContents } from 'lib/types';
+import {
+	DisplayDomainRequestAndContents,
+	DomainRequestAndContents,
+} from 'lib/types';
 
 //- Style Imports
 import styles from './RequestTable.module.css';
@@ -77,12 +80,12 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
-	const [domainFilter, setDomainFilter] = useState('All Domains');
+	const [domainFilter, setDomainFilter] = useState('');
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
-		DomainRequestAndContents | undefined
+		DisplayDomainRequestAndContents | undefined
 	>();
 
 	// The Token that we need to approve the staking controller to transfer
@@ -92,7 +95,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	// The requests that we have loaded (pulled from chain and grabbed metadata from IFPS)
 	const [loadedRequests, setLoadedRequests] = useState<
-		DomainRequestAndContents[]
+		DisplayDomainRequestAndContents[]
 	>([]);
 
 	///////////////
@@ -188,6 +191,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		let isSubscribed = true;
 		setTimeout(() => {
 			if (isSubscribed) {
+				yourRequests.refresh();
 				requestsForYou.refresh();
 			}
 		}, 5000);
@@ -240,7 +244,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	/////////////////
 
 	// Table Data
-	const displayData: DomainRequestAndContents[] = useMemo(() => {
+	const displayData: DisplayDomainRequestAndContents[] = useMemo(() => {
 		if (
 			(searchQuery.length ||
 				(statusFilter.length && statusFilter !== 'All Statuses')) &&
@@ -252,7 +256,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			// Filter per search string
 			if (searchQuery.length) {
 				filtered = filtered.filter((r) => {
-					const s = r.request.domain.toLowerCase();
+					const s = (r.metadata.title + r.request.domain).toLowerCase();
 					return s.indexOf(searchQuery.toLowerCase()) > -1;
 				});
 			}
@@ -276,22 +280,22 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	}, [loadedRequests, searchQuery, statusFilter]);
 
 	// Column Setup
-	const columns = useMemo<Column<DomainRequestAndContents>[]>(
+	const columns = useMemo<Column<DisplayDomainRequestAndContents>[]>(
 		() => [
 			{
 				id: 'index',
-				accessor: (d: DomainRequestAndContents, i: number) => (
+				accessor: (d: DisplayDomainRequestAndContents, i: number) => (
 					<span>{i + 1}</span>
 				),
 			},
 			{
 				Header: () => <div className={styles.left}>Creator</div>,
 				id: 'creator',
-				accessor: (d: DomainRequestAndContents) => (
+				accessor: (d: DisplayDomainRequestAndContents) => (
 					<Member
 						id={d.request.requestor.id}
-						name={''}
-						image={''}
+						name={'requestor'}
+						image={randomImage(d.request.requestor.id)}
 						subtext={
 							mvpVersion === 3
 								? randomName(d.request.requestor.id)
@@ -305,11 +309,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			{
 				Header: () => <div className={styles.left}>Artwork Info</div>,
 				id: 'title',
-				accessor: (d: DomainRequestAndContents) => (
+				accessor: (d: DisplayDomainRequestAndContents) => (
 					<Artwork
 						id={d.request.domain}
-						disableInteraction
-						metadataUrl={d.contents.metadata}
+						name={d.metadata.title ?? ''}
+						image={d.metadata.image ?? ''}
 						domain={d.request.domain ? `0://${d.request.domain}` : ''}
 						pending
 					/>
@@ -318,7 +322,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			{
 				Header: () => <div className={styles.left}>Request Date</div>,
 				id: 'date',
-				accessor: (d: DomainRequestAndContents) => {
+				accessor: (d: DisplayDomainRequestAndContents) => {
 					return (
 						<div className={styles.left}>
 							{dateFromTimestamp(d.request.timestamp).split(',')[0]}
@@ -329,7 +333,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			{
 				Header: () => <div className={styles.right}>Staked Tokens</div>,
 				id: 'stakeAmount',
-				accessor: (d: DomainRequestAndContents) => (
+				accessor: (d: DisplayDomainRequestAndContents) => (
 					<div className={styles.right}>
 						{Number(
 							ethers.utils.formatEther(d.request.offeredAmount),
@@ -340,7 +344,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			},
 			{
 				id: 'accepted',
-				accessor: (d: DomainRequestAndContents) => (
+				accessor: (d: DisplayDomainRequestAndContents) => (
 					<div className={styles.center}>
 						{/* Fulfilled domain requests */}
 						{d.request.fulfilled && (
@@ -392,7 +396,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	);
 
 	// React-Table Config
-	const tableHook = useTable<DomainRequestAndContents>(
+	const tableHook = useTable<DisplayDomainRequestAndContents>(
 		{ columns, data: displayData },
 		useFilters,
 		useGlobalFilter,
@@ -452,7 +456,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					<SearchBar
 						onChange={(event: any) => search(event.target.value)}
 						style={{ width: '100%', marginRight: 16 }}
-						placeholder="Search by domain name"
 					/>
 					<div className={styles.searchHeaderButtons}>
 						<OptionDropdown
@@ -473,7 +476,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								{statusFilter || 'All Statuses'}
 							</FilterButton>
 						</OptionDropdown>
-						{/* {isGridViewToggleable && (
+						{isGridViewToggleable && (
 							<>
 								<IconButton
 									onClick={setList}
@@ -488,7 +491,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 									style={{ height: 32, width: 32 }}
 								/>
 							</>
-						)} */}
+						)}
 					</div>
 				</div>
 			)}
@@ -532,8 +535,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					)}
 
 					{/* Grid View */}
-					{/* @todo re-enable grid view */}
-					{/* {!isLoading && isGridView && (
+					{!isLoading && isGridView && (
 						<ol className={styles.Grid}>
 							{displayData.map((d, i) => (
 								<li key={i} onClick={() => view(d.request.domain)}>
@@ -548,6 +550,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 										showOwner
 										style={{ width: 380 }}
 									>
+										{/* @TODO Refactor this horrific section */}
 										<div
 											style={{
 												display: 'flex',
@@ -609,7 +612,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								</li>
 							))}
 						</ol>
-					)} */}
+					)}
 
 					{/* No Search Results Message */}
 					{!isLoading &&

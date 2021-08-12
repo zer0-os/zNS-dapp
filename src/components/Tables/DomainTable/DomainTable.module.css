@@ -12,10 +12,6 @@
 	transition: height var(--animation-time-long) ease-in-out;
 }
 
-.Empty {
-	text-align: center;
-}
-
 .DomainTable {
 	width: 100%;
 }
@@ -78,6 +74,12 @@
 	padding-left: 30px;
 	padding-right: 0;
 	width: 50px;
+}
+
+.DomainTable th:nth-child(2),
+.DomainTable td:nth-child(2) {
+	padding-right: 0;
+	width: 56px;
 }
 
 .DomainTable th:last-child,

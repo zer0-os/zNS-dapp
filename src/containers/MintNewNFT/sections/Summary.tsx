@@ -18,7 +18,7 @@ import tickerIcon from './assets/ticker.svg';
 import addressIcon from './assets/address.svg';
 
 //- Component Imports
-import { FutureButton, Image, LoadingIndicator } from 'components';
+import { FutureButton } from 'components';
 
 type SummaryProps = {
 	token: TokenInformationType | null;
@@ -37,10 +37,6 @@ const Summary: React.FC<SummaryProps> = ({
 	isMintLoading,
 	domain,
 }) => {
-	let parentDomain;
-	if (domain.substring(1).length > 0) parentDomain = domain.substring(1) + '.';
-	else parentDomain = domain.substring(1);
-
 	if (!token) return <></>;
 
 	return (
@@ -48,7 +44,7 @@ const Summary: React.FC<SummaryProps> = ({
 			<div className={styles.Summary}>
 				<div className={`${styles.NFT} border-rounded border-blue`}>
 					{token.previewImage.indexOf('image/') > -1 && (
-						<Image alt="nft preview" src={token.previewImage} />
+						<img alt="nft preview" src={token.previewImage} />
 					)}
 					{token.previewImage.indexOf('video/') > -1 && (
 						<video controls src={token.previewImage} />
@@ -58,22 +54,15 @@ const Summary: React.FC<SummaryProps> = ({
 					<h2>Summary</h2>
 					<ul>
 						<li className={styles.Name}>
-							<div className={styles.Icon}>
-								<Image alt="name icon" src={tickerIcon} />
-							</div>
+							<img alt="name icon" src={tickerIcon} />
 							{token.name}
 						</li>
 						<li>
-							<div className={styles.Icon}>
-								<Image alt="address icon" src={addressIcon} />
-							</div>
-							0://wilder.{parentDomain}
-							{token.domain}
+							<img alt="address icon" src={addressIcon} />
+							0://wilder.{domain.substring(1)}.{token.domain}
 						</li>
 						<li style={{ maxHeight: 200, overflowY: 'scroll' }}>
-							<div className={styles.Icon}>
-								<Image alt="story icon" src={storyIcon} />
-							</div>
+							<img alt="story icon" src={storyIcon} />
 							<p
 								style={{
 									padding: 0,
@@ -87,9 +76,7 @@ const Summary: React.FC<SummaryProps> = ({
 						</li>
 						{staking && (
 							<li>
-								<div className={styles.Icon}>
-									<Image alt="stake icon" src={handIcon} />
-								</div>
+								<img alt="stake icon" src={handIcon} />
 								{staking.amount} {staking.currency}
 							</li>
 						)}
@@ -104,21 +91,24 @@ const Summary: React.FC<SummaryProps> = ({
 					marginTop: 80,
 				}}
 			>
-				{!isMintLoading && (
-					<FutureButton
-						style={{
-							margin: '8px auto 0 auto',
-							height: 36,
-							borderRadius: 18,
-							width: 130,
-						}}
-						onClick={onContinue}
-						glow={true}
-					>
-						MINT
-					</FutureButton>
+				{isMintLoading && (
+					<p style={{ fontWeight: 700 }}>
+						Things are working behind the scenes - please wait
+					</p>
 				)}
-				{isMintLoading && <LoadingIndicator text="Minting in progress" />}
+				<FutureButton
+					style={{
+						margin: '8px auto 0 auto',
+						height: 36,
+						borderRadius: 18,
+						width: 130,
+					}}
+					onClick={onContinue}
+					loading={isMintLoading}
+					glow={true}
+				>
+					MINT
+				</FutureButton>
 			</div>
 		</div>
 	);

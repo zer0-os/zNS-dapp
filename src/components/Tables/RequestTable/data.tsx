@@ -2,6 +2,7 @@
 import { getMetadata } from 'lib/metadata';
 import {
 	DomainRequest,
+	DisplayDomainRequestAndContents,
 	DomainRequestAndContents,
 	DomainRequestContents,
 } from 'lib/types';
@@ -10,7 +11,7 @@ import {
 export const getRequestData = (requests: DomainRequest[]) => {
 	return new Promise((resolve, reject) => {
 		const requestsToFetch = requests.filter((d: any) => d.requestUri);
-		const loadedRequests: DomainRequestAndContents[] = [];
+		const loadedRequests: DisplayDomainRequestAndContents[] = [];
 		var counted = 0;
 
 		for (var i = 0; i < requestsToFetch.length; i++) {
@@ -23,7 +24,15 @@ export const getRequestData = (requests: DomainRequest[]) => {
 						request,
 					};
 
-					loadedRequests.push(requestData);
+					const metadata = await getMetadata(requestData.contents.metadata);
+
+					if (metadata) {
+						const displayRequest: DisplayDomainRequestAndContents = {
+							...requestData,
+							metadata,
+						};
+						loadedRequests.push(displayRequest);
+					}
 				} catch (e) {
 					console.error(
 						`Failed to retrieve request data of ${request.id} (${request.requestUri})`,

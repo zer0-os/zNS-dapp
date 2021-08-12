@@ -44,7 +44,7 @@ export function useDomainByNameQuery(domainName: string) {
 
 export function useDomainsOwnedByUserQuery(account: string) {
 	const query = useQueryHook<DomainsQueryResult>(queries.ownedByAccountQuery, {
-		owner: account.toLowerCase(),
+		owner: account,
 	});
 
 	return query;

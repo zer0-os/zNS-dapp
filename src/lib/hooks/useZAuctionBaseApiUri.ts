@@ -9,9 +9,9 @@ export function useZAuctionBaseApiUri(chain: number): string | undefined {
 		function getApiEndpoint() {
 			switch (chain) {
 				case 1:
-					return 'https://mainnet.zauction.api.zero.tech/api';
+					return 'https://zproduction.ilios.dev/api';
 				case 42:
-					return 'https://zauction-kovan-api.herokuapp.com/api';
+					return 'https://zproxy.ilios.dev/api';
 				default:
 					return 'Unsupported Chain';
 			}

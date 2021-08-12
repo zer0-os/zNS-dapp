@@ -1,9 +1,6 @@
-import { Metadata } from 'lib/types';
-
 export * from './domains';
 
 interface DomainMetadataParams {
-	previewImage?: Buffer;
 	image: Buffer;
 	name: string;
 	story: string;
@@ -15,35 +12,7 @@ interface UploadResponseDTO {
 	url: string;
 }
 
-const uploadApiEndpoint = `https://zns-backend.herokuapp.com/api/upload`;
-
-const uploadData = async (dataToUpload: string | Buffer) => {
-	const dataResponse = await fetch(uploadApiEndpoint, {
-		method: 'POST',
-		body: dataToUpload,
-	});
-	const dataUploaded = (await dataResponse.json()) as UploadResponseDTO;
-	return dataUploaded;
-};
-
-const uploadMetadata = async (params: DomainMetadataParams) => {
-	// upload images to http backend
-	const image = await uploadData(params.image);
-
-	const metadataObject: Metadata = {
-		title: params.name,
-		description: params.story,
-		image: image.url,
-	};
-
-	if (params.previewImage) {
-		//if params has the optional preview image it builds metadata with it
-		const previewImage = await uploadData(params.previewImage);
-		metadataObject.previewImage = previewImage.url;
-	}
-
-	return metadataObject;
-};
+const uploadApiEndpoint = `https://zns-backend.netlify.app/.netlify/functions/upload`;
 
 /**
  * Creates and uploads a domains metadata to IPFS
@@ -52,10 +21,27 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
  */
 
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
+	// upload image to http backend
+
+	const imageResponse = await fetch(uploadApiEndpoint, {
+		method: 'POST',
+		body: JSON.stringify(params.image),
+	});
+	const image = (await imageResponse.json()) as UploadResponseDTO;
+
 	// upload metadata to IPFS
-	const metadataObject = await uploadMetadata(params);
+	const metadataObject = {
+		name: params.name,
+		description: params.story,
+		image: image.url,
+	};
 	const metadataAsString = JSON.stringify(metadataObject);
-	const metadata = await uploadData(metadataAsString);
+
+	const metadataResponse = await fetch(uploadApiEndpoint, {
+		method: 'POST',
+		body: metadataAsString,
+	});
+	const metadata = (await metadataResponse.json()) as UploadResponseDTO;
 
 	return metadata.url;
 };
@@ -66,7 +52,11 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
  * @returns Uri to uploaded data
  */
 export const uploadToIPFS = async (data: string | Buffer) => {
-	const uploaded = await uploadData(data);
+	const uploadedResponse = await fetch(uploadApiEndpoint, {
+		method: 'POST',
+		body: data,
+	});
+	const uploaded = (await uploadedResponse.json()) as UploadResponseDTO;
 	return uploaded.url;
 };
 

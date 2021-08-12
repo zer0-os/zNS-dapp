@@ -9,19 +9,21 @@ import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { randomName, randomImage } from 'lib/Random';
 import { ethers } from 'ethers';
 import { tokenToUsd } from 'lib/coingecko';
-import { getMetadata } from 'lib/metadata';
 
 //- Style Imports
 import styles from './Request.module.css';
 
 //- Type Imports
-import { DomainRequestAndContents, Metadata } from 'lib/types';
+import {
+	DisplayDomainRequestAndContents,
+	DomainRequestAndContents,
+} from 'lib/types';
 
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
 
 type RequestProps = {
-	request: DomainRequestAndContents;
+	request: DisplayDomainRequestAndContents;
 	// @TODO Change 'yours' to 'sentByYou'
 	yours?: boolean;
 	onApprove: (request: DomainRequestAndContents) => void;
@@ -51,7 +53,6 @@ const Request: React.FC<RequestProps> = ({
 	const [isModalOpen, setIsModalOpen] = useState(false); // Toggle confirmation overlay
 	const isFulfilling =
 		yours && request.request.approved && !request.request.fulfilled;
-	const [metadata, setMetadata] = useState<Metadata | undefined>();
 
 	// Token offer in correct format
 	const tokenAmount = Number(
@@ -78,13 +79,6 @@ const Request: React.FC<RequestProps> = ({
 	/////////////
 
 	React.useEffect(() => {
-		getMetadata(request.contents.metadata).then((d) => {
-			if (!d) return;
-			setMetadata(d);
-		});
-	}, [request]);
-
-	React.useEffect(() => {
 		tokenToUsd('wilder-world').then((d) => {
 			setStake(d as number);
 		});
@@ -105,7 +99,7 @@ const Request: React.FC<RequestProps> = ({
 				>
 					<div>
 						<Image
-							src={metadata?.image || ''}
+							src={request.metadata.image}
 							style={{
 								width: 'auto',
 								maxHeight: '80vh',
@@ -155,13 +149,13 @@ const Request: React.FC<RequestProps> = ({
 
 			{/* Preview Image (Clickable) */}
 			<div className={styles.Image}>
-				<Image src={metadata?.image} onClick={preview} />
+				<Image src={request.metadata.image} onClick={preview} />
 			</div>
 
 			{/* Requested Domain Info (Name, description, etc.) */}
 			<div className={styles.Info}>
 				<div>
-					<h1 className="glow-text-white">{metadata?.title || ''}</h1>
+					<h1 className="glow-text-white">{request.metadata.title}</h1>
 					<span className={styles.Domain}>0://{request.request.domain}</span>
 					<Member
 						style={{ marginTop: 16 }}
@@ -172,7 +166,7 @@ const Request: React.FC<RequestProps> = ({
 						subtext={'Creator'}
 					/>
 				</div>
-				<div className={styles.Story}>{metadata?.description || ''}</div>
+				<div className={styles.Story}>{request.metadata.description}</div>
 
 				{/* Stake Info */}
 				<div>

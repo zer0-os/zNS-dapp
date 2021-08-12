@@ -37,32 +37,28 @@
 }
 
 .NFT {
-	position: relative;
 	cursor: pointer;
-	min-height: 224px;
-	flex-basis: 0;
-	flex-grow: 1;
+	height: 224px;
 	margin-right: 12px;
 	min-width: 224px;
 
-	background: rgba(255, 255, 255, 0.05);
+	overflow: hidden;
 
+	transition: transform var(--animation-time-medium) ease-in-out;
 	width: 224px;
 }
 
-.NFT img {
+.NFT > img {
 	border-radius: inherit;
 	height: 100%;
 	width: 100%;
-	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
-.NFT:hover img {
+.NFT:hover {
 	transform: scale(1.05);
 }
 
 .Details {
-	flex: 1;
 	margin-left: 12px;
 }
 
@@ -85,13 +81,6 @@
 .Price span:nth-of-type(2) {
 	font-size: 14px;
 	font-weight: 700;
-}
-
-.ViewAll {
-	display: block;
-	margin-top: 24px;
-	padding: 0;
-	font-size: 16px;
 }
 
 .InputWrapper {

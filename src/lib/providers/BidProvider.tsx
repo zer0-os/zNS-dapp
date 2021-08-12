@@ -4,13 +4,14 @@ import React from 'react';
 //- Library Imports
 import { Domain, Bid } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { tryFunction } from 'lib/utils';
 import * as zAuction from '../zAuction';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
 import { useWeb3React } from '@web3-react/core';
+import { AccountBidsDto, NftIdBidsDto } from '../zAuction';
 import { useZAuctionBaseApiUri } from 'lib/hooks/useZAuctionBaseApiUri';
 import { useChainSelector } from './ChainSelectorProvider';
 
@@ -27,8 +28,7 @@ export const BidContext = React.createContext({
 	placeBid: async (
 		domain: Domain,
 		bid: number,
-		onStep: (step: string) => void,
-	): Promise<void> => {
+	): Promise<boolean | undefined> => {
 		return;
 	},
 	acceptBid: async (
@@ -140,7 +140,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 			try {
 				const displayBids = bids.map((e) => {
-					return getBidParameters(e, undefined);
+					return getBidParameters(e, undefined, id);
 				});
 
 				return displayBids;
@@ -155,22 +155,36 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 	//this will receive either DTOs, and will populate the parameters with the correct data
 	function getBidParameters(
-		dto: zAuction.BidDto,
-		tokenId: string | undefined,
+		DTO: NftIdBidsDto | AccountBidsDto,
+		idToken: string | undefined,
+		account: string | undefined,
 	): Bid {
-		const amount = Number(ethers.utils.formatEther(dto.bidAmount));
+		const bidderAccount =
+			(DTO as NftIdBidsDto).account !== undefined //if account its defined, its a NftIdBidsDto, if not its a AccountBidsDto
+				? (DTO as NftIdBidsDto).account
+				: account!;
+		const tokenId =
+			(DTO as NftIdBidsDto).account !== undefined
+				? idToken!
+				: (DTO as AccountBidsDto).tokenId;
+		const nftAddress =
+			(DTO as NftIdBidsDto).account !== undefined
+				? contracts!.registry.address
+				: (DTO as AccountBidsDto).contractAddress;
+
+		const amount = Number(ethers.utils.formatEther(DTO.bidAmount));
 
 		return {
-			bidderAccount: dto.account,
+			bidderAccount,
 			amount,
-			date: new Date(dto.date),
-			tokenId: dto.tokenId,
-			signature: dto.signedMessage,
-			auctionId: dto.auctionId,
-			nftAddress: dto.contractAddress,
-			minBid: dto.minimumBid,
-			startBlock: dto.startBlock,
-			expireBlock: dto.expireBlock,
+			date: new Date(), // not supported by zAuction
+			tokenId,
+			signature: DTO.signedMessage,
+			auctionId: DTO.auctionId,
+			nftAddress,
+			minBid: DTO.minimumBid,
+			startBlock: DTO.startBlock,
+			expireBlock: DTO.expireBlock,
 		};
 	}
 
@@ -179,54 +193,47 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			throw Error(`no api endpoint`);
 		}
 		try {
-			let bids = (await zAuction.getBidsForNft(
+			const bids = await zAuction.getBidsForNft(
 				baseApiUri,
 				contracts!.registry.address,
 				domain.id,
-			)) as zAuction.BidDto[];
+			);
 
 			try {
-				bids = bids.filter((e) => {
-					return e.account.toLowerCase() !== domain.owner.id.toLowerCase();
-				});
-
-				let displayBids = bids.map((e) => {
-					return getBidParameters(e, domain.id);
-				});
-
-				displayBids.sort((a, b) => {
-					return b.amount - a.amount;
+				const displayBids = bids.map((e) => {
+					return getBidParameters(e, domain.id, undefined);
 				});
 
 				// @TODO: Add filtering expired/invalid bids out
 				return displayBids;
 			} catch (e) {
-				return;
+				return [];
 			}
 		} catch (e) {
-			console.error(`Failed to retrieve bids for ${domain.id}: ${e}`);
-			return;
+			console.error('Failed to retrive bids for domain ' + domain.id);
+			return [];
 		}
 	};
 
-	const placeBid = async (
-		domain: Domain,
-		bid: number,
-		onStep: (status: string) => void,
-	) => {
+	const placeBid = async (domain: Domain, bid: number) => {
 		if (baseApiUri === undefined) {
 			throw Error(`no api endpoint`);
 		}
-
-		await zAuction.placeBid(
-			baseApiUri,
-			context.library!,
-			contracts!.registry.address,
-			domain.id,
-			ethers.utils.parseEther(bid.toString()).toString(),
-			onStep,
-		);
-		addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
+		// Replace with bid functionality
+		try {
+			await zAuction.placeBid(
+				baseApiUri,
+				context.library!,
+				contracts!.registry.address,
+				domain.id,
+				ethers.utils.parseEther(bid.toString()).toString(),
+			);
+			addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
+			return true;
+		} catch (e) {
+			console.error(e);
+			return;
+		}
 	};
 
 	const contextValue = {

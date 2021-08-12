@@ -35,6 +35,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, content }) => {
 	return (
 		<div ref={wrapperRef} className={styles.Tooltip}>
 			<div onClick={toggle}>{children}</div>
+			{console.log(open)}
 			<div
 				className={`${styles.Content} ${open ? styles.Open : styles.Closed}`}
 			>

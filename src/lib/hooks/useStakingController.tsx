@@ -41,7 +41,6 @@ export function useStakingController(): StakingControllerHooks {
 
 			// Create the intended metadata
 			const intendedMetadata = await createDomainMetadata({
-				previewImage: params.nft.previewImage,
 				image: params.nft.image,
 				name: params.nft.name,
 				story: params.nft.story,

@@ -15,7 +15,6 @@ import MintProvider from 'lib/providers/MintProvider';
 import BidProvider from 'lib/providers/BidProvider';
 import CurrencyProvider from 'lib/providers/CurrencyProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
-import TransferProvider from './lib/providers/TransferProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
@@ -54,16 +53,11 @@ function App() {
 	return (
 		<HashRouter>
 			<Route
-				render={({ location, match }) => {
-					return (
-						<>
-							<ZNS
-								domain={location.pathname}
-								isNftView={location.search === '?view'}
-							/>
-						</>
-					);
-				}}
+				render={({ location, match }) => (
+					<>
+						<ZNS domain={location.pathname} />
+					</>
+				)}
 			/>
 		</HashRouter>
 	);
@@ -81,15 +75,13 @@ function wrappedApp() {
 							<MvpVersionProvider>
 								<CurrencyProvider>
 									<BidProvider>
-										<TransferProvider>
-											<StakingRequestProvider>
-												<MintProvider>
-													<EnlistProvider>
-														<App />
-													</EnlistProvider>
-												</MintProvider>
-											</StakingRequestProvider>
-										</TransferProvider>
+										<StakingRequestProvider>
+											<MintProvider>
+												<EnlistProvider>
+													<App />
+												</EnlistProvider>
+											</MintProvider>
+										</StakingRequestProvider>
 									</BidProvider>
 								</CurrencyProvider>
 							</MvpVersionProvider>
