@@ -147,16 +147,6 @@
 	margin: 32px auto;
 }
 
-.ErrorMessage {
-	display: block;
-	margin-top: 12px;
-
-	color: var(--color-invalid);
-	font-size: 18px;
-	font-weight: 700;
-	text-align: center;
-}
-
 .Spinner {
 	width: 18px;
 	height: 18px;

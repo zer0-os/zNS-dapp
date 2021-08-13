@@ -196,7 +196,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			await placeBid(domain, bidAmount, onStep);
 			onBid();
 		} catch (e) {
-			setError(e && (e.toString() ?? ''));
+			setError(e && (e.message ?? ''));
+			setIsMetamaskWaiting(false);
 		}
 	};
 
@@ -476,7 +477,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		let errorMessage: Maybe<React.ReactFragment>;
 
 		if (error) {
-			errorMessage = <p className={styles.ErrorMessage}>{error}</p>;
+			errorMessage = (
+				<p
+					style={{ textAlign: 'center', marginTop: '12px' }}
+					className={styles.Error}
+				>
+					{error}
+				</p>
+			);
 		}
 
 		return (
