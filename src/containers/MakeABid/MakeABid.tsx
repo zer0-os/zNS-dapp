@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 //- Library Imports
-import { Domain, Metadata, Bid } from 'lib/types';
+import { Domain, Metadata, Bid, Maybe } from 'lib/types';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
 import { toFiat } from 'lib/currency';
@@ -24,7 +24,6 @@ import {
 	Member,
 	Overlay,
 	LoadingIndicator,
-	Spinner,
 } from 'components';
 import { BidList } from 'containers';
 
@@ -82,7 +81,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, chainId } = walletContext;
+	const { account } = walletContext;
 
 	const znsContracts = useZnsContracts()!;
 	const zAuctionAddress = znsContracts.zAuction.address;
@@ -353,68 +352,83 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		);
 	};
 
-	const bidStep = () => (
-		<>
-			{modals()}
-			<div
-				className={styles.Section}
-				style={{ display: 'flex', padding: '0 37.5px' }}
-			>
-				{nft()}
-				{details()}
-			</div>
-			<div className={styles.InputWrapper}>
-				{wildBalance === undefined && (
-					<>
-						<LoadingIndicator text="Checking WILD Balance" />
-					</>
-				)}
-				{wildBalance && wildBalance > (currentHighestBid?.amount || 0) && (
-					<>
-						<p className="glow-text-blue">Enter the amount you wish to bid:</p>
-						<span style={{ marginBottom: 8 }} className={styles.Estimate}>
-							Your Balance: {Number(wildBalance).toLocaleString()} WILD
-						</span>
-						<form onSubmit={formSubmit}>
-							<TextInput
-								onChange={(text: string) => setBid(text)}
-								placeholder="Bid amount (WILD)"
-								error={error.length > 0}
-								errorText={error}
-								numeric
-								text={bid}
-								style={{ width: 268, margin: '0 auto' }}
-							/>
-						</form>
-						{estimation()}
-						<FutureButton
-							style={{
-								height: 36,
-								borderRadius: 18,
-								textTransform: 'uppercase',
-								margin: '32px auto 0 auto',
-							}}
-							loading={isBidPending}
-							onClick={continueBid}
-							glow={isBidValid}
-						>
-							Continue
-						</FutureButton>
-					</>
-				)}
-				{wildBalance && wildBalance <= (currentHighestBid?.amount || 0) && (
-					<>
-						<p className={styles.Error}>
-							You don't have enough WILD to bid on this NFT
-						</p>
-						<span className={styles.Estimate}>
-							Your Balance: {Number(wildBalance).toLocaleString()} WILD
-						</span>
-					</>
-				)}
-			</div>
-		</>
-	);
+	const loadingWildBalance = wildBalance === undefined;
+
+	const bidStep = () => {
+		let bidTooHighWarning: Maybe<React.ReactFragment> = null;
+
+		if (!loadingWildBalance && Number(bid) > wildBalance!) {
+			bidTooHighWarning = (
+				<>
+					<p className={styles.Error} style={{ paddingTop: '16px' }}>
+						You don't have enough WILD to place that large of a bid
+					</p>
+				</>
+			);
+		}
+
+		return (
+			<>
+				{modals()}
+				<div
+					className={styles.Section}
+					style={{ display: 'flex', padding: '0 37.5px' }}
+				>
+					{nft()}
+					{details()}
+				</div>
+				<div className={styles.InputWrapper}>
+					{loadingWildBalance && (
+						<>
+							<LoadingIndicator text="Checking WILD Balance" />
+						</>
+					)}
+					{
+						<>
+							<p className="glow-text-blue">
+								Enter the amount you wish to bid:
+							</p>
+							<span style={{ marginBottom: 8 }} className={styles.Estimate}>
+								Your Balance: {Number(wildBalance).toLocaleString()} WILD
+							</span>
+							<form onSubmit={formSubmit}>
+								<TextInput
+									onChange={(text: string) => setBid(text)}
+									placeholder="Bid amount (WILD)"
+									error={error.length > 0}
+									errorText={error}
+									numeric
+									text={bid}
+									style={{ width: 268, margin: '0 auto' }}
+								/>
+							</form>
+							{estimation()}
+							{bidTooHighWarning}
+							<FutureButton
+								style={{
+									height: 36,
+									borderRadius: 18,
+									textTransform: 'uppercase',
+									margin: '32px auto 0 auto',
+								}}
+								loading={isBidPending}
+								onClick={() => {
+									if (!isBidValid) {
+										return;
+									}
+
+									continueBid();
+								}}
+								glow={isBidValid}
+							>
+								Continue
+							</FutureButton>
+						</>
+					}
+				</div>
+			</>
+		);
+	};
 
 	const approveStep = () => {
 		return (
@@ -492,8 +506,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				<>
 					{hasApprovedTokenTransfer && (
 						<>
-							<p style={{ textAlign: 'center', marginTop: 24 }}>
-								You are about to place a{' '}
+							<p
+								style={{ textAlign: 'center', marginTop: 24, lineHeight: 1.3 }}
+							>
+								Are you sure you want to place a{' '}
 								<b className="glow-text-white">
 									{Number(bid).toLocaleString()} WILD
 								</b>{' '}
@@ -517,7 +533,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			)}
 			{isMetamaskWaiting && (
 				<>
-					<LoadingIndicator style={{ marginTop: 24 }} text="Processing bid" />
+					<LoadingIndicator style={{ marginTop: 24 }} text={statusText} />
 				</>
 			)}
 			{error && (
