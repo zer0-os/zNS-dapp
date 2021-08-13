@@ -97,11 +97,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	// Functions //
 	///////////////
 
-	const navigateTo = (domain: string) => {
-		const relativeDomain = getRelativeDomainPath(domain);
-		history.push(relativeDomain);
-	};
-
 	const showAllBidsModal = () => setIsAllBidsModalOpen(true);
 	const hideAllBidsModal = () => setIsAllBidsModalOpen(false);
 
@@ -111,19 +106,64 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	};
 
 	const approveZAuction = async () => {
+		setStatusText('Ensuring you have enough gas to approve zAuction...');
+		setError(``);
+		setIsApprovalInProgress(true);
+
 		try {
-			setIsApprovalInProgress(true);
-			const tx = await wildContract.approve(
+			const gasRequired = await wildContract.estimateGas.approve(
 				zAuctionAddress,
 				ethers.constants.MaxUint256,
 			);
-			await tx.wait();
-			setHasApprovedTokenTransfer(true);
-			setIsApprovalInProgress(false);
+			const gasPrice = await wildContract.signer.getGasPrice();
+			const userBalance = await wildContract.signer.getBalance();
+
+			const totalPrice = gasPrice.mul(gasRequired);
+			if (userBalance.lt(totalPrice)) {
+				setError(`You don't have enough Ether to use as gas`);
+				setIsApprovalInProgress(false);
+				return;
+			}
 		} catch (e) {
-			console.warn('zAuction approval failed');
+			console.error(e);
+			setError(`Failed to calculate gas costs. Please try again later.`);
 			setIsApprovalInProgress(false);
+			return;
 		}
+
+		setStatusText('Please submit the approval transaction from your wallet.');
+
+		let tx: Maybe<ethers.ContractTransaction>;
+
+		try {
+			tx = await wildContract.approve(
+				zAuctionAddress,
+				ethers.constants.MaxUint256,
+			);
+		} catch (e) {
+			console.error(e);
+			if (e.code === 4001) {
+				setError(`Transaction rejected`);
+			} else {
+				setError(`Failed to submit transaction.`);
+			}
+			setIsApprovalInProgress(false);
+			return;
+		}
+
+		setStatusText('Waiting for approval transaction to be confirmed.');
+		try {
+			await tx.wait();
+		} catch (e) {
+			setError(`Transaction failed, try again later.`);
+			console.error(e);
+
+			setIsApprovalInProgress(false);
+			return;
+		}
+
+		setHasApprovedTokenTransfer(true);
+		setIsApprovalInProgress(false);
 	};
 
 	const continueBid = async () => {
@@ -151,6 +191,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		// Send bid to hook
 		setIsMetamaskWaiting(true);
 		setError('');
+		setStatusText('');
 		try {
 			await placeBid(domain, bidAmount, onStep);
 			onBid();
@@ -202,6 +243,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	}, [hasApprovedTokenTransfer]);
 
 	useEffect(() => {
+		setError(``);
 		if (step === Steps.Approve) {
 			checkAllowance();
 		}
@@ -431,6 +473,12 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	};
 
 	const approveStep = () => {
+		let errorMessage: Maybe<React.ReactFragment>;
+
+		if (error) {
+			errorMessage = <p className={styles.ErrorMessage}>{error}</p>;
+		}
+
 		return (
 			<div
 				className={styles.Section}
@@ -461,6 +509,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 								>
 									Approve zAuction
 								</FutureButton>
+								{errorMessage}
 							</>
 						)}
 					</>
@@ -473,20 +522,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 						/>
 					</>
 				)}
-				{isMetamaskWaiting && (
-					<>
-						<LoadingIndicator
-							style={{ marginTop: 24 }}
-							text="Hold tight while we process your bid"
-						/>
-					</>
-				)}
 				{isApprovalInProgress && (
 					<>
-						<LoadingIndicator
-							style={{ marginTop: 24 }}
-							text="zAuction approval in progress"
-						/>
+						<LoadingIndicator style={{ marginTop: 24 }} text={statusText} />
 					</>
 				)}
 			</div>
