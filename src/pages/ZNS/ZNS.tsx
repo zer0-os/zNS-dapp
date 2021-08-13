@@ -181,12 +181,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	const closeModal = () => {
 		setModal(undefined);
-	}
+	};
 	const openMint = () => setModal(Modal.Mint);
 	const openProfile = () => setModal(Modal.Profile);
 	const openWallet = () => {
 		setModal(Modal.Wallet);
-	}
+	};
 	const openBidOverlay = () => {
 		if (!znsDomain.domain) return;
 		setModal(Modal.Bid);
@@ -227,14 +227,21 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	/* Find the freshly minted NFT */
 	useEffect(() => {
-		try {
-			const d = minted[minted.length - 1] as NftParams;
-			const newDomain = `${d.zna === '/' ? d.zna : d.zna + '.'}${d.domain}`;
-			// Temporarily disabled
-			// history.push(newDomain);
-		} catch (e) {
-			console.error('Failed to find newly minted zNA');
+		console.log(minted);
+		if (minted.length === 0) {
+			return;
 		}
+
+		znsDomain.refetch();
+
+		// try {
+		// 	const d = minted[minted.length - 1] as NftParams;
+		// 	const newDomain = `${d.zna === '/' ? d.zna : d.zna + '.'}${d.domain}`;
+		// 	// Temporarily disabled
+		// 	// history.push(newDomain);
+		// } catch (e) {
+		// 	console.error('Failed to find newly minted zNA');
+		// }
 	}, [minted]);
 
 	/* Handle notification for wallet changes */
@@ -452,9 +459,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						isSearchActive={isSearchActive}
 						setIsSearchActive={setIsSearchActive}
 					>
-						
 						<div>
-						{!account && localStorage.getItem('chosenWallet') &&(
+							{!account && localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={() => openWallet()}>
 									<div
 										style={{

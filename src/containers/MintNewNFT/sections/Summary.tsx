@@ -19,6 +19,7 @@ import addressIcon from './assets/address.svg';
 
 //- Component Imports
 import { FutureButton, Image, LoadingIndicator } from 'components';
+import { Maybe } from 'lib/types';
 
 type SummaryProps = {
 	token: TokenInformationType | null;
@@ -27,6 +28,7 @@ type SummaryProps = {
 	onContinue: () => void;
 	isMintLoading: boolean;
 	domain: string;
+	errorText: string;
 };
 
 const Summary: React.FC<SummaryProps> = ({
@@ -36,12 +38,23 @@ const Summary: React.FC<SummaryProps> = ({
 	onContinue,
 	isMintLoading,
 	domain,
+	errorText,
 }) => {
 	let parentDomain;
 	if (domain.substring(1).length > 0) parentDomain = domain.substring(1) + '.';
 	else parentDomain = domain.substring(1);
 
 	if (!token) return <></>;
+
+	let errorMessage: Maybe<React.ReactFragment>;
+
+	if (errorText.length > 0 && !isMintLoading) {
+		errorMessage = (
+			<p style={{ marginTop: '16px' }} className={styles.Error}>
+				{`${errorText} Try again later.`}
+			</p>
+		);
+	}
 
 	return (
 		<div className={styles.Section}>
@@ -118,6 +131,7 @@ const Summary: React.FC<SummaryProps> = ({
 						MINT
 					</FutureButton>
 				)}
+				{errorMessage}
 				{isMintLoading && <LoadingIndicator text="Minting in progress" />}
 			</div>
 		</div>

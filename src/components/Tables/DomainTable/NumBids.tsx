@@ -36,11 +36,12 @@ const NumBids: React.FC<NumBidsProps> = ({ domain, refreshKey }) => {
 
 	useEffect(() => {
 		isMounted.current = true;
+		setIsLoading(true);
 		getBids();
 		return () => {
 			isMounted.current = false;
 		};
-	}, [refreshKey]);
+	}, [domain]);
 
 	useEffect(() => {
 		if (refreshKey === domain.id) {
