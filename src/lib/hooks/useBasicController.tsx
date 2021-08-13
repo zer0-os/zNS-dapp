@@ -1,27 +1,37 @@
 import { useZnsContracts } from 'lib/contracts';
 import { createDomainMetadata } from 'lib/utils';
-import { NftParams } from 'lib/types';
+import { Maybe, NftParams } from 'lib/types';
+import { ethers } from 'ethers';
 
 export function useBasicController() {
 	const basicController = useZnsContracts()?.basicController;
 
-	const registerSubdomain = async (params: NftParams) => {
+	const registerSubdomain = async (
+		params: NftParams,
+	): Promise<ethers.ContractTransaction> => {
 		if (!basicController) {
-			console.error(`no controller`);
-			return;
+			throw Error(`No basic controller.`);
 		}
 
+		// get metadata uri
+		let metadataUri: Maybe<string>;
+
 		try {
-			// get metadata uri
-			const metadataUri = await createDomainMetadata({
+			metadataUri = await createDomainMetadata({
 				previewImage: params.previewImage,
 				image: params.image,
 				name: params.name,
 				story: params.story,
 			});
+		} catch (e) {
+			console.error(e);
+			throw Error(`Failed to upload metadata.`);
+		}
 
-			// register subdomain
-			const tx = await basicController.registerSubdomainExtended(
+		// register subdomain
+		let tx: Maybe<ethers.ContractTransaction>;
+		try {
+			tx = await basicController.registerSubdomainExtended(
 				params.parent,
 				params.domain,
 				params.owner,
@@ -29,14 +39,15 @@ export function useBasicController() {
 				0,
 				params.locked,
 			);
-
-			return tx;
 		} catch (e) {
-			if (e.message || e.data) {
-				console.error(`failed to mint: ${e.data} : ${e.message}`);
-			}
 			console.error(e);
+			if (e.code === 4001) {
+				throw Error(`Transaction rejected by wallet.`);
+			}
+			throw Error(`Failed to submit transaction.`);
 		}
+
+		return tx;
 	};
 
 	return { registerSubdomain };

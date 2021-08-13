@@ -91,6 +91,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		useState<TokenInformationType | null>(null);
 	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
 	const [step, setStep] = useState(MintState.DomainDetails);
+	const [error, setError] = useState('');
 
 	// @todo reimplement for later releases
 	// Token Dynamics Page
@@ -134,7 +135,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 			existingNames = subdomains.map((sub: string) => {
 				const split = sub.split(domainName.substring(1));
 				const dot = split[split.length - 1].split('.');
-				console.log(dot[dot.length - 1]);
 				return dot[dot.length - 1];
 			});
 		}
@@ -235,6 +235,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 
 				onMint();
 			} catch (e) {
+				setError(e && (e.message ?? ''));
 				setIsMintLoading(false);
 			}
 		};
@@ -331,6 +332,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						onContinue={submit}
 						isMintLoading={isMintLoading}
 						domain={domainName}
+						errorText={error}
 					/>
 				)}
 			</div>

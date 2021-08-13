@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
-import { NftParams } from 'lib/types';
+import { Maybe, NftParams } from 'lib/types';
 import { useBasicController } from '../hooks/useBasicController';
+import { ethers } from 'ethers';
 
 export const MintContext = React.createContext({
 	minting: [{}],
@@ -26,17 +27,20 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 	const { registerSubdomain } = useBasicController();
 
 	const mint = async (nft: NftParams) => {
-		const tx = await registerSubdomain(nft);
-		if (!tx) {
+		let tx: Maybe<ethers.ContractTransaction>;
+
+		try {
+			tx = await registerSubdomain(nft);
+		} catch (e) {
 			addNotification('Encountered an error while attempting to mint.');
-			return;
+			throw e;
 		}
 
 		addNotification(`Started minting ${nft.name}`);
 		setMinting([...minting, nft]);
 
 		const finishMinting = async () => {
-			await tx.wait();
+			await tx!.wait();
 			setFinishedMinting(nft);
 		};
 
