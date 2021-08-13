@@ -48,7 +48,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		if (!loadTime.current) loadTime.current = new Date();
 		if (metadataUrl) {
 			getMetadata(metadataUrl).then((m: Metadata | undefined) => {
-				if (loadTime.current) {
+				if (loadTime.current && isMounted.current) {
 					// If the metadata was loaded fast it was probably
 					// from cache, so we should just skip the animation
 					const loadedInMs = new Date().getTime() - loadTime.current.getTime();
@@ -70,7 +70,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		return () => {
 			isMounted.current = false;
 		};
-	}, []);
+	}, [metadataUrl]);
 
 	return (
 		<>
