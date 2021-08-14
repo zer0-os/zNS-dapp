@@ -59,7 +59,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const context = useWeb3React<Web3Provider>();
 	const { account } = context; // account = connected wallet ID
 
-	// WILD Balance
+	// LOOT Balance
 	const znsContracts = useZnsContracts()!;
 	const lootContract: ERC20 = znsContracts.lootToken;
 

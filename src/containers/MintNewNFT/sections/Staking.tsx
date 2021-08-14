@@ -47,7 +47,7 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 	const balanceIndicator = () => (
 		<>
 			<span style={{ marginBottom: 8 }} className={styles.Estimate}>
-				{balance && <>Your Balance: {Number(balance).toLocaleString()} WILD</>}
+				{balance && <>Your Balance: {Number(balance).toLocaleString()} LOOT</>}
 				{!balance && <>Your Balance: Loading...</>}
 			</span>
 		</>
