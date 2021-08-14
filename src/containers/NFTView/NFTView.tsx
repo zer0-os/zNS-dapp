@@ -243,8 +243,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						account.length - 4,
 					)}`}</a>
 				</b>{' '}
-				made an offer of{' '}
-				<b>{Number(amount.toFixed(2)).toLocaleString()} WILD</b>
+				made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
 			</div>
 			<div>
 				<b>{moment(date).fromNow()}</b>
