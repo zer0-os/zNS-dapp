@@ -22,6 +22,7 @@ export interface ContractAddresses {
 	registrar: string;
 	staking: string;
 	wildToken: string;
+	lootToken: string;
 	zAuction: string;
 }
 
@@ -30,6 +31,7 @@ export interface Contracts {
 	basicController: BasicController;
 	stakingController: StakingController;
 	wildToken: ERC20;
+	lootToken: ERC20;
 	zAuction: ZauctionSupportingZNS;
 }
 
@@ -69,6 +71,7 @@ function useZnsContracts(): Contracts | null {
 				signer,
 			),
 			wildToken: ERC20__factory.connect(contracts.wildToken, signer),
+			lootToken: ERC20__factory.connect(contracts.lootToken, signer),
 			zAuction: ZauctionSupportingZNS__factory.connect(
 				contracts.zAuction,
 				signer,

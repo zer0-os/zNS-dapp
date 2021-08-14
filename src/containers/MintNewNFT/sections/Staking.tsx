@@ -30,7 +30,7 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 		if (balance && stake > balance) return setError('Insufficient balance');
 		onContinue({
 			amount: parseFloat(amount),
-			currency: 'WILD',
+			currency: 'LOOT',
 		});
 	};
 
@@ -66,7 +66,7 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 			{balanceIndicator()}
 			<div style={{ margin: '0 auto', position: 'relative' }}>
 				<TextInput
-					placeholder={'Stake amount (WILD)'}
+					placeholder={'Stake amount (LOOT)'}
 					onChange={(amount: string) => setAmount(amount)}
 					text={amount}
 					style={{ width: '215px' }}

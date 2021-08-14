@@ -61,7 +61,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 
 	// WILD Balance
 	const znsContracts = useZnsContracts()!;
-	const wildContract: ERC20 = znsContracts.wildToken;
+	const lootContract: ERC20 = znsContracts.lootToken;
 
 	// Mint/Staking Hooks
 	const mint = useMintProvider();
@@ -79,7 +79,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const [name, setName] = useState('');
 	const [domain, setDomain] = useState('');
 	const [isMintLoading, setIsMintLoading] = useState(false);
-	const [wildBalance, setWildBalance] = useState<number | undefined>();
+	const [lootBalance, setLootBalance] = useState<number | undefined>();
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [existingSubdomains, setExistingSubdomains] = useState<
 		string[] | undefined
@@ -113,11 +113,11 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		}
 
 		const fetchTokenBalance = async () => {
-			const balance = await wildContract.balanceOf(account);
-			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
+			const balance = await lootContract.balanceOf(account);
+			setLootBalance(parseInt(ethers.utils.formatEther(balance), 10));
 		};
 		fetchTokenBalance();
-	}, [wildContract, account]);
+	}, [lootContract, account]);
 
 	useEffect(() => {
 		resize();
@@ -318,7 +318,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				{/* SECTION 3: Staking */}
 				{step === MintState.Staking && (
 					<Staking
-						balance={wildBalance}
+						balance={lootBalance}
 						token={tokenStake}
 						onContinue={(data: TokenStakeType) => getTokenStake(data)}
 					/>
