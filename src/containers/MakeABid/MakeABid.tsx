@@ -423,53 +423,62 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					{details()}
 				</div>
 				<div className={styles.InputWrapper}>
-					{loadingWildBalance && (
+					{domain.owner.id.toLowerCase() === account?.toLowerCase() && (
+						<p className={styles.Error} style={{ paddingTop: '16px' }}>
+							You can not bid on your own domain
+						</p>
+					)}
+					{domain.owner.id.toLowerCase() !== account?.toLowerCase() && (
 						<>
-							<LoadingIndicator text="Checking WILD Balance" />
+							{loadingWildBalance && (
+								<>
+									<LoadingIndicator text="Checking WILD Balance" />
+								</>
+							)}
+							{
+								<>
+									<p className="glow-text-blue">
+										Enter the amount you wish to bid:
+									</p>
+									<span style={{ marginBottom: 8 }} className={styles.Estimate}>
+										Your Balance: {Number(wildBalance).toLocaleString()} WILD
+									</span>
+									<form onSubmit={formSubmit}>
+										<TextInput
+											onChange={(text: string) => setBid(text)}
+											placeholder="Bid amount (WILD)"
+											error={error.length > 0}
+											errorText={error}
+											numeric
+											text={bid}
+											style={{ width: 268, margin: '0 auto' }}
+										/>
+									</form>
+									{estimation()}
+									{bidTooHighWarning}
+									<FutureButton
+										style={{
+											height: 36,
+											borderRadius: 18,
+											textTransform: 'uppercase',
+											margin: '32px auto 0 auto',
+										}}
+										loading={isBidPending}
+										onClick={() => {
+											if (!isBidValid) {
+												return;
+											}
+
+											continueBid();
+										}}
+										glow={isBidValid}
+									>
+										Continue
+									</FutureButton>
+								</>
+							}
 						</>
 					)}
-					{
-						<>
-							<p className="glow-text-blue">
-								Enter the amount you wish to bid:
-							</p>
-							<span style={{ marginBottom: 8 }} className={styles.Estimate}>
-								Your Balance: {Number(wildBalance).toLocaleString()} WILD
-							</span>
-							<form onSubmit={formSubmit}>
-								<TextInput
-									onChange={(text: string) => setBid(text)}
-									placeholder="Bid amount (WILD)"
-									error={error.length > 0}
-									errorText={error}
-									numeric
-									text={bid}
-									style={{ width: 268, margin: '0 auto' }}
-								/>
-							</form>
-							{estimation()}
-							{bidTooHighWarning}
-							<FutureButton
-								style={{
-									height: 36,
-									borderRadius: 18,
-									textTransform: 'uppercase',
-									margin: '32px auto 0 auto',
-								}}
-								loading={isBidPending}
-								onClick={() => {
-									if (!isBidValid) {
-										return;
-									}
-
-									continueBid();
-								}}
-								glow={isBidValid}
-							>
-								Continue
-							</FutureButton>
-						</>
-					}
 				</div>
 			</>
 		);
