@@ -294,7 +294,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							creatorId={znsDomain?.domain?.minter?.id || ''}
 							disabled={
 								znsDomain.domain?.owner?.id.toLowerCase() ===
-								account?.toLowerCase()
+									account?.toLowerCase() || !active
 							}
 							ownerId={znsDomain?.domain?.owner?.id || ''}
 							mvpVersion={mvpVersion}
@@ -352,6 +352,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					isRootDomain={isRoot}
 					style={{ marginTop: 16 }}
 					empty={(znsDomain.domain && tableData.length === 0) as boolean}
+					disableButton={!active}
 					isGridView={isGridView}
 					setIsGridView={setIsGridView}
 					userId={account as string}
