@@ -147,6 +147,13 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		};
 	}, []);
 
+	useEffect(() => {
+		if (!userId) {
+			setBiddingOn(undefined);
+			closeModal();
+		}
+	}, [userId]);
+
 	// Resizes the table container
 	// (The animation is done in CSS)
 	useEffect(() => {
@@ -266,12 +273,21 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	// React Fragments //
 	/////////////////////
 
-	const overlays = () => (
-		<Overlay onClose={closeModal} centered open={modal === Modals.Bid}>
-			<MakeABid domain={biddingOn!} onBid={onBid} />
-		</Overlay>
-	);
-
+	const overlays = () => {
+		return (
+			<>
+				{userId && (
+					<Overlay
+						onClose={closeModal}
+						centered
+						open={modal === Modals.Bid && biddingOn !== undefined}
+					>
+						<MakeABid domain={biddingOn!} onBid={onBid} />
+					</Overlay>
+				)}
+			</>
+		);
+	};
 	////////////
 	// Render //
 	////////////

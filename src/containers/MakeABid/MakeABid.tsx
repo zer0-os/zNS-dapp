@@ -81,7 +81,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account } = walletContext;
+	const { account, active } = walletContext;
 
 	const znsContracts = useZnsContracts()!;
 	const zAuctionAddress = znsContracts.zAuction.address;
@@ -299,6 +299,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	/////////////////////
 	// React Fragments //
 	/////////////////////
+
+	if (!active) return <></>; // Render nothing if wallet disconnected
 
 	const modals = () => (
 		<>

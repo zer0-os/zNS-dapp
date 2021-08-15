@@ -51,6 +51,12 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 	// Effects //
 	/////////////
 
+	////////////
+	// Render //
+	////////////
+
+	if (!id) return <></>; // if user has disconnected wallet while profile is open
+
 	return (
 		<div
 			className={`${ProfileStyle.profile} blur border-primary border-rounded`}

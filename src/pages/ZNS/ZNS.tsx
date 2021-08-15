@@ -257,6 +257,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		}
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
+
+		// Check if we need to close a modal
+		if (
+			(!active && modal === Modal.Profile) ||
+			modal === Modal.Transfer ||
+			modal === Modal.Mint
+		) {
+			closeModal();
+		}
 	}, [active]);
 
 	useEffect(() => {
