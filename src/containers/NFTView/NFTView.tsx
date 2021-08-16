@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 import { useHistory } from 'react-router';
+import { BigNumber } from 'ethers';
 
 //- Component Imports
 import {
@@ -63,8 +64,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
-	const domainIdInteger = parseInt(domainId,16)
-	
+	const domainIdInteger = BigNumber.from(domainId);
 
 	const znsDomain = useZnsDomain(domainId);
 
@@ -79,7 +79,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const registrarAddress = contracts ? contracts.registry.address : '';
 
 	const etherscanBaseUri = getEtherscanUri(networkType);
-	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString(16)}`;
+	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
 
 	//- Functions
 	const copyContractToClipboard = () => {
