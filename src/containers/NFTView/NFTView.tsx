@@ -64,7 +64,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
-	const domainIdInteger = BigNumber.from(domainId);
+	const domainIdInteger = BigNumber.from(domainId); //domainId as bignumber used to redirect to etherscan link
 
 	const znsDomain = useZnsDomain(domainId);
 
