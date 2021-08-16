@@ -63,6 +63,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
+	const domainIdInteger = parseInt(domainId,16)
+
 	const znsDomain = useZnsDomain(domainId);
 
 	const { getBidsForDomain } = useBidProvider();
@@ -76,7 +78,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const registrarAddress = contracts ? contracts.registry.address : '';
 
 	const etherscanBaseUri = getEtherscanUri(networkType);
-	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainId}`;
+	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger}`;
 
 	//- Functions
 	const copyContractToClipboard = () => {
