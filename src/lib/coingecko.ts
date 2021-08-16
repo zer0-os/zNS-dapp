@@ -5,7 +5,7 @@ export const tokenToUsd = async (token: string): Promise<number> => {
 		return tokenToUsdCache[token]!;
 	}
 
-	if (token === "LOOT") {
+	if (token === 'LOOT') {
 		return 0.1;
 	}
 

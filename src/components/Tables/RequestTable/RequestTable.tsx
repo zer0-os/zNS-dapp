@@ -62,7 +62,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const znsContracts = useZnsContracts()!;
 	const yourRequests = useRequestsMadeByAccount(userId);
 	const requestsForYou = useRequestsForOwnedDomains(userId);
-	const wildToken = znsContracts.wildToken;
+	const lootToken = znsContracts.lootToken;
 
 	//////////////////
 	// State / Refs //
@@ -143,7 +143,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 */
 	const onApproveTokenTransfer = async () => {
 		try {
-			await wildToken.approve(
+			await lootToken.approve(
 				znsContracts.stakingController.address,
 				ethers.constants.MaxUint256,
 			);
@@ -153,13 +153,13 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
-		const allowance = await wildToken.allowance(
+		const allowance = await lootToken.allowance(
 			account!,
 			znsContracts.stakingController.address,
 		);
 
 		if (allowance.lt(request.request.offeredAmount)) {
-			setApproveTokenTransfer(wildToken.address);
+			setApproveTokenTransfer(lootToken.address);
 			return;
 		}
 
@@ -334,7 +334,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						{Number(
 							ethers.utils.formatEther(d.request.offeredAmount),
 						).toLocaleString()}{' '}
-						WILD
+						LOOT
 					</div>
 				),
 			},
@@ -439,7 +439,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						}}
 					>
 						<p>
-							You must approve zNS to transfer your WILD tokens before minting
+							You must approve zNS to transfer your LOOT tokens before minting
 							this domain.
 						</p>
 					</Confirmation>

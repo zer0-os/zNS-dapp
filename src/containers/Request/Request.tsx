@@ -85,7 +85,7 @@ const Request: React.FC<RequestProps> = ({
 	}, [request]);
 
 	React.useEffect(() => {
-		tokenToUsd('wilder-world').then((d) => {
+		tokenToUsd('LOOT').then((d) => {
 			setStake(d as number);
 		});
 	}, []);
