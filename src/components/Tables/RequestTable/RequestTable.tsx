@@ -80,9 +80,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [domainFilter, setDomainFilter] = useState('All Domains');
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
-	
+
 	const [isAllowed, setIsAllowed] = useState(false);
-	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false)
+	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DomainRequestAndContents | undefined
@@ -145,7 +145,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 * tokens on behalf of the user.
 	 */
 	const onApproveTokenTransfer = async () => {
-		setShowLoadingIndicator(true)
+		setShowLoadingIndicator(true);
 		try {
 			await lootToken.approve(
 				znsContracts.stakingController.address,
@@ -154,7 +154,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			console.error(e);
 		}
-		setShowLoadingIndicator(false)
+		setShowLoadingIndicator(false);
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
@@ -165,11 +165,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 		if (allowance.lt(request.request.offeredAmount)) {
 			setApproveTokenTransfer(lootToken.address);
-			setIsAllowed(false)
+			setIsAllowed(false);
 			return;
 		}
-		setIsAllowed(true)
-		setShowLoadingIndicator(true)
+		setIsAllowed(true);
+		setShowLoadingIndicator(true);
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
@@ -178,7 +178,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			console.error(e);
 		}
 
-		setShowLoadingIndicator(false)
+		setShowLoadingIndicator(false);
 	};
 
 	/* Sets some search parameters 
@@ -426,7 +426,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						onNavigate={onNavigate}
 						isAllowed={isAllowed}
 						request={viewing}
-						showLoadingIndicator ={showLoadingIndicator}
+						showLoadingIndicator={showLoadingIndicator}
 						yours={viewing.contents.requestor === userId}
 					/>
 				</Overlay>
