@@ -69,7 +69,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, chainId } = walletContext;
+	const { account, active, chainId } = walletContext;
 
 	const networkType = chainIdToNetworkType(chainId);
 	const contracts = useZnsContracts();
@@ -261,7 +261,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				Transfer Ownership
 			</FutureButton>
 			<FutureButton
-				glow={!isOwnedByYou}
+				glow={!isOwnedByYou && active}
 				onClick={openBidOverlay}
 				style={{ height: 36, borderRadius: 18 }}
 			>

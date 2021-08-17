@@ -33,6 +33,7 @@ import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
 	className?: string;
+	disableButton?: boolean;
 	domains: Domain[];
 	empty?: boolean;
 	hideOwnBids?: boolean;
@@ -55,6 +56,7 @@ enum Modals {
 
 const DomainTable: React.FC<DomainTableProps> = ({
 	className,
+	disableButton,
 	domains,
 	empty,
 	hideOwnBids,
@@ -107,6 +109,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	};
 
 	const buttonClick = (domain: Domain) => {
+		if (disableButton) return;
 		// Default behaviour
 		try {
 			if (domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
@@ -143,6 +146,13 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			window.removeEventListener('resize', handleResize);
 		};
 	}, []);
+
+	useEffect(() => {
+		if (!userId) {
+			setBiddingOn(undefined);
+			closeModal();
+		}
+	}, [userId]);
 
 	// Resizes the table container
 	// (The animation is done in CSS)
@@ -221,7 +231,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							{!rowButtonText && (
 								<FutureButton
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
-									glow={shouldGlow}
+									glow={disableButton === false && shouldGlow}
 									onClick={() => buttonClick(domain)}
 								>
 									{rowButtonText || 'Make A Bid'}
@@ -263,12 +273,21 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	// React Fragments //
 	/////////////////////
 
-	const overlays = () => (
-		<Overlay onClose={closeModal} centered open={modal === Modals.Bid}>
-			<MakeABid domain={biddingOn!} onBid={onBid} />
-		</Overlay>
-	);
-
+	const overlays = () => {
+		return (
+			<>
+				{userId && (
+					<Overlay
+						onClose={closeModal}
+						centered
+						open={modal === Modals.Bid && biddingOn !== undefined}
+					>
+						<MakeABid domain={biddingOn!} onBid={onBid} />
+					</Overlay>
+				)}
+			</>
+		);
+	};
 	////////////
 	// Render //
 	////////////
