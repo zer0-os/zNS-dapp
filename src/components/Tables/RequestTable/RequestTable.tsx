@@ -81,7 +81,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 	
-	const [isAllowed, setIsAllowed] = useState(false); // Not needed anymore?
+	const [isAllowed, setIsAllowed] = useState(false);
 	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false)
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
