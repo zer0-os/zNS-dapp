@@ -295,7 +295,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				</div>
 				<div className={styles.Info}>
 					<div>
-						<h1 className="glow-text-white">{znsDomain.domain?.name ?? ''}</h1>
+						<h1 className="glow-text-white">{znsDomain.domain?.title ?? ''}</h1>
 						<span>
 							{domain.length > 0 ? `0://wilder.${domain.substring(1)}` : ''}
 						</span>
