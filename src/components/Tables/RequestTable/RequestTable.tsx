@@ -80,7 +80,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [domainFilter, setDomainFilter] = useState('All Domains');
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
-	const [isTryingFulfill, setIsTryingFulfill] = useState(false)
+	
+	const [isAllowed, setIsAllowed] = useState(false); // Not needed anymore?
+	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false)
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DomainRequestAndContents | undefined
@@ -143,7 +145,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 * tokens on behalf of the user.
 	 */
 	const onApproveTokenTransfer = async () => {
-		setIsTryingFulfill(true)
+		setShowLoadingIndicator(true)
 		try {
 			await lootToken.approve(
 				znsContracts.stakingController.address,
@@ -152,11 +154,10 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			console.error(e);
 		}
-		setIsTryingFulfill(false)
+		setShowLoadingIndicator(false)
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
-		setIsTryingFulfill(true)
 		const allowance = await lootToken.allowance(
 			account!,
 			znsContracts.stakingController.address,
@@ -164,9 +165,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 		if (allowance.lt(request.request.offeredAmount)) {
 			setApproveTokenTransfer(lootToken.address);
+			setIsAllowed(false)
 			return;
 		}
-
+		setIsAllowed(true)
+		setShowLoadingIndicator(true)
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
@@ -175,7 +178,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			console.error(e);
 		}
 
-		setIsTryingFulfill(false)
+		setShowLoadingIndicator(false)
 	};
 
 	/* Sets some search parameters 
@@ -421,8 +424,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						onApprove={onApprove}
 						onFulfill={onFulfill}
 						onNavigate={onNavigate}
+						isAllowed={isAllowed}
 						request={viewing}
-						isTryingFulfill ={isTryingFulfill}
+						showLoadingIndicator ={showLoadingIndicator}
 						yours={viewing.contents.requestor === userId}
 					/>
 				</Overlay>

@@ -23,8 +23,9 @@ import galaxyBackground from './assets/galaxy.png';
 type RequestProps = {
 	request: DomainRequestAndContents;
 	// @TODO Change 'yours' to 'sentByYou'
-	isTryingFulfill?: boolean;
+	showLoadingIndicator?: boolean;
 	yours?: boolean;
+	isAllowed?: boolean;
 	onApprove: (request: DomainRequestAndContents) => void;
 	onFulfill: (request: DomainRequestAndContents) => void;
 	onNavigate: (domain: string) => void;
@@ -32,8 +33,9 @@ type RequestProps = {
 
 const Request: React.FC<RequestProps> = ({
 	request,
-	isTryingFulfill,
+	showLoadingIndicator,
 	yours,
+	isAllowed,
 	onApprove,
 	onFulfill,
 	onNavigate,
@@ -143,7 +145,7 @@ const Request: React.FC<RequestProps> = ({
 							>
 								Cancel
 							</FutureButton>
-							{!isTryingFulfill && (
+							{!showLoadingIndicator && (
 								<FutureButton
 									style={{ textTransform: 'uppercase' }}
 									glow
@@ -152,7 +154,8 @@ const Request: React.FC<RequestProps> = ({
 									Continue
 								</FutureButton>
 							)}
-							{isTryingFulfill &&(
+							
+							{showLoadingIndicator &&(
 								<FutureButton glow onClick={() => {}}>
 									<div
 										 className={styles.ButtonWithLoading}
@@ -162,7 +165,7 @@ const Request: React.FC<RequestProps> = ({
 										>
 											<Spinner />
 										</div>
-										<p
+										{!isAllowed && (<p
 											 style={{
 												display: 'inline-block',
 												width: '90%',
@@ -173,8 +176,21 @@ const Request: React.FC<RequestProps> = ({
 												fontSize: '15px',
 											 }}
 										>
-											Loading
-										</p>
+											Approving
+										</p>)}
+										{isAllowed && (<p
+											 style={{
+												display: 'inline-block',
+												width: '90%',
+												verticalAlign: 'center',
+												height: '10px',
+												marginLeft: '15px',
+												paddingTop: '3px',
+												fontSize: '15px',
+											 }}
+										>
+											Fulfilling
+										</p>)}
 									</div>
 								</FutureButton>
 							)}
