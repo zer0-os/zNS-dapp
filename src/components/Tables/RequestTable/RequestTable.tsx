@@ -442,7 +442,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				>
 					<Confirmation
 						title={'Approve Token Transfer'}
-						onConfirm={async () => {
+						onConfirm={() => {
 							setApproveTokenTransfer(undefined); //close overlay
 							onApproveTokenTransfer();
 						}}
