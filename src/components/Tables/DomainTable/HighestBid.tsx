@@ -63,7 +63,7 @@ const HighestBid: React.FC<HighestBidProps> = ({ domain, refreshKey }) => {
 	} else if (highestBid === 0) {
 		displayElement = <>-</>;
 	} else if (highestBid && highestBid > 0) {
-		displayElement = <>{highestBid} WILD</>;
+		displayElement = <>{highestBid.toLocaleString()} WILD</>;
 	}
 
 	return <>{displayElement}</>;

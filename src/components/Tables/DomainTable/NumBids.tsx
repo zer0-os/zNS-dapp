@@ -57,7 +57,7 @@ const NumBids: React.FC<NumBidsProps> = ({ domain, refreshKey }) => {
 	} else if (didApiCallFail) {
 		displayElement = <>Failed to retrieve</>;
 	} else {
-		displayElement = <>{numBids || 0}</>;
+		displayElement = <>{numBids?.toLocaleString() || 0}</>;
 	}
 
 	return <>{displayElement}</>;
