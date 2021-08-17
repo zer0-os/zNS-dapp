@@ -23,9 +23,9 @@ import galaxyBackground from './assets/galaxy.png';
 type RequestProps = {
 	request: DomainRequestAndContents;
 	// @TODO Change 'yours' to 'sentByYou'
-	showLoadingIndicator?: boolean;
+	showLoadingIndicator: boolean;
 	yours?: boolean;
-	isAllowed?: boolean;
+	isAllowed: boolean;
 	onApprove: (request: DomainRequestAndContents) => void;
 	onFulfill: (request: DomainRequestAndContents) => void;
 	onNavigate: (domain: string) => void;
