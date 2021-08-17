@@ -7,9 +7,10 @@ import { Spring, animated } from 'react-spring';
 import {
 	Artwork,
 	FutureButton,
-	IconButton,
+	NFTCard,
 	SearchBar,
 	Overlay,
+	IconButton,
 } from 'components';
 import { MakeABid } from 'containers';
 import HighestBid from './HighestBid';
@@ -308,8 +309,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						onChange={(event: any) => search(event.target.value)}
 						style={{ width: '100%' }}
 					/>
-					{/* @todo re-enable grid view */}
-					{/* <div className={styles.searchHeaderButtons}>
+					<div className={styles.searchHeaderButtons}>
 						<IconButton
 							onClick={setList}
 							toggled={!isGridView}
@@ -322,7 +322,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							iconUri={grid}
 							style={{ height: 32, width: 32 }}
 						/>
-					</div> */}
+					</div>
 				</div>
 
 				<div className={styles.DomainTable}>
@@ -363,26 +363,26 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 						{/* Grid View */}
 						{/* @todo re-enable grid view */}
-						{/* {!empty && isGridView && (
+						{!empty && isGridView && (
 							<ol className={styles.Grid}>
 								{data
 									.filter((d) => d.name.includes(searchQuery))
 									.map((d, i) => (
-										<li onClick={() => navigateTo(d.name)} key={i}>
+										<li onClick={(e) => rowClick(e, d)} key={i}>
 											<NFTCard
-												name={d.name}
-												domain={d.domain.name || ''}
-												imageUri={d.metadata.image || ''}
-												price={d.bids[0]?.amount || 0}
-												nftOwnerId={'Owner Name'}
-												nftMinterId={'Minter Name'}
+												domain={d.name}
+												imageUri={''}
+												price={0}
+												metadataUrl={d.metadata}
+												nftOwnerId={d.owner?.id || ''}
+												nftMinterId={d.minter?.id || ''}
 												showCreator={true}
 												showOwner={true}
 											/>
 										</li>
 									))}
 							</ol>
-						)} */}
+						)}
 
 						{empty && <p className={styles.Empty}>No domains found</p>}
 					</div>
