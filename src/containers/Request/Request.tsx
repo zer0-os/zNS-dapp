@@ -154,43 +154,43 @@ const Request: React.FC<RequestProps> = ({
 									Continue
 								</FutureButton>
 							)}
-							
-							{showLoadingIndicator &&(
+
+							{showLoadingIndicator && (
 								<FutureButton glow onClick={() => {}}>
-									<div
-										 className={styles.ButtonWithLoading}
-									>
-										<div
-											 className={styles.SpinnerLoadingButton}
-										>
+									<div className={styles.ButtonWithLoading}>
+										<div className={styles.SpinnerLoadingButton}>
 											<Spinner />
 										</div>
-										{!isAllowed && (<p
-											 style={{
-												display: 'inline-block',
-												width: '90%',
-												verticalAlign: 'center',
-												height: '10px',
-												marginLeft: '15px',
-												paddingTop: '3px',
-												fontSize: '15px',
-											 }}
-										>
-											Approving
-										</p>)}
-										{isAllowed && (<p
-											 style={{
-												display: 'inline-block',
-												width: '90%',
-												verticalAlign: 'center',
-												height: '10px',
-												marginLeft: '15px',
-												paddingTop: '3px',
-												fontSize: '15px',
-											 }}
-										>
-											Fulfilling
-										</p>)}
+										{!isAllowed && (
+											<p
+												style={{
+													display: 'inline-block',
+													width: '90%',
+													verticalAlign: 'center',
+													height: '10px',
+													marginLeft: '15px',
+													paddingTop: '3px',
+													fontSize: '15px',
+												}}
+											>
+												Approving
+											</p>
+										)}
+										{isAllowed && (
+											<p
+												style={{
+													display: 'inline-block',
+													width: '90%',
+													verticalAlign: 'center',
+													height: '10px',
+													marginLeft: '15px',
+													paddingTop: '3px',
+													fontSize: '15px',
+												}}
+											>
+												Fulfilling
+											</p>
+										)}
 									</div>
 								</FutureButton>
 							)}
