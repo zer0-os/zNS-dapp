@@ -80,6 +80,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [domainFilter, setDomainFilter] = useState('All Domains');
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
+	const [isTryingFulfill, setIsTryingFulfill] = useState(false)
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DomainRequestAndContents | undefined
@@ -142,6 +143,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 * tokens on behalf of the user.
 	 */
 	const onApproveTokenTransfer = async () => {
+		setIsTryingFulfill(true)
 		try {
 			await lootToken.approve(
 				znsContracts.stakingController.address,
@@ -150,9 +152,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			console.error(e);
 		}
+		setIsTryingFulfill(false)
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
+		setIsTryingFulfill(true)
 		const allowance = await lootToken.allowance(
 			account!,
 			znsContracts.stakingController.address,
@@ -170,6 +174,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			// Catch thrown when user rejects transaction
 			console.error(e);
 		}
+
+		setIsTryingFulfill(false)
 	};
 
 	/* Sets some search parameters 
@@ -416,6 +422,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						onFulfill={onFulfill}
 						onNavigate={onNavigate}
 						request={viewing}
+						isTryingFulfill ={isTryingFulfill}
 						yours={viewing.contents.requestor === userId}
 					/>
 				</Overlay>
@@ -431,8 +438,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				>
 					<Confirmation
 						title={'Approve Token Transfer'}
-						onConfirm={() => {
-							onApproveTokenTransfer();
+						onConfirm={async () => {
+							setApproveTokenTransfer(undefined); //close overlay
+							await onApproveTokenTransfer();
 						}}
 						onCancel={() => {
 							setApproveTokenTransfer(undefined);

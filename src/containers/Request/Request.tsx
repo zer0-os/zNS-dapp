@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 //- Component Imports
-import { FutureButton, Image, Member, Overlay } from 'components';
+import { FutureButton, Image, Member, Overlay, Spinner } from 'components';
 
 //- Library Imports
 import useMvpVersion from 'lib/hooks/useMvpVersion';
@@ -23,6 +23,7 @@ import galaxyBackground from './assets/galaxy.png';
 type RequestProps = {
 	request: DomainRequestAndContents;
 	// @TODO Change 'yours' to 'sentByYou'
+	isTryingFulfill?: boolean;
 	yours?: boolean;
 	onApprove: (request: DomainRequestAndContents) => void;
 	onFulfill: (request: DomainRequestAndContents) => void;
@@ -31,6 +32,7 @@ type RequestProps = {
 
 const Request: React.FC<RequestProps> = ({
 	request,
+	isTryingFulfill,
 	yours,
 	onApprove,
 	onFulfill,
@@ -141,13 +143,41 @@ const Request: React.FC<RequestProps> = ({
 							>
 								Cancel
 							</FutureButton>
-							<FutureButton
-								style={{ textTransform: 'uppercase' }}
-								glow
-								onClick={confirm}
-							>
-								Continue
-							</FutureButton>
+							{!isTryingFulfill && (
+								<FutureButton
+									style={{ textTransform: 'uppercase' }}
+									glow
+									onClick={confirm}
+								>
+									Continue
+								</FutureButton>
+							)}
+							{isTryingFulfill &&(
+								<FutureButton glow onClick={() => {}}>
+									<div
+										 className={styles.ButtonWithLoading}
+									>
+										<div
+											 className={styles.SpinnerLoadingButton}
+										>
+											<Spinner />
+										</div>
+										<p
+											 style={{
+												display: 'inline-block',
+												width: '90%',
+												verticalAlign: 'center',
+												height: '10px',
+												marginLeft: '15px',
+												paddingTop: '3px',
+												fontSize: '15px',
+											 }}
+										>
+											Loading
+										</p>
+									</div>
+								</FutureButton>
+							)}
 						</div>
 					</div>
 				</Overlay>
