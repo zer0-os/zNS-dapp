@@ -1,5 +1,5 @@
 //- React Imports
-import { FutureButton, Spinner } from 'components';
+import { FutureButton } from 'components';
 import LoadingIndicator from 'components/LoadingIndicator/LoadingIndicator';
 import React from 'react';
 
