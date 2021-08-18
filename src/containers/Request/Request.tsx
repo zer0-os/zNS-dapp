@@ -163,13 +163,7 @@ const Request: React.FC<RequestProps> = ({
 						<div className={styles.Buttons}>
 							{showLoadingIndicator && (
 								<LoadingIndicator
-									style={{
-										display: 'inline-block',
-										width: '10%',
-										height: '10%',
-										margin: '0px',
-										paddingTop: '10px',
-									}}
+									style={{ textTransform: 'uppercase' }}
 									text={'approving'}
 								/>
 							)}
