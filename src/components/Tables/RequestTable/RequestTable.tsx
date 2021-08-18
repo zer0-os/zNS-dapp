@@ -153,10 +153,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			);
 
 			await approveTx.wait();
-
 		} catch (e) {
 			console.error(e);
-			
 		}
 		setIsApproving(false);
 		setApproveTokenTransfer(undefined);
