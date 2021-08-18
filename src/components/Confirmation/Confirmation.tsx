@@ -1,5 +1,6 @@
 //- React Imports
-import { FutureButton } from 'components';
+import { FutureButton, Spinner } from 'components';
+import LoadingIndicator from 'components/LoadingIndicator/LoadingIndicator';
 import React from 'react';
 
 //- Style Imports
@@ -9,6 +10,8 @@ type ConfirmationProps = {
 	cancelText?: string;
 	children?: React.ReactNode;
 	confirmText?: string;
+	loadingCondition?: boolean;
+	loadingText?: string;
 	hideButtons?: boolean;
 	onCancel: () => void;
 	onConfirm: () => void;
@@ -19,6 +22,8 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 	cancelText,
 	children,
 	confirmText,
+	loadingCondition,
+	loadingText,
 	hideButtons,
 	onCancel,
 	onConfirm,
@@ -31,7 +36,7 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 			<h2 className="glow-text-white">{title ?? 'Are you sure?'}</h2>
 			<hr className="glow" />
 			{children}
-			{!hideButtons && (
+			{!hideButtons && !loadingCondition && (
 				<div className={styles.Buttons}>
 					<FutureButton
 						style={{ textTransform: 'uppercase' }}
@@ -48,6 +53,14 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 					>
 						{confirmText ?? 'Continue'}
 					</FutureButton>
+				</div>
+			)}
+			{!hideButtons && loadingCondition && loadingText && (
+				<div className={styles.Buttons}>
+					<LoadingIndicator
+						style={{ textTransform: 'uppercase', justifyContent: '10%' }}
+						text={loadingText}
+					/>
 				</div>
 			)}
 		</div>

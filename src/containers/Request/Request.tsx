@@ -2,7 +2,14 @@
 import React, { useState } from 'react';
 
 //- Component Imports
-import { FutureButton, Image, Member, Overlay, Spinner } from 'components';
+import {
+	FutureButton,
+	Image,
+	LoadingIndicator,
+	Member,
+	Overlay,
+	Spinner,
+} from 'components';
 
 //- Library Imports
 import useMvpVersion from 'lib/hooks/useMvpVersion';
@@ -25,7 +32,6 @@ type RequestProps = {
 	// @TODO Change 'yours' to 'sentByYou'
 	showLoadingIndicator: boolean;
 	yours?: boolean;
-	isAllowed: boolean;
 	onApprove: (request: DomainRequestAndContents) => void;
 	onFulfill: (request: DomainRequestAndContents) => void;
 	onNavigate: (domain: string) => void;
@@ -35,7 +41,6 @@ const Request: React.FC<RequestProps> = ({
 	request,
 	showLoadingIndicator,
 	yours,
-	isAllowed,
 	onApprove,
 	onFulfill,
 	onNavigate,
@@ -136,16 +141,16 @@ const Request: React.FC<RequestProps> = ({
 								: `This will approve the request for another user to mint 0://${request.request.domain}`}
 						</p>
 						<p>There's no going back.</p>
-						<div className={styles.Buttons}>
-							<FutureButton
-								style={{ textTransform: 'uppercase' }}
-								alt
-								glow
-								onClick={closeModal}
-							>
-								Cancel
-							</FutureButton>
-							{!showLoadingIndicator && (
+						{!showLoadingIndicator && (
+							<div className={styles.Buttons}>
+								<FutureButton
+									style={{ textTransform: 'uppercase' }}
+									alt
+									glow
+									onClick={closeModal}
+								>
+									Cancel
+								</FutureButton>
 								<FutureButton
 									style={{ textTransform: 'uppercase' }}
 									glow
@@ -153,46 +158,20 @@ const Request: React.FC<RequestProps> = ({
 								>
 									Continue
 								</FutureButton>
-							)}
-
+							</div>
+						)}
+						<div className={styles.Buttons}>
 							{showLoadingIndicator && (
-								<FutureButton glow onClick={() => {}}>
-									<div className={styles.ButtonWithLoading}>
-										<div className={styles.SpinnerLoadingButton}>
-											<Spinner />
-										</div>
-										{!isAllowed && (
-											<p
-												style={{
-													display: 'inline-block',
-													width: '90%',
-													verticalAlign: 'center',
-													height: '10px',
-													marginLeft: '15px',
-													paddingTop: '3px',
-													fontSize: '15px',
-												}}
-											>
-												Approving
-											</p>
-										)}
-										{isAllowed && (
-											<p
-												style={{
-													display: 'inline-block',
-													width: '90%',
-													verticalAlign: 'center',
-													height: '10px',
-													marginLeft: '15px',
-													paddingTop: '3px',
-													fontSize: '15px',
-												}}
-											>
-												Fulfilling
-											</p>
-										)}
-									</div>
-								</FutureButton>
+								<LoadingIndicator
+									style={{
+										display: 'inline-block',
+										width: '10%',
+										height: '10%',
+										margin: '0px',
+										paddingTop: '10px',
+									}}
+									text={'approving'}
+								/>
 							)}
 						</div>
 					</div>

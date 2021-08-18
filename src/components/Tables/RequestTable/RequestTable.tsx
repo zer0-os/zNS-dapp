@@ -73,6 +73,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const [isGridView, setIsGridView] = useState(false);
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
+	const [isApproving, setIsApproving] = useState(false);
 
 	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
@@ -81,7 +82,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 
-	const [isAllowed, setIsAllowed] = useState(false);
 	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
@@ -145,16 +145,20 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 * tokens on behalf of the user.
 	 */
 	const onApproveTokenTransfer = async () => {
-		setShowLoadingIndicator(true);
+		setIsApproving(true);
 		try {
-			await lootToken.approve(
+			const approveTx = await lootToken.approve(
 				znsContracts.stakingController.address,
 				ethers.constants.MaxUint256,
 			);
+
+			await approveTx.wait();
+			setIsApproving(false);
 		} catch (e) {
 			console.error(e);
+			setIsApproving(false);
 		}
-		setShowLoadingIndicator(false);
+		setApproveTokenTransfer(undefined);
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
@@ -165,10 +169,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 		if (allowance.lt(request.request.offeredAmount)) {
 			setApproveTokenTransfer(lootToken.address);
-			setIsAllowed(false);
 			return;
 		}
-		setIsAllowed(true);
 		setShowLoadingIndicator(true);
 		try {
 			await staking.fulfillRequest(request);
@@ -424,7 +426,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						onApprove={onApprove}
 						onFulfill={onFulfill}
 						onNavigate={onNavigate}
-						isAllowed={isAllowed}
 						request={viewing}
 						showLoadingIndicator={showLoadingIndicator}
 						yours={viewing.contents.requestor === userId}
@@ -442,8 +443,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				>
 					<Confirmation
 						title={'Approve Token Transfer'}
+						loadingCondition={isApproving}
+						loadingText={'approving'}
 						onConfirm={() => {
-							setApproveTokenTransfer(undefined); //close overlay
 							onApproveTokenTransfer();
 						}}
 						onCancel={() => {
