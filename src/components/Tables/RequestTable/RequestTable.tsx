@@ -74,7 +74,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [isGridView, setIsGridView] = useState(false);
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
 	const [isApproving, setIsApproving] = useState(false);
-
+	const [approvingText, setApprovingText] = useState('Please confirm transaction in wallet');
 	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
@@ -145,19 +145,22 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 * tokens on behalf of the user.
 	 */
 	const onApproveTokenTransfer = async () => {
-		setIsApproving(true);
+		setIsApproving(true); //start loading indicator
 		try {
+			
 			const approveTx = await lootToken.approve(
 				znsContracts.stakingController.address,
 				ethers.constants.MaxUint256,
 			);
-
+			setApprovingText('Waiting for transaction to complete')
 			await approveTx.wait();
+			
 		} catch (e) {
 			console.error(e);
 		}
-		setIsApproving(false);
-		setApproveTokenTransfer(undefined);
+		setIsApproving(false); //stop loading indicator
+		setApproveTokenTransfer(undefined); //close modal
+		setApprovingText('Please confirm transaction in wallet')
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
@@ -172,8 +175,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		}
 		setShowLoadingIndicator(true);
 		try {
-			const tx = await staking.fulfillRequest(request);
-			if (tx) await tx.wait();
+			await staking.fulfillRequest(request);
 			setViewing(undefined);
 		} catch (e) {
 			// Catch thrown when user rejects transaction
@@ -444,7 +446,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					<Confirmation
 						title={'Approve Token Transfer'}
 						showLoading={isApproving}
-						loadingText={'approving'}
+						loadingText={approvingText} 
 						onConfirm={() => {
 							onApproveTokenTransfer();
 						}}
