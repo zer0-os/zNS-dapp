@@ -416,7 +416,7 @@ nav {
  * Media Queries
  *
  */
-@media only screen and (max-width: 660px) {
+/* @media only screen and (max-width: 660px) {
 	#root {
 		opacity: 0;
 	}
@@ -441,7 +441,7 @@ nav {
 		text-align: center;
 		line-height: 22px;
 	}
-}
+} */
 
 /*
  *
