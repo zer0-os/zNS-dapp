@@ -20,13 +20,13 @@ const NFTCardContainer: React.FC<NFTCardContainerProps> = (props) => {
 
 	// Grabs metadata from URL if URL is provided
 	useEffect(() => {
-		if (props.metadataUrl && !metadata) {
+		if (props.metadataUrl) {
 			getMetadata(props.metadataUrl).then((m) => {
 				setMetadata(m);
 				getProps();
 			});
 		}
-	}, []);
+	}, [props.metadataUrl]);
 
 	// Creates a prop object to pass through to child
 	const getProps = (): NFTCardProps => {
