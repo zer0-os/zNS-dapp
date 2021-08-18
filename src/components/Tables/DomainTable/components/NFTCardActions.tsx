@@ -16,6 +16,7 @@ type NFTCardActionsProps = {
 	domain: Domain;
 	hideButton?: boolean;
 	onButtonClick: (domain: Domain) => void;
+	onLoad?: () => void;
 };
 
 const NFTCardActions: React.FC<NFTCardActionsProps> = ({
@@ -23,6 +24,7 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 	domain,
 	hideButton,
 	onButtonClick,
+	onLoad,
 }) => {
 	const { getBidsForDomain } = useBidProvider();
 
@@ -50,6 +52,8 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 		} else {
 			setHighestBid(bids[0].amount);
 		}
+
+		if (onLoad) onLoad();
 	};
 
 	useEffect(() => {

@@ -130,6 +130,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		if (window.innerWidth < 1282) setList();
 	};
 
+	const checkHeight = () => {
+		const height = containerRef.current?.offsetHeight;
+		if (height === undefined && containerHeight === height) return;
+		setContainerHeight(height || 0);
+	};
+
 	const onBid = async () => {
 		closeModal();
 
@@ -158,26 +164,14 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		}
 	}, [userId]);
 
-	// Resizes the table container
-	// (The animation is done in CSS)
-	useEffect(() => {
-		if (!isLoading) {
-			const el = containerRef.current;
-			if (el) {
-				if (!isMounted.current) return;
-				setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-			}
-			if (onLoad) onLoad();
-		} else {
-			if (!isMounted.current) return;
-			setContainerHeight(0);
-		}
-	}, [isLoading, searchQuery, isGridView, domains]);
-
 	useEffect(() => {
 		if (!isMounted.current) return;
 		setIsLoading(false);
 	}, [domains]);
+
+	useEffect(() => {
+		checkHeight();
+	}, [containerRef.current?.offsetHeight, searchQuery]);
 
 	/////////////////
 	// React Table //
@@ -300,6 +294,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				disableButton={userId?.toLowerCase() === domain.owner.id.toLowerCase()}
 				hideButton={!isGlobalTable}
 				onButtonClick={buttonClick}
+				onLoad={checkHeight}
 			/>
 		);
 	};
