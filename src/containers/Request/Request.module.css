@@ -89,22 +89,6 @@
 	margin-left: 16px;
 }
 
-.ButtonWithLoading {
-	display: flex;
-	justify-content: center;
-	vertical-align: center;
-	align-items: center;
-	padding-bottom: 15px;
-}
-
-.SpinnerLoadingButton {
-	display: inline-block;
-	width: 10%;
-	height: 10%;
-	margin: 0px;
-	padding-top: 10px;
-}
-
 .Buttons {
 	display: flex;
 	margin-top: 32px;
