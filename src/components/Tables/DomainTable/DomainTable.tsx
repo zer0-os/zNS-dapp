@@ -322,7 +322,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					<SearchBar
 						placeholder="Search by domain name"
 						onChange={(event: any) => search(event.target.value)}
-						style={{ width: '100%' }}
+						style={{ width: '100%', marginRight: 16 }}
 					/>
 					<div className={styles.searchHeaderButtons}>
 						<IconButton
