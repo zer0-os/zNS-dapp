@@ -1,7 +1,7 @@
-import { ethers } from "ethers";
-import addresses from "./addresses";
-import { RPC_URLS } from "./connectors";
-import { NETWORK_TYPES } from "./network";
+import { ethers } from 'ethers';
+import { BancorContractRegistry__factory, BancorNetwork__factory } from 'types';
+import { RPC_URLS } from './connectors';
+import { Maybe } from './types';
 
 const tokenToUsdCache: { [token: string]: number | undefined } = {};
 
@@ -10,43 +10,72 @@ export const tokenToUsd = async (token: string): Promise<number> => {
 		return tokenToUsdCache[token]!;
 	}
 
+	let priceInUsd: Maybe<number>;
+
 	if (token === 'LOOT') {
-		return 0.1;
+		priceInUsd = await getLootPrice();
+	} else {
+		const res = await fetch(
+			`https://api.coingecko.com/api/v3/simple/price?ids=${token}&vs_currencies=usd`,
+		);
+
+		const data = await res.json();
+		if (!data) {
+			throw Error(`Unable to fetch price for ${token}`);
+		}
+
+		priceInUsd = data[token].usd as number;
 	}
-
-	const res = await fetch(
-		`https://api.coingecko.com/api/v3/simple/price?ids=${token}&vs_currencies=usd`,
-	);
-
-	const data = await res.json();
-	if (!data) {
-		throw Error(`Unable to fetch price for ${token}`);
-	}
-
-	const priceInUsd = data[token].usd as number;
 
 	tokenToUsdCache[token] = priceInUsd;
 
 	return priceInUsd;
 };
 
-const wEthTokenAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
+const ethAddress = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 const infinityTokenAddress = '0xf56efd691c64ef76d6a90d6b2852ce90fa8c2dcf';
-const lootTokenAddress = addresses[NETWORK_TYPES.MAINNET].lootToken;
-
-const contractRegistryAbi = [
-	"function addressOf(bytes32 _contractName) public view returns (address);"
-]
-const bancorContractRegistryAddress = "0x52Ae12ABe5D8BD778BD5397F99cA900624CfADD4";
+const lootTokenAddress = '0x43b8219aC1883373C0428688eE1a76e19E6B6D9d';
+const bancorContractRegistryAddress =
+	'0x52Ae12ABe5D8BD778BD5397F99cA900624CfADD4';
 
 const getLootPrice = async () => {
-	const mainnetProvider = new ethers.providers.JsonRpcProvider(RPC_URLS[1]);
-	const registry = new ethers.Contract(bancorContractRegistryAddress, [], mainnetProvider);
+	// needs to be mainnet
+	const provider = new ethers.providers.JsonRpcProvider(RPC_URLS[1]);
+	const registry = BancorContractRegistry__factory.connect(
+		bancorContractRegistryAddress,
+		provider,
+	);
+	const networkAddress = await registry.addressOf(
+		await registry.BANCOR_NETWORK(),
+	);
+	const bancorNetwork = BancorNetwork__factory.connect(
+		networkAddress,
+		provider,
+	);
 
-	const tokenPath = [wEthTokenAddress, infinityTokenAddress, infinityTokenAddress, lootTokenAddress];
+	const tokenPath = [
+		ethAddress,
+		infinityTokenAddress,
+		infinityTokenAddress,
+		lootTokenAddress,
+		lootTokenAddress,
+	];
 
+	const ethToLoot = parseFloat(
+		ethers.utils.formatEther(
+			(
+				await bancorNetwork.getReturnByPath(
+					tokenPath,
+					ethers.utils.parseEther('1.0'),
+				)
+			)[0],
+		),
+	);
 
-}
+	const ethToUsd = await tokenToUsd('ethereum');
+	const usdToLoot = ethToUsd / ethToLoot;
+	return usdToLoot;
+};
 
 export const wildToUsd = async (amount: number) => {
 	const price = await tokenToUsd('wilder-world');
