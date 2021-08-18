@@ -30,12 +30,10 @@ const NFTCardContainer: React.FC<NFTCardContainerProps> = (props) => {
 
 	// Creates a prop object to pass through to child
 	const getProps = (): NFTCardProps => {
-		let passedProps = JSON.parse(JSON.stringify(props)); // Deep copy
 		return {
-			...passedProps,
+			...props,
 			name: metadata?.title || '',
 			imageUri: metadata?.image || '',
-			metadataUrl: undefined,
 		};
 	};
 
