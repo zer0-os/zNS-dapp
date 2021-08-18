@@ -443,7 +443,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				>
 					<Confirmation
 						title={'Approve Token Transfer'}
-						loadingCondition={isApproving}
+						showLoading={isApproving}
 						loadingText={'approving'}
 						onConfirm={() => {
 							onApproveTokenTransfer();

@@ -10,7 +10,7 @@ type ConfirmationProps = {
 	cancelText?: string;
 	children?: React.ReactNode;
 	confirmText?: string;
-	loadingCondition?: boolean;
+	showLoading?: boolean;
 	loadingText?: string;
 	hideButtons?: boolean;
 	onCancel: () => void;
@@ -22,14 +22,14 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 	cancelText,
 	children,
 	confirmText,
-	loadingCondition,
+	showLoading,
 	loadingText,
 	hideButtons,
 	onCancel,
 	onConfirm,
 	title,
 }) => {
-	if (loadingCondition === undefined) loadingCondition = false; //if undefined its false
+	if (showLoading === undefined) showLoading = false; //if undefined its false
 
 	return (
 		<div
@@ -38,7 +38,7 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 			<h2 className="glow-text-white">{title ?? 'Are you sure?'}</h2>
 			<hr className="glow" />
 			{children}
-			{!hideButtons && !loadingCondition && (
+			{!hideButtons && !showLoading && (
 				<div className={styles.Buttons}>
 					<FutureButton
 						style={{ textTransform: 'uppercase' }}
@@ -57,7 +57,7 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 					</FutureButton>
 				</div>
 			)}
-			{!hideButtons && loadingCondition && loadingText && (
+			{!hideButtons && showLoading && loadingText && (
 				<div className={styles.Buttons}>
 					<LoadingIndicator
 						style={{ textTransform: 'uppercase' }}
