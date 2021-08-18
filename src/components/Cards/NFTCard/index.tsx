@@ -1,5 +1,5 @@
 // React Imports
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Library Imports
 import { getMetadata } from 'lib/metadata';
@@ -16,12 +16,21 @@ interface NFTCardContainerProps extends NFTCardProps {
 }
 
 const NFTCardContainer: React.FC<NFTCardContainerProps> = (props) => {
+	const isMounted = useRef<boolean>();
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
+
+	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	}, []);
 
 	// Grabs metadata from URL if URL is provided
 	useEffect(() => {
 		if (props.metadataUrl) {
 			getMetadata(props.metadataUrl).then((m) => {
+				if (isMounted.current === false) return;
 				setMetadata(m);
 				getProps();
 			});
