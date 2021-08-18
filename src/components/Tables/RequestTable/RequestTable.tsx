@@ -154,12 +154,12 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			);
 			setApprovingText('Waiting for transaction to complete')
 			await approveTx.wait();
-			
+			setApproveTokenTransfer(undefined); //close modal
 		} catch (e) {
 			console.error(e);
 		}
 		setIsApproving(false); //stop loading indicator
-		setApproveTokenTransfer(undefined); //close modal
+
 		setApprovingText('Please confirm transaction in wallet')
 	};
 
