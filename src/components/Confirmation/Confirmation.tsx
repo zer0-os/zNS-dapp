@@ -29,6 +29,8 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 	onConfirm,
 	title,
 }) => {
+	if (loadingCondition === undefined) loadingCondition = false; //if undefined its false
+
 	return (
 		<div
 			className={`${styles.Confirmation} blur border-primary border-rounded`}

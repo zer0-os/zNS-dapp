@@ -164,7 +164,7 @@ const Request: React.FC<RequestProps> = ({
 							{showLoadingIndicator && (
 								<LoadingIndicator
 									style={{ textTransform: 'uppercase' }}
-									text={'approving'}
+									text={'Fulfilling'}
 								/>
 							)}
 						</div>
