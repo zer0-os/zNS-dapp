@@ -390,6 +390,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 												nftMinterId={d.minter?.id || ''}
 												showCreator
 												showOwner
+												style={{ margin: '0 auto' }}
 											/>
 										</li>
 									))}
