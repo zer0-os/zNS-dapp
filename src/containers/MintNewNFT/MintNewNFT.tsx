@@ -190,7 +190,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				story: tokenInformation.story,
 				image: tokenInformation.image,
 				domain: tokenInformation.domain,
-				zna: domainName,
+				zna: newDomainZna(),
 				// @TODO Reimplement ticker when we enable dynamic tokens
 				ticker: '',
 				dynamic: false,
@@ -219,7 +219,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					story: tokenInformation.story,
 					image: tokenInformation.image,
 					domain: tokenInformation.domain,
-					zna: domainName,
+					zna: newDomainZna(),
 					// @TODO Reimplement ticker when we enable dynamic tokens
 					ticker: '',
 					dynamic: false,
@@ -261,12 +261,17 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	// Fragments //
 	///////////////
 
-	const domainString = () => {
+	const newDomainZna = () => {
 		const parentDomain =
 			domainName.length > 1 ? `.${domainName.substring(1)}` : '';
 		const newDomain = domain.length > 0 ? `.${domain}` : '';
 		const str = `0://${rootDomainName}${parentDomain}${newDomain}`;
-		return <>{str}</>;
+
+		return str;
+	};
+
+	const domainString = () => {
+		return <>{newDomainZna()}</>;
 	};
 
 	////////////

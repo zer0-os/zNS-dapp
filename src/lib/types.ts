@@ -28,7 +28,7 @@ export interface ParentDomain extends Domain {
 	subdomains: SubDomain[];
 }
 
-export interface SubDomain extends Domain { }
+export interface SubDomain extends Domain {}
 
 export interface DomainRequest {
 	id: string;
@@ -72,6 +72,16 @@ export interface NftParams {
 	previewImage?: Buffer;
 	dynamic: boolean;
 	locked: boolean;
+}
+
+// Interface for an NFT Status Card
+export interface NftStatusCard {
+	zNA: string;
+	title: string;
+	imageUri: string;
+	story: string;
+	stakeAmount?: string;
+	transactionHash: string;
 }
 
 // The contents of a Domain Request file that has been uploaded to IPFS

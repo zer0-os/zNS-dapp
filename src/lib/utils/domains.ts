@@ -39,3 +39,21 @@ export const getRelativeDomainPath = (domain: string): string => {
 
 	return fixedPath;
 };
+
+export const zNAToLink = (domain: string): string => {
+	// remove any 0:// prefix
+	{
+		const prefix = '0://';
+		domain = domain.replace(prefix, '');
+	}
+
+	// remove root domain
+	domain = domain.replace(rootDomainName, '');
+
+	// remove leading '.'
+	if (domain[0] === '.') {
+		domain = domain.substr(1);
+	}
+
+	return domain;
+};

@@ -58,6 +58,7 @@ import { useTransferProvider } from 'lib/providers/TransferProvider';
 import { MintNewNFT, NFTView, MakeABid, TransferOwnership } from 'containers';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 
 type ZNSProps = {
 	domain: string;
@@ -126,8 +127,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		}
 	}, [znsDomain.domain, loading]);
 
-	//- Minting State
-	const { minting, minted } = useMintProvider();
+	const mintingProvider = useMintProvider();
+	const stakingProvider = useStakingProvider();
+
+	const statusCount =
+		mintingProvider.minting.length + stakingProvider.requesting.length;
+	const showStatus =
+		mintingProvider.minting.length +
+		mintingProvider.minted.length +
+		stakingProvider.requesting.length +
+		stakingProvider.requested.length;
+
 	const { transferring, transferred } = useTransferProvider();
 
 	//- Notification State
@@ -227,22 +237,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	/* Find the freshly minted NFT */
 	useEffect(() => {
-		console.log(minted);
-		if (minted.length === 0) {
-			return;
-		}
-
 		znsDomain.refetch();
-
-		// try {
-		// 	const d = minted[minted.length - 1] as NftParams;
-		// 	const newDomain = `${d.zna === '/' ? d.zna : d.zna + '.'}${d.domain}`;
-		// 	// Temporarily disabled
-		// 	// history.push(newDomain);
-		// } catch (e) {
-		// 	console.error('Failed to find newly minted zNA');
-		// }
-	}, [minted]);
+	}, [mintingProvider.minted, stakingProvider.fulfilled]);
 
 	/* Handle notification for wallet changes */
 	useEffect(() => {
@@ -527,16 +523,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										{isOwnedByUser === false && 'REQUEST TO MINT NFT'}
 									</FutureButton>
 
-									{/* Mint Progress button */}
-									{(minting.length > 0 || minted.length > 0) && (
+									{/* Status / Long Running Operation Button */}
+									{showStatus ? (
 										<Tooltip content={<MintPreview />}>
 											<NumberButton
-												rotating={minting.length > 0}
-												number={minting.length}
+												rotating={statusCount > 0}
+												number={statusCount}
 												onClick={() => {}}
 											/>
 										</Tooltip>
-									)}
+									) : null}
 
 									{/* Transfer Progress button */}
 									{transferring.length > 0 && (
