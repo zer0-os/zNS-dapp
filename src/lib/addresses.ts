@@ -5,9 +5,9 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 	[NETWORK_TYPES.MAINNET]: {
 		registrar: '0xc2e9678A71e50E5AEd036e00e9c5caeb1aC5987D',
 		basic: '0xa05Ae774Da859943B7B859cd2A6aD9F5f1651d6a',
-		staking: '0x79135dd59346BBf06Ccf40978ACaC570d92eefBa',//$WILD staking controller, @todo change to a $LOOT mainnet one
+		staking: '0x45b13d8e6579d5C3FeC14bB9998A3640CD4F008D',
 		wildToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
-		lootToken: '0xD364C50c33902110230255FE1D730D84FA23e48e', //KOVAN $LOOT address, @todo change to a mainnet one
+		lootToken: '0x43b8219aC1883373C0428688eE1a76e19E6B6D9d',
 		zAuction: '0x8d63253c54B7D4Ac44A93636B7F5f94Ab63E6e39',
 	},
 	[NETWORK_TYPES.KOVAN]: {
