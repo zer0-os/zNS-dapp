@@ -8,6 +8,7 @@ import styles from './NFTCard.module.css';
 import { ArrowLink, Image } from 'components';
 
 export interface NFTCardProps {
+	actionsComponent?: React.ReactNode;
 	children?: React.ReactNode;
 	domain: string;
 	imageUri?: string;
@@ -21,6 +22,7 @@ export interface NFTCardProps {
 }
 
 const NFTCard: React.FC<NFTCardProps> = ({
+	actionsComponent,
 	children,
 	domain,
 	imageUri,
@@ -55,7 +57,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 			<div className={styles.Body}>
 				<h5 className={`glow-text-blue`}>{name}</h5>
 				<ArrowLink>{domainText}</ArrowLink>
-				{children}
+				{actionsComponent}
 			</div>
 		</div>
 	);
