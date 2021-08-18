@@ -126,7 +126,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	};
 
 	const handleResize = () => {
-		if (window.innerWidth < 1282) setList();
+		if (window.innerWidth <= 700) setGrid();
+		checkHeight();
 	};
 
 	const checkHeight = () => {
@@ -307,9 +308,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			{overlays()}
 			<div
 				style={style}
-				className={`${
-					styles.DomainTableContainer
-				} border-primary border-rounded ${className || ''}`}
+				className={`
+				${styles.DomainTableContainer} 
+				${className || ''}
+				${isGlobalTable ? styles.Global : styles.Nested}
+				border-primary border-rounded 				
+				`}
 			>
 				{/* Table Header */}
 				<div className={styles.searchHeader}>

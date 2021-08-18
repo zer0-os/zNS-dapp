@@ -193,13 +193,13 @@
 
 .Grid {
 	width: 100%;
-	padding-top: 11px;
-	padding-bottom: 24px;
+	padding: 11px 16px 24px 16px;
 
 	display: grid;
 	justify-content: space-evenly;
-	grid-template-columns: repeat(3, 388px);
-	grid-gap: 24px 0;
+	grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+
+	grid-gap: 1.5rem;
 
 	list-style: none;
 }
@@ -214,7 +214,18 @@
 	transform: scale(1.03);
 }
 
-@media only screen and (max-width: 1282px) {
+@media only screen and (max-width: 900px) {
+	.Global tr td:nth-last-child(2),
+	.Global tr th:nth-last-child(2) {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 700px) {
+	.searchHeader > div:first-child {
+		margin-right: 0px !important;
+	}
+
 	.searchHeaderButtons {
 		display: none;
 	}
