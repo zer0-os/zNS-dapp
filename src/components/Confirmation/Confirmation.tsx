@@ -1,6 +1,7 @@
 //- React Imports
 import { FutureButton } from 'components';
 import LoadingIndicator from 'components/LoadingIndicator/LoadingIndicator';
+import { Maybe } from 'lib/types';
 import React from 'react';
 
 //- Style Imports
@@ -9,6 +10,7 @@ import styles from './Confirmation.module.css';
 type ConfirmationProps = {
 	cancelText?: string;
 	children?: React.ReactNode;
+	errorText?: string;
 	confirmText?: string;
 	showLoading?: boolean;
 	loadingText?: string;
@@ -28,8 +30,19 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 	onCancel,
 	onConfirm,
 	title,
+	errorText,
 }) => {
 	if (showLoading === undefined) showLoading = false; //if undefined its false
+
+	let errorMessage: Maybe<React.ReactFragment>;
+
+	if (errorText && errorText.length > 0) {
+		errorMessage = (
+			<p style={{ marginTop: '16px' }} className={styles.Error}>
+				{`${errorText} Try again later.`}
+			</p>
+		);
+	}
 
 	return (
 		<div
@@ -57,6 +70,8 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 					</FutureButton>
 				</div>
 			)}
+			{!hideButtons && !showLoading && errorText &&(
+			<div>{errorMessage}</div>)}
 			{!hideButtons && showLoading && loadingText && (
 				<div className={styles.Buttons}>
 					<LoadingIndicator

@@ -74,7 +74,10 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [isGridView, setIsGridView] = useState(false);
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
 	const [isApproving, setIsApproving] = useState(false);
-	const [approvingText, setApprovingText] = useState('Please confirm transaction in wallet');
+	const [approvingText, setApprovingText] = useState(
+		'Please confirm transaction in wallet',
+	);
+	const [error, setError] = useState<string | undefined>();
 	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
@@ -147,20 +150,20 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const onApproveTokenTransfer = async () => {
 		setIsApproving(true); //start loading indicator
 		try {
-			
 			const approveTx = await lootToken.approve(
 				znsContracts.stakingController.address,
 				ethers.constants.MaxUint256,
 			);
-			setApprovingText('Waiting for transaction to complete')
+			setApprovingText('Waiting for transaction to complete');
 			await approveTx.wait();
 			setApproveTokenTransfer(undefined); //close modal
 		} catch (e) {
 			console.error(e);
+			setError(e && (e.message ?? ''));
 		}
 		setIsApproving(false); //stop loading indicator
 
-		setApprovingText('Please confirm transaction in wallet')
+		setApprovingText('Please confirm transaction in wallet');
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
@@ -441,17 +444,20 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					open
 					onClose={() => {
 						setApproveTokenTransfer(undefined);
+						setError(undefined);
 					}}
 				>
 					<Confirmation
 						title={'Approve Token Transfer'}
 						showLoading={isApproving}
-						loadingText={approvingText} 
+						loadingText={approvingText}
+						errorText={error}
 						onConfirm={() => {
 							onApproveTokenTransfer();
 						}}
 						onCancel={() => {
 							setApproveTokenTransfer(undefined);
+							setError(undefined)
 						}}
 					>
 						<p>
