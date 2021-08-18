@@ -197,7 +197,7 @@
 
 	display: grid;
 	justify-content: space-evenly;
-	grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(311px, 1fr));
 
 	grid-gap: 1.5rem;
 

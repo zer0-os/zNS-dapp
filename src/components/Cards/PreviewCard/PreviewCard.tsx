@@ -159,8 +159,10 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 						>
 							<Image style={{ objectFit: 'contain' }} src={image} />
 						</div>
-						{body()}
-						{buy()}
+						<div className={styles.InfoContainer}>
+							{body()}
+							{buy()}
+						</div>
 					</div>
 					{children && mvpVersion === 3 && (
 						<>

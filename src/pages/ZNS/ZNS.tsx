@@ -126,6 +126,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		}
 	}, [znsDomain.domain, loading]);
 
+	const previewCardRef = useRef<HTMLDivElement>(null);
+
 	//- Minting State
 	const { minting, minted } = useMintProvider();
 	const { transferring, transferred } = useTransferProvider();
@@ -292,60 +294,67 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				to={
 					!isRoot && (znsDomain.loading || tableData.length >= 0) && !isNftView
 						? { opacity: 1, marginTop: 0 }
-						: { opacity: 0, marginTop: -springAmount }
+						: {
+								opacity: 0,
+								marginTop: previewCardRef.current
+									? -previewCardRef.current?.clientHeight
+									: 0,
+						  }
 				}
 			>
 				{(styles) => (
 					<animated.div style={styles}>
-						<PreviewCard
-							domain={domain}
-							metadataUrl={znsDomain?.domain?.metadata}
-							creatorId={znsDomain?.domain?.minter?.id || ''}
-							disabled={
-								znsDomain.domain?.owner?.id.toLowerCase() ===
-									account?.toLowerCase() || !active
-							}
-							ownerId={znsDomain?.domain?.owner?.id || ''}
-							mvpVersion={mvpVersion}
-							onButtonClick={openBidOverlay}
-							onImageClick={() => {}}
-						>
-							{mvpVersion === 3 && (
-								<HorizontalScroll fade>
-									<AssetPriceCard
-										title={`${domain.substring(1, 5).toUpperCase()} Price`}
-										price={randomNumber(85, 400, 2)}
-										change={randomNumber(-30, 30, 2)}
-									/>
-									<AssetGraphCard
-										title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-									/>
-									<AssetPriceCard
-										title={`${domain.substring(1, 5).toUpperCase()} Price`}
-										price={randomNumber(85, 400, 2)}
-										change={randomNumber(-30, 30, 2)}
-									/>
-									<AssetMarketCapCard
-										title={`Total ${domain
-											.substring(1, 5)
-											.toUpperCase()} Holders`}
-										price={randomNumber(15000, 40000, 2)}
-									/>
-									<AssetMarketCapCard
-										title={`Total ${domain
-											.substring(1, 5)
-											.toUpperCase()} Holders`}
-										price={randomNumber(15000, 40000, 2)}
-									/>
-									<AssetMarketCapCard
-										title={`Total ${domain
-											.substring(1, 5)
-											.toUpperCase()} Holders`}
-										price={randomNumber(15000, 40000, 2)}
-									/>
-								</HorizontalScroll>
-							)}
-						</PreviewCard>
+						<div ref={previewCardRef}>
+							<PreviewCard
+								domain={domain}
+								metadataUrl={znsDomain?.domain?.metadata}
+								creatorId={znsDomain?.domain?.minter?.id || ''}
+								disabled={
+									znsDomain.domain?.owner?.id.toLowerCase() ===
+										account?.toLowerCase() || !active
+								}
+								ownerId={znsDomain?.domain?.owner?.id || ''}
+								mvpVersion={mvpVersion}
+								onButtonClick={openBidOverlay}
+								onImageClick={() => {}}
+							>
+								{mvpVersion === 3 && (
+									<HorizontalScroll fade>
+										<AssetPriceCard
+											title={`${domain.substring(1, 5).toUpperCase()} Price`}
+											price={randomNumber(85, 400, 2)}
+											change={randomNumber(-30, 30, 2)}
+										/>
+										<AssetGraphCard
+											title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+										/>
+										<AssetPriceCard
+											title={`${domain.substring(1, 5).toUpperCase()} Price`}
+											price={randomNumber(85, 400, 2)}
+											change={randomNumber(-30, 30, 2)}
+										/>
+										<AssetMarketCapCard
+											title={`Total ${domain
+												.substring(1, 5)
+												.toUpperCase()} Holders`}
+											price={randomNumber(15000, 40000, 2)}
+										/>
+										<AssetMarketCapCard
+											title={`Total ${domain
+												.substring(1, 5)
+												.toUpperCase()} Holders`}
+											price={randomNumber(15000, 40000, 2)}
+										/>
+										<AssetMarketCapCard
+											title={`Total ${domain
+												.substring(1, 5)
+												.toUpperCase()} Holders`}
+											price={randomNumber(15000, 40000, 2)}
+										/>
+									</HorizontalScroll>
+								)}
+							</PreviewCard>
+						</div>
 					</animated.div>
 				)}
 			</Spring>

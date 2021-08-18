@@ -88,6 +88,11 @@
 	z-index: 2;
 }
 
+.InfoContainer {
+	display: flex;
+	flex: 1;
+}
+
 .Body {
 	display: flex;
 	flex: 1;
@@ -103,6 +108,10 @@
 	font-size: 24px;
 	font-weight: 400;
 	margin-bottom: 6px;
+
+	/* white-space: nowrap; */
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .Domain {
@@ -196,4 +205,47 @@
 
 .Children {
 	padding: 24.5px 8px 26px 8px;
+}
+
+@media only screen and (max-width: 1190px) {
+	.Members {
+		display: none;
+	}
+
+	.InfoContainer {
+		flex-direction: column;
+	}
+
+	.Buy {
+		flex-direction: row;
+		margin-top: 16px;
+		margin-right: auto;
+		margin-left: 24px;
+	}
+
+	.Buy > *:not(:first-child) {
+		margin-top: 0 !important;
+		margin-left: 24px;
+	}
+}
+
+@media only screen and (max-width: 950px) {
+	.Buy {
+		flex-direction: column;
+	}
+
+	.Buy > *:not(:first-child) {
+		margin-top: 16px !important;
+		margin-left: 0 !important;
+	}
+}
+
+@media only screen and (max-width: 679px) {
+	.InfoContainer {
+		display: none;
+	}
+
+	.Asset {
+		width: 100%;
+	}
 }
