@@ -1,0 +1,24 @@
+.Container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	margin-top: 16px;
+}
+
+.Bid {
+	display: flex;
+	flex-direction: column;
+}
+
+.Bid label {
+	font-weight: 700;
+	font-size: 14px;
+	color: var(--color-primary-lighter-3);
+}
+
+.Bid span {
+	margin-top: 4px;
+	font-size: 18px;
+	color: var(--color-text-primary);
+}

@@ -30,6 +30,7 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { domain } from 'process';
 import { useRefreshToken } from 'lib/hooks/useRefreshToken';
+import NFTCardActions from './components/NFTCardActions';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -292,8 +293,15 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		);
 	};
 
-	const nftCardActionComponent = () => {
-		return <p>{isGlobalTable ? 'global' : 'not global'}</p>;
+	const nftCardActionComponent = (domain: Domain) => {
+		return (
+			<NFTCardActions
+				domain={domain}
+				disableButton={userId?.toLowerCase() === domain.owner.id.toLowerCase()}
+				hideButton={!isGlobalTable}
+				onButtonClick={buttonClick}
+			/>
+		);
 	};
 
 	////////////
@@ -377,7 +385,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									.map((d, i) => (
 										<li onClick={(e) => rowClick(e, d)} key={i}>
 											<NFTCard
-												actionsComponent={nftCardActionComponent()}
+												actionsComponent={nftCardActionComponent(d)}
 												domain={d.name}
 												imageUri={''}
 												price={0}
