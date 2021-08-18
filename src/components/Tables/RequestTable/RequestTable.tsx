@@ -16,6 +16,7 @@ import {
 	Spinner,
 	Confirmation,
 } from 'components';
+import RequestActions from './components/RequestActions';
 import { Request } from 'containers';
 
 //- Library Imports
@@ -539,63 +540,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								<li key={i} onClick={() => view(d.request.domain)}>
 									<NFTCard
 										actionsComponent={
-											<div
-												style={{
-													display: 'flex',
-													flexDirection: 'column',
-													alignItems: 'center',
-													marginTop: 32,
-												}}
-											>
-												<span
-													style={{
-														display: 'inline-block',
-														fontWeight: 700,
-														color: d.request.approved
-															? 'var(--color-success)'
-															: 'var(--color-primary-lighter-3)',
-														textTransform: 'uppercase',
-														fontSize: 14,
-														marginTop: 4,
-													}}
-												>
-													Offer {d.request.approved ? 'Accepted' : 'Made'}
-												</span>
-												<span
-													className="glow-text-blue"
-													style={{
-														display: 'inline-block',
-														fontWeight: 700,
-														fontSize: 24,
-														marginTop: 4,
-													}}
-												>
-													{Number(
-														ethers.utils.formatEther(d.request.offeredAmount),
-													).toLocaleString()}{' '}
-													WILD
-												</span>
-												<span
-													style={{
-														display: 'inline-block',
-														fontSize: 12,
-														marginTop: 4,
-													}}
-												>
-													{dateFromTimestamp(d.request.timestamp)}
-												</span>
-												<FutureButton
-													style={{
-														maxWidth: 200,
-														marginTop: 24,
-														textTransform: 'uppercase',
-													}}
-													glow
-													onClick={() => view(d.request.domain)}
-												>
-													View Offer
-												</FutureButton>
-											</div>
+											<RequestActions onClick={view} request={d} />
 										}
 										metadataUrl={d.contents.metadata}
 										domain={d.request.domain}
