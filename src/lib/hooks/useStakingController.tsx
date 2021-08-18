@@ -1,6 +1,6 @@
 import { useZnsContracts } from 'lib/contracts';
 import { createDomainMetadata, tryFunction, uploadToIPFS } from 'lib/utils';
-import { DomainRequestContents, NftParams } from 'lib/types';
+import { DomainRequestContents, Maybe, NftParams } from 'lib/types';
 import { ethers } from 'ethers';
 export interface DomainRequestParams {
 	requestor: string;
@@ -23,6 +23,7 @@ export interface FulfillRequestExtendedParams {
 interface StakingControllerHooks {
 	placeRequest: (
 		params: DomainRequestParams,
+		setStatus: (status: string) => void,
 	) => Promise<ethers.ContractTransaction>;
 	approveRequest: (requestId: string) => Promise<ethers.ContractTransaction>;
 	fulfillRequest: (
@@ -33,48 +34,72 @@ interface StakingControllerHooks {
 export function useStakingController(): StakingControllerHooks {
 	const stakingController = useZnsContracts()?.stakingController;
 
-	const placeRequest = async (params: DomainRequestParams) => {
-		const tx = await tryFunction(async () => {
-			if (!stakingController) {
-				throw Error(`no controller`);
-			}
+	const placeRequest = async (
+		params: DomainRequestParams,
+		setStatus: (status: string) => void,
+	) => {
+		if (!stakingController) {
+			throw Error(`no controller`);
+		}
 
-			// Create the intended metadata
-			const intendedMetadata = await createDomainMetadata({
+		setStatus(`Uploading metadata`);
+
+		let domainMetadataUri: Maybe<string>;
+
+		// Create the intended metadata
+		try {
+			domainMetadataUri = await createDomainMetadata({
 				previewImage: params.nft.previewImage,
 				image: params.nft.image,
 				name: params.nft.name,
 				story: params.nft.story,
 			});
+		} catch (e) {
+			console.error(e);
+			throw Error(`Failed to upload metadata`);
+		}
 
-			// Upload the request data to IPFS
-			const fullRequestData: DomainRequestContents = {
-				parent: params.nft.parent,
-				domain: params.nft.domain,
-				requestor: params.requestor,
-				stakeAmount: params.stakeAmount,
-				stakeCurrency: params.stakeCurrency,
-				metadata: intendedMetadata,
-				locked: params.nft.locked,
-			};
+		// Upload the request data to IPFS
+		const fullRequestData: DomainRequestContents = {
+			parent: params.nft.parent,
+			domain: params.nft.domain,
+			requestor: params.requestor,
+			stakeAmount: params.stakeAmount,
+			stakeCurrency: params.stakeCurrency,
+			metadata: domainMetadataUri,
+			locked: params.nft.locked,
+		};
+		setStatus(`Uploading domain request`);
 
-			const domainRequestUri = await uploadToIPFS(
-				JSON.stringify(fullRequestData),
-			);
+		let domainRequestUri: Maybe<string>;
 
-			// Convert to wei (assumes 18 decimals places on token)
-			const offeredAmountInWei = ethers.utils.parseEther(params.stakeAmount);
+		try {
+			domainRequestUri = await uploadToIPFS(JSON.stringify(fullRequestData));
+		} catch (e) {
+			console.error(e);
+			throw Error(`Failed to upload domain request`);
+		}
 
-			// Place the request for the domain
-			const tx = await stakingController.placeDomainRequest(
+		// Convert to wei (assumes 18 decimals places on token)
+		const offeredAmountInWei = ethers.utils.parseEther(params.stakeAmount);
+
+		setStatus(`Waiting for transaction to be approved by wallet`);
+		// Place the request for the domain
+		let tx: Maybe<ethers.ContractTransaction>;
+		try {
+			tx = await stakingController.placeDomainRequest(
 				params.nft.parent,
 				offeredAmountInWei,
 				params.nft.domain,
 				domainRequestUri,
 			);
-
-			return tx;
-		}, `place request`);
+		} catch (e) {
+			console.error(e);
+			if (e.code === 4001) {
+				throw Error(`Transaction rejected by wallet.`);
+			}
+			throw Error(`Failed to submit transaction.`);
+		}
 
 		return tx;
 	};

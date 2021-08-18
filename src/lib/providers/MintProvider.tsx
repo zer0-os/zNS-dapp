@@ -10,7 +10,7 @@ import { ethers } from 'ethers';
 export const MintContext = React.createContext({
 	minting: [{}],
 	minted: [{}],
-	mint: async (nft: NftParams) => {},
+	mint: async (nft: NftParams, setStatus: (status: string) => void) => {},
 });
 
 type MintProviderType = {
@@ -24,13 +24,13 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 	const [finishedMinting, setFinishedMinting] = useState<NftParams | null>(
 		null,
 	);
-	const { registerSubdomain } = useBasicController();
+	const basicController = useBasicController();
 
-	const mint = async (nft: NftParams) => {
+	const mint = async (nft: NftParams, setStatus: (status: string) => void) => {
 		let tx: Maybe<ethers.ContractTransaction>;
 
 		try {
-			tx = await registerSubdomain(nft);
+			tx = await basicController.registerSubdomain(nft, setStatus);
 		} catch (e) {
 			addNotification('Encountered an error while attempting to mint.');
 			throw e;

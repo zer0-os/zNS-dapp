@@ -8,6 +8,7 @@ export function useBasicController() {
 
 	const registerSubdomain = async (
 		params: NftParams,
+		setStatus: (status: string) => void,
 	): Promise<ethers.ContractTransaction> => {
 		if (!basicController) {
 			throw Error(`No basic controller.`);
@@ -15,6 +16,7 @@ export function useBasicController() {
 
 		// get metadata uri
 		let metadataUri: Maybe<string>;
+		setStatus(`Uploading metadata`);
 
 		try {
 			metadataUri = await createDomainMetadata({
@@ -28,6 +30,7 @@ export function useBasicController() {
 			throw Error(`Failed to upload metadata.`);
 		}
 
+		setStatus(`Waiting for transaction to be approved by wallet`);
 		// register subdomain
 		let tx: Maybe<ethers.ContractTransaction>;
 		try {

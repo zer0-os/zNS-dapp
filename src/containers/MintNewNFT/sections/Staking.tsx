@@ -83,7 +83,12 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 						borderRadius: 18,
 						width: 130,
 					}}
-					onClick={pressContinue}
+					onClick={() => {
+						if (!isValid) {
+							return;
+						}
+						pressContinue();
+					}}
 					glow={isValid}
 				>
 					Continue

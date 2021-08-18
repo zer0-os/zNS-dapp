@@ -79,6 +79,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const [name, setName] = useState('');
 	const [domain, setDomain] = useState('');
 	const [isMintLoading, setIsMintLoading] = useState(false);
+	const [mintingStatusText, setMintingStatusText] = useState('');
 	const [lootBalance, setLootBalance] = useState<number | undefined>();
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [existingSubdomains, setExistingSubdomains] = useState<
@@ -171,36 +172,18 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		}
 	};
 
+	const setStatusText = (status: string) => {
+		setMintingStatusText(status);
+	};
+
 	// Mints NFT through user's wallet
 	const submitMint = async () => {
 		if (!account) return setIsMintLoading(false);
 		if (!tokenInformation) return setIsMintLoading(false);
+		setStatusText(`Minting domain`);
 
-		const hasSubmitMint = mint.mint({
-			parent: domainId,
-			owner: account,
-			name: tokenInformation.name,
-			story: tokenInformation.story,
-			image: tokenInformation.image,
-			domain: tokenInformation.domain,
-			zna: domainName,
-			// @TODO Reimplement ticker when we enable dynamic tokens
-			ticker: '',
-			dynamic: false,
-			locked: tokenInformation.locked,
-		});
-
-		return hasSubmitMint;
-	};
-
-	// Submits stake request through user's wallet
-	const submitRequest = async () => {
-		if (!account) return setIsMintLoading(false);
-		if (!tokenInformation) return setIsMintLoading(false);
-		if (!tokenStake) return setIsMintLoading(false);
-
-		const hasSubmitRequest = staking.placeRequest({
-			nft: {
+		const hasSubmitMint = mint.mint(
+			{
 				parent: domainId,
 				owner: account,
 				name: tokenInformation.name,
@@ -213,10 +196,41 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				dynamic: false,
 				locked: tokenInformation.locked,
 			},
-			requestor: account,
-			stakeAmount: tokenStake.amount.toString(),
-			stakeCurrency: tokenStake.currency,
-		});
+			setStatusText,
+		);
+
+		return hasSubmitMint;
+	};
+
+	// Submits stake request through user's wallet
+	const submitRequest = async () => {
+		if (!account) return setIsMintLoading(false);
+		if (!tokenInformation) return setIsMintLoading(false);
+		if (!tokenStake) return setIsMintLoading(false);
+
+		setStatusText(`Placing domain request`);
+
+		const hasSubmitRequest = staking.placeRequest(
+			{
+				nft: {
+					parent: domainId,
+					owner: account,
+					name: tokenInformation.name,
+					story: tokenInformation.story,
+					image: tokenInformation.image,
+					domain: tokenInformation.domain,
+					zna: domainName,
+					// @TODO Reimplement ticker when we enable dynamic tokens
+					ticker: '',
+					dynamic: false,
+					locked: tokenInformation.locked,
+				},
+				requestor: account,
+				stakeAmount: tokenStake.amount.toString(),
+				stakeCurrency: tokenStake.currency,
+			},
+			setStatusText,
+		);
 
 		return hasSubmitRequest;
 	};
@@ -327,8 +341,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				{step === MintState.Summary && (
 					<Summary
 						token={tokenInformation}
-						// dynamic={}
-						// staking={tokenStake}
+						mintingStatusText={mintingStatusText}
 						onContinue={submit}
 						isMintLoading={isMintLoading}
 						domain={domainName}
