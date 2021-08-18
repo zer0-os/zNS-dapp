@@ -173,7 +173,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		}
 		setShowLoadingIndicator(true);
 		try {
-			await staking.fulfillRequest(request);
+			const tx = await staking.fulfillRequest(request);
+			await tx!.wait();
 			setViewing(undefined);
 		} catch (e) {
 			// Catch thrown when user rejects transaction
