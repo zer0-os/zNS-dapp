@@ -158,7 +158,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			console.error(e);
 			setIsApproving(false);
 		}
-		setIsApproving(false);
+
 		setApproveTokenTransfer(undefined);
 	};
 
