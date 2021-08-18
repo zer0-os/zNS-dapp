@@ -6,7 +6,7 @@ import { connectorFromName } from 'components/ConnectToWallet/ConnectToWallet';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 
 export function useEagerConnect() {
-	const { activate, active } = useWeb3React();
+	const { activate, deactivate, active } = useWeb3React();
 
 	const [tried, setTried] = useState(false);
 
@@ -14,13 +14,17 @@ export function useEagerConnect() {
 		const wallet = localStorage.getItem('chosenWallet');
 		const reConnectToWallet = async (wallet: string) => {
 			if (wallet === 'metamask') {
+				setTimeout(() => {
+					//timeout if user lost session and page tries to reconnect forever
+					if (!active) {
+						localStorage.removeItem('chosenWallet');
+						setTried(false);
+					}
+				}, 5000);
+
 				await injected.isAuthorized().then((isAuthorized: boolean) => {
 					if (isAuthorized) {
-						activate(injected, undefined, true).catch(() => {
-							setTried(true);
-						});
-					} else {
-						setTried(true);
+						activate(injected, undefined, true);
 					}
 				});
 			} else {
@@ -33,9 +37,9 @@ export function useEagerConnect() {
 						console.error(`Encounter error while connecting to ${wallet}.`);
 						console.error(e);
 					});
-					setTried(true);
 				}
 			}
+			setTried(true);
 		};
 
 		if (wallet) reConnectToWallet(wallet); //if was connected to a wallet

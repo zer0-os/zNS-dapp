@@ -89,8 +89,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 			onConnect();
 		}
 	};
-
-	const closeSession = (wallet: string) => {
+	const closeSession = async (wallet: string) => {
 		deactivate();
 		//if has a wallet connected, instead of just deactivate, close connection too
 		switch (wallet) {
