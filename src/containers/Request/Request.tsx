@@ -8,7 +8,7 @@ import { FutureButton, Image, Member, Overlay } from 'components';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { randomName, randomImage } from 'lib/Random';
 import { ethers } from 'ethers';
-import { tokenToUsd } from 'lib/coingecko';
+import { tokenToUsd } from 'lib/tokenPrices';
 import { getMetadata } from 'lib/metadata';
 
 //- Style Imports
