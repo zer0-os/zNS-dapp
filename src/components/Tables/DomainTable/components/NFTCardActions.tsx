@@ -29,6 +29,7 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 	const { getBidsForDomain } = useBidProvider();
 
 	let isMounted = useRef(false);
+
 	const [highestBid, setHighestBid] = useState<number | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -43,15 +44,9 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 
 		setIsLoading(false);
 
-		if (!bids) {
-			return;
-		}
+		if (!bids) return;
 
-		if (bids.length === 0) {
-			setHighestBid(0);
-		} else {
-			setHighestBid(bids[0].amount);
-		}
+		setHighestBid(bids[0]?.amount || 0);
 
 		if (onLoad) onLoad();
 	};
@@ -65,6 +60,15 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 		};
 	}, [domain]);
 
+	const bidText = () => {
+		if (highestBid !== undefined) {
+			if (highestBid > 0) return `${highestBid?.toLocaleString()} WILD`;
+			else return 'No bids';
+		} else {
+			return 'Failed to retrieve';
+		}
+	};
+
 	return (
 		<div className={styles.Container}>
 			<div className={styles.Bid}>
@@ -72,13 +76,7 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 				{!isLoading && (
 					<>
 						<label>Highest Bid</label>
-						<span className="glow-text-blue">
-							{highestBid !== undefined &&
-								highestBid > 0 &&
-								`${highestBid?.toLocaleString()} WILD`}
-							{highestBid !== undefined && highestBid === 0 && 'No bids'}
-							{highestBid === undefined && 'Failed to retrieve'}
-						</span>
+						<span className="glow-text-blue">{bidText()}</span>
 					</>
 				)}
 			</div>

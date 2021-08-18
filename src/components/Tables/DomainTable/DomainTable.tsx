@@ -13,8 +13,9 @@ import {
 	IconButton,
 } from 'components';
 import { MakeABid } from 'containers';
-import HighestBid from './HighestBid';
-import NumBids from './NumBids';
+import HighestBid from './components/HighestBid';
+import NumBids from './components/NumBids';
+import NFTCardActions from './components/NFTCardActions';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
@@ -30,7 +31,6 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { domain } from 'process';
 import { useRefreshToken } from 'lib/hooks/useRefreshToken';
-import NFTCardActions from './components/NFTCardActions';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -80,7 +80,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const { getBidsForDomain } = useBidProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const [isLoading, setIsLoading] = useState(true);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
 
@@ -166,7 +165,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	useEffect(() => {
 		if (!isMounted.current) return;
-		setIsLoading(false);
+		if (onLoad) onLoad();
 	}, [domains]);
 
 	useEffect(() => {
@@ -310,7 +309,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				style={style}
 				className={`${
 					styles.DomainTableContainer
-				} border-primary border-rounded blur ${className || ''}`}
+				} border-primary border-rounded ${className || ''}`}
 			>
 				{/* Table Header */}
 				<div className={styles.searchHeader}>
@@ -382,13 +381,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 											<NFTCard
 												actionsComponent={nftCardActionComponent(d)}
 												domain={d.name}
-												imageUri={''}
-												price={0}
 												metadataUrl={d.metadata}
 												nftOwnerId={d.owner?.id || ''}
 												nftMinterId={d.minter?.id || ''}
-												showCreator={true}
-												showOwner={true}
+												showCreator
+												showOwner
 											/>
 										</li>
 									))}
