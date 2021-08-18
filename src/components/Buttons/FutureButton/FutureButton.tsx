@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styles from './FutureButtonStyle.module.css';
 
 type FutureButtonProps = {
+	className?: string;
 	onClick: () => void;
 	style?: React.CSSProperties;
 	toggleable?: boolean;
@@ -14,6 +15,7 @@ type FutureButtonProps = {
 
 // @TODO Should make glow the default state since it's much more prevalent in the design
 const FutureButton: React.FC<FutureButtonProps> = ({
+	className,
 	onClick,
 	style,
 	toggleable,
@@ -39,7 +41,9 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 		<button
 			className={`${styles.futureButton} ${isSelected ? styles.selected : ''} ${
 				glow ? styles.glow : ''
-			} ${loading ? styles.Loading : ''} ${alt ? styles.Alt : ''} `}
+			} ${loading ? styles.Loading : ''} ${alt ? styles.Alt : ''} ${
+				className ? className : ''
+			}`}
 			onMouseEnter={handleHover}
 			onMouseUp={handleClick}
 			style={style}
