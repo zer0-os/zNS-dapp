@@ -160,10 +160,10 @@ const Request: React.FC<RequestProps> = ({
 								</FutureButton>
 							</div>
 						)}
-						<div className={styles.Buttons}>
+						<div className={styles.FulfillIndicator}>
 							{showLoadingIndicator && (
 								<LoadingIndicator
-									style={{ textTransform: 'uppercase' }}
+									style={{ textTransform: 'uppercase'}}
 									text={'Fulfilling'}
 								/>
 							)}

@@ -126,6 +126,10 @@
 	justify-content: center;
 }
 
+.FulfillIndicator > div > p{
+	font-size: 24px !important;
+}
+
 @media only screen and (max-width: 1200px) {
 	.Info {
 		width: 50%;
