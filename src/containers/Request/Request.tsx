@@ -19,6 +19,7 @@ import { DomainRequestAndContents, Metadata } from 'lib/types';
 
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 
 type RequestProps = {
 	request: DomainRequestAndContents;
@@ -41,12 +42,12 @@ const Request: React.FC<RequestProps> = ({
 	////////////////////
 
 	const { mvpVersion } = useMvpVersion();
+	const currency = useCurrencyProvider();
 
 	///////////
 	// State //
 	///////////
 
-	const [stake, setStake] = useState(0); // Stake in USD (as state because API call is async)
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false); // Toggle image lightbox
 	const [isModalOpen, setIsModalOpen] = useState(false); // Toggle confirmation overlay
 	const isFulfilling =
@@ -84,11 +85,7 @@ const Request: React.FC<RequestProps> = ({
 		});
 	}, [request]);
 
-	React.useEffect(() => {
-		tokenToUsd('LOOT').then((d) => {
-			setStake(d as number);
-		});
-	}, []);
+	const stakeCurrencyToUsd = currency.lootPriceUsd;
 
 	return (
 		<div
@@ -191,7 +188,11 @@ const Request: React.FC<RequestProps> = ({
 							{tokenAmount.toLocaleString()} {request.contents.stakeCurrency}
 						</span>
 						<span>
-							${Number((tokenAmount * stake).toFixed(2)).toLocaleString()} USD
+							$
+							{Number(
+								(tokenAmount * stakeCurrencyToUsd).toFixed(2),
+							).toLocaleString()}{' '}
+							USD
 						</span>
 					</div>
 
