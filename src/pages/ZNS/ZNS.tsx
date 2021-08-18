@@ -139,6 +139,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
+	const [pageWidth, setPageWidth] = useState<number>(0);
 
 	//- Table State
 	const [isGridView, setIsGridView] = useState(false);
@@ -200,9 +201,21 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		if (modal) closeModal();
 	};
 
+	const handleResize = () => {
+		setPageWidth(window.innerWidth);
+	};
+
 	/////////////
 	// Effects //
 	/////////////
+
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		handleResize();
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	/* Handles the back/forward history */
 	useEffect(() => {
@@ -518,7 +531,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							)}
 							{!account && !localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={openWallet}>
-									Connect Wallet
+									Connect {pageWidth > 900 && 'Wallet'}
 								</FutureButton>
 							)}
 							{account && !isSearchActive && (
@@ -533,8 +546,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										}}
 										loading={loading}
 									>
-										{isOwnedByUser === true && 'MINT NFT'}
-										{isOwnedByUser === false && 'REQUEST TO MINT NFT'}
+										{pageWidth <= 900 && 'MINT'}
+										{pageWidth > 900 && isOwnedByUser === true && 'MINT NFT'}
+										{pageWidth > 900 &&
+											isOwnedByUser === false &&
+											'REQUEST TO MINT NFT'}
 									</FutureButton>
 
 									{/* Mint Progress button */}
