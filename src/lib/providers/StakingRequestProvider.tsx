@@ -15,6 +15,7 @@ interface StakingRequestProviderContext {
 	requested: DomainRequestParams[];
 	placeRequest: (
 		params: DomainRequestParams,
+		setStatus: (status: string) => void,
 	) => Promise<ethers.ContractTransaction | void>;
 	approving: DomainRequestAndContents[];
 	approved: DomainRequestAndContents[];
@@ -32,7 +33,10 @@ export const StakingRequestContext =
 	React.createContext<StakingRequestProviderContext>({
 		requesting: [],
 		requested: [],
-		placeRequest: async (params: DomainRequestParams) => {},
+		placeRequest: async (
+			params: DomainRequestParams,
+			setStatus: (status: string) => void,
+		) => {},
 		approving: [],
 		approved: [],
 		approveRequest: async (params: DomainRequestAndContents) => {},
@@ -61,8 +65,11 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 
 	const stakingController = useStakingController();
 
-	const placeRequest = async (params: DomainRequestParams) => {
-		const tx = await stakingController.placeRequest(params);
+	const placeRequest = async (
+		params: DomainRequestParams,
+		setStatus: (status: string) => void,
+	) => {
+		const tx = await stakingController.placeRequest(params, setStatus);
 		if (!tx) {
 			addNotification(
 				'Encountered an error while attempting to place request.',

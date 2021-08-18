@@ -27,6 +27,7 @@ type SummaryProps = {
 	staking?: TokenStakeType | null;
 	onContinue: () => void;
 	isMintLoading: boolean;
+	mintingStatusText: string;
 	domain: string;
 	errorText: string;
 };
@@ -37,6 +38,7 @@ const Summary: React.FC<SummaryProps> = ({
 	staking,
 	onContinue,
 	isMintLoading,
+	mintingStatusText,
 	domain,
 	errorText,
 }) => {
@@ -132,7 +134,7 @@ const Summary: React.FC<SummaryProps> = ({
 					</FutureButton>
 				)}
 				{errorMessage}
-				{isMintLoading && <LoadingIndicator text="Minting in progress" />}
+				{isMintLoading && <LoadingIndicator text={mintingStatusText} />}
 			</div>
 		</div>
 	);
