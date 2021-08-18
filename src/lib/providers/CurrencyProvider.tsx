@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 //- Lib Imports
-import { wildToUsd } from 'lib/coingecko';
+import { wildToUsd } from 'lib/tokenPrices';
 
 export const CurrencyContext = React.createContext({
 	wildPriceUsd: 0,
