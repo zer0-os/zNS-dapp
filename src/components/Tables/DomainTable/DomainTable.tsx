@@ -39,6 +39,7 @@ type DomainTableProps = {
 	empty?: boolean;
 	hideOwnBids?: boolean;
 	isButtonActive?: (row: any) => boolean;
+	isGlobalTable?: boolean;
 	isGridView?: boolean;
 	isRootDomain: boolean;
 	onLoad?: () => void;
@@ -62,6 +63,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	empty,
 	hideOwnBids,
 	isButtonActive,
+	isGlobalTable,
 	isGridView,
 	isRootDomain,
 	onLoad,
@@ -289,6 +291,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			</>
 		);
 	};
+
+	const nftCardActionComponent = () => {
+		return <p>{isGlobalTable ? 'global' : 'not global'}</p>;
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -370,6 +377,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									.map((d, i) => (
 										<li onClick={(e) => rowClick(e, d)} key={i}>
 											<NFTCard
+												actionsComponent={nftCardActionComponent()}
 												domain={d.name}
 												imageUri={''}
 												price={0}
