@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 
 //- Lib Imports
-import { wildToUsd } from 'lib/tokenPrices';
+import { lootTokenPrice, wildTokenPrice } from 'lib/tokenPrices';
 
 export const CurrencyContext = React.createContext({
 	wildPriceUsd: 0,
+	lootPriceUsd: 0,
 });
 
 type CurrencyProviderType = {
@@ -18,21 +19,31 @@ const CurrencyProvider: React.FC<CurrencyProviderType> = ({ children }) => {
 	//////////////////////////
 
 	const [wildPriceUsd, setWildPriceUsd] = useState(0);
+	const [lootPriceUsd, setLootPriceUsd] = useState(0);
 
 	useEffect(() => {
 		getWildPriceUsd();
+		getLootPriceUsd();
 	});
 
 	// Poll CoinGecko every 30 seconds
 	const getWildPriceUsd = async () => {
-		const price = await wildToUsd(1);
+		const price = await wildTokenPrice();
 		setWildPriceUsd(price || 0);
 		await new Promise((resolve) => setTimeout(resolve, 30000));
 		getWildPriceUsd();
 	};
 
+	const getLootPriceUsd = async () => {
+		const price = await lootTokenPrice();
+		setLootPriceUsd(price || 0);
+		await new Promise((resolve) => setTimeout(resolve, 30000));
+		getLootPriceUsd();
+	};
+
 	const contextValue = {
 		wildPriceUsd,
+		lootPriceUsd,
 	};
 
 	return (
@@ -45,6 +56,6 @@ const CurrencyProvider: React.FC<CurrencyProviderType> = ({ children }) => {
 export default CurrencyProvider;
 
 export function useCurrencyProvider() {
-	const { wildPriceUsd } = React.useContext(CurrencyContext);
-	return { wildPriceUsd };
+	const { wildPriceUsd, lootPriceUsd } = React.useContext(CurrencyContext);
+	return { wildPriceUsd, lootPriceUsd };
 }
