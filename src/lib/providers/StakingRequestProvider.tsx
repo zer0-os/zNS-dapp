@@ -84,35 +84,35 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 	const stakingController = useStakingController();
 
 	// uncomment for dev/test
-	React.useEffect(() => {
-		setRequesting([
-			...requesting,
-			{
-				zNA: '0://wilder.zachary.vacation.pudding',
-				title: 'Title 123',
-				imageUri:
-					'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
-				story: 'this is a story',
-				stakeAmount: '300',
-				transactionHash:
-					'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
-			} as NftStatusCard,
-		]);
+	// React.useEffect(() => {
+	// 	setRequesting([
+	// 		...requesting,
+	// 		{
+	// 			zNA: '0://wilder.zachary.vacation.pudding',
+	// 			title: 'Title 123',
+	// 			imageUri:
+	// 				'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
+	// 			story: 'this is a story',
+	// 			stakeAmount: '300',
+	// 			transactionHash:
+	// 				'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
+	// 		} as NftStatusCard,
+	// 	]);
 
-		setRequested([
-			...requested,
-			{
-				zNA: '0://wilder.zachary.vacation.pudding',
-				title: 'Title 123',
-				imageUri:
-					'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
-				story: 'this is a story',
-				stakeAmount: '300',
-				transactionHash:
-					'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
-			} as NftStatusCard,
-		]);
-	}, []);
+	// 	setRequested([
+	// 		...requested,
+	// 		{
+	// 			zNA: '0://wilder.zachary.vacation.pudding',
+	// 			title: 'Title 123',
+	// 			imageUri:
+	// 				'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
+	// 			story: 'this is a story',
+	// 			stakeAmount: '300',
+	// 			transactionHash:
+	// 				'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
+	// 		} as NftStatusCard,
+	// 	]);
+	// }, []);
 
 	const placeRequest = async (
 		params: StakingRequest,

@@ -27,33 +27,33 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 	const basicController = useBasicController();
 
 	// Uncomment to test/dev
-	React.useEffect(() => {
-		setMinting([
-			...minting,
-			{
-				zNA: '0://wilder.zachary.vacation.pudding',
-				title: 'Title 123',
-				imageUri:
-					'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
-				story: 'this is a story',
-				transactionHash:
-					'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
-			} as NftStatusCard,
-		]);
+	// React.useEffect(() => {
+	// 	setMinting([
+	// 		...minting,
+	// 		{
+	// 			zNA: '0://wilder.zachary.vacation.pudding',
+	// 			title: 'Title 123',
+	// 			imageUri:
+	// 				'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
+	// 			story: 'this is a story',
+	// 			transactionHash:
+	// 				'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
+	// 		} as NftStatusCard,
+	// 	]);
 
-		setMinted([
-			...minted,
-			{
-				zNA: '0://wilder.zachary.vacation.pudding',
-				title: 'Title 123',
-				imageUri:
-					'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
-				story: 'this is a story',
-				transactionHash:
-					'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
-			} as NftStatusCard,
-		]);
-	}, []);
+	// 	setMinted([
+	// 		...minted,
+	// 		{
+	// 			zNA: '0://wilder.zachary.vacation.pudding',
+	// 			title: 'Title 123',
+	// 			imageUri:
+	// 				'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
+	// 			story: 'this is a story',
+	// 			transactionHash:
+	// 				'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
+	// 		} as NftStatusCard,
+	// 	]);
+	// }, []);
 
 	const mint = async (nft: NftParams, setStatus: (status: string) => void) => {
 		let tx: Maybe<ethers.ContractTransaction>;
