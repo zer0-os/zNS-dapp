@@ -22,7 +22,7 @@ import { getMetadata } from 'lib/metadata';
 import styles from './Request.module.css';
 
 //- Type Imports
-import { DomainRequestAndContents, Metadata } from 'lib/types';
+import { DomainRequestAndContents, Maybe, Metadata } from 'lib/types';
 
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
@@ -35,6 +35,7 @@ type RequestProps = {
 	onApprove: (request: DomainRequestAndContents) => void;
 	onFulfill: (request: DomainRequestAndContents) => void;
 	onNavigate: (domain: string) => void;
+	errorText?: string;
 };
 
 const Request: React.FC<RequestProps> = ({
@@ -44,6 +45,7 @@ const Request: React.FC<RequestProps> = ({
 	onApprove,
 	onFulfill,
 	onNavigate,
+	errorText,
 }) => {
 	////////////////////
 	// Imported Hooks //
@@ -58,6 +60,8 @@ const Request: React.FC<RequestProps> = ({
 	const [stake, setStake] = useState(0); // Stake in USD (as state because API call is async)
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false); // Toggle image lightbox
 	const [isModalOpen, setIsModalOpen] = useState(false); // Toggle confirmation overlay
+	const [errorMessage, setErrorMessage] =
+		useState<Maybe<React.ReactFragment>>(); // Toggle confirmation overlay
 	const isFulfilling =
 		yours && request.request.approved && !request.request.fulfilled;
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
@@ -67,11 +71,15 @@ const Request: React.FC<RequestProps> = ({
 		ethers.utils.formatEther(request.request.offeredAmount),
 	);
 
+
 	///////////////
 	// Functions //
 	///////////////
 
-	const openModal = () => setIsModalOpen(true);
+	const openModal = () => {
+		setIsModalOpen(true);
+		setErrorMessage(undefined);
+	};
 	const closeModal = () => setIsModalOpen(false);
 	const preview = () => setIsLightboxOpen(true);
 	const confirm = () => {
@@ -98,6 +106,18 @@ const Request: React.FC<RequestProps> = ({
 			setStake(d as number);
 		});
 	}, []);
+
+	//And after a new error, show error message
+	React.useEffect(() => {
+		if (errorText && errorText.length > 0) {
+			console.log("recomputed")
+			setErrorMessage(
+				<p style={{ marginTop: '16px' }} className={styles.Error}>
+					{`${errorText} Try again later.`}
+				</p>,
+			);
+		}
+	}, [errorText]);
 
 	return (
 		<div
@@ -160,6 +180,7 @@ const Request: React.FC<RequestProps> = ({
 								</FutureButton>
 							</div>
 						)}
+						{!showLoadingIndicator && errorText && <div>{errorMessage}</div>}
 						<div className={styles.FulfillIndicator}>
 							{showLoadingIndicator && (
 								<LoadingIndicator

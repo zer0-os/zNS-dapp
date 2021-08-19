@@ -148,6 +148,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 * tokens on behalf of the user.
 	 */
 	const onApproveTokenTransfer = async () => {
+		setError(undefined);
 		setIsApproving(true); //start loading indicator
 		try {
 			const approveTx = await lootToken.approve(
@@ -167,6 +168,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
+		setError(undefined);
 		const allowance = await lootToken.allowance(
 			account!,
 			znsContracts.stakingController.address,
@@ -183,6 +185,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			// Catch thrown when user rejects transaction
 			console.error(e);
+			setError(e && (e.message ?? ''));
 		}
 
 		setShowLoadingIndicator(false);
@@ -425,12 +428,14 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					open
 					onClose={() => {
 						setViewing(undefined);
+						setError(undefined);
 					}}
 				>
 					<Request
 						onApprove={onApprove}
 						onFulfill={onFulfill}
 						onNavigate={onNavigate}
+						errorText={error}
 						request={viewing}
 						showLoadingIndicator={showLoadingIndicator}
 						yours={viewing.contents.requestor === userId}
