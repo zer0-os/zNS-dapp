@@ -110,7 +110,6 @@ const Request: React.FC<RequestProps> = ({
 	//And after a new error, show error message
 	React.useEffect(() => {
 		if (errorText && errorText.length > 0) {
-			console.log("recomputed")
 			setErrorMessage(
 				<p style={{ marginTop: '16px' }} className={styles.Error}>
 					{`${errorText} Try again later.`}
