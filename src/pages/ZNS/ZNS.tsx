@@ -15,8 +15,6 @@ import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { randomNumber } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
-import useEnlist from 'lib/hooks/useEnlist';
-import { getMetadata } from 'lib/metadata';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Type Imports
@@ -154,7 +152,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
-	const [isTransferModalOpen, setIsTransferModalOpen] = useState(false); // @todo refactor out?
 
 	//- MVP Version
 	// TODO: Move the MVP version handler out to a hook
@@ -200,6 +197,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const openBidOverlay = () => {
 		if (!znsDomain.domain) return;
 		setModal(Modal.Bid);
+	};
+	const openTransferOwnershipModal = () => {
+		setModal(Modal.Transfer);
 	};
 
 	const navigate = (to: string) => {
@@ -400,7 +400,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					metadataUrl={znsDomain.domain?.metadata ?? ''}
 					domainName={domain}
 					domainId={znsDomain.domain?.id ?? ''}
-					onModalChange={(value) => setIsTransferModalOpen(value)}
+					onTransfer={closeModal}
 					creatorId={
 						znsDomain.domain && znsDomain.domain.minter.id
 							? znsDomain.domain.minter.id
@@ -621,7 +621,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							<animated.div style={styles}>
 								<NFTView
 									domain={domain}
-									onTransfer={() => setIsTransferModalOpen(true)}
+									onTransfer={openTransferOwnershipModal}
 								/>
 							</animated.div>
 						)}
