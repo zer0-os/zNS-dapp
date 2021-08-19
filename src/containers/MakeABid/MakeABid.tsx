@@ -276,7 +276,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			// Get highest bid
 			const allBids = await getBidsForDomain(domain);
 
-			if (!allBids || allBids.length === 0) return;
+			if (!allBids || allBids.length === 0) {
+				setHasBidDataLoaded(true);
+				return;
+			}
 			const highestBid = allBids.reduce(function (prev, current) {
 				return prev.amount > current.amount ? prev : current;
 			});
@@ -385,10 +388,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	);
 
 	const estimation = () => {
-		const isBidValid = !Number.isNaN(parseInt(bid));
+		const isBidValid = !Number.isNaN(parseFloat(bid));
 		const bidString = isBidValid
-			? Number((parseInt(bid) * wildPriceUsd).toFixed(2)).toLocaleString()
-			: '0';
+			? toFiat(parseFloat(bid) * wildPriceUsd)
+			: '0.00';
 
 		return (
 			<>
@@ -435,7 +438,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 									<LoadingIndicator text="Checking WILD Balance" />
 								</>
 							)}
-							{
+							{!loadingWildBalance && (
 								<>
 									<p className="glow-text-blue">
 										Enter the amount you wish to bid:
@@ -476,7 +479,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 										Continue
 									</FutureButton>
 								</>
-							}
+							)}
 						</>
 					)}
 				</div>
