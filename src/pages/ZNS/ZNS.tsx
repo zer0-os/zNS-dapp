@@ -379,7 +379,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					<MakeABid domain={znsDomain.domain} onBid={closeModal} />
 				</Overlay>
 			)}
-			<Overlay style={{ zIndex: 0 }} open={isSearchActive} onClose={() => {}}>
+			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
 			{modal === Modal.Wallet && (
@@ -449,7 +449,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				<FilterBar
 					style={
 						isSearchActive
-							? { zIndex: isSearchActive ? 10000 : 10, background: 'none' }
+							? { zIndex: isSearchActive ? 100 : 10, background: 'none' }
 							: {}
 					}
 					onSelect={() => {
