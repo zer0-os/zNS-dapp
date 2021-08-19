@@ -51,13 +51,23 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
  * @returns URI to the created Metadata
  */
 
+export interface UploadedDomainMetadata {
+	url: string;
+	contents: Metadata;
+}
+
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	// upload metadata to IPFS
 	const metadataObject = await uploadMetadata(params);
 	const metadataAsString = JSON.stringify(metadataObject);
 	const metadata = await uploadData(metadataAsString);
 
-	return metadata.url;
+	const uploadedMetadata: UploadedDomainMetadata = {
+		url: metadata.url,
+		contents: metadataObject,
+	};
+
+	return uploadedMetadata;
 };
 
 /**
