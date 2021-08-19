@@ -160,6 +160,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			await approveTx.wait();
 			setApproveTokenTransfer(undefined); //close modal
 		} catch (e) {
+			console.error(e);
 			//if user rejects transaction
 			if (e.code === 4001) { 
 				setApproveError(`Rejected by wallet`);
@@ -188,6 +189,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
 		} catch (e) { 
+			console.error(e);
 			//if user rejects transaction
 			if (
 				e.message ===
