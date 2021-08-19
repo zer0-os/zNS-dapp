@@ -7,14 +7,36 @@
 }
 
 .NFT {
+	position: relative;
 	display: flex;
 	justify-content: space-between;
+	padding: 60px 57.5px;
 
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+	background-color: var(--color-background);
 
-	padding: 60px 57.5px;
+	transition: background var(--animation-time-medium) ease-in-out;
+
+	overflow: hidden;
+}
+
+.Loaded {
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.Loaded .BG {
+	opacity: 1;
+}
+
+.Bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
 }
 
 .NFT > div {
@@ -24,6 +46,7 @@
 .Image {
 	transition: transform var(--animation-time-medium) ease-in-out;
 	cursor: pointer;
+	background: rgba(255, 255, 255, 0.05);
 }
 
 .Image:hover {
