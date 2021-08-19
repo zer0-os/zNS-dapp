@@ -179,7 +179,7 @@ const Request: React.FC<RequestProps> = ({
 								</FutureButton>
 							</div>
 						)}
-						{!showLoadingIndicator && errorText && <div>{errorMessage}</div>}
+						{!showLoadingIndicator && errorText && errorMessage &&<div>{errorMessage}</div>}
 						<div className={styles.FulfillIndicator}>
 							{showLoadingIndicator && (
 								<LoadingIndicator
