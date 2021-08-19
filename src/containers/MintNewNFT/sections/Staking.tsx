@@ -9,6 +9,7 @@ import styles from '../MintNewNFT.module.css';
 
 //- Component Imports
 import { TextInput, FutureButton } from 'components';
+import { Maybe } from 'lib/types';
 
 type StakingProps = {
 	balance: number | undefined;
@@ -23,11 +24,13 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 
 	const pressContinue = () => {
 		// Validate
-		const e: string[] = [];
 		const stake = Number(amount);
 		if (!amount.length || stake == undefined || stake === 0)
 			return setError('Please provide a stake amount');
-		if (balance && stake > balance) return setError('Insufficient balance');
+		if (balance !== undefined && stake > balance) {
+			setError('Insufficient balance');
+			return;
+		}
 		onContinue({
 			amount: parseFloat(amount),
 			currency: 'LOOT',
@@ -42,13 +45,24 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 			stake <= balance &&
 			stake > 0;
 		setIsValid(valid);
+
+		if (balance !== undefined && stake > balance) {
+			setError('Insufficient balance');
+		} else {
+			setError(undefined);
+		}
 	}, [amount]);
 
 	const balanceIndicator = () => (
 		<>
 			<span style={{ marginBottom: 8 }} className={styles.Estimate}>
-				{balance && <>Your Balance: {Number(balance).toLocaleString()} LOOT</>}
-				{!balance && <>Your Balance: Loading...</>}
+				<>
+					Your Balance:{' '}
+					{balance !== undefined
+						? Number(balance).toLocaleString()
+						: 'Loading...'}{' '}
+					LOOT
+				</>
 			</span>
 		</>
 	);
