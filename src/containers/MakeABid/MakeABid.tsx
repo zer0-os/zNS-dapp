@@ -276,7 +276,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			// Get highest bid
 			const allBids = await getBidsForDomain(domain);
 
-			if (!allBids || allBids.length === 0) return;
+			if (!allBids || allBids.length === 0) {
+				setHasBidDataLoaded(true);
+				return;
+			}
 			const highestBid = allBids.reduce(function (prev, current) {
 				return prev.amount > current.amount ? prev : current;
 			});
