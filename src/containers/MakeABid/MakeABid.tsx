@@ -402,7 +402,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const bidStep = () => {
 		let bidTooHighWarning: Maybe<React.ReactFragment> = null;
 
-		if (loadingWildBalance && Number(bid) > wildBalance!) {
+		if (!loadingWildBalance && Number(bid) > wildBalance!) {
 			bidTooHighWarning = (
 				<>
 					<p className={styles.Error} style={{ paddingTop: '16px' }}>
