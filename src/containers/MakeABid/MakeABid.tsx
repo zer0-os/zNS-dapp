@@ -402,7 +402,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const bidStep = () => {
 		let bidTooHighWarning: Maybe<React.ReactFragment> = null;
 
-		if (!loadingWildBalance && Number(bid) > wildBalance!) {
+		if (loadingWildBalance && Number(bid) > wildBalance!) {
 			bidTooHighWarning = (
 				<>
 					<p className={styles.Error} style={{ paddingTop: '16px' }}>
@@ -435,7 +435,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 									<LoadingIndicator text="Checking WILD Balance" />
 								</>
 							)}
-							{
+							{!loadingWildBalance && (
 								<>
 									<p className="glow-text-blue">
 										Enter the amount you wish to bid:
@@ -476,7 +476,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 										Continue
 									</FutureButton>
 								</>
-							}
+							)}
 						</>
 					)}
 				</div>
