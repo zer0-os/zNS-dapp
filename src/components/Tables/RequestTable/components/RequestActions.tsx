@@ -53,7 +53,7 @@ const RequestActions: React.FC<RequestActionsProps> = ({
 				{Number(
 					ethers.utils.formatEther(request.request.offeredAmount),
 				).toLocaleString()}{' '}
-				WILD
+				{request.contents.stakeCurrency}
 			</span>
 			<span className={styles.Date}>
 				{dateFromTimestamp(request.request.timestamp)}
