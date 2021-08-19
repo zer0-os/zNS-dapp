@@ -21,7 +21,7 @@ type TransferOwnershipProps = {
 	domainId: string;
 	creatorId: string;
 	ownerId: string;
-	onModalChange: (arg: boolean) => void;
+	onTransfer: () => void;
 };
 
 const TransferOwnership: React.FC<TransferOwnershipProps> = ({
@@ -31,7 +31,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 	domainId,
 	creatorId,
 	ownerId,
-	onModalChange,
+	onTransfer,
 }) => {
 	// State
 	const [walletAddress, setWalletAddress] = useState('');
@@ -63,7 +63,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 				walletAddress,
 			});
 
-			onModalChange(false);
+			onTransfer();
 		} catch (err) {}
 		setIsLoading(false);
 	};
@@ -105,7 +105,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 				</div>
 			</Overlay>
 
-			<Overlay open={!hasAccepted} onClose={() => onModalChange(false)}>
+			<Overlay open={!hasAccepted} onClose={() => onTransfer()}>
 				<div
 					className={`${styles.TransferOwnership} blur border-rounded border-primary`}
 				>

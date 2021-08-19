@@ -10,7 +10,7 @@ type TransferOwnershipContainerProps = {
 	domainId: string;
 	creatorId: string;
 	ownerId: string;
-	onModalChange: (arg: boolean) => void;
+	onTransfer: () => void;
 };
 
 const TransferOwnershipContainer: React.FC<TransferOwnershipContainerProps> = ({
@@ -19,7 +19,7 @@ const TransferOwnershipContainer: React.FC<TransferOwnershipContainerProps> = ({
 	domainId,
 	creatorId,
 	ownerId,
-	onModalChange,
+	onTransfer,
 }) => {
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
 
@@ -39,7 +39,7 @@ const TransferOwnershipContainer: React.FC<TransferOwnershipContainerProps> = ({
 			image={metadata?.image || ''}
 			domainName={domainName}
 			domainId={domainId}
-			onModalChange={onModalChange}
+			onTransfer={onTransfer}
 			creatorId={creatorId}
 			ownerId={ownerId}
 		/>
