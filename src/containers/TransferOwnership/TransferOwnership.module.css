@@ -140,6 +140,6 @@
 	justify-content: center;
 }
 
-.Confirmation .Buttons button:first-of-type {
+.Confirmation .Buttons button:first-of-type:not(:last-child) {
 	margin-right: 40px;
 }
