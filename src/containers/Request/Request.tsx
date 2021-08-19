@@ -116,7 +116,7 @@ const Request: React.FC<RequestProps> = ({
 				</p>,
 			);
 		}
-	}, [errorText]);
+	}, [showLoadingIndicator]);
 
 	return (
 		<div

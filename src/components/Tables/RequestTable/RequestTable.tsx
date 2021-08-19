@@ -159,8 +159,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			await approveTx.wait();
 			setApproveTokenTransfer(undefined); //close modal
 		} catch (e) {
-			console.error(e);
-			setError(e && (e.message ?? ''));
+			if (e.code === 4001) {
+				setError(`Rejected by wallet`);
+			} else {
+				setError(`Failed to submit transaction.`);
+			}
 		}
 		setIsApproving(false); //stop loading indicator
 
@@ -178,14 +181,16 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			setApproveTokenTransfer(lootToken.address);
 			return;
 		}
-		setShowLoadingIndicator(true);
+		setShowLoadingIndicator(true); //displays loading indicator on overlay
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
 		} catch (e) {
-			// Catch thrown when user rejects transaction
-			console.error(e);
-			setError(e && (e.message ?? ''));
+			if (e.message === "Failed to fulfill request: undefined MetaMask Tx Signature: User denied transaction signature.") {
+				setError(`Rejected by wallet`);
+			} else {
+				setError(`Failed to submit transaction.`);
+			}
 		}
 
 		setShowLoadingIndicator(false);
