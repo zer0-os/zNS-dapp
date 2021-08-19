@@ -126,10 +126,13 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			}
 			try {
 				const sorted = bids.sort((a, b) => b.date.getTime() - a.date.getTime());
+				const highestBid = bids.reduce(function (prev, current) {
+					return prev.amount > current.amount ? prev : current;
+				});
 				if (!isMounted.current) return;
 				setBids(sorted);
-				setHighestBid(sorted[0]);
-				setHighestBidUsd(sorted[0].amount * wildPriceUsd);
+				setHighestBid(highestBid);
+				setHighestBidUsd(highestBid.amount * wildPriceUsd);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
@@ -207,7 +210,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					<h2 className="glow-text-blue">Highest Bid</h2>
 					<span className={styles.Crypto}>
 						{Number(highestBid.amount.toFixed(2)).toLocaleString()} WILD{' '}
-						{highestBidUsd && (
+						{highestBidUsd !== undefined && (
 							<span className={styles.Fiat}>(${toFiat(highestBidUsd)})</span>
 						)}
 					</span>
