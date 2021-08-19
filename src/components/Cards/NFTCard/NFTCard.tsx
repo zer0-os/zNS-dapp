@@ -7,27 +7,29 @@ import styles from './NFTCard.module.css';
 //- Component Imports
 import { ArrowLink, Image } from 'components';
 
-type NFTCardProps = {
-	name: string;
+export interface NFTCardProps {
+	actionsComponent?: React.ReactNode;
+	children?: React.ReactNode;
 	domain: string;
-	imageUri: string;
-	price: number;
-	nftOwnerId: string;
+	imageUri?: string;
+	name?: string;
 	nftMinterId: string;
+	nftOwnerId: string;
+	price?: number;
 	showCreator?: boolean;
 	showOwner?: boolean;
 	style?: React.CSSProperties;
-	children?: React.ReactNode;
-};
+}
 
 const NFTCard: React.FC<NFTCardProps> = ({
-	name,
+	actionsComponent,
+	children,
 	domain,
 	imageUri,
-	price,
-	nftOwnerId,
-	children,
+	name,
 	nftMinterId,
+	nftOwnerId,
+	price,
 	showCreator,
 	showOwner,
 	style,
@@ -55,7 +57,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 			<div className={styles.Body}>
 				<h5 className={`glow-text-blue`}>{name}</h5>
 				<ArrowLink>{domainText}</ArrowLink>
-				{children}
+				{actionsComponent}
 			</div>
 		</div>
 	);

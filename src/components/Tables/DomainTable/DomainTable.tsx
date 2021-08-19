@@ -7,13 +7,15 @@ import { Spring, animated } from 'react-spring';
 import {
 	Artwork,
 	FutureButton,
-	IconButton,
+	NFTCard,
 	SearchBar,
 	Overlay,
+	IconButton,
 } from 'components';
 import { MakeABid } from 'containers';
-import HighestBid from './HighestBid';
-import NumBids from './NumBids';
+import HighestBid from './components/HighestBid';
+import NumBids from './components/NumBids';
+import NFTCardActions from './components/NFTCardActions';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
@@ -38,6 +40,7 @@ type DomainTableProps = {
 	empty?: boolean;
 	hideOwnBids?: boolean;
 	isButtonActive?: (row: any) => boolean;
+	isGlobalTable?: boolean;
 	isGridView?: boolean;
 	isRootDomain: boolean;
 	onLoad?: () => void;
@@ -61,6 +64,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	empty,
 	hideOwnBids,
 	isButtonActive,
+	isGlobalTable,
 	isGridView,
 	isRootDomain,
 	onLoad,
@@ -76,7 +80,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const { getBidsForDomain } = useBidProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const [isLoading, setIsLoading] = useState(true);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
 
@@ -126,6 +129,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		if (window.innerWidth < 1282) setList();
 	};
 
+	const checkHeight = () => {
+		const height = containerRef.current?.offsetHeight;
+		if (height === undefined && containerHeight === height) return;
+		setContainerHeight(height || 0);
+	};
+
 	const onBid = async () => {
 		closeModal();
 
@@ -154,26 +163,14 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		}
 	}, [userId]);
 
-	// Resizes the table container
-	// (The animation is done in CSS)
-	useEffect(() => {
-		if (!isLoading) {
-			const el = containerRef.current;
-			if (el) {
-				if (!isMounted.current) return;
-				setContainerHeight(isGridView ? el.clientHeight + 30 : el.clientHeight);
-			}
-			if (onLoad) onLoad();
-		} else {
-			if (!isMounted.current) return;
-			setContainerHeight(0);
-		}
-	}, [isLoading, searchQuery, isGridView, domains]);
-
 	useEffect(() => {
 		if (!isMounted.current) return;
-		setIsLoading(false);
+		if (onLoad) onLoad();
 	}, [domains]);
+
+	useEffect(() => {
+		checkHeight();
+	}, [containerRef.current?.offsetHeight, searchQuery]);
 
 	/////////////////
 	// React Table //
@@ -288,6 +285,19 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			</>
 		);
 	};
+
+	const nftCardActionComponent = (domain: Domain) => {
+		return (
+			<NFTCardActions
+				domain={domain}
+				disableButton={userId?.toLowerCase() === domain.owner.id.toLowerCase()}
+				hideButton={!isGlobalTable}
+				onButtonClick={buttonClick}
+				onLoad={checkHeight}
+			/>
+		);
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -299,17 +309,16 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				style={style}
 				className={`${
 					styles.DomainTableContainer
-				} border-primary border-rounded blur ${className || ''}`}
+				} border-primary border-rounded ${className || ''}`}
 			>
 				{/* Table Header */}
 				<div className={styles.searchHeader}>
 					<SearchBar
 						placeholder="Search by domain name"
 						onChange={(event: any) => search(event.target.value)}
-						style={{ width: '100%' }}
+						style={{ width: '100%', marginRight: 16 }}
 					/>
-					{/* @todo re-enable grid view */}
-					{/* <div className={styles.searchHeaderButtons}>
+					<div className={styles.searchHeaderButtons}>
 						<IconButton
 							onClick={setList}
 							toggled={!isGridView}
@@ -322,7 +331,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							iconUri={grid}
 							style={{ height: 32, width: 32 }}
 						/>
-					</div> */}
+					</div>
 				</div>
 
 				<div className={styles.DomainTable}>
@@ -363,26 +372,25 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 						{/* Grid View */}
 						{/* @todo re-enable grid view */}
-						{/* {!empty && isGridView && (
+						{!empty && isGridView && (
 							<ol className={styles.Grid}>
 								{data
 									.filter((d) => d.name.includes(searchQuery))
 									.map((d, i) => (
-										<li onClick={() => navigateTo(d.name)} key={i}>
+										<li onClick={(e) => rowClick(e, d)} key={i}>
 											<NFTCard
-												name={d.name}
-												domain={d.domain.name || ''}
-												imageUri={d.metadata.image || ''}
-												price={d.bids[0]?.amount || 0}
-												nftOwnerId={'Owner Name'}
-												nftMinterId={'Minter Name'}
-												showCreator={true}
-												showOwner={true}
+												actionsComponent={nftCardActionComponent(d)}
+												domain={d.name}
+												metadataUrl={d.metadata}
+												nftOwnerId={d.owner?.id || ''}
+												nftMinterId={d.minter?.id || ''}
+												showCreator
+												showOwner
 											/>
 										</li>
 									))}
 							</ol>
-						)} */}
+						)}
 
 						{empty && <p className={styles.Empty}>No domains found</p>}
 					</div>

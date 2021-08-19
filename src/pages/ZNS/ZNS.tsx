@@ -359,6 +359,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				<DomainTable
 					domains={tableData.slice().sort((a, b) => (a.name < b.name ? -1 : 1))}
 					isRootDomain={isRoot}
+					isGlobalTable
 					style={{ marginTop: 16 }}
 					empty={(znsDomain.domain && tableData.length === 0) as boolean}
 					disableButton={!active}
