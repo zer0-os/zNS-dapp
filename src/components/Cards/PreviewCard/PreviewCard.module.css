@@ -56,7 +56,7 @@
 	width: 398.33px;
 	height: 220px;
 
-	/* background-color: var(--background-purple-card); */
+	background-color: var(--background-purple-card);
 	background: rgba(255, 255, 255, 0.05);
 	background-size: cover;
 	background-position: center;

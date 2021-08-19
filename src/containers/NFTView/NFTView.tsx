@@ -51,6 +51,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	// because it needs way more data than is worth sending through props
 
 	const isMounted = useRef(false);
+	const blobCache = useRef<string>();
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
 
@@ -61,6 +62,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [highestBid, setHighestBid] = useState<Bid | undefined>();
 	const [highestBidUsd, setHighestBidUsd] = useState<number | undefined>();
+	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
+		blobCache.current,
+	);
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -138,10 +142,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	useEffect(() => {
 		isMounted.current = true;
+
+		fetch(galaxyBackground)
+			.then((r) => r.blob())
+			.then((blob) => {
+				const url = URL.createObjectURL(blob);
+				blobCache.current = url;
+				setBackgroundBlob(url);
+			});
 		return () => {
 			isMounted.current = false;
 		};
-	});
+	}, []);
 
 	useEffect(() => {
 		if (!isMounted.current) return;
@@ -281,8 +293,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		<div className={styles.NFTView}>
 			{overlays()}
 			<div
-				className={`${styles.NFT} blur border-primary border-rounded`}
-				style={{ backgroundImage: `url(${galaxyBackground})` }}
+				className={`${styles.NFT} ${
+					backgroundBlob !== undefined ? styles.Loaded : ''
+				} border-primary border-rounded`}
 			>
 				<div className={`${styles.Image} border-rounded`}>
 					<Image
@@ -329,6 +342,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					</div>
 					{price()}
 					{actionButtons()}
+					{backgroundBlob !== undefined && (
+						<img src={backgroundBlob} className={styles.Bg} />
+					)}
 				</div>
 			</div>
 			<div className={styles.Horizontal} style={{ marginTop: 20 }}>
