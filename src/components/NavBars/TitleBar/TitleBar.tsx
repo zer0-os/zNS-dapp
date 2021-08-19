@@ -1,6 +1,7 @@
 //- React Imports
 import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Spring, animated } from 'react-spring';
 
 //- Component Imports
 import { IconButton, ZNALink } from 'components';
@@ -39,49 +40,50 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	setIsSearchActive,
 	isSearchActive,
 }) => {
-	const domainSearch = useDomainSearch();
-	const history = useHistory();
-	const searchInput = useRef<HTMLInputElement>(null);
-	const [searchText, setSearchText] = useState('');
-	const [isSearchInputHovered, setIsSearchInputHovered] = useState(false);
-
-	const containerRef = useRef<HTMLDivElement>(null);
-	const listRef = useRef<HTMLUListElement>(null);
-	const [containerHeight, setContainerHeight] = useState<number>(0);
+	//////////////////
+	// State & Data //
+	//////////////////
 
 	const config = {
 		smallestSearchQuery: 2,
 		isExactMatchEnabled: false,
 	};
 
+	const listRef = useRef<HTMLUListElement>(null);
+
+	const domainSearch = useDomainSearch();
+	const history = useHistory();
+	const searchInput = useRef<HTMLInputElement>(null);
+
+	const [containerHeight, setContainerHeight] = useState<number>(0);
+	const [searchText, setSearchText] = useState('');
+	const [isSearchInputHovered, setIsSearchInputHovered] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
 
-	// Input Key Presses
+	///////////////
+	// Functions //
+	///////////////
+
 	const onSearchChange = (event: any) => setSearchQuery(event.target.value);
 	const checkEscape = (event: any) => {
 		if (event.which === 27) searchInput?.current?.blur();
 	};
 
-	const openSearch = () => {
-		setIsSearchActive(true);
-	};
+	const openSearch = () => setIsSearchActive(true);
 	const closeSearch = () => {
 		setContainerHeight(0);
-		// Search is disappearing before the click registers
-		// Set a little timeout so the row click registers before de-rendering
-		setTimeout(
-			() => {
-				setIsSearchActive(false);
-				setSearchQuery('');
-			},
-			containerHeight === 0 ? 0 : 750,
-		);
+		setIsSearchActive(false);
+		setSearchQuery('');
 	};
 
 	const go = (to: string) => {
 		const relativeDomain = getRelativeDomainPath(to);
 		history.push(relativeDomain);
 	};
+
+	/////////////
+	// Effects //
+	/////////////
 
 	useEffect(() => {
 		// If the query is valid, set the pattern
@@ -93,22 +95,66 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	}, [searchQuery]);
 
 	useEffect(() => {
-		const height = listRef?.current?.clientHeight;
-		if (height) setContainerHeight(height);
+		setContainerHeight(listRef?.current?.clientHeight || 50);
 
-		if (searchQuery.length === 0) {
-			setContainerHeight(0);
-		}
+		if (searchQuery.length === 0) setContainerHeight(0);
 
-		if (domainSearch?.matches?.length === 0 && searchQuery.length > 0) {
+		if (domainSearch?.matches?.length === 0 && searchQuery.length > 0)
 			setSearchText('No results');
-		}
 
 		return () => {
 			setContainerHeight(50);
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [domainSearch.matches]);
+
+	///////////////
+	// Fragments //
+	///////////////
+
+	const search = () => (
+		<Spring to={{ height: containerHeight || 0 }}>
+			{(animatedStyles) => (
+				<animated.div
+					className={`${styles.SearchResults} blur`}
+					style={animatedStyles}
+				>
+					<ul ref={listRef}>
+						{/* @TODO: Implement exact domain properly */}
+						{config.isExactMatchEnabled && domainSearch?.exactMatch?.name && (
+							<li
+								className={styles.ExactMatch}
+								key={domainSearch.exactMatch.name}
+								onMouseDown={() => go(domainSearch?.exactMatch?.name || '')}
+							>
+								{
+									domainSearch.exactMatch.name.split('.')[
+										domainSearch.exactMatch.name.split('.').length - 1
+									]
+								}{' '}
+								<span>{domainSearch.exactMatch.name}</span>
+							</li>
+						)}
+						{domainSearch?.matches
+							?.filter((d) => d.name.length > 1)
+							.map((s, i) => (
+								<li onMouseDown={() => go(s.name)} key={i + s.name}>
+									{s.name.split('.')[s.name.split('.').length - 1]}
+									<span>{s.name}</span>
+								</li>
+							))}
+						{searchText.length > 0 && domainSearch.matches?.length === 0 && (
+							<li key={'type'}>{searchText}</li>
+						)}
+					</ul>
+				</animated.div>
+			)}
+		</Spring>
+	);
+
+	////////////
+	// Render //
+	////////////
 
 	return (
 		<div
@@ -154,43 +200,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 				</div>
 				{children}
 			</div>
-			{isSearchActive && (
-				<div className={`${styles.SearchResults} blur`}>
-					<ul ref={listRef}>
-						{/* @TODO: Implement exact domain properly */}
-						{config.isExactMatchEnabled && domainSearch?.exactMatch?.name && (
-							<li
-								className={styles.ExactMatch}
-								key={domainSearch.exactMatch.name}
-								onClick={() => go(domainSearch?.exactMatch?.name || '')}
-							>
-								{
-									domainSearch.exactMatch.name.split('.')[
-										domainSearch.exactMatch.name.split('.').length - 1
-									]
-								}{' '}
-								<span>{domainSearch.exactMatch.name}</span>
-							</li>
-						)}
-						{domainSearch?.matches
-							?.filter((d) => d.name.length > 1)
-							.map((s, i) => (
-								<li onClick={() => go(s.name)} key={i + s.name}>
-									{s.name.split('.')[s.name.split('.').length - 1]}
-									<span>{s.name}</span>
-								</li>
-							))}
-						{searchText.length > 0 && domainSearch.matches?.length === 0 && (
-							<li key={'type'}>{searchText}</li>
-						)}
-					</ul>
-					<div
-						ref={containerRef}
-						className={styles.GrowContainer}
-						style={{ height: containerHeight }}
-					></div>
-				</div>
-			)}
+			{isSearchActive && search()}
 		</div>
 	);
 };
