@@ -28,6 +28,11 @@ const Image = (props: any) => {
 				...props.style,
 			}}
 		>
+			{!loaded && (
+				<div {...props} className={styles.Loading}>
+					<div className={styles.Spinner}></div>
+				</div>
+			)}
 			{!tryVideo && (
 				<img
 					{...props}
@@ -64,11 +69,6 @@ const Image = (props: any) => {
 						containerRef.current.clientWidth > 100
 					}
 				/>
-			)}
-			{!loaded && (
-				<div {...props} className={styles.Loading}>
-					<div className={styles.Spinner}></div>
-				</div>
 			)}
 		</div>
 	);
