@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 
 import { useBidProvider } from 'lib/providers/BidProvider';
 
-import { Spinner } from 'components';
-
 import { Bid, Domain, DomainData } from 'lib/types';
 import FutureButton from 'components/Buttons/FutureButton/FutureButton';
 
@@ -15,9 +13,9 @@ type ViewBidsProps = {
 
 const ViewBids: React.FC<ViewBidsProps> = ({ domain, onClick, style }) => {
 	let isMounted = useRef(false);
+
 	const { getBidsForDomain } = useBidProvider();
 	const [bids, setBids] = useState<Bid[] | undefined>();
-
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const handleClick = () => {
