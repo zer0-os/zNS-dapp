@@ -183,7 +183,6 @@ const Request: React.FC<RequestProps> = ({
 						<div className={styles.FulfillIndicator}>
 							{showLoadingIndicator && (
 								<LoadingIndicator
-									style={{ textTransform: 'uppercase' }}
 									text={'Please confirm transaction in wallet'}
 								/>
 							)}

@@ -74,7 +74,6 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 			{!hideButtons && showLoading && loadingText && (
 				<div className={styles.Buttons}>
 					<LoadingIndicator
-						style={{ textTransform: 'uppercase' }}
 						text={loadingText}
 					/>
 				</div>
