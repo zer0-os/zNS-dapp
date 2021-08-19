@@ -2,7 +2,14 @@
 import React, { useState } from 'react';
 
 //- Component Imports
-import { FutureButton, Image, Member, Overlay } from 'components';
+import {
+	FutureButton,
+	Image,
+	LoadingIndicator,
+	Member,
+	Overlay,
+	Spinner,
+} from 'components';
 
 //- Library Imports
 import useMvpVersion from 'lib/hooks/useMvpVersion';
@@ -15,7 +22,7 @@ import { getMetadata } from 'lib/metadata';
 import styles from './Request.module.css';
 
 //- Type Imports
-import { DomainRequestAndContents, Metadata } from 'lib/types';
+import { DomainRequestAndContents, Maybe, Metadata } from 'lib/types';
 
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
@@ -24,18 +31,22 @@ import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 type RequestProps = {
 	request: DomainRequestAndContents;
 	// @TODO Change 'yours' to 'sentByYou'
+	showLoadingIndicator: boolean;
 	yours?: boolean;
 	onApprove: (request: DomainRequestAndContents) => void;
 	onFulfill: (request: DomainRequestAndContents) => void;
 	onNavigate: (domain: string) => void;
+	errorText?: string;
 };
 
 const Request: React.FC<RequestProps> = ({
 	request,
+	showLoadingIndicator,
 	yours,
 	onApprove,
 	onFulfill,
 	onNavigate,
+	errorText,
 }) => {
 	////////////////////
 	// Imported Hooks //
@@ -50,6 +61,8 @@ const Request: React.FC<RequestProps> = ({
 
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false); // Toggle image lightbox
 	const [isModalOpen, setIsModalOpen] = useState(false); // Toggle confirmation overlay
+	const [errorMessage, setErrorMessage] =
+		useState<Maybe<React.ReactFragment>>(); // Toggle confirmation overlay
 	const isFulfilling =
 		yours && request.request.approved && !request.request.fulfilled;
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
@@ -59,11 +72,15 @@ const Request: React.FC<RequestProps> = ({
 		ethers.utils.formatEther(request.request.offeredAmount),
 	);
 
+
 	///////////////
 	// Functions //
 	///////////////
 
-	const openModal = () => setIsModalOpen(true);
+	const openModal = () => {
+		setIsModalOpen(true);
+		setErrorMessage(undefined);
+	};
 	const closeModal = () => setIsModalOpen(false);
 	const preview = () => setIsLightboxOpen(true);
 	const confirm = () => {
@@ -86,6 +103,17 @@ const Request: React.FC<RequestProps> = ({
 	}, [request]);
 
 	const stakeCurrencyToUsd = currency.lootPriceUsd;
+
+	//And after a new error, show error message
+	React.useEffect(() => {
+		if (errorText && errorText.length > 0) {
+			setErrorMessage(
+				<p style={{ marginTop: '16px' }} className={styles.Error}>
+					{`${errorText} Try again later.`}
+				</p>,
+			);
+		}
+	}, [errorText]);
 
 	return (
 		<div
@@ -129,22 +157,32 @@ const Request: React.FC<RequestProps> = ({
 								: `This will approve the request for another user to mint 0://${request.request.domain}`}
 						</p>
 						<p>There's no going back.</p>
-						<div className={styles.Buttons}>
-							<FutureButton
-								style={{ textTransform: 'uppercase' }}
-								alt
-								glow
-								onClick={closeModal}
-							>
-								Cancel
-							</FutureButton>
-							<FutureButton
-								style={{ textTransform: 'uppercase' }}
-								glow
-								onClick={confirm}
-							>
-								Continue
-							</FutureButton>
+						{!showLoadingIndicator && (
+							<div className={styles.Buttons}>
+								<FutureButton
+									style={{ textTransform: 'uppercase' }}
+									alt
+									glow
+									onClick={closeModal}
+								>
+									Cancel
+								</FutureButton>
+								<FutureButton
+									style={{ textTransform: 'uppercase' }}
+									glow
+									onClick={confirm}
+								>
+									Continue
+								</FutureButton>
+							</div>
+						)}
+						{!showLoadingIndicator && errorText && errorMessage &&<div>{errorMessage}</div>}
+						<div className={styles.FulfillIndicator}>
+							{showLoadingIndicator && (
+								<LoadingIndicator
+									text={'Please confirm transaction in wallet'}
+								/>
+							)}
 						</div>
 					</div>
 				</Overlay>

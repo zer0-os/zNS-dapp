@@ -12,6 +12,12 @@
 	background-repeat: no-repeat;
 }
 
+.Error {
+	padding: 0;
+	font-weight: 700 !important;
+	color: var(--color-primary-lighter-3);
+}
+
 .Image {
 	width: 543px;
 	max-width: 543px;
