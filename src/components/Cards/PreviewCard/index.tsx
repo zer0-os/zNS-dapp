@@ -3,7 +3,7 @@
  */
 
 // React Imports
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Library Imports
 import { Maybe, Metadata } from 'lib/types';
@@ -24,6 +24,7 @@ type PreviewCardContainerProps = {
 	onImageClick?: () => void;
 	ownerId: string;
 	style?: React.CSSProperties;
+	preventInteraction?: boolean;
 	metadataUrl?: string;
 };
 
@@ -37,9 +38,11 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 	onImageClick,
 	ownerId,
 	style,
+	preventInteraction,
 	metadataUrl,
 }) => {
 	const history = useHistory();
+	const isMounted = useRef<boolean>();
 
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
 	const [isPreviewOpen, setIsPreviewOpen] = useState(false);
@@ -55,10 +58,17 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 	const closeImagePreview = () => setIsPreviewOpen(false);
 
 	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	}, []);
+
+	useEffect(() => {
 		setMetadata(undefined);
-		if (!metadataUrl) return;
+		if (domain === '/' || !metadataUrl) return;
 		getMetadata(metadataUrl).then((m) => {
-			if (!m) return;
+			if (isMounted.current === false || !m) return;
 			else setMetadata(m);
 		});
 	}, [metadataUrl]);
@@ -99,6 +109,7 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 				onMakeBid={onButtonClick}
 				onViewDomain={onViewDomain}
 				ownerId={ownerId}
+				preventInteraction={preventInteraction}
 				style={style}
 			>
 				{children}

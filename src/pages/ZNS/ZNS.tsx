@@ -279,74 +279,62 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	// React Fragments //
 	/////////////////////
 
-	const previewCard = () => (
-		<>
-			{/* Preview Card */}
-			{/* TODO: This definitely needs some refactoring */}
-			<Spring
-				from={{ opacity: 0, marginTop: -springAmount }}
-				to={
-					!isRoot && (znsDomain.loading || tableData.length >= 0) && !isNftView
-						? { opacity: 1, marginTop: 0 }
-						: { opacity: 0, marginTop: -springAmount }
-				}
-			>
-				{(styles) => (
-					<animated.div style={styles}>
-						<PreviewCard
-							domain={domain}
-							metadataUrl={znsDomain?.domain?.metadata}
-							creatorId={znsDomain?.domain?.minter?.id || ''}
-							disabled={
-								znsDomain.domain?.owner?.id.toLowerCase() ===
-									account?.toLowerCase() || !active
-							}
-							ownerId={znsDomain?.domain?.owner?.id || ''}
-							mvpVersion={mvpVersion}
-							onButtonClick={openBidOverlay}
-							onImageClick={() => {}}
-						>
-							{mvpVersion === 3 && (
-								<HorizontalScroll fade>
-									<AssetPriceCard
-										title={`${domain.substring(1, 5).toUpperCase()} Price`}
-										price={randomNumber(85, 400, 2)}
-										change={randomNumber(-30, 30, 2)}
-									/>
-									<AssetGraphCard
-										title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-									/>
-									<AssetPriceCard
-										title={`${domain.substring(1, 5).toUpperCase()} Price`}
-										price={randomNumber(85, 400, 2)}
-										change={randomNumber(-30, 30, 2)}
-									/>
-									<AssetMarketCapCard
-										title={`Total ${domain
-											.substring(1, 5)
-											.toUpperCase()} Holders`}
-										price={randomNumber(15000, 40000, 2)}
-									/>
-									<AssetMarketCapCard
-										title={`Total ${domain
-											.substring(1, 5)
-											.toUpperCase()} Holders`}
-										price={randomNumber(15000, 40000, 2)}
-									/>
-									<AssetMarketCapCard
-										title={`Total ${domain
-											.substring(1, 5)
-											.toUpperCase()} Holders`}
-										price={randomNumber(15000, 40000, 2)}
-									/>
-								</HorizontalScroll>
-							)}
-						</PreviewCard>
-					</animated.div>
-				)}
-			</Spring>
-		</>
-	);
+	const previewCard = () => {
+		// if (nftView === true) return <></>;
+
+		const isVisible = domain !== '/' && !isNftView;
+		let to;
+		if (isVisible) {
+			// If should be visible, slide down
+			to = { opacity: 1, marginTop: 0 };
+		} else if (domain === '/') {
+			// If root view, slide up
+			to = { opacity: 0, marginTop: -springAmount };
+		} else {
+			// If NFT view, don't render
+			return <></>;
+		}
+
+		return (
+			<>
+				{/* Preview Card */}
+				{/* TODO: This definitely needs some refactoring */}
+				<Spring to={to}>
+					{(styles) => (
+						<animated.div style={styles}>
+							<PreviewCard
+								domain={domain}
+								metadataUrl={znsDomain?.domain?.metadata}
+								creatorId={znsDomain?.domain?.minter?.id || ''}
+								disabled={
+									znsDomain.domain?.owner?.id.toLowerCase() ===
+										account?.toLowerCase() || !active
+								}
+								ownerId={znsDomain?.domain?.owner?.id || ''}
+								mvpVersion={mvpVersion}
+								onButtonClick={openBidOverlay}
+								onImageClick={() => {}}
+								preventInteraction={domain === '/'}
+							>
+								{mvpVersion === 3 && (
+									<HorizontalScroll fade>
+										<AssetPriceCard
+											title={`${domain.substring(1, 5).toUpperCase()} Price`}
+											price={randomNumber(85, 400, 2)}
+											change={randomNumber(-30, 30, 2)}
+										/>
+										<AssetGraphCard
+											title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+										/>
+									</HorizontalScroll>
+								)}
+							</PreviewCard>
+						</animated.div>
+					)}
+				</Spring>
+			</>
+		);
+	};
 
 	const subdomainTable = () => (
 		<>
