@@ -159,7 +159,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			await approveTx.wait();
 			setApproveTokenTransfer(undefined); //close modal
 		} catch (e) {
-			if (e.code === 4001) {
+			//if user rejects transaction
+			if (e.code === 4001) { 
 				setError(`Rejected by wallet`);
 			} else {
 				setError(`Failed to submit transaction.`);
@@ -185,8 +186,12 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
-		} catch (e) {
-			if (e.message === "Failed to fulfill request: undefined MetaMask Tx Signature: User denied transaction signature.") {
+		} catch (e) { 
+			//if user rejects transaction
+			if (
+				e.message ===
+				'Failed to fulfill request: undefined MetaMask Tx Signature: User denied transaction signature.'
+			) {
 				setError(`Rejected by wallet`);
 			} else {
 				setError(`Failed to submit transaction.`);
@@ -421,8 +426,13 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		useFilters,
 		useGlobalFilter,
 	);
-	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
-		tableHook;
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		prepareRow,
+		rows,
+	} = tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
@@ -467,7 +477,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						}}
 						onCancel={() => {
 							setApproveTokenTransfer(undefined);
-							setError(undefined)
+							setError(undefined);
 						}}
 					>
 						<p>
