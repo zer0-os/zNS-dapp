@@ -77,7 +77,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const [approvingText, setApprovingText] = useState(
 		'Please confirm transaction in wallet',
 	);
-	const [error, setError] = useState<string | undefined>();
+	const [approveError, setApproveError] = useState<string | undefined>();
+	const [fulfillError, setFulfillError] = useState<string | undefined>();
 	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
@@ -148,7 +149,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 * tokens on behalf of the user.
 	 */
 	const onApproveTokenTransfer = async () => {
-		setError(undefined);
+		setApproveError(undefined);
 		setIsApproving(true); //start loading indicator
 		try {
 			const approveTx = await lootToken.approve(
@@ -161,9 +162,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			//if user rejects transaction
 			if (e.code === 4001) { 
-				setError(`Rejected by wallet`);
+				setApproveError(`Rejected by wallet`);
 			} else {
-				setError(`Failed to submit transaction.`);
+				setApproveError(`Failed to submit transaction.`);
 			}
 		}
 		setIsApproving(false); //stop loading indicator
@@ -172,7 +173,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
-		setError(undefined);
+		setFulfillError(undefined);
 		const allowance = await lootToken.allowance(
 			account!,
 			znsContracts.stakingController.address,
@@ -192,9 +193,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				e.message ===
 				'Failed to fulfill request: undefined MetaMask Tx Signature: User denied transaction signature.'
 			) {
-				setError(`Rejected by wallet`);
+				setFulfillError(`Rejected by wallet`);
 			} else {
-				setError(`Failed to submit transaction.`);
+				setFulfillError(`Failed to submit transaction.`);
 			}
 		}
 
@@ -443,14 +444,14 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					open
 					onClose={() => {
 						setViewing(undefined);
-						setError(undefined);
+						setFulfillError(undefined);
 					}}
 				>
 					<Request
 						onApprove={onApprove}
 						onFulfill={onFulfill}
 						onNavigate={onNavigate}
-						errorText={error}
+						errorText={fulfillError}
 						request={viewing}
 						showLoadingIndicator={showLoadingIndicator}
 						yours={viewing.contents.requestor === userId}
@@ -464,20 +465,20 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					open
 					onClose={() => {
 						setApproveTokenTransfer(undefined);
-						setError(undefined);
+						setApproveError(undefined);
 					}}
 				>
 					<Confirmation
 						title={'Approve Token Transfer'}
 						showLoading={isApproving}
 						loadingText={approvingText}
-						errorText={error}
+						errorText={approveError}
 						onConfirm={() => {
 							onApproveTokenTransfer();
 						}}
 						onCancel={() => {
 							setApproveTokenTransfer(undefined);
-							setError(undefined);
+							setApproveError(undefined);
 						}}
 					>
 						<p>
