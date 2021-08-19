@@ -385,10 +385,13 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	);
 
 	const estimation = () => {
-		const isBidValid = !Number.isNaN(parseInt(bid));
+		const isBidValid = !Number.isNaN(parseFloat(bid));
 		const bidString = isBidValid
-			? Number((parseInt(bid) * wildPriceUsd).toFixed(2)).toLocaleString()
-			: '0';
+			? (parseFloat(bid) * wildPriceUsd).toLocaleString(undefined, {
+					minimumFractionDigits: 2,
+					maximumFractionDigits: 2,
+			  })
+			: '0.00';
 
 		return (
 			<>
