@@ -14,14 +14,13 @@ export function useEagerConnect() {
 		const wallet = localStorage.getItem('chosenWallet');
 		const reConnectToWallet = async (wallet: string) => {
 			if (wallet === 'metamask') {
-				if (window.ethereum?.isMetaMask) {
-					//if metamask provider its active, it will try to connect
-					await injected.isAuthorized().then((isAuthorized: boolean) => {
-						if (isAuthorized) {
-							activate(injected, undefined, true);
-						}
-					});
-				} else localStorage.removeItem('chosenWallet');
+				await injected.isAuthorized().then((isAuthorized: boolean) => {
+					//if user is authorized then connect
+					if (isAuthorized) activate(injected, undefined, true);
+					//if not authorized then not try to recoonect next time
+					//same case if there is no provider
+					else localStorage.removeItem('chosenWallet');
+				});
 			} else {
 				const c = connectorFromName(wallet) as AbstractConnector;
 				if (c) {

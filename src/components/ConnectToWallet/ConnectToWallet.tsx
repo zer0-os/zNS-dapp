@@ -81,6 +81,9 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				//if user tries to connect metamask without provider
 				addNotification('no provider, start crypto wallets or get metamask');
 				setIsLoading(false);
+				setTimeout(() => {
+					window.location.reload(); //brave wont show first time the pop up to connect, this fix that
+				}, 1500);
 			} else {
 				const previousWallet = localStorage.getItem('chosenWallet');
 				if (previousWallet) await closeSession(previousWallet);
@@ -89,13 +92,12 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				if (wallet === 'metamask') {
 					if (window.ethereum) {
 						const { ethereum } = window as any;
-						localStorage.removeItem('chosenWallet');
 						activate(c, undefined, true);
 						//if user its using brave browser, this may get stuck, but still handle the "accountsChanged"
 						//if using metamask extension, will connect and save the chosen wallet to reconnect again next time
 						ethereum.on('accountsChanged', () => {
-							localStorage.setItem('chosenWallet', wallet);
 							activate(c, undefined, true);
+							window.location.reload(); //reload and will get connected automatically
 						});
 					}
 				} else {
@@ -108,7 +110,6 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				}
 
 				setIsLoading(false);
-
 				onConnect();
 			}
 		}
