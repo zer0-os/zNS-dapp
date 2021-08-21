@@ -16,9 +16,9 @@
 
 .ArrowContainer {
 	position: absolute;
-	top: 0px;
 	left: calc(100% + 5px);
-	height: 12px;
+	top: 0;
+	height: 100%;
 	width: 12px;
 
 	transition: margin-left var(--animation-time-medium) ease-in-out;

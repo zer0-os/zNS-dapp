@@ -72,7 +72,7 @@
 
 .Price h3 {
 	color: var(--color-primary-lighter-3);
-	font-size: 14px;
+	font-size: 12px;
 	font-weight: 700;
 	margin-bottom: 4px;
 }
@@ -91,7 +91,6 @@
 	display: block;
 	margin-top: 24px;
 	padding: 0;
-	font-size: 16px;
 }
 
 .InputWrapper {
@@ -102,7 +101,7 @@
 .InputWrapper p {
 	margin: 0;
 	padding: 0;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 	text-align: center;
 }
