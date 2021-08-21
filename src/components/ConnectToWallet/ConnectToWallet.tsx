@@ -83,7 +83,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				setIsLoading(false);
 				setTimeout(() => {
 					window.location.reload(); //brave wont show first time the pop up to connect, this fix that
-				}, 1500);
+				}, 3000);
 			} else {
 				const previousWallet = localStorage.getItem('chosenWallet');
 				if (previousWallet) await closeSession(previousWallet);
