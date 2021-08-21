@@ -6,7 +6,7 @@ import { connectorFromName } from 'components/ConnectToWallet/ConnectToWallet';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 
 export function useEagerConnect() {
-	const { activate, deactivate, active } = useWeb3React();
+	const { activate, active } = useWeb3React();
 
 	const [tried, setTried] = useState(false);
 
@@ -14,19 +14,14 @@ export function useEagerConnect() {
 		const wallet = localStorage.getItem('chosenWallet');
 		const reConnectToWallet = async (wallet: string) => {
 			if (wallet === 'metamask') {
-				setTimeout(() => {
-					//timeout if user lost session and page tries to reconnect forever
-					if (!active) {
-						localStorage.removeItem('chosenWallet');
-						setTried(false);
-					}
-				}, 5000);
-
-				await injected.isAuthorized().then((isAuthorized: boolean) => {
-					if (isAuthorized) {
-						activate(injected, undefined, true);
-					}
-				});
+				if (window.ethereum?.isMetaMask) {
+					//if metamask provider its active, it will try to connect
+					await injected.isAuthorized().then((isAuthorized: boolean) => {
+						if (isAuthorized) {
+							activate(injected, undefined, true);
+						}
+					});
+				} else localStorage.removeItem('chosenWallet');
 			} else {
 				const c = connectorFromName(wallet) as AbstractConnector;
 				if (c) {
@@ -97,4 +92,7 @@ export function useInactiveListener(suppress: boolean = false) {
 			};
 		}
 	}, [active, error, suppress, activate]);
+}
+function addNotification(arg0: string) {
+	throw new Error('Function not implemented.');
 }

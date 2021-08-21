@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //- Web3 Imports
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
@@ -26,6 +26,9 @@ import coinbaseWalletIcon from './assets/coinbasewallet.svg';
 import fortmaticIcon from './assets/fortmatic.svg';
 import portisIcon from './assets/portis.svg';
 import useNotification from 'lib/hooks/useNotification';
+import { ethers } from 'ethers';
+import { useInactiveListener } from 'lib/hooks/provider-hooks';
+import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 
 type ConnectToWalletProps = {
 	onConnect: () => void;
@@ -64,9 +67,8 @@ const nameFromConnector = (c: AbstractConnector) => {
 
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const walletContext = useWeb3React<Web3Provider>();
-	const { active, connector, activate, deactivate } = walletContext;
+	const { active, connector, activate, deactivate, account } = walletContext;
 	const [isLoading, setIsLoading] = useState(false); //state for trigger the loading spinner
-
 	//- Notification State
 	const { addNotification } = useNotification();
 
@@ -75,20 +77,43 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		const c = connectorFromName(wallet) as AbstractConnector;
 
 		if (c) {
-			const previousWallet = localStorage.getItem('chosenWallet');
-			if (previousWallet) await closeSession(previousWallet);
-			localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to connect
+			if (wallet === 'metamask' && window.ethereum === undefined) {
+				//if user tries to connect metamask without provider
+				addNotification('no provider, start crypto wallets or get metamask');
+				setIsLoading(false);
+			} else {
+				const previousWallet = localStorage.getItem('chosenWallet');
+				if (previousWallet) await closeSession(previousWallet);
+				localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to reconnect if connected
 
-			await activate(c, async (e: Error) => {
-				addNotification(`Failed to connect to wallet.`);
-				localStorage.removeItem('chosenWallet');
-				console.error(`Encounter error while connecting to ${wallet}.`);
-				console.error(e);
-			});
-			setIsLoading(false);
-			onConnect();
+				if (wallet === 'metamask') {
+					if (window.ethereum) {
+						const { ethereum } = window as any;
+						localStorage.removeItem('chosenWallet');
+						activate(c, undefined, true);
+						//if user its using brave browser, this may get stuck, but still handle the "accountsChanged"
+						//if using metamask extension, will connect and save the chosen wallet to reconnect again next time
+						ethereum.on('accountsChanged', () => {
+							localStorage.setItem('chosenWallet', wallet);
+							if (account === undefined) window.location.reload();
+						});
+					}
+				} else {
+					await activate(c, async (e: Error) => {
+						addNotification(`Failed to connect to wallet.`);
+						localStorage.removeItem('chosenWallet');
+						console.error(`Encounter error while connecting to ${wallet}.`);
+						console.error(e);
+					});
+				}
+
+				setIsLoading(false);
+
+				onConnect();
+			}
 		}
 	};
+
 	const closeSession = async (wallet: string) => {
 		deactivate();
 		//if has a wallet connected, instead of just deactivate, close connection too
