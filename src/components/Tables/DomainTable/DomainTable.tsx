@@ -301,7 +301,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		return (
 			<NFTCardActions
 				domain={domain}
-				disableButton={userId?.toLowerCase() === domain.owner.id.toLowerCase()}
+				disableButton={
+					!userId || userId?.toLowerCase() === domain.owner.id.toLowerCase()
+				}
 				hideButton={!isGlobalTable}
 				onButtonClick={buttonClick}
 				onLoad={checkHeight}
