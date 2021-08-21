@@ -95,7 +95,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						//if using metamask extension, will connect and save the chosen wallet to reconnect again next time
 						ethereum.on('accountsChanged', () => {
 							localStorage.setItem('chosenWallet', wallet);
-							if (account === undefined) window.location.reload();
+							activate(c, undefined, true);
 						});
 					}
 				} else {
