@@ -79,7 +79,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		if (c) {
 			if (wallet === 'metamask' && !window.ethereum) {
 				//if user tries to connect metamask without provider
-				addNotification('no provider, start crypto wallets or get metamask');
+				addNotification('start or get wallet provider first');
 				setIsLoading(false);
 				setTimeout(() => {
 					window.location.reload(); //brave wont show first time the pop up to connect, this fix that
