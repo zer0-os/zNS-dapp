@@ -26,9 +26,6 @@ import coinbaseWalletIcon from './assets/coinbasewallet.svg';
 import fortmaticIcon from './assets/fortmatic.svg';
 import portisIcon from './assets/portis.svg';
 import useNotification from 'lib/hooks/useNotification';
-import { ethers } from 'ethers';
-import { useInactiveListener } from 'lib/hooks/provider-hooks';
-import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 
 type ConnectToWalletProps = {
 	onConnect: () => void;
