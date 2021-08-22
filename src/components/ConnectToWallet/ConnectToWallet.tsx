@@ -92,13 +92,15 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				if (wallet === 'metamask') {
 					if (window.ethereum) {
 						const { ethereum } = window as any;
+						const authorized = await injected.isAuthorized();
 						activate(c, undefined, true);
 						//if user its using brave browser, this may get stuck, but still handle the "accountsChanged"
 						//if using metamask extension, will connect and save the chosen wallet to reconnect again next time
-						ethereum.on('accountsChanged', () => {
-							activate(c, undefined, true);
-							window.location.reload(); //reload and will get connected automatically
-						});
+						if (!authorized)
+							ethereum.on('accountsChanged', async () => {
+								activate(c, undefined, true);
+								window.location.reload(); //reload and will get connected automatically
+							});
 					}
 				} else {
 					await activate(c, async (e: Error) => {
