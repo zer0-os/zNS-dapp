@@ -77,7 +77,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		const c = connectorFromName(wallet) as AbstractConnector;
 
 		if (c) {
-			if (wallet === 'metamask' && window.ethereum === undefined) {
+			if (wallet === 'metamask' && !window.ethereum) {
 				//if user tries to connect metamask without provider
 				addNotification('no provider, start crypto wallets or get metamask');
 				setIsLoading(false);
@@ -89,27 +89,12 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				if (previousWallet) await closeSession(previousWallet);
 				localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to reconnect if connected
 
-				if (wallet === 'metamask') {
-					if (window.ethereum) {
-						const { ethereum } = window as any;
-						const authorized = await injected.isAuthorized();
-						activate(c, undefined, true);
-						//if user its using brave browser, this may get stuck, but still handle the "accountsChanged"
-						//if using metamask extension, will connect and save the chosen wallet to reconnect again next time
-						if (!authorized)
-							ethereum.on('accountsChanged', async () => {
-								activate(c, undefined, true);
-								window.location.reload(); //reload and will get connected automatically
-							});
-					}
-				} else {
-					await activate(c, async (e: Error) => {
-						addNotification(`Failed to connect to wallet.`);
-						localStorage.removeItem('chosenWallet');
-						console.error(`Encounter error while connecting to ${wallet}.`);
-						console.error(e);
-					});
-				}
+				await activate(c, async (e: Error) => {
+					addNotification(`Failed to connect to wallet.`);
+					localStorage.removeItem('chosenWallet');
+					console.error(`Encounter error while connecting to ${wallet}.`);
+					console.error(e);
+				});
 
 				setIsLoading(false);
 				onConnect();
