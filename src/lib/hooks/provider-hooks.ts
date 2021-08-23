@@ -92,6 +92,3 @@ export function useInactiveListener(suppress: boolean = false) {
 		}
 	}, [active, error, suppress, activate]);
 }
-function addNotification(arg0: string) {
-	throw new Error('Function not implemented.');
-}
