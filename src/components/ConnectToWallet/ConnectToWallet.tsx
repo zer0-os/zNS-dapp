@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 //- Web3 Imports
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
