@@ -87,7 +87,11 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 					//metamask may get stuck due to eth_requestAccounts promise, if user close log in overlay
 					setTimeout(async () => {
 						const authorized = await injected.isAuthorized();
-						if (!authorized) window.location.reload();
+						if (
+							!authorized &&
+							localStorage.getItem('chosenWallet') === 'metamask'
+						)
+							addNotification('Cant connect?, please reload and retry');
 					}, 20000); //@todo: check if metamask solves this, issue #10085
 
 				await activate(c, async (e) => {
