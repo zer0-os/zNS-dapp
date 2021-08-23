@@ -66,6 +66,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { active, connector, activate, deactivate } = walletContext;
 	const [isLoading, setIsLoading] = useState(false); //state for trigger the loading spinner
+
 	//- Notification State
 	const { addNotification } = useNotification();
 
