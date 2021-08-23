@@ -17,7 +17,7 @@ export function useEagerConnect() {
 				await injected.isAuthorized().then((isAuthorized: boolean) => {
 					//if user is authorized then connect
 					if (isAuthorized) activate(injected, undefined, true);
-					//if not authorized then not try to reconect next time
+					//if not authorized then not try to reconnect next time
 					//same case if there is no provider
 					else localStorage.removeItem('chosenWallet');
 				});
