@@ -64,7 +64,7 @@ const nameFromConnector = (c: AbstractConnector) => {
 
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const walletContext = useWeb3React<Web3Provider>();
-	const { active, connector, activate, deactivate, account } = walletContext;
+	const { active, connector, activate, deactivate } = walletContext;
 	const [isLoading, setIsLoading] = useState(false); //state for trigger the loading spinner
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -86,11 +86,23 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				if (previousWallet) await closeSession(previousWallet);
 				localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to reconnect if connected
 
-				await activate(c, async (e: Error) => {
+				if (wallet === 'metamask')
+					//metamask may get stuck due to eth_requestAccounts promise, if user close log in overlay
+					setTimeout(async () => {
+						const authorized = await injected.isAuthorized();
+						if (!authorized) window.location.reload();
+					}, 20000); //@todo: check if metamask solves this, issue #10085
+
+				await activate(c, async (e) => {
 					addNotification(`Failed to connect to wallet.`);
 					localStorage.removeItem('chosenWallet');
 					console.error(`Encounter error while connecting to ${wallet}.`);
 					console.error(e);
+					if (
+						//if page has a connection request stuck, it needs to reload to get connected again
+						e.message === 'Already processing eth_requestAccounts. Please wait.'
+					)
+						window.location.reload();
 				});
 
 				setIsLoading(false);
