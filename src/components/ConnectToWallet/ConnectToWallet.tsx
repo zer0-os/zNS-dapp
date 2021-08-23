@@ -81,7 +81,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 				setIsLoading(false);
 			} else {
 				const previousWallet = localStorage.getItem('chosenWallet');
-				if (previousWallet) closeSession(previousWallet);
+				if (previousWallet) await closeSession(previousWallet);
 				localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to reconnect if connected
 
 				if (wallet === 'metamask')
