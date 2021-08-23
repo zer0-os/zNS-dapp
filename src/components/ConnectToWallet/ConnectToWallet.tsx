@@ -77,7 +77,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		if (c) {
 			if (wallet === 'metamask' && !window.ethereum) {
 				//if user tries to connect metamask without provider
-				addNotification('start or get wallet provider an reload');
+				addNotification('start or get wallet provider and reload');
 				setIsLoading(false);
 			} else {
 				const previousWallet = localStorage.getItem('chosenWallet');
