@@ -23,7 +23,7 @@ export const useZnsDomain = (domainId: string) => {
 			setDomain(null);
 			setTimeout(() => {
 				if (!domain) setLoading(false); //triggers the kickout
-			}, 1000);
+			}, 2000);
 			return;
 		}
 
