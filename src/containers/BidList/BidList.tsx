@@ -55,7 +55,9 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 								{wildPriceUsd !== undefined && wildPriceUsd > 0 && (
 									<>
 										($
-										{(bid.amount * wildPriceUsd).toFixed(2).toLocaleString()}
+										{(bid.amount * wildPriceUsd)
+											.toFixed(2)
+											.toLocaleString()}{' '}
 										USD)
 									</>
 								)}
