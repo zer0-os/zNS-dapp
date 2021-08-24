@@ -75,41 +75,43 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		const c = connectorFromName(wallet) as AbstractConnector;
 
 		if (c) {
+			//if user tries to connect metamask without provider
 			if (wallet === 'metamask' && !window.ethereum) {
-				//if user tries to connect metamask without provider
 				addNotification('Start or get wallet provider and reload');
 				setIsLoading(false);
-			} else {
-				const previousWallet = localStorage.getItem('chosenWallet');
-				if (previousWallet) await closeSession(previousWallet);
-				localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to reconnect if connected
-
-				if (wallet === 'metamask')
-					//metamask may get stuck due to eth_requestAccounts promise, if user close log in overlay
-					setTimeout(async () => {
-						const authorized = await injected.isAuthorized();
-						if (
-							!authorized &&
-							localStorage.getItem('chosenWallet') === 'metamask'
-						)
-							addNotification('Cant connect?, please reload and retry');
-					}, 20000); //@todo: check if metamask solves this, issue #10085
-
-				await activate(c, async (e) => {
-					addNotification(`Failed to connect to wallet.`);
-					localStorage.removeItem('chosenWallet');
-					console.error(`Encounter error while connecting to ${wallet}.`);
-					console.error(e);
-					if (
-						//if page has a connection request stuck, it needs to reload to get connected again
-						e.message === 'Already processing eth_requestAccounts. Please wait.'
-					)
-						window.location.reload();
-				});
-
-				setIsLoading(false);
-				onConnect();
+				return;
 			}
+
+			const previousWallet = localStorage.getItem('chosenWallet');
+			if (previousWallet) await closeSession(previousWallet);
+			localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to reconnect if connected
+
+			//metamask may get stuck due to eth_requestAccounts promise, if user close log in overlay
+			if (wallet === 'metamask') {
+				setTimeout(async () => {
+					const authorized = await injected.isAuthorized();
+					if (
+						!authorized &&
+						localStorage.getItem('chosenWallet') === 'metamask'
+					)
+						addNotification('Cant connect?, please reload and retry');
+				}, 20000); //@todo: check if metamask solves this, issue #10085
+			}
+
+			await activate(c, async (e) => {
+				addNotification(`Failed to connect to wallet.`);
+				localStorage.removeItem('chosenWallet');
+				console.error(`Encounter error while connecting to ${wallet}.`);
+				console.error(e);
+				//if page has a connection request stuck, it needs to reload to get connected again
+				if (
+					e.message === 'Already processing eth_requestAccounts. Please wait.'
+				)
+					window.location.reload();
+			});
+
+			setIsLoading(false);
+			onConnect();
 		}
 	};
 
