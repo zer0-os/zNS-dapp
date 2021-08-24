@@ -52,9 +52,10 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 							<label>{moment(bid.date).fromNow()}</label>
 							<span>
 								{bid.amount.toLocaleString()} WILD{' '}
-								{wildPriceUsd && (
+								{wildPriceUsd !== undefined && wildPriceUsd > 0 && (
 									<>
-										(${(bid.amount * wildPriceUsd).toFixed(2).toLocaleString()}{' '}
+										($
+										{(bid.amount * wildPriceUsd).toFixed(2).toLocaleString()}
 										USD)
 									</>
 								)}
