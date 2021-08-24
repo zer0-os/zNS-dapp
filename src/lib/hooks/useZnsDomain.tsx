@@ -18,7 +18,12 @@ export const useZnsDomain = (domainId: string) => {
 
 	React.useEffect(() => {
 		if (!rawDomainData) {
+			//first queries will always return undefined
+			//if after some time keeps the same then get back to home
 			setDomain(null);
+			setTimeout(() => {
+				if (!domain) setLoading(false); //triggers the kickout
+			}, 2000);
 			return;
 		}
 
