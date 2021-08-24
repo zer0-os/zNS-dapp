@@ -29,14 +29,18 @@ const CurrencyProvider: React.FC<CurrencyProviderType> = ({ children }) => {
 	// Poll CoinGecko every 30 seconds
 	const getWildPriceUsd = async () => {
 		const price = await wildTokenPrice();
-		setWildPriceUsd(price || 0);
+		setWildPriceUsd(price);
+		if (price === 0)
+			console.error('$WILD price API call failed, set to $0 by default');
 		await new Promise((resolve) => setTimeout(resolve, 30000));
 		getWildPriceUsd();
 	};
 
 	const getLootPriceUsd = async () => {
 		const price = await lootTokenPrice();
-		setLootPriceUsd(price || 0);
+		setLootPriceUsd(price);
+		if (price === 0)
+			console.error('$LOOT price API call failed, set to $0 by default');
 		await new Promise((resolve) => setTimeout(resolve, 30000));
 		getLootPriceUsd();
 	};
