@@ -394,9 +394,11 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			: '0.00';
 
 		return (
-			<>
-				<span className={styles.Estimate}>Approx. ${bidString} USD</span>
-			</>
+			wildPriceUsd > 0 && (
+				<>
+					<span className={styles.Estimate}>Approx. ${bidString} USD</span>
+				</>
+			)
 		);
 	};
 

@@ -5,7 +5,9 @@ import { Maybe } from './types';
 
 const tokenToUsdCache: { [token: string]: number | undefined } = {};
 
-export const tokenToUsd = async (token: string): Promise<number> => {
+export const tokenToUsd = async (
+	token: string,
+): Promise<number | undefined> => {
 	if (tokenToUsdCache[token]) {
 		return tokenToUsdCache[token]!;
 	}
@@ -14,15 +16,15 @@ export const tokenToUsd = async (token: string): Promise<number> => {
 
 	if (token === 'LOOT') {
 		priceInUsd = await getLootPrice();
+		if (!priceInUsd) return;
 	} else {
 		const res = await fetch(
 			`https://api.coingecko.com/api/v3/simple/price?ids=${token}&vs_currencies=usd`,
 		);
 
 		const data = await res.json();
-		if (!data) {
-			throw Error(`Unable to fetch price for ${token}`);
-		}
+
+		if (!data[token]) return;
 
 		priceInUsd = data[token].usd as number;
 	}
@@ -73,6 +75,7 @@ const getLootPrice = async () => {
 	);
 
 	const ethToUsd = await tokenToUsd('ethereum');
+	if (!ethToUsd) return;
 	const usdToLoot = ethToUsd / ethToLoot;
 	return usdToLoot;
 };
