@@ -310,8 +310,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							height: 422,
 							borderRadius: 10,
 							borderWidth: 2,
+							objectFit: 'contain',
 						}}
-						className="border-primary border-radius"
+						className="border-radius"
 						src={znsDomain.domain?.image ?? ''}
 						onClick={openImageOverlay}
 					/>
