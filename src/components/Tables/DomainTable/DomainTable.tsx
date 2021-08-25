@@ -249,6 +249,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
 									domain={domain}
 									onClick={onRowButtonClick}
+									filterOwnerBids={filterOwnerBids}
 								/>
 							)}
 						</>
