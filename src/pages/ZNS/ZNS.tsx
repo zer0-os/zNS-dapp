@@ -437,7 +437,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	return (
 		<>
-			{modals()}
+			{pageWidth > 1280 && modals()}
 			{/* ZNS Content */}
 			<div
 				className="page-spacing"
@@ -469,7 +469,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						isSearchActive={isSearchActive}
 						setIsSearchActive={setIsSearchActive}
 					>
-						<div>
+						<>
 							{!account && localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={() => openWallet()}>
 									<div
@@ -571,7 +571,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 									</div>
 								</>
 							)}
-						</div>
+						</>
 					</TitleBar>
 				</FilterBar>
 
