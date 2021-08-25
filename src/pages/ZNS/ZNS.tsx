@@ -236,6 +236,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		}
 		lastDomain.current = domain;
 		pageHistory.current = pageHistory.current.concat([domain]);
+		window.scrollTo(0, 0); // scroll to top whenever we change domain
 	}, [domain]);
 
 	/* WIP */
