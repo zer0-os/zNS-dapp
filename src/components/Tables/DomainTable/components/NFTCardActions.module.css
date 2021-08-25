@@ -23,7 +23,7 @@
 	color: var(--color-text-primary);
 }
 
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1000px) {
 	.Container button {
 		display: none;
 	}
