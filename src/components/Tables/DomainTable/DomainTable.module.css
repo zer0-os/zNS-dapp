@@ -214,10 +214,26 @@
 	transform: scale(1.03);
 }
 
+@media only screen and (max-width: 1280px) {
+	.Global tr td:last-child,
+	.Global tr th:last-child {
+		display: none;
+	}
+	.Global tr td:nth-last-child(2),
+	.Global tr th:nth-last-child(2) {
+		padding-right: 32px;
+	}
+}
+
 @media only screen and (max-width: 900px) {
 	.Global tr td:nth-last-child(2),
 	.Global tr th:nth-last-child(2) {
 		display: none;
+	}
+
+	.Global tr td:nth-last-child(3),
+	.Global tr th:nth-last-child(3) {
+		padding-right: 32px;
 	}
 }
 
