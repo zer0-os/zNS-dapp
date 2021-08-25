@@ -37,6 +37,7 @@ import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 type DomainTableProps = {
 	className?: string;
 	disableButton?: boolean;
+	filterOwnerBids?: boolean;
 	domains: Domain[];
 	empty?: boolean;
 	hideOwnBids?: boolean;
@@ -61,6 +62,7 @@ enum Modals {
 const DomainTable: React.FC<DomainTableProps> = ({
 	className,
 	disableButton,
+	filterOwnerBids,
 	domains,
 	empty,
 	hideOwnBids,
@@ -217,7 +219,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				id: 'numBids',
 				accessor: (domain: Domain) => (
 					<div style={{ textAlign: 'right' }}>
-						<NumBids domain={domain} refreshKey={domainToRefresh} />
+						<NumBids
+							domain={domain}
+							refreshKey={domainToRefresh}
+							filterOwnerBids={filterOwnerBids}
+						/>
 					</div>
 				),
 			},
