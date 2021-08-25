@@ -78,7 +78,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 			<div>
 				<h5>{name ? name : domain.split('/')[1]}</h5>
 				<span className={styles.Domain}>0://wilder.{domain.substring(1)}</span>
-				<p>{description}</p>
+				<p className={styles.Description}>{description}</p>
 			</div>
 			<div className={styles.Members}>
 				{/* TODO: Switch these to Member component */}
@@ -116,7 +116,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 						onClick={openNftView}
 						style={{ marginTop: 24 }}
 					>
-						View Domain
+						View
 					</FutureButton>
 				</>
 			)}
