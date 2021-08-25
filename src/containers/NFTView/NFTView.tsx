@@ -231,7 +231,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				</div>
 			)}
 			{bids && bids.length === 0 && (
-				<span style={{ marginTop: 23, display: 'block' }}>No bids</span>
+				<span style={{ marginTop: 12, display: 'block' }}>No bids</span>
 			)}
 			{bids && bids.length > 0 && (
 				<ul>

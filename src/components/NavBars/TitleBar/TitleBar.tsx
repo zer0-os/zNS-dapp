@@ -182,7 +182,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 					/>
 					{/* TODO: Split this into its own component */}
 					{!isSearchActive && (
-						<ZNALink style={{ marginLeft: 16, marginTop: 3 }} domain={domain} />
+						<ZNALink style={{ marginLeft: 16 }} domain={domain} />
 					)}
 					<input
 						className={styles.Search}

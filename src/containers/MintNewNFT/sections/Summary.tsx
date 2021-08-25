@@ -85,7 +85,7 @@ const Summary: React.FC<SummaryProps> = ({
 							0://wilder.{parentDomain}
 							{token.domain}
 						</li>
-						<li style={{ maxHeight: 200, overflowY: 'scroll' }}>
+						<li>
 							<div className={styles.Icon}>
 								<Image alt="story icon" src={storyIcon} />
 							</div>
@@ -94,7 +94,7 @@ const Summary: React.FC<SummaryProps> = ({
 									padding: 0,
 									paddingRight: 12,
 									maxHeight: 200,
-									overflowY: 'scroll',
+									overflowY: 'auto',
 								}}
 							>
 								{token.story}

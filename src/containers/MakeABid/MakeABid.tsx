@@ -318,7 +318,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const header = () => (
 		<>
 			<div className={styles.Header}>
-				<h1 className={`glow-text-white`}>Place A Bid</h1>
+				<h1 className={`glow-text-white`}>Make A Bid</h1>
 			</div>
 		</>
 	);
@@ -351,7 +351,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					</span>
 					<br />
 					{currentHighestBidUsd && currentHighestBidUsd > 0 && (
-						<span className="glow-text-white">
+						<span
+							style={{ marginTop: 4, display: 'inline-block' }}
+							className="glow-text-white"
+						>
 							(${toFiat(currentHighestBidUsd)} USD)
 						</span>
 					)}
@@ -409,7 +412,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			bidTooHighWarning = (
 				<>
 					<p className={styles.Error} style={{ paddingTop: '16px' }}>
-						You don't have enough WILD to place that large of a bid
+						You don't have enough WILD to make that large of a bid
 					</p>
 				</>
 			);
@@ -443,7 +446,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 									<p className="glow-text-blue">
 										Enter the amount you wish to bid:
 									</p>
-									<span style={{ marginBottom: 8 }} className={styles.Estimate}>
+									<span
+										style={{ marginBottom: 16 }}
+										className={styles.Estimate}
+									>
 										Your Balance: {Number(wildBalance).toLocaleString()} WILD
 									</span>
 									<form onSubmit={formSubmit}>
@@ -493,7 +499,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		if (error) {
 			errorMessage = (
 				<p
-					style={{ textAlign: 'center', marginTop: '12px' }}
+					style={{ textAlign: 'center', marginTop: '16px' }}
 					className={styles.Error}
 				>
 					{error}
@@ -569,7 +575,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 							<p
 								style={{ textAlign: 'center', marginTop: 24, lineHeight: 1.3 }}
 							>
-								Are you sure you want to place a{' '}
+								Are you sure you want to make a{' '}
 								<b className="glow-text-white">
 									{Number(bid).toLocaleString()} WILD
 								</b>{' '}
@@ -585,7 +591,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 								}}
 								onClick={makeBid}
 							>
-								Place Bid
+								Make Bid
 							</FutureButton>
 						</>
 					)}

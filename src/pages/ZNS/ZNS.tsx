@@ -289,7 +289,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			to = { opacity: 1, marginTop: 0 };
 		} else if (domain === '/') {
 			// If root view, slide up
-			to = { opacity: 0, marginTop: -springAmount };
+			to = { opacity: 0, marginTop: -springAmount - 10 };
 		} else {
 			// If NFT view, don't render
 			return <></>;
@@ -429,7 +429,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				style={{
 					opacity: hasLoaded ? 1 : 0,
 					transition: 'opacity 0.2s ease-in-out',
-					paddingTop: mvpVersion === 1 ? 155 : 139,
+					paddingTop: mvpVersion === 1 ? 145 : 129,
 				}}
 			>
 				{/* Nav Bar */}

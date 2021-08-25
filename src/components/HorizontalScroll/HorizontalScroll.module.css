@@ -1,7 +1,7 @@
 .bar {
 	display: flex;
 	flex-direction: row;
-	overflow-x: scroll;
+	overflow-x: auto;
 	width: 100%;
 	-ms-overflow-style: none;
 	scrollbar-width: none;

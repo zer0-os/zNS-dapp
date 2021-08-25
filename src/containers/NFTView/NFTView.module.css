@@ -150,7 +150,6 @@
 .Box span {
 	width: 100%;
 	text-overflow: ellipsis;
-	font-size: 24px;
 	font-weight: 700;
 }
 
@@ -225,7 +224,6 @@
 .Contract p {
 	position: relative;
 	text-overflow: clip;
-	font-size: 16px;
 	font-weight: 700;
 	line-height: 21px;
 	word-break: break-all;
@@ -243,7 +241,6 @@
 }
 
 .History span {
-	font-size: 16px;
 	font-weight: 400;
 }
 

@@ -18,7 +18,12 @@ const CopyInput = (props) => {
 		<div style={props.style} className={CopyInputStyle.wallet}>
 			<img alt="ethereum icon" src={ethIcon} />
 			<span>Ethereum Address</span>
-			<input onChange={() => {}} type="text" value={props.value}></input>
+			<input
+				className="border-primary"
+				onChange={() => {}}
+				type="text"
+				value={props.value}
+			></input>
 			<button onClick={copyContractToClipboard}></button>
 		</div>
 	);

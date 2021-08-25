@@ -1,7 +1,6 @@
 .ZNALink > a {
 	position: relative;
 	transition: all var(--animation-time-short) ease-in-out;
-	font-weight: 700;
 }
 
 .ZNALink > a::before {
@@ -15,6 +14,10 @@
 	width: calc(100% - 16px);
 	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.3);
 	opacity: 0;
+}
+
+.ZNALink > a:last-of-type {
+	font-weight: 700;
 }
 
 .ZNALink > a:last-of-type::before {
