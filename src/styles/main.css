@@ -101,7 +101,8 @@
 	--box-radius: 16px;
 
 	--width-max: 1282px;
-	--width-min: 375px;
+	--width-min: 288px;
+	--page-padding: 24px;
 
 	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
 
@@ -116,6 +117,18 @@
 	--animation-time-short: 0.1s;
 	--animation-time-medium: 0.3s;
 	--animation-time-long: 0.7s;
+}
+
+@media only screen and (max-width: 1024px) {
+	:root {
+	}
+}
+
+/* Mobile Lrg */
+@media only screen and (max-width: 414px) {
+	:root {
+		--page-padding: 16px;
+	}
 }
 
 /*
@@ -323,8 +336,8 @@ button {
 }
 
 nav {
-	width: calc(100% - 64px) !important;
-	max-width: calc(var(--width-max) - 64px);
+	width: calc(100% - (var(--page-padding) * 2));
+	max-width: calc(var(--width-max) - (var(--page-padding) * 2)) !important;
 }
 
 .page-spacing {
@@ -335,19 +348,12 @@ nav {
 	margin: 0 auto;
 	padding-top: 126px;
 	padding-bottom: 110px;
-	padding-left: 32px;
-	padding-right: 32px;
+	padding-left: var(--page-padding);
+	padding-right: var(--page-padding);
 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-}
-
-@media only screen and (max-width: 400px) {
-	.page-spacing {
-		padding-left: 16px;
-		padding-right: 16px;
-	}
 }
 
 .no-select {

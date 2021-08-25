@@ -230,3 +230,21 @@
 		display: none;
 	}
 }
+
+@media only screen and (max-width: 414px) {
+	.DomainTableContainer {
+		background: none;
+		border: none;
+		box-shadow: none;
+	}
+
+	.searchHeader {
+		padding-left: 0;
+		padding-right: 0;
+		padding-top: 0;
+	}
+
+	.Grid {
+		padding: 0;
+	}
+}

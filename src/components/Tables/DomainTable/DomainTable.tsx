@@ -151,6 +151,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		isMounted.current = true;
 		window.addEventListener('resize', handleResize);
+		handleResize();
 		return () => {
 			isMounted.current = false;
 			window.removeEventListener('resize', handleResize);

@@ -189,3 +189,13 @@ header {
 .GrowContainer {
 	transition: height var(--animation-time-long) ease-in-out;
 }
+
+@media only screen and (max-width: 760px) {
+	.Actions {
+		display: none !important;
+	}
+
+	.ZNA {
+		margin-left: 0 !important;
+	}
+}

@@ -400,6 +400,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		<>
 			{/* Overlays */}
 			<NotificationDrawer />
+			{console.log('yo')}
 			{znsDomain.domain && (
 				<Overlay onClose={closeModal} centered open={modal === Modal.Bid}>
 					<MakeABid domain={znsDomain.domain} onBid={closeModal} />

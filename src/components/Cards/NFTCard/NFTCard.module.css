@@ -1,6 +1,6 @@
 .NFTCard {
 	min-width: 311px;
-	max-width: 388px;
+	/* max-width: 388px; */
 
 	background-color: var(--color-background-alt);
 }
