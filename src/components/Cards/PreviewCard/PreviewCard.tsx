@@ -102,10 +102,15 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
-					<FutureButton glow={disabled !== true} onClick={makeBid}>
+					<FutureButton
+						className={styles.Bid}
+						glow={disabled !== true}
+						onClick={makeBid}
+					>
 						MAKE A BID
 					</FutureButton>
 					<FutureButton
+						className={styles.View}
 						glow
 						alt
 						onClick={openNftView}
