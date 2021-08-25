@@ -186,10 +186,6 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			)) as zAuction.BidDto[];
 
 			try {
-				bids = bids.filter((e) => {
-					return e.account.toLowerCase() !== domain.owner.id.toLowerCase();
-				});
-
 				let displayBids = bids.map((e) => {
 					return getBidParameters(e, domain.id);
 				});
