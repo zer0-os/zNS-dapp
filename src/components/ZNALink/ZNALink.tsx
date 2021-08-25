@@ -5,13 +5,17 @@ import { Link } from 'react-router-dom';
 import styles from './ZNALink.module.css';
 
 type ZNAProps = {
+	className?: string;
 	domain: string;
 	style?: React.CSSProperties;
 };
 
-const ZNALink: React.FC<ZNAProps> = ({ domain, style }) => {
+const ZNALink: React.FC<ZNAProps> = ({ className, domain, style }) => {
 	return (
-		<div className={styles.ZNALink} style={style}>
+		<div
+			className={`${styles.ZNALink} ${className ? className : ''}`}
+			style={style}
+		>
 			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
 			<Link style={{ textDecoration: 'none', color: 'white' }} to={''}>
 				wilder

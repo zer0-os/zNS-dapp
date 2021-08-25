@@ -2,9 +2,10 @@
 	position: relative;
 	transition: all var(--animation-time-short) ease-in-out;
 	font-weight: 700;
+	z-index: 1;
 }
 
-.ZNALink > a::before {
+.ZNALink > a::after {
 	transition: opacity var(--animation-time-medium) ease-in-out;
 	content: ' ';
 	position: absolute;
@@ -15,20 +16,21 @@
 	width: calc(100% - 16px);
 	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.3);
 	opacity: 0;
+	z-index: -1;
 }
 
-.ZNALink > a:last-of-type::before {
+.ZNALink > a:last-of-type::after {
 	opacity: 1;
 }
 
-.ZNALink > a:not(:last-child):hover::before {
+.ZNALink > a:not(:last-child):hover::after {
 	opacity: 1;
 }
 
 .ZNALink > a:not(:last-child):hover {
 }
 
-.ZNALink > a:last-child::before {
+.ZNALink > a:last-child::after {
 	content: ' ';
 	position: absolute;
 	top: 50%;
