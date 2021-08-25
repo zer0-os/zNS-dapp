@@ -7,14 +7,33 @@ import {
 	DomainRequestParams,
 	useStakingController,
 } from 'lib/hooks/useStakingController';
-import { DomainRequestAndContents } from 'lib/types';
+import {
+	DomainRequestAndContents,
+	DomainRequestContents,
+	Maybe,
+	NftParams,
+	NftStatusCard,
+} from 'lib/types';
 import { ethers } from 'ethers';
+import {
+	createDomainMetadata,
+	UploadedDomainMetadata,
+	uploadToIPFS,
+} from 'lib/utils';
+
+export interface StakingRequest {
+	requestor: string;
+	stakeAmount: string;
+	stakeCurrency: string;
+	nft: NftParams;
+}
 
 interface StakingRequestProviderContext {
-	requesting: DomainRequestParams[];
-	requested: DomainRequestParams[];
+	requesting: NftStatusCard[];
+	requested: NftStatusCard[];
 	placeRequest: (
-		params: DomainRequestParams,
+		params: StakingRequest,
+		setStatus: (status: string) => void,
 	) => Promise<ethers.ContractTransaction | void>;
 	approving: DomainRequestAndContents[];
 	approved: DomainRequestAndContents[];
@@ -32,7 +51,10 @@ export const StakingRequestContext =
 	React.createContext<StakingRequestProviderContext>({
 		requesting: [],
 		requested: [],
-		placeRequest: async (params: DomainRequestParams) => {},
+		placeRequest: async (
+			params: StakingRequest,
+			setStatus: (status: string) => void,
+		) => {},
 		approving: [],
 		approved: [],
 		approveRequest: async (params: DomainRequestAndContents) => {},
@@ -50,8 +72,8 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 }) => {
 	const { addNotification } = useNotification();
 
-	const [requesting, setRequesting] = useState<DomainRequestParams[]>([]);
-	const [requested, setRequested] = useState<DomainRequestParams[]>([]);
+	const [requesting, setRequesting] = useState<NftStatusCard[]>([]);
+	const [requested, setRequested] = useState<NftStatusCard[]>([]);
 
 	const [approving, setApproving] = useState<DomainRequestAndContents[]>([]);
 	const [approved, setApproved] = useState<DomainRequestAndContents[]>([]);
@@ -61,26 +83,118 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 
 	const stakingController = useStakingController();
 
-	const placeRequest = async (params: DomainRequestParams) => {
-		const tx = await stakingController.placeRequest(params);
+	// uncomment for dev/test
+	// React.useEffect(() => {
+	// 	setRequesting([
+	// 		...requesting,
+	// 		{
+	// 			zNA: '0://wilder.zachary.vacation.pudding',
+	// 			title: 'Title 123',
+	// 			imageUri:
+	// 				'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
+	// 			story: 'this is a story',
+	// 			stakeAmount: '300',
+	// 			transactionHash:
+	// 				'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
+	// 		} as NftStatusCard,
+	// 	]);
+
+	// 	setRequested([
+	// 		...requested,
+	// 		{
+	// 			zNA: '0://wilder.zachary.vacation.pudding',
+	// 			title: 'Title 123',
+	// 			imageUri:
+	// 				'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
+	// 			story: 'this is a story',
+	// 			stakeAmount: '300',
+	// 			transactionHash:
+	// 				'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
+	// 		} as NftStatusCard,
+	// 	]);
+	// }, []);
+
+	const placeRequest = async (
+		params: StakingRequest,
+		setStatus: (status: string) => void,
+	) => {
+		setStatus(`Uploading metadata`);
+
+		let metadata: Maybe<UploadedDomainMetadata>;
+
+		// Create the intended metadata
+		try {
+			metadata = await createDomainMetadata({
+				previewImage: params.nft.previewImage,
+				image: params.nft.image,
+				name: params.nft.name,
+				story: params.nft.story,
+			});
+		} catch (e) {
+			console.error(e);
+			throw Error(`Failed to upload metadata`);
+		}
+
+		// Upload the request data to IPFS
+		const fullRequestData: DomainRequestContents = {
+			parent: params.nft.parent,
+			domain: params.nft.domain,
+			requestor: params.requestor,
+			stakeAmount: params.stakeAmount,
+			stakeCurrency: params.stakeCurrency,
+			metadata: metadata.url,
+			locked: params.nft.locked,
+		};
+		setStatus(`Uploading domain request`);
+
+		let domainRequestUri: Maybe<string>;
+
+		try {
+			domainRequestUri = await uploadToIPFS(JSON.stringify(fullRequestData));
+		} catch (e) {
+			console.error(e);
+			throw Error(`Failed to upload domain request`);
+		}
+
+		setStatus(`Waiting for transaction to be approved by wallet`);
+		const tx = await stakingController.placeRequest({
+			requestor: params.requestor,
+			stakeAmount: params.stakeAmount,
+			stakeCurrency: params.stakeCurrency,
+			parentId: params.nft.parent,
+			domain: params.nft.domain,
+			domainRequestUri,
+		});
+
 		if (!tx) {
 			addNotification(
 				'Encountered an error while attempting to place request.',
 			);
-			return;
+
+			throw Error(`Failed to submit transaction`);
 		}
 
 		addNotification(`Placing request to mint ${params.nft.name}`);
-		setRequesting([...requesting, params]);
+
+		const domainStatusCard: NftStatusCard = {
+			zNA: params.nft.zna,
+			title: params.nft.name,
+			imageUri: metadata.contents.image,
+			story: params.nft.story,
+			stakeAmount: params.stakeAmount,
+			transactionHash: tx.hash,
+		};
+
+		setRequesting([...requesting, domainStatusCard]);
 
 		const finishStakingRequesting = async () => {
 			await tx.wait();
 
 			addNotification(
-				`Successfully placed request to mint ${params.nft.name}.`,
+				`Successfully placed request to mint ${domainStatusCard.title}.`,
 			);
-			setRequesting(requesting.filter((n) => n !== params));
-			requested.push(params);
+			setRequesting(requesting.filter((n) => n !== domainStatusCard));
+			requested.push(domainStatusCard);
 			setRequested(requested);
 		};
 

@@ -56,7 +56,7 @@
 	width: 398.33px;
 	height: 220px;
 
-	/* background-color: var(--background-purple-card); */
+	background-color: var(--background-purple-card);
 	background: rgba(255, 255, 255, 0.05);
 	background-size: cover;
 	background-position: center;
@@ -162,9 +162,6 @@
 	font-weight: 700;
 }
 
-.Member > span:first-of-type {
-}
-
 .Member > span:last-of-type {
 	color: var(--color-primary-lighter-3);
 	margin-top: 4px;
@@ -207,29 +204,16 @@
 	padding: 24.5px 8px 26px 8px;
 }
 
+.Blocker {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 5;
+}
+
 @media only screen and (max-width: 1000px) {
-	/* .Members {
-		display: none;
-	}
-
-	
-
-	.InfoContainer {
-		flex-direction: column;
-	}
-
-	.Buy {
-		flex-direction: row;
-		margin-top: 16px;
-		margin-right: auto;
-		margin-left: 24px;
-	}
-
-	.Buy > *:not(:first-child) {
-		margin-top: 0 !important;
-		margin-left: 24px;
-	} */
-
 	.Preview {
 		flex-direction: column;
 	}

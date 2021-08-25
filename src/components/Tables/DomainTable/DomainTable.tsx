@@ -16,6 +16,7 @@ import { MakeABid } from 'containers';
 import HighestBid from './components/HighestBid';
 import NumBids from './components/NumBids';
 import NFTCardActions from './components/NFTCardActions';
+import ViewBids from './components/ViewBids';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
@@ -115,7 +116,10 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		if (disableButton) return;
 		// Default behaviour
 		try {
-			if (domain?.owner.id.toLowerCase() !== userId?.toLowerCase()) {
+			if (
+				isGlobalTable &&
+				domain?.owner.id.toLowerCase() !== userId?.toLowerCase()
+			) {
 				if (!isMounted.current) return;
 				setBiddingOn(domain);
 				openBidModal();
@@ -172,7 +176,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	useEffect(() => {
 		checkHeight();
-	}, [containerRef.current?.offsetHeight, searchQuery]);
+	}, [containerRef.current?.offsetHeight, searchQuery, isGridView]);
 
 	/////////////////
 	// React Table //
@@ -227,14 +231,21 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 					return (
 						<>
-							{!rowButtonText && (
+							{isGlobalTable && (
 								<FutureButton
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
 									glow={disableButton === false && shouldGlow}
 									onClick={() => buttonClick(domain)}
 								>
-									{rowButtonText || 'Make A Bid'}
+									Make A Bid
 								</FutureButton>
+							)}
+							{!isGlobalTable && onRowButtonClick && (
+								<ViewBids
+									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
+									domain={domain}
+									onClick={onRowButtonClick}
+								/>
 							)}
 						</>
 					);

@@ -15,7 +15,7 @@ interface UploadResponseDTO {
 	url: string;
 }
 
-const uploadApiEndpoint = `https://zns-backend.herokuapp.com/api/upload`;
+const uploadApiEndpoint = `https://zns.api.zero.tech/api/upload`;
 
 const uploadData = async (dataToUpload: string | Buffer) => {
 	const dataResponse = await fetch(uploadApiEndpoint, {
@@ -51,13 +51,23 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
  * @returns URI to the created Metadata
  */
 
+export interface UploadedDomainMetadata {
+	url: string;
+	contents: Metadata;
+}
+
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	// upload metadata to IPFS
 	const metadataObject = await uploadMetadata(params);
 	const metadataAsString = JSON.stringify(metadataObject);
 	const metadata = await uploadData(metadataAsString);
 
-	return metadata.url;
+	const uploadedMetadata: UploadedDomainMetadata = {
+		url: metadata.url,
+		contents: metadataObject,
+	};
+
+	return uploadedMetadata;
 };
 
 /**

@@ -147,6 +147,7 @@ header {
 .SearchResults {
 	width: calc(100% + 2px);
 	/* background: inherit; */
+	overflow: hidden;
 
 	border-top: 0px solid white !important;
 	border-radius: 0 0 var(--box-radius) var(--box-radius);
@@ -157,8 +158,6 @@ header {
 }
 
 .SearchResults ul {
-	position: absolute;
-	left: 0;
 	width: 100%;
 }
 

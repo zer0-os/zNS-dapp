@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 import { useHistory } from 'react-router';
+import { BigNumber } from 'ethers';
 
 //- Component Imports
 import {
@@ -50,6 +51,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	// because it needs way more data than is worth sending through props
 
 	const isMounted = useRef(false);
+	const blobCache = useRef<string>();
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
 
@@ -60,9 +62,14 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [highestBid, setHighestBid] = useState<Bid | undefined>();
 	const [highestBidUsd, setHighestBidUsd] = useState<number | undefined>();
+	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
+		blobCache.current,
+	);
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
+	const domainIdInteger = BigNumber.from(domainId); //domainId as bignumber used to redirect to etherscan link
+
 	const znsDomain = useZnsDomain(domainId);
 
 	const { getBidsForDomain } = useBidProvider();
@@ -76,7 +83,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const registrarAddress = contracts ? contracts.registry.address : '';
 
 	const etherscanBaseUri = getEtherscanUri(networkType);
-	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainId}`;
+	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
 
 	//- Functions
 	const copyContractToClipboard = () => {
@@ -119,10 +126,13 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			}
 			try {
 				const sorted = bids.sort((a, b) => b.date.getTime() - a.date.getTime());
+				const highestBid = bids.reduce(function (prev, current) {
+					return prev.amount > current.amount ? prev : current;
+				});
 				if (!isMounted.current) return;
 				setBids(sorted);
-				setHighestBid(sorted[0]);
-				setHighestBidUsd(sorted[0].amount * wildPriceUsd);
+				setHighestBid(highestBid);
+				setHighestBidUsd(highestBid.amount * wildPriceUsd);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
@@ -135,10 +145,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	useEffect(() => {
 		isMounted.current = true;
+
+		fetch(galaxyBackground)
+			.then((r) => r.blob())
+			.then((blob) => {
+				const url = URL.createObjectURL(blob);
+				blobCache.current = url;
+				setBackgroundBlob(url);
+			});
 		return () => {
 			isMounted.current = false;
 		};
-	});
+	}, []);
 
 	useEffect(() => {
 		if (!isMounted.current) return;
@@ -192,7 +210,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					<h2 className="glow-text-blue">Highest Bid</h2>
 					<span className={styles.Crypto}>
 						{Number(highestBid.amount.toFixed(2)).toLocaleString()} WILD{' '}
-						{highestBidUsd && (
+						{highestBidUsd !== undefined && (
 							<span className={styles.Fiat}>(${toFiat(highestBidUsd)})</span>
 						)}
 					</span>
@@ -278,8 +296,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		<div className={styles.NFTView}>
 			{overlays()}
 			<div
-				className={`${styles.NFT} blur border-primary border-rounded`}
-				style={{ backgroundImage: `url(${galaxyBackground})` }}
+				className={`${styles.NFT} ${
+					backgroundBlob !== undefined ? styles.Loaded : ''
+				} border-primary border-rounded`}
 			>
 				<div className={`${styles.Image} border-rounded`}>
 					<Image
@@ -295,7 +314,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				</div>
 				<div className={styles.Info}>
 					<div>
-						<h1 className="glow-text-white">{znsDomain.domain?.name ?? ''}</h1>
+						<h1 className="glow-text-white">{znsDomain.domain?.title ?? ''}</h1>
 						<span>
 							{domain.length > 0 ? `0://wilder.${domain.substring(1)}` : ''}
 						</span>
@@ -326,6 +345,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					</div>
 					{price()}
 					{actionButtons()}
+					{backgroundBlob !== undefined && (
+						<img src={backgroundBlob} className={styles.Bg} />
+					)}
 				</div>
 			</div>
 			<div className={styles.Horizontal} style={{ marginTop: 20 }}>

@@ -27,7 +27,6 @@ interface ZauctionSupportingZNSInterface extends ethers.utils.Interface {
     "cancelBidsUnderPrice(uint256,uint256)": FunctionFragment;
     "recover(bytes32,bytes)": FunctionFragment;
     "toEthSignedMessageHash(bytes32)": FunctionFragment;
-    "test(bytes,uint256,address,uint256,address,uint256,uint256,uint256,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -60,20 +59,6 @@ interface ZauctionSupportingZNSInterface extends ethers.utils.Interface {
     functionFragment: "toEthSignedMessageHash",
     values: [BytesLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "test",
-    values: [
-      BytesLike,
-      BigNumberish,
-      string,
-      BigNumberish,
-      string,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish,
-      BigNumberish
-    ]
-  ): string;
 
   decodeFunctionResult(functionFragment: "consumed", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "acceptBid", data: BytesLike): Result;
@@ -86,7 +71,6 @@ interface ZauctionSupportingZNSInterface extends ethers.utils.Interface {
     functionFragment: "toEthSignedMessageHash",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "test", data: BytesLike): Result;
 
   events: {
     "BidAccepted(uint256,address,address,uint256,address,uint256,uint256)": EventFragment;
@@ -126,7 +110,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param bid weth amount bid
+     * @param bid token amount bid
      * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
      * @param expireblock block number at which acceptBid stops working
      * @param minbid minimum bid allowed
@@ -151,7 +135,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param bid weth amount bid
+     * @param bid token amount bid
      * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
      * @param expireblock block number at which acceptBid stops working
      * @param minbid minimum bid allowed
@@ -176,7 +160,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * invalidates all sender's bids at and under given price
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param price weth amount to cancel at and under
+     * @param price token amount to cancel at and under
      */
     cancelBidsUnderPrice(
       auctionid: BigNumberish,
@@ -187,7 +171,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * invalidates all sender's bids at and under given price
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param price weth amount to cancel at and under
+     * @param price token amount to cancel at and under
      */
     "cancelBidsUnderPrice(uint256,uint256)"(
       auctionid: BigNumberish,
@@ -216,32 +200,6 @@ export class ZauctionSupportingZNS extends Contract {
       hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<[string]>;
-
-    test(
-      signature: BytesLike,
-      auctionid: BigNumberish,
-      bidder: string,
-      bid: BigNumberish,
-      nftaddress: string,
-      tokenid: BigNumberish,
-      minbid: BigNumberish,
-      startblock: BigNumberish,
-      expireblock: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
-    "test(bytes,uint256,address,uint256,address,uint256,uint256,uint256,uint256)"(
-      signature: BytesLike,
-      auctionid: BigNumberish,
-      bidder: string,
-      bid: BigNumberish,
-      nftaddress: string,
-      tokenid: BigNumberish,
-      minbid: BigNumberish,
-      startblock: BigNumberish,
-      expireblock: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
   };
 
   consumed(
@@ -259,7 +217,7 @@ export class ZauctionSupportingZNS extends Contract {
   /**
    * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
    * @param auctionid unique per address auction identifier chosen by seller
-   * @param bid weth amount bid
+   * @param bid token amount bid
    * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
    * @param expireblock block number at which acceptBid stops working
    * @param minbid minimum bid allowed
@@ -284,7 +242,7 @@ export class ZauctionSupportingZNS extends Contract {
   /**
    * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
    * @param auctionid unique per address auction identifier chosen by seller
-   * @param bid weth amount bid
+   * @param bid token amount bid
    * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
    * @param expireblock block number at which acceptBid stops working
    * @param minbid minimum bid allowed
@@ -309,7 +267,7 @@ export class ZauctionSupportingZNS extends Contract {
   /**
    * invalidates all sender's bids at and under given price
    * @param auctionid unique per address auction identifier chosen by seller
-   * @param price weth amount to cancel at and under
+   * @param price token amount to cancel at and under
    */
   cancelBidsUnderPrice(
     auctionid: BigNumberish,
@@ -320,7 +278,7 @@ export class ZauctionSupportingZNS extends Contract {
   /**
    * invalidates all sender's bids at and under given price
    * @param auctionid unique per address auction identifier chosen by seller
-   * @param price weth amount to cancel at and under
+   * @param price token amount to cancel at and under
    */
   "cancelBidsUnderPrice(uint256,uint256)"(
     auctionid: BigNumberish,
@@ -350,32 +308,6 @@ export class ZauctionSupportingZNS extends Contract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  test(
-    signature: BytesLike,
-    auctionid: BigNumberish,
-    bidder: string,
-    bid: BigNumberish,
-    nftaddress: string,
-    tokenid: BigNumberish,
-    minbid: BigNumberish,
-    startblock: BigNumberish,
-    expireblock: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  "test(bytes,uint256,address,uint256,address,uint256,uint256,uint256,uint256)"(
-    signature: BytesLike,
-    auctionid: BigNumberish,
-    bidder: string,
-    bid: BigNumberish,
-    nftaddress: string,
-    tokenid: BigNumberish,
-    minbid: BigNumberish,
-    startblock: BigNumberish,
-    expireblock: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
   callStatic: {
     consumed(
       arg0: string,
@@ -392,7 +324,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param bid weth amount bid
+     * @param bid token amount bid
      * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
      * @param expireblock block number at which acceptBid stops working
      * @param minbid minimum bid allowed
@@ -417,7 +349,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param bid weth amount bid
+     * @param bid token amount bid
      * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
      * @param expireblock block number at which acceptBid stops working
      * @param minbid minimum bid allowed
@@ -442,7 +374,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * invalidates all sender's bids at and under given price
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param price weth amount to cancel at and under
+     * @param price token amount to cancel at and under
      */
     cancelBidsUnderPrice(
       auctionid: BigNumberish,
@@ -453,7 +385,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * invalidates all sender's bids at and under given price
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param price weth amount to cancel at and under
+     * @param price token amount to cancel at and under
      */
     "cancelBidsUnderPrice(uint256,uint256)"(
       auctionid: BigNumberish,
@@ -482,32 +414,6 @@ export class ZauctionSupportingZNS extends Contract {
       hash: BytesLike,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    test(
-      signature: BytesLike,
-      auctionid: BigNumberish,
-      bidder: string,
-      bid: BigNumberish,
-      nftaddress: string,
-      tokenid: BigNumberish,
-      minbid: BigNumberish,
-      startblock: BigNumberish,
-      expireblock: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    "test(bytes,uint256,address,uint256,address,uint256,uint256,uint256,uint256)"(
-      signature: BytesLike,
-      auctionid: BigNumberish,
-      bidder: string,
-      bid: BigNumberish,
-      nftaddress: string,
-      tokenid: BigNumberish,
-      minbid: BigNumberish,
-      startblock: BigNumberish,
-      expireblock: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
   };
 
   filters: {
@@ -544,7 +450,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param bid weth amount bid
+     * @param bid token amount bid
      * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
      * @param expireblock block number at which acceptBid stops working
      * @param minbid minimum bid allowed
@@ -569,7 +475,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param bid weth amount bid
+     * @param bid token amount bid
      * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
      * @param expireblock block number at which acceptBid stops working
      * @param minbid minimum bid allowed
@@ -594,7 +500,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * invalidates all sender's bids at and under given price
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param price weth amount to cancel at and under
+     * @param price token amount to cancel at and under
      */
     cancelBidsUnderPrice(
       auctionid: BigNumberish,
@@ -605,7 +511,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * invalidates all sender's bids at and under given price
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param price weth amount to cancel at and under
+     * @param price token amount to cancel at and under
      */
     "cancelBidsUnderPrice(uint256,uint256)"(
       auctionid: BigNumberish,
@@ -632,32 +538,6 @@ export class ZauctionSupportingZNS extends Contract {
 
     "toEthSignedMessageHash(bytes32)"(
       hash: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    test(
-      signature: BytesLike,
-      auctionid: BigNumberish,
-      bidder: string,
-      bid: BigNumberish,
-      nftaddress: string,
-      tokenid: BigNumberish,
-      minbid: BigNumberish,
-      startblock: BigNumberish,
-      expireblock: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    "test(bytes,uint256,address,uint256,address,uint256,uint256,uint256,uint256)"(
-      signature: BytesLike,
-      auctionid: BigNumberish,
-      bidder: string,
-      bid: BigNumberish,
-      nftaddress: string,
-      tokenid: BigNumberish,
-      minbid: BigNumberish,
-      startblock: BigNumberish,
-      expireblock: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
@@ -678,7 +558,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param bid weth amount bid
+     * @param bid token amount bid
      * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
      * @param expireblock block number at which acceptBid stops working
      * @param minbid minimum bid allowed
@@ -703,7 +583,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * recovers bidder's signature based on seller's proposed data and, if bid data hash matches the message hash, transfers nft and payment
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param bid weth amount bid
+     * @param bid token amount bid
      * @param bidder address of who the seller says the bidder is, for confirmation of the recovered bidder
      * @param expireblock block number at which acceptBid stops working
      * @param minbid minimum bid allowed
@@ -728,7 +608,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * invalidates all sender's bids at and under given price
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param price weth amount to cancel at and under
+     * @param price token amount to cancel at and under
      */
     cancelBidsUnderPrice(
       auctionid: BigNumberish,
@@ -739,7 +619,7 @@ export class ZauctionSupportingZNS extends Contract {
     /**
      * invalidates all sender's bids at and under given price
      * @param auctionid unique per address auction identifier chosen by seller
-     * @param price weth amount to cancel at and under
+     * @param price token amount to cancel at and under
      */
     "cancelBidsUnderPrice(uint256,uint256)"(
       auctionid: BigNumberish,
@@ -766,32 +646,6 @@ export class ZauctionSupportingZNS extends Contract {
 
     "toEthSignedMessageHash(bytes32)"(
       hash: BytesLike,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    test(
-      signature: BytesLike,
-      auctionid: BigNumberish,
-      bidder: string,
-      bid: BigNumberish,
-      nftaddress: string,
-      tokenid: BigNumberish,
-      minbid: BigNumberish,
-      startblock: BigNumberish,
-      expireblock: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    "test(bytes,uint256,address,uint256,address,uint256,uint256,uint256,uint256)"(
-      signature: BytesLike,
-      auctionid: BigNumberish,
-      bidder: string,
-      bid: BigNumberish,
-      nftaddress: string,
-      tokenid: BigNumberish,
-      minbid: BigNumberish,
-      startblock: BigNumberish,
-      expireblock: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

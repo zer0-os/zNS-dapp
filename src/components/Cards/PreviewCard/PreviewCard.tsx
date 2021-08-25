@@ -1,5 +1,5 @@
 //- React imports
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 //- Style Imports
 import styles from './PreviewCard.module.css';
@@ -12,6 +12,7 @@ import { FutureButton, Image, Member, Overlay } from 'components';
 import { Maybe } from 'lib/types';
 
 type PreviewCardProps = {
+	preventInteraction?: boolean;
 	children?: React.ReactNode;
 	creatorId: string;
 	description: string;
@@ -44,6 +45,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	onMakeBid,
 	onViewDomain,
 	ownerId,
+	preventInteraction,
 	style,
 }) => {
 	//////////////////
@@ -141,6 +143,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 				className={`${styles.PreviewCard} border-primary border-rounded blur`}
 				style={style ? style : {}}
 			>
+				{preventInteraction && <div className={styles.Blocker}></div>}
 				{isLoading && (
 					<div className={styles.Loading}>
 						<div className={styles.Spinner}></div>

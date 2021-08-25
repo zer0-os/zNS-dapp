@@ -74,13 +74,20 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	const [isGridView, setIsGridView] = useState(false);
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
-
+	const [isApproving, setIsApproving] = useState(false);
+	const [approvingText, setApprovingText] = useState(
+		'Please confirm transaction in wallet',
+	);
+	const [approveError, setApproveError] = useState<string | undefined>();
+	const [fulfillError, setFulfillError] = useState<string | undefined>();
 	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
 	const [domainFilter, setDomainFilter] = useState('All Domains');
 
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
+
+	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DomainRequestAndContents | undefined
@@ -143,17 +150,32 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 * tokens on behalf of the user.
 	 */
 	const onApproveTokenTransfer = async () => {
+		setApproveError(undefined);
+		setIsApproving(true); //start loading indicator
 		try {
-			await lootToken.approve(
+			const approveTx = await lootToken.approve(
 				znsContracts.stakingController.address,
 				ethers.constants.MaxUint256,
 			);
+			setApprovingText('Waiting for transaction to complete');
+			await approveTx.wait();
+			setApproveTokenTransfer(undefined); //close modal
 		} catch (e) {
 			console.error(e);
+			//if user rejects transaction
+			if (e.code === 4001) { 
+				setApproveError(`Rejected by wallet`);
+			} else {
+				setApproveError(`Failed to submit transaction.`);
+			}
 		}
+		setIsApproving(false); //stop loading indicator
+
+		setApprovingText('Please confirm transaction in wallet');
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
+		setFulfillError(undefined);
 		const allowance = await lootToken.allowance(
 			account!,
 			znsContracts.stakingController.address,
@@ -163,14 +185,24 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			setApproveTokenTransfer(lootToken.address);
 			return;
 		}
-
+		setShowLoadingIndicator(true); //displays loading indicator on overlay
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
-		} catch (e) {
-			// Catch thrown when user rejects transaction
+		} catch (e) { 
 			console.error(e);
+			//if user rejects transaction
+			if (
+				e.message ===
+				'Failed to fulfill request: undefined MetaMask Tx Signature: User denied transaction signature.'
+			) {
+				setFulfillError(`Rejected by wallet`);
+			} else {
+				setFulfillError(`Failed to submit transaction.`);
+			}
 		}
+
+		setShowLoadingIndicator(false);
 	};
 
 	/* Sets some search parameters 
@@ -398,8 +430,13 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		useFilters,
 		useGlobalFilter,
 	);
-	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
-		tableHook;
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		prepareRow,
+		rows,
+	} = tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
@@ -410,13 +447,16 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					open
 					onClose={() => {
 						setViewing(undefined);
+						setFulfillError(undefined);
 					}}
 				>
 					<Request
 						onApprove={onApprove}
 						onFulfill={onFulfill}
 						onNavigate={onNavigate}
+						errorText={fulfillError}
 						request={viewing}
+						showLoadingIndicator={showLoadingIndicator}
 						yours={viewing.contents.requestor === userId}
 					/>
 				</Overlay>
@@ -428,15 +468,20 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					open
 					onClose={() => {
 						setApproveTokenTransfer(undefined);
+						setApproveError(undefined);
 					}}
 				>
 					<Confirmation
 						title={'Approve Token Transfer'}
+						showLoading={isApproving}
+						loadingText={approvingText}
+						errorText={approveError}
 						onConfirm={() => {
 							onApproveTokenTransfer();
 						}}
 						onCancel={() => {
 							setApproveTokenTransfer(undefined);
+							setApproveError(undefined);
 						}}
 					>
 						<p>

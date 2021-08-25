@@ -208,6 +208,15 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 				),
 			},
 			{
+				Header: () => <div style={{ textAlign: 'right' }}>Date</div>,
+				id: 'date',
+				accessor: (bid: BidTableDataWithHighest) => (
+					<div style={{ textAlign: 'right' }}>
+						{bid.bid.date.toDateString()}
+					</div>
+				),
+			},
+			{
 				Header: () => <div style={{ textAlign: 'right' }}>Your Bid</div>,
 				id: 'yourBid',
 				accessor: (bid: BidTableDataWithHighest) => (
@@ -230,9 +239,10 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 								style={{
 									color: 'var(--color-success)',
 									textAlign: 'right',
+									fontWeight: 700,
 								}}
 							>
-								Leading
+								You Lead
 							</div>
 						)}
 						{bid.highestBid.signature !== bid.bid.signature && (
@@ -240,6 +250,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 								style={{
 									color: 'var(--color-error)',
 									textAlign: 'right',
+									fontWeight: 700,
 								}}
 							>
 								Outbid

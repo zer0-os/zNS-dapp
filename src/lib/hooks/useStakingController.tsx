@@ -1,12 +1,14 @@
 import { useZnsContracts } from 'lib/contracts';
 import { createDomainMetadata, tryFunction, uploadToIPFS } from 'lib/utils';
-import { DomainRequestContents, NftParams } from 'lib/types';
+import { DomainRequestContents, Maybe, NftParams } from 'lib/types';
 import { ethers } from 'ethers';
 export interface DomainRequestParams {
 	requestor: string;
 	stakeAmount: string;
 	stakeCurrency: string;
-	nft: NftParams;
+	parentId: string;
+	domain: string;
+	domainRequestUri: string;
 }
 
 export interface FulfillRequestParams {
@@ -34,47 +36,25 @@ export function useStakingController(): StakingControllerHooks {
 	const stakingController = useZnsContracts()?.stakingController;
 
 	const placeRequest = async (params: DomainRequestParams) => {
-		const tx = await tryFunction(async () => {
-			if (!stakingController) {
-				throw Error(`no controller`);
-			}
+		// Convert to wei (assumes 18 decimals places on token)
+		const offeredAmountInWei = ethers.utils.parseEther(params.stakeAmount);
 
-			// Create the intended metadata
-			const intendedMetadata = await createDomainMetadata({
-				previewImage: params.nft.previewImage,
-				image: params.nft.image,
-				name: params.nft.name,
-				story: params.nft.story,
-			});
-
-			// Upload the request data to IPFS
-			const fullRequestData: DomainRequestContents = {
-				parent: params.nft.parent,
-				domain: params.nft.domain,
-				requestor: params.requestor,
-				stakeAmount: params.stakeAmount,
-				stakeCurrency: params.stakeCurrency,
-				metadata: intendedMetadata,
-				locked: params.nft.locked,
-			};
-
-			const domainRequestUri = await uploadToIPFS(
-				JSON.stringify(fullRequestData),
-			);
-
-			// Convert to wei (assumes 18 decimals places on token)
-			const offeredAmountInWei = ethers.utils.parseEther(params.stakeAmount);
-
-			// Place the request for the domain
-			const tx = await stakingController.placeDomainRequest(
-				params.nft.parent,
+		// Place the request for the domain
+		let tx: Maybe<ethers.ContractTransaction>;
+		try {
+			tx = await stakingController!.placeDomainRequest(
+				params.parentId,
 				offeredAmountInWei,
-				params.nft.domain,
-				domainRequestUri,
+				params.domain,
+				params.domainRequestUri,
 			);
-
-			return tx;
-		}, `place request`);
+		} catch (e) {
+			console.error(e);
+			if (e.code === 4001) {
+				throw Error(`Transaction rejected by wallet.`);
+			}
+			throw Error(`Failed to submit transaction.`);
+		}
 
 		return tx;
 	};
