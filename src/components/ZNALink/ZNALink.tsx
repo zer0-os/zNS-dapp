@@ -20,6 +20,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, domain, style }) => {
 			<Link style={{ textDecoration: 'none', color: 'white' }} to={''}>
 				wilder
 			</Link>
+			{domain !== '/' && <span className={styles.Dots}>..</span>}
 			{domain.split('.').map((part, i) => {
 				if (part === '/') return '';
 				return i === 0 ? (

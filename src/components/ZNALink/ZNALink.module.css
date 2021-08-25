@@ -45,3 +45,21 @@
 	box-shadow: 0 0 20px 13px #3ca1ff;
 	z-index: -1;
 }
+
+.Dots {
+	display: none;
+	font-weight: 700;
+	color: white;
+	z-index: 2;
+}
+
+@media only screen and (max-width: 600px) {
+	.ZNALink > a:not(:first-of-type):not(:last-of-type) {
+		display: none !important;
+		background: red;
+	}
+
+	.Dots {
+		display: inline-block;
+	}
+}
