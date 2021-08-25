@@ -1,3 +1,7 @@
+.ZNALink {
+	display: flex;
+}
+
 .ZNALink > a {
 	position: relative;
 	transition: all var(--animation-time-short) ease-in-out;
