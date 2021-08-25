@@ -158,10 +158,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
 
-	//- MVP Version
-	// TODO: Move the MVP version handler out to a hook
-	const springAmount = mvpVersion === 3 ? 425.5 : 240;
-
 	//- Data
 	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
 	const isRoot: boolean =
@@ -299,12 +295,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const previewCard = () => {
 		const isVisible = domain !== '/' && !isNftView;
 		let to;
-		if (isVisible) {
+		if (isVisible && previewCardRef) {
 			// If should be visible, slide down
 			to = { opacity: 1, marginTop: 0 };
 		} else if (domain === '/') {
 			// If root view, slide up
-			to = { opacity: 0, marginTop: -springAmount };
+			to = {
+				opacity: 0,
+				marginTop: -(previewCardRef?.current?.clientHeight || 0),
+			};
 		} else {
 			// If NFT view, don't render
 			return <></>;
@@ -313,52 +312,38 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		return (
 			<>
 				{/* Preview Card */}
-				{/* TODO: This definitely needs some refactoring */}
-				<Spring
-					from={{ opacity: 0, marginTop: -springAmount }}
-					to={
-						!isRoot &&
-						(znsDomain.loading || tableData.length >= 0) &&
-						!isNftView
-							? { opacity: 1, marginTop: 0 }
-							: {
-									opacity: 0,
-									marginTop: previewCardRef.current
-										? -previewCardRef.current?.clientHeight
-										: 0,
-							  }
-					}
-				>
+				<Spring to={to}>
 					{(styles) => (
 						<animated.div style={styles}>
-							<div ref={previewCardRef}></div>
-							<PreviewCard
-								domain={domain}
-								metadataUrl={znsDomain?.domain?.metadata}
-								creatorId={znsDomain?.domain?.minter?.id || ''}
-								disabled={
-									znsDomain.domain?.owner?.id.toLowerCase() ===
-										account?.toLowerCase() || !active
-								}
-								ownerId={znsDomain?.domain?.owner?.id || ''}
-								mvpVersion={mvpVersion}
-								onButtonClick={openBidOverlay}
-								onImageClick={() => {}}
-								preventInteraction={domain === '/'}
-							>
-								{mvpVersion === 3 && (
-									<HorizontalScroll fade>
-										<AssetPriceCard
-											title={`${domain.substring(1, 5).toUpperCase()} Price`}
-											price={randomNumber(85, 400, 2)}
-											change={randomNumber(-30, 30, 2)}
-										/>
-										<AssetGraphCard
-											title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-										/>
-									</HorizontalScroll>
-								)}
-							</PreviewCard>
+							<div ref={previewCardRef}>
+								<PreviewCard
+									domain={domain}
+									metadataUrl={znsDomain?.domain?.metadata}
+									creatorId={znsDomain?.domain?.minter?.id || ''}
+									disabled={
+										znsDomain.domain?.owner?.id.toLowerCase() ===
+											account?.toLowerCase() || !active
+									}
+									ownerId={znsDomain?.domain?.owner?.id || ''}
+									mvpVersion={mvpVersion}
+									onButtonClick={openBidOverlay}
+									onImageClick={() => {}}
+									preventInteraction={domain === '/'}
+								>
+									{mvpVersion === 3 && (
+										<HorizontalScroll fade>
+											<AssetPriceCard
+												title={`${domain.substring(1, 5).toUpperCase()} Price`}
+												price={randomNumber(85, 400, 2)}
+												change={randomNumber(-30, 30, 2)}
+											/>
+											<AssetGraphCard
+												title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+											/>
+										</HorizontalScroll>
+									)}
+								</PreviewCard>
+							</div>
 						</animated.div>
 					)}
 				</Spring>
