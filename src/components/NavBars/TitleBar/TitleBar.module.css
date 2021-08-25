@@ -204,5 +204,17 @@ header {
 
 	.Search {
 		min-width: 0px;
+		margin-left: 0 !important;
+	}
+
+	.SearchResults li {
+		display: flex;
+		flex-direction: column;
+		padding-left: 17px;
+	}
+
+	.SearchResults li span {
+		margin: 0;
+		margin-top: 4px;
 	}
 }
