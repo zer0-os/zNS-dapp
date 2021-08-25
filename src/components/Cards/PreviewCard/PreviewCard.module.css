@@ -67,8 +67,10 @@
 	cursor: pointer;
 }
 
-.Asset:hover > div {
-	transform: scale(1.02);
+@media (hover: hover) and (pointer: fine) {
+	.Asset:hover > div {
+		transform: scale(1.02);
+	}
 }
 
 .MVP3Asset {
