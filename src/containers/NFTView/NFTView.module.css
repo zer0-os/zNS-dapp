@@ -45,12 +45,18 @@
 }
 
 .Image {
-	transition: transform var(--animation-time-medium) ease-in-out;
+	height: 422px;
+	min-height: 422px;
+	max-height: 422px;
 	cursor: pointer;
-	background: rgba(255, 255, 255, 0.05);
+	background: rgba(0, 0, 0, 0.3);
 }
 
-.Image:hover {
+.Image > div {
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Image:hover > div {
 	transform: scale(1.03);
 }
 
@@ -389,6 +395,11 @@
 @media only screen and (max-width: 414px) {
 	.Price h2 {
 		font-size: 18px;
+	}
+
+	.Image {
+		padding: 16px;
+		border-collapse: separate;
 	}
 
 	.Crypto {

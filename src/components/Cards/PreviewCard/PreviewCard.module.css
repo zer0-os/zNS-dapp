@@ -229,6 +229,7 @@
 	.Asset {
 		width: 326.5px;
 		height: 437px;
+		background: none;
 	}
 
 	.Body {
@@ -272,7 +273,6 @@
 @media only screen and (max-width: 600px) {
 	.Preview {
 		flex-direction: column;
-		padding: 0;
 	}
 
 	.Description {
