@@ -53,6 +53,7 @@ const Image = (props: any) => {
 			{tryVideo && (
 				<video
 					{...props}
+					autoPlay
 					className={`${props.className ? props.className : ''} ${
 						styles.Image
 					} ${styles.Video}`}
@@ -63,11 +64,7 @@ const Image = (props: any) => {
 					}}
 					preload="metadata"
 					onLoadedMetadata={load}
-					controls={
-						containerRef &&
-						containerRef.current &&
-						containerRef.current.clientWidth > 100
-					}
+					playsInline
 				/>
 			)}
 		</div>
