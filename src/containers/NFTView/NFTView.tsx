@@ -276,20 +276,24 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const actionButtons = () => (
 		<div className={styles.Buttons}>
-			<FutureButton
-				glow={isOwnedByYou}
-				onClick={() => isOwnedByYou && onTransfer()}
-				style={{ height: 36, borderRadius: 18 }}
-			>
-				Transfer Ownership
-			</FutureButton>
-			<FutureButton
-				glow={!isOwnedByYou && active}
-				onClick={openBidOverlay}
-				style={{ height: 36, borderRadius: 18 }}
-			>
-				Make A Bid
-			</FutureButton>
+			{isOwnedByYou && (
+				<FutureButton
+					glow={isOwnedByYou}
+					onClick={() => isOwnedByYou && onTransfer()}
+					style={{ height: 36, borderRadius: 18 }}
+				>
+					Transfer Ownership
+				</FutureButton>
+			)}
+			{!isOwnedByYou && (
+				<FutureButton
+					glow={!isOwnedByYou && active}
+					onClick={openBidOverlay}
+					style={{ height: 36, borderRadius: 18 }}
+				>
+					Make A Bid
+				</FutureButton>
+			)}
 		</div>
 	);
 
