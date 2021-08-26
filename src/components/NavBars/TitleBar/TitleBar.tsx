@@ -204,6 +204,13 @@ const TitleBar: React.FC<TitleBarProps> = ({
 						placeholder={isSearchActive ? 'Type to search' : ''}
 					/>
 				</div>
+				<a
+					className={`${styles.Info} alt-link`}
+					href="https://wilderworld.com/info"
+					target="_blank"
+				>
+					Info
+				</a>
 				<div className={styles.Actions}>{children}</div>
 			</div>
 			{isSearchActive && search()}

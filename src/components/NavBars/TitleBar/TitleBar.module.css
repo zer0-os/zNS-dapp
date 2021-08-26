@@ -42,6 +42,7 @@ header {
 .Bar {
 	position: relative;
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 	padding: 11px 17px;
 }
@@ -185,6 +186,12 @@ header {
 
 .Actions > *:not(:last-child) {
 	margin-right: 10px;
+}
+
+.Info {
+	margin-right: 24px;
+	font-weight: 700;
+	text-transform: uppercase;
 }
 
 @media only screen and (max-width: 1000px) {
