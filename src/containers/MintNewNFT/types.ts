@@ -1,5 +1,6 @@
 export type TokenInformationType = {
 	previewImage: string;
+	mediaType: string;
 	image: Buffer;
 	name: string;
 	domain: string;

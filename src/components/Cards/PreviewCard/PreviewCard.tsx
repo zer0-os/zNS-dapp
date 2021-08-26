@@ -165,7 +165,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							}`}
 							onClick={clickImage}
 						>
-							<Image style={{ objectFit: 'contain' }} src={image} />
+							<Image unmute style={{ objectFit: 'contain' }} src={image} />
 						</div>
 						<div className={styles.InfoContainer}>
 							{body()}
