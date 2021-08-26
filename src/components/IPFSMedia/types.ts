@@ -1,10 +1,15 @@
 interface SharedProps {
 	className?: string;
 	style?: React.CSSProperties;
+	alt: string;
 }
 
-interface MediaProps extends SharedProps {
-	mediaExtension?: string;
+export interface MediaProps extends SharedProps {
+	type: string;
+	extension: string;
+	data: string; // Temp until we work this one out
 }
 
-interface MediaContainerProps extends SharedProps {}
+export interface MediaContainerProps extends SharedProps {
+	url: string;
+}

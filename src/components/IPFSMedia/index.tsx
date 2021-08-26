@@ -1,1 +1,5 @@
-const IPFSMediaContainer = () => {};
+const IPFSMediaContainer = () => {
+	return <></>;
+};
+
+export default IPFSMediaContainer;
