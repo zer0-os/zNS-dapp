@@ -14,6 +14,7 @@ type FutureButtonProps = {
 };
 
 // @TODO Should make glow the default state since it's much more prevalent in the design
+// @TODO glow is effectively our "disabled" state here, but we should be more explicit about that
 const FutureButton: React.FC<FutureButtonProps> = ({
 	className,
 	onClick,
@@ -40,7 +41,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	return (
 		<button
 			className={`${styles.futureButton} ${isSelected ? styles.selected : ''} ${
-				glow ? styles.glow : ''
+				glow ? styles.glow : styles.Disabled
 			} ${loading ? styles.Loading : ''} ${alt ? styles.Alt : ''} ${
 				className ? className : ''
 			}`}
