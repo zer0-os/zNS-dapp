@@ -55,6 +55,7 @@ const Image = (props: any) => {
 				<video
 					{...props}
 					autoPlay
+					loop
 					className={`${props.className ? props.className : ''} ${
 						styles.Image
 					} ${styles.Video}`}
