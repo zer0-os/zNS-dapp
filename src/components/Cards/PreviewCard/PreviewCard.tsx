@@ -57,7 +57,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	///////////////
 
 	const makeBid = () => {
-		if (disabled || !onMakeBid) return;
+		if (!onMakeBid) return;
 		onMakeBid();
 	};
 

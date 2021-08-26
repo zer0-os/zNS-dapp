@@ -97,7 +97,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const openBidOverlay = () => {
 		if (!isMounted.current) return;
-		if (!znsDomain.domain || isOwnedByYou) return;
+		if (!znsDomain.domain || isOwnedByYou)
+			return addNotification(`You can't make bids on your own domains.`);
 		setIsBidOverlayOpen(true);
 	};
 

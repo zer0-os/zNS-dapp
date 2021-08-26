@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Maybe, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
 import { useHistory } from 'react-router-dom';
+import useNotification from 'lib/hooks/useNotification';
 
 // Copmonent Imports
 import PreviewCard from './PreviewCard';

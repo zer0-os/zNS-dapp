@@ -23,6 +23,7 @@ import 'lib/react-table-config.d.ts';
 import { Domain, DomainData } from 'lib/types';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { useBidProvider } from 'lib/providers/BidProvider';
+import useNotification from 'lib/hooks/useNotification';
 
 //- Style Imports
 import styles from './DomainTable.module.css';
@@ -78,6 +79,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 }) => {
 	const isMounted = useRef(false);
 	const { mvpVersion } = useMvpVersion();
+	const { addNotification } = useNotification();
 	const { getBidsForDomain } = useBidProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -113,7 +115,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	};
 
 	const buttonClick = (domain: Domain) => {
-		if (disableButton) return;
+		if (!userId) return addNotification(`Connect a wallet to make bids`);
+		if (domain?.owner.id.toLowerCase() === userId?.toLowerCase())
+			return addNotification(`You can't make bids on your own domains.`);
 		// Default behaviour
 		try {
 			if (
@@ -303,7 +307,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		return (
 			<NFTCardActions
 				domain={domain}
-				disableButton={userId?.toLowerCase() === domain.owner.id.toLowerCase()}
+				disableButton={
+					!userId || userId?.toLowerCase() === domain.owner.id.toLowerCase()
+				}
 				hideButton={!isGlobalTable}
 				onButtonClick={buttonClick}
 				onLoad={checkHeight}
