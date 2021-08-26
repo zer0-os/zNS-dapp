@@ -45,13 +45,17 @@
 }
 
 .Image {
+	height: 422px;
 	max-height: 422px;
-	transition: transform var(--animation-time-medium) ease-in-out;
 	cursor: pointer;
 	background: rgba(255, 255, 255, 0.05);
 }
 
-.Image:hover {
+.Image > div {
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Image:hover > div {
 	transform: scale(1.03);
 }
 
