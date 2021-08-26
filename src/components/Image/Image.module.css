@@ -17,10 +17,6 @@
 	transition: opacity var(--animation-time-medium) ease-in-out;
 }
 
-.Video {
-	background-color: rgba(0, 0, 0, 0.4);
-}
-
 .Spinner {
 	width: 24px;
 	height: 24px;
