@@ -61,12 +61,12 @@ const Summary: React.FC<SummaryProps> = ({
 	return (
 		<div className={styles.Section}>
 			<div className={styles.Summary}>
-				<div className={`${styles.NFT} border-rounded border-blue`}>
-					{token.previewImage.indexOf('image/') > -1 && (
-						<Image alt="nft preview" src={token.previewImage} />
+				<div className={`${styles.NFT} ${styles.Uploaded} border-rounded`}>
+					{token.mediaType === 'image' && (
+						<img alt="nft preview" src={token.previewImage} />
 					)}
-					{token.previewImage.indexOf('video/') > -1 && (
-						<video controls src={token.previewImage} />
+					{token.mediaType === 'video' && (
+						<video autoPlay controls src={token.previewImage} />
 					)}
 				</div>
 				<div style={{ marginLeft: 16 }}>

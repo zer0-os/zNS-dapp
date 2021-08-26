@@ -37,6 +37,9 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	//////////////////
 
 	const [previewImage, setPreviewImage] = useState(token?.previewImage ?? '');
+	const [mediaType, setMediaType] = useState<string | undefined>(
+		token?.mediaType,
+	);
 	const [name, setName] = useState(token ? token.name : '');
 	const [story, setStory] = useState(token ? token.story : '');
 	const [image, setImage] = useState(token ? token.image : Buffer.from(''));
@@ -74,13 +77,13 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 		inputFile.current ? inputFile.current.click() : null;
 	const onImageChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files[0]) {
+			const type = event.target.files[0].type;
 			// Raw data for image preview
-			const reader = new FileReader();
-			reader.onload = (e: any) =>
-				e.target
-					? setPreviewImage(e.target?.result)
-					: alert('File upload failed, please try again!');
-			reader.readAsDataURL(event.target.files[0]);
+			const url = URL.createObjectURL(event.target.files[0]);
+			if (type.indexOf('image') > -1) setMediaType('image');
+			else if (type.indexOf('video') > -1) setMediaType('video');
+			else return;
+			setPreviewImage(url);
 
 			// Uint8Array data for sending to IPFS
 			const bufferReader = new FileReader();
@@ -91,7 +94,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	};
 
 	const pressContinue = () => {
-		// Do some validation
+		// Field Validation
 		const errors: Error[] = [];
 		if (!name.length) errors.push({ id: 'name', text: 'NFT name is required' });
 		if (!story.length) errors.push({ id: 'story', text: 'Story is required' });
@@ -100,6 +103,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 			errors.push({ id: 'domain', text: 'Domain name is required' });
 		if (existingSubdomains.includes(domain))
 			errors.push({ id: 'domain', text: 'Domain name already exists' });
+
 		// Don't continue if there's errors
 		if (errors.length) return setErrors(errors);
 
@@ -107,6 +111,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 			name: name,
 			story: story,
 			previewImage: previewImage,
+			mediaType: mediaType!,
 			image: image,
 			domain: domain,
 			locked: locked,
@@ -132,7 +137,9 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 				<div style={{ display: 'flex' }}>
 					<div
 						onClick={openUploadDialog}
-						className={`${styles.NFT} border-rounded border-blue`}
+						className={`${styles.NFT} border-rounded ${
+							previewImage && styles.Uploaded
+						}`}
 						style={{
 							borderColor: hasError('image') ? 'var(--color-invalid)' : '',
 						}}
@@ -140,16 +147,16 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 						{!previewImage && (
 							<span className="glow-text-white">Choose Media</span>
 						)}
-						{previewImage && previewImage.indexOf('image/') > -1 && (
+						{previewImage && mediaType === 'image' && (
 							<img alt="NFT Preview" src={previewImage as string} />
 						)}
-						{previewImage && previewImage.indexOf('video/') > -1 && (
-							<video controls src={previewImage as string} />
+						{previewImage && mediaType === 'video' && (
+							<video autoPlay controls loop src={previewImage as string} />
 						)}
 					</div>
 					<input
 						style={{ display: 'none' }}
-						accept="image/*,video/mp4"
+						accept="image/*,video/*,video/quicktime"
 						multiple={false}
 						name={'media'}
 						type="file"
