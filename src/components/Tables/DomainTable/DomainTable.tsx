@@ -130,7 +130,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	};
 
 	const handleResize = () => {
-		if (window.innerWidth < 1282) setList();
+		if (window.innerWidth <= 700) setGrid();
+		checkHeight();
 	};
 
 	const checkHeight = () => {
@@ -154,6 +155,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		isMounted.current = true;
 		window.addEventListener('resize', handleResize);
+		handleResize();
 		return () => {
 			isMounted.current = false;
 			window.removeEventListener('resize', handleResize);
@@ -318,9 +320,12 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			{overlays()}
 			<div
 				style={style}
-				className={`${
-					styles.DomainTableContainer
-				} border-primary border-rounded ${className || ''}`}
+				className={`
+				${styles.DomainTableContainer} 
+				${className || ''}
+				${isGlobalTable ? styles.Global : styles.Nested}
+				border-primary border-rounded 				
+				`}
 			>
 				{/* Table Header */}
 				<div className={styles.searchHeader}>
@@ -397,6 +402,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 												nftMinterId={d.minter?.id || ''}
 												showCreator
 												showOwner
+												style={{ margin: '0 auto' }}
 											/>
 										</li>
 									))}

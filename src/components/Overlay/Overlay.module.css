@@ -82,3 +82,9 @@
 		opacity: 0;
 	}
 }
+
+@media only screen and (max-width: 768px) {
+	.Overlay > div {
+		padding: 0 !important;
+	}
+}
