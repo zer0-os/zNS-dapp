@@ -11,5 +11,5 @@ export interface MediaProps extends SharedProps {
 }
 
 export interface MediaContainerProps extends SharedProps {
-	url: string;
+	ipfsUrl: string;
 }
