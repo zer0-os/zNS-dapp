@@ -307,7 +307,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				<div className={`${styles.Image} border-rounded`}>
 					<Image
 						style={{
-							height: 422,
 							borderRadius: 10,
 							borderWidth: 2,
 							objectFit: 'contain',

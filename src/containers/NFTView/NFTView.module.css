@@ -45,6 +45,7 @@
 }
 
 .Image {
+	max-height: 422px;
 	transition: transform var(--animation-time-medium) ease-in-out;
 	cursor: pointer;
 	background: rgba(255, 255, 255, 0.05);
@@ -389,6 +390,13 @@
 @media only screen and (max-width: 414px) {
 	.Price h2 {
 		font-size: 18px;
+	}
+
+	.Image {
+		border-bottom: 1px solid #af4cff67;
+
+		border-collapse: separate;
+		box-shadow: 0px 0px 16px 0px #c41dff33;
 	}
 
 	.Crypto {
