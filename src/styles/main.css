@@ -101,7 +101,8 @@
 	--box-radius: 16px;
 
 	--width-max: 1282px;
-	--width-min: 500px;
+	--width-min: 288px;
+	--page-padding: 24px;
 
 	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
 
@@ -116,6 +117,18 @@
 	--animation-time-short: 0.1s;
 	--animation-time-medium: 0.3s;
 	--animation-time-long: 0.7s;
+}
+
+@media only screen and (max-width: 1024px) {
+	:root {
+	}
+}
+
+/* Mobile Lrg */
+@media only screen and (max-width: 414px) {
+	:root {
+		--page-padding: 16px;
+	}
 }
 
 /*
@@ -298,8 +311,8 @@ button {
 	position: absolute;
 	top: 0;
 	left: 0;
-	height: 100%;
-	width: 100%;
+	height: 100vh;
+	width: 100vw;
 
 	background-attachment: fixed;
 	background-repeat: no-repeat;
@@ -308,7 +321,7 @@ button {
 	opacity: 0;
 	z-index: -100;
 
-	transition: all var(--animation-time-long) ease-in-out;
+	transition: opacity var(--animation-time-long) ease-in-out;
 }
 
 .content {
@@ -323,8 +336,10 @@ button {
 }
 
 nav {
-	width: calc(100% - 64px) !important;
-	max-width: calc(var(--width-max) - 64px);
+	width: calc(
+		100% - (var(--page-padding) * 2) - 6px
+	); /* Not sure why the -6 is needed, temp fix */
+	max-width: calc(var(--width-max) - (var(--page-padding) * 2)) !important;
 }
 
 .page-spacing {
@@ -335,8 +350,8 @@ nav {
 	margin: 0 auto;
 	padding-top: 126px;
 	padding-bottom: 110px;
-	padding-left: 32px;
-	padding-right: 32px;
+	padding-left: var(--page-padding);
+	padding-right: var(--page-padding);
 
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -416,7 +431,7 @@ nav {
  * Media Queries
  *
  */
-@media only screen and (max-width: 660px) {
+/* @media only screen and (max-width: 660px) {
 	#root {
 		opacity: 0;
 	}
@@ -441,7 +456,7 @@ nav {
 		text-align: center;
 		line-height: 22px;
 	}
-}
+} */
 
 /*
  *

@@ -25,6 +25,7 @@ const Image = (props: any) => {
 				width: '100%',
 				height: '100%',
 				display: 'inline-block',
+				maxHeight: 'inherit',
 				...props.style,
 			}}
 		>

@@ -88,7 +88,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	//- Functions
 	const copyContractToClipboard = () => {
 		addNotification('Copied Token ID to clipboard.');
-		navigator.clipboard.writeText(domainId);
+		try {
+			navigator?.clipboard?.writeText(domainId);
+		} catch (e) {
+			console.error(e);
+		}
 	};
 
 	const openBidOverlay = () => {
@@ -207,7 +211,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		<>
 			{highestBid && (
 				<div className={styles.Price}>
-					<h2 className="glow-text-blue">Highest Bid</h2>
+					<h2>Highest Bid</h2>
 					<span className={styles.Crypto}>
 						{Number(highestBid.amount.toFixed(2)).toLocaleString()} WILD{' '}
 						{highestBidUsd !== undefined && (
@@ -303,21 +307,25 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				<div className={`${styles.Image} border-rounded`}>
 					<Image
 						style={{
-							height: 422,
 							borderRadius: 10,
 							borderWidth: 2,
+							objectFit: 'contain',
 						}}
-						className="border-primary border-radius"
+						className="border-radius"
 						src={znsDomain.domain?.image ?? ''}
 						onClick={openImageOverlay}
 					/>
 				</div>
 				<div className={styles.Info}>
-					<div>
-						<h1 className="glow-text-white">{znsDomain.domain?.title ?? ''}</h1>
-						<span>
-							{domain.length > 0 ? `0://wilder.${domain.substring(1)}` : ''}
-						</span>
+					<div className={styles.Details}>
+						<div>
+							<h1 className="glow-text-white">
+								{znsDomain.domain?.title ?? ''}
+							</h1>
+							<span>
+								{domain.length > 0 ? `0://wilder.${domain.substring(1)}` : ''}
+							</span>
+						</div>
 						<div className={styles.Members}>
 							<Member
 								id={znsDomain.domain ? znsDomain.domain.owner.id : ''}
