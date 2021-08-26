@@ -187,13 +187,9 @@
 .Story p {
 	/* height: 100%; */
 	line-height: 20px;
-	overflow: scroll;
 	padding-right: 12px;
-	padding-bottom: 0;
+	padding-bottom: 12px;
 
-	position: absolute;
-	top: 48px;
-	max-height: calc(100% - 48px);
 	margin-right: 8px;
 }
 
@@ -372,7 +368,6 @@
 		top: 0;
 		position: relative;
 		display: block;
-		max-height: 200px;
 	}
 	.Details {
 		flex-direction: column;
