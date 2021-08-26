@@ -206,7 +206,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 				</div>
 				<a
 					className={`${styles.Info} alt-link`}
-					href="https://wilderworld.com/info"
+					href="https://info.wilderworld.com/"
 					target="_blank"
 				>
 					Info

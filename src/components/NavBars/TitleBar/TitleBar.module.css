@@ -192,11 +192,16 @@ header {
 	margin-right: 24px;
 	font-weight: 700;
 	text-transform: uppercase;
+	flex-shrink: 0;
 }
 
 @media only screen and (max-width: 1000px) {
 	.Actions {
 		display: none !important;
+	}
+
+	.Info {
+		margin-right: 0;
 	}
 }
 
