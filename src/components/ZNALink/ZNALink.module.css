@@ -1,15 +1,10 @@
-.ZNALink {
-	display: flex;
-}
-
 .ZNALink > a {
 	position: relative;
 	transition: all var(--animation-time-short) ease-in-out;
 	font-weight: 700;
-	z-index: 1;
 }
 
-.ZNALink > a::after {
+.ZNALink > a::before {
 	transition: opacity var(--animation-time-medium) ease-in-out;
 	content: ' ';
 	position: absolute;
@@ -20,21 +15,20 @@
 	width: calc(100% - 16px);
 	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.3);
 	opacity: 0;
-	z-index: -1;
 }
 
-.ZNALink > a:last-of-type::after {
+.ZNALink > a:last-of-type::before {
 	opacity: 1;
 }
 
-.ZNALink > a:not(:last-child):hover::after {
+.ZNALink > a:not(:last-child):hover::before {
 	opacity: 1;
 }
 
 .ZNALink > a:not(:last-child):hover {
 }
 
-.ZNALink > a:last-child::after {
+.ZNALink > a:last-child::before {
 	content: ' ';
 	position: absolute;
 	top: 50%;
@@ -44,22 +38,4 @@
 	width: calc(100% - 16px);
 	box-shadow: 0 0 20px 13px #3ca1ff;
 	z-index: -1;
-}
-
-.Dots {
-	display: none;
-	font-weight: 700;
-	color: white;
-	z-index: 2;
-}
-
-@media only screen and (max-width: 600px) {
-	.ZNALink > a:not(:first-of-type):not(:last-of-type) {
-		display: none !important;
-		background: red;
-	}
-
-	.Dots {
-		display: inline-block;
-	}
 }

@@ -8,7 +8,6 @@
 	border-radius: calc(var(--box-radius) / 2);
 
 	transition: all var(--animation-time-medium) ease-in-out;
-	z-index: 1;
 }
 
 .iconButton > img {

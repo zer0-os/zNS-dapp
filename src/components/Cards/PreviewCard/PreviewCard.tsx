@@ -78,7 +78,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 			<div>
 				<h5>{name ? name : domain.split('/')[1]}</h5>
 				<span className={styles.Domain}>0://wilder.{domain.substring(1)}</span>
-				<p className={styles.Description}>{description}</p>
+				<p>{description}</p>
 			</div>
 			<div className={styles.Members}>
 				{/* TODO: Switch these to Member component */}
@@ -102,21 +102,16 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
-					<FutureButton
-						className={styles.Bid}
-						glow={disabled !== true}
-						onClick={makeBid}
-					>
+					<FutureButton glow={disabled !== true} onClick={makeBid}>
 						MAKE A BID
 					</FutureButton>
 					<FutureButton
-						className={styles.View}
 						glow
 						alt
 						onClick={openNftView}
 						style={{ marginTop: 24 }}
 					>
-						View
+						View Domain
 					</FutureButton>
 				</>
 			)}
@@ -167,10 +162,8 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 						>
 							<Image style={{ objectFit: 'contain' }} src={image} />
 						</div>
-						<div className={styles.InfoContainer}>
-							{body()}
-							{buy()}
-						</div>
+						{body()}
+						{buy()}
 					</div>
 					{children && mvpVersion === 3 && (
 						<>

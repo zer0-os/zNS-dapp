@@ -125,10 +125,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		}
 	}, [znsDomain.domain, loading]);
 
-	const previewCardRef = useRef<HTMLDivElement>(null);
-
-	//- Minting State
-	const { minting, minted } = useMintProvider();
 	const mintingProvider = useMintProvider();
 	const stakingProvider = useStakingProvider();
 
@@ -149,7 +145,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
-	const [pageWidth, setPageWidth] = useState<number>(0);
 
 	//- Table State
 	const [isGridView, setIsGridView] = useState(false);
@@ -157,6 +152,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
+
+	//- MVP Version
+	// TODO: Move the MVP version handler out to a hook
+	const springAmount = mvpVersion === 3 ? 425.5 : 240;
 
 	//- Data
 	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
@@ -209,21 +208,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		if (modal) closeModal();
 	};
 
-	const handleResize = () => {
-		setPageWidth(window.innerWidth);
-	};
-
 	/////////////
 	// Effects //
 	/////////////
-
-	useEffect(() => {
-		window.addEventListener('resize', handleResize);
-		handleResize();
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
 
 	/* Handles the back/forward history */
 	useEffect(() => {
@@ -236,7 +223,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		}
 		lastDomain.current = domain;
 		pageHistory.current = pageHistory.current.concat([domain]);
-		window.scrollTo(0, 0); // scroll to top whenever we change domain
 	}, [domain]);
 
 	/* WIP */
@@ -294,17 +280,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	/////////////////////
 
 	const previewCard = () => {
+		// if (nftView === true) return <></>;
+
 		const isVisible = domain !== '/' && !isNftView;
 		let to;
-		if (isVisible && previewCardRef) {
+		if (isVisible) {
 			// If should be visible, slide down
 			to = { opacity: 1, marginTop: 0 };
 		} else if (domain === '/') {
 			// If root view, slide up
-			to = {
-				opacity: 0,
-				marginTop: -(previewCardRef?.current?.clientHeight || 0),
-			};
+			to = { opacity: 0, marginTop: -springAmount };
 		} else {
 			// If NFT view, don't render
 			return <></>;
@@ -313,38 +298,37 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		return (
 			<>
 				{/* Preview Card */}
+				{/* TODO: This definitely needs some refactoring */}
 				<Spring to={to}>
 					{(styles) => (
 						<animated.div style={styles}>
-							<div ref={previewCardRef}>
-								<PreviewCard
-									domain={domain}
-									metadataUrl={znsDomain?.domain?.metadata}
-									creatorId={znsDomain?.domain?.minter?.id || ''}
-									disabled={
-										znsDomain.domain?.owner?.id.toLowerCase() ===
-											account?.toLowerCase() || !active
-									}
-									ownerId={znsDomain?.domain?.owner?.id || ''}
-									mvpVersion={mvpVersion}
-									onButtonClick={openBidOverlay}
-									onImageClick={() => {}}
-									preventInteraction={domain === '/'}
-								>
-									{mvpVersion === 3 && (
-										<HorizontalScroll fade>
-											<AssetPriceCard
-												title={`${domain.substring(1, 5).toUpperCase()} Price`}
-												price={randomNumber(85, 400, 2)}
-												change={randomNumber(-30, 30, 2)}
-											/>
-											<AssetGraphCard
-												title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-											/>
-										</HorizontalScroll>
-									)}
-								</PreviewCard>
-							</div>
+							<PreviewCard
+								domain={domain}
+								metadataUrl={znsDomain?.domain?.metadata}
+								creatorId={znsDomain?.domain?.minter?.id || ''}
+								disabled={
+									znsDomain.domain?.owner?.id.toLowerCase() ===
+										account?.toLowerCase() || !active
+								}
+								ownerId={znsDomain?.domain?.owner?.id || ''}
+								mvpVersion={mvpVersion}
+								onButtonClick={openBidOverlay}
+								onImageClick={() => {}}
+								preventInteraction={domain === '/'}
+							>
+								{mvpVersion === 3 && (
+									<HorizontalScroll fade>
+										<AssetPriceCard
+											title={`${domain.substring(1, 5).toUpperCase()} Price`}
+											price={randomNumber(85, 400, 2)}
+											change={randomNumber(-30, 30, 2)}
+										/>
+										<AssetGraphCard
+											title={`Price ${domain.substring(1, 5).toUpperCase()}`}
+										/>
+									</HorizontalScroll>
+								)}
+							</PreviewCard>
 						</animated.div>
 					)}
 				</Spring>
@@ -438,7 +422,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	return (
 		<>
-			{pageWidth > 1000 && modals()}
+			{modals()}
 			{/* ZNS Content */}
 			<div
 				className="page-spacing"
@@ -470,7 +454,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						isSearchActive={isSearchActive}
 						setIsSearchActive={setIsSearchActive}
 					>
-						<>
+						<div>
 							{!account && localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={() => openWallet()}>
 									<div
@@ -509,7 +493,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							)}
 							{!account && !localStorage.getItem('chosenWallet') && (
 								<FutureButton glow onClick={openWallet}>
-									Connect {pageWidth > 900 && 'Wallet'}
+									Connect Wallet
 								</FutureButton>
 							)}
 							{account && !isSearchActive && (
@@ -524,11 +508,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										}}
 										loading={loading}
 									>
-										{pageWidth <= 900 && 'MINT'}
-										{pageWidth > 900 && isOwnedByUser === true && 'MINT NFT'}
-										{pageWidth > 900 &&
-											isOwnedByUser === false &&
-											'REQUEST TO MINT NFT'}
+										{isOwnedByUser === true && 'MINT NFT'}
+										{isOwnedByUser === false && 'REQUEST TO MINT NFT'}
 									</FutureButton>
 
 									{/* Status / Long Running Operation Button */}
@@ -572,7 +553,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 									</div>
 								</>
 							)}
-						</>
+						</div>
 					</TitleBar>
 				</FilterBar>
 

@@ -64,6 +64,19 @@ header {
 	-webkit-box-sizing: border-box;
 }
 
+.Bar > div {
+	flex: 1;
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+}
+
+.Bar > div > * {
+	/* Maybe not the best solution long term but works for now
+	until we have other breakpoints designed */
+	flex-shrink: 0;
+}
+
 .Searching .Bar > div:nth-child(2) {
 	display: none;
 }
@@ -73,18 +86,20 @@ header {
 	max-width: 100%;
 }
 
+.Bar > div:nth-child(2) {
+	flex: 1;
+	flex-grow: 0 0;
+	justify-content: flex-end;
+}
+
+.Bar > div:nth-child(2) > *:not(:last-child) {
+	margin-right: 10px;
+}
+
 /* Search Styling */
 
 .Navigation {
 	flex: 1;
-	flex-grow: 1;
-	display: flex;
-	align-items: center;
-	height: 32px;
-}
-
-.Buttons {
-	display: flex;
 }
 
 .Navigation > input {
@@ -117,7 +132,7 @@ header {
 }
 
 .Search {
-	flex: 1;
+	width: 100%;
 	margin-left: 16px;
 
 	background: none;
@@ -172,49 +187,4 @@ header {
 
 .GrowContainer {
 	transition: height var(--animation-time-long) ease-in-out;
-}
-
-.ZNA {
-	flex-shrink: 0;
-}
-
-.Actions {
-	display: flex;
-	flex-direction: row;
-}
-
-.Actions > *:not(:last-child) {
-	margin-right: 10px;
-}
-
-@media only screen and (max-width: 1000px) {
-	.Actions {
-		display: none !important;
-	}
-}
-
-@media only screen and (max-width: 768px) {
-	.ZNA {
-		margin-left: 0 !important;
-	}
-
-	.Buttons {
-		display: none !important;
-	}
-
-	.Search {
-		min-width: 0px;
-		margin-left: 0 !important;
-	}
-
-	.SearchResults li {
-		display: flex;
-		flex-direction: column;
-		padding-left: 17px;
-	}
-
-	.SearchResults li span {
-		margin: 0;
-		margin-top: 4px;
-	}
 }

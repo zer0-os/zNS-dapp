@@ -166,29 +166,23 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		>
 			<div className={styles.Bar}>
 				<div className={styles.Navigation}>
-					<div className={styles.Buttons}>
-						<IconButton
-							iconUri={arrowBackIcon}
-							onClick={onBack}
-							style={{ height: 32, width: 32 }}
-							disabled={!canGoBack}
-							alt={'back'}
-						/>
-						<IconButton
-							iconUri={arrowForwardIcon}
-							onClick={onForward}
-							style={{ height: 32, width: 32, marginLeft: 4 }}
-							disabled={!canGoForward}
-							alt={'forward'}
-						/>
-					</div>
+					<IconButton
+						iconUri={arrowBackIcon}
+						onClick={onBack}
+						style={{ height: 32, width: 32 }}
+						disabled={!canGoBack}
+						alt={'back'}
+					/>
+					<IconButton
+						iconUri={arrowForwardIcon}
+						onClick={onForward}
+						style={{ height: 32, width: 32, marginLeft: 4 }}
+						disabled={!canGoForward}
+						alt={'forward'}
+					/>
 					{/* TODO: Split this into its own component */}
 					{!isSearchActive && (
-						<ZNALink
-							className={styles.ZNA}
-							style={{ marginLeft: 16, marginTop: 3 }}
-							domain={domain}
-						/>
+						<ZNALink style={{ marginLeft: 16, marginTop: 3 }} domain={domain} />
 					)}
 					<input
 						className={styles.Search}
@@ -204,7 +198,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 						placeholder={isSearchActive ? 'Type to search' : ''}
 					/>
 				</div>
-				<div className={styles.Actions}>{children}</div>
+				{children}
 			</div>
 			{isSearchActive && search()}
 		</div>
