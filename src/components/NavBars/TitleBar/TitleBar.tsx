@@ -209,7 +209,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 					href="https://info.wilderworld.com/"
 					target="_blank"
 				>
-					Info
+					About
 				</a>
 				<div className={styles.Actions}>{children}</div>
 			</div>
