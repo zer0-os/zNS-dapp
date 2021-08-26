@@ -98,9 +98,12 @@
 	transform: scale(1.05);
 }
 
+.NFT > img {
+	height: 100%;
+}
+
 .NFT > img,
 .NFT > video {
-	height: 100%;
 	max-width: 100%;
 	object-fit: contain;
 	transition: transform var(--animation-time-medium) ease-in-out;

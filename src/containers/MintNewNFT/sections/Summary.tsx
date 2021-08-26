@@ -66,7 +66,7 @@ const Summary: React.FC<SummaryProps> = ({
 						<img alt="nft preview" src={token.previewImage} />
 					)}
 					{token.mediaType === 'video' && (
-						<video autoPlay src={token.previewImage} />
+						<video autoPlay controls src={token.previewImage} />
 					)}
 				</div>
 				<div style={{ marginLeft: 16 }}>

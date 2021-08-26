@@ -151,7 +151,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							<img alt="NFT Preview" src={previewImage as string} />
 						)}
 						{previewImage && mediaType === 'video' && (
-							<video autoPlay loop src={previewImage as string} />
+							<video autoPlay controls loop src={previewImage as string} />
 						)}
 					</div>
 					<input
