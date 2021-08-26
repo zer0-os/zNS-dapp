@@ -149,7 +149,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 					</div>
 					<input
 						style={{ display: 'none' }}
-						accept="image/*,video/mp4"
+						accept="image/*,video/*"
 						multiple={false}
 						name={'media'}
 						type="file"
