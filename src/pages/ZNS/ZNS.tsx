@@ -196,7 +196,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		setModal(Modal.Wallet);
 	};
 	const openBidOverlay = () => {
+		if (!account) return addNotification(`Connect a wallet to make a bid.`);
 		if (!znsDomain.domain) return;
+		if (
+			znsDomain.domain.owner.id.toLocaleLowerCase() ===
+			account.toLocaleLowerCase()
+		)
+			return addNotification(`You can't make bids on your own domains.`);
 		setModal(Modal.Bid);
 	};
 	const openTransferOwnershipModal = () => {

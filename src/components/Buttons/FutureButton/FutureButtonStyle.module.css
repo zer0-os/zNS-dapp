@@ -72,7 +72,6 @@
 	font-weight: 700;
 
 	color: var(--color-accent-1);
-	text-shadow: var(--glow-text-blue);
 	transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
 }
 
@@ -172,6 +171,14 @@
 	z-index: 0;
 }
 
+.Disabled::after {
+	border-color: var(--color-grey) !important;
+}
+
+.Disabled .content {
+	color: var(--color-grey) !important;
+}
+
 /* SELECTED STYLING */
 
 .selected:after {
@@ -210,12 +217,12 @@
 
 /* HOVER STYLING */
 
-.wash.hovered {
+.futureButton:not(.Disabled) .wash.hovered {
 	animation: shrink 0.5s;
 	animation-timing-function: ease-in-out;
 }
 
-.futureButton:hover:not(.selected) .wash {
+.futureButton:hover:not(.selected, .Disabled) .wash {
 	animation: expand 0.2s forwards;
 	animation-timing-function: ease-in-out;
 }
