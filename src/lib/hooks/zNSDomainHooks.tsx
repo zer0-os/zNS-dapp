@@ -15,6 +15,7 @@ function useQueryHook<T>(query: DocumentNode, variables?: OperationVariables) {
 	const hook = useQuery<T>(query, {
 		variables,
 		fetchPolicy: defaultFetchPolicy,
+		pollInterval: 5000,
 	});
 
 	return hook;
