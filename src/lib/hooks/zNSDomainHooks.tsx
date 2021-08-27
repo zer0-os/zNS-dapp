@@ -14,12 +14,12 @@ const defaultFetchPolicy = 'cache-and-network';
 function useQueryHook<T>(
 	query: DocumentNode,
 	variables?: OperationVariables,
-	pollIntervalValue?: number,
+	pollInterval?: number,
 ) {
 	const hook = useQuery<T>(query, {
 		variables,
 		fetchPolicy: defaultFetchPolicy,
-		pollInterval: pollIntervalValue,
+		pollInterval: pollInterval,
 	});
 
 	return hook;
@@ -49,14 +49,14 @@ export function useDomainByNameQuery(domainName: string) {
 
 export function useDomainsOwnedByUserQuery(
 	account: string,
-	pollIntervalValue?: number,
+	pollInterval?: number,
 ) {
 	const query = useQueryHook<DomainsQueryResult>(
 		queries.ownedByAccountQuery,
 		{
 			owner: account.toLowerCase(),
 		},
-		pollIntervalValue,
+		pollInterval,
 	);
 
 	return query;

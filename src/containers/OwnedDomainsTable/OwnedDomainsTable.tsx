@@ -34,8 +34,11 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	// Wallet Integrations
 	const { account } = useWeb3React();
-	const pollIntervalValue: number = 5000; //poll interval for a domains owned by user query
-	const ownedQuery = useDomainsOwnedByUserQuery(account!, pollIntervalValue);
+	const ownedDomainPollingInterval: number = 5000; //poll interval for a domains owned by user query
+	const ownedQuery = useDomainsOwnedByUserQuery(
+		account!,
+		ownedDomainPollingInterval,
+	);
 	const owned = ownedQuery.data?.domains;
 
 	// zAuction Integrations
