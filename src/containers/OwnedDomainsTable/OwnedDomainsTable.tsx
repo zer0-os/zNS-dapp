@@ -215,7 +215,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			<DomainTable
 				className={styles.Reset}
 				domains={owned}
-				hideOwnBids
 				isButtonActive={isButtonActive}
 				filterOwnerBids={true}
 				isRootDomain={false}

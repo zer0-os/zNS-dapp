@@ -40,7 +40,6 @@ type DomainTableProps = {
 	filterOwnerBids?: boolean;
 	domains: Domain[];
 	empty?: boolean;
-	hideOwnBids?: boolean;
 	isButtonActive?: (row: any) => boolean;
 	isGlobalTable?: boolean;
 	isGridView?: boolean;
@@ -65,7 +64,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	filterOwnerBids,
 	domains,
 	empty,
-	hideOwnBids,
 	isButtonActive,
 	isGlobalTable,
 	isGridView,
