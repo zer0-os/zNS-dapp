@@ -111,10 +111,14 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const closeDomain = () => setViewingDomain(undefined);
 
 	const acceptBidConfirmed = async () => {
-		if (!acceptingBid) return;
+		if (!acceptingBid) {
+			return;
+		}
 		setIsAccepting(true);
 		const tx = await acceptBid(acceptingBid.bid);
-		if (tx) await tx.wait();
+		if (tx) {
+			await tx.wait();
+		}
 		setTimeout(() => {
 			//refetch after confirm the transaction, with a delay to wait until backend gets updated
 			ownedQuery.refetch();
