@@ -14,7 +14,6 @@ export const tokenToUsd = async (token: string): Promise<number> => {
 
 	if (token === 'LOOT') {
 		priceInUsd = await getLootPrice();
-		if (!priceInUsd) return 0;
 	} else {
 		const res = await fetch(
 			`https://api.coingecko.com/api/v3/simple/price?ids=${token}&vs_currencies=usd`,
@@ -22,7 +21,9 @@ export const tokenToUsd = async (token: string): Promise<number> => {
 
 		const data = await res.json();
 
-		if (!data[token]) return 0;
+		if (!data[token]) {
+			throw Error(`Unable to fetch price for ${token}`);
+		}
 
 		priceInUsd = data[token].usd as number;
 	}
@@ -73,7 +74,6 @@ const getLootPrice = async () => {
 	);
 
 	const ethToUsd = await tokenToUsd('ethereum');
-	if (!ethToUsd) return;
 	const usdToLoot = ethToUsd / ethToLoot;
 	return usdToLoot;
 };

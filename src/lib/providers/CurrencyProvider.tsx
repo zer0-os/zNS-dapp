@@ -26,20 +26,32 @@ const CurrencyProvider: React.FC<CurrencyProviderType> = ({ children }) => {
 		getLootPriceUsd();
 	});
 
-	// Poll CoinGecko every 30 seconds
+	// Poll CoinGecko every 30 seconds, 5 seconds if call fails and set value to $0 (wont be rendered in this case)
 	const getWildPriceUsd = async () => {
-		const price = await wildTokenPrice();
-		setWildPriceUsd(price);
-		if (price === 0) console.error('$WILD price API call failed');
-		await new Promise((resolve) => setTimeout(resolve, 30000));
+		try {
+			const price = await wildTokenPrice();
+			setWildPriceUsd(price);
+			await new Promise((resolve) => setTimeout(resolve, 30000));
+			console.log(price + ' wild');
+		} catch (e) {
+			console.error(e);
+			setWildPriceUsd(0);
+		}
+		await new Promise((resolve) => setTimeout(resolve, 5000));
 		getWildPriceUsd();
 	};
 
 	const getLootPriceUsd = async () => {
-		const price = await lootTokenPrice();
-		setLootPriceUsd(price);
-		if (price === 0) console.error('$LOOT price API call failed');
-		await new Promise((resolve) => setTimeout(resolve, 30000));
+		try {
+			const price = await lootTokenPrice();
+			setLootPriceUsd(price);
+			await new Promise((resolve) => setTimeout(resolve, 30000));
+			console.log(price + ' loot');
+		} catch (e) {
+			console.error(e);
+			await new Promise((resolve) => setTimeout(resolve, 5000));
+			setLootPriceUsd(0);
+		}
 		getLootPriceUsd();
 	};
 
