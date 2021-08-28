@@ -34,7 +34,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	// Wallet Integrations
 	const { account } = useWeb3React();
-	const ownedDomainPollingInterval: number = 5000; //poll interval for a domains owned by user query
+	const ownedDomainPollingInterval: number = 5000;
 	const ownedQuery = useDomainsOwnedByUserQuery(
 		account!,
 		ownedDomainPollingInterval,
