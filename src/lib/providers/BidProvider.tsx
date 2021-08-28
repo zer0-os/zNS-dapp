@@ -15,7 +15,10 @@ import { useZAuctionBaseApiUri } from 'lib/hooks/useZAuctionBaseApiUri';
 import { useChainSelector } from './ChainSelectorProvider';
 
 export const BidContext = React.createContext({
-	getBidsForDomain: async (domain: Domain): Promise<Bid[] | undefined> => {
+	getBidsForDomain: async (
+		domain: Domain,
+		filterOwnBids?: boolean,
+	): Promise<Bid[] | undefined> => {
 		return;
 	},
 	getBidsForAccount: async (id: string): Promise<Bid[] | undefined> => {
@@ -174,7 +177,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		};
 	}
 
-	const getBidsForDomain = async (domain: Domain) => {
+	const getBidsForDomain = async (domain: Domain, filterOwnBids?: boolean) => {
 		if (baseApiUri === undefined) {
 			throw Error(`no api endpoint`);
 		}
@@ -186,9 +189,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			)) as zAuction.BidDto[];
 
 			try {
-				bids = bids.filter((e) => {
-					return e.account.toLowerCase() !== domain.owner.id.toLowerCase();
-				});
+				if (filterOwnBids) {
+					bids = bids.filter((e) => {
+						return e.account.toLowerCase() !== domain.owner.id.toLowerCase();
+					});
+				}
 
 				let displayBids = bids.map((e) => {
 					return getBidParameters(e, domain.id);

@@ -9,9 +9,14 @@ import { Domain } from 'lib/types';
 type NumBidsProps = {
 	domain: Domain;
 	refreshKey: string;
+	filterOwnBids?: boolean;
 };
 
-const NumBids: React.FC<NumBidsProps> = ({ domain, refreshKey }) => {
+const NumBids: React.FC<NumBidsProps> = ({
+	domain,
+	refreshKey,
+	filterOwnBids,
+}) => {
 	let isMounted = useRef(false);
 	const { getBidsForDomain } = useBidProvider();
 	const [numBids, setNumBids] = useState<number | undefined>();
@@ -20,7 +25,7 @@ const NumBids: React.FC<NumBidsProps> = ({ domain, refreshKey }) => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const getBids = async () => {
-		const bids = await getBidsForDomain(domain);
+		const bids = await getBidsForDomain(domain, filterOwnBids);
 
 		if (!isMounted.current) return;
 
