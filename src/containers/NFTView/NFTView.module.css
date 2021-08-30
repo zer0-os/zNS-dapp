@@ -117,17 +117,17 @@
 
 .Price h2 {
 	color: var(--color-primary-lighter-3);
-	font-size: 21px;
-	margin-bottom: 16px;
+	font-size: 16px;
+	margin-bottom: 4px;
 	text-align: center;
 }
 
 .Crypto {
-	font-size: 40px;
+	font-size: 24px;
 }
 
 .Fiat {
-	font-size: 20px;
+	font-size: 18px;
 	color: var(--color-primary-lighter-3);
 }
 
