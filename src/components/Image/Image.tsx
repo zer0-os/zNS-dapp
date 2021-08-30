@@ -57,7 +57,6 @@ const Image = (props: any) => {
 					}`}
 					style={{
 						opacity: loaded ? 1 : 0,
-						objectFit: 'cover',
 						...props.style,
 					}}
 					onLoad={load}
