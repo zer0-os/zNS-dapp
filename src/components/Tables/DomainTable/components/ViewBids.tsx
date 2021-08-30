@@ -61,7 +61,7 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 				</FutureButton>
 			)}
 			{bids === undefined && (
-				<div style={{ textAlign: 'right', marginRight: '48px' }}>no bids</div>
+				<div style={{ textAlign: 'right', marginRight: '48px' }}>No bids</div>
 			)}
 		</>
 	);
