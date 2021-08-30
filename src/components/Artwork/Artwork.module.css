@@ -21,7 +21,6 @@
 
 .Domain {
 	display: block;
-	margin-top: 4px;
 	color: var(--color-primary-lighter-3);
 }
 
@@ -38,13 +37,16 @@
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-	ax-width: inherit;
+	max-width: inherit;
 }
 
 .Info > *:first-child {
 	color: white;
 	font-weight: 400;
-	margin-top: 4px;
+}
+
+.Info > *:not(:first-child) {
+	margin-top: 2px;
 }
 
 .Title {
