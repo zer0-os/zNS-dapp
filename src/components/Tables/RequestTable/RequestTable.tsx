@@ -79,7 +79,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		'Please confirm transaction in wallet',
 	);
 	const [approveError, setApproveError] = useState<string | undefined>();
-	const [fulfillError, setFulfillError] = useState<string | undefined>();
+	const [confirmError, setConfirmError] = useState<string | undefined>();
 	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
 	const [statusFilter, setStatusFilter] = useState('');
@@ -136,13 +136,25 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	/* Calls the middleware for approving a request
 		 This is passed to the Request modal */
 	const onApprove = async (request: DomainRequestAndContents) => {
+		setConfirmError(undefined);
+		setShowLoadingIndicator(true); //displays loading indicator on overlay
 		try {
 			await staking.approveRequest(request);
 			setViewing(undefined);
 		} catch (e) {
 			// Catch thrown when user rejects transaction
 			console.error(e);
+			console.log(e.message);
+			if (
+				e.message ===
+				'Failed to approve request: undefined MetaMask Tx Signature: User denied transaction signature.'
+			) {
+				setConfirmError(`Rejected by wallet`);
+			} else {
+				setConfirmError(`Failed to submit transaction.`);
+			}
 		}
+		setShowLoadingIndicator(false);
 	};
 
 	/**
@@ -163,7 +175,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			console.error(e);
 			//if user rejects transaction
-			if (e.code === 4001) { 
+			if (e.code === 4001) {
 				setApproveError(`Rejected by wallet`);
 			} else {
 				setApproveError(`Failed to submit transaction.`);
@@ -175,7 +187,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	};
 
 	const onFulfill = async (request: DomainRequestAndContents) => {
-		setFulfillError(undefined);
+		setConfirmError(undefined);
 		const allowance = await lootToken.allowance(
 			account!,
 			znsContracts.stakingController.address,
@@ -189,16 +201,16 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
-		} catch (e) { 
+		} catch (e) {
 			console.error(e);
 			//if user rejects transaction
 			if (
 				e.message ===
 				'Failed to fulfill request: undefined MetaMask Tx Signature: User denied transaction signature.'
 			) {
-				setFulfillError(`Rejected by wallet`);
+				setConfirmError(`Rejected by wallet`);
 			} else {
-				setFulfillError(`Failed to submit transaction.`);
+				setConfirmError(`Failed to submit transaction.`);
 			}
 		}
 
@@ -430,13 +442,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		useFilters,
 		useGlobalFilter,
 	);
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		prepareRow,
-		rows,
-	} = tableHook;
+	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
+		tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
@@ -447,14 +454,14 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					open
 					onClose={() => {
 						setViewing(undefined);
-						setFulfillError(undefined);
+						setConfirmError(undefined);
 					}}
 				>
 					<Request
 						onApprove={onApprove}
 						onFulfill={onFulfill}
 						onNavigate={onNavigate}
-						errorText={fulfillError}
+						errorText={confirmError}
 						request={viewing}
 						showLoadingIndicator={showLoadingIndicator}
 						yours={viewing.contents.requestor === userId}
