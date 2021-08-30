@@ -161,7 +161,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	 * tokens on behalf of the user.
 	 */
 	const onApproveTokenTransfer = async () => {
-		setApproveError(undefined);
+		setConfirmError(undefined);
 		setIsApproving(true); //start loading indicator
 		try {
 			const approveTx = await lootToken.approve(
@@ -175,9 +175,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			console.error(e);
 			//if user rejects transaction
 			if (e.code === 4001) {
-				setApproveError(`Rejected by wallet`);
+				setConfirmError(`Rejected by wallet`);
 			} else {
-				setApproveError(`Failed to submit transaction.`);
+				setConfirmError(`Failed to submit transaction.`);
 			}
 		}
 		setIsApproving(false); //stop loading indicator
@@ -474,20 +474,20 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					open
 					onClose={() => {
 						setApproveTokenTransfer(undefined);
-						setApproveError(undefined);
+						setConfirmError(undefined);
 					}}
 				>
 					<Confirmation
 						title={'Approve Token Transfer'}
 						showLoading={isApproving}
 						loadingText={approvingText}
-						errorText={approveError}
+						errorText={confirmError}
 						onConfirm={() => {
 							onApproveTokenTransfer();
 						}}
 						onCancel={() => {
 							setApproveTokenTransfer(undefined);
-							setApproveError(undefined);
+							setConfirmError(undefined);
 						}}
 					>
 						<p>
