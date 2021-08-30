@@ -164,7 +164,6 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 								justifyContent: 'center',
 								verticalAlign: 'center',
 								alignItems: 'center',
-								paddingBottom: '5px',
 							}}
 						>
 							<div
