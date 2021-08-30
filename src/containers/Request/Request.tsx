@@ -72,7 +72,6 @@ const Request: React.FC<RequestProps> = ({
 		ethers.utils.formatEther(request.request.offeredAmount),
 	);
 
-
 	///////////////
 	// Functions //
 	///////////////
@@ -176,7 +175,9 @@ const Request: React.FC<RequestProps> = ({
 								</FutureButton>
 							</div>
 						)}
-						{!showLoadingIndicator && errorText && errorMessage &&<div>{errorMessage}</div>}
+						{!showLoadingIndicator && errorText && errorMessage && (
+							<div>{errorMessage}</div>
+						)}
 						<div className={styles.FulfillIndicator}>
 							{showLoadingIndicator && (
 								<LoadingIndicator
@@ -225,13 +226,15 @@ const Request: React.FC<RequestProps> = ({
 						<span>
 							{tokenAmount.toLocaleString()} {request.contents.stakeCurrency}
 						</span>
-						<span>
-							$
-							{Number(
-								(tokenAmount * stakeCurrencyToUsd).toFixed(2),
-							).toLocaleString()}{' '}
-							USD
-						</span>
+						{stakeCurrencyToUsd > 0 && (
+							<span>
+								$
+								{Number(
+									(tokenAmount * stakeCurrencyToUsd).toFixed(2),
+								).toLocaleString()}{' '}
+								USD
+							</span>
+						)}
 					</div>
 
 					{/* Action Buttons */}

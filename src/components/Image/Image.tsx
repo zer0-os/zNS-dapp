@@ -1,10 +1,11 @@
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import styles from './Image.module.css';
 // import placeholder from './'
 
 // @TODO: Refactor props to not by 'any' type
 const Image = (props: any) => {
+	const refVideo = useRef<HTMLVideoElement | undefined>(null);
 	const [loaded, setLoaded] = useState(false);
 	const [tryVideo, setTryVideo] = useState(false);
 
@@ -17,6 +18,20 @@ const Image = (props: any) => {
 		}
 	};
 
+	useEffect(() => {
+		if (!refVideo.current) {
+			return;
+		}
+
+		if (props.unmute) {
+			refVideo.current.defaultMuted = false;
+			refVideo.current.muted = false;
+		} else {
+			refVideo.current.defaultMuted = true;
+			refVideo.current.muted = true;
+		}
+	}, [tryVideo, props.unmute]);
+
 	return (
 		<div
 			ref={containerRef}
@@ -25,6 +40,7 @@ const Image = (props: any) => {
 				width: '100%',
 				height: '100%',
 				display: 'inline-block',
+				maxHeight: 'inherit',
 				...props.style,
 			}}
 		>
@@ -53,6 +69,9 @@ const Image = (props: any) => {
 			{tryVideo && (
 				<video
 					{...props}
+					autoPlay
+					loop
+					ref={refVideo}
 					className={`${props.className ? props.className : ''} ${
 						styles.Image
 					} ${styles.Video}`}
@@ -63,11 +82,7 @@ const Image = (props: any) => {
 					}}
 					preload="metadata"
 					onLoadedMetadata={load}
-					controls={
-						containerRef &&
-						containerRef.current &&
-						containerRef.current.clientWidth > 100
-					}
+					playsInline
 				/>
 			)}
 		</div>

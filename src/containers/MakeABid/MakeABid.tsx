@@ -350,11 +350,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 						)}
 					</span>
 					<br />
-					{currentHighestBidUsd && currentHighestBidUsd > 0 && (
-						<span
-							style={{ marginTop: 4, display: 'inline-block' }}
-							className="glow-text-white"
-						>
+					{currentHighestBidUsd !== undefined && currentHighestBidUsd > 0 && (
+						<span className="glow-text-white">
 							(${toFiat(currentHighestBidUsd)} USD)
 						</span>
 					)}
@@ -397,9 +394,11 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			: '0.00';
 
 		return (
-			<>
-				<span className={styles.Estimate}>Approx. ${bidString} USD</span>
-			</>
+			wildPriceUsd > 0 && (
+				<>
+					<span className={styles.Estimate}>Approx. ${bidString} USD</span>
+				</>
+			)
 		);
 	};
 

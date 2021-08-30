@@ -15,13 +15,11 @@ export function useEagerConnect() {
 		const reConnectToWallet = async (wallet: string) => {
 			if (wallet === 'metamask') {
 				await injected.isAuthorized().then((isAuthorized: boolean) => {
-					if (isAuthorized) {
-						activate(injected, undefined, true).catch(() => {
-							setTried(true);
-						});
-					} else {
-						setTried(true);
-					}
+					//if user is authorized then connect
+					if (isAuthorized) activate(injected, undefined, true);
+					//if not authorized then not try to reconnect next time
+					//same case if there is no provider
+					else localStorage.removeItem('chosenWallet');
 				});
 			} else {
 				const c = connectorFromName(wallet) as AbstractConnector;
@@ -33,9 +31,9 @@ export function useEagerConnect() {
 						console.error(`Encounter error while connecting to ${wallet}.`);
 						console.error(e);
 					});
-					setTried(true);
 				}
 			}
+			setTried(true);
 		};
 
 		if (wallet) reConnectToWallet(wallet); //if was connected to a wallet

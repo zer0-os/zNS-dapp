@@ -22,3 +22,9 @@
 	font-size: 18px;
 	color: var(--color-text-primary);
 }
+
+@media only screen and (max-width: 1000px) {
+	.Container button {
+		display: none;
+	}
+}

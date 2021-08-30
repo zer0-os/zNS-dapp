@@ -20,7 +20,8 @@ export const tokenToUsd = async (token: string): Promise<number> => {
 		);
 
 		const data = await res.json();
-		if (!data) {
+
+		if (!data[token]) {
 			throw Error(`Unable to fetch price for ${token}`);
 		}
 

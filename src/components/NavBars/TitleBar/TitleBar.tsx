@@ -166,23 +166,29 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		>
 			<div className={styles.Bar}>
 				<div className={styles.Navigation}>
-					<IconButton
-						iconUri={arrowBackIcon}
-						onClick={onBack}
-						style={{ height: 32, width: 32 }}
-						disabled={!canGoBack}
-						alt={'back'}
-					/>
-					<IconButton
-						iconUri={arrowForwardIcon}
-						onClick={onForward}
-						style={{ height: 32, width: 32, marginLeft: 4 }}
-						disabled={!canGoForward}
-						alt={'forward'}
-					/>
+					<div className={styles.Buttons}>
+						<IconButton
+							iconUri={arrowBackIcon}
+							onClick={onBack}
+							style={{ height: 32, width: 32 }}
+							disabled={!canGoBack}
+							alt={'back'}
+						/>
+						<IconButton
+							iconUri={arrowForwardIcon}
+							onClick={onForward}
+							style={{ height: 32, width: 32, marginLeft: 4 }}
+							disabled={!canGoForward}
+							alt={'forward'}
+						/>
+					</div>
 					{/* TODO: Split this into its own component */}
 					{!isSearchActive && (
-						<ZNALink style={{ marginLeft: 16 }} domain={domain} />
+						<ZNALink
+							className={styles.ZNA}
+							style={{ marginLeft: 16, marginTop: 3 }}
+							domain={domain}
+						/>
 					)}
 					<input
 						className={styles.Search}
@@ -198,7 +204,14 @@ const TitleBar: React.FC<TitleBarProps> = ({
 						placeholder={isSearchActive ? 'Type to search' : ''}
 					/>
 				</div>
-				{children}
+				<a
+					className={`${styles.Info} alt-link`}
+					href="https://info.wilderworld.com/"
+					target="_blank"
+				>
+					About
+				</a>
+				<div className={styles.Actions}>{children}</div>
 			</div>
 			{isSearchActive && search()}
 		</div>

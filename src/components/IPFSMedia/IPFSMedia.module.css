@@ -13,8 +13,11 @@
 .Image {
 	height: 100%;
 	width: 100%;
-	max-height: inherit;
 	transition: opacity var(--animation-time-medium) ease-in-out;
+}
+
+.Video {
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .Spinner {
