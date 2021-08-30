@@ -22,7 +22,6 @@
 .Domain {
 	display: block;
 	margin-top: 4px;
-	font-weight: 700;
 	color: var(--color-primary-lighter-3);
 }
 
@@ -39,8 +38,7 @@
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
-	font-weight: 700;
-	max-width: inherit;
+	ax-width: inherit;
 }
 
 .Info > *:first-child {
