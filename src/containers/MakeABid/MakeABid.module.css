@@ -16,9 +16,9 @@
 
 .Header h1 {
 	color: white;
-	font-size: 36px;
+	font-size: 24px;
 	font-weight: 700;
-	margin-bottom: 40px;
+	margin-bottom: 32px;
 }
 
 .Container h2 {
@@ -77,14 +77,19 @@
 	margin-bottom: 4px;
 }
 
+.Price span {
+	display: block;
+}
+
 .Price span:first-of-type {
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 700;
 }
 
 .Price span:nth-of-type(2) {
 	font-size: 14px;
 	font-weight: 700;
+	margin-top: 8px;
 }
 
 .ViewAll {

@@ -349,7 +349,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 							<span className="glow-text-white">No bids found</span>
 						)}
 					</span>
-					<br />
 					{currentHighestBidUsd !== undefined && currentHighestBidUsd > 0 && (
 						<span className="glow-text-white">
 							(${toFiat(currentHighestBidUsd)} USD)
