@@ -107,16 +107,12 @@
 .Body h5 {
 	color: white;
 	font-size: 24px;
-	font-weight: 400;
+	font-weight: 700;
 	margin-bottom: 6px;
 
 	/* white-space: nowrap; */
 	overflow: hidden;
 	text-overflow: ellipsis;
-}
-
-.Domain {
-	font-weight: 700;
 }
 
 .Description {
