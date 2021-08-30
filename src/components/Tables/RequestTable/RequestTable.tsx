@@ -144,7 +144,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			// Catch thrown when user rejects transaction
 			console.error(e);
-			console.log(e.message);
 			if (
 				e.message ===
 				'Failed to approve request: undefined MetaMask Tx Signature: User denied transaction signature.'
