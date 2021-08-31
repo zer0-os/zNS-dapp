@@ -34,8 +34,11 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	// Wallet Integrations
 	const { account } = useWeb3React();
-
-	const ownedQuery = useDomainsOwnedByUserQuery(account!);
+	const ownedDomainPollingInterval: number = 5000;
+	const ownedQuery = useDomainsOwnedByUserQuery(
+		account!,
+		ownedDomainPollingInterval,
+	);
 	const owned = ownedQuery.data?.domains;
 
 	// zAuction Integrations
@@ -108,9 +111,18 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const closeDomain = () => setViewingDomain(undefined);
 
 	const acceptBidConfirmed = async () => {
-		if (!acceptingBid) return;
+		if (!acceptingBid) {
+			return;
+		}
 		setIsAccepting(true);
-		await acceptBid(acceptingBid.bid);
+		const tx = await acceptBid(acceptingBid.bid);
+		if (tx) {
+			await tx.wait();
+		}
+		setTimeout(() => {
+			//refetch after confirm the transaction, with a delay to wait until backend gets updated
+			ownedQuery.refetch();
+		}, 500);
 		setIsAccepting(false);
 		setAcceptingBid(undefined);
 	};
@@ -215,8 +227,8 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			<DomainTable
 				className={styles.Reset}
 				domains={owned}
-				hideOwnBids
 				isButtonActive={isButtonActive}
+				filterOwnBids={true}
 				isRootDomain={false}
 				rowButtonText={'View Bids'}
 				onLoad={tableLoaded}

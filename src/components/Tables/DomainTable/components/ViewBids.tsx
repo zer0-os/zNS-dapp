@@ -9,9 +9,15 @@ type ViewBidsProps = {
 	domain: Domain;
 	onClick: (domain: DomainData) => void;
 	style?: React.CSSProperties;
+	filterOwnBids?: boolean;
 };
 
-const ViewBids: React.FC<ViewBidsProps> = ({ domain, onClick, style }) => {
+const ViewBids: React.FC<ViewBidsProps> = ({
+	domain,
+	onClick,
+	style,
+	filterOwnBids,
+}) => {
 	let isMounted = useRef(false);
 
 	const { getBidsForDomain } = useBidProvider();
@@ -28,7 +34,7 @@ const ViewBids: React.FC<ViewBidsProps> = ({ domain, onClick, style }) => {
 	};
 
 	const getBids = async () => {
-		const bids = await getBidsForDomain(domain);
+		const bids = await getBidsForDomain(domain, filterOwnBids);
 		if (!isMounted.current) return;
 		setIsLoading(false);
 		if (bids && bids.length) setBids(bids);
