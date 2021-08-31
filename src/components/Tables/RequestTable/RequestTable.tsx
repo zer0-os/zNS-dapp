@@ -143,10 +143,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			// Catch thrown when user rejects transaction
 			console.error(e);
-			if (
-				e.message ===
-				'Failed to approve request: undefined MetaMask Tx Signature: User denied transaction signature.'
-			) {
+			if (e.message.includes('code: 4001')) {
 				setErrorMessage(`Rejected by wallet`);
 			} else {
 				setErrorMessage(`Failed to submit transaction.`);
@@ -202,10 +199,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			console.error(e);
 			//if user rejects transaction
-			if (
-				e.message ===
-				'Failed to fulfill request: undefined MetaMask Tx Signature: User denied transaction signature.'
-			) {
+			if (e.message.includes('code: 4001')) {
 				setErrorMessage(`Rejected by wallet`);
 			} else {
 				setErrorMessage(`Failed to submit transaction.`);

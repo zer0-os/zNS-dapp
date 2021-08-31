@@ -84,8 +84,8 @@ export async function tryFunction<T>(func: () => Promise<T>, msg: string) {
 	try {
 		return await func();
 	} catch (e) {
-		if (e.message || e.data) {
-			throw Error(`Failed to ${msg}: ${e.data} ${e.message}`);
+		if (e.message || e.data || e.code) {
+			throw Error(`Failed to ${msg}: ${e.data} ${e.message} code: ${e.code}`);
 		}
 		throw Error(`Failed to ${msg}: ${e}`);
 	}
