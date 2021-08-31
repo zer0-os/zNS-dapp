@@ -56,6 +56,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const { wildPriceUsd } = useCurrencyProvider();
 
 	//- Page State
+	const [displayLoadError, setDisplayLoadError] = React.useState(false);
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
@@ -71,6 +72,13 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const domainIdInteger = BigNumber.from(domainId); //domainId as bignumber used to redirect to etherscan link
 
 	const znsDomain = useZnsDomain(domainId);
+	//Display error one time
+	if (znsDomain.error && !displayLoadError) {
+		setDisplayLoadError(true);
+		addNotification(
+			'One of our dependencies is experiencing an outage. Please visit later',
+		);
+	}
 
 	const { getBidsForDomain } = useBidProvider();
 

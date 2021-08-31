@@ -17,6 +17,7 @@ import styles from './OwnedDomainsTable.module.css';
 import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
+import useNotification from 'lib/hooks/useNotification';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -39,6 +40,18 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		account!,
 		ownedDomainPollingInterval,
 	);
+
+	//- Notification State
+	const { addNotification } = useNotification();
+	const [displayLoadError, setDisplayLoadError] = React.useState(false);
+
+	if (ownedQuery.error && !displayLoadError) {
+		setDisplayLoadError(true);
+		addNotification(
+			'One of our dependencies is experiencing an outage. Please visit later',
+		);
+	}
+
 	const owned = ownedQuery.data?.domains;
 
 	// zAuction Integrations
