@@ -19,6 +19,11 @@ const Image = (props: any) => {
 	};
 
 	useEffect(() => {
+		setTryVideo(false);
+		setLoaded(false);
+	}, [props.src]);
+
+	useEffect(() => {
 		if (!refVideo.current) {
 			return;
 		}
