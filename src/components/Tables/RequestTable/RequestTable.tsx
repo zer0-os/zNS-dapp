@@ -42,6 +42,7 @@ import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
 import { useWeb3React } from '@web3-react/core';
 import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
+import useNotification from 'lib/hooks/useNotification';
 
 type RequestTableProps = {
 	style?: React.CSSProperties;
@@ -64,6 +65,15 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const yourRequests = useRequestsMadeByAccount(userId);
 	const requestsForYou = useRequestsForOwnedDomains(userId);
 	const lootToken = znsContracts.lootToken;
+	const { addNotification } = useNotification();
+
+	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
+	if ((yourRequests.error || requestsForYou.error) && !displayedLoadError) {
+		setDisplayedLoadError(true);
+		addNotification(
+			'One of our dependencies is experiencing an outage. Please visit later',
+		);
+	}
 
 	//////////////////
 	// State / Refs //
@@ -163,7 +173,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			console.error(e);
 			//if user rejects transaction
-			if (e.code === 4001) { 
+			if (e.code === 4001) {
 				setApproveError(`Rejected by wallet`);
 			} else {
 				setApproveError(`Failed to submit transaction.`);
@@ -189,7 +199,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
-		} catch (e) { 
+		} catch (e) {
 			console.error(e);
 			//if user rejects transaction
 			if (
@@ -430,13 +440,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		useFilters,
 		useGlobalFilter,
 	);
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		prepareRow,
-		rows,
-	} = tableHook;
+	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
+		tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>

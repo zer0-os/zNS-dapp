@@ -98,15 +98,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Notification State
 	const { addNotification } = useNotification();
-	const [displayLoadError, setDisplayLoadError] = React.useState(false);
+	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
 
 	//- Domain Data
 	const domainId = getDomainId(domain.substring(1));
 	const znsDomain = useZnsDomain(domainId);
 
 	//Display error one time
-	if (znsDomain.error && !displayLoadError) {
-		setDisplayLoadError(true);
+	if (znsDomain.error && !displayedLoadError) {
+		setDisplayedLoadError(true);
 		addNotification(
 			'One of our dependencies is experiencing an outage. Please visit later',
 		);
@@ -135,7 +135,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				history.push('/');
 				return;
 			}
-			setDisplayLoadError(false);
+			setDisplayedLoadError(false);
 		}
 	}, [znsDomain.domain, loading]);
 

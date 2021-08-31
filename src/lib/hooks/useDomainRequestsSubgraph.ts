@@ -103,7 +103,7 @@ export function useRequestsForOwnedDomains(account: string | undefined) {
 		}
 	}, [error, data]);
 
-	return { requests, refresh: refreshToken.refresh };
+	return { requests, refresh: refreshToken.refresh, error: error };
 }
 
 interface RequestsForDomain {
@@ -168,5 +168,5 @@ export function useRequestsMadeByAccount(account: string | undefined) {
 		}
 	}, [error, data]);
 
-	return { requests, refresh: refreshToken.refresh };
+	return { requests, refresh: refreshToken.refresh, error: error };
 }

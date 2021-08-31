@@ -43,10 +43,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	//- Notification State
 	const { addNotification } = useNotification();
-	const [displayLoadError, setDisplayLoadError] = React.useState(false);
+	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
 
-	if (ownedQuery.error && !displayLoadError) {
-		setDisplayLoadError(true);
+	if (ownedQuery.error && !displayedLoadError) {
+		setDisplayedLoadError(true);
 		addNotification(
 			'One of our dependencies is experiencing an outage. Please visit later',
 		);
