@@ -42,7 +42,7 @@ import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
 import { useWeb3React } from '@web3-react/core';
 import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
-import { useFailCheck } from 'lib/hooks/useQueryFailCheck';
+import { useQueryFailCheck } from 'lib/hooks/useQueryFailCheck';
 
 type RequestTableProps = {
 	style?: React.CSSProperties;
@@ -66,7 +66,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const requestsForYou = useRequestsForOwnedDomains(userId);
 	const lootToken = znsContracts.lootToken;
 
-	useFailCheck(yourRequests.error, requestsForYou.error);
+	useQueryFailCheck(yourRequests.error, requestsForYou.error);
 
 	//////////////////
 	// State / Refs //

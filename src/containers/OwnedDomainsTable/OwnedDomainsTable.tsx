@@ -18,7 +18,7 @@ import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 import useNotification from 'lib/hooks/useNotification';
-import { useFailCheck } from 'lib/hooks/useQueryFailCheck';
+import { useQueryFailCheck } from 'lib/hooks/useQueryFailCheck';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -46,7 +46,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const { addNotification } = useNotification();
 	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
 
-	useFailCheck(ownedQuery.error);
+	useQueryFailCheck(ownedQuery.error);
 	const owned = ownedQuery.data?.domains;
 
 	// zAuction Integrations
