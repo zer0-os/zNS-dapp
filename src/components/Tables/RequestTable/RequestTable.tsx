@@ -62,11 +62,16 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const { mvpVersion } = useMvpVersion();
 	const staking = useStakingProvider();
 	const znsContracts = useZnsContracts()!;
-	const yourRequests = useRequestsMadeByAccount(userId);
-	const requestsForYou = useRequestsForOwnedDomains(userId);
 	const lootToken = znsContracts.lootToken;
 
+	const yourRequests = useRequestsMadeByAccount(userId);
 	useQueryFailNotification(yourRequests.error);
+
+	const requestsForYou = useRequestsForOwnedDomains(userId);
+	if (yourRequests.error) {
+		requestsForYou.error = undefined;
+	} //this trigger one time the fail notification if both queries fails at same time
+	useQueryFailNotification(requestsForYou.error);
 
 	//////////////////
 	// State / Refs //
