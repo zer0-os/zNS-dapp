@@ -3,7 +3,7 @@ import { ApolloError } from '@apollo/client';
 import React from 'react';
 import useNotification from './useNotification';
 
-export function useQueryFailCheck(
+export function useQueryFailNotification(
 	error?: ApolloError,
 	otherError?: ApolloError,
 ) {

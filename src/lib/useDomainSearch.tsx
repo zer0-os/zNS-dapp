@@ -5,7 +5,6 @@ import {
 	useDomainByIdQuery,
 	useDomainsByNameContainsQuery,
 } from './hooks/zNSDomainHooks';
-import { useQueryFailNotification } from './hooks/useQueryFailNotification';
 
 interface DomainSearch {
 	exactMatch?: DisplayParentDomain;
@@ -30,7 +29,6 @@ export function useDomainSearch() {
 		`${rootDomainName}.%${pattern}`,
 	);
 	const fuzzyMatch = byNameContainsQuery.data;
-	useQueryFailNotification(byIdQuery.error, byNameContainsQuery.error);
 
 	React.useEffect(() => {
 		let exactMatch: DisplayParentDomain | undefined = undefined;
