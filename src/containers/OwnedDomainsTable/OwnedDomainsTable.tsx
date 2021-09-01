@@ -42,10 +42,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		ownedDomainPollingInterval,
 	);
 
-	//- Notification State
-	const { addNotification } = useNotification();
-	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
-
 	useQueryFailCheck(ownedQuery.error);
 	const owned = ownedQuery.data?.domains;
 
