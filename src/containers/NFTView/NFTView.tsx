@@ -57,7 +57,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const { wildPriceUsd } = useCurrencyProvider();
 
 	//- Page State
-	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);

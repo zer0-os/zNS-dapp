@@ -17,7 +17,6 @@ import styles from './OwnedDomainsTable.module.css';
 import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
-import useNotification from 'lib/hooks/useNotification';
 import { useQueryFailCheck } from 'lib/hooks/useQueryFailCheck';
 
 type AcceptBidModalData = {
