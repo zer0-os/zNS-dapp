@@ -5,7 +5,7 @@ import {
 	useDomainByIdQuery,
 	useDomainsByNameContainsQuery,
 } from './hooks/zNSDomainHooks';
-import useNotification from './hooks/useNotification';
+import { useFailCheck } from './hooks/useQueryFailCheck';
 
 interface DomainSearch {
 	exactMatch?: DisplayParentDomain;
@@ -30,14 +30,7 @@ export function useDomainSearch() {
 		`${rootDomainName}.%${pattern}`,
 	);
 	const fuzzyMatch = byNameContainsQuery.data;
-	const { addNotification } = useNotification();
-	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
-	if ((byIdQuery.error || byNameContainsQuery.error) && !displayedLoadError) {
-		setDisplayedLoadError(true);
-		addNotification(
-			'One of our dependencies is experiencing an outage. Please visit later',
-		);
-	}
+	useFailCheck(byIdQuery.error, byNameContainsQuery.error);
 
 	React.useEffect(() => {
 		let exactMatch: DisplayParentDomain | undefined = undefined;

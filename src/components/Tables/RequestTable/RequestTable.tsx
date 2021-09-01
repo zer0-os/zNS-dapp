@@ -42,7 +42,7 @@ import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
 import { useWeb3React } from '@web3-react/core';
 import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
-import useNotification from 'lib/hooks/useNotification';
+import { useFailCheck } from 'lib/hooks/useQueryFailCheck';
 
 type RequestTableProps = {
 	style?: React.CSSProperties;
@@ -65,15 +65,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const yourRequests = useRequestsMadeByAccount(userId);
 	const requestsForYou = useRequestsForOwnedDomains(userId);
 	const lootToken = znsContracts.lootToken;
-	const { addNotification } = useNotification();
 
-	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
-	if ((yourRequests.error || requestsForYou.error) && !displayedLoadError) {
-		setDisplayedLoadError(true);
-		addNotification(
-			'One of our dependencies is experiencing an outage. Please visit later',
-		);
-	}
+	useFailCheck(yourRequests.error, requestsForYou.error);
 
 	//////////////////
 	// State / Refs //
