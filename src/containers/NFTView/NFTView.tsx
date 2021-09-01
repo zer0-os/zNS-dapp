@@ -36,7 +36,7 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useQueryFailCheck } from 'lib/hooks/useQueryFailCheck';
+import { useQueryFailNotification } from 'lib/hooks/useQueryFailNotification';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -72,7 +72,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const domainIdInteger = BigNumber.from(domainId); //domainId as bignumber used to redirect to etherscan link
 
 	const znsDomain = useZnsDomain(domainId);
-	useQueryFailCheck(znsDomain.error);
+	useQueryFailNotification(znsDomain.error);
 
 	const { getBidsForDomain } = useBidProvider();
 

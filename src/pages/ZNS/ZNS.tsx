@@ -57,7 +57,7 @@ import { MintNewNFT, NFTView, MakeABid, TransferOwnership } from 'containers';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
-import { useQueryFailCheck } from 'lib/hooks/useQueryFailCheck';
+import { useQueryFailNotification } from 'lib/hooks/useQueryFailNotification';
 
 type ZNSProps = {
 	domain: string;
@@ -104,7 +104,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const domainId = getDomainId(domain.substring(1));
 	const znsDomain = useZnsDomain(domainId);
 
-	useQueryFailCheck(znsDomain.error);
+	useQueryFailNotification(znsDomain.error);
 
 	const loading = znsDomain.loading;
 
