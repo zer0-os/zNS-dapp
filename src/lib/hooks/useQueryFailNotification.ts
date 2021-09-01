@@ -3,6 +3,8 @@ import { ApolloError } from '@apollo/client';
 import React from 'react';
 import useNotification from './useNotification';
 
+//This custom hook accepts 2 error parameters from apollo queries
+//if one error its defined, it will pop up the fail notification
 export function useQueryFailNotification(
 	firstError?: ApolloError,
 	secondError?: ApolloError,
