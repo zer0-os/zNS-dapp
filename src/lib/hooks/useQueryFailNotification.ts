@@ -10,10 +10,14 @@ export function useQueryFailNotification(
 	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
 	const { addNotification } = useNotification();
 
-	if ((error || otherError) && !displayedLoadError) {
-		setDisplayedLoadError(true);
-		addNotification(
-			'One of our dependencies is experiencing an outage. Please visit later',
-		);
-	}
+	React.useEffect(() => {
+		if ((error || otherError) && !displayedLoadError) {
+			setDisplayedLoadError(true);
+			addNotification(
+				'One of our dependencies is experiencing an outage. Please visit later',
+			);
+		} else {
+			setDisplayedLoadError(false);
+		}
+	}, [error, otherError]);
 }
