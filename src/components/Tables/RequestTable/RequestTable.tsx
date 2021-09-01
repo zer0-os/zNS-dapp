@@ -66,7 +66,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const requestsForYou = useRequestsForOwnedDomains(userId);
 	const lootToken = znsContracts.lootToken;
 
-	useQueryFailNotification(yourRequests.error, requestsForYou.error);
+	useQueryFailNotification(yourRequests.error);
 
 	//////////////////
 	// State / Refs //

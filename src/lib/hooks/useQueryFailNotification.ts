@@ -3,15 +3,12 @@ import { ApolloError } from '@apollo/client';
 import React from 'react';
 import useNotification from './useNotification';
 
-export function useQueryFailNotification(
-	error?: ApolloError,
-	otherError?: ApolloError,
-) {
+export function useQueryFailNotification(error?: ApolloError) {
 	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
 	const { addNotification } = useNotification();
 
 	React.useEffect(() => {
-		if ((error || otherError) && !displayedLoadError) {
+		if (error && !displayedLoadError) {
 			setDisplayedLoadError(true);
 			addNotification(
 				'One of our dependencies is experiencing an outage. Please visit later',
@@ -19,5 +16,5 @@ export function useQueryFailNotification(
 		} else {
 			setDisplayedLoadError(false);
 		}
-	}, [error, otherError]);
+	}, [error]);
 }
