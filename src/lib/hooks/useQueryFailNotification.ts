@@ -8,7 +8,7 @@ export function useQueryFailNotification(
 	error?: ApolloError,
 ) {
 	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
-	const { addNotification } = useNotification();
+	const { addNotification, removeNotification } = useNotification();
 
 	const loadingRef = React.useRef(loading);
 	loadingRef.current = loading;
@@ -36,5 +36,11 @@ export function useQueryFailNotification(
 		} else {
 			setDisplayedLoadError(false);
 		}
+
+		return () =>
+			removeNotification({
+				text:
+					'One of our dependencies is experiencing an outage. Please visit later',
+			});
 	}, [error]);
 }
