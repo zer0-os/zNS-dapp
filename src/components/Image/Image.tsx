@@ -16,7 +16,6 @@ const Image = (props: any) => {
 	const refVideo = useRef<HTMLVideoElement | undefined>(null);
 	const [loaded, setLoaded] = useState(false);
 
-	const [blobUrl, setBlobUrl] = useState<string | undefined>();
 	const [mediaType, setMediaType] = useState<MediaType | undefined>();
 	const [loadedSrc, setLoadedSrc] = useState<string | undefined>();
 	const [loadingSrc, setLoadingSrc] = useState<string | undefined>();
@@ -56,6 +55,13 @@ const Image = (props: any) => {
 		};
 	}, []);
 
+	/* Get type of media in src
+		 There's no indication from the IPFS url as to whether
+		 we're loading an image or a video, which is important
+		 for rendering the correct tags.
+
+		 Fetch the blob first and check file type before rendering
+	*/
 	useEffect(() => {
 		if (
 			!props.src ||
@@ -86,13 +92,7 @@ const Image = (props: any) => {
 				}
 
 				const type = getMediaType(blob.type);
-				const url = URL.createObjectURL(blob);
-				if (!url || type === undefined) {
-					throw 'Failed to create blob from IPFS url';
-				}
 				setMediaType(type);
-				setBlobUrl(url);
-				setLoaded(true);
 				setLoadedSrc(r.url);
 				setLoadingSrc(undefined);
 			} catch (e: any) {
@@ -135,7 +135,8 @@ const Image = (props: any) => {
 						objectFit: 'cover',
 						...props.style,
 					}}
-					src={blobUrl}
+					onLoad={load}
+					src={props.src}
 					alt={props.alt || ''}
 					onClick={click}
 				/>
@@ -154,7 +155,7 @@ const Image = (props: any) => {
 						objectFit: 'cover',
 						...props.style,
 					}}
-					src={blobUrl}
+					src={props.src}
 					preload="metadata"
 					onLoadedMetadata={load}
 					muted
