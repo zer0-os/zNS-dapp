@@ -11,17 +11,19 @@ export function useQueryFailNotification(
 	const { addNotification } = useNotification();
 
 	const loadingRef = React.useRef(loading);
-	loadingRef.current = loading;
+	loadingRef.current = true;
 
 	//Trigger a timeout that will check if query finish loading after 10s
 	React.useEffect(() => {
-		setTimeout(() => {
+		const slowTimer = setTimeout(() => {
 			if (loadingRef.current) {
 				addNotification(
 					'One of our dependencies is working slow. Please visit later',
 				);
 			}
-		}, 10000);
+		}, 5000);
+
+		return () => clearTimeout(slowTimer);
 	}, []);
 
 	//If has at least one error defined, and not displayed error message yet, display error
