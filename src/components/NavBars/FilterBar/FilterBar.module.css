@@ -25,6 +25,10 @@
 	height: 56px;
 	width: 56px;
 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
 	background: linear-gradient(180deg, #1c4358 0%, #2a0047 100%);
 	border-radius: 50%;
 
@@ -35,13 +39,17 @@
 	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
-.Wilder:hover {
-	transform: translateX(-100%) scale(1.1);
-}
-
 .Wilder img {
-	width: 100%;
-	height: 100%;
+	max-width: 65%;
+	height: auto;
+	margin-left: 1px;
+
+	user-drag: none;
+	-webkit-user-drag: none;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 
 .Hidden {
