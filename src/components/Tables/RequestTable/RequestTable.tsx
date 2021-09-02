@@ -67,7 +67,11 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const yourRequests = useRequestsMadeByAccount(userId);
 	const requestsForYou = useRequestsForOwnedDomains(userId);
 
-	useQueryFailNotification(requestsForYou.error, yourRequests.error);
+	useQueryFailNotification(
+		requestsForYou.loading || yourRequests.loading,
+		requestsForYou.error,
+		yourRequests.error,
+	);
 
 	//////////////////
 	// State / Refs //

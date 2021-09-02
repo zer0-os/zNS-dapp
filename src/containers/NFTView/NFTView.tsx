@@ -72,7 +72,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const domainIdInteger = BigNumber.from(domainId); //domainId as bignumber used to redirect to etherscan link
 
 	const znsDomain = useZnsDomain(domainId);
-	useQueryFailNotification(znsDomain.error);
+
+	useQueryFailNotification(znsDomain.loading, znsDomain.error);
 
 	const { getBidsForDomain } = useBidProvider();
 

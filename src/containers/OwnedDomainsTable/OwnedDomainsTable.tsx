@@ -41,7 +41,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		ownedDomainPollingInterval,
 	);
 
-	useQueryFailNotification(ownedQuery.error);
+	useQueryFailNotification(ownedQuery.loading, ownedQuery.error);
 	const owned = ownedQuery.data?.domains;
 
 	// zAuction Integrations

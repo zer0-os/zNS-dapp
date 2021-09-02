@@ -98,13 +98,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	}, [chainId]);
 
 	//- Notification State
-	const { addNotification } = useNotification();
+	const { addNotification, removeNotification } = useNotification();
 
 	//- Domain Data
 	const domainId = getDomainId(domain.substring(1));
 	const znsDomain = useZnsDomain(domainId);
 
-	useQueryFailNotification(znsDomain.error);
+	useQueryFailNotification(znsDomain.loading, znsDomain.error);
 
 	const loading = znsDomain.loading;
 
@@ -269,8 +269,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			localStorage.removeItem('walletconnect');
 			localStorage.removeItem('chosenWallet');
 		}
-		if (triedEagerConnect)
+		if (triedEagerConnect) {
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
+		}
 
 		// Check if we need to close a modal
 		if (
