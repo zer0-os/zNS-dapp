@@ -1,3 +1,9 @@
+.Container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 .Loading {
 	position: absolute;
 	top: 0;
@@ -11,9 +17,8 @@
 }
 
 .Image {
-	height: 100%;
-	width: 100%;
-	max-height: inherit;
+	max-height: 100%;
+	max-width: 100%;
 	transition: opacity var(--animation-time-medium) ease-in-out;
 }
 
