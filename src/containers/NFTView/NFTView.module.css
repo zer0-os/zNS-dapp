@@ -82,11 +82,6 @@
 	opacity: 0;
 }
 
-/* ZNA */
-.Info span:first-of-type {
-	font-weight: 700;
-}
-
 .Details {
 	display: flex;
 	flex-direction: column;
@@ -117,17 +112,17 @@
 
 .Price h2 {
 	color: var(--color-primary-lighter-3);
-	font-size: 16px;
+	font-size: 24px;
 	margin-bottom: 4px;
 	text-align: center;
 }
 
 .Crypto {
-	font-size: 24px;
+	font-size: 40px;
 }
 
 .Fiat {
-	font-size: 18px;
+	font-size: 24px;
 	color: var(--color-primary-lighter-3);
 }
 
@@ -185,7 +180,6 @@
 
 .Story p {
 	/* height: 100%; */
-	line-height: 20px;
 	padding-right: 12px;
 	padding-bottom: 12px;
 
@@ -242,8 +236,6 @@
 .Contract p {
 	position: relative;
 	text-overflow: clip;
-	font-weight: 700;
-	line-height: 21px;
 	word-break: break-all;
 	padding: 0;
 	padding-right: 38px;
@@ -290,10 +282,6 @@
 }
 
 @media only screen and (max-width: 1100px) {
-	.Crypto {
-		font-size: 32px;
-	}
-
 	.Buttons {
 		flex-direction: column;
 	}
@@ -384,22 +372,24 @@
 	}
 }
 
-@media only screen and (max-width: 414px) {
+@media only screen and (max-width: 600px) {
 	.Price h2 {
-		font-size: 18px;
-	}
-
-	.Image {
-		padding: 16px;
-		border-collapse: separate;
+		font-size: 18px !important;
 	}
 
 	.Crypto {
-		font-size: 24px;
+		font-size: 24px !important;
 	}
 
 	.Fiat {
-		font-size: 18px;
+		font-size: 18px !important;
+	}
+}
+
+@media only screen and (max-width: 414px) {
+	.Image {
+		padding: 16px;
+		border-collapse: separate;
 	}
 
 	.Members {

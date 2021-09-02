@@ -370,7 +370,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 				>
 					<h4>Token Id</h4>
-					<p className="glow-text-white">
+					<p>
 						<img
 							onClick={copyContractToClipboard}
 							className={styles.Copy}
