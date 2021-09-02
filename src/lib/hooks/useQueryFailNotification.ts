@@ -22,10 +22,7 @@ export function useQueryFailNotification(
 	};
 
 	React.useEffect(() => {
-		console.log(loading);
-		if (loading) {
-			setQueryIsLoading(loading);
-		}
+		setQueryIsLoading(loading);
 		if (!firstError && !secondError && loading) {
 			setTimeout(() => {
 				displaySlowNotification();
@@ -39,9 +36,7 @@ export function useQueryFailNotification(
 			addNotification(
 				'One of our dependencies is experiencing an outage. Please visit later',
 			);
-		}
-
-		if (displayedLoadError) {
+		} else {
 			setDisplayedLoadError(false);
 		}
 	}, [firstError, secondError]);
