@@ -97,7 +97,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const openBidOverlay = () => {
 		if (!isMounted.current) return;
-		if (!znsDomain.domain || isOwnedByYou) return;
+		if (!znsDomain.domain || isOwnedByYou || !active) return;
 		setIsBidOverlayOpen(true);
 	};
 
