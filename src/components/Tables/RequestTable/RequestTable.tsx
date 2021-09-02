@@ -41,7 +41,6 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
 import { useWeb3React } from '@web3-react/core';
-import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
 import { useQueryFailNotification } from 'lib/hooks/useQueryFailNotification';
 
 type RequestTableProps = {
@@ -69,8 +68,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 	useQueryFailNotification(
 		requestsForYou.loading || yourRequests.loading,
-		requestsForYou.error,
-		yourRequests.error,
+		requestsForYou.error || yourRequests.error,
 	);
 
 	//////////////////

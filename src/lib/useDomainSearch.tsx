@@ -5,6 +5,7 @@ import {
 	useDomainByIdQuery,
 	useDomainsByNameContainsQuery,
 } from './hooks/zNSDomainHooks';
+import { useQueryFailNotification } from './hooks/useQueryFailNotification';
 
 interface DomainSearch {
 	exactMatch?: DisplayParentDomain;
@@ -27,6 +28,11 @@ export function useDomainSearch() {
 	// `id` is already relative but we need to search relative
 	const byNameContainsQuery = useDomainsByNameContainsQuery(
 		`${rootDomainName}.%${pattern}`,
+	);
+
+	useQueryFailNotification(
+		byNameContainsQuery.loading || byIdQuery.loading,
+		byNameContainsQuery.error || byIdQuery.error,
 	);
 	const fuzzyMatch = byNameContainsQuery.data;
 

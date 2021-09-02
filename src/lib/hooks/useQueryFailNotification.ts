@@ -5,8 +5,7 @@ import useNotification from './useNotification';
 
 export function useQueryFailNotification(
 	loading: boolean,
-	firstError?: ApolloError,
-	secondError?: ApolloError,
+	error?: ApolloError,
 ) {
 	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
 	const { addNotification } = useNotification();
@@ -27,7 +26,7 @@ export function useQueryFailNotification(
 
 	//If has at least one error defined, and not displayed error message yet, display error
 	React.useEffect(() => {
-		if ((firstError || secondError) && !displayedLoadError) {
+		if (error && !displayedLoadError) {
 			setDisplayedLoadError(true);
 			addNotification(
 				'One of our dependencies is experiencing an outage. Please visit later',
@@ -35,5 +34,5 @@ export function useQueryFailNotification(
 		} else {
 			setDisplayedLoadError(false);
 		}
-	}, [firstError, secondError]);
+	}, [error]);
 }
