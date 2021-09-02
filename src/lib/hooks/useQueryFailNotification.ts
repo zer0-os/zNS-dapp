@@ -37,10 +37,11 @@ export function useQueryFailNotification(
 
 		return () => {
 			setDisplayedLoadError(false);
-			removeNotification({
-				text:
-					'One of our dependencies is experiencing an outage. Please visit later',
-			});
+			if (error)
+				removeNotification({
+					text:
+						'One of our dependencies is experiencing an outage. Please visit later',
+				});
 		};
 	}, [error]);
 }
