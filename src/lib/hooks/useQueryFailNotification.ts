@@ -21,7 +21,7 @@ export function useQueryFailNotification(
 					'One of our dependencies is working slow. Please visit later',
 				);
 			}
-		}, 5000);
+		}, 10000);
 
 		return () => clearTimeout(slowTimer);
 	}, []);
