@@ -98,7 +98,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	}, [chainId]);
 
 	//- Notification State
-	const { addNotification, removeNotification } = useNotification();
+	const { addNotification } = useNotification();
 
 	//- Domain Data
 	const domainId = getDomainId(domain.substring(1));
