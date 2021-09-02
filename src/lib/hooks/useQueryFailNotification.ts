@@ -11,7 +11,7 @@ export function useQueryFailNotification(
 	const { addNotification } = useNotification();
 
 	const loadingRef = React.useRef(loading);
-	loadingRef.current = true;
+	loadingRef.current = loading;
 
 	//Trigger a timeout that will check if query finish loading after 10s
 	React.useEffect(() => {
