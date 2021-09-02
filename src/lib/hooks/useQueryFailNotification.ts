@@ -3,8 +3,9 @@ import { ApolloError } from '@apollo/client';
 import React from 'react';
 import useNotification from './useNotification';
 
-//This custom hook accepts 2 error parameters from apollo queries
+//This custom hook accepts 3 error parameters from apollo queries
 //if one error its defined, it will pop up the fail notification
+//if its loading, and keeps loading after 10s, will pop up other error
 export function useQueryFailNotification(
 	loading: boolean,
 	firstError?: ApolloError,
