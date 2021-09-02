@@ -18,15 +18,16 @@ export function useQueryFailNotification(
 	loadingRef.current = loading;
 
 	React.useEffect(() => {
-		if (!firstError && !secondError && loading) {
-			setTimeout(() => {
-				if (loadingRef.current) {
-					addNotification(
-						'One of our dependencies is working slow. Please visit later',
-					);
-				}
-			}, 10000);
-		}
+		setTimeout(() => {
+			if (loadingRef.current) {
+				addNotification(
+					'One of our dependencies is working slow. Please visit later',
+				);
+			}
+		}, 10000);
+	}, []);
+
+	React.useEffect(() => {
 		if ((firstError || secondError) && !displayedLoadError) {
 			setDisplayedLoadError(true);
 			addNotification(
