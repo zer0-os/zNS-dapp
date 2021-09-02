@@ -11,22 +11,19 @@ export function useQueryFailNotification(
 	secondError?: ApolloError,
 ) {
 	const [displayedLoadError, setDisplayedLoadError] = React.useState(false);
-	const [queryIsLoading, setQueryIsLoading] = React.useState(false);
 	const { addNotification } = useNotification();
 
-	const displaySlowNotification = () => {
-		if (queryIsLoading && !firstError && !secondError)
-			addNotification(
-				'One of our dependencies is working slow. Please wait or visit later',
-			);
-	};
+	const loadingRef = React.useRef(loading);
+	loadingRef.current = loading;
 
 	React.useEffect(() => {
-		setQueryIsLoading(loading);
 		if (!firstError && !secondError && loading) {
 			setTimeout(() => {
-				displaySlowNotification();
-			}, 10000);
+				if (loadingRef.current)
+					addNotification(
+						'One of our dependencies is working slow. Please wait or visit later',
+					);
+			}, 5000);
 		}
 	}, [loading]);
 
