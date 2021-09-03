@@ -169,19 +169,24 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	}, []);
 
 	useEffect(() => {
-		if (!isMounted.current) return;
 		if (
-			znsDomain.domain &&
-			znsDomain.domain.metadata &&
-			!znsDomain.domain.image
-		) {
-			if (!isMounted.current) return;
-			setIsOwnedByYou(
-				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
-			);
+			!isMounted.current ||
+			(znsDomain.domain && !znsDomain.domain.metadata && znsDomain.domain.image)
+		)
+			return;
 
+		setIsOwnedByYou(
+			znsDomain.domain?.owner.id.toLowerCase() === account?.toLowerCase(),
+		);
+
+		getBids(); //fetch a first time, then await 5s for the interval to refetch
+		const bidInteral = setInterval(() => {
+			//when domains change, set a interval that will fetch bids
 			getBids();
-		}
+		}, 5000);
+
+		return () => clearInterval(bidInteral);
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain.domain]);
 
