@@ -36,8 +36,8 @@ export function useQueryFailNotification(
 		}
 
 		return () => {
-			setDisplayedLoadError(false);
 			if (error) {
+				setDisplayedLoadError(false);
 				removeNotification({
 					text:
 						'One of our dependencies is experiencing an outage. Please visit later',
