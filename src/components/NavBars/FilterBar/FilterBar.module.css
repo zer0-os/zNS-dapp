@@ -40,7 +40,7 @@
 }
 
 .Wilder img {
-	max-width: 65%;
+	max-width: calc(65% - 1px);
 	height: auto;
 	margin-left: 1px;
 
