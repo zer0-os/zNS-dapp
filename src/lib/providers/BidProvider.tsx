@@ -18,6 +18,7 @@ export const BidContext = React.createContext({
 	getBidsForDomain: async (
 		domain: Domain,
 		filterOwnBids?: boolean,
+		bypassCache?: boolean,
 	): Promise<Bid[] | undefined> => {
 		return;
 	},
@@ -177,7 +178,11 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		};
 	}
 
-	const getBidsForDomain = async (domain: Domain, filterOwnBids?: boolean) => {
+	const getBidsForDomain = async (
+		domain: Domain,
+		filterOwnBids?: boolean,
+		bypassCache?: boolean,
+	) => {
 		if (baseApiUri === undefined) {
 			throw Error(`no api endpoint`);
 		}
@@ -186,6 +191,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				baseApiUri,
 				contracts!.registry.address,
 				domain.id,
+				bypassCache,
 			)) as zAuction.BidDto[];
 
 			try {

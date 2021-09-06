@@ -98,11 +98,12 @@ export async function getBidsForNft(
 	baseApiUri: string,
 	contract: string,
 	tokenId: string,
+	bypassCache?: boolean,
 ): Promise<BidDto[]> {
 	const nftId = getNftId(contract, tokenId);
 	const cacheKey = cacheKeyForNftBids(baseApiUri, nftId);
 
-	if (getBidsForNftCache.exists(cacheKey)) {
+	if (getBidsForNftCache.exists(cacheKey) && !bypassCache) {
 		return getBidsForNftCache.get(cacheKey);
 	}
 

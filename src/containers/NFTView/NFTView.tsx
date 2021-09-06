@@ -122,7 +122,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const getBids = async () => {
 		if (znsDomain.domain) {
-			const bids = await getBidsForDomain(znsDomain.domain);
+			const bids = await getBidsForDomain(znsDomain.domain, false, true);
 
 			if (!bids || !bids.length) {
 				setBids([]);
