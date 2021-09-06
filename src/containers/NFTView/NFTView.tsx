@@ -171,6 +171,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	useEffect(() => {
 		if (
 			!isMounted.current ||
+			!znsDomain.domain ||
 			(znsDomain.domain && !znsDomain.domain.metadata && znsDomain.domain.image)
 		)
 			return;
