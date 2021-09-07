@@ -257,6 +257,8 @@
 }
 
 .History span {
+	padding: 20px;
+	padding-top: 0;
 	font-weight: 400;
 }
 
