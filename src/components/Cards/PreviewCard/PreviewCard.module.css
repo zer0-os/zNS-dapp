@@ -108,11 +108,14 @@
 	color: white;
 	font-size: 24px;
 	font-weight: 700;
-	margin-bottom: 6px;
 
 	/* white-space: nowrap; */
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+.Domain {
+	color: var(--color-accent-1);
 }
 
 .Description {
