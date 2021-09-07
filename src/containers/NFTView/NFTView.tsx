@@ -234,9 +234,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
 		>
 			<h4>History</h4>
-			<div className={styles.Loading}>
-				<span>Loading bid history</span>
-			</div>
+			{!bids && (
+				<div className={styles.Loading}>
+					<span>Loading bid history</span>
+				</div>
+			)}
 			{bids && bids.length === 0 && (
 				<span style={{ marginTop: 12, display: 'block' }}>No bids</span>
 			)}
