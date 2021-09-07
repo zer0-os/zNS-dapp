@@ -71,6 +71,16 @@ const Image = (props: any) => {
 		) {
 			return;
 		}
+
+		// Hotfix for SVGs
+		if (props.src.indexOf('.svg') > -1) {
+			setLoaded(true);
+			setLoadingSrc(props.src);
+			setMediaType(MediaType.Image);
+			setLoadedSrc(props.src);
+			return;
+		}
+
 		setLoaded(false);
 		setLoadingSrc(props.src);
 		fetch(props.src).then(async (r: Response) => {
