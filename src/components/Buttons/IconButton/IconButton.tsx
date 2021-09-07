@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import styles from './IconButton.module.css';
 
 type IconButtonProps = {
+	className?: string;
 	toggleable?: boolean;
 	iconUri: string;
 	style?: React.CSSProperties;
@@ -13,6 +14,7 @@ type IconButtonProps = {
 };
 
 const IconButton: React.FC<IconButtonProps> = ({
+	className,
 	toggleable,
 	toggled,
 	iconUri,
@@ -37,7 +39,7 @@ const IconButton: React.FC<IconButtonProps> = ({
 			onClick={handleClick}
 			className={`${styles.iconButton} ${
 				(toggleable && selected) || toggled ? styles.selected : ''
-			} ${disabled ? styles.Disabled : ''}`}
+			} ${disabled ? styles.Disabled : ''} ${className ? className : ''}`}
 		>
 			<img alt={altText} src={iconUri} />
 		</button>
