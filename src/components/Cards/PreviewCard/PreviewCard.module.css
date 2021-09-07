@@ -272,7 +272,7 @@
 	}
 
 	.Description {
-		margin-top: 8px !important;
+		margin-top: 16px !important;
 	}
 
 	.Body {
@@ -295,7 +295,7 @@
 	}
 
 	.Members {
-		margin-top: 8px;
+		margin-top: 24px;
 		flex-direction: row;
 		justify-content: flex-start;
 	}
