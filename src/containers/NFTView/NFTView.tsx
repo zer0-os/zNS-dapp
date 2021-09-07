@@ -97,7 +97,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const openBidOverlay = () => {
 		if (!isMounted.current) return;
-		if (!znsDomain.domain || isOwnedByYou) return;
+		if (!znsDomain.domain || isOwnedByYou || !active) return;
 		setIsBidOverlayOpen(true);
 	};
 
@@ -136,7 +136,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				if (!isMounted.current) return;
 				setBids(sorted);
 				setHighestBid(highestBid);
-				setHighestBidUsd(highestBid.amount * wildPriceUsd);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
@@ -146,6 +145,13 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	/////////////
 	// Effects //
 	/////////////
+
+	useEffect(() => {
+		if (!highestBid) {
+			return;
+		}
+		setHighestBidUsd(highestBid.amount * wildPriceUsd);
+	}, [highestBid, wildPriceUsd]);
 
 	useEffect(() => {
 		isMounted.current = true;
@@ -311,6 +317,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							borderWidth: 2,
 							objectFit: 'contain',
 						}}
+						controls
 						unmute
 						className="border-radius"
 						src={znsDomain.domain?.image ?? ''}

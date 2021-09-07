@@ -183,6 +183,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		setForwardDomain(undefined);
 	};
 
+	const scrollToTop = () => {
+		document.querySelector('body')?.scrollTo(0, 0);
+	};
+
 	/////////////////////
 	// Overlay Toggles //
 	/////////////////////
@@ -236,11 +240,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		}
 		lastDomain.current = domain;
 		pageHistory.current = pageHistory.current.concat([domain]);
-		window.scrollTo(0, 0); // scroll to top whenever we change domain
+		scrollToTop();
 	}, [domain]);
 
 	/* WIP */
 	useEffect(() => {
+		scrollToTop();
 		setShowDomainTable(!isNftView);
 	}, [isNftView]);
 
@@ -287,6 +292,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			setTableData(znsDomain.domain.subdomains);
 			setHasLoaded(true);
 		}
+		window.scrollTo({
+			top: -1000,
+			behavior: 'smooth',
+		});
 	}, [znsDomain.domain, hasLoaded]);
 
 	/////////////////////

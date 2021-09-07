@@ -71,6 +71,10 @@
 	font-weight: 700;
 }
 
+.Info span {
+	overflow-wrap: break-word;
+}
+
 .Info p {
 	padding: 0;
 
