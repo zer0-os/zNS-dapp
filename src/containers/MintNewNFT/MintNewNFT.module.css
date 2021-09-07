@@ -130,10 +130,14 @@
 
 .Summary li {
 	position: relative;
-	padding-top: 8px;
+	padding-top: 2px;
 	padding-left: 40px;
-	margin-top: 12px;
 	overflow-wrap: anywhere;
+	margin-top: 8px;
+}
+
+.Summary li:not(:first-of-type) {
+	margin-top: 16px;
 }
 
 .Icon > div {
