@@ -120,7 +120,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 						style={{ display: 'flex', padding: '0 37.5px' }}
 					>
 						<div className={styles.NFT}>
-							<Image src={image} />
+							<Image controls src={image} />
 						</div>
 
 						<div className={styles.Details}>
