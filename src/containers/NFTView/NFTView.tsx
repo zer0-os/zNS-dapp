@@ -317,6 +317,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							borderWidth: 2,
 							objectFit: 'contain',
 						}}
+						controls
 						unmute
 						className="border-radius"
 						src={znsDomain.domain?.image ?? ''}

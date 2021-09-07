@@ -129,6 +129,7 @@ const Request: React.FC<RequestProps> = ({
 				>
 					<div>
 						<Image
+							controls
 							src={metadata?.image || ''}
 							style={{
 								width: 'auto',
@@ -191,7 +192,7 @@ const Request: React.FC<RequestProps> = ({
 
 			{/* Preview Image (Clickable) */}
 			<div className={styles.Image}>
-				<Image src={metadata?.image} onClick={preview} />
+				<Image controls src={metadata?.image} onClick={preview} />
 			</div>
 
 			{/* Requested Domain Info (Name, description, etc.) */}

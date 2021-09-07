@@ -319,6 +319,7 @@ nav {
 		100% - (var(--page-padding) * 2) - 6px
 	); /* Not sure why the -6 is needed, temp fix */
 	max-width: calc(var(--width-max) - (var(--page-padding) * 2)) !important;
+	min-width: var(--width-min);
 }
 
 .page-spacing {
