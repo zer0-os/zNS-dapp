@@ -24,14 +24,14 @@
 }
 
 .Header h1 {
-	font-size: 36px;
+	font-size: 24px;
 	font-weight: 700;
 	text-align: center;
 	overflow-wrap: anywhere;
 }
 
 .Header h2 {
-	font-size: 24px;
+	font-size: 16px;
 }
 
 .Header > div {

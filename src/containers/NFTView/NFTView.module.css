@@ -75,17 +75,11 @@
 .Info h1 {
 	font-size: 36px;
 	font-weight: 700;
-	margin-bottom: 8px;
 }
 
 .Info h1::after {
 	content: 'holder';
 	opacity: 0;
-}
-
-/* ZNA */
-.Info span:first-of-type {
-	font-weight: 700;
 }
 
 .Details {
@@ -118,17 +112,18 @@
 
 .Price h2 {
 	color: var(--color-primary-lighter-3);
-	font-size: 21px;
-	margin-bottom: 16px;
+	margin-bottom: 4px;
 	text-align: center;
 }
 
 .Crypto {
-	font-size: 40px;
+	font-size: 24px;
+	font-weight: 700;
 }
 
 .Fiat {
-	font-size: 20px;
+	font-size: 18px;
+	font-weight: 400;
 	color: var(--color-primary-lighter-3);
 }
 
@@ -166,14 +161,12 @@
 .Box h4 {
 	margin-bottom: 8px;
 	color: var(--color-primary-lighter-3);
-	font-weight: 700;
 	text-transform: uppercase;
 }
 
 .Box span {
 	width: 100%;
 	text-overflow: ellipsis;
-	font-size: 24px;
 	font-weight: 700;
 }
 
@@ -187,7 +180,6 @@
 
 .Story p {
 	/* height: 100%; */
-	line-height: 20px;
 	padding-right: 12px;
 	padding-bottom: 12px;
 
@@ -244,25 +236,27 @@
 .Contract p {
 	position: relative;
 	text-overflow: clip;
-	font-size: 16px;
-	font-weight: 700;
-	line-height: 21px;
 	word-break: break-all;
 	padding: 0;
 	padding-right: 38px;
 }
 
 .History {
+	padding: 20px 0 0 0;
 	margin-top: 24px;
+}
+
+.History h4 {
+	padding: 0 20px;
 }
 
 .History ul {
 	max-height: 400px;
 	overflow-y: auto;
+	padding: 0 20px 20px 20px;
 }
 
 .History span {
-	font-size: 16px;
 	font-weight: 400;
 }
 
@@ -294,10 +288,6 @@
 }
 
 @media only screen and (max-width: 1100px) {
-	.Crypto {
-		font-size: 32px;
-	}
-
 	.Buttons {
 		flex-direction: column;
 	}
@@ -386,24 +376,31 @@
 	.Bid > *:first-child {
 		margin-top: 4px;
 	}
+
+	.Bid .From b {
+		font-size: 14px;
+		font-weight: 400;
+	}
 }
 
-@media only screen and (max-width: 414px) {
+@media only screen and (max-width: 600px) {
 	.Price h2 {
-		font-size: 18px;
-	}
-
-	.Image {
-		padding: 16px;
-		border-collapse: separate;
+		font-size: 18px !important;
 	}
 
 	.Crypto {
-		font-size: 24px;
+		font-size: 24px !important;
 	}
 
 	.Fiat {
-		font-size: 18px;
+		font-size: 18px !important;
+	}
+}
+
+@media only screen and (max-width: 414px) {
+	.Image {
+		padding: 16px;
+		border-collapse: separate;
 	}
 
 	.Members {

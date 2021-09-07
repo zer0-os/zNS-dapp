@@ -2,7 +2,6 @@
  * @author Brett Collins
  *
  * Search:
- *  - Fonts
  *  - Variables
  *  - Default HTML Elements
  *	- Custom HTML Elements
@@ -13,29 +12,6 @@
  */
 
 /*
- * Fonts
- * -- Imports for fonts - application of fonts does not belong here
- *
- */
-@font-face {
-	font-family: 'Eurostile';
-	font-weight: 400;
-	src: local('Eurostile'), url('../fonts/Eurostile-Reg.otf') format('opentype');
-}
-
-@font-face {
-	font-family: 'Eurostile';
-	font-weight: 500;
-	src: local('Eurostile'), url('../fonts/Eurostile-Med.otf') format('opentype');
-}
-
-@font-face {
-	font-family: 'Eurostile';
-	font-weight: 700;
-	src: local('Eurostile'), url('../fonts/Eurostile-Bol.otf') format('opentype');
-}
-
-/*
  * Variables
  * -- The design is likely to change, so let's use variables where we can
  * to make changes a bit easier.
@@ -44,7 +20,8 @@
  */
 :root {
 	--font-size-default: 16px;
-	--font-family: 'Eurostile', sans-serif;
+	--font-size-smaller: 14px;
+	--font-family: 'Inter', serif;
 
 	--color-primary: #8c00ff;
 	--color-primary-lighter-3: #e5baff;
@@ -63,6 +40,7 @@
 	--color-error: #f03738;
 	--color-invalid: #d379ff;
 	--color-grey: #808080;
+	--color-grey-lighter-2: #bfbfbf;
 	--color-text-primary: #ffffff;
 
 	--color-background: rgb(16, 5, 46);
@@ -143,8 +121,10 @@ button,
 input,
 textarea {
 	font-family: var(--font-family);
+	font-size: var(--font-size-default);
 	-webkit-font-smoothing: antialiased;
-	letter-spacing: 0.2px;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
 }
 
 html,
@@ -254,7 +234,6 @@ button.text-button {
 	background: none;
 	padding: 0;
 	font-weight: 700;
-	font-size: 16px;
 }
 
 button {

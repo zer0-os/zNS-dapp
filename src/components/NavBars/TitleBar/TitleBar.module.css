@@ -139,7 +139,7 @@ header {
 	border-radius: 0 0 var(--box-radius) var(--box-radius);
 	box-shadow: none;
 
-	overflow: scroll;
+	overflow-y: auto;
 	max-height: 80vh;
 }
 

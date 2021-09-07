@@ -454,7 +454,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				style={{
 					opacity: hasLoaded ? 1 : 0,
 					transition: 'opacity 0.2s ease-in-out',
-					paddingTop: mvpVersion === 1 ? 155 : 139,
+					paddingTop: mvpVersion === 1 ? 145 : 129,
 				}}
 			>
 				{/* Nav Bar */}

@@ -241,7 +241,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				</div>
 			)}
 			{bids && bids.length === 0 && (
-				<span style={{ marginTop: 23, display: 'block' }}>No bids</span>
+				<span style={{ marginTop: 12, display: 'block' }}>No bids</span>
 			)}
 			{bids && bids.length > 0 && (
 				<ul>
@@ -273,7 +273,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				</b>{' '}
 				made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
 			</div>
-			<div>
+			<div className={styles.From}>
 				<b>{moment(date).fromNow()}</b>
 			</div>
 		</li>
@@ -377,7 +377,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 				>
 					<h4>Token Id</h4>
-					<p className="glow-text-white">
+					<p>
 						<img
 							onClick={copyContractToClipboard}
 							className={styles.Copy}
@@ -389,8 +389,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					<ArrowLink
 						style={{
 							marginTop: 8,
-							width: 140,
-							fontWeight: 700,
+							width: 150,
 						}}
 						href={etherscanLink}
 					>
