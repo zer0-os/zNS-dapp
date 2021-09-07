@@ -43,7 +43,7 @@
 	width: 8px;
 	position: absolute;
 	left: 0;
-	top: calc(50% - 1px);
+	top: 50%;
 
 	background: var(--color-accent-1);
 }
