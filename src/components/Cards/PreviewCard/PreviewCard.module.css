@@ -101,7 +101,7 @@
 	flex-direction: column;
 	justify-content: space-between;
 
-	margin: 8px 0 0 24px;
+	margin: 8px 24px 0 24px;
 }
 
 .Body h5 {
@@ -229,6 +229,7 @@
 
 	.Body {
 		justify-content: flex-start;
+		margin-right: 0;
 	}
 
 	.Description {
