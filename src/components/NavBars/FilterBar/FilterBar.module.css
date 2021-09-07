@@ -1,7 +1,7 @@
 .FilterBar {
 	position: fixed;
 	top: 29px;
-	height: 110px;
+	height: 104px;
 	margin-left: 0;
 	margin-right: 0;
 
@@ -54,7 +54,11 @@
 
 	width: 100%;
 
-	padding: 0 20px 12px 20px;
+	padding: 0 20px 16px 20px;
+}
+
+.FilterBar > ul button {
+	font-size: 14px;
 }
 
 .FilterBar > ul > li:not(:first-child) {
