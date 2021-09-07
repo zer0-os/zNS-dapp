@@ -382,8 +382,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					<ArrowLink
 						style={{
 							marginTop: 8,
-							width: 140,
-							fontWeight: 700,
+							width: 150,
 						}}
 						href={etherscanLink}
 					>

@@ -63,7 +63,7 @@
 }
 
 .Bid label {
-	font-size: 12px;
+	font-size: var(--font-size-smaller);
 }
 
 .Bid > div {

@@ -21,6 +21,7 @@
 
 .Domain {
 	display: block;
+	font-size: var(--font-size-smaller);
 	color: var(--color-primary-lighter-3);
 }
 

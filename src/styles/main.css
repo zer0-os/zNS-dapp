@@ -19,7 +19,8 @@
  * TODO: Would it be worth changing this to SCSS and having slightly more versatile variables?
  */
 :root {
-	--font-size-default: 14px;
+	--font-size-default: 16px;
+	--font-size-smaller: 14px;
 	--font-family: 'Inter', serif;
 
 	--color-primary: #8c00ff;
