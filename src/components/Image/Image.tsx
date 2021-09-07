@@ -39,7 +39,7 @@ const Image = (props: any) => {
 	};
 
 	const click = (event: any) => {
-		if (!loaded || props.controls) {
+		if (!loaded || (mediaType === MediaType.Video && props.controls)) {
 			event.stopPropagation();
 		}
 	};
