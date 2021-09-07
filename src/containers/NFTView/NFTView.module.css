@@ -376,6 +376,11 @@
 	.Bid > *:first-child {
 		margin-top: 4px;
 	}
+
+	.Bid .From b {
+		font-size: 14px;
+		font-weight: 400;
+	}
 }
 
 @media only screen and (max-width: 600px) {
