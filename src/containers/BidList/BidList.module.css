@@ -63,7 +63,7 @@
 }
 
 .Bid label {
-	font-size: var(--font-size-smaller);
+	font-size: 12px;
 }
 
 .Bid > div {
@@ -78,5 +78,4 @@
 
 .Bid > div > span:not(:first-of-type) {
 	margin-top: 6px;
-	font-size: 12px;
 }

@@ -215,7 +215,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				),
 			},
 			{
-				Header: () => <div style={{ textAlign: 'right' }}># Of Bids</div>,
+				Header: () => <div style={{ textAlign: 'right' }}>Num. Bids</div>,
 				id: 'numBids',
 				accessor: (domain: Domain) => (
 					<div style={{ textAlign: 'right' }}>
@@ -308,9 +308,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		return (
 			<NFTCardActions
 				domain={domain}
-				disableButton={
-					!userId || userId?.toLowerCase() === domain.owner.id.toLowerCase()
-				}
+				disableButton={userId?.toLowerCase() === domain.owner.id.toLowerCase()}
 				hideButton={!isGlobalTable}
 				onButtonClick={buttonClick}
 				onLoad={checkHeight}

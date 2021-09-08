@@ -11,7 +11,6 @@
 
 .profile h1 {
 	font-size: 24px;
-	font-weight: 700;
 	color: white;
 }
 
@@ -39,7 +38,7 @@
 .body {
 	display: flex;
 	/* justify-content: center; */
-	padding: 40px 52px 40px 0;
+	padding: 39px 52px 62px 0;
 
 	font-size: var(--font-size-default);
 	color: white;
@@ -87,6 +86,7 @@
 /* Profile paragraph */
 .Second {
 	width: 550px;
+	margin-left: 57px;
 
 	line-height: 22px;
 }

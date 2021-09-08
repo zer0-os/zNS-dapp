@@ -107,9 +107,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Browser Navigation State
 	const history = useHistory();
+	const backCount = useRef(0);
+	const pageHistory = useRef<string[]>([]);
 	const [forwardDomain, setForwardDomain] = useState<string | undefined>();
 	const lastDomain = useRef<string>();
-	const canGoBack = domain !== undefined && domain !== '/';
+	const canGoBack = pageHistory.current.length > 1;
 	const canGoForward = !!forwardDomain;
 
 	// Force to go back to home if invalid domain
@@ -169,23 +171,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	// Go back through page history
 	const back = () => {
-		const lastIndex = domain.lastIndexOf('.');
-		if (lastIndex > 0) {
-			const to = domain.slice(0, domain.lastIndexOf('.'));
-			history.push(to);
-		} else {
-			history.push('/');
-		}
+		pageHistory.current.pop();
+		pageHistory.current.pop();
+		backCount.current++;
+		history.goBack();
 	};
 
 	// Go forward through page history
 	const forward = () => {
 		if (forwardDomain) history.push(forwardDomain);
 		setForwardDomain(undefined);
-	};
-
-	const scrollToTop = () => {
-		document.querySelector('body')?.scrollTo(0, 0);
 	};
 
 	/////////////////////
@@ -240,12 +235,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			}
 		}
 		lastDomain.current = domain;
-		scrollToTop();
+		pageHistory.current = pageHistory.current.concat([domain]);
+		window.scrollTo(0, 0); // scroll to top whenever we change domain
 	}, [domain]);
 
 	/* WIP */
 	useEffect(() => {
-		scrollToTop();
 		setShowDomainTable(!isNftView);
 	}, [isNftView]);
 
@@ -292,10 +287,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			setTableData(znsDomain.domain.subdomains);
 			setHasLoaded(true);
 		}
-		window.scrollTo({
-			top: -1000,
-			behavior: 'smooth',
-		});
 	}, [znsDomain.domain, hasLoaded]);
 
 	/////////////////////
@@ -454,7 +445,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				style={{
 					opacity: hasLoaded ? 1 : 0,
 					transition: 'opacity 0.2s ease-in-out',
-					paddingTop: mvpVersion === 1 ? 145 : 129,
+					paddingTop: mvpVersion === 1 ? 155 : 139,
 				}}
 			>
 				{/* Nav Bar */}

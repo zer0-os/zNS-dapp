@@ -50,20 +50,13 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 	}, [domain]);
 
 	return (
-		<>
-			{bids !== undefined && bids.length > 0 && (
-				<FutureButton
-					onClick={handleClick}
-					glow={!isLoading && bids !== undefined}
-					style={style}
-				>
-					View Bids
-				</FutureButton>
-			)}
-			{bids === undefined && (
-				<div style={{ textAlign: 'right', marginRight: '48px' }}>No Bids</div>
-			)}
-		</>
+		<FutureButton
+			onClick={handleClick}
+			glow={!isLoading && bids !== undefined}
+			style={style}
+		>
+			View Bids
+		</FutureButton>
 	);
 };
 
