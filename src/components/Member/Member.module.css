@@ -22,23 +22,12 @@
 	width: 100%;
 }
 
-.Info {
-	margin-top: 4px;
-	font-weight: 700;
-}
-
 .Info > * {
 	display: block;
 }
 
 .Info > span:first-of-type {
-	font-weight: 700;
 	cursor: pointer;
-}
-
-.Info > *:not(:first-child) {
-	margin-top: 4px;
-	font-weight: 700;
 }
 
 .Info > span:last-of-type {

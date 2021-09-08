@@ -97,7 +97,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const openBidOverlay = () => {
 		if (!isMounted.current) return;
-		if (!znsDomain.domain || isOwnedByYou) return;
+		if (!znsDomain.domain || isOwnedByYou || !active) return;
 		setIsBidOverlayOpen(true);
 	};
 
@@ -236,12 +236,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			<h4>History</h4>
 			{!bids && (
 				<div className={styles.Loading}>
-					<Spinner />
 					<span>Loading bid history</span>
 				</div>
 			)}
 			{bids && bids.length === 0 && (
-				<span style={{ marginTop: 23, display: 'block' }}>No bids</span>
+				<span style={{ marginTop: 12, display: 'block' }}>No bids</span>
 			)}
 			{bids && bids.length > 0 && (
 				<ul>
@@ -273,7 +272,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				</b>{' '}
 				made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
 			</div>
-			<div>
+			<div className={styles.From}>
 				<b>{moment(date).fromNow()}</b>
 			</div>
 		</li>
@@ -317,6 +316,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							borderWidth: 2,
 							objectFit: 'contain',
 						}}
+						controls
 						unmute
 						className="border-radius"
 						src={znsDomain.domain?.image ?? ''}
@@ -376,7 +376,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 				>
 					<h4>Token Id</h4>
-					<p className="glow-text-white">
+					<p>
 						<img
 							onClick={copyContractToClipboard}
 							className={styles.Copy}
@@ -388,8 +388,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					<ArrowLink
 						style={{
 							marginTop: 8,
-							width: 140,
-							fontWeight: 700,
+							width: 150,
 						}}
 						href={etherscanLink}
 					>

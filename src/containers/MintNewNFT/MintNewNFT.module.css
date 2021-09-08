@@ -24,14 +24,14 @@
 }
 
 .Header h1 {
-	font-size: 36px;
+	font-size: 24px;
 	font-weight: 700;
 	text-align: center;
 	overflow-wrap: anywhere;
 }
 
 .Header h2 {
-	font-size: 24px;
+	font-size: 16px;
 }
 
 .Header > div {
@@ -130,10 +130,14 @@
 
 .Summary li {
 	position: relative;
-	padding-top: 8px;
+	padding-top: 2px;
 	padding-left: 40px;
-	margin-top: 12px;
 	overflow-wrap: anywhere;
+	margin-top: 8px;
+}
+
+.Summary li:not(:first-of-type) {
+	margin-top: 16px;
 }
 
 .Icon > div {

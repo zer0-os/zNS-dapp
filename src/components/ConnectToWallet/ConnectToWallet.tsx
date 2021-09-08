@@ -150,7 +150,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	return (
 		<div className={`${WalletStyles.connect} border-primary`}>
 			<div className={WalletStyles.header}>
-				<h3 className={`glow-text-white`}>Connect to a wallet</h3>
+				<h3 className={`glow-text-white`}>Connect To A Wallet</h3>
 			</div>
 			<hr className="glow" />
 
@@ -164,7 +164,6 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 								justifyContent: 'center',
 								verticalAlign: 'center',
 								alignItems: 'center',
-								paddingBottom: '5px',
 							}}
 						>
 							<div
