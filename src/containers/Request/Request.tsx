@@ -129,6 +129,7 @@ const Request: React.FC<RequestProps> = ({
 				>
 					<div>
 						<Image
+							controls
 							src={metadata?.image || ''}
 							style={{
 								width: 'auto',
@@ -191,7 +192,7 @@ const Request: React.FC<RequestProps> = ({
 
 			{/* Preview Image (Clickable) */}
 			<div className={styles.Image}>
-				<Image src={metadata?.image} onClick={preview} />
+				<Image controls src={metadata?.image} onClick={preview} />
 			</div>
 
 			{/* Requested Domain Info (Name, description, etc.) */}
@@ -200,23 +201,23 @@ const Request: React.FC<RequestProps> = ({
 					<h1 className="glow-text-white">{metadata?.title || ''}</h1>
 					<span className={styles.Domain}>0://{request.request.domain}</span>
 					<Member
-						style={{ marginTop: 16 }}
+						style={{ marginTop: 32 }}
 						id={request.request.requestor.id}
 						name={randomName(request.request.requestor.id)}
 						image={randomImage(request.request.requestor.id)}
 						showZna={mvpVersion === 3}
 						subtext={'Creator'}
 					/>
+					<div className={styles.Story}>{metadata?.description || ''}</div>
 				</div>
-				<div className={styles.Story}>{metadata?.description || ''}</div>
 
 				{/* Stake Info */}
 				<div>
 					<span
 						style={{
-							fontWeight: 700,
 							color: 'var(--color-primary-lighter-3)',
-							textTransform: 'uppercase',
+							textAlign: 'center',
+							fontSize: 16,
 						}}
 						className={'glow-text-blue'}
 					>
@@ -228,11 +229,11 @@ const Request: React.FC<RequestProps> = ({
 						</span>
 						{stakeCurrencyToUsd > 0 && (
 							<span>
-								$
+								($
 								{Number(
 									(tokenAmount * stakeCurrencyToUsd).toFixed(2),
 								).toLocaleString()}{' '}
-								USD
+								USD)
 							</span>
 						)}
 					</div>

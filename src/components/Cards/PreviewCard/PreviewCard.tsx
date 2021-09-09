@@ -76,7 +76,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	const body = () => (
 		<div className={styles.Body}>
 			<div>
-				<h5>{name ? name : domain.split('/')[1]}</h5>
+				<h5 className="glow-text-blue">{name ? name : domain.split('/')[1]}</h5>
 				<span className={styles.Domain}>0://wilder.{domain.substring(1)}</span>
 				<p className={styles.Description}>{description}</p>
 			</div>
@@ -165,7 +165,12 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							}`}
 							onClick={clickImage}
 						>
-							<Image unmute style={{ objectFit: 'contain' }} src={image} />
+							<Image
+								controls
+								unmute
+								style={{ objectFit: 'contain' }}
+								src={image}
+							/>
 						</div>
 						<div className={styles.InfoContainer}>
 							{body()}

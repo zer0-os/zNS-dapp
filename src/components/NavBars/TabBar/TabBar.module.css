@@ -8,27 +8,16 @@
 }
 
 .Tab button {
-	font-size: 24px;
-	color: var(--color-grey);
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--color-grey-lighter-2);
 	background: none;
 	/* transition: font-weight var(--animation-time-medium) ease-in-out; */
 }
 
-.Tab button::after {
-	display: block;
-	content: attr(title);
-	font-weight: bold;
-	height: 1px;
-	color: transparent;
-	overflow: hidden;
-	visibility: hidden;
-}
-
 .Selected button {
 	color: white;
-	font-weight: 700;
 	text-shadow: var(--glow-text-white);
-	transform: scale(0.97);
 	transition: text-shadow var(--animation-time-medium) ease-in-out,
 		color var(--animation-time-short) ease-in-out;
 }
