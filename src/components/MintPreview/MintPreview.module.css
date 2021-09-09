@@ -4,7 +4,7 @@
 
 	max-height: 70vh;
 
-	overflow: scroll;
+	overflow: auto;
 
 	background: radial-gradient(
 			56.93% 56.93% at 50% 50%,
@@ -69,6 +69,10 @@
 	overflow-wrap: break-word;
 
 	font-weight: 700;
+}
+
+.Info span {
+	overflow-wrap: break-word;
 }
 
 .Info p {

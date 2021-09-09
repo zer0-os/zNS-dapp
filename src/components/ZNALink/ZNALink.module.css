@@ -5,8 +5,11 @@
 .ZNALink > a {
 	position: relative;
 	transition: all var(--animation-time-short) ease-in-out;
-	font-weight: 700;
 	z-index: 1;
+}
+
+.ZNALink > a:last-of-type {
+	font-weight: 700;
 }
 
 .ZNALink > a::after {
