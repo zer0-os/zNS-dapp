@@ -60,7 +60,6 @@
 .DomainTable th {
 	color: var(--color-primary-lighter-3);
 	font-weight: 700;
-	font-size: var(--font-size-smaller);
 }
 
 /* Table */

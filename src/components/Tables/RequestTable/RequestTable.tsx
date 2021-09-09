@@ -163,7 +163,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		} catch (e) {
 			console.error(e);
 			//if user rejects transaction
-			if (e.code === 4001) {
+			if (e.code === 4001) { 
 				setApproveError(`Rejected by wallet`);
 			} else {
 				setApproveError(`Failed to submit transaction.`);
@@ -189,7 +189,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
-		} catch (e) {
+		} catch (e) { 
 			console.error(e);
 			//if user rejects transaction
 			if (
@@ -372,7 +372,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				),
 			},
 			{
-				Header: () => <div className={styles.center}>Status</div>,
 				id: 'accepted',
 				accessor: (d: DomainRequestAndContents) => (
 					<div className={styles.center}>
@@ -431,8 +430,13 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		useFilters,
 		useGlobalFilter,
 	);
-	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
-		tableHook;
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		prepareRow,
+		rows,
+	} = tableHook;
 
 	return (
 		<div style={style} className={styles.RequestTableContainer}>

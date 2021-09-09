@@ -101,13 +101,14 @@
 	flex-direction: column;
 	justify-content: space-between;
 
-	margin: 8px 24px 0 24px;
+	margin: 19px 0 0 24px;
 }
 
 .Body h5 {
 	color: white;
 	font-size: 24px;
-	font-weight: 700;
+	font-weight: 400;
+	margin-bottom: 6px;
 
 	/* white-space: nowrap; */
 	overflow: hidden;
@@ -115,7 +116,7 @@
 }
 
 .Domain {
-	color: var(--color-accent-1);
+	font-weight: 700;
 }
 
 .Description {
@@ -196,6 +197,10 @@
 	color: var(--color-primary-lighter-3);
 }
 
+.Buy span > span {
+	font-size: 16px;
+}
+
 .Children {
 	padding: 24.5px 8px 26px 8px;
 }
@@ -229,7 +234,6 @@
 
 	.Body {
 		justify-content: flex-start;
-		margin-right: 0;
 	}
 
 	.Description {
@@ -272,7 +276,7 @@
 	}
 
 	.Description {
-		margin-top: 16px !important;
+		margin-top: 8px !important;
 	}
 
 	.Body {
@@ -295,7 +299,7 @@
 	}
 
 	.Members {
-		margin-top: 24px;
+		margin-top: 8px;
 		flex-direction: row;
 		justify-content: flex-start;
 	}

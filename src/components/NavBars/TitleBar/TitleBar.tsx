@@ -186,7 +186,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 					{!isSearchActive && (
 						<ZNALink
 							className={styles.ZNA}
-							style={{ marginLeft: 16 }}
+							style={{ marginLeft: 16, marginTop: 3 }}
 							domain={domain}
 						/>
 					)}

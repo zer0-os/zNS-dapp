@@ -12,10 +12,11 @@
 		rgba(175, 114, 243, 0.25) 100%
 	);
 	border-radius: 31px;
-	padding: 0 24px 1px 39px;
+	padding: 5px 24px 0 39px;
 
 	/* Text */
 	text-align: left;
+	font-size: 16px;
 	color: white;
 
 	/* Text shadow isn't working as expected - it cuts off for some reason */
@@ -37,4 +38,5 @@
 
 .searchBar input::placeholder {
 	color: white;
+	font-size: 16px;
 }

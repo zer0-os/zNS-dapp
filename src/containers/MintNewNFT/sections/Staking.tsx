@@ -55,7 +55,7 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 
 	const balanceIndicator = () => (
 		<>
-			<span style={{ marginBottom: 16 }} className={styles.Estimate}>
+			<span style={{ marginBottom: 8 }} className={styles.Estimate}>
 				<>
 					Your Balance:{' '}
 					{balance !== undefined
@@ -72,7 +72,7 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 			className={styles.Section}
 			style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}
 		>
-			<p style={{ lineHeight: 1.3 }}>
+			<p style={{ fontSize: 18, lineHeight: 1.3 }}>
 				In order to mint this token in Wilder, you’ll need to put up some
 				capital. You can bid what you think is a reasonable amount; if the owner
 				accepts your offer, you will be able to create the token.
@@ -93,6 +93,8 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 				<FutureButton
 					style={{
 						margin: '0 auto 0 auto',
+						height: 36,
+						borderRadius: 18,
 						width: 130,
 					}}
 					onClick={() => {

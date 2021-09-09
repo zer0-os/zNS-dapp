@@ -15,7 +15,7 @@
 
 .Header h1 {
 	color: white;
-	font-size: 24px;
+	font-size: 36px;
 	font-weight: 700;
 	margin-bottom: 0;
 }
@@ -44,13 +44,10 @@
 	margin-right: 12px;
 	min-width: 224px;
 
-	width: 224px;
-	background: rgba(0, 0, 0, 0.3);
-}
+	overflow: hidden;
 
-.NFT > div {
 	transition: transform var(--animation-time-medium) ease-in-out;
-	object-fit: contain;
+	width: 224px;
 }
 
 .NFT > img {
@@ -59,7 +56,7 @@
 	width: 100%;
 }
 
-.NFT:hover > div {
+.NFT:hover {
 	transform: scale(1.05);
 }
 
@@ -100,7 +97,8 @@
 }
 
 .InputWrapper p {
-	color: var(--color-primary-lighter-3);
+	color: var(--color-accent-1);
+	font-size: 24px;
 	font-weight: 700;
 	margin-bottom: 16px;
 	text-align: center;
