@@ -148,7 +148,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const canPlaceBid = () => {
 		const id = acceptingBid!.bid.bidderAccount;
 		return (
-			<p style={{ fontSize: 16, fontWeight: 400, lineHeight: '21px' }}>
+			<p style={{ fontSize: 14, fontWeight: 400, lineHeight: '21px' }}>
 				Are you sure you want to accept the bid of{' '}
 				<b className="glow-text-white">
 					{acceptingBid!.bid.amount.toLocaleString()} WILD

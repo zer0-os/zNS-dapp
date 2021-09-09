@@ -77,7 +77,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 			{/* TODO: Remove overlay from child */}
 			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
 				<div className={styles.Image}>
-					<Image style={{ zIndex: 2 }} src={image || metadata?.image || ''} />
+					<Image
+						style={{ zIndex: 2, objectFit: 'cover' }}
+						src={image || metadata?.image || ''}
+					/>
 				</div>
 				<div className={styles.Info}>
 					{shouldAnimate && (metadata?.title || name) && (

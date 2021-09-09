@@ -6,7 +6,7 @@
 }
 
 .Body {
-	padding: 18px 20px;
+	padding: 8px 16px 16px 16px;
 }
 
 .Creator {
@@ -33,14 +33,9 @@
 }
 
 .NFTCard h5 {
-	margin-bottom: 8px;
-
+	margin-bottom: 1px;
 	color: white;
 	font-size: 24px;
-}
-
-.NFTCard a {
-	color: var(--color-accent-1);
 	font-weight: 700;
 }
 
@@ -67,7 +62,6 @@
 }
 
 .Foot > div > span:first-child {
-	font-weight: 700;
 	color: var(--color-primary-lighter-3);
 
 	text-transform: uppercase;

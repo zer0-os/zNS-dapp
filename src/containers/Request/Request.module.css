@@ -22,19 +22,19 @@
 	width: 543px;
 	max-width: 543px;
 	border-radius: var(--box-radius);
-	overflow: hidden;
 	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out;
+	background: rgba(0, 0, 0, 0.3);
 }
 
-.Image:hover {
+.Image:hover > * {
 	transform: scale(1.01);
 }
 
 .Image > * {
+	transition: transform var(--animation-time-medium) ease-in-out;
 	height: 100%;
 	width: 100%;
-	object-fit: cover;
+	object-fit: contain !important;
 }
 
 .Info {
@@ -51,15 +51,10 @@
 	font-weight: 700;
 }
 
-.Info > div:first-of-type > span:first-of-type {
-	display: inline-block;
-	margin-top: 4px;
-}
-
 .Info > div {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	/* align-items: center; */
 }
 
 .Info > h1 {
@@ -67,17 +62,18 @@
 }
 
 .Domain {
-	font-weight: 700;
+	display: inline-block !important;
+	margin-top: 8px;
 }
 
 .Story {
 	max-height: 150px;
-	overflow-y: auto;
 	padding-right: 12px;
+	margin-top: 39px;
 }
 
 .Offer {
-	margin-top: 16px;
+	margin-top: 8px;
 	text-align: center;
 }
 
@@ -87,6 +83,7 @@
 
 .Offer > span:first-of-type {
 	font-size: 40px;
+	font-weight: 700;
 }
 
 .Offer > span:last-of-type {
@@ -97,6 +94,7 @@
 
 .Buttons {
 	display: flex;
+	justify-content: center;
 	margin-top: 32px;
 }
 
@@ -132,7 +130,7 @@
 	justify-content: center;
 }
 
-.FulfillIndicator > div > p{
+.FulfillIndicator > div > p {
 	font-size: 24px !important;
 }
 

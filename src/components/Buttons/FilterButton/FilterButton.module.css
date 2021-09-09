@@ -8,8 +8,6 @@
 	background: var(--color-background-alt);
 
 	color: white;
-	font-size: 16px;
-	font-weight: 700;
 
 	border-radius: var(--box-radius);
 }
@@ -22,6 +20,5 @@
 
 .Button > span {
 	display: inline-block;
-	margin-top: 4px;
 	white-space: nowrap;
 }

@@ -9,7 +9,7 @@ import styles from './FilterBar.module.css';
 import { TextButton } from 'components';
 
 //- Asset Imports
-import wilderIcon from './assets/wilder-icon.png';
+import wilderIcon from './assets/WWLogo_SVG.svg';
 
 type FilterBarProps = {
 	filters: string[];

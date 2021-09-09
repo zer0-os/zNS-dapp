@@ -139,7 +139,7 @@ header {
 	border-radius: 0 0 var(--box-radius) var(--box-radius);
 	box-shadow: none;
 
-	overflow: scroll;
+	overflow-y: auto;
 	max-height: 80vh;
 }
 
@@ -193,7 +193,6 @@ header {
 	font-weight: 700;
 	text-transform: uppercase;
 	flex-shrink: 0;
-	margin-top: 3px;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -229,5 +228,11 @@ header {
 	.SearchResults li span {
 		margin: 0;
 		margin-top: 4px;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	.Search {
+		display: none;
 	}
 }

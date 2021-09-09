@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 
 import styles from './Image.module.css';
+// import placeholder from './'
 
 // @TODO: Refactor props to not by 'any' type
 const Image = (props: any) => {
