@@ -8,7 +8,7 @@ import styles from './PreviewCard.module.css';
 import { randomName, randomImage } from 'lib/Random';
 
 //- Component Imports
-import { FutureButton, Image, Member, Overlay } from 'components';
+import { FutureButton, Image, Member, Overlay, NFTMedia } from 'components';
 import { Maybe } from 'lib/types';
 
 type PreviewCardProps = {
@@ -163,13 +163,16 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							className={`${styles.Asset} ${
 								mvpVersion === 3 ? styles.MVP3Asset : ''
 							}`}
-							onClick={clickImage}
+							// onClick={clickImage}
 						>
-							<Image
-								controls
-								unmute
-								style={{ objectFit: 'contain' }}
-								src={image}
+							<NFTMedia
+								style={{
+									zIndex: 2,
+								}}
+								size="small"
+								className={`${styles.Image} border-rounded`}
+								alt="NFT Preview"
+								ipfsUrl={image}
 							/>
 						</div>
 						<div className={styles.InfoContainer}>

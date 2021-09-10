@@ -13,6 +13,7 @@ import {
 	FutureButton,
 	Member,
 	Image,
+	NFTMedia,
 	Overlay,
 	Spinner,
 } from 'components';
@@ -309,20 +310,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					backgroundBlob !== undefined ? styles.Loaded : ''
 				} border-primary border-rounded`}
 			>
-				<div className={`${styles.Image} border-rounded`}>
-					<Image
-						style={{
-							borderRadius: 10,
-							borderWidth: 2,
-							objectFit: 'contain',
-						}}
-						controls
-						unmute
-						className="border-radius"
-						src={znsDomain.domain?.image ?? ''}
-						onClick={openImageOverlay}
-					/>
-				</div>
+				<NFTMedia
+					style={{
+						borderRadius: 10,
+						borderWidth: 2,
+						objectFit: 'contain',
+					}}
+					size="large"
+					className={`${styles.Image} border-rounded`}
+					alt="NFT Preview"
+					ipfsUrl={znsDomain.domain?.image ?? ''}
+				/>
 				<div className={styles.Info}>
 					<div className={styles.Details}>
 						<div>

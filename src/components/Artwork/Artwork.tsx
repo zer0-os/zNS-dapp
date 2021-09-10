@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import { Image } from 'components';
+import { Image, NFTMedia } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
@@ -77,9 +77,14 @@ const Artwork: React.FC<ArtworkProps> = ({
 			{/* TODO: Remove overlay from child */}
 			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
 				<div className={styles.Image}>
-					<Image
-						style={{ zIndex: 2, objectFit: 'cover' }}
-						src={image || metadata?.image || ''}
+					<NFTMedia
+						style={{
+							zIndex: 2,
+						}}
+						size="tiny"
+						className={`${styles.Image} border-rounded`}
+						alt="NFT Preview"
+						ipfsUrl={metadata?.image || ''}
 					/>
 				</div>
 				<div className={styles.Info}>
