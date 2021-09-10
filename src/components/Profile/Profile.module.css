@@ -87,8 +87,8 @@
 /* Profile paragraph */
 .Second {
 	width: 550px;
-
 	line-height: 22px;
+	margin: 0 auto;
 }
 
 .body > div:nth-child(2) > p {
