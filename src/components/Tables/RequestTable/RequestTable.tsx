@@ -336,7 +336,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				),
 			},
 			{
-				Header: () => <div className={styles.left}>Artwork Info</div>,
+				Header: () => <div className={styles.left}>DOMAIN</div>,
 				id: 'title',
 				accessor: (d: DomainRequestAndContents) => (
 					<Artwork
