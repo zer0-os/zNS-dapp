@@ -60,7 +60,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 			var xhttp = new XMLHttpRequest();
 			xhttp.open('HEAD', props.ipfsUrl);
 			xhttp.onreadystatechange = function () {
-				if (this.readyState == this.DONE) {
+				if (this.readyState === this.DONE) {
 					const mimeType = this.getResponseHeader('Content-Type');
 					if (mimeType?.includes('image')) {
 						resolve(MediaType.Image);
