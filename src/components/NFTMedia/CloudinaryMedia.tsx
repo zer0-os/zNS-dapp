@@ -1,12 +1,25 @@
+import React from 'react';
+
 import styles from './NFTMedia.module.css';
 
 import { CloudinaryMediaProps } from './types';
 
+import { Spinner } from 'components';
+
 import { Image, Video, Transformation } from 'cloudinary-react';
 import { generateVideoPoster, cloudName, folder } from './config';
+import { useState } from 'react';
 
 const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	const { className, style, alt, hash, size, isVideo } = props;
+
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const mediaClass = `${styles.Media} ${isLoading ?? styles.Loading}`;
+
+	const onLoad = () => {
+		setIsLoading(false);
+	};
 
 	const getHeight = () => {
 		switch (size as string) {
@@ -15,7 +28,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			case 'medium':
 				return '500';
 			case 'small':
-				return '200';
+				return '300';
 			case 'tiny':
 				return '50';
 			default:
@@ -34,7 +47,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			case 'medium':
 				return 'c_fit,h_500,w_500';
 			case 'small':
-				return 'c_fit,h_200,w_200';
+				return 'c_fit,h_300,w_300';
 			case 'tiny':
 				return 'c_fit,h_50,w_50';
 			default:
@@ -45,12 +58,18 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 
 	return (
 		<div className={`${styles.Container} ${className}`}>
+			{isLoading && (
+				<div className={styles.Spinner}>
+					<Spinner />
+				</div>
+			)}
 			{!isVideo && (
 				<Image
-					className={styles.Media}
+					className={mediaClass}
 					cloudName={cloudName}
 					secure={true}
 					publicId={`${folder}/${hash}`}
+					onLoad={onLoad}
 				>
 					{height && (
 						<Transformation height={height} width={height} crop="fit" />
@@ -59,7 +78,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			)}
 			{isVideo && (
 				<Video
-					className={styles.Media}
+					className={mediaClass}
 					cloudName={cloudName}
 					secure={true}
 					publicId={`${folder}/${hash}`}
@@ -68,6 +87,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 					muted
 					loop={true}
 					preload="metadata"
+					onLoadedMetadata={onLoad}
 				>
 					{height && (
 						<Transformation width={height} height={height} crop="fit" />
@@ -78,4 +98,4 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	);
 };
 
-export default CloudinaryMedia;
+export default React.memo(CloudinaryMedia);
