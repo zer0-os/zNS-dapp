@@ -6,7 +6,7 @@
 */
 
 // React Imports
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // Type Imports
 import { MediaContainerProps } from './types';
@@ -30,6 +30,8 @@ enum MediaType {
 const NFTMediaContainer = (props: MediaContainerProps) => {
 	// Destructure props
 	const { className, style, alt, ipfsUrl, size } = props;
+
+	const isMounted = useRef(false);
 
 	// Setup some state
 	const [isMediaLoading, setIsMediaLoading] = useState<boolean>(true);
@@ -79,10 +81,26 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		});
 	};
 
+	const resetState = () => {
+		if (isMounted.current) {
+			setIsMediaLoading(true);
+			setMediaLocation(undefined);
+			setIsCloudinaryUrl(undefined);
+		}
+	};
+
+	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	});
+
 	useEffect(() => {
 		if (!props.ipfsUrl || !props.ipfsUrl.length) {
 			return;
 		}
+		resetState();
 		const getMediaData = async () => {
 			// Get data
 			const mediaType = (await checkMediaType()) as MediaType;
@@ -90,21 +108,26 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 				mediaType === MediaType.Video,
 			)) as boolean;
 
-			// Assign data
-			setMediaType(mediaType);
-			if (hasCloudinaryUrl) {
-				setIsCloudinaryUrl(true);
-				setMediaLocation(getHashFromIPFSUrl(ipfsUrl));
-			} else {
-				setIsCloudinaryUrl(false);
-				setMediaLocation(ipfsUrl);
+			if (isMounted.current) {
+				// Assign data
+				setMediaType(mediaType);
+				if (hasCloudinaryUrl) {
+					setIsCloudinaryUrl(true);
+					setMediaLocation(getHashFromIPFSUrl(ipfsUrl));
+				} else {
+					setIsCloudinaryUrl(false);
+					setMediaLocation(ipfsUrl);
+				}
 			}
 		};
 		getMediaData();
 	}, [props.ipfsUrl]);
 
 	return (
-		<div className={styles.Container}>
+		<div
+			className={`${styles.Container} ${className ? className : ''}`}
+			style={style}
+		>
 			{isMediaLoading && (
 				<div className={styles.Spinner}>
 					<Spinner />
@@ -113,22 +136,20 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 			{isCloudinaryUrl === true && (
 				<CloudinaryMedia
 					alt={alt}
-					style={style}
-					className={className}
 					hash={mediaLocation!}
 					size={size}
 					isVideo={mediaType === MediaType.Video}
 					onLoad={onLoadMedia}
+					style={{ opacity: isMediaLoading ? 0 : 1 }}
 				/>
 			)}
 			{isCloudinaryUrl === false && (
 				<IPFSMedia
 					alt={alt}
-					style={style}
-					className={className}
 					ipfsUrl={mediaLocation!}
 					isVideo={mediaType === MediaType.Video}
 					onLoad={onLoadMedia}
+					style={{ opacity: isMediaLoading ? 0 : 1 }}
 				/>
 			)}
 		</div>

@@ -7,15 +7,24 @@ import { MediaContainerProps } from './types';
 import { Image, Spinner } from 'components';
 
 const IPFSMedia = (props: MediaContainerProps) => {
-	const { className, style, alt, ipfsUrl, isVideo, onLoad } = props;
+	const { style, alt, ipfsUrl, isVideo, onLoad, size } = props;
 
 	return (
 		<>
 			{!isVideo && (
-				<img onLoad={onLoad} className={styles.Media} src={ipfsUrl} />
+				<img
+					alt={alt}
+					style={style}
+					onLoad={onLoad}
+					className={styles.Media}
+					src={ipfsUrl}
+				/>
 			)}
 			{isVideo && (
 				<video
+					style={style}
+					autoPlay
+					muted
 					onLoadedMetadata={onLoad}
 					className={styles.Media}
 					src={ipfsUrl}
