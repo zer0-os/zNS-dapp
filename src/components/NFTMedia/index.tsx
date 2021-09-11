@@ -5,25 +5,27 @@
 		- if no, send the IPFS URL to the media component
 */
 
+// React Imports
 import { useState, useEffect } from 'react';
 
+// Type Imports
 import { MediaContainerProps } from './types';
 
-import { Spinner } from 'components';
+// Style Imports
+import styles from './NFTMedia.module.css';
 
+// Component Imports
+import { Spinner } from 'components';
 import IPFSMedia from './IPFSMedia';
 import CloudinaryMedia from './CloudinaryMedia';
+
+import { cloudinaryImageBaseUrl, cloudinaryVideoBaseUrl } from './config';
 
 enum MediaType {
 	Image,
 	Video,
 	Unknown,
 }
-
-const cloudinaryImageBaseUrl =
-	'https://res.cloudinary.com/fact0ry/image/upload/v1/zns/';
-const cloudinaryVideoBaseUrl =
-	'https://res.cloudinary.com/fact0ry/video/upload/v1/zns/';
 
 const NFTMediaContainer = (props: MediaContainerProps) => {
 	// Destructure props
@@ -47,7 +49,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 			// Check if Cloudinary URL exists
 			const cloudinaryUrl =
 				(isVideo ? cloudinaryVideoBaseUrl : cloudinaryImageBaseUrl) + hash;
-			fetch(cloudinaryUrl).then((r: Response) => {
+			fetch(cloudinaryUrl, { method: 'HEAD' }).then((r: Response) => {
 				resolve(r.status === 200);
 			});
 		});
@@ -97,7 +99,11 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	}, [props.ipfsUrl]);
 
 	if (!mediaLocation) {
-		return <Spinner />;
+		return (
+			<div className={styles.Container}>
+				<Spinner />
+			</div>
+		);
 	}
 
 	// If we found a Cloudinary URL
