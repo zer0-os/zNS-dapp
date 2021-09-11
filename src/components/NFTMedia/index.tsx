@@ -32,6 +32,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	const { className, style, alt, ipfsUrl, size } = props;
 
 	// Setup some state
+	const [isMediaLoading, setIsMediaLoading] = useState<boolean>(true);
 	const [isCloudinaryUrl, setIsCloudinaryUrl] = useState<boolean | undefined>();
 	const [mediaLocation, setMediaLocation] = useState<string | undefined>();
 	const [mediaType, setMediaType] = useState<MediaType | undefined>();
@@ -39,6 +40,10 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	const getHashFromIPFSUrl = (url: string) => {
 		const hashIndex = url.lastIndexOf('/') + 1;
 		return url.slice(hashIndex);
+	};
+
+	const onLoadMedia = () => {
+		setIsMediaLoading(false);
 	};
 
 	const checkHasCloudinaryUrl = (isVideo: boolean) => {
@@ -98,39 +103,35 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		getMediaData();
 	}, [props.ipfsUrl]);
 
-	if (!mediaLocation) {
-		return (
-			<div className={styles.Container}>
-				<Spinner />
-			</div>
-		);
-	}
-
-	// If we found a Cloudinary URL
-	// Render the components from react-cloudinary
-	if (isCloudinaryUrl === true) {
-		return (
-			<CloudinaryMedia
-				alt={alt}
-				style={style}
-				className={className}
-				hash={mediaLocation!}
-				size={size}
-				isVideo={mediaType === MediaType.Video}
-			/>
-		);
-	}
-
-	// If we didn't fint a Cloudinary URL
-	// Render the IPFS Media
 	return (
-		<IPFSMedia
-			alt={alt}
-			style={style}
-			className={className}
-			ipfsUrl={mediaLocation!}
-			isVideo={mediaType === MediaType.Video}
-		/>
+		<div className={styles.Container}>
+			{isMediaLoading && (
+				<div className={styles.Spinner}>
+					<Spinner />
+				</div>
+			)}
+			{isCloudinaryUrl === true && (
+				<CloudinaryMedia
+					alt={alt}
+					style={style}
+					className={className}
+					hash={mediaLocation!}
+					size={size}
+					isVideo={mediaType === MediaType.Video}
+					onLoad={onLoadMedia}
+				/>
+			)}
+			{isCloudinaryUrl === false && (
+				<IPFSMedia
+					alt={alt}
+					style={style}
+					className={className}
+					ipfsUrl={mediaLocation!}
+					isVideo={mediaType === MediaType.Video}
+					onLoad={onLoadMedia}
+				/>
+			)}
+		</div>
 	);
 };
 

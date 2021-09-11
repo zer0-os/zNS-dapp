@@ -3,6 +3,7 @@ interface SharedProps {
 	style?: React.CSSProperties;
 	alt: string;
 	size?: string | undefined;
+	onLoad?: () => void;
 }
 
 export interface CloudinaryMediaProps extends SharedProps {

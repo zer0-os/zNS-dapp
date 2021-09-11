@@ -11,15 +11,7 @@ import { generateVideoPoster, cloudName, folder } from './config';
 import { useState } from 'react';
 
 const CloudinaryMedia = (props: CloudinaryMediaProps) => {
-	const { className, style, alt, hash, size, isVideo } = props;
-
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-
-	const mediaClass = `${styles.Media} ${isLoading ?? styles.Loading}`;
-
-	const onLoad = () => {
-		setIsLoading(false);
-	};
+	const { className, style, alt, hash, size, isVideo, onLoad } = props;
 
 	const getHeight = () => {
 		switch (size as string) {
@@ -57,15 +49,10 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	const crop = size !== undefined && cropOptions();
 
 	return (
-		<div className={`${styles.Container} ${className}`}>
-			{isLoading && (
-				<div className={styles.Spinner}>
-					<Spinner />
-				</div>
-			)}
+		<>
 			{!isVideo && (
 				<Image
-					className={mediaClass}
+					className={styles.Media}
 					cloudName={cloudName}
 					secure={true}
 					publicId={`${folder}/${hash}`}
@@ -78,7 +65,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			)}
 			{isVideo && (
 				<Video
-					className={mediaClass}
+					className={styles.Media}
 					cloudName={cloudName}
 					secure={true}
 					publicId={`${folder}/${hash}`}
@@ -94,7 +81,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 					)}
 				</Video>
 			)}
-		</div>
+		</>
 	);
 };
 
