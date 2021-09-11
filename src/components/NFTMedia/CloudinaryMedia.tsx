@@ -3,12 +3,7 @@ import styles from './NFTMedia.module.css';
 import { CloudinaryMediaProps } from './types';
 
 import { Image, Video, Transformation } from 'cloudinary-react';
-import { cloudinaryVideoBaseUrl, generateVideoPoster } from './config';
-
-const Cloudinary = {
-	cloudName: 'fact0ry',
-	preHash: '/zns/',
-};
+import { generateVideoPoster, cloudName, folder } from './config';
 
 const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	const { className, style, alt, hash, size, isVideo } = props;
@@ -53,9 +48,9 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			{!isVideo && (
 				<Image
 					className={styles.Media}
-					cloudName={Cloudinary.cloudName}
+					cloudName={cloudName}
 					secure={true}
-					publicId={Cloudinary.preHash + hash}
+					publicId={`${folder}/${hash}`}
 				>
 					{height && (
 						<Transformation height={height} width={height} crop="fit" />
@@ -65,9 +60,9 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			{isVideo && (
 				<Video
 					className={styles.Media}
-					cloudName={Cloudinary.cloudName}
+					cloudName={cloudName}
 					secure={true}
-					publicId={Cloudinary.preHash + hash}
+					publicId={`${folder}/${hash}`}
 					autoPlay={true}
 					poster={generateVideoPoster(hash, crop as string)}
 					muted
