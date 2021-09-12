@@ -179,7 +179,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const overlays = () => (
 		<>
 			{znsDomain.domain && (
-				<Overlay onClose={closeBidOverlay} centered open={isBidOverlayOpen}>
+				<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
 					<MakeABid domain={znsDomain.domain} onBid={onBid} />
 				</Overlay>
 			)}
