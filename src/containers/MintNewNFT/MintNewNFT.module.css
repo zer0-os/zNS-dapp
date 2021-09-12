@@ -104,6 +104,7 @@
 
 .NFT > img,
 .NFT > video {
+	max-height: 100%;
 	max-width: 100%;
 	object-fit: contain;
 	transition: transform var(--animation-time-medium) ease-in-out;

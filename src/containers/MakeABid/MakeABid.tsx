@@ -19,11 +19,11 @@ import {
 	StepBar,
 	FutureButton,
 	TextButton,
-	Image,
 	TextInput,
 	Member,
 	Overlay,
 	LoadingIndicator,
+	NFTMedia,
 } from 'components';
 import { BidList } from 'containers';
 
@@ -325,10 +325,11 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const nft = () => (
 		<div className={styles.NFT}>
-			<Image
-				controls
+			<NFTMedia
+				alt="Bid NFT preview"
 				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
-				src={domainMetadata?.image}
+				ipfsUrl={domainMetadata?.image || ''}
+				size="small"
 			/>
 		</div>
 	);

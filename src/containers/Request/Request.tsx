@@ -7,6 +7,7 @@ import {
 	Image,
 	LoadingIndicator,
 	Member,
+	NFTMedia,
 	Overlay,
 	Spinner,
 } from 'components';
@@ -192,7 +193,16 @@ const Request: React.FC<RequestProps> = ({
 
 			{/* Preview Image (Clickable) */}
 			<div className={styles.Image}>
-				<Image controls src={metadata?.image} onClick={preview} />
+				<NFTMedia
+					style={{
+						borderRadius: 10,
+						borderWidth: 2,
+						objectFit: 'contain',
+					}}
+					size="medium"
+					alt="NFT Preview"
+					ipfsUrl={metadata?.image ?? ''}
+				/>
 			</div>
 
 			{/* Requested Domain Info (Name, description, etc.) */}
