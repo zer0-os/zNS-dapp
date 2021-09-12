@@ -65,10 +65,6 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		if (onViewDomain) onViewDomain();
 	};
 
-	const clickImage = () => {
-		if (onClickImage) onClickImage();
-	};
-
 	///////////////
 	// Fragments //
 	///////////////

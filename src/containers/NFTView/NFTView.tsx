@@ -102,16 +102,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		setIsBidOverlayOpen(true);
 	};
 
-	const openImageOverlay = () => {
-		if (!isMounted.current) return;
-		setIsImageOverlayOpen(true);
-	};
-
-	const closeImageOverlay = () => {
-		if (!isMounted.current) return;
-		setIsImageOverlayOpen(false);
-	};
-
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
 	const onBid = async () => {
@@ -292,10 +282,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					backgroundBlob !== undefined ? styles.Loaded : ''
 				} border-primary border-rounded`}
 			>
-				<div
-					onClick={openImageOverlay}
-					className={`${styles.Image} border-rounded`}
-				>
+				<div className={`${styles.Image} border-rounded`}>
 					<NFTMedia
 						style={{
 							borderRadius: 10,
