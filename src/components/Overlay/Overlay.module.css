@@ -25,12 +25,17 @@
 	width: 100%;
 }
 
+.FullScreen .Content {
+	width: 100%;
+}
+
 .FullScreen > div {
 	height: 100%;
 }
 
-.Container > * {
-	margin: 0 auto;
+.Container {
+	display: flex;
+	justify-content: center;
 }
 
 .Centered {

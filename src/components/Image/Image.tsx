@@ -69,7 +69,7 @@ const Image = (props: any) => {
 			{tryVideo && (
 				<video
 					{...props}
-					autoPlay
+					autoPlay={true}
 					muted
 					className={`${props.className ? props.className : ''} ${
 						styles.Image

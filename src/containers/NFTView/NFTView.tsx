@@ -13,6 +13,7 @@ import {
 	FutureButton,
 	Member,
 	Image,
+	NFTMedia,
 	Overlay,
 	Spinner,
 } from 'components';
@@ -101,16 +102,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		setIsBidOverlayOpen(true);
 	};
 
-	const openImageOverlay = () => {
-		if (!isMounted.current) return;
-		setIsImageOverlayOpen(true);
-	};
-
-	const closeImageOverlay = () => {
-		if (!isMounted.current) return;
-		setIsImageOverlayOpen(false);
-	};
-
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
 	const onBid = async () => {
@@ -187,26 +178,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const overlays = () => (
 		<>
-			<Overlay
-				centered
-				img
-				open={isImageOverlayOpen}
-				onClose={closeImageOverlay}
-			>
-				<Image
-					src={znsDomain.domain?.image ?? ''}
-					style={{
-						width: 'auto',
-						maxHeight: '80vh',
-						maxWidth: '80vw',
-						objectFit: 'contain',
-						textAlign: 'center',
-					}}
-				/>
-			</Overlay>
-
 			{znsDomain.domain && (
-				<Overlay onClose={closeBidOverlay} centered open={isBidOverlayOpen}>
+				<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
 					<MakeABid domain={znsDomain.domain} onBid={onBid} />
 				</Overlay>
 			)}
@@ -310,17 +283,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				} border-primary border-rounded`}
 			>
 				<div className={`${styles.Image} border-rounded`}>
-					<Image
+					<NFTMedia
 						style={{
 							borderRadius: 10,
 							borderWidth: 2,
 							objectFit: 'contain',
 						}}
-						controls
-						unmute
-						className="border-radius"
-						src={znsDomain.domain?.image ?? ''}
-						onClick={openImageOverlay}
+						className={`border-rounded`}
+						alt="NFT Preview"
+						ipfsUrl={znsDomain.domain?.image ?? ''}
 					/>
 				</div>
 				<div className={styles.Info}>

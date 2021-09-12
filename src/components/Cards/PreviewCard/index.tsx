@@ -45,7 +45,6 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 	const isMounted = useRef<boolean>();
 
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
-	const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
 	const onViewDomain = () => {
 		history.push({
@@ -53,9 +52,6 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 			search: '?view',
 		});
 	};
-
-	const openImagePreview = () => setIsPreviewOpen(true);
-	const closeImagePreview = () => setIsPreviewOpen(false);
 
 	useEffect(() => {
 		isMounted.current = true;
@@ -77,24 +73,8 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 	// React Fragments //
 	/////////////////////
 
-	const modals = () => (
-		<Overlay centered img open={isPreviewOpen} onClose={closeImagePreview}>
-			<Image
-				src={metadata?.image ?? ''}
-				style={{
-					width: 'auto',
-					maxHeight: '80vh',
-					maxWidth: '80vw',
-					objectFit: 'contain',
-					textAlign: 'center',
-				}}
-			/>
-		</Overlay>
-	);
-
 	return (
 		<>
-			{modals()}
 			<PreviewCard
 				creatorId={creatorId}
 				description={metadata?.description || ''}
@@ -104,8 +84,6 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 				isLoading={!metadata}
 				mvpVersion={mvpVersion}
 				name={metadata?.title || ''}
-				onClickImage={openImagePreview}
-				onImageClick={onImageClick}
 				onMakeBid={onButtonClick}
 				onViewDomain={onViewDomain}
 				ownerId={ownerId}

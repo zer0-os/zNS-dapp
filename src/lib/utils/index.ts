@@ -15,7 +15,7 @@ interface UploadResponseDTO {
 	url: string;
 }
 
-const uploadApiEndpoint = `https://zns.api.zero.tech/api/upload`;
+const uploadApiEndpoint = `https://zns.api.zero.tech/api/uploadCloudinary`;
 
 const uploadData = async (dataToUpload: string | Buffer) => {
 	const dataResponse = await fetch(uploadApiEndpoint, {

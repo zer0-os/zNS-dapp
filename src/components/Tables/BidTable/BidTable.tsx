@@ -286,7 +286,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
 			{biddingOn !== undefined && (
-				<Overlay onClose={cancelBid} centered open={biddingOn !== undefined}>
+				<Overlay onClose={cancelBid} open={biddingOn !== undefined}>
 					<MakeABid domain={biddingOn!} onBid={hasBidded} />
 				</Overlay>
 			)}

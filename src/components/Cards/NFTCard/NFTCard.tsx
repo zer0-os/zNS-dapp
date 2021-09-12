@@ -5,7 +5,7 @@ import React from 'react';
 import styles from './NFTCard.module.css';
 
 //- Component Imports
-import { ArrowLink, Image } from 'components';
+import { ArrowLink, Image, NFTMedia } from 'components';
 
 export interface NFTCardProps {
 	actionsComponent?: React.ReactNode;
@@ -49,10 +49,13 @@ const NFTCard: React.FC<NFTCardProps> = ({
 			style={style ? style : {}}
 			className={`${styles.NFTCard} border-rounded`}
 		>
-			<Image
+			<NFTMedia
 				className={styles.NFT}
 				style={{ height: 348, objectFit: 'contain' }}
-				src={imageUri ? imageUri : ''}
+				ipfsUrl={imageUri ? imageUri : ''}
+				size="medium"
+				alt={`NFT preview for ${name}`}
+				disableLightbox
 			/>
 			<div className={styles.Body}>
 				<h5 className={`glow-text-blue`}>{name}</h5>
