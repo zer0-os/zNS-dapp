@@ -294,7 +294,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				{userId && (
 					<Overlay
 						onClose={closeModal}
-						centered
 						open={modal === Modals.Bid && biddingOn !== undefined}
 					>
 						<MakeABid domain={biddingOn!} onBid={onBid} />

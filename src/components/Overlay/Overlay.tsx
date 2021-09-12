@@ -107,7 +107,7 @@ const Overlay: React.FC<OverlayProps> = ({
 				style={{ height: 32, width: 32, padding: 6 }}
 			/>
 			<div className={`overlay ${styles.Container} ${img ? styles.Image : ''}`}>
-				{children}
+				<div className={`overlay ${styles.Content}`}>{children}</div>
 				<div style={{ display: centered ? 'none' : 'block', height: 64 }}></div>
 			</div>
 		</div>
