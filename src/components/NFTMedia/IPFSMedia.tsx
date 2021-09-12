@@ -9,12 +9,21 @@ import { Image, Spinner } from 'components';
 const IPFSMedia = (props: MediaContainerProps) => {
 	const { style, alt, ipfsUrl, isVideo, onLoad, size } = props;
 
+	const clickVideo = (e: any) => {
+		if (size === undefined) {
+			e.stopPropagation();
+		} else if (props.onClick) {
+			props.onClick();
+		}
+	};
+
 	return (
 		<>
 			{!isVideo && (
 				<img
 					alt={alt}
 					style={style}
+					onClick={props.onClick}
 					onLoad={onLoad}
 					className={styles.Media}
 					src={ipfsUrl}
@@ -24,6 +33,8 @@ const IPFSMedia = (props: MediaContainerProps) => {
 				<video
 					style={style}
 					autoPlay
+					controls={size === undefined}
+					onClick={clickVideo}
 					muted
 					onLoadedMetadata={onLoad}
 					className={styles.Media}

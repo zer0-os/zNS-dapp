@@ -188,24 +188,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const overlays = () => (
 		<>
-			<Overlay
-				centered
-				img
-				open={isImageOverlayOpen}
-				onClose={closeImageOverlay}
-			>
-				<Image
-					src={znsDomain.domain?.image ?? ''}
-					style={{
-						width: 'auto',
-						maxHeight: '80vh',
-						maxWidth: '80vw',
-						objectFit: 'contain',
-						textAlign: 'center',
-					}}
-				/>
-			</Overlay>
-
 			{znsDomain.domain && (
 				<Overlay onClose={closeBidOverlay} centered open={isBidOverlayOpen}>
 					<MakeABid domain={znsDomain.domain} onBid={onBid} />
@@ -310,14 +292,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					backgroundBlob !== undefined ? styles.Loaded : ''
 				} border-primary border-rounded`}
 			>
-				<div className={`${styles.Image} border-rounded`}>
+				<div
+					onClick={openImageOverlay}
+					className={`${styles.Image} border-rounded`}
+				>
 					<NFTMedia
 						style={{
 							borderRadius: 10,
 							borderWidth: 2,
 							objectFit: 'contain',
 						}}
-						size="large"
 						className={`border-rounded`}
 						alt="NFT Preview"
 						ipfsUrl={znsDomain.domain?.image ?? ''}

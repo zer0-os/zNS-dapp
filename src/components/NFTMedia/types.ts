@@ -4,6 +4,9 @@ interface SharedProps {
 	alt: string;
 	size?: string | undefined;
 	onLoad?: () => void;
+	onClick?: () => void;
+	isPlaying?: boolean;
+	disableLightbox?: boolean;
 }
 
 export interface CloudinaryMediaProps extends SharedProps {

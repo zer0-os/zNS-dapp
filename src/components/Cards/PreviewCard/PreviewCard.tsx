@@ -163,7 +163,6 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							className={`${styles.Asset} ${
 								mvpVersion === 3 ? styles.MVP3Asset : ''
 							}`}
-							// onClick={clickImage}
 						>
 							<NFTMedia
 								style={{

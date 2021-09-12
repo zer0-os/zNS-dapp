@@ -78,6 +78,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
 				<div className={styles.Image}>
 					<NFTMedia
+						disableLightbox
 						style={{
 							zIndex: 2,
 						}}

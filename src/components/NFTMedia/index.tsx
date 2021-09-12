@@ -6,7 +6,7 @@
 */
 
 // React Imports
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 // Type Imports
 import { MediaContainerProps } from './types';
@@ -15,7 +15,7 @@ import { MediaContainerProps } from './types';
 import styles from './NFTMedia.module.css';
 
 // Component Imports
-import { Spinner } from 'components';
+import { Overlay, Spinner } from 'components';
 import IPFSMedia from './IPFSMedia';
 import CloudinaryMedia from './CloudinaryMedia';
 
@@ -29,11 +29,13 @@ enum MediaType {
 
 const NFTMediaContainer = (props: MediaContainerProps) => {
 	// Destructure props
-	const { className, style, alt, ipfsUrl, size } = props;
+	const { className, style, alt, ipfsUrl, size, onClick, disableLightbox } =
+		props;
 
 	const isMounted = useRef(false);
 
 	// Setup some state
+	const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 	const [isMediaLoading, setIsMediaLoading] = useState<boolean>(true);
 	const [isCloudinaryUrl, setIsCloudinaryUrl] = useState<boolean | undefined>();
 	const [mediaLocation, setMediaLocation] = useState<string | undefined>();
@@ -46,6 +48,12 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 
 	const onLoadMedia = () => {
 		setIsMediaLoading(false);
+	};
+
+	const toggleLightbox = () => {
+		if (!disableLightbox) {
+			setIsLightboxOpen(!isLightboxOpen);
+		}
 	};
 
 	const checkHasCloudinaryUrl = (isVideo: boolean) => {
@@ -89,6 +97,41 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		}
 	};
 
+	const mediaComponent = (
+		matchSize: boolean,
+		style: React.CSSProperties | undefined,
+	) => {
+		if (!mediaLocation) {
+			return;
+		}
+		if (isCloudinaryUrl) {
+			return (
+				<CloudinaryMedia
+					alt={alt}
+					hash={mediaLocation!}
+					size={matchSize ? size : undefined}
+					isVideo={mediaType === MediaType.Video}
+					isPlaying={!isLightboxOpen}
+					onClick={toggleLightbox}
+					onLoad={onLoadMedia}
+					style={{ ...style, opacity: isMediaLoading ? 0 : 1 }}
+				/>
+			);
+		} else if (!isCloudinaryUrl) {
+			return (
+				<IPFSMedia
+					alt={alt}
+					ipfsUrl={mediaLocation!}
+					size={matchSize ? size : undefined}
+					isVideo={mediaType === MediaType.Video}
+					onClick={toggleLightbox}
+					onLoad={onLoadMedia}
+					style={{ ...style, opacity: isMediaLoading ? 0 : 1 }}
+				/>
+			);
+		}
+	};
+
 	useEffect(() => {
 		isMounted.current = true;
 		return () => {
@@ -128,30 +171,40 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 			className={`${styles.Container} ${className ? className : ''}`}
 			style={style}
 		>
+			{isLightboxOpen && (
+				<Overlay centered img open onClose={toggleLightbox}>
+					<div
+						className={`${styles.Container}`}
+						style={{
+							...style,
+							position: 'relative',
+							width: 'auto',
+							height: '100%',
+							maxHeight: '80vh',
+							maxWidth: '80vw',
+							objectFit: 'contain',
+							textAlign: 'center',
+							borderRadius: 0,
+						}}
+					>
+						{mediaComponent(false, {
+							position: 'relative',
+							width: 'auto',
+							height: '100%',
+							maxHeight: '80vh',
+							maxWidth: '80vw',
+							objectFit: 'contain',
+							textAlign: 'center',
+						})}
+					</div>
+				</Overlay>
+			)}
 			{isMediaLoading && (
 				<div className={styles.Spinner}>
 					<Spinner />
 				</div>
 			)}
-			{isCloudinaryUrl === true && (
-				<CloudinaryMedia
-					alt={alt}
-					hash={mediaLocation!}
-					size={size}
-					isVideo={mediaType === MediaType.Video}
-					onLoad={onLoadMedia}
-					style={{ opacity: isMediaLoading ? 0 : 1 }}
-				/>
-			)}
-			{isCloudinaryUrl === false && (
-				<IPFSMedia
-					alt={alt}
-					ipfsUrl={mediaLocation!}
-					isVideo={mediaType === MediaType.Video}
-					onLoad={onLoadMedia}
-					style={{ opacity: isMediaLoading ? 0 : 1 }}
-				/>
-			)}
+			{mediaComponent(true, undefined)}
 		</div>
 	);
 };
