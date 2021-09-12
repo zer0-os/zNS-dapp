@@ -51,10 +51,16 @@
 	max-height: 422px;
 	cursor: pointer;
 	background: rgba(0, 0, 0, 0.3);
+	border-radius: inherit;
 }
 
 .Image > div {
 	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Image img,
+.Image video {
+	border-radius: inherit;
 }
 
 .Image:hover > div {
