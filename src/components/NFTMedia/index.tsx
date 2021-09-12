@@ -30,6 +30,11 @@ enum MediaType {
 	Unknown, // unhandled
 }
 
+type Media = {
+	mediaType: MediaType;
+	extension: string;
+};
+
 const NFTMediaContainer = (props: MediaContainerProps) => {
 	//////////////////
 	// State & Data //
@@ -79,14 +84,18 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	// for a given NFT's hash
 	// @todo should change to more generic "checkUrlIsValid"
 	// and take URL as parameter
-	const checkHasCloudinaryUrl = (isVideo: boolean) => {
+	const checkHasCloudinaryUrl = (isVideo: boolean, extension: string) => {
 		return new Promise((resolve, reject) => {
 			// Strip the IPFS hash from ipfs.io URL in NFT metadata
 			const hash = getHashFromIPFSUrl(ipfsUrl);
 
 			// Check if Cloudinary URL exists
 			const cloudinaryUrl =
-				(isVideo ? cloudinaryVideoBaseUrl : cloudinaryImageBaseUrl) + hash;
+				(isVideo ? cloudinaryVideoBaseUrl : cloudinaryImageBaseUrl) +
+				hash +
+				'.' +
+				extension;
+
 			fetch(cloudinaryUrl, { method: 'HEAD' }).then((r: Response) => {
 				resolve(r.status === 200);
 			});
@@ -101,16 +110,25 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		return new Promise((resolve, reject) => {
 			// @todo switch to a fetch
 			var xhttp = new XMLHttpRequest();
-			xhttp.open('HEAD', props.ipfsUrl);
+			xhttp.open('HEAD', ipfsUrl);
 			xhttp.onreadystatechange = function () {
 				if (this.readyState === this.DONE) {
 					const mimeType = this.getResponseHeader('Content-Type');
 					if (mimeType?.includes('image')) {
-						resolve(MediaType.Image);
+						resolve({
+							mediaType: MediaType.Image,
+							extension: mimeType.split('/')[1],
+						});
 					} else if (mimeType?.includes('video')) {
-						resolve(MediaType.Video);
+						resolve({
+							mediaType: MediaType.Video,
+							extension: mimeType.split('/')[1],
+						});
 					}
-					resolve(MediaType.Unknown);
+					resolve({
+						mediaType: MediaType.Unknown,
+						extension: '',
+					});
 				}
 			};
 			xhttp.send();
@@ -123,11 +141,12 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	// 3. Sets state based on data from 1 and 2
 	const getMediaData = async () => {
 		// 1.
-		const mediaType = (await checkMediaType()) as MediaType;
+		const { mediaType, extension } = (await checkMediaType()) as Media;
 
 		// 2.
 		const hasCloudinaryUrl = (await checkHasCloudinaryUrl(
 			mediaType === MediaType.Video,
+			extension,
 		)) as boolean;
 
 		// 3.
