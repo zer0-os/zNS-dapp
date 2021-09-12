@@ -1,12 +1,12 @@
 interface SharedProps {
-	className?: string;
-	style?: React.CSSProperties;
 	alt: string;
-	size?: string | undefined;
-	onLoad?: () => void;
-	onClick?: () => void;
-	isPlaying?: boolean;
+	className?: string;
 	disableLightbox?: boolean;
+	isPlaying?: boolean;
+	onClick?: () => void;
+	onLoad?: () => void;
+	size?: string | undefined;
+	style?: React.CSSProperties;
 }
 
 export interface CloudinaryMediaProps extends SharedProps {

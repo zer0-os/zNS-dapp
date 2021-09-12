@@ -1,22 +1,32 @@
-import React, { SyntheticEvent, useEffect } from 'react';
+// React Imports
+import React, { SyntheticEvent, useEffect, useRef } from 'react';
 
+// Style Imports
 import styles from './NFTMedia.module.css';
 
+// Library Imports
+import { Image, Transformation, Video } from 'cloudinary-react';
+
+// Local Imports
 import { CloudinaryMediaProps } from './types';
-
-import { Spinner } from 'components';
-
-import { Image, Video, Transformation } from 'cloudinary-react';
-import { generateVideoPoster, cloudName, folder } from './config';
-import { useState, useRef } from 'react';
-import IconButton from 'components/Buttons/IconButton/IconButton';
-import TextButton from 'components/Buttons/TextButton/TextButton';
+import { cloudName, folder, generateVideoPoster } from './config';
 
 const CloudinaryMedia = (props: CloudinaryMediaProps) => {
-	const { style, alt, hash, size, isVideo, onLoad, isPlaying } = props;
+	//////////////////
+	// State & Data //
+	//////////////////
 
+	const { alt, hash, isPlaying, isVideo, onLoad, size, style } = props;
 	const videoRef = useRef<HTMLVideoElement>();
 
+	///////////////
+	// Functions //
+	///////////////
+
+	// Click handler for videos
+	// Prevents prop onClick if controls
+	// are rendered -- this is to prevent opening
+	// video in lightbox when fullscreen control is available
 	const clickVideo = (e: any) => {
 		if (size === undefined) {
 			e.stopPropagation();
@@ -25,6 +35,9 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 		}
 	};
 
+	// Runs when content is loading
+	// For images - when the image is fully loaded
+	// For videos - when the metadata is fully loaded
 	const load = (e: SyntheticEvent) => {
 		videoRef.current = e.target as HTMLVideoElement;
 		if (props.onLoad) {
@@ -32,16 +45,8 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 		}
 	};
 
-	useEffect(() => {
-		if (videoRef.current) {
-			if (isPlaying) {
-				videoRef.current.play();
-			} else {
-				videoRef.current.pause();
-			}
-		}
-	}, [isPlaying]);
-
+	// Converts a size e.g. "large", "medium", etc.
+	// into a number to feed into Cloudinary
 	const getHeight = () => {
 		switch (size as string) {
 			case 'large':
@@ -59,7 +64,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	const height = size !== undefined && getHeight();
 
 	// For some reason, Cloudinary SDK isn't
-	// applying the crop options to the poster,
+	// applying the crop options video posters,
 	// so I'm adding them manually
 	const cropOptions = () => {
 		switch (size as string) {
@@ -77,6 +82,24 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	};
 	const crop = size !== undefined && cropOptions();
 
+	/////////////
+	// Effects //
+	/////////////
+
+	useEffect(() => {
+		if (videoRef.current) {
+			if (isPlaying) {
+				videoRef.current.play();
+			} else {
+				videoRef.current.pause();
+			}
+		}
+	}, [isPlaying]);
+
+	///////////////
+	// Fragments //
+	///////////////
+
 	return (
 		<>
 			{!isVideo && (
@@ -84,11 +107,11 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 					alt={alt}
 					className={styles.Media}
 					cloudName={cloudName}
+					onClick={props.onClick}
 					onLoad={onLoad}
 					publicId={`${folder}/${hash}`}
 					secure={true}
 					style={style}
-					onClick={props.onClick}
 				>
 					{height && (
 						<Transformation height={height} width={height} crop="fit" />
@@ -104,14 +127,14 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 					controls={size === undefined}
 					loop={true}
 					muted
+					onClick={clickVideo}
 					onLoadedMetadata={load}
+					playsInline
 					poster={generateVideoPoster(hash, crop as string)}
 					preload="metadata"
 					publicId={`${folder}/${hash}`}
-					playsInline
 					secure={true}
 					style={style}
-					onClick={clickVideo}
 				>
 					{height && (
 						<Transformation width={height} height={height} crop="fit" />

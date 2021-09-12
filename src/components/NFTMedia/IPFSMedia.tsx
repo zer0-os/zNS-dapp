@@ -1,14 +1,24 @@
-import { useState } from 'react';
-
+// Style Imports
 import styles from './NFTMedia.module.css';
 
+// Local Imports
 import { MediaContainerProps } from './types';
 
-import { Image, Spinner } from 'components';
-
 const IPFSMedia = (props: MediaContainerProps) => {
-	const { style, alt, ipfsUrl, isVideo, onLoad, size } = props;
+	//////////////////
+	// State & Data //
+	//////////////////
 
+	const { alt, ipfsUrl, isVideo, onLoad, size, style } = props;
+
+	///////////////
+	// Functions //
+	///////////////
+
+	// Click handler for videos
+	// Prevents prop onClick if controls
+	// are rendered -- this is to prevent opening
+	// video in lightbox when fullscreen control is available
 	const clickVideo = (e: any) => {
 		if (size === undefined) {
 			e.stopPropagation();
@@ -17,28 +27,32 @@ const IPFSMedia = (props: MediaContainerProps) => {
 		}
 	};
 
+	///////////////
+	// Fragments //
+	///////////////
+
 	return (
 		<>
 			{!isVideo && (
 				<img
 					alt={alt}
-					style={style}
+					className={styles.Media}
 					onClick={props.onClick}
 					onLoad={onLoad}
-					className={styles.Media}
 					src={ipfsUrl}
+					style={style}
 				/>
 			)}
 			{isVideo && (
 				<video
-					style={style}
 					autoPlay
-					controls={size === undefined}
-					onClick={clickVideo}
-					muted
-					onLoadedMetadata={onLoad}
 					className={styles.Media}
+					controls={size === undefined}
+					muted
+					onClick={clickVideo}
+					onLoadedMetadata={onLoad}
 					src={ipfsUrl}
+					style={style}
 				/>
 			)}
 		</>

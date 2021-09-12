@@ -19,43 +19,66 @@ import { Overlay, Spinner } from 'components';
 import IPFSMedia from './IPFSMedia';
 import CloudinaryMedia from './CloudinaryMedia';
 
+// Local Imports
 import { cloudinaryImageBaseUrl, cloudinaryVideoBaseUrl } from './config';
 
+// Possible media types based on
+// MIME type of content
 enum MediaType {
-	Image,
-	Video,
-	Unknown,
+	Image, // image/*
+	Video, // video/*
+	Unknown, // unhandled
 }
 
 const NFTMediaContainer = (props: MediaContainerProps) => {
-	// Destructure props
-	const { className, style, alt, ipfsUrl, size, onClick, disableLightbox } =
-		props;
+	//////////////////
+	// State & Data //
+	//////////////////
 
+	const { alt, className, disableLightbox, ipfsUrl, size, style } = props;
 	const isMounted = useRef(false);
 
-	// Setup some state
+	// Handling lightbox open/close
 	const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
-	const [isMediaLoading, setIsMediaLoading] = useState<boolean>(true);
+
+	// Media details
 	const [isCloudinaryUrl, setIsCloudinaryUrl] = useState<boolean | undefined>();
+	const [isMediaLoading, setIsMediaLoading] = useState<boolean>(true);
 	const [mediaLocation, setMediaLocation] = useState<string | undefined>();
 	const [mediaType, setMediaType] = useState<MediaType | undefined>();
 
+	///////////////
+	// Functions //
+	///////////////
+
+	// Pulls the IPFS hash from an IPFS url
+	// https://ipfs.fleek.co/ipfs/QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
+	// turns into
+	// QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
 	const getHashFromIPFSUrl = (url: string) => {
 		const hashIndex = url.lastIndexOf('/') + 1;
 		return url.slice(hashIndex);
 	};
 
+	// Sets internal "media loading" state
+	// when media loads - this is passed down
+	// to the image or video components
 	const onLoadMedia = () => {
 		setIsMediaLoading(false);
 	};
 
+	// Toggles internal lightbox state object
+	// i.e. shows/hides lightbox
 	const toggleLightbox = () => {
 		if (!disableLightbox) {
 			setIsLightboxOpen(!isLightboxOpen);
 		}
 	};
 
+	// Pings Cloudinary to see if a link exists
+	// for a given NFT's hash
+	// @todo should change to more generic "checkUrlIsValid"
+	// and take URL as parameter
 	const checkHasCloudinaryUrl = (isVideo: boolean) => {
 		return new Promise((resolve, reject) => {
 			// Strip the IPFS hash from ipfs.io URL in NFT metadata
@@ -70,8 +93,13 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		});
 	};
 
+	// Gets MIME type of media at URL
+	// Useful because our IPFS links don't have
+	// a file extension
+	// @todo should take a URL as parameter
 	const checkMediaType = () => {
 		return new Promise((resolve, reject) => {
+			// @todo switch to a fetch
 			var xhttp = new XMLHttpRequest();
 			xhttp.open('HEAD', props.ipfsUrl);
 			xhttp.onreadystatechange = function () {
@@ -89,14 +117,80 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		});
 	};
 
-	const resetState = () => {
+	// Gets data for media
+	// 1. Gets media type from IPFS URL
+	// 2. Checks if a Cloudinary URL exists
+	// 3. Sets state based on data from 1 and 2
+	const getMediaData = async () => {
+		// 1.
+		const mediaType = (await checkMediaType()) as MediaType;
+
+		// 2.
+		const hasCloudinaryUrl = (await checkHasCloudinaryUrl(
+			mediaType === MediaType.Video,
+		)) as boolean;
+
+		// 3.
 		if (isMounted.current) {
-			setIsMediaLoading(true);
-			setMediaLocation(undefined);
-			setIsCloudinaryUrl(undefined);
+			// Assign data
+			setMediaType(mediaType);
+			if (hasCloudinaryUrl) {
+				setIsCloudinaryUrl(true);
+				setMediaLocation(getHashFromIPFSUrl(ipfsUrl));
+			} else {
+				setIsCloudinaryUrl(false);
+				setMediaLocation(ipfsUrl);
+			}
 		}
 	};
 
+	// Resets relevant state objects
+	// Sometimes react-table does weird stuff
+	// to enhance performance - this should handle those
+	// cases
+	const resetState = () => {
+		if (isMounted.current) {
+			setIsCloudinaryUrl(undefined);
+			setIsMediaLoading(true);
+			setMediaLocation(undefined);
+		}
+	};
+
+	/////////////
+	// Effects //
+	/////////////
+
+	// Sets isMounted flag to help prevent
+	// state updates to unmounted components
+	// after an async call finishes
+	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	});
+
+	// Gets all media data when IPFS url changes
+	// @todo clean this up
+	useEffect(() => {
+		if (!props.ipfsUrl || !props.ipfsUrl.length) {
+			// By returning nothing here this container
+			// will just render the Spinner component
+			// @todo render an error icon/message
+			return;
+		}
+		resetState();
+
+		getMediaData();
+	}, [props.ipfsUrl]);
+
+	///////////////
+	// Fragments //
+	///////////////
+
+	// React fragment for the media component
+	// @params matchSize - true if we should respect the size prop
+	// useful for showing full-res version lightbox
 	const mediaComponent = (
 		matchSize: boolean,
 		style: React.CSSProperties | undefined,
@@ -109,11 +203,11 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 				<CloudinaryMedia
 					alt={alt}
 					hash={mediaLocation!}
-					size={matchSize ? size : undefined}
-					isVideo={mediaType === MediaType.Video}
 					isPlaying={!isLightboxOpen}
+					isVideo={mediaType === MediaType.Video}
 					onClick={toggleLightbox}
 					onLoad={onLoadMedia}
+					size={matchSize ? size : undefined}
 					style={{ ...style, opacity: isMediaLoading ? 0 : 1 }}
 				/>
 			);
@@ -122,49 +216,15 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 				<IPFSMedia
 					alt={alt}
 					ipfsUrl={mediaLocation!}
-					size={matchSize ? size : undefined}
 					isVideo={mediaType === MediaType.Video}
 					onClick={toggleLightbox}
 					onLoad={onLoadMedia}
+					size={matchSize ? size : undefined}
 					style={{ ...style, opacity: isMediaLoading ? 0 : 1 }}
 				/>
 			);
 		}
 	};
-
-	useEffect(() => {
-		isMounted.current = true;
-		return () => {
-			isMounted.current = false;
-		};
-	});
-
-	useEffect(() => {
-		if (!props.ipfsUrl || !props.ipfsUrl.length) {
-			return;
-		}
-		resetState();
-		const getMediaData = async () => {
-			// Get data
-			const mediaType = (await checkMediaType()) as MediaType;
-			const hasCloudinaryUrl = (await checkHasCloudinaryUrl(
-				mediaType === MediaType.Video,
-			)) as boolean;
-
-			if (isMounted.current) {
-				// Assign data
-				setMediaType(mediaType);
-				if (hasCloudinaryUrl) {
-					setIsCloudinaryUrl(true);
-					setMediaLocation(getHashFromIPFSUrl(ipfsUrl));
-				} else {
-					setIsCloudinaryUrl(false);
-					setMediaLocation(ipfsUrl);
-				}
-			}
-		};
-		getMediaData();
-	}, [props.ipfsUrl]);
 
 	return (
 		<div
@@ -173,28 +233,29 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		>
 			{isLightboxOpen && (
 				<Overlay centered img open onClose={toggleLightbox}>
+					{/* @todo clean up the inline styling below */}
 					<div
 						className={`${styles.Container}`}
 						style={{
 							...style,
-							position: 'relative',
-							width: 'auto',
+							borderRadius: 0,
 							height: '100%',
 							maxHeight: '80vh',
 							maxWidth: '80vw',
 							objectFit: 'contain',
+							position: 'relative',
 							textAlign: 'center',
-							borderRadius: 0,
+							width: 'auto',
 						}}
 					>
 						{mediaComponent(false, {
-							position: 'relative',
-							width: 'auto',
 							height: '100%',
 							maxHeight: '80vh',
 							maxWidth: '80vw',
 							objectFit: 'contain',
+							position: 'relative',
 							textAlign: 'center',
+							width: 'auto',
 						})}
 					</div>
 				</Overlay>
