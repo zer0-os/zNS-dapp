@@ -55,6 +55,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 				ipfsUrl={imageUri ? imageUri : ''}
 				size="medium"
 				alt={`NFT preview for ${name}`}
+				disableLightbox
 			/>
 			<div className={styles.Body}>
 				<h5 className={`glow-text-blue`}>{name}</h5>
