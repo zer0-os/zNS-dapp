@@ -62,9 +62,10 @@ const IPFSMedia = (props: MediaContainerProps) => {
 			)}
 			{imageFailed && (
 				<video
-					autoPlay
+					autoPlay={true}
 					className={styles.Media}
 					controls={size === undefined}
+					loop={true}
 					muted
 					onClick={clickVideo}
 					onLoadedMetadata={onLoad}
