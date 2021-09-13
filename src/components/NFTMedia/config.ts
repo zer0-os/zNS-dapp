@@ -11,3 +11,13 @@ export const generateVideoPoster = (hash: string, options: string) =>
 	`https://res.cloudinary.com/${cloudName}/video/upload/${
 		options?.length ? options + '/' : ''
 	}v1/${folder}/${hash}.jpg`;
+
+export const generateCloudinaryUrl = (
+	hash: string,
+	type: string,
+	options?: string,
+) => {
+	return `https://res.cloudinary.com/${cloudName}/${type}/upload/${
+		options ? options + '/' : ''
+	}v1631501273/${folder}/${hash}`;
+};
