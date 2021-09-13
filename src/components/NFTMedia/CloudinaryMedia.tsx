@@ -38,14 +38,17 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	const loadVideo = (e: SyntheticEvent) => {
 		videoRef.current = e.target as HTMLVideoElement;
 		if (videoRef.current) {
-			try {
-				videoRef.current.play();
-			} catch {
-				// Just don't want to show err
-				console.warn(
-					'Play for NFT asset was disrupted by reload ipfs.fleek.co/ipfs/' +
-						hash,
-				);
+			var playPromise = videoRef.current.play();
+
+			if (playPromise !== undefined) {
+				playPromise.catch((error: any) => {
+					// Auto-play was prevented
+					// Show paused UI.
+					console.warn(
+						'Video autoplay interrupted by reload for ipfs.fleek.co/ipfs/' +
+							hash,
+					);
+				});
 			}
 		}
 		if (props.onLoad) {
