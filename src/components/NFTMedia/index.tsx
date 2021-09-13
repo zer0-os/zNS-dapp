@@ -176,7 +176,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 			return (
 				<IPFSMedia
 					alt={alt}
-					ipfsUrl={mediaLocation!}
+					ipfsUrl={ipfsUrl!}
 					onClick={toggleLightbox}
 					onLoad={onLoadMedia}
 					size={matchSize ? size : undefined}

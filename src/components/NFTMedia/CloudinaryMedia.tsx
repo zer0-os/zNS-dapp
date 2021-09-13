@@ -16,7 +16,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	// State & Data //
 	//////////////////
 
-	const { alt, hash, isPlaying, isVideo, onLoad, size, style } = props;
+	const { alt, hash, isPlaying, isVideo, onLoad, onError, size, style } = props;
 	const videoRef = useRef<HTMLVideoElement>();
 
 	///////////////
@@ -35,11 +35,15 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 		}
 	};
 
-	// Runs when content is loading
-	// For images - when the image is fully loaded
-	// For videos - when the metadata is fully loaded
-	const load = (e: SyntheticEvent) => {
+	const loadVideo = (e: SyntheticEvent) => {
 		videoRef.current = e.target as HTMLVideoElement;
+		if (videoRef.current) {
+			try {
+				videoRef.current.play();
+			} catch {
+				// Just don't want to show err
+			}
+		}
 		if (props.onLoad) {
 			props.onLoad();
 		}
@@ -119,7 +123,18 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 					)}
 				</Image>
 			)}
-			{isVideo && (
+			{isVideo && size === 'tiny' && (
+				<img
+					alt={alt}
+					className={styles.Media}
+					onClick={props.onClick}
+					onError={props.onError}
+					onLoad={onLoad}
+					src={generateVideoPoster(hash, crop as string)}
+					style={style}
+				/>
+			)}
+			{isVideo && size !== 'tiny' && (
 				<Video
 					alt={alt}
 					autoPlay={true}
@@ -130,11 +145,11 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 					muted
 					onClick={clickVideo}
 					onError={props.onError}
-					onLoadedMetadata={load}
+					onLoadedMetadata={loadVideo}
 					playsInline
 					poster={generateVideoPoster(hash, crop as string)}
 					preload="metadata"
-					publicId={`${folder}/${hash}`}
+					publicId={`${folder}/${hash}${size !== undefined ? '.jpg' : ''}`}
 					secure={true}
 					style={style}
 				>
