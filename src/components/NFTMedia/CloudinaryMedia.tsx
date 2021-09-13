@@ -9,15 +9,26 @@ import { Image, Transformation, Video } from 'cloudinary-react';
 
 // Local Imports
 import { CloudinaryMediaProps } from './types';
-import { cloudName, folder, generateVideoPoster } from './config';
+import {
+	cloudName,
+	folder,
+	generateCloudinaryUrl,
+	generateVideoPoster,
+} from './config';
 
 const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
 
-	const { alt, hash, isPlaying, isVideo, onLoad, size, style } = props;
+	const { alt, hash, isPlaying, isVideo, onLoad, onError, size, style } = props;
 	const videoRef = useRef<HTMLVideoElement>();
+
+	const isIos = navigator.userAgent.includes('Mac') && 'ontouchend' in document;
+	const isMobile =
+		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(
+			navigator.userAgent,
+		);
 
 	///////////////
 	// Functions //
@@ -35,11 +46,22 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 		}
 	};
 
-	// Runs when content is loading
-	// For images - when the image is fully loaded
-	// For videos - when the metadata is fully loaded
-	const load = (e: SyntheticEvent) => {
+	const loadVideo = (e: SyntheticEvent) => {
 		videoRef.current = e.target as HTMLVideoElement;
+		if (videoRef.current) {
+			var playPromise = videoRef.current.play();
+
+			if (playPromise !== undefined) {
+				playPromise.catch((error: any) => {
+					// Auto-play was prevented
+					// Show paused UI.
+					console.warn(
+						'Video autoplay interrupted by reload for ipfs.fleek.co/ipfs/' +
+							hash,
+					);
+				});
+			}
+		}
 		if (props.onLoad) {
 			props.onLoad();
 		}
@@ -82,6 +104,12 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	};
 	const crop = size !== undefined && cropOptions();
 
+	const url = generateCloudinaryUrl(
+		hash,
+		isVideo ? 'video' : 'image',
+		cropOptions(),
+	);
+
 	/////////////
 	// Effects //
 	/////////////
@@ -100,48 +128,93 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	// Fragments //
 	///////////////
 
-	return (
-		<>
-			{!isVideo && (
-				<Image
-					alt={alt}
-					className={styles.Media}
-					cloudName={cloudName}
-					onClick={props.onClick}
-					onLoad={onLoad}
-					publicId={`${folder}/${hash}`}
-					secure={true}
-					style={style}
-				>
-					{height && (
-						<Transformation height={height} width={height} crop="fit" />
-					)}
-				</Image>
-			)}
-			{isVideo && (
-				<Video
-					alt={alt}
+	//
+	// Image handlers
+	//
+
+	// If it's not a video
+	if (!isVideo) {
+		return (
+			<Image
+				alt={alt}
+				className={styles.Media}
+				cloudName={cloudName}
+				onClick={props.onClick}
+				onError={props.onError}
+				onLoad={onLoad}
+				publicId={`${folder}/${hash}`}
+				secure={true}
+				style={style}
+			>
+				{height && <Transformation height={height} width={height} crop="fit" />}
+			</Image>
+		);
+	}
+
+	//
+	// Video handlers
+	//
+
+	// If it is a video, but we want the thumbnail only
+	// If we're on iOS and not showing the full size,
+	if (size === 'tiny' || (size !== undefined && (isIos || isMobile))) {
+		return (
+			<img
+				alt={alt}
+				className={styles.Media}
+				onClick={props.onClick}
+				onError={props.onError}
+				onLoad={onLoad}
+				src={generateVideoPoster(hash, crop as string)}
+				style={style}
+			/>
+		);
+	}
+
+	// If we're on iOS, need to handle videos differently
+	if (isIos) {
+		return (
+			<>
+				<video
 					autoPlay={true}
 					className={styles.Media}
-					cloudName={cloudName}
 					controls={size === undefined}
 					loop={true}
 					muted
 					onClick={clickVideo}
-					onLoadedMetadata={load}
+					onError={props.onError}
+					onLoadedMetadata={loadVideo}
 					playsInline
 					poster={generateVideoPoster(hash, crop as string)}
-					preload="metadata"
-					publicId={`${folder}/${hash}`}
-					secure={true}
 					style={style}
-				>
-					{height && (
-						<Transformation width={height} height={height} crop="fit" />
-					)}
-				</Video>
-			)}
-		</>
+					src={url + '.mp4'}
+				></video>
+			</>
+		);
+	}
+
+	// Rendering videos normal way
+	return (
+		<Video
+			alt={alt}
+			autoPlay={true}
+			className={styles.Media}
+			cloudName={cloudName}
+			controls={size === undefined}
+			loop={true}
+			muted
+			onClick={clickVideo}
+			onError={props.onError}
+			onLoadedMetadata={loadVideo}
+			playsInline
+			poster={generateVideoPoster(hash, crop as string)}
+			preload="metadata"
+			publicId={`${folder}/${hash}${size !== undefined ? '.jpg' : ''}`}
+			secure={true}
+			style={style}
+		>
+			{height && <Transformation width={height} height={height} crop="fit" />}
+		</Video>
 	);
 };
 

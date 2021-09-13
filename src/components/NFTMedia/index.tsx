@@ -19,9 +19,6 @@ import { Overlay, Spinner } from 'components';
 import IPFSMedia from './IPFSMedia';
 import CloudinaryMedia from './CloudinaryMedia';
 
-// Local Imports
-import { cloudinaryImageBaseUrl, cloudinaryVideoBaseUrl } from './config';
-
 // Possible media types based on
 // MIME type of content
 enum MediaType {
@@ -41,8 +38,10 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	// Handling lightbox open/close
 	const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 
+	const [hasCloudinaryFailed, setHasCloudinaryFailed] =
+		useState<boolean>(false);
+
 	// Media details
-	const [isCloudinaryUrl, setIsCloudinaryUrl] = useState<boolean | undefined>();
 	const [isMediaLoading, setIsMediaLoading] = useState<boolean>(true);
 	const [mediaLocation, setMediaLocation] = useState<string | undefined>();
 	const [mediaType, setMediaType] = useState<MediaType | undefined>();
@@ -67,6 +66,11 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		setIsMediaLoading(false);
 	};
 
+	const onCloudinaryFailed = () => {
+		console.warn('Failed to find Cloudinary link for asset ' + ipfsUrl);
+		setHasCloudinaryFailed(true);
+	};
+
 	// Toggles internal lightbox state object
 	// i.e. shows/hides lightbox
 	const toggleLightbox = () => {
@@ -75,73 +79,32 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		}
 	};
 
-	// Pings Cloudinary to see if a link exists
-	// for a given NFT's hash
-	// @todo should change to more generic "checkUrlIsValid"
-	// and take URL as parameter
-	const checkHasCloudinaryUrl = (isVideo: boolean) => {
+	// Gets MIME type of media at URL
+	// Useful because our IPFS links don't have
+	// a file extension
+	const checkMediaType = () => {
 		return new Promise((resolve, reject) => {
-			// Strip the IPFS hash from ipfs.io URL in NFT metadata
-			const hash = getHashFromIPFSUrl(ipfsUrl);
+			fetch(ipfsUrl, { method: 'HEAD' }).then((r: Response) => {
+				const contentTypeHeader = r.headers.get('Content-Type');
 
-			// Check if Cloudinary URL exists
-			const cloudinaryUrl =
-				(isVideo ? cloudinaryVideoBaseUrl : cloudinaryImageBaseUrl) + hash;
-			fetch(cloudinaryUrl, { method: 'HEAD' }).then((r: Response) => {
-				resolve(r.status === 200);
+				if (contentTypeHeader?.startsWith('image')) {
+					resolve(MediaType.Image);
+				} else if (contentTypeHeader?.startsWith('video')) {
+					resolve(MediaType.Video);
+				} else {
+					resolve(MediaType.Unknown);
+				}
 			});
 		});
 	};
 
-	// Gets MIME type of media at URL
-	// Useful because our IPFS links don't have
-	// a file extension
-	// @todo should take a URL as parameter
-	const checkMediaType = () => {
-		return new Promise((resolve, reject) => {
-			// @todo switch to a fetch
-			var xhttp = new XMLHttpRequest();
-			xhttp.open('HEAD', props.ipfsUrl);
-			xhttp.onreadystatechange = function () {
-				if (this.readyState === this.DONE) {
-					const mimeType = this.getResponseHeader('Content-Type');
-					if (mimeType?.includes('image')) {
-						resolve(MediaType.Image);
-					} else if (mimeType?.includes('video')) {
-						resolve(MediaType.Video);
-					}
-					resolve(MediaType.Unknown);
-				}
-			};
-			xhttp.send();
-		});
-	};
-
 	// Gets data for media
-	// 1. Gets media type from IPFS URL
-	// 2. Checks if a Cloudinary URL exists
-	// 3. Sets state based on data from 1 and 2
 	const getMediaData = async () => {
-		// 1.
 		const mediaType = (await checkMediaType()) as MediaType;
+		setMediaType(mediaType);
 
-		// 2.
-		const hasCloudinaryUrl = (await checkHasCloudinaryUrl(
-			mediaType === MediaType.Video,
-		)) as boolean;
-
-		// 3.
-		if (isMounted.current) {
-			// Assign data
-			setMediaType(mediaType);
-			if (hasCloudinaryUrl) {
-				setIsCloudinaryUrl(true);
-				setMediaLocation(getHashFromIPFSUrl(ipfsUrl));
-			} else {
-				setIsCloudinaryUrl(false);
-				setMediaLocation(ipfsUrl);
-			}
-		}
+		const hash = getHashFromIPFSUrl(ipfsUrl);
+		setMediaLocation(hash);
 	};
 
 	// Resets relevant state objects
@@ -150,7 +113,6 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	// cases
 	const resetState = () => {
 		if (isMounted.current) {
-			setIsCloudinaryUrl(undefined);
 			setIsMediaLoading(true);
 			setMediaLocation(undefined);
 		}
@@ -180,7 +142,6 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 			return;
 		}
 		resetState();
-
 		getMediaData();
 	}, [props.ipfsUrl]);
 
@@ -198,7 +159,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		if (!mediaLocation) {
 			return;
 		}
-		if (isCloudinaryUrl) {
+		if (!hasCloudinaryFailed) {
 			return (
 				<CloudinaryMedia
 					alt={alt}
@@ -206,17 +167,17 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 					isPlaying={!isLightboxOpen}
 					isVideo={mediaType === MediaType.Video}
 					onClick={toggleLightbox}
+					onError={onCloudinaryFailed}
 					onLoad={onLoadMedia}
 					size={matchSize ? size : undefined}
 					style={{ ...style, opacity: isMediaLoading ? 0 : 1 }}
 				/>
 			);
-		} else if (!isCloudinaryUrl) {
+		} else {
 			return (
 				<IPFSMedia
 					alt={alt}
-					ipfsUrl={mediaLocation!}
-					isVideo={mediaType === MediaType.Video}
+					ipfsUrl={ipfsUrl!}
 					onClick={toggleLightbox}
 					onLoad={onLoadMedia}
 					size={matchSize ? size : undefined}

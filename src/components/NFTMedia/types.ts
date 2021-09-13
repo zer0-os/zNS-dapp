@@ -4,6 +4,7 @@ interface SharedProps {
 	disableLightbox?: boolean;
 	isPlaying?: boolean;
 	onClick?: () => void;
+	onError?: () => void;
 	onLoad?: () => void;
 	size?: string | undefined;
 	style?: React.CSSProperties;
