@@ -39,7 +39,7 @@
 .body {
 	display: flex;
 	/* justify-content: center; */
-	padding: 40px 52px 40px 0;
+	padding: 40px 0 40px 0;
 
 	font-size: var(--font-size-default);
 	color: white;
