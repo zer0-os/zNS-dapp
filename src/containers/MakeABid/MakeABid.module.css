@@ -69,6 +69,8 @@
 
 .Domain {
 	overflow-wrap: anywhere;
+	display: block;
+	margin-top: 4px;
 }
 
 .Price {
