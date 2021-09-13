@@ -108,6 +108,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 					className={styles.Media}
 					cloudName={cloudName}
 					onClick={props.onClick}
+					onError={props.onError}
 					onLoad={onLoad}
 					publicId={`${folder}/${hash}`}
 					secure={true}
@@ -128,6 +129,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 					loop={true}
 					muted
 					onClick={clickVideo}
+					onError={props.onError}
 					onLoadedMetadata={load}
 					playsInline
 					poster={generateVideoPoster(hash, crop as string)}
