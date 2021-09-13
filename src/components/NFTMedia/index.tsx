@@ -67,6 +67,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	};
 
 	const onCloudinaryFailed = () => {
+		console.warn('Failed to find Cloudinary link for asset ' + ipfsUrl);
 		setHasCloudinaryFailed(true);
 	};
 
