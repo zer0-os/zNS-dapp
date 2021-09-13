@@ -374,7 +374,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const details = () => (
 		<div className={styles.Details}>
 			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
-			<span>0://{domain.name}</span>
+			<span className={styles.Domain}>0://{domain.name}</span>
 			<div className={styles.Price}>
 				<h3 className="glow-text-blue">Highest Bid</h3>
 				{highestBid()}

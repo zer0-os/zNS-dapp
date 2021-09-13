@@ -64,6 +64,11 @@
 .Details {
 	flex: 1;
 	margin-left: 12px;
+	width: 272px;
+}
+
+.Domain {
+	overflow-wrap: anywhere;
 }
 
 .Price {
