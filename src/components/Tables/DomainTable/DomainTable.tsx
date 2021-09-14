@@ -145,6 +145,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 		if (biddingOn && isMounted.current) {
 			setDomainToRefresh(biddingOn.id);
+			// Need to reset this in case the user
+			// is bidding on the same domain twice
+			setTimeout(() => {
+				setDomainToRefresh('');
+			}, 1000);
 		}
 	};
 
@@ -230,15 +235,15 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			{
 				id: 'bid',
 				accessor: (domain: Domain) => {
-					const shouldGlow =
-						userId?.toLowerCase() !== domain.owner.id.toLowerCase();
-
 					return (
 						<>
 							{isGlobalTable && (
 								<FutureButton
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
-									glow={disableButton === false && shouldGlow}
+									glow={
+										userId !== undefined &&
+										userId?.toLowerCase() !== domain.owner.id.toLowerCase()
+									}
 									onClick={() => buttonClick(domain)}
 								>
 									Make A Bid
@@ -257,7 +262,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				},
 			},
 		],
-		[domains],
+		[domains, userId, domainToRefresh],
 	);
 
 	// Navigation Handling

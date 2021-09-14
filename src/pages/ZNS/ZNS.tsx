@@ -51,6 +51,8 @@ import {
 	Spinner,
 } from 'components';
 
+import { SubdomainTable } from 'containers';
+
 //- Library Imports
 import { useTransferProvider } from 'lib/providers/TransferProvider';
 import { MintNewNFT, NFTView, MakeABid, TransferOwnership } from 'containers';
@@ -361,27 +363,19 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		);
 	};
 
-	const subdomainTable = () => (
-		<>
-			{/* Subdomain Table */}
-			{showDomainTable && (
-				<DomainTable
-					domains={tableData.slice().sort((a, b) => (a.name < b.name ? -1 : 1))}
-					isRootDomain={isRoot}
-					isGlobalTable
-					style={{ marginTop: 16 }}
-					empty={(znsDomain.domain && tableData.length === 0) as boolean}
-					disableButton={!active}
+	const subdomainTable = () => {
+		if (showDomainTable) {
+			return (
+				<SubdomainTable
 					isGridView={isGridView}
 					setIsGridView={setIsGridView}
-					userId={account as string}
-					onRowClick={(domain: Domain) =>
-						navigate(domain.name.split('wilder.')[1])
-					}
+					domainName={domain}
 				/>
-			)}
-		</>
-	);
+			);
+		} else {
+			return <></>;
+		}
+	};
 
 	const modals = () => (
 		<>
