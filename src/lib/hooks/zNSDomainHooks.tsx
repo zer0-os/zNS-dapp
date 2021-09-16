@@ -64,7 +64,7 @@ export function useDomainsOwnedByUserQuery(
 
 export function useDomainsTransfers(domainId: string, pollInterval?: number) {
 	const query = useQueryHook<DomainsQueryResult>(
-		queries.byIdTransfers,
+		queries.getDomainTransfers,
 		{
 			id: domainId,
 		},

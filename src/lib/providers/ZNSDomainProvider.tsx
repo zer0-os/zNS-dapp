@@ -40,7 +40,7 @@ export function ZNSDomainsProvider({ children }: any) {
 		domainId: string,
 	): Promise<ApolloQueryResult<DomainQueryResult> | undefined> => {
 		const options: QueryOptions = {
-			query: queries.byIdMint,
+			query: queries.getDomainMintEvent,
 			variables: { id: domainId },
 			fetchPolicy: 'cache-first',
 		};

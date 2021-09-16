@@ -104,8 +104,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		console.log(transfersDto.domainTransferreds[0].timestamp);
 	}
 
+	/*  //isolated until we have mainnet subgraph updated
 	//- Declare an async function to get mint data
-	const getMint = async () => {
+	const getMintData = async () => {
 		const minterDto = (await ZNSDomainsProvider.getDomainMint(domainId))
 			?.data as minterData;
 
@@ -120,7 +121,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	};
 
 	//- Prints and call function to print async
-	getMint();
+	getMintData();
+*/
 
 	//- Functions
 	const copyContractToClipboard = () => {
