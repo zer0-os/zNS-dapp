@@ -37,6 +37,8 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
+import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -44,12 +46,40 @@ type NFTViewProps = {
 	onTransfer: () => void;
 };
 
+interface minterDto {
+	id: string;
+	domain: string;
+	blockNumber: number;
+	timestamp: number;
+	transactionID: string;
+	minter: string;
+}
+
+interface transferDto {
+	id: string;
+	domain: string;
+	blockNumber: number;
+	timestamp: number;
+	transactionID: string;
+	from: string;
+	to: string;
+}
+
+interface minterData {
+	domainMinteds?: minterDto[];
+}
+
+interface transfersData {
+	domainTransferreds?: transferDto[];
+}
+
 const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
 
 	//- Notes:
 	// It's worth having this component consume the domain context
 	// because it needs way more data than is worth sending through props
+	const ZNSDomainsProvider = useZNSDomains();
 
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
@@ -85,6 +115,34 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const etherscanBaseUri = getEtherscanUri(networkType);
 	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
+
+	//Transfers and mint data from nft
+	//- Calls the hook with a polling interval to update the data
+
+	const transfersPollingInterval: number = 5000;
+	const transfers = useDomainsTransfers(
+		domainId,
+		transfersPollingInterval,
+	).data;
+
+	//- Convert to dto
+	const transfersDto = transfers as transfersData;
+	if (transfersDto && transfersDto.domainTransferreds) {
+		console.log(transfersDto.domainTransferreds[0].timestamp);
+	}
+
+	//- Declare an async function to get mint data
+	const getMint = async () => {
+		const data = await ZNSDomainsProvider.getDomainMint(domainId);
+		const minterDto = data as minterData;
+		if (minterDto && minterDto.domainMinteds) {
+			console.log(minterDto.domainMinteds[0].minter);
+		}
+		return data?.data as minterData;
+	};
+	//- Prints and call function to print async
+	console.log('mint');
+	getMint();
 
 	//- Functions
 	const copyContractToClipboard = () => {
@@ -167,6 +225,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			!znsDomain.domain.image
 		) {
 			if (!isMounted.current) return;
+
 			setIsOwnedByYou(
 				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
 			);

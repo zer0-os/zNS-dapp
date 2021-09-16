@@ -1,5 +1,42 @@
 import { gql } from '@apollo/client';
 
+export const byIdMint = gql`
+	query DomainMinted($id: ID!) {
+		domainMinteds(where: { domain: $id }) {
+			id
+			domain {
+				id
+			}
+			blockNumber
+			timestamp
+			transactionID
+			minter {
+				id
+			}
+		}
+	}
+`;
+
+export const byIdTransfers = gql`
+	query DomainTransferred($id: ID!) {
+		domainTransferreds(where: { domain: $id }) {
+			id
+			domain {
+				id
+			}
+			blockNumber
+			timestamp
+			transactionID
+			from {
+				id
+			}
+			to {
+				id
+			}
+		}
+	}
+`;
+
 export const byIdQuery = gql`
 	query Domain($id: ID!) {
 		domain(id: $id) {
