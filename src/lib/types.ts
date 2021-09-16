@@ -159,7 +159,7 @@ interface minterDto {
 	minter: string;
 }
 
-interface transferDto {
+export interface transferDto {
 	id: string;
 	domain: string;
 	blockNumber: string;
