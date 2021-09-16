@@ -14,6 +14,7 @@ import { Metadata } from 'lib/types';
 
 //- Style Imports
 import styles from './Artwork.module.css';
+import LazyLoad from 'react-lazyload';
 
 type ArtworkProps = {
 	domain: string;

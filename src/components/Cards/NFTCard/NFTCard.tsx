@@ -6,6 +6,7 @@ import styles from './NFTCard.module.css';
 
 //- Component Imports
 import { ArrowLink, Image, NFTMedia } from 'components';
+import LazyLoad from 'react-lazyload';
 
 export interface NFTCardProps {
 	actionsComponent?: React.ReactNode;
@@ -49,14 +50,9 @@ const NFTCard: React.FC<NFTCardProps> = ({
 			style={style ? style : {}}
 			className={`${styles.NFTCard} border-rounded`}
 		>
-			<NFTMedia
-				className={styles.NFT}
-				style={{ height: 348, objectFit: 'contain' }}
-				ipfsUrl={imageUri ? imageUri : ''}
-				size="medium"
-				alt={`NFT preview for ${name}`}
-				disableLightbox
-			/>
+			<LazyLoad throttle={200} height={348}>
+				<img src="https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_500,w_500/v1/zns/QmNeJfSMhxKYgKMDahyGRdf29EgoLBYVYFuZiQeENV3Doj.jpg" />
+			</LazyLoad>
 			<div className={styles.Body}>
 				<h5 className={`glow-text-blue`}>{name}</h5>
 				<ArrowLink>{domainText}</ArrowLink>

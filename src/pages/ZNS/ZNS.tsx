@@ -363,20 +363,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		);
 	};
 
-	const subdomainTable = () => {
-		if (showDomainTable) {
-			return (
-				<SubdomainTable
-					isGridView={isGridView}
-					setIsGridView={setIsGridView}
-					domainName={domain}
-				/>
-			);
-		} else {
-			return <></>;
-		}
-	};
-
 	const modals = () => (
 		<>
 			{/* Overlays */}
@@ -635,7 +621,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				)}
 
 				{previewCard()}
-				{subdomainTable()}
+
+				{showDomainTable && (
+					<SubdomainTable
+						isGridView={isGridView}
+						setIsGridView={setIsGridView}
+						domainName={domain}
+					/>
+				)}
 
 				{znsDomain.domain && (isNftView || tableData.length === 0) && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>

@@ -1,8 +1,9 @@
 /*
 	This is a container for rendering a subdomain
 	on the *current* domain.
+
 	It is rendered in ZNS.tsx - domain name is passed
-	from the react-router to the 
+	from react-router in App.tsx
  */
 
 // React Imports

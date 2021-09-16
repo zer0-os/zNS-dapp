@@ -32,6 +32,7 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { domain } from 'process';
 import { useRefreshToken } from 'lib/hooks/useRefreshToken';
+import LazyLoad from 'react-lazyload';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
