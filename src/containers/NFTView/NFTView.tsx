@@ -39,39 +39,13 @@ import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
 import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
+import { transfersData, minterData } from 'lib/types';
 const moment = require('moment');
 
 type NFTViewProps = {
 	domain: string;
 	onTransfer: () => void;
 };
-
-interface minterDto {
-	id: string;
-	domain: string;
-	blockNumber: number;
-	timestamp: number;
-	transactionID: string;
-	minter: string;
-}
-
-interface transferDto {
-	id: string;
-	domain: string;
-	blockNumber: number;
-	timestamp: number;
-	transactionID: string;
-	from: string;
-	to: string;
-}
-
-interface minterData {
-	domainMinteds?: minterDto[];
-}
-
-interface transfersData {
-	domainTransferreds?: transferDto[];
-}
 
 const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
@@ -120,28 +94,32 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	//- Calls the hook with a polling interval to update the data
 
 	const transfersPollingInterval: number = 5000;
-	const transfers = useDomainsTransfers(
-		domainId,
-		transfersPollingInterval,
-	).data;
+	const transfersDto = useDomainsTransfers(domainId, transfersPollingInterval)
+		.data as transfersData;
 
-	//- Convert to dto
-	const transfersDto = transfers as transfersData;
+	console.log('transfer data');
+	console.log(transfersDto);
 	if (transfersDto && transfersDto.domainTransferreds) {
+		console.log('only timestamp of the first transfer');
 		console.log(transfersDto.domainTransferreds[0].timestamp);
 	}
 
 	//- Declare an async function to get mint data
 	const getMint = async () => {
-		const data = await ZNSDomainsProvider.getDomainMint(domainId);
-		const minterDto = data as minterData;
+		const minterDto = (await ZNSDomainsProvider.getDomainMint(domainId))
+			?.data as minterData;
+
+		console.log('mint data');
+		console.log(minterDto);
 		if (minterDto && minterDto.domainMinteds) {
+			console.log('only minter');
 			console.log(minterDto.domainMinteds[0].minter);
 		}
-		return data?.data as minterData;
+
+		return minterDto;
 	};
+
 	//- Prints and call function to print async
-	console.log('mint');
 	getMint();
 
 	//- Functions

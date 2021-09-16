@@ -149,3 +149,30 @@ export interface DomainsQueryResult {
 export interface DomainQueryResult {
 	domain: Maybe<ParentDomain>;
 }
+
+interface minterDto {
+	id: string;
+	domain: string;
+	blockNumber: string;
+	timestamp: string;
+	transactionID: string;
+	minter: string;
+}
+
+interface transferDto {
+	id: string;
+	domain: string;
+	blockNumber: string;
+	timestamp: string;
+	transactionID: string;
+	from: string;
+	to: string;
+}
+
+export interface minterData {
+	domainMinteds?: minterDto[];
+}
+
+export interface transfersData {
+	domainTransferreds?: transferDto[];
+}
