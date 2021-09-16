@@ -37,6 +37,9 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
+import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
+import { transfersData, minterData, transferDto } from 'lib/types';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -50,6 +53,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	//- Notes:
 	// It's worth having this component consume the domain context
 	// because it needs way more data than is worth sending through props
+	const ZNSDomainsProvider = useZNSDomains();
 
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
@@ -85,6 +89,13 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const etherscanBaseUri = getEtherscanUri(networkType);
 	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
+
+	//Transfers and mint data from nft
+	//- Calls the hook with a polling interval to update the data
+
+	const transfersPollingInterval: number = 5000;
+	const transfersDto = useDomainsTransfers(domainId, transfersPollingInterval)
+		.data as transfersData;
 
 	//- Functions
 	const copyContractToClipboard = () => {
@@ -167,6 +178,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			!znsDomain.domain.image
 		) {
 			if (!isMounted.current) return;
+
 			setIsOwnedByYou(
 				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
 			);
@@ -202,54 +214,125 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		</>
 	);
 
-	const history = () => (
-		<section
-			className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
-		>
-			<h4>History</h4>
-			{!bids && (
-				<div className={styles.Loading}>
-					<span>Loading bid history</span>
-				</div>
-			)}
-			{bids && bids.length === 0 && (
-				<span style={{ marginTop: 12, display: 'block' }}>No bids</span>
-			)}
-			{bids && bids.length > 0 && (
-				<ul>
-					{bids?.map((bid: Bid, i: number) =>
-						historyItem(bid.bidderAccount, bid.amount, bid.date, i),
-					)}
-				</ul>
-			)}
-		</section>
-	);
+	const history = () => {
+		// @todo this is very gross, rewrite
+		const both = [bids || [], transfersDto?.domainTransferreds || []].flat();
+		const sorted = both.sort((a, b) => {
+			const aVal =
+				Number((a as transferDto).timestamp) * 1000 ||
+				(a as Bid).date.getTime() ||
+				0;
+			const bVal =
+				Number((b as transferDto).timestamp) * 1000 ||
+				(b as Bid).date.getTime() ||
+				0;
+			return bVal - aVal;
+		});
+		const allHistoryItems = sorted.slice(0, sorted.length); // the last item is always the doubled up mint transfer
+		return (
+			<section
+				className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
+			>
+				<h4>History</h4>
+				{!bids && (
+					<div className={styles.Loading}>
+						<span>Loading domain history</span>
+					</div>
+				)}
+				{bids && sorted.length > 0 && (
+					<ul>
+						{allHistoryItems.map((item: Bid | transferDto, i: number) =>
+							historyItem(item, i, i === allHistoryItems.length - 1),
+						)}
+					</ul>
+				)}
+			</section>
+		);
+	};
 
 	const historyItem = (
-		account: string,
-		amount: number,
-		date: Date,
+		item: Bid | transferDto,
 		i: number,
-	) => (
-		<li className={styles.Bid} key={i}>
-			<div>
-				<b>
-					<a
-						className="alt-link"
-						href={`https://etherscan.io/address/${account}`}
-						target="_blank"
-						rel="noreferrer"
-					>{`${account.substring(0, 4)}...${account.substring(
-						account.length - 4,
-					)}`}</a>
-				</b>{' '}
-				made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
-			</div>
-			<div className={styles.From}>
-				<b>{moment(date).fromNow()}</b>
-			</div>
-		</li>
-	);
+		isLastItem: boolean,
+	) => {
+		const isBid = (item as Bid).bidderAccount !== undefined;
+
+		if (isBid) {
+			const bid = item as Bid;
+			return (
+				<li className={styles.Bid} key={i}>
+					<div>
+						<b>
+							<a
+								className="alt-link"
+								href={`https://etherscan.io/address/${bid.bidderAccount}`}
+								target="_blank"
+								rel="noreferrer"
+							>{`${bid.bidderAccount.substring(
+								0,
+								4,
+							)}...${bid.bidderAccount.substring(
+								bid.bidderAccount.length - 4,
+							)}`}</a>
+						</b>{' '}
+						made an offer of <b>{Number(bid.amount).toLocaleString()} WILD</b>
+					</div>
+					<div className={styles.From}>
+						<b>{moment(bid.date).fromNow()}</b>
+					</div>
+				</li>
+			);
+		} else if (isLastItem) {
+			const transfer = item as transferDto;
+			return (
+				<li className={styles.Bid} key={i}>
+					<div>
+						<b>Domain minted</b>{' '}
+					</div>
+					<div className={styles.From}>
+						<b>{moment(Number(transfer.timestamp) * 1000).fromNow()}</b>
+					</div>
+				</li>
+			);
+		} else {
+			const transfer = item as transferDto;
+			return (
+				<li className={styles.Bid} key={i}>
+					<div>
+						<b>Ownership transferred</b>{' '}
+					</div>
+					<div className={styles.From}>
+						<b>{moment(Number(transfer.timestamp) * 1000).fromNow()}</b>
+					</div>
+				</li>
+			);
+		}
+	};
+
+	// const historyItem = (item: Bid | transferDto, i: number) => (
+	// 	<>
+	// 		{ (
+	// 			<li className={styles.Bid} key={i}>
+	// 				<div>
+	// 					<b>
+	// 						<a
+	// 							className="alt-link"
+	// 							href={`https://etherscan.io/address/${account}`}
+	// 							target="_blank"
+	// 							rel="noreferrer"
+	// 						>{`${item.bidderAccount.substring(0, 4)}...${item.bidderAccount.substring(
+	// 							account.length - 4,
+	// 						)}`}</a>
+	// 					</b>{' '}
+	// 					made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
+	// 				</div>
+	// 				<div className={styles.From}>
+	// 					<b>{moment(date).fromNow()}</b>
+	// 				</div>
+	// 			</li>
+	// 		)}
+	// 	</>
+	// );
 
 	const actionButtons = () => (
 		<div className={styles.Buttons}>

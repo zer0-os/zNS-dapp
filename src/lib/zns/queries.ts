@@ -1,5 +1,37 @@
 import { gql } from '@apollo/client';
 
+//this only works on kovan until mainnet gets updated
+export const getDomainMintEvent = gql`
+	query DomainMinted($id: ID!) {
+		domainMinteds(where: { domain: $id }) {
+			id
+			domain {
+				id
+			}
+			blockNumber
+			timestamp
+			transactionID
+			minter {
+				id
+			}
+		}
+	}
+`;
+
+export const getDomainTransfers = gql`
+	query DomainTransferred($id: ID!) {
+		domainTransferreds(where: { domain: $id }) {
+			id
+			domain {
+				id
+			}
+			blockNumber
+			timestamp
+			transactionID
+		}
+	}
+`;
+
 export const byIdQuery = gql`
 	query Domain($id: ID!) {
 		domain(id: $id) {
