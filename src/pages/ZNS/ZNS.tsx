@@ -38,7 +38,7 @@ import {
 	DomainTable,
 	TitleBar,
 	Tooltip,
-	NextDrop,
+	CountdownBanner,
 	IconButton,
 	Overlay,
 	Profile,
@@ -312,7 +312,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			// If root view, slide up
 			to = {
 				opacity: 0,
-				marginTop: -(previewCardRef?.current?.clientHeight || 0),
+				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 16,
 			};
 		} else {
 			// If NFT view, don't render
@@ -339,6 +339,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 									onButtonClick={openBidOverlay}
 									onImageClick={() => {}}
 									preventInteraction={domain === '/'}
+									style={{ marginBottom: 16 }}
 								>
 									{mvpVersion === 3 && (
 										<HorizontalScroll fade>
@@ -596,12 +597,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					>
 						{(styles) => (
 							<animated.div style={styles}>
-								<NextDrop
-									title="Futopia"
-									artist="Frank Wilder"
-									date={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
-									style={{ marginTop: 16 }}
-								/>
 								<HorizontalScroll style={{ marginTop: 16 }} fade>
 									<AssetPriceCard
 										title={`${domain.substring(1, 5).toUpperCase()} Price`}
@@ -641,6 +636,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				)}
 
 				{previewCard()}
+				<CountdownBanner />
 				{subdomainTable()}
 
 				{znsDomain.domain && (isNftView || tableData.length === 0) && (

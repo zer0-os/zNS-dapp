@@ -1,5 +1,6 @@
 .NFTView {
 	width: 100%;
+	margin-top: 16px;
 }
 
 .NFTView > div {
