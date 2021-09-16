@@ -60,7 +60,7 @@ const CountdownBanner = () => {
 		<div onClick={onClick} className={`${styles.nextDrop} border-rounded`}>
 			{!isFinished && (
 				<span>
-					AIRWILD auction ending in{' '}
+					AIR WILD auction ending in{' '}
 					<b className={styles.Remaining}>{timeLeft}</b>
 					<b className={styles.Bid}>
 						Bid Now
