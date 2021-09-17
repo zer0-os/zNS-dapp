@@ -75,13 +75,16 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const inputFile = useRef<HTMLInputElement>(null);
 	const openUploadDialog = () =>
 		inputFile.current ? inputFile.current.click() : null;
+	//CHANGE AND ADD THE TYPE FBX
 	const onImageChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files[0]) {
 			const type = event.target.files[0].type;
+			console.log(event.target.files[0]);
 			// Raw data for image preview
 			const url = URL.createObjectURL(event.target.files[0]);
 			if (type.indexOf('image') > -1) setMediaType('image');
 			else if (type.indexOf('video') > -1) setMediaType('video');
+			else if (type.indexOf('.fbx') > -1) setMediaType('fbx');
 			else return;
 			setPreviewImage(url);
 
@@ -153,10 +156,11 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 						{previewImage && mediaType === 'video' && (
 							<video autoPlay controls loop src={previewImage as string} />
 						)}
+						{previewImage && mediaType === '.fbx' && <h2>Fsao</h2>}
 					</div>
 					<input
 						style={{ display: 'none' }}
-						accept="image/*,video/*,video/quicktime"
+						accept="image/*,video/*,video/quicktime,.fbx,.gltf"
 						multiple={false}
 						name={'media'}
 						type="file"
