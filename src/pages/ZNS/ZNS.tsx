@@ -38,7 +38,6 @@ import {
 	DomainTable,
 	TitleBar,
 	Tooltip,
-	CountdownBanner,
 	IconButton,
 	Overlay,
 	Profile,
@@ -636,7 +635,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				)}
 
 				{previewCard()}
-				<CountdownBanner />
 				{subdomainTable()}
 
 				{znsDomain.domain && (isNftView || tableData.length === 0) && (
