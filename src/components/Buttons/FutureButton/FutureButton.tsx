@@ -11,6 +11,7 @@ type FutureButtonProps = {
 	glow?: boolean;
 	loading?: boolean;
 	alt?: boolean;
+	isWalletConnected?: string;
 };
 
 // @TODO Should make glow the default state since it's much more prevalent in the design
@@ -23,12 +24,14 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	glow,
 	loading,
 	alt,
+	isWalletConnected,
 }) => {
 	const [hasHovered, setHovered] = useState(false);
 	const [isSelected, setSelected] = useState(false);
 
 	const handleHover = () => {
-		if (!hasHovered) setHovered(true);
+		if (!glow) return;
+		else if (!hasHovered) setHovered(true);
 	};
 
 	const handleClick = () => {
@@ -39,16 +42,16 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 
 	return (
 		<button
-			className={`${styles.futureButton} ${isSelected ? styles.selected : ''} ${
-				glow ? styles.glow : ''
-			} ${loading ? styles.Loading : ''} ${alt ? styles.Alt : ''} ${
-				className ? className : ''
-			}`}
+			className={`${styles.futureButton} ${
+				glow ? ' ' : styles.futureButtonUnActive
+			} ${isSelected ? styles.selected : ''} ${glow ? styles.glow : ''} ${
+				loading ? styles.Loading : ''
+			} ${alt ? styles.Alt : ''} ${className ? className : ' '}`}
 			onMouseEnter={handleHover}
 			onMouseUp={handleClick}
 			style={style}
 		>
-			<div className={styles.content}>
+			<div className={`${styles.Content}`}>
 				{!loading && children}
 				{loading && <div className={styles.Spinner}></div>}
 			</div>

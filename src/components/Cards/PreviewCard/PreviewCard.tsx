@@ -112,7 +112,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 					<FutureButton
 						className={styles.View}
 						glow
-						alt
+						 alt
 						onClick={openNftView}
 						style={{ marginTop: 24 }}
 					>
