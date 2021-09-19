@@ -44,7 +44,7 @@
 	left: 50%;
 	-webkit-transform: translate(-50%);
 	transform: translate(-50%);
-	width: calc(100% - 16px);
+	width: calc(100% - 24px);
 	box-shadow: 0 0 20px 13px #3ca1ff;
 	z-index: -1;
 }
