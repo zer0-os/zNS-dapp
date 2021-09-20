@@ -79,13 +79,16 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const onImageChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files[0]) {
 			const type = event.target.files[0].type;
-			console.log(event.target.files[0]);
 			// Raw data for image preview
 			const url = URL.createObjectURL(event.target.files[0]);
 			if (type.indexOf('image') > -1) setMediaType('image');
 			else if (type.indexOf('video') > -1) setMediaType('video');
-			else if (type.indexOf('.fbx') > -1) setMediaType('fbx');
-			else return;
+			else if (type.indexOf('') > -1) {
+				let fileName = event.target.files[0].name;
+				let extension = fileName.split('.').pop();
+				console.log(extension?.toUpperCase() + ' extension selected.');
+				setMediaType(extension?.toLowerCase());
+			} else return;
 			setPreviewImage(url);
 
 			// Uint8Array data for sending to IPFS
@@ -156,11 +159,16 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 						{previewImage && mediaType === 'video' && (
 							<video autoPlay controls loop src={previewImage as string} />
 						)}
-						{previewImage && mediaType === '.fbx' && <h2>Fsao</h2>}
+						{previewImage && mediaType === 'fbx' && (
+							<span className="glow-text-white">FBX</span>
+						)}
+						{previewImage && mediaType === 'gltf' && (
+							<span className="glow-text-white">GLTF</span>
+						)}
 					</div>
 					<input
 						style={{ display: 'none' }}
-						accept="image/*,video/*,video/quicktime,.fbx,.gltf"
+						accept="image/*,video/*,video/quicktime, .fbx, .gltf"
 						multiple={false}
 						name={'media'}
 						type="file"
