@@ -19,6 +19,7 @@ import TransferProvider from './lib/providers/TransferProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
+import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 
 //- Asset Imports
 import backgroundImage from 'assets/background.jpg';
@@ -57,10 +58,12 @@ function App() {
 				render={({ location, match }) => {
 					return (
 						<>
-							<ZNS
-								domain={location.pathname}
-								isNftView={location.search === '?view'}
-							/>
+							<CurrentDomainProvider>
+								<ZNS
+									domain={location.pathname}
+									isNftView={location.search === '?view'}
+								/>
+							</CurrentDomainProvider>
 						</>
 					);
 				}}
@@ -74,8 +77,8 @@ function wrappedApp() {
 		// Web3 Library Hooks
 		<ChainSelectorProvider>
 			<SubgraphProvider>
-				<NotificationProvider>
-					<Web3ReactProvider getLibrary={getLibrary}>
+				<Web3ReactProvider getLibrary={getLibrary}>
+					<NotificationProvider>
 						{/* Our Hooks  */}
 						<ZNSDomainsProvider>
 							<MvpVersionProvider>
@@ -94,8 +97,8 @@ function wrappedApp() {
 								</CurrencyProvider>
 							</MvpVersionProvider>
 						</ZNSDomainsProvider>
-					</Web3ReactProvider>
-				</NotificationProvider>
+					</NotificationProvider>
+				</Web3ReactProvider>
 			</SubgraphProvider>
 		</ChainSelectorProvider>
 	);

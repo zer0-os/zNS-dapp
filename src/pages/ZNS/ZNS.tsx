@@ -51,14 +51,13 @@ import {
 	Spinner,
 } from 'components';
 
-import { SubdomainTable } from 'containers';
+import { SubdomainTable, CurrentDomainPreview } from 'containers';
 
 //- Library Imports
 import { useTransferProvider } from 'lib/providers/TransferProvider';
 import { MintNewNFT, NFTView, MakeABid, TransferOwnership } from 'containers';
-import { getDomainId } from 'lib/utils';
-import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 type ZNSProps = {
 	domain: string;
@@ -99,9 +98,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	}, [chainId]);
 
 	//- Domain Data
-	const domainId = getDomainId(domain.substring(1));
-	const znsDomain = useZnsDomain(domainId);
-	const loading = znsDomain.loading;
+	const { domain: znsDomain, loading, refetch } = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
@@ -117,13 +114,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	// Force to go back to home if invalid domain
 	React.useEffect(() => {
 		if (!loading) {
-			if (!znsDomain.domain) {
+			if (!znsDomain) {
 				console.log(`invalid domain, returning to home`);
 				history.push('/');
 				return;
 			}
 		}
-	}, [znsDomain.domain, loading]);
+	}, [znsDomain, loading]);
 
 	const previewCardRef = useRef<HTMLDivElement>(null);
 
@@ -159,11 +156,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [isSearchActive, setIsSearchActive] = useState(false);
 
 	//- Data
-	const [tableData, setTableData] = useState<DisplayDomain[]>([]);
 	const isRoot: boolean =
-		domain === '/' || (znsDomain.domain ? !znsDomain.domain.parent : false);
+		domain === '/' || (znsDomain ? !znsDomain.parent : false);
 	const isOwnedByUser: boolean =
-		znsDomain?.domain?.owner?.id.toLowerCase() === account?.toLowerCase();
+		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
 
 	///////////////
 	// Functions //
@@ -203,7 +199,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		setModal(Modal.Wallet);
 	};
 	const openBidOverlay = () => {
-		if (!znsDomain.domain) return;
+		if (!znsDomain) return;
 		setModal(Modal.Bid);
 	};
 	const openTransferOwnershipModal = () => {
@@ -258,7 +254,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	/* Find the freshly minted NFT */
 	useEffect(() => {
-		znsDomain.refetch();
+		if (refetch) {
+			refetch();
+		}
 	}, [mintingProvider.minted, stakingProvider.fulfilled]);
 
 	/* Handle notification for wallet changes */
@@ -287,18 +285,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	useEffect(() => {
 		// TODO: Clean this whole hook up
-		if (!znsDomain.domain) setTableData([]);
-		else {
+		if (znsDomain) {
 			// Set the domain data for table view
-			setIsNftView(nftView === true || tableData?.length === 0);
-			setTableData(znsDomain.domain.subdomains);
+			setIsNftView(nftView === true || znsDomain.subdomains.length === 0);
 			setHasLoaded(true);
 		}
 		window.scrollTo({
 			top: -1000,
 			behavior: 'smooth',
 		});
-	}, [znsDomain.domain, hasLoaded]);
+	}, [znsDomain, hasLoaded]);
 
 	/////////////////////
 	// React Fragments //
@@ -328,33 +324,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					{(styles) => (
 						<animated.div style={styles}>
 							<div ref={previewCardRef}>
-								<PreviewCard
-									domain={domain}
-									metadataUrl={znsDomain?.domain?.metadata}
-									creatorId={znsDomain?.domain?.minter?.id || ''}
-									disabled={
-										znsDomain.domain?.owner?.id.toLowerCase() ===
-											account?.toLowerCase() || !active
-									}
-									ownerId={znsDomain?.domain?.owner?.id || ''}
-									mvpVersion={mvpVersion}
-									onButtonClick={openBidOverlay}
-									onImageClick={() => {}}
-									preventInteraction={domain === '/'}
-								>
-									{mvpVersion === 3 && (
-										<HorizontalScroll fade>
-											<AssetPriceCard
-												title={`${domain.substring(1, 5).toUpperCase()} Price`}
-												price={randomNumber(85, 400, 2)}
-												change={randomNumber(-30, 30, 2)}
-											/>
-											<AssetGraphCard
-												title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-											/>
-										</HorizontalScroll>
-									)}
-								</PreviewCard>
+								<CurrentDomainPreview />
 							</div>
 						</animated.div>
 					)}
@@ -367,11 +337,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		<>
 			{/* Overlays */}
 			<NotificationDrawer />
-			{znsDomain.domain && (
-				<Overlay onClose={closeModal} open={modal === Modal.Bid}>
-					<MakeABid domain={znsDomain.domain} onBid={closeModal} />
-				</Overlay>
-			)}
 			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
@@ -385,10 +350,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					<MintNewNFT
 						onMint={closeModal}
 						domainName={domain}
-						domainId={znsDomain.domain ? znsDomain.domain.id : ''}
-						domainOwner={znsDomain.domain ? znsDomain.domain.owner.id : ''}
+						domainId={znsDomain ? znsDomain.id : ''}
+						domainOwner={znsDomain ? znsDomain.owner.id : ''}
 						subdomains={
-							(znsDomain.domain?.subdomains?.map(
+							(znsDomain?.subdomains?.map(
 								(sub: any) => sub.name,
 							) as string[]) || []
 						}
@@ -402,20 +367,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			)}
 			{modal === Modal.Transfer && (
 				<TransferOwnership
-					metadataUrl={znsDomain.domain?.metadata ?? ''}
+					metadataUrl={znsDomain?.metadata ?? ''}
 					domainName={domain}
-					domainId={znsDomain.domain?.id ?? ''}
+					domainId={znsDomain?.id ?? ''}
 					onTransfer={closeModal}
-					creatorId={
-						znsDomain.domain && znsDomain.domain.minter.id
-							? znsDomain.domain.minter.id
-							: ''
-					}
-					ownerId={
-						znsDomain.domain && znsDomain.domain.owner.id
-							? znsDomain.domain.owner.id
-							: ''
-					}
+					creatorId={znsDomain?.minter?.id || ''}
+					ownerId={znsDomain?.owner?.id || ''}
 				/>
 			)}
 		</>
@@ -630,7 +587,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					/>
 				)}
 
-				{znsDomain.domain && (isNftView || tableData.length === 0) && (
+				{znsDomain && isNftView && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
 						{(styles) => (
 							<animated.div style={styles}>

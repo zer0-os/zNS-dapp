@@ -16,8 +16,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 
 // Library Imports
 import { Domain } from 'lib/types';
-import { getDomainId } from 'lib/utils';
-import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 // Component Imports
 import { DomainTable } from 'components';
@@ -37,10 +36,8 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	const { account } = walletContext;
 
 	// Domain hook data
-	const domainId = getDomainId(props.domainName.substring(1));
-	const znsDomain = useZnsDomain(domainId);
-	const loading = znsDomain.loading;
-	const subdomains = znsDomain?.domain?.subdomains;
+	const { domain, loading } = useCurrentDomain();
+	const subdomains = domain?.subdomains;
 
 	const onRowClick = useCallback((domain: Domain) => {
 		if (domain.name.startsWith('wilder.')) {

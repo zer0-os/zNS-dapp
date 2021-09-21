@@ -9,6 +9,9 @@
  *
  */
 
+// Cards
+export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/CurrentDomainPreview';
+
 export { default as BidList } from './BidList/BidList';
 export { default as Enlist } from './Enlist/Enlist';
 export { default as MakeABid } from './MakeABid/MakeABid';

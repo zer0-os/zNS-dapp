@@ -37,6 +37,7 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -71,7 +72,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const domainId = getDomainId(domain.substring(1));
 	const domainIdInteger = BigNumber.from(domainId); //domainId as bignumber used to redirect to etherscan link
 
-	const znsDomain = useZnsDomain(domainId);
+	const { domain: znsDomain, loading, refetch } = useCurrentDomain();
 
 	const { getBidsForDomain } = useBidProvider();
 
@@ -98,7 +99,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const openBidOverlay = () => {
 		if (!isMounted.current) return;
-		if (!znsDomain.domain || isOwnedByYou || !active) return;
+		if (!znsDomain || isOwnedByYou || !active) return;
 		setIsBidOverlayOpen(true);
 	};
 
@@ -112,8 +113,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	};
 
 	const getBids = async () => {
-		if (znsDomain.domain) {
-			const bids = await getBidsForDomain(znsDomain.domain);
+		if (znsDomain) {
+			const bids = await getBidsForDomain(znsDomain);
 
 			if (!bids || !bids.length) {
 				setBids([]);
@@ -161,26 +162,22 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	useEffect(() => {
 		if (!isMounted.current) return;
-		if (
-			znsDomain.domain &&
-			znsDomain.domain.metadata &&
-			!znsDomain.domain.image
-		) {
+		if (znsDomain && znsDomain.metadata && !znsDomain.image) {
 			if (!isMounted.current) return;
 			setIsOwnedByYou(
-				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
+				znsDomain.owner.id.toLowerCase() === account?.toLowerCase(),
 			);
 
 			getBids();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [znsDomain.domain]);
+	}, [znsDomain]);
 
 	const overlays = () => (
 		<>
-			{znsDomain.domain && (
+			{znsDomain && (
 				<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
-					<MakeABid domain={znsDomain.domain} onBid={onBid} />
+					<MakeABid domain={znsDomain} onBid={onBid} />
 				</Overlay>
 			)}
 		</>
@@ -291,40 +288,28 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						}}
 						className={`border-rounded`}
 						alt="NFT Preview"
-						ipfsUrl={znsDomain.domain?.image ?? ''}
+						ipfsUrl={znsDomain?.image ?? ''}
 					/>
 				</div>
 				<div className={styles.Info}>
 					<div className={styles.Details}>
 						<div>
-							<h1 className="glow-text-white">
-								{znsDomain.domain?.title ?? ''}
-							</h1>
+							<h1 className="glow-text-white">{znsDomain?.title ?? ''}</h1>
 							<span>
 								{domain.length > 0 ? `0://wilder.${domain.substring(1)}` : ''}
 							</span>
 						</div>
 						<div className={styles.Members}>
 							<Member
-								id={znsDomain.domain ? znsDomain.domain.owner.id : ''}
-								name={
-									znsDomain.domain ? randomName(znsDomain.domain.owner.id) : ''
-								}
-								image={
-									znsDomain.domain ? randomImage(znsDomain.domain.owner.id) : ''
-								}
+								id={znsDomain?.owner?.id || ''}
+								name={znsDomain ? randomName(znsDomain.owner.id) : ''}
+								image={znsDomain ? randomImage(znsDomain.owner.id) : ''}
 								subtext={'Owner'}
 							/>
 							<Member
-								id={znsDomain.domain ? znsDomain.domain.minter.id : ''}
-								name={
-									znsDomain.domain ? randomName(znsDomain.domain.minter.id) : ''
-								}
-								image={
-									znsDomain.domain
-										? randomImage(znsDomain.domain.minter.id)
-										: ''
-								}
+								id={znsDomain ? znsDomain.minter?.id : ''}
+								name={znsDomain ? randomName(znsDomain.minter.id) : ''}
+								image={znsDomain ? randomImage(znsDomain.minter.id) : ''}
 								subtext={'Creator'}
 							/>
 						</div>
@@ -341,7 +326,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					className={`${styles.Box} ${styles.Story} blur border-primary border-rounded`}
 				>
 					<h4>Story</h4>
-					<p>{znsDomain.domain?.description ?? ''}</p>
+					{/* <p>{znsDomain.domain?.description ?? ''}</p> */}
 				</div>
 				<div
 					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
