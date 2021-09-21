@@ -45,7 +45,7 @@ const Member: React.FC<MemberProps> = ({
 							target="_blank"
 							rel="noreferrer"
 						>
-							{id.substring(0, 4)}...${id.substring(id.length - 4)}
+							{id.substring(0, 4)}...{id.substring(id.length - 4)}
 						</a>
 					</span>
 					{subtext && (
