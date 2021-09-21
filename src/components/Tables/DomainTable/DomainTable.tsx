@@ -21,7 +21,6 @@ import ViewBids from './components/ViewBids';
 //- Library Imports
 import 'lib/react-table-config.d.ts';
 import { Domain, DomainData } from 'lib/types';
-import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { useBidProvider } from 'lib/providers/BidProvider';
 
 //- Style Imports
@@ -78,7 +77,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	userId,
 }) => {
 	const isMounted = useRef(false);
-	const { mvpVersion } = useMvpVersion();
 	const { getBidsForDomain } = useBidProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);

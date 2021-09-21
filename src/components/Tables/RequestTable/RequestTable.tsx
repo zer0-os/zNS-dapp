@@ -20,7 +20,6 @@ import RequestActions from './components/RequestActions';
 import { Request } from 'containers';
 
 //- Library Imports
-import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { randomImage, randomName } from 'lib/Random';
 import { getRequestData } from './data';
 import {
@@ -58,7 +57,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// Custom Hooks //
 	//////////////////
 	const { account } = useWeb3React();
-	const { mvpVersion } = useMvpVersion();
 	const staking = useStakingProvider();
 	const znsContracts = useZnsContracts()!;
 	const yourRequests = useRequestsMadeByAccount(userId);
@@ -321,18 +319,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				Header: () => <div className={styles.left}>Creator</div>,
 				id: 'creator',
 				accessor: (d: DomainRequestAndContents) => (
-					<Member
-						id={d.request.requestor.id}
-						name={''}
-						image={''}
-						subtext={
-							mvpVersion === 3
-								? randomName(d.request.requestor.id)
-										.substring(0, 3)
-										.toUpperCase()
-								: ''
-						}
-					/>
+					<Member id={d.request.requestor.id} name={''} image={''} />
 				),
 			},
 			{

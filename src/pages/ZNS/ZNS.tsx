@@ -15,7 +15,6 @@ import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { randomNumber } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
-import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Type Imports
 import { Metadata, DisplayDomain, NftParams, Domain } from 'lib/types';
@@ -77,8 +76,6 @@ enum Modal {
 
 const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	// TODO: Need to handle domains that don't exist!
-
-	const { mvpVersion } = useMvpVersion();
 
 	///////////////////
 	// Web3 Handling //
@@ -391,7 +388,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				style={{
 					opacity: hasLoaded ? 1 : 0,
 					transition: 'opacity 0.2s ease-in-out',
-					paddingTop: mvpVersion === 1 ? 145 : 129,
+					paddingTop: 145,
 				}}
 			>
 				{/* Nav Bar */}
@@ -503,11 +500,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 									<IconButton
 										onClick={openProfile}
 										style={{ height: 32, width: 32, borderRadius: '50%' }}
-										iconUri={
-											mvpVersion === 3
-												? `https://picsum.photos/seed/${account}/200/300`
-												: userIcon
-										}
+										iconUri={userIcon}
 									/>
 
 									{/* TODO: Change the triple dot button to a component */}
@@ -521,61 +514,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						</>
 					</TitleBar>
 				</FilterBar>
-
-				{/* TODO: Maybe worth moving sidebar up to App.tsx depending on its functionality */}
-				{mvpVersion === 3 && <SideBar />}
-
-				{/* Asset Cards per MVP 3 */}
-				{mvpVersion === 3 && (
-					<Spring
-						from={{ opacity: 0, marginTop: -231 }}
-						to={{ opacity: isRoot ? 1 : 0, marginTop: isRoot ? 0 : -231 }}
-					>
-						{(styles) => (
-							<animated.div style={styles}>
-								<NextDrop
-									title="Futopia"
-									artist="Frank Wilder"
-									date={new Date(new Date().getTime() + 24 * 60 * 60 * 1000)}
-									style={{ marginTop: 16 }}
-								/>
-								<HorizontalScroll style={{ marginTop: 16 }} fade>
-									<AssetPriceCard
-										title={`${domain.substring(1, 5).toUpperCase()} Price`}
-										price={randomNumber(85, 400, 2)}
-										change={randomNumber(-30, 30, 2)}
-									/>
-									<AssetGraphCard
-										title={`Price ${domain.substring(1, 5).toUpperCase()}`}
-									/>
-									<AssetPriceCard
-										title={`${domain.substring(1, 5).toUpperCase()} Price`}
-										price={randomNumber(85, 400, 2)}
-										change={randomNumber(-30, 30, 2)}
-									/>
-									<AssetMarketCapCard
-										title={`Total ${domain
-											.substring(1, 5)
-											.toUpperCase()} Holders`}
-										price={randomNumber(15000, 40000, 2)}
-									/>
-									<AssetMarketCapCard
-										title={`Total ${domain
-											.substring(1, 5)
-											.toUpperCase()} Holders`}
-										price={randomNumber(15000, 40000, 2)}
-									/>
-									<AssetMarketCapCard
-										title={`Total ${domain
-											.substring(1, 5)
-											.toUpperCase()} Holders`}
-										price={randomNumber(15000, 40000, 2)}
-									/>
-								</HorizontalScroll>
-							</animated.div>
-						)}
-					</Spring>
-				)}
 
 				{previewCard()}
 

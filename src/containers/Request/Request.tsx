@@ -13,7 +13,6 @@ import {
 } from 'components';
 
 //- Library Imports
-import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { randomName, randomImage } from 'lib/Random';
 import { ethers } from 'ethers';
 import { tokenToUsd } from 'lib/tokenPrices';
@@ -53,7 +52,6 @@ const Request: React.FC<RequestProps> = ({
 	// Imported Hooks //
 	////////////////////
 
-	const { mvpVersion } = useMvpVersion();
 	const currency = useCurrencyProvider();
 
 	///////////
@@ -215,7 +213,6 @@ const Request: React.FC<RequestProps> = ({
 						id={request.request.requestor.id}
 						name={randomName(request.request.requestor.id)}
 						image={randomImage(request.request.requestor.id)}
-						showZna={mvpVersion === 3}
 						subtext={'Creator'}
 					/>
 					<div className={styles.Story}>{metadata?.description || ''}</div>
