@@ -17,6 +17,9 @@ const GenericTable = (props: any) => {
 	const [isGridView, setIsGridView] = useState<boolean>(false);
 	const [searchQuery, setSearchQuery] = useState<string>();
 
+	const contentRef = useRef<HTMLDivElement>(null);
+	const [containerSize, setContainerSize] = useState<number | undefined>();
+
 	const rawData = props.data;
 	const chunkSize = 6;
 
@@ -70,6 +73,10 @@ const GenericTable = (props: any) => {
 		// 	increaseChunkSize();
 		// }
 	}, [rawData, searchQuery]);
+
+	useEffect(() => {
+		setContainerSize(contentRef.current?.offsetHeight || 0);
+	}, [chunk, searchQuery, rawData]);
 
 	const ListView = useMemo(() => {
 		const rows = () => {
@@ -152,35 +159,41 @@ const GenericTable = (props: any) => {
 	return (
 		<div
 			className={`${styles.Container} background-primary border-rounded border-primary`}
-			style={props.style}
+			style={{
+				...props.style,
+				height:
+					!isGridView && containerSize !== undefined ? containerSize : 'auto',
+			}}
 		>
-			<div className={styles.Controls}>
-				<SearchBar
-					placeholder="Search by domain name"
-					onChange={onSearchBarUpdate}
-					style={{ width: '100%', marginRight: 16 }}
-				/>
-				<div className={styles.Buttons}>
-					<IconButton
-						onClick={() => setIsGridView(false)}
-						toggled={!isGridView}
-						iconUri={list}
-						style={{ height: 32, width: 32 }}
+			<div ref={contentRef} className={styles.Content}>
+				<div className={styles.Controls}>
+					<SearchBar
+						placeholder="Search by domain name"
+						onChange={onSearchBarUpdate}
+						style={{ width: '100%', marginRight: 16 }}
 					/>
-					<IconButton
-						onClick={() => setIsGridView(true)}
-						toggled={isGridView}
-						iconUri={grid}
-						style={{ height: 32, width: 32 }}
-					/>
+					<div className={styles.Buttons}>
+						<IconButton
+							onClick={() => setIsGridView(false)}
+							toggled={!isGridView}
+							iconUri={list}
+							style={{ height: 32, width: 32 }}
+						/>
+						<IconButton
+							onClick={() => setIsGridView(true)}
+							toggled={isGridView}
+							iconUri={grid}
+							style={{ height: 32, width: 32 }}
+						/>
+					</div>
 				</div>
+				{!props.isLoading && (isGridView ? GridView : ListView)}
+				{props.isLoading && (
+					<div className={styles.Loading}>
+						<Spinner /> {props.loadingText ? props.loadingText : 'Loading'}
+					</div>
+				)}
 			</div>
-			{!props.isLoading && (isGridView ? GridView : ListView)}
-			{props.isLoading && (
-				<div className={styles.Loading}>
-					<Spinner /> {props.loadingText ? props.loadingText : 'Loading'}
-				</div>
-			)}
 		</div>
 	);
 };
