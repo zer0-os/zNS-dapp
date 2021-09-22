@@ -1,9 +1,9 @@
 canvas {
-	display: flex;
+	display: inline-block;
 }
 
 #gui {
-	position: flex;
+	position: inline-block;
 	z-index: 5;
 }
 

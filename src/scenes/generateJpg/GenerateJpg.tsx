@@ -49,7 +49,8 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ object }) => {
 	renderer.setSize(240, 240);
 
 	useEffect(() => {
-		document.body.appendChild(renderer.domElement);
+		const faso = document.getElementById('Faso');
+		faso?.appendChild(renderer.domElement);
 	}, []);
 
 	// tone mapping
@@ -161,13 +162,14 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ object }) => {
 	};
 
 	return (
-		<div>
+		<div id={'Faso'} style={{ display: 'inline-block', position: 'relative' }}>
 			{loading && <div id="loader"></div>}
-			{!loading && (
+
+			{/*!loading && (
 				<div id="gui">
 					<button onClick={() => takeScreenShot()}>Screenshot</button>
 				</div>
-			)}
+			)*/}
 		</div>
 	);
 };
