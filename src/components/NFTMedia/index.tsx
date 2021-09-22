@@ -19,6 +19,7 @@ import styles from './NFTMedia.module.css';
 import { Overlay, Spinner } from 'components';
 import IPFSMedia from './IPFSMedia';
 import CloudinaryMedia from './CloudinaryMedia';
+import { useInView } from 'react-intersection-observer';
 
 // Possible media types based on
 // MIME type of content
@@ -233,4 +234,4 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	);
 };
 
-export default NFTMediaContainer;
+export default React.memo(NFTMediaContainer);

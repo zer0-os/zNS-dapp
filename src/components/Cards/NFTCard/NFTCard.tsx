@@ -1,12 +1,11 @@
 //- React Imports
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 //- Style Imports
 import styles from './NFTCard.module.css';
 
 //- Component Imports
 import { ArrowLink, Image, NFTMedia } from 'components';
-import LazyLoad from 'react-lazyload';
 
 export interface NFTCardProps {
 	actionsComponent?: React.ReactNode;
@@ -16,6 +15,7 @@ export interface NFTCardProps {
 	name?: string;
 	nftMinterId: string;
 	nftOwnerId: string;
+	onClick?: (event?: any) => void;
 	price?: number;
 	showCreator?: boolean;
 	showOwner?: boolean;
@@ -30,6 +30,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	name,
 	nftMinterId,
 	nftOwnerId,
+	onClick,
 	price,
 	showCreator,
 	showOwner,
@@ -45,21 +46,35 @@ const NFTCard: React.FC<NFTCardProps> = ({
 		domainText = `0://${domain}`;
 	}
 
+	const media = useMemo(() => {
+		return (
+			<NFTMedia
+				className={styles.NFT}
+				style={{ height: 348, objectFit: 'contain' }}
+				ipfsUrl={imageUri ? imageUri : ''}
+				size="medium"
+				alt={`NFT preview for ${name}`}
+				disableLightbox
+			/>
+		);
+	}, [imageUri, name]);
+
 	return (
 		<div
 			style={style ? style : {}}
 			className={`${styles.NFTCard} border-rounded`}
+			onClick={onClick}
 		>
-			<LazyLoad throttle={200} height={348}>
-				<img src="https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_500,w_500/v1/zns/QmNeJfSMhxKYgKMDahyGRdf29EgoLBYVYFuZiQeENV3Doj.jpg" />
-			</LazyLoad>
+			{media}
 			<div className={styles.Body}>
 				<h5 className={`glow-text-blue`}>{name}</h5>
 				<ArrowLink>{domainText}</ArrowLink>
+				{/* Need to refactor out actions component */}
 				{actionsComponent}
+				{children}
 			</div>
 		</div>
 	);
 };
 
-export default NFTCard;
+export default React.memo(NFTCard);

@@ -8,7 +8,7 @@ export const cloudinaryVideoBaseUrl = `https://res.cloudinary.com/${cloudName}/v
 // to video posters automatially, so we have to generate
 // them manually
 export const generateVideoPoster = (hash: string, options: string) =>
-	`https://res.cloudinary.com/${cloudName}/video/upload/${
+	`https://res.cloudinary.com/${cloudName}/video/upload/so_0/${
 		options?.length ? options + '/' : ''
 	}v1/${folder}/${hash}.jpg`;
 

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
 import { useHistory } from 'react-router-dom';
@@ -144,9 +144,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
 	const [pageWidth, setPageWidth] = useState<number>(0);
-
-	//- Table State
-	const [isGridView, setIsGridView] = useState(false);
 
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
@@ -375,6 +372,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		</>
 	);
 
+	const subTable = useMemo(() => {
+		return <SubdomainTable style={{ marginTop: 16 }} domainName={domain} />;
+	}, [domain]);
+
 	////////////
 	// Render //
 	////////////
@@ -517,13 +518,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 				{previewCard()}
 
-				{showDomainTable && (
-					<SubdomainTable
-						isGridView={isGridView}
-						setIsGridView={setIsGridView}
-						domainName={domain}
-					/>
-				)}
+				{showDomainTable && subTable}
 
 				{znsDomain && isNftView && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>

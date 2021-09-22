@@ -73,22 +73,26 @@ const Artwork: React.FC<ArtworkProps> = ({
 		};
 	}, [metadataUrl]);
 
+	const artwork = React.useMemo(() => {
+		return (
+			<NFTMedia
+				disableLightbox
+				style={{
+					zIndex: 2,
+				}}
+				size="tiny"
+				className={`${styles.Image} border-rounded`}
+				alt="NFT Preview"
+				ipfsUrl={metadata?.image || ''}
+			/>
+		);
+	}, [metadata]);
+
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
 			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
-				<div className={styles.Image}>
-					<NFTMedia
-						disableLightbox
-						style={{
-							zIndex: 2,
-						}}
-						size="tiny"
-						className={`${styles.Image} border-rounded`}
-						alt="NFT Preview"
-						ipfsUrl={metadata?.image || ''}
-					/>
-				</div>
+				<div className={styles.Image}>{artwork}</div>
 				<div className={styles.Info}>
 					{shouldAnimate && (metadata?.title || name) && (
 						<Spring

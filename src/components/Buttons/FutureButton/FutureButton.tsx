@@ -4,7 +4,7 @@ import styles from './FutureButtonStyle.module.css';
 
 type FutureButtonProps = {
 	className?: string;
-	onClick: () => void;
+	onClick: (event?: any) => void;
 	style?: React.CSSProperties;
 	toggleable?: boolean;
 	children: React.ReactNode;
@@ -31,9 +31,9 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 		if (!hasHovered) setHovered(true);
 	};
 
-	const handleClick = () => {
+	const handleClick = (event: any) => {
 		if (loading) return;
-		if (onClick) onClick();
+		if (onClick) onClick(event);
 		if (toggleable) setSelected(!isSelected);
 	};
 

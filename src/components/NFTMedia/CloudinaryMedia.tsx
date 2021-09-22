@@ -1,5 +1,5 @@
 // React Imports
-import React, { SyntheticEvent, useEffect, useRef } from 'react';
+import React, { SyntheticEvent, useCallback, useEffect, useRef } from 'react';
 
 // Style Imports
 import styles from './NFTMedia.module.css';
@@ -15,14 +15,28 @@ import {
 	generateCloudinaryUrl,
 	generateVideoPoster,
 } from './config';
+import { useInView } from 'react-intersection-observer';
 
 const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
 
-	const { alt, hash, isPlaying, isVideo, onLoad, onError, size, style } = props;
+	const { alt, hash, isVideo, onLoad, size, style } = props;
 	const videoRef = useRef<HTMLVideoElement>();
+
+	const { ref: inViewRef, entry } = useInView();
+
+	useEffect(() => {
+		if (!videoRef.current) {
+			return;
+		}
+		if (entry?.isIntersecting) {
+			videoRef.current?.play();
+		} else {
+			videoRef.current?.pause();
+		}
+	}, [entry]);
 
 	const isIos = navigator.userAgent.includes('Mac') && 'ontouchend' in document;
 	const isMobile =
@@ -47,25 +61,20 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	};
 
 	const loadVideo = (e: SyntheticEvent) => {
-		videoRef.current = e.target as HTMLVideoElement;
-		if (videoRef.current) {
-			var playPromise = videoRef.current.play();
-
-			if (playPromise !== undefined) {
-				playPromise.catch((error: any) => {
-					// Auto-play was prevented
-					// Show paused UI.
-					console.warn(
-						'Video autoplay interrupted by reload for ipfs.fleek.co/ipfs/' +
-							hash,
-					);
-				});
-			}
-		}
 		if (props.onLoad) {
 			props.onLoad();
 		}
 	};
+
+	const setRefs = useCallback(
+		(node: any) => {
+			// Ref's from useRef needs to have the node assigned to `current`
+			videoRef.current = node;
+			// Callback refs, like the one from `useInView`, is a function that takes the node as an argument
+			inViewRef(node);
+		},
+		[inViewRef],
+	);
 
 	// Converts a size e.g. "large", "medium", etc.
 	// into a number to feed into Cloudinary
@@ -110,20 +119,6 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 		cropOptions(),
 	);
 
-	/////////////
-	// Effects //
-	/////////////
-
-	useEffect(() => {
-		if (videoRef.current) {
-			if (isPlaying) {
-				videoRef.current.play();
-			} else {
-				videoRef.current.pause();
-			}
-		}
-	}, [isPlaying]);
-
 	///////////////
 	// Fragments //
 	///////////////
@@ -157,7 +152,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 
 	// If it is a video, but we want the thumbnail only
 	// If we're on iOS and not showing the full size,
-	if (size === 'tiny' || (size !== undefined && (isIos || isMobile))) {
+	if (size === 'tiny') {
 		return (
 			<img
 				alt={alt}
@@ -188,18 +183,16 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 					poster={generateVideoPoster(hash, crop as string)}
 					style={style}
 					src={url + '.mp4'}
+					ref={setRefs}
 				></video>
 			</>
 		);
 	}
 
-	// Rendering videos normal way
 	return (
-		<Video
-			alt={alt}
+		<video
 			autoPlay={true}
 			className={styles.Media}
-			cloudName={cloudName}
 			controls={size === undefined}
 			loop={true}
 			muted
@@ -209,12 +202,13 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			playsInline
 			poster={generateVideoPoster(hash, crop as string)}
 			preload="metadata"
-			publicId={`${folder}/${hash}${size !== undefined ? '.jpg' : ''}`}
-			secure={true}
 			style={style}
+			ref={setRefs}
 		>
-			{height && <Transformation width={height} height={height} crop="fit" />}
-		</Video>
+			<source src={url + '.webm'} type="video/webm"></source>
+			<source src={url + '.mp4'} type="video/mp4"></source>
+			<source src={url + '.ogv'} type="video/ogg"></source>
+		</video>
 	);
 };
 

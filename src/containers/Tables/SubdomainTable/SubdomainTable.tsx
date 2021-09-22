@@ -1,66 +1,39 @@
 /*
 	This is a container for rendering a subdomain
 	on the *current* domain.
-
-	It is rendered in ZNS.tsx - domain name is passed
-	from react-router in App.tsx
  */
 
-// React Imports
-import { useHistory } from 'react-router-dom';
-import { useCallback } from 'react';
-
-// Web3 Imports
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-
 // Library Imports
-import { Domain } from 'lib/types';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 // Component Imports
-import { DomainTable } from 'components';
+import SubdomainTableRow from './SubdomainTableRow';
+import SubdomainTableCard from './SubdomainTableCard';
+import { GenericTable } from 'components';
+import React from 'react';
 
 type SubdomainTableProps = {
-	isGridView: boolean;
-	setIsGridView: (grid: boolean) => void;
 	domainName: string;
+	style?: React.CSSProperties;
 };
 
 const SubdomainTable = (props: SubdomainTableProps) => {
-	// Navigation data
-	const { push: goTo } = useHistory();
-
-	// Web3 hook data
-	const walletContext = useWeb3React<Web3Provider>();
-	const { account } = walletContext;
-
 	// Domain hook data
 	const { domain, loading } = useCurrentDomain();
-	const subdomains = domain?.subdomains;
-
-	const onRowClick = useCallback((domain: Domain) => {
-		if (domain.name.startsWith('wilder.')) {
-			goTo(domain.name.split('wilder.')[1]);
-		} else {
-			goTo(domain.name);
-		}
-	}, []);
 
 	return (
-		<DomainTable
-			domains={subdomains || []}
-			isRootDomain={props.domainName === '/'}
-			isGlobalTable
-			style={{ marginTop: 16 }}
-			empty={!loading && (!subdomains || subdomains?.length === 0)}
-			disableButton={!account}
-			isGridView={props.isGridView}
-			setIsGridView={props.setIsGridView}
-			userId={account as string}
-			onRowClick={onRowClick}
+		<GenericTable
+			alignments={[0, 0, 1, 1, 1]}
+			data={domain?.subdomains}
+			headers={['', 'Domain', 'Highest Bid', '# of Bids', '']}
+			rowComponent={SubdomainTableRow}
+			gridComponent={SubdomainTableCard}
+			infiniteScroll
+			isLoading={loading}
+			loadingText={'Loading Subdomains'}
+			style={props.style}
 		/>
 	);
 };
 
-export default SubdomainTable;
+export default React.memo(SubdomainTable);
