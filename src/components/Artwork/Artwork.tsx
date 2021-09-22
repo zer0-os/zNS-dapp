@@ -62,10 +62,15 @@ const Artwork: React.FC<ArtworkProps> = ({
 		}
 
 		// Truncate
-		if (domain.length > 30) {
+		if (('wilder.' + domain).length > 30) {
 			const split = domain.split('.');
-			if (isMounted.current === true)
+			if (isMounted.current === true) {
 				setTruncatedDomain('wilder...' + split[split.length - 1]);
+			}
+		} else {
+			if (isMounted.current === true) {
+				setTruncatedDomain(undefined);
+			}
 		}
 
 		return () => {
@@ -123,7 +128,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && (
 								<span className={styles.Domain}>
-									{truncatedDomain || domain}
+									{truncatedDomain || 'wilder.' + domain}
 								</span>
 							)}
 							{!disableInteraction && (
