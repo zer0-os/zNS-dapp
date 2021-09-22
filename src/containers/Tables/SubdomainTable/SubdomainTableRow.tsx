@@ -49,7 +49,7 @@ const SubdomainTableRow = (props: any) => {
 			return (
 				<>
 					<td className={styles.Right}>
-						{bids[0]?.amount.toLocaleString() || '-'} WILD
+						{bids[0] ? bids[0].amount.toLocaleString() + ' WILD' : '-'}
 					</td>
 					<td className={styles.Right}>{bids.length.toLocaleString()}</td>
 				</>
