@@ -1,7 +1,7 @@
 import { Artwork, FutureButton, Spinner } from 'components';
 import React, { useEffect, useState } from 'react';
 
-import styles from './SubdomainTableRow.module.css';
+import styles from './SubdomainTableCard.module.css';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
@@ -26,15 +26,21 @@ const SubdomainTableCard = (props: any) => {
 	const domain = props.data;
 
 	const [bids, setBids] = useState<Bid[] | undefined>();
+	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
 
 	const isOwnedByUser =
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
+
+	const onButtonClick = (event: any) => {
+		event.stopPropagation();
+	};
 
 	useEffect(() => {
 		let isMounted = true;
 		const get = async () => {
 			const b = await getBidsForDomain(domain);
 			if (isMounted) {
+				setAreBidsLoading(false);
 				setBids(b);
 			}
 		};
@@ -42,7 +48,7 @@ const SubdomainTableCard = (props: any) => {
 		return () => {
 			isMounted = false;
 		};
-	}, []);
+	}, [domain]);
 
 	const onClick = () => {
 		goTo(domain.name.split('wilder.')[1]);
@@ -58,12 +64,27 @@ const SubdomainTableCard = (props: any) => {
 			showOwner
 			onClick={onClick}
 		>
-			<div>
+			<div className={styles.Container}>
+				<div className={styles.Bid}>
+					{areBidsLoading && <Spinner style={{ marginTop: 1 }} />}
+					{!areBidsLoading && (
+						<>
+							<label>Highest Bid</label>
+							<span className="glow-text-blue">
+								{bids &&
+									bids.length > 0 &&
+									bids[0].amount.toLocaleString() + ' WILD'}
+								{bids && bids.length === 0 && 'No bids'}
+								{!bids && 'Failed to retrieve'}
+							</span>
+						</>
+					)}
+				</div>
 				<FutureButton
 					glow={account !== undefined && !isOwnedByUser}
-					onClick={() => console.log('make a bid')}
+					onClick={onButtonClick}
 				>
-					Make A Bid
+					Bid
 				</FutureButton>
 			</div>
 		</NFTCard>

@@ -1,0 +1,29 @@
+.Container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	margin-top: 16px;
+}
+
+.Bid {
+	display: flex;
+	flex-direction: column;
+}
+
+.Bid label {
+	font-size: 12px;
+	color: var(--color-primary-lighter-3);
+}
+
+.Bid span {
+	margin-top: 2px;
+	font-size: 18px;
+	color: var(--color-text-primary);
+}
+
+@media only screen and (max-width: 1000px) {
+	.Container button {
+		display: none;
+	}
+}
