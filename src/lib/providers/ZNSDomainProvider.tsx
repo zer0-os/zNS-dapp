@@ -9,6 +9,10 @@ interface ZNSDomainsContext {
 	getDomainData: (
 		domainId: string,
 	) => Promise<ApolloQueryResult<DomainQueryResult> | undefined>;
+
+	getDomainMint: (
+		domainId: string,
+	) => Promise<ApolloQueryResult<DomainQueryResult> | undefined>;
 }
 
 export const zNSDomainProvider = React.createContext<ZNSDomainsContext>(
@@ -32,7 +36,21 @@ export function ZNSDomainsProvider({ children }: any) {
 		return tx;
 	};
 
-	const context: ZNSDomainsContext = { getDomainData };
+	const getDomainMint = async (
+		domainId: string,
+	): Promise<ApolloQueryResult<DomainQueryResult> | undefined> => {
+		const options: QueryOptions = {
+			query: queries.getDomainMintEvent,
+			variables: { id: domainId },
+			fetchPolicy: 'cache-first',
+		};
+
+		const tx = await subgraphProvider.client!.query(options);
+
+		return tx;
+	};
+
+	const context: ZNSDomainsContext = { getDomainData, getDomainMint };
 
 	return (
 		<zNSDomainProvider.Provider value={context}>

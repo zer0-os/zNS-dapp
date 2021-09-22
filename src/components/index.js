@@ -12,6 +12,7 @@
 // TODO: Change this file to TypeScript
 
 //- Banners
+export { default as CountdownBanner } from './Banners/CountdownBanner/CountdownBanner';
 export { default as NextDrop } from './Banners/NextDrop/NextDrop.js';
 
 //- Buttons

@@ -37,7 +37,6 @@ import {
 	DomainTable,
 	TitleBar,
 	Tooltip,
-	NextDrop,
 	IconButton,
 	Overlay,
 	Profile,
@@ -304,7 +303,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			// If root view, slide up
 			to = {
 				opacity: 0,
-				marginTop: -(previewCardRef?.current?.clientHeight || 0),
+				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 16,
 			};
 		} else {
 			// If NFT view, don't render
