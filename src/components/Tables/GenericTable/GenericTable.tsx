@@ -154,14 +154,14 @@ const GenericTable = (props: any) => {
 			return <></>;
 		}
 		const data = props.infiniteScroll
-			? rawData.filter((d: any) =>
-					searchQuery ? d.name.includes(searchQuery) : true,
-			  )
-			: rawData
+			? rawData
 					.filter((d: any) =>
 						searchQuery ? d.name.includes(searchQuery) : true,
 					)
-					.slice(0, chunk * chunkSize);
+					.slice(0, chunk * chunkSize)
+			: rawData.filter((d: any) =>
+					searchQuery ? d.name.includes(searchQuery) : true,
+			  );
 
 		return (
 			<div className={styles.Grid}>
