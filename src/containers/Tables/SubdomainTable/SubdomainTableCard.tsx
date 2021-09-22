@@ -98,7 +98,7 @@ const SubdomainTableCard = (props: any) => {
 					glow={account !== undefined && !isOwnedByUser}
 					onClick={onButtonClick}
 				>
-					Make A Bid
+					Bid
 				</FutureButton>
 			</div>
 		</NFTCard>
