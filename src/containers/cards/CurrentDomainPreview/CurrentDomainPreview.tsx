@@ -38,7 +38,7 @@ const CurrentDomainPreview = () => {
 			)}
 			<PreviewCard
 				domain={domainName || ''}
-				metadataUrl={domain?.metadata}
+				metadataUrl={!isRootDomain ? domain?.metadata : ''}
 				creatorId={domain?.minter?.id || ''}
 				ownerId={domain?.owner?.id || ''}
 				disabled={false}
