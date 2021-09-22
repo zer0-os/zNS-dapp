@@ -18,7 +18,6 @@ const GenericTable = (props: any) => {
 	const [searchQuery, setSearchQuery] = useState<string>();
 
 	const contentRef = useRef<HTMLDivElement>(null);
-	const [containerSize, setContainerSize] = useState<number | undefined>();
 
 	const rawData = props.data;
 	const chunkSize = 6;
@@ -69,13 +68,13 @@ const GenericTable = (props: any) => {
 	// Add a listener for window resizes
 	useEffect(() => {
 		window.addEventListener('resize', handleResize);
+		handleResize();
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
 	}, []);
 
 	useEffect(() => {
-		console.log(entry);
 		if (entry?.isIntersecting) {
 			increaseChunkSize();
 		}
@@ -87,14 +86,9 @@ const GenericTable = (props: any) => {
 
 	useEffect(() => {
 		if (shouldLoadMore) {
-			console.log('should load');
 			// increaseChunkSize();
 		}
 	}, [rawData, searchQuery]);
-
-	useEffect(() => {
-		setContainerSize(contentRef.current?.offsetHeight || 0);
-	}, [chunk, searchQuery, rawData]);
 
 	///////////////
 	// Fragments //
@@ -185,10 +179,7 @@ const GenericTable = (props: any) => {
 	return (
 		<div
 			className={`${styles.Container} background-primary border-rounded border-primary`}
-			style={{
-				...props.style,
-				height: !isGridView && containerSize !== undefined ? 'auto' : 'auto',
-			}}
+			style={props.style}
 		>
 			<div ref={contentRef} className={styles.Content}>
 				<div className={styles.Controls}>
