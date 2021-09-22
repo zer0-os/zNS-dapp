@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import { Image, NFTMedia } from 'components';
+import { NFTMedia } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
@@ -14,7 +14,6 @@ import { Metadata } from 'lib/types';
 
 //- Style Imports
 import styles from './Artwork.module.css';
-import LazyLoad from 'react-lazyload';
 
 type ArtworkProps = {
 	domain: string;

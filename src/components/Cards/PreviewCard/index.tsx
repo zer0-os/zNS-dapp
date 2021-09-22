@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * Stateful container for PreviewCard.tsx
  */
@@ -12,7 +13,6 @@ import { useHistory } from 'react-router-dom';
 
 // Copmonent Imports
 import PreviewCard from './PreviewCard';
-import { Overlay, Image } from 'components';
 
 type PreviewCardContainerProps = {
 	children?: React.ReactNode;

@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 //- Component Imports
@@ -73,7 +73,7 @@ const MintPreview = () => {
 						) : null}
 						<p>
 							<div style={statusStyle}>{statusText}</div>
-							<a target={'_blank'} href={etherscanLink}>
+							<a target={'_blank'} href={etherscanLink} rel="noreferrer">
 								View on Etherscan
 							</a>
 						</p>

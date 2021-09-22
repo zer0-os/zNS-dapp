@@ -1,11 +1,11 @@
 //- React Imports
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 //- Style Imports
 import styles from './NFTCard.module.css';
 
 //- Component Imports
-import { ArrowLink, Image, NFTMedia } from 'components';
+import { ArrowLink, NFTMedia } from 'components';
 
 export interface NFTCardProps {
 	actionsComponent?: React.ReactNode;

@@ -20,7 +20,6 @@ import RequestActions from './components/RequestActions';
 import { Request } from 'containers';
 
 //- Library Imports
-import { randomImage, randomName } from 'lib/Random';
 import { getRequestData } from './data';
 import {
 	useRequestsMadeByAccount,
@@ -40,7 +39,6 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
 import { useWeb3React } from '@web3-react/core';
-import { useSubgraphProvider } from 'lib/providers/SubgraphProvider';
 
 type RequestTableProps = {
 	style?: React.CSSProperties;
@@ -68,7 +66,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	//////////////////
 
 	const containerRef = useRef<HTMLDivElement>(null);
-	const [containerHeight, setContainerHeight] = useState(0); // Not needed anymore?
 
 	const [isGridView, setIsGridView] = useState(false);
 	const [isGridViewToggleable, setIsGridViewToggleable] = useState(true);
@@ -606,12 +603,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						<p className={styles.Message}>Nothing here!</p>
 					)} */}
 				</div>
-
-				{/* Expander for animating height (@TODO Remove this functionality) */}
-				<div
-					style={{ height: containerHeight }}
-					className={styles.Expander}
-				></div>
 			</div>
 		</div>
 	);

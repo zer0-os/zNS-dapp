@@ -5,7 +5,7 @@ import React, { SyntheticEvent, useCallback, useEffect, useRef } from 'react';
 import styles from './NFTMedia.module.css';
 
 // Library Imports
-import { Image, Transformation, Video } from 'cloudinary-react';
+import { Image, Transformation } from 'cloudinary-react';
 
 // Local Imports
 import { CloudinaryMediaProps } from './types';

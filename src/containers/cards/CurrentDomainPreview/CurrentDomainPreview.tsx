@@ -1,6 +1,5 @@
 // React Imports
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 // Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';

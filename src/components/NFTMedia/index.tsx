@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /*
 	This container...
 	- checks if we have a Cloudinary upload for given hash
@@ -7,7 +8,6 @@
 
 // React Imports
 import React, { useState, useEffect, useRef } from 'react';
-import LazyLoad from 'react-lazyload';
 
 // Type Imports
 import { MediaContainerProps } from './types';
@@ -19,7 +19,6 @@ import styles from './NFTMedia.module.css';
 import { Overlay, Spinner } from 'components';
 import IPFSMedia from './IPFSMedia';
 import CloudinaryMedia from './CloudinaryMedia';
-import { useInView } from 'react-intersection-observer';
 
 // Possible media types based on
 // MIME type of content

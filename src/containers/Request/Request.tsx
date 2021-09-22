@@ -9,13 +9,11 @@ import {
 	Member,
 	NFTMedia,
 	Overlay,
-	Spinner,
 } from 'components';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import { ethers } from 'ethers';
-import { tokenToUsd } from 'lib/tokenPrices';
 import { getMetadata } from 'lib/metadata';
 
 //- Style Imports
@@ -80,7 +78,6 @@ const Request: React.FC<RequestProps> = ({
 		setErrorMessage(undefined);
 	};
 	const closeModal = () => setIsModalOpen(false);
-	const preview = () => setIsLightboxOpen(true);
 	const confirm = () => {
 		if (isFulfilling && onFulfill) onFulfill(request);
 		else if (!isFulfilling && onApprove) onApprove(request);

@@ -1,16 +1,13 @@
 //- React imports
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 //- Style Imports
 import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.css';
 
 //- Component Imports
-import { BidTable, Image, RequestTable, TabBar } from 'components';
+import { RequestTable, TabBar } from 'components';
 import { OwnedDomainsTable } from 'containers';
-
-//- Library Imports
-import { randomName, randomImage } from 'lib/Random';
 
 type ProfileProps = {
 	id: string;

@@ -1,14 +1,8 @@
 //- React Imports
 import React from 'react';
 
-//- Component Imports
-import { Image } from 'components';
-
 //- Style Imports
 import styles from './Member.module.css';
-
-//- Library Imports
-import { randomName } from 'lib/Random';
 
 type MemberProps = {
 	id: string;

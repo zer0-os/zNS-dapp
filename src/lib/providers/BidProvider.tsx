@@ -4,7 +4,7 @@ import React from 'react';
 //- Library Imports
 import { Domain, Bid } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { tryFunction } from 'lib/utils';
 import * as zAuction from '../zAuction';
 

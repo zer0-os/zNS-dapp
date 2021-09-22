@@ -1,5 +1,5 @@
 //- React imports
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 //- Style Imports
 import styles from './PreviewCard.module.css';
@@ -8,7 +8,7 @@ import styles from './PreviewCard.module.css';
 import { randomName, randomImage } from 'lib/Random';
 
 //- Component Imports
-import { FutureButton, Image, Member, Overlay, NFTMedia } from 'components';
+import { FutureButton, Member, NFTMedia } from 'components';
 import { Maybe } from 'lib/types';
 
 type PreviewCardProps = {

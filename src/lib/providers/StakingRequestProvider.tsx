@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
-import {
-	DomainRequestParams,
-	useStakingController,
-} from 'lib/hooks/useStakingController';
+import { useStakingController } from 'lib/hooks/useStakingController';
 import {
 	DomainRequestAndContents,
 	DomainRequestContents,

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Artwork, FutureButton, Spinner } from 'components';
 import React, { useEffect, useState } from 'react';
 
@@ -9,11 +10,6 @@ import { useBidProvider } from 'lib/providers/BidProvider';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
-
-type BidData = {
-	highestBid: number;
-	numBids: number;
-};
 
 const SubdomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();

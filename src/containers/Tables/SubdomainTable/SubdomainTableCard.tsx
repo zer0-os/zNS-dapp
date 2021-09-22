@@ -1,4 +1,5 @@
-import { Artwork, FutureButton, Spinner } from 'components';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { FutureButton, Spinner } from 'components';
 import React, { useEffect, useState } from 'react';
 
 import styles from './SubdomainTableCard.module.css';
@@ -12,11 +13,6 @@ import { useHistory } from 'react-router-dom';
 import { NFTCard } from 'components';
 
 import { useBid } from './BidProvider';
-
-type BidData = {
-	highestBid: number;
-	numBids: number;
-};
 
 const SubdomainTableCard = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();

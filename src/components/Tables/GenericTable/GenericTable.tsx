@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './GenericTable.module.css';
 import { useInView } from 'react-intersection-observer';
 import { IconButton, SearchBar, Spinner, TextButton } from 'components';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
-import { data } from 'jquery';
 
 const GenericTable = (props: any) => {
 	///////////////////////

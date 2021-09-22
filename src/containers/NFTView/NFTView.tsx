@@ -4,19 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
-import { useHistory } from 'react-router';
 import { BigNumber } from 'ethers';
 
 //- Component Imports
-import {
-	ArrowLink,
-	FutureButton,
-	Member,
-	Image,
-	NFTMedia,
-	Overlay,
-	Spinner,
-} from 'components';
+import { ArrowLink, FutureButton, Member, NFTMedia, Overlay } from 'components';
 import { MakeABid } from 'containers';
 
 //- Library Imports
@@ -38,8 +29,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
-import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
-import { transfersData, minterData, transferDto } from 'lib/types';
+import { transfersData, transferDto } from 'lib/types';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -50,11 +40,6 @@ type NFTViewProps = {
 const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
 
-	//- Notes:
-	// It's worth having this component consume the domain context
-	// because it needs way more data than is worth sending through props
-	const ZNSDomainsProvider = useZNSDomains();
-
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
 	const { addNotification } = useNotification();
@@ -62,7 +47,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	//- Page State
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
-	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [highestBid, setHighestBid] = useState<Bid | undefined>();
@@ -415,7 +399,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					{price()}
 					{actionButtons()}
 					{backgroundBlob !== undefined && (
-						<img src={backgroundBlob} className={styles.Bg} />
+						<img
+							alt="NFT panel background"
+							src={backgroundBlob}
+							className={styles.Bg}
+						/>
 					)}
 				</div>
 			</div>

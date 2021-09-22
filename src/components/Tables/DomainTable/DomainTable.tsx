@@ -21,7 +21,6 @@ import ViewBids from './components/ViewBids';
 //- Library Imports
 import 'lib/react-table-config.d.ts';
 import { Domain, DomainData } from 'lib/types';
-import { useBidProvider } from 'lib/providers/BidProvider';
 
 //- Style Imports
 import styles from './DomainTable.module.css';
@@ -29,9 +28,6 @@ import styles from './DomainTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
-import { domain } from 'process';
-import { useRefreshToken } from 'lib/hooks/useRefreshToken';
-import LazyLoad from 'react-lazyload';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -77,7 +73,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	userId,
 }) => {
 	const isMounted = useRef(false);
-	const { getBidsForDomain } = useBidProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0);

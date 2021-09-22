@@ -12,12 +12,8 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 
 //- Library Imports
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-import { randomNumber } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
-
-//- Type Imports
-import { Metadata, DisplayDomain, NftParams, Domain } from 'lib/types';
 
 //- Style Imports
 import styles from './ZNS.module.css';
@@ -27,21 +23,14 @@ import userIcon from 'assets/user.svg';
 
 //- Components & Containers
 import {
-	AssetGraphCard,
-	AssetMarketCapCard,
-	AssetPriceCard,
 	ConnectToWallet,
 	FutureButton,
 	FilterBar,
-	HorizontalScroll,
-	DomainTable,
 	TitleBar,
 	Tooltip,
 	IconButton,
 	Overlay,
 	Profile,
-	PreviewCard,
-	SideBar,
 	NotificationDrawer,
 	NumberButton,
 	MintPreview,
@@ -53,7 +42,7 @@ import { SubdomainTable, CurrentDomainPreview } from 'containers';
 
 //- Library Imports
 import { useTransferProvider } from 'lib/providers/TransferProvider';
-import { MintNewNFT, NFTView, MakeABid, TransferOwnership } from 'containers';
+import { MintNewNFT, NFTView, TransferOwnership } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
@@ -121,7 +110,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const previewCardRef = useRef<HTMLDivElement>(null);
 
 	//- Minting State
-	const { minting, minted } = useMintProvider();
 	const mintingProvider = useMintProvider();
 	const stakingProvider = useStakingProvider();
 
@@ -133,7 +121,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		stakingProvider.requesting.length +
 		stakingProvider.requested.length;
 
-	const { transferring, transferred } = useTransferProvider();
+	const { transferring } = useTransferProvider();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -149,8 +137,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [isSearchActive, setIsSearchActive] = useState(false);
 
 	//- Data
-	const isRoot: boolean =
-		domain === '/' || (znsDomain ? !znsDomain.parent : false);
 	const isOwnedByUser: boolean =
 		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
 
@@ -190,10 +176,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const openProfile = () => setModal(Modal.Profile);
 	const openWallet = () => {
 		setModal(Modal.Wallet);
-	};
-	const openBidOverlay = () => {
-		if (!znsDomain) return;
-		setModal(Modal.Bid);
 	};
 	const openTransferOwnershipModal = () => {
 		setModal(Modal.Transfer);
