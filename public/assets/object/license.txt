@@ -1,0 +1,11 @@
+Model Information:
+* title:	Alfa Romeo Giulia GTAm (low-poly)
+* source:	https://sketchfab.com/3d-models/alfa-romeo-giulia-gtam-low-poly-bdcb47f5eaff43a694f954e2dde9d2d7
+* author:	rossty3d (https://sketchfab.com/rossty3d)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Alfa Romeo Giulia GTAm (low-poly)" (https://sketchfab.com/3d-models/alfa-romeo-giulia-gtam-low-poly-bdcb47f5eaff43a694f954e2dde9d2d7) by rossty3d (https://sketchfab.com/rossty3d) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

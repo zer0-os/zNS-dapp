@@ -19,6 +19,7 @@
 		"@testing-library/react": "^11.2.6",
 		"@testing-library/user-event": "^12.8.3",
 		"@types/react-router-dom": "^5.1.7",
+		"@types/three": "^0.131.1",
 		"@typescript-eslint/typescript-estree": "^4.17.0",
 		"@web3-react/abstract-connector": "^6.0.7",
 		"@web3-react/authereum-connector": "^6.1.9",
@@ -56,6 +57,7 @@
 		"react-spring": "^9.1.2",
 		"react-table": "^7.6.3",
 		"react-window": "^1.8.6",
+		"three": "^0.132.2",
 		"typescript": "^4.2.3",
 		"web-vitals": "^1.1.1"
 	},

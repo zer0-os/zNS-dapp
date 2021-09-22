@@ -10,6 +10,9 @@ import styles from '../MintNewNFT.module.css';
 //- Component Imports
 import { TextInput, FutureButton } from 'components';
 
+//3D
+import GenerateJpg from 'scenes/generateJpg/GenerateJpg';
+
 type TokenInformationProps = {
 	existingSubdomains: string[];
 	token: TokenInformationType | null;
@@ -47,6 +50,8 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const [locked] = useState(token ? token.locked : true);
 	const [errors, setErrors] = useState<Error[]>([]);
 
+	const [model, setModel] = useState<File | undefined>(undefined);
+
 	///////////////
 	// Functions //
 	///////////////
@@ -79,6 +84,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const onImageChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files[0]) {
 			const type = event.target.files[0].type;
+			console.log(event.target.files[0]);
 			// Raw data for image preview
 			const url = URL.createObjectURL(event.target.files[0]);
 			if (type.indexOf('image') > -1) setMediaType('image');
@@ -88,14 +94,18 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 				let extension = fileName.split('.').pop();
 				console.log(extension?.toUpperCase() + ' extension selected.');
 				setMediaType(extension?.toLowerCase());
+
+				let modelo = event.target.files[0];
+				setModel(modelo);
 			} else return;
 			setPreviewImage(url);
 
 			// Uint8Array data for sending to IPFS
 			const bufferReader = new FileReader();
 			bufferReader.readAsArrayBuffer(event.target.files[0]);
-			bufferReader.onloadend = () =>
+			bufferReader.onloadend = () => {
 				setImage(Buffer.from(bufferReader.result as ArrayBuffer));
+			};
 		}
 	};
 
@@ -163,7 +173,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							<span className="glow-text-white">FBX</span>
 						)}
 						{previewImage && mediaType === 'gltf' && (
-							<span className="glow-text-white">GLTF</span>
+							<GenerateJpg object={model}></GenerateJpg>
 						)}
 					</div>
 					<input
