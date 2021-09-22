@@ -38,7 +38,9 @@ const GenericTable = (props: any) => {
 	};
 
 	const increaseChunkSize = () => {
-		setChunk(chunk + 1);
+		if (rawData && (chunk + 1) * chunkSize <= rawData.length) {
+			setChunk(chunk + 1);
+		}
 	};
 
 	// Updates search query state based on search bar input
@@ -65,6 +67,10 @@ const GenericTable = (props: any) => {
 	// Effects //
 	/////////////
 
+	useEffect(() => {
+		resetChunkSize();
+	}, [isGridView, searchQuery]);
+
 	// Add a listener for window resizes
 	useEffect(() => {
 		window.addEventListener('resize', handleResize);
@@ -75,18 +81,18 @@ const GenericTable = (props: any) => {
 	}, []);
 
 	useEffect(() => {
+		resetChunkSize();
+	}, [rawData]);
+
+	useEffect(() => {
 		if (entry?.isIntersecting) {
 			increaseChunkSize();
 		}
 	}, [entry]);
 
 	useEffect(() => {
-		resetChunkSize();
-	}, [rawData, isGridView, searchQuery]);
-
-	useEffect(() => {
-		if (shouldLoadMore) {
-			// increaseChunkSize();
+		if (shouldLoadMore && chunk === 1) {
+			increaseChunkSize();
 		}
 	}, [rawData, searchQuery]);
 
