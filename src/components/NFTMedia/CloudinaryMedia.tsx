@@ -31,10 +31,21 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 		if (!videoRef.current) {
 			return;
 		}
-		if (entry?.isIntersecting) {
-			videoRef.current?.play();
-		} else {
-			videoRef.current?.pause();
+
+		try {
+			if (entry?.isIntersecting) {
+				var playPromise = videoRef.current.play();
+				if (playPromise !== undefined) {
+					playPromise.catch((error) => {
+						// Auto-play was prevented
+						// Show paused UI.
+					});
+				}
+			} else {
+				videoRef.current?.pause();
+			}
+		} catch (e) {
+			console.warn('Weird play bug');
 		}
 	}, [entry]);
 
