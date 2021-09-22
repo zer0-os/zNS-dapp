@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styles from './GenericTable.module.css';
 import { useInView } from 'react-intersection-observer';
-import { IconButton, SearchBar, Spinner } from 'components';
+import { IconButton, SearchBar, Spinner, TextButton } from 'components';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import { data } from 'jquery';
 
 const GenericTable = (props: any) => {
 	///////////////////////
@@ -20,7 +21,7 @@ const GenericTable = (props: any) => {
 	const contentRef = useRef<HTMLDivElement>(null);
 
 	const rawData = props.data;
-	const chunkSize = 6;
+	const chunkSize = isGridView ? 6 : 12;
 
 	// Handler for infinite scroll trigger
 	const {
@@ -37,9 +38,9 @@ const GenericTable = (props: any) => {
 		setChunk(1);
 	};
 
-	const increaseChunkSize = () => {
-		if (rawData && (chunk + 1) * chunkSize <= rawData.length) {
-			setChunk(chunk + 1);
+	const increaseChunkSize = (amount?: number) => {
+		if (rawData && chunk * chunkSize <= rawData.length) {
+			setChunk(chunk + (amount || 1));
 		}
 	};
 
@@ -217,6 +218,16 @@ const GenericTable = (props: any) => {
 				)}
 				<div ref={ref}></div>
 			</div>
+			{rawData && !searchQuery && chunk * chunkSize < rawData.length && (
+				<TextButton
+					onClick={() =>
+						isGridView ? increaseChunkSize() : increaseChunkSize(2)
+					}
+					className={styles.LoadMore}
+				>
+					Load More
+				</TextButton>
+			)}
 		</div>
 	);
 };
