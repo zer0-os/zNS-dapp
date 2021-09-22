@@ -55,6 +55,14 @@
 	padding-left: 0;
 }
 
+.Table tbody tr:last-of-type td:first-of-type {
+	border-radius: 0 0 0 var(--box-radius);
+}
+
+.Table tbody tr:last-of-type td:last-of-type {
+	border-radius: 0 0 var(--box-radius) 0;
+}
+
 .Left {
 	text-align: left;
 }
