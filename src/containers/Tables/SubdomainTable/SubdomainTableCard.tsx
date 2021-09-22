@@ -11,6 +11,8 @@ import { useHistory } from 'react-router-dom';
 
 import { NFTCard } from 'components';
 
+import { useBid } from './BidProvider';
+
 type BidData = {
 	highestBid: number;
 	numBids: number;
@@ -20,6 +22,7 @@ const SubdomainTableCard = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
+	const { makeABid } = useBid();
 
 	const { getBidsForDomain } = useBidProvider();
 
@@ -32,7 +35,7 @@ const SubdomainTableCard = (props: any) => {
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
 
 	const onButtonClick = (event: any) => {
-		event.stopPropagation();
+		makeABid(domain);
 	};
 
 	useEffect(() => {
@@ -50,8 +53,10 @@ const SubdomainTableCard = (props: any) => {
 		};
 	}, [domain]);
 
-	const onClick = () => {
-		goTo(domain.name.split('wilder.')[1]);
+	const onClick = (event: any) => {
+		if (!event.target.className.includes('FutureButton')) {
+			goTo(domain.name.split('wilder.')[1]);
+		}
 	};
 
 	return (
@@ -84,7 +89,7 @@ const SubdomainTableCard = (props: any) => {
 					glow={account !== undefined && !isOwnedByUser}
 					onClick={onButtonClick}
 				>
-					Bid
+					Make A Bid
 				</FutureButton>
 			</div>
 		</NFTCard>

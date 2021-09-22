@@ -8,6 +8,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
+import { useBid } from './BidProvider';
 
 type BidData = {
 	highestBid: number;
@@ -19,6 +20,7 @@ const SubdomainTableRow = (props: any) => {
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
 
+	const { makeABid } = useBid();
 	const { getBidsForDomain } = useBidProvider();
 
 	const domain = props.data;
@@ -67,7 +69,7 @@ const SubdomainTableRow = (props: any) => {
 	};
 
 	const onBidButtonClick = () => {
-		console.log('bid');
+		makeABid(domain);
 	};
 
 	const onRowClick = (event: any) => {
@@ -92,7 +94,7 @@ const SubdomainTableRow = (props: any) => {
 			{bidColumns()}
 			<td>
 				<FutureButton
-					glow={!account || isOwnedByUser}
+					glow={account !== undefined && !isOwnedByUser}
 					onClick={onBidButtonClick}
 					style={{ marginLeft: 'auto' }}
 				>
