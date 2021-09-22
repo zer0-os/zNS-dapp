@@ -92,6 +92,16 @@
 	list-style: none;
 }
 
+.Grid > div {
+	transition: transform var(--animation-time-long) ease;
+}
+
+@media only screen and (min-width: 1000px) {
+	.Grid > div:hover {
+		transform: scale(1.02);
+	}
+}
+
 @media only screen and (max-width: 768px) {
 	.Grid {
 		grid-template-columns: repeat(auto-fit, minmax(311px, 1fr));
