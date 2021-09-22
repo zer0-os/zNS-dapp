@@ -152,7 +152,8 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 
 	// If it is a video, but we want the thumbnail only
 	// If we're on iOS and not showing the full size,
-	if (size === 'tiny') {
+
+	if (size === 'tiny' || (size !== undefined && (isIos || isMobile))) {
 		return (
 			<img
 				alt={alt}
