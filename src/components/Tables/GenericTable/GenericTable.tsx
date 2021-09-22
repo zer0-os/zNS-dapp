@@ -48,17 +48,34 @@ const GenericTable = (props: any) => {
 		setSearchQuery(query.length > 2 ? query : undefined);
 	};
 
+	// Since due date is coming up, I'm rushing the search algo
+	// This will need to be expanded to be generic
 	const matchesSearch = (d: any) => {
-		// Since due date is coming up, I'm rushing the search algo
-		// This will need to be expanded to be generic
 		return d.name.includes(searchQuery);
+	};
+
+	// Toggles to grid view when viewport
+	// resizes to below 700px
+	const handleResize = () => {
+		if (window.innerWidth <= 700) {
+			setIsGridView(true);
+		}
 	};
 
 	/////////////
 	// Effects //
 	/////////////
 
+	// Add a listener for window resizes
 	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
+
+	useEffect(() => {
+		console.log(entry);
 		if (entry?.isIntersecting) {
 			increaseChunkSize();
 		}
@@ -69,15 +86,21 @@ const GenericTable = (props: any) => {
 	}, [rawData, isGridView, searchQuery]);
 
 	useEffect(() => {
-		// if (shouldLoadMore) {
-		// 	increaseChunkSize();
-		// }
+		if (shouldLoadMore) {
+			console.log('should load');
+			// increaseChunkSize();
+		}
 	}, [rawData, searchQuery]);
 
 	useEffect(() => {
 		setContainerSize(contentRef.current?.offsetHeight || 0);
 	}, [chunk, searchQuery, rawData]);
 
+	///////////////
+	// Fragments //
+	///////////////
+
+	// List view container and rows
 	const ListView = useMemo(() => {
 		const rows = () => {
 			if (!rawData) {
@@ -127,11 +150,11 @@ const GenericTable = (props: any) => {
 					</tr>
 				</thead>
 				<tbody>{rows()}</tbody>
-				<div ref={ref}></div>
 			</table>
 		);
 	}, [rawData, chunk, searchQuery]);
 
+	// Grid View container & cards
 	const GridView = useMemo(() => {
 		if (!rawData) {
 			return <></>;
@@ -151,18 +174,20 @@ const GenericTable = (props: any) => {
 				{data.map((d: any, index: number) => (
 					<props.gridComponent key={index} rowNumber={index} data={d} />
 				))}
-				<div ref={ref}></div>
 			</div>
 		);
 	}, [rawData, chunk, searchQuery]);
+
+	////////////
+	// Render //
+	////////////
 
 	return (
 		<div
 			className={`${styles.Container} background-primary border-rounded border-primary`}
 			style={{
 				...props.style,
-				height:
-					!isGridView && containerSize !== undefined ? containerSize : 'auto',
+				height: !isGridView && containerSize !== undefined ? 'auto' : 'auto',
 			}}
 		>
 			<div ref={contentRef} className={styles.Content}>
@@ -193,6 +218,7 @@ const GenericTable = (props: any) => {
 						<Spinner /> {props.loadingText ? props.loadingText : 'Loading'}
 					</div>
 				)}
+				<div ref={ref}></div>
 			</div>
 		</div>
 	);
