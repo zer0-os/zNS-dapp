@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
 import React, { useRef, useEffect } from 'react';
 

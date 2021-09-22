@@ -8,7 +8,7 @@ import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
 
 // Type Imports
-import { Bid, Domain, DomainData, ParentDomain } from 'lib/types';
+import { Bid, Domain, DomainData } from 'lib/types';
 
 // Style Imports
 import styles from './OwnedDomainsTable.module.css';
@@ -45,7 +45,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
 	const znsContracts = useZnsContracts()!;
 	const { acceptBid } = useBidProvider();
-	const wildToken = znsContracts.wildToken;
 	const zAuctionAddress = znsContracts.zAuction.address;
 
 	// State

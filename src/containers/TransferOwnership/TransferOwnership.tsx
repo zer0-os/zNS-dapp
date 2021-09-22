@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styles from './TransferOwnership.module.css';
 
 //- Component Imports
-import { EtherInput, FutureButton, Image, NFTMedia, Overlay } from 'components';
+import { EtherInput, FutureButton, NFTMedia, Overlay } from 'components';
 
 //- Library Imports
 /*

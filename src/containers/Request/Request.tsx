@@ -9,14 +9,11 @@ import {
 	Member,
 	NFTMedia,
 	Overlay,
-	Spinner,
 } from 'components';
 
 //- Library Imports
-import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { randomName, randomImage } from 'lib/Random';
 import { ethers } from 'ethers';
-import { tokenToUsd } from 'lib/tokenPrices';
 import { getMetadata } from 'lib/metadata';
 
 //- Style Imports
@@ -53,7 +50,6 @@ const Request: React.FC<RequestProps> = ({
 	// Imported Hooks //
 	////////////////////
 
-	const { mvpVersion } = useMvpVersion();
 	const currency = useCurrencyProvider();
 
 	///////////
@@ -82,7 +78,6 @@ const Request: React.FC<RequestProps> = ({
 		setErrorMessage(undefined);
 	};
 	const closeModal = () => setIsModalOpen(false);
-	const preview = () => setIsLightboxOpen(true);
 	const confirm = () => {
 		if (isFulfilling && onFulfill) onFulfill(request);
 		else if (!isFulfilling && onApprove) onApprove(request);
@@ -215,7 +210,6 @@ const Request: React.FC<RequestProps> = ({
 						id={request.request.requestor.id}
 						name={randomName(request.request.requestor.id)}
 						image={randomImage(request.request.requestor.id)}
-						showZna={mvpVersion === 3}
 						subtext={'Creator'}
 					/>
 					<div className={styles.Story}>{metadata?.description || ''}</div>

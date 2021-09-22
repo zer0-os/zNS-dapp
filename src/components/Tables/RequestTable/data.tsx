@@ -1,5 +1,4 @@
 /* eslint-disable no-loop-func */
-import { getMetadata } from 'lib/metadata';
 import {
 	DomainRequest,
 	DomainRequestAndContents,
