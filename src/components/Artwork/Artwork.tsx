@@ -47,6 +47,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		// Get metadata
 		isMounted.current = true;
 		if (!loadTime.current) loadTime.current = new Date();
+		setMetadata(undefined);
 		if (metadataUrl) {
 			getMetadata(metadataUrl).then((m: Metadata | undefined) => {
 				if (loadTime.current && isMounted.current) {
@@ -76,7 +77,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		return () => {
 			isMounted.current = false;
 		};
-	}, [metadataUrl]);
+	}, [domain, metadataUrl]);
 
 	const artwork = React.useMemo(() => {
 		return (

@@ -53,7 +53,7 @@ const SubdomainTableRow = (props: any) => {
 		return () => {
 			isMounted = false;
 		};
-	}, [hasUpdated]);
+	}, [domain, hasUpdated]);
 
 	const bidColumns = () => {
 		if (!areBidsLoading) {
