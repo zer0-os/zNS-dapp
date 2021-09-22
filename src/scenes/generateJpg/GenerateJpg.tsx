@@ -14,11 +14,11 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 import './GenerateJpg.css';
 
 type GenerateJpgProps = {
-	object: any;
+	url: string;
 	style?: React.CSSProperties;
 };
 
-const GenerateJpg: React.FC<GenerateJpgProps> = ({ object }) => {
+const GenerateJpg: React.FC<GenerateJpgProps> = ({ url }) => {
 	////////////
 	// States //
 	////////////
@@ -86,7 +86,7 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ object }) => {
 		function (texture) {
 			const loader = new GLTFLoader();
 			loader.load(
-				'assets/object/scene.gltf',
+				url,
 				function (gltf) {
 					scene.add(gltf.scene);
 					setLoading(false);

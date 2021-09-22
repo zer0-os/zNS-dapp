@@ -84,7 +84,6 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const onImageChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (event.target.files && event.target.files[0]) {
 			const type = event.target.files[0].type;
-			console.log(event.target.files[0]);
 			// Raw data for image preview
 			const url = URL.createObjectURL(event.target.files[0]);
 			if (type.indexOf('image') > -1) setMediaType('image');
@@ -173,7 +172,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							<span className="glow-text-white">FBX</span>
 						)}
 						{previewImage && mediaType === 'gltf' && (
-							<GenerateJpg object={model}></GenerateJpg>
+							<GenerateJpg url={previewImage}></GenerateJpg>
 						)}
 					</div>
 					<input
