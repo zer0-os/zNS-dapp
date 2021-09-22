@@ -175,7 +175,7 @@ const GenericTable = (props: any) => {
 					/>
 				</div>
 			</div>
-			{!props.isLoading && isGridView ? GridView : ListView}
+			{!props.isLoading && (isGridView ? GridView : ListView)}
 			{props.isLoading && (
 				<div className={styles.Loading}>
 					<Spinner /> {props.loadingText ? props.loadingText : 'Loading'}
