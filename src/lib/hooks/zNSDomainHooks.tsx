@@ -1,10 +1,5 @@
 import { DocumentNode, OperationVariables, useQuery } from '@apollo/client';
-import {
-	DomainQueryResult,
-	DomainsQueryResult,
-	Maybe,
-	ParentDomain,
-} from 'lib/types';
+import { DomainQueryResult, DomainsQueryResult } from 'lib/types';
 import { getDomainId } from 'lib/utils';
 
 import { queries } from '../zns';

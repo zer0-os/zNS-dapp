@@ -1,6 +1,6 @@
 import { useZnsContracts } from 'lib/contracts';
-import { createDomainMetadata, tryFunction, uploadToIPFS } from 'lib/utils';
-import { DomainRequestContents, Maybe, NftParams } from 'lib/types';
+import { tryFunction } from 'lib/utils';
+import { Maybe, NftParams } from 'lib/types';
 import { ethers } from 'ethers';
 export interface DomainRequestParams {
 	requestor: string;

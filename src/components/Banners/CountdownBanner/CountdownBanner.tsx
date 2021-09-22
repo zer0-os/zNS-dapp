@@ -1,17 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 import styles from './CountdownBanner.module.css';
 
 import arrow from './assets/bidarrow.svg';
-
-type TimeRemaining = {
-	seconds: number;
-	minutes: number;
-	hours: number;
-	days: number;
-};
 
 const CountdownBanner = () => {
 	const history = useHistory();

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /*
 	This container...
 	- checks if we have a Cloudinary upload for given hash
@@ -101,10 +102,11 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	// Gets data for media
 	const getMediaData = async () => {
 		const mediaType = (await checkMediaType()) as MediaType;
-		setMediaType(mediaType);
-
 		const hash = getHashFromIPFSUrl(ipfsUrl);
-		setMediaLocation(hash);
+		if (isMounted.current) {
+			setMediaType(mediaType);
+			setMediaLocation(hash);
+		}
 	};
 
 	// Resets relevant state objects
@@ -231,4 +233,4 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	);
 };
 
-export default NFTMediaContainer;
+export default React.memo(NFTMediaContainer);

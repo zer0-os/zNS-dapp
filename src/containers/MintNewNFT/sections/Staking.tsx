@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
 import React, { useState, useEffect } from 'react';
 
@@ -9,7 +10,6 @@ import styles from '../MintNewNFT.module.css';
 
 //- Component Imports
 import { TextInput, FutureButton } from 'components';
-import { Maybe } from 'lib/types';
 
 type StakingProps = {
 	balance: number | undefined;
@@ -25,7 +25,7 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 	const pressContinue = () => {
 		// Validate
 		const stake = Number(amount);
-		if (!amount.length || stake == undefined || stake === 0)
+		if (!amount.length || stake === undefined || stake === 0)
 			return setError('Please provide a stake amount');
 		if (balance !== undefined && stake > balance) {
 			setError('Insufficient balance');
@@ -40,8 +40,8 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 	useEffect(() => {
 		const stake = Number(amount);
 		const valid =
-			stake != undefined &&
-			balance != undefined &&
+			stake !== undefined &&
+			balance !== undefined &&
 			stake <= balance &&
 			stake > 0;
 		setIsValid(valid);
@@ -84,7 +84,7 @@ const Staking: React.FC<StakingProps> = ({ balance, token, onContinue }) => {
 					onChange={(amount: string) => setAmount(amount)}
 					text={amount}
 					style={{ width: '215px' }}
-					error={error != undefined}
+					error={error !== undefined}
 					errorText={error}
 					numeric
 				/>

@@ -48,6 +48,7 @@ export { default as TitleBar } from './NavBars/TitleBar/TitleBar';
 export { default as BidTable } from './Tables/BidTable/BidTable';
 export { default as DomainTable } from './Tables/DomainTable/DomainTable';
 export { default as RequestTable } from './Tables/RequestTable/RequestTable';
+export { default as GenericTable } from './Tables/GenericTable/GenericTable';
 
 //- Other
 export { default as ArrowLink } from './ArrowLink/ArrowLink';

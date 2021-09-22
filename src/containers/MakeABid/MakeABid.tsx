@@ -1,6 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
@@ -9,7 +9,6 @@ import { Domain, Metadata, Bid, Maybe } from 'lib/types';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
 import { toFiat } from 'lib/currency';
-import { getRelativeDomainPath } from 'lib/utils/domains';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
@@ -45,9 +44,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	//- Bid hooks
 	const { getBidsForDomain, placeBid } = useBidProvider();
 
-	// React-router-dom
-	const history = useHistory();
-
 	// Wild to usd
 	const { wildPriceUsd } = useCurrencyProvider();
 
@@ -74,7 +70,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	// Loading States
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
-	const [isBidPending, setIsBidPending] = useState(false);
+	const [isBidPending] = useState(false);
 	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
 	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
 	const [statusText, setStatusText] = useState<string>('Processing bid');
