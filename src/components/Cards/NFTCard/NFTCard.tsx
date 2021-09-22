@@ -38,7 +38,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 }) => {
 	// If the domain is super long, truncate it
 	let domainText;
-	if (domain.length > 38) {
+	if (('wilder.' + domain).length > 38) {
 		domainText = `0://wilder...${
 			domain.split('.')[domain.split('.').length - 1]
 		}`;
