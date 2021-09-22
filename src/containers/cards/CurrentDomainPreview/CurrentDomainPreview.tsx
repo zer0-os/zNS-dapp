@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 // Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import { useWeb3React } from '@web3-react/core';
 
 // Component Imports
 import { PreviewCard, Overlay } from 'components';
@@ -14,10 +15,13 @@ const CurrentDomainPreview = () => {
 	//////////////////
 
 	const { domain } = useCurrentDomain();
+	const { account } = useWeb3React();
 
 	// Both variables current hardcoded for Wilder World
 	const domainName = domain?.name.split('wilder.')[1];
 	const isRootDomain = domain?.name === 'wilder';
+	const isDisabled =
+		!account || account.toLowerCase() === domain?.owner?.id.toLowerCase();
 
 	const [isBidModalOpen, setIsBidModalOpen] = useState(false);
 
@@ -41,7 +45,7 @@ const CurrentDomainPreview = () => {
 				metadataUrl={!isRootDomain ? domain?.metadata : ''}
 				creatorId={domain?.minter?.id || ''}
 				ownerId={domain?.owner?.id || ''}
-				disabled={false}
+				disabled={isDisabled}
 				mvpVersion={1}
 				onButtonClick={openBidModal}
 				onImageClick={() => {}}
