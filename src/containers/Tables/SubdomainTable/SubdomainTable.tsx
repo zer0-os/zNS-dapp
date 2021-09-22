@@ -25,13 +25,13 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	// Domain hook data
 	const { domain, loading } = useCurrentDomain();
 
-	const { domain: biddingOn, close } = useBid();
+	const { domain: biddingOn, close, bidPlaced } = useBid();
 
 	return (
 		<>
 			{biddingOn !== undefined && (
 				<Overlay onClose={close} open={biddingOn !== undefined}>
-					<MakeABid domain={biddingOn!} onBid={close} />
+					<MakeABid domain={biddingOn!} onBid={bidPlaced} />
 				</Overlay>
 			)}
 			<GenericTable

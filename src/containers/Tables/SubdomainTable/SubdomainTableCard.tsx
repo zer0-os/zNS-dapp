@@ -22,13 +22,14 @@ const SubdomainTableCard = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
-	const { makeABid } = useBid();
+	const { makeABid, updated } = useBid();
 
 	const { getBidsForDomain } = useBidProvider();
 
 	const domain = props.data;
 
 	const [bids, setBids] = useState<Bid[] | undefined>();
+	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
 
 	const isOwnedByUser =
@@ -39,8 +40,16 @@ const SubdomainTableCard = (props: any) => {
 	};
 
 	useEffect(() => {
+		if (updated && updated.id === domain.id) {
+			setHasUpdated(!hasUpdated);
+		}
+	}, [updated]);
+
+	useEffect(() => {
 		let isMounted = true;
 		const get = async () => {
+			setAreBidsLoading(true);
+			setBids(undefined);
 			const b = await getBidsForDomain(domain);
 			if (isMounted) {
 				setAreBidsLoading(false);
@@ -51,7 +60,7 @@ const SubdomainTableCard = (props: any) => {
 		return () => {
 			isMounted = false;
 		};
-	}, [domain]);
+	}, [domain, hasUpdated]);
 
 	const onClick = (event: any) => {
 		if (!event.target.className.includes('FutureButton')) {

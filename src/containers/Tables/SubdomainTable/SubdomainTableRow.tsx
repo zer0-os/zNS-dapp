@@ -20,21 +20,32 @@ const SubdomainTableRow = (props: any) => {
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
 
-	const { makeABid } = useBid();
+	const { makeABid, updated } = useBid();
 	const { getBidsForDomain } = useBidProvider();
 
 	const domain = props.data;
 
 	const [bids, setBids] = useState<Bid[] | undefined>();
+	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
+	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
 
 	const isOwnedByUser =
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
 
 	useEffect(() => {
+		if (updated && updated.id === domain.id) {
+			setHasUpdated(!hasUpdated);
+		}
+	}, [updated]);
+
+	useEffect(() => {
 		let isMounted = true;
 		const get = async () => {
+			setBids(undefined);
+			setAreBidsLoading(true);
 			const b = await getBidsForDomain(domain);
 			if (isMounted) {
+				setAreBidsLoading(false);
 				setBids(b);
 			}
 		};
@@ -42,16 +53,21 @@ const SubdomainTableRow = (props: any) => {
 		return () => {
 			isMounted = false;
 		};
-	}, []);
+	}, [hasUpdated]);
 
 	const bidColumns = () => {
-		if (bids) {
+		if (!areBidsLoading) {
 			return (
 				<>
 					<td className={styles.Right}>
-						{bids[0] ? bids[0].amount.toLocaleString() + ' WILD' : '-'}
+						{!bids && 'Failed to retrieve'}
+						{bids &&
+							(bids[0] ? bids[0].amount.toLocaleString() + ' WILD' : '-')}
 					</td>
-					<td className={styles.Right}>{bids.length.toLocaleString()}</td>
+					<td className={styles.Right}>
+						{!bids && 'Failed to retrieve'}
+						{bids && bids.length.toLocaleString()}
+					</td>
 				</>
 			);
 		} else {

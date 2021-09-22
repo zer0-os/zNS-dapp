@@ -12,6 +12,10 @@ export const BidContext = React.createContext({
 	close: () => {
 		return;
 	},
+	bidPlaced: () => {
+		return;
+	},
+	updated: undefined as Maybe<Domain>,
 });
 
 type BidProviderType = {
@@ -24,6 +28,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 	//////////////////////////
 
 	const [biddingOn, setBiddingOn] = useState<Maybe<Domain>>();
+	const [updated, setUpdated] = useState<Maybe<Domain>>();
 
 	const makeABid = (domain: Domain) => {
 		setBiddingOn(domain);
@@ -33,10 +38,22 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 		setBiddingOn(undefined);
 	};
 
+	const bidPlaced = () => {
+		setUpdated(biddingOn);
+		setBiddingOn(undefined);
+
+		// This is a bad solution long term
+		setTimeout(() => {
+			setUpdated(undefined);
+		}, 1000);
+	};
+
 	const contextValue = {
 		domain: biddingOn,
 		makeABid,
 		close,
+		bidPlaced,
+		updated,
 	};
 
 	return (
@@ -47,6 +64,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 export default BidProvider;
 
 export function useBid() {
-	const { domain, makeABid, close } = React.useContext(BidContext);
-	return { domain, makeABid, close };
+	const { bidPlaced, updated, domain, makeABid, close } =
+		React.useContext(BidContext);
+	return { bidPlaced, updated, domain, makeABid, close };
 }
