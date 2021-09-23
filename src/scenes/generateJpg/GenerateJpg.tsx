@@ -3,10 +3,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import * as Three from 'three';
 
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-//import { GLTFLoaderObject } from './loaders/GLTFLoaderObject.d';
 
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
@@ -32,15 +29,11 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ url }) => {
 
 	//Camera Viewer
 	const [camera, setCamera] = useState(
-		new Three.PerspectiveCamera(
-			75,
-			window.innerWidth / window.innerHeight,
-			0.1,
-			1000,
-		),
+		new Three.PerspectiveCamera(75, 240 / 240, 0.1, 1000),
 	);
 
-	//camera.position.setZ(10);
+	camera.position.set(-5, 1, 10);
+	camera.rotation.set(-0.1, -0.5, 0);
 
 	///////////////////////////////////////
 
@@ -49,7 +42,7 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ url }) => {
 	renderer.setSize(240, 240);
 
 	useEffect(() => {
-		const faso = document.getElementById('Faso');
+		const faso = document.getElementById('Container3d');
 		faso?.appendChild(renderer.domElement);
 	}, []);
 
@@ -59,26 +52,9 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ url }) => {
 
 	///////////////////////////////////////
 
-	//GEOMETRY
+	var img = document.createElement('img');
 
-	const torusGeo = new Three.TorusGeometry(10, 3, 16, 100);
-	const torusMat = new Three.MeshStandardMaterial({ color: 0xff6347 });
-	const torusMesh = new Three.Mesh(torusGeo, torusMat);
-
-	///////////////////////////////////////
-
-	//LIGHT
-	const pointLight = new Three.PointLight(0xffffff, 1);
-	pointLight.position.set(5, 5, 5);
-	//scene.add(pointLight);
-
-	//Light
-	const ambientLight = new Three.AmbientLight(0xffffff, 0.1);
-	//scene.add(ambientLight);
-
-	//PROBE
-	const lightProbe = new Three.LightProbe();
-	//scene.add(lightProbe);
+	var picture: string;
 
 	//ENV MAP
 	new RGBELoader().setPath('assets/hdri/').load(
@@ -89,11 +65,44 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ url }) => {
 				url,
 				function (gltf) {
 					scene.add(gltf.scene);
+
+					const cameraRender = new Three.PerspectiveCamera(
+						200,
+						300 / 300,
+						0.1,
+						1000,
+					);
+
+					cameraRender.position.set(
+						camera.position.x,
+						camera.position.y,
+						camera.position.z,
+					);
+
+					cameraRender.rotation.set(
+						camera.rotation.x,
+						camera.rotation.y,
+						camera.rotation.z,
+					);
+
+					renderer.setSize(300, 300);
+					renderer.render(scene, cameraRender);
+
+					var binaryData = [];
+					binaryData.push(renderer.domElement.toDataURL('image/png'));
+					picture = URL.createObjectURL(
+						new Blob(binaryData, { type: 'image/png' }),
+					);
+					console.log(picture.split('blob:').pop());
+					let source: string | undefined = picture.split('blob:').pop();
+					img.src = source ? source : '';
+					img.alt = 'NFT Preview';
+					const image = document.getElementById('Container3d');
+					image?.appendChild(img);
+					console.log(img);
 					setLoading(false);
 				},
-				function (x) {
-					console.log(x);
-				},
+				undefined,
 				function (error) {
 					console.error(error);
 				},
@@ -112,19 +121,8 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ url }) => {
 
 	///////////////////////////////////////
 
-	//Controls
-	const controls = new OrbitControls(camera, renderer.domElement);
-	controls.minDistance = 8;
-	controls.maxDistance = 10;
-	controls.enablePan = false;
-
-	var a = document.createElement('a');
-
 	//Function that reload
 	function animate() {
-		//Update View
-		controls.update();
-
 		//Update Size and Render
 		renderer.render(scene, camera);
 
@@ -139,7 +137,7 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ url }) => {
 
 	const takeScreenShot = () => {
 		//Camera Render
-		const cameraRender = new Three.PerspectiveCamera(75, 300 / 300, 0.1, 1000);
+		const cameraRender = new Three.PerspectiveCamera(200, 300 / 300, 0.1, 1000);
 
 		cameraRender.position.set(
 			camera.position.x,
@@ -156,20 +154,20 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ url }) => {
 		renderer.setSize(300, 300);
 		renderer.render(scene, cameraRender);
 
+		/*
 		a.href = renderer.domElement.toDataURL('image/png');
 		a.download = 'screenshot.png';
-		a.click();
+		a.click();*/
 	};
 
 	return (
-		<div id={'Faso'} style={{ display: 'inline-block', position: 'relative' }}>
+		<div
+			id={'Container3d'}
+			style={{ display: 'inline-block', position: 'relative' }}
+		>
 			{loading && <div id="loader"></div>}
 
-			{/*!loading && (
-				<div id="gui">
-					<button onClick={() => takeScreenShot()}>Screenshot</button>
-				</div>
-			)*/}
+			{/*!loading && <img alt="NFT Preview" src={picture} />*/}
 		</div>
 	);
 };

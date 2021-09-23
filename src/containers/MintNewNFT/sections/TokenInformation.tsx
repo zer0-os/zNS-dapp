@@ -172,7 +172,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							<span className="glow-text-white">FBX</span>
 						)}
 						{previewImage && mediaType === 'gltf' && (
-							<GenerateJpg url={previewImage}></GenerateJpg>
+							<GenerateJpg url={previewImage as string}></GenerateJpg>
 						)}
 					</div>
 					<input
