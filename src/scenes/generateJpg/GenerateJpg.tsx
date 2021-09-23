@@ -49,43 +49,45 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({ url }) => {
 
 	const [img, setImg] = useState(document.createElement('img'));
 
-	//ENV MAP
-	new RGBELoader().setPath('assets/hdri/').load(
-		'fondo.hdr',
-		function (texture) {
-			const loader = new GLTFLoader();
-			loader.load(
-				url,
-				function (gltf) {
-					scene.add(gltf.scene);
+	useEffect(() => {
+		//ENV MAP
+		new RGBELoader().setPath('assets/hdri/').load(
+			'fondo.hdr',
+			function (texture) {
+				const loader = new GLTFLoader();
+				loader.load(
+					url,
+					function (gltf) {
+						scene.add(gltf.scene);
 
-					renderer.render(scene, camera);
+						renderer.render(scene, camera);
 
-					img.src = renderer.domElement.toDataURL('image/png');
-					img.alt = 'NFT Preview';
-					const image = document.getElementById('Container3d');
-					if (image?.lastChild) {
-						image?.removeChild(image?.lastChild);
-					}
-					console.log('Faso');
-					image?.appendChild(img);
-					setLoading(false);
-				},
-				undefined,
-				function (error) {
-					console.error(error);
-				},
-			);
+						img.src = renderer.domElement.toDataURL('image/png');
+						img.alt = 'NFT Preview';
+						const image = document.getElementById('Container3d');
+						if (image?.lastChild) {
+							image?.removeChild(image?.lastChild);
+						}
+						console.log('Faso');
+						image?.appendChild(img);
+						setLoading(false);
+					},
+					undefined,
+					function (error) {
+						console.error(error);
+					},
+				);
 
-			texture.mapping = Three.EquirectangularReflectionMapping;
+				texture.mapping = Three.EquirectangularReflectionMapping;
 
-			scene.environment = texture;
-		},
-		undefined,
-		function (error) {
-			console.error(error);
-		},
-	);
+				scene.environment = texture;
+			},
+			undefined,
+			function (error) {
+				console.error(error);
+			},
+		);
+	}, []);
 
 	///////////////////////////////////////
 
