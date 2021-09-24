@@ -63,10 +63,16 @@ const Summary: React.FC<SummaryProps> = ({
 			<div className={styles.Summary}>
 				<div className={`${styles.NFT} ${styles.Uploaded} border-rounded`}>
 					{token.mediaType === 'image' && (
-						<img alt="nft preview" src={token.previewImage} />
+						<img alt="nft preview" src={token.previewImage as string} />
 					)}
 					{token.mediaType === 'video' && (
 						<video autoPlay controls src={token.previewImage} />
+					)}
+					{token.mediaType === 'fbx' && (
+						<img alt="nft preview" src={token.previewImage as string} />
+					)}
+					{token.mediaType === 'gltf' && (
+						<img alt="nft preview" src={token.previewImage as string} />
 					)}
 				</div>
 				<div style={{ marginLeft: 16 }}>

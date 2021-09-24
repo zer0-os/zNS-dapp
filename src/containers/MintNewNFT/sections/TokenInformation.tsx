@@ -50,6 +50,8 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const [locked] = useState(token ? token.locked : true);
 	const [errors, setErrors] = useState<Error[]>([]);
 
+	const [loadingThumbnail, setLoadingThumbnail] = useState(true);
+
 	///////////////
 	// Functions //
 	///////////////
@@ -84,9 +86,11 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 			const type = event.target.files[0].type;
 			// Raw data for image preview
 			const url = URL.createObjectURL(event.target.files[0]);
-			if (type.indexOf('image') > -1) setMediaType('image');
-			else if (type.indexOf('video') > -1) setMediaType('video');
-			else if (type.indexOf('') > -1) {
+			if (type.indexOf('image') > -1) {
+				setMediaType('image');
+			} else if (type.indexOf('video') > -1) {
+				setMediaType('video');
+			} else if (type.indexOf('') > -1) {
 				let fileName = event.target.files[0].name;
 				let extension = fileName.split('.').pop();
 				console.log(extension?.toUpperCase() + ' extension selected.');
@@ -94,14 +98,36 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 			} else return;
 			setPreviewImage(url);
 
+			if (type.indexOf('image') > -1 || type.indexOf('video') > -1) {
+				console.log(event.target.files[0]);
+				// Uint8Array data for sending to IPFS
+				const bufferReader = new FileReader();
+				bufferReader.readAsArrayBuffer(event.target.files[0]);
+				bufferReader.onloadend = () => {
+					setImage(Buffer.from(bufferReader.result as ArrayBuffer));
+				};
+			}
+		}
+	};
+
+	//CREATE A BLOB WITH THE THUMBNAIL
+	const createBlob = () => {
+		if (mediaType == 'fbx' || mediaType == 'gltf') {
+			var blob = new Blob([previewImage]);
+
 			// Uint8Array data for sending to IPFS
 			const bufferReader = new FileReader();
-			bufferReader.readAsArrayBuffer(event.target.files[0]);
+			bufferReader.readAsArrayBuffer(blob);
 			bufferReader.onloadend = () => {
 				setImage(Buffer.from(bufferReader.result as ArrayBuffer));
 			};
+			console.log('Done');
 		}
 	};
+
+	useEffect(() => {
+		createBlob();
+	}, [previewImage]);
 
 	const pressContinue = () => {
 		// Field Validation
@@ -163,11 +189,18 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 						{previewImage && mediaType === 'video' && (
 							<video autoPlay controls loop src={previewImage as string} />
 						)}
-						{previewImage && mediaType === 'fbx' && (
-							<span className="glow-text-white">FBX</span>
-						)}
-						{previewImage && mediaType === 'gltf' && (
-							<GenerateJpg url={previewImage as string}></GenerateJpg>
+						{previewImage && (mediaType === 'gltf' || mediaType === 'fbx') && (
+							<>
+								<GenerateJpg
+									url={previewImage as string}
+									onRender={setPreviewImage}
+									getLoading={(x) => setLoadingThumbnail(x)}
+									type={mediaType}
+								/>
+								{!loadingThumbnail && (
+									<img alt="NFT Preview" src={previewImage as string} />
+								)}
+							</>
 						)}
 					</div>
 					<input
