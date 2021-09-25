@@ -7,8 +7,11 @@ import styles from './CountdownBanner.module.css';
 import arrow from './assets/bidarrow.svg';
 
 import CountdownData from './countdown.json';
-// "startTimeUTC": 1632574800000,
-// "endTimeUTC": 1632657600000,
+
+const startTimeUTC = new Date().getTime() + 15000;
+const endTimeUTC = new Date().getTime() + 30000;
+const preHoursVisible = 0.003;
+const postHoursVisible = 0.003;
 
 const CountdownBanner = () => {
 	//////////////////
@@ -32,8 +35,8 @@ const CountdownBanner = () => {
 	>();
 
 	// Grab start and end from JSON file
-	const startTime = CountdownData.startTimeUTC;
-	const endTime = CountdownData.endTimeUTC;
+	const startTime = startTimeUTC;
+	const endTime = endTimeUTC;
 
 	// Had to break the flow of the file for this to be used below
 	const hoursToMilliseconds = (hrs: number) => {
@@ -41,10 +44,8 @@ const CountdownBanner = () => {
 	};
 
 	// Calculated times from JSON file
-	const preStartTime =
-		startTime - hoursToMilliseconds(CountdownData.pre.hoursVisible);
-	const postEndTime =
-		endTime + hoursToMilliseconds(CountdownData.after.hoursVisible);
+	const preStartTime = startTime - hoursToMilliseconds(preHoursVisible);
+	const postEndTime = endTime + hoursToMilliseconds(postHoursVisible);
 
 	///////////////
 	// Functions //
@@ -133,7 +134,10 @@ const CountdownBanner = () => {
 			onClick={onClick}
 			className={`${styles.nextDrop} border-rounded`}
 		>
-			{text} {timeRemainingLabel && timeRemainingLabel}
+			{text}{' '}
+			{timeRemainingLabel && (
+				<b className={styles.Remaining}>{timeRemainingLabel}</b>
+			)}
 			{buttonText && (
 				<b className={styles.Bid}>
 					{buttonText}
