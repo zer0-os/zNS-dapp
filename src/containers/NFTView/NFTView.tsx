@@ -334,7 +334,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
-						Ownership selled from{' '}
+						Domain sold from{' '}
 						<b>
 							<a
 								className="alt-link"
