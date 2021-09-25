@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
-import { useHistory } from 'react-router';
 import { BigNumber, ethers } from 'ethers';
 
 //- Component Imports
@@ -22,7 +21,6 @@ import { MakeABid } from 'containers';
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
 import useNotification from 'lib/hooks/useNotification';
-import { useBidProvider } from 'lib/providers/BidProvider';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { toFiat } from 'lib/currency';
 
