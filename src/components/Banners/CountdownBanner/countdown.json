@@ -3,16 +3,16 @@
 	"startTimeUTC": 1632621600000,
 	"endTimeUTC": 1632708000000,
 	"pre": {
-		"label": "Chad Knight auction starting in",
+		"label": "Auction for Wild Guidance will start at 6pm PST -",
 		"hoursVisible": 12
 	},
 	"during": {
-		"label": "Chad Knight auction closing in",
+		"label": "Wild Guidance bidding ends in",
 		"button": "Bid Now"
 	},
 	"after": {
-		"label": "Chad Knight auction has closed",
-		"button": "View",
+		"label": "Bidding for Wild Guidance has ended",
+		"button": "View Results",
 		"hoursVisible": 3
 	}
 }
