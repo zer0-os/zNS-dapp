@@ -37,12 +37,8 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
-import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
-import { transfersData, minterData, transferDto } from 'lib/types';
 import { useSDKProvider } from 'lib/providers/SDKProvider';
 import { DomainBidEvent, DomainEvent } from '@zero-tech/zns-sdk';
-import { DataProxy } from '@apollo/client';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -78,8 +74,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const domainIdInteger = BigNumber.from(domainId); //domainId as bignumber used to redirect to etherscan link
 
 	const znsDomain = useZnsDomain(domainId);
-
-	const { getBidsForDomain } = useBidProvider();
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
