@@ -118,6 +118,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const getHistory = async () => {
 		if (znsDomain.domain) {
 			const events = await sdk.instance?.getDomainEvents(znsDomain.domain.id);
+			console.log(events);
 			const bids = await sdk.getBids(znsDomain.domain.id);
 			if (!events || !events.length) {
 				setAllItems([]);
@@ -129,11 +130,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					(a, b) =>
 						new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
 				);
+				let filter: DomainEvent[] = [];
+				//removes repeated timestamps of the sorted array, sdk must fix this later
+				sorted.reduce(function (prev, current) {
+					if (prev.timestamp !== current.timestamp) filter.push(current);
+					return current;
+				});
+				console.log(filter);
 				const highestBid = bids.reduce(function (prev, current) {
 					return prev.amount > current.amount ? prev : current;
 				});
 				if (!isMounted.current) return;
-				setAllItems(sorted);
+				setAllItems(filter);
 				setHighestBid(highestBid);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
