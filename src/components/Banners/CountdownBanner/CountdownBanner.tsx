@@ -6,28 +6,62 @@ import styles from './CountdownBanner.module.css';
 
 import arrow from './assets/bidarrow.svg';
 
+import CountdownData from './countdown.json';
+// "startTimeUTC": 1632574800000,
+// "endTimeUTC": 1632657600000,
+
 const CountdownBanner = () => {
+	//////////////////
+	// State & Data //
+	//////////////////
+
 	const history = useHistory();
 
-	const onClick = () => {
-		history.push('kicks.airwild.season0');
+	// Trigger for effect loop
+	const [secondsCounted, setSecondsCounted] = useState<number>(0);
+
+	// We shouldn't show banner outside of pre countdown and after countdown times
+	const [shouldShowBanner, setShouldShowBanner] = useState<boolean>(false);
+
+	// Variables to render in banner
+	const [text, setText] = useState<string | undefined>();
+	const [buttonText, setButtonText] = useState<string | undefined>();
+	const [buttonLink, setButtonLink] = useState<string | undefined>();
+	const [timeRemainingLabel, setTimeRemainingLabel] = useState<
+		string | undefined
+	>();
+
+	// Grab start and end from JSON file
+	const startTime = CountdownData.startTimeUTC;
+	const endTime = CountdownData.endTimeUTC;
+
+	// Had to break the flow of the file for this to be used below
+	const hoursToMilliseconds = (hrs: number) => {
+		return hrs * 3600000;
 	};
 
-	const endDate = new Date(Date.UTC(2021, 8, 17, 1)).getTime();
+	// Calculated times from JSON file
+	const preStartTime =
+		startTime - hoursToMilliseconds(CountdownData.pre.hoursVisible);
+	const postEndTime =
+		endTime + hoursToMilliseconds(CountdownData.after.hoursVisible);
 
-	const [isFinished, setIsFinished] = useState(false);
+	///////////////
+	// Functions //
+	///////////////
 
-	const calculateTimeLeft = () => {
-		const now = new Date().getTime();
-		const difference = endDate - now;
+	// Converts difference between two UTC timestamps into
+	// [days]d [hours]h [minutes]m [seconds]s
+	const getRemainingTimeAsString = (from: number, to: number) => {
+		const difference = to - from;
+
 		const seconds = Math.floor((difference / 1000) % 60);
 		const minutes = Math.floor((difference / 1000 / 60) % 60);
 		const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
 		const days = hours > 24 ? hours % 24 : 0;
 
 		if (difference <= 0) {
-			setIsFinished(true);
-			return;
+			return '0s';
 		}
 
 		return `${days > 0 ? days + 'd ' : ''}${hours > 0 ? hours + 'h ' : ''}${
@@ -35,36 +69,80 @@ const CountdownBanner = () => {
 		}${seconds}s`;
 	};
 
-	const [timeLeft, setTimeLeft] = useState<string | undefined>();
+	// Navigates to button link
+	const onClick = () => {
+		if (buttonLink) {
+			history.push(buttonLink);
+		}
+	};
+
+	/////////////
+	// Effects //
+	/////////////
 
 	useEffect(() => {
 		let isActive = true;
 		setTimeout(() => {
-			if (isActive && !isFinished) {
-				setTimeLeft(calculateTimeLeft());
+			if (isActive) {
+				const now = new Date().getTime();
+				let countingDownTo;
+				// @todo refactor - this is messy
+				if (now < preStartTime) {
+					// Nothing
+					setShouldShowBanner(false);
+				} else if (now < startTime) {
+					// Pre-drop banner
+					countingDownTo = startTime;
+					setText(CountdownData.pre.label);
+					setButtonText(undefined);
+				} else if (now < endTime) {
+					// Auction countdown
+					countingDownTo = endTime;
+					setText(CountdownData.during.label);
+					setButtonText(CountdownData.during.button);
+					setButtonLink(CountdownData.domain);
+				} else if (now < postEndTime) {
+					// Post auction banner
+					setText(CountdownData.after.label);
+					setButtonText(CountdownData.after.button);
+					setButtonLink(CountdownData.domain);
+					setTimeRemainingLabel(undefined);
+				} else {
+					// Nothing
+					setShouldShowBanner(false);
+				}
+				if (countingDownTo) {
+					const remaining = getRemainingTimeAsString(now, countingDownTo);
+					setTimeRemainingLabel(remaining);
+					setShouldShowBanner(true);
+				}
+				setSecondsCounted(secondsCounted + 1);
 			}
 		}, 1000);
-		return () => {
-			isActive = false;
-		};
-	}, [timeLeft]);
+	}, [secondsCounted]);
+
+	////////////
+	// Render //
+	////////////
+
+	if (!shouldShowBanner) return <></>;
 
 	return (
-		<div onClick={onClick} className={`${styles.nextDrop} border-rounded`}>
-			{!isFinished && (
-				<span>
-					AIR WILD auction ending in{' '}
-					<b className={styles.Remaining}>{timeLeft}</b>
-					<b className={styles.Bid}>
-						Bid Now
-						<img alt="arrow" className={styles.Arrow} src={arrow} />
-					</b>
-				</span>
+		<div
+			style={{ marginBottom: 16 }}
+			onClick={onClick}
+			className={`${styles.nextDrop} border-rounded`}
+		>
+			{text} {timeRemainingLabel && timeRemainingLabel}
+			{buttonText && (
+				<b className={styles.Bid}>
+					{buttonText}
+					<img alt="arrow" className={styles.Arrow} src={arrow} />
+				</b>
 			)}
-			{isFinished && <span>AIRWILD auction has closed</span>}
 			<div className={styles.Background}></div>
 		</div>
 	);
 };
 
-export default CountdownBanner;
+export default React.memo(CountdownBanner);

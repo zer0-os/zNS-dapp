@@ -1,0 +1,18 @@
+{
+	"domain": "guild.knight.guidance",
+	"startTimeUTC": 1632621600000,
+	"endTimeUTC": 1632708000000,
+	"pre": {
+		"label": "Chad Knight auction starting in",
+		"hoursVisible": 12
+	},
+	"during": {
+		"label": "Chad Knight auction closing in",
+		"button": "Bid Now"
+	},
+	"after": {
+		"label": "Chad Knight auction has closed",
+		"button": "View",
+		"hoursVisible": 3
+	}
+}
