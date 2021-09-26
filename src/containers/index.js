@@ -12,13 +12,19 @@
 // Cards
 export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/CurrentDomainPreview';
 
-export { default as BidList } from './BidList/BidList';
-export { default as Enlist } from './Enlist/Enlist';
-export { default as MakeABid } from './MakeABid/MakeABid';
-export { default as MintNewNFT } from './MintNewNFT/MintNewNFT';
-export { default as Shop } from './Shop/Shop';
-export { default as SubdomainTable } from './Tables/SubdomainTable/SubdomainTable';
-export { default as NFTView } from './NFTView/NFTView';
-export { default as TransferOwnership } from './TransferOwnership';
-export { default as OwnedDomainsTable } from './Tables/OwnedDomainsTable/OwnedDomainsTable';
-export { default as Request } from './Request/Request';
+// Flows
+export { default as MakeABid } from './flows/MakeABid/MakeABid';
+export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
+export { default as MintWheels } from './flows/MintWheels/MintWheels';
+export { default as TransferOwnership } from './flows/TransferOwnership';
+
+// Tables
+export { default as OwnedDomainsTable } from './tables/OwnedDomainsTable/OwnedDomainsTable';
+export { default as SubdomainTable } from './tables/SubdomainTable/SubdomainTable';
+
+// Lists
+export { default as BidList } from './lists/BidList/BidList';
+
+// Other
+export { default as NFTView } from './other/NFTView/NFTView';
+export { default as Request } from './other/Request/Request';
