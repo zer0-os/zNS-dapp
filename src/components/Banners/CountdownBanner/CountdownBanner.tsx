@@ -92,7 +92,8 @@ const CountdownBanner = () => {
 					// Pre-drop banner
 					countingDownTo = startTime;
 					setText(CountdownData.pre.label);
-					setButtonText(undefined);
+					setButtonText(CountdownData.during.button);
+					setButtonLink(CountdownData.domain);
 				} else if (now < endTime) {
 					// Auction countdown
 					countingDownTo = endTime;
