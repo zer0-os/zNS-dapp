@@ -132,8 +132,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				filter.push(sorted[0]);
 				//removes repeated timestamps of the sorted array, sdk must fix this later
 				sorted.reduce(function (prev, current) {
-					if (prev.timestamp !== current.timestamp || !current.bidder)
-						filter.push(current);
+					if (prev.timestamp !== current.timestamp) filter.push(current);
 					return current;
 				});
 				const highestBid = bids.reduce(function (prev, current) {
