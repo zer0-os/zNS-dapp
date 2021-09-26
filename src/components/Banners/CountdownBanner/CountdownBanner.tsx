@@ -131,16 +131,18 @@ const CountdownBanner = () => {
 			onClick={onClick}
 			className={`${styles.nextDrop} border-rounded`}
 		>
-			{text}{' '}
-			{timeRemainingLabel && (
-				<b className={styles.Remaining}>{timeRemainingLabel}</b>
-			)}
-			{buttonText && (
-				<b className={styles.Bid}>
-					{buttonText}
-					<img alt="arrow" className={styles.Arrow} src={arrow} />
-				</b>
-			)}
+			<span>
+				{text}{' '}
+				{timeRemainingLabel && (
+					<b className={styles.Remaining}>{timeRemainingLabel}</b>
+				)}
+				{buttonText && (
+					<b className={styles.Bid}>
+						{buttonText}
+						<img alt="arrow" className={styles.Arrow} src={arrow} />
+					</b>
+				)}
+			</span>
 			<div className={styles.Background}></div>
 		</div>
 	);
