@@ -231,7 +231,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const history = () => (
 		<section
-			className={`${styles.History} ${bids && bids.length === 0 ? styles.HistoryNoBids : ' '}  ${styles.Box} blur border-primary border-rounded`}
+			className={`${styles.History} ${
+				bids && bids.length === 0 ? styles.HistoryNoBids : ' '
+			}  ${styles.Box} blur border-primary border-rounded`}
 		>
 			<h4>History</h4>
 			{!bids && (
