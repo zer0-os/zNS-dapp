@@ -43,7 +43,6 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				infiniteScroll
 				isLoading={loading}
 				loadingText={'Loading Subdomains'}
-				style={props.style}
 			/>
 		</>
 	);

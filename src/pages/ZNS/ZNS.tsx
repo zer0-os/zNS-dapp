@@ -29,6 +29,7 @@ import {
 	TitleBar,
 	Tooltip,
 	IconButton,
+	CountdownBanner,
 	Overlay,
 	Profile,
 	NotificationDrawer,
@@ -280,12 +281,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		let to;
 		if (isVisible && previewCardRef) {
 			// If should be visible, slide down
-			to = { opacity: 1, marginTop: 0 };
+			to = { opacity: 1, marginTop: 0, marginBottom: 16 };
 		} else if (domain === '/') {
 			// If root view, slide up
 			to = {
 				opacity: 0,
-				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 8,
+				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 12,
+				marginBottom: 16,
 			};
 		} else {
 			// If NFT view, don't render
@@ -498,6 +500,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				</FilterBar>
 
 				{previewCard()}
+
+				<CountdownBanner />
 
 				{showDomainTable && subTable}
 
