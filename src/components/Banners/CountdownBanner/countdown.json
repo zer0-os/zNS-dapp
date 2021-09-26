@@ -1,7 +1,7 @@
 {
 	"domain": "guild.knight.guidance",
-	"startTimeUTC": 1632621600000,
-	"endTimeUTC": 1632708000000,
+	"startTimeUTC": 1632618000000,
+	"endTimeUTC": 1632704400000,
 	"pre": {
 		"label": "Auction for Wild Guidance will start at 6pm PST -",
 		"hoursVisible": 12
