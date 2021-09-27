@@ -10,7 +10,7 @@ const GenericTable = (props: any) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
-console.log(props.onRowButtonClick,'generic');
+
 
 	
 
@@ -119,7 +119,7 @@ console.log(props.onRowButtonClick,'generic');
 				return (
 					<>
 						{filteredData.map((d: any, index: number) => (
-							<props.rowComponent key={index} rowNumber={index} data={d}  rowClick={props.rowClick} onRowButtonClick={props.onRowButtonClick} filterOwnBids={props.filterOwnBids}/>
+							<props.rowComponent key={index} rowNumber={index} data={d}  rowClick={props.rowClick} onRowClick={props.onRowButtonClick} filterOwnBids={props.filterOwnBids} userId={props.userId}/>
 						))}
 					</>
 				);
@@ -129,7 +129,7 @@ console.log(props.onRowButtonClick,'generic');
 						{filteredData
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
-								<props.rowComponent key={index} rowNumber={index} data={d}  rowClick={props.rowClick} onRowButtonClick={props.onRowButtonClick} filterOwnBids={props.filterOwnBids} />
+								<props.rowComponent key={index} rowNumber={index} data={d}  rowClick={props.rowClick} onRowClick={props.onRowButtonClick} filterOwnBids={props.filterOwnBids}userId={props.userId} />
 							))}
 					</>
 				);
@@ -176,7 +176,8 @@ console.log(props.onRowButtonClick,'generic');
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					<props.gridComponent key={index} rowNumber={index} data={d} />
+					
+					<props.gridComponent key={index} rowNumber={index} data={d} rowClick={props.rowClick} onRowButtonClick={props.onRowButtonClick}  />
 				))}
 			</div>
 		);

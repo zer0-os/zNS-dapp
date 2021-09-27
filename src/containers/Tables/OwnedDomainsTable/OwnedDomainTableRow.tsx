@@ -1,42 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Artwork, FutureButton, Spinner } from 'components';
 import React, { useEffect, useState } from 'react';
 import styles from './SubdomainTableRow.module.css';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { Bid, Domain } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from '../SubdomainTable/BidProvider';
-// Components 
-import ViewBids from 'components/Tables/DomainTable/components/ViewBids';
+// Components
+import ViewBids  from './components/ViewBids';
+import { Artwork, Overlay, Spinner } from 'components';
+import { MakeABid } from 'containers';
 
 enum Modals {
 	Bid,
 }
 
-
-
 const OwnedDomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
-    // const {onNavigate}= props;
+	// const {onNavigate}= props;
 	const domain = props.data;
-    // console.log(onNavigate,'navigate');
+	// console.log(onNavigate,'navigate');
 
 	const { makeABid, updated } = useBid();
 	// Data state
 	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
 	const [modal, setModal] = useState<Modals | undefined>();
 	const { getBidsForDomain } = useBidProvider();
- 
-
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
+	// const [domainToRefresh, setDomainToRefresh] = useState<string>('');
 
 	const isOwnedByUser = account?.toLowerCase() === domain?.id.toLowerCase();
 
@@ -64,8 +61,36 @@ const OwnedDomainTableRow = (props: any) => {
 	}, [domain, hasUpdated]);
 
 	// Modals
-	const openBidModal = () => setModal(Modals.Bid);
+	const openBidModal = () =>{ 
+		
+		setModal(Modals.Bid);}
+		console.log(modal,'log');
+	
+	
 	const closeModal = () => setModal(undefined);
+
+	const onBid = async () => {
+		closeModal();
+
+		// if (biddingOn) {
+		// 	setDomainToRefresh(biddingOn.id);
+		// 	// Need to reset this in case the user
+		// 	// is bidding on the same domain twice
+		// 	setTimeout(() => {
+		// 		setDomainToRefresh('');
+		// 	}, 1000);
+		// }
+	};
+
+
+	//Click handlers
+	const rowClick = (event: any, domain: Domain) => {
+		if (event.target.className.indexOf('FutureButton') >= 0) return;
+		if (props.rowClick) {
+			props.rowClick(domain);
+			return;
+		}
+	};
 
 	const bidColumns = () => {
 		if (!areBidsLoading) {
@@ -96,8 +121,6 @@ const OwnedDomainTableRow = (props: any) => {
 		}
 	};
 
-
-
 	const buttonClick = (domain: Domain) => {
 		try {
 			if (domain?.owner.id.toLowerCase() !== account?.toLowerCase()) {
@@ -109,35 +132,54 @@ const OwnedDomainTableRow = (props: any) => {
 		}
 	};
 
-    
- 
-console.log(props.onRowButtonClick,'undefined');
+	/////////////////////
+	// React Fragments //
+	/////////////////////
+
+	const overlays = () => {
+		return (
+			<>
+				{props.userId && (
+					<Overlay
+						onClose={closeModal}
+						centered
+						open={modal === Modals.Bid && biddingOn !== undefined}
+					>
+						<MakeABid domain={biddingOn!} onBid={onBid} />
+					</Overlay>
+				)}
+			</>
+		);
+	};
 
 	return (
-		<tr className={styles.Row} onClick={()=>props.rowClick(domain)}>
-			<td>{props.rowNumber + 1}</td>
-			<td>
-				<Artwork
-					domain={domain.name.split('wilder.')[1]}
-					disableInteraction
-					metadataUrl={domain.metadata}
-					id={domain.id}
-					style={{ maxWidth: 200 }}
-				/>
-			</td>
-			{bidColumns()}
-			<td>
-				<ViewBids
-                    domain={domain}
-					onClick={props.onRowButtonClick}
-                    filterOwnBids={props.filterOwnBids}
-					style={{ marginLeft: 'auto' }}
-
-				>
-					View Bids
-				</ViewBids>
-			</td>
-		</tr>
+		<>
+			{overlays()}
+			<tr className={styles.Row} onClick={(e)=>rowClick(e,domain)}>
+				<td>{props.rowNumber + 1}</td>
+				<td>
+					<Artwork
+						domain={domain.name.split('wilder.')[1]}
+						disableInteraction
+						metadataUrl={domain.metadata}
+						id={domain.id}
+						style={{ maxWidth: 200 }}
+					/>
+				</td>
+				{bidColumns()}
+				<td>
+					<ViewBids
+						domain={domain}
+						onClick={props.onRowClick}
+						openModal={openBidModal}
+						filterOwnBids={props.filterOwnBids}
+						style={{ marginLeft: 'auto' }}
+					>
+						View Bids
+					</ViewBids>
+				</td>
+			</tr>
+		</>
 	);
 };
 

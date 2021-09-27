@@ -14,7 +14,7 @@ import { NFTCard } from 'components';
 
 import { useBid } from '../SubdomainTable/BidProvider';
 
-const SubdomainTableCard = (props: any) => {
+const OwnedDomainTableCard = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
@@ -23,6 +23,8 @@ const SubdomainTableCard = (props: any) => {
 	const { getBidsForDomain } = useBidProvider();
 
 	const domain = props.data;
+
+	
 
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
@@ -101,4 +103,4 @@ const SubdomainTableCard = (props: any) => {
 	);
 };
 
-export default React.memo(SubdomainTableCard);
+export default React.memo(OwnedDomainTableCard);

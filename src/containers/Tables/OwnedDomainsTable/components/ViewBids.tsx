@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { Bid, Domain, DomainData } from 'lib/types';
 import { FutureButton } from 'components';
@@ -7,15 +7,16 @@ import { FutureButton } from 'components';
 type ViewBidsProps = {
 	domain: Domain;
 	onClick: (domain: DomainData) => void;
+	openModal: () => void;
 	style?: React.CSSProperties;
 	filterOwnBids?: boolean;
 };
-
-const ViewBids: React.FC<ViewBidsProps> = ({
+ const ViewBids:React.FC<ViewBidsProps>=({
 	domain,
 	onClick,
+	openModal,
 	style,
-	filterOwnBids,
+	filterOwnBids
 }) => {
 	let isMounted = useRef(false);
 
@@ -24,12 +25,14 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const handleClick = () => {
+		console.log(domain,'domain');
+		
 		if (!isLoading && bids !== undefined) {
 			onClick({
 				domain,
 				bids,
-			}
-			);
+			});
+			openModal();
 		}
 	};
 
@@ -51,7 +54,7 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 
 	return (
 		<>
-			{bids !== undefined && bids.length > 0 && (
+			 {bids !== undefined && bids.length > 0 && (
 				<FutureButton
 					onClick={handleClick}
 					glow={!isLoading && bids !== undefined}
@@ -59,7 +62,7 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 				>
 					View Bids
 				</FutureButton>
-			)}
+			)} 
 			{bids === undefined && (
 				<div style={{ textAlign: 'right', marginRight: '48px' }}>No Bids</div>
 			)}
@@ -67,4 +70,4 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 	);
 };
 
-export default ViewBids;
+export default ViewBids

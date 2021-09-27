@@ -16,7 +16,7 @@ import { MakeABid } from 'containers';
 import HighestBid from './components/HighestBid';
 import NumBids from './components/NumBids';
 import NFTCardActions from './components/NFTCardActions';
-import ViewBids from './components/ViewBids';
+// import ViewBids from './components/ViewBids';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
@@ -243,14 +243,14 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									Make A Bid
 								</FutureButton>
 							)}
-							{!isGlobalTable && onRowButtonClick && (
+							{/* {!isGlobalTable && onRowButtonClick && (
 								<ViewBids
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
 									domain={domain}
 									onClick={onRowButtonClick}
 									filterOwnBids={filterOwnBids}
 								/>
-							)}
+							)} */}
 						</>
 					);
 				},

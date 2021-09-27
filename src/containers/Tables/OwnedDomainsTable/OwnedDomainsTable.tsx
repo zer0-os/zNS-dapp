@@ -19,7 +19,7 @@ import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 import OwnedDomainTableRow from "./OwnedDomainTableRow"
 import OwnedDomainTableCard from './OwnedDomainTableCard';
-import { domain } from 'process';
+
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -56,7 +56,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		boolean | undefined
 	>();
 	const [isAccepting, setIsAccepting] = React.useState(false);
-	const [isGridView, setIsGridView] = React.useState(false);
+	// const [isGridView, setIsGridView] = React.useState(false);
 	const [acceptingBid, setAcceptingBid] = React.useState<
 		AcceptBidModalData | undefined
 	>();
@@ -68,9 +68,15 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	// Functions //
 	///////////////
 
-	const viewBid = async (domain: DomainData) => {
-		setViewingDomain(domain);
+	const viewBid = async (domain: DomainData) =>{ 
+		setViewingDomain(domain)
+		
 	};
+
+	
+	 	
+		
+	
 
 	const accept = async (bid: Bid) => {
 		if (!viewingDomain?.domain || !bid) return;
@@ -147,6 +153,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	// React Fragments //
 	/////////////////////
 
+
+	
+
 	const canPlaceBid = () => {
 		const id = acceptingBid!.bid.bidderAccount;
 		return (
@@ -211,7 +220,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			)}
 			{viewingDomain !== undefined && (
 				<Overlay onClose={closeDomain} centered open>
-					<BidList bids={viewingDomain.bids} onAccept={accept} />
+					<BidList bids={viewingDomain!.bids} onAccept={accept} />
 				</Overlay>
 			)}
 		</>
@@ -240,9 +249,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				loadingText={'Loading Domains'}
 				rowComponent={OwnedDomainTableRow}
 				gridComponent={OwnedDomainTableCard}
-				rowClick={rowClick}
+				onRowClick={rowClick}
 				onRowButtonClick={viewBid}
 				filterOwnBids={true}
+				userId={account || undefined}
 				// isGridView={isGridView}
 				// // isLoading={isTableLoading}
 				// domains={owned}
@@ -254,7 +264,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				// onRowButtonClick={viewBid}
 				// onRowClick={rowClick}
 				// setIsGridView={(grid: boolean) => setIsGridView(grid)}
-				// userId={account || undefined}
 				// style={{ display: isTableLoading ? 'none' : 'inline-block' }}
 			/>
 		</>
