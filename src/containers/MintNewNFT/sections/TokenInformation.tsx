@@ -97,13 +97,24 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const pressContinue = () => {
 		// Field Validation
 		const errors: Error[] = [];
-		if (!name.length) errors.push({ id: 'name', text: 'NFT name is required' });
-		if (!story.length) errors.push({ id: 'story', text: 'Story is required' });
-		if (!image.length) errors.push({ id: 'image', text: 'Media is required' });
-		if (!domain.length)
+		if (!name.length) {
+			errors.push({ id: 'name', text: 'NFT name is required' });
+		}
+		if (!story.length) {
+			errors.push({ id: 'story', text: 'Story is required' });
+		}
+		if (!image.length) {
+			errors.push({ id: 'image', text: 'Media is required' });
+		}
+		if (!domain.length) {
 			errors.push({ id: 'domain', text: 'Domain name is required' });
-		if (existingSubdomains.includes(domain))
+		}
+		if (/[A-Z]/.test(domain)) {
+			errors.push({ id: 'domain', text: 'Domain name must be lower case' });
+		}
+		if (existingSubdomains.includes(domain)) {
 			errors.push({ id: 'domain', text: 'Domain name already exists' });
+		}
 
 		// Don't continue if there's errors
 		if (errors.length) return setErrors(errors);
@@ -127,6 +138,20 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	useEffect(() => {
 		if (onResize) onResize();
 	}, [errors, story]);
+
+	useEffect(() => {
+		// @todo refactor
+		if (/[A-Z]/.test(domain)) {
+			setErrors([
+				...errors,
+				{ id: 'domain', text: 'Domain name must be lower case' },
+			]);
+		} else {
+			setErrors(
+				errors.filter((e) => e.text !== 'Domain name must be lower case'),
+			);
+		}
+	}, [domain]);
 
 	////////////
 	// Render //
@@ -179,6 +204,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							error={hasError('domain')}
 							errorText={errorText('domain')}
 							alphanumeric
+							maxLength={25}
 						/>
 						{/* <ToggleButton
 							toggled={locked}
