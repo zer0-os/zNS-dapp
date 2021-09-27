@@ -249,10 +249,10 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	// Start submit process - call function for minting or requesting
 	const submit = () => {
 		const isNftValid = checkIsNftValid();
-		// if (!isNftValid) {
-		// 	setError('Something went wrong - please try again');
-		// 	return;
-		// }
+		if (!isNftValid) {
+			setError('Something went wrong - please try again');
+			return;
+		}
 
 		setIsMintLoading(true);
 
