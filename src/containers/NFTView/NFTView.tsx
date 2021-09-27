@@ -44,6 +44,16 @@ type NFTViewProps = {
 	onTransfer: () => void;
 };
 
+export interface DomainEvents extends DomainEvent {
+	from?: string;
+	to?: string;
+	minter?: string;
+	buyer?: string;
+	seller?: string;
+	amount?: string;
+	bidder?: string;
+}
+
 const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
 
@@ -222,11 +232,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	);
 
 	const history = () => {
-		const allHistoryItems = allItems?.sort((a: DomainEvent, b: DomainEvent) => {
-			const aVal = a.bidder ? Number(a.timestamp) : Number(a.timestamp) * 1000;
-			const bVal = b.bidder ? Number(b.timestamp) : Number(b.timestamp) * 1000;
-			return bVal - aVal;
-		});
+		const allHistoryItems = allItems?.sort(
+			(a: DomainEvents, b: DomainEvents) => {
+				const aVal = a.bidder
+					? Number(a.timestamp)
+					: Number(a.timestamp) * 1000;
+				const bVal = b.bidder
+					? Number(b.timestamp)
+					: Number(b.timestamp) * 1000;
+				return bVal - aVal;
+			},
+		);
+		console.log(allHistoryItems);
 		return (
 			<section
 				className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
@@ -248,7 +265,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		);
 	};
 
-	const historyItem = (item: DomainEvent, i: number) => {
+	const historyItem = (item: DomainEvents, i: number) => {
 		if (item.bidder && item.amount) {
 			return (
 				<li className={styles.Bid} key={i}>
@@ -361,31 +378,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			);
 		}
 	};
-
-	// const historyItem = (item: Bid | transferDto, i: number) => (
-	// 	<>
-	// 		{ (
-	// 			<li className={styles.Bid} key={i}>
-	// 				<div>
-	// 					<b>
-	// 						<a
-	// 							className="alt-link"
-	// 							href={`https://etherscan.io/address/${account}`}
-	// 							target="_blank"
-	// 							rel="noreferrer"
-	// 						>{`${item.bidderAccount.substring(0, 4)}...${item.bidderAccount.substring(
-	// 							account.length - 4,
-	// 						)}`}</a>
-	// 					</b>{' '}
-	// 					made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
-	// 				</div>
-	// 				<div className={styles.From}>
-	// 					<b>{moment(date).fromNow()}</b>
-	// 				</div>
-	// 			</li>
-	// 		)}
-	// 	</>
-	// );
 
 	const actionButtons = () => (
 		<div className={styles.Buttons}>
