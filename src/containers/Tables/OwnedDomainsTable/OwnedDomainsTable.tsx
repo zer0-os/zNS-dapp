@@ -249,7 +249,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				loadingText={'Loading Domains'}
 				rowComponent={OwnedDomainTableRow}
 				gridComponent={OwnedDomainTableCard}
-				onRowClick={rowClick}
+				rowClick={rowClick}
 				onRowButtonClick={viewBid}
 				filterOwnBids={true}
 				userId={account || undefined}

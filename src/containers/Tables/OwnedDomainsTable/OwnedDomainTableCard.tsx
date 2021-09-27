@@ -24,6 +24,7 @@ const OwnedDomainTableCard = (props: any) => {
 
 	const domain = props.data;
 
+	console.log(props);
 	
 
 	const [bids, setBids] = useState<Bid[] | undefined>();
@@ -62,6 +63,8 @@ const OwnedDomainTableCard = (props: any) => {
 
 	const onClick = (event: any) => {
 		if (!event.target.className.includes('FutureButton')) {
+			console.log('works');
+			
 			goTo(domain.name.split('wilder.')[1]);
 		}
 	};
@@ -74,7 +77,7 @@ const OwnedDomainTableCard = (props: any) => {
 			nftMinterId={domain.minter?.id || ''}
 			showCreator
 			showOwner
-			onClick={onClick}
+			onClick={(e)=>props.rowClick(domain)}
 		>
 			<div className={styles.Container}>
 				<div className={styles.Bid}>

@@ -177,7 +177,7 @@ const GenericTable = (props: any) => {
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
 					
-					<props.gridComponent key={index} rowNumber={index} data={d} rowClick={props.rowClick} onRowButtonClick={props.onRowButtonClick}  />
+					<props.gridComponent key={index} rowNumber={index} data={d} rowClick={props.rowClick}/>
 				))}
 			</div>
 		);
