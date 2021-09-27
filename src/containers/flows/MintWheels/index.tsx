@@ -13,9 +13,10 @@ import { useWeb3React } from '@web3-react/core';
 // Step Imports
 import Loading from './steps/Loading/Loading';
 import Info from './steps/Info/Info';
+import MintWheels from './MintWheels';
 
 // Configuration
-import { Stage } from './types';
+import { Drop, Stage, WheelQuantity } from './types';
 import {
 	getDropStage,
 	getUserEligibility,
@@ -23,7 +24,7 @@ import {
 	getWildBalance,
 } from './helpers';
 
-const MintWheels = () => {
+const MintWheelsContainer = () => {
 	/*
 		Need to know:
 			- If user is logged in [1]
@@ -119,32 +120,14 @@ const MintWheels = () => {
 	///////////////
 
 	const onContinueFromInfo = () => {
-		// Set step to "choose amount"
+		console.log('continuing');
 	};
 
 	////////////
 	// Render //
 	////////////
 
-	return (
-		<div>
-			{isLoadingPrimaryData && <Loading text={'Loading Wheels Drop'} />}
-			{!isLoadingPrimaryData &&
-				dropStage !== undefined &&
-				wheelsMinted !== undefined &&
-				wheelsTotal !== undefined &&
-				isUserEligible !== undefined && (
-					<Info
-						dropStage={dropStage}
-						isUserEligible={isUserEligible}
-						isWalletConnected={account !== undefined}
-						onContinue={onContinueFromInfo}
-						wheelsMinted={wheelsMinted}
-						wheelsTotal={wheelsTotal}
-					/>
-				)}
-		</div>
-	);
+	return <MintWheels />;
 };
 
-export default MintWheels;
+export default MintWheelsContainer;
