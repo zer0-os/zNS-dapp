@@ -115,6 +115,11 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 		params: StakingRequest,
 		setStatus: (status: string) => void,
 	) => {
+		// @todo better validation
+		if (/[A-Z]/.test(params.nft.domain)) {
+			return;
+		}
+
 		setStatus(`Uploading metadata`);
 
 		let metadata: Maybe<UploadedDomainMetadata>;

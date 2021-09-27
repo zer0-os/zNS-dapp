@@ -56,6 +56,11 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 	// }, []);
 
 	const mint = async (nft: NftParams, setStatus: (status: string) => void) => {
+		// @todo better validation
+		if (/[A-Z]/.test(nft.zna)) {
+			return;
+		}
+
 		let tx: Maybe<ethers.ContractTransaction>;
 
 		// get metadata uri
