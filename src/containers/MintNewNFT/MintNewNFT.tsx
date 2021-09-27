@@ -155,6 +155,17 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		}
 	};
 
+	const checkIsNftValid = () => {
+		let valid = true;
+		// Domain name lowercase
+		if (!account || !tokenInformation) {
+			valid = false;
+		} else if (/[A-Z]/.test(tokenInformation.domain)) {
+			valid = false;
+		}
+		return valid;
+	};
+
 	// Sets the token stake data from the token stake section
 	const getTokenStake = (data: TokenStakeType) => {
 		setTokenStake(data);
@@ -237,6 +248,12 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 
 	// Start submit process - call function for minting or requesting
 	const submit = () => {
+		const isNftValid = checkIsNftValid();
+		// if (!isNftValid) {
+		// 	setError('Something went wrong - please try again');
+		// 	return;
+		// }
+
 		setIsMintLoading(true);
 
 		const doSubmit = async () => {
