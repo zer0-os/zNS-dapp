@@ -27,6 +27,8 @@ type TextInputProps = {
 	resizable?: boolean;
 	alphanumeric?: boolean; // If we want only alphanumeric characters
 	numeric?: boolean;
+	lowercase?: boolean;
+	maxLength?: number;
 };
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -42,6 +44,8 @@ const TextInput: React.FC<TextInputProps> = ({
 	resizable,
 	alphanumeric,
 	numeric,
+	lowercase,
+	maxLength,
 }) => {
 	//////////////////
 	// State & Data //
@@ -55,10 +59,20 @@ const TextInput: React.FC<TextInputProps> = ({
 
 	const handleChange = (event: any) => {
 		const newValue = event.target.value;
-		if (validate(newValue) && onChange) return onChange(event.target.value);
+		if (validate(newValue) && onChange) {
+			return onChange(format(event.target.value));
+		}
+	};
+
+	const format = (str: string) => {
+		if (lowercase) {
+			return str.toLowerCase();
+		}
+		return str;
 	};
 
 	const validate = (str: string) => {
+		if (maxLength && maxLength < str.length) return false;
 		if (alphanumeric && !isAlphanumeric(str)) return false;
 		if (numeric && !isNumber(str)) return false;
 		return true;
