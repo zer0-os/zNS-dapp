@@ -9,7 +9,8 @@ type LoadingProps = {
 const Loading = (props: LoadingProps) => {
 	return (
 		<section className={styles.Container}>
-			<Spinner /> <span>{props.text}</span>
+			<span>{props.text}</span>
+			<Spinner />
 		</section>
 	);
 };

@@ -1,9 +1,12 @@
 .Container {
 	display: flex;
 	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 
 .Container span {
 	display: inline-block;
 	margin-left: 12px;
+	margin-bottom: 40px;
 }
