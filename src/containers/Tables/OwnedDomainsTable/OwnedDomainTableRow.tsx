@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import styles from './SubdomainTableRow.module.css';
+import styles from './OwnedDomainTableRow.module.css';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
@@ -20,10 +20,10 @@ enum Modals {
 const OwnedDomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account } = walletContext;
-	const { push: goTo } = useHistory();
+	// const { push: goTo } = useHistory();
 	// const {onNavigate}= props;
 	const domain = props.data;
-	// console.log(onNavigate,'navigate');
+
 
 	const { makeABid, updated } = useBid();
 	// Data state
@@ -64,7 +64,7 @@ const OwnedDomainTableRow = (props: any) => {
 	const openBidModal = () =>{ 
 		
 		setModal(Modals.Bid);}
-		console.log(modal,'log');
+	
 	
 	
 	const closeModal = () => setModal(undefined);
@@ -133,7 +133,7 @@ const OwnedDomainTableRow = (props: any) => {
 	};
 
 	/////////////////////
-	// React Fragments //
+	// Overlay Fragment //
 	/////////////////////
 
 	const overlays = () => {
@@ -156,7 +156,7 @@ const OwnedDomainTableRow = (props: any) => {
 		<>
 			{overlays()}
 			<tr className={styles.Row} onClick={(e)=>rowClick(e,domain)}>
-				<td>{props.rowNumber + 1}</td>
+				<td className={styles.RowNumber}>{props.rowNumber + 1}</td>
 				<td>
 					<Artwork
 						domain={domain.name.split('wilder.')[1]}

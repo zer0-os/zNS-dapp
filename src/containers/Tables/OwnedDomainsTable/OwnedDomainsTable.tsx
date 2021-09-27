@@ -14,7 +14,7 @@ import { Bid, Domain, DomainData } from 'lib/types';
 import styles from './OwnedDomainsTable.module.css';
 
 // Component Imports
-import { Confirmation, Overlay, Spinner, GenericTable, DomainTable } from 'components';
+import { Confirmation, Overlay, Spinner, GenericTable } from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 import OwnedDomainTableRow from "./OwnedDomainTableRow"
@@ -228,7 +228,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	
 
-	console.log(owned,'domains');
+
 	
 
 	return (
@@ -243,7 +243,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 			<GenericTable
 				className={styles.Reset}
-				alignments={[1,0,1, 1,1]}
+				alignments={[1, 1, 1]}
 				headers={['DOMAIN', 'HIGHEST BID','# OF BIDS']}
 				data={owned}
 				loadingText={'Loading Domains'}

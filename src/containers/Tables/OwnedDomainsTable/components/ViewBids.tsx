@@ -11,12 +11,12 @@ type ViewBidsProps = {
 	style?: React.CSSProperties;
 	filterOwnBids?: boolean;
 };
- const ViewBids:React.FC<ViewBidsProps>=({
+const ViewBids: React.FC<ViewBidsProps> = ({
 	domain,
 	onClick,
 	openModal,
 	style,
-	filterOwnBids
+	filterOwnBids,
 }) => {
 	let isMounted = useRef(false);
 
@@ -25,8 +25,6 @@ type ViewBidsProps = {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const handleClick = () => {
-		console.log(domain,'domain');
-		
 		if (!isLoading && bids !== undefined) {
 			onClick({
 				domain,
@@ -54,7 +52,7 @@ type ViewBidsProps = {
 
 	return (
 		<>
-			 {bids !== undefined && bids.length > 0 && (
+			{bids !== undefined && bids.length > 0 && (
 				<FutureButton
 					onClick={handleClick}
 					glow={!isLoading && bids !== undefined}
@@ -62,7 +60,7 @@ type ViewBidsProps = {
 				>
 					View Bids
 				</FutureButton>
-			)} 
+			)}
 			{bids === undefined && (
 				<div style={{ textAlign: 'right', marginRight: '48px' }}>No Bids</div>
 			)}
@@ -70,4 +68,4 @@ type ViewBidsProps = {
 	);
 };
 
-export default ViewBids
+export default ViewBids;

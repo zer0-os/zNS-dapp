@@ -11,9 +11,6 @@ const GenericTable = (props: any) => {
 	// State & Variables //
 	///////////////////////
 
-
-	
-
 	// chunk defines which row we're up to when infinite scroll is enabled
 	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows
 	const [chunk, setChunk] = useState<number>(1);
@@ -119,7 +116,15 @@ const GenericTable = (props: any) => {
 				return (
 					<>
 						{filteredData.map((d: any, index: number) => (
-							<props.rowComponent key={index} rowNumber={index} data={d}  rowClick={props.rowClick} onRowClick={props.onRowButtonClick} filterOwnBids={props.filterOwnBids} userId={props.userId}/>
+							<props.rowComponent
+								key={index}
+								rowNumber={index}
+								data={d}
+								rowClick={props.rowClick}
+								onRowClick={props.onRowButtonClick}
+								filterOwnBids={props.filterOwnBids}
+								userId={props.userId}
+							/>
 						))}
 					</>
 				);
@@ -129,7 +134,15 @@ const GenericTable = (props: any) => {
 						{filteredData
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
-								<props.rowComponent key={index} rowNumber={index} data={d}  rowClick={props.rowClick} onRowClick={props.onRowButtonClick} filterOwnBids={props.filterOwnBids}userId={props.userId} />
+								<props.rowComponent
+									key={index}
+									rowNumber={index}
+									data={d}
+									rowClick={props.rowClick}
+									onRowClick={props.onRowButtonClick}
+									filterOwnBids={props.filterOwnBids}
+									userId={props.userId}
+								/>
 							))}
 					</>
 				);
@@ -176,8 +189,12 @@ const GenericTable = (props: any) => {
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					
-					<props.gridComponent key={index} rowNumber={index} data={d} rowClick={props.rowClick}/>
+					<props.gridComponent
+						key={index}
+						rowNumber={index}
+						data={d}
+						rowClick={props.rowClick}
+					/>
 				))}
 			</div>
 		);

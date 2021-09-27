@@ -4,6 +4,7 @@
 	box-shadow: none !important;
 	backdrop-filter: none !important;
 	overflow: visible !important;
+	color:#fff;
 }
 
 .Reset > div:first-of-type {
@@ -17,3 +18,5 @@
 	font-weight: 700;
 	color: white;
 }
+
+
