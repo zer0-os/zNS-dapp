@@ -21,13 +21,18 @@ const Info = (props: InfoProps) => {
 	const button = () => {
 		if (!props.isWalletConnected) {
 			return (
-				<FutureButton glow onClick={openConnectWalletModal}>
+				<FutureButton
+					className={styles.Button}
+					glow
+					onClick={openConnectWalletModal}
+				>
 					Connect Wallet
 				</FutureButton>
 			);
 		} else {
 			return (
 				<FutureButton
+					className={styles.Button}
 					glow={props.isWalletConnected && props.isUserEligible}
 					onClick={props.onContinue}
 				>
@@ -39,33 +44,30 @@ const Info = (props: InfoProps) => {
 
 	return (
 		<section className={styles.Container}>
-			{/* Body */}
-			<section>
-				{/* Wheels Image */}
-				<div></div>
+			{/* Wheels Image */}
+			<img className={styles.Image} src="" />
 
-				{/* Wheels Available */}
-				<div>
-					<span>Wheels Available</span>
-					<h2>
-						{props.wheelsMinted} / {props.wheelsTotal} WHEELS have been minted
-					</h2>
-					<ArrowLink>View Auction Rules</ArrowLink>
-				</div>
+			{/* Wheels Available */}
+			<div className={styles.Available}>
+				<span>Wheels Available</span>
+				<h2>
+					{props.wheelsMinted} / {props.wheelsTotal} WHEELS have been minted
+				</h2>
+				<ArrowLink>View Auction Rules</ArrowLink>
+			</div>
 
-				{/* Info */}
-				<p>
-					This is some explainer text about WHEELS and what this flow involves,
-					it is about two sentences long. Ready to start?
-				</p>
-				<p>
-					You may mint up to 2 Wheels total. The cost for each Wheel is 0.07 ETH
-					(100 WILD) plus GAS.
-				</p>
+			{/* Info */}
+			<p>
+				This is some explainer text about WHEELS and what this flow involves, it
+				is about two sentences long. Ready to start?
+			</p>
+			<p>
+				You may mint up to 2 Wheels total. The cost for each Wheel is 0.07 ETH
+				(100 WILD) plus GAS.
+			</p>
 
-				{/* Button */}
-				{button()}
-			</section>
+			{/* Button */}
+			{button()}
 		</section>
 	);
 };

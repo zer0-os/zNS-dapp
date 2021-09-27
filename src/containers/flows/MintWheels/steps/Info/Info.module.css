@@ -1,3 +1,27 @@
 .Container {
 	width: 100%;
 }
+
+.Image {
+	width: 100%;
+	height: 296px;
+	border-radius: var(--box-radius);
+}
+
+.Available {
+	margin-top: 24px;
+	margin-bottom: 40px;
+}
+
+.Available span {
+	font-size: 12px;
+	color: var(--color-grey);
+}
+
+.Available h2 {
+	font-weight: 700;
+}
+
+.Button {
+	margin: 25px auto 0 auto;
+}
