@@ -24,6 +24,9 @@ import {
 	getWildBalance,
 } from './helpers';
 
+// Style Imports
+import styles from './MintWheels.module.css';
+
 const MintWheels = () => {
 	/*
 		Need to know:
@@ -138,11 +141,13 @@ const MintWheels = () => {
 	////////////
 
 	return (
-		<div>
+		<div className={`${styles.Container} border-primary border-rounded`}>
 			{/* Head section */}
-			<section>
-				<h1>Mint Your Wheels</h1>
-				<span>Your ride in the metaverse awaits</span>
+			<section className={styles.Header}>
+				<h1 className="glow-text-white">Mint Your Wheels</h1>
+				<span className="glow-text-white">
+					Your ride in the metaverse awaits
+				</span>
 				<hr />
 			</section>
 			{step === Step.LoadingPrimary && <Loading text={'Loading Wheels Drop'} />}
