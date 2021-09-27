@@ -11,41 +11,38 @@ import styles from './TextInput.module.css';
 //- Local Imports
 import { isAlphanumeric, isNumber } from './validation';
 
-// TODO: Implement max characters (props.max)
-// TODO: Convert to TypeScript
-
 type TextInputProps = {
+	alphanumeric?: boolean; // No symbols
 	autosize?: boolean;
-	onChange: (text: string) => void;
 	error?: boolean;
 	errorText?: string;
-	placeholder?: string;
-	type?: string;
-	text?: string;
-	multiline?: boolean;
-	style?: React.CSSProperties;
-	resizable?: boolean;
-	alphanumeric?: boolean; // If we want only alphanumeric characters
-	numeric?: boolean;
-	lowercase?: boolean;
+	lowercase?: boolean; // Lowercase only
 	maxLength?: number;
+	multiline?: boolean;
+	numeric?: boolean; // Numbers only
+	onChange: (text: string) => void;
+	placeholder?: string;
+	resizable?: boolean;
+	style?: React.CSSProperties;
+	text?: string;
+	type?: string;
 };
 
 const TextInput: React.FC<TextInputProps> = ({
+	alphanumeric,
 	autosize,
-	onChange,
 	error,
 	errorText,
-	placeholder,
-	type,
-	text,
-	multiline,
-	style,
-	resizable,
-	alphanumeric,
-	numeric,
 	lowercase,
 	maxLength,
+	multiline,
+	numeric,
+	onChange,
+	placeholder,
+	resizable,
+	style,
+	text,
+	type,
 }) => {
 	//////////////////
 	// State & Data //
