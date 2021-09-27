@@ -105,6 +105,13 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 			const amountInWei = ethers.utils.parseEther(bidData.amount.toString());
 
+			console.debug(
+				`Attempting to accept bid of ${amountInWei.toString()} via ${
+					zAuctionContract.address
+				}`,
+			);
+			console.debug(bidData);
+
 			const tx = await zAuctionContract.acceptBid(
 				bidData.signature,
 				bidData.auctionId,
