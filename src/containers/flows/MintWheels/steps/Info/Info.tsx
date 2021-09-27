@@ -39,13 +39,6 @@ const Info = (props: InfoProps) => {
 
 	return (
 		<section className={styles.Container}>
-			{/* Head section */}
-			<section>
-				<h1>Mint Your Wheels</h1>
-				<span>Your ride in the metaverse awaits</span>
-				<hr />
-			</section>
-
 			{/* Body */}
 			<section>
 				{/* Wheels Image */}

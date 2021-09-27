@@ -128,6 +128,12 @@ const MintWheels = () => {
 
 	return (
 		<div>
+			{/* Head section */}
+			<section>
+				<h1>Mint Your Wheels</h1>
+				<span>Your ride in the metaverse awaits</span>
+				<hr />
+			</section>
 			{isLoadingPrimaryData && <Loading text={'Loading Wheels Drop'} />}
 			{!isLoadingPrimaryData &&
 				dropStage !== undefined &&
