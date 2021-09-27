@@ -28,7 +28,7 @@ export const getWheelQuantities = async (): Promise<
 				total: 1000,
 				minted: 500,
 			});
-		}, 623);
+		}, 23);
 	});
 };
 

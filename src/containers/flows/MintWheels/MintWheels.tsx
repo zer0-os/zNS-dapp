@@ -10,6 +10,9 @@ import { useEffect, useState } from 'react';
 // Web3 Imports
 import { useWeb3React } from '@web3-react/core';
 
+// Component Imports
+import Loading from './steps/Loading/Loading';
+
 // Configuration
 import { Drop, Stage, WheelQuantity } from './types';
 import {
@@ -70,8 +73,6 @@ const MintWheels = () => {
 				return;
 			}
 
-			setIsLoadingPrimaryData(false); // Tell the UI the primary data has finished loading
-
 			if (
 				stage === undefined ||
 				eligible === undefined ||
@@ -79,8 +80,14 @@ const MintWheels = () => {
 			) {
 				// Something went wrong in the loading
 				// We shouldn't show the UI if any of these failed - maybe retry?
+				setIsLoadingPrimaryData(true);
 				return;
 			}
+
+			// Need to set a timeout so the "Loading" shows for a little longer
+			await new Promise((r) => setTimeout(r, 1200));
+
+			setIsLoadingPrimaryData(false); // Tell the UI the primary data has finished loading
 
 			setDropStage(stage);
 			setUserIsEligible(eligible);
@@ -109,7 +116,11 @@ const MintWheels = () => {
 	// Render //
 	////////////
 
-	return <></>;
+	return (
+		<div>
+			{isLoadingPrimaryData && <Loading text={'Loading Wheels Drop'} />}
+		</div>
+	);
 };
 
 export default MintWheels;
