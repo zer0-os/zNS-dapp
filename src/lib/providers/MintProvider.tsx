@@ -58,7 +58,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 	const mint = async (nft: NftParams, setStatus: (status: string) => void) => {
 		// @todo better validation
 		if (/[A-Z]/.test(nft.zna)) {
-			return;
+			throw Error(`Invalid domain name: ${nft.zna} (Uppercase characters)`);
 		}
 
 		let tx: Maybe<ethers.ContractTransaction>;

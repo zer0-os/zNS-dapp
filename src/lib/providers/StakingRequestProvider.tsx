@@ -117,7 +117,9 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 	) => {
 		// @todo better validation
 		if (/[A-Z]/.test(params.nft.domain)) {
-			return;
+			throw Error(
+				`Invalid domain name: ${params.nft.domain} (Uppercase characters)`,
+			);
 		}
 
 		setStatus(`Uploading metadata`);
