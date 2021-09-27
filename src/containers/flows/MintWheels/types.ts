@@ -1,3 +1,5 @@
+// Enums
+
 export enum Stage {
 	Upcoming,
 	Whitelist,
@@ -5,6 +7,16 @@ export enum Stage {
 	Ended,
 	Sold,
 }
+
+export enum Step {
+	LoadingPrimary,
+	Info,
+	LoadingSecondary,
+	SelectAmount,
+	PendingWalletApproval,
+}
+
+// Types
 
 export type WheelQuantity = {
 	total: number;

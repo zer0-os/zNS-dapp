@@ -13,9 +13,10 @@ import { useWeb3React } from '@web3-react/core';
 // Step Imports
 import Loading from './steps/Loading/Loading';
 import Info from './steps/Info/Info';
+import SelectAmount from './steps/SelectAmount/SelectAmount';
 
 // Configuration
-import { Stage } from './types';
+import { Stage, Step } from './types';
 import {
 	getDropStage,
 	getUserEligibility,
@@ -39,6 +40,8 @@ const MintWheels = () => {
 	//////////////////
 
 	const { account } = useWeb3React();
+
+	const [step, setStep] = useState<Step>(Step.LoadingPrimary);
 
 	// Primary data - data this is needed on first render
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
@@ -122,6 +125,14 @@ const MintWheels = () => {
 		// Set step to "choose amount"
 	};
 
+	const onContinueFromSelectAmount = () => {
+		// Set step to next in flow
+	};
+
+	const onBack = () => {
+		// Set step - 1
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -134,21 +145,30 @@ const MintWheels = () => {
 				<span>Your ride in the metaverse awaits</span>
 				<hr />
 			</section>
-			{isLoadingPrimaryData && <Loading text={'Loading Wheels Drop'} />}
-			{!isLoadingPrimaryData &&
-				dropStage !== undefined &&
-				wheelsMinted !== undefined &&
-				wheelsTotal !== undefined &&
-				isUserEligible !== undefined && (
-					<Info
-						dropStage={dropStage}
-						isUserEligible={isUserEligible}
-						isWalletConnected={account !== undefined}
-						onContinue={onContinueFromInfo}
-						wheelsMinted={wheelsMinted}
-						wheelsTotal={wheelsTotal}
-					/>
-				)}
+			{step === Step.LoadingPrimary && <Loading text={'Loading Wheels Drop'} />}
+			{step === Step.Info && (
+				<Info
+					dropStage={dropStage!}
+					isUserEligible={isUserEligible!}
+					isWalletConnected={account !== undefined}
+					onContinue={onContinueFromInfo!}
+					wheelsMinted={wheelsMinted!}
+					wheelsTotal={wheelsTotal!}
+				/>
+			)}
+			{step === Step.LoadingSecondary && (
+				<Loading text={'Checking your wallet'} />
+			)}
+			{step === Step.SelectAmount && (
+				<SelectAmount
+					onBack={onBack}
+					onContinue={onContinueFromSelectAmount}
+					remainingWheels={0}
+				/>
+			)}
+			{step === Step.PendingWalletApproval && (
+				<Loading text={'Pending wallet approval'} />
+			)}
 		</div>
 	);
 };
