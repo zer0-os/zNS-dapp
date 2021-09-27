@@ -7,14 +7,13 @@ import { FutureButton } from 'components';
 type ViewBidsProps = {
 	domain: Domain;
 	onClick: (domain: DomainData) => void;
-	openModal: () => void;
+	// openModal: () => void;
 	style?: React.CSSProperties;
 	filterOwnBids?: boolean;
 };
 const ViewBids: React.FC<ViewBidsProps> = ({
 	domain,
 	onClick,
-	openModal,
 	style,
 	filterOwnBids,
 }) => {
@@ -30,7 +29,6 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 				domain,
 				bids,
 			});
-			openModal();
 		}
 	};
 

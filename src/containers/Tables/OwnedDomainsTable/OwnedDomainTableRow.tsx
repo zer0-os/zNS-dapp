@@ -1,41 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import styles from './OwnedDomainTableRow.module.css';
-
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { Bid, Domain } from 'lib/types';
-import { useHistory } from 'react-router-dom';
+
 import { useBid } from '../SubdomainTable/BidProvider';
 // Components
-import ViewBids  from './components/ViewBids';
-import { Artwork, Overlay, Spinner } from 'components';
-import { MakeABid } from 'containers';
-
-enum Modals {
-	Bid,
-}
+import ViewBids from './components/ViewBids';
+import { Artwork, Spinner } from 'components';
 
 const OwnedDomainTableRow = (props: any) => {
-	const walletContext = useWeb3React<Web3Provider>();
-	const { account } = walletContext;
-	// const { push: goTo } = useHistory();
-	// const {onNavigate}= props;
 	const domain = props.data;
-
-
-	const { makeABid, updated } = useBid();
+	const { updated } = useBid();
 	// Data state
-	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
-	const [modal, setModal] = useState<Modals | undefined>();
 	const { getBidsForDomain } = useBidProvider();
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
-	// const [domainToRefresh, setDomainToRefresh] = useState<string>('');
-
-	const isOwnedByUser = account?.toLowerCase() === domain?.id.toLowerCase();
 
 	useEffect(() => {
 		if (updated && updated.id === domain.id) {
@@ -59,29 +40,6 @@ const OwnedDomainTableRow = (props: any) => {
 			isMounted = false;
 		};
 	}, [domain, hasUpdated]);
-
-	// Modals
-	const openBidModal = () =>{ 
-		
-		setModal(Modals.Bid);}
-	
-	
-	
-	const closeModal = () => setModal(undefined);
-
-	const onBid = async () => {
-		closeModal();
-
-		// if (biddingOn) {
-		// 	setDomainToRefresh(biddingOn.id);
-		// 	// Need to reset this in case the user
-		// 	// is bidding on the same domain twice
-		// 	setTimeout(() => {
-		// 		setDomainToRefresh('');
-		// 	}, 1000);
-		// }
-	};
-
 
 	//Click handlers
 	const rowClick = (event: any, domain: Domain) => {
@@ -121,41 +79,13 @@ const OwnedDomainTableRow = (props: any) => {
 		}
 	};
 
-	const buttonClick = (domain: Domain) => {
-		try {
-			if (domain?.owner.id.toLowerCase() !== account?.toLowerCase()) {
-				setBiddingOn(domain);
-				openBidModal();
-			}
-		} catch (e) {
-			console.error(e);
-		}
-	};
-
 	/////////////////////
 	// Overlay Fragment //
 	/////////////////////
 
-	const overlays = () => {
-		return (
-			<>
-				{props.userId && (
-					<Overlay
-						onClose={closeModal}
-						centered
-						open={modal === Modals.Bid && biddingOn !== undefined}
-					>
-						<MakeABid domain={biddingOn!} onBid={onBid} />
-					</Overlay>
-				)}
-			</>
-		);
-	};
-
 	return (
 		<>
-			{overlays()}
-			<tr className={styles.Row} onClick={(e)=>rowClick(e,domain)}>
+			<tr className={styles.Row} onClick={(e) => rowClick(e, domain)}>
 				<td className={styles.RowNumber}>{props.rowNumber + 1}</td>
 				<td>
 					<Artwork
@@ -171,7 +101,6 @@ const OwnedDomainTableRow = (props: any) => {
 					<ViewBids
 						domain={domain}
 						onClick={props.onRowClick}
-						openModal={openBidModal}
 						filterOwnBids={props.filterOwnBids}
 						style={{ marginLeft: 'auto' }}
 					>

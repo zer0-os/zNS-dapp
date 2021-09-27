@@ -3,7 +3,7 @@
 	/* transition: background var(--animation-time-short) linear; */
 }
 
-.RowNumber{
+.RowNumber {
 	color: #fff;
 }
 
@@ -17,7 +17,7 @@
 
 .Right {
 	text-align: right;
-	color:rgb(246, 246, 246)
+	color: rgb(246, 246, 246);
 }
 
 .Right > * {
@@ -26,7 +26,6 @@
 
 .Left {
 	text-align: left;
-
 }
 
 .Left > * {

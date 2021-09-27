@@ -205,6 +205,7 @@ const GenericTable = (props: any) => {
 	////////////
 
 	return (
+		// @todo fix the border in the PR. @colbr
 		<div
 			className={`${styles.Container} background-primary border-rounded border-primary`}
 			style={props.style}
