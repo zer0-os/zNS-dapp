@@ -10,6 +10,9 @@ const GenericTable = (props: any) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
+console.log(props.onRowButtonClick,'generic');
+
+	
 
 	// chunk defines which row we're up to when infinite scroll is enabled
 	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows
@@ -116,7 +119,7 @@ const GenericTable = (props: any) => {
 				return (
 					<>
 						{filteredData.map((d: any, index: number) => (
-							<props.rowComponent key={index} rowNumber={index} data={d} />
+							<props.rowComponent key={index} rowNumber={index} data={d}  rowClick={props.rowClick} onRowButtonClick={props.onRowButtonClick} filterOwnBids={props.filterOwnBids}/>
 						))}
 					</>
 				);
@@ -126,7 +129,7 @@ const GenericTable = (props: any) => {
 						{filteredData
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
-								<props.rowComponent key={index} rowNumber={index} data={d} />
+								<props.rowComponent key={index} rowNumber={index} data={d}  rowClick={props.rowClick} onRowButtonClick={props.onRowButtonClick} filterOwnBids={props.filterOwnBids} />
 							))}
 					</>
 				);

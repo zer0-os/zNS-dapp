@@ -14,9 +14,12 @@ import { Bid, Domain, DomainData } from 'lib/types';
 import styles from './OwnedDomainsTable.module.css';
 
 // Component Imports
-import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
+import { Confirmation, Overlay, Spinner, GenericTable, DomainTable } from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
+import OwnedDomainTableRow from "./OwnedDomainTableRow"
+import OwnedDomainTableCard from './OwnedDomainTableCard';
+import { domain } from 'process';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -214,29 +217,45 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		</>
 	);
 
+	
+
+	console.log(owned,'domains');
+	
+
 	return (
 		<>
 			{overlays()}
-			{isTableLoading && (
+			{/* {isTableLoading && (
 				<>
 					<p className={styles.Message}>Loading Your Domains</p>
 					<Spinner style={{ margin: '8px auto' }} />
 				</>
-			)}
-			<DomainTable
+			)} */}
+
+			<GenericTable
 				className={styles.Reset}
-				domains={owned}
-				isButtonActive={isButtonActive}
-				filterOwnBids={true}
-				isRootDomain={false}
-				rowButtonText={'View Bids'}
-				onLoad={tableLoaded}
+				alignments={[1,0,1, 1,1]}
+				headers={['DOMAIN', 'HIGHEST BID','# OF BIDS']}
+				data={owned}
+				loadingText={'Loading Domains'}
+				rowComponent={OwnedDomainTableRow}
+				gridComponent={OwnedDomainTableCard}
+				rowClick={rowClick}
 				onRowButtonClick={viewBid}
-				onRowClick={rowClick}
-				isGridView={isGridView}
-				setIsGridView={(grid: boolean) => setIsGridView(grid)}
-				userId={account || undefined}
-				style={{ display: isTableLoading ? 'none' : 'inline-block' }}
+				filterOwnBids={true}
+				// isGridView={isGridView}
+				// // isLoading={isTableLoading}
+				// domains={owned}
+				// isButtonActive={isButtonActive}
+				// filterOwnBids={true}
+				// isRootDomain={false}
+				// rowButtonText={'View Bids'}
+				// onLoad={tableLoaded}
+				// onRowButtonClick={viewBid}
+				// onRowClick={rowClick}
+				// setIsGridView={(grid: boolean) => setIsGridView(grid)}
+				// userId={account || undefined}
+				// style={{ display: isTableLoading ? 'none' : 'inline-block' }}
 			/>
 		</>
 	);
