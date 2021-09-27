@@ -222,7 +222,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	);
 
 	const history = () => {
-		const allHistoryItems = allItems?.sort((a, b) => {
+		const allHistoryItems = allItems?.sort((a: DomainEvent, b: DomainEvent) => {
 			const aVal = a.bidder ? Number(a.timestamp) : Number(a.timestamp) * 1000;
 			const bVal = b.bidder ? Number(b.timestamp) : Number(b.timestamp) * 1000;
 			return bVal - aVal;
