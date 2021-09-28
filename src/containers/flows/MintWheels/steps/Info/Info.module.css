@@ -33,3 +33,13 @@
 .Orange {
 	color: var(--color-warning);
 }
+
+.Checking {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.Checking span {
+	margin-left: 16px;
+}

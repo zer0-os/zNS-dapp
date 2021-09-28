@@ -2,7 +2,7 @@ import { Stage } from '../../types';
 
 // Component & Container Imports
 import { ConnectWalletButton } from 'containers';
-import { ArrowLink, FutureButton } from 'components';
+import { ArrowLink, FutureButton, Spinner } from 'components';
 
 import styles from './Info.module.css';
 
@@ -22,27 +22,21 @@ const Info = (props: InfoProps) => {
 	// Fragments //
 	///////////////
 
-	const button = () => {
+	const eligibilityText = () => {
 		if (!props.isWalletConnected) {
+			return;
+		}
+		if (
+			props.isUserWhitelisted === undefined &&
+			props.dropStage === Stage.Whitelist
+		) {
 			return (
-				<ConnectWalletButton className={styles.Button}>
-					Connect Wallet
-				</ConnectWalletButton>
-			);
-		} else {
-			return (
-				<FutureButton
-					className={styles.Button}
-					glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
-					onClick={props.onContinue}
-				>
-					Mint Your Wheels
-				</FutureButton>
+				<div className={styles.Checking}>
+					<Spinner />
+					<span>Checking whitelist status</span>
+				</div>
 			);
 		}
-	};
-
-	const eligibilityText = () => {
 		if (props.dropStage === Stage.Whitelist) {
 			if (props.isUserWhitelisted) {
 				return <p className={styles.Green}>*** Missing copy here ***</p>;
@@ -94,7 +88,9 @@ const Info = (props: InfoProps) => {
 			{eligibilityText()}
 
 			{/* Info */}
-			{props.dropStage === Stage.Upcoming && <p>Dropping soon</p>}
+			{props.dropStage === Stage.Upcoming && (
+				<p>Dropping soon ***countdown***</p>
+			)}
 			{(props.dropStage === Stage.Public ||
 				(props.dropStage === Stage.Whitelist && props.isUserWhitelisted)) && (
 				<>
@@ -106,9 +102,22 @@ const Info = (props: InfoProps) => {
 						You may mint up to 2 Wheels total. The cost for each Wheel is 0.07
 						ETH (100 WILD) plus GAS.
 					</p>
-					{/* Button */}
-					{button()}
+					{props.isWalletConnected && (
+						<FutureButton
+							className={styles.Button}
+							glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
+							onClick={props.onContinue}
+						>
+							Mint Your Wheels
+						</FutureButton>
+					)}
 				</>
+			)}
+			{/* Button */}
+			{!props.isWalletConnected && props.dropStage !== Stage.Upcoming && (
+				<ConnectWalletButton className={styles.Button}>
+					Connect Wallet
+				</ConnectWalletButton>
 			)}
 		</section>
 	);

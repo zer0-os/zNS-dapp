@@ -5,7 +5,7 @@ export const EthPerWheel = 0.07;
 const testApiFailure = false;
 
 const testConfig = {
-	stage: Stage.Public,
+	stage: Stage.Whitelist,
 	whitelist: true,
 	wheelsTotal: 1000,
 	wheelsMinted: 500,
