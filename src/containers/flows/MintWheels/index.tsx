@@ -50,6 +50,7 @@ const MintWheelsFlowContainer = () => {
 	useEffect(() => {
 		let isMounted = true;
 		const getData = async () => {
+			// Get the data related to the drop
 			getPrimaryData()
 				.then((d) => {
 					if (!isMounted) {
@@ -64,6 +65,7 @@ const MintWheelsFlowContainer = () => {
 					console.error(e);
 				});
 
+			// Get user data if wallet connected
 			if (account) {
 				getUserEligibility(account).then((d) => {
 					if (!isMounted || d !== undefined) {
@@ -83,6 +85,9 @@ const MintWheelsFlowContainer = () => {
 		};
 	}, []);
 
+	// Handles changes to wallet
+	// Checks user whitelist status against API - sets as state variable
+	// Checks user Eth balance - sets as state variable
 	useEffect(() => {
 		let isMounted = true;
 		if (account) {
@@ -108,8 +113,6 @@ const MintWheelsFlowContainer = () => {
 	////////////
 	// Render //
 	////////////
-
-	console.log(account, isUserWhitelisted);
 
 	return (
 		<>
