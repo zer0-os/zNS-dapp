@@ -59,8 +59,9 @@ const SelectAmount = (props: SelectAmountProps) => {
 		<section className={styles.Container}>
 			<form onSubmit={formSubmit}>
 				<p>
-					You may mint up to 2 wheels. For each Wheel you mint, you must pay
-					100WILD. They will be minted in one transaction incurring a GAS fee.
+					How many wheels would you like to Mint? You may mint up to 2. For each
+					Wheel you mint, you must pay 100WILD. However many you choose, they
+					will be minted in one transaction, saving on GAS fees.
 				</p>
 				<TextInput
 					onChange={onInputChange}
