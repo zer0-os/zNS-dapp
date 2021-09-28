@@ -6,8 +6,7 @@ import styles from './MintWheelsBanner.module.css';
 
 type MintWheelsBannerProps = {
 	title: string;
-	label: string;
-	labelBold: React.ReactNode;
+	label: React.ReactNode;
 	buttonText: string;
 	onClick: () => void;
 	style?: React.CSSProperties;
@@ -16,7 +15,6 @@ type MintWheelsBannerProps = {
 const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 	title,
 	label,
-	labelBold,
 	buttonText,
 	onClick,
 	style,
@@ -27,10 +25,7 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 			<div className={`${styles.Content}`}>
 				<div className={`${styles.TextContainer}`}>
 					<h2 className={`${styles.Title}`}>{title}</h2>
-					<p className={`${styles.Label}`}>
-						{label + ' '}
-						<span>{labelBold}</span>
-					</p>
+					<p className={`${styles.Label}`}>{label}</p>
 				</div>
 
 				<button className={`${styles.Button}`} onClick={onClick}>
