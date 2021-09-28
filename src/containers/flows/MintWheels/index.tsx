@@ -125,20 +125,33 @@ const MintWheelsFlowContainer = () => {
 						onClose={closeWizard}
 						onSubmitTransaction={onSubmitTransaction}
 						userId={account as string | undefined}
-						wheelsMinted={500}
-						wheelsTotal={1000}
+						wheelsMinted={wheelsMinted}
+						wheelsTotal={wheelsTotal}
 					/>
 				</Overlay>
 			)}
-			<button onClick={openWizard}>
-				{dropStage === undefined && <Spinner />}
-				{dropStage !== undefined && (
-					<>
-						Auction stage {dropStage} -- {wheelsMinted}/{wheelsTotal} (this will
-						be the real banner)
-					</>
-				)}
-			</button>
+			<div style={{ height: 124, position: 'relative', marginBottom: 16 }}>
+				<button
+					style={{
+						position: 'absolute',
+						width: '100%',
+						height: 124,
+						background: 'var(--background-blue-card-wilder)',
+						color: 'white',
+						borderRadius: 'var(--box-radius)',
+						zIndex: 6,
+					}}
+					onClick={openWizard}
+				>
+					{dropStage === undefined && <Spinner style={{ margin: '0 auto' }} />}
+					{dropStage !== undefined && (
+						<>
+							Wheels Drop -- {wheelsMinted}/{wheelsTotal} (this will be the real
+							banner)
+						</>
+					)}
+				</button>
+			</div>
 		</>
 	);
 };
