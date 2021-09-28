@@ -73,11 +73,7 @@
 	font-weight: 400;
 	font-size: 14px;
 	line-height: 24px;
-}
-
-.Label > span {
-	font-family: var(--font-family);
-	font-weight: 700;
+	margin-top: 4px;
 }
 
 /*Button*/
@@ -89,6 +85,10 @@
 	background: none;
 	z-index: 2;
 	transition: text-shadow var(--animation-time-medium) ease-in-out;
+
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 24px;
 }
 
 .Button:hover {
