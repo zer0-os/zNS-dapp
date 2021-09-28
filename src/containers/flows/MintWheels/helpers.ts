@@ -1,4 +1,4 @@
-import { Stage, WheelQuantity, PrimaryData } from './types';
+import { Stage, WheelQuantity, DropData } from './types';
 
 export const EthPerWheel = 0.07;
 
@@ -9,11 +9,11 @@ const testConfig = {
 	whitelist: true,
 	wheelsTotal: 1000,
 	wheelsMinted: 500,
-	balance: 1000,
-	apiResponseTime: 300,
+	balance: 0.1,
+	apiResponseTime: 2500,
 };
 
-export const getPrimaryData = (): Promise<PrimaryData | undefined> => {
+export const getDropData = (): Promise<DropData | undefined> => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const [dropStage, wheelQuantities] = await Promise.all([
@@ -35,7 +35,7 @@ export const getPrimaryData = (): Promise<PrimaryData | undefined> => {
 				dropStage,
 				wheelsTotal: wheelQuantities.total,
 				wheelsMinted: wheelQuantities.minted,
-			} as PrimaryData);
+			} as DropData);
 		} catch (error) {
 			reject(error);
 		}

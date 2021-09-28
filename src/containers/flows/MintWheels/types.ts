@@ -19,7 +19,7 @@ export enum Step {
 
 // Types
 
-export type PrimaryData = {
+export type DropData = {
 	dropStage: Stage;
 	wheelsTotal: number;
 	wheelsMinted: number;
@@ -34,4 +34,11 @@ export type Drop = {
 	wheelQuantity: WheelQuantity;
 	dateWhitelist: number;
 	datePublic: number;
+};
+
+export type TransactionData = {
+	numWheels: number;
+	statusCallback: (status: string) => void;
+	errorCallback: (error: string) => void;
+	finishedCallback: () => void;
 };

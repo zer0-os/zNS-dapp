@@ -4,8 +4,6 @@ import { Stage } from '../../types';
 import { ConnectWalletButton } from 'containers';
 import { ArrowLink, FutureButton } from 'components';
 
-import { getCopy } from './helpers';
-
 import styles from './Info.module.css';
 
 import banner from './assets/banner.png';
@@ -78,7 +76,11 @@ const Info = (props: InfoProps) => {
 	return (
 		<section className={styles.Container}>
 			{/* Wheels Image */}
-			<img className={styles.Image} src={banner} />
+			<img
+				alt="wheels NFT drop banner image"
+				className={styles.Image}
+				src={banner}
+			/>
 
 			{/* Wheels Available */}
 			<div className={styles.Available}>

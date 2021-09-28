@@ -14,13 +14,8 @@ import SelectAmount from './steps/SelectAmount/SelectAmount';
 import InsufficientFunds from './steps/InsufficientFunds/InsufficientFunds';
 
 // Configuration
-import { Stage, Step, PrimaryData } from './types';
-import {
-	EthPerWheel,
-	getPrimaryData,
-	getBalanceEth,
-	getUserEligibility,
-} from './helpers';
+import { Stage, Step, TransactionData } from './types';
+import { EthPerWheel } from './helpers';
 
 // Style Imports
 import styles from './MintWheels.module.css';
@@ -33,7 +28,7 @@ type MintWheelsProps = {
 	userId?: string;
 	wheelsTotal?: number;
 	wheelsMinted?: number;
-	onSubmitTransaction: (numWheels: number) => void;
+	onSubmitTransaction: (data: TransactionData) => void;
 };
 
 const MintWheels = (props: MintWheelsProps) => {
@@ -42,6 +37,13 @@ const MintWheels = (props: MintWheelsProps) => {
 	//////////////////
 
 	const [step, setStep] = useState<Step>(Step.Info);
+
+	const [transactionStatus, setTransactionStatus] = useState<string>(
+		'Pending Wallet Approval',
+	);
+	const [transactionError, setTransactionError] = useState<
+		string | undefined
+	>();
 
 	///////////////
 	// Functions //
@@ -68,6 +70,28 @@ const MintWheels = (props: MintWheelsProps) => {
 	const submitTransaction = (numWheels: number) => {
 		// Switch to "pending wallet approval" step
 		setStep(Step.PendingWalletApproval);
+		setTransactionError(undefined);
+
+		const statusCallback = (status: string) => {
+			setTransactionStatus(status);
+		};
+
+		const errorCallback = (error: string) => {
+			setStep(Step.SelectAmount);
+			setTransactionError(error);
+		};
+
+		const finishedCallback = () => {
+			props.onClose();
+		};
+
+		const data: TransactionData = {
+			numWheels,
+			statusCallback,
+			errorCallback,
+			finishedCallback,
+		};
+		props.onSubmitTransaction(data);
 	};
 
 	const onBack = () => {
@@ -99,6 +123,7 @@ const MintWheels = (props: MintWheelsProps) => {
 					onBack={onBack}
 					onContinue={submitTransaction}
 					remainingWheels={props.wheelsTotal! - props.wheelsMinted!}
+					error={transactionError}
 				/>
 			);
 		}
@@ -106,7 +131,7 @@ const MintWheels = (props: MintWheelsProps) => {
 			return <Loading text={'Checking your ETH balance'} />;
 		}
 		if (step === Step.PendingWalletApproval) {
-			return <Loading text={'Pending wallet approval'} />;
+			return <Loading text={transactionStatus} />;
 		}
 		if (step === Step.InsufficientFunds) {
 			return <InsufficientFunds onDismiss={props.onClose} />;

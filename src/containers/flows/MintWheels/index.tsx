@@ -6,8 +6,8 @@ import { Overlay, Spinner } from 'components';
 
 import MintWheels from './MintWheels';
 
-import { Stage, Step, PrimaryData } from './types';
-import { getPrimaryData, getUserEligibility, getBalanceEth } from './helpers';
+import { Stage, DropData, TransactionData } from './types';
+import { getDropData, getUserEligibility, getBalanceEth } from './helpers';
 
 const MintWheelsFlowContainer = () => {
 	// Web3 hooks
@@ -39,8 +39,28 @@ const MintWheelsFlowContainer = () => {
 		setIsWizardOpen(false);
 	};
 
-	const onSubmitTransaction = useCallback((numWheels: number) => {
-		console.log(numWheels);
+	const transactionSuccessful = () => {
+		console.log('yay');
+	};
+
+	// Submits transaction, feeds status updates
+	// back through the callbacks provided by MintWheels
+	const onSubmitTransaction = useCallback((data: TransactionData) => {
+		const { numWheels, statusCallback, errorCallback, finishedCallback } = data;
+		statusCallback('Pending wallet approval');
+		setTimeout(() => {
+			setTimeout(() => {
+				statusCallback('Transaction pending');
+				setTimeout(() => {
+					if (Math.random() >= 0.5) {
+						errorCallback('Simulated transaction fail');
+					} else {
+						finishedCallback();
+						transactionSuccessful();
+					}
+				}, 2000);
+			});
+		}, 2000);
 	}, []);
 
 	/////////////
@@ -51,12 +71,12 @@ const MintWheelsFlowContainer = () => {
 		let isMounted = true;
 		const getData = async () => {
 			// Get the data related to the drop
-			getPrimaryData()
+			getDropData()
 				.then((d) => {
 					if (!isMounted) {
 						return;
 					}
-					const primaryData = d as PrimaryData;
+					const primaryData = d as DropData;
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
@@ -88,6 +108,9 @@ const MintWheelsFlowContainer = () => {
 	// Handles changes to wallet
 	// Checks user whitelist status against API - sets as state variable
 	// Checks user Eth balance - sets as state variable
+	//
+	// note: could set this to only run when the modal opens by putting
+	// isWizardOpen as a dependency
 	useEffect(() => {
 		let isMounted = true;
 		if (account) {
