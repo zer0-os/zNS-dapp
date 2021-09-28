@@ -375,7 +375,148 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					paddingTop: 145,
 				}}
 			>
+				{/* Nav Bar */}
+				{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
+				<FilterBar
+					style={
+						isSearchActive
+							? { zIndex: isSearchActive ? 100 : 10, background: 'none' }
+							: {}
+					}
+					onSelect={() => {
+						history.push('/');
+					}}
+					filters={!isSearchActive ? ['Everything'] : []}
+				>
+					<TitleBar
+						domain={domain}
+						canGoBack={canGoBack}
+						canGoForward={canGoForward}
+						onBack={back}
+						onForward={forward}
+						isSearchActive={isSearchActive}
+						setIsSearchActive={setIsSearchActive}
+					>
+						<>
+							{!account && localStorage.getItem('chosenWallet') && (
+								<FutureButton glow onClick={() => openWallet()}>
+									<div
+										style={{
+											display: 'flex',
+											justifyContent: 'center',
+											verticalAlign: 'center',
+											alignItems: 'center',
+											paddingBottom: '5px',
+										}}
+									>
+										<div
+											style={{
+												display: 'inline-block',
+												width: '10%',
+												margin: '0px',
+												padding: '0px',
+											}}
+										>
+											<Spinner />
+										</div>
+										<p
+											style={{
+												display: 'inline-block',
+												width: '90%',
+												verticalAlign: 'center',
+												height: '18px',
+												marginLeft: '15px',
+											}}
+											className={styles.Message}
+										>
+											Trying to connect {localStorage.getItem('chosenWallet')}
+										</p>
+									</div>
+								</FutureButton>
+							)}
+							{!account && !localStorage.getItem('chosenWallet') && (
+								<FutureButton glow onClick={openWallet}>
+									Connect {pageWidth > 900 && 'Wallet'}
+								</FutureButton>
+							)}
+							{account && !isSearchActive && (
+								<>
+									{/* Mint button */}
+									<FutureButton
+										glow={account != null}
+										onClick={() => {
+											account != null
+												? openMint()
+												: addNotification('Please connect your wallet.');
+										}}
+										loading={loading}
+									>
+										{pageWidth <= 900 && 'MINT'}
+										{pageWidth > 900 && isOwnedByUser === true && 'MINT NFT'}
+										{pageWidth > 900 &&
+											isOwnedByUser === false &&
+											'REQUEST TO MINT NFT'}
+									</FutureButton>
+
+									{/* Status / Long Running Operation Button */}
+									{showStatus ? (
+										<Tooltip content={<MintPreview />}>
+											<NumberButton
+												rotating={statusCount > 0}
+												number={statusCount}
+												onClick={() => {}}
+											/>
+										</Tooltip>
+									) : null}
+
+									{/* Transfer Progress button */}
+									{transferring.length > 0 && (
+										<Tooltip content={<TransferPreview />}>
+											<NumberButton
+												rotating={transferring.length > 0}
+												number={transferring.length}
+												onClick={() => {}}
+											/>
+										</Tooltip>
+									)}
+
+									{/* Profile Button */}
+									<IconButton
+										onClick={openProfile}
+										style={{ height: 32, width: 32, borderRadius: '50%' }}
+										iconUri={userIcon}
+									/>
+
+									{/* TODO: Change the triple dot button to a component */}
+									<div className={styles.Dots} onClick={openWallet}>
+										<div></div>
+										<div></div>
+										<div></div>
+									</div>
+								</>
+							)}
+						</>
+					</TitleBar>
+				</FilterBar>
+
 				<MintWheels />
+
+				{previewCard()}
+
+				{showDomainTable && subTable}
+
+				{znsDomain && isNftView && (
+					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
+						{(styles) => (
+							<animated.div style={styles}>
+								<NFTView
+									domain={domain}
+									onTransfer={openTransferOwnershipModal}
+								/>
+							</animated.div>
+						)}
+					</Spring>
+				)}
 			</div>
 		</>
 	);
