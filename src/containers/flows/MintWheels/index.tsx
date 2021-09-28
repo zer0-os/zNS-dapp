@@ -96,6 +96,9 @@ const MintWheelsFlowContainer = () => {
 					setBalanceEth(d);
 				}
 			});
+		} else {
+			setIsUserWhitelisted(undefined);
+			setBalanceEth(undefined);
 		}
 		return () => {
 			isMounted = false;
