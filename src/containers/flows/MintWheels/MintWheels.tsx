@@ -95,11 +95,10 @@ const MintWheels = (props: MintWheelsProps) => {
 		if (step === Step.SelectAmount) {
 			return (
 				<SelectAmount
-					balanceEth={1000}
+					balanceEth={props.balanceEth!}
 					onBack={onBack}
 					onContinue={submitTransaction}
 					remainingWheels={props.wheelsTotal! - props.wheelsMinted!}
-					error={'User rejected transaction'}
 				/>
 			);
 		}
