@@ -14,6 +14,7 @@ import { useWeb3React } from '@web3-react/core';
 import Loading from './steps/Loading/Loading';
 import Info from './steps/Info/Info';
 import SelectAmount from './steps/SelectAmount/SelectAmount';
+import InsufficientFunds from './steps/InsufficientFunds/InsufficientFunds';
 
 // Configuration
 import { Stage, Step } from './types';
@@ -44,7 +45,7 @@ const MintWheels = () => {
 
 	const { account } = useWeb3React();
 
-	const [step, setStep] = useState<Step>(Step.LoadingPrimary);
+	const [step, setStep] = useState<Step>(Step.InsufficientFunds);
 
 	// Primary data - data this is needed on first render
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
@@ -173,6 +174,13 @@ const MintWheels = () => {
 			)}
 			{step === Step.PendingWalletApproval && (
 				<Loading text={'Pending wallet approval'} />
+			)}
+			{step === Step.InsufficientFunds && (
+				<InsufficientFunds
+					onDismiss={() => {
+						console.log('dismiss');
+					}}
+				/>
 			)}
 		</div>
 	);

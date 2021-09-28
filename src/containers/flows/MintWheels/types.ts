@@ -12,6 +12,7 @@ export enum Step {
 	LoadingPrimary,
 	Info,
 	LoadingSecondary,
+	InsufficientFunds,
 	SelectAmount,
 	PendingWalletApproval,
 }
