@@ -37,6 +37,7 @@ import {
 	MintPreview,
 	TransferPreview,
 	Spinner,
+	MintWheelsBanner,
 } from 'components';
 
 import { SubdomainTable, CurrentDomainPreview } from 'containers';
@@ -498,6 +499,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						</>
 					</TitleBar>
 				</FilterBar>
+
+				<MintWheelsBanner
+					title={'Get your ride for the metaverse '}
+					label={'WILDER WHEELS now available for supporters'}
+					labelBold={'123/1000 Minted'}
+					buttonText={'Mint Now'}
+					onClick={() => {}}
+				/>
 
 				{previewCard()}
 
