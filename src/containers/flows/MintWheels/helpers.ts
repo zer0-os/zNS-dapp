@@ -1,5 +1,7 @@
 import { Stage, WheelQuantity } from './types';
 
+export const EthPerWheel = 0.07;
+
 export const getDropStage = async (): Promise<Stage | undefined> => {
 	// Stub function - should check stage of drop i.e. public, whitelist, etc.
 	return new Promise((resolve, reject) => {
@@ -32,7 +34,7 @@ export const getWheelQuantities = async (): Promise<
 	});
 };
 
-export const getWildBalance = async (): Promise<number | undefined> => {
+export const getBalanceEth = async (): Promise<number | undefined> => {
 	// Stub function - should check total & remanining wheels
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {

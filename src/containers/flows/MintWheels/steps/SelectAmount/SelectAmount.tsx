@@ -4,10 +4,14 @@ import { FutureButton, TextInput } from 'components';
 
 import styles from './SelectAmount.module.css';
 
+import { EthPerWheel } from '../../helpers';
+
 type SelectAmountProps = {
 	onBack: () => void;
-	onContinue: () => void;
+	onContinue: (numWheels: number) => void;
 	remainingWheels: number;
+	balanceEth: number;
+	error?: string;
 };
 
 const SelectAmount = (props: SelectAmountProps) => {
@@ -36,7 +40,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 	const formSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (isAmountValid()) {
-			props.onContinue();
+			props.onContinue(Number(amount));
 		}
 	};
 
@@ -69,6 +73,9 @@ const SelectAmount = (props: SelectAmountProps) => {
 					numeric
 					text={amount}
 				/>
+				{props.error !== undefined && (
+					<span className={styles.Error}>{props.error}</span>
+				)}
 				<FutureButton glow={isAmountValid()} onClick={() => {}}>
 					Continue
 				</FutureButton>

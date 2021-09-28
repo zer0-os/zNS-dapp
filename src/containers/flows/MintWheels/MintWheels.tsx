@@ -19,33 +19,34 @@ import InsufficientFunds from './steps/InsufficientFunds/InsufficientFunds';
 // Configuration
 import { Stage, Step } from './types';
 import {
+	EthPerWheel,
 	getDropStage,
 	getUserEligibility,
 	getWheelQuantities,
-	getWildBalance,
+	getBalanceEth,
 } from './helpers';
 
 // Style Imports
 import styles from './MintWheels.module.css';
 
 const MintWheels = () => {
-	/*
-		Need to know:
-			- If user is logged in [1]
-			- What stage the drop is in (whitelist, public, or neither) [2]
-			- Eligibility of the user (are they on the whitelist) [3]
-			- Total wheels in drop [4]
-			- Remaining wheels in drop [5]
-			- Date drop goes public [6]
-	 */
-
 	//////////////////
 	// State & Data //
 	//////////////////
 
 	const { account } = useWeb3React();
 
-	const [step, setStep] = useState<Step>(Step.InsufficientFunds);
+	const [step, setStep] = useState<Step>(Step.LoadingPrimary);
+
+	// Have split data up into two different sets:
+	// - Primary data: the minimal data we need to show the first screen in flow
+	// - Secondary data: data that isn't on the first page, i.e. isn't needed instantly
+
+	// Flags for "has drop data finished loading?"
+	const [isLoadingPrimaryData, setIsLoadingPrimaryData] =
+		useState<boolean>(true);
+	const [isLoadingSecondaryData, setIsLoadingSecondaryData] =
+		useState<boolean>(true);
 
 	// Primary data - data this is needed on first render
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
@@ -53,11 +54,8 @@ const MintWheels = () => {
 	const [wheelsTotal, setWheelsTotal] = useState<number | undefined>();
 	const [wheelsMinted, setWheelsMinted] = useState<number | undefined>();
 
-	const [isLoadingPrimaryData, setIsLoadingPrimaryData] =
-		useState<boolean>(true);
-
 	// Secondary data - data that isn't needed on first render
-	const [wildBalance, setWildBalance] = useState<number | undefined>();
+	const [balanceEth, setBalanceEth] = useState<number | undefined>();
 
 	/////////////
 	// Effects //
@@ -102,17 +100,22 @@ const MintWheels = () => {
 			setIsUserEligible(eligible);
 			setWheelsTotal(quantity.total);
 			setWheelsMinted(quantity.minted);
+			setStep(Step.Info);
 		};
 		getPrimaryData();
 
 		// Gets all the data we can load last (req. > step 2)
 		const getSecondaryData = async () => {
-			const [wildBalance] = await Promise.all([getWildBalance()]);
+			const [balanceEth] = await Promise.all([getBalanceEth()]);
 
 			// Unsubscribe if not mounted
 			if (!isMounted) {
 				return;
 			}
+
+			setBalanceEth(balanceEth);
+
+			setIsLoadingSecondaryData(false);
 		};
 		getSecondaryData();
 
@@ -127,10 +130,18 @@ const MintWheels = () => {
 
 	const onContinueFromInfo = () => {
 		// Set step to "choose amount"
+		if (!isLoadingSecondaryData && balanceEth !== undefined) {
+			if (balanceEth < EthPerWheel) {
+				setStep(Step.InsufficientFunds);
+			} else {
+				setStep(Step.SelectAmount);
+			}
+		}
 	};
 
-	const onContinueFromSelectAmount = () => {
-		// Set step to next in flow
+	const submitTransaction = (numWheels: number) => {
+		// Switch to "pending wallet approval" step
+		setStep(Step.PendingWalletApproval);
 	};
 
 	const onBack = () => {
@@ -167,9 +178,11 @@ const MintWheels = () => {
 			)}
 			{step === Step.SelectAmount && (
 				<SelectAmount
+					balanceEth={balanceEth!}
 					onBack={onBack}
-					onContinue={onContinueFromSelectAmount}
-					remainingWheels={0}
+					onContinue={submitTransaction}
+					remainingWheels={wheelsTotal! - wheelsMinted!}
+					error={'User rejected transaction'}
 				/>
 			)}
 			{step === Step.PendingWalletApproval && (
