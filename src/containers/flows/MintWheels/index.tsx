@@ -81,7 +81,7 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
-	});
+	}, []);
 
 	useEffect(() => {
 		let isMounted = true;
@@ -108,6 +108,8 @@ const MintWheelsFlowContainer = () => {
 	////////////
 	// Render //
 	////////////
+
+	console.log(account, isUserWhitelisted);
 
 	return (
 		<>
