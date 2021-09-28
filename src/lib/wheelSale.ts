@@ -120,7 +120,7 @@ export const purchaseWheels = async (
 	return tx;
 };
 
-export const numWheelsPurchasedByUser = async (
+export const getNumberPurchasedByUser = async (
 	user: string,
 	contract: WhitelistSimpleSale,
 ): Promise<number> => {
@@ -128,7 +128,7 @@ export const numWheelsPurchasedByUser = async (
 	return purchased.toNumber();
 };
 
-export const maxPurchasesPerUser = async (
+export const getMaxPurchasesPerUser = async (
 	contract: WhitelistSimpleSale,
 ): Promise<number> => {
 	const max = await contract.maxPurchasesPerAccount();
