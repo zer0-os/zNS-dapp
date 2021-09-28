@@ -28,8 +28,7 @@ export function useSDKProvider() {
 			}
 
 			default: {
-				console.error('no sdk configuration for selected chain');
-				break;
+				throw new Error('SDK isn´t available for this chainId');
 			}
 		}
 	}, [web3Context.chainId]);

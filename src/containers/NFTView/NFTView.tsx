@@ -44,6 +44,7 @@ type NFTViewProps = {
 	onTransfer: () => void;
 };
 
+//this will be refactorized on next iterations
 export interface DomainEvents extends DomainEvent {
 	from?: string;
 	to?: string;
