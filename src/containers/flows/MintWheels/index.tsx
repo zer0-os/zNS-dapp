@@ -8,10 +8,20 @@ import MintWheels from './MintWheels';
 
 import { Stage, DropData, TransactionData } from './types';
 import { getDropData, getUserEligibility, getBalanceEth } from './helpers';
+import { useZnsContracts } from 'lib/contracts';
+import { Web3Provider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
+import { Maybe } from 'lib/types';
+
+import * as wheels from '../../../lib/wheelSale';
 
 const MintWheelsFlowContainer = () => {
 	// Web3 hooks
-	const { account } = useWeb3React();
+	const { account, library } = useWeb3React<Web3Provider>();
+
+	// Contracts
+	const contracts = useZnsContracts();
+	const saleContract = contracts?.wheelSale;
 
 	// Wizard state
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
@@ -45,23 +55,31 @@ const MintWheelsFlowContainer = () => {
 
 	// Submits transaction, feeds status updates
 	// back through the callbacks provided by MintWheels
-	const onSubmitTransaction = useCallback((data: TransactionData) => {
+	const onSubmitTransaction = async (data: TransactionData) => {
 		const { numWheels, statusCallback, errorCallback, finishedCallback } = data;
+
+		if (!saleContract) {
+			return;
+		}
+
+		let tx: Maybe<ethers.ContractTransaction>;
+
 		statusCallback('Pending wallet approval');
-		setTimeout(() => {
-			setTimeout(() => {
-				statusCallback('Transaction pending');
-				setTimeout(() => {
-					if (Math.random() >= 0.5) {
-						errorCallback('Simulated transaction fail');
-					} else {
-						finishedCallback();
-						transactionSuccessful();
-					}
-				}, 2000);
-			});
-		}, 2000);
-	}, []);
+
+		try {
+			tx = await wheels.purchaseWheels(numWheels, saleContract);
+		} catch (e) {
+			console.error(e);
+			errorCallback('Failed to submit transaction');
+			return;
+		}
+
+		statusCallback('Waiting for transaction to be completed');
+		await tx.wait();
+
+		finishedCallback();
+		transactionSuccessful();
+	};
 
 	/////////////
 	// Effects //
@@ -70,8 +88,12 @@ const MintWheelsFlowContainer = () => {
 	useEffect(() => {
 		let isMounted = true;
 		const getData = async () => {
+			if (!saleContract) {
+				return;
+			}
+
 			// Get the data related to the drop
-			getDropData()
+			getDropData(saleContract)
 				.then((d) => {
 					if (!isMounted) {
 						return;
@@ -86,13 +108,13 @@ const MintWheelsFlowContainer = () => {
 				});
 
 			// Get user data if wallet connected
-			if (account) {
-				getUserEligibility(account).then((d) => {
+			if (account && library) {
+				getUserEligibility(account, saleContract).then((d) => {
 					if (!isMounted || d !== undefined) {
 						setIsUserWhitelisted(d);
 					}
 				});
-				getBalanceEth().then((d) => {
+				getBalanceEth(library.getSigner()).then((d) => {
 					if (!isMounted || d !== undefined) {
 						setBalanceEth(d);
 					}
@@ -103,7 +125,7 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
-	}, []);
+	}, [account, library, saleContract]);
 
 	// Handles changes to wallet
 	// Checks user whitelist status against API - sets as state variable
@@ -112,14 +134,18 @@ const MintWheelsFlowContainer = () => {
 	// note: could set this to only run when the modal opens by putting
 	// isWizardOpen as a dependency
 	useEffect(() => {
+		if (!saleContract) {
+			return;
+		}
+
 		let isMounted = true;
-		if (account) {
-			getUserEligibility(account).then((d) => {
+		if (account && library) {
+			getUserEligibility(account, saleContract).then((d) => {
 				if (!isMounted || d !== undefined) {
 					setIsUserWhitelisted(d);
 				}
 			});
-			getBalanceEth().then((d) => {
+			getBalanceEth(library.getSigner()).then((d) => {
 				if (!isMounted || d !== undefined) {
 					setBalanceEth(d);
 				}
@@ -131,7 +157,7 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
-	}, [account]);
+	}, [account, saleContract, library]);
 
 	////////////
 	// Render //

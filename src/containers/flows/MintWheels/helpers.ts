@@ -1,5 +1,9 @@
 import { Stage, WheelQuantity, DropData } from './types';
 
+import * as wheels from '../../../lib/wheelSale';
+import { WhitelistSimpleSale } from 'types';
+import { ethers } from 'ethers';
+
 export const EthPerWheel = 0.07;
 
 const testApiFailure = false;
@@ -13,12 +17,14 @@ const testConfig = {
 	apiResponseTime: 2500,
 };
 
-export const getDropData = (): Promise<DropData | undefined> => {
+export const getDropData = (
+	contract: WhitelistSimpleSale,
+): Promise<DropData | undefined> => {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const [dropStage, wheelQuantities] = await Promise.all([
-				getDropStage(),
-				getWheelQuantities(),
+				getDropStage(contract),
+				getWheelQuantities(contract),
 			]);
 
 			// Check if we somehow got an undefined variable
@@ -42,62 +48,60 @@ export const getDropData = (): Promise<DropData | undefined> => {
 	});
 };
 
-const getDropStage = async (): Promise<Stage | undefined> => {
-	// Stub function - should check stage of drop i.e. public, whitelist, etc.
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			// If API call fails, reject
-			if (testApiFailure) {
-				reject();
-			}
+const getDropStage = async (
+	contract: WhitelistSimpleSale,
+): Promise<Stage | undefined> => {
+	const status = await wheels.getSaleStatus(contract);
 
-			resolve(testConfig.stage);
-		}, testConfig.apiResponseTime);
-	});
+	if (status === wheels.SaleStatus.NotStarted) {
+		return Stage.Upcoming;
+	}
+
+	const data = await wheels.getWheelsSaleData(contract);
+
+	if (data.minted === data.total) {
+		return Stage.Sold;
+	}
+
+	if (status === wheels.SaleStatus.WhitelistOnly) {
+		return Stage.Whitelist;
+	}
+
+	if (status === wheels.SaleStatus.Public) {
+		return Stage.Public;
+	}
 };
 
 export const getUserEligibility = async (
 	userId: string,
+	contract: WhitelistSimpleSale,
 ): Promise<boolean | undefined> => {
-	// Stub function - should check eligibility of user
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			// If API call fails, reject
-			if (testApiFailure) {
-				reject();
-			}
+	const status = await wheels.getSaleStatus(contract);
 
-			resolve(testConfig.whitelist);
-		}, testConfig.apiResponseTime);
-	});
+	if (
+		status === wheels.SaleStatus.NotStarted ||
+		status === wheels.SaleStatus.WhitelistOnly
+	) {
+		const isWhitelisted = await wheels.isUserOnWhitelist(userId);
+		return isWhitelisted;
+	}
+
+	// status is public, so anyone can buy
+	return true;
 };
 
-const getWheelQuantities = async (): Promise<WheelQuantity | undefined> => {
-	// Stub function - should check total & remanining wheels
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			// If API call fails, reject
-			if (testApiFailure) {
-				reject();
-			}
+const getWheelQuantities = async (
+	contract: WhitelistSimpleSale,
+): Promise<WheelQuantity | undefined> => {
+	const data = await wheels.getWheelsSaleData(contract);
 
-			resolve({
-				total: testConfig.wheelsTotal,
-				minted: testConfig.wheelsMinted,
-			});
-		}, testConfig.apiResponseTime);
-	});
+	return data;
 };
 
-export const getBalanceEth = async (): Promise<number | undefined> => {
-	// Stub function - should check total & remanining wheels
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			if (testApiFailure) {
-				reject();
-			}
-
-			resolve(testConfig.balance);
-		}, testConfig.apiResponseTime);
-	});
+export const getBalanceEth = async (
+	signer: ethers.Signer,
+): Promise<number | undefined> => {
+	const ethBalance = await signer.getBalance();
+	const asString = ethers.utils.formatEther(ethBalance);
+	return Number(asString);
 };
