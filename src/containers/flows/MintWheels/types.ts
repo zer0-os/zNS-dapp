@@ -21,7 +21,6 @@ export enum Step {
 
 export type PrimaryData = {
 	dropStage: Stage;
-	isUserEligible: boolean;
 	wheelsTotal: number;
 	wheelsMinted: number;
 };

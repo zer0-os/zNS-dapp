@@ -25,3 +25,11 @@
 .Button {
 	margin: 25px auto 0 auto;
 }
+
+.Green {
+	color: var(--color-success);
+}
+
+.Orange {
+	color: var(--color-warning);
+}

@@ -1,12 +1,18 @@
 import { Stage } from '../../types';
 
+// Component & Container Imports
+import { ConnectWalletButton } from 'containers';
 import { ArrowLink, FutureButton } from 'components';
+
+import { getCopy } from './helpers';
 
 import styles from './Info.module.css';
 
+import banner from './assets/banner.png';
+
 type InfoProps = {
 	dropStage: Stage;
-	isUserEligible: boolean;
+	isUserWhitelisted?: boolean;
 	isWalletConnected: boolean;
 	onContinue: () => void;
 	wheelsMinted: number;
@@ -14,26 +20,22 @@ type InfoProps = {
 };
 
 const Info = (props: InfoProps) => {
-	const openConnectWalletModal = () => {
-		console.log('open connect wallet');
-	};
+	///////////////
+	// Fragments //
+	///////////////
 
 	const button = () => {
 		if (!props.isWalletConnected) {
 			return (
-				<FutureButton
-					className={styles.Button}
-					glow
-					onClick={openConnectWalletModal}
-				>
+				<ConnectWalletButton className={styles.Button}>
 					Connect Wallet
-				</FutureButton>
+				</ConnectWalletButton>
 			);
 		} else {
 			return (
 				<FutureButton
 					className={styles.Button}
-					glow={props.isWalletConnected && props.isUserEligible}
+					glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 					onClick={props.onContinue}
 				>
 					Mint Your Wheels
@@ -42,10 +44,41 @@ const Info = (props: InfoProps) => {
 		}
 	};
 
+	const eligibilityText = () => {
+		if (props.dropStage === Stage.Whitelist) {
+			if (props.isUserWhitelisted) {
+				return <p className={styles.Green}>*** Missing copy here ***</p>;
+			} else {
+				return (
+					<p className={styles.Orange}>
+						Currently WHEELS are only available to white-listed supporters of
+						Wilder World. Should supply last, you will be able to mint in ****
+						countdown ****
+					</p>
+				);
+			}
+		}
+		if (props.dropStage === Stage.Public) {
+			if (props.isUserWhitelisted) {
+				return (
+					<p className={styles.Green}>
+						Thank you for your support! You’re white-listed but the supporter
+						exclusive time period has passed. Minting is now open to everyone,
+						act fast to secure your wheels.
+					</p>
+				);
+			}
+		}
+	};
+
+	////////////
+	// Render //
+	////////////
+
 	return (
 		<section className={styles.Container}>
 			{/* Wheels Image */}
-			<img className={styles.Image} src="" />
+			<img className={styles.Image} src={banner} />
 
 			{/* Wheels Available */}
 			<div className={styles.Available}>
@@ -56,18 +89,25 @@ const Info = (props: InfoProps) => {
 				<ArrowLink>View Auction Rules</ArrowLink>
 			</div>
 
-			{/* Info */}
-			<p>
-				This is some explainer text about WHEELS and what this flow involves, it
-				is about two sentences long. Ready to start?
-			</p>
-			<p>
-				You may mint up to 2 Wheels total. The cost for each Wheel is 0.07 ETH
-				(100 WILD) plus GAS.
-			</p>
+			{eligibilityText()}
 
-			{/* Button */}
-			{button()}
+			{/* Info */}
+			{props.dropStage === Stage.Upcoming && <p>Dropping soon</p>}
+			{(props.dropStage === Stage.Public ||
+				(props.dropStage === Stage.Whitelist && props.isUserWhitelisted)) && (
+				<>
+					<p>
+						This is some explainer text about WHEELS and what this flow
+						involves, it is about two sentences long. Ready to start?
+					</p>
+					<p>
+						You may mint up to 2 Wheels total. The cost for each Wheel is 0.07
+						ETH (100 WILD) plus GAS.
+					</p>
+					{/* Button */}
+					{button()}
+				</>
+			)}
 		</section>
 	);
 };

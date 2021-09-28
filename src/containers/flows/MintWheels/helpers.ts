@@ -4,21 +4,26 @@ export const EthPerWheel = 0.07;
 
 const testApiFailure = false;
 
-export const getPrimaryData = (
-	userId: string,
-): Promise<PrimaryData | undefined> => {
+const testConfig = {
+	stage: Stage.Public,
+	whitelist: true,
+	wheelsTotal: 1000,
+	wheelsMinted: 500,
+	balance: 1000,
+	apiResponseTime: 300,
+};
+
+export const getPrimaryData = (): Promise<PrimaryData | undefined> => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const [dropStage, isUserEligible, wheelQuantities] = await Promise.all([
+			const [dropStage, wheelQuantities] = await Promise.all([
 				getDropStage(),
-				getUserEligibility(userId),
 				getWheelQuantities(),
 			]);
 
 			// Check if we somehow got an undefined variable
 			if (
 				dropStage === undefined ||
-				isUserEligible === undefined ||
 				wheelQuantities === undefined ||
 				wheelQuantities.total === undefined ||
 				wheelQuantities.minted === undefined
@@ -28,7 +33,6 @@ export const getPrimaryData = (
 
 			resolve({
 				dropStage,
-				isUserEligible,
 				wheelsTotal: wheelQuantities.total,
 				wheelsMinted: wheelQuantities.minted,
 			} as PrimaryData);
@@ -38,7 +42,7 @@ export const getPrimaryData = (
 	});
 };
 
-export const getDropStage = async (): Promise<Stage | undefined> => {
+const getDropStage = async (): Promise<Stage | undefined> => {
 	// Stub function - should check stage of drop i.e. public, whitelist, etc.
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
@@ -47,8 +51,8 @@ export const getDropStage = async (): Promise<Stage | undefined> => {
 				reject();
 			}
 
-			resolve(Stage.Public);
-		}, 259);
+			resolve(testConfig.stage);
+		}, testConfig.apiResponseTime);
 	});
 };
 
@@ -63,14 +67,12 @@ export const getUserEligibility = async (
 				reject();
 			}
 
-			resolve(true);
-		}, 103);
+			resolve(testConfig.whitelist);
+		}, testConfig.apiResponseTime);
 	});
 };
 
-export const getWheelQuantities = async (): Promise<
-	WheelQuantity | undefined
-> => {
+const getWheelQuantities = async (): Promise<WheelQuantity | undefined> => {
 	// Stub function - should check total & remanining wheels
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
@@ -80,10 +82,10 @@ export const getWheelQuantities = async (): Promise<
 			}
 
 			resolve({
-				total: 1000,
-				minted: 500,
+				total: testConfig.wheelsTotal,
+				minted: testConfig.wheelsMinted,
 			});
-		}, 23);
+		}, testConfig.apiResponseTime);
 	});
 };
 
@@ -95,7 +97,7 @@ export const getBalanceEth = async (): Promise<number | undefined> => {
 				reject();
 			}
 
-			resolve(10000);
-		}, 132);
+			resolve(testConfig.balance);
+		}, testConfig.apiResponseTime);
 	});
 };

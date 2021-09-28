@@ -18,7 +18,7 @@ export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/Cu
 // Flows
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
-export { default as MintWheels } from './flows/MintWheels/MintWheels';
+export { default as MintWheels } from './flows/MintWheels';
 export { default as TransferOwnership } from './flows/TransferOwnership';
 
 // Tables
