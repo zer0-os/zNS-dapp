@@ -47,15 +47,22 @@ const MintWheels = (props: MintWheelsProps) => {
 	///////////////
 
 	const onContinueFromInfo = () => {
-		// Set step to "choose amount"
-		// if (balanceEth !== undefined) {
-		// 	if (balanceEth < EthPerWheel) {
-		// 		setStep(Step.InsufficientFunds);
-		// 	} else {
-		// 		setStep(Step.SelectAmount);
-		// 	}
-		// }
+		if (props.balanceEth !== undefined) {
+			if (props.balanceEth < EthPerWheel) {
+				setStep(Step.InsufficientFunds);
+			} else {
+				setStep(Step.SelectAmount);
+			}
+		} else {
+			setStep(Step.CheckingBalance);
+		}
 	};
+
+	useEffect(() => {
+		if (props.balanceEth !== undefined && step === Step.CheckingBalance) {
+			setStep(Step.SelectAmount);
+		}
+	}, [props.balanceEth]);
 
 	const submitTransaction = (numWheels: number) => {
 		// Switch to "pending wallet approval" step
@@ -94,6 +101,9 @@ const MintWheels = (props: MintWheelsProps) => {
 					error={'User rejected transaction'}
 				/>
 			);
+		}
+		if (step === Step.CheckingBalance) {
+			return <Loading text={'Checking your ETH balance'} />;
 		}
 		if (step === Step.PendingWalletApproval) {
 			return <Loading text={'Pending wallet approval'} />;

@@ -11,7 +11,7 @@ export enum Stage {
 export enum Step {
 	LoadingPrimary,
 	Info,
-	LoadingSecondary,
+	CheckingBalance,
 	InsufficientFunds,
 	SelectAmount,
 	PendingWalletApproval,

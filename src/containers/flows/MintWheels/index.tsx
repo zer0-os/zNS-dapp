@@ -63,6 +63,19 @@ const MintWheelsFlowContainer = () => {
 				.catch((e) => {
 					console.error(e);
 				});
+
+			if (account) {
+				getUserEligibility(account).then((d) => {
+					if (!isMounted || d !== undefined) {
+						setIsUserWhitelisted(d);
+					}
+				});
+				getBalanceEth().then((d) => {
+					if (!isMounted || d !== undefined) {
+						setBalanceEth(d);
+					}
+				});
+			}
 		};
 		getData();
 		return () => {
@@ -98,6 +111,7 @@ const MintWheelsFlowContainer = () => {
 			{isWizardOpen && (
 				<Overlay open onClose={closeWizard}>
 					<MintWheels
+						balanceEth={balanceEth}
 						dropStage={dropStage}
 						isUserWhitelisted={isUserWhitelisted}
 						userId={account as string | undefined}
