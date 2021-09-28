@@ -9,6 +9,9 @@
  *
  */
 
+// Buttons
+export { default as ConnectWalletButton } from './buttons/ConnectWalletButton/ConnectWalletButton';
+
 // Cards
 export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/CurrentDomainPreview';
 
