@@ -4,18 +4,10 @@ import React, { useState, useEffect, useRef } from 'react';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
-import { useHistory } from 'react-router';
 import { BigNumber } from 'ethers';
 
 //- Component Imports
-import {
-	ArrowLink,
-	FutureButton,
-	Member,
-	Image,
-	Overlay,
-	Spinner,
-} from 'components';
+import { ArrowLink, FutureButton, Member, NFTMedia, Overlay } from 'components';
 import { MakeABid } from 'containers';
 
 //- Library Imports
@@ -36,6 +28,8 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
+import { transfersData, transferDto } from 'lib/types';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -46,10 +40,6 @@ type NFTViewProps = {
 const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
 
-	//- Notes:
-	// It's worth having this component consume the domain context
-	// because it needs way more data than is worth sending through props
-
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
 	const { addNotification } = useNotification();
@@ -57,7 +47,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	//- Page State
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
-	const [isImageOverlayOpen, setIsImageOverlayOpen] = useState(false);
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [highestBid, setHighestBid] = useState<Bid | undefined>();
@@ -85,6 +74,13 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const etherscanBaseUri = getEtherscanUri(networkType);
 	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
 
+	//Transfers and mint data from nft
+	//- Calls the hook with a polling interval to update the data
+
+	const transfersPollingInterval: number = 5000;
+	const transfersDto = useDomainsTransfers(domainId, transfersPollingInterval)
+		.data as transfersData;
+
 	//- Functions
 	const copyContractToClipboard = () => {
 		addNotification('Copied Token ID to clipboard.');
@@ -99,16 +95,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		if (!isMounted.current) return;
 		if (!znsDomain.domain || isOwnedByYou || !active) return;
 		setIsBidOverlayOpen(true);
-	};
-
-	const openImageOverlay = () => {
-		if (!isMounted.current) return;
-		setIsImageOverlayOpen(true);
-	};
-
-	const closeImageOverlay = () => {
-		if (!isMounted.current) return;
-		setIsImageOverlayOpen(false);
 	};
 
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
@@ -176,6 +162,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			!znsDomain.domain.image
 		) {
 			if (!isMounted.current) return;
+
 			setIsOwnedByYou(
 				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
 			);
@@ -187,26 +174,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const overlays = () => (
 		<>
-			<Overlay
-				centered
-				img
-				open={isImageOverlayOpen}
-				onClose={closeImageOverlay}
-			>
-				<Image
-					src={znsDomain.domain?.image ?? ''}
-					style={{
-						width: 'auto',
-						maxHeight: '80vh',
-						maxWidth: '80vw',
-						objectFit: 'contain',
-						textAlign: 'center',
-					}}
-				/>
-			</Overlay>
-
 			{znsDomain.domain && (
-				<Overlay onClose={closeBidOverlay} centered open={isBidOverlayOpen}>
+				<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
 					<MakeABid domain={znsDomain.domain} onBid={onBid} />
 				</Overlay>
 			)}
@@ -229,54 +198,125 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		</>
 	);
 
-	const history = () => (
-		<section
-			className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
-		>
-			<h4>History</h4>
-			{!bids && (
-				<div className={styles.Loading}>
-					<span>Loading bid history</span>
-				</div>
-			)}
-			{bids && bids.length === 0 && (
-				<span style={{ marginTop: 12, display: 'block' }}>No bids</span>
-			)}
-			{bids && bids.length > 0 && (
-				<ul>
-					{bids?.map((bid: Bid, i: number) =>
-						historyItem(bid.bidderAccount, bid.amount, bid.date, i),
-					)}
-				</ul>
-			)}
-		</section>
-	);
+	const history = () => {
+		// @todo this is very gross, rewrite
+		const both = [bids || [], transfersDto?.domainTransferreds || []].flat();
+		const sorted = both.sort((a, b) => {
+			const aVal =
+				Number((a as transferDto).timestamp) * 1000 ||
+				(a as Bid).date.getTime() ||
+				0;
+			const bVal =
+				Number((b as transferDto).timestamp) * 1000 ||
+				(b as Bid).date.getTime() ||
+				0;
+			return bVal - aVal;
+		});
+		const allHistoryItems = sorted.slice(0, sorted.length); // the last item is always the doubled up mint transfer
+		return (
+			<section
+				className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
+			>
+				<h4>History</h4>
+				{!bids && (
+					<div className={styles.Loading}>
+						<span>Loading domain history</span>
+					</div>
+				)}
+				{bids && sorted.length > 0 && (
+					<ul>
+						{allHistoryItems.map((item: Bid | transferDto, i: number) =>
+							historyItem(item, i, i === allHistoryItems.length - 1),
+						)}
+					</ul>
+				)}
+			</section>
+		);
+	};
 
 	const historyItem = (
-		account: string,
-		amount: number,
-		date: Date,
+		item: Bid | transferDto,
 		i: number,
-	) => (
-		<li className={styles.Bid} key={i}>
-			<div>
-				<b>
-					<a
-						className="alt-link"
-						href={`https://etherscan.io/address/${account}`}
-						target="_blank"
-						rel="noreferrer"
-					>{`${account.substring(0, 4)}...${account.substring(
-						account.length - 4,
-					)}`}</a>
-				</b>{' '}
-				made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
-			</div>
-			<div className={styles.From}>
-				<b>{moment(date).fromNow()}</b>
-			</div>
-		</li>
-	);
+		isLastItem: boolean,
+	) => {
+		const isBid = (item as Bid).bidderAccount !== undefined;
+
+		if (isBid) {
+			const bid = item as Bid;
+			return (
+				<li className={styles.Bid} key={i}>
+					<div>
+						<b>
+							<a
+								className="alt-link"
+								href={`https://etherscan.io/address/${bid.bidderAccount}`}
+								target="_blank"
+								rel="noreferrer"
+							>{`${bid.bidderAccount.substring(
+								0,
+								4,
+							)}...${bid.bidderAccount.substring(
+								bid.bidderAccount.length - 4,
+							)}`}</a>
+						</b>{' '}
+						made an offer of <b>{Number(bid.amount).toLocaleString()} WILD</b>
+					</div>
+					<div className={styles.From}>
+						<b>{moment(bid.date).fromNow()}</b>
+					</div>
+				</li>
+			);
+		} else if (isLastItem) {
+			const transfer = item as transferDto;
+			return (
+				<li className={styles.Bid} key={i}>
+					<div>
+						<b>Domain minted</b>{' '}
+					</div>
+					<div className={styles.From}>
+						<b>{moment(Number(transfer.timestamp) * 1000).fromNow()}</b>
+					</div>
+				</li>
+			);
+		} else {
+			const transfer = item as transferDto;
+			return (
+				<li className={styles.Bid} key={i}>
+					<div>
+						<b>Ownership transferred</b>{' '}
+					</div>
+					<div className={styles.From}>
+						<b>{moment(Number(transfer.timestamp) * 1000).fromNow()}</b>
+					</div>
+				</li>
+			);
+		}
+	};
+
+	// const historyItem = (item: Bid | transferDto, i: number) => (
+	// 	<>
+	// 		{ (
+	// 			<li className={styles.Bid} key={i}>
+	// 				<div>
+	// 					<b>
+	// 						<a
+	// 							className="alt-link"
+	// 							href={`https://etherscan.io/address/${account}`}
+	// 							target="_blank"
+	// 							rel="noreferrer"
+	// 						>{`${item.bidderAccount.substring(0, 4)}...${item.bidderAccount.substring(
+	// 							account.length - 4,
+	// 						)}`}</a>
+	// 					</b>{' '}
+	// 					made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
+	// 				</div>
+	// 				<div className={styles.From}>
+	// 					<b>{moment(date).fromNow()}</b>
+	// 				</div>
+	// 			</li>
+	// 		)}
+	// 	</>
+	// );
 
 	const actionButtons = () => (
 		<div className={styles.Buttons}>
@@ -310,17 +350,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				} border-primary border-rounded`}
 			>
 				<div className={`${styles.Image} border-rounded`}>
-					<Image
+					<NFTMedia
 						style={{
 							borderRadius: 10,
 							borderWidth: 2,
 							objectFit: 'contain',
 						}}
-						controls
-						unmute
-						className="border-radius"
-						src={znsDomain.domain?.image ?? ''}
-						onClick={openImageOverlay}
+						className={`border-rounded`}
+						alt="NFT Preview"
+						ipfsUrl={znsDomain.domain?.image ?? ''}
 					/>
 				</div>
 				<div className={styles.Info}>
@@ -361,7 +399,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					{price()}
 					{actionButtons()}
 					{backgroundBlob !== undefined && (
-						<img src={backgroundBlob} className={styles.Bg} />
+						<img
+							alt="NFT panel background"
+							src={backgroundBlob}
+							className={styles.Bg}
+						/>
 					)}
 				</div>
 			</div>

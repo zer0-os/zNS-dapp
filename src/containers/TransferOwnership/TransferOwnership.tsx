@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styles from './TransferOwnership.module.css';
 
 //- Component Imports
-import { EtherInput, FutureButton, Image, Overlay } from 'components';
+import { EtherInput, FutureButton, NFTMedia, Overlay } from 'components';
 
 //- Library Imports
 /*
@@ -120,7 +120,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 						style={{ display: 'flex', padding: '0 37.5px' }}
 					>
 						<div className={styles.NFT}>
-							<Image controls src={image} />
+							<NFTMedia alt="Bid NFT preview" ipfsUrl={image} size="small" />
 						</div>
 
 						<div className={styles.Details}>
