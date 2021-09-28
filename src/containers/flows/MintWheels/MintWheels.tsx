@@ -28,6 +28,7 @@ import styles from './MintWheels.module.css';
 type MintWheelsProps = {
 	balanceEth?: number;
 	dropStage?: Stage;
+	onClose: () => void;
 	isUserWhitelisted?: boolean;
 	userId?: string;
 	wheelsTotal?: number;
@@ -109,13 +110,7 @@ const MintWheels = (props: MintWheelsProps) => {
 			return <Loading text={'Pending wallet approval'} />;
 		}
 		if (step === Step.InsufficientFunds) {
-			return (
-				<InsufficientFunds
-					onDismiss={() => {
-						console.log('dismiss');
-					}}
-				/>
-			);
+			return <InsufficientFunds onDismiss={props.onClose} />;
 		}
 	};
 

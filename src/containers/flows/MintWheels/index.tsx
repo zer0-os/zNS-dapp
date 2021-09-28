@@ -122,10 +122,11 @@ const MintWheelsFlowContainer = () => {
 						balanceEth={balanceEth}
 						dropStage={dropStage}
 						isUserWhitelisted={isUserWhitelisted}
+						onClose={closeWizard}
+						onSubmitTransaction={onSubmitTransaction}
 						userId={account as string | undefined}
 						wheelsMinted={500}
 						wheelsTotal={1000}
-						onSubmitTransaction={onSubmitTransaction}
 					/>
 				</Overlay>
 			)}
