@@ -17,14 +17,8 @@ import SelectAmount from './steps/SelectAmount/SelectAmount';
 import InsufficientFunds from './steps/InsufficientFunds/InsufficientFunds';
 
 // Configuration
-import { Stage, Step } from './types';
-import {
-	EthPerWheel,
-	getDropStage,
-	getUserEligibility,
-	getWheelQuantities,
-	getBalanceEth,
-} from './helpers';
+import { Stage, Step, PrimaryData } from './types';
+import { EthPerWheel, getPrimaryData, getBalanceEth } from './helpers';
 
 // Style Imports
 import styles from './MintWheels.module.css';
@@ -61,48 +55,41 @@ const MintWheels = () => {
 	// Effects //
 	/////////////
 
+	useEffect(() => {
+		if (isLoadingPrimaryData) {
+			setStep(Step.LoadingPrimary);
+		} else {
+			setStep(Step.Info);
+		}
+	}, [isLoadingPrimaryData]);
+
 	// Get all data on enter DOM
 	useEffect(() => {
 		let isMounted = true;
 
 		setIsLoadingPrimaryData(true);
 
-		// Gets all the data we need initially for step 1
-		const getPrimaryData = async () => {
-			const [stage, eligible, quantity] = await Promise.all([
-				getDropStage(),
-				getUserEligibility(),
-				getWheelQuantities(),
-			]);
+		if (!account) {
+			return;
+		}
 
-			// Unsubscribe if not mounted
-			if (!isMounted) {
-				return;
-			}
-
-			if (
-				stage === undefined ||
-				eligible === undefined ||
-				quantity === undefined
-			) {
-				// Something went wrong in the loading
-				// We shouldn't show the UI if any of these failed - maybe retry?
-				setIsLoadingPrimaryData(true);
-				return;
-			}
-
-			// Need to set a timeout so the "Loading" shows for a little longer
-			await new Promise((r) => setTimeout(r, 1200));
-
-			setIsLoadingPrimaryData(false); // Tell the UI the primary data has finished loading
-
-			setDropStage(stage);
-			setIsUserEligible(eligible);
-			setWheelsTotal(quantity.total);
-			setWheelsMinted(quantity.minted);
-			setStep(Step.Info);
+		const getData = async () => {
+			getPrimaryData(account)
+				.then((d) => {
+					if (!isMounted) {
+						return;
+					}
+					const primaryData = d as PrimaryData;
+					setPrimaryData(d as PrimaryData);
+					setIsLoadingPrimaryData(false);
+				})
+				.catch((e) => {
+					console.log('failed to load');
+					console.error(e);
+				});
+			// Start the secondary data
 		};
-		getPrimaryData();
+		getData();
 
 		// Gets all the data we can load last (req. > step 2)
 		const getSecondaryData = async () => {
@@ -122,11 +109,18 @@ const MintWheels = () => {
 		return () => {
 			isMounted = false;
 		};
-	}, []);
+	}, [account]);
 
 	///////////////
 	// Functions //
 	///////////////
+
+	const setPrimaryData = (primaryData: PrimaryData) => {
+		setDropStage(primaryData.dropStage);
+		setIsUserEligible(primaryData.isUserEligible);
+		setWheelsTotal(primaryData.wheelsTotal);
+		setWheelsMinted(primaryData.wheelsMinted);
+	};
 
 	const onContinueFromInfo = () => {
 		// Set step to "choose amount"
@@ -145,7 +139,9 @@ const MintWheels = () => {
 	};
 
 	const onBack = () => {
-		// Set step - 1
+		if (step === Step.InsufficientFunds || step === Step.SelectAmount) {
+			setStep(Step.Info);
+		}
 	};
 
 	////////////

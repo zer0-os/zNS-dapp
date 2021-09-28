@@ -19,6 +19,13 @@ export enum Step {
 
 // Types
 
+export type PrimaryData = {
+	dropStage: Stage;
+	isUserEligible: boolean;
+	wheelsTotal: number;
+	wheelsMinted: number;
+};
+
 export type WheelQuantity = {
 	total: number;
 	minted: number;
