@@ -503,7 +503,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				<MintWheelsBanner
 					title={'Get your ride for the metaverse '}
 					label={'WILDER WHEELS Available in 1d 23m 45s'}
-					buttonText={'Mint Now'}
+					buttonText={'Learn More'}
 					onClick={() => {
 						console.log('Click');
 					}}

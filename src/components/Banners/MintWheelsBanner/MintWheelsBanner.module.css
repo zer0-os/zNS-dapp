@@ -15,8 +15,7 @@
 }
 
 .Container:hover {
-	box-shadow: 0px 0px 10px rgba(189, 95, 255, 0.7);
-	filter: drop-shadow(0px 0px 10px rgba(189, 95, 255, 0.7));
+	filter: drop-shadow(0px 0px 5px rgba(189, 95, 255, 0.7));
 }
 
 .Background {
@@ -27,7 +26,7 @@
 	background-image: url(./assets/WheelsBanner.gif);
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: 80% 0px;
+	background-position: 50% 0px;
 
 	opacity: 0.8;
 
@@ -125,6 +124,9 @@
 		right: 40px;
 		bottom: auto;
 		left: auto;
+	}
+	.Background {
+		background-position: 90% 0px;
 	}
 }
 
