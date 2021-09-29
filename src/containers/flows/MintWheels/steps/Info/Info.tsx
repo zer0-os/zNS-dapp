@@ -22,9 +22,14 @@ type InfoProps = {
 };
 
 const Info = (props: InfoProps) => {
+	// @todo clean up logic
 	const isAuctionDataLoading = props.dropStage === undefined;
 	const isUserDataLoading =
 		props.isWalletConnected && props.isUserWhitelisted === undefined;
+	const canUserMintMore =
+		props.numberPurchasedByUser !== undefined &&
+		props.maxPurchasesPerUser !== undefined &&
+		props.numberPurchasedByUser < props.maxPurchasesPerUser;
 
 	///////////////
 	// Fragments //
@@ -117,7 +122,14 @@ const Info = (props: InfoProps) => {
 			);
 		} else {
 			if (
-				![Stage.Upcoming, Stage.Ended, Stage.Sold].includes(props.dropStage)
+				props.maxPurchasesPerUser === undefined &&
+				props.numberPurchasedByUser === undefined
+			) {
+				return;
+			}
+			if (
+				![Stage.Upcoming, Stage.Ended, Stage.Sold].includes(props.dropStage) &&
+				canUserMintMore
 			) {
 				return (
 					<FutureButton

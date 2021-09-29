@@ -9,8 +9,8 @@ import { EthPerWheel } from '../../helpers';
 type SelectAmountProps = {
 	balanceEth: number;
 	error?: string;
-	maxPurchasesPerUser?: number;
-	numberPurchasedByUser?: number;
+	maxPurchasesPerUser: number;
+	numberPurchasedByUser: number;
 	onBack: () => void;
 	onContinue: (numWheels: number) => void;
 	remainingWheels: number;
@@ -22,13 +22,15 @@ const SelectAmount = (props: SelectAmountProps) => {
 	//////////////////
 
 	const maxPerUser = 2;
-	const max =
-		props.remainingWheels < maxPerUser ? props.remainingWheels : maxPerUser;
-	// If the user sees this page, they can afford at least 1 wheel, so we only
-	// need to check if the user can afford 2
+	const remainingUserWheels =
+		props.maxPurchasesPerUser - props.numberPurchasedByUser;
 	const maxUserCanAfford = Math.floor(props.balanceEth / EthPerWheel);
-	const maxUserCanBuy = Math.min(maxUserCanAfford, max);
-	const min = 1;
+
+	const maxWheelsRemaining = Math.min(
+		remainingUserWheels,
+		props.remainingWheels,
+	);
+	const maxUserCanBuy = Math.min(maxUserCanAfford, maxWheelsRemaining);
 	const [amount, setAmount] = useState<string | undefined>();
 
 	// Input errors
@@ -62,6 +64,12 @@ const SelectAmount = (props: SelectAmountProps) => {
 				setInputError(`Please enter a number between 1 & ${maxPerUser}`);
 			} else if (numWheels * EthPerWheel > props.balanceEth) {
 				setInputError(`You do not have enough ETH to mint ${numWheels} Wheels`);
+			} else if (numWheels > remainingUserWheels) {
+				setInputError(
+					`You have already minted ${props.numberPurchasedByUser} wheel${
+						props.numberPurchasedByUser > 1 && 's'
+					} - you may only mint ${maxWheelsRemaining} more`,
+				);
 			}
 		}
 	};
@@ -71,10 +79,8 @@ const SelectAmount = (props: SelectAmountProps) => {
 			amount !== undefined &&
 			amount.length > 0 &&
 			!isNaN(Number(amount)) &&
-			Number(amount) * EthPerWheel <= props.balanceEth &&
 			Number(amount) % 1 === 0 &&
-			Number(amount) >= min &&
-			Number(amount) <= max
+			Number(amount) <= maxUserCanBuy
 		);
 	};
 
@@ -84,30 +90,38 @@ const SelectAmount = (props: SelectAmountProps) => {
 
 	return (
 		<section>
-			<form onSubmit={formSubmit}>
-				<p>
-					How many Wheels would you like to Mint? Each user can mint a maximum
-					of <b>2 Wheels</b>. For each Wheel you mint, you must pay{' '}
-					<b>{EthPerWheel} ETH</b>. However many you choose, they will be minted
-					in one transaction, saving on GAS fees. Your current balance is{' '}
-					<b>{props.balanceEth} ETH</b>.
+			{props.numberPurchasedByUser < props.maxPurchasesPerUser && (
+				<form onSubmit={formSubmit}>
+					<p>
+						How many Wheels would you like to Mint? Each user can mint a maximum
+						of <b>2 Wheels</b>. For each Wheel you mint, you must pay{' '}
+						<b>{EthPerWheel} ETH</b>. However many you choose, they will be
+						minted in one transaction, saving on GAS fees. Your current balance
+						is <b>{props.balanceEth} ETH</b>.
+					</p>
+					<TextInput
+						onChange={onInputChange}
+						placeholder={`Number of Wheels (Maximum of 2)`}
+						numeric
+						text={amount}
+					/>
+					{props.error !== undefined && (
+						<span className={styles.Error}>{props.error}</span>
+					)}
+					{inputError !== undefined && (
+						<span className={styles.Error}>{inputError}</span>
+					)}
+					<FutureButton glow className={styles.Button} onClick={() => {}}>
+						Continue
+					</FutureButton>
+				</form>
+			)}
+			{props.numberPurchasedByUser >= props.maxPurchasesPerUser && (
+				<p className={styles.Green} style={{ textAlign: 'center' }}>
+					You have already minted {props.numberPurchasedByUser}/
+					{props.maxPurchasesPerUser} Wheels
 				</p>
-				<TextInput
-					onChange={onInputChange}
-					placeholder={`Number of Wheels (Maximum of 2)`}
-					numeric
-					text={amount}
-				/>
-				{props.error !== undefined && (
-					<span className={styles.Error}>{props.error}</span>
-				)}
-				{inputError !== undefined && (
-					<span className={styles.Error}>{inputError}</span>
-				)}
-				<FutureButton glow className={styles.Button} onClick={() => {}}>
-					Continue
-				</FutureButton>
-			</form>
+			)}
 		</section>
 	);
 };

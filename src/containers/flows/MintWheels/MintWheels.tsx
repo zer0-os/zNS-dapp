@@ -125,8 +125,8 @@ const MintWheels = (props: MintWheelsProps) => {
 				<SelectAmount
 					balanceEth={props.balanceEth!}
 					error={transactionError}
-					maxPurchasesPerUser={props.maxPurchasesPerUser}
-					numberPurchasedByUser={props.numberPurchasedByUser}
+					maxPurchasesPerUser={props.maxPurchasesPerUser!}
+					numberPurchasedByUser={props.numberPurchasedByUser!}
 					onBack={onBack}
 					onContinue={submitTransaction}
 					remainingWheels={props.wheelsTotal! - props.wheelsMinted!}
