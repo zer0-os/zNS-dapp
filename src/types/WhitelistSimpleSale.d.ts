@@ -24,9 +24,10 @@ import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 interface WhitelistSimpleSaleInterface extends ethers.utils.Interface {
   functions: {
     "__SimpleSale_init(address,uint256,uint256,uint256,address,address)": FunctionFragment;
-    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,address,address,uint256,bytes32)": FunctionFragment;
+    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,uint256,address,address,uint256,bytes32)": FunctionFragment;
     "addDomainsToSell(string[])": FunctionFragment;
     "controller()": FunctionFragment;
+    "currentMaxPurchaseCount()": FunctionFragment;
     "domainsForSale(uint256)": FunctionFragment;
     "domainsPurchasedByAccount(address)": FunctionFragment;
     "domainsSold()": FunctionFragment;
@@ -34,6 +35,7 @@ interface WhitelistSimpleSaleInterface extends ethers.utils.Interface {
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
     "owner()": FunctionFragment;
     "parentDomainId()": FunctionFragment;
+    "postWhitelistMaxPurchases()": FunctionFragment;
     "purchaseDomains(uint8)": FunctionFragment;
     "purchaseDomainsWhitelisted(uint8,uint256,bytes32[])": FunctionFragment;
     "releaseDomain()": FunctionFragment;
@@ -65,6 +67,7 @@ interface WhitelistSimpleSaleInterface extends ethers.utils.Interface {
       BigNumberish,
       BigNumberish,
       BigNumberish,
+      BigNumberish,
       string,
       string,
       BigNumberish,
@@ -77,6 +80,10 @@ interface WhitelistSimpleSaleInterface extends ethers.utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "controller",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "currentMaxPurchaseCount",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -102,6 +109,10 @@ interface WhitelistSimpleSaleInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "parentDomainId",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "postWhitelistMaxPurchases",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -182,6 +193,10 @@ interface WhitelistSimpleSaleInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "controller", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "currentMaxPurchaseCount",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "domainsForSale",
     data: BytesLike
   ): Result;
@@ -204,6 +219,10 @@ interface WhitelistSimpleSaleInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "parentDomainId",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "postWhitelistMaxPurchases",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -328,6 +347,7 @@ export class WhitelistSimpleSale extends Contract {
       parentDomainId_: BigNumberish,
       price: BigNumberish,
       maxPurchasesPerAccount_: BigNumberish,
+      postWhitelistMaxPurchases_: BigNumberish,
       zNSRegistrar_: string,
       sellerWallet_: string,
       whitelistSaleDuration_: BigNumberish,
@@ -335,11 +355,12 @@ export class WhitelistSimpleSale extends Contract {
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
-    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,address,address,uint256,bytes32)"(
+    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,uint256,address,address,uint256,bytes32)"(
       controller_: string,
       parentDomainId_: BigNumberish,
       price: BigNumberish,
       maxPurchasesPerAccount_: BigNumberish,
+      postWhitelistMaxPurchases_: BigNumberish,
       zNSRegistrar_: string,
       sellerWallet_: string,
       whitelistSaleDuration_: BigNumberish,
@@ -360,6 +381,12 @@ export class WhitelistSimpleSale extends Contract {
     controller(overrides?: CallOverrides): Promise<[string]>;
 
     "controller()"(overrides?: CallOverrides): Promise<[string]>;
+
+    currentMaxPurchaseCount(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "currentMaxPurchaseCount()"(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     domainsForSale(
       arg0: BigNumberish,
@@ -412,6 +439,12 @@ export class WhitelistSimpleSale extends Contract {
     parentDomainId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     "parentDomainId()"(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    postWhitelistMaxPurchases(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    "postWhitelistMaxPurchases()"(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     purchaseDomains(
       count: BigNumberish,
@@ -559,6 +592,7 @@ export class WhitelistSimpleSale extends Contract {
     parentDomainId_: BigNumberish,
     price: BigNumberish,
     maxPurchasesPerAccount_: BigNumberish,
+    postWhitelistMaxPurchases_: BigNumberish,
     zNSRegistrar_: string,
     sellerWallet_: string,
     whitelistSaleDuration_: BigNumberish,
@@ -566,11 +600,12 @@ export class WhitelistSimpleSale extends Contract {
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
-  "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,address,address,uint256,bytes32)"(
+  "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,uint256,address,address,uint256,bytes32)"(
     controller_: string,
     parentDomainId_: BigNumberish,
     price: BigNumberish,
     maxPurchasesPerAccount_: BigNumberish,
+    postWhitelistMaxPurchases_: BigNumberish,
     zNSRegistrar_: string,
     sellerWallet_: string,
     whitelistSaleDuration_: BigNumberish,
@@ -591,6 +626,10 @@ export class WhitelistSimpleSale extends Contract {
   controller(overrides?: CallOverrides): Promise<string>;
 
   "controller()"(overrides?: CallOverrides): Promise<string>;
+
+  currentMaxPurchaseCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "currentMaxPurchaseCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   domainsForSale(
     arg0: BigNumberish,
@@ -643,6 +682,10 @@ export class WhitelistSimpleSale extends Contract {
   parentDomainId(overrides?: CallOverrides): Promise<BigNumber>;
 
   "parentDomainId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+  postWhitelistMaxPurchases(overrides?: CallOverrides): Promise<BigNumber>;
+
+  "postWhitelistMaxPurchases()"(overrides?: CallOverrides): Promise<BigNumber>;
 
   purchaseDomains(
     count: BigNumberish,
@@ -790,6 +833,7 @@ export class WhitelistSimpleSale extends Contract {
       parentDomainId_: BigNumberish,
       price: BigNumberish,
       maxPurchasesPerAccount_: BigNumberish,
+      postWhitelistMaxPurchases_: BigNumberish,
       zNSRegistrar_: string,
       sellerWallet_: string,
       whitelistSaleDuration_: BigNumberish,
@@ -797,11 +841,12 @@ export class WhitelistSimpleSale extends Contract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,address,address,uint256,bytes32)"(
+    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,uint256,address,address,uint256,bytes32)"(
       controller_: string,
       parentDomainId_: BigNumberish,
       price: BigNumberish,
       maxPurchasesPerAccount_: BigNumberish,
+      postWhitelistMaxPurchases_: BigNumberish,
       zNSRegistrar_: string,
       sellerWallet_: string,
       whitelistSaleDuration_: BigNumberish,
@@ -822,6 +867,10 @@ export class WhitelistSimpleSale extends Contract {
     controller(overrides?: CallOverrides): Promise<string>;
 
     "controller()"(overrides?: CallOverrides): Promise<string>;
+
+    currentMaxPurchaseCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "currentMaxPurchaseCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     domainsForSale(
       arg0: BigNumberish,
@@ -874,6 +923,12 @@ export class WhitelistSimpleSale extends Contract {
     parentDomainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     "parentDomainId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    postWhitelistMaxPurchases(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "postWhitelistMaxPurchases()"(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     purchaseDomains(
       count: BigNumberish,
@@ -1038,6 +1093,7 @@ export class WhitelistSimpleSale extends Contract {
       parentDomainId_: BigNumberish,
       price: BigNumberish,
       maxPurchasesPerAccount_: BigNumberish,
+      postWhitelistMaxPurchases_: BigNumberish,
       zNSRegistrar_: string,
       sellerWallet_: string,
       whitelistSaleDuration_: BigNumberish,
@@ -1045,11 +1101,12 @@ export class WhitelistSimpleSale extends Contract {
       overrides?: Overrides
     ): Promise<BigNumber>;
 
-    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,address,address,uint256,bytes32)"(
+    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,uint256,address,address,uint256,bytes32)"(
       controller_: string,
       parentDomainId_: BigNumberish,
       price: BigNumberish,
       maxPurchasesPerAccount_: BigNumberish,
+      postWhitelistMaxPurchases_: BigNumberish,
       zNSRegistrar_: string,
       sellerWallet_: string,
       whitelistSaleDuration_: BigNumberish,
@@ -1070,6 +1127,10 @@ export class WhitelistSimpleSale extends Contract {
     controller(overrides?: CallOverrides): Promise<BigNumber>;
 
     "controller()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    currentMaxPurchaseCount(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "currentMaxPurchaseCount()"(overrides?: CallOverrides): Promise<BigNumber>;
 
     domainsForSale(
       arg0: BigNumberish,
@@ -1122,6 +1183,12 @@ export class WhitelistSimpleSale extends Contract {
     parentDomainId(overrides?: CallOverrides): Promise<BigNumber>;
 
     "parentDomainId()"(overrides?: CallOverrides): Promise<BigNumber>;
+
+    postWhitelistMaxPurchases(overrides?: CallOverrides): Promise<BigNumber>;
+
+    "postWhitelistMaxPurchases()"(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     purchaseDomains(
       count: BigNumberish,
@@ -1267,6 +1334,7 @@ export class WhitelistSimpleSale extends Contract {
       parentDomainId_: BigNumberish,
       price: BigNumberish,
       maxPurchasesPerAccount_: BigNumberish,
+      postWhitelistMaxPurchases_: BigNumberish,
       zNSRegistrar_: string,
       sellerWallet_: string,
       whitelistSaleDuration_: BigNumberish,
@@ -1274,11 +1342,12 @@ export class WhitelistSimpleSale extends Contract {
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
-    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,address,address,uint256,bytes32)"(
+    "__WhitelistSimpleSale_init(address,uint256,uint256,uint256,uint256,address,address,uint256,bytes32)"(
       controller_: string,
       parentDomainId_: BigNumberish,
       price: BigNumberish,
       maxPurchasesPerAccount_: BigNumberish,
+      postWhitelistMaxPurchases_: BigNumberish,
       zNSRegistrar_: string,
       sellerWallet_: string,
       whitelistSaleDuration_: BigNumberish,
@@ -1299,6 +1368,14 @@ export class WhitelistSimpleSale extends Contract {
     controller(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "controller()"(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    currentMaxPurchaseCount(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "currentMaxPurchaseCount()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     domainsForSale(
       arg0: BigNumberish,
@@ -1355,6 +1432,14 @@ export class WhitelistSimpleSale extends Contract {
     parentDomainId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "parentDomainId()"(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    postWhitelistMaxPurchases(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    "postWhitelistMaxPurchases()"(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

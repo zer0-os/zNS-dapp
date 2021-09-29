@@ -186,6 +186,11 @@ const _abi = [
         type: "uint256",
       },
       {
+        internalType: "uint256",
+        name: "postWhitelistMaxPurchases_",
+        type: "uint256",
+      },
+      {
         internalType: "contract IERC721Upgradeable",
         name: "zNSRegistrar_",
         type: "address",
@@ -232,6 +237,19 @@ const _abi = [
         internalType: "contract IBasicController",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "currentMaxPurchaseCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -351,6 +369,19 @@ const _abi = [
   {
     inputs: [],
     name: "parentDomainId",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "postWhitelistMaxPurchases",
     outputs: [
       {
         internalType: "uint256",

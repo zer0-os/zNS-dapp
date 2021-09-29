@@ -131,6 +131,6 @@ export const getNumberPurchasedByUser = async (
 export const getMaxPurchasesPerUser = async (
 	contract: WhitelistSimpleSale,
 ): Promise<number> => {
-	const max = await contract.maxPurchasesPerAccount();
+	const max = await contract.currentMaxPurchaseCount();
 	return max.toNumber();
 };
