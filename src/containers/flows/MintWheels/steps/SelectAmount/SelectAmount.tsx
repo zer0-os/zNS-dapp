@@ -66,9 +66,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 				setInputError(`You do not have enough ETH to mint ${numWheels} Wheels`);
 			} else if (numWheels > remainingUserWheels) {
 				setInputError(
-					`You have already minted ${props.numberPurchasedByUser} wheel${
-						props.numberPurchasedByUser > 1 && 's'
-					} - you may only mint ${maxWheelsRemaining} more`,
+					`You have already minted ${props.numberPurchasedByUser}/${props.maxPurchasesPerUser} of the maximum allowed Wheels. Please choose a lower number`,
 				);
 			}
 		}
@@ -105,7 +103,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 						numeric
 						text={amount}
 					/>
-					{props.error !== undefined && (
+					{props.error !== undefined && inputError === undefined && (
 						<span className={styles.Error}>{props.error}</span>
 					)}
 					{inputError !== undefined && (
