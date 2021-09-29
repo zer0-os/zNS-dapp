@@ -22,8 +22,8 @@ export { default as MintWheels } from './flows/MintWheels';
 export { default as TransferOwnership } from './flows/TransferOwnership';
 
 // Tables
-export { default as OwnedDomainsTable } from './tables/OwnedDomainsTable/OwnedDomainsTable';
-export { default as SubdomainTable } from './tables/SubdomainTable/SubdomainTable';
+export { default as OwnedDomainsTable } from './Tables/OwnedDomainsTable/OwnedDomainsTable';
+export { default as SubdomainTable } from './Tables/SubdomainTable/SubdomainTable';
 
 // Lists
 export { default as BidList } from './lists/BidList/BidList';
