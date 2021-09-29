@@ -17,12 +17,14 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import { Maybe } from 'lib/types';
+import useNotification from 'lib/hooks/useNotification';
 
 import * as wheels from '../../../lib/wheelSale';
 
 const MintWheelsFlowContainer = () => {
 	// Web3 hooks
 	const { account, library } = useWeb3React<Web3Provider>();
+	const { addNotification } = useNotification();
 
 	// Contracts
 	const contracts = useZnsContracts();
@@ -60,8 +62,10 @@ const MintWheelsFlowContainer = () => {
 		setIsWizardOpen(false);
 	};
 
-	const transactionSuccessful = () => {
-		console.log('yay');
+	const transactionSuccessful = (numWheels: number) => {
+		addNotification(
+			`Successfully minted ${numWheels} Wheels. Open your Profile to view them`,
+		);
 	};
 
 	// Submits transaction, feeds status updates
@@ -89,7 +93,7 @@ const MintWheelsFlowContainer = () => {
 		await tx.wait();
 
 		finishedCallback();
-		transactionSuccessful();
+		transactionSuccessful(numWheels);
 	};
 
 	/////////////
