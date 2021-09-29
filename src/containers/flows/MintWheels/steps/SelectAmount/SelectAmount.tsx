@@ -68,6 +68,14 @@ const SelectAmount = (props: SelectAmountProps) => {
 				setInputError(
 					`You have already minted ${props.numberPurchasedByUser}/${props.maxPurchasesPerUser} of the maximum allowed Wheels. Please choose a lower number`,
 				);
+			} else if (numWheels > props.remainingWheels) {
+				if (props.remainingWheels === 1) {
+					setInputError(`There is only 1 Wheel left in this drop`);
+				} else {
+					setInputError(
+						`There are only ${props.remainingWheels} Wheels left in this drop`,
+					);
+				}
 			}
 		}
 	};
