@@ -25,6 +25,8 @@ type MintWheelsProps = {
 	dropStage?: Stage;
 	onClose: () => void;
 	isUserWhitelisted?: boolean;
+	maxPurchasesPerUser?: number;
+	numberPurchasedByUser?: number;
 	userId?: string;
 	wheelsTotal?: number;
 	wheelsMinted?: number;
@@ -110,6 +112,8 @@ const MintWheels = (props: MintWheelsProps) => {
 					dropStage={props.dropStage!}
 					isUserWhitelisted={props.isUserWhitelisted}
 					isWalletConnected={props.userId !== undefined}
+					maxPurchasesPerUser={props.maxPurchasesPerUser}
+					numberPurchasedByUser={props.numberPurchasedByUser}
 					onContinue={onContinueFromInfo!}
 					wheelsMinted={props.wheelsMinted!}
 					wheelsTotal={props.wheelsTotal!}
@@ -120,10 +124,12 @@ const MintWheels = (props: MintWheelsProps) => {
 			return (
 				<SelectAmount
 					balanceEth={props.balanceEth!}
+					error={transactionError}
+					maxPurchasesPerUser={props.maxPurchasesPerUser}
+					numberPurchasedByUser={props.numberPurchasedByUser}
 					onBack={onBack}
 					onContinue={submitTransaction}
 					remainingWheels={props.wheelsTotal! - props.wheelsMinted!}
-					error={transactionError}
 				/>
 			);
 		}
@@ -152,9 +158,6 @@ const MintWheels = (props: MintWheelsProps) => {
 				</span>
 				<hr />
 			</section>
-			{props.dropStage === undefined && (
-				<Loading text={'Loading Wheels Drop'} />
-			)}
 			{getFlowSection()}
 		</div>
 	);

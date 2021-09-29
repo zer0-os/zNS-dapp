@@ -7,11 +7,13 @@ import styles from './SelectAmount.module.css';
 import { EthPerWheel } from '../../helpers';
 
 type SelectAmountProps = {
+	balanceEth: number;
+	error?: string;
+	maxPurchasesPerUser?: number;
+	numberPurchasedByUser?: number;
 	onBack: () => void;
 	onContinue: (numWheels: number) => void;
 	remainingWheels: number;
-	balanceEth: number;
-	error?: string;
 };
 
 const SelectAmount = (props: SelectAmountProps) => {

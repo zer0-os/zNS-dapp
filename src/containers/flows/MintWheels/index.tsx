@@ -7,7 +7,12 @@ import { Overlay, Spinner } from 'components';
 import MintWheels from './MintWheels';
 
 import { Stage, DropData, TransactionData } from './types';
-import { getDropData, getUserEligibility, getBalanceEth } from './helpers';
+import {
+	getDropData,
+	getUserEligibility,
+	getBalanceEth,
+	getNumberPurchasedByUser,
+} from './helpers';
 import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
@@ -30,12 +35,18 @@ const MintWheelsFlowContainer = () => {
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
 	const [wheelsTotal, setWheelsTotal] = useState<number | undefined>();
 	const [wheelsMinted, setWheelsMinted] = useState<number | undefined>();
+	const [maxPurchasesPerUser, setMaxPurchasesPerUser] = useState<
+		number | undefined
+	>();
 
 	// User data
 	const [isUserWhitelisted, setIsUserWhitelisted] = useState<
 		boolean | undefined
 	>();
 	const [balanceEth, setBalanceEth] = useState<number | undefined>();
+	const [numberPurchasedByUser, setNumberPurchasedByUser] = useState<
+		number | undefined
+	>();
 
 	///////////////
 	// Functions //
@@ -102,6 +113,7 @@ const MintWheelsFlowContainer = () => {
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
+					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 				})
 				.catch((e) => {
 					console.error(e);
@@ -110,15 +122,24 @@ const MintWheelsFlowContainer = () => {
 			// Get user data if wallet connected
 			if (account && library) {
 				getUserEligibility(account, saleContract).then((d) => {
-					if (!isMounted || d !== undefined) {
+					if (isMounted && d !== undefined) {
 						setIsUserWhitelisted(d);
 					}
 				});
 				getBalanceEth(library.getSigner()).then((d) => {
-					if (!isMounted || d !== undefined) {
+					if (isMounted && d !== undefined) {
 						setBalanceEth(d);
 					}
 				});
+				getNumberPurchasedByUser(account, saleContract).then((d) => {
+					if (isMounted && d !== undefined) {
+						setNumberPurchasedByUser(d);
+					}
+				});
+			} else {
+				setIsUserWhitelisted(undefined);
+				setBalanceEth(undefined);
+				setNumberPurchasedByUser(undefined);
 			}
 		};
 		getData();
@@ -126,38 +147,6 @@ const MintWheelsFlowContainer = () => {
 			isMounted = false;
 		};
 	}, [account, library, saleContract]);
-
-	// Handles changes to wallet
-	// Checks user whitelist status against API - sets as state variable
-	// Checks user Eth balance - sets as state variable
-	//
-	// note: could set this to only run when the modal opens by putting
-	// isWizardOpen as a dependency
-	useEffect(() => {
-		if (!saleContract) {
-			return;
-		}
-
-		let isMounted = true;
-		if (account && library) {
-			getUserEligibility(account, saleContract).then((d) => {
-				if (!isMounted || d !== undefined) {
-					setIsUserWhitelisted(d);
-				}
-			});
-			getBalanceEth(library.getSigner()).then((d) => {
-				if (!isMounted || d !== undefined) {
-					setBalanceEth(d);
-				}
-			});
-		} else {
-			setIsUserWhitelisted(undefined);
-			setBalanceEth(undefined);
-		}
-		return () => {
-			isMounted = false;
-		};
-	}, [account, saleContract, library]);
 
 	////////////
 	// Render //
@@ -171,6 +160,8 @@ const MintWheelsFlowContainer = () => {
 						balanceEth={balanceEth}
 						dropStage={dropStage}
 						isUserWhitelisted={isUserWhitelisted}
+						maxPurchasesPerUser={maxPurchasesPerUser}
+						numberPurchasedByUser={numberPurchasedByUser}
 						onClose={closeWizard}
 						onSubmitTransaction={onSubmitTransaction}
 						userId={account as string | undefined}

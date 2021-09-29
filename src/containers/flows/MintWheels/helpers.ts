@@ -22,17 +22,20 @@ export const getDropData = (
 ): Promise<DropData | undefined> => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const [dropStage, wheelQuantities] = await Promise.all([
-				getDropStage(contract),
-				getWheelQuantities(contract),
-			]);
+			const [dropStage, wheelQuantities, maxPurchasesPerUser] =
+				await Promise.all([
+					getDropStage(contract),
+					getWheelQuantities(contract),
+					getMaxPurchasesPerUser(contract),
+				]);
 
 			// Check if we somehow got an undefined variable
 			if (
 				dropStage === undefined ||
 				wheelQuantities === undefined ||
 				wheelQuantities.total === undefined ||
-				wheelQuantities.minted === undefined
+				wheelQuantities.minted === undefined ||
+				maxPurchasesPerUser === undefined
 			) {
 				throw Error('Failed to retrieve primary data');
 			}
@@ -41,6 +44,7 @@ export const getDropData = (
 				dropStage,
 				wheelsTotal: wheelQuantities.total,
 				wheelsMinted: wheelQuantities.minted,
+				maxPurchasesPerUser,
 			} as DropData);
 		} catch (error) {
 			reject(error);
@@ -72,22 +76,25 @@ const getDropStage = async (
 	}
 };
 
+export const getNumberPurchasedByUser = async (
+	userId: string,
+	contract: WhitelistSimpleSale,
+) => {
+	const number = await wheels.getNumberPurchasedByUser(userId, contract);
+	return number;
+};
+
+export const getMaxPurchasesPerUser = async (contract: WhitelistSimpleSale) => {
+	const max = await wheels.getMaxPurchasesPerUser(contract);
+	return max;
+};
+
 export const getUserEligibility = async (
 	userId: string,
 	contract: WhitelistSimpleSale,
 ): Promise<boolean | undefined> => {
-	const status = await wheels.getSaleStatus(contract);
-
-	if (
-		status === wheels.SaleStatus.NotStarted ||
-		status === wheels.SaleStatus.WhitelistOnly
-	) {
-		const isWhitelisted = await wheels.isUserOnWhitelist(userId);
-		return isWhitelisted;
-	}
-
-	// status is public, so anyone can buy
-	return true;
+	const isWhitelisted = await wheels.isUserOnWhitelist(userId);
+	return isWhitelisted;
 };
 
 const getWheelQuantities = async (

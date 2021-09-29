@@ -14,21 +14,41 @@ type InfoProps = {
 	dropStage: Stage;
 	isUserWhitelisted?: boolean;
 	isWalletConnected: boolean;
+	maxPurchasesPerUser?: number;
+	numberPurchasedByUser?: number;
 	onContinue: () => void;
 	wheelsMinted: number;
 	wheelsTotal: number;
 };
 
 const Info = (props: InfoProps) => {
+	const isAuctionDataLoading = props.dropStage === undefined;
+	const isUserDataLoading =
+		props.isWalletConnected && props.isUserWhitelisted === undefined;
+
 	///////////////
 	// Fragments //
 	///////////////
 
-	const eligibilityText = () => {
-		if (!props.isWalletConnected) {
+	const alreadyMinted = () => {
+		if (isAuctionDataLoading || isUserDataLoading) {
 			return;
 		}
-		if (props.isUserWhitelisted === undefined) {
+		if (props.numberPurchasedByUser !== undefined) {
+			return (
+				<p>
+					You have minted: {props.numberPurchasedByUser} /{' '}
+					{props.maxPurchasesPerUser}
+				</p>
+			);
+		}
+	};
+
+	const eligibilityText = () => {
+		if (isAuctionDataLoading || !props.isWalletConnected) {
+			return;
+		}
+		if (isUserDataLoading) {
 			return (
 				<div className={styles.Checking}>
 					<Spinner />
@@ -68,6 +88,60 @@ const Info = (props: InfoProps) => {
 		}
 	};
 
+	const content = () => {
+		if (isAuctionDataLoading || isUserDataLoading) {
+			return;
+		} else {
+			return (
+				<p>
+					Each user may mint up to {props.maxPurchasesPerUser} Wheels. The cost
+					for each Wheel is <b>{EthPerWheel} ETH</b> plus GAS.
+				</p>
+			);
+		}
+	};
+
+	const button = () => {
+		if (
+			(props.isWalletConnected && props.isUserWhitelisted === undefined) ||
+			props.dropStage === undefined
+		) {
+			return;
+		}
+
+		if (!props.isWalletConnected) {
+			return (
+				<ConnectWalletButton className={styles.Button}>
+					Connect Wallet
+				</ConnectWalletButton>
+			);
+		} else {
+			if (
+				![Stage.Upcoming, Stage.Ended, Stage.Sold].includes(props.dropStage)
+			) {
+				return (
+					<FutureButton
+						className={styles.Button}
+						glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
+						onClick={props.onContinue}
+					>
+						Mint Your Wheels
+					</FutureButton>
+				);
+			} else {
+				return (
+					<FutureButton
+						className={styles.Button}
+						glow
+						onClick={props.onContinue}
+					>
+						Dismiss
+					</FutureButton>
+				);
+			}
+		}
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -88,34 +162,11 @@ const Info = (props: InfoProps) => {
 
 			{eligibilityText()}
 
-			{((props.isWalletConnected && props.isUserWhitelisted !== undefined) ||
-				!props.isWalletConnected) && (
-				<>
-					{/* Info */}
-					{props.dropStage === Stage.Upcoming && (
-						<p>Dropping soon ***countdown***</p>
-					)}
-					<p>
-						Each user may mint up to 2 Wheels. The cost for each Wheel is{' '}
-						<b>{EthPerWheel} ETH</b> plus GAS.
-					</p>
-					{props.isWalletConnected && props.isUserWhitelisted !== undefined && (
-						<FutureButton
-							className={styles.Button}
-							glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
-							onClick={props.onContinue}
-						>
-							Mint Your Wheels
-						</FutureButton>
-					)}
-					{/* Button */}
-					{!props.isWalletConnected && props.dropStage !== Stage.Upcoming && (
-						<ConnectWalletButton className={styles.Button}>
-							Connect Wallet
-						</ConnectWalletButton>
-					)}
-				</>
-			)}
+			{alreadyMinted()}
+
+			{content()}
+
+			{button()}
 		</section>
 	);
 };
