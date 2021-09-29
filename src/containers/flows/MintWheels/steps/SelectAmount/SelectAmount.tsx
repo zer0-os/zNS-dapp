@@ -27,9 +27,10 @@ const SelectAmount = (props: SelectAmountProps) => {
 	const maxUserCanAfford = Math.floor(props.balanceEth / EthPerWheel);
 	const maxUserCanBuy = Math.min(maxUserCanAfford, max);
 	const min = 1;
-	const [amount, setAmount] = useState<string | undefined>(
-		maxUserCanBuy.toString(),
-	);
+	const [amount, setAmount] = useState<string | undefined>();
+
+	// Input errors
+	const [inputError, setInputError] = useState<string | undefined>();
 
 	// We should never hit this, but just in case
 	// there are no wheels remaining
@@ -50,6 +51,17 @@ const SelectAmount = (props: SelectAmountProps) => {
 		e.preventDefault();
 		if (isAmountValid()) {
 			props.onContinue(Number(amount));
+		} else {
+			if (isNaN(Number(amount))) {
+				return;
+			}
+			const numWheels = Number(amount);
+			console.log(numWheels, maxPerUser);
+			if (numWheels <= 0 || numWheels > maxPerUser) {
+				setInputError(`Please enter a number between 1 & ${maxPerUser}`);
+			} else if (numWheels * EthPerWheel > props.balanceEth) {
+				setInputError(`You do not have enough ETH to mint ${numWheels} Wheels`);
+			}
 		}
 	};
 
@@ -73,34 +85,25 @@ const SelectAmount = (props: SelectAmountProps) => {
 		<section>
 			<form onSubmit={formSubmit}>
 				<p>
-					How many wheels would you like to Mint? Each user can mint a maximum
-					of <b>2 wheels</b>. For each Wheel you mint, you must pay{' '}
+					How many Wheels would you like to Mint? Each user can mint a maximum
+					of <b>2 Wheels</b>. For each Wheel you mint, you must pay{' '}
 					<b>{EthPerWheel} ETH</b>. However many you choose, they will be minted
-					in one transaction, saving on GAS fees.
-				</p>
-				<p className={styles.Green}>
-					Your balance is <b>{props.balanceEth} ETH</b>, which means you can
-					mint{' '}
-					<b>
-						{maxUserCanBuy} wheel
-						{maxUserCanBuy > 1 || (maxUserCanBuy === 0 && 's')}
-					</b>{' '}
-					not including GAS fees.
+					in one transaction, saving on GAS fees. Your current balance is{' '}
+					<b>{props.balanceEth} ETH</b>.
 				</p>
 				<TextInput
 					onChange={onInputChange}
-					placeholder={`Number of Wheels (Maximum of ${maxUserCanBuy})`}
+					placeholder={`Number of Wheels (Maximum of 2)`}
 					numeric
 					text={amount}
 				/>
 				{props.error !== undefined && (
 					<span className={styles.Error}>{props.error}</span>
 				)}
-				<FutureButton
-					className={styles.Button}
-					glow={isAmountValid()}
-					onClick={() => {}}
-				>
+				{inputError !== undefined && (
+					<span className={styles.Error}>{inputError}</span>
+				)}
+				<FutureButton glow className={styles.Button} onClick={() => {}}>
 					Continue
 				</FutureButton>
 			</form>
