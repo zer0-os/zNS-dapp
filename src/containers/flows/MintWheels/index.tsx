@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
 
-import { Overlay, Spinner } from 'components';
+import { MintWheelsBanner, Overlay, Spinner } from 'components';
 
 import MintWheels from './MintWheels';
 
@@ -50,6 +50,16 @@ const MintWheelsFlowContainer = () => {
 	const [numberPurchasedByUser, setNumberPurchasedByUser] = useState<
 		number | undefined
 	>();
+
+	const getBannerButtonText = () => {
+		if (dropStage === undefined) {
+			return 'Learn More';
+		}
+
+		if (dropStage === Stage.Public || Stage.Whitelist) {
+			return 'Mint Now';
+		}
+	};
 
 	///////////////
 	// Functions //
@@ -177,26 +187,12 @@ const MintWheelsFlowContainer = () => {
 				</Overlay>
 			)}
 			<div style={{ height: 124, position: 'relative', marginBottom: 16 }}>
-				<button
-					style={{
-						position: 'absolute',
-						width: '100%',
-						height: 124,
-						background: 'var(--background-blue-card-wilder)',
-						color: 'white',
-						borderRadius: 'var(--box-radius)',
-						zIndex: 6,
-					}}
+				<MintWheelsBanner
+					title={'Get your ride for the metaverse '}
+					label={'This banner is a Work In Progress'}
+					buttonText={'Learn More'}
 					onClick={openWizard}
-				>
-					{dropStage === undefined && <Spinner style={{ margin: '0 auto' }} />}
-					{dropStage !== undefined && (
-						<>
-							Wheels Drop -- {wheelsMinted}/{wheelsTotal} (this will be the real
-							banner)
-						</>
-					)}
-				</button>
+				/>
 			</div>
 		</>
 	);
