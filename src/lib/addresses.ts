@@ -18,7 +18,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildToken: '0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F',
 		lootToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
 		zAuction: '0x18A804a028aAf1F30082E91d2947734961Dd7f89',
-		wheelSale: '0x5F80dbA18cE2B3058afACc65f818e30135d926c4', // kovan-test-4
+		wheelSale: '0x2216D06dD17d40f89D2D68800a86787218Ea6bdF', // kovan-test-8
 	},
 } as any;
 

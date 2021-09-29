@@ -4,7 +4,7 @@ import { WhitelistSimpleSale } from 'types';
 import { Maybe } from './types';
 
 const whitelistUri =
-	'https://ipfs.io/ipfs/QmSmcfTYfRnB2uiEuVTJConN1KD1Pw5MrLt1e3W8gMyDuF';
+	'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
 
 export interface WheelsWhitelistClaim {
 	index: number;
