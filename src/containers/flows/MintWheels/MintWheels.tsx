@@ -158,6 +158,9 @@ const MintWheels = (props: MintWheelsProps) => {
 				</span>
 				<hr />
 			</section>
+			{props.dropStage === undefined && (
+				<Loading text={'Loading Wheels Drop'} />
+			)}
 			{getFlowSection()}
 		</div>
 	);
