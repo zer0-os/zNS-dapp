@@ -20,7 +20,7 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 	style,
 }) => {
 	return (
-		<div className={`${styles.Container}`} style={style}>
+		<button className={`${styles.Container}`} style={style} onClick={onClick}>
 			<div className={`${styles.Background}`}></div>
 			<div className={`${styles.Content}`}>
 				<div className={`${styles.TextContainer}`}>
@@ -28,11 +28,9 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 					<p className={`${styles.Label}`}>{label}</p>
 				</div>
 
-				<button className={`${styles.Button}`} onClick={onClick}>
-					{buttonText + ' ↗'}
-				</button>
+				<p className={`${styles.Button}`}>{buttonText + ' ↗'}</p>
 			</div>
-		</div>
+		</button>
 	);
 };
 
