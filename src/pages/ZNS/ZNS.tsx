@@ -27,7 +27,7 @@ import {
 	FutureButton,
 	FilterBar,
 	TitleBar,
-	Tooltip,
+	TooltipLegacy,
 	IconButton,
 	CountdownBanner,
 	Overlay,
@@ -314,7 +314,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		<>
 			{/* Overlays */}
 			<NotificationDrawer />
-			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
+			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => { }}>
 				<></>
 			</Overlay>
 			{modal === Modal.Wallet && (
@@ -460,24 +460,24 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
-										<Tooltip content={<MintPreview />}>
+										<TooltipLegacy content={<MintPreview />}>
 											<NumberButton
 												rotating={statusCount > 0}
 												number={statusCount}
-												onClick={() => {}}
+												onClick={() => { }}
 											/>
-										</Tooltip>
+										</TooltipLegacy>
 									) : null}
 
 									{/* Transfer Progress button */}
 									{transferring.length > 0 && (
-										<Tooltip content={<TransferPreview />}>
+										<TooltipLegacy content={<TransferPreview />}>
 											<NumberButton
 												rotating={transferring.length > 0}
 												number={transferring.length}
-												onClick={() => {}}
+												onClick={() => { }}
 											/>
-										</Tooltip>
+										</TooltipLegacy>
 									)}
 
 									{/* Profile Button */}
