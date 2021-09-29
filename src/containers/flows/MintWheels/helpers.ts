@@ -4,7 +4,7 @@ import * as wheels from '../../../lib/wheelSale';
 import { WhitelistSimpleSale } from 'types';
 import { ethers } from 'ethers';
 
-export const EthPerWheel = 0.07;
+export const EthPerWheel = 0.369;
 
 const testApiFailure = false;
 
