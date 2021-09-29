@@ -29,7 +29,6 @@ import {
 	TitleBar,
 	Tooltip,
 	IconButton,
-	CountdownBanner,
 	Overlay,
 	Profile,
 	NotificationDrawer,
@@ -37,7 +36,6 @@ import {
 	MintPreview,
 	TransferPreview,
 	Spinner,
-	MintWheelsBanner,
 } from 'components';
 
 import { SubdomainTable, CurrentDomainPreview, MintWheels } from 'containers';

@@ -1,5 +1,7 @@
+// Component Imports
 import { Spinner } from 'components';
 
+// Style Imports
 import styles from './Loading.module.css';
 
 type LoadingProps = {

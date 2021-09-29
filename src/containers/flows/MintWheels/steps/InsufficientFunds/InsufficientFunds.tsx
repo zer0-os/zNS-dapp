@@ -1,8 +1,11 @@
+// Component Imports
 import { FutureButton } from 'components';
 
-import styles from './InsufficientFunds.module.css';
-
+// Library Imports
 import { EthPerWheel } from '../../helpers';
+
+// Style Imports
+import styles from './InsufficientFunds.module.css';
 
 type InsufficientFundsProps = {
 	onDismiss: () => void;

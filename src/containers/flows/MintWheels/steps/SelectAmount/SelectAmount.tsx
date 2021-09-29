@@ -1,9 +1,13 @@
+// React Imports
 import { FormEvent, useState } from 'react';
 
+// Component Imports
 import { FutureButton, TextInput } from 'components';
 
+// Style Imports
 import styles from './SelectAmount.module.css';
 
+// Library Imports
 import { EthPerWheel } from '../../helpers';
 
 type SelectAmountProps = {

@@ -1,28 +1,34 @@
-import { useCallback, useEffect, useState } from 'react';
+// React Imports
+import { useEffect, useState } from 'react';
 
+// Web3 Imports
 import { useWeb3React } from '@web3-react/core';
+import { useZnsContracts } from 'lib/contracts';
+import { Web3Provider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
 
-import { MintWheelsBanner, Overlay, Spinner } from 'components';
-
+// Component Imports
+import { MintWheelsBanner, Overlay } from 'components';
 import MintWheels from './MintWheels';
 
+// Library Imports
+import * as wheels from 'lib/wheelSale';
 import { Stage, DropData, TransactionData } from './types';
+import { getBannerLabel, getBannerButtonText } from './labels';
+import { Maybe } from 'lib/types';
+import useNotification from 'lib/hooks/useNotification';
 import {
 	getDropData,
 	getUserEligibility,
 	getBalanceEth,
 	getNumberPurchasedByUser,
 } from './helpers';
-import { getBannerLabel, getBannerButtonText } from './labels';
-import { useZnsContracts } from 'lib/contracts';
-import { Web3Provider } from '@ethersproject/providers';
-import { ethers } from 'ethers';
-import { Maybe } from 'lib/types';
-import useNotification from 'lib/hooks/useNotification';
-
-import * as wheels from '../../../lib/wheelSale';
 
 const MintWheelsFlowContainer = () => {
+	//////////////////
+	// State & Data //
+	//////////////////
+
 	// Web3 hooks
 	const { account, library } = useWeb3React<Web3Provider>();
 	const { addNotification } = useNotification();
@@ -56,6 +62,7 @@ const MintWheelsFlowContainer = () => {
 	// Functions //
 	///////////////
 
+	// Open/close the Mint wizard
 	const openWizard = () => {
 		setIsWizardOpen(true);
 	};
@@ -64,8 +71,9 @@ const MintWheelsFlowContainer = () => {
 		setIsWizardOpen(false);
 	};
 
+	// Run a few things after the transaction succeeds
 	const transactionSuccessful = (numWheels: number) => {
-		setNumMinted(numMinted + 1);
+		setNumMinted(numMinted + 1); // Increment to trigger re-fetch
 		addNotification(
 			`Successfully minted ${numWheels} Wheels. Open your Profile to view them`,
 		);

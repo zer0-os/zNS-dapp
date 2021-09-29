@@ -1,14 +1,16 @@
-import { Stage } from '../../types';
-
 // Component & Container Imports
 import { ConnectWalletButton } from 'containers';
-import { ArrowLink, FutureButton, Spinner } from 'components';
+import { ArrowLink, FutureButton } from 'components';
 import Loading from '../Loading/Loading';
 
+// Library Imports
+import { Stage } from '../../types';
 import { EthPerWheel } from '../../helpers';
 
+// Style Imports
 import styles from './Info.module.css';
 
+// Asset Imports
 import banner from './assets/banner.png';
 
 type InfoProps = {

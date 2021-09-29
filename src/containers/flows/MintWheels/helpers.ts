@@ -1,21 +1,9 @@
-import { Stage, WheelQuantity, DropData } from './types';
-
-import * as wheels from '../../../lib/wheelSale';
-import { WhitelistSimpleSale } from 'types';
+import * as wheels from 'lib/wheelSale';
 import { ethers } from 'ethers';
+import { Stage, WheelQuantity, DropData } from './types';
+import { WhitelistSimpleSale } from 'types';
 
 export const EthPerWheel = 0.369;
-
-const testApiFailure = false;
-
-const testConfig = {
-	stage: Stage.Whitelist,
-	whitelist: true,
-	wheelsTotal: 1000,
-	wheelsMinted: 500,
-	balance: 0.1,
-	apiResponseTime: 2500,
-};
 
 export const getDropData = (
 	contract: WhitelistSimpleSale,

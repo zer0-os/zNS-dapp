@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /*
  This container is for the Mint Wheels flow. It should be
  replaced by a more generic container for minting procedurally
@@ -63,12 +64,6 @@ const MintWheels = (props: MintWheelsProps) => {
 		}
 	};
 
-	useEffect(() => {
-		if (props.balanceEth !== undefined && step === Step.CheckingBalance) {
-			setStep(Step.SelectAmount);
-		}
-	}, [props.balanceEth]);
-
 	const submitTransaction = (numWheels: number) => {
 		// Switch to "pending wallet approval" step
 		setStep(Step.PendingWalletApproval);
@@ -101,6 +96,20 @@ const MintWheels = (props: MintWheelsProps) => {
 			setStep(Step.Info);
 		}
 	};
+
+	/////////////
+	// Effects //
+	/////////////
+
+	useEffect(() => {
+		if (props.balanceEth !== undefined && step === Step.CheckingBalance) {
+			setStep(Step.SelectAmount);
+		}
+	}, [props.balanceEth]);
+
+	///////////////
+	// Fragments //
+	///////////////
 
 	const getFlowSection = () => {
 		if (props.dropStage === undefined) {
