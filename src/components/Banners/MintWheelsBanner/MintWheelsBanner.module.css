@@ -10,7 +10,8 @@
 }
 
 .Container:hover {
-	box-shadow: 0px 0px 10px var(--color-accent-2);
+	box-shadow: 0px 0px 10px rgba(189, 95, 255, 0.7);
+	filter: drop-shadow(0px 0px 10px rgba(189, 95, 255, 0.7));
 }
 
 .Background {
@@ -18,12 +19,12 @@
 	width: 100%;
 	height: 124px;
 
-	background-image: url(./assets/wheels.jpg);
+	background-image: url(./assets/WheelsBanner.gif);
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: 0px 46%;
+	background-position: 80% 0px;
 
-	opacity: 0.5;
+	opacity: 0.8;
 
 	position: absolute;
 }
@@ -61,7 +62,7 @@
 	font-family: var(--font-family);
 	font-weight: 700;
 	font-size: 16px;
-	line-height: 22px;
+	line-height: 24px;
 
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -98,4 +99,36 @@
 .Button:hover {
 	cursor: pointer;
 	text-shadow: var(--glow-text-blue);
+}
+
+/* PC Resolution */
+@media only screen and (min-width: 768px) {
+	.Content {
+		display: flex;
+		padding: 37px 0px 37px 40px;
+	}
+
+	.Title {
+		font-size: 18px;
+		line-height: 21px;
+	}
+
+	.Label {
+		font-size: 14px;
+		margin-top: 4px;
+	}
+
+	.Button {
+		top: 50px;
+		right: 40px;
+		bottom: auto;
+		left: auto;
+	}
+}
+
+/* Fix Background */
+@media only screen and (min-width: 1200px) {
+	.Background {
+		background-position: 0px;
+	}
 }
