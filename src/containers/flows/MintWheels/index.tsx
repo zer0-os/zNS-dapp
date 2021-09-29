@@ -13,6 +13,7 @@ import {
 	getBalanceEth,
 	getNumberPurchasedByUser,
 } from './helpers';
+import { getBannerLabel, getBannerButtonText } from './labels';
 import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
@@ -50,16 +51,6 @@ const MintWheelsFlowContainer = () => {
 	const [numberPurchasedByUser, setNumberPurchasedByUser] = useState<
 		number | undefined
 	>();
-
-	const getBannerButtonText = () => {
-		if (dropStage === undefined) {
-			return 'Learn More';
-		}
-
-		if (dropStage === Stage.Public || Stage.Whitelist) {
-			return 'Mint Now';
-		}
-	};
 
 	///////////////
 	// Functions //
@@ -189,8 +180,8 @@ const MintWheelsFlowContainer = () => {
 			<div style={{ height: 124, position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
 					title={'Get your ride for the metaverse '}
-					label={'This banner is a Work In Progress'}
-					buttonText={'Learn More'}
+					label={getBannerLabel(dropStage, wheelsMinted, wheelsTotal)}
+					buttonText={getBannerButtonText(dropStage)}
 					onClick={openWizard}
 				/>
 			</div>
