@@ -4,6 +4,8 @@ import { Stage } from '../../types';
 import { ConnectWalletButton } from 'containers';
 import { ArrowLink, FutureButton, Spinner } from 'components';
 
+import { EthPerWheel } from '../../helpers';
+
 import styles from './Info.module.css';
 
 import banner from './assets/banner.png';
@@ -26,24 +28,27 @@ const Info = (props: InfoProps) => {
 		if (!props.isWalletConnected) {
 			return;
 		}
-		if (
-			props.isUserWhitelisted === undefined &&
-			props.dropStage === Stage.Whitelist
-		) {
+		if (props.isUserWhitelisted === undefined) {
 			return (
 				<div className={styles.Checking}>
 					<Spinner />
-					<span>Checking whitelist status</span>
+					<span>Checking your wallet</span>
 				</div>
 			);
 		}
 		if (props.dropStage === Stage.Whitelist) {
 			if (props.isUserWhitelisted) {
-				return <p className={styles.Green}>*** Missing copy here ***</p>;
+				return (
+					<p className={styles.Green}>
+						Thank you for your support! As a white-listed member, you may now
+						mint a Wheel before they become publicly available in *** countdown
+						****
+					</p>
+				);
 			} else {
 				return (
 					<p className={styles.Orange}>
-						Currently WHEELS are only available to white-listed supporters of
+						Currently Wheels are only available to white-listed supporters of
 						Wilder World. Should supply last, you will be able to mint in ****
 						countdown ****
 					</p>
@@ -56,7 +61,7 @@ const Info = (props: InfoProps) => {
 					<p className={styles.Green}>
 						Thank you for your support! You’re white-listed but the supporter
 						exclusive time period has passed. Minting is now open to everyone,
-						act fast to secure your wheels.
+						act fast to secure your Wheels.
 					</p>
 				);
 			}
@@ -70,39 +75,31 @@ const Info = (props: InfoProps) => {
 	return (
 		<section className={styles.Container}>
 			{/* Wheels Image */}
-			<img
-				alt="wheels NFT drop banner image"
-				className={styles.Image}
-				src={banner}
-			/>
+			<img alt="wheels NFT drop banner" className={styles.Image} src={banner} />
 
 			{/* Wheels Available */}
 			<div className={styles.Available}>
 				<span>Wheels Available</span>
 				<h2>
-					{props.wheelsMinted} / {props.wheelsTotal} WHEELS have been minted
+					{props.wheelsMinted} / {props.wheelsTotal} Wheels have been minted
 				</h2>
 				<ArrowLink>View Auction Rules</ArrowLink>
 			</div>
 
 			{eligibilityText()}
 
-			{/* Info */}
-			{props.dropStage === Stage.Upcoming && (
-				<p>Dropping soon ***countdown***</p>
-			)}
-			{(props.dropStage === Stage.Public ||
-				(props.dropStage === Stage.Whitelist && props.isUserWhitelisted)) && (
+			{((props.isWalletConnected && props.isUserWhitelisted !== undefined) ||
+				!props.isWalletConnected) && (
 				<>
+					{/* Info */}
+					{props.dropStage === Stage.Upcoming && (
+						<p>Dropping soon ***countdown***</p>
+					)}
 					<p>
-						This is some explainer text about WHEELS and what this flow
-						involves, it is about two sentences long. Ready to start?
+						Each user may mint up to 2 Wheels. The cost for each Wheel is{' '}
+						<b>{EthPerWheel} ETH</b> plus GAS.
 					</p>
-					<p>
-						You may mint up to 2 Wheels total. The cost for each Wheel is 0.07
-						ETH (100 WILD) plus GAS.
-					</p>
-					{props.isWalletConnected && (
+					{props.isWalletConnected && props.isUserWhitelisted !== undefined && (
 						<FutureButton
 							className={styles.Button}
 							glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
@@ -111,13 +108,13 @@ const Info = (props: InfoProps) => {
 							Mint Your Wheels
 						</FutureButton>
 					)}
+					{/* Button */}
+					{!props.isWalletConnected && props.dropStage !== Stage.Upcoming && (
+						<ConnectWalletButton className={styles.Button}>
+							Connect Wallet
+						</ConnectWalletButton>
+					)}
 				</>
-			)}
-			{/* Button */}
-			{!props.isWalletConnected && props.dropStage !== Stage.Upcoming && (
-				<ConnectWalletButton className={styles.Button}>
-					Connect Wallet
-				</ConnectWalletButton>
 			)}
 		</section>
 	);
