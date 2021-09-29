@@ -30,8 +30,9 @@ const MintWheelsFlowContainer = () => {
 	const contracts = useZnsContracts();
 	const saleContract = contracts?.wheelSale;
 
-	// Wizard state
+	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
+	const [numMinted, setNumMinted] = useState<number>(0);
 
 	// Auction data
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
@@ -63,6 +64,7 @@ const MintWheelsFlowContainer = () => {
 	};
 
 	const transactionSuccessful = (numWheels: number) => {
+		setNumMinted(numMinted + 1);
 		addNotification(
 			`Successfully minted ${numWheels} Wheels. Open your Profile to view them`,
 		);
@@ -150,7 +152,7 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
-	}, [account, library, saleContract]);
+	}, [account, library, saleContract, numMinted]);
 
 	////////////
 	// Render //
