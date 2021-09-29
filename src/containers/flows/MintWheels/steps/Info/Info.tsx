@@ -3,6 +3,7 @@ import { Stage } from '../../types';
 // Component & Container Imports
 import { ConnectWalletButton } from 'containers';
 import { ArrowLink, FutureButton, Spinner } from 'components';
+import Loading from '../Loading/Loading';
 
 import { EthPerWheel } from '../../helpers';
 
@@ -23,135 +24,118 @@ type InfoProps = {
 };
 
 const Info = (props: InfoProps) => {
-	// @todo clean up logic
+	///////////////////////
+	// State & Variables //
+	///////////////////////
+
+	// Warning: Some ugly booleans ahead
+
+	// If any of the auction data items are undefined it
+	// must be loading
 	const isAuctionDataLoading = props.dropStage === undefined;
+
+	// If wallet is connnected and the user data is undefined
+	// it must be loading
 	const isUserDataLoading =
-		props.isWalletConnected && props.isUserWhitelisted === undefined;
-	const canUserMintMore =
-		props.numberPurchasedByUser !== undefined &&
-		props.maxPurchasesPerUser !== undefined &&
-		props.numberPurchasedByUser < props.maxPurchasesPerUser;
+		props.isWalletConnected &&
+		(props.isUserWhitelisted === undefined ||
+			props.numberPurchasedByUser === undefined);
+
+	// If all data is loaded, and it's the public release
+	// or it's the whitelist release and the user is whitelisted
+	const isUserEligible =
+		!isUserDataLoading &&
+		!isAuctionDataLoading &&
+		(props.dropStage === Stage.Public ||
+			(props.dropStage === Stage.Whitelist && props.isUserWhitelisted));
+
+	// If the user has any wheels left to mint
+	const userHasWheelsRemaining =
+		isUserEligible && props.numberPurchasedByUser! < props.maxPurchasesPerUser!;
 
 	///////////////
 	// Fragments //
 	///////////////
 
-	const alreadyMinted = () => {
-		if (isAuctionDataLoading || isUserDataLoading) {
-			return;
-		}
-		if (props.numberPurchasedByUser !== undefined) {
-			return (
-				<p>
-					You have minted: {props.numberPurchasedByUser} /{' '}
-					{props.maxPurchasesPerUser}
-				</p>
-			);
-		}
+	const mintButton = () => {
+		return (
+			<FutureButton
+				className={styles.Button}
+				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
+				onClick={props.onContinue}
+			>
+				Mint Your Wheels
+			</FutureButton>
+		);
 	};
 
-	const eligibilityText = () => {
-		if (isAuctionDataLoading || !props.isWalletConnected) {
-			return;
-		}
-		if (isUserDataLoading) {
-			return (
-				<div className={styles.Checking}>
-					<Spinner />
-					<span>Checking your wallet</span>
-				</div>
-			);
-		}
-		if (props.dropStage === Stage.Whitelist) {
-			if (props.isUserWhitelisted) {
-				return (
-					<p className={styles.Green}>
-						Thank you for your support! As a white-listed member, you may now
-						mint a Wheel before they become publicly available in *** countdown
-						****
-					</p>
-				);
-			} else {
-				return (
-					<p className={styles.Orange}>
-						Currently Wheels are only available to white-listed supporters of
-						Wilder World. Should supply last, you will be able to mint in ****
-						countdown ****
-					</p>
-				);
-			}
-		}
-		if (props.dropStage === Stage.Public) {
-			if (props.isUserWhitelisted) {
-				return (
-					<p className={styles.Green}>
-						Thank you for your support! You’re white-listed but the supporter
-						exclusive time period has passed. Minting is now open to everyone,
-						act fast to secure your Wheels.
-					</p>
-				);
-			}
-		}
+	const connectWalletButton = () => {
+		return (
+			<ConnectWalletButton className={styles.Button}>
+				Connect Wallet
+			</ConnectWalletButton>
+		);
 	};
 
-	const content = () => {
-		if (isAuctionDataLoading || isUserDataLoading) {
-			return;
-		} else {
-			return (
-				<p>
-					Each user may mint up to {props.maxPurchasesPerUser} Wheels. The cost
-					for each Wheel is <b>{EthPerWheel} ETH</b> plus GAS.
-				</p>
-			);
-		}
+	const dismissButton = () => {
+		return (
+			<FutureButton className={styles.Button} glow onClick={props.onDismiss}>
+				Dismiss
+			</FutureButton>
+		);
 	};
 
-	const button = () => {
-		if (
-			(props.isWalletConnected && props.isUserWhitelisted === undefined) ||
-			props.dropStage === undefined
-		) {
-			return;
-		}
-
+	const body = () => {
 		if (!props.isWalletConnected) {
 			return (
-				<ConnectWalletButton className={styles.Button}>
-					Connect Wallet
-				</ConnectWalletButton>
+				<>
+					<p>
+						Each user may mint up to 2 Wheels. The cost for each Wheels is{' '}
+						<>{EthPerWheel} ETH</> plus GAS.
+					</p>
+					{connectWalletButton()}
+				</>
 			);
-		} else {
-			if (
-				props.maxPurchasesPerUser === undefined &&
-				props.numberPurchasedByUser === undefined
-			) {
-				return;
-			}
-			if (
-				![Stage.Upcoming, Stage.Ended, Stage.Sold].includes(props.dropStage) &&
-				canUserMintMore
-			) {
+		}
+		if (isAuctionDataLoading) {
+			return <Loading text={'Loading Auction Data'} />;
+		}
+		if (isUserDataLoading) {
+			return <Loading text={'Loading User Data'} />;
+		}
+		if (isUserEligible) {
+			if (userHasWheelsRemaining) {
 				return (
-					<FutureButton
-						className={styles.Button}
-						glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
-						onClick={props.onContinue}
-					>
-						Mint Your Wheels
-					</FutureButton>
+					<>
+						<p>
+							You have minted {props.numberPurchasedByUser} /{' '}
+							{props.maxPurchasesPerUser} Wheels. The cost for each set of
+							Wheels is <b>{EthPerWheel} ETH</b> plus GAS.
+						</p>
+						{mintButton()}
+					</>
 				);
 			} else {
 				return (
-					<FutureButton
-						className={styles.Button}
-						glow
-						onClick={props.onDismiss}
-					>
-						Dismiss
-					</FutureButton>
+					<>
+						<p className={styles.Green}>
+							Congratulations, you have minted 2/2 of your Wheels.
+						</p>
+						{dismissButton()}
+					</>
 				);
 			}
+		} else {
+			return (
+				<>
+					<p className={styles.Orange}>
+						Currently, Wheels are only available to white-listed supporters of
+						Wilder World. If supply lasts, you will be able to mint when the
+						whitelist sale ends.
+					</p>
+					{dismissButton()}
+				</>
+			);
 		}
 	};
 
@@ -165,21 +149,17 @@ const Info = (props: InfoProps) => {
 			<img alt="wheels NFT drop banner" className={styles.Image} src={banner} />
 
 			{/* Wheels Available */}
-			<div className={styles.Available}>
-				<span>Wheels Available</span>
-				<h2>
-					{props.wheelsMinted} / {props.wheelsTotal} Wheels have been minted
-				</h2>
-				<ArrowLink>View Auction Rules</ArrowLink>
-			</div>
+			{!isAuctionDataLoading && (
+				<div className={styles.Available}>
+					<span>Wheels Available</span>
+					<h2>
+						{props.wheelsMinted} / {props.wheelsTotal} Wheels have been minted
+					</h2>
+					<ArrowLink>View Auction Rules</ArrowLink>
+				</div>
+			)}
 
-			{eligibilityText()}
-
-			{alreadyMinted()}
-
-			{content()}
-
-			{button()}
+			{body()}
 		</section>
 	);
 };
