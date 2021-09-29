@@ -17,6 +17,7 @@ type InfoProps = {
 	maxPurchasesPerUser?: number;
 	numberPurchasedByUser?: number;
 	onContinue: () => void;
+	onDismiss: () => void;
 	wheelsMinted: number;
 	wheelsTotal: number;
 };
@@ -145,7 +146,7 @@ const Info = (props: InfoProps) => {
 					<FutureButton
 						className={styles.Button}
 						glow
-						onClick={props.onContinue}
+						onClick={props.onDismiss}
 					>
 						Dismiss
 					</FutureButton>

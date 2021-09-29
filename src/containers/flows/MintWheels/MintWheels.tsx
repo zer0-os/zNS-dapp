@@ -115,6 +115,7 @@ const MintWheels = (props: MintWheelsProps) => {
 					maxPurchasesPerUser={props.maxPurchasesPerUser}
 					numberPurchasedByUser={props.numberPurchasedByUser}
 					onContinue={onContinueFromInfo!}
+					onDismiss={props.onClose}
 					wheelsMinted={props.wheelsMinted!}
 					wheelsTotal={props.wheelsTotal!}
 				/>
