@@ -40,7 +40,7 @@ export const getUserClaim = async (
 };
 
 export const isUserOnWhitelist = async (user: string): Promise<boolean> => {
-	const userClaim = getUserClaim(user);
+	const userClaim = await getUserClaim(user);
 
 	if (!userClaim) {
 		return false;
