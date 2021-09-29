@@ -2,7 +2,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './GenericTable.module.css';
 import { useInView } from 'react-intersection-observer';
-import { IconButton, SearchBar, Spinner, TextButton } from 'components';
+import {
+	IconButton,
+	SearchBar,
+	Spinner,
+	TextButton,
+	FilterButton,
+	OptionDropdown,
+} from 'components';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
@@ -116,7 +123,12 @@ const GenericTable = (props: any) => {
 				return (
 					<>
 						{filteredData.map((d: any, index: number) => (
-							<props.rowComponent key={index} rowNumber={index} data={d} />
+							<props.rowComponent
+								key={index}
+								rowNumber={index}
+								data={d}
+								view={props.view}
+							/>
 						))}
 					</>
 				);
@@ -126,7 +138,12 @@ const GenericTable = (props: any) => {
 						{filteredData
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
-								<props.rowComponent key={index} rowNumber={index} data={d} />
+								<props.rowComponent
+									key={index}
+									rowNumber={index}
+									data={d}
+									view={props.view}
+								/>
 							))}
 					</>
 				);
@@ -140,10 +157,20 @@ const GenericTable = (props: any) => {
 						{props.headers.map((h: string, index: number) => (
 							<th
 								className={
-									props.alignments && props.alignments[index] > 0
+									props.alignments && props.alignments[index] === 0
 										? styles.Right
-										: styles.Left
+										: props.alignments[index] === 1
+										? styles.Left
+										: props.alignments[index] === 2
+										? styles.Center
+										: ''
 								}
+								style={{
+									paddingRight:
+										props.alignments[index] === 2 && props.adjustHeaderStatus
+											? props.adjustHeaderStatus
+											: '',
+								}}
 							>
 								{h}
 							</th>
@@ -173,7 +200,13 @@ const GenericTable = (props: any) => {
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					<props.gridComponent key={index} rowNumber={index} data={d} />
+					<props.gridComponent
+						key={index}
+						rowNumber={index}
+						data={d}
+						view={props.view}
+						isLoading={props.isLoading}
+					/>
 				))}
 			</div>
 		);
@@ -195,7 +228,48 @@ const GenericTable = (props: any) => {
 						onChange={onSearchBarUpdate}
 						style={{ width: '100%', marginRight: 16 }}
 					/>
+
 					<div className={styles.Buttons}>
+						{props.isFilterRequired ? (
+							<>
+								<OptionDropdown
+									onSelect={props.filterByDomain}
+									options={props.optionsFilterByDomain.map(
+										(opt: string) => opt,
+									)}
+									drawerStyle={{
+										width: 179,
+										color: props.dropDownColorText
+											? props.dropDownColorText
+											: '',
+									}}
+								>
+									<FilterButton onClick={() => {}}>
+										{props.domainFilter || 'All Domains'}
+									</FilterButton>
+								</OptionDropdown>
+								{/* <div style={{width:10}}/> */}
+								<OptionDropdown
+									onSelect={props.filterByStatus}
+									options={props.optionsFilterByStatus.map(
+										(opt: string) => opt,
+									)}
+									drawerStyle={{
+										width: 179,
+										color: props.dropDownColorText
+											? props.dropDownColorText
+											: '',
+									}}
+								>
+									<FilterButton onClick={() => {}}>
+										{props.statusFilter || 'All Statuses'}
+									</FilterButton>
+								</OptionDropdown>
+								<div />
+							</>
+						) : (
+							<></>
+						)}
 						<IconButton
 							onClick={() => setIsGridView(false)}
 							toggled={!isGridView}

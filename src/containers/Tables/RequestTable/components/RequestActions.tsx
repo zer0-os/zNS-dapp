@@ -36,7 +36,6 @@ const RequestActions: React.FC<RequestActionsProps> = ({
 	////////////
 	// Render //
 	////////////
-
 	return (
 		<div className={styles.Container}>
 			<span

@@ -1,129 +1,95 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-// import { Artwork, FutureButton, Spinner, Member } from 'components';
- import React, { useEffect, useState } from 'react';
-
-// import styles from './SubdomainTableRow.module.css';
-
-// import { useWeb3React } from '@web3-react/core';
-// import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-// import { useBidProvider } from 'lib/providers/BidProvider';
-// import { Bid } from 'lib/types';
-// import { useHistory } from 'react-router-dom';
-// import { useBid } from './BidProvider';
+import { Artwork, FutureButton, Spinner, Member } from 'components';
+import React, { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
+import styles from './RequestTableRow.module.css';
 
 const SubdomainTableRow = (props: any) => {
-	// const walletContext = useWeb3React<Web3Provider>();
-	// const { account } = walletContext;
-	// const { push: goTo } = useHistory();
+	const dateFromTimestamp = (timestamp: string) =>
+		new Date(Number(timestamp) * 1000).toLocaleString();
 
-	// const { makeABid, updated } = useBid();
-	// const { getBidsForDomain } = useBidProvider();
+	const { contents, request } = props.data;
 
-	// const domain = props.data;
+	return (
+		<>
+			<tr onClick={() => props.view(request.domain)} className={styles.Rows}>
+				<td>{props.rowNumber + 1}</td>
+				<td>
+					<Member id={request.requestor.id} name={''} image={''} />
+				</td>
 
-	// const [bids, setBids] = useState<Bid[] | undefined>();
-	// const [hasUpdated, setHasUpdated] = useState<boolean>(false);
-	// const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
+				<td>
+					<Artwork
+						id={request.domain}
+						domain={request.domain ? `0://${request.domain}` : ''}
+						disableInteraction
+						metadataUrl={contents.metadata}
+						style={{ maxWidth: 200 }}
+						pending
+					/>
+				</td>
+				<td>
+					<div className={styles.left}>
+						{dateFromTimestamp(request.timestamp).split(',')[0]}
+					</div>
+				</td>
+				<td>
+					<div className={styles.right}>
+						{Number(
+							ethers.utils.formatEther(request.offeredAmount),
+						).toLocaleString()}{' '}
+						LOOT
+					</div>
+				</td>
 
-	// const isOwnedByUser =
-	// 	account?.toLowerCase() === domain?.owner?.id.toLowerCase();
+				<td>
+					<div className={styles.center}>
+						{/* Fulfilled domain request */}
+						{request.fulfilled && (
+							<div className={styles.Accepted}>
+								<span>Fulfilled</span>
+								<br />
+								<span>{dateFromTimestamp(request.timestamp)}</span>
+							</div>
+						)}
 
-	// useEffect(() => {
-	// 	if (updated && updated.id === domain.id) {
-	// 		setHasUpdated(!hasUpdated);
-	// 	}
-	// }, [updated]);
+						{/* Your request - approved */}
+						{request.approved &&
+							!request.fulfilled &&
+							contents.requestor === props.userId && (
+								<FutureButton
+									style={{ textTransform: 'uppercase' }}
+									glow
+									onClick={() => props.view(request.domain)}
+								>
+									Fulfill
+								</FutureButton>
+							)}
 
-	// useEffect(() => {
-	// 	let isMounted = true;
-	// 	const get = async () => {
-	// 		setBids(undefined);
-	// 		setAreBidsLoading(true);
-	// 		const b = await getBidsForDomain(domain);
-	// 		if (isMounted) {
-	// 			setAreBidsLoading(false);
-	// 			setBids(b);
-	// 		}
-	// 	};
-	// 	get();
-	// 	return () => {
-	// 		isMounted = false;
-	// 	};
-	// }, [domain, hasUpdated]);
+						{request.approved &&
+							!request.fulfilled &&
+							contents.requestor !== props.userId && (
+								<div className={styles.Accepted}>
+									<span>Accepted</span>
+									<br />
+									<span>{dateFromTimestamp(request.timestamp)}</span>
+								</div>
+							)}
 
-	// const bidColumns = () => {
-	// 	if (!areBidsLoading) {
-	// 		return (
-	// 			<>
-	// 				<td className={styles.Right}>
-	// 					{!bids && 'Failed to retrieve'}
-	// 					{bids &&
-	// 						(bids[0] ? bids[0].amount.toLocaleString() + ' WILD' : '-')}
-	// 				</td>
-	// 				<td className={styles.Right}>
-	// 					{!bids && 'Failed to retrieve'}
-	// 					{bids && bids.length.toLocaleString()}
-	// 				</td>
-	// 			</>
-	// 		);
-	// 	} else {
-	// 		return (
-	// 			<>
-	// 				<td className={styles.Right}>
-	// 					<Spinner />
-	// 				</td>
-	// 				<td className={styles.Right}>
-	// 					<Spinner />
-	// 				</td>
-	// 			</>
-	// 		);
-	// 	}
-	// };
-
-	// const onBidButtonClick = () => {
-	// 	makeABid(domain);
-	// };
-
-	// const onRowClick = (event: any) => {
-	// 	const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
-	// 	if (!clickedButton) {
-	// 		goTo(domain.name.split('wilder.')[1]);
-	// 	}
-	// };
-
-	return (<></>
-		// <tr className={styles.Row} onClick={onRowClick}>
-		// 	<td>{props.rowNumber + 1}</td>
-        //     <td>
-		// 		<Member
-		// 			domain={domain.name.split('wilder.')[1]}
-		// 			disableInteraction
-		// 			metadataUrl={domain.metadata}
-		// 			id={domain.id}
-		// 			style={{ maxWidth: 200 }}
-		// 		/>
-		// 	</td>
-
-		// 	<td>
-		// 		<Artwork
-		// 			domain={domain.name.split('wilder.')[1]}
-		// 			disableInteraction
-		// 			metadataUrl={domain.metadata}
-		// 			id={domain.id}
-		// 			style={{ maxWidth: 200 }}
-		// 		/>
-		// 	</td>
-		// 	{bidColumns()}
-		// 	<td>
-		// 		<FutureButton
-		// 			glow={account !== undefined && !isOwnedByUser}
-		// 			onClick={onBidButtonClick}
-		// 			style={{ marginLeft: 'auto' }}
-		// 		>
-		// 			Make A Bid
-		// 		</FutureButton>
-		// 	</td>
-		// </tr>
+						{/* Needs Approving */}
+						{!request.approved && (
+							<FutureButton
+								style={{ textTransform: 'uppercase' }}
+								glow
+								onClick={() => props.view(request.domain)}
+							>
+								View Offer
+							</FutureButton>
+						)}
+					</div>
+				</td>
+			</tr>
+		</>
 	);
 };
 

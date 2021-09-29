@@ -71,6 +71,11 @@
 	text-align: right;
 }
 
+.Center {
+	text-align: center;
+	margin: 0 auto;
+}
+
 /* Grid Table Styles */
 
 /* 

@@ -16,7 +16,7 @@ import {
 	Spinner,
 	Confirmation,
 } from 'components';
-import RequestActions from './components/RequestActions';
+import RequestActions from '../../../containers/Tables/RequestTable/components/RequestActions';
 import { Request } from 'containers';
 
 //- Library Imports
@@ -418,6 +418,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
 		tableHook;
 
+		
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
 			{/* Viewing overlay */}
@@ -565,7 +566,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								<li key={i} onClick={() => view(d.request.domain)}>
 									<NFTCard
 										actionsComponent={
-											<RequestActions onClick={view} request={d} />
+										 <RequestActions onClick={view} request={d} />
 										}
 										metadataUrl={d.contents.metadata}
 										domain={d.request.domain}
@@ -597,11 +598,6 @@ const RequestTable: React.FC<RequestTableProps> = ({
 							<Spinner style={{ margin: '0 auto' }} />
 						</>
 					)}
-
-					{/* Empty Table Message */}
-					{/* {!isLoading && requests.length === 0 && (
-						<p className={styles.Message}>Nothing here!</p>
-					)} */}
 				</div>
 			</div>
 		</div>

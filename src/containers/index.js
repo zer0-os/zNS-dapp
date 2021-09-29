@@ -21,4 +21,5 @@ export { default as SubdomainTable } from './Tables/SubdomainTable/SubdomainTabl
 export { default as NFTView } from './NFTView/NFTView';
 export { default as TransferOwnership } from './TransferOwnership';
 export { default as OwnedDomainsTable } from './Tables/OwnedDomainsTable/OwnedDomainsTable';
+export {default as RequestTable} from './Tables/RequestTable/RequestTable';
 export { default as Request } from './Request/Request';
