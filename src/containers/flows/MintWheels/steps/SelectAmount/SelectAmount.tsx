@@ -58,7 +58,6 @@ const SelectAmount = (props: SelectAmountProps) => {
 				return;
 			}
 			const numWheels = Number(amount);
-			console.log(numWheels, maxPerUser);
 			if (numWheels <= 0 || numWheels > maxPerUser) {
 				setInputError(`Please enter a number between 1 & ${maxPerUser}`);
 			} else if (numWheels * EthPerWheel > props.balanceEth) {
