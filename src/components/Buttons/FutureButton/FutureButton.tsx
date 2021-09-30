@@ -33,7 +33,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 
 	const handleClick = (event: any) => {
 		if (loading) return;
-		if (glow && onClick) onClick(event);
+		if (onClick) onClick(event);
 		if (toggleable) setSelected(!isSelected);
 	};
 
