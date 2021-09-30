@@ -244,7 +244,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				return bVal - aVal;
 			},
 		);
-		console.log(allHistoryItems);
+
 		return (
 			<section
 				className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
