@@ -29,7 +29,6 @@ import {
 	TitleBar,
 	Tooltip,
 	IconButton,
-	CountdownBanner,
 	Overlay,
 	Profile,
 	NotificationDrawer,
@@ -37,10 +36,9 @@ import {
 	MintPreview,
 	TransferPreview,
 	Spinner,
-	MintWheelsBanner,
 } from 'components';
 
-import { SubdomainTable, CurrentDomainPreview } from 'containers';
+import { SubdomainTable, CurrentDomainPreview, MintWheels } from 'containers';
 
 //- Library Imports
 import { useTransferProvider } from 'lib/providers/TransferProvider';
@@ -461,7 +459,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
-										<Tooltip content={<MintPreview />}>
+										<Tooltip
+											content={<MintPreview onOpenProfile={openProfile} />}
+										>
 											<NumberButton
 												rotating={statusCount > 0}
 												number={statusCount}
@@ -500,18 +500,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					</TitleBar>
 				</FilterBar>
 
-				<MintWheelsBanner
-					title={'Get your ride for the metaverse '}
-					label={'WILDER WHEELS Available in 1d 23m 45s'}
-					buttonText={'Learn More'}
-					onClick={() => {
-						console.log('Click');
-					}}
-				/>
+				<MintWheels />
 
 				{previewCard()}
-
-				<CountdownBanner />
 
 				{showDomainTable && subTable}
 

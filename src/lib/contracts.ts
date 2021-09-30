@@ -12,6 +12,8 @@ import {
 	ERC20__factory,
 	StakingController,
 	StakingController__factory,
+	WhitelistSimpleSale,
+	WhitelistSimpleSale__factory,
 	ZauctionSupportingZNS,
 	ZauctionSupportingZNS__factory,
 } from 'types';
@@ -24,6 +26,7 @@ export interface ContractAddresses {
 	wildToken: string;
 	lootToken: string;
 	zAuction: string;
+	wheelSale: string;
 }
 
 export interface Contracts {
@@ -33,6 +36,7 @@ export interface Contracts {
 	wildToken: ERC20;
 	lootToken: ERC20;
 	zAuction: ZauctionSupportingZNS;
+	wheelSale: WhitelistSimpleSale;
 }
 
 function useZnsContracts(): Contracts | null {
@@ -74,6 +78,10 @@ function useZnsContracts(): Contracts | null {
 			lootToken: ERC20__factory.connect(contracts.lootToken, signer),
 			zAuction: ZauctionSupportingZNS__factory.connect(
 				contracts.zAuction,
+				signer,
+			),
+			wheelSale: WhitelistSimpleSale__factory.connect(
+				contracts.wheelSale,
 				signer,
 			),
 		};

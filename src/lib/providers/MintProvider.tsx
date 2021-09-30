@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
 import { Maybe, NftParams, NftStatusCard } from 'lib/types';
+import * as wheels from 'lib/wheelSale';
+import { useZnsContracts } from 'lib/contracts';
 import { useBasicController } from '../hooks/useBasicController';
 import { ethers } from 'ethers';
 import { createDomainMetadata, UploadedDomainMetadata } from 'lib/utils';
@@ -12,6 +14,12 @@ export const MintContext = React.createContext({
 	minting: [] as NftStatusCard[],
 	minted: [] as NftStatusCard[],
 	mint: async (nft: NftParams, setStatus: (status: string) => void) => {},
+	mintWheels: async (
+		numWheels: number,
+		setStatus: (status: string) => void,
+		onFinish: () => void,
+		onError: (error: string) => void,
+	) => {},
 });
 
 type MintProviderType = {
@@ -19,6 +27,10 @@ type MintProviderType = {
 };
 
 const MintProvider: React.FC<MintProviderType> = ({ children }) => {
+	///////////////////////
+	// State & Variables //
+	///////////////////////
+
 	const { addNotification } = useNotification();
 	const [minting, setMinting] = useState<NftStatusCard[]>([]);
 	const [minted, setMinted] = useState<NftStatusCard[]>([]);
@@ -26,34 +38,69 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		useState<Maybe<NftStatusCard>>(null);
 	const basicController = useBasicController();
 
-	// Uncomment to test/dev
-	// React.useEffect(() => {
-	// 	setMinting([
-	// 		...minting,
-	// 		{
-	// 			zNA: '0://wilder.zachary.vacation.pudding',
-	// 			title: 'Title 123',
-	// 			imageUri:
-	// 				'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
-	// 			story: 'this is a story',
-	// 			transactionHash:
-	// 				'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
-	// 		} as NftStatusCard,
-	// 	]);
+	const contracts = useZnsContracts();
+	const saleContract = contracts?.wheelSale;
 
-	// 	setMinted([
-	// 		...minted,
-	// 		{
-	// 			zNA: '0://wilder.zachary.vacation.pudding',
-	// 			title: 'Title 123',
-	// 			imageUri:
-	// 				'https://ipfs.fleek.co/ipfs/QmWaJntCvxLsGqWfzzRz88ctYSDKnbJXaUAYsm7jQ1GUs8',
-	// 			story: 'this is a story',
-	// 			transactionHash:
-	// 				'0x28ec32c109f01ef48eff7b4943989cde274633e6a037686609f80892a83bb83e',
-	// 		} as NftStatusCard,
-	// 	]);
-	// }, []);
+	///////////////
+	// Functions //
+	///////////////
+
+	const mintWheels = async (
+		numWheels: number,
+		setStatus: (status: string) => void,
+		onFinish: () => void,
+		onError: (error: string) => void,
+	) => {
+		// Set up default wheel to render
+		const wheel = {
+			zNA: '',
+			title: 'Your Wheels',
+			imageUri:
+				'https://res.cloudinary.com/fact0ry/image/upload/c_fill,h_200,w_296/v1632961649/zns/minting-in-progress.gif',
+			story: '',
+			transactionHash: '',
+		};
+
+		if (!saleContract) {
+			return;
+		}
+
+		//////////////////////////////////////
+		// Get approval for the transaction //
+		//////////////////////////////////////
+
+		let tx: Maybe<ethers.ContractTransaction>;
+		setStatus('Pending wallet approval');
+
+		try {
+			tx = await wheels.purchaseWheels(numWheels, saleContract);
+		} catch (e) {
+			console.error(e);
+			onError('Failed to submit transaction');
+			return;
+		}
+
+		//////////////////////////
+		// Send the transaction //
+		//////////////////////////
+
+		setStatus('Waiting for transaction to be completed');
+		setMinting([...minting, wheel]);
+		await tx.wait();
+
+		//////////////////////////
+		// Transaction complete //
+		//////////////////////////
+
+		addNotification(
+			`Successfully minted ${numWheels} Wheels. Open your Profile to view them`,
+		);
+		const index = minting.findIndex((d) => d.title === 'Your Wheels');
+		setMinting(minting.splice(index, 1));
+		setMinted([...minted, wheel]);
+
+		onFinish();
+	};
 
 	const mint = async (nft: NftParams, setStatus: (status: string) => void) => {
 		// @todo better validation
@@ -121,6 +168,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		minting,
 		minted,
 		mint,
+		mintWheels,
 	};
 
 	return (
@@ -131,6 +179,6 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 export default MintProvider;
 
 export function useMintProvider() {
-	const { minting, mint, minted } = React.useContext(MintContext);
-	return { minting, mint, minted };
+	const { minting, mint, minted, mintWheels } = React.useContext(MintContext);
+	return { minting, mint, minted, mintWheels };
 }

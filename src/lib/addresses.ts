@@ -9,6 +9,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
 		lootToken: '0x43b8219aC1883373C0428688eE1a76e19E6B6D9d',
 		zAuction: '0x05cBD37cA528B7ea50800aA80ddD0F9F30C952F0',
+		wheelSale: '0x202410F1f2bbECD53E844b874367da69fD4B6DFc',
 	},
 	[NETWORK_TYPES.KOVAN]: {
 		registrar: '0xC613fCc3f81cC2888C5Cccc1620212420FFe4931',
@@ -17,6 +18,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildToken: '0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F',
 		lootToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
 		zAuction: '0x18A804a028aAf1F30082E91d2947734961Dd7f89',
+		wheelSale: '0x0408d68b69786B5E6c9c6543601050953e0cBed1', // wheelstest1
 	},
 } as any;
 

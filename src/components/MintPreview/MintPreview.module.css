@@ -32,14 +32,6 @@
 	width: 200px;
 
 	overflow: hidden;
-
-	cursor: pointer;
-
-	transition: transform var(--animation-time-medium) ease-in-out;
-}
-
-.Image:hover {
-	transform: scale(1.05);
 }
 
 .Image img {
@@ -53,6 +45,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 
 	width: 240px;
 	max-width: 240px;
@@ -86,9 +79,4 @@
 	margin-top: 12px;
 
 	overflow-y: auto;
-}
-
-.Info p:last-of-type {
-	position: absolute;
-	bottom: 0;
 }

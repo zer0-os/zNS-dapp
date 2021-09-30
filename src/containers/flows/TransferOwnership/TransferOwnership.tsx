@@ -4,7 +4,13 @@ import React, { useState } from 'react';
 import styles from './TransferOwnership.module.css';
 
 //- Component Imports
-import { EtherInput, FutureButton, NFTMedia, Overlay } from 'components';
+import {
+	EtherInput,
+	FutureButton,
+	NFTMedia,
+	Overlay,
+	Member,
+} from 'components';
 
 //- Library Imports
 /*
@@ -12,7 +18,6 @@ import { getMetadata } from 'lib/metadata';
 */
 import { randomImage, randomName } from 'lib/Random';
 import { useTransferProvider } from 'lib/providers/TransferProvider';
-import { Member } from '../../components';
 
 type TransferOwnershipProps = {
 	name: string;
