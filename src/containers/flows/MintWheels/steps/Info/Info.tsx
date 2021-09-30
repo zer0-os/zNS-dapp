@@ -121,7 +121,8 @@ const Info = (props: InfoProps) => {
 				return (
 					<>
 						<p className={styles.Green}>
-							Congratulations, you have minted 2/2 of your Wheels.
+							Congratulations, you have minted {props.numberPurchasedByUser}/
+							{props.maxPurchasesPerUser} of your Wheels.
 						</p>
 						{dismissButton()}
 					</>
