@@ -149,7 +149,36 @@ const Info = (props: InfoProps) => {
 	return (
 		<section className={styles.Container}>
 			{/* Wheels Image */}
-			<img alt="wheels NFT drop banner" className={styles.Image} src={banner} />
+			<video
+				autoPlay={true}
+				className={styles.Image}
+				loop={true}
+				muted
+				playsInline
+				poster={
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.jpg'
+				}
+				preload="metadata"
+			>
+				<source
+					src={
+						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.webm'
+					}
+					type="video/webm"
+				></source>
+				<source
+					src={
+						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.mp4'
+					}
+					type="video/mp4"
+				></source>
+				<source
+					src={
+						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.ogv'
+					}
+					type="video/ogg"
+				></source>
+			</video>
 
 			{/* Wheels Available */}
 			{!isAuctionDataLoading && (
