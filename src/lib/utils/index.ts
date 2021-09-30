@@ -1,4 +1,4 @@
-import { Metadata } from 'lib/types';
+import { UploadMetadata } from 'lib/types';
 
 export * from './domains';
 
@@ -30,8 +30,8 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
 	// upload images to http backend
 	const image = await uploadData(params.image);
 
-	const metadataObject: Metadata = {
-		title: params.name,
+	const metadataObject: UploadMetadata = {
+		name: params.name,
 		description: params.story,
 		image: image.url,
 	};
@@ -53,7 +53,7 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
 
 export interface UploadedDomainMetadata {
 	url: string;
-	contents: Metadata;
+	contents: UploadMetadata;
 }
 
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
