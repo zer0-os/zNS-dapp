@@ -37,6 +37,7 @@ const MintWheelsFlowContainer = () => {
 
 	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
+	const [canOpenWizard, setCanOpenWizard] = useState<boolean>(false);
 	const [numMinted, setNumMinted] = useState<number>(0);
 
 	// Auction data
@@ -66,11 +67,21 @@ const MintWheelsFlowContainer = () => {
 
 	// Open/close the Mint wizard
 	const openWizard = () => {
-		setIsWizardOpen(true);
+		if (canOpenWizard) {
+			setIsWizardOpen(true);
+		} else {
+			window?.open('https://wilderworld.com/', '_blank')?.focus();
+		}
 	};
 
 	const closeWizard = () => {
 		setIsWizardOpen(false);
+	};
+
+	// Toggles to grid view when viewport
+	// resizes to below 700px
+	const handleResize = () => {
+		setCanOpenWizard(window.innerWidth >= 900);
 	};
 
 	// Run a few things after the transaction succeeds
@@ -95,6 +106,14 @@ const MintWheelsFlowContainer = () => {
 	/////////////
 	// Effects //
 	/////////////
+
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		handleResize();
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	useEffect(() => {
 		let isMounted = true;
@@ -154,7 +173,7 @@ const MintWheelsFlowContainer = () => {
 
 	return (
 		<>
-			{isWizardOpen && (
+			{canOpenWizard && isWizardOpen && (
 				<Overlay open onClose={closeWizard}>
 					<MintWheels
 						balanceEth={balanceEth}
@@ -170,11 +189,13 @@ const MintWheelsFlowContainer = () => {
 					/>
 				</Overlay>
 			)}
-			<div style={{ height: 124, position: 'relative', marginBottom: 16 }}>
+			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
 					title={'Get your ride for the Metaverse '}
 					label={getBannerLabel(dropStage, wheelsMinted, wheelsTotal)}
-					buttonText={getBannerButtonText(dropStage)}
+					buttonText={
+						canOpenWizard ? getBannerButtonText(dropStage) : 'Learn More'
+					}
 					onClick={openWizard}
 				/>
 			</div>

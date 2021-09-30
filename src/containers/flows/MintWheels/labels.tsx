@@ -42,5 +42,5 @@ export const getBannerLabel = (
 	if (dropStage === Stage.Sold) {
 		<>All {wheelsTotal} Wilder Wheels have been minted</>;
 	}
-	return <>Loading drop data</>;
+	return <>Loading drop data...</>;
 };
