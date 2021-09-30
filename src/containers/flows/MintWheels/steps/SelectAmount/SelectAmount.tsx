@@ -25,7 +25,6 @@ const SelectAmount = (props: SelectAmountProps) => {
 	// State & Data //
 	//////////////////
 
-	const maxPerUser = 2;
 	const remainingUserWheels =
 		props.maxPurchasesPerUser - props.numberPurchasedByUser;
 	const maxUserCanAfford = Math.floor(props.balanceEth / EthPerWheel);

@@ -1,9 +1,6 @@
 // Component Imports
 import { FutureButton } from 'components';
 
-// Library Imports
-import { EthPerWheel } from '../../helpers';
-
 // Style Imports
 import styles from './Finished.module.css';
 

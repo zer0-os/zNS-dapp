@@ -14,6 +14,7 @@ const Loading = (props: LoadingProps) => {
 		<section className={styles.Container}>
 			{props.isMinting && (
 				<img
+					alt="loading spinner"
 					className={styles.Image}
 					src="https://res.cloudinary.com/fact0ry/image/upload/c_fill/v1632961649/zns/minting-in-progress.gif"
 				/>
