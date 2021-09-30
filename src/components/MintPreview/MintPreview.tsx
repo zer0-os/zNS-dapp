@@ -58,7 +58,11 @@ const MintPreview = (props: MintPreviewProps) => {
 					<div className={`${styles.Image} border-rounded`}>
 						{/* @todo fix hardcoded handling of name */}
 						{nft.imageUri.indexOf('cloudinary') > -1 ? (
-							<img style={{ objectFit: 'cover' }} src={nft.imageUri} />
+							<img
+								alt="nft preview"
+								style={{ objectFit: 'cover' }}
+								src={nft.imageUri}
+							/>
 						) : (
 							<Image src={nft.imageUri} />
 						)}
