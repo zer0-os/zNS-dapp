@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import styles from './Image.module.css';
 // import placeholder from './'
@@ -88,4 +88,4 @@ const Image = (props: any) => {
 	);
 };
 
-export default Image;
+export default React.memo(Image);
