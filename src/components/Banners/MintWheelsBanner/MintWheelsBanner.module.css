@@ -13,6 +13,7 @@
 	text-align: left;
 }
 
+
 .Background {
 	display: flex;
 	width: 100%;
@@ -21,7 +22,7 @@
 	background-image: url(https://res.cloudinary.com/fact0ry/image/upload/v1632956958/wheelsbanner_emr5ik.gif);
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-position: 80% 0px;
+	background-position: 50% 0px;
 
 	opacity: 0.8;
 
@@ -119,6 +120,9 @@
 		right: 40px;
 		bottom: auto;
 		left: auto;
+	}
+	.Background {
+		background-position: 90% 0px;
 	}
 }
 
