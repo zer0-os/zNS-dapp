@@ -56,7 +56,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 			zNA: '',
 			title: 'Your Wheels',
 			imageUri:
-				'https://res.cloudinary.com/fact0ry/video/upload/c_fill,h_200,w_296/v1632919480/a6hk6uvvu9tpbdat2fev.mp4',
+				'https://res.cloudinary.com/fact0ry/image/upload/c_fill,h_200,w_296/v1632961649/zns/minting-in-progress.gif',
 			story: '',
 			transactionHash: '',
 		};

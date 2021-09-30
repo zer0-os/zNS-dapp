@@ -459,7 +459,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
-										<Tooltip content={<MintPreview />}>
+										<Tooltip
+											content={<MintPreview onOpenProfile={openProfile} />}
+										>
 											<NumberButton
 												rotating={statusCount > 0}
 												number={statusCount}
