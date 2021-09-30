@@ -8,7 +8,7 @@ import { BigNumber } from 'ethers';
 
 //- Component Imports
 import { ArrowLink, FutureButton, Member, NFTMedia, Overlay } from 'components';
-import { MakeABid } from 'containers';
+import { BidButton, MakeABid } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/Random';
@@ -327,13 +327,13 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			>
 				Transfer Ownership
 			</FutureButton>
-			<FutureButton
+			<BidButton
 				glow={!isOwnedByYou && active}
 				onClick={openBidOverlay}
 				style={{ height: 36, borderRadius: 18 }}
 			>
 				Make A Bid
-			</FutureButton>
+			</BidButton>
 		</div>
 	);
 

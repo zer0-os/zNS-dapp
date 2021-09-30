@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Artwork, FutureButton, Spinner } from 'components';
+import { Artwork, Spinner } from 'components';
 import React, { useEffect, useState } from 'react';
 
 import styles from './SubdomainTableRow.module.css';
@@ -10,6 +10,7 @@ import { useBidProvider } from 'lib/providers/BidProvider';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
+import { BidButton } from 'containers';
 
 const SubdomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
@@ -105,13 +106,13 @@ const SubdomainTableRow = (props: any) => {
 			</td>
 			{bidColumns()}
 			<td>
-				<FutureButton
+				<BidButton
 					glow={account !== undefined && !isOwnedByUser}
 					onClick={onBidButtonClick}
 					style={{ marginLeft: 'auto' }}
 				>
 					Make A Bid
-				</FutureButton>
+				</BidButton>
 			</td>
 		</tr>
 	);
