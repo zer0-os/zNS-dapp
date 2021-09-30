@@ -164,7 +164,7 @@ const MintWheels = (props: MintWheelsProps) => {
 			<section className={styles.Header}>
 				<h1 className="glow-text-white">Mint Your Wheels</h1>
 				<span className="glow-text-white">
-					Your ride in the metaverse awaits
+					Your ride in the Metaverse awaits
 				</span>
 				<hr />
 			</section>

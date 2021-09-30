@@ -20,7 +20,11 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 	style,
 }) => {
 	return (
-		<button className={`${styles.Container}`} style={style} onClick={onClick}>
+		<button
+			className={`${styles.Container} border-primary`}
+			style={style}
+			onClick={onClick}
+		>
 			<div className={`${styles.Background}`}></div>
 			<div className={`${styles.Content}`}>
 				<div className={`${styles.TextContainer}`}>

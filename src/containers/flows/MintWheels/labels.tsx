@@ -1,9 +1,7 @@
 import { Stage } from './types';
 
 const totalLabel = (wheelsMinted: number, wheelsTotal: number) => (
-	<b>
-		{wheelsMinted}/{wheelsTotal} Minted
-	</b>
+	<b>{wheelsTotal - wheelsMinted} Remaining</b>
 );
 
 export const getBannerButtonText = (dropStage?: Stage): string => {

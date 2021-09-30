@@ -10,9 +10,6 @@ import { EthPerWheel } from '../../helpers';
 // Style Imports
 import styles from './Info.module.css';
 
-// Asset Imports
-import banner from './assets/banner.png';
-
 type InfoProps = {
 	dropStage: Stage;
 	isUserWhitelisted?: boolean;
@@ -184,9 +181,7 @@ const Info = (props: InfoProps) => {
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
 					<span>Wheels Available</span>
-					<h2>
-						{props.wheelsMinted} / {props.wheelsTotal} Wheels have been minted
-					</h2>
+					<h2>{props.wheelsTotal - props.wheelsMinted} Wheels Remaining</h2>
 					<ArrowLink>View Auction Rules</ArrowLink>
 				</div>
 			)}

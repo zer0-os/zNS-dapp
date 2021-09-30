@@ -172,7 +172,7 @@ const MintWheelsFlowContainer = () => {
 			)}
 			<div style={{ height: 124, position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
-					title={'Get your ride for the metaverse '}
+					title={'Get your ride for the Metaverse '}
 					label={getBannerLabel(dropStage, wheelsMinted, wheelsTotal)}
 					buttonText={getBannerButtonText(dropStage)}
 					onClick={openWizard}

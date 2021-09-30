@@ -6,9 +6,10 @@
 	background: none;
 	border-radius: 16px;
 
-	color: white;
+	color: var(--color-success);
 	font-weight: 700;
 	text-align: center;
+	transition: color var(--animation-time-medium) ease-in-out;
 }
 
 .NumberButton::before {
@@ -22,15 +23,26 @@
 	/* background: rgba(0,0,0,0.3); */
 
 	border-radius: 16px;
-	border-left: 2px solid white;
-	border-right: 2px solid white;
+	border-left: 2px solid var(--color-success);
+	border-right: 2px solid var(--color-success);
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 
 	transform: rotate(0deg);
 
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform var(--animation-time-medium) ease-in-out,
+		border-left-color var(--animation-time-medium),
+		border-right-color var(--animation-time-medium);
+}
+
+.Rotating {
+	color: white;
+}
+
+.Rotating::before {
+	border-left-color: 2px solid white;
+	border-right-color: 2px solid white;
 }
 
 .Rotating::before {

@@ -109,7 +109,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 					</p>
 					<TextInput
 						onChange={onInputChange}
-						placeholder={`Number of Wheels (Maximum of 2)`}
+						placeholder={`Number of Wheels (Maximum of ${props.maxPurchasesPerUser})`}
 						numeric
 						text={amount}
 					/>
