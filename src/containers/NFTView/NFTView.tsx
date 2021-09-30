@@ -146,12 +146,14 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					if (prev.timestamp !== current.timestamp) filter.push(current);
 					return current;
 				});
-				const highestBid = bids.reduce(function (prev, current) {
-					return prev.amount > current.amount ? prev : current;
-				});
+
+				const sortedBids = bids.sort(
+					(a, b) => Number(b.amount) - Number(a.amount),
+				);
+
 				if (!isMounted.current) return;
 				setAllItems(filter);
-				setHighestBid(highestBid);
+				setHighestBid(sortedBids[0]);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
