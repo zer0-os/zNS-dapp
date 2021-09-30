@@ -9,8 +9,14 @@
  *
  */
 
+// Buttons
+export { default as BidButton } from './buttons/BidButton/BidButton';
+
 // Cards
 export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/CurrentDomainPreview';
+
+//Prompts
+export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/ConnectWalletPrompt';
 
 export { default as BidList } from './BidList/BidList';
 export { default as Enlist } from './Enlist/Enlist';
