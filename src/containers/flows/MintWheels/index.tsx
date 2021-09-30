@@ -5,18 +5,15 @@ import { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
-import { ethers } from 'ethers';
 
 // Component Imports
 import { MintWheelsBanner, Overlay } from 'components';
 import MintWheels from './MintWheels';
 
 // Library Imports
-import * as wheels from 'lib/wheelSale';
 import { Stage, DropData, TransactionData } from './types';
 import { getBannerLabel, getBannerButtonText } from './labels';
-import { Maybe } from 'lib/types';
-import useNotification from 'lib/hooks/useNotification';
+import { useMintProvider } from 'lib/providers/MintProvider';
 import {
 	getDropData,
 	getUserEligibility,
@@ -29,9 +26,10 @@ const MintWheelsFlowContainer = () => {
 	// State & Data //
 	//////////////////
 
+	const { mintWheels } = useMintProvider();
+
 	// Web3 hooks
 	const { account, library } = useWeb3React<Web3Provider>();
-	const { addNotification } = useNotification();
 
 	// Contracts
 	const contracts = useZnsContracts();
@@ -62,6 +60,10 @@ const MintWheelsFlowContainer = () => {
 	// Functions //
 	///////////////
 
+	const transactionSuccessful = (numWheels: number) => {
+		setNumMinted(numMinted + 1); // Increment to trigger re-fetch
+	};
+
 	// Open/close the Mint wizard
 	const openWizard = () => {
 		setIsWizardOpen(true);
@@ -72,39 +74,22 @@ const MintWheelsFlowContainer = () => {
 	};
 
 	// Run a few things after the transaction succeeds
-	const transactionSuccessful = (numWheels: number) => {
-		setNumMinted(numMinted + 1); // Increment to trigger re-fetch
-		addNotification(
-			`Successfully minted ${numWheels} Wheels. Open your Profile to view them`,
-		);
-	};
+	// const transactionSuccessful = (numWheels: number) => {};
 
 	// Submits transaction, feeds status updates
 	// back through the callbacks provided by MintWheels
 	const onSubmitTransaction = async (data: TransactionData) => {
 		const { numWheels, statusCallback, errorCallback, finishedCallback } = data;
-
-		if (!saleContract) {
-			return;
-		}
-
-		let tx: Maybe<ethers.ContractTransaction>;
-
-		statusCallback('Pending wallet approval');
-
-		try {
-			tx = await wheels.purchaseWheels(numWheels, saleContract);
-		} catch (e) {
-			console.error(e);
-			errorCallback('Failed to submit transaction');
-			return;
-		}
-
-		statusCallback('Waiting for transaction to be completed');
-		await tx.wait();
-
-		finishedCallback();
-		transactionSuccessful(numWheels);
+		const combinedFinishedCallback = () => {
+			transactionSuccessful(numWheels);
+			finishedCallback();
+		};
+		mintWheels(
+			numWheels,
+			statusCallback,
+			combinedFinishedCallback,
+			errorCallback,
+		);
 	};
 
 	/////////////
