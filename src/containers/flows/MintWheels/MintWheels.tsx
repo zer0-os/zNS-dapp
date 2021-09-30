@@ -13,6 +13,7 @@ import Loading from './steps/Loading/Loading';
 import Info from './steps/Info/Info';
 import SelectAmount from './steps/SelectAmount/SelectAmount';
 import InsufficientFunds from './steps/InsufficientFunds/InsufficientFunds';
+import Finished from './steps/Finished/Finished';
 
 // Configuration
 import { Stage, Step, TransactionData } from './types';
@@ -25,6 +26,7 @@ type MintWheelsProps = {
 	balanceEth?: number;
 	dropStage?: Stage;
 	onClose: () => void;
+	onFinish: () => void;
 	isUserWhitelisted?: boolean;
 	maxPurchasesPerUser?: number;
 	numberPurchasedByUser?: number;
@@ -79,7 +81,7 @@ const MintWheels = (props: MintWheelsProps) => {
 		};
 
 		const finishedCallback = () => {
-			props.onClose();
+			setStep(Step.Finished);
 		};
 
 		const data: TransactionData = {
@@ -147,10 +149,13 @@ const MintWheels = (props: MintWheelsProps) => {
 			return <Loading text={'Checking your ETH balance'} />;
 		}
 		if (step === Step.PendingWalletApproval) {
-			return <Loading text={transactionStatus} />;
+			return <Loading isMinting text={transactionStatus} />;
 		}
 		if (step === Step.InsufficientFunds) {
 			return <InsufficientFunds onDismiss={props.onClose} />;
+		}
+		if (step === Step.Finished) {
+			return <Finished onFinish={props.onFinish} />;
 		}
 	};
 

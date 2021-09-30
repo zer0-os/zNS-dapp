@@ -85,7 +85,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		//////////////////////////
 
 		setStatus(
-			'Minting your wheels... The transacion will continue in the backround if you close this. Your Wheels will be in your profile when complete.',
+			'Minting your wheels... The transaction will continue in the backround if you close this window. Your Wheels will be in your profile when complete.',
 		);
 		setMinting([...minting, wheel]);
 		await tx.wait();

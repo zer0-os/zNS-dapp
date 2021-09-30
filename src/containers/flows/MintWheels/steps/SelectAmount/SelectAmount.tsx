@@ -64,8 +64,10 @@ const SelectAmount = (props: SelectAmountProps) => {
 				return;
 			}
 			const numWheels = Number(amount);
-			if (numWheels <= 0 || numWheels > maxPerUser) {
-				setInputError(`Please enter a number between 1 & ${maxPerUser}`);
+			if (numWheels <= 0 || numWheels > props.maxPurchasesPerUser) {
+				setInputError(
+					`Please enter a number between 1 & ${props.maxPurchasesPerUser}`,
+				);
 			} else if (numWheels * EthPerWheel > props.balanceEth) {
 				setInputError(`You do not have enough ETH to mint ${numWheels} Wheels`);
 			} else if (numWheels > remainingUserWheels) {

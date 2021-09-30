@@ -15,6 +15,7 @@ export enum Step {
 	InsufficientFunds,
 	SelectAmount,
 	PendingWalletApproval,
+	Finished,
 }
 
 // Types

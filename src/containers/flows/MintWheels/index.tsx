@@ -1,5 +1,6 @@
 // React Imports
 import { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 // Web3 Imports
 import { useWeb3React } from '@web3-react/core';
@@ -27,6 +28,8 @@ const MintWheelsFlowContainer = () => {
 	//////////////////
 
 	const { mintWheels } = useMintProvider();
+	const history = useHistory();
+	const location = useLocation();
 
 	// Web3 hooks
 	const { account, library } = useWeb3React<Web3Provider>();
@@ -101,6 +104,17 @@ const MintWheelsFlowContainer = () => {
 			combinedFinishedCallback,
 			errorCallback,
 		);
+	};
+
+	const openProfile = () => {
+		setIsWizardOpen(false);
+
+		const params = new URLSearchParams(location.search);
+		params.set('profile', 'true');
+		history.push({
+			pathname: location.pathname,
+			search: params.toString(),
+		});
 	};
 
 	/////////////
@@ -182,6 +196,7 @@ const MintWheelsFlowContainer = () => {
 						maxPurchasesPerUser={maxPurchasesPerUser}
 						numberPurchasedByUser={numberPurchasedByUser}
 						onClose={closeWizard}
+						onFinish={openProfile}
 						onSubmitTransaction={onSubmitTransaction}
 						userId={account as string | undefined}
 						wheelsMinted={wheelsMinted}

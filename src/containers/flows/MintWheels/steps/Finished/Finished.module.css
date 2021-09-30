@@ -7,15 +7,12 @@
 
 .Container span {
 	display: inline-block;
-	margin-bottom: 40px;
 	width: 100%;
-	text-align: center;
-}
+	margin-left: 12px;
+	margin-bottom: 40px;
 
-.Image {
-	width: 100%;
-	height: 296px;
-	border-radius: var(--box-radius);
-	object-fit: cover;
-	margin-bottom: 40px;
+	color: var(--color-success);
+	text-align: center;
+
+	line-height: 24px;
 }
