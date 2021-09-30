@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
@@ -30,7 +30,6 @@ import {
 	Tooltip,
 	IconButton,
 	Overlay,
-	Profile,
 	NotificationDrawer,
 	NumberButton,
 	MintPreview,
@@ -38,7 +37,12 @@ import {
 	Spinner,
 } from 'components';
 
-import { SubdomainTable, CurrentDomainPreview, MintWheels } from 'containers';
+import {
+	SubdomainTable,
+	CurrentDomainPreview,
+	MintWheels,
+	ProfileModal,
+} from 'containers';
 
 //- Library Imports
 import { useTransferProvider } from 'lib/providers/TransferProvider';
@@ -55,7 +59,6 @@ type ZNSProps = {
 enum Modal {
 	Bid,
 	Mint,
-	Profile,
 	Transfer,
 	Wallet,
 }
@@ -91,6 +94,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Browser Navigation State
 	const history = useHistory();
+	const location = useLocation();
 	const [forwardDomain, setForwardDomain] = useState<string | undefined>();
 	const lastDomain = useRef<string>();
 	const canGoBack = domain !== undefined && domain !== '/';
@@ -173,18 +177,21 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		setModal(undefined);
 	};
 	const openMint = () => setModal(Modal.Mint);
-	const openProfile = () => setModal(Modal.Profile);
+
+	const openProfile = () => {
+		const params = new URLSearchParams(location.search);
+		params.set('profile', 'true');
+		history.push({
+			pathname: domain,
+			search: params.toString(),
+		});
+	};
+
 	const openWallet = () => {
 		setModal(Modal.Wallet);
 	};
 	const openTransferOwnershipModal = () => {
 		setModal(Modal.Transfer);
-	};
-
-	const navigate = (to: string) => {
-		history.push(to);
-		// @todo rewrite
-		if (modal) closeModal();
 	};
 
 	const handleResize = () => {
@@ -249,11 +256,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
 
 		// Check if we need to close a modal
-		if (
-			(!active && modal === Modal.Profile) ||
-			modal === Modal.Transfer ||
-			modal === Modal.Mint
-		) {
+		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
 		}
 	}, [active]);
@@ -313,6 +316,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		<>
 			{/* Overlays */}
 			<NotificationDrawer />
+			<ProfileModal />
 			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
@@ -334,11 +338,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							) as string[]) || []
 						}
 					/>
-				</Overlay>
-			)}
-			{modal === Modal.Profile && (
-				<Overlay fullScreen centered open onClose={closeModal}>
-					<Profile yours id={account ? account : ''} onNavigate={navigate} />
 				</Overlay>
 			)}
 			{modal === Modal.Transfer && (
