@@ -56,7 +56,6 @@
 	box-shadow: 0px 0px 40px rgba(82, 203, 255, 0.8);
 	transition: transform var(--animation-time-short) ease-in-out,
 		opacity var(--animation-time-short) ease-in-out;
-	border-color: #52cbff;
 }
 
 .Bid button:after {
