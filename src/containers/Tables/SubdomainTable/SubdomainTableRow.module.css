@@ -4,7 +4,7 @@
 }
 
 .Row:hover {
-	background: var(--color-background-alt-50);
+	background: rgba(78, 0, 132, 0.5);
 }
 
 .Row td:first-of-type {
