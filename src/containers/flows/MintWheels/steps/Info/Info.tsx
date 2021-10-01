@@ -129,7 +129,7 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Wheels are only available to white-listed supporters of
+						Currently, Wheels are only available to whitelisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
 						whitelist sale ends.
 					</p>

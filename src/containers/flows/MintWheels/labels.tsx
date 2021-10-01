@@ -32,7 +32,7 @@ export const getBannerLabel = (
 	if (dropStage === Stage.Whitelist) {
 		return (
 			<>
-				Wilder Wheels now available for supporters{' '}
+				Wilder Wheels now available for whitelisted supporters{' '}
 				{totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);
