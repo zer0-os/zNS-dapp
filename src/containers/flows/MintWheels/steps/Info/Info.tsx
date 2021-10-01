@@ -150,28 +150,27 @@ const Info = (props: InfoProps) => {
 				autoPlay={true}
 				className={styles.Image}
 				loop={true}
-				muted
 				playsInline
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1633058067/zns/minting-wheels-audio.ogv'
 					}
 					type="video/ogg"
 				></source>
