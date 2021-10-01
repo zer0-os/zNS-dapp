@@ -7,7 +7,7 @@ const whitelistUriKovan =
 	'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
 
 const whitelistUriMainnet =
-	'https://ipfs.io/ipfs/QmTgygeUHwYCugxmirDkJmKQcbsAHofxAJLPa6pGCKhsoP';
+	'https://ipfs.io/ipfs/QmUgNqXoSCwYqpAZ6Y3LopRXKHTZh5g5vePDYQVCvxreNU';
 
 export interface WheelsWhitelistClaim {
 	index: number;
