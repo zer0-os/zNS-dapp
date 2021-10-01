@@ -91,6 +91,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
+	const downloadAsset = () => {
+		if (znsDomain?.domain?.image) {
+			window.open(znsDomain.domain.image, '_blank');
+		}
+	};
+
 	const openBidOverlay = () => {
 		if (!isMounted.current) return;
 		if (!znsDomain.domain || isOwnedByYou || !active) return;
@@ -327,13 +333,24 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			>
 				Transfer Ownership
 			</FutureButton>
-			<FutureButton
-				glow={!isOwnedByYou && active}
-				onClick={openBidOverlay}
-				style={{ height: 36, borderRadius: 18 }}
-			>
-				Make A Bid
-			</FutureButton>
+			{!isOwnedByYou && (
+				<FutureButton
+					glow={!isOwnedByYou && active}
+					onClick={openBidOverlay}
+					style={{ height: 36, borderRadius: 18 }}
+				>
+					Make A Bid
+				</FutureButton>
+			)}
+			{isOwnedByYou && (
+				<FutureButton
+					glow
+					onClick={downloadAsset}
+					style={{ height: 36, borderRadius: 18 }}
+				>
+					Download
+				</FutureButton>
+			)}
 		</div>
 	);
 
