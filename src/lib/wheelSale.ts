@@ -3,8 +3,11 @@ import { BigNumber, ethers } from 'ethers';
 import { WhitelistSimpleSale } from 'types';
 import { Maybe } from './types';
 
-const whitelistUri =
+const whitelistUriKovan =
 	'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
+
+const whitelistUriMainnet =
+	'https://ipfs.io/ipfs/QmUgNqXoSCwYqpAZ6Y3LopRXKHTZh5g5vePDYQVCvxreNU';
 
 export interface WheelsWhitelistClaim {
 	index: number;
@@ -18,10 +21,14 @@ export interface WheelsWhitelistDto {
 
 let cachedWhitelist: Maybe<WheelsWhitelistDto>;
 
-export const getWhitelist = async (): Promise<WheelsWhitelistDto> => {
+export const getWhitelist = async (
+	mainnet: boolean,
+): Promise<WheelsWhitelistDto> => {
 	if (cachedWhitelist) {
 		return cachedWhitelist;
 	}
+
+	let whitelistUri = mainnet ? whitelistUriMainnet : whitelistUriKovan;
 
 	const res = await fetch(whitelistUri);
 	const body = await res.json();
@@ -33,14 +40,18 @@ export const getWhitelist = async (): Promise<WheelsWhitelistDto> => {
 
 export const getUserClaim = async (
 	user: string,
+	mainnet: boolean,
 ): Promise<Maybe<WheelsWhitelistClaim>> => {
-	const whitelist = await getWhitelist();
+	const whitelist = await getWhitelist(mainnet);
 	const userClaim = whitelist.claims[user];
 	return userClaim;
 };
 
-export const isUserOnWhitelist = async (user: string): Promise<boolean> => {
-	const userClaim = await getUserClaim(user);
+export const isUserOnWhitelist = async (
+	user: string,
+	mainnet: boolean,
+): Promise<boolean> => {
+	const userClaim = await getUserClaim(user, mainnet);
 
 	if (!userClaim) {
 		return false;
@@ -90,6 +101,7 @@ export const getWheelsSaleData = async (
 export const purchaseWheels = async (
 	quantity: number,
 	contract: WhitelistSimpleSale,
+	mainnet: boolean,
 ): Promise<ethers.ContractTransaction> => {
 	const status = await getSaleStatus(contract);
 
@@ -99,7 +111,7 @@ export const purchaseWheels = async (
 
 	if (status === SaleStatus.WhitelistOnly) {
 		const userAddress = await contract.signer.getAddress();
-		const claim = await getUserClaim(userAddress);
+		const claim = await getUserClaim(userAddress, mainnet);
 
 		if (!claim) {
 			throw Error(`User not whitelisted`);

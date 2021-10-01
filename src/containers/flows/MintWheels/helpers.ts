@@ -81,7 +81,12 @@ export const getUserEligibility = async (
 	userId: string,
 	contract: WhitelistSimpleSale,
 ): Promise<boolean | undefined> => {
-	const isWhitelisted = await wheels.isUserOnWhitelist(userId);
+	const network = await contract.provider.getNetwork();
+
+	const isWhitelisted = await wheels.isUserOnWhitelist(
+		userId,
+		network.chainId === 1,
+	);
 	return isWhitelisted;
 };
 
