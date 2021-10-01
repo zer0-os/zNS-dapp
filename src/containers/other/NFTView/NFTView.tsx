@@ -342,15 +342,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					Make A Bid
 				</FutureButton>
 			)}
-			{isOwnedByYou && (
-				<FutureButton
-					glow
-					onClick={downloadAsset}
-					style={{ height: 36, borderRadius: 18 }}
-				>
-					Download
-				</FutureButton>
-			)}
 		</div>
 	);
 
