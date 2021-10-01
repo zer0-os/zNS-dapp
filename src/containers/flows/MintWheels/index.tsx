@@ -79,7 +79,7 @@ const MintWheelsFlowContainer = () => {
 				)
 				?.focus();
 		} else if (dropStage === Stage.Sold) {
-			history.push('kovansaletest9');
+			history.push('wheels');
 		} else {
 			setIsWizardOpen(true);
 		}
