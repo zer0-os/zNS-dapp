@@ -222,7 +222,11 @@ const MintWheelsFlowContainer = () => {
 							? 'Failed to load auction data - refresh to try again'
 							: getBannerLabel(dropStage, wheelsMinted, wheelsTotal)
 					}
-					buttonText={getBannerButtonText(dropStage, canOpenWizard)}
+					buttonText={
+						failedToLoad
+							? 'Learn More'
+							: getBannerButtonText(dropStage, canOpenWizard)
+					}
 					onClick={openWizard}
 				/>
 			</div>
