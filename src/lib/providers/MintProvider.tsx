@@ -72,8 +72,14 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		let tx: Maybe<ethers.ContractTransaction>;
 		setStatus('Pending wallet approval');
 
+		const network = await saleContract.provider.getNetwork();
+
 		try {
-			tx = await wheels.purchaseWheels(numWheels, saleContract);
+			tx = await wheels.purchaseWheels(
+				numWheels,
+				saleContract,
+				network.chainId === 1,
+			);
 		} catch (e) {
 			console.error(e);
 			onError('Failed to submit transaction');
