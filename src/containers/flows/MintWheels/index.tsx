@@ -8,7 +8,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
-import { MintWheelsBanner, Overlay } from 'components';
+import { Countdown, MintWheelsBanner, Overlay } from 'components';
 import MintWheels from './MintWheels';
 
 // Library Imports
@@ -23,6 +23,10 @@ import {
 } from './helpers';
 
 const MintWheelsFlowContainer = () => {
+	// Hardcoded dates
+	const whitelistDate = 1633071540000;
+	const publicDate = 1633114740000;
+
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -42,6 +46,9 @@ const MintWheelsFlowContainer = () => {
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
 	const [canOpenWizard, setCanOpenWizard] = useState<boolean>(false);
 	const [numMinted, setNumMinted] = useState<number>(0);
+	const [countdownDate, setCountdownDate] = useState<number | undefined>();
+	const [hasCountdownFinished, setHasCountdownFinished] =
+		useState<boolean>(false);
 
 	// Auction data
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
@@ -51,6 +58,7 @@ const MintWheelsFlowContainer = () => {
 		number | undefined
 	>();
 	const [failedToLoad, setFailedToLoad] = useState<boolean>(false);
+	const [refetch, setRefetch] = useState<number>(0);
 
 	// User data
 	const [isUserWhitelisted, setIsUserWhitelisted] = useState<
@@ -93,6 +101,10 @@ const MintWheelsFlowContainer = () => {
 	// resizes to below 700px
 	const handleResize = () => {
 		setCanOpenWizard(window.innerWidth >= 900);
+	};
+
+	const countdownFinished = () => {
+		setHasCountdownFinished(true);
 	};
 
 	// Run a few things after the transaction succeeds
@@ -151,6 +163,13 @@ const MintWheelsFlowContainer = () => {
 						return;
 					}
 					const primaryData = d as DropData;
+					if (primaryData.dropStage === Stage.Upcoming) {
+						setCountdownDate(whitelistDate);
+					} else if (primaryData.dropStage === Stage.Whitelist) {
+						setCountdownDate(publicDate);
+					} else {
+						setCountdownDate(undefined);
+					}
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
@@ -191,6 +210,41 @@ const MintWheelsFlowContainer = () => {
 		};
 	}, [account, library, saleContract, numMinted]);
 
+	useEffect(() => {
+		let isMounted = true;
+
+		if (!saleContract || !hasCountdownFinished) {
+			return;
+		}
+
+		getDropData(saleContract)
+			.then((d) => {
+				if (!isMounted) {
+					return;
+				}
+				const primaryData = d as DropData;
+				const currentDropStage = primaryData.dropStage;
+				if (dropStage !== undefined && currentDropStage !== dropStage) {
+					setDropStage(primaryData.dropStage);
+					setWheelsTotal(primaryData.wheelsTotal);
+					setWheelsMinted(primaryData.wheelsMinted);
+					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
+				} else {
+					setTimeout(() => {
+						setRefetch(refetch + 1);
+					}, 5000);
+				}
+			})
+			.catch((e) => {
+				console.error(e);
+				setFailedToLoad(true);
+			});
+
+		return () => {
+			isMounted = false;
+		};
+	}, [hasCountdownFinished, refetch]);
+
 	////////////
 	// Render //
 	////////////
@@ -220,7 +274,14 @@ const MintWheelsFlowContainer = () => {
 					label={
 						failedToLoad
 							? 'Failed to load auction data - refresh to try again'
-							: getBannerLabel(dropStage, wheelsMinted, wheelsTotal)
+							: getBannerLabel(
+									dropStage,
+									wheelsMinted,
+									wheelsTotal,
+									countdownDate,
+									countdownFinished,
+									hasCountdownFinished,
+							  )
 					}
 					buttonText={
 						failedToLoad
