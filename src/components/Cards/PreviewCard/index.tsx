@@ -47,9 +47,11 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
 
 	const onViewDomain = () => {
+		const params = new URLSearchParams(window.location.search);
+		params.set('view', 'true');
 		history.push({
 			pathname: domain,
-			search: '?view',
+			search: params.toString(),
 		});
 	};
 

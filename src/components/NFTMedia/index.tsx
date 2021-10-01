@@ -85,17 +85,21 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	// a file extension
 	const checkMediaType = () => {
 		return new Promise((resolve, reject) => {
-			fetch(ipfsUrl, { method: 'HEAD' }).then((r: Response) => {
-				const contentTypeHeader = r.headers.get('Content-Type');
+			fetch(ipfsUrl, { method: 'HEAD' })
+				.then((r: Response) => {
+					const contentTypeHeader = r.headers.get('Content-Type');
 
-				if (contentTypeHeader?.startsWith('image')) {
-					resolve(MediaType.Image);
-				} else if (contentTypeHeader?.startsWith('video')) {
-					resolve(MediaType.Video);
-				} else {
+					if (contentTypeHeader?.startsWith('image')) {
+						resolve(MediaType.Image);
+					} else if (contentTypeHeader?.startsWith('video')) {
+						resolve(MediaType.Video);
+					} else {
+						resolve(MediaType.Unknown);
+					}
+				})
+				.catch(() => {
 					resolve(MediaType.Unknown);
-				}
-			});
+				});
 		});
 	};
 
