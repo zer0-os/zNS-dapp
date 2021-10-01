@@ -50,6 +50,7 @@ const MintWheelsFlowContainer = () => {
 	const [maxPurchasesPerUser, setMaxPurchasesPerUser] = useState<
 		number | undefined
 	>();
+	const [failedToLoad, setFailedToLoad] = useState<boolean>(false);
 
 	// User data
 	const [isUserWhitelisted, setIsUserWhitelisted] = useState<
@@ -70,7 +71,7 @@ const MintWheelsFlowContainer = () => {
 
 	// Open/close the Mint wizard
 	const openWizard = () => {
-		if (dropStage === Stage.Upcoming || !canOpenWizard) {
+		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://wilderworld.com/', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold) {
 			history.push('kovansaletest9');
@@ -149,9 +150,11 @@ const MintWheelsFlowContainer = () => {
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
+					setFailedToLoad(false);
 				})
 				.catch((e) => {
 					console.error(e);
+					setFailedToLoad(true);
 				});
 
 			// Get user data if wallet connected
@@ -209,7 +212,11 @@ const MintWheelsFlowContainer = () => {
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
 					title={'Get your ride for the Metaverse '}
-					label={getBannerLabel(dropStage, wheelsMinted, wheelsTotal)}
+					label={
+						failedToLoad
+							? 'Failed to load auction data - refresh to try again'
+							: getBannerLabel(dropStage, wheelsMinted, wheelsTotal)
+					}
 					buttonText={getBannerButtonText(dropStage, canOpenWizard)}
 					onClick={openWizard}
 				/>
