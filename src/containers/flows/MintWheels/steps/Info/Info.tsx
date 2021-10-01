@@ -89,8 +89,8 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						Each user may mint up to 2 Wheels. The cost for each Wheels is{' '}
-						<>{EthPerWheel} ETH</> plus GAS.
+						Each user may mint up to {props.maxPurchasesPerUser} Wheels. The
+						cost for each Wheels is <>{EthPerWheel} ETH</> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -129,7 +129,7 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Wheels are only available to white-listed supporters of
+						Currently, Wheels are only available to whitelisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
 						whitelist sale ends.
 					</p>
@@ -150,28 +150,27 @@ const Info = (props: InfoProps) => {
 				autoPlay={true}
 				className={styles.Image}
 				loop={true}
-				muted
 				playsInline
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1632961671/zns/minting-wheels.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_396,w_642/v1633058067/zns/minting-wheels-audio.ogv'
 					}
 					type="video/ogg"
 				></source>
@@ -182,7 +181,9 @@ const Info = (props: InfoProps) => {
 				<div className={styles.Available}>
 					<span>Wheels Available</span>
 					<h2>{props.wheelsTotal - props.wheelsMinted} Wheels Remaining</h2>
-					<ArrowLink>View Auction Rules</ArrowLink>
+					<ArrowLink href="https://zine.wilderworld.com/wilder-wheels-community-whitelist-now-open/">
+						View Auction Rules
+					</ArrowLink>
 				</div>
 			)}
 
