@@ -38,15 +38,15 @@ const BidButton: React.FC<BidButtonProps> = ({ onClick, ...rest }) => {
 	////////////
 	return (
 		<>
-			<FutureButton onClick={handleClick} {...rest}>
-				Make A Bid
-			</FutureButton>
 			{isModalOpen && (
 				<ConnectWalletPrompt
 					open={isModalOpen}
 					onClose={() => setIsModalOpen(false)}
 				/>
 			)}
+			<FutureButton onClick={handleClick} {...rest}>
+				Make A Bid
+			</FutureButton>
 		</>
 	);
 };

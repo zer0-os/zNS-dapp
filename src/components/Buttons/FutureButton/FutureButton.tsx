@@ -4,7 +4,7 @@ import styles from './FutureButtonStyle.module.css';
 
 type FutureButtonProps = {
 	className?: string;
-	onClick: (event?: any) => void;
+	onClick?: (event?: any) => void;
 	style?: React.CSSProperties;
 	toggleable?: boolean;
 	children: React.ReactNode;
