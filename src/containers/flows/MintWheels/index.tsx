@@ -72,7 +72,12 @@ const MintWheelsFlowContainer = () => {
 	// Open/close the Mint wizard
 	const openWizard = () => {
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
-			window?.open('https://wilderworld.com/', '_blank')?.focus();
+			window
+				?.open(
+					'https://zine.wilderworld.com/wilder-wheels-community-whitelist-now-open/',
+					'_blank',
+				)
+				?.focus();
 		} else if (dropStage === Stage.Sold) {
 			history.push('kovansaletest9');
 		} else {

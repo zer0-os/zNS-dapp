@@ -27,14 +27,24 @@ export const getBannerLabel = (
 	wheelsTotal?: number,
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
-		return <>Wilder Wheels Available on ** date/time **</>;
+		return (
+			<>
+				Wilder Wheels available to whitelisted supporters on 30th September at
+				11.59pm PST
+			</>
+		);
 	}
 	if (dropStage === Stage.Whitelist) {
 		return (
-			<>
-				Wilder Wheels now available for whitelisted supporters{' '}
-				{totalLabel(wheelsMinted!, wheelsTotal!)}
-			</>
+			<div style={{ display: 'flex', flexDirection: 'column' }}>
+				<span>
+					Wilder Wheels now available for whitelisted supporters{' '}
+					{totalLabel(wheelsMinted!, wheelsTotal!)}
+				</span>
+				<span style={{ display: 'inline-block', marginTop: 4 }}>
+					Available to everyone on 1st October 11:59am PST
+				</span>
+			</div>
 		);
 	}
 	if (dropStage === Stage.Public) {

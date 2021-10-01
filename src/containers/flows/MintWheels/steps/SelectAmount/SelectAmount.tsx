@@ -102,7 +102,9 @@ const SelectAmount = (props: SelectAmountProps) => {
 	const openTerms = (event: React.MouseEvent<HTMLElement>) => {
 		event.stopPropagation();
 		event.preventDefault();
-		window.open('https://wilderworld.com', '_blank')?.focus();
+		window
+			.open('https://zine.wilderworld.com/terms-and-conditions/', '_blank')
+			?.focus();
 	};
 
 	const isAmountValid = () => {

@@ -182,7 +182,9 @@ const Info = (props: InfoProps) => {
 				<div className={styles.Available}>
 					<span>Wheels Available</span>
 					<h2>{props.wheelsTotal - props.wheelsMinted} Wheels Remaining</h2>
-					<ArrowLink>View Auction Rules</ArrowLink>
+					<ArrowLink href="https://zine.wilderworld.com/wilder-wheels-community-whitelist-now-open/">
+						View Auction Rules
+					</ArrowLink>
 				</div>
 			)}
 
