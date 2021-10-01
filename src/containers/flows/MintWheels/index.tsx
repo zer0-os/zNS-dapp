@@ -70,10 +70,12 @@ const MintWheelsFlowContainer = () => {
 
 	// Open/close the Mint wizard
 	const openWizard = () => {
-		if (canOpenWizard) {
-			setIsWizardOpen(true);
-		} else {
+		if (dropStage === Stage.Upcoming || !canOpenWizard) {
 			window?.open('https://wilderworld.com/', '_blank')?.focus();
+		} else if (dropStage === Stage.Sold) {
+			history.push('kovansaletest9');
+		} else {
+			setIsWizardOpen(true);
 		}
 	};
 
@@ -208,9 +210,7 @@ const MintWheelsFlowContainer = () => {
 				<MintWheelsBanner
 					title={'Get your ride for the Metaverse '}
 					label={getBannerLabel(dropStage, wheelsMinted, wheelsTotal)}
-					buttonText={
-						canOpenWizard ? getBannerButtonText(dropStage) : 'Learn More'
-					}
+					buttonText={getBannerButtonText(dropStage, canOpenWizard)}
 					onClick={openWizard}
 				/>
 			</div>

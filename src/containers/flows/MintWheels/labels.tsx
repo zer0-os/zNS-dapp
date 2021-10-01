@@ -4,8 +4,14 @@ const totalLabel = (wheelsMinted: number, wheelsTotal: number) => (
 	<b>{wheelsTotal - wheelsMinted} Remaining</b>
 );
 
-export const getBannerButtonText = (dropStage?: Stage): string => {
-	if (dropStage === Stage.Public || Stage.Whitelist) {
+export const getBannerButtonText = (
+	dropStage?: Stage,
+	isDesktopBreakpoint?: boolean,
+): string => {
+	if (!isDesktopBreakpoint) {
+		return 'Learn More';
+	}
+	if (dropStage === Stage.Public || dropStage === Stage.Whitelist) {
 		return 'Mint Now';
 	}
 	if (dropStage === Stage.Sold) {
@@ -40,7 +46,7 @@ export const getBannerLabel = (
 		);
 	}
 	if (dropStage === Stage.Sold) {
-		<>All {wheelsTotal} Wilder Wheels have been minted</>;
+		return <>All {wheelsTotal} Wheels have been minted</>;
 	}
 	return <>Loading drop data...</>;
 };
