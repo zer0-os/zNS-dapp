@@ -3,6 +3,7 @@ import React from 'react';
 
 //- Style Imports
 import styles from './MintWheelsBanner.module.css';
+import arrow from './assets/bidarrow.svg';
 
 type MintWheelsBannerProps = {
 	title: string;
@@ -32,7 +33,10 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 					<p className={`${styles.Label}`}>{label}</p>
 				</div>
 
-				<p className={`${styles.Button}`}>{buttonText + ' ↗'}</p>
+				<p className={`${styles.Button}`}>
+					{buttonText}
+					<img alt="arrow" src={arrow} />
+				</p>
 			</div>
 		</button>
 	);
