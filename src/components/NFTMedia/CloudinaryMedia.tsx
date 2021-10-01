@@ -117,7 +117,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			case 'small':
 				return 'c_fit,h_300,w_300';
 			case 'tiny':
-				return 'c_fit,h_50,w_50';
+				return 'c_fit,h_100,w_100';
 			default:
 				return '';
 		}
