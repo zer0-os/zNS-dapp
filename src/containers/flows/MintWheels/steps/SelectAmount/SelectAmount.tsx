@@ -36,8 +36,12 @@ const SelectAmount = (props: SelectAmountProps) => {
 	const maxUserCanBuy = Math.min(maxUserCanAfford, maxWheelsRemaining);
 	const [amount, setAmount] = useState<string | undefined>();
 
+	const [hasUserAcceptedTerms, setHasUserAcceptedTerms] =
+		useState<boolean>(false);
+
 	// Input errors
 	const [inputError, setInputError] = useState<string | undefined>();
+	const [showTermsError, setShowTermsError] = useState<boolean>(false);
 
 	// We should never hit this, but just in case
 	// there are no wheels remaining
@@ -57,9 +61,15 @@ const SelectAmount = (props: SelectAmountProps) => {
 	const formSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (isAmountValid()) {
-			props.onContinue(Number(amount));
+			if (!hasUserAcceptedTerms) {
+				setShowTermsError(true);
+				setInputError(undefined);
+			} else {
+				props.onContinue(Number(amount));
+			}
 		} else {
 			if (isNaN(Number(amount))) {
+				setInputError('Please enter a valid number');
 				return;
 			}
 			const numWheels = Number(amount);
@@ -83,6 +93,16 @@ const SelectAmount = (props: SelectAmountProps) => {
 				}
 			}
 		}
+	};
+
+	const toggleAcceptTerms = (event: any) => {
+		setHasUserAcceptedTerms(!hasUserAcceptedTerms);
+	};
+
+	const openTerms = (event: React.MouseEvent<HTMLElement>) => {
+		event.stopPropagation();
+		event.preventDefault();
+		window.open('https://wilderworld.com', '_blank')?.focus();
 	};
 
 	const isAmountValid = () => {
@@ -114,11 +134,41 @@ const SelectAmount = (props: SelectAmountProps) => {
 						numeric
 						text={amount}
 					/>
-					{props.error !== undefined && inputError === undefined && (
-						<span className={styles.Error}>{props.error}</span>
-					)}
+
+					<div className={styles.Terms}>
+						<div
+							onClick={toggleAcceptTerms}
+							className={hasUserAcceptedTerms ? styles.Selected : ''}
+						></div>
+						<input
+							type="radio"
+							id="termsAndConditions"
+							name="terms"
+							value="terms"
+							checked={hasUserAcceptedTerms}
+							onClick={toggleAcceptTerms}
+							readOnly
+						/>
+						<label className="no-select" htmlFor="termsAndConditions">
+							I agree to the auction{' '}
+							<button className="text-button" onClick={openTerms}>
+								terms and conditions
+							</button>
+						</label>
+					</div>
+
+					{props.error !== undefined &&
+						inputError === undefined &&
+						!showTermsError && (
+							<span className={styles.Error}>{props.error}</span>
+						)}
 					{inputError !== undefined && (
 						<span className={styles.Error}>{inputError}</span>
+					)}
+					{showTermsError && !inputError && (
+						<span className={styles.Error}>
+							Please accept the terms and conditions to continue
+						</span>
 					)}
 					<FutureButton glow className={styles.Button} onClick={() => {}}>
 						Continue

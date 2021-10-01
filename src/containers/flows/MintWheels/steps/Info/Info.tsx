@@ -89,8 +89,8 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						Each user may mint up to 2 Wheels. The cost for each Wheels is{' '}
-						<>{EthPerWheel} ETH</> plus GAS.
+						Each user may mint up to {props.maxPurchasesPerUser} Wheels. The
+						cost for each Wheels is <>{EthPerWheel} ETH</> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
