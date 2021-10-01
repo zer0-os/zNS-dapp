@@ -87,7 +87,7 @@ const MintWheelsFlowContainer = () => {
 				)
 				?.focus();
 		} else if (dropStage === Stage.Sold) {
-			history.push('wheels');
+			history.push('wheels.genesis');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -170,6 +170,9 @@ const MintWheelsFlowContainer = () => {
 					} else {
 						setCountdownDate(undefined);
 					}
+					if (refetch > 0) {
+						setCountdownDate(undefined);
+					}
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
@@ -225,6 +228,16 @@ const MintWheelsFlowContainer = () => {
 				const primaryData = d as DropData;
 				const currentDropStage = primaryData.dropStage;
 				if (dropStage !== undefined && currentDropStage !== dropStage) {
+					if (currentDropStage === Stage.Upcoming) {
+						setCountdownDate(whitelistDate);
+					} else if (currentDropStage === Stage.Whitelist) {
+						setCountdownDate(publicDate);
+					} else {
+						setCountdownDate(undefined);
+					}
+					if (refetch > 0) {
+						setCountdownDate(undefined);
+					}
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
