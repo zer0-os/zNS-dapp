@@ -97,6 +97,10 @@
 	flex-shrink: 0;
 }
 
+.Button img {
+	margin-left: 6px;
+}
+
 /* PC Resolution */
 @media only screen and (min-width: 768px) {
 	.Content {

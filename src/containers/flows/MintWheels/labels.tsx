@@ -1,4 +1,5 @@
 import { Stage } from './types';
+import { Countdown } from 'components';
 
 const totalLabel = (wheelsMinted: number, wheelsTotal: number) => (
 	<b>{wheelsTotal - wheelsMinted} Remaining</b>
@@ -25,25 +26,71 @@ export const getBannerLabel = (
 	dropStage?: Stage,
 	wheelsMinted?: number,
 	wheelsTotal?: number,
+	countdownDate?: number,
+	onFinish?: () => void,
+	isFinished?: boolean,
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
-		return (
-			<>
-				Wilder Wheels available to whitelisted supporters on 30th September at
-				11.59pm PST
-			</>
-		);
+		if (isFinished) {
+			return <>Wilder Wheels whitelist release starting now</>;
+		} else {
+			return (
+				<>
+					Wilder Wheels available to whitelisted supporters in{' '}
+					{countdownDate && (
+						<Countdown to={countdownDate} onFinish={onFinish} />
+					)}
+				</>
+			);
+		}
 	}
 	if (dropStage === Stage.Whitelist) {
+		if (isFinished) {
+			<>Wilder Wheels public release starting now</>;
+		} else {
+			return (
+				<div style={{ display: 'flex', flexDirection: 'column' }}>
+					<span>
+						Wilder Wheels now available for whitelisted supporters{' '}
+						{totalLabel(wheelsMinted!, wheelsTotal!)}
+					</span>
+					<span>
+						Available to public in{' '}
+						{countdownDate && (
+							<Countdown to={countdownDate} onFinish={onFinish} />
+						)}
+					</span>
+				</div>
+			);
+		}
+	}
+	if (dropStage === Stage.Whitelist) {
+		let timer;
+		if (countdownDate && !isFinished) {
+			timer = (
+				<span style={{ display: 'inline-block', marginTop: 6 }}>
+					Available to everyone in{' '}
+					{countdownDate && (
+						<Countdown to={countdownDate} onFinish={onFinish} />
+					)}
+				</span>
+			);
+		}
+		if (countdownDate && isFinished) {
+			timer = (
+				<span style={{ display: 'inline-block', marginTop: 4 }}>
+					Public release starting now
+				</span>
+			);
+		}
+
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
 					Wilder Wheels now available for whitelisted supporters{' '}
 					{totalLabel(wheelsMinted!, wheelsTotal!)}
 				</span>
-				<span style={{ display: 'inline-block', marginTop: 4 }}>
-					Available to everyone on 1st October 11:59am PST
-				</span>
+				{timer}
 			</div>
 		);
 	}

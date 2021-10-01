@@ -75,6 +75,7 @@ export { default as Tooltip } from './Tooltip/Tooltip';
 export { default as ZNALink } from './ZNALink/ZNALink';
 export { default as Confirmation } from './Confirmation/Confirmation';
 export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator';
+export { default as Countdown } from './Countdown/Countdown';
 
 //- Progress Indicators
 export { default as StepBar } from './ProgressIndicators/StepBar/StepBar';
