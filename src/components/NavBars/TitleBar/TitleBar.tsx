@@ -170,14 +170,14 @@ const TitleBar: React.FC<TitleBarProps> = ({
 						<IconButton
 							iconUri={arrowBackIcon}
 							onClick={onBack}
-							style={{ height: 32, width: 32 }}
+							style={{ height: 32, width: 32, padding:'8px'  }}
 							disabled={!canGoBack}
 							alt={'back'}
 						/>
 						<IconButton
 							iconUri={arrowForwardIcon}
 							onClick={onForward}
-							style={{ height: 32, width: 32, marginLeft: 4 }}
+							style={{ height: 32, width: 32, padding:'8px', marginLeft: 4 }}
 							disabled={!canGoForward}
 							alt={'forward'}
 						/>
