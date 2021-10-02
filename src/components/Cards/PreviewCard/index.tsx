@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * Stateful container for PreviewCard.tsx
  */
@@ -12,7 +13,6 @@ import { useHistory } from 'react-router-dom';
 
 // Copmonent Imports
 import PreviewCard from './PreviewCard';
-import { Overlay, Image } from 'components';
 
 type PreviewCardContainerProps = {
 	children?: React.ReactNode;
@@ -45,17 +45,15 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 	const isMounted = useRef<boolean>();
 
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
-	const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
 	const onViewDomain = () => {
+		const params = new URLSearchParams(window.location.search);
+		params.set('view', 'true');
 		history.push({
 			pathname: domain,
-			search: '?view',
+			search: params.toString(),
 		});
 	};
-
-	const openImagePreview = () => setIsPreviewOpen(true);
-	const closeImagePreview = () => setIsPreviewOpen(false);
 
 	useEffect(() => {
 		isMounted.current = true;
@@ -77,35 +75,17 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 	// React Fragments //
 	/////////////////////
 
-	const modals = () => (
-		<Overlay centered img open={isPreviewOpen} onClose={closeImagePreview}>
-			<Image
-				src={metadata?.image ?? ''}
-				style={{
-					width: 'auto',
-					maxHeight: '80vh',
-					maxWidth: '80vw',
-					objectFit: 'contain',
-					textAlign: 'center',
-				}}
-			/>
-		</Overlay>
-	);
-
 	return (
 		<>
-			{modals()}
 			<PreviewCard
 				creatorId={creatorId}
 				description={metadata?.description || ''}
 				disabled={disabled}
 				domain={domain}
 				image={metadata?.image || ''}
-				isLoading={!metadata}
+				isLoading={!metadata || domain.length === 0}
 				mvpVersion={mvpVersion}
 				name={metadata?.title || ''}
-				onClickImage={openImagePreview}
-				onImageClick={onImageClick}
 				onMakeBid={onButtonClick}
 				onViewDomain={onViewDomain}
 				ownerId={ownerId}

@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 
 //- Hook Imports
 import useNotification from 'lib/hooks/useNotification';
-import {
-	DomainRequestParams,
-	useStakingController,
-} from 'lib/hooks/useStakingController';
+import { useStakingController } from 'lib/hooks/useStakingController';
 import {
 	DomainRequestAndContents,
 	DomainRequestContents,
@@ -118,6 +115,13 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 		params: StakingRequest,
 		setStatus: (status: string) => void,
 	) => {
+		// @todo better validation
+		if (/[A-Z]/.test(params.nft.domain)) {
+			throw Error(
+				`Invalid domain name: ${params.nft.domain} (Uppercase characters)`,
+			);
+		}
+
 		setStatus(`Uploading metadata`);
 
 		let metadata: Maybe<UploadedDomainMetadata>;
