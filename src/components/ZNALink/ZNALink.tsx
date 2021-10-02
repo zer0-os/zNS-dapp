@@ -16,7 +16,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, domain, style }) => {
 			className={`${styles.ZNALink} ${className ? className : ''}`}
 			style={style}
 		>
-			<a className="alt-link" href='https://www.zero.tech/'  target="_blank" rel="noreferrer" style={{ cursor: 'cursor', opacity: 0.75 }}>0://</a>
+			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
 			<Link style={{ textDecoration: 'none', color: 'white' }} to={''}>
 				wilder
 			</Link>

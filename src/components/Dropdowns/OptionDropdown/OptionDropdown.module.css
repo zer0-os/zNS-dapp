@@ -24,7 +24,6 @@
 	position: relative;
 	padding: 16px 32px;
 	cursor: pointer;
-	user-select: none;
 }
 
 .Drawer li::before {
