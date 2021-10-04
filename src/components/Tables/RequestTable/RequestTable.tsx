@@ -283,9 +283,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		switch (columnId) {
 			case 'title': {
 				let a: string = rowA.values[columnId].props.id;
-				console.log(a);
 				let b: string = rowB.values[columnId].props.id;
-				console.log(b);
 				if (a > b) {
 					return 1;
 				}
@@ -297,9 +295,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			}
 			case 'stakeAmount': {
 				let a = Number(rowA.values[columnId].props.children[0]);
-				console.log(a);
 				let b = Number(rowB.values[columnId].props.children[0]);
-				console.log(b);
 				if (Number.isNaN(a)) {
 					// Blanks and non-numeric strings to bottom
 					a = desc ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
@@ -318,9 +314,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			}
 			case 'date': {
 				let a: Date = rowA.values[columnId].props.children;
-				console.log(a);
 				let b: Date = rowB.values[columnId].props.children;
-				console.log(b);
 				if (a > b) {
 					return 1;
 				}
@@ -335,9 +329,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			}
 			case 'creator': {
 				let a: number = Number(rowA.values[columnId].props.id);
-				console.log(a);
 				let b: number = Number(rowB.values[columnId].props.id);
-				console.log(b);
 				if (a > b) {
 					return 1;
 				}
