@@ -1,6 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
+import {
+	Column,
+	useTable,
+	useGlobalFilter,
+	useFilters,
+	useSortBy,
+	Row,
+} from 'react-table';
 
 //- Component Imports
 import {
@@ -267,6 +274,85 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// React-Table //
 	/////////////////
 
+	const customSort = (
+		rowA: Row,
+		rowB: Row,
+		columnId: string,
+		desc: boolean,
+	) => {
+		switch (columnId) {
+			case 'title': {
+				let a: string = rowA.values[columnId].props.id;
+				console.log(a);
+				let b: string = rowB.values[columnId].props.id;
+				console.log(b);
+				if (a > b) {
+					return 1;
+				}
+				if (a < b) {
+					return -1;
+				}
+
+				return 0;
+			}
+			case 'stakeAmount': {
+				let a = Number(rowA.values[columnId].props.children[0]);
+				console.log(a);
+				let b = Number(rowB.values[columnId].props.children[0]);
+				console.log(b);
+				if (Number.isNaN(a)) {
+					// Blanks and non-numeric strings to bottom
+					a = desc ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+				}
+				if (Number.isNaN(b)) {
+					b = desc ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+				}
+				if (a > b) {
+					return 1;
+				}
+				if (a < b) {
+					return -1;
+				}
+
+				return 0;
+			}
+			case 'date': {
+				let a: Date = rowA.values[columnId].props.children;
+				console.log(a);
+				let b: Date = rowB.values[columnId].props.children;
+				console.log(b);
+				if (a > b) {
+					return 1;
+				}
+				if (a < b) {
+					return -1;
+				}
+
+				return 0;
+			}
+			case 'accepted': {
+				break;
+			}
+			case 'creator': {
+				let a: number = Number(rowA.values[columnId].props.id);
+				console.log(a);
+				let b: number = Number(rowB.values[columnId].props.id);
+				console.log(b);
+				if (a > b) {
+					return 1;
+				}
+				if (a < b) {
+					return -1;
+				}
+
+				return 0;
+			}
+			default:
+				break;
+		}
+		return;
+	};
+
 	// Table Data
 	const displayData: DomainRequestAndContents[] = useMemo(() => {
 		if (
@@ -292,15 +378,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			}
 
 			// @TODO Move sorting to React-Table built-in sorting
-			return filtered.sort(
-				(a, b) => Number(b.request.timestamp) - Number(a.request.timestamp),
-			);
+			return filtered;
 		}
-		return (
-			loadedRequests.sort(
-				(a, b) => Number(b.request.timestamp) - Number(a.request.timestamp),
-			) || []
-		);
+		return loadedRequests || [];
 	}, [loadedRequests, searchQuery, statusFilter]);
 
 	// Column Setup
@@ -318,6 +398,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 				accessor: (d: DomainRequestAndContents) => (
 					<Member id={d.request.requestor.id} name={''} image={''} />
 				),
+				sortType: customSort,
 			},
 			{
 				Header: () => <div className={styles.left}>Artwork Info</div>,
@@ -331,6 +412,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						pending
 					/>
 				),
+				sortType: customSort,
 			},
 			{
 				Header: () => <div className={styles.left}>Request Date</div>,
@@ -342,6 +424,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						</div>
 					);
 				},
+				sortType: customSort,
 			},
 			{
 				Header: () => <div className={styles.right}>Staked Tokens</div>,
@@ -354,6 +437,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						LOOT
 					</div>
 				),
+				sortType: customSort,
 			},
 			{
 				Header: () => <div className={styles.center}>Status</div>,
@@ -404,6 +488,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						)}
 					</div>
 				),
+				disableSortBy: true,
 			},
 		],
 		[displayData],
@@ -414,6 +499,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		{ columns, data: displayData },
 		useFilters,
 		useGlobalFilter,
+		useSortBy,
 	);
 	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
 		tableHook;
@@ -529,8 +615,20 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								{headerGroups.map((headerGroup) => (
 									<tr {...headerGroup.getHeaderGroupProps()}>
 										{headerGroup.headers.map((column) => (
-											<th {...column.getHeaderProps()}>
+											<th
+												{...column.getHeaderProps(
+													column.getSortByToggleProps(),
+												)}
+											>
 												{column.render('Header')}
+												{/* Add a sort direction indicator */}
+												<span>
+													{column.isSorted
+														? column.isSortedDesc
+															? ' 🔽'
+															: ' 🔼'
+														: ''}
+												</span>
 											</th>
 										))}
 									</tr>
