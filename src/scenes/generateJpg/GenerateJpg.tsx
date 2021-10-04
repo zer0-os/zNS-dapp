@@ -56,6 +56,8 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({
 
 	///////////////////////////////////////
 
+	const material = new Three.MeshStandardMaterial();
+
 	useEffect(() => {
 		if (type == 'fbx') {
 			//ENV MAP
@@ -67,6 +69,14 @@ const GenerateJpg: React.FC<GenerateJpgProps> = ({
 					loader.load(
 						url,
 						function (fbx) {
+							fbx.traverse(function (child) {
+								if ((child as THREE.Mesh).isMesh) {
+									(child as THREE.Mesh).material = (
+										child as THREE.Mesh
+									).material;
+								}
+							});
+
 							scene.add(fbx);
 
 							renderer.render(scene, camera);

@@ -72,6 +72,7 @@ export interface NftParams {
 	previewImage?: Buffer;
 	dynamic: boolean;
 	locked: boolean;
+	model?: File;
 }
 
 // Interface for an NFT Status Card

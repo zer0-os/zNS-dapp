@@ -49,6 +49,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	const [domain, setDomain] = useState(token ? token.domain : '');
 	const [locked] = useState(token ? token.locked : true);
 	const [errors, setErrors] = useState<Error[]>([]);
+	const [model, setModel] = useState<File | undefined>();
 
 	const [loadingThumbnail, setLoadingThumbnail] = useState(true);
 
@@ -95,6 +96,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 				let extension = fileName.split('.').pop();
 				console.log(extension?.toUpperCase() + ' extension selected.');
 				setMediaType(extension?.toLowerCase());
+				setModel(event.target.files[0]);
 			} else return;
 			setPreviewImage(url);
 
