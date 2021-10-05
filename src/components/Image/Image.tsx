@@ -1,15 +1,22 @@
-import { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import styles from './Image.module.css';
 // import placeholder from './'
 
 // @TODO: Refactor props to not by 'any' type
 const Image = (props: any) => {
-	const refVideo = useRef<HTMLVideoElement | undefined>(null);
 	const [loaded, setLoaded] = useState(false);
 	const [tryVideo, setTryVideo] = useState(false);
 
 	const containerRef = useRef<HTMLDivElement>(null);
+
+	const click = (e: any) => {
+		if (!loaded || (tryVideo && props.controls)) {
+			e.stopPropagation();
+		} else {
+			if (props.onClick) props.onClick();
+		}
+	};
 
 	const load = () => setLoaded(true);
 	const err = (e: any) => {
@@ -19,18 +26,9 @@ const Image = (props: any) => {
 	};
 
 	useEffect(() => {
-		if (!refVideo.current) {
-			return;
-		}
-
-		if (props.unmute) {
-			refVideo.current.defaultMuted = false;
-			refVideo.current.muted = false;
-		} else {
-			refVideo.current.defaultMuted = true;
-			refVideo.current.muted = true;
-		}
-	}, [tryVideo, props.unmute]);
+		setTryVideo(false);
+		setLoaded(false);
+	}, [props.src]);
 
 	return (
 		<div
@@ -39,13 +37,14 @@ const Image = (props: any) => {
 				position: 'relative',
 				width: '100%',
 				height: '100%',
-				display: 'inline-block',
 				maxHeight: 'inherit',
 				...props.style,
 			}}
+			className={styles.Container}
+			onClick={click}
 		>
 			{!loaded && (
-				<div {...props} className={styles.Loading}>
+				<div {...props} onClick={click} className={styles.Loading}>
 					<div className={styles.Spinner}></div>
 				</div>
 			)}
@@ -64,14 +63,14 @@ const Image = (props: any) => {
 					src={props.src}
 					alt={props.alt || ''}
 					onError={err}
+					onClick={click}
 				/>
 			)}
 			{tryVideo && (
 				<video
 					{...props}
-					autoPlay
-					loop
-					ref={refVideo}
+					autoPlay={true}
+					muted
 					className={`${props.className ? props.className : ''} ${
 						styles.Image
 					} ${styles.Video}`}
@@ -82,11 +81,11 @@ const Image = (props: any) => {
 					}}
 					preload="metadata"
 					onLoadedMetadata={load}
-					playsInline
+					onClick={click}
 				/>
 			)}
 		</div>
 	);
 };
 
-export default Image;
+export default React.memo(Image);

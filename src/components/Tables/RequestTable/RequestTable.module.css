@@ -57,6 +57,7 @@
 
 .RequestTable th {
 	color: var(--color-primary-lighter-3);
+	font-size: var(--font-size-smaller);
 	font-weight: 700;
 }
 

@@ -1,0 +1,28 @@
+.Row {
+	cursor: pointer;
+	/* transition: background var(--animation-time-short) linear; */
+}
+
+.Row:hover {
+	background: var(--color-background-alt-50);
+}
+
+.Row td:first-of-type {
+	width: 50px;
+}
+
+.Right {
+	text-align: right;
+}
+
+.Right > * {
+	margin-left: auto;
+}
+
+.Left {
+	text-align: left;
+}
+
+.Left > * {
+	margin-right: auto;
+}

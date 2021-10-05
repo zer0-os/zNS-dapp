@@ -52,6 +52,7 @@
 .Asset {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 
 	width: 398.33px;
 	height: 220px;
@@ -101,14 +102,13 @@
 	flex-direction: column;
 	justify-content: space-between;
 
-	margin: 19px 0 0 24px;
+	margin: 8px 24px 0 24px;
 }
 
 .Body h5 {
 	color: white;
 	font-size: 24px;
-	font-weight: 400;
-	margin-bottom: 6px;
+	font-weight: 700;
 
 	/* white-space: nowrap; */
 	overflow: hidden;
@@ -116,7 +116,7 @@
 }
 
 .Domain {
-	font-weight: 700;
+	color: var(--color-accent-1);
 }
 
 .Description {
@@ -197,10 +197,6 @@
 	color: var(--color-primary-lighter-3);
 }
 
-.Buy span > span {
-	font-size: 16px;
-}
-
 .Children {
 	padding: 24.5px 8px 26px 8px;
 }
@@ -234,6 +230,7 @@
 
 	.Body {
 		justify-content: flex-start;
+		margin-right: 0;
 	}
 
 	.Description {
@@ -276,7 +273,7 @@
 	}
 
 	.Description {
-		margin-top: 8px !important;
+		margin-top: 16px !important;
 	}
 
 	.Body {
@@ -299,7 +296,7 @@
 	}
 
 	.Members {
-		margin-top: 8px;
+		margin-top: 24px;
 		flex-direction: row;
 		justify-content: flex-start;
 	}

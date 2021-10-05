@@ -4,7 +4,7 @@
 
 	max-height: 70vh;
 
-	overflow: scroll;
+	overflow: auto;
 
 	background: radial-gradient(
 			56.93% 56.93% at 50% 50%,
@@ -32,14 +32,6 @@
 	width: 200px;
 
 	overflow: hidden;
-
-	cursor: pointer;
-
-	transition: transform var(--animation-time-medium) ease-in-out;
-}
-
-.Image:hover {
-	transform: scale(1.05);
 }
 
 .Image img {
@@ -53,6 +45,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 
 	width: 240px;
 	max-width: 240px;
@@ -71,6 +64,10 @@
 	font-weight: 700;
 }
 
+.Info span {
+	overflow-wrap: break-word;
+}
+
 .Info p {
 	padding: 0;
 
@@ -82,9 +79,4 @@
 	margin-top: 12px;
 
 	overflow-y: auto;
-}
-
-.Info p:last-of-type {
-	position: absolute;
-	bottom: 0;
 }

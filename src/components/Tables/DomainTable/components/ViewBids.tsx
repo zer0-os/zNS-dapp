@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from 'react';
 
 import { useBidProvider } from 'lib/providers/BidProvider';
@@ -50,13 +51,20 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 	}, [domain]);
 
 	return (
-		<FutureButton
-			onClick={handleClick}
-			glow={!isLoading && bids !== undefined}
-			style={style}
-		>
-			View Bids
-		</FutureButton>
+		<>
+			{bids !== undefined && bids.length > 0 && (
+				<FutureButton
+					onClick={handleClick}
+					glow={!isLoading && bids !== undefined}
+					style={style}
+				>
+					View Bids
+				</FutureButton>
+			)}
+			{bids === undefined && (
+				<div style={{ textAlign: 'right', marginRight: '48px' }}>No Bids</div>
+			)}
+		</>
 	);
 };
 

@@ -73,9 +73,7 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 			{!hideButtons && !showLoading && errorText && <div>{errorMessage}</div>}
 			{!hideButtons && showLoading && loadingText && (
 				<div className={styles.Buttons}>
-					<LoadingIndicator
-						text={loadingText}
-					/>
+					<LoadingIndicator text={loadingText} />
 				</div>
 			)}
 		</div>

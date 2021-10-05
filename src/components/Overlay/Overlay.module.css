@@ -16,7 +16,7 @@
 	z-index: 9000;
 	opacity: 0;
 
-	background: rgba(0, 0, 0, 0.7);
+	background: rgba(0, 0, 0, 0.9);
 	transition: backdrop-filter 0.2s;
 }
 
@@ -25,12 +25,17 @@
 	width: 100%;
 }
 
+.FullScreen .Content {
+	width: 100%;
+}
+
 .FullScreen > div {
 	height: 100%;
 }
 
-.Container > * {
-	margin: 0 auto;
+.Container {
+	display: flex;
+	justify-content: center;
 }
 
 .Centered {
@@ -63,6 +68,13 @@
 
 	/* @todo temporarily disabled backdrop blur for performance */
 	/* backdrop-filter: blur(30px) opacity(0); */
+}
+
+.Close {
+	position: fixed;
+	top: 32px;
+	right: 32px;
+	background: rgba(255, 255, 255, 0.1);
 }
 
 @keyframes open {

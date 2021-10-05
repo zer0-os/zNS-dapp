@@ -3,14 +3,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 
 //- Component Imports
-import {
-	Artwork,
-	Confirmation,
-	FutureButton,
-	Overlay,
-	SearchBar,
-	Spinner,
-} from 'components';
+import { Artwork, Overlay, SearchBar, Spinner } from 'components';
 import { MakeABid } from 'containers';
 
 //- Library Imports
@@ -40,10 +33,6 @@ type BidTableDataWithHighest = {
 	highestBid: Bid;
 };
 
-enum Modals {
-	Accept,
-}
-
 const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 	//////////////////
 	// State / Refs //
@@ -56,14 +45,11 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 
 	// Searching
 	const [searchQuery, setSearchQuery] = useState('');
-	const [statusFilter, setStatusFilter] = useState('');
-	const [domainFilter, setDomainFilter] = useState('');
+	const [statusFilter] = useState('');
 
 	const [bidTrigger, setBidTrigger] = useState(0);
 	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
-	const [modal, setModal] = useState<Modals | undefined>();
-	const [acceptingBid, setAcceptingBid] = useState<Bid | undefined>();
 
 	//////////
 	// Data //
@@ -147,12 +133,6 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 		if (onNavigate) onNavigate(to);
 	};
 
-	const closeModal = () => setModal(undefined);
-
-	const makeABid = (domain: Domain) => {
-		setBiddingOn(domain);
-	};
-
 	// @todo less hacky way to do this
 	const hasBidded = () => {
 		setBidTrigger(bidTrigger + 1);
@@ -160,10 +140,6 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 	};
 
 	const cancelBid = () => setBiddingOn(undefined);
-
-	const acceptBidConfirmed = () => {
-		setAcceptingBid(undefined);
-	};
 
 	const fetchDomainData = async (bid: Bid) => {
 		try {
@@ -273,12 +249,6 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 	const { getTableProps, getTableBodyProps, headerGroups, prepareRow, rows } =
 		tableHook;
 
-	///////////////
-	// Fragments //
-	///////////////
-
-	const modals = () => <></>;
-
 	////////////
 	// Render //
 	////////////
@@ -286,7 +256,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 	return (
 		<div style={style} className={styles.RequestTableContainer}>
 			{biddingOn !== undefined && (
-				<Overlay onClose={cancelBid} centered open={biddingOn !== undefined}>
+				<Overlay onClose={cancelBid} open={biddingOn !== undefined}>
 					<MakeABid domain={biddingOn!} onBid={hasBidded} />
 				</Overlay>
 			)}

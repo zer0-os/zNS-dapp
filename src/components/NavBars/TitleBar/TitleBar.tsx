@@ -186,7 +186,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 					{!isSearchActive && (
 						<ZNALink
 							className={styles.ZNA}
-							style={{ marginLeft: 16, marginTop: 3 }}
+							style={{ marginLeft: 16 }}
 							domain={domain}
 						/>
 					)}
@@ -206,10 +206,11 @@ const TitleBar: React.FC<TitleBarProps> = ({
 				</div>
 				<a
 					className={`${styles.Info} alt-link`}
-					href="https://info.wilderworld.com/"
+					href="https://www.wilderworld.com/"
 					target="_blank"
+					rel="noreferrer"
 				>
-					About
+					Home
 				</a>
 				<div className={styles.Actions}>{children}</div>
 			</div>
