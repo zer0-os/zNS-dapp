@@ -100,12 +100,14 @@ const Overlay: React.FC<OverlayProps> = ({
 			} ${centered ? styles.Centered : ''}
 			${fullScreen ? styles.FullScreen : ''}`}
 		>
-			<IconButton
-				className={styles.Close}
-				onClick={onClose}
-				iconUri={closeIcon}
-				style={{ height: 32, width: 32, padding: 6 }}
-			/>
+			{hasCloseButton && (
+				<IconButton
+					className={styles.Close}
+					onClick={onClose}
+					iconUri={closeIcon}
+					style={{ height: 32, width: 32, padding: 6 }}
+				/>
+			)}
 			<div className={`overlay ${styles.Container} ${img ? styles.Image : ''}`}>
 				<div className={`overlay ${styles.Content}`}>{children}</div>
 				<div style={{ display: centered ? 'none' : 'block', height: 64 }}></div>

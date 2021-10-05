@@ -10,10 +10,14 @@
  */
 
 // Buttons
+export { default as BidButton } from './buttons/BidButton/BidButton';
 export { default as ConnectWalletButton } from './buttons/ConnectWalletButton/ConnectWalletButton';
 
 // Cards
 export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/CurrentDomainPreview';
+
+//Prompts
+export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/ConnectWalletPrompt';
 
 // Flows
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
@@ -34,3 +38,6 @@ export { default as BidList } from './lists/BidList/BidList';
 // Other
 export { default as NFTView } from './other/NFTView/NFTView';
 export { default as Request } from './other/Request/Request';
+
+// Legacy
+export { default as Enlist } from './legacy/Enlist/Enlist';

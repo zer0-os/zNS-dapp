@@ -104,6 +104,12 @@
 	margin-left: 16px;
 }
 
+.Close {
+	position: relative;
+	bottom: 32px;
+	float: right;
+}
+
 .Confirmation {
 	width: 588px;
 	padding: 32px 40px 40px 40px;

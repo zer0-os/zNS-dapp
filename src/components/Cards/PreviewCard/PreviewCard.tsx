@@ -9,6 +9,7 @@ import { randomName, randomImage } from 'lib/Random';
 
 //- Component Imports
 import { FutureButton, Member, NFTMedia } from 'components';
+import { BidButton } from 'containers';
 import { Maybe } from 'lib/types';
 
 type PreviewCardProps = {
@@ -98,13 +99,13 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
-					<FutureButton
+					<BidButton
 						className={styles.Bid}
 						glow={disabled !== true}
 						onClick={makeBid}
 					>
 						MAKE A BID
-					</FutureButton>
+					</BidButton>
 					<FutureButton
 						className={styles.View}
 						glow
