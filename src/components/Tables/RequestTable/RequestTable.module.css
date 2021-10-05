@@ -93,7 +93,7 @@
 
 .RequestTable > tbody > tr:hover,
 .RequestTable > tbody > tr:hover {
-	background: rgba(78, 0, 132, 0.5);
+	background: var(--color-background-alt-50);
 }
 
 .RequestTable tbody tr td:first-of-type,
