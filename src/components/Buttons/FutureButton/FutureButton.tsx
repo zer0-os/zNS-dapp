@@ -11,7 +11,6 @@ type FutureButtonProps = {
 	glow?: boolean;
 	loading?: boolean;
 	alt?: boolean;
-	isWalletConnected?: string;
 };
 
 // @TODO Should make glow the default state since it's much more prevalent in the design
@@ -24,7 +23,6 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	glow,
 	loading,
 	alt,
-	isWalletConnected,
 }) => {
 	const [hasHovered, setHovered] = useState(false);
 	const [isSelected, setSelected] = useState(false);

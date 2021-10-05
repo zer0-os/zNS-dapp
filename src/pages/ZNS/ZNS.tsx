@@ -532,7 +532,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 												: addNotification('Please connect your wallet.');
 										}}
 										loading={loading}
-										isWalletConnected={account}
 									>
 										{pageWidth <= 900 && 'MINT'}
 										{pageWidth > 900 && isOwnedByUser === true && 'MINT NFT'}
