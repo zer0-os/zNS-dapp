@@ -24,7 +24,9 @@ const CountdownBanner = () => {
 	// Variables to render in banner
 	const [text, setText] = useState<string | undefined>();
 	const [buttonText, setButtonText] = useState<string | undefined>();
-	const [buttonLink, setButtonLink] = useState<string | undefined>();
+	const [buttonLink, setButtonLink] = useState<string | undefined>(
+		CountdownData.domain,
+	);
 	const [timeRemainingLabel, setTimeRemainingLabel] = useState<
 		string | undefined
 	>();
@@ -69,6 +71,7 @@ const CountdownBanner = () => {
 
 	// Navigates to button link
 	const onClick = () => {
+		console.log('yo');
 		if (buttonLink) {
 			history.push(buttonLink);
 		}
