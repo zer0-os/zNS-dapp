@@ -77,6 +77,7 @@ const Overlay: React.FC<OverlayProps> = ({
 	};
 
 	const closeOverlay = (e: React.MouseEvent) => {
+		e.stopPropagation();
 		const target = e.target as HTMLInputElement;
 		const overlay = document.querySelector(domId);
 		if (
