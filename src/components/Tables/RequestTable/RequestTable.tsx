@@ -615,7 +615,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 												)}
 											>
 												{column.render('Header')}
-												{/* Add a sort direction indicator */}
+												{/* Add a sort direction indicator
 												<span>
 													{column.isSorted
 														? column.isSortedDesc
@@ -623,6 +623,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 															: ' 🔼'
 														: ''}
 												</span>
+												 */}
 											</th>
 										))}
 									</tr>

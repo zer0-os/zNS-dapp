@@ -488,13 +488,15 @@ const DomainTable: React.FC<DomainTableProps> = ({
 													)}
 												>
 													{column.render('Header')}
-													<span>
-														{column.isSorted
-															? column.isSortedDesc
-																? ' 🔽'
-																: ' 🔼'
-															: ''}
-													</span>
+													{/* Add a sort direction indicator
+												<span>
+													{column.isSorted
+														? column.isSortedDesc
+															? ' 🔽'
+															: ' 🔼'
+														: ''}
+												</span>
+												 */}
 												</th>
 											))}
 										</tr>
