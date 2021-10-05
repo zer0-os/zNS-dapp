@@ -91,6 +91,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
+	const downloadAsset = () => {
+		if (znsDomain?.domain?.image) {
+			window.open(znsDomain.domain.image, '_blank');
+		}
+	};
+
 	const openBidOverlay = () => {
 		if (!isMounted.current) return;
 		if (!znsDomain.domain || isOwnedByYou || !active) return;

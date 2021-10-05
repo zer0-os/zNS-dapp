@@ -35,14 +35,10 @@ import {
 	MintPreview,
 	TransferPreview,
 	Spinner,
+	CountdownBanner,
 } from 'components';
 
-import {
-	SubdomainTable,
-	CurrentDomainPreview,
-	MintWheels,
-	ProfileModal,
-} from 'containers';
+import { SubdomainTable, CurrentDomainPreview, ProfileModal } from 'containers';
 
 //- Library Imports
 import { useTransferProvider } from 'lib/providers/TransferProvider';
@@ -499,7 +495,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					</TitleBar>
 				</FilterBar>
 
-				<MintWheels />
+				<CountdownBanner />
 
 				{previewCard()}
 

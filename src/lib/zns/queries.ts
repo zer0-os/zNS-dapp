@@ -41,7 +41,7 @@ export const byIdQuery = gql`
 				id
 				name
 			}
-			subdomains {
+			subdomains(first: 1000) {
 				id
 				name
 				metadata
@@ -74,7 +74,7 @@ export const byNameQuery = gql`
 				id
 				name
 			}
-			subdomains {
+			subdomains(first: 1000) {
 				id
 				name
 				metadata
@@ -100,14 +100,14 @@ export const byNameQuery = gql`
 
 export const childDomainsQuery = gql`
 	query ChildrenDomains($id: ID!) {
-		domains(where: { parent: $parent }) {
+		domains(where: { parent: $parent }, first: 1000) {
 			id
 			name
 			parent {
 				id
 				name
 			}
-			subdomains {
+			subdomains(first: 1000) {
 				id
 				name
 				metadata
@@ -140,7 +140,7 @@ export const ownedByAccountQuery = gql`
 				id
 				name
 			}
-			subdomains {
+			subdomains(first: 1000) {
 				id
 				name
 				metadata
