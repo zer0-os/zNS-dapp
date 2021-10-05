@@ -49,7 +49,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 			onMouseUp={handleClick}
 			style={style}
 		>
-			<div className={`${styles.Content}`}>
+			<div className={styles.Content}>
 				{!loading && children}
 				{loading && <div className={styles.Spinner}></div>}
 			</div>
