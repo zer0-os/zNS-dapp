@@ -41,7 +41,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	return (
 		<button
 			className={`${styles.futureButton} ${
-				glow ? '' : styles.futureButtonUnActive
+				glow ? '' : styles.futureButtonInactive
 			} ${isSelected ? styles.selected : ''} ${glow ? styles.glow : ''} ${
 				loading ? styles.Loading : ''
 			} ${alt ? styles.Alt : ''} ${className ? className : ''}`}

@@ -11,7 +11,7 @@
 	--border-color-hover: #fff;
 }
 
-.futureButtonUnActive {
+.futureButtonInactive {
 	box-shadow: none;
 	--box-shadow-heavy: none;
 	--bg: none !important;
@@ -19,11 +19,11 @@
 	--color: #808080;
 }
 
-.futureButtonUnActive.Content {
+.futureButtonInactive.Content {
 	color: #808080;
 }
 
-.futureButtonUnActive.Alt {
+.futureButtonInactive.Alt {
 	color: #fff;
 	--border-color: #fff;
 }
@@ -54,7 +54,7 @@
 	opacity: 0.6;
 }
 
-.futureButton:not(.futureButtonUnActive):hover::after {
+.futureButton:not(.futureButtonInactive):hover::after {
 	border-color: var(--border-color-hover);
 }
 
@@ -230,7 +230,7 @@
 	animation-timing-function: ease-in-out;
 }
 
-.futureButton:hover:not(.selected, .futureButtonUnActive) .wash {
+.futureButton:hover:not(.selected, .futureButtonInActive) .wash {
 	animation: expand 0.2s forwards;
 	animation-timing-function: ease-in-out;
 }
