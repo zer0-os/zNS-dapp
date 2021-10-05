@@ -30,7 +30,7 @@ const Overlay: React.FC<OverlayProps> = ({
 	nested,
 	fullScreen,
 	style,
-	hasCloseButton,
+	hasCloseButton = true,
 }) => {
 	const [inDOM, setInDOM] = useState<boolean>(false);
 	const [domId, setDomId] = useState('');
