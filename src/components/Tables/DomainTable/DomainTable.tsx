@@ -1,6 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
+import {
+	Column,
+	useTable,
+	useGlobalFilter,
+	useFilters,
+	useSortBy,
+	Row,
+} from 'react-table';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
@@ -28,6 +35,7 @@ import styles from './DomainTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import { useBidProvider } from 'lib/providers/BidProvider';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -77,7 +85,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [searchQuery, setSearchQuery] = useState('');
-
+	const { getBidsForDomain } = useBidProvider();
+	let highestBidMap = new Map();
+	let numBidsMap = new Map();
 	const [modal, setModal] = useState<Modals | undefined>();
 
 	// Data state
@@ -171,17 +181,116 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		if (!isMounted.current) return;
 		if (onLoad) onLoad();
+		domains.forEach((element) => {
+			getBids(element);
+		});
 	}, [domains]);
 
 	useEffect(() => {
 		checkHeight();
 	}, [containerRef.current?.offsetHeight, searchQuery, isGridView]);
 
+	//map the highestBids for actualDomains
+	const getBids = async (domain: Domain) => {
+		const bidsWithYours = await getBidsForDomain(domain);
+		const bidsWithoutYours = await getBidsForDomain(domain, true);
+
+		if (!isMounted.current) {
+			return;
+		}
+
+		if (!bidsWithYours || !bidsWithoutYours) {
+			return;
+		}
+
+		if (bidsWithYours.length === 0) {
+			highestBidMap.set(domain.name, 0);
+			numBidsMap.set(domain.name, 0);
+		} else {
+			highestBidMap.set(domain.name, bidsWithYours[0].amount);
+			numBidsMap.set(domain.name, bidsWithoutYours.length);
+		}
+	};
+
 	/////////////////
 	// React Table //
 	/////////////////
 
 	const data = domains;
+
+	const customSort = (
+		rowA: Row,
+		rowB: Row,
+		columnId: string,
+		desc: boolean,
+	) => {
+		switch (columnId) {
+			case 'image': {
+				let a: string = rowA.values[columnId];
+				let b: string = rowB.values[columnId];
+
+				let compare = a.localeCompare(b);
+
+				if (compare > 0) {
+					return 1;
+				}
+				if (compare < 0) {
+					return -1;
+				}
+
+				return 0;
+			}
+			case 'numBids': {
+				let a = Number(
+					numBidsMap.get(
+						rowA.values[columnId].props.children.props.domain.name,
+					),
+				);
+				let b = Number(
+					numBidsMap.get(
+						rowB.values[columnId].props.children.props.domain.name,
+					),
+				);
+				if (Number.isNaN(a)) {
+					// Blanks and non-numeric strings to bottom
+					a = desc ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+				}
+				if (Number.isNaN(b)) {
+					b = desc ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+				}
+				if (a > b) {
+					return 1;
+				}
+				if (a < b) {
+					return -1;
+				}
+
+				return 0;
+			}
+			case 'highestBid': {
+				let a = Number(highestBidMap.get(rowA.values[columnId]));
+				let b = Number(highestBidMap.get(rowB.values[columnId]));
+				if (Number.isNaN(a)) {
+					// Blanks and non-numeric strings to bottom
+					a = desc ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+				}
+				if (Number.isNaN(b)) {
+					b = desc ? Number.NEGATIVE_INFINITY : Number.POSITIVE_INFINITY;
+				}
+				if (a > b) {
+					return 1;
+				}
+				if (a < b) {
+					return -1;
+				}
+
+				return 0;
+			}
+			default:
+				break;
+		}
+		return;
+	};
 
 	const columns = useMemo<Column<Domain>[]>(
 		() => [
@@ -194,6 +303,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				Header: () => <div style={{ textAlign: 'left' }}>Domain</div>,
 				id: 'image',
 				accessor: ({ name }) => name,
+				sortType: customSort,
 				Cell: (row: any) => (
 					<Artwork
 						domain={row.row.original.name}
@@ -207,9 +317,14 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			{
 				Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
 				id: 'highestBid',
-				accessor: (domain: Domain) => (
+				sortType: customSort,
+				accessor: ({ name }) => name,
+				Cell: (row: any) => (
 					<div style={{ textAlign: 'right' }}>
-						<HighestBid domain={domain} refreshKey={domainToRefresh} />
+						<HighestBid
+							domain={row.row.original}
+							refreshKey={row.row.original}
+						/>
 					</div>
 				),
 			},
@@ -225,6 +340,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						/>
 					</div>
 				),
+				sortType: customSort,
 			},
 			{
 				id: 'bid',
@@ -254,6 +370,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						</>
 					);
 				},
+				disableSortBy: true,
 			},
 		],
 		[domains, userId, domainToRefresh],
@@ -267,6 +384,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		{ columns, data, initialState },
 		useFilters,
 		useGlobalFilter,
+		useSortBy,
 	);
 	const {
 		getTableProps,
@@ -364,8 +482,19 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									{headerGroups.map((headerGroup) => (
 										<tr {...headerGroup.getHeaderGroupProps()}>
 											{headerGroup.headers.map((column) => (
-												<th {...column.getHeaderProps()}>
+												<th
+													{...column.getHeaderProps(
+														column.getSortByToggleProps(),
+													)}
+												>
 													{column.render('Header')}
+													<span>
+														{column.isSorted
+															? column.isSortedDesc
+																? ' 🔽'
+																: ' 🔼'
+															: ''}
+													</span>
 												</th>
 											))}
 										</tr>

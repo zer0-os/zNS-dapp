@@ -284,13 +284,15 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			case 'title': {
 				let a: string = rowA.values[columnId].props.id;
 				let b: string = rowB.values[columnId].props.id;
-				if (a > b) {
+
+				let compare = a.localeCompare(b);
+
+				if (compare > 0) {
 					return 1;
 				}
-				if (a < b) {
+				if (compare < 0) {
 					return -1;
 				}
-
 				return 0;
 			}
 			case 'stakeAmount': {
