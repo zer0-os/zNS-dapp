@@ -41,10 +41,10 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	return (
 		<button
 			className={`${styles.futureButton} ${
-				glow ? ' ' : styles.futureButtonUnActive
+				glow ? '' : styles.futureButtonUnActive
 			} ${isSelected ? styles.selected : ''} ${glow ? styles.glow : ''} ${
 				loading ? styles.Loading : ''
-			} ${alt ? styles.Alt : ''} ${className ? className : ' '}`}
+			} ${alt ? styles.Alt : ''} ${className ? className : ''}`}
 			onMouseEnter={handleHover}
 			onMouseUp={handleClick}
 			style={style}
