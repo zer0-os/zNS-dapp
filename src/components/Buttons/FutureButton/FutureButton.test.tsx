@@ -28,7 +28,7 @@ afterEach(() => {
 	jest.clearAllMocks();
 });
 
-describe('FutureButton componnent', () => {
+describe('FutureButton component', () => {
 	it('Renders FutureButton', () => {
 		const { getByTestId } = renderComponent();
 

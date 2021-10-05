@@ -27,7 +27,7 @@ afterEach(() => {
 	jest.clearAllMocks();
 });
 
-describe('Member componnent', () => {
+describe('Member component', () => {
 	it('Renders Member', () => {
 		const { getByTestId } = renderComponent();
 

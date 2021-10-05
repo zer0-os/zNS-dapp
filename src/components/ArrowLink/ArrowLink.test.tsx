@@ -13,7 +13,7 @@ afterEach(() => {
 	jest.clearAllMocks();
 });
 
-describe('ArrowLink componnent', () => {
+describe('ArrowLink component', () => {
 	it('Renders ArrowLink', () => {
 		const { getByTestId } = renderComponent();
 
