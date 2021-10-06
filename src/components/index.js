@@ -54,7 +54,6 @@ export { default as GenericTable } from './Tables/GenericTable/GenericTable';
 //- Other
 export { default as ArrowLink } from './ArrowLink/ArrowLink';
 export { default as Artwork } from './Artwork/Artwork';
-export { default as ButtonTray } from './ButtonTray/ButtonTray.js';
 export { default as ConnectToWallet } from './ConnectToWallet/ConnectToWallet';
 export { default as CopyInput } from './CopyInput/CopyInput.js';
 export { default as HorizontalScroll } from './HorizontalScroll/HorizontalScroll';

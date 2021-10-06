@@ -16,7 +16,7 @@ import {
 /*
 import { getMetadata } from 'lib/metadata';
 */
-import { randomImage, randomName } from 'lib/Random';
+import { randomImage, randomName } from 'lib/random';
 import { useTransferProvider } from 'lib/providers/TransferProvider';
 
 type TransferOwnershipProps = {

@@ -5,7 +5,7 @@ import React from 'react';
 import styles from './PreviewCard.module.css';
 
 //- Library Imports
-import { randomName, randomImage } from 'lib/Random';
+import { randomName, randomImage } from 'lib/random';
 
 //- Component Imports
 import { FutureButton, Member, NFTMedia } from 'components';

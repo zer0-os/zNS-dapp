@@ -11,7 +11,7 @@ import { ArrowLink, FutureButton, Member, NFTMedia, Overlay } from 'components';
 import { BidButton, MakeABid } from 'containers';
 
 //- Library Imports
-import { randomName, randomImage } from 'lib/Random';
+import { randomName, randomImage } from 'lib/random';
 import useNotification from 'lib/hooks/useNotification';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
