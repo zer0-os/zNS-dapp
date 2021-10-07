@@ -95,7 +95,7 @@
 	text-shadow: var(--glow-text-blue);
 }
 
-.ContentUnActive .iconImage {
+.ContentInActive .iconImage {
 	height: 13px;
 	width: 13px;
 	background-image: url('./arrow.svg');
