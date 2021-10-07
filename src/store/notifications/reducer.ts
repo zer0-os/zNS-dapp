@@ -1,3 +1,4 @@
+import { createSlice } from '@reduxjs/toolkit';
 import {
 	ADD_NOTIFICATION_REQUEST,
 	REMOVE_NOTIFICATION_REQUEST,
@@ -8,11 +9,13 @@ import {
 	NotificationsActions,
 } from './types';
 
-const initialState: NotificationsState = {
+export const REDUCER_NAME = 'notifications';
+
+export const INITIAL_STATE: NotificationsState = {
 	notifications: [],
 };
 
-const reducer = (state = initialState, action: NotificationsActions) => {
+const reducer = (state = INITIAL_STATE, action: NotificationsActions) => {
 	switch (action.type) {
 		case ADD_NOTIFICATION_REQUEST:
 			const { id, text, duration } = action.payload;

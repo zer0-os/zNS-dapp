@@ -1,11 +1,12 @@
 import { createSelector } from 'reselect';
 import { AppState } from 'store';
+import { REDUCER_NAME } from './reducer';
 
 /**
  *
  * Notifications reducer
  */
-const getNotificationsReducer = (state: AppState) => state.notifications;
+const getNotificationsReducer = (state: AppState) => state[REDUCER_NAME];
 
 /**
  *

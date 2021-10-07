@@ -8,16 +8,18 @@ import { Notification } from 'store/notifications/types';
 //- Style Imports
 import styles from './NotificationDrawer.module.css';
 
+export const TEST_ID = {
+	CONTAINER: 'notification-drawer-container',
+	NOTIFICATIONS: {
+		CONTAINER: 'notification-drawer-notifications',
+		NOTIFICATION: 'notification-drawer-notification',
+	},
+};
+
 const NotificationDrawer = () => {
-	// TODO: Need to animate notifications coming in and out
-	// TODO: Change to useMemo
-	// TODO: Change notifications over to a portal?
-
 	const { notifications, removeNotification } = useNotification();
-
-	// TODO: Should move Notification type into a module so we don't have to use 'any'
-	const remove = (o: Notification) => {
-		removeNotification(o.id);
+	const remove = (n: Notification) => {
+		removeNotification(n.id);
 	};
 
 	return (
@@ -25,11 +27,16 @@ const NotificationDrawer = () => {
 			className={`${styles.NotificationDrawer} blur  border-primary ${
 				!notifications.length ? styles.Hidden : ''
 			}`}
+			data-testid={TEST_ID.CONTAINER}
 		>
-			<ul>
-				{notifications.map((o: any) => (
-					<li key={o.text + Math.random()} onClick={() => remove(o)}>
-						{o.text}
+			<ul data-testid={TEST_ID.NOTIFICATIONS.CONTAINER}>
+				{notifications.map((n: Notification) => (
+					<li
+						key={n.id}
+						onClick={() => remove(n)}
+						data-testid={`${TEST_ID.NOTIFICATIONS.CONTAINER}-${n.id}`}
+					>
+						{n.text}
 					</li>
 				))}
 			</ul>
