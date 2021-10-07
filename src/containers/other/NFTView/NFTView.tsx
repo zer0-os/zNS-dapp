@@ -21,7 +21,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
-import { Bid, transfersData, transferDto } from 'lib/types';
+import { Attribute, Bid, transfersData, transferDto } from 'lib/types';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -315,6 +315,24 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		</div>
 	);
 
+	const attributes = () => {
+		if (!znsDomain.domain?.attributes) {
+			return;
+		} else {
+			return (
+				<ul>
+					{znsDomain.domain?.attributes.map(
+						(attribute: Attribute, index: number) => (
+							<li key={index}>
+								{attribute.trait_type}: {attribute.value}
+							</li>
+						),
+					)}
+				</ul>
+			);
+		}
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -385,6 +403,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					)}
 				</div>
 			</div>
+			{attributes()}
 			<div className={styles.Horizontal} style={{ marginTop: 20 }}>
 				<div
 					className={`${styles.Box} ${styles.Story} blur border-primary border-rounded`}
