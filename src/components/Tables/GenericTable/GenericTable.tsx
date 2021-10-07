@@ -120,8 +120,6 @@ const GenericTable = (props: any) => {
 								key={index}
 								rowNumber={index}
 								data={d}
-								rowClick={props.rowClick}
-								onRowClick={props.onRowButtonClick}
 								filterOwnBids={props.filterOwnBids}
 								userId={props.userId}
 							/>
@@ -138,8 +136,6 @@ const GenericTable = (props: any) => {
 									key={index}
 									rowNumber={index}
 									data={d}
-									rowClick={props.rowClick}
-									onRowClick={props.onRowButtonClick}
 									filterOwnBids={props.filterOwnBids}
 									userId={props.userId}
 								/>
