@@ -17,7 +17,7 @@ const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 /**
  * Add Notification saga
  */
-function* addNotification(action: AddNotificationRequest) {
+export function* addNotification(action: AddNotificationRequest) {
 	try {
 		yield put(addNotificationSuccess());
 		const { id, duration } = action.payload;
@@ -37,7 +37,7 @@ export function* addNotificationSaga() {
 /**
  * Remove Notification saga
  */
-function* removeNotification(action: RemoveNotificationRequest) {
+export function* removeNotification(action: RemoveNotificationRequest) {
 	try {
 		yield put(removeNotificationSuccess());
 	} catch (e) {

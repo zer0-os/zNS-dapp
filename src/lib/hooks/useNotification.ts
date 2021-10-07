@@ -5,10 +5,17 @@ import {
 	removeNotificationRequest,
 } from 'store/notifications/actions';
 import { getNotifications } from 'store/notifications/selectors';
+import { Notification } from 'store/notifications/types';
 import { randomUUID } from 'lib/Random';
 import { DEFAULT_NOTIFICATION_DURATION } from 'constants/notifications';
 
-const useNotification = () => {
+export type NotificationHook = {
+	notifications: Notification[];
+	addNotification(text: string, duration?: number): void;
+	removeNotification(id: string): void;
+};
+
+const useNotification = (): NotificationHook => {
 	const notifications = useSelector(getNotifications);
 
 	const dispatch = useDispatch();
