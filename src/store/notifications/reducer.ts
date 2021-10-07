@@ -1,4 +1,3 @@
-import { createSlice } from '@reduxjs/toolkit';
 import {
 	ADD_NOTIFICATION_REQUEST,
 	REMOVE_NOTIFICATION_REQUEST,
