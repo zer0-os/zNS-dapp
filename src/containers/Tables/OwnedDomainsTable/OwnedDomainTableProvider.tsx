@@ -20,7 +20,7 @@ export const RequestTableContext = React.createContext({
 		return;
 	},
 	viewingDomain: undefined as any,
-	filterOwnBids: undefined as any,
+
 });
 
 const OwnedDomainTableProvider: React.FC<BidProviderType> = ({
@@ -58,7 +58,6 @@ const OwnedDomainTableProvider: React.FC<BidProviderType> = ({
 		rowClick,
 		setViewingDomainState,
 		viewingDomain,
-		filterOwnBids
 	};
 
 	return (
@@ -71,7 +70,7 @@ const OwnedDomainTableProvider: React.FC<BidProviderType> = ({
 export default OwnedDomainTableProvider;
 
 export function useTableProvider() {
-	const { viewBid, rowClick, setViewingDomainState, viewingDomain, filterOwnBids } =
+	const { viewBid, rowClick, setViewingDomainState, viewingDomain  } =
 		React.useContext(RequestTableContext);
-	return { viewBid, rowClick, setViewingDomainState, viewingDomain, filterOwnBids };
+	return { viewBid, rowClick, setViewingDomainState, viewingDomain };
 }

@@ -7,15 +7,12 @@ import { Bid, Domain } from 'lib/types';
 import { useBid } from '../SubdomainTable/BidProvider';
 import { useTableProvider } from './OwnedDomainTableProvider';
 // Components
-import ViewBids from './components/ViewBids';
-import { Artwork, Spinner } from 'components';
-
-
+import { Artwork, Spinner, FutureButton } from 'components';
 
 const OwnedDomainTableRow = (props: any) => {
 	const domain = props.data;
 	const { updated } = useBid();
-	const {rowClick, viewBid, filterOwnBids} = useTableProvider()
+	const { rowClick, viewBid } = useTableProvider();
 	// Data state
 	const { getBidsForDomain } = useBidProvider();
 	const [bids, setBids] = useState<Bid[] | undefined>();
@@ -54,6 +51,15 @@ const OwnedDomainTableRow = (props: any) => {
 		}
 	};
 
+	const handleClick = () => {
+		if (bids !== undefined) {
+			viewBid({
+				domain,
+				bids,
+			});
+		}
+	};
+
 	const bidColumns = () => {
 		if (!areBidsLoading) {
 			return (
@@ -83,6 +89,24 @@ const OwnedDomainTableRow = (props: any) => {
 		}
 	};
 
+	const buttonViewBid = () => {
+		return (
+			<>
+				{bids !== undefined && bids.length > 0 ? (
+					<FutureButton
+						onClick={handleClick}
+						glow={!areBidsLoading && bids !== undefined}
+						style={{ marginLeft: 'auto' }}
+					>
+						View Bids
+					</FutureButton>
+				) : (
+					<div style={{ textAlign: 'right', marginRight: '48px' }}>No Bids</div>
+				)}
+			</>
+		);
+	};
+
 	/////////////////////
 	// Overlay Fragment //
 	/////////////////////
@@ -102,14 +126,7 @@ const OwnedDomainTableRow = (props: any) => {
 				</td>
 				{bidColumns()}
 				<td>
-					<ViewBids
-						domain={domain}
-						onClick={viewBid}
-						filterOwnBids={filterOwnBids}
-						style={{ marginLeft: 'auto' }}
-					>
-						View Bids
-					</ViewBids>
+					<>{buttonViewBid()}</>
 				</td>
 			</tr>
 		</>
