@@ -21,6 +21,7 @@ import RequestTableRow from './RequestTableRow';
 import RequestTableCard from './RequestTableCard';
 import { GenericTable, Overlay, Confirmation } from 'components';
 import { Request } from 'containers';
+import RequestTableProvider, { useTableProvider } from './RequestTableProvider';
 
 type RequestTableProps = {
 	style?: React.CSSProperties;
@@ -28,7 +29,7 @@ type RequestTableProps = {
 	onNavigate: (domain: string) => void;
 };
 
-const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
+const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 	//////////////////
 	// Custom Hooks //
 	//////////////////
@@ -43,14 +44,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 	// State / Refs //
 	//////////////////
 
-	const [loadedRequests, setLoadedRequests] = useState<
-		DomainRequestAndContents[]
-	>([]);
-	// The request we're viewing in the request modal
-	const [viewing, setViewing] = useState<
-		DomainRequestAndContents | undefined
-	>();
-
 	const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 	const [approveError, setApproveError] = useState<string | undefined>();
 	const [fulfillError, setFulfillError] = useState<string | undefined>();
@@ -61,7 +54,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
 
 	// Searching
-	const [statusFilter, setStatusFilter] = useState('');
 	const [domainFilter, setDomainFilter] = useState('All Domains');
 
 	// The Token that we need to approve the staking controller to transfer
@@ -69,44 +61,23 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 		string | undefined
 	>();
 
-	const filterByStatus = (filter: string) => setStatusFilter(filter);
-	const filterByDomain = (filter: string) => setDomainFilter(filter);
 
-	const view = (domainName: string) => {
-		if (loadedRequests) {
-			const r = loadedRequests?.filter(
-				(d) => d.request.domain === domainName,
-			)[0];
-			setViewing(r);
-		}
-	};
+	const { viewing, setView, setLoadRequest, loadedRequests, onApprove } =
+		useTableProvider();
 
 	const displayData: DomainRequestAndContents[] = useMemo(() => {
-		if (
-			statusFilter.length &&
-			statusFilter !== 'All Statuses' &&
-			loadedRequests &&
-			loadedRequests.length
-		) {
-			var filtered = loadedRequests;
-
-			// Filter per status
-			if (statusFilter.length && statusFilter !== 'All Statuses') {
-				const approved = statusFilter === 'Accepted';
-				filtered = filtered.filter((r) => r.request.approved === approved);
-			}
-
-			// @TODO Move sorting to React-Table built-in sorting
-			return filtered.sort(
-				(a, b) => Number(b.request.timestamp) - Number(a.request.timestamp),
+		if (loadedRequests && loadedRequests.length) {
+			return (
+				loadedRequests.sort(
+					(
+						a: { request: { timestamp: any } },
+						b: { request: { timestamp: any } },
+					) => Number(b.request.timestamp) - Number(a.request.timestamp),
+				) || []
 			);
 		}
-		return (
-			loadedRequests.sort(
-				(a, b) => Number(b.request.timestamp) - Number(a.request.timestamp),
-			) || []
-		);
-	}, [loadedRequests, statusFilter]);
+	}, [loadedRequests]);
+
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -124,14 +95,14 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 		}
 
 		if (requests.length === 0) {
-			setLoadedRequests([]);
+			setLoadRequest([]);
 			setIsLoading(false);
 			return;
 		}
 
 		getRequestData(requests).then((d: any) => {
 			if (d) {
-				setLoadedRequests(d);
+				setLoadRequest(d);
 			} else {
 				console.error('Failed to retrieve request data');
 			}
@@ -141,15 +112,6 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 
 	/* Calls the middleware for approving a request
 		 This is passed to the Request modal */
-	const onApprove = async (request: DomainRequestAndContents) => {
-		try {
-			await staking.approveRequest(request);
-			setViewing(undefined);
-		} catch (e) {
-			// Catch thrown when user rejects transaction
-			console.error(e);
-		}
-	};
 
 	/**
 	 * Creates Transaction to approve the Staking Controller to transfer
@@ -194,7 +156,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 		setShowLoadingIndicator(true); //displays loading indicator on overlay
 		try {
 			await staking.fulfillRequest(request);
-			setViewing(undefined);
+			setView(undefined);
 		} catch (e: any) {
 			console.error(e);
 			//if user rejects transaction
@@ -211,6 +173,8 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 		setShowLoadingIndicator(false);
 	};
 
+	console.log(viewing, 'viewing');
+
 	return (
 		<>
 			{viewing && (
@@ -218,7 +182,7 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 					centered
 					open
 					onClose={() => {
-						setViewing(undefined);
+						setView(undefined);
 						setFulfillError(undefined);
 					}}
 				>
@@ -276,16 +240,12 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 				]}
 				data={displayData}
 				rowComponent={RequestTableRow}
-				view={view}
 				gridComponent={RequestTableCard}
 				isLoading={isLoading}
 				isFilterRequired={true}
-				filterByStatus={filterByStatus}
+				isRequestTable={true}
 				optionsFilterByStatus={['All Statuses', 'Open Requests', 'Accepted']}
-				filterByDomain={filterByDomain}
 				optionsFilterByDomain={['All Domains', 'Your Domains', 'Your Requests']}
-				filterCheckerDomain={domainFilter}
-				filterCheckerStatus={statusFilter}
 				dropDownColorText={'white'}
 				adjustHeaderStatus={'44px'}
 			/>
@@ -293,4 +253,12 @@ const RequestTable: React.FC<RequestTableProps> = ({ userId, onNavigate }) => {
 	);
 };
 
-export default RequestTable;
+const WrappedRequestTable = (props: RequestTableProps) => {
+	return (
+		<RequestTableProvider>
+			<RequestTable {...props} />
+		</RequestTableProvider>
+	);
+};
+
+export default WrappedRequestTable;

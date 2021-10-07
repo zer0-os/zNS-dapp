@@ -3,16 +3,18 @@ import { Artwork, FutureButton, Spinner, Member } from 'components';
 import React, { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import styles from './RequestTableRow.module.css';
+import  {useTableProvider} from './RequestTableProvider'
 
 const SubdomainTableRow = (props: any) => {
 	const dateFromTimestamp = (timestamp: string) =>
 		new Date(Number(timestamp) * 1000).toLocaleString();
 
 	const { contents, request } = props.data;
+	const {view} = useTableProvider()
 
 	return (
 		<>
-			<tr onClick={() => props.view(request.domain)} className={styles.Rows}>
+			<tr onClick={() => view(request.domain)} className={styles.Rows}>
 				<td>{props.rowNumber + 1}</td>
 				<td>
 					<Member id={request.requestor.id} name={''} image={''} />
@@ -60,7 +62,7 @@ const SubdomainTableRow = (props: any) => {
 								<FutureButton
 									style={{ textTransform: 'uppercase' }}
 									glow
-									onClick={() => props.view(request.domain)}
+									onClick={() => view(request.domain)}
 								>
 									Fulfill
 								</FutureButton>
@@ -81,7 +83,7 @@ const SubdomainTableRow = (props: any) => {
 							<FutureButton
 								style={{ textTransform: 'uppercase' }}
 								glow
-								onClick={() => props.view(request.domain)}
+								onClick={() => view(request.domain)}
 							>
 								View Offer
 							</FutureButton>

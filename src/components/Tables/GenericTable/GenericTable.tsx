@@ -25,6 +25,10 @@ const GenericTable = (props: any) => {
 	const [isGridView, setIsGridView] = useState<boolean>(false);
 	const [searchQuery, setSearchQuery] = useState<string>();
 
+	//This handles the filter selection
+	const [statusFilter, setStatusFilter] = useState('');
+	const [domainFilter, setDomainFilter] = useState('All Domains');
+
 	const contentRef = useRef<HTMLDivElement>(null);
 
 	const rawData = props.data;
@@ -60,7 +64,28 @@ const GenericTable = (props: any) => {
 	// Since due date is coming up, I'm rushing the search algo
 	// This will need to be expanded to be generic
 	const matchesSearch = (d: any) => {
-		return d.name.includes(searchQuery);
+		switch (true) {
+			case props.isFilterRequired:
+				let s = d.request.domain.toLowerCase();
+				return s.indexOf(searchQuery?.toLowerCase()) > -1;
+			default:
+				d.name.includes(searchQuery);
+		}
+
+		// if (props.isFilterRequired) {
+		// 	let s = d.request.domain.toLowerCase();
+		// 	return s.indexOf(searchQuery?.toLowerCase()) > -1;
+		// } else return d.name.includes(searchQuery);
+	};
+
+	const matchesFilter = (d: any) => {
+		switch (true) {
+			case props.isRequestTable:
+				const approved = statusFilter === 'Accepted';
+				return d.request.approved === approved;
+			default:
+				d.name.includes(searchQuery);
+		}
 	};
 
 	// Toggles to grid view when viewport
@@ -71,13 +96,16 @@ const GenericTable = (props: any) => {
 		}
 	};
 
+	const filterByStatus = (filter: string) => setStatusFilter(filter);
+	const filterByDomain = (filter: string) => setDomainFilter(filter);
+
 	/////////////
 	// Effects //
 	/////////////
 
 	useEffect(() => {
 		resetChunkSize();
-	}, [isGridView, searchQuery]);
+	}, [isGridView, searchQuery, statusFilter, domainFilter]);
 
 	// Add a listener for window resizes
 	useEffect(() => {
@@ -104,6 +132,36 @@ const GenericTable = (props: any) => {
 		}
 	}, [rawData, searchQuery]);
 
+	// if (props.isRequestTable) const settingDomainFilter = () => {
+	// 	if(props.isRequestTable)
+	// };
+
+	/////////////////
+	// Data Handler//
+	/////////////////
+
+	const displayData = useMemo(() => {
+		if (
+			searchQuery?.length ||
+			(statusFilter.length && statusFilter !== 'All Statuses')
+		) {
+			var filtered = rawData;
+
+			// Filter per search string
+			if (searchQuery?.length) {
+				filtered = filtered.filter((r: any) => matchesSearch(r));
+			}
+
+			// Filter
+			if (statusFilter.length) {
+				filtered = filtered.filter((r: any) => matchesFilter(r));
+			}
+
+			return filtered;
+		}
+		return rawData;
+	}, [searchQuery, statusFilter, rawData]);
+	console.log(displayData, 'display data');
 	///////////////
 	// Fragments //
 	///////////////
@@ -115,14 +173,10 @@ const GenericTable = (props: any) => {
 				return <></>;
 			}
 
-			let filteredData = rawData.filter((d: any) =>
-				searchQuery ? matchesSearch(d) : true,
-			);
-
 			if (!props.infiniteScroll) {
 				return (
 					<>
-						{filteredData.map((d: any, index: number) => (
+						{displayData.map((d: any, index: number) => (
 							<props.rowComponent
 								key={index}
 								rowNumber={index}
@@ -135,7 +189,7 @@ const GenericTable = (props: any) => {
 			} else {
 				return (
 					<>
-						{filteredData
+						{displayData
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
 								<props.rowComponent
@@ -180,7 +234,7 @@ const GenericTable = (props: any) => {
 				<tbody>{rows()}</tbody>
 			</table>
 		);
-	}, [rawData, chunk, searchQuery]);
+	}, [rawData, chunk, searchQuery, statusFilter]);
 
 	// Grid View container & cards
 	const GridView = useMemo(() => {
@@ -188,14 +242,10 @@ const GenericTable = (props: any) => {
 			return <></>;
 		}
 		const data = props.infiniteScroll
-			? rawData
-					.filter((d: any) =>
-						searchQuery ? d.name.includes(searchQuery) : true,
-					)
+			? displayData
+					.filter((d: any) => (searchQuery ? matchesSearch(searchQuery) : true))
 					.slice(0, chunk * chunkSize)
-			: rawData.filter((d: any) =>
-					searchQuery ? d.name.includes(searchQuery) : true,
-			  );
+			: displayData.filter((d: any) => (searchQuery ? matchesSearch(d) : true));
 
 		return (
 			<div className={styles.Grid}>
@@ -233,7 +283,7 @@ const GenericTable = (props: any) => {
 						{props.isFilterRequired ? (
 							<>
 								<OptionDropdown
-									onSelect={props.filterByDomain}
+									onSelect={filterByDomain}
 									options={props.optionsFilterByDomain.map(
 										(opt: string) => opt,
 									)}
@@ -245,12 +295,12 @@ const GenericTable = (props: any) => {
 									}}
 								>
 									<FilterButton onClick={() => {}}>
-										{props.domainFilter || 'All Domains'}
+										{domainFilter || props.optionsFilterByDomain[0]}
 									</FilterButton>
 								</OptionDropdown>
-								{/* <div style={{width:10}}/> */}
+
 								<OptionDropdown
-									onSelect={props.filterByStatus}
+									onSelect={filterByStatus}
 									options={props.optionsFilterByStatus.map(
 										(opt: string) => opt,
 									)}
@@ -262,7 +312,7 @@ const GenericTable = (props: any) => {
 									}}
 								>
 									<FilterButton onClick={() => {}}>
-										{props.statusFilter || 'All Statuses'}
+										{statusFilter || props.optionsFilterByStatus[0]}
 									</FilterButton>
 								</OptionDropdown>
 								<div />

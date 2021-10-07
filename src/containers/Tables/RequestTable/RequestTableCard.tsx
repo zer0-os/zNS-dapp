@@ -1,15 +1,17 @@
 import RequestActions from './components/RequestActions';
 import { NFTCard } from 'components';
+import { useTableProvider } from './RequestTableProvider';
 
 const RequestTableCard = (props: any) => {
 	const { contents, request } = props.data;
+	const {view } = useTableProvider();
 	return (
 		<>
 			{request && (
 				<NFTCard
-					onClick={() => props.view(request.domain)}
+					onClick={() => view(request.domain)}
 					actionsComponent={
-						<RequestActions onClick={props.view} request={props.data} />
+						<RequestActions onClick={view} request={props.data} />
 					}
 					metadataUrl={contents.metadata}
 					domain={request.domain}
