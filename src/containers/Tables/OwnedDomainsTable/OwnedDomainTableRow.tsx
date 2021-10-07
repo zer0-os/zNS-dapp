@@ -15,7 +15,7 @@ import { Artwork, Spinner } from 'components';
 const OwnedDomainTableRow = (props: any) => {
 	const domain = props.data;
 	const { updated } = useBid();
-	const {rowClick, viewBid} = useTableProvider()
+	const {rowClick, viewBid, filterOwnBids} = useTableProvider()
 	// Data state
 	const { getBidsForDomain } = useBidProvider();
 	const [bids, setBids] = useState<Bid[] | undefined>();
@@ -105,7 +105,7 @@ const OwnedDomainTableRow = (props: any) => {
 					<ViewBids
 						domain={domain}
 						onClick={viewBid}
-						filterOwnBids={props.filterOwnBids}
+						filterOwnBids={filterOwnBids}
 						style={{ marginLeft: 'auto' }}
 					>
 						View Bids

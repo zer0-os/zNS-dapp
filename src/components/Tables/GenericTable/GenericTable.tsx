@@ -135,7 +135,7 @@ const GenericTable = (props: any) => {
 									key={index}
 									rowNumber={index}
 									data={d}
-									filterOwnBids={props.filterOwnBids}
+									
 									
 								/>
 							))}

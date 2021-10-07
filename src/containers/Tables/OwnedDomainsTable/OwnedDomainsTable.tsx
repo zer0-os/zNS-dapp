@@ -207,7 +207,7 @@ const OwnedDomainTables = ({ onNavigate }: OwnedDomainTableProps) => {
 				loadingText={'Loading Domains'}
 				rowComponent={OwnedDomainTableRow}
 				gridComponent={OwnedDomainTableCard}
-				filterOwnBids={true}
+				
 			/>
 		</>
 	);
