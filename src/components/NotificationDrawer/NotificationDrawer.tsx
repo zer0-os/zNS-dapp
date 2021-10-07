@@ -1,8 +1,9 @@
 //- React Imports
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 //- Library Imports
 import useNotification from 'lib/hooks/useNotification';
+import { Notification } from 'store/notifications/types';
 
 //- Style Imports
 import styles from './NotificationDrawer.module.css';
@@ -12,19 +13,12 @@ const NotificationDrawer = () => {
 	// TODO: Change to useMemo
 	// TODO: Change notifications over to a portal?
 
-	const [visibleNotifications, setVisibleNotifications] = useState<any>([]);
-
 	const { notifications, removeNotification } = useNotification();
 
 	// TODO: Should move Notification type into a module so we don't have to use 'any'
-	const remove = (o: any) => {
-		removeNotification(o);
+	const remove = (o: Notification) => {
+		removeNotification(o.id);
 	};
-
-	useEffect(() => {
-		setVisibleNotifications([...visibleNotifications, notifications]);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [notifications]);
 
 	return (
 		<div
