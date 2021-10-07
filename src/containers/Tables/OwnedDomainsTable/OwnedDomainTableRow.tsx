@@ -5,13 +5,17 @@ import { useBidProvider } from 'lib/providers/BidProvider';
 import { Bid, Domain } from 'lib/types';
 
 import { useBid } from '../SubdomainTable/BidProvider';
+import { useTableProvider } from './OwnedDomainTableProvider';
 // Components
 import ViewBids from './components/ViewBids';
 import { Artwork, Spinner } from 'components';
 
+
+
 const OwnedDomainTableRow = (props: any) => {
 	const domain = props.data;
 	const { updated } = useBid();
+	const {rowClick, viewBid} = useTableProvider()
 	// Data state
 	const { getBidsForDomain } = useBidProvider();
 	const [bids, setBids] = useState<Bid[] | undefined>();
@@ -42,10 +46,10 @@ const OwnedDomainTableRow = (props: any) => {
 	}, [domain, hasUpdated]);
 
 	//Click handlers
-	const rowClick = (event: any, domain: Domain) => {
+	const click = (event: any, domain: Domain) => {
 		if (event.target.className.indexOf('FutureButton') >= 0) return;
-		if (props.rowClick) {
-			props.rowClick(domain);
+		if (rowClick) {
+			rowClick(domain);
 			return;
 		}
 	};
@@ -85,7 +89,7 @@ const OwnedDomainTableRow = (props: any) => {
 
 	return (
 		<>
-			<tr className={styles.Row} onClick={(e) => rowClick(e, domain)}>
+			<tr className={styles.Row} onClick={(e) => click(e, domain)}>
 				<td className={styles.RowNumber}>{props.rowNumber + 1}</td>
 				<td>
 					<Artwork
@@ -100,7 +104,7 @@ const OwnedDomainTableRow = (props: any) => {
 				<td>
 					<ViewBids
 						domain={domain}
-						onClick={props.onRowClick}
+						onClick={viewBid}
 						filterOwnBids={props.filterOwnBids}
 						style={{ marginLeft: 'auto' }}
 					>

@@ -6,6 +6,7 @@ import styles from './OwnedDomainTableCard.module.css';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { Bid } from 'lib/types';
 import { NFTCard } from 'components';
+import { useTableProvider } from './OwnedDomainTableProvider';
 
 const OwnedDomainTableCard = (props: any) => {
 	const { getBidsForDomain } = useBidProvider();
@@ -13,6 +14,7 @@ const OwnedDomainTableCard = (props: any) => {
 	const domain = props.data;
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
+	const { rowClick } = useTableProvider();
 
 	useEffect(() => {
 		let isMounted = true;
@@ -39,7 +41,7 @@ const OwnedDomainTableCard = (props: any) => {
 			nftMinterId={domain.minter?.id || ''}
 			showCreator
 			showOwner
-			onClick={(e) => props.rowClick(domain)}
+			onClick={(e) => rowClick(domain)}
 		>
 			<div className={styles.Container}>
 				<div className={styles.Bid}>

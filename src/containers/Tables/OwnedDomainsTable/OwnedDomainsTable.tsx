@@ -8,7 +8,7 @@ import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
 
 // Type Imports
-import { Bid, Domain, DomainData } from 'lib/types';
+import { Bid, Domain } from 'lib/types';
 
 // Component Imports
 import { Confirmation, Overlay, Spinner, GenericTable } from 'components';
@@ -16,6 +16,9 @@ import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 import OwnedDomainTableRow from './OwnedDomainTableRow';
 import OwnedDomainTableCard from './OwnedDomainTableCard';
+import OwnedDomainTableProvider, {
+	useTableProvider,
+} from './OwnedDomainTableProvider';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -26,7 +29,7 @@ type OwnedDomainTableProps = {
 	onNavigate?: (to: string) => void;
 };
 
-const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
+const OwnedDomainTables = ({ onNavigate }: OwnedDomainTableProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -54,17 +57,12 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [acceptingBid, setAcceptingBid] = React.useState<
 		AcceptBidModalData | undefined
 	>();
-	const [viewingDomain, setViewingDomain] = React.useState<
-		DomainData | undefined
-	>();
 
 	///////////////
 	// Functions //
 	///////////////
 
-	const viewBid = async (domain: DomainData) => {
-		setViewingDomain(domain);
-	};
+	const { setViewingDomainState, viewingDomain } = useTableProvider();
 
 	const accept = async (bid: Bid) => {
 		if (!viewingDomain?.domain || !bid) return;
@@ -104,7 +102,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	const closeBid = () => setAcceptingBid(undefined);
 
-	const closeDomain = () => setViewingDomain(undefined);
+	const closeDomain = () => setViewingDomainState(undefined);
 
 	const acceptBidConfirmed = async () => {
 		if (!acceptingBid) {
@@ -121,10 +119,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		}, 500);
 		setIsAccepting(false);
 		setAcceptingBid(undefined);
-	};
-
-	const rowClick = (domain: Domain) => {
-		if (onNavigate) onNavigate(domain.name);
 	};
 
 	if (!owned) return <></>;
@@ -213,13 +207,18 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				loadingText={'Loading Domains'}
 				rowComponent={OwnedDomainTableRow}
 				gridComponent={OwnedDomainTableCard}
-				rowClick={rowClick}
-				onRowButtonClick={viewBid}
 				filterOwnBids={true}
-				userId={account || undefined}
 			/>
 		</>
 	);
 };
 
-export default OwnedDomainTables;
+const WrappedOwnedDomainTable = ({ onNavigate }: OwnedDomainTableProps) => {
+	return (
+		<OwnedDomainTableProvider onNavigate={onNavigate}>
+			<OwnedDomainTables onNavigate={onNavigate} />
+		</OwnedDomainTableProvider>
+	);
+};
+
+export default React.memo(WrappedOwnedDomainTable);

@@ -1,67 +1,73 @@
-import React from 'react'
+// React Imports
+import React, { useState } from 'react';
+//- Type Imports
 
-
-export const BidContext = React.createContext({
-
-	makeABid: (domain: Domain) => {
-		return;
-	},
-	close: () => {
-		return;
-	},
-	bidPlaced: () => {
-		return;
-	},
-	
-});
+import { Bid, Domain, DomainData } from 'lib/types';
 
 type BidProviderType = {
 	children: React.ReactNode;
-};
+	onNavigate: any;
+}; // The request we're viewing in the request modal
 
-const OwnedDomainTableProvider: React.FC<BidProviderType> = ({ children }) => {
+export const RequestTableContext = React.createContext({
+	viewBid: (domain: any) => {
+		return;
+	},
+	rowClick: (domain: any) => {
+		return;
+	},
+	setViewingDomainState: (domain: DomainData | undefined): void => {
+		return;
+	},
+	viewingDomain: undefined as any,
+});
+
+const OwnedDomainTableProvider: React.FC<BidProviderType> = ({
+	children,
+	onNavigate,
+}) => {
 	//////////////////////////
 	// Hooks & State & Data //
 	//////////////////////////
+	const [viewingDomain, setViewingDomain] = React.useState<
+		DomainData | undefined
+	>();
 
-	const [biddingOn, setBiddingOn] = useState<Maybe<Domain>>();
-	const [updated, setUpdated] = useState<Maybe<Domain>>();
+	const viewBid = async (domain: DomainData) => {
+		console.log(domain);
 
-	const makeABid = (domain: Domain) => {
-		setBiddingOn(domain);
+		setViewingDomain(domain);
 	};
 
-	const close = () => {
-		setBiddingOn(undefined);
+	const rowClick = (domain: Domain) => {
+		if (onNavigate) onNavigate(domain.name);
 	};
 
-	const bidPlaced = () => {
-		setUpdated(biddingOn);
-		setBiddingOn(undefined);
+	const setViewingDomainState = (domain: DomainData | undefined) =>
+		setViewingDomain(domain);
 
-		// This is a bad solution long term
-		setTimeout(() => {
-			setUpdated(undefined);
-		}, 1000);
-	};
+	//////////////////
+	// Custom Hooks //
+	//////////////////
 
 	const contextValue = {
-		domain: biddingOn,
-		makeABid,
-		close,
-		bidPlaced,
-		updated,
+		viewBid,
+		rowClick,
+		setViewingDomainState,
+		viewingDomain,
 	};
 
 	return (
-		<BidContext.Provider value={contextValue}>{children}</BidContext.Provider>
+		<RequestTableContext.Provider value={contextValue}>
+			{children}
+		</RequestTableContext.Provider>
 	);
 };
 
 export default OwnedDomainTableProvider;
 
 export function useTableProvider() {
-	const { bidPlaced, makeABid, close } =
-		React.useContext(BidContext);
-	return { bidPlaced, makeABid, close };
+	const { viewBid, rowClick, setViewingDomainState, viewingDomain } =
+		React.useContext(RequestTableContext);
+	return { viewBid, rowClick, setViewingDomainState, viewingDomain };
 }
