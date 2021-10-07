@@ -35,7 +35,7 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useSDKProvider } from 'lib/providers/SDKProvider';
+import { useZnsSdk } from 'lib/providers/ZnsProvider';
 import { DomainBidEvent, DomainEvent } from '@zero-tech/zns-sdk';
 const moment = require('moment');
 
@@ -95,7 +95,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const etherscanBaseUri = getEtherscanUri(networkType);
 	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
 
-	const sdk = useSDKProvider();
+	const sdk = useZnsSdk();
 	//Transfers and mint data from nft
 	//- Calls the hook with a polling interval to update the data
 

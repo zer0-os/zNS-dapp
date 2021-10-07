@@ -9,7 +9,7 @@ import {
 import React from 'react';
 import { useChainSelector } from './ChainSelectorProvider';
 
-export function useSDKProvider() {
+export function useZnsSdk() {
 	const web3Context = useWeb3React();
 	const chainSelector = useChainSelector();
 
