@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core'; // Wallet data
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { BigNumber } from 'ethers';
 
 //- Component Imports
@@ -16,6 +16,12 @@ import useNotification from 'lib/hooks/useNotification';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { toFiat } from 'lib/currency';
+import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
+import { useZnsContracts } from 'lib/contracts';
+import { getDomainId } from 'lib/utils';
+import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
+import { Bid, transfersData, transferDto } from 'lib/types';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -23,13 +29,7 @@ import styles from './NFTView.module.css';
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
 import copyIcon from './assets/copy-icon.svg';
-import { Bid } from 'lib/types';
-import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import { useZnsContracts } from 'lib/contracts';
-import { getDomainId } from 'lib/utils';
-import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
-import { transfersData, transferDto } from 'lib/types';
+
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -38,7 +38,9 @@ type NFTViewProps = {
 };
 
 const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
-	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
+	//////////////////
+	// State & Data //
+	//////////////////
 
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
@@ -81,19 +83,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const transfersDto = useDomainsTransfers(domainId, transfersPollingInterval)
 		.data as transfersData;
 
-	//- Functions
+	///////////////
+	// Functions //
+	///////////////
+
 	const copyContractToClipboard = () => {
 		addNotification('Copied Token ID to clipboard.');
 		try {
 			navigator?.clipboard?.writeText(domainId);
 		} catch (e) {
 			console.error(e);
-		}
-	};
-
-	const downloadAsset = () => {
-		if (znsDomain?.domain?.image) {
-			window.open(znsDomain.domain.image, '_blank');
 		}
 	};
 
@@ -106,8 +105,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
 	const onBid = async () => {
-		// @todo switch this to live data
-		// should refresh on bid rather than add mock data
 		getBids();
 		closeBidOverlay();
 	};
@@ -298,31 +295,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			);
 		}
 	};
-
-	// const historyItem = (item: Bid | transferDto, i: number) => (
-	// 	<>
-	// 		{ (
-	// 			<li className={styles.Bid} key={i}>
-	// 				<div>
-	// 					<b>
-	// 						<a
-	// 							className="alt-link"
-	// 							href={`https://etherscan.io/address/${account}`}
-	// 							target="_blank"
-	// 							rel="noreferrer"
-	// 						>{`${item.bidderAccount.substring(0, 4)}...${item.bidderAccount.substring(
-	// 							account.length - 4,
-	// 						)}`}</a>
-	// 					</b>{' '}
-	// 					made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
-	// 				</div>
-	// 				<div className={styles.From}>
-	// 					<b>{moment(date).fromNow()}</b>
-	// 				</div>
-	// 			</li>
-	// 		)}
-	// 	</>
-	// );
 
 	const actionButtons = () => (
 		<div className={styles.Buttons}>
