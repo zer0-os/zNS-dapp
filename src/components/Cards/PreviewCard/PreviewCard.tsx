@@ -162,9 +162,6 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							}`}
 						>
 							<NFTMedia
-								style={{
-									zIndex: 2,
-								}}
 								size="small"
 								className={`${styles.Image} border-rounded`}
 								alt="NFT Preview"

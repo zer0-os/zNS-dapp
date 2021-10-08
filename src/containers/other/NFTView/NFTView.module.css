@@ -46,11 +46,9 @@
 }
 
 .Image {
-	height: 422px;
-	min-height: 422px;
+	height: auto;
 	max-height: 422px;
 	cursor: pointer;
-	background: rgba(0, 0, 0, 0.3);
 	border-radius: inherit;
 }
 
