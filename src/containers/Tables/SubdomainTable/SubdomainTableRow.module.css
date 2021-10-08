@@ -26,3 +26,13 @@
 .Left > * {
 	margin-right: auto;
 }
+
+.Bid {
+	display: block;
+}
+
+.Bid:not(:first-child) {
+	margin-top: 2px;
+	color: var(--color-primary-lighter-3);
+	font-size: 14px;
+}

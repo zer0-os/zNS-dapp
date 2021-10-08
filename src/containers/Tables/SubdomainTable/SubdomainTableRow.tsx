@@ -7,10 +7,12 @@ import styles from './SubdomainTableRow.module.css';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useBidProvider } from 'lib/providers/BidProvider';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { BidButton } from 'containers';
+import { toFiat } from 'lib/currency';
 
 const SubdomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
@@ -19,6 +21,8 @@ const SubdomainTableRow = (props: any) => {
 
 	const { makeABid, updated } = useBid();
 	const { getBidsForDomain } = useBidProvider();
+
+	const { wildPriceUsd } = useCurrencyProvider();
 
 	const domain = props.data;
 
@@ -52,15 +56,32 @@ const SubdomainTableRow = (props: any) => {
 		};
 	}, [domain, hasUpdated]);
 
+	const highestBid = () => {
+		if (!bids) {
+			return <span>Failed to retrieve</span>;
+		} else if (bids.length === 0) {
+			return <span>-</span>;
+		} else {
+			return (
+				<>
+					<span className={styles.Bid}>
+						{bids[0].amount.toLocaleString() + ' WILD'}
+					</span>
+					{wildPriceUsd && (
+						<span className={styles.Bid}>
+							{'$' + toFiat(wildPriceUsd * bids[0].amount) + ' USD'}
+						</span>
+					)}
+				</>
+			);
+		}
+	};
+
 	const bidColumns = () => {
 		if (!areBidsLoading) {
 			return (
 				<>
-					<td className={styles.Right}>
-						{!bids && 'Failed to retrieve'}
-						{bids &&
-							(bids[0] ? bids[0].amount.toLocaleString() + ' WILD' : '-')}
-					</td>
+					<td className={styles.Right}>{highestBid()}</td>
 					<td className={styles.Right}>
 						{!bids && 'Failed to retrieve'}
 						{bids && bids.length.toLocaleString()}
