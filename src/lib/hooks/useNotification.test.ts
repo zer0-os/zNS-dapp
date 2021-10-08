@@ -1,4 +1,4 @@
-import { randomUUID } from 'lib/Random';
+import { randomUUID } from 'lib/random';
 import { renderHook } from 'lib/testUtils';
 import {
 	addNotificationRequest as reduxAddNotification,
@@ -12,7 +12,7 @@ jest.mock('store/notifications/actions', () => ({
 	removeNotificationRequest: jest.fn(),
 }));
 
-jest.mock('lib/Random', () => ({
+jest.mock('lib/random', () => ({
 	randomUUID: jest.fn(),
 }));
 
