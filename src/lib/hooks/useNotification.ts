@@ -6,7 +6,7 @@ import {
 } from 'store/notifications/actions';
 import { getNotifications } from 'store/notifications/selectors';
 import { Notification } from 'store/notifications/types';
-import { randomUUID } from 'lib/Random';
+import { randomUUID } from 'lib/random';
 import { DEFAULT_NOTIFICATION_DURATION } from 'constants/notifications';
 
 export type NotificationHook = {
