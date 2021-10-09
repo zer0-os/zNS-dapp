@@ -289,7 +289,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
-						<b>Ownership transferred</b>{' '}
+						<b>
+							{`${transfer.from.id.substring(
+								0,
+								4,
+							)}...${transfer.from.id.substring(
+								transfer.from.id.length - 4,
+							)}`}{' '}
+							transferred ownership to{' '}
+							{`${transfer.to.id.substring(0, 4)}...${transfer.to.id.substring(
+								transfer.to.id.length - 4,
+							)}`}
+						</b>{' '}
 					</div>
 					<div className={styles.From}>
 						<b>{moment(Number(transfer.timestamp) * 1000).fromNow()}</b>
