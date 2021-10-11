@@ -296,7 +296,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							)}...${transfer.from.id.substring(
 								transfer.from.id.length - 4,
 							)}`}{' '}
-							transferred ownership to{' '}
+						</b>
+						transferred ownership to{' '}
+						<b>
 							{`${transfer.to.id.substring(0, 4)}...${transfer.to.id.substring(
 								transfer.to.id.length - 4,
 							)}`}
