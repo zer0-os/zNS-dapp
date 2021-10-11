@@ -20,7 +20,7 @@ import { Stage, Step, TransactionData } from './types';
 import { EthPerWheel } from './helpers';
 
 // Style Imports
-import styles from './MintWheels.module.css';
+import styles from './MintWheels.module.scss';
 
 type MintWheelsProps = {
 	balanceEth?: number;

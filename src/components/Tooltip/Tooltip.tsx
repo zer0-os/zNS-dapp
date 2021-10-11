@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 //- Style Imports
-import styles from './Tooltip.module.css';
+import styles from './Tooltip.module.scss';
 
 type TooltipProps = {
 	children: React.ReactNode;

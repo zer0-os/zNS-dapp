@@ -9,7 +9,7 @@ import { FutureButton, Image } from 'components';
 import { useMintProvider } from 'lib/providers/MintProvider';
 
 //- Style Imports
-import styles from './MintPreview.module.css';
+import styles from './MintPreview.module.scss';
 import { Maybe, NftStatusCard } from 'lib/types';
 import { zNAToLink } from 'lib/utils';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';

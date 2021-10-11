@@ -2,7 +2,7 @@
 import React, { SyntheticEvent, useCallback, useEffect, useRef } from 'react';
 
 // Style Imports
-import styles from './NFTMedia.module.css';
+import styles from './NFTMedia.module.scss';
 
 // Library Imports
 import { Image, Transformation } from 'cloudinary-react';

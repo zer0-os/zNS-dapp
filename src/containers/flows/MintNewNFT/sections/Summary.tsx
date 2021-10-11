@@ -9,7 +9,7 @@ import {
 } from '../types';
 
 //- Style Imports
-import styles from '../MintNewNFT.module.css';
+import styles from '../MintNewNFT.module.scss';
 
 //- Asset Imports
 import handIcon from './assets/hand.svg';

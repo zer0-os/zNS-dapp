@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import useNotification from 'lib/hooks/useNotification';
 
 //- Style Imports
-import styles from './NotificationDrawer.module.css';
+import styles from './NotificationDrawer.module.scss';
 
 const NotificationDrawer = () => {
 	// TODO: Need to animate notifications coming in and out

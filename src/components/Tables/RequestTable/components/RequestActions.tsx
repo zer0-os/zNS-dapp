@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import { DomainRequestAndContents } from 'lib/types';
 
 // Style Imports
-import styles from './RequestActions.module.css';
+import styles from './RequestActions.module.scss';
 
 type RequestActionsProps = {
 	onClick: (domainName: string) => void;

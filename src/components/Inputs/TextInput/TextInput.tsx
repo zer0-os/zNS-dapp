@@ -6,7 +6,7 @@ import React, { useRef, useEffect } from 'react';
 import autoHeight from 'autosize';
 
 //- Style Imports
-import styles from './TextInput.module.css';
+import styles from './TextInput.module.scss';
 
 //- Local Imports
 import { isAlphanumeric, isNumber } from './validation';

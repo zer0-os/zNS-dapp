@@ -2,7 +2,7 @@
 import { FutureButton, Spinner } from 'components';
 import React, { useEffect, useState } from 'react';
 
-import styles from './SubdomainTableCard.module.css';
+import styles from './SubdomainTableCard.module.scss';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';

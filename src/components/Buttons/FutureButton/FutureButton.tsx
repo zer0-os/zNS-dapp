@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import styles from './FutureButtonStyle.module.css';
+import styles from './FutureButtonStyle.module.scss';
 
 type FutureButtonProps = {
 	className?: string;

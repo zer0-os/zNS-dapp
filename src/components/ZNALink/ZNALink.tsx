@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-import styles from './ZNALink.module.css';
+import styles from './ZNALink.module.scss';
 
 type ZNAProps = {
 	className?: string;

@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './ToggleButton.module.css';
+import styles from './ToggleButton.module.scss';
 
 type ToggleButtonProps = {
 	toggled: boolean;

@@ -13,7 +13,7 @@ import { getMetadata } from 'lib/metadata';
 import { Metadata } from 'lib/types';
 
 //- Style Imports
-import styles from './Artwork.module.css';
+import styles from './Artwork.module.scss';
 
 type ArtworkProps = {
 	domain: string;

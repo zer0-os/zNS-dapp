@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './MintWheelsBanner.module.css';
+import styles from './MintWheelsBanner.module.scss';
 import arrow from './assets/bidarrow.svg';
 
 type MintWheelsBannerProps = {

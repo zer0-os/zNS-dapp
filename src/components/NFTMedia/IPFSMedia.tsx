@@ -1,6 +1,6 @@
 // Style Imports
 import { useEffect, useState } from 'react';
-import styles from './NFTMedia.module.css';
+import styles from './NFTMedia.module.scss';
 
 // Local Imports
 import { MediaContainerProps } from './types';

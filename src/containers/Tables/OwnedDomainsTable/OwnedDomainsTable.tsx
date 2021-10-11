@@ -11,7 +11,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Bid, Domain, DomainData } from 'lib/types';
 
 // Style Imports
-import styles from './OwnedDomainsTable.module.css';
+import styles from './OwnedDomainsTable.module.scss';
 
 // Component Imports
 import { Confirmation, DomainTable, Overlay, Spinner } from 'components';

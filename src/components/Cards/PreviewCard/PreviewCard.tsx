@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './PreviewCard.module.css';
+import styles from './PreviewCard.module.scss';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/random';
