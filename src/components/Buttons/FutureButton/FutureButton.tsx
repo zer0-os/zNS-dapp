@@ -23,6 +23,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	glow,
 	loading,
 	alt,
+
 }) => {
 	const [hasHovered, setHovered] = useState(false);
 	const [isSelected, setSelected] = useState(false);

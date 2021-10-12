@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 import styles from './RequestTableRow.module.css';
 import  {useTableProvider} from './RequestTableProvider'
 
-const SubdomainTableRow = (props: any) => {
+const RequestTableRow = (props: any) => {
 	const dateFromTimestamp = (timestamp: string) =>
 		new Date(Number(timestamp) * 1000).toLocaleString();
 
@@ -95,4 +95,4 @@ const SubdomainTableRow = (props: any) => {
 	);
 };
 
-export default React.memo(SubdomainTableRow);
+export default React.memo(RequestTableRow);

@@ -54,13 +54,14 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
 
 	// Searching
-	const [domainFilter, setDomainFilter] = useState('All Domains');
+	const [domainFilter, setDomainFilter] = useState<string | undefined>(
+		'All Domains',
+	);
 
 	// The Token that we need to approve the staking controller to transfer
 	const [approveTokenTransfer, setApproveTokenTransfer] = useState<
 		string | undefined
 	>();
-
 
 	const { viewing, setView, setLoadRequest, loadedRequests, onApprove } =
 		useTableProvider();
@@ -76,11 +77,11 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 				) || []
 			);
 		}
-	}, [loadedRequests]);
-
+	}, [domainFilter, loadedRequests]);
 
 	useEffect(() => {
 		setIsLoading(true);
+
 		const i = yourRequests.requests?.domainRequests || [];
 		const j =
 			requestsForYou.requests?.domains.map((d) => d.requests).flat() || [];
@@ -103,17 +104,13 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 		getRequestData(requests).then((d: any) => {
 			if (d) {
 				setLoadRequest(d);
-			} else {
-				console.error('Failed to retrieve request data');
-			}
-			setIsLoading(false);
+				return d;
+			} else console.error('Failed to retrieve request data');
 		});
+		setIsLoading(false);
 	}, [yourRequests.requests, requestsForYou.requests, domainFilter]);
 
-	/* Calls the middleware for approving a request
-		 This is passed to the Request modal */
-
-	/**
+	/*
 	 * Creates Transaction to approve the Staking Controller to transfer
 	 * tokens on behalf of the user.
 	 */
@@ -173,7 +170,47 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 		setShowLoadingIndicator(false);
 	};
 
-	console.log(viewing, 'viewing');
+	const search = (query: string, data?: any[]) => {
+		let results = data || [];
+		if (query?.length) {
+			results = results.filter((r: any) => {
+				let s = r?.request.domain.toLowerCase();
+				return s.indexOf(query?.toLowerCase()) > -1;
+			});
+		}
+		return results;
+	};
+
+	const filterByStatus = (filter: string | undefined, data?: any[]) => {
+		let results = data || [];
+		let isSearchData = data === undefined;
+		if (filter !== 'All Statuses') {
+			const approved = filter === 'Accepted';
+			return (results = (isSearchData ? [] : results).filter(
+				(d: any) => d.request.approved === approved,
+			));
+		}
+		return results;
+	};
+
+	const filter = (filter?: string, data?: any[]) => {
+		let results = data || [];
+		switch (filter) {
+			case 'All Statuses':
+				return results;
+
+			case 'Accepted':
+				results = filterByStatus(filter, data);
+				return results;
+
+			case 'Open Requests':
+				results = filterByStatus(filter, data);
+				return results;
+
+			default:
+			return setDomainFilter(filter);
+		}
+	};
 
 	return (
 		<>
@@ -244,10 +281,12 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 				isLoading={isLoading}
 				isFilterRequired={true}
 				isRequestTable={true}
-				optionsFilterByStatus={['All Statuses', 'Open Requests', 'Accepted']}
-				optionsFilterByDomain={['All Domains', 'Your Domains', 'Your Requests']}
+				optionsFilterOne={['All Domains', 'Your Domains', 'Your Requests']}
+				optionsFilterTwo={['All Statuses', 'Open Requests', 'Accepted']}
 				dropDownColorText={'white'}
 				adjustHeaderStatus={'44px'}
+				search={search}
+				filter={filter}
 			/>
 		</>
 	);

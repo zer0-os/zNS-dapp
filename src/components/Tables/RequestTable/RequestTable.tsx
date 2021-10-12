@@ -16,7 +16,7 @@ import {
 	Spinner,
 	Confirmation,
 } from 'components';
-import RequestActions from '../../../containers/Tables/RequestTable/components/RequestActions';
+// import RequestActions from '../../../containers/Tables/RequestTable/components/RequestActions';
 import { Request } from 'containers';
 
 //- Library Imports
@@ -201,7 +201,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	};
 
 	/* Sets some search parameters 
-		 There's a hook listening to each of these variables */
+	   There's a hook listening to each of these variables */
 	const search = (query: string) => setSearchQuery(query);
 	const filterByStatus = (filter: string) => setStatusFilter(filter);
 	const filterByDomain = (filter: string) => setDomainFilter(filter);
@@ -560,7 +560,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 
 					{/* Grid View */}
 					{/* @todo re-enable grid view */}
-					{!isLoading && isGridView && (
+					{/* {!isLoading && isGridView && (
 						<ol className={styles.Grid}>
 							{displayData.map((d, i) => (
 								<li key={i} onClick={() => view(d.request.domain)}>
@@ -580,7 +580,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 								</li>
 							))}
 						</ol>
-					)}
+					)} */}
 
 					{/* No Search Results Message */}
 					{!isLoading &&

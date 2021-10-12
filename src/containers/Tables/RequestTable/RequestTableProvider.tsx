@@ -44,7 +44,6 @@ const RequestTableProvider: React.FC<BidProviderType> = ({ children }) => {
 	>();
 
     const setView =(domain:DomainRequestAndContents | undefined)=>{
-        console.log(domain,'provider');
         
         setViewing(domain)
     }
@@ -52,8 +51,6 @@ const RequestTableProvider: React.FC<BidProviderType> = ({ children }) => {
     const setLoadRequest=(domain:DomainRequestAndContents[])=>{
             setLoadedRequests(domain)
     }
-
-    const [isLoading, setIsLoading] = useState(false); // Not needed anymore?
 	
  
 	//////////////////
@@ -62,9 +59,7 @@ const RequestTableProvider: React.FC<BidProviderType> = ({ children }) => {
 
     const staking = useStakingProvider();
 	
-    const view = (domainName: string) => {
-        console.log('cheks');
-        
+    const view = (domainName: string) => {        
 		if (loadedRequests) {
 			const r = loadedRequests?.filter(
 				(d) => d.request.domain === domainName,
