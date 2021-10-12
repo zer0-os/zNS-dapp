@@ -53,11 +53,19 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 
 	// Pulls the IPFS hash from an IPFS url
 	// https://ipfs.fleek.co/ipfs/QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
+	// or
+	// ipfs://QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
 	// turns into
 	// QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
 	const getHashFromIPFSUrl = (url: string) => {
-		const hashIndex = url.lastIndexOf('/') + 1;
-		return url.slice(hashIndex);
+		if (url.startsWith('ipfs://')) {
+			// ipfs://
+			return url.slice(7);
+		} else {
+			// http(s)://
+			const hashIndex = url.lastIndexOf('/') + 1;
+			return url.slice(hashIndex);
+		}
 	};
 
 	// Sets internal "media loading" state
@@ -183,7 +191,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 			return (
 				<IPFSMedia
 					alt={alt}
-					ipfsUrl={ipfsUrl!}
+					ipfsUrl={'https://ipfs.fleek.co/ipfs/' + mediaLocation!}
 					onClick={toggleLightbox}
 					onLoad={onLoadMedia}
 					size={matchSize ? size : undefined}
