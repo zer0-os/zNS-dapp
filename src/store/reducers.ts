@@ -11,7 +11,7 @@ const createRootReducer = (history: History<any>) =>
 		router: connectRouter(history),
 		[NOTIFICCATION_REDUCER_NAME]: notificationsReducer,
 		/**
-		 * Other reduceers will be added here
+		 * Other reducers will be added here
 		 */
 	});
 
