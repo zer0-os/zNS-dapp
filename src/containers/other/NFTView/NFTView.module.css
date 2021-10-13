@@ -10,7 +10,7 @@
 	position: relative;
 	display: flex;
 	justify-content: space-between;
-	padding: 60px 57.5px;
+	padding: 48px;
 
 	background-size: cover;
 	background-position: center;
@@ -49,16 +49,12 @@
 	height: auto;
 	max-height: 422px;
 	cursor: pointer;
-	border-radius: inherit;
+	border-radius: 8px;
 }
 
 .Image > div {
-	transition: transform var(--animation-time-medium) ease-in-out;
-}
-
-.Image img,
-.Image video {
 	border-radius: inherit;
+	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
 .Image:hover > div {
