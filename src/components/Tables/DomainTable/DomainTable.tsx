@@ -4,15 +4,8 @@ import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import {
-	Artwork,
-	FutureButton,
-	NFTCard,
-	SearchBar,
-	Overlay,
-	IconButton,
-} from 'components';
-import { MakeABid } from 'containers';
+import { Artwork, NFTCard, SearchBar, Overlay, IconButton } from 'components';
+import { BidButton, MakeABid } from 'containers';
 import HighestBid from './components/HighestBid';
 import NumBids from './components/NumBids';
 import NFTCardActions from './components/NFTCardActions';
@@ -21,8 +14,6 @@ import ViewBids from './components/ViewBids';
 //- Library Imports
 import 'lib/react-table-config.d.ts';
 import { Domain, DomainData } from 'lib/types';
-import useMvpVersion from 'lib/hooks/useMvpVersion';
-import { useBidProvider } from 'lib/providers/BidProvider';
 
 //- Style Imports
 import styles from './DomainTable.module.css';
@@ -30,8 +21,6 @@ import styles from './DomainTable.module.css';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
-import { domain } from 'process';
-import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -77,8 +66,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	userId,
 }) => {
 	const isMounted = useRef(false);
-	const { mvpVersion } = useMvpVersion();
-	const { getBidsForDomain } = useBidProvider();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [containerHeight, setContainerHeight] = useState(0);
@@ -145,6 +132,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 		if (biddingOn && isMounted.current) {
 			setDomainToRefresh(biddingOn.id);
+			// Need to reset this in case the user
+			// is bidding on the same domain twice
+			setTimeout(() => {
+				setDomainToRefresh('');
+			}, 1000);
 		}
 	};
 
@@ -230,19 +222,19 @@ const DomainTable: React.FC<DomainTableProps> = ({
 			{
 				id: 'bid',
 				accessor: (domain: Domain) => {
-					const shouldGlow =
-						userId?.toLowerCase() !== domain.owner.id.toLowerCase();
-
 					return (
 						<>
 							{isGlobalTable && (
-								<FutureButton
+								<BidButton
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
-									glow={disableButton === false && shouldGlow}
+									glow={
+										userId !== undefined &&
+										userId?.toLowerCase() !== domain.owner.id.toLowerCase()
+									}
 									onClick={() => buttonClick(domain)}
 								>
 									Make A Bid
-								</FutureButton>
+								</BidButton>
 							)}
 							{!isGlobalTable && onRowButtonClick && (
 								<ViewBids
@@ -257,7 +249,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				},
 			},
 		],
-		[domains],
+		[domains, userId, domainToRefresh],
 	);
 
 	// Navigation Handling

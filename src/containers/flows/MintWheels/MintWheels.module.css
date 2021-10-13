@@ -1,0 +1,27 @@
+.Container {
+	width: 640px;
+	padding: 48px;
+
+	background: var(--background-blue-card-wilder);
+}
+
+.Header {
+	text-align: center;
+
+	margin-bottom: 40px;
+}
+
+.Header h1 {
+	font-weight: 700;
+}
+
+.Header span {
+	display: inline-block;
+	margin-top: 8px;
+}
+
+.Header hr {
+	margin-top: 16px;
+	border: 0;
+	border-bottom: 1px solid #50207b;
+}

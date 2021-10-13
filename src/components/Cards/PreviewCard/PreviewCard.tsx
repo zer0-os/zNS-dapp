@@ -1,14 +1,15 @@
 //- React imports
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 //- Style Imports
 import styles from './PreviewCard.module.css';
 
 //- Library Imports
-import { randomName, randomImage } from 'lib/Random';
+import { randomName, randomImage } from 'lib/random';
 
 //- Component Imports
-import { FutureButton, Image, Member, Overlay, NFTMedia } from 'components';
+import { FutureButton, Member, NFTMedia } from 'components';
+import { BidButton } from 'containers';
 import { Maybe } from 'lib/types';
 
 type PreviewCardProps = {
@@ -73,7 +74,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Body}>
 			<div>
 				<h5 className="glow-text-blue">{name ? name : domain.split('/')[1]}</h5>
-				<span className={styles.Domain}>0://wilder.{domain.substring(1)}</span>
+				<span className={styles.Domain}>0://wilder.{domain}</span>
 				<p className={styles.Description}>{description}</p>
 			</div>
 			<div className={styles.Members}>
@@ -98,13 +99,13 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
-					<FutureButton
+					<BidButton
 						className={styles.Bid}
 						glow={disabled !== true}
 						onClick={makeBid}
 					>
 						MAKE A BID
-					</FutureButton>
+					</BidButton>
 					<FutureButton
 						className={styles.View}
 						glow

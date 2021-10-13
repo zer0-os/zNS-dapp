@@ -1,5 +1,5 @@
 import { useZnsContracts } from 'lib/contracts';
-import { Maybe, NftParams } from 'lib/types';
+import { Maybe } from 'lib/types';
 import { ethers } from 'ethers';
 
 export interface RegisterSubdomainParams {

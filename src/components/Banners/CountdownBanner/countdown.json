@@ -1,0 +1,18 @@
+{
+	"domain": "guild.jpierce.serenity",
+	"startTimeUTC": 1633395600000,
+	"endTimeUTC": 1633482000000,
+	"pre": {
+		"label": "Auction countdown for Serenity will start at 6pm PST -",
+		"hoursVisible": 12
+	},
+	"during": {
+		"label": "Serenity bidding ends in",
+		"button": "Bid Now"
+	},
+	"after": {
+		"label": "Bidding for Serenity has ended",
+		"button": "View Results",
+		"hoursVisible": 3
+	}
+}

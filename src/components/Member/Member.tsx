@@ -1,15 +1,8 @@
 //- React Imports
 import React from 'react';
 
-//- Component Imports
-import { Image } from 'components';
-
 //- Style Imports
 import styles from './Member.module.css';
-
-//- Library Imports
-import useMvpVersion from 'lib/hooks/useMvpVersion';
-import { randomName } from 'lib/Random';
 
 type MemberProps = {
 	id: string;
@@ -20,6 +13,14 @@ type MemberProps = {
 	style?: React.CSSProperties;
 };
 
+export const TEST_ID = {
+	CONTAINER: 'member-container',
+	MEMBER_INFO: 'member-info',
+	MEMBER_ID: 'member-id',
+	MEMBER_TEXT: 'member-text',
+	MEMBER_ZNA_BUTTON: 'member-zna-button',
+};
+
 const Member: React.FC<MemberProps> = ({
 	id,
 	name,
@@ -28,41 +29,42 @@ const Member: React.FC<MemberProps> = ({
 	showZna,
 	style,
 }) => {
-	const { mvpVersion } = useMvpVersion();
-
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
-			<div style={style} className={styles.Member}>
-				{mvpVersion === 3 && (
-					<div className={styles.Image}>
-						<Image
-							onClick={() => console.warn('Member clicks not yet implemented')}
-							src={image}
-						/>
-					</div>
-				)}
-				<div className={styles.Info}>
-					<span>
+			<div
+				style={style}
+				className={styles.Member}
+				data-testid={TEST_ID.CONTAINER}
+			>
+				{/* <div className={styles.Image}>
+					<Image
+						onClick={() => console.warn('Member clicks not yet implemented')}
+						src={image}
+					/>
+				</div> */}
+				<div className={styles.Info} data-testid={TEST_ID.MEMBER_INFO}>
+					<span data-testid={TEST_ID.MEMBER_ID}>
 						<a
 							href={'https://etherscan.io/address/' + id}
 							className={'alt-link'}
 							target="_blank"
 							rel="noreferrer"
 						>
-							{mvpVersion === 3
-								? randomName(id)
-								: `${id.substring(0, 4)}...${id.substring(id.length - 4)}`}
+							{id.substring(0, 4)}...{id.substring(id.length - 4)}
 						</a>
 					</span>
 					{subtext && (
 						<>
-							<span>{subtext}</span>
+							<span data-testid={TEST_ID.MEMBER_TEXT}>{subtext}</span>
 						</>
 					)}
 					{showZna && (
 						<>
-							<button className="text-button">
+							<button
+								className="text-button"
+								data-testid={TEST_ID.MEMBER_ZNA_BUTTON}
+							>
 								0://wilder.{name.toLowerCase().split(' ').join('.')}
 							</button>
 						</>

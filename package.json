@@ -18,6 +18,7 @@
 		"@testing-library/jest-dom": "^5.11.10",
 		"@testing-library/react": "^11.2.6",
 		"@testing-library/user-event": "^12.8.3",
+		"@types/react-lazyload": "^3.1.1",
 		"@types/react-router-dom": "^5.1.7",
 		"@typescript-eslint/typescript-estree": "^4.17.0",
 		"@web3-react/abstract-connector": "^6.0.7",
@@ -53,6 +54,8 @@
 		"react-clipboard.js": "^2.0.16",
 		"react-dom": "^17.0.2",
 		"react-hook-form": "^6.15.5",
+		"react-intersection-observer": "^8.32.1",
+		"react-lazyload": "^3.2.0",
 		"react-router-dom": "^5.2.0",
 		"react-scripts": "^4.0.3",
 		"react-spring": "^9.1.2",
@@ -65,11 +68,12 @@
 		"start": "react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
+		"testci": "react-scripts test --coverage",
 		"eject": "react-scripts eject",
 		"typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
 		"lint": "eslint src --ext .ts",
 		"apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql ",
-		"prettier": "prettier --write ./src/**/*.ts && prettier --write ./src/**/*.tsx"
+		"prettier": "prettier --write './src/**/*.{js,css,ts,tsx}'"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -107,8 +111,20 @@
 		"@types/react-dom": "^17.0.3",
 		"@types/react-table": "^7.0.29",
 		"@types/react-window": "^1.8.2",
+		"husky": "^4.3.8",
+		"lint-staged": "^11.1.2",
 		"prettier": "^2.2.1",
 		"ts-essentials": "^7.0.1",
 		"typechain": "^4.0.3"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.{js,css,ts,tsx}": [
+			"npm run prettier"
+		]
 	}
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /**
  * Stateful container for PreviewCard.tsx
  */
@@ -12,7 +13,6 @@ import { useHistory } from 'react-router-dom';
 
 // Copmonent Imports
 import PreviewCard from './PreviewCard';
-import { Overlay, Image } from 'components';
 
 type PreviewCardContainerProps = {
 	children?: React.ReactNode;
@@ -47,9 +47,11 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
 
 	const onViewDomain = () => {
+		const params = new URLSearchParams(window.location.search);
+		params.set('view', 'true');
 		history.push({
 			pathname: domain,
-			search: '?view',
+			search: params.toString(),
 		});
 	};
 
@@ -81,7 +83,7 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 				disabled={disabled}
 				domain={domain}
 				image={metadata?.image || ''}
-				isLoading={!metadata}
+				isLoading={!metadata || domain.length === 0}
 				mvpVersion={mvpVersion}
 				name={metadata?.title || ''}
 				onMakeBid={onButtonClick}

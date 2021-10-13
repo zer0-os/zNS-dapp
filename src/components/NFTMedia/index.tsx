@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /*
 	This container...
 	- checks if we have a Cloudinary upload for given hash
@@ -84,27 +85,32 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	// a file extension
 	const checkMediaType = () => {
 		return new Promise((resolve, reject) => {
-			fetch(ipfsUrl, { method: 'HEAD' }).then((r: Response) => {
-				const contentTypeHeader = r.headers.get('Content-Type');
+			fetch(ipfsUrl, { method: 'HEAD' })
+				.then((r: Response) => {
+					const contentTypeHeader = r.headers.get('Content-Type');
 
-				if (contentTypeHeader?.startsWith('image')) {
-					resolve(MediaType.Image);
-				} else if (contentTypeHeader?.startsWith('video')) {
-					resolve(MediaType.Video);
-				} else {
+					if (contentTypeHeader?.startsWith('image')) {
+						resolve(MediaType.Image);
+					} else if (contentTypeHeader?.startsWith('video')) {
+						resolve(MediaType.Video);
+					} else {
+						resolve(MediaType.Unknown);
+					}
+				})
+				.catch(() => {
 					resolve(MediaType.Unknown);
-				}
-			});
+				});
 		});
 	};
 
 	// Gets data for media
 	const getMediaData = async () => {
 		const mediaType = (await checkMediaType()) as MediaType;
-		setMediaType(mediaType);
-
 		const hash = getHashFromIPFSUrl(ipfsUrl);
-		setMediaLocation(hash);
+		if (isMounted.current) {
+			setMediaType(mediaType);
+			setMediaLocation(hash);
+		}
 	};
 
 	// Resets relevant state objects
@@ -231,4 +237,4 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	);
 };
 
-export default NFTMediaContainer;
+export default React.memo(NFTMediaContainer);
