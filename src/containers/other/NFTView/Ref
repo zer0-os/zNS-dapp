@@ -1,0 +1,12 @@
+https://twitter.com/intent/tweet?
+hashtags=demo
+&original_referer=https%3A%2F%2Fdeveloper.twitter.com%2F
+&ref_src=twsrc%5Etfw%7Ctwcamp%5Ebuttonembed%7Ctwterm%5Eshare%7Ctwgr%5E
+&related=twitterapi%2Ctwitter&text=Hello%20world
+&url=https%3A%2F%2Fexample.com%2Ffoo
+&via=twitterdev
+
+https://twitter.com/intent/tweet?
+text=Check%20out%20this%20account%20on%20OpenSea
+&url=https%3A%2F%2Fopensea.io%2Fassets%2F0x495f947276749ce646f68ac8c248420045cb7b5e%2F93281785975417662181072555544922004567407315035659333894901814581487403532293%2F
+&via=opensea
