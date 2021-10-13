@@ -91,9 +91,9 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	// Gets MIME type of media at URL
 	// Useful because our IPFS links don't have
 	// a file extension
-	const checkMediaType = () => {
+	const checkMediaType = (hash: string) => {
 		return new Promise((resolve, reject) => {
-			fetch(ipfsUrl, { method: 'HEAD' })
+			fetch('https://ipfs.fleek.co/ipfs/' + hash, { method: 'HEAD' })
 				.then((r: Response) => {
 					const contentTypeHeader = r.headers.get('Content-Type');
 
@@ -113,8 +113,8 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 
 	// Gets data for media
 	const getMediaData = async () => {
-		const mediaType = (await checkMediaType()) as MediaType;
 		const hash = getHashFromIPFSUrl(ipfsUrl);
+		const mediaType = (await checkMediaType(hash)) as MediaType;
 		if (isMounted.current) {
 			setMediaType(mediaType);
 			setMediaLocation(hash);
