@@ -364,7 +364,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						}}
 						className={`border-rounded`}
 						alt="NFT Preview"
-						ipfsUrl={znsDomain.domain?.image ?? ''}
+						ipfsUrl={
+							znsDomain.domain?.image_full || znsDomain.domain?.image || ''
+						}
 					/>
 				</div>
 				<div className={styles.Info}>
