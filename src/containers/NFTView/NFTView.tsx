@@ -7,15 +7,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 import { BigNumber, ethers } from 'ethers';
 
 //- Component Imports
-import {
-	ArrowLink,
-	FutureButton,
-	Member,
-	Image,
-	NFTMedia,
-	Overlay,
-	Spinner,
-} from 'components';
+import { ArrowLink, FutureButton, Member, NFTMedia, Overlay } from 'components';
 import { MakeABid } from 'containers';
 
 //- Library Imports
@@ -30,12 +22,11 @@ import styles from './NFTView.module.css';
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
 import copyIcon from './assets/copy-icon.svg';
-import { Bid } from 'lib/types';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useZnsSdk } from 'lib/providers/ZnsProvider';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DomainBidEvent, DomainEvent } from '@zero-tech/zns-sdk';
 const moment = require('moment');
 
@@ -44,7 +35,7 @@ type NFTViewProps = {
 	onTransfer: () => void;
 };
 
-//this will be refactorized on next iterations
+// @todo refactor on next iterations
 export interface DomainEvents extends DomainEvent {
 	from?: string;
 	to?: string;
@@ -56,12 +47,6 @@ export interface DomainEvents extends DomainEvent {
 }
 
 const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
-	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
-
-	//- Notes:
-	// It's worth having this component consume the domain context
-	// because it needs way more data than is worth sending through props
-
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
 	const { addNotification } = useNotification();
@@ -70,7 +55,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	//- Page State
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
-	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [allItems, setAllItems] = useState<DomainEvent[] | undefined>();
 	const [highestBid, setHighestBid] = useState<DomainBidEvent | undefined>();
 	const [highestBidUsd, setHighestBidUsd] = useState<number | undefined>();
@@ -147,13 +131,13 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					return current;
 				});
 
-				const sortedBids = bids.sort(
+				const sortedBids = bids?.sort(
 					(a, b) => Number(b.amount) - Number(a.amount),
 				);
 
 				if (!isMounted.current) return;
 				setAllItems(filter);
-				setHighestBid(sortedBids[0]);
+				setHighestBid(sortedBids?.[0]);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
@@ -235,6 +219,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	);
 
 	const history = () => {
+		// Sort all history items
 		const allHistoryItems = allItems?.sort(
 			(a: DomainEvents, b: DomainEvents) => {
 				const aVal = a.bidder
@@ -463,7 +448,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					{price()}
 					{actionButtons()}
 					{backgroundBlob !== undefined && (
-						<img src={backgroundBlob} className={styles.Bg} />
+						<img
+							alt="section background"
+							src={backgroundBlob}
+							className={styles.Bg}
+						/>
 					)}
 				</div>
 			</div>
