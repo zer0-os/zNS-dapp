@@ -17,5 +17,6 @@ export interface CloudinaryMediaProps extends SharedProps {
 
 export interface MediaContainerProps extends SharedProps {
 	ipfsUrl: string;
+	rawUrl?: string;
 	isVideo?: boolean;
 }

@@ -25,6 +25,7 @@ export async function getMetadata(
 			title: data.name || data.title,
 			description: data.description,
 			image: data.image,
+			image_full: data.image_full,
 		} as Metadata;
 
 		if (!metadata.title || !metadata.description || !metadata.image) {
