@@ -348,8 +348,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							'text=Check%20out%20this%20account%20on%20WilderWorld' +
 							'&hashtags=WilderWorld' +
 							'&via=WilderWorld' +
-							'&url=' +
-							window.location.href,
+							'&url=https://market.wilderworld.com/#/',
 					);
 				}}
 				style={{ height: 36, borderRadius: 18 }}
