@@ -50,10 +50,6 @@ const GenericTable = (props: any) => {
 		setSearchQuery(query.length > 2 ? query : undefined);
 	};
 
-
-	
-
-
 	const searchEffect = (query: string | undefined) => {
 		// depends on query and filters
 		let searchResults;
@@ -62,16 +58,12 @@ const GenericTable = (props: any) => {
 		if (query) {
 			searchResults = props.search(query, props.data);
 			return searchResults;
-		}
-		else {
+		} else {
 			return searchResults || filterResults;
 		}
 	};
 
-	const searchResults = useMemo(
-		() => searchEffect(searchQuery),
-		[searchQuery],
-	);
+	const searchResults = useMemo(() => searchEffect(searchQuery), [searchQuery]);
 
 	// Toggles to grid view when viewport
 	// resizes to below 700px
@@ -125,20 +117,11 @@ const GenericTable = (props: any) => {
 				return <></>;
 			}
 
-			// let filteredData = rawData.filter((d: any) =>
-			// 	searchQuery ? matchesSearch(d) : true,
-			// );
-
 			if (!props.infiniteScroll) {
 				return (
 					<>
 						{(searchResults || props.data).map((d: any, index: number) => (
-							<props.rowComponent
-								key={index}
-								rowNumber={index}
-								data={d}
-								
-							/>
+							<props.rowComponent key={index} rowNumber={index} data={d} />
 						))}
 					</>
 				);
@@ -148,13 +131,7 @@ const GenericTable = (props: any) => {
 						{(searchResults || props.data)
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
-								<props.rowComponent
-									key={index}
-									rowNumber={index}
-									data={d}
-									
-									
-								/>
+								<props.rowComponent key={index} rowNumber={index} data={d} />
 							))}
 					</>
 				);
@@ -201,11 +178,7 @@ const GenericTable = (props: any) => {
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					<props.gridComponent
-						key={index}
-						rowNumber={index}
-						data={d}
-					/>
+					<props.gridComponent key={index} rowNumber={index} data={d} />
 				))}
 			</div>
 		);
@@ -251,7 +224,7 @@ const GenericTable = (props: any) => {
 				)}
 				<div ref={ref}></div>
 			</div>
-			{rawData && !searchQuery && chunk * chunkSize < rawData.length && (
+			{(searchResults || rawData) && !searchQuery && chunk * chunkSize < rawData.length && (
 				<TextButton
 					onClick={() =>
 						isGridView ? increaseChunkSize() : increaseChunkSize(2)
