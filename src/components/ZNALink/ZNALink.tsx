@@ -11,7 +11,6 @@ type ZNAProps = {
 };
 
 const ZNALink: React.FC<ZNAProps> = ({ className, domain, style }) => {
-	console.log(domain.split('').length, 'domain');
 	return (
 		<div
 			className={`${styles.ZNALink} ${className ? className : ''}`}
