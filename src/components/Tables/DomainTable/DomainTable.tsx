@@ -4,15 +4,8 @@ import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import {
-	Artwork,
-	FutureButton,
-	NFTCard,
-	SearchBar,
-	Overlay,
-	IconButton,
-} from 'components';
-import { MakeABid } from 'containers';
+import { Artwork, NFTCard, SearchBar, Overlay, IconButton } from 'components';
+import { BidButton, MakeABid } from 'containers';
 import HighestBid from './components/HighestBid';
 import NumBids from './components/NumBids';
 import NFTCardActions from './components/NFTCardActions';
@@ -232,7 +225,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					return (
 						<>
 							{isGlobalTable && (
-								<FutureButton
+								<BidButton
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
 									glow={
 										userId !== undefined &&
@@ -241,7 +234,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									onClick={() => buttonClick(domain)}
 								>
 									Make A Bid
-								</FutureButton>
+								</BidButton>
 							)}
 							{!isGlobalTable && onRowButtonClick && (
 								<ViewBids

@@ -65,7 +65,7 @@ function App() {
 							<CurrentDomainProvider>
 								<ZNS
 									domain={location.pathname}
-									isNftView={location.search === '?view'}
+									isNftView={location.search.includes('view=true')}
 								/>
 							</CurrentDomainProvider>
 						</>

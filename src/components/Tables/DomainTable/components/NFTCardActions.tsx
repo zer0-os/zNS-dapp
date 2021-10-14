@@ -7,10 +7,11 @@ import { Domain } from 'lib/types';
 import { useBidProvider } from 'lib/providers/BidProvider';
 
 // Component Imports
-import { FutureButton, Spinner } from 'components';
+import { Spinner } from 'components';
 
 // Style Imports
 import styles from './NFTCardActions.module.css';
+import { BidButton } from 'containers';
 
 type NFTCardActionsProps = {
 	disableButton?: boolean;
@@ -82,9 +83,9 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 				)}
 			</div>
 			{!hideButton && (
-				<FutureButton glow={!disableButton} onClick={buttonClick}>
+				<BidButton glow={!disableButton} onClick={buttonClick}>
 					Make A Bid
-				</FutureButton>
+				</BidButton>
 			)}
 		</div>
 	);
