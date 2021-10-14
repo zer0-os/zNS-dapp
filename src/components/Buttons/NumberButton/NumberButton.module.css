@@ -9,6 +9,7 @@
 	color: white;
 	font-weight: 700;
 	text-align: center;
+	transition: color var(--animation-time-medium) ease-in-out;
 }
 
 .NumberButton::before {
@@ -30,7 +31,9 @@
 
 	transform: rotate(0deg);
 
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform var(--animation-time-medium) ease-in-out,
+		border-left-color var(--animation-time-medium),
+		border-right-color var(--animation-time-medium);
 }
 
 .Rotating::before {

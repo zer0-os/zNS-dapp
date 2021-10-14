@@ -1,72 +1,70 @@
-
-
 export interface TimeCache<T> {
-  exists(key: string): boolean,
-  get(key: string): T,
-  put(key: string, value: T): void
-  clear(): void;
-  clearKey(key: string): void;
+	exists(key: string): boolean;
+	get(key: string): T;
+	put(key: string, value: T): void;
+	clear(): void;
+	clearKey(key: string): void;
 }
 
 interface CacheEntry<T> {
-  value: T,
-  time: number
+	value: T;
+	time: number;
 }
 
 interface Cache<T> {
-  [key: string]: CacheEntry<T> | undefined;
+	[key: string]: CacheEntry<T> | undefined;
 }
 
 export function createTimeCache<T>(timeout: number): TimeCache<T> {
-  let cache: Cache<T> = {};
+	let cache: Cache<T> = {};
 
-  const getCacheEntry = (key: string): CacheEntry<T> | undefined => {
-    return cache[key];
-  }
+	const getCacheEntry = (key: string): CacheEntry<T> | undefined => {
+		return cache[key];
+	};
 
-  const exists = (key: string): boolean => {
-    const entry = getCacheEntry(key);
-    if (!entry) {
-      return false;
-    }
+	const exists = (key: string): boolean => {
+		const entry = getCacheEntry(key);
+		if (!entry) {
+			return false;
+		}
 
-    const now = Date.now();
-    const expired = now > entry.time + timeout;
+		const now = Date.now();
+		const expired = now > entry.time + timeout;
 
-    return !expired;
-  }
+		return !expired;
+	};
 
-  const get = (key: string): T => {
-    const entry = getCacheEntry(key);
-    if (!entry) {
-      throw Error(`no cache entry for ${key}`);
-    }
+	const get = (key: string): T => {
+		const entry = getCacheEntry(key);
+		if (!entry) {
+			throw Error(`no cache entry for ${key}`);
+		}
 
-    return entry.value;
-  }
+		return entry.value;
+	};
 
-  const put = (key: string, value: T): void => {
-    const now = Date.now();
+	const put = (key: string, value: T): void => {
+		const now = Date.now();
 
-    cache[key] = {
-      time: now,
-      value
-    }
-  }
+		cache[key] = {
+			time: now,
+			value,
+		};
+	};
 
-  const clear = () => {
-    cache = {};
-  }
+	const clear = () => {
+		cache = {};
+	};
 
-  const clearKey = (key: string) => {
-    cache[key] = undefined;
-  }
+	const clearKey = (key: string) => {
+		cache[key] = undefined;
+	};
 
-  return {
-    exists,
-    get,
-    put,
-    clear,
-    clearKey
-  }
+	return {
+		exists,
+		get,
+		put,
+		clear,
+		clearKey,
+	};
 }

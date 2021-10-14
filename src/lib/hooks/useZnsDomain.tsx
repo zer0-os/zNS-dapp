@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { DisplayParentDomain, Maybe } from 'lib/types';
 import React from 'react';

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import { Image } from 'components';
+import { NFTMedia } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
@@ -46,6 +46,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		// Get metadata
 		isMounted.current = true;
 		if (!loadTime.current) loadTime.current = new Date();
+		setMetadata(undefined);
 		if (metadataUrl) {
 			getMetadata(metadataUrl).then((m: Metadata | undefined) => {
 				if (loadTime.current && isMounted.current) {
@@ -61,27 +62,42 @@ const Artwork: React.FC<ArtworkProps> = ({
 		}
 
 		// Truncate
-		if (domain.length > 30) {
+		if (('wilder.' + domain).length > 30) {
 			const split = domain.split('.');
-			if (isMounted.current === true)
+			if (isMounted.current === true) {
 				setTruncatedDomain('wilder...' + split[split.length - 1]);
+			}
+		} else {
+			if (isMounted.current === true) {
+				setTruncatedDomain(undefined);
+			}
 		}
 
 		return () => {
 			isMounted.current = false;
 		};
-	}, [metadataUrl]);
+	}, [domain, metadataUrl]);
+
+	const artwork = React.useMemo(() => {
+		return (
+			<NFTMedia
+				disableLightbox
+				style={{
+					zIndex: 2,
+				}}
+				size="tiny"
+				className={`${styles.Image} border-rounded`}
+				alt="NFT Preview"
+				ipfsUrl={metadata?.image || ''}
+			/>
+		);
+	}, [metadata]);
 
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
 			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
-				<div className={styles.Image}>
-					<Image
-						style={{ zIndex: 2, objectFit: 'cover' }}
-						src={image || metadata?.image || ''}
-					/>
-				</div>
+				<div className={styles.Image}>{artwork}</div>
 				<div className={styles.Info}>
 					{shouldAnimate && (metadata?.title || name) && (
 						<Spring
@@ -112,7 +128,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && (
 								<span className={styles.Domain}>
-									{truncatedDomain || domain}
+									{truncatedDomain || 'wilder.' + domain}
 								</span>
 							)}
 							{!disableInteraction && (
