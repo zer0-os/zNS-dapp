@@ -142,6 +142,14 @@
 	margin-left: 24px;
 }
 
+.Twitter {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-image: url('./assets/twitter-64.png');
+	background-size: contain;
+}
+
 .Horizontal {
 	display: flex;
 }
@@ -266,9 +274,6 @@
 	padding: 20px;
 	padding-top: 0;
 	font-weight: 400;
-}
-
-.History .Loading span {
 }
 
 .History .Loading {

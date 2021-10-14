@@ -340,6 +340,22 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			>
 				Make A Bid
 			</BidButton>
+			<FutureButton
+				glow={!isOwnedByYou && active}
+				onClick={() => {
+					window.open(
+						'https://twitter.com/intent/tweet?' +
+							'text=Check%20out%20this%20account%20on%20WilderWorld' +
+							'&hashtags=WilderWorld' +
+							'&via=WilderWorld' +
+							'&url=' +
+							window.location.href,
+					);
+				}}
+				style={{ height: 36, borderRadius: 18 }}
+			>
+				<div className={styles.Twitter}></div>
+			</FutureButton>
 		</div>
 	);
 
@@ -364,9 +380,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						}}
 						className={`border-rounded`}
 						alt="NFT Preview"
-						ipfsUrl={
-							znsDomain.domain?.image_full || znsDomain.domain?.image || ''
-						}
+						ipfsUrl={znsDomain.domain?.image ?? ''}
 					/>
 				</div>
 				<div className={styles.Info}>
