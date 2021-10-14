@@ -1,0 +1,46 @@
+.Tooltip {
+	position: relative;
+}
+
+.Content {
+	/* display: none; */
+	position: absolute;
+	padding-top: 12px;
+	right: -86px;
+	z-index: 10;
+
+	opacity: 0;
+}
+
+.Open {
+	animation: open var(--animation-time-short) forwards;
+	animation-timing-function: ease-in-out;
+	opacity: 1;
+}
+
+.Closed {
+	animation: close var(--animation-time-short) forwards;
+	animation-timing-function: ease-in-out;
+	display: none;
+}
+
+@keyframes open {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes close {
+	0% {
+		opacity: 1;
+	}
+	99% {
+		opacity: 0;
+	}
+	100% {
+		display: none;
+	}
+}
