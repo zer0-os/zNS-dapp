@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react';
+import React, { createRef, useState } from 'react';
 //- Type Imports
 import { DomainRequestAndContents } from '../../../lib/types';
 
@@ -38,6 +38,10 @@ const RequestTableProvider: React.FC<BidProviderType> = ({ children }) => {
 	const [loadedRequests, setLoadedRequests] = useState<
 		DomainRequestAndContents[]
 	>([]);
+
+	
+	
+
 	// The request we're viewing in the request modal
 	const [viewing, setViewing] = useState<
 		DomainRequestAndContents | undefined
@@ -48,11 +52,17 @@ const RequestTableProvider: React.FC<BidProviderType> = ({ children }) => {
         setViewing(domain)
     }
 
+	// const domainRef = createRef();
+	// const getData= (domain:any)=> domainRef.current = domain;
+	
+
+	
+
     const setLoadRequest=(domain:DomainRequestAndContents[])=>{
-            setLoadedRequests(domain)
+          setLoadedRequests(domain)
     }
 	
- 
+	// const loadedRequests = domainRef.current;
 	//////////////////
 	// Custom Hooks //
 	//////////////////
@@ -62,7 +72,7 @@ const RequestTableProvider: React.FC<BidProviderType> = ({ children }) => {
     const view = (domainName: string) => {        
 		if (loadedRequests) {
 			const r = loadedRequests?.filter(
-				(d) => d.request.domain === domainName,
+				(d:any) => d.request.domain === domainName,
 			)[0];
 			setViewing(r);
 		}

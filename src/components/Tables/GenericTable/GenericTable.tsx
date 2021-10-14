@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo, useRef, createRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './GenericTable.module.css';
 import { useInView } from 'react-intersection-observer';
 import {
@@ -12,8 +12,9 @@ import {
 } from 'components';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import React from 'react';
 
-const GenericTable = (props: any) => {
+const GenericTable = React.memo((props: any) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
@@ -21,15 +22,11 @@ const GenericTable = (props: any) => {
 	// chunk defines which row we're up to when infinite scroll is enabled
 	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows
 	const [chunk, setChunk] = useState<number>(1);
-
 	const [isGridView, setIsGridView] = useState<boolean>(false);
 	const [searchQuery, setSearchQuery] = useState<string>();
-	// const [searchResults , setSearchResults]= useState<Array<any>>()
 
 	//This handles the filter selection
 	const [filter, setFilter] = useState<any>('');
-	const [filterOne, setFilterOne] = useState<any>('');
-	const [filterTwo, setFilterTwo] = useState<any>('');
 	const contentRef = useRef<HTMLDivElement>(null);
 
 	const rawData = props.data;
@@ -72,7 +69,7 @@ const GenericTable = (props: any) => {
 			return searchResults;
 		}
 		if (filter) {
-			filterResults = props.filter(filter, props.data);
+			filterResults = props.filter(filter, filterResults);
 			return filterResults;
 		} else {
 			return searchResults || filterResults;
@@ -93,16 +90,6 @@ const GenericTable = (props: any) => {
 	};
 
 	const getFilterSelection = (filter: string) => setFilter(filter);
-	
-
-	const getFilterOne = (filter: string) => {
-		getFilterSelection(filter);
-		setFilterOne(filter);
-	};
-	const getFilterTwo = (filter: string) => {
-		getFilterSelection(filter);
-		setFilterTwo(filter);
-	};
 
 	/////////////
 	// Effects //
@@ -152,12 +139,7 @@ const GenericTable = (props: any) => {
 				return (
 					<>
 						{(searchResults || props.data).map((d: any, index: number) => (
-							<props.rowComponent
-								key={index}
-								rowNumber={index}
-								data={d}
-								
-							/>
+							<props.rowComponent key={index} rowNumber={index} data={d} />
 						))}
 					</>
 				);
@@ -167,11 +149,7 @@ const GenericTable = (props: any) => {
 						{(searchResults || props.data)
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
-								<props.rowComponent
-									key={index}
-									rowNumber={index}
-									data={d}
-								/>
+								<props.rowComponent key={index} rowNumber={index} data={d} />
 							))}
 					</>
 				);
@@ -222,19 +200,58 @@ const GenericTable = (props: any) => {
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					<props.gridComponent
-						key={index}
-						rowNumber={index}
-						data={d}
-					/>
+					<props.gridComponent key={index} rowNumber={index} data={d} />
 				))}
 			</div>
 		);
 	}, [rawData, chunk, searchQuery, filter]);
 
+	const Filters = () => {
+		return (
+			<>
+				{/* 
+		@NOTE:
+
+		Filters data should come in this format —The object can be extended if more functionalities are required or filters need to be extended:
+
+		const filterOpts ={ 
+		default: 0,
+		selected: domainFilter,
+		options: ['All Domains', 'Your Domains', 'Your Requests'],
+		setSelected: (filter: string) => filter
+		}
+		The props.filterData expects an array of objs with this parameters.
+		How the object is handled would be the container's concern.
+
+		
+		 */}
+
+				{props.filtersData.map((filter: any, idx: number) => {
+					return (
+						<OptionDropdown
+							onSelect={getFilterSelection}
+							options={filter.options.map((opt: string) => opt)}
+							drawerStyle={{
+								width: 179,
+								color: props.dropDownColorText ? props.dropDownColorText : '',
+							}}
+						>
+							<FilterButton onClick={() => {}}>
+								{filter.selected || filter.options[filter.default]}
+							</FilterButton>
+						</OptionDropdown>
+					);
+				})}
+
+				<div />
+			</>
+		);
+	};
+
 	////////////
 	// Render //
 	////////////
+
 
 	return (
 		<div
@@ -250,42 +267,7 @@ const GenericTable = (props: any) => {
 					/>
 
 					<div className={styles.Buttons}>
-						{props.isFilterRequired ? (
-							<>
-								<OptionDropdown
-									onSelect={getFilterOne}
-									options={props.optionsFilterOne.map((opt: string) => opt)}
-									drawerStyle={{
-										width: 179,
-										color: props.dropDownColorText
-											? props.dropDownColorText
-											: '',
-									}}
-								>
-									<FilterButton onClick={() => {}}>
-										{filterOne || props.optionsFilterOne[0]}
-									</FilterButton>
-								</OptionDropdown>
-
-								<OptionDropdown
-									onSelect={getFilterTwo}
-									options={props.optionsFilterTwo.map((opt: string) => opt)}
-									drawerStyle={{
-										width: 179,
-										color: props.dropDownColorText
-											? props.dropDownColorText
-											: '',
-									}}
-								>
-									<FilterButton onClick={() => {}}>
-										{filterTwo || props.optionsFilterTwo[0]}
-									</FilterButton>
-								</OptionDropdown>
-								<div />
-							</>
-						) : (
-							<></>
-						)}
+						{props.isFilterRequired ? <>{Filters()}</> : <></>}
 						<IconButton
 							onClick={() => setIsGridView(false)}
 							toggled={!isGridView}
@@ -321,6 +303,6 @@ const GenericTable = (props: any) => {
 			)}
 		</div>
 	);
-};
+});
 
 export default GenericTable;

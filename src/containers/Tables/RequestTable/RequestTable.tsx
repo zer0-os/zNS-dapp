@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 //- Library Imports
 import { getRequestData } from './data';
@@ -29,6 +29,13 @@ type RequestTableProps = {
 	onNavigate: (domain: string) => void;
 };
 
+type filterParameters = {
+	default: number;
+	selected: string;
+	options: Array<string>;
+	setSelected: (value: string) => string;
+};
+
 const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 	//////////////////
 	// Custom Hooks //
@@ -54,9 +61,7 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 	const [showLoadingIndicator, setShowLoadingIndicator] = useState(false);
 
 	// Searching
-	const [domainFilter, setDomainFilter] = useState<string | undefined>(
-		'All Domains',
-	);
+	const [domainFilter, setDomainFilter] = useState<string>('All Domains');
 
 	// The Token that we need to approve the staking controller to transfer
 	const [approveTokenTransfer, setApproveTokenTransfer] = useState<
@@ -81,7 +86,6 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 
 	useEffect(() => {
 		setIsLoading(true);
-
 		const i = yourRequests.requests?.domainRequests || [];
 		const j =
 			requestsForYou.requests?.domains.map((d) => d.requests).flat() || [];
@@ -104,10 +108,10 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 		getRequestData(requests).then((d: any) => {
 			if (d) {
 				setLoadRequest(d);
+				setIsLoading(false);
 				return d;
 			} else console.error('Failed to retrieve request data');
 		});
-		setIsLoading(false);
 	}, [yourRequests.requests, requestsForYou.requests, domainFilter]);
 
 	/*
@@ -193,24 +197,46 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 		return results;
 	};
 
-	const filter = (filter?: string, data?: any[]) => {
+	const filter = (filter: string, data?: any[]) => {
 		let results = data || [];
 		switch (filter) {
 			case 'All Statuses':
+				filterStatus.setSelected(filter);
 				return results;
 
 			case 'Accepted':
+				filterStatus.setSelected(filter);
 				results = filterByStatus(filter, data);
 				return results;
 
 			case 'Open Requests':
+				filterStatus.setSelected(filter);
 				results = filterByStatus(filter, data);
 				return results;
-
 			default:
-			return setDomainFilter(filter);
+				// filterDomain.setSelected(filter)
+				setDomainFilter(filter);
+				results = displayData;
+				return results;
 		}
 	};
+
+	const filterStatus: filterParameters = {
+		default: 0,
+		selected: '',
+		options: ['All Statuses', 'Open Requests', 'Accepted'],
+		setSelected: (filter: string) => (filterStatus.selected = filter),
+	};
+	const filterDomain: filterParameters = {
+		default: 0,
+		selected: domainFilter,
+		options: ['All Domains', 'Your Domains', 'Your Requests'],
+		setSelected: (filter: string) => filter,
+	};
+	
+	/////////////
+	//FRAGMENTS//
+	/////////////
 
 	return (
 		<>
@@ -281,8 +307,7 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 				isLoading={isLoading}
 				isFilterRequired={true}
 				isRequestTable={true}
-				optionsFilterOne={['All Domains', 'Your Domains', 'Your Requests']}
-				optionsFilterTwo={['All Statuses', 'Open Requests', 'Accepted']}
+				filtersData={[filterDomain, filterStatus]}
 				dropDownColorText={'white'}
 				adjustHeaderStatus={'44px'}
 				search={search}
