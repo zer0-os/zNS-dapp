@@ -123,6 +123,17 @@ const OwnedDomainTables = ({ onNavigate }: OwnedDomainTableProps) => {
 
 	if (!owned) return <></>;
 
+	const search = (query: string, data?: any[]) => {
+		let results = data || [];
+		if (query?.length) {
+			results = results.filter((r: any) => {
+				let s = r.name.toLowerCase();
+				return s.indexOf(query?.toLowerCase()) > -1;
+			});
+		}
+		return results;
+	};
+
 	/////////////////////
 	// React Fragments //
 	/////////////////////
@@ -207,6 +218,7 @@ const OwnedDomainTables = ({ onNavigate }: OwnedDomainTableProps) => {
 				loadingText={'Loading Domains'}
 				rowComponent={OwnedDomainTableRow}
 				gridComponent={OwnedDomainTableCard}
+				search={search}
 				
 			/>
 		</>

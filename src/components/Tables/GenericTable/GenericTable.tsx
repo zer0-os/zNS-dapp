@@ -50,11 +50,28 @@ const GenericTable = (props: any) => {
 		setSearchQuery(query.length > 2 ? query : undefined);
 	};
 
-	// Since due date is coming up, I'm rushing the search algo
-	// This will need to be expanded to be generic
-	const matchesSearch = (d: any) => {
-		return d.name.includes(searchQuery);
+
+	
+
+
+	const searchEffect = (query: string | undefined) => {
+		// depends on query and filters
+		let searchResults;
+		let filterResults = props.data;
+
+		if (query) {
+			searchResults = props.search(query, props.data);
+			return searchResults;
+		}
+		else {
+			return searchResults || filterResults;
+		}
 	};
+
+	const searchResults = useMemo(
+		() => searchEffect(searchQuery),
+		[searchQuery],
+	);
 
 	// Toggles to grid view when viewport
 	// resizes to below 700px
@@ -108,14 +125,14 @@ const GenericTable = (props: any) => {
 				return <></>;
 			}
 
-			let filteredData = rawData.filter((d: any) =>
-				searchQuery ? matchesSearch(d) : true,
-			);
+			// let filteredData = rawData.filter((d: any) =>
+			// 	searchQuery ? matchesSearch(d) : true,
+			// );
 
 			if (!props.infiniteScroll) {
 				return (
 					<>
-						{filteredData.map((d: any, index: number) => (
+						{(searchResults || props.data).map((d: any, index: number) => (
 							<props.rowComponent
 								key={index}
 								rowNumber={index}
@@ -128,7 +145,7 @@ const GenericTable = (props: any) => {
 			} else {
 				return (
 					<>
-						{filteredData
+						{(searchResults || props.data)
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
 								<props.rowComponent
@@ -172,12 +189,12 @@ const GenericTable = (props: any) => {
 			return <></>;
 		}
 		const data = props.infiniteScroll
-			? rawData
+			? (searchResults || props.data)
 					.filter((d: any) =>
 						searchQuery ? d.name.includes(searchQuery) : true,
 					)
 					.slice(0, chunk * chunkSize)
-			: rawData.filter((d: any) =>
+			: (searchResults || props.data).filter((d: any) =>
 					searchQuery ? d.name.includes(searchQuery) : true,
 			  );
 
