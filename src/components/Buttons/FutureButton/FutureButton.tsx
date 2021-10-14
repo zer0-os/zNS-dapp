@@ -1,5 +1,8 @@
+// React Imports
 import React, { useState } from 'react';
 
+// Style Imports
+import classNames from 'classnames/bind';
 import styles from './FutureButtonStyle.module.css';
 
 type FutureButtonProps = {
@@ -12,6 +15,8 @@ type FutureButtonProps = {
 	loading?: boolean;
 	alt?: boolean;
 };
+
+const cx = classNames.bind(styles);
 
 // @TODO Should make glow the default state since it's much more prevalent in the design
 const FutureButton: React.FC<FutureButtonProps> = ({
@@ -38,13 +43,23 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 		if (toggleable) setSelected(!isSelected);
 	};
 
+	const buttonClasses = cx(className, {
+		futureButton: true,
+		futureButtonInactive: !glow,
+		glow: glow,
+		selected: isSelected,
+		Loading: loading,
+		Alt: alt,
+	});
+
+	const washClasses = cx({
+		wash: true,
+		hovered: hasHovered && !isSelected,
+	});
+
 	return (
 		<button
-			className={`${styles.futureButton} ${
-				glow ? '' : styles.futureButtonInactive
-			} ${isSelected ? styles.selected : ''} ${glow ? styles.glow : ''} ${
-				loading ? styles.Loading : ''
-			} ${alt ? styles.Alt : ''} ${className ? className : ''}`}
+			className={buttonClasses}
 			onMouseEnter={handleHover}
 			onMouseUp={handleClick}
 			style={style}
@@ -53,11 +68,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 				{!loading && children}
 				{loading && <div className={styles.Spinner}></div>}
 			</div>
-			<div
-				className={`${styles.wash} ${
-					hasHovered && !isSelected ? styles.hovered : ''
-				}`}
-			></div>
+			<div className={washClasses}></div>
 		</button>
 	);
 };

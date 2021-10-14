@@ -230,7 +230,7 @@
 	animation-timing-function: ease-in-out;
 }
 
-.futureButton:hover:not(.selected, .futureButtonInActive) .wash {
+.futureButton:hover:not(.selected, .futureButtonInactive) .wash {
 	animation: expand 0.2s forwards;
 	animation-timing-function: ease-in-out;
 }
