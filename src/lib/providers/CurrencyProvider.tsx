@@ -31,10 +31,10 @@ const CurrencyProvider: React.FC<CurrencyProviderType> = ({ children }) => {
 		try {
 			const price = await wildTokenPrice();
 			setWildPriceUsd(price);
-			await new Promise((resolve) => setTimeout(resolve, 30000));
+			await new Promise((resolve) => setTimeout(resolve, 1000000));
 		} catch (e) {
 			console.error(e);
-			await new Promise((resolve) => setTimeout(resolve, 5000));
+			await new Promise((resolve) => setTimeout(resolve, 5000000));
 		}
 		getWildPriceUsd();
 	};
@@ -43,10 +43,10 @@ const CurrencyProvider: React.FC<CurrencyProviderType> = ({ children }) => {
 		try {
 			const price = await lootTokenPrice();
 			setLootPriceUsd(price);
-			await new Promise((resolve) => setTimeout(resolve, 30000));
+			await new Promise((resolve) => setTimeout(resolve, 30000000));
 		} catch (e) {
 			console.error(e);
-			await new Promise((resolve) => setTimeout(resolve, 5000));
+			await new Promise((resolve) => setTimeout(resolve, 50000000));
 		}
 		getLootPriceUsd();
 	};

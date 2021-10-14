@@ -7,7 +7,7 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	background: var(--background-blue-card-wilder);
+	background: var(--background-blue-card-wilder) !important;
 }
 /* marginTop: 16, marginLeft: 43, marginRight: 43, marginBottom: 0 */
 .PreviewCard hr {
@@ -52,6 +52,7 @@
 .Asset {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 
 	width: 398.33px;
 	height: 220px;

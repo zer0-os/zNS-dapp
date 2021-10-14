@@ -12,10 +12,13 @@ import {
 	ERC20__factory,
 	StakingController,
 	StakingController__factory,
+	WhitelistSimpleSale,
+	WhitelistSimpleSale__factory,
 	ZauctionSupportingZNS,
 	ZauctionSupportingZNS__factory,
 } from 'types';
 import * as ethers from 'ethers';
+import { RPC_URLS } from './connectors';
 
 export interface ContractAddresses {
 	basic: string;
@@ -24,6 +27,7 @@ export interface ContractAddresses {
 	wildToken: string;
 	lootToken: string;
 	zAuction: string;
+	wheelSale: string;
 }
 
 export interface Contracts {
@@ -33,6 +37,7 @@ export interface Contracts {
 	wildToken: ERC20;
 	lootToken: ERC20;
 	zAuction: ZauctionSupportingZNS;
+	wheelSale: WhitelistSimpleSale;
 }
 
 function useZnsContracts(): Contracts | null {
@@ -40,10 +45,15 @@ function useZnsContracts(): Contracts | null {
 	const { library, active, chainId } = context;
 	const contract = useMemo((): Contracts | null => {
 		let contracts;
-		let signer: ethers.VoidSigner | ethers.Signer = new ethers.VoidSigner(
-			ethers.constants.AddressZero,
-		);
+		let signer: ethers.Signer | ethers.providers.Provider =
+			new ethers.VoidSigner(ethers.constants.AddressZero);
 		if (!library) {
+			if (RPC_URLS[defaultNetworkId]) {
+				signer = new ethers.providers.JsonRpcProvider(
+					RPC_URLS[defaultNetworkId],
+				);
+			}
+
 			contracts = addresses[chainIdToNetworkType(defaultNetworkId)];
 		} else {
 			if (!chainId) {
@@ -74,6 +84,10 @@ function useZnsContracts(): Contracts | null {
 			lootToken: ERC20__factory.connect(contracts.lootToken, signer),
 			zAuction: ZauctionSupportingZNS__factory.connect(
 				contracts.zAuction,
+				signer,
+			),
+			wheelSale: WhitelistSimpleSale__factory.connect(
+				contracts.wheelSale,
 				signer,
 			),
 		};

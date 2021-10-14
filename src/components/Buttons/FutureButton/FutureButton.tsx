@@ -7,7 +7,7 @@ import styles from './FutureButtonStyle.module.css';
 
 type FutureButtonProps = {
 	className?: string;
-	onClick: () => void;
+	onClick?: (event?: any) => void;
 	style?: React.CSSProperties;
 	toggleable?: boolean;
 	children: React.ReactNode;
@@ -17,6 +17,12 @@ type FutureButtonProps = {
 };
 
 const cx = classNames.bind(styles);
+
+export const TEST_ID = {
+	CONTAINER: 'future-button-container',
+	LOADER: 'future-button-loading-spinner',
+	WASH: 'future-button-wash',
+};
 
 // @TODO Should make glow the default state since it's much more prevalent in the design
 const FutureButton: React.FC<FutureButtonProps> = ({
@@ -37,9 +43,9 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 		else if (!hasHovered) setHovered(true);
 	};
 
-	const handleClick = () => {
+	const handleClick = (event: any) => {
 		if (loading) return;
-		if (onClick) onClick();
+		if (onClick) onClick(event);
 		if (toggleable) setSelected(!isSelected);
 	};
 
@@ -63,12 +69,15 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 			onMouseEnter={handleHover}
 			onMouseUp={handleClick}
 			style={style}
+			data-testid={TEST_ID.CONTAINER}
 		>
 			<div className={styles.Content}>
 				{!loading && children}
-				{loading && <div className={styles.Spinner}></div>}
+				{loading && (
+					<div className={styles.Spinner} data-testid={TEST_ID.LOADER}></div>
+				)}
 			</div>
-			<div className={washClasses}></div>
+			<div className={washClasses} data-testid={TEST_ID.WASH}></div>
 		</button>
 	);
 };

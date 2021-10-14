@@ -1,10 +1,5 @@
 import { DocumentNode, OperationVariables, useQuery } from '@apollo/client';
-import {
-	DomainQueryResult,
-	DomainsQueryResult,
-	Maybe,
-	ParentDomain,
-} from 'lib/types';
+import { DomainQueryResult, DomainsQueryResult } from 'lib/types';
 import { getDomainId } from 'lib/utils';
 
 import { queries } from '../zns';
@@ -55,6 +50,18 @@ export function useDomainsOwnedByUserQuery(
 		queries.ownedByAccountQuery,
 		{
 			owner: account.toLowerCase(),
+		},
+		pollInterval,
+	);
+
+	return query;
+}
+
+export function useDomainsTransfers(domainId: string, pollInterval?: number) {
+	const query = useQueryHook<DomainsQueryResult>(
+		queries.getDomainTransfers,
+		{
+			id: domainId,
 		},
 		pollInterval,
 	);

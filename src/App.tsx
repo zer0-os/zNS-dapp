@@ -16,9 +16,9 @@ import BidProvider from 'lib/providers/BidProvider';
 import CurrencyProvider from 'lib/providers/CurrencyProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import TransferProvider from './lib/providers/TransferProvider';
-import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
+import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 
 //- Asset Imports
 import backgroundImage from 'assets/background.jpg';
@@ -37,6 +37,11 @@ function getLibrary(provider: any): Web3Provider {
 }
 
 function App() {
+	console.log(
+		'%cHello fellow devs & tinkerers!',
+		'display: block; border: 3px solid #3ca1ff; border-radius: 7px; padding: 10px; margin: 8px;',
+	);
+
 	// Programatically load the background image
 	const loadImg = new Image();
 	loadImg.src = backgroundImage;
@@ -57,10 +62,12 @@ function App() {
 				render={({ location, match }) => {
 					return (
 						<>
-							<ZNS
-								domain={location.pathname}
-								isNftView={location.search === '?view'}
-							/>
+							<CurrentDomainProvider>
+								<ZNS
+									domain={location.pathname}
+									isNftView={location.search.includes('view=true')}
+								/>
+							</CurrentDomainProvider>
 						</>
 					);
 				}}
@@ -74,28 +81,26 @@ function wrappedApp() {
 		// Web3 Library Hooks
 		<ChainSelectorProvider>
 			<SubgraphProvider>
-				<NotificationProvider>
-					<Web3ReactProvider getLibrary={getLibrary}>
+				<Web3ReactProvider getLibrary={getLibrary}>
+					<NotificationProvider>
 						{/* Our Hooks  */}
 						<ZNSDomainsProvider>
-							<MvpVersionProvider>
-								<CurrencyProvider>
-									<BidProvider>
-										<TransferProvider>
-											<StakingRequestProvider>
-												<MintProvider>
-													<EnlistProvider>
-														<App />
-													</EnlistProvider>
-												</MintProvider>
-											</StakingRequestProvider>
-										</TransferProvider>
-									</BidProvider>
-								</CurrencyProvider>
-							</MvpVersionProvider>
+							<CurrencyProvider>
+								<BidProvider>
+									<TransferProvider>
+										<StakingRequestProvider>
+											<MintProvider>
+												<EnlistProvider>
+													<App />
+												</EnlistProvider>
+											</MintProvider>
+										</StakingRequestProvider>
+									</TransferProvider>
+								</BidProvider>
+							</CurrencyProvider>
 						</ZNSDomainsProvider>
-					</Web3ReactProvider>
-				</NotificationProvider>
+					</NotificationProvider>
+				</Web3ReactProvider>
 			</SubgraphProvider>
 		</ChainSelectorProvider>
 	);

@@ -16,7 +16,7 @@
 	z-index: 9000;
 	opacity: 0;
 
-	background: rgba(0, 0, 0, 0.9);
+	background: rgba(0, 0, 0, 0.9) !important;
 	transition: backdrop-filter 0.2s;
 }
 
@@ -25,12 +25,17 @@
 	width: 100%;
 }
 
+.FullScreen .Content {
+	width: 100%;
+}
+
 .FullScreen > div {
 	height: 100%;
 }
 
-.Container > * {
-	margin: 0 auto;
+.Container {
+	display: flex;
+	justify-content: center;
 }
 
 .Centered {

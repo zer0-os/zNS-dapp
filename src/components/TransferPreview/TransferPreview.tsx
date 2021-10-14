@@ -54,9 +54,7 @@ const TransferPreview = () => {
 			className={`${styles.TransferPreview} border-primary border-rounded blur`}
 		>
 			<h4 className="glow-text-white">Transfer In Progress</h4>
-			<ul>
-				{transferring.map((n: any) => nft(n, false))}
-			</ul>
+			<ul>{transferring.map((n: any) => nft(n, false))}</ul>
 		</div>
 	);
 };

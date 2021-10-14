@@ -1,9 +1,9 @@
 //- React Imports
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 //- Component Imports
-import { Image } from 'components';
+import { FutureButton, Image } from 'components';
 
 //- Hook Imports
 import { useMintProvider } from 'lib/providers/MintProvider';
@@ -17,7 +17,11 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
-const MintPreview = () => {
+type MintPreviewProps = {
+	onOpenProfile: () => void;
+};
+
+const MintPreview = (props: MintPreviewProps) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { chainId } = walletContext;
 
@@ -41,42 +45,70 @@ const MintPreview = () => {
 			fontWeight: 700,
 		};
 
+		const openProfile = () => {
+			if (props.onOpenProfile) {
+				props.onOpenProfile();
+			}
+		};
+
 		return (
 			<>
 				<hr className="glow" />
 				<li key={`${nft.title}${Math.random()}`}>
 					<div className={`${styles.Image} border-rounded`}>
-						{exists ? (
-							<Link to={link}>
-								<Image src={nft.imageUri} />
-							</Link>
+						{/* @todo fix hardcoded handling of name */}
+						{nft.imageUri.indexOf('cloudinary') > -1 ? (
+							<img
+								alt="nft preview"
+								style={{ objectFit: 'cover' }}
+								src={nft.imageUri}
+							/>
 						) : (
 							<Image src={nft.imageUri} />
 						)}
 					</div>
 					<div className={styles.Info}>
-						<h5 className="glow-text-blue">{nft.title}</h5>
+						<div>
+							<h5 className="glow-text-blue">{nft.title}</h5>
 
-						{exists ? (
-							<Link to={link}>{nft.zNA}</Link>
-						) : (
-							<span style={{ color: 'var(--color-grey)', fontWeight: 700 }}>
-								{nft.zNA}
-							</span>
-						)}
+							{nft.zNA.length > 0 && (
+								<>
+									{exists ? (
+										<Link to={link}>{nft.zNA}</Link>
+									) : (
+										<span
+											style={{ color: 'var(--color-grey)', fontWeight: 700 }}
+										>
+											{nft.zNA}
+										</span>
+									)}
+								</>
+							)}
+						</div>
 
-						<p>{nft.story}</p>
-						{nft.stakeAmount && nft.stakeAmount.length > 0 ? (
-							<p style={{ marginTop: '16px' }}>
-								Stake Amount: {nft.stakeAmount} LOOT
-							</p>
-						) : null}
-						<p>
+						{isCompleted &&
+							nft.zNA.length === 0 &&
+							props.onOpenProfile !== undefined && (
+								<FutureButton glow onClick={openProfile}>
+									View In Profile
+								</FutureButton>
+							)}
+
+						<div>
+							{nft.stakeAmount && nft.stakeAmount.length > 0 ? (
+								<p style={{ marginTop: '16px' }}>
+									Stake Amount: {nft.stakeAmount} LOOT
+								</p>
+							) : null}
 							<div style={statusStyle}>{statusText}</div>
-							<a target={'_blank'} href={etherscanLink}>
-								View on Etherscan
-							</a>
-						</p>
+							{nft.transactionHash.length > 0 && (
+								<p>
+									<a target={'_blank'} href={etherscanLink} rel="noreferrer">
+										View on Etherscan
+									</a>
+								</p>
+							)}
+						</div>
 					</div>
 				</li>
 			</>
