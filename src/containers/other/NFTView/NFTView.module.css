@@ -46,8 +46,7 @@
 }
 
 .Image {
-	height: auto;
-	max-height: 422px;
+	height: 568px;
 	cursor: pointer;
 	border-radius: 8px;
 }
