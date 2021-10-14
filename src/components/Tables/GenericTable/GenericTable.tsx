@@ -212,7 +212,8 @@ const GenericTable = React.memo((props: any) => {
 				{/* 
 		@NOTE:
 
-		Filters data should come in this format —The object can be extended if more functionalities are required or filters need to be extended:
+		Filters data should come on this format: 
+		—The object can be extended if more functionalities are required or filters need to be extended:
 
 		const filterOpts ={ 
 		default: 0,
@@ -222,7 +223,6 @@ const GenericTable = React.memo((props: any) => {
 		}
 		The props.filterData expects an array of objs with this parameters.
 		How the object is handled would be the container's concern.
-
 		
 		 */}
 
@@ -251,7 +251,6 @@ const GenericTable = React.memo((props: any) => {
 	////////////
 	// Render //
 	////////////
-
 
 	return (
 		<div
