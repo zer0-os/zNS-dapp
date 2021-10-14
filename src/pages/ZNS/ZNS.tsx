@@ -27,7 +27,7 @@ import {
 	FutureButton,
 	FilterBar,
 	TitleBar,
-	Tooltip,
+	TooltipLegacy,
 	IconButton,
 	Overlay,
 	NotificationDrawer,
@@ -454,7 +454,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
-										<Tooltip
+										<TooltipLegacy
 											content={<MintPreview onOpenProfile={openProfile} />}
 										>
 											<NumberButton
@@ -462,18 +462,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 												number={statusCount}
 												onClick={() => {}}
 											/>
-										</Tooltip>
+										</TooltipLegacy>
 									) : null}
 
 									{/* Transfer Progress button */}
 									{transferring.length > 0 && (
-										<Tooltip content={<TransferPreview />}>
+										<TooltipLegacy content={<TransferPreview />}>
 											<NumberButton
 												rotating={transferring.length > 0}
 												number={transferring.length}
 												onClick={() => {}}
 											/>
-										</Tooltip>
+										</TooltipLegacy>
 									)}
 
 									{/* Profile Button */}
