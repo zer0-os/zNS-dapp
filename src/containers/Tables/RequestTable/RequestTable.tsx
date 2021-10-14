@@ -214,7 +214,6 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 				results = filterByStatus(filter, data);
 				return results;
 			default:
-				// filterDomain.setSelected(filter)
 				setDomainFilter(filter);
 				results = displayData;
 				return results;
@@ -233,7 +232,7 @@ const RequestTable = ({ userId, onNavigate }: RequestTableProps) => {
 		options: ['All Domains', 'Your Domains', 'Your Requests'],
 		setSelected: (filter: string) => filter,
 	};
-	
+
 	/////////////
 	//FRAGMENTS//
 	/////////////
