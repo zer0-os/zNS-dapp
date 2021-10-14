@@ -54,11 +54,7 @@
 
 /* Text */
 .Title {
-	background: -webkit-linear-gradient(
-		45deg,
-		rgba(137, 48, 238, 1),
-		rgba(175, 114, 243, 1)
-	);
+	background: var(--color-cosmic-gradient);
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 
@@ -81,7 +77,7 @@
 /*Button*/
 .Button {
 	font-family: var(--font-family);
-	color: #52cbff;
+	color: var(--color-accent-blue-100);
 	background: none;
 	z-index: 2;
 	transition: text-shadow var(--animation-time-medium) ease-in-out;

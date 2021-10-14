@@ -42,50 +42,65 @@
 	--color-grey: #808080;
 	--color-grey-lighter-2: #bfbfbf;
 	--color-text-primary: #ffffff;
-	
-	--color-purple-darkest: #10052E;
-	--color-purple-dark: #1D0C4A;
-	--color-purple-light: #29175A;
-	--color-purple-lighter: #50207B;
-	--color-purple-lightest: #C169FF;
 
-	--color-black: #000000 
+	--color-purple-darkest: #10052e;
+	--color-purple-dark: #1d0c4a;
+	--color-purple-light: #29175a;
+	--color-purple-lighter: #50207b;
+	--color-purple-lightest: #c169ff;
+
+	--color-black: #000000;
 	--color-grey-draker: #404040;
-	--color-grey-lighter-3: #D9D9D9;
-	--color-grey-lighter-4: #F2F2F2;
+	--color-grey-lighter-3: #d9d9d9;
+	--color-grey-lighter-4: #f2f2f2;
 
-	--color-accent-blue-100: #52CBFF;
-	--color-blue-200: #52AEFF;
-	--color-blue-300: #5291FF;
-	--color-blue-400: #5274FF;
+	--color-accent-blue-100: #52cbff;
+	--color-blue-200: #52aeff;
+	--color-blue-300: #5291ff;
+	--color-blue-400: #5274ff;
 
-	--color-success: #58C573;
-	--color-error: #F6677C;
-	--color-red-200: #F67F7C;
-	--color-red-400: #F66596;
-	--color-red-500: #F763B0;
+	--color-success: #58c573;
+	--color-error: #f6677c;
+	--color-red-200: #f67f7c;
+	--color-red-400: #f66596;
+	--color-red-500: #f763b0;
 
-	--color-azure-gradient: linear-gradient(90deg, #5257FF 0%, #52CBFF 100%);
-	--color-azure-gradient-50: linear-gradient(90deg, rgba(82, 87, 255, 0.5) 0%, rgba(82, 203, 255, 0.5) 100%);
-	--color-azure-gradient-25: linear-gradient(90deg, rgba(82, 87, 255, 0.25) 0%, rgba(82, 203, 255, 0.25) 100%);
+	--color-azure-gradient: linear-gradient(90deg, #5257ff 0%, #52cbff 100%);
+	--color-azure-gradient-50: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 0.5) 0%,
+		rgba(82, 203, 255, 0.5) 100%
+	);
+	--color-azure-gradient-25: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 0.25) 0%,
+		rgba(82, 203, 255, 0.25) 100%
+	);
 
-	--color-coral-gradient: linear-gradient(90deg, #F46B47 0%, #F763B0 100%);
+	--color-coral-gradient: linear-gradient(90deg, #f46b47 0%, #f763b0 100%);
 
-	--color-cosmic-gradient: linear-gradient(90deg, #8930EE 0%, #AF72F3 100%);
-	--color-cosmic-gradient-25: linear-gradient(90deg, rgba(137, 48, 238, 0.25) 0%, rgba(175, 114, 243, 0.25) 100%);
-	
-	--color-horizon-gradient: linear-gradient(270deg, #52AEFF 0%, #8930EE 100%);
+	--color-cosmic-gradient: linear-gradient(90deg, #8930ee 0%, #af72f3 100%);
+	--color-cosmic-gradient-25: linear-gradient(
+		90deg,
+		rgba(137, 48, 238, 0.25) 0%,
+		rgba(175, 114, 243, 0.25) 100%
+	);
 
-	--color-miami-gradient: linear-gradient(90deg, #F66596 0%, #5291FF 100%);
-	
-	--color-ocean-gradient: linear-gradient(90deg, #52AEFF 0%, #52CBFF 100%);
-	--color-ocean-gradient-10: linear-gradient(90deg, rgba(82, 174, 255, 0.1) 0%, rgba(82, 203, 255, 0.1) 100%);
+	--color-horizon-gradient: linear-gradient(270deg, #52aeff 0%, #8930ee 100%);
 
-	--color-purpink-gradient: linear-gradient(90deg, #F763B0 0%, #7614E7 100%);
-	--color-sunset-gradient: linear-gradient(270deg, #F6677C 0%, #F58C61 100%);
+	--color-miami-gradient: linear-gradient(90deg, #f66596 0%, #5291ff 100%);
+
+	--color-ocean-gradient: linear-gradient(90deg, #52aeff 0%, #52cbff 100%);
+	--color-ocean-gradient-10: linear-gradient(
+		90deg,
+		rgba(82, 174, 255, 0.1) 0%,
+		rgba(82, 203, 255, 0.1) 100%
+	);
+
+	--color-purpink-gradient: linear-gradient(90deg, #f763b0 0%, #7614e7 100%);
+	--color-sunset-gradient: linear-gradient(270deg, #f6677c 0%, #f58c61 100%);
 
 	--color-baby-blue: #9dd0ff;
-
 
 	--color-background: rgb(16, 5, 46);
 	--color-background-50: rgba(16, 5, 46, 0.5);
