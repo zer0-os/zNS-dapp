@@ -310,7 +310,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
-						<b>Ownership transferred from</b>{' '}
 						<b>
 							<a
 								className="alt-link"
@@ -321,7 +320,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								item.from.length - 4,
 							)}`}</a>
 						</b>{' '}
-						to
+						transferred ownership to
 						<b>
 							<a
 								className="alt-link"
@@ -342,7 +341,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
-						Domain sold from{' '}
 						<b>
 							<a
 								className="alt-link"
@@ -353,7 +351,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								item.seller.length - 4,
 							)}`}</a>
 						</b>{' '}
-						to{' '}
+						sold this NFT to{' '}
 						<b>
 							<a
 								className="alt-link"
@@ -364,6 +362,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								item.buyer.length - 4,
 							)}`}</a>
 						</b>{' '}
+						{item.amount && (
+							<>
+								for{' '}
+								<b>
+									{Number(
+										ethers.utils.formatEther(item.amount!),
+									).toLocaleString()}{' '}
+									WILD
+								</b>
+							</>
+						)}
 					</div>
 					<div className={styles.From}>
 						<b>{moment(Number(item.timestamp) * 1000).fromNow()}</b>
