@@ -285,7 +285,7 @@
 }
 
 @media only screen and (max-width: 1280px) {
-	.Buttons {
+	.Buttons button {
 		display: none;
 	}
 }
