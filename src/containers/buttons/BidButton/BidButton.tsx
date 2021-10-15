@@ -44,9 +44,7 @@ const BidButton: React.FC<BidButtonProps> = ({ onClick, ...rest }) => {
 					onClose={() => setIsModalOpen(false)}
 				/>
 			)}
-			<FutureButton onClick={handleClick} {...rest}>
-				Make A Bid
-			</FutureButton>
+			<FutureButton onClick={handleClick} {...rest} />
 		</>
 	);
 };
