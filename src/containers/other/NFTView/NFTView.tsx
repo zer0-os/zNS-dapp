@@ -359,12 +359,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		</div>
 	);
 
-	if (znsDomain.domain?.title) {
-		var meta = document.createElement('meta');
-		meta.name = 'twitter:title';
-		meta.content = znsDomain.domain?.title;
-		document.getElementsByTagName('head')[0].appendChild(meta);
-	}
+	const changeMetaTags = () => {
+		document
+			?.querySelector('meta[name="twitter:title"]')
+			?.setAttribute(
+				'content',
+				znsDomain.domain?.title ? znsDomain.domain?.title : '',
+			);
+	};
+	changeMetaTags();
 
 	////////////
 	// Render //
