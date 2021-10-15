@@ -10,7 +10,8 @@
 	position: relative;
 	display: flex;
 	justify-content: space-between;
-	padding: 60px 57.5px;
+	padding: 48px;
+	border-radius: var(--box-radius);
 
 	background-size: cover;
 	background-position: center;
@@ -46,21 +47,14 @@
 }
 
 .Image {
-	height: 422px;
-	min-height: 422px;
-	max-height: 422px;
+	height: 568px;
 	cursor: pointer;
-	background: rgba(0, 0, 0, 0.3);
-	border-radius: inherit;
+	border-radius: 8px;
 }
 
 .Image > div {
-	transition: transform var(--animation-time-medium) ease-in-out;
-}
-
-.Image img,
-.Image video {
 	border-radius: inherit;
+	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
 .Image:hover > div {
@@ -181,13 +175,12 @@
 	display: flex;
 	flex: 1;
 	flex-direction: column;
-	padding-bottom: 0;
 }
 
 .Story p {
 	/* height: 100%; */
 	padding-right: 12px;
-	padding-bottom: 12px;
+	padding-bottom: 0;
 
 	margin-right: 8px;
 }
@@ -248,8 +241,11 @@
 }
 
 .History {
-	padding: 20px 0 0 0;
+	padding: 20px 0 20px 0;
 	margin-top: 24px;
+}
+.HistoryNoBids {
+	padding: 20px 0 0 0;
 }
 
 .History h4 {
@@ -289,7 +285,7 @@
 }
 
 @media only screen and (max-width: 1280px) {
-	.Buttons {
+	.Buttons button {
 		display: none;
 	}
 }

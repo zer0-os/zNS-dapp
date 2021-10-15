@@ -12,7 +12,7 @@ import {
 } from 'components';
 
 //- Library Imports
-import { randomName, randomImage } from 'lib/Random';
+import { randomName, randomImage } from 'lib/random';
 import { ethers } from 'ethers';
 import { getMetadata } from 'lib/metadata';
 

@@ -1,6 +1,5 @@
 import { gql } from '@apollo/client';
 
-//this only works on kovan until mainnet gets updated
 export const getDomainMintEvent = gql`
 	query DomainMinted($id: ID!) {
 		domainMinteds(where: { domain: $id }) {
@@ -28,6 +27,12 @@ export const getDomainTransfers = gql`
 			blockNumber
 			timestamp
 			transactionID
+			from {
+				id
+			}
+			to {
+				id
+			}
 		}
 	}
 `;
