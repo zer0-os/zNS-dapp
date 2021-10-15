@@ -289,7 +289,35 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
-						<b>Ownership transferred</b>{' '}
+						<b>
+							<a
+								className="alt-link"
+								href={`https://etherscan.io/address/${transfer.from.id}`}
+								target="_blank"
+								rel="noreferrer"
+							>
+								{`${transfer.from.id.substring(
+									0,
+									4,
+								)}...${transfer.from.id.substring(
+									transfer.from.id.length - 4,
+								)}`}{' '}
+							</a>
+						</b>
+						transferred ownership to{' '}
+						<a
+							className="alt-link"
+							href={`https://etherscan.io/address/${transfer.to.id}`}
+							target="_blank"
+							rel="noreferrer"
+						>
+							<b>
+								{`${transfer.to.id.substring(
+									0,
+									4,
+								)}...${transfer.to.id.substring(transfer.to.id.length - 4)}`}
+							</b>{' '}
+						</a>
 					</div>
 					<div className={styles.From}>
 						<b>{moment(Number(transfer.timestamp) * 1000).fromNow()}</b>

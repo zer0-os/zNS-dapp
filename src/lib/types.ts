@@ -177,8 +177,8 @@ export interface transferDto {
 	blockNumber: string;
 	timestamp: string;
 	transactionID: string;
-	from: string;
-	to: string;
+	from: Account;
+	to: Account;
 }
 
 export interface minterData {
