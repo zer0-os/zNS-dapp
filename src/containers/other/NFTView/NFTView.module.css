@@ -11,6 +11,7 @@
 	display: flex;
 	justify-content: space-between;
 	padding: 48px;
+	border-radius: var(--box-radius);
 
 	background-size: cover;
 	background-position: center;
