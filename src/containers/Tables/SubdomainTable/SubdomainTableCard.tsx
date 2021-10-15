@@ -11,6 +11,7 @@ import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 
 import { NFTCard } from 'components';
+import { BidButton } from 'containers';
 
 import { useBid } from './BidProvider';
 
@@ -90,12 +91,12 @@ const SubdomainTableCard = (props: any) => {
 						</>
 					)}
 				</div>
-				<FutureButton
+				<BidButton
 					glow={account !== undefined && !isOwnedByUser}
 					onClick={onButtonClick}
 				>
 					Bid
-				</FutureButton>
+				</BidButton>
 			</div>
 		</NFTCard>
 	);

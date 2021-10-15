@@ -70,6 +70,7 @@ export { default as SearchBar } from './SearchBar/SearchBar.js';
 export { default as SideBar } from './SideBar/SideBar';
 export { default as Spinner } from './Spinner/Spinner';
 export { default as ToggleSection } from './ToggleSection/ToggleSection.js';
+export { default as TooltipLegacy } from './TooltipLegacy/Tooltip';
 export { default as Tooltip } from './Tooltip/Tooltip';
 export { default as ZNALink } from './ZNALink/ZNALink';
 export { default as Confirmation } from './Confirmation/Confirmation';

@@ -1,15 +1,40 @@
 /* Set up some variables */
 .futureButton {
-	--bg: var(--background-accent-1-gradient);
-
+	--bg: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 0.25) 0%,
+		rgba(82, 203, 255, 0.25) 100%
+	);
 	--box-shadow: var(--color-accent-1-medium-10);
 	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
+	--border-color: #3ca1ff;
+	--border-color-hover: #fff;
+}
+
+.futureButtonInactive {
+	box-shadow: none;
+	--box-shadow-heavy: none;
+	--bg: none !important;
+	--border-color: #808080;
+	--color: #808080;
+}
+
+.futureButtonInactive.Content {
+	color: #808080;
+}
+
+.futureButtonInactive.Alt {
+	color: #fff;
+	--border-color: #fff;
 }
 
 .Alt {
-	--bg: #ff43b410;
-	--box-shadow: rgba(255, 67, 180, 0.25);
-	--box-shadow-heavy: rgba(255, 67, 180, 0.25);
+	--bg: rgba(247, 99, 176, 0.25);
+	--box-shadow: rgba(247, 99, 176, 0.25);
+	--box-shadow-heavy: #7000ff;
+	--border-color: #f763b0;
+	--border-color-hover: #f763b0;
+	--color: #fff;
 }
 
 .futureButton {
@@ -17,21 +42,20 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
 	height: 32px;
 	padding-left: 25px;
 	padding-right: 25px;
-
+	color: var(--color);
 	background: var(--bg);
-
 	border-radius: var(--box-radius);
-
 	cursor: pointer;
-
 	text-transform: uppercase;
-
 	transition: opacity var(--animation-time-short) ease-in-out;
 	opacity: 0.6;
+}
+
+.futureButton:not(.futureButtonInactive):hover::after {
+	border-color: var(--border-color-hover);
 }
 
 /* 
@@ -42,49 +66,43 @@
 	content: ' ';
 	width: 100%;
 	height: 100%;
-
 	position: absolute;
 	top: 0;
 	left: -1;
-
 	border-radius: inherit;
 	border-style: solid;
 	border-top-width: 0;
 	border-bottom-width: 0;
 	border-left-width: 2px;
 	border-right-width: 2px;
-	border-color: var(--color-accent-1);
-
+	border-color: var(--border-color);
 	transition: border-color 0.3s ease-in-out;
-
 	/* box-shadow: 0px 0px 7px -px rgba(0, 178, 255, 0.7); */
 }
 
-.content {
+.Content {
 	margin-left: 8px;
 	margin-right: 8px;
 	z-index: 2;
-
 	text-align: center;
-
 	font-size: var(--font-size-default);
 	font-weight: 700;
-
-	color: var(--color-accent-1);
-	text-shadow: var(--glow-text-blue);
 	transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
 }
 
-.iconImage {
+.ContentActive {
+	color: var(--color-gray);
+	text-shadow: var(--glow-text-blue);
+}
+
+.ContentInActive .iconImage {
 	height: 13px;
 	width: 13px;
-
 	background-image: url('./arrow.svg');
 	background-size: 13px 13px;
 	background-repeat: no-repeat;
 	background-position: center;
 	border-radius: 50%;
-
 	transition: filter 0.3s ease-in-out;
 }
 
@@ -103,12 +121,14 @@
 	25% {
 		box-shadow: 0px 0px 10px 5px var(--box-shadow);
 	}
+	75% {
+		box-shadow: 0px 0px 10px 5px var(--box-shadow);
+	}
 	100% {
 		opacity: 1;
-		box-shadow: 0px 0px 10px 5px var(--box-shadow);
+		box-shadow: 0px 0px 0px 0px var(--box-shadow);
 		top: 0;
 		left: 0;
-
 		width: 100%;
 		height: 100%;
 		border-radius: 18px;
@@ -128,7 +148,6 @@
 		opacity: 1;
 		top: 50%;
 		left: calc(50% - 2px);
-
 		width: 2px;
 		height: 0;
 	}
@@ -136,21 +155,18 @@
 		opacity: 1;
 		top: 0;
 		left: calc(50% - 2px);
-
 		width: 2px;
 		height: 100%;
-
 		box-shadow: 0px 0px 10px 5px var(--box-shadow);
 	}
 	0% {
 		opacity: 1;
 		top: 0;
 		left: 0;
-
 		width: 100%;
 		height: 100%;
 		border-radius: 18px;
-		box-shadow: 0px 0px 5px 5px var(--box-shadow);
+		box-shadow: 0px 0px 0px 0px var(--box-shadow);
 	}
 }
 
@@ -163,7 +179,7 @@
 	width: 0;
 
 	background: var(--box-shadow);
-	box-shadow: 0px 0px 10px 5px var(--box-shadow);
+	/* box-shadow: 0px 0px 10px 5px var(--box-shadow); */
 
 	transition: background 0.3s ease-in-out;
 
@@ -214,7 +230,7 @@
 	animation-timing-function: ease-in-out;
 }
 
-.futureButton:hover:not(.selected) .wash {
+.futureButton:hover:not(.selected, .futureButtonInactive) .wash {
 	animation: expand 0.2s forwards;
 	animation-timing-function: ease-in-out;
 }
@@ -226,10 +242,6 @@
 	opacity: 1;
 }
 
-.glow:after {
-	border-color: white;
-}
-
 .glow:before {
 	content: ' ';
 	position: absolute;
@@ -237,7 +249,6 @@
 	left: 0;
 	width: 100%;
 	height: 0;
-
 	box-shadow: 0px 0px 40px 15px var(--box-shadow-heavy);
 }
 

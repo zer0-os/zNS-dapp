@@ -48,7 +48,6 @@
 
 .Bid button {
 	margin-left: auto;
-	opacity: 0.3;
 	transition: transform var(--animation-time-short) ease-in-out,
 		opacity var(--animation-time-short) ease-in-out;
 }
@@ -58,7 +57,6 @@
 }
 
 .Bid:hover button {
-	opacity: 1;
 	transform: scale(1.05);
 }
 
