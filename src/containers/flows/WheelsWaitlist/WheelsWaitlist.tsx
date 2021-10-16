@@ -3,8 +3,8 @@ import { FutureButton, Spinner, TextInput } from 'components';
 import styles from './WheelsWaitlist.module.css';
 import { isValidEmail } from './validation';
 
-import iconDiscord from './assets/discord.svg';
-import iconTwitter from './assets/twitter.svg';
+import iconDiscord from './assets/discord.png';
+import iconTwitter from './assets/twitter.png';
 
 type WheelsWaitlistProps = {
 	hasSubmitted: boolean;

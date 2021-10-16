@@ -85,3 +85,8 @@
 	justify-content: center;
 	margin-top: 16px;
 }
+
+.Socials img {
+	height: 64px;
+	width: 64px;
+}
