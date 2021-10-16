@@ -24,6 +24,7 @@ export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
 export { default as MintWheels } from './flows/MintWheels';
 export { default as TransferOwnership } from './flows/TransferOwnership';
+export { default as WheelsWaitlist } from './flows/WheelsWaitlist';
 
 // Tables
 export { default as OwnedDomainsTable } from './Tables/OwnedDomainsTable/OwnedDomainsTable';

@@ -1,0 +1,92 @@
+.Container {
+	width: 588px;
+	padding: 25.5px 40px 40px 40px;
+
+	background: var(--background-blue-card-wilder);
+}
+
+.Header {
+	text-align: center;
+
+	margin-bottom: 40px;
+}
+
+.Header h1 {
+	font-weight: 700;
+}
+
+.Header span {
+	display: inline-block;
+	margin-top: 8px;
+}
+
+.Header hr {
+	margin-top: 25.5px;
+	border: 0;
+	border-bottom: 1px solid #50207b;
+}
+
+.Input {
+	margin-top: 16px;
+}
+
+.Button {
+	margin: 40px auto 0 auto;
+}
+
+.Error {
+	display: block;
+	margin-top: 16px;
+	width: 100%;
+
+	color: var(--color-error);
+	text-align: center;
+}
+
+.Loading {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 40px;
+}
+
+.Loading span {
+	font-weight: 700;
+	margin-bottom: 24px;
+}
+
+.Success {
+	text-align: center;
+	color: var(--color-success);
+}
+
+.Socials {
+	margin-top: 40px;
+}
+
+.Socials span {
+	display: block;
+	font-weight: 700;
+	text-align: center;
+}
+
+.Socials a {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.Socials a:not(:first-of-type) {
+	margin-left: 16px;
+}
+
+.Socials div {
+	display: flex;
+	justify-content: center;
+	margin-top: 16px;
+}
+
+.Socials img {
+	height: 64px;
+	width: 64px;
+}
