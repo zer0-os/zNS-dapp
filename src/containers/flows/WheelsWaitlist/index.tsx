@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { MintWheelsBanner, Overlay, Countdown } from 'components';
 import WheelsWaitlist from './WheelsWaitlist';
 
 const WheelsWaitlistContainer = () => {
 	const countdownDate = 1634508000000;
+
+	const history = useHistory();
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
@@ -13,6 +16,8 @@ const WheelsWaitlistContainer = () => {
 	const openModal = () => {
 		if (canOpen) {
 			setIsModalOpen(true);
+		} else {
+			history.push('wheels.genesis');
 		}
 	};
 
