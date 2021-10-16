@@ -46,7 +46,9 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 			style={style}
 			onClick={onClick}
 		>
-			<img className={styles.Background} src={backgroundBlob} />
+			{backgroundBlob && (
+				<img className={styles.Background} src={backgroundBlob} />
+			)}
 			<div className={`${styles.Content}`}>
 				<div className={`${styles.TextContainer}`}>
 					<h2 className={`${styles.Title}`}>{title}</h2>
