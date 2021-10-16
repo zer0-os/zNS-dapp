@@ -79,7 +79,7 @@ const WheelsWaitlistContainer = () => {
 		if (canOpen) {
 			return (
 				<>
-					Get notified about the Wilder Wheels raffle launching in{' '}
+					Get notified about the Wilder Wheels raffle - starting in{' '}
 					<b>
 						<Countdown to={countdownDate} onFinish={onFinishCountdown} />
 					</b>
@@ -88,7 +88,7 @@ const WheelsWaitlistContainer = () => {
 		} else {
 			return (
 				<>
-					Wilder Wheels raffle launch starts in{' '}
+					Wilder Wheels raffle starts in{' '}
 					<b>
 						<Countdown to={countdownDate} onFinish={onFinishCountdown} />
 					</b>
