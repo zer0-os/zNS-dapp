@@ -110,7 +110,11 @@ const WheelsWaitlistContainer = () => {
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
-					title={'Your ride for the Metaverse'}
+					title={
+						canOpen
+							? 'Your ride for the Metaverse'
+							: 'Guarantee your ride for the Metaverse'
+					}
 					label={bannerLabel()}
 					buttonText={canOpen ? 'Get Notified' : 'View First Drop'}
 					onClick={openModal}
