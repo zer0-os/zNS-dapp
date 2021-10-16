@@ -82,7 +82,11 @@ const WheelsWaitlist = (props: WheelsWaitlistProps) => {
 					<div className={styles.Socials}>
 						<span>Follow our socials to get the latest info:</span>
 						<div>
-							<a>
+							<a
+								href={'https://discord.com/invite/wilderworld'}
+								target="_blank"
+								rel="noreferrer"
+							>
 								<img src={iconDiscord} />
 								Discord
 							</a>
