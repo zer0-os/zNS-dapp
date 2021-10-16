@@ -50,7 +50,7 @@ const WheelsWaitlist = (props: WheelsWaitlistProps) => {
 			{!props.hasSubmitted && (
 				<section>
 					<label className={styles.Label}>
-						Enter your email to be notified about the public Wilder Wheels sale:
+						Enter your email to be notified about the Wilder Wheels raffle:
 					</label>
 					{!isLoading && (
 						<>
