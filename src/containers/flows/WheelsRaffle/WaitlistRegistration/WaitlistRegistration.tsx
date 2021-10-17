@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { FutureButton, Spinner, TextInput } from 'components';
-import styles from './WheelsWaitlist.module.css';
+import styles from './WaitlistRegistration.module.css';
 import { isValidEmail } from './validation';
 
-import iconDiscord from './assets/discord.png';
-import iconTwitter from './assets/twitter.png';
+import iconDiscord from '../assets/discord.png';
+import iconTwitter from '../assets/twitter.png';
 
-type WheelsWaitlistProps = {
+type WaitlistRegistrationProps = {
 	hasSubmitted: boolean;
 	onSubmit: (email: string) => Promise<boolean>;
 };
 
-const WheelsWaitlist = (props: WheelsWaitlistProps) => {
+const WaitlistRegistration = (props: WaitlistRegistrationProps) => {
 	const [userEmail, setUserEmail] = useState<string | undefined>();
 	const [error, setError] = useState<string | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -106,4 +106,4 @@ const WheelsWaitlist = (props: WheelsWaitlistProps) => {
 	);
 };
 
-export default WheelsWaitlist;
+export default WaitlistRegistration;

@@ -41,7 +41,7 @@ import {
 	SubdomainTable,
 	CurrentDomainPreview,
 	ProfileModal,
-	WheelsWaitlist,
+	WheelsRaffle,
 } from 'containers';
 
 //- Library Imports
@@ -499,7 +499,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					</TitleBar>
 				</FilterBar>
 
-				<WheelsWaitlist />
+				<WheelsRaffle />
 
 				{previewCard()}
 
