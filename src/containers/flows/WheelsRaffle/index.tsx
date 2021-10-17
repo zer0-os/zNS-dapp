@@ -1,13 +1,38 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MintWheelsBanner, Overlay, Countdown } from 'components';
-import WheelsWaitlist from './WheelsWaitlist';
+import { MintWheels } from 'containers';
+import WaitlistRegistration from './WaitlistRegistration';
+import RaffleRegistration from './RaffleRegistration';
 
 const WheelsRaffleContainer = () => {
-	const countdownDate = 1634508000000;
+	//////////////////
+	// State & Data //
+	//////////////////
+
+	const currentTime = new Date().getTime();
+	// Hardcoded event times
+	const RAFFLE_START_TIME = 1634508000000;
+	const RAFFLE_END_TIME = 1634853600000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-	const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
+
+	const [hasRaffleStarted, setHasRaffleStarted] = useState<boolean>(
+		currentTime >= RAFFLE_START_TIME,
+	);
+	const [hasRaffleEnded, setHasRaffleEnded] = useState<boolean>(
+		currentTime >= RAFFLE_END_TIME,
+	);
+
+	const isMobile =
+		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(
+			navigator.userAgent,
+		);
+	const [windowWidth, setWindowWidth] = useState<number | undefined>();
+
+	///////////////
+	// Functions //
+	///////////////
 
 	const openModal = () => {
 		setIsModalOpen(true);
@@ -17,67 +42,129 @@ const WheelsRaffleContainer = () => {
 		setIsModalOpen(false);
 	};
 
-	const onFinishCountdown = () => {
-		console.log('done');
+	const onFinishRaffleStartCountdown = () => {
+		setHasRaffleStarted(true);
 	};
 
-	const submitEmail = (email: string): Promise<boolean> => {
-		return new Promise((resolve) => {
-			fetch('https://zns-mail-microservice.herokuapp.com/wheels', {
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ email: email }),
-			})
-				.then((r) => {
-					resolve(r.ok);
-					setHasSubmitted(true);
-				})
-				.catch((e) => {
-					resolve(false);
-					console.error(e);
-				});
-		});
+	const onFinishRaffleEndCountdown = () => {
+		setHasRaffleEnded(true);
 	};
+
+	const handleResize = () => {
+		setWindowWidth(window.innerWidth);
+	};
+
+	/////////////
+	// Effects //
+	/////////////
+
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		handleResize();
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	///////////////
 	// Fragments //
 	///////////////
 
 	const bannerLabel = (): React.ReactNode => {
-		return (
-			<>
-				Get notified about the Wilder Wheels raffle - starting in{' '}
-				<b>
-					<Countdown to={countdownDate} onFinish={onFinishCountdown} />
-				</b>
-			</>
-		);
+		if (hasRaffleEnded) {
+			return <>Wilder Wheels raffle has ended --- SHOW MINT WHEELS BANNER</>;
+		} else if (hasRaffleStarted) {
+			return (
+				<>
+					Wilder Wheels raffle has started - whitelist sale starting in{' '}
+					<b>
+						<Countdown
+							to={RAFFLE_END_TIME}
+							onFinish={onFinishRaffleEndCountdown}
+						/>
+					</b>
+				</>
+			);
+		} else {
+			return (
+				<>
+					Get notified about the Wilder Wheels raffle - starting in{' '}
+					<b>
+						<Countdown
+							to={RAFFLE_START_TIME}
+							onFinish={onFinishRaffleStartCountdown}
+						/>
+					</b>
+				</>
+			);
+		}
+	};
+
+	const bannerButtonLabel = () => {
+		if (!hasRaffleStarted) {
+			return 'Get Notified';
+		} else if (!hasRaffleEnded) {
+			return 'Enter Raffle';
+		} else {
+			return 'Mint Wheels';
+		}
+	};
+
+	const overlay = () => {
+		if (isMobile) {
+			return (
+				<Overlay open centered onClose={closeModal}>
+					<p>
+						<b>Please use a desktop device to register</b>
+					</p>
+				</Overlay>
+			);
+		}
+		if (windowWidth && windowWidth < 900) {
+			return (
+				<Overlay open centered onClose={closeModal}>
+					<p>
+						<b>Please use a device with a larger viewport to register</b>
+					</p>
+				</Overlay>
+			);
+		}
+		if (!hasRaffleStarted) {
+			return (
+				<Overlay open centered onClose={closeModal}>
+					<WaitlistRegistration />
+				</Overlay>
+			);
+		} else if (!hasRaffleEnded) {
+			return (
+				<Overlay open centered onClose={closeModal}>
+					<RaffleRegistration />
+				</Overlay>
+			);
+		}
 	};
 
 	////////////
 	// Render //
 	////////////
 
-	return (
-		<>
-			{isModalOpen && (
-				<Overlay open centered onClose={closeModal}>
-					<WheelsWaitlist hasSubmitted={hasSubmitted} onSubmit={submitEmail} />
-				</Overlay>
-			)}
-			<div style={{ position: 'relative', marginBottom: 16 }}>
-				<MintWheelsBanner
-					title={'Guarantee your ride for the Metaverse'}
-					label={bannerLabel()}
-					buttonText={'Get Notified'}
-					onClick={openModal}
-				/>
-			</div>
-		</>
-	);
+	if (!hasRaffleEnded) {
+		return (
+			<>
+				{isModalOpen && overlay()}
+				<div style={{ position: 'relative', marginBottom: 16 }}>
+					<MintWheelsBanner
+						title={'Guarantee your ride for the Metaverse'}
+						label={bannerLabel()}
+						buttonText={bannerButtonLabel()}
+						onClick={openModal}
+					/>
+				</div>
+			</>
+		);
+	}
+
+	return <MintWheels />;
 };
 
 export default WheelsRaffleContainer;
