@@ -12,8 +12,8 @@ const WheelsRaffleContainer = () => {
 
 	const currentTime = new Date().getTime();
 	// Hardcoded event times
-	const RAFFLE_START_TIME = 1634508000000;
-	const RAFFLE_END_TIME = 1634853600000;
+	const RAFFLE_START_TIME = 1634408000000;
+	const RAFFLE_END_TIME = 1635112800000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
