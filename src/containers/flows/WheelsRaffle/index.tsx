@@ -76,7 +76,7 @@ const WheelsRaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Wilder Wheels raffle has started - whitelist sale starting in{' '}
+					Wilder Wheels whitelist raffle has started - sale starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
