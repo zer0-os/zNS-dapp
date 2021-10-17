@@ -324,7 +324,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			<NFTMedia
 				alt="Bid NFT preview"
 				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
-				ipfsUrl={domainMetadata?.image || ''}
+				ipfsUrl={domainMetadata?.image_full || domainMetadata?.image || ''}
 				size="small"
 			/>
 		</div>

@@ -91,6 +91,11 @@
 	transform: scale(1.1);
 }
 
+.RequestTable > tbody > tr:hover,
+.RequestTable > tbody > tr:hover {
+	background: var(--color-background-alt-50);
+}
+
 .RequestTable tbody tr td:first-of-type,
 .RequestTable > thead tr th:first-of-type {
 	padding-left: 23px;

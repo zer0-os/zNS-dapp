@@ -12,7 +12,7 @@ import {
 } from 'components';
 
 //- Library Imports
-import { randomName, randomImage } from 'lib/Random';
+import { randomName, randomImage } from 'lib/random';
 import { ethers } from 'ethers';
 import { getMetadata } from 'lib/metadata';
 
@@ -196,7 +196,7 @@ const Request: React.FC<RequestProps> = ({
 					}}
 					size="medium"
 					alt="NFT Preview"
-					ipfsUrl={metadata?.image ?? ''}
+					ipfsUrl={metadata?.image_full || metadata?.image || ''}
 				/>
 			</div>
 

@@ -24,6 +24,7 @@ interface Meta {
 	description: string;
 	image: string; // One of: Image, Video, 3d Model
 	previewImage?: string; // One of: Image, Video
+	image_full?: string;
 }
 
 export interface Metadata extends Meta {
@@ -63,6 +64,7 @@ export interface DisplayDomain extends Domain {
 	image: Maybe<string>;
 	description: Maybe<string>;
 	title: Maybe<string>;
+	image_full?: Maybe<string>;
 }
 
 export interface DisplayParentDomain extends DisplayDomain {
@@ -175,8 +177,8 @@ export interface transferDto {
 	blockNumber: string;
 	timestamp: string;
 	transactionID: string;
-	from: string;
-	to: string;
+	from: Account;
+	to: Account;
 }
 
 export interface minterData {
