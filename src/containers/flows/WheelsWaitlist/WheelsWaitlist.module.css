@@ -90,3 +90,18 @@
 	height: 64px;
 	width: 64px;
 }
+
+@media only screen and (max-width: 768px) {
+	.Container {
+		width: 90%;
+		margin: 0 auto;
+	}
+
+	.Header h1 {
+		font-size: 18px;
+	}
+
+	.Input {
+		margin-top: 40px;
+	}
+}
