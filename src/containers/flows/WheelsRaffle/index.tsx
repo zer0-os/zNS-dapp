@@ -111,19 +111,19 @@ const WheelsRaffleContainer = () => {
 	};
 
 	const overlay = () => {
-		if (isMobile) {
+		if (isMobile && hasRaffleStarted) {
 			return (
 				<Overlay open centered onClose={closeModal}>
-					<p>
+					<p style={{ padding: 16, textAlign: 'center' }}>
 						<b>Please use a desktop device to register</b>
 					</p>
 				</Overlay>
 			);
 		}
-		if (windowWidth && windowWidth < 900) {
+		if (hasRaffleStarted && windowWidth && windowWidth < 900) {
 			return (
 				<Overlay open centered onClose={closeModal}>
-					<p>
+					<p style={{ padding: 16, textAlign: 'center' }}>
 						<b>Please use a device with a larger viewport to register</b>
 					</p>
 				</Overlay>
