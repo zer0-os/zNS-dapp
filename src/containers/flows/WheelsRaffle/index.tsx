@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { MintWheelsBanner, Overlay, Countdown } from 'components';
 import WheelsWaitlist from './WheelsWaitlist';
 
-const WheelsWaitlistContainer = () => {
+const WheelsRaffleContainer = () => {
 	const countdownDate = 1634508000000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -80,4 +80,4 @@ const WheelsWaitlistContainer = () => {
 	);
 };
 
-export default WheelsWaitlistContainer;
+export default WheelsRaffleContainer;
