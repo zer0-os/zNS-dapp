@@ -12,8 +12,8 @@ const WheelsRaffleContainer = () => {
 
 	const currentTime = new Date().getTime();
 	// Hardcoded event times
-	const RAFFLE_START_TIME = 1634508000000;
-	const RAFFLE_END_TIME = 1634853600000;
+	const RAFFLE_START_TIME = 1634408000000;
+	const RAFFLE_END_TIME = 1635112800000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -76,7 +76,7 @@ const WheelsRaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Wilder Wheels raffle has started - whitelist sale starting in{' '}
+					Wilder Wheels whitelist raffle has started - whitelist ends in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
