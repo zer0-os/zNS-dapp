@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
 
 import { MintWheelsBanner, Overlay, Countdown } from 'components';
 import WheelsWaitlist from './WheelsWaitlist';
@@ -7,18 +6,11 @@ import WheelsWaitlist from './WheelsWaitlist';
 const WheelsWaitlistContainer = () => {
 	const countdownDate = 1634508000000;
 
-	const history = useHistory();
-
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
-	const [canOpen, setCanOpen] = useState<boolean>(true);
 
 	const openModal = () => {
-		if (canOpen) {
-			setIsModalOpen(true);
-		} else {
-			history.push('wheels.genesis');
-		}
+		setIsModalOpen(true);
 	};
 
 	const closeModal = () => {
@@ -50,51 +42,19 @@ const WheelsWaitlistContainer = () => {
 		});
 	};
 
-	const handleResize = () => {
-		if (window.innerWidth >= 900) {
-			setCanOpen(true);
-		} else {
-			setCanOpen(false);
-			setIsModalOpen(false);
-		}
-	};
-
-	/////////////
-	// Effects //
-	/////////////
-
-	useEffect(() => {
-		window.addEventListener('resize', handleResize);
-		handleResize();
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
-
 	///////////////
 	// Fragments //
 	///////////////
 
 	const bannerLabel = (): React.ReactNode => {
-		if (canOpen) {
-			return (
-				<>
-					Get notified about the Wilder Wheels raffle - starting in{' '}
-					<b>
-						<Countdown to={countdownDate} onFinish={onFinishCountdown} />
-					</b>
-				</>
-			);
-		} else {
-			return (
-				<>
-					Wilder Wheels raffle starts in{' '}
-					<b>
-						<Countdown to={countdownDate} onFinish={onFinishCountdown} />
-					</b>
-				</>
-			);
-		}
+		return (
+			<>
+				Get notified about the Wilder Wheels raffle - starting in{' '}
+				<b>
+					<Countdown to={countdownDate} onFinish={onFinishCountdown} />
+				</b>
+			</>
+		);
 	};
 
 	////////////
@@ -110,13 +70,9 @@ const WheelsWaitlistContainer = () => {
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
-					title={
-						canOpen
-							? 'Your ride for the Metaverse'
-							: 'Guarantee your ride for the Metaverse'
-					}
+					title={'Guarantee your ride for the Metaverse'}
 					label={bannerLabel()}
-					buttonText={canOpen ? 'Get Notified' : 'View First Drop'}
+					buttonText={'Get Notified'}
 					onClick={openModal}
 				/>
 			</div>
