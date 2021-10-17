@@ -30,7 +30,7 @@ const Countdown = (props: CountdownProps) => {
 			return '0s';
 		}
 
-		return `${totalDays > 0 ? Math.floor(totalDays) + 'd ' : ''}${
+		return `${totalDays > 1 ? Math.floor(totalDays) + 'd ' : ''}${
 			hours > 0 ? hours + 'h ' : ''
 		}${minutes > 0 ? minutes + 'm ' : ''}${seconds}s`;
 	};

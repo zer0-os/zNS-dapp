@@ -8,7 +8,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
-import { Countdown, MintWheelsBanner, Overlay } from 'components';
+import { MintWheelsBanner, Overlay } from 'components';
 import MintWheels from './MintWheels';
 
 // Library Imports
