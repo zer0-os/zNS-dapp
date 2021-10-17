@@ -72,7 +72,7 @@ const WheelsRaffleContainer = () => {
 
 	const bannerLabel = (): React.ReactNode => {
 		if (hasRaffleEnded) {
-			return <>Wilder Wheels raffle has ended --- SHOW MINT WHEELS BANNER</>;
+			return <>Wilder Wheels raffle has ended</>;
 		} else if (hasRaffleStarted) {
 			return (
 				<>
