@@ -29,6 +29,7 @@ type PreviewCardProps = {
 	onViewDomain?: () => void;
 	ownerId: string;
 	style?: React.CSSProperties;
+	isPreviewEnabled?: boolean;
 };
 
 const PreviewCard: React.FC<PreviewCardProps> = ({
@@ -48,6 +49,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	ownerId,
 	preventInteraction,
 	style,
+	isPreviewEnabled,
 }) => {
 	//////////////////
 	// State & Data //
@@ -74,12 +76,12 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Body}>
 			<div>
 				<h5 className="glow-text-blue">{name ? name : domain.split('/')[1]}</h5>
-				<span className={styles.Domain}>0://wilder.{domain}</span>
+				{/* <span className={styles.Domain}>0://wilder.{domain}</span> */}
 				<p className={styles.Description}>{description}</p>
 			</div>
-			<div className={styles.Members}>
-				{/* TODO: Switch these to Member component */}
-				<Member
+			{/* <div className={styles.Members}> */}
+			{/* TODO: Switch these to Member component */}
+			{/* <Member
 					id={creatorId}
 					name={randomName(creatorId)}
 					image={randomImage(creatorId)}
@@ -90,8 +92,8 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 					name={randomName(ownerId)}
 					image={randomImage(ownerId)}
 					subtext={'Owner'}
-				/>
-			</div>
+				/> */}
+			{/* </div> */}
 		</div>
 	);
 
@@ -99,14 +101,17 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
-					<BidButton
+					{/* <BidButton
 						className={styles.Bid}
 						glow={disabled !== true}
 						onClick={makeBid}
 					>
 						MAKE A BID
-					</BidButton>
-					<FutureButton
+					</BidButton> */}
+					<div onClick={openNftView} className={styles.ViewLink}>
+						View NFT Page
+					</div>
+					{/* <FutureButton
 						className={styles.View}
 						glow
 						alt
@@ -114,7 +119,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 						style={{ marginTop: 24 }}
 					>
 						View
-					</FutureButton>
+					</FutureButton> */}
 				</>
 			)}
 			{mvpVersion === 3 && (
@@ -142,7 +147,11 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	return (
 		<>
 			<div
-				className={`${styles.PreviewCard} border-primary border-rounded blur`}
+				className={`${styles.PreviewCard} ${
+					!isPreviewEnabled
+						? 'border-primary border-rounded blur'
+						: 'border-top-left-rounded border-top-right-rounded'
+				}`}
 				style={style ? style : {}}
 			>
 				{preventInteraction && <div className={styles.Blocker}></div>}

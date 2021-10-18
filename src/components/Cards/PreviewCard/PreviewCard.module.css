@@ -92,13 +92,14 @@
 	flex: 1;
 	flex-direction: column;
 	justify-content: space-between;
+	align-self: center;
 
 	margin: 8px 24px 0 24px;
 }
 
 .Body h5 {
 	color: white;
-	font-size: 24px;
+	font-size: 36px;
 	font-weight: 700;
 
 	/* white-space: nowrap; */
@@ -199,6 +200,12 @@
 	width: 100%;
 	height: 100%;
 	z-index: 5;
+}
+
+.ViewLink {
+	font-size: 16px;
+	color: #52cbff;
+	cursor: pointer;
 }
 
 @media only screen and (max-width: 1000px) {
