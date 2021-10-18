@@ -259,9 +259,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	};
 
 	const historyItem = (item: DomainEvents, i: number) => {
-		if (item.type === 3) {
-			console.log(item);
-		}
 		if (item.type === 2) {
 			return (
 				<li className={styles.Bid} key={i}>
