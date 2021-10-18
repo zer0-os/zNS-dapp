@@ -253,8 +253,6 @@
 }
 
 .History ul {
-	max-height: 400px;
-	overflow-y: auto;
 	padding: 0 20px 20px 20px;
 }
 
