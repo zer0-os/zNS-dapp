@@ -1,6 +1,9 @@
 //- React Imports
 import React, { useState, useEffect, useRef } from 'react';
 
+//- React Helmet
+import { Helmet } from 'react-helmet';
+
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
@@ -381,6 +384,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					backgroundBlob !== undefined ? styles.Loaded : ''
 				} border-primary border-rounded`}
 			>
+				<Helmet>
+					<meta name="twitter:card" content="summary_large_image" />
+					<meta name="twitter:title" content="Working" />
+					<meta name="twitter:site" content="@nytimes" />
+					<meta name="twitter:creator" content="@wilderworld" />
+					<meta name="twitter:description" content="Description Here." />
+					<meta
+						name="twitter:image"
+						content="http://graphics8.nytimes.com/images/2012/02/19/us/19whitney-span/19whitney-span-articleLarge.jpg"
+					/>
+				</Helmet>
 				<div className={`${styles.Image} border-rounded`}>
 					<NFTMedia
 						style={{

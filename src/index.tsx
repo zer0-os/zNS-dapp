@@ -1,9 +1,9 @@
 import React from 'react';
-import { render } from 'react-snapshot';
+import { render as Render } from 'react-snapshot';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-render(
+Render(
 	<React.StrictMode>
 		<head>
 			<meta name="fortmatic-site-verification" content="fdtdkNpVYri6vfLG" />
