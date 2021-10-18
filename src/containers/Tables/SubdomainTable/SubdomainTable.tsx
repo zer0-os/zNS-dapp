@@ -35,9 +35,17 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				</Overlay>
 			)}
 			<GenericTable
-				alignments={[0, 0, 1, 1, 1]}
+				alignments={[0, 0, 1, 1, 1, 1, 1]}
 				data={domain?.subdomains}
-				headers={['', 'Domain', 'Highest Bid', '# of Bids', '']}
+				headers={[
+					'',
+					'Domain',
+					'Highest Bid',
+					'# of Bids',
+					'Last Sale',
+					'Volume',
+					'',
+				]}
 				rowComponent={SubdomainTableRow}
 				gridComponent={SubdomainTableCard}
 				infiniteScroll
