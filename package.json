@@ -83,7 +83,8 @@
 		"typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
 		"lint": "eslint src --ext .ts",
 		"apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql ",
-		"prettier": "prettier --write './src/**/*.{js,css,ts,tsx}'"
+		"prettier": "prettier --write './src/**/*.{js,css,ts,tsx}'",
+		"postbuild": "react-snap"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -125,6 +126,7 @@
 		"husky": "^4.3.8",
 		"lint-staged": "^11.1.2",
 		"prettier": "^2.2.1",
+		"react-snap": "^1.23.0",
 		"ts-essentials": "^7.0.1",
 		"typechain": "^4.0.3"
 	},
