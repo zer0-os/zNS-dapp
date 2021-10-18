@@ -196,7 +196,7 @@ const Request: React.FC<RequestProps> = ({
 					}}
 					size="medium"
 					alt="NFT Preview"
-					ipfsUrl={metadata?.image ?? ''}
+					ipfsUrl={metadata?.image_full || metadata?.image || ''}
 				/>
 			</div>
 

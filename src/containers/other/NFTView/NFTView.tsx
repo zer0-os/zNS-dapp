@@ -414,18 +414,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			<div
 				className={`${styles.NFT} ${
 					backgroundBlob !== undefined ? styles.Loaded : ''
-				} border-primary border-rounded`}
+				} border-primary`}
 			>
-				<div className={`${styles.Image} border-rounded`}>
+				<div className={`${styles.Image}`}>
 					<NFTMedia
 						style={{
-							borderRadius: 10,
-							borderWidth: 2,
 							objectFit: 'contain',
 						}}
-						className={`border-rounded`}
 						alt="NFT Preview"
-						ipfsUrl={znsDomain.domain?.image ?? ''}
+						ipfsUrl={
+							znsDomain.domain?.image_full || znsDomain.domain?.image || ''
+						}
 					/>
 				</div>
 				<div className={styles.Info}>

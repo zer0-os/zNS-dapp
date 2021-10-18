@@ -14,10 +14,14 @@ const Countdown = (props: CountdownProps) => {
 	const getRemainingTimeAsString = () => {
 		const difference = props.to - new Date().getTime();
 
-		const seconds = Math.floor((difference / 1000) % 60);
-		const minutes = Math.floor((difference / 1000 / 60) % 60);
-		const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
-		const days = hours > 24 ? hours % 24 : 0;
+		const totalSeconds = difference / 1000;
+		const totalMinutes = totalSeconds / 60;
+		const totalHours = totalMinutes / 60;
+		const totalDays = (totalHours / 24) % 24;
+
+		const seconds = Math.floor(totalSeconds % 60);
+		const minutes = Math.floor(totalMinutes % 60);
+		const hours = Math.floor(totalHours % 24);
 
 		if (difference <= 0) {
 			if (props.onFinish) {
@@ -26,9 +30,9 @@ const Countdown = (props: CountdownProps) => {
 			return '0s';
 		}
 
-		return `${days > 0 ? days + 'd ' : ''}${hours > 0 ? hours + 'h ' : ''}${
-			minutes > 0 ? minutes + 'm ' : ''
-		}${seconds}s`;
+		return `${totalDays > 1 ? Math.floor(totalDays) + 'd ' : ''}${
+			hours > 0 ? hours + 'h ' : ''
+		}${minutes > 0 ? minutes + 'm ' : ''}${seconds}s`;
 	};
 
 	useEffect(() => {
