@@ -76,7 +76,6 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"postbuild": "react-snap",
 		"test": "react-scripts test",
 		"testci": "react-scripts test --coverage",
 		"eject": "react-scripts eject",
@@ -124,7 +123,6 @@
 		"husky": "^4.3.8",
 		"lint-staged": "^11.1.2",
 		"prettier": "^2.2.1",
-		"react-snap": "^1.23.0",
 		"ts-essentials": "^7.0.1",
 		"typechain": "^4.0.3"
 	},
