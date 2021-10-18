@@ -9,7 +9,7 @@ import { useWeb3React } from '@web3-react/core';
 import { PreviewCard, Overlay } from 'components';
 import { MakeABid } from 'containers';
 
-const CurrentDomainPreview = () => {
+const CurrentDomainPreview = (props: any) => {
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -50,6 +50,7 @@ const CurrentDomainPreview = () => {
 				onButtonClick={openBidModal}
 				onImageClick={() => {}}
 				preventInteraction={isRootDomain}
+				isPreviewEnabled={props?.isPreviewEnabled}
 			/>
 		</>
 	);

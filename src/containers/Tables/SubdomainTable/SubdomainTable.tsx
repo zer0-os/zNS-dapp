@@ -18,6 +18,7 @@ import { MakeABid } from 'containers';
 
 type SubdomainTableProps = {
 	domainName: string;
+	isNftView?: boolean;
 	style?: React.CSSProperties;
 };
 
@@ -26,6 +27,8 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	const { domain, loading } = useCurrentDomain();
 
 	const { domain: biddingOn, close, bidPlaced } = useBid();
+
+	const isVisible = props.domainName !== '/' && !props.isNftView;
 
 	return (
 		<>
@@ -43,6 +46,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				infiniteScroll
 				isLoading={loading}
 				loadingText={'Loading Subdomains'}
+				isPreviewCardVisible={isVisible}
 			/>
 		</>
 	);
