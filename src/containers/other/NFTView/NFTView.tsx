@@ -73,6 +73,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		blobCache.current,
 	);
 	const [tradeData, setTradeData] = useState<DomainTradingData | undefined>();
+	const [bids, setBids] = useState<DomainBidEvent[] | undefined>();
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -131,6 +132,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			const events = await sdk.instance?.getDomainEvents(znsDomain.domain.id);
 
 			const bids = await sdk.getBids(znsDomain.domain.id);
+			setBids(bids);
 			if (!events || !events.length) {
 				setAllItems([]);
 				return;
@@ -233,25 +235,38 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const nftStats = () => {
 		const data = [
 			{
-				fieldName: 'Items in Domain',
-				title: '123',
+				fieldName: 'Top Bid',
+				title: `${
+					tradeData?.highestBid
+						? Number(ethers.utils.formatEther(tradeData?.highestBid))
+								.toFixed(2)
+								.toLocaleString()
+						: 0
+				} WILD`,
 				subTitle: '$1,234.00 USD',
 				accentText: '+12% week',
 			},
 			{
-				fieldName: 'Total Owners',
-				title: '123',
-				accentText: '+12% week',
-			},
-			{
-				fieldName: 'Floor Price',
-				title: '1234.00 WILD',
+				fieldName: 'Bids',
+				title: bids?.length,
 				subTitle: '$1,234.00 USD',
 				accentText: '+12% week',
 			},
 			{
-				fieldName: 'Volume(All-Time)',
-				title: '1234.00 WILD',
+				fieldName: 'Last Sale',
+				title: `${
+					tradeData?.lastSale
+						? Number(ethers.utils.formatEther(tradeData?.lastSale))
+								.toFixed(2)
+								.toLocaleString()
+						: 0
+				} WILD`,
+				subTitle: '$1,234.00 USD',
+				accentText: '+12% week',
+			},
+			{
+				fieldName: 'Volume',
+				title: tradeData?.volume,
 				subTitle: '$1,234.00 USD',
 				accentText: '+12% week',
 			},

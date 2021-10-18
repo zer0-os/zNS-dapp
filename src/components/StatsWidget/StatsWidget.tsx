@@ -2,9 +2,10 @@ import styles from './StatsWidget.module.css';
 
 const StatsWidget: React.FC<{
 	fieldName: string;
-	title: string;
+	title?: string | number;
 	subTitle?: string;
-	accentText: string;
+	accentText?: string;
+	isLoading?: boolean;
 }> = ({ fieldName, title, subTitle, accentText, ...rest }) => (
 	<div {...rest} className={styles.StatsWidget}>
 		<div className={styles.StatsFieldName}>{fieldName}</div>
