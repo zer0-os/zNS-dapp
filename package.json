@@ -77,7 +77,7 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "react-scripts build && react-snapshot",
+		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"testci": "react-scripts test --coverage",
 		"eject": "react-scripts eject",
