@@ -284,6 +284,14 @@
 	margin-top: 12px;
 }
 
+.Stats {
+	display: flex;
+	justify-content: space-between;
+}
+.Stats:first-child {
+	margin-left: 0;
+}
+
 @media only screen and (max-width: 1280px) {
 	.Buttons button {
 		display: none;

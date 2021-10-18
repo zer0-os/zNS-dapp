@@ -1,0 +1,35 @@
+.StatsWidget {
+	background: #10052e;
+	border: 1px solid #50207b;
+	box-sizing: border-box;
+	box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
+	border-radius: 16px;
+	padding: 16px;
+	margin-top: 20px;
+	width: 24.2%;
+}
+
+.StatsFieldName {
+	color: #bfbfbf;
+	font-size: 12px;
+	line-height: 15px;
+	margin: 4px 0px;
+}
+
+.StatsTitle {
+	font-weight: bold;
+	font-size: 18px;
+	line-height: 22px;
+	margin: 6px 0px;
+}
+
+.StatsSubText {
+	font-size: 12px;
+	line-height: 15px;
+	color: #bfbfbf;
+	margin: 4px 0px;
+}
+
+.StatsAccentText {
+	color: #58c573;
+}

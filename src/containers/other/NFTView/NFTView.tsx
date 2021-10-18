@@ -241,7 +241,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			{
 				fieldName: 'Total Owners',
 				title: '123',
-				subTitle: '$1,234.00 USD',
 				accentText: '+12% week',
 			},
 			{
@@ -258,7 +257,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			},
 		];
 
-		return data.map((item) => <StatsWidget {...item}></StatsWidget>);
+		return (
+			<>
+				<div className={styles.Stats}>
+					{data.map((item) => (
+						<StatsWidget {...item}></StatsWidget>
+					))}
+				</div>
+			</>
+		);
 	};
 
 	const overlays = () => (
