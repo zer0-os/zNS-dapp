@@ -7,7 +7,14 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 import { BigNumber, ethers } from 'ethers';
 
 //- Component Imports
-import { ArrowLink, FutureButton, Member, NFTMedia, Overlay } from 'components';
+import {
+	ArrowLink,
+	FutureButton,
+	Member,
+	NFTMedia,
+	Overlay,
+	StatsWidget,
+} from 'components';
 import { BidButton, MakeABid } from 'containers';
 
 //- Library Imports
@@ -27,7 +34,11 @@ import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { DomainBidEvent, DomainEvent } from '@zero-tech/zns-sdk';
+import {
+	DomainBidEvent,
+	DomainEvent,
+	DomainTradingData,
+} from '@zero-tech/zns-sdk';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -61,6 +72,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
 		blobCache.current,
 	);
+	const [tradeData, setTradeData] = useState<DomainTradingData | undefined>();
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -148,6 +160,29 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			}
 		}
 	};
+	const getTradeData = async () => {
+		if (znsDomain.domain) {
+			const data = await sdk.instance.getSubdomainTradingData(
+				znsDomain.domain.id,
+			);
+			console.log(data, znsDomain.domain.id);
+			setTradeData(data);
+		}
+	};
+
+	// useEffect(() => {
+	// 	if (!znsDomain.domain) {
+	// 		return;
+	// 	}
+	// 	const getTradeData = async () => {
+	// 		const data = await sdk.instance.getSubdomainTradingData(
+	// 			znsDomain.domain.id,
+	// 		);
+	// 		console.log(data, znsDomain.domain.id);
+	// 		setTradeData(data);
+	// 	};
+	// 	getTradeData();
+	// }, [znsDomain.domain, sdk.instance]);
 
 	/////////////
 	// Effects //
@@ -190,9 +225,41 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
 			);
 			getHistory();
+			getTradeData();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain.domain]);
+
+	const nftStats = () => {
+		const data = [
+			{
+				fieldName: 'Items in Domain',
+				title: '123',
+				subTitle: '$1,234.00 USD',
+				accentText: '+12% week',
+			},
+			{
+				fieldName: 'Total Owners',
+				title: '123',
+				subTitle: '$1,234.00 USD',
+				accentText: '+12% week',
+			},
+			{
+				fieldName: 'Floor Price',
+				title: '1234.00 WILD',
+				subTitle: '$1,234.00 USD',
+				accentText: '+12% week',
+			},
+			{
+				fieldName: 'Volume(All-Time)',
+				title: '1234.00 WILD',
+				subTitle: '$1,234.00 USD',
+				accentText: '+12% week',
+			},
+		];
+
+		return data.map((item) => <StatsWidget {...item}></StatsWidget>);
+	};
 
 	const overlays = () => (
 		<>
@@ -470,6 +537,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					)}
 				</div>
 			</div>
+			{nftStats()}
 			<div className={styles.Horizontal} style={{ marginTop: 20 }}>
 				<div
 					className={`${styles.Box} ${styles.Story} blur border-primary border-rounded`}
