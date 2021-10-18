@@ -406,7 +406,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 												key={index}
 											>
 												<h3 className={styles.Traits}>
-													{attribute.trait_type}
+													{attribute.trait_type.toString().length > 24
+														? attribute.trait_type
+																.toString()
+																.slice(0, 21)
+																.concat('...')
+														: attribute.trait_type}
 												</h3>
 												<h3 className={styles.Properties}>
 													{attribute.value.toString().length > 24
