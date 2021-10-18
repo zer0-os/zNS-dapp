@@ -388,6 +388,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				</div>
 
 				<Helmet>
+					<title>It's working</title>
 					<meta name="twitter:card" content="summary_large_image" />
 					<meta name="twitter:site" content="@nytimes" />
 					<meta name="twitter:title" content="Funcionó" />
