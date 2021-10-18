@@ -130,9 +130,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
 				);
 				let filter: DomainEvent[] = [];
-				filter.push(sorted[0]);
 				//removes repeated timestamps of the sorted array, sdk must fix this later
-				sorted.reduce(function (prev, current) {
+				sorted.reverse().reduce(function (prev, current) {
 					if (prev.timestamp !== current.timestamp) filter.push(current);
 					return current;
 				});
@@ -260,75 +259,78 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	};
 
 	const historyItem = (item: DomainEvents, i: number) => {
-		if (item.bidder && item.amount) {
+		if (item.type === 3) {
+			console.log(item);
+		}
+		if (item.type === 2) {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder}`}
+								href={`https://etherscan.io/address/${item.bidder!}`}
 								target="_blank"
 								rel="noreferrer"
-							>{`${item.bidder.substring(0, 4)}...${item.bidder.substring(
-								item.bidder.length - 4,
+							>{`${item.bidder!.substring(0, 4)}...${item.bidder!.substring(
+								item.bidder!.length - 4,
 							)}`}</a>
 						</b>{' '}
 						made an offer of{' '}
 						<b>
-							{Number(ethers.utils.formatEther(item.amount)).toLocaleString()}{' '}
+							{Number(ethers.utils.formatEther(item.amount!)).toLocaleString()}{' '}
 							WILD
 						</b>
 					</div>
 					<div className={styles.From}>
-						<b>{moment(Number(item.timestamp)).fromNow()}</b>
+						<b>{moment(Number(item!.timestamp)).fromNow()}</b>
 					</div>
 				</li>
 			);
-		} else if (item.minter) {
+		} else if (item.type === 0) {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder}`}
+								href={`https://etherscan.io/address/${item.bidder!}`}
 								target="_blank"
 								rel="noreferrer"
-							>{`${item.minter.substring(0, 4)}...${item.minter.substring(
-								item.minter.length - 4,
+							>{`${item.minter!.substring(0, 4)}...${item.minter!.substring(
+								item.minter!.length - 4,
 							)}`}</a>
 						</b>{' '}
 						minted the domain
 					</div>
 					<div className={styles.From}>
-						<b>{moment(Number(item.timestamp) * 1000).fromNow()}</b>
+						<b>{moment(Number(item.timestamp!) * 1000).fromNow()}</b>
 					</div>
 				</li>
 			);
-		} else if (item.from && item.to) {
+		} else if (item.type === 1) {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder}`}
+								href={`https://etherscan.io/address/${item!.bidder}`}
 								target="_blank"
 								rel="noreferrer"
-							>{`${item.from.substring(0, 4)}...${item.from.substring(
-								item.from.length - 4,
+							>{`${item.from!.substring(0, 4)}...${item.from!.substring(
+								item.from!.length - 4,
 							)}`}</a>
 						</b>{' '}
-						transferred ownership to
+						transferred ownership to{' '}
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder}`}
+								href={`https://etherscan.io/address/${item!.bidder}`}
 								target="_blank"
 								rel="noreferrer"
-							>{`${item.to.substring(0, 4)}...${item.to.substring(
-								item.to.length - 4,
+							>{`${item.to!.substring(0, 4)}...${item.to!.substring(
+								item.to!.length - 4,
 							)}`}</a>
 						</b>{' '}
 					</div>
@@ -337,29 +339,30 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					</div>
 				</li>
 			);
-		} else if (item.buyer && item.seller) {
+		} else if (item.type === 3) {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
 						<b>
+							3
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder}`}
+								href={`https://etherscan.io/address/${item.bidder!}`}
 								target="_blank"
 								rel="noreferrer"
-							>{`${item.seller.substring(0, 4)}...${item.seller.substring(
-								item.seller.length - 4,
+							>{`${item.seller!.substring(0, 4)}...${item.seller!.substring(
+								item.seller!.length - 4,
 							)}`}</a>
 						</b>{' '}
 						sold this NFT to{' '}
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder}`}
+								href={`https://etherscan.io/address/${item.bidder!}`}
 								target="_blank"
 								rel="noreferrer"
-							>{`${item.buyer.substring(0, 4)}...${item.buyer.substring(
-								item.buyer.length - 4,
+							>{`${item.buyer!.substring(0, 4)}...${item.buyer!.substring(
+								item.buyer!.length - 4,
 							)}`}</a>
 						</b>{' '}
 						{item.amount && (
