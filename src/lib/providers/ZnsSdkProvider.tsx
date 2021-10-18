@@ -4,6 +4,7 @@ import {
 	DomainBidEvent,
 	DomainMintEvent,
 	DomainSaleEvent,
+	DomainTradingData,
 	DomainTransferEvent,
 } from '@zero-tech/zns-sdk';
 import React from 'react';
@@ -85,5 +86,24 @@ export function useZnsSdk() {
 		}
 	};
 
-	return { instance, getMintEvents, getTransferEvents, getBids, getSaleEvents };
+	const getSubdomainTradingData = async (domainId: string) => {
+		try {
+			const data: DomainTradingData = await instance?.getSubdomainTradingData(
+				domainId,
+			);
+			return data;
+		} catch {
+			console.error('Failed to retrieve sale event data');
+			return;
+		}
+	};
+
+	return {
+		instance,
+		getMintEvents,
+		getTransferEvents,
+		getBids,
+		getSaleEvents,
+		getSubdomainTradingData,
+	};
 }
