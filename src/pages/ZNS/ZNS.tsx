@@ -35,6 +35,7 @@ import {
 	MintPreview,
 	TransferPreview,
 	Spinner,
+	StatsWidget,
 } from 'components';
 
 import {
@@ -312,6 +313,37 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		);
 	};
 
+	const nftStats = () => {
+		const data = [
+			{
+				fieldName: 'Items in Domain',
+				title: '123',
+				subTitle: '$1,234.00 USD',
+				accentText: '+12% week',
+			},
+			{
+				fieldName: 'Total Owners',
+				title: '123',
+				subTitle: '$1,234.00 USD',
+				accentText: '+12% week',
+			},
+			{
+				fieldName: 'Floor Price',
+				title: '1234.00 WILD',
+				subTitle: '$1,234.00 USD',
+				accentText: '+12% week',
+			},
+			{
+				fieldName: 'Volume(All-Time)',
+				title: '1234.00 WILD',
+				subTitle: '$1,234.00 USD',
+				accentText: '+12% week',
+			},
+		];
+
+		return data.map((item) => <StatsWidget {...item}></StatsWidget>);
+	};
+
 	const modals = () => (
 		<>
 			{/* Overlays */}
@@ -502,6 +534,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				<WheelsRaffle />
 
 				{previewCard()}
+
+				{nftStats()}
 
 				{showDomainTable && subTable}
 
