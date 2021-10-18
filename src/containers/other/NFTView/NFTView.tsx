@@ -1,9 +1,9 @@
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core'; // Wallet data
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { BigNumber } from 'ethers';
 
 //- Component Imports
@@ -16,6 +16,12 @@ import useNotification from 'lib/hooks/useNotification';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { toFiat } from 'lib/currency';
+import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
+import { useZnsContracts } from 'lib/contracts';
+import { getDomainId } from 'lib/utils';
+import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
+import { Attribute, Bid, transfersData, transferDto } from 'lib/types';
 
 //- Style Imports
 import styles from './NFTView.module.css';
@@ -23,13 +29,7 @@ import styles from './NFTView.module.css';
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
 import copyIcon from './assets/copy-icon.svg';
-import { Bid } from 'lib/types';
-import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import { useZnsContracts } from 'lib/contracts';
-import { getDomainId } from 'lib/utils';
-import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
-import { transfersData, transferDto } from 'lib/types';
+
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -38,10 +38,13 @@ type NFTViewProps = {
 };
 
 const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
-	// TODO: NFT page data shouldn't change before unloading - maybe deep copy the data first
+	//////////////////
+	// State & Data //
+	//////////////////
 
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
+	const attributeSection = useRef<HTMLDivElement>(null);
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
 
@@ -54,6 +57,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
 		blobCache.current,
 	);
+	const [isShowMoreAtrributes, setIsShowMoreAttributes] =
+		useState<boolean>(false);
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -81,19 +86,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const transfersDto = useDomainsTransfers(domainId, transfersPollingInterval)
 		.data as transfersData;
 
-	//- Functions
+	///////////////
+	// Functions //
+	///////////////
+
 	const copyContractToClipboard = () => {
 		addNotification('Copied Token ID to clipboard.');
 		try {
 			navigator?.clipboard?.writeText(domainId);
 		} catch (e) {
 			console.error(e);
-		}
-	};
-
-	const downloadAsset = () => {
-		if (znsDomain?.domain?.image) {
-			window.open(znsDomain.domain.image, '_blank');
 		}
 	};
 
@@ -106,8 +108,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
 	const onBid = async () => {
-		// @todo switch this to live data
-		// should refresh on bid rather than add mock data
 		getBids();
 		closeBidOverlay();
 	};
@@ -133,6 +133,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			}
 		}
 	};
+
+	const setAttributesSectionStyles = () => {
+		if (attributeSection.current)
+			return !isShowMoreAtrributes
+				? { height: '146px' }
+				: { height: attributeSection.current.scrollHeight + 90 };
+	};
+
+	const toggleAttributes = () => setIsShowMoreAttributes((prev) => !prev);
 
 	/////////////
 	// Effects //
@@ -174,7 +183,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			);
 
 			getBids();
+			setAttributesSectionStyles();
 		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain.domain]);
 
@@ -327,31 +338,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
-	// const historyItem = (item: Bid | transferDto, i: number) => (
-	// 	<>
-	// 		{ (
-	// 			<li className={styles.Bid} key={i}>
-	// 				<div>
-	// 					<b>
-	// 						<a
-	// 							className="alt-link"
-	// 							href={`https://etherscan.io/address/${account}`}
-	// 							target="_blank"
-	// 							rel="noreferrer"
-	// 						>{`${item.bidderAccount.substring(0, 4)}...${item.bidderAccount.substring(
-	// 							account.length - 4,
-	// 						)}`}</a>
-	// 					</b>{' '}
-	// 					made an offer of <b>{Number(amount).toLocaleString()} WILD</b>
-	// 				</div>
-	// 				<div className={styles.From}>
-	// 					<b>{moment(date).fromNow()}</b>
-	// 				</div>
-	// 			</li>
-	// 		)}
-	// 	</>
-	// );
-
 	const actionButtons = () => (
 		<div className={styles.Buttons}>
 			<FutureButton
@@ -370,6 +356,85 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			</BidButton>
 		</div>
 	);
+
+	const attributes = () => {
+		if (!znsDomain.domain?.attributes) {
+			return;
+		} else {
+			const showMoreRemaining =
+				znsDomain.domain?.attributes?.length -
+				znsDomain?.domain?.attributes.slice(0, 12).length;
+			return (
+				<>
+					<section
+						className={`${styles.Attributes}  blur border-primary border-rounded`}
+					>
+						<div
+							className={styles.AttributesContainer}
+							style={setAttributesSectionStyles()}
+						>
+							<h4>Properties</h4>
+							<div className={styles.AttributesGrid} ref={attributeSection}>
+								{znsDomain.domain?.attributes
+									.slice(0, 11)
+									.map((attribute: Attribute, index: number) => (
+										<div className={styles.AttributesWrapper} key={index}>
+											<h3 className={styles.Traits}>
+												{attribute.trait_type.toString().length > 24
+													? attribute.trait_type
+															.toString()
+															.slice(0, 21)
+															.concat('...')
+													: attribute.trait_type}
+											</h3>
+											<h3 className={styles.Properties}>
+												{attribute.value.toString().length > 24
+													? attribute.value
+															.toString()
+															.slice(0, 21)
+															.concat('...')
+													: attribute.value}
+											</h3>
+										</div>
+									))}
+								{isShowMoreAtrributes &&
+									znsDomain.domain?.attributes
+										.slice(12)
+										.map((attribute: Attribute, index: number) => (
+											<div
+												className={`${styles.AttributesWrapper} ${styles.AttributesTransition}`}
+												key={index}
+											>
+												<h3 className={styles.Traits}>
+													{attribute.trait_type}
+												</h3>
+												<h3 className={styles.Properties}>
+													{attribute.value.toString().length > 24
+														? attribute.value
+																.toString()
+																.slice(0, 21)
+																.concat('...')
+														: attribute.value}
+												</h3>
+											</div>
+										))}
+								{znsDomain.domain?.attributes?.length >= 12 && (
+									<button
+										className={styles.ToggleAttributes}
+										onClick={toggleAttributes}
+									>
+										{isShowMoreAtrributes
+											? 'Show Less'
+											: `+${showMoreRemaining} More`}
+									</button>
+								)}
+							</div>
+						</div>
+					</section>
+				</>
+			);
+		}
+	};
 
 	////////////
 	// Render //
@@ -430,6 +495,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						</div>
 					</div>
 					{price()}
+
 					{actionButtons()}
 					{backgroundBlob !== undefined && (
 						<img
@@ -440,6 +506,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					)}
 				</div>
 			</div>
+
+			{attributes()}
 			<div className={styles.Horizontal} style={{ marginTop: 20 }}>
 				<div
 					className={`${styles.Box} ${styles.Story} blur border-primary border-rounded`}

@@ -22,6 +22,7 @@ export async function getMetadata(
 		const response = await fetch(requestUrl);
 		const data = await response.json();
 		const metadata = {
+			attributes: data.attributes,
 			title: data.name || data.title,
 			description: data.description,
 			image: data.image,

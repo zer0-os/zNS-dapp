@@ -110,6 +110,94 @@
 	margin: 0 auto;
 }
 
+/* Attributes styles Start */
+
+.Attributes {
+	margin-top: 24px;
+	padding: 24px;
+	background: var(--color-background);
+}
+
+.Attributes h4 {
+	padding: 0;
+	color: var(--color-primary-lighter-3);
+	text-transform: uppercase;
+}
+
+.AttributesContainer {
+	width: 1202px;
+	transition: height var(--animation-time-medium) ease-in-out;
+	overflow: hidden;
+}
+
+.AttributesGrid {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	margin: 16px 0;
+	position: relative;
+}
+
+.AttributesWrapper {
+	width: 193.67px;
+	height: 48px;
+	margin: 4px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	justify-content: end;
+	padding: 8px 8px 8px 16px;
+	border: 1px solid #50207b;
+	border-radius: 999px;
+}
+
+.Traits {
+	font-size: 12px;
+	color: #bcbcbc;
+}
+
+.Properties {
+	font-size: 12px;
+	margin-top: 2px;
+}
+
+button.ToggleAttributes {
+	background-color: var(--color-background);
+	color: #52cbff;
+	font-size: 16px;
+	cursor: pointer;
+	width: 193.67px;
+	height: 48px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 8px 20px;
+	margin: 4px 0;
+	position: absolute;
+	right: 8px;
+	bottom: 0px;
+	cursor: pointer;
+}
+
+.AttributesTransition {
+	animation: animatedOpacity var(--animation-time-medium) ease-in;
+}
+
+@keyframes animatedOpacity {
+	0% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+/* Attributes styles End */
+
 .Price h2 {
 	color: var(--color-primary-lighter-3);
 	margin-bottom: 4px;
