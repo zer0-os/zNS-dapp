@@ -185,7 +185,11 @@ const GenericTable = (props: any) => {
 
 	return (
 		<div
-			className={`${styles.Container} background-primary border-rounded border-primary`}
+			className={`${styles.Container} ${
+				!props.isPreviewCardVisible
+					? 'background-primary border-rounded border-primary'
+					: 'border-bottom-left-rounded border-bottom-right-rounded'
+			}`}
 			style={props.style}
 		>
 			<div ref={contentRef} className={styles.Content}>
