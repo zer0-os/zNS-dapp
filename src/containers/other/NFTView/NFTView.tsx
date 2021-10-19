@@ -74,6 +74,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	);
 	const [tradeData, setTradeData] = useState<DomainTradingData | undefined>();
 	const [bids, setBids] = useState<DomainBidEvent[] | undefined>();
+	const [statsLoaded, setStatsLoaded] = useState(false);
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -167,8 +168,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			const data = await sdk.instance.getSubdomainTradingData(
 				znsDomain.domain.id,
 			);
-			console.log(data, znsDomain.domain.id);
 			setTradeData(data);
+			setStatsLoaded(true);
 		}
 	};
 
@@ -227,6 +228,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
 			);
 			getHistory();
+			setStatsLoaded(false);
 			getTradeData();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -243,14 +245,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								.toLocaleString()
 						: 0
 				} WILD`,
-				subTitle: '$1,234.00 USD',
-				accentText: '+12% week',
+				subTitle: `${
+					tradeData?.highestBid
+						? toFiat(
+								Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+									wildPriceUsd,
+						  )
+						: 0
+				} USD`,
 			},
 			{
 				fieldName: 'Bids',
 				title: bids?.length,
-				subTitle: '$1,234.00 USD',
-				accentText: '+12% week',
 			},
 			{
 				fieldName: 'Last Sale',
@@ -261,14 +267,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								.toLocaleString()
 						: 0
 				} WILD`,
-				subTitle: '$1,234.00 USD',
-				accentText: '+12% week',
+				subTitle: `${
+					tradeData?.lastSale
+						? toFiat(
+								Number(ethers.utils.formatEther(tradeData?.lastSale)) *
+									wildPriceUsd,
+						  )
+						: 0
+				} USD`,
 			},
 			{
 				fieldName: 'Volume',
 				title: tradeData?.volume,
-				subTitle: '$1,234.00 USD',
-				accentText: '+12% week',
 			},
 		];
 
@@ -276,7 +286,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			<>
 				<div className={styles.Stats}>
 					{data.map((item) => (
-						<StatsWidget {...item}></StatsWidget>
+						<StatsWidget {...item} isLoading={!statsLoaded}></StatsWidget>
 					))}
 				</div>
 			</>
