@@ -361,9 +361,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		if (!znsDomain.domain?.attributes) {
 			return;
 		} else {
-			const showMoreRemaining =
-				znsDomain.domain?.attributes?.length -
-				znsDomain?.domain?.attributes.slice(0, 12).length;
+			const numberAttributesHidden =
+				znsDomain.domain.attributes.length -
+				znsDomain.domain.attributes.slice(0, 12).length;
 			return (
 				<>
 					<section
@@ -430,7 +430,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 									>
 										{isShowMoreAtrributes
 											? 'Show Less'
-											: `+${showMoreRemaining} More`}
+											: `+${numberAttributesHidden} More`}
 									</button>
 								)}
 							</div>
