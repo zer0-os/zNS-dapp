@@ -8,7 +8,7 @@ import styles from './PreviewCard.module.scss';
 import { randomName, randomImage } from 'lib/random';
 
 //- Component Imports
-import { FutureButton, Member, NFTMedia } from 'components';
+import { FutureButton, Member, NFTMedia, TextButton } from 'components';
 import { BidButton } from 'containers';
 import { Maybe } from 'lib/types';
 
@@ -85,9 +85,9 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
-					<div onClick={openNftView} className={styles.ViewLink}>
+					<TextButton onClick={openNftView} className={styles.ViewLink}>
 						View NFT Page
-					</div>
+					</TextButton>
 				</>
 			)}
 			{mvpVersion === 3 && (
