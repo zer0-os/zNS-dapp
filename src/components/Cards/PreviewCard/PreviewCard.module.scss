@@ -56,7 +56,7 @@
 	width: 400px;
 	height: 224px;
 	cursor: pointer;
-	border-radius: 16px;
+	border-radius: 8px;
 	overflow: hidden;
 }
 
@@ -85,6 +85,7 @@
 .InfoContainer {
 	display: flex;
 	flex: 1;
+	height: 224px;
 }
 
 .Body {
@@ -112,8 +113,6 @@
 }
 
 .Description {
-	max-height: 70px;
-	overflow-y: auto;
 	margin-top: 16px;
 	color: white;
 	line-height: 19.2px;
@@ -121,6 +120,11 @@
 
 	-ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
 	scrollbar-width: none; /* Hide scrollbar in Firefox */
+	display: -webkit-box;
+	-webkit-line-clamp: 8;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .Description::-webkit-scrollbar {
@@ -174,7 +178,6 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	transform: translateY(calc(50% - 18px));
 }
 
 /* "Last Offer" text */
@@ -204,8 +207,13 @@
 
 .ViewLink {
 	font-size: 16px;
-	color: #52cbff;
+	color: var(--color-accent-blue-100);
 	cursor: pointer;
+}
+
+.ViewLink:hover {
+	color: var(--color-accent-1);
+	text-shadow: var(--glow-text-blue), var(--glow-text-blue);
 }
 
 @media only screen and (max-width: 1000px) {
