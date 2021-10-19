@@ -1,3 +1,4 @@
+import { Spinner } from 'components';
 import styles from './StatsWidget.module.css';
 
 const StatsWidget: React.FC<{
@@ -6,16 +7,24 @@ const StatsWidget: React.FC<{
 	subTitle?: string;
 	accentText?: string;
 	isLoading?: boolean;
-}> = ({ fieldName, title, subTitle, accentText, ...rest }) => (
+}> = ({ fieldName, title, subTitle, accentText, isLoading, ...rest }) => (
 	<div {...rest} className={styles.StatsWidget}>
 		<div className={styles.StatsFieldName}>{fieldName}</div>
-		<div className={styles.StatsTitle}>{title}</div>
-		<div className={styles.StatsSubText}>
-			{subTitle && <span>{subTitle} </span>}
-			{accentText && (
-				<span className={styles.StatsAccentText}> ({accentText})</span>
-			)}
-		</div>
+		{isLoading ? (
+			<div className={styles.SpinnerContainer}>
+				<Spinner />
+			</div>
+		) : (
+			<>
+				<div className={styles.StatsTitle}>{title}</div>
+				<div className={styles.StatsSubText}>
+					{subTitle && <span>{subTitle} </span>}
+					{accentText && (
+						<span className={styles.StatsAccentText}> ({accentText})</span>
+					)}
+				</div>
+			</>
+		)}
 	</div>
 );
 

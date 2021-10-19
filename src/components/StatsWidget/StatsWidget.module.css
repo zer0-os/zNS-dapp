@@ -33,3 +33,10 @@
 .StatsAccentText {
 	color: #58c573;
 }
+
+.SpinnerContainer {
+	margin: 14px 0;
+	text-align: center;
+	display: flex;
+	align-items: center;
+}
