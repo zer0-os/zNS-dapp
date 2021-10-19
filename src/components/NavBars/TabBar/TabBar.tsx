@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 //- Style Imports
-import styles from './TabBar.module.css';
+import styles from './TabBar.module.scss';
 
 type TabBarProps = {
 	tabs: string[];

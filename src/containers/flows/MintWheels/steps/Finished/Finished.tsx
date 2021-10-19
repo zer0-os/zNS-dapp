@@ -2,7 +2,7 @@
 import { FutureButton } from 'components';
 
 // Style Imports
-import styles from './Finished.module.css';
+import styles from './Finished.module.scss';
 
 type FinishedProps = {
 	onFinish: () => void;

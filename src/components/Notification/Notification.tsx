@@ -1,5 +1,5 @@
 //- Style Imports
-import styles from './Notification.module.css';
+import styles from './Notification.module.scss';
 
 type NotificationProps = {
 	text: string;

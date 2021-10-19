@@ -27,7 +27,7 @@ import Staking from './sections/Staking';
 import Summary from './sections/Summary';
 
 //- Style Imports
-import styles from './MintNewNFT.module.css';
+import styles from './MintNewNFT.module.scss';
 import { rootDomainName } from 'lib/utils/domains';
 
 type MintNewNFTProps = {

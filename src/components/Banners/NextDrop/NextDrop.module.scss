@@ -6,7 +6,7 @@
 
 	padding: 15px 20px 16px 20px;
 
-	background: url('assets/new-drop-bg.png');
+	background: url('../../../assets/new-drop-bg.png');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -29,7 +29,7 @@
 }
 
 .nextDrop h5 > span {
-	color: #9dd0ff;
+	color: var(--color-baby-blue);
 }
 
 .nextDrop p {

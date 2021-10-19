@@ -2,7 +2,7 @@
 import { Artwork, Spinner } from 'components';
 import React, { useEffect, useState } from 'react';
 
-import styles from './SubdomainTableRow.module.css';
+import styles from './SubdomainTableRow.module.scss';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
