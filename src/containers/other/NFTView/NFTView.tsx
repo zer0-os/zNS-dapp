@@ -20,7 +20,7 @@ import { toFiat } from 'lib/currency';
 import styles from './NFTView.module.css';
 
 //- Asset Imports
-import galaxyBackground from './assets/galaxy.png';
+import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
@@ -165,7 +165,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	useEffect(() => {
 		isMounted.current = true;
 
-		fetch(galaxyBackground)
+		fetch(background)
 			.then((r) => r.blob())
 			.then((blob) => {
 				const url = URL.createObjectURL(blob);
@@ -384,20 +384,24 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const actionButtons = () => (
 		<div className={styles.Buttons}>
-			<FutureButton
-				glow={isOwnedByYou}
-				onClick={() => isOwnedByYou && onTransfer()}
-				style={{ height: 36, borderRadius: 18 }}
-			>
-				Transfer Ownership
-			</FutureButton>
-			<BidButton
-				glow={!isOwnedByYou && active}
-				onClick={openBidOverlay}
-				style={{ height: 36, borderRadius: 18 }}
-			>
-				Make A Bid
-			</BidButton>
+			{isOwnedByYou && (
+				<FutureButton
+					glow={isOwnedByYou}
+					onClick={() => isOwnedByYou && onTransfer()}
+					style={{ height: 36, borderRadius: 18 }}
+				>
+					Transfer Ownership
+				</FutureButton>
+			)}
+			{!isOwnedByYou && (
+				<BidButton
+					glow={!isOwnedByYou && active}
+					onClick={openBidOverlay}
+					style={{ height: 36, borderRadius: 18 }}
+				>
+					Make A Bid
+				</BidButton>
+			)}
 		</div>
 	);
 
@@ -430,9 +434,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							<h1 className="glow-text-white">
 								{znsDomain.domain?.title ?? ''}
 							</h1>
-							<span>
-								{domain.length > 0 ? `0://wilder.${domain.substring(1)}` : ''}
-							</span>
 						</div>
 						<div className={styles.Members}>
 							<Member
@@ -458,9 +459,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								subtext={'Creator'}
 							/>
 						</div>
+						<div className={styles.Story}>
+							{znsDomain.domain?.description ?? ''}
+						</div>
+						{price()}
+						{actionButtons()}
 					</div>
-					{price()}
-					{actionButtons()}
 					{backgroundBlob !== undefined && (
 						<img
 							alt="NFT panel background"
@@ -470,36 +474,28 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					)}
 				</div>
 			</div>
-			<div className={styles.Horizontal} style={{ marginTop: 20 }}>
-				<div
-					className={`${styles.Box} ${styles.Story} blur border-primary border-rounded`}
+			<div
+				className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+			>
+				<h4>Token Id</h4>
+				<p>
+					<img
+						onClick={copyContractToClipboard}
+						className={styles.Copy}
+						src={copyIcon}
+						alt={'Copy Contract Icon'}
+					/>
+					{domainId}
+				</p>
+				<ArrowLink
+					style={{
+						marginTop: 8,
+						width: 150,
+					}}
+					href={etherscanLink}
 				>
-					<h4>Story</h4>
-					<p>{znsDomain.domain?.description ?? ''}</p>
-				</div>
-				<div
-					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
-				>
-					<h4>Token Id</h4>
-					<p>
-						<img
-							onClick={copyContractToClipboard}
-							className={styles.Copy}
-							src={copyIcon}
-							alt={'Copy Contract Icon'}
-						/>
-						{domainId}
-					</p>
-					<ArrowLink
-						style={{
-							marginTop: 8,
-							width: 150,
-						}}
-						href={etherscanLink}
-					>
-						View on Etherscan
-					</ArrowLink>
-				</div>
+					View on Etherscan
+				</ArrowLink>
 			</div>
 			{history()}
 		</div>
