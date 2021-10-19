@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import styles from './NextDrop.module.css';
+import styles from './NextDrop.module.scss';
 
 import avatar from './assets/avatar.png';
 

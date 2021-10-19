@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './EtherInput.module.css';
+import styles from './EtherInput.module.scss';
 
 //- Local Imports
 import { isAlphanumeric, isNumber } from './validation';

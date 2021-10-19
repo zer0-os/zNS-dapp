@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SideBarStyles from './SideBar.module.css';
+import SideBarStyles from './SideBar.module.scss';
 
 import trendingIcon from './assets/trending.svg';
 import discoverIcon from './assets/discover.svg';

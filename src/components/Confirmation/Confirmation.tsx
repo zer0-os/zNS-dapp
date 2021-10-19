@@ -5,7 +5,7 @@ import { Maybe } from 'lib/types';
 import React from 'react';
 
 //- Style Imports
-import styles from './Confirmation.module.css';
+import styles from './Confirmation.module.scss';
 import closeIcon from 'assets/close-icon.svg';
 
 type ConfirmationProps = {

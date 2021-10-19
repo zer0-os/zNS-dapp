@@ -5,7 +5,7 @@ import { FormEvent, useState } from 'react';
 import { FutureButton, TextInput } from 'components';
 
 // Style Imports
-import styles from './SelectAmount.module.css';
+import styles from './SelectAmount.module.scss';
 
 // Library Imports
 import { EthPerWheel } from '../../helpers';

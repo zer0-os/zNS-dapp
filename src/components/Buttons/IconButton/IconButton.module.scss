@@ -50,7 +50,7 @@
 }
 
 .iconButton.selected:after {
-	box-shadow: 0 0 20px 13px #3ca1ff;
+	box-shadow: 0 0 20px 13px var(--color-accent-1);
 }
 
 .Disabled {

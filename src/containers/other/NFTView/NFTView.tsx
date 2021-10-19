@@ -17,7 +17,7 @@ import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { toFiat } from 'lib/currency';
 
 //- Style Imports
-import styles from './NFTView.module.css';
+import styles from './NFTView.module.scss';
 
 //- Asset Imports
 import background from './assets/bg.jpeg';
