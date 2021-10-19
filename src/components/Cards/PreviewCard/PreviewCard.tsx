@@ -76,24 +76,8 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Body}>
 			<div>
 				<h5 className="glow-text-blue">{name ? name : domain.split('/')[1]}</h5>
-				{/* <span className={styles.Domain}>0://wilder.{domain}</span> */}
 				<p className={styles.Description}>{description}</p>
 			</div>
-			{/* <div className={styles.Members}> */}
-			{/* TODO: Switch these to Member component */}
-			{/* <Member
-					id={creatorId}
-					name={randomName(creatorId)}
-					image={randomImage(creatorId)}
-					subtext={'Creator'}
-				/>
-				<Member
-					id={ownerId}
-					name={randomName(ownerId)}
-					image={randomImage(ownerId)}
-					subtext={'Owner'}
-				/> */}
-			{/* </div> */}
 		</div>
 	);
 
@@ -101,25 +85,9 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
-					{/* <BidButton
-						className={styles.Bid}
-						glow={disabled !== true}
-						onClick={makeBid}
-					>
-						MAKE A BID
-					</BidButton> */}
 					<div onClick={openNftView} className={styles.ViewLink}>
 						View NFT Page
 					</div>
-					{/* <FutureButton
-						className={styles.View}
-						glow
-						alt
-						onClick={openNftView}
-						style={{ marginTop: 24 }}
-					>
-						View
-					</FutureButton> */}
 				</>
 			)}
 			{mvpVersion === 3 && (
