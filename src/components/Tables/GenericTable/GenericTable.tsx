@@ -194,14 +194,6 @@ const GenericTable = (props: any) => {
 		>
 			<div ref={contentRef} className={styles.Content}>
 				<div className={styles.Controls}>
-					{props?.isPreviewCardVisible && (
-						<div
-							className="glow-text-blue"
-							style={{ width: 155, fontWeight: 'bold' }}
-						>
-							Sub Domains
-						</div>
-					)}
 					<SearchBar
 						placeholder="Search by domain name"
 						onChange={onSearchBarUpdate}
