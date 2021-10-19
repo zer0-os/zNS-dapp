@@ -173,20 +173,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
-	// useEffect(() => {
-	// 	if (!znsDomain.domain) {
-	// 		return;
-	// 	}
-	// 	const getTradeData = async () => {
-	// 		const data = await sdk.instance.getSubdomainTradingData(
-	// 			znsDomain.domain.id,
-	// 		);
-	// 		console.log(data, znsDomain.domain.id);
-	// 		setTradeData(data);
-	// 	};
-	// 	getTradeData();
-	// }, [znsDomain.domain, sdk.instance]);
-
 	/////////////
 	// Effects //
 	/////////////
