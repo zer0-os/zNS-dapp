@@ -50,6 +50,11 @@ import { useTransferProvider } from 'lib/providers/TransferProvider';
 import { MintNewNFT, NFTView, TransferOwnership } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { DomainTradingData } from '@zero-tech/zns-sdk';
+import { ethers } from 'ethers';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import { toFiat } from 'lib/currency';
 
 type ZNSProps = {
 	domain: string;
@@ -75,8 +80,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
+
 	const { account, active, chainId } = walletContext;
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
+
+	const sdk = useZnsSdk();
+	const { wildPriceUsd } = useCurrencyProvider();
 
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
@@ -141,6 +150,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
 
+	const [tradeData, setTradeData] = useState<DomainTradingData | undefined>();
+	const [statsLoaded, setStatsLoaded] = useState(false);
+
 	//- Data
 	const isOwnedByUser: boolean =
 		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
@@ -197,6 +209,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	const handleResize = () => {
 		setPageWidth(window.innerWidth);
+	};
+
+	const getTradeData = async () => {
+		if (znsDomain) {
+			const data = await sdk.instance.getSubdomainTradingData(znsDomain.id);
+			setTradeData(data);
+			setStatsLoaded(true);
+		}
 	};
 
 	/////////////
@@ -275,9 +295,61 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		});
 	}, [znsDomain, hasLoaded]);
 
+	useEffect(() => {
+		if (znsDomain) {
+			setStatsLoaded(false);
+			getTradeData();
+		}
+	}, [znsDomain]);
+
 	/////////////////////
 	// React Fragments //
 	/////////////////////
+
+	const nftStats = () => {
+		const data = [
+			{
+				fieldName: 'Items in Domain',
+				title: tradeData?.items,
+			},
+			{
+				fieldName: 'Total Owners',
+				title: tradeData?.holders,
+			},
+			{
+				fieldName: 'Floor Price',
+				title: `${
+					tradeData?.lowestSale
+						? Number(ethers.utils.formatEther(tradeData?.lowestSale))
+								.toFixed(2)
+								.toLocaleString()
+						: 0
+				} WILD`,
+				subTitle: `${
+					tradeData?.lowestSale
+						? toFiat(
+								Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
+									wildPriceUsd,
+						  )
+						: 0
+				} USD`,
+			},
+			{
+				fieldName: 'Volume(All-Time)',
+				title: tradeData?.volume,
+			},
+		];
+
+		return (
+			<>
+				<div className={styles.Stats}>
+					{data.map((item) => (
+						<StatsWidget {...item} isLoading={!statsLoaded}></StatsWidget>
+					))}
+				</div>
+			</>
+		);
+	};
 
 	const previewCard = () => {
 		const isVisible = domain !== '/' && !isNftView;
@@ -307,6 +379,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							<div ref={previewCardRef}>
 								<div className="border-primary border-rounded blur">
 									<CurrentDomainPreview isPreviewEnabled={isPreviewEnabled} />
+									{nftStats()}
 									{isPreviewEnabled && subTable}
 								</div>
 							</div>
