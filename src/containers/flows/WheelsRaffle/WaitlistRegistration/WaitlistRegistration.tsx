@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FutureButton, Spinner, TextInput } from 'components';
-import styles from './WaitlistRegistration.module.css';
+import styles from './WaitlistRegistration.module.scss';
 import { isValidEmail } from './validation';
 
 import iconDiscord from '../assets/discord.png';
