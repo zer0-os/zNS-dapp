@@ -14,6 +14,7 @@ import { isAlphanumeric, isNumber } from './validation';
 type TextInputProps = {
 	alphanumeric?: boolean; // No symbols
 	autosize?: boolean;
+	className?: string;
 	error?: boolean;
 	errorText?: string;
 	lowercase?: boolean; // Lowercase only
@@ -31,6 +32,7 @@ type TextInputProps = {
 const TextInput: React.FC<TextInputProps> = ({
 	alphanumeric,
 	autosize,
+	className,
 	error,
 	errorText,
 	lowercase,
@@ -95,7 +97,7 @@ const TextInput: React.FC<TextInputProps> = ({
 				<textarea
 					className={`${styles.TextInput} border-blue ${
 						error ? styles.Error : ''
-					}`}
+					} ${className || ''}`}
 					ref={textArea}
 					onChange={handleChange}
 					style={{
@@ -111,7 +113,7 @@ const TextInput: React.FC<TextInputProps> = ({
 					type={type ? type : ''}
 					className={`${styles.TextInput} border-blue ${
 						error ? styles.Error : ''
-					}`}
+					} ${className || ''}`}
 					onChange={handleChange}
 					style={style}
 					placeholder={placeholder}
