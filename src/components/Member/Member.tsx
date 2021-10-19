@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './Member.module.css';
+import styles from './Member.module.scss';
 
 type MemberProps = {
 	id: string;

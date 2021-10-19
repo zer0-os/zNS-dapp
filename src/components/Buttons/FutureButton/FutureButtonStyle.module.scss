@@ -5,7 +5,7 @@
 		rgba(82, 87, 255, 0.25) 0%,
 		rgba(82, 203, 255, 0.25) 100%
 	);
-	--box-shadow: rgba(0, 209, 255, 0.1);
+	--box-shadow: var(--color-accent-1-medium-10);
 	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
 	--border-color: #3ca1ff;
 	--border-color-hover: #fff;

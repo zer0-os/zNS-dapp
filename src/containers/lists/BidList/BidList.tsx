@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Style Imports
-import styles from './BidList.module.css';
+import styles from './BidList.module.scss';
 
 // Component Imports
 import { FutureButton } from 'components';

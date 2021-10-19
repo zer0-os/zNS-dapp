@@ -6,7 +6,7 @@ import { useLayer, useHover, Arrow } from 'react-laag';
 import { motion, AnimatePresence, MotionProps } from 'framer-motion';
 
 //- Style Imports
-import styles from './Tooltip.module.css';
+import styles from './Tooltip.module.scss';
 
 type TooltipProps = {
 	children: React.ReactNode | string | number;

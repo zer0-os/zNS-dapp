@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 //- Style Imports
 import CopyInput from '../CopyInput/CopyInput.js';
-import ProfileStyle from './Profile.module.css';
+import ProfileStyle from './Profile.module.scss';
 
 //- Component Imports
 import { RequestTable, TabBar } from 'components';

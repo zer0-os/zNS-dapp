@@ -16,7 +16,7 @@ import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
 
 //- Style Imports
-import styles from './ZNS.module.css';
+import styles from './ZNS.module.scss';
 
 //- Icon Imports
 import userIcon from 'assets/user.svg';

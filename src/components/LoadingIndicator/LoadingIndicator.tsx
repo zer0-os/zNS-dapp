@@ -1,6 +1,6 @@
 import { Spinner } from 'components';
 
-import styles from './LoadingIndicator.module.css';
+import styles from './LoadingIndicator.module.scss';
 
 type LoadingIndicatorProps = {
 	style?: React.CSSProperties;
