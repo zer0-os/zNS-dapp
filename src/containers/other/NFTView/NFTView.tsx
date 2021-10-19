@@ -44,7 +44,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
-	const attributeSection = useRef<HTMLDivElement>(null);
+	const attributeSection = useRef<HTMLUListElement>(null);
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
 
@@ -374,11 +374,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							style={setAttributesSectionStyles()}
 						>
 							<h4>Properties</h4>
-							<div className={styles.AttributesGrid} ref={attributeSection}>
+							<ul className={styles.AttributesGrid} ref={attributeSection}>
 								{znsDomain.domain?.attributes
-									.slice(0, 11)
+									.slice(
+										0,
+										isShowMoreAtrributes
+											? znsDomain.domain.attributes.length
+											: 11,
+									)
 									.map((attribute: Attribute, index: number) => (
-										<div className={styles.AttributesWrapper} key={index}>
+										<li className={styles.AttributesWrapper} key={index}>
 											<h3 className={styles.Traits}>
 												{attribute.trait_type.toString().length > 24
 													? attribute.trait_type
@@ -387,6 +392,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 															.concat('...')
 													: attribute.trait_type}
 											</h3>
+
 											<h3 className={styles.Properties}>
 												{attribute.value.toString().length > 24
 													? attribute.value
@@ -395,34 +401,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 															.concat('...')
 													: attribute.value}
 											</h3>
-										</div>
+										</li>
 									))}
-								{isShowMoreAtrributes &&
-									znsDomain.domain?.attributes
-										.slice(12)
-										.map((attribute: Attribute, index: number) => (
-											<div
-												className={`${styles.AttributesWrapper} ${styles.AttributesTransition}`}
-												key={index}
-											>
-												<h3 className={styles.Traits}>
-													{attribute.trait_type.toString().length > 24
-														? attribute.trait_type
-																.toString()
-																.slice(0, 21)
-																.concat('...')
-														: attribute.trait_type}
-												</h3>
-												<h3 className={styles.Properties}>
-													{attribute.value.toString().length > 24
-														? attribute.value
-																.toString()
-																.slice(0, 21)
-																.concat('...')
-														: attribute.value}
-												</h3>
-											</div>
-										))}
+
 								{znsDomain.domain?.attributes?.length >= 12 && (
 									<button
 										className={styles.ToggleAttributes}
@@ -433,7 +414,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 											: `+${numberAttributesHidden} More`}
 									</button>
 								)}
-							</div>
+							</ul>
 						</div>
 					</section>
 				</>
