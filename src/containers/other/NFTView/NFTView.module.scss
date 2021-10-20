@@ -71,8 +71,7 @@
 .Info {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	padding: 59.5px 0;
+	justify-content: center;
 }
 
 .Info h1 {
@@ -89,6 +88,7 @@
 .Details {
 	display: flex;
 	flex-direction: column;
+	max-height: 568px;
 }
 
 .Details > div:first-of-type {
@@ -155,10 +155,10 @@
 .Story {
 	display: block; /* Fallback for non-webkit */
 	display: -webkit-box;
-	height: 144px;
+	max-height: 216px;
 	margin: 32px 0;
 	line-height: 24px;
-	-webkit-line-clamp: 6;
+	-webkit-line-clamp: 9;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
