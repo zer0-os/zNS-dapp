@@ -139,7 +139,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							}`}
 						>
 							<NFTMedia
-								size="small"
+								size="medium"
 								className={`${styles.Image} img-border-rounded`}
 								alt="NFT Preview"
 								ipfsUrl={image}
