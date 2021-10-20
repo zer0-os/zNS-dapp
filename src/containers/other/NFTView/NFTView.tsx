@@ -135,10 +135,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
-	//This functions checks if
+	//This functions checks the width of current screen and then return a number to set the list of attributes length
 	const setAttributesListLength = (): number => {
-		const isTablet = window.innerWidth > 500 && window.innerWidth < 800;
-		const isMobile = window.innerWidth <= 500;
+		const isTablet = window.innerWidth > 414 && window.innerWidth < 768;
+		const isMobile = window.innerWidth <= 414;
 		if (isTablet) return 7;
 		else if (isMobile) return 5;
 		else return 11;
@@ -406,7 +406,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const attributes = () => {
 		const getAttributeListLength = setAttributesListLength();
-		const isMobile = window.innerWidth <= 500;
 
 		if (!znsDomain.domain?.attributes) {
 			return;

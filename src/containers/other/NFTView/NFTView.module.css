@@ -150,15 +150,15 @@
 }
 
 @media only screen and (max-width: 768px) {
+	.Attributes {
+		padding: 16px;
+	}
 	.AttributesGrid {
 		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 		column-gap: 8px;
 	}
-	.Attributes {
-		padding: 16px;
-	}
 }
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 414px) {
 	.Attributes {
 		padding: 16px;
 	}
@@ -228,7 +228,7 @@ button.ToggleAttributes {
 	}
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 414px) {
 	button.ToggleAttributes {
 		position: relative;
 		width: 100%;
