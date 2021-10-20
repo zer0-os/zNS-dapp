@@ -4,6 +4,10 @@
 	/* max-width: 388px; */
 
 	background-color: var(--color-background-alt);
+
+	@media only screen and (max-width: 414px) {
+		min-width: unset;
+	}
 }
 
 .Body {

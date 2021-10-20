@@ -164,7 +164,7 @@
 /* Mobile Lrg */
 @media only screen and (max-width: 414px) {
 	:root {
-		--page-padding: 16px;
+		--page-padding: 8px;
 	}
 }
 
@@ -429,6 +429,26 @@ nav {
 .border-pink-glow {
 	border: 1px solid var(--color-primary-lighter-3);
 	box-shadow: 0 0 10px 0 #8d0099;
+}
+
+.border-top-left-rounded {
+	border-top-left-radius: 16px;
+}
+
+.border-top-right-rounded {
+	border-top-right-radius: 16px;
+}
+
+.border-bottom-left-rounded {
+	border-bottom-left-radius: 16px;
+}
+
+.border-bottom-right-rounded {
+	border-bottom-right-radius: 16px;
+}
+
+.img-border-rounded {
+	border-radius: 8px !important;
 }
 
 /*
