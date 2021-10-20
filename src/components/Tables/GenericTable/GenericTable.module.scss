@@ -110,20 +110,18 @@
 
 @media only screen and (max-width: 414px) {
 	.Container {
-		background: none;
-		border: none;
-		box-shadow: none;
 		overflow: visible;
 	}
 
 	.Grid {
-		padding: 0;
+		grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+		padding: 8px;
 	}
 
 	.Controls {
-		padding-top: 0;
-		padding-left: 0;
-		padding-right: 0;
+		padding-top: 16px;
+		padding-left: 8px;
+		padding-right: 8px;
 	}
 }
 
