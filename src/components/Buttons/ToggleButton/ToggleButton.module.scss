@@ -54,7 +54,7 @@
 }
 
 .Container > span {
-	color: #808080;
+	color: var(--color-grey);
 	transition: all var(--animation-time-short) ease-in-out;
 	cursor: pointer;
 }

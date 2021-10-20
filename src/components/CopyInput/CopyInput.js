@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CopyInputStyle from './CopyInput.module.css';
+import CopyInputStyle from './CopyInput.module.scss';
 
 import useNotification from 'lib/hooks/useNotification';
 

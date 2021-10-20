@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 //- Style Imports
-import styles from './Enlist.module.css';
+import styles from './Enlist.module.scss';
 
 //- Component Imports
 import { TextInput, FutureButton, Image } from 'components';

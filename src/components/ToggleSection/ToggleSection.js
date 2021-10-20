@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './ToggleSection.module.css';
+import styles from './ToggleSection.module.scss';
 
 import arrow from './assets/arrow.svg';
 

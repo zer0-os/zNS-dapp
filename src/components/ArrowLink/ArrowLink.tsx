@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './ArrowLink.module.css';
+import styles from './ArrowLink.module.scss';
 
 type ArrowLinkProps = {
 	children: React.ReactNode;

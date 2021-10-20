@@ -9,7 +9,7 @@ import { Image } from 'components';
 import { useTransferProvider } from 'lib/providers/TransferProvider';
 
 //- Style Imports
-import styles from './TranferPreview.module.css';
+import styles from './TranferPreview.module.scss';
 
 const TransferPreview = () => {
 	const { transferring } = useTransferProvider();

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FutureButton, Spinner } from 'components';
-import styles from './RaffleRegistration.module.css';
+import styles from './RaffleRegistration.module.scss';
 import { ConnectWalletButton } from 'containers';
 
 import iconDiscord from '../assets/discord.png';

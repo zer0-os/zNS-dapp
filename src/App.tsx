@@ -7,8 +7,8 @@ import { ConnectedRouter } from 'connected-react-router';
 import store, { history } from './store';
 
 //- Global Stylesheets
-import 'styles/reset.css';
-import 'styles/main.css';
+import 'styles/reset.scss';
+import 'styles/main.scss';
 
 //- React Imports
 import { HashRouter, Route } from 'react-router-dom';

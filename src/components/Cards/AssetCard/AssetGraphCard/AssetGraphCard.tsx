@@ -3,7 +3,7 @@ import React from 'react';
 import AssetCard from '../AssetCard';
 import { TextButton } from 'components';
 
-import styles from './AssetGraphCard.module.css';
+import styles from './AssetGraphCard.module.scss';
 
 import graph from './assets/graph-template.svg';
 

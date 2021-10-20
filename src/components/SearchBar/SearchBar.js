@@ -1,6 +1,6 @@
 import React from 'react';
 
-import searchBarStyles from './SearchBar.module.css';
+import searchBarStyles from './SearchBar.module.scss';
 
 // TODO: Convert to TypeScript
 const SearchBar = (props) => {

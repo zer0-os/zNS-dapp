@@ -5,18 +5,24 @@ import { ethers } from 'ethers';
 import { Maybe } from 'lib/types';
 
 const RegistrationContainer = () => {
-	const { account, active, library } = useWeb3React<Web3Provider>();
+	const { account, active, library, chainId } = useWeb3React<Web3Provider>();
 
 	const submit = async (
 		statusCallback: (status: string) => void,
 	): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
+			if (chainId !== 1) {
+				reject('Please connect to Ethereum Mainnet');
+				return;
+			}
+
 			// Get user eth balance
 			let ethBalance;
 			try {
 				ethBalance = await getEthBalance();
 			} catch (e) {
 				reject(e);
+				return;
 			}
 
 			// Sign transaction
@@ -29,6 +35,7 @@ const RegistrationContainer = () => {
 				signedMessage = await signMessage();
 			} catch (e) {
 				reject(e);
+				return;
 			}
 
 			// Check we have all the data

@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './NumberButton.module.css';
+import styles from './NumberButton.module.scss';
 
 type NumberButtonProps = {
 	number: number;
