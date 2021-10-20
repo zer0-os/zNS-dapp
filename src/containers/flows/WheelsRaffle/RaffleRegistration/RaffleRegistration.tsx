@@ -39,7 +39,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	return (
 		<div className={`${styles.Container} border-primary border-rounded`}>
 			<section className={styles.Header}>
-				<h1 className="glow-text-white">Guarantee Your Ride</h1>
+				<h1 className="glow-text-white">Join The Whitelist Raffle</h1>
 				<hr />
 			</section>
 			{!hasSubmitted && (
@@ -47,10 +47,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					{!isLoading && (
 						<>
 							<p>
-								The upcoming Wilder Wheels drop will first be available to
-								whitelisted members. Whitelist spots will be selected through a
-								raffle. In order to register you will need to sign a message
-								with your wallet, then you're all set.
+								Whitelisted members will have early access to the upcoming
+								wheels drop. Sign up to the raffle with your wallet for a chance
+								at joining the whitelist!
 							</p>
 							{error && <span className={styles.Error}>{error}</span>}
 							{props.isWalletConnected && (
@@ -75,7 +74,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 			)}
 			{hasSubmitted && (
 				<>
-					<p className={styles.Success}>You’ve been added the raffle.</p>
+					<p className={styles.Success}>You successfully joined the raffle!</p>
 					<div className={styles.Socials}>
 						<span>Follow our socials to get the latest info:</span>
 						<div>
