@@ -151,6 +151,22 @@
 	border-radius: 999px;
 }
 
+.SetOpacityTransition {
+	animation: animatedOpacity var(--animation-time-medium) ease-in-out;
+}
+
+@keyframes animatedOpacity {
+	0% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
 .Traits {
 	font-size: 12px;
 	color: #bcbcbc;
@@ -159,6 +175,13 @@
 .Properties {
 	font-size: 12px;
 	margin-top: 2px;
+}
+
+.Traits,
+.Properties {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 button.ToggleAttributes {
@@ -178,22 +201,6 @@ button.ToggleAttributes {
 	right: 8px;
 	bottom: 0px;
 	cursor: pointer;
-}
-
-.AttributesTransition {
-	animation: animatedOpacity var(--animation-time-medium) ease-in;
-}
-
-@keyframes animatedOpacity {
-	0% {
-		opacity: 0;
-	}
-	75% {
-		opacity: 0.5;
-	}
-	100% {
-		opacity: 1;
-	}
 }
 
 /* Attributes styles End */

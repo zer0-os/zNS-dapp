@@ -364,18 +364,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const attributesList = (attribute: Attribute, index: number) => {
 		return (
 			<>
-				<li className={styles.AttributesWrapper} key={index}>
-					<h3 className={styles.Traits}>
-						{attribute.trait_type.toString().length > 24
-							? attribute.trait_type.toString().slice(0, 21).concat('...')
-							: attribute.trait_type}
-					</h3>
+				<li
+					className={`${styles.AttributesWrapper} ${
+						index > 10 && styles.SetOpacityTransition
+					}`}
+					key={index}
+				>
+					<h3 className={styles.Traits}>{attribute.trait_type}</h3>
 
-					<h3 className={styles.Properties}>
-						{attribute.value.toString().length > 24
-							? attribute.value.toString().slice(0, 21).concat('...')
-							: attribute.value}
-					</h3>
+					<h3 className={styles.Properties}>{attribute.value}</h3>
 				</li>
 			</>
 		);
@@ -387,7 +384,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		} else {
 			const numberAttributesHidden =
 				znsDomain.domain.attributes.length -
-				znsDomain.domain.attributes.slice(0, 12).length;
+				znsDomain.domain.attributes.slice(0, 11).length;
 
 			return (
 				<>
@@ -410,7 +407,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 								{znsDomain.domain?.attributes?.length >= 12 && (
 									<button
-										className={styles.ToggleAttributes}
+										className={`${styles.ToggleAttributes} ${
+											isShowMoreAtrributes && styles.SetOpacityTransition
+										}`}
 										onClick={toggleAttributes}
 									>
 										{isShowMoreAtrributes
