@@ -69,9 +69,37 @@
 }
 
 .Info {
+	// position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+}
+
+.Tray {
+	position: absolute;
+	display: flex;
+	top: 40px;
+	right: 40px;
+
+	background: var(--color-purple-darkest);
+
+	border-radius: 8px;
+	border: 1px solid var(--color-purple-ligher);
+
+	overflow: hidden;
+
+	button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 56px;
+		height: 37px;
+
+		background: none;
+
+		&:hover {
+		}
+	}
 }
 
 .Info h1 {
@@ -276,6 +304,10 @@
 @media only screen and (max-width: 768px) {
 	.NFT {
 		flex-direction: column;
+	}
+
+	.Tray {
+		display: none;
 	}
 
 	.NFT > div + div {

@@ -7,7 +7,15 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 import { BigNumber, ethers } from 'ethers';
 
 //- Component Imports
-import { ArrowLink, FutureButton, Member, NFTMedia, Overlay } from 'components';
+import {
+	ArrowLink,
+	FutureButton,
+	IconButton,
+	Member,
+	NFTMedia,
+	Overlay,
+	Tooltip,
+} from 'components';
 import { BidButton, MakeABid } from 'containers';
 
 //- Library Imports
@@ -22,6 +30,8 @@ import styles from './NFTView.module.scss';
 //- Asset Imports
 import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
+import downloadIcon from './assets/download.svg';
+import shareIcon from './assets/share.svg';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
@@ -93,9 +103,67 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
-	const downloadAsset = () => {
-		if (znsDomain?.domain?.image) {
-			window.open(znsDomain.domain.image, '_blank');
+	const downloadAsset = async () => {
+		// @todo move this into a helper
+		if (znsDomain?.domain?.image_full || znsDomain?.domain?.image) {
+			// Get hash from asset
+
+			const url = (znsDomain.domain.image_full || znsDomain.domain.image)!;
+			let hash: string;
+			if (url.startsWith('ipfs://')) {
+				// ipfs://
+				hash = url.slice(7);
+			} else {
+				// http(s)://
+				const hashIndex = url.lastIndexOf('/') + 1;
+				hash = url.slice(hashIndex);
+			}
+
+			const checkUrl = (url: string) => {
+				return new Promise((resolve, reject) => {
+					fetch(url, { method: 'HEAD' }).then((r) => {
+						if (r.ok) {
+							resolve(url);
+						} else {
+							reject();
+						}
+					});
+				});
+			};
+
+			try {
+				const asset = await Promise.any([
+					checkUrl(
+						`https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_900,w_900,fps_1-24,f_mp4,vc_h264/v1631501273/zns/${hash}.mp4`,
+					),
+					checkUrl(
+						`https://res.cloudinary.com/fact0ry/image/upload/c_fit,h_1900,w_1200,q_auto/v1631501273/zns/${hash}.jpg`,
+					),
+				]);
+				if (typeof asset !== 'string') {
+					return;
+				}
+				fetch(asset, {
+					method: 'GET',
+					headers: {},
+				})
+					.then((response) => {
+						response.arrayBuffer().then(function (buffer) {
+							const url = window.URL.createObjectURL(new Blob([buffer]));
+							const link = document.createElement('a');
+							link.href = url;
+							link.setAttribute('download', hash + '.png'); // not sure why png works for all types
+							document.body.appendChild(link);
+							link.click();
+							link.remove();
+						});
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			} catch (e) {
+				console.error(e);
+			}
 		}
 	};
 
@@ -429,6 +497,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					/>
 				</div>
 				<div className={styles.Info}>
+					<div className={styles.Tray}>
+						{/* share icon hidden until share functionality is done */}
+						{/* <button>
+							<img src={shareIcon} />
+						</button> */}
+						<Tooltip text={'Download Media'}>
+							<button onClick={downloadAsset}>
+								<img alt="download asset" src={downloadIcon} />
+							</button>
+						</Tooltip>
+					</div>
 					<div className={styles.Details}>
 						<div>
 							<h1 className="glow-text-white">
