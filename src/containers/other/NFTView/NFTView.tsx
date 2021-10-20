@@ -450,8 +450,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	// Render //
 	////////////
 
-	console.log(window.innerWidth, 'window');
-
 	return (
 		<div className={styles.NFTView}>
 			{overlays()}
