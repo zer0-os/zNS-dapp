@@ -2,7 +2,7 @@
 import { FutureButton, Spinner } from 'components';
 import React, { useEffect, useState } from 'react';
 
-import styles from './SubdomainTableCard.module.css';
+import styles from './SubdomainTableCard.module.scss';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { toFiat } from 'lib/currency';
 
 import { NFTCard } from 'components';
+import { BidButton } from 'containers';
 
 import { useBid } from './BidProvider';
 
@@ -109,12 +110,12 @@ const SubdomainTableCard = (props: any) => {
 						</>
 					)}
 				</div>
-				<FutureButton
+				<BidButton
 					glow={account !== undefined && !isOwnedByUser}
 					onClick={onButtonClick}
 				>
 					Bid
-				</FutureButton>
+				</BidButton>
 			</div>
 		</NFTCard>
 	);

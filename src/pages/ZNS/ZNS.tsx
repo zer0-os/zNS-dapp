@@ -16,7 +16,7 @@ import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
 
 //- Style Imports
-import styles from './ZNS.module.css';
+import styles from './ZNS.module.scss';
 
 //- Icon Imports
 import userIcon from 'assets/user.svg';
@@ -27,7 +27,7 @@ import {
 	FutureButton,
 	FilterBar,
 	TitleBar,
-	Tooltip,
+	TooltipLegacy,
 	IconButton,
 	Overlay,
 	NotificationDrawer,
@@ -35,10 +35,14 @@ import {
 	MintPreview,
 	TransferPreview,
 	Spinner,
-	CountdownBanner,
 } from 'components';
 
-import { SubdomainTable, CurrentDomainPreview, ProfileModal } from 'containers';
+import {
+	SubdomainTable,
+	CurrentDomainPreview,
+	ProfileModal,
+	WheelsRaffle,
+} from 'containers';
 
 //- Library Imports
 import { useTransferProvider } from 'lib/providers/TransferProvider';
@@ -277,9 +281,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const previewCard = () => {
 		const isVisible = domain !== '/' && !isNftView;
 		let to;
+		const isPreviewEnabled = isVisible && previewCardRef;
 		if (isVisible && previewCardRef) {
 			// If should be visible, slide down
-			to = { opacity: 1, marginTop: 0, marginBottom: 16 };
+			to = { opacity: 1, marginTop: 0 };
 		} else if (domain === '/') {
 			// If root view, slide up
 			to = {
@@ -299,7 +304,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					{(styles) => (
 						<animated.div style={styles}>
 							<div ref={previewCardRef}>
-								<CurrentDomainPreview />
+								<div className="border-primary border-rounded blur">
+									<CurrentDomainPreview isPreviewEnabled={isPreviewEnabled} />
+									{isPreviewEnabled && subTable}
+								</div>
 							</div>
 						</animated.div>
 					)}
@@ -350,8 +358,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	);
 
 	const subTable = useMemo(() => {
-		return <SubdomainTable style={{ marginTop: 16 }} domainName={domain} />;
-	}, [domain]);
+		return (
+			<SubdomainTable
+				style={{ marginTop: 16 }}
+				domainName={domain}
+				isNftView={isNftView}
+			/>
+		);
+	}, [domain, isNftView]);
 
 	////////////
 	// Render //
@@ -454,7 +468,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
-										<Tooltip
+										<TooltipLegacy
 											content={<MintPreview onOpenProfile={openProfile} />}
 										>
 											<NumberButton
@@ -462,18 +476,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 												number={statusCount}
 												onClick={() => {}}
 											/>
-										</Tooltip>
+										</TooltipLegacy>
 									) : null}
 
 									{/* Transfer Progress button */}
 									{transferring.length > 0 && (
-										<Tooltip content={<TransferPreview />}>
+										<TooltipLegacy content={<TransferPreview />}>
 											<NumberButton
 												rotating={transferring.length > 0}
 												number={transferring.length}
 												onClick={() => {}}
 											/>
-										</Tooltip>
+										</TooltipLegacy>
 									)}
 
 									{/* Profile Button */}
@@ -495,11 +509,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					</TitleBar>
 				</FilterBar>
 
-				<CountdownBanner />
+				<WheelsRaffle />
 
 				{previewCard()}
 
-				{showDomainTable && subTable}
+				{domain === '/' && showDomainTable && subTable}
 
 				{znsDomain && isNftView && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>

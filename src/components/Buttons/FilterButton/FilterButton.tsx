@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './FilterButton.module.css';
+import styles from './FilterButton.module.scss';
 
 //- Asset Imports
 import icon from './assets/icon.svg';

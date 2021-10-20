@@ -1,0 +1,36 @@
+.searchBar {
+	position: relative;
+	border-radius: var(--box-radius);
+}
+
+.searchBar input {
+	width: 100%;
+	height: 32px;
+	background: var(--color-cosmic-gradient-25);
+	border-radius: 31px;
+	padding: 0 24px 1px 39px;
+
+	/* Text */
+	text-align: left;
+	color: white;
+
+	/* Text shadow isn't working as expected - it cuts off for some reason */
+	/* text-shadow: var(--glow-text-white); */
+}
+
+.searchBar button {
+	position: absolute;
+	left: 16px;
+	top: 9px;
+	height: 14px;
+	width: 14px;
+	background-color: rgba(0, 0, 0, 0);
+	background-image: url('./assets/search-icon.svg');
+	background-position: center;
+	background-size: 14px 14px;
+	background-repeat: no-repeat;
+}
+
+.searchBar input::placeholder {
+	color: white;
+}

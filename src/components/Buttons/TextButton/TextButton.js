@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import styles from './TextButton.module.css';
+import styles from './TextButton.module.scss';
 
 const TextButton = (props) => {
 	const [selected, setSelected] = useState(false);

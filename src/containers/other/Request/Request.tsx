@@ -17,7 +17,7 @@ import { ethers } from 'ethers';
 import { getMetadata } from 'lib/metadata';
 
 //- Style Imports
-import styles from './Request.module.css';
+import styles from './Request.module.scss';
 
 //- Type Imports
 import { DomainRequestAndContents, Maybe, Metadata } from 'lib/types';
@@ -196,7 +196,7 @@ const Request: React.FC<RequestProps> = ({
 					}}
 					size="medium"
 					alt="NFT Preview"
-					ipfsUrl={metadata?.image ?? ''}
+					ipfsUrl={metadata?.image_full || metadata?.image || ''}
 				/>
 			</div>
 

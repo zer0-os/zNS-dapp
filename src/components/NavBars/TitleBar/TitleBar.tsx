@@ -15,7 +15,7 @@ import arrowForwardIcon from 'assets/arrow-forward.svg';
 import arrowBackIcon from 'assets/arrow-back.svg';
 
 //- Style Imports
-import styles from './TitleBar.module.css';
+import styles from './TitleBar.module.scss';
 
 type TitleBarProps = {
 	style?: React.CSSProperties;

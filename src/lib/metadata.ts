@@ -14,12 +14,18 @@ export async function getMetadata(
 			return memoryCache[metadataUrl];
 		}
 
-		const response = await fetch(metadataUrl);
+		let requestUrl = metadataUrl;
+		if (metadataUrl.startsWith('ipfs://')) {
+			requestUrl = 'https://ipfs.fleek.co/ipfs/' + metadataUrl.slice(7);
+		}
+
+		const response = await fetch(requestUrl);
 		const data = await response.json();
 		const metadata = {
 			title: data.name || data.title,
 			description: data.description,
 			image: data.image,
+			image_full: data.image_full,
 		} as Metadata;
 
 		if (!metadata.title || !metadata.description || !metadata.image) {

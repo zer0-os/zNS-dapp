@@ -14,7 +14,7 @@ import {
 import { AbstractConnector } from '@web3-react/abstract-connector';
 
 //- Style Imports
-import WalletStyles from './Wallet.module.css';
+import WalletStyles from './Wallet.module.scss';
 
 //- Component Imports
 import { FutureButton, Spinner, Image } from 'components';

@@ -1,0 +1,536 @@
+/*
+ * @author Brett Collins
+ *
+ * Search:
+ *  - Variables
+ *  - Default HTML Elements
+ *	- Custom HTML Elements
+ *	- Borders
+ *	- Glows / Shadows
+ *	- Effects
+ *  - Media Queries
+ */
+
+/*
+ * Variables
+ * -- The design is likely to change, so let's use variables where we can
+ * to make changes a bit easier.
+ *
+ * TODO: Would it be worth changing this to SCSS and having slightly more versatile variables?
+ */
+:root {
+	--font-size-default: 16px;
+	--font-size-smaller: 14px;
+	--font-family: 'Inter', serif;
+
+	--color-primary: #8c00ff;
+	--color-primary-lighter-3: #e5baff;
+	--color-primary-darkest: #8c00ff;
+	--color-accent-1: #3ca1ff;
+	--color-accent-1-30: #9ed0ff;
+	--color-accent-1-50: rgba(60, 161, 255, 0.5);
+	--color-accent-1-dark: #1e5180;
+	--color-accent-1-darker: #002f5b;
+	--color-accent-1-medium-10: rgba(0, 209, 255, 0.1);
+	--color-accent-1-light: #a1d2ff;
+	--color-accent-1-lighter: #9ed0ff;
+	--color-accent-2: #eb00ff;
+	// --color-success: #3cc13b;
+	--color-warning: #f58c61;
+	// --color-error: #f03738;
+	--color-invalid: #d379ff;
+	--color-grey: #808080;
+	--color-grey-lighter-2: #bfbfbf;
+	--color-text-primary: #ffffff;
+
+	--color-purple-darkest: #10052e;
+	--color-purple-dark: #1d0c4a;
+	--color-purple-light: #29175a;
+	--color-purple-lighter: #50207b;
+	--color-purple-lightest: #c169ff;
+
+	--color-black: #000000;
+	--color-grey-draker: #404040;
+	--color-grey-lighter-3: #d9d9d9;
+	--color-grey-lighter-4: #f2f2f2;
+
+	--color-accent-blue-100: #52cbff;
+	--color-blue-200: #52aeff;
+	--color-blue-300: #5291ff;
+	--color-blue-400: #5274ff;
+
+	--color-success: #58c573;
+	--color-error: #f6677c;
+	--color-red-200: #f67f7c;
+	--color-red-400: #f66596;
+	--color-red-500: #f763b0;
+
+	--color-azure-gradient: linear-gradient(90deg, #5257ff 0%, #52cbff 100%);
+	--color-azure-gradient-50: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 0.5) 0%,
+		rgba(82, 203, 255, 0.5) 100%
+	);
+	--color-azure-gradient-25: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 0.25) 0%,
+		rgba(82, 203, 255, 0.25) 100%
+	);
+
+	--color-coral-gradient: linear-gradient(90deg, #f46b47 0%, #f763b0 100%);
+
+	--color-cosmic-gradient: linear-gradient(90deg, #8930ee 0%, #af72f3 100%);
+	--color-cosmic-gradient-25: linear-gradient(
+		90deg,
+		rgba(137, 48, 238, 0.25) 0%,
+		rgba(175, 114, 243, 0.25) 100%
+	);
+
+	--color-horizon-gradient: linear-gradient(270deg, #52aeff 0%, #8930ee 100%);
+
+	--color-miami-gradient: linear-gradient(90deg, #f66596 0%, #5291ff 100%);
+
+	--color-ocean-gradient: linear-gradient(90deg, #52aeff 0%, #52cbff 100%);
+	--color-ocean-gradient-10: linear-gradient(
+		90deg,
+		rgba(82, 174, 255, 0.1) 0%,
+		rgba(82, 203, 255, 0.1) 100%
+	);
+
+	--color-purpink-gradient: linear-gradient(90deg, #f763b0 0%, #7614e7 100%);
+	--color-sunset-gradient: linear-gradient(270deg, #f6677c 0%, #f58c61 100%);
+
+	--color-baby-blue: #9dd0ff;
+
+	--color-background: rgb(16, 5, 46);
+	--color-background-50: rgba(16, 5, 46, 0.5);
+	--color-background-alt: rgb(29, 12, 74);
+	--color-background-alt-50: rgba(29, 21, 74, 0.5);
+
+	--color-green-2: #27ae60;
+
+	--color-red: #eb5757;
+
+	--background-primary-button-fill: linear-gradient(
+		148deg,
+		#00407c 20.93%,
+		#00203f 82.47%
+	);
+	--background-secondary-button-fill: #1e5180;
+
+	/* TODO: Should probably find a library that lets us set
+		opacity on HEX colours so we don't have to do this */
+	--background-purple-card: var(--color-background);
+	--background-purple-card-50: var(--color-background);
+	--background-purple-card-20: var(--color-background);
+	--background-purple-card-10: var(--color-background);
+	--background-purple-light-20: var(--color-background);
+
+	--background-field-bg: var(--color-background);
+	--background-blue-deck: var(--color-background);
+	--background-blue-card: var(--color-background);
+	--background-blue-card-wilder: var(--color-background);
+
+	--background-primary: var(--color-background);
+	--background-primary-gradient: var(--color-background);
+	--background-accent-1-gradient: var(--color-background);
+
+	--box-radius: 16px;
+
+	--width-max: 1282px;
+	--width-min: 288px;
+	--page-padding: 24px;
+
+	--stroke-primary-button: linear-gradient(180deg, #5f8cff 0%, #002584 100%);
+
+	--glow-primary: drop-shadow(0px 0px 10px 0px #eb00ff);
+	--glow-text-blue: 0px 0px 10px rgba(60, 161, 255, 0.7);
+	--glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
+	--glow-text-white-big: 0px 0px 15px rgba(255, 255, 255, 1),
+		0px 0px 15px rgba(255, 255, 255, 1), 0px 0px 15px rgba(255, 255, 255, 1);
+	--glow-text-blue-big: 0px 0px 15px rgba(60, 161, 255, 1),
+		0px 0px 15px rgba(60, 161, 255, 1), 0px 0px 15px rgba(60, 161, 255, 1);
+
+	--animation-time-short: 0.1s;
+	--animation-time-medium: 0.3s;
+	--animation-time-long: 0.7s;
+}
+
+@media only screen and (max-width: 1024px) {
+	:root {
+	}
+}
+
+/* Mobile Lrg */
+@media only screen and (max-width: 414px) {
+	:root {
+		--page-padding: 8px;
+	}
+}
+
+/*
+ *
+ * Default HTML Elements
+ *
+ */
+
+html,
+body,
+button,
+input,
+textarea {
+	font-family: var(--font-family);
+	font-size: var(--font-size-default);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+}
+
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+}
+
+#main-container {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	overflow: auto;
+}
+
+input,
+textarea {
+	font-size: 1em;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type='number'] {
+	-moz-appearance: textfield;
+}
+
+body {
+	min-height: 100vh;
+	width: 100%;
+	overflow: auto;
+
+	color: var(--color-text-primary);
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+body.no-scroll {
+	height: 100%;
+	overflow: hidden;
+}
+
+h1 {
+	font-size: 22px;
+}
+
+th {
+	text-transform: uppercase;
+}
+
+hr.glow {
+	position: relative;
+	height: 1px;
+	border: none;
+	background-color: #6e10bb;
+}
+
+hr.glow::before {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 1px;
+	width: 8px;
+	background-color: #e0baff;
+}
+
+hr.glow::after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 1px;
+	width: 8px;
+	background-color: #e0baff;
+}
+
+a,
+button.text-button {
+	color: var(--color-accent-1);
+	text-decoration: none;
+	transition: text-shadow var(--animation-time-short) ease-in-out;
+}
+
+a:hover,
+button.text-button:hover {
+	color: var(--color-accent-1);
+	text-shadow: var(--glow-text-blue), var(--glow-text-blue);
+}
+
+a.alt-link {
+	color: white;
+}
+
+a.alt-link:hover {
+	color: white;
+	text-shadow: var(--glow-text-white);
+}
+
+button.text-button {
+	background: none;
+	padding: 0;
+	font-weight: 700;
+}
+
+button {
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+*::-webkit-scrollbar-corner {
+	background: rgba(0, 0, 0, 0);
+	height: 0;
+	width: 0;
+}
+
+*::-webkit-scrollbar-track {
+	background-color: none;
+}
+
+*::-webkit-scrollbar {
+	width: 6px;
+	background-color: none;
+}
+
+*::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: rgba(60, 161, 255, 0.2);
+}
+
+/*
+ *
+ * Custom HTML Elements
+ *
+ */
+
+#breakpointMessage {
+	display: none;
+}
+
+#overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100000;
+}
+
+#backgroundImage {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	background-size: cover;
+
+	opacity: 0;
+	z-index: -100;
+
+	transition: opacity var(--animation-time-long) ease-in-out;
+}
+
+.content {
+	display: flex;
+	margin-left: 180px;
+	margin-top: 106px;
+	padding: 25px;
+}
+
+.main {
+	flex: 1;
+}
+
+nav {
+	width: calc(
+		100% - (var(--page-padding) * 2) - 6px
+	); /* Not sure why the -6 is needed, temp fix */
+	max-width: calc(var(--width-max) - (var(--page-padding) * 2)) !important;
+	min-width: var(--width-min);
+}
+
+.page-spacing {
+	position: relative;
+	width: 100%;
+	max-width: var(--width-max);
+	min-width: var(--width-min);
+	margin: 0 auto;
+	padding-top: 126px;
+	padding-bottom: 110px;
+	padding-left: var(--page-padding);
+	padding-right: var(--page-padding);
+
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.no-select {
+	-webkit-user-select: none; /* Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+/Edge */
+	user-select: none; /* Standard */
+}
+
+/*
+ *
+ * Borders
+ *
+ */
+
+.border-primary {
+	border: 1px solid #af4cff67;
+
+	border-collapse: separate;
+	box-shadow: 0px 0px 16px 0px #c41dff33;
+}
+
+.border-rounded {
+	border-radius: 16px;
+	border-collapse: separate;
+}
+
+.border-blue {
+	border: 1px solid #88d7ff;
+}
+
+.border-pink-glow {
+	border: 1px solid var(--color-primary-lighter-3);
+	box-shadow: 0 0 10px 0 #8d0099;
+}
+
+.border-top-left-rounded {
+	border-top-left-radius: 16px;
+}
+
+.border-top-right-rounded {
+	border-top-right-radius: 16px;
+}
+
+.border-bottom-left-rounded {
+	border-bottom-left-radius: 16px;
+}
+
+.border-bottom-right-rounded {
+	border-bottom-right-radius: 16px;
+}
+
+.img-border-rounded {
+	border-radius: 8px !important;
+}
+
+/*
+ *
+ * Glows / Shadows
+ *
+ */
+
+.glow-box-accent-2 {
+	filter: drop-shadow(0px 0px 10px var(--color-accent-2));
+}
+
+.glow-text-white {
+	text-shadow: var(--glow-text-white);
+}
+
+.glow-text-blue {
+	text-shadow: var(--glow-text-blue);
+}
+
+/*
+ *
+ * Effects
+ *
+ */
+
+/* Blurs the background of the div */
+/* @todo deprecated, remove */
+.blur {
+	/* backdrop-filter: blur(20px);
+	backdrop-webkit-filter: blur(20px);
+	backdrop-moz-filter: blur(20px);
+	backdrop-o-filter: blur(20px);
+	backdrop-ms-filter: blur(20px); */
+}
+
+/*
+ *
+ * Media Queries
+ *
+ */
+/* @media only screen and (max-width: 660px) {
+	#root {
+		opacity: 0;
+	}
+
+	#overlay {
+		display: none;
+	}
+
+	#breakpointMessage {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		padding: 32px;
+
+		display: flex !important;
+		align-items: center;
+		justify-content: center;
+
+		font-weight: 700;
+		text-align: center;
+		line-height: 22px;
+	}
+} */
+
+/*
+ *
+ * Polyfills
+ *
+ */
+
+@supports not (
+	(-webkit-backdrop-filter: blur(20em)) or (backdrop-filter: blur(2em))
+) {
+	.blur {
+		background: rgba(78, 0, 132, 0.4) !important;
+	}
+
+	.overlay {
+		background: rgba(0, 0, 0, 0.4) !important;
+	}
+}

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
-import styles from './ZNALink.module.css';
+import styles from './ZNALink.module.scss';
 
 type ZNAProps = {
 	className?: string;
@@ -18,8 +18,9 @@ const ZNALink: React.FC<ZNAProps> = ({ className, domain, style }) => {
 		>
 			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
 			<Link style={{ textDecoration: 'none', color: 'white' }} to={''}>
-				wilder
+				wilder{domain.split('').length <= 1 ? '' : '.'}
 			</Link>
+
 			{domain !== '/' && <span className={styles.Dots}>..</span>}
 			{domain.split('.').map((part, i) => {
 				if (part === '/') return '';
@@ -29,19 +30,21 @@ const ZNALink: React.FC<ZNAProps> = ({ className, domain, style }) => {
 						style={{ textDecoration: 'none', color: 'white' }}
 						to={part}
 					>
-						.{part.charAt(0) === '/' ? part.substring(1, part.length) : part}
+						{part.charAt(0) === '/' ? part.substring(1, part.length) : part}
 					</Link>
 				) : (
-					<Link
-						key={i}
-						style={{ textDecoration: 'none', color: 'white' }}
-						to={domain
-							.split('.')
-							.slice(0, i + 1)
-							.join('.')}
-					>
-						{i > 0 ? `.${part}` : part}
-					</Link>
+					<>
+						<Link
+							key={i}
+							style={{ textDecoration: 'none', color: 'white' }}
+							to={domain
+								.split('.')
+								.slice(0, i + 1)
+								.join('.')}
+						>
+							{i > 0 ? `.${part}` : part}
+						</Link>
+					</>
 				);
 			})}
 		</div>

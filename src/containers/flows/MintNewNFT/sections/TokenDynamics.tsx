@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { TokenDynamicType } from '../types';
 
 //- Style Imports
-import styles from '../MintNewNFT.module.css';
+import styles from '../MintNewNFT.module.scss';
 
 //- Component Imports
 import { ToggleButton, TextInput, FutureButton } from 'components';
