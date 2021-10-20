@@ -125,20 +125,22 @@
 }
 
 .AttributesContainer {
-	width: 1202px;
-	transition: height var(--animation-time-medium) ease-in-out;
-	overflow: hidden;
+	width: 100%;
+	/* transition: height var(--animation-time-medium) ease-in-out;
+	overflow: hidden; */
 }
 
 .AttributesGrid {
 	display: grid;
-	grid-template-columns: repeat(6, 1fr);
+	grid-template-columns: repeat(auto-fit, minmax(194px, 1fr));
+	grid-row-start: 1;
+	gap: 4px;
 	margin: 16px 0;
 	position: relative;
 }
 
 .AttributesWrapper {
-	width: 193.67px;
+	width: 100%;
 	height: 48px;
 	margin: 4px 0;
 	display: flex;
@@ -162,11 +164,11 @@
 }
 
 button.ToggleAttributes {
-	background-color: var(--color-background);
+	background: none;
 	color: #52cbff;
 	font-size: 16px;
 	cursor: pointer;
-	width: 193.67px;
+	width: 190px;
 	height: 48px;
 	display: flex;
 	flex-direction: column;

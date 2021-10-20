@@ -1,5 +1,6 @@
 //- React Imports
 import React, { useState, useEffect, useRef, createRef } from 'react';
+import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
@@ -44,7 +45,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
-	const attributeSection = useRef<HTMLUListElement>(null);
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
 
@@ -59,6 +59,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	);
 	const [isShowMoreAtrributes, setIsShowMoreAttributes] =
 		useState<boolean>(false);
+	const [containerHeight, setContainerHeight] = useState(0);
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -134,14 +135,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
-	const setAttributesSectionStyles = () => {
-		if (attributeSection.current)
-			return !isShowMoreAtrributes
-				? { height: '146px' }
-				: { height: attributeSection.current.scrollHeight + 90 };
+	const toggleAttributes = () => setIsShowMoreAttributes((prev) => !prev);
+
+	//Checks the height of attributes container
+	const checkHeight = () => {
+		if (isShowMoreAtrributes) setContainerHeight(10);
+		else setContainerHeight(0);
 	};
 
-	const toggleAttributes = () => setIsShowMoreAttributes((prev) => !prev);
+	useEffect(() => {
+		checkHeight();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isShowMoreAtrributes]);
 
 	/////////////
 	// Effects //
@@ -183,7 +188,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			);
 
 			getBids();
-			setAttributesSectionStyles();
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -357,6 +361,26 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		</div>
 	);
 
+	const attributesList = (attribute: Attribute, index: number) => {
+		return (
+			<>
+				<li className={styles.AttributesWrapper} key={index}>
+					<h3 className={styles.Traits}>
+						{attribute.trait_type.toString().length > 24
+							? attribute.trait_type.toString().slice(0, 21).concat('...')
+							: attribute.trait_type}
+					</h3>
+
+					<h3 className={styles.Properties}>
+						{attribute.value.toString().length > 24
+							? attribute.value.toString().slice(0, 21).concat('...')
+							: attribute.value}
+					</h3>
+				</li>
+			</>
+		);
+	};
+
 	const attributes = () => {
 		if (!znsDomain.domain?.attributes) {
 			return;
@@ -364,45 +388,25 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			const numberAttributesHidden =
 				znsDomain.domain.attributes.length -
 				znsDomain.domain.attributes.slice(0, 12).length;
+
 			return (
 				<>
 					<section
 						className={`${styles.Attributes}  blur border-primary border-rounded`}
 					>
-						<div
-							className={styles.AttributesContainer}
-							style={setAttributesSectionStyles()}
-						>
+						<div className={styles.AttributesContainer}>
 							<h4>Properties</h4>
-							<ul className={styles.AttributesGrid} ref={attributeSection}>
-								{znsDomain.domain?.attributes
+							<ul className={styles.AttributesGrid}>
+								{znsDomain.domain.attributes
 									.slice(
 										0,
 										isShowMoreAtrributes
 											? znsDomain.domain.attributes.length
 											: 11,
 									)
-									.map((attribute: Attribute, index: number) => (
-										<li className={styles.AttributesWrapper} key={index}>
-											<h3 className={styles.Traits}>
-												{attribute.trait_type.toString().length > 24
-													? attribute.trait_type
-															.toString()
-															.slice(0, 21)
-															.concat('...')
-													: attribute.trait_type}
-											</h3>
-
-											<h3 className={styles.Properties}>
-												{attribute.value.toString().length > 24
-													? attribute.value
-															.toString()
-															.slice(0, 21)
-															.concat('...')
-													: attribute.value}
-											</h3>
-										</li>
-									))}
+									.map((attribute: Attribute, index: number) =>
+										attributesList(attribute, index),
+									)}
 
 								{znsDomain.domain?.attributes?.length >= 12 && (
 									<button
@@ -416,6 +420,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								)}
 							</ul>
 						</div>
+						<Spring to={{ height: containerHeight }}>
+							{(styles) => <animated.div style={styles}></animated.div>}
+						</Spring>
 					</section>
 				</>
 			);
