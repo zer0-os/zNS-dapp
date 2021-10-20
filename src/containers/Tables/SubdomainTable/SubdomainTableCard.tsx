@@ -7,8 +7,10 @@ import styles from './SubdomainTableCard.module.scss';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useBidProvider } from 'lib/providers/BidProvider';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
+import { toFiat } from 'lib/currency';
 
 import { NFTCard } from 'components';
 import { BidButton } from 'containers';
@@ -22,6 +24,8 @@ const SubdomainTableCard = (props: any) => {
 	const { makeABid, updated } = useBid();
 
 	const { getBidsForDomain } = useBidProvider();
+
+	const { wildPriceUsd } = useCurrencyProvider();
 
 	const domain = props.data;
 
@@ -65,6 +69,24 @@ const SubdomainTableCard = (props: any) => {
 		}
 	};
 
+	const highestBidWild = () => {
+		if (!bids) {
+			return 'Failed to retrieve';
+		}
+		if (bids.length === 0) {
+			return 'No bids';
+		} else {
+			return bids[0].amount.toLocaleString() + ' WILD';
+		}
+	};
+
+	const highestBidUsd = () => {
+		if (!bids || bids.length === 0) {
+			return;
+		}
+		return '$' + toFiat(wildPriceUsd * bids[0].amount) + ' USD';
+	};
+
 	return (
 		<NFTCard
 			domain={domain.name}
@@ -81,13 +103,10 @@ const SubdomainTableCard = (props: any) => {
 					{!areBidsLoading && (
 						<>
 							<label>Highest Bid</label>
-							<span className="glow-text-blue">
-								{bids &&
-									bids.length > 0 &&
-									bids[0].amount.toLocaleString() + ' WILD'}
-								{bids && bids.length === 0 && 'No bids'}
-								{!bids && 'Failed to retrieve'}
+							<span className={`${styles.Crypto} glow-text-blue`}>
+								{highestBidWild()}
 							</span>
+							<span className={styles.Fiat}>{highestBidUsd()}</span>
 						</>
 					)}
 				</div>
