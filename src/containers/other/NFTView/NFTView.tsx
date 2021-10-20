@@ -135,6 +135,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
+	//This functions checks if
+	const setAttributesListLength = (): number => {
+		const isTablet = window.innerWidth > 500 && window.innerWidth < 800;
+		const isMobile = window.innerWidth <= 500;
+		if (isTablet) return 7;
+		else if (isMobile) return 5;
+		else return 11;
+	};
+
 	const toggleAttributes = () => setIsShowMoreAttributes((prev) => !prev);
 
 	//Checks the height of attributes container
@@ -377,13 +386,34 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		);
 	};
 
+	const attributesButtonToggler = (numberAttributesHidden: number) => {
+		return (
+			<>
+				<button
+					className={`${styles.ToggleAttributes} ${
+						isShowMoreAtrributes && styles.SetOpacityAnimation
+					}`}
+					style={{ background: 'none' }}
+					onClick={toggleAttributes}
+				>
+					{isShowMoreAtrributes
+						? 'Show Less'
+						: `+${numberAttributesHidden} More`}
+				</button>
+			</>
+		);
+	};
+
 	const attributes = () => {
+		const getAttributeListLength = setAttributesListLength();
+		const isMobile = window.innerWidth <= 500;
+
 		if (!znsDomain.domain?.attributes) {
 			return;
 		} else {
 			const numberAttributesHidden =
 				znsDomain.domain.attributes.length -
-				znsDomain.domain.attributes.slice(0, 11).length;
+				znsDomain.domain.attributes.slice(0, getAttributeListLength).length;
 
 			return (
 				<>
@@ -398,24 +428,14 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 										0,
 										isShowMoreAtrributes
 											? znsDomain.domain.attributes.length
-											: 11,
+											: getAttributeListLength,
 									)
 									.map((attribute: Attribute, index: number) =>
 										attributesList(attribute, index),
 									)}
 
-								{znsDomain.domain?.attributes?.length >= 12 && (
-									<button
-										className={`${styles.ToggleAttributes} ${
-											isShowMoreAtrributes && styles.SetOpacityAnimation
-										}`}
-										onClick={toggleAttributes}
-									>
-										{isShowMoreAtrributes
-											? 'Show Less'
-											: `+${numberAttributesHidden} More`}
-									</button>
-								)}
+								{znsDomain.domain?.attributes?.length >= 12 &&
+									attributesButtonToggler(numberAttributesHidden)}
 							</ul>
 						</div>
 						<Spring to={{ height: containerHeight }}>
@@ -430,6 +450,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	////////////
 	// Render //
 	////////////
+
+	console.log(window.innerWidth, 'window');
 
 	return (
 		<div className={styles.NFTView}>

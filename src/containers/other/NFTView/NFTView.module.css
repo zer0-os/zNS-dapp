@@ -126,16 +126,14 @@
 
 .AttributesContainer {
 	width: 100%;
-	/* transition: height var(--animation-time-medium) ease-in-out;
-	overflow: hidden; */
 }
 
 .AttributesGrid {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(194px, 1fr));
 	grid-row-start: 1;
-	gap: 4px;
-	margin: 16px 0;
+	column-gap: 4px;
+	margin-top: 16px;
 	position: relative;
 }
 
@@ -149,7 +147,28 @@
 	padding: 8px 8px 8px 16px;
 	border: 1px solid #50207b;
 	border-radius: 999px;
-	transition: opacity var(--animation-time-medium) ease-in-out;
+}
+
+@media only screen and (max-width: 768px) {
+	.AttributesGrid {
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		column-gap: 8px;
+	}
+	.Attributes {
+		padding: 16px;
+	}
+}
+@media only screen and (max-width: 500px) {
+	.Attributes {
+		padding: 16px;
+	}
+	.AttributesGrid {
+		grid-template-columns: 1fr;
+		column-gap: 8px;
+	}
+	.AttributesWrapper {
+		margin: 8px 0;
+	}
 }
 
 .SetOpacityAnimation {
@@ -189,7 +208,6 @@ button.ToggleAttributes {
 	background: none;
 	color: #52cbff;
 	font-size: 16px;
-	cursor: pointer;
 	width: 190px;
 	height: 48px;
 	display: flex;
@@ -204,6 +222,19 @@ button.ToggleAttributes {
 	cursor: pointer;
 }
 
+@media only screen and (max-width: 768px) {
+	button.ToggleAttributes {
+		width: 150px;
+	}
+}
+
+@media only screen and (max-width: 500px) {
+	button.ToggleAttributes {
+		position: relative;
+		width: 100%;
+		margin: 8px;
+	}
+}
 /* Attributes styles End */
 
 .Price h2 {
