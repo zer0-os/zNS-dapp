@@ -26,7 +26,9 @@ const RegistrationContainer = () => {
 			}
 
 			// Sign transaction
-			statusCallback('Verifying wallet - please approve signature request');
+			statusCallback(
+				'Please sign transaction in your wallet to be entered in the raffle...',
+			);
 
 			let signedMessage;
 			try {

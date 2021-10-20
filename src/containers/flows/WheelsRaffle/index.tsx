@@ -76,7 +76,7 @@ const WheelsRaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Wilder Wheels whitelist raffle has started - whitelist ends in{' '}
+					Join the whitelist raffle. Early sale starts in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
@@ -154,7 +154,7 @@ const WheelsRaffleContainer = () => {
 				{isModalOpen && overlay()}
 				<div style={{ position: 'relative', marginBottom: 16 }}>
 					<MintWheelsBanner
-						title={'Guarantee your ride for the Metaverse'}
+						title={'Get Early Access to Wilder Wheels'}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}
 						onClick={openModal}
