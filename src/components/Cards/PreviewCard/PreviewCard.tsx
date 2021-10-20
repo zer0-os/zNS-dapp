@@ -113,57 +113,52 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	////////////
 
 	return (
-		<>
-			<div
-				className={`${styles.PreviewCard} ${
-					!isPreviewEnabled
-						? 'border-primary border-rounded blur'
-						: 'border-top-left-rounded border-top-right-rounded'
-				}`}
-				style={style ? style : {}}
-			>
-				{preventInteraction && <div className={styles.Blocker}></div>}
-				{isLoading && (
-					<div className={styles.Loading}>
-						<div className={styles.Spinner}></div>
-					</div>
-				)}
-				<>
+		<div
+			className={`${styles.PreviewCard} ${
+				!isPreviewEnabled
+					? 'border-primary border-rounded blur'
+					: 'border-top-left-rounded border-top-right-rounded'
+			}`}
+			style={style ? style : {}}
+		>
+			{preventInteraction && <div className={styles.Blocker}></div>}
+			{isLoading && (
+				<div className={styles.Loading}>
+					<div className={styles.Spinner}></div>
+				</div>
+			)}
+			<>
+				<div className={styles.Preview} style={{ opacity: isLoading ? 0 : 1 }}>
 					<div
-						className={styles.Preview}
-						style={{ opacity: isLoading ? 0 : 1 }}
+						className={`${styles.Asset} ${
+							mvpVersion === 3 ? styles.MVP3Asset : ''
+						}`}
 					>
-						<div
-							className={`${styles.Asset} ${
-								mvpVersion === 3 ? styles.MVP3Asset : ''
-							}`}
-						>
-							<NFTMedia
-								size="small"
-								className={`${styles.Image} img-border-rounded`}
-								alt="NFT Preview"
-								ipfsUrl={image}
-							/>
-						</div>
-						<div className={styles.InfoContainer}>
-							{body()}
-							{buy()}
-						</div>
+						<NFTMedia
+							size="medium"
+							className={`${styles.Image} img-border-rounded`}
+							alt="NFT Preview"
+							ipfsUrl={image}
+						/>
 					</div>
-					{children && mvpVersion === 3 && (
-						<>
-							<hr className="glow" style={{ opacity: isLoading ? 0 : 1 }} />
-							<div
-								className={styles.Children}
-								style={{ opacity: isLoading ? 0 : 1 }}
-							>
-								{children}
-							</div>
-						</>
-					)}
-				</>
-			</div>
-		</>
+					<div className={styles.InfoContainer}>
+						{body()}
+						{buy()}
+					</div>
+				</div>
+				{children && mvpVersion === 3 && (
+					<>
+						<hr className="glow" style={{ opacity: isLoading ? 0 : 1 }} />
+						<div
+							className={styles.Children}
+							style={{ opacity: isLoading ? 0 : 1 }}
+						>
+							{children}
+						</div>
+					</>
+				)}
+			</>
+		</div>
 	);
 };
 

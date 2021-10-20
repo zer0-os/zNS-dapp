@@ -17,8 +17,11 @@
 .Preview {
 	display: flex;
 	width: 100%;
-
 	padding: 8px;
+
+	@media only screen and (max-width: 950px) {
+		flex-direction: column;
+	}
 }
 
 .Loading {
@@ -54,15 +57,31 @@
 	align-items: center;
 	justify-content: center;
 	width: 400px;
-	height: 224px;
+	height: 225px;
 	cursor: pointer;
 	border-radius: 8px;
 	overflow: hidden;
-}
 
-@media (hover: hover) and (pointer: fine) {
-	.Asset:hover > div {
-		transform: scale(1.02);
+	@media (hover: hover) and (pointer: fine) {
+		&:hover > div {
+			transform: scale(1.02);
+		}
+	}
+
+	@media only screen and (max-width: 950px) {
+		width: 100%;
+	}
+
+	.Image > img {
+		width: 100%;
+		height: 100%;
+	}
+
+	div {
+		overflow: hidden;
+		transition: transform var(--animation-time-medium) ease-in-out;
+		border-radius: 16px;
+		z-index: 2;
 	}
 }
 
@@ -70,65 +89,130 @@
 	border-radius: 9px 0px 0px 0px;
 }
 
-.Asset .Image > img {
-	width: 100%;
-	height: 100%;
-}
-
-.Asset > div {
-	overflow: hidden;
-	transition: transform var(--animation-time-medium) ease-in-out;
-	border-radius: 16px;
-	z-index: 2;
-}
-
 .InfoContainer {
 	display: flex;
 	flex: 1;
 	height: 224px;
-}
+	padding: 8px 24px 0 24px;
 
-.Body {
-	display: flex;
-	flex: 1;
-	flex-direction: column;
-	justify-content: space-between;
-	align-self: center;
+	@media only screen and (max-width: 1280px) {
+		flex-direction: column;
+		justify-content: center;
+	}
 
-	margin: 8px 24px 0 24px;
-}
+	@media only screen and (max-width: 415px) {
+		padding-left: 0;
+		padding-right: 0;
+	}
 
-.Body h5 {
-	color: white;
-	font-size: 36px;
-	font-weight: 700;
+	.Body {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		justify-content: space-between;
+		align-self: center;
+		width: 100%;
 
-	/* white-space: nowrap; */
-	overflow: hidden;
-	text-overflow: ellipsis;
+		padding-right: 24px;
+
+		@media only screen and (max-width: 1280px) {
+			padding-right: 0;
+			flex-grow: 0;
+		}
+
+		h5 {
+			color: white;
+			font-size: 36px;
+			font-weight: 700;
+
+			/* white-space: nowrap; */
+			overflow: hidden;
+			text-overflow: ellipsis;
+
+			@media only screen and (max-width: 550px) {
+				font-size: 24px;
+			}
+		}
+
+		.Description {
+			margin-top: 16px;
+			color: white;
+			line-height: 19.2px;
+			padding-bottom: 0;
+
+			-ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+			scrollbar-width: none; /* Hide scrollbar in Firefox */
+			display: -webkit-box;
+			-webkit-line-clamp: 8;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			text-overflow: ellipsis;
+
+			@media only screen and (max-width: 1280px) {
+				-webkit-line-clamp: 6;
+			}
+
+			@media only screen and (max-width: 950px) {
+				-webkit-line-clamp: unset;
+			}
+		}
+
+		.Description::-webkit-scrollbar {
+			display: none; /* Hide scrollbar in Chrome */
+		}
+	}
+
+	.Buy {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		margin-left: auto;
+		margin-right: 40px;
+
+		@media only screen and (max-width: 1280px) {
+			margin: 0;
+
+			align-items: flex-start;
+		}
+
+		.ViewLink {
+			margin-top: 16px;
+			padding: 0;
+			font-size: 16px;
+			font-weight: 400;
+			color: var(--color-accent-blue-100);
+			cursor: pointer;
+		}
+
+		.ViewLink:hover {
+			color: var(--color-accent-1);
+			text-shadow: var(--glow-text-blue), var(--glow-text-blue);
+		}
+
+		* {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		span {
+			&:first-of-type {
+				margin-top: 20px;
+				font-size: 24px;
+			}
+
+			&:last-of-type {
+				margin-top: 8px;
+				color: var(--color-primary-lighter-3);
+			}
+		}
+	}
 }
 
 .Domain {
 	color: var(--color-accent-1);
-}
-
-.Description {
-	margin-top: 16px;
-	color: white;
-	line-height: 19.2px;
-	padding-bottom: 0;
-
-	-ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
-	scrollbar-width: none; /* Hide scrollbar in Firefox */
-	display: -webkit-box;
-	-webkit-line-clamp: 8;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.Description::-webkit-scrollbar {
-	display: none; /* Hide scrollbar in Chrome */
 }
 
 .Members {
@@ -164,34 +248,6 @@
 	margin-top: 4px;
 }
 
-.Buy {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-
-	margin-left: auto;
-	margin-right: 40px;
-}
-
-.Buy > * {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-
-/* "Last Offer" text */
-.Buy span:first-of-type {
-	margin-top: 20px;
-	font-size: 24px;
-}
-
-/* Offer amount */
-.Buy span:last-of-type {
-	margin-top: 8px;
-	color: var(--color-primary-lighter-3);
-}
-
 .Children {
 	padding: 24.5px 8px 26px 8px;
 }
@@ -205,115 +261,103 @@
 	z-index: 5;
 }
 
-.ViewLink {
-	font-size: 16px;
-	font-weight: 400;
-	color: var(--color-accent-blue-100);
-	cursor: pointer;
-}
+// @media only screen and (max-width: 1000px) {
+// 	.Bid {
+// 		display: none;
+// 	}
+// }
 
-.ViewLink:hover {
-	color: var(--color-accent-1);
-	text-shadow: var(--glow-text-blue), var(--glow-text-blue);
-}
+// @media only screen and (max-width: 768px) {
+// 	.InfoContainer {
+// 		flex-direction: column;
+// 		padding-bottom: 16px;
+// 	}
 
-@media only screen and (max-width: 1000px) {
-	.Bid {
-		display: none;
-	}
-}
+// 	.Asset {
+// 		width: 326.5px;
+// 		height: 437px;
+// 		background: none;
+// 	}
 
-@media only screen and (max-width: 768px) {
-	.InfoContainer {
-		flex-direction: column;
-		padding-bottom: 16px;
-	}
+// 	.Body {
+// 		justify-content: flex-start;
+// 		margin-right: 0;
+// 	}
 
-	.Asset {
-		width: 326.5px;
-		height: 437px;
-		background: none;
-	}
+// 	.Description {
+// 		margin-top: 40px !important;
+// 		max-height: 76px;
+// 	}
 
-	.Body {
-		justify-content: flex-start;
-		margin-right: 0;
-	}
+// 	.Buy {
+// 		margin: 0 auto;
+// 	}
+// }
 
-	.Description {
-		margin-top: 40px !important;
-		max-height: 76px;
-	}
+// @media only screen and (max-width: 710px) {
+// 	.Members {
+// 		flex-direction: column;
+// 	}
 
-	.Buy {
-		margin: 0 auto;
-	}
-}
+// 	.Members > *:not(:first-child) {
+// 		margin-top: 16px;
+// 	}
+// }
 
-@media only screen and (max-width: 710px) {
-	.Members {
-		flex-direction: column;
-	}
+// @media only screen and (max-width: 660px) {
+// 	.Members > div:not(:first-child) > div {
+// 		/* margin-left: auto; */
+// 	}
 
-	.Members > *:not(:first-child) {
-		margin-top: 16px;
-	}
-}
+// 	.Buy {
+// 		margin: 0 auto;
+// 	}
 
-@media only screen and (max-width: 660px) {
-	.Members > div:not(:first-child) > div {
-		/* margin-left: auto; */
-	}
+// 	.View {
+// 		margin-top: 8px !important;
+// 	}
+// }
 
-	.Buy {
-		margin: 0 auto;
-	}
+// @media only screen and (max-width: 600px) {
+// 	.Preview {
+// 		flex-direction: column;
+// 	}
 
-	.View {
-		margin-top: 8px !important;
-	}
-}
+// 	.Description {
+// 		margin-top: 16px !important;
+// 	}
 
-@media only screen and (max-width: 600px) {
-	.Preview {
-		flex-direction: column;
-	}
+// 	.Body {
+// 		padding: 16px;
+// 		margin: 0;
+// 		margin-top: 24px;
+// 	}
 
-	.Description {
-		margin-top: 16px !important;
-	}
+// 	.Asset {
+// 		width: 100%;
+// 		height: auto;
+// 		max-height: 437px;
+// 		border-radius: var(--box-radius);
+// 	}
 
-	.Body {
-		padding: 16px;
-		margin: 0;
-		margin-top: 24px;
-	}
+// 	.Asset * {
+// 		max-height: 437px;
+// 		height: auto;
+// 		border-radius: var(--box-radius);
+// 	}
 
-	.Asset {
-		width: 100%;
-		height: auto;
-		max-height: 437px;
-		border-radius: var(--box-radius);
-	}
+// 	.Members {
+// 		margin-top: 24px;
+// 		flex-direction: row;
+// 		justify-content: flex-start;
+// 	}
 
-	.Asset * {
-		max-height: 437px;
-		height: auto;
-		border-radius: var(--box-radius);
-	}
+// 	.Members > * {
+// 		margin-top: 0 !important;
+// 		width: auto !important;
+// 	}
 
-	.Members {
-		margin-top: 24px;
-		flex-direction: row;
-		justify-content: flex-start;
-	}
-
-	.Members > * {
-		margin-top: 0 !important;
-		width: auto !important;
-	}
-
-	.Members > *:not(:first-child) {
-		margin-left: 56px;
-	}
-}
+// 	.Members > *:not(:first-child) {
+// 		margin-left: 56px;
+// 	}
+// }
