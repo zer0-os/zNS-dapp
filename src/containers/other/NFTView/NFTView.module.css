@@ -149,9 +149,10 @@
 	padding: 8px 8px 8px 16px;
 	border: 1px solid #50207b;
 	border-radius: 999px;
+	transition: opacity var(--animation-time-medium) ease-in-out;
 }
 
-.SetOpacityTransition {
+.SetOpacityAnimation {
 	animation: animatedOpacity var(--animation-time-medium) ease-in-out;
 }
 

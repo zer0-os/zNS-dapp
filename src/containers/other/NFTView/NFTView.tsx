@@ -366,13 +366,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			<>
 				<li
 					className={`${styles.AttributesWrapper} ${
-						index > 10 && styles.SetOpacityTransition
+						index > 10 && styles.SetOpacityAnimation
 					}`}
 					key={index}
 				>
-					<h3 className={styles.Traits}>{attribute.trait_type}</h3>
-
-					<h3 className={styles.Properties}>{attribute.value}</h3>
+					<span className={styles.Traits}>{attribute.trait_type}</span>
+					<span className={styles.Properties}>{attribute.value} </span>
 				</li>
 			</>
 		);
@@ -408,7 +407,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								{znsDomain.domain?.attributes?.length >= 12 && (
 									<button
 										className={`${styles.ToggleAttributes} ${
-											isShowMoreAtrributes && styles.SetOpacityTransition
+											isShowMoreAtrributes && styles.SetOpacityAnimation
 										}`}
 										onClick={toggleAttributes}
 									>
