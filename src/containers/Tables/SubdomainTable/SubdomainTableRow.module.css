@@ -33,6 +33,6 @@
 
 .Bid:not(:first-child) {
 	margin-top: 2px;
-	color: var(--color-primary-lighter-3);
-	font-size: 14px;
+	color: var(--color-grey);
+	font-size: 12px;
 }
