@@ -17,10 +17,16 @@
 	color: var(--color-primary-lighter-3);
 }
 
-.Bid span {
+.Crypto {
 	margin-top: 2px;
 	font-size: 18px;
 	color: var(--color-text-primary);
+}
+
+.Fiat {
+	font-size: 14px;
+	color: var(--color-grey);
+	margin-top: 2px;
 }
 
 @media only screen and (max-width: 1000px) {

@@ -1,5 +1,6 @@
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
+import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
@@ -14,6 +15,8 @@ import {
 	NFTMedia,
 	Overlay,
 	StatsWidget,
+	IconButton,
+	Tooltip,
 } from 'components';
 import { BidButton, MakeABid } from 'containers';
 
@@ -22,6 +25,18 @@ import { randomName, randomImage } from 'lib/random';
 import useNotification from 'lib/hooks/useNotification';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { toFiat } from 'lib/currency';
+import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
+import { useZnsContracts } from 'lib/contracts';
+import { getDomainId } from 'lib/utils';
+import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
+import { Attribute, transfersData } from 'lib/types';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import {
+	DomainBidEvent,
+	DomainEvent,
+	DomainTradingData,
+} from '@zero-tech/zns-sdk';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
@@ -29,16 +44,8 @@ import styles from './NFTView.module.scss';
 //- Asset Imports
 import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
-import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import { useZnsContracts } from 'lib/contracts';
-import { getDomainId } from 'lib/utils';
-import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import {
-	DomainBidEvent,
-	DomainEvent,
-	DomainTradingData,
-} from '@zero-tech/zns-sdk';
+import downloadIcon from './assets/download.svg';
+import shareIcon from './assets/share.svg';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -75,6 +82,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [tradeData, setTradeData] = useState<DomainTradingData | undefined>();
 	const [bids, setBids] = useState<DomainBidEvent[] | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
+	const [isShowMoreAtrributes, setIsShowMoreAttributes] =
+		useState<boolean>(false);
+	const [containerHeight, setContainerHeight] = useState(0);
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -107,9 +117,70 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
-	const downloadAsset = () => {
-		if (znsDomain?.domain?.image) {
-			window.open(znsDomain.domain.image, '_blank');
+	const downloadAsset = async () => {
+		// @todo move this into a helper
+		if (znsDomain?.domain?.image_full || znsDomain?.domain?.image) {
+			// Get hash from asset
+
+			const url = (znsDomain.domain.image_full || znsDomain.domain.image)!;
+			let hash: string;
+			if (url.startsWith('ipfs://')) {
+				// ipfs://
+				hash = url.slice(7);
+			} else {
+				// http(s)://
+				const hashIndex = url.lastIndexOf('/') + 1;
+				hash = url.slice(hashIndex);
+			}
+
+			const checkUrl = (url: string) => {
+				return new Promise((resolve, reject) => {
+					fetch(url, { method: 'HEAD' }).then((r) => {
+						if (r.ok) {
+							resolve(url);
+						} else {
+							reject();
+						}
+					});
+				});
+			};
+
+			try {
+				const asset = await Promise.any([
+					checkUrl(
+						`https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_900,w_900,fps_1-24,f_mp4,vc_h264/v1631501273/zns/${hash}.mp4`,
+					),
+					checkUrl(
+						`https://res.cloudinary.com/fact0ry/image/upload/c_fit,h_1900,w_1200,q_auto/v1631501273/zns/${hash}.jpg`,
+					),
+				]);
+				if (typeof asset !== 'string') {
+					return;
+				}
+				addNotification('Download starting');
+				fetch(asset, {
+					method: 'GET',
+				})
+					.then((response) => {
+						response.arrayBuffer().then(function (buffer) {
+							const url = window.URL.createObjectURL(new Blob([buffer]));
+							const link = document.createElement('a');
+							link.href = url;
+							link.setAttribute(
+								'download',
+								asset.split('/')[asset.split('/').length - 1],
+							);
+							document.body.appendChild(link);
+							link.click();
+							link.remove();
+						});
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			} catch (e) {
+				console.error(e);
+			}
 		}
 	};
 
@@ -173,6 +244,28 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
+	//This functions checks the width of current screen and then return a number to set the list of attributes length
+	const setAttributesListLength = (): number => {
+		const isTablet = window.innerWidth > 414 && window.innerWidth < 768;
+		const isMobile = window.innerWidth <= 414;
+		if (isTablet) return 7;
+		else if (isMobile) return 5;
+		else return 11;
+	};
+
+	const toggleAttributes = () => setIsShowMoreAttributes((prev) => !prev);
+
+	//Checks the height of attributes container
+	const checkHeight = () => {
+		if (isShowMoreAtrributes) setContainerHeight(10);
+		else setContainerHeight(0);
+	};
+
+	useEffect(() => {
+		checkHeight();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isShowMoreAtrributes]);
+
 	/////////////
 	// Effects //
 	/////////////
@@ -217,6 +310,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			setStatsLoaded(false);
 			getTradeData();
 		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain.domain]);
 
@@ -429,7 +523,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							3
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder!}`}
+								href={`https://etherscan.io/address/${item.seller!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.seller!.substring(0, 4)}...${item.seller!.substring(
@@ -440,7 +534,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder!}`}
+								href={`https://etherscan.io/address/${item.buyer!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.buyer!.substring(0, 4)}...${item.buyer!.substring(
@@ -490,6 +584,82 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		</div>
 	);
 
+	const attributesList = (attribute: Attribute, index: number) => {
+		return (
+			<>
+				<li
+					className={`${styles.AttributesWrapper} ${
+						index > 10 && styles.SetOpacityAnimation
+					}`}
+					key={index}
+				>
+					<span className={styles.Traits}>{attribute.trait_type}</span>
+					<span className={styles.Properties}>{attribute.value} </span>
+				</li>
+			</>
+		);
+	};
+
+	const attributesButtonToggler = (numberAttributesHidden: number) => {
+		return (
+			<>
+				<button
+					className={`${styles.ToggleAttributes} ${
+						isShowMoreAtrributes && styles.SetOpacityAnimation
+					}`}
+					style={{ background: 'none' }}
+					onClick={toggleAttributes}
+				>
+					{isShowMoreAtrributes
+						? 'Show Less'
+						: `+${numberAttributesHidden} More`}
+				</button>
+			</>
+		);
+	};
+
+	const attributes = () => {
+		const getAttributeListLength = setAttributesListLength();
+
+		if (!znsDomain.domain?.attributes) {
+			return;
+		} else {
+			const numberAttributesHidden =
+				znsDomain.domain.attributes.length -
+				znsDomain.domain.attributes.slice(0, getAttributeListLength).length;
+
+			return (
+				<>
+					<section
+						className={`${styles.Attributes}  blur border-primary border-rounded`}
+					>
+						<div className={styles.AttributesContainer}>
+							<h4>Attributes</h4>
+							<ul className={styles.AttributesGrid}>
+								{znsDomain.domain.attributes
+									.slice(
+										0,
+										isShowMoreAtrributes
+											? znsDomain.domain.attributes.length
+											: getAttributeListLength,
+									)
+									.map((attribute: Attribute, index: number) =>
+										attributesList(attribute, index),
+									)}
+
+								{znsDomain.domain?.attributes?.length >= 12 &&
+									attributesButtonToggler(numberAttributesHidden)}
+							</ul>
+						</div>
+						<Spring to={{ height: containerHeight }}>
+							{(styles) => <animated.div style={styles}></animated.div>}
+						</Spring>
+					</section>
+				</>
+			);
+		}
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -514,6 +684,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					/>
 				</div>
 				<div className={styles.Info}>
+					<div className={styles.Tray}>
+						{/* share icon hidden until share functionality is done */}
+						{/* <button>
+							<img src={shareIcon} />
+						</button> */}
+						<Tooltip text={'Download Media'}>
+							<button onClick={downloadAsset}>
+								<img alt="download asset" src={downloadIcon} />
+							</button>
+						</Tooltip>
+					</div>
 					<div className={styles.Details}>
 						<div>
 							<h1 className="glow-text-white">
@@ -561,6 +742,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			</div>
 			{nftStats()}
 
+			{attributes()}
 			<div
 				className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 			>

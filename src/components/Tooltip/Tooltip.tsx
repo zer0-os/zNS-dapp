@@ -39,7 +39,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 	placement = 'top-center',
 	triggerOffset = 8,
 	delayEnter = 100,
-	delayLeave = 300,
+	delayLeave = 200,
 	hideOnScroll = true,
 	animationProps = {
 		initial: { opacity: 0, scale: 0.9 },

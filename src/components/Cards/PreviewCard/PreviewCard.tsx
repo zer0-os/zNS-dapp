@@ -29,7 +29,6 @@ type PreviewCardProps = {
 	onViewDomain?: () => void;
 	ownerId: string;
 	style?: React.CSSProperties;
-	isPreviewEnabled?: boolean;
 };
 
 const PreviewCard: React.FC<PreviewCardProps> = ({
@@ -49,7 +48,6 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	ownerId,
 	preventInteraction,
 	style,
-	isPreviewEnabled,
 }) => {
 	//////////////////
 	// State & Data //
@@ -113,14 +111,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	////////////
 
 	return (
-		<div
-			className={`${styles.PreviewCard} ${
-				!isPreviewEnabled
-					? 'border-primary border-rounded blur'
-					: 'border-top-left-rounded border-top-right-rounded'
-			}`}
-			style={style ? style : {}}
-		>
+		<div className={styles.PreviewCard} style={style ? style : {}}>
 			{preventInteraction && <div className={styles.Blocker}></div>}
 			{isLoading && (
 				<div className={styles.Loading}>

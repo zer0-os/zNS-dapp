@@ -69,10 +69,38 @@
 }
 
 .Info {
+	// position: relative;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	padding: 59.5px 0;
+	justify-content: center;
+}
+
+.Tray {
+	position: absolute;
+	display: flex;
+	top: 40px;
+	right: 40px;
+
+	background: var(--color-purple-darkest);
+
+	border-radius: 8px;
+	border: 1px solid var(--color-purple-ligher);
+
+	overflow: hidden;
+
+	button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 56px;
+		height: 37px;
+		padding-top: 0;
+
+		background: none;
+
+		&:hover {
+		}
+	}
 }
 
 .Info h1 {
@@ -89,6 +117,7 @@
 .Details {
 	display: flex;
 	flex-direction: column;
+	max-height: 568px;
 }
 
 .Details > div:first-of-type {
@@ -155,10 +184,10 @@
 .Story {
 	display: block; /* Fallback for non-webkit */
 	display: -webkit-box;
-	height: 144px;
+	max-height: 216px;
 	margin: 32px 0;
 	line-height: 24px;
-	-webkit-line-clamp: 6;
+	-webkit-line-clamp: 9;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -306,6 +335,10 @@
 		flex-direction: column;
 	}
 
+	.Tray {
+		display: none;
+	}
+
 	.NFT > div + div {
 		margin-left: 0;
 	}
@@ -380,3 +413,131 @@
 		padding: 0 24px 24px 24px;
 	}
 }
+
+/* Attributes styles Start */
+
+.Attributes {
+	margin-top: 24px;
+	padding: 24px;
+	background: var(--color-background);
+}
+
+.Attributes h4 {
+	padding: 0;
+	color: var(--color-grey);
+	font-size: 12px;
+	text-transform: uppercase;
+}
+
+.AttributesContainer {
+	width: 100%;
+}
+
+.AttributesGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(194px, 1fr));
+	grid-row-start: 1;
+	column-gap: 4px;
+	margin-top: 16px;
+	position: relative;
+}
+
+.AttributesWrapper {
+	width: 100%;
+	height: 48px;
+	margin: 4px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 8px 16px 8px 20px;
+	border: 1px solid #50207b;
+	border-radius: 999px;
+}
+
+@media only screen and (max-width: 768px) {
+	.Attributes {
+		padding: 16px;
+	}
+	.AttributesGrid {
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		column-gap: 8px;
+	}
+}
+@media only screen and (max-width: 414px) {
+	.Attributes {
+		padding: 16px;
+	}
+	.AttributesGrid {
+		grid-template-columns: 1fr;
+		column-gap: 8px;
+	}
+	.AttributesWrapper {
+		margin: 8px 0;
+	}
+}
+
+.SetOpacityAnimation {
+	animation: animatedOpacity var(--animation-time-medium) ease-in-out;
+}
+
+@keyframes animatedOpacity {
+	0% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.Traits {
+	font-size: 12px;
+	color: #bcbcbc;
+}
+
+.Properties {
+	font-size: 12px;
+	margin-top: 2px;
+}
+
+.Traits,
+.Properties {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+button.ToggleAttributes {
+	background: none;
+	color: #52cbff;
+	font-size: 16px;
+	width: 190px;
+	height: 48px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 8px 20px;
+	margin: 4px 0;
+	position: absolute;
+	right: 8px;
+	bottom: 0px;
+	cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+	button.ToggleAttributes {
+		width: 150px;
+	}
+}
+
+@media only screen and (max-width: 414px) {
+	button.ToggleAttributes {
+		position: relative;
+		width: 100%;
+		margin: 8px;
+	}
+}
+/* Attributes styles End */

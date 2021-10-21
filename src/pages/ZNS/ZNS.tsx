@@ -354,20 +354,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const previewCard = () => {
 		const isVisible = domain !== '/' && !isNftView;
 		let to;
-		const isPreviewEnabled = isVisible && previewCardRef;
 		if (isVisible && previewCardRef) {
 			// If should be visible, slide down
-			to = { opacity: 1, marginTop: 0 };
-		} else if (domain === '/') {
+			to = { opacity: 1, marginTop: 0, marginBottom: 0 };
+		} else {
 			// If root view, slide up
 			to = {
 				opacity: 0,
 				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 12,
 				marginBottom: 16,
 			};
-		} else {
-			// If NFT view, don't render
-			return <></>;
 		}
 
 		return (
@@ -377,11 +373,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					{(styles) => (
 						<animated.div style={styles}>
 							<div ref={previewCardRef}>
-								<div className="border-primary border-rounded blur">
-									<CurrentDomainPreview isPreviewEnabled={isPreviewEnabled} />
-									{nftStats()}
-									{isPreviewEnabled && subTable}
-								</div>
+								<CurrentDomainPreview />
 							</div>
 						</animated.div>
 					)}
@@ -585,9 +577,19 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 				<WheelsRaffle />
 
-				{previewCard()}
-
-				{domain === '/' && showDomainTable && subTable}
+				{!isNftView && (
+					<div
+						className="background-primary border-primary border-rounded"
+						style={{
+							background: 'var(--background-primary)',
+							overflow: 'hidden',
+						}}
+					>
+						{previewCard()}
+						{nftStats()}
+						{showDomainTable && subTable}
+					</div>
+				)}
 
 				{znsDomain && isNftView && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
