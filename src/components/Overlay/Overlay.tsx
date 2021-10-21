@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { IconButton } from 'components';
 
 //- Style Imports
-import styles from './Overlay.module.css';
+import styles from './Overlay.module.scss';
 
 import closeIcon from 'assets/close-icon.svg';
 

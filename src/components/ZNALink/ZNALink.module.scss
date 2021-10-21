@@ -45,7 +45,7 @@
 	-webkit-transform: translate(-50%);
 	transform: translate(-50%);
 	width: calc(100% - 19px);
-	box-shadow: 1px 2px 16px 10px #3ca1ff;
+	box-shadow: 1px 2px 16px 10px var(--color-accent-1);
 	z-index: -1;
 }
 

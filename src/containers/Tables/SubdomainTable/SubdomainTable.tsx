@@ -18,6 +18,7 @@ import { MakeABid } from 'containers';
 
 type SubdomainTableProps = {
 	domainName: string;
+	isNftView?: boolean;
 	style?: React.CSSProperties;
 };
 

@@ -10,16 +10,15 @@
 	position: relative;
 	display: flex;
 	justify-content: space-between;
-	padding: 48px;
+	padding: 40px;
+	filter: drop-shadow(0px 0px 16px rgba(140, 84, 221, 0.25));
 	border-radius: var(--box-radius);
-
+	border: 1px solid #50207b;
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 	background-color: var(--color-background);
-
 	transition: background var(--animation-time-medium) ease-in-out;
-
 	overflow: hidden;
 }
 
@@ -43,17 +42,20 @@
 }
 
 .NFT > div {
-	flex: 1;
+	flex: 1 1;
+	height: 568px;
+	min-width: 0;
+}
+
+.NFT > div + div {
+	margin-left: 40px;
 }
 
 .Image {
-	height: 568px;
 	cursor: pointer;
-	border-radius: 8px;
 }
 
 .Image > div {
-	border-radius: inherit;
 	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
@@ -63,18 +65,48 @@
 
 .Image img {
 	object-fit: cover;
+	border-radius: 8px;
 }
 
 .Info {
+	// position: relative;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	margin-left: 32px;
+	justify-content: center;
+}
+
+.Tray {
+	position: absolute;
+	display: flex;
+	top: 40px;
+	right: 40px;
+
+	background: var(--color-purple-darkest);
+
+	border-radius: 8px;
+	border: 1px solid var(--color-purple-ligher);
+
+	overflow: hidden;
+
+	button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 56px;
+		height: 37px;
+		padding-top: 0;
+
+		background: none;
+
+		&:hover {
+		}
+	}
 }
 
 .Info h1 {
 	font-size: 36px;
-	font-weight: 700;
+	font-weight: bold;
+	line-height: 44px;
 }
 
 .Info h1::after {
@@ -85,6 +117,7 @@
 .Details {
 	display: flex;
 	flex-direction: column;
+	max-height: 568px;
 }
 
 .Details > div:first-of-type {
@@ -106,14 +139,9 @@
 	margin-left: 64px;
 }
 
-.Price {
-	margin: 0 auto;
-}
-
 .Price h2 {
 	color: var(--color-primary-lighter-3);
 	margin-bottom: 4px;
-	text-align: center;
 }
 
 .Crypto {
@@ -128,24 +156,7 @@
 }
 
 .Buttons {
-	display: flex;
-	margin: 0 auto;
-}
-
-.Buttons > *:not(:first-child) {
-	margin-left: 24px;
-}
-
-.Horizontal {
-	display: flex;
-}
-
-.Horizontal > div {
-	width: 50%;
-}
-
-.Horizontal > div:not(:first-child) {
-	margin-left: 20.5px;
+	margin: 32px 0;
 }
 
 .Vertical > div:not(:first-child) {
@@ -171,39 +182,32 @@
 }
 
 .Story {
-	position: relative;
-	display: flex;
-	flex: 1;
-	flex-direction: column;
+	display: block; /* Fallback for non-webkit */
+	display: -webkit-box;
+	max-height: 216px;
+	margin: 32px 0;
+	line-height: 24px;
+	-webkit-line-clamp: 9;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
-.Story p {
-	/* height: 100%; */
-	padding-right: 12px;
-	padding-bottom: 0;
-
-	margin-right: 8px;
-}
-
-.Story p::-webkit-scrollbar-corner,
 .History ul::-webkit-scrollbar-corner {
 	background: rgba(0, 0, 0, 0);
 	height: 0;
 	width: 0;
 }
 
-.Story p::-webkit-scrollbar-track,
 .History ul::-webkit-scrollbar-track {
 	background-color: none;
 }
 
-.Story p::-webkit-scrollbar,
 .History ul::-webkit-scrollbar {
 	width: 6px;
 	background-color: none;
 }
 
-.Story p::-webkit-scrollbar-thumb,
 .History ul::-webkit-scrollbar-thumb {
 	border-radius: 10px;
 	background-color: rgba(60, 161, 255, 0.2);
@@ -213,6 +217,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	margin-top: 20px;
 }
 
 .Copy {
@@ -253,18 +258,13 @@
 }
 
 .History ul {
-	max-height: 400px;
-	overflow-y: auto;
-	padding: 0 20px 20px 20px;
+	padding: 0 20px;
 }
 
 .History span {
 	padding: 20px;
 	padding-top: 0;
 	font-weight: 400;
-}
-
-.History .Loading span {
 }
 
 .History .Loading {
@@ -284,29 +284,13 @@
 	margin-top: 12px;
 }
 
-@media only screen and (max-width: 1280px) {
-	.Buttons button {
-		display: none;
-	}
-}
-
-@media only screen and (max-width: 1100px) {
-	.Buttons {
-		flex-direction: column;
-	}
-
-	.Buttons button {
-		margin-left: 0 !important;
-	}
-
-	.Buttons button:not(:first-child) {
-		margin-top: 24px;
-	}
-}
-
 @media only screen and (max-width: 960px) {
 	.NFT {
 		padding: 32px;
+	}
+
+	.NFT > div + div {
+		margin-left: 32px;
 	}
 
 	.Copy {
@@ -323,46 +307,22 @@
 		flex-direction: column;
 	}
 
-	.Info {
+	.Tray {
+		display: none;
+	}
+
+	.NFT > div + div {
 		margin-left: 0;
-		margin-top: 24px;
+	}
+
+	.Info {
+		padding: 32px 0;
 	}
 
 	.Fiat {
 		margin-top: 6px;
 	}
 
-	.Buttons {
-		flex-direction: row;
-		margin-top: 32px;
-	}
-
-	.Buttons > * {
-		margin-top: 0 !important;
-	}
-
-	.Buttons > *:not(:first-child) {
-		margin-left: 32px !important;
-	}
-
-	.Horizontal {
-		flex-direction: column;
-	}
-
-	.Horizontal > div {
-		width: 100%;
-	}
-
-	.Horizontal > div:not(:first-child) {
-		margin-left: 0;
-		margin-top: 20px;
-	}
-
-	.Story p {
-		top: 0;
-		position: relative;
-		display: block;
-	}
 	.Details {
 		flex-direction: column;
 		align-items: flex-start;
@@ -425,3 +385,131 @@
 		padding: 0 24px 24px 24px;
 	}
 }
+
+/* Attributes styles Start */
+
+.Attributes {
+	margin-top: 24px;
+	padding: 24px;
+	background: var(--color-background);
+}
+
+.Attributes h4 {
+	padding: 0;
+	color: var(--color-grey);
+	font-size: 12px;
+	text-transform: uppercase;
+}
+
+.AttributesContainer {
+	width: 100%;
+}
+
+.AttributesGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(194px, 1fr));
+	grid-row-start: 1;
+	column-gap: 4px;
+	margin-top: 16px;
+	position: relative;
+}
+
+.AttributesWrapper {
+	width: 100%;
+	height: 48px;
+	margin: 4px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 8px 16px 8px 20px;
+	border: 1px solid #50207b;
+	border-radius: 999px;
+}
+
+@media only screen and (max-width: 768px) {
+	.Attributes {
+		padding: 16px;
+	}
+	.AttributesGrid {
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		column-gap: 8px;
+	}
+}
+@media only screen and (max-width: 414px) {
+	.Attributes {
+		padding: 16px;
+	}
+	.AttributesGrid {
+		grid-template-columns: 1fr;
+		column-gap: 8px;
+	}
+	.AttributesWrapper {
+		margin: 8px 0;
+	}
+}
+
+.SetOpacityAnimation {
+	animation: animatedOpacity var(--animation-time-medium) ease-in-out;
+}
+
+@keyframes animatedOpacity {
+	0% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.Traits {
+	font-size: 12px;
+	color: #bcbcbc;
+}
+
+.Properties {
+	font-size: 12px;
+	margin-top: 2px;
+}
+
+.Traits,
+.Properties {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+button.ToggleAttributes {
+	background: none;
+	color: #52cbff;
+	font-size: 16px;
+	width: 190px;
+	height: 48px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 8px 20px;
+	margin: 4px 0;
+	position: absolute;
+	right: 8px;
+	bottom: 0px;
+	cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+	button.ToggleAttributes {
+		width: 150px;
+	}
+}
+
+@media only screen and (max-width: 414px) {
+	button.ToggleAttributes {
+		position: relative;
+		width: 100%;
+		margin: 8px;
+	}
+}
+/* Attributes styles End */

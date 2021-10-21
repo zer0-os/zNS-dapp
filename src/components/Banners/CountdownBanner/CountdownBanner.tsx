@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import styles from './CountdownBanner.module.css';
+import styles from './CountdownBanner.module.scss';
 
 import arrow from './assets/bidarrow.svg';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 //- Style Imports
-import styles from './TransferOwnership.module.css';
+import styles from './TransferOwnership.module.scss';
 
 //- Component Imports
 import {

@@ -25,6 +25,12 @@ interface Meta {
 	image: string; // One of: Image, Video, 3d Model
 	previewImage?: string; // One of: Image, Video
 	image_full?: string;
+	attributes?: Attribute[];
+}
+
+export interface Attribute {
+	trait_type: string;
+	value: string | number;
 }
 
 export interface Metadata extends Meta {
@@ -61,6 +67,7 @@ export type DomainData = {
 };
 
 export interface DisplayDomain extends Domain {
+	attributes: Maybe<Attribute[]>;
 	image: Maybe<string>;
 	description: Maybe<string>;
 	title: Maybe<string>;

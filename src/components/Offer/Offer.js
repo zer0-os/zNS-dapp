@@ -1,7 +1,7 @@
 import React from 'react';
 
-import OfferStyle from '../styles/Offer.module.css';
-import ButtonStyle from '../styles/Button.module.css';
+import OfferStyle from '../styles/Offer.module.scss';
+import ButtonStyle from '../styles/Button.module.scss';
 
 import coronalisa from './assets/nft-image-coronalisa.png';
 

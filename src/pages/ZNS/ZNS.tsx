@@ -16,7 +16,7 @@ import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
 
 //- Style Imports
-import styles from './ZNS.module.css';
+import styles from './ZNS.module.scss';
 
 //- Icon Imports
 import userIcon from 'assets/user.svg';
@@ -283,17 +283,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		let to;
 		if (isVisible && previewCardRef) {
 			// If should be visible, slide down
-			to = { opacity: 1, marginTop: 0, marginBottom: 16 };
-		} else if (domain === '/') {
+			to = { opacity: 1, marginTop: 0, marginBottom: 0 };
+		} else {
 			// If root view, slide up
 			to = {
 				opacity: 0,
 				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 12,
 				marginBottom: 16,
 			};
-		} else {
-			// If NFT view, don't render
-			return <></>;
 		}
 
 		return (
@@ -354,8 +351,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	);
 
 	const subTable = useMemo(() => {
-		return <SubdomainTable style={{ marginTop: 16 }} domainName={domain} />;
-	}, [domain]);
+		return (
+			<SubdomainTable
+				style={{ marginTop: 16 }}
+				domainName={domain}
+				isNftView={isNftView}
+			/>
+		);
+	}, [domain, isNftView]);
 
 	////////////
 	// Render //
@@ -501,9 +504,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 				<WheelsRaffle />
 
-				{previewCard()}
-
-				{showDomainTable && subTable}
+				{!isNftView && (
+					<div
+						className="background-primary border-primary border-rounded"
+						style={{
+							background: 'var(--background-primary)',
+							overflow: 'hidden',
+						}}
+					>
+						{previewCard()}
+						{showDomainTable && subTable}
+					</div>
+				)}
 
 				{znsDomain && isNftView && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>

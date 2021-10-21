@@ -16,7 +16,7 @@ import 'lib/react-table-config.d.ts';
 import { Domain, DomainData } from 'lib/types';
 
 //- Style Imports
-import styles from './DomainTable.module.css';
+import styles from './DomainTable.module.scss';
 
 //- Asset Imports
 import grid from './assets/grid.svg';

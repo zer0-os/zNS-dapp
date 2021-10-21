@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ArrowLink } from 'components';
 
-import styles from './StepBar.module.css';
+import styles from './StepBar.module.scss';
 
 type StepBarProps = {
 	step: number;

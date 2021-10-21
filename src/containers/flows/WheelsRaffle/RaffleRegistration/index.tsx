@@ -5,18 +5,24 @@ import { ethers } from 'ethers';
 import { Maybe } from 'lib/types';
 
 const RegistrationContainer = () => {
-	const { account, active, library } = useWeb3React<Web3Provider>();
+	const { account, active, library, chainId } = useWeb3React<Web3Provider>();
 
 	const submit = async (
 		statusCallback: (status: string) => void,
 	): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
+			if (chainId !== 1) {
+				reject('Please connect to Ethereum Mainnet');
+				return;
+			}
+
 			// Get user eth balance
 			let ethBalance;
 			try {
 				ethBalance = await getEthBalance();
 			} catch (e) {
 				reject(e);
+				return;
 			}
 
 			// Sign transaction
@@ -29,6 +35,7 @@ const RegistrationContainer = () => {
 				signedMessage = await signMessage();
 			} catch (e) {
 				reject(e);
+				return;
 			}
 
 			// Check we have all the data
@@ -86,7 +93,34 @@ const RegistrationContainer = () => {
 		return signedBid;
 	};
 
-	return <RaffleRegistration isWalletConnected={active} onSubmit={submit} />;
+	const submitEmail = (email: string): Promise<boolean> => {
+		return new Promise((resolve) => {
+			fetch('https://zns-mail-microservice.herokuapp.com/wheels', {
+				method: 'POST',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ email: email }),
+			})
+				.then((r) => {
+					resolve(r.ok);
+					// setHasSubmitted(true);
+				})
+				.catch((e) => {
+					resolve(false);
+					console.error(e);
+				});
+		});
+	};
+
+	return (
+		<RaffleRegistration
+			isWalletConnected={active}
+			onSubmit={submit}
+			onSubmitEmail={submitEmail}
+		/>
+	);
 };
 
 export default RegistrationContainer;

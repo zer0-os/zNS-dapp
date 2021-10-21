@@ -2,7 +2,7 @@
 import { Spinner } from 'components';
 
 // Style Imports
-import styles from './Loading.module.css';
+import styles from './Loading.module.scss';
 
 type LoadingProps = {
 	isMinting?: boolean;

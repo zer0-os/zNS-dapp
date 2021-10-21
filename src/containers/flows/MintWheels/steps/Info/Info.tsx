@@ -8,7 +8,7 @@ import { Stage } from '../../types';
 import { EthPerWheel } from '../../helpers';
 
 // Style Imports
-import styles from './Info.module.css';
+import styles from './Info.module.scss';
 
 type InfoProps = {
 	dropStage: Stage;

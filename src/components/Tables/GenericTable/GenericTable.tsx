@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import styles from './GenericTable.module.css';
+import styles from './GenericTable.module.scss';
 import { useInView } from 'react-intersection-observer';
 import { IconButton, SearchBar, Spinner, TextButton } from 'components';
 import grid from './assets/grid.svg';
@@ -175,6 +175,13 @@ const GenericTable = (props: any) => {
 				{data.map((d: any, index: number) => (
 					<props.gridComponent key={index} rowNumber={index} data={d} />
 				))}
+				{data.length === 2 && <div></div>}
+				{data.length === 1 && (
+					<>
+						<div></div>
+						<div></div>
+					</>
+				)}
 			</div>
 		);
 	}, [rawData, chunk, searchQuery]);
@@ -184,10 +191,7 @@ const GenericTable = (props: any) => {
 	////////////
 
 	return (
-		<div
-			className={`${styles.Container} background-primary border-rounded border-primary`}
-			style={props.style}
-		>
+		<div className={styles.Container} style={props.style}>
 			<div ref={contentRef} className={styles.Content}>
 				<div className={styles.Controls}>
 					<SearchBar

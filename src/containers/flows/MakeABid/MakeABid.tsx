@@ -27,7 +27,7 @@ import {
 import { BidList } from 'containers';
 
 //- Style Imports
-import styles from './MakeABid.module.css';
+import styles from './MakeABid.module.scss';
 
 type MakeABidProps = {
 	domain: Domain;

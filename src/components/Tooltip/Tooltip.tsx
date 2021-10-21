@@ -6,7 +6,7 @@ import { useLayer, useHover, Arrow } from 'react-laag';
 import { motion, AnimatePresence, MotionProps } from 'framer-motion';
 
 //- Style Imports
-import styles from './Tooltip.module.css';
+import styles from './Tooltip.module.scss';
 
 type TooltipProps = {
 	children: React.ReactNode | string | number;
@@ -39,7 +39,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 	placement = 'top-center',
 	triggerOffset = 8,
 	delayEnter = 100,
-	delayLeave = 300,
+	delayLeave = 200,
 	hideOnScroll = true,
 	animationProps = {
 		initial: { opacity: 0, scale: 0.9 },

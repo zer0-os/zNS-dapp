@@ -12,7 +12,7 @@ import { useBidProvider } from 'lib/providers/BidProvider';
 import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
 
 //- Style Imports
-import styles from './BidTable.module.css';
+import styles from './BidTable.module.scss';
 
 type BidTableProps = {
 	style?: React.CSSProperties;

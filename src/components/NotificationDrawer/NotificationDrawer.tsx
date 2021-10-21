@@ -6,7 +6,7 @@ import useNotification from 'lib/hooks/useNotification';
 import { Notification } from 'store/notifications/types';
 
 //- Style Imports
-import styles from './NotificationDrawer.module.css';
+import styles from './NotificationDrawer.module.scss';
 
 export const TEST_ID = {
 	CONTAINER: 'notification-drawer-container',
