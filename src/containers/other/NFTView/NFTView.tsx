@@ -1,5 +1,6 @@
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, createRef } from 'react';
+import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
@@ -23,6 +24,14 @@ import { randomName, randomImage } from 'lib/random';
 import useNotification from 'lib/hooks/useNotification';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { toFiat } from 'lib/currency';
+import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
+import { useZnsContracts } from 'lib/contracts';
+import { getDomainId } from 'lib/utils';
+import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
+import { Attribute, transfersData } from 'lib/types';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { DomainBidEvent, DomainEvent } from '@zero-tech/zns-sdk';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
@@ -32,12 +41,6 @@ import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
 import shareIcon from './assets/share.svg';
-import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import { useZnsContracts } from 'lib/contracts';
-import { getDomainId } from 'lib/utils';
-import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { DomainBidEvent, DomainEvent } from '@zero-tech/zns-sdk';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -71,6 +74,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
 		blobCache.current,
 	);
+	const [isShowMoreAtrributes, setIsShowMoreAttributes] =
+		useState<boolean>(false);
+	const [containerHeight, setContainerHeight] = useState(0);
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -220,6 +226,28 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 
+	//This functions checks the width of current screen and then return a number to set the list of attributes length
+	const setAttributesListLength = (): number => {
+		const isTablet = window.innerWidth > 414 && window.innerWidth < 768;
+		const isMobile = window.innerWidth <= 414;
+		if (isTablet) return 7;
+		else if (isMobile) return 5;
+		else return 11;
+	};
+
+	const toggleAttributes = () => setIsShowMoreAttributes((prev) => !prev);
+
+	//Checks the height of attributes container
+	const checkHeight = () => {
+		if (isShowMoreAtrributes) setContainerHeight(10);
+		else setContainerHeight(0);
+	};
+
+	useEffect(() => {
+		checkHeight();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isShowMoreAtrributes]);
+
 	/////////////
 	// Effects //
 	/////////////
@@ -262,6 +290,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			);
 			getHistory();
 		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain.domain]);
 
@@ -476,6 +505,82 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		</div>
 	);
 
+	const attributesList = (attribute: Attribute, index: number) => {
+		return (
+			<>
+				<li
+					className={`${styles.AttributesWrapper} ${
+						index > 10 && styles.SetOpacityAnimation
+					}`}
+					key={index}
+				>
+					<span className={styles.Traits}>{attribute.trait_type}</span>
+					<span className={styles.Properties}>{attribute.value} </span>
+				</li>
+			</>
+		);
+	};
+
+	const attributesButtonToggler = (numberAttributesHidden: number) => {
+		return (
+			<>
+				<button
+					className={`${styles.ToggleAttributes} ${
+						isShowMoreAtrributes && styles.SetOpacityAnimation
+					}`}
+					style={{ background: 'none' }}
+					onClick={toggleAttributes}
+				>
+					{isShowMoreAtrributes
+						? 'Show Less'
+						: `+${numberAttributesHidden} More`}
+				</button>
+			</>
+		);
+	};
+
+	const attributes = () => {
+		const getAttributeListLength = setAttributesListLength();
+
+		if (!znsDomain.domain?.attributes) {
+			return;
+		} else {
+			const numberAttributesHidden =
+				znsDomain.domain.attributes.length -
+				znsDomain.domain.attributes.slice(0, getAttributeListLength).length;
+
+			return (
+				<>
+					<section
+						className={`${styles.Attributes}  blur border-primary border-rounded`}
+					>
+						<div className={styles.AttributesContainer}>
+							<h4>Attributes</h4>
+							<ul className={styles.AttributesGrid}>
+								{znsDomain.domain.attributes
+									.slice(
+										0,
+										isShowMoreAtrributes
+											? znsDomain.domain.attributes.length
+											: getAttributeListLength,
+									)
+									.map((attribute: Attribute, index: number) =>
+										attributesList(attribute, index),
+									)}
+
+								{znsDomain.domain?.attributes?.length >= 12 &&
+									attributesButtonToggler(numberAttributesHidden)}
+							</ul>
+						</div>
+						<Spring to={{ height: containerHeight }}>
+							{(styles) => <animated.div style={styles}></animated.div>}
+						</Spring>
+					</section>
+				</>
+			);
+		}
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -556,6 +661,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					)}
 				</div>
 			</div>
+
+			{attributes()}
 			<div
 				className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 			>
