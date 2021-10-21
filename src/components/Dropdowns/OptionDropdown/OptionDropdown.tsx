@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 //- Style Imports
-import styles from './OptionDropdown.module.css';
+import styles from './OptionDropdown.module.scss';
 
 type OptionDropdownProps = {
 	options: string[];

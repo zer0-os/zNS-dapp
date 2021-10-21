@@ -1,7 +1,7 @@
 // React Imports
 import { useState } from 'react';
 
-import styles from './ConnectWalletPrompt.module.css';
+import styles from './ConnectWalletPrompt.module.scss';
 
 // Component Imports
 import { Confirmation, ConnectToWallet, Overlay } from 'components';

@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 
 //- Style Imports
-import styles from './NFTCard.module.css';
+import styles from './NFTCard.module.scss';
 
 //- Component Imports
 import { ArrowLink, NFTMedia } from 'components';

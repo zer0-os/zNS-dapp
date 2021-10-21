@@ -2,13 +2,13 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './PreviewCard.module.css';
+import styles from './PreviewCard.module.scss';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/random';
 
 //- Component Imports
-import { FutureButton, Member, NFTMedia } from 'components';
+import { FutureButton, Member, NFTMedia, TextButton } from 'components';
 import { BidButton } from 'containers';
 import { Maybe } from 'lib/types';
 
@@ -29,6 +29,7 @@ type PreviewCardProps = {
 	onViewDomain?: () => void;
 	ownerId: string;
 	style?: React.CSSProperties;
+	isPreviewEnabled?: boolean;
 };
 
 const PreviewCard: React.FC<PreviewCardProps> = ({
@@ -48,6 +49,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	ownerId,
 	preventInteraction,
 	style,
+	isPreviewEnabled,
 }) => {
 	//////////////////
 	// State & Data //
@@ -74,23 +76,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Body}>
 			<div>
 				<h5 className="glow-text-blue">{name ? name : domain.split('/')[1]}</h5>
-				<span className={styles.Domain}>0://wilder.{domain}</span>
 				<p className={styles.Description}>{description}</p>
-			</div>
-			<div className={styles.Members}>
-				{/* TODO: Switch these to Member component */}
-				<Member
-					id={creatorId}
-					name={randomName(creatorId)}
-					image={randomImage(creatorId)}
-					subtext={'Creator'}
-				/>
-				<Member
-					id={ownerId}
-					name={randomName(ownerId)}
-					image={randomImage(ownerId)}
-					subtext={'Owner'}
-				/>
 			</div>
 		</div>
 	);
@@ -99,22 +85,9 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
-					<BidButton
-						className={styles.Bid}
-						glow={disabled !== true}
-						onClick={makeBid}
-					>
-						MAKE A BID
-					</BidButton>
-					<FutureButton
-						className={styles.View}
-						glow
-						alt
-						onClick={openNftView}
-						style={{ marginTop: 24 }}
-					>
-						View
-					</FutureButton>
+					<TextButton onClick={openNftView} className={styles.ViewLink}>
+						View NFT Page
+					</TextButton>
 				</>
 			)}
 			{mvpVersion === 3 && (
@@ -140,53 +113,52 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	////////////
 
 	return (
-		<>
-			<div
-				className={`${styles.PreviewCard} border-primary border-rounded blur`}
-				style={style ? style : {}}
-			>
-				{preventInteraction && <div className={styles.Blocker}></div>}
-				{isLoading && (
-					<div className={styles.Loading}>
-						<div className={styles.Spinner}></div>
-					</div>
-				)}
-				<>
+		<div
+			className={`${styles.PreviewCard} ${
+				!isPreviewEnabled
+					? 'border-primary border-rounded blur'
+					: 'border-top-left-rounded border-top-right-rounded'
+			}`}
+			style={style ? style : {}}
+		>
+			{preventInteraction && <div className={styles.Blocker}></div>}
+			{isLoading && (
+				<div className={styles.Loading}>
+					<div className={styles.Spinner}></div>
+				</div>
+			)}
+			<>
+				<div className={styles.Preview} style={{ opacity: isLoading ? 0 : 1 }}>
 					<div
-						className={styles.Preview}
-						style={{ opacity: isLoading ? 0 : 1 }}
+						className={`${styles.Asset} ${
+							mvpVersion === 3 ? styles.MVP3Asset : ''
+						}`}
 					>
-						<div
-							className={`${styles.Asset} ${
-								mvpVersion === 3 ? styles.MVP3Asset : ''
-							}`}
-						>
-							<NFTMedia
-								size="small"
-								className={`${styles.Image} border-rounded`}
-								alt="NFT Preview"
-								ipfsUrl={image}
-							/>
-						</div>
-						<div className={styles.InfoContainer}>
-							{body()}
-							{buy()}
-						</div>
+						<NFTMedia
+							size="medium"
+							className={`${styles.Image} img-border-rounded`}
+							alt="NFT Preview"
+							ipfsUrl={image}
+						/>
 					</div>
-					{children && mvpVersion === 3 && (
-						<>
-							<hr className="glow" style={{ opacity: isLoading ? 0 : 1 }} />
-							<div
-								className={styles.Children}
-								style={{ opacity: isLoading ? 0 : 1 }}
-							>
-								{children}
-							</div>
-						</>
-					)}
-				</>
-			</div>
-		</>
+					<div className={styles.InfoContainer}>
+						{body()}
+						{buy()}
+					</div>
+				</div>
+				{children && mvpVersion === 3 && (
+					<>
+						<hr className="glow" style={{ opacity: isLoading ? 0 : 1 }} />
+						<div
+							className={styles.Children}
+							style={{ opacity: isLoading ? 0 : 1 }}
+						>
+							{children}
+						</div>
+					</>
+				)}
+			</>
+		</div>
 	);
 };
 

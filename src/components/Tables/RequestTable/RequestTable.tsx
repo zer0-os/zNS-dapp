@@ -32,7 +32,7 @@ import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { DomainRequestAndContents } from 'lib/types';
 
 //- Style Imports
-import styles from './RequestTable.module.css';
+import styles from './RequestTable.module.scss';
 
 //- Asset Imports
 import grid from './assets/grid.svg';

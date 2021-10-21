@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react';
 import { TokenStakeType } from '../types';
 
 //- Style Imports
-import styles from '../MintNewNFT.module.css';
+import styles from '../MintNewNFT.module.scss';
 
 //- Component Imports
 import { TextInput, FutureButton } from 'components';

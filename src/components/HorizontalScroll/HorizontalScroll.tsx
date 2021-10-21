@@ -2,7 +2,7 @@
 import React from 'react';
 
 //- Style Imports
-import styles from './HorizontalScroll.module.css';
+import styles from './HorizontalScroll.module.scss';
 
 type HorizontalScrollProps = {
 	style?: React.CSSProperties;

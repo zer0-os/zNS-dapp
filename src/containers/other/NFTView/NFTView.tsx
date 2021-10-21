@@ -3,18 +3,25 @@ import React, { useState, useEffect, useRef, createRef } from 'react';
 import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { BigNumber } from 'ethers';
+import { useWeb3React } from '@web3-react/core'; // Wallet data
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
+import { BigNumber, ethers } from 'ethers';
 
 //- Component Imports
-import { ArrowLink, FutureButton, Member, NFTMedia, Overlay } from 'components';
+import {
+	ArrowLink,
+	FutureButton,
+	IconButton,
+	Member,
+	NFTMedia,
+	Overlay,
+	Tooltip,
+} from 'components';
 import { BidButton, MakeABid } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/random';
 import useNotification from 'lib/hooks/useNotification';
-import { useBidProvider } from 'lib/providers/BidProvider';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { toFiat } from 'lib/currency';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
@@ -22,15 +29,18 @@ import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
-import { Attribute, Bid, transfersData, transferDto } from 'lib/types';
+import { Attribute, transfersData } from 'lib/types';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { DomainBidEvent, DomainEvent } from '@zero-tech/zns-sdk';
 
 //- Style Imports
-import styles from './NFTView.module.css';
+import styles from './NFTView.module.scss';
 
 //- Asset Imports
-import galaxyBackground from './assets/galaxy.png';
+import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
-
+import downloadIcon from './assets/download.svg';
+import shareIcon from './assets/share.svg';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -38,11 +48,18 @@ type NFTViewProps = {
 	onTransfer: () => void;
 };
 
-const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
-	//////////////////
-	// State & Data //
-	//////////////////
+// @todo refactor on next iterations
+export interface DomainEvents extends DomainEvent {
+	from?: string;
+	to?: string;
+	minter?: string;
+	buyer?: string;
+	seller?: string;
+	amount?: string;
+	bidder?: string;
+}
 
+const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
 	const { addNotification } = useNotification();
@@ -51,8 +68,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	//- Page State
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
-	const [bids, setBids] = useState<Bid[] | undefined>();
-	const [highestBid, setHighestBid] = useState<Bid | undefined>();
+	const [allItems, setAllItems] = useState<DomainEvent[] | undefined>();
+	const [highestBid, setHighestBid] = useState<DomainBidEvent | undefined>();
 	const [highestBidUsd, setHighestBidUsd] = useState<number | undefined>();
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
 		blobCache.current,
@@ -67,8 +84,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const znsDomain = useZnsDomain(domainId);
 
-	const { getBidsForDomain } = useBidProvider();
-
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account, active, chainId } = walletContext;
@@ -80,23 +95,81 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const etherscanBaseUri = getEtherscanUri(networkType);
 	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
 
+	const sdk = useZnsSdk();
 	//Transfers and mint data from nft
 	//- Calls the hook with a polling interval to update the data
 
-	const transfersPollingInterval: number = 5000;
-	const transfersDto = useDomainsTransfers(domainId, transfersPollingInterval)
-		.data as transfersData;
-
-	///////////////
-	// Functions //
-	///////////////
-
+	//- Functions
 	const copyContractToClipboard = () => {
 		addNotification('Copied Token ID to clipboard.');
 		try {
 			navigator?.clipboard?.writeText(domainId);
 		} catch (e) {
 			console.error(e);
+		}
+	};
+
+	const downloadAsset = async () => {
+		// @todo move this into a helper
+		if (znsDomain?.domain?.image_full || znsDomain?.domain?.image) {
+			// Get hash from asset
+
+			const url = (znsDomain.domain.image_full || znsDomain.domain.image)!;
+			let hash: string;
+			if (url.startsWith('ipfs://')) {
+				// ipfs://
+				hash = url.slice(7);
+			} else {
+				// http(s)://
+				const hashIndex = url.lastIndexOf('/') + 1;
+				hash = url.slice(hashIndex);
+			}
+
+			const checkUrl = (url: string) => {
+				return new Promise((resolve, reject) => {
+					fetch(url, { method: 'HEAD' }).then((r) => {
+						if (r.ok) {
+							resolve(url);
+						} else {
+							reject();
+						}
+					});
+				});
+			};
+
+			try {
+				const asset = await Promise.any([
+					checkUrl(
+						`https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_900,w_900,fps_1-24,f_mp4,vc_h264/v1631501273/zns/${hash}.mp4`,
+					),
+					checkUrl(
+						`https://res.cloudinary.com/fact0ry/image/upload/c_fit,h_1900,w_1200,q_auto/v1631501273/zns/${hash}.jpg`,
+					),
+				]);
+				if (typeof asset !== 'string') {
+					return;
+				}
+				fetch(asset, {
+					method: 'GET',
+					headers: {},
+				})
+					.then((response) => {
+						response.arrayBuffer().then(function (buffer) {
+							const url = window.URL.createObjectURL(new Blob([buffer]));
+							const link = document.createElement('a');
+							link.href = url;
+							link.setAttribute('download', hash + '.png'); // not sure why png works for all types
+							document.body.appendChild(link);
+							link.click();
+							link.remove();
+						});
+					})
+					.catch((err) => {
+						console.log(err);
+					});
+			} catch (e) {
+				console.error(e);
+			}
 		}
 	};
 
@@ -109,26 +182,41 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
 	const onBid = async () => {
-		getBids();
+		// @todo switch this to live data
+		// should refresh on bid rather than add mock data
+		getHistory();
 		closeBidOverlay();
 	};
 
-	const getBids = async () => {
+	const getHistory = async () => {
 		if (znsDomain.domain) {
-			const bids = await getBidsForDomain(znsDomain.domain);
+			const events = await sdk.instance?.getDomainEvents(znsDomain.domain.id);
 
-			if (!bids || !bids.length) {
-				setBids([]);
+			const bids = await sdk.getBids(znsDomain.domain.id);
+			if (!events || !events.length) {
+				setAllItems([]);
 				return;
 			}
+
 			try {
-				const sorted = bids.sort((a, b) => b.date.getTime() - a.date.getTime());
-				const highestBid = bids.reduce(function (prev, current) {
-					return prev.amount > current.amount ? prev : current;
+				const sorted = events.sort(
+					(a, b) =>
+						new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+				);
+				let filter: DomainEvent[] = [];
+				//removes repeated timestamps of the sorted array, sdk must fix this later
+				sorted.reverse().reduce(function (prev, current) {
+					if (prev.timestamp !== current.timestamp) filter.push(current);
+					return current;
 				});
+
+				const sortedBids = bids?.sort(
+					(a, b) => Number(b.amount) - Number(a.amount),
+				);
+
 				if (!isMounted.current) return;
-				setBids(sorted);
-				setHighestBid(highestBid);
+				setAllItems(filter);
+				setHighestBid(sortedBids?.[0]);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
@@ -165,13 +253,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		if (!highestBid) {
 			return;
 		}
-		setHighestBidUsd(highestBid.amount * wildPriceUsd);
+		setHighestBidUsd(
+			Number(ethers.utils.formatEther(highestBid.amount)) * wildPriceUsd,
+		);
 	}, [highestBid, wildPriceUsd]);
 
 	useEffect(() => {
 		isMounted.current = true;
 
-		fetch(galaxyBackground)
+		fetch(background)
 			.then((r) => r.blob())
 			.then((blob) => {
 				const url = URL.createObjectURL(blob);
@@ -195,8 +285,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			setIsOwnedByYou(
 				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
 			);
-
-			getBids();
+			getHistory();
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -218,7 +307,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				<div className={styles.Price}>
 					<h2>Highest Bid</h2>
 					<span className={styles.Crypto}>
-						{Number(highestBid.amount.toFixed(2)).toLocaleString()} WILD{' '}
+						{Number(ethers.utils.formatEther(highestBid.amount))
+							.toFixed(2)
+							.toLocaleString()}{' '}
+						WILD{' '}
 						{highestBidUsd !== undefined && wildPriceUsd > 0 && (
 							<span className={styles.Fiat}>(${toFiat(highestBidUsd)})</span>
 						)}
@@ -229,34 +321,33 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	);
 
 	const history = () => {
-		// @todo this is very gross, rewrite
-		const both = [bids || [], transfersDto?.domainTransferreds || []].flat();
-		const sorted = both.sort((a, b) => {
-			const aVal =
-				Number((a as transferDto).timestamp) * 1000 ||
-				(a as Bid).date.getTime() ||
-				0;
-			const bVal =
-				Number((b as transferDto).timestamp) * 1000 ||
-				(b as Bid).date.getTime() ||
-				0;
-			return bVal - aVal;
-		});
-		const allHistoryItems = sorted.slice(0, sorted.length); // the last item is always the doubled up mint transfer
+		// Sort all history items
+		const allHistoryItems = allItems?.sort(
+			(a: DomainEvents, b: DomainEvents) => {
+				const aVal = a.bidder
+					? Number(a.timestamp)
+					: Number(a.timestamp) * 1000;
+				const bVal = b.bidder
+					? Number(b.timestamp)
+					: Number(b.timestamp) * 1000;
+				return bVal - aVal;
+			},
+		);
+
 		return (
 			<section
 				className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
 			>
 				<h4>History</h4>
-				{!bids && (
+				{!allItems && (
 					<div className={styles.Loading}>
 						<span>Loading domain history</span>
 					</div>
 				)}
-				{bids && sorted.length > 0 && (
+				{allHistoryItems && allHistoryItems.length > 0 && (
 					<ul>
-						{allHistoryItems.map((item: Bid | transferDto, i: number) =>
-							historyItem(item, i, i === allHistoryItems.length - 1),
+						{allHistoryItems.map((item: DomainEvent, i: number) =>
+							historyItem(item, i),
 						)}
 					</ul>
 				)}
@@ -264,87 +355,124 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		);
 	};
 
-	const historyItem = (
-		item: Bid | transferDto,
-		i: number,
-		isLastItem: boolean,
-	) => {
-		const isBid = (item as Bid).bidderAccount !== undefined;
-
-		if (isBid) {
-			const bid = item as Bid;
+	const historyItem = (item: DomainEvents, i: number) => {
+		if (item.type === 2) {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${bid.bidderAccount}`}
+								href={`https://etherscan.io/address/${item.bidder!}`}
 								target="_blank"
 								rel="noreferrer"
-							>{`${bid.bidderAccount.substring(
-								0,
-								4,
-							)}...${bid.bidderAccount.substring(
-								bid.bidderAccount.length - 4,
+							>{`${item.bidder!.substring(0, 4)}...${item.bidder!.substring(
+								item.bidder!.length - 4,
 							)}`}</a>
 						</b>{' '}
-						made an offer of <b>{Number(bid.amount).toLocaleString()} WILD</b>
+						made an offer of{' '}
+						<b>
+							{Number(ethers.utils.formatEther(item.amount!)).toLocaleString()}{' '}
+							WILD
+						</b>
 					</div>
 					<div className={styles.From}>
-						<b>{moment(bid.date).fromNow()}</b>
+						<b>{moment(Number(item!.timestamp)).fromNow()}</b>
 					</div>
 				</li>
 			);
-		} else if (isLastItem) {
-			const transfer = item as transferDto;
-			return (
-				<li className={styles.Bid} key={i}>
-					<div>
-						<b>Domain minted</b>{' '}
-					</div>
-					<div className={styles.From}>
-						<b>{moment(Number(transfer.timestamp) * 1000).fromNow()}</b>
-					</div>
-				</li>
-			);
-		} else {
-			const transfer = item as transferDto;
+		} else if (item.type === 0) {
 			return (
 				<li className={styles.Bid} key={i}>
 					<div>
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${transfer.from.id}`}
+								href={`https://etherscan.io/address/${item.bidder!}`}
 								target="_blank"
 								rel="noreferrer"
-							>
-								{`${transfer.from.id.substring(
-									0,
-									4,
-								)}...${transfer.from.id.substring(
-									transfer.from.id.length - 4,
-								)}`}{' '}
-							</a>
-						</b>
-						transferred ownership to{' '}
-						<a
-							className="alt-link"
-							href={`https://etherscan.io/address/${transfer.to.id}`}
-							target="_blank"
-							rel="noreferrer"
-						>
-							<b>
-								{`${transfer.to.id.substring(
-									0,
-									4,
-								)}...${transfer.to.id.substring(transfer.to.id.length - 4)}`}
-							</b>{' '}
-						</a>
+							>{`${item.minter!.substring(0, 4)}...${item.minter!.substring(
+								item.minter!.length - 4,
+							)}`}</a>
+						</b>{' '}
+						minted the domain
 					</div>
 					<div className={styles.From}>
-						<b>{moment(Number(transfer.timestamp) * 1000).fromNow()}</b>
+						<b>{moment(Number(item.timestamp!) * 1000).fromNow()}</b>
+					</div>
+				</li>
+			);
+		} else if (item.type === 1) {
+			return (
+				<li className={styles.Bid} key={i}>
+					<div>
+						<b>
+							<a
+								className="alt-link"
+								href={`https://etherscan.io/address/${item!.bidder}`}
+								target="_blank"
+								rel="noreferrer"
+							>{`${item.from!.substring(0, 4)}...${item.from!.substring(
+								item.from!.length - 4,
+							)}`}</a>
+						</b>{' '}
+						transferred ownership to{' '}
+						<b>
+							<a
+								className="alt-link"
+								href={`https://etherscan.io/address/${item!.bidder}`}
+								target="_blank"
+								rel="noreferrer"
+							>{`${item.to!.substring(0, 4)}...${item.to!.substring(
+								item.to!.length - 4,
+							)}`}</a>
+						</b>{' '}
+					</div>
+					<div className={styles.From}>
+						<b>{moment(Number(item.timestamp) * 1000).fromNow()}</b>
+					</div>
+				</li>
+			);
+		} else if (item.type === 3) {
+			return (
+				<li className={styles.Bid} key={i}>
+					<div>
+						<b>
+							3
+							<a
+								className="alt-link"
+								href={`https://etherscan.io/address/${item.bidder!}`}
+								target="_blank"
+								rel="noreferrer"
+							>{`${item.seller!.substring(0, 4)}...${item.seller!.substring(
+								item.seller!.length - 4,
+							)}`}</a>
+						</b>{' '}
+						sold this NFT to{' '}
+						<b>
+							<a
+								className="alt-link"
+								href={`https://etherscan.io/address/${item.bidder!}`}
+								target="_blank"
+								rel="noreferrer"
+							>{`${item.buyer!.substring(0, 4)}...${item.buyer!.substring(
+								item.buyer!.length - 4,
+							)}`}</a>
+						</b>{' '}
+						{item.amount && (
+							<>
+								for{' '}
+								<b>
+									{Number(
+										ethers.utils.formatEther(item.amount!),
+									).toLocaleString()}{' '}
+									WILD
+								</b>
+							</>
+						)}
+					</div>
+					<div className={styles.From}>
+						<b>{moment(Number(item.timestamp) * 1000).fromNow()}</b>
 					</div>
 				</li>
 			);
@@ -353,20 +481,24 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const actionButtons = () => (
 		<div className={styles.Buttons}>
-			<FutureButton
-				glow={isOwnedByYou}
-				onClick={() => isOwnedByYou && onTransfer()}
-				style={{ height: 36, borderRadius: 18 }}
-			>
-				Transfer Ownership
-			</FutureButton>
-			<BidButton
-				glow={!isOwnedByYou && active}
-				onClick={openBidOverlay}
-				style={{ height: 36, borderRadius: 18 }}
-			>
-				Make A Bid
-			</BidButton>
+			{isOwnedByYou && (
+				<FutureButton
+					glow={isOwnedByYou}
+					onClick={() => isOwnedByYou && onTransfer()}
+					style={{ height: 36, borderRadius: 18 }}
+				>
+					Transfer Ownership
+				</FutureButton>
+			)}
+			{!isOwnedByYou && (
+				<BidButton
+					glow={!isOwnedByYou && active}
+					onClick={openBidOverlay}
+					style={{ height: 36, borderRadius: 18 }}
+				>
+					Make A Bid
+				</BidButton>
+			)}
 		</div>
 	);
 
@@ -470,14 +602,22 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					/>
 				</div>
 				<div className={styles.Info}>
+					<div className={styles.Tray}>
+						{/* share icon hidden until share functionality is done */}
+						{/* <button>
+							<img src={shareIcon} />
+						</button> */}
+						<Tooltip text={'Download Media'}>
+							<button onClick={downloadAsset}>
+								<img alt="download asset" src={downloadIcon} />
+							</button>
+						</Tooltip>
+					</div>
 					<div className={styles.Details}>
 						<div>
 							<h1 className="glow-text-white">
 								{znsDomain.domain?.title ?? ''}
 							</h1>
-							<span>
-								{domain.length > 0 ? `0://wilder.${domain.substring(1)}` : ''}
-							</span>
 						</div>
 						<div className={styles.Members}>
 							<Member
@@ -503,10 +643,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								subtext={'Creator'}
 							/>
 						</div>
+						<div className={styles.Story}>
+							{znsDomain.domain?.description ?? ''}
+						</div>
+						{price()}
+						{actionButtons()}
 					</div>
-					{price()}
-
-					{actionButtons()}
 					{backgroundBlob !== undefined && (
 						<img
 							alt="NFT panel background"
@@ -518,36 +660,28 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			</div>
 
 			{attributes()}
-			<div className={styles.Horizontal} style={{ marginTop: 20 }}>
-				<div
-					className={`${styles.Box} ${styles.Story} blur border-primary border-rounded`}
+			<div
+				className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+			>
+				<h4>Token Id</h4>
+				<p>
+					<img
+						onClick={copyContractToClipboard}
+						className={styles.Copy}
+						src={copyIcon}
+						alt={'Copy Contract Icon'}
+					/>
+					{domainId}
+				</p>
+				<ArrowLink
+					style={{
+						marginTop: 8,
+						width: 150,
+					}}
+					href={etherscanLink}
 				>
-					<h4>Story</h4>
-					<p>{znsDomain.domain?.description ?? ''}</p>
-				</div>
-				<div
-					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
-				>
-					<h4>Token Id</h4>
-					<p>
-						<img
-							onClick={copyContractToClipboard}
-							className={styles.Copy}
-							src={copyIcon}
-							alt={'Copy Contract Icon'}
-						/>
-						{domainId}
-					</p>
-					<ArrowLink
-						style={{
-							marginTop: 8,
-							width: 150,
-						}}
-						href={etherscanLink}
-					>
-						View on Etherscan
-					</ArrowLink>
-				</div>
+					View on Etherscan
+				</ArrowLink>
 			</div>
 			{history()}
 		</div>

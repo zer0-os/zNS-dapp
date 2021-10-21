@@ -5,6 +5,11 @@
 	background: var(--background-blue-card-wilder);
 }
 
+.Container p {
+	text-align: center;
+	line-height: 24px;
+}
+
 .Header {
 	text-align: center;
 
@@ -53,6 +58,7 @@
 .Loading span {
 	font-weight: 700;
 	margin-bottom: 24px;
+	text-align: center;
 }
 
 .Success {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './ProfileButton.module.css';
+import styles from './ProfileButton.module.scss';
 
 const ProfileButton = (props) => {
 	return (

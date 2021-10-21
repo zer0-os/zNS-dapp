@@ -26,6 +26,7 @@ type PreviewCardContainerProps = {
 	style?: React.CSSProperties;
 	preventInteraction?: boolean;
 	metadataUrl?: string;
+	isPreviewEnabled?: boolean;
 };
 
 const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
@@ -40,6 +41,7 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 	style,
 	preventInteraction,
 	metadataUrl,
+	isPreviewEnabled,
 }) => {
 	const history = useHistory();
 	const isMounted = useRef<boolean>();
@@ -91,6 +93,7 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 				ownerId={ownerId}
 				preventInteraction={preventInteraction}
 				style={style}
+				isPreviewEnabled={isPreviewEnabled}
 			>
 				{children}
 			</PreviewCard>

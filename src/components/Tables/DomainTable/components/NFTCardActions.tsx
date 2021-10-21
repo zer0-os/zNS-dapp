@@ -10,7 +10,7 @@ import { useBidProvider } from 'lib/providers/BidProvider';
 import { Spinner } from 'components';
 
 // Style Imports
-import styles from './NFTCardActions.module.css';
+import styles from './NFTCardActions.module.scss';
 import { BidButton } from 'containers';
 
 type NFTCardActionsProps = {

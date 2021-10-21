@@ -13,7 +13,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MediaContainerProps } from './types';
 
 // Style Imports
-import styles from './NFTMedia.module.css';
+import styles from './NFTMedia.module.scss';
 
 // Component Imports
 import { Overlay, Spinner } from 'components';

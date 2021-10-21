@@ -2,7 +2,7 @@ import React from 'react';
 
 import AssetCard from '../AssetCard';
 
-import styles from './AssetMarketCapCard.module.css';
+import styles from './AssetMarketCapCard.module.scss';
 
 type AssetPriceCardProps = {
 	style?: React.CSSProperties;
