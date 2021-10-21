@@ -20,6 +20,9 @@ import { Overlay, Spinner } from 'components';
 import IPFSMedia from './IPFSMedia';
 import CloudinaryMedia from './CloudinaryMedia';
 
+// Library Imports
+import classNames from 'classnames/bind';
+
 // Possible media types based on
 // MIME type of content
 enum MediaType {
@@ -27,6 +30,8 @@ enum MediaType {
 	Video, // video/*
 	Unknown, // unhandled
 }
+
+const cx = classNames.bind(styles);
 
 const NFTMediaContainer = (props: MediaContainerProps) => {
 	//////////////////
@@ -185,6 +190,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 					onLoad={onLoadMedia}
 					size={matchSize ? size : undefined}
 					style={{ ...style, opacity: isMediaLoading ? 0 : 1 }}
+					fit={props.fit}
 				/>
 			);
 		} else {
@@ -203,7 +209,10 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 
 	return (
 		<div
-			className={`${styles.Container} ${className ? className : ''}`}
+			className={cx(className, {
+				Container: true,
+				Cover: props.fit === 'cover',
+			})}
 			style={style}
 		>
 			{isLightboxOpen && (

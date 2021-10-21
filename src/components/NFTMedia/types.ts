@@ -8,6 +8,7 @@ interface SharedProps {
 	onLoad?: () => void;
 	size?: string | undefined;
 	style?: React.CSSProperties;
+	fit?: 'contain' | 'cover';
 }
 
 export interface CloudinaryMediaProps extends SharedProps {

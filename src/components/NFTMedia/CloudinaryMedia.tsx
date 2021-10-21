@@ -109,15 +109,16 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	// applying the crop options video posters,
 	// so I'm adding them manually
 	const cropOptions = () => {
+		let fill = props.fit === 'cover' ? 'c_fill' : 'c_fit';
 		switch (size as string) {
 			case 'large':
-				return 'c_fit,h_1000,w_1000';
+				return fill + ',h_1000,w_1000';
 			case 'medium':
-				return 'c_fit,h_500,w_500';
+				return fill + ',h_700,w_700';
 			case 'small':
-				return 'c_fit,h_300,w_300';
+				return fill + ',h_300,w_300';
 			case 'tiny':
-				return 'c_fit,h_100,w_100';
+				return fill + ',h_100,w_100';
 			default:
 				return '';
 		}
@@ -152,7 +153,13 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 				secure={true}
 				style={style}
 			>
-				{height && <Transformation height={height} width={height} crop="fit" />}
+				{height && (
+					<Transformation
+						height={height}
+						width={height}
+						crop={props.fit === 'cover' ? 'fill' : 'fit'}
+					/>
+				)}
 			</Image>
 		);
 	}

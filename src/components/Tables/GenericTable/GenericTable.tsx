@@ -175,6 +175,13 @@ const GenericTable = (props: any) => {
 				{data.map((d: any, index: number) => (
 					<props.gridComponent key={index} rowNumber={index} data={d} />
 				))}
+				{data.length === 2 && <div></div>}
+				{data.length === 1 && (
+					<>
+						<div></div>
+						<div></div>
+					</>
+				)}
 			</div>
 		);
 	}, [rawData, chunk, searchQuery]);
