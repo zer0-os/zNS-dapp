@@ -50,7 +50,6 @@ const CurrentDomainPreview = (props: any) => {
 				onButtonClick={openBidModal}
 				onImageClick={() => {}}
 				preventInteraction={isRootDomain}
-				isPreviewEnabled={props?.isPreviewEnabled}
 			/>
 		</>
 	);
