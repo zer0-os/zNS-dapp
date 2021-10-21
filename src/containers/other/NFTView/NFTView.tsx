@@ -444,7 +444,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							3
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder!}`}
+								href={`https://etherscan.io/address/${item.seller!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.seller!.substring(0, 4)}...${item.seller!.substring(
@@ -455,7 +455,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder!}`}
+								href={`https://etherscan.io/address/${item.buyer!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.buyer!.substring(0, 4)}...${item.buyer!.substring(
