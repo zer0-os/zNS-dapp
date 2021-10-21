@@ -11,7 +11,7 @@
 }
 
 .Body {
-	padding: 8px 16px 16px 16px;
+	padding: 16px;
 }
 
 .Creator {
@@ -45,10 +45,15 @@
 }
 
 .NFT {
-	width: 100%;
 	height: 450px;
+	width: 100% !important;
 	border-radius: var(--box-radius) var(--box-radius) 0 0;
 	background: rgba(0, 0, 0, 0.3);
+
+	img,
+	video {
+		width: 100%;
+	}
 }
 
 .Foot {
@@ -77,4 +82,27 @@
 
 	font-size: 24px;
 	color: white;
+}
+
+.HasAspectRatio {
+	position: relative !important;
+
+	.NFT {
+		height: auto !important;
+		position: absolute !important;
+		top: 0;
+		left: 0;
+	}
+
+	&.Ratio16-9 {
+		padding-top: 56.25%;
+	}
+
+	&.Ratio1-1 {
+		padding-top: 100%;
+	}
+
+	&.Ratio4-5 {
+		padding-top: 125%;
+	}
 }
