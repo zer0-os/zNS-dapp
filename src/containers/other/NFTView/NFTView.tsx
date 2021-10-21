@@ -610,7 +610,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						{/* <button>
 							<img src={shareIcon} />
 						</button> */}
-						<Tooltip text={'Download Media'}>
+						<Tooltip text={'Download for Twitter'}>
 							<button onClick={downloadAsset}>
 								<img alt="download asset" src={downloadIcon} />
 							</button>
