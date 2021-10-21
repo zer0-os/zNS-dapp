@@ -145,14 +145,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				}
 				fetch(asset, {
 					method: 'GET',
-					headers: {},
 				})
 					.then((response) => {
 						response.arrayBuffer().then(function (buffer) {
 							const url = window.URL.createObjectURL(new Blob([buffer]));
 							const link = document.createElement('a');
 							link.href = url;
-							link.setAttribute('download', hash + '.png'); // not sure why png works for all types
+							link.setAttribute(
+								'download',
+								asset.split('/')[asset.split('/').length - 1],
+							);
 							document.body.appendChild(link);
 							link.click();
 							link.remove();
