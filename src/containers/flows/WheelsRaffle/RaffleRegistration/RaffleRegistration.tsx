@@ -20,7 +20,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	>();
 	const [isLoadingRegistration, setIsLoadingRegistration] =
 		useState<boolean>(false);
-	const [hasSubmitted, setHasSubmitted] = useState<boolean>(true);
+	const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
 
 	// Email submission
 	const [isLoadingEmail, setIsLoadingEmail] = useState<boolean>(false);
