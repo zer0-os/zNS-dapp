@@ -108,13 +108,18 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 	// For some reason, Cloudinary SDK isn't
 	// applying the crop options video posters,
 	// so I'm adding them manually
-	const cropOptions = () => {
+	const cropOptions = (isVideo: boolean | undefined) => {
 		let fill = props.fit === 'cover' ? 'c_fill' : 'c_fit';
+		if (isVideo) {
+			fill += ',f_auto';
+		} else {
+			fill += ',q_auto';
+		}
 		switch (size as string) {
 			case 'large':
 				return fill + ',h_1000,w_1000';
 			case 'medium':
-				return fill + ',h_700,w_700';
+				return fill + ',h_500,w_500';
 			case 'small':
 				return fill + ',h_300,w_300';
 			case 'tiny':
@@ -123,12 +128,12 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 				return '';
 		}
 	};
-	const crop = size !== undefined && cropOptions();
+	const crop = size !== undefined && cropOptions(isVideo);
 
 	const url = generateCloudinaryUrl(
 		hash,
 		isVideo ? 'video' : 'image',
-		cropOptions(),
+		cropOptions(isVideo),
 	);
 
 	///////////////
