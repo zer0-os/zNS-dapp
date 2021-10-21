@@ -143,6 +143,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				if (typeof asset !== 'string') {
 					return;
 				}
+				addNotification('Download starting');
 				fetch(asset, {
 					method: 'GET',
 				})
