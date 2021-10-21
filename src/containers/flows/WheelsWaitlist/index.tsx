@@ -25,9 +25,7 @@ const WheelsWaitlistContainer = () => {
 		setIsModalOpen(false);
 	};
 
-	const onFinishCountdown = () => {
-		console.log('done');
-	};
+	const onFinishCountdown = () => {};
 
 	const submitEmail = (email: string): Promise<boolean> => {
 		return new Promise((resolve) => {

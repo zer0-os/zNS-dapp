@@ -120,7 +120,8 @@
 
 .Attributes h4 {
 	padding: 0;
-	color: var(--color-primary-lighter-3);
+	color: var(--color-grey);
+	font-size: 12px;
 	text-transform: uppercase;
 }
 
@@ -144,7 +145,7 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	padding: 8px 8px 8px 16px;
+	padding: 8px 16px 8px 20px;
 	border: 1px solid #50207b;
 	border-radius: 999px;
 }

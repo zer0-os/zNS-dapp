@@ -420,7 +420,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						className={`${styles.Attributes}  blur border-primary border-rounded`}
 					>
 						<div className={styles.AttributesContainer}>
-							<h4>Properties</h4>
+							<h4>Attributes</h4>
 							<ul className={styles.AttributesGrid}>
 								{znsDomain.domain.attributes
 									.slice(
