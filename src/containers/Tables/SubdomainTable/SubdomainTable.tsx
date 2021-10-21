@@ -28,8 +28,6 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 
 	const { domain: biddingOn, close, bidPlaced } = useBid();
 
-	const isVisible = props.domainName !== '/' && !props.isNftView;
-
 	return (
 		<>
 			{biddingOn !== undefined && (
@@ -46,7 +44,6 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				infiniteScroll
 				isLoading={loading}
 				loadingText={'Loading Subdomains'}
-				isPreviewCardVisible={isVisible}
 			/>
 		</>
 	);

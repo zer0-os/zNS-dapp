@@ -191,14 +191,7 @@ const GenericTable = (props: any) => {
 	////////////
 
 	return (
-		<div
-			className={`${styles.Container} ${
-				!props.isPreviewCardVisible
-					? 'background-primary border-rounded border-primary'
-					: 'border-bottom-left-rounded border-bottom-right-rounded'
-			}`}
-			style={props.style}
-		>
+		<div className={styles.Container} style={props.style}>
 			<div ref={contentRef} className={styles.Content}>
 				<div className={styles.Controls}>
 					<SearchBar
