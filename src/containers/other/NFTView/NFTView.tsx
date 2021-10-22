@@ -366,7 +366,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			<>
 				<div className={styles.Stats}>
 					{data.map((item) => (
-						<StatsWidget {...item} isLoading={!statsLoaded}></StatsWidget>
+						<StatsWidget
+							{...item}
+							isLoading={!statsLoaded}
+							className="previewView"
+						></StatsWidget>
 					))}
 				</div>
 			</>
