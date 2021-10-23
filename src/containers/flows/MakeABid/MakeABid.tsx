@@ -9,7 +9,7 @@ import { Domain, Metadata, Bid, Maybe } from 'lib/types';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { getMetadata } from 'lib/metadata';
 import { toFiat } from 'lib/currency';
-import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import useCurrency from 'lib/hooks/useCurrency';
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 import { ERC20 } from 'types';
@@ -45,7 +45,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const { getBidsForDomain, placeBid } = useBidProvider();
 
 	// Wild to usd
-	const { wildPriceUsd } = useCurrencyProvider();
+	const { wildPriceUsd } = useCurrency();
 
 	///////////
 	// State //
