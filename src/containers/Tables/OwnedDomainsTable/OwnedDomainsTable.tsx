@@ -229,6 +229,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				isButtonActive={isButtonActive}
 				filterOwnBids={true}
 				isRootDomain={false}
+				ignoreAspectRatios={true}
 				rowButtonText={'View Bids'}
 				onLoad={tableLoaded}
 				onRowButtonClick={viewBid}
