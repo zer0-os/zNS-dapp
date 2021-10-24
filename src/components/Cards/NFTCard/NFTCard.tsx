@@ -13,6 +13,7 @@ export interface NFTCardProps {
 	children?: React.ReactNode;
 	className?: string;
 	domain: string;
+	ignoreAspectRatio?: boolean;
 	imageUri?: string;
 	name?: string;
 	nftMinterId: string;
@@ -31,6 +32,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	children,
 	className,
 	domain,
+	ignoreAspectRatio,
 	imageUri,
 	name,
 	nftMinterId,
@@ -48,7 +50,9 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	const isLandscape = domain.includes('.wheels') || domain.includes('.concept');
 	const isPortrait = domain.includes('.WoW');
 	const hasAspectRatio =
-		!isRootDomain && (isSquare || isLandscape || isPortrait);
+		!ignoreAspectRatio &&
+		!isRootDomain &&
+		(isSquare || isLandscape || isPortrait);
 
 	// If the domain is super long, truncate it
 	let domainText;
@@ -80,9 +84,9 @@ const NFTCard: React.FC<NFTCardProps> = ({
 			className={cx(className, 'border-rounded', {
 				NFTCard: true,
 				HasAspectRatio: hasAspectRatio,
-				'Ratio1-1': isSquare,
-				'Ratio16-9': isLandscape,
-				'Ratio4-5': isPortrait,
+				'Ratio1-1': hasAspectRatio && isSquare,
+				'Ratio16-9': hasAspectRatio && isLandscape,
+				'Ratio4-5': hasAspectRatio && isPortrait,
 			})}
 			onClick={onClick}
 		>
