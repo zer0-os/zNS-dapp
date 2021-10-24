@@ -1,8 +1,5 @@
-import {
-	checkMediaType,
-	getHashFromIPFSUrl,
-	MediaType,
-} from 'components/NFTMedia';
+import { checkMediaType, MediaType } from 'components/NFTMedia';
+import { getHashFromIPFSUrl } from 'lib/ipfs';
 import { UploadMetadata } from 'lib/types';
 
 export * from './domains';
@@ -37,9 +34,10 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
 	const hash = getHashFromIPFSUrl(image.url);
 	const mediaType = (await checkMediaType(hash)) as MediaType;
 
-	if (mediaType === MediaType.Unknown) {
+	if (mediaType === MediaType.Unknown || !image) {
 		throw Error(`Failed to upload image to ipfs.`);
 	}
+
 	const metadataObject: UploadMetadata = {
 		name: params.name,
 		description: params.story,
