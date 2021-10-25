@@ -51,7 +51,7 @@ import { MintNewNFT, NFTView, TransferOwnership } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { DomainTradingData } from '@zero-tech/zns-sdk';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { toFiat } from 'lib/currency';
@@ -150,7 +150,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
 
-	const [tradeData, setTradeData] = useState<DomainTradingData | undefined>();
+	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
 
 	//- Data
@@ -213,8 +213,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	const getTradeData = async () => {
 		if (znsDomain) {
-			const data = await sdk.instance.getSubdomainTradingData(znsDomain.id);
-			setTradeData(data);
+			const metricsData = await sdk.instance.getDomainMetrics([znsDomain.id]);
+			console.log(metricsData);
+			if (metricsData && metricsData[znsDomain.id]) {
+				setTradeData(metricsData[znsDomain.id]);
+			}
 			setStatsLoaded(true);
 		}
 	};
@@ -296,7 +299,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	}, [znsDomain, hasLoaded]);
 
 	useEffect(() => {
-		if (znsDomain) {
+		if (znsDomain && znsDomain.id) {
 			setStatsLoaded(false);
 			getTradeData();
 		}
@@ -336,7 +339,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			},
 			{
 				fieldName: 'Volume(All-Time)',
-				title: tradeData?.volume,
+				title: (tradeData?.volume as any)?.all
+					? ethers.utils.formatUnits((tradeData?.volume as any)?.all)
+					: '',
 			},
 		];
 
