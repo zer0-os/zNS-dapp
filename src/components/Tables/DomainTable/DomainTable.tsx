@@ -29,6 +29,7 @@ type DomainTableProps = {
 	filterOwnBids?: boolean;
 	domains: Domain[];
 	empty?: boolean;
+	ignoreAspectRatios?: boolean;
 	isButtonActive?: (row: any) => boolean;
 	isGlobalTable?: boolean;
 	isGridView?: boolean;
@@ -53,6 +54,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	filterOwnBids,
 	domains,
 	empty,
+	ignoreAspectRatios,
 	isButtonActive,
 	isGlobalTable,
 	isGridView,
@@ -395,6 +397,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 											<NFTCard
 												actionsComponent={nftCardActionComponent(d)}
 												domain={d.name}
+												ignoreAspectRatio={ignoreAspectRatios}
 												metadataUrl={d.metadata}
 												nftOwnerId={d.owner?.id || ''}
 												nftMinterId={d.minter?.id || ''}

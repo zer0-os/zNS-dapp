@@ -197,34 +197,21 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const getHistory = async () => {
 		if (znsDomain.domain) {
-			const events = await sdk.instance?.getDomainEvents(znsDomain.domain.id);
-
-			const bids = await sdk.getBids(znsDomain.domain.id);
-			setBids(bids);
-			if (!events || !events.length) {
-				setAllItems([]);
-				return;
-			}
-
 			try {
-				const sorted = events.sort(
-					(a, b) =>
-						new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-				);
-				let filter: DomainEvent[] = [];
-				//removes repeated timestamps of the sorted array, sdk must fix this later
-				sorted.reverse().reduce(function (prev, current) {
-					if (prev.timestamp !== current.timestamp) filter.push(current);
-					return current;
-				});
+				const events = await sdk.instance?.getDomainEvents(znsDomain.domain.id);
 
-				const sortedBids = bids?.sort(
-					(a, b) => Number(b.amount) - Number(a.amount),
-				);
+				const bids = events.filter((e) => e.type === 2) as DomainBidEvent[];
+				setBids(bids);
+				const highest = bids.sort((a, b) => {
+					return (
+						Number(ethers.utils.formatEther(b.amount)) -
+						Number(ethers.utils.formatEther(a.amount))
+					);
+				})[0];
 
 				if (!isMounted.current) return;
-				setAllItems(filter);
-				setHighestBid(sortedBids?.[0]);
+				setAllItems(events);
+				setHighestBid(highest);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
@@ -389,9 +376,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				<div className={styles.Price}>
 					<h2>Highest Bid</h2>
 					<span className={styles.Crypto}>
-						{Number(ethers.utils.formatEther(highestBid.amount))
-							.toFixed(2)
-							.toLocaleString()}{' '}
+						{Number(
+							ethers.utils.formatEther(highestBid.amount!),
+						).toLocaleString()}{' '}
 						WILD{' '}
 						{highestBidUsd !== undefined && wildPriceUsd > 0 && (
 							<span className={styles.Fiat}>(${toFiat(highestBidUsd)})</span>
@@ -689,7 +676,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						{/* <button>
 							<img src={shareIcon} />
 						</button> */}
-						<Tooltip text={'Download Media'}>
+						<Tooltip text={'Download for Twitter'}>
 							<button onClick={downloadAsset}>
 								<img alt="download asset" src={downloadIcon} />
 							</button>

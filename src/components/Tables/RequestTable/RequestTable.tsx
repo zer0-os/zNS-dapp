@@ -568,6 +568,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 											<RequestActions onClick={view} request={d} />
 										}
 										metadataUrl={d.contents.metadata}
+										ignoreAspectRatio={true}
 										domain={d.request.domain}
 										price={100}
 										nftOwnerId={d.contents.requestor}
