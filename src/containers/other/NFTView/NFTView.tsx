@@ -32,11 +32,7 @@ import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
 import { Attribute, transfersData } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import {
-	DomainBidEvent,
-	DomainEvent,
-	DomainTradingData,
-} from '@zero-tech/zns-sdk';
+import { DomainBidEvent, DomainEvent, DomainMetrics } from '@zero-tech/zns-sdk';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
@@ -79,7 +75,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
 		blobCache.current,
 	);
-	const [tradeData, setTradeData] = useState<DomainTradingData | undefined>();
+	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
 	const [bids, setBids] = useState<DomainBidEvent[] | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
 	const [isShowMoreAtrributes, setIsShowMoreAttributes] =
@@ -236,10 +232,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	};
 	const getTradeData = async () => {
 		if (znsDomain.domain) {
-			const data = await sdk.instance.getSubdomainTradingData(
-				znsDomain.domain.id,
-			);
-			setTradeData(data);
+			const data = await sdk.instance.getDomainMetrics([znsDomain.domain.id]);
+			setTradeData(data[znsDomain.domain.id]);
 			setStatsLoaded(true);
 		}
 	};
@@ -358,7 +352,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			},
 			{
 				fieldName: 'Volume',
-				title: tradeData?.volume,
+				title: (tradeData?.volume as any)?.all
+					? ethers.utils.formatUnits((tradeData?.volume as any)?.all)
+					: '',
 			},
 		];
 
