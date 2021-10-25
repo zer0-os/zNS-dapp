@@ -349,7 +349,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			<>
 				<div className={styles.Stats}>
 					{data.map((item) => (
-						<StatsWidget {...item} isLoading={!statsLoaded}></StatsWidget>
+						<StatsWidget
+							{...item}
+							isLoading={!statsLoaded}
+							className="normalView"
+						></StatsWidget>
 					))}
 				</div>
 			</>
