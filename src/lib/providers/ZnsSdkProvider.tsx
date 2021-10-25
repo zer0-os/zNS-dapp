@@ -2,9 +2,9 @@ import { useWeb3React } from '@web3-react/core';
 import * as zns from '@zero-tech/zns-sdk';
 import {
 	DomainBidEvent,
+	DomainMetricsCollection,
 	DomainMintEvent,
 	DomainSaleEvent,
-	DomainTradingData,
 	DomainTransferEvent,
 } from '@zero-tech/zns-sdk';
 import React from 'react';
@@ -86,10 +86,10 @@ export function useZnsSdk() {
 		}
 	};
 
-	const getSubdomainTradingData = async (domainId: string) => {
+	const getDomainMetrics = async (domainIds: string[]) => {
 		try {
-			const data: DomainTradingData = await instance?.getSubdomainTradingData(
-				domainId,
+			const data: DomainMetricsCollection = await instance?.getDomainMetrics(
+				domainIds,
 			);
 			return data;
 		} catch {
@@ -104,6 +104,6 @@ export function useZnsSdk() {
 		getTransferEvents,
 		getBids,
 		getSaleEvents,
-		getSubdomainTradingData,
+		getDomainMetrics,
 	};
 }
