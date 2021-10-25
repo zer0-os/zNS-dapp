@@ -12,15 +12,13 @@ import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { BidButton } from 'containers';
-import { DomainTradingData } from '@zero-tech/zns-sdk';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { ethers } from 'ethers';
 import { toFiat } from 'lib/currency';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
 
 const SubdomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account } = walletContext;
-	const sdk = useZnsSdk();
 	const { push: goTo } = useHistory();
 
 	const { makeABid, updated } = useBid();
@@ -29,9 +27,9 @@ const SubdomainTableRow = (props: any) => {
 	const { wildPriceUsd } = useCurrencyProvider();
 
 	const domain = props.data;
+	const tradeData: DomainMetrics = domain?.metrics;
 
 	const [bids, setBids] = useState<Bid[] | undefined>();
-	const [tradeData, setTradeData] = useState<DomainTradingData | undefined>();
 
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
@@ -54,8 +52,6 @@ const SubdomainTableRow = (props: any) => {
 				const b = await getBidsForDomain(domain);
 				if (isMounted) {
 					setBids(b);
-					const data = await sdk.instance.getSubdomainTradingData(domain.id);
-					setTradeData(data);
 					setAreBidsLoading(false);
 				}
 			} catch (err) {
@@ -109,7 +105,9 @@ const SubdomainTableRow = (props: any) => {
 					</td>
 					<td className={styles.Right}>
 						{!tradeData && 'Failed to retrieve'}
-						{tradeData?.volume ? tradeData?.volume.toLocaleString() : ''}
+						{(tradeData?.volume as any)?.all
+							? ethers.utils.formatUnits((tradeData?.volume as any)?.all)
+							: ''}
 					</td>
 				</>
 			);
