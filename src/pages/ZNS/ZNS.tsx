@@ -342,6 +342,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				title: (tradeData?.volume as any)?.all
 					? `${ethers.utils.formatUnits((tradeData?.volume as any)?.all)} WILD`
 					: '',
+				subTitle: `${
+					(tradeData?.volume as any)?.all
+						? toFiat(
+								Number(
+									ethers.utils.formatEther((tradeData?.volume as any)?.all),
+								) * wildPriceUsd,
+						  )
+						: 0
+				} USD`,
 			},
 		];
 

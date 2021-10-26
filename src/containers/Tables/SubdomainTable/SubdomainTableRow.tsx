@@ -86,6 +86,33 @@ const SubdomainTableRow = (props: any) => {
 		}
 	};
 
+	const formatColumn = (columnName: keyof DomainMetrics) => {
+		const value =
+			columnName === 'volume'
+				? (tradeData?.volume as any)?.all
+				: tradeData[columnName];
+		return (
+			<>
+				{' '}
+				{!tradeData && 'Failed to retrieve'}
+				{value && (
+					<span className={styles.Bid}>
+						{Number(ethers.utils.formatEther(value))
+							.toFixed(2)
+							.toLocaleString()}
+					</span>
+				)}
+				{wildPriceUsd && (
+					<span className={styles.Bid}>
+						{'$' +
+							toFiat(wildPriceUsd * Number(ethers.utils.formatEther(value))) +
+							' USD'}
+					</span>
+				)}
+			</>
+		);
+	};
+
 	const bidColumns = () => {
 		if (!areBidsLoading) {
 			return (
@@ -95,20 +122,8 @@ const SubdomainTableRow = (props: any) => {
 						{!bids && 'Failed to retrieve'}
 						{bids && bids.length.toLocaleString()}
 					</td>
-					<td className={styles.Right}>
-						{!tradeData && 'Failed to retrieve'}
-						{tradeData?.lastSale
-							? Number(ethers.utils.formatEther(tradeData?.lastSale))
-									.toFixed(2)
-									.toLocaleString()
-							: ''}
-					</td>
-					<td className={styles.Right}>
-						{!tradeData && 'Failed to retrieve'}
-						{(tradeData?.volume as any)?.all
-							? ethers.utils.formatUnits((tradeData?.volume as any)?.all)
-							: ''}
-					</td>
+					<td className={styles.Right}>{formatColumn('lastSale')}</td>
+					<td className={styles.Right}>{formatColumn('volume')}</td>
 				</>
 			);
 		} else {
