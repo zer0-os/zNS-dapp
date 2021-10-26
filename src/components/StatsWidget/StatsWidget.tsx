@@ -1,5 +1,5 @@
 import { Spinner } from 'components';
-import styles from './StatsWidget.module.css';
+import styles from './StatsWidget.module.scss';
 
 const StatsWidget: React.FC<{
 	fieldName: string;

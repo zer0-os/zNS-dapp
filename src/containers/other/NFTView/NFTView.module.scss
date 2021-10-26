@@ -217,7 +217,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	margin-top: 20px;
+	margin-top: 16px;
 }
 
 .Copy {
@@ -287,7 +287,9 @@
 .Stats {
 	display: flex;
 	justify-content: space-between;
+	margin-top: 24px;
 }
+
 .Stats:first-child {
 	margin-left: 0;
 }

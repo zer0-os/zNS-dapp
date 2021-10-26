@@ -74,10 +74,10 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				headers={[
 					'',
 					'Domain',
-					'Highest Bid',
+					'Highest Bid (WILD)',
 					'# of Bids',
-					'Last Sale',
-					'Volume',
+					'Last Sale (WILD)',
+					'Volume (WILD)',
 					'',
 				]}
 				rowComponent={SubdomainTableRow}

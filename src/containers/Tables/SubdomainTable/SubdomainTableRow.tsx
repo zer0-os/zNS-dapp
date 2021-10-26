@@ -100,7 +100,7 @@ const SubdomainTableRow = (props: any) => {
 						{tradeData?.lastSale
 							? Number(ethers.utils.formatEther(tradeData?.lastSale))
 									.toFixed(2)
-									.toLocaleString() + ' WILD'
+									.toLocaleString()
 							: ''}
 					</td>
 					<td className={styles.Right}>
