@@ -96,9 +96,8 @@ function wrappedApp() {
 	return (
 		<CacheBuster
 			currentVersion={version}
-			isEnabled={isProduction} //If false, the library is disabled.
-			isVerboseMode={true} //If true, the library writes verbose logs to console.
-			loadingComponent={<Spinner />} //If not pass, nothing appears at the time of new version check.
+			isEnabled={isProduction}
+			isVerboseMode={true}
 		>
 			<ReduxProvider store={store}>
 				<ChainSelectorProvider>
