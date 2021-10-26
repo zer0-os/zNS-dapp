@@ -1,3 +1,5 @@
+import { version } from '../package.json';
+
 //- React Imports
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -17,7 +19,11 @@ import { HashRouter, Route } from 'react-router-dom';
 import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
+// Component Imports
+import { Spinner } from 'components';
+
 //- Library Imports
+import CacheBuster from 'react-cache-buster';
 import MintProvider from 'lib/providers/MintProvider';
 import BidProvider from 'lib/providers/BidProvider';
 import CurrencyProvider from 'lib/providers/CurrencyProvider';
@@ -44,8 +50,8 @@ function getLibrary(provider: any): Web3Provider {
 
 function App() {
 	console.log(
-		'%cHello fellow devs & tinkerers!',
-		'display: block; border: 3px solid #3ca1ff; border-radius: 7px; padding: 10px; margin: 8px;',
+		`%cWilder World Marketplace v${version}`,
+		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
 
 	// Programatically load the background image
@@ -85,32 +91,40 @@ function App() {
 }
 
 function wrappedApp() {
+	const isProduction = process.env.NODE_ENV === 'production';
+
 	return (
-		// Web3 Library Hooks
-		<ReduxProvider store={store}>
-			<ChainSelectorProvider>
-				<SubgraphProvider>
-					<Web3ReactProvider getLibrary={getLibrary}>
-						{/* Our Hooks  */}
-						<ZNSDomainsProvider>
-							<CurrencyProvider>
-								<BidProvider>
-									<TransferProvider>
-										<StakingRequestProvider>
-											<MintProvider>
-												<EnlistProvider>
-													<App />
-												</EnlistProvider>
-											</MintProvider>
-										</StakingRequestProvider>
-									</TransferProvider>
-								</BidProvider>
-							</CurrencyProvider>
-						</ZNSDomainsProvider>
-					</Web3ReactProvider>
-				</SubgraphProvider>
-			</ChainSelectorProvider>
-		</ReduxProvider>
+		<CacheBuster
+			currentVersion={version}
+			isEnabled={isProduction} //If false, the library is disabled.
+			isVerboseMode={true} //If true, the library writes verbose logs to console.
+			loadingComponent={<Spinner />} //If not pass, nothing appears at the time of new version check.
+		>
+			<ReduxProvider store={store}>
+				<ChainSelectorProvider>
+					<SubgraphProvider>
+						<Web3ReactProvider getLibrary={getLibrary}>
+							{/* Our Hooks  */}
+							<ZNSDomainsProvider>
+								<CurrencyProvider>
+									<BidProvider>
+										<TransferProvider>
+											<StakingRequestProvider>
+												<MintProvider>
+													<EnlistProvider>
+														<App />
+													</EnlistProvider>
+												</MintProvider>
+											</StakingRequestProvider>
+										</TransferProvider>
+									</BidProvider>
+								</CurrencyProvider>
+							</ZNSDomainsProvider>
+						</Web3ReactProvider>
+					</SubgraphProvider>
+				</ChainSelectorProvider>
+			</ReduxProvider>
+		</CacheBuster>
 	);
 }
 
