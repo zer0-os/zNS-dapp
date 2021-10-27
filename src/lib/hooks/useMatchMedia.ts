@@ -12,7 +12,6 @@ const useMatchMedia = (query: any) => {
 
 	const queryToMatch =
 		mediaQueries[query as keyof typeof mediaQueries] || query;
-	console.log(queryToMatch);
 	// eslint-disable-next-line react-hooks/rules-of-hooks
 	const [matches, setMatches] = useState(
 		window.matchMedia(queryToMatch).matches,

@@ -51,3 +51,23 @@
 	display: flex;
 	align-items: center;
 }
+@media only screen and (max-width: 415px) {
+	.StatsWidget {
+		margin: 8px 0;
+		&:first-child {
+			margin-top: 16px;
+		}
+		&:last-child {
+			margin-bottom: 0px;
+		}
+	}
+	.previewView {
+		margin: 4px 0;
+		&:first-child {
+			margin-top: 0px;
+		}
+		&:last-child {
+			margin-bottom: 0px;
+		}
+	}
+}
