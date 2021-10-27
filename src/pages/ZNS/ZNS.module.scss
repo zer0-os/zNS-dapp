@@ -26,3 +26,15 @@
 .Dots > div:last-child {
 	transform: translate(-50%, calc(-50% + calc(100% + var(--dot-gap))));
 }
+
+.Stats {
+	display: flex;
+	justify-content: space-between;
+	background: var(--background-purple-card-20);
+	padding: 16px;
+	flex-wrap: wrap;
+}
+
+.Stats:first-child {
+	margin-left: 0;
+}

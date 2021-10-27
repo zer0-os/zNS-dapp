@@ -36,3 +36,21 @@
 	color: var(--color-grey);
 	font-size: 12px;
 }
+
+// .volumeCol {
+// 	@media only screen and (max-width: 768px) {
+// 		display: none;
+// 	}
+// }
+
+@media only screen and (max-width: 1024px) {
+	.volumeCol {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.lastSaleCol {
+		display: none;
+	}
+}

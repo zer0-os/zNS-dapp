@@ -12,7 +12,9 @@ import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { BidButton } from 'containers';
+import { ethers } from 'ethers';
 import { toFiat } from 'lib/currency';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
 
 const SubdomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
@@ -25,8 +27,10 @@ const SubdomainTableRow = (props: any) => {
 	const { wildPriceUsd } = useCurrencyProvider();
 
 	const domain = props.data;
+	const tradeData: DomainMetrics = domain?.metrics;
 
 	const [bids, setBids] = useState<Bid[] | undefined>();
+
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
 
@@ -44,10 +48,15 @@ const SubdomainTableRow = (props: any) => {
 		const get = async () => {
 			setBids(undefined);
 			setAreBidsLoading(true);
-			const b = await getBidsForDomain(domain);
-			if (isMounted) {
+			try {
+				const b = await getBidsForDomain(domain);
+				if (isMounted) {
+					setBids(b);
+					setAreBidsLoading(false);
+				}
+			} catch (err) {
 				setAreBidsLoading(false);
-				setBids(b);
+				console.log(err);
 			}
 		};
 		get();
@@ -77,7 +86,35 @@ const SubdomainTableRow = (props: any) => {
 		}
 	};
 
+	const formatColumn = (columnName: keyof DomainMetrics) => {
+		const value =
+			columnName === 'volume'
+				? (tradeData?.volume as any)?.all
+				: tradeData[columnName];
+		return (
+			<>
+				{' '}
+				{!tradeData && 'Failed to retrieve'}
+				{value && (
+					<span className={styles.Bid}>
+						{Number(ethers.utils.formatEther(value))
+							.toFixed(2)
+							.toLocaleString()}
+					</span>
+				)}
+				{wildPriceUsd && (
+					<span className={styles.Bid}>
+						{'$' +
+							toFiat(wildPriceUsd * Number(ethers.utils.formatEther(value))) +
+							' USD'}
+					</span>
+				)}
+			</>
+		);
+	};
+
 	const bidColumns = () => {
+		// TODO: Avoid directly defining the columns and associated render method.
 		if (!areBidsLoading) {
 			return (
 				<>
@@ -86,11 +123,23 @@ const SubdomainTableRow = (props: any) => {
 						{!bids && 'Failed to retrieve'}
 						{bids && bids.length.toLocaleString()}
 					</td>
+					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
+						{formatColumn('lastSale')}
+					</td>
+					<td className={`${styles.Right} ${styles.volumeCol}`}>
+						{formatColumn('volume')}
+					</td>
 				</>
 			);
 		} else {
 			return (
 				<>
+					<td className={styles.Right}>
+						<Spinner />
+					</td>
+					<td className={styles.Right}>
+						<Spinner />
+					</td>
 					<td className={styles.Right}>
 						<Spinner />
 					</td>

@@ -35,6 +35,7 @@ import {
 	MintPreview,
 	TransferPreview,
 	Spinner,
+	StatsWidget,
 } from 'components';
 
 import {
@@ -49,6 +50,12 @@ import { useTransferProvider } from 'lib/providers/TransferProvider';
 import { MintNewNFT, NFTView, TransferOwnership } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
+import { ethers } from 'ethers';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import { toFiat } from 'lib/currency';
+import useMatchMedia from 'lib/hooks/useMatchMedia';
 
 type ZNSProps = {
 	domain: string;
@@ -74,8 +81,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
+
 	const { account, active, chainId } = walletContext;
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
+
+	const sdk = useZnsSdk();
+	const { wildPriceUsd } = useCurrencyProvider();
 
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
@@ -130,6 +141,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Notification State
 	const { addNotification } = useNotification();
 
+	const isMobile = useMatchMedia('phone');
+	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
+	const isMobilePortrait = useMatchMedia('(max-width: 415px)');
+
 	//- Page State
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
@@ -139,6 +154,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
+
+	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
+	const [statsLoaded, setStatsLoaded] = useState(false);
 
 	//- Data
 	const isOwnedByUser: boolean =
@@ -196,6 +214,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	const handleResize = () => {
 		setPageWidth(window.innerWidth);
+	};
+
+	const getTradeData = async () => {
+		if (znsDomain) {
+			const metricsData = await sdk.instance.getDomainMetrics([znsDomain.id]);
+			if (metricsData && metricsData[znsDomain.id]) {
+				setTradeData(metricsData[znsDomain.id]);
+			}
+			setStatsLoaded(true);
+		}
 	};
 
 	/////////////
@@ -274,9 +302,92 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		});
 	}, [znsDomain, hasLoaded]);
 
+	useEffect(() => {
+		setStatsLoaded(false);
+		if (znsDomain && znsDomain.id) {
+			getTradeData();
+		}
+	}, [znsDomain]);
+
 	/////////////////////
 	// React Fragments //
 	/////////////////////
+
+	const nftStats = () => {
+		let width = '24.2%';
+		if (isMobilePortrait) {
+			width = '100%';
+		} else if (isTabletPortrait) {
+			width = '32%';
+		}
+
+		const data = [
+			{
+				fieldName: 'Items in Domain',
+				title: tradeData?.items,
+				isHidden: isMobilePortrait,
+			},
+			{
+				fieldName: 'Total Owners',
+				title: tradeData?.holders,
+				isHidden: isMobile || isTabletPortrait,
+			},
+			{
+				fieldName: 'Floor Price',
+				title: `${
+					tradeData?.lowestSale
+						? Number(ethers.utils.formatEther(tradeData?.lowestSale))
+								.toFixed(2)
+								.toLocaleString()
+						: 0
+				} WILD`,
+				subTitle: `$${
+					tradeData?.lowestSale
+						? toFiat(
+								Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
+									wildPriceUsd,
+						  )
+						: 0
+				} USD`,
+			},
+			{
+				fieldName: 'Volume (All-Time)',
+				title: (tradeData?.volume as any)?.all
+					? `${ethers.utils.formatUnits((tradeData?.volume as any)?.all)} WILD`
+					: '',
+				subTitle: `$${
+					(tradeData?.volume as any)?.all
+						? toFiat(
+								Number(
+									ethers.utils.formatEther((tradeData?.volume as any)?.all),
+								) * wildPriceUsd,
+						  )
+						: 0
+				} USD`,
+			},
+		];
+
+		return (
+			<>
+				<div className={styles.Stats}>
+					{data.map((item) => (
+						<>
+							{!item.isHidden ? (
+								<StatsWidget
+									{...item}
+									isLoading={!statsLoaded}
+									className="normalView"
+									style={{
+										width: width,
+									}}
+								></StatsWidget>
+							) : null}
+						</>
+					))}
+				</div>
+			</>
+		);
+	};
 
 	const previewCard = () => {
 		const isVisible = domain !== '/' && !isNftView;
@@ -513,6 +624,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						}}
 					>
 						{previewCard()}
+						{nftStats()}
 						{showDomainTable && subTable}
 					</div>
 				)}
