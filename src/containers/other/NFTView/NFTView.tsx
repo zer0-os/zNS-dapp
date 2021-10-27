@@ -42,6 +42,7 @@ import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
 import shareIcon from './assets/share.svg';
+import useMatchMedia from 'lib/hooks/useMatchMedia';
 const moment = require('moment');
 
 type NFTViewProps = {
@@ -65,6 +66,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const blobCache = useRef<string>();
 	const { addNotification } = useNotification();
 	const { wildPriceUsd } = useCurrencyProvider();
+
+	const isMobile = useMatchMedia('phone');
+	const isTabletPotriat = useMatchMedia('(max-width: 768px)');
+	const isMobilePotriat = useMatchMedia('(max-width: 415px)');
 
 	//- Page State
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
@@ -296,6 +301,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	}, [znsDomain.domain]);
 
 	const nftStats = () => {
+		let width = '24.2%';
+		if (isMobilePotriat) {
+			width = '100%';
+		} else if (isTabletPotriat) {
+			width = '32%';
+		}
 		const data = [
 			{
 				fieldName: 'Top Bid',
@@ -318,6 +329,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			{
 				fieldName: 'Bids',
 				title: bids?.length,
+				isHidden: isMobile || isTabletPotriat || isMobilePotriat,
 			},
 			{
 				fieldName: 'Last Sale',
@@ -358,11 +370,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			<>
 				<div className={styles.Stats}>
 					{data.map((item) => (
-						<StatsWidget
-							{...item}
-							isLoading={!statsLoaded}
-							className="previewView"
-						></StatsWidget>
+						<>
+							{!item.isHidden ? (
+								<StatsWidget
+									{...item}
+									isLoading={!statsLoaded}
+									className="previewView"
+									style={{
+										width: width,
+									}}
+								></StatsWidget>
+							) : null}
+						</>
 					))}
 				</div>
 			</>
