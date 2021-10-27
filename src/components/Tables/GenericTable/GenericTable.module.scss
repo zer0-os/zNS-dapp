@@ -175,3 +175,15 @@
 		margin-right: 0 !important;
 	}
 }
+
+@media only screen and (max-width: 1024px) {
+	.volume {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.lastSale {
+		display: none;
+	}
+}
