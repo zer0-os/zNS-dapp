@@ -155,11 +155,11 @@ const GenericTable = (props: any) => {
 					<tr>
 						{props.headers.map((h: GenericTableHeader, index: number) => (
 							<th
-								className={`${
-									props.alignments && props.alignments[index] > 0
-										? styles.Right
-										: styles.Left
-								} ${h?.className && styles[h?.className]}`}
+								className={`${props.alignments && props.alignments[index] > 0
+									? styles.Right
+									: styles.Left
+									} ${h?.className && styles[h?.className]}`}
+								key={index}
 							>
 								{h?.label}
 							</th>
@@ -178,13 +178,13 @@ const GenericTable = (props: any) => {
 		}
 		const data = props.infiniteScroll
 			? rawData
-					.filter((d: any) =>
-						searchQuery ? d.name.includes(searchQuery) : true,
-					)
-					.slice(0, chunk * chunkSize)
-			: rawData.filter((d: any) =>
+				.filter((d: any) =>
 					searchQuery ? d.name.includes(searchQuery) : true,
-			  );
+				)
+				.slice(0, chunk * chunkSize)
+			: rawData.filter((d: any) =>
+				searchQuery ? d.name.includes(searchQuery) : true,
+			);
 
 		return (
 			<div className={styles.Grid}>

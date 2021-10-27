@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useEffect, useRef, createRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
@@ -29,8 +29,7 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
-import { Attribute, transfersData } from 'lib/types';
+import { Attribute } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DomainBidEvent, DomainEvent, DomainMetrics } from '@zero-tech/zns-sdk';
 
@@ -41,7 +40,6 @@ import styles from './NFTView.module.scss';
 import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
-import shareIcon from './assets/share.svg';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 const moment = require('moment');
 
@@ -310,21 +308,19 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		const data = [
 			{
 				fieldName: 'Top Bid',
-				title: `${
-					tradeData?.highestBid
+				title: `${tradeData?.highestBid
 						? Number(ethers.utils.formatEther(tradeData?.highestBid))
-								.toFixed(2)
-								.toLocaleString()
+							.toFixed(2)
+							.toLocaleString()
 						: 0
-				} WILD`,
-				subTitle: `${
-					tradeData?.highestBid
+					} WILD`,
+				subTitle: `${tradeData?.highestBid
 						? toFiat(
-								Number(ethers.utils.formatEther(tradeData?.highestBid)) *
-									wildPriceUsd,
-						  )
+							Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+							wildPriceUsd,
+						)
 						: 0
-				} USD`,
+					} USD`,
 			},
 			{
 				fieldName: 'Bids',
@@ -333,36 +329,33 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			},
 			{
 				fieldName: 'Last Sale',
-				title: `${
-					tradeData?.lastSale
+				title: `${tradeData?.lastSale
 						? Number(ethers.utils.formatEther(tradeData?.lastSale))
-								.toFixed(2)
-								.toLocaleString()
+							.toFixed(2)
+							.toLocaleString()
 						: 0
-				} WILD`,
-				subTitle: `$${
-					tradeData?.lastSale
+					} WILD`,
+				subTitle: `$${tradeData?.lastSale
 						? toFiat(
-								Number(ethers.utils.formatEther(tradeData?.lastSale)) *
-									wildPriceUsd,
-						  )
+							Number(ethers.utils.formatEther(tradeData?.lastSale)) *
+							wildPriceUsd,
+						)
 						: 0
-				} USD`,
+					} USD`,
 			},
 			{
 				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.day
 					? `${ethers.utils.formatEther((tradeData?.volume as any)?.day)} WILD`
 					: '',
-				subTitle: `$${
-					(tradeData?.volume as any)?.day
+				subTitle: `$${(tradeData?.volume as any)?.day
 						? toFiat(
-								Number(
-									ethers.utils.formatEther((tradeData?.volume as any)?.day),
-								) * wildPriceUsd,
-						  )
+							Number(
+								ethers.utils.formatEther((tradeData?.volume as any)?.day),
+							) * wildPriceUsd,
+						)
 						: 0
-				} USD`,
+					} USD`,
 			},
 		];
 
@@ -603,9 +596,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		return (
 			<>
 				<li
-					className={`${styles.AttributesWrapper} ${
-						index > 10 && styles.SetOpacityAnimation
-					}`}
+					className={`${styles.AttributesWrapper} ${index > 10 && styles.SetOpacityAnimation
+						}`}
 					key={index}
 				>
 					<span className={styles.Traits}>{attribute.trait_type}</span>
@@ -619,9 +611,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		return (
 			<>
 				<button
-					className={`${styles.ToggleAttributes} ${
-						isShowMoreAtrributes && styles.SetOpacityAnimation
-					}`}
+					className={`${styles.ToggleAttributes} ${isShowMoreAtrributes && styles.SetOpacityAnimation
+						}`}
 					style={{ background: 'none' }}
 					onClick={toggleAttributes}
 				>
@@ -683,9 +674,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		<div className={styles.NFTView}>
 			{overlays()}
 			<div
-				className={`${styles.NFT} ${
-					backgroundBlob !== undefined ? styles.Loaded : ''
-				} border-primary`}
+				className={`${styles.NFT} ${backgroundBlob !== undefined ? styles.Loaded : ''
+					} border-primary`}
 			>
 				<div className={`${styles.Image}`}>
 					<NFTMedia

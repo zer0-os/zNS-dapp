@@ -4,12 +4,8 @@ import React from 'react';
 //- Style Imports
 import styles from './PreviewCard.module.scss';
 
-//- Library Imports
-import { randomName, randomImage } from 'lib/random';
-
 //- Component Imports
-import { FutureButton, Member, NFTMedia, TextButton } from 'components';
-import { BidButton } from 'containers';
+import { FutureButton, NFTMedia, TextButton } from 'components';
 import { Maybe } from 'lib/types';
 
 type PreviewCardProps = {
