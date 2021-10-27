@@ -31,7 +31,7 @@ export function useZnsSdk() {
 				throw new Error('SDK isn´t available for this chainId');
 			}
 		}
-	}, [web3Context.chainId]);
+	}, [web3Context.library, chainSelector.selectedChain]);
 
 	const getMintEvents = async (domainId: string) => {
 		try {

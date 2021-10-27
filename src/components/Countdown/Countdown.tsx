@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 
 type CountdownProps = {
 	to: number;
@@ -35,7 +36,7 @@ const Countdown = (props: CountdownProps) => {
 		}${minutes > 0 ? minutes + 'm ' : ''}${seconds}s`;
 	};
 
-	useEffect(() => {
+	useUpdateEffect(() => {
 		let isActive = true;
 		if (!label) {
 			if (isActive) {

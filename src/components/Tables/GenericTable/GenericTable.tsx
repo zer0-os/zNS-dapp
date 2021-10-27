@@ -139,6 +139,7 @@ const GenericTable = (props: any) => {
 					<tr>
 						{props.headers.map((h: string, index: number) => (
 							<th
+								key={index}
 								className={
 									props.alignments && props.alignments[index] > 0
 										? styles.Right
