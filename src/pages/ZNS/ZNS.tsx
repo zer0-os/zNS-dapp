@@ -55,6 +55,7 @@ import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { toFiat } from 'lib/currency';
+import useMatchMedia from 'lib/hooks/useMatchMedia';
 
 type ZNSProps = {
 	domain: string;
@@ -139,6 +140,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Notification State
 	const { addNotification } = useNotification();
+
+	const isMobile = useMatchMedia('phone');
+	const isTabletPotriat = useMatchMedia('(max-width: 768px)');
+	const isMobilePotriat = useMatchMedia('(max-width: 415px)');
 
 	//- Page State
 	const [hasLoaded, setHasLoaded] = useState(false);
@@ -310,14 +315,23 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	/////////////////////
 
 	const nftStats = () => {
+		let width = '24.2%';
+		if (isMobilePotriat) {
+			width = '100%';
+		} else if (isTabletPotriat) {
+			width = '32%';
+		}
+
 		const data = [
 			{
 				fieldName: 'Items in Domain',
 				title: tradeData?.items,
+				isHidden: isMobilePotriat,
 			},
 			{
 				fieldName: 'Total Owners',
 				title: tradeData?.holders,
+				isHidden: isMobile || isTabletPotriat,
 			},
 			{
 				fieldName: 'Floor Price',
@@ -358,11 +372,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			<>
 				<div className={styles.Stats}>
 					{data.map((item) => (
-						<StatsWidget
-							{...item}
-							isLoading={!statsLoaded}
-							className="normalView"
-						></StatsWidget>
+						<>
+							{!item.isHidden ? (
+								<StatsWidget
+									{...item}
+									isLoading={!statsLoaded}
+									className="normalView"
+									style={{
+										width: width,
+									}}
+								></StatsWidget>
+							) : null}
+						</>
 					))}
 				</div>
 			</>
