@@ -2,6 +2,7 @@ import { useWeb3React } from '@web3-react/core';
 import * as zns from '@zero-tech/zns-sdk';
 import {
 	DomainBidEvent,
+	DomainMetricsCollection,
 	DomainMintEvent,
 	DomainSaleEvent,
 	DomainTransferEvent,
@@ -85,5 +86,24 @@ export function useZnsSdk() {
 		}
 	};
 
-	return { instance, getMintEvents, getTransferEvents, getBids, getSaleEvents };
+	const getDomainMetrics = async (domainIds: string[]) => {
+		try {
+			const data: DomainMetricsCollection = await instance?.getDomainMetrics(
+				domainIds,
+			);
+			return data;
+		} catch {
+			console.error('Failed to retrieve sale event data');
+			return;
+		}
+	};
+
+	return {
+		instance,
+		getMintEvents,
+		getTransferEvents,
+		getBids,
+		getSaleEvents,
+		getDomainMetrics,
+	};
 }
