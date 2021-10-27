@@ -1,6 +1,6 @@
 {
 	"name": "zns-dapp",
-	"version": "0.1.0",
+	"version": "0.10.3",
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
@@ -56,6 +56,7 @@
 		"moment": "^2.29.1",
 		"node-random-name": "^1.0.1",
 		"react": "^17.0.2",
+		"react-cache-buster": "^0.1.5",
 		"react-clipboard.js": "^2.0.16",
 		"react-dom": "^17.0.2",
 		"react-hook-form": "^6.15.5",
@@ -80,14 +81,15 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "react-scripts build",
+		"build": "npm run generate-meta-tag && react-scripts build",
 		"test": "react-scripts test",
 		"testci": "react-scripts test --coverage",
 		"eject": "react-scripts eject",
 		"typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
 		"lint": "eslint src --ext .ts",
 		"apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql ",
-		"prettier": "prettier --write './src/**/*.{js,css,ts,tsx}'"
+		"prettier": "prettier --write './src/**/*.{js,css,ts,tsx}'",
+		"generate-meta-tag": "node ./node_modules/react-cache-buster/dist/generate-meta-tag.js"
 	},
 	"eslintConfig": {
 		"extends": [
