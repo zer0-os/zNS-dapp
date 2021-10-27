@@ -7,6 +7,7 @@ const StatsWidget: React.FC<{
 	subTitle?: string;
 	accentText?: string;
 	isLoading?: boolean;
+	style?: React.CSSProperties;
 	className: string;
 }> = ({
 	fieldName,
@@ -15,9 +16,14 @@ const StatsWidget: React.FC<{
 	accentText,
 	isLoading,
 	className,
+	style,
 	...rest
 }) => (
-	<div {...rest} className={`${styles.StatsWidget} ${styles[className]}`}>
+	<div
+		{...rest}
+		className={`${styles.StatsWidget} ${styles[className]}`}
+		style={style}
+	>
 		<div className={styles.StatsFieldName}>{fieldName}</div>
 		{isLoading ? (
 			<div className={styles.SpinnerContainer}>
