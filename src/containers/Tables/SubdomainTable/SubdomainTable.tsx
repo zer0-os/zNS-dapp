@@ -61,6 +61,44 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 		}
 	}, [domain]);
 
+	const headers = [
+		{
+			label: '',
+			accessor: '',
+			className: '',
+		},
+		{
+			label: 'Domain',
+			accessor: '',
+			className: 'domain',
+		},
+		{
+			label: 'Highest Bid (WILD)',
+			accessor: '',
+			className: '',
+		},
+		{
+			label: '# of Bids',
+			accessor: '',
+			className: '',
+		},
+		{
+			label: 'Last Sale (WILD)',
+			accessor: '',
+			className: 'lastSale',
+		},
+		{
+			label: 'Volume (WILD)',
+			accessor: '',
+			className: 'volume',
+		},
+		{
+			label: '',
+			accessor: '',
+			className: '',
+		},
+	];
+
 	return (
 		<>
 			{biddingOn !== undefined && (
@@ -71,15 +109,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			<GenericTable
 				alignments={[0, 0, 1, 1, 1, 1, 1]}
 				data={data}
-				headers={[
-					'',
-					'Domain',
-					'Highest Bid (WILD)',
-					'# of Bids',
-					'Last Sale (WILD)',
-					'Volume (WILD)',
-					'',
-				]}
+				headers={headers}
 				rowComponent={SubdomainTableRow}
 				gridComponent={SubdomainTableCard}
 				infiniteScroll

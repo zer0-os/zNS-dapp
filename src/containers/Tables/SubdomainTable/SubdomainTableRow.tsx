@@ -114,6 +114,7 @@ const SubdomainTableRow = (props: any) => {
 	};
 
 	const bidColumns = () => {
+		// TODO: Avoid directly defining the columns and associated render method.
 		if (!areBidsLoading) {
 			return (
 				<>
@@ -122,8 +123,12 @@ const SubdomainTableRow = (props: any) => {
 						{!bids && 'Failed to retrieve'}
 						{bids && bids.length.toLocaleString()}
 					</td>
-					<td className={styles.Right}>{formatColumn('lastSale')}</td>
-					<td className={styles.Right}>{formatColumn('volume')}</td>
+					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
+						{formatColumn('lastSale')}
+					</td>
+					<td className={`${styles.Right} ${styles.volumeCol}`}>
+						{formatColumn('volume')}
+					</td>
 				</>
 			);
 		} else {
