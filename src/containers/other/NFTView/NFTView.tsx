@@ -68,8 +68,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const { wildPriceUsd } = useCurrencyProvider();
 
 	const isMobile = useMatchMedia('phone');
-	const isTabletPotriat = useMatchMedia('(max-width: 768px)');
-	const isMobilePotriat = useMatchMedia('(max-width: 415px)');
+	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
+	const isMobilePortrait = useMatchMedia('(max-width: 415px)');
 
 	//- Page State
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
@@ -302,9 +302,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const nftStats = () => {
 		let width = '24.2%';
-		if (isMobilePotriat) {
+		if (isMobilePortrait) {
 			width = '100%';
-		} else if (isTabletPotriat) {
+		} else if (isTabletPortrait) {
 			width = '32%';
 		}
 		const data = [
@@ -328,8 +328,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			},
 			{
 				fieldName: 'Bids',
-				title: bids?.length,
-				isHidden: isMobile || isTabletPotriat || isMobilePotriat,
+				title: bids?.length || '0',
+				isHidden: isMobile || isTabletPortrait || isMobilePortrait,
 			},
 			{
 				fieldName: 'Last Sale',
@@ -340,7 +340,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								.toLocaleString()
 						: 0
 				} WILD`,
-				subTitle: `${
+				subTitle: `$${
 					tradeData?.lastSale
 						? toFiat(
 								Number(ethers.utils.formatEther(tradeData?.lastSale)) *
@@ -354,7 +354,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				title: (tradeData?.volume as any)?.day
 					? `${ethers.utils.formatEther((tradeData?.volume as any)?.day)} WILD`
 					: '',
-				subTitle: `${
+				subTitle: `$${
 					(tradeData?.volume as any)?.day
 						? toFiat(
 								Number(
@@ -374,7 +374,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							{!item.isHidden ? (
 								<StatsWidget
 									{...item}
-									isLoading={!statsLoaded}
+									isLoading={!statsLoaded || !allItems}
 									className="previewView"
 									style={{
 										width: width,

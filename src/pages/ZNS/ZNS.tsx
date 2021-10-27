@@ -142,8 +142,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const { addNotification } = useNotification();
 
 	const isMobile = useMatchMedia('phone');
-	const isTabletPotriat = useMatchMedia('(max-width: 768px)');
-	const isMobilePotriat = useMatchMedia('(max-width: 415px)');
+	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
+	const isMobilePortrait = useMatchMedia('(max-width: 415px)');
 
 	//- Page State
 	const [hasLoaded, setHasLoaded] = useState(false);
@@ -219,7 +219,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const getTradeData = async () => {
 		if (znsDomain) {
 			const metricsData = await sdk.instance.getDomainMetrics([znsDomain.id]);
-			console.log(metricsData);
 			if (metricsData && metricsData[znsDomain.id]) {
 				setTradeData(metricsData[znsDomain.id]);
 			}
@@ -304,8 +303,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	}, [znsDomain, hasLoaded]);
 
 	useEffect(() => {
+		setStatsLoaded(false);
 		if (znsDomain && znsDomain.id) {
-			setStatsLoaded(false);
 			getTradeData();
 		}
 	}, [znsDomain]);
@@ -316,9 +315,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	const nftStats = () => {
 		let width = '24.2%';
-		if (isMobilePotriat) {
+		if (isMobilePortrait) {
 			width = '100%';
-		} else if (isTabletPotriat) {
+		} else if (isTabletPortrait) {
 			width = '32%';
 		}
 
@@ -326,12 +325,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			{
 				fieldName: 'Items in Domain',
 				title: tradeData?.items,
-				isHidden: isMobilePotriat,
+				isHidden: isMobilePortrait,
 			},
 			{
 				fieldName: 'Total Owners',
 				title: tradeData?.holders,
-				isHidden: isMobile || isTabletPotriat,
+				isHidden: isMobile || isTabletPortrait,
 			},
 			{
 				fieldName: 'Floor Price',
@@ -342,7 +341,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 								.toLocaleString()
 						: 0
 				} WILD`,
-				subTitle: `${
+				subTitle: `$${
 					tradeData?.lowestSale
 						? toFiat(
 								Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
@@ -356,7 +355,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				title: (tradeData?.volume as any)?.all
 					? `${ethers.utils.formatUnits((tradeData?.volume as any)?.all)} WILD`
 					: '',
-				subTitle: `${
+				subTitle: `$${
 					(tradeData?.volume as any)?.all
 						? toFiat(
 								Number(
