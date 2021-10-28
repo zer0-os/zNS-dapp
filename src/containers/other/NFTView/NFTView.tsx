@@ -347,7 +347,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				}`,
 			},
 			{
-				fieldName: 'Volume (All-Time)',
+				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.all
 					? `${Number(
 							ethers.utils.formatEther((tradeData?.volume as any)?.all),
