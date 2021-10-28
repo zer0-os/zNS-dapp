@@ -118,6 +118,10 @@
 	display: flex;
 	flex-direction: column;
 	max-height: 568px;
+
+	@media only screen and (max-width: 768px) {
+		max-height: unset;
+	}
 }
 
 .Details > div:first-of-type {
@@ -191,6 +195,15 @@
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
+
+	@media only screen and (max-width: 768px) {
+		max-height: unset;
+		margin: 16px 0;
+		line-height: 24px;
+		-webkit-line-clamp: unset;
+		overflow: visible;
+		text-overflow: unset;
+	}
 }
 
 .History ul::-webkit-scrollbar-corner {

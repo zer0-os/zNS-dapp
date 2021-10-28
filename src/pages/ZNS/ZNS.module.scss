@@ -33,8 +33,13 @@
 	background: var(--background-purple-card-20);
 	padding: 16px;
 	flex-wrap: wrap;
-}
 
-.Stats:first-child {
-	margin-left: 0;
+	@media only screen and (max-width: 415px) {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	&:first-child {
+		margin-left: 0;
+	}
 }
