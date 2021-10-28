@@ -86,7 +86,8 @@ const SubdomainTableCard = (props: any) => {
 						<>
 							<label>Highest Bid</label>
 							<span className={`${styles.Crypto} glow-text-blue`}>
-								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}
+								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}{' '}
+								WILD
 							</span>
 							<span className={styles.Fiat}>
 								$
