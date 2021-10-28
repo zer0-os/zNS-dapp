@@ -74,7 +74,7 @@ const SubdomainTableRow = (props: any) => {
 			return (
 				<>
 					<span className={styles.Bid}>
-						{bids[0].amount.toLocaleString() + ' WILD'}
+						{bids[0].amount ? bids[0].amount.toLocaleString() : '0'}
 					</span>
 					{wildPriceUsd && (
 						<span className={styles.Bid}>
@@ -98,8 +98,10 @@ const SubdomainTableRow = (props: any) => {
 				{value && (
 					<span className={styles.Bid}>
 						{Number(ethers.utils.formatEther(value))
-							.toFixed(2)
-							.toLocaleString()}
+							? Number(ethers.utils.formatEther(value))
+									.toFixed(2)
+									.toLocaleString()
+							: '0'}
 					</span>
 				)}
 				{wildPriceUsd && (
