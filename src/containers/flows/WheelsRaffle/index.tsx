@@ -64,7 +64,10 @@ const WheelsRaffleContainer = () => {
 		if (!hasRaffleEnded) {
 			setIsModalOpen(true);
 		} else {
-			history.push('wheels.genesis');
+			window.open(
+				'https://zine.wilderworld.com/wilder-wheels-public-sale-reveal/',
+				'_blank',
+			);
 		}
 	};
 
@@ -130,7 +133,7 @@ const WheelsRaffleContainer = () => {
 		} else if (!hasRaffleEnded) {
 			return 'Enter Raffle';
 		} else {
-			return 'View Wheels';
+			return 'More Info';
 		}
 	};
 
