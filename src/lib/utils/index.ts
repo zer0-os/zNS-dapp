@@ -1,5 +1,3 @@
-import { checkMediaType, MediaType } from 'components/NFTMedia';
-import { getHashFromIPFSUrl } from 'lib/ipfs';
 import { UploadMetadata } from 'lib/types';
 
 export * from './domains';
@@ -31,11 +29,9 @@ const uploadData = async (dataToUpload: string | Buffer) => {
 const uploadMetadata = async (params: DomainMetadataParams) => {
 	// upload images to http backend
 	const image = await uploadData(params.image);
-	const hash = getHashFromIPFSUrl(image.url);
-	const mediaType = (await checkMediaType(hash)) as MediaType;
 
-	if (mediaType === MediaType.Unknown || !image) {
-		throw Error(`Failed to upload image to ipfs.`);
+	if (!image || !image.url) {
+		throw Error('Failed to upload metadata');
 	}
 
 	const metadataObject: UploadMetadata = {
@@ -66,16 +62,21 @@ export interface UploadedDomainMetadata {
 
 export const createDomainMetadata = async (params: DomainMetadataParams) => {
 	// upload metadata to IPFS
-	const metadataObject = await uploadMetadata(params);
-	const metadataAsString = JSON.stringify(metadataObject);
-	const metadata = await uploadData(metadataAsString);
+	try {
+		const metadataObject = await uploadMetadata(params);
+		const metadataAsString = JSON.stringify(metadataObject);
+		const metadata = await uploadData(metadataAsString);
 
-	const uploadedMetadata: UploadedDomainMetadata = {
-		url: metadata.url,
-		contents: metadataObject,
-	};
+		const uploadedMetadata: UploadedDomainMetadata = {
+			url: metadata.url,
+			contents: metadataObject,
+		};
 
-	return uploadedMetadata;
+		return uploadedMetadata;
+	} catch (e) {
+		console.log(e);
+		throw Error(e);
+	}
 };
 
 /**
