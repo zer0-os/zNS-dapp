@@ -207,7 +207,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 							/>
 						</div>
 					</li>
-					{/* <li
+					<li
 						onClick={() => connectToWallet('walletconnect')}
 						className={WalletStyles.wallet}
 					>
@@ -215,8 +215,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						<div>
 							<Image alt="wallet connect" src={walletConnectIcon} />
 						</div>
-					</li> */}
-					{/* <li
+					</li>
+					<li
 						onClick={() => connectToWallet('coinbase')}
 						className={WalletStyles.wallet}
 					>
@@ -224,7 +224,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						<div>
 							<Image alt="coinbase wallet" src={coinbaseWalletIcon} />
 						</div>
-					</li> */}
+					</li>
 					<li
 						onClick={() => connectToWallet('fortmatic')}
 						className={WalletStyles.wallet}
