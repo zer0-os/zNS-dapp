@@ -118,6 +118,10 @@
 	display: flex;
 	flex-direction: column;
 	max-height: 568px;
+
+	@media only screen and (max-width: 768px) {
+		max-height: unset;
+	}
 }
 
 .Details > div:first-of-type {
@@ -170,9 +174,9 @@
 }
 
 .Box h4 {
-	margin-bottom: 8px;
-	color: var(--color-primary-lighter-3);
-	text-transform: uppercase;
+	margin-bottom: 4px;
+	font-size: 12px;
+	color: #bfbfbf;
 }
 
 .Box span {
@@ -191,6 +195,15 @@
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
+
+	@media only screen and (max-width: 768px) {
+		max-height: unset;
+		margin: 16px 0;
+		line-height: 24px;
+		-webkit-line-clamp: unset;
+		overflow: visible;
+		text-overflow: unset;
+	}
 }
 
 .History ul::-webkit-scrollbar-corner {
@@ -218,6 +231,10 @@
 	display: flex;
 	flex-direction: column;
 	margin-top: 16px;
+
+	a {
+		margin-top: 6.5px;
+	}
 }
 
 .Copy {
