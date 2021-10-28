@@ -115,7 +115,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	React.useEffect(() => {
 		if (!loading) {
 			if (!znsDomain) {
-				console.log(`invalid domain, returning to home`);
 				history.push('/');
 				return;
 			}
