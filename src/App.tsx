@@ -19,6 +19,9 @@ import { HashRouter, Route } from 'react-router-dom';
 import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
+// Component Imports
+import { Spinner } from 'components';
+
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import MintProvider from 'lib/providers/MintProvider';
