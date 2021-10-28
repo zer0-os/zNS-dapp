@@ -24,8 +24,8 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const whitelistDate = 1633071540000;
-	const publicDate = 1633114740000;
+	const whitelistDate = 1635458400000;
+	const publicDate = 1635544800000;
 
 	//////////////////
 	// State & Data //
