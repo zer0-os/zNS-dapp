@@ -174,7 +174,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						});
 					})
 					.catch((err) => {
-						console.log(err);
+						console.error(err);
 					});
 			} catch (e) {
 				console.error(e);
@@ -279,11 +279,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	useEffect(() => {
 		if (!isMounted.current) return;
-		if (
-			znsDomain.domain &&
-			znsDomain.domain.metadata &&
-			!znsDomain.domain.image
-		) {
+		if (znsDomain.domain) {
 			if (!isMounted.current) return;
 
 			setIsOwnedByYou(

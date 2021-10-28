@@ -59,10 +59,12 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 					setData(subDomainsData);
 				}
 			} catch (err) {
-				console.log(err);
+				console.error(err);
 			}
 
-			setAreDomainMetricsLoading(false);
+			if (isMounted) {
+				setAreDomainMetricsLoading(false);
+			}
 		} else {
 			setData([]);
 			setLoadingDomain(domain?.name);
