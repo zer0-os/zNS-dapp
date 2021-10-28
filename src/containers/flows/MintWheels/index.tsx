@@ -14,7 +14,6 @@ import MintWheels from './MintWheels';
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
 import { getBannerLabel, getBannerButtonText } from './labels';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useMintProvider } from 'lib/providers/MintProvider';
 import {
 	getDropData,
@@ -150,7 +149,7 @@ const MintWheelsFlowContainer = () => {
 		};
 	}, []);
 
-	useUpdateEffect(() => {
+	useEffect(() => {
 		let isMounted = true;
 		const getData = async () => {
 			if (!saleContract) {
@@ -212,9 +211,10 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [account, library, saleContract, numMinted]);
 
-	useUpdateEffect(() => {
+	useEffect(() => {
 		let isMounted = true;
 
 		if (!saleContract || !hasCountdownFinished) {
@@ -257,6 +257,7 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasCountdownFinished, refetch]);
 
 	////////////

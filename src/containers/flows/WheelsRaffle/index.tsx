@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { MintWheelsBanner, Overlay, Countdown } from 'components';
+import { MintWheels } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 
@@ -13,7 +14,7 @@ const WheelsRaffleContainer = () => {
 	// Hardcoded event times
 	const RAFFLE_START_TIME = 1634408000000;
 	const RAFFLE_END_TIME = 1635303609000;
-	const SALE_START_TIME = 1635458400000;
+	const SALE_START_TIME = currentTime + 5000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -192,7 +193,7 @@ const WheelsRaffleContainer = () => {
 		);
 	}
 
-	return <></>;
+	return <MintWheels />;
 };
 
 export default WheelsRaffleContainer;
