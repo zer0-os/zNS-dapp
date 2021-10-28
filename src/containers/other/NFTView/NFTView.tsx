@@ -370,7 +370,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						<>
 							{!item.isHidden ? (
 								<StatsWidget
-									{...item}
+									title={item.title}
+									fieldName={item.fieldName}
+									subTitle={item.subTitle}
 									isLoading={!statsLoaded || !allItems}
 									className="previewView"
 									style={{

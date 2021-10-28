@@ -378,9 +378,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						<>
 							{!item.isHidden ? (
 								<StatsWidget
-									{...item}
-									isLoading={!statsLoaded}
 									className="normalView"
+									fieldName={item.fieldName}
+									isLoading={!statsLoaded}
+									title={item.title}
+									subTitle={item.subTitle}
 									style={{
 										width: width,
 									}}

@@ -45,6 +45,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 
 	useAsyncEffect(async () => {
 		let isMounted = true;
+		setData(undefined);
 		if (domain?.subdomains) {
 			setAreDomainMetricsLoading(true);
 			setLoadingDomain(domain.name);
@@ -54,7 +55,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				const subDomainsData = domain.subdomains.map((item) =>
 					Object.assign({}, item, { metrics: tradeData[item.id] }),
 				);
-				if (isMounted && loadingDomain === domain.name) {
+				if (isMounted && (!loadingDomain || loadingDomain === domain.name)) {
 					setData(subDomainsData);
 				}
 			} catch (err) {
@@ -62,6 +63,9 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			}
 
 			setAreDomainMetricsLoading(false);
+		} else {
+			setData([]);
+			setLoadingDomain(domain?.name);
 		}
 
 		return () => {
@@ -117,6 +121,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			<GenericTable
 				alignments={[0, 0, 1, 1, 1, 1, 1]}
 				data={data}
+				itemKey={'id'}
 				headers={headers}
 				rowComponent={SubdomainTableRow}
 				gridComponent={SubdomainTableCard}
