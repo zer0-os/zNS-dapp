@@ -99,7 +99,7 @@ const SubdomainTableRow = (props: any) => {
 		const value =
 			columnName === 'volume'
 				? (tradeData?.volume as any)?.all
-				: tradeData[columnName];
+				: tradeData?.[columnName];
 		return (
 			<>
 				{' '}
