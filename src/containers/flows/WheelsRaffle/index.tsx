@@ -61,10 +61,7 @@ const WheelsRaffleContainer = () => {
 		if (!hasRaffleEnded) {
 			setIsModalOpen(true);
 		} else {
-			window.open(
-				'https://zine.wilderworld.com/wilder-wheels-public-sale-reveal/',
-				'_blank',
-			);
+			window.open('https://www.zine.live/the-network-state/', '_blank');
 		}
 	};
 
