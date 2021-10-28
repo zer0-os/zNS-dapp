@@ -314,7 +314,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						  ).toLocaleString()
 						: 0
 				} WILD`,
-				subTitle: `${
+				subTitle: `$${
 					tradeData?.highestBid
 						? toFiat(
 								Number(ethers.utils.formatEther(tradeData?.highestBid)) *
