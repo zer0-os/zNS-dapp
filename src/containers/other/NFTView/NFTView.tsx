@@ -66,7 +66,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const isMobile = useMatchMedia('phone');
 	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
-	const isMobilePortrait = useMatchMedia('(max-width: 415px)');
+	const isMobilePortrait = useMatchMedia('(max-width: 428px)');
 
 	//- Page State
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
