@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useEffect, useRef, createRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
@@ -15,7 +15,6 @@ import {
 	NFTMedia,
 	Overlay,
 	StatsWidget,
-	IconButton,
 	Tooltip,
 } from 'components';
 import { BidButton, MakeABid } from 'containers';
@@ -29,8 +28,7 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useDomainsTransfers } from 'lib/hooks/zNSDomainHooks';
-import { Attribute, transfersData } from 'lib/types';
+import { Attribute } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DomainBidEvent, DomainEvent, DomainMetrics } from '@zero-tech/zns-sdk';
 
@@ -41,7 +39,6 @@ import styles from './NFTView.module.scss';
 import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
-import shareIcon from './assets/share.svg';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 const moment = require('moment');
 
@@ -312,9 +309,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				fieldName: 'Top Bid',
 				title: `${
 					tradeData?.highestBid
-						? Number(ethers.utils.formatEther(tradeData?.highestBid))
-								.toFixed(2)
-								.toLocaleString()
+						? Number(
+								ethers.utils.formatEther(tradeData?.highestBid),
+						  ).toLocaleString()
 						: 0
 				} WILD`,
 				subTitle: `${
@@ -328,16 +325,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			},
 			{
 				fieldName: 'Bids',
-				title: bids?.length || '0',
+				title: bids?.length ? bids.length.toLocaleString() : '0',
 				isHidden: isMobile || isTabletPortrait || isMobilePortrait,
 			},
 			{
 				fieldName: 'Last Sale',
 				title: `${
 					tradeData?.lastSale
-						? Number(ethers.utils.formatEther(tradeData?.lastSale))
-								.toFixed(2)
-								.toLocaleString()
+						? Number(
+								ethers.utils.formatEther(tradeData?.lastSale),
+						  ).toLocaleString()
 						: 0
 				} WILD`,
 				subTitle: `$${
@@ -350,15 +347,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				} USD`,
 			},
 			{
-				fieldName: 'Volume',
-				title: (tradeData?.volume as any)?.day
-					? `${ethers.utils.formatEther((tradeData?.volume as any)?.day)} WILD`
+				fieldName: 'Volume (All-Time)',
+				title: (tradeData?.volume as any)?.all
+					? `${Number(
+							ethers.utils.formatEther((tradeData?.volume as any)?.all),
+					  ).toLocaleString()} WILD`
 					: '',
 				subTitle: `$${
-					(tradeData?.volume as any)?.day
+					(tradeData?.volume as any)?.all
 						? toFiat(
 								Number(
-									ethers.utils.formatEther((tradeData?.volume as any)?.day),
+									ethers.utils.formatEther((tradeData?.volume as any)?.all),
 								) * wildPriceUsd,
 						  )
 						: 0
@@ -373,7 +372,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						<>
 							{!item.isHidden ? (
 								<StatsWidget
-									{...item}
+									title={item.title}
+									fieldName={item.fieldName}
+									subTitle={item.subTitle}
 									isLoading={!statsLoaded || !allItems}
 									className="previewView"
 									style={{

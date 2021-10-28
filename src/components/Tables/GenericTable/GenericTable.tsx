@@ -138,7 +138,7 @@ const GenericTable = (props: any) => {
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
 								<props.rowComponent
-									key={index}
+									key={d[props.itemKey]}
 									rowNumber={index}
 									data={d}
 									headers={props.headers}
@@ -160,6 +160,7 @@ const GenericTable = (props: any) => {
 										? styles.Right
 										: styles.Left
 								} ${h?.className && styles[h?.className]}`}
+								key={index}
 							>
 								{h?.label}
 							</th>
@@ -189,7 +190,11 @@ const GenericTable = (props: any) => {
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					<props.gridComponent key={index} rowNumber={index} data={d} />
+					<props.gridComponent
+						key={d[props.itemKey]}
+						rowNumber={index}
+						data={d}
+					/>
 				))}
 				{data.length === 2 && <div></div>}
 				{data.length === 1 && (

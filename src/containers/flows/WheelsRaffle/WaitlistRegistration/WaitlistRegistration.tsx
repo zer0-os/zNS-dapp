@@ -87,7 +87,7 @@ const WaitlistRegistration = (props: WaitlistRegistrationProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								<img src={iconDiscord} />
+								<img src={iconDiscord} alt="discord" />
 								Discord
 							</a>
 							<a

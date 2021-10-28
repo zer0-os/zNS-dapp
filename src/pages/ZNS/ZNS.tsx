@@ -324,21 +324,23 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		const data = [
 			{
 				fieldName: 'Items in Domain',
-				title: tradeData?.items,
+				title: tradeData?.items ? Number(tradeData.items).toLocaleString() : 0,
 				isHidden: isMobilePortrait,
 			},
 			{
 				fieldName: 'Total Owners',
-				title: tradeData?.holders,
+				title: tradeData?.holders
+					? Number(tradeData.holders).toLocaleString()
+					: 0,
 				isHidden: isMobile || isTabletPortrait,
 			},
 			{
 				fieldName: 'Floor Price',
 				title: `${
 					tradeData?.lowestSale
-						? Number(ethers.utils.formatEther(tradeData?.lowestSale))
-								.toFixed(2)
-								.toLocaleString()
+						? Number(
+								ethers.utils.formatEther(tradeData?.lowestSale),
+						  ).toLocaleString()
 						: 0
 				} WILD`,
 				subTitle: `$${
@@ -353,7 +355,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			{
 				fieldName: 'Volume (All-Time)',
 				title: (tradeData?.volume as any)?.all
-					? `${ethers.utils.formatUnits((tradeData?.volume as any)?.all)} WILD`
+					? `${Number(
+							ethers.utils.formatUnits((tradeData?.volume as any)?.all),
+					  ).toLocaleString()} WILD`
 					: '',
 				subTitle: `$${
 					(tradeData?.volume as any)?.all
@@ -374,9 +378,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						<>
 							{!item.isHidden ? (
 								<StatsWidget
-									{...item}
-									isLoading={!statsLoaded}
 									className="normalView"
+									fieldName={item.fieldName}
+									isLoading={!statsLoaded}
+									title={item.title}
+									subTitle={item.subTitle}
 									style={{
 										width: width,
 									}}

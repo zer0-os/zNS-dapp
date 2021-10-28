@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 //- Style Imports
 import classNames from 'classnames/bind';
@@ -76,7 +76,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 				fit={!hasAspectRatio ? 'cover' : undefined}
 			/>
 		);
-	}, [imageUri, name]);
+	}, [imageUri, name, hasAspectRatio]);
 
 	return (
 		<div

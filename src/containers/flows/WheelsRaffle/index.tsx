@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { MintWheelsBanner, Overlay, Countdown } from 'components';
 import WaitlistRegistration from './WaitlistRegistration';
@@ -9,8 +8,6 @@ const WheelsRaffleContainer = () => {
 	//////////////////
 	// State & Data //
 	//////////////////
-
-	const history = useHistory();
 
 	const currentTime = new Date().getTime();
 	// Hardcoded event times
@@ -64,7 +61,7 @@ const WheelsRaffleContainer = () => {
 		if (!hasRaffleEnded) {
 			setIsModalOpen(true);
 		} else {
-			history.push('wheels.genesis');
+			window.open('https://www.zine.live/the-network-state/', '_blank');
 		}
 	};
 
@@ -130,7 +127,7 @@ const WheelsRaffleContainer = () => {
 		} else if (!hasRaffleEnded) {
 			return 'Enter Raffle';
 		} else {
-			return 'View Wheels';
+			return 'More Info';
 		}
 	};
 

@@ -32,7 +32,6 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 				if (isMounted) {
 					const url = URL.createObjectURL(blob);
 					setBackgroundBlob(url);
-					console.log(url);
 				}
 			});
 		return () => {
@@ -47,7 +46,7 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 			onClick={onClick}
 		>
 			{backgroundBlob && (
-				<img className={styles.Background} src={backgroundBlob} />
+				<img className={styles.Background} src={backgroundBlob} alt="" />
 			)}
 			<div className={`${styles.Content}`}>
 				<div className={`${styles.TextContainer}`}>

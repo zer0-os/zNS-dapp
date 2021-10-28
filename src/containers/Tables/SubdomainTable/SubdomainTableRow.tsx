@@ -66,19 +66,28 @@ const SubdomainTableRow = (props: any) => {
 	}, [domain, hasUpdated]);
 
 	const highestBid = () => {
-		if (!bids) {
+		if (!tradeData) {
 			return <span>Failed to retrieve</span>;
-		} else if (bids.length === 0) {
-			return <span>-</span>;
 		} else {
 			return (
 				<>
 					<span className={styles.Bid}>
-						{bids[0].amount.toLocaleString() + ' WILD'}
+						{tradeData.highestBid
+							? Number(
+									ethers.utils.formatEther(tradeData.highestBid),
+							  ).toLocaleString()
+							: 0}
 					</span>
 					{wildPriceUsd && (
 						<span className={styles.Bid}>
-							{'$' + toFiat(wildPriceUsd * bids[0].amount) + ' USD'}
+							$
+							{tradeData.highestBid
+								? toFiat(
+										Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+											wildPriceUsd,
+								  )
+								: 0}{' '}
+							USD
 						</span>
 					)}
 				</>
@@ -90,7 +99,7 @@ const SubdomainTableRow = (props: any) => {
 		const value =
 			columnName === 'volume'
 				? (tradeData?.volume as any)?.all
-				: tradeData[columnName];
+				: tradeData?.[columnName];
 		return (
 			<>
 				{' '}
@@ -98,11 +107,11 @@ const SubdomainTableRow = (props: any) => {
 				{value && (
 					<span className={styles.Bid}>
 						{Number(ethers.utils.formatEther(value))
-							.toFixed(2)
-							.toLocaleString()}
+							? Number(ethers.utils.formatEther(value)).toLocaleString()
+							: '-'}
 					</span>
 				)}
-				{wildPriceUsd && (
+				{wildPriceUsd && Number(value) > 0 && (
 					<span className={styles.Bid}>
 						{'$' +
 							toFiat(wildPriceUsd * Number(ethers.utils.formatEther(value))) +
