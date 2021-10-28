@@ -14,7 +14,6 @@ import MintWheels from './MintWheels';
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
 import { getBannerLabel, getBannerButtonText } from './labels';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useMintProvider } from 'lib/providers/MintProvider';
 import {
 	getDropData,
@@ -25,8 +24,8 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const whitelistDate = 1633071540000;
-	const publicDate = 1633114740000;
+	const whitelistDate = 1635458400000;
+	const publicDate = 1635544800000;
 
 	//////////////////
 	// State & Data //
@@ -83,7 +82,7 @@ const MintWheelsFlowContainer = () => {
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window
 				?.open(
-					'https://zine.wilderworld.com/wilder-wheels-community-whitelist-now-open/',
+					'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
 					'_blank',
 				)
 				?.focus();
@@ -150,7 +149,7 @@ const MintWheelsFlowContainer = () => {
 		};
 	}, []);
 
-	useUpdateEffect(() => {
+	useEffect(() => {
 		let isMounted = true;
 		const getData = async () => {
 			if (!saleContract) {
@@ -212,9 +211,10 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [account, library, saleContract, numMinted]);
 
-	useUpdateEffect(() => {
+	useEffect(() => {
 		let isMounted = true;
 
 		if (!saleContract || !hasCountdownFinished) {
@@ -257,6 +257,7 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasCountdownFinished, refetch]);
 
 	////////////

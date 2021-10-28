@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { MintWheelsBanner, Overlay, Countdown } from 'components';
+import { MintWheels } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 
@@ -192,7 +193,7 @@ const WheelsRaffleContainer = () => {
 		);
 	}
 
-	return <></>;
+	return <MintWheels />;
 };
 
 export default WheelsRaffleContainer;

@@ -67,7 +67,7 @@ const SubdomainTableRow = (props: any) => {
 
 	const highestBid = () => {
 		if (!tradeData) {
-			return <span>Failed to retrieve</span>;
+			return <span>-</span>;
 		} else {
 			return (
 				<>
@@ -98,7 +98,7 @@ const SubdomainTableRow = (props: any) => {
 		return (
 			<>
 				{' '}
-				{!tradeData && 'Failed to retrieve'}
+				{!tradeData && '-'}
 				{value && (
 					<span className={styles.Bid}>
 						{Number(ethers.utils.formatEther(value))
@@ -125,7 +125,7 @@ const SubdomainTableRow = (props: any) => {
 				<>
 					<td className={styles.Right}>{highestBid()}</td>
 					<td className={styles.Right}>
-						{!bids && 'Failed to retrieve'}
+						{!bids && '-'}
 						{bids && formatNumber(bids.length)}
 					</td>
 					<td className={`${styles.Right} ${styles.lastSaleCol}`}>

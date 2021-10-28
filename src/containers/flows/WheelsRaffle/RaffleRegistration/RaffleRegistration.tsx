@@ -40,7 +40,6 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 
 	const onSubmitEmail = async () => {
 		const valid = isValidEmail(userEmail || '');
-		console.log(valid);
 		if (!valid) {
 			setEmailError('Please enter a valid email address');
 		} else {

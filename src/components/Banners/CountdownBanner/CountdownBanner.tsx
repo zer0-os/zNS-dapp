@@ -71,7 +71,6 @@ const CountdownBanner = () => {
 
 	// Navigates to button link
 	const onClick = () => {
-		console.log('yo');
 		if (buttonLink) {
 			history.push(buttonLink);
 		}

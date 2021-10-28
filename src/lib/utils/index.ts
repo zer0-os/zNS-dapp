@@ -75,7 +75,7 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
 
 		return uploadedMetadata;
 	} catch (e) {
-		console.log(e);
+		console.error(e);
 		throw Error(e);
 	}
 };
