@@ -82,7 +82,7 @@ const MintWheelsFlowContainer = () => {
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window
 				?.open(
-					'https://zine.wilderworld.com/wilder-wheels-community-whitelist-now-open/',
+					'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
 					'_blank',
 				)
 				?.focus();
