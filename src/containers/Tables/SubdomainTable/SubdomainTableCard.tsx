@@ -6,10 +6,10 @@ import styles from './SubdomainTableCard.module.scss';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useBidProvider } from 'lib/providers/BidProvider';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
-import { Bid } from 'lib/types';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { useHistory } from 'react-router-dom';
+import { ethers } from 'ethers';
 import { toFiat } from 'lib/currency';
 
 import { NFTCard } from 'components';
@@ -23,15 +23,12 @@ const SubdomainTableCard = (props: any) => {
 	const { push: goTo } = useHistory();
 	const { makeABid, updated } = useBid();
 
-	const { getBidsForDomain } = useBidProvider();
-
 	const { wildPriceUsd } = useCurrencyProvider();
 
 	const domain = props.data;
+	const tradeData: DomainMetrics = domain?.metrics;
 
-	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
-	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
 
 	const isOwnedByUser =
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
@@ -46,45 +43,10 @@ const SubdomainTableCard = (props: any) => {
 		}
 	}, [updated]);
 
-	useEffect(() => {
-		let isMounted = true;
-		const get = async () => {
-			setAreBidsLoading(true);
-			setBids(undefined);
-			const b = await getBidsForDomain(domain);
-			if (isMounted) {
-				setAreBidsLoading(false);
-				setBids(b);
-			}
-		};
-		get();
-		return () => {
-			isMounted = false;
-		};
-	}, [domain, hasUpdated]);
-
 	const onClick = (event: any) => {
 		if (!event.target.className.includes('FutureButton')) {
 			goTo(domain.name.split('wilder.')[1]);
 		}
-	};
-
-	const highestBidWild = () => {
-		if (!bids) {
-			return 'Failed to retrieve';
-		}
-		if (bids.length === 0) {
-			return 'No bids';
-		} else {
-			return bids[0].amount.toLocaleString() + ' WILD';
-		}
-	};
-
-	const highestBidUsd = () => {
-		if (!bids || bids.length === 0) {
-			return;
-		}
-		return '$' + toFiat(wildPriceUsd * bids[0].amount) + ' USD';
 	};
 
 	return (
@@ -99,14 +61,27 @@ const SubdomainTableCard = (props: any) => {
 		>
 			<div className={styles.Container}>
 				<div className={styles.Bid}>
-					{areBidsLoading && <Spinner style={{ marginTop: 1 }} />}
-					{!areBidsLoading && (
+					{!tradeData && <Spinner style={{ marginTop: 1 }} />}
+					{tradeData && (
 						<>
 							<label>Highest Bid</label>
 							<span className={`${styles.Crypto} glow-text-blue`}>
-								{highestBidWild()}
+								{tradeData.highestBid
+									? Number(
+											ethers.utils.formatEther(tradeData.highestBid),
+									  ).toLocaleString()
+									: 0}
 							</span>
-							<span className={styles.Fiat}>{highestBidUsd()}</span>
+							<span className={styles.Fiat}>
+								$
+								{tradeData.highestBid
+									? toFiat(
+											Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+												wildPriceUsd,
+									  )
+									: 0}{' '}
+								USD
+							</span>
 						</>
 					)}
 				</div>
