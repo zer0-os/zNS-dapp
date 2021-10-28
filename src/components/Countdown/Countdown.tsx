@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { useEffect, useState } from 'react';
 
 type CountdownProps = {
 	to: number;
@@ -36,7 +35,7 @@ const Countdown = (props: CountdownProps) => {
 		}${minutes > 0 ? minutes + 'm ' : ''}${seconds}s`;
 	};
 
-	useUpdateEffect(() => {
+	useEffect(() => {
 		let isActive = true;
 		if (!label) {
 			if (isActive) {
@@ -52,6 +51,7 @@ const Countdown = (props: CountdownProps) => {
 		return () => {
 			isActive = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [secondsCounted]);
 
 	return <>{label}</>;
