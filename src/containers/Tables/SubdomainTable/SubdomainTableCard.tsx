@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { FutureButton, Spinner } from 'components';
+import { Spinner } from 'components';
 import React, { useEffect, useState } from 'react';
 
 import styles from './SubdomainTableCard.module.scss';

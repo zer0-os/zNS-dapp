@@ -70,7 +70,7 @@ const RegistrationContainer = () => {
 
 	const getEthBalance = async () => {
 		if (!library) {
-			throw 'Could not find web3 library';
+			throw new Error('Could not find web3 library');
 		}
 		const ethBalance = await library.getSigner().getBalance();
 		const asString = ethers.utils.formatEther(ethBalance);
@@ -79,7 +79,7 @@ const RegistrationContainer = () => {
 
 	const signMessage = async () => {
 		if (!library) {
-			throw 'Failed to find Web3 provider';
+			throw new Error('Failed to find Web3 provider');
 		}
 		const signer = library.getSigner();
 		let signedBid: Maybe<string>;
@@ -88,7 +88,7 @@ const RegistrationContainer = () => {
 				'Wilder Wheels Raffle Registration',
 			);
 		} catch {
-			throw 'Failed to sign message';
+			throw new Error('Failed to sign message');
 		}
 		return signedBid;
 	};

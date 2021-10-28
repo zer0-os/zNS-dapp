@@ -160,6 +160,7 @@ const GenericTable = (props: any) => {
 										? styles.Right
 										: styles.Left
 								} ${h?.className && styles[h?.className]}`}
+								key={index}
 							>
 								{h?.label}
 							</th>
