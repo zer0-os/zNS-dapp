@@ -284,7 +284,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				setHasBidDataLoaded(true);
 				setBids(allBids);
 				setCurrentHighestBid(highestBid);
-				setCurrentHighestBidUsd(highestBid.amount * wildPriceUsd);
+				if (wildPriceUsd > 0) {
+					setCurrentHighestBidUsd(highestBid.amount * wildPriceUsd);
+				}
 			}
 		};
 
