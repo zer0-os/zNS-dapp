@@ -53,6 +53,7 @@
 		"graphql-tag": "^2.11.0",
 		"ipfs-http-client": "^50.0.0",
 		"lodash": "^4.17.21",
+		"millify": "^4.0.0",
 		"moment": "^2.29.1",
 		"node-random-name": "^1.0.1",
 		"react": "^17.0.2",

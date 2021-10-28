@@ -14,6 +14,7 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
+import { formatNumber, formatEthers } from 'lib/utils';
 
 //- Style Imports
 import styles from './ZNS.module.scss';
@@ -54,7 +55,6 @@ import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
-import { toFiat } from 'lib/currency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 
 type ZNSProps = {
@@ -324,50 +324,42 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		const data = [
 			{
 				fieldName: 'Items in Domain',
-				title: tradeData?.items ? Number(tradeData.items).toLocaleString() : 0,
+				title: tradeData?.items ? formatNumber(tradeData.items) : 0,
 				isHidden: isMobilePortrait,
 			},
 			{
 				fieldName: 'Total Owners',
-				title: tradeData?.holders
-					? Number(tradeData.holders).toLocaleString()
-					: 0,
+				title: tradeData?.holders ? formatNumber(tradeData.holders) : 0,
 				isHidden: isMobile || isTabletPortrait,
 			},
 			{
 				fieldName: 'Floor Price',
 				title: `${
-					tradeData?.lowestSale
-						? Number(
-								ethers.utils.formatEther(tradeData?.lowestSale),
-						  ).toLocaleString()
-						: 0
+					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
 				} WILD`,
 				subTitle: `$${
 					tradeData?.lowestSale
-						? toFiat(
+						? formatNumber(
 								Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
 									wildPriceUsd,
 						  )
 						: 0
-				} USD`,
+				}`,
 			},
 			{
 				fieldName: 'Volume (All-Time)',
 				title: (tradeData?.volume as any)?.all
-					? `${Number(
-							ethers.utils.formatUnits((tradeData?.volume as any)?.all),
-					  ).toLocaleString()} WILD`
+					? `${formatEthers((tradeData?.volume as any)?.all)} WILD`
 					: '',
 				subTitle: `$${
 					(tradeData?.volume as any)?.all
-						? toFiat(
+						? formatNumber(
 								Number(
 									ethers.utils.formatEther((tradeData?.volume as any)?.all),
 								) * wildPriceUsd,
 						  )
 						: 0
-				} USD`,
+				}`,
 			},
 		];
 

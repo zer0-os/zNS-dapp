@@ -13,8 +13,8 @@ import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { BidButton } from 'containers';
 import { ethers } from 'ethers';
-import { toFiat } from 'lib/currency';
 import { DomainMetrics } from '@zero-tech/zns-sdk';
+import { formatNumber, formatEthers } from 'lib/utils';
 
 const SubdomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
@@ -72,22 +72,17 @@ const SubdomainTableRow = (props: any) => {
 			return (
 				<>
 					<span className={styles.Bid}>
-						{tradeData.highestBid
-							? Number(
-									ethers.utils.formatEther(tradeData.highestBid),
-							  ).toLocaleString()
-							: 0}
+						{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}
 					</span>
 					{wildPriceUsd && (
 						<span className={styles.Bid}>
 							$
 							{tradeData.highestBid
-								? toFiat(
+								? formatNumber(
 										Number(ethers.utils.formatEther(tradeData?.highestBid)) *
 											wildPriceUsd,
 								  )
 								: 0}{' '}
-							USD
 						</span>
 					)}
 				</>
@@ -107,15 +102,16 @@ const SubdomainTableRow = (props: any) => {
 				{value && (
 					<span className={styles.Bid}>
 						{Number(ethers.utils.formatEther(value))
-							? Number(ethers.utils.formatEther(value)).toLocaleString()
+							? formatEthers(value)
 							: '-'}
 					</span>
 				)}
 				{wildPriceUsd && Number(value) > 0 && (
 					<span className={styles.Bid}>
 						{'$' +
-							toFiat(wildPriceUsd * Number(ethers.utils.formatEther(value))) +
-							' USD'}
+							formatNumber(
+								wildPriceUsd * Number(ethers.utils.formatEther(value)),
+							)}
 					</span>
 				)}
 			</>
@@ -130,7 +126,7 @@ const SubdomainTableRow = (props: any) => {
 					<td className={styles.Right}>{highestBid()}</td>
 					<td className={styles.Right}>
 						{!bids && 'Failed to retrieve'}
-						{bids && bids.length.toLocaleString()}
+						{bids && formatNumber(bids.length)}
 					</td>
 					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
 						{formatColumn('lastSale')}

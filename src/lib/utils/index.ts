@@ -1,6 +1,7 @@
 import { UploadMetadata } from 'lib/types';
 
 export * from './domains';
+export * from './number';
 
 interface DomainMetadataParams {
 	previewImage?: Buffer;

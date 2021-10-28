@@ -10,7 +10,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
-import { toFiat } from 'lib/currency';
+import { formatNumber, formatEthers } from 'lib/utils';
 
 // Component Imports
 import { Spinner, NFTCard } from 'components';
@@ -61,7 +61,6 @@ const SubdomainTableCard = (props: any) => {
 
 	useEffect(() => {
 		if (updated && updated.id === domain.id) {
-			console.log(updated);
 			setHasUpdated(!hasUpdated);
 		}
 	}, [updated]);
@@ -87,21 +86,16 @@ const SubdomainTableCard = (props: any) => {
 						<>
 							<label>Highest Bid</label>
 							<span className={`${styles.Crypto} glow-text-blue`}>
-								{tradeData.highestBid
-									? Number(
-											ethers.utils.formatEther(tradeData.highestBid),
-									  ).toLocaleString()
-									: 0}
+								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}
 							</span>
 							<span className={styles.Fiat}>
 								$
 								{tradeData.highestBid
-									? toFiat(
+									? formatNumber(
 											Number(ethers.utils.formatEther(tradeData?.highestBid)) *
 												wildPriceUsd,
 									  )
 									: 0}{' '}
-								USD
 							</span>
 						</>
 					)}

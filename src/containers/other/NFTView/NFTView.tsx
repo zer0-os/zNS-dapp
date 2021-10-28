@@ -321,7 +321,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 									wildPriceUsd,
 						  )
 						: 0
-				} USD`,
+				}`,
 			},
 			{
 				fieldName: 'Bids',
@@ -344,7 +344,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 									wildPriceUsd,
 						  )
 						: 0
-				} USD`,
+				}`,
 			},
 			{
 				fieldName: 'Volume (All-Time)',
@@ -361,7 +361,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								) * wildPriceUsd,
 						  )
 						: 0
-				} USD`,
+				}`,
 			},
 		];
 
