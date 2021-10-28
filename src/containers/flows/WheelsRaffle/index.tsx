@@ -61,7 +61,10 @@ const WheelsRaffleContainer = () => {
 		if (!hasRaffleEnded) {
 			setIsModalOpen(true);
 		} else {
-			window.open('https://www.zine.live/the-network-state/', '_blank');
+			window.open(
+				'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
+				'_blank',
+			);
 		}
 	};
 
@@ -127,7 +130,7 @@ const WheelsRaffleContainer = () => {
 		} else if (!hasRaffleEnded) {
 			return 'Enter Raffle';
 		} else {
-			return 'More Info';
+			return 'Sale Info';
 		}
 	};
 

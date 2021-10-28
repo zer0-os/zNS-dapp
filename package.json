@@ -1,6 +1,6 @@
 {
 	"name": "zns-dapp",
-	"version": "0.10.4",
+	"version": "0.10.5",
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
@@ -53,6 +53,7 @@
 		"graphql-tag": "^2.11.0",
 		"ipfs-http-client": "^50.0.0",
 		"lodash": "^4.17.21",
+		"millify": "^4.0.0",
 		"moment": "^2.29.1",
 		"node-random-name": "^1.0.1",
 		"react": "^17.0.2",

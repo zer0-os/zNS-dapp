@@ -46,13 +46,12 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	// Some hardcoded values for aspect ratios
 	// This will need to be extended
 	const isRootDomain = domain.split('.').length <= 2;
-	const isSquare = domain.includes('.kicks');
-	const isLandscape = domain.includes('.wheels') || domain.includes('.concept');
-	const isPortrait = domain.includes('.WoW');
+	const isSquare = domain.includes('.kicks') && !isRootDomain;
+	const isLandscape =
+		domain.includes('.wheels') || domain.includes('.concept') || isRootDomain;
+	const isPortrait = domain.includes('.WoW') && !isRootDomain;
 	const hasAspectRatio =
-		!ignoreAspectRatio &&
-		!isRootDomain &&
-		(isSquare || isLandscape || isPortrait);
+		!ignoreAspectRatio && (isSquare || isLandscape || isPortrait);
 
 	// If the domain is super long, truncate it
 	let domainText;

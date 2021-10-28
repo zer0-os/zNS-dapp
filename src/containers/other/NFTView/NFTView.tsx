@@ -66,7 +66,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const isMobile = useMatchMedia('phone');
 	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
-	const isMobilePortrait = useMatchMedia('(max-width: 415px)');
+	const isMobilePortrait = useMatchMedia('(max-width: 428px)');
 
 	//- Page State
 	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
@@ -314,14 +314,14 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						  ).toLocaleString()
 						: 0
 				} WILD`,
-				subTitle: `${
+				subTitle: `$${
 					tradeData?.highestBid
 						? toFiat(
 								Number(ethers.utils.formatEther(tradeData?.highestBid)) *
 									wildPriceUsd,
 						  )
 						: 0
-				} USD`,
+				}`,
 			},
 			{
 				fieldName: 'Bids',
@@ -344,10 +344,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 									wildPriceUsd,
 						  )
 						: 0
-				} USD`,
+				}`,
 			},
 			{
-				fieldName: 'Volume (All-Time)',
+				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.all
 					? `${Number(
 							ethers.utils.formatEther((tradeData?.volume as any)?.all),
@@ -361,7 +361,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 								) * wildPriceUsd,
 						  )
 						: 0
-				} USD`,
+				}`,
 			},
 		];
 
