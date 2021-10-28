@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { MintWheelsBanner, Overlay, Countdown } from 'components';
 import WaitlistRegistration from './WaitlistRegistration';
@@ -9,8 +8,6 @@ const WheelsRaffleContainer = () => {
 	//////////////////
 	// State & Data //
 	//////////////////
-
-	const history = useHistory();
 
 	const currentTime = new Date().getTime();
 	// Hardcoded event times
