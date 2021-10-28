@@ -350,15 +350,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				} USD`,
 			},
 			{
-				fieldName: 'Volume',
-				title: (tradeData?.volume as any)?.day
-					? `${ethers.utils.formatEther((tradeData?.volume as any)?.day)} WILD`
+				fieldName: 'Volume (All-Time)',
+				title: (tradeData?.volume as any)?.all
+					? `${ethers.utils.formatEther((tradeData?.volume as any)?.all)} WILD`
 					: '',
 				subTitle: `$${
-					(tradeData?.volume as any)?.day
+					(tradeData?.volume as any)?.all
 						? toFiat(
 								Number(
-									ethers.utils.formatEther((tradeData?.volume as any)?.day),
+									ethers.utils.formatEther((tradeData?.volume as any)?.all),
 								) * wildPriceUsd,
 						  )
 						: 0
