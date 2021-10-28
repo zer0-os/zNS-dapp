@@ -15,7 +15,6 @@ import {
 	NFTMedia,
 	Overlay,
 	StatsWidget,
-	IconButton,
 	Tooltip,
 } from 'components';
 import { BidButton, MakeABid } from 'containers';
