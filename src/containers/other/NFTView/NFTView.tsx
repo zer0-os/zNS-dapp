@@ -310,14 +310,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						  ).toLocaleString()
 						: 0
 				} WILD`,
-				subTitle: `$${
-					tradeData?.highestBid
-						? toFiat(
-								Number(ethers.utils.formatEther(tradeData?.highestBid)) *
-									wildPriceUsd,
-						  )
-						: 0
-				}`,
+				subTitle:
+					wildPriceUsd > 0
+						? `$${
+								tradeData?.highestBid
+									? toFiat(
+											Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+												wildPriceUsd,
+									  )
+									: 0
+						  }`
+						: '',
 			},
 			{
 				fieldName: 'Bids',
@@ -333,14 +336,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						  ).toLocaleString()
 						: 0
 				} WILD`,
-				subTitle: `$${
-					tradeData?.lastSale
-						? toFiat(
-								Number(ethers.utils.formatEther(tradeData?.lastSale)) *
-									wildPriceUsd,
-						  )
-						: 0
-				}`,
+				subTitle:
+					wildPriceUsd > 0
+						? `$${
+								tradeData?.lastSale
+									? toFiat(
+											Number(ethers.utils.formatEther(tradeData?.lastSale)) *
+												wildPriceUsd,
+									  )
+									: 0
+						  }`
+						: '',
 			},
 			{
 				fieldName: 'Volume',
@@ -349,15 +355,20 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 							ethers.utils.formatEther((tradeData?.volume as any)?.all),
 					  ).toLocaleString()} WILD`
 					: '',
-				subTitle: `$${
-					(tradeData?.volume as any)?.all
-						? toFiat(
-								Number(
-									ethers.utils.formatEther((tradeData?.volume as any)?.all),
-								) * wildPriceUsd,
-						  )
-						: 0
-				}`,
+				subTitle:
+					wildPriceUsd > 0
+						? `$${
+								(tradeData?.volume as any)?.all
+									? toFiat(
+											Number(
+												ethers.utils.formatEther(
+													(tradeData?.volume as any)?.all,
+												),
+											) * wildPriceUsd,
+									  )
+									: 0
+						  }`
+						: '',
 			},
 		];
 

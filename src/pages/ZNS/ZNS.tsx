@@ -336,29 +336,37 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				title: `${
 					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
 				} WILD`,
-				subTitle: `$${
-					tradeData?.lowestSale
-						? formatNumber(
-								Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
-									wildPriceUsd,
-						  )
-						: 0
-				}`,
+				subTitle:
+					wildPriceUsd > 0
+						? `$${
+								tradeData?.lowestSale
+									? formatNumber(
+											Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
+												wildPriceUsd,
+									  )
+									: 0
+						  }`
+						: '',
 			},
 			{
 				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.all
 					? `${formatEthers((tradeData?.volume as any)?.all)} WILD`
 					: '',
-				subTitle: `$${
-					(tradeData?.volume as any)?.all
-						? formatNumber(
-								Number(
-									ethers.utils.formatEther((tradeData?.volume as any)?.all),
-								) * wildPriceUsd,
-						  )
-						: 0
-				}`,
+				subTitle:
+					wildPriceUsd > 0
+						? `$${
+								(tradeData?.volume as any)?.all
+									? formatNumber(
+											Number(
+												ethers.utils.formatEther(
+													(tradeData?.volume as any)?.all,
+												),
+											) * wildPriceUsd,
+									  )
+									: 0
+						  }`
+						: '',
 			},
 		];
 
