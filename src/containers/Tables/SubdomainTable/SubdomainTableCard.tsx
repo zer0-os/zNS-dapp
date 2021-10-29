@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import useCurrency from 'lib/hooks/useCurrency';
 import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 import { formatNumber, formatEthers } from 'lib/utils';
@@ -29,7 +29,7 @@ const SubdomainTableCard = (props: any) => {
 	const { push: goTo } = useHistory();
 	const { makeABid, updated } = useBid();
 
-	const { wildPriceUsd } = useCurrencyProvider();
+	const { wildPriceUsd } = useCurrency();
 
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
@@ -91,9 +91,9 @@ const SubdomainTableCard = (props: any) => {
 								$
 								{tradeData.highestBid
 									? formatNumber(
-											Number(ethers.utils.formatEther(tradeData?.highestBid)) *
-												wildPriceUsd,
-									  )
+										Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+										wildPriceUsd,
+									)
 									: 0}{' '}
 							</span>
 						</>
