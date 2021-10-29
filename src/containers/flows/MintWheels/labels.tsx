@@ -56,7 +56,7 @@ export const getBannerLabel = (
 						Wilder Wheels now available for whitelisted supporters{' '}
 						{totalLabel(wheelsMinted!, wheelsTotal!)}
 					</span>
-					<span>
+					<span style={{ marginTop: 4 }}>
 						Available to public in{' '}
 						{countdownDate && (
 							<Countdown to={countdownDate} onFinish={onFinish} />
