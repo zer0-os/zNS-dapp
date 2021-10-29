@@ -32,7 +32,9 @@ export const getBannerLabel = (
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
 		if (isFinished) {
-			return <>Wilder Wheels whitelist release starting now</>;
+			return (
+				<>Wilder Wheels whitelist release starting - you may need to refresh</>
+			);
 		} else {
 			return (
 				<>
@@ -46,7 +48,7 @@ export const getBannerLabel = (
 	}
 	if (dropStage === Stage.Whitelist) {
 		if (isFinished) {
-			<>Wilder Wheels public release starting now</>;
+			<>Wilder Wheels public release starting - you may need to refresh</>;
 		} else {
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
