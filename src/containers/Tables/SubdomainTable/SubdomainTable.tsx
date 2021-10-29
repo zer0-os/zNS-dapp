@@ -46,12 +46,42 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	useAsyncEffect(async () => {
 		let isMounted = true;
 		setData(undefined);
-		if (domain?.subdomains) {
+		if (domain?.subdomains && !areDomainMetricsLoading) {
 			setAreDomainMetricsLoading(true);
 			setLoadingDomain(domain.name);
-			const sudomains = domain.subdomains.map((item) => item.id);
+			const subdomains = domain.subdomains.map((item) => item.id);
+
+			var i;
+			var j;
+			var temporary: string[] = [];
+			const chunk = 900;
+			const promises = [];
+			for (i = 0, j = subdomains.length; i < j; i += chunk) {
+				temporary = subdomains.slice(i, i + chunk);
+				promises.push(
+					// eslint-disable-next-line no-loop-func
+					new Promise((resolve, reject) => {
+						try {
+							sdk.instance.getDomainMetrics(temporary).then((d) => {
+								resolve(d);
+							});
+						} catch {
+							reject();
+						}
+					}),
+				);
+			}
+
 			try {
-				const tradeData = await sdk.instance.getDomainMetrics(sudomains);
+				var tradeData: any = {}; // @todo fix any
+				try {
+					const rawData = (await Promise.all(promises)) as any[];
+					for (var m = 0; m < rawData.length; m++) {
+						tradeData = { ...tradeData, ...rawData[m] };
+					}
+				} catch (e) {
+					console.error(e);
+				}
 				const subDomainsData = domain.subdomains.map((item) =>
 					Object.assign({}, item, { metrics: tradeData[item.id] }),
 				);
