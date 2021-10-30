@@ -142,7 +142,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	const isMobile = useMatchMedia('phone');
 	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
-	const isMobilePortrait = useMatchMedia('(max-width: 428px)');
+	const isMobilePortrait = useMatchMedia('(max-width: 520px)');
 
 	//- Page State
 	const [hasLoaded, setHasLoaded] = useState(false);
