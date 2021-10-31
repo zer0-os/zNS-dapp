@@ -39,9 +39,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
 	const [hideHeader, setHideHeader] = useState(false);
 	const handleScroll = () => {
 		if (body.scrollTop > 60 && body.scrollTop > lastY) {
+			// Going down and at least 60 pixels
 			lastY = body.scrollTop;
 			setHideHeader(true);
 		} else if (lastY - body.scrollTop >= 10) {
+			// Going up and more than 10 pixel
 			lastY = body.scrollTop;
 			setHideHeader(false);
 		}
