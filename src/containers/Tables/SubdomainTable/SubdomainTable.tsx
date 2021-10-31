@@ -4,7 +4,7 @@
  */
 
 // React Imports
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 // Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
@@ -29,13 +29,14 @@ type SubdomainTableProps = {
 const SubdomainTable = (props: SubdomainTableProps) => {
 	const sdk = useZnsSdk();
 
+	const d = useRef<string | undefined>();
+
 	// Domain hook data
 	const { domain, loading } = useCurrentDomain();
 
 	const { domain: biddingOn, close, bidPlaced } = useBid();
 
 	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
-	const [loadingDomain, setLoadingDomain] = useState<string | undefined>();
 	const [data, setData] = useState<
 		| (DisplayDomain & {
 				metrics: DomainMetrics;
@@ -48,7 +49,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 		setData(undefined);
 		if (domain?.subdomains && !areDomainMetricsLoading) {
 			setAreDomainMetricsLoading(true);
-			setLoadingDomain(domain.name);
+			d.current = domain.name;
 			const subdomains = domain.subdomains.map((item) => item.id);
 
 			var i;
@@ -85,8 +86,12 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				const subDomainsData = domain.subdomains.map((item) =>
 					Object.assign({}, item, { metrics: tradeData[item.id] }),
 				);
-				if (isMounted && (!loadingDomain || loadingDomain === domain.name)) {
+				if (isMounted && (!d.current || d.current === domain.name)) {
 					setData(subDomainsData);
+				} else {
+					console.warn(
+						`Detected a domain change while loading ${domain.name} - unloaded data`,
+					);
 				}
 			} catch (err) {
 				console.error(err);
@@ -97,7 +102,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			}
 		} else {
 			setData([]);
-			setLoadingDomain(domain?.name);
+			d.current = domain?.name;
 		}
 
 		return () => {
