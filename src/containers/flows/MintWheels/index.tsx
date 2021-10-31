@@ -1,5 +1,5 @@
 // React Imports
-import { useEffect, useState } from 'react';
+import { EventHandler, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Web3 Imports
@@ -83,7 +83,20 @@ const MintWheelsFlowContainer = () => {
 	};
 
 	// Open/close the Mint wizard
-	const openWizard = () => {
+	const openWizard = (event: any) => {
+		console.log(event.target);
+		if (event.target.nodeName.toLowerCase() === 'a') {
+			return;
+		}
+		if (isSaleHalted) {
+			window
+				?.open(
+					'https://zine.wilderworld.com/the-wilder-way-wheels-update/',
+					'_blank',
+				)
+				?.focus();
+			return;
+		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window
 				?.open(
@@ -118,9 +131,8 @@ const MintWheelsFlowContainer = () => {
 	// Submits transaction, feeds status updates
 	// back through the callbacks provided by MintWheels
 	const onSubmitTransaction = async (data: TransactionData) => {
-		if (isSaleHalted) {
-			const { numWheels, statusCallback, errorCallback, finishedCallback } =
-				data;
+		const { numWheels, statusCallback, errorCallback, finishedCallback } = data;
+		if (!isSaleHalted) {
 			const combinedFinishedCallback = () => {
 				transactionSuccessful(numWheels);
 				finishedCallback();
@@ -131,6 +143,8 @@ const MintWheelsFlowContainer = () => {
 				combinedFinishedCallback,
 				errorCallback,
 			);
+		} else {
+			errorCallback('Sale has ended');
 		}
 	};
 
@@ -281,8 +295,20 @@ const MintWheelsFlowContainer = () => {
 		if (isSaleHalted) {
 			return (
 				<>
-					The Wilder Wheels Phase 1 and 2 sales are complete. Join our Discord
-					for details on when the next sale will open.
+					<span>The Wilder Wheels Phase 1 and 2 sales are complete.</span>
+					<span style={{ display: 'block', marginTop: 4 }}>
+						Join our{' '}
+						<b>
+							<a
+								href={'https://discord.gg/fqjKgFrX'}
+								target={'_blank'}
+								rel={'noreferrer'}
+							>
+								Discord
+							</a>
+						</b>{' '}
+						for details on when the next sale will open.
+					</span>
 				</>
 			);
 		}

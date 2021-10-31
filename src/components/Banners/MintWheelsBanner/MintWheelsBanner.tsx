@@ -10,7 +10,7 @@ type MintWheelsBannerProps = {
 	title: string;
 	label: React.ReactNode;
 	buttonText: string;
-	onClick: () => void;
+	onClick: (event: any) => void;
 	style?: React.CSSProperties;
 };
 

@@ -1,5 +1,5 @@
 import { Stage } from './types';
-import { Countdown } from 'components';
+import { ArrowLink, Countdown } from 'components';
 import { saleHaltAmount, EthPerWheel } from './helpers';
 
 const totalLabel = (wheelsMinted: number, wheelsTotal: number) => (
@@ -103,12 +103,18 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					Minting is now open to everyone, act fast to secure your Wheels!{' '}
-					{totalLabel(wheelsMinted!, wheelsTotal!)}
+					Minting is open to everyone!{' '}
+					<b>{(saleHaltAmount - wheelsMinted! || 0).toLocaleString()}</b>{' '}
+					remaining at {EthPerWheel} ETH.
 				</span>
 				<span style={{ marginTop: '4px' }}>
-					{saleHaltAmount - wheelsMinted! || 0} remaining at {EthPerWheel} ETH -
-					price jumps to 1 ETH thereafter
+					Price jumps to {2 * EthPerWheel} ETH thereafter.{' '}
+					<ArrowLink
+						href={'https://zine.wilderworld.com/the-wilder-way-wheels-update/'}
+						style={{ fontWeight: 700 }}
+					>
+						Learn more
+					</ArrowLink>
 				</span>
 			</div>
 		);
