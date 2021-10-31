@@ -1,8 +1,11 @@
 import { Stage } from './types';
 import { Countdown } from 'components';
+import { saleHaltAmount, EthPerWheel } from './helpers';
 
 const totalLabel = (wheelsMinted: number, wheelsTotal: number) => (
-	<b>{wheelsTotal - wheelsMinted} Remaining</b>
+	<span>
+		<b>{wheelsTotal - wheelsMinted} Remaining</b>
+	</span>
 );
 
 export const getBannerButtonText = (
@@ -98,10 +101,16 @@ export const getBannerLabel = (
 	}
 	if (dropStage === Stage.Public) {
 		return (
-			<>
-				Minting is now open to everyone, act fast to secure your Wheels!{' '}
-				{totalLabel(wheelsMinted!, wheelsTotal!)}
-			</>
+			<div style={{ display: 'flex', flexDirection: 'column' }}>
+				<span>
+					Minting is now open to everyone, act fast to secure your Wheels!{' '}
+					{totalLabel(wheelsMinted!, wheelsTotal!)}
+				</span>
+				<span style={{ marginTop: '4px' }}>
+					{saleHaltAmount - wheelsMinted! || 0} remaining at {EthPerWheel} ETH -
+					price jumps to 1 ETH thereafter
+				</span>
+			</div>
 		);
 	}
 	if (dropStage === Stage.Sold) {

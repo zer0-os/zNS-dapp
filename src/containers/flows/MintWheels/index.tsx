@@ -20,6 +20,7 @@ import {
 	getUserEligibility,
 	getBalanceEth,
 	getNumberPurchasedByUser,
+	saleHaltAmount,
 } from './helpers';
 
 const MintWheelsFlowContainer = () => {
@@ -69,6 +70,10 @@ const MintWheelsFlowContainer = () => {
 		number | undefined
 	>();
 
+	// NOTE: TEMPORARY FOR SALE HALT
+	const isSaleHalted =
+		wheelsMinted !== undefined && wheelsMinted >= saleHaltAmount;
+
 	///////////////
 	// Functions //
 	///////////////
@@ -113,17 +118,20 @@ const MintWheelsFlowContainer = () => {
 	// Submits transaction, feeds status updates
 	// back through the callbacks provided by MintWheels
 	const onSubmitTransaction = async (data: TransactionData) => {
-		const { numWheels, statusCallback, errorCallback, finishedCallback } = data;
-		const combinedFinishedCallback = () => {
-			transactionSuccessful(numWheels);
-			finishedCallback();
-		};
-		mintWheels(
-			numWheels,
-			statusCallback,
-			combinedFinishedCallback,
-			errorCallback,
-		);
+		if (isSaleHalted) {
+			const { numWheels, statusCallback, errorCallback, finishedCallback } =
+				data;
+			const combinedFinishedCallback = () => {
+				transactionSuccessful(numWheels);
+				finishedCallback();
+			};
+			mintWheels(
+				numWheels,
+				statusCallback,
+				combinedFinishedCallback,
+				errorCallback,
+			);
+		}
 	};
 
 	const openProfile = () => {
@@ -178,9 +186,12 @@ const MintWheelsFlowContainer = () => {
 					setWheelsMinted(primaryData.wheelsMinted);
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 					setFailedToLoad(false);
+
+					setRefetch(refetch + 1);
 				})
 				.catch((e) => {
 					console.error(e);
+					setRefetch(refetch + 1);
 					setFailedToLoad(true);
 				});
 
@@ -217,7 +228,7 @@ const MintWheelsFlowContainer = () => {
 	useEffect(() => {
 		let isMounted = true;
 
-		if (!saleContract || !hasCountdownFinished) {
+		if (!saleContract) {
 			return;
 		}
 
@@ -227,11 +238,10 @@ const MintWheelsFlowContainer = () => {
 					return;
 				}
 				const primaryData = d as DropData;
-				const currentDropStage = primaryData.dropStage;
-				if (dropStage !== undefined && currentDropStage !== dropStage) {
-					if (currentDropStage === Stage.Upcoming) {
+				if (dropStage !== undefined) {
+					if (primaryData.dropStage === Stage.Upcoming) {
 						setCountdownDate(whitelistDate);
-					} else if (currentDropStage === Stage.Whitelist) {
+					} else if (primaryData.dropStage === Stage.Whitelist) {
 						setCountdownDate(publicDate);
 					} else {
 						setCountdownDate(undefined);
@@ -243,14 +253,17 @@ const MintWheelsFlowContainer = () => {
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
-				} else {
-					setTimeout(() => {
-						setRefetch(refetch + 1);
-					}, 5000);
 				}
+				setTimeout(() => {
+					setRefetch(refetch + 1);
+				}, 5000);
+				setFailedToLoad(false);
 			})
 			.catch((e) => {
 				console.error(e);
+				setTimeout(() => {
+					setRefetch(refetch + 1);
+				}, 5000);
 				setFailedToLoad(true);
 			});
 
@@ -260,13 +273,44 @@ const MintWheelsFlowContainer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasCountdownFinished, refetch]);
 
+	///////////////
+	// Fragments //
+	///////////////
+
+	const bannerLabel = () => {
+		if (isSaleHalted) {
+			return (
+				<>
+					The Wilder Wheels Phase 1 and 2 sales are complete. Join our Discord
+					for details on when the next sale will open.
+				</>
+			);
+		}
+		return failedToLoad
+			? 'Failed to load auction data - refresh to try again'
+			: getBannerLabel(
+					dropStage,
+					wheelsMinted,
+					wheelsTotal,
+					countdownDate,
+					countdownFinished,
+					hasCountdownFinished,
+			  );
+	};
+
+	const buttonText = () => {
+		return failedToLoad || isSaleHalted
+			? 'Learn More'
+			: getBannerButtonText(dropStage, canOpenWizard);
+	};
+
 	////////////
 	// Render //
 	////////////
 
 	return (
 		<>
-			{canOpenWizard && isWizardOpen && (
+			{canOpenWizard && isWizardOpen && !isSaleHalted && (
 				<Overlay open onClose={closeWizard}>
 					<MintWheels
 						balanceEth={balanceEth}
@@ -286,23 +330,8 @@ const MintWheelsFlowContainer = () => {
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
 					title={'Get your ride for the Metaverse '}
-					label={
-						failedToLoad
-							? 'Failed to load auction data - refresh to try again'
-							: getBannerLabel(
-									dropStage,
-									wheelsMinted,
-									wheelsTotal,
-									countdownDate,
-									countdownFinished,
-									hasCountdownFinished,
-							  )
-					}
-					buttonText={
-						failedToLoad
-							? 'Learn More'
-							: getBannerButtonText(dropStage, canOpenWizard)
-					}
+					label={bannerLabel()}
+					buttonText={buttonText()}
 					onClick={openWizard}
 				/>
 			</div>
