@@ -47,7 +47,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	useAsyncEffect(async () => {
 		let isMounted = true;
 		setData(undefined);
-		if (domain?.subdomains && !areDomainMetricsLoading) {
+		if (domain?.subdomains) {
 			setAreDomainMetricsLoading(true);
 			d.current = domain.name;
 			const subdomains = domain.subdomains.map((item) => item.id);
@@ -88,6 +88,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				);
 				if (isMounted && (!d.current || d.current === domain.name)) {
 					setData(subDomainsData);
+					setAreDomainMetricsLoading(false);
 				} else {
 					console.warn(
 						`Detected a domain change while loading ${domain.name} - unloaded data`,
@@ -95,10 +96,6 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				}
 			} catch (err) {
 				console.error(err);
-			}
-
-			if (isMounted) {
-				setAreDomainMetricsLoading(false);
 			}
 		} else {
 			setData([]);
