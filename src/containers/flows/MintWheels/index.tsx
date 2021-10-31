@@ -84,7 +84,6 @@ const MintWheelsFlowContainer = () => {
 
 	// Open/close the Mint wizard
 	const openWizard = (event: any) => {
-		console.log(event.target);
 		if (event.target.nodeName.toLowerCase() === 'a') {
 			return;
 		}
