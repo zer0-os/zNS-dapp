@@ -204,6 +204,7 @@ const MintWheelsFlowContainer = () => {
 				})
 				.catch((e) => {
 					console.error(e);
+					console.log('failed to get');
 					setRefetch(refetch + 1);
 					setFailedToLoad(true);
 				});
@@ -273,10 +274,9 @@ const MintWheelsFlowContainer = () => {
 				setFailedToLoad(false);
 			})
 			.catch((e) => {
-				console.error(e);
 				setTimeout(() => {
 					setRefetch(refetch + 1);
-				}, 5000);
+				}, 30000);
 				setFailedToLoad(true);
 			});
 
