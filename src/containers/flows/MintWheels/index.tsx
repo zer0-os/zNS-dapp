@@ -274,7 +274,6 @@ const MintWheelsFlowContainer = () => {
 				setFailedToLoad(false);
 			})
 			.catch((e) => {
-				console.log('failed to get drop data');
 				setTimeout(() => {
 					setRefetch(refetch + 1);
 				}, 30000);
