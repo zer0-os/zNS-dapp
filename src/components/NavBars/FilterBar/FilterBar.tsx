@@ -41,7 +41,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 		if (body.scrollTop > 60 && body.scrollTop > lastY) {
 			lastY = body.scrollTop;
 			setHideHeader(true);
-		} else if (lastY - body.scrollTop >= 20) {
+		} else if (lastY - body.scrollTop >= 10) {
 			lastY = body.scrollTop;
 			setHideHeader(false);
 		}
