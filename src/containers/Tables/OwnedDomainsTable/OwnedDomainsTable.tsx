@@ -1,20 +1,30 @@
 // React Imports
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Library Imports
 import { useZnsContracts } from 'lib/contracts';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
+import { ERC20 } from 'types';
 
 // Type Imports
-import { Bid, Domain, DomainData } from 'lib/types';
+import { Bid, Domain, DomainData, Maybe } from 'lib/types';
 
 // Style Imports
 import styles from './OwnedDomainsTable.module.scss';
 
 // Component Imports
-import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
+import {
+	Confirmation,
+	DomainTable,
+	FutureButton,
+	LoadingIndicator,
+	Overlay,
+	Spinner,
+	StepBar,
+} from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 
@@ -22,6 +32,12 @@ type AcceptBidModalData = {
 	domain: Domain;
 	bid: Bid;
 };
+
+enum Steps {
+	Approve,
+	Confirm,
+	Accept,
+}
 
 type OwnedDomainTableProps = {
 	onNavigate?: (to: string) => void;
@@ -32,20 +48,21 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	// State & Data //
 	//////////////////
 
+	// zAuction Integrations
+	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
+	const znsContracts = useZnsContracts()!;
+	const { acceptBid } = useBidProvider();
+	const zAuctionAddress = znsContracts.zAuction.address;
+
 	// Wallet Integrations
-	const { account } = useWeb3React();
+	const { account, active } = useWeb3React();
 	const ownedDomainPollingInterval: number = 5000;
 	const ownedQuery = useDomainsOwnedByUserQuery(
 		account!,
 		ownedDomainPollingInterval,
 	);
 	const owned = ownedQuery.data?.domains;
-
-	// zAuction Integrations
-	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
-	const znsContracts = useZnsContracts()!;
-	const { acceptBid } = useBidProvider();
-	const zAuctionAddress = znsContracts.zAuction.address;
+	const wildContract: ERC20 = znsContracts.wildToken;
 
 	// State
 	const [isTableLoading, setIsTableLoading] = React.useState(true);
@@ -60,10 +77,89 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [viewingDomain, setViewingDomain] = React.useState<
 		DomainData | undefined
 	>();
+	const [step, setStep] = useState<Steps>(Steps.Approve);
+	const [error, setError] = useState('');
+	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
+	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
+	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
+	const [hasApprovedTokenTransfer, setHasApprovedTokenTransfer] = useState<
+		boolean | undefined
+	>();
+	const [statusText, setStatusText] = useState<string>('Processing bid');
 
 	///////////////
 	// Functions //
 	///////////////
+
+	// Wizard Step 1/3
+	const approveZAuction = async () => {
+		setStatusText('Ensuring you have enough gas to approve zAuction...');
+		setError(``);
+		setIsApprovalInProgress(true);
+
+		// try {
+		// 	const gasRequired = await wildContract.estimateGas.approve(
+		// 		zAuctionAddress,
+		// 		ethers.constants.MaxUint256,
+		// 	);
+		// 	const gasPrice = await wildContract.signer.getGasPrice();
+		// 	const userBalance = await wildContract.signer.getBalance();
+
+		// 	const totalPrice = gasPrice.mul(gasRequired);
+		// 	if (userBalance.lt(totalPrice)) {
+		// 		setError(`You don't have enough Ether to use as gas`);
+		// 		setIsApprovalInProgress(false);
+		// 		return;
+		// 	}
+		// } catch (e) {
+		// 	console.error(e);
+		// 	setError(`Failed to calculate gas costs. Please try again later.`);
+		// 	setIsApprovalInProgress(false);
+		// 	return;
+		// }
+
+		setStatusText(
+			'Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will incur gas fees.' +
+				'Please accept in your wallet...',
+		);
+
+		let tx: Maybe<ethers.ContractTransaction>;
+
+		try {
+			tx = await wildContract.approve(
+				zAuctionAddress,
+				ethers.constants.MaxUint256,
+			);
+		} catch (e) {
+			console.error(e);
+			if (e.code === 4001) {
+				setError(`Approval rejected by wallet`);
+			} else {
+				setError(`Failed to submit transaction.`);
+			}
+			setIsApprovalInProgress(false);
+			return;
+		}
+
+		setStatusText('Waiting for approval transaction to be confirmed.');
+		try {
+			await tx.wait();
+		} catch (e) {
+			setError(`Transaction failed, try again later.`);
+			console.error(e);
+
+			setIsApprovalInProgress(false);
+			return;
+		}
+
+		setHasApprovedTokenTransfer(true);
+		setIsApprovalInProgress(false);
+	};
+
+	// Wizard Step 2/3
+	// TODO
+	// Wizard Step 3/3
+	// TODO
 
 	const viewBid = async (domain: DomainData) => {
 		setViewingDomain(domain);
@@ -105,7 +201,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		return approved;
 	};
 
-	const closeBid = () => setAcceptingBid(undefined);
+	const closeBid = () => {
+		setAcceptingBid(undefined);
+		setError('');
+	};
 
 	const closeDomain = () => setViewingDomain(undefined);
 
@@ -138,54 +237,153 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		setIsTableLoading(false);
 	};
 
-	if (!owned) return <></>;
+	if (!owned) return <></>; // Render nothing if no domains owned
 
 	/////////////////////
 	// React Fragments //
 	/////////////////////
 
-	const canPlaceBid = () => {
-		const id = acceptingBid!.bid.bidderAccount;
+	if (!active) return <></>; // Render nothing if wallet disconnected
+
+	const approveStep = () => {
+		let errorMessage: Maybe<React.ReactFragment>;
+
+		if (error) {
+			errorMessage = (
+				<p
+					style={{ textAlign: 'center', marginTop: '16px' }}
+					className={styles.Error}
+				>
+					{error}
+				</p>
+			);
+		}
+
 		return (
-			<p style={{ fontSize: 14, fontWeight: 400, lineHeight: '21px' }}>
-				Are you sure you want to accept the bid of{' '}
-				<b className="glow-text-white">
-					{acceptingBid!.bid.amount.toLocaleString()} WILD
-				</b>{' '}
-				tokens by{' '}
-				<b>
-					<a
-						className="alt-link"
-						href={`https://etherscan.io/address/${id}`}
-						target="_blank"
-						rel="noreferrer"
-					>
-						{id.substring(0, 4)}...{id.substring(id.length - 4)}
-					</a>
-				</b>
-				? You will receive{' '}
-				<b className="glow-text-white">
-					{acceptingBid!.bid.amount.toLocaleString()} WILD
-				</b>{' '}
-				tokens in exchange for ownership of{' '}
-				<b className="glow-text-white">0://{acceptingBid!.domain.name}</b>
-			</p>
+			<div
+				className={styles.Section}
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					padding: '0 16px',
+					textAlign: 'center',
+				}}
+			>
+				{!isMetamaskWaiting && !isApprovalInProgress && !isCheckingAllowance && (
+					<>
+						{!hasApprovedTokenTransfer && (
+							<>
+								<p style={{ lineHeight: '24px' }}>
+									Before you can accept a bid, your wallet needs to approve
+									zAuction. You will only need to do this once. This will incur
+									gas fees.
+								</p>
+								{errorMessage}
+
+								<div className={styles.CTAContainer}>
+									<div>
+										<FutureButton
+											glow
+											alt
+											style={{
+												height: 36,
+												width: 140,
+												borderRadius: 18,
+												textTransform: 'uppercase',
+												margin: '16px auto 0 auto',
+											}}
+											onClick={closeBid}
+										>
+											Cancel
+										</FutureButton>
+									</div>
+									<div>
+										<FutureButton
+											glow
+											style={{
+												height: 36,
+												width: 140,
+												borderRadius: 18,
+												textTransform: 'uppercase',
+												margin: '16px auto 0 auto',
+											}}
+											onClick={approveZAuction}
+										>
+											Continue
+										</FutureButton>
+									</div>
+								</div>
+							</>
+						)}
+					</>
+				)}
+				{isCheckingAllowance && (
+					<>
+						<LoadingIndicator
+							style={{ marginTop: 24 }}
+							text="Checking status of zAuction approval"
+						/>
+					</>
+				)}
+				{isApprovalInProgress && (
+					<>
+						<LoadingIndicator style={{ marginTop: 24 }} text={statusText} />
+					</>
+				)}
+			</div>
 		);
 	};
 
-	const loadingState = () => <Spinner style={{ margin: '8px auto' }} />;
+	// const canPlaceBid = () => {
+	// 	const id = acceptingBid!.bid.bidderAccount;
+	// 	return (
+	// 		<p style={{ fontSize: 14, fontWeight: 400, lineHeight: '21px' }}>
+	// 			Are you sure you want to accept the bid of{' '}
+	// 			<b className="glow-text-white">
+	// 				{acceptingBid!.bid.amount.toLocaleString()} WILD
+	// 			</b>{' '}
+	// 			tokens by{' '}
+	// 			<b>
+	// 				<a
+	// 					className="alt-link"
+	// 					href={`https://etherscan.io/address/${id}`}
+	// 					target="_blank"
+	// 					rel="noreferrer"
+	// 				>
+	// 					{id.substring(0, 4)}...{id.substring(id.length - 4)}
+	// 				</a>
+	// 			</b>
+	// 			? You will receive{' '}
+	// 			<b className="glow-text-white">
+	// 				{acceptingBid!.bid.amount.toLocaleString()} WILD
+	// 			</b>{' '}
+	// 			tokens in exchange for ownership of{' '}
+	// 			<b className="glow-text-white">0://{acceptingBid!.domain.name}</b>
+	// 		</p>
+	// 	);
+	// };
 
-	const bidPending = () => (
-		<>
-			<p>Pending</p>
-			<Spinner style={{ margin: '8px auto' }} />
-		</>
-	);
+	// const loadingState = () => <Spinner style={{ margin: '8px auto' }} />;
 
-	const approving = () => (
+	// const bidPending = () => (
+	// 	<>
+	// 		<p>Pending</p>
+	// 		<Spinner style={{ margin: '8px auto' }} />
+	// 	</>
+	// );
+
+	// const approving = () => (
+	// 	<>
+	// 		<p>Your wallet needs to approve zAuction to accept this bid</p>
+	// 		<Spinner style={{ margin: '8px auto' }} />
+	// 	</>
+	// );
+
+	const header = () => (
 		<>
-			<p>Your wallet needs to approve zAuction to accept this bid</p>
-			<Spinner style={{ margin: '8px auto' }} />
+			<div className={styles.Header}>
+				<h1 className={`glow-text-white`}>Approve zAuction</h1>
+			</div>
 		</>
 	);
 
@@ -193,7 +391,20 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		<>
 			{acceptingBid !== undefined && (
 				<Overlay onClose={closeBid} centered open>
-					<Confirmation
+					<div
+						className={`${styles.Container} border-primary border-rounded blur`}
+					>
+						{header()}
+						<StepBar
+							step={step + 1}
+							steps={['zAuction Check', 'Confirm', 'Accept']}
+							onNavigate={(i: number) => setStep(i)}
+						/>
+						{step === Steps.Approve && approveStep()}
+						{/* {step === Steps.Confirm && approveStep()}
+						{step === Steps.Accept && confirmStep()} */}
+					</div>
+					{/* <Confirmation
 						title={`Accept bid`}
 						onConfirm={acceptBidConfirmed}
 						onCancel={closeBid}
@@ -203,7 +414,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 						{tokensApproved === false && approving()}
 						{tokensApproved && !isAccepting && canPlaceBid()}
 						{tokensApproved && isAccepting && bidPending()}
-					</Confirmation>
+					</Confirmation> */}
 				</Overlay>
 			)}
 			{viewingDomain !== undefined && (
