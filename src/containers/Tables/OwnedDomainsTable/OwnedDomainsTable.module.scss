@@ -1,6 +1,6 @@
 .Container {
 	width: 640px;
-	padding: 40px;
+	padding: 53px 44px 40px 44px;
 	color: white !important;
 	background: var(--background-blue-card-wilder);
 }
@@ -16,35 +16,25 @@
 	color: white;
 	font-size: 24px;
 	font-weight: 700;
-	margin-bottom: 32px;
+	margin-bottom: 26px;
 }
 
 .Section {
 	margin-top: 40px;
-	margin-bottom: 56px;
-}
-
-.Section > div:nth-of-type(2) {
-	margin-left: 12px;
 }
 
 .CTAContainer {
 	display: flex;
 	flex-direction: row;
 	align-self: center;
-
-	// > * {
-	// 	margin-right: 24px;
-
-	// 	&:last-child {
-	// 		margin-right: 0;
-	// 	}
-	// }
 }
 
 .CTAContainer > div:last-child {
 	margin-left: 24px;
-	width: 124px;
+}
+
+.Loading {
+	white-space: pre-wrap;
 }
 
 .Reset {
@@ -69,6 +59,5 @@
 
 .Error {
 	padding: 0;
-	font-weight: 700 !important;
-	color: var(--color-primary-lighter-3);
+	color: var(--color-error);
 }

@@ -93,7 +93,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	// Wizard Step 1/3
 	const approveZAuction = async () => {
-		setStatusText('Ensuring you have enough gas to approve zAuction...');
+		// setStatusText('Ensuring you have enough gas to approve zAuction...');
 		setError(``);
 		setIsApprovalInProgress(true);
 
@@ -119,8 +119,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		// }
 
 		setStatusText(
-			'Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will incur gas fees.' +
-				'Please accept in your wallet...',
+			'Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will incur gas fees. \nPlease accept in your wallet...',
 		);
 
 		let tx: Maybe<ethers.ContractTransaction>;
@@ -251,7 +250,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		if (error) {
 			errorMessage = (
 				<p
-					style={{ textAlign: 'center', marginTop: '16px' }}
+					style={{ textAlign: 'center', margin: '24px 0' }}
 					className={styles.Error}
 				>
 					{error}
@@ -327,7 +326,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				)}
 				{isApprovalInProgress && (
 					<>
-						<LoadingIndicator style={{ marginTop: 24 }} text={statusText} />
+						<p className={styles.Loading} style={{ lineHeight: '24px' }}>
+							{statusText}
+						</p>
+						<Spinner style={{ margin: '40px auto 20px auto' }} />
 					</>
 				)}
 			</div>
