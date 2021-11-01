@@ -10,7 +10,7 @@ import { ethers } from 'ethers';
 import { ERC20 } from 'types';
 
 // Type Imports
-import { Bid, Domain, DomainData, Maybe } from 'lib/types';
+import { Bid, Domain, DomainData, Maybe, Metadata } from 'lib/types';
 
 // Style Imports
 import styles from './OwnedDomainsTable.module.scss';
@@ -21,12 +21,17 @@ import {
 	DomainTable,
 	FutureButton,
 	LoadingIndicator,
+	Member,
+	NFTMedia,
 	Overlay,
 	Spinner,
 	StepBar,
 } from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
+import { toFiat } from 'lib/currency';
+import { getMetadata } from 'lib/metadata';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -54,6 +59,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const { acceptBid } = useBidProvider();
 	const zAuctionAddress = znsContracts.zAuction.address;
 
+	// Wild to usd
+	const { wildPriceUsd } = useCurrencyProvider();
+
 	// Wallet Integrations
 	const { account, active } = useWeb3React();
 	const ownedDomainPollingInterval: number = 5000;
@@ -74,11 +82,13 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [acceptingBid, setAcceptingBid] = React.useState<
 		AcceptBidModalData | undefined
 	>();
+	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [viewingDomain, setViewingDomain] = React.useState<
 		DomainData | undefined
 	>();
 	const [step, setStep] = useState<Steps>(Steps.Approve);
 	const [error, setError] = useState('');
+	const [bids, setBids] = useState<Bid[] | undefined>([]);
 	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
 	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
@@ -86,12 +96,18 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		boolean | undefined
 	>();
 	const [statusText, setStatusText] = useState<string>('Processing bid');
+	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
+		number | undefined
+	>();
+
+	// organise states - loading
+	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
+	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
 
 	///////////////
 	// Functions //
 	///////////////
 
-	// Wizard Step 1/3
 	const approveZAuction = async () => {
 		// setStatusText('Ensuring you have enough gas to approve zAuction...');
 		setError(``);
@@ -141,7 +157,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			return;
 		}
 
-		setStatusText('Waiting for approval transaction to be confirmed.');
+		setStatusText(
+			`Approving zAuction. This may take up to x mins. Do not close this window or refresh your browser as this may incur additional gas fees.`,
+		);
 		try {
 			await tx.wait();
 		} catch (e) {
@@ -155,11 +173,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		setHasApprovedTokenTransfer(true);
 		setIsApprovalInProgress(false);
 	};
-
-	// Wizard Step 2/3
-	// TODO
-	// Wizard Step 3/3
-	// TODO
 
 	const viewBid = async (domain: DomainData) => {
 		setViewingDomain(domain);
@@ -237,15 +250,44 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		setIsTableLoading(false);
 	};
 
-	if (!owned) return <></>; // Render nothing if no domains owned
+	/////////////////////
+	// Effects //
+	/////////////////////
+
+	useEffect(() => {
+		if (hasApprovedTokenTransfer && step === Steps.Approve) {
+			setStep(Steps.Confirm);
+		}
+	}, [hasApprovedTokenTransfer]);
+
+	useEffect(() => {
+		let isSubscribed = true;
+
+		const loadDomainData = async () => {
+			const metadata =
+				acceptingBid && (await getMetadata(acceptingBid.domain.metadata));
+			if (!metadata) return;
+
+			if (isSubscribed) {
+				setDomainMetadata(metadata);
+			}
+		};
+
+		loadDomainData();
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [acceptingBid, acceptingBid?.domain, wildPriceUsd]);
 
 	/////////////////////
 	// React Fragments //
 	/////////////////////
 
-	if (!active) return <></>; // Render nothing if wallet disconnected
+	if (!active || !owned) return <></>; // Render nothing if wallet disconnected or no domains owned
 
-	const approveStep = () => {
+	// Wizard Step 1/3 Approve
+	const approveZAuctionStep = () => {
 		let errorMessage: Maybe<React.ReactFragment>;
 
 		if (error) {
@@ -265,7 +307,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				style={{
 					display: 'flex',
 					flexDirection: 'column',
-					padding: '0 16px',
+					padding: '2px 12px',
 					textAlign: 'center',
 				}}
 			>
@@ -319,10 +361,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				)}
 				{isCheckingAllowance && (
 					<>
-						<LoadingIndicator
-							style={{ marginTop: 24 }}
-							text="Checking status of zAuction approval"
-						/>
+						<p style={{ lineHeight: '24px' }}>
+							Checking status of zAuction Approval...
+						</p>
+						<Spinner style={{ margin: '40px auto 20px auto' }} />
 					</>
 				)}
 				{isApprovalInProgress && (
@@ -336,6 +378,139 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			</div>
 		);
 	};
+
+	const details = () => (
+		<div className={styles.Details}>
+			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
+			<span className={styles.Domain}>0://{acceptingBid?.domain?.name}</span>
+			<div className={styles.Price}>
+				<h3 className="glow-text-blue">Highest Bid</h3>
+				{highestBid()}
+			</div>
+			<Member
+				id={acceptingBid?.domain?.minter?.id || ''}
+				name={''}
+				image={''}
+				subtext={'Creator'}
+			/>
+		</div>
+	);
+
+	const highestBid = () => {
+		const hasBids = bids !== undefined && bids.length > 0;
+
+		// @todo in serious need of tidy-up
+		return (
+			<>
+				<>
+					<span className={hasBids ? 'glow-text-white' : ''}>
+						{/* @todo change dp amount */}
+						{!hasBidDataLoaded && <>Loading bids...</>}
+						{hasBids && currentHighestBid && (
+							<>{Number(currentHighestBid.amount).toLocaleString()} WILD</>
+						)}
+						{hasBidDataLoaded && !currentHighestBid && (
+							<span className="glow-text-white">No bids found</span>
+						)}
+					</span>
+					{currentHighestBidUsd !== undefined && currentHighestBidUsd > 0 && (
+						<span className="glow-text-white">
+							(${toFiat(currentHighestBidUsd)} USD)
+						</span>
+					)}
+				</>
+			</>
+		);
+	};
+
+	const nft = () => (
+		<div className={styles.NFT}>
+			<NFTMedia
+				alt="Bid NFT preview"
+				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
+				ipfsUrl={domainMetadata?.image_full || domainMetadata?.image || ''}
+				size="small"
+			/>
+		</div>
+	);
+
+	// Wizard Step 2/3 Confirm
+	const confirmStep = () => (
+		<>
+			<div
+				className={styles.Section}
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					padding: '0 16px',
+					textAlign: 'center',
+				}}
+			>
+				{nft()}
+				{details()}
+			</div>
+			{/* <div className={styles.InputWrapper}>
+				{domain.owner.id.toLowerCase() === account?.toLowerCase() && (
+					<p className={styles.Error} style={{ paddingTop: '16px' }}>
+						You can not bid on your own domain
+					</p>
+				)}
+				{domain.owner.id.toLowerCase() !== account?.toLowerCase() && (
+					<>
+						{loadingWildBalance && (
+							<>
+								<LoadingIndicator text="Checking WILD Balance" />
+							</>
+						)}
+						{!loadingWildBalance && (
+							<>
+								<p className="glow-text-blue">
+									Enter the amount you wish to bid:
+								</p>
+								<span style={{ marginBottom: 16 }} className={styles.Estimate}>
+									Your Balance: {Number(wildBalance).toLocaleString()} WILD
+								</span>
+								<form onSubmit={formSubmit}>
+									<TextInput
+										onChange={(text: string) => setBid(text)}
+										placeholder="Bid amount (WILD)"
+										error={error.length > 0}
+										errorText={error}
+										numeric
+										text={bid}
+										style={{ width: 268, margin: '0 auto' }}
+									/>
+								</form>
+								{estimation()}
+								{bidTooHighWarning}
+								<FutureButton
+									style={{
+										height: 36,
+										borderRadius: 18,
+										textTransform: 'uppercase',
+										margin: '32px auto 0 auto',
+									}}
+									loading={isBidPending}
+									onClick={() => {
+										if (!isBidValid) {
+											return;
+										}
+
+										continueBid();
+									}}
+									glow={isBidValid}
+								>
+									Continue
+								</FutureButton>
+							</>
+						)}
+					</>
+				)}
+			</div> */}
+		</>
+	);
+
+	// Wizard Step 3/3 Accepting
 
 	// const canPlaceBid = () => {
 	// 	const id = acceptingBid!.bid.bidderAccount;
@@ -403,8 +578,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 							steps={['zAuction Check', 'Confirm', 'Accept']}
 							onNavigate={(i: number) => setStep(i)}
 						/>
-						{step === Steps.Approve && approveStep()}
-						{/* {step === Steps.Confirm && approveStep()}
+						{step === Steps.Approve && approveZAuctionStep()}
+						{step === Steps.Confirm && confirmStep()}
+						{/* 
 						{step === Steps.Accept && confirmStep()} */}
 					</div>
 					{/* <Confirmation

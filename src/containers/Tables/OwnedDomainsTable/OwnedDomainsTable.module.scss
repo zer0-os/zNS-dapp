@@ -37,6 +37,47 @@
 	white-space: pre-wrap;
 }
 
+.Details {
+	flex: 1;
+	margin-left: 12px;
+	width: 272px;
+}
+
+.Domain {
+	overflow-wrap: anywhere;
+	display: block;
+	margin-top: 4px;
+}
+
+.Price {
+	margin: 24px 0;
+}
+
+.NFT {
+	position: relative;
+	cursor: pointer;
+	min-height: 224px;
+	flex-basis: 0;
+	flex-grow: 1;
+	margin-right: 12px;
+	min-width: 224px;
+
+	background: rgba(255, 255, 255, 0.05);
+
+	width: 224px;
+}
+
+.NFT img {
+	border-radius: inherit;
+	height: 100%;
+	width: 100%;
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.NFT:hover img {
+	transform: scale(1.05);
+}
+
 .Reset {
 	background: none !important;
 	border: none !important;
