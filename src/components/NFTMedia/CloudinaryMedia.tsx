@@ -100,10 +100,10 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			case 'tiny':
 				return '100';
 			default:
-				return undefined;
+				return '1500';
 		}
 	};
-	const height = size !== undefined && getHeight();
+	const height = getHeight();
 
 	// For some reason, Cloudinary SDK isn't
 	// applying the crop options video posters,
@@ -113,7 +113,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 		if (isVideo) {
 			fill += ',f_auto';
 		} else {
-			fill += ',q_auto';
+			fill += ',q_60';
 		}
 		switch (size as string) {
 			case 'large':
@@ -125,10 +125,10 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			case 'tiny':
 				return fill + ',h_100,w_100';
 			default:
-				return '';
+				return fill + ',h_1200,w_1200';
 		}
 	};
-	const crop = size !== undefined && cropOptions(isVideo);
+	const crop = cropOptions(isVideo);
 
 	const url = generateCloudinaryUrl(
 		hash,
@@ -158,13 +158,12 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 				secure={true}
 				style={style}
 			>
-				{height && (
-					<Transformation
-						height={height}
-						width={height}
-						crop={props.fit === 'cover' ? 'fill' : 'fit'}
-					/>
-				)}
+				<Transformation
+					height={height || ''}
+					width={height || ''}
+					crop={props.fit === 'cover' ? 'fill' : 'fit'}
+					quality={60}
+				/>
 			</Image>
 		);
 	}
