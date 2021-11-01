@@ -119,7 +119,8 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		// }
 
 		setStatusText(
-			'Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will incur gas fees. \nPlease accept in your wallet...',
+			`Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will incur gas fees. 
+			\nPlease accept in your wallet...`,
 		);
 
 		let tx: Maybe<ethers.ContractTransaction>;
