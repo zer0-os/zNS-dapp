@@ -305,8 +305,8 @@ const MintWheelsFlowContainer = () => {
 							>
 								Discord
 							</a>
-						</b>{' '}
-						for details on when the next sale will open.
+						</b>
+						. Next Wheels batch will start at 0.738 ETH.
 					</span>
 				</>
 			);
