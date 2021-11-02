@@ -8,7 +8,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
-import { MintWheelsBanner, Overlay } from 'components';
+import { Countdown, MintWheelsBanner, Overlay } from 'components';
 import MintWheels from './MintWheels';
 
 // Library Imports
@@ -20,13 +20,13 @@ import {
 	getUserEligibility,
 	getBalanceEth,
 	getNumberPurchasedByUser,
-	saleHaltAmount,
 } from './helpers';
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
+	const currentTime = new Date().getTime();
 	const whitelistDate = 1635458400000;
-	const publicDate = 1635555600000;
+	const publicDate = 1636063200000;
 
 	//////////////////
 	// State & Data //
@@ -71,8 +71,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted =
-		wheelsMinted !== undefined && wheelsMinted >= saleHaltAmount;
+	const [isSaleHalted, setIsSaleHalted] = useState(currentTime <= publicDate);
 
 	///////////////
 	// Functions //
@@ -200,7 +199,9 @@ const MintWheelsFlowContainer = () => {
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 					setFailedToLoad(false);
 
-					// setRefetch(refetch + 1);
+					if (!isSaleHalted) {
+						setRefetch(refetch + 1);
+					}
 				})
 				.catch((e) => {
 					console.error(e);
@@ -268,15 +269,19 @@ const MintWheelsFlowContainer = () => {
 					setWheelsMinted(primaryData.wheelsMinted);
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 				}
-				setTimeout(() => {
-					// setRefetch(refetch + 1);
-				}, 5000);
-				setFailedToLoad(false);
+				if (!isSaleHalted) {
+					setTimeout(() => {
+						setRefetch(refetch + 1);
+					}, 30000);
+					setFailedToLoad(false);
+				}
 			})
 			.catch((e) => {
-				setTimeout(() => {
-					// setRefetch(refetch + 1);
-				}, 30000);
+				if (!failedToLoad) {
+					setTimeout(() => {
+						setRefetch(refetch + 1);
+					}, 30000);
+				}
 				setFailedToLoad(true);
 			});
 
@@ -294,7 +299,17 @@ const MintWheelsFlowContainer = () => {
 		if (isSaleHalted) {
 			return (
 				<>
-					<span>The Wilder Wheels Phase 1 and 2 sales are complete.</span>
+					<span>
+						The Wilder Wheels Phase C sale will open in{' '}
+						<b>
+							<Countdown
+								to={publicDate}
+								onFinish={() => {
+									setIsSaleHalted(false);
+								}}
+							/>
+						</b>
+					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
