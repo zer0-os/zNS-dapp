@@ -355,6 +355,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 								<div className={styles.CTAContainer}>
 									<div>
+										{/* extract buttons */}
 										<FutureButton
 											glow
 											alt
@@ -416,7 +417,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		// @todo in serious need of tidy-up
 		return (
 			<>
-				<span className={hasBids ? 'glow-text-white' : ''}>
+				<span>
 					{/* @todo change dp amount */}
 					{!hasBidDataLoaded && <>Loading bids...</>}
 					{hasBids && currentHighestBid && (
@@ -438,9 +439,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	const details = () => (
 		<div className={styles.Details}>
-			<h2 className="glow-text-white" style={{ lineHeight: '29px' }}>
-				{domainMetadata?.title}
-			</h2>
+			<h2 style={{ lineHeight: '29px' }}>{domainMetadata?.title}</h2>
 			<span className={styles.Domain}>0://{acceptingBid?.domain?.name}</span>
 			<div className={styles.Price}>
 				<h3 className="glow-text-blue">Highest Bid</h3>
@@ -485,19 +484,61 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				style={{
 					display: 'flex',
 					flexDirection: 'column',
-					padding: '0 12px',
 					textAlign: 'center',
+					marginBottom: '8px',
 				}}
 			>
 				{currentHighestBid && (
-					<p>
-						{`Are you sure you want to accept a bid of` +
-							`${Number(currentHighestBid.amount).toLocaleString()}` +
-							`WILD` +
-							`(2,678.91 USD)` +
-							`and transfer ownership of 0://wilder.NFTname to 0x01...456f?`}
-					</p>
+					<div style={{ margin: '0 8px' }}>
+						<p style={{ lineHeight: '24px' }}>
+							Are you sure you want to accept a bid of{' '}
+							<b>{Number(currentHighestBid.amount).toLocaleString()} WILD</b> ($
+							{toFiat(Number(currentHighestBidUsd))} USD) and transfer ownership
+							of <b>0://{acceptingBid?.domain?.name}</b> to{' '}
+							<b>
+								{acceptingBid?.bid.bidderAccount.substring(0, 4)}...
+								{acceptingBid?.bid.bidderAccount.substring(
+									acceptingBid?.bid.bidderAccount.length - 4,
+								)}
+							</b>
+							?
+						</p>
+					</div>
 				)}
+				<div className={styles.CTAContainer}>
+					<div>
+						{/* extract buttons */}
+						<FutureButton
+							glow
+							alt
+							style={{
+								height: 36,
+								width: 140,
+								borderRadius: 18,
+								textTransform: 'uppercase',
+								margin: '16px auto 0 auto',
+							}}
+							onClick={closeBid}
+						>
+							Cancel
+						</FutureButton>
+					</div>
+					<div>
+						<FutureButton
+							glow
+							style={{
+								height: 36,
+								width: 140,
+								borderRadius: 18,
+								textTransform: 'uppercase',
+								margin: '16px auto 0 auto',
+							}}
+							onClick={acceptBidConfirmed}
+						>
+							Continue
+						</FutureButton>
+					</div>
+				</div>
 			</div>
 			{/* <div className={styles.InputWrapper}>
 				{domain.owner.id.toLowerCase() === account?.toLowerCase() && (
