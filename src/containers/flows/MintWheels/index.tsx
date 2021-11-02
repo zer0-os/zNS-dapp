@@ -200,7 +200,7 @@ const MintWheelsFlowContainer = () => {
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 					setFailedToLoad(false);
 
-					setRefetch(refetch + 1);
+					// setRefetch(refetch + 1);
 				})
 				.catch((e) => {
 					console.error(e);
@@ -269,13 +269,13 @@ const MintWheelsFlowContainer = () => {
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 				}
 				setTimeout(() => {
-					setRefetch(refetch + 1);
+					// setRefetch(refetch + 1);
 				}, 5000);
 				setFailedToLoad(false);
 			})
 			.catch((e) => {
 				setTimeout(() => {
-					setRefetch(refetch + 1);
+					// setRefetch(refetch + 1);
 				}, 30000);
 				setFailedToLoad(true);
 			});
