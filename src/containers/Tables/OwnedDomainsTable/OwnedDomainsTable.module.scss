@@ -38,37 +38,52 @@
 }
 
 .Details {
+	display: flex;
+	flex-direction: column;
 	flex: 1;
-	margin-left: 12px;
-	width: 272px;
+	margin: 12px 0 0 12px;
+	align-items: flex-start;
+}
+
+.Details h2 {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.Details h3 {
+	font-size: 12px;
+	color: var(--color-grey-lighter-2);
 }
 
 .Domain {
 	overflow-wrap: anywhere;
 	display: block;
 	margin-top: 4px;
+	color: var(--color-accent-blue-100);
 }
 
 .Price {
-	margin: 24px 0;
+	margin: 16px 0;
+}
+
+.Price > div:last-of-type {
+	display: flex;
+	align-items: center;
 }
 
 .NFT {
 	position: relative;
 	cursor: pointer;
-	min-height: 224px;
+	min-height: 268px;
 	flex-basis: 0;
 	flex-grow: 1;
 	margin-right: 12px;
-	min-width: 224px;
-
-	background: rgba(255, 255, 255, 0.05);
-
-	width: 224px;
+	min-width: 268px;
+	width: 268px;
 }
 
 .NFT img {
-	border-radius: inherit;
+	border-radius: 8px;
 	height: 100%;
 	width: 100%;
 	transition: transform var(--animation-time-medium) ease-in-out;

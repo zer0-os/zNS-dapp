@@ -56,7 +56,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	// zAuction Integrations
 	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
 	const znsContracts = useZnsContracts()!;
-	const { acceptBid } = useBidProvider();
+	const { acceptBid, getBidsForDomain } = useBidProvider();
 	const zAuctionAddress = znsContracts.zAuction.address;
 
 	// Wild to usd
@@ -280,6 +280,37 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		};
 	}, [acceptingBid, acceptingBid?.domain, wildPriceUsd]);
 
+	useEffect(() => {
+		let isSubscribed = true;
+
+		const getCurrentHighestBid = async () => {
+			// Get highest bid
+			const allBids =
+				acceptingBid && (await getBidsForDomain(acceptingBid?.domain));
+
+			if (!allBids || allBids.length === 0) {
+				setHasBidDataLoaded(true);
+				return;
+			}
+			const highestBid = allBids.reduce(function (prev, current) {
+				return prev.amount > current.amount ? prev : current;
+			});
+
+			if (isSubscribed) {
+				setHasBidDataLoaded(true);
+				setBids(allBids);
+				setCurrentHighestBid(highestBid);
+				setCurrentHighestBidUsd(highestBid.amount * wildPriceUsd);
+			}
+		};
+
+		getCurrentHighestBid();
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [acceptingBid?.domain, wildPriceUsd]);
+
 	/////////////////////
 	// React Fragments //
 	/////////////////////
@@ -307,7 +338,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				style={{
 					display: 'flex',
 					flexDirection: 'column',
-					padding: '2px 12px',
+					padding: '0 12px',
 					textAlign: 'center',
 				}}
 			>
@@ -379,49 +410,50 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		);
 	};
 
-	const details = () => (
-		<div className={styles.Details}>
-			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
-			<span className={styles.Domain}>0://{acceptingBid?.domain?.name}</span>
-			<div className={styles.Price}>
-				<h3 className="glow-text-blue">Highest Bid</h3>
-				{highestBid()}
-			</div>
-			<Member
-				id={acceptingBid?.domain?.minter?.id || ''}
-				name={''}
-				image={''}
-				subtext={'Creator'}
-			/>
-		</div>
-	);
-
 	const highestBid = () => {
 		const hasBids = bids !== undefined && bids.length > 0;
 
 		// @todo in serious need of tidy-up
 		return (
 			<>
-				<>
-					<span className={hasBids ? 'glow-text-white' : ''}>
-						{/* @todo change dp amount */}
-						{!hasBidDataLoaded && <>Loading bids...</>}
-						{hasBids && currentHighestBid && (
-							<>{Number(currentHighestBid.amount).toLocaleString()} WILD</>
-						)}
-						{hasBidDataLoaded && !currentHighestBid && (
-							<span className="glow-text-white">No bids found</span>
-						)}
-					</span>
-					{currentHighestBidUsd !== undefined && currentHighestBidUsd > 0 && (
-						<span className="glow-text-white">
-							(${toFiat(currentHighestBidUsd)} USD)
-						</span>
+				<span className={hasBids ? 'glow-text-white' : ''}>
+					{/* @todo change dp amount */}
+					{!hasBidDataLoaded && <>Loading bids...</>}
+					{hasBids && currentHighestBid && (
+						// extract value
+						<>{Number(currentHighestBid.amount).toLocaleString()} WILD</>
 					)}
-				</>
+					{hasBidDataLoaded && !currentHighestBid && (
+						<span className="glow-text-white">No bids found</span>
+					)}
+				</span>
+				{currentHighestBidUsd !== undefined && currentHighestBidUsd > 0 && (
+					<h3 className="glow-text-blue" style={{ marginLeft: '8px' }}>
+						{toFiat(currentHighestBidUsd)} USD
+					</h3>
+				)}
 			</>
 		);
 	};
+
+	const details = () => (
+		<div className={styles.Details}>
+			<h2 className="glow-text-white" style={{ lineHeight: '29px' }}>
+				{domainMetadata?.title}
+			</h2>
+			<span className={styles.Domain}>0://{acceptingBid?.domain?.name}</span>
+			<div className={styles.Price}>
+				<h3 className="glow-text-blue">Highest Bid</h3>
+				<div>{highestBid()}</div>
+			</div>
+			<h3 className="glow-text-blue">Creator</h3>
+			<Member
+				id={acceptingBid?.domain?.minter?.id || ''}
+				name={''}
+				image={''}
+			/>
+		</div>
+	);
 
 	const nft = () => (
 		<div className={styles.NFT}>
@@ -441,13 +473,31 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				className={styles.Section}
 				style={{
 					display: 'flex',
-					flexDirection: 'column',
-					padding: '0 16px',
-					textAlign: 'center',
+					flexDirection: 'row',
+					padding: '0',
 				}}
 			>
 				{nft()}
 				{details()}
+			</div>
+			<div
+				className={styles.Section}
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					padding: '0 12px',
+					textAlign: 'center',
+				}}
+			>
+				{currentHighestBid && (
+					<p>
+						{`Are you sure you want to accept a bid of` +
+							`${Number(currentHighestBid.amount).toLocaleString()}` +
+							`WILD` +
+							`(2,678.91 USD)` +
+							`and transfer ownership of 0://wilder.NFTname to 0x01...456f?`}
+					</p>
+				)}
 			</div>
 			{/* <div className={styles.InputWrapper}>
 				{domain.owner.id.toLowerCase() === account?.toLowerCase() && (
@@ -557,13 +607,21 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	// 	</>
 	// );
 
-	const header = () => (
-		<>
-			<div className={styles.Header}>
-				<h1 className={`glow-text-white`}>Approve zAuction</h1>
-			</div>
-		</>
-	);
+	const header = () => {
+		// extract
+		const approveHeading = `Approve zAuction`;
+		const acceptHeading = `Accept Bid`;
+		return (
+			<>
+				<div className={styles.Header}>
+					<h1 className={`glow-text-white`}>
+						{/* extract */}
+						{step === Steps.Approve ? approveHeading : acceptHeading}
+					</h1>
+				</div>
+			</>
+		);
+	};
 
 	const overlays = () => (
 		<>
