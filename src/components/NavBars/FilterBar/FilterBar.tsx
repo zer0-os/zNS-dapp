@@ -38,9 +38,15 @@ const FilterBar: React.FC<FilterBarProps> = ({
 	// TODO: Move hidden header to a separate component
 	const [hideHeader, setHideHeader] = useState(false);
 	const handleScroll = () => {
-		const hide = body.scrollTop > 60 && body.scrollTop > lastY;
-		lastY = body.scrollTop;
-		setHideHeader(hide);
+		if (body.scrollTop > 60 && body.scrollTop > lastY) {
+			// Going down and at least 60 pixels
+			lastY = body.scrollTop;
+			setHideHeader(true);
+		} else if (lastY - body.scrollTop >= 10) {
+			// Going up and more than 10 pixel
+			lastY = body.scrollTop;
+			setHideHeader(false);
+		}
 	};
 
 	useEffect(() => {
