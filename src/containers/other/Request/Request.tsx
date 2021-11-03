@@ -24,7 +24,7 @@ import { DomainRequestAndContents, Maybe, Metadata } from 'lib/types';
 
 //- Asset Imports
 import galaxyBackground from './assets/galaxy.png';
-import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import useCurrency from 'lib/hooks/useCurrency';
 
 type RequestProps = {
 	request: DomainRequestAndContents;
@@ -50,7 +50,7 @@ const Request: React.FC<RequestProps> = ({
 	// Imported Hooks //
 	////////////////////
 
-	const currency = useCurrencyProvider();
+	const currency = useCurrency();
 
 	///////////
 	// State //

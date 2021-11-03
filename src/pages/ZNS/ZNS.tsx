@@ -54,7 +54,7 @@ import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
-import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 
 type ZNSProps = {
@@ -86,7 +86,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
 
 	const sdk = useZnsSdk();
-	const { wildPriceUsd } = useCurrencyProvider();
+	const { wildPriceUsd } = useCurrency();
 
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
@@ -430,7 +430,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			{/* Overlays */}
 			<NotificationDrawer />
 			<ProfileModal />
-			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
+			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => { }}>
 				<></>
 			</Overlay>
 			{modal === Modal.Wallet && (
@@ -583,7 +583,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={statusCount > 0}
 												number={statusCount}
-												onClick={() => {}}
+												onClick={() => { }}
 											/>
 										</TooltipLegacy>
 									) : null}
@@ -594,7 +594,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={transferring.length > 0}
 												number={transferring.length}
-												onClick={() => {}}
+												onClick={() => { }}
 											/>
 										</TooltipLegacy>
 									)}
