@@ -59,12 +59,12 @@
 .Domain {
 	overflow-wrap: anywhere;
 	display: block;
-	margin-top: 4px;
+	margin: 4px 0 16px 0;
 	color: var(--color-accent-blue-100);
 }
 
 .Price {
-	margin: 16px 0;
+	margin-bottom: 16px;
 }
 
 .Price > div:last-of-type {

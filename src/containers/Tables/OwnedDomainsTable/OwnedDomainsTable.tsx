@@ -430,7 +430,36 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				</span>
 				{currentHighestBidUsd !== undefined && currentHighestBidUsd > 0 && (
 					<h3 className="glow-text-blue" style={{ marginLeft: '8px' }}>
-						{toFiat(currentHighestBidUsd)} USD
+						${toFiat(currentHighestBidUsd)}
+					</h3>
+				)}
+			</>
+		);
+	};
+
+	const acceptingBidUSD =
+		acceptingBid && acceptingBid.bid.amount * wildPriceUsd;
+
+	const selectedBid = () => {
+		const hasBids = bids !== undefined && bids.length > 0;
+
+		// @todo in serious need of tidy-up
+		return (
+			<>
+				<span>
+					{/* @todo change dp amount */}
+					{!hasBidDataLoaded && <>Loading bids...</>}
+					{hasBids && acceptingBid && (
+						// extract value
+						<>{Number(acceptingBid.bid.amount).toLocaleString()} WILD</>
+					)}
+					{hasBidDataLoaded && !acceptingBid && (
+						<span className="glow-text-white">No bids found</span>
+					)}
+				</span>
+				{acceptingBidUSD !== undefined && acceptingBidUSD > 0 && (
+					<h3 className="glow-text-blue" style={{ marginLeft: '8px' }}>
+						${toFiat(acceptingBidUSD)}
 					</h3>
 				)}
 			</>
@@ -442,15 +471,21 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			<h2 style={{ lineHeight: '29px' }}>{domainMetadata?.title}</h2>
 			<span className={styles.Domain}>0://{acceptingBid?.domain?.name}</span>
 			<div className={styles.Price}>
+				<h3 className="glow-text-blue">Creator</h3>
+				<Member
+					id={acceptingBid?.domain?.minter?.id || ''}
+					name={''}
+					image={''}
+				/>
+			</div>
+			<div className={styles.Price}>
 				<h3 className="glow-text-blue">Highest Bid</h3>
 				<div>{highestBid()}</div>
 			</div>
-			<h3 className="glow-text-blue">Creator</h3>
-			<Member
-				id={acceptingBid?.domain?.minter?.id || ''}
-				name={''}
-				image={''}
-			/>
+			<div className={styles.Price}>
+				<h3 className="glow-text-blue">Bid You’re Accepting</h3>
+				<div>{selectedBid()}</div>
+			</div>
 		</div>
 	);
 
@@ -492,9 +527,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 					<div style={{ margin: '0 8px' }}>
 						<p style={{ lineHeight: '24px' }}>
 							Are you sure you want to accept a bid of{' '}
-							<b>{Number(currentHighestBid.amount).toLocaleString()} WILD</b> ($
-							{toFiat(Number(currentHighestBidUsd))} USD) and transfer ownership
-							of <b>0://{acceptingBid?.domain?.name}</b> to{' '}
+							<b>{Number(acceptingBid?.bid.amount).toLocaleString()} WILD</b> (
+							{toFiat(Number(acceptingBidUSD))} USD) and transfer ownership of{' '}
+							<b>0://{acceptingBid?.domain?.name}</b> to{' '}
 							<b>
 								{acceptingBid?.bid.bidderAccount.substring(0, 4)}...
 								{acceptingBid?.bid.bidderAccount.substring(
@@ -540,64 +575,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 					</div>
 				</div>
 			</div>
-			{/* <div className={styles.InputWrapper}>
-				{domain.owner.id.toLowerCase() === account?.toLowerCase() && (
-					<p className={styles.Error} style={{ paddingTop: '16px' }}>
-						You can not bid on your own domain
-					</p>
-				)}
-				{domain.owner.id.toLowerCase() !== account?.toLowerCase() && (
-					<>
-						{loadingWildBalance && (
-							<>
-								<LoadingIndicator text="Checking WILD Balance" />
-							</>
-						)}
-						{!loadingWildBalance && (
-							<>
-								<p className="glow-text-blue">
-									Enter the amount you wish to bid:
-								</p>
-								<span style={{ marginBottom: 16 }} className={styles.Estimate}>
-									Your Balance: {Number(wildBalance).toLocaleString()} WILD
-								</span>
-								<form onSubmit={formSubmit}>
-									<TextInput
-										onChange={(text: string) => setBid(text)}
-										placeholder="Bid amount (WILD)"
-										error={error.length > 0}
-										errorText={error}
-										numeric
-										text={bid}
-										style={{ width: 268, margin: '0 auto' }}
-									/>
-								</form>
-								{estimation()}
-								{bidTooHighWarning}
-								<FutureButton
-									style={{
-										height: 36,
-										borderRadius: 18,
-										textTransform: 'uppercase',
-										margin: '32px auto 0 auto',
-									}}
-									loading={isBidPending}
-									onClick={() => {
-										if (!isBidValid) {
-											return;
-										}
-
-										continueBid();
-									}}
-									glow={isBidValid}
-								>
-									Continue
-								</FutureButton>
-							</>
-						)}
-					</>
-				)}
-			</div> */}
 		</>
 	);
 
