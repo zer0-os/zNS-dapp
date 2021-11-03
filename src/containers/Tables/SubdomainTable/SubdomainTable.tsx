@@ -4,7 +4,7 @@
  */
 
 // React Imports
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 // Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
@@ -29,13 +29,14 @@ type SubdomainTableProps = {
 const SubdomainTable = (props: SubdomainTableProps) => {
 	const sdk = useZnsSdk();
 
+	const d = useRef<string | undefined>();
+
 	// Domain hook data
 	const { domain, loading } = useCurrentDomain();
 
 	const { domain: biddingOn, close, bidPlaced } = useBid();
 
 	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
-	const [loadingDomain, setLoadingDomain] = useState<string | undefined>();
 	const [data, setData] = useState<
 		| (DisplayDomain & {
 				metrics: DomainMetrics;
@@ -48,26 +49,57 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 		setData(undefined);
 		if (domain?.subdomains) {
 			setAreDomainMetricsLoading(true);
-			setLoadingDomain(domain.name);
-			const sudomains = domain.subdomains.map((item) => item.id);
+			d.current = domain.name;
+			const subdomains = domain.subdomains.map((item) => item.id);
+
+			var i;
+			var j;
+			var temporary: string[] = [];
+			const chunk = 900;
+			const promises = [];
+			for (i = 0, j = subdomains.length; i < j; i += chunk) {
+				temporary = subdomains.slice(i, i + chunk);
+				promises.push(
+					// eslint-disable-next-line no-loop-func
+					new Promise((resolve, reject) => {
+						try {
+							sdk.instance.getDomainMetrics(temporary).then((d) => {
+								resolve(d);
+							});
+						} catch {
+							reject();
+						}
+					}),
+				);
+			}
+
 			try {
-				const tradeData = await sdk.instance.getDomainMetrics(sudomains);
+				var tradeData: any = {}; // @todo fix any
+				try {
+					const rawData = (await Promise.all(promises)) as any[];
+					for (var m = 0; m < rawData.length; m++) {
+						tradeData = { ...tradeData, ...rawData[m] };
+					}
+				} catch (e) {
+					console.error(e);
+				}
 				const subDomainsData = domain.subdomains.map((item) =>
 					Object.assign({}, item, { metrics: tradeData[item.id] }),
 				);
-				if (isMounted && (!loadingDomain || loadingDomain === domain.name)) {
+				if (isMounted && (!d.current || d.current === domain.name)) {
 					setData(subDomainsData);
+					setAreDomainMetricsLoading(false);
+				} else {
+					console.warn(
+						`Detected a domain change while loading ${domain.name} - unloaded data`,
+					);
 				}
 			} catch (err) {
 				console.error(err);
 			}
-
-			if (isMounted) {
-				setAreDomainMetricsLoading(false);
-			}
 		} else {
 			setData([]);
-			setLoadingDomain(domain?.name);
+			d.current = domain?.name;
 		}
 
 		return () => {

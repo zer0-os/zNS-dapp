@@ -87,15 +87,18 @@ const SubdomainTableCard = (props: any) => {
 								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}{' '}
 								WILD
 							</span>
-							<span className={styles.Fiat}>
-								$
-								{tradeData.highestBid
-									? formatNumber(
-										Number(ethers.utils.formatEther(tradeData?.highestBid)) *
-										wildPriceUsd,
-									)
-									: 0}{' '}
-							</span>
+							{wildPriceUsd > 0 && (
+								<span className={styles.Fiat}>
+									$
+									{tradeData.highestBid
+										? formatNumber(
+												Number(
+													ethers.utils.formatEther(tradeData?.highestBid),
+												) * wildPriceUsd,
+										  )
+										: 0}{' '}
+								</span>
+							)}
 						</>
 					)}
 				</div>

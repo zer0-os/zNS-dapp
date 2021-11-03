@@ -1,5 +1,5 @@
 // React Imports
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Web3 Imports
@@ -8,7 +8,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
-import { MintWheelsBanner, Overlay } from 'components';
+import { Countdown, MintWheelsBanner, Overlay } from 'components';
 import MintWheels from './MintWheels';
 
 // Library Imports
@@ -24,8 +24,9 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const whitelistDate = 1635458400000;
-	const publicDate = 1635544800000;
+	const currentTime = new Date().getTime();
+	const DATE_WHITELIST = 1635458400000;
+	const DATE_PUBLIC = 1636063200000;
 
 	//////////////////
 	// State & Data //
@@ -69,16 +70,32 @@ const MintWheelsFlowContainer = () => {
 		number | undefined
 	>();
 
+	// NOTE: TEMPORARY FOR SALE HALT
+	const [isSaleHalted, setIsSaleHalted] = useState(currentTime <= DATE_PUBLIC);
+
 	///////////////
 	// Functions //
 	///////////////
 
 	const transactionSuccessful = (numWheels: number) => {
-		setNumMinted(numMinted + 1); // Increment to trigger re-fetch
+		setNumMinted(numMinted + numWheels); // Increment to trigger re-fetch
+		setNumberPurchasedByUser(numberPurchasedByUser! + numWheels);
 	};
 
 	// Open/close the Mint wizard
-	const openWizard = () => {
+	const openWizard = (event: any) => {
+		if (event.target.nodeName.toLowerCase() === 'a') {
+			return;
+		}
+		if (isSaleHalted) {
+			window
+				?.open(
+					'https://zine.wilderworld.com/the-wilder-way-wheels-update/',
+					'_blank',
+				)
+				?.focus();
+			return;
+		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window
 				?.open(
@@ -114,16 +131,20 @@ const MintWheelsFlowContainer = () => {
 	// back through the callbacks provided by MintWheels
 	const onSubmitTransaction = async (data: TransactionData) => {
 		const { numWheels, statusCallback, errorCallback, finishedCallback } = data;
-		const combinedFinishedCallback = () => {
-			transactionSuccessful(numWheels);
-			finishedCallback();
-		};
-		mintWheels(
-			numWheels,
-			statusCallback,
-			combinedFinishedCallback,
-			errorCallback,
-		);
+		if (!isSaleHalted) {
+			const combinedFinishedCallback = () => {
+				transactionSuccessful(numWheels);
+				finishedCallback();
+			};
+			mintWheels(
+				numWheels,
+				statusCallback,
+				combinedFinishedCallback,
+				errorCallback,
+			);
+		} else {
+			errorCallback('Sale has ended');
+		}
 	};
 
 	const openProfile = () => {
@@ -137,6 +158,15 @@ const MintWheelsFlowContainer = () => {
 		});
 	};
 
+	// Handler for domain purchase events from contract
+	// Method gets called once per wheel
+	const onDomainPurchased = useCallback((d: any) => {
+		if (wheelsMinted !== undefined) {
+			setWheelsMinted(wheelsMinted + 1);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	/////////////
 	// Effects //
 	/////////////
@@ -149,8 +179,19 @@ const MintWheelsFlowContainer = () => {
 		};
 	}, []);
 
+	// Get sale data
 	useEffect(() => {
 		let isMounted = true;
+
+		// Generally this would be < DATE_WHITELIST & < DATE_PUBLIC
+		// but given time constraints we're just going to compare
+		// to DATE_PUBLIC
+		if (isSaleHalted) {
+			setCountdownDate(DATE_PUBLIC);
+			setFailedToLoad(false);
+			return;
+		}
+
 		const getData = async () => {
 			if (!saleContract) {
 				return;
@@ -164,9 +205,9 @@ const MintWheelsFlowContainer = () => {
 					}
 					const primaryData = d as DropData;
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(whitelistDate);
+						setCountdownDate(DATE_WHITELIST);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(publicDate);
+						setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -181,43 +222,70 @@ const MintWheelsFlowContainer = () => {
 				})
 				.catch((e) => {
 					console.error(e);
+					console.log('failed to get');
+					setRefetch(refetch + 1);
 					setFailedToLoad(true);
 				});
-
-			// Get user data if wallet connected
-			if (account && library) {
-				getUserEligibility(account, saleContract).then((d) => {
-					if (isMounted && d !== undefined) {
-						setIsUserWhitelisted(d);
-					}
-				});
-				getBalanceEth(library.getSigner()).then((d) => {
-					if (isMounted && d !== undefined) {
-						setBalanceEth(d);
-					}
-				});
-				getNumberPurchasedByUser(account, saleContract).then((d) => {
-					if (isMounted && d !== undefined) {
-						setNumberPurchasedByUser(d);
-					}
-				});
-			} else {
-				setIsUserWhitelisted(undefined);
-				setBalanceEth(undefined);
-				setNumberPurchasedByUser(undefined);
-			}
 		};
 		getData();
 		return () => {
 			isMounted = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [account, library, saleContract, numMinted]);
+	}, [library, saleContract, isSaleHalted]);
+
+	// Get user eligibility
+	useEffect(() => {
+		let isMounted = true;
+		if (!saleContract) {
+			return;
+		}
+		// Get user data if wallet connected
+		if (account && library) {
+			getUserEligibility(account, saleContract).then((d) => {
+				if (isMounted && d !== undefined) {
+					setIsUserWhitelisted(d);
+				}
+			});
+		} else {
+			setIsUserWhitelisted(undefined);
+		}
+		return () => {
+			isMounted = false;
+		};
+	}, [account, library, saleContract, isSaleHalted]);
+
+	// Get user balance and number purchased
+	useEffect(() => {
+		let isMounted = true;
+		if (!saleContract) {
+			return;
+		}
+		// Get user data if wallet connected
+		if (account && library) {
+			getBalanceEth(library.getSigner()).then((d) => {
+				if (isMounted && d !== undefined) {
+					setBalanceEth(d);
+				}
+			});
+			getNumberPurchasedByUser(account, saleContract).then((d) => {
+				if (isMounted && d !== undefined) {
+					setNumberPurchasedByUser(d);
+				}
+			});
+		} else {
+			setBalanceEth(undefined);
+			setNumberPurchasedByUser(undefined);
+		}
+		return () => {
+			isMounted = false;
+		};
+	}, [numMinted, account, library, saleContract]);
 
 	useEffect(() => {
 		let isMounted = true;
 
-		if (!saleContract || !hasCountdownFinished) {
+		if (!saleContract) {
 			return;
 		}
 
@@ -227,12 +295,11 @@ const MintWheelsFlowContainer = () => {
 					return;
 				}
 				const primaryData = d as DropData;
-				const currentDropStage = primaryData.dropStage;
-				if (dropStage !== undefined && currentDropStage !== dropStage) {
-					if (currentDropStage === Stage.Upcoming) {
-						setCountdownDate(whitelistDate);
-					} else if (currentDropStage === Stage.Whitelist) {
-						setCountdownDate(publicDate);
+				if (dropStage !== undefined) {
+					if (primaryData.dropStage === Stage.Upcoming) {
+						setCountdownDate(DATE_WHITELIST);
+					} else if (primaryData.dropStage === Stage.Whitelist) {
+						setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -243,14 +310,17 @@ const MintWheelsFlowContainer = () => {
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
-				} else {
+				}
+				if (!isSaleHalted) {
+					setFailedToLoad(false);
+				}
+			})
+			.catch((e) => {
+				if (!failedToLoad) {
 					setTimeout(() => {
 						setRefetch(refetch + 1);
 					}, 5000);
 				}
-			})
-			.catch((e) => {
-				console.error(e);
 				setFailedToLoad(true);
 			});
 
@@ -260,13 +330,80 @@ const MintWheelsFlowContainer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasCountdownFinished, refetch]);
 
+	useEffect(() => {
+		saleContract?.off('DomainPurchased', onDomainPurchased);
+		if (
+			saleContract &&
+			(dropStage === Stage.Public || dropStage === Stage.Whitelist) &&
+			!isSaleHalted &&
+			!account
+		) {
+			// Listen to mints
+			saleContract.on('DomainPurchased', onDomainPurchased);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dropStage, saleContract, isSaleHalted, account]);
+
+	///////////////
+	// Fragments //
+	///////////////
+
+	const bannerLabel = () => {
+		if (isSaleHalted) {
+			return (
+				<>
+					<span>
+						The Wilder Wheels Phase C sale will open in{' '}
+						<b>
+							<Countdown
+								to={DATE_PUBLIC}
+								onFinish={() => {
+									setIsSaleHalted(false);
+								}}
+							/>
+						</b>
+					</span>
+					<span style={{ display: 'block', marginTop: 4 }}>
+						Join our{' '}
+						<b>
+							<a
+								href={'https://discord.gg/fqjKgFrX'}
+								target={'_blank'}
+								rel={'noreferrer'}
+							>
+								Discord
+							</a>
+						</b>
+						. Next Wheels batch will start at 0.738 ETH.
+					</span>
+				</>
+			);
+		}
+		return failedToLoad
+			? 'Failed to load auction data - refresh to try again'
+			: getBannerLabel(
+					dropStage,
+					wheelsMinted,
+					wheelsTotal,
+					countdownDate,
+					countdownFinished,
+					hasCountdownFinished,
+			  );
+	};
+
+	const buttonText = () => {
+		return failedToLoad || isSaleHalted
+			? 'Learn More'
+			: getBannerButtonText(dropStage, canOpenWizard);
+	};
+
 	////////////
 	// Render //
 	////////////
 
 	return (
 		<>
-			{canOpenWizard && isWizardOpen && (
+			{canOpenWizard && isWizardOpen && !isSaleHalted && (
 				<Overlay open onClose={closeWizard}>
 					<MintWheels
 						balanceEth={balanceEth}
@@ -286,23 +423,8 @@ const MintWheelsFlowContainer = () => {
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
 					title={'Get your ride for the Metaverse '}
-					label={
-						failedToLoad
-							? 'Failed to load auction data - refresh to try again'
-							: getBannerLabel(
-									dropStage,
-									wheelsMinted,
-									wheelsTotal,
-									countdownDate,
-									countdownFinished,
-									hasCountdownFinished,
-							  )
-					}
-					buttonText={
-						failedToLoad
-							? 'Learn More'
-							: getBannerButtonText(dropStage, canOpenWizard)
-					}
+					label={bannerLabel()}
+					buttonText={buttonText()}
 					onClick={openWizard}
 				/>
 			</div>
