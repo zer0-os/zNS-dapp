@@ -25,8 +25,8 @@ import {
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
 	const currentTime = new Date().getTime();
-	const whitelistDate = 1635458400000;
-	const publicDate = 1636063200000;
+	const DATE_WHITELIST = 1635458400000;
+	const DATE_PUBLIC = 1636063200000;
 
 	//////////////////
 	// State & Data //
@@ -71,7 +71,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const [isSaleHalted, setIsSaleHalted] = useState(currentTime <= publicDate);
+	const [isSaleHalted, setIsSaleHalted] = useState(currentTime <= DATE_PUBLIC);
 
 	///////////////
 	// Functions //
@@ -184,9 +184,9 @@ const MintWheelsFlowContainer = () => {
 					}
 					const primaryData = d as DropData;
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(whitelistDate);
+						setCountdownDate(DATE_WHITELIST);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(publicDate);
+						setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -255,9 +255,9 @@ const MintWheelsFlowContainer = () => {
 				const primaryData = d as DropData;
 				if (dropStage !== undefined) {
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(whitelistDate);
+						setCountdownDate(DATE_WHITELIST);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(publicDate);
+						setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -303,7 +303,7 @@ const MintWheelsFlowContainer = () => {
 						The Wilder Wheels Phase C sale will open in{' '}
 						<b>
 							<Countdown
-								to={publicDate}
+								to={DATE_PUBLIC}
 								onFinish={() => {
 									setIsSaleHalted(false);
 								}}
