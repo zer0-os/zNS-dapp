@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { Stage, WheelQuantity, DropData } from './types';
 import { WhitelistSimpleSale } from 'types';
 
-export const EthPerWheel = 0.369;
+export const EthPerWheel = 0.738;
 export const saleHaltAmount = 3764;
 
 export const getDropData = (
