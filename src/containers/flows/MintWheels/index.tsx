@@ -1,5 +1,5 @@
 // React Imports
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Web3 Imports
@@ -25,8 +25,8 @@ import {
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
 	const currentTime = new Date().getTime();
-	const whitelistDate = 1635458400000;
-	const publicDate = 1636063200000;
+	const DATE_WHITELIST = 1635458400000;
+	const DATE_PUBLIC = 1636063200000;
 
 	//////////////////
 	// State & Data //
@@ -71,14 +71,15 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const [isSaleHalted, setIsSaleHalted] = useState(currentTime <= publicDate);
+	const [isSaleHalted, setIsSaleHalted] = useState(currentTime <= DATE_PUBLIC);
 
 	///////////////
 	// Functions //
 	///////////////
 
 	const transactionSuccessful = (numWheels: number) => {
-		setNumMinted(numMinted + 1); // Increment to trigger re-fetch
+		setNumMinted(numMinted + numWheels); // Increment to trigger re-fetch
+		setNumberPurchasedByUser(numberPurchasedByUser! + numWheels);
 	};
 
 	// Open/close the Mint wizard
@@ -157,6 +158,15 @@ const MintWheelsFlowContainer = () => {
 		});
 	};
 
+	// Handler for domain purchase events from contract
+	// Method gets called once per wheel
+	const onDomainPurchased = useCallback((d: any) => {
+		if (wheelsMinted !== undefined) {
+			setWheelsMinted(wheelsMinted + 1);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	/////////////
 	// Effects //
 	/////////////
@@ -169,8 +179,19 @@ const MintWheelsFlowContainer = () => {
 		};
 	}, []);
 
+	// Get sale data
 	useEffect(() => {
 		let isMounted = true;
+
+		// Generally this would be < DATE_WHITELIST & < DATE_PUBLIC
+		// but given time constraints we're just going to compare
+		// to DATE_PUBLIC
+		if (isSaleHalted) {
+			setCountdownDate(DATE_PUBLIC);
+			setFailedToLoad(false);
+			return;
+		}
+
 		const getData = async () => {
 			if (!saleContract) {
 				return;
@@ -184,9 +205,9 @@ const MintWheelsFlowContainer = () => {
 					}
 					const primaryData = d as DropData;
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(whitelistDate);
+						setCountdownDate(DATE_WHITELIST);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(publicDate);
+						setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -198,10 +219,6 @@ const MintWheelsFlowContainer = () => {
 					setWheelsMinted(primaryData.wheelsMinted);
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 					setFailedToLoad(false);
-
-					if (!isSaleHalted) {
-						setRefetch(refetch + 1);
-					}
 				})
 				.catch((e) => {
 					console.error(e);
@@ -209,36 +226,61 @@ const MintWheelsFlowContainer = () => {
 					setRefetch(refetch + 1);
 					setFailedToLoad(true);
 				});
-
-			// Get user data if wallet connected
-			if (account && library) {
-				getUserEligibility(account, saleContract).then((d) => {
-					if (isMounted && d !== undefined) {
-						setIsUserWhitelisted(d);
-					}
-				});
-				getBalanceEth(library.getSigner()).then((d) => {
-					if (isMounted && d !== undefined) {
-						setBalanceEth(d);
-					}
-				});
-				getNumberPurchasedByUser(account, saleContract).then((d) => {
-					if (isMounted && d !== undefined) {
-						setNumberPurchasedByUser(d);
-					}
-				});
-			} else {
-				setIsUserWhitelisted(undefined);
-				setBalanceEth(undefined);
-				setNumberPurchasedByUser(undefined);
-			}
 		};
 		getData();
 		return () => {
 			isMounted = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [account, library, saleContract, numMinted]);
+	}, [library, saleContract, isSaleHalted]);
+
+	// Get user eligibility
+	useEffect(() => {
+		let isMounted = true;
+		if (!saleContract) {
+			return;
+		}
+		// Get user data if wallet connected
+		if (account && library) {
+			getUserEligibility(account, saleContract).then((d) => {
+				if (isMounted && d !== undefined) {
+					setIsUserWhitelisted(d);
+				}
+			});
+		} else {
+			setIsUserWhitelisted(undefined);
+		}
+		return () => {
+			isMounted = false;
+		};
+	}, [account, library, saleContract, isSaleHalted]);
+
+	// Get user balance and number purchased
+	useEffect(() => {
+		let isMounted = true;
+		if (!saleContract) {
+			return;
+		}
+		// Get user data if wallet connected
+		if (account && library) {
+			getBalanceEth(library.getSigner()).then((d) => {
+				if (isMounted && d !== undefined) {
+					setBalanceEth(d);
+				}
+			});
+			getNumberPurchasedByUser(account, saleContract).then((d) => {
+				if (isMounted && d !== undefined) {
+					setNumberPurchasedByUser(d);
+				}
+			});
+		} else {
+			setBalanceEth(undefined);
+			setNumberPurchasedByUser(undefined);
+		}
+		return () => {
+			isMounted = false;
+		};
+	}, [numMinted, account, library, saleContract]);
 
 	useEffect(() => {
 		let isMounted = true;
@@ -255,9 +297,9 @@ const MintWheelsFlowContainer = () => {
 				const primaryData = d as DropData;
 				if (dropStage !== undefined) {
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(whitelistDate);
+						setCountdownDate(DATE_WHITELIST);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(publicDate);
+						setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -270,9 +312,6 @@ const MintWheelsFlowContainer = () => {
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 				}
 				if (!isSaleHalted) {
-					setTimeout(() => {
-						setRefetch(refetch + 1);
-					}, 30000);
 					setFailedToLoad(false);
 				}
 			})
@@ -280,7 +319,7 @@ const MintWheelsFlowContainer = () => {
 				if (!failedToLoad) {
 					setTimeout(() => {
 						setRefetch(refetch + 1);
-					}, 30000);
+					}, 5000);
 				}
 				setFailedToLoad(true);
 			});
@@ -290,6 +329,20 @@ const MintWheelsFlowContainer = () => {
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasCountdownFinished, refetch]);
+
+	useEffect(() => {
+		saleContract?.off('DomainPurchased', onDomainPurchased);
+		if (
+			saleContract &&
+			(dropStage === Stage.Public || dropStage === Stage.Whitelist) &&
+			!isSaleHalted &&
+			!account
+		) {
+			// Listen to mints
+			saleContract.on('DomainPurchased', onDomainPurchased);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [dropStage, saleContract, isSaleHalted, account]);
 
 	///////////////
 	// Fragments //
@@ -303,7 +356,7 @@ const MintWheelsFlowContainer = () => {
 						The Wilder Wheels Phase C sale will open in{' '}
 						<b>
 							<Countdown
-								to={publicDate}
+								to={DATE_PUBLIC}
 								onFinish={() => {
 									setIsSaleHalted(false);
 								}}
