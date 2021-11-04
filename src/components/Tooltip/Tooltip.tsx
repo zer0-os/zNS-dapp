@@ -1,46 +1,107 @@
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useMemo } from 'react';
+
+// Library Imports
+import { useLayer, useHover, Arrow } from 'react-laag';
+import { motion, AnimatePresence, MotionProps } from 'framer-motion';
 
 //- Style Imports
-import styles from './Tooltip.module.css';
+import styles from './Tooltip.module.scss';
 
 type TooltipProps = {
-	children: React.ReactNode;
-	content: React.ReactNode;
+	children: React.ReactNode | string | number;
+	text: string;
+	auto?: boolean;
+	placement?:
+		| 'top-start'
+		| 'top-center'
+		| 'top-end'
+		| 'left-start'
+		| 'left-center'
+		| 'left-end'
+		| 'right-start'
+		| 'right-center'
+		| 'right-end'
+		| 'bottom-start'
+		| 'bottom-center'
+		| 'bottom-end';
+	triggerOffset?: number;
+	delayEnter?: number;
+	delayLeave?: number;
+	hideOnScroll?: boolean;
+	animationProps?: MotionProps;
 };
 
-const Tooltip: React.FC<TooltipProps> = ({ children, content }) => {
-	// TODO: Make this way more generic
+const Tooltip: React.FC<TooltipProps> = ({
+	children,
+	text,
+	auto = true,
+	placement = 'top-center',
+	triggerOffset = 8,
+	delayEnter = 100,
+	delayLeave = 200,
+	hideOnScroll = true,
+	animationProps = {
+		initial: { opacity: 0, scale: 0.9 },
+		animate: { opacity: 1, scale: 1 },
+		exit: { opacity: 0, scale: 0.9 },
+		transition: { duration: 0.1 },
+	},
+}) => {
+	const isReactText = useMemo(() => {
+		return ['string', 'number'].includes(typeof children);
+	}, [children]);
 
-	const [open, setOpen] = useState(false);
-	const wrapperRef = useRef<HTMLDivElement>(null);
+	const [isOver, hoverProps] = useHover({
+		delayEnter,
+		delayLeave,
+		hideOnScroll,
+	});
 
-	const toggle = () => {
-		setOpen(!open);
-	};
+	const { triggerProps, layerProps, arrowProps, renderLayer } = useLayer({
+		isOpen: isOver,
+		auto,
+		placement,
+		triggerOffset,
+	});
 
-	const toggleWindow = (event: Event) => {
-		const t = event.target as HTMLElement;
-		const w = wrapperRef.current;
-		if (!t || !w) return;
-		if (!w.contains(t)) setOpen(false);
-	};
+	// when children equals text (string | number), we need to wrap it in an
+	// extra span-element in order to attach props
+	let trigger;
+	if (isReactText) {
+		trigger = (
+			<span className="tooltip-text-wrapper" {...triggerProps} {...hoverProps}>
+				{children}
+			</span>
+		);
+	} else {
+		// In case of an react-element, we need to clone it in order to attach our own props
+		trigger = React.cloneElement(children as React.ReactElement, {
+			...triggerProps,
+			...hoverProps,
+		});
+	}
 
-	useEffect(() => {
-		if (open) window.addEventListener('click', toggleWindow);
-		else window.removeEventListener('click', toggleWindow);
-		return () => window.removeEventListener('click', toggleWindow);
-	}, [open]);
-
+	// We're using framer-motion for our enter / exit animations.
+	// This is why we need to wrap our actual tooltip inside `<AnimatePresence />`.
 	return (
-		<div ref={wrapperRef} className={styles.Tooltip}>
-			<div onClick={toggle}>{children}</div>
-			<div
-				className={`${styles.Content} ${open ? styles.Open : styles.Closed}`}
-			>
-				{content}
-			</div>
-		</div>
+		<>
+			{trigger}
+			{renderLayer(
+				<AnimatePresence>
+					{isOver && (
+						<motion.div
+							className={styles.Tooltip}
+							{...animationProps}
+							{...layerProps}
+						>
+							{text}
+							<Arrow {...arrowProps} className={styles.Arrow} />
+						</motion.div>
+					)}
+				</AnimatePresence>,
+			)}
+		</>
 	);
 };
 

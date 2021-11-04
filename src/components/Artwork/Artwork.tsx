@@ -13,7 +13,7 @@ import { getMetadata } from 'lib/metadata';
 import { Metadata } from 'lib/types';
 
 //- Style Imports
-import styles from './Artwork.module.css';
+import styles from './Artwork.module.scss';
 
 type ArtworkProps = {
 	domain: string;
@@ -88,7 +88,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 				size="tiny"
 				className={`${styles.Image} border-rounded`}
 				alt="NFT Preview"
-				ipfsUrl={metadata?.image || ''}
+				ipfsUrl={metadata?.image_full || metadata?.image || ''}
 			/>
 		);
 	}, [metadata]);

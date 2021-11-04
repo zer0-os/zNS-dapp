@@ -1,0 +1,563 @@
+.NFTView {
+	width: 100%;
+}
+
+.NFTView > div {
+	width: 100%;
+}
+
+.NFT {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	padding: 40px;
+	filter: drop-shadow(0px 0px 16px rgba(140, 84, 221, 0.25));
+	border-radius: var(--box-radius);
+	border: 1px solid #50207b;
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: var(--color-background);
+	transition: background var(--animation-time-medium) ease-in-out;
+	overflow: hidden;
+}
+
+.Loaded {
+	background-color: rgba(0, 0, 0, 0);
+}
+
+.Loaded .BG {
+	opacity: 1;
+}
+
+.Bg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	object-fit: cover;
+	border-radius: var(--box-radius);
+}
+
+.NFT > div {
+	flex: 1 1;
+	height: 568px;
+	min-width: 0;
+}
+
+.NFT > div + div {
+	margin-left: 40px;
+}
+
+.Image {
+	cursor: pointer;
+}
+
+.Image > div {
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Image:hover > div {
+	transform: scale(1.03);
+}
+
+.Image img {
+	object-fit: cover;
+	border-radius: 8px;
+}
+
+.Info {
+	// position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.Tray {
+	position: absolute;
+	display: flex;
+	top: 40px;
+	right: 40px;
+
+	background: var(--color-purple-darkest);
+
+	border-radius: 8px;
+	border: 1px solid var(--color-purple-ligher);
+
+	overflow: hidden;
+
+	button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 56px;
+		height: 37px;
+		padding-top: 0;
+
+		background: none;
+
+		&:hover {
+		}
+	}
+}
+
+.Info h1 {
+	font-size: 36px;
+	font-weight: bold;
+	line-height: 44px;
+}
+
+.Info h1::after {
+	content: 'holder';
+	opacity: 0;
+}
+
+.Details {
+	display: flex;
+	flex-direction: column;
+	max-height: 568px;
+
+	@media only screen and (max-width: 768px) {
+		max-height: unset;
+	}
+}
+
+.Details > div:first-of-type {
+	width: 100%;
+}
+
+.Details > div:first-of-type span {
+	display: inline-block;
+	width: 100%;
+	word-break: break-all;
+}
+
+.Members {
+	display: flex;
+	margin-top: 32px;
+}
+
+.Members > *:not(:first-child) {
+	margin-left: 64px;
+}
+
+.Price h2 {
+	color: var(--color-primary-lighter-3);
+	margin-bottom: 4px;
+}
+
+.Crypto {
+	font-size: 24px;
+	font-weight: 700;
+}
+
+.Fiat {
+	font-size: 18px;
+	font-weight: 400;
+	color: var(--color-primary-lighter-3);
+}
+
+.Buttons {
+	margin: 32px 0;
+}
+
+.Vertical > div:not(:first-child) {
+	margin-top: 20.5px;
+}
+
+.Box {
+	/* height: 95.5px; */
+	padding: 20px;
+	background: var(--color-background);
+}
+
+.Box h4 {
+	margin-bottom: 4px;
+	font-size: 12px;
+	color: #bfbfbf;
+}
+
+.Box span {
+	width: 100%;
+	text-overflow: ellipsis;
+	font-weight: 700;
+}
+
+.Story {
+	display: block; /* Fallback for non-webkit */
+	display: -webkit-box;
+	max-height: 216px;
+	margin: 32px 0;
+	line-height: 24px;
+	-webkit-line-clamp: 9;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	@media only screen and (max-width: 768px) {
+		max-height: unset;
+		margin: 16px 0;
+		line-height: 24px;
+		-webkit-line-clamp: unset;
+		overflow: visible;
+		text-overflow: unset;
+	}
+}
+
+.History ul::-webkit-scrollbar-corner {
+	background: rgba(0, 0, 0, 0);
+	height: 0;
+	width: 0;
+}
+
+.History ul::-webkit-scrollbar-track {
+	background-color: none;
+}
+
+.History ul::-webkit-scrollbar {
+	width: 6px;
+	background-color: none;
+}
+
+.History ul::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: rgba(60, 161, 255, 0.2);
+}
+
+.Contract {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin-top: 16px;
+
+	a {
+		margin-top: 6.5px;
+	}
+}
+
+.Copy {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	height: 24px;
+	width: 24px;
+	transform: translateY(-50%);
+
+	cursor: pointer;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Copy:hover {
+	transform: translateY(-50%) scale(1.1);
+}
+
+.Contract p {
+	position: relative;
+	text-overflow: clip;
+	word-break: break-all;
+	padding: 0;
+	padding-right: 38px;
+}
+
+.History {
+	padding: 20px 0 20px 0;
+	margin-top: 24px;
+}
+.HistoryNoBids {
+	padding: 20px 0 0 0;
+}
+
+.History h4 {
+	padding: 0 20px;
+}
+
+.History ul {
+	padding: 0 20px;
+}
+
+.History span {
+	padding: 20px;
+	padding-top: 0;
+	font-weight: 400;
+}
+
+.History .Loading {
+	display: flex;
+	align-items: center;
+	margin-top: 19px;
+	margin-bottom: -3px;
+}
+
+.Bid {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 23px;
+}
+
+.Bid:first-child {
+	margin-top: 12px;
+}
+
+.Stats {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 24px;
+	flex-wrap: wrap;
+}
+
+.Stats:first-child {
+	margin-left: 0;
+}
+
+@media only screen and (max-width: 1280px) {
+	.Buttons button {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 1100px) {
+	.Buttons {
+		flex-direction: column;
+	}
+
+	.Buttons button {
+		margin-left: 0 !important;
+	}
+
+	.Buttons button:not(:first-child) {
+		margin-top: 24px;
+	}
+}
+
+@media only screen and (max-width: 960px) {
+	.NFT {
+		padding: 32px;
+	}
+
+	.NFT > div + div {
+		margin-left: 32px;
+	}
+
+	.Copy {
+		display: none; /* Hide for now since it breaks mobile/tablet */
+	}
+
+	.Contract p {
+		padding-right: 0;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.NFT {
+		flex-direction: column;
+	}
+
+	.Tray {
+		display: none;
+	}
+
+	.NFT > div + div {
+		margin-left: 0;
+	}
+
+	.Info {
+		padding: 32px 0;
+	}
+
+	.Fiat {
+		margin-top: 6px;
+	}
+
+	.Details {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.Price {
+		margin-top: 24px;
+	}
+
+	.Bid {
+		flex-direction: column-reverse;
+	}
+
+	.Bid > *:first-child {
+		margin-top: 4px;
+	}
+
+	.Bid .From b {
+		font-size: 14px;
+		font-weight: 400;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.Price h2 {
+		font-size: 18px !important;
+	}
+
+	.Crypto {
+		font-size: 24px !important;
+	}
+
+	.Fiat {
+		font-size: 18px !important;
+	}
+}
+
+@media only screen and (max-width: 414px) {
+	.Image {
+		padding: 16px;
+		border-collapse: separate;
+	}
+
+	.Members {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+		margin-top: 32px;
+	}
+
+	.Members > * {
+		margin-left: 0 !important;
+	}
+
+	.NFT {
+		padding: 0;
+	}
+
+	.Info {
+		padding: 0 24px 24px 24px;
+	}
+}
+
+/* Attributes styles Start */
+
+.Attributes {
+	margin-top: 24px;
+	padding: 24px;
+	background: var(--color-background);
+}
+
+.Attributes h4 {
+	padding: 0;
+	color: var(--color-grey);
+	font-size: 12px;
+	text-transform: uppercase;
+}
+
+.AttributesContainer {
+	width: 100%;
+}
+
+.AttributesGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(194px, 1fr));
+	grid-row-start: 1;
+	column-gap: 4px;
+	margin-top: 16px;
+	position: relative;
+}
+
+.AttributesWrapper {
+	width: 100%;
+	height: 48px;
+	margin: 4px 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 8px 16px 8px 20px;
+	border: 1px solid #50207b;
+	border-radius: 999px;
+}
+
+@media only screen and (max-width: 768px) {
+	.Attributes {
+		padding: 16px;
+	}
+	.AttributesGrid {
+		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+		column-gap: 8px;
+	}
+}
+@media only screen and (max-width: 414px) {
+	.Attributes {
+		padding: 16px;
+	}
+	.AttributesGrid {
+		grid-template-columns: 1fr;
+		column-gap: 8px;
+	}
+	.AttributesWrapper {
+		margin: 8px 0;
+	}
+}
+
+.SetOpacityAnimation {
+	animation: animatedOpacity var(--animation-time-medium) ease-in-out;
+}
+
+@keyframes animatedOpacity {
+	0% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 0.5;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.Traits {
+	font-size: 12px;
+	color: #bcbcbc;
+}
+
+.Properties {
+	font-size: 12px;
+	margin-top: 2px;
+}
+
+.Traits,
+.Properties {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+button.ToggleAttributes {
+	background: none;
+	color: #52cbff;
+	font-size: 16px;
+	width: 190px;
+	height: 48px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 8px 20px;
+	margin: 4px 0;
+	position: absolute;
+	right: 8px;
+	bottom: 0px;
+	cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+	button.ToggleAttributes {
+		width: 150px;
+	}
+}
+
+@media only screen and (max-width: 414px) {
+	button.ToggleAttributes {
+		position: relative;
+		width: 100%;
+		margin: 8px;
+	}
+}
+/* Attributes styles End */

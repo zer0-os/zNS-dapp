@@ -4,15 +4,8 @@ import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import {
-	Artwork,
-	FutureButton,
-	NFTCard,
-	SearchBar,
-	Overlay,
-	IconButton,
-} from 'components';
-import { MakeABid } from 'containers';
+import { Artwork, NFTCard, SearchBar, Overlay, IconButton } from 'components';
+import { BidButton, MakeABid } from 'containers';
 import HighestBid from './components/HighestBid';
 import NumBids from './components/NumBids';
 import NFTCardActions from './components/NFTCardActions';
@@ -23,7 +16,7 @@ import 'lib/react-table-config.d.ts';
 import { Domain, DomainData } from 'lib/types';
 
 //- Style Imports
-import styles from './DomainTable.module.css';
+import styles from './DomainTable.module.scss';
 
 //- Asset Imports
 import grid from './assets/grid.svg';
@@ -36,6 +29,7 @@ type DomainTableProps = {
 	filterOwnBids?: boolean;
 	domains: Domain[];
 	empty?: boolean;
+	ignoreAspectRatios?: boolean;
 	isButtonActive?: (row: any) => boolean;
 	isGlobalTable?: boolean;
 	isGridView?: boolean;
@@ -60,6 +54,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	filterOwnBids,
 	domains,
 	empty,
+	ignoreAspectRatios,
 	isButtonActive,
 	isGlobalTable,
 	isGridView,
@@ -232,7 +227,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					return (
 						<>
 							{isGlobalTable && (
-								<FutureButton
+								<BidButton
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
 									glow={
 										userId !== undefined &&
@@ -241,7 +236,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									onClick={() => buttonClick(domain)}
 								>
 									Make A Bid
-								</FutureButton>
+								</BidButton>
 							)}
 							{/* {!isGlobalTable && onRowButtonClick && (
 								<ViewBids
@@ -402,6 +397,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 											<NFTCard
 												actionsComponent={nftCardActionComponent(d)}
 												domain={d.name}
+												ignoreAspectRatio={ignoreAspectRatios}
 												metadataUrl={d.metadata}
 												nftOwnerId={d.owner?.id || ''}
 												nftMinterId={d.minter?.id || ''}

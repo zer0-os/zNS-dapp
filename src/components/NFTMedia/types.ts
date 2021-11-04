@@ -8,6 +8,7 @@ interface SharedProps {
 	onLoad?: () => void;
 	size?: string | undefined;
 	style?: React.CSSProperties;
+	fit?: 'contain' | 'cover';
 }
 
 export interface CloudinaryMediaProps extends SharedProps {
@@ -17,5 +18,6 @@ export interface CloudinaryMediaProps extends SharedProps {
 
 export interface MediaContainerProps extends SharedProps {
 	ipfsUrl: string;
+	rawUrl?: string;
 	isVideo?: boolean;
 }

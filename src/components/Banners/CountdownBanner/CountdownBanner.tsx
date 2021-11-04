@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import styles from './CountdownBanner.module.css';
+import styles from './CountdownBanner.module.scss';
 
 import arrow from './assets/bidarrow.svg';
 
@@ -24,7 +24,9 @@ const CountdownBanner = () => {
 	// Variables to render in banner
 	const [text, setText] = useState<string | undefined>();
 	const [buttonText, setButtonText] = useState<string | undefined>();
-	const [buttonLink, setButtonLink] = useState<string | undefined>();
+	const [buttonLink, setButtonLink] = useState<string | undefined>(
+		CountdownData.domain,
+	);
 	const [timeRemainingLabel, setTimeRemainingLabel] = useState<
 		string | undefined
 	>();

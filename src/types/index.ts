@@ -7,6 +7,7 @@ export type { BasicController } from "./BasicController";
 export type { ERC20 } from "./ERC20";
 export type { Registrar } from "./Registrar";
 export type { StakingController } from "./StakingController";
+export type { WhitelistSimpleSale } from "./WhitelistSimpleSale";
 export type { ZauctionSupportingZNS } from "./ZauctionSupportingZNS";
 
 export { BancorContractRegistry__factory } from "./factories/BancorContractRegistry__factory";
@@ -15,4 +16,5 @@ export { BasicController__factory } from "./factories/BasicController__factory";
 export { ERC20__factory } from "./factories/ERC20__factory";
 export { Registrar__factory } from "./factories/Registrar__factory";
 export { StakingController__factory } from "./factories/StakingController__factory";
+export { WhitelistSimpleSale__factory } from "./factories/WhitelistSimpleSale__factory";
 export { ZauctionSupportingZNS__factory } from "./factories/ZauctionSupportingZNS__factory";

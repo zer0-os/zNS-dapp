@@ -17,11 +17,28 @@ export interface Domain {
 	metadata: string;
 }
 
-export interface Metadata {
-	title: string;
+// We have two different types of Metadata
+// because we changed Schema. This needs to be
+// handled in a better way
+interface Meta {
 	description: string;
 	image: string; // One of: Image, Video, 3d Model
 	previewImage?: string; // One of: Image, Video
+	image_full?: string;
+	attributes?: Attribute[];
+}
+
+export interface Attribute {
+	trait_type: string;
+	value: string | number;
+}
+
+export interface Metadata extends Meta {
+	title: string;
+}
+
+export interface UploadMetadata extends Meta {
+	name: string;
 }
 
 export interface ParentDomain extends Domain {
@@ -50,9 +67,11 @@ export type DomainData = {
 };
 
 export interface DisplayDomain extends Domain {
+	attributes: Maybe<Attribute[]>;
 	image: Maybe<string>;
 	description: Maybe<string>;
 	title: Maybe<string>;
+	image_full?: Maybe<string>;
 }
 
 export interface DisplayParentDomain extends DisplayDomain {
@@ -165,8 +184,8 @@ export interface transferDto {
 	blockNumber: string;
 	timestamp: string;
 	transactionID: string;
-	from: string;
-	to: string;
+	from: Account;
+	to: Account;
 }
 
 export interface minterData {

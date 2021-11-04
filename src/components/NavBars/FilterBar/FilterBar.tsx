@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Style Imports
-import styles from './FilterBar.module.css';
+import styles from './FilterBar.module.scss';
 
 //- Component Imports
 import { TextButton } from 'components';

@@ -8,7 +8,10 @@ import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
 
 // Type Imports
-import { Bid, Domain } from 'lib/types';
+import { Bid, Domain, DomainData } from 'lib/types';
+
+// Style Imports
+import styles from './OwnedDomainsTable.module.scss';
 
 // Component Imports
 import { Confirmation, Overlay, Spinner, GenericTable } from 'components';
@@ -208,18 +211,46 @@ const OwnedDomainTables = ({ onNavigate }: OwnedDomainTableProps) => {
 		</>
 	);
 
+	const headers = [
+		{
+			label: '',
+			accessor: 'index',
+			className: '',
+		},
+		{
+			label: 'Domain',
+			accessor: 'domain',
+			className: 'domain',
+		},
+		{
+			label: 'Highest Bid (WILD)',
+			accessor: 'highestBid',
+			className: '',
+		},
+		{
+			label: '# of Bids',
+			accessor: 'numOfBids',
+			className: '',
+		},
+		{
+			label: '',
+			accessor: 'action',
+			className: '',
+		},
+	];
+
 	return (
 		<>
 			{overlays()}
 			<GenericTable
 				alignments={[0, 0, 1, 1, 1]}
-				headers={['', 'DOMAIN', 'HIGHEST BID', '# OF BIDS', '']}
+				headers={headers}
 				data={owned}
+				itemKey={'id'}
 				loadingText={'Loading Domains'}
 				rowComponent={OwnedDomainTableRow}
 				gridComponent={OwnedDomainTableCard}
 				search={search}
-				
 			/>
 		</>
 	);

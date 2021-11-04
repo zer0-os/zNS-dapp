@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './AssetCard.module.css';
+import styles from './AssetCard.module.scss';
 
 type AssetCardProps = {
 	style?: React.CSSProperties;

@@ -1,0 +1,105 @@
+.Container {
+	width: 588px;
+	padding: 25.5px 40px 40px 40px;
+
+	background: var(--background-blue-card-wilder);
+
+	p {
+		text-align: center;
+		line-height: 24px;
+		padding: 0;
+	}
+
+	.Header {
+		text-align: center;
+
+		margin-bottom: 40px;
+
+		h1 {
+			font-weight: 700;
+		}
+
+		span {
+			display: inline-block;
+			margin-top: 8px;
+		}
+		hr {
+			margin-top: 25.5px;
+			border: 0;
+			border-bottom: 1px solid #50207b;
+		}
+	}
+
+	.Button {
+		margin: 40px auto 0 auto;
+	}
+
+	.Error {
+		display: block;
+		margin-top: 16px;
+		width: 100%;
+
+		color: var(--color-error);
+		text-align: center;
+	}
+
+	.Loading {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		margin-top: 40px;
+
+		span {
+			font-weight: 700;
+			margin-bottom: 24px;
+			text-align: center;
+		}
+	}
+
+	.Success {
+		text-align: center;
+		color: var(--color-success);
+	}
+
+	.Email {
+		margin-top: 40px;
+
+		p {
+			padding-bottom: 0;
+		}
+
+		.Input {
+			margin-top: 16px;
+		}
+	}
+
+	.Socials {
+		margin-top: 40px;
+
+		span {
+			display: block;
+			font-weight: 700;
+			text-align: center;
+		}
+		a {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			&:not(:first-of-type) {
+				margin-left: 16px;
+			}
+		}
+
+		div {
+			display: flex;
+			justify-content: center;
+			margin-top: 16px;
+		}
+
+		img {
+			height: 64px;
+			width: 64px;
+		}
+	}
+}

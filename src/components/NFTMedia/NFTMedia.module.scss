@@ -1,0 +1,50 @@
+.Container {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+.Media {
+	object-fit: contain;
+	max-width: 100%;
+	max-height: 100%;
+	border-radius: 8px;
+	transition: opacity var(--animation-time-medium) ease-in-out;
+}
+
+.Cover {
+	* {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+.Loading {
+	opacity: 0;
+}
+
+.Spinner {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+}
+
+.Mute {
+	position: absolute;
+	top: 100%;
+	right: 0;
+
+	transform: translateY(-100%);
+	z-index: 2;
+}

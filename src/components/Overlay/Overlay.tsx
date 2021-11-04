@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { IconButton } from 'components';
 
 //- Style Imports
-import styles from './Overlay.module.css';
+import styles from './Overlay.module.scss';
 
 import closeIcon from 'assets/close-icon.svg';
 
@@ -30,7 +30,7 @@ const Overlay: React.FC<OverlayProps> = ({
 	nested,
 	fullScreen,
 	style,
-	hasCloseButton,
+	hasCloseButton = true,
 }) => {
 	const [inDOM, setInDOM] = useState<boolean>(false);
 	const [domId, setDomId] = useState('');
@@ -77,6 +77,7 @@ const Overlay: React.FC<OverlayProps> = ({
 	};
 
 	const closeOverlay = (e: React.MouseEvent) => {
+		e.stopPropagation();
 		const target = e.target as HTMLInputElement;
 		const overlay = document.querySelector(domId);
 		if (
@@ -100,12 +101,14 @@ const Overlay: React.FC<OverlayProps> = ({
 			} ${centered ? styles.Centered : ''}
 			${fullScreen ? styles.FullScreen : ''}`}
 		>
-			<IconButton
-				className={styles.Close}
-				onClick={onClose}
-				iconUri={closeIcon}
-				style={{ height: 32, width: 32, padding: 6 }}
-			/>
+			{hasCloseButton && (
+				<IconButton
+					className={styles.Close}
+					onClick={onClose}
+					iconUri={closeIcon}
+					style={{ height: 32, width: 32, padding: 6 }}
+				/>
+			)}
 			<div className={`overlay ${styles.Container} ${img ? styles.Image : ''}`}>
 				<div className={`overlay ${styles.Content}`}>{children}</div>
 				<div style={{ display: centered ? 'none' : 'block', height: 64 }}></div>

@@ -13,20 +13,49 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MediaContainerProps } from './types';
 
 // Style Imports
-import styles from './NFTMedia.module.css';
+import styles from './NFTMedia.module.scss';
 
 // Component Imports
 import { Overlay, Spinner } from 'components';
 import IPFSMedia from './IPFSMedia';
 import CloudinaryMedia from './CloudinaryMedia';
 
+// Library Imports
+import classNames from 'classnames/bind';
+import { getHashFromIPFSUrl } from 'lib/ipfs';
+
 // Possible media types based on
 // MIME type of content
-enum MediaType {
+export enum MediaType {
 	Image, // image/*
 	Video, // video/*
 	Unknown, // unhandled
 }
+
+const cx = classNames.bind(styles);
+
+// Gets MIME type of media at URL
+// Useful because our IPFS links don't have
+// a file extension
+export const checkMediaType = (hash: string) => {
+	return new Promise((resolve, reject) => {
+		fetch('https://ipfs.fleek.co/ipfs/' + hash, { method: 'HEAD' })
+			.then((r: Response) => {
+				const contentTypeHeader = r.headers.get('Content-Type');
+
+				if (contentTypeHeader?.startsWith('image')) {
+					resolve(MediaType.Image);
+				} else if (contentTypeHeader?.startsWith('video')) {
+					resolve(MediaType.Video);
+				} else {
+					resolve(MediaType.Unknown);
+				}
+			})
+			.catch(() => {
+				resolve(MediaType.Unknown);
+			});
+	});
+};
 
 const NFTMediaContainer = (props: MediaContainerProps) => {
 	//////////////////
@@ -51,15 +80,6 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	// Functions //
 	///////////////
 
-	// Pulls the IPFS hash from an IPFS url
-	// https://ipfs.fleek.co/ipfs/QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
-	// turns into
-	// QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
-	const getHashFromIPFSUrl = (url: string) => {
-		const hashIndex = url.lastIndexOf('/') + 1;
-		return url.slice(hashIndex);
-	};
-
 	// Sets internal "media loading" state
 	// when media loads - this is passed down
 	// to the image or video components
@@ -80,29 +100,10 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		}
 	};
 
-	// Gets MIME type of media at URL
-	// Useful because our IPFS links don't have
-	// a file extension
-	const checkMediaType = () => {
-		return new Promise((resolve, reject) => {
-			fetch(ipfsUrl, { method: 'HEAD' }).then((r: Response) => {
-				const contentTypeHeader = r.headers.get('Content-Type');
-
-				if (contentTypeHeader?.startsWith('image')) {
-					resolve(MediaType.Image);
-				} else if (contentTypeHeader?.startsWith('video')) {
-					resolve(MediaType.Video);
-				} else {
-					resolve(MediaType.Unknown);
-				}
-			});
-		});
-	};
-
 	// Gets data for media
 	const getMediaData = async () => {
-		const mediaType = (await checkMediaType()) as MediaType;
 		const hash = getHashFromIPFSUrl(ipfsUrl);
+		const mediaType = (await checkMediaType(hash)) as MediaType;
 		if (isMounted.current) {
 			setMediaType(mediaType);
 			setMediaLocation(hash);
@@ -173,13 +174,14 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 					onLoad={onLoadMedia}
 					size={matchSize ? size : undefined}
 					style={{ ...style, opacity: isMediaLoading ? 0 : 1 }}
+					fit={props.fit}
 				/>
 			);
 		} else {
 			return (
 				<IPFSMedia
 					alt={alt}
-					ipfsUrl={ipfsUrl!}
+					ipfsUrl={'https://ipfs.fleek.co/ipfs/' + mediaLocation!}
 					onClick={toggleLightbox}
 					onLoad={onLoadMedia}
 					size={matchSize ? size : undefined}
@@ -191,7 +193,10 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 
 	return (
 		<div
-			className={`${styles.Container} ${className ? className : ''}`}
+			className={cx(className, {
+				Container: true,
+				Cover: props.fit === 'cover',
+			})}
 			style={style}
 		>
 			{isLightboxOpen && (

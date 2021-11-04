@@ -1,0 +1,68 @@
+.ZNALink {
+	display: flex;
+}
+
+.ZNALink > a {
+	position: relative;
+	transition: all var(--animation-time-short) ease-in-out;
+	z-index: 1;
+}
+
+.ZNALink > a:last-of-type {
+	font-weight: 700;
+}
+
+.ZNALink > a::after {
+	transition: opacity var(--animation-time-medium) ease-in-out;
+	content: ' ';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%);
+	transform: translate(-50%);
+	width: calc(100% - 16px);
+	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.3);
+	opacity: 0;
+	z-index: -1;
+}
+
+.ZNALink > a:last-of-type::after {
+	opacity: 1;
+}
+
+.ZNALink > a:not(:last-child):hover::after {
+	opacity: 1;
+}
+
+.ZNALink > a:not(:last-child):hover {
+}
+
+.ZNALink > a:last-child::after {
+	content: ' ';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%);
+	transform: translate(-50%);
+	width: calc(100% - 19px);
+	box-shadow: 1px 2px 16px 10px var(--color-accent-1);
+	z-index: -1;
+}
+
+.Dots {
+	display: none;
+	font-weight: 700;
+	color: white;
+	z-index: 2;
+}
+
+@media only screen and (max-width: 600px) {
+	.ZNALink > a:not(:first-of-type):not(:last-of-type) {
+		display: none !important;
+		background: red;
+	}
+
+	.Dots {
+		display: inline-block;
+	}
+}

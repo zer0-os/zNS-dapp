@@ -1,0 +1,73 @@
+.StatsWidget {
+	border-radius: 16px;
+	padding: 16px;
+	/* margin-top: 16px; */
+	// width: 24.2%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.previewView {
+	background: #10052e;
+	border: 1px solid #50207b;
+	box-sizing: border-box;
+	box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
+}
+
+.normalView {
+	background: #1d0c4a;
+	border-radius: 16px;
+}
+
+.StatsFieldName {
+	color: #bfbfbf;
+	font-size: 12px;
+	line-height: 15px;
+	margin-bottom: 2px;
+}
+
+.StatsTitle {
+	font-weight: bold;
+	font-size: 18px;
+	line-height: 22px;
+	margin: 2px 0px;
+}
+
+.StatsSubText {
+	font-size: 12px;
+	line-height: 15px;
+	color: #bfbfbf;
+	margin-top: 2px;
+}
+
+.StatsAccentText {
+	color: #58c573;
+}
+
+.SpinnerContainer {
+	margin: 9.5px 0;
+	text-align: center;
+	display: flex;
+	align-items: center;
+}
+@media only screen and (max-width: 428px) {
+	.StatsWidget {
+		margin: 8px 0;
+		&:first-child {
+			margin-top: 16px;
+		}
+		&:last-child {
+			margin-bottom: 0px;
+		}
+	}
+	.previewView {
+		margin: 4px 0;
+		&:first-child {
+			margin-top: 0px;
+		}
+		&:last-child {
+			margin-bottom: 0px;
+		}
+	}
+}

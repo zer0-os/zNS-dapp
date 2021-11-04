@@ -1,0 +1,45 @@
+.Dots {
+	--dot-size: 5px;
+	--dot-gap: 2.8px;
+
+	position: relative;
+	height: 32px;
+	width: 16px;
+	cursor: pointer;
+}
+
+.Dots > div {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: var(--dot-size);
+	width: var(--dot-size);
+	border-radius: 50%;
+	background: var(--color-accent-1);
+}
+
+.Dots > div:first-child {
+	transform: translate(-50%, calc(-50% - calc(100% + var(--dot-gap))));
+}
+
+.Dots > div:last-child {
+	transform: translate(-50%, calc(-50% + calc(100% + var(--dot-gap))));
+}
+
+.Stats {
+	display: flex;
+	justify-content: space-between;
+	background: var(--background-purple-card-20);
+	padding: 16px;
+	flex-wrap: wrap;
+
+	@media only screen and (max-width: 415px) {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	&:first-child {
+		margin-left: 0;
+	}
+}

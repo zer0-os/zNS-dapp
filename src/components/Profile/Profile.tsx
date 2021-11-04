@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 //- Style Imports
 import CopyInput from '../CopyInput/CopyInput.js';
-import ProfileStyle from './Profile.module.css';
+import ProfileStyle from './Profile.module.scss';
 
 //- Component Imports
 import { RequestTable, TabBar } from 'components';
@@ -35,7 +35,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 		setSelected(option);
 	};
 
-	const navigateToDomain = (domain: string) => {		
+	const navigateToDomain = (domain: string) => {
 		const d =
 			domain.indexOf('wilder.') === 0 ? domain.split('wilder.')[1] : domain;
 		if (onNavigate) onNavigate(d);

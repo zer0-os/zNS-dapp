@@ -1,11 +1,12 @@
 //- React Imports
-import { FutureButton } from 'components';
+import { FutureButton, IconButton } from 'components';
 import LoadingIndicator from 'components/LoadingIndicator/LoadingIndicator';
 import { Maybe } from 'lib/types';
 import React from 'react';
 
 //- Style Imports
-import styles from './Confirmation.module.css';
+import styles from './Confirmation.module.scss';
+import closeIcon from 'assets/close-icon.svg';
 
 type ConfirmationProps = {
 	cancelText?: string;
@@ -17,7 +18,9 @@ type ConfirmationProps = {
 	hideButtons?: boolean;
 	onCancel: () => void;
 	onConfirm: () => void;
+	onClose?: () => void;
 	title?: string;
+	hasCloseButton?: boolean;
 };
 
 const Confirmation: React.FC<ConfirmationProps> = ({
@@ -29,8 +32,10 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 	hideButtons,
 	onCancel,
 	onConfirm,
+	onClose,
 	title,
 	errorText,
+	hasCloseButton,
 }) => {
 	if (showLoading === undefined) showLoading = false; //if undefined its false
 
@@ -44,11 +49,25 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 		);
 	}
 
+	const handleClick = () => {
+		if (onClose) {
+			onClose();
+		}
+	};
+
 	return (
 		<div
 			className={`${styles.Confirmation} blur border-primary border-rounded`}
 		>
 			<h2 className="glow-text-white">{title ?? 'Are you sure?'}</h2>
+			{hasCloseButton && (
+				<IconButton
+					className={styles.Close}
+					onClick={handleClick}
+					iconUri={closeIcon}
+					style={{ height: 32, width: 32, padding: 6 }}
+				/>
+			)}
 			<hr className="glow" />
 			{children}
 			{!hideButtons && !showLoading && (
@@ -73,9 +92,7 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 			{!hideButtons && !showLoading && errorText && <div>{errorMessage}</div>}
 			{!hideButtons && showLoading && loadingText && (
 				<div className={styles.Buttons}>
-					<LoadingIndicator
-						text={loadingText}
-					/>
+					<LoadingIndicator text={loadingText} />
 				</div>
 			)}
 		</div>

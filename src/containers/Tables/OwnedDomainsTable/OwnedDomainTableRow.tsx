@@ -101,7 +101,15 @@ const OwnedDomainTableRow = (props: any) => {
 						View Bids
 					</FutureButton>
 				) : (
-					<div style={{ textAlign: 'right', marginRight: '48px' }}>No Bids</div>
+					<div
+						style={{
+							color: '#4d4d4d',
+							textAlign: 'right',
+							marginRight: '48px',
+						}}
+					>
+						No Bids
+					</div>
 				)}
 			</>
 		);

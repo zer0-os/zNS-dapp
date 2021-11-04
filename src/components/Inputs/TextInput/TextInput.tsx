@@ -6,42 +6,45 @@ import React, { useRef, useEffect } from 'react';
 import autoHeight from 'autosize';
 
 //- Style Imports
-import styles from './TextInput.module.css';
+import styles from './TextInput.module.scss';
 
 //- Local Imports
 import { isAlphanumeric, isNumber } from './validation';
 
-// TODO: Implement max characters (props.max)
-// TODO: Convert to TypeScript
-
 type TextInputProps = {
+	alphanumeric?: boolean; // No symbols
 	autosize?: boolean;
-	onChange: (text: string) => void;
+	className?: string;
 	error?: boolean;
 	errorText?: string;
-	placeholder?: string;
-	type?: string;
-	text?: string;
+	lowercase?: boolean; // Lowercase only
+	maxLength?: number;
 	multiline?: boolean;
-	style?: React.CSSProperties;
+	numeric?: boolean; // Numbers only
+	onChange: (text: string) => void;
+	placeholder?: string;
 	resizable?: boolean;
-	alphanumeric?: boolean; // If we want only alphanumeric characters
-	numeric?: boolean;
+	style?: React.CSSProperties;
+	text?: string;
+	type?: string;
 };
 
 const TextInput: React.FC<TextInputProps> = ({
+	alphanumeric,
 	autosize,
-	onChange,
+	className,
 	error,
 	errorText,
-	placeholder,
-	type,
-	text,
+	lowercase,
+	maxLength,
 	multiline,
-	style,
-	resizable,
-	alphanumeric,
 	numeric,
+	onChange,
+	placeholder,
+	resizable,
+	style,
+	text,
+	type,
 }) => {
 	//////////////////
 	// State & Data //
@@ -55,10 +58,20 @@ const TextInput: React.FC<TextInputProps> = ({
 
 	const handleChange = (event: any) => {
 		const newValue = event.target.value;
-		if (validate(newValue) && onChange) return onChange(event.target.value);
+		if (validate(newValue) && onChange) {
+			return onChange(format(event.target.value));
+		}
+	};
+
+	const format = (str: string) => {
+		if (lowercase) {
+			return str.toLowerCase();
+		}
+		return str;
 	};
 
 	const validate = (str: string) => {
+		if (maxLength && maxLength < str.length) return false;
 		if (alphanumeric && !isAlphanumeric(str)) return false;
 		if (numeric && !isNumber(str)) return false;
 		return true;
@@ -84,7 +97,7 @@ const TextInput: React.FC<TextInputProps> = ({
 				<textarea
 					className={`${styles.TextInput} border-blue ${
 						error ? styles.Error : ''
-					}`}
+					} ${className || ''}`}
 					ref={textArea}
 					onChange={handleChange}
 					style={{
@@ -100,7 +113,7 @@ const TextInput: React.FC<TextInputProps> = ({
 					type={type ? type : ''}
 					className={`${styles.TextInput} border-blue ${
 						error ? styles.Error : ''
-					}`}
+					} ${className || ''}`}
 					onChange={handleChange}
 					style={style}
 					placeholder={placeholder}

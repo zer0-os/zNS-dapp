@@ -1,10 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import styles from './GenericTable.module.css';
+import styles from './GenericTable.module.scss';
 import { useInView } from 'react-intersection-observer';
 import { IconButton, SearchBar, Spinner, TextButton } from 'components';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+
+type GenericTableHeader = {
+	label: string;
+	accessor?: string;
+	className?: string;
+};
 
 const GenericTable = (props: any) => {
 	///////////////////////
@@ -121,7 +127,12 @@ const GenericTable = (props: any) => {
 				return (
 					<>
 						{(searchResults || props.data).map((d: any, index: number) => (
-							<props.rowComponent key={index} rowNumber={index} data={d} />
+							<props.rowComponent
+								key={d[props.itemKey]}
+								rowNumber={index}
+								data={d}
+								headers={props.headers}
+							/>
 						))}
 					</>
 				);
@@ -131,7 +142,12 @@ const GenericTable = (props: any) => {
 						{(searchResults || props.data)
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
-								<props.rowComponent key={index} rowNumber={index} data={d} />
+								<props.rowComponent
+									key={d[props.itemKey]}
+									rowNumber={index}
+									data={d}
+									headers={props.headers}
+								/>
 							))}
 					</>
 				);
@@ -142,15 +158,16 @@ const GenericTable = (props: any) => {
 			<table className={styles.Table}>
 				<thead>
 					<tr>
-						{props.headers.map((h: string, index: number) => (
+						{props.headers.map((h: GenericTableHeader, index: number) => (
 							<th
-								className={
+								className={`${
 									props.alignments && props.alignments[index] > 0
 										? styles.Right
 										: styles.Left
-								}
+								} ${h.className && styles[h.className]}`}
+								key={h.accessor}
 							>
-								{h}
+								{h.label}
 							</th>
 						))}
 					</tr>
@@ -178,8 +195,19 @@ const GenericTable = (props: any) => {
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					<props.gridComponent key={index} rowNumber={index} data={d} />
+					<props.gridComponent
+						key={d[props.itemKey]}
+						rowNumber={index}
+						data={d}
+					/>
 				))}
+				{data.length === 2 && <div></div>}
+				{data.length === 1 && (
+					<>
+						<div></div>
+						<div></div>
+					</>
+				)}
 			</div>
 		);
 	}, [rawData, chunk, searchQuery]);
@@ -189,11 +217,7 @@ const GenericTable = (props: any) => {
 	////////////
 
 	return (
-		// @todo fix the border in the PR. @colbr
-		<div
-			className={`${styles.Container} background-primary border-rounded border-primary`}
-			style={props.style}
-		>
+		<div className={`${styles.Container}`} style={props.style}>
 			<div ref={contentRef} className={styles.Content}>
 				<div className={styles.Controls}>
 					<SearchBar
@@ -224,16 +248,19 @@ const GenericTable = (props: any) => {
 				)}
 				<div ref={ref}></div>
 			</div>
-			{(searchResults || rawData) && !searchQuery && chunk * chunkSize < rawData.length && (
-				<TextButton
-					onClick={() =>
-						isGridView ? increaseChunkSize() : increaseChunkSize(2)
-					}
-					className={styles.LoadMore}
-				>
-					Load More
-				</TextButton>
-			)}
+			{(searchResults || rawData) &&
+				props.infiniteScroll &&
+				!searchQuery &&
+				chunk * chunkSize < rawData.length && (
+					<TextButton
+						onClick={() =>
+							isGridView ? increaseChunkSize() : increaseChunkSize(2)
+						}
+						className={styles.LoadMore}
+					>
+						Load More
+					</TextButton>
+				)}
 		</div>
 	);
 };

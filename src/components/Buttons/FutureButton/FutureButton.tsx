@@ -1,16 +1,27 @@
+// React Imports
 import React, { useState } from 'react';
 
-import styles from './FutureButtonStyle.module.css';
+import styles from './FutureButtonStyle.module.scss';
+// Style Imports
+import classNames from 'classnames/bind';
 
 type FutureButtonProps = {
 	className?: string;
-	onClick: (event?: any) => void;
+	onClick?: (event?: any) => void;
 	style?: React.CSSProperties;
 	toggleable?: boolean;
 	children: React.ReactNode;
 	glow?: boolean;
 	loading?: boolean;
 	alt?: boolean;
+};
+
+const cx = classNames.bind(styles);
+
+export const TEST_ID = {
+	CONTAINER: 'future-button-container',
+	LOADER: 'future-button-loading-spinner',
+	WASH: 'future-button-wash',
 };
 
 // @TODO Should make glow the default state since it's much more prevalent in the design
@@ -28,35 +39,45 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	const [isSelected, setSelected] = useState(false);
 
 	const handleHover = () => {
-		if (!hasHovered) setHovered(true);
+		if (!glow) return;
+		else if (!hasHovered) setHovered(true);
 	};
 
 	const handleClick = (event: any) => {
 		if (loading) return;
-		if (glow && onClick) onClick(event);
+		if (onClick) onClick(event);
 		if (toggleable) setSelected(!isSelected);
 	};
 
+	const buttonClasses = cx(className, {
+		futureButton: true,
+		futureButtonInactive: !glow,
+		glow: glow,
+		selected: isSelected,
+		Loading: loading,
+		Alt: alt,
+	});
+
+	const washClasses = cx({
+		wash: true,
+		hovered: hasHovered && !isSelected,
+	});
+
 	return (
 		<button
-			className={`${styles.futureButton} ${isSelected ? styles.selected : ''} ${
-				glow ? styles.glow : ''
-			} ${loading ? styles.Loading : ''} ${alt ? styles.Alt : ''} ${
-				className ? className : ''
-			}`}
+			className={buttonClasses}
 			onMouseEnter={handleHover}
 			onMouseUp={handleClick}
 			style={style}
+			data-testid={TEST_ID.CONTAINER}
 		>
-			<div className={styles.content}>
+			<div className={styles.Content}>
 				{!loading && children}
-				{loading && <div className={styles.Spinner}></div>}
+				{loading && (
+					<div className={styles.Spinner} data-testid={TEST_ID.LOADER}></div>
+				)}
 			</div>
-			<div
-				className={`${styles.wash} ${
-					hasHovered && !isSelected ? styles.hovered : ''
-				}`}
-			></div>
+			<div className={washClasses} data-testid={TEST_ID.WASH}></div>
 		</button>
 	);
 };

@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
@@ -14,9 +14,10 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
+import { formatNumber, formatEthers } from 'lib/utils';
 
 //- Style Imports
-import styles from './ZNS.module.css';
+import styles from './ZNS.module.scss';
 
 //- Icon Imports
 import userIcon from 'assets/user.svg';
@@ -27,25 +28,34 @@ import {
 	FutureButton,
 	FilterBar,
 	TitleBar,
-	Tooltip,
+	TooltipLegacy,
 	IconButton,
-	CountdownBanner,
 	Overlay,
-	Profile,
 	NotificationDrawer,
 	NumberButton,
 	MintPreview,
 	TransferPreview,
 	Spinner,
+	StatsWidget,
 } from 'components';
 
-import { SubdomainTable, CurrentDomainPreview } from 'containers';
+import {
+	SubdomainTable,
+	CurrentDomainPreview,
+	ProfileModal,
+	WheelsRaffle,
+} from 'containers';
 
 //- Library Imports
 import { useTransferProvider } from 'lib/providers/TransferProvider';
 import { MintNewNFT, NFTView, TransferOwnership } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
+import { ethers } from 'ethers';
+import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import useMatchMedia from 'lib/hooks/useMatchMedia';
 
 type ZNSProps = {
 	domain: string;
@@ -56,7 +66,6 @@ type ZNSProps = {
 enum Modal {
 	Bid,
 	Mint,
-	Profile,
 	Transfer,
 	Wallet,
 }
@@ -72,8 +81,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
+
 	const { account, active, chainId } = walletContext;
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
+
+	const sdk = useZnsSdk();
+	const { wildPriceUsd } = useCurrencyProvider();
 
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
@@ -92,6 +105,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 	//- Browser Navigation State
 	const history = useHistory();
+	const location = useLocation();
 	const [forwardDomain, setForwardDomain] = useState<string | undefined>();
 	const lastDomain = useRef<string>();
 	const canGoBack = domain !== undefined && domain !== '/';
@@ -101,7 +115,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	React.useEffect(() => {
 		if (!loading) {
 			if (!znsDomain) {
-				console.log(`invalid domain, returning to home`);
 				history.push('/');
 				return;
 			}
@@ -127,6 +140,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Notification State
 	const { addNotification } = useNotification();
 
+	const isMobile = useMatchMedia('phone');
+	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
+	const isMobilePortrait = useMatchMedia('(max-width: 428px)');
+
 	//- Page State
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
@@ -136,6 +153,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
+
+	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
+	const [statsLoaded, setStatsLoaded] = useState(false);
 
 	//- Data
 	const isOwnedByUser: boolean =
@@ -174,7 +194,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		setModal(undefined);
 	};
 	const openMint = () => setModal(Modal.Mint);
-	const openProfile = () => setModal(Modal.Profile);
+
+	const openProfile = () => {
+		const params = new URLSearchParams(location.search);
+		params.set('profile', 'true');
+		history.push({
+			pathname: domain,
+			search: params.toString(),
+		});
+	};
+
 	const openWallet = () => {
 		setModal(Modal.Wallet);
 	};
@@ -182,14 +211,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		setModal(Modal.Transfer);
 	};
 
-	const navigate = (to: string) => {
-		history.push(to);
-		// @todo rewrite
-		if (modal) closeModal();
-	};
-
 	const handleResize = () => {
 		setPageWidth(window.innerWidth);
+	};
+
+	const getTradeData = async () => {
+		if (znsDomain) {
+			const metricsData = await sdk.instance.getDomainMetrics([znsDomain.id]);
+			if (metricsData && metricsData[znsDomain.id]) {
+				setTradeData(metricsData[znsDomain.id]);
+			}
+			setStatsLoaded(true);
+		}
 	};
 
 	/////////////
@@ -250,11 +283,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
 
 		// Check if we need to close a modal
-		if (
-			(!active && modal === Modal.Profile) ||
-			modal === Modal.Transfer ||
-			modal === Modal.Mint
-		) {
+		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
 		}
 	}, [active]);
@@ -272,26 +301,104 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		});
 	}, [znsDomain, hasLoaded]);
 
+	useEffect(() => {
+		setStatsLoaded(false);
+		if (znsDomain && znsDomain.id) {
+			getTradeData();
+		}
+	}, [znsDomain]);
+
 	/////////////////////
 	// React Fragments //
 	/////////////////////
+
+	const nftStats = () => {
+		let width = '24.2%';
+		if (isMobilePortrait) {
+			width = '100%';
+		} else if (isTabletPortrait) {
+			width = '32%';
+		}
+
+		const data = [
+			{
+				fieldName: 'Items in Domain',
+				title: tradeData?.items ? formatNumber(tradeData.items) : 0,
+				isHidden: isMobilePortrait,
+			},
+			{
+				fieldName: 'Total Owners',
+				title: tradeData?.holders ? formatNumber(tradeData.holders) : 0,
+				isHidden: isMobile || isTabletPortrait,
+			},
+			{
+				fieldName: 'Floor Price',
+				title: `${
+					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
+				} WILD`,
+				subTitle: `$${
+					tradeData?.lowestSale
+						? formatNumber(
+								Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
+									wildPriceUsd,
+						  )
+						: 0
+				}`,
+			},
+			{
+				fieldName: 'Volume',
+				title: (tradeData?.volume as any)?.all
+					? `${formatEthers((tradeData?.volume as any)?.all)} WILD`
+					: '',
+				subTitle: `$${
+					(tradeData?.volume as any)?.all
+						? formatNumber(
+								Number(
+									ethers.utils.formatEther((tradeData?.volume as any)?.all),
+								) * wildPriceUsd,
+						  )
+						: 0
+				}`,
+			},
+		];
+
+		return (
+			<>
+				<div className={styles.Stats}>
+					{data.map((item) => (
+						<>
+							{!item.isHidden ? (
+								<StatsWidget
+									className="normalView"
+									fieldName={item.fieldName}
+									isLoading={!statsLoaded}
+									title={item.title}
+									subTitle={item.subTitle}
+									style={{
+										width: width,
+									}}
+								></StatsWidget>
+							) : null}
+						</>
+					))}
+				</div>
+			</>
+		);
+	};
 
 	const previewCard = () => {
 		const isVisible = domain !== '/' && !isNftView;
 		let to;
 		if (isVisible && previewCardRef) {
 			// If should be visible, slide down
-			to = { opacity: 1, marginTop: 0, marginBottom: 16 };
-		} else if (domain === '/') {
+			to = { opacity: 1, marginTop: 0, marginBottom: 0 };
+		} else {
 			// If root view, slide up
 			to = {
 				opacity: 0,
 				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 12,
 				marginBottom: 16,
 			};
-		} else {
-			// If NFT view, don't render
-			return <></>;
 		}
 
 		return (
@@ -314,6 +421,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		<>
 			{/* Overlays */}
 			<NotificationDrawer />
+			<ProfileModal />
 			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
@@ -337,11 +445,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					/>
 				</Overlay>
 			)}
-			{modal === Modal.Profile && (
-				<Overlay fullScreen centered open onClose={closeModal}>
-					<Profile yours id={account ? account : ''} onNavigate={navigate} />
-				</Overlay>
-			)}
 			{modal === Modal.Transfer && (
 				<TransferOwnership
 					metadataUrl={znsDomain?.metadata ?? ''}
@@ -356,8 +459,14 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	);
 
 	const subTable = useMemo(() => {
-		return <SubdomainTable style={{ marginTop: 16 }} domainName={domain} />;
-	}, [domain]);
+		return (
+			<SubdomainTable
+				style={{ marginTop: 16 }}
+				domainName={domain}
+				isNftView={isNftView}
+			/>
+		);
+	}, [domain, isNftView]);
 
 	////////////
 	// Render //
@@ -460,24 +569,26 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
-										<Tooltip content={<MintPreview />}>
+										<TooltipLegacy
+											content={<MintPreview onOpenProfile={openProfile} />}
+										>
 											<NumberButton
 												rotating={statusCount > 0}
 												number={statusCount}
 												onClick={() => {}}
 											/>
-										</Tooltip>
+										</TooltipLegacy>
 									) : null}
 
 									{/* Transfer Progress button */}
 									{transferring.length > 0 && (
-										<Tooltip content={<TransferPreview />}>
+										<TooltipLegacy content={<TransferPreview />}>
 											<NumberButton
 												rotating={transferring.length > 0}
 												number={transferring.length}
 												onClick={() => {}}
 											/>
-										</Tooltip>
+										</TooltipLegacy>
 									)}
 
 									{/* Profile Button */}
@@ -499,11 +610,21 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					</TitleBar>
 				</FilterBar>
 
-				{previewCard()}
+				<WheelsRaffle />
 
-				<CountdownBanner />
-
-				{showDomainTable && subTable}
+				{!isNftView && (
+					<div
+						className="background-primary border-primary border-rounded"
+						style={{
+							background: 'var(--background-primary)',
+							overflow: 'hidden',
+						}}
+					>
+						{previewCard()}
+						{nftStats()}
+						{showDomainTable && subTable}
+					</div>
+				)}
 
 				{znsDomain && isNftView && (
 					<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
