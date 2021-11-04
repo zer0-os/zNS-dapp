@@ -8,7 +8,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
-import { Countdown, MintWheelsBanner, Overlay } from 'components';
+import { MintWheelsBanner, Overlay } from 'components';
 import MintWheels from './MintWheels';
 
 // Library Imports
@@ -24,7 +24,6 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const currentTime = new Date().getTime();
 	const DATE_WHITELIST = 1635458400000;
 	const DATE_PUBLIC = 1636063200000;
 
@@ -71,7 +70,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const [isSaleHalted, setIsSaleHalted] = useState(currentTime <= DATE_PUBLIC);
+	const isSaleHalted = true;
 
 	///////////////
 	// Functions //
@@ -237,7 +236,7 @@ const MintWheelsFlowContainer = () => {
 	// Get user eligibility
 	useEffect(() => {
 		let isMounted = true;
-		if (!saleContract) {
+		if (!saleContract || isSaleHalted) {
 			return;
 		}
 		// Get user data if wallet connected
@@ -258,7 +257,7 @@ const MintWheelsFlowContainer = () => {
 	// Get user balance and number purchased
 	useEffect(() => {
 		let isMounted = true;
-		if (!saleContract) {
+		if (!saleContract || isSaleHalted) {
 			return;
 		}
 		// Get user data if wallet connected
@@ -280,12 +279,13 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [numMinted, account, library, saleContract]);
 
 	useEffect(() => {
 		let isMounted = true;
 
-		if (!saleContract) {
+		if (!saleContract || isSaleHalted) {
 			return;
 		}
 
@@ -352,17 +352,7 @@ const MintWheelsFlowContainer = () => {
 		if (isSaleHalted) {
 			return (
 				<>
-					<span>
-						The Wilder Wheels Phase C sale will open in{' '}
-						<b>
-							<Countdown
-								to={DATE_PUBLIC}
-								onFinish={() => {
-									setIsSaleHalted(false);
-								}}
-							/>
-						</b>
-					</span>
+					<span>The Wilder Wheels Phase 1 and 2 sales are complete.</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
@@ -373,8 +363,8 @@ const MintWheelsFlowContainer = () => {
 							>
 								Discord
 							</a>
-						</b>
-						. Next Wheels batch will start at 0.738 ETH.
+						</b>{' '}
+						for details on when the next sale will happen.
 					</span>
 				</>
 			);
