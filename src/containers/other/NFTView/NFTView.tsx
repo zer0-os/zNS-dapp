@@ -39,8 +39,11 @@ import styles from './NFTView.module.scss';
 import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
+import shareIcon from './assets/share.svg';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 const moment = require('moment');
+
+const ZNS_SHARE_BASE_URL = process.env.REACT_APP_ZNS_SHARE_BASE_URL as string;
 
 type NFTViewProps = {
 	domain: string;
@@ -180,6 +183,17 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				console.error(e);
 			}
 		}
+	};
+
+	const shareAsset = () => {
+		const url = `${ZNS_SHARE_BASE_URL}${domain}`;
+		window.open(
+			`https://twitter.com/share?url=
+				${encodeURIComponent(url)}`,
+			'',
+			'menubar=no,toolbar=no,resizable=no,scrollbars=no,personalbar=no,height=575,width=500',
+		);
+		return false;
 	};
 
 	const openBidOverlay = () => {
@@ -713,6 +727,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						{/* <button>
 							<img src={shareIcon} />
 						</button> */}
+						<Tooltip text={'Share to Twitter'}>
+							<button onClick={shareAsset}>
+								<img src={shareIcon} alt="share asset" />
+							</button>
+						</Tooltip>
 						<Tooltip text={'Download for Twitter'}>
 							<button onClick={downloadAsset}>
 								<img alt="download asset" src={downloadIcon} />
