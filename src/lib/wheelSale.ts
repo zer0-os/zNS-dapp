@@ -37,7 +37,7 @@ export const getWhitelist = async (
 	try {
 		res = await fetch(whitelistUri);
 		body = await res.json();
-	} catch (e) {
+	} catch (e: any) {
 		res = await fetch(backupWhitelist);
 		body = await res.json();
 	}

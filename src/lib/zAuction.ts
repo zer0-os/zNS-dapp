@@ -142,7 +142,7 @@ export async function getBidsForNft(
 		const data = await response.json();
 		bids = data !== undefined ? (data as BidDto[]) : [];
 		getBidsForNftCache.put(cacheKey, bids);
-	} catch (e) {
+	} catch (e: any) {
 		error = `Failed to fetch bids for nft: ${e}`;
 	}
 
@@ -256,7 +256,7 @@ export async function placeBid(
 			startBlock,
 			expireBlock,
 		});
-	} catch (e) {
+	} catch (e: any) {
 		console.error(e);
 		throw Error(`Failed to generate bid.`);
 	}
@@ -271,7 +271,7 @@ export async function placeBid(
 		signedBid = await signer.signMessage(
 			ethers.utils.arrayify(bidData.payload),
 		);
-	} catch (e) {
+	} catch (e: any) {
 		console.error(e);
 		throw Error(`Bid was not signed by wallet.`);
 	}
@@ -300,7 +300,7 @@ export async function placeBid(
 			expireBlock,
 			signedMessage: signedBid,
 		});
-	} catch (e) {
+	} catch (e: any) {
 		console.error(e);
 		throw Error(`Failed to submit bid.`);
 	}

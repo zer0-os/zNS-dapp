@@ -25,7 +25,7 @@ export function* addNotification(action: AddNotificationRequest) {
 		// Remove a notification after the duration
 		yield delay(duration);
 		yield put(removeNotificationRequest({ id }));
-	} catch (e) {
+	} catch (e: any) {
 		yield put(addNotificationError());
 	}
 }
@@ -40,7 +40,7 @@ export function* addNotificationSaga() {
 export function* removeNotification(action: RemoveNotificationRequest) {
 	try {
 		yield put(removeNotificationSuccess());
-	} catch (e) {
+	} catch (e: any) {
 		yield put(removeNotificationError());
 	}
 }

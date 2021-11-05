@@ -28,6 +28,7 @@ type OwnedDomainTableProps = {
 };
 
 const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
+	console.log('no');
 	//////////////////
 	// State & Data //
 	//////////////////

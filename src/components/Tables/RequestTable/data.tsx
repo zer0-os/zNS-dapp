@@ -23,7 +23,7 @@ export const getRequestData = (requests: DomainRequest[]) => {
 					};
 
 					loadedRequests.push(requestData);
-				} catch (e) {
+				} catch (e: any) {
 					console.error(
 						`Failed to retrieve request data of ${request.id} (${request.requestUri})`,
 					);

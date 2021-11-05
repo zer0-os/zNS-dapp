@@ -36,7 +36,7 @@ export async function getMetadata(
 		memoryCache[metadataUrl] = metadata;
 
 		return metadata;
-	} catch (e) {
+	} catch (e: any) {
 		console.error('Failed to retrieve metadata from ' + metadataUrl);
 		return;
 	}

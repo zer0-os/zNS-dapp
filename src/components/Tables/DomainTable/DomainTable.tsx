@@ -113,7 +113,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				setBiddingOn(domain);
 				openBidModal();
 			}
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 		}
 	};
