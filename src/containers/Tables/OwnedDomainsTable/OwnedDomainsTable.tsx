@@ -32,6 +32,7 @@ import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 import { toFiat } from 'lib/currency';
 import { getMetadata } from 'lib/metadata';
 import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import useNotification from 'lib/hooks/useNotification';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -92,13 +93,15 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
 	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
-	const [hasApprovedTokenTransfer, setHasApprovedTokenTransfer] = useState<
+	const [hasApprovedZAuction, setHasApprovedZAuction] = useState<
 		boolean | undefined
 	>();
 	const [statusText, setStatusText] = useState<string>('Processing bid');
 	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
 		number | undefined
 	>();
+
+	const { addNotification } = useNotification();
 
 	// organise states - loading
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
@@ -170,7 +173,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			return;
 		}
 
-		setHasApprovedTokenTransfer(true);
+		setHasApprovedZAuction(true);
 		setIsApprovalInProgress(false);
 	};
 
@@ -222,20 +225,37 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const closeDomain = () => setViewingDomain(undefined);
 
 	const acceptBidConfirmed = async () => {
+		setError(``);
 		if (!acceptingBid) {
 			return;
 		}
 		setIsAccepting(true);
 		const tx = await acceptBid(acceptingBid.bid);
-		if (tx) {
-			await tx.wait();
+		try {
+			if (tx) {
+				await tx.wait();
+			}
+			setTimeout(() => {
+				//refetch after confirm the transaction, with a delay to wait until backend gets updated
+				ownedQuery.refetch();
+			}, 500);
+		} catch (e) {
+			setError(`Approval rejected by wallet`);
+			setIsAccepting(false);
 		}
-		setTimeout(() => {
-			//refetch after confirm the transaction, with a delay to wait until backend gets updated
-			ownedQuery.refetch();
-		}, 500);
+		// should there be a check for bidder balance here?
+		setStep(Steps.Accept);
+		setStatusText(
+			`Accepting Bid... This may take up to x mins. Do not close this window or refresh your browser...`,
+		);
+		try {
+			await tx?.wait();
+		} catch (e) {
+			setError(`Transaction failed, try again later.`);
+			console.error(e);
+			setIsAccepting(false);
+		}
 		setIsAccepting(false);
-		setAcceptingBid(undefined);
 	};
 
 	const rowClick = (domain: Domain) => {
@@ -254,11 +274,18 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	// Effects //
 	/////////////////////
 
+	// useEffect(() => {
+	// 	setError(``);
+	// 	if (step === Steps.Confirm) {
+	// 		checkBidderAllowance();
+	// 	}
+	// }, [step]);
+
 	useEffect(() => {
-		if (hasApprovedTokenTransfer && step === Steps.Approve) {
+		if (hasApprovedZAuction && step === Steps.Approve) {
 			setStep(Steps.Confirm);
 		}
-	}, [hasApprovedTokenTransfer]);
+	}, [hasApprovedZAuction]);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -342,9 +369,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 					textAlign: 'center',
 				}}
 			>
-				{!isMetamaskWaiting && !isApprovalInProgress && !isCheckingAllowance && (
+				{!isMetamaskWaiting && !isApprovalInProgress && (
 					<>
-						{!hasApprovedTokenTransfer && (
+						{!hasApprovedZAuction && (
 							<>
 								<p style={{ lineHeight: '24px' }}>
 									Before you can accept a bid, your wallet needs to approve
@@ -556,7 +583,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 							</p>
 						</div>
 					)}
-					{errorMessage}
+					{error && errorMessage}
 					{!isAccepting && (
 						<div className={styles.CTAContainer}>
 							<div>
@@ -596,7 +623,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 					{isAccepting && (
 						<>
 							{/* set status text here? */}
-							<p style={{ lineHeight: '24px' }}>
+							<p style={{ lineHeight: '24px', marginTop: '24px' }}>
 								Waiting for approval from your wallet...
 							</p>
 							<Spinner style={{ margin: '40px auto 20px auto' }} />
@@ -608,6 +635,82 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	};
 
 	// Wizard Step 3/3 Accepting
+	const bidAcceptedStep = () => {
+		const handleClick = () => {
+			closeBid();
+			setViewingDomain(undefined);
+			addNotification(
+				`Bid of ${acceptingBid?.bid.amount} WILD for 0://${acceptingBid?.domain.name} accepted. Ownership has been transferred.`,
+			);
+		};
+		// extract - using this multiple times
+		let errorMessage: Maybe<React.ReactFragment>;
+
+		if (error) {
+			errorMessage = (
+				<p
+					style={{ textAlign: 'center', margin: '24px 0' }}
+					className={styles.Error}
+				>
+					{error}
+				</p>
+			);
+		}
+		return (
+			<>
+				{!isAccepting && (
+					<div
+						className={styles.Section}
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							padding: '0',
+						}}
+					>
+						{nft()}
+						{details()}
+					</div>
+				)}
+				{error && errorMessage}
+				{!isAccepting && (
+					<>
+						<p
+							className={styles.SuccessConfirmation}
+							style={{
+								lineHeight: '24px',
+								textAlign: 'center',
+								marginTop: '40px',
+							}}
+						>
+							Success! Bid accepted and ownership transferred
+						</p>
+						<FutureButton
+							glow
+							style={{
+								height: 36,
+								width: 140,
+								borderRadius: 18,
+								textTransform: 'uppercase',
+								margin: '24px auto',
+							}}
+							onClick={handleClick}
+						>
+							Finish
+						</FutureButton>
+					</>
+				)}
+				{isAccepting && (
+					<>
+						{/* set status text here? */}
+						<p style={{ lineHeight: '24px', marginTop: '24px' }}>
+							{statusText}
+						</p>
+						<Spinner style={{ margin: '40px auto 20px auto' }} />
+					</>
+				)}
+			</>
+		);
+	};
 
 	// const canPlaceBid = () => {
 	// 	const id = acceptingBid!.bid.bidderAccount;
@@ -685,8 +788,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 						/>
 						{step === Steps.Approve && approveZAuctionStep()}
 						{step === Steps.Confirm && confirmStep()}
-						{/* 
-						{step === Steps.Accept && confirmStep()} */}
+						{step === Steps.Accept && bidAcceptedStep()}
 					</div>
 					{/* <Confirmation
 						title={`Accept bid`}
