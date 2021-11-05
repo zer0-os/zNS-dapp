@@ -501,82 +501,111 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	);
 
 	// Wizard Step 2/3 Confirm
-	const confirmStep = () => (
-		<>
-			<div
-				className={styles.Section}
-				style={{
-					display: 'flex',
-					flexDirection: 'row',
-					padding: '0',
-				}}
-			>
-				{nft()}
-				{details()}
-			</div>
-			<div
-				className={styles.Section}
-				style={{
-					display: 'flex',
-					flexDirection: 'column',
-					textAlign: 'center',
-					marginBottom: '8px',
-				}}
-			>
-				{currentHighestBid && (
-					<div style={{ margin: '0 8px' }}>
-						<p style={{ lineHeight: '24px' }}>
-							Are you sure you want to accept a bid of{' '}
-							<b>{Number(acceptingBid?.bid.amount).toLocaleString()} WILD</b> (
-							{toFiat(Number(acceptingBidUSD))} USD) and transfer ownership of{' '}
-							<b>0://{acceptingBid?.domain?.name}</b> to{' '}
-							<b>
-								{acceptingBid?.bid.bidderAccount.substring(0, 4)}...
-								{acceptingBid?.bid.bidderAccount.substring(
-									acceptingBid?.bid.bidderAccount.length - 4,
-								)}
-							</b>
-							?
-						</p>
+	const confirmStep = () => {
+		// extract - using this multiple times
+		let errorMessage: Maybe<React.ReactFragment>;
+
+		if (error) {
+			errorMessage = (
+				<p
+					style={{ textAlign: 'center', margin: '24px 0' }}
+					className={styles.Error}
+				>
+					{error}
+				</p>
+			);
+		}
+		return (
+			<>
+				{!isAccepting && (
+					<div
+						className={styles.Section}
+						style={{
+							display: 'flex',
+							flexDirection: 'row',
+							padding: '0',
+						}}
+					>
+						{nft()}
+						{details()}
 					</div>
 				)}
-				<div className={styles.CTAContainer}>
-					<div>
-						{/* extract buttons */}
-						<FutureButton
-							glow
-							alt
-							style={{
-								height: 36,
-								width: 140,
-								borderRadius: 18,
-								textTransform: 'uppercase',
-								margin: '16px auto 0 auto',
-							}}
-							onClick={closeBid}
-						>
-							Cancel
-						</FutureButton>
-					</div>
-					<div>
-						<FutureButton
-							glow
-							style={{
-								height: 36,
-								width: 140,
-								borderRadius: 18,
-								textTransform: 'uppercase',
-								margin: '16px auto 0 auto',
-							}}
-							onClick={acceptBidConfirmed}
-						>
-							Continue
-						</FutureButton>
-					</div>
+				<div
+					className={styles.Section}
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						textAlign: 'center',
+						marginBottom: '8px',
+					}}
+				>
+					{currentHighestBid && (
+						<div style={{ margin: '0 8px' }}>
+							<p style={{ lineHeight: '24px' }}>
+								Are you sure you want to accept a bid of{' '}
+								<b>{Number(acceptingBid?.bid.amount).toLocaleString()} WILD</b>{' '}
+								({toFiat(Number(acceptingBidUSD))} USD) and transfer ownership
+								of <b>0://{acceptingBid?.domain?.name}</b> to{' '}
+								<b>
+									{acceptingBid?.bid.bidderAccount.substring(0, 4)}...
+									{acceptingBid?.bid.bidderAccount.substring(
+										acceptingBid?.bid.bidderAccount.length - 4,
+									)}
+								</b>
+								?
+							</p>
+						</div>
+					)}
+					{errorMessage}
+					{!isAccepting && (
+						<div className={styles.CTAContainer}>
+							<div>
+								{/* extract buttons */}
+								<FutureButton
+									glow
+									alt
+									style={{
+										height: 36,
+										width: 140,
+										borderRadius: 18,
+										textTransform: 'uppercase',
+										margin: '16px auto 0 auto',
+									}}
+									onClick={closeBid}
+								>
+									Cancel
+								</FutureButton>
+							</div>
+							<div>
+								<FutureButton
+									glow
+									style={{
+										height: 36,
+										width: 140,
+										borderRadius: 18,
+										textTransform: 'uppercase',
+										margin: '16px auto 0 auto',
+									}}
+									onClick={acceptBidConfirmed}
+								>
+									Continue
+								</FutureButton>
+							</div>
+						</div>
+					)}
+					{isAccepting && (
+						<>
+							{/* set status text here? */}
+							<p style={{ lineHeight: '24px' }}>
+								Waiting for approval from your wallet...
+							</p>
+							<Spinner style={{ margin: '40px auto 20px auto' }} />
+						</>
+					)}
 				</div>
-			</div>
-		</>
-	);
+			</>
+		);
+	};
 
 	// Wizard Step 3/3 Accepting
 
