@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // React Imports
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
@@ -55,6 +56,7 @@ import {
 	FINISH_BTN,
 	LOADING_DOMAINS_LABEL,
 	NO_STATUS,
+	CHECKING_ZAUCTION_STATUS,
 } from './constants';
 // Utils
 import { AcceptBidModalData, OwnedDomainTableProps, Steps } from './utils';
@@ -108,6 +110,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [isAccepting, setIsAccepting] = React.useState(false);
 	const [isGridView, setIsGridView] = React.useState(false);
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
+	// const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
 	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [hasApprovedZAuction, setHasApprovedZAuction] = useState<
@@ -277,6 +280,19 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	const closeDomain = () => setViewingDomain(undefined);
 
+	const checkZAuctionApproval = async () => {
+		setIsCheckingAllowance(true);
+		setStatusText(CHECKING_ZAUCTION_STATUS);
+		await new Promise((r) => setTimeout(r, 800)); // Add a timeout so we can show the user a message for UX
+		if (hasApprovedZAuction) {
+			setIsCheckingAllowance(false);
+			setStep(Steps.Confirm);
+		} else {
+			setIsCheckingAllowance(false);
+			setHasApprovedZAuction(false);
+		}
+	};
+
 	/////////////
 	// Effects //
 	/////////////
@@ -285,14 +301,23 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		if (hasApprovedZAuction && step === Steps.Approve) {
 			setStep(Steps.Confirm);
 		}
-	}, [hasApprovedZAuction, step]);
+	}, [hasApprovedZAuction]);
 
 	useEffect(() => {
+		setError(NO_ERROR);
+		if (step === Steps.Approve) {
+			checkZAuctionApproval();
+		}
+	}, [step]);
+
+	useEffect(() => {
+		if (!acceptingBid) {
+			return;
+		}
 		let isSubscribed = true;
 
 		const loadDomainData = async () => {
-			const metadata =
-				acceptingBid && (await getMetadata(acceptingBid.domain.metadata));
+			const metadata = await getMetadata(acceptingBid.domain.metadata);
 			if (!metadata) return;
 
 			if (isSubscribed) {
@@ -308,12 +333,14 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	}, [acceptingBid, acceptingBid?.domain, wildPriceUsd]);
 
 	useEffect(() => {
+		if (!acceptingBid) {
+			return;
+		}
 		let isSubscribed = true;
 
 		const getCurrentHighestBid = async () => {
 			// Get highest bid
-			const allBids =
-				acceptingBid && (await getBidsForDomain(acceptingBid?.domain));
+			const allBids = await getBidsForDomain(acceptingBid?.domain);
 
 			if (!allBids || allBids.length === 0) {
 				setHasBidDataLoaded(true);
@@ -474,7 +501,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				textAlign: 'center',
 			}}
 		>
-			{!isApprovalInProgress && (
+			{!isApprovalInProgress && !isCheckingAllowance && (
 				<>
 					{!hasApprovedZAuction && (
 						<>
@@ -519,14 +546,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 					)}
 				</>
 			)}
-			{/* {isCheckingAllowance && (
-				<>
-					<p style={{ lineHeight: '24px' }}>
-						{statusText}
-					</p>
-					<Spinner style={{ margin: '40px auto 20px auto' }} />
-				</>
-			)} */}
+			{isCheckingAllowance && loadingState()}
 			{isApprovalInProgress && loadingState()}
 		</div>
 	);
