@@ -191,8 +191,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		setStatusText(AWAITING_APPROVAL);
 
 		// User Wallet Interaction
-		const tx = await acceptBid(acceptingBid.bid);
+		// const tx = await acceptBid(acceptingBid.bid);
+		let tx: Maybe<ethers.ContractTransaction>;
 		try {
+			tx = await acceptBid(acceptingBid.bid);
 			if (tx) {
 				await tx.wait();
 			}
@@ -200,14 +202,14 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				//refetch after confirm the transaction, with a delay to wait until backend gets updated
 				ownedQuery.refetch();
 			}, 500);
+			// Set Accept Step
+			setStep(Steps.Accept);
+			setStatusText(ACCEPTING_BID);
 		} catch (e) {
 			setError(APPROVAL_REJECTED);
 			setIsAccepting(false);
 		}
 		setStatusText(NO_STATUS);
-		// Set Accept Step
-		setStep(Steps.Accept);
-		setStatusText(ACCEPTING_BID);
 		try {
 			await tx?.wait();
 		} catch (e) {
@@ -275,9 +277,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	const closeDomain = () => setViewingDomain(undefined);
 
-	/////////////////////
+	/////////////
 	// Effects //
-	/////////////////////
+	/////////////
 
 	useEffect(() => {
 		if (hasApprovedZAuction && step === Steps.Approve) {
@@ -334,7 +336,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [acceptingBid, acceptingBid?.domain, getBidsForDomain, wildPriceUsd]);
+	}, [acceptingBid, acceptingBid?.domain, wildPriceUsd]);
 
 	/////////////////////
 	// React Fragments //
