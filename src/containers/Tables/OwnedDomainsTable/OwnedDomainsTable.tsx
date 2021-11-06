@@ -373,7 +373,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	if (error) {
 		errorMessage = (
 			<p
-				style={{ textAlign: 'center', margin: '24px 0' }}
+				style={{ textAlign: 'center', margin: '12px 0' }}
 				className={styles.Error}
 			>
 				{error}
@@ -606,12 +606,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 							</p>
 						</div>
 					)}
-
-					{errorMessage}
-
+					{error && <div style={{ paddingTop: '12px' }}>{errorMessage}</div>}
 					{!isAccepting && (
 						<div className={styles.CTAContainer}>
-							<div style={{ paddingTop: '8px' }}>
+							<div>
 								<FutureButton
 									glow
 									alt
@@ -627,7 +625,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 									{CANCEL_BTN}
 								</FutureButton>
 							</div>
-							<div style={{ paddingTop: '8px' }}>
+							<div>
 								<FutureButton
 									glow
 									style={{
