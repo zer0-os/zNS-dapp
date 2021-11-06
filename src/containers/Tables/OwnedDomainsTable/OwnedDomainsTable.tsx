@@ -611,7 +611,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 					{!isAccepting && (
 						<div className={styles.CTAContainer}>
-							<div>
+							<div style={{ paddingTop: '8px' }}>
 								<FutureButton
 									glow
 									alt
@@ -627,7 +627,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 									{CANCEL_BTN}
 								</FutureButton>
 							</div>
-							<div>
+							<div style={{ paddingTop: '8px' }}>
 								<FutureButton
 									glow
 									style={{
@@ -644,9 +644,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 							</div>
 						</div>
 					)}
-					<div style={{ marginTop: '40px' }}>
-						{isAccepting && loadingState()}
-					</div>
+					{isAccepting && (
+						<div style={{ marginTop: '40px' }}>{loadingState()}</div>
+					)}
 				</div>
 			</>
 		);
@@ -706,7 +706,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 						</FutureButton>
 					</>
 				)}
-				<div style={{ marginTop: '40px' }}>{isAccepting && loadingState()}</div>
+				{isAccepting && (
+					<div style={{ marginTop: '40px' }}>{loadingState()}</div>
+				)}
 			</>
 		);
 	};
