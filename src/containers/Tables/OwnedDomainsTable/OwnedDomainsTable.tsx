@@ -338,7 +338,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		let isSubscribed = true;
 
 		const getCurrentHighestBid = async () => {
-			// Get highest bid
+			// Get bids for selected domain and return highest
 			const allBids = await getBidsForDomain(acceptingBid?.domain);
 
 			if (!allBids || allBids.length === 0) {
@@ -367,6 +367,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	/////////////////////
 	// React Fragments //
 	/////////////////////
+
+	// Render nothing if wallet disconnected or no domains owned
+	if (!active || !owned) return <></>;
 
 	// Handle Errors
 	let errorMessage: Maybe<React.ReactFragment>;
@@ -488,9 +491,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			</>
 		);
 	};
-
-	// Render nothing if wallet disconnected or no domains owned
-	if (!active || !owned) return <></>;
 
 	// Wizard Step 1/3 Approve Fragment
 	const approveZAuctionStep = () => (
