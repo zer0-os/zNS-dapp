@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // React Imports
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
@@ -55,7 +55,6 @@ import {
 	SUCCESS_CONFIRMATION,
 	FINISH_BTN,
 	LOADING_DOMAINS_LABEL,
-	NO_STATUS,
 	CHECKING_ZAUCTION_STATUS,
 } from './constants';
 // Utils
@@ -110,8 +109,8 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [isAccepting, setIsAccepting] = React.useState(false);
 	const [isGridView, setIsGridView] = React.useState(false);
 	const [isApprovalInProgress, setIsApprovalInProgress] = useState(false);
-	// const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
 	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
+	const [isBidConfirmed, setIsBidConfirmed] = useState(false);
 	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [hasApprovedZAuction, setHasApprovedZAuction] = useState<
 		boolean | undefined
@@ -186,7 +185,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	};
 
 	const acceptBidConfirmed = async () => {
-		setError(``);
+		setError(NO_ERROR);
 		if (!acceptingBid) {
 			return;
 		}
@@ -198,6 +197,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		let tx: Maybe<ethers.ContractTransaction>;
 		try {
 			tx = await acceptBid(acceptingBid.bid);
+			setStatusText(ACCEPTING_BID);
+			// Set Accept Step
+			setStep(Steps.Accept);
 			if (tx) {
 				await tx.wait();
 			}
@@ -205,14 +207,11 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				//refetch after confirm the transaction, with a delay to wait until backend gets updated
 				ownedQuery.refetch();
 			}, 500);
-			// Set Accept Step
-			setStep(Steps.Accept);
-			setStatusText(ACCEPTING_BID);
+			setIsBidConfirmed(true);
 		} catch (e) {
 			setError(APPROVAL_REJECTED);
 			setIsAccepting(false);
 		}
-		setStatusText(NO_STATUS);
 		try {
 			await tx?.wait();
 		} catch (e) {
@@ -467,7 +466,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	const loadingState = () => (
 		<>
-			<p className={styles.Loading} style={{ lineHeight: '24px' }}>
+			<p
+				className={styles.Loading}
+				style={{ lineHeight: '24px', textAlign: 'center' }}
+			>
 				{statusText}
 			</p>
 			<Spinner style={{ margin: '40px auto 20px auto' }} />
@@ -553,6 +555,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	// Wizard Step 2/3 Confirm Fragment
 	const confirmStep = () => {
+		if (isBidConfirmed) {
+			setStep(Steps.Accept);
+			bidAcceptedStep();
+		}
 		const acceptingBidUSD =
 			acceptingBid && acceptingBid.bid.amount * wildPriceUsd;
 		const truncatedAccountAddress = `${acceptingBid?.bid.bidderAccount.substring(
@@ -591,8 +597,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				>
 					{currentHighestBid && (
 						<div style={{ margin: '0 8px 8px 8px' }}>
-							<p style={{ lineHeight: '24px' }}>
-								{CONFIRM_BID_AMOUNT} <b>{acceptingBidAmountWild}</b> (
+							<p style={{ lineHeight: '24px', paddingBottom: '0' }}>
+								{CONFIRM_BID_AMOUNT}
+								<br /> <b>{acceptingBidAmountWild}</b> (
 								{toFiat(Number(acceptingBidUSD))} {USD_CURRENCY_CODE}) and
 								transfer ownership of <b>0://{acceptingBid?.domain?.name}</b> to{' '}
 								<b>{truncatedAccountAddress}</b>?
@@ -637,7 +644,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 							</div>
 						</div>
 					)}
-					{isAccepting && loadingState()}
+					<div style={{ marginTop: '40px' }}>
+						{isAccepting && loadingState()}
+					</div>
 				</div>
 			</>
 		);
@@ -697,7 +706,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 						</FutureButton>
 					</>
 				)}
-				{isAccepting && loadingState()}
+				<div style={{ marginTop: '40px' }}>{isAccepting && loadingState()}</div>
 			</>
 		);
 	};

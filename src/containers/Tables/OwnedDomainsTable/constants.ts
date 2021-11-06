@@ -1,5 +1,4 @@
 // Status Text
-export const NO_STATUS = '';
 export const CHECK_GAS_STATUS =
 	'Ensuring you have enough gas to approve zAuction...';
 export const ACCEPT_ZAUCTION_PROMPT = `Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will incur gas fees. 
