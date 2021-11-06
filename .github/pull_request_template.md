@@ -1,4 +1,4 @@
-Assocated zer0 card:  
+Link to associated zer0 card:  
 
 -----
 
