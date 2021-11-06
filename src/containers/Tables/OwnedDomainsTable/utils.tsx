@@ -9,9 +9,3 @@ export type AcceptBidModalData = {
 export type OwnedDomainTableProps = {
 	onNavigate?: (to: string) => void;
 };
-// Enums
-export enum Steps {
-	Approve,
-	Confirm,
-	Accept,
-}

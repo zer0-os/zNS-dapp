@@ -1,0 +1,110 @@
+.Container {
+	width: 640px;
+	padding: 53px 44px 40px 44px;
+	color: white !important;
+	background: var(--background-blue-card-wilder);
+}
+
+.Header {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	width: 100%;
+}
+
+.Header h1 {
+	color: white;
+	font-size: 24px;
+	font-weight: 700;
+	margin-bottom: 26px;
+}
+
+.Section {
+	margin-top: 40px;
+}
+
+.CTAContainer {
+	display: flex;
+	flex-direction: row;
+	align-self: center;
+	margin: 8px 0;
+}
+
+.CTAContainer > div:last-child {
+	margin-left: 24px;
+}
+
+.Loading {
+	white-space: pre-wrap;
+}
+
+.Details {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	margin: 12px 0 0 12px;
+	align-items: flex-start;
+}
+
+.Details h2 {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.Details h3 {
+	font-size: 12px;
+	color: var(--color-grey-lighter-2);
+}
+
+.Details p {
+	font-size: 12px;
+	color: var(--color-grey-lighter-2);
+	padding-bottom: 0;
+}
+
+.Domain {
+	overflow-wrap: anywhere;
+	display: block;
+	margin: 4px 0 16px 0;
+	color: var(--color-accent-blue-100);
+}
+
+.Price {
+	margin-bottom: 16px;
+}
+
+.Price > div:last-of-type {
+	display: flex;
+	align-items: center;
+}
+
+.NFT {
+	position: relative;
+	cursor: pointer;
+	min-height: 268px;
+	flex-basis: 0;
+	flex-grow: 1;
+	margin-right: 12px;
+	min-width: 268px;
+	width: 268px;
+}
+
+.NFT img {
+	border-radius: 8px;
+	height: 100%;
+	width: 100%;
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.NFT:hover img {
+	transform: scale(1.05);
+}
+
+.SuccessConfirmation {
+	color: var(--color-success);
+}
+
+.Error {
+	padding: 0;
+	color: var(--color-error);
+}
