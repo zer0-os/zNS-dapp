@@ -42,7 +42,8 @@
 }
 
 .searchBar input:hover {
-	background: #1d154a;
+	// background: #1d154a;
+	background: var(--color-background-alt-50)
 }
 .searchBar input:focus::placeholder {
 	color: #fff;
