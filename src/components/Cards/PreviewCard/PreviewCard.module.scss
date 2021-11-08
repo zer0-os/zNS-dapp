@@ -7,6 +7,8 @@
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	padding: 8px 16px;
+	padding-top: 16px;
 }
 /* marginTop: 16, marginLeft: 43, marginRight: 43, marginBottom: 0 */
 .PreviewCard hr {
@@ -16,7 +18,6 @@
 .Preview {
 	display: flex;
 	width: 100%;
-	padding: 8px 16px;
 
 	@media only screen and (max-width: 950px) {
 		flex-direction: column;
@@ -80,7 +81,7 @@
 
 	.Image > img {
 		width: 100%;
-		height: 100%;
+
 	}
 
 	div {
@@ -99,7 +100,7 @@
 	display: flex;
 	flex: 1;
 	height: 224px;
-	padding: 8px 24px 0 24px;
+	padding: 8px 24px 0 40px;
 
 	@media only screen and (max-width: 1280px) {
 		flex-direction: column;
@@ -123,7 +124,7 @@
 		align-self: center;
 		width: 100%;
 
-		padding-right: 24px;
+		padding-right: 40px;
 
 		@media only screen and (max-width: 1280px) {
 			padding-right: 0;
