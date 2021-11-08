@@ -12,8 +12,9 @@ import { TextButton } from 'components';
 import wilderIcon from './assets/WWLogo_SVG.svg';
 
 type FilterBarProps = {
-	filters: string[];
-	onSelect: (filter: string) => void;
+	//This has been commented out until filter features are implemented
+	// filters: string[];
+	// onSelect: (filter: string) => void;
 	style?: React.CSSProperties;
 	children?: React.ReactNode;
 };
@@ -21,13 +22,16 @@ type FilterBarProps = {
 var lastY = 0; // Just a global variable to stash last scroll position
 
 const FilterBar: React.FC<FilterBarProps> = ({
-	filters,
-	onSelect,
+	//This has been commented out until filter features are implemented
+	// filters,
+	// onSelect,
 	style,
 	children,
 }) => {
 	//- State
-	const [selected, setSelected] = useState(filters.length ? filters[0] : '');
+
+	//This has been commented out until filter features are implemented
+	// const [selected, setSelected] = useState(filters.length ? filters[0] : '');
 
 	//- Data
 	const body = document.getElementsByTagName('body')[0];
@@ -55,10 +59,12 @@ const FilterBar: React.FC<FilterBarProps> = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const select = (filter: string) => {
-		setSelected(filter);
-		onSelect(filter);
-	};
+	//This has been commented out until filter features are implemented
+
+	// const select = (filter: string) => {
+	// 	setSelected(filter);
+	// 	onSelect(filter);
+	// };
 
 	const home = () => {
 		history.push('/');
@@ -74,7 +80,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 				<img alt="home icon" src={wilderIcon} onClick={home} />
 			</div>
 			{children}
-			<ul>
+			{/* <ul>
 				{filters.map((filter, index) => (
 					<li key={index}>
 						<TextButton
@@ -85,7 +91,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 						</TextButton>
 					</li>
 				))}
-			</ul>
+			</ul> */}
 		</nav>
 	);
 };
