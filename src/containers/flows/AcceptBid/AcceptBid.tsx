@@ -307,7 +307,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 					{hasBids && currentHighestBid && <>{highestCurrentBid}</>}
 				</span>
 				{isCurrentHighestBidUsd && (
-					<p className="glow-text-blue" style={{ marginLeft: '8px' }}>
+					<p style={{ marginLeft: '8px' }}>
 						${toFiat(Number(currentHighestBidUsd))}
 					</p>
 				)}
@@ -332,7 +332,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 					{hasBids && acceptingBid && <>{acceptBidAmount}</>}
 				</span>
 				{isAcceptingBidUsd && (
-					<p className="glow-text-blue" style={{ marginLeft: '8px' }}>
+					<p style={{ marginLeft: '8px' }}>
 						${toFiat(Number(acceptingBidUsd))}
 					</p>
 				)}
@@ -345,7 +345,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 			<h2 style={{ lineHeight: '29px' }}>{domainMetadata?.title}</h2>
 			<span className={styles.Domain}>0://{acceptingBid?.domain?.name}</span>
 			<div className={styles.Price}>
-				<h3 className="glow-text-blue">{CREATOR_LABEL}</h3>
+				<h3>{CREATOR_LABEL}</h3>
 				<Member
 					id={acceptingBid?.domain?.minter?.id || ''}
 					name={''}
@@ -353,11 +353,11 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 				/>
 			</div>
 			<div className={styles.Price}>
-				<h3 className="glow-text-blue">{HIGHEST_BID_LABEL}</h3>
+				<h3>{HIGHEST_BID_LABEL}</h3>
 				<div>{highestBid()}</div>
 			</div>
 			<div className={styles.Price}>
-				<h3 className="glow-text-blue">{SELECTED_BID_LABEL}</h3>
+				<h3>{SELECTED_BID_LABEL}</h3>
 				<div>{selectedBid()}</div>
 			</div>
 		</div>
@@ -506,14 +506,10 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 						<div style={{ margin: '0 8px 8px 8px' }}>
 							<p style={{ lineHeight: '24px', paddingBottom: '0' }}>
 								{CONFIRM_BID_AMOUNT}
-								<br />{' '}
-								<b className="glow-text-white">{acceptingBidAmountWild}</b> (
+								<br /> <b>{acceptingBidAmountWild}</b> (
 								{toFiat(Number(acceptingBidUSD))} {USD_CURRENCY_CODE}) and
-								transfer ownership of{' '}
-								<b className="glow-text-white">
-									0://{acceptingBid?.domain?.name}
-								</b>{' '}
-								to <b className="glow-text-white">{truncatedAccountAddress}</b>?
+								transfer ownership of <b>0://{acceptingBid?.domain?.name}</b> to{' '}
+								<b>{truncatedAccountAddress}</b>?
 							</p>
 						</div>
 					)}

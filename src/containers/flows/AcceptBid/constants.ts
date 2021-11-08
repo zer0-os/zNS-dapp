@@ -1,7 +1,7 @@
 // Status Text
 export const CHECK_GAS_STATUS =
 	'Ensuring you have enough gas to approve zAuction...';
-export const ACCEPT_ZAUCTION_PROMPT = `Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will incur gas fees. 
+export const ACCEPT_ZAUCTION_PROMPT = `Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will cost gas. 
 	\nPlease accept in your wallet...`;
 export const APPROVING_ZAUCTION =
 	'Approving zAuction. This may take up to x mins. Do not close this window or refresh your browser as this may incur additional gas fees.';
@@ -21,7 +21,7 @@ export const FAILED_TRANSACTION = 'Failed to submit transaction.';
 
 // Step Prompt Text
 export const ZAUCTION_PROMPT =
-	'Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will incur gas fees.';
+	'Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will cost gas.';
 export const CONFIRM_BID_AMOUNT = 'Are you sure you want to accept a bid of';
 export const SUCCESS_CONFIRMATION =
 	'Success! Bid accepted and ownership transferred';
