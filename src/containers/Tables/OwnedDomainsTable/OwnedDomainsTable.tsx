@@ -141,6 +141,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 						ownedQuery={ownedQuery}
 						error={error}
 						setError={setError}
+						userId={account || undefined}
 					/>
 				</Overlay>
 			)}

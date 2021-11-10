@@ -53,6 +53,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 	zAuctionAddress,
 	znsContracts,
 	ownedQuery,
+	userId,
 }) => {
 	// Bid hooks
 	const { acceptBid, getBidsForDomain } = useBidProvider();
@@ -91,6 +92,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 
 	// Steps Functions
 	const approveZAuction = async () => {
+		setHasApprovedZAuction(true);
 		setError(NO_ERROR);
 		setStatusText(CHECK_GAS_STATUS);
 		setIsApprovalInProgress(true);
@@ -190,6 +192,11 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 	};
 
 	const checkZAuctionApproval = async () => {
+		const allowance = await wildContract.allowance(userId!, zAuctionAddress);
+		const bidAsWei = ethers.utils
+			.parseEther(String(acceptingBid.bid.amount))
+			.toString();
+		const needsApproving = allowance.lt(bidAsWei);
 		setIsCheckingAllowance(true);
 		setStatusText(CHECKING_ZAUCTION_STATUS);
 		await new Promise((r) => setTimeout(r, 800));
@@ -198,13 +205,21 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 			setStep(Steps.Confirm);
 		} else {
 			setIsCheckingAllowance(false);
-			setHasApprovedZAuction(false);
+			setHasApprovedZAuction(!needsApproving);
 		}
 	};
 
 	/////////////
 	// Effects //
 	/////////////
+
+	useEffect(() => {
+		if (!userId) {
+			return;
+		}
+		setStep(Steps.Approve);
+		setHasApprovedZAuction(undefined);
+	}, [userId]);
 
 	useEffect(() => {
 		if (hasApprovedZAuction && step === Steps.Approve) {
@@ -626,6 +641,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 			<div className={`${styles.Container} border-primary border-rounded blur`}>
 				{header()}
 				<div style={{ margin: '0 8px' }}>
+					{console.log(hasApprovedZAuction)}
 					<StepBar
 						step={step + 1}
 						steps={['zAuction Check', 'Confirm', 'Accept']}

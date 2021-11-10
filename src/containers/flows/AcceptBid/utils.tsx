@@ -23,4 +23,5 @@ export type AcceptBidProps = {
 	zAuctionAddress: string;
 	znsContracts: Contracts;
 	ownedQuery: any;
+	userId?: string;
 };
