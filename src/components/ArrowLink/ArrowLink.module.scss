@@ -16,7 +16,7 @@
 
 .ArrowContainer {
 	position: absolute;
-	left: -12%;
+	left: calc(100% + 5px);
 	top: 0;
 	height: 100%;
 	width: 12px;
@@ -67,7 +67,7 @@
 }
 
 .Back {
-	left: -12px;
+	left: calc(0% + -12px);
 }
 
 .Back .Arrow {
