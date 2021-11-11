@@ -15,3 +15,7 @@ export const getHashFromIPFSUrl = (url: string) => {
 		return url.slice(hashIndex);
 	}
 };
+
+export const getWebIPFSUrlFromHash = (hash: string) => {
+	return `https://ipfs.fleek.co/ipfs/${hash}`
+};
