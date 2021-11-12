@@ -41,6 +41,7 @@ import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
 import shareIcon from './assets/share.svg';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
+import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
 const moment = require('moment');
 
 const ZNS_SHARE_BASE_URL = process.env.REACT_APP_ZNS_SHARE_BASE_URL as string;
@@ -86,6 +87,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [isShowMoreAtrributes, setIsShowMoreAttributes] =
 		useState<boolean>(false);
 	const [containerHeight, setContainerHeight] = useState(0);
+	const [ipfsHash, setIpfsHash] = useState<string>('');
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -109,13 +111,24 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	//- Calls the hook with a polling interval to update the data
 
 	//- Functions
-	const copyContractToClipboard = () => {
-		addNotification('Copied Token ID to clipboard.');
+	const copyToClipboard = (content: string, label: string) => {
+		addNotification(`Copied ${label} to clipboard.`);
 		try {
-			navigator?.clipboard?.writeText(domainId);
+			navigator?.clipboard?.writeText(content);
 		} catch (e) {
 			console.error(e);
 		}
+	};
+
+	const truncateText = (
+		text: string,
+		startLength: number,
+		endLength: number = 4,
+	) => {
+		const stringLength = text.length;
+		return `${text.slice(0, startLength)}...${text.slice(
+			stringLength - endLength,
+		)}`;
 	};
 
 	const downloadAsset = async () => {
@@ -302,6 +315,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			getHistory();
 			setStatsLoaded(false);
 			getTradeData();
+			setIpfsHash(getHashFromIPFSUrl(znsDomain.domain.metadata));
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -786,29 +800,55 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			{nftStats()}
 
 			{attributes()}
-			<div
-				className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
-			>
-				<h4>Token Id</h4>
-				<p>
-					<img
-						onClick={copyContractToClipboard}
-						className={styles.Copy}
-						src={copyIcon}
-						alt={'Copy Contract Icon'}
-					/>
-					{domainId}
-				</p>
-				<ArrowLink
-					style={{
-						marginTop: 8,
-						width: 150,
-					}}
-					href={etherscanLink}
+			<div className={`${styles.TokenHashContainer}`}>
+				<div
+					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 				>
-					View on Etherscan
-				</ArrowLink>
+					<h4>Token Id</h4>
+					<p>
+						<img
+							onClick={() => copyToClipboard(domainId, 'Token ID')}
+							className={styles.Copy}
+							src={copyIcon}
+							alt={'Copy Contract Icon'}
+						/>
+						{truncateText(domainId, 18)}
+					</p>
+					<ArrowLink
+						style={{
+							marginTop: 8,
+							width: 150,
+						}}
+						href={etherscanLink}
+					>
+						View on Etherscan
+					</ArrowLink>
+				</div>
+				<div
+					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+				>
+					<h4>IPFS Hash</h4>
+					<p>
+						<img
+							onClick={() => copyToClipboard(ipfsHash, 'IPFS Hash')}
+							className={styles.Copy}
+							src={copyIcon}
+							alt={'Copy Contract Icon'}
+						/>
+						{truncateText(ipfsHash, 15)}
+					</p>
+					<ArrowLink
+						style={{
+							marginTop: 8,
+							width: 105,
+						}}
+						href={getWebIPFSUrlFromHash(ipfsHash)}
+					>
+						View on IPFS
+					</ArrowLink>
+				</div>
 			</div>
+
 			{history()}
 		</div>
 	);
