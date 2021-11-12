@@ -7,7 +7,7 @@ import styles from './SubdomainTableRow.module.scss';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useBidProvider } from 'lib/providers/BidProvider';
-import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import useCurrency from 'lib/hooks/useCurrency';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
@@ -24,7 +24,7 @@ const SubdomainTableRow = (props: any) => {
 	const { makeABid, updated } = useBid();
 	const { getBidsForDomain } = useBidProvider();
 
-	const { wildPriceUsd } = useCurrencyProvider();
+	const { wildPriceUsd } = useCurrency();
 
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
