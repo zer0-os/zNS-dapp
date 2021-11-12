@@ -81,13 +81,11 @@
 	background: var(--background-purple-card-20);
 }
 
-.RequestTable > tbody > tr img,
-.RequestTable > tbody > tr button {
+.RequestTable > tbody > tr img {
 	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
-.RequestTable > tbody > tr:hover > td > img,
-.RequestTable > tbody > tr:hover button {
+.RequestTable > tbody > tr:hover > td > img {
 	transform: scale(1.1);
 }
 

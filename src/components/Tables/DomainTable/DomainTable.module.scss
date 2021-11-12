@@ -96,14 +96,12 @@
 	background: var(--color-background-alt-50);
 }
 
-.DomainTable > tbody > tr img,
-.DomainTable > tbody > tr button {
+.DomainTable > tbody > tr img {
 	transition: transform var(--animation-time-medium) ease-in-out;
 }
 
 .DomainTable > tbody > tr:hover img,
-.DomainTable > tbody > tr:hover video,
-.DomainTable > tbody > tr:hover button {
+.DomainTable > tbody > tr:hover video {
 	transform: scale(1.1);
 }
 
