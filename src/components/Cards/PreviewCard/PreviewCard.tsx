@@ -25,6 +25,7 @@ type PreviewCardProps = {
 	onViewDomain?: () => void;
 	ownerId: string;
 	style?: React.CSSProperties;
+	ignoreAspectRatio?: boolean;
 };
 
 const PreviewCard: React.FC<PreviewCardProps> = ({
