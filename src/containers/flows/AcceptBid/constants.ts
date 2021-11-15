@@ -6,7 +6,7 @@ export const ACCEPT_ZAUCTION_PROMPT = `Before you can accept a bid, your wallet 
 export const APPROVING_ZAUCTION =
 	'Approving zAuction. This may take up to x mins. Do not close this window or refresh your browser as this may incur additional gas fees.';
 export const ACCEPTING_BID =
-	'Accepting Bid... This may take up to x mins. Do not close this window or refresh your browser...';
+	'Accepting Bid, do not close this window or refresh your browser...';
 export const CHECKING_ZAUCTION_STATUS =
 	'Checking status of zAuction Approval...';
 export const AWAITING_APPROVAL = 'Waiting for approval from your wallet...';

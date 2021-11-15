@@ -641,7 +641,6 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 			<div className={`${styles.Container} border-primary border-rounded blur`}>
 				{header()}
 				<div style={{ margin: '0 8px' }}>
-					{console.log(hasApprovedZAuction)}
 					<StepBar
 						step={step + 1}
 						steps={['zAuction Check', 'Confirm', 'Accept']}
