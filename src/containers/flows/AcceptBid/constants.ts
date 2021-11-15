@@ -4,7 +4,7 @@ export const CHECK_GAS_STATUS =
 export const ACCEPT_ZAUCTION_PROMPT = `Before you can accept a bid, your wallet needs to approve zAuction. You will only need to do this once. This will cost gas. 
 	\nPlease accept in your wallet...`;
 export const APPROVING_ZAUCTION =
-	'Approving zAuction. This may take up to x mins. Do not close this window or refresh your browser as this may incur additional gas fees.';
+	'Approving zAuction. Do not close this window or refresh your browser as this may incur additional gas fees.';
 export const ACCEPTING_BID =
 	'Accepting Bid, do not close this window or refresh your browser...';
 export const CHECKING_ZAUCTION_STATUS =
