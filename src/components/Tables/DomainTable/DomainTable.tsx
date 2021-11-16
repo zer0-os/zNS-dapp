@@ -4,7 +4,14 @@ import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import { Artwork, NFTCard, SearchBar, Overlay, IconButton } from 'components';
+import {
+	Artwork,
+	NFTCard,
+	SearchBar,
+	Overlay,
+	IconButton,
+	Tooltip,
+} from 'components';
 import { BidButton, MakeABid } from 'containers';
 import HighestBid from './components/HighestBid';
 import NumBids from './components/NumBids';
@@ -21,6 +28,7 @@ import styles from './DomainTable.module.scss';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import settings from './assets/settings.png';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -247,6 +255,21 @@ const DomainTable: React.FC<DomainTableProps> = ({
 								/>
 							)}
 						</>
+					);
+				},
+			},
+			{
+				id: 'settings',
+				accessor: (domain: Domain) => {
+					return (
+						<Tooltip text="My Dodmain Settings">
+							<button
+								className={styles.DomainSettingsButton}
+								onClick={() => buttonClick(domain)}
+							>
+								<img src={settings} alt="domain settings" />
+							</button>
+						</Tooltip>
 					);
 				},
 			},

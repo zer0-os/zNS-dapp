@@ -83,6 +83,9 @@
 
 .DomainTable th:last-child,
 .DomainTable td:last-child {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	padding-right: 30px;
 }
 
@@ -103,6 +106,10 @@
 .DomainTable > tbody > tr:hover img,
 .DomainTable > tbody > tr:hover video {
 	transform: scale(1.1);
+}
+.DomainTable .DomainSettingsButton {
+	padding: 0;
+	background: none;
 }
 
 .ticker {

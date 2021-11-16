@@ -1,3 +1,25 @@
+.TextInputTopPlaceholderWrapper {
+	position: relative;
+}
+
+.TextInputTopPlaceholder {
+	padding-top: 20px !important;
+	padding-bottom: 5px !important;
+	background: linear-gradient(
+		90deg,
+		rgba(82, 174, 255, 0.1) 0%,
+		rgba(82, 203, 255, 0.1) 100%
+	) !important;
+}
+
+.TopPlaceholder {
+	position: absolute;
+	top: 5px;
+	left: 24px;
+	color: var(--color-accent-1);
+	font-size: 10px;
+}
+
 .TextInput {
 	width: 100%;
 	padding: 12.5px 24px;

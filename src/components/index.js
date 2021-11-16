@@ -24,6 +24,7 @@ export { default as NumberButton } from './Buttons/NumberButton/NumberButton';
 export { default as ProfileButton } from './Buttons/ProfileButton/ProfileButton.js';
 export { default as TextButton } from './Buttons/TextButton/TextButton.js';
 export { default as ToggleButton } from './Buttons/ToggleButton/ToggleButton';
+export { default as QuestionButton } from './Buttons/QuestionButton/QuestionButton';
 
 //- Cards
 export { default as AssetCard } from './Cards/AssetCard/AssetCard';
@@ -34,11 +35,12 @@ export { default as NFTCard } from './Cards/NFTCard';
 export { default as PreviewCard } from './Cards/PreviewCard';
 
 //- Dropdowns
-export { default as OptionDropdown } from './Dropdowns/OptionDropdown/OptionDropdown';
+export * from './Dropdowns';
 
 //- Inputs
 export { default as EtherInput } from './Inputs/EtherInput/EtherInput';
 export { default as TextInput } from './Inputs/TextInput/TextInput';
+export { default as TextInputWithTopPlaceHolder } from './Inputs/TextInput/TextInputWithTopPlaceHolder';
 
 //- NavBars
 export { default as FilterBar } from './NavBars/FilterBar/FilterBar';
@@ -81,6 +83,9 @@ export { default as StatsWidget } from './StatsWidget/StatsWidget';
 
 //- Progress Indicators
 export { default as StepBar } from './ProgressIndicators/StepBar/StepBar';
+
+//- Switches
+export { default as ToggleSwitch } from './Switchs/ToggleSwitch/ToggleSwitch';
 
 //- To be implemented
 // export { default as CopyInput } from './CopyInput/CopyInput.js'

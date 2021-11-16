@@ -11,7 +11,7 @@ import styles from './TextInput.module.scss';
 //- Local Imports
 import { isAlphanumeric, isNumber } from './validation';
 
-type TextInputProps = {
+export type TextInputProps = {
 	alphanumeric?: boolean; // No symbols
 	autosize?: boolean;
 	className?: string;

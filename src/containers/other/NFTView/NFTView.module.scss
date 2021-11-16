@@ -86,8 +86,6 @@
 	border-radius: 8px;
 	border: 1px solid var(--color-purple-ligher);
 
-	overflow: hidden;
-
 	button {
 		display: flex;
 		justify-content: center;
@@ -99,6 +97,27 @@
 		background: none;
 
 		&:hover {
+		}
+	}
+}
+
+.MoreDropdown {
+	:global(ul) {
+		top: calc(100% + 5px);
+		left: unset;
+		right: 0;
+		width: 229px;
+		transform: unset;
+		border: 1px solid var(--color-purple-lighter);
+		box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
+
+		li {
+			display: flex;
+			padding: 16px;
+
+			span {
+				margin-left: 16px;
+			}
 		}
 	}
 }

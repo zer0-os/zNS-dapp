@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useMemo } from 'react';
+import React from 'react';
 
 // Library Imports
 import { useLayer, useHover, Arrow } from 'react-laag';
@@ -48,10 +48,6 @@ const Tooltip: React.FC<TooltipProps> = ({
 		transition: { duration: 0.1 },
 	},
 }) => {
-	const isReactText = useMemo(() => {
-		return ['string', 'number'].includes(typeof children);
-	}, [children]);
-
 	const [isOver, hoverProps] = useHover({
 		delayEnter,
 		delayLeave,
@@ -65,22 +61,11 @@ const Tooltip: React.FC<TooltipProps> = ({
 		triggerOffset,
 	});
 
-	// when children equals text (string | number), we need to wrap it in an
-	// extra span-element in order to attach props
-	let trigger;
-	if (isReactText) {
-		trigger = (
-			<span className="tooltip-text-wrapper" {...triggerProps} {...hoverProps}>
-				{children}
-			</span>
-		);
-	} else {
-		// In case of an react-element, we need to clone it in order to attach our own props
-		trigger = React.cloneElement(children as React.ReactElement, {
-			...triggerProps,
-			...hoverProps,
-		});
-	}
+	const trigger = (
+		<span className="tooltip-text-wrapper" {...triggerProps} {...hoverProps}>
+			{children}
+		</span>
+	);
 
 	// We're using framer-motion for our enter / exit animations.
 	// This is why we need to wrap our actual tooltip inside `<AnimatePresence />`.
