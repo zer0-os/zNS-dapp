@@ -9,13 +9,19 @@ export interface Account {
 	id: string;
 }
 
+export interface DomainMin {
+	id: string;
+	name: string;
+}
+
 export interface Domain {
 	id: string;
 	name: string;
-	parent: string;
+	parent: DomainMin;
 	owner: Account;
 	minter: Account;
 	metadata: string;
+	isLocked: boolean;
 }
 
 // We have two different types of Metadata
@@ -132,7 +138,10 @@ export interface DisplayDomainRequestAndContents
 export const DefaultDomain: Domain = {
 	id: '',
 	name: '',
-	parent: '',
+	parent: {
+		id: '',
+		name: '',
+	},
 	owner: {
 		id: '',
 	},
@@ -140,6 +149,7 @@ export const DefaultDomain: Domain = {
 		id: '',
 	},
 	metadata: '',
+	isLocked: false,
 };
 
 // @zachary change these types

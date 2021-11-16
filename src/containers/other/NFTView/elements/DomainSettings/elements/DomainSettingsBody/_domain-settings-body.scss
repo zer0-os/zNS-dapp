@@ -1,0 +1,66 @@
+.domain-settings-body {
+	&__container {
+		flex-grow: 1;
+		padding: 48px;
+		overflow-y: auto;
+	}
+
+	&__top {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
+
+		&--left {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 260px;
+			width: 260px;
+			min-width: 260px;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			border-radius: 16px;
+			overflow: hidden;
+			cursor: pointer;
+			transition: transform var(--animation-time-medium) ease-in-out,
+				border-color var(--animation-time-medium) ease-in-out;
+		}
+
+		&--right {
+			width: 260px;
+			min-width: 260px;
+
+			> div + div {
+				margin-top: 32px;
+			}
+		}
+	}
+
+	&__center {
+		margin: 40px 0;
+	}
+
+	&__footer {
+		padding: 8px 0;
+		border-top: 2px solid var(--color-grey-lighter-2);
+
+		h3 {
+			font-size: 16px;
+			font-weight: 700;
+			line-height: 24px;
+			margin-bottom: 16px;
+		}
+
+		&--section {
+			display: flex;
+			align-items: center;
+			padding: 16px 0;
+			border-bottom: 1px solid var(--color-purple-lighter);
+
+			> label {
+				margin-right: 8px;
+			}
+		}
+	}
+}

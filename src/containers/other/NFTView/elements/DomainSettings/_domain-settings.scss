@@ -1,0 +1,25 @@
+.domain-settings {
+	&__overlay {
+		background: radial-gradient(
+			50% 50% at 50% 50%,
+			rgba(0, 0, 0, 0.73) 0%,
+			rgba(0, 0, 0, 0.43) 100%
+		) !important;
+		backdrop-filter: blur(20px);
+
+		> div {
+			padding: 0 !important;
+		}
+	}
+
+	&__modal {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		width: 640px;
+		height: calc(100vh - 16px);
+		margin: 16px 0 0;
+		background: var(--background-purple-card-20);
+	}
+}

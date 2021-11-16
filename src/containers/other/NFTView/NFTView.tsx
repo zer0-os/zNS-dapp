@@ -16,10 +16,13 @@ import {
 	Overlay,
 	StatsWidget,
 	Tooltip,
+	OptionDropdown,
 } from 'components';
 import { BidButton, MakeABid } from 'containers';
+import { DomainSettings } from './elements';
 
 //- Library Imports
+import moment from 'moment';
 import { randomName, randomImage } from 'lib/random';
 import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
@@ -33,6 +36,12 @@ import {
 	DomainEvent,
 	DomainMetrics,
 } from '@zero-tech/zns-sdk/lib/types';
+import useMatchMedia from 'lib/hooks/useMatchMedia';
+import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+
+//- Type Imports
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
@@ -42,10 +51,23 @@ import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
 import shareIcon from './assets/share.svg';
-import useMatchMedia from 'lib/hooks/useMatchMedia';
-import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
-import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-const moment = require('moment');
+import moreIcon from './assets/more-vertical.png';
+import settingsIcon from './assets/settings.svg';
+import dollarSignIcon from './assets/dollar-sign.svg';
+
+//- Constants Imports
+import { MORE_ACTION_KEY } from './NFTView.constants';
+
+const MORE_ACTIONS = [
+	{
+		icon: settingsIcon,
+		title: MORE_ACTION_KEY.MY_DOMAIN_SETTINGS,
+	},
+	{
+		icon: dollarSignIcon,
+		title: MORE_ACTION_KEY.VIEW_BIDS,
+	},
+];
 
 const ZNS_SHARE_BASE_URL = process.env.REACT_APP_ZNS_SHARE_BASE_URL as string;
 
@@ -90,6 +112,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		useState<boolean>(false);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [ipfsHash, setIpfsHash] = useState<string>('');
+	const [isDomainSettingsOpen, setIsDomainSettingsOpen] =
+		useState<Boolean>(false);
 
 	const { domainId, domain: znsDomain, domainRaw: domain } = useCurrentDomain();
 
@@ -337,23 +361,21 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		const data = [
 			{
 				fieldName: 'Top Bid',
-				title: `${
-					tradeData?.highestBid
-						? Number(
-								ethers.utils.formatEther(tradeData?.highestBid),
-						  ).toLocaleString()
-						: 0
-				} WILD`,
+				title: `${tradeData?.highestBid
+					? Number(
+						ethers.utils.formatEther(tradeData?.highestBid),
+					).toLocaleString()
+					: 0
+					} WILD`,
 				subTitle:
 					wildPriceUsd > 0
-						? `$${
-								tradeData?.highestBid
-									? toFiat(
-											Number(ethers.utils.formatEther(tradeData?.highestBid)) *
-												wildPriceUsd,
-									  )
-									: 0
-						  }`
+						? `$${tradeData?.highestBid
+							? toFiat(
+								Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+								wildPriceUsd,
+							)
+							: 0
+						}`
 						: '',
 			},
 			{
@@ -363,45 +385,42 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			},
 			{
 				fieldName: 'Last Sale',
-				title: `${
-					tradeData?.lastSale
-						? Number(
-								ethers.utils.formatEther(tradeData?.lastSale),
-						  ).toLocaleString()
-						: 0
-				} WILD`,
+				title: `${tradeData?.lastSale
+					? Number(
+						ethers.utils.formatEther(tradeData?.lastSale),
+					).toLocaleString()
+					: 0
+					} WILD`,
 				subTitle:
 					wildPriceUsd > 0
-						? `$${
-								tradeData?.lastSale
-									? toFiat(
-											Number(ethers.utils.formatEther(tradeData?.lastSale)) *
-												wildPriceUsd,
-									  )
-									: 0
-						  }`
+						? `$${tradeData?.lastSale
+							? toFiat(
+								Number(ethers.utils.formatEther(tradeData?.lastSale)) *
+								wildPriceUsd,
+							)
+							: 0
+						}`
 						: '',
 			},
 			{
 				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.all
 					? `${Number(
-							ethers.utils.formatEther((tradeData?.volume as any)?.all),
-					  ).toLocaleString()} WILD`
+						ethers.utils.formatEther((tradeData?.volume as any)?.all),
+					).toLocaleString()} WILD`
 					: '',
 				subTitle:
 					wildPriceUsd > 0
-						? `$${
-								(tradeData?.volume as any)?.all
-									? toFiat(
-											Number(
-												ethers.utils.formatEther(
-													(tradeData?.volume as any)?.all,
-												),
-											) * wildPriceUsd,
-									  )
-									: 0
-						  }`
+						? `$${(tradeData?.volume as any)?.all
+							? toFiat(
+								Number(
+									ethers.utils.formatEther(
+										(tradeData?.volume as any)?.all,
+									),
+								) * wildPriceUsd,
+							)
+							: 0
+						}`
 						: '',
 			},
 		];
@@ -646,9 +665,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		return (
 			<>
 				<li
-					className={`${styles.AttributesWrapper} ${
-						index > 10 && styles.SetOpacityAnimation
-					}`}
+					className={`${styles.AttributesWrapper} ${index > 10 && styles.SetOpacityAnimation
+						}`}
 					key={index}
 				>
 					<span className={styles.Traits}>{attribute.trait_type}</span>
@@ -662,9 +680,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		return (
 			<>
 				<button
-					className={`${styles.ToggleAttributes} ${
-						isShowMoreAtrributes && styles.SetOpacityAnimation
-					}`}
+					className={`${styles.ToggleAttributes} ${isShowMoreAtrributes && styles.SetOpacityAnimation
+						}`}
 					style={{ background: 'none' }}
 					onClick={toggleAttributes}
 				>
@@ -718,6 +735,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		}
 	};
 
+	const handleSelectMoreOption = (option: Option) => {
+		if (option.title === MORE_ACTION_KEY.MY_DOMAIN_SETTINGS) {
+			setIsDomainSettingsOpen(true);
+		}
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -726,9 +749,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		<div className={styles.NFTView}>
 			{overlays()}
 			<div
-				className={`${styles.NFT} ${
-					backgroundBlob !== undefined ? styles.Loaded : ''
-				} border-primary`}
+				className={`${styles.NFT} ${backgroundBlob !== undefined ? styles.Loaded : ''
+					} border-primary`}
 			>
 				<div className={`${styles.Image}`}>
 					<NFTMedia
@@ -747,10 +769,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				</div>
 				<div className={styles.Info}>
 					<div className={styles.Tray}>
-						{/* share icon hidden until share functionality is done */}
-						{/* <button>
-							<img src={shareIcon} />
-						</button> */}
 						<Tooltip text={'Share to Twitter'}>
 							<button onClick={shareAsset}>
 								<img src={shareIcon} alt="share asset" />
@@ -761,6 +779,16 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 								<img alt="download asset" src={downloadIcon} />
 							</button>
 						</Tooltip>
+						<OptionDropdown
+							onSelect={handleSelectMoreOption}
+							// only show my domain settings action for now
+							options={[MORE_ACTIONS[0]]}
+							className={styles.MoreDropdown}
+						>
+							<button>
+								<img alt="more actions" src={moreIcon} />
+							</button>
+						</OptionDropdown>
 					</div>
 					<div className={styles.Details}>
 						<div>
@@ -846,6 +874,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			</div>
 
 			{history()}
+			{isDomainSettingsOpen && (
+				<DomainSettings
+					domainId={domainId}
+					onClose={() => setIsDomainSettingsOpen(false)}
+				/>
+			)}
 		</div>
 	);
 };
