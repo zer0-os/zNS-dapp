@@ -19,7 +19,7 @@
 
 .searchBar:focus-within .ButtonIconStyles {
 	filter: brightness(0) invert(1);
-	transition: filter var(--animation-time-long) ease-out;
+	transition: filter var(--animation-time-medium) ease-out;
 }
 
 .searchBar input::placeholder {
@@ -37,10 +37,10 @@
 		/* Text */
 		text-align: left;
 		color:var(--color-grey-lighter-2);
-		transition: background var(--animation-time-long) ease-in-out;
+		transition: background var(--animation-time-medium) ease-in-out;
 		&:hover {
 			background: var(--color-background-alt-50);
-			transition: background var(--animation-time-long) ease-in-out;
+			transition: background var(--animation-time-medium) ease-in-out;
 		}
 
 		&:focus {
@@ -54,7 +54,7 @@
 
 			&::placeholder {
 				color: #fff;
-				transition: color var(--animation-time-long) ease-in-out;
+				transition: color var(--animation-time-medium) ease-in-out;
 			}
 		}
 	}
