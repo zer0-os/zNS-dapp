@@ -43,7 +43,8 @@ import {
 	SubdomainTable,
 	CurrentDomainPreview,
 	ProfileModal,
-	WheelsRaffle,
+	// Temporarily removed raffle
+	// WheelsRaffle,
 } from 'containers';
 
 //- Library Imports
@@ -430,7 +431,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			{/* Overlays */}
 			<NotificationDrawer />
 			<ProfileModal />
-			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => { }}>
+			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
 			{modal === Modal.Wallet && (
@@ -583,7 +584,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={statusCount > 0}
 												number={statusCount}
-												onClick={() => { }}
+												onClick={() => {}}
 											/>
 										</TooltipLegacy>
 									) : null}
@@ -594,7 +595,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={transferring.length > 0}
 												number={transferring.length}
-												onClick={() => { }}
+												onClick={() => {}}
 											/>
 										</TooltipLegacy>
 									)}
@@ -618,7 +619,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					</TitleBar>
 				</FilterBar>
 
-				<WheelsRaffle />
+				{/* Temporarily removed Raffle */}
+				{/* <WheelsRaffle /> */}
 
 				{!isNftView && (
 					<div
