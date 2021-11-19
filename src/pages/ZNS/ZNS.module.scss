@@ -43,3 +43,16 @@
 		margin-left: 0;
 	}
 }
+
+.WildPriceDropdown {
+	display: flex;
+	align-items: center;
+	border-left: 1px solid var(--color-purple-lighter);
+	border-right: 1px solid var(--color-purple-lighter);
+	padding: 4px 16px;
+}
+
+.WildPriceDropdown:hover {
+	background-color: var(--color-azure-gradient-25);
+	cursor: pointer;
+}

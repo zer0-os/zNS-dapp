@@ -188,6 +188,10 @@ header {
 	margin-right: 10px;
 }
 
+.Actions > *:not(:first-child) {
+	margin-left: 10px;
+}
+
 .Info {
 	margin-right: 24px;
 	font-weight: 700;

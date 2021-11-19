@@ -430,7 +430,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			{/* Overlays */}
 			<NotificationDrawer />
 			<ProfileModal />
-			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => { }}>
+			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
 			{modal === Modal.Wallet && (
@@ -560,6 +560,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 								<>
 									{/* Mint button */}
 									<FutureButton
+										style={{ padding: '0px 12px' }}
 										glow={account != null}
 										onClick={() => {
 											account != null
@@ -568,11 +569,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										}}
 										loading={loading}
 									>
-										{pageWidth <= 900 && 'MINT'}
+										MINT
+										{/* {pageWidth <= 900 && 'MINT'}
+
 										{pageWidth > 900 && isOwnedByUser === true && 'MINT NFT'}
 										{pageWidth > 900 &&
 											isOwnedByUser === false &&
-											'REQUEST TO MINT NFT'}
+											'REQUEST TO MINT NFT'} */}
 									</FutureButton>
 
 									{/* Status / Long Running Operation Button */}
@@ -583,7 +586,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={statusCount > 0}
 												number={statusCount}
-												onClick={() => { }}
+												onClick={() => {}}
 											/>
 										</TooltipLegacy>
 									) : null}
@@ -594,10 +597,13 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={transferring.length > 0}
 												number={transferring.length}
-												onClick={() => { }}
+												onClick={() => {}}
 											/>
 										</TooltipLegacy>
 									)}
+
+									{/* Wild price dropdown */}
+									<div className={styles.WildPriceDropdown}>Wild price</div>
 
 									{/* Profile Button */}
 									<IconButton
