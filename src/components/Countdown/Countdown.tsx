@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 type CountdownProps = {
 	to: number;
@@ -51,6 +51,7 @@ const Countdown = (props: CountdownProps) => {
 		return () => {
 			isActive = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [secondsCounted]);
 
 	return <>{label}</>;

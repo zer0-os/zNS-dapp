@@ -40,7 +40,6 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 
 	const onSubmitEmail = async () => {
 		const valid = isValidEmail(userEmail || '');
-		console.log(valid);
 		if (!valid) {
 			setEmailError('Please enter a valid email address');
 		} else {
@@ -170,7 +169,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								<img src={iconDiscord} />
+								<img src={iconDiscord} alt="discord" />
 								Discord
 							</a>
 							<a

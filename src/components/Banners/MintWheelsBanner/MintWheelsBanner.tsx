@@ -10,7 +10,7 @@ type MintWheelsBannerProps = {
 	title: string;
 	label: React.ReactNode;
 	buttonText: string;
-	onClick: () => void;
+	onClick: (event: any) => void;
 	style?: React.CSSProperties;
 };
 
@@ -32,7 +32,6 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 				if (isMounted) {
 					const url = URL.createObjectURL(blob);
 					setBackgroundBlob(url);
-					console.log(url);
 				}
 			});
 		return () => {
@@ -47,12 +46,15 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 			onClick={onClick}
 		>
 			{backgroundBlob && (
-				<img className={styles.Background} src={backgroundBlob} />
+				<img className={styles.Background} src={backgroundBlob} alt="" />
 			)}
 			<div className={`${styles.Content}`}>
 				<div className={`${styles.TextContainer}`}>
 					<h2 className={`${styles.Title}`}>{title}</h2>
 					<p className={`${styles.Label}`}>{label}</p>
+					<p className={`${styles.Label} ${styles.Mobile}`}>
+						Minting is available on desktop only
+					</p>
 				</div>
 
 				<p className={`${styles.Button}`}>

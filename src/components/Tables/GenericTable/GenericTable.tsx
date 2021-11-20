@@ -6,6 +6,12 @@ import { IconButton, SearchBar, Spinner, TextButton } from 'components';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
+type GenericTableHeader = {
+	label: string;
+	accessor?: string;
+	className?: string;
+};
+
 const GenericTable = (props: any) => {
 	///////////////////////
 	// State & Variables //
@@ -116,7 +122,12 @@ const GenericTable = (props: any) => {
 				return (
 					<>
 						{filteredData.map((d: any, index: number) => (
-							<props.rowComponent key={index} rowNumber={index} data={d} />
+							<props.rowComponent
+								key={index}
+								rowNumber={index}
+								data={d}
+								headers={props.headers}
+							/>
 						))}
 					</>
 				);
@@ -126,7 +137,12 @@ const GenericTable = (props: any) => {
 						{filteredData
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
-								<props.rowComponent key={index} rowNumber={index} data={d} />
+								<props.rowComponent
+									key={d[props.itemKey]}
+									rowNumber={index}
+									data={d}
+									headers={props.headers}
+								/>
 							))}
 					</>
 				);
@@ -137,15 +153,16 @@ const GenericTable = (props: any) => {
 			<table className={styles.Table}>
 				<thead>
 					<tr>
-						{props.headers.map((h: string, index: number) => (
+						{props.headers.map((h: GenericTableHeader, index: number) => (
 							<th
-								className={
+								className={`${
 									props.alignments && props.alignments[index] > 0
 										? styles.Right
 										: styles.Left
-								}
+								} ${h?.className && styles[h?.className]}`}
+								key={index}
 							>
-								{h}
+								{h?.label}
 							</th>
 						))}
 					</tr>
@@ -173,7 +190,11 @@ const GenericTable = (props: any) => {
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					<props.gridComponent key={index} rowNumber={index} data={d} />
+					<props.gridComponent
+						key={d[props.itemKey]}
+						rowNumber={index}
+						data={d}
+					/>
 				))}
 				{data.length === 2 && <div></div>}
 				{data.length === 1 && (

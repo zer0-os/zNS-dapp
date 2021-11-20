@@ -26,7 +26,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, domain, style }) => {
 				if (part === '/') return '';
 				return i === 0 ? (
 					<Link
-						key={i}
+						key={i + part}
 						style={{ textDecoration: 'none', color: 'white' }}
 						to={part}
 					>
@@ -35,7 +35,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, domain, style }) => {
 				) : (
 					<>
 						<Link
-							key={i}
+							key={i + part}
 							style={{ textDecoration: 'none', color: 'white' }}
 							to={domain
 								.split('.')

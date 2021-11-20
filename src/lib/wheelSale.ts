@@ -6,8 +6,10 @@ import { Maybe } from './types';
 const whitelistUriKovan =
 	'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
 
+const backupWhitelist =
+	'https://ipfs.io/ipfs/QmUfqAdwAdZ5mar1VHjmn8cXxPJ9hcoXophP2GF7nY5v8S';
 const whitelistUriMainnet =
-	'https://ipfs.io/ipfs/QmUgNqXoSCwYqpAZ6Y3LopRXKHTZh5g5vePDYQVCvxreNU';
+	'https://d3810nvssqir6b.cloudfront.net/wheels-launch-2-merkleTree.json';
 
 export interface WheelsWhitelistClaim {
 	index: number;
@@ -30,8 +32,15 @@ export const getWhitelist = async (
 
 	let whitelistUri = mainnet ? whitelistUriMainnet : whitelistUriKovan;
 
-	const res = await fetch(whitelistUri);
-	const body = await res.json();
+	let res;
+	let body;
+	try {
+		res = await fetch(whitelistUri);
+		body = await res.json();
+	} catch (e) {
+		res = await fetch(backupWhitelist);
+		body = await res.json();
+	}
 
 	cachedWhitelist = body as WheelsWhitelistDto;
 

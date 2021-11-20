@@ -7,12 +7,14 @@ import styles from './SubdomainTableRow.module.scss';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useBidProvider } from 'lib/providers/BidProvider';
-import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import useCurrency from 'lib/hooks/useCurrency';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { BidButton } from 'containers';
-import { toFiat } from 'lib/currency';
+import { ethers } from 'ethers';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
+import { formatNumber, formatEthers } from 'lib/utils';
 
 const SubdomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
@@ -22,11 +24,13 @@ const SubdomainTableRow = (props: any) => {
 	const { makeABid, updated } = useBid();
 	const { getBidsForDomain } = useBidProvider();
 
-	const { wildPriceUsd } = useCurrencyProvider();
+	const { wildPriceUsd } = useCurrency();
 
 	const domain = props.data;
+	const tradeData: DomainMetrics = domain?.metrics;
 
 	const [bids, setBids] = useState<Bid[] | undefined>();
+
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
 
@@ -44,10 +48,15 @@ const SubdomainTableRow = (props: any) => {
 		const get = async () => {
 			setBids(undefined);
 			setAreBidsLoading(true);
-			const b = await getBidsForDomain(domain);
-			if (isMounted) {
+			try {
+				const b = await getBidsForDomain(domain);
+				if (isMounted) {
+					setBids(b);
+					setAreBidsLoading(false);
+				}
+			} catch (err) {
 				setAreBidsLoading(false);
-				setBids(b);
+				console.log(err);
 			}
 		};
 		get();
@@ -57,19 +66,23 @@ const SubdomainTableRow = (props: any) => {
 	}, [domain, hasUpdated]);
 
 	const highestBid = () => {
-		if (!bids) {
-			return <span>Failed to retrieve</span>;
-		} else if (bids.length === 0) {
+		if (!tradeData) {
 			return <span>-</span>;
 		} else {
 			return (
 				<>
 					<span className={styles.Bid}>
-						{bids[0].amount.toLocaleString() + ' WILD'}
+						{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}
 					</span>
-					{wildPriceUsd && (
+					{wildPriceUsd > 0 && (
 						<span className={styles.Bid}>
-							{'$' + toFiat(wildPriceUsd * bids[0].amount) + ' USD'}
+							$
+							{tradeData.highestBid
+								? formatNumber(
+										Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+											wildPriceUsd,
+								  )
+								: 0}{' '}
 						</span>
 					)}
 				</>
@@ -77,20 +90,61 @@ const SubdomainTableRow = (props: any) => {
 		}
 	};
 
+	const formatColumn = (columnName: keyof DomainMetrics) => {
+		const value =
+			columnName === 'volume'
+				? (tradeData?.volume as any)?.all
+				: tradeData?.[columnName];
+		return (
+			<>
+				{' '}
+				{!tradeData && '-'}
+				{value && (
+					<span className={styles.Bid}>
+						{Number(ethers.utils.formatEther(value))
+							? formatEthers(value)
+							: '-'}
+					</span>
+				)}
+				{wildPriceUsd > 0 && Number(value) > 0 && (
+					<span className={styles.Bid}>
+						{'$' +
+							formatNumber(
+								wildPriceUsd * Number(ethers.utils.formatEther(value)),
+							)}
+					</span>
+				)}
+			</>
+		);
+	};
+
 	const bidColumns = () => {
+		// TODO: Avoid directly defining the columns and associated render method.
 		if (!areBidsLoading) {
 			return (
 				<>
 					<td className={styles.Right}>{highestBid()}</td>
 					<td className={styles.Right}>
-						{!bids && 'Failed to retrieve'}
-						{bids && bids.length.toLocaleString()}
+						{!bids && '-'}
+						{bids && formatNumber(bids.length)}
+					</td>
+					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
+						{formatColumn('lastSale')}
+					</td>
+					<td className={`${styles.Right} ${styles.volumeCol}`}>
+						{formatColumn('volume')}
 					</td>
 				</>
 			);
 		} else {
 			return (
 				<>
+					<td className={styles.Right}>
+						<Spinner />
+					</td>
+					<td className={styles.Right}>
+						<Spinner />
+					</td>
 					<td className={styles.Right}>
 						<Spinner />
 					</td>

@@ -14,6 +14,7 @@ const WheelsRaffleContainer = () => {
 	// Hardcoded event times
 	const RAFFLE_START_TIME = 1634408000000;
 	const RAFFLE_END_TIME = 1635303609000;
+	const SALE_START_TIME = 1635469200000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -22,6 +23,9 @@ const WheelsRaffleContainer = () => {
 	);
 	const [hasRaffleEnded, setHasRaffleEnded] = useState<boolean>(
 		currentTime >= RAFFLE_END_TIME,
+	);
+	const [hasSaleStarted, setHasSaleStarted] = useState<boolean>(
+		currentTime >= SALE_START_TIME,
 	);
 
 	const isMobile =
@@ -33,10 +37,6 @@ const WheelsRaffleContainer = () => {
 	///////////////
 	// Functions //
 	///////////////
-
-	const openModal = () => {
-		setIsModalOpen(true);
-	};
 
 	const closeModal = () => {
 		setIsModalOpen(false);
@@ -50,8 +50,23 @@ const WheelsRaffleContainer = () => {
 		setHasRaffleEnded(true);
 	};
 
+	const onFinishSaleStartCountdown = () => {
+		setHasSaleStarted(true);
+	};
+
 	const handleResize = () => {
 		setWindowWidth(window.innerWidth);
+	};
+
+	const onBannerClick = () => {
+		if (!hasRaffleEnded) {
+			setIsModalOpen(true);
+		} else {
+			window.open(
+				'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
+				'_blank',
+			);
+		}
 	};
 
 	/////////////
@@ -72,11 +87,21 @@ const WheelsRaffleContainer = () => {
 
 	const bannerLabel = (): React.ReactNode => {
 		if (hasRaffleEnded) {
-			return <>Wilder Wheels raffle has ended</>;
+			return (
+				<>
+					Whitelist sale starting in{' '}
+					<b>
+						<Countdown
+							to={SALE_START_TIME}
+							onFinish={onFinishSaleStartCountdown}
+						/>
+					</b>
+				</>
+			);
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Join the whitelist raffle. Early sale starts in{' '}
+					Join the whitelist raffle. Raffle closes in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
@@ -106,7 +131,7 @@ const WheelsRaffleContainer = () => {
 		} else if (!hasRaffleEnded) {
 			return 'Enter Raffle';
 		} else {
-			return 'Mint Wheels';
+			return 'Sale Info';
 		}
 	};
 
@@ -148,16 +173,20 @@ const WheelsRaffleContainer = () => {
 	// Render //
 	////////////
 
-	if (!hasRaffleEnded) {
+	if (!hasSaleStarted) {
 		return (
 			<>
 				{isModalOpen && overlay()}
 				<div style={{ position: 'relative', marginBottom: 16 }}>
 					<MintWheelsBanner
-						title={'Get Early Access to Wilder Wheels'}
+						title={
+							hasRaffleEnded
+								? 'Your ride for the Metaverse awaits'
+								: 'Get Early Access to Wilder Wheels'
+						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}
-						onClick={openModal}
+						onClick={onBannerClick}
 					/>
 				</div>
 			</>

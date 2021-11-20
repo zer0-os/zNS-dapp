@@ -118,6 +118,10 @@
 	display: flex;
 	flex-direction: column;
 	max-height: 568px;
+
+	@media only screen and (max-width: 768px) {
+		max-height: unset;
+	}
 }
 
 .Details > div:first-of-type {
@@ -170,9 +174,9 @@
 }
 
 .Box h4 {
-	margin-bottom: 8px;
-	color: var(--color-primary-lighter-3);
-	text-transform: uppercase;
+	margin-bottom: 4px;
+	font-size: 12px;
+	color: #bfbfbf;
 }
 
 .Box span {
@@ -191,6 +195,15 @@
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
+
+	@media only screen and (max-width: 768px) {
+		max-height: unset;
+		margin: 16px 0;
+		line-height: 24px;
+		-webkit-line-clamp: unset;
+		overflow: visible;
+		text-overflow: unset;
+	}
 }
 
 .History ul::-webkit-scrollbar-corner {
@@ -217,7 +230,11 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	margin-top: 20px;
+	margin-top: 16px;
+
+	a {
+		margin-top: 6.5px;
+	}
 }
 
 .Copy {
@@ -282,6 +299,37 @@
 
 .Bid:first-child {
 	margin-top: 12px;
+}
+
+.Stats {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 24px;
+	flex-wrap: wrap;
+}
+
+.Stats:first-child {
+	margin-left: 0;
+}
+
+@media only screen and (max-width: 1280px) {
+	.Buttons button {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 1100px) {
+	.Buttons {
+		flex-direction: column;
+	}
+
+	.Buttons button {
+		margin-left: 0 !important;
+	}
+
+	.Buttons button:not(:first-child) {
+		margin-top: 24px;
+	}
 }
 
 @media only screen and (max-width: 960px) {

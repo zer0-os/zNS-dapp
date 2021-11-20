@@ -1,3 +1,5 @@
+import { version } from '../package.json';
+
 //- React Imports
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
@@ -18,9 +20,9 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
 //- Library Imports
+import CacheBuster from 'react-cache-buster';
 import MintProvider from 'lib/providers/MintProvider';
 import BidProvider from 'lib/providers/BidProvider';
-import CurrencyProvider from 'lib/providers/CurrencyProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import TransferProvider from './lib/providers/TransferProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
@@ -44,8 +46,8 @@ function getLibrary(provider: any): Web3Provider {
 
 function App() {
 	console.log(
-		'%cHello fellow devs & tinkerers!',
-		'display: block; border: 3px solid #3ca1ff; border-radius: 7px; padding: 10px; margin: 8px;',
+		`%cWilder World Marketplace v${version}`,
+		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
 
 	// Programatically load the background image
@@ -85,15 +87,20 @@ function App() {
 }
 
 function wrappedApp() {
+	const isProduction = process.env.NODE_ENV === 'production';
+
 	return (
-		// Web3 Library Hooks
-		<ReduxProvider store={store}>
-			<ChainSelectorProvider>
-				<SubgraphProvider>
-					<Web3ReactProvider getLibrary={getLibrary}>
-						{/* Our Hooks  */}
-						<ZNSDomainsProvider>
-							<CurrencyProvider>
+		<CacheBuster
+			currentVersion={version}
+			isEnabled={isProduction}
+			isVerboseMode={true}
+		>
+			<ReduxProvider store={store}>
+				<ChainSelectorProvider>
+					<SubgraphProvider>
+						<Web3ReactProvider getLibrary={getLibrary}>
+							{/* Our Hooks  */}
+							<ZNSDomainsProvider>
 								<BidProvider>
 									<TransferProvider>
 										<StakingRequestProvider>
@@ -105,12 +112,12 @@ function wrappedApp() {
 										</StakingRequestProvider>
 									</TransferProvider>
 								</BidProvider>
-							</CurrencyProvider>
-						</ZNSDomainsProvider>
-					</Web3ReactProvider>
-				</SubgraphProvider>
-			</ChainSelectorProvider>
-		</ReduxProvider>
+							</ZNSDomainsProvider>
+						</Web3ReactProvider>
+					</SubgraphProvider>
+				</ChainSelectorProvider>
+			</ReduxProvider>
+		</CacheBuster>
 	);
 }
 

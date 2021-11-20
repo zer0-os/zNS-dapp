@@ -3,8 +3,12 @@ import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { DisplayParentDomain, Maybe } from 'lib/types';
 import React from 'react';
 import { useDomainByIdQuery } from './zNSDomainHooks';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 
 export const useZnsDomain = (domainId: string) => {
+	const { instance: sdk } = useZnsSdk();
+
+	const loadingDomainId = React.useRef<string | undefined>(undefined);
 	const [loading, setLoading] = React.useState(true);
 	const [domain, setDomain] =
 		React.useState<Maybe<DisplayParentDomain>>(undefined);
@@ -14,26 +18,50 @@ export const useZnsDomain = (domainId: string) => {
 	const domainMetadata = useDomainMetadata(rawDomainData?.metadata);
 
 	React.useEffect(() => {
+		loadingDomainId.current = domainId;
 		setLoading(true);
+		setDomain(undefined);
 	}, [domainId]);
 
 	React.useEffect(() => {
-		if (!rawDomainData) {
-			//first queries will always return undefined
-			//if after some time keeps the same then get back to home
+		if (domainQuery.data?.domain === null) {
+			console.warn('404: ' + domainId);
 			setDomain(null);
-			setTimeout(() => {
-				if (!domain) setLoading(false); //triggers the kickout
-			}, 2000);
+			setLoading(false);
+		}
+	}, [domainQuery.data]);
+
+	React.useEffect(() => {
+		if (!rawDomainData) {
 			return;
 		}
 
-		setDomain({
-			...rawDomainData,
-			...domainMetadata,
-		} as DisplayParentDomain);
-
-		setLoading(false);
+		if (rawDomainData.subdomains.length > 999) {
+			sdk.getSubdomainsById(domainId).then((s) => {
+				if (loadingDomainId?.current === domainId) {
+					const subs = s.map((sub) => ({
+						id: sub.id,
+						metadata: sub.metadataUri,
+						minter: { id: sub.minter },
+						name: sub.name,
+						owner: { id: sub.owner },
+					}));
+					setDomain({
+						...{ ...rawDomainData, subdomains: subs },
+						...domainMetadata,
+					} as DisplayParentDomain);
+					setLoading(false);
+				} else {
+					console.warn('changed domains, ignoring subdomains');
+				}
+			});
+		} else {
+			setDomain({
+				...rawDomainData,
+				...domainMetadata,
+			} as DisplayParentDomain);
+			setLoading(false);
+		}
 	}, [rawDomainData, domainMetadata]);
 
 	return { loading, domain, refetch: domainQuery.refetch };
