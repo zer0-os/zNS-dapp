@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useBidProvider } from 'lib/providers/BidProvider';
 import { toFiat } from 'lib/currency';
 import { getMetadata } from 'lib/metadata';
-import { useCurrencyProvider } from 'lib/providers/CurrencyProvider';
+import useCurrency from 'lib/hooks/useCurrency';
 import useNotification from 'lib/hooks/useNotification';
 import { ethers } from 'ethers';
 import { ERC20 } from 'types';
@@ -60,7 +60,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 	// Notification Confirmation
 	const { addNotification } = useNotification();
 	// Wild to usd
-	const { wildPriceUsd } = useCurrencyProvider();
+	const { wildPriceUsd } = useCurrency();
 	// Wallet Integrations
 	const wildContract: ERC20 = znsContracts.wildToken;
 
