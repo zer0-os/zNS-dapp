@@ -29,8 +29,7 @@ const StepBar: React.FC<StepBarProps> = ({
 		if (onNavigate) onNavigate(i);
 	};
 
-	const text = (step: string, i: number) =>
-		`Step ${i + 1} of ${steps.length}: ${step}`;
+	const text = (step: string, i: number) => `${i + 1}/${steps.length} ${step}`;
 
 	return (
 		<div style={style} className={`${styles.StepBar} no-select`}>
@@ -61,9 +60,9 @@ const StepBar: React.FC<StepBarProps> = ({
 					transform: `translateX(${translate()})`,
 				}}
 				className={`${styles.Bar} ${step > steps.length ? styles.Hide : ''}`}
-				data-text={`Step ${step > steps.length ? steps.length : step} of ${
+				data-text={`${step > steps.length ? steps.length : step}/${
 					steps.length
-				}: ${steps[step - 1] || steps[steps.length - 1]}`}
+				} ${steps[step - 1] || steps[steps.length - 1]}`}
 			></div>
 		</div>
 	);

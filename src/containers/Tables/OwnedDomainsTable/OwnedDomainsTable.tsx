@@ -1,39 +1,39 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // React Imports
-import React from 'react';
-
+import React, { useState } from 'react';
+//- Web3 Imports
+import { useWeb3React } from '@web3-react/core'; // Wallet data
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 // Library Imports
 import { useZnsContracts } from 'lib/contracts';
-import { useBidProvider } from 'lib/providers/BidProvider';
 import { useApprovals } from 'lib/hooks/useApprovals';
-import { useWeb3React } from '@web3-react/core';
-
+import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 // Type Imports
 import { Bid, Domain, DomainData } from 'lib/types';
-
+// Component Imports
+import { DomainTable, Overlay, Spinner } from 'components';
+// Containers Imports
+import { BidList, AcceptBid } from 'containers';
+// Constants
+import {
+	NO_ERROR,
+	FAILED_TO_APPROVE,
+	LOADING_DOMAINS_LABEL,
+} from './constants';
+// Utils
+import { AcceptBidModalData, OwnedDomainTableProps } from './utils';
 // Style Imports
 import styles from './OwnedDomainsTable.module.scss';
 
-// Component Imports
-import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
-import { BidList } from 'containers';
-import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
-
-type AcceptBidModalData = {
-	domain: Domain;
-	bid: Bid;
-};
-
-type OwnedDomainTableProps = {
-	onNavigate?: (to: string) => void;
-};
-
 const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
-	//////////////////
-	// State & Data //
-	//////////////////
-
+	// zAuction Integrations
+	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
+	const znsContracts = useZnsContracts()!;
+	const zAuctionAddress = znsContracts.zAuction.address;
 	// Wallet Integrations
-	const { account } = useWeb3React();
+	const walletContext = useWeb3React<Web3Provider>();
+	const { account, active } = walletContext;
+	// Queries
 	const ownedDomainPollingInterval: number = 5000;
 	const ownedQuery = useDomainsOwnedByUserQuery(
 		account!,
@@ -41,91 +41,30 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	);
 	const owned = ownedQuery.data?.domains;
 
-	// zAuction Integrations
-	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
-	const znsContracts = useZnsContracts()!;
-	const { acceptBid } = useBidProvider();
-	const zAuctionAddress = znsContracts.zAuction.address;
+	//////////////////
+	// State & Data //
+	//////////////////
 
-	// State
-	const [isTableLoading, setIsTableLoading] = React.useState(true);
-	const [tokensApproved, setTokensApproved] = React.useState<
-		boolean | undefined
-	>();
-	const [isAccepting, setIsAccepting] = React.useState(false);
-	const [isGridView, setIsGridView] = React.useState(false);
+	// Accepting Bid Data
 	const [acceptingBid, setAcceptingBid] = React.useState<
 		AcceptBidModalData | undefined
 	>();
+
+	// Domain Data
 	const [viewingDomain, setViewingDomain] = React.useState<
 		DomainData | undefined
 	>();
+
+	// Loading States
+	const [isTableLoading, setIsTableLoading] = React.useState(true);
+	const [isGridView, setIsGridView] = React.useState(false);
+	const [error, setError] = useState('');
 
 	///////////////
 	// Functions //
 	///////////////
 
-	const viewBid = async (domain: DomainData) => {
-		setViewingDomain(domain);
-	};
-
-	const accept = async (bid: Bid) => {
-		if (!viewingDomain?.domain || !bid) return;
-		setAcceptingBid({
-			domain: viewingDomain.domain,
-			bid: bid,
-		});
-
-		const shouldApprove = !(await isApproved());
-		setTokensApproved(!shouldApprove);
-		if (shouldApprove) {
-			try {
-				const approvedSuccess = await approve();
-				if (approvedSuccess) throw Error('failed to approve');
-				setTokensApproved(true);
-			} catch (e: any) {
-				closeBid();
-			}
-		}
-	};
-
-	const isApproved = async () => {
-		const approved = await isApprovedForAllTokens({
-			owner: account as string,
-			operator: zAuctionAddress,
-		});
-		return approved;
-	};
-
-	const approve = async () => {
-		const approved = await approveAllTokens({
-			operator: zAuctionAddress,
-			approved: true,
-		});
-		return approved;
-	};
-
-	const closeBid = () => setAcceptingBid(undefined);
-
-	const closeDomain = () => setViewingDomain(undefined);
-
-	const acceptBidConfirmed = async () => {
-		if (!acceptingBid) {
-			return;
-		}
-		setIsAccepting(true);
-		const tx = await acceptBid(acceptingBid.bid);
-		if (tx) {
-			await tx.wait();
-		}
-		setTimeout(() => {
-			//refetch after confirm the transaction, with a delay to wait until backend gets updated
-			ownedQuery.refetch();
-		}, 500);
-		setIsAccepting(false);
-		setAcceptingBid(undefined);
-	};
-
+	// Domain Table Functions
 	const rowClick = (domain: Domain) => {
 		if (onNavigate) onNavigate(domain.name);
 	};
@@ -138,72 +77,72 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		setIsTableLoading(false);
 	};
 
-	if (!owned) return <></>;
+	const viewBid = async (domain: DomainData) => {
+		setViewingDomain(domain);
+	};
+
+	const closeDomain = () => setViewingDomain(undefined);
+
+	const closeAcceptBid = () => {
+		setAcceptingBid(undefined);
+		setError(NO_ERROR);
+	};
+
+	const isApproved = async () => {
+		const approved = await isApprovedForAllTokens({
+			owner: account as string,
+			operator: zAuctionAddress,
+		});
+		return approved;
+	};
+
+	const accept = async (bid: Bid) => {
+		if (!viewingDomain?.domain || !bid) return;
+		setAcceptingBid({
+			domain: viewingDomain.domain,
+			bid: bid,
+		});
+		const shouldApprove = !(await isApproved());
+		if (shouldApprove) {
+			try {
+				const approvedSuccess = await approve();
+				if (approvedSuccess) throw Error(FAILED_TO_APPROVE);
+			} catch (e: any) {
+				closeAcceptBid();
+			}
+		}
+	};
+
+	const approve = async () => {
+		const approved = await approveAllTokens({
+			operator: zAuctionAddress,
+			approved: true,
+		});
+		return approved;
+	};
 
 	/////////////////////
 	// React Fragments //
 	/////////////////////
 
-	const canPlaceBid = () => {
-		const id = acceptingBid!.bid.bidderAccount;
-		return (
-			<p style={{ fontSize: 14, fontWeight: 400, lineHeight: '21px' }}>
-				Are you sure you want to accept the bid of{' '}
-				<b className="glow-text-white">
-					{acceptingBid!.bid.amount.toLocaleString()} WILD
-				</b>{' '}
-				tokens by{' '}
-				<b>
-					<a
-						className="alt-link"
-						href={`https://etherscan.io/address/${id}`}
-						target="_blank"
-						rel="noreferrer"
-					>
-						{id.substring(0, 4)}...{id.substring(id.length - 4)}
-					</a>
-				</b>
-				? You will receive{' '}
-				<b className="glow-text-white">
-					{acceptingBid!.bid.amount.toLocaleString()} WILD
-				</b>{' '}
-				tokens in exchange for ownership of{' '}
-				<b className="glow-text-white">0://{acceptingBid!.domain.name}</b>
-			</p>
-		);
-	};
-
-	const loadingState = () => <Spinner style={{ margin: '8px auto' }} />;
-
-	const bidPending = () => (
-		<>
-			<p>Pending</p>
-			<Spinner style={{ margin: '8px auto' }} />
-		</>
-	);
-
-	const approving = () => (
-		<>
-			<p>Your wallet needs to approve zAuction to accept this bid</p>
-			<Spinner style={{ margin: '8px auto' }} />
-		</>
-	);
+	// Render nothing if wallet disconnected or no domains owned
+	if (!active || !owned) return <></>;
 
 	const overlays = () => (
 		<>
 			{acceptingBid !== undefined && (
-				<Overlay onClose={closeBid} centered open>
-					<Confirmation
-						title={`Accept bid`}
-						onConfirm={acceptBidConfirmed}
-						onCancel={closeBid}
-						hideButtons={tokensApproved !== true || isAccepting}
-					>
-						{tokensApproved === undefined && loadingState()}
-						{tokensApproved === false && approving()}
-						{tokensApproved && !isAccepting && canPlaceBid()}
-						{tokensApproved && isAccepting && bidPending()}
-					</Confirmation>
+				<Overlay onClose={closeAcceptBid} centered open>
+					<AcceptBid
+						onClose={closeAcceptBid}
+						setViewingDomain={setViewingDomain}
+						acceptingBid={acceptingBid}
+						znsContracts={znsContracts}
+						zAuctionAddress={zAuctionAddress}
+						ownedQuery={ownedQuery}
+						error={error}
+						setError={setError}
+						userId={account || undefined}
+					/>
 				</Overlay>
 			)}
 			{viewingDomain !== undefined && (
@@ -219,7 +158,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			{overlays()}
 			{isTableLoading && (
 				<>
-					<p className={styles.Message}>Loading Your Domains</p>
+					<p className={styles.Message}>{LOADING_DOMAINS_LABEL}</p>
 					<Spinner style={{ margin: '8px auto' }} />
 				</>
 			)}

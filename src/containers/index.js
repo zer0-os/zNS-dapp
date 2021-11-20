@@ -20,6 +20,7 @@ export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/Cu
 export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/ConnectWalletPrompt';
 
 // Flows
+export { default as AcceptBid } from './flows/AcceptBid/AcceptBid';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
 export { default as MintWheels } from './flows/MintWheels';
