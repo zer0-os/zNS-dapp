@@ -84,12 +84,21 @@
 	color: var(--color-grey-lighter-2);
 }
 
-.CurrentPrice {
+.CurrentPriceSml {
 	font-size: 12px;
 	font-weight: bold;
 	line-height: 14.5px;
 	color: var(--color-text-primary);
 	padding: 2px 6px 0 0;
+	text-shadow: var(--glow-text-blue);
+}
+
+.CurrentPriceLrg {
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 24px;
+	color: var(--color-text-primary);
+	padding: 0 6px 0 0;
 	text-shadow: var(--glow-text-blue);
 }
 
@@ -114,17 +123,27 @@
 	border-radius: 16px;
 	background: var(--color-purple-darkest);
 	cursor: default;
-}
-
-.DropDownContent a {
-	background-color: var(--color-purple-medium);
-	margin: 0 10px;
-}
-
-.DropDownContent a:hover {
-	background-color: var(--color-purple-medium);
+	padding: 32px;
 }
 
 .WildPriceContainer:hover .DropDownContentContainer {
 	display: block;
+}
+
+.ExternalUrl {
+	display: flex;
+	align-items: baseline;
+	justify-content: flex-start;
+}
+
+.ExternalUrl a {
+	font-size: 12px;
+	line-height: 15px;
+	background-color: transparent;
+	text-shadow: none;
+	color: var(--color-grey-lighter-4);
+}
+
+.ExternalUrl:hover {
+	transform: scale(1.01);
 }
