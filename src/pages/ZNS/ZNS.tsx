@@ -597,7 +597,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 									)}
 
 									{/* Wild price dropdown */}
-
 									<div className={styles.WildPriceContainer}>
 										<span className={styles.TickerName}>Wilder WILD</span>
 										<div
@@ -611,6 +610,39 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 												${wildPriceUsd}
 											</span>
 											<span className={styles.PercentageChange}>+12%</span>
+										</div>
+										<div className={styles.DropDownContentContainer}>
+											<div
+												className={`${styles.DropDownContent} border-primary border-rounded blur`}
+											>
+												<div
+													style={{
+														display: 'flex',
+														flexDirection: 'row',
+													}}
+												>
+													<span className={styles.CurrentPrice}>
+														${wildPriceUsd}
+													</span>
+													<>some url .com </>
+												</div>
+												<div style={{ display: 'flex', flexDirection: 'row' }}>
+													<>some url .com </>
+													<div style={{ borderBottom: '1px solid red' }} />
+												</div>
+
+												<ul>
+													<li>
+														<a href="/">Uniswap</a>
+													</li>
+													<li>
+														<a href="/">Kucoin</a>
+													</li>
+													<li>
+														<a href="/">Gate.io</a>
+													</li>
+												</ul>
+											</div>
 										</div>
 									</div>
 

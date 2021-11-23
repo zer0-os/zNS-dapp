@@ -99,3 +99,32 @@
 	line-height: 14.5px;
 	color: var(--color-success);
 }
+
+.DropDownContentContainer {
+	display: none;
+	position: absolute;
+	right: calc(0% - 140px);
+	padding: 32px;
+	z-index: 1;
+	top: 56%;
+}
+
+.DropDownContent {
+	width: 540px;
+	border-radius: 16px;
+	background: var(--color-purple-darkest);
+	cursor: default;
+}
+
+.DropDownContent a {
+	background-color: var(--color-purple-medium);
+	margin: 0 10px;
+}
+
+.DropDownContent a:hover {
+	background-color: var(--color-purple-medium);
+}
+
+.WildPriceContainer:hover .DropDownContentContainer {
+	display: block;
+}
