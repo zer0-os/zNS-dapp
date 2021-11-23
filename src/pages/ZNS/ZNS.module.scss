@@ -44,15 +44,58 @@
 	}
 }
 
-.WildPriceDropdown {
+.WildPriceContainer {
 	display: flex;
-	align-items: center;
-	border-left: 1px solid var(--color-purple-lighter);
-	border-right: 1px solid var(--color-purple-lighter);
+	flex-direction: column;
+	justify-content: center;
+	background: none;
+	height: 100%;
+	position: relative;
+	transition: all 0.2s ease-in-out 0s;
 	padding: 4px 16px;
+	cursor: pointer;
 }
 
-.WildPriceDropdown:hover {
-	background-color: var(--color-azure-gradient-25);
-	cursor: pointer;
+.WildPriceContainer::after {
+	content: '';
+	height: 100%;
+	left: 0;
+	position: absolute;
+	top: 0;
+	transform: scale(1, 0.56);
+	transition: all 0.2s ease-in-out 0s;
+	width: 99%;
+}
+
+.WildPriceContainer::after {
+	border-left: 1px solid var(--color-purple-lighter);
+	border-right: 1px solid var(--color-purple-lighter);
+}
+
+.WildPriceContainer:hover::after {
+	transform: scale(1);
+	background: var(--color-azure-gradient-25);
+}
+
+.TickerName {
+	font-size: 10px;
+	font-weight: 400;
+	line-height: 12.1px;
+	color: var(--color-grey-lighter-2);
+}
+
+.CurrentPrice {
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 14.5px;
+	color: var(--color-text-primary);
+	padding: 2px 6px 0 0;
+	text-shadow: var(--glow-text-blue);
+}
+
+.PercentageChange {
+	font-size: 12px;
+	font-weight: 400;
+	line-height: 14.5px;
+	color: var(--color-success);
 }

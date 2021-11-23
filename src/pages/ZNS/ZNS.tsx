@@ -570,12 +570,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										loading={loading}
 									>
 										MINT
-										{/* {pageWidth <= 900 && 'MINT'}
-
-										{pageWidth > 900 && isOwnedByUser === true && 'MINT NFT'}
-										{pageWidth > 900 &&
-											isOwnedByUser === false &&
-											'REQUEST TO MINT NFT'} */}
 									</FutureButton>
 
 									{/* Status / Long Running Operation Button */}
@@ -603,7 +597,22 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 									)}
 
 									{/* Wild price dropdown */}
-									<div className={styles.WildPriceDropdown}>Wild price</div>
+
+									<div className={styles.WildPriceContainer}>
+										<span className={styles.TickerName}>Wilder WILD</span>
+										<div
+											style={{
+												display: 'flex',
+												flexDirection: 'row',
+												alignItems: 'baseline',
+											}}
+										>
+											<span className={styles.CurrentPrice}>
+												${wildPriceUsd}
+											</span>
+											<span className={styles.PercentageChange}>+12%</span>
+										</div>
+									</div>
 
 									{/* Profile Button */}
 									<IconButton

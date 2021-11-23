@@ -44,7 +44,7 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 11px 17px;
+	padding: 0px 17px;
 }
 
 .Bar::after {
@@ -182,6 +182,8 @@ header {
 .Actions {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
+	height: 56px;
 }
 
 .Actions > *:not(:last-child) {
