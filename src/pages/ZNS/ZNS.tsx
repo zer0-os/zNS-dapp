@@ -19,9 +19,6 @@ import { formatNumber, formatEthers } from 'lib/utils';
 //- Style Imports
 import styles from './ZNS.module.scss';
 
-//- Asset Imports
-import openExternalUrl from 'assets/open-external-url.svg';
-
 //- Icon Imports
 import userIcon from 'assets/user.svg';
 
@@ -47,6 +44,7 @@ import {
 	CurrentDomainPreview,
 	ProfileModal,
 	WheelsRaffle,
+	BuyTokenRedirect,
 } from 'containers';
 
 //- Library Imports
@@ -599,102 +597,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										</TooltipLegacy>
 									)}
 
-									{/* Wild price dropdown */}
-									<div className={styles.WildPriceContainer}>
-										<span className={styles.TickerName}>Wilder WILD</span>
-										<div
-											style={{
-												display: 'flex',
-												flexDirection: 'row',
-												alignItems: 'baseline',
-											}}
-										>
-											<span className={styles.CurrentPriceSml}>
-												${wildPriceUsd}
-											</span>
-											<span className={styles.PercentageChange}>+12%</span>
-										</div>
-										<div className={styles.DropDownContentContainer}>
-											<div
-												className={`${styles.DropDownContent} border-primary border-rounded blur`}
-											>
-												<div
-													style={{
-														display: 'flex',
-														flexDirection: 'row',
-														alignItems: 'baseline',
-														justifyContent: 'space-between',
-													}}
-												>
-													<div>
-														<span className={styles.CurrentPriceLrg}>
-															${wildPriceUsd}
-														</span>
-														<span className={styles.PercentageChange}>
-															(+12%)
-														</span>
-													</div>
-													<div className={styles.ExternalUrl}>
-														<div>
-															<a
-																href={
-																	'https://coinmarketcap.com/currencies/wilder-world/'
-																}
-																target="_blank"
-																rel="noreferrer"
-															>
-																View on CoinMarketCap
-															</a>
-															<img
-																alt="external url btn"
-																src={openExternalUrl}
-															/>
-														</div>
-													</div>
-												</div>
-												<div
-													style={{
-														display: 'flex',
-														flexDirection: 'row',
-														alignItems: 'center',
-														justifyContent: 'space-between',
-													}}
-												>
-													<p
-														style={{
-															fontWeight: 'bold',
-															fontSize: '12px',
-															lineHeightStep: '14px',
-															marginTop: '24px',
-															color: '#D9D9D9',
-														}}
-													>
-														BUY $WILD
-													</p>
-													<div
-														style={{
-															width: '82%',
-															borderTop:
-																'1px solid var(--color-purple-lighter)',
-															marginTop: '10px',
-														}}
-													></div>
-												</div>
-
-												{/* <ul>
-													<li>
-														<a href="/">Uniswap</a>
-													</li>
-													<li>
-														<a href="/">Kucoin</a>
-													</li>
-													<li>
-														<a href="/">Gate.io</a>
-													</li>
-												</ul> */}
-											</div>
-										</div>
-									</div>
+									{/* Buy token from external urls */}
+									<BuyTokenRedirect />
 
 									{/* Profile Button */}
 									<IconButton

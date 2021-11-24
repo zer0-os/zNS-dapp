@@ -1,70 +1,24 @@
-.Dots {
-	--dot-size: 5px;
-	--dot-gap: 2.8px;
-
-	position: relative;
-	height: 32px;
-	width: 16px;
-	cursor: pointer;
-}
-
-.Dots > div {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	height: var(--dot-size);
-	width: var(--dot-size);
-	border-radius: 50%;
-	background: var(--color-accent-1);
-}
-
-.Dots > div:first-child {
-	transform: translate(-50%, calc(-50% - calc(100% + var(--dot-gap))));
-}
-
-.Dots > div:last-child {
-	transform: translate(-50%, calc(-50% + calc(100% + var(--dot-gap))));
-}
-
-.Stats {
-	display: flex;
-	justify-content: space-between;
-	background: var(--background-purple-card-20);
-	padding: 16px;
-	flex-wrap: wrap;
-
-	@media only screen and (max-width: 415px) {
-		padding-left: 8px;
-		padding-right: 8px;
-	}
-
-	&:first-child {
-		margin-left: 0;
-	}
-}
-
 .WildPriceContainer {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	position: relative;
 	background: none;
 	height: 100%;
-	position: relative;
-	transition: all 0.2s ease-in-out 0s;
 	padding: 4px 16px;
 	cursor: pointer;
+	transition: all 0.2s ease-in-out 0s;
 }
 
 .WildPriceContainer::after {
 	content: '';
+	position: absolute;
 	height: 100%;
 	left: 0;
-	position: absolute;
 	top: 0;
+	width: 99%;
 	transform: scale(1, 0.56);
 	transition: all 0.2s ease-in-out 0s;
-	width: 99%;
 }
 
 .WildPriceContainer::after {
@@ -75,6 +29,12 @@
 .WildPriceContainer:hover::after {
 	transform: scale(1);
 	background: var(--color-azure-gradient-25);
+}
+
+.CurrentPriceContainer {
+	display: flex;
+	flex-direction: row;
+	align-items: baseline;
 }
 
 .TickerName {
@@ -88,8 +48,8 @@
 	font-size: 12px;
 	font-weight: bold;
 	line-height: 14.5px;
-	color: var(--color-text-primary);
 	padding: 2px 6px 0 0;
+	color: var(--color-text-primary);
 	text-shadow: var(--glow-text-blue);
 }
 
@@ -97,8 +57,8 @@
 	font-size: 16px;
 	font-weight: bold;
 	line-height: 24px;
-	color: var(--color-text-primary);
 	padding: 0 6px 0 0;
+	color: var(--color-text-primary);
 	text-shadow: var(--glow-text-blue);
 }
 
@@ -109,41 +69,92 @@
 	color: var(--color-success);
 }
 
-.DropDownContentContainer {
-	display: block;
+.DropdownContentContainer {
+	display: none;
 	position: absolute;
-	right: calc(0% - 140px);
+	top: 56%;
+	right: calc(0% - 138px);
 	padding: 32px;
 	z-index: 1;
-	top: 56%;
 }
 
-.DropDownContent {
-	width: 540px;
-	border-radius: 16px;
-	background: var(--color-purple-darkest);
+.DropdownContent {
+	width: 535px;
 	cursor: default;
 	padding: 32px;
+	border-radius: 16px;
+	background: var(--color-purple-darkest);
 }
 
-.WildPriceContainer:hover .DropDownContentContainer {
+.WildPriceContainer:hover .DropdownContentContainer {
 	display: block;
 }
 
 .ExternalUrl {
 	display: flex;
-	align-items: baseline;
-	justify-content: flex-start;
+	align-items: flex-end;
 }
 
 .ExternalUrl a {
 	font-size: 12px;
 	line-height: 15px;
-	background-color: transparent;
 	text-shadow: none;
+	background-color: transparent;
+	padding-right: 6px;
 	color: var(--color-grey-lighter-4);
 }
 
 .ExternalUrl:hover {
 	transform: scale(1.01);
+}
+
+.Section {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.DividerCopy {
+	font-weight: bold;
+	font-size: 12px;
+	line-height: 14px;
+	margin-top: 24px;
+	color: var(--color-grey-lighter-3);
+}
+
+.Divider {
+	width: 82%;
+	margin-top: 10px;
+	border-top: 1px solid var(--color-purple-lighter);
+}
+
+.UrlRowContainer {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}
+
+.UrlRowContainer a {
+	max-width: 140px;
+	width: 100%;
+	font-size: 14px;
+	line-height: 17px;
+	text-shadow: unset;
+	color: var(--color-accent-blue-100);
+	padding-top: 10px;
+}
+
+.IconWrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 8px;
+}
+
+.IconWrapper p {
+	padding: 2px 0 6px 0;
+}
+
+.IconWrapper:hover {
+	background: var(--color-azure-gradient-25);
 }
