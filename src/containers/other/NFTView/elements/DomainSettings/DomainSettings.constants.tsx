@@ -8,6 +8,7 @@ export enum DomainSettingsWarning {
 
 export enum DomainSettingsSuccess {
 	MEATA_DATA_SAVED = 'MEATA_DATA_SAVED',
+	MEATA_DATA_SAVED_AND_LOCKED = 'MEATA_DATA_SAVED_AND_LOCKED',
 }
 
 export const DOMAIN_SETTINGS_WARNING_MESSAGES = {
@@ -17,6 +18,8 @@ export const DOMAIN_SETTINGS_WARNING_MESSAGES = {
 
 export const DOMAIN_SETTINGS_SUCCESS_MESSAGES = {
 	[DomainSettingsSuccess.MEATA_DATA_SAVED]: 'Your changes have been saved',
+	[DomainSettingsSuccess.MEATA_DATA_SAVED_AND_LOCKED]:
+		'Your changes have been saved and locked',
 };
 
 /**
