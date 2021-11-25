@@ -44,7 +44,7 @@ import {
 	CurrentDomainPreview,
 	ProfileModal,
 	// Temporarily removed raffle
-	// WheelsRaffle,
+	WheelsRaffle,
 } from 'containers';
 
 //- Library Imports
@@ -620,7 +620,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				</FilterBar>
 
 				{/* Temporarily removed Raffle */}
-				{/* <WheelsRaffle /> */}
+				<WheelsRaffle />
 
 				{!isNftView && (
 					<div

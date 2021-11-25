@@ -12,9 +12,9 @@ const WheelsRaffleContainer = () => {
 
 	const currentTime = new Date().getTime();
 	// Hardcoded event times
-	const RAFFLE_START_TIME = 1634408000000;
-	const RAFFLE_END_TIME = 1635303609000;
-	const SALE_START_TIME = 1635469200000;
+	const RAFFLE_START_TIME = 1637777600000;
+	const RAFFLE_END_TIME = 1637978400000;
+	const SALE_START_TIME = 1638234000000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -113,7 +113,7 @@ const WheelsRaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Wheels raffle - starting in{' '}
+					Get notified about the Wilder Cribs raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -182,7 +182,7 @@ const WheelsRaffleContainer = () => {
 						title={
 							hasRaffleEnded
 								? 'Your ride for the Metaverse awaits'
-								: 'Get Early Access to Wilder Wheels'
+								: 'Get Early Access to Wilder Cribs'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}
