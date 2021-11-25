@@ -13,9 +13,9 @@ const WheelsRaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	const RAFFLE_START_TIME = 1637825430478;
-	const RAFFLE_END_TIME = 1637825730478;
-	const SALE_START_TIME = 1637826030478;
+	const RAFFLE_START_TIME = 1637829566370;
+	const RAFFLE_END_TIME = 1637829866370;
+	const SALE_START_TIME = 1637831066370;
 
 	// Hardcoded event times
 	// const RAFFLE_START_TIME = 1637870400000;
