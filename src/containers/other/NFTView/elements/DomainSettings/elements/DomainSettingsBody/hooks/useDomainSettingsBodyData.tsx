@@ -18,11 +18,24 @@ export const useDomainSettingsBodyData = (
 	const [errors, setErrors] = useState<Error[]>([]);
 	/* Switches */
 	const [mintRequestOn, setMintRequestOn] = useState<boolean>(false);
+	// Domain bidding
 	const [biddingOn, setBiddingOn] = useState<boolean>(false);
+	//// Domain bidding -> sub settings
+	const [bidExpiryOn, setBidExpiryOn] = useState<boolean>(false);
+	const [bidExpireTime, setBidExpireTime] = useState<string>('');
+	const [auctionEndtimeOn, setAuctionEndtimeOn] = useState<boolean>(false);
+	const [auctionEndtime, setAuctionEndtime] = useState<string>('');
+	const [auctionMessage, setAuctionMessage] = useState<string>('');
+	// Buy Now
 	const [buyNowOn, setBuyNowOn] = useState<boolean>(false);
+	//// Buy Now -> sub settings
+	const [buyNowPrice, setBuyNowPrice] = useState<string>('');
+	// Display domain grid
 	const [displayGridOn, setDisplayGridOn] = useState<boolean>(false);
+	// Custom aspect ratio
 	const [customAspectRatioOn, setCustomAspectRatioOn] =
 		useState<boolean>(false);
+	// Lock Metadata
 	const [lockMetadataOn, setLockMetadataOn] = useState<boolean>(false);
 
 	return {
@@ -35,7 +48,13 @@ export const useDomainSettingsBodyData = (
 			/* Switches */
 			mintRequestOn,
 			biddingOn,
+			bidExpiryOn,
+			bidExpireTime,
+			auctionEndtimeOn,
+			auctionEndtime,
+			auctionMessage,
 			buyNowOn,
+			buyNowPrice,
 			displayGridOn,
 			customAspectRatioOn,
 			lockMetadataOn,
@@ -48,7 +67,13 @@ export const useDomainSettingsBodyData = (
 			/* Switches */
 			setMintRequestOn,
 			setBiddingOn,
+			setBidExpiryOn,
+			setBidExpireTime,
+			setAuctionEndtimeOn,
+			setAuctionEndtime,
+			setAuctionMessage,
 			setBuyNowOn,
+			setBuyNowPrice,
 			setDisplayGridOn,
 			setCustomAspectRatioOn,
 			setLockMetadataOn,

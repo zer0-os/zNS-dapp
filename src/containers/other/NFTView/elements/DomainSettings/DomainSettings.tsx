@@ -56,17 +56,25 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 				{/* Footer */}
 				<DomainSettingsFooter
 					isLocked={localState.isLocked}
+					isSaved={localState.isSaved}
 					warning={localState.warning}
 					success={localState.success}
+					onLock={handlers.handleLock}
 					onUnlock={modalsActions.handleUnlockModalOpen}
 					onSaveWithoutLocking={modalsActions.handleSaveWithoutLockingModalOpen}
 					onSaveAndLock={modalsActions.handleSaveAndLockModalOpen}
+					onFinish={handlers.handleFinish}
 				/>
 				{/* Modals */}
 				<DomainSettingsModal
 					{...modalsState.unlockModal}
 					onConfirm={handlers.handleUnlock}
 					onCancel={modalsActions.handleUnlockModalClose}
+				/>
+				<DomainSettingsModal
+					{...modalsState.lockModal}
+					onConfirm={handlers.handleLock}
+					onCancel={modalsActions.handleLockModalClose}
 				/>
 				<DomainSettingsModal
 					{...modalsState.saveWithoutLockingModal}
