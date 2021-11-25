@@ -129,7 +129,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 			{hasSubmitted && (
 				<>
 					<p className={styles.Success}>You successfully joined the raffle!</p>
-					{!emailRegistrationSuccess && (
+					{/* {!emailRegistrationSuccess && (
 						<>
 							<div className={styles.Email}>
 								<p>
@@ -160,7 +160,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 								You have been added to our Cribs mail list!
 							</p>
 						</>
-					)}
+					)} */}
 					<div className={styles.Socials}>
 						<span>Follow our socials to get the latest info:</span>
 						<div>
