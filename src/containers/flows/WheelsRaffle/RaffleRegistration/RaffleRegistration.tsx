@@ -95,9 +95,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					{!isLoadingRegistration && (
 						<>
 							<p>
-								Whitelisted members will have early access to the upcoming
-								wheels drop. Sign up to the raffle with your wallet for a chance
-								at joining the whitelist!
+								Whitelisted members will have early access to the upcoming cribs
+								drop. Sign up to the raffle with your wallet for a chance at
+								joining the whitelist!
 							</p>
 							{registrationError && (
 								<span className={styles.Error}>{registrationError}</span>
@@ -133,7 +133,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 						<>
 							<div className={styles.Email}>
 								<p>
-									Enter your email to be notified about the Wilder Wheels sale:
+									Enter your email to be notified about the Wilder Cribs sale:
 								</p>
 								<TextInput
 									className={styles.Input}
@@ -157,7 +157,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 						<>
 							<br />
 							<p className={styles.Success}>
-								You have been added to our Wheels mail list!
+								You have been added to our Cribs mail list!
 							</p>
 						</>
 					)}
