@@ -56,6 +56,7 @@ import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
+import { injected } from 'lib/connectors';
 
 type ZNSProps = {
 	domain: string;
@@ -82,7 +83,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
 
-	const { account, active, chainId } = walletContext;
+	const { activate, account, active, chainId, error } = walletContext;
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
 
 	const sdk = useZnsSdk();
@@ -111,6 +112,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const canGoBack = domain !== undefined && domain !== '/';
 	const canGoForward = !!forwardDomain;
 
+	const chosenWallet = useRef(localStorage.getItem('chosenWallet'));
+	chosenWallet.current = localStorage.getItem('chosenWallet');
 	// Force to go back to home if invalid domain
 	React.useEffect(() => {
 		if (!loading) {
@@ -149,7 +152,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
 	const [pageWidth, setPageWidth] = useState<number>(0);
-
+	const [metamaskLocked, setMetamaskLocked] = useState(false);
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
@@ -285,6 +288,30 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		// Check if we need to close a modal
 		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
+		}
+
+		if (
+			!active &&
+			triedEagerConnect &&
+			localStorage.getItem('chosenWallet') === 'metamask'
+		) {
+			//If has tried to connect to metamask, and isnt active. Assume metamask its locked and show the message on button
+			setMetamaskLocked(true);
+		}
+	}, [active]);
+
+	useEffect(() => {
+		//If user cant connect to metamask, every 1 sec it will check if wallet its unlocked
+		if (!active && chosenWallet.current === 'metamask') {
+			setInterval(() => {
+				injected.isAuthorized().then((isAuthorized: boolean) => {
+					//If wallet unlocked or reconnected then activate
+					if (isAuthorized && chosenWallet.current === 'metamask') {
+						setMetamaskLocked(false);
+						activate(injected, undefined, true);
+					}
+				});
+			}, 1000);
 		}
 	}, [active]);
 
@@ -430,7 +457,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			{/* Overlays */}
 			<NotificationDrawer />
 			<ProfileModal />
-			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => { }}>
+			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
 			{modal === Modal.Wallet && (
@@ -515,45 +542,55 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 						setIsSearchActive={setIsSearchActive}
 					>
 						<>
-							{!account && localStorage.getItem('chosenWallet') && (
-								<FutureButton glow onClick={() => openWallet()}>
-									<div
-										style={{
-											display: 'flex',
-											justifyContent: 'center',
-											verticalAlign: 'center',
-											alignItems: 'center',
-											paddingBottom: '5px',
-										}}
-									>
+							{!account &&
+								localStorage.getItem('chosenWallet') &&
+								!triedEagerConnect && (
+									<FutureButton glow onClick={() => openWallet()}>
 										<div
 											style={{
-												display: 'inline-block',
-												width: '10%',
-												margin: '0px',
-												padding: '0px',
-											}}
-										>
-											<Spinner />
-										</div>
-										<p
-											style={{
-												display: 'inline-block',
-												width: '90%',
+												display: 'flex',
+												justifyContent: 'center',
 												verticalAlign: 'center',
-												height: '18px',
-												marginLeft: '15px',
+												alignItems: 'center',
+												paddingBottom: '5px',
 											}}
-											className={styles.Message}
 										>
-											Trying to connect {localStorage.getItem('chosenWallet')}
-										</p>
-									</div>
-								</FutureButton>
-							)}
-							{!account && !localStorage.getItem('chosenWallet') && (
+											<div
+												style={{
+													display: 'inline-block',
+													width: '10%',
+													margin: '0px',
+													padding: '0px',
+												}}
+											>
+												<Spinner />
+											</div>
+											<p
+												style={{
+													display: 'inline-block',
+													width: '90%',
+													verticalAlign: 'center',
+													height: '18px',
+													marginLeft: '15px',
+												}}
+												className={styles.Message}
+											>
+												Trying to connect {localStorage.getItem('chosenWallet')}
+											</p>
+										</div>
+									</FutureButton>
+								)}
+							{!account &&
+								!localStorage.getItem('chosenWallet') &&
+								!metamaskLocked && (
+									<FutureButton glow onClick={openWallet}>
+										Connect {pageWidth > 900 && 'Wallet'}
+									</FutureButton>
+								)}
+
+							{metamaskLocked && (
 								<FutureButton glow onClick={openWallet}>
-									Connect {pageWidth > 900 && 'Wallet'}
+									Wallet Locked
 								</FutureButton>
 							)}
 							{account && !isSearchActive && (
@@ -583,7 +620,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={statusCount > 0}
 												number={statusCount}
-												onClick={() => { }}
+												onClick={() => {}}
 											/>
 										</TooltipLegacy>
 									) : null}
@@ -594,7 +631,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={transferring.length > 0}
 												number={transferring.length}
-												onClick={() => { }}
+												onClick={() => {}}
 											/>
 										</TooltipLegacy>
 									)}
