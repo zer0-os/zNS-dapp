@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { isNil } from 'lodash';
 import { DisplayDomain, Maybe } from 'lib/types';
+import { DomainSettingsError } from '../DomainSettingsBody.constants';
 
 export const useDomainSettingsBodyData = (
 	currentDomain: Maybe<DisplayDomain>,
@@ -15,7 +16,7 @@ export const useDomainSettingsBodyData = (
 	const [locked] = useState<boolean>(
 		isNil(currentDomain?.isLocked) ? true : Boolean(currentDomain?.isLocked),
 	);
-	const [errors, setErrors] = useState<Error[]>([]);
+	const [errors, setErrors] = useState<DomainSettingsError>({});
 	/* Switches */
 	const [mintRequestOn, setMintRequestOn] = useState<boolean>(false);
 	// Domain bidding

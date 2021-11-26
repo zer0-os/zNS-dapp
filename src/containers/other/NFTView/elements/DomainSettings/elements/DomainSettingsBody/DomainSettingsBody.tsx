@@ -10,7 +10,9 @@ import {
 import {
 	useDomainSettingsBodyData,
 	useDomainSettingsBodyHandlers,
+	useDomainSettingsBodyLifecycle,
 } from './hooks';
+import { ERROR_KEYS } from './DomainSettingsBody.constants';
 import './_domain-settings-body.scss';
 
 type DomainSettingsBodyProps = {
@@ -30,9 +32,16 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 	const handlers = useDomainSettingsBodyHandlers({
 		props: {
 			isLocked,
+			unavailableDomainNames,
 			onShowLockedWarning,
 		},
+		localState,
 		localActions,
+	});
+
+	useDomainSettingsBodyLifecycle({
+		localState,
+		handlers,
 	});
 
 	return (
@@ -57,15 +66,15 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 						topPlaceholder={'Title'}
 						onChange={localActions.setName}
 						text={localState.name || ''}
-						error={false}
-						errorText={'asdf'}
+						error={!!localState.errors[ERROR_KEYS.NAME]}
+						errorText={localState.errors[ERROR_KEYS.NAME]}
 					/>
 					<TextInputWithTopPlaceHolder
 						topPlaceholder={'Subdomain Name'}
 						onChange={localActions.setDomain}
 						text={localState.domain}
-						error={false}
-						errorText={'asdf'}
+						error={!!localState.errors[ERROR_KEYS.SUB_DOMAIN]}
+						errorText={localState.errors[ERROR_KEYS.SUB_DOMAIN]}
 					/>
 				</div>
 			</div>
@@ -76,8 +85,8 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 					topPlaceholder={'Story (400 characters max)'}
 					onChange={localActions.setStory}
 					text={localState.story || ''}
-					error={false}
-					errorText={'asdf'}
+					error={!!localState.errors[ERROR_KEYS.STORY]}
+					errorText={localState.errors[ERROR_KEYS.STORY]}
 				/>
 			</div>
 			<div className="domain-settings-body__footer">
@@ -128,8 +137,6 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 										placeholder="hh:mm:ss"
 										onChange={localActions.setBidExpireTime}
 										text={localState.bidExpireTime}
-										error={false}
-										errorText={'asdf'}
 									/>
 								</div>
 							</div>
@@ -150,8 +157,6 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 										placeholder="Mmm dd yyyy hh:mm:ss UTC"
 										onChange={localActions.setAuctionEndtime}
 										text={localState.auctionEndtime}
-										error={false}
-										errorText={'asdf'}
 									/>
 								</div>
 							</div>
@@ -162,8 +167,6 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 										placeholder=""
 										onChange={localActions.setAuctionMessage}
 										text={localState.auctionMessage}
-										error={false}
-										errorText={'asdf'}
 									/>
 								</div>
 							</div>
@@ -190,8 +193,6 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 								placeholder="1234 WILD"
 								onChange={localActions.setBuyNowPrice}
 								text={localState.buyNowPrice}
-								error={false}
-								errorText={'asdf'}
 							/>
 						</div>
 					)}
