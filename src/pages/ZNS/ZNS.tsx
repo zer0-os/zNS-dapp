@@ -553,9 +553,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 								</FutureButton>
 							)}
 							{!account && !localStorage.getItem('chosenWallet') && (
-								<FutureButton glow onClick={openWallet}>
-									Connect {pageWidth > 900 && 'Wallet'}
-								</FutureButton>
+								<>
+									<FutureButton glow onClick={openWallet}>
+										Connect {pageWidth > 900 && 'Wallet'}
+									</FutureButton>
+									<BuyTokenRedirect />
+								</>
 							)}
 							{account && !isSearchActive && (
 								<>
@@ -598,7 +601,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 									)}
 
 									{/* Buy token from external urls */}
-									<BuyTokenRedirect />
+									<BuyTokenRedirect walletConnected />
 
 									{/* Profile Button */}
 									<IconButton

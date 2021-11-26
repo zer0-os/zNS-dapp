@@ -13,10 +13,14 @@ import * as constants from './constants';
 //- Utils Imports
 import { UrlList, Size } from './utils';
 
-const BuyTokenRedirect = () => {
+//- Props
+interface IProps {
+	walletConnected?: boolean;
+}
+
+const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 	//- Wallet Data
 	const { wildPriceUsd } = useCurrency();
-
 	/////////////////////
 	// React Fragments //
 	/////////////////////
@@ -90,7 +94,12 @@ const BuyTokenRedirect = () => {
 		<>
 			<div className={styles.WildPriceContainer}>
 				{currentPriceDetails(Size.SML, constants.TICKER_NAME)}
-				<div className={styles.DropdownContentContainer}>
+
+				<div
+					className={`${styles.DropdownContentContainer} ${
+						walletConnected ? styles.WalletConnected : ''
+					}`}
+				>
 					<div
 						className={`${styles.DropdownContent} border-primary border-rounded blur`}
 					>

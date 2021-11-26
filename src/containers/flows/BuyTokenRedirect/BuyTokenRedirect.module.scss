@@ -73,9 +73,13 @@
 	display: none;
 	position: absolute;
 	top: 56%;
-	right: calc(0% - 138px);
+	right: calc(0% - 50px);
 	padding: 32px;
 	z-index: 1;
+}
+
+.WalletConnected {
+	right: calc(0% - 130px);
 }
 
 .DropdownContent {
