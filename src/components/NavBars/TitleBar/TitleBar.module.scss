@@ -187,15 +187,11 @@ header {
 }
 
 .Actions > *:not(:last-child) {
-	margin-right: 10px;
-}
-
-.Actions > *:not(:first-child) {
-	margin-left: 10px;
+	margin-right: 16px;
 }
 
 .Info {
-	margin-right: 24px;
+	margin-right: 16px;
 	font-weight: 700;
 	text-transform: uppercase;
 	flex-shrink: 0;
