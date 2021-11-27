@@ -1,6 +1,7 @@
 import { WheelQuantity } from 'containers/flows/MintWheels/types';
 import { BigNumber, ethers } from 'ethers';
 import { WhitelistSimpleSale } from 'types';
+import { RPC_URLS } from './connectors';
 import { Maybe } from './types';
 
 const whitelistUriKovan =
@@ -154,4 +155,12 @@ export const getMaxPurchasesPerUser = async (
 ): Promise<number> => {
 	const max = await contract.currentMaxPurchaseCount();
 	return max.toNumber();
+};
+
+export const getCurrentBlock = async () => {
+	const provider = new ethers.providers.JsonRpcProvider(RPC_URLS[1]);
+
+	const currentBlockNumber = await provider.getBlockNumber();
+	const currentBlock = await provider.getBlock(currentBlockNumber);
+	return currentBlock;
 };
