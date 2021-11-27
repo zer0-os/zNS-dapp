@@ -35,6 +35,8 @@ const WheelsRaffleContainer = () => {
 		currentTime >= RAFFLE_END_TIME,
 	);
 	const [hasSaleStarted, setHasSaleStarted] = useState<boolean>(false);
+	const [hasSaleCountDownEnded, setHasSaleCountDownEnded] =
+		useState<boolean>(false);
 
 	const isMobile =
 		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(
@@ -59,7 +61,8 @@ const WheelsRaffleContainer = () => {
 	};
 
 	const onFinishSaleStartCountdown = () => {
-		setHasSaleStarted(true);
+		setHasSaleCountDownEnded(true);
+		setHasSaleStarted(currentBlock >= SALE_START_BLOCK);
 	};
 
 	const handleResize = () => {
@@ -94,7 +97,7 @@ const WheelsRaffleContainer = () => {
 		const interval = setInterval(async () => {
 			const { number: block } = await getCurrentBlock();
 			setHasSaleStarted(
-				currentTime >= SALE_START_TIME && SALE_START_BLOCK >= block,
+				currentTime >= SALE_START_TIME && block >= SALE_START_BLOCK,
 			);
 			if (SALE_START_BLOCK >= block) {
 				clearInterval(interval);
@@ -114,14 +117,21 @@ const WheelsRaffleContainer = () => {
 			return (
 				<>
 					Whitelist sale starting in <b>{SALE_START_BLOCK - currentBlock}</b>{' '}
-					blocks (approximately{' '}
-					<b>
-						<Countdown
-							to={SALE_START_TIME}
-							onFinish={onFinishSaleStartCountdown}
-						/>
-					</b>
-					)
+					blocks{' '}
+					{!hasSaleCountDownEnded ? (
+						<>
+							(approximately{' '}
+							<b>
+								<Countdown
+									to={SALE_START_TIME}
+									onFinish={onFinishSaleStartCountdown}
+								/>
+							</b>
+							)
+						</>
+					) : (
+						<>(starting soon)</>
+					)}
 				</>
 			);
 		} else if (hasRaffleStarted) {
