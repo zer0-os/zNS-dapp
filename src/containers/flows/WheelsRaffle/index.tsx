@@ -4,6 +4,8 @@ import { MintWheelsBanner, Overlay, Countdown } from 'components';
 import { MintWheels } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
+import useAsyncEffect from 'use-async-effect';
+import { getCurrentBlock } from 'lib/wheelSale';
 
 const WheelsRaffleContainer = () => {
 	//////////////////
@@ -16,6 +18,7 @@ const WheelsRaffleContainer = () => {
 	const RAFFLE_START_TIME = currentTime + 10000;
 	const RAFFLE_END_TIME = currentTime + 20000;
 	const SALE_START_TIME = currentTime + 30000;
+	const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
 	// const RAFFLE_START_TIME = 1637870400000;
@@ -23,6 +26,7 @@ const WheelsRaffleContainer = () => {
 	// const SALE_START_TIME = 1638324000000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [currentBlock, setCurrentBlock] = useState<number>(0);
 
 	const [hasRaffleStarted, setHasRaffleStarted] = useState<boolean>(
 		currentTime >= RAFFLE_START_TIME,
@@ -30,9 +34,7 @@ const WheelsRaffleContainer = () => {
 	const [hasRaffleEnded, setHasRaffleEnded] = useState<boolean>(
 		currentTime >= RAFFLE_END_TIME,
 	);
-	const [hasSaleStarted, setHasSaleStarted] = useState<boolean>(
-		currentTime >= SALE_START_TIME,
-	);
+	const [hasSaleStarted, setHasSaleStarted] = useState<boolean>(false);
 
 	const isMobile =
 		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(
@@ -87,6 +89,22 @@ const WheelsRaffleContainer = () => {
 		};
 	}, []);
 
+	useAsyncEffect(() => {
+		// if (currentTime >= SALE_START_TIME) {
+		const interval = setInterval(async () => {
+			const { number: block } = await getCurrentBlock();
+			setHasSaleStarted(
+				currentTime >= SALE_START_TIME && SALE_START_BLOCK >= block,
+			);
+			if (SALE_START_BLOCK >= block) {
+				clearInterval(interval);
+			}
+			setCurrentBlock(block);
+		}, 13000);
+		return () => clearInterval(interval);
+		// }
+	}, []);
+
 	///////////////
 	// Fragments //
 	///////////////
@@ -95,13 +113,15 @@ const WheelsRaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Whitelist sale starting in{' '}
+					Whitelist sale starting in <b>{SALE_START_BLOCK - currentBlock}</b>{' '}
+					blocks (approximately{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
 							onFinish={onFinishSaleStartCountdown}
 						/>
 					</b>
+					)
 				</>
 			);
 		} else if (hasRaffleStarted) {
