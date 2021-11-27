@@ -63,7 +63,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 				onClick={props.onContinue}
 			>
-				Mint Your Wheels
+				Mint Your Cribs
 			</FutureButton>
 		);
 	};
@@ -89,8 +89,8 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						Each user may mint up to {props.maxPurchasesPerUser} Wheels. The
-						cost for each Wheels is <>{EthPerWheel} ETH</> plus GAS.
+						Each user may mint up to {props.maxPurchasesPerUser} Cribs. The cost
+						for each Crib is <>{EthPerWheel} WILD</> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -108,8 +108,8 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Wheels. The cost for each set of
-							Wheels is <b>{EthPerWheel} ETH</b> plus GAS.
+							{props.maxPurchasesPerUser} Cribs. The cost for each Crib is{' '}
+							<b>{EthPerWheel} WILD</b> plus GAS.
 						</p>
 						{mintButton()}
 					</>
@@ -119,7 +119,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p className={styles.Green}>
 							Congratulations, you have minted {props.numberPurchasedByUser}/
-							{props.maxPurchasesPerUser} of your Wheels.
+							{props.maxPurchasesPerUser} of your Cribs.
 						</p>
 						{dismissButton()}
 					</>
@@ -129,7 +129,7 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Wheels are only available to whitelisted supporters of
+						Currently, Cribs are only available to whitelisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
 						whitelist sale ends.
 					</p>
@@ -146,7 +146,8 @@ const Info = (props: InfoProps) => {
 	return (
 		<section className={styles.Container}>
 			{/* Wheels Image */}
-			<video
+			{/* Hiding the wheels video & images for Cribs Sale */}
+			{/* <video
 				autoPlay={true}
 				className={styles.Image}
 				loop={true}
@@ -174,14 +175,14 @@ const Info = (props: InfoProps) => {
 					}
 					type="video/ogg"
 				></source>
-			</video>
+			</video> */}
 
 			{/* Wheels Available */}
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
-					<span>Wheels Available</span>
-					<h2>{props.wheelsTotal - props.wheelsMinted} Wheels Remaining</h2>
-					<ArrowLink href="https://zine.wilderworld.com/wilder-wheels-community-whitelist-now-open/">
+					<span>Cribs Available</span>
+					<h2>{props.wheelsTotal - props.wheelsMinted} Cribs Remaining</h2>
+					<ArrowLink href="https://zine.wilderworld.com/introducing-wilder-cribs-a-place-to-call-home-in-the-metaverse/">
 						View Auction Rules
 					</ArrowLink>
 				</div>

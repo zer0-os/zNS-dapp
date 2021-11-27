@@ -13,14 +13,14 @@ const WheelsRaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	// const RAFFLE_START_TIME = 1637829566370;
-	// const RAFFLE_END_TIME = 1637829866370;
-	// const SALE_START_TIME = 1637831066370;
+	const RAFFLE_START_TIME = currentTime + 10000;
+	const RAFFLE_END_TIME = currentTime + 20000;
+	const SALE_START_TIME = currentTime + 30000;
 
 	// Hardcoded event times
-	const RAFFLE_START_TIME = 1637870400000;
-	const RAFFLE_END_TIME = 1638043200000;
-	const SALE_START_TIME = 1638324000000;
+	// const RAFFLE_START_TIME = 1637870400000;
+	// const RAFFLE_END_TIME = 1638043200000;
+	// const SALE_START_TIME = 1638324000000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -69,7 +69,7 @@ const WheelsRaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
+				'https://zine.wilderworld.com/introducing-wilder-cribs-a-place-to-call-home-in-the-metaverse/',
 				'_blank',
 			);
 		}

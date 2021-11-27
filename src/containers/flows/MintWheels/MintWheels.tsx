@@ -146,7 +146,7 @@ const MintWheels = (props: MintWheelsProps) => {
 			);
 		}
 		if (step === Step.CheckingBalance) {
-			return <Loading text={'Checking your ETH balance'} />;
+			return <Loading text={'Checking your WILD balance'} />;
 		}
 		if (step === Step.PendingWalletApproval) {
 			return <Loading isMinting text={transactionStatus} />;
@@ -167,15 +167,13 @@ const MintWheels = (props: MintWheelsProps) => {
 		<div className={`${styles.Container} border-primary border-rounded`}>
 			{/* Head section */}
 			<section className={styles.Header}>
-				<h1 className="glow-text-white">Mint Your Wheels</h1>
+				<h1 className="glow-text-white">Mint Your Cribs</h1>
 				<span className="glow-text-white">
 					Your Crib in the Metaverse awaits
 				</span>
 				<hr />
 			</section>
-			{props.dropStage === undefined && (
-				<Loading text={'Loading Wheels Drop'} />
-			)}
+			{props.dropStage === undefined && <Loading text={'Loading Cribs Drop'} />}
 			{getFlowSection()}
 		</div>
 	);

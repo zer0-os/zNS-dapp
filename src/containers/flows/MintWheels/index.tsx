@@ -70,7 +70,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted = true;
+	const isSaleHalted = false;
 
 	///////////////
 	// Functions //
@@ -98,7 +98,7 @@ const MintWheelsFlowContainer = () => {
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window
 				?.open(
-					'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
+					'https://zine.wilderworld.com/introducing-wilder-cribs-a-place-to-call-home-in-the-metaverse/',
 					'_blank',
 				)
 				?.focus();
