@@ -24,8 +24,8 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_WHITELIST = 1635458400000;
-	const DATE_PUBLIC = 1636063200000;
+	const DATE_WHITELIST = 1638324000000;
+	const DATE_PUBLIC = 1639324000000;
 
 	//////////////////
 	// State & Data //
@@ -70,7 +70,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted = true;
+	const isSaleHalted = false;
 
 	///////////////
 	// Functions //
@@ -98,7 +98,7 @@ const MintWheelsFlowContainer = () => {
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window
 				?.open(
-					'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
+					'https://zine.wilderworld.com/introducing-wilder-cribs-a-place-to-call-home-in-the-metaverse/',
 					'_blank',
 				)
 				?.focus();
