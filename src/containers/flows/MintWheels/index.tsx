@@ -18,8 +18,8 @@ import { useMintProvider } from 'lib/providers/MintProvider';
 import {
 	getDropData,
 	getUserEligibility,
-	getBalanceEth,
 	getNumberPurchasedByUser,
+	getERC20TokenBalance,
 } from './helpers';
 
 const MintWheelsFlowContainer = () => {
@@ -41,6 +41,7 @@ const MintWheelsFlowContainer = () => {
 	// Contracts
 	const contracts = useZnsContracts();
 	const saleContract = contracts?.wheelSale;
+	const wildTokenContract = contracts?.wildToken;
 
 	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
@@ -261,8 +262,8 @@ const MintWheelsFlowContainer = () => {
 			return;
 		}
 		// Get user data if wallet connected
-		if (account && library) {
-			getBalanceEth(library.getSigner()).then((d) => {
+		if (account && library && wildTokenContract) {
+			getERC20TokenBalance(wildTokenContract, account).then((d) => {
 				if (isMounted && d !== undefined) {
 					setBalanceEth(d);
 				}
