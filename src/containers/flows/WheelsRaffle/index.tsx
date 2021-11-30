@@ -93,8 +93,10 @@ const WheelsRaffleContainer = () => {
 		};
 	}, []);
 
-	useAsyncEffect(() => {
-		// if (currentTime >= SALE_START_TIME) {
+	useAsyncEffect(async () => {
+		const { number: block } = await getCurrentBlock();
+		setCurrentBlock(block);
+
 		const interval = setInterval(async () => {
 			const { number: block } = await getCurrentBlock();
 			setHasSaleStarted(
@@ -103,10 +105,8 @@ const WheelsRaffleContainer = () => {
 			if (SALE_START_BLOCK >= block) {
 				clearInterval(interval);
 			}
-			setCurrentBlock(block);
 		}, 13000);
 		return () => clearInterval(interval);
-		// }
 	}, []);
 
 	///////////////
@@ -117,7 +117,8 @@ const WheelsRaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Whitelist sale starting in <b>{SALE_START_BLOCK - currentBlock}</b>{' '}
+					Whitelist sale starting in{' '}
+					<b>{currentBlock > 0 ? SALE_START_BLOCK - currentBlock : '...'}</b>{' '}
 					blocks{' '}
 					{!hasSaleCountDownEnded ? (
 						<>
