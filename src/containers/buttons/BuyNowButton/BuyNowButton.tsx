@@ -6,6 +6,7 @@ import { FutureButton, Tooltip } from 'components';
 import { ConnectWalletPrompt } from 'containers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
 
 interface BuyNowButtonProps {
 	onClick: (event?: any) => void;
@@ -19,13 +20,13 @@ interface BuyNowButtonProps {
 	tooltip?: string;
 }
 
-interface ConditionalWrapper {
+interface ConditionalWrapperProps {
 	condition: boolean;
 	wrapper: (children: React.ReactElement) => JSX.Element;
 	children: React.ReactElement;
 }
 
-const ConditionalWrapper: React.FC<ConditionalWrapper> = ({
+const ConditionalWrapper: React.FC<ConditionalWrapperProps> = ({
 	condition,
 	wrapper,
 	children,
@@ -64,7 +65,17 @@ const BuyNowButton: React.FC<BuyNowButtonProps> = ({
 			)}
 			<ConditionalWrapper
 				condition={tooltip !== undefined}
-				wrapper={(children) => <Tooltip text={tooltip!}>{children}</Tooltip>}
+				wrapper={(children) => (
+					<Tooltip
+						text={
+							Intl.NumberFormat('en-US', {
+								minimumFractionDigits: 0,
+							}).format(Number(ethers.utils.formatEther(tooltip!))) + ' WILD'
+						}
+					>
+						{children}
+					</Tooltip>
+				)}
 			>
 				<FutureButton onClick={handleClick} {...rest} />
 			</ConditionalWrapper>
