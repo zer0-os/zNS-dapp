@@ -106,7 +106,7 @@ const MintWheelsFlowContainer = () => {
 				)
 				?.focus();
 		} else if (dropStage === Stage.Sold) {
-			history.push('wheels.genesis');
+			history.push('cribs.wiami.southbeach.qube');
 		} else {
 			setIsWizardOpen(true);
 		}
