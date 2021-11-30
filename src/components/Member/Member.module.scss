@@ -1,5 +1,11 @@
 .Member {
 	display: flex;
+
+	.SubText {
+		color: var(--color-grey-lighter-2);
+		font-size: 12px;
+		font-weight: 400;
+	}
 }
 
 .Image {

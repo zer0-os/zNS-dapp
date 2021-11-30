@@ -1,0 +1,141 @@
+.Container {
+	width: 640px;
+	padding: 40px;
+
+	color: white !important;
+	background: var(--background-blue-card-wilder);
+}
+
+.Header {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	width: 100%;
+	border-bottom: 1px solid #6e10bb;
+
+	h1 {
+		color: white;
+		font-size: 24px;
+		font-weight: 700;
+		margin-bottom: 10px;
+	}
+
+	h4 {
+		color: white;
+		font-size: 16px;
+		font-weight: 400;
+		margin-bottom: 18px;
+		text-align: center;
+	}
+
+	h2 {
+		font-size: 24px;
+		font-weight: 700;
+		line-height: 28px;
+	}
+}
+
+.Section {
+	margin-top: 40px;
+	margin-bottom: 56px;
+	display: flex;
+
+	& > div:nth-of-type(2) {
+		margin-left: 12px;
+	}
+}
+
+.NFT {
+	position: relative;
+	cursor: pointer;
+	min-height: 268px;
+	flex-basis: 0;
+	flex-grow: 1;
+	margin-right: 12px;
+	min-width: 268px;
+
+	background: rgba(255, 255, 255, 0.05);
+
+	width: 268px;
+
+	img {
+		border-radius: inherit;
+		height: 100%;
+		width: 100%;
+		transition: transform var(--animation-time-medium) ease-in-out;
+	}
+
+	&:hover img {
+		transform: scale(1.05);
+	}
+}
+
+.NFT .Details {
+	flex: 1;
+	margin-left: 12px;
+	width: 272px;
+}
+
+.Details {
+	display: flex;
+	flex-direction: column;
+	padding: 16px 0;
+	gap: 16px;
+
+	h2 {
+		font-size: 24px;
+		font-weight: 700;
+	}
+}
+
+.Domain {
+	font-size: 16px;
+	color: var(--color-accent-blue-100);
+	overflow-wrap: anywhere;
+	display: block;
+	margin-top: 4px;
+}
+
+.Price {
+	h3 {
+		color: var(--color-grey-lighter-2);
+		font-size: 12px;
+		font-weight: 400;
+	}
+
+	.Value {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+	}
+
+	h4 {
+		font-size: 16px;
+	}
+	span {
+		color: var(--color-grey-lighter-2);
+		font-size: 12px;
+		font-weight: 400;
+	}
+}
+
+.Error {
+	padding: 0;
+	font-size: 16px;
+	font-weight: 400 !important;
+	color: var(--color-primary-lighter-3);
+	text-align: center;
+}
+
+.Estimate {
+	text-align: center;
+	font-weight: 400;
+
+	span {
+		color: var(--color-grey-lighter-2);
+		font-size: 12px;
+	}
+
+	margin: 16px auto 0 auto;
+}

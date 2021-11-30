@@ -22,6 +22,7 @@ export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/Co
 
 // Flows
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
+export { default as MakeABuy } from './flows/MakeABuy/MakeABuy';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
 export { default as MintWheels } from './flows/MintWheels';
 export { default as TransferOwnership } from './flows/TransferOwnership';
