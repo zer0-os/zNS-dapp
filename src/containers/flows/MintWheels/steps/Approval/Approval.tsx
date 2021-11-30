@@ -17,6 +17,7 @@ type ApprovalProps = {
 	token: ERC20;
 	userId: string;
 	onApproval: () => void;
+	onCancel: () => void;
 	onError: (error: string) => void;
 };
 
@@ -25,6 +26,7 @@ const Approval: React.FC<ApprovalProps> = ({
 	token,
 	userId,
 	onApproval,
+	onCancel,
 	onError,
 }) => {
 	const [isCheckingApproval, setIsCheckingApproval] = useState(true);
@@ -100,7 +102,7 @@ const Approval: React.FC<ApprovalProps> = ({
 				</span>
 				{error !== undefined && <span className="error-text">{error}</span>}
 				<div className="option-buttons">
-					<FutureButton alt glow onClick={() => console.log('hello')}>
+					<FutureButton alt glow onClick={onCancel}>
 						Cancel
 					</FutureButton>
 					<FutureButton glow onClick={approve}>

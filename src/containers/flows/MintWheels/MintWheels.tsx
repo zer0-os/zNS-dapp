@@ -151,6 +151,7 @@ const MintWheels = (props: MintWheelsProps) => {
 					userId={props.userId!}
 					onApproval={() => submitTransaction(1)}
 					onError={onCheckApprovalError}
+					onCancel={props.onClose}
 				/>
 			);
 		}
