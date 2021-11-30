@@ -1,16 +1,32 @@
 // Component Imports
 import { FutureButton, Spinner } from 'components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { ERC20, WhitelistSimpleSale } from 'types';
+
+import {
+	getSaleContractApprovalStatus,
+	approveSaleContract,
+} from '../../helpers';
 
 // Style Imports
 import styles from './Approval.module.scss';
 
-const Approval = () => {
-	// Is Checking Approval
-	// Has Approved
-	// Is Approving
-	// Has Approval Failed
+type ApprovalProps = {
+	contract: WhitelistSimpleSale;
+	token: ERC20;
+	userId: string;
+	onApproval: () => void;
+	onError: (error: string) => void;
+};
 
+const Approval: React.FC<ApprovalProps> = ({
+	contract,
+	token,
+	userId,
+	onApproval,
+	onError,
+}) => {
 	const [isCheckingApproval, setIsCheckingApproval] = useState(true);
 	const [hasApproved, setHasApproved] = useState<boolean | undefined>(false);
 	const [isWaitingForConfirmation, setIsWaitingForConfirmation] =
@@ -18,6 +34,53 @@ const Approval = () => {
 	const [isApprovalInProgress, setIsApprovalInProgress] =
 		useState<boolean>(false);
 	const [error, setError] = useState<string | undefined>();
+
+	const checkContractApproval = () => {
+		return new Promise((resolve, reject) => {
+			getSaleContractApprovalStatus(userId, contract, token)
+				.then((isApproved) => resolve(isApproved))
+				.catch((e) => reject(e));
+		});
+	};
+
+	const approve = () => {
+		setIsWaitingForConfirmation(true);
+		approveSaleContract(contract, token)
+			.then(async (tx) => {
+				try {
+					setIsApprovalInProgress(true);
+					setIsWaitingForConfirmation(false);
+					await tx.wait();
+					setHasApproved(true);
+					onApproval();
+				} catch (e) {
+					setError(e.message);
+					setIsWaitingForConfirmation(false);
+					setIsApprovalInProgress(false);
+				}
+			})
+			.catch((e) => {
+				setError(e.message);
+				setIsWaitingForConfirmation(false);
+				setIsApprovalInProgress(false);
+			});
+	};
+
+	useEffect(() => {
+		// needs to sleep here for a couple seconds
+		checkContractApproval()
+			.then((isApproved) => {
+				if (isApproved) {
+					onApproval();
+				} else {
+					setIsCheckingApproval(false);
+					setHasApproved(false);
+				}
+			})
+			.catch((e) => {
+				onError(e.message);
+			});
+	}, []);
 
 	const checkingApproval = () => {
 		return (
@@ -40,7 +103,7 @@ const Approval = () => {
 					<FutureButton alt glow onClick={() => console.log('hello')}>
 						Cancel
 					</FutureButton>
-					<FutureButton glow onClick={() => console.log('hello')}>
+					<FutureButton glow onClick={approve}>
 						Continue
 					</FutureButton>
 				</div>

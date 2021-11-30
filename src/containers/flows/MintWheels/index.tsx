@@ -24,7 +24,9 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_WHITELIST = 1638324000000;
+	const currentDate = new Date().getTime();
+	const DATE_WHITELIST = currentDate + 10000;
+	// const DATE_WHITELIST = 1638324000000;
 	const DATE_PUBLIC = 1639324000000;
 
 	//////////////////
@@ -398,6 +400,7 @@ const MintWheelsFlowContainer = () => {
 				<Overlay open onClose={closeWizard}>
 					<MintWheels
 						balanceEth={balanceEth}
+						contract={saleContract}
 						dropStage={dropStage}
 						isUserWhitelisted={isUserWhitelisted}
 						maxPurchasesPerUser={maxPurchasesPerUser}
@@ -408,6 +411,7 @@ const MintWheelsFlowContainer = () => {
 						userId={account as string | undefined}
 						wheelsMinted={wheelsMinted}
 						wheelsTotal={wheelsTotal}
+						token={wildTokenContract}
 					/>
 				</Overlay>
 			)}

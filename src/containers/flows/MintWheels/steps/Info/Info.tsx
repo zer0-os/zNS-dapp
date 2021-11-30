@@ -12,6 +12,7 @@ import styles from './Info.module.scss';
 
 type InfoProps = {
 	dropStage: Stage;
+	errorMessage?: string;
 	isUserWhitelisted?: boolean;
 	isWalletConnected: boolean;
 	maxPurchasesPerUser?: number;
@@ -63,7 +64,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 				onClick={props.onContinue}
 			>
-				Mint Your Cribs
+				Mint Your Crib
 			</FutureButton>
 		);
 	};
@@ -111,6 +112,9 @@ const Info = (props: InfoProps) => {
 							{props.maxPurchasesPerUser} Cribs. The cost for each Crib is{' '}
 							<b>{EthPerWheel} WILD</b> plus GAS.
 						</p>
+						{props.errorMessage !== undefined && (
+							<p className="error-text text-center">{props.errorMessage}</p>
+						)}
 						{mintButton()}
 					</>
 				);

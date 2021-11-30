@@ -12,13 +12,13 @@ type LoadingProps = {
 const Loading = (props: LoadingProps) => {
 	return (
 		<section className={styles.Container}>
-			{/* {props.isMinting && (
+			{props.isMinting && (
 				<img
 					alt="loading spinner"
 					className={styles.Image}
-					src="https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_290,w_542/v1632961649/zns/minting-in-progress.gif"
+					src="https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_290,w_542/v1632961649/zns/cribs-mint-progress.gif"
 				/>
-			)} */}
+			)}
 			<span>{props.text}</span>
 			<Spinner />
 		</section>
