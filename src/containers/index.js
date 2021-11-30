@@ -11,6 +11,7 @@
 
 // Buttons
 export { default as BidButton } from './buttons/BidButton/BidButton';
+export { default as BuyNowButton } from './buttons/BuyNowButton/BuyNowButton';
 export { default as ConnectWalletButton } from './buttons/ConnectWalletButton/ConnectWalletButton';
 
 // Cards
