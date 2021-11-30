@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 // Step Imports
 import Loading from './steps/Loading/Loading';
 import Info from './steps/Info/Info';
+import Approval from './steps/Approval/Approval';
 import SelectAmount from './steps/SelectAmount/SelectAmount';
 import InsufficientFunds from './steps/InsufficientFunds/InsufficientFunds';
 import Finished from './steps/Finished/Finished';
@@ -131,6 +132,9 @@ const MintWheels = (props: MintWheelsProps) => {
 					wheelsTotal={props.wheelsTotal!}
 				/>
 			);
+		}
+		if (step === Step.Approval) {
+			return <Approval />;
 		}
 		if (step === Step.SelectAmount) {
 			return (
