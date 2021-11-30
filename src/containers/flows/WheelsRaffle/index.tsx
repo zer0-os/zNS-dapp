@@ -117,22 +117,13 @@ const WheelsRaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Whitelist sale starting in <b>{SALE_START_BLOCK - currentBlock}</b>{' '}
-					blocks{' '}
-					{!hasSaleCountDownEnded ? (
-						<>
-							(approximately{' '}
-							<b>
-								<Countdown
-									to={SALE_START_TIME}
-									onFinish={onFinishSaleStartCountdown}
-								/>
-							</b>
-							)
-						</>
-					) : (
-						<>(starting soon)</>
-					)}
+					Whitelist sale starting in{' '}
+					<b>
+						<Countdown
+							to={SALE_START_TIME}
+							onFinish={onFinishSaleStartCountdown}
+						/>
+					</b>
 				</>
 			);
 		} else if (hasRaffleStarted) {
