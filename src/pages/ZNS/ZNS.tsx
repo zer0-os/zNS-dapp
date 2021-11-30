@@ -620,9 +620,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 
 				{/* Temporarily removed Raffle */}
 				<WheelsRaffle />
-				<p>
-					The above banner is using a hardcoded 10 second timer - ignore block number
-				</p>
 
 				{!isNftView && (
 					<div
