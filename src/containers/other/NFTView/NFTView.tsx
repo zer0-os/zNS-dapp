@@ -17,7 +17,7 @@ import {
 	StatsWidget,
 	Tooltip,
 } from 'components';
-import { BidButton, BuyNowButton, MakeABid } from 'containers';
+import { BidButton, BuyNowButton, MakeABid, MakeABuy } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/random';
@@ -92,6 +92,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		'1000000000000000000000',
 	);
 	const [buyNowPriceUsd, setBuyNowPriceUsd] = useState<number | undefined>();
+	const [isBuyOverlayOpen, setIsBuyOverlayOpen] = useState(false);
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -219,7 +220,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		setIsBidOverlayOpen(true);
 	};
 
+	const openBuyOverlay = () => {
+		if (!isMounted.current) return;
+		if (!znsDomain.domain || isOwnedByYou || !active) return;
+		setIsBuyOverlayOpen(true);
+	};
+
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
+
+	const closeBuyOverlay = () => setIsBuyOverlayOpen(false);
 
 	const onBid = async () => {
 		// @todo switch this to live data
@@ -297,7 +306,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				Number(ethers.utils.formatEther(buyNowPrice)) * wildPriceUsd,
 			);
 		}
-	}, [highestBid, wildPriceUsd]);
+	}, [highestBid, wildPriceUsd, buyNowPrice]);
 
 	useEffect(() => {
 		isMounted.current = true;
@@ -436,11 +445,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const overlays = () => (
 		<>
-			{znsDomain.domain && (
-				<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
-					<MakeABid domain={znsDomain.domain} onBid={onBid} />
-				</Overlay>
-			)}
+			{znsDomain.domain &&
+				(isBidOverlayOpen ? (
+					<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
+						<MakeABid domain={znsDomain.domain} onBid={onBid} />
+					</Overlay>
+				) : (
+					<Overlay onClose={closeBuyOverlay} open={isBuyOverlayOpen}>
+						<MakeABuy domain={znsDomain.domain} />
+					</Overlay>
+				))}
 		</>
 	);
 
@@ -472,7 +486,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				{!isOwnedByYou && (
 					<BuyNowButton
 						glow={!isOwnedByYou && active}
-						onClick={openBidOverlay}
+						onClick={openBuyOverlay}
 						style={{ height: 36, borderRadius: 18 }}
 					>
 						Buy Now
