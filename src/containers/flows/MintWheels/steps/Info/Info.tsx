@@ -146,36 +146,35 @@ const Info = (props: InfoProps) => {
 	return (
 		<section className={styles.Container}>
 			{/* Wheels Image */}
-			{/* Hiding the wheels video & images for Cribs Sale */}
-			{/* <video
+			<video
 				autoPlay={true}
 				className={styles.Image}
 				loop={true}
 				playsInline
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1633058067/zns/cribs-mint-main.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/cribs-mint-main.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/cribs-mint-main.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/minting-wheels-audio.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/cribs-mint-main.ogv'
 					}
 					type="video/ogg"
 				></source>
-			</video> */}
+			</video>
 
 			{/* Wheels Available */}
 			{!isAuctionDataLoading && (
