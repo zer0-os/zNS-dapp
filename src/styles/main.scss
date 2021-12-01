@@ -363,6 +363,14 @@ button {
 	transition: opacity var(--animation-time-long) ease-in-out;
 }
 
+.option-buttons {
+	display: flex;
+
+	> *:not(:first-child) {
+		margin-left: 24px;
+	}
+}
+
 .content {
 	display: flex;
 	margin-left: 180px;
@@ -403,6 +411,14 @@ nav {
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+/Edge */
 	user-select: none; /* Standard */
+}
+
+.text-center {
+	text-align: center;
+}
+
+.error-text {
+	color: var(--color-error);
 }
 
 /*

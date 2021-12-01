@@ -17,7 +17,7 @@ const WheelsRaffleContainer = () => {
 	// Temporary values
 	// const RAFFLE_START_TIME = currentTime + 10000;
 	// const RAFFLE_END_TIME = currentTime + 20000;
-	// const SALE_START_TIME = currentTime + 30000;
+	// const SALE_START_TIME = currentTime + 10000;
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
@@ -93,8 +93,10 @@ const WheelsRaffleContainer = () => {
 		};
 	}, []);
 
-	useAsyncEffect(() => {
-		// if (currentTime >= SALE_START_TIME) {
+	useAsyncEffect(async () => {
+		const { number: block } = await getCurrentBlock();
+		setCurrentBlock(block);
+
 		const interval = setInterval(async () => {
 			const { number: block } = await getCurrentBlock();
 			setHasSaleStarted(
@@ -103,10 +105,8 @@ const WheelsRaffleContainer = () => {
 			if (SALE_START_BLOCK >= block) {
 				clearInterval(interval);
 			}
-			setCurrentBlock(block);
 		}, 13000);
 		return () => clearInterval(interval);
-		// }
 	}, []);
 
 	///////////////
@@ -201,7 +201,7 @@ const WheelsRaffleContainer = () => {
 	// Render //
 	////////////
 
-	if (!hasSaleStarted) {
+	if (!hasSaleCountDownEnded) {
 		return (
 			<>
 				{isModalOpen && overlay()}

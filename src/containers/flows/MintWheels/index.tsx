@@ -18,13 +18,12 @@ import { useMintProvider } from 'lib/providers/MintProvider';
 import {
 	getDropData,
 	getUserEligibility,
-	getBalanceEth,
 	getNumberPurchasedByUser,
+	getERC20TokenBalance,
 } from './helpers';
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_WHITELIST = 1638324000000;
 	const DATE_PUBLIC = 1639324000000;
 
 	//////////////////
@@ -41,6 +40,7 @@ const MintWheelsFlowContainer = () => {
 	// Contracts
 	const contracts = useZnsContracts();
 	const saleContract = contracts?.wheelSale;
+	const wildTokenContract = contracts?.wildToken;
 
 	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
@@ -103,7 +103,7 @@ const MintWheelsFlowContainer = () => {
 				)
 				?.focus();
 		} else if (dropStage === Stage.Sold) {
-			history.push('wheels.genesis');
+			history.push('cribs.wiami.southbeach.qube');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -204,7 +204,10 @@ const MintWheelsFlowContainer = () => {
 					}
 					const primaryData = d as DropData;
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(DATE_WHITELIST);
+						setCountdownDate(undefined);
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
 						setCountdownDate(DATE_PUBLIC);
 					} else {
@@ -261,8 +264,8 @@ const MintWheelsFlowContainer = () => {
 			return;
 		}
 		// Get user data if wallet connected
-		if (account && library) {
-			getBalanceEth(library.getSigner()).then((d) => {
+		if (account && library && wildTokenContract) {
+			getERC20TokenBalance(wildTokenContract, account).then((d) => {
 				if (isMounted && d !== undefined) {
 					setBalanceEth(d);
 				}
@@ -297,7 +300,10 @@ const MintWheelsFlowContainer = () => {
 				const primaryData = d as DropData;
 				if (dropStage !== undefined) {
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(DATE_WHITELIST);
+						setCountdownDate(undefined);
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
 						setCountdownDate(DATE_PUBLIC);
 					} else {
@@ -319,7 +325,7 @@ const MintWheelsFlowContainer = () => {
 				if (!failedToLoad) {
 					setTimeout(() => {
 						setRefetch(refetch + 1);
-					}, 5000);
+					}, 7000);
 				}
 				setFailedToLoad(true);
 			});
@@ -397,6 +403,7 @@ const MintWheelsFlowContainer = () => {
 				<Overlay open onClose={closeWizard}>
 					<MintWheels
 						balanceEth={balanceEth}
+						contract={saleContract}
 						dropStage={dropStage}
 						isUserWhitelisted={isUserWhitelisted}
 						maxPurchasesPerUser={maxPurchasesPerUser}
@@ -407,6 +414,7 @@ const MintWheelsFlowContainer = () => {
 						userId={account as string | undefined}
 						wheelsMinted={wheelsMinted}
 						wheelsTotal={wheelsTotal}
+						token={wildTokenContract}
 					/>
 				</Overlay>
 			)}
