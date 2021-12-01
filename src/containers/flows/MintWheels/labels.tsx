@@ -33,20 +33,11 @@ export const getBannerLabel = (
 	isFinished?: boolean,
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
-		if (isFinished) {
-			return (
-				<>Wilder Cribs whitelist release starting - you may need to refresh</>
-			);
-		} else {
-			return (
-				<>
-					Wilder Cribs available to whitelisted supporters in{' '}
-					{countdownDate && (
-						<Countdown to={countdownDate} onFinish={onFinish} />
-					)}
-				</>
-			);
-		}
+		return (
+			<>
+				Wilder Cribs whitelist release starting - waiting for contract to begin
+			</>
+		);
 	}
 	if (dropStage === Stage.Whitelist) {
 		if (isFinished) {

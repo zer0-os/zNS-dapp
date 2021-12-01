@@ -24,9 +24,6 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const currentDate = new Date().getTime();
-	const DATE_WHITELIST = currentDate + 10000;
-	// const DATE_WHITELIST = 1638324000000;
 	const DATE_PUBLIC = 1639324000000;
 
 	//////////////////
@@ -207,7 +204,10 @@ const MintWheelsFlowContainer = () => {
 					}
 					const primaryData = d as DropData;
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(DATE_WHITELIST);
+						setCountdownDate(undefined);
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
 						setCountdownDate(DATE_PUBLIC);
 					} else {
@@ -300,7 +300,10 @@ const MintWheelsFlowContainer = () => {
 				const primaryData = d as DropData;
 				if (dropStage !== undefined) {
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(DATE_WHITELIST);
+						setCountdownDate(undefined);
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
 						setCountdownDate(DATE_PUBLIC);
 					} else {
@@ -322,7 +325,7 @@ const MintWheelsFlowContainer = () => {
 				if (!failedToLoad) {
 					setTimeout(() => {
 						setRefetch(refetch + 1);
-					}, 5000);
+					}, 7000);
 				}
 				setFailedToLoad(true);
 			});
