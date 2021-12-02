@@ -74,7 +74,7 @@ export const getBannerLabel = (
 		if (countdownDate && isFinished) {
 			timer = (
 				<span style={{ display: 'inline-block', marginTop: 4 }}>
-					Public release starting now
+					Public release starting now - waiting for contract to begin
 				</span>
 			);
 		}
