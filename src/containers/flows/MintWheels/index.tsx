@@ -299,6 +299,12 @@ const MintWheelsFlowContainer = () => {
 				}
 				const primaryData = d as DropData;
 				if (dropStage !== undefined) {
+					if (hasCountdownFinished && primaryData.dropStage === dropStage) {
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
+						return;
+					}
 					if (primaryData.dropStage === Stage.Upcoming) {
 						setCountdownDate(undefined);
 						setTimeout(() => {
