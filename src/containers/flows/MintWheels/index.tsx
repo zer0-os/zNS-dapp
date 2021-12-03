@@ -89,7 +89,7 @@ const MintWheelsFlowContainer = () => {
 		if (isSaleHalted) {
 			window
 				?.open(
-					'https://zine.wilderworld.com/the-wilder-way-wheels-update/',
+					'https://discord.gg/mb9fcFey8a',
 					'_blank',
 				)
 				?.focus();
@@ -98,7 +98,7 @@ const MintWheelsFlowContainer = () => {
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window
 				?.open(
-					'https://zine.wilderworld.com/introducing-wilder-cribs-a-place-to-call-home-in-the-metaverse/',
+					'https://discord.gg/mb9fcFey8a',
 					'_blank',
 				)
 				?.focus();
