@@ -24,7 +24,7 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_PUBLIC = 1638496800000;
+	const DATE_PUBLIC = 1638666000000;
 
 	//////////////////
 	// State & Data //
@@ -70,7 +70,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted = true;
+	const isSaleHalted = false;
 
 	///////////////
 	// Functions //
@@ -87,21 +87,11 @@ const MintWheelsFlowContainer = () => {
 			return;
 		}
 		if (isSaleHalted) {
-			window
-				?.open(
-					'https://discord.gg/mb9fcFey8a',
-					'_blank',
-				)
-				?.focus();
+			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 			return;
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
-			window
-				?.open(
-					'https://discord.gg/mb9fcFey8a',
-					'_blank',
-				)
-				?.focus();
+			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold) {
 			history.push('cribs.wiami.southbeach.qube');
 		} else {
