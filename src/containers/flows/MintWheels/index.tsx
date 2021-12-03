@@ -70,7 +70,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted = false;
+	const isSaleHalted = true;
 
 	///////////////
 	// Functions //
@@ -364,19 +364,21 @@ const MintWheelsFlowContainer = () => {
 		if (isSaleHalted) {
 			return (
 				<>
-					<span>The Wilder Wheels Phase 1 and 2 sales are complete.</span>
+					<span>
+						Wilder Cribs sale has been temporarily paused to ensure a fair sale.
+					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
 							<a
-								href={'https://discord.gg/fqjKgFrX'}
+								href={'https://discord.gg/mb9fcFey8a'}
 								target={'_blank'}
 								rel={'noreferrer'}
 							>
 								Discord
 							</a>
 						</b>{' '}
-						for details on when the next sale will happen.
+						for more details.
 					</span>
 				</>
 			);
