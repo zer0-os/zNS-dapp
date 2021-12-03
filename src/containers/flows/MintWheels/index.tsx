@@ -371,7 +371,7 @@ const MintWheelsFlowContainer = () => {
 						Join our{' '}
 						<b>
 							<a
-								href={'https://discord.gg/fqjKgFrX'}
+								href={'https://discord.gg/mb9fcFey8a'}
 								target={'_blank'}
 								rel={'noreferrer'}
 							>
