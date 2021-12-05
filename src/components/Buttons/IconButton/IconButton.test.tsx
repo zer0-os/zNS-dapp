@@ -37,7 +37,6 @@ afterEach(() => {
 describe('IconButton component', () => {
 	it('Renders IconButton', () => {
 		const { getByTestId } = renderComponent();
-
 		const container = getByTestId(TEST_ID.CONTAINER);
 		expect(container).toBeInTheDocument();
 	});
@@ -53,13 +52,13 @@ describe('IconButton component', () => {
 		const container = getByTestId(TEST_ID.CONTAINER);
 		expect(container).toHaveClass('Disabled');
 	});
-	it('Button have classname coming through props', () => {
+	it('Button to have classname coming through props', () => {
 		const { getByTestId } = renderComponent({ className: 'ClassName-Prop' });
 		const container = getByTestId(TEST_ID.CONTAINER);
 		expect(container).toHaveClass('ClassName-Prop');
 	});
 
-	it('Has alt coming through props', () => {
+	it('Has alt from props alt', () => {
 		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { getByTestId } = renderComponent({ alt: 'alt-img' });
 		const imageEl = screen.getByAltText('alt-img');
