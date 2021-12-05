@@ -430,7 +430,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			{/* Overlays */}
 			<NotificationDrawer />
 			<ProfileModal />
-			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => { }}>
+			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
 			{modal === Modal.Wallet && (
@@ -503,7 +503,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					onSelect={() => {
 						history.push('/');
 					}}
-					filters={!isSearchActive ? ['Everything'] : []}
+					filters={[]}
 				>
 					<TitleBar
 						domain={domain}
@@ -583,7 +583,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={statusCount > 0}
 												number={statusCount}
-												onClick={() => { }}
+												onClick={() => {}}
 											/>
 										</TooltipLegacy>
 									) : null}
@@ -594,7 +594,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											<NumberButton
 												rotating={transferring.length > 0}
 												number={transferring.length}
-												onClick={() => { }}
+												onClick={() => {}}
 											/>
 										</TooltipLegacy>
 									)}
