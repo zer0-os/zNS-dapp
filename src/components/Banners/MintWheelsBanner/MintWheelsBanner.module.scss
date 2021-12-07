@@ -9,8 +9,8 @@
 	transition: filter var(--animation-time-medium) ease-in-out;
 	transition: transform var(--animation-time-medium) ease-in-out;
 
-	background: blue;
-
+	// need to get correct color
+	background: purple;
 	padding: 0;
 	text-align: left;
 }
@@ -138,7 +138,7 @@
 
 @media only screen and (min-width: 900px) {
 	.Background {
-		opacity: 1;
+		opacity: 0.8;
 		background-position: 70%;
 	}
 }
