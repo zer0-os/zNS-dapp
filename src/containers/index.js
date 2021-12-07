@@ -38,6 +38,7 @@ export { default as BidList } from './lists/BidList/BidList';
 
 // Other
 export { default as NFTView } from './other/NFTView/NFTView';
+export { default as PageHeader } from './other/PageHeader/PageHeader';
 export { default as Request } from './other/Request/Request';
 
 // Legacy

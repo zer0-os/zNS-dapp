@@ -41,7 +41,6 @@ export { default as EtherInput } from './Inputs/EtherInput/EtherInput';
 export { default as TextInput } from './Inputs/TextInput/TextInput';
 
 //- NavBars
-export { default as FilterBar } from './NavBars/FilterBar/FilterBar';
 export { default as TabBar } from './NavBars/TabBar/TabBar';
 export { default as TitleBar } from './NavBars/TitleBar/TitleBar';
 
@@ -72,6 +71,7 @@ export { default as Spinner } from './Spinner/Spinner';
 export { default as ToggleSection } from './ToggleSection/ToggleSection.js';
 export { default as TooltipLegacy } from './TooltipLegacy/Tooltip';
 export { default as Tooltip } from './Tooltip/Tooltip';
+export { default as WidlerIcon } from './WilderIcon/WilderIcon';
 export { default as ZNALink } from './ZNALink/ZNALink';
 export { default as Confirmation } from './Confirmation/Confirmation';
 export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator';

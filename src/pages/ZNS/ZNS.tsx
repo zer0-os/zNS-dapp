@@ -26,7 +26,6 @@ import userIcon from 'assets/user.svg';
 import {
 	ConnectToWallet,
 	FutureButton,
-	FilterBar,
 	TitleBar,
 	TooltipLegacy,
 	IconButton,
@@ -43,7 +42,7 @@ import {
 	SubdomainTable,
 	CurrentDomainPreview,
 	ProfileModal,
-	WheelsRaffle,
+	PageHeader,
 } from 'containers';
 
 //- Library Imports
@@ -489,22 +488,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				style={{
 					opacity: hasLoaded ? 1 : 0,
 					transition: 'opacity 0.2s ease-in-out',
-					paddingTop: 145,
+					paddingTop: 271,
 				}}
 			>
-				{/* Nav Bar */}
-				{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
-				<FilterBar
+				<PageHeader
 					style={
 						isSearchActive
 							? { zIndex: isSearchActive ? 100 : 10, background: 'none' }
 							: {}
 					}
-					onSelect={() => {
-						history.push('/');
-					}}
-					filters={[]}
 				>
+					{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
+					{/* Nav Bar */}
 					<TitleBar
 						domain={domain}
 						canGoBack={canGoBack}
@@ -616,9 +611,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							)}
 						</>
 					</TitleBar>
-				</FilterBar>
-
-				<WheelsRaffle />
+				</PageHeader>
 
 				{!isNftView && (
 					<div
