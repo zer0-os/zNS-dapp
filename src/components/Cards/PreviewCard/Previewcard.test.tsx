@@ -105,8 +105,7 @@ describe('preview card component', () => {
 	it('Does Render Children NFTMedia with image url', () => {
 		const image =
 			'https://res.cloudinary.com/fact0ry/image/upload/c_…ns/QmRLG913uKX7QxwSFMk1TMhtjxwy6kVek37HTcR7AtJUVf';
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { getByTestId } = renderComponent({
+		renderComponent({
 			image: image,
 		});
 		expect(mockChildComponentNFTMedia).toHaveBeenCalledWith(
@@ -120,8 +119,7 @@ describe('preview card component', () => {
 	});
 
 	it('Does Not Render </TextButton>', () => {
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const { getByTestId } = renderComponent({ mvpVersion: 0 });
+		renderComponent({ mvpVersion: 0 });
 		expect(mockChildComponentTextButton).not.toHaveBeenCalled();
 	});
 	it('Does render InfoContainer and have BUY as decendant', () => {
