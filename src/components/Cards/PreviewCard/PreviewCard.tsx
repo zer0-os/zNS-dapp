@@ -27,7 +27,7 @@ type PreviewCardProps = {
 	style?: React.CSSProperties;
 };
 
-export const TEST_ID_PARENT = {
+export const TEST_IDS = {
 	CONTAINER: 'preview-card-container',
 	BLOCKER: 'blocker',
 	LOADER: 'loader',
