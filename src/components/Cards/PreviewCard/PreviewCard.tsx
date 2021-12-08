@@ -131,7 +131,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	return (
 		<div
 			className={styles.PreviewCard}
-			style={style ? style : {}}
+			style={style || {}}
 			data-testid="preview-card-container"
 		>
 			{preventInteraction && (
