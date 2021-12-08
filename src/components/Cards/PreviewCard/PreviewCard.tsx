@@ -7,6 +7,7 @@ import styles from './PreviewCard.module.scss';
 //- Component Imports
 import { FutureButton, NFTMedia, TextButton } from 'components';
 import { Maybe } from 'lib/types';
+import { TEST_ID } from 'components/Buttons/FutureButton/FutureButton';
 
 type PreviewCardProps = {
 	preventInteraction?: boolean;
@@ -40,6 +41,7 @@ export const TEST_IDS = {
 	BODY_COMPONENT_TITLE: 'body-component-title',
 	BODY_COMPONENT_DESCRIPTION: 'body-component-description',
 	FUTURE_BUTTON_CONTAINER: 'buy-description-and-action',
+	NFT_MEDIA: 'nft_media',
 };
 
 const PreviewCard: React.FC<PreviewCardProps> = ({
@@ -159,6 +161,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 							className={`${styles.Image} img-border-rounded`}
 							alt="NFT Preview"
 							ipfsUrl={image}
+							data-testid={TEST_IDS.NFT_MEDIA}
 						/>
 					</div>
 					<div className={styles.InfoContainer} data-testid="info-container">

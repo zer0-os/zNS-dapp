@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import PreviewCard, { TEST_ID_PARENT } from './PreviewCard';
+import PreviewCard, { TEST_IDS } from './PreviewCard';
 
 const renderComponent = ({
 	preventInteraction = false,
@@ -55,50 +55,51 @@ jest.mock('../../Buttons/TextButton/TextButton', () => (props: any) => {
 describe('preview card component', () => {
 	it('Renders Component', () => {
 		const { getByTestId } = renderComponent();
-		const container = getByTestId(TEST_ID_PARENT.CONTAINER);
+		const container = getByTestId(TEST_IDS.CONTAINER);
 		expect(container).toBeInTheDocument();
 	});
 
 	it('Does render blocker', () => {
 		const { getByTestId } = renderComponent({ preventInteraction: true });
-		const bloker = getByTestId(TEST_ID_PARENT.BLOCKER);
+		const bloker = getByTestId(TEST_IDS.BLOCKER);
 		expect(bloker).toBeInTheDocument();
 	});
 
 	it('Does render loader', () => {
 		const { getByTestId } = renderComponent({ isLoading: true });
-		const loader = getByTestId(TEST_ID_PARENT.LOADER);
+		const loader = getByTestId(TEST_IDS.LOADER);
 		expect(loader).toBeInTheDocument();
 	});
 
 	it('Does render spinner', () => {
 		const { getByTestId } = renderComponent({ isLoading: true });
-		const spinner = getByTestId(TEST_ID_PARENT.SPINNER);
+		const spinner = getByTestId(TEST_IDS.SPINNER);
 		expect(spinner).toBeInTheDocument();
 	});
 
 	it('Does render preview image container', () => {
 		const { getByTestId } = renderComponent({ isLoading: false });
-		const previewImage = getByTestId(TEST_ID_PARENT.PREVIEW_IMAGE);
+		const previewImage = getByTestId(TEST_IDS.PREVIEW_IMAGE);
 		expect(previewImage).toBeInTheDocument();
 	});
 
 	it('Does have opacity style', () => {
 		const { getByTestId } = renderComponent({ isLoading: false });
-		const previewImage = getByTestId(TEST_ID_PARENT.PREVIEW_IMAGE);
+		const previewImage = getByTestId(TEST_IDS.PREVIEW_IMAGE);
 		expect(previewImage).toHaveStyle({ opacity: 1 });
 	});
 
 	it('Asset element Does have classname', () => {
 		const { getByTestId } = renderComponent({ mvpVersion: 3 });
-		const asset = getByTestId(TEST_ID_PARENT.ASSET);
+		const asset = getByTestId(TEST_IDS.ASSET);
 		expect(asset).toHaveClass('MVP3Asset');
 	});
 
-	it('Does Contain </NFTMEDIA>', () => {
+	it('Does Contain  child </NFTMEDIA>', () => {
 		const { getByTestId } = renderComponent();
-		const asset = getByTestId(TEST_ID_PARENT.ASSET);
+		const asset = getByTestId(TEST_IDS.ASSET);
 		expect(asset.childElementCount).toBe(1);
+		expect(mockChildComponentNFTMedia).toBeDefined();
 	});
 
 	it('Does Render Children NFTMedia with image url', () => {
@@ -125,22 +126,22 @@ describe('preview card component', () => {
 	});
 	it('Does render InfoContainer and have BUY as decendant', () => {
 		const { getByTestId } = renderComponent();
-		const infoContainer = getByTestId(TEST_ID_PARENT.INFO_CONTAINER);
-		const buyContainer = getByTestId(TEST_ID_PARENT.BUY_CONTAINER);
+		const infoContainer = getByTestId(TEST_IDS.INFO_CONTAINER);
+		const buyContainer = getByTestId(TEST_IDS.BUY_CONTAINER);
 		expect(infoContainer).toContainElement(buyContainer);
 	});
 
 	it('Does render InfoContainer and have BODY as decendant', () => {
 		const { getByTestId } = renderComponent();
-		const infoContainer = getByTestId(TEST_ID_PARENT.INFO_CONTAINER);
-		const bodyContainer = getByTestId(TEST_ID_PARENT.BODY_COMPONENT);
+		const infoContainer = getByTestId(TEST_IDS.INFO_CONTAINER);
+		const bodyContainer = getByTestId(TEST_IDS.BODY_COMPONENT);
 		expect(infoContainer).toContainElement(bodyContainer);
 	});
 
 	it('Body component title has name as value', () => {
 		const name = 'this is a test';
 		const { getByTestId } = renderComponent({ name: name });
-		const bodyContainerTitle = getByTestId(TEST_ID_PARENT.BODY_COMPONENT_TITLE);
+		const bodyContainerTitle = getByTestId(TEST_IDS.BODY_COMPONENT_TITLE);
 		expect(bodyContainerTitle).toHaveTextContent(name);
 	});
 
@@ -148,16 +149,14 @@ describe('preview card component', () => {
 		const description = 'this is a test';
 		const { getByTestId } = renderComponent({ description: description });
 		const bodyContainerDescription = getByTestId(
-			TEST_ID_PARENT.BODY_COMPONENT_DESCRIPTION,
+			TEST_IDS.BODY_COMPONENT_DESCRIPTION,
 		);
 		expect(bodyContainerDescription).toHaveTextContent(description);
 	});
 
 	it('Does render future button container', () => {
 		const { getByTestId } = renderComponent({ mvpVersion: 3 });
-		const futureButtonContainer = getByTestId(
-			TEST_ID_PARENT.FUTURE_BUTTON_CONTAINER,
-		);
+		const futureButtonContainer = getByTestId(TEST_IDS.FUTURE_BUTTON_CONTAINER);
 		expect(futureButtonContainer).toBeVisible();
 	});
 });
