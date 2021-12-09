@@ -220,20 +220,22 @@ const GenericTable = (props: any) => {
 						onChange={onSearchBarUpdate}
 						style={{ width: '100%', marginRight: 16 }}
 					/>
-					<div className={styles.Buttons}>
-						<IconButton
-							onClick={() => setIsGridView(false)}
-							toggled={!isGridView}
-							iconUri={list}
-							style={{ height: 32, width: 32 }}
-						/>
-						<IconButton
-							onClick={() => setIsGridView(true)}
-							toggled={isGridView}
-							iconUri={grid}
-							style={{ height: 32, width: 32 }}
-						/>
-					</div>
+					{props.gridComponent && props.rowComponent && (
+						<div className={styles.Buttons}>
+							<IconButton
+								onClick={() => setIsGridView(false)}
+								toggled={!isGridView}
+								iconUri={list}
+								style={{ height: 32, width: 32 }}
+							/>
+							<IconButton
+								onClick={() => setIsGridView(true)}
+								toggled={isGridView}
+								iconUri={grid}
+								style={{ height: 32, width: 32 }}
+							/>
+						</div>
+					)}
 				</div>
 				{!props.isLoading && (isGridView ? GridView : ListView)}
 				{props.isLoading && (
