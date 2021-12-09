@@ -237,10 +237,6 @@ h1 {
 	font-size: 22px;
 }
 
-th {
-	text-transform: uppercase;
-}
-
 hr.glow {
 	position: relative;
 	height: 1px;
@@ -419,6 +415,15 @@ nav {
 
 .error-text {
 	color: var(--color-error);
+}
+
+/*
+ *
+ * Backgrounds
+ *
+ */
+.background-primary {
+	background-color: var(--background-primary);
 }
 
 /*
