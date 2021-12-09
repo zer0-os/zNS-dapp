@@ -160,6 +160,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				rowComponent={SubdomainTableRow}
 				gridComponent={SubdomainTableCard}
 				infiniteScroll
+				isSearchable
 				isLoading={loading || areDomainMetricsLoading}
 				loadingText={'Loading Subdomains'}
 			/>

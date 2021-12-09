@@ -29,6 +29,9 @@ const GenericTable = (props: any) => {
 	const rawData = props.data;
 	const chunkSize = isGridView ? 6 : 12;
 
+	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
+	const shouldShowSearchBar = props.isSearchable;
+
 	// Handler for infinite scroll trigger
 	const {
 		ref,
@@ -214,29 +217,33 @@ const GenericTable = (props: any) => {
 	return (
 		<div className={styles.Container} style={props.style}>
 			<div ref={contentRef} className={styles.Content}>
-				<div className={styles.Controls}>
-					<SearchBar
-						placeholder="Search by domain name"
-						onChange={onSearchBarUpdate}
-						style={{ width: '100%', marginRight: 16 }}
-					/>
-					{props.gridComponent && props.rowComponent && (
-						<div className={styles.Buttons}>
-							<IconButton
-								onClick={() => setIsGridView(false)}
-								toggled={!isGridView}
-								iconUri={list}
-								style={{ height: 32, width: 32 }}
+				{(shouldShowSearchBar || shouldShowViewToggle) && (
+					<div className={styles.Controls}>
+						{shouldShowSearchBar && (
+							<SearchBar
+								placeholder="Search by domain name"
+								onChange={onSearchBarUpdate}
+								style={{ width: '100%', marginRight: 16 }}
 							/>
-							<IconButton
-								onClick={() => setIsGridView(true)}
-								toggled={isGridView}
-								iconUri={grid}
-								style={{ height: 32, width: 32 }}
-							/>
-						</div>
-					)}
-				</div>
+						)}
+						{shouldShowViewToggle && (
+							<div className={styles.Buttons}>
+								<IconButton
+									onClick={() => setIsGridView(false)}
+									toggled={!isGridView}
+									iconUri={list}
+									style={{ height: 32, width: 32 }}
+								/>
+								<IconButton
+									onClick={() => setIsGridView(true)}
+									toggled={isGridView}
+									iconUri={grid}
+									style={{ height: 32, width: 32 }}
+								/>
+							</div>
+						)}
+					</div>
+				)}
 				{!props.isLoading && (isGridView ? GridView : ListView)}
 				{props.isLoading && (
 					<div className={styles.Loading}>
