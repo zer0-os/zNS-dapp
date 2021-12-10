@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 
 import { TabBar } from 'components';
 
-import { StakePools } from 'containers/staking';
+import { Deposits, StakePools } from 'containers/staking';
 
 // Style Imports
 import styles from './StakingContainer.module.css';
@@ -19,13 +19,13 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	className,
 	style,
 }) => {
-	const [selectedTab, setSelectedTab] = useState<string>('Pools');
+	const [selectedTab, setSelectedTab] = useState<string>('Deposits');
 
 	const tab = useMemo(() => {
 		if (selectedTab === 'Pools') {
 			return <StakePools />;
 		} else {
-			return 'Dashboard';
+			return <Deposits />;
 		}
 	}, [selectedTab]);
 
