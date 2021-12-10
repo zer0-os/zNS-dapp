@@ -7,8 +7,12 @@
 	display: flex;
 }
 
-.Tab button {
+.Tab {
 	font-size: 18px;
+}
+
+.Tab button {
+	font-size: inherit;
 	font-weight: 700;
 	color: var(--color-grey-lighter-2);
 	background: none;

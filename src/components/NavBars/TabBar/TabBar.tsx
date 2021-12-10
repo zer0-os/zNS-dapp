@@ -6,19 +6,21 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './TabBar.module.scss';
 
 type TabBarProps = {
-	tabs: string[];
 	onSelect: (option: string) => void;
-	tabStyle?: React.CSSProperties;
-	sliderStyle?: React.CSSProperties;
 	selection?: string;
+	sliderStyle?: React.CSSProperties;
+	tabs: string[];
+	tabStyle?: React.CSSProperties;
+	underline?: boolean;
 };
 
 const TabBar: React.FC<TabBarProps> = ({
-	tabs,
 	onSelect,
-	tabStyle,
-	sliderStyle,
 	selection,
+	sliderStyle,
+	tabs,
+	tabStyle,
+	underline,
 }) => {
 	//////////////////
 	// State & Refs //
@@ -72,16 +74,20 @@ const TabBar: React.FC<TabBarProps> = ({
 					</li>
 				))}
 			</ul>
-			<div
-				ref={sliderRef}
-				style={{
-					...sliderStyle,
-					left: sliderX,
-					width: sliderWidth,
-				}}
-				className={styles.Slider}
-			></div>
-			<hr className="glow" />
+			{underline && (
+				<>
+					<div
+						ref={sliderRef}
+						style={{
+							...sliderStyle,
+							left: sliderX,
+							width: sliderWidth,
+						}}
+						className={styles.Slider}
+					></div>
+					<hr className="glow" />
+				</>
+			)}
 		</div>
 	);
 };
