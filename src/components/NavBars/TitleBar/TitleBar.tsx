@@ -18,6 +18,7 @@ import arrowBackIcon from 'assets/arrow-back.svg';
 import styles from './TitleBar.module.scss';
 
 type TitleBarProps = {
+	className?: string;
 	style?: React.CSSProperties;
 	children: React.ReactNode;
 	canGoBack: boolean;
@@ -30,6 +31,7 @@ type TitleBarProps = {
 };
 
 const TitleBar: React.FC<TitleBarProps> = ({
+	className,
 	style,
 	children,
 	canGoBack,
@@ -162,7 +164,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 			${styles.TitleBar}
 			${isSearchActive ? styles.Searching : ''}
 			${isSearchInputHovered ? styles.Hovered : ''}
-			border-primary`}
+			border-primary ${className ? className : ''}`}
 		>
 			<div className={styles.Bar}>
 				<div className={styles.Navigation}>

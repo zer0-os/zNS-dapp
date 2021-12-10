@@ -486,16 +486,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			{pageWidth > 1000 && modals()}
 			{/* ZNS Content */}
 			<div
-				className="page-spacing"
-				style={{
-					opacity: hasLoaded ? 1 : 0,
-					transition: 'opacity 0.2s ease-in-out',
-					paddingTop: 145,
-				}}
+				style={
+					{
+						// opacity: hasLoaded ? 1 : 0,
+						// transition: 'opacity 0.2s ease-in-out',
+						// paddingTop: 145,
+					}
+				}
 			>
 				{/* Nav Bar */}
 				{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
-				<FilterBar
+				{/* <FilterBar
 					style={
 						isSearchActive
 							? { zIndex: isSearchActive ? 100 : 10, background: 'none' }
@@ -559,7 +560,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							)}
 							{account && !isSearchActive && (
 								<>
-									{/* Mint button */}
 									{isOwnedByUser && (
 										<FutureButton
 											glow={account != null}
@@ -575,7 +575,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										</FutureButton>
 									)}
 
-									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
 										<TooltipLegacy
 											content={<MintPreview onOpenProfile={openProfile} />}
@@ -588,7 +587,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										</TooltipLegacy>
 									) : null}
 
-									{/* Transfer Progress button */}
 									{transferring.length > 0 && (
 										<TooltipLegacy content={<TransferPreview />}>
 											<NumberButton
@@ -599,14 +597,12 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										</TooltipLegacy>
 									)}
 
-									{/* Profile Button */}
 									<IconButton
 										onClick={openProfile}
 										style={{ height: 32, width: 32, borderRadius: '50%' }}
 										iconUri={userIcon}
 									/>
 
-									{/* TODO: Change the triple dot button to a component */}
 									<div className={styles.Dots} onClick={openWallet}>
 										<div></div>
 										<div></div>
@@ -616,7 +612,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							)}
 						</>
 					</TitleBar>
-				</FilterBar>
+				</FilterBar> */}
 
 				{/* Temporarily removed Raffle */}
 				<WheelsRaffle />

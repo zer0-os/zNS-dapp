@@ -33,6 +33,7 @@ import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import backgroundImage from 'assets/background.jpg';
 
 //- Page Imports
+import { Navigator } from 'containers';
 import { ZNS } from 'pages';
 import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
 import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
@@ -72,10 +73,7 @@ function App() {
 						return (
 							<>
 								<CurrentDomainProvider>
-									<ZNS
-										domain={location.pathname}
-										isNftView={location.search.includes('view=true')}
-									/>
+									<Navigator domain={location.pathname} />
 								</CurrentDomainProvider>
 							</>
 						);
