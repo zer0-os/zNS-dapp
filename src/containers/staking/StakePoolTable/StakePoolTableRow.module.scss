@@ -1,0 +1,15 @@
+.Right {
+	text-align: right;
+
+	& > * {
+		margin-left: auto;
+	}
+}
+
+.Left {
+	text-align: left;
+
+	& > * {
+		margin-right: auto;
+	}
+}
