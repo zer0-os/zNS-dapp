@@ -15,24 +15,6 @@
 	transform: translateY(0);
 }
 
-.BannerContainer {
-	position: fixed;
-	z-index: 3;
-	width: 1234px;
-}
-
-.ScrollDown {
-	top: 24px;
-	margin-top: 0px;
-	transition: opacity 0.4s ease-in-out, 0.4s ease-in-out;
-}
-
-.ScrollUp {
-	top: 95px;
-	margin-top: 14px;
-	transition: opacity 0.4s ease-in-out, 0.4s ease-in-out;
-}
-
 .Hidden {
 	opacity: 0;
 	transform: translateY(-100px);

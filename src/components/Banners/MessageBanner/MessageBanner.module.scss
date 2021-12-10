@@ -8,10 +8,11 @@
 	transition: box-shadow var(--animation-time-medium) ease-in-out;
 	transition: filter var(--animation-time-medium) ease-in-out;
 	transition: transform var(--animation-time-medium) ease-in-out;
-
-	background: var(--color-purple-lighter);
-	padding: 0;
-	text-align: left;
+	background: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 1) 20%,
+		rgba(82, 203, 255, 1) 100%
+	);
 }
 
 .Mobile {
@@ -25,64 +26,42 @@
 	transform: scale(1.01);
 }
 
-.Background {
-	display: flex;
-	min-width: 100%;
-	min-height: 100%;
-	right: -150px;
-
-	background-repeat: no-repeat;
-	background-size: contain;
-	background-position: 80%;
-
-	opacity: 0.5;
-	position: absolute;
-}
-
 .Content {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	position: relative;
+	justify-content: center;
+	align-items: center;
 	width: 100%;
-
-	padding: 26px 16px;
-
+	padding: 16px 0;
 	background: linear-gradient(
 		90deg,
-		rgba(0, 0, 0, 0.35) 0%,
-		rgba(0, 0, 0, 0) 51.04%
+		rgba(0, 0, 0, 0.4) 0%,
+		rgba(0, 0, 0, 0.45) 51.04%
 	);
-
-	position: relative;
 }
 
 .Content:hover {
 	cursor: pointer;
 }
 
-/* Text */
-.Title {
-	background: var(--color-cosmic-gradient);
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-
-	font-family: var(--font-family);
-	font-weight: 700;
-	font-size: 16px;
-	line-height: 24px;
-}
-
 .Label {
 	font-family: var(--font-family);
 	font-weight: 400;
-	font-size: 12px;
+	font-size: 16px;
+	margin-right: 8px;
 	padding-bottom: 0;
-	margin-top: 4px;
-
-	color: white;
+	color: rgba(255, 255, 255, 1);
 }
 
-/*Button*/
+.Countdown {
+	font-weight: 700;
+	font-size: 14px;
+	margin-right: 8px;
+	padding-bottom: 0;
+	color: rgba(255, 255, 255, 1);
+}
+
 .Button {
 	font-family: var(--font-family);
 	color: var(--color-accent-blue-100);
@@ -90,10 +69,9 @@
 	z-index: 2;
 	transition: text-shadow var(--animation-time-medium) ease-in-out;
 	padding-bottom: 0;
-	margin-top: 8px;
 
 	font-weight: 700;
-	font-size: 16px;
+	font-size: 14px;
 
 	display: flex;
 	align-items: center;
@@ -109,35 +87,21 @@
 	.Content {
 		display: flex;
 		flex-direction: row;
-		padding: 37px 40px;
-	}
-
-	.Title {
-		font-size: 18px;
-		line-height: 21px;
 	}
 
 	.Label {
-		font-size: 14px;
-		margin-top: 4px;
+		font-size: 16px;
+	}
+
+	.Countdown {
+		font-size: 16px;
 	}
 
 	.Button {
+		font-size: 16px;
 		top: 50px;
 		right: 40px;
 		bottom: auto;
 		left: auto;
-	}
-
-	.Background {
-		opacity: 0.6;
-		right: 0;
-	}
-}
-
-@media only screen and (min-width: 900px) {
-	.Background {
-		opacity: 0.7;
-		background-position: 70%;
 	}
 }

@@ -177,7 +177,7 @@ const WheelsRaffleContainer = () => {
 		return (
 			<>
 				{isModalOpen && overlay()}
-				<div style={{ position: 'relative', marginBottom: 16 }}>
+				<div>
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
