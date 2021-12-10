@@ -33,6 +33,9 @@ export { default as SubdomainTable } from './Tables/SubdomainTable/SubdomainTabl
 // Modals
 export { default as ProfileModal } from './modals/ProfileModal/ProfileModal';
 
+// Navigation
+export { default as Navigator } from './navigation/Navigator/Navigator';
+
 // Lists
 export { default as BidList } from './lists/BidList/BidList';
 
