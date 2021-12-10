@@ -386,6 +386,16 @@ button {
 	min-width: var(--width-min) !important;
 }
 
+.flex-split {
+	display: flex;
+	justify-content: space-between;
+}
+
+.flex-vertical-align {
+	display: flex;
+	align-items: center;
+}
+
 .page-spacing {
 	position: relative;
 	width: 100%;
