@@ -41,7 +41,11 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 			)}
 			style={style}
 		>
-			<TabBar tabs={['Pools', 'My Deposits']} onSelect={setSelectedTab} />
+			<TabBar
+				tabs={['Pools', 'My Deposits']}
+				tabStyle={{ fontSize: 24 }}
+				onSelect={setSelectedTab}
+			/>
 			{tab}
 		</div>
 	);
