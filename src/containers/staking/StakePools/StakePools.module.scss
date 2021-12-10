@@ -1,0 +1,12 @@
+.Stats {
+	display: flex;
+	margin-top: 24px;
+
+	> * {
+		flex: 1;
+
+		&:not(:last-child) {
+			margin-right: 16px;
+		}
+	}
+}
