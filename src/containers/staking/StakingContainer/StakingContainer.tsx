@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { TabBar } from 'components';
 
@@ -21,20 +21,29 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 }) => {
 	const [selectedTab, setSelectedTab] = useState<string>('Pools');
 
+	const tab = useMemo(() => {
+		if (selectedTab === 'Pools') {
+			return <StakePools />;
+		} else {
+			return 'Dashboard';
+		}
+	}, [selectedTab]);
+
 	return (
-		<main
+		<div
 			className={cx(
 				className,
+				styles.Container,
 				'main',
 				'background-primary',
 				'border-primary',
 				'border-rounded',
 			)}
-			style={{ ...style, marginTop: 32 }}
+			style={style}
 		>
-			<TabBar tabs={['Pools', 'My Dash']} onSelect={setSelectedTab} />
-			<StakePools />
-		</main>
+			<TabBar tabs={['Pools', 'My Deposits']} onSelect={setSelectedTab} />
+			{tab}
+		</div>
 	);
 };
 
