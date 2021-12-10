@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import { NFTMedia } from 'components';
+import { NFTMedia, Image } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
@@ -79,19 +79,24 @@ const Artwork: React.FC<ArtworkProps> = ({
 	}, [domain, metadataUrl]);
 
 	const artwork = React.useMemo(() => {
-		return (
-			<NFTMedia
-				disableLightbox
-				style={{
-					zIndex: 2,
-				}}
-				size="tiny"
-				className={`${styles.Image} border-rounded`}
-				alt="NFT Preview"
-				ipfsUrl={metadata?.image_full || metadata?.image || ''}
-			/>
-		);
-	}, [metadata]);
+		if (image) {
+			return <Image alt="pool icon" src={image} />;
+		}
+		if (metadata) {
+			return (
+				<NFTMedia
+					disableLightbox
+					style={{
+						zIndex: 2,
+					}}
+					size="tiny"
+					className={`${styles.Image} border-rounded`}
+					alt="NFT Preview"
+					ipfsUrl={metadata?.image_full || metadata?.image || ''}
+				/>
+			);
+		}
+	}, [image, metadata]);
 
 	return (
 		<>
