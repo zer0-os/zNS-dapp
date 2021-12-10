@@ -1,0 +1,31 @@
+.Header {
+	display: flex;
+	align-items: center;
+
+	h1 {
+		margin-left: 24px;
+		font-size: 36px;
+		font-weight: 700;
+	}
+
+	img {
+		border-radius: 50%;
+	}
+}
+
+.Stats {
+	display: flex;
+	margin-top: 16px;
+
+	&:first-of-type {
+		margin-top: 32px;
+	}
+
+	> * {
+		flex: 1;
+
+		&:not(:last-child) {
+			margin-right: 16px;
+		}
+	}
+}

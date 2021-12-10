@@ -6,3 +6,5 @@ export { default as DepositTable } from './DepositTable/DepositTable';
 
 export { default as StakePools } from './StakePools/StakePools';
 export { default as StakePoolTable } from './StakePoolTable/StakePoolTable';
+
+export { default as StakePool } from './StakePool/StakePool';
