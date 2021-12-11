@@ -8,3 +8,5 @@ export { default as StakePools } from './StakePools/StakePools';
 export { default as StakePoolTable } from './StakePoolTable/StakePoolTable';
 
 export { default as StakePool } from './StakePool/StakePool';
+
+export { default as StakeModule } from './StakeModule/StakeModule';
