@@ -18,13 +18,13 @@ export function useZnsSdk() {
 		switch (chainSelector.selectedChain) {
 			case 1: {
 				return zns.createInstance(
-					zns.configuration.mainnetConfiguration(web3Context.library),
+					zns.configurations.mainnetConfiguration(web3Context.library),
 				);
 			}
 
 			case 42: {
 				return zns.createInstance(
-					zns.configuration.kovanConfiguration(web3Context.library),
+					zns.configurations.kovanConfiguration(web3Context.library),
 				);
 			}
 
