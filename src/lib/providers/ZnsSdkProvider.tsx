@@ -6,8 +6,8 @@ import {
 	DomainMintEvent,
 	DomainSaleEvent,
 	DomainTransferEvent,
-} from '@zero-tech/zns-sdk';
-import { ethers } from 'ethers';
+} from '@zero-tech/zns-sdk/lib/types';
+import { ContractTransaction, ethers } from 'ethers';
 import React from 'react';
 import { useChainSelector } from './ChainSelectorProvider';
 
@@ -19,13 +19,13 @@ export function useZnsSdk() {
 		switch (chainSelector.selectedChain) {
 			case 1: {
 				return zns.createInstance(
-					zns.configurations.mainnetConfiguration(web3Context.library),
+					zns.configuration.mainnetConfiguration(web3Context.library),
 				);
 			}
 
 			case 42: {
 				return zns.createInstance(
-					zns.configurations.kovanConfiguration(web3Context.library),
+					zns.configuration.kovanConfiguration(web3Context.library),
 				);
 			}
 
@@ -105,7 +105,7 @@ export function useZnsSdk() {
 		signer: ethers.Signer,
 	) => {
 		try {
-			const data: DomainMetricsCollection = await instance?.lockDomainMetadata(
+			const data: ContractTransaction = await instance?.lockDomainMetadata(
 				domainId,
 				lockStatus,
 				signer,
@@ -123,7 +123,7 @@ export function useZnsSdk() {
 		signer: ethers.Signer,
 	) => {
 		try {
-			const data: DomainMetricsCollection = await instance?.setDomainMetadata(
+			const data: ContractTransaction = await instance?.setDomainMetadata(
 				domainId,
 				metadataUri,
 				signer,
@@ -141,7 +141,7 @@ export function useZnsSdk() {
 		signer: ethers.Signer,
 	) => {
 		try {
-			const data: DomainMetricsCollection = await instance?.setDomainMetadata(
+			const data: ContractTransaction = await instance?.setDomainMetadata(
 				domainId,
 				metadataUri,
 				signer,
