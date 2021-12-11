@@ -98,6 +98,60 @@ export function useZnsSdk() {
 		}
 	};
 
+	const lockDomainMetadata = async (
+		domainId: string,
+		lockStatus: boolean,
+		signer: ethers.Signer,
+	) => {
+		try {
+			const data: DomainMetricsCollection = await instance?.lockDomainMetadata(
+				domainId,
+				lockStatus,
+				signer,
+			);
+			return data;
+		} catch {
+			console.error('Failed to retrieve sale event data');
+			return;
+		}
+	};
+
+	const setDomainMetadata = async (
+		domainId: string,
+		metadataUri: string,
+		signer: ethers.Signer,
+	) => {
+		try {
+			const data: DomainMetricsCollection = await instance?.setDomainMetadata(
+				domainId,
+				metadataUri,
+				signer,
+			);
+			return data;
+		} catch {
+			console.error('Failed to retrieve sale event data');
+			return;
+		}
+	};
+
+	const setAndLockMetadata = async (
+		domainId: string,
+		metadataUri: string,
+		signer: ethers.Signer,
+	) => {
+		try {
+			const data: DomainMetricsCollection = await instance?.setDomainMetadata(
+				domainId,
+				metadataUri,
+				signer,
+			);
+			return data;
+		} catch {
+			console.error('Failed to retrieve sale event data');
+			return;
+		}
+	};
+
 	return {
 		instance,
 		getMintEvents,
@@ -105,5 +159,8 @@ export function useZnsSdk() {
 		getBids,
 		getSaleEvents,
 		getDomainMetrics,
+		lockDomainMetadata,
+		setDomainMetadata,
+		setAndLockMetadata,
 	};
 }
