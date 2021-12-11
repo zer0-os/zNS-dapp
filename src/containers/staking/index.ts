@@ -10,3 +10,5 @@ export { default as StakePoolTable } from './StakePoolTable/StakePoolTable';
 export { default as StakePool } from './StakePool/StakePool';
 
 export { default as StakeModule } from './StakeModule/StakeModule';
+
+export { default as StakeFlow } from './StakeFlow/StakeFlow';
