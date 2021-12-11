@@ -11,9 +11,9 @@ type FinishedProps = {
 const Finished = (props: FinishedProps) => {
 	return (
 		<section className={styles.Container}>
-			<span>Your Wheels were minted successfully!</span>
+			<span>Your Crib was minted successfully!</span>
 			<FutureButton glow onClick={props.onFinish}>
-				View My Wheels
+				View My Profile
 			</FutureButton>
 		</section>
 	);

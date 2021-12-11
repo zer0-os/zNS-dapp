@@ -18,7 +18,7 @@ export const getBannerButtonText = (
 		return 'Mint Now';
 	}
 	if (dropStage === Stage.Sold) {
-		return 'See Wheels';
+		return 'See Cribs';
 	}
 
 	return 'Learn More';
@@ -33,29 +33,20 @@ export const getBannerLabel = (
 	isFinished?: boolean,
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
-		if (isFinished) {
-			return (
-				<>Wilder Wheels whitelist release starting - you may need to refresh</>
-			);
-		} else {
-			return (
-				<>
-					Wilder Wheels available to whitelisted supporters in{' '}
-					{countdownDate && (
-						<Countdown to={countdownDate} onFinish={onFinish} />
-					)}
-				</>
-			);
-		}
+		return (
+			<>
+				Wilder Cribs whitelist release starting - waiting for contract to begin
+			</>
+		);
 	}
 	if (dropStage === Stage.Whitelist) {
 		if (isFinished) {
-			<>Wilder Wheels public release starting - you may need to refresh</>;
+			<>Wilder Cribs public release starting - you may need to refresh</>;
 		} else {
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<span>
-						Wilder Wheels now available for whitelisted supporters{' '}
+						Wilder Cribs now available for whitelisted supporters{' '}
 						{totalLabel(wheelsMinted!, wheelsTotal!)}
 					</span>
 					<span style={{ marginTop: 4 }}>
@@ -83,7 +74,7 @@ export const getBannerLabel = (
 		if (countdownDate && isFinished) {
 			timer = (
 				<span style={{ display: 'inline-block', marginTop: 4 }}>
-					Public release starting now
+					Public release starting now - waiting for contract to begin
 				</span>
 			);
 		}
@@ -91,7 +82,7 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					Wilder Wheels now available for whitelisted supporters{' '}
+					Wilder Cribs now available for whitelisted supporters{' '}
 					{totalLabel(wheelsMinted!, wheelsTotal!)}
 				</span>
 				{timer}
@@ -101,13 +92,13 @@ export const getBannerLabel = (
 	if (dropStage === Stage.Public) {
 		return (
 			<>
-				Minting is now open to everyone, act fast to secure your Wheels!{' '}
+				Minting is now open to everyone, act fast to secure your Cribs!{' '}
 				{totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);
 	}
 	if (dropStage === Stage.Sold) {
-		return <>All {wheelsTotal} Wheels have been minted</>;
+		return <>All {wheelsTotal} Cribs have been minted</>;
 	}
 	return <>Loading drop data...</>;
 };
