@@ -104,7 +104,7 @@ export function useZnsSdk() {
 		signer: ethers.Signer,
 	) => {
 		try {
-			const data: DomainMetricsCollection = await instance?.lockDomainMetadata(
+			const data: ContractTransaction = await instance?.lockDomainMetadata(
 				domainId,
 				lockStatus,
 				signer,
@@ -122,7 +122,7 @@ export function useZnsSdk() {
 		signer: ethers.Signer,
 	) => {
 		try {
-			const data: DomainMetricsCollection = await instance?.setDomainMetadata(
+			const data: ContractTransaction = await instance?.setDomainMetadata(
 				domainId,
 				metadataUri,
 				signer,
@@ -140,7 +140,7 @@ export function useZnsSdk() {
 		signer: ethers.Signer,
 	) => {
 		try {
-			const data: DomainMetricsCollection = await instance?.setDomainMetadata(
+			const data: ContractTransaction = await instance?.setDomainMetadata(
 				domainId,
 				metadataUri,
 				signer,
