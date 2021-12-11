@@ -1,10 +1,9 @@
 import * as wheels from 'lib/wheelSale';
 import { ethers } from 'ethers';
 import { Stage, WheelQuantity, DropData } from './types';
-import { WhitelistSimpleSale } from 'types';
+import { ERC20, WhitelistSimpleSale } from 'types';
 
-export const EthPerWheel = 0.738;
-export const saleHaltAmount = 3764;
+export const EthPerWheel = 501;
 
 export const getDropData = (
 	contract: WhitelistSimpleSale,
@@ -106,3 +105,17 @@ export const getBalanceEth = async (
 	const asString = ethers.utils.formatEther(ethBalance);
 	return Number(asString);
 };
+
+export const getERC20TokenBalance = async (
+	token: ERC20,
+	user: string,
+): Promise<number> => {
+	const balance = await token.balanceOf(user);
+	const asString = ethers.utils.formatEther(balance);
+	return Number(asString);
+};
+
+export const getSaleContractApprovalStatus =
+	wheels.getSaleContractApprovalStatus;
+
+export const approveSaleContract = wheels.approveSaleContract;
