@@ -14,8 +14,10 @@ import { Metadata } from 'lib/types';
 
 //- Style Imports
 import styles from './Artwork.module.scss';
+import classNames from 'classnames/bind';
 
 type ArtworkProps = {
+	circleIcon?: boolean;
 	domain: string;
 	disableInteraction?: boolean;
 	id: string;
@@ -26,7 +28,10 @@ type ArtworkProps = {
 	style?: React.CSSProperties;
 };
 
+const cx = classNames.bind(styles);
+
 const Artwork: React.FC<ArtworkProps> = ({
+	circleIcon,
 	domain,
 	disableInteraction,
 	id,
@@ -102,7 +107,13 @@ const Artwork: React.FC<ArtworkProps> = ({
 		<>
 			{/* TODO: Remove overlay from child */}
 			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
-				<div className={styles.Image}>{artwork}</div>
+				<div
+					className={cx(styles.Image, {
+						Circle: circleIcon,
+					})}
+				>
+					{artwork}
+				</div>
 				<div className={styles.Info}>
 					{shouldAnimate && (metadata?.title || name) && (
 						<Spring
