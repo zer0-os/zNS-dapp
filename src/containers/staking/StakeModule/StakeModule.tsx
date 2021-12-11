@@ -8,12 +8,14 @@ import { useState } from 'react';
 const cx = classNames.bind(styles);
 
 type StakeModuleProps = {
+	className?: string;
 	balance: number;
+	onStake: (amount: number) => void;
 	tokenName: string;
 };
 
-const StakeModule: React.FC<StakeModuleProps> = (props: StakeModuleProps) => {
-	const { balance, tokenName } = props;
+const StakeModule = (props: StakeModuleProps) => {
+	const { className, balance, onStake, tokenName } = props;
 
 	const [amountString, setAmountString] = useState<string | undefined>();
 
@@ -24,14 +26,14 @@ const StakeModule: React.FC<StakeModuleProps> = (props: StakeModuleProps) => {
 		setAmountString(input);
 	};
 
-	const onStake = () => {
+	const onStakeButton = () => {
 		if (canStakeSpecifiedAmount) {
-			// @todo implement parent onStake
+			onStake(Number(amountString));
 		}
 	};
 
 	return (
-		<div className={cx(styles.Container)}>
+		<div className={cx(styles.Container, className)}>
 			<div className={styles.Actions}>
 				<TextInput
 					text={amountString}
@@ -39,7 +41,7 @@ const StakeModule: React.FC<StakeModuleProps> = (props: StakeModuleProps) => {
 					placeholder="Amount"
 					onChange={onInput}
 				/>
-				<FutureButton glow={canStakeSpecifiedAmount} onClick={onStake}>
+				<FutureButton glow={canStakeSpecifiedAmount} onClick={onStakeButton}>
 					Stake
 				</FutureButton>
 			</div>
