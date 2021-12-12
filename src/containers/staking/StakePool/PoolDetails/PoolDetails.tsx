@@ -13,6 +13,7 @@ type PoolDetailsProps = {
 	icon: string;
 	isUserConnected: boolean;
 	name: string;
+	onStake: () => void;
 	peopleStaked?: number;
 	ticker: string;
 	tokenName: string;
@@ -28,6 +29,7 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 	icon,
 	isUserConnected,
 	name,
+	onStake,
 	peopleStaked,
 	ticker,
 	tokenName,
@@ -38,11 +40,15 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 		<section className={className}>
 			<div className={'flex-split flex-vertical-align'}>
 				<div className={styles.Header}>
-					<Image style={{ height: 80, width: 80 }} src={icon} />{' '}
+					<Image
+						className="border-rounded"
+						style={{ height: 80, width: 80 }}
+						src={icon}
+					/>{' '}
 					<h1 className={'glow-text-white'}>{name}</h1>
 				</div>
 				{isUserConnected ? (
-					<FutureButton glow onClick={() => {}}>
+					<FutureButton glow onClick={onStake}>
 						Stake
 					</FutureButton>
 				) : (
@@ -54,7 +60,7 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 				<StatsWidget
 					className="normalView"
 					fieldName={'Token'}
-					isLoading={false}
+					isLoading={tokenName === undefined || ticker === undefined}
 					title={`${tokenName} (${ticker})`}
 					subTitle={
 						<a

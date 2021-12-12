@@ -9,21 +9,30 @@ import styles from './Stake.module.scss';
 import backIcon from './assets/back.svg';
 import successIcon from './assets/success.svg';
 import errorIcon from './assets/error.svg';
+import { useStaking } from 'lib/providers/staking/StakingProvider';
 
 const cx = classNames.bind(styles);
 
-const Stake = () => {
-	const apy = 553215.5382915;
-	const totalValueLocked = 53253.5389215321;
-	const message = {
-		error: true,
-		content: <span>Failed to submit transaction</span>,
-	};
+type StakeProps = {
+	apy: number;
+	totalValueLocked: number;
+	message: { error?: boolean; content: string } | undefined;
+	poolIconUrl: string;
+	poolName: string;
+	poolDomain: string;
+	onBack: () => void;
+};
 
-	const onBack = () => {
-		// @todo wire up back button
-		console.log('back');
-	};
+const Stake = (props: StakeProps) => {
+	const {
+		apy,
+		totalValueLocked,
+		message,
+		poolIconUrl,
+		poolName,
+		poolDomain,
+		onBack,
+	} = props;
 
 	const onStake = (amount: number) => {
 		// @todo wire up stake flow
@@ -53,10 +62,9 @@ const Stake = () => {
 			<div className="flex-split flex-vertical-align">
 				<div>
 					<Artwork
-						circleIcon
-						domain={'hello'}
-						name={'Stake WILD'}
-						image={'https://picsum.photos/200/200'}
+						domain={poolDomain}
+						name={poolName}
+						image={poolIconUrl}
 						disableInteraction
 						id={'123'}
 						style={{ maxWidth: 200 }}

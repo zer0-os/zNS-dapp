@@ -3,6 +3,8 @@ import { StakePoolTable } from 'containers/staking';
 import { useEffect, useState } from 'react';
 import styles from './StakePools.module.scss';
 
+import { useStaking } from 'lib/providers/staking/StakingProvider';
+
 const StakePools = () => {
 	const [totalAmountStaked, setTotalAmountStaked] = useState<
 		number | undefined

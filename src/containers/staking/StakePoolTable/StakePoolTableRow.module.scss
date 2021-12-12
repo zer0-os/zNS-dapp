@@ -1,3 +1,25 @@
+.Row {
+	cursor: pointer;
+
+	&:hover {
+		background: var(--color-background-alt-50);
+	}
+
+	td {
+		&:first-of-type {
+			padding-left: 8px !important;
+			width: 40px;
+			text-align: center;
+		}
+
+		&:last-of-type {
+			display: flex;
+			justify-content: center;
+			padding-right: 0px !important;
+		}
+	}
+}
+
 .Right {
 	text-align: right;
 

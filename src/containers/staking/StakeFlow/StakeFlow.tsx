@@ -3,6 +3,8 @@ import { useMemo, useState } from 'react';
 import Stake from './steps/Stake/Stake';
 import Approve, { ApprovalStep } from './steps/Approve/Approve';
 
+import { useStaking } from 'lib/providers/staking/StakingProvider';
+
 import styles from './StakeFlow.module.scss';
 
 import classNames from 'classnames/bind';
@@ -14,13 +16,30 @@ enum Steps {
 
 const cx = classNames.bind(styles);
 
-const StakeFlow = () => {
+type StakeFlowProps = {
+	onClose: () => void;
+};
+
+const StakeFlow = (props: StakeFlowProps) => {
+	const { onClose } = props;
+	const { stakingOn } = useStaking();
+
 	const [step, setStep] = useState<Steps>(Steps.Stake);
 
 	const stepNode = useMemo(() => {
 		switch (step) {
 			case Steps.Stake:
-				return <Stake />;
+				return (
+					<Stake
+						apy={stakingOn.apy}
+						totalValueLocked={stakingOn.tvl}
+						message={undefined}
+						poolIconUrl={stakingOn.image}
+						poolName={stakingOn.name}
+						poolDomain={stakingOn.domain}
+						onBack={onClose}
+					/>
+				);
 			case Steps.Approve:
 				return <Approve step={ApprovalStep.Approving} />;
 			default:

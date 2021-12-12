@@ -1,9 +1,11 @@
 import { TitleBar, SideBar } from 'components';
+import Staking from 'dapps/Staking';
 import { ZNS } from 'pages';
 import React, { useEffect, useMemo, useState } from 'react';
 
 import styles from './Navigator.module.scss';
 import classNames from 'classnames/bind';
+import { StakingContainer } from 'containers/staking';
 
 type NavigatorProps = {
 	domain: string;
@@ -19,7 +21,7 @@ const cx = classNames.bind(styles);
 
 const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
 	const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
-	const [selectedApp, setSelectedApp] = useState<App>(App.Market);
+	const [selectedApp, setSelectedApp] = useState<App>(App.Staking);
 
 	// Hiding NavBar
 	const body = document.getElementsByTagName('body')[0];
@@ -48,7 +50,7 @@ const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
 			case App.Market:
 				return <ZNS domain={domain} />;
 			case App.Staking:
-				return <>Staking</>;
+				return <Staking />;
 		}
 	}, [selectedApp]);
 

@@ -28,7 +28,13 @@ export const TABLE_HEADERS = [
 		className: 'lastSale',
 	},
 	{
-		label: 'Total Rewards Issued (WILD)',
+		label: (
+			<span>
+				Total Rewards
+				<br />
+				Issued (WILD)
+			</span>
+		),
 		accessor: '',
 		className: '',
 	},

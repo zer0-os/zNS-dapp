@@ -2,11 +2,19 @@ import { FutureButton } from 'components';
 import { Artwork } from 'components';
 import styles from './StakePoolTableRow.module.scss';
 
+import { useStaking } from 'lib/providers/staking/StakingProvider';
+
 const StakePoolTableRow = (props: any) => {
+	const { openStakingModal } = useStaking();
+
 	const pool = props.data;
 
+	const onButtonClick = () => {
+		openStakingModal(pool.domain);
+	};
+
 	return (
-		<tr>
+		<tr className={styles.Row}>
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
@@ -27,7 +35,7 @@ const StakePoolTableRow = (props: any) => {
 				{pool.totalRewardsIssued.toLocaleString()}
 			</td>
 			<td>
-				<FutureButton glow onClick={() => {}}>
+				<FutureButton glow onClick={onButtonClick}>
 					Stake
 				</FutureButton>
 			</td>
