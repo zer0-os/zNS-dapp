@@ -12,10 +12,11 @@ type StakeModuleProps = {
 	balance: number;
 	onStake: (amount: number) => void;
 	tokenName: string;
+	isLoading?: boolean;
 };
 
 const StakeModule = (props: StakeModuleProps) => {
-	const { className, balance, onStake, tokenName } = props;
+	const { className, balance, onStake, tokenName, isLoading } = props;
 
 	const [amountString, setAmountString] = useState<string | undefined>();
 
@@ -40,8 +41,13 @@ const StakeModule = (props: StakeModuleProps) => {
 					numeric
 					placeholder="Amount"
 					onChange={onInput}
+					disabled={isLoading}
 				/>
-				<FutureButton glow={canStakeSpecifiedAmount} onClick={onStakeButton}>
+				<FutureButton
+					loading={isLoading}
+					glow={canStakeSpecifiedAmount}
+					onClick={onStakeButton}
+				>
 					Stake
 				</FutureButton>
 			</div>

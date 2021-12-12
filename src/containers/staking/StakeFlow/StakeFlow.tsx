@@ -26,6 +26,11 @@ const StakeFlow = (props: StakeFlowProps) => {
 
 	const [step, setStep] = useState<Steps>(Steps.Stake);
 
+	const onStake = (amount: number) => {
+		console.log(amount);
+		setStep(Steps.Approve);
+	};
+
 	const stepNode = useMemo(() => {
 		switch (step) {
 			case Steps.Stake:
@@ -38,6 +43,8 @@ const StakeFlow = (props: StakeFlowProps) => {
 						poolName={stakingOn.name}
 						poolDomain={stakingOn.domain}
 						onBack={onClose}
+						onStake={onStake}
+						isTransactionPending
 					/>
 				);
 			case Steps.Approve:

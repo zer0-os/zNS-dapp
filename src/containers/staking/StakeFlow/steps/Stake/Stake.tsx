@@ -21,6 +21,8 @@ type StakeProps = {
 	poolName: string;
 	poolDomain: string;
 	onBack: () => void;
+	onStake: (amount: number) => void;
+	isTransactionPending?: boolean;
 };
 
 const Stake = (props: StakeProps) => {
@@ -32,12 +34,9 @@ const Stake = (props: StakeProps) => {
 		poolName,
 		poolDomain,
 		onBack,
+		onStake,
+		isTransactionPending,
 	} = props;
-
-	const onStake = (amount: number) => {
-		// @todo wire up stake flow
-		console.log('staking', amount);
-	};
 
 	return (
 		<div className={styles.Container}>
@@ -93,6 +92,7 @@ const Stake = (props: StakeProps) => {
 				balance={10000}
 				onStake={onStake}
 				tokenName={'WILD'}
+				isLoading={isTransactionPending}
 			/>
 		</div>
 	);
