@@ -18,32 +18,12 @@ export const TABLE_HEADERS = [
 		className: '',
 	},
 	{
-		label: 'Your Stake',
+		label: 'Amount',
 		accessor: '',
 		className: '',
 	},
 	{
-		label: 'Your Rewards (WILD)',
-		accessor: '',
-		className: '',
-	},
-	{
-		label: 'Rewards Vested (WILD)',
-		accessor: '',
-		className: '',
-	},
-	{
-		label: '',
-		accessor: '',
-		className: '',
-	},
-	{
-		label: '',
-		accessor: '',
-		className: '',
-	},
-	{
-		label: '',
+		label: 'Lock Period',
 		accessor: '',
 		className: '',
 	},

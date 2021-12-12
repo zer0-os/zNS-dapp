@@ -1,9 +1,13 @@
-import { FutureButton } from 'components';
+import { OptionDropdown } from 'components';
 import { Artwork } from 'components';
 import styles from './DepositTableRow.module.scss';
 
 const StakePoolTableRow = (props: any) => {
 	const stake = props.data;
+
+	const onDropdownSelect = (selection: string) => {
+		console.log('selection');
+	};
 
 	return (
 		<tr>
@@ -24,23 +28,20 @@ const StakePoolTableRow = (props: any) => {
 			<td className={styles.Right}>
 				{stake.stakeAmount.toLocaleString()} {stake.token}
 			</td>
-			<td className={styles.Right}>{stake.stakeRewards.toLocaleString()}</td>
-			<td className={styles.Right}>
-				{stake.stakeRewardsVested.toLocaleString()}
-			</td>
+			<td className={styles.Right}>@todo</td>
 			<td>
-				<FutureButton style={{ width: 113 }} glow onClick={() => {}}>
-					Unstake
-				</FutureButton>
-			</td>
-			<td>
-				<FutureButton
-					style={{ width: 92 }}
-					glow={stake.stakeRewardsVested > 0}
-					onClick={() => {}}
+				<OptionDropdown
+					onSelect={onDropdownSelect}
+					options={['Unstake Deposit', 'Claim Rewards', 'Stake In Pool']}
+					disableSelection
+					drawerStyle={{ width: 222 }}
 				>
-					Claim
-				</FutureButton>
+					<button className={styles.Dots} onClick={() => {}}>
+						<div></div>
+						<div></div>
+						<div></div>
+					</button>
+				</OptionDropdown>
 			</td>
 		</tr>
 	);
