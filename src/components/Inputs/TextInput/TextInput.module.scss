@@ -8,6 +8,11 @@
 
 	background: none;
 	transition: border var(--animation-time-medium) ease-in-out;
+
+	&:disabled {
+		border-color: var(--color-grey);
+		color: var(--color-grey);
+	}
 }
 
 .Error {
