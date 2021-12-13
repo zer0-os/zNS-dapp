@@ -1,6 +1,8 @@
-import { FutureButton, Spinner } from 'components';
+import { FutureButton, LoadingIndicator, Spinner } from 'components';
 
 import styles from './Approve.module.scss';
+
+import { Loading } from '../../../';
 
 export enum ApprovalStep {
 	Prompt,
@@ -38,26 +40,30 @@ const Approve = (props: ApproveProps) => {
 			);
 		} else if (step === ApprovalStep.WaitingForWallet) {
 			return (
-				<>
-					<p>
-						Before you can stake in this pool, your wallet needs to approve pool
-						spending. You will only need to do this once per pool. This will
-						cost gas.
-					</p>
-					<p>Please accept in your wallet...</p>
-					<Spinner />
-				</>
+				<LoadingIndicator
+					text={
+						<>
+							<p>
+								Before you can stake in this pool, your wallet needs to approve
+								pool spending. You will only need to do this once per pool. This
+								will cost gas.
+							</p>
+							<p>Please accept in your wallet...</p>
+						</>
+					}
+				/>
 			);
 		} else if (step === ApprovalStep.Approving) {
 			return (
-				<>
-					<p>
-						Approving pool spending... This may take up to 20 mins. This
-						transaction must finish before you can continue to stake in this
-						pool.
-					</p>
-					<Spinner />
-				</>
+				<LoadingIndicator
+					text={
+						<p>
+							Approving pool spending... This may take up to 20 mins. This
+							transaction must finish before you can continue to stake in this
+							pool.
+						</p>
+					}
+				/>
 			);
 		}
 	};
