@@ -10,25 +10,26 @@ const StakePoolTableRow = (props: any) => {
 	};
 
 	return (
-		<tr>
+		<tr className={styles.Row}>
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
-					domain={stake.domain}
-					name={stake.name}
-					image={stake.image}
+					disableAnimation
+					domain={stake?.pool.domain}
+					name={stake?.pool.name}
+					image={stake?.pool.image}
 					disableInteraction
-					id={stake.id}
+					id={stake?.pool.id}
 					style={{ maxWidth: 200 }}
 				/>
 			</td>
 			<td className={styles.Right}>
-				{stake.dateStaked.toLocaleString().split(',')[0]}
+				{stake?.dateStaked.toLocaleString().split(',')[0]}
 			</td>
 			<td className={styles.Right}>
-				{stake.stakeAmount.toLocaleString()} {stake.token}
+				{stake?.stakeAmount.toLocaleString()} {stake?.pool.token}
 			</td>
-			<td className={styles.Right}>@todo</td>
+			<td className={styles.Right}>365 Days</td>
 			<td>
 				<OptionDropdown
 					onSelect={onDropdownSelect}

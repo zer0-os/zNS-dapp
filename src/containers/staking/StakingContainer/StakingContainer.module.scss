@@ -7,4 +7,25 @@
 			margin-top: 24px;
 		}
 	}
+
+	.Links > a {
+		color: var(--color-grey-lighter-2);
+		font-size: 32px;
+		font-weight: 700;
+
+		transition: color var(--animation-time-short) ease-in-out;
+
+		&:not(:first-of-type) {
+			margin-left: 40px;
+		}
+
+		&.Active {
+			color: var(--color-text-primary);
+			text-shadow: var(--glow-text-white) !important;
+		}
+
+		&:hover {
+			text-shadow: none;
+		}
+	}
 }

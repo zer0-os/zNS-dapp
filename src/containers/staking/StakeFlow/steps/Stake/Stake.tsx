@@ -62,6 +62,7 @@ const Stake = (props: StakeProps) => {
 				<div>
 					<Artwork
 						domain={poolDomain}
+						disableAnimation
 						name={poolName}
 						image={poolIconUrl}
 						disableInteraction

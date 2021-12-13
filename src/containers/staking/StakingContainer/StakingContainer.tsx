@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { Overlay, TabBar } from 'components';
 
@@ -9,6 +9,14 @@ import { useStaking } from 'lib/providers/staking/StakingProvider';
 // Style Imports
 import styles from './StakingContainer.module.scss';
 import classNames from 'classnames/bind';
+import {
+	useLocation,
+	BrowserRouter,
+	Link,
+	Redirect,
+	Route,
+	Switch,
+} from 'react-router-dom';
 
 type StakingContainerProps = {
 	className?: string;
@@ -27,16 +35,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	// - Opening StakeFlow modal for a specified pool
 
 	const { stakingOn, closeStakingModal } = useStaking();
-
-	const [selectedTab, setSelectedTab] = useState<string>('Pools');
-
-	const tab = useMemo(() => {
-		if (selectedTab === 'Pools') {
-			return <StakePools />;
-		} else {
-			return <Deposits />;
-		}
-	}, [selectedTab]);
+	const { pathname } = useLocation();
 
 	return (
 		<>
@@ -47,25 +46,44 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 			>
 				<StakeFlow onClose={closeStakingModal} />
 			</Overlay>
-			<StakePool domain={'stakewild'} />
-			<div
-				className={cx(
-					className,
-					styles.Container,
-					'main',
-					'background-primary',
-					'border-primary',
-					'border-rounded',
-				)}
-				style={style}
-			>
-				<TabBar
-					tabs={['Pools', 'My Deposits']}
-					tabStyle={{ fontSize: 24 }}
-					onSelect={setSelectedTab}
+			<Switch>
+				<Route
+					path="/pools/:pool"
+					component={(params: any) => (
+						<StakePool domain={params.match.params.pool} />
+					)}
 				/>
-				{tab}
-			</div>
+				<div
+					className={cx(
+						className,
+						styles.Container,
+						'main',
+						'background-primary',
+						'border-primary',
+						'border-rounded',
+					)}
+					style={style}
+				>
+					<nav className={styles.Links}>
+						<Link
+							className={cx({ Active: pathname.startsWith('/pools') })}
+							to={'/pools'}
+						>
+							Pools
+						</Link>
+						<Link
+							className={cx({ Active: pathname.startsWith('/deposits') })}
+							to={'/deposits'}
+						>
+							My Deposits
+						</Link>
+					</nav>
+					<Route exact path="/deposits" component={Deposits} />
+					<Route exact path="/pools" component={StakePools} />
+					<Redirect to={'/pools'} />
+				</div>
+				<Redirect to={'/pools'} />
+			</Switch>
 		</>
 	);
 };

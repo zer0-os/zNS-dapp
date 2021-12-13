@@ -88,7 +88,8 @@ const StakePool = (props: StakePoolProps) => {
 								{historyTypeToString(item.type)}
 								{item.amount !== undefined && item.amount > 0 && (
 									<b>
-										{item.amount} {pool?.token}
+										{item.amount}{' '}
+										{item.type === HistoryItem.Claim ? 'WILD' : pool?.token}
 									</b>
 								)}
 							</div>
