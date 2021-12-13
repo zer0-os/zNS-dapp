@@ -19,6 +19,7 @@ import classNames from 'classnames/bind';
 type ArtworkProps = {
 	circleIcon?: boolean;
 	domain: string;
+	disableAnimation?: boolean;
 	disableInteraction?: boolean;
 	id: string;
 	image?: string;
@@ -33,6 +34,7 @@ const cx = classNames.bind(styles);
 const Artwork: React.FC<ArtworkProps> = ({
 	circleIcon,
 	domain,
+	disableAnimation,
 	disableInteraction,
 	id,
 	image,
@@ -117,7 +119,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 				<div className={styles.Info}>
 					{shouldAnimate && (metadata?.title || name) && (
 						<Spring
-							from={{ maxHeight: 0, opacity: 0 }}
+							from={{
+								maxHeight: disableAnimation ? 18 : 0,
+								opacity: disableAnimation ? 1 : 0,
+							}}
 							to={{ maxHeight: 18, opacity: 1 }}
 						>
 							{(animatedStyles) => (
