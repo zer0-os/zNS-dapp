@@ -7,7 +7,7 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
 type GenericTableHeader = {
-	label: string;
+	label: string | React.ReactNode;
 	accessor?: string;
 	className?: string;
 };
