@@ -29,7 +29,7 @@ const StakePoolTableRow = (props: any) => {
 			<td className={styles.Right}>
 				{stake?.stakeAmount.toLocaleString()} {stake?.pool.token}
 			</td>
-			<td className={styles.Right}>365 Days</td>
+			<td className={styles.Right}>None (Flexible)</td>
 			<td>
 				<OptionDropdown
 					onSelect={onDropdownSelect}
