@@ -1,8 +1,6 @@
-import { FutureButton, LoadingIndicator, Spinner } from 'components';
+import { FutureButton, LoadingIndicator } from 'components';
 
 import styles from './Approve.module.scss';
-
-import { Loading } from '../../../';
 
 export enum ApprovalStep {
 	Prompt,

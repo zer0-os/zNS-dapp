@@ -1,14 +1,8 @@
 import { StakeModule } from 'containers/staking';
 
-import classNames from 'classnames/bind';
-
-import { PoolData, Message } from '../../../';
+import { PoolData, Message, Back } from '../../../';
 
 import styles from './Stake.module.scss';
-
-import backIcon from './assets/back.svg';
-
-const cx = classNames.bind(styles);
 
 type StakeProps = {
 	apy: number;
@@ -37,12 +31,7 @@ const Stake = (props: StakeProps) => {
 
 	return (
 		<div className={styles.Container}>
-			<button
-				className={cx(styles.Back, 'flex-vertical-align')}
-				onClick={onBack}
-			>
-				<img src={backIcon} alt="back" /> All Pools
-			</button>
+			<Back onBack={onBack} text={'All Pools'} />
 			{message && <Message message={message.content} error={message.error} />}
 			<PoolData
 				domain={poolDomain}
