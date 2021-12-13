@@ -83,7 +83,7 @@
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "npm run generate-meta-tag && react-scripts build",
-		"test": "react-scripts test",
+		"test:watch": "react-scripts test",
 		"testci": "react-scripts test --coverage",
 		"eject": "react-scripts eject",
 		"typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
