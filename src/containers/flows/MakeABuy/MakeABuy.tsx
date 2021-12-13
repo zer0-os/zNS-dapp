@@ -15,7 +15,14 @@ import { ERC20 } from 'types';
 import { useBidProvider } from 'lib/providers/BidProvider';
 
 //- Component Imports
-import { FutureButton, Member, LoadingIndicator, NFTMedia } from 'components';
+import {
+	FutureButton,
+	Member,
+	LoadingIndicator,
+	NFTMedia,
+	WalletInteraction,
+	Tooltip,
+} from 'components';
 
 //- Style Imports
 import styles from './MakeABuy.module.scss';
@@ -31,6 +38,9 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 	///////////
 	// State //
 	///////////
+
+	const [ShowWalletInteraction, setShowWalletInteraction] = useState(false);
+	const [ShowProccesing, setShowProccesing] = useState(false);
 
 	const [buyNowPrice, setBuyNowPrice] = useState<string>(
 		'1000000000000000000000',
@@ -309,10 +319,47 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 		);
 	};
 
+	const proccessing = () => {
+		return (
+			<div className={styles.Processing}>
+				<h2 className={styles.Header}>
+					Buy Now
+					<div className={styles.infoButton}>
+						<Tooltip text="This is a long info message">
+							<div>
+								<svg
+									width="6"
+									height="9"
+									viewBox="0 0 6 9"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M2.25169 6.45316H3.27209V6.40153C3.28909 5.33461 3.5612 4.86998 4.30949 4.39675C5.05779 3.93642 5.49996 3.2739 5.49996 2.32314C5.49996 0.98088 4.53058 0 3.03399 0C1.65645 0 0.563775 0.860421 0.5 2.32314H1.57142C1.6352 1.30784 2.33672 0.894837 3.03399 0.894837C3.83331 0.894837 4.47956 1.4283 4.47956 2.27151C4.47956 2.95555 4.09266 3.44598 3.59521 3.75143C2.76189 4.26338 2.26444 4.76243 2.25169 6.40153V6.45316ZM2.7959 9C3.21682 9 3.5612 8.65153 3.5612 8.22562C3.5612 7.79971 3.21682 7.45124 2.7959 7.45124C2.37499 7.45124 2.0306 7.79971 2.0306 8.22562C2.0306 8.65153 2.37499 9 2.7959 9Z"
+										fill="white"
+									/>
+								</svg>
+							</div>
+						</Tooltip>
+					</div>
+				</h2>
+
+				<div className={styles.proccessingInfo}>
+					<p>
+						Buying NFT. This may take up to 20 mins... Please do not close this
+						window or refresh the page.
+					</p>
+				</div>
+			</div>
+		);
+	};
+
 	return (
 		<div className={`${styles.Container} border-primary border-rounded blur`}>
 			{header()}
 			{buy()}
+			{ShowProccesing && proccessing()}
+			{ShowWalletInteraction ? <WalletInteraction /> : ''}
 		</div>
 	);
 };

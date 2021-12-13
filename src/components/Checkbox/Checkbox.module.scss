@@ -1,0 +1,35 @@
+.Checkbox {
+	-webkit-appearance: none;
+	appearance: none;
+	cursor: pointer;
+	outline: 0;
+
+	width: 16px;
+	height: 16px;
+	border: 1px solid #52cbff;
+	color: #52cbff;
+	box-sizing: border-box;
+	border-radius: 4px;
+
+	&:hover {
+		background-color: rgba(88, 197, 115, 0.25);
+	}
+}
+
+.Checked {
+	background-color: rgba(88, 197, 115, 0.1);
+	color: #58c573;
+	fill: #58c573;
+
+	border: 1px solid #58c573;
+
+	&:hover {
+		background-color: rgba(88, 197, 115, 0.25);
+	}
+}
+
+.Icon {
+	position: absolute;
+	padding-bottom: 4px;
+	padding-left: 3px;
+}

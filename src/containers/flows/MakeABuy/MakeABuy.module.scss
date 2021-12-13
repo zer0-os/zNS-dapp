@@ -139,3 +139,32 @@
 
 	margin: 16px auto 0 auto;
 }
+
+.Processing {
+	text-align: center;
+
+	h2 {
+		font-weight: bold;
+		display: inline-block;
+		font-size: 24px;
+		line-height: 29px;
+
+		padding: 24px;
+	}
+
+	.infoButton {
+		margin-left: 6px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding-bottom: 7px;
+		width: 16px;
+		height: 16px;
+		border-radius: 16px;
+		background: rgba(255, 255, 255, 0.25);
+	}
+
+	.proccessingInfo {
+		padding: 42px;
+	}
+}
