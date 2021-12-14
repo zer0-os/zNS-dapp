@@ -1,4 +1,5 @@
-import { FutureButton, LoadingIndicator } from 'components';
+import { LoadingIndicator } from 'components';
+import { Confirm, Header } from '../../../';
 
 import styles from './Approve.module.scss';
 
@@ -6,6 +7,7 @@ export enum ApprovalStep {
 	Prompt,
 	WaitingForWallet,
 	Approving,
+	Checking,
 }
 
 type ApproveProps = {
@@ -16,25 +18,35 @@ type ApproveProps = {
 const Approve = (props: ApproveProps) => {
 	const { error, step } = props;
 
+	const onContinue = () => {
+		console.log('continue');
+	};
+
+	const onCancel = () => {
+		console.log('cancel');
+	};
+
 	const view = () => {
-		if (step === ApprovalStep.Prompt || error) {
+		if (step === ApprovalStep.Checking) {
 			return (
-				<>
-					<p>
-						Before you can stake in this pool, your wallet needs to approve pool
-						spending. You will only need to do this once per pool. This will
-						cost gas.
-					</p>
-					{error && <p className="error-text">{error}</p>}
-					<div className={styles.Buttons}>
-						<FutureButton glow alt onClick={() => {}}>
-							Cancel
-						</FutureButton>
-						<FutureButton glow onClick={() => {}}>
-							Continue
-						</FutureButton>
-					</div>
-				</>
+				<LoadingIndicator
+					text={<p>Checking status of pool spending approval...</p>}
+				/>
+			);
+		} else if (step === ApprovalStep.Prompt || error) {
+			return (
+				<Confirm
+					content={
+						<p>
+							Before you can stake in this pool, your wallet needs to approve
+							pool spending. You will only need to do this once per pool. This
+							will cost gas.
+						</p>
+					}
+					confirmText={'Continue'}
+					onConfirm={onContinue}
+					onCancel={onCancel}
+				/>
 			);
 		} else if (step === ApprovalStep.WaitingForWallet) {
 			return (
@@ -66,7 +78,12 @@ const Approve = (props: ApproveProps) => {
 		}
 	};
 
-	return <div className={styles.Container}>{view()}</div>;
+	return (
+		<>
+			<Header text="Approve Pool Spending" />
+			<div className={styles.Container}>{view()}</div>
+		</>
+	);
 };
 
 export default Approve;
