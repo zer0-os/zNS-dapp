@@ -28,6 +28,10 @@ export interface ContractAddresses {
 	lootToken: string;
 	zAuction: string;
 	wheelSale: string;
+	stakeFactory: string;
+	liquidityToken: string;
+	wildStakingPool: string;
+	lpStakingPool: string;
 }
 
 export interface Contracts {
