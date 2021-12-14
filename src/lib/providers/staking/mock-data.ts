@@ -5,7 +5,7 @@ export const POOL_DATA = [
 	{
 		apy: 5382,
 		domain: 'wild',
-		id: '0x2',
+		id: undefined,
 		image: stakeIcon,
 		name: 'Stake Wild',
 		numStakers: 23589,
@@ -17,7 +17,7 @@ export const POOL_DATA = [
 	{
 		apy: 105302,
 		domain: 'lp',
-		id: '0x1',
+		id: undefined,
 		image: farmIcon,
 		name: 'Farm WILD - WETH LP',
 		tokenFullName: 'Liquidity Provider',

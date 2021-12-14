@@ -1,5 +1,4 @@
-import { Overlay } from 'components';
-import { StakeFlow, StakingContainer, StakePool } from 'containers/staking';
+import { StakingContainer } from 'containers/staking';
 import StakingProvider from 'lib/providers/staking/StakingProvider';
 import { BrowserRouter } from 'react-router-dom';
 

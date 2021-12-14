@@ -4,7 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 
+import { createInstance } from './temp-sdk';
+import addresses from 'lib/addresses';
+
 import { POOL_DATA, DEPOSIT_DATA } from './mock-data';
+import { ethers, BigNumber } from 'ethers';
+import { useZnsSdk } from '../ZnsSdkProvider';
+import { useApprovals } from 'lib/hooks/useApprovals';
 
 export type Stat = {
 	fieldName: string;
@@ -14,15 +20,16 @@ export type Stat = {
 };
 
 export const StakingContext = React.createContext({
-	pools: [] as any[] | undefined,
 	deposits: [] as any[] | undefined,
-	getPoolByDomain: (domain: string) => {},
-	selectPoolByDomain: (domain: string) => {},
-	deselectPool: () => {},
-	selectedPool: undefined as any | undefined,
-	selectedDeposit: undefined as any | undefined,
-	selectDepositById: (id: string) => {},
 	deselectDeposit: () => {},
+	deselectPool: () => {},
+	getPoolByDomain: (domain: string) => {},
+	pools: [] as any[] | undefined,
+	selectDepositById: (id: string) => {},
+	selectedDeposit: undefined as any | undefined,
+	selectedPool: undefined as any | undefined,
+	selectPoolByDomain: (domain: string) => {},
+	stake: (signer: ethers.Signer) => {},
 });
 
 type StakingProviderType = {
@@ -30,16 +37,50 @@ type StakingProviderType = {
 };
 
 const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
-	const web3Context = useWeb3React();
-	const chainSelector = useChainSelector();
+	const { account, library, chainId } = useWeb3React();
+	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
 
-	const { account } = useWeb3React();
+	const instance = React.useMemo(() => {
+		if (library === undefined) {
+			return;
+		}
+
+		switch (chainId) {
+			case 1: {
+				return createInstance({
+					wildPoolAddress: addresses.MAINNET.wildStakingPool,
+					lpTokenPoolAddress: addresses.MAINNET.lpStakingPool,
+					factoryAddress: addresses.MAINNET.stakeFactory,
+					provider: library,
+				});
+			}
+
+			case 42: {
+				return createInstance({
+					wildPoolAddress: addresses.KOVAN.wildStakingPool,
+					lpTokenPoolAddress: addresses.KOVAN.lpStakingPool,
+					factoryAddress: addresses.KOVAN.stakeFactory,
+					provider: library,
+				});
+			}
+
+			default: {
+				throw new Error('SDK isn´t available for this chainId');
+			}
+		}
+	}, [library, chainId]);
+
+	useEffect(() => {
+		if (instance) {
+			// instance.wildPool.getRewardTokensPerBlock().then((d) => console.log(d));
+		}
+	}, [instance]);
 
 	// change from 'any' type
-	const [pools, setPoolData] = useState<any[] | undefined>();
 	const [deposits, setDepositData] = useState<any[] | undefined>();
-	const [selectedPool, setSelectedPool] = useState<any | undefined>();
+	const [pools, setPoolData] = useState<any[] | undefined>();
 	const [selectedDeposit, setSelectedDeposit] = useState<any | undefined>();
+	const [selectedPool, setSelectedPool] = useState<any | undefined>();
 
 	//////////////
 	// Get data //
@@ -49,20 +90,52 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 		getPoolData();
 	});
 
+	const approve = async () => {
+		const app = await approveAllTokens({
+			operator: addresses.KOVAN.wildStakingPool,
+			approved: true,
+		});
+	};
+
+	const checkApproval = async () => {
+		const approval = await isApprovedForAllTokens({
+			operator: addresses.KOVAN.lpStakingPool,
+			owner: account as string,
+		});
+	};
+
 	useEffect(() => {
-		getDepositData();
-	}, [account]);
+		if (account && instance) {
+			getDepositData(account);
+			stake(library.getSigner());
+		}
+	}, [instance, account]);
+
+	/////////////
+	// Actions //
+	/////////////
+
+	const stake = (signer: ethers.Signer) => {
+		instance?.wildPool.stake('1000', BigNumber.from(0), signer);
+	};
+
+	/////////////
+	// Getters //
+	/////////////
+
+	// Deposits
+
+	const getDepositData = async (user: string) => {
+		await new Promise((r) => setTimeout(r, 5000));
+		setDepositData([]);
+	};
+
+	// Pools
 
 	const getPoolData = async () => {
 		// Simulate async data
 		await new Promise((r) => setTimeout(r, 1500));
 		setPoolData(POOL_DATA);
-	};
-
-	const getDepositData = async () => {
-		// Simulate async data
-		await new Promise((r) => setTimeout(r, 1500));
-		setDepositData(DEPOSIT_DATA);
 	};
 
 	const getPoolByDomain = (domain: string) => {
@@ -75,6 +148,8 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 	/////////////////
 	// Select Data //
 	/////////////////
+
+	// Deposits
 
 	const selectDepositById = (id: string) => {
 		if (deposits) {
@@ -89,6 +164,8 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 		setSelectedDeposit(undefined);
 	};
 
+	// Pools
+
 	const selectPoolByDomain = (domain: string) => {
 		if (pools) {
 			const pool = pools.filter((pool: any) => pool.domain === domain);
@@ -102,16 +179,21 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 		setSelectedPool(undefined);
 	};
 
+	/////////////////////
+	// Provider Values //
+	/////////////////////
+
 	const contextValue = {
-		pools,
 		deposits,
-		getPoolByDomain,
-		selectPoolByDomain,
-		deselectPool,
-		selectedPool,
-		selectedDeposit,
-		selectDepositById,
 		deselectDeposit,
+		deselectPool,
+		getPoolByDomain,
+		pools,
+		selectDepositById,
+		selectedDeposit,
+		selectedPool,
+		selectPoolByDomain,
+		stake,
 	};
 
 	return (
@@ -125,25 +207,27 @@ export default StakingProvider;
 
 export function useStaking() {
 	const {
-		pools,
-		getPoolByDomain,
 		deposits,
-		selectPoolByDomain,
-		selectedPool,
+		deselectDeposit,
 		deselectPool,
+		getPoolByDomain,
+		pools,
 		selectDepositById,
 		selectedDeposit,
-		deselectDeposit,
+		selectedPool,
+		selectPoolByDomain,
+		stake,
 	} = React.useContext(StakingContext);
 	return {
-		pools,
-		getPoolByDomain,
 		deposits,
-		selectPoolByDomain,
-		selectedPool,
-		deselectPool,
-		selectedDeposit,
-		selectDepositById,
 		deselectDeposit,
+		deselectPool,
+		getPoolByDomain,
+		pools,
+		selectDepositById,
+		selectedDeposit,
+		selectedPool,
+		selectPoolByDomain,
+		stake,
 	};
 }
