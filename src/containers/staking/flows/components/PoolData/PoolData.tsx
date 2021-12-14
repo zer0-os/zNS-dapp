@@ -29,7 +29,6 @@ const PoolData = ({
 		<div className="flex-split flex-vertical-align">
 			<div>
 				<Artwork
-					domain={domain}
 					disableAnimation
 					name={name}
 					image={image}
