@@ -2,7 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react';
 
 import { Overlay, TabBar } from 'components';
 
-import { Deposits, StakeFlow, StakePool, StakePools } from 'containers/staking';
+import {
+	Deposits,
+	StakeFlow,
+	StakePool,
+	StakePools,
+	ClaimFlow,
+} from 'containers/staking';
 
 import { useStaking } from 'lib/providers/staking/StakingProvider';
 
@@ -44,7 +50,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				open={stakingOn !== undefined}
 				onClose={closeStakingModal}
 			>
-				<StakeFlow onClose={closeStakingModal} />
+				<ClaimFlow onClose={closeStakingModal} />
 			</Overlay>
 			<Switch>
 				<Route

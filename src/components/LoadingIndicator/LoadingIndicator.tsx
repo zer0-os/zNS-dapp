@@ -8,9 +8,9 @@ type LoadingIndicatorProps = {
 	text: string | React.ReactNode;
 };
 
-const LoadingIndicator = (props: LoadingIndicatorProps) => (
-	<div style={props.style} className={styles.Container}>
-		<p>{props.text}</p>
+const LoadingIndicator = ({ style, text }: LoadingIndicatorProps) => (
+	<div style={style} className={styles.Container}>
+		{typeof text === 'string' ? <p>{text}</p> : <>{text}</>}
 		<Spinner />
 	</div>
 );

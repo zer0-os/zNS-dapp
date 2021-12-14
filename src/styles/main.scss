@@ -387,6 +387,10 @@ button {
 	min-width: var(--width-min) !important;
 }
 
+.width-full {
+	width: 100%;
+}
+
 .flex-split {
 	display: flex;
 	justify-content: space-between;
