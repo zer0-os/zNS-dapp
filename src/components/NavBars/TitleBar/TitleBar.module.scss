@@ -29,6 +29,10 @@ header {
 		box-shadow var(--animation-time-medium) ease-in-out;
 }
 
+.Title {
+	margin-left: 8px;
+}
+
 .Hovered {
 	/* background-color: rgba(0, 63, 137, 0.4); */
 	box-shadow: 0 0 20px 0 rgb(235 0 255 / 40%);

@@ -6,6 +6,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styles from './Navigator.module.scss';
 import classNames from 'classnames/bind';
 import { StakingContainer } from 'containers/staking';
+import { useEagerConnect } from 'lib/hooks/provider-hooks';
 
 type NavigatorProps = {
 	domain: string;
@@ -22,6 +23,8 @@ const cx = classNames.bind(styles);
 const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
 	const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 	const [selectedApp, setSelectedApp] = useState<App>(App.Staking);
+
+	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
 
 	// Hiding NavBar
 	const body = document.getElementsByTagName('body')[0];
@@ -64,6 +67,7 @@ const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
 				<TitleBar
 					className={'nav'}
 					domain={domain}
+					title={'Staking'}
 					canGoBack={true}
 					canGoForward={true}
 					onBack={() => {}}
@@ -71,7 +75,7 @@ const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
 					isSearchActive={false}
 					setIsSearchActive={setIsSearchActive}
 				>
-					TEST
+					{''}
 				</TitleBar>
 			</nav>
 			{/* <nav className={cx(styles.Left)}>

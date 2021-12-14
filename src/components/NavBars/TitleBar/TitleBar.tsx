@@ -28,6 +28,7 @@ type TitleBarProps = {
 	domain: string;
 	setIsSearchActive: (active: boolean) => void;
 	isSearchActive: boolean;
+	title?: string;
 };
 
 const TitleBar: React.FC<TitleBarProps> = ({
@@ -41,6 +42,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	domain,
 	setIsSearchActive,
 	isSearchActive,
+	title,
 }) => {
 	//////////////////
 	// State & Data //
@@ -185,13 +187,14 @@ const TitleBar: React.FC<TitleBarProps> = ({
 						/>
 					</div>
 					{/* TODO: Split this into its own component */}
-					{!isSearchActive && (
+					{!isSearchActive && !title && (
 						<ZNALink
 							className={styles.ZNA}
 							style={{ marginLeft: 16 }}
 							domain={domain}
 						/>
 					)}
+					{title !== undefined && <b className={styles.Title}>{title}</b>}
 					<input
 						className={styles.Search}
 						onChange={onSearchChange}
