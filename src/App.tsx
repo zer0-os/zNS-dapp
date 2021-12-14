@@ -13,7 +13,7 @@ import 'styles/reset.scss';
 import 'styles/main.scss';
 
 //- React Imports
-import { HashRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 //- Web3 Imports
 import { Web3ReactProvider } from '@web3-react/core';
@@ -34,6 +34,7 @@ import backgroundImage from 'assets/background.jpg';
 
 //- Page Imports
 import { ZNS } from 'pages';
+import PageContainer from 'containers/PageContainer';
 import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
 import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
 
@@ -66,22 +67,42 @@ function App() {
 
 	return (
 		<ConnectedRouter history={history}>
-			<HashRouter>
-				<Route
-					render={({ location, match }) => {
-						return (
-							<>
-								<CurrentDomainProvider>
-									<ZNS
-										domain={location.pathname}
-										isNftView={location.search.includes('view=true')}
-									/>
-								</CurrentDomainProvider>
-							</>
-						);
-					}}
-				/>
-			</HashRouter>
+			<BrowserRouter>
+				<Switch>
+					<CurrentDomainProvider>
+						{/* Need to remove dependency across the application before switching to a new root for apps */}
+						{/* <Route path="/market">
+							<Route
+								render={({ location, match }) => {
+									console.log(match.path, location.pathname)
+									return (
+										<PageContainer
+
+										>
+											<ZNS
+												domain={location.pathname.replace(match.path, "")}
+												isNftView={location.search.includes('view=true')}
+											/>
+										</PageContainer>
+									);
+								}}
+							/>
+						</Route> */}
+						<Route
+							render={({ location, match }) => {
+								return (
+									<PageContainer>
+										<ZNS
+											domain={location.pathname}
+											isNftView={location.search.includes('view=true')}
+										/>
+									</PageContainer>
+								);
+							}}
+						/>
+					</CurrentDomainProvider>
+				</Switch>
+			</BrowserRouter>
 		</ConnectedRouter>
 	);
 }

@@ -1,30 +1,29 @@
-import React from 'react';
+import { FC } from 'react';
 
 import SideBarStyles from './SideBar.module.scss';
 
-import trendingIcon from './assets/trending.svg';
-import discoverIcon from './assets/discover.svg';
-import lendingIcon from './assets/lending.svg';
-import governanceIcon from './assets/governance.svg';
+import marketIcon from './assets/icon_market.svg';
+import stakingIcon from './assets/icon_staking.svg';
 
-const SideBar: React.FC = () => {
+const SideBar: FC = () => {
 	return (
 		<div className={SideBarStyles.SideBar}>
-			<div className={`${SideBarStyles.Navigator}  border-primary blur`}>
-				<ul className={SideBarStyles.Icons}>
-					<li key="trending">
-						<img alt="trending icon" src={trendingIcon} />
-					</li>
-					<li key="discover" className={SideBarStyles.Selected}>
-						<img alt="discover icon" src={discoverIcon} />
-					</li>
-					<li key="lending">
-						<img alt="lending icon" src={lendingIcon} />
-					</li>
-					<li key="governance">
-						<img alt="governance icon" src={governanceIcon} />
-					</li>
-				</ul>
+			<div className={SideBarStyles.Navigator}>
+				<div className={SideBarStyles.Icons}>
+					<div className={SideBarStyles.Action} key="market">
+						<div className={`${SideBarStyles.Hype} ${SideBarStyles.Selected}`}>
+							<img alt="market icon" src={marketIcon} />
+						</div>
+						{/* TODO: Fix overlaying issue with Name */}
+						<div className={SideBarStyles.Name}>Market</div>
+					</div>
+					<div className={SideBarStyles.Action} key="staking">
+						<div className={SideBarStyles.Hype}>
+							<img alt="staking icon" src={stakingIcon} />
+						</div>
+						<div className={SideBarStyles.Name}>Staking</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
