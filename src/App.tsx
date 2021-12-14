@@ -67,19 +67,19 @@ function App() {
 
 	return (
 		<ConnectedRouter history={history}>
-			<HashRouter>
+			{/* <HashRouter>
 				<Route
 					render={({ location, match }) => {
 						return (
-							<>
-								<CurrentDomainProvider>
-									<Navigator domain={location.pathname} />
-								</CurrentDomainProvider>
-							</>
+							<> */}
+			{/* <CurrentDomainProvider> */}
+			<Navigator domain={''} />
+			{/* </CurrentDomainProvider> */}
+			{/* </>
 						);
 					}}
 				/>
-			</HashRouter>
+			</HashRouter> */}
 		</ConnectedRouter>
 	);
 }
@@ -98,19 +98,19 @@ function wrappedApp() {
 					<SubgraphProvider>
 						<Web3ReactProvider getLibrary={getLibrary}>
 							{/* Our Hooks  */}
-							<ZNSDomainsProvider>
+							{/* <ZNSDomainsProvider>
 								<BidProvider>
 									<TransferProvider>
 										<StakingRequestProvider>
 											<MintProvider>
-												<EnlistProvider>
-													<App />
-												</EnlistProvider>
+												<EnlistProvider> */}
+							<App />
+							{/* </EnlistProvider>
 											</MintProvider>
 										</StakingRequestProvider>
 									</TransferProvider>
 								</BidProvider>
-							</ZNSDomainsProvider>
+							</ZNSDomainsProvider> */}
 						</Web3ReactProvider>
 					</SubgraphProvider>
 				</ChainSelectorProvider>
