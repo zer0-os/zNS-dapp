@@ -22,7 +22,7 @@ type StakeFlowProps = {
 
 const StakeFlow = (props: StakeFlowProps) => {
 	const { onClose } = props;
-	const { stakingOn } = useStaking();
+	const { selectedPool } = useStaking();
 
 	const [step, setStep] = useState<Steps>(Steps.Stake);
 
@@ -35,12 +35,12 @@ const StakeFlow = (props: StakeFlowProps) => {
 			case Steps.Stake:
 				return (
 					<Stake
-						apy={stakingOn.apy}
-						totalValueLocked={stakingOn.tvl}
+						apy={selectedPool.apy}
+						totalValueLocked={selectedPool.tvl}
 						message={undefined}
-						poolIconUrl={stakingOn.image}
-						poolName={stakingOn.name}
-						poolDomain={stakingOn.domain}
+						poolIconUrl={selectedPool.image}
+						poolName={selectedPool.name}
+						poolDomain={selectedPool.domain}
 						onBack={onClose}
 						onStake={onStake}
 					/>

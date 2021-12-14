@@ -24,7 +24,7 @@ type StakeFlowProps = {
 
 const StakeFlow = (props: StakeFlowProps) => {
 	const { onClose } = props;
-	const { stakingOn } = useStaking();
+	const { selectedPool } = useStaking();
 
 	const rewardAmount = 1241;
 	const HEADER = <Header text="Claim Pool Rewards" />;
@@ -51,12 +51,12 @@ const StakeFlow = (props: StakeFlowProps) => {
 			case Steps.Claim:
 				return (
 					<Claim
-						apy={stakingOn.apy}
-						totalValueLocked={stakingOn.tvl}
+						apy={selectedPool.apy}
+						totalValueLocked={selectedPool.tvl}
 						message={message}
-						poolIconUrl={stakingOn.image}
-						poolName={stakingOn.name}
-						poolDomain={stakingOn.domain}
+						poolIconUrl={selectedPool.image}
+						poolName={selectedPool.name}
+						poolDomain={selectedPool.domain}
 						onBack={onClose}
 						onClaim={onClaim}
 						rewardAmount={rewardAmount}

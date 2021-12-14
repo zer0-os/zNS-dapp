@@ -30,6 +30,7 @@ export const POOL_DATA = [
 
 export const DEPOSIT_DATA = [
 	{
+		id: '1',
 		pool: POOL_DATA[1],
 		dateStaked: new Date(),
 		stakeAmount: 2351326,
@@ -37,6 +38,7 @@ export const DEPOSIT_DATA = [
 		stakeRewardsVested: 0,
 	},
 	{
+		id: '2',
 		pool: POOL_DATA[0],
 		dateStaked: new Date(),
 		stakeAmount: 4316431,
@@ -44,6 +46,7 @@ export const DEPOSIT_DATA = [
 		stakeRewardsVested: 2356,
 	},
 	{
+		id: '3',
 		pool: POOL_DATA[1],
 		dateStaked: new Date(),
 		stakeAmount: 64316,

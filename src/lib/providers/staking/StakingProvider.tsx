@@ -17,9 +17,12 @@ export const StakingContext = React.createContext({
 	pools: [] as any[] | undefined,
 	deposits: [] as any[] | undefined,
 	getPoolByDomain: (domain: string) => {},
-	openStakingModal: (domain: string) => {},
-	closeStakingModal: () => {},
-	stakingOn: undefined as any | undefined,
+	selectPoolByDomain: (domain: string) => {},
+	deselectPool: () => {},
+	selectedPool: undefined as any | undefined,
+	selectedDeposit: undefined as any | undefined,
+	selectDepositById: (id: string) => {},
+	deselectDeposit: () => {},
 });
 
 type StakingProviderType = {
@@ -35,7 +38,12 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 	// change from 'any' type
 	const [pools, setPoolData] = useState<any[] | undefined>();
 	const [deposits, setDepositData] = useState<any[] | undefined>();
-	const [stakingOn, setStakingOn] = useState<any | undefined>();
+	const [selectedPool, setSelectedPool] = useState<any | undefined>();
+	const [selectedDeposit, setSelectedDeposit] = useState<any | undefined>();
+
+	//////////////
+	// Get data //
+	//////////////
 
 	useEffect(() => {
 		getPoolData();
@@ -57,22 +65,6 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 		setDepositData(DEPOSIT_DATA);
 	};
 
-	const stake = async () => {};
-	const claim = async () => {};
-
-	const openStakingModal = (poolDomain: string) => {
-		if (pools) {
-			const pool = pools.filter((pool: any) => pool.domain === poolDomain);
-			if (pool.length) {
-				setStakingOn(pool[0]);
-			}
-		}
-	};
-
-	const closeStakingModal = () => {
-		setStakingOn(undefined);
-	};
-
 	const getPoolByDomain = (domain: string) => {
 		if (pools) {
 			const pool = pools.filter((p) => p.domain === domain);
@@ -80,13 +72,46 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 		}
 	};
 
+	/////////////////
+	// Select Data //
+	/////////////////
+
+	const selectDepositById = (id: string) => {
+		if (deposits) {
+			const deposit = deposits.filter((deposit: any) => deposit.id === id);
+			if (deposit.length) {
+				setSelectedDeposit(deposit[0]);
+			}
+		}
+	};
+
+	const deselectDeposit = () => {
+		setSelectedDeposit(undefined);
+	};
+
+	const selectPoolByDomain = (domain: string) => {
+		if (pools) {
+			const pool = pools.filter((pool: any) => pool.domain === domain);
+			if (pool.length) {
+				setSelectedPool(pool[0]);
+			}
+		}
+	};
+
+	const deselectPool = () => {
+		setSelectedPool(undefined);
+	};
+
 	const contextValue = {
 		pools,
 		deposits,
 		getPoolByDomain,
-		openStakingModal,
-		closeStakingModal,
-		stakingOn,
+		selectPoolByDomain,
+		deselectPool,
+		selectedPool,
+		selectedDeposit,
+		selectDepositById,
+		deselectDeposit,
 	};
 
 	return (
@@ -103,16 +128,22 @@ export function useStaking() {
 		pools,
 		getPoolByDomain,
 		deposits,
-		openStakingModal,
-		stakingOn,
-		closeStakingModal,
+		selectPoolByDomain,
+		selectedPool,
+		deselectPool,
+		selectDepositById,
+		selectedDeposit,
+		deselectDeposit,
 	} = React.useContext(StakingContext);
 	return {
 		pools,
 		getPoolByDomain,
 		deposits,
-		openStakingModal,
-		stakingOn,
-		closeStakingModal,
+		selectPoolByDomain,
+		selectedPool,
+		deselectPool,
+		selectedDeposit,
+		selectDepositById,
+		deselectDeposit,
 	};
 }

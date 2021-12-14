@@ -40,17 +40,18 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	// - Grabbing all user data (deposits, WILD balance, rewards, etc
 	// - Opening StakeFlow modal for a specified pool
 
-	const { stakingOn, closeStakingModal } = useStaking();
+	const { selectedPool, deselectPool, selectedDeposit, deselectDeposit } =
+		useStaking();
 	const { pathname } = useLocation();
 
 	return (
 		<>
 			<Overlay
 				centered
-				open={stakingOn !== undefined}
-				onClose={closeStakingModal}
+				open={selectedPool !== undefined}
+				onClose={deselectPool}
 			>
-				<ClaimFlow onClose={closeStakingModal} />
+				<StakeFlow onClose={deselectPool} />
 			</Overlay>
 			<Switch>
 				<Route

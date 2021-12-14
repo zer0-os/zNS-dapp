@@ -25,11 +25,11 @@ const StakePool = (props: StakePoolProps) => {
 
 	const [pool, setPool] = useState<any | undefined>();
 	const { domain } = props;
-	const { pools, getPoolByDomain, openStakingModal } = useStaking();
+	const { pools, getPoolByDomain, selectPoolByDomain } = useStaking();
 
 	const onStake = () => {
 		if (pool?.domain) {
-			openStakingModal(pool.domain);
+			selectPoolByDomain(pool.domain);
 		}
 	};
 

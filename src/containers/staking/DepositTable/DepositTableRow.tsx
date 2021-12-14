@@ -2,11 +2,38 @@ import { OptionDropdown } from 'components';
 import { Artwork } from 'components';
 import styles from './DepositTableRow.module.scss';
 
-const StakePoolTableRow = (props: any) => {
+import { useStaking } from 'lib/providers/staking/StakingProvider';
+
+type Option = {
+	name: string;
+	callback: () => void;
+};
+
+const DepositTableRow = (props: any) => {
 	const stake = props.data;
 
+	const { selectDepositById, selectPoolByDomain } = useStaking();
+
+	const OPTIONS: Option[] = [
+		{
+			name: 'Unstake Deposit',
+			callback: () => console.log('unhandled'),
+		},
+		{
+			name: 'Claim Rewards',
+			callback: () => console.log('unhandled'),
+		},
+		{
+			name: 'Stake In Pool',
+			callback: () => selectPoolByDomain(stake.pool.domain),
+		},
+	];
+
 	const onDropdownSelect = (selection: string) => {
-		console.log('selection');
+		const filter = OPTIONS.filter((o: Option) => o.name === selection);
+		if (filter.length) {
+			filter[0].callback();
+		}
 	};
 
 	return (
@@ -33,7 +60,7 @@ const StakePoolTableRow = (props: any) => {
 			<td>
 				<OptionDropdown
 					onSelect={onDropdownSelect}
-					options={['Unstake Deposit', 'Claim Rewards', 'Stake In Pool']}
+					options={OPTIONS.map((o: Option) => o.name)}
 					disableSelection
 					drawerStyle={{ width: 222 }}
 				>
@@ -48,4 +75,4 @@ const StakePoolTableRow = (props: any) => {
 	);
 };
 
-export default StakePoolTableRow;
+export default DepositTableRow;

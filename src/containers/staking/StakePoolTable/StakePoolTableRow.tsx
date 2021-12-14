@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import { useStaking } from 'lib/providers/staking/StakingProvider';
 
 const StakePoolTableRow = (props: any) => {
-	const { openStakingModal } = useStaking();
+	const { selectPoolByDomain } = useStaking();
 	const { push } = useHistory();
 
 	const pool = props.data;
@@ -18,7 +18,7 @@ const StakePoolTableRow = (props: any) => {
 	};
 
 	const onButtonClick = () => {
-		openStakingModal(pool.domain);
+		selectPoolByDomain(pool.domain);
 	};
 
 	return (
