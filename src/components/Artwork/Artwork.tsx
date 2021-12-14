@@ -18,7 +18,7 @@ import classNames from 'classnames/bind';
 
 type ArtworkProps = {
 	circleIcon?: boolean;
-	domain: string;
+	domain?: string;
 	disableAnimation?: boolean;
 	disableInteraction?: boolean;
 	id: string;
@@ -69,7 +69,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		}
 
 		// Truncate
-		if (('wilder.' + domain).length > 30) {
+		if (domain && ('wilder.' + domain).length > 30) {
 			const split = domain.split('.');
 			if (isMounted.current === true) {
 				setTruncatedDomain('wilder...' + split[split.length - 1]);
@@ -147,12 +147,12 @@ const Artwork: React.FC<ArtworkProps> = ({
 					)}
 					{!pending && (
 						<>
-							{disableInteraction && (
+							{disableInteraction && domain && (
 								<span className={styles.Domain}>
 									{truncatedDomain || 'wilder.' + domain}
 								</span>
 							)}
-							{!disableInteraction && (
+							{!disableInteraction && domain && (
 								<Link
 									className={styles.Domain}
 									to={domain.split('wilder.')[1]}
@@ -164,7 +164,9 @@ const Artwork: React.FC<ArtworkProps> = ({
 							)}
 						</>
 					)}
-					{pending && <span className={styles.Domain}>{domain}</span>}
+					{pending && (
+						<span className={styles.Domain}>{domain ? domain : 'Loading'}</span>
+					)}
 				</div>
 			</div>
 		</>
