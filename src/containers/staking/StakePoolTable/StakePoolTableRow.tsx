@@ -27,7 +27,6 @@ const StakePoolTableRow = (props: any) => {
 			<td>
 				<Artwork
 					disableAnimation
-					domain={pool.domain}
 					name={pool.name}
 					image={pool.image}
 					disableInteraction
