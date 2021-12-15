@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
 
-import { createInstance } from './temp-sdk';
+import { createInstance } from './temp-sdk/index.js';
 import addresses from 'lib/addresses';
 
 import { wildPool, liquidityPool, Pool } from './pools';
-import { Deposit } from './temp-sdk/types';
+import { Deposit } from './temp-sdk/types.js';
 import { ethers, BigNumber } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
 import { chainIdToNetworkType } from 'lib/network';
