@@ -51,13 +51,20 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				open={selectedPool !== undefined}
 				onClose={deselectPool}
 			>
-				<StakeFlow onClose={deselectPool} />
+				{selectedPool && <StakeFlow onClose={deselectPool} />}
+			</Overlay>
+			<Overlay
+				centered
+				open={selectedDeposit !== undefined}
+				onClose={deselectDeposit}
+			>
+				{selectedDeposit && <ClaimFlow onClose={deselectDeposit} />}
 			</Overlay>
 			<Switch>
 				<Route
 					path="/pools/:pool"
 					component={(params: any) => (
-						<StakePool domain={params.match.params.pool} />
+						<StakePool domain={'/pools/' + params.match.params.pool} />
 					)}
 				/>
 				<div

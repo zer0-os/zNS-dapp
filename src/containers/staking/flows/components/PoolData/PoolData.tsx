@@ -3,6 +3,8 @@ import { Artwork, StatsWidget } from 'components';
 import styles from './PoolData.module.scss';
 
 import classNames from 'classnames/bind';
+import { ethers } from 'ethers';
+import { toFiat } from 'lib/currency';
 
 const cx = classNames.bind(styles);
 
@@ -13,7 +15,7 @@ type PoolDataProps = {
 	image: string;
 	name: string;
 	poolUrl: string;
-	totalValueLocked?: number;
+	pendingRewards?: ethers.BigNumber;
 };
 
 const PoolData = ({
@@ -23,7 +25,7 @@ const PoolData = ({
 	image,
 	name,
 	poolUrl,
-	totalValueLocked,
+	pendingRewards,
 }: PoolDataProps) => (
 	<>
 		<div className="flex-split flex-vertical-align">
@@ -45,16 +47,16 @@ const PoolData = ({
 			<StatsWidget
 				className="previewView"
 				fieldName={'APY'}
-				isLoading={apy === undefined}
-				title={Number(apy?.toFixed(2)).toLocaleString() + '%'}
+				isLoading={false}
+				title="-"
 			/>
 			<StatsWidget
 				className="previewView"
-				fieldName={'Total Value Locked'}
-				isLoading={totalValueLocked === undefined}
-				title={totalValueLocked?.toLocaleString() + ' WILD'}
-				subTitle={`$${(1234.0).toLocaleString()}`}
-				accentText={`+123%`}
+				fieldName={'Your Rewards Claimable'}
+				isLoading={pendingRewards === undefined}
+				title={
+					pendingRewards && toFiat(Number(pendingRewards.toString())) + ' WILD'
+				}
 			/>
 		</ul>
 	</>

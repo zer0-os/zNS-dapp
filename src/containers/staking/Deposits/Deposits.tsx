@@ -1,10 +1,16 @@
+import { useWeb3React } from '@web3-react/core';
 import { StatsWidget } from 'components';
 import { DepositTable } from 'containers/staking';
+import { ethers } from 'ethers';
+import { useStaking } from 'lib/providers/staking/StakingProvider';
 import { useEffect, useState } from 'react';
 import styles from './Deposits.module.scss';
 
 const Deposits = () => {
-	const [wildBalance, setWildBalance] = useState<number | undefined>();
+	const { totalUserValueLocked, totalUserValueUnlocked, wildBalance } =
+		useStaking();
+	const { active } = useWeb3React();
+
 	const [totalStaked, setTotalStaked] = useState<number | undefined>();
 	const [totalRewards, setTotalRewards] = useState<number | undefined>();
 	const [totalRewardsVested, setTotalRewardsVested] = useState<
@@ -12,14 +18,19 @@ const Deposits = () => {
 	>();
 
 	useEffect(() => {
+		let isMounted = true;
 		const getMetrics = async () => {
 			await new Promise((r) => setTimeout(r, 3500));
-			setWildBalance(1234);
-			setTotalStaked(1295);
-			setTotalRewards(112);
-			setTotalRewardsVested(2);
+			if (isMounted) {
+				setTotalStaked(1295);
+				setTotalRewards(112);
+				setTotalRewardsVested(2);
+			}
 		};
 		getMetrics();
+		return () => {
+			isMounted = false;
+		};
 	}, []);
 
 	return (
@@ -28,30 +39,41 @@ const Deposits = () => {
 				<StatsWidget
 					className="normalView"
 					fieldName={'Wallet WILD Balance'}
-					isLoading={wildBalance === undefined}
-					title={wildBalance?.toLocaleString() + ' WILD'}
-					subTitle={`$${(1234.0).toLocaleString()}`}
+					isLoading={active && wildBalance === undefined}
+					title={
+						active && wildBalance !== undefined
+							? Number(
+									ethers.utils.formatEther(wildBalance.toString()),
+							  ).toFixed(2) + ' WILD'
+							: '-'
+					}
 				/>
 				<StatsWidget
 					className="normalView"
 					fieldName={'Total Stake'}
-					isLoading={totalStaked === undefined}
-					title={totalStaked?.toLocaleString() + ' WILD'}
-					subTitle={`$${(1234.0).toLocaleString()}`}
+					isLoading={false}
+					title={'????'}
+					subTitle={'cant show multiple tokens'}
 				/>
 				<StatsWidget
 					className="normalView"
 					fieldName={'Total Rewards'}
-					isLoading={totalRewards === undefined}
-					title={totalRewards?.toLocaleString() + ' WILD'}
-					subTitle={`$${(1234.0).toLocaleString()}`}
+					isLoading={active && totalUserValueUnlocked === undefined}
+					title={
+						active
+							? totalUserValueUnlocked?.toString().toLocaleString() + ' WILD'
+							: '-'
+					}
 				/>
 				<StatsWidget
 					className="normalView"
 					fieldName={'Total Rewards Vested'}
-					isLoading={totalRewardsVested === undefined}
-					title={totalRewardsVested?.toLocaleString()}
-					subTitle={`$${(1234.0).toLocaleString()}`}
+					isLoading={active && totalUserValueLocked === undefined}
+					title={
+						active
+							? totalUserValueLocked?.toString().toLocaleString() + ' WILD'
+							: '-'
+					}
 				/>
 			</ul>
 			<DepositTable />

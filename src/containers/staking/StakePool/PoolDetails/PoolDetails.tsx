@@ -1,5 +1,6 @@
 import { FutureButton, Image, StatsWidget } from 'components';
 import { ConnectWalletButton } from 'containers';
+import { truncateAddress } from 'lib/utils';
 
 import { Stat } from '../StakePool.helpers';
 
@@ -19,6 +20,7 @@ type PoolDetailsProps = {
 	tokenName: string;
 	totalRewards?: number;
 	totalValueLocked?: number;
+	tokenPurchaseUrl?: string;
 };
 
 const PoolDetails: React.FC<PoolDetailsProps> = ({
@@ -35,6 +37,7 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 	tokenName,
 	totalRewards,
 	totalValueLocked,
+	tokenPurchaseUrl,
 }) => {
 	return (
 		<section className={className}>
@@ -63,48 +66,44 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 					isLoading={tokenName === undefined || ticker === undefined}
 					title={`${tokenName} (${ticker})`}
 					subTitle={
-						<a
-							href="https://app.uniswap.org/#/swap"
-							target="_blank"
-							rel="noreferrer"
-						>
-							Buy {ticker}
-						</a>
+						tokenPurchaseUrl && (
+							<a href={tokenPurchaseUrl} target="_blank" rel="noreferrer">
+								Buy {ticker}
+							</a>
+						)
 					}
 				/>
 				<StatsWidget
 					className="normalView"
 					fieldName={'APY'}
-					isLoading={apy === undefined}
-					title={Number(apy?.toFixed(2)).toLocaleString() + '%'}
+					isLoading={false}
+					title={'-'}
 				/>
 				<StatsWidget
 					className="normalView"
 					fieldName={'Total Rewards'}
-					isLoading={totalRewards === undefined}
-					title={Number(totalRewards?.toFixed(2)).toLocaleString() + ' WILD'}
+					isLoading={false}
+					title={'-'}
 				/>
 			</ul>
 			<ul className={styles.Stats}>
 				<StatsWidget
 					className="normalView"
 					fieldName={'People Staked'}
-					isLoading={peopleStaked === undefined}
-					title={Math.abs(peopleStaked || 0).toLocaleString()}
+					isLoading={false}
+					title={'-'}
 				/>
 				<StatsWidget
 					className="normalView"
 					fieldName={'Total Value Locked'}
-					isLoading={totalValueLocked === undefined}
-					title={
-						Number(totalValueLocked?.toFixed(2)).toLocaleString() + ' ' + ticker
-					}
+					isLoading={false}
+					title={'-'}
 				/>
 				<StatsWidget
 					className="normalView"
 					fieldName={'Contract Address'}
 					isLoading={contractAddress === undefined}
-					title={contractAddress}
+					title={contractAddress && truncateAddress(contractAddress)}
 					subTitle={
 						<a
 							href={'https://etherscan.io/address/' + contractAddress}

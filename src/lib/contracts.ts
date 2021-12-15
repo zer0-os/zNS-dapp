@@ -42,6 +42,7 @@ export interface Contracts {
 	lootToken: ERC20;
 	zAuction: ZauctionSupportingZNS;
 	wheelSale: WhitelistSimpleSale;
+	lpToken: ERC20;
 }
 
 function useZnsContracts(): Contracts | null {
@@ -85,6 +86,7 @@ function useZnsContracts(): Contracts | null {
 				signer,
 			),
 			wildToken: ERC20__factory.connect(contracts.wildToken, signer),
+			lpToken: ERC20__factory.connect(contracts.liquidityToken, signer),
 			lootToken: ERC20__factory.connect(contracts.lootToken, signer),
 			zAuction: ZauctionSupportingZNS__factory.connect(
 				contracts.zAuction,

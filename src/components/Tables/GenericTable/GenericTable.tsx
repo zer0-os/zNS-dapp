@@ -177,7 +177,7 @@ const GenericTable = (props: any) => {
 
 	// Grid View container & cards
 	const GridView = useMemo(() => {
-		if (!rawData) {
+		if (!rawData || !props.gridComponent) {
 			return <></>;
 		}
 		const data = props.infiniteScroll

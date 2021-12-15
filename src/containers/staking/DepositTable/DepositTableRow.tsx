@@ -2,7 +2,8 @@ import { OptionDropdown } from 'components';
 import { Artwork } from 'components';
 import styles from './DepositTableRow.module.scss';
 
-import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { useStaking, DepositView } from 'lib/providers/staking/StakingProvider';
+import { ethers } from 'ethers';
 
 type Option = {
 	name: string;
@@ -10,9 +11,9 @@ type Option = {
 };
 
 const DepositTableRow = (props: any) => {
-	const stake = props.data;
+	const deposit = props.data as DepositView;
 
-	const { selectDepositById, selectPoolByDomain } = useStaking();
+	const { selectPoolByName, selectDeposit } = useStaking();
 
 	const OPTIONS: Option[] = [
 		{
@@ -21,11 +22,11 @@ const DepositTableRow = (props: any) => {
 		},
 		{
 			name: 'Claim Rewards',
-			callback: () => console.log('unhandled'),
+			callback: () => selectDeposit(deposit.depositId, deposit.pool.name),
 		},
 		{
 			name: 'Stake In Pool',
-			callback: () => selectPoolByDomain(stake.pool.domain),
+			callback: () => selectPoolByName(deposit.pool.name),
 		},
 	];
 
@@ -36,27 +37,41 @@ const DepositTableRow = (props: any) => {
 		}
 	};
 
+	const timestampLabel = (timestamp: ethers.BigNumber) => {
+		// Only have flexible locking for now
+		return 'No Lock (Flexible)';
+	};
+
+	const dateFromTimestamp = (timestamp: ethers.BigNumber) => {
+		return new Date(timestamp.toNumber() * 1000);
+	};
+
+	if (!deposit) {
+		return <></>;
+	}
+
 	return (
 		<tr className={styles.Row}>
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
 					disableAnimation
-					domain={stake?.pool.domain}
-					name={stake?.pool.name}
-					image={stake?.pool.image}
+					name={deposit.pool.name}
+					image={deposit.pool.image}
 					disableInteraction
-					id={stake?.pool.id}
+					id={deposit.pool.id}
 					style={{ maxWidth: 200 }}
 				/>
 			</td>
 			<td className={styles.Right}>
-				{stake?.dateStaked.toLocaleString().split(',')[0]}
+				{deposit.lockedFrom.gt('0')
+					? dateFromTimestamp(deposit.lockedFrom).toLocaleString().split(',')[0]
+					: '-'}
 			</td>
 			<td className={styles.Right}>
-				{stake?.stakeAmount.toLocaleString()} {stake?.pool.token}
+				{deposit.tokenAmount.toString()} {deposit?.pool.tokenTicker}
 			</td>
-			<td className={styles.Right}>None (Flexible)</td>
+			<td className={styles.Right}>{timestampLabel(deposit?.lockedUntil)}</td>
 			<td>
 				<OptionDropdown
 					onSelect={onDropdownSelect}

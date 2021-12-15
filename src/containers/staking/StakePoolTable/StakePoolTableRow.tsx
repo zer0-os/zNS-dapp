@@ -6,19 +6,19 @@ import { useHistory } from 'react-router';
 import { useStaking } from 'lib/providers/staking/StakingProvider';
 
 const StakePoolTableRow = (props: any) => {
-	const { selectPoolByDomain } = useStaking();
+	const { selectPoolByName } = useStaking();
 	const { push } = useHistory();
 
 	const pool = props.data;
 
 	const onRowClick = (event: React.MouseEvent<HTMLElement>) => {
 		if ((event.target as HTMLElement).className.indexOf('FutureButton') < 0) {
-			push('pools/' + pool.domain);
+			push(pool.domain);
 		}
 	};
 
 	const onButtonClick = () => {
-		selectPoolByDomain(pool.domain);
+		selectPoolByName(pool.name);
 	};
 
 	return (
@@ -34,14 +34,10 @@ const StakePoolTableRow = (props: any) => {
 					style={{ maxWidth: 200 }}
 				/>
 			</td>
-			<td className={styles.Right}>{pool.apy.toLocaleString()}%</td>
-			<td className={styles.Right}>
-				{pool.tvl.toLocaleString()} {pool.token}
-			</td>
-			<td className={styles.Right}>{pool.numStakers.toLocaleString()}</td>
-			<td className={styles.Right}>
-				{pool.totalRewardsIssued.toLocaleString()}
-			</td>
+			<td className={styles.Right}>-</td>
+			<td className={styles.Right}>-</td>
+			<td className={styles.Right}>-</td>
+			<td className={styles.Right}>-</td>
 			<td>
 				<FutureButton glow onClick={onButtonClick}>
 					Stake

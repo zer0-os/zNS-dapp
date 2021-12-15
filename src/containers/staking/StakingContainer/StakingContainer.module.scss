@@ -8,24 +8,28 @@
 		}
 	}
 
-	.Links > a {
-		color: var(--color-grey-lighter-2);
-		font-size: 32px;
-		font-weight: 700;
+	.Links {
+		padding: 8px 16px;
 
-		transition: color var(--animation-time-short) ease-in-out;
+		> a {
+			color: var(--color-grey-lighter-2);
+			font-size: 24px;
+			font-weight: 700;
 
-		&:not(:first-of-type) {
-			margin-left: 40px;
-		}
+			transition: color var(--animation-time-short) ease-in-out;
 
-		&.Active {
-			color: var(--color-text-primary);
-			text-shadow: var(--glow-text-white) !important;
-		}
+			&:not(:first-of-type) {
+				margin-left: 40px;
+			}
 
-		&:hover {
-			text-shadow: none;
+			&.Active {
+				color: var(--color-text-primary);
+				text-shadow: var(--glow-text-white) !important;
+			}
+
+			&:hover {
+				text-shadow: none;
+			}
 		}
 	}
 }

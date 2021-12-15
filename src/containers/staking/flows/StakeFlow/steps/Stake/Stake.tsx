@@ -1,12 +1,15 @@
 import { StakeModule } from 'containers/staking';
+import { ethers } from 'ethers';
 
 import { PoolData, Message, Back } from '../../../';
 
 import styles from './Stake.module.scss';
 
 type StakeProps = {
-	apy: number;
-	totalValueLocked: number;
+	amount?: number;
+	apy?: number;
+	balance?: ethers.BigNumber;
+	pendingRewards?: ethers.BigNumber;
 	message: { error?: boolean; content: string } | undefined;
 	poolIconUrl: string;
 	poolName: string;
@@ -14,12 +17,15 @@ type StakeProps = {
 	onBack: () => void;
 	onStake: (amount: number) => void;
 	isTransactionPending?: boolean;
+	token: string;
 };
 
 const Stake = (props: StakeProps) => {
 	const {
+		amount,
+		balance,
 		apy,
-		totalValueLocked,
+		pendingRewards,
 		message,
 		poolIconUrl,
 		poolName,
@@ -27,6 +33,7 @@ const Stake = (props: StakeProps) => {
 		onBack,
 		onStake,
 		isTransactionPending,
+		token,
 	} = props;
 
 	return (
@@ -39,14 +46,15 @@ const Stake = (props: StakeProps) => {
 				image={poolIconUrl}
 				id={'123'}
 				poolUrl={'https://youtube.com/'}
-				apy={apy}
-				totalValueLocked={totalValueLocked}
+				apy={apy || 0}
+				pendingRewards={pendingRewards}
 			/>
 			<StakeModule
+				amount={amount}
 				className="border-rounded"
-				balance={10000}
+				balance={balance}
 				onStake={onStake}
-				tokenName={'WILD'}
+				tokenName={token}
 				isLoading={isTransactionPending}
 			/>
 		</div>

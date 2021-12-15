@@ -1,5 +1,6 @@
 import { FutureButton } from 'components';
 import { StakeModule } from 'containers/staking';
+import { ethers } from 'ethers';
 
 import { PoolData, Message, Back } from '../../..';
 
@@ -7,7 +8,6 @@ import styles from './Claim.module.scss';
 
 type StakeProps = {
 	apy: number;
-	totalValueLocked: number;
 	message: { error?: boolean; content: string } | undefined;
 	poolIconUrl: string;
 	poolName: string;
@@ -15,13 +15,12 @@ type StakeProps = {
 	onBack: () => void;
 	onClaim: (amount: number) => void;
 	isTransactionPending?: boolean;
-	rewardAmount: number;
+	rewardAmount?: ethers.BigNumber;
 };
 
 const Claim = (props: StakeProps) => {
 	const {
 		apy,
-		totalValueLocked,
 		message,
 		poolIconUrl,
 		poolName,
@@ -43,10 +42,15 @@ const Claim = (props: StakeProps) => {
 				id={'123'}
 				poolUrl={'https://youtube.com/'}
 				apy={apy}
-				totalValueLocked={totalValueLocked}
+				pendingRewards={rewardAmount}
 			/>
-			<FutureButton className="width-full" glow onClick={onClaim}>
-				Claim {rewardAmount} WILD
+			<FutureButton
+				className="width-full"
+				loading={rewardAmount === undefined}
+				glow
+				onClick={onClaim}
+			>
+				Claim {rewardAmount?.toString()} WILD
 			</FutureButton>
 		</div>
 	);

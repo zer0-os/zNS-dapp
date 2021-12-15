@@ -25,11 +25,11 @@ const StakePool = (props: StakePoolProps) => {
 
 	const [pool, setPool] = useState<any | undefined>();
 	const { domain } = props;
-	const { pools, getPoolByDomain, selectPoolByDomain } = useStaking();
+	const { pools, getPoolByDomain, selectPoolByName } = useStaking();
 
 	const onStake = () => {
-		if (pool?.domain) {
-			selectPoolByDomain(pool.domain);
+		if (pool?.name) {
+			selectPoolByName(pool.name);
 		}
 	};
 
@@ -39,6 +39,8 @@ const StakePool = (props: StakePoolProps) => {
 			setPool(p);
 		}
 	}, [pools]);
+
+	console.log(pool);
 
 	const containerClasses = cx(
 		styles.Container,
@@ -66,19 +68,20 @@ const StakePool = (props: StakePoolProps) => {
 			<PoolDetails
 				apy={pool?.apy}
 				className={containerClasses}
-				contractAddress={pool?.id}
+				contractAddress={pool?.contract.address}
 				icon={pool?.image}
 				name={pool?.name}
 				onStake={onStake}
-				ticker={pool?.token}
-				tokenName={pool?.tokenFullName}
+				ticker={pool?.tokenTicker}
+				tokenName={pool?.token}
 				isUserConnected={active}
 				peopleStaked={pool?.numStakers}
 				totalValueLocked={pool?.tvl}
 				totalRewards={pool?.totalRewardsIssued}
+				tokenPurchaseUrl={pool?.tokenPurchaseUrl}
 			/>
-			{/* @todo move history to its own container */}
-			<section className={cx(styles.History, containerClasses)}>
+			{/* history temporarily removed */}
+			{/* <section className={cx(styles.History, containerClasses)}>
 				<h4>Pool History</h4>
 				<ul>
 					{HISTORY_ITEMS.map((item) => (
@@ -97,7 +100,7 @@ const StakePool = (props: StakePoolProps) => {
 						</li>
 					))}
 				</ul>
-			</section>
+			</section> */}
 		</>
 	);
 };

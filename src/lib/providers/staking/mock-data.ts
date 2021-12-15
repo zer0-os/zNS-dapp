@@ -1,5 +1,13 @@
 import stakeIcon from './assets/stake.png';
 import farmIcon from './assets/farm.png';
+import { ethers } from 'ethers';
+
+export const TOKENS = [
+	{
+		name: 'WILD',
+		fullName: 'Wilder World',
+	},
+];
 
 export const POOL_DATA = [
 	{
@@ -30,27 +38,22 @@ export const POOL_DATA = [
 
 export const DEPOSIT_DATA = [
 	{
-		id: '1',
+		depositId: '1',
 		pool: POOL_DATA[1],
-		dateStaked: new Date(),
 		stakeAmount: 2351326,
-		stakeRewards: 63216,
-		stakeRewardsVested: 0,
+		lockedFrom: ethers.BigNumber,
+		lockedUntil: ethers.BigNumber,
 	},
 	{
-		id: '2',
+		depositId: '2',
 		pool: POOL_DATA[0],
 		dateStaked: new Date(),
 		stakeAmount: 4316431,
-		stakeRewards: 64316,
-		stakeRewardsVested: 2356,
 	},
 	{
-		id: '3',
-		pool: POOL_DATA[1],
+		depositId: '2',
+		pool: POOL_DATA[0],
 		dateStaked: new Date(),
-		stakeAmount: 64316,
-		stakeRewards: 1264,
-		stakeRewardsVested: 0,
+		stakeAmount: 4316431,
 	},
 ];

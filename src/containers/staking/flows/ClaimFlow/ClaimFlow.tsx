@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import Claim from './steps/Claim/Claim';
 import { Confirm, Header } from '../';
@@ -9,6 +9,7 @@ import styles from './ClaimFlow.module.scss';
 
 import classNames from 'classnames/bind';
 import { LoadingIndicator } from 'components';
+import { ethers } from 'ethers';
 
 enum Steps {
 	Claim,
@@ -24,15 +25,26 @@ type StakeFlowProps = {
 
 const StakeFlow = (props: StakeFlowProps) => {
 	const { onClose } = props;
-	const { selectedPool } = useStaking();
+	const { checkRewards, claimRewards, selectedDeposit } = useStaking();
 
-	const rewardAmount = 1241;
 	const HEADER = <Header text="Claim Pool Rewards" />;
 
+	const [rewardAmount, setRewardAmount] = useState<
+		ethers.BigNumber | undefined
+	>();
 	const [step, setStep] = useState<Steps>(Steps.Claim);
 	const [message, setMessage] = useState<
 		{ content: string; error?: boolean } | undefined
 	>();
+
+	useEffect(() => {
+		getRewardAmount();
+	}, []);
+
+	const getRewardAmount = async () => {
+		const rewards = await checkRewards(selectedDeposit.pool.name);
+		setRewardAmount(rewards);
+	};
 
 	const onClaim = () => {
 		setStep(Steps.Confirm);
@@ -40,23 +52,23 @@ const StakeFlow = (props: StakeFlowProps) => {
 
 	const onConfirm = () => {
 		setStep(Steps.Processing);
-		setTimeout(() => {
-			setMessage({ content: `${rewardAmount} WILD claimed successfully` });
+		claimRewards(selectedDeposit.pool.name).then((d) => {
 			setStep(Steps.Claim);
-		}, 3000);
+			setRewardAmount(undefined);
+			getRewardAmount();
+		});
 	};
 
-	const stepNode = useMemo(() => {
+	const stepNode = () => {
 		switch (step) {
 			case Steps.Claim:
 				return (
 					<Claim
-						apy={selectedPool.apy}
-						totalValueLocked={selectedPool.tvl}
+						apy={selectedDeposit.pool.apy}
 						message={message}
-						poolIconUrl={selectedPool.image}
-						poolName={selectedPool.name}
-						poolDomain={selectedPool.domain}
+						poolIconUrl={selectedDeposit.pool.image}
+						poolName={selectedDeposit.pool.name}
+						poolDomain={selectedDeposit.pool.domain}
 						onBack={onClose}
 						onClaim={onClaim}
 						rewardAmount={rewardAmount}
@@ -74,8 +86,8 @@ const StakeFlow = (props: StakeFlowProps) => {
 										pool and can be unstaked after a 12 month vesting period.
 									</p>
 									<p>
-										Are you sure you want to claim <b>{rewardAmount} WILD</b>{' '}
-										($TODO) in pool rewards?
+										Are you sure you want to claim{' '}
+										<b>{rewardAmount?.toString()} WILD</b> in pool rewards?
 									</p>
 								</>
 							}
@@ -96,7 +108,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 			default:
 				return 'error';
 		}
-	}, [step]);
+	};
 
 	return (
 		<div
@@ -107,7 +119,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 				'border-primary',
 			)}
 		>
-			{stepNode}
+			{stepNode()}
 		</div>
 	);
 };

@@ -11,20 +11,14 @@ export enum ApprovalStep {
 }
 
 type ApproveProps = {
+	onContinue: () => void;
+	onCancel: () => void;
 	error?: string;
 	step: ApprovalStep;
 };
 
 const Approve = (props: ApproveProps) => {
-	const { error, step } = props;
-
-	const onContinue = () => {
-		console.log('continue');
-	};
-
-	const onCancel = () => {
-		console.log('cancel');
-	};
+	const { onContinue, onCancel, error, step } = props;
 
 	const view = () => {
 		if (step === ApprovalStep.Checking) {
