@@ -49,7 +49,7 @@ const MintWheels = (props: MintWheelsProps) => {
 	const [step, setStep] = useState<Step>(Step.Info);
 
 	const [transactionStatus, setTransactionStatus] = useState<string>(
-		'Confirm wallet transaction to begin minting your Crib',
+		'Confirm wallet transaction to begin minting your Craft',
 	);
 	const [transactionError, setTransactionError] = useState<
 		string | undefined
@@ -190,13 +190,15 @@ const MintWheels = (props: MintWheelsProps) => {
 		<div className={`${styles.Container} border-primary border-rounded`}>
 			{/* Head section */}
 			<section className={styles.Header}>
-				<h1 className="glow-text-white">Mint Your Cribs</h1>
+				<h1 className="glow-text-white">Mint Your Crafts</h1>
 				<span className="glow-text-white">
-					Your Crib in the Metaverse awaits
+					Your Craft in the Metaverse awaits
 				</span>
 				<hr />
 			</section>
-			{props.dropStage === undefined && <Loading text={'Loading Cribs Drop'} />}
+			{props.dropStage === undefined && (
+				<Loading text={'Loading Crafts Drop'} />
+			)}
 			{getFlowSection()}
 		</div>
 	);

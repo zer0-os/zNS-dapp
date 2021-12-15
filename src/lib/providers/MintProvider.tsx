@@ -54,9 +54,9 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		// Set up default wheel to render
 		const wheel = {
 			zNA: '',
-			title: 'Your Crib',
+			title: 'Your Craft',
 			imageUri:
-				'https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_200,w_200/v1632961649/zns/cribs-mint-progress.gif',
+				'https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_200,w_200/v1639579038/zns/craft-mint-progress.gif',
 			story: '',
 			transactionHash: '',
 		};
@@ -70,7 +70,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		//////////////////////////////////////
 
 		let tx: Maybe<ethers.ContractTransaction>;
-		setStatus('Confirm wallet transaction to begin minting your Crib');
+		setStatus('Confirm wallet transaction to begin minting your Craft');
 
 		const network = await saleContract.provider.getNetwork();
 
@@ -91,7 +91,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		//////////////////////////
 
 		setStatus(
-			'Minting your Crib... this may take up to 20 minutes if the network is busy. You may close this and the transaction will continue in the backround. When minting is complete, your Crib will be in your profile.',
+			'Minting your Craft... this may take up to 20 minutes if the network is busy. You may close this and the transaction will continue in the backround. When minting is complete, your Craft will be in your profile.',
 		);
 		setMinting([...minting, wheel]);
 		await tx.wait();
@@ -100,7 +100,9 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		// Transaction complete //
 		//////////////////////////
 
-		addNotification(`Successfully minted a Crib. Open your Profile to view it`);
+		addNotification(
+			`Successfully minted a Craft. Open your Profile to view it`,
+		);
 		const index = minting.findIndex((d) => d.title === 'Your Wheels');
 		setMinting(minting.splice(index, 1));
 		setMinted([...minted, wheel]);
