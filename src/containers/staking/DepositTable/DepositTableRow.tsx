@@ -6,6 +6,7 @@ import { ethers } from 'ethers';
 import { WrappedDeposit } from './DepositTable';
 import { displayEther } from 'lib/currency';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
+import { optionsToId } from 'react-intersection-observer/observe';
 
 type Option = {
 	name: string;
@@ -21,10 +22,6 @@ const DepositTableRow = (props: any) => {
 
 	const OPTIONS: Option[] = [
 		{
-			name: 'Unstake Deposit',
-			callback: () => unstake(deposit),
-		},
-		{
 			name: 'Claim Rewards',
 			callback: () => claim(deposit.pool),
 		},
@@ -33,6 +30,13 @@ const DepositTableRow = (props: any) => {
 			callback: () => stake(deposit.pool),
 		},
 	];
+
+	if (!deposit.isYield) {
+		OPTIONS.unshift({
+			name: 'Unstake Deposit',
+			callback: () => unstake(deposit),
+		});
+	}
 
 	const onDropdownSelect = (selection: string) => {
 		const filter = OPTIONS.filter((o: Option) => o.name === selection);
