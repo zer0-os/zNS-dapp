@@ -12,8 +12,6 @@ const StakePoolTable = () => {
 
 	const pools = staking.pools ? Object.values(staking.pools) : undefined;
 
-	console.log(pools);
-
 	return (
 		<GenericTable
 			alignments={[0, 0, 1, 1, 1, 1, 1]}
