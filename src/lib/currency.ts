@@ -17,3 +17,15 @@ export const displayEther = (x: ethers.BigNumber, decimalPlaces?: number) => {
 		return number;
 	}
 };
+
+export const displayEtherToFiat = (
+	x: ethers.BigNumber,
+	conversionRate: number,
+) => {
+	// Have to convert conversation rate by some arbitrary large
+	// number then divide by the same number because you can't convert
+	// a decimal number to a BigNumber
+	const y = 100000;
+	const number = x.mul(conversionRate * y).div(y);
+	return displayEther(number, 2);
+};

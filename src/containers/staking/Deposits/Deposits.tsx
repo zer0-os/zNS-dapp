@@ -4,7 +4,8 @@ import { StatsWidget } from 'components';
 import { DepositTable } from 'containers/staking';
 import { ethers } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
-import { displayEther } from 'lib/currency';
+import { displayEther, displayEtherToFiat, toFiat } from 'lib/currency';
+import useCurrency from 'lib/hooks/useCurrency';
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 import { MaybeUndefined } from 'lib/types';
 import { useEffect, useState } from 'react';
@@ -14,6 +15,7 @@ const Deposits = () => {
 	const staking = useStaking();
 	const contracts = useZnsContracts();
 	const { active, account } = useWeb3React<Web3Provider>();
+	const { wildPriceUsd } = useCurrency();
 
 	const [totalRewardsClaimable, setTotalRewardsClaimable] =
 		useState<MaybeUndefined<ethers.BigNumber>>();
@@ -63,6 +65,11 @@ const Deposits = () => {
 							? displayEther(wildBalance)
 							: '-'
 					}
+					subTitle={
+						wildBalance &&
+						wildPriceUsd &&
+						'$' + displayEtherToFiat(wildBalance, wildPriceUsd)
+					}
 				/>
 				<StatsWidget
 					className="normalView"
@@ -72,6 +79,11 @@ const Deposits = () => {
 						active && totalRewardsClaimable !== undefined
 							? displayEther(totalRewardsClaimable) + ' WILD'
 							: '-'
+					}
+					subTitle={
+						totalRewardsClaimable &&
+						wildPriceUsd &&
+						'$' + displayEtherToFiat(totalRewardsClaimable, wildPriceUsd)
 					}
 				/>
 			</ul>
