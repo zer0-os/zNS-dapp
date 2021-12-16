@@ -32,7 +32,6 @@ const PoolData = ({
 	<>
 		<div className="flex-split flex-vertical-align">
 			<div>
-				{console.log(wildToUsd)}
 				<Artwork
 					disableAnimation
 					name={name}
