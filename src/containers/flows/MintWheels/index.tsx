@@ -18,14 +18,13 @@ import { useMintProvider } from 'lib/providers/MintProvider';
 import {
 	getDropData,
 	getUserEligibility,
-	getBalanceEth,
 	getNumberPurchasedByUser,
+	getERC20TokenBalance,
 } from './helpers';
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_WHITELIST = 1635458400000;
-	const DATE_PUBLIC = 1636063200000;
+	const DATE_PUBLIC = 1638666000000;
 
 	//////////////////
 	// State & Data //
@@ -41,6 +40,7 @@ const MintWheelsFlowContainer = () => {
 	// Contracts
 	const contracts = useZnsContracts();
 	const saleContract = contracts?.wheelSale;
+	const wildTokenContract = contracts?.wildToken;
 
 	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
@@ -70,7 +70,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted = true;
+	const isSaleHalted = false;
 
 	///////////////
 	// Functions //
@@ -87,23 +87,13 @@ const MintWheelsFlowContainer = () => {
 			return;
 		}
 		if (isSaleHalted) {
-			window
-				?.open(
-					'https://zine.wilderworld.com/the-wilder-way-wheels-update/',
-					'_blank',
-				)
-				?.focus();
+			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 			return;
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
-			window
-				?.open(
-					'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
-					'_blank',
-				)
-				?.focus();
+			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold) {
-			history.push('wheels.genesis');
+			history.push('cribs.wiami.southbeach.qube');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -204,7 +194,10 @@ const MintWheelsFlowContainer = () => {
 					}
 					const primaryData = d as DropData;
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(DATE_WHITELIST);
+						setCountdownDate(undefined);
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
 						setCountdownDate(DATE_PUBLIC);
 					} else {
@@ -261,8 +254,8 @@ const MintWheelsFlowContainer = () => {
 			return;
 		}
 		// Get user data if wallet connected
-		if (account && library) {
-			getBalanceEth(library.getSigner()).then((d) => {
+		if (account && library && wildTokenContract) {
+			getERC20TokenBalance(wildTokenContract, account).then((d) => {
 				if (isMounted && d !== undefined) {
 					setBalanceEth(d);
 				}
@@ -296,8 +289,17 @@ const MintWheelsFlowContainer = () => {
 				}
 				const primaryData = d as DropData;
 				if (dropStage !== undefined) {
+					if (hasCountdownFinished && primaryData.dropStage === dropStage) {
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
+						return;
+					}
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(DATE_WHITELIST);
+						setCountdownDate(undefined);
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
 						setCountdownDate(DATE_PUBLIC);
 					} else {
@@ -319,7 +321,7 @@ const MintWheelsFlowContainer = () => {
 				if (!failedToLoad) {
 					setTimeout(() => {
 						setRefetch(refetch + 1);
-					}, 5000);
+					}, 7000);
 				}
 				setFailedToLoad(true);
 			});
@@ -352,19 +354,21 @@ const MintWheelsFlowContainer = () => {
 		if (isSaleHalted) {
 			return (
 				<>
-					<span>The Wilder Wheels Phase 1 and 2 sales are complete.</span>
+					<span>
+						Wilder Cribs sale has been temporarily paused to ensure a fair sale.
+					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
 							<a
-								href={'https://discord.gg/fqjKgFrX'}
+								href={'https://discord.gg/mb9fcFey8a'}
 								target={'_blank'}
 								rel={'noreferrer'}
 							>
 								Discord
 							</a>
 						</b>{' '}
-						for details on when the next sale will happen.
+						for more details.
 					</span>
 				</>
 			);
@@ -397,6 +401,7 @@ const MintWheelsFlowContainer = () => {
 				<Overlay open onClose={closeWizard}>
 					<MintWheels
 						balanceEth={balanceEth}
+						contract={saleContract}
 						dropStage={dropStage}
 						isUserWhitelisted={isUserWhitelisted}
 						maxPurchasesPerUser={maxPurchasesPerUser}
@@ -407,12 +412,13 @@ const MintWheelsFlowContainer = () => {
 						userId={account as string | undefined}
 						wheelsMinted={wheelsMinted}
 						wheelsTotal={wheelsTotal}
+						token={wildTokenContract}
 					/>
 				</Overlay>
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
-					title={'Get your ride for the Metaverse '}
+					title={'Get your crib for the Metaverse '}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}

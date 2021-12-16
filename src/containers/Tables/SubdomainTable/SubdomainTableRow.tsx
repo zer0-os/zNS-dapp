@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { BidButton } from 'containers';
 import { ethers } from 'ethers';
-import { DomainMetrics } from '@zero-tech/zns-sdk';
+import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { formatNumber, formatEthers } from 'lib/utils';
 
 const SubdomainTableRow = (props: any) => {

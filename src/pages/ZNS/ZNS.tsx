@@ -44,7 +44,7 @@ import {
 	CurrentDomainPreview,
 	ProfileModal,
 	// Temporarily removed raffle
-	// WheelsRaffle,
+	WheelsRaffle,
 } from 'containers';
 
 //- Library Imports
@@ -53,7 +53,7 @@ import { MintNewNFT, NFTView, TransferOwnership } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { DomainMetrics } from '@zero-tech/zns-sdk';
+import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
@@ -560,21 +560,20 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							{account && !isSearchActive && (
 								<>
 									{/* Mint button */}
-									<FutureButton
-										glow={account != null}
-										onClick={() => {
-											account != null
-												? openMint()
-												: addNotification('Please connect your wallet.');
-										}}
-										loading={loading}
-									>
-										{pageWidth <= 900 && 'MINT'}
-										{pageWidth > 900 && isOwnedByUser === true && 'MINT NFT'}
-										{pageWidth > 900 &&
-											isOwnedByUser === false &&
-											'REQUEST TO MINT NFT'}
-									</FutureButton>
+									{isOwnedByUser && (
+										<FutureButton
+											glow={account != null}
+											onClick={() => {
+												account != null
+													? openMint()
+													: addNotification('Please connect your wallet.');
+											}}
+											loading={loading}
+										>
+											{pageWidth <= 900 && 'MINT'}
+											{pageWidth > 900 && 'MINT NFT'}
+										</FutureButton>
+									)}
 
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
@@ -620,7 +619,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				</FilterBar>
 
 				{/* Temporarily removed Raffle */}
-				{/* <WheelsRaffle /> */}
+				<WheelsRaffle />
 
 				{!isNftView && (
 					<div
