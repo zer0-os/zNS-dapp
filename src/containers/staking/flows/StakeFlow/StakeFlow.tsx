@@ -13,6 +13,7 @@ import { useWeb3React } from '@web3-react/core';
 import { MaybeUndefined } from 'lib/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useRefreshToken } from 'lib/hooks/useRefreshToken';
+import useCurrency from 'lib/hooks/useCurrency';
 
 enum Steps {
 	Stake,
@@ -35,6 +36,8 @@ const StakeFlow = (props: StakeFlowProps) => {
 
 	const context = useWeb3React<Web3Provider>();
 	const signer = context.library!.getSigner();
+
+	const { wildPriceUsd } = useCurrency();
 
 	const stakingPool = useStakingPoolSelector().stakePool;
 
@@ -171,6 +174,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 						onStake={onStake}
 						isTransactionPending={isTransactionPending}
 						token={stakingPool!.content.tokenTicker}
+						wildToUsd={wildPriceUsd}
 					/>
 				);
 			case Steps.Approve:

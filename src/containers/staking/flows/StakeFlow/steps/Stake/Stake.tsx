@@ -18,6 +18,7 @@ type StakeProps = {
 	onStake: (amount: string) => void;
 	isTransactionPending?: boolean;
 	token: string;
+	wildToUsd?: number;
 };
 
 const Stake = (props: StakeProps) => {
@@ -34,6 +35,7 @@ const Stake = (props: StakeProps) => {
 		onStake,
 		isTransactionPending,
 		token,
+		wildToUsd,
 	} = props;
 
 	return (
@@ -48,6 +50,7 @@ const Stake = (props: StakeProps) => {
 				poolUrl={'https://youtube.com/'}
 				apy={apy || 0}
 				pendingRewards={pendingRewards}
+				wildToUsd={wildToUsd}
 			/>
 			<StakeModule
 				amount={amount}

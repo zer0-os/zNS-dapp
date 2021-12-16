@@ -4,7 +4,7 @@ import styles from './PoolData.module.scss';
 
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
-import { displayEther, toFiat } from 'lib/currency';
+import { displayEther, displayEtherToFiat, toFiat } from 'lib/currency';
 
 const cx = classNames.bind(styles);
 
@@ -16,6 +16,7 @@ type PoolDataProps = {
 	name: string;
 	poolUrl: string;
 	pendingRewards?: ethers.BigNumber;
+	wildToUsd?: number;
 };
 
 const PoolData = ({
@@ -26,10 +27,12 @@ const PoolData = ({
 	name,
 	poolUrl,
 	pendingRewards,
+	wildToUsd,
 }: PoolDataProps) => (
 	<>
 		<div className="flex-split flex-vertical-align">
 			<div>
+				{console.log(wildToUsd)}
 				<Artwork
 					disableAnimation
 					name={name}
@@ -55,6 +58,11 @@ const PoolData = ({
 				fieldName={'Your Rewards Claimable'}
 				isLoading={pendingRewards === undefined}
 				title={pendingRewards && displayEther(pendingRewards) + ' WILD'}
+				subTitle={
+					pendingRewards !== undefined &&
+					wildToUsd &&
+					'$' + displayEtherToFiat(pendingRewards, wildToUsd)
+				}
 			/>
 		</ul>
 	</>
