@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 
-import { Overlay, TabBar } from 'components';
+import { Overlay } from 'components';
 
 import {
 	Deposits,
@@ -10,19 +10,10 @@ import {
 	ClaimFlow,
 } from 'containers/staking';
 
-import { useStaking } from 'lib/providers/staking/StakingProvider';
-
 // Style Imports
 import styles from './StakingContainer.module.scss';
 import classNames from 'classnames/bind';
-import {
-	useLocation,
-	BrowserRouter,
-	Link,
-	Redirect,
-	Route,
-	Switch,
-} from 'react-router-dom';
+import { useLocation, Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 
 type StakingContainerProps = {
@@ -55,22 +46,16 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				}}
 			>
 				{poolSelection.stakePool && (
-					<StakeFlow
-						onClose={() => {
-							poolSelection.selectStakePool(undefined);
-						}}
-					/>
+					<StakeFlow onClose={() => poolSelection.selectStakePool(undefined)} />
 				)}
 			</Overlay>
 			<Overlay
 				centered
-				open={poolSelection.depositPool !== undefined}
-				onClose={() => poolSelection.selectDepositPool(undefined)}
+				open={poolSelection.claiming !== undefined}
+				onClose={() => poolSelection.claim(undefined)}
 			>
-				{poolSelection.depositPool && (
-					<ClaimFlow
-						onClose={() => poolSelection.selectDepositPool(undefined)}
-					/>
+				{poolSelection.claiming && (
+					<ClaimFlow onClose={() => poolSelection.claim(undefined)} />
 				)}
 			</Overlay>
 			<Switch>

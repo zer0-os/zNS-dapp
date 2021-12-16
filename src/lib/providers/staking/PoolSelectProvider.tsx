@@ -3,8 +3,8 @@ import React from 'react';
 import { WrappedStakingPool } from './StakingProviderTypes';
 
 export const SelectorContext = React.createContext({
-	selectDepositPool: (pool: MaybeUndefined<WrappedStakingPool>) => {},
-	depositPool: undefined as MaybeUndefined<WrappedStakingPool>,
+	claim: (pool: MaybeUndefined<WrappedStakingPool>) => {},
+	claiming: undefined as MaybeUndefined<WrappedStakingPool>,
 	selectStakePool: (pool: MaybeUndefined<WrappedStakingPool>) => {},
 	stakePool: undefined as MaybeUndefined<WrappedStakingPool>,
 });
@@ -16,14 +16,14 @@ type SelectorContextProviderType = {
 export const PoolSelectProvider: React.FC<SelectorContextProviderType> = ({
 	children,
 }) => {
-	const [depositPool, setDepositPool] =
+	const [claiming, setClaiming] =
 		React.useState<MaybeUndefined<WrappedStakingPool>>();
 	const [stakePool, setStakePool] =
 		React.useState<MaybeUndefined<WrappedStakingPool>>();
 
 	const contextValue = {
-		depositPool,
-		selectDepositPool: setDepositPool,
+		claim: setClaiming,
+		claiming: claiming,
 		stakePool,
 		selectStakePool: setStakePool,
 	};

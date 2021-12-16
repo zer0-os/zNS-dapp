@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Claim from './steps/Claim/Claim';
 import { Confirm, Header } from '../';
@@ -10,6 +10,8 @@ import styles from './ClaimFlow.module.scss';
 import classNames from 'classnames/bind';
 import { LoadingIndicator } from 'components';
 import { ethers } from 'ethers';
+import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
+import { displayEther } from 'lib/currency';
 
 enum Steps {
 	Claim,
@@ -19,13 +21,14 @@ enum Steps {
 
 const cx = classNames.bind(styles);
 
-type StakeFlowProps = {
+type ClaimFlowProps = {
 	onClose: () => void;
 };
 
-const StakeFlow = (props: StakeFlowProps) => {
+const ClaimFlow = (props: ClaimFlowProps) => {
 	const { onClose } = props;
-	const { checkRewards, claimRewards, selectedDeposit } = useStaking();
+	const { checkRewards, claimRewards } = useStaking();
+	const { claiming } = useStakingPoolSelector();
 
 	const HEADER = <Header text="Claim Pool Rewards" />;
 
@@ -42,7 +45,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 	}, []);
 
 	const getRewardAmount = async () => {
-		const rewards = await checkRewards(selectedDeposit.pool.name);
+		const rewards = await checkRewards(claiming!.content.name);
 		setRewardAmount(rewards);
 	};
 
@@ -52,7 +55,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 
 	const onConfirm = () => {
 		setStep(Steps.Processing);
-		claimRewards(selectedDeposit.pool.name).then((d) => {
+		claimRewards(claiming!.content.name).then((d) => {
 			setStep(Steps.Claim);
 			setRewardAmount(undefined);
 			getRewardAmount();
@@ -64,11 +67,11 @@ const StakeFlow = (props: StakeFlowProps) => {
 			case Steps.Claim:
 				return (
 					<Claim
-						apy={selectedDeposit.pool.apy}
+						apy={0}
 						message={message}
-						poolIconUrl={selectedDeposit.pool.image}
-						poolName={selectedDeposit.pool.name}
-						poolDomain={selectedDeposit.pool.domain}
+						poolIconUrl={claiming!.content.image}
+						poolName={claiming!.content.name}
+						poolDomain={claiming!.content.domain}
 						onBack={onClose}
 						onClaim={onClaim}
 						rewardAmount={rewardAmount}
@@ -87,7 +90,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 									</p>
 									<p>
 										Are you sure you want to claim{' '}
-										<b>{rewardAmount?.toString()} WILD</b> in pool rewards?
+										<b>{displayEther(rewardAmount!)} WILD</b> in pool rewards?
 									</p>
 								</>
 							}
@@ -110,6 +113,10 @@ const StakeFlow = (props: StakeFlowProps) => {
 		}
 	};
 
+	if (!claiming) {
+		return <></>;
+	}
+
 	return (
 		<div
 			className={cx(
@@ -124,4 +131,4 @@ const StakeFlow = (props: StakeFlowProps) => {
 	);
 };
 
-export default StakeFlow;
+export default ClaimFlow;

@@ -14,10 +14,14 @@ import { MaybeUndefined } from 'lib/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 import useCurrency from 'lib/hooks/useCurrency';
+import { Header } from '..';
+import { FutureButton, Spinner } from 'components';
+import { displayEther } from 'lib/currency';
 
 enum Steps {
 	Stake,
 	Approve,
+	Claim,
 }
 
 type Message = {
@@ -44,7 +48,10 @@ const StakeFlow = (props: StakeFlowProps) => {
 	const [step, setStep] = useState<Steps>(Steps.Stake);
 	const [isTransactionPending, setIsTransactionPending] =
 		useState<boolean>(false);
+	const [isTransactionActive, setIsTransactionActive] =
+		useState<boolean>(false);
 	const [message, setMessage] = useState<Message | undefined>();
+	const [stake, setStake] = useState<string | undefined>();
 	const [stakeAmount, setStakeAmount] =
 		useState<MaybeUndefined<ethers.BigNumber>>(); // Amount user wants to stake
 	const [poolTokenBalance, setPoolTokenBalance] = useState<
@@ -101,7 +108,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 		setApprovalStep(ApprovalStep.Approving);
 
 		// property 'wait' does ont exist on type never
-		// await tx?.wait();
+		await tx?.wait();
 		setStep(Steps.Stake);
 		doStake(stakeAmount!);
 	};
@@ -119,12 +126,14 @@ const StakeFlow = (props: StakeFlowProps) => {
 			signer,
 		);
 
+		setStep(Steps.Stake);
+
 		const success = await tx?.wait();
 		refreshToken.refresh();
 
 		if (success) {
 			setMessage({
-				content: `${amount.toLocaleString()} ${
+				content: `${displayEther(amount)} ${
 					stakingPool!.content.tokenTicker
 				} staked successfully`,
 			});
@@ -137,9 +146,16 @@ const StakeFlow = (props: StakeFlowProps) => {
 		setIsTransactionPending(false);
 	};
 
-	const onStake = async (amount: string) => {
+	const onStake = async (amount: string, shouldContinue?: boolean) => {
+		if (!shouldContinue && pendingRewards) {
+			setStep(Steps.Claim);
+			setStake(amount);
+			return;
+		}
+
 		setMessage(undefined);
 		setIsTransactionPending(true);
+
 		const amountAsWei = ethers.utils.parseEther(amount);
 		setStakeAmount(amountAsWei);
 
@@ -162,7 +178,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 			case Steps.Stake:
 				return (
 					<Stake
-						amount={stakeAmount}
+						amount={stake}
 						balance={poolTokenBalance}
 						apy={0}
 						pendingRewards={pendingRewards}
@@ -184,6 +200,33 @@ const StakeFlow = (props: StakeFlowProps) => {
 						onContinue={onContinueApproval}
 						onCancel={onCancelApproval}
 					/>
+				);
+			case Steps.Claim:
+				return (
+					<>
+						<Header text="Stake & Claim Rewards" />
+						<div className={styles.Claim}>
+							<p>
+								When you make another deposit, you will also claim your WILD
+								rewards from this pool. These rewards will be staked in the WILD
+								pool and can be unstaked after the 12 month vesting period.
+							</p>
+							<p>
+								Are you sure you want to claim{' '}
+								<b>{displayEther(pendingRewards!)} WILD</b> in pool rewards and
+								stake <b>{stake} WILD</b>? This will happen in one transaction.
+							</p>
+							<div>
+								{isTransactionPending ? (
+									<Spinner />
+								) : (
+									<FutureButton glow onClick={() => onStake(stake!, true)}>
+										Confirm Stake
+									</FutureButton>
+								)}
+							</div>
+						</div>
+					</>
 				);
 			default:
 				return 'error';

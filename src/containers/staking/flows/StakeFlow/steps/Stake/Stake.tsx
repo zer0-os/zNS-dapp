@@ -6,7 +6,7 @@ import { PoolData, Message, Back } from '../../../';
 import styles from './Stake.module.scss';
 
 type StakeProps = {
-	amount?: ethers.BigNumber;
+	amount?: string;
 	apy?: number;
 	balance?: ethers.BigNumber;
 	pendingRewards?: ethers.BigNumber;
@@ -18,7 +18,8 @@ type StakeProps = {
 	onStake: (amount: string) => void;
 	isTransactionPending?: boolean;
 	token: string;
-	wildToUsd?: number;
+	wildToUsd: number;
+	rewardsPending?: ethers.BigNumber;
 };
 
 const Stake = (props: StakeProps) => {
@@ -59,6 +60,7 @@ const Stake = (props: StakeProps) => {
 				onStake={onStake}
 				tokenName={token}
 				isLoading={isTransactionPending}
+				pendingRewards={pendingRewards}
 			/>
 		</div>
 	);

@@ -1,6 +1,7 @@
 import { FutureButton } from 'components';
 import { StakeModule } from 'containers/staking';
 import { ethers } from 'ethers';
+import { displayEther } from 'lib/currency';
 
 import { PoolData, Message, Back } from '../../..';
 
@@ -44,14 +45,16 @@ const Claim = (props: StakeProps) => {
 				apy={apy}
 				pendingRewards={rewardAmount}
 			/>
-			<FutureButton
-				className="width-full"
-				loading={rewardAmount === undefined}
-				glow
-				onClick={onClaim}
-			>
-				Claim {rewardAmount?.toString()} WILD
-			</FutureButton>
+			{(rewardAmount === undefined || rewardAmount.gt(0)) && (
+				<FutureButton
+					className="width-full"
+					loading={isTransactionPending}
+					onClick={onClaim}
+					glow
+				>
+					Claim {rewardAmount && displayEther(rewardAmount)} WILD
+				</FutureButton>
+			)}
 		</div>
 	);
 };

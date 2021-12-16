@@ -2,3 +2,20 @@
 	width: 640px;
 	padding: 40px;
 }
+
+.Claim {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+
+	> * {
+		&:not(:first-child) {
+			margin-top: 40px;
+		}
+	}
+
+	p {
+		padding: 0;
+	}
+}

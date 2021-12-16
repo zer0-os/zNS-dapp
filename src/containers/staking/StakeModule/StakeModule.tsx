@@ -11,20 +11,28 @@ import { MaybeUndefined } from 'lib/types';
 const cx = classNames.bind(styles);
 
 type StakeModuleProps = {
-	amount?: ethers.BigNumber;
+	amount?: string;
 	className?: string;
 	balance?: ethers.BigNumber;
 	onStake: (amount: string) => void;
 	tokenName: string;
 	isLoading?: boolean;
+	pendingRewards?: ethers.BigNumber;
 };
 
 const StakeModule = (props: StakeModuleProps) => {
-	const { amount, className, balance, onStake, tokenName, isLoading } = props;
+	const {
+		amount,
+		className,
+		balance,
+		onStake,
+		tokenName,
+		isLoading,
+		pendingRewards,
+	} = props;
 
-	const [amountString, setAmountString] = useState<MaybeUndefined<string>>(
-		!amount ? undefined : ethers.utils.formatEther(amount),
-	);
+	const [amountString, setAmountString] =
+		useState<MaybeUndefined<string>>(amount);
 
 	const canStakeSpecifiedAmount =
 		balance && Number(amountString) > 0 && balance.gt(amountString || 0);
@@ -69,6 +77,14 @@ const StakeModule = (props: StakeModuleProps) => {
 						</b>
 					</div>
 				</div>
+				{pendingRewards && (
+					<div className={cx(styles.Balance, 'flex-split flex-vertical-align')}>
+						<span>Your Pool Rewards Claimable (WILD)</span>
+						<div className={styles.Amounts}>
+							<b className={styles.Tokens}>{displayEther(pendingRewards)}</b>
+						</div>
+					</div>
+				)}
 			</div>
 		</div>
 	);

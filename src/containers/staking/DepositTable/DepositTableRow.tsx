@@ -2,10 +2,10 @@ import { OptionDropdown } from 'components';
 import { Artwork } from 'components';
 import styles from './DepositTableRow.module.scss';
 
-import { useStaking, DepositView } from 'lib/providers/staking/StakingProvider';
 import { ethers } from 'ethers';
 import { WrappedDeposit } from './DepositTable';
-import { displayEther, toFiat } from 'lib/currency';
+import { displayEther } from 'lib/currency';
+import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 
 type Option = {
 	name: string;
@@ -15,7 +15,8 @@ type Option = {
 const DepositTableRow = (props: any) => {
 	const deposit = props.data as WrappedDeposit;
 
-	const { selectPoolByName, selectDeposit } = useStaking();
+	const stake = useStakingPoolSelector().selectStakePool;
+	const claim = useStakingPoolSelector().claim;
 
 	const OPTIONS: Option[] = [
 		{
@@ -24,12 +25,11 @@ const DepositTableRow = (props: any) => {
 		},
 		{
 			name: 'Claim Rewards',
-			callback: () =>
-				selectDeposit(deposit.depositId, deposit.pool.content.name),
+			callback: () => claim(deposit.pool),
 		},
 		{
 			name: 'Stake In Pool',
-			callback: () => selectPoolByName(deposit.pool.content.name),
+			callback: () => stake(deposit.pool),
 		},
 	];
 

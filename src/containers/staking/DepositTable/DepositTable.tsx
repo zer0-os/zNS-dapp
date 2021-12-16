@@ -14,12 +14,15 @@ import React from 'react';
 import * as zfi from '@zero-tech/zfi-sdk';
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
 import { MaybeUndefined } from 'lib/types';
+import DepositProvider from './DepositTableProvider';
+
+type DepositTableProps = {};
 
 export interface WrappedDeposit extends zfi.Deposit {
 	pool: WrappedStakingPool;
 }
 
-const DepositTable = () => {
+const DepositTable = (props: DepositTableProps) => {
 	const staking = useStaking();
 	const { account } = useWeb3React();
 
@@ -72,16 +75,18 @@ const DepositTable = () => {
 		);
 	} else if (!deposits || (deposits && deposits.length)) {
 		return (
-			<GenericTable
-				alignments={[0, 0, 1, 1, 1, 1, 1]}
-				data={deposits}
-				isLoading={deposits === undefined}
-				loadingText={'Loading Deposits'}
-				itemKey={'id'}
-				headers={TABLE_HEADERS}
-				empty={deposits?.length === 0}
-				rowComponent={DepositTableRow}
-			/>
+			<DepositProvider>
+				<GenericTable
+					alignments={[0, 0, 1, 1, 1, 1, 1]}
+					data={deposits}
+					isLoading={deposits === undefined}
+					loadingText={'Loading Deposits'}
+					itemKey={'id'}
+					headers={TABLE_HEADERS}
+					empty={deposits?.length === 0}
+					rowComponent={DepositTableRow}
+				/>
+			</DepositProvider>
 		);
 	}
 
@@ -95,4 +100,12 @@ const DepositTable = () => {
 	);
 };
 
-export default DepositTable;
+const WrappedDepositTable = (props: DepositTableProps) => {
+	return (
+		<DepositProvider>
+			<DepositTable {...props} />
+		</DepositProvider>
+	);
+};
+
+export default React.memo(WrappedDepositTable);
