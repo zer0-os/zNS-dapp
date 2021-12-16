@@ -51,6 +51,17 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 			</Overlay>
 			<Overlay
 				centered
+				open={poolSelection.unstaking !== undefined}
+				onClose={() => {
+					poolSelection.unstake(undefined);
+				}}
+			>
+				{poolSelection.unstaking && (
+					<StakeFlow unstake onClose={() => poolSelection.unstake(undefined)} />
+				)}
+			</Overlay>
+			<Overlay
+				centered
 				open={poolSelection.claiming !== undefined}
 				onClose={() => poolSelection.claim(undefined)}
 			>

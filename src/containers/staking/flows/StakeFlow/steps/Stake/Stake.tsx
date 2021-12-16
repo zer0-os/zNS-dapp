@@ -20,6 +20,7 @@ type StakeProps = {
 	token: string;
 	wildToUsd: number;
 	rewardsPending?: ethers.BigNumber;
+	unstake?: boolean;
 };
 
 const Stake = (props: StakeProps) => {
@@ -37,6 +38,7 @@ const Stake = (props: StakeProps) => {
 		isTransactionPending,
 		token,
 		wildToUsd,
+		unstake,
 	} = props;
 
 	return (
@@ -61,6 +63,7 @@ const Stake = (props: StakeProps) => {
 				tokenName={token}
 				isLoading={isTransactionPending}
 				pendingRewards={pendingRewards}
+				unstake={unstake}
 			/>
 		</div>
 	);

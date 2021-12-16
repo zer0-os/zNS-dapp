@@ -18,6 +18,7 @@ type StakeModuleProps = {
 	tokenName: string;
 	isLoading?: boolean;
 	pendingRewards?: ethers.BigNumber;
+	unstake?: boolean;
 };
 
 const StakeModule = (props: StakeModuleProps) => {
@@ -29,6 +30,7 @@ const StakeModule = (props: StakeModuleProps) => {
 		tokenName,
 		isLoading,
 		pendingRewards,
+		unstake,
 	} = props;
 
 	const [amountString, setAmountString] =
@@ -62,7 +64,7 @@ const StakeModule = (props: StakeModuleProps) => {
 					glow={canStakeSpecifiedAmount}
 					onClick={onStakeButton}
 				>
-					Stake{' '}
+					{unstake ? 'Unstake' : 'Stake'}{' '}
 					{amountString &&
 						Number(amountString).toLocaleString() + ' ' + tokenName}
 				</FutureButton>
@@ -70,7 +72,11 @@ const StakeModule = (props: StakeModuleProps) => {
 			<hr />
 			<div className={styles.Balances}>
 				<div className={cx(styles.Balance, 'flex-split flex-vertical-align')}>
-					<span>Your balance</span>
+					<span>
+						{unstake
+							? `Amount Staked in This Deposit (${tokenName})`
+							: `Your balance (${tokenName})`}
+					</span>
 					<div className={styles.Amounts}>
 						<b className={styles.Tokens}>
 							{balance ? displayEther(balance) + ' ' + tokenName : <Spinner />}

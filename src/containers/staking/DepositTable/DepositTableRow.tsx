@@ -17,11 +17,12 @@ const DepositTableRow = (props: any) => {
 
 	const stake = useStakingPoolSelector().selectStakePool;
 	const claim = useStakingPoolSelector().claim;
+	const unstake = useStakingPoolSelector().unstake;
 
 	const OPTIONS: Option[] = [
 		{
 			name: 'Unstake Deposit',
-			callback: () => console.log('unhandled'),
+			callback: () => unstake(deposit),
 		},
 		{
 			name: 'Claim Rewards',

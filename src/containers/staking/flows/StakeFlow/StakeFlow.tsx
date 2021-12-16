@@ -33,17 +33,19 @@ const cx = classNames.bind(styles);
 
 type StakeFlowProps = {
 	onClose: () => void;
+	unstake?: boolean;
 };
 
 const StakeFlow = (props: StakeFlowProps) => {
-	const { onClose } = props;
+	const { onClose, unstake } = props;
 
 	const context = useWeb3React<Web3Provider>();
 	const signer = context.library!.getSigner();
 
 	const { wildPriceUsd } = useCurrency();
 
-	const stakingPool = useStakingPoolSelector().stakePool;
+	const deposit = useStakingPoolSelector().unstaking;
+	const stakingPool = useStakingPoolSelector().stakePool || deposit?.pool;
 
 	const [step, setStep] = useState<Steps>(Steps.Stake);
 	const [isTransactionPending, setIsTransactionPending] =
@@ -120,11 +122,20 @@ const StakeFlow = (props: StakeFlowProps) => {
 
 	const doStake = async (amount: ethers.BigNumber) => {
 		// If already approved
-		const tx = await stakingPool!.instance.stake(
-			amount.toString(),
-			BigNumber.from(0),
-			signer,
-		);
+		var tx;
+		if (!unstake) {
+			tx = await stakingPool!.instance.stake(
+				amount.toString(),
+				BigNumber.from(0),
+				signer,
+			);
+		} else {
+			tx = await stakingPool!.instance.unstake(
+				deposit!.depositId.toString(),
+				amount.toString(),
+				signer,
+			);
+		}
 
 		setStep(Steps.Stake);
 
@@ -133,9 +144,9 @@ const StakeFlow = (props: StakeFlowProps) => {
 
 		if (success) {
 			setMessage({
-				content: `${displayEther(amount)} ${
-					stakingPool!.content.tokenTicker
-				} staked successfully`,
+				content: `${displayEther(amount)} ${stakingPool!.content.tokenTicker} ${
+					unstake ? 'unstaked' : 'staked'
+				} successfully`,
 			});
 		} else {
 			setMessage({
@@ -179,7 +190,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 				return (
 					<Stake
 						amount={stake}
-						balance={poolTokenBalance}
+						balance={unstake ? deposit?.tokenAmount : poolTokenBalance}
 						apy={0}
 						pendingRewards={pendingRewards}
 						message={message}
@@ -191,6 +202,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 						isTransactionPending={isTransactionPending}
 						token={stakingPool!.content.tokenTicker}
 						wildToUsd={wildPriceUsd}
+						unstake={unstake}
 					/>
 				);
 			case Steps.Approve:
@@ -204,24 +216,35 @@ const StakeFlow = (props: StakeFlowProps) => {
 			case Steps.Claim:
 				return (
 					<>
-						<Header text="Stake & Claim Rewards" />
+						<Header text={`${unstake ? 'Unstake' : 'Stake'} & Claim Rewards`} />
 						<div className={styles.Claim}>
-							<p>
-								When you make another deposit, you will also claim your WILD
-								rewards from this pool. These rewards will be staked in the WILD
-								pool and can be unstaked after the 12 month vesting period.
-							</p>
+							{unstake ? (
+								<p>
+									When you unstake this deposit, you will also claim your WILD
+									rewards from this pool. These rewards will be staked in the
+									WILD pool and can be unstaked after the 12 month vesting
+									period.
+								</p>
+							) : (
+								<p>
+									When you make another deposit, you will also claim your WILD
+									rewards from this pool. These rewards will be staked in the
+									WILD pool and can be unstaked after the 12 month vesting
+									period.
+								</p>
+							)}
 							<p>
 								Are you sure you want to claim{' '}
-								<b>{displayEther(pendingRewards!)} WILD</b> in pool rewards and
-								stake <b>{stake} WILD</b>? This will happen in one transaction.
+								<b>{displayEther(pendingRewards!)} WILD</b> in pool rewards and{' '}
+								{unstake ? 'unstake' : 'stake'} <b>{stake} WILD</b>? This will
+								happen in one transaction.
 							</p>
 							<div>
 								{isTransactionPending ? (
 									<Spinner />
 								) : (
 									<FutureButton glow onClick={() => onStake(stake!, true)}>
-										Confirm Stake
+										Confirm {unstake ? 'Unstake' : 'Stake'}
 									</FutureButton>
 								)}
 							</div>

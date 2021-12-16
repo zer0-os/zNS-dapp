@@ -283,7 +283,6 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 		try {
 			// Grab the pool from the pool list
 			const pool = getPoolByName(poolName);
-			console.log('found', pool);
 			if (!pool || !pool.address || !pool.contract) {
 				throw new Error('Failed to find pool named ' + poolName);
 			}
@@ -410,7 +409,6 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 	// Pools
 
 	const getAllPools = () => {
-		console.log('get pools');
 		if (!instance || !contracts) {
 			return;
 		}
