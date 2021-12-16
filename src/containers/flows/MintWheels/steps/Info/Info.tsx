@@ -156,25 +156,25 @@ const Info = (props: InfoProps) => {
 				loop={true}
 				playsInline
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1639579048/zns/craft-mint.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1639619660/zns/craft-mint-main.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1639579048/zns/craft-mint.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1639619660/zns/craft-mint-main.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1639579048/zns/craft-mint.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1639619660/zns/craft-mint-main.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1639579048/zns/craft-mint.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1639619660/zns/craft-mint-main.ogv'
 					}
 					type="video/ogg"
 				></source>
