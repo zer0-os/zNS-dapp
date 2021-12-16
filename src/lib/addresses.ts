@@ -13,7 +13,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 
 		// All Kovan addresses for now
 		stakeFactory: '0x47946797E05A34B47ffE7151D0Fbc15E8297650E',
-		liquidityToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
+		lpToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
 		wildStakingPool: '0x4E226a8BbECAa435d2c77D3E4a096F87322Ef1Ae',
 		lpStakingPool: '0x9CF0DaD38E4182d944a1A4463c56CFD1e6fa8fE7',
 	},
@@ -28,7 +28,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 
 		// Staking dApp contracts
 		stakeFactory: '0x47946797E05A34B47ffE7151D0Fbc15E8297650E',
-		liquidityToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
+		lpToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
 		wildStakingPool: '0x4E226a8BbECAa435d2c77D3E4a096F87322Ef1Ae',
 		lpStakingPool: '0x9CF0DaD38E4182d944a1A4463c56CFD1e6fa8fE7',
 	},

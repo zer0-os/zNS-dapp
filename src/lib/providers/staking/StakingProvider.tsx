@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
 
-import { createInstance } from './temp-sdk';
+import { createInstance } from '@zero-tech/zfi-sdk';
 import addresses from 'lib/addresses';
 
 import { wildPool, liquidityPool, Pool } from './pools';
-import { Deposit } from './temp-sdk/types';
+import { Deposit } from '@zero-tech/zfi-sdk/lib/types';
 import { ethers, BigNumber } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
 import { chainIdToNetworkType } from 'lib/network';
-import { ERC20 } from 'types';
+
 import {
 	getApproval,
 	getBalance,
@@ -133,6 +133,8 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 			// Set up on instance ready
 			// Account is not necessarily plugged in yet
 			getAllPools();
+
+			console.log(instance);
 		}
 	}, [instance]);
 
@@ -408,6 +410,7 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 	// Pools
 
 	const getAllPools = () => {
+		console.log('get pools');
 		if (!instance || !contracts) {
 			return;
 		}

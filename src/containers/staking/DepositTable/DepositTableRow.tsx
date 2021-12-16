@@ -4,6 +4,8 @@ import styles from './DepositTableRow.module.scss';
 
 import { useStaking, DepositView } from 'lib/providers/staking/StakingProvider';
 import { ethers } from 'ethers';
+import { WrappedDeposit } from './DepositTable';
+import { toFiat } from 'lib/currency';
 
 type Option = {
 	name: string;
@@ -11,7 +13,7 @@ type Option = {
 };
 
 const DepositTableRow = (props: any) => {
-	const deposit = props.data as DepositView;
+	const deposit = props.data as WrappedDeposit;
 
 	const { selectPoolByName, selectDeposit } = useStaking();
 
@@ -22,11 +24,12 @@ const DepositTableRow = (props: any) => {
 		},
 		{
 			name: 'Claim Rewards',
-			callback: () => selectDeposit(deposit.depositId, deposit.pool.name),
+			callback: () =>
+				selectDeposit(deposit.depositId, deposit.pool.content.name),
 		},
 		{
 			name: 'Stake In Pool',
-			callback: () => selectPoolByName(deposit.pool.name),
+			callback: () => selectPoolByName(deposit.pool.content.name),
 		},
 	];
 
@@ -38,6 +41,11 @@ const DepositTableRow = (props: any) => {
 	};
 
 	const timestampLabel = (timestamp: ethers.BigNumber) => {
+		if (timestamp.gt(0)) {
+			return new Date(timestamp.toNumber() * 1000)
+				.toLocaleString()
+				.split(',')[0];
+		}
 		// Only have flexible locking for now
 		return 'No Lock (Flexible)';
 	};
@@ -56,10 +64,10 @@ const DepositTableRow = (props: any) => {
 			<td>
 				<Artwork
 					disableAnimation
-					name={deposit.pool.name}
-					image={deposit.pool.image}
+					name={deposit.pool.content.name}
+					image={deposit.pool.content.image}
 					disableInteraction
-					id={deposit.pool.id}
+					id={deposit.pool.content.domain}
 					style={{ maxWidth: 200 }}
 				/>
 			</td>
@@ -69,7 +77,8 @@ const DepositTableRow = (props: any) => {
 					: '-'}
 			</td>
 			<td className={styles.Right}>
-				{deposit.tokenAmount.toString()} {deposit?.pool.tokenTicker}
+				{toFiat(Number(ethers.utils.formatEther(deposit.tokenAmount)))}{' '}
+				{deposit?.pool.content.tokenTicker}
 			</td>
 			<td className={styles.Right}>{timestampLabel(deposit?.lockedUntil)}</td>
 			<td>

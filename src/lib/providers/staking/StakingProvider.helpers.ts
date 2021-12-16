@@ -1,6 +1,6 @@
 import { ethers } from 'ethers';
 import { ERC20 } from 'types';
-import { PoolInstance } from './temp-sdk/types';
+import { PoolInstance } from '@zero-tech/zfi-sdk/lib/types';
 
 export const getBalance = async (contract: ERC20, account: string) => {
 	const balance = await contract.balanceOf(account);
@@ -31,7 +31,7 @@ export const getTotalUserValue = async (
 	// Create promise array
 	const promises: any[] = [];
 	pools.forEach((pool: PoolInstance) =>
-		promises.push(pool.calculateUserValueLocked(account)),
+		promises.push(pool.userValueStaked(account)),
 	);
 
 	// Execute promise array

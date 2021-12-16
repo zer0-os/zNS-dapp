@@ -3,12 +3,18 @@ import { useEffect, useMemo, useState } from 'react';
 import Stake from './steps/Stake/Stake';
 import Approve, { ApprovalStep } from './steps/Approve/Approve';
 
-import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 import styles from './StakeFlow.module.scss';
 
 import classNames from 'classnames/bind';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
+import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
+import { ERC20__factory } from 'types';
+import { useWeb3React } from '@web3-react/core';
+import { MaybeUndefined } from 'lib/types';
+import { Web3Provider } from '@ethersproject/providers';
+import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 
 enum Steps {
 	Stake,
@@ -28,24 +34,24 @@ type StakeFlowProps = {
 
 const StakeFlow = (props: StakeFlowProps) => {
 	const { onClose } = props;
-	const {
-		selectedPool,
-		stake,
-		checkApproval,
-		approve,
-		getBalanceByPoolName,
-		checkRewards,
-	} = useStaking();
+
+	const context = useWeb3React<Web3Provider>();
+	const signer = context.library!.getSigner();
+
+	const stakingPool = useStakingPoolSelector().stakePool;
 
 	const [step, setStep] = useState<Steps>(Steps.Stake);
 	const [isTransactionPending, setIsTransactionPending] =
 		useState<boolean>(false);
 	const [message, setMessage] = useState<Message | undefined>();
-	const [amount, setAmount] = useState<number | undefined>(); // Amount user wants to stake
-	const [balance, setBalance] = useState<ethers.BigNumber | undefined>();
-	const [pendingRewards, setPendingRewards] = useState<
+	const [stakeAmount, setStakeAmount] =
+		useState<MaybeUndefined<ethers.BigNumber>>(); // Amount user wants to stake
+	const [poolTokenBalance, setPoolTokenBalance] = useState<
 		ethers.BigNumber | undefined
 	>();
+	const [pendingRewards, setPendingRewards] =
+		useState<MaybeUndefined<ethers.BigNumber>>();
+	const refreshToken = useRefreshToken();
 
 	// Approval stuff
 	const [approvalStep, setApprovalStep] = useState<ApprovalStep>(
@@ -53,23 +59,48 @@ const StakeFlow = (props: StakeFlowProps) => {
 	);
 
 	useEffect(() => {
-		const get = async () => {
-			const balance = await getBalanceByPoolName(selectedPool.name);
-			const rewards = await checkRewards(selectedPool.name);
-			console.log(rewards);
-			setBalance(balance);
-			setPendingRewards(rewards);
+		let isSubscribed = true;
+
+		const getBalance = async () => {
+			if (!stakingPool || !context.library || !context.account) {
+				return;
+			}
+
+			const poolTokenAddress = await stakingPool.instance.getPoolToken();
+			const token = ERC20__factory.connect(poolTokenAddress, context.library);
+			const balance = await token.balanceOf(context.account);
+
+			if (isSubscribed) {
+				setPoolTokenBalance(balance);
+			}
+
+			const pendingRewards = await stakingPool.instance.pendingYieldRewards(
+				context.account,
+			);
+
+			if (isSubscribed) {
+				setPendingRewards(pendingRewards);
+			}
 		};
-		get();
-	}, []);
+		getBalance();
+
+		return () => {
+			isSubscribed = false;
+		};
+	}, [
+		stakingPool,
+		context.library,
+		context.account,
+		refreshToken.shouldRefresh,
+	]);
 
 	const onContinueApproval = async () => {
 		setApprovalStep(ApprovalStep.WaitingForWallet);
-		const tx = await approve(selectedPool.name);
+		const tx = await stakingPool!.instance.approve(signer);
 		setApprovalStep(ApprovalStep.Approving);
 		await tx?.wait();
 		setStep(Steps.Stake);
-		onStake(amount!);
+		doStake(stakeAmount!);
 	};
 
 	const onCancelApproval = () => {
@@ -77,27 +108,21 @@ const StakeFlow = (props: StakeFlowProps) => {
 		setIsTransactionPending(false);
 	};
 
-	const onStake = async (amount: number) => {
-		setMessage(undefined);
-		setIsTransactionPending(true);
-		setAmount(amount);
-
-		const approval = await checkApproval(selectedPool.name, amount);
-
-		// If needs approving
-		if (approval === false) {
-			setStep(Steps.Approve);
-			setApprovalStep(ApprovalStep.Prompt);
-			return;
-		}
-
+	const doStake = async (amount: ethers.BigNumber) => {
 		// If already approved
-		const tx = await stake(amount);
+		const tx = await stakingPool!.instance.stake(
+			amount.toString(),
+			BigNumber.from(0),
+			signer,
+		);
+
 		const success = await tx?.wait();
+		refreshToken.refresh();
+
 		if (success) {
 			setMessage({
 				content: `${amount.toLocaleString()} ${
-					selectedPool.tokenTicker
+					stakingPool!.content.tokenTicker
 				} staked successfully`,
 			});
 		} else {
@@ -109,23 +134,43 @@ const StakeFlow = (props: StakeFlowProps) => {
 		setIsTransactionPending(false);
 	};
 
+	const onStake = async (amount: string) => {
+		setMessage(undefined);
+		setIsTransactionPending(true);
+		const amountAsWei = ethers.utils.parseEther(amount);
+		setStakeAmount(amountAsWei);
+
+		const allowance = await stakingPool!.instance.allowance(signer);
+
+		const approval = amountAsWei.lt(allowance);
+
+		// If needs approving
+		if (approval === false) {
+			setStep(Steps.Approve);
+			setApprovalStep(ApprovalStep.Prompt);
+			return;
+		}
+
+		doStake(amountAsWei);
+	};
+
 	const stepNode = () => {
 		switch (step) {
 			case Steps.Stake:
 				return (
 					<Stake
-						amount={amount}
-						balance={balance}
-						apy={selectedPool.apy}
+						amount={stakeAmount}
+						balance={poolTokenBalance}
+						apy={0}
 						pendingRewards={pendingRewards}
 						message={message}
-						poolIconUrl={selectedPool.image}
-						poolName={selectedPool.name}
-						poolDomain={selectedPool.domain}
+						poolIconUrl={stakingPool!.content.image}
+						poolName={stakingPool!.content.name}
+						poolDomain={stakingPool!.content.domain}
 						onBack={onClose}
 						onStake={onStake}
 						isTransactionPending={isTransactionPending}
-						token={selectedPool.tokenTicker}
+						token={stakingPool!.content.tokenTicker}
 					/>
 				);
 			case Steps.Approve:

@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 
 import { truncateAddress } from 'lib/utils';
 
-import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 import PoolDetails from './PoolDetails/PoolDetails';
 
@@ -11,6 +11,10 @@ import { HISTORY_ITEMS, HistoryItem } from './StakePool.helpers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useEffect, useState } from 'react';
+import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
+import { getPoolByDomain } from 'lib/providers/staking/StakingUtils';
+import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
+import { MaybeUndefined } from 'lib/types';
 
 const cx = classNames.bind(styles);
 const moment = require('moment');
@@ -23,24 +27,45 @@ const StakePool = (props: StakePoolProps) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { active } = walletContext;
 
-	const [pool, setPool] = useState<any | undefined>();
+	const [pool, setPool] = useState<MaybeUndefined<WrappedStakingPool>>();
 	const { domain } = props;
-	const { pools, getPoolByDomain, selectPoolByName } = useStaking();
+
+	const staking = useStaking();
+	const poolSelector = useStakingPoolSelector();
 
 	const onStake = () => {
-		if (pool?.name) {
-			selectPoolByName(pool.name);
-		}
+		poolSelector.selectStakePool(pool);
 	};
 
-	useEffect(() => {
-		if (pools !== undefined) {
-			const p = getPoolByDomain(domain);
-			setPool(p);
-		}
-	}, [pools]);
+	const [apy, setApy] = useState<number>();
 
-	console.log(pool);
+	useEffect(() => {
+		let isMounted = true;
+
+		const getPoolData = async () => {
+			if (!staking.pools) {
+				return;
+			}
+
+			const pool = getPoolByDomain(staking.pools, domain);
+
+			if (!pool) {
+				return;
+			}
+
+			if (isMounted) {
+				setPool(pool);
+			}
+
+			//await pool.instance.getPoolToken()
+		};
+
+		getPoolData();
+
+		return () => {
+			isMounted = false;
+		};
+	}, [staking.pools, domain]);
 
 	const containerClasses = cx(
 		styles.Container,
@@ -63,22 +88,26 @@ const StakePool = (props: StakePoolProps) => {
 		}
 	};
 
+	if (!pool) {
+		return <></>;
+	}
+
 	return (
 		<>
 			<PoolDetails
-				apy={pool?.apy}
+				apy={apy}
 				className={containerClasses}
-				contractAddress={pool?.contract.address}
-				icon={pool?.image}
-				name={pool?.name}
+				contractAddress={'0x0'}
+				icon={pool!.content.image}
+				name={pool!.content.name}
 				onStake={onStake}
-				ticker={pool?.tokenTicker}
-				tokenName={pool?.token}
+				ticker={pool!.content.tokenTicker}
+				tokenName={pool!.content.token}
 				isUserConnected={active}
-				peopleStaked={pool?.numStakers}
-				totalValueLocked={pool?.tvl}
-				totalRewards={pool?.totalRewardsIssued}
-				tokenPurchaseUrl={pool?.tokenPurchaseUrl}
+				peopleStaked={0}
+				totalValueLocked={0}
+				totalRewards={0}
+				tokenPurchaseUrl={pool.content.tokenPurchaseUrl}
 			/>
 			{/* history temporarily removed */}
 			{/* <section className={cx(styles.History, containerClasses)}>

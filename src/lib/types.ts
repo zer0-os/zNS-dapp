@@ -3,7 +3,7 @@
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
-
+export type MaybeUndefined<T> = T | undefined;
 export interface Account {
 	id: string;
 }

@@ -4,21 +4,22 @@ import styles from './StakePoolTableRow.module.scss';
 import { useHistory } from 'react-router';
 
 import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
 
 const StakePoolTableRow = (props: any) => {
 	const { selectPoolByName } = useStaking();
 	const { push } = useHistory();
 
-	const pool = props.data;
+	const pool = props.data as WrappedStakingPool;
 
 	const onRowClick = (event: React.MouseEvent<HTMLElement>) => {
 		if ((event.target as HTMLElement).className.indexOf('FutureButton') < 0) {
-			push(pool.domain);
+			push(pool.content.domain);
 		}
 	};
 
 	const onButtonClick = () => {
-		selectPoolByName(pool.name);
+		selectPoolByName(pool.content.name);
 	};
 
 	return (
@@ -27,10 +28,10 @@ const StakePoolTableRow = (props: any) => {
 			<td>
 				<Artwork
 					disableAnimation
-					name={pool.name}
-					image={pool.image}
+					name={pool.content.name}
+					image={pool.content.image}
 					disableInteraction
-					id={pool.id}
+					id={pool.content.domain}
 					style={{ maxWidth: 200 }}
 				/>
 			</td>

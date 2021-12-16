@@ -23,6 +23,7 @@ import {
 	Route,
 	Switch,
 } from 'react-router-dom';
+import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 
 type StakingContainerProps = {
 	className?: string;
@@ -40,25 +41,37 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	// - Grabbing all user data (deposits, WILD balance, rewards, etc
 	// - Opening StakeFlow modal for a specified pool
 
-	const { selectedPool, deselectPool, selectedDeposit, deselectDeposit } =
-		useStaking();
+	const poolSelection = useStakingPoolSelector();
+
 	const { pathname } = useLocation();
 
 	return (
 		<>
 			<Overlay
 				centered
-				open={selectedPool !== undefined}
-				onClose={deselectPool}
+				open={poolSelection.stakePool !== undefined}
+				onClose={() => {
+					poolSelection.selectStakePool(undefined);
+				}}
 			>
-				{selectedPool && <StakeFlow onClose={deselectPool} />}
+				{poolSelection.stakePool && (
+					<StakeFlow
+						onClose={() => {
+							poolSelection.selectStakePool(undefined);
+						}}
+					/>
+				)}
 			</Overlay>
 			<Overlay
 				centered
-				open={selectedDeposit !== undefined}
-				onClose={deselectDeposit}
+				open={poolSelection.depositPool !== undefined}
+				onClose={() => poolSelection.selectDepositPool(undefined)}
 			>
-				{selectedDeposit && <ClaimFlow onClose={deselectDeposit} />}
+				{poolSelection.depositPool && (
+					<ClaimFlow
+						onClose={() => poolSelection.selectDepositPool(undefined)}
+					/>
+				)}
 			</Overlay>
 			<Switch>
 				<Route

@@ -1,14 +1,18 @@
 import { GenericTable } from 'components';
 import StakePoolTableRow from './StakePoolTableRow';
 
-import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 import styles from './StakePoolTable.module.scss';
 
 import { TABLE_HEADERS } from './StakePoolTable.helpers';
 
 const StakePoolTable = () => {
-	const { pools } = useStaking();
+	const staking = useStaking();
+
+	const pools = staking.pools ? Object.values(staking.pools) : undefined;
+
+	console.log(pools);
 
 	return (
 		<GenericTable

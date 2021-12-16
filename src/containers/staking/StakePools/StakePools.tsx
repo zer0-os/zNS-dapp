@@ -3,7 +3,7 @@ import { StakePoolTable } from 'containers/staking';
 import { useEffect } from 'react';
 import styles from './StakePools.module.scss';
 
-import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 const StakePools = () => {
 	const { pools } = useStaking();
@@ -40,7 +40,7 @@ const StakePools = () => {
 					className="normalView"
 					fieldName={'# Of Pools'}
 					isLoading={pools === undefined}
-					title={pools?.length}
+					title={2}
 				/>
 			</ul>
 			<StakePoolTable />

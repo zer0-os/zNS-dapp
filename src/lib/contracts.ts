@@ -29,7 +29,7 @@ export interface ContractAddresses {
 	zAuction: string;
 	wheelSale: string;
 	stakeFactory: string;
-	liquidityToken: string;
+	lpToken: string;
 	wildStakingPool: string;
 	lpStakingPool: string;
 }
@@ -86,7 +86,7 @@ function useZnsContracts(): Contracts | null {
 				signer,
 			),
 			wildToken: ERC20__factory.connect(contracts.wildToken, signer),
-			lpToken: ERC20__factory.connect(contracts.liquidityToken, signer),
+			lpToken: ERC20__factory.connect(contracts.lpToken, signer),
 			lootToken: ERC20__factory.connect(contracts.lootToken, signer),
 			zAuction: ZauctionSupportingZNS__factory.connect(
 				contracts.zAuction,
@@ -102,4 +102,15 @@ function useZnsContracts(): Contracts | null {
 	return contract;
 }
 
-export { useZnsContracts };
+function useContractAddresses(): ContractAddresses | undefined {
+	const context = useWeb3React<Web3Provider>();
+	const { library, active, chainId } = context;
+	const networkAddresses = useMemo((): ContractAddresses | undefined => {
+		let contracts = addresses[chainIdToNetworkType(defaultNetworkId)];
+		return contracts;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [active, library, chainId]);
+	return networkAddresses;
+}
+
+export { useZnsContracts, useContractAddresses };

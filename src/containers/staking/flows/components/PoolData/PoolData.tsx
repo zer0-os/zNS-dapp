@@ -55,7 +55,9 @@ const PoolData = ({
 				fieldName={'Your Rewards Claimable'}
 				isLoading={pendingRewards === undefined}
 				title={
-					pendingRewards && toFiat(Number(pendingRewards.toString())) + ' WILD'
+					pendingRewards &&
+					toFiat(Number(ethers.utils.formatEther(pendingRewards).toString())) +
+						' WILD'
 				}
 			/>
 		</ul>

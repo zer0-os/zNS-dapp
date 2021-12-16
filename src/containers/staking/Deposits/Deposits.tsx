@@ -1,37 +1,54 @@
+import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import { StatsWidget } from 'components';
 import { DepositTable } from 'containers/staking';
 import { ethers } from 'ethers';
-import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { useZnsContracts } from 'lib/contracts';
+import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
+import { MaybeUndefined } from 'lib/types';
 import { useEffect, useState } from 'react';
 import styles from './Deposits.module.scss';
 
 const Deposits = () => {
-	const { totalUserValueLocked, totalUserValueUnlocked, wildBalance } =
-		useStaking();
-	const { active } = useWeb3React();
+	const staking = useStaking();
+	const contracts = useZnsContracts();
+	const { active, account } = useWeb3React<Web3Provider>();
 
-	const [totalStaked, setTotalStaked] = useState<number | undefined>();
-	const [totalRewards, setTotalRewards] = useState<number | undefined>();
-	const [totalRewardsVested, setTotalRewardsVested] = useState<
-		number | undefined
-	>();
+	const [totalRewardsClaimable, setTotalRewardsClaimable] =
+		useState<MaybeUndefined<ethers.BigNumber>>();
+
+	const [wildBalance, setWildBalance] =
+		useState<MaybeUndefined<ethers.BigNumber>>();
 
 	useEffect(() => {
 		let isMounted = true;
+
 		const getMetrics = async () => {
-			await new Promise((r) => setTimeout(r, 3500));
-			if (isMounted) {
-				setTotalStaked(1295);
-				setTotalRewards(112);
-				setTotalRewardsVested(2);
+			if (!account || !staking.pools) {
+				return;
 			}
+
+			const lpReward = await staking.pools.lpPool.instance.pendingYieldRewards(
+				account,
+			);
+			const wildReward =
+				await staking.pools.wildPool.instance.pendingYieldRewards(account);
+
+			const totalReward = lpReward.add(wildReward);
+
+			if (isMounted) {
+				setTotalRewardsClaimable(totalReward);
+			}
+
+			const wildTokenBalance = await contracts!.wildToken.balanceOf(account);
+			setWildBalance(wildTokenBalance);
 		};
 		getMetrics();
+
 		return () => {
 			isMounted = false;
 		};
-	}, []);
+	}, [account, staking.pools]);
 
 	return (
 		<>
@@ -57,21 +74,13 @@ const Deposits = () => {
 				/>
 				<StatsWidget
 					className="normalView"
-					fieldName={'Total Rewards'}
-					isLoading={active && totalUserValueUnlocked === undefined}
+					fieldName={'Total Rewards Claimable'}
+					isLoading={active && totalRewardsClaimable === undefined}
 					title={
-						active
-							? totalUserValueUnlocked?.toString().toLocaleString() + ' WILD'
-							: '-'
-					}
-				/>
-				<StatsWidget
-					className="normalView"
-					fieldName={'Total Rewards Vested'}
-					isLoading={active && totalUserValueLocked === undefined}
-					title={
-						active
-							? totalUserValueLocked?.toString().toLocaleString() + ' WILD'
+						active && totalRewardsClaimable !== undefined
+							? Number(
+									ethers.utils.formatEther(totalRewardsClaimable.toString()),
+							  ).toFixed(2) + ' WILD'
 							: '-'
 					}
 				/>

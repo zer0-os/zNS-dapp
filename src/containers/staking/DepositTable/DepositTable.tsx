@@ -1,7 +1,7 @@
 import { GenericTable } from 'components';
 import DepositTableRow from './DepositTableRow';
 
-import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 import styles from './DepositTable.module.scss';
 
@@ -9,9 +9,58 @@ import { TABLE_HEADERS } from './DepositTable.helpers';
 import { useWeb3React } from '@web3-react/core';
 import { ConnectWalletButton } from 'containers';
 import { Link } from 'react-router-dom';
+import React from 'react';
+
+import * as zfi from '@zero-tech/zfi-sdk';
+import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
+import { MaybeUndefined } from 'lib/types';
+
+export interface WrappedDeposit extends zfi.Deposit {
+	pool: WrappedStakingPool;
+}
 
 const DepositTable = () => {
-	const { deposits } = useStaking();
+	const staking = useStaking();
+	const { account } = useWeb3React();
+
+	const [deposits, setDeposits] =
+		React.useState<MaybeUndefined<WrappedDeposit[]>>();
+
+	React.useEffect(() => {
+		let isMounted = true;
+
+		const fetchDeposits = async () => {
+			if (!staking.pools || !account) {
+				return;
+			}
+
+			let deposits: WrappedDeposit[] = [];
+
+			for (const pool of Object.values(staking.pools) as WrappedStakingPool[]) {
+				const wrappedDeposits = (
+					await pool.instance.getAllDeposits(account)
+				).map((e) => {
+					return {
+						pool,
+						...e,
+					} as WrappedDeposit;
+				});
+
+				deposits = deposits.concat(wrappedDeposits);
+			}
+
+			if (isMounted) {
+				setDeposits(deposits);
+			}
+		};
+
+		fetchDeposits();
+
+		return () => {
+			isMounted = false;
+		};
+	}, [staking.pools, account]);
+
 	const { active } = useWeb3React();
 
 	if (!active) {

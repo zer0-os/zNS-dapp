@@ -6,14 +6,15 @@ import { toFiat } from 'lib/currency';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { ethers } from 'ethers';
+import { MaybeUndefined } from 'lib/types';
 
 const cx = classNames.bind(styles);
 
 type StakeModuleProps = {
-	amount?: number;
+	amount?: ethers.BigNumber;
 	className?: string;
 	balance?: ethers.BigNumber;
-	onStake: (amount: number) => void;
+	onStake: (amount: string) => void;
 	tokenName: string;
 	isLoading?: boolean;
 };
@@ -21,8 +22,8 @@ type StakeModuleProps = {
 const StakeModule = (props: StakeModuleProps) => {
 	const { amount, className, balance, onStake, tokenName, isLoading } = props;
 
-	const [amountString, setAmountString] = useState<string | undefined>(
-		amount?.toString(),
+	const [amountString, setAmountString] = useState<MaybeUndefined<string>>(
+		!amount ? undefined : ethers.utils.formatEther(amount),
 	);
 
 	const canStakeSpecifiedAmount =
@@ -33,8 +34,8 @@ const StakeModule = (props: StakeModuleProps) => {
 	};
 
 	const onStakeButton = () => {
-		if (canStakeSpecifiedAmount) {
-			onStake(Number(amountString));
+		if (canStakeSpecifiedAmount && amountString) {
+			onStake(amountString);
 		}
 	};
 

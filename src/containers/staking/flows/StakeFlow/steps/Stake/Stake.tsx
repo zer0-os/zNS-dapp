@@ -6,7 +6,7 @@ import { PoolData, Message, Back } from '../../../';
 import styles from './Stake.module.scss';
 
 type StakeProps = {
-	amount?: number;
+	amount?: ethers.BigNumber;
 	apy?: number;
 	balance?: ethers.BigNumber;
 	pendingRewards?: ethers.BigNumber;
@@ -15,7 +15,7 @@ type StakeProps = {
 	poolName: string;
 	poolDomain: string;
 	onBack: () => void;
-	onStake: (amount: number) => void;
+	onStake: (amount: string) => void;
 	isTransactionPending?: boolean;
 	token: string;
 };
