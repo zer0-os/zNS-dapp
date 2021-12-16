@@ -15,15 +15,15 @@ const WheelsRaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	// const RAFFLE_START_TIME = currentTime + 10000;
-	// const RAFFLE_END_TIME = currentTime + 20000;
+	// const RAFFLE_START_TIME = currentTime - 10000;
+	// const RAFFLE_END_TIME = currentTime - 10000;
 	// const SALE_START_TIME = currentTime + 10000;
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
 	const RAFFLE_START_TIME = 1637870400000;
 	const RAFFLE_END_TIME = 1638043200000;
-	const SALE_START_TIME = 1638579600000;
+	const SALE_START_TIME = 1639706400000;
 	const SALE_START_BLOCK = 13719840;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -75,7 +75,7 @@ const WheelsRaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/introducing-wilder-cribs-a-place-to-call-home-in-the-metaverse/',
+				'https://zine.wilderworld.com/wilder-craft-a-new-dimension-of-exploration/',
 				'_blank',
 			);
 		}
@@ -141,7 +141,7 @@ const WheelsRaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Cribs raffle - starting in{' '}
+					Get notified about the Wilder Craft raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -209,8 +209,8 @@ const WheelsRaffleContainer = () => {
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
-								? 'Your Crib for the Metaverse awaits'
-								: 'Get Early Access to Wilder Cribs'
+								? 'Your Craft for the Metaverse awaits'
+								: 'Get Early Access to Wilder Crafts'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

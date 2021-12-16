@@ -24,7 +24,7 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_PUBLIC = 1638666000000;
+	const DATE_PUBLIC = 1639879200000;
 
 	//////////////////
 	// State & Data //
@@ -93,6 +93,7 @@ const MintWheelsFlowContainer = () => {
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold) {
+			// TODO: Update with path for crafts
 			history.push('cribs.wiami.southbeach.qube');
 		} else {
 			setIsWizardOpen(true);
@@ -355,7 +356,8 @@ const MintWheelsFlowContainer = () => {
 			return (
 				<>
 					<span>
-						Wilder Cribs sale has been temporarily paused to ensure a fair sale.
+						Wilder Crafts sale has been temporarily paused to ensure a fair
+						sale.
 					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
@@ -418,7 +420,7 @@ const MintWheelsFlowContainer = () => {
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
-					title={'Get your crib for the Metaverse '}
+					title={'Get your craft for the Metaverse '}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}

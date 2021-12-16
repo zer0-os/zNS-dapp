@@ -18,7 +18,7 @@ export const getBannerButtonText = (
 		return 'Mint Now';
 	}
 	if (dropStage === Stage.Sold) {
-		return 'See Cribs';
+		return 'See Crafts';
 	}
 
 	return 'Learn More';
@@ -35,18 +35,18 @@ export const getBannerLabel = (
 	if (dropStage === Stage.Upcoming) {
 		return (
 			<>
-				Wilder Cribs whitelist release starting - waiting for contract to begin
+				Wilder Crafts whitelist release starting - waiting for contract to begin
 			</>
 		);
 	}
 	if (dropStage === Stage.Whitelist) {
 		if (isFinished) {
-			<>Wilder Cribs public release starting - you may need to refresh</>;
+			<>Wilder Crafts public release starting - you may need to refresh</>;
 		} else {
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<span>
-						Wilder Cribs now available for whitelisted supporters{' '}
+						Wilder Crafts now available for whitelisted supporters{' '}
 						{totalLabel(wheelsMinted!, wheelsTotal!)}
 					</span>
 					<span style={{ marginTop: 4 }}>
@@ -82,7 +82,7 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					Wilder Cribs now available for whitelisted supporters{' '}
+					Wilder Crafts now available for whitelisted supporters{' '}
 					{totalLabel(wheelsMinted!, wheelsTotal!)}
 				</span>
 				{timer}
@@ -92,13 +92,13 @@ export const getBannerLabel = (
 	if (dropStage === Stage.Public) {
 		return (
 			<>
-				Minting is now open to everyone, act fast to secure your Cribs!{' '}
+				Minting is now open to everyone, act fast to secure your Crafts!{' '}
 				{totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);
 	}
 	if (dropStage === Stage.Sold) {
-		return <>All {wheelsTotal} Cribs have been minted</>;
+		return <>All {wheelsTotal} Crafts have been minted</>;
 	}
 	return <>Loading drop data...</>;
 };
