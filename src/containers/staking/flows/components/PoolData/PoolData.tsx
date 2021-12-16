@@ -4,7 +4,7 @@ import styles from './PoolData.module.scss';
 
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
-import { toFiat } from 'lib/currency';
+import { displayEther, toFiat } from 'lib/currency';
 
 const cx = classNames.bind(styles);
 
@@ -54,11 +54,7 @@ const PoolData = ({
 				className="previewView"
 				fieldName={'Your Rewards Claimable'}
 				isLoading={pendingRewards === undefined}
-				title={
-					pendingRewards &&
-					toFiat(Number(ethers.utils.formatEther(pendingRewards).toString())) +
-						' WILD'
-				}
+				title={pendingRewards && displayEther(pendingRewards) + ' WILD'}
 			/>
 		</ul>
 	</>

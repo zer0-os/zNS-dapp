@@ -1,7 +1,7 @@
 import styles from './StakeModule.module.scss';
 
 import { TextInput, FutureButton, Spinner } from 'components';
-import { toFiat } from 'lib/currency';
+import { displayEther, toFiat } from 'lib/currency';
 
 import classNames from 'classnames/bind';
 import { useState } from 'react';
@@ -65,13 +65,7 @@ const StakeModule = (props: StakeModuleProps) => {
 					<span>Your balance</span>
 					<div className={styles.Amounts}>
 						<b className={styles.Tokens}>
-							{balance ? (
-								toFiat(Number(ethers.utils.formatEther(balance.toString()))) +
-								' ' +
-								tokenName
-							) : (
-								<Spinner />
-							)}
+							{balance ? displayEther(balance) + ' ' + tokenName : <Spinner />}
 						</b>
 					</div>
 				</div>

@@ -4,6 +4,7 @@ import { StatsWidget } from 'components';
 import { DepositTable } from 'containers/staking';
 import { ethers } from 'ethers';
 import { useZnsContracts } from 'lib/contracts';
+import { displayEther } from 'lib/currency';
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 import { MaybeUndefined } from 'lib/types';
 import { useEffect, useState } from 'react';
@@ -59,18 +60,9 @@ const Deposits = () => {
 					isLoading={active && wildBalance === undefined}
 					title={
 						active && wildBalance !== undefined
-							? Number(
-									ethers.utils.formatEther(wildBalance.toString()),
-							  ).toFixed(2) + ' WILD'
+							? displayEther(wildBalance)
 							: '-'
 					}
-				/>
-				<StatsWidget
-					className="normalView"
-					fieldName={'Total Stake'}
-					isLoading={false}
-					title={'????'}
-					subTitle={'cant show multiple tokens'}
 				/>
 				<StatsWidget
 					className="normalView"
@@ -78,9 +70,7 @@ const Deposits = () => {
 					isLoading={active && totalRewardsClaimable === undefined}
 					title={
 						active && totalRewardsClaimable !== undefined
-							? Number(
-									ethers.utils.formatEther(totalRewardsClaimable.toString()),
-							  ).toFixed(2) + ' WILD'
+							? displayEther(totalRewardsClaimable) + ' WILD'
 							: '-'
 					}
 				/>

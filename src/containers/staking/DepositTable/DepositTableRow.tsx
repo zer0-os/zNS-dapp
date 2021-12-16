@@ -5,7 +5,7 @@ import styles from './DepositTableRow.module.scss';
 import { useStaking, DepositView } from 'lib/providers/staking/StakingProvider';
 import { ethers } from 'ethers';
 import { WrappedDeposit } from './DepositTable';
-import { toFiat } from 'lib/currency';
+import { displayEther, toFiat } from 'lib/currency';
 
 type Option = {
 	name: string;
@@ -77,8 +77,7 @@ const DepositTableRow = (props: any) => {
 					: '-'}
 			</td>
 			<td className={styles.Right}>
-				{toFiat(Number(ethers.utils.formatEther(deposit.tokenAmount)))}{' '}
-				{deposit?.pool.content.tokenTicker}
+				{displayEther(deposit.tokenAmount)} {deposit?.pool.content.tokenTicker}
 			</td>
 			<td className={styles.Right}>{timestampLabel(deposit?.lockedUntil)}</td>
 			<td>
