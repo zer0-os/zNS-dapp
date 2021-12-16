@@ -3,12 +3,15 @@ import { Artwork } from 'components';
 import styles from './StakePoolTableRow.module.scss';
 import { useHistory } from 'react-router';
 
-import { useStaking } from 'lib/providers/staking/StakingProvider';
+// import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
 
 const StakePoolTableRow = (props: any) => {
-	const { selectPoolByName } = useStaking();
+	// const { selectPoolByName } = useStaking();
 	const { push } = useHistory();
+
+	const selectPool = useStakingPoolSelector().selectStakePool;
 
 	const pool = props.data as WrappedStakingPool;
 
@@ -19,7 +22,7 @@ const StakePoolTableRow = (props: any) => {
 	};
 
 	const onButtonClick = () => {
-		selectPoolByName(pool.content.name);
+		selectPool(pool);
 	};
 
 	return (

@@ -3,8 +3,6 @@ import { useEffect, useMemo, useState } from 'react';
 import Stake from './steps/Stake/Stake';
 import Approve, { ApprovalStep } from './steps/Approve/Approve';
 
-import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
-
 import styles from './StakeFlow.module.scss';
 
 import classNames from 'classnames/bind';
@@ -98,7 +96,9 @@ const StakeFlow = (props: StakeFlowProps) => {
 		setApprovalStep(ApprovalStep.WaitingForWallet);
 		const tx = await stakingPool!.instance.approve(signer);
 		setApprovalStep(ApprovalStep.Approving);
-		await tx?.wait();
+
+		// property 'wait' does ont exist on type never
+		// await tx?.wait();
 		setStep(Steps.Stake);
 		doStake(stakeAmount!);
 	};
