@@ -9,7 +9,7 @@ import { displayEther, displayEtherToFiat, toFiat } from 'lib/currency';
 const cx = classNames.bind(styles);
 
 type PoolDataProps = {
-	apy?: number;
+	apy?: string;
 	domain: string;
 	id: string;
 	image: string;
@@ -50,7 +50,7 @@ const PoolData = ({
 				className="previewView"
 				fieldName={'APY'}
 				isLoading={false}
-				title="-"
+				title={apy}
 			/>
 			<StatsWidget
 				className="previewView"

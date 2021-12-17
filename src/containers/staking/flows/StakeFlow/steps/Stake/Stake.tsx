@@ -7,7 +7,7 @@ import styles from './Stake.module.scss';
 
 type StakeProps = {
 	amount?: string;
-	apy?: number;
+	apy?: string;
 	balance?: ethers.BigNumber;
 	pendingRewards?: ethers.BigNumber;
 	message: { error?: boolean; content: string } | undefined;
@@ -51,7 +51,7 @@ const Stake = (props: StakeProps) => {
 				image={poolIconUrl}
 				id={'123'}
 				poolUrl={'https://youtube.com/'}
-				apy={apy || 0}
+				apy={apy}
 				pendingRewards={pendingRewards}
 				wildToUsd={wildToUsd}
 			/>

@@ -49,6 +49,8 @@ const DepositTable = (props: DepositTableProps) => {
 					} as WrappedDeposit;
 				});
 
+				console.log(wrappedDeposits);
+
 				deposits = deposits.concat(wrappedDeposits);
 			}
 

@@ -67,7 +67,7 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 			case Steps.Claim:
 				return (
 					<Claim
-						apy={0}
+						apy={'0'}
 						message={message}
 						poolIconUrl={claiming!.content.image}
 						poolName={claiming!.content.name}

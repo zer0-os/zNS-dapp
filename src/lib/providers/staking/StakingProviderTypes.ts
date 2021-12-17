@@ -10,7 +10,7 @@ export interface StakingPoolContent {
 }
 
 export interface StakingPoolMetrics {
-	apy?: number;
+	apy: number;
 }
 
 export interface WrappedStakingPool {

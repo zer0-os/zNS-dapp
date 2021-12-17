@@ -19,7 +19,8 @@ type PoolDetailsProps = {
 	ticker: string;
 	tokenName: string;
 	totalRewards?: number;
-	totalValueLocked?: number;
+	tokensLocked?: string;
+	valueLocked?: string;
 	tokenPurchaseUrl?: string;
 };
 
@@ -36,7 +37,8 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 	ticker,
 	tokenName,
 	totalRewards,
-	totalValueLocked,
+	tokensLocked,
+	valueLocked,
 	tokenPurchaseUrl,
 }) => {
 	return (
@@ -77,7 +79,7 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 					className="normalView"
 					fieldName={'APY'}
 					isLoading={false}
-					title={'-'}
+					title={`${apy}%`}
 				/>
 				<StatsWidget
 					className="normalView"
@@ -97,7 +99,8 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 					className="normalView"
 					fieldName={'Total Value Locked'}
 					isLoading={false}
-					title={'-'}
+					title={`${tokensLocked} ${ticker}`}
+					subTitle={`$${valueLocked} USD`}
 				/>
 				<StatsWidget
 					className="normalView"

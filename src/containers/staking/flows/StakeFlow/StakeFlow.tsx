@@ -191,7 +191,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 					<Stake
 						amount={stake}
 						balance={unstake ? deposit?.tokenAmount : poolTokenBalance}
-						apy={0}
+						apy={`${stakingPool?.metrics.apy.toFixed(2)} %`}
 						pendingRewards={pendingRewards}
 						message={message}
 						poolIconUrl={stakingPool!.content.image}
