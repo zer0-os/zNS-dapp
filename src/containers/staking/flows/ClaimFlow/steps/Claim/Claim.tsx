@@ -45,16 +45,12 @@ const Claim = (props: StakeProps) => {
 				apy={apy}
 				pendingRewards={rewardAmount}
 			/>
-			{(rewardAmount === undefined || rewardAmount.gt(0)) && (
-				<FutureButton
-					className="width-full"
-					loading={isTransactionPending}
-					onClick={onClaim}
-					glow
-				>
-					Claim {rewardAmount && displayEther(rewardAmount)} WILD
-				</FutureButton>
-			)}
+			{rewardAmount !== undefined &&
+				rewardAmount.gt(ethers.utils.parseEther('0.09')) && (
+					<FutureButton className="width-full" onClick={onClaim} glow>
+						Claim {rewardAmount && displayEther(rewardAmount)} WILD
+					</FutureButton>
+				)}
 		</div>
 	);
 };
