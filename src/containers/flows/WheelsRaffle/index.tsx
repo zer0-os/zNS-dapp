@@ -15,16 +15,16 @@ const WheelsRaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	// const RAFFLE_START_TIME = currentTime - 10000;
-	// const RAFFLE_END_TIME = currentTime - 10000;
-	// const SALE_START_TIME = currentTime + 10000;
-	// const SALE_START_BLOCK = 13719840;
+	const RAFFLE_START_TIME = currentTime - 10000;
+	const RAFFLE_END_TIME = currentTime - 10000;
+	const SALE_START_TIME = currentTime + 10000;
+	const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
-	const RAFFLE_START_TIME = 1637870400000;
-	const RAFFLE_END_TIME = 1638043200000;
-	const SALE_START_TIME = 1639706400000;
-	const SALE_START_BLOCK = 13719840;
+	// const RAFFLE_START_TIME = 1637870400000;
+	// const RAFFLE_END_TIME = 1638043200000;
+	// const SALE_START_TIME = 1639706400000;
+	// const SALE_START_BLOCK = 13719840;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [currentBlock, setCurrentBlock] = useState<number>(0);

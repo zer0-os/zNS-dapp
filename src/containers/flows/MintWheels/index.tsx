@@ -94,7 +94,7 @@ const MintWheelsFlowContainer = () => {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold) {
 			// TODO: Update with path for crafts
-			history.push('cribs.wiami.southbeach.qube');
+			history.push('craft.genesis');
 		} else {
 			setIsWizardOpen(true);
 		}

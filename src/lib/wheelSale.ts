@@ -8,9 +8,9 @@ const whitelistUriKovan =
 	'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
 
 const backupWhitelist =
-	'https://ipfs.io/ipfs/QmVbrj58sPDtY3hJpDJd6vEHU9kdWQ1j9fvVosuG9ThS3L';
+	'https://ipfs.io/ipfs/QmQvd9Z8eUn4emw1fhUtWD36vxj5RGXTHs658iQRK5PuSL';
 const whitelistUriMainnet =
-	'https://d3810nvssqir6b.cloudfront.net/cribs-sale-v2.json';
+	'https://d3810nvssqir6b.cloudfront.net/craft-whitelist.json';
 
 export interface WheelsWhitelistClaim {
 	index: number;
