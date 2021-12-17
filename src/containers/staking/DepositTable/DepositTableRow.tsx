@@ -96,7 +96,10 @@ const DepositTableRow = (props: any) => {
 					onSelect={onDropdownSelect}
 					options={OPTIONS.map((o: Option) => o.name)}
 					disableSelection
-					drawerStyle={{ width: 222 }}
+					drawerStyle={{
+						width: 222,
+						transform: 'translateX(calc(-100% + 8px))',
+					}}
 				>
 					<button ref={buttonRef} className={styles.Dots} onClick={() => {}}>
 						<div></div>
