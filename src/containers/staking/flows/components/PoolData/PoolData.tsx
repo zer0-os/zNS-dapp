@@ -54,7 +54,7 @@ const PoolData = ({
 			/>
 			<StatsWidget
 				className="previewView"
-				fieldName={'Your Rewards Claimable'}
+				fieldName={'Your Pool Rewards Claimable'}
 				isLoading={pendingRewards === undefined}
 				title={pendingRewards && displayEther(pendingRewards) + ' WILD'}
 				subTitle={
