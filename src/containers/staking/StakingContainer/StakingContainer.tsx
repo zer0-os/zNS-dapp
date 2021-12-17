@@ -70,12 +70,6 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				)}
 			</Overlay>
 			<Switch>
-				<Route
-					path="/pools/:pool"
-					component={(params: any) => (
-						<StakePool domain={'/pools/' + params.match.params.pool} />
-					)}
-				/>
 				<div
 					className={cx(
 						className,
