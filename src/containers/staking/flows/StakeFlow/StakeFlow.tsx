@@ -22,6 +22,7 @@ enum Steps {
 	Stake,
 	Approve,
 	Claim,
+	Pending,
 }
 
 type Message = {
@@ -137,7 +138,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 			);
 		}
 
-		setStep(Steps.Stake);
+		setStep(Steps.Pending);
 
 		const success = await tx?.wait();
 		refreshToken.refresh();
@@ -156,6 +157,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 		}
 
 		// Reset values
+		setStep(Steps.Stake);
 		setIsTransactionPending(false);
 		setStakeAmount(undefined);
 		setStake(undefined);
@@ -221,7 +223,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 				return (
 					<>
 						<Header text={`${unstake ? 'Unstake' : 'Stake'} & Claim Rewards`} />
-						<div className={styles.Claim}>
+						<div className={styles.Content}>
 							{unstake ? (
 								<p>
 									When you unstake this deposit, you will also claim your WILD
@@ -251,6 +253,18 @@ const StakeFlow = (props: StakeFlowProps) => {
 										Confirm {unstake ? 'Unstake' : 'Stake'}
 									</FutureButton>
 								)}
+							</div>
+						</div>
+					</>
+				);
+			case Steps.Pending:
+				return (
+					<>
+						<Header text="Processing Transaction" />
+						<div className={styles.Content}>
+							<p>Your transaction is being processed...</p>
+							<div>
+								<Spinner />
 							</div>
 						</div>
 					</>
