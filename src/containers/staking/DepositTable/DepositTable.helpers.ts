@@ -20,7 +20,7 @@ export const TABLE_HEADERS = [
 		className: '',
 	},
 	{
-		label: 'Lock Period',
+		label: 'Unlock Date',
 		accessor: '',
 		className: '',
 	},
