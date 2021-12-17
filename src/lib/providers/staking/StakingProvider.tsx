@@ -133,8 +133,6 @@ const StakingProvider: React.FC<StakingProviderType> = ({ children }) => {
 			// Set up on instance ready
 			// Account is not necessarily plugged in yet
 			getAllPools();
-
-			console.log(instance);
 		}
 	}, [instance]);
 
