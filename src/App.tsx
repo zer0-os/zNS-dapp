@@ -66,21 +66,17 @@ function App() {
 	}
 
 	return (
-		<ConnectedRouter history={history}>
-			{/* <HashRouter>
-				<Route
-					render={({ location, match }) => {
-						return (
-							<> */}
-			{/* <CurrentDomainProvider> */}
-			<Navigator domain={''} />
-			{/* </CurrentDomainProvider> */}
-			{/* </>
-						);
-					}}
-				/>
-			</HashRouter> */}
-		</ConnectedRouter>
+		<div
+			style={{
+				height: '100vh',
+				width: '100vw',
+				display: 'flex',
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}
+		>
+			<b>Staking Coming Soon</b>
+		</div>
 	);
 }
 
@@ -93,28 +89,7 @@ function wrappedApp() {
 			isEnabled={isProduction}
 			isVerboseMode={true}
 		>
-			<ReduxProvider store={store}>
-				<ChainSelectorProvider>
-					<SubgraphProvider>
-						<Web3ReactProvider getLibrary={getLibrary}>
-							{/* Our Hooks  */}
-							{/* <ZNSDomainsProvider>
-								<BidProvider>
-									<TransferProvider>
-										<StakingRequestProvider>
-											<MintProvider>
-												<EnlistProvider> */}
-							<App />
-							{/* </EnlistProvider>
-											</MintProvider>
-										</StakingRequestProvider>
-									</TransferProvider>
-								</BidProvider>
-							</ZNSDomainsProvider> */}
-						</Web3ReactProvider>
-					</SubgraphProvider>
-				</ChainSelectorProvider>
-			</ReduxProvider>
+			<App />
 		</CacheBuster>
 	);
 }
