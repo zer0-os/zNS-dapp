@@ -154,7 +154,11 @@ const StakeFlow = (props: StakeFlowProps) => {
 				error: true,
 			});
 		}
+
+		// Reset values
 		setIsTransactionPending(false);
+		setStakeAmount(undefined);
+		setStake(undefined);
 	};
 
 	const onStake = async (amount: string, shouldContinue?: boolean) => {

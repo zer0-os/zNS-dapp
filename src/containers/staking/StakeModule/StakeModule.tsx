@@ -4,7 +4,7 @@ import { TextInput, FutureButton, Spinner } from 'components';
 import { displayEther } from 'lib/currency';
 
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { MaybeUndefined } from 'lib/types';
 
@@ -64,6 +64,10 @@ const StakeModule = (props: StakeModuleProps) => {
 			onStake(amountString);
 		}
 	};
+
+	useEffect(() => {
+		setAmountString(amount);
+	}, [amount]);
 
 	return (
 		<div className={cx(styles.Container, className)}>
