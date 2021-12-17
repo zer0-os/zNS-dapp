@@ -51,24 +51,31 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 			return;
 		}
 
-		const wildPool: WrappedStakingPool = {
-			instance: instance.wildPool,
-			content: poolContent.wildPool,
-			metrics: {},
-		};
+		const getMetrics = async () => {
+			const wildPool: WrappedStakingPool = {
+				instance: instance.wildPool,
+				content: poolContent.wildPool,
+				metrics: {
+					apy: await instance.wildPool.poolApr(),
+				},
+			};
 
-		const lpPool: WrappedStakingPool = {
-			instance: instance.liquidityPool,
-			content: poolContent.lpPool,
-			metrics: {},
-		};
+			const lpPool: WrappedStakingPool = {
+				instance: instance.liquidityPool,
+				content: poolContent.lpPool,
+				metrics: {
+					apy: await instance.liquidityPool.poolApr(),
+				},
+			};
 
-		const pools = {
-			wildPool,
-			lpPool,
-		};
+			const pools = {
+				wildPool,
+				lpPool,
+			};
 
-		setPools(pools);
+			setPools(pools);
+		};
+		getMetrics();
 	}, [instance]);
 
 	const contextValue = {

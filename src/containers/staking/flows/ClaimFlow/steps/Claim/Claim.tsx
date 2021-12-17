@@ -8,7 +8,7 @@ import { PoolData, Message, Back } from '../../..';
 import styles from './Claim.module.scss';
 
 type StakeProps = {
-	apy: number;
+	apy: string;
 	message: { error?: boolean; content: string } | undefined;
 	poolIconUrl: string;
 	poolName: string;

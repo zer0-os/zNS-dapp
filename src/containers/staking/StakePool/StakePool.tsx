@@ -15,6 +15,8 @@ import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider
 import { getPoolByDomain } from 'lib/providers/staking/StakingUtils';
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
 import { MaybeUndefined } from 'lib/types';
+import { ethers } from 'ethers';
+import { toFiat } from 'lib/currency';
 
 const cx = classNames.bind(styles);
 const moment = require('moment');
@@ -38,6 +40,8 @@ const StakePool = (props: StakePoolProps) => {
 	};
 
 	const [apy, setApy] = useState<number>();
+	const [tokensLocked, setTokensLocked] = useState<MaybeUndefined<string>>();
+	const [valueLocked, setValueLocked] = useState<MaybeUndefined<string>>();
 
 	useEffect(() => {
 		let isMounted = true;
@@ -57,7 +61,13 @@ const StakePool = (props: StakePoolProps) => {
 				setPool(pool);
 			}
 
-			//await pool.instance.getPoolToken()
+			const tvl = await pool.instance.poolTvl();
+
+			if (isMounted) {
+				setValueLocked(toFiat(tvl.valueOfTokensUSD));
+				setTokensLocked(toFiat(tvl.numberOfTokens));
+				setApy(Number(pool.metrics.apy.toFixed(2)));
+			}
 		};
 
 		getPoolData();
@@ -97,7 +107,7 @@ const StakePool = (props: StakePoolProps) => {
 			<PoolDetails
 				apy={apy}
 				className={containerClasses}
-				contractAddress={'0x0'}
+				contractAddress={pool!.instance.address}
 				icon={pool!.content.image}
 				name={pool!.content.name}
 				onStake={onStake}
@@ -105,7 +115,8 @@ const StakePool = (props: StakePoolProps) => {
 				tokenName={pool!.content.token}
 				isUserConnected={active}
 				peopleStaked={0}
-				totalValueLocked={0}
+				tokensLocked={tokensLocked}
+				valueLocked={valueLocked}
 				totalRewards={0}
 				tokenPurchaseUrl={pool.content.tokenPurchaseUrl}
 			/>
