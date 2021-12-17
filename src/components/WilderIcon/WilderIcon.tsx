@@ -12,13 +12,13 @@ const WilderIcon: React.FC = () => {
 	//- Hooks
 	const history = useHistory();
 
-	const home = () => {
+	const redirectToHome = () => {
 		history.push('/');
 	};
 
 	return (
 		<div className={styles.Wilder}>
-			<img alt="home icon" src={wilderIcon} onClick={home} />
+			<img alt="home icon" src={wilderIcon} onClick={redirectToHome} />
 		</div>
 	);
 };

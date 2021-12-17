@@ -8,11 +8,7 @@
 	transition: box-shadow var(--animation-time-medium) ease-in-out;
 	transition: filter var(--animation-time-medium) ease-in-out;
 	transition: transform var(--animation-time-medium) ease-in-out;
-	background: linear-gradient(
-		90deg,
-		rgba(82, 87, 255, 1) 20%,
-		rgba(82, 203, 255, 1) 100%
-	);
+	background: var(--color-azure-gradient-100);
 }
 
 .Mobile {
@@ -34,11 +30,7 @@
 	align-items: center;
 	width: 100%;
 	padding: 16px 0;
-	background: linear-gradient(
-		90deg,
-		rgba(0, 0, 0, 0.4) 0%,
-		rgba(0, 0, 0, 0.45) 51.04%
-	);
+	background: var(--color-black-gradient-40);
 }
 
 .Content:hover {
@@ -51,7 +43,7 @@
 	font-size: 16px;
 	margin-right: 8px;
 	padding-bottom: 0;
-	color: rgba(255, 255, 255, 1);
+	color: var(--color-white-secondary);
 }
 
 .Countdown {
@@ -59,7 +51,7 @@
 	font-size: 14px;
 	margin-right: 8px;
 	padding-bottom: 0;
-	color: rgba(255, 255, 255, 1);
+	color: var(--color-white-secondary);
 }
 
 .Button {
