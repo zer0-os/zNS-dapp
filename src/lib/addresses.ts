@@ -9,7 +9,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
 		lootToken: '0x43b8219aC1883373C0428688eE1a76e19E6B6D9d',
 		zAuction: '0x05cBD37cA528B7ea50800aA80ddD0F9F30C952F0',
-		wheelSale: '0xA2E4a7678C30C061B26e2F38737C025Ffc6C22B5', //  cribs
+		wheelSale: '0x7bA5faff747a3cA7E4ebe65F64e3EDFAEE136846', //  crafts
 	},
 	[NETWORK_TYPES.KOVAN]: {
 		registrar: '0xC613fCc3f81cC2888C5Cccc1620212420FFe4931',
