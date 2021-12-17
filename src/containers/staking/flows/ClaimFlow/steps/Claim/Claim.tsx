@@ -34,7 +34,7 @@ const Claim = (props: StakeProps) => {
 
 	return (
 		<div className={styles.Container}>
-			<Back onBack={onBack} text={'All Pools'} />
+			<Back onBack={onBack} text={'Back'} />
 			{message && <Message message={message.content} error={message.error} />}
 			<PoolData
 				domain={poolDomain}
