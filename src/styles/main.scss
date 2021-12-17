@@ -48,11 +48,28 @@
 	--color-purple-light: #29175a;
 	--color-purple-lighter: #50207b;
 	--color-purple-lightest: #c169ff;
+	--color-purple-gradient-darker: linear-gradient(
+		180deg,
+		#1c4358 0%,
+		#2a0047 100%
+	);
 
 	--color-black: #000000;
+	--color-black-gradient-30: linear-gradient(
+		90deg,
+		rgba(0, 0, 0, 0.35) 0%,
+		rgba(0, 0, 0, 0) 51.04%
+	);
+	--color-black-gradient-40: linear-gradient(
+		90deg,
+		rgba(0, 0, 0, 0.4) 0%,
+		rgba(0, 0, 0, 0.45) 51.04%
+	);
 	--color-grey-draker: #404040;
 	--color-grey-lighter-3: #d9d9d9;
 	--color-grey-lighter-4: #f2f2f2;
+
+	--color-white-secondary: rgba(255, 255, 255, 1);
 
 	--color-accent-blue-100: #52cbff;
 	--color-blue-200: #52aeff;
@@ -66,6 +83,11 @@
 	--color-red-500: #f763b0;
 
 	--color-azure-gradient: linear-gradient(90deg, #5257ff 0%, #52cbff 100%);
+	--color-azure-gradient-100: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 1) 20%,
+		rgba(82, 203, 255, 1) 100%
+	);
 	--color-azure-gradient-50: linear-gradient(
 		90deg,
 		rgba(82, 87, 255, 0.5) 0%,

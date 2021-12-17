@@ -416,14 +416,12 @@ const MintWheelsFlowContainer = () => {
 					/>
 				</Overlay>
 			)}
-			<div style={{ position: 'relative', marginBottom: 16 }}>
-				<MintWheelsBanner
-					title={'Get your crib for the Metaverse '}
-					label={bannerLabel()}
-					buttonText={buttonText()}
-					onClick={openWizard}
-				/>
-			</div>
+			<MintWheelsBanner
+				title={'Get your ride for the Metaverse '}
+				label={bannerLabel()}
+				buttonText={buttonText()}
+				onClick={openWizard}
+			/>
 		</>
 	);
 };
