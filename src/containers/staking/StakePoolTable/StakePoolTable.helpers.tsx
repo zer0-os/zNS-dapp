@@ -20,22 +20,6 @@ export const TABLE_HEADERS = [
 		className: '',
 	},
 	{
-		label: 'Stakers',
-		accessor: '',
-		className: 'lastSale',
-	},
-	{
-		label: (
-			<span>
-				Total Rewards
-				<br />
-				Issued (WILD)
-			</span>
-		),
-		accessor: '',
-		className: '',
-	},
-	{
 		label: '',
 		accessor: '',
 		className: '',

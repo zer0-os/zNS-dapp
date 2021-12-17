@@ -1,4 +1,4 @@
-import { PoolInstance } from '@zero-tech/zfi-sdk/lib/types';
+import { PoolInstance, TotalValueLocked } from '@zero-tech/zfi-sdk/lib/types';
 
 export interface StakingPoolContent {
 	image: string;
@@ -11,6 +11,7 @@ export interface StakingPoolContent {
 
 export interface StakingPoolMetrics {
 	apy: number;
+	tvl: TotalValueLocked;
 }
 
 export interface WrappedStakingPool {

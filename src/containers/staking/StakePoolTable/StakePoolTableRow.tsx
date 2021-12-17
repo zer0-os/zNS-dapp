@@ -6,6 +6,7 @@ import { useHistory } from 'react-router';
 // import { useStaking } from 'lib/providers/staking/StakingProvider';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
+import { toFiat } from 'lib/currency';
 
 const StakePoolTableRow = (props: any) => {
 	// const { selectPoolByName } = useStaking();
@@ -14,6 +15,8 @@ const StakePoolTableRow = (props: any) => {
 	const selectPool = useStakingPoolSelector().selectStakePool;
 
 	const pool = props.data as WrappedStakingPool;
+	const apy = pool.metrics.apy;
+	const tvl = pool.metrics.tvl.valueOfTokensUSD;
 
 	const onRowClick = (event: React.MouseEvent<HTMLElement>) => {
 		if ((event.target as HTMLElement).className.indexOf('FutureButton') < 0) {
@@ -38,10 +41,10 @@ const StakePoolTableRow = (props: any) => {
 					style={{ maxWidth: 200 }}
 				/>
 			</td>
-			<td className={styles.Right}>-</td>
-			<td className={styles.Right}>-</td>
-			<td className={styles.Right}>-</td>
-			<td className={styles.Right}>-</td>
+			<td className={styles.Right}>
+				{Number(apy.toFixed(2)).toLocaleString() + '%'}
+			</td>
+			<td className={styles.Right}>{'$' + toFiat(tvl)}</td>
 			<td>
 				<FutureButton glow onClick={onButtonClick}>
 					Stake

@@ -57,6 +57,7 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 				content: poolContent.wildPool,
 				metrics: {
 					apy: await instance.wildPool.poolApr(),
+					tvl: await instance.wildPool.poolTvl(),
 				},
 			};
 
@@ -65,6 +66,7 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 				content: poolContent.lpPool,
 				metrics: {
 					apy: await instance.liquidityPool.poolApr(),
+					tvl: await instance.liquidityPool.poolTvl(),
 				},
 			};
 
