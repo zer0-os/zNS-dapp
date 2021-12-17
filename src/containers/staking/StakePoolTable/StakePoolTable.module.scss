@@ -1,3 +1,17 @@
-.Table {
-	background: red;
+.Container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 15px 0;
+
+	p {
+		padding: 0;
+	}
+
+	> * {
+		&:not(:first-child) {
+			margin-top: 24px;
+		}
+	}
 }
