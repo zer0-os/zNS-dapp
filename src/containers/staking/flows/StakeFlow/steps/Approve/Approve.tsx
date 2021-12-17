@@ -62,7 +62,7 @@ const Approve = (props: ApproveProps) => {
 				<LoadingIndicator
 					text={
 						<p>
-							Approving pool spending... This may take up to 20 mins. This
+							Approving pool spending... This may take up to 20 minutes. This
 							transaction must finish before you can continue to stake in this
 							pool.
 						</p>
