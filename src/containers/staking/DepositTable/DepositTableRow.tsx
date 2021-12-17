@@ -22,7 +22,7 @@ const DepositTableRow = (props: any) => {
 
 	const OPTIONS: Option[] = [
 		{
-			name: 'Claim Rewards',
+			name: 'Claim Pool Rewards',
 			callback: () => claim(deposit.pool),
 		},
 		{
