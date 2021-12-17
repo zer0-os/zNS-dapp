@@ -7,6 +7,7 @@ import styles from './Image.module.scss';
 const Image = (props: any) => {
 	const [loaded, setLoaded] = useState(false);
 	const [tryVideo, setTryVideo] = useState(false);
+	const [src, setSrc] = useState<string | undefined>();
 
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -28,6 +29,10 @@ const Image = (props: any) => {
 	useEffect(() => {
 		setTryVideo(false);
 		setLoaded(false);
+		// Using src because it's possible for an
+		// img to not register the onLoad if loading from
+		// cache
+		setSrc(props.src);
 	}, [props.src]);
 
 	return (
@@ -60,7 +65,7 @@ const Image = (props: any) => {
 						...props.style,
 					}}
 					onLoad={load}
-					src={props.src}
+					src={src}
 					alt={props.alt || ''}
 					onError={err}
 					onClick={click}
