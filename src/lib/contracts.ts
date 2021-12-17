@@ -106,7 +106,11 @@ function useContractAddresses(): ContractAddresses | undefined {
 	const context = useWeb3React<Web3Provider>();
 	const { library, active, chainId } = context;
 	const networkAddresses = useMemo((): ContractAddresses | undefined => {
-		let contracts = addresses[chainIdToNetworkType(defaultNetworkId)];
+		if (!library) {
+			return undefined;
+		}
+
+		let contracts = addresses[chainIdToNetworkType(chainId)];
 		return contracts;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active, library, chainId]);

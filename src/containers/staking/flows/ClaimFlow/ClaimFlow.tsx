@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Claim from './steps/Claim/Claim';
 import { Confirm, Header } from '../';
 
-import { useStaking } from 'lib/providers/staking/StakingProvider';
+import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 import styles from './ClaimFlow.module.scss';
 
@@ -27,7 +27,7 @@ type ClaimFlowProps = {
 
 const ClaimFlow = (props: ClaimFlowProps) => {
 	const { onClose } = props;
-	const { checkRewards, claimRewards } = useStaking();
+	const staking = useStaking();
 	const { claiming } = useStakingPoolSelector();
 
 	const HEADER = <Header text="Claim Pool Rewards" />;
@@ -45,21 +45,21 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 	}, []);
 
 	const getRewardAmount = async () => {
-		const rewards = await checkRewards(claiming!.content.name);
-		setRewardAmount(rewards);
+		// const rewards = await checkRewards(claiming!.content.name);
+		// setRewardAmount(rewards);
 	};
 
 	const onClaim = () => {
 		setStep(Steps.Confirm);
 	};
 
-	const onConfirm = () => {
+	const onConfirm = async () => {
 		setStep(Steps.Processing);
-		claimRewards(claiming!.content.name).then((d) => {
-			setStep(Steps.Claim);
-			setRewardAmount(undefined);
-			getRewardAmount();
-		});
+		// claimRewards(claiming!.content.name).then((d) => {
+		// 	setStep(Steps.Claim);
+		// 	setRewardAmount(undefined);
+		// 	getRewardAmount();
+		// });
 	};
 
 	const stepNode = () => {
