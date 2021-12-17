@@ -82,8 +82,7 @@ const StakeModule = (props: StakeModuleProps) => {
 					onClick={onStakeButton}
 				>
 					{unstake ? 'Unstake' : 'Stake'}{' '}
-					{amountString &&
-						Number(amountString).toLocaleString() + ' ' + tokenName}
+					{amountString && ethers.utils.commify(amountString) + ' ' + tokenName}
 				</FutureButton>
 			</div>
 			<hr />
