@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { OptionDropdown } from 'components';
 import { Artwork } from 'components';
 import styles from './DepositTableRow.module.scss';
@@ -6,7 +7,6 @@ import { ethers } from 'ethers';
 import { WrappedDeposit } from './DepositTable';
 import { displayEther } from 'lib/currency';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
-import { optionsToId } from 'react-intersection-observer/observe';
 
 type Option = {
 	name: string;
@@ -15,6 +15,8 @@ type Option = {
 
 const DepositTableRow = (props: any) => {
 	const deposit = props.data as WrappedDeposit;
+
+	const buttonRef = useRef<HTMLButtonElement>(null);
 
 	const stake = useStakingPoolSelector().selectStakePool;
 	const claim = useStakingPoolSelector().claim;
@@ -59,12 +61,16 @@ const DepositTableRow = (props: any) => {
 		return new Date(timestamp.toNumber() * 1000);
 	};
 
+	const onClick = () => {
+		buttonRef.current?.click();
+	};
+
 	if (!deposit) {
 		return <></>;
 	}
 
 	return (
-		<tr className={styles.Row}>
+		<tr className={styles.Row} onClick={onClick}>
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
@@ -92,7 +98,7 @@ const DepositTableRow = (props: any) => {
 					disableSelection
 					drawerStyle={{ width: 222 }}
 				>
-					<button className={styles.Dots} onClick={() => {}}>
+					<button ref={buttonRef} className={styles.Dots} onClick={() => {}}>
 						<div></div>
 						<div></div>
 						<div></div>
