@@ -22,13 +22,14 @@ type TitleBarProps = {
 	style?: React.CSSProperties;
 	children: React.ReactNode;
 	canGoBack: boolean;
+	hideNavigationButtons?: boolean;
 	onBack: () => void;
 	canGoForward: boolean;
 	onForward: () => void;
 	domain: string;
 	setIsSearchActive: (active: boolean) => void;
 	isSearchActive: boolean;
-	title?: string;
+	title?: string | React.ReactNode;
 };
 
 const TitleBar: React.FC<TitleBarProps> = ({
@@ -36,6 +37,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	style,
 	children,
 	canGoBack,
+	hideNavigationButtons,
 	onBack,
 	canGoForward,
 	onForward,
@@ -170,22 +172,24 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		>
 			<div className={styles.Bar}>
 				<div className={styles.Navigation}>
-					<div className={styles.Buttons}>
-						<IconButton
-							iconUri={arrowBackIcon}
-							onClick={onBack}
-							style={{ height: 32, width: 32 }}
-							disabled={!canGoBack}
-							alt={'back'}
-						/>
-						<IconButton
-							iconUri={arrowForwardIcon}
-							onClick={onForward}
-							style={{ height: 32, width: 32, marginLeft: 4 }}
-							disabled={!canGoForward}
-							alt={'forward'}
-						/>
-					</div>
+					{!hideNavigationButtons && (
+						<div className={styles.Buttons}>
+							<IconButton
+								iconUri={arrowBackIcon}
+								onClick={onBack}
+								style={{ height: 32, width: 32 }}
+								disabled={!canGoBack}
+								alt={'back'}
+							/>
+							<IconButton
+								iconUri={arrowForwardIcon}
+								onClick={onForward}
+								style={{ height: 32, width: 32, marginLeft: 4 }}
+								disabled={!canGoForward}
+								alt={'forward'}
+							/>
+						</div>
+					)}
 					{/* TODO: Split this into its own component */}
 					{!isSearchActive && !title && (
 						<ZNALink

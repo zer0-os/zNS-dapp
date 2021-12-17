@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Overlay } from 'components';
 
@@ -15,6 +15,7 @@ import styles from './StakingContainer.module.scss';
 import classNames from 'classnames/bind';
 import { useLocation, Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
+import { useNav } from 'lib/providers/NavProvider';
 
 type StakingContainerProps = {
 	className?: string;
@@ -35,6 +36,21 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	const poolSelection = useStakingPoolSelector();
 
 	const { pathname } = useLocation();
+	const { setLocation } = useNav();
+
+	useEffect(() => {
+		switch (pathname) {
+			case '/pools':
+				setLocation('Staking - Pools');
+				break;
+			case '/deposits':
+				setLocation('Staking - My Deposits');
+				break;
+			default:
+				setLocation(undefined);
+				break;
+		}
+	}, [pathname]);
 
 	return (
 		<>

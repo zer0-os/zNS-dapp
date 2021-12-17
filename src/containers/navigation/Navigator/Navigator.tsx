@@ -1,12 +1,16 @@
-import { TitleBar, SideBar } from 'components';
+import { TitleBar, SideBar, ConnectToWallet } from 'components';
 import Staking from 'dapps/Staking';
 import { ZNS } from 'pages';
 import React, { useEffect, useMemo, useState } from 'react';
+
+import NavProvider, { useNav } from 'lib/providers/NavProvider';
 
 import styles from './Navigator.module.scss';
 import classNames from 'classnames/bind';
 import { StakingContainer } from 'containers/staking';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
+import { ConnectWalletButton } from 'containers';
+import { useWeb3React } from '@web3-react/core';
 
 type NavigatorProps = {
 	domain: string;
@@ -21,7 +25,10 @@ var lastY = 0; // Just a global variable to stash last scroll position
 const cx = classNames.bind(styles);
 
 const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
-	const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+	const { active } = useWeb3React();
+
+	const { location } = useNav();
+
 	const [selectedApp, setSelectedApp] = useState<App>(App.Staking);
 
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
@@ -67,15 +74,16 @@ const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
 				<TitleBar
 					className={'nav'}
 					domain={domain}
-					title={'Staking'}
+					title={location || 'Staking'}
+					hideNavigationButtons
 					canGoBack={true}
 					canGoForward={true}
 					onBack={() => {}}
 					onForward={() => {}}
 					isSearchActive={false}
-					setIsSearchActive={setIsSearchActive}
+					setIsSearchActive={() => {}}
 				>
-					{''}
+					{!active && <ConnectWalletButton>Connect</ConnectWalletButton>}
 				</TitleBar>
 			</nav>
 			{/* <nav className={cx(styles.Left)}>
@@ -86,4 +94,12 @@ const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
 	);
 };
 
-export default Navigator;
+const WrappedNavigator = (props: NavigatorProps) => {
+	return (
+		<NavProvider>
+			<Navigator {...props} />
+		</NavProvider>
+	);
+};
+
+export default WrappedNavigator;
