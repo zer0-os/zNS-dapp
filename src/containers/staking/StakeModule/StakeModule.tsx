@@ -1,7 +1,7 @@
 import styles from './StakeModule.module.scss';
 
 import { TextInput, FutureButton, Spinner } from 'components';
-import { displayEther, toFiat } from 'lib/currency';
+import { displayEther } from 'lib/currency';
 
 import classNames from 'classnames/bind';
 import { useState } from 'react';
@@ -35,16 +35,32 @@ const StakeModule = (props: StakeModuleProps) => {
 
 	const [amountString, setAmountString] =
 		useState<MaybeUndefined<string>>(amount);
-
-	const canStakeSpecifiedAmount =
-		balance && Number(amountString) > 0 && balance.gt(amountString || 0);
+	const [amountIsValid, setAmountIsValid] = useState<boolean>(false);
 
 	const onInput = (input: string) => {
-		setAmountString(input);
+		if (input.length === 0) {
+			setAmountString(input);
+			setAmountIsValid(false);
+			return;
+		}
+		try {
+			const amtWei = ethers.BigNumber.from(ethers.utils.parseEther(input));
+			// Check amount
+			if (input.length && balance) {
+				setAmountIsValid(
+					amtWei.gt(0) && ethers.BigNumber.from(amtWei).lt(balance),
+				);
+			} else {
+				setAmountIsValid(false);
+			}
+			setAmountString(input);
+		} catch (e) {
+			console.error(e);
+		}
 	};
 
 	const onStakeButton = () => {
-		if (canStakeSpecifiedAmount && amountString) {
+		if (amountIsValid && amountString) {
 			onStake(amountString);
 		}
 	};
@@ -58,10 +74,11 @@ const StakeModule = (props: StakeModuleProps) => {
 					placeholder="Amount"
 					onChange={onInput}
 					disabled={isLoading}
+					maxLength={24}
 				/>
 				<FutureButton
 					loading={isLoading}
-					glow={canStakeSpecifiedAmount}
+					glow={amountIsValid}
 					onClick={onStakeButton}
 				>
 					{unstake ? 'Unstake' : 'Stake'}{' '}
