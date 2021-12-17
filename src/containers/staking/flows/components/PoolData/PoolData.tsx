@@ -41,9 +41,6 @@ const PoolData = ({
 					style={{ maxWidth: 200 }}
 				/>
 			</div>
-			<a target="_blank" rel="noreferrer" href={poolUrl}>
-				See Pool Page
-			</a>
 		</div>
 		<ul className={cx(styles.Stats, 'flex-split')}>
 			<StatsWidget
