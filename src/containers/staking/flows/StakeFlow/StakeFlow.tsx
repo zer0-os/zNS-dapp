@@ -164,7 +164,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 			setMessage({
 				content: `${displayEther(amount)} ${stakingPool!.content.tokenTicker} ${
 					unstake ? 'unstaked' : 'staked'
-				} successfully`,
+				} successfully${!unstake && ' - view in My Deposits'}`,
 			});
 		} else {
 			setMessage({

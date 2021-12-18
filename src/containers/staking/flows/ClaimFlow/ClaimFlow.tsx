@@ -85,7 +85,10 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 			return;
 		}
 		setMessage({
-			content: 'Successfully claimed ' + displayEther(rewardAmount!) + ' WILD',
+			content:
+				'Successfully claimed ' +
+				displayEther(rewardAmount!) +
+				' WILD - view in My Deposits',
 		});
 		setStep(Steps.Claim);
 		setRewardAmount(undefined);
