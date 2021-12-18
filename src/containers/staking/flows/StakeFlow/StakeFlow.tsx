@@ -90,7 +90,11 @@ const StakeFlow = (props: StakeFlowProps) => {
 			);
 
 			if (isSubscribed) {
-				setPendingRewards(pendingRewards);
+				if (pendingRewards.gt(ethers.utils.parseEther('0.01'))) {
+					setPendingRewards(pendingRewards);
+				} else {
+					setPendingRewards(ethers.BigNumber.from(0));
+				}
 			}
 		};
 		getBalance();
@@ -242,8 +246,11 @@ const StakeFlow = (props: StakeFlowProps) => {
 							<p>
 								Are you sure you want to claim{' '}
 								<b>{displayEther(pendingRewards!)} WILD</b> in pool rewards and{' '}
-								{unstake ? 'unstake' : 'stake'} <b>{stake} WILD</b>? This will
-								happen in one transaction.
+								{unstake ? 'unstake' : 'stake'}{' '}
+								<b>
+									{stake} {stakingPool?.content.tokenTicker}
+								</b>
+								? This will happen in one transaction.
 							</p>
 							<div>
 								{isTransactionPending ? (
