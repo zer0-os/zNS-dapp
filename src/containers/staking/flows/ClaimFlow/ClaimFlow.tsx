@@ -63,8 +63,27 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 			return;
 		}
 		setStep(Steps.Processing);
-		const tx = await claiming?.instance.processRewards(library.getSigner());
-		await tx?.wait();
+		var tx;
+		try {
+			tx = await claiming?.instance.processRewards(library.getSigner());
+		} catch {
+			setMessage({
+				content: 'Transaction rejected',
+				error: true,
+			});
+			setStep(Steps.Claim);
+			return;
+		}
+		try {
+			await tx?.wait();
+		} catch {
+			setMessage({
+				content: 'Transaction failed',
+				error: true,
+			});
+			setStep(Steps.Claim);
+			return;
+		}
 		setMessage({
 			content: 'Successfully claimed ' + displayEther(rewardAmount!) + ' WILD',
 		});
