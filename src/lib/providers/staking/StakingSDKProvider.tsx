@@ -9,6 +9,7 @@ import {
 	WrappedStakingPool,
 	WrappedStakingPools,
 } from './StakingProviderTypes';
+import { Web3Provider } from '@ethersproject/providers';
 
 export const StakingContext = React.createContext({
 	instance: undefined as MaybeUndefined<Instance>,
@@ -22,7 +23,7 @@ type StakingProviderType = {
 export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 	children,
 }) => {
-	const { account, library, chainId } = useWeb3React();
+	const { account, library, chainId } = useWeb3React<Web3Provider>();
 	const contracts = useZnsContracts();
 	const contractAddresses = useContractAddresses();
 
@@ -44,14 +45,18 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 		});
 
 		setInstance(instance);
-	}, [contractAddresses, library]);
+	}, [contractAddresses, library, chainId]);
 
 	React.useEffect(() => {
-		if (!instance) {
-			return;
-		}
+		let isMounted = true;
+
+		console.log(instance);
 
 		const getMetrics = async () => {
+			if (!instance) {
+				return;
+			}
+
 			const wildPool: WrappedStakingPool = {
 				instance: instance.wildPool,
 				content: poolContent.wildPool,
@@ -75,9 +80,17 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 				lpPool,
 			};
 
-			setPools(pools);
+			if (isMounted) {
+				setPools(pools);
+			}
 		};
-		getMetrics();
+		getMetrics().catch((e) => {
+			console.log(e.stack);
+		});
+
+		return () => {
+			isMounted = false;
+		};
 	}, [instance]);
 
 	const contextValue = {

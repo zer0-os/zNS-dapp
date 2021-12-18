@@ -26,7 +26,7 @@ export const wildPool: Pool = {
 
 export const liquidityPool: Pool = {
 	image: 'staking/farm.png',
-	name: 'Farm WILD - WETH LP',
+	name: 'Uniswap WILD - WETH LP',
 	token: 'Liquidity Provider',
 	tokenTicker: 'LP',
 	domain: '/pools/lp',
