@@ -126,25 +126,38 @@ const StakeFlow = (props: StakeFlowProps) => {
 	};
 
 	const doStake = async (amount: ethers.BigNumber) => {
-		// If already approved
-		var tx;
-		if (!unstake) {
-			tx = await stakingPool!.instance.stake(
-				amount.toString(),
-				BigNumber.from(0),
-				signer,
-			);
-		} else {
-			tx = await stakingPool!.instance.unstake(
-				deposit!.depositId.toString(),
-				amount.toString(),
-				signer,
-			);
+		try {
+			// If already approved
+			var tx;
+			if (!unstake) {
+				tx = await stakingPool!.instance.stake(
+					amount.toString(),
+					BigNumber.from(0),
+					signer,
+				);
+			} else {
+				tx = await stakingPool!.instance.unstake(
+					deposit!.depositId.toString(),
+					amount.toString(),
+					signer,
+				);
+			}
+		} catch {
+			setMessage({ content: 'Transaction rejected', error: true });
+			reset();
+			return;
 		}
 
 		setStep(Steps.Pending);
 
-		const success = await tx?.wait();
+		var success;
+		try {
+			success = await tx?.wait();
+		} catch {
+			setMessage({ content: 'Transaction failed', error: true });
+			reset();
+			return;
+		}
 		refreshToken.refresh();
 
 		if (success) {
@@ -161,10 +174,16 @@ const StakeFlow = (props: StakeFlowProps) => {
 		}
 
 		// Reset values
+		reset(true);
+	};
+
+	const reset = (shouldResetAmount?: boolean) => {
 		setStep(Steps.Stake);
 		setIsTransactionPending(false);
-		setStakeAmount(undefined);
-		setStake(undefined);
+		if (shouldResetAmount) {
+			setStakeAmount(undefined);
+			setStake(undefined);
+		}
 	};
 
 	const onStake = async (amount: string, shouldContinue?: boolean) => {
