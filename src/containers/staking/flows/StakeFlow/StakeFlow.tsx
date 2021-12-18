@@ -164,7 +164,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 	};
 
 	const onStake = async (amount: string, shouldContinue?: boolean) => {
-		if (!shouldContinue && pendingRewards) {
+		if (!shouldContinue && pendingRewards?.gt(0)) {
 			setStep(Steps.Claim);
 			setStake(amount);
 			return;
