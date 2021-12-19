@@ -1,15 +1,11 @@
 //- React Imports
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 
 //- Style Imports
 import styles from './FilterBar.module.scss';
 
 //- Component Imports
 import { TextButton } from 'components';
-
-//- Asset Imports
-import wilderIcon from './assets/WWLogo_SVG.svg';
 
 type FilterBarProps = {
 	filters: string[];
@@ -31,9 +27,6 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
 	//- Data
 	const body = document.getElementsByTagName('body')[0];
-
-	//- Hooks
-	const history = useHistory();
 
 	// TODO: Move hidden header to a separate component
 	const [hideHeader, setHideHeader] = useState(false);
@@ -60,19 +53,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
 		onSelect(filter);
 	};
 
-	const home = () => {
-		history.push('/');
-	};
-
 	return (
 		<nav
 			className={`${styles.FilterBar} blur ${hideHeader ? styles.Hidden : ''}`}
 			style={style}
 		>
-			{/* TODO: Move Wilder icon out of this component */}
-			<div className={styles.Wilder}>
-				<img alt="home icon" src={wilderIcon} onClick={home} />
-			</div>
 			{children}
 			<ul>
 				{filters.map((filter, index) => (

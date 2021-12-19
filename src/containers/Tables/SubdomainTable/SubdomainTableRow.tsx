@@ -163,7 +163,7 @@ const SubdomainTableRow = (props: any) => {
 	const onRowClick = (event: any) => {
 		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
 		if (!clickedButton) {
-			goTo(domain.name.split('wilder.')[1]);
+			goTo(`/market/${domain.name.split('wilder.')[1]}`);
 		}
 	};
 

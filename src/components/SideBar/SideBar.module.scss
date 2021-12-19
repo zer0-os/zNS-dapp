@@ -1,6 +1,6 @@
 .SideBar {
-	top: calc(29px + 56px + 16px);
-	width: 56px;
+	top: calc(29px + 54px + 16px);
+	width: 54px;
 
 	display: flex;
 	flex-direction: column;
@@ -14,7 +14,7 @@
 
 .Navigator {
 	border-radius: 27px;
-	padding: 7px 5px;
+	padding: 7px 4px;
 	border: 1px solid var(--color-purple-lighter);
 
 	background-color: var(--color-purple-darkest);
@@ -81,6 +81,7 @@
 		&::after,
 		&::before {
 			z-index: -5;
+			transition: all var(--animation-time-medium) ease-in-out;
 		}
 
 		&.Selected {

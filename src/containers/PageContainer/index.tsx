@@ -17,6 +17,7 @@ import styles from './PageContainer.module.scss';
 
 //- Icon Imports
 import userIcon from 'assets/user.svg';
+import wilderIcon from 'assets/WWLogo_SVG.svg';
 
 //- Components & Containers
 import {
@@ -68,6 +69,7 @@ const PageContainer: FC = ({ children }) => {
 		if (chainId && chainSelector.selectedChain !== chainId) {
 			chainSelector.selectChain(chainId);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chainId]);
 
 	//- Domain Data
@@ -80,6 +82,7 @@ const PageContainer: FC = ({ children }) => {
 	//- Browser Navigation State
 	const history = useHistory();
 	const location = useLocation();
+	const globalDomain = useCurrentDomain();
 	const domain = useMemo(() => location.pathname, [location.pathname]);
 	const [forwardDomain, setForwardDomain] = useState<string | undefined>();
 	const lastDomain = useRef<string>();
@@ -88,13 +91,11 @@ const PageContainer: FC = ({ children }) => {
 
 	// Force to go back to home if invalid domain
 	React.useEffect(() => {
-		if (!loading) {
-			if (!znsDomain) {
-				history.push('/');
-				return;
-			}
+		if (!loading && !znsDomain) {
+			return history.push(globalDomain.app);
 		}
-	}, [znsDomain, loading]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [znsDomain, loading, globalDomain.app]);
 
 	//- Minting State
 	const mintingProvider = useMintProvider();
@@ -133,10 +134,9 @@ const PageContainer: FC = ({ children }) => {
 	const back = () => {
 		const lastIndex = domain.lastIndexOf('.');
 		if (lastIndex > 0) {
-			const to = domain.slice(0, domain.lastIndexOf('.'));
-			history.push(to);
+			history.push(domain.slice(0, domain.lastIndexOf('.')));
 		} else {
-			history.push('/');
+			history.push(domain.slice(0, domain.lastIndexOf('/')));
 		}
 	};
 
@@ -205,7 +205,7 @@ const PageContainer: FC = ({ children }) => {
 		if (refetch) {
 			refetch();
 		}
-	}, [mintingProvider.minted, stakingProvider.fulfilled]);
+	}, [mintingProvider.minted, refetch, stakingProvider.fulfilled]);
 
 	/* Handle notification for wallet changes */
 	useEffect(() => {
@@ -225,6 +225,7 @@ const PageContainer: FC = ({ children }) => {
 		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active]);
 
 	useEffect(() => {
@@ -285,6 +286,14 @@ const PageContainer: FC = ({ children }) => {
 					paddingTop: 145,
 				}}
 			>
+				{/* Home icon always goes to the market */}
+				<div className={styles.Wilder}>
+					<img
+						alt="home icon"
+						src={wilderIcon}
+						onClick={() => history.push('/market')}
+					/>
+				</div>
 				<FilterBar
 					style={
 						isSearchActive
@@ -297,7 +306,7 @@ const PageContainer: FC = ({ children }) => {
 					filters={!isSearchActive ? ['Everything'] : []}
 				>
 					<TitleBar
-						domain={domain}
+						// domain={domain.replace("/market", "") === "" ? "/" : domain.replace("/market", "")}
 						canGoBack={canGoBack}
 						canGoForward={canGoForward}
 						onBack={back}

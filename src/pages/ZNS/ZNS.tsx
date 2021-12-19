@@ -130,6 +130,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			top: -1000,
 			behavior: 'smooth',
 		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain, hasLoaded]);
 
 	useEffect(() => {
@@ -137,6 +138,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 		if (znsDomain && znsDomain.id) {
 			getTradeData();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain]);
 
 	/////////////////////

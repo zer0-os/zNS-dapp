@@ -70,36 +70,30 @@ function App() {
 			<BrowserRouter>
 				<Switch>
 					<CurrentDomainProvider>
-						{/* Need to remove dependency across the application before switching to a new root for apps */}
-						{/* <Route path="/market">
+						<PageContainer>
 							<Route
+								path="/market"
 								render={({ location, match }) => {
-									console.log(match.path, location.pathname)
 									return (
-										<PageContainer
-
-										>
-											<ZNS
-												domain={location.pathname.replace(match.path, "")}
-												isNftView={location.search.includes('view=true')}
-											/>
-										</PageContainer>
+										<ZNS
+											// TODO: Remove dependence on domain here, use the current domain provider hook instead.
+											domain={
+												location.pathname.replace(match.path, '') === ''
+													? '/'
+													: location.pathname.replace(match.path, '')
+											}
+											isNftView={location.search.includes('view=true')}
+										/>
 									);
 								}}
 							/>
-						</Route> */}
-						<Route
-							render={({ location, match }) => {
-								return (
-									<PageContainer>
-										<ZNS
-											domain={location.pathname}
-											isNftView={location.search.includes('view=true')}
-										/>
-									</PageContainer>
-								);
-							}}
-						/>
+							<Route
+								path="/staking"
+								render={({ location, match }) => {
+									return <span>Test</span>;
+								}}
+							/>
+						</PageContainer>
 					</CurrentDomainProvider>
 				</Switch>
 			</BrowserRouter>

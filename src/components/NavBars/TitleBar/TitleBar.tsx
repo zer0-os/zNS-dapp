@@ -24,7 +24,6 @@ type TitleBarProps = {
 	onBack: () => void;
 	canGoForward: boolean;
 	onForward: () => void;
-	domain: string;
 	setIsSearchActive: (active: boolean) => void;
 	isSearchActive: boolean;
 };
@@ -36,7 +35,6 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	onBack,
 	canGoForward,
 	onForward,
-	domain,
 	setIsSearchActive,
 	isSearchActive,
 }) => {
@@ -184,11 +182,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 					</div>
 					{/* TODO: Split this into its own component */}
 					{!isSearchActive && (
-						<ZNALink
-							className={styles.ZNA}
-							style={{ marginLeft: 16 }}
-							domain={domain}
-						/>
+						<ZNALink className={styles.ZNA} style={{ marginLeft: 16 }} />
 					)}
 					<input
 						className={styles.Search}
