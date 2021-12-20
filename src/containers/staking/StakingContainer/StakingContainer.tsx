@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Overlay } from 'components';
 
@@ -38,6 +38,12 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	const { pathname } = useLocation();
 	const { setLocation } = useNav();
 
+	const [isBelowBreakpoint, setIsBelowBreakpoint] = useState<boolean>();
+
+	const handleResize = () => {
+		setIsBelowBreakpoint(window.innerWidth <= 701);
+	};
+
 	useEffect(() => {
 		switch (pathname) {
 			case '/pools':
@@ -51,6 +57,33 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				break;
 		}
 	}, [pathname]);
+
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		handleResize();
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
+
+	if (isBelowBreakpoint) {
+		return (
+			<div
+				style={{
+					position: 'fixed',
+					top: '50%',
+					left: '50%',
+					transform: 'translate(-50%, -100%)',
+					width: '100%',
+					padding: 16,
+					textAlign: 'center',
+					fontWeight: 700,
+				}}
+			>
+				Staking is currently only available on desktop
+			</div>
+		);
+	}
 
 	return (
 		<>
