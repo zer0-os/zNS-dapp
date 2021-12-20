@@ -34,11 +34,12 @@ const cx = classNames.bind(styles);
 
 type StakeFlowProps = {
 	onClose: () => void;
+	onSuccess?: () => void;
 	unstake?: boolean;
 };
 
 const StakeFlow = (props: StakeFlowProps) => {
-	const { onClose, unstake } = props;
+	const { onClose, onSuccess, unstake } = props;
 
 	const context = useWeb3React<Web3Provider>();
 	const signer = context.library!.getSigner();
@@ -153,6 +154,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 		var success;
 		try {
 			success = await tx?.wait();
+			onSuccess?.();
 		} catch {
 			setMessage({ content: 'Transaction failed', error: true });
 			reset();

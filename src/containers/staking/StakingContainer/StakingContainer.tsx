@@ -16,6 +16,7 @@ import classNames from 'classnames/bind';
 import { useLocation, Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { useNav } from 'lib/providers/NavProvider';
+import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvider';
 
 type StakingContainerProps = {
 	className?: string;
@@ -34,6 +35,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	// - Opening StakeFlow modal for a specified pool
 
 	const poolSelection = useStakingPoolSelector();
+	const { refetch: refetchUserData } = useStakingUserData();
 
 	const { pathname } = useLocation();
 	const { setLocation } = useNav();
@@ -106,7 +108,11 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				}}
 			>
 				{poolSelection.unstaking && (
-					<StakeFlow unstake onClose={() => poolSelection.unstake(undefined)} />
+					<StakeFlow
+						onSuccess={refetchUserData}
+						unstake
+						onClose={() => poolSelection.unstake(undefined)}
+					/>
 				)}
 			</Overlay>
 			<Overlay
