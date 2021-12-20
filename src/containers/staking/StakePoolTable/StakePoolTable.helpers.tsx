@@ -15,6 +15,11 @@ export const TABLE_HEADERS = [
 		className: '',
 	},
 	{
+		label: 'Your Total Stake',
+		accessor: '',
+		className: '',
+	},
+	{
 		label: 'TVL',
 		accessor: '',
 		className: '',
