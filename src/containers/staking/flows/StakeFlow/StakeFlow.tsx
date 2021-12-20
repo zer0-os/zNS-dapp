@@ -34,11 +34,12 @@ const cx = classNames.bind(styles);
 
 type StakeFlowProps = {
 	onClose: () => void;
+	onSuccess?: () => void;
 	unstake?: boolean;
 };
 
 const StakeFlow = (props: StakeFlowProps) => {
-	const { onClose, unstake } = props;
+	const { onClose, onSuccess, unstake } = props;
 
 	const context = useWeb3React<Web3Provider>();
 	const signer = context.library!.getSigner();
@@ -90,7 +91,11 @@ const StakeFlow = (props: StakeFlowProps) => {
 			);
 
 			if (isSubscribed) {
-				setPendingRewards(pendingRewards);
+				if (pendingRewards.gt(ethers.utils.parseEther('0.01'))) {
+					setPendingRewards(pendingRewards);
+				} else {
+					setPendingRewards(ethers.BigNumber.from(0));
+				}
 			}
 		};
 		getBalance();
@@ -122,32 +127,46 @@ const StakeFlow = (props: StakeFlowProps) => {
 	};
 
 	const doStake = async (amount: ethers.BigNumber) => {
-		// If already approved
-		var tx;
-		if (!unstake) {
-			tx = await stakingPool!.instance.stake(
-				amount.toString(),
-				BigNumber.from(0),
-				signer,
-			);
-		} else {
-			tx = await stakingPool!.instance.unstake(
-				deposit!.depositId.toString(),
-				amount.toString(),
-				signer,
-			);
+		try {
+			// If already approved
+			var tx;
+			if (!unstake) {
+				tx = await stakingPool!.instance.stake(
+					amount.toString(),
+					BigNumber.from(0),
+					signer,
+				);
+			} else {
+				tx = await stakingPool!.instance.unstake(
+					deposit!.depositId.toString(),
+					amount.toString(),
+					signer,
+				);
+			}
+		} catch {
+			setMessage({ content: 'Transaction rejected', error: true });
+			reset();
+			return;
 		}
 
 		setStep(Steps.Pending);
 
-		const success = await tx?.wait();
+		var success;
+		try {
+			success = await tx?.wait();
+			onSuccess?.();
+		} catch {
+			setMessage({ content: 'Transaction failed', error: true });
+			reset();
+			return;
+		}
 		refreshToken.refresh();
 
 		if (success) {
 			setMessage({
 				content: `${displayEther(amount)} ${stakingPool!.content.tokenTicker} ${
 					unstake ? 'unstaked' : 'staked'
-				} successfully`,
+				} successfully${!unstake ? ' - view in My Deposits' : ''}`,
 			});
 		} else {
 			setMessage({
@@ -157,14 +176,20 @@ const StakeFlow = (props: StakeFlowProps) => {
 		}
 
 		// Reset values
+		reset(true);
+	};
+
+	const reset = (shouldResetAmount?: boolean) => {
 		setStep(Steps.Stake);
 		setIsTransactionPending(false);
-		setStakeAmount(undefined);
-		setStake(undefined);
+		if (shouldResetAmount) {
+			setStakeAmount(undefined);
+			setStake(undefined);
+		}
 	};
 
 	const onStake = async (amount: string, shouldContinue?: boolean) => {
-		if (!shouldContinue && pendingRewards) {
+		if (!shouldContinue && pendingRewards?.gt(0)) {
 			setStep(Steps.Claim);
 			setStake(amount);
 			return;
@@ -242,8 +267,11 @@ const StakeFlow = (props: StakeFlowProps) => {
 							<p>
 								Are you sure you want to claim{' '}
 								<b>{displayEther(pendingRewards!)} WILD</b> in pool rewards and{' '}
-								{unstake ? 'unstake' : 'stake'} <b>{stake} WILD</b>? This will
-								happen in one transaction.
+								{unstake ? 'unstake' : 'stake'}{' '}
+								<b>
+									{stake} {stakingPool?.content.tokenTicker}
+								</b>
+								? This will happen in one transaction.
 							</p>
 							<div>
 								{isTransactionPending ? (

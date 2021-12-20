@@ -15,6 +15,7 @@ import * as zfi from '@zero-tech/zfi-sdk';
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
 import { MaybeUndefined } from 'lib/types';
 import DepositProvider from './DepositTableProvider';
+import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvider';
 
 type DepositTableProps = {};
 
@@ -23,46 +24,7 @@ export interface WrappedDeposit extends zfi.Deposit {
 }
 
 const DepositTable = (props: DepositTableProps) => {
-	const staking = useStaking();
-	const { account } = useWeb3React();
-
-	const [deposits, setDeposits] =
-		React.useState<MaybeUndefined<WrappedDeposit[]>>();
-
-	React.useEffect(() => {
-		let isMounted = true;
-
-		const fetchDeposits = async () => {
-			if (!staking.pools || !account) {
-				return;
-			}
-
-			let deposits: WrappedDeposit[] = [];
-
-			for (const pool of Object.values(staking.pools) as WrappedStakingPool[]) {
-				const wrappedDeposits = (
-					await pool.instance.getAllDeposits(account)
-				).map((e) => {
-					return {
-						pool,
-						...e,
-					} as WrappedDeposit;
-				});
-
-				deposits = deposits.concat(wrappedDeposits);
-			}
-
-			if (isMounted) {
-				setDeposits(deposits);
-			}
-		};
-
-		fetchDeposits();
-
-		return () => {
-			isMounted = false;
-		};
-	}, [staking.pools, account]);
+	const { deposits } = useStakingUserData();
 
 	const { active } = useWeb3React();
 

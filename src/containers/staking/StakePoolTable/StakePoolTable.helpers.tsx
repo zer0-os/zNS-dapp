@@ -10,7 +10,12 @@ export const TABLE_HEADERS = [
 		className: '',
 	},
 	{
-		label: 'APY',
+		label: 'APR',
+		accessor: '',
+		className: '',
+	},
+	{
+		label: 'Your Total Stake',
 		accessor: '',
 		className: '',
 	},

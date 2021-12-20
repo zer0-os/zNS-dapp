@@ -24,6 +24,14 @@
 	position: relative;
 	padding: 16px 32px;
 	cursor: pointer;
+
+	transition: text-shadow var(--animation-time-short) ease-in-out,
+		font-weight var(--animation-time-short) ease-in-out;
+
+	&:hover {
+		text-shadow: var(--glow-text-white);
+		font-weight: 700;
+	}
 }
 
 .Selected {

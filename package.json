@@ -1,6 +1,6 @@
 {
-	"name": "zns-dapp",
-	"version": "0.10.25",
+	"name": "staking-dapp",
+	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",

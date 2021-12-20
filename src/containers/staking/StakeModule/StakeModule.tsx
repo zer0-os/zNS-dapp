@@ -48,7 +48,7 @@ const StakeModule = (props: StakeModuleProps) => {
 			// Check amount
 			if (input.length && balance) {
 				setAmountIsValid(
-					amtWei.gt(0) && ethers.BigNumber.from(amtWei).lt(balance),
+					amtWei.gt(0) && ethers.BigNumber.from(amtWei).lte(balance),
 				);
 			} else {
 				setAmountIsValid(false);
