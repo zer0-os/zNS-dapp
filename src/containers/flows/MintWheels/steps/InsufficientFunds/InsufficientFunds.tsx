@@ -16,7 +16,7 @@ const InsufficientFunds = (props: InsufficientFundsProps) => {
 		<section className={styles.Container}>
 			<span>
 				Insufficient funds. You must have at least <b>{EthPerWheel} ETH</b> in
-				your wallet to mint a Craft
+				your wallet to mint a Wheels
 			</span>
 			<FutureButton glow onClick={props.onDismiss}>
 				Dismiss

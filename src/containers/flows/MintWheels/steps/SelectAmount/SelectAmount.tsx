@@ -78,19 +78,17 @@ const SelectAmount = (props: SelectAmountProps) => {
 					`Please enter a number between 1 & ${props.maxPurchasesPerUser}`,
 				);
 			} else if (numWheels * EthPerWheel > props.balanceEth) {
-				setInputError(
-					`You do not have enough WILD to mint ${numWheels} Crafts`,
-				);
+				setInputError(`You do not have enough ETH to mint ${numWheels} Wheels`);
 			} else if (numWheels > remainingUserWheels) {
 				setInputError(
-					`You have already minted ${props.numberPurchasedByUser}/${props.maxPurchasesPerUser} of the maximum allowed Crafts. Please choose a lower number`,
+					`You have already minted ${props.numberPurchasedByUser}/${props.maxPurchasesPerUser} of the maximum allowed Wheels. Please choose a lower number`,
 				);
 			} else if (numWheels > props.remainingWheels) {
 				if (props.remainingWheels === 1) {
-					setInputError(`There is only 1 Craft left in this drop`);
+					setInputError(`There is only 1 Wheels left in this drop`);
 				} else {
 					setInputError(
-						`There are only ${props.remainingWheels} Crafts left in this drop`,
+						`There are only ${props.remainingWheels} Wheels left in this drop`,
 					);
 				}
 			}
@@ -128,13 +126,13 @@ const SelectAmount = (props: SelectAmountProps) => {
 			{props.numberPurchasedByUser < props.maxPurchasesPerUser && (
 				<form onSubmit={formSubmit}>
 					<p>
-						How many Crafts would you like to Mint? The number of Crafts you
+						How many Wheels would you like to Mint? The number of Wheels you
 						enter will be minted in one transaction, saving on GAS fees. Each
-						Craft costs <b>{EthPerWheel} WILD</b>.
+						Wheels costs <b>{EthPerWheel} ETH</b>.
 					</p>
 					<TextInput
 						onChange={onInputChange}
-						placeholder={`Number of Crafts (Maximum of ${props.maxPurchasesPerUser})`}
+						placeholder={`Number of Wheels (Maximum of ${props.maxPurchasesPerUser})`}
 						numeric
 						text={amount}
 					/>
@@ -182,7 +180,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 			{props.numberPurchasedByUser >= props.maxPurchasesPerUser && (
 				<p className={styles.Green} style={{ textAlign: 'center' }}>
 					You have already minted {props.numberPurchasedByUser}/
-					{props.maxPurchasesPerUser} Crafts
+					{props.maxPurchasesPerUser} Wheels
 				</p>
 			)}
 		</section>

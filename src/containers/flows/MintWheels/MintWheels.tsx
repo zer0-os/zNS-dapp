@@ -64,7 +64,7 @@ const MintWheels = (props: MintWheelsProps) => {
 			if (props.balanceEth < EthPerWheel) {
 				setStep(Step.InsufficientFunds);
 			} else {
-				setStep(Step.Approval);
+				setStep(Step.SelectAmount);
 			}
 		} else {
 			setStep(Step.CheckingBalance);
@@ -169,7 +169,7 @@ const MintWheels = (props: MintWheelsProps) => {
 			);
 		}
 		if (step === Step.CheckingBalance) {
-			return <Loading text={'Checking your WILD balance'} />;
+			return <Loading text={'Checking your ETH balance'} />;
 		}
 		if (step === Step.PendingWalletApproval) {
 			return <Loading isMinting text={transactionStatus} />;

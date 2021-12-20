@@ -44,13 +44,13 @@ const WaitlistRegistration = (props: WaitlistRegistrationProps) => {
 	return (
 		<div className={`${styles.Container} border-primary border-rounded`}>
 			<section className={styles.Header}>
-				<h1 className="glow-text-white">Guarantee Your Craft</h1>
+				<h1 className="glow-text-white">Guarantee Your Wheels</h1>
 				<hr />
 			</section>
 			{!props.hasSubmitted && (
 				<section>
 					<label className={styles.Label}>
-						Enter your email to be notified about the Wilder Crafts raffle:
+						Enter your email to be notified about the Wilder Wheels raffle:
 					</label>
 					{!isLoading && (
 						<>
