@@ -97,7 +97,10 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				}}
 			>
 				{poolSelection.stakePool && (
-					<StakeFlow onClose={() => poolSelection.selectStakePool(undefined)} />
+					<StakeFlow
+						onSuccess={refetchUserData}
+						onClose={() => poolSelection.selectStakePool(undefined)}
+					/>
 				)}
 			</Overlay>
 			<Overlay
