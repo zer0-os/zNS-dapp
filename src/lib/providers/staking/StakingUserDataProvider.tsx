@@ -34,20 +34,25 @@ export const StakingUserDataProvider: React.FC<UserDataContextProviderType> = ({
 
 		setDeposits(undefined);
 
-		let deposits: WrappedDeposit[] = [];
-		for (const pool of Object.values(staking.pools) as WrappedStakingPool[]) {
-			const wrappedDeposits = (await pool.instance.getAllDeposits(account)).map(
-				(e) => {
+		try {
+			let deposits: WrappedDeposit[] = [];
+			for (const pool of Object.values(staking.pools) as WrappedStakingPool[]) {
+				const wrappedDeposits = (
+					await pool.instance.getAllDeposits(account)
+				).map((e) => {
 					return {
 						pool,
 						...e,
 					} as WrappedDeposit;
-				},
-			);
-			deposits = deposits.concat(wrappedDeposits);
-		}
+				});
+				deposits = deposits.concat(wrappedDeposits);
+			}
 
-		setDeposits(deposits);
+			setDeposits(deposits);
+		} catch (e: any) {
+			console.error(e);
+			setDeposits([]);
+		}
 	};
 
 	useEffect(() => {
