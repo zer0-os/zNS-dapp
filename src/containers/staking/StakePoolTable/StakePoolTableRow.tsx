@@ -33,7 +33,7 @@ const StakePoolTableRow = (props: any) => {
 		if (account) {
 			getStake(account);
 		}
-	}, []);
+	}, [pool]);
 
 	const onClick = () => {
 		selectPool(pool);
