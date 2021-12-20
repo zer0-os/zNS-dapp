@@ -24,10 +24,11 @@ const cx = classNames.bind(styles);
 
 type ClaimFlowProps = {
 	onClose: () => void;
+	onSuccess?: () => void;
 };
 
 const ClaimFlow = (props: ClaimFlowProps) => {
-	const { onClose } = props;
+	const { onClose, onSuccess } = props;
 	const staking = useStaking();
 	const { claiming } = useStakingPoolSelector();
 	const { account, library } = useWeb3React();
@@ -76,6 +77,7 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 		}
 		try {
 			await tx?.wait();
+			onSuccess?.();
 		} catch {
 			setMessage({
 				content: 'Transaction failed',

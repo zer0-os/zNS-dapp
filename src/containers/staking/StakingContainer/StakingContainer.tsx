@@ -17,6 +17,7 @@ import { useLocation, Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { useNav } from 'lib/providers/NavProvider';
 import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvider';
+import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 type StakingContainerProps = {
 	className?: string;
@@ -34,6 +35,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	// - Grabbing all user data (deposits, WILD balance, rewards, etc
 	// - Opening StakeFlow modal for a specified pool
 
+	const { refetch: refetchPoolData } = useStaking();
 	const poolSelection = useStakingPoolSelector();
 	const { refetch: refetchUserData } = useStakingUserData();
 
@@ -44,6 +46,11 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 
 	const handleResize = () => {
 		setIsBelowBreakpoint(window.innerWidth <= 701);
+	};
+
+	const refetchAll = () => {
+		refetchPoolData();
+		refetchUserData();
 	};
 
 	useEffect(() => {
@@ -98,7 +105,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 			>
 				{poolSelection.stakePool && (
 					<StakeFlow
-						onSuccess={refetchUserData}
+						onSuccess={refetchAll}
 						onClose={() => poolSelection.selectStakePool(undefined)}
 					/>
 				)}
@@ -112,7 +119,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 			>
 				{poolSelection.unstaking && (
 					<StakeFlow
-						onSuccess={refetchUserData}
+						onSuccess={refetchAll}
 						unstake
 						onClose={() => poolSelection.unstake(undefined)}
 					/>
@@ -124,7 +131,10 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				onClose={() => poolSelection.claim(undefined)}
 			>
 				{poolSelection.claiming && (
-					<ClaimFlow onClose={() => poolSelection.claim(undefined)} />
+					<ClaimFlow
+						onSuccess={refetchAll}
+						onClose={() => poolSelection.claim(undefined)}
+					/>
 				)}
 			</Overlay>
 			<Switch>
