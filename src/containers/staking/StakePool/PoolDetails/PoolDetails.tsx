@@ -77,7 +77,7 @@ const PoolDetails: React.FC<PoolDetailsProps> = ({
 				/>
 				<StatsWidget
 					className="normalView"
-					fieldName={'APY'}
+					fieldName={'APR'}
 					isLoading={false}
 					title={`${apy}%`}
 				/>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Overlay } from 'components';
 
@@ -16,6 +16,8 @@ import classNames from 'classnames/bind';
 import { useLocation, Link, Redirect, Route, Switch } from 'react-router-dom';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { useNav } from 'lib/providers/NavProvider';
+import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvider';
+import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 type StakingContainerProps = {
 	className?: string;
@@ -33,10 +35,23 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	// - Grabbing all user data (deposits, WILD balance, rewards, etc
 	// - Opening StakeFlow modal for a specified pool
 
+	const { refetch: refetchPoolData } = useStaking();
 	const poolSelection = useStakingPoolSelector();
+	const { refetch: refetchUserData } = useStakingUserData();
 
 	const { pathname } = useLocation();
 	const { setLocation } = useNav();
+
+	const [isBelowBreakpoint, setIsBelowBreakpoint] = useState<boolean>();
+
+	const handleResize = () => {
+		setIsBelowBreakpoint(window.innerWidth <= 701);
+	};
+
+	const refetchAll = () => {
+		refetchPoolData();
+		refetchUserData();
+	};
 
 	useEffect(() => {
 		switch (pathname) {
@@ -52,6 +67,33 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 		}
 	}, [pathname]);
 
+	useEffect(() => {
+		window.addEventListener('resize', handleResize);
+		handleResize();
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
+
+	if (isBelowBreakpoint) {
+		return (
+			<div
+				style={{
+					position: 'fixed',
+					top: '50%',
+					left: '50%',
+					transform: 'translate(-50%, -100%)',
+					width: '100%',
+					padding: 16,
+					textAlign: 'center',
+					fontWeight: 700,
+				}}
+			>
+				Staking is currently only available on desktop
+			</div>
+		);
+	}
+
 	return (
 		<>
 			<Overlay
@@ -62,7 +104,10 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				}}
 			>
 				{poolSelection.stakePool && (
-					<StakeFlow onClose={() => poolSelection.selectStakePool(undefined)} />
+					<StakeFlow
+						onSuccess={refetchAll}
+						onClose={() => poolSelection.selectStakePool(undefined)}
+					/>
 				)}
 			</Overlay>
 			<Overlay
@@ -73,7 +118,11 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				}}
 			>
 				{poolSelection.unstaking && (
-					<StakeFlow unstake onClose={() => poolSelection.unstake(undefined)} />
+					<StakeFlow
+						onSuccess={refetchAll}
+						unstake
+						onClose={() => poolSelection.unstake(undefined)}
+					/>
 				)}
 			</Overlay>
 			<Overlay
@@ -82,7 +131,10 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				onClose={() => poolSelection.claim(undefined)}
 			>
 				{poolSelection.claiming && (
-					<ClaimFlow onClose={() => poolSelection.claim(undefined)} />
+					<ClaimFlow
+						onSuccess={refetchAll}
+						onClose={() => poolSelection.claim(undefined)}
+					/>
 				)}
 			</Overlay>
 			<Switch>

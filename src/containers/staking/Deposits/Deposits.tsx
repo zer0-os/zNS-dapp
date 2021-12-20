@@ -26,6 +26,9 @@ const Deposits = () => {
 	useEffect(() => {
 		let isMounted = true;
 
+		setWildBalance(undefined);
+		setTotalRewardsClaimable(undefined);
+
 		const getMetrics = async () => {
 			if (!account || !staking.pools) {
 				return;

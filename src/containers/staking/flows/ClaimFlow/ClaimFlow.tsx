@@ -12,6 +12,7 @@ import { LoadingIndicator } from 'components';
 import { ethers } from 'ethers';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { displayEther } from 'lib/currency';
+import { useWeb3React } from '@web3-react/core';
 
 enum Steps {
 	Claim,
@@ -23,12 +24,14 @@ const cx = classNames.bind(styles);
 
 type ClaimFlowProps = {
 	onClose: () => void;
+	onSuccess?: () => void;
 };
 
 const ClaimFlow = (props: ClaimFlowProps) => {
-	const { onClose } = props;
+	const { onClose, onSuccess } = props;
 	const staking = useStaking();
 	const { claiming } = useStakingPoolSelector();
+	const { account, library } = useWeb3React();
 
 	const HEADER = <Header text="Claim Pool Rewards" />;
 
@@ -45,8 +48,11 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 	}, []);
 
 	const getRewardAmount = async () => {
-		// const rewards = await checkRewards(claiming!.content.name);
-		// setRewardAmount(rewards);
+		if (!account) {
+			return;
+		}
+		const rewards = await claiming?.instance.pendingYieldRewards(account);
+		setRewardAmount(rewards);
 	};
 
 	const onClaim = () => {
@@ -54,12 +60,41 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 	};
 
 	const onConfirm = async () => {
+		if (!library) {
+			return;
+		}
 		setStep(Steps.Processing);
-		// claimRewards(claiming!.content.name).then((d) => {
-		// 	setStep(Steps.Claim);
-		// 	setRewardAmount(undefined);
-		// 	getRewardAmount();
-		// });
+		var tx;
+		try {
+			tx = await claiming?.instance.processRewards(library.getSigner());
+		} catch {
+			setMessage({
+				content: 'Transaction rejected',
+				error: true,
+			});
+			setStep(Steps.Claim);
+			return;
+		}
+		try {
+			await tx?.wait();
+			onSuccess?.();
+		} catch {
+			setMessage({
+				content: 'Transaction failed',
+				error: true,
+			});
+			setStep(Steps.Claim);
+			return;
+		}
+		setMessage({
+			content:
+				'Successfully claimed ' +
+				displayEther(rewardAmount!) +
+				' WILD - view in My Deposits',
+		});
+		setStep(Steps.Claim);
+		setRewardAmount(undefined);
+		getRewardAmount();
 	};
 
 	const stepNode = () => {
