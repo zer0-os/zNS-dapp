@@ -19,7 +19,6 @@ import {
 	getDropData,
 	getUserEligibility,
 	getNumberPurchasedByUser,
-	getERC20TokenBalance,
 	getBalanceEth,
 } from './helpers';
 
