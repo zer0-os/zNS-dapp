@@ -20,11 +20,12 @@ import {
 	getUserEligibility,
 	getNumberPurchasedByUser,
 	getERC20TokenBalance,
+	getBalanceEth,
 } from './helpers';
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_PUBLIC = 1639879200000;
+	const DATE_PUBLIC = 1640181600000;
 
 	//////////////////
 	// State & Data //
@@ -93,8 +94,7 @@ const MintWheelsFlowContainer = () => {
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold) {
-			// TODO: Update with path for crafts
-			history.push('craft.genesis');
+			history.push('wheels.genesis');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -210,6 +210,7 @@ const MintWheelsFlowContainer = () => {
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
+					console.log(saleContract, primaryData);
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 					setFailedToLoad(false);
 				})
@@ -256,7 +257,12 @@ const MintWheelsFlowContainer = () => {
 		}
 		// Get user data if wallet connected
 		if (account && library && wildTokenContract) {
-			getERC20TokenBalance(wildTokenContract, account).then((d) => {
+			// getERC20TokenBalance(wildTokenContract, account).then((d) => {
+			// 	if (isMounted && d !== undefined) {
+			// 		setBalanceEth(d);
+			// 	}
+			// });
+			getBalanceEth(library.getSigner()).then((d) => {
 				if (isMounted && d !== undefined) {
 					setBalanceEth(d);
 				}
@@ -356,7 +362,7 @@ const MintWheelsFlowContainer = () => {
 			return (
 				<>
 					<span>
-						Wilder Crafts sale has been temporarily paused to ensure a fair
+						Wilder Wheels sale has been temporarily paused to ensure a fair
 						sale.
 					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
@@ -420,7 +426,7 @@ const MintWheelsFlowContainer = () => {
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
-					title={'Get your craft for the Metaverse '}
+					title={'Get your Wheels for the Metaverse '}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}

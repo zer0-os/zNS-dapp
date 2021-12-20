@@ -5,7 +5,6 @@ import { MintWheels } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 import useAsyncEffect from 'use-async-effect';
-import { getCurrentBlock } from 'lib/wheelSale';
 
 const WheelsRaffleContainer = () => {
 	//////////////////
@@ -21,13 +20,11 @@ const WheelsRaffleContainer = () => {
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
-	const RAFFLE_START_TIME = 1637870400000;
-	const RAFFLE_END_TIME = 1638043200000;
-	const SALE_START_TIME = 1639706400000;
-	const SALE_START_BLOCK = 13719840;
+	const RAFFLE_START_TIME = 0;
+	const RAFFLE_END_TIME = 0;
+	const SALE_START_TIME = Date.now(); //1640181600000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-	const [currentBlock, setCurrentBlock] = useState<number>(0);
 
 	const [hasRaffleStarted, setHasRaffleStarted] = useState<boolean>(
 		currentTime >= RAFFLE_START_TIME,
@@ -63,7 +60,7 @@ const WheelsRaffleContainer = () => {
 
 	const onFinishSaleStartCountdown = () => {
 		setHasSaleCountDownEnded(true);
-		setHasSaleStarted(currentBlock >= SALE_START_BLOCK);
+		// setHasSaleStarted(currentBlock >= SALE_START_BLOCK);
 	};
 
 	const handleResize = () => {
@@ -75,7 +72,7 @@ const WheelsRaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/wilder-craft-a-new-dimension-of-exploration/',
+				'https://zine.wilderworld.com/wilder-wheels-tier-c-getting-set-to-start-their-wengines-2/',
 				'_blank',
 			);
 		}
@@ -94,15 +91,9 @@ const WheelsRaffleContainer = () => {
 	}, []);
 
 	useAsyncEffect(async () => {
-		const { number: block } = await getCurrentBlock();
-		setCurrentBlock(block);
-
 		const interval = setInterval(async () => {
-			const { number: block } = await getCurrentBlock();
-			setHasSaleStarted(
-				currentTime >= SALE_START_TIME && block >= SALE_START_BLOCK,
-			);
-			if (SALE_START_BLOCK >= block) {
+			setHasSaleStarted(Date.now() >= SALE_START_TIME);
+			if (Date.now() >= SALE_START_TIME) {
 				clearInterval(interval);
 			}
 		}, 13000);
@@ -117,7 +108,7 @@ const WheelsRaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Whitelist sale starting in{' '}
+					Sale starting in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -141,7 +132,7 @@ const WheelsRaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Craft raffle - starting in{' '}
+					Get notified about the Wilder Wheels raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -209,8 +200,8 @@ const WheelsRaffleContainer = () => {
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
-								? 'Your Craft for the Metaverse awaits'
-								: 'Get Early Access to Wilder Crafts'
+								? 'Your Wheels for the Metaverse awaits'
+								: 'Get Early Access to Wilder Wheels'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

@@ -64,7 +64,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 				onClick={props.onContinue}
 			>
-				Mint Your Craft
+				Mint Your Wheels
 			</FutureButton>
 		);
 	};
@@ -90,8 +90,8 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						Each user may mint up to {props.maxPurchasesPerUser} Crafts. The
-						cost for each Craft is <>{EthPerWheel} WILD</> plus GAS.
+						Each user may mint up to {props.maxPurchasesPerUser} Wheels. The
+						cost for each Wheels is <>{EthPerWheel} ETH</> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -109,8 +109,8 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Crafts. The cost for each Craft is{' '}
-							<b>{EthPerWheel} WILD</b> plus GAS.
+							{props.maxPurchasesPerUser} Wheels. The cost for each Wheels is{' '}
+							<b>{EthPerWheel} ETH</b> plus GAS.
 						</p>
 						{props.errorMessage !== undefined && (
 							<p className="error-text text-center">{props.errorMessage}</p>
@@ -123,7 +123,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p className={styles.Green}>
 							Congratulations, you have minted {props.numberPurchasedByUser}/
-							{props.maxPurchasesPerUser} of your Crafts.
+							{props.maxPurchasesPerUser} of your Wheels.
 						</p>
 						{dismissButton()}
 					</>
@@ -133,7 +133,7 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Crafts are only available to whitelisted supporters of
+						Currently, Wheels are only available to whitelisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
 						whitelist sale ends.
 					</p>
@@ -156,25 +156,25 @@ const Info = (props: InfoProps) => {
 				loop={true}
 				playsInline
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1639619660/zns/craft-mint-main.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1639619660/zns/craft-mint-main.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1639619660/zns/craft-mint-main.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1639619660/zns/craft-mint-main.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/minting-wheels-audio.ogv'
 					}
 					type="video/ogg"
 				></source>
@@ -184,8 +184,8 @@ const Info = (props: InfoProps) => {
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
 					<span>Crafts Available</span>
-					<h2>{props.wheelsTotal - props.wheelsMinted} Crafts Remaining</h2>
-					<ArrowLink href="https://zine.wilderworld.com/wilder-craft-a-new-dimension-of-exploration/">
+					<h2>{props.wheelsTotal - props.wheelsMinted} Wheels Remaining</h2>
+					<ArrowLink href="https://zine.wilderworld.com/wilder-wheels-tier-c-getting-set-to-start-their-wengines-2/">
 						View Auction Rules
 					</ArrowLink>
 				</div>
