@@ -32,6 +32,8 @@ const DepositTable = (props: DepositTableProps) => {
 	React.useEffect(() => {
 		let isMounted = true;
 
+		setDeposits(undefined);
+
 		const fetchDeposits = async () => {
 			if (!staking.pools || !account) {
 				return;
