@@ -45,7 +45,7 @@ const PoolData = ({
 		<ul className={cx(styles.Stats, 'flex-split')}>
 			<StatsWidget
 				className="previewView"
-				fieldName={'APY'}
+				fieldName={'APR'}
 				isLoading={false}
 				title={apy}
 			/>
