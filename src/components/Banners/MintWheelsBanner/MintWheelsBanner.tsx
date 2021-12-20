@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 //- Style Imports
 import styles from './MintWheelsBanner.module.scss';
 import arrow from './assets/bidarrow.svg';
-import banner from './assets/banner.gif';
+import banner from './assets/cribs-banner.gif';
 
 type MintWheelsBannerProps = {
 	title: string;

@@ -7,7 +7,7 @@ const WaitlistContainer = () => {
 
 	const submitEmail = (email: string): Promise<boolean> => {
 		return new Promise((resolve) => {
-			fetch('https://zns-mail-microservice.herokuapp.com/wheels', {
+			fetch('https://zns-mail-microservice.herokuapp.com/cribs', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',

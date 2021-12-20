@@ -1,6 +1,6 @@
 {
 	"name": "zns-dapp",
-	"version": "0.10.18",
+	"version": "0.10.25",
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",

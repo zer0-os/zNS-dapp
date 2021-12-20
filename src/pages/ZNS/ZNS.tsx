@@ -26,7 +26,6 @@ import userIcon from 'assets/user.svg';
 import {
 	ConnectToWallet,
 	FutureButton,
-	FilterBar,
 	TitleBar,
 	TooltipLegacy,
 	IconButton,
@@ -37,13 +36,18 @@ import {
 	TransferPreview,
 	Spinner,
 	StatsWidget,
+	WilderIcon,
+	MessageBanner,
 } from 'components';
 
 import {
 	SubdomainTable,
 	CurrentDomainPreview,
 	ProfileModal,
+	PageHeader,
+	// Temporarily removed raffle
 	WheelsRaffle,
+	BannerContainer,
 } from 'containers';
 
 //- Library Imports
@@ -57,6 +61,7 @@ import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import { injected } from 'lib/connectors';
+import useScrollDetection from 'lib/hooks/useScrollDetection';
 
 type ZNSProps = {
 	domain: string;
@@ -153,6 +158,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [isNftView, setIsNftView] = useState(nftView === true);
 	const [pageWidth, setPageWidth] = useState<number>(0);
 	const [metamaskLocked, setMetamaskLocked] = useState(false);
+	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [isSearchActive, setIsSearchActive] = useState(false);
@@ -163,6 +169,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Data
 	const isOwnedByUser: boolean =
 		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
+
+	///////////////
+	// Hooks //
+	///////////////
+	useScrollDetection(setScrollDetectionDown);
 
 	///////////////
 	// Functions //
@@ -516,22 +527,20 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				style={{
 					opacity: hasLoaded ? 1 : 0,
 					transition: 'opacity 0.2s ease-in-out',
-					paddingTop: 145,
+					paddingTop: 108,
 				}}
 			>
-				{/* Nav Bar */}
-				{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
-				<FilterBar
+				<PageHeader
 					style={
 						isSearchActive
 							? { zIndex: isSearchActive ? 100 : 10, background: 'none' }
 							: {}
 					}
-					onSelect={() => {
-						history.push('/');
-					}}
-					filters={!isSearchActive ? ['Everything'] : []}
+					hideNavBar={isScrollDetectionDown}
 				>
+					{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
+					{/* Nav Bar */}
+					<WilderIcon />
 					<TitleBar
 						domain={domain}
 						canGoBack={canGoBack}
@@ -596,21 +605,20 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							{account && !isSearchActive && (
 								<>
 									{/* Mint button */}
-									<FutureButton
-										glow={account != null}
-										onClick={() => {
-											account != null
-												? openMint()
-												: addNotification('Please connect your wallet.');
-										}}
-										loading={loading}
-									>
-										{pageWidth <= 900 && 'MINT'}
-										{pageWidth > 900 && isOwnedByUser === true && 'MINT NFT'}
-										{pageWidth > 900 &&
-											isOwnedByUser === false &&
-											'REQUEST TO MINT NFT'}
-									</FutureButton>
+									{isOwnedByUser && (
+										<FutureButton
+											glow={account != null}
+											onClick={() => {
+												account != null
+													? openMint()
+													: addNotification('Please connect your wallet.');
+											}}
+											loading={loading}
+										>
+											{pageWidth <= 900 && 'MINT'}
+											{pageWidth > 900 && 'MINT NFT'}
+										</FutureButton>
+									)}
 
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
@@ -653,9 +661,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							)}
 						</>
 					</TitleBar>
-				</FilterBar>
+				</PageHeader>
 
-				<WheelsRaffle />
+				<BannerContainer isScrollDetectionDown={isScrollDetectionDown}>
+          {/* Temporarily removed Raffle */}
+					<WheelsRaffle />
+					{/* <MessageBanner
+						label="This is a banner message"
+						buttonText="CTA"
+						countdownTime={3634408000000}
+					/> */}
+				</BannerContainer>
 
 				{!isNftView && (
 					<div
