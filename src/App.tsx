@@ -48,13 +48,6 @@ function getLibrary(provider: any): Web3Provider {
 }
 
 function App() {
-	const connector = useWeb3React();
-
-	// Load default Infura connector if no wallet connected
-	if (!connector.active) {
-		connector.activate(network);
-	}
-
 	console.log(
 		`%cWilder World Staking v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
