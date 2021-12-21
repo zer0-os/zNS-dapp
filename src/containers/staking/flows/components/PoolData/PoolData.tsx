@@ -13,6 +13,7 @@ type PoolDataProps = {
 	domain: string;
 	id: string;
 	image: string;
+	isUserConnected?: boolean;
 	name: string;
 	poolUrl: string;
 	pendingRewards?: ethers.BigNumber;
@@ -24,6 +25,7 @@ const PoolData = ({
 	domain,
 	id,
 	image,
+	isUserConnected,
 	name,
 	poolUrl,
 	pendingRewards,
@@ -52,9 +54,14 @@ const PoolData = ({
 			<StatsWidget
 				className="previewView"
 				fieldName={'Your Pool Rewards Claimable'}
-				isLoading={pendingRewards === undefined}
-				title={pendingRewards && displayEther(pendingRewards) + ' WILD'}
+				isLoading={isUserConnected && pendingRewards === undefined}
+				title={
+					isUserConnected
+						? pendingRewards && displayEther(pendingRewards) + ' WILD'
+						: '-'
+				}
 				subTitle={
+					isUserConnected &&
 					pendingRewards !== undefined &&
 					wildToUsd &&
 					'$' + displayEtherToFiat(pendingRewards, wildToUsd)

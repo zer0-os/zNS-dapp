@@ -64,7 +64,7 @@ const nameFromConnector = (c: AbstractConnector) => {
 
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	const walletContext = useWeb3React<Web3Provider>();
-	const { active, connector, activate, deactivate } = walletContext;
+	const { account, connector, activate, deactivate } = walletContext;
 	const [isLoading, setIsLoading] = useState(false); //state for trigger the loading spinner
 
 	//- Notification State
@@ -245,7 +245,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 					</li>
 				</ul>
 			)}
-			{active && connector && !isLoading && (
+			{account && connector && !isLoading && (
 				<div className={WalletStyles.Disconnect}>
 					<hr className="glow" />
 					<FutureButton glow onClick={disconnect}>

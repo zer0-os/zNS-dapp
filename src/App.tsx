@@ -16,7 +16,7 @@ import 'styles/main.scss';
 import { HashRouter, Route } from 'react-router-dom';
 
 //- Web3 Imports
-import { Web3ReactProvider } from '@web3-react/core';
+import { useWeb3React, Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
 //- Library Imports
@@ -37,15 +37,24 @@ import { Navigator } from 'containers';
 import { ZNS } from 'pages';
 import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
 import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
+import { network } from 'lib/connectors';
 
 // Web3 library to query
 function getLibrary(provider: any): Web3Provider {
+	console.log('>> RUN GET LIBRARY <<');
 	const library = new Web3Provider(provider);
 	library.pollingInterval = 12000;
 	return library;
 }
 
 function App() {
+	const connector = useWeb3React();
+
+	// Load default Infura connector if no wallet connected
+	if (!connector.active) {
+		connector.activate(network);
+	}
+
 	console.log(
 		`%cWilder World Marketplace v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',

@@ -18,6 +18,7 @@ import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider
 import { useNav } from 'lib/providers/NavProvider';
 import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvider';
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
+import { useWeb3React } from '@web3-react/core';
 
 type StakingContainerProps = {
 	className?: string;
@@ -35,6 +36,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	// - Grabbing all user data (deposits, WILD balance, rewards, etc
 	// - Opening StakeFlow modal for a specified pool
 
+	const { account } = useWeb3React();
 	const { refetch: refetchPoolData } = useStaking();
 	const poolSelection = useStakingPoolSelector();
 	const { refetch: refetchUserData } = useStakingUserData();
@@ -74,6 +76,10 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 			window.removeEventListener('resize', handleResize);
 		};
 	}, []);
+
+	useEffect(() => {
+		poolSelection.claim(undefined);
+	}, [account]);
 
 	if (isBelowBreakpoint) {
 		return (

@@ -28,7 +28,12 @@ export const StakingUserDataProvider: React.FC<UserDataContextProviderType> = ({
 	};
 
 	const fetchDeposits = async () => {
-		if (!staking.pools || !account) {
+		if (!staking.pools) {
+			return;
+		}
+
+		if (!account) {
+			setDeposits([]);
 			return;
 		}
 

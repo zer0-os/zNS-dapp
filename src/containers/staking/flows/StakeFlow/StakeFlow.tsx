@@ -42,7 +42,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 	const { onClose, onSuccess, unstake } = props;
 
 	const context = useWeb3React<Web3Provider>();
-	const signer = context.library!.getSigner();
+	const signer = context.library?.getSigner();
 
 	const { wildPriceUsd } = useCurrency();
 
@@ -111,6 +111,9 @@ const StakeFlow = (props: StakeFlowProps) => {
 	]);
 
 	const onContinueApproval = async () => {
+		if (!signer) {
+			return;
+		}
 		setApprovalStep(ApprovalStep.WaitingForWallet);
 		const tx = await stakingPool!.instance.approve(signer);
 		setApprovalStep(ApprovalStep.Approving);
@@ -134,13 +137,13 @@ const StakeFlow = (props: StakeFlowProps) => {
 				tx = await stakingPool!.instance.stake(
 					amount.toString(),
 					BigNumber.from(0),
-					signer,
+					signer!,
 				);
 			} else {
 				tx = await stakingPool!.instance.unstake(
 					deposit!.depositId.toString(),
 					amount.toString(),
-					signer,
+					signer!,
 				);
 			}
 		} catch {
@@ -189,6 +192,10 @@ const StakeFlow = (props: StakeFlowProps) => {
 	};
 
 	const onStake = async (amount: string, shouldContinue?: boolean) => {
+		if (!signer) {
+			return;
+		}
+
 		if (!shouldContinue && pendingRewards?.gt(0)) {
 			setStep(Steps.Claim);
 			setStake(amount);
@@ -231,6 +238,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 						onBack={onClose}
 						onStake={onStake}
 						isTransactionPending={isTransactionPending}
+						isUserConnected={context.account !== null}
 						token={stakingPool!.content.tokenTicker}
 						wildToUsd={wildPriceUsd}
 						unstake={unstake}

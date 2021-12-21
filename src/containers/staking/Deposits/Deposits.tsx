@@ -58,38 +58,40 @@ const Deposits = () => {
 
 	return (
 		<>
-			<ul className={styles.Stats}>
-				<StatsWidget
-					className="normalView"
-					fieldName={'Wallet WILD Balance'}
-					isLoading={active && wildBalance === undefined}
-					title={
-						active && wildBalance !== undefined
-							? displayEther(wildBalance)
-							: '-'
-					}
-					subTitle={
-						wildBalance &&
-						wildPriceUsd &&
-						'$' + displayEtherToFiat(wildBalance, wildPriceUsd)
-					}
-				/>
-				<StatsWidget
-					className="normalView"
-					fieldName={'Total Rewards Claimable'}
-					isLoading={active && totalRewardsClaimable === undefined}
-					title={
-						active && totalRewardsClaimable !== undefined
-							? displayEther(totalRewardsClaimable) + ' WILD'
-							: '-'
-					}
-					subTitle={
-						totalRewardsClaimable &&
-						wildPriceUsd &&
-						'$' + displayEtherToFiat(totalRewardsClaimable, wildPriceUsd)
-					}
-				/>
-			</ul>
+			{account !== null && (
+				<ul className={styles.Stats}>
+					<StatsWidget
+						className="normalView"
+						fieldName={'Wallet WILD Balance'}
+						isLoading={active !== null && wildBalance === undefined}
+						title={
+							account && wildBalance !== undefined
+								? displayEther(wildBalance)
+								: '-'
+						}
+						subTitle={
+							wildBalance &&
+							wildPriceUsd &&
+							'$' + displayEtherToFiat(wildBalance, wildPriceUsd)
+						}
+					/>
+					<StatsWidget
+						className="normalView"
+						fieldName={'Total Rewards Claimable'}
+						isLoading={account !== null && totalRewardsClaimable === undefined}
+						title={
+							account && totalRewardsClaimable !== undefined
+								? displayEther(totalRewardsClaimable) + ' WILD'
+								: '-'
+						}
+						subTitle={
+							totalRewardsClaimable &&
+							wildPriceUsd &&
+							'$' + displayEtherToFiat(totalRewardsClaimable, wildPriceUsd)
+						}
+					/>
+				</ul>
+			)}
 			<DepositTable />
 		</>
 	);
