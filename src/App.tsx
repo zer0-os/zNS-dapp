@@ -56,7 +56,7 @@ function App() {
 	}
 
 	console.log(
-		`%cWilder World Marketplace v${version}`,
+		`%cWilder World Staking v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
 
