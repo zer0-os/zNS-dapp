@@ -22,7 +22,7 @@ const WheelsRaffleContainer = () => {
 	// Hardcoded event times
 	const RAFFLE_START_TIME = 0;
 	const RAFFLE_END_TIME = 0;
-	const SALE_START_TIME = 1640181600000; //1640181600000;
+	const SALE_START_TIME = 1640138400000; //1640181600000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
