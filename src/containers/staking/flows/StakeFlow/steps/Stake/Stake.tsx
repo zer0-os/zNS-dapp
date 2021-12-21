@@ -1,3 +1,4 @@
+import { ConnectWalletButton } from 'containers';
 import { StakeModule } from 'containers/staking';
 import { ethers } from 'ethers';
 
@@ -17,6 +18,7 @@ type StakeProps = {
 	onBack: () => void;
 	onStake: (amount: string) => void;
 	isTransactionPending?: boolean;
+	isUserConnected?: boolean;
 	token: string;
 	wildToUsd: number;
 	rewardsPending?: ethers.BigNumber;
@@ -36,6 +38,7 @@ const Stake = (props: StakeProps) => {
 		onBack,
 		onStake,
 		isTransactionPending,
+		isUserConnected,
 		token,
 		wildToUsd,
 		unstake,
@@ -54,17 +57,24 @@ const Stake = (props: StakeProps) => {
 				apy={apy}
 				pendingRewards={pendingRewards}
 				wildToUsd={wildToUsd}
+				isUserConnected={isUserConnected}
 			/>
-			<StakeModule
-				amount={amount}
-				className="border-rounded"
-				balance={balance}
-				onStake={onStake}
-				tokenName={token}
-				isLoading={isTransactionPending}
-				pendingRewards={pendingRewards}
-				unstake={unstake}
-			/>
+			{isUserConnected ? (
+				<StakeModule
+					amount={amount}
+					className="border-rounded"
+					balance={balance}
+					onStake={onStake}
+					tokenName={token}
+					isLoading={isTransactionPending}
+					pendingRewards={pendingRewards}
+					unstake={unstake}
+				/>
+			) : (
+				<ConnectWalletButton className={styles.Connect}>
+					Connect Wallet To Stake
+				</ConnectWalletButton>
+			)}
 		</div>
 	);
 };

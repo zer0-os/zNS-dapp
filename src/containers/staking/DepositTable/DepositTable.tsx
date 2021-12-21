@@ -26,9 +26,9 @@ export interface WrappedDeposit extends zfi.Deposit {
 const DepositTable = (props: DepositTableProps) => {
 	const { deposits } = useStakingUserData();
 
-	const { active } = useWeb3React();
+	const { account } = useWeb3React();
 
-	if (!active) {
+	if (!account) {
 		return (
 			<div className={styles.Container}>
 				<p>Connect a Web3 wallet to see your Staking data</p>

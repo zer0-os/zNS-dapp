@@ -11,6 +11,7 @@ import { StakingContainer } from 'containers/staking';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { ConnectWalletButton } from 'containers';
 import { useWeb3React } from '@web3-react/core';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 
 type NavigatorProps = {
 	domain: string;
@@ -25,13 +26,21 @@ var lastY = 0; // Just a global variable to stash last scroll position
 const cx = classNames.bind(styles);
 
 const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
-	const { active } = useWeb3React();
+	const { account, chainId } = useWeb3React();
 
 	const { location } = useNav();
 
 	const [selectedApp, setSelectedApp] = useState<App>(App.Staking);
 
-	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
+	useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasnt disconnected
+
+	//- Chain Selection (@todo: refactor to provider)
+	const chainSelector = useChainSelector();
+	React.useEffect(() => {
+		if (chainId && chainSelector.selectedChain !== chainId) {
+			chainSelector.selectChain(chainId);
+		}
+	}, [chainId]);
 
 	// Hiding NavBar
 	const body = document.getElementsByTagName('body')[0];
@@ -83,7 +92,7 @@ const Navigator: React.FC<NavigatorProps> = ({ domain }) => {
 					isSearchActive={false}
 					setIsSearchActive={() => {}}
 				>
-					{!active && <ConnectWalletButton>Connect</ConnectWalletButton>}
+					{!account && <ConnectWalletButton>Connect</ConnectWalletButton>}
 				</TitleBar>
 			</nav>
 			{/* <nav className={cx(styles.Left)}>
