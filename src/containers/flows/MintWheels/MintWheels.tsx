@@ -192,7 +192,7 @@ const MintWheels = (props: MintWheelsProps) => {
 			<section className={styles.Header}>
 				<h1 className="glow-text-white">Mint Your Wheels</h1>
 				<span className="glow-text-white">
-					Your Wheels in the Metaverse awaits
+					Your Wheels in the Metaverse await
 				</span>
 				<hr />
 			</section>

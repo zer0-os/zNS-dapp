@@ -109,8 +109,8 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Wheels. The cost for each Wheels is{' '}
-							<b>{EthPerWheel} ETH</b> plus GAS.
+							{props.maxPurchasesPerUser} Wheels. The cost for each set of
+							Wheels is <b>{EthPerWheel} ETH</b> plus GAS.
 						</p>
 						{props.errorMessage !== undefined && (
 							<p className="error-text text-center">{props.errorMessage}</p>

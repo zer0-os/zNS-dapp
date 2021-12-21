@@ -126,13 +126,13 @@ const SelectAmount = (props: SelectAmountProps) => {
 			{props.numberPurchasedByUser < props.maxPurchasesPerUser && (
 				<form onSubmit={formSubmit}>
 					<p>
-						How many Wheels would you like to Mint? The number of Wheels you
-						enter will be minted in one transaction, saving on GAS fees. Each
+						How many sets of Wheels would you like to Mint? The number you enter
+						will be minted in one transaction, saving on GAS fees. Each set of
 						Wheels costs <b>{EthPerWheel} ETH</b>.
 					</p>
 					<TextInput
 						onChange={onInputChange}
-						placeholder={`Number of Wheels (Maximum of ${props.maxPurchasesPerUser})`}
+						placeholder={`Number of sets of Wheels (Maximum of ${props.maxPurchasesPerUser})`}
 						numeric
 						text={amount}
 					/>

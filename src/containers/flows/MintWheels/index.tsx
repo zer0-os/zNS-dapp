@@ -209,7 +209,6 @@ const MintWheelsFlowContainer = () => {
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
-					console.log(saleContract, primaryData);
 					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 					setFailedToLoad(false);
 				})
