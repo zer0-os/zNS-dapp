@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { Stage, WheelQuantity, DropData } from './types';
 import { ERC20, WhitelistSimpleSale } from 'types';
 
-export const EthPerWheel = 999;
+export const EthPerWheel = 0.738;
 
 export const getDropData = (
 	contract: WhitelistSimpleSale,
