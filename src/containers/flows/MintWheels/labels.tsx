@@ -3,7 +3,7 @@ import { Countdown } from 'components';
 
 const totalLabel = (wheelsMinted: number, wheelsTotal: number) => (
 	<span>
-		<b>{Math.max(wheelsTotal - wheelsMinted - 3300, 0)} Remaining</b>
+		<b>{Math.max(wheelsTotal - wheelsMinted - 3423, 0)} Remaining</b>
 	</span>
 );
 

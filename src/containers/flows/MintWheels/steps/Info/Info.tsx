@@ -185,7 +185,7 @@ const Info = (props: InfoProps) => {
 				<div className={styles.Available}>
 					<span>Wheels Available</span>
 					<h2>
-						{props.wheelsTotal - props.wheelsMinted - 3300} Wheels Remaining
+						{props.wheelsTotal - props.wheelsMinted - 3423} Wheels Remaining
 					</h2>
 					<ArrowLink href="https://zine.wilderworld.com/wilder-wheels-tier-c-getting-set-to-start-their-wengines-2/">
 						View Auction Rules
