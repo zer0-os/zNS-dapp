@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react';
-import { isNil } from 'lodash';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { getRelativeDomainPath } from 'lib/utils/domains';
+import { useZnsContracts } from 'lib/contracts';
 import { Maybe } from 'lib/types';
 import {
 	DomainSettingsWarning,
@@ -11,12 +12,12 @@ import {
 export const useDomainSettingsData = (domainId: string) => {
 	const myDomain = useZnsDomain(domainId);
 	const parentDomain = useZnsDomain(myDomain.domain?.parent.id || '');
+	const metadata = useDomainMetadata(myDomain.domain?.metadata);
 
-	const [isLocked, setIsLocked] = useState<boolean>(
-		isNil(myDomain.domain?.isLocked)
-			? true
-			: Boolean(myDomain.domain?.isLocked),
-	);
+	const znsContracts = useZnsContracts()!;
+	const registrar = znsContracts.registry;
+
+	const [isLocked, setIsLocked] = useState<boolean>(true);
 	const [isSaved, setIsSaved] = useState<boolean>(false);
 	const [warning, setWarning] =
 		useState<Maybe<DomainSettingsWarning>>(undefined);
@@ -64,9 +65,11 @@ export const useDomainSettingsData = (domainId: string) => {
 		formattedData: {
 			myDomain,
 			parentDomain,
+			metadata,
 			domainUri,
 			relativeDomain,
 			unavailableDomainNames,
 		},
+		registrar,
 	};
 };

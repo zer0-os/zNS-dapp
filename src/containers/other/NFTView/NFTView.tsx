@@ -361,14 +361,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		const data = [
 			{
 				fieldName: 'Top Bid',
-<<<<<<< HEAD
-				title: `${tradeData?.highestBid
-					? Number(
-						ethers.utils.formatEther(tradeData?.highestBid),
-					).toLocaleString()
-					: 0
-					} WILD`,
-=======
 				title: `${
 					tradeData?.highestBid
 						? Number(
@@ -376,7 +368,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						  ).toLocaleString()
 						: 0
 				} WILD`,
->>>>>>> Update zns-sdk version
 				subTitle:
 					wildPriceUsd > 0
 						? `$${
@@ -396,14 +387,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			},
 			{
 				fieldName: 'Last Sale',
-<<<<<<< HEAD
-				title: `${tradeData?.lastSale
-					? Number(
-						ethers.utils.formatEther(tradeData?.lastSale),
-					).toLocaleString()
-					: 0
-					} WILD`,
-=======
 				title: `${
 					tradeData?.lastSale
 						? Number(
@@ -411,7 +394,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						  ).toLocaleString()
 						: 0
 				} WILD`,
->>>>>>> Update zns-sdk version
 				subTitle:
 					wildPriceUsd > 0
 						? `$${

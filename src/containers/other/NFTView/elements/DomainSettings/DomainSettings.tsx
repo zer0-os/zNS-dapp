@@ -10,6 +10,7 @@ import {
 	useDomainSettingsData,
 	useDomainSettingsModals,
 	useDomainSettingsHandlers,
+	useDomainSettingsLifecycle,
 } from './hooks';
 import './_domain-settings.scss';
 
@@ -22,13 +23,24 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 	domainId,
 	onClose,
 }) => {
-	const { localState, localActions, formattedData } =
+	const { localState, localActions, formattedData, registrar } =
 		useDomainSettingsData(domainId);
 	const { modalsState, modalsActions } = useDomainSettingsModals();
 	const handlers = useDomainSettingsHandlers({
-		localState,
+		props: {
+			domain: formattedData.myDomain.domain!,
+			registrar,
+		},
 		localActions,
 		modalsActions,
+	});
+
+	useDomainSettingsLifecycle({
+		props: {
+			domain: formattedData.myDomain.domain!,
+			registrar,
+		},
+		handlers,
 	});
 
 	return (

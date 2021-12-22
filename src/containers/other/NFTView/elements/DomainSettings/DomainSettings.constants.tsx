@@ -4,6 +4,7 @@
 export enum DomainSettingsWarning {
 	LOCKED = 'LOCKED',
 	TRANSACTION_DENIED = 'TRANSACTION_DENIED',
+	TRANSACTION_FAILED = 'TRANSACTION_FAILED',
 }
 
 export enum DomainSettingsSuccess {
@@ -12,8 +13,10 @@ export enum DomainSettingsSuccess {
 }
 
 export const DOMAIN_SETTINGS_WARNING_MESSAGES = {
-	[DomainSettingsWarning.LOCKED]: 'Please unlock to make changes',
-	[DomainSettingsWarning.TRANSACTION_DENIED]: 'Transaction denied by wallet',
+	[DomainSettingsWarning.LOCKED]: 'Please unlock to make changes.',
+	[DomainSettingsWarning.TRANSACTION_DENIED]: 'Transaction denied by wallet.',
+	[DomainSettingsWarning.TRANSACTION_FAILED]:
+		'Transaction failed, try again later.',
 };
 
 export const DOMAIN_SETTINGS_SUCCESS_MESSAGES = {

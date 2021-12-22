@@ -1,12 +1,17 @@
 import { useCallback } from 'react';
-import { Maybe } from 'lib/types';
+import { DisplayParentDomain, Maybe } from 'lib/types';
+import { Registrar } from 'types/Registrar';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import {
 	DomainSettingsWarning,
 	DomainSettingsSuccess,
 } from '../DomainSettings.constants';
 
 type UseDomainSettingsHandlersProps = {
-	localState: {};
+	props: {
+		domain: DisplayParentDomain;
+		registrar: Registrar;
+	};
 	localActions: {
 		setIsLocked: React.Dispatch<React.SetStateAction<boolean>>;
 		setIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
@@ -37,13 +42,26 @@ type UseDomainSettingsHandlersProps = {
 	};
 };
 
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
 export const useDomainSettingsHandlers = ({
-	localState,
+	props,
 	localActions,
 	modalsActions,
 }: UseDomainSettingsHandlersProps) => {
+	/* SDK */
+	const sdk = useZnsSdk();
+
+	/* Iniital Actions */
+	const handleCheckAndSetDomainMetadataLockStatus = useCallback(async () => {
+		const { registrar, domain } = props;
+
+		const isDomainMetadataLocked = await registrar.isDomainMetadataLocked(
+			domain.id,
+		);
+
+		localActions.setIsLocked(isDomainMetadataLocked);
+	}, [props, localActions]);
+
+	/* Local Actions */
 	const handleShowingLockedWarning = useCallback(() => {
 		localActions.setWarning(DomainSettingsWarning.LOCKED);
 	}, [localActions]);
@@ -55,27 +73,37 @@ export const useDomainSettingsHandlers = ({
 
 		modalsActions.handleUnlockModalConfirm();
 
-		// Set loading for 5 seconds for now
-		// Should be implemented with API
-		await delay(5000);
+		try {
+			const tx = await sdk.instance.lockDomainMetadata(
+				props.domain.id,
+				false,
+				props.registrar.signer,
+			);
 
-		modalsActions.handleUnlockModalProcessing();
+			try {
+				modalsActions.handleUnlockModalProcessing();
 
-		// Set loading for 5 seconds for now
-		// Should be implemented with API
-		await delay(5000);
+				await tx.wait();
 
-		// Mock result with random boolean
-		// Should be the result of API connection
-		const mockSuccess = Math.random() < 0.9; // 90% probability of getting true
+				localActions.setIsLocked(false);
+			} catch (e) {
+				console.error(e);
+				localActions.setWarning(DomainSettingsWarning.TRANSACTION_FAILED);
 
-		if (!mockSuccess) {
-			localActions.setWarning(DomainSettingsWarning.TRANSACTION_DENIED);
+				localActions.setIsLocked(true);
+				return;
+			}
+		} catch (e) {
+			console.log(e);
+
+			if (e.code === 4001) {
+				localActions.setWarning(DomainSettingsWarning.TRANSACTION_DENIED);
+				localActions.setIsLocked(true);
+			}
 		}
 
-		localActions.setIsLocked(!mockSuccess);
 		modalsActions.handleUnlockModalClose();
-	}, [localActions, modalsActions]);
+	}, [sdk, props, localActions, modalsActions]);
 
 	/* Lock */
 	const handleLock = useCallback(async () => {
@@ -84,28 +112,35 @@ export const useDomainSettingsHandlers = ({
 
 		modalsActions.handleLockModalOpen();
 
-		// Set loading for 5 seconds for now
-		// Should be implemented with API
-		await delay(5000);
+		try {
+			const tx = await sdk.instance.lockDomainMetadata(
+				props.domain.id,
+				true,
+				props.registrar.signer,
+			);
 
-		modalsActions.handleLockModalProcessing();
+			try {
+				modalsActions.handleLockModalProcessing();
 
-		// Set loading for 5 seconds for now
-		// Should be implemented with API
-		await delay(5000);
-		console.log('here');
+				await tx.wait();
 
-		// Mock result with random boolean
-		// Should be the result of API connection
-		const mockSuccess = Math.random() < 0.8; // 80% probability of getting true
+				localActions.setIsLocked(true);
+			} catch (e) {
+				console.error(e);
+				localActions.setWarning(DomainSettingsWarning.TRANSACTION_FAILED);
+				localActions.setIsLocked(false);
+			}
+		} catch (e) {
+			console.log(e);
 
-		if (!mockSuccess) {
-			localActions.setWarning(DomainSettingsWarning.TRANSACTION_DENIED);
+			if (e.code === 4001) {
+				localActions.setWarning(DomainSettingsWarning.TRANSACTION_DENIED);
+				localActions.setIsLocked(false);
+			}
 		}
 
-		localActions.setIsLocked(mockSuccess);
 		modalsActions.handleLockModalClose();
-	}, [localActions, modalsActions]);
+	}, [sdk, props, localActions, modalsActions]);
 
 	/* Save Without Locking */
 	const handleSaveWithoutLocking = useCallback(async () => {
@@ -114,29 +149,37 @@ export const useDomainSettingsHandlers = ({
 
 		modalsActions.handleSaveWithoutLockingModalConfirm();
 
-		// Set loading for 5 seconds for now
-		// Should be implemented with API
-		await delay(5000);
+		try {
+			const tx = await sdk.instance.setDomainMetadata(
+				props.domain.id,
+				props.domain.metadata,
+				props.registrar.signer,
+			);
 
-		modalsActions.handleSaveWithoutLockingModalProcessing();
+			try {
+				modalsActions.handleSaveWithoutLockingModalProcessing();
 
-		// Set loading for 5 seconds for now
-		// Should be implemented with API
-		await delay(5000);
+				await tx.wait();
 
-		// Mock result with random boolean
-		// Should be the result of API connection
-		const mockSuccess = Math.random() < 0.8; // 80% probability of getting true
+				localActions.setSuccess(DomainSettingsSuccess.MEATA_DATA_SAVED);
 
-		if (mockSuccess) {
-			localActions.setSuccess(DomainSettingsSuccess.MEATA_DATA_SAVED);
-		} else {
-			localActions.setWarning(DomainSettingsWarning.TRANSACTION_DENIED);
+				localActions.setIsSaved(true);
+			} catch (e) {
+				console.error(e);
+				localActions.setWarning(DomainSettingsWarning.TRANSACTION_FAILED);
+				localActions.setIsSaved(false);
+			}
+		} catch (e) {
+			console.log(e);
+
+			if (e.code === 4001) {
+				localActions.setWarning(DomainSettingsWarning.TRANSACTION_DENIED);
+				localActions.setIsSaved(false);
+			}
 		}
 
-		localActions.setIsSaved(mockSuccess);
 		modalsActions.handleSaveWithoutLockingModalClose();
-	}, [localActions, modalsActions]);
+	}, [sdk, props, localActions, modalsActions]);
 
 	/* Save And Lock */
 	const handleSaveAndLock = useCallback(async () => {
@@ -145,32 +188,40 @@ export const useDomainSettingsHandlers = ({
 
 		modalsActions.handleSaveAndLockModalConfirm();
 
-		// Set loading for 5 seconds for now
-		// Should be implemented with API
-		await delay(5000);
-
-		modalsActions.handleSaveAndLockModalProcessing();
-
-		// Set loading for 5 seconds for now
-		// Should be implemented with API
-		await delay(5000);
-
-		// Mock result with random boolean
-		// Should be the result of API connection
-		const mockSuccess = Math.random() < 0.8; // 80% probability of getting true
-
-		if (mockSuccess) {
-			localActions.setSuccess(
-				DomainSettingsSuccess.MEATA_DATA_SAVED_AND_LOCKED,
+		try {
+			const tx = await sdk.instance.setAndLockMetadata(
+				props.domain.id,
+				props.domain.metadata,
+				props.registrar.signer,
 			);
-		} else {
-			localActions.setWarning(DomainSettingsWarning.TRANSACTION_DENIED);
+
+			try {
+				modalsActions.handleSaveAndLockModalProcessing();
+
+				await tx.wait();
+
+				localActions.setSuccess(
+					DomainSettingsSuccess.MEATA_DATA_SAVED_AND_LOCKED,
+				);
+
+				localActions.setIsSaved(true);
+			} catch (e) {
+				console.error(e);
+				localActions.setWarning(DomainSettingsWarning.TRANSACTION_FAILED);
+				localActions.setIsSaved(false);
+			}
+		} catch (e) {
+			console.log(e);
+
+			if (e.code === 4001) {
+				localActions.setWarning(DomainSettingsWarning.TRANSACTION_DENIED);
+				localActions.setIsSaved(false);
+			}
 		}
 
-		localActions.setIsLocked(mockSuccess);
-		localActions.setIsSaved(mockSuccess);
+		localActions.setIsLocked(true);
 		modalsActions.handleSaveAndLockModalClose();
-	}, [localActions, modalsActions]);
+	}, [sdk, props, localActions, modalsActions]);
 
 	/* Finish */
 	const handleFinish = useCallback(() => {
@@ -181,6 +232,7 @@ export const useDomainSettingsHandlers = ({
 	}, [localActions]);
 
 	return {
+		handleCheckAndSetDomainMetadataLockStatus,
 		handleShowingLockedWarning,
 		handleUnlock,
 		handleLock,
