@@ -26,6 +26,17 @@ type ArtworkProps = {
 	style?: React.CSSProperties;
 };
 
+export const TEST_ID = {
+	ARTWORK: 'artwork',
+	CONTAINER: 'container',
+	DISABLE_LINK: 'disable-link',
+	LINK: 'link',
+	PENDING: 'pending',
+	SHOULD_ANIMATE: 'should-animate',
+	SHOULD_NOT_ANIMATE: 'should-not-animate',
+	ARTWORK_CONTAINER: 'artwork-container',
+};
+
 const Artwork: React.FC<ArtworkProps> = ({
 	domain,
 	disableInteraction,
@@ -89,6 +100,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 				className={`${styles.Image} border-rounded`}
 				alt="NFT Preview"
 				ipfsUrl={metadata?.image_full || metadata?.image || ''}
+				data-testid={TEST_ID.ARTWORK}
 			/>
 		);
 	}, [metadata]);
@@ -96,19 +108,27 @@ const Artwork: React.FC<ArtworkProps> = ({
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
-			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
-				<div className={styles.Image}>{artwork}</div>
+			<div
+				className={`${styles.Artwork} ${styles.Pending}`}
+				style={style}
+				data-testid={TEST_ID.CONTAINER}
+			>
+				<div className={styles.Image} data-testid={TEST_ID.ARTWORK_CONTAINER}>
+					{artwork}
+				</div>
 				<div className={styles.Info}>
 					{shouldAnimate && (metadata?.title || name) && (
 						<Spring
 							from={{ maxHeight: 0, opacity: 0 }}
 							to={{ maxHeight: 18, opacity: 1 }}
+							// data-testid={TEST_ID.SHOULD_ANIMATE}
 						>
 							{(animatedStyles) => (
 								<animated.div style={animatedStyles}>
 									<span
 										style={{ cursor: pending ? 'default' : 'pointer' }}
 										className={styles.Title}
+										data-testid={TEST_ID.SHOULD_ANIMATE}
 									>
 										{metadata?.title || name}
 									</span>
@@ -120,6 +140,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<span
 							style={{ cursor: pending ? 'default' : 'pointer' }}
 							className={styles.Title}
+							data-testid={TEST_ID.SHOULD_NOT_ANIMATE}
 						>
 							{metadata?.title || name}
 						</span>
@@ -127,7 +148,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 					{!pending && (
 						<>
 							{disableInteraction && (
-								<span className={styles.Domain}>
+								<span
+									className={styles.Domain}
+									data-testid={TEST_ID.DISABLE_LINK}
+								>
 									{truncatedDomain || 'wilder.' + domain}
 								</span>
 							)}
@@ -137,13 +161,18 @@ const Artwork: React.FC<ArtworkProps> = ({
 									to={domain.split('wilder.')[1]}
 									target="_blank"
 									rel="noreferrer"
+									data-testid={TEST_ID.LINK}
 								>
 									{truncatedDomain || domain}
 								</Link>
 							)}
 						</>
 					)}
-					{pending && <span className={styles.Domain}>{domain}</span>}
+					{pending && (
+						<span data-testid={TEST_ID.PENDING} className={styles.Domain}>
+							{domain}
+						</span>
+					)}
 				</div>
 			</div>
 		</>

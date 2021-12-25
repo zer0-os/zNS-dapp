@@ -15,8 +15,8 @@ import { StatsWidget } from 'components';
 import {
 	SubdomainTable,
 	CurrentDomainPreview,
-	// Temporarily removed raffle
 	WheelsRaffle,
+	BannerContainer,
 } from 'containers';
 
 //- Library Imports
@@ -27,6 +27,7 @@ import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
+import useScrollDetection from 'lib/hooks/useScrollDetection';
 
 type ZNSProps = {
 	domain: string;
@@ -69,11 +70,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
+	const [pageWidth, setPageWidth] = useState<number>(0);
+	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
+
+	///////////////
+	// Hooks //
+	///////////////
+	useScrollDetection(setScrollDetectionDown);
 
 	///////////////
 	// Functions //
@@ -286,7 +294,15 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				/>
 			)}
 			{/* ZNS Content */}
-			<WheelsRaffle />
+			<BannerContainer isScrollDetectionDown={isScrollDetectionDown}>
+				{/* Temporarily removed Raffle */}
+				<WheelsRaffle />
+				{/* <MessageBanner
+						label="This is a banner message"
+						buttonText="CTA"
+						countdownTime={3634408000000}
+					/> */}
+			</BannerContainer>
 
 			{!isNftView && (
 				<div
