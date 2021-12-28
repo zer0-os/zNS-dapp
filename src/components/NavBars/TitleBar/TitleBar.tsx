@@ -156,11 +156,9 @@ const TitleBar: React.FC<TitleBarProps> = ({
 
 	return (
 		<div
-			className={`
-			${styles.TitleBar}
-			${isSearchActive ? styles.Searching : ''}
-			${isSearchInputHovered ? styles.Hovered : ''}
-			border-primary`}
+			className={`${styles.TitleBar} ${isSearchActive ? styles.Searching : ''}	${
+				isSearchInputHovered ? styles.Hovered : ''
+			} border-primary`}
 		>
 			<div className={styles.Bar}>
 				<div className={styles.Navigation}>

@@ -404,7 +404,7 @@ const PageContainer: FC = ({ children }) => {
 				</TitleBar>
 				<SideBar />
 				{/* TODO: Encapsulate this */}
-				{children}
+				<div>{children}</div>
 			</div>
 		</>
 	);

@@ -27,6 +27,7 @@ const StakePoolTable = () => {
 			itemKey={'id'}
 			loadingText={'Loading Stake Pools'}
 			rowComponent={StakePoolTableRow}
+			notSearchable
 		/>
 	);
 };

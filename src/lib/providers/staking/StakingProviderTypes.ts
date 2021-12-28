@@ -36,7 +36,7 @@ const wildPool: StakingPoolContent = {
 };
 
 const lpPool: StakingPoolContent = {
-	image: 'staking/farm.png',
+	image: '/staking/farm.png',
 	name: 'Farm WILD - WETH LP',
 	token: 'Liquidity Provider',
 	tokenTicker: 'LP',
