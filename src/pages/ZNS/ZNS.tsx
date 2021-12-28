@@ -23,7 +23,7 @@ import {
 import { NFTView, TransferOwnership } from 'containers';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { DomainMetrics } from '@zero-tech/zns-sdk';
+import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';

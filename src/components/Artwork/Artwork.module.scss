@@ -16,12 +16,16 @@
 	overflow: hidden;
 	cursor: pointer;
 	transition: transform var(--animation-time-medium) ease-in-out;
+
+	&.Circle {
+		border-radius: 50%;
+	}
 }
 
 .Domain {
 	display: block;
 	font-size: var(--font-size-smaller);
-	color: var(--color-primary-lighter-3);
+	color: var(--color-grey-lighter-2);
 }
 
 .Image:hover {

@@ -10,6 +10,12 @@
 
 	transform: translateX(calc(-100% - 19px));
 	z-index: 500;
+
+	&:hover {
+		.Icons {
+			pointer-events: all;
+		}
+	}
 }
 
 .Navigator {
@@ -30,6 +36,8 @@
 	overflow: hidden;
 	padding-right: 200px;
 	padding-left: 22px;
+
+	pointer-events: none;
 
 	& .Action:hover .Name {
 		left: 54px;

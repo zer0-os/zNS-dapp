@@ -18,6 +18,17 @@ type CurrentDomainProviderType = {
 	children: React.ReactNode;
 };
 
+const parseDomainFromURI = (pathname: string) => {
+	if (pathname.startsWith('/market')) {
+		return (
+			pathname.replace('/market', '') === ''
+				? '/'
+				: pathname.replace('/market', '')
+		).substring(1);
+	}
+	return '';
+};
+
 const CurrentDomainProvider: React.FC<CurrentDomainProviderType> = ({
 	children,
 }) => {
@@ -29,11 +40,8 @@ const CurrentDomainProvider: React.FC<CurrentDomainProviderType> = ({
 	const { location } = useHistory();
 
 	// Get current domain details from web3 hooks
-	const domain = (
-		location.pathname.replace('/market', '').replace('/staking', '') === ''
-			? '/'
-			: location.pathname.replace('/market', '').replace('/staking', '')
-	).substring(1);
+	const domain = parseDomainFromURI(location.pathname);
+	console.log({ domain });
 	const domainId = getDomainId(domain);
 	const znsDomain = useZnsDomain(domainId);
 

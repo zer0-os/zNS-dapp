@@ -28,6 +28,10 @@ export interface ContractAddresses {
 	lootToken: string;
 	zAuction: string;
 	wheelSale: string;
+	stakeFactory: string;
+	lpToken: string;
+	wildStakingPool: string;
+	lpStakingPool: string;
 }
 
 export interface Contracts {
@@ -96,4 +100,19 @@ function useZnsContracts(): Contracts | null {
 	return contract;
 }
 
-export { useZnsContracts };
+function useContractAddresses(): ContractAddresses | undefined {
+	const context = useWeb3React<Web3Provider>();
+	const { library, active, chainId } = context;
+	const networkAddresses = useMemo((): ContractAddresses | undefined => {
+		if (!library) {
+			return undefined;
+		}
+
+		let contracts = addresses[chainIdToNetworkType(chainId)];
+		return contracts;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [active, library, chainId]);
+	return networkAddresses;
+}
+
+export { useZnsContracts, useContractAddresses };

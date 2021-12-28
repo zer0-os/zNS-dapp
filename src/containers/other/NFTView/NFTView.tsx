@@ -30,7 +30,11 @@ import { getDomainId } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { Attribute } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { DomainBidEvent, DomainEvent, DomainMetrics } from '@zero-tech/zns-sdk';
+import {
+	DomainBidEvent,
+	DomainEvent,
+	DomainMetrics,
+} from '@zero-tech/zns-sdk/lib/types';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
