@@ -9,14 +9,12 @@ import { getDomainId } from 'lib/utils';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
+	domainId: '',
+	domainRaw: '/',
 	app: '',
 	loading: true,
 	refetch: () => {}, // @todo update this
 });
-
-type CurrentDomainProviderType = {
-	children: React.ReactNode;
-};
 
 const parseDomainFromURI = (pathname: string) => {
 	if (pathname.startsWith('/market')) {
@@ -29,9 +27,7 @@ const parseDomainFromURI = (pathname: string) => {
 	return '';
 };
 
-const CurrentDomainProvider: React.FC<CurrentDomainProviderType> = ({
-	children,
-}) => {
+const CurrentDomainProvider: React.FC = ({ children }) => {
 	//////////////////////////
 	// Hooks & State & Data //
 	//////////////////////////
@@ -41,12 +37,13 @@ const CurrentDomainProvider: React.FC<CurrentDomainProviderType> = ({
 
 	// Get current domain details from web3 hooks
 	const domain = parseDomainFromURI(location.pathname);
-	console.log({ domain });
 	const domainId = getDomainId(domain);
 	const znsDomain = useZnsDomain(domainId);
 
 	const contextValue = {
 		domain: znsDomain.domain,
+		domainId,
+		domainRaw: domain,
 		app: location.pathname.indexOf('/market') > -1 ? '/market' : '/staking',
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,

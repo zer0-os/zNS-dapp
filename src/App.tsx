@@ -71,23 +71,8 @@ function App() {
 				<Switch>
 					<CurrentDomainProvider>
 						<PageContainer>
-							<Route
-								path="/market"
-								render={({ location, match }) => {
-									return (
-										<ZNS
-											// TODO: Remove dependence on domain here, use the current domain provider hook instead.
-											domain={
-												location.pathname.replace(match.path, '') === ''
-													? '/'
-													: location.pathname.replace(match.path, '')
-											}
-											isNftView={location.search.includes('view=true')}
-										/>
-									);
-								}}
-							/>
-							<Route path="/staking" render={Staking} />
+							<Route path="/market" component={ZNS} />
+							<Route path="/staking" component={Staking} />
 							<Route exact path="/">
 								<Redirect to="/market" />
 							</Route>

@@ -28,9 +28,9 @@ import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
+import { useLocation } from 'react-router-dom';
 
 type ZNSProps = {
-	domain: string;
 	version?: number;
 	isNftView?: boolean;
 };
@@ -44,7 +44,7 @@ enum Modal {
 
 // @TODO: Rewrite this whole page
 
-const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
+const ZNS: React.FC<ZNSProps> = ({}) => {
 	// TODO: Need to handle domains that don't exist!
 
 	///////////////////
@@ -54,7 +54,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const { wildPriceUsd } = useCurrency();
 
 	//- Domain Data
-	const { domain: znsDomain } = useCurrentDomain();
+	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
@@ -66,11 +66,16 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
 	const isMobilePortrait = useMatchMedia('(max-width: 520px)');
 
+	const location = useLocation();
+	const nftView = useMemo(
+		() => location.search.includes('view=true'),
+		[location.search],
+	);
+
 	//- Page State
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
-	const [pageWidth, setPageWidth] = useState<number>(0);
 	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 
 	//- Overlay State
@@ -236,7 +241,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	};
 
 	const previewCard = () => {
-		const isVisible = domain !== '/' && !isNftView;
+		const isVisible = domain !== '' && !isNftView;
 		let to;
 		if (isVisible && previewCardRef) {
 			// If should be visible, slide down
@@ -267,14 +272,8 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	};
 
 	const subTable = useMemo(() => {
-		return (
-			<SubdomainTable
-				style={{ marginTop: 16 }}
-				domainName={domain}
-				isNftView={isNftView}
-			/>
-		);
-	}, [domain, isNftView]);
+		return <SubdomainTable style={{ marginTop: 16 }} isNftView={isNftView} />;
+	}, [isNftView]);
 
 	////////////
 	// Render //
@@ -323,7 +322,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 					{(styles) => (
 						<animated.div style={styles}>
 							<NFTView
-								domain={domain}
+								// domain={domain}
 								onTransfer={openTransferOwnershipModal}
 							/>
 						</animated.div>

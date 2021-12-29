@@ -46,9 +46,9 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	// const { setLocation } = useNav();
 	const { path } = useRouteMatch();
 
-	useEffect(() => {
-		console.log(path);
-	}, [path]);
+	// useEffect(() => {
+	// 	console.log(path);
+	// }, [path]);
 
 	const [isBelowBreakpoint, setIsBelowBreakpoint] = useState<boolean>();
 
