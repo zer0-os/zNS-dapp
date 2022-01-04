@@ -14,7 +14,7 @@ import MintWheels from './MintWheels';
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
 import { getBannerLabel, getBannerButtonText } from './labels';
-import { useMintProvider } from 'lib/providers/MintProvider';
+import useMint from 'lib/hooks/useMint';
 import {
 	getDropData,
 	getUserEligibility,
@@ -30,7 +30,7 @@ const MintWheelsFlowContainer = () => {
 	// State & Data //
 	//////////////////
 
-	const { mintWheels } = useMintProvider();
+	const { mintWheels } = useMint();
 	const history = useHistory();
 	const location = useLocation();
 

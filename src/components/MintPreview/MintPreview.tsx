@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { FutureButton, Image } from 'components';
 
 //- Hook Imports
-import { useMintProvider } from 'lib/providers/MintProvider';
+import useMint from 'lib/hooks/useMint';
 
 //- Style Imports
 import styles from './MintPreview.module.scss';
@@ -28,7 +28,7 @@ const MintPreview = (props: MintPreviewProps) => {
 	const networkType = chainIdToNetworkType(chainId);
 	const baseEtherscanUri = getEtherscanUri(networkType);
 
-	const mintProvider = useMintProvider();
+	const { minting, minted } = useMint();
 	const stakingProvider = useStakingProvider();
 
 	const statusCard = (
@@ -128,16 +128,12 @@ const MintPreview = (props: MintPreviewProps) => {
 	};
 
 	let mintingSection: Maybe<React.ReactFragment>;
-	if (mintProvider.minting.length > 0 || mintProvider.minted.length > 0) {
+	if (minting.length > 0 || minted.length > 0) {
 		mintingSection = (
 			<>
 				<h4 className="glow-text-white">Minting</h4>
-				{mintProvider.minting.map((n: NftStatusCard) =>
-					mintingStatusCard(n, false),
-				)}
-				{mintProvider.minted.map((n: NftStatusCard) =>
-					mintingStatusCard(n, true),
-				)}
+				{minting.map((n: NftStatusCard) => mintingStatusCard(n, false))}
+				{minted.map((n: NftStatusCard) => mintingStatusCard(n, true))}
 			</>
 		);
 	}
