@@ -20,7 +20,7 @@ interface IProps {
 
 const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 	//- Wallet Data
-	const { wildPriceUsd } = useCurrency();
+	const { wildPriceUsd, wildPercentageChange } = useCurrency();
 	/////////////////////
 	// React Fragments //
 	/////////////////////
@@ -34,10 +34,10 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 				{title && <span className={styles.TickerName}>{title}</span>}
 				<div className={styles.CurrentPriceContainer}>
 					<span className={isSizeSmall}>${wildPriceUsd}</span>
-
-					{/* replace hard coded percentage change */}
 					<span className={styles.PercentageChange}>
-						{size === Size.LRG ? '(+12%)' : '+12%'}
+						{size === Size.LRG
+							? `(${wildPercentageChange}%)`
+							: `${wildPercentageChange}%`}
 					</span>
 				</div>
 			</>
