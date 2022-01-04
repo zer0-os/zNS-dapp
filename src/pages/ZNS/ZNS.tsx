@@ -563,19 +563,20 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							{account && !isSearchActive && (
 								<>
 									{/* Mint button */}
-									<FutureButton
-										style={{ padding: '0px 12px' }}
-										glow={account != null}
-										onClick={() => {
-											account != null
-												? openMint()
-												: addNotification('Please connect your wallet.');
-										}}
-										loading={loading}
-									>
-										MINT
-									</FutureButton>
-
+									{isOwnedByUser && (
+										<FutureButton
+											style={{ padding: '0px 12px' }}
+											glow={account != null}
+											onClick={() => {
+												account != null
+													? openMint()
+													: addNotification('Please connect your wallet.');
+											}}
+											loading={loading}
+										>
+											MINT
+										</FutureButton>
+									)}
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
 										<TooltipLegacy
