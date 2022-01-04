@@ -1,0 +1,40 @@
+.Wilder {
+	position: absolute;
+	top: 0;
+	left: -19px;
+	height: 56px;
+	width: 56px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background: var(--color-purple-gradient-darker);
+	border-radius: 50%;
+
+	transform: translateX(-100%);
+
+	cursor: pointer;
+
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
+
+.Wilder img {
+	max-width: calc(65% - 1px);
+	height: auto;
+	margin-left: 1px;
+
+	// are these styles used?
+	user-drag: none;
+	-webkit-user-drag: none;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+}
+
+@media only screen and (max-width: 1282px) {
+	.Wilder {
+		display: none;
+	}
+}
