@@ -75,7 +75,7 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 	) => (
 		<div className={styles.UrlRowContainer}>
 			{urlList.map((item) => (
-				<a target="_blank" rel="noreferrer" href={item.href}>
+				<a key={item.title} target="_blank" rel="noreferrer" href={item.href}>
 					<div className={styles.IconWrapper}>
 						<img
 							style={{ width: '40px', height: '40px' }}
