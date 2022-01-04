@@ -13,6 +13,9 @@ import * as constants from './constants';
 //- Utils Imports
 import { UrlList, Size } from './utils';
 
+//- Global Utils Imports
+import { formatNumber } from 'lib/utils/number';
+
 //- Props
 interface IProps {
 	walletConnected?: boolean;
@@ -36,8 +39,8 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 					<span className={isSizeSmall}>${wildPriceUsd}</span>
 					<span className={styles.PercentageChange}>
 						{size === Size.LRG
-							? `(${wildPercentageChange}%)`
-							: `${wildPercentageChange}%`}
+							? `(${formatNumber(wildPercentageChange)}%)`
+							: `${formatNumber(wildPercentageChange)}%`}
 					</span>
 				</div>
 			</>
