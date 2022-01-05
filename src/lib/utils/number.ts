@@ -13,10 +13,6 @@ export const formatEthers = (number: string) => {
 	return formatNumber(asNumber);
 };
 
-export const ONE_DECIMAL_PLACE_VALUE = 1;
-export const TWO_DECIMAL_PLACE_VALUE = 2;
-export const THREE_DECIMAL_PLACE_VALUE = 3;
-
 export const formatByDecimalPlace = (
 	value: number | string,
 	places: number,
