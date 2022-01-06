@@ -87,7 +87,7 @@ const MintWheelsFlowContainer = () => {
 			return;
 		}
 		if (isSaleHalted) {
-			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
+			window?.open('https://discord.gg/7tyggH6eh9', '_blank')?.focus();
 			return;
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
@@ -367,7 +367,7 @@ const MintWheelsFlowContainer = () => {
 						Join our{' '}
 						<b>
 							<a
-								href={'https://discord.gg/mb9fcFey8a'}
+								href={'https://discord.gg/7tyggH6eh9'}
 								target={'_blank'}
 								rel={'noreferrer'}
 							>
