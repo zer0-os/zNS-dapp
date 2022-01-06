@@ -70,7 +70,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted = false;
+	const isSaleHalted = true;
 
 	///////////////
 	// Functions //
