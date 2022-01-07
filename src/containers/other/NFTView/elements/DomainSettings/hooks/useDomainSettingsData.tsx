@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
+import { DomainMetadata } from '@zero-tech/zns-sdk';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { getRelativeDomainPath } from 'lib/utils/domains';
 import { useZnsContracts } from 'lib/contracts';
 import { Maybe } from 'lib/types';
@@ -12,7 +12,6 @@ import {
 export const useDomainSettingsData = (domainId: string) => {
 	const myDomain = useZnsDomain(domainId);
 	const parentDomain = useZnsDomain(myDomain.domain?.parent.id || '');
-	const metadata = useDomainMetadata(myDomain.domain?.metadata);
 
 	const znsContracts = useZnsContracts()!;
 	const registrar = znsContracts.registry;
@@ -23,6 +22,11 @@ export const useDomainSettingsData = (domainId: string) => {
 		useState<Maybe<DomainSettingsWarning>>(undefined);
 	const [success, setSuccess] =
 		useState<Maybe<DomainSettingsSuccess>>(undefined);
+	const [metadata, setMetadata] = useState<Maybe<DomainMetadata>>(undefined);
+	const [localMetadata, setLocalMetadata] =
+		useState<Maybe<DomainMetadata>>(undefined);
+
+	console.log({ domainId, metadata, localMetadata });
 
 	const { domainUri, relativeDomain } = useMemo(() => {
 		const domainUri = `0://${myDomain.domain?.name}`;
@@ -55,17 +59,20 @@ export const useDomainSettingsData = (domainId: string) => {
 			isSaved,
 			warning,
 			success,
+			metadata,
+			localMetadata,
 		},
 		localActions: {
 			setIsLocked,
 			setIsSaved,
 			setWarning,
 			setSuccess,
+			setMetadata,
+			setLocalMetadata,
 		},
 		formattedData: {
 			myDomain,
 			parentDomain,
-			metadata,
 			domainUri,
 			relativeDomain,
 			unavailableDomainNames,

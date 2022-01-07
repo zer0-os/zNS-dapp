@@ -5,11 +5,16 @@ type UseDomainSettingsBodyLifecycleProps = {
 		name: string;
 		domain: string;
 		story: string;
+		isMintable: boolean;
+		isBiddable: boolean;
+		gridViewByDefault: boolean;
+		customDomainHeader: boolean;
 	};
 	handlers: {
 		handleDomainNameChange: () => void;
 		handleSubDomainNameChange: () => void;
 		handleStoryChange: () => void;
+		handleMetadataChange: () => void;
 	};
 };
 
@@ -22,4 +27,14 @@ export const useDomainSettingsBodyLifecycle = ({
 	useUpdateEffect(handlers.handleSubDomainNameChange, [localState.domain]);
 
 	useUpdateEffect(handlers.handleStoryChange, [localState.story]);
+
+	useUpdateEffect(handlers.handleMetadataChange, [
+		localState.name,
+		localState.domain,
+		localState.story,
+		localState.isBiddable,
+		localState.isMintable,
+		localState.gridViewByDefault,
+		localState.customDomainHeader,
+	]);
 };

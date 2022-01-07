@@ -31,6 +31,7 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 			domain: formattedData.myDomain.domain!,
 			registrar,
 		},
+		localState,
 		localActions,
 		modalsActions,
 	});
@@ -60,9 +61,11 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 				{formattedData.myDomain.domain?.title && (
 					<DomainSettingsBody
 						domain={formattedData.myDomain.domain}
+						metadata={localState.metadata}
 						unavailableDomainNames={formattedData.unavailableDomainNames}
 						isLocked={localState.isLocked}
 						onShowLockedWarning={handlers.handleShowingLockedWarning}
+						onMetadataChange={handlers.handleLocalMetadataChange}
 					/>
 				)}
 				{/* Footer */}

@@ -1,3 +1,6 @@
+import { useMemo, useCallback } from 'react';
+import { DomainMetadata } from '@zero-tech/zns-sdk';
+import { Maybe } from 'lib/types';
 import {
 	DomainSettingsError,
 	ERROR_KEYS,
@@ -8,14 +11,20 @@ import {
 type UseDomainSettingsBodyHandlersProps = {
 	props: {
 		isLocked: boolean;
+		metadata: Maybe<DomainMetadata>;
 		unavailableDomainNames: string[];
 		onShowLockedWarning: () => void;
+		onMetadataChange: (metadata: DomainMetadata) => void;
 	};
 	localState: {
 		name: string;
 		domain: string;
 		story: string;
 		errors: DomainSettingsError;
+		isMintable: boolean;
+		isBiddable: boolean;
+		gridViewByDefault: boolean;
+		customDomainHeader: boolean;
 	};
 	localActions: {
 		setErrors: React.Dispatch<React.SetStateAction<DomainSettingsError>>;
@@ -27,13 +36,13 @@ export const useDomainSettingsBodyHandlers = ({
 	localState,
 	localActions,
 }: UseDomainSettingsBodyHandlersProps) => {
-	const handleBodyClicking = () => {
+	const handleBodyClicking = useCallback(() => {
 		if (props.isLocked) {
 			props.onShowLockedWarning();
 		}
-	};
+	}, [props]);
 
-	const handleDomainNameChange = () => {
+	const handleDomainNameChange = useCallback(() => {
 		if (!localState.name) {
 			localActions.setErrors({
 				...localState.errors,
@@ -46,9 +55,9 @@ export const useDomainSettingsBodyHandlers = ({
 				[ERROR_KEYS.NAME]: undefined,
 			});
 		}
-	};
+	}, [localState, localActions]);
 
-	const handleSubDomainNameChange = () => {
+	const handleSubDomainNameChange = useCallback(() => {
 		if (!localState.domain) {
 			localActions.setErrors({
 				...localState.errors,
@@ -73,9 +82,9 @@ export const useDomainSettingsBodyHandlers = ({
 				[ERROR_KEYS.SUB_DOMAIN]: undefined,
 			});
 		}
-	};
+	}, [props, localState, localActions]);
 
-	const handleStoryChange = () => {
+	const handleStoryChange = useCallback(() => {
 		if (!localState.story) {
 			localActions.setErrors({
 				...localState.errors,
@@ -88,12 +97,47 @@ export const useDomainSettingsBodyHandlers = ({
 				[ERROR_KEYS.STORY]: undefined,
 			});
 		}
-	};
+	}, [localState, localActions]);
 
-	return {
-		handleBodyClicking,
-		handleDomainNameChange,
-		handleSubDomainNameChange,
-		handleStoryChange,
-	};
+	const handleMetadataChange = useCallback(() => {
+		const {
+			name,
+			domain,
+			story,
+			isMintable,
+			isBiddable,
+			gridViewByDefault,
+			customDomainHeader,
+		} = localState;
+
+		if (!!name && !!domain && !!story) {
+			props.onMetadataChange({
+				...props.metadata!,
+				name,
+				domain,
+				description: story,
+				isMintable,
+				isBiddable,
+				gridViewByDefault,
+				customDomainHeader,
+			});
+		}
+	}, [props, localState]);
+
+	return useMemo(
+		() => ({
+			handleBodyClicking,
+			handleDomainNameChange,
+			handleSubDomainNameChange,
+			handleStoryChange,
+			handleMetadataChange,
+		}),
+		[
+			handleBodyClicking,
+			handleDomainNameChange,
+			handleSubDomainNameChange,
+			handleStoryChange,
+			handleMetadataChange,
+		],
+	);
 };

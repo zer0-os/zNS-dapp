@@ -1,4 +1,5 @@
 import React from 'react';
+import { DomainMetadata } from '@zero-tech/zns-sdk';
 import { DisplayDomain, Maybe } from 'lib/types';
 import {
 	NFTMedia,
@@ -17,23 +18,33 @@ import './_domain-settings-body.scss';
 
 type DomainSettingsBodyProps = {
 	domain: Maybe<DisplayDomain>;
+	metadata: Maybe<DomainMetadata>;
 	unavailableDomainNames: string[];
 	isLocked: boolean;
 	onShowLockedWarning: () => void;
+	onMetadataChange: (metadata: DomainMetadata) => void;
 };
 
 export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 	domain,
+	metadata,
 	unavailableDomainNames,
 	isLocked,
 	onShowLockedWarning,
+	onMetadataChange,
 }) => {
-	const { localState, localActions } = useDomainSettingsBodyData(domain);
+	const { localState, localActions } = useDomainSettingsBodyData(
+		domain,
+		metadata,
+	);
+
 	const handlers = useDomainSettingsBodyHandlers({
 		props: {
 			isLocked,
+			metadata,
 			unavailableDomainNames,
 			onShowLockedWarning,
+			onMetadataChange,
 		},
 		localState,
 		localActions,
@@ -55,7 +66,7 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 							objectFit: 'contain',
 						}}
 						alt="NFT Preview"
-						ipfsUrl={domain?.image_full || domain?.image || ''}
+						ipfsUrl={metadata?.image || ''}
 						size="large"
 					/>
 				</div>
@@ -96,8 +107,8 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 				<div className="domain-settings-body__footer--section">
 					<div className="domain-settings-body__footer--main-section">
 						<ToggleSwitch
-							checked={localState.mintRequestOn}
-							onChange={localActions.setMintRequestOn}
+							checked={localState.isMintable}
+							onChange={localActions.setIsMintable}
 						/>
 						<label>Domain Mint Requests</label>
 						<Tooltip text="This is long information to display on hover">
@@ -110,98 +121,22 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 				<div className="domain-settings-body__footer--section">
 					<div className="domain-settings-body__footer--main-section">
 						<ToggleSwitch
-							checked={localState.biddingOn}
-							onChange={localActions.setBiddingOn}
+							checked={localState.isBiddable}
+							onChange={localActions.setIsBiddable}
 						/>
 						<label>Domain Bidding</label>
 						<Tooltip text="This is long information to display on hover">
 							<QuestionButton small />
 						</Tooltip>
 					</div>
-					{localState.biddingOn && (
-						<div className="domain-settings-body__footer--sub-section">
-							<div className="domain-settings-body__footer--sub-section-wrap">
-								<div className="domain-settings-body__footer--sub-section-block">
-									<ToggleSwitch
-										checked={localState.bidExpiryOn}
-										onChange={localActions.setBidExpiryOn}
-									/>
-									<label>Bid Expiry</label>
-									<Tooltip text="This is long information to display on hover">
-										<QuestionButton small />
-									</Tooltip>
-								</div>
-								<div className="domain-settings-body__footer--sub-section-block">
-									<TextInputWithTopPlaceHolder
-										topPlaceholder={'Bids Expire After'}
-										placeholder="hh:mm:ss"
-										onChange={localActions.setBidExpireTime}
-										text={localState.bidExpireTime}
-									/>
-								</div>
-							</div>
-							<div className="domain-settings-body__footer--sub-section-wrap">
-								<div className="domain-settings-body__footer--sub-section-block">
-									<ToggleSwitch
-										checked={localState.auctionEndtimeOn}
-										onChange={localActions.setAuctionEndtimeOn}
-									/>
-									<label>Auction End Time</label>
-									<Tooltip text="This is long information to display on hover">
-										<QuestionButton small />
-									</Tooltip>
-								</div>
-								<div className="domain-settings-body__footer--sub-section-block">
-									<TextInputWithTopPlaceHolder
-										topPlaceholder={'Auction End Time'}
-										placeholder="Mmm dd yyyy hh:mm:ss UTC"
-										onChange={localActions.setAuctionEndtime}
-										text={localState.auctionEndtime}
-									/>
-								</div>
-							</div>
-							<div className="domain-settings-body__footer--sub-section-wrap">
-								<div className="domain-settings-body__footer--sub-section-block">
-									<TextInputWithTopPlaceHolder
-										topPlaceholder={'Auction Message (124 characters max)'}
-										placeholder=""
-										onChange={localActions.setAuctionMessage}
-										text={localState.auctionMessage}
-									/>
-								</div>
-							</div>
-						</div>
-					)}
 				</div>
 
-				{/* Bid now Section */}
+				{/* Grid View By Default Section */}
 				<div className="domain-settings-body__footer--section">
 					<div className="domain-settings-body__footer--main-section">
 						<ToggleSwitch
-							checked={localState.buyNowOn}
-							onChange={localActions.setBuyNowOn}
-						/>
-						<label>Buy Now</label>
-						<Tooltip text="This is long information to display on hover">
-							<QuestionButton small />
-						</Tooltip>
-					</div>
-					{localState.buyNowOn && (
-						<div className="domain-settings-body__footer--sub-section no-gutters">
-							<TextInputWithTopPlaceHolder
-								topPlaceholder={'Buy Now Price (WILD)'}
-								placeholder="1234 WILD"
-								onChange={localActions.setBuyNowPrice}
-								text={localState.buyNowPrice}
-							/>
-						</div>
-					)}
-				</div>
-				<div className="domain-settings-body__footer--section">
-					<div className="domain-settings-body__footer--main-section">
-						<ToggleSwitch
-							checked={localState.displayGridOn}
-							onChange={localActions.setDisplayGridOn}
+							checked={localState.gridViewByDefault}
+							onChange={localActions.setGridViewByDefault}
 						/>
 						<label>Display Domain in Grid View by Default</label>
 						<Tooltip text="This is long information to display on hover">
@@ -210,12 +145,12 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 					</div>
 				</div>
 
-				{/* Custom Aspect Ratio in Grid View Section */}
+				{/* Custom Domain Header Section */}
 				<div className="domain-settings-body__footer--section">
 					<div className="domain-settings-body__footer--main-section">
 						<ToggleSwitch
-							checked={localState.customAspectRatioOn}
-							onChange={localActions.setCustomAspectRatioOn}
+							checked={localState.customDomainHeader}
+							onChange={localActions.setCustomDomainHeader}
 						/>
 						<label>Custom Aspect Ratio in Grid View</label>
 						<Tooltip text="This is long information to display on hover">
@@ -223,21 +158,8 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 						</Tooltip>
 					</div>
 				</div>
-
-				{/* Lock Metadata Section */}
-				<div className="domain-settings-body__footer--section">
-					<div className="domain-settings-body__footer--main-section">
-						<ToggleSwitch
-							checked={localState.lockMetadataOn}
-							onChange={localActions.setLockMetadataOn}
-						/>
-						<label>Lock Metadata</label>
-						<Tooltip text="This is long information to display on hover">
-							<QuestionButton small />
-						</Tooltip>
-					</div>
-				</div>
 			</div>
+
 			{isLocked && (
 				<div
 					className="domain-settings-body__blocked"

@@ -8,6 +8,7 @@ type UseDomainSettingsLifecycleProps = {
 		registrar: Registrar;
 	};
 	handlers: {
+		handleFetchMetadata: () => Promise<void>;
 		handleCheckAndSetDomainMetadataLockStatus: () => Promise<void>;
 	};
 };
@@ -16,5 +17,7 @@ export const useDomainSettingsLifecycle = ({
 	props,
 	handlers,
 }: UseDomainSettingsLifecycleProps) => {
+	useUpdateEffect(handlers.handleFetchMetadata, [props.domain?.id]);
+
 	useUpdateEffect(handlers.handleCheckAndSetDomainMetadataLockStatus, [props]);
 };

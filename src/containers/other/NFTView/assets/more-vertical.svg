@@ -1,18 +1,5 @@
-<svg width="25" height="38" viewBox="0 0 25 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_818:10142)">
-<path d="M12.2533 20C12.8056 20 13.2533 19.5523 13.2533 19C13.2533 18.4477 12.8056 18 12.2533 18C11.701 18 11.2533 18.4477 11.2533 19C11.2533 19.5523 11.701 20 12.2533 20Z" stroke="#52CBFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.2533 13C12.8056 13 13.2533 12.5523 13.2533 12C13.2533 11.4477 12.8056 11 12.2533 11C11.701 11 11.2533 11.4477 11.2533 12C11.2533 12.5523 11.701 13 12.2533 13Z" stroke="#52CBFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12.2533 27C12.8056 27 13.2533 26.5523 13.2533 26C13.2533 25.4477 12.8056 25 12.2533 25C11.701 25 11.2533 25.4477 11.2533 26C11.2533 26.5523 11.701 27 12.2533 27Z" stroke="#52CBFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<defs>
-<filter id="filter0_d_818:10142" x="-9.7467" y="-3" width="44" height="44" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset/>
-<feGaussianBlur stdDeviation="5"/>
-<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.7 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_818:10142"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_818:10142" result="shape"/>
-</filter>
-</defs>
+<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.2538 13C12.8061 13 13.2538 12.5523 13.2538 12C13.2538 11.4477 12.8061 11 12.2538 11C11.7015 11 11.2538 11.4477 11.2538 12C11.2538 12.5523 11.7015 13 12.2538 13Z" stroke="#52CBFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.2538 6C12.8061 6 13.2538 5.55228 13.2538 5C13.2538 4.44772 12.8061 4 12.2538 4C11.7015 4 11.2538 4.44772 11.2538 5C11.2538 5.55228 11.7015 6 12.2538 6Z" stroke="#52CBFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.2538 20C12.8061 20 13.2538 19.5523 13.2538 19C13.2538 18.4477 12.8061 18 12.2538 18C11.7015 18 11.2538 18.4477 11.2538 19C11.2538 19.5523 11.7015 20 12.2538 20Z" stroke="#52CBFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

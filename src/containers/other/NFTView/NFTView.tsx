@@ -51,7 +51,7 @@ import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
 import shareIcon from './assets/share.svg';
-import moreIcon from './assets/more-vertical.png';
+import moreIcon from './assets/more-vertical.svg';
 import settingsIcon from './assets/settings.svg';
 import dollarSignIcon from './assets/dollar-sign.svg';
 

@@ -1,64 +1,46 @@
 import { useState } from 'react';
-import { isNil } from 'lodash';
+import { DomainMetadata } from '@zero-tech/zns-sdk';
 import { DisplayDomain, Maybe } from 'lib/types';
+import { usePropsState } from 'lib/hooks/usePropsState';
 import { DomainSettingsError } from '../DomainSettingsBody.constants';
 
 export const useDomainSettingsBodyData = (
 	currentDomain: Maybe<DisplayDomain>,
+	metadata: Maybe<DomainMetadata>,
 ) => {
-	const [name, setName] = useState<string>(currentDomain?.title || '');
+	const [name, setName] = usePropsState<string>(metadata?.name || '');
 	const [domain, setDomain] = useState<string>(
 		currentDomain?.name
 			.replace(currentDomain.parent?.name || '', '')
 			.replace('.', '') || '',
 	);
-	const [story, setStory] = useState<string>(currentDomain?.description || '');
-	const [locked] = useState<boolean>(
-		isNil(currentDomain?.isLocked) ? true : Boolean(currentDomain?.isLocked),
-	);
+	const [story, setStory] = usePropsState<string>(metadata?.description || '');
 	const [errors, setErrors] = useState<DomainSettingsError>({});
 	/* Switches */
-	const [mintRequestOn, setMintRequestOn] = useState<boolean>(false);
-	// Domain bidding
-	const [biddingOn, setBiddingOn] = useState<boolean>(false);
-	//// Domain bidding -> sub settings
-	const [bidExpiryOn, setBidExpiryOn] = useState<boolean>(false);
-	const [bidExpireTime, setBidExpireTime] = useState<string>('');
-	const [auctionEndtimeOn, setAuctionEndtimeOn] = useState<boolean>(false);
-	const [auctionEndtime, setAuctionEndtime] = useState<string>('');
-	const [auctionMessage, setAuctionMessage] = useState<string>('');
-	// Buy Now
-	const [buyNowOn, setBuyNowOn] = useState<boolean>(false);
-	//// Buy Now -> sub settings
-	const [buyNowPrice, setBuyNowPrice] = useState<string>('');
-	// Display domain grid
-	const [displayGridOn, setDisplayGridOn] = useState<boolean>(false);
-	// Custom aspect ratio
-	const [customAspectRatioOn, setCustomAspectRatioOn] =
-		useState<boolean>(false);
-	// Lock Metadata
-	const [lockMetadataOn, setLockMetadataOn] = useState<boolean>(false);
+	const [isMintable, setIsMintable] = usePropsState<boolean>(
+		Boolean(metadata?.isMintable),
+	);
+	const [isBiddable, setIsBiddable] = usePropsState<boolean>(
+		Boolean(metadata?.isBiddable),
+	);
+	const [gridViewByDefault, setGridViewByDefault] = usePropsState<boolean>(
+		Boolean(metadata?.gridViewByDefault),
+	);
+	const [customDomainHeader, setCustomDomainHeader] = usePropsState<boolean>(
+		Boolean(metadata?.customDomainHeader),
+	);
 
 	return {
 		localState: {
 			name,
 			domain,
 			story,
-			locked,
 			errors,
 			/* Switches */
-			mintRequestOn,
-			biddingOn,
-			bidExpiryOn,
-			bidExpireTime,
-			auctionEndtimeOn,
-			auctionEndtime,
-			auctionMessage,
-			buyNowOn,
-			buyNowPrice,
-			displayGridOn,
-			customAspectRatioOn,
-			lockMetadataOn,
+			isMintable,
+			isBiddable,
+			gridViewByDefault,
+			customDomainHeader,
 		},
 		localActions: {
 			setName,
@@ -66,18 +48,10 @@ export const useDomainSettingsBodyData = (
 			setStory,
 			setErrors,
 			/* Switches */
-			setMintRequestOn,
-			setBiddingOn,
-			setBidExpiryOn,
-			setBidExpireTime,
-			setAuctionEndtimeOn,
-			setAuctionEndtime,
-			setAuctionMessage,
-			setBuyNowOn,
-			setBuyNowPrice,
-			setDisplayGridOn,
-			setCustomAspectRatioOn,
-			setLockMetadataOn,
+			setIsMintable,
+			setIsBiddable,
+			setGridViewByDefault,
+			setCustomDomainHeader,
 		},
 	};
 };

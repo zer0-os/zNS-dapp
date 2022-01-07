@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
+import { DomainMetadata } from '@zero-tech/zns-sdk';
 import { DisplayParentDomain, Maybe } from 'lib/types';
 import { Registrar } from 'types/Registrar';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
@@ -12,7 +13,14 @@ type UseDomainSettingsHandlersProps = {
 		domain: DisplayParentDomain;
 		registrar: Registrar;
 	};
+	localState: {
+		localMetadata: Maybe<DomainMetadata>;
+	};
 	localActions: {
+		setMetadata: React.Dispatch<React.SetStateAction<Maybe<DomainMetadata>>>;
+		setLocalMetadata: React.Dispatch<
+			React.SetStateAction<Maybe<DomainMetadata>>
+		>;
 		setIsLocked: React.Dispatch<React.SetStateAction<boolean>>;
 		setIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
 		setWarning: React.Dispatch<
@@ -44,6 +52,7 @@ type UseDomainSettingsHandlersProps = {
 
 export const useDomainSettingsHandlers = ({
 	props,
+	localState,
 	localActions,
 	modalsActions,
 }: UseDomainSettingsHandlersProps) => {
@@ -61,10 +70,33 @@ export const useDomainSettingsHandlers = ({
 		localActions.setIsLocked(isDomainMetadataLocked);
 	}, [props, localActions]);
 
+	/* Get Metadata */
+	const handleFetchMetadata = useCallback(async () => {
+		try {
+			const metadata = await sdk.instance.getDomainMetadata(
+				props.domain.id,
+				props.registrar.signer,
+			);
+			console.log('Fetched Metadata = ', metadata);
+
+			localActions.setMetadata(metadata);
+			localActions.setLocalMetadata(metadata);
+		} catch (e) {
+			console.error('Fetched Metadata Errors = ', e);
+		}
+	}, [sdk, props, localActions]);
+
 	/* Local Actions */
 	const handleShowingLockedWarning = useCallback(() => {
 		localActions.setWarning(DomainSettingsWarning.LOCKED);
 	}, [localActions]);
+
+	const handleLocalMetadataChange = useCallback(
+		(localMetadata: DomainMetadata) => {
+			localActions.setLocalMetadata(localMetadata);
+		},
+		[localActions],
+	);
 
 	/* Unlock */
 	const handleUnlock = useCallback(async () => {
@@ -144,6 +176,10 @@ export const useDomainSettingsHandlers = ({
 
 	/* Save Without Locking */
 	const handleSaveWithoutLocking = useCallback(async () => {
+		if (!localState.localMetadata) {
+			return;
+		}
+
 		localActions.setWarning(undefined);
 		localActions.setSuccess(undefined);
 
@@ -152,7 +188,7 @@ export const useDomainSettingsHandlers = ({
 		try {
 			const tx = await sdk.instance.setDomainMetadata(
 				props.domain.id,
-				props.domain.metadata,
+				localState.localMetadata,
 				props.registrar.signer,
 			);
 
@@ -179,19 +215,23 @@ export const useDomainSettingsHandlers = ({
 		}
 
 		modalsActions.handleSaveWithoutLockingModalClose();
-	}, [sdk, props, localActions, modalsActions]);
+	}, [sdk, props, localState, localActions, modalsActions]);
 
 	/* Save And Lock */
 	const handleSaveAndLock = useCallback(async () => {
+		if (!localState.localMetadata) {
+			return;
+		}
+
 		localActions.setWarning(undefined);
 		localActions.setSuccess(undefined);
 
 		modalsActions.handleSaveAndLockModalConfirm();
 
 		try {
-			const tx = await sdk.instance.setAndLockMetadata(
+			const tx = await sdk.instance.setAndLockDomainMetadata(
 				props.domain.id,
-				props.domain.metadata,
+				localState.localMetadata,
 				props.registrar.signer,
 			);
 
@@ -221,7 +261,7 @@ export const useDomainSettingsHandlers = ({
 
 		localActions.setIsLocked(true);
 		modalsActions.handleSaveAndLockModalClose();
-	}, [sdk, props, localActions, modalsActions]);
+	}, [sdk, props, localState, localActions, modalsActions]);
 
 	/* Finish */
 	const handleFinish = useCallback(() => {
@@ -231,13 +271,28 @@ export const useDomainSettingsHandlers = ({
 		localActions.setIsSaved(false);
 	}, [localActions]);
 
-	return {
-		handleCheckAndSetDomainMetadataLockStatus,
-		handleShowingLockedWarning,
-		handleUnlock,
-		handleLock,
-		handleSaveWithoutLocking,
-		handleSaveAndLock,
-		handleFinish,
-	};
+	return useMemo(
+		() => ({
+			handleFetchMetadata,
+			handleLocalMetadataChange,
+			handleCheckAndSetDomainMetadataLockStatus,
+			handleShowingLockedWarning,
+			handleUnlock,
+			handleLock,
+			handleSaveWithoutLocking,
+			handleSaveAndLock,
+			handleFinish,
+		}),
+		[
+			handleFetchMetadata,
+			handleLocalMetadataChange,
+			handleCheckAndSetDomainMetadataLockStatus,
+			handleShowingLockedWarning,
+			handleUnlock,
+			handleLock,
+			handleSaveWithoutLocking,
+			handleSaveAndLock,
+			handleFinish,
+		],
+	);
 };
