@@ -35,7 +35,7 @@ type DomainTableProps = {
 	isGridView?: boolean;
 	isRootDomain: boolean;
 	onLoad?: () => void;
-	onBtnClick?: (domain: DomainData) => void;
+	onButtonClick?: (domain: DomainData) => void;
 	onRowClick?: (domain: Domain) => void;
 	rowButtonText?: string;
 	// TODO: Find a better way to persist grid view than with props
@@ -60,7 +60,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	isGridView,
 	isRootDomain,
 	onLoad,
-	onBtnClick,
+	onButtonClick,
 	onRowClick,
 	rowButtonText,
 	setIsGridView,
@@ -238,11 +238,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									Make A Bid
 								</BidButton>
 							)}
-							{!isGlobalTable && onBtnClick && (
+							{!isGlobalTable && onButtonClick && (
 								<ViewBids
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
 									domain={domain}
-									onClick={onBtnClick}
+									onClick={onButtonClick}
 									filterOwnBids={filterOwnBids}
 								/>
 							)}
@@ -301,7 +301,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		return (
 			<NFTCardActions
 				domain={domain}
-				onBtnClick={onBtnClick}
+				onButtonClick={onButtonClick}
 				onLoad={checkHeight}
 				filterOwnBids={filterOwnBids}
 			/>

@@ -16,14 +16,14 @@ import styles from './NFTCardActions.module.scss';
 type NFTCardActionsProps = {
 	filterOwnBids?: boolean;
 	domain: Domain;
-	onBtnClick?: (domain: DomainData) => void;
+	onButtonClick?: (domain: DomainData) => void;
 	onLoad?: () => void;
 };
 
 const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 	domain,
 	filterOwnBids,
-	onBtnClick,
+	onButtonClick,
 	onLoad,
 }) => {
 	const { getBidsForDomain } = useBidProvider();
@@ -76,11 +76,11 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 					</>
 				)}
 			</div>
-			{onBtnClick && (
+			{onButtonClick && (
 				<ViewBids
 					style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
 					domain={domain}
-					onClick={onBtnClick}
+					onClick={onButtonClick}
 					filterOwnBids={filterOwnBids}
 				/>
 			)}
