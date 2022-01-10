@@ -16,6 +16,7 @@ import arrowBackIcon from 'assets/arrow-back.svg';
 
 //- Style Imports
 import styles from './TitleBar.module.scss';
+import { useNavBarContents } from 'lib/providers/NavBarProvider';
 
 type TitleBarProps = {
 	style?: React.CSSProperties;
@@ -57,6 +58,8 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	const [searchText, setSearchText] = useState('');
 	const [isSearchInputHovered, setIsSearchInputHovered] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
+
+	const { title } = useNavBarContents();
 
 	///////////////
 	// Functions //
@@ -180,7 +183,12 @@ const TitleBar: React.FC<TitleBarProps> = ({
 					</div>
 					{/* TODO: Split this into its own component */}
 					{!isSearchActive && (
-						<ZNALink className={styles.ZNA} style={{ marginLeft: 16 }} />
+						<>
+							{title && <b className={styles.Title}>{title}</b>}
+							{!title && (
+								<ZNALink className={styles.ZNA} style={{ marginLeft: 16 }} />
+							)}
+						</>
 					)}
 					<input
 						className={styles.Search}

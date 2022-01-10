@@ -29,6 +29,7 @@ import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
 import { useLocation } from 'react-router-dom';
+import { useNavBarContents } from 'lib/providers/NavBarProvider';
 
 type ZNSProps = {
 	version?: number;
@@ -87,6 +88,12 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 	// Hooks //
 	///////////////
 	useScrollDetection(setScrollDetectionDown);
+
+	const { setTitle } = useNavBarContents();
+
+	useEffect(() => {
+		setTitle(undefined);
+	}, []);
 
 	///////////////
 	// Functions //

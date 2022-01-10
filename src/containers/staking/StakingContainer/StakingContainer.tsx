@@ -20,6 +20,7 @@ import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider
 import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvider';
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 import { useWeb3React } from '@web3-react/core';
+import { useNavBarContents } from 'lib/providers/NavBarProvider';
 
 type StakingContainerProps = {
 	className?: string;
@@ -61,19 +62,21 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 		refetchUserData();
 	};
 
-	// useEffect(() => {
-	// 	switch (pathname) {
-	// 		case '/pools':
-	// 			setLocation('Staking - Pools');
-	// 			break;
-	// 		case '/deposits':
-	// 			setLocation('Staking - My Deposits');
-	// 			break;
-	// 		default:
-	// 			setLocation(undefined);
-	// 			break;
-	// 	}
-	// }, [pathname]);
+	const { setTitle } = useNavBarContents();
+
+	useEffect(() => {
+		switch (pathname.replace('/staking', '')) {
+			case '/pools':
+				setTitle('Staking - Pools');
+				break;
+			case '/deposits':
+				setTitle('Staking - My Deposits');
+				break;
+			default:
+				setTitle(undefined);
+				break;
+		}
+	}, [pathname]);
 
 	useEffect(() => {
 		window.addEventListener('resize', handleResize);
