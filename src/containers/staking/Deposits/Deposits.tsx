@@ -17,6 +17,8 @@ const Deposits = () => {
 	const { active, account } = useWeb3React<Web3Provider>();
 	const { wildPriceUsd } = useCurrency();
 
+	console.log({ account });
+
 	const [totalRewardsClaimable, setTotalRewardsClaimable] =
 		useState<MaybeUndefined<ethers.BigNumber>>();
 
@@ -58,7 +60,7 @@ const Deposits = () => {
 
 	return (
 		<>
-			{account !== null && (
+			{!!account && (
 				<ul className={styles.Stats}>
 					<StatsWidget
 						className="normalView"

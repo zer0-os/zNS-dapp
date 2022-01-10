@@ -38,8 +38,6 @@ export function useEagerConnect() {
 
 		if (wallet) {
 			reConnectToWallet(wallet); //if was connected to a wallet
-		} else {
-			activate(network);
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps

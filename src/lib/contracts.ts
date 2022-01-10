@@ -47,6 +47,7 @@ export interface Contracts {
 function useZnsContracts(): Contracts | null {
 	const context = useWeb3React<Web3Provider>();
 	const { library, active, chainId } = context;
+
 	const contract = useMemo((): Contracts | null => {
 		let contracts;
 		let signer: ethers.Signer | ethers.providers.Provider =
@@ -105,11 +106,10 @@ function useContractAddresses(): ContractAddresses | undefined {
 	const { library, active, chainId } = context;
 	const networkAddresses = useMemo((): ContractAddresses | undefined => {
 		if (!library) {
-			return undefined;
+			return addresses[chainIdToNetworkType(defaultNetworkId)];
 		}
 
-		let contracts = addresses[chainIdToNetworkType(chainId)];
-		return contracts;
+		return addresses[chainIdToNetworkType(chainId)];
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [active, library, chainId]);
 	return networkAddresses;

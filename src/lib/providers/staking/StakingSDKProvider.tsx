@@ -10,6 +10,9 @@ import {
 	WrappedStakingPools,
 } from './StakingProviderTypes';
 import { Web3Provider } from '@ethersproject/providers';
+import { ethers } from 'ethers';
+import { RPC_URLS } from 'lib/connectors';
+import { defaultNetworkId } from 'lib/network';
 
 export const StakingContext = React.createContext({
 	instance: undefined as MaybeUndefined<Instance>,
@@ -93,18 +96,31 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 	}, [instance]);
 
 	React.useEffect(() => {
-		if (!library || !contractAddresses) {
+		if (!contractAddresses) {
 			return;
 		}
 
-		const instance = zfi.createInstance({
-			wildPoolAddress: contractAddresses.wildStakingPool,
-			lpTokenPoolAddress: contractAddresses.lpStakingPool,
-			factoryAddress: contractAddresses.stakeFactory,
-			provider: library,
-		});
+		if (!library) {
+			const instance = zfi.createInstance({
+				wildPoolAddress: contractAddresses.wildStakingPool,
+				lpTokenPoolAddress: contractAddresses.lpStakingPool,
+				factoryAddress: contractAddresses.stakeFactory,
+				provider: new ethers.providers.JsonRpcProvider(
+					RPC_URLS[defaultNetworkId],
+				),
+			});
 
-		setInstance(instance);
+			setInstance(instance);
+		} else {
+			const instance = zfi.createInstance({
+				wildPoolAddress: contractAddresses.wildStakingPool,
+				lpTokenPoolAddress: contractAddresses.lpStakingPool,
+				factoryAddress: contractAddresses.stakeFactory,
+				provider: library,
+			});
+
+			setInstance(instance);
+		}
 	}, [contractAddresses, library, chainId]);
 
 	const contextValue = {

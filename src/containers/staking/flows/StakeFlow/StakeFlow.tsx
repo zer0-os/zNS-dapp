@@ -238,7 +238,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 						onBack={onClose}
 						onStake={onStake}
 						isTransactionPending={isTransactionPending}
-						isUserConnected={context.account !== null}
+						isUserConnected={!!context.account}
 						token={stakingPool!.content.tokenTicker}
 						wildToUsd={wildPriceUsd}
 						unstake={unstake}
