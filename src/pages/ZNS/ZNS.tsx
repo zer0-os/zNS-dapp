@@ -627,7 +627,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				</PageHeader>
 
 				<BannerContainer isScrollDetectionDown={isScrollDetectionDown}>
-          {/* Temporarily removed Raffle */}
+					{/* Temporarily removed Raffle */}
 					<WheelsRaffle />
 					{/* <MessageBanner
 						label="This is a banner message"

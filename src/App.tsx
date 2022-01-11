@@ -22,7 +22,6 @@ import { Web3Provider } from '@ethersproject/providers';
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import MintProvider from 'lib/providers/MintProvider';
-import BidProvider from 'lib/providers/BidProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import TransferProvider from './lib/providers/TransferProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
@@ -101,17 +100,15 @@ function wrappedApp() {
 						<Web3ReactProvider getLibrary={getLibrary}>
 							{/* Our Hooks  */}
 							<ZNSDomainsProvider>
-								<BidProvider>
-									<TransferProvider>
-										<StakingRequestProvider>
-											<MintProvider>
-												<EnlistProvider>
-													<App />
-												</EnlistProvider>
-											</MintProvider>
-										</StakingRequestProvider>
-									</TransferProvider>
-								</BidProvider>
+								<TransferProvider>
+									<StakingRequestProvider>
+										<MintProvider>
+											<EnlistProvider>
+												<App />
+											</EnlistProvider>
+										</MintProvider>
+									</StakingRequestProvider>
+								</TransferProvider>
 							</ZNSDomainsProvider>
 						</Web3ReactProvider>
 					</SubgraphProvider>
