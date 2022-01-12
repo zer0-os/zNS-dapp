@@ -58,16 +58,14 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 					onClose={onClose}
 				/>
 				{/* Body */}
-				{formattedData.myDomain.domain?.title && (
-					<DomainSettingsBody
-						domain={formattedData.myDomain.domain}
-						metadata={localState.metadata}
-						unavailableDomainNames={formattedData.unavailableDomainNames}
-						isLocked={localState.isLocked}
-						onShowLockedWarning={handlers.handleShowingLockedWarning}
-						onMetadataChange={handlers.handleLocalMetadataChange}
-					/>
-				)}
+				<DomainSettingsBody
+					domain={formattedData.myDomain.domain}
+					metadata={localState.metadata}
+					unavailableDomainNames={formattedData.unavailableDomainNames}
+					isLocked={localState.isLocked}
+					onShowLockedWarning={handlers.handleShowingLockedWarning}
+					onMetadataChange={handlers.handleLocalMetadataChange}
+				/>
 				{/* Footer */}
 				<DomainSettingsFooter
 					isLocked={localState.isLocked}
