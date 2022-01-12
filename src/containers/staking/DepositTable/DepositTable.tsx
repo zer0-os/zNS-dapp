@@ -47,6 +47,7 @@ const DepositTable = (props: DepositTableProps) => {
 					headers={TABLE_HEADERS}
 					empty={deposits?.length === 0}
 					rowComponent={DepositTableRow}
+					notSearchable
 				/>
 			</DepositProvider>
 		);
