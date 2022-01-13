@@ -14,6 +14,10 @@ import {
 	useDomainSettingsBodyLifecycle,
 } from './hooks';
 import { ERROR_KEYS } from './DomainSettingsBody.constants';
+import {
+	DomainSettingsTooltipType,
+	DOMAIN_SETTINGS_TOOLTIPS,
+} from '../../DomainSettings.constants';
 import './_domain-settings-body.scss';
 
 type DomainSettingsBodyProps = {
@@ -56,7 +60,10 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 	});
 
 	return (
-		<div className={`domain-settings-body__container ${isLocked && 'locked'}`}>
+		<div
+			className={`domain-settings-body__container ${isLocked && 'locked'}`}
+			id="domain_settings_body__wrapper"
+		>
 			<div className="domain-settings-body__top">
 				{/* Domain Media Section */}
 				<div className="domain-settings-body__top--left border-blue">
@@ -111,7 +118,13 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 							onChange={localActions.setIsMintable}
 						/>
 						<label>Domain Mint Requests</label>
-						<Tooltip text="This is long information to display on hover">
+						<Tooltip
+							text={
+								DOMAIN_SETTINGS_TOOLTIPS[
+									DomainSettingsTooltipType.SETTINGS_MINT_REQUEST
+								]
+							}
+						>
 							<QuestionButton small />
 						</Tooltip>
 					</div>
@@ -125,7 +138,13 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 							onChange={localActions.setIsBiddable}
 						/>
 						<label>Domain Bidding</label>
-						<Tooltip text="This is long information to display on hover">
+						<Tooltip
+							text={
+								DOMAIN_SETTINGS_TOOLTIPS[
+									DomainSettingsTooltipType.UNLSETTINGS_BIDDING
+								]
+							}
+						>
 							<QuestionButton small />
 						</Tooltip>
 					</div>
@@ -139,7 +158,13 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 							onChange={localActions.setGridViewByDefault}
 						/>
 						<label>Display Domain in Grid View by Default</label>
-						<Tooltip text="This is long information to display on hover">
+						<Tooltip
+							text={
+								DOMAIN_SETTINGS_TOOLTIPS[
+									DomainSettingsTooltipType.SETTINGS_GRID_VIEW_DEFAULT
+								]
+							}
+						>
 							<QuestionButton small />
 						</Tooltip>
 					</div>
@@ -152,8 +177,14 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 							checked={localState.customDomainHeader}
 							onChange={localActions.setCustomDomainHeader}
 						/>
-						<label>Custom Aspect Ratio in Grid View</label>
-						<Tooltip text="This is long information to display on hover">
+						<label>Custom Domain Header</label>
+						<Tooltip
+							text={
+								DOMAIN_SETTINGS_TOOLTIPS[
+									DomainSettingsTooltipType.SETTINGS_CUSTOM_DOMAIN_HEADER
+								]
+							}
+						>
 							<QuestionButton small />
 						</Tooltip>
 					</div>

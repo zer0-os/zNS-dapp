@@ -9,10 +9,12 @@ export const useDomainSettingsBodyData = (
 	metadata: Maybe<DomainMetadata>,
 ) => {
 	const [name, setName] = usePropsState<string>(metadata?.name || '');
-	const [domain, setDomain] = useState<string>(
-		currentDomain?.name
-			.replace(currentDomain.parent?.name || '', '')
-			.replace('.', '') || '',
+	const [domain, setDomain] = usePropsState<string>(
+		(metadata?.domain as string) ||
+			currentDomain?.name
+				.replace(currentDomain.parent?.name || '', '')
+				.replace('.', '') ||
+			'',
 	);
 	const [story, setStory] = usePropsState<string>(metadata?.description || '');
 	const [errors, setErrors] = useState<DomainSettingsError>({});

@@ -26,8 +26,6 @@ export const useDomainSettingsData = (domainId: string) => {
 	const [localMetadata, setLocalMetadata] =
 		useState<Maybe<DomainMetadata>>(undefined);
 
-	console.log({ domainId, metadata, localMetadata });
-
 	const { domainUri, relativeDomain } = useMemo(() => {
 		const domainUri = `0://${myDomain.domain?.name}`;
 		const relativeDomain = getRelativeDomainPath(myDomain.domain?.name || '');

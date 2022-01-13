@@ -116,3 +116,33 @@ export const DOMAIN_SETTINGS_MODALS = {
 		},
 	} as DomainSettingsModalOptions,
 };
+
+/**
+ * Tooltips
+ */
+export enum DomainSettingsTooltipType {
+	LOCKED = 'LOCKED',
+	UNLOCKED = 'UNLOCKED',
+	SAVED_AND_UNLOCKED = 'SAVED_AND_UNLOCKED',
+	SETTINGS_MINT_REQUEST = 'SETTINGS_MINT_REQUEST',
+	UNLSETTINGS_BIDDING = 'UNLSETTINGS_BIDDING',
+	SETTINGS_GRID_VIEW_DEFAULT = 'SETTINGS_GRID_VIEW_DEFAULT',
+	SETTINGS_CUSTOM_DOMAIN_HEADER = 'SETTINGS_CUSTOM_DOMAIN_HEADER',
+}
+
+export const DOMAIN_SETTINGS_TOOLTIPS = {
+	[DomainSettingsTooltipType.LOCKED]:
+		'Metadata is locked. Only the person who locked it may unlock and make changes.',
+	[DomainSettingsTooltipType.UNLOCKED]:
+		'You may save changes leaving the metadata unlocked for the next owner to edit, or save & lock the metadata preventing future edits by anyone other than you.',
+	[DomainSettingsTooltipType.SAVED_AND_UNLOCKED]:
+		'Metadata is unlocked, if you transfer ownership of this domain, the new owner can edit metadata and lock it. You may lose access forever. You can lock the metadata preventing future edits by anyone other than you.',
+	[DomainSettingsTooltipType.SETTINGS_MINT_REQUEST]:
+		'Allow members to make a stake offer in order to mint NFTs on your domain. Turn off if your domain is not intended to be open for others to mint upon',
+	[DomainSettingsTooltipType.UNLSETTINGS_BIDDING]:
+		'Allow bidding on your domain. Turn off if the domain is not intended to be sold.',
+	[DomainSettingsTooltipType.SETTINGS_GRID_VIEW_DEFAULT]:
+		'Grid view has larger image previews which can benefit domains with a focus on art rather than statistics.',
+	[DomainSettingsTooltipType.SETTINGS_CUSTOM_DOMAIN_HEADER]:
+		'Change the first column header of list view. By default this is ‘Domain’.',
+};

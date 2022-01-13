@@ -77,7 +77,6 @@ export const useDomainSettingsHandlers = ({
 				props.domain.id,
 				props.registrar.signer,
 			);
-			console.log('Fetched Metadata = ', metadata);
 
 			localActions.setMetadata(metadata);
 			localActions.setLocalMetadata(metadata);
@@ -172,6 +171,9 @@ export const useDomainSettingsHandlers = ({
 		}
 
 		modalsActions.handleLockModalClose();
+
+		// scroll to top
+		document.getElementById('domain_settings_body__wrapper')!.scrollTop = 0;
 	}, [sdk, props, localActions, modalsActions]);
 
 	/* Save Without Locking */
@@ -215,6 +217,9 @@ export const useDomainSettingsHandlers = ({
 		}
 
 		modalsActions.handleSaveWithoutLockingModalClose();
+
+		// scroll to top
+		document.getElementById('domain_settings_body__wrapper')!.scrollTop = 0;
 	}, [sdk, props, localState, localActions, modalsActions]);
 
 	/* Save And Lock */
@@ -261,6 +266,9 @@ export const useDomainSettingsHandlers = ({
 
 		localActions.setIsLocked(true);
 		modalsActions.handleSaveAndLockModalClose();
+
+		// scroll to top
+		document.getElementById('domain_settings_body__wrapper')!.scrollTop = 0;
 	}, [sdk, props, localState, localActions, modalsActions]);
 
 	/* Finish */

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FutureButton, QuestionButton, Tooltip, IconButton } from 'components';
 import { Maybe } from 'lib/types';
 import {
@@ -6,6 +6,8 @@ import {
 	DomainSettingsSuccess,
 	DOMAIN_SETTINGS_WARNING_MESSAGES,
 	DOMAIN_SETTINGS_SUCCESS_MESSAGES,
+	DomainSettingsTooltipType,
+	DOMAIN_SETTINGS_TOOLTIPS,
 } from '../../DomainSettings.constants';
 import unlockIcon from './assets/unlock.svg';
 import lockIcon from './assets/lock.svg';
@@ -34,6 +36,19 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 	onSaveAndLock,
 	onFinish,
 }) => {
+	const tooltipText = useMemo(() => {
+		if (isLocked)
+			return DOMAIN_SETTINGS_TOOLTIPS[DomainSettingsTooltipType.LOCKED];
+		if (!isLocked && !isSaved)
+			return DOMAIN_SETTINGS_TOOLTIPS[DomainSettingsTooltipType.UNLOCKED];
+		if (!isLocked && isSaved)
+			return DOMAIN_SETTINGS_TOOLTIPS[
+				DomainSettingsTooltipType.SAVED_AND_UNLOCKED
+			];
+
+		return undefined;
+	}, [isLocked, isSaved]);
+
 	return (
 		<div className="domain-settings-footer__container">
 			<div className="domain-settings-footer__label">
@@ -83,9 +98,11 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 						Finish
 					</FutureButton>
 				)}
-				<Tooltip text="This is long information to display on hover">
-					<QuestionButton className="domain-settings-footer__buttons-icon" />
-				</Tooltip>
+				{tooltipText && (
+					<Tooltip text={tooltipText}>
+						<QuestionButton className="domain-settings-footer__buttons-icon" />
+					</Tooltip>
+				)}
 			</div>
 		</div>
 	);
