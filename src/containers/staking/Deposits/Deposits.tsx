@@ -46,6 +46,10 @@ const Deposits = () => {
 				setTotalRewardsClaimable(totalReward);
 			}
 
+			const totalStakedUsd =
+				await staking.instance?.liquidityPool.userValueStaked(account);
+			console.log('total staked:', totalStakedUsd);
+
 			const wildTokenBalance = await contracts!.wildToken.balanceOf(account);
 			setWildBalance(wildTokenBalance);
 		};
