@@ -7,22 +7,24 @@
 	height: 100%;
 	padding: 4px 16px;
 	cursor: pointer;
+	z-index: 0;
 	transition: all 0.2s ease-in-out 0s;
 
 	&::after {
 		content: '';
+		z-index: -1;
 		position: absolute;
 		height: 100%;
 		left: 0;
 		top: 0;
 		width: 99%;
 		transform: scale(1, 0.56);
-		transition: all 0.2s ease-in-out 0s;
 		border-left: 1px solid var(--color-purple-lighter);
 		border-right: 1px solid var(--color-purple-lighter);
 	}
 
 	&:hover::after {
+		transform: scale(1);
 		background: var(--color-azure-gradient-25);
 	}
 }
