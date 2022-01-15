@@ -10,12 +10,13 @@ import React, { useRef, useState } from 'react';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useAsyncEffect } from 'use-async-effect';
 import BidProvider, { useBid } from './BidProvider';
+import BuyNowProvider, { useBuyNow } from './BuyNowProvider';
 
 // Component Imports
 import SubdomainTableRow from './SubdomainTableRow';
 import SubdomainTableCard from './SubdomainTableCard';
 import { GenericTable, Overlay } from 'components';
-import { MakeABid } from 'containers';
+import { MakeABid, MakeABuy } from 'containers';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DisplayDomain } from 'lib/types';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
@@ -35,6 +36,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	const { domain, loading } = useCurrentDomain();
 
 	const { domain: biddingOn, close, bidPlaced } = useBid();
+	const { domain: buyingOn, closeBuyNow } = useBuyNow();
 
 	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
 	const [data, setData] = useState<
@@ -152,6 +154,11 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 					<MakeABid domain={biddingOn!} onBid={bidPlaced} />
 				</Overlay>
 			)}
+			{buyingOn !== undefined && (
+				<Overlay onClose={closeBuyNow} open={buyingOn !== undefined}>
+					<MakeABuy domain={domain} />
+				</Overlay>
+			)}
 			<GenericTable
 				alignments={[0, 0, 1, 1, 1, 1, 1]}
 				data={data}
@@ -170,7 +177,9 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 const WrappedSubdomainTable = (props: SubdomainTableProps) => {
 	return (
 		<BidProvider>
-			<SubdomainTable {...props} />
+			<BuyNowProvider>
+				<SubdomainTable {...props} />
+			</BuyNowProvider>
 		</BidProvider>
 	);
 };

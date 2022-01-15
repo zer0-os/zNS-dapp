@@ -5,7 +5,7 @@ import { Spring, animated } from 'react-spring';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber, ethers, providers } from 'ethers';
 
 //- Component Imports
 import {
@@ -92,9 +92,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		useState<boolean>(false);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [ipfsHash, setIpfsHash] = useState<string>('');
-	const [buyNowPrice, setBuyNowPrice] = useState<string | undefined>(
-		'1000000000000000000000',
-	);
+	const [buyNowPrice, setBuyNowPrice] = useState<string | undefined>();
 	const [buyNowPriceUsd, setBuyNowPriceUsd] = useState<number | undefined>();
 	const [isBuyOverlayOpen, setIsBuyOverlayOpen] = useState(false);
 
@@ -106,7 +104,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active, chainId } = walletContext;
+	const { account, active, chainId, library } = walletContext;
 
 	const networkType = chainIdToNetworkType(chainId);
 	const contracts = useZnsContracts();
@@ -116,6 +114,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
 
 	const sdk = useZnsSdk();
+
+	const provider = library && new providers.Web3Provider(library.provider);
+	const signer = provider && provider.getSigner(account!);
 	//Transfers and mint data from nft
 	//- Calls the hook with a polling interval to update the data
 
@@ -326,6 +327,34 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			isMounted.current = false;
 		};
 	}, []);
+
+	useEffect(() => {
+		(async () => {
+			const isAbleToSpendTokens = await (
+				await sdk.instance.getZAuctionInstanceForDomain(domainId)
+			).getZAuctionSpendAllowance(await signer?.getAddress()!);
+
+			if (isAbleToSpendTokens) {
+				const zauctionBuyNowPrice = (await (
+					await sdk.instance.getZAuctionInstanceForDomain(domainId)
+				).getBuyNowPrice(domainId, signer!)) as BigNumber;
+
+				if (!zauctionBuyNowPrice.isZero())
+					setBuyNowPrice(zauctionBuyNowPrice.toString());
+			} else {
+				await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+					.approveZAuctionSpendTradeTokens(signer!)
+					.then(async () => {
+						const zauctionBuyNowPrice = (await (
+							await sdk.instance.getZAuctionInstanceForDomain(domainId)
+						).getBuyNowPrice(domainId, signer!)) as BigNumber;
+
+						if (!zauctionBuyNowPrice.isZero())
+							setBuyNowPrice(zauctionBuyNowPrice.toString());
+					});
+			}
+		})();
+	}, [signer, domainId, sdk.instance]);
 
 	useEffect(() => {
 		if (!isMounted.current) return;
@@ -849,7 +878,6 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						<div className={styles.Story}>
 							{znsDomain.domain?.description ?? ''}
 						</div>
-						{highestBid && console.log(highestBid!.amount!)}
 						<div className={styles.Action}>
 							{buyNowPrice !== undefined ? actionBuy() : actionBid()}
 							{buyNowPrice !== undefined && highestBid ? (

@@ -6,6 +6,7 @@ import {
 	DomainMintEvent,
 	DomainSaleEvent,
 	DomainTransferEvent,
+	DomainMetadata,
 } from '@zero-tech/zns-sdk/lib/types';
 import { ContractTransaction, ethers } from 'ethers';
 import React from 'react';
@@ -119,7 +120,7 @@ export function useZnsSdk() {
 
 	const setDomainMetadata = async (
 		domainId: string,
-		metadataUri: string,
+		metadataUri: DomainMetadata,
 		signer: ethers.Signer,
 	) => {
 		try {
@@ -137,7 +138,7 @@ export function useZnsSdk() {
 
 	const setAndLockMetadata = async (
 		domainId: string,
-		metadataUri: string,
+		metadataUri: DomainMetadata,
 		signer: ethers.Signer,
 	) => {
 		try {

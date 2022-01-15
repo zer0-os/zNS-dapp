@@ -10,7 +10,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 import { Metadata, Bid, Maybe } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
 import { getMetadata } from 'lib/metadata';
-import { ethers } from 'ethers';
+import { BigNumber, ethers, providers } from 'ethers';
 import { ERC20 } from 'types';
 import { useBidProvider } from 'lib/providers/BidProvider';
 
@@ -18,15 +18,17 @@ import { useBidProvider } from 'lib/providers/BidProvider';
 import {
 	FutureButton,
 	Member,
+	Spinner,
 	LoadingIndicator,
 	NFTMedia,
-	WalletInteraction,
 	Tooltip,
 } from 'components';
 
 //- Style Imports
 import styles from './MakeABuy.module.scss';
 import useCurrency from 'lib/hooks/useCurrency';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useBuyNow } from 'containers/Tables/SubdomainTable/BuyNowProvider';
 
 const MakeABuy: React.FC<any> = ({ domain }) => {
 	//- Bid hooks
@@ -39,12 +41,14 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 	// State //
 	///////////
 
-	const [ShowWalletInteraction, setShowWalletInteraction] = useState(false);
+	const [isFinishidSuccessful, setFinishiedSuccessful] = useState(false);
+	const { closeBuyNow } = useBuyNow();
+
+	// todo add shopWalletInteraction if needed
+	// const [ShowWalletInteraction, setShowWalletInteraction] = useState(false);
 	const [ShowProccesing, setShowProccesing] = useState(false);
 
-	const [buyNowPrice, setBuyNowPrice] = useState<string>(
-		'1000000000000000000000',
-	);
+	const [buyNowPrice, setBuyNowPrice] = useState<string>();
 	const [buyNowPriceUsd, setBuyNowPriceUsd] = useState<number | undefined>();
 	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
 	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
@@ -58,7 +62,7 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account } = walletContext;
+	const { account, library } = walletContext;
 
 	const znsContracts = useZnsContracts()!;
 	const wildContract: ERC20 = znsContracts.wildToken;
@@ -69,12 +73,33 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 			Number(ethers.utils.formatEther(buyNowPrice)) <= wildBalance &&
 			Number(ethers.utils.formatEther(buyNowPrice)) > 0) === true;
 
+	const sdk = useZnsSdk();
+	const domainId = domain.id;
+
+	const provider = library && new providers.Web3Provider(library.provider);
+	const signer = provider && provider.getSigner(account!);
+
 	///////////////
 	// Functions //
 	///////////////
 
 	const buyNft = async () => {
-		// todo implement
+		setIsMetamaskWaiting(true);
+
+		await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+			.getZAuctionSpendAllowance(await signer?.getAddress()!)
+			.then(async () => {
+				setIsMetamaskWaiting(false);
+				setShowProccesing(true);
+				await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+					.buyNow({ tokenId: domainId, amount: buyNowPrice! }, signer!)
+					.then(async (transcation) => {
+						await transcation.wait().then(() => {
+							setShowProccesing(false);
+							setFinishiedSuccessful(true);
+						});
+					});
+			});
 	};
 
 	/////////////
@@ -94,7 +119,34 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 		};
 
 		fetchTokenBalance();
-	});
+
+		(async () => {
+			const isAbleToSpendTokens = await (
+				await sdk.instance.getZAuctionInstanceForDomain(domainId)
+			).getZAuctionSpendAllowance(await signer?.getAddress()!);
+
+			if (isAbleToSpendTokens) {
+				const zauctionBuyNowPrice = (await (
+					await sdk.instance.getZAuctionInstanceForDomain(domainId)
+				).getBuyNowPrice(domainId, signer!)) as BigNumber;
+
+				console.log(zauctionBuyNowPrice);
+				if (!zauctionBuyNowPrice.isZero())
+					setBuyNowPrice(zauctionBuyNowPrice.toString());
+			} else {
+				await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+					.approveZAuctionSpendTradeTokens(signer!)
+					.then(async () => {
+						const zauctionBuyNowPrice = (await (
+							await sdk.instance.getZAuctionInstanceForDomain(domainId)
+						).getBuyNowPrice(domainId, signer!)) as BigNumber;
+
+						if (!zauctionBuyNowPrice.isZero())
+							setBuyNowPrice(zauctionBuyNowPrice.toString());
+					});
+			}
+		})();
+	}, []);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -134,9 +186,10 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 				if (wildPriceUsd > 0) {
 					setCurrentHighestBidUsd(highestBid.amount * wildPriceUsd);
 
-					setBuyNowPriceUsd(
-						Number(ethers.utils.formatEther(buyNowPrice)) * wildPriceUsd,
-					);
+					if (typeof buyNowPrice !== 'undefined')
+						setBuyNowPriceUsd(
+							Number(ethers.utils.formatEther(buyNowPrice)) * wildPriceUsd,
+						);
 				}
 			}
 		};
@@ -155,10 +208,13 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 	const header = () => (
 		<>
 			<div className={styles.Header}>
-				<h1 className={`glow-text-white`}>Buy Now</h1>
+				<h1 className={`glow-text-white`}>
+					{isFinishidSuccessful ? 'Congratulations!' : 'Buy Now'}
+				</h1>
 				<h4 className="glow-text-white">
-					Please review the information and the art to make sure you are
-					purchasing the right NFT.
+					{isFinishidSuccessful
+						? 'You have succesfully purchased the following NFT.'
+						: 'Please review the information and the art to make sure you are purchasing the right NFT.'}
 				</h4>
 			</div>
 		</>
@@ -254,7 +310,7 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 
 		if (
 			!loadingWildBalance &&
-			Number(ethers.utils.formatEther(buyNowPrice)) > wildBalance!
+			Number(ethers.utils.formatEther(buyNowPrice!)) > wildBalance!
 		) {
 			buyTooHighWarning = (
 				<>
@@ -267,6 +323,7 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 
 		return (
 			<>
+				{header()}
 				<div className={styles.Section}>
 					{nft()}
 					{details()}
@@ -277,43 +334,53 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 							You can not buy on your own domain
 						</p>
 					)}
-					{domain.owner.id.toLowerCase() !== account?.toLowerCase() && (
-						<>
-							{loadingWildBalance && (
-								<>
-									<LoadingIndicator text="Checking WILD Balance" />
-								</>
-							)}
-							{!loadingWildBalance && (
-								<>
-									<div className={styles.Estimate}>
-										<span>Your Balance</span>
-										<h4>{Number(wildBalance).toLocaleString()} WILD</h4>
-									</div>
-									{buyTooHighWarning}
-									<FutureButton
-										style={{
-											height: 36,
-											borderRadius: 18,
-											textTransform: 'uppercase',
-											margin: '32px auto 0 auto',
-										}}
-										loading={isBuyValid}
-										onClick={() => {
-											if (!isBuyValid) {
-												return;
-											}
-
-											buyNft();
-										}}
-										glow={isBuyValid}
-									>
-										Confirm
-									</FutureButton>
-								</>
-							)}
-						</>
-					)}
+					{domain.owner.id.toLowerCase() !== account?.toLowerCase() &&
+						isFinishidSuccessful && (
+							<FutureButton
+								style={{
+									height: 36,
+									borderRadius: 18,
+									textTransform: 'uppercase',
+									margin: '32px auto 0 auto',
+								}}
+								onClick={closeBuyNow}
+								glow
+							>
+								Confirm
+							</FutureButton>
+						)}
+					{domain.owner.id.toLowerCase() !== account?.toLowerCase() &&
+						!isFinishidSuccessful && (
+							<>
+								{loadingWildBalance && (
+									<>
+										<LoadingIndicator text="Checking WILD Balance" />
+									</>
+								)}
+								{!loadingWildBalance && (
+									<>
+										<div className={styles.Estimate}>
+											<span>Your Balance</span>
+											<h4>{Number(wildBalance).toLocaleString()} WILD</h4>
+										</div>
+										{buyTooHighWarning}
+										<FutureButton
+											style={{
+												height: 36,
+												borderRadius: 18,
+												textTransform: 'uppercase',
+												margin: '32px auto 0 auto',
+											}}
+											loading={isBuyValid}
+											onClick={buyNft}
+											glow={isBuyValid || isMetamaskWaiting}
+										>
+											{isMetamaskWaiting ? <Spinner /> : 'Confirm'}
+										</FutureButton>
+									</>
+								)}
+							</>
+						)}
 				</div>
 			</>
 		);
@@ -356,10 +423,8 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 
 	return (
 		<div className={`${styles.Container} border-primary border-rounded blur`}>
-			{header()}
-			{buy()}
+			{!ShowProccesing && buy()}
 			{ShowProccesing && proccessing()}
-			{ShowWalletInteraction ? <WalletInteraction /> : ''}
 		</div>
 	);
 };
