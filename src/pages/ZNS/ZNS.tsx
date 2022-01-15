@@ -619,7 +619,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				</FilterBar>
 
 				{/* Temporarily removed Raffle */}
-				{/* <WheelsRaffle /> */}
+				<WheelsRaffle />
 
 				{!isNftView && (
 					<div
