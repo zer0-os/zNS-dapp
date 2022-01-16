@@ -47,6 +47,7 @@ import {
 	PageHeader,
 	// Temporarily removed raffle
 	WheelsRaffle,
+	BuyTokenRedirect,
 	BannerContainer,
 } from 'containers';
 
@@ -561,15 +562,19 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 								</FutureButton>
 							)}
 							{!account && !localStorage.getItem('chosenWallet') && (
-								<FutureButton glow onClick={openWallet}>
-									Connect {pageWidth > 900 && 'Wallet'}
-								</FutureButton>
+								<>
+									<FutureButton glow onClick={openWallet}>
+										Connect {pageWidth > 900 && 'Wallet'}
+									</FutureButton>
+									<BuyTokenRedirect />
+								</>
 							)}
 							{account && !isSearchActive && (
 								<>
 									{/* Mint button */}
 									{isOwnedByUser && (
 										<FutureButton
+											style={{ padding: '0px 12px' }}
 											glow={account != null}
 											onClick={() => {
 												account != null
@@ -578,11 +583,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											}}
 											loading={loading}
 										>
-											{pageWidth <= 900 && 'MINT'}
-											{pageWidth > 900 && 'MINT NFT'}
+											MINT
 										</FutureButton>
 									)}
-
 									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
 										<TooltipLegacy
@@ -606,6 +609,9 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											/>
 										</TooltipLegacy>
 									)}
+
+									{/* Buy token from external urls */}
+									<BuyTokenRedirect walletConnected />
 
 									{/* Profile Button */}
 									<IconButton
