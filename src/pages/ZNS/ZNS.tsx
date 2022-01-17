@@ -16,6 +16,7 @@ import {
 	SubdomainTable,
 	CurrentDomainPreview,
 	WheelsRaffle,
+	BuyTokenRedirect,
 	BannerContainer,
 } from 'containers';
 
