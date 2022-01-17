@@ -155,6 +155,9 @@ const Info = (props: InfoProps) => {
 				className={styles.Image}
 				loop={true}
 				playsInline
+				controls
+				disablePictureInPicture
+				controlsList="nodownload noremoteplayback noplaybackrate"
 				poster={
 					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.jpg'
 				}
