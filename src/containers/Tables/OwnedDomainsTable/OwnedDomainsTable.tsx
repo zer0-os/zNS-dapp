@@ -232,7 +232,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				ignoreAspectRatios={true}
 				rowButtonText={'View Bids'}
 				onLoad={tableLoaded}
-				onRowButtonClick={viewBid}
+				onButtonClick={viewBid}
 				onRowClick={rowClick}
 				isGridView={isGridView}
 				setIsGridView={(grid: boolean) => setIsGridView(grid)}

@@ -35,7 +35,7 @@ import {
 	SideBar,
 } from 'components';
 
-import { ProfileModal } from 'containers';
+import { BuyTokenRedirect, ProfileModal } from 'containers';
 
 //- Library Imports
 import { useTransferProvider } from 'lib/providers/TransferProvider';
@@ -294,7 +294,7 @@ const PageContainer: FC = ({ children }) => {
 					/>
 				</div>
 				<TitleBar
-					// domain={domain.replace("/market", "") === "" ? "/" : domain.replace("/market", "")}
+					// domain={domain}
 					canGoBack={canGoBack}
 					canGoForward={canGoForward}
 					onBack={back}
@@ -340,15 +340,19 @@ const PageContainer: FC = ({ children }) => {
 							</FutureButton>
 						)}
 						{!account && !localStorage.getItem('chosenWallet') && (
-							<FutureButton glow onClick={openWallet}>
-								Connect {pageWidth > 900 && 'Wallet'}
-							</FutureButton>
+							<>
+								<FutureButton glow onClick={openWallet}>
+									Connect {pageWidth > 900 && 'Wallet'}
+								</FutureButton>
+								<BuyTokenRedirect />
+							</>
 						)}
 						{account && !isSearchActive && (
 							<>
 								{/* Mint button */}
 								{isOwnedByUser && (
 									<FutureButton
+										style={{ padding: '0px 12px' }}
 										glow={account != null}
 										onClick={() => {
 											account != null
@@ -357,11 +361,9 @@ const PageContainer: FC = ({ children }) => {
 										}}
 										loading={loading}
 									>
-										{pageWidth <= 900 && 'MINT'}
-										{pageWidth > 900 && 'MINT NFT'}
+										MINT
 									</FutureButton>
 								)}
-
 								{/* Status / Long Running Operation Button */}
 								{showStatus ? (
 									<TooltipLegacy
@@ -385,6 +387,9 @@ const PageContainer: FC = ({ children }) => {
 										/>
 									</TooltipLegacy>
 								)}
+
+								{/* Buy token from external urls */}
+								<BuyTokenRedirect walletConnected />
 
 								{/* Profile Button */}
 								<IconButton
