@@ -165,22 +165,24 @@ const TitleBar: React.FC<TitleBarProps> = ({
 		>
 			<div className={styles.Bar}>
 				<div className={styles.Navigation}>
-					<div className={styles.Buttons}>
-						<IconButton
-							iconUri={arrowBackIcon}
-							onClick={onBack}
-							style={{ height: 32, width: 32 }}
-							disabled={!canGoBack}
-							alt={'back'}
-						/>
-						<IconButton
-							iconUri={arrowForwardIcon}
-							onClick={onForward}
-							style={{ height: 32, width: 32, marginLeft: 4 }}
-							disabled={!canGoForward}
-							alt={'forward'}
-						/>
-					</div>
+					{!title && (
+						<div className={styles.Buttons}>
+							<IconButton
+								iconUri={arrowBackIcon}
+								onClick={onBack}
+								style={{ height: 32, width: 32 }}
+								disabled={!canGoBack}
+								alt={'back'}
+							/>
+							<IconButton
+								iconUri={arrowForwardIcon}
+								onClick={onForward}
+								style={{ height: 32, width: 32, marginLeft: 4 }}
+								disabled={!canGoForward}
+								alt={'forward'}
+							/>
+						</div>
+					)}
 					{/* TODO: Split this into its own component */}
 					{!isSearchActive && (
 						<>
