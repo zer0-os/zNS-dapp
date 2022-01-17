@@ -24,7 +24,7 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_PUBLIC = 1642816800655;
+	const DATE_PUBLIC = 1642730400655;
 
 	//////////////////
 	// State & Data //

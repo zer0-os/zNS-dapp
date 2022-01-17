@@ -72,7 +72,7 @@ const WheelsRaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/wilder-wheels-tier-c-getting-set-to-start-their-wengines-2/',
+				'https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/',
 				'_blank',
 			);
 		}
@@ -200,7 +200,7 @@ const WheelsRaffleContainer = () => {
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
-								? 'Your Kicks for the Metaverse awaits'
+								? 'Your Kicks for the Metaverse await'
 								: 'Get Early Access to Wilder Kicks'
 						}
 						label={bannerLabel()}

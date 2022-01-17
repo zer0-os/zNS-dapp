@@ -91,7 +91,7 @@ const Info = (props: InfoProps) => {
 				<>
 					<p>
 						Each user may mint up to {props.maxPurchasesPerUser} Kicks. The cost
-						for each Kicks is <>{EthPerWheel} ETH</> plus GAS.
+						for each set of Kicks is <b>{EthPerWheel} ETH</b> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -187,7 +187,7 @@ const Info = (props: InfoProps) => {
 					<h2>
 						{props.wheelsTotal - props.wheelsMinted - 3423} Kicks Remaining
 					</h2>
-					<ArrowLink href="https://zine.wilderworld.com/wilder-wheels-tier-c-getting-set-to-start-their-wengines-2/">
+					<ArrowLink href="https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/">
 						View Auction Rules
 					</ArrowLink>
 				</div>
