@@ -199,7 +199,7 @@ const MintWheelsFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						// setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -306,7 +306,7 @@ const MintWheelsFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						// setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
