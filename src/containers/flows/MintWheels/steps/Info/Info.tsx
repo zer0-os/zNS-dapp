@@ -192,9 +192,7 @@ const Info = (props: InfoProps) => {
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
 					<span>Kicks Available</span>
-					<h2>
-						{props.wheelsTotal - props.wheelsMinted - 3423} Kicks Remaining
-					</h2>
+					<h2>{props.wheelsTotal - props.wheelsMinted} Kicks Remaining</h2>
 					<ArrowLink href="https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/">
 						View Auction Rules
 					</ArrowLink>

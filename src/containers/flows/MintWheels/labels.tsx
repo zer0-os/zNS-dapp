@@ -3,7 +3,7 @@ import { Countdown } from 'components';
 
 const totalLabel = (wheelsMinted: number, wheelsTotal: number) => (
 	<span>
-		<b>{Math.max(wheelsTotal - wheelsMinted - 3423, 0)} Remaining</b>
+		<b>{Math.max(wheelsTotal - wheelsMinted, 0)} Remaining</b>
 	</span>
 );
 
@@ -99,13 +99,13 @@ export const getBannerLabel = (
 	// }
 	if (
 		dropStage === Stage.Public &&
-		Math.max(wheelsTotal! - wheelsMinted! - 3423, 0) !== 0
+		Math.max(wheelsTotal! - wheelsMinted!, 0) !== 0
 	) {
 		return (
 			<>
 				The Air Wild Season One sale is finished.{' '}
-				{Math.max(wheelsTotal! - wheelsMinted! - 3423, 0)} remaining pairs have
-				been transferred to the Wilder DAO.
+				{Math.max(wheelsTotal! - wheelsMinted!, 0)} remaining pairs have been
+				transferred to the Wilder DAO.
 			</>
 		);
 	}
