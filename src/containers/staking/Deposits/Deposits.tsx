@@ -23,6 +23,9 @@ const Deposits = () => {
 	const [wildBalance, setWildBalance] =
 		useState<MaybeUndefined<ethers.BigNumber>>();
 
+	const [totalStakedUsd, setTotalStakedUsd] =
+		useState<MaybeUndefined<number>>();
+
 	useEffect(() => {
 		let isMounted = true;
 
@@ -46,12 +49,22 @@ const Deposits = () => {
 				setTotalRewardsClaimable(totalReward);
 			}
 
-			const totalStakedUsd =
-				await staking.instance?.liquidityPool.userValueStaked(account);
-			console.log('total staked:', totalStakedUsd);
+			Promise.all([
+				staking.instance?.liquidityPool.userValueStaked(account),
+				staking.instance?.wildPool.userValueStaked(account),
+			]).then(([lpStake, wildStake]) => {
+				if (!lpStake || !wildStake) {
+					// do something
+					return;
+				}
+				setTotalStakedUsd(
+					lpStake.userValueUnlockedUsd + wildStake.userValueUnlockedUsd,
+				);
+			});
 
-			const wildTokenBalance = await contracts!.wildToken.balanceOf(account);
-			setWildBalance(wildTokenBalance);
+			contracts!.wildToken.balanceOf(account).then((balance) => {
+				setWildBalance(balance);
+			});
 		};
 		getMetrics();
 
@@ -92,6 +105,16 @@ const Deposits = () => {
 							totalRewardsClaimable &&
 							wildPriceUsd &&
 							'$' + displayEtherToFiat(totalRewardsClaimable, wildPriceUsd)
+						}
+					/>
+					<StatsWidget
+						className="normalView"
+						fieldName={'Your Total Stake (USD)'}
+						isLoading={account !== null && !totalStakedUsd}
+						title={
+							account && totalStakedUsd !== undefined
+								? '$' + toFiat(totalStakedUsd) + ' USD'
+								: '-'
 						}
 					/>
 				</ul>
