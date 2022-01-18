@@ -14,10 +14,10 @@ export const getBannerButtonText = (
 	if (!isDesktopBreakpoint) {
 		return 'Learn More';
 	}
-	if (dropStage === Stage.Public || dropStage === Stage.Whitelist) {
+	if (dropStage === Stage.Whitelist) {
 		return 'Mint Now';
 	}
-	if (dropStage === Stage.Sold) {
+	if (dropStage === Stage.Public || dropStage === Stage.Sold) {
 		return 'See Kicks';
 	}
 

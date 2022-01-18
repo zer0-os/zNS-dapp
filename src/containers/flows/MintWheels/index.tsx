@@ -92,7 +92,7 @@ const MintWheelsFlowContainer = () => {
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold) {
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Public) {
 			history.push('kicks.airwild.season1');
 		} else {
 			setIsWizardOpen(true);
