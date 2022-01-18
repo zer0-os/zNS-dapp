@@ -49,12 +49,12 @@ export const getBannerLabel = (
 						Wilder Kicks now available for whitelisted supporters{' '}
 						{totalLabel(wheelsMinted!, wheelsTotal!)}
 					</span>
-					<span style={{ marginTop: 4 }}>
+					{/* <span style={{ marginTop: 4 }}>
 						Available to public in{' '}
 						{countdownDate && (
 							<Countdown to={countdownDate} onFinish={onFinish} />
 						)}
-					</span>
+					</span> */}
 				</div>
 			);
 		}
@@ -89,16 +89,30 @@ export const getBannerLabel = (
 			</div>
 		);
 	}
-	if (dropStage === Stage.Public) {
+	// if (dropStage === Stage.Public) {
+	// 	return (
+	// 		<>
+	// 			Minting is now open to everyone, act fast to secure your Kicks!{' '}
+	// 			{totalLabel(wheelsMinted!, wheelsTotal!)}
+	// 		</>
+	// 	);
+	// }
+	if (
+		dropStage === Stage.Public &&
+		Math.max(wheelsTotal! - wheelsMinted! - 3423, 0) !== 0
+	) {
 		return (
 			<>
-				Minting is now open to everyone, act fast to secure your Kicks!{' '}
-				{totalLabel(wheelsMinted!, wheelsTotal!)}
+				Air Wild sale is finished.{' '}
+				{Math.max(wheelsTotal! - wheelsMinted! - 3423, 0)} remaining pairs have
+				been transferred to the Wilder DAO.
 			</>
 		);
 	}
 	if (dropStage === Stage.Sold) {
-		return <>All {wheelsTotal} Kicks have been minted</>;
+		// return <>All {wheelsTotal} Kicks have been minted</>;
+		return <>Air Wild sold out!</>;
 	}
+
 	return <>Loading drop data...</>;
 };
