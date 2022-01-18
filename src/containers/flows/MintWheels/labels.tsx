@@ -103,7 +103,7 @@ export const getBannerLabel = (
 	) {
 		return (
 			<>
-				Air Wild sale is finished.{' '}
+				The Air Wild Season One sale is finished.{' '}
 				{Math.max(wheelsTotal! - wheelsMinted! - 3423, 0)} remaining pairs have
 				been transferred to the Wilder DAO.
 			</>
@@ -111,7 +111,7 @@ export const getBannerLabel = (
 	}
 	if (dropStage === Stage.Sold) {
 		// return <>All {wheelsTotal} Kicks have been minted</>;
-		return <>Air Wild sold out!</>;
+		return <>Air Wild Season One is sold out!</>;
 	}
 
 	return <>Loading drop data...</>;

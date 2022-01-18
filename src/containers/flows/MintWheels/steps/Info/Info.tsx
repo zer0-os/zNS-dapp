@@ -90,8 +90,13 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						Each user may mint up to {props.maxPurchasesPerUser} Kicks. The cost
-						for each pair of Kicks is <b>{EthPerWheel} ETH</b> plus GAS.
+						You will be able to mint {props.maxPurchasesPerUser} set of Kicks if
+						your wallet was whitelisted in our raffle on Monday, January 17,
+						2022.
+						<br></br>
+						<br></br>
+						The cost for each pair of Kicks is <b>{EthPerWheel} ETH</b> plus
+						GAS.
 					</p>
 					{connectWalletButton()}
 				</>
