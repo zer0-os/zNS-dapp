@@ -91,7 +91,7 @@ const Info = (props: InfoProps) => {
 				<>
 					<p>
 						Each user may mint up to {props.maxPurchasesPerUser} Kicks. The cost
-						for each set of Kicks is <b>{EthPerWheel} ETH</b> plus GAS.
+						for each pair of Kicks is <b>{EthPerWheel} ETH</b> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -109,7 +109,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Kicks. The cost for each set of Kicks
+							{props.maxPurchasesPerUser} Kicks. The cost for each pair of Kicks
 							is <b>{EthPerWheel} ETH</b> plus GAS.
 						</p>
 						{props.errorMessage !== undefined && (

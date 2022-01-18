@@ -101,7 +101,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 		//////////////////////////
 
 		addNotification(
-			`Successfully minted a Kicks. Open your Profile to view it`,
+			`Successfully minted your Kicks. Open your Profile to view it`,
 		);
 		const index = minting.findIndex((d) => d.title === 'Your Kicks');
 		setMinting(minting.splice(index, 1));

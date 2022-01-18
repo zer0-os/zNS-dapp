@@ -85,10 +85,10 @@ const SelectAmount = (props: SelectAmountProps) => {
 				);
 			} else if (numWheels > props.remainingWheels) {
 				if (props.remainingWheels === 1) {
-					setInputError(`There is only 1 Kicks left in this drop`);
+					setInputError(`There is only 1 pair of Kicks left in this drop`);
 				} else {
 					setInputError(
-						`There are only ${props.remainingWheels} Kicks left in this drop`,
+						`There are only ${props.remainingWheels} pairs of Kicks left in this drop`,
 					);
 				}
 			}
@@ -126,13 +126,13 @@ const SelectAmount = (props: SelectAmountProps) => {
 			{props.numberPurchasedByUser < props.maxPurchasesPerUser && (
 				<form onSubmit={formSubmit}>
 					<p>
-						How many sets of Kicks would you like to Mint? The number you enter
-						will be minted in one transaction, saving on GAS fees. Each set of
+						How many pairs of Kicks would you like to Mint? The number you enter
+						will be minted in one transaction, saving on GAS fees. Each pair of
 						Kicks costs <b>{EthPerWheel} ETH</b>.
 					</p>
 					<TextInput
 						onChange={onInputChange}
-						placeholder={`Number of sets of Kicks (Maximum of ${props.maxPurchasesPerUser})`}
+						placeholder={`Number of pairs of Kicks (Maximum of ${props.maxPurchasesPerUser})`}
 						numeric
 						text={amount}
 					/>
