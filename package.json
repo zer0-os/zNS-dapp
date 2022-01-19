@@ -1,6 +1,6 @@
 {
 	"name": "staking-dapp",
-	"version": "0.1.2",
+	"version": "0.2.0",
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
