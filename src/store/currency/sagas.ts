@@ -1,14 +1,18 @@
 import { wildTokenPrice, lootTokenPrice } from 'lib/tokenPrices';
+import { wildPricePercentageChange } from 'lib/tokenPricePercentageChanges';
 import { call, put, takeEvery } from '@redux-saga/core/effects';
 import {
 	getWildPriceUsdSuccess,
 	getWildPriceUsdError,
 	getLootPriceUsdSuccess,
 	getLootPriceUsdError,
+	getWildPricePercentageChangeSuccess,
+	getWildPricePercentageChangeError,
 } from './actions';
 import {
 	GET_WILD_PRICE_USD_REQUEST,
 	GET_LOOT_PRICE_USD_REQUEST,
+	GET_WILD_PRICE_PERCENTAGE_CHANGE_REQUEST,
 } from './actionTypes';
 
 /**
@@ -43,4 +47,27 @@ export function* getLootPriceUsd() {
 
 export function* getLootPriceUsdSaga() {
 	yield takeEvery(GET_LOOT_PRICE_USD_REQUEST, getLootPriceUsd);
+}
+
+/**
+ * Get Wild Price 24hr Percentage Change USD saga
+ */
+export function* getWildPricePercentageChange() {
+	try {
+		const percentage: number = yield call(wildPricePercentageChange);
+		yield put(getWildPricePercentageChangeSuccess(percentage)); //
+	} catch (e) {
+		yield put(
+			getWildPricePercentageChangeError(
+				'Error in getting wild price percentage change',
+			),
+		);
+	}
+}
+
+export function* getWildPricePercentageChangeSaga() {
+	yield takeEvery(
+		GET_WILD_PRICE_PERCENTAGE_CHANGE_REQUEST,
+		getWildPricePercentageChange,
+	); //
 }
