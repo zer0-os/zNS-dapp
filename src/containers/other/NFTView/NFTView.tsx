@@ -730,7 +730,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						}}
 						alt="NFT Preview"
 						ipfsUrl={
-							znsDomain.domain?.image_full || znsDomain.domain?.image || ''
+							znsDomain.domain?.animation_url ||
+							znsDomain.domain?.image_full ||
+							znsDomain.domain?.image ||
+							''
 						}
 						size="large"
 					/>
