@@ -5,12 +5,14 @@ import { RPC_URLS } from './connectors';
 import { Maybe } from './types';
 
 const whitelistUriKovan =
-	'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
+	'https://ipfs.io/ipfs/QmeTHvtancDwS2UC4SshQsS89dveLi171pGLc6b1GLxLDM';
+// const whitelistUriKovan =
+// 'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
 
 const backupWhitelist =
-	'https://ipfs.io/ipfs/QmQvd9Z8eUn4emw1fhUtWD36vxj5RGXTHs658iQRK5PuSL';
+	'https://ipfs.fleek.co/ipfs/QmUVyU4NYiVbAJtQMYjx67bmf9aMTLWrjwn2mYLSWQ22TX';
 const whitelistUriMainnet =
-	'https://d3810nvssqir6b.cloudfront.net/craft-whitelist.json';
+	'https://d3810nvssqir6b.cloudfront.net/airwilds1whitelist.json';
 
 export interface WheelsWhitelistClaim {
 	index: number;
