@@ -88,12 +88,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 				size="tiny"
 				className={`${styles.Image} border-rounded`}
 				alt="NFT Preview"
-				ipfsUrl={
-					metadata?.animation_url ||
-					metadata?.image_full ||
-					metadata?.image ||
-					''
-				}
+				ipfsUrl={metadata?.image || metadata?.image_full || ''}
 			/>
 		);
 	}, [metadata]);
