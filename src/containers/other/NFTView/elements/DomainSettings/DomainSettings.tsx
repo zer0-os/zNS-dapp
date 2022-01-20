@@ -28,7 +28,7 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 	const { modalsState, modalsActions } = useDomainSettingsModals();
 	const handlers = useDomainSettingsHandlers({
 		props: {
-			domain: formattedData.myDomain.domain!,
+			domainId,
 			registrar,
 		},
 		localState,

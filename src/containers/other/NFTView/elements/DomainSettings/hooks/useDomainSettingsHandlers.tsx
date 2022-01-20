@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from 'react';
 import { DomainMetadata } from '@zero-tech/zns-sdk';
-import { DisplayParentDomain, Maybe } from 'lib/types';
+import { Maybe } from 'lib/types';
 import { Registrar } from 'types/Registrar';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import {
@@ -10,7 +10,7 @@ import {
 
 type UseDomainSettingsHandlersProps = {
 	props: {
-		domain: DisplayParentDomain;
+		domainId: string;
 		registrar: Registrar;
 	};
 	localState: {
@@ -61,10 +61,10 @@ export const useDomainSettingsHandlers = ({
 
 	/* Iniital Actions */
 	const handleCheckAndSetDomainMetadataLockStatus = useCallback(async () => {
-		const { registrar, domain } = props;
+		const { registrar, domainId } = props;
 
 		const isDomainMetadataLocked = await registrar.isDomainMetadataLocked(
-			domain.id,
+			domainId,
 		);
 
 		localActions.setIsLocked(isDomainMetadataLocked);
@@ -74,7 +74,7 @@ export const useDomainSettingsHandlers = ({
 	const handleFetchMetadata = useCallback(async () => {
 		try {
 			const metadata = await sdk.instance.getDomainMetadata(
-				props.domain.id,
+				props.domainId,
 				props.registrar.signer,
 			);
 
@@ -106,7 +106,7 @@ export const useDomainSettingsHandlers = ({
 
 		try {
 			const tx = await sdk.instance.lockDomainMetadata(
-				props.domain.id,
+				props.domainId,
 				false,
 				props.registrar.signer,
 			);
@@ -145,7 +145,7 @@ export const useDomainSettingsHandlers = ({
 
 		try {
 			const tx = await sdk.instance.lockDomainMetadata(
-				props.domain.id,
+				props.domainId,
 				true,
 				props.registrar.signer,
 			);
@@ -189,7 +189,7 @@ export const useDomainSettingsHandlers = ({
 
 		try {
 			const tx = await sdk.instance.setDomainMetadata(
-				props.domain.id,
+				props.domainId,
 				localState.localMetadata,
 				props.registrar.signer,
 			);
@@ -235,7 +235,7 @@ export const useDomainSettingsHandlers = ({
 
 		try {
 			const tx = await sdk.instance.setAndLockDomainMetadata(
-				props.domain.id,
+				props.domainId,
 				localState.localMetadata,
 				props.registrar.signer,
 			);

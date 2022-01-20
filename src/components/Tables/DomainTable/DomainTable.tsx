@@ -17,6 +17,7 @@ import HighestBid from './components/HighestBid';
 import NumBids from './components/NumBids';
 import NFTCardActions from './components/NFTCardActions';
 import ViewBids from './components/ViewBids';
+import { DomainSettings as MyDomainSettingsModal } from '../../../containers/other/NFTView/elements';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
@@ -56,6 +57,16 @@ enum Modals {
 	Bid,
 }
 
+type DomainSettingsModal = {
+	isOpen: boolean;
+	domainId?: string;
+};
+
+const DEFAUL_DOMAIN_SETTINGS_MODAL: DomainSettingsModal = {
+	isOpen: false,
+	domainId: undefined,
+};
+
 const DomainTable: React.FC<DomainTableProps> = ({
 	className,
 	disableButton,
@@ -82,6 +93,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [searchQuery, setSearchQuery] = useState('');
 
 	const [modal, setModal] = useState<Modals | undefined>();
+	const [domainSettingsModal, setDomainSettingsModal] =
+		useState<DomainSettingsModal>(DEFAUL_DOMAIN_SETTINGS_MODAL);
 
 	// Data state
 	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
@@ -262,10 +275,17 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				id: 'settings',
 				accessor: (domain: Domain) => {
 					return (
-						<Tooltip text="My Dodmain Settings">
+						<Tooltip text="My Domain Settings">
 							<button
 								className={styles.DomainSettingsButton}
-								onClick={() => buttonClick(domain)}
+								onClick={(e) => {
+									e.stopPropagation();
+
+									setDomainSettingsModal({
+										isOpen: true,
+										domainId: domain.id,
+									});
+								}}
 							>
 								<img src={settings} alt="domain settings" />
 							</button>
@@ -315,6 +335,13 @@ const DomainTable: React.FC<DomainTableProps> = ({
 					>
 						<MakeABid domain={biddingOn!} onBid={onBid} />
 					</Overlay>
+				)}
+
+				{domainSettingsModal.isOpen && domainSettingsModal.domainId && (
+					<MyDomainSettingsModal
+						domainId={domainSettingsModal.domainId}
+						onClose={() => setDomainSettingsModal(DEFAUL_DOMAIN_SETTINGS_MODAL)}
+					/>
 				)}
 			</>
 		);
