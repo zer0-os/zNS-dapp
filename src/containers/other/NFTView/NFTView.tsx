@@ -133,10 +133,16 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const downloadAsset = async () => {
 		// @todo move this into a helper
-		if (znsDomain?.domain?.image_full || znsDomain?.domain?.image) {
+		if (
+			znsDomain?.domain?.animation_url ||
+			znsDomain?.domain?.image_full ||
+			znsDomain?.domain?.image
+		) {
 			// Get hash from asset
 
-			const url = (znsDomain.domain.image_full || znsDomain.domain.image)!;
+			const url = (znsDomain.domain.animation_url ||
+				znsDomain.domain.image_full ||
+				znsDomain.domain.image)!;
 			let hash: string;
 			if (url.startsWith('ipfs://')) {
 				// ipfs://
