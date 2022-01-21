@@ -25,37 +25,58 @@ const Deposits = () => {
 	const [wildBalance, setWildBalance] =
 		useState<MaybeUndefined<ethers.BigNumber>>();
 
+	const [totalStakedUsd, setTotalStakedUsd] =
+		useState<MaybeUndefined<number>>();
+
 	useEffect(() => {
 		let isMounted = true;
 
 		setWildBalance(undefined);
+		setTotalStakedUsd(undefined);
 		setTotalRewardsClaimable(undefined);
 
-		const getMetrics = async () => {
+		(async () => {
 			if (!account || !staking.pools) {
 				return;
 			}
 
-			const lpReward = await staking.pools.lpPool.instance.pendingYieldRewards(
-				account,
-			);
-			const wildReward =
-				await staking.pools.wildPool.instance.pendingYieldRewards(account);
+			// Gets user's WILD balance
+			contracts!.wildToken.balanceOf(account).then((balance) => {
+				setWildBalance(balance);
+			});
 
-			const totalReward = lpReward.add(wildReward);
+			// Gets total claimable rewards
+			Promise.all([
+				staking.pools.lpPool.instance.pendingYieldRewards(account),
+				staking.pools.wildPool.instance.pendingYieldRewards(account),
+			]).then(([lpRewards, wildRewards]) => {
+				if (!isMounted || !lpRewards || !wildRewards) {
+					// error handling
+					return;
+				}
+				setTotalRewardsClaimable(lpRewards.add(wildRewards));
+			});
 
-			if (isMounted) {
-				setTotalRewardsClaimable(totalReward);
-			}
-
-			const wildTokenBalance = await contracts!.wildToken.balanceOf(account);
-			setWildBalance(wildTokenBalance);
-		};
-		getMetrics();
+			// Gets total user stake in USD
+			Promise.all([
+				staking.instance?.liquidityPool.userValueStaked(account),
+				staking.instance?.wildPool.userValueStaked(account),
+			]).then(([lpStake, wildStake]) => {
+				if (!lpStake || !wildStake || !isMounted) {
+					// error handling
+					console.log(lpStake, wildStake, 'error');
+					return;
+				}
+				setTotalStakedUsd(
+					lpStake.userValueUnlockedUsd + wildStake.userValueUnlockedUsd,
+				);
+			});
+		})();
 
 		return () => {
 			isMounted = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [account, staking.pools]);
 
 	return (
@@ -90,6 +111,16 @@ const Deposits = () => {
 							totalRewardsClaimable &&
 							wildPriceUsd &&
 							'$' + displayEtherToFiat(totalRewardsClaimable, wildPriceUsd)
+						}
+					/>
+					<StatsWidget
+						className="normalView"
+						fieldName={'Your Total Stake (USD)'}
+						isLoading={account !== null && !totalStakedUsd}
+						title={
+							account && totalStakedUsd !== undefined
+								? '$' + toFiat(totalStakedUsd) + ' USD'
+								: '-'
 						}
 					/>
 				</ul>
