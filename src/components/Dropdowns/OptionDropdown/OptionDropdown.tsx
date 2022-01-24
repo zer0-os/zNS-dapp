@@ -14,6 +14,7 @@ export type Option = {
 
 type OptionDropdownProps = {
 	options: Option[];
+	selected?: Option;
 	onSelect: (selection: Option) => void;
 	children: React.ReactNode;
 	className?: string;
@@ -23,6 +24,7 @@ type OptionDropdownProps = {
 
 const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	options,
+	selected,
 	onSelect,
 	children,
 	className,
@@ -34,7 +36,6 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	//////////////////
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [selected, setSelected] = useState<Option>(options[0] || '');
 	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	///////////////
@@ -42,7 +43,6 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	///////////////
 
 	const select = (option: Option) => {
-		setSelected(option);
 		onSelect(option);
 		close();
 	};

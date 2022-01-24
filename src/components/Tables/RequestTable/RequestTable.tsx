@@ -501,6 +501,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						<OptionDropdown
 							onSelect={filterByDomain}
 							options={DOMAIN_FILTER_OPTIONS}
+							selected={DOMAIN_FILTER_OPTIONS.find(
+								(option) => option.title === (domainFilter || 'All Domains'),
+							)}
 							drawerStyle={{ width: 179 }}
 						>
 							<FilterButton onClick={() => {}}>
@@ -510,6 +513,9 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						<OptionDropdown
 							onSelect={filterByStatus}
 							options={STATUS_FILTER_OPTIONS}
+							selected={STATUS_FILTER_OPTIONS.find(
+								(option) => option.title === (statusFilter || 'All Statuses'),
+							)}
 							drawerStyle={{ width: 179 }}
 						>
 							<FilterButton onClick={() => {}}>
