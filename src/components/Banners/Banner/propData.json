@@ -1,0 +1,11 @@
+{
+	"bannerProps": [
+		{
+			"title": "Demo Title",
+			"label": "Demo Label",
+			"buttonText": "Demo Button Text",
+			"bannerImageUrl": "'./assets/banner.gif'",
+			"buttonIcon": ""
+		}
+	]
+}

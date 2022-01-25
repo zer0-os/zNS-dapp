@@ -8,12 +8,14 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
-import { MintWheelsBanner, Overlay } from 'components';
+import { Banner, Overlay } from 'components';
 import MintWheels from './MintWheels';
+import { getMintBannerLabel } from 'components/Banners/Banner/BannerLabels/Labels';
+import { BannerEventType, IndustryType } from 'components/Banners/Banner/utils';
 
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
-import { getBannerLabel, getBannerButtonText } from './labels';
+import { getBannerButtonText } from './labels';
 import { useMintProvider } from 'lib/providers/MintProvider';
 import {
 	getDropData,
@@ -21,6 +23,8 @@ import {
 	getNumberPurchasedByUser,
 	getERC20TokenBalance,
 } from './helpers';
+
+import banner from '../../../components/Banners/Banner/assets/banner.gif';
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
@@ -350,38 +354,18 @@ const MintWheelsFlowContainer = () => {
 	// Fragments //
 	///////////////
 
-	const bannerLabel = () => {
-		if (isSaleHalted) {
-			return (
-				<>
-					<span>
-						Wilder Cribs sale has been temporarily paused to ensure a fair sale.
-					</span>
-					<span style={{ display: 'block', marginTop: 4 }}>
-						Join our{' '}
-						<b>
-							<a
-								href={'https://discord.gg/mb9fcFey8a'}
-								target={'_blank'}
-								rel={'noreferrer'}
-							>
-								Discord
-							</a>
-						</b>{' '}
-						for more details.
-					</span>
-				</>
-			);
-		}
+	const bannerLabel = (industryType: IndustryType) => {
 		return failedToLoad
 			? 'Failed to load auction data - refresh to try again'
-			: getBannerLabel(
+			: getMintBannerLabel(
+					industryType,
 					dropStage,
 					wheelsMinted,
 					wheelsTotal,
 					countdownDate,
 					countdownFinished,
 					hasCountdownFinished,
+					isSaleHalted,
 			  );
 	};
 
@@ -390,6 +374,18 @@ const MintWheelsFlowContainer = () => {
 			? 'Learn More'
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
+
+	const bannerImage = () => {
+		return banner;
+	};
+
+	const getBannerData = () => ({
+		title: 'Get your ride for the Metaverse ',
+		label: bannerLabel(IndustryType.CRIBS),
+		buttonText: buttonText(),
+		bannerImageUrl: bannerImage(),
+		bannerImageAlt: 'car in motion',
+	});
 
 	////////////
 	// Render //
@@ -416,12 +412,7 @@ const MintWheelsFlowContainer = () => {
 					/>
 				</Overlay>
 			)}
-			<MintWheelsBanner
-				title={'Get your ride for the Metaverse '}
-				label={bannerLabel()}
-				buttonText={buttonText()}
-				onClick={openWizard}
-			/>
+			<Banner data={getBannerData()} onClick={openWizard} />
 		</>
 	);
 };

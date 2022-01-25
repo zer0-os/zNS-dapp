@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { MintWheelsBanner, Overlay, Countdown } from 'components';
+import { Banner, Overlay } from 'components';
 import { MintWheels } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 import useAsyncEffect from 'use-async-effect';
 import { getCurrentBlock } from 'lib/wheelSale';
+import banner from '../../../components/Banners/Banner/assets/banner.gif';
+import { getRaffleBannerLabel } from 'components/Banners/Banner/BannerLabels/Labels';
+import { IndustryType } from 'components/Banners/Banner/utils';
 
 const WheelsRaffleContainer = () => {
 	//////////////////
@@ -113,44 +116,18 @@ const WheelsRaffleContainer = () => {
 	// Fragments //
 	///////////////
 
-	const bannerLabel = (): React.ReactNode => {
-		if (hasRaffleEnded) {
-			return (
-				<>
-					Whitelist sale starting in{' '}
-					<b>
-						<Countdown
-							to={SALE_START_TIME}
-							onFinish={onFinishSaleStartCountdown}
-						/>
-					</b>
-				</>
-			);
-		} else if (hasRaffleStarted) {
-			return (
-				<>
-					Join the whitelist raffle. Raffle closes in{' '}
-					<b>
-						<Countdown
-							to={RAFFLE_END_TIME}
-							onFinish={onFinishRaffleEndCountdown}
-						/>
-					</b>
-				</>
-			);
-		} else {
-			return (
-				<>
-					Get notified about the Wilder Cribs raffle - starting in{' '}
-					<b>
-						<Countdown
-							to={RAFFLE_START_TIME}
-							onFinish={onFinishRaffleStartCountdown}
-						/>
-					</b>
-				</>
-			);
-		}
+	const bannerLabel = (industryType: IndustryType) => {
+		return getRaffleBannerLabel(
+			industryType,
+			hasRaffleEnded,
+			hasRaffleStarted,
+			SALE_START_TIME,
+			RAFFLE_END_TIME,
+			RAFFLE_START_TIME,
+			onFinishSaleStartCountdown,
+			onFinishRaffleEndCountdown,
+			onFinishRaffleStartCountdown,
+		);
 	};
 
 	const bannerButtonLabel = () => {
@@ -162,6 +139,18 @@ const WheelsRaffleContainer = () => {
 			return 'Sale Info';
 		}
 	};
+
+	const bannerImage = () => {
+		return banner;
+	};
+
+	const getBannerData = () => ({
+		title: 'Get your ride for the Metaverse ',
+		label: bannerLabel(IndustryType.CRIBS),
+		buttonText: bannerButtonLabel(),
+		bannerImageUrl: bannerImage(),
+		bannerImageAlt: 'car in motion',
+	});
 
 	const overlay = () => {
 		if (isMobile && hasRaffleStarted) {
@@ -206,16 +195,7 @@ const WheelsRaffleContainer = () => {
 			<>
 				{isModalOpen && overlay()}
 				<div>
-					<MintWheelsBanner
-						title={
-							hasRaffleEnded
-								? 'Your Crib for the Metaverse awaits'
-								: 'Get Early Access to Wilder Cribs'
-						}
-						label={bannerLabel()}
-						buttonText={bannerButtonLabel()}
-						onClick={onBannerClick}
-					/>
+					<Banner data={getBannerData()} onClick={onBannerClick} />
 				</div>
 			</>
 		);

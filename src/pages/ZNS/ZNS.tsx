@@ -635,11 +635,6 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 				<BannerContainer isScrollDetectionDown={isScrollDetectionDown}>
 					{/* Temporarily removed Raffle */}
 					<WheelsRaffle />
-					{/* <MessageBanner
-						label="This is a banner message"
-						buttonText="CTA"
-						countdownTime={3634408000000}
-					/> */}
 				</BannerContainer>
 
 				{!isNftView && (
