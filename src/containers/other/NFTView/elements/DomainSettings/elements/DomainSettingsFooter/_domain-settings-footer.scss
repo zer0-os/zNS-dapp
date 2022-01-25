@@ -19,6 +19,10 @@
 		label {
 			&.warning {
 				color: var(--color-error);
+
+				&.is_locked_warning {
+					color: var(--color-warning);
+				}
 			}
 			&.success {
 				color: var(--color-success);

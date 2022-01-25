@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import classnames from 'classnames';
 import { FutureButton, QuestionButton, Tooltip, IconButton } from 'components';
 import { Maybe } from 'lib/types';
 import {
@@ -11,6 +12,7 @@ import {
 } from '../../DomainSettings.constants';
 import unlockIcon from './assets/unlock.svg';
 import lockIcon from './assets/lock.svg';
+import lockWarningIcon from './assets/lock-warning.svg';
 import './_domain-settings-footer.scss';
 
 type DomainSettingsFooterProps = {
@@ -53,7 +55,11 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 		<div className="domain-settings-footer__container">
 			<div className="domain-settings-footer__label">
 				{warning && (
-					<label className="warning">
+					<label
+						className={classnames('warning', {
+							is_locked_warning: warning === DomainSettingsWarning.LOCKED,
+						})}
+					>
 						{DOMAIN_SETTINGS_WARNING_MESSAGES[warning]}
 					</label>
 				)}
@@ -66,7 +72,13 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 			<div className="domain-settings-footer__buttons">
 				<IconButton
 					className="domain-settings-footer__buttons-icon"
-					iconUri={isLocked ? lockIcon : unlockIcon}
+					iconUri={
+						isLocked
+							? warning === DomainSettingsWarning.LOCKED
+								? lockWarningIcon
+								: lockIcon
+							: unlockIcon
+					}
 				/>
 				{isLocked && !isSaved && (
 					<FutureButton className="" onClick={onUnlock} glow>
