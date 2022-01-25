@@ -7,7 +7,6 @@ import styles from './PreviewCard.module.scss';
 //- Component Imports
 import { FutureButton, NFTMedia, TextButton } from 'components';
 import { Maybe } from 'lib/types';
-import { TEST_ID } from 'components/Buttons/FutureButton/FutureButton';
 
 type PreviewCardProps = {
 	preventInteraction?: boolean;
@@ -26,22 +25,6 @@ type PreviewCardProps = {
 	onViewDomain?: () => void;
 	ownerId: string;
 	style?: React.CSSProperties;
-};
-
-export const TEST_IDS = {
-	CONTAINER: 'preview-card-container',
-	BLOCKER: 'blocker',
-	LOADER: 'loader',
-	SPINNER: 'spinner',
-	PREVIEW_IMAGE: 'preview-image-container',
-	ASSET: 'asset',
-	INFO_CONTAINER: 'info-container',
-	BUY_CONTAINER: 'buy-container',
-	BODY_COMPONENT: 'body-container',
-	BODY_COMPONENT_TITLE: 'body-component-title',
-	BODY_COMPONENT_DESCRIPTION: 'body-component-description',
-	FUTURE_BUTTON_CONTAINER: 'buy-description-and-action',
-	NFT_MEDIA: 'nft_media',
 };
 
 const PreviewCard: React.FC<PreviewCardProps> = ({
@@ -84,23 +67,16 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	///////////////
 
 	const body = () => (
-		<div className={styles.Body} data-testid="body-container">
+		<div className={styles.Body}>
 			<div>
-				<h5 className="glow-text-blue" data-testid="body-component-title">
-					{name ? name : domain.split('/')[1]}
-				</h5>
-				<p
-					className={styles.Description}
-					data-testid="body-component-description"
-				>
-					{description}
-				</p>
+				<h5 className="glow-text-blue">{name ? name : domain.split('/')[1]}</h5>
+				<p className={styles.Description}>{description}</p>
 			</div>
 		</div>
 	);
 
 	const buy = () => (
-		<div className={styles.Buy} data-testid="buy-container">
+		<div className={styles.Buy}>
 			{mvpVersion === 1 && (
 				<>
 					<TextButton onClick={openNftView} className={styles.ViewLink}>
@@ -109,7 +85,7 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 				</>
 			)}
 			{mvpVersion === 3 && (
-				<div data-testid="buy-description-and-action">
+				<div>
 					<FutureButton
 						glow
 						onClick={makeBid}
@@ -131,40 +107,28 @@ const PreviewCard: React.FC<PreviewCardProps> = ({
 	////////////
 
 	return (
-		<div
-			className={styles.PreviewCard}
-			style={style || {}}
-			data-testid="preview-card-container"
-		>
-			{preventInteraction && (
-				<div className={styles.Blocker} data-testid="blocker"></div>
-			)}
+		<div className={styles.PreviewCard} style={style ? style : {}}>
+			{preventInteraction && <div className={styles.Blocker}></div>}
 			{isLoading && (
-				<div className={styles.Loading} data-testid="loader">
-					<div className={styles.Spinner} data-testid="spinner"></div>
+				<div className={styles.Loading}>
+					<div className={styles.Spinner}></div>
 				</div>
 			)}
 			<>
-				<div
-					className={styles.Preview}
-					style={{ opacity: isLoading ? 0 : 1 }}
-					data-testid="preview-image-container"
-				>
+				<div className={styles.Preview} style={{ opacity: isLoading ? 0 : 1 }}>
 					<div
 						className={`${styles.Asset} ${
 							mvpVersion === 3 ? styles.MVP3Asset : ''
 						}`}
-						data-testid="asset"
 					>
 						<NFTMedia
 							size="medium"
 							className={`${styles.Image} img-border-rounded`}
 							alt="NFT Preview"
 							ipfsUrl={image}
-							data-testid={TEST_IDS.NFT_MEDIA}
 						/>
 					</div>
-					<div className={styles.InfoContainer} data-testid="info-container">
+					<div className={styles.InfoContainer}>
 						{body()}
 						{buy()}
 					</div>

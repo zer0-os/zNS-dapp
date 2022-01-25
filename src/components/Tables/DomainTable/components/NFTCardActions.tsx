@@ -3,26 +3,28 @@
 import { useState, useEffect, useRef } from 'react';
 
 // Library Imports
-import { Domain, DomainData } from 'lib/types';
+import { Domain } from 'lib/types';
 import { useBidProvider } from 'lib/providers/BidProvider';
 
 // Component Imports
 import { Spinner } from 'components';
-import ViewBids from './ViewBids';
 
 // Style Imports
 import styles from './NFTCardActions.module.scss';
+import { BidButton } from 'containers';
 
 type NFTCardActionsProps = {
-	filterOwnBids?: boolean;
+	disableButton?: boolean;
 	domain: Domain;
-	onButtonClick?: (domain: DomainData) => void;
+	hideButton?: boolean;
+	onButtonClick: (domain: Domain) => void;
 	onLoad?: () => void;
 };
 
 const NFTCardActions: React.FC<NFTCardActionsProps> = ({
+	disableButton,
 	domain,
-	filterOwnBids,
+	hideButton,
 	onButtonClick,
 	onLoad,
 }) => {
@@ -32,6 +34,10 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 
 	const [highestBid, setHighestBid] = useState<number | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+
+	const buttonClick = () => {
+		onButtonClick(domain);
+	};
 
 	const getBids = async () => {
 		const bids = await getBidsForDomain(domain);
@@ -76,13 +82,10 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 					</>
 				)}
 			</div>
-			{onButtonClick && (
-				<ViewBids
-					style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
-					domain={domain}
-					onClick={onButtonClick}
-					filterOwnBids={filterOwnBids}
-				/>
+			{!hideButton && (
+				<BidButton glow={!disableButton} onClick={buttonClick}>
+					Make A Bid
+				</BidButton>
 			)}
 		</div>
 	);

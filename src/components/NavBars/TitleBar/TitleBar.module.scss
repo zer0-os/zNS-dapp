@@ -48,7 +48,7 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 0px 17px;
+	padding: 11px 17px;
 }
 
 .Bar::after {
@@ -186,16 +186,14 @@ header {
 .Actions {
 	display: flex;
 	flex-direction: row;
-	align-items: center;
-	height: 56px;
 }
 
 .Actions > *:not(:last-child) {
-	margin-right: 16px;
+	margin-right: 10px;
 }
 
 .Info {
-	margin-right: 16px;
+	margin-right: 24px;
 	font-weight: 700;
 	text-transform: uppercase;
 	flex-shrink: 0;
@@ -208,10 +206,6 @@ header {
 
 	.Info {
 		margin-right: 0;
-	}
-
-	.TitleBar {
-		padding: 11px 17px;
 	}
 }
 
