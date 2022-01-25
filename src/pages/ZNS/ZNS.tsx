@@ -26,7 +26,6 @@ import userIcon from 'assets/user.svg';
 import {
 	ConnectToWallet,
 	FutureButton,
-	FilterBar,
 	TitleBar,
 	TooltipLegacy,
 	IconButton,
@@ -37,14 +36,19 @@ import {
 	TransferPreview,
 	Spinner,
 	StatsWidget,
+	WilderIcon,
+	MessageBanner,
 } from 'components';
 
 import {
 	SubdomainTable,
 	CurrentDomainPreview,
 	ProfileModal,
+	PageHeader,
 	// Temporarily removed raffle
 	WheelsRaffle,
+	BuyTokenRedirect,
+	BannerContainer,
 } from 'containers';
 
 //- Library Imports
@@ -57,6 +61,7 @@ import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
+import useScrollDetection from 'lib/hooks/useScrollDetection';
 
 type ZNSProps = {
 	domain: string;
@@ -150,6 +155,7 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
 	const [pageWidth, setPageWidth] = useState<number>(0);
+	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
@@ -161,6 +167,11 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 	//- Data
 	const isOwnedByUser: boolean =
 		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
+
+	///////////////
+	// Hooks //
+	///////////////
+	useScrollDetection(setScrollDetectionDown);
 
 	///////////////
 	// Functions //
@@ -486,27 +497,24 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 			{pageWidth > 1000 && modals()}
 			{/* ZNS Content */}
 			<div
-				style={
-					{
-						// opacity: hasLoaded ? 1 : 0,
-						// transition: 'opacity 0.2s ease-in-out',
-						// paddingTop: 145,
-					}
-				}
+				className="page-spacing"
+				style={{
+					opacity: hasLoaded ? 1 : 0,
+					transition: 'opacity 0.2s ease-in-out',
+					paddingTop: 108,
+				}}
 			>
-				{/* Nav Bar */}
-				{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
-				{/* <FilterBar
+				<PageHeader
 					style={
 						isSearchActive
 							? { zIndex: isSearchActive ? 100 : 10, background: 'none' }
 							: {}
 					}
-					onSelect={() => {
-						history.push('/');
-					}}
-					filters={!isSearchActive ? ['Everything'] : []}
+					hideNavBar={isScrollDetectionDown}
 				>
+					{/* TODO: Make a more generic Nav component and nest FilterBar and TitleBar */}
+					{/* Nav Bar */}
+					<WilderIcon />
 					<TitleBar
 						domain={domain}
 						canGoBack={canGoBack}
@@ -554,14 +562,18 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 								</FutureButton>
 							)}
 							{!account && !localStorage.getItem('chosenWallet') && (
-								<FutureButton glow onClick={openWallet}>
-									Connect {pageWidth > 900 && 'Wallet'}
-								</FutureButton>
+								<>
+									<FutureButton glow onClick={openWallet}>
+										Connect {pageWidth > 900 && 'Wallet'}
+									</FutureButton>
+									<BuyTokenRedirect />
+								</>
 							)}
 							{account && !isSearchActive && (
 								<>
 									{isOwnedByUser && (
 										<FutureButton
+											style={{ padding: '0px 12px' }}
 											glow={account != null}
 											onClick={() => {
 												account != null
@@ -570,11 +582,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 											}}
 											loading={loading}
 										>
-											{pageWidth <= 900 && 'MINT'}
-											{pageWidth > 900 && 'MINT NFT'}
+											MINT
 										</FutureButton>
 									)}
-
+									{/* Status / Long Running Operation Button */}
 									{showStatus ? (
 										<TooltipLegacy
 											content={<MintPreview onOpenProfile={openProfile} />}
@@ -597,6 +608,10 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 										</TooltipLegacy>
 									)}
 
+									{/* Buy token from external urls */}
+									<BuyTokenRedirect walletConnected />
+
+									{/* Profile Button */}
 									<IconButton
 										onClick={openProfile}
 										style={{ height: 32, width: 32, borderRadius: '50%' }}
@@ -612,10 +627,17 @@ const ZNS: React.FC<ZNSProps> = ({ domain, version, isNftView: nftView }) => {
 							)}
 						</>
 					</TitleBar>
-				</FilterBar> */}
+				</PageHeader>
 
-				{/* Temporarily removed Raffle */}
-				<WheelsRaffle />
+				<BannerContainer isScrollDetectionDown={isScrollDetectionDown}>
+					{/* Temporarily removed Raffle */}
+					<WheelsRaffle />
+					{/* <MessageBanner
+						label="This is a banner message"
+						buttonText="CTA"
+						countdownTime={3634408000000}
+					/> */}
+				</BannerContainer>
 
 				{!isNftView && (
 					<div

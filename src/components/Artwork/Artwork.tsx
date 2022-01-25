@@ -29,7 +29,16 @@ type ArtworkProps = {
 	style?: React.CSSProperties;
 };
 
-const cx = classNames.bind(styles);
+export const TEST_ID = {
+	ARTWORK: 'artwork',
+	CONTAINER: 'container',
+	DISABLE_LINK: 'disable-link',
+	LINK: 'link',
+	PENDING: 'pending',
+	SHOULD_ANIMATE: 'should-animate',
+	SHOULD_NOT_ANIMATE: 'should-not-animate',
+	ARTWORK_CONTAINER: 'artwork-container',
+};
 
 const Artwork: React.FC<ArtworkProps> = ({
 	circleIcon,
@@ -86,34 +95,30 @@ const Artwork: React.FC<ArtworkProps> = ({
 	}, [domain, metadataUrl]);
 
 	const artwork = React.useMemo(() => {
-		if (image) {
-			return <Image alt="pool icon" src={image} />;
-		}
-		if (metadata) {
-			return (
-				<NFTMedia
-					disableLightbox
-					style={{
-						zIndex: 2,
-					}}
-					size="tiny"
-					className={`${styles.Image} border-rounded`}
-					alt="NFT Preview"
-					ipfsUrl={metadata?.image_full || metadata?.image || ''}
-				/>
-			);
-		}
-	}, [image, metadata]);
+		return (
+			<NFTMedia
+				disableLightbox
+				style={{
+					zIndex: 2,
+				}}
+				size="tiny"
+				className={`${styles.Image} border-rounded`}
+				alt="NFT Preview"
+				ipfsUrl={metadata?.image_full || metadata?.image || ''}
+				data-testid={TEST_ID.ARTWORK}
+			/>
+		);
+	}, [metadata]);
 
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
-			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
-				<div
-					className={cx(styles.Image, {
-						Circle: circleIcon,
-					})}
-				>
+			<div
+				className={`${styles.Artwork} ${styles.Pending}`}
+				style={style}
+				data-testid={TEST_ID.CONTAINER}
+			>
+				<div className={styles.Image} data-testid={TEST_ID.ARTWORK_CONTAINER}>
 					{artwork}
 				</div>
 				<div className={styles.Info}>
@@ -124,12 +129,14 @@ const Artwork: React.FC<ArtworkProps> = ({
 								opacity: disableAnimation ? 1 : 0,
 							}}
 							to={{ maxHeight: 18, opacity: 1 }}
+							// data-testid={TEST_ID.SHOULD_ANIMATE}
 						>
 							{(animatedStyles) => (
 								<animated.div style={animatedStyles}>
 									<span
 										style={{ cursor: pending ? 'default' : 'pointer' }}
 										className={styles.Title}
+										data-testid={TEST_ID.SHOULD_ANIMATE}
 									>
 										{metadata?.title || name}
 									</span>
@@ -141,14 +148,18 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<span
 							style={{ cursor: pending ? 'default' : 'pointer' }}
 							className={styles.Title}
+							data-testid={TEST_ID.SHOULD_NOT_ANIMATE}
 						>
 							{metadata?.title || name}
 						</span>
 					)}
 					{!pending && (
 						<>
-							{disableInteraction && domain && (
-								<span className={styles.Domain}>
+							{disableInteraction && (
+								<span
+									className={styles.Domain}
+									data-testid={TEST_ID.DISABLE_LINK}
+								>
 									{truncatedDomain || 'wilder.' + domain}
 								</span>
 							)}
@@ -158,6 +169,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 									to={domain.split('wilder.')[1]}
 									target="_blank"
 									rel="noreferrer"
+									data-testid={TEST_ID.LINK}
 								>
 									{truncatedDomain || domain}
 								</Link>
@@ -165,7 +177,9 @@ const Artwork: React.FC<ArtworkProps> = ({
 						</>
 					)}
 					{pending && (
-						<span className={styles.Domain}>{domain ? domain : 'Loading'}</span>
+						<span data-testid={TEST_ID.PENDING} className={styles.Domain}>
+							{domain}
+						</span>
 					)}
 				</div>
 			</div>

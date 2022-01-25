@@ -20,6 +20,7 @@ export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/Cu
 export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/ConnectWalletPrompt';
 
 // Flows
+export { default as BuyTokenRedirect } from './flows/BuyTokenRedirect/BuyTokenRedirect';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
 export { default as MintWheels } from './flows/MintWheels';
@@ -40,7 +41,9 @@ export { default as Navigator } from './navigation/Navigator/Navigator';
 export { default as BidList } from './lists/BidList/BidList';
 
 // Other
+export { default as BannerContainer } from './other/BannerContainer/BannerContainer';
 export { default as NFTView } from './other/NFTView/NFTView';
+export { default as PageHeader } from './other/PageHeader/PageHeader';
 export { default as Request } from './other/Request/Request';
 
 // Legacy
