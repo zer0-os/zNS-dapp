@@ -11,6 +11,7 @@ export enum IndustryType {
 	CRIBS = 'CRIBS',
 	KICKS = 'KICKS',
 	PETS = 'PETS',
+	CRAFTS = 'CRAFTS',
 }
 
 export enum BannerEventType {
@@ -18,16 +19,18 @@ export enum BannerEventType {
 	MINT = 'MINT',
 }
 
-export const getBannerTitle = (banner?: IndustryType) => {
-	switch (banner) {
+export const getIndustryTitle = (industryType: IndustryType) => {
+	switch (industryType) {
 		case IndustryType.WHEELS:
-			return 'Wilder Wheels';
+			return 'Wheels';
 		case IndustryType.CRIBS:
-			return 'Wilder Cribs';
+			return 'Cribs';
 		case IndustryType.KICKS:
-			return 'Wilder Kicks';
+			return 'Kicks';
 		case IndustryType.PETS:
-			return 'Wilder Pets';
+			return 'Pets';
+		case IndustryType.CRAFTS:
+			return 'Crafts';
 		default:
 			return '';
 	}

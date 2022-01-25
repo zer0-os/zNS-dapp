@@ -6,9 +6,14 @@ import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 import useAsyncEffect from 'use-async-effect';
 import { getCurrentBlock } from 'lib/wheelSale';
-import banner from '../../../components/Banners/Banner/assets/banner.gif';
-import { getRaffleBannerLabel } from 'components/Banners/Banner/BannerLabels/Labels';
-import { IndustryType } from 'components/Banners/Banner/utils';
+import {
+	getRaffleBannerLabel,
+	getRaffleBannerButtonText,
+	getBannerImage,
+	getBannerImageAlt,
+	getBannerTitle,
+} from 'components/Banners/Banner/BannerContent/BannerContent';
+import { BannerEventType, IndustryType } from 'components/Banners/Banner/utils';
 
 const WheelsRaffleContainer = () => {
 	//////////////////
@@ -116,9 +121,14 @@ const WheelsRaffleContainer = () => {
 	// Fragments //
 	///////////////
 
-	const bannerLabel = (industryType: IndustryType) => {
+	// Add a call to fetch IndustryType and BannerEventType - replace params below
+	const bannerTitle = () => {
+		return getBannerTitle(IndustryType.CRIBS, BannerEventType.RAFFLE);
+	};
+
+	const bannerLabel = () => {
 		return getRaffleBannerLabel(
-			industryType,
+			IndustryType.CRIBS,
 			hasRaffleEnded,
 			hasRaffleStarted,
 			SALE_START_TIME,
@@ -130,26 +140,24 @@ const WheelsRaffleContainer = () => {
 		);
 	};
 
-	const bannerButtonLabel = () => {
-		if (!hasRaffleStarted) {
-			return 'Get Notified';
-		} else if (!hasRaffleEnded) {
-			return 'Enter Raffle';
-		} else {
-			return 'Sale Info';
-		}
+	const bannerButtonText = () => {
+		return getRaffleBannerButtonText(hasRaffleStarted, hasRaffleEnded);
 	};
 
 	const bannerImage = () => {
-		return banner;
+		return getBannerImage(IndustryType.CRIBS);
+	};
+
+	const bannerImageAlt = () => {
+		return getBannerImageAlt(IndustryType.CRIBS);
 	};
 
 	const getBannerData = () => ({
-		title: 'Get your ride for the Metaverse ',
-		label: bannerLabel(IndustryType.CRIBS),
-		buttonText: bannerButtonLabel(),
+		title: bannerTitle(),
+		label: bannerLabel(),
+		buttonText: bannerButtonText(),
 		bannerImageUrl: bannerImage(),
-		bannerImageAlt: 'car in motion',
+		bannerImageAlt: bannerImageAlt(),
 	});
 
 	const overlay = () => {

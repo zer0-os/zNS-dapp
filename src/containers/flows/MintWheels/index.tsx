@@ -10,12 +10,17 @@ import { Web3Provider } from '@ethersproject/providers';
 // Component Imports
 import { Banner, Overlay } from 'components';
 import MintWheels from './MintWheels';
-import { getMintBannerLabel } from 'components/Banners/Banner/BannerLabels/Labels';
+import {
+	getMintBannerLabel,
+	getMintBannerButtonText,
+	getBannerTitle,
+	getBannerImage,
+	getBannerImageAlt,
+} from 'components/Banners/Banner/BannerContent/BannerContent';
 import { BannerEventType, IndustryType } from 'components/Banners/Banner/utils';
 
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
-import { getBannerButtonText } from './labels';
 import { useMintProvider } from 'lib/providers/MintProvider';
 import {
 	getDropData,
@@ -23,8 +28,6 @@ import {
 	getNumberPurchasedByUser,
 	getERC20TokenBalance,
 } from './helpers';
-
-import banner from '../../../components/Banners/Banner/assets/banner.gif';
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
@@ -354,11 +357,16 @@ const MintWheelsFlowContainer = () => {
 	// Fragments //
 	///////////////
 
-	const bannerLabel = (industryType: IndustryType) => {
+	// Add a call to fetch IndustryType and BannerEventType - replace params below
+	const bannerTitle = () => {
+		return getBannerTitle(IndustryType.CRIBS, BannerEventType.MINT);
+	};
+
+	const bannerLabel = () => {
 		return failedToLoad
 			? 'Failed to load auction data - refresh to try again'
 			: getMintBannerLabel(
-					industryType,
+					IndustryType.CRIBS,
 					dropStage,
 					wheelsMinted,
 					wheelsTotal,
@@ -369,22 +377,26 @@ const MintWheelsFlowContainer = () => {
 			  );
 	};
 
-	const buttonText = () => {
+	const bannerButtonText = () => {
 		return failedToLoad || isSaleHalted
 			? 'Learn More'
-			: getBannerButtonText(dropStage, canOpenWizard);
+			: getMintBannerButtonText(IndustryType.CRIBS, dropStage, canOpenWizard);
 	};
 
 	const bannerImage = () => {
-		return banner;
+		return getBannerImage(IndustryType.CRIBS);
+	};
+
+	const bannerImageAlt = () => {
+		return getBannerImageAlt(IndustryType.CRIBS);
 	};
 
 	const getBannerData = () => ({
-		title: 'Get your ride for the Metaverse ',
-		label: bannerLabel(IndustryType.CRIBS),
-		buttonText: buttonText(),
+		title: bannerTitle(),
+		label: bannerLabel(),
+		buttonText: bannerButtonText(),
 		bannerImageUrl: bannerImage(),
-		bannerImageAlt: 'car in motion',
+		bannerImageAlt: bannerImageAlt(),
 	});
 
 	////////////
