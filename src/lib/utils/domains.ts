@@ -57,3 +57,9 @@ export const zNAToLink = (domain: string): string => {
 
 	return domain;
 };
+
+export const truncateAddress = (address: string) => {
+	return `${address.substring(0, 2)}...${address.substring(
+		address.length - 4,
+	)}`;
+};

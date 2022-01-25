@@ -93,7 +93,7 @@ const MintWheelsFlowContainer = () => {
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold) {
-			history.push('cribs.wiami.southbeach.qube');
+			history.push('/market/cribs.wiami.southbeach.qube');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -185,7 +185,6 @@ const MintWheelsFlowContainer = () => {
 			if (!saleContract) {
 				return;
 			}
-
 			// Get the data related to the drop
 			getDropData(saleContract)
 				.then((d) => {
