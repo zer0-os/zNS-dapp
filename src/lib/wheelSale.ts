@@ -153,7 +153,7 @@ export const purchaseWheels = async (
 			quantity,
 			claim.index,
 			claim.proof,
-			{ value }
+			{ value },
 		);
 	} else {
 		tx = await contract.purchaseDomains(quantity, { value });
