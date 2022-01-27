@@ -22,7 +22,7 @@ const WheelsRaffleContainer = () => {
 	// Hardcoded event times
 	const RAFFLE_START_TIME = 0;
 	const RAFFLE_END_TIME = 0;
-	const SALE_START_TIME = 1640138400000; //1640181600000;
+	const SALE_START_TIME = 1642644000655; //1640181600000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -72,7 +72,7 @@ const WheelsRaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/wilder-wheels-tier-c-getting-set-to-start-their-wengines-2/',
+				'https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/',
 				'_blank',
 			);
 		}
@@ -132,7 +132,7 @@ const WheelsRaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Wheels raffle - starting in{' '}
+					Get notified about the Wilder Kicks raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -200,8 +200,8 @@ const WheelsRaffleContainer = () => {
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
-								? 'Your Wheels for the Metaverse awaits'
-								: 'Get Early Access to Wilder Wheels'
+								? 'Your Kicks for the Metaverse await'
+								: 'Get Early Access to Wilder Kicks'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

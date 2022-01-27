@@ -9,7 +9,8 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
 		lootToken: '0x43b8219aC1883373C0428688eE1a76e19E6B6D9d',
 		zAuction: '0x05cBD37cA528B7ea50800aA80ddD0F9F30C952F0',
-		wheelSale: '0x19a55608f360f6Df69B7932dC2F65EDEFAa88Dc2', //  wheels
+		wheelSale: '0x6427CcA6CD4586ec7044Cc138158ba4Eb1633711', //  kicks
+		// wheelSale: '0x19a55608f360f6Df69B7932dC2F65EDEFAa88Dc2', //  wheels
 
 		stakeFactory: '0xF133faFd49f4671ac63EE3a3aE7E7C4C9B84cE4a',
 		lpToken: '0xcaA004418eB42cdf00cB057b7C9E28f0FfD840a5',
@@ -24,7 +25,9 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildToken: '0x50A0A3E9873D7e7d306299a75Dc05bd3Ab2d251F',
 		lootToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
 		zAuction: '0x18A804a028aAf1F30082E91d2947734961Dd7f89',
-		wheelSale: '0xa6A3321b743C31912263090275E24d8b1A50cFE8', // wheelstest2
+		wheelSale: '0xE744793F0Bd9FDB2d68a9aDd367d3FfE9E4bcE04', // kicks sale
+		// wheelSale: '0xa6A3321b743C31912263090275E24d8b1A50cFE8', // wheelstest2
+		// wheelSale: '0xa6A3321b743C31912263090275E24d8b1A50cFE8', // wheelstest2
 
 		// Staking dApp contracts
 		stakeFactory: '0x47946797E05A34B47ffE7151D0Fbc15E8297650E',
