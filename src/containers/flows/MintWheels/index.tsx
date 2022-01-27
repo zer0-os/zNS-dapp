@@ -92,8 +92,8 @@ const MintWheelsFlowContainer = () => {
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold || dropStage === Stage.Public) {
-			history.push('kicks.airwild.season1');
+		} else if (dropStage === Stage.Sold) {
+			history.push('/market/cribs.wiami.southbeach.qube');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -185,7 +185,6 @@ const MintWheelsFlowContainer = () => {
 			if (!saleContract) {
 				return;
 			}
-
 			// Get the data related to the drop
 			getDropData(saleContract)
 				.then((d) => {
@@ -421,14 +420,12 @@ const MintWheelsFlowContainer = () => {
 					/>
 				</Overlay>
 			)}
-			<div style={{ position: 'relative', marginBottom: 16 }}>
-				<MintWheelsBanner
-					title={'Get your Kicks for the Metaverse '}
-					label={bannerLabel()}
-					buttonText={buttonText()}
-					onClick={openWizard}
-				/>
-			</div>
+			<MintWheelsBanner
+				title={'Get your ride for the Metaverse '}
+				label={bannerLabel()}
+				buttonText={buttonText()}
+				onClick={openWizard}
+			/>
 		</>
 	);
 };

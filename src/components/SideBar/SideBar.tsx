@@ -1,30 +1,51 @@
-import React from 'react';
+import { FC } from 'react';
 
 import SideBarStyles from './SideBar.module.scss';
 
-import trendingIcon from './assets/trending.svg';
-import discoverIcon from './assets/discover.svg';
-import lendingIcon from './assets/lending.svg';
-import governanceIcon from './assets/governance.svg';
+import marketIcon from './assets/icon_market.svg';
+import stakingIcon from './assets/icon_staking.svg';
+import { useHistory } from 'react-router-dom';
 
-const SideBar: React.FC = () => {
+const SideBar: FC = () => {
+	const history = useHistory();
+	// Can't use route match without being inside a route
+
 	return (
 		<div className={SideBarStyles.SideBar}>
-			<div className={`${SideBarStyles.Navigator}  border-primary blur`}>
-				<ul className={SideBarStyles.Icons}>
-					<li key="trending">
-						<img alt="trending icon" src={trendingIcon} />
-					</li>
-					<li key="discover" className={SideBarStyles.Selected}>
-						<img alt="discover icon" src={discoverIcon} />
-					</li>
-					<li key="lending">
-						<img alt="lending icon" src={lendingIcon} />
-					</li>
-					<li key="governance">
-						<img alt="governance icon" src={governanceIcon} />
-					</li>
-				</ul>
+			<div className={SideBarStyles.Navigator}>
+				<div className={SideBarStyles.Icons}>
+					<div
+						className={SideBarStyles.Action}
+						key="market"
+						onClick={() => history.push('/market')}
+					>
+						<div
+							className={`${SideBarStyles.Hype} ${
+								history.location.pathname.indexOf('/market') > -1 &&
+								SideBarStyles.Selected
+							}`}
+						>
+							<img alt="market icon" src={marketIcon} />
+						</div>
+						{/* TODO: Fix overlaying issue with Name */}
+						<div className={SideBarStyles.Name}>Market</div>
+					</div>
+					<div
+						className={SideBarStyles.Action}
+						key="staking"
+						onClick={() => history.push('/staking')}
+					>
+						<div
+							className={`${SideBarStyles.Hype} ${
+								history.location.pathname.indexOf('/staking') > -1 &&
+								SideBarStyles.Selected
+							}`}
+						>
+							<img alt="staking icon" src={stakingIcon} />
+						</div>
+						<div className={SideBarStyles.Name}>Staking</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
