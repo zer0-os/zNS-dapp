@@ -17,8 +17,6 @@ const Deposits = () => {
 	const { active, account } = useWeb3React<Web3Provider>();
 	const { wildPriceUsd } = useCurrency();
 
-	console.log({ account });
-
 	const [totalRewardsClaimable, setTotalRewardsClaimable] =
 		useState<MaybeUndefined<ethers.BigNumber>>();
 
@@ -64,7 +62,6 @@ const Deposits = () => {
 			]).then(([lpStake, wildStake]) => {
 				if (!lpStake || !wildStake || !isMounted) {
 					// error handling
-					console.log(lpStake, wildStake, 'error');
 					return;
 				}
 				setTotalStakedUsd(
