@@ -9,6 +9,7 @@ type OptionDropdownProps = {
 	onSelect: (selection: string) => void;
 	children: React.ReactNode;
 	drawerStyle?: React.CSSProperties;
+	disableSelection?: boolean;
 };
 
 const OptionDropdown: React.FC<OptionDropdownProps> = ({
@@ -16,6 +17,7 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	onSelect,
 	children,
 	drawerStyle,
+	disableSelection,
 }) => {
 	//////////////////
 	// State & Refs //
@@ -77,11 +79,13 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 				<ul
 					ref={wrapperRef}
 					style={drawerStyle}
-					className={`${styles.Drawer} blur`}
+					className={`${styles.Drawer} border-rounded`}
 				>
 					{options.map((o) => (
 						<li
-							className={selected === o ? styles.Selected : ''}
+							className={
+								selected === o && !disableSelection ? styles.Selected : ''
+							}
 							onClick={() => select(o)}
 							key={o}
 						>

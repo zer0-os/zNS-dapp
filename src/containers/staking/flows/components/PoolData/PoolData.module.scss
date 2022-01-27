@@ -1,0 +1,9 @@
+.Stats {
+	> * {
+		flex: 1;
+
+		&:not(:first-of-type) {
+			margin-left: 16px;
+		}
+	}
+}
