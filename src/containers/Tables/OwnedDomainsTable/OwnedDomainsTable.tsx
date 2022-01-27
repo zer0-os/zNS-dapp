@@ -127,7 +127,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	};
 
 	const rowClick = (domain: Domain) => {
-		if (onNavigate) onNavigate(domain.name);
+		if (onNavigate) onNavigate(`/market/${domain.name.replace('wilder.', '')}`);
 	};
 
 	const isButtonActive = (row: any[]) => {
