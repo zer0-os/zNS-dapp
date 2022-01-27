@@ -39,7 +39,7 @@ const cx = classNames.bind(styles);
 // a file extension
 export const checkMediaType = (hash: string) => {
 	return new Promise((resolve, reject) => {
-		fetch('https://ipfs.fleek.co/ipfs/' + hash, { method: 'HEAD' })
+		fetch('https://gateway.ipfs.io/ipfs/' + hash, { method: 'HEAD' })
 			.then((r: Response) => {
 				const contentTypeHeader = r.headers.get('Content-Type');
 

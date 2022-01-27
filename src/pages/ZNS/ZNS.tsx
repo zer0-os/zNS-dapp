@@ -258,7 +258,7 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 			// If root view, slide up
 			to = {
 				opacity: 0,
-				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 12,
+				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 14,
 				marginBottom: 16,
 			};
 		}
@@ -301,15 +301,7 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 				/>
 			)}
 			{/* ZNS Content */}
-			{/* <BannerContainer isScrollDetectionDown={isScrollDetectionDown}> */}
-			{/* Temporarily removed Raffle */}
-			<WheelsRaffle />
-			{/* <MessageBanner
-						label="This is a banner message"
-						buttonText="CTA"
-						countdownTime={3634408000000}
-					/> */}
-			{/* </BannerContainer> */}
+			{/* <WheelsRaffle /> */}
 
 			{!isNftView && (
 				<div
@@ -317,6 +309,7 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 					style={{
 						background: 'var(--background-primary)',
 						overflow: 'hidden',
+						marginTop: 16,
 					}}
 				>
 					{previewCard()}
@@ -326,7 +319,10 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 			)}
 
 			{znsDomain && isNftView && (
-				<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
+				<Spring
+					from={{ opacity: 0, marginTop: 16 }}
+					to={{ opacity: 1, marginTop: 16 }}
+				>
 					{(styles) => (
 						<animated.div style={styles}>
 							<NFTView
