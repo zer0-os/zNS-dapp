@@ -8,9 +8,9 @@ const whitelistUriKovan =
 	'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
 
 const backupWhitelist =
-	'https://ipfs.io/ipfs/QmVbrj58sPDtY3hJpDJd6vEHU9kdWQ1j9fvVosuG9ThS3L';
+	'https://ipfs.io/ipfs/QmQvd9Z8eUn4emw1fhUtWD36vxj5RGXTHs658iQRK5PuSL';
 const whitelistUriMainnet =
-	'https://d3810nvssqir6b.cloudfront.net/cribs-sale-v2.json';
+	'https://d3810nvssqir6b.cloudfront.net/craft-whitelist.json';
 
 export interface WheelsWhitelistClaim {
 	index: number;
@@ -137,6 +137,8 @@ export const purchaseWheels = async (
 
 	let tx: Maybe<ethers.ContractTransaction>;
 
+	const value = (await contract.salePrice()).mul(quantity);
+
 	if (status === SaleStatus.WhitelistOnly) {
 		const userAddress = await contract.signer.getAddress();
 		const claim = await getUserClaim(userAddress, mainnet);
@@ -151,7 +153,7 @@ export const purchaseWheels = async (
 			claim.proof,
 		);
 	} else {
-		tx = await contract.purchaseDomains(quantity);
+		tx = await contract.purchaseDomains(quantity, { value });
 	}
 
 	return tx;
