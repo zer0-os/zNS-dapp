@@ -77,7 +77,9 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		if (c) {
 			//if user tries to connect metamask without provider
 			if (wallet === 'metamask' && !window.ethereum) {
-				addNotification('Start or get wallet provider and reload');
+				addNotification(
+					'Unable to find Metamask. Please check it is installed.',
+				);
 				setIsLoading(false);
 				return;
 			}

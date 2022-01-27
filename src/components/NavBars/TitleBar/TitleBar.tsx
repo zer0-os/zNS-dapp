@@ -79,7 +79,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 
 	const go = (to: string) => {
 		const relativeDomain = getRelativeDomainPath(to);
-		history.push(relativeDomain);
+		history.push('market/' + relativeDomain);
 	};
 
 	/////////////
