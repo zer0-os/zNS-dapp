@@ -72,7 +72,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 		title: 'Unlock Metadata?',
 		description: {
 			[DomainSettingsModalStatus.NORMAL]:
-				'Unlocking metadata is a blockchain transaction that will cost gas. Additional, optional, transactions are required to save chagnes and lock the metadata again.',
+				'Unlocking metadata is a blockchain transaction that will cost gas. Additional, optional, transactions are required to save changes and lock the metadata again.',
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
 				'Waiting wallet confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
