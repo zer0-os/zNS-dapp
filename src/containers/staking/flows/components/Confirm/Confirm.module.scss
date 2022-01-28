@@ -1,0 +1,25 @@
+.Container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+
+	> * {
+		padding: 0;
+
+		&:not(:first-child) {
+			margin-top: 40px;
+		}
+	}
+
+	.Buttons {
+		display: flex;
+
+		> * {
+			&:not(:first-child) {
+				margin-left: 32px;
+			}
+		}
+	}
+}

@@ -9,9 +9,11 @@
 	transition: filter var(--animation-time-medium) ease-in-out;
 	transition: transform var(--animation-time-medium) ease-in-out;
 
-	background: none;
+	background: var(--color-purple-lighter);
 	padding: 0;
 	text-align: left;
+
+	margin: 16px 0;
 }
 
 .Mobile {
@@ -49,8 +51,8 @@
 
 	background: linear-gradient(
 		90deg,
-		rgba(0, 0, 0, 0.6) 0%,
-		rgba(0, 0, 0, 0.4) 51.04%
+		rgba(0, 0, 0, 0.35) 0%,
+		rgba(0, 0, 0, 0) 51.04%
 	);
 
 	position: relative;
@@ -137,7 +139,7 @@
 
 @media only screen and (min-width: 900px) {
 	.Background {
-		opacity: 0.8;
+		opacity: 0.7;
 		background-position: 70%;
 	}
 }

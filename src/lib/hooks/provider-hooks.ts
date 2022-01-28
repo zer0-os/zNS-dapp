@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useWeb3React } from '@web3-react/core';
 
-import { injected } from '../connectors';
+import { injected, network } from '../connectors';
 import { connectorFromName } from 'components/ConnectToWallet/ConnectToWallet';
 import { AbstractConnector } from '@web3-react/abstract-connector';
 
@@ -36,7 +36,9 @@ export function useEagerConnect() {
 			setTried(true);
 		};
 
-		if (wallet) reConnectToWallet(wallet); //if was connected to a wallet
+		if (wallet) {
+			reConnectToWallet(wallet); //if was connected to a wallet
+		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // intentionally only running on mount (make sure it's only mounted once :))
