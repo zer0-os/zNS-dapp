@@ -17,6 +17,8 @@ header {
 	display: flex;
 	flex-direction: column;
 
+	z-index: 4;
+
 	width: 100%;
 
 	background: var(--color-background);
@@ -27,6 +29,10 @@ header {
 	transition: background-color var(--animation-time-medium) ease-in-out,
 		border var(--animation-time-medium) ease-in-out,
 		box-shadow var(--animation-time-medium) ease-in-out;
+}
+
+.Title {
+	margin-left: 16px;
 }
 
 .Hovered {

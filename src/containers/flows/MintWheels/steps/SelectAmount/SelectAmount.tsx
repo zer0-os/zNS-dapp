@@ -78,17 +78,17 @@ const SelectAmount = (props: SelectAmountProps) => {
 					`Please enter a number between 1 & ${props.maxPurchasesPerUser}`,
 				);
 			} else if (numWheels * EthPerWheel > props.balanceEth) {
-				setInputError(`You do not have enough WILD to mint ${numWheels} Cribs`);
+				setInputError(`You do not have enough ETH to mint ${numWheels} Kicks`);
 			} else if (numWheels > remainingUserWheels) {
 				setInputError(
-					`You have already minted ${props.numberPurchasedByUser}/${props.maxPurchasesPerUser} of the maximum allowed Cribs. Please choose a lower number`,
+					`You have already minted ${props.numberPurchasedByUser}/${props.maxPurchasesPerUser} of the maximum allowed Kicks. Please choose a lower number`,
 				);
 			} else if (numWheels > props.remainingWheels) {
 				if (props.remainingWheels === 1) {
-					setInputError(`There is only 1 Crib left in this drop`);
+					setInputError(`There is only 1 pair of Kicks left in this drop`);
 				} else {
 					setInputError(
-						`There are only ${props.remainingWheels} Cribs left in this drop`,
+						`There are only ${props.remainingWheels} pairs of Kicks left in this drop`,
 					);
 				}
 			}
@@ -126,13 +126,13 @@ const SelectAmount = (props: SelectAmountProps) => {
 			{props.numberPurchasedByUser < props.maxPurchasesPerUser && (
 				<form onSubmit={formSubmit}>
 					<p>
-						How many Cribs would you like to Mint? The number of Cribs you enter
-						will be minted in one transaction, saving on GAS fees. Each Crib
-						costs <b>{EthPerWheel} WILD</b>.
+						How many pairs of Kicks would you like to Mint? The number you enter
+						will be minted in one transaction, saving on GAS fees. Each pair of
+						Kicks costs <b>{EthPerWheel} ETH</b>.
 					</p>
 					<TextInput
 						onChange={onInputChange}
-						placeholder={`Number of Cribs (Maximum of ${props.maxPurchasesPerUser})`}
+						placeholder={`Number of pairs of Kicks (Maximum of ${props.maxPurchasesPerUser})`}
 						numeric
 						text={amount}
 					/>
@@ -180,7 +180,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 			{props.numberPurchasedByUser >= props.maxPurchasesPerUser && (
 				<p className={styles.Green} style={{ textAlign: 'center' }}>
 					You have already minted {props.numberPurchasedByUser}/
-					{props.maxPurchasesPerUser} Cribs
+					{props.maxPurchasesPerUser} Kicks
 				</p>
 			)}
 		</section>
