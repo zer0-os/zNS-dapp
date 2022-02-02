@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 
 // Library Imports
 import { Domain, DomainData } from 'lib/types';
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 
 // Component Imports
 import { Spinner } from 'components';

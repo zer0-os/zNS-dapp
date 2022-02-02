@@ -3,7 +3,7 @@ import React from 'react';
 
 // Library Imports
 import { useZnsContracts } from 'lib/contracts';
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
 
