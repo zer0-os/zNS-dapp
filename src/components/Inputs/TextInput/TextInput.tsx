@@ -7,7 +7,6 @@ import autoHeight from 'autosize';
 
 //- Style Imports
 import styles from './TextInput.module.scss';
-import classNames from 'classnames';
 
 //- Local Imports
 import { isAlphanumeric, isNumber } from './validation';
@@ -16,7 +15,6 @@ type TextInputProps = {
 	alphanumeric?: boolean; // No symbols
 	autosize?: boolean;
 	className?: string;
-	disabled?: boolean;
 	error?: boolean;
 	errorText?: string;
 	lowercase?: boolean; // Lowercase only
@@ -31,13 +29,10 @@ type TextInputProps = {
 	type?: string;
 };
 
-const cx = classNames.bind(styles);
-
 const TextInput: React.FC<TextInputProps> = ({
 	alphanumeric,
 	autosize,
 	className,
-	disabled,
 	error,
 	errorText,
 	lowercase,
@@ -100,9 +95,9 @@ const TextInput: React.FC<TextInputProps> = ({
 		<>
 			{multiline && (
 				<textarea
-					className={cx(className, styles.TextInput, 'border-blue', {
-						Error: error,
-					})}
+					className={`${styles.TextInput} border-blue ${
+						error ? styles.Error : ''
+					} ${className || ''}`}
 					ref={textArea}
 					onChange={handleChange}
 					style={{
@@ -111,20 +106,18 @@ const TextInput: React.FC<TextInputProps> = ({
 					}}
 					placeholder={placeholder}
 					value={text ? text : ''}
-					disabled={disabled}
 				/>
 			)}
 			{!multiline && (
 				<input
 					type={type ? type : ''}
-					className={cx(className, styles.TextInput, 'border-blue', {
-						Error: error,
-					})}
+					className={`${styles.TextInput} border-blue ${
+						error ? styles.Error : ''
+					} ${className || ''}`}
 					onChange={handleChange}
 					style={style}
 					placeholder={placeholder}
 					value={text ? text : ''}
-					disabled={disabled}
 				/>
 			)}
 			{error && errorText && (

@@ -2,10 +2,10 @@ import { Spinner } from 'components';
 import styles from './StatsWidget.module.scss';
 
 const StatsWidget: React.FC<{
-	fieldName: string | React.ReactNode;
-	title?: string | number | React.ReactNode;
-	subTitle?: string | React.ReactNode;
-	accentText?: string | React.ReactNode;
+	fieldName: string;
+	title?: string | number;
+	subTitle?: string;
+	accentText?: string;
 	isLoading?: boolean;
 	style?: React.CSSProperties;
 	className: string;

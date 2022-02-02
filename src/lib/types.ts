@@ -3,7 +3,6 @@
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
-export type MaybeUndefined<T> = T | undefined;
 
 export interface Account {
 	id: string;
@@ -27,7 +26,6 @@ interface Meta {
 	previewImage?: string; // One of: Image, Video
 	image_full?: string;
 	attributes?: Attribute[];
-	animation_url?: string;
 }
 
 export interface Attribute {
@@ -74,7 +72,6 @@ export interface DisplayDomain extends Domain {
 	description: Maybe<string>;
 	title: Maybe<string>;
 	image_full?: Maybe<string>;
-	animation_url?: Maybe<string>;
 }
 
 export interface DisplayParentDomain extends DisplayDomain {

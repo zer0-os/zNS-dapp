@@ -5,6 +5,7 @@ import { MintWheels } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 import useAsyncEffect from 'use-async-effect';
+import { getCurrentBlock } from 'lib/wheelSale';
 
 const WheelsRaffleContainer = () => {
 	//////////////////
@@ -14,17 +15,19 @@ const WheelsRaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	// const RAFFLE_START_TIME = currentTime - 10000;
-	// const RAFFLE_END_TIME = currentTime - 10000;
+	// const RAFFLE_START_TIME = currentTime + 10000;
+	// const RAFFLE_END_TIME = currentTime + 20000;
 	// const SALE_START_TIME = currentTime + 10000;
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
-	const RAFFLE_START_TIME = 0;
-	const RAFFLE_END_TIME = 0;
-	const SALE_START_TIME = 1642644000655; //1640181600000;
+	const RAFFLE_START_TIME = 1637870400000;
+	const RAFFLE_END_TIME = 1638043200000;
+	const SALE_START_TIME = 1638579600000;
+	const SALE_START_BLOCK = 13719840;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [currentBlock, setCurrentBlock] = useState<number>(0);
 
 	const [hasRaffleStarted, setHasRaffleStarted] = useState<boolean>(
 		currentTime >= RAFFLE_START_TIME,
@@ -60,7 +63,7 @@ const WheelsRaffleContainer = () => {
 
 	const onFinishSaleStartCountdown = () => {
 		setHasSaleCountDownEnded(true);
-		// setHasSaleStarted(currentBlock >= SALE_START_BLOCK);
+		setHasSaleStarted(currentBlock >= SALE_START_BLOCK);
 	};
 
 	const handleResize = () => {
@@ -72,7 +75,7 @@ const WheelsRaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/',
+				'https://zine.wilderworld.com/introducing-wilder-cribs-a-place-to-call-home-in-the-metaverse/',
 				'_blank',
 			);
 		}
@@ -91,9 +94,15 @@ const WheelsRaffleContainer = () => {
 	}, []);
 
 	useAsyncEffect(async () => {
+		const { number: block } = await getCurrentBlock();
+		setCurrentBlock(block);
+
 		const interval = setInterval(async () => {
-			setHasSaleStarted(Date.now() >= SALE_START_TIME);
-			if (Date.now() >= SALE_START_TIME) {
+			const { number: block } = await getCurrentBlock();
+			setHasSaleStarted(
+				currentTime >= SALE_START_TIME && block >= SALE_START_BLOCK,
+			);
+			if (SALE_START_BLOCK >= block) {
 				clearInterval(interval);
 			}
 		}, 13000);
@@ -108,7 +117,7 @@ const WheelsRaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Sale starting in{' '}
+					Whitelist sale starting in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -132,7 +141,7 @@ const WheelsRaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Kicks raffle - starting in{' '}
+					Get notified about the Wilder Cribs raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -200,8 +209,8 @@ const WheelsRaffleContainer = () => {
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
-								? 'Your Kicks for the Metaverse await'
-								: 'Get Early Access to Wilder Kicks'
+								? 'Your Crib for the Metaverse awaits'
+								: 'Get Early Access to Wilder Cribs'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

@@ -1,29 +1,23 @@
 .SideBar {
-	top: calc(29px + 54px + 16px);
-	width: 54px;
+	height: 100vh;
+	width: 56px;
 
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 
 	position: fixed;
+	top: 0;
 
 	transform: translateX(calc(-100% - 19px));
-	z-index: 500;
-
-	&:hover {
-		.Icons {
-			pointer-events: all;
-		}
-	}
 }
 
+/* Navigator Styling */
 .Navigator {
 	border-radius: 27px;
-	padding: 7px 4px;
-	border: 1px solid var(--color-purple-lighter);
+	padding: 7px 5px;
 
-	background-color: var(--color-purple-darkest);
+	background-color: #4e008466;
 }
 
 .Icons {
@@ -31,112 +25,71 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	position: relative;
-
-	overflow: hidden;
-	padding-right: 200px;
-	padding-left: 22px;
-
-	pointer-events: none;
-
-	& .Action:hover .Name {
-		left: 54px;
-	}
-
-	.Name {
-		transition: all var(--animation-time-medium) ease-in-out;
-		pointer-events: none;
-		position: absolute;
-		top: 0;
-		height: 32px;
-		left: -200px;
-		margin: 6px 0;
-		background-color: var(--color-purple-dark);
-		padding: 8px 16px;
-		border-radius: 16px;
-		box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
-		font-size: var(--font-size-smaller);
-	}
 }
 
-.Icons .Action {
+.Icons li {
 	position: relative;
 	height: 44px;
 	width: 44px;
 
-	background-color: #00d1ff1a;
 	border-radius: 50%;
-	background: var(--color-cosmic-gradient-25);
+	background-color: #00d1ff1a;
 
 	cursor: pointer;
-	transition: all var(--animation-time-medium) ease-in-out;
 
-	& img {
-		height: 100%;
-		width: 100%;
-	}
+	transition: transform var(--animation-time-medium) ease-in-out;
+}
 
-	&:not(:first-child) {
-		margin-top: 12px;
-	}
+.Icons li > img {
+	height: 100%;
+	width: 100%;
+}
 
-	.Hype {
-		border-radius: 50%;
-		overflow: hidden;
-		z-index: 3;
-		height: 100%;
+.Icons li:hover {
+	transform: scale(1.2);
+}
 
-		&::after,
-		&::before {
-			z-index: -5;
-			transition: all var(--animation-time-medium) ease-in-out;
-		}
+.Icons li::after,
+.Icons li::before {
+	z-index: -5;
+}
 
-		&.Selected {
-			transform: scale(1);
+.Icons li::before {
+	content: ' ';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 0px;
+	height: 0px;
+	box-shadow: 0px 0px 30px 15px rgba(0, 178, 255);
+	transform: translate(-50%, -50%);
+	transition: box-shadow var(--animation-time-medium) ease-in-out;
+}
 
-			&::before {
-				content: ' ';
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				width: 0px;
-				height: 0px;
-				box-shadow: 0px 0px 36px 12px rgb(136, 219, 255);
-				transform: translate(-50%, -50%);
-				transition: box-shadow var(--animation-time-short) ease-in-out;
-			}
+.Icons li:hover::before {
+	box-shadow: 0px 0px 25px 12px rgb(136, 219, 255);
+}
 
-			&::after {
-				content: ' ';
-				position: absolute;
-				width: calc(100% - 4px);
-				height: calc(100% + 2px);
-				margin: -1px 0;
-				top: 0;
-				left: 0;
-				border-radius: inherit;
-				border-style: solid;
-				border-width: 0 2px;
-				border-color: var(--color-accent-blue-100);
-				transition: border-color var(--animation-time-short) ease-in-out;
-				z-index: 1;
-			}
-		}
-	}
+.Icons li:not(:first-child) {
+	margin-top: 12px;
+}
 
-	&:hover {
-		transform: scale(1);
-		background: var(--color-azure-gradient-25);
+.Selected:hover {
+	transform: scale(1) !important;
+}
 
-		.Hype {
-			&::before {
-				box-shadow: 0px 0px 25px 12px rgb(136, 219, 255);
-			}
+.Selected::before {
+	box-shadow: 0px 0px 30px 20px rgba(0, 178, 255) !important;
+}
 
-			&::after {
-				border-color: var(--color-accent-blue-100);
-			}
-		}
-	}
+.Selected::after {
+	content: ' ';
+	position: absolute;
+	top: 0;
+	left: -3px;
+	width: calc(100%);
+	border-radius: 50%;
+	height: 100%;
+	border-left: 3px var(--color-accent-1) solid;
+	border-right: 3px var(--color-accent-1) solid;
 }

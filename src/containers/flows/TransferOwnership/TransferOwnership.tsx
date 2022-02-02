@@ -131,7 +131,9 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 						<div className={styles.Details}>
 							<h2 className="glow-text-white">{name}</h2>
 							<span>
-								{domainName.length > 0 ? `0://wilder.${domainName}` : ''}
+								{domainName.length > 0
+									? `0://wilder.${domainName.substring(1)}`
+									: ''}
 							</span>
 
 							<div className={styles.Price}>

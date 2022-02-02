@@ -4,7 +4,7 @@ import styles from './LoadingIndicator.module.scss';
 
 type LoadingIndicatorProps = {
 	style?: React.CSSProperties;
-	text: string | React.ReactNode;
+	text: string;
 };
 
 const LoadingIndicator = (props: LoadingIndicatorProps) => {

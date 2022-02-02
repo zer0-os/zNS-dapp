@@ -5,14 +5,12 @@ import { RPC_URLS } from './connectors';
 import { Maybe } from './types';
 
 const whitelistUriKovan =
-	'https://ipfs.io/ipfs/QmeTHvtancDwS2UC4SshQsS89dveLi171pGLc6b1GLxLDM';
-// const whitelistUriKovan =
-// 'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
+	'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
 
 const backupWhitelist =
-	'https://ipfs.fleek.co/ipfs/QmUVyU4NYiVbAJtQMYjx67bmf9aMTLWrjwn2mYLSWQ22TX';
+	'https://ipfs.io/ipfs/QmVbrj58sPDtY3hJpDJd6vEHU9kdWQ1j9fvVosuG9ThS3L';
 const whitelistUriMainnet =
-	'https://d3810nvssqir6b.cloudfront.net/airwilds1whitelist.json';
+	'https://d3810nvssqir6b.cloudfront.net/cribs-sale-v2.json';
 
 export interface WheelsWhitelistClaim {
 	index: number;
@@ -139,8 +137,6 @@ export const purchaseWheels = async (
 
 	let tx: Maybe<ethers.ContractTransaction>;
 
-	const value = (await contract.salePrice()).mul(quantity);
-
 	if (status === SaleStatus.WhitelistOnly) {
 		const userAddress = await contract.signer.getAddress();
 		const claim = await getUserClaim(userAddress, mainnet);
@@ -153,10 +149,9 @@ export const purchaseWheels = async (
 			quantity,
 			claim.index,
 			claim.proof,
-			{ value },
 		);
 	} else {
-		tx = await contract.purchaseDomains(quantity, { value });
+		tx = await contract.purchaseDomains(quantity);
 	}
 
 	return tx;

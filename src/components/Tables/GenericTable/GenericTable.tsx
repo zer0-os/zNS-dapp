@@ -7,7 +7,7 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
 type GenericTableHeader = {
-	label: string | React.ReactNode;
+	label: string;
 	accessor?: string;
 	className?: string;
 };
@@ -28,9 +28,6 @@ const GenericTable = (props: any) => {
 
 	const rawData = props.data;
 	const chunkSize = isGridView ? 6 : 12;
-
-	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
-	const shouldShowSearchBar = !props.notSearchable;
 
 	// Handler for infinite scroll trigger
 	const {
@@ -177,7 +174,7 @@ const GenericTable = (props: any) => {
 
 	// Grid View container & cards
 	const GridView = useMemo(() => {
-		if (!rawData || !props.gridComponent) {
+		if (!rawData) {
 			return <></>;
 		}
 		const data = props.infiniteScroll
@@ -217,33 +214,27 @@ const GenericTable = (props: any) => {
 	return (
 		<div className={styles.Container} style={props.style}>
 			<div ref={contentRef} className={styles.Content}>
-				{(shouldShowSearchBar || shouldShowViewToggle) && (
-					<div className={styles.Controls}>
-						{shouldShowSearchBar && (
-							<SearchBar
-								placeholder="Search by domain name"
-								onChange={onSearchBarUpdate}
-								style={{ width: '100%', marginRight: 16 }}
-							/>
-						)}
-						{shouldShowViewToggle && (
-							<div className={styles.Buttons}>
-								<IconButton
-									onClick={() => setIsGridView(false)}
-									toggled={!isGridView}
-									iconUri={list}
-									style={{ height: 32, width: 32 }}
-								/>
-								<IconButton
-									onClick={() => setIsGridView(true)}
-									toggled={isGridView}
-									iconUri={grid}
-									style={{ height: 32, width: 32 }}
-								/>
-							</div>
-						)}
+				<div className={styles.Controls}>
+					<SearchBar
+						placeholder="Search by domain name"
+						onChange={onSearchBarUpdate}
+						style={{ width: '100%', marginRight: 16 }}
+					/>
+					<div className={styles.Buttons}>
+						<IconButton
+							onClick={() => setIsGridView(false)}
+							toggled={!isGridView}
+							iconUri={list}
+							style={{ height: 32, width: 32 }}
+						/>
+						<IconButton
+							onClick={() => setIsGridView(true)}
+							toggled={isGridView}
+							iconUri={grid}
+							style={{ height: 32, width: 32 }}
+						/>
 					</div>
-				)}
+				</div>
 				{!props.isLoading && (isGridView ? GridView : ListView)}
 				{props.isLoading && (
 					<div className={styles.Loading}>

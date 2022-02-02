@@ -84,9 +84,7 @@ const RegistrationContainer = () => {
 		const signer = library.getSigner();
 		let signedBid: Maybe<string>;
 		try {
-			signedBid = await signer?.signMessage(
-				'Wilder Crafts Raffle Registration',
-			);
+			signedBid = await signer?.signMessage('Wilder Cribs Raffle Registration');
 		} catch {
 			throw new Error('Failed to sign message');
 		}

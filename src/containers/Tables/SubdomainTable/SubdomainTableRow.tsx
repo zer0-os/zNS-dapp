@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { BidButton } from 'containers';
 import { ethers } from 'ethers';
-import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { formatNumber, formatEthers } from 'lib/utils';
 
 const SubdomainTableRow = (props: any) => {
@@ -163,7 +163,7 @@ const SubdomainTableRow = (props: any) => {
 	const onRowClick = (event: any) => {
 		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
 		if (!clickedButton) {
-			goTo(`/market/${domain.name.split('wilder.')[1]}`);
+			goTo(domain.name.split('wilder.')[1]);
 		}
 	};
 

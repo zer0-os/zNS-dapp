@@ -18,9 +18,10 @@ import { GenericTable, Overlay } from 'components';
 import { MakeABid } from 'containers';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DisplayDomain } from 'lib/types';
-import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
 
 type SubdomainTableProps = {
+	domainName: string;
 	isNftView?: boolean;
 	style?: React.CSSProperties;
 };

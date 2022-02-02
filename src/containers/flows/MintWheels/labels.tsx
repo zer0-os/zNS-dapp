@@ -3,7 +3,7 @@ import { Countdown } from 'components';
 
 const totalLabel = (wheelsMinted: number, wheelsTotal: number) => (
 	<span>
-		<b>{Math.max(wheelsTotal - wheelsMinted, 0)} Remaining</b>
+		<b>{wheelsTotal - wheelsMinted} Remaining</b>
 	</span>
 );
 
@@ -14,11 +14,11 @@ export const getBannerButtonText = (
 	if (!isDesktopBreakpoint) {
 		return 'Learn More';
 	}
-	if (dropStage === Stage.Whitelist) {
+	if (dropStage === Stage.Public || dropStage === Stage.Whitelist) {
 		return 'Mint Now';
 	}
-	if (dropStage === Stage.Public || dropStage === Stage.Sold) {
-		return 'See Kicks';
+	if (dropStage === Stage.Sold) {
+		return 'See Cribs';
 	}
 
 	return 'Learn More';
@@ -35,26 +35,26 @@ export const getBannerLabel = (
 	if (dropStage === Stage.Upcoming) {
 		return (
 			<>
-				Wilder Kicks whitelist release starting - waiting for contract to begin
+				Wilder Cribs whitelist release starting - waiting for contract to begin
 			</>
 		);
 	}
 	if (dropStage === Stage.Whitelist) {
 		if (isFinished) {
-			<>Wilder Kicks public release starting - you may need to refresh</>;
+			<>Wilder Cribs public release starting - you may need to refresh</>;
 		} else {
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<span>
-						Wilder Kicks now available for whitelisted supporters{' '}
+						Wilder Cribs now available for whitelisted supporters{' '}
 						{totalLabel(wheelsMinted!, wheelsTotal!)}
 					</span>
-					{/* <span style={{ marginTop: 4 }}>
+					<span style={{ marginTop: 4 }}>
 						Available to public in{' '}
 						{countdownDate && (
 							<Countdown to={countdownDate} onFinish={onFinish} />
 						)}
-					</span> */}
+					</span>
 				</div>
 			);
 		}
@@ -82,37 +82,23 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					Wilder Kicks now available for whitelisted supporters{' '}
+					Wilder Cribs now available for whitelisted supporters{' '}
 					{totalLabel(wheelsMinted!, wheelsTotal!)}
 				</span>
 				{timer}
 			</div>
 		);
 	}
-	// if (dropStage === Stage.Public) {
-	// 	return (
-	// 		<>
-	// 			Minting is now open to everyone, act fast to secure your Kicks!{' '}
-	// 			{totalLabel(wheelsMinted!, wheelsTotal!)}
-	// 		</>
-	// 	);
-	// }
-	if (
-		dropStage === Stage.Public &&
-		Math.max(wheelsTotal! - wheelsMinted!, 0) !== 0
-	) {
+	if (dropStage === Stage.Public) {
 		return (
 			<>
-				The Air Wild Season One sale is finished.{' '}
-				{Math.max(wheelsTotal! - wheelsMinted!, 0)} remaining pairs have been
-				transferred to the Wilder DAO.
+				Minting is now open to everyone, act fast to secure your Cribs!{' '}
+				{totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);
 	}
 	if (dropStage === Stage.Sold) {
-		// return <>All {wheelsTotal} Kicks have been minted</>;
-		return <>Air Wild Season One is sold out!</>;
+		return <>All {wheelsTotal} Cribs have been minted</>;
 	}
-
 	return <>Loading drop data...</>;
 };

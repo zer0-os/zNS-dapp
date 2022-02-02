@@ -1,5 +1,4 @@
-import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import React, { useMemo, useRef } from 'react';
+import React from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -7,45 +6,45 @@ import styles from './ZNALink.module.scss';
 
 type ZNAProps = {
 	className?: string;
+	domain: string;
 	style?: React.CSSProperties;
 };
 
-const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
-	const globalDomain = useCurrentDomain();
-	const oldDomainRef = useRef('');
-
-	const parsedDomain = useMemo(() => {
-		if (!globalDomain.domain?.name) {
-			return oldDomainRef.current;
-		} else {
-			oldDomainRef.current = globalDomain.domain?.name;
-			return globalDomain.domain?.name;
-		}
-	}, [globalDomain.domain]);
-
+const ZNALink: React.FC<ZNAProps> = ({ className, domain, style }) => {
 	return (
 		<div
 			className={`${styles.ZNALink} ${className ? className : ''}`}
 			style={style}
 		>
 			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
-			{parsedDomain.split('.').map((part, i) => {
-				const linkTarget =
-					part === 'wilder'
-						? ''
-						: `/${parsedDomain
-								.split('.')
-								.slice(0, i + 1)
-								.join('.')
-								.replace('wilder.', '')}`;
-				return (
+			<Link style={{ textDecoration: 'none', color: 'white' }} to={''}>
+				wilder{domain.split('').length <= 1 ? '' : '.'}
+			</Link>
+
+			{domain !== '/' && <span className={styles.Dots}>..</span>}
+			{domain.split('.').map((part, i) => {
+				if (part === '/') return '';
+				return i === 0 ? (
 					<Link
 						key={i + part}
 						style={{ textDecoration: 'none', color: 'white' }}
-						to={`${globalDomain.app}${linkTarget}`}
+						to={part}
 					>
-						{i > 0 ? `.${part}` : part}
+						{part.charAt(0) === '/' ? part.substring(1, part.length) : part}
 					</Link>
+				) : (
+					<>
+						<Link
+							key={i + part}
+							style={{ textDecoration: 'none', color: 'white' }}
+							to={domain
+								.split('.')
+								.slice(0, i + 1)
+								.join('.')}
+						>
+							{i > 0 ? `.${part}` : part}
+						</Link>
+					</>
 				);
 			})}
 		</div>

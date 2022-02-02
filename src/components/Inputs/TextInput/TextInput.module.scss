@@ -6,28 +6,19 @@
 
 	color: white;
 
-	background: none;
+	background: var(--background-field-bg);
 	transition: border var(--animation-time-medium) ease-in-out;
-
-	&::placeholder {
-		color: #dedede;
-	}
-
-	&:disabled {
-		border-color: var(--color-grey);
-		color: var(--color-grey);
-
-		&::placeholder {
-			color: var(--color-grey);
-		}
-	}
 }
 
 .Error {
 	border: 1px solid var(--color-invalid);
 }
 
-.TextInput .ErrorMessage {
+.TextInput::placeholder {
+	color: #dedede;
+}
+
+.ErrorMessage {
 	display: block;
 	margin-top: 12px;
 

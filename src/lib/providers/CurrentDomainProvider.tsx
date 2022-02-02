@@ -1,5 +1,5 @@
 // React Imports
-import React, { useContext } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 // Web3 Imports
@@ -9,25 +9,17 @@ import { getDomainId } from 'lib/utils';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
-	domainId: '',
-	domainRaw: '/',
-	app: '',
 	loading: true,
 	refetch: () => {}, // @todo update this
 });
 
-const parseDomainFromURI = (pathname: string) => {
-	if (pathname.startsWith('/market')) {
-		return (
-			pathname.replace('/market', '') === ''
-				? '/'
-				: pathname.replace('/market', '')
-		).substring(1);
-	}
-	return '';
+type CurrentDomainProviderType = {
+	children: React.ReactNode;
 };
 
-const CurrentDomainProvider: React.FC = ({ children }) => {
+const CurrentDomainProvider: React.FC<CurrentDomainProviderType> = ({
+	children,
+}) => {
 	//////////////////////////
 	// Hooks & State & Data //
 	//////////////////////////
@@ -36,15 +28,12 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 	const { location } = useHistory();
 
 	// Get current domain details from web3 hooks
-	const domain = parseDomainFromURI(location.pathname);
+	const domain = location.pathname.substring(1);
 	const domainId = getDomainId(domain);
 	const znsDomain = useZnsDomain(domainId);
 
 	const contextValue = {
 		domain: znsDomain.domain,
-		domainId,
-		domainRaw: domain,
-		app: location.pathname.indexOf('/market') > -1 ? '/market' : '/staking',
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,
 	};
@@ -59,5 +48,6 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 export default CurrentDomainProvider;
 
 export function useCurrentDomain() {
-	return useContext(CurrentDomainContext);
+	const { domain, loading, refetch } = React.useContext(CurrentDomainContext);
+	return { domain, loading, refetch };
 }
