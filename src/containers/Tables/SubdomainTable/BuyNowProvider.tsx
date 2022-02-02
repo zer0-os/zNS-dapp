@@ -12,7 +12,7 @@ export const BuyNowContext = React.createContext({
 	closeBuyNow: () => {
 		return;
 	},
-	buyPlaced: () => {
+	buyFinished: () => {
 		return;
 	},
 	updated: undefined as Maybe<Domain>,
@@ -38,7 +38,7 @@ const BuyNowProvider: React.FC<BuyNowProviderType> = ({ children }) => {
 		setBuyingOn(undefined);
 	};
 
-	const buyPlaced = () => {
+	const buyFinished = () => {
 		setUpdated(buyingOn);
 		setBuyingOn(undefined);
 
@@ -52,7 +52,7 @@ const BuyNowProvider: React.FC<BuyNowProviderType> = ({ children }) => {
 		domain: buyingOn,
 		makeABuy,
 		closeBuyNow,
-		buyPlaced,
+		buyFinished,
 		updated,
 	};
 
@@ -66,7 +66,7 @@ const BuyNowProvider: React.FC<BuyNowProviderType> = ({ children }) => {
 export default BuyNowProvider;
 
 export function useBuyNow() {
-	const { buyPlaced, updated, domain, makeABuy, closeBuyNow } =
+	const { buyFinished, updated, domain, makeABuy, closeBuyNow } =
 		React.useContext(BuyNowContext);
-	return { buyPlaced, updated, domain, makeABuy, closeBuyNow };
+	return { buyFinished, updated, domain, makeABuy, closeBuyNow };
 }
