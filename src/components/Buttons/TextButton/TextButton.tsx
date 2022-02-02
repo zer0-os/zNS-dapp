@@ -7,7 +7,7 @@ export const TEST_ID = {
 };
 type TextButtonProps = {
 	className?: string;
-	onClick?: () => any;
+	onClick?: () => any | void;
 	style?: React.CSSProperties;
 	toggleable?: boolean;
 	selected?: boolean;
