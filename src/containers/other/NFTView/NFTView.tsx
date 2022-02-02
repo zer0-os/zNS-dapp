@@ -95,6 +95,8 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [buyNowPrice, setBuyNowPrice] = useState<string | undefined>();
 	const [buyNowPriceUsd, setBuyNowPriceUsd] = useState<number | undefined>();
 	const [isBuyOverlayOpen, setIsBuyOverlayOpen] = useState(false);
+	const [isBuyNowFinishedSuccesfully, setBuyNowFinishedSuccefully] =
+		useState(false);
 
 	//- Web3 Domain Data
 	const domainId = getDomainId(domain.substring(1));
@@ -242,6 +244,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		closeBidOverlay();
 	};
 
+	const onBuy = async () => {
+		closeBuyOverlay();
+		setBuyNowFinishedSuccefully(true);
+	};
+
 	const getHistory = async () => {
 		if (znsDomain.domain) {
 			try {
@@ -289,14 +296,14 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		else setContainerHeight(0);
 	};
 
+	/////////////
+	// Effects //
+	/////////////
+
 	useEffect(() => {
 		checkHeight();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isShowMoreAtrributes]);
-
-	/////////////
-	// Effects //
-	/////////////
 
 	useEffect(() => {
 		if (!highestBid) {
@@ -371,7 +378,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [znsDomain.domain]);
+	}, [znsDomain.domain, isBuyNowFinishedSuccesfully]);
 
 	const nftStats = () => {
 		let width = '24.2%';
@@ -485,7 +492,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					</Overlay>
 				) : (
 					<Overlay onClose={closeBuyOverlay} open={isBuyOverlayOpen}>
-						<MakeABuy domain={znsDomain.domain} />
+						<MakeABuy domain={znsDomain.domain} onBuy={onBuy} />
 					</Overlay>
 				))}
 		</>
@@ -547,7 +554,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				</div>
 			)}
 			<div className={styles.Buttons}>
-				{isOwnedByYou && (
+				{isOwnedByYou && !buyNowPrice && (
 					<FutureButton
 						glow={isOwnedByYou}
 						onClick={() => isOwnedByYou && onTransfer()}

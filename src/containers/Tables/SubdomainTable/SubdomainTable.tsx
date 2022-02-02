@@ -36,7 +36,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	const { domain, loading } = useCurrentDomain();
 
 	const { domain: biddingOn, close, bidPlaced } = useBid();
-	const { domain: buyingOn, closeBuyNow, buyPlaced } = useBuyNow();
+	const { domain: buyingOn, closeBuyNow, buyFinished } = useBuyNow();
 
 	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
 	const [data, setData] = useState<
@@ -45,6 +45,8 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 		  })[]
 		| undefined
 	>();
+	const [isBuyNowFinishedSuccesfully, setBuyNowFinishedSuccesfully] =
+		useState(false);
 
 	useAsyncEffect(async () => {
 		let isMounted = true;
@@ -107,7 +109,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 		return () => {
 			isMounted = false;
 		};
-	}, [domain]);
+	}, [domain, isBuyNowFinishedSuccesfully]);
 
 	const headers = [
 		{
@@ -156,7 +158,13 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			)}
 			{buyingOn !== undefined && (
 				<Overlay onClose={closeBuyNow} open={buyingOn !== undefined}>
-					<MakeABuy domain={buyingOn} onBuy={buyPlaced} />
+					<MakeABuy
+						domain={buyingOn!}
+						onBuy={() => {
+							buyFinished();
+							setBuyNowFinishedSuccesfully(true);
+						}}
+					/>
 				</Overlay>
 			)}
 			<GenericTable
