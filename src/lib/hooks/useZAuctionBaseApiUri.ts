@@ -10,6 +10,8 @@ export function useZAuctionBaseApiUri(chain: number): string | undefined {
 			switch (chain) {
 				case 1:
 					return 'https://mainnet.zauction.api.zero.tech/api';
+				case 4:
+					return 'https://zauction-api-rinkeby.herokuapp.com/api';
 				case 42:
 					return 'https://zauction-kovan-api.herokuapp.com/api';
 				default:
