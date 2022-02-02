@@ -1,0 +1,47 @@
+.Container {
+	width: 100%;
+	padding: 32px;
+	background: var(--color-purple-dark);
+
+	button {
+		width: 100%;
+
+		margin-top: 41px;
+	}
+
+	hr {
+		margin-top: 26px;
+		border: 0;
+		height: 1px;
+		background: linear-gradient(
+			270deg,
+			rgba(82, 87, 255, 0.5) 0%,
+			rgba(82, 203, 255, 0.5) 100%
+		);
+	}
+}
+
+.Balance {
+	margin-top: 32px;
+
+	.Tokens {
+		font-size: 18px;
+		display: block;
+	}
+
+	.Fiat {
+		font-size: var(--font-size-small);
+		display: block;
+	}
+
+	> span {
+		font-size: var(--font-size-small);
+		color: var(--color-grey-lighter-2);
+	}
+
+	.Amounts {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+	}
+}

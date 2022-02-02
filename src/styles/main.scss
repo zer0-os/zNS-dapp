@@ -21,12 +21,13 @@
 :root {
 	--font-size-default: 16px;
 	--font-size-smaller: 14px;
+	--font-size-small: 12px;
 	--font-family: 'Inter', serif;
 
 	--color-primary: #8c00ff;
 	--color-primary-lighter-3: #e5baff;
 	--color-primary-darkest: #8c00ff;
-	--color-accent-1: #3ca1ff;
+	--color-accent-1: #52cbff;
 	--color-accent-1-30: #9ed0ff;
 	--color-accent-1-50: rgba(60, 161, 255, 0.5);
 	--color-accent-1-dark: #1e5180;
@@ -45,31 +46,15 @@
 
 	--color-purple-darkest: #10052e;
 	--color-purple-dark: #1d0c4a;
+	--color-purple-medium: #1d154a;
 	--color-purple-light: #29175a;
 	--color-purple-lighter: #50207b;
 	--color-purple-lightest: #c169ff;
-	--color-purple-gradient-darker: linear-gradient(
-		180deg,
-		#1c4358 0%,
-		#2a0047 100%
-	);
 
 	--color-black: #000000;
-	--color-black-gradient-30: linear-gradient(
-		90deg,
-		rgba(0, 0, 0, 0.35) 0%,
-		rgba(0, 0, 0, 0) 51.04%
-	);
-	--color-black-gradient-40: linear-gradient(
-		90deg,
-		rgba(0, 0, 0, 0.4) 0%,
-		rgba(0, 0, 0, 0.45) 51.04%
-	);
 	--color-grey-draker: #404040;
 	--color-grey-lighter-3: #d9d9d9;
 	--color-grey-lighter-4: #f2f2f2;
-
-	--color-white-secondary: rgba(255, 255, 255, 1);
 
 	--color-accent-blue-100: #52cbff;
 	--color-blue-200: #52aeff;
@@ -83,11 +68,6 @@
 	--color-red-500: #f763b0;
 
 	--color-azure-gradient: linear-gradient(90deg, #5257ff 0%, #52cbff 100%);
-	--color-azure-gradient-100: linear-gradient(
-		90deg,
-		rgba(82, 87, 255, 1) 20%,
-		rgba(82, 203, 255, 1) 100%
-	);
 	--color-azure-gradient-50: linear-gradient(
 		90deg,
 		rgba(82, 87, 255, 0.5) 0%,
@@ -259,10 +239,6 @@ h1 {
 	font-size: 22px;
 }
 
-th {
-	text-transform: uppercase;
-}
-
 hr.glow {
 	position: relative;
 	height: 1px;
@@ -404,12 +380,26 @@ button {
 	flex: 1;
 }
 
-nav {
+.nav {
 	width: calc(
 		100% - (var(--page-padding) * 2) - 6px
-	); /* Not sure why the -6 is needed, temp fix */
+	) !important; /* Not sure why the -6 is needed, temp fix */
 	max-width: calc(var(--width-max) - (var(--page-padding) * 2)) !important;
-	min-width: var(--width-min);
+	min-width: var(--width-min) !important;
+}
+
+.width-full {
+	width: 100%;
+}
+
+.flex-split {
+	display: flex;
+	justify-content: space-between;
+}
+
+.flex-vertical-align {
+	display: flex;
+	align-items: center;
 }
 
 .page-spacing {
@@ -418,7 +408,7 @@ nav {
 	max-width: var(--width-max);
 	min-width: var(--width-min);
 	margin: 0 auto;
-	padding-top: 126px;
+	padding-top: 29px;
 	padding-bottom: 110px;
 	padding-left: var(--page-padding);
 	padding-right: var(--page-padding);
@@ -441,6 +431,15 @@ nav {
 
 .error-text {
 	color: var(--color-error);
+}
+
+/*
+ *
+ * Backgrounds
+ *
+ */
+.background-primary {
+	background-color: var(--background-primary);
 }
 
 /*

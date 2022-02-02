@@ -127,7 +127,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	};
 
 	const rowClick = (domain: Domain) => {
-		if (onNavigate) onNavigate(domain.name);
+		if (onNavigate) onNavigate(`/market/${domain.name.replace('wilder.', '')}`);
 	};
 
 	const isButtonActive = (row: any[]) => {
@@ -232,7 +232,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				ignoreAspectRatios={true}
 				rowButtonText={'View Bids'}
 				onLoad={tableLoaded}
-				onRowButtonClick={viewBid}
+				onButtonClick={viewBid}
 				onRowClick={rowClick}
 				isGridView={isGridView}
 				setIsGridView={(grid: boolean) => setIsGridView(grid)}
