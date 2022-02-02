@@ -60,6 +60,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [viewingDomain, setViewingDomain] = React.useState<
 		DomainData | undefined
 	>();
+	const [errorWhileAccepting, setErrorWhileAccepting] = React.useState<
+		string | undefined
+	>();
 
 	///////////////
 	// Functions //
@@ -105,7 +108,11 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		return approved;
 	};
 
-	const closeBid = () => setAcceptingBid(undefined);
+	const closeBid = () => {
+		setIsAccepting(false);
+		setAcceptingBid(undefined);
+		setErrorWhileAccepting(undefined);
+	};
 
 	const closeDomain = () => setViewingDomain(undefined);
 
@@ -113,17 +120,24 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		if (!acceptingBid) {
 			return;
 		}
-		setIsAccepting(true);
-		const tx = await acceptBid(acceptingBid.bid);
-		if (tx) {
-			await tx.wait();
+		try {
+			setIsAccepting(true);
+			setErrorWhileAccepting(undefined);
+
+			const tx = await acceptBid(acceptingBid.bid);
+			if (tx) {
+				await tx.wait();
+			}
+			setTimeout(() => {
+				//refetch after confirm the transaction, with a delay to wait until backend gets updated
+				ownedQuery.refetch();
+			}, 500);
+			setIsAccepting(false);
+			setAcceptingBid(undefined);
+		} catch {
+			setErrorWhileAccepting('Failed to accept bid');
+			setIsAccepting(false);
 		}
-		setTimeout(() => {
-			//refetch after confirm the transaction, with a delay to wait until backend gets updated
-			ownedQuery.refetch();
-		}, 500);
-		setIsAccepting(false);
-		setAcceptingBid(undefined);
 	};
 
 	const rowClick = (domain: Domain) => {
@@ -147,29 +161,36 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const canPlaceBid = () => {
 		const id = acceptingBid!.bid.bidderAccount;
 		return (
-			<p style={{ fontSize: 14, fontWeight: 400, lineHeight: '21px' }}>
-				Are you sure you want to accept the bid of{' '}
-				<b className="glow-text-white">
-					{acceptingBid!.bid.amount.toLocaleString()} WILD
-				</b>{' '}
-				tokens by{' '}
-				<b>
-					<a
-						className="alt-link"
-						href={`https://etherscan.io/address/${id}`}
-						target="_blank"
-						rel="noreferrer"
-					>
-						{id.substring(0, 4)}...{id.substring(id.length - 4)}
-					</a>
-				</b>
-				? You will receive{' '}
-				<b className="glow-text-white">
-					{acceptingBid!.bid.amount.toLocaleString()} WILD
-				</b>{' '}
-				tokens in exchange for ownership of{' '}
-				<b className="glow-text-white">0://{acceptingBid!.domain.name}</b>
-			</p>
+			<>
+				<p style={{ fontSize: 14, fontWeight: 400, lineHeight: '21px' }}>
+					Are you sure you want to accept the bid of{' '}
+					<b className="glow-text-white">
+						{acceptingBid!.bid.amount.toLocaleString()} WILD
+					</b>{' '}
+					tokens by{' '}
+					<b>
+						<a
+							className="alt-link"
+							href={`https://etherscan.io/address/${id}`}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{id.substring(0, 4)}...{id.substring(id.length - 4)}
+						</a>
+					</b>
+					? You will receive{' '}
+					<b className="glow-text-white">
+						{acceptingBid!.bid.amount.toLocaleString()} WILD
+					</b>{' '}
+					tokens in exchange for ownership of{' '}
+					<b className="glow-text-white">0://{acceptingBid!.domain.name}</b>
+				</p>
+				{errorWhileAccepting && (
+					<p style={{ fontWeight: 400, padding: 0 }} className="error-text">
+						{errorWhileAccepting}
+					</p>
+				)}
+			</>
 		);
 	};
 
