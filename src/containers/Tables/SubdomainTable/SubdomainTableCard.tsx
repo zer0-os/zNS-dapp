@@ -70,35 +70,40 @@ const SubdomainTableCard = (props: any) => {
 	/////////////
 
 	useEffect(() => {
-		(async () => {
-			const provider = library && new providers.Web3Provider(library.provider);
-			const signer = provider && provider.getSigner(account!);
+		try {
+			(async () => {
+				const provider =
+					library && new providers.Web3Provider(library.provider);
+				const signer = provider && provider.getSigner(account!);
 
-			const isAbleToSpendTokens = await (
-				await sdk.instance.getZAuctionInstanceForDomain(domainId)
-			).getZAuctionSpendAllowance(await signer?.getAddress()!);
+				const isAbleToSpendTokens = await (
+					await sdk.instance.getZAuctionInstanceForDomain(domainId)
+				).getZAuctionSpendAllowance(await signer?.getAddress()!);
 
-			if (isAbleToSpendTokens) {
-				await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
-					.getBuyNowPrice(domainId, signer!)
-					.then((zauctionBuyNowPrice) => {
-						if (!zauctionBuyNowPrice.isZero())
-							setBuyNowPrice(zauctionBuyNowPrice.toString());
-					});
-			} else {
-				await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
-					.approveZAuctionSpendTradeTokens(signer!)
-					.then(async () => {
-						await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
-							.getBuyNowPrice(domainId, signer!)
-							.then((zauctionBuyNowPrice) => {
-								console.log(zauctionBuyNowPrice.isZero());
-								if (!zauctionBuyNowPrice.isZero())
-									setBuyNowPrice(zauctionBuyNowPrice.toString());
-							});
-					});
-			}
-		})();
+				if (isAbleToSpendTokens) {
+					await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+						.getBuyNowPrice(domainId, signer!)
+						.then((zauctionBuyNowPrice) => {
+							if (!zauctionBuyNowPrice.isZero())
+								setBuyNowPrice(zauctionBuyNowPrice.toString());
+						});
+				} else {
+					await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+						.approveZAuctionSpendTradeTokens(signer!)
+						.then(async () => {
+							await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+								.getBuyNowPrice(domainId, signer!)
+								.then((zauctionBuyNowPrice) => {
+									console.log(zauctionBuyNowPrice.isZero());
+									if (!zauctionBuyNowPrice.isZero())
+										setBuyNowPrice(zauctionBuyNowPrice.toString());
+								});
+						});
+				}
+			})();
+		} catch (error) {
+			console.error(error);
+		}
 	}, []);
 
 	useEffect(() => {
