@@ -6,6 +6,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
 import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
 
 // Type Imports
 import { Bid, Domain, DomainData } from 'lib/types';
@@ -17,6 +18,7 @@ import styles from './OwnedDomainsTable.module.scss';
 import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
+import { ERC20 } from 'types';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -46,6 +48,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const znsContracts = useZnsContracts()!;
 	const { acceptBid } = useBidProvider();
 	const zAuctionAddress = znsContracts.zAuction.address;
+	const wildContract: ERC20 = znsContracts.wildToken;
 
 	// State
 	const [isTableLoading, setIsTableLoading] = React.useState(true);
@@ -124,18 +127,36 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			setIsAccepting(true);
 			setErrorWhileAccepting(undefined);
 
-			const tx = await acceptBid(acceptingBid.bid);
-			if (tx) {
-				await tx.wait();
+			const { bidderAccount, amount: bidAmount } = acceptingBid.bid;
+
+			// Check bidder has sufficient balance
+			const bidAsWei = ethers.utils.parseEther(bidAmount.toString());
+			const checkBalance = await wildContract.balanceOf(bidderAccount);
+			const bidderHasInsufficientBalance = checkBalance.lt(bidAsWei);
+
+			if (bidderHasInsufficientBalance) {
+				throw new Error('Bidder has insufficient balance');
 			}
+
+			try {
+				// Wrapping a try around this as acceptBid doesn't throw any
+				// descriptive errors (yet)
+				const tx = await acceptBid(acceptingBid.bid);
+				if (tx) {
+					await tx.wait();
+				}
+			} catch {
+				throw new Error('Failed to accept bid');
+			}
+
 			setTimeout(() => {
 				//refetch after confirm the transaction, with a delay to wait until backend gets updated
 				ownedQuery.refetch();
 			}, 500);
 			setIsAccepting(false);
 			setAcceptingBid(undefined);
-		} catch {
-			setErrorWhileAccepting('Failed to accept bid');
+		} catch (e) {
+			setErrorWhileAccepting((e as Error).message || 'Failed to accept bid');
 			setIsAccepting(false);
 		}
 	};
