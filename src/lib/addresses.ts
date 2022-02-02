@@ -36,6 +36,26 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		lpStakingPool: '0x9CF0DaD38E4182d944a1A4463c56CFD1e6fa8fE7',
 		// wheelSale: '0x946911623663e1526165Cc1eFf37DdE0834e7786', // crafts sale
 	},
+	[NETWORK_TYPES.RINKEBY]: {
+		registrar: '0xa4F6C921f914ff7972D7C55c15f015419326e0Ca',
+		basic: '0x1188dD1a0F42BA4a117EF1c09D884f5183D40B28',
+		staking: '0x7FDd24f30fB8a3E0021e85Fdb737a3483D3C8135', //$LOOT staking controller
+		wildToken: '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79',
+		zAuction: '0xe94a5456Db55af2D6a37FaDd7cEd363EDBcA65CF',
+
+		// TODO: update address for following contracts on rinkbey when they are available
+		lootToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
+		wheelSale: '0xE744793F0Bd9FDB2d68a9aDd367d3FfE9E4bcE04', // kicks sale
+		// wheelSale: '0xa6A3321b743C31912263090275E24d8b1A50cFE8', // wheelstest2
+		// wheelSale: '0xa6A3321b743C31912263090275E24d8b1A50cFE8', // wheelstest2
+
+		// Staking dApp contracts
+		stakeFactory: '0x47946797E05A34B47ffE7151D0Fbc15E8297650E',
+		lpToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
+		wildStakingPool: '0x4E226a8BbECAa435d2c77D3E4a096F87322Ef1Ae',
+		lpStakingPool: '0x9CF0DaD38E4182d944a1A4463c56CFD1e6fa8fE7',
+		// wheelSale: '0x946911623663e1526165Cc1eFf37DdE0834e7786', // crafts sale
+	},
 } as any;
 
 export default addresses;
