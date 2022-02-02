@@ -1,8 +1,6 @@
 import { GenericTable } from 'components';
 import DepositTableRow from './DepositTableRow';
 
-import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
-
 import styles from './DepositTable.module.scss';
 
 import { TABLE_HEADERS } from './DepositTable.helpers';
@@ -13,7 +11,6 @@ import React from 'react';
 
 import * as zfi from '@zero-tech/zfi-sdk';
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
-import { MaybeUndefined } from 'lib/types';
 import DepositProvider from './DepositTableProvider';
 import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvider';
 

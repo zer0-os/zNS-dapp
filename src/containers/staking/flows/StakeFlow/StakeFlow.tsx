@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Stake from './steps/Stake/Stake';
 import Approve, { ApprovalStep } from './steps/Approve/Approve';
@@ -51,8 +51,6 @@ const StakeFlow = (props: StakeFlowProps) => {
 
 	const [step, setStep] = useState<Steps>(Steps.Stake);
 	const [isTransactionPending, setIsTransactionPending] =
-		useState<boolean>(false);
-	const [isTransactionActive, setIsTransactionActive] =
 		useState<boolean>(false);
 	const [message, setMessage] = useState<Message | undefined>();
 	const [stake, setStake] = useState<string | undefined>();

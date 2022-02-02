@@ -26,8 +26,6 @@ import useCurrency from 'lib/hooks/useCurrency';
 import { toFiat } from 'lib/currency';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
-import { getDomainId } from 'lib/utils';
-import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { Attribute } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import {
@@ -411,10 +409,11 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		return (
 			<>
 				<div className={styles.Stats}>
-					{data.map((item) => (
+					{data.map((item, index) => (
 						<>
 							{!item.isHidden ? (
 								<StatsWidget
+									key={index}
 									title={item.title}
 									fieldName={item.fieldName}
 									subTitle={item.subTitle}

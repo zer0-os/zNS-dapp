@@ -2,8 +2,6 @@ import { FutureButton, Image, StatsWidget } from 'components';
 import { ConnectWalletButton } from 'containers';
 import { truncateAddress } from 'lib/utils';
 
-import { Stat } from '../StakePool.helpers';
-
 import styles from './PoolDetails.module.scss';
 
 type PoolDetailsProps = {

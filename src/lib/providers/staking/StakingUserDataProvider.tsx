@@ -1,9 +1,10 @@
+import React from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { WrappedDeposit } from 'containers/staking/DepositTable/DepositTable';
 import { MaybeUndefined } from 'lib/types';
-import React, { useEffect } from 'react';
 import { WrappedStakingPool } from './StakingProviderTypes';
 import { useStaking } from './StakingSDKProvider';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 
 export const SelectorContext = React.createContext({
 	deposits: undefined as MaybeUndefined<WrappedDeposit[]>,
@@ -55,7 +56,7 @@ export const StakingUserDataProvider: React.FC<UserDataContextProviderType> = ({
 		setDeposits(deposits);
 	};
 
-	useEffect(() => {
+	useUpdateEffect(() => {
 		fetchDeposits();
 	}, [account, staking.pools]);
 
