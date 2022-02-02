@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 
 //- Library Imports
-import { Metadata, Bid, Maybe, Domain } from 'lib/types';
+import { Metadata, Bid, Domain } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
 import { getMetadata } from 'lib/metadata';
 import { BigNumber, ethers, providers } from 'ethers';
@@ -27,7 +27,6 @@ import {
 import styles from './MakeABuy.module.scss';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { useBuyNow } from 'containers/Tables/SubdomainTable/BuyNowProvider';
 
 interface MakeABuyProps {
 	domain: Domain;
@@ -45,8 +44,8 @@ const MakeABuy: React.FC<MakeABuyProps> = ({ domain, onBuy }) => {
 	// State //
 	///////////
 
-	const [isFinishidSuccessful, setFinishiedSuccessful] = useState(false);
-	const { closeBuyNow } = useBuyNow();
+	const [isBuyNowFinishedSuccesfully, setBuyNowFinishedSuccesfully] =
+		useState(false);
 
 	// todo add shopWalletInteraction if needed
 	// const [ShowWalletInteraction, setShowWalletInteraction] = useState(false);
@@ -98,8 +97,7 @@ const MakeABuy: React.FC<MakeABuyProps> = ({ domain, onBuy }) => {
 			.then(async (transcation) => {
 				await transcation.wait().then(() => {
 					setShowProccesing(false);
-					setFinishiedSuccessful(true);
-					onBuy();
+					setBuyNowFinishedSuccesfully(true);
 				});
 			})
 			.catch(() => {
@@ -121,12 +119,13 @@ const MakeABuy: React.FC<MakeABuyProps> = ({ domain, onBuy }) => {
 						setShowProccesing(true);
 						sdkBuy();
 					} else {
-						await (
-							await sdk.instance.getZAuctionInstanceForDomain(domainId)
-						).approveZAuctionSpendTradeTokens(signer!);
-						setIsMetamaskWaiting(false);
-						setShowProccesing(true);
-						sdkBuy();
+						await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+							.approveZAuctionSpendTradeTokens(signer!)
+							.then(() => {
+								setIsMetamaskWaiting(false);
+								setShowProccesing(true);
+								sdkBuy();
+							});
 					}
 				})
 				.catch(() => {
@@ -260,10 +259,10 @@ const MakeABuy: React.FC<MakeABuyProps> = ({ domain, onBuy }) => {
 		<>
 			<div className={styles.Header}>
 				<h1 className={`glow-text-white`}>
-					{isFinishidSuccessful ? 'Congratulations!' : 'Buy Now'}
+					{isBuyNowFinishedSuccesfully ? 'Congratulations!' : 'Buy Now'}
 				</h1>
 				<h4 className="glow-text-white">
-					{isFinishidSuccessful
+					{isBuyNowFinishedSuccesfully
 						? 'You have succesfully purchased the following NFT.'
 						: 'Please review the information and the art to make sure you are purchasing the right NFT.'}
 				</h4>
@@ -392,7 +391,7 @@ const MakeABuy: React.FC<MakeABuyProps> = ({ domain, onBuy }) => {
 						</p>
 					)}
 					{domain.owner.id.toLowerCase() !== account?.toLowerCase() &&
-						isFinishidSuccessful && (
+						isBuyNowFinishedSuccesfully && (
 							<FutureButton
 								style={{
 									height: 36,
@@ -400,14 +399,14 @@ const MakeABuy: React.FC<MakeABuyProps> = ({ domain, onBuy }) => {
 									textTransform: 'uppercase',
 									margin: '32px auto 0 auto',
 								}}
-								onClick={closeBuyNow}
+								onClick={onBuy}
 								glow
 							>
 								Confirm
 							</FutureButton>
 						)}
 					{domain.owner.id.toLowerCase() !== account?.toLowerCase() &&
-						!isFinishidSuccessful && (
+						!isBuyNowFinishedSuccesfully && (
 							<>
 								{loadingWildBalance && (
 									<>
