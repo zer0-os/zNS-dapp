@@ -56,7 +56,7 @@ const BuyNowButton: React.FC<BuyNowButtonProps> = ({
 	// Render //
 	////////////
 	return (
-		<div>
+		<>
 			{isModalOpen && (
 				<ConnectWalletPrompt
 					open={isModalOpen}
@@ -79,7 +79,7 @@ const BuyNowButton: React.FC<BuyNowButtonProps> = ({
 			>
 				<FutureButton onClick={handleClick} {...rest} />
 			</ConditionalWrapper>
-		</div>
+		</>
 	);
 };
 

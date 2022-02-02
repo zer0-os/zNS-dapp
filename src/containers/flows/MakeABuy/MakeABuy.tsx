@@ -7,7 +7,7 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 
 //- Library Imports
-import { Metadata, Bid, Maybe } from 'lib/types';
+import { Metadata, Bid, Maybe, Domain } from 'lib/types';
 import { useZnsContracts } from 'lib/contracts';
 import { getMetadata } from 'lib/metadata';
 import { BigNumber, ethers, providers } from 'ethers';
@@ -18,10 +18,9 @@ import { useBidProvider } from 'lib/providers/BidProvider';
 import {
 	FutureButton,
 	Member,
-	Spinner,
-	LoadingIndicator,
 	NFTMedia,
 	Tooltip,
+	LoadingIndicator,
 } from 'components';
 
 //- Style Imports
@@ -30,7 +29,12 @@ import useCurrency from 'lib/hooks/useCurrency';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { useBuyNow } from 'containers/Tables/SubdomainTable/BuyNowProvider';
 
-const MakeABuy: React.FC<any> = ({ domain }) => {
+interface MakeABuyProps {
+	domain: Domain;
+	onBuy: () => void;
+}
+
+const MakeABuy: React.FC<MakeABuyProps> = ({ domain, onBuy }) => {
 	//- Bid hooks
 	const { getBidsForDomain } = useBidProvider();
 
@@ -48,7 +52,8 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 	// const [ShowWalletInteraction, setShowWalletInteraction] = useState(false);
 	const [ShowProccesing, setShowProccesing] = useState(false);
 
-	const [buyNowPrice, setBuyNowPrice] = useState<string>();
+	const [buyNowPrice, setBuyNowPrice] = useState<BigNumber | undefined>();
+	const [isActionDeclined, setActionDeclined] = useState(false);
 	const [buyNowPriceUsd, setBuyNowPriceUsd] = useState<number | undefined>();
 	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
 	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
@@ -67,11 +72,7 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 	const znsContracts = useZnsContracts()!;
 	const wildContract: ERC20 = znsContracts.wildToken;
 
-	const isBuyValid =
-		(buyNowPrice &&
-			wildBalance &&
-			Number(ethers.utils.formatEther(buyNowPrice)) <= wildBalance &&
-			Number(ethers.utils.formatEther(buyNowPrice)) > 0) === true;
+	const [isBuyValid, setBuyValid] = useState(false);
 
 	const sdk = useZnsSdk();
 	const domainId = domain.id;
@@ -83,23 +84,55 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 	// Functions //
 	///////////////
 
+	const sdkBuy = async () => {
+		await (
+			await sdk.instance.getZAuctionInstanceForDomain(domainId)
+		)
+			.buyNow(
+				{
+					tokenId: domainId,
+					amount: buyNowPrice!.toString(),
+				},
+				signer!,
+			)
+			.then(async (transcation) => {
+				await transcation.wait().then(() => {
+					setShowProccesing(false);
+					setFinishiedSuccessful(true);
+					onBuy();
+				});
+			})
+			.catch(() => {
+				setActionDeclined(true);
+			});
+	};
+
 	const buyNft = async () => {
 		setIsMetamaskWaiting(true);
 
-		await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
-			.getZAuctionSpendAllowance(await signer?.getAddress()!)
-			.then(async () => {
-				setIsMetamaskWaiting(false);
-				setShowProccesing(true);
-				await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
-					.buyNow({ tokenId: domainId, amount: buyNowPrice! }, signer!)
-					.then(async (transcation) => {
-						await transcation.wait().then(() => {
-							setShowProccesing(false);
-							setFinishiedSuccessful(true);
-						});
-					});
-			});
+		if (typeof buyNowPrice !== 'undefined') {
+			await (
+				await sdk.instance.getZAuctionInstanceForDomain(domainId)
+			)
+				.getZAuctionSpendAllowance(await signer?.getAddress()!)
+				.then(async (allowedSpendAmount) => {
+					if (allowedSpendAmount.gt(buyNowPrice)) {
+						setIsMetamaskWaiting(false);
+						setShowProccesing(true);
+						sdkBuy();
+					} else {
+						await (
+							await sdk.instance.getZAuctionInstanceForDomain(domainId)
+						).approveZAuctionSpendTradeTokens(signer!);
+						setIsMetamaskWaiting(false);
+						setShowProccesing(true);
+						sdkBuy();
+					}
+				})
+				.catch(() => {
+					setActionDeclined(true);
+				});
+		}
 	};
 
 	/////////////
@@ -107,11 +140,20 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 	/////////////
 
 	useEffect(() => {
+		setBuyValid(
+			typeof buyNowPrice !== 'undefined' &&
+				typeof wildBalance !== 'undefined' &&
+				Number(ethers.utils.formatEther(buyNowPrice)) <= wildBalance &&
+				Number(ethers.utils.formatEther(buyNowPrice)) > 0,
+		);
+	}, [buyNowPrice, wildBalance]);
+
+	useEffect(() => {
 		if (!account) {
 			return;
 		}
 
-		setIsMetamaskWaiting(false);
+		setIsMetamaskWaiting(true);
 
 		const fetchTokenBalance = async () => {
 			const balance = await wildContract.balanceOf(account);
@@ -124,25 +166,34 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 			const isAbleToSpendTokens = await (
 				await sdk.instance.getZAuctionInstanceForDomain(domainId)
 			).getZAuctionSpendAllowance(await signer?.getAddress()!);
+			setIsMetamaskWaiting(false);
 
 			if (isAbleToSpendTokens) {
-				const zauctionBuyNowPrice = (await (
+				await (
 					await sdk.instance.getZAuctionInstanceForDomain(domainId)
-				).getBuyNowPrice(domainId, signer!)) as BigNumber;
-
-				console.log(zauctionBuyNowPrice);
-				if (!zauctionBuyNowPrice.isZero())
-					setBuyNowPrice(zauctionBuyNowPrice.toString());
+				)
+					.getBuyNowPrice(domainId, signer!)
+					.then((price) => {
+						setBuyNowPrice(price);
+					})
+					.catch(() => {
+						setActionDeclined(true);
+					});
 			} else {
-				await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+				await (
+					await sdk.instance.getZAuctionInstanceForDomain(domainId)
+				)
 					.approveZAuctionSpendTradeTokens(signer!)
 					.then(async () => {
-						const zauctionBuyNowPrice = (await (
+						const zauctionBuyNowPrice = await (
 							await sdk.instance.getZAuctionInstanceForDomain(domainId)
-						).getBuyNowPrice(domainId, signer!)) as BigNumber;
+						).getBuyNowPrice(domainId, signer!);
 
 						if (!zauctionBuyNowPrice.isZero())
-							setBuyNowPrice(zauctionBuyNowPrice.toString());
+							setBuyNowPrice(zauctionBuyNowPrice);
+					})
+					.catch(() => {
+						setActionDeclined(true);
 					});
 			}
 		})();
@@ -306,20 +357,26 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 	const loadingWildBalance = wildBalance === undefined;
 
 	const buy = () => {
-		let buyTooHighWarning: Maybe<React.ReactFragment> = null;
+		const accountHasEnoughTokens =
+			buyNowPrice &&
+			wildBalance &&
+			Number(ethers.utils.formatEther(buyNowPrice)) > wildBalance;
 
-		if (
-			!loadingWildBalance &&
-			Number(ethers.utils.formatEther(buyNowPrice!)) > wildBalance!
-		) {
-			buyTooHighWarning = (
-				<>
+		const warning = (
+			<>
+				{!loadingWildBalance && accountHasEnoughTokens ? (
 					<p className={styles.Error} style={{ paddingTop: '16px' }}>
-						You don't have enough WILD to buy this NFT
+						You don't have enough WILD to buy this NFT.
 					</p>
-				</>
-			);
-		}
+				) : isActionDeclined ? (
+					<p className={styles.Error} style={{ paddingTop: '16px' }}>
+						You declined the action in your wallet.
+					</p>
+				) : (
+					''
+				)}
+			</>
+		);
 
 		return (
 			<>
@@ -363,7 +420,7 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 											<span>Your Balance</span>
 											<h4>{Number(wildBalance).toLocaleString()} WILD</h4>
 										</div>
-										{buyTooHighWarning}
+										{warning}
 										<FutureButton
 											style={{
 												height: 36,
@@ -371,11 +428,17 @@ const MakeABuy: React.FC<any> = ({ domain }) => {
 												textTransform: 'uppercase',
 												margin: '32px auto 0 auto',
 											}}
-											loading={isBuyValid}
-											onClick={buyNft}
+											loading={!isBuyValid || isMetamaskWaiting}
+											onClick={() => {
+												if (!isBuyValid && isMetamaskWaiting) {
+													return;
+												}
+
+												buyNft();
+											}}
 											glow={isBuyValid || isMetamaskWaiting}
 										>
-											{isMetamaskWaiting ? <Spinner /> : 'Confirm'}
+											Confirm
 										</FutureButton>
 									</>
 								)}

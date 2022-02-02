@@ -36,7 +36,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	const { domain, loading } = useCurrentDomain();
 
 	const { domain: biddingOn, close, bidPlaced } = useBid();
-	const { domain: buyingOn, closeBuyNow } = useBuyNow();
+	const { domain: buyingOn, closeBuyNow, buyPlaced } = useBuyNow();
 
 	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
 	const [data, setData] = useState<
@@ -156,7 +156,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			)}
 			{buyingOn !== undefined && (
 				<Overlay onClose={closeBuyNow} open={buyingOn !== undefined}>
-					<MakeABuy domain={domain} />
+					<MakeABuy domain={buyingOn} onBuy={buyPlaced} />
 				</Overlay>
 			)}
 			<GenericTable

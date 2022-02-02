@@ -229,6 +229,7 @@ const SubdomainTableRow = (props: any) => {
 						glow={account !== undefined && !isOwnedByUser}
 						onClick={onBuyNowButtonClick}
 						tooltip={buyNowPrice}
+						style={{ margin: 'auto' }}
 					>
 						Buy Now
 					</BuyNowButton>
@@ -236,7 +237,7 @@ const SubdomainTableRow = (props: any) => {
 					<BidButton
 						glow={account !== undefined && !isOwnedByUser}
 						onClick={onBidButtonClick}
-						style={{ marginLeft: 'auto' }}
+						style={{ margin: 'auto' }}
 					>
 						Make A Bid
 					</BidButton>
