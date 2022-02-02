@@ -66,6 +66,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [errorWhileAccepting, setErrorWhileAccepting] = React.useState<
 		string | undefined
 	>();
+	const [statusText, setStatusText] = React.useState<string | undefined>();
 
 	///////////////
 	// Functions //
@@ -130,6 +131,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			const { bidderAccount, amount: bidAmount } = acceptingBid.bid;
 
 			// Check bidder has sufficient balance
+			setStatusText("Checking bidder's WILD balance");
 			const bidAsWei = ethers.utils.parseEther(bidAmount.toString());
 			const checkBalance = await wildContract.balanceOf(bidderAccount);
 			const bidderHasInsufficientBalance = checkBalance.lt(bidAsWei);
@@ -141,8 +143,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			try {
 				// Wrapping a try around this as acceptBid doesn't throw any
 				// descriptive errors (yet)
+				setStatusText('Waiting for wallet approval');
 				const tx = await acceptBid(acceptingBid.bid);
 				if (tx) {
+					setStatusText('Processing transaction');
 					await tx.wait();
 				}
 			} catch {
@@ -159,6 +163,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			setErrorWhileAccepting((e as Error).message || 'Failed to accept bid');
 			setIsAccepting(false);
 		}
+		setStatusText(undefined);
 	};
 
 	const rowClick = (domain: Domain) => {
@@ -219,7 +224,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	const bidPending = () => (
 		<>
-			<p>Pending</p>
+			<p>{statusText || 'Pending'}</p>
 			<Spinner style={{ margin: '8px auto' }} />
 		</>
 	);
