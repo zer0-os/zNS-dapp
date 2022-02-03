@@ -413,7 +413,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<>
 							{!item.isHidden ? (
 								<StatsWidget
-									key={index}
+									key={`stats-widget-${index}`}
 									title={item.title}
 									fieldName={item.fieldName}
 									subTitle={item.subTitle}
