@@ -6,7 +6,7 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.scss';
 
 //- Component Imports
-import { RequestTable, TabBar } from 'components';
+import { TabBar } from 'components';
 import { OwnedDomainsTable } from 'containers';
 
 type ProfileProps = {

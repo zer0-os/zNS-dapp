@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Claim from './steps/Claim/Claim';
 import { Confirm, Header } from '../';
-
-import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 import styles from './ClaimFlow.module.scss';
 
@@ -13,6 +11,7 @@ import { ethers } from 'ethers';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { displayEther } from 'lib/currency';
 import { useWeb3React } from '@web3-react/core';
+import { useDidMount } from 'lib/hooks/useDidMount';
 
 enum Steps {
 	Claim,
@@ -29,7 +28,6 @@ type ClaimFlowProps = {
 
 const ClaimFlow = (props: ClaimFlowProps) => {
 	const { onClose, onSuccess } = props;
-	const staking = useStaking();
 	const { claiming } = useStakingPoolSelector();
 	const { account, library } = useWeb3React();
 
@@ -43,9 +41,9 @@ const ClaimFlow = (props: ClaimFlowProps) => {
 		{ content: string; error?: boolean } | undefined
 	>();
 
-	useEffect(() => {
+	useDidMount(() => {
 		getRewardAmount();
-	}, []);
+	});
 
 	const getRewardAmount = async () => {
 		if (!account) {
