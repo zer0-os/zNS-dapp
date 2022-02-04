@@ -12,6 +12,7 @@ import styles from './Info.module.scss';
 
 type InfoProps = {
 	dropStage: Stage;
+	errorMessage?: string;
 	isUserWhitelisted?: boolean;
 	isWalletConnected: boolean;
 	maxPurchasesPerUser?: number;
@@ -63,7 +64,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 				onClick={props.onContinue}
 			>
-				Mint Your Wheels
+				Mint Your Kicks
 			</FutureButton>
 		);
 	};
@@ -89,8 +90,13 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						Each user may mint up to {props.maxPurchasesPerUser} Wheels. The
-						cost for each Wheels is <>{EthPerWheel} ETH</> plus GAS.
+						You will be able to mint {props.maxPurchasesPerUser} set of Kicks if
+						your wallet was whitelisted in our raffle on Monday, January 17,
+						2022.
+						<br></br>
+						<br></br>
+						The cost for each pair of Kicks is <b>{EthPerWheel} ETH</b> plus
+						GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -108,9 +114,12 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Wheels. The cost for each set of
-							Wheels is <b>{EthPerWheel} ETH</b> plus GAS.
+							{props.maxPurchasesPerUser} Kicks. The cost for each pair of Kicks
+							is <b>{EthPerWheel} ETH</b> plus GAS.
 						</p>
+						{props.errorMessage !== undefined && (
+							<p className="error-text text-center">{props.errorMessage}</p>
+						)}
 						{mintButton()}
 					</>
 				);
@@ -119,7 +128,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p className={styles.Green}>
 							Congratulations, you have minted {props.numberPurchasedByUser}/
-							{props.maxPurchasesPerUser} of your Wheels.
+							{props.maxPurchasesPerUser} of your Kicks.
 						</p>
 						{dismissButton()}
 					</>
@@ -129,7 +138,7 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Wheels are only available to whitelisted supporters of
+						Currently, Kicks are only available to whitelisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
 						whitelist sale ends.
 					</p>
@@ -151,26 +160,29 @@ const Info = (props: InfoProps) => {
 				className={styles.Image}
 				loop={true}
 				playsInline
+				controls
+				disablePictureInPicture
+				controlsList="nodownload noremoteplayback noplaybackrate"
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/wheels-minting-audio.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/minting-wheels-audio.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/v1642269545/zns/kicks-mint-main.ogv'
 					}
 					type="video/ogg"
 				></source>
@@ -179,9 +191,9 @@ const Info = (props: InfoProps) => {
 			{/* Wheels Available */}
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
-					<span>Wheels Available</span>
-					<h2>{props.wheelsTotal - props.wheelsMinted} Wheels Remaining</h2>
-					<ArrowLink href="https://zine.wilderworld.com/wilder-wheels-community-whitelist-now-open/">
+					<span>Kicks Available</span>
+					<h2>{props.wheelsTotal - props.wheelsMinted} Kicks Remaining</h2>
+					<ArrowLink href="https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/">
 						View Auction Rules
 					</ArrowLink>
 				</div>

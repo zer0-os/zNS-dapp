@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import { NFTMedia } from 'components';
+import { NFTMedia, Image } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
@@ -14,9 +14,12 @@ import { Metadata } from 'lib/types';
 
 //- Style Imports
 import styles from './Artwork.module.scss';
+import classNames from 'classnames/bind';
 
 type ArtworkProps = {
-	domain: string;
+	circleIcon?: boolean;
+	domain?: string;
+	disableAnimation?: boolean;
 	disableInteraction?: boolean;
 	id: string;
 	image?: string;
@@ -26,8 +29,12 @@ type ArtworkProps = {
 	style?: React.CSSProperties;
 };
 
+const cx = classNames.bind(styles);
+
 const Artwork: React.FC<ArtworkProps> = ({
+	circleIcon,
 	domain,
+	disableAnimation,
 	disableInteraction,
 	id,
 	image,
@@ -62,7 +69,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		}
 
 		// Truncate
-		if (('wilder.' + domain).length > 30) {
+		if (domain && ('wilder.' + domain).length > 30) {
 			const split = domain.split('.');
 			if (isMounted.current === true) {
 				setTruncatedDomain('wilder...' + split[split.length - 1]);
@@ -79,29 +86,43 @@ const Artwork: React.FC<ArtworkProps> = ({
 	}, [domain, metadataUrl]);
 
 	const artwork = React.useMemo(() => {
-		return (
-			<NFTMedia
-				disableLightbox
-				style={{
-					zIndex: 2,
-				}}
-				size="tiny"
-				className={`${styles.Image} border-rounded`}
-				alt="NFT Preview"
-				ipfsUrl={metadata?.image_full || metadata?.image || ''}
-			/>
-		);
-	}, [metadata]);
+		if (image) {
+			return <Image alt="pool icon" src={image} />;
+		}
+		if (metadata) {
+			return (
+				<NFTMedia
+					disableLightbox
+					style={{
+						zIndex: 2,
+					}}
+					size="tiny"
+					className={`${styles.Image} border-rounded`}
+					alt="NFT Preview"
+					ipfsUrl={metadata?.image_full || metadata?.image || ''}
+				/>
+			);
+		}
+	}, [image, metadata]);
 
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
 			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
-				<div className={styles.Image}>{artwork}</div>
+				<div
+					className={cx(styles.Image, {
+						Circle: circleIcon,
+					})}
+				>
+					{artwork}
+				</div>
 				<div className={styles.Info}>
 					{shouldAnimate && (metadata?.title || name) && (
 						<Spring
-							from={{ maxHeight: 0, opacity: 0 }}
+							from={{
+								maxHeight: disableAnimation ? 18 : 0,
+								opacity: disableAnimation ? 1 : 0,
+							}}
 							to={{ maxHeight: 18, opacity: 1 }}
 						>
 							{(animatedStyles) => (
@@ -126,12 +147,12 @@ const Artwork: React.FC<ArtworkProps> = ({
 					)}
 					{!pending && (
 						<>
-							{disableInteraction && (
+							{disableInteraction && domain && (
 								<span className={styles.Domain}>
 									{truncatedDomain || 'wilder.' + domain}
 								</span>
 							)}
-							{!disableInteraction && (
+							{!disableInteraction && domain && (
 								<Link
 									className={styles.Domain}
 									to={domain.split('wilder.')[1]}
@@ -143,7 +164,9 @@ const Artwork: React.FC<ArtworkProps> = ({
 							)}
 						</>
 					)}
-					{pending && <span className={styles.Domain}>{domain}</span>}
+					{pending && (
+						<span className={styles.Domain}>{domain ? domain : 'Loading'}</span>
+					)}
 				</div>
 			</div>
 		</>

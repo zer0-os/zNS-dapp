@@ -231,7 +231,7 @@
 	display: flex;
 	flex-direction: column;
 	margin-top: 16px;
-
+	width: 50%;
 	a {
 		margin-top: 6.5px;
 	}
@@ -310,6 +310,12 @@
 
 .Stats:first-child {
 	margin-left: 0;
+}
+
+.TokenHashContainer {
+	display: flex;
+	justify-content: space-between;
+	grid-gap: 16px;
 }
 
 @media only screen and (max-width: 1280px) {
@@ -406,6 +412,16 @@
 	.Fiat {
 		font-size: 18px !important;
 	}
+
+	.TokenHashContainer {
+		flex-direction: column;
+	}
+	.Contract {
+		width: 100%;
+		&:last-child {
+			margin-top: 0;
+		}
+	}
 }
 
 @media only screen and (max-width: 414px) {
@@ -444,9 +460,10 @@
 
 .Attributes h4 {
 	padding: 0;
-	color: var(--color-grey);
+	color: var(--color-grey-lighter-2);
 	font-size: 12px;
-	text-transform: uppercase;
+	text-transform: capitalize;
+	font-weight: normal;
 }
 
 .AttributesContainer {

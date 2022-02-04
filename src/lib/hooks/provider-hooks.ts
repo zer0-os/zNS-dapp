@@ -36,7 +36,9 @@ export function useEagerConnect() {
 			setTried(true);
 		};
 
-		if (wallet) reConnectToWallet(wallet); //if was connected to a wallet
+		if (wallet) {
+			reConnectToWallet(wallet); //if was connected to a wallet
+		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // intentionally only running on mount (make sure it's only mounted once :))

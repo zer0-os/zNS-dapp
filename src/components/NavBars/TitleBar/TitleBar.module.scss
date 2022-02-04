@@ -17,6 +17,8 @@ header {
 	display: flex;
 	flex-direction: column;
 
+	z-index: 4;
+
 	width: 100%;
 
 	background: var(--color-background);
@@ -27,6 +29,10 @@ header {
 	transition: background-color var(--animation-time-medium) ease-in-out,
 		border var(--animation-time-medium) ease-in-out,
 		box-shadow var(--animation-time-medium) ease-in-out;
+}
+
+.Title {
+	margin-left: 16px;
 }
 
 .Hovered {
@@ -44,7 +50,7 @@ header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 11px 17px;
+	padding: 0px 17px;
 }
 
 .Bar::after {
@@ -182,14 +188,16 @@ header {
 .Actions {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
+	height: 56px;
 }
 
 .Actions > *:not(:last-child) {
-	margin-right: 10px;
+	margin-right: 16px;
 }
 
 .Info {
-	margin-right: 24px;
+	margin-right: 16px;
 	font-weight: 700;
 	text-transform: uppercase;
 	flex-shrink: 0;
@@ -202,6 +210,10 @@ header {
 
 	.Info {
 		margin-right: 0;
+	}
+
+	.TitleBar {
+		padding: 11px 17px;
 	}
 }
 

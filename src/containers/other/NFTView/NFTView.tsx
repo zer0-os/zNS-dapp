@@ -26,11 +26,13 @@ import useCurrency from 'lib/hooks/useCurrency';
 import { toFiat } from 'lib/currency';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
-import { getDomainId } from 'lib/utils';
-import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { Attribute } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { DomainBidEvent, DomainEvent, DomainMetrics } from '@zero-tech/zns-sdk';
+import {
+	DomainBidEvent,
+	DomainEvent,
+	DomainMetrics,
+} from '@zero-tech/zns-sdk/lib/types';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
@@ -41,12 +43,13 @@ import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
 import shareIcon from './assets/share.svg';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
+import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 const moment = require('moment');
 
 const ZNS_SHARE_BASE_URL = process.env.REACT_APP_ZNS_SHARE_BASE_URL as string;
 
 type NFTViewProps = {
-	domain: string;
 	onTransfer: () => void;
 };
 
@@ -61,7 +64,7 @@ export interface DomainEvents extends DomainEvent {
 	bidder?: string;
 }
 
-const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
+const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const isMounted = useRef(false);
 	const blobCache = useRef<string>();
 	const { addNotification } = useNotification();
@@ -86,12 +89,15 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const [isShowMoreAtrributes, setIsShowMoreAttributes] =
 		useState<boolean>(false);
 	const [containerHeight, setContainerHeight] = useState(0);
+	const [ipfsHash, setIpfsHash] = useState<string>('');
+
+	const { domainId, domain: znsDomain, domainRaw: domain } = useCurrentDomain();
 
 	//- Web3 Domain Data
-	const domainId = getDomainId(domain.substring(1));
+	// const domainId = getDomainId(domain.substring(1));
 	const domainIdInteger = BigNumber.from(domainId); //domainId as bignumber used to redirect to etherscan link
 
-	const znsDomain = useZnsDomain(domainId);
+	// const znsDomain = useZnsDomain(domainId);
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -109,21 +115,34 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	//- Calls the hook with a polling interval to update the data
 
 	//- Functions
-	const copyContractToClipboard = () => {
-		addNotification('Copied Token ID to clipboard.');
+	const copyToClipboard = (content: string, label: string) => {
+		addNotification(`Copied ${label} to clipboard.`);
 		try {
-			navigator?.clipboard?.writeText(domainId);
+			navigator?.clipboard?.writeText(content);
 		} catch (e) {
 			console.error(e);
 		}
 	};
 
+	const truncateText = (
+		text: string,
+		startLength: number,
+		endLength: number = 4,
+	) => {
+		const stringLength = text.length;
+		return `${text.slice(0, startLength)}...${text.slice(
+			stringLength - endLength,
+		)}`;
+	};
+
 	const downloadAsset = async () => {
 		// @todo move this into a helper
-		if (znsDomain?.domain?.image_full || znsDomain?.domain?.image) {
+		if (znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image) {
 			// Get hash from asset
 
-			const url = (znsDomain.domain.image_full || znsDomain.domain.image)!;
+			const url = (znsDomain.animation_url ||
+				znsDomain.image_full ||
+				znsDomain.image)!;
 			let hash: string;
 			if (url.startsWith('ipfs://')) {
 				// ipfs://
@@ -149,7 +168,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			try {
 				const asset = await Promise.any([
 					checkUrl(
-						`https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_900,w_900,fps_1-24,f_mp4,vc_h264/v1631501273/zns/${hash}.mp4`,
+						`https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_900,w_900,fps_1-24,f_mp4,vc_h264,ac_aac/v1631501273/zns/${hash}.mp4`,
 					),
 					checkUrl(
 						`https://res.cloudinary.com/fact0ry/image/upload/c_fit,h_1900,w_1200,q_auto/v1631501273/zns/${hash}.jpg`,
@@ -186,7 +205,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	};
 
 	const shareAsset = () => {
-		const url = `${ZNS_SHARE_BASE_URL}${domain}`;
+		const url = `${ZNS_SHARE_BASE_URL}/${domain}`;
 		window.open(
 			`https://twitter.com/share?url=
 				${encodeURIComponent(url)}`,
@@ -198,7 +217,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const openBidOverlay = () => {
 		if (!isMounted.current) return;
-		if (!znsDomain.domain || isOwnedByYou || !active) return;
+		if (!znsDomain || isOwnedByYou || !active) return;
 		setIsBidOverlayOpen(true);
 	};
 
@@ -212,9 +231,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	};
 
 	const getHistory = async () => {
-		if (znsDomain.domain) {
+		if (znsDomain) {
 			try {
-				const events = await sdk.instance?.getDomainEvents(znsDomain.domain.id);
+				const events = await sdk.instance?.getDomainEvents(znsDomain.id);
 
 				const bids = events.filter((e) => e.type === 2) as DomainBidEvent[];
 				setBids(bids);
@@ -234,9 +253,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		}
 	};
 	const getTradeData = async () => {
-		if (znsDomain.domain) {
-			const data = await sdk.instance.getDomainMetrics([znsDomain.domain.id]);
-			setTradeData(data[znsDomain.domain.id]);
+		if (znsDomain) {
+			const data = await sdk.instance.getDomainMetrics([znsDomain.id]);
+			setTradeData(data[znsDomain.id]);
 			setStatsLoaded(true);
 		}
 	};
@@ -293,19 +312,20 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	useEffect(() => {
 		if (!isMounted.current) return;
-		if (znsDomain.domain) {
+		if (znsDomain) {
 			if (!isMounted.current) return;
 
 			setIsOwnedByYou(
-				znsDomain.domain.owner.id.toLowerCase() === account?.toLowerCase(),
+				znsDomain.owner.id.toLowerCase() === account?.toLowerCase(),
 			);
 			getHistory();
 			setStatsLoaded(false);
 			getTradeData();
+			setIpfsHash(getHashFromIPFSUrl(znsDomain.metadata));
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [znsDomain.domain]);
+	}, [znsDomain]);
 
 	const nftStats = () => {
 		let width = '24.2%';
@@ -389,10 +409,11 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		return (
 			<>
 				<div className={styles.Stats}>
-					{data.map((item) => (
+					{data.map((item, index) => (
 						<>
 							{!item.isHidden ? (
 								<StatsWidget
+									key={`stats-widget-${index}`}
 									title={item.title}
 									fieldName={item.fieldName}
 									subTitle={item.subTitle}
@@ -412,9 +433,9 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 
 	const overlays = () => (
 		<>
-			{znsDomain.domain && (
+			{znsDomain && (
 				<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
-					<MakeABid domain={znsDomain.domain} onBid={onBid} />
+					<MakeABid domain={znsDomain} onBid={onBid} />
 				</Overlay>
 			)}
 		</>
@@ -507,7 +528,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder!}`}
+								href={`https://etherscan.io/address/${item.minter!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.minter!.substring(0, 4)}...${item.minter!.substring(
@@ -528,7 +549,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item!.bidder}`}
+								href={`https://etherscan.io/address/${item.from!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.from!.substring(0, 4)}...${item.from!.substring(
@@ -539,7 +560,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item!.bidder}`}
+								href={`https://etherscan.io/address/${item.to!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.to!.substring(0, 4)}...${item.to!.substring(
@@ -658,12 +679,12 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 	const attributes = () => {
 		const getAttributeListLength = setAttributesListLength();
 
-		if (!znsDomain.domain?.attributes) {
+		if (!znsDomain?.attributes) {
 			return;
 		} else {
 			const numberAttributesHidden =
-				znsDomain.domain.attributes.length -
-				znsDomain.domain.attributes.slice(0, getAttributeListLength).length;
+				znsDomain.attributes.length -
+				znsDomain.attributes.slice(0, getAttributeListLength).length;
 
 			return (
 				<>
@@ -673,18 +694,18 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						<div className={styles.AttributesContainer}>
 							<h4>Attributes</h4>
 							<ul className={styles.AttributesGrid}>
-								{znsDomain.domain.attributes
+								{znsDomain.attributes
 									.slice(
 										0,
 										isShowMoreAtrributes
-											? znsDomain.domain.attributes.length
+											? znsDomain.attributes.length
 											: getAttributeListLength,
 									)
 									.map((attribute: Attribute, index: number) =>
 										attributesList(attribute, index),
 									)}
 
-								{znsDomain.domain?.attributes?.length >= 12 &&
+								{znsDomain?.attributes?.length >= 12 &&
 									attributesButtonToggler(numberAttributesHidden)}
 							</ul>
 						</div>
@@ -716,7 +737,10 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 						}}
 						alt="NFT Preview"
 						ipfsUrl={
-							znsDomain.domain?.image_full || znsDomain.domain?.image || ''
+							znsDomain?.animation_url ||
+							znsDomain?.image_full ||
+							znsDomain?.image ||
+							''
 						}
 						size="large"
 					/>
@@ -740,37 +764,23 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					</div>
 					<div className={styles.Details}>
 						<div>
-							<h1 className="glow-text-white">
-								{znsDomain.domain?.title ?? ''}
-							</h1>
+							<h1 className="glow-text-white">{znsDomain?.title ?? ''}</h1>
 						</div>
 						<div className={styles.Members}>
 							<Member
-								id={znsDomain.domain ? znsDomain.domain.owner.id : ''}
-								name={
-									znsDomain.domain ? randomName(znsDomain.domain.owner.id) : ''
-								}
-								image={
-									znsDomain.domain ? randomImage(znsDomain.domain.owner.id) : ''
-								}
+								id={znsDomain ? znsDomain.owner.id : ''}
+								name={znsDomain ? randomName(znsDomain.owner.id) : ''}
+								image={znsDomain ? randomImage(znsDomain.owner.id) : ''}
 								subtext={'Owner'}
 							/>
 							<Member
-								id={znsDomain.domain ? znsDomain.domain.minter.id : ''}
-								name={
-									znsDomain.domain ? randomName(znsDomain.domain.minter.id) : ''
-								}
-								image={
-									znsDomain.domain
-										? randomImage(znsDomain.domain.minter.id)
-										: ''
-								}
+								id={znsDomain ? znsDomain.minter.id : ''}
+								name={znsDomain ? randomName(znsDomain.minter.id) : ''}
+								image={znsDomain ? randomImage(znsDomain.minter.id) : ''}
 								subtext={'Creator'}
 							/>
 						</div>
-						<div className={styles.Story}>
-							{znsDomain.domain?.description ?? ''}
-						</div>
+						<div className={styles.Story}>{znsDomain?.description ?? ''}</div>
 						{price()}
 						{actionButtons()}
 					</div>
@@ -786,29 +796,55 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 			{nftStats()}
 
 			{attributes()}
-			<div
-				className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
-			>
-				<h4>Token Id</h4>
-				<p>
-					<img
-						onClick={copyContractToClipboard}
-						className={styles.Copy}
-						src={copyIcon}
-						alt={'Copy Contract Icon'}
-					/>
-					{domainId}
-				</p>
-				<ArrowLink
-					style={{
-						marginTop: 8,
-						width: 150,
-					}}
-					href={etherscanLink}
+			<div className={`${styles.TokenHashContainer}`}>
+				<div
+					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
 				>
-					View on Etherscan
-				</ArrowLink>
+					<h4>Token Id</h4>
+					<p>
+						<img
+							onClick={() => copyToClipboard(domainId, 'Token ID')}
+							className={styles.Copy}
+							src={copyIcon}
+							alt={'Copy Contract Icon'}
+						/>
+						{truncateText(domainId, 18)}
+					</p>
+					<ArrowLink
+						style={{
+							marginTop: 8,
+							width: 150,
+						}}
+						href={etherscanLink}
+					>
+						View on Etherscan
+					</ArrowLink>
+				</div>
+				<div
+					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+				>
+					<h4>IPFS Hash</h4>
+					<p>
+						<img
+							onClick={() => copyToClipboard(ipfsHash, 'IPFS Hash')}
+							className={styles.Copy}
+							src={copyIcon}
+							alt={'Copy Contract Icon'}
+						/>
+						{truncateText(ipfsHash, 15)}
+					</p>
+					<ArrowLink
+						style={{
+							marginTop: 8,
+							width: 105,
+						}}
+						href={getWebIPFSUrlFromHash(ipfsHash)}
+					>
+						View on IPFS
+					</ArrowLink>
+				</div>
 			</div>
+
 			{history()}
 		</div>
 	);

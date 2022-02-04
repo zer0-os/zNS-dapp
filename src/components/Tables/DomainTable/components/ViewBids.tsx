@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from 'react';
 
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 
 import { Bid, Domain, DomainData } from 'lib/types';
 import FutureButton from 'components/Buttons/FutureButton/FutureButton';

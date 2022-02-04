@@ -1,0 +1,21 @@
+.Container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+
+.Container span {
+	display: inline-block;
+	margin-bottom: 40px;
+	width: 100%;
+	text-align: center;
+}
+
+.Image {
+	width: 100%;
+	height: 296px;
+	border-radius: var(--box-radius);
+	object-fit: cover;
+	margin-bottom: 40px;
+}

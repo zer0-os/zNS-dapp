@@ -8,7 +8,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
-import { Countdown, MintWheelsBanner, Overlay } from 'components';
+import { MintWheelsBanner, Overlay } from 'components';
 import MintWheels from './MintWheels';
 
 // Library Imports
@@ -18,15 +18,13 @@ import { useMintProvider } from 'lib/providers/MintProvider';
 import {
 	getDropData,
 	getUserEligibility,
-	getBalanceEth,
 	getNumberPurchasedByUser,
+	getBalanceEth,
 } from './helpers';
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const currentTime = new Date().getTime();
-	const DATE_WHITELIST = 1635458400000;
-	const DATE_PUBLIC = 1636063200000;
+	const DATE_PUBLIC = 1642730400655;
 
 	//////////////////
 	// State & Data //
@@ -42,6 +40,7 @@ const MintWheelsFlowContainer = () => {
 	// Contracts
 	const contracts = useZnsContracts();
 	const saleContract = contracts?.wheelSale;
+	const wildTokenContract = contracts?.wildToken;
 
 	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
@@ -71,7 +70,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const [isSaleHalted, setIsSaleHalted] = useState(currentTime <= DATE_PUBLIC);
+	const isSaleHalted = false;
 
 	///////////////
 	// Functions //
@@ -88,23 +87,13 @@ const MintWheelsFlowContainer = () => {
 			return;
 		}
 		if (isSaleHalted) {
-			window
-				?.open(
-					'https://zine.wilderworld.com/the-wilder-way-wheels-update/',
-					'_blank',
-				)
-				?.focus();
+			window?.open('https://discord.gg/7tyggH6eh9', '_blank')?.focus();
 			return;
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
-			window
-				?.open(
-					'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
-					'_blank',
-				)
-				?.focus();
-		} else if (dropStage === Stage.Sold) {
-			history.push('wheels.genesis');
+			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Public) {
+			history.push('market/kicks.airwild.season1');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -196,7 +185,6 @@ const MintWheelsFlowContainer = () => {
 			if (!saleContract) {
 				return;
 			}
-
 			// Get the data related to the drop
 			getDropData(saleContract)
 				.then((d) => {
@@ -205,9 +193,12 @@ const MintWheelsFlowContainer = () => {
 					}
 					const primaryData = d as DropData;
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(DATE_WHITELIST);
+						setCountdownDate(undefined);
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						// setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -237,7 +228,7 @@ const MintWheelsFlowContainer = () => {
 	// Get user eligibility
 	useEffect(() => {
 		let isMounted = true;
-		if (!saleContract) {
+		if (!saleContract || isSaleHalted) {
 			return;
 		}
 		// Get user data if wallet connected
@@ -258,11 +249,16 @@ const MintWheelsFlowContainer = () => {
 	// Get user balance and number purchased
 	useEffect(() => {
 		let isMounted = true;
-		if (!saleContract) {
+		if (!saleContract || isSaleHalted) {
 			return;
 		}
 		// Get user data if wallet connected
-		if (account && library) {
+		if (account && library && wildTokenContract) {
+			// getERC20TokenBalance(wildTokenContract, account).then((d) => {
+			// 	if (isMounted && d !== undefined) {
+			// 		setBalanceEth(d);
+			// 	}
+			// });
 			getBalanceEth(library.getSigner()).then((d) => {
 				if (isMounted && d !== undefined) {
 					setBalanceEth(d);
@@ -280,12 +276,13 @@ const MintWheelsFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [numMinted, account, library, saleContract]);
 
 	useEffect(() => {
 		let isMounted = true;
 
-		if (!saleContract) {
+		if (!saleContract || isSaleHalted) {
 			return;
 		}
 
@@ -296,10 +293,19 @@ const MintWheelsFlowContainer = () => {
 				}
 				const primaryData = d as DropData;
 				if (dropStage !== undefined) {
+					if (hasCountdownFinished && primaryData.dropStage === dropStage) {
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
+						return;
+					}
 					if (primaryData.dropStage === Stage.Upcoming) {
-						setCountdownDate(DATE_WHITELIST);
+						setCountdownDate(undefined);
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						// setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -319,7 +325,7 @@ const MintWheelsFlowContainer = () => {
 				if (!failedToLoad) {
 					setTimeout(() => {
 						setRefetch(refetch + 1);
-					}, 5000);
+					}, 7000);
 				}
 				setFailedToLoad(true);
 			});
@@ -353,28 +359,20 @@ const MintWheelsFlowContainer = () => {
 			return (
 				<>
 					<span>
-						The Wilder Wheels Phase C sale will open in{' '}
-						<b>
-							<Countdown
-								to={DATE_PUBLIC}
-								onFinish={() => {
-									setIsSaleHalted(false);
-								}}
-							/>
-						</b>
+						Wilder Kicks sale has been temporarily paused to ensure a fair sale.
 					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
 							<a
-								href={'https://discord.gg/fqjKgFrX'}
+								href={'https://discord.gg/7tyggH6eh9'}
 								target={'_blank'}
 								rel={'noreferrer'}
 							>
 								Discord
 							</a>
-						</b>
-						. Next Wheels batch will start at 0.738 ETH.
+						</b>{' '}
+						for more details.
 					</span>
 				</>
 			);
@@ -407,6 +405,7 @@ const MintWheelsFlowContainer = () => {
 				<Overlay open onClose={closeWizard}>
 					<MintWheels
 						balanceEth={balanceEth}
+						contract={saleContract}
 						dropStage={dropStage}
 						isUserWhitelisted={isUserWhitelisted}
 						maxPurchasesPerUser={maxPurchasesPerUser}
@@ -417,12 +416,13 @@ const MintWheelsFlowContainer = () => {
 						userId={account as string | undefined}
 						wheelsMinted={wheelsMinted}
 						wheelsTotal={wheelsTotal}
+						token={wildTokenContract}
 					/>
 				</Overlay>
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
-					title={'Get your ride for the Metaverse '}
+					title={'Get your Kicks for the Metaverse '}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}

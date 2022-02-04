@@ -3,7 +3,7 @@ import { Countdown } from 'components';
 
 const totalLabel = (wheelsMinted: number, wheelsTotal: number) => (
 	<span>
-		<b>{wheelsTotal - wheelsMinted} Remaining</b>
+		<b>{Math.max(wheelsTotal - wheelsMinted, 0)} Remaining</b>
 	</span>
 );
 
@@ -14,11 +14,11 @@ export const getBannerButtonText = (
 	if (!isDesktopBreakpoint) {
 		return 'Learn More';
 	}
-	if (dropStage === Stage.Public || dropStage === Stage.Whitelist) {
+	if (dropStage === Stage.Whitelist) {
 		return 'Mint Now';
 	}
-	if (dropStage === Stage.Sold) {
-		return 'See Wheels';
+	if (dropStage === Stage.Public || dropStage === Stage.Sold) {
+		return 'See Kicks';
 	}
 
 	return 'Learn More';
@@ -33,37 +33,28 @@ export const getBannerLabel = (
 	isFinished?: boolean,
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
-		if (isFinished) {
-			return (
-				<>Wilder Wheels whitelist release starting - you may need to refresh</>
-			);
-		} else {
-			return (
-				<>
-					Wilder Wheels available to whitelisted supporters in{' '}
-					{countdownDate && (
-						<Countdown to={countdownDate} onFinish={onFinish} />
-					)}
-				</>
-			);
-		}
+		return (
+			<>
+				Wilder Kicks whitelist release starting - waiting for contract to begin
+			</>
+		);
 	}
 	if (dropStage === Stage.Whitelist) {
 		if (isFinished) {
-			<>Wilder Wheels public release starting - you may need to refresh</>;
+			<>Wilder Kicks public release starting - you may need to refresh</>;
 		} else {
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<span>
-						Wilder Wheels now available for whitelisted supporters{' '}
+						Wilder Kicks now available for whitelisted supporters{' '}
 						{totalLabel(wheelsMinted!, wheelsTotal!)}
 					</span>
-					<span style={{ marginTop: 4 }}>
+					{/* <span style={{ marginTop: 4 }}>
 						Available to public in{' '}
 						{countdownDate && (
 							<Countdown to={countdownDate} onFinish={onFinish} />
 						)}
-					</span>
+					</span> */}
 				</div>
 			);
 		}
@@ -83,7 +74,7 @@ export const getBannerLabel = (
 		if (countdownDate && isFinished) {
 			timer = (
 				<span style={{ display: 'inline-block', marginTop: 4 }}>
-					Public release starting now
+					Public release starting now - waiting for contract to begin
 				</span>
 			);
 		}
@@ -91,23 +82,37 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					Wilder Wheels now available for whitelisted supporters{' '}
+					Wilder Kicks now available for whitelisted supporters{' '}
 					{totalLabel(wheelsMinted!, wheelsTotal!)}
 				</span>
 				{timer}
 			</div>
 		);
 	}
-	if (dropStage === Stage.Public) {
+	// if (dropStage === Stage.Public) {
+	// 	return (
+	// 		<>
+	// 			Minting is now open to everyone, act fast to secure your Kicks!{' '}
+	// 			{totalLabel(wheelsMinted!, wheelsTotal!)}
+	// 		</>
+	// 	);
+	// }
+	if (
+		dropStage === Stage.Public &&
+		Math.max(wheelsTotal! - wheelsMinted!, 0) !== 0
+	) {
 		return (
 			<>
-				Minting is now open to everyone, act fast to secure your Wheels!{' '}
-				{totalLabel(wheelsMinted!, wheelsTotal!)}
+				The Air Wild Season One sale is finished.{' '}
+				{Math.max(wheelsTotal! - wheelsMinted!, 0)} remaining pairs have been
+				transferred to the Wilder DAO.
 			</>
 		);
 	}
 	if (dropStage === Stage.Sold) {
-		return <>All {wheelsTotal} Wheels have been minted</>;
+		// return <>All {wheelsTotal} Kicks have been minted</>;
+		return <>Air Wild Season One is sold out!</>;
 	}
+
 	return <>Loading drop data...</>;
 };

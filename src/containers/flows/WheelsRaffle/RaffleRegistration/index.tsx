@@ -85,7 +85,7 @@ const RegistrationContainer = () => {
 		let signedBid: Maybe<string>;
 		try {
 			signedBid = await signer?.signMessage(
-				'Wilder Wheels Raffle Registration',
+				'Wilder Crafts Raffle Registration',
 			);
 		} catch {
 			throw new Error('Failed to sign message');
@@ -95,7 +95,7 @@ const RegistrationContainer = () => {
 
 	const submitEmail = (email: string): Promise<boolean> => {
 		return new Promise((resolve) => {
-			fetch('https://zns-mail-microservice.herokuapp.com/wheels', {
+			fetch('https://zns-mail-microservice.herokuapp.com/cribs', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
