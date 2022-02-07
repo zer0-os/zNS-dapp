@@ -6,7 +6,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
-import { injected } from 'lib/connectors';
 
 //- Library Imports
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
