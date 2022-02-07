@@ -44,6 +44,9 @@ import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { NavBarProvider } from 'lib/providers/NavBarProvider';
 
+//- Utils Imports
+import { Flags, getFeatureFlag } from 'lib/utils/featureFlags';
+
 enum Modal {
 	Bid,
 	Mint,
@@ -125,6 +128,11 @@ const PageContainer: FC = ({ children }) => {
 	//- Data
 	const isOwnedByUser: boolean =
 		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
+
+	//- Feature Flags
+	const isTitleBarMintButtonEnabled = getFeatureFlag(
+		Flags.IS_TITLE_BAR_MINT_BUTTON_ENABLED,
+	);
 
 	///////////////
 	// Functions //
@@ -350,7 +358,7 @@ const PageContainer: FC = ({ children }) => {
 						{account && !isSearchActive && (
 							<>
 								{/* Mint button */}
-								{isOwnedByUser && (
+								{isOwnedByUser && isTitleBarMintButtonEnabled && (
 									<FutureButton
 										style={{ padding: '0px 12px' }}
 										glow={account != null}
