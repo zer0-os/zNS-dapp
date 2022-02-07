@@ -220,7 +220,9 @@ const PageContainer: FC = ({ children }) => {
 			!active &&
 			triedEagerConnect
 		) {
-			localStorage.removeItem('chosenWallet');
+			setTimeout(async () => {
+				localStorage.removeItem('chosenWallet');
+			}, 2000);
 		}
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
