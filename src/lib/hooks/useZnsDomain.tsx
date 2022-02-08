@@ -45,11 +45,11 @@ export const useZnsDomain = (domainId: string) => {
 				owner: { id: sub.owner },
 			}));
 
-			setLoading(false);
 			setDomain({
 				...formattedDomain,
 				subdomains: formattedSubdomains,
 			});
+			setLoading(false);
 		})();
 		return () => {
 			isMounted = false;
