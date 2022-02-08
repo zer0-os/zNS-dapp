@@ -231,7 +231,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	const openBuyOverlay = () => {
 		if (!isMounted.current) return;
-		if (!znsDomain.domain || isOwnedByYou || !active) return;
+		if (!znsDomain || isOwnedByYou || !active) return;
 		setIsBuyOverlayOpen(true);
 	};
 
@@ -380,7 +380,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [znsDomain]);
+	}, [znsDomain, isBuyNowFinishedSuccesfully]);
 
 	const nftStats = () => {
 		let width = '24.2%';
@@ -488,11 +488,16 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	const overlays = () => (
 		<>
-			{znsDomain && (
-				<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
-					<MakeABid domain={znsDomain} onBid={onBid} />
-				</Overlay>
-			)}
+			{znsDomain &&
+				(isBidOverlayOpen ? (
+					<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
+						<MakeABid domain={znsDomain} onBid={onBid} />
+					</Overlay>
+				) : (
+					<Overlay onClose={closeBuyOverlay} open={isBuyOverlayOpen}>
+						<MakeABuy domain={znsDomain} onBuy={onBuy} />
+					</Overlay>
+				))}
 		</>
 	);
 
@@ -871,7 +876,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 								subtext={'Creator'}
 							/>
 						</div>
-						<div className={styles.Story}>{znsDomain.description ?? ''}</div>
+						<div className={styles.Story}>{znsDomain!.description ?? ''}</div>
 						<div className={styles.Action}>
 							{buyNowPrice !== undefined ? actionBuy() : actionBid()}
 							{buyNowPrice !== undefined && highestBid ? (

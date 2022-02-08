@@ -12,7 +12,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { getMetadata } from 'lib/metadata';
 import { BigNumber, ethers, providers } from 'ethers';
 import { ERC20 } from 'types';
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 
 //- Component Imports
 import {
