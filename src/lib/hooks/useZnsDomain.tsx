@@ -3,6 +3,7 @@ import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { DisplayParentDomain, Maybe } from 'lib/types';
 import React from 'react';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { Domain } from '@zero-tech/zns-sdk';
 
 export const useZnsDomain = (domainId: string) => {
 	const { instance: sdk } = useZnsSdk();
@@ -10,6 +11,8 @@ export const useZnsDomain = (domainId: string) => {
 
 	const [domain, setDomain] =
 		React.useState<Maybe<DisplayParentDomain>>(undefined);
+	const [subdomains, setSubdomains] =
+		React.useState<Maybe<Domain[]>>(undefined);
 	const [loading, setLoading] = React.useState<boolean>(true);
 	const metadata = useDomainMetadata(domain?.metadata);
 	const [refetchSwitch, setRefetchSwitch] = React.useState<boolean>(false);
@@ -18,12 +21,16 @@ export const useZnsDomain = (domainId: string) => {
 		let isMounted = true;
 		(async () => {
 			setLoading(true);
+			setSubdomains(undefined);
+			setDomain(undefined);
 			loadingDomainId.current = domainId;
 
 			const [rawDomain, rawSubdomains] = await Promise.all([
 				sdk.getDomainById(domainId),
 				sdk.getSubdomainsById(domainId),
 			]);
+
+			console.log(rawDomain);
 
 			if (!isMounted || !(loadingDomainId.current === rawDomain?.id)) {
 				console.log('cancel load');
@@ -45,6 +52,7 @@ export const useZnsDomain = (domainId: string) => {
 				owner: { id: sub.owner },
 			}));
 
+			setSubdomains(rawSubdomains);
 			setDomain({
 				...formattedDomain,
 				subdomains: formattedSubdomains,
@@ -63,6 +71,7 @@ export const useZnsDomain = (domainId: string) => {
 	return {
 		loading,
 		domain,
+		subdomains,
 		metadata,
 		refetch,
 	};
