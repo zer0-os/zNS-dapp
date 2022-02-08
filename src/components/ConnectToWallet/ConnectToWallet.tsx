@@ -19,6 +19,9 @@ import WalletStyles from './Wallet.module.scss';
 //- Component Imports
 import { FutureButton, Spinner, Image } from 'components';
 
+//- Utils Imports
+import { WalletOptionType, getWalletOptionStyle } from './utils';
+
 //- Asset Imports
 import metamaskIcon from './assets/metamask.svg';
 import walletConnectIcon from './assets/walletconnect.svg';
@@ -39,7 +42,7 @@ const nameToConnector: { [key: string]: AbstractConnector } = {
 };
 
 export const connectorFromName = (name: string) => {
-	if (name === 'walletconnect') {
+	if (name === WalletOptionType.WALLET_CONNECT) {
 		return createWalletConnectConnector();
 	}
 
@@ -76,7 +79,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 
 		if (c) {
 			//if user tries to connect metamask without provider
-			if (wallet === 'metamask' && !window.ethereum) {
+			if (wallet === WalletOptionType.METAMASK && !window.ethereum) {
 				addNotification(
 					'Unable to find Metamask. Please check it is installed.',
 				);
@@ -89,12 +92,12 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 			localStorage.setItem('chosenWallet', wallet); //sets the actual wallet key to reconnect if connected
 
 			//metamask may get stuck due to eth_requestAccounts promise, if user close log in overlay
-			if (wallet === 'metamask') {
+			if (wallet === WalletOptionType.METAMASK) {
 				setTimeout(async () => {
 					const authorized = await injected.isAuthorized();
 					if (
 						!authorized &&
-						localStorage.getItem('chosenWallet') === 'metamask'
+						localStorage.getItem('chosenWallet') === WalletOptionType.METAMASK
 					)
 						addNotification('Cant connect?, please reload and retry');
 				}, 20000); //@todo: check if metamask solves this, issue #10085
@@ -121,20 +124,20 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 		deactivate();
 		//if has a wallet connected, instead of just deactivate, close connection too
 		switch (wallet) {
-			case 'coinbase': {
+			case WalletOptionType.COINBASE: {
 				walletlink.close();
 				break;
 			}
-			case 'portis': {
+			case WalletOptionType.PORTIS: {
 				portis.close();
 				break;
 			}
-			case 'fortmatic': {
+			case WalletOptionType.FORTMATIC: {
 				fortmatic.close();
 				break;
 			}
-			case 'walletconnect': {
-				localStorage.removeItem('walletconnect'); //session info of walletconnect
+			case WalletOptionType.WALLET_CONNECT: {
+				localStorage.removeItem(WalletOptionType.WALLET_CONNECT); //session info of walletconnect
 				break;
 			}
 			default:
@@ -197,8 +200,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 			{!isLoading && (
 				<ul>
 					<li
-						onClick={() => connectToWallet('metamask')}
-						className={WalletStyles.wallet}
+						onClick={() => connectToWallet(WalletOptionType.METAMASK)}
+						className={getWalletOptionStyle(WalletOptionType.METAMASK)}
 					>
 						Metamask
 						<div>
@@ -210,8 +213,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						</div>
 					</li>
 					<li
-						onClick={() => connectToWallet('walletconnect')}
-						className={WalletStyles.wallet}
+						onClick={() => connectToWallet(WalletOptionType.WALLET_CONNECT)}
+						className={getWalletOptionStyle(WalletOptionType.WALLET_CONNECT)}
 					>
 						<span>Wallet Connect</span>
 						<div>
@@ -219,8 +222,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						</div>
 					</li>
 					<li
-						onClick={() => connectToWallet('coinbase')}
-						className={WalletStyles.wallet}
+						onClick={() => connectToWallet(WalletOptionType.COINBASE)}
+						className={getWalletOptionStyle(WalletOptionType.COINBASE)}
 					>
 						<span>Coinbase Wallet</span>
 						<div>
@@ -228,8 +231,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						</div>
 					</li>
 					<li
-						onClick={() => connectToWallet('fortmatic')}
-						className={WalletStyles.wallet}
+						onClick={() => connectToWallet(WalletOptionType.FORTMATIC)}
+						className={getWalletOptionStyle(WalletOptionType.FORTMATIC)}
 					>
 						<span>Fortmatic</span>
 						<div>
@@ -237,8 +240,8 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 						</div>
 					</li>
 					<li
-						onClick={() => connectToWallet('portis')}
-						className={WalletStyles.wallet}
+						onClick={() => connectToWallet(WalletOptionType.PORTIS)}
+						className={getWalletOptionStyle(WalletOptionType.PORTIS)}
 					>
 						<span>Portis</span>
 						<div>
