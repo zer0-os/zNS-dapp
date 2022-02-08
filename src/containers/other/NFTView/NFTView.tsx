@@ -5,7 +5,7 @@ import { Spring, animated } from 'react-spring';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
-import { BigNumber, ethers } from 'ethers';
+import { BigNumber, ethers, providers } from 'ethers';
 
 //- Component Imports
 import {
@@ -43,6 +43,8 @@ import styles from './NFTView.module.scss';
 import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
 import downloadIcon from './assets/download.svg';
+import moreActionsIcon from './assets/more-vertical.svg';
+import setPriceIcon from './assets/set-price.svg';
 import shareIcon from './assets/share.svg';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
@@ -103,7 +105,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active, chainId } = walletContext;
+	const { account, active, chainId, library } = walletContext;
 
 	const networkType = chainIdToNetworkType(chainId);
 	const contracts = useZnsContracts();
@@ -117,6 +119,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	//- Calls the hook with a polling interval to update the data
 
 	//- Functions
+	const openSetBuyNowPriceWizard = () => {};
+
 	const copyToClipboard = (content: string, label: string) => {
 		addNotification(`Copied ${label} to clipboard.`);
 		try {
@@ -717,6 +721,15 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		}
 	};
 
+	const ownerActions = () => (
+		<>
+			<div className={styles.OwnerAction} onClick={openSetBuyNowPriceWizard}>
+				<img src={setPriceIcon} alt="" />
+				<span>Set Buy Now Price</span>
+			</div>
+		</>
+	);
+
 	////////////
 	// Render //
 	////////////
@@ -755,6 +768,19 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 								<img alt="download asset" src={downloadIcon} />
 							</button>
 						</Tooltip>
+						{isOwnedByYou && (
+							<Tooltip
+								text={ownerActions()}
+								triggerOnTooltip={true}
+								placement={'bottom-center'}
+								arrow={false}
+								tooltipClassName={styles.ActionsTooltip}
+							>
+								<button>
+									<img alt="more actions" src={moreActionsIcon} />
+								</button>
+							</Tooltip>
+						)}
 					</div>
 					<div className={styles.Details}>
 						<div>
