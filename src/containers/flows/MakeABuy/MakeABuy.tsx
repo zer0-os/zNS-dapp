@@ -275,7 +275,12 @@ const MakeABuy: React.FC<MakeABuyProps> = ({ domain, onBuy }) => {
 			<NFTMedia
 				alt="Bid NFT preview"
 				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
-				ipfsUrl={domainMetadata?.image_full || domainMetadata?.image || ''}
+				ipfsUrl={
+					domainMetadata?.animation_url ||
+					domainMetadata?.image_full ||
+					domainMetadata?.image ||
+					''
+				}
 				size="small"
 			/>
 		</div>
