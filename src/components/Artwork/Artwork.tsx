@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import { NFTMedia } from 'components';
+import { NFTMedia, Image } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
@@ -14,9 +14,12 @@ import { Metadata } from 'lib/types';
 
 //- Style Imports
 import styles from './Artwork.module.scss';
+import classNames from 'classnames/bind';
 
 type ArtworkProps = {
-	domain: string;
+	circleIcon?: boolean;
+	domain?: string;
+	disableAnimation?: boolean;
 	disableInteraction?: boolean;
 	id: string;
 	image?: string;
@@ -26,19 +29,12 @@ type ArtworkProps = {
 	style?: React.CSSProperties;
 };
 
-export const TEST_ID = {
-	ARTWORK: 'artwork',
-	CONTAINER: 'container',
-	DISABLE_LINK: 'disable-link',
-	LINK: 'link',
-	PENDING: 'pending',
-	SHOULD_ANIMATE: 'should-animate',
-	SHOULD_NOT_ANIMATE: 'should-not-animate',
-	ARTWORK_CONTAINER: 'artwork-container',
-};
+const cx = classNames.bind(styles);
 
 const Artwork: React.FC<ArtworkProps> = ({
+	circleIcon,
 	domain,
+	disableAnimation,
 	disableInteraction,
 	id,
 	image,
@@ -73,7 +69,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		}
 
 		// Truncate
-		if (('wilder.' + domain).length > 30) {
+		if (domain && ('wilder.' + domain).length > 30) {
 			const split = domain.split('.');
 			if (isMounted.current === true) {
 				setTruncatedDomain('wilder...' + split[split.length - 1]);
@@ -90,45 +86,50 @@ const Artwork: React.FC<ArtworkProps> = ({
 	}, [domain, metadataUrl]);
 
 	const artwork = React.useMemo(() => {
-		return (
-			<NFTMedia
-				disableLightbox
-				style={{
-					zIndex: 2,
-				}}
-				size="tiny"
-				className={`${styles.Image} border-rounded`}
-				alt="NFT Preview"
-				ipfsUrl={metadata?.image_full || metadata?.image || ''}
-				data-testid={TEST_ID.ARTWORK}
-			/>
-		);
-	}, [metadata]);
+		if (image) {
+			return <Image alt="pool icon" src={image} />;
+		}
+		if (metadata) {
+			return (
+				<NFTMedia
+					disableLightbox
+					style={{
+						zIndex: 2,
+					}}
+					size="tiny"
+					className={`${styles.Image} border-rounded`}
+					alt="NFT Preview"
+					ipfsUrl={metadata?.image_full || metadata?.image || ''}
+				/>
+			);
+		}
+	}, [image, metadata]);
 
 	return (
 		<>
 			{/* TODO: Remove overlay from child */}
-			<div
-				className={`${styles.Artwork} ${styles.Pending}`}
-				style={style}
-				data-testid={TEST_ID.CONTAINER}
-			>
-				<div className={styles.Image} data-testid={TEST_ID.ARTWORK_CONTAINER}>
+			<div className={`${styles.Artwork} ${styles.Pending}`} style={style}>
+				<div
+					className={cx(styles.Image, {
+						Circle: circleIcon,
+					})}
+				>
 					{artwork}
 				</div>
 				<div className={styles.Info}>
 					{shouldAnimate && (metadata?.title || name) && (
 						<Spring
-							from={{ maxHeight: 0, opacity: 0 }}
+							from={{
+								maxHeight: disableAnimation ? 18 : 0,
+								opacity: disableAnimation ? 1 : 0,
+							}}
 							to={{ maxHeight: 18, opacity: 1 }}
-							// data-testid={TEST_ID.SHOULD_ANIMATE}
 						>
 							{(animatedStyles) => (
 								<animated.div style={animatedStyles}>
 									<span
 										style={{ cursor: pending ? 'default' : 'pointer' }}
 										className={styles.Title}
-										data-testid={TEST_ID.SHOULD_ANIMATE}
 									>
 										{metadata?.title || name}
 									</span>
@@ -140,28 +141,23 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<span
 							style={{ cursor: pending ? 'default' : 'pointer' }}
 							className={styles.Title}
-							data-testid={TEST_ID.SHOULD_NOT_ANIMATE}
 						>
 							{metadata?.title || name}
 						</span>
 					)}
 					{!pending && (
 						<>
-							{disableInteraction && (
-								<span
-									className={styles.Domain}
-									data-testid={TEST_ID.DISABLE_LINK}
-								>
+							{disableInteraction && domain && (
+								<span className={styles.Domain}>
 									{truncatedDomain || 'wilder.' + domain}
 								</span>
 							)}
-							{!disableInteraction && (
+							{!disableInteraction && domain && (
 								<Link
 									className={styles.Domain}
 									to={domain.split('wilder.')[1]}
 									target="_blank"
 									rel="noreferrer"
-									data-testid={TEST_ID.LINK}
 								>
 									{truncatedDomain || domain}
 								</Link>
@@ -169,9 +165,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 						</>
 					)}
 					{pending && (
-						<span data-testid={TEST_ID.PENDING} className={styles.Domain}>
-							{domain}
-						</span>
+						<span className={styles.Domain}>{domain ? domain : 'Loading'}</span>
 					)}
 				</div>
 			</div>

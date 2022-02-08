@@ -45,7 +45,11 @@ const NFTCardContainer: React.FC<NFTCardContainerProps> = (props) => {
 		return {
 			...props,
 			name: metadata?.title || '',
-			imageUri: metadata?.image_full || metadata?.image || '',
+			imageUri:
+				metadata?.animation_url ||
+				metadata?.image_full ||
+				metadata?.image ||
+				'',
 		};
 	};
 

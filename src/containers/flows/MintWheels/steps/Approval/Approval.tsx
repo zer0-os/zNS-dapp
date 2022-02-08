@@ -82,6 +82,7 @@ const Approval: React.FC<ApprovalProps> = ({
 			.catch((e) => {
 				onError(e.message);
 			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const checkingApproval = () => {

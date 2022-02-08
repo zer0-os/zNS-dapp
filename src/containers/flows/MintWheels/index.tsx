@@ -14,7 +14,7 @@ import MintWheels from './MintWheels';
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
 import { getBannerLabel, getBannerButtonText } from './labels';
-import { useMintProvider } from 'lib/providers/MintProvider';
+import useMint from 'lib/hooks/useMint';
 import {
 	getDropData,
 	getUserEligibility,
@@ -24,13 +24,13 @@ import {
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_PUBLIC = 1640138400000;
+	const DATE_PUBLIC = 1642730400655;
 
 	//////////////////
 	// State & Data //
 	//////////////////
 
-	const { mintWheels } = useMintProvider();
+	const { mintWheels } = useMint();
 	const history = useHistory();
 	const location = useLocation();
 
@@ -70,7 +70,7 @@ const MintWheelsFlowContainer = () => {
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted = true;
+	const isSaleHalted = false;
 
 	///////////////
 	// Functions //
@@ -92,8 +92,8 @@ const MintWheelsFlowContainer = () => {
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold) {
-			history.push('wheels.genesis');
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Public) {
+			history.push('market/kicks.airwild.season1');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -185,7 +185,6 @@ const MintWheelsFlowContainer = () => {
 			if (!saleContract) {
 				return;
 			}
-
 			// Get the data related to the drop
 			getDropData(saleContract)
 				.then((d) => {
@@ -199,7 +198,7 @@ const MintWheelsFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						// setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -306,7 +305,7 @@ const MintWheelsFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						// setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -360,8 +359,7 @@ const MintWheelsFlowContainer = () => {
 			return (
 				<>
 					<span>
-						Wilder Wheels sale has been temporarily paused to ensure a fair
-						sale.
+						Wilder Kicks sale has been temporarily paused to ensure a fair sale.
 					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
@@ -422,12 +420,14 @@ const MintWheelsFlowContainer = () => {
 					/>
 				</Overlay>
 			)}
-			<MintWheelsBanner
-				title={'Get your ride for the Metaverse '}
-				label={bannerLabel()}
-				buttonText={buttonText()}
-				onClick={openWizard}
-			/>
+			<div style={{ position: 'relative', marginBottom: 16 }}>
+				<MintWheelsBanner
+					title={'Get your Kicks for the Metaverse '}
+					label={bannerLabel()}
+					buttonText={buttonText()}
+					onClick={openWizard}
+				/>
+			</div>
 		</>
 	);
 };

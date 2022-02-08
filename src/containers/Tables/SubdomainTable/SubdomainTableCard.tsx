@@ -61,7 +61,7 @@ const SubdomainTableCard = (props: any) => {
 
 	const onClick = (event: any) => {
 		if (!event.target.className.includes('FutureButton')) {
-			goTo(domain.name.split('wilder.')[1]);
+			goTo('/market/' + domain.name.split('wilder.')[1]);
 		}
 	};
 

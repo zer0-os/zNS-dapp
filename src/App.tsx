@@ -13,7 +13,7 @@ import 'styles/reset.scss';
 import 'styles/main.scss';
 
 //- React Imports
-import { HashRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 
 //- Web3 Imports
 import { Web3ReactProvider } from '@web3-react/core';
@@ -21,8 +21,6 @@ import { Web3Provider } from '@ethersproject/providers';
 
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
-import MintProvider from 'lib/providers/MintProvider';
-import BidProvider from 'lib/providers/BidProvider';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import TransferProvider from './lib/providers/TransferProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
@@ -33,7 +31,8 @@ import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import backgroundImage from 'assets/background.jpg';
 
 //- Page Imports
-import { ZNS } from 'pages';
+import { ZNS, Staking } from 'pages';
+import PageContainer from 'containers/PageContainer';
 import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
 import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
 
@@ -66,22 +65,19 @@ function App() {
 
 	return (
 		<ConnectedRouter history={history}>
-			<HashRouter>
-				<Route
-					render={({ location, match }) => {
-						return (
-							<>
-								<CurrentDomainProvider>
-									<ZNS
-										domain={location.pathname}
-										isNftView={location.search.includes('view=true')}
-									/>
-								</CurrentDomainProvider>
-							</>
-						);
-					}}
-				/>
-			</HashRouter>
+			<BrowserRouter>
+				<Switch>
+					<CurrentDomainProvider>
+						<PageContainer>
+							<Route path="/market" component={ZNS} />
+							<Route path="/staking" component={Staking} />
+							<Route exact path="/">
+								<Redirect to="/market" />
+							</Route>
+						</PageContainer>
+					</CurrentDomainProvider>
+				</Switch>
+			</BrowserRouter>
 		</ConnectedRouter>
 	);
 }
@@ -101,17 +97,13 @@ function wrappedApp() {
 						<Web3ReactProvider getLibrary={getLibrary}>
 							{/* Our Hooks  */}
 							<ZNSDomainsProvider>
-								<BidProvider>
-									<TransferProvider>
-										<StakingRequestProvider>
-											<MintProvider>
-												<EnlistProvider>
-													<App />
-												</EnlistProvider>
-											</MintProvider>
-										</StakingRequestProvider>
-									</TransferProvider>
-								</BidProvider>
+								<TransferProvider>
+									<StakingRequestProvider>
+										<EnlistProvider>
+											<App />
+										</EnlistProvider>
+									</StakingRequestProvider>
+								</TransferProvider>
 							</ZNSDomainsProvider>
 						</Web3ReactProvider>
 					</SubgraphProvider>

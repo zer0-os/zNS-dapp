@@ -6,7 +6,7 @@ import styles from './SubdomainTableRow.module.scss';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useCurrency from 'lib/hooks/useCurrency';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
@@ -211,7 +211,7 @@ const SubdomainTableRow = (props: any) => {
 	const onRowClick = (event: any) => {
 		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
 		if (!clickedButton) {
-			goTo(domain.name.split('wilder.')[1]);
+			goTo(`/market/${domain.name.split('wilder.')[1]}`);
 		}
 	};
 

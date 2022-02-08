@@ -16,6 +16,7 @@ import arrowBackIcon from 'assets/arrow-back.svg';
 
 //- Style Imports
 import styles from './TitleBar.module.scss';
+import { useNavBarContents } from 'lib/providers/NavBarProvider';
 
 type TitleBarProps = {
 	style?: React.CSSProperties;
@@ -24,7 +25,6 @@ type TitleBarProps = {
 	onBack: () => void;
 	canGoForward: boolean;
 	onForward: () => void;
-	domain: string;
 	setIsSearchActive: (active: boolean) => void;
 	isSearchActive: boolean;
 };
@@ -36,7 +36,6 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	onBack,
 	canGoForward,
 	onForward,
-	domain,
 	setIsSearchActive,
 	isSearchActive,
 }) => {
@@ -60,6 +59,8 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	const [isSearchInputHovered, setIsSearchInputHovered] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
 
+	const { title } = useNavBarContents();
+
 	///////////////
 	// Functions //
 	///////////////
@@ -78,7 +79,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 
 	const go = (to: string) => {
 		const relativeDomain = getRelativeDomainPath(to);
-		history.push(relativeDomain);
+		history.push('market/' + relativeDomain);
 	};
 
 	/////////////
@@ -158,37 +159,38 @@ const TitleBar: React.FC<TitleBarProps> = ({
 
 	return (
 		<div
-			className={`
-			${styles.TitleBar}
-			${isSearchActive ? styles.Searching : ''}
-			${isSearchInputHovered ? styles.Hovered : ''}
-			border-primary`}
+			className={`${styles.TitleBar} ${isSearchActive ? styles.Searching : ''}	${
+				isSearchInputHovered ? styles.Hovered : ''
+			} border-primary`}
 		>
 			<div className={styles.Bar}>
 				<div className={styles.Navigation}>
-					<div className={styles.Buttons}>
-						<IconButton
-							iconUri={arrowBackIcon}
-							onClick={onBack}
-							style={{ height: 32, width: 32 }}
-							disabled={!canGoBack}
-							alt={'back'}
-						/>
-						<IconButton
-							iconUri={arrowForwardIcon}
-							onClick={onForward}
-							style={{ height: 32, width: 32, marginLeft: 4 }}
-							disabled={!canGoForward}
-							alt={'forward'}
-						/>
-					</div>
+					{!title && (
+						<div className={styles.Buttons}>
+							<IconButton
+								iconUri={arrowBackIcon}
+								onClick={onBack}
+								style={{ height: 32, width: 32 }}
+								disabled={!canGoBack}
+								alt={'back'}
+							/>
+							<IconButton
+								iconUri={arrowForwardIcon}
+								onClick={onForward}
+								style={{ height: 32, width: 32, marginLeft: 4 }}
+								disabled={!canGoForward}
+								alt={'forward'}
+							/>
+						</div>
+					)}
 					{/* TODO: Split this into its own component */}
 					{!isSearchActive && (
-						<ZNALink
-							className={styles.ZNA}
-							style={{ marginLeft: 16 }}
-							domain={domain}
-						/>
+						<>
+							{title && <b className={styles.Title}>{title}</b>}
+							{!title && (
+								<ZNALink className={styles.ZNA} style={{ marginLeft: 16 }} />
+							)}
+						</>
 					)}
 					<input
 						className={styles.Search}
