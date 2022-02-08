@@ -89,11 +89,11 @@ describe('number', () => {
 		});
 
 		it('should support different user locales - French', () => {
-			expect(formatByDecimalPlace(12345.67, 2, 'fr')).toEqual('12 345,67');
+			expect(formatByDecimalPlace(12345.67, 2, 'fr-FR')).toEqual('12 345,67');
 		});
 
 		it('should support different user locales - Italian', () => {
-			expect(formatByDecimalPlace(12345.67, 2, 'it')).toEqual('12.345,67');
+			expect(formatByDecimalPlace(12345.67, 2, 'it-IT')).toEqual('12.345,67');
 		});
 
 		it('should fallback to the browser locale if no locale code is specified', () => {
