@@ -15,6 +15,7 @@ export const useZnsDomain = (domainId: string) => {
 	const [refetchSwitch, setRefetchSwitch] = React.useState<boolean>(false);
 
 	React.useEffect(() => {
+		let isMounted = true;
 		(async () => {
 			setLoading(true);
 			loadingDomainId.current = domainId;
@@ -24,7 +25,7 @@ export const useZnsDomain = (domainId: string) => {
 				sdk.getSubdomainsById(domainId),
 			]);
 
-			if (!(loadingDomainId.current === rawDomain?.id)) {
+			if (!isMounted || !(loadingDomainId.current === rawDomain?.id)) {
 				console.log('cancel load');
 				return;
 			}
@@ -50,6 +51,9 @@ export const useZnsDomain = (domainId: string) => {
 				subdomains: formattedSubdomains,
 			});
 		})();
+		return () => {
+			isMounted = false;
+		};
 	}, [domainId, refetchSwitch, sdk]);
 
 	const refetch = () => {
