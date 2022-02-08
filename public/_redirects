@@ -1,1 +1,7 @@
+# Certain cases can exclude the http version, even though we have force_ssl enabled on Netlify & Cloudflare.
+http://market.wilderworld.com/* https://app.wilderworld.com/market/:splat 301!
+https://market.wilderworld.com/* https://app.wilderworld.com/market/:splat 301!
+http://staking.wilderworld.com/* https://app.wilderworld.com/staking/:splat 301!
+https://staking.wilderworld.com/* https://app.wilderworld.com/staking/:splat 301!
+
 /* /index.html 200

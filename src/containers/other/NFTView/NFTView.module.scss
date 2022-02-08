@@ -163,24 +163,43 @@ div .ActionsTooltip {
 	margin-left: 64px;
 }
 
+.Action {
+	margin-top: 8px;
+	display: flex;
+	gap: 40px;
+}
+
+.Divider {
+	width: 1px;
+	height: 100%;
+	background-color: #50207b;
+}
+
 .Price h2 {
-	color: var(--color-primary-lighter-3);
-	margin-bottom: 4px;
+	font-size: 12px;
+	color: var(--color-purple-lightest);
 }
 
 .Crypto {
-	font-size: 24px;
+	font-size: 20px;
 	font-weight: 700;
+	margin: 4px 0;
 }
 
 .Fiat {
-	font-size: 18px;
+	font-size: 12px;
 	font-weight: 400;
 	color: var(--color-primary-lighter-3);
 }
 
 .Buttons {
-	margin: 32px 0;
+	margin: 16px 0 0 0;
+
+	* {
+		font-size: var(--font-size-smaller);
+		margin-left: 0px;
+		margin-right: 0px;
+	}
 }
 
 .Vertical > div:not(:first-child) {

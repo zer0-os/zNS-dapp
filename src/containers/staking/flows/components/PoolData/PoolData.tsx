@@ -4,7 +4,7 @@ import styles from './PoolData.module.scss';
 
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
-import { displayEther, displayEtherToFiat, toFiat } from 'lib/currency';
+import { displayEther, displayEtherToFiat } from 'lib/currency';
 
 const cx = classNames.bind(styles);
 

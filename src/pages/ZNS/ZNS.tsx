@@ -12,13 +12,7 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 
-import {
-	SubdomainTable,
-	CurrentDomainPreview,
-	WheelsRaffle,
-	BuyTokenRedirect,
-	BannerContainer,
-} from 'containers';
+import { SubdomainTable, CurrentDomainPreview } from 'containers';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
@@ -29,6 +23,7 @@ import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
+import { useDidMount } from 'lib/hooks/useDidMount';
 import { useLocation } from 'react-router-dom';
 import { useNavBarContents } from 'lib/providers/NavBarProvider';
 
@@ -46,7 +41,7 @@ enum Modal {
 
 // @TODO: Rewrite this whole page
 
-const ZNS: React.FC<ZNSProps> = ({}) => {
+const ZNS: React.FC<ZNSProps> = () => {
 	// TODO: Need to handle domains that don't exist!
 
 	///////////////////
@@ -78,6 +73,7 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 
 	//- Overlay State
@@ -92,9 +88,9 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 
 	const { setTitle } = useNavBarContents();
 
-	useEffect(() => {
+	useDidMount(() => {
 		setTitle(undefined);
-	}, []);
+	});
 
 	///////////////
 	// Functions //
@@ -227,10 +223,11 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 		return (
 			<>
 				<div className={styles.Stats}>
-					{data.map((item) => (
+					{data.map((item, index) => (
 						<>
 							{!item.isHidden ? (
 								<StatsWidget
+									key={`stats-widget=${index}`}
 									className="normalView"
 									fieldName={item.fieldName}
 									isLoading={!statsLoaded}
@@ -258,7 +255,7 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 			// If root view, slide up
 			to = {
 				opacity: 0,
-				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 12,
+				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 14,
 				marginBottom: 16,
 			};
 		}
@@ -301,15 +298,7 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 				/>
 			)}
 			{/* ZNS Content */}
-			{/* <BannerContainer isScrollDetectionDown={isScrollDetectionDown}> */}
-			{/* Temporarily removed Raffle */}
-			<WheelsRaffle />
-			{/* <MessageBanner
-						label="This is a banner message"
-						buttonText="CTA"
-						countdownTime={3634408000000}
-					/> */}
-			{/* </BannerContainer> */}
+			{/* <WheelsRaffle /> */}
 
 			{!isNftView && (
 				<div
@@ -317,6 +306,7 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 					style={{
 						background: 'var(--background-primary)',
 						overflow: 'hidden',
+						marginTop: 16,
 					}}
 				>
 					{previewCard()}
@@ -326,7 +316,10 @@ const ZNS: React.FC<ZNSProps> = ({}) => {
 			)}
 
 			{znsDomain && isNftView && (
-				<Spring from={{ opacity: 0 }} to={{ opacity: 1 }}>
+				<Spring
+					from={{ opacity: 0, marginTop: 16 }}
+					to={{ opacity: 1, marginTop: 16 }}
+				>
 					{(styles) => (
 						<animated.div style={styles}>
 							<NFTView

@@ -8,8 +8,8 @@ import { ethers } from 'ethers';
 
 //- Providers
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
-import { useMintProvider } from 'lib/providers/MintProvider';
 import { useZnsContracts } from 'lib/contracts';
+import useMint from 'lib/hooks/useMint';
 
 //- Type Imports
 import { ERC20 } from 'types';
@@ -64,7 +64,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const lootContract: ERC20 = znsContracts.lootToken;
 
 	// Mint/Staking Hooks
-	const mint = useMintProvider();
+	const { mint } = useMint();
 	const staking = useStakingProvider();
 
 	// @todo refactor into useEffect so we don't have to calculate each render
@@ -193,7 +193,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		if (!tokenInformation) return setIsMintLoading(false);
 		setStatusText(`Minting domain`);
 
-		const hasSubmitMint = mint.mint(
+		const hasSubmitMint = await mint(
 			{
 				parent: domainId,
 				owner: account,

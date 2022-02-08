@@ -6,22 +6,25 @@ import styles from './SubdomainTableRow.module.scss';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useCurrency from 'lib/hooks/useCurrency';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
-import { BidButton } from 'containers';
-import { ethers } from 'ethers';
+import { BidButton, BuyNowButton } from 'containers';
+import { ethers, providers } from 'ethers';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { formatNumber, formatEthers } from 'lib/utils';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useBuyNow } from './BuyNowProvider';
 
 const SubdomainTableRow = (props: any) => {
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account } = walletContext;
+	const { account, library } = walletContext;
 	const { push: goTo } = useHistory();
 
 	const { makeABid, updated } = useBid();
+	const { makeABuy } = useBuyNow();
 	const { getBidsForDomain } = useBidProvider();
 
 	const { wildPriceUsd } = useCurrency();
@@ -29,10 +32,16 @@ const SubdomainTableRow = (props: any) => {
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
 
+	const sdk = useZnsSdk();
+
 	const [bids, setBids] = useState<Bid[] | undefined>();
+	const [buyNowPrice, setBuyNowPrice] = useState<string | undefined>();
+	const [isMounted, setIsMounted] = useState(false);
 
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
+
+	const domainId = domain.id;
 
 	const isOwnedByUser =
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
@@ -44,7 +53,6 @@ const SubdomainTableRow = (props: any) => {
 	}, [updated]);
 
 	useEffect(() => {
-		let isMounted = true;
 		const get = async () => {
 			setBids(undefined);
 			setAreBidsLoading(true);
@@ -60,8 +68,44 @@ const SubdomainTableRow = (props: any) => {
 			}
 		};
 		get();
+
+		try {
+			(async () => {
+				const provider =
+					library && new providers.Web3Provider(library.provider);
+				const signer = provider && provider.getSigner(account!);
+
+				const isAbleToSpendTokens = await (
+					await sdk.instance.getZAuctionInstanceForDomain(domainId)
+				).getZAuctionSpendAllowance(await signer?.getAddress()!);
+
+				if (isAbleToSpendTokens) {
+					await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+						.getBuyNowPrice(domainId, signer!)
+						.then((zauctionBuyNowPrice) => {
+							if (!zauctionBuyNowPrice.isZero())
+								setBuyNowPrice(zauctionBuyNowPrice.toString());
+						});
+				} else {
+					await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+						.approveZAuctionSpendTradeTokens(signer!)
+						.then(async () => {
+							await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+								.getBuyNowPrice(domainId, signer!)
+								.then((zauctionBuyNowPrice) => {
+									console.log(zauctionBuyNowPrice.isZero());
+									if (!zauctionBuyNowPrice.isZero())
+										setBuyNowPrice(zauctionBuyNowPrice.toString());
+								});
+						});
+				}
+			})();
+		} catch (error) {
+			console.error(error);
+		}
+
 		return () => {
-			isMounted = false;
+			setIsMounted(false);
 		};
 	}, [domain, hasUpdated]);
 
@@ -160,6 +204,10 @@ const SubdomainTableRow = (props: any) => {
 		makeABid(domain);
 	};
 
+	const onBuyNowButtonClick = () => {
+		makeABuy(domain);
+	};
+
 	const onRowClick = (event: any) => {
 		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
 		if (!clickedButton) {
@@ -181,13 +229,24 @@ const SubdomainTableRow = (props: any) => {
 			</td>
 			{bidColumns()}
 			<td>
-				<BidButton
-					glow={account !== undefined && !isOwnedByUser}
-					onClick={onBidButtonClick}
-					style={{ marginLeft: 'auto' }}
-				>
-					Make A Bid
-				</BidButton>
+				{buyNowPrice ? (
+					<BuyNowButton
+						glow={account !== undefined && !isOwnedByUser}
+						onClick={onBuyNowButtonClick}
+						tooltip={buyNowPrice}
+						style={{ margin: 'auto' }}
+					>
+						Buy Now
+					</BuyNowButton>
+				) : (
+					<BidButton
+						glow={account !== undefined && !isOwnedByUser}
+						onClick={onBidButtonClick}
+						style={{ margin: 'auto' }}
+					>
+						Make A Bid
+					</BidButton>
+				)}
 			</td>
 		</tr>
 	);

@@ -6,7 +6,9 @@ import {
 	DomainMintEvent,
 	DomainSaleEvent,
 	DomainTransferEvent,
+	DomainMetadata,
 } from '@zero-tech/zns-sdk/lib/types';
+import { ContractTransaction, ethers } from 'ethers';
 import React from 'react';
 import { useChainSelector } from './ChainSelectorProvider';
 
@@ -98,6 +100,60 @@ export function useZnsSdk() {
 		}
 	};
 
+	const lockDomainMetadata = async (
+		domainId: string,
+		lockStatus: boolean,
+		signer: ethers.Signer,
+	) => {
+		try {
+			const data: ContractTransaction = await instance?.lockDomainMetadata(
+				domainId,
+				lockStatus,
+				signer,
+			);
+			return data;
+		} catch {
+			console.error('Failed to retrieve sale event data');
+			return;
+		}
+	};
+
+	const setDomainMetadata = async (
+		domainId: string,
+		metadataUri: DomainMetadata,
+		signer: ethers.Signer,
+	) => {
+		try {
+			const data: ContractTransaction = await instance?.setDomainMetadata(
+				domainId,
+				metadataUri,
+				signer,
+			);
+			return data;
+		} catch {
+			console.error('Failed to retrieve sale event data');
+			return;
+		}
+	};
+
+	const setAndLockMetadata = async (
+		domainId: string,
+		metadataUri: DomainMetadata,
+		signer: ethers.Signer,
+	) => {
+		try {
+			const data: ContractTransaction = await instance?.setDomainMetadata(
+				domainId,
+				metadataUri,
+				signer,
+			);
+			return data;
+		} catch {
+			console.error('Failed to retrieve sale event data');
+			return;
+		}
+	};
+
 	return {
 		instance,
 		getMintEvents,
@@ -105,5 +161,8 @@ export function useZnsSdk() {
 		getBids,
 		getSaleEvents,
 		getDomainMetrics,
+		lockDomainMetadata,
+		setDomainMetadata,
+		setAndLockMetadata,
 	};
 }

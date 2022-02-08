@@ -17,7 +17,7 @@ import {
 	StatsWidget,
 	Tooltip,
 } from 'components';
-import { BidButton, MakeABid } from 'containers';
+import { BidButton, BuyNowButton, MakeABid, MakeABuy } from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/random';
@@ -26,8 +26,6 @@ import useCurrency from 'lib/hooks/useCurrency';
 import { toFiat } from 'lib/currency';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
-import { getDomainId } from 'lib/utils';
-import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { Attribute } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import {
@@ -94,6 +92,11 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		useState<boolean>(false);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [ipfsHash, setIpfsHash] = useState<string>('');
+	const [buyNowPrice, setBuyNowPrice] = useState<string | undefined>();
+	const [buyNowPriceUsd, setBuyNowPriceUsd] = useState<number | undefined>();
+	const [isBuyOverlayOpen, setIsBuyOverlayOpen] = useState(false);
+	const [isBuyNowFinishedSuccesfully, setBuyNowFinishedSuccefully] =
+		useState(false);
 
 	const { domainId, domain: znsDomain, domainRaw: domain } = useCurrentDomain();
 
@@ -115,6 +118,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
 
 	const sdk = useZnsSdk();
+
+	const provider = library && new providers.Web3Provider(library.provider);
+	const signer = provider && provider.getSigner(account!);
 	//Transfers and mint data from nft
 	//- Calls the hook with a polling interval to update the data
 
@@ -143,10 +149,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	const downloadAsset = async () => {
 		// @todo move this into a helper
-		if (znsDomain?.image_full || znsDomain?.image) {
+		if (znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image) {
 			// Get hash from asset
 
-			const url = (znsDomain.image_full || znsDomain.image)!;
+			const url = (znsDomain.animation_url ||
+				znsDomain.image_full ||
+				znsDomain.image)!;
 			let hash: string;
 			if (url.startsWith('ipfs://')) {
 				// ipfs://
@@ -225,13 +233,26 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		setIsBidOverlayOpen(true);
 	};
 
+	const openBuyOverlay = () => {
+		if (!isMounted.current) return;
+		if (!znsDomain || isOwnedByYou || !active) return;
+		setIsBuyOverlayOpen(true);
+	};
+
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
+
+	const closeBuyOverlay = () => setIsBuyOverlayOpen(false);
 
 	const onBid = async () => {
 		// @todo switch this to live data
 		// should refresh on bid rather than add mock data
 		getHistory();
 		closeBidOverlay();
+	};
+
+	const onBuy = async () => {
+		closeBuyOverlay();
+		setBuyNowFinishedSuccefully(true);
 	};
 
 	const getHistory = async () => {
@@ -281,14 +302,14 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		else setContainerHeight(0);
 	};
 
+	/////////////
+	// Effects //
+	/////////////
+
 	useEffect(() => {
 		checkHeight();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isShowMoreAtrributes]);
-
-	/////////////
-	// Effects //
-	/////////////
 
 	useEffect(() => {
 		if (!highestBid) {
@@ -297,7 +318,13 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		setHighestBidUsd(
 			Number(ethers.utils.formatEther(highestBid.amount)) * wildPriceUsd,
 		);
-	}, [highestBid, wildPriceUsd]);
+
+		if (buyNowPrice) {
+			setBuyNowPriceUsd(
+				Number(ethers.utils.formatEther(buyNowPrice)) * wildPriceUsd,
+			);
+		}
+	}, [highestBid, wildPriceUsd, buyNowPrice]);
 
 	useEffect(() => {
 		isMounted.current = true;
@@ -315,6 +342,34 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	}, []);
 
 	useEffect(() => {
+		(async () => {
+			const isAbleToSpendTokens = await (
+				await sdk.instance.getZAuctionInstanceForDomain(domainId)
+			).getZAuctionSpendAllowance(await signer?.getAddress()!);
+
+			if (isAbleToSpendTokens) {
+				const zauctionBuyNowPrice = (await (
+					await sdk.instance.getZAuctionInstanceForDomain(domainId)
+				).getBuyNowPrice(domainId, signer!)) as BigNumber;
+
+				if (!zauctionBuyNowPrice.isZero())
+					setBuyNowPrice(zauctionBuyNowPrice.toString());
+			} else {
+				await (await sdk.instance.getZAuctionInstanceForDomain(domainId))
+					.approveZAuctionSpendTradeTokens(signer!)
+					.then(async () => {
+						const zauctionBuyNowPrice = (await (
+							await sdk.instance.getZAuctionInstanceForDomain(domainId)
+						).getBuyNowPrice(domainId, signer!)) as BigNumber;
+
+						if (!zauctionBuyNowPrice.isZero())
+							setBuyNowPrice(zauctionBuyNowPrice.toString());
+					});
+			}
+		})();
+	}, [signer, domainId, sdk.instance]);
+
+	useEffect(() => {
 		if (!isMounted.current) return;
 		if (znsDomain) {
 			if (!isMounted.current) return;
@@ -329,7 +384,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [znsDomain]);
+	}, [znsDomain, isBuyNowFinishedSuccesfully]);
 
 	const nftStats = () => {
 		let width = '24.2%';
@@ -413,10 +468,11 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		return (
 			<>
 				<div className={styles.Stats}>
-					{data.map((item) => (
+					{data.map((item, index) => (
 						<>
 							{!item.isHidden ? (
 								<StatsWidget
+									key={`stats-widget-${index}`}
 									title={item.title}
 									fieldName={item.fieldName}
 									subTitle={item.subTitle}
@@ -436,31 +492,95 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	const overlays = () => (
 		<>
-			{znsDomain && (
-				<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
-					<MakeABid domain={znsDomain} onBid={onBid} />
-				</Overlay>
-			)}
+			{znsDomain &&
+				(isBidOverlayOpen ? (
+					<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
+						<MakeABid domain={znsDomain} onBid={onBid} />
+					</Overlay>
+				) : (
+					<Overlay onClose={closeBuyOverlay} open={isBuyOverlayOpen}>
+						<MakeABuy domain={znsDomain} onBuy={onBuy} />
+					</Overlay>
+				))}
 		</>
 	);
 
-	const price = () => (
-		<>
-			{highestBid && (
+	const actionBuy = () => (
+		<div>
+			{buyNowPrice && (
 				<div className={styles.Price}>
-					<h2>Highest Bid</h2>
-					<span className={styles.Crypto}>
-						{Number(
-							ethers.utils.formatEther(highestBid.amount!),
-						).toLocaleString()}{' '}
-						WILD{' '}
-						{highestBidUsd !== undefined && wildPriceUsd > 0 && (
-							<span className={styles.Fiat}>(${toFiat(highestBidUsd)})</span>
-						)}
-					</span>
+					<h2>Buy Now (WILD)</h2>
+					<div className={styles.Crypto}>
+						{Intl.NumberFormat('en-US', {
+							minimumFractionDigits: 2,
+						}).format(Number(ethers.utils.formatEther(buyNowPrice)))}{' '}
+					</div>
+					{buyNowPriceUsd !== undefined && wildPriceUsd > 0 && (
+						<div className={styles.Fiat}>${toFiat(buyNowPriceUsd)}</div>
+					)}
 				</div>
 			)}
-		</>
+			<div className={styles.Buttons}>
+				{isOwnedByYou && (
+					<FutureButton
+						glow={isOwnedByYou}
+						onClick={() => isOwnedByYou && onTransfer()}
+						style={{ height: 36, borderRadius: 18 }}
+					>
+						Transfer Ownership
+					</FutureButton>
+				)}
+				{!isOwnedByYou && (
+					<BuyNowButton
+						glow={!isOwnedByYou && active}
+						onClick={openBuyOverlay}
+						style={{ height: 36, borderRadius: 18 }}
+					>
+						Buy Now
+					</BuyNowButton>
+				)}
+			</div>
+		</div>
+	);
+
+	const actionBid = () => (
+		<div>
+			{highestBid && (
+				<div className={styles.Price}>
+					<h2>Highest Bid (WILD)</h2>
+					<div className={styles.Crypto}>
+						{Intl.NumberFormat('en-US', {
+							minimumFractionDigits: 2,
+						}).format(
+							Number(ethers.utils.formatEther(highestBid.amount!)),
+						)}{' '}
+					</div>
+					{highestBidUsd !== undefined && wildPriceUsd > 0 && (
+						<div className={styles.Fiat}>${toFiat(highestBidUsd)}</div>
+					)}
+				</div>
+			)}
+			<div className={styles.Buttons}>
+				{isOwnedByYou && !buyNowPrice && (
+					<FutureButton
+						glow={isOwnedByYou}
+						onClick={() => isOwnedByYou && onTransfer()}
+						style={{ height: 36, borderRadius: 18 }}
+					>
+						Transfer Ownership
+					</FutureButton>
+				)}
+				{!isOwnedByYou && (
+					<BidButton
+						glow={!isOwnedByYou && active}
+						onClick={openBidOverlay}
+						style={{ height: 36, borderRadius: 18 }}
+					>
+						Make A Bid
+					</BidButton>
+				)}
+			</div>
+		</div>
 	);
 
 	const history = () => {
@@ -531,7 +651,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder!}`}
+								href={`https://etherscan.io/address/${item.minter!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.minter!.substring(0, 4)}...${item.minter!.substring(
@@ -552,7 +672,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item!.bidder}`}
+								href={`https://etherscan.io/address/${item.from!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.from!.substring(0, 4)}...${item.from!.substring(
@@ -563,7 +683,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item!.bidder}`}
+								href={`https://etherscan.io/address/${item.to!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.to!.substring(0, 4)}...${item.to!.substring(
@@ -621,29 +741,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			);
 		}
 	};
-
-	const actionButtons = () => (
-		<div className={styles.Buttons}>
-			{isOwnedByYou && (
-				<FutureButton
-					glow={isOwnedByYou}
-					onClick={() => isOwnedByYou && onTransfer()}
-					style={{ height: 36, borderRadius: 18 }}
-				>
-					Transfer Ownership
-				</FutureButton>
-			)}
-			{!isOwnedByYou && (
-				<BidButton
-					glow={!isOwnedByYou && active}
-					onClick={openBidOverlay}
-					style={{ height: 36, borderRadius: 18 }}
-				>
-					Make A Bid
-				</BidButton>
-			)}
-		</div>
-	);
 
 	const attributesList = (attribute: Attribute, index: number) => {
 		return (
@@ -748,7 +845,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 							objectFit: 'contain',
 						}}
 						alt="NFT Preview"
-						ipfsUrl={znsDomain?.image_full || znsDomain?.image || ''}
+						ipfsUrl={
+							znsDomain?.animation_url ||
+							znsDomain?.image_full ||
+							znsDomain?.image ||
+							''
+						}
 						size="large"
 					/>
 				</div>
@@ -800,9 +902,18 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 								subtext={'Creator'}
 							/>
 						</div>
-						<div className={styles.Story}>{znsDomain?.description ?? ''}</div>
-						{price()}
-						{actionButtons()}
+						<div className={styles.Story}>{znsDomain!.description ?? ''}</div>
+						<div className={styles.Action}>
+							{buyNowPrice !== undefined ? actionBuy() : actionBid()}
+							{buyNowPrice !== undefined && highestBid ? (
+								<>
+									<div className={styles.Divider} />
+									{actionBid()}
+								</>
+							) : (
+								''
+							)}
+						</div>
 					</div>
 					{backgroundBlob !== undefined && (
 						<img

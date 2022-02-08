@@ -11,6 +11,7 @@
 
 // Buttons
 export { default as BidButton } from './buttons/BidButton/BidButton';
+export { default as BuyNowButton } from './buttons/BuyNowButton/BuyNowButton';
 export { default as ConnectWalletButton } from './buttons/ConnectWalletButton/ConnectWalletButton';
 
 // Cards
@@ -22,6 +23,7 @@ export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/Co
 // Flows
 export { default as BuyTokenRedirect } from './flows/BuyTokenRedirect/BuyTokenRedirect';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
+export { default as MakeABuy } from './flows/MakeABuy/MakeABuy';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
 export { default as MintWheels } from './flows/MintWheels';
 export { default as TransferOwnership } from './flows/TransferOwnership';

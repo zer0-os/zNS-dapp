@@ -44,6 +44,16 @@ const Member: React.FC<MemberProps> = ({
 					/>
 				</div> */}
 				<div className={styles.Info} data-testid={TEST_ID.MEMBER_INFO}>
+					{subtext && (
+						<>
+							<span
+								className={styles.SubText}
+								data-testid={TEST_ID.MEMBER_TEXT}
+							>
+								{subtext}
+							</span>
+						</>
+					)}
 					<span data-testid={TEST_ID.MEMBER_ID}>
 						<a
 							href={'https://etherscan.io/address/' + id}
@@ -54,11 +64,6 @@ const Member: React.FC<MemberProps> = ({
 							{id.substring(0, 4)}...{id.substring(id.length - 4)}
 						</a>
 					</span>
-					{subtext && (
-						<>
-							<span data-testid={TEST_ID.MEMBER_TEXT}>{subtext}</span>
-						</>
-					)}
 					{showZna && (
 						<>
 							<button

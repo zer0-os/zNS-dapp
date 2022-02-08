@@ -14,7 +14,7 @@ import MintWheels from './MintWheels';
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
 import { getBannerLabel, getBannerButtonText } from './labels';
-import { useMintProvider } from 'lib/providers/MintProvider';
+import useMint from 'lib/hooks/useMint';
 import {
 	getDropData,
 	getUserEligibility,
@@ -30,7 +30,7 @@ const MintWheelsFlowContainer = () => {
 	// State & Data //
 	//////////////////
 
-	const { mintWheels } = useMintProvider();
+	const { mintWheels } = useMint();
 	const history = useHistory();
 	const location = useLocation();
 
@@ -92,8 +92,8 @@ const MintWheelsFlowContainer = () => {
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold) {
-			history.push('/market/cribs.wiami.southbeach.qube');
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Public) {
+			history.push('market/kicks.airwild.season1');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -420,12 +420,14 @@ const MintWheelsFlowContainer = () => {
 					/>
 				</Overlay>
 			)}
-			<MintWheelsBanner
-				title={'Get your ride for the Metaverse '}
-				label={bannerLabel()}
-				buttonText={buttonText()}
-				onClick={openWizard}
-			/>
+			<div style={{ position: 'relative', marginBottom: 16 }}>
+				<MintWheelsBanner
+					title={'Get your Kicks for the Metaverse '}
+					label={bannerLabel()}
+					buttonText={buttonText()}
+					onClick={openWizard}
+				/>
+			</div>
 		</>
 	);
 };
