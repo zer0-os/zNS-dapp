@@ -2,67 +2,64 @@
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { DisplayParentDomain, Maybe } from 'lib/types';
 import React from 'react';
-import { useDomainByIdQuery } from './zNSDomainHooks';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 
 export const useZnsDomain = (domainId: string) => {
 	const { instance: sdk } = useZnsSdk();
-
 	const loadingDomainId = React.useRef<string | undefined>(undefined);
-	const [loading, setLoading] = React.useState(true);
+
 	const [domain, setDomain] =
 		React.useState<Maybe<DisplayParentDomain>>(undefined);
-
-	const domainQuery = useDomainByIdQuery(domainId);
-	const rawDomainData = domainQuery.data?.domain;
-	const domainMetadata = useDomainMetadata(rawDomainData?.metadata);
-
-	React.useEffect(() => {
-		loadingDomainId.current = domainId;
-		setLoading(true);
-		setDomain(undefined);
-	}, [domainId]);
+	const [loading, setLoading] = React.useState<boolean>(true);
+	const metadata = useDomainMetadata(domain?.metadata);
+	const [refetchSwitch, setRefetchSwitch] = React.useState<boolean>(false);
 
 	React.useEffect(() => {
-		if (domainQuery.data?.domain === null) {
-			console.warn('404: ' + domainId);
-			setDomain(null);
+		(async () => {
+			setLoading(true);
+			loadingDomainId.current = domainId;
+
+			const [rawDomain, rawSubdomains] = await Promise.all([
+				sdk.getDomainById(domainId),
+				sdk.getSubdomainsById(domainId),
+			]);
+
+			if (!(loadingDomainId.current === rawDomain?.id)) {
+				console.log('cancel load');
+				return;
+			}
+
+			// Format data to match existing
+			const formattedDomain = rawDomain as any;
+			formattedDomain.metadata = formattedDomain.metadataUri;
+
+			formattedDomain.minter = { id: formattedDomain.minter };
+			formattedDomain.owner = { id: formattedDomain.owner };
+
+			const formattedSubdomains = rawSubdomains.map((sub) => ({
+				id: sub.id,
+				metadata: sub.metadataUri,
+				minter: { id: sub.minter },
+				name: sub.name,
+				owner: { id: sub.owner },
+			}));
+
 			setLoading(false);
-		}
-	}, [domainQuery.data]);
-
-	React.useEffect(() => {
-		if (!rawDomainData) {
-			return;
-		}
-
-		if (rawDomainData.subdomains.length > 999) {
-			sdk.getSubdomainsById(domainId).then((s) => {
-				if (loadingDomainId?.current === domainId) {
-					const subs = s.map((sub) => ({
-						id: sub.id,
-						metadata: sub.metadataUri,
-						minter: { id: sub.minter },
-						name: sub.name,
-						owner: { id: sub.owner },
-					}));
-					setDomain({
-						...{ ...rawDomainData, subdomains: subs },
-						...domainMetadata,
-					} as DisplayParentDomain);
-					setLoading(false);
-				} else {
-					console.warn('changed domains, ignoring subdomains');
-				}
-			});
-		} else {
 			setDomain({
-				...rawDomainData,
-				...domainMetadata,
-			} as DisplayParentDomain);
-			setLoading(false);
-		}
-	}, [rawDomainData, domainMetadata]);
+				...formattedDomain,
+				subdomains: formattedSubdomains,
+			});
+		})();
+	}, [domainId, refetchSwitch, sdk]);
 
-	return { loading, domain, refetch: domainQuery.refetch };
+	const refetch = () => {
+		setRefetchSwitch(!refetch);
+	};
+
+	return {
+		loading,
+		domain,
+		metadata,
+		refetch,
+	};
 };
