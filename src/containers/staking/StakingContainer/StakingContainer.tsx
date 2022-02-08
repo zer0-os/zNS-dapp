@@ -21,6 +21,7 @@ import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvide
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 import { useWeb3React } from '@web3-react/core';
 import { useNavBarContents } from 'lib/providers/NavBarProvider';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 
 type StakingContainerProps = {
 	className?: string;
@@ -64,7 +65,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 
 	const { setTitle } = useNavBarContents();
 
-	useEffect(() => {
+	useUpdateEffect(() => {
 		switch (pathname.replace('/staking', '')) {
 			case '/pools':
 				setTitle('Staking - Pools');
@@ -86,7 +87,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 		};
 	}, []);
 
-	useEffect(() => {
+	useUpdateEffect(() => {
 		poolSelection.claim(undefined);
 	}, [account]);
 

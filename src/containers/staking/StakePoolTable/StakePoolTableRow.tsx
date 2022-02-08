@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FutureButton, Spinner } from 'components';
 import { Artwork } from 'components';
 import styles from './StakePoolTableRow.module.scss';
@@ -8,6 +8,7 @@ import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
 import { displayEther, toFiat } from 'lib/currency';
 import { ethers } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 
 const StakePoolTableRow = (props: any) => {
 	const selectPool = useStakingPoolSelector().selectStakePool;
@@ -29,7 +30,7 @@ const StakePoolTableRow = (props: any) => {
 		}
 	};
 
-	useEffect(() => {
+	useUpdateEffect(() => {
 		if (account) {
 			getStake(account);
 		}

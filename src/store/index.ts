@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import { composeWithDevTools } from 'redux-devtools-extension';
-// import logger from 'redux-logger';
+import logger from 'redux-logger';
 
 import createRootReducer from './reducers';
 import { rootSaga } from './sagas';
@@ -19,9 +19,9 @@ const rootReducer = createRootReducer(history);
 
 // Middleweares
 const middlewares = [routerMiddleware(history), sagaMiddleware];
-// if (process.env.NODE_ENV === 'development') {
-// 	middlewares.push(logger);
-// }
+if (process.env.REACT_APP_REDUX_LOG_ENABLED || false) {
+	middlewares.push(logger);
+}
 
 // Mount it on the Store
 const store = createStore(

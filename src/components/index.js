@@ -23,7 +23,7 @@ export { default as FutureButton } from './Buttons/FutureButton/FutureButton';
 export { default as IconButton } from './Buttons/IconButton/IconButton';
 export { default as NumberButton } from './Buttons/NumberButton/NumberButton';
 export { default as ProfileButton } from './Buttons/ProfileButton/ProfileButton.js';
-export { default as TextButton } from './Buttons/TextButton/TextButton.js';
+export { default as TextButton } from './Buttons/TextButton/TextButton';
 export { default as ToggleButton } from './Buttons/ToggleButton/ToggleButton';
 
 //- Cards

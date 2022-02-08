@@ -8,7 +8,7 @@ import { MakeABid } from 'containers';
 
 //- Library Imports
 import { Bid, Domain, Maybe, ParentDomain } from 'lib/types';
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
 
 //- Style Imports

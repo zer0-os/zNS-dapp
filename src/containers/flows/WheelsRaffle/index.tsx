@@ -32,6 +32,7 @@ const WheelsRaffleContainer = () => {
 	const [hasRaffleEnded, setHasRaffleEnded] = useState<boolean>(
 		currentTime >= RAFFLE_END_TIME,
 	);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [hasSaleStarted, setHasSaleStarted] = useState<boolean>(false);
 	const [hasSaleCountDownEnded, setHasSaleCountDownEnded] =
 		useState<boolean>(false);

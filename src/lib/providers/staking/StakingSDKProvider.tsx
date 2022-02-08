@@ -93,6 +93,7 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 
 	React.useEffect(() => {
 		refetch();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [instance]);
 
 	React.useEffect(() => {
