@@ -42,19 +42,14 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		staking: '0x7FDd24f30fB8a3E0021e85Fdb737a3483D3C8135', //$LOOT staking controller
 		wildToken: '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79',
 		zAuction: '0xe94a5456Db55af2D6a37FaDd7cEd363EDBcA65CF',
-
-		// TODO: update address for following contracts on rinkbey when they are available
-		lootToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
-		wheelSale: '0xE744793F0Bd9FDB2d68a9aDd367d3FfE9E4bcE04', // kicks sale
-		// wheelSale: '0xa6A3321b743C31912263090275E24d8b1A50cFE8', // wheelstest2
-		// wheelSale: '0xa6A3321b743C31912263090275E24d8b1A50cFE8', // wheelstest2
-
+		lootToken: '0x5bAbCA2Af93A9887C86161083b8A90160DA068f2',
+		// NOTE: wheels sale - current address is for kovan and not for rinkeby
+		wheelSale: '0xE744793F0Bd9FDB2d68a9aDd367d3FfE9E4bcE04',
 		// Staking dApp contracts
-		stakeFactory: '0x47946797E05A34B47ffE7151D0Fbc15E8297650E',
-		lpToken: '0xD364C50c33902110230255FE1D730D84FA23e48e',
-		wildStakingPool: '0x4E226a8BbECAa435d2c77D3E4a096F87322Ef1Ae',
-		lpStakingPool: '0x9CF0DaD38E4182d944a1A4463c56CFD1e6fa8fE7',
-		// wheelSale: '0x946911623663e1526165Cc1eFf37DdE0834e7786', // crafts sale
+		stakeFactory: '0xfC4D4b3d4d83f383FA30B2357a956cD718f0C991',
+		lpToken: '0x123c1B5A87E4E11663F2604f3EbCAf4ba86e25E1',
+		wildStakingPool: '0xb1ABFc6C847a15Cb7FA213363CbACC375b1068A0',
+		lpStakingPool: '0x6D3475040CC0F9e48bD916e8559DA5A098eBc613',
 	},
 } as any;
 
