@@ -4,13 +4,12 @@ import { useHistory } from 'react-router-dom';
 
 // Web3 Imports
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { DisplayParentDomain, Maybe } from 'lib/types';
+import { Maybe, Domain, Metadata } from 'lib/types';
 import { getDomainId } from 'lib/utils';
 
-import { Domain } from '@zero-tech/zns-sdk';
-
 export const CurrentDomainContext = React.createContext({
-	domain: undefined as Maybe<DisplayParentDomain>,
+	domain: undefined as Maybe<Domain>,
+	metadata: undefined as Maybe<Metadata>,
 	subdomains: undefined as Maybe<Domain[]>,
 	domainId: '',
 	domainRaw: '/',
@@ -46,6 +45,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 	const contextValue = {
 		domain: znsDomain.domain,
 		domainId,
+		metadata: znsDomain.metadata,
 		subdomains: znsDomain.subdomains,
 		domainRaw: domain,
 		app: location.pathname.indexOf('/market') > -1 ? '/market' : '/staking',

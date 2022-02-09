@@ -1,6 +1,8 @@
 // Types
 
 import { ethers } from 'ethers';
+import { Domain, DomainMetadata as Metadata } from '@zero-tech/zns-sdk';
+export type { Domain, DomainMetadata as Metadata } from '@zero-tech/zns-sdk';
 
 export type Maybe<T> = T | undefined | null;
 export type MaybeUndefined<T> = T | undefined;
@@ -9,14 +11,14 @@ export interface Account {
 	id: string;
 }
 
-export interface Domain {
-	id: string;
-	name: string;
-	parent: string;
-	owner: Account;
-	minter: Account;
-	metadata: string;
-}
+// export interface Domain {
+// 	id: string;
+// 	name: string;
+// 	parent: string;
+// 	owner: Account;
+// 	minter: Account;
+// 	metadata: string;
+// }
 
 // We have two different types of Metadata
 // because we changed Schema. This needs to be
@@ -35,9 +37,9 @@ export interface Attribute {
 	value: string | number;
 }
 
-export interface Metadata extends Meta {
-	title: string;
-}
+// export interface Metadata extends Meta {
+// 	title: string;
+// }
 
 export interface UploadMetadata extends Meta {
 	name: string;
@@ -132,14 +134,10 @@ export interface DisplayDomainRequestAndContents
 export const DefaultDomain: Domain = {
 	id: '',
 	name: '',
-	parent: '',
-	owner: {
-		id: '',
-	},
-	minter: {
-		id: '',
-	},
-	metadata: '',
+	parentId: '',
+	owner: '',
+	minter: '',
+	metadataUri: '',
 };
 
 // @zachary change these types

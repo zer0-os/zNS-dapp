@@ -51,7 +51,11 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const { wildPriceUsd } = useCurrency();
 
 	//- Domain Data
-	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		domainRaw: domain,
+		subdomains,
+	} = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
@@ -140,7 +144,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 		// TODO: Clean this whole hook up
 		if (znsDomain) {
 			// Set the domain data for table view
-			setIsNftView(nftView === true || znsDomain.subdomains.length === 0);
+			setIsNftView(nftView === true || subdomains?.length === 0);
 			setHasLoaded(true);
 		}
 		window.scrollTo({
@@ -183,17 +187,19 @@ const ZNS: React.FC<ZNSProps> = () => {
 			},
 			{
 				fieldName: 'Floor Price',
-				title: `${tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
-					} WILD`,
+				title: `${
+					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
+				} WILD`,
 				subTitle:
 					wildPriceUsd > 0
-						? `$${tradeData?.lowestSale
-							? formatNumber(
-								Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
-								wildPriceUsd,
-							)
-							: 0
-						}`
+						? `$${
+								tradeData?.lowestSale
+									? formatNumber(
+											Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
+												wildPriceUsd,
+									  )
+									: 0
+						  }`
 						: '',
 			},
 			{
@@ -203,16 +209,17 @@ const ZNS: React.FC<ZNSProps> = () => {
 					: '',
 				subTitle:
 					wildPriceUsd > 0
-						? `$${(tradeData?.volume as any)?.all
-							? formatNumber(
-								Number(
-									ethers.utils.formatEther(
-										(tradeData?.volume as any)?.all,
-									),
-								) * wildPriceUsd,
-							)
-							: 0
-						}`
+						? `$${
+								(tradeData?.volume as any)?.all
+									? formatNumber(
+											Number(
+												ethers.utils.formatEther(
+													(tradeData?.volume as any)?.all,
+												),
+											) * wildPriceUsd,
+									  )
+									: 0
+						  }`
 						: '',
 			},
 		];
@@ -286,12 +293,12 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{/* TODO: Convert page width into a hook to add condition here */}
 			{modal === Modal.Transfer && (
 				<TransferOwnership
-					metadataUrl={znsDomain?.metadata ?? ''}
+					metadataUrl={znsDomain?.metadataUri ?? ''}
 					domainName={domain}
 					domainId={znsDomain?.id ?? ''}
 					onTransfer={closeModal}
-					creatorId={znsDomain?.minter?.id || ''}
-					ownerId={znsDomain?.owner?.id || ''}
+					creatorId={znsDomain?.minter || ''}
+					ownerId={znsDomain?.owner || ''}
 				/>
 			)}
 			{/* ZNS Content */}

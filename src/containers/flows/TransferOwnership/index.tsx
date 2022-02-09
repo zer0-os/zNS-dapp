@@ -35,7 +35,7 @@ const TransferOwnershipContainer: React.FC<TransferOwnershipContainerProps> = ({
 
 	return (
 		<TransferOwnership
-			name={metadata?.title || ''}
+			name={metadata?.name || ''}
 			image={metadata?.image || ''}
 			domainName={domainName}
 			domainId={domainId}

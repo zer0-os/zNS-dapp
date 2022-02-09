@@ -34,8 +34,7 @@ const SubdomainTableRow = (props: any) => {
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
 
-	const isOwnedByUser =
-		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
+	const isOwnedByUser = account?.toLowerCase() === domain?.owner?.toLowerCase();
 
 	useEffect(() => {
 		if (updated && updated.id === domain.id) {
@@ -174,7 +173,7 @@ const SubdomainTableRow = (props: any) => {
 				<Artwork
 					domain={domain.name.split('wilder.')[1]}
 					disableInteraction
-					metadataUrl={domain.metadata}
+					metadataUrl={domain.metadataUri}
 					id={domain.id}
 					style={{ maxWidth: 200 }}
 				/>

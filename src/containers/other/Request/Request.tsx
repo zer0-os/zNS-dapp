@@ -197,10 +197,10 @@ const Request: React.FC<RequestProps> = ({
 					size="medium"
 					alt="NFT Preview"
 					ipfsUrl={
-						metadata?.animation_url ||
-						metadata?.image_full ||
-						metadata?.image ||
-						''
+						(metadata?.animation_url ||
+							metadata?.image_full ||
+							metadata?.image ||
+							'') as string
 					}
 				/>
 			</div>
@@ -208,7 +208,7 @@ const Request: React.FC<RequestProps> = ({
 			{/* Requested Domain Info (Name, description, etc.) */}
 			<div className={styles.Info}>
 				<div>
-					<h1 className="glow-text-white">{metadata?.title || ''}</h1>
+					<h1 className="glow-text-white">{metadata?.name || ''}</h1>
 					<span className={styles.Domain}>0://{request.request.domain}</span>
 					<Member
 						style={{ marginTop: 32 }}

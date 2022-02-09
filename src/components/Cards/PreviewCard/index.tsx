@@ -83,14 +83,14 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 				disabled={disabled}
 				domain={domain}
 				image={
-					metadata?.animation_url ||
-					metadata?.image_full ||
-					metadata?.image ||
-					''
+					(metadata?.animation_url ||
+						metadata?.image_full ||
+						metadata?.image ||
+						'') as string
 				}
 				isLoading={!metadata || domain.length === 0}
 				mvpVersion={mvpVersion}
-				name={metadata?.title || ''}
+				name={metadata?.name || ''}
 				onMakeBid={onButtonClick}
 				onViewDomain={onViewDomain}
 				ownerId={ownerId}

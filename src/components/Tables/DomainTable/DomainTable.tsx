@@ -67,356 +67,359 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	style,
 	userId,
 }) => {
-	const isMounted = useRef(false);
+	// this file is deprecated
+	return <></>;
 
-	const containerRef = useRef<HTMLDivElement>(null);
-	const [containerHeight, setContainerHeight] = useState(0);
-	const [searchQuery, setSearchQuery] = useState('');
+	// const isMounted = useRef(false);
 
-	const [modal, setModal] = useState<Modals | undefined>();
+	// const containerRef = useRef<HTMLDivElement>(null);
+	// const [containerHeight, setContainerHeight] = useState(0);
+	// const [searchQuery, setSearchQuery] = useState('');
 
-	// Data state
-	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
+	// const [modal, setModal] = useState<Modals | undefined>();
 
-	const [domainToRefresh, setDomainToRefresh] = useState<string>('');
+	// // Data state
+	// const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
 
-	///////////////
-	// Functions //
-	///////////////
+	// const [domainToRefresh, setDomainToRefresh] = useState<string>('');
 
-	// Table views
-	const setGrid = () => setIsGridView && setIsGridView(true);
-	const setList = () => setIsGridView && setIsGridView(false);
+	// ///////////////
+	// // Functions //
+	// ///////////////
 
-	// Modals
-	const openBidModal = () => setModal(Modals.Bid);
-	const closeModal = () => setModal(undefined);
+	// // Table views
+	// const setGrid = () => setIsGridView && setIsGridView(true);
+	// const setList = () => setIsGridView && setIsGridView(false);
 
-	//Click handlers
-	const rowClick = (event: any, domain: Domain) => {
-		if (event.target.className.indexOf('FutureButton') >= 0) return;
-		if (onRowClick) {
-			onRowClick(domain);
-			return;
-		}
-	};
+	// // Modals
+	// const openBidModal = () => setModal(Modals.Bid);
+	// const closeModal = () => setModal(undefined);
 
-	const buttonClick = (domain: Domain) => {
-		if (disableButton) return;
-		// Default behaviour
-		try {
-			if (
-				isGlobalTable &&
-				domain?.owner.id.toLowerCase() !== userId?.toLowerCase()
-			) {
-				if (!isMounted.current) return;
-				setBiddingOn(domain);
-				openBidModal();
-			}
-		} catch (e) {
-			console.error(e);
-		}
-	};
+	// //Click handlers
+	// const rowClick = (event: any, domain: Domain) => {
+	// 	if (event.target.className.indexOf('FutureButton') >= 0) return;
+	// 	if (onRowClick) {
+	// 		onRowClick(domain);
+	// 		return;
+	// 	}
+	// };
 
-	const handleResize = () => {
-		if (window.innerWidth <= 700) setGrid();
-		checkHeight();
-	};
+	// const buttonClick = (domain: Domain) => {
+	// 	if (disableButton) return;
+	// 	// Default behaviour
+	// 	try {
+	// 		if (
+	// 			isGlobalTable &&
+	// 			domain?.owner.toLowerCase() !== userId?.toLowerCase()
+	// 		) {
+	// 			if (!isMounted.current) return;
+	// 			setBiddingOn(domain);
+	// 			openBidModal();
+	// 		}
+	// 	} catch (e) {
+	// 		console.error(e);
+	// 	}
+	// };
 
-	const checkHeight = () => {
-		const height = containerRef.current?.offsetHeight;
-		if (height === undefined && containerHeight === height) return;
-		setContainerHeight(height || 0);
-	};
+	// const handleResize = () => {
+	// 	if (window.innerWidth <= 700) setGrid();
+	// 	checkHeight();
+	// };
 
-	const onBid = async () => {
-		closeModal();
+	// const checkHeight = () => {
+	// 	const height = containerRef.current?.offsetHeight;
+	// 	if (height === undefined && containerHeight === height) return;
+	// 	setContainerHeight(height || 0);
+	// };
 
-		if (biddingOn && isMounted.current) {
-			setDomainToRefresh(biddingOn.id);
-			// Need to reset this in case the user
-			// is bidding on the same domain twice
-			setTimeout(() => {
-				setDomainToRefresh('');
-			}, 1000);
-		}
-	};
+	// const onBid = async () => {
+	// 	closeModal();
 
-	/////////////
-	// Effects //
-	/////////////
+	// 	if (biddingOn && isMounted.current) {
+	// 		setDomainToRefresh(biddingOn.id);
+	// 		// Need to reset this in case the user
+	// 		// is bidding on the same domain twice
+	// 		setTimeout(() => {
+	// 			setDomainToRefresh('');
+	// 		}, 1000);
+	// 	}
+	// };
 
-	useEffect(() => {
-		isMounted.current = true;
-		window.addEventListener('resize', handleResize);
-		handleResize();
-		return () => {
-			isMounted.current = false;
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
+	// /////////////
+	// // Effects //
+	// /////////////
 
-	useEffect(() => {
-		if (!userId) {
-			setBiddingOn(undefined);
-			closeModal();
-		}
-	}, [userId]);
+	// useEffect(() => {
+	// 	isMounted.current = true;
+	// 	window.addEventListener('resize', handleResize);
+	// 	handleResize();
+	// 	return () => {
+	// 		isMounted.current = false;
+	// 		window.removeEventListener('resize', handleResize);
+	// 	};
+	// }, []);
 
-	useEffect(() => {
-		if (!isMounted.current) return;
-		if (onLoad) onLoad();
-	}, [domains]);
+	// useEffect(() => {
+	// 	if (!userId) {
+	// 		setBiddingOn(undefined);
+	// 		closeModal();
+	// 	}
+	// }, [userId]);
 
-	useEffect(() => {
-		checkHeight();
-	}, [containerRef.current?.offsetHeight, searchQuery, isGridView]);
+	// useEffect(() => {
+	// 	if (!isMounted.current) return;
+	// 	if (onLoad) onLoad();
+	// }, [domains]);
 
-	/////////////////
-	// React Table //
-	/////////////////
+	// useEffect(() => {
+	// 	checkHeight();
+	// }, [containerRef.current?.offsetHeight, searchQuery, isGridView]);
 
-	const data = domains;
+	// /////////////////
+	// // React Table //
+	// /////////////////
 
-	const columns = useMemo<Column<Domain>[]>(
-		() => [
-			{
-				Header: '',
-				id: 'index',
-				accessor: (data: Domain, i: number) => i + 1,
-			},
-			{
-				Header: () => <div style={{ textAlign: 'left' }}>Domain</div>,
-				id: 'image',
-				accessor: ({ name }) => name,
-				Cell: (row: any) => (
-					<Artwork
-						domain={row.row.original.name}
-						disableInteraction
-						metadataUrl={row.row.original.metadata}
-						id={row.row.original.id}
-						style={{ maxWidth: 200 }}
-					/>
-				),
-			},
-			{
-				Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
-				id: 'highestBid',
-				accessor: (domain: Domain) => (
-					<div style={{ textAlign: 'right' }}>
-						<HighestBid domain={domain} refreshKey={domainToRefresh} />
-					</div>
-				),
-			},
-			{
-				Header: () => <div style={{ textAlign: 'right' }}># Of Bids</div>,
-				id: 'numBids',
-				accessor: (domain: Domain) => (
-					<div style={{ textAlign: 'right' }}>
-						<NumBids
-							domain={domain}
-							refreshKey={domainToRefresh}
-							filterOwnBids={filterOwnBids}
-						/>
-					</div>
-				),
-			},
-			{
-				id: 'bid',
-				accessor: (domain: Domain) => {
-					return (
-						<>
-							{isGlobalTable && (
-								<BidButton
-									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
-									glow={
-										userId !== undefined &&
-										userId?.toLowerCase() !== domain.owner.id.toLowerCase()
-									}
-									onClick={() => buttonClick(domain)}
-								>
-									Make A Bid
-								</BidButton>
-							)}
-							{!isGlobalTable && onButtonClick && (
-								<ViewBids
-									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
-									domain={domain}
-									onClick={onButtonClick}
-									filterOwnBids={filterOwnBids}
-								/>
-							)}
-						</>
-					);
-				},
-			},
-		],
-		[domains, userId, domainToRefresh],
-	);
+	// const data = domains;
 
-	// Navigation Handling
-	const initialState = { hiddenColumns: ['waitlist', 'lastSalePrice'] };
+	// const columns = useMemo<Column<Domain>[]>(
+	// 	() => [
+	// 		{
+	// 			Header: '',
+	// 			id: 'index',
+	// 			accessor: (data: Domain, i: number) => i + 1,
+	// 		},
+	// 		{
+	// 			Header: () => <div style={{ textAlign: 'left' }}>Domain</div>,
+	// 			id: 'image',
+	// 			accessor: ({ name }) => name,
+	// 			Cell: (row: any) => (
+	// 				<Artwork
+	// 					domain={row.row.original.name}
+	// 					disableInteraction
+	// 					metadataUrl={row.row.original.metadata}
+	// 					id={row.row.original.id}
+	// 					style={{ maxWidth: 200 }}
+	// 				/>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: () => <div style={{ textAlign: 'right' }}>Highest Bid</div>,
+	// 			id: 'highestBid',
+	// 			accessor: (domain: Domain) => (
+	// 				<div style={{ textAlign: 'right' }}>
+	// 					<HighestBid domain={domain} refreshKey={domainToRefresh} />
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			Header: () => <div style={{ textAlign: 'right' }}># Of Bids</div>,
+	// 			id: 'numBids',
+	// 			accessor: (domain: Domain) => (
+	// 				<div style={{ textAlign: 'right' }}>
+	// 					<NumBids
+	// 						domain={domain}
+	// 						refreshKey={domainToRefresh}
+	// 						filterOwnBids={filterOwnBids}
+	// 					/>
+	// 				</div>
+	// 			),
+	// 		},
+	// 		{
+	// 			id: 'bid',
+	// 			accessor: (domain: Domain) => {
+	// 				return (
+	// 					<>
+	// 						{isGlobalTable && (
+	// 							<BidButton
+	// 								style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
+	// 								glow={
+	// 									userId !== undefined &&
+	// 									userId?.toLowerCase() !== domain.owner.toLowerCase()
+	// 								}
+	// 								onClick={() => buttonClick(domain)}
+	// 							>
+	// 								Make A Bid
+	// 							</BidButton>
+	// 						)}
+	// 						{!isGlobalTable && onButtonClick && (
+	// 							<ViewBids
+	// 								style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
+	// 								domain={domain}
+	// 								onClick={onButtonClick}
+	// 								filterOwnBids={filterOwnBids}
+	// 							/>
+	// 						)}
+	// 					</>
+	// 				);
+	// 			},
+	// 		},
+	// 	],
+	// 	[domains, userId, domainToRefresh],
+	// );
 
-	// React-Table Hooks
-	const tableHook = useTable(
-		{ columns, data, initialState },
-		useFilters,
-		useGlobalFilter,
-	);
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		prepareRow,
-		rows,
-		setGlobalFilter,
-	} = tableHook;
+	// // Navigation Handling
+	// const initialState = { hiddenColumns: ['waitlist', 'lastSalePrice'] };
 
-	const search = (query: string) => {
-		if (!isMounted.current) return;
-		setGlobalFilter(query);
-		setSearchQuery(query);
-	};
+	// // React-Table Hooks
+	// const tableHook = useTable(
+	// 	{ columns, data, initialState },
+	// 	useFilters,
+	// 	useGlobalFilter,
+	// );
+	// const {
+	// 	getTableProps,
+	// 	getTableBodyProps,
+	// 	headerGroups,
+	// 	prepareRow,
+	// 	rows,
+	// 	setGlobalFilter,
+	// } = tableHook;
 
-	/////////////////////
-	// React Fragments //
-	/////////////////////
+	// const search = (query: string) => {
+	// 	if (!isMounted.current) return;
+	// 	setGlobalFilter(query);
+	// 	setSearchQuery(query);
+	// };
 
-	const overlays = () => {
-		return (
-			<>
-				{userId && (
-					<Overlay
-						onClose={closeModal}
-						open={modal === Modals.Bid && biddingOn !== undefined}
-					>
-						<MakeABid domain={biddingOn!} onBid={onBid} />
-					</Overlay>
-				)}
-			</>
-		);
-	};
+	// /////////////////////
+	// // React Fragments //
+	// /////////////////////
 
-	const nftCardActionComponent = (domain: Domain) => {
-		return (
-			<NFTCardActions
-				domain={domain}
-				onButtonClick={onButtonClick}
-				onLoad={checkHeight}
-				filterOwnBids={filterOwnBids}
-			/>
-		);
-	};
+	// const overlays = () => {
+	// 	return (
+	// 		<>
+	// 			{userId && (
+	// 				<Overlay
+	// 					onClose={closeModal}
+	// 					open={modal === Modals.Bid && biddingOn !== undefined}
+	// 				>
+	// 					<MakeABid domain={biddingOn!} onBid={onBid} />
+	// 				</Overlay>
+	// 			)}
+	// 		</>
+	// 	);
+	// };
 
-	////////////
-	// Render //
-	////////////
+	// const nftCardActionComponent = (domain: Domain) => {
+	// 	return (
+	// 		<NFTCardActions
+	// 			domain={domain}
+	// 			onButtonClick={onButtonClick}
+	// 			onLoad={checkHeight}
+	// 			filterOwnBids={filterOwnBids}
+	// 		/>
+	// 	);
+	// };
 
-	return (
-		<>
-			{overlays()}
-			<div
-				style={style}
-				className={`
-				${styles.DomainTableContainer} 
-				${className || ''}
-				${isGlobalTable ? styles.Global : styles.Nested}
-				border-primary border-rounded 				
-				`}
-			>
-				{/* Table Header */}
-				<div className={styles.searchHeader}>
-					<SearchBar
-						placeholder="Search by domain name"
-						onChange={(event: any) => search(event.target.value)}
-						style={{ width: '100%', marginRight: 16 }}
-					/>
-					<div className={styles.searchHeaderButtons}>
-						<IconButton
-							onClick={setList}
-							toggled={!isGridView}
-							iconUri={list}
-							style={{ height: 32, width: 32 }}
-						/>
-						<IconButton
-							onClick={setGrid}
-							toggled={isGridView}
-							iconUri={grid}
-							style={{ height: 32, width: 32 }}
-						/>
-					</div>
-				</div>
+	// ////////////
+	// // Render //
+	// ////////////
 
-				<div className={styles.DomainTable}>
-					<div className={styles.Container} ref={containerRef}>
-						{/* List View */}
-						{!empty && !isGridView && (
-							<table {...getTableProps()} className={styles.DomainTable}>
-								<thead>
-									{headerGroups.map((headerGroup) => (
-										<tr {...headerGroup.getHeaderGroupProps()}>
-											{headerGroup.headers.map((column) => (
-												<th {...column.getHeaderProps()}>
-													{column.render('Header')}
-												</th>
-											))}
-										</tr>
-									))}
-								</thead>
-								<tbody {...getTableBodyProps()}>
-									{rows.map((row) => {
-										prepareRow(row);
-										return (
-											<tr
-												onClick={(event: any) => rowClick(event, row.original)}
-												{...row.getRowProps()}
-											>
-												{row.cells.map((cell) => (
-													<td {...cell.getCellProps()}>
-														{cell.render('Cell')}
-													</td>
-												))}
-											</tr>
-										);
-									})}
-								</tbody>
-							</table>
-						)}
+	// return (
+	// 	<>
+	// 		{overlays()}
+	// 		<div
+	// 			style={style}
+	// 			className={`
+	// 			${styles.DomainTableContainer}
+	// 			${className || ''}
+	// 			${isGlobalTable ? styles.Global : styles.Nested}
+	// 			border-primary border-rounded
+	// 			`}
+	// 		>
+	// 			{/* Table Header */}
+	// 			<div className={styles.searchHeader}>
+	// 				<SearchBar
+	// 					placeholder="Search by domain name"
+	// 					onChange={(event: any) => search(event.target.value)}
+	// 					style={{ width: '100%', marginRight: 16 }}
+	// 				/>
+	// 				<div className={styles.searchHeaderButtons}>
+	// 					<IconButton
+	// 						onClick={setList}
+	// 						toggled={!isGridView}
+	// 						iconUri={list}
+	// 						style={{ height: 32, width: 32 }}
+	// 					/>
+	// 					<IconButton
+	// 						onClick={setGrid}
+	// 						toggled={isGridView}
+	// 						iconUri={grid}
+	// 						style={{ height: 32, width: 32 }}
+	// 					/>
+	// 				</div>
+	// 			</div>
 
-						{/* Grid View */}
-						{/* @todo re-enable grid view */}
-						{!empty && isGridView && (
-							<ol className={styles.Grid}>
-								{data
-									.filter((d) => d.name.includes(searchQuery))
-									.map((d, i) => (
-										<li onClick={(e) => rowClick(e, d)} key={i}>
-											<NFTCard
-												actionsComponent={nftCardActionComponent(d)}
-												domain={d.name}
-												ignoreAspectRatio={ignoreAspectRatios}
-												metadataUrl={d.metadata}
-												nftOwnerId={d.owner?.id || ''}
-												nftMinterId={d.minter?.id || ''}
-												showCreator
-												showOwner
-												style={{ margin: '0 auto' }}
-											/>
-										</li>
-									))}
-							</ol>
-						)}
+	// 			<div className={styles.DomainTable}>
+	// 				<div className={styles.Container} ref={containerRef}>
+	// 					{/* List View */}
+	// 					{!empty && !isGridView && (
+	// 						<table {...getTableProps()} className={styles.DomainTable}>
+	// 							<thead>
+	// 								{headerGroups.map((headerGroup) => (
+	// 									<tr {...headerGroup.getHeaderGroupProps()}>
+	// 										{headerGroup.headers.map((column) => (
+	// 											<th {...column.getHeaderProps()}>
+	// 												{column.render('Header')}
+	// 											</th>
+	// 										))}
+	// 									</tr>
+	// 								))}
+	// 							</thead>
+	// 							<tbody {...getTableBodyProps()}>
+	// 								{rows.map((row) => {
+	// 									prepareRow(row);
+	// 									return (
+	// 										<tr
+	// 											onClick={(event: any) => rowClick(event, row.original)}
+	// 											{...row.getRowProps()}
+	// 										>
+	// 											{row.cells.map((cell) => (
+	// 												<td {...cell.getCellProps()}>
+	// 													{cell.render('Cell')}
+	// 												</td>
+	// 											))}
+	// 										</tr>
+	// 									);
+	// 								})}
+	// 							</tbody>
+	// 						</table>
+	// 					)}
 
-						{empty && <p className={styles.Empty}>No domains found</p>}
-					</div>
+	// 					{/* Grid View */}
+	// 					{/* @todo re-enable grid view */}
+	// 					{!empty && isGridView && (
+	// 						<ol className={styles.Grid}>
+	// 							{data
+	// 								.filter((d) => d.name.includes(searchQuery))
+	// 								.map((d, i) => (
+	// 									<li onClick={(e) => rowClick(e, d)} key={i}>
+	// 										<NFTCard
+	// 											actionsComponent={nftCardActionComponent(d)}
+	// 											domain={d.name}
+	// 											ignoreAspectRatio={ignoreAspectRatios}
+	// 											metadataUrl={d.metadata}
+	// 											nftOwnerId={d.owner?.id || ''}
+	// 											nftMinterId={d.minter?.id || ''}
+	// 											showCreator
+	// 											showOwner
+	// 											style={{ margin: '0 auto' }}
+	// 										/>
+	// 									</li>
+	// 								))}
+	// 						</ol>
+	// 					)}
 
-					<Spring to={{ height: containerHeight }}>
-						{(styles) => <animated.div style={styles}></animated.div>}
-					</Spring>
-				</div>
-			</div>
-		</>
-	);
+	// 					{empty && <p className={styles.Empty}>No domains found</p>}
+	// 				</div>
+
+	// 				<Spring to={{ height: containerHeight }}>
+	// 					{(styles) => <animated.div style={styles}></animated.div>}
+	// 				</Spring>
+	// 			</div>
+	// 		</div>
+	// 	</>
+	// );
 };
 
 export default DomainTable;

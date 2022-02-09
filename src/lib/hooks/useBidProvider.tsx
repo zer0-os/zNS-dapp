@@ -186,7 +186,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				try {
 					if (filterOwnBids) {
 						bids = bids.filter((e) => {
-							return e.account.toLowerCase() !== domain.owner.id.toLowerCase();
+							return e.account.toLowerCase() !== domain.owner.toLowerCase();
 						});
 					}
 

@@ -99,7 +99,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 					size="tiny"
 					className={`${styles.Image} border-rounded`}
 					alt="NFT Preview"
-					ipfsUrl={metadata?.image_full || metadata?.image || ''}
+					ipfsUrl={(metadata?.image_full || metadata?.image || '') as string}
 				/>
 			);
 		}
@@ -117,7 +117,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 					{artwork}
 				</div>
 				<div className={styles.Info}>
-					{shouldAnimate && (metadata?.title || name) && (
+					{shouldAnimate && (metadata?.name || name) && (
 						<Spring
 							from={{
 								maxHeight: disableAnimation ? 18 : 0,
@@ -129,20 +129,20 @@ const Artwork: React.FC<ArtworkProps> = ({
 								<animated.div style={animatedStyles}>
 									<span
 										style={{ cursor: pending ? 'default' : 'pointer' }}
-										className={styles.Title}
+										className={styles.name}
 									>
-										{metadata?.title || name}
+										{metadata?.name || name}
 									</span>
 								</animated.div>
 							)}
 						</Spring>
 					)}
-					{!shouldAnimate && metadata?.title && (
+					{!shouldAnimate && metadata?.name && (
 						<span
 							style={{ cursor: pending ? 'default' : 'pointer' }}
-							className={styles.Title}
+							className={styles.name}
 						>
-							{metadata?.title || name}
+							{metadata?.name || name}
 						</span>
 					)}
 					{!pending && (

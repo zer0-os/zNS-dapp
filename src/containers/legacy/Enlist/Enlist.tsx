@@ -57,9 +57,9 @@ const Enlist: React.FC<EnlistProps> = ({ onSubmit }) => {
 	};
 
 	useEffect(() => {
-		if (!enlisting || !enlisting.metadata) return;
+		if (!enlisting || !enlisting.metadataUri) return;
 
-		getMetadata(enlisting.metadata).then((metadata) => {
+		getMetadata(enlisting.metadataUri).then((metadata) => {
 			if (!metadata) return;
 			setImage(metadata.image);
 		});

@@ -20,23 +20,16 @@ export async function getMetadata(
 		}
 
 		const response = await fetch(requestUrl);
-		const data = await response.json();
-		const metadata = {
-			attributes: data.attributes,
-			title: data.name || data.title,
-			description: data.description,
-			image: data.image,
-			image_full: data.image_full,
-			animation_url: data.animation_url,
-		} as Metadata;
+		let data = await response.json();
 
-		if (!metadata.title || !metadata.description || !metadata.image) {
-			throw Error();
+		if (data.title) {
+			data.name = data.title;
+			delete data.title;
 		}
 
-		memoryCache[metadataUrl] = metadata;
+		memoryCache[metadataUrl] = data;
 
-		return metadata;
+		return data as Metadata;
 	} catch (e) {
 		console.error('Failed to retrieve metadata from ' + metadataUrl);
 		return;

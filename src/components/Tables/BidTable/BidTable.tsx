@@ -84,7 +84,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 						return;
 					}
 
-					if (domain.owner.id.toLowerCase() === userId.toLowerCase()) {
+					if (domain.owner.toLowerCase() === userId.toLowerCase()) {
 						return;
 					}
 
@@ -178,7 +178,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 					<Artwork
 						id={bid.domain.id}
 						domain={bid.domain.name}
-						metadataUrl={bid.domain.metadata}
+						metadataUrl={bid.domain.metadataUri}
 						pending
 					/>
 				),

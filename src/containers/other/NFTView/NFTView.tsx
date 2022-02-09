@@ -91,7 +91,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [ipfsHash, setIpfsHash] = useState<string>('');
 
-	const { domainId, domain: znsDomain, domainRaw: domain } = useCurrentDomain();
+	const {
+		domainId,
+		domain: znsDomain,
+		domainRaw: domain,
+		metadata: domainMetadata,
+	} = useCurrentDomain();
 
 	//- Web3 Domain Data
 	// const domainId = getDomainId(domain.substring(1));
@@ -137,12 +142,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	const downloadAsset = async () => {
 		// @todo move this into a helper
-		if (znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image) {
-			// Get hash from asset
-
-			const url = (znsDomain.animation_url ||
-				znsDomain.image_full ||
-				znsDomain.image)!;
+		const url = (domainMetadata?.animation_url ||
+			domainMetadata?.image_full ||
+			domainMetadata?.image) as string | undefined;
+		if (url) {
 			let hash: string;
 			if (url.startsWith('ipfs://')) {
 				// ipfs://
@@ -315,13 +318,11 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		if (znsDomain) {
 			if (!isMounted.current) return;
 
-			setIsOwnedByYou(
-				znsDomain.owner.id.toLowerCase() === account?.toLowerCase(),
-			);
+			setIsOwnedByYou(znsDomain.owner.toLowerCase() === account?.toLowerCase());
 			getHistory();
 			setStatsLoaded(false);
 			getTradeData();
-			setIpfsHash(getHashFromIPFSUrl(znsDomain.metadata));
+			setIpfsHash(getHashFromIPFSUrl(znsDomain.metadataUri));
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -678,13 +679,13 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	const attributes = () => {
 		const getAttributeListLength = setAttributesListLength();
+		const attributes = domainMetadata?.attributes as any[] | undefined;
 
-		if (!znsDomain?.attributes) {
+		if (!attributes) {
 			return;
 		} else {
 			const numberAttributesHidden =
-				znsDomain.attributes.length -
-				znsDomain.attributes.slice(0, getAttributeListLength).length;
+				attributes.length - attributes.slice(0, getAttributeListLength).length;
 
 			return (
 				<>
@@ -694,18 +695,18 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<div className={styles.AttributesContainer}>
 							<h4>Attributes</h4>
 							<ul className={styles.AttributesGrid}>
-								{znsDomain.attributes
+								{attributes
 									.slice(
 										0,
 										isShowMoreAtrributes
-											? znsDomain.attributes.length
+											? attributes.length
 											: getAttributeListLength,
 									)
 									.map((attribute: Attribute, index: number) =>
 										attributesList(attribute, index),
 									)}
 
-								{znsDomain?.attributes?.length >= 12 &&
+								{attributes.length >= 12 &&
 									attributesButtonToggler(numberAttributesHidden)}
 							</ul>
 						</div>
@@ -737,10 +738,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						}}
 						alt="NFT Preview"
 						ipfsUrl={
-							znsDomain?.animation_url ||
-							znsDomain?.image_full ||
-							znsDomain?.image ||
-							''
+							(domainMetadata?.animation_url ||
+								domainMetadata?.image_full ||
+								domainMetadata?.image ||
+								'') as string
 						}
 						size="large"
 					/>
@@ -764,23 +765,25 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 					</div>
 					<div className={styles.Details}>
 						<div>
-							<h1 className="glow-text-white">{znsDomain?.title ?? ''}</h1>
+							<h1 className="glow-text-white">{domainMetadata?.name ?? ''}</h1>
 						</div>
 						<div className={styles.Members}>
 							<Member
-								id={znsDomain ? znsDomain.owner.id : ''}
-								name={znsDomain ? randomName(znsDomain.owner.id) : ''}
-								image={znsDomain ? randomImage(znsDomain.owner.id) : ''}
+								id={znsDomain ? znsDomain.owner : ''}
+								name={znsDomain ? randomName(znsDomain.owner) : ''}
+								image={znsDomain ? randomImage(znsDomain.owner) : ''}
 								subtext={'Owner'}
 							/>
 							<Member
-								id={znsDomain ? znsDomain.minter.id : ''}
-								name={znsDomain ? randomName(znsDomain.minter.id) : ''}
-								image={znsDomain ? randomImage(znsDomain.minter.id) : ''}
+								id={znsDomain ? znsDomain.minter : ''}
+								name={znsDomain ? randomName(znsDomain.minter) : ''}
+								image={znsDomain ? randomImage(znsDomain.minter) : ''}
 								subtext={'Creator'}
 							/>
 						</div>
-						<div className={styles.Story}>{znsDomain?.description ?? ''}</div>
+						<div className={styles.Story}>
+							{domainMetadata?.description ?? ''}
+						</div>
 						{price()}
 						{actionButtons()}
 					</div>

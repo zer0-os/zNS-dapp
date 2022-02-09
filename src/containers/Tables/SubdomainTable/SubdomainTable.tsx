@@ -17,7 +17,7 @@ import SubdomainTableCard from './SubdomainTableCard';
 import { GenericTable, Overlay } from 'components';
 import { MakeABid } from 'containers';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { DisplayDomain } from 'lib/types';
+import { Domain } from 'lib/types';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 
 type SubdomainTableProps = {
@@ -31,13 +31,13 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	const d = useRef<string | undefined>();
 
 	// Domain hook data
-	const { domain, loading } = useCurrentDomain();
+	const { domain, loading, subdomains } = useCurrentDomain();
 
 	const { domain: biddingOn, close, bidPlaced } = useBid();
 
 	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
 	const [data, setData] = useState<
-		| (DisplayDomain & {
+		| (Domain & {
 				metrics: DomainMetrics;
 		  })[]
 		| undefined
@@ -46,18 +46,18 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	useAsyncEffect(async () => {
 		let isMounted = true;
 		setData(undefined);
-		if (domain?.subdomains) {
+		if (domain && subdomains) {
 			setAreDomainMetricsLoading(true);
 			d.current = domain.name;
-			const subdomains = domain.subdomains.map((item) => item.id);
+			const subdomainIds = subdomains.map((item) => item.id);
 
 			var i;
 			var j;
 			var temporary: string[] = [];
 			const chunk = 900;
 			const promises = [];
-			for (i = 0, j = subdomains.length; i < j; i += chunk) {
-				temporary = subdomains.slice(i, i + chunk);
+			for (i = 0, j = subdomainIds.length; i < j; i += chunk) {
+				temporary = subdomainIds.slice(i, i + chunk);
 				promises.push(
 					// eslint-disable-next-line no-loop-func
 					new Promise((resolve, reject) => {
@@ -82,7 +82,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 				} catch (e) {
 					console.error(e);
 				}
-				const subDomainsData = domain.subdomains.map((item) =>
+				const subDomainsData = subdomains.map((item) =>
 					Object.assign({}, item, { metrics: tradeData[item.id] }),
 				);
 				if (isMounted && (!d.current || d.current === domain.name)) {

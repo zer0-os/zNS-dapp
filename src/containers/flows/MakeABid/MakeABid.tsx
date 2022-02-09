@@ -250,7 +250,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		let isSubscribed = true;
 
 		const loadDomainData = async () => {
-			const metadata = await getMetadata(domain.metadata);
+			const metadata = await getMetadata(domain.metadataUri);
 			if (!metadata) return;
 
 			if (isSubscribed) {
@@ -327,10 +327,10 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				alt="Bid NFT preview"
 				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
 				ipfsUrl={
-					domainMetadata?.animation_url ||
-					domainMetadata?.image_full ||
-					domainMetadata?.image ||
-					''
+					(domainMetadata?.animation_url ||
+						domainMetadata?.image_full ||
+						domainMetadata?.image ||
+						'') as string
 				}
 				size="small"
 			/>
@@ -376,14 +376,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	const details = () => (
 		<div className={styles.Details}>
-			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
+			<h2 className="glow-text-white">{domainMetadata?.name}</h2>
 			<span className={styles.Domain}>0://{domain.name}</span>
 			<div className={styles.Price}>
 				<h3 className="glow-text-blue">Highest Bid</h3>
 				{highestBid()}
 			</div>
 			<Member
-				id={domain?.minter?.id || ''}
+				id={domain?.minter || ''}
 				name={''}
 				image={''}
 				subtext={'Creator'}
@@ -432,12 +432,12 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					{details()}
 				</div>
 				<div className={styles.InputWrapper}>
-					{domain.owner.id.toLowerCase() === account?.toLowerCase() && (
+					{domain.owner.toLowerCase() === account?.toLowerCase() && (
 						<p className={styles.Error} style={{ paddingTop: '16px' }}>
 							You can not bid on your own domain
 						</p>
 					)}
-					{domain.owner.id.toLowerCase() !== account?.toLowerCase() && (
+					{domain.owner.toLowerCase() !== account?.toLowerCase() && (
 						<>
 							{loadingWildBalance && (
 								<>

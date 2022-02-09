@@ -21,7 +21,7 @@ const CurrentDomainPreview = (props: any) => {
 	const domainName = domain?.name.split('wilder.')[1];
 	const isRootDomain = domain?.name === 'wilder';
 	const isDisabled =
-		!account || account.toLowerCase() === domain?.owner?.id.toLowerCase();
+		!account || account.toLowerCase() === domain?.owner?.toLowerCase();
 
 	const [isBidModalOpen, setIsBidModalOpen] = useState(false);
 
@@ -42,9 +42,9 @@ const CurrentDomainPreview = (props: any) => {
 			)}
 			<PreviewCard
 				domain={domainName || ''}
-				metadataUrl={!isRootDomain ? domain?.metadata : ''}
-				creatorId={domain?.minter?.id || ''}
-				ownerId={domain?.owner?.id || ''}
+				metadataUrl={!isRootDomain ? domain?.metadataUri : ''}
+				creatorId={domain?.minter || ''}
+				ownerId={domain?.owner || ''}
 				disabled={isDisabled}
 				mvpVersion={1}
 				onButtonClick={openBidModal}

@@ -73,7 +73,12 @@ const PageContainer: FC = ({ children }) => {
 	}, [chainId]);
 
 	//- Domain Data
-	const { domain: znsDomain, loading, refetch } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		loading,
+		refetch,
+		subdomains,
+	} = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
@@ -124,7 +129,7 @@ const PageContainer: FC = ({ children }) => {
 
 	//- Data
 	const isOwnedByUser: boolean =
-		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
+		znsDomain?.owner?.toLowerCase() === account?.toLowerCase();
 
 	///////////////
 	// Functions //
@@ -263,11 +268,9 @@ const PageContainer: FC = ({ children }) => {
 						onMint={closeModal}
 						domainName={domain}
 						domainId={znsDomain ? znsDomain.id : ''}
-						domainOwner={znsDomain ? znsDomain.owner.id : ''}
+						domainOwner={znsDomain ? znsDomain.owner : ''}
 						subdomains={
-							(znsDomain?.subdomains?.map(
-								(sub: any) => sub.name,
-							) as string[]) || []
+							(subdomains?.map((sub: any) => sub.name) as string[]) || []
 						}
 					/>
 				</Overlay>

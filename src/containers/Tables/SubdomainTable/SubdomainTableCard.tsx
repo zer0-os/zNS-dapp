@@ -36,8 +36,7 @@ const SubdomainTableCard = (props: any) => {
 
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 
-	const isOwnedByUser =
-		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
+	const isOwnedByUser = account?.toLowerCase() === domain?.owner?.toLowerCase();
 
 	///////////////
 	// Functions //
@@ -70,7 +69,7 @@ const SubdomainTableCard = (props: any) => {
 	return (
 		<NFTCard
 			domain={domain.name}
-			metadataUrl={domain.metadata}
+			metadataUrl={domain.metadataUri}
 			nftOwnerId={domain.owner?.id || ''}
 			nftMinterId={domain.minter?.id || ''}
 			showCreator
