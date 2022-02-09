@@ -9,6 +9,26 @@ export const hash = (x: string): string => {
 	return hash;
 };
 
+export const parseDomainFromURI = (pathname: string) => {
+	if (pathname.startsWith('/market')) {
+		return (
+			pathname.replace('/market', '') === ''
+				? '/'
+				: pathname.replace('/market', '')
+		).substring(1);
+	}
+	return '';
+};
+
+export const truncateDomain = (domain: string) => {
+	if (domain && ('wilder.' + domain).length > 30) {
+		const split = domain.split('.');
+		return 'wilder...' + split[split.length - 1];
+	} else {
+		return domain;
+	}
+};
+
 const getSubnodeHash = (parentHash: string, labelHash: string): string => {
 	const calculatedHash = ethers.utils.keccak256(
 		ethers.utils.defaultAbiCoder.encode(
