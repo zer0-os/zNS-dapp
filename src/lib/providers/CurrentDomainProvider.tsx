@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 // Web3 Imports
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { Maybe, Domain, Metadata } from 'lib/types';
-import { getDomainId } from 'lib/utils';
+import { getDomainId, parseDomainFromURI } from 'lib/utils';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<Domain>,
@@ -17,17 +17,6 @@ export const CurrentDomainContext = React.createContext({
 	loading: true,
 	refetch: () => {}, // @todo update this
 });
-
-const parseDomainFromURI = (pathname: string) => {
-	if (pathname.startsWith('/market')) {
-		return (
-			pathname.replace('/market', '') === ''
-				? '/'
-				: pathname.replace('/market', '')
-		).substring(1);
-	}
-	return '';
-};
 
 const CurrentDomainProvider: React.FC = ({ children }) => {
 	//////////////////////////
