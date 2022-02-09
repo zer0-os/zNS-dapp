@@ -1,9 +1,7 @@
-import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import React, { useMemo, useRef } from 'react';
-
-import { Link } from 'react-router-dom';
-
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import styles from './ZNALink.module.scss';
+import { parseDomainFromURI } from 'lib/utils';
 
 type ZNAProps = {
 	className?: string;
@@ -11,17 +9,8 @@ type ZNAProps = {
 };
 
 const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
-	const globalDomain = useCurrentDomain();
-	const oldDomainRef = useRef('');
-
-	const parsedDomain = useMemo(() => {
-		if (!globalDomain.domain?.name) {
-			return oldDomainRef.current;
-		} else {
-			oldDomainRef.current = globalDomain.domain?.name;
-			return globalDomain.domain?.name;
-		}
-	}, [globalDomain.domain]);
+	const { location } = useHistory();
+	const domain = parseDomainFromURI(location.pathname);
 
 	return (
 		<div
@@ -29,22 +18,25 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 			style={style}
 		>
 			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
-			{parsedDomain.split('.').map((part, i) => {
-				const linkTarget =
-					part === 'wilder'
-						? ''
-						: `/${parsedDomain
-								.split('.')
-								.slice(0, i + 1)
-								.join('.')
-								.replace('wilder.', '')}`;
+			<Link style={{ textDecoration: 'none', color: 'white' }} to={`/market/`}>
+				wilder
+			</Link>
+			{domain.split('.').map((part, i) => {
+				if (part === '') {
+					return undefined;
+				}
+				const linkTarget = `/market/${domain
+					.split('.')
+					.slice(0, i + 1)
+					.join('.')
+					.replace('wilder.', '')}`;
 				return (
 					<Link
 						key={i + part}
 						style={{ textDecoration: 'none', color: 'white' }}
-						to={`${globalDomain.app}${linkTarget}`}
+						to={linkTarget}
 					>
-						{i > 0 ? `.${part}` : part}
+						{'.' + part}
 					</Link>
 				);
 			})}
