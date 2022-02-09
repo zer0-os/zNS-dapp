@@ -8,6 +8,7 @@ import { NFTMedia, Image } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
+import { truncateDomain } from 'lib/utils';
 
 //- Type Imports
 import { Metadata } from 'lib/types';
@@ -46,7 +47,6 @@ const Artwork: React.FC<ArtworkProps> = ({
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
-	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
 
 	useEffect(() => {
@@ -66,18 +66,6 @@ const Artwork: React.FC<ArtworkProps> = ({
 					setMetadata(m);
 				}
 			});
-		}
-
-		// Truncate
-		if (domain && ('wilder.' + domain).length > 30) {
-			const split = domain.split('.');
-			if (isMounted.current === true) {
-				setTruncatedDomain('wilder...' + split[split.length - 1]);
-			}
-		} else {
-			if (isMounted.current === true) {
-				setTruncatedDomain(undefined);
-			}
 		}
 
 		return () => {
@@ -148,9 +136,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 					{!pending && (
 						<>
 							{disableInteraction && domain && (
-								<span className={styles.Domain}>
-									{truncatedDomain || 'wilder.' + domain}
-								</span>
+								<span className={styles.Domain}>{truncateDomain(domain)}</span>
 							)}
 							{!disableInteraction && domain && (
 								<Link
@@ -159,13 +145,15 @@ const Artwork: React.FC<ArtworkProps> = ({
 									target="_blank"
 									rel="noreferrer"
 								>
-									{truncatedDomain || domain}
+									{truncateDomain(domain)}
 								</Link>
 							)}
 						</>
 					)}
 					{pending && (
-						<span className={styles.Domain}>{domain ? domain : 'Loading'}</span>
+						<span className={styles.Domain}>
+							{domain ? truncateDomain(domain) : 'Loading'}
+						</span>
 					)}
 				</div>
 			</div>
