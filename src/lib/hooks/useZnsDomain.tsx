@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
-import { Maybe } from 'lib/types';
+import { Maybe, Domain, Metadata } from 'lib/types';
 import React from 'react';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { Domain } from '@zero-tech/zns-sdk';
 
 export const useZnsDomain = (domainId: string) => {
 	const { instance: sdk } = useZnsSdk();
@@ -13,7 +11,7 @@ export const useZnsDomain = (domainId: string) => {
 	const [subdomains, setSubdomains] =
 		React.useState<Maybe<Domain[]>>(undefined);
 	const [loading, setLoading] = React.useState<boolean>(true);
-	const metadata = useDomainMetadata(domain?.metadataUri);
+	const [metadata, setMetadata] = React.useState<Maybe<Metadata>>(undefined);
 	const [refetchSwitch, setRefetchSwitch] = React.useState<boolean>(false);
 
 	React.useEffect(() => {
@@ -22,6 +20,7 @@ export const useZnsDomain = (domainId: string) => {
 			setLoading(true);
 			setSubdomains(undefined);
 			setDomain(undefined);
+			setMetadata(undefined);
 			loadingDomainId.current = domainId;
 
 			const [rawDomain, rawSubdomains] = await Promise.all([
@@ -33,6 +32,10 @@ export const useZnsDomain = (domainId: string) => {
 				console.log('cancel load');
 				return;
 			}
+
+			sdk.utility.getMetadataFromUri(rawDomain.metadataUri).then((m) => {
+				setMetadata(m);
+			});
 
 			setSubdomains(rawSubdomains);
 			setDomain(rawDomain);
