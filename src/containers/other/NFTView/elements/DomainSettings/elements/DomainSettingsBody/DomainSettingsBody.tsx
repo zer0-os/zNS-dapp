@@ -1,5 +1,5 @@
 import React from 'react';
-import { DomainMetadata } from '@zero-tech/zns-sdk';
+import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { DisplayDomain, Maybe } from 'lib/types';
 import {
 	NFTMedia,

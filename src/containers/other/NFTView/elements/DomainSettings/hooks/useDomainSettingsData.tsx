@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { DomainMetadata } from '@zero-tech/zns-sdk';
+import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { getRelativeDomainPath } from 'lib/utils/domains';
 import { useZnsContracts } from 'lib/contracts';

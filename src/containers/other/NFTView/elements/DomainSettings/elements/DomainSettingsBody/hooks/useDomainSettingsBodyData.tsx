@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DomainMetadata } from '@zero-tech/zns-sdk';
+import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { DisplayDomain, Maybe } from 'lib/types';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { DomainSettingsError } from '../DomainSettingsBody.constants';
