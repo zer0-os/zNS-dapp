@@ -92,7 +92,8 @@
 		"lint": "eslint src --ext .ts",
 		"apollo:generate": "apollo codegen:generate --excludes=node_modules/* --includes=**/*.ts --endpoint=https://api.thegraph.com/subgraphs/name/zer0-os/zns-kovan  --target=typescript --tagName=gql",
 		"prettier": "prettier --write \"./src/**/*.{js,jsx,css,ts,tsx}\"",
-		"generate-meta-tag": "node ./node_modules/react-cache-buster/dist/generate-meta-tag.js"
+		"generate-meta-tag": "node ./node_modules/react-cache-buster/dist/generate-meta-tag.js",
+		"docker": "docker-compose -f docker-compose.yml up"
 	},
 	"eslintConfig": {
 		"extends": [
