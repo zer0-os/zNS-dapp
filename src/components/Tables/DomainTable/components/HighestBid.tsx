@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from 'react';
 
-import { useBidProvider } from 'lib/hooks/useBidProvider';
+import { useBid } from 'lib/hooks/useBid';
 
 import { Spinner } from 'components';
 
@@ -14,7 +14,7 @@ type HighestBidProps = {
 
 const HighestBid: React.FC<HighestBidProps> = ({ domain, refreshKey }) => {
 	let isMounted = useRef(false);
-	const { getBidsForDomain } = useBidProvider();
+	const { getBidsForDomain } = useBid();
 	const [highestBid, setHighestBid] = useState<number | undefined>();
 	const [didApiCallFail, setDidApiCallFail] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(true);

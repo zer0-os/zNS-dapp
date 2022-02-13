@@ -3,7 +3,7 @@ import React from 'react';
 
 // Library Imports
 import { useZnsContracts } from 'lib/contracts';
-import { useBidProvider } from 'lib/hooks/useBidProvider';
+import { useBid } from 'lib/hooks/useBid';
 import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
@@ -46,7 +46,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	// zAuction Integrations
 	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
 	const znsContracts = useZnsContracts()!;
-	const { acceptBid } = useBidProvider();
+	const { acceptBid } = useBid();
 	const zAuctionAddress = znsContracts.zAuction.address;
 	const wildContract: ERC20 = znsContracts.wildToken;
 

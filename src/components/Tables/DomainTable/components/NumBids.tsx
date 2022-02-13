@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from 'react';
 
-import { useBidProvider } from 'lib/hooks/useBidProvider';
+import { useBid } from 'lib/hooks/useBid';
 
 import { Spinner } from 'components';
 
@@ -19,7 +19,7 @@ const NumBids: React.FC<NumBidsProps> = ({
 	filterOwnBids,
 }) => {
 	let isMounted = useRef(false);
-	const { getBidsForDomain } = useBidProvider();
+	const { getBidsForDomain } = useBid();
 	const [numBids, setNumBids] = useState<number | undefined>();
 	const [didApiCallFail, setDidApiCallFail] = useState<boolean>(false);
 

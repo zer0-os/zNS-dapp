@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 //- Library Imports
 import { Domain, Metadata, Bid, Maybe } from 'lib/types';
-import { useBidProvider } from 'lib/hooks/useBidProvider';
+import { useBid } from 'lib/hooks/useBid';
 import { getMetadata } from 'lib/metadata';
 import { toFiat } from 'lib/currency';
 import useCurrency from 'lib/hooks/useCurrency';
@@ -42,7 +42,7 @@ enum Steps {
 
 const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	//- Bid hooks
-	const { getBidsForDomain, placeBid } = useBidProvider();
+	const { getBidsForDomain, placeBid } = useBid();
 
 	// Wild to usd
 	const { wildPriceUsd } = useCurrency();

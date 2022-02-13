@@ -35,7 +35,7 @@ const getBidParameters = (
 	};
 };
 
-export type UseBidProviderReturn = {
+export type UseBidReturn = {
 	acceptBid: (bidData: Bid) => Promise<ethers.ContractTransaction>;
 	getBidsForYourDomains: () => Promise<Bid[] | undefined>;
 	getBidsForAccount: (id: string) => Promise<Bid[] | undefined>;
@@ -50,7 +50,7 @@ export type UseBidProviderReturn = {
 	) => Promise<void>;
 };
 
-export const useBidProvider = (): UseBidProviderReturn => {
+export const useBid = (): UseBidReturn => {
 	//////////////////////////
 	// Hooks & State & Data //
 	//////////////////////////

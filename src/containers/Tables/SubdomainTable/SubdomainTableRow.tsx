@@ -6,11 +6,11 @@ import styles from './SubdomainTableRow.module.scss';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useBidProvider } from 'lib/hooks/useBidProvider';
+import { useBid } from 'lib/hooks/useBid';
 import useCurrency from 'lib/hooks/useCurrency';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
-import { useBid } from './BidProvider';
+import { useBid as useBidLocal } from './BidProvider';
 import { BidButton } from 'containers';
 import { ethers } from 'ethers';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
@@ -21,8 +21,8 @@ const SubdomainTableRow = (props: any) => {
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
 
-	const { makeABid, updated } = useBid();
-	const { getBidsForDomain } = useBidProvider();
+	const { makeABid, updated } = useBidLocal();
+	const { getBidsForDomain } = useBid();
 
 	const { wildPriceUsd } = useCurrency();
 

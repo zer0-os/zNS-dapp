@@ -8,7 +8,7 @@ import { MakeABid } from 'containers';
 
 //- Library Imports
 import { Bid, Domain, Maybe, ParentDomain } from 'lib/types';
-import { useBidProvider } from 'lib/hooks/useBidProvider';
+import { useBid } from 'lib/hooks/useBid';
 import { useZNSDomains } from 'lib/providers/ZNSDomainProvider';
 
 //- Style Imports
@@ -38,7 +38,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 	// State / Refs //
 	//////////////////
 
-	const { getBidsForAccount, getBidsForDomain } = useBidProvider();
+	const { getBidsForAccount, getBidsForDomain } = useBid();
 	const znsDomains = useZNSDomains();
 
 	const containerRef = useRef<HTMLDivElement>(null);

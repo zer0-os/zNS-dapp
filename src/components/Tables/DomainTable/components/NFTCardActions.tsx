@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 
 // Library Imports
 import { Domain, DomainData } from 'lib/types';
-import { useBidProvider } from 'lib/hooks/useBidProvider';
+import { useBid } from 'lib/hooks/useBid';
 
 // Component Imports
 import { Spinner } from 'components';
@@ -26,7 +26,7 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 	onButtonClick,
 	onLoad,
 }) => {
-	const { getBidsForDomain } = useBidProvider();
+	const { getBidsForDomain } = useBid();
 
 	let isMounted = useRef(false);
 

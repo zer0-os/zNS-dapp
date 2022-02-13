@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useRef } from 'react';
 
-import { useBidProvider } from 'lib/hooks/useBidProvider';
+import { useBid } from 'lib/hooks/useBid';
 
 import { Bid, Domain, DomainData } from 'lib/types';
 import FutureButton from 'components/Buttons/FutureButton/FutureButton';
@@ -21,7 +21,7 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 }) => {
 	let isMounted = useRef(false);
 
-	const { getBidsForDomain } = useBidProvider();
+	const { getBidsForDomain } = useBid();
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
