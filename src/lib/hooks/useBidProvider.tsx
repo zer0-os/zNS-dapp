@@ -14,46 +14,6 @@ import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { useZAuctionBaseApiUri } from './useZAuctionBaseApiUri';
 import useNotification from './useNotification';
 
-/////////////////////
-// Mock data stuff //
-/////////////////////
-
-const randomDate = () => {
-	const start = new Date(2012, 0, 1);
-	const end = new Date();
-	return new Date(
-		start.getTime() + Math.random() * (end.getTime() - start.getTime()),
-	);
-};
-
-// Create some mock bids
-export const getMock = (amount: number) => {
-	const mockBids: Bid[] = [];
-	[...Array(amount)].forEach((a: any) => {
-		mockBids.push({
-			amount: Math.random() * 10000,
-			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
-			date: randomDate(),
-			tokenId: `${Math.random() * 10000}`,
-			auctionId: `${Math.random() * 10000}`,
-			nftAddress: `0x${Math.floor(Math.random() * 100000000000000000)}`,
-			minBid: `0`,
-			startBlock: `0`,
-			expireBlock: `999999999999`,
-			signature: `0x${Math.floor(Math.random() * 100000000000000000)}`,
-		});
-	});
-	// Sort by recent
-	return mockBids.sort((a, b) => {
-		return b.date.valueOf() - a.date.valueOf();
-	});
-};
-
-const asyncGetMock = async (amount: number, timeout: number) => {
-	await new Promise((resolve) => setTimeout(resolve, timeout));
-	return getMock(amount);
-};
-
 // This will receive either DTOs, and will populate the parameters with the correct data
 const getBidParameters = (
 	dto: zAuction.BidDto,
@@ -132,14 +92,8 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	);
 
 	const getBidsForYourDomains = useCallback(async () => {
-		try {
-			// @zachary
-			// return bids from owned domains or undefined
-			const mockBids = await asyncGetMock(5, 150);
-			return mockBids;
-		} catch (e) {
-			console.error("Failed to retrieve bids for user's domains");
-		}
+		// Currently unimplemented
+		return [];
 	}, []);
 
 	const getBidsForAccount = useCallback(
