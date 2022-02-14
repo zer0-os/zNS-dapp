@@ -134,31 +134,30 @@ export const useBid = (): UseBidReturn => {
 			}
 
 			try {
-				let bids = (await zAuction.getBidsForNft(
-					baseApiUri,
-					contracts!.registry.address,
-					domainId,
-				)) as zAuction.BidDto[];
+				let bids = await sdk.zauction.listBids(domainId);
 
 				try {
-					const id = context.account;
-					if (filterOwnBids && id) {
-						bids = bids.filter((e) => {
-							return e.account.toLowerCase() !== id.toLowerCase();
-						});
-					}
-
-					let displayBids = bids.map((e) => {
-						return getBidParameters(e, domainId);
+					const formatBid = (bid: any) => {
+						return {
+							amount: Number(ethers.utils.formatEther(bid.amount)),
+							bidderAccount: bid.bidder,
+							date: new Date(bid.timestamp),
+							tokenId: bid.tokenId,
+							signature: bid.signedMessage,
+							auctionId: bid.auctionId,
+							nftAddress: '123',
+							minBid: '0',
+							startBlock: bid.startBlock,
+							expireBlock: bid.expireBlock,
+						};
+					};
+					const displayBids = bids.map((e: any) => {
+						return formatBid(e) as Bid;
 					});
 
-					displayBids.sort((a, b) => {
-						return b.amount - a.amount;
-					});
-
-					// @TODO: Add filtering expired/invalid bids out
 					return displayBids;
 				} catch (e) {
+					console.error(e);
 					return;
 				}
 			} catch (e) {
