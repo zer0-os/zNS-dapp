@@ -10,8 +10,10 @@ import styles from './Tooltip.module.scss';
 
 type TooltipProps = {
 	children: React.ReactNode | string | number;
-	text: string;
+	text: string | React.ReactElement;
 	auto?: boolean;
+	open?: boolean;
+	openOnHover?: boolean;
 	placement?:
 		| 'top-start'
 		| 'top-center'
@@ -30,6 +32,9 @@ type TooltipProps = {
 	delayLeave?: number;
 	hideOnScroll?: boolean;
 	animationProps?: MotionProps;
+	triggerOnTooltip?: boolean;
+	arrow?: boolean;
+	tooltipClassName?: string;
 };
 
 const Tooltip: React.FC<TooltipProps> = ({
@@ -41,6 +46,11 @@ const Tooltip: React.FC<TooltipProps> = ({
 	delayEnter = 100,
 	delayLeave = 200,
 	hideOnScroll = true,
+	triggerOnTooltip = false,
+	open = false,
+	openOnHover = true,
+	arrow = true,
+	tooltipClassName,
 	animationProps = {
 		initial: { opacity: 0, scale: 0.9 },
 		animate: { opacity: 1, scale: 1 },
@@ -82,6 +92,8 @@ const Tooltip: React.FC<TooltipProps> = ({
 		});
 	}
 
+	const tooltipHoverProps = triggerOnTooltip ? hoverProps : {};
+
 	// We're using framer-motion for our enter / exit animations.
 	// This is why we need to wrap our actual tooltip inside `<AnimatePresence />`.
 	return (
@@ -91,12 +103,16 @@ const Tooltip: React.FC<TooltipProps> = ({
 				<AnimatePresence>
 					{isOver && (
 						<motion.div
-							className={styles.Tooltip}
+							className={
+								styles.Tooltip +
+								(tooltipClassName ? ` ${tooltipClassName}` : '')
+							}
 							{...animationProps}
 							{...layerProps}
+							{...tooltipHoverProps}
 						>
 							{text}
-							<Arrow {...arrowProps} className={styles.Arrow} />
+							{arrow && <Arrow {...arrowProps} className={styles.Arrow} />}
 						</motion.div>
 					)}
 				</AnimatePresence>,
