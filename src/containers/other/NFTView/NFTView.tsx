@@ -17,7 +17,13 @@ import {
 	StatsWidget,
 	Tooltip,
 } from 'components';
-import { BidButton, BuyNowButton, MakeABid, MakeABuy } from 'containers';
+import {
+	BidButton,
+	BuyNowButton,
+	MakeABid,
+	MakeABuy,
+	SetBuyPriceWizard,
+} from 'containers';
 
 //- Library Imports
 import { randomName, randomImage } from 'lib/random';
@@ -98,6 +104,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const [isBuyNowFinishedSuccesfully, setBuyNowFinishedSuccefully] =
 		useState(false);
 
+	const [isPriceWizardOpen, setPriceWizardOpen] = useState(false);
+
 	const { domainId, domain: znsDomain, domainRaw: domain } = useCurrentDomain();
 
 	//- Web3 Domain Data
@@ -125,8 +133,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	//- Calls the hook with a polling interval to update the data
 
 	//- Functions
-	const openSetBuyNowPriceWizard = () => {};
-
+	const openSetBuyNowPriceWizard = () => setPriceWizardOpen(true);
 	const copyToClipboard = (content: string, label: string) => {
 		addNotification(`Copied ${label} to clipboard.`);
 		try {
@@ -238,6 +245,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		if (!znsDomain || isOwnedByYou || !active) return;
 		setIsBuyOverlayOpen(true);
 	};
+
+	const closeSetPriceWizard = () => setPriceWizardOpen(false);
 
 	const closeBidOverlay = () => setIsBidOverlayOpen(false);
 
@@ -498,9 +507,27 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<MakeABid domain={znsDomain} onBid={onBid} />
 					</Overlay>
 				) : (
+					''
+				))}
+			{znsDomain &&
+				(isBuyOverlayOpen ? (
 					<Overlay onClose={closeBuyOverlay} open={isBuyOverlayOpen}>
 						<MakeABuy domain={znsDomain} onBuy={onBuy} />
 					</Overlay>
+				) : (
+					''
+				))}
+			{znsDomain &&
+				(isPriceWizardOpen ? (
+					<Overlay onClose={closeSetPriceWizard} open={isPriceWizardOpen}>
+						<SetBuyPriceWizard
+							domain={znsDomain}
+							successHandler={closeSetPriceWizard}
+							cancelHandler={closeSetPriceWizard}
+						/>
+					</Overlay>
+				) : (
+					''
 				))}
 		</>
 	);

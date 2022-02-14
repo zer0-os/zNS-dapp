@@ -28,6 +28,7 @@ export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
 export { default as MintWheels } from './flows/MintWheels';
 export { default as TransferOwnership } from './flows/TransferOwnership';
 export { default as WheelsRaffle } from './flows/WheelsRaffle';
+export { default as SetBuyPriceWizard } from './flows/TransactionWizards/SetBuyPriceWizard';
 
 // Tables
 export { default as OwnedDomainsTable } from './Tables/OwnedDomainsTable/OwnedDomainsTable';
@@ -35,6 +36,7 @@ export { default as SubdomainTable } from './Tables/SubdomainTable/SubdomainTabl
 
 // Modals
 export { default as ProfileModal } from './modals/ProfileModal/ProfileModal';
+export { SetBuyPriceContext } from './modals/ProfileModal/ProfileModal';
 
 // Lists
 export { default as BidList } from './lists/BidList/BidList';

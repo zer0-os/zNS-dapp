@@ -1,11 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useContext } from 'react';
 import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import { Artwork, NFTCard, SearchBar, Overlay, IconButton } from 'components';
-import { BidButton, MakeABid } from 'containers';
+import {
+	Artwork,
+	NFTCard,
+	SearchBar,
+	Overlay,
+	IconButton,
+	Tooltip,
+} from 'components';
+import { BidButton, MakeABid, SetBuyPriceContext } from 'containers';
 import HighestBid from './components/HighestBid';
 import NumBids from './components/NumBids';
 import NFTCardActions from './components/NFTCardActions';
@@ -21,6 +28,8 @@ import styles from './DomainTable.module.scss';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import moreActionsIcon from './assets/more-horizontal.svg';
+import setPriceIcon from './assets/set-price.svg';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -75,10 +84,15 @@ const DomainTable: React.FC<DomainTableProps> = ({
 
 	const [modal, setModal] = useState<Modals | undefined>();
 
+	// Owner Actions state
+	const [isOwnerActionsOpenned, setOwnerActionsOpenned] = useState(false);
+
 	// Data state
 	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
 
 	const [domainToRefresh, setDomainToRefresh] = useState<string>('');
+
+	const setBuyPriceWizardDispatch = useContext(SetBuyPriceContext);
 
 	///////////////
 	// Functions //
@@ -107,7 +121,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		try {
 			if (
 				isGlobalTable &&
-				domain?.owner.id.toLowerCase() !== userId?.toLowerCase()
+				domain.owner.id.toLowerCase() !== userId?.toLowerCase()
 			) {
 				if (!isMounted.current) return;
 				setBiddingOn(domain);
@@ -142,6 +156,14 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		}
 	};
 
+	const openSetBuyNowPriceWizard = (e: React.MouseEvent, domain: Domain) => {
+		e.stopPropagation();
+
+		if (setBuyPriceWizardDispatch !== null) {
+			setBuyPriceWizardDispatch({ type: 'openSetPriceWizard', domain: domain });
+		}
+	};
+
 	/////////////
 	// Effects //
 	/////////////
@@ -171,6 +193,48 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	useEffect(() => {
 		checkHeight();
 	}, [containerRef.current?.offsetHeight, searchQuery, isGridView]);
+
+	/////////////////////
+	// React Fragments //
+	/////////////////////
+
+	const overlays = () => {
+		return (
+			<>
+				{userId && (
+					<Overlay
+						onClose={closeModal}
+						open={modal === Modals.Bid && biddingOn !== undefined}
+					>
+						<MakeABid domain={biddingOn!} onBid={onBid} />
+					</Overlay>
+				)}
+			</>
+		);
+	};
+
+	const nftCardActionComponent = (domain: Domain) => {
+		return (
+			<NFTCardActions
+				domain={domain}
+				onButtonClick={onButtonClick}
+				onLoad={checkHeight}
+				filterOwnBids={filterOwnBids}
+			/>
+		);
+	};
+
+	const ownerActions = (domain: Domain) => (
+		<>
+			<div
+				className={styles.OwnerAction}
+				onClick={(e: React.MouseEvent) => openSetBuyNowPriceWizard(e, domain)}
+			>
+				<img src={setPriceIcon} alt="" />
+				<span>Set Buy Now Price</span>
+			</div>
+		</>
+	);
 
 	/////////////////
 	// React Table //
@@ -228,7 +292,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						<>
 							{isGlobalTable && (
 								<BidButton
-									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
+									style={{ margin: 'auto', textTransform: 'uppercase' }}
 									glow={
 										userId !== undefined &&
 										userId?.toLowerCase() !== domain.owner.id.toLowerCase()
@@ -240,13 +304,39 @@ const DomainTable: React.FC<DomainTableProps> = ({
 							)}
 							{!isGlobalTable && onButtonClick && (
 								<ViewBids
-									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
+									style={{ margin: 'auto', textTransform: 'uppercase' }}
 									domain={domain}
 									onClick={onButtonClick}
 									filterOwnBids={filterOwnBids}
 								/>
 							)}
 						</>
+					);
+				},
+			},
+			{
+				id: 'ownerActions',
+				accessor: (domain: Domain) => {
+					return (
+						<Tooltip
+							text={ownerActions(domain)}
+							triggerOnTooltip={true}
+							placement={'bottom-center'}
+							arrow={false}
+							openOnHover={false}
+							open={isOwnerActionsOpenned}
+							tooltipClassName={styles.ActionsTooltip}
+						>
+							<button
+								onClick={(e: React.MouseEvent) => {
+									e.stopPropagation();
+									setOwnerActionsOpenned(true);
+								}}
+								style={{ background: 'transparent', marginLeft: 10 }}
+							>
+								<img alt="more actions" src={moreActionsIcon} />
+							</button>
+						</Tooltip>
 					);
 				},
 			},
@@ -276,36 +366,6 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		if (!isMounted.current) return;
 		setGlobalFilter(query);
 		setSearchQuery(query);
-	};
-
-	/////////////////////
-	// React Fragments //
-	/////////////////////
-
-	const overlays = () => {
-		return (
-			<>
-				{userId && (
-					<Overlay
-						onClose={closeModal}
-						open={modal === Modals.Bid && biddingOn !== undefined}
-					>
-						<MakeABid domain={biddingOn!} onBid={onBid} />
-					</Overlay>
-				)}
-			</>
-		);
-	};
-
-	const nftCardActionComponent = (domain: Domain) => {
-		return (
-			<NFTCardActions
-				domain={domain}
-				onButtonClick={onButtonClick}
-				onLoad={checkHeight}
-				filterOwnBids={filterOwnBids}
-			/>
-		);
 	};
 
 	////////////
