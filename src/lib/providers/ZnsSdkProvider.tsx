@@ -1,3 +1,4 @@
+import { JsonRpcSigner } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 import * as zns from '@zero-tech/zns-sdk';
 import {
@@ -154,6 +155,31 @@ export function useZnsSdk() {
 		}
 	};
 
+	const approveZAuctionToSpendTokens = async (
+		domainId: string,
+		signer: JsonRpcSigner,
+	) => {
+		return await (
+			await instance.getZAuctionInstanceForDomain(domainId)
+		).approveZAuctionSpendTradeTokens(signer);
+	};
+
+	const getBuyNowPrice = async (domainId: string, signer: JsonRpcSigner) => {
+		return await (
+			await instance.getZAuctionInstanceForDomain(domainId)
+		).getBuyNowPrice(domainId, signer);
+	};
+
+	const setBuyNowPrice = async (
+		domainId: string,
+		signer: JsonRpcSigner,
+		price: string,
+	) => {
+		return await (
+			await instance.getZAuctionInstanceForDomain(domainId)
+		).setBuyNowPrice({ tokenId: domainId, amount: price }, signer);
+	};
+
 	return {
 		instance,
 		getMintEvents,
@@ -164,5 +190,8 @@ export function useZnsSdk() {
 		lockDomainMetadata,
 		setDomainMetadata,
 		setAndLockMetadata,
+		approveZAuctionToSpendTokens,
+		getBuyNowPrice,
+		setBuyNowPrice,
 	};
 }

@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
 
-import { useZauctionApproval } from 'lib/hooks/znsSdk-hooks';
+import { useBuyNowPrice, useZauctionApproval } from 'lib/hooks/znsSdk-hooks';
 import { Bid, Domain, Metadata } from 'lib/types';
 import { getMetadata } from 'lib/metadata';
 
@@ -17,12 +17,13 @@ import { FutureButton, Member, NFTMedia, Spinner } from 'components';
 import styles from './TransactionWizard.module.scss';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useCurrency from 'lib/hooks/useCurrency';
-import { ethers } from 'ethers';
+import { ContractTransaction } from 'ethers';
 
 interface TransactionWizardProps {
 	domain: Domain;
 	name: string;
 	steps: TransactionData[];
+	rejectMessage: string;
 	cancelHandler: () => void;
 	successHandler: () => void;
 }
@@ -31,7 +32,11 @@ type TransactionData = {
 	stepName: string;
 	stepTemplate?: 'NFTPreview' | 'approval';
 	stepAdditionalData: () => JSX.Element;
-	actions: { cancel: () => Promise<void>; next: () => Promise<void> };
+	actions: {
+		cancel: () => Promise<ContractTransaction | undefined>;
+		next: () => Promise<any>;
+	};
+	loadingMessage?: string;
 };
 
 export const TransactionWizard: React.FC<TransactionWizardProps> = ({
@@ -39,6 +44,7 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 	name,
 	steps,
 	successHandler,
+	rejectMessage,
 	cancelHandler,
 }) => {
 	///////////
@@ -54,10 +60,12 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 
 	const [isTransactionFailed, setTransactionFailed] = useState(false);
 
+	const [isRejectModalOpenned, setRejectModalOpenned] = useState(false);
+
 	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
-	const [currentBuyPrice, setCurrentBuyPrice] = useState<
-		BigInteger | undefined
-	>();
+
+	const [isWaletLoading, setWalletLoading] = useState(false);
+	const [isTransactionProccessing, setTransactionProccessing] = useState(false);
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -69,6 +77,12 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 		account,
 	});
 
+	const [currentBuyPrice] = useBuyNowPrice({
+		library,
+		account,
+		domainId: domain.id,
+	});
+
 	//////////////
 	// Handlers //
 	//////////////
@@ -77,7 +91,7 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 		steps[currentStep].actions
 			.cancel()
 			.then(() => {
-				setCurrentStep(currentStep + 1);
+				setRejectModalOpenned(true);
 			})
 			.catch(() => {
 				setTransactionFailed(true);
@@ -85,13 +99,35 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 	};
 
 	const handleNextStep = async () => {
+		setWalletLoading(true);
+
 		steps[currentStep].actions
 			.next()
-			.then(() => {
-				setCurrentStep(currentStep + 1);
+			.then(async (transaction) => {
+				if (typeof transaction !== 'undefined') {
+					setWalletLoading(false);
+					setTransactionProccessing(true);
+					await transaction
+						.wait()
+						.then(() => {
+							setCurrentStep(currentStep + 1);
+						})
+						.catch((error: any) => {
+							console.error('network error, unable to set buy price');
+							console.error(error);
+						})
+						.finally(() => {
+							setTransactionProccessing(false);
+						});
+				} else {
+					setCurrentStep(currentStep + 1);
+					setWalletLoading(false);
+				}
 			})
-			.catch(() => {
+			.catch((error) => {
+				console.warn(error);
 				setTransactionFailed(true);
+				setWalletLoading(false);
 			});
 	};
 
@@ -108,11 +144,11 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 	/////////////
 
 	useEffect(() => {
-		if (zauctionApproved && steps[currentStep].stepTemplate === 'approval') {
-			setCurrentStep(currentStep + 1);
-		}
 		console.log(zauctionApproved);
-	}, [zauctionApproved]);
+		if (zauctionApproved && !isApprovalLoading) {
+			setCurrentStep((prevStep) => prevStep + 1);
+		}
+	}, [zauctionApproved, isApprovalLoading]);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -138,7 +174,7 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 		return () => {
 			isSubscribed = false;
 		};
-	}, [domain]);
+	}, [domain, getBidsForDomain]);
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -163,8 +199,7 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 	// React Fragments //
 	/////////////////////
 
-	const tab = (active: boolean) => <></>;
-
+	// todo implement tabs
 	const tabs = () => (
 		<div>
 			<div></div>
@@ -225,15 +260,14 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 				{currentHighestBid
 					? pricePreview('Highest Bid', currentHighestBid.amount)
 					: ''}
-				{currentBuyPrice
-					? pricePreview(
-							'Buy Now',
-							Number(ethers.utils.formatEther(currentBuyPrice)),
-					  )
+				{Number(currentBuyPrice) > 0
+					? pricePreview('Buy Now', Number(currentBuyPrice))
 					: ''}
 			</div>
 		</>
 	);
+
+	const rejectTransaction = () => <div>{rejectMessage}</div>;
 
 	const actionButtons = () => (
 		<>
@@ -254,23 +288,55 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 		</>
 	);
 
+	const rejectButtons = () => (
+		<>
+			<FutureButton
+				onClick={() => setRejectModalOpenned(false)}
+				className="Alt"
+				glow={true}
+			>
+				Return
+			</FutureButton>
+			<FutureButton onClick={handleTransactionCancel} glow={true}>
+				Close
+			</FutureButton>
+		</>
+	);
+
 	return (
 		<div className={`${styles['wizard']} border-primary border-rounded blur`}>
 			<div className={styles['wizard--header']}>
-				<h1 className={`glow-text-white`}>{name}</h1>
+				<h1 className={`glow-text-white`}>
+					{isRejectModalOpenned ? 'Are You Sure?' : name}
+				</h1>
 				{tabs()}
 			</div>
 			<div className={styles['wizard--body']}>
-				{steps[currentStep].stepTemplate === 'NFTPreview' ? nftPreview() : ''}
+				{isRejectModalOpenned
+					? ''
+					: steps[currentStep].stepTemplate === 'NFTPreview'
+					? nftPreview()
+					: ''}
 			</div>
 			<div className={styles['wizard--additional']}>
-				{isApprovalLoading && !zauctionApproved ? (
-					<p>Checking status of zAuction Approval...</p>
+				{isTransactionProccessing ? (
+					<p>
+						{steps[currentStep].loadingMessage} This may take up to 20 mins...
+						Please do not close this window or refresh the page.
+					</p>
+				) : !isRejectModalOpenned ? (
+					(isApprovalLoading && !zauctionApproved) || isWaletLoading ? (
+						<p>Checking status of zAuction Approval...</p>
+					) : (
+						steps[currentStep].stepAdditionalData()
+					)
 				) : (
-					steps[currentStep].stepAdditionalData()
+					rejectTransaction()
 				)}
 			</div>
-			{isTransactionFailed ? (
+			{isRejectModalOpenned ? (
+				''
+			) : isTransactionFailed ? (
 				<div className={styles['wizard--error']}>
 					<p>Approval rejected by wallet</p>
 				</div>
@@ -278,12 +344,16 @@ export const TransactionWizard: React.FC<TransactionWizardProps> = ({
 				''
 			)}
 			<div className={styles['wizard--action']}>
-				{isApprovalLoading ? (
-					<Spinner />
-				) : currentStep === steps.length - 1 ? (
-					finishButtons()
+				{!isRejectModalOpenned ? (
+					isApprovalLoading || isWaletLoading || isTransactionProccessing ? (
+						<Spinner />
+					) : currentStep === steps.length - 1 ? (
+						finishButtons()
+					) : (
+						actionButtons()
+					)
 				) : (
-					actionButtons()
+					rejectButtons()
 				)}
 			</div>
 		</div>

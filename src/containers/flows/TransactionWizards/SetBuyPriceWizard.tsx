@@ -1,8 +1,13 @@
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
 import { TextInput, ToggleButton } from 'components';
-import { BigNumber } from 'ethers';
+import { providers } from 'ethers';
+import useCurrency from 'lib/hooks/useCurrency';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { Domain } from 'lib/types';
 import React, { useState } from 'react';
 import { TransactionWizard } from './TransactionWizard';
+import styles from './TransactionWizard.module.scss';
 
 interface SetBuyPriceWizardProps {
 	domain: Domain;
@@ -19,17 +24,39 @@ export const SetBuyPriceWizard: React.FC<SetBuyPriceWizardProps> = ({
 	// State //
 	///////////
 
-	const numberRegexp = /\D/g;
+	const sdk = useZnsSdk();
 
-	const [priceValue, setPriceValue] = useState('');
-	const [newBuyPrice, setNewBuyPrice] = useState<BigNumber | undefined>();
+	const walletContext = useWeb3React<Web3Provider>();
+	const { account, library } = walletContext;
+
+	const provider = library && new providers.Web3Provider(library.provider);
+	const signer = provider && provider.getSigner(account!);
+
+	const [inputError, setInputError] = useState(false);
+	const [currentValue, updateCurrentValue] = React.useState<string>('');
+	const [isZero, setZero] = React.useState(false);
+
+	const { wildPriceUsd } = useCurrency();
 
 	///////////////
 	// Functions //
 	///////////////
 
-	const priceInputHandler = (text: string) => {
-		setPriceValue(text.replace(numberRegexp, ''));
+	const handleChange = (value: string) => {
+		updateCurrentValue(value);
+	};
+
+	const hadleSwitch = () => {
+		setZero((prevValue) => !prevValue);
+	};
+
+	const setBuyPrice = async () => {
+		if (isZero) {
+			return await sdk.setBuyNowPrice(domain.id, signer!, '0');
+		} else if (currentValue !== '') {
+			return await sdk.setBuyNowPrice(domain.id, signer!, '0');
+		}
+		return;
 	};
 
 	/////////////////////
@@ -45,22 +72,54 @@ export const SetBuyPriceWizard: React.FC<SetBuyPriceWizardProps> = ({
 
 	const setPriceInput = () => (
 		<>
-			<div>
-				<ToggleButton toggled={true} onClick={() => {}} /> Buy Now
+			<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+				<ToggleButton toggled={!isZero} onClick={hadleSwitch} /> Buy Now
 			</div>
 			<br />
-			<TextInput
-				text={priceValue}
-				placeholder="Buy Now Price (WILD)"
-				onChange={priceInputHandler}
-			/>
+			{isZero ? (
+				''
+			) : (
+				<div>
+					<TextInput
+						numeric
+						type="text"
+						text={currentValue}
+						placeholder="Buy Now Price (WILD)"
+						onChange={handleChange}
+						error={inputError}
+						errorText={'Price can not be empty'}
+					/>
+					<div
+						style={{ textAlign: 'left', paddingLeft: '24px' }}
+						className={styles.Price}
+					>
+						<span>
+							{currentValue
+								? (Number(currentValue) * wildPriceUsd).toLocaleString(
+										'en-US',
+										{
+											style: 'currency',
+											currency: 'USD',
+										},
+								  )
+								: '0.00 USD'}
+						</span>
+					</div>
+				</div>
+			)}
 		</>
 	);
 
 	const confirm = () => (
 		<>
-			Are you sure you want to set a buy now price of <b>{newBuyPrice} WILD</b>{' '}
-			for <b>NFT {domain.name}?</b>
+			{isZero ? (
+				<p>Are you sure you want to turn off the buy now for NFT Name?</p>
+			) : (
+				<p>
+					Are you sure you want to set a buy now price of{' '}
+					<b>{currentValue} WILD</b> for <b>NFT {domain.name}?</b>
+				</p>
+			)}
 		</>
 	);
 
@@ -74,14 +133,18 @@ export const SetBuyPriceWizard: React.FC<SetBuyPriceWizardProps> = ({
 			domain={domain}
 			cancelHandler={cancelHandler}
 			successHandler={successHandler}
+			rejectMessage={
+				'You will lose your changes, a buy now price will not be added.'
+			}
 			steps={[
 				{
 					stepName: 'Approve',
 					stepTemplate: 'approval',
 					stepAdditionalData: zAuctionApproval,
+					loadingMessage: 'Approving zAuction.',
 					actions: {
-						cancel: async () => {},
-						next: async () => {},
+						cancel: async () => undefined,
+						next: () => sdk.approveZAuctionToSpendTokens(domain.id, signer!),
 					},
 				},
 				{
@@ -89,17 +152,23 @@ export const SetBuyPriceWizard: React.FC<SetBuyPriceWizardProps> = ({
 					stepTemplate: 'NFTPreview',
 					stepAdditionalData: setPriceInput,
 					actions: {
-						cancel: async () => {},
-						next: async () => {},
+						cancel: async () => undefined,
+						next: async () => {
+							if (currentValue === '' && !isZero) {
+								setInputError(true);
+								throw new Error('no price provided');
+							}
+						},
 					},
 				},
 				{
 					stepName: 'Confirm',
 					stepTemplate: 'NFTPreview',
 					stepAdditionalData: confirm,
+					loadingMessage: 'Setting buy now.',
 					actions: {
-						cancel: async () => {},
-						next: async () => {},
+						cancel: async () => undefined,
+						next: setBuyPrice,
 					},
 				},
 				{
@@ -107,7 +176,7 @@ export const SetBuyPriceWizard: React.FC<SetBuyPriceWizardProps> = ({
 					stepTemplate: 'NFTPreview',
 					stepAdditionalData: success,
 					actions: {
-						cancel: async () => {},
+						cancel: async () => undefined,
 						next: async () => {},
 					},
 				},

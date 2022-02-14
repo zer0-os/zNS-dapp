@@ -6,7 +6,7 @@ interface ZauctionApprovalProps {
 	library: any;
 	account: any;
 	domainId: string;
-	price?: BigNumber;
+	price?: string;
 }
 
 export const useZauctionApproval = ({
@@ -21,9 +21,12 @@ export const useZauctionApproval = ({
 	const [isApprovalLoading, setApprovalLoading] = useState(false);
 	const [networkError, setNetworkError] = useState('');
 
+	const provider = library && new providers.Web3Provider(library.provider);
+	const signer = provider && provider.getSigner(account!);
+
+	const leastPrice = BigNumber.from(price ? price : '100');
+
 	useEffect(() => {
-		const provider = library && new providers.Web3Provider(library.provider);
-		const signer = provider && provider.getSigner(account!);
 		setApprovalLoading(true);
 
 		(async () => {
@@ -33,52 +36,52 @@ export const useZauctionApproval = ({
 				.getZAuctionSpendAllowance(await signer?.getAddress()!)
 				.then((data) => {
 					setApprovalLoading(false);
-					if (price) {
-						setZAuctionApproved(data.gt(price));
-					} else {
-						setZAuctionApproved(data.gt(BigNumber.from(0.1)));
-					}
+					setZAuctionApproved(data.gt(leastPrice));
 				})
 				.catch((error) => {
 					setNetworkError(error);
 				});
 		})();
-	}, []);
 
-	return [isZAuctionApproved, isApprovalLoading];
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [domainId]);
+
+	return [isZAuctionApproved, isApprovalLoading, networkError];
 };
 
-export const useApproveZauction = ({
+export const useBuyNowPrice = ({
 	library,
 	account,
 	domainId,
-	price,
 }: ZauctionApprovalProps) => {
 	const sdk = useZnsSdk();
 
-	const [isZAuctionApproved, setZAuctionApproved] = useState(false);
-	const [isApprovalLoading, setApprovalLoading] = useState(false);
+	const [buyPrice, setBuyPrice] = useState<string | undefined>();
+	const [isFetching, setFetching] = useState(false);
 	const [networkError, setNetworkError] = useState('');
 
+	const provider = library && new providers.Web3Provider(library.provider);
+	const signer = provider && provider.getSigner(account!);
+
 	useEffect(() => {
-		const provider = library && new providers.Web3Provider(library.provider);
-		const signer = provider && provider.getSigner(account!);
-		setApprovalLoading(true);
+		setFetching(true);
 
 		(async () => {
 			await (
 				await sdk.instance.getZAuctionInstanceForDomain(domainId)
 			)
-				.approveZAuctionSpendTradeTokens(await signer?.getAddress()!)
-				.then((data) => {
-					setApprovalLoading(false);
-					setZAuctionApproved(true);
+				.getBuyNowPrice(domainId, signer!)
+				.then((price: BigNumber) => {
+					setBuyPrice(price.toString());
+					setFetching(false);
 				})
-				.catch((error) => {
+				.catch((error: any) => {
 					setNetworkError(error);
 				});
 		})();
-	}, []);
 
-	return [isZAuctionApproved, isApprovalLoading, networkError];
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [domainId]);
+
+	return [buyPrice, isFetching, networkError];
 };
