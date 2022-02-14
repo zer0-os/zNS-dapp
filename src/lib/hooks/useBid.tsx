@@ -13,6 +13,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { useZAuctionBaseApiUri } from './useZAuctionBaseApiUri';
 import useNotification from './useNotification';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 
 // This will receive either DTOs, and will populate the parameters with the correct data
 const getBidParameters = (
@@ -61,6 +62,8 @@ export const useBid = (): UseBidReturn => {
 	const zAuctionContract = useZnsContracts()?.zAuction;
 	const chainSelector = useChainSelector();
 	const baseApiUri = useZAuctionBaseApiUri(chainSelector.selectedChain);
+
+	const { instance: sdk } = useZnsSdk();
 
 	const acceptBid = useCallback(
 		async (bidData: Bid) => {
