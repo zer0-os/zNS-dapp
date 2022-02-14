@@ -41,7 +41,7 @@ export type UseBidReturn = {
 	getBidsForYourDomains: () => Promise<Bid[] | undefined>;
 	getBidsForAccount: (id: string) => Promise<Bid[] | undefined>;
 	getBidsForDomain: (
-		domain: Domain,
+		domainId: string,
 		filterOwnBids?: boolean | undefined,
 	) => Promise<Bid[] | undefined>;
 	placeBid: (
@@ -127,7 +127,7 @@ export const useBid = (): UseBidReturn => {
 	);
 
 	const getBidsForDomain = useCallback(
-		async (domain: Domain, filterOwnBids?: boolean) => {
+		async (domainId: string, filterOwnBids?: boolean) => {
 			if (baseApiUri === undefined) {
 				console.warn('no api endpoint');
 				return;
@@ -137,18 +137,19 @@ export const useBid = (): UseBidReturn => {
 				let bids = (await zAuction.getBidsForNft(
 					baseApiUri,
 					contracts!.registry.address,
-					domain.id,
+					domainId,
 				)) as zAuction.BidDto[];
 
 				try {
-					if (filterOwnBids) {
+					const id = context.account;
+					if (filterOwnBids && id) {
 						bids = bids.filter((e) => {
-							return e.account.toLowerCase() !== domain.owner.id.toLowerCase();
+							return e.account.toLowerCase() !== id.toLowerCase();
 						});
 					}
 
 					let displayBids = bids.map((e) => {
-						return getBidParameters(e, domain.id);
+						return getBidParameters(e, domainId);
 					});
 
 					displayBids.sort((a, b) => {
@@ -161,7 +162,7 @@ export const useBid = (): UseBidReturn => {
 					return;
 				}
 			} catch (e) {
-				console.error(`Failed to retrieve bids for ${domain.id}: ${e}`);
+				console.error(`Failed to retrieve bids for ${domainId}: ${e}`);
 				return;
 			}
 		},

@@ -20,7 +20,7 @@ const HighestBid: React.FC<HighestBidProps> = ({ domain, refreshKey }) => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const getBids = async () => {
-		const bids = await getBidsForDomain(domain);
+		const bids = await getBidsForDomain(domain.id);
 		if (!isMounted.current) {
 			return;
 		}

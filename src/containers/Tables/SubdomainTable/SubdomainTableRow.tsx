@@ -49,7 +49,7 @@ const SubdomainTableRow = (props: any) => {
 			setBids(undefined);
 			setAreBidsLoading(true);
 			try {
-				const b = await getBidsForDomain(domain);
+				const b = await getBidsForDomain(domain.id);
 				if (isMounted) {
 					setBids(b);
 					setAreBidsLoading(false);

@@ -26,7 +26,7 @@ const NumBids: React.FC<NumBidsProps> = ({
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const getBids = async () => {
-		const bids = await getBidsForDomain(domain, filterOwnBids);
+		const bids = await getBidsForDomain(domain.id, filterOwnBids);
 
 		if (!isMounted.current) return;
 

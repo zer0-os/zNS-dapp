@@ -270,7 +270,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 		const getCurrentHighestBid = async () => {
 			// Get highest bid
-			const allBids = await getBidsForDomain(domain);
+			const allBids = await getBidsForDomain(domain.id);
 
 			if (!allBids || allBids.length === 0) {
 				setHasBidDataLoaded(true);

@@ -35,7 +35,7 @@ const ViewBids: React.FC<ViewBidsProps> = ({
 	};
 
 	const getBids = async () => {
-		const bids = await getBidsForDomain(domain, filterOwnBids);
+		const bids = await getBidsForDomain(domain.id, filterOwnBids);
 		if (!isMounted.current) return;
 		setIsLoading(false);
 		if (bids && bids.length) setBids(bids);

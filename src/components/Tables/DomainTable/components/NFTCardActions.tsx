@@ -34,7 +34,7 @@ const NFTCardActions: React.FC<NFTCardActionsProps> = ({
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const getBids = async () => {
-		const bids = await getBidsForDomain(domain);
+		const bids = await getBidsForDomain(domain.id);
 
 		if (isMounted.current === false) return;
 

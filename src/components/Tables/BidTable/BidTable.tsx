@@ -155,7 +155,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 
 	const fetchBids = async (domain: BidTableData) => {
 		try {
-			const bids = await getBidsForDomain(domain.domain);
+			const bids = await getBidsForDomain(domain.domain.id);
 			if (!bids) return;
 			bids.sort((a: any, b: any) => b.amount - a.amount);
 			return { ...domain, highestBid: bids[0] };
