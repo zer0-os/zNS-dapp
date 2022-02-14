@@ -39,7 +39,7 @@
 		"@web3-react/trezor-connector": "^6.1.9",
 		"@web3-react/walletconnect-connector": "6.2.4",
 		"@web3-react/walletlink-connector": "^6.1.9",
-		"@zero-tech/zfi-sdk": "^0.1.13",
+		"@zero-tech/zfi-sdk": "^0.1.14",
 		"@zero-tech/zns-sdk": "0.1.0",
 		"apollo": "^2.32.5",
 		"autosize": "^5.0.1",
