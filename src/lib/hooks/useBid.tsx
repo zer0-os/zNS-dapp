@@ -171,18 +171,25 @@ export const useBid = (): UseBidReturn => {
 	const placeBid = useCallback(
 		async (domain: Domain, bid: number, onStep: (status: string) => void) => {
 			if (baseApiUri === undefined) {
-				console.warn('no api endpoint');
-				return;
+				throw 'Failed to find API endpoint';
 			}
 
-			await zAuction.placeBid(
-				baseApiUri,
-				context.library!,
-				contracts!.registry.address,
-				domain.id,
-				ethers.utils.parseEther(bid.toString()).toString(),
-				onStep,
+			const signer = context.library?.getSigner() as ethers.Signer;
+
+			if (!signer) {
+				throw 'Failed to find signer';
+			}
+
+			const amountInWei = ethers.utils.parseEther(bid.toString());
+
+			await sdk.zauction.placeBid(
+				{
+					domainId: domain.id,
+					bidAmount: amountInWei,
+				},
+				signer,
 			);
+
 			addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
 		},
 		[baseApiUri, contracts, context.library, addNotification],
