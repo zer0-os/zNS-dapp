@@ -1,0 +1,140 @@
+.wizard {
+	width: 640px;
+	padding: 48px;
+	margin: 0 auto;
+
+	color: white !important;
+	background: var(--background-blue-card-wilder);
+
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+}
+
+.wizard--header {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+
+	width: 100%;
+	border-bottom: 1px solid var(--color-purple-lighter);
+
+	h1 {
+		color: white;
+		font-size: 24px;
+		font-weight: 700;
+		margin-bottom: 10px;
+	}
+
+	h4 {
+		color: white;
+		font-size: 16px;
+		font-weight: 400;
+		margin-bottom: 18px;
+		text-align: center;
+	}
+
+	h2 {
+		font-size: 24px;
+		font-weight: 700;
+		line-height: 28px;
+	}
+}
+
+.wizard--body {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 24px;
+}
+
+.NFT {
+	position: relative;
+	cursor: pointer;
+	min-height: 268px;
+	flex-basis: 0;
+	margin-right: 12px;
+	min-width: 268px;
+
+	background: rgba(255, 255, 255, 0.05);
+
+	width: 268px;
+
+	img {
+		border-radius: inherit;
+		height: 100%;
+		width: 100%;
+		transition: transform var(--animation-time-medium) ease-in-out;
+	}
+
+	&:hover img {
+		transform: scale(1.05);
+	}
+}
+
+.NFT .Details {
+	flex: 1;
+	margin-left: 12px;
+	width: 272px;
+}
+
+.Details {
+	display: flex;
+	flex-direction: column;
+	padding: 16px 0;
+	gap: 16px;
+
+	h2 {
+		font-size: 24px;
+		font-weight: 700;
+	}
+}
+
+.Domain {
+	font-size: 16px;
+	color: var(--color-accent-blue-100);
+	overflow-wrap: anywhere;
+	display: block;
+	margin-top: 4px;
+}
+
+.Price {
+	h3 {
+		color: var(--color-grey-lighter-2);
+		font-size: 12px;
+		font-weight: 400;
+	}
+
+	.Value {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+	}
+
+	h4 {
+		font-size: 16px;
+	}
+	span {
+		color: var(--color-grey-lighter-2);
+		font-size: 12px;
+		font-weight: 400;
+	}
+}
+
+.wizard--additional {
+	text-align: center;
+}
+
+.wizard--error {
+	text-align: center;
+	color: var(--color-error);
+}
+
+.wizard--action {
+	display: flex;
+	gap: 24px;
+	justify-content: center;
+}
+
+.red-button {
+	background-color: var(--color-red-500);
+}
