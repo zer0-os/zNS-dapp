@@ -3,7 +3,7 @@ import { connectRouter } from 'connected-react-router';
 import { History } from 'history';
 
 import notificationsReducer, {
-	REDUCER_NAME as NOTIFICCATION_REDUCER_NAME,
+	REDUCER_NAME as NOTIFICATION_REDUCER_NAME,
 } from './notifications/reducer';
 import currencyReducer, {
 	REDUCER_NAME as CURRENCY_REDUCER_NAME,
@@ -16,7 +16,7 @@ import transferReducer, {
 const createRootReducer = (history: History<any>) =>
 	combineReducers({
 		router: connectRouter(history),
-		[NOTIFICCATION_REDUCER_NAME]: notificationsReducer,
+		[NOTIFICATION_REDUCER_NAME]: notificationsReducer,
 		[CURRENCY_REDUCER_NAME]: currencyReducer,
 		[MINT_REDUCER_NAME]: mintRducer,
 		[TRANSFER_REDUCER_NAME]: transferReducer,
