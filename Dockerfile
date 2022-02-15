@@ -1,5 +1,6 @@
 # pull the official base image
 FROM node:16.13.2-alpine AS development
+RUN apk --no-cache add --virtual .builds-deps build-base python3
 ENV NODE_ENV development
 # set working direction
 WORKDIR /app
