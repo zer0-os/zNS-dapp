@@ -22,6 +22,7 @@ export type BannerProps = {
 	actionText?: string;
 	backgroundBlob?: string;
 	imgAlt?: string;
+	shouldDisplayCountdown: boolean;
 	onClick: () => void;
 	onFinish: () => void;
 };
@@ -35,6 +36,7 @@ const BannerContent: React.FC<BannerProps> = ({
 	actionText,
 	backgroundBlob,
 	imgAlt,
+	shouldDisplayCountdown,
 	onClick,
 	onFinish,
 }) => {
@@ -53,9 +55,9 @@ const BannerContent: React.FC<BannerProps> = ({
 					<div style={{ display: 'flex', flexDirection: 'column' }}>
 						<p className={styles.Label}>
 							{subtext}{' '}
-							{countdownDate && timeToShow && timeToHide && (
+							{countdownDate && (
 								<b>
-									<Countdown to={timeToHide} onFinish={onFinish} />
+									<Countdown to={countdownDate} onFinish={onFinish} />
 								</b>
 							)}
 						</p>

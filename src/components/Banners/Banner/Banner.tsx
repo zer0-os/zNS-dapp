@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -12,11 +13,17 @@ import { isWilderWorldAppDomain } from 'lib/utils/url';
 //- Banner Data
 import BannerData from './BannerData.json';
 
+// interface BannerProps {
+// 	setIsModalOpen: (state: boolean) => void;
+// }
+
 const Banner: React.FC = () => {
 	//////////////////
 	//    State     //
 	//////////////////
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>();
+	const [shouldDisplayCountdown, setShouldDisplayCountdown] =
+		useState<boolean>(false);
 	const [bannerContent, setBannerContent] = useState<
 		BannerContentType | undefined
 	>();
@@ -81,9 +88,37 @@ const Banner: React.FC = () => {
 		};
 	}, [imgUrl]);
 
+	// Set Countdown
+	useEffect(() => {
+		if (countdownDate && timeToHide) {
+			if (currentTime >= timeToHide) {
+				const content = getBannerContent(currentTime, contentData);
+				setBannerContent(content);
+			}
+		}
+	}, []);
+
 	//////////////////
 	//   Functions  //
 	//////////////////
+
+	const handleOpenModal = () => {
+		console.log('OPEN MODAL');
+		// if (contractAddress === wheelSale) {
+		// 	setModalContent(Modal.Wheels)
+		// } else if (contractAddress === cribSale) {
+		// 	setModalContent(Modal.Cribs)
+		// }  else if (contractAddress === kickSale) {
+		// 	setModalContent(Modal.Kicks)
+		// } else if (contractAddress === craftSale) {
+		// 	setModalContent(Modal.Crafts)
+		// } else if (contractAddress === landSale) {
+		// 	setModalContent(Modal.Land)
+		// } else {
+		// 	setModalContent(Modal.Pets)
+		// }
+		// setIsModalOpen(true)
+	};
 
 	// Get banner click event
 	const onBannerClick = () => {
@@ -94,7 +129,7 @@ const Banner: React.FC = () => {
 				history.push(link);
 			}
 		} else if (contractAddress && action === 'modal') {
-			// setIsModalOpen(true);
+			handleOpenModal();
 		} else {
 			return;
 		}
@@ -108,20 +143,19 @@ const Banner: React.FC = () => {
 
 	return (
 		<>
-			{bannerContent ? (
-				<BannerContent
-					title={title}
-					subtext={subtext}
-					timeToShow={timeToShow}
-					timeToHide={timeToHide}
-					countdownDate={countdownDate}
-					actionText={actionText}
-					onClick={onBannerClick}
-					onFinish={onFinish}
-					backgroundBlob={backgroundBlob}
-					imgAlt={imgAlt}
-				/>
-			) : null}
+			<BannerContent
+				title={title}
+				subtext={subtext}
+				timeToShow={timeToShow}
+				timeToHide={timeToHide}
+				countdownDate={countdownDate}
+				actionText={actionText}
+				backgroundBlob={backgroundBlob}
+				imgAlt={imgAlt}
+				shouldDisplayCountdown={shouldDisplayCountdown}
+				onClick={onBannerClick}
+				onFinish={onFinish}
+			/>
 		</>
 	);
 };
