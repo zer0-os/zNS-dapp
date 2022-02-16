@@ -10,7 +10,7 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 //- Library Imports
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import useNotification from 'lib/hooks/useNotification';
-import { useMintProvider } from 'lib/providers/MintProvider';
+import useMint from 'lib/hooks/useMint';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Style Imports
@@ -102,14 +102,13 @@ const PageContainer: FC = ({ children }) => {
 	}, [znsDomain, loading, globalDomain.app]);
 
 	//- Minting State
-	const mintingProvider = useMintProvider();
+	const { minting, minted } = useMint();
 	const stakingProvider = useStakingProvider();
 
-	const statusCount =
-		mintingProvider.minting.length + stakingProvider.requesting.length;
+	const statusCount = minting.length + stakingProvider.requesting.length;
 	const showStatus =
-		mintingProvider.minting.length +
-		mintingProvider.minted.length +
+		minting.length +
+		minted.length +
 		stakingProvider.requesting.length +
 		stakingProvider.requested.length;
 
@@ -210,7 +209,7 @@ const PageContainer: FC = ({ children }) => {
 		if (refetch) {
 			refetch();
 		}
-	}, [mintingProvider.minted, refetch, stakingProvider.fulfilled]);
+	}, [minted, refetch, stakingProvider.fulfilled]);
 
 	/* Handle notification for wallet changes */
 	useEffect(() => {
@@ -259,7 +258,7 @@ const PageContainer: FC = ({ children }) => {
 			{/* Overlays */}
 			<NotificationDrawer />
 			<ProfileModal />
-			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
+			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => { }}>
 				<></>
 			</Overlay>
 			{modal === Modal.Wallet && (
@@ -349,6 +348,7 @@ const PageContainer: FC = ({ children }) => {
 								</div>
 							</FutureButton>
 						)}
+
 						{!account && !localStorage.getItem('chosenWallet') && (
 							<>
 								<FutureButton glow onClick={openWallet}>
@@ -357,6 +357,7 @@ const PageContainer: FC = ({ children }) => {
 								<BuyTokenRedirect />
 							</>
 						)}
+
 						{account && !isSearchActive && (
 							<>
 								{/* Mint button */}
@@ -382,7 +383,7 @@ const PageContainer: FC = ({ children }) => {
 										<NumberButton
 											rotating={statusCount > 0}
 											number={statusCount}
-											onClick={() => {}}
+											onClick={() => { }}
 										/>
 									</TooltipLegacy>
 								) : null}
@@ -393,7 +394,7 @@ const PageContainer: FC = ({ children }) => {
 										<NumberButton
 											rotating={transferring.length > 0}
 											number={transferring.length}
-											onClick={() => {}}
+											onClick={() => { }}
 										/>
 									</TooltipLegacy>
 								)}
