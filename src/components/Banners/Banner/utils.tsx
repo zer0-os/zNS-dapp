@@ -1,37 +1,23 @@
-export type BannerData = {
+export type BannerContentType = {
 	title: string;
-	label: React.ReactNode;
-	buttonText: string;
-	bannerImageUrl: string;
-	bannerImageAlt: string;
+	subtext: string;
+	timeToShow: number;
+	timeToHide: number;
+	countdownDate?: number;
+	actionText?: string;
+	action?: string;
+	contractAddress?: string;
+	href?: string;
+	imgUrl?: string;
+	imgAlt?: string;
 };
 
-export enum IndustryType {
-	WHEELS = 'WHEELS',
-	CRIBS = 'CRIBS',
-	KICKS = 'KICKS',
-	PETS = 'PETS',
-	CRAFTS = 'CRAFTS',
-}
-
-export enum BannerEventType {
-	RAFFLE = 'RAFFLE',
-	MINT = 'MINT',
-}
-
-export const getIndustryTitle = (industryType: IndustryType) => {
-	switch (industryType) {
-		case IndustryType.WHEELS:
-			return 'Wheels';
-		case IndustryType.CRIBS:
-			return 'Cribs';
-		case IndustryType.KICKS:
-			return 'Kicks';
-		case IndustryType.PETS:
-			return 'Pets';
-		case IndustryType.CRAFTS:
-			return 'Crafts';
-		default:
-			return '';
-	}
+export const getBannerContent = (
+	date: number,
+	bannerContent: BannerContentType[],
+) => {
+	const result = bannerContent.findIndex(
+		(item) => date >= item.timeToShow && date <= item.timeToHide,
+	);
+	return bannerContent[result];
 };
