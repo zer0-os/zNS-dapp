@@ -78,6 +78,7 @@ export { default as ZNALink } from './ZNALink/ZNALink';
 export { default as Confirmation } from './Confirmation/Confirmation';
 export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator';
 export { default as Countdown } from './Countdown/Countdown';
+export { default as BannerContent } from './Banners/Banner/BannerContent';
 
 export { default as StatsWidget } from './StatsWidget/StatsWidget';
 

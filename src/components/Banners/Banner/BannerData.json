@@ -1,0 +1,24 @@
+[
+	{
+		"title": "Your Wilder Crib for the Metaverse Awaits",
+		"subtext": " Wilder Cribs sale starting in",
+		"timeToShow": 1644876421499,
+		"timeToHide": 3044876421499,
+		"countdownDate": 3044876421499,
+		"actionText": "Learn More",
+		"action": "link",
+		"href": "wilderworld.com",
+		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
+		"imgAlt": "Car in motion banner animation"
+	},
+	{
+		"title": "Your Wilder Crib for the Metaverse Awaits",
+		"subtext": "Wilder Cribs sale starting in",
+		"timeToShow": 1144876421499,
+		"timeToHide": 1044876421499,
+		"countdownDate": 1044876421499,
+		"actionText": "Mint Cribs",
+		"action": "modal",
+		"contractAddress": "0xd1a13c28CaAc090b51Db2ab99Ef3F1a54eDF0Fb7"
+	}
+]
