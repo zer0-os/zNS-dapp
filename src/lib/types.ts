@@ -198,3 +198,13 @@ export interface minterData {
 export interface transfersData {
 	domainTransferreds?: transferDto[];
 }
+
+export interface TransferSubmitParams {
+	name: string;
+	domainId: string;
+	domainName: string;
+	ownerId: string;
+	image: string;
+	creatorId: string;
+	walletAddress: string;
+}

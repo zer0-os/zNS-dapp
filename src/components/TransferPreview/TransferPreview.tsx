@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 import { Image } from 'components';
 
 //- Hook Imports
-import { useTransferProvider } from 'lib/providers/TransferProvider';
+import { useTransfer } from 'lib/hooks/useTransfer';
 
 //- Style Imports
 import styles from './TranferPreview.module.scss';
 
 const TransferPreview = () => {
-	const { transferring } = useTransferProvider();
+	const { transferring } = useTransfer();
 
 	const nft = (nft: any, minted: boolean) => (
 		<li key={`${nft.name}${Math.random()}`}>
