@@ -1,29 +1,74 @@
 //- React Imports
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
-//- Style Imports
-import styles from './Banner.module.scss';
-import arrow from './assets/bidarrow.svg';
-
-//- Constant Imports
-import { MOBILE_ALERT_TEXT } from './constants';
+//- Component Imports
+import { BannerContent } from 'components';
 
 //- Utils Imports
-import { BannerData } from './utils';
+import { BannerContentType, getBannerContent } from './utils';
+import { isWilderWorldAppDomain } from 'lib/utils/url';
 
-type BannerProps = {
-	data: BannerData;
-	onClick: (event: any) => void;
-	style?: React.CSSProperties;
-};
+//- Banner Data
+import BannerData from './BannerData.json';
 
-const Banner: React.FC<BannerProps> = ({ data, onClick, style }) => {
+const Banner: React.FC = () => {
+	//////////////////
+	//    State     //
+	//////////////////
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>();
+	const [bannerContent, setBannerContent] = useState<
+		BannerContentType | undefined
+	>();
 
+	//////////////////
+	//     Hooks    //
+	//////////////////
+	const history = useHistory();
+
+	//////////////////
+	//     Data     //
+	//////////////////
+	const currentTime = new Date().getTime();
+	const contentData: BannerContentType[] = BannerData;
+
+	// Get banner data
+	const content = getBannerContent(currentTime, contentData);
+	const title = bannerContent?.title;
+	const subtext = bannerContent?.subtext;
+	const timeToShow = bannerContent?.timeToShow;
+	const timeToHide = bannerContent?.timeToHide;
+	const countdownDate = bannerContent?.countdownDate;
+	const actionText = bannerContent?.actionText;
+	const action = bannerContent?.action;
+	const contractAddress = bannerContent?.contractAddress;
+	const link = bannerContent?.href;
+	const imgAlt = bannerContent?.imgAlt;
+	const imgUrl = bannerContent?.imgUrl;
+
+	//////////////////
+	//    Effects   //
+	//////////////////
+
+	// Set banner content
 	useEffect(() => {
+		if (!content) {
+			// Set banner content as undefined
+			setBannerContent(undefined);
+		}
+		// Set banner content as getBannerContent result
+		setBannerContent(content);
+	}, [content]);
+
+	// Set background image
+	useEffect(() => {
+		if (!imgUrl) {
+			return;
+		}
+
 		let isMounted = true;
 
-		fetch(data.bannerImageUrl)
+		fetch(imgUrl)
 			.then((r) => r.blob())
 			.then((blob) => {
 				if (isMounted) {
@@ -34,36 +79,50 @@ const Banner: React.FC<BannerProps> = ({ data, onClick, style }) => {
 		return () => {
 			isMounted = false;
 		};
-	}, []);
+	}, [imgUrl]);
+
+	//////////////////
+	//   Functions  //
+	//////////////////
+
+	// Get banner click event
+	const onBannerClick = () => {
+		if (link && action === 'link') {
+			if (!isWilderWorldAppDomain(link)) {
+				window.open(link, '_blank');
+			} else {
+				history.push(link);
+			}
+		} else if (contractAddress && action === 'modal') {
+			// setIsModalOpen(true);
+		} else {
+			return;
+		}
+	};
+
+	const onFinish = () => {};
+
+	//////////////////
+	//    Render    //
+	//////////////////
 
 	return (
-		<button
-			className={`${styles.Container} border-primary`}
-			style={style}
-			onClick={onClick}
-		>
-			{backgroundBlob && (
-				<img
-					className={styles.Background}
-					src={backgroundBlob}
-					alt={data.bannerImageAlt}
+		<>
+			{bannerContent ? (
+				<BannerContent
+					title={title}
+					subtext={subtext}
+					timeToShow={timeToShow}
+					timeToHide={timeToHide}
+					countdownDate={countdownDate}
+					actionText={actionText}
+					onClick={onBannerClick}
+					onFinish={onFinish}
+					backgroundBlob={backgroundBlob}
+					imgAlt={imgAlt}
 				/>
-			)}
-			<div className={`${styles.Content}`}>
-				<div className={`${styles.TextContainer}`}>
-					<h2 className={`${styles.Title}`}>{data.title}</h2>
-					<p className={`${styles.Label}`}>{data.label}</p>
-					<p className={`${styles.Label} ${styles.Mobile}`}>
-						{MOBILE_ALERT_TEXT}
-					</p>
-				</div>
-
-				<p className={`${styles.Button}`}>
-					{data.buttonText}
-					<img alt="arrow" src={arrow} />
-				</p>
-			</div>
-		</button>
+			) : null}
+		</>
 	);
 };
 

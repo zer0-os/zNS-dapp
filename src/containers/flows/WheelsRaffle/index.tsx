@@ -1,42 +1,37 @@
+//- React Imports
 import { useEffect, useState } from 'react';
 
-import { Banner, Overlay } from 'components';
+//- Modules Imports
+import useAsyncEffect from 'use-async-effect';
+
+//- Components Imports
+import { Overlay } from 'components';
+import { Banner } from 'components';
+
+//- Library Imports
+import { getCurrentBlock } from 'lib/wheelSale';
+
+//- Containers Imports
 import { MintWheels } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
-import useAsyncEffect from 'use-async-effect';
-import { getCurrentBlock } from 'lib/wheelSale';
-import {
-	getRaffleBannerLabel,
-	getRaffleBannerButtonText,
-	getBannerImage,
-	getBannerImageAlt,
-	getBannerTitle,
-} from 'components/Banners/Banner/BannerContent/BannerContent';
-import { BannerEventType, IndustryType } from 'components/Banners/Banner/utils';
 
 const WheelsRaffleContainer = () => {
-	//////////////////
-	// State & Data //
-	//////////////////
-
-	const currentTime = new Date().getTime();
-
-	// Temporary values
-	// const RAFFLE_START_TIME = currentTime + 10000;
-	// const RAFFLE_END_TIME = currentTime + 20000;
-	// const SALE_START_TIME = currentTime + 10000;
-	// const SALE_START_BLOCK = 13719840;
-
 	// Hardcoded event times
 	const RAFFLE_START_TIME = 1637870400000;
 	const RAFFLE_END_TIME = 1638043200000;
 	const SALE_START_TIME = 1638579600000;
 	const SALE_START_BLOCK = 13719840;
 
+	// Current Time
+	const currentTime = new Date().getTime();
+
+	//////////////////
+	// State & Data //
+	//////////////////
+
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 	const [currentBlock, setCurrentBlock] = useState<number>(0);
-
 	const [hasRaffleStarted, setHasRaffleStarted] = useState<boolean>(
 		currentTime >= RAFFLE_START_TIME,
 	);
@@ -121,45 +116,6 @@ const WheelsRaffleContainer = () => {
 	// Fragments //
 	///////////////
 
-	// Add a call to fetch IndustryType and BannerEventType - replace params below
-	const bannerTitle = () => {
-		return getBannerTitle(IndustryType.CRIBS, BannerEventType.RAFFLE);
-	};
-
-	const bannerLabel = () => {
-		return getRaffleBannerLabel(
-			IndustryType.CRIBS,
-			hasRaffleEnded,
-			hasRaffleStarted,
-			SALE_START_TIME,
-			RAFFLE_END_TIME,
-			RAFFLE_START_TIME,
-			onFinishSaleStartCountdown,
-			onFinishRaffleEndCountdown,
-			onFinishRaffleStartCountdown,
-		);
-	};
-
-	const bannerButtonText = () => {
-		return getRaffleBannerButtonText(hasRaffleStarted, hasRaffleEnded);
-	};
-
-	const bannerImage = () => {
-		return getBannerImage(IndustryType.CRIBS);
-	};
-
-	const bannerImageAlt = () => {
-		return getBannerImageAlt(IndustryType.CRIBS);
-	};
-
-	const getBannerData = () => ({
-		title: bannerTitle(),
-		label: bannerLabel(),
-		buttonText: bannerButtonText(),
-		bannerImageUrl: bannerImage(),
-		bannerImageAlt: bannerImageAlt(),
-	});
-
 	const overlay = () => {
 		if (isMobile && hasRaffleStarted) {
 			return (
@@ -203,7 +159,7 @@ const WheelsRaffleContainer = () => {
 			<>
 				{isModalOpen && overlay()}
 				<div>
-					<Banner data={getBannerData()} onClick={onBannerClick} />
+					<Banner />
 				</div>
 			</>
 		);

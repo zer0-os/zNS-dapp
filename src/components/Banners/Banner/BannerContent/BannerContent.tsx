@@ -4,50 +4,36 @@ import { Countdown } from 'components';
 //- Container Imports
 import { Stage } from 'containers/flows/MintWheels/types';
 
-//- Utils Imports
-import { IndustryType, getIndustryTitle, BannerEventType } from '../utils';
-
 //- Constants Imports
 import { LOADING_DROP_DATA } from '../constants';
 
-//- Asset Imports
-import CribsBanner from '../assets/cribs-banner.gif';
-import WheelsBanner from '../assets/wheels-banner.gif';
+export enum IndustryType {
+	WHEELS = 'WHEELS',
+	CRIBS = 'CRIBS',
+	KICKS = 'KICKS',
+	PETS = 'PETS',
+	CRAFTS = 'CRAFTS',
+}
 
-//- Banner Image Url
-export const getBannerImage = (industryType: IndustryType) => {
-	if (industryType === IndustryType.CRIBS) {
-		return CribsBanner;
-	} else if (industryType === IndustryType.WHEELS) {
-		return WheelsBanner;
-	} else if (industryType === IndustryType.KICKS) {
-		// placeholder - gif required
-		return 'KicksBanner';
-	} else if (industryType === IndustryType.PETS) {
-		// placeholder - gif required
-		return 'PetsBanner';
-	} else if (industryType === IndustryType.CRAFTS) {
-		// placeholder - gif required
-		return 'CraftsBanner';
-	} else {
-		return '';
-	}
-};
+export enum BannerEventType {
+	RAFFLE = 'RAFFLE',
+	MINT = 'MINT',
+}
 
-//- Image Alts
-export const getBannerImageAlt = (industryType: IndustryType) => {
-	if (industryType === IndustryType.CRIBS) {
-		return 'buildings in motion';
-	} else if (industryType === IndustryType.WHEELS) {
-		return 'car in motion';
-	} else if (industryType === IndustryType.KICKS) {
-		return 'shoes in motion';
-	} else if (industryType === IndustryType.PETS) {
-		return 'pets in motion';
-	} else if (industryType === IndustryType.CRAFTS) {
-		return 'crafts in motion';
-	} else {
-		return '';
+export const getIndustryTitle = (industryType: IndustryType) => {
+	switch (industryType) {
+		case IndustryType.WHEELS:
+			return 'Wheels';
+		case IndustryType.CRIBS:
+			return 'Cribs';
+		case IndustryType.KICKS:
+			return 'Kicks';
+		case IndustryType.PETS:
+			return 'Pets';
+		case IndustryType.CRAFTS:
+			return 'Crafts';
+		default:
+			return '';
 	}
 };
 

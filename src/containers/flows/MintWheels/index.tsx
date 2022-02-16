@@ -10,14 +10,6 @@ import { Web3Provider } from '@ethersproject/providers';
 // Component Imports
 import { Banner, Overlay } from 'components';
 import MintWheels from './MintWheels';
-import {
-	getMintBannerLabel,
-	getMintBannerButtonText,
-	getBannerTitle,
-	getBannerImage,
-	getBannerImageAlt,
-} from 'components/Banners/Banner/BannerContent/BannerContent';
-import { BannerEventType, IndustryType } from 'components/Banners/Banner/utils';
 
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
@@ -353,52 +345,6 @@ const MintWheelsFlowContainer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dropStage, saleContract, isSaleHalted, account]);
 
-	///////////////
-	// Fragments //
-	///////////////
-
-	// Add a call to fetch IndustryType and BannerEventType - replace params below
-	const bannerTitle = () => {
-		return getBannerTitle(IndustryType.CRIBS, BannerEventType.MINT);
-	};
-
-	const bannerLabel = () => {
-		return failedToLoad
-			? 'Failed to load auction data - refresh to try again'
-			: getMintBannerLabel(
-					IndustryType.CRIBS,
-					dropStage,
-					wheelsMinted,
-					wheelsTotal,
-					countdownDate,
-					countdownFinished,
-					hasCountdownFinished,
-					isSaleHalted,
-			  );
-	};
-
-	const bannerButtonText = () => {
-		return failedToLoad || isSaleHalted
-			? 'Learn More'
-			: getMintBannerButtonText(IndustryType.CRIBS, dropStage, canOpenWizard);
-	};
-
-	const bannerImage = () => {
-		return getBannerImage(IndustryType.CRIBS);
-	};
-
-	const bannerImageAlt = () => {
-		return getBannerImageAlt(IndustryType.CRIBS);
-	};
-
-	const getBannerData = () => ({
-		title: bannerTitle(),
-		label: bannerLabel(),
-		buttonText: bannerButtonText(),
-		bannerImageUrl: bannerImage(),
-		bannerImageAlt: bannerImageAlt(),
-	});
-
 	////////////
 	// Render //
 	////////////
@@ -424,7 +370,8 @@ const MintWheelsFlowContainer = () => {
 					/>
 				</Overlay>
 			)}
-			<Banner data={getBannerData()} onClick={openWizard} />
+
+			<Banner />
 		</>
 	);
 };
