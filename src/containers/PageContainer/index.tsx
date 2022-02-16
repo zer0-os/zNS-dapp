@@ -38,7 +38,7 @@ import {
 import { BuyTokenRedirect, ProfileModal } from 'containers';
 
 //- Library Imports
-import { useTransferProvider } from 'lib/providers/TransferProvider';
+import { useTransfer } from 'lib/hooks/useTransfer';
 import { MintNewNFT } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
@@ -108,7 +108,7 @@ const PageContainer: FC = ({ children }) => {
 		stakingProvider.requesting.length +
 		stakingProvider.requested.length;
 
-	const { transferring } = useTransferProvider();
+	const { transferring } = useTransfer();
 
 	//- Notification State
 	const { addNotification } = useNotification();
