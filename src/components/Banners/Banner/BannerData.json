@@ -1,24 +1,47 @@
 [
 	{
-		"title": "Your Wilder Crib for the Metaverse Awaits",
-		"subtext": " Wilder Cribs sale starting in",
-		"timeToShow": 1644876421499,
-		"timeToHide": 3044876421491,
-		"countdownDate": 3044876421499,
-		"actionText": "Learn More",
+		"title": "This is a link for interal domain",
+		"subtext": "Take me to Materminators",
+		"timeToShow": 1645136792133,
+		"timeToHide": 1645136796657,
+		"actionText": "Go to internal domain",
 		"action": "link",
 		"href": "Materminators",
 		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
-		"imgAlt": "Car in motion banner animation"
+		"imgAlt": "This would be relate to the img url"
 	},
 	{
-		"title": "Your Wilder Crib for the Metaverse Awaits",
-		"subtext": "Wilder Cribs sale starting in",
-		"timeToShow": 1144876421499,
-		"timeToHide": 1044876421499,
-		"countdownDate": 1044876421499,
-		"actionText": "Mint Cribs",
+		"title": "This is a banner to open a modal",
+		"subtext": "I have a countdown",
+		"timeToShow": 1645136595845,
+		"timeToHide": 1645136786176,
+		"countdownDate": 1645136786176,
+		"actionText": "Mint Something ",
 		"action": "modal",
-		"contractAddress": "0xd1a13c28CaAc090b51Db2ab99Ef3F1a54eDF0Fb7"
+		"contractAddress": "0x1233",
+		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
+		"imgAlt": "This would be relate to the img url"
+	},
+	{
+		"title": "This is a banner to open a modal",
+		"subtext": "I do not have a countdown",
+		"timeToShow": 1645131194917,
+		"timeToHide": 1645131212662,
+		"actionText": "Mint Something",
+		"action": "modal",
+		"contractAddress": "0x1233",
+		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
+		"imgAlt": "This would be relate to the img url"
+	},
+	{
+		"title": "This is a link for external domain",
+		"subtext": "Take me to Zine in new tab",
+		"timeToShow": 1645131012606,
+		"timeToHide": 1645131021056,
+		"actionText": "Go to external domain",
+		"action": "link",
+		"href": "Materminators",
+		"imgUrl": "https://media.giphy.com/media/NxWk4NY7C59Fm/giphy.gif",
+		"imgAlt": "This would be relate to the img url"
 	}
 ]

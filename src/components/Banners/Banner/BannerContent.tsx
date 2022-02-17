@@ -16,8 +16,6 @@ import { MOBILE_ALERT_TEXT, ARROW_ICON_ALT } from './constants';
 export type BannerProps = {
 	title: string | undefined;
 	subtext: string | undefined;
-	timeToShow: number | undefined;
-	timeToHide: number | undefined;
 	countdownDate?: number;
 	actionText?: string;
 	backgroundBlob?: string;
@@ -30,8 +28,6 @@ export type BannerProps = {
 const BannerContent: React.FC<BannerProps> = ({
 	title,
 	subtext,
-	timeToShow,
-	timeToHide,
 	countdownDate,
 	actionText,
 	backgroundBlob,
@@ -40,6 +36,8 @@ const BannerContent: React.FC<BannerProps> = ({
 	onClick,
 	onFinish,
 }) => {
+	const setCountdownDate = countdownDate === undefined ? 0 : countdownDate;
+
 	//////////////////
 	//    Render    //
 	//////////////////
@@ -50,28 +48,36 @@ const BannerContent: React.FC<BannerProps> = ({
 				<img className={styles.Background} src={backgroundBlob} alt={imgAlt} />
 			)}
 			<div className={styles.Content}>
+				{/* Banner Title */}
 				<div className={styles.TextContainer}>
 					<h2 className={styles.Title}>{title}</h2>
+
+					{/* Banner Subtext */}
 					<div style={{ display: 'flex', flexDirection: 'column' }}>
 						<p className={styles.Label}>
 							{subtext}{' '}
-							{countdownDate && (
+							{shouldDisplayCountdown && (
 								<b>
-									<Countdown to={countdownDate} onFinish={onFinish} />
+									{/* Banner Countdown */}
+									<Countdown to={setCountdownDate} onFinish={onFinish} />
 								</b>
 							)}
 						</p>
 					</div>
 
+					{/* Mobile Screen Size */}
 					<p className={`${styles.Label} ${styles.Mobile}`}>
 						{MOBILE_ALERT_TEXT}
 					</p>
 				</div>
 
-				<p className={styles.Button}>
-					{actionText}
-					<img alt={ARROW_ICON_ALT} src={arrow} />
-				</p>
+				{/* Banner Action */}
+				{actionText && (
+					<p className={styles.Button}>
+						{actionText}
+						<img alt={ARROW_ICON_ALT} src={arrow} />
+					</p>
+				)}
 			</div>
 		</button>
 	);

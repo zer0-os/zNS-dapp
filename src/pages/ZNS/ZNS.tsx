@@ -37,7 +37,6 @@ import {
 	Spinner,
 	StatsWidget,
 	WilderIcon,
-	MessageBanner,
 } from 'components';
 
 import {

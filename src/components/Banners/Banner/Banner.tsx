@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -13,15 +12,26 @@ import { isWilderWorldAppDomain } from 'lib/utils/url';
 //- Banner Data
 import BannerData from './BannerData.json';
 
-// interface BannerProps {
-// 	setIsModalOpen: (state: boolean) => void;
-// }
-
 const Banner: React.FC = () => {
+	//////////////////
+	//     Hooks    //
+	//////////////////
+
+	const history = useHistory();
+
+	//////////////////
+	//     Data     //
+	//////////////////
+
+	const currentTime = new Date().getTime();
+	const contentData: BannerContentType[] = BannerData;
+
 	//////////////////
 	//    State     //
 	//////////////////
+
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>();
+	const [shouldDisplayBanner, setShouldDisplayBanner] = useState<boolean>(true);
 	const [shouldDisplayCountdown, setShouldDisplayCountdown] =
 		useState<boolean>(false);
 	const [bannerContent, setBannerContent] = useState<
@@ -29,53 +39,44 @@ const Banner: React.FC = () => {
 	>();
 
 	//////////////////
-	//     Hooks    //
-	//////////////////
-	const history = useHistory();
-
-	//////////////////
-	//     Data     //
-	//////////////////
-	const currentTime = new Date().getTime();
-	const contentData: BannerContentType[] = BannerData;
-
-	// Get banner data
-	const content = getBannerContent(currentTime, contentData);
-	const title = bannerContent?.title;
-	const subtext = bannerContent?.subtext;
-	const timeToShow = bannerContent?.timeToShow;
-	const timeToHide = bannerContent?.timeToHide;
-	const countdownDate = bannerContent?.countdownDate;
-	const actionText = bannerContent?.actionText;
-	const action = bannerContent?.action;
-	const contractAddress = bannerContent?.contractAddress;
-	const link = bannerContent?.href;
-	const imgAlt = bannerContent?.imgAlt;
-	const imgUrl = bannerContent?.imgUrl;
-
-	//////////////////
 	//    Effects   //
 	//////////////////
+	console.log('currentTime', currentTime);
+	console.log(currentTime + 3 * 60 * 1000);
 
-	// Set banner content
+	// Set banner
 	useEffect(() => {
-		if (!content) {
-			// Set banner content as undefined
-			setBannerContent(undefined);
-		}
-		// Set banner content as getBannerContent result
+		let isActive = true;
+
+		const content = getBannerContent(currentTime, contentData);
 		setBannerContent(content);
-	}, [content]);
+
+		if (isActive) {
+			console.log('console.log(bannerContent);');
+			if (!bannerContent) {
+				setShouldDisplayBanner(false);
+				console.log('NO DATA');
+			} else {
+				setShouldDisplayBanner(true);
+				if (
+					bannerContent.countdownDate &&
+					currentTime < bannerContent.countdownDate
+				) {
+					setShouldDisplayCountdown(true);
+				}
+			}
+		}
+	}, [bannerContent, contentData, currentTime]);
 
 	// Set background image
 	useEffect(() => {
-		if (!imgUrl) {
+		if (!bannerContent?.imgUrl) {
 			return;
 		}
 
 		let isMounted = true;
 
-		fetch(imgUrl)
+		fetch(bannerContent.imgUrl)
 			.then((r) => r.blob())
 			.then((blob) => {
 				if (isMounted) {
@@ -86,56 +87,45 @@ const Banner: React.FC = () => {
 		return () => {
 			isMounted = false;
 		};
-	}, [imgUrl]);
-
-	// Set Countdown
-	useEffect(() => {
-		if (countdownDate && timeToHide) {
-			if (currentTime >= timeToHide) {
-				const content = getBannerContent(currentTime, contentData);
-				setBannerContent(content);
-			}
-		}
-	}, []);
+	}, [bannerContent?.imgUrl]);
 
 	//////////////////
 	//   Functions  //
 	//////////////////
 
-	const handleOpenModal = () => {
-		console.log('OPEN MODAL');
-		// if (contractAddress === wheelSale) {
-		// 	setModalContent(Modal.Wheels)
-		// } else if (contractAddress === cribSale) {
-		// 	setModalContent(Modal.Cribs)
-		// }  else if (contractAddress === kickSale) {
-		// 	setModalContent(Modal.Kicks)
-		// } else if (contractAddress === craftSale) {
-		// 	setModalContent(Modal.Crafts)
-		// } else if (contractAddress === landSale) {
-		// 	setModalContent(Modal.Land)
-		// } else {
-		// 	setModalContent(Modal.Pets)
-		// }
-		// setIsModalOpen(true)
+	// const handleOpenModal = () => {
+	// 	console.log('OPEN MODAL');
+	// if (contractAddress === wheelSale) {
+	// 	setModalContent(Modal.Wheels)
+	// } else if (contractAddress === cribSale) {
+	// 	setModalContent(Modal.Cribs)
+	// }  else if (contractAddress === kickSale) {
+	// 	setModalContent(Modal.Kicks)
+	// } else if (contractAddress === craftSale) {
+	// 	setModalContent(Modal.Crafts)
+	// } else if (contractAddress === landSale) {
+	// 	setModalContent(Modal.Land)
+	// } else {
+	// 	setModalContent(Modal.Pets)
+	// }
+	// setIsModalOpen(true)
+	// };
+
+	const onCountDownFinish = () => {
+		setShouldDisplayCountdown(false);
 	};
 
-	// Get banner click event
 	const onBannerClick = () => {
-		if (link && action === 'link') {
-			if (!isWilderWorldAppDomain(link)) {
-				window.open(link, '_blank');
+		if (bannerContent?.href && bannerContent.action === 'link') {
+			if (!isWilderWorldAppDomain(bannerContent?.href)) {
+				window.open(bannerContent?.href, '_blank');
 			} else {
-				history.push(link);
+				history.push(bannerContent?.href);
 			}
-		} else if (contractAddress && action === 'modal') {
-			handleOpenModal();
 		} else {
 			return;
 		}
 	};
-
-	const onFinish = () => {};
 
 	//////////////////
 	//    Render    //
@@ -143,19 +133,21 @@ const Banner: React.FC = () => {
 
 	return (
 		<>
-			<BannerContent
-				title={title}
-				subtext={subtext}
-				timeToShow={timeToShow}
-				timeToHide={timeToHide}
-				countdownDate={countdownDate}
-				actionText={actionText}
-				backgroundBlob={backgroundBlob}
-				imgAlt={imgAlt}
-				shouldDisplayCountdown={shouldDisplayCountdown}
-				onClick={onBannerClick}
-				onFinish={onFinish}
-			/>
+			{shouldDisplayBanner && bannerContent ? (
+				<BannerContent
+					title={bannerContent.title}
+					subtext={bannerContent.subtext}
+					countdownDate={bannerContent.countdownDate}
+					actionText={bannerContent.actionText}
+					backgroundBlob={backgroundBlob}
+					imgAlt={bannerContent.imgAlt}
+					onClick={onBannerClick}
+					onFinish={onCountDownFinish}
+					shouldDisplayCountdown={shouldDisplayCountdown}
+				/>
+			) : (
+				<div style={{ marginTop: '-30px' }}>{null}</div>
+			)}
 		</>
 	);
 };
