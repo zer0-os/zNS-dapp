@@ -32,12 +32,19 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 	const currentPriceDetails = (size: string, title?: string) => {
 		const isSizeSmall =
 			size === Size.SML ? styles.CurrentPriceSml : styles.CurrentPriceLrg;
+
 		return (
 			<>
 				{title && <span className={styles.TickerName}>{title}</span>}
 				<div className={styles.CurrentPriceContainer}>
 					<span className={isSizeSmall}>${wildPriceUsd}</span>
-					<span className={styles.PercentageChange}>
+					<span
+						className={`${styles.PercentageChange} ${
+							wildPercentageChange < 0
+								? styles.PercentageChangeNegative
+								: styles.PercentageChangePositive
+						}`}
+					>
 						{size === Size.LRG
 							? `(${formatByDecimalPlace(wildPercentageChange, 1)}%)`
 							: `${formatByDecimalPlace(wildPercentageChange, 1)}%`}

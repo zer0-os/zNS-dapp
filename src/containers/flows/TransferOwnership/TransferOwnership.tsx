@@ -17,7 +17,7 @@ import {
 import { getMetadata } from 'lib/metadata';
 */
 import { randomImage, randomName } from 'lib/random';
-import { useTransferProvider } from 'lib/providers/TransferProvider';
+import { useTransfer } from 'lib/hooks/useTransfer';
 
 type TransferOwnershipProps = {
 	name: string;
@@ -44,7 +44,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 	const [isLoading, setIsLoading] = useState(false);
 
 	// Provider
-	const { transferRequest } = useTransferProvider();
+	const { transferRequest } = useTransfer();
 
 	// Form validation
 	const isEthAddress = (text: string) =>
@@ -131,9 +131,7 @@ const TransferOwnership: React.FC<TransferOwnershipProps> = ({
 						<div className={styles.Details}>
 							<h2 className="glow-text-white">{name}</h2>
 							<span>
-								{domainName.length > 0
-									? `0://wilder.${domainName.substring(1)}`
-									: ''}
+								{domainName.length > 0 ? `0://wilder.${domainName}` : ''}
 							</span>
 
 							<div className={styles.Price}>

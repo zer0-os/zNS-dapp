@@ -4,8 +4,7 @@ import { Router, Switch } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import store from 'store/index';
 import { render } from '@testing-library/react';
-import { notificationsReady } from 'store/notifications/notifications.mockData';
-import { currencyReady } from 'store/currency/currency.mockData';
+import { storeReady } from 'store/store.mockData';
 
 export const renderWithRedux = (
 	component: React.ReactNode,
@@ -19,8 +18,7 @@ export const renderWithRedux = (
 
 	// TODO Add more state mocks
 	const initialReduxState = {
-		notifications: notificationsReady,
-		currency: currencyReady,
+		...storeReady,
 		...reduxState,
 	};
 

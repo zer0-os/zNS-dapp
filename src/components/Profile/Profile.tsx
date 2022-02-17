@@ -6,7 +6,7 @@ import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.scss';
 
 //- Component Imports
-import { RequestTable, TabBar } from 'components';
+import { TabBar } from 'components';
 import { OwnedDomainsTable } from 'containers';
 
 type ProfileProps = {
@@ -88,13 +88,13 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<TabBar tabs={['Your Domains', 'Offers']} onSelect={select} />
+			<TabBar tabs={['Your Domains']} onSelect={select} />
 			{selected === 'Your Domains' && (
 				<OwnedDomainsTable onNavigate={navigateToDomain} />
 			)}
-			{selected === 'Offers' && (
+			{/* {selected === 'Offers' && (
 				<RequestTable onNavigate={navigateToDomain} userId={id} />
-			)}
+			)} */}
 		</div>
 	);
 };

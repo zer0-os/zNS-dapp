@@ -23,6 +23,7 @@ import CloudinaryMedia from './CloudinaryMedia';
 // Library Imports
 import classNames from 'classnames/bind';
 import { getHashFromIPFSUrl } from 'lib/ipfs';
+import { generateCloudinaryUrl } from './config';
 
 // Possible media types based on
 // MIME type of content
@@ -38,22 +39,16 @@ const cx = classNames.bind(styles);
 // Useful because our IPFS links don't have
 // a file extension
 export const checkMediaType = (hash: string) => {
-	return new Promise((resolve, reject) => {
-		fetch('https://ipfs.fleek.co/ipfs/' + hash, { method: 'HEAD' })
-			.then((r: Response) => {
-				const contentTypeHeader = r.headers.get('Content-Type');
-
-				if (contentTypeHeader?.startsWith('image')) {
-					resolve(MediaType.Image);
-				} else if (contentTypeHeader?.startsWith('video')) {
+	return new Promise((resolve) => {
+		fetch(generateCloudinaryUrl(hash, 'video'), { method: 'HEAD' }).then(
+			(d: Response) => {
+				if (d.status === 200) {
 					resolve(MediaType.Video);
 				} else {
-					resolve(MediaType.Unknown);
+					resolve(MediaType.Image);
 				}
-			})
-			.catch(() => {
-				resolve(MediaType.Unknown);
-			});
+			},
+		);
 	});
 };
 

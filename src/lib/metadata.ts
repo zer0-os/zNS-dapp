@@ -27,6 +27,7 @@ export async function getMetadata(
 			description: data.description,
 			image: data.image,
 			image_full: data.image_full,
+			animation_url: data.animation_url,
 		} as Metadata;
 
 		if (!metadata.title || !metadata.description || !metadata.image) {

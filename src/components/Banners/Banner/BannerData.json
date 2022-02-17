@@ -13,9 +13,9 @@
 	{
 		"title": "This is a banner to open a modal",
 		"subtext": "I have a countdown",
-		"timeToShow": 1645136595845,
-		"timeToHide": 1645136786176,
-		"countdownDate": 1645136786176,
+		"timeToShow": 1645141058745,
+		"timeToHide": 1645141246706,
+		"countdownDate": 1645141246706,
 		"actionText": "Mint Something ",
 		"action": "modal",
 		"contractAddress": "0x1233",

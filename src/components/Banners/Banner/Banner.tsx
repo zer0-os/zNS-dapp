@@ -132,7 +132,7 @@ const Banner: React.FC = () => {
 	//////////////////
 
 	return (
-		<>
+		<div style={{ paddingTop: '16px' }}>
 			{shouldDisplayBanner && bannerContent ? (
 				<BannerContent
 					title={bannerContent.title}
@@ -146,9 +146,9 @@ const Banner: React.FC = () => {
 					shouldDisplayCountdown={shouldDisplayCountdown}
 				/>
 			) : (
-				<div style={{ marginTop: '-30px' }}>{null}</div>
+				<div style={{ marginTop: '-16px' }}>{null}</div>
 			)}
-		</>
+		</div>
 	);
 };
 

@@ -8,28 +8,29 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
-import { Banner, Overlay } from 'components';
+import { MintWheelsBanner, Overlay } from 'components';
 import MintWheels from './MintWheels';
 
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
-import { useMintProvider } from 'lib/providers/MintProvider';
+import { getBannerLabel, getBannerButtonText } from './labels';
+import useMint from 'lib/hooks/useMint';
 import {
 	getDropData,
 	getUserEligibility,
 	getNumberPurchasedByUser,
-	getERC20TokenBalance,
+	getBalanceEth,
 } from './helpers';
 
 const MintWheelsFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_PUBLIC = 1638666000000;
+	const DATE_PUBLIC = 1642730400655;
 
 	//////////////////
 	// State & Data //
 	//////////////////
 
-	const { mintWheels } = useMintProvider();
+	const { mintWheels } = useMint();
 	const history = useHistory();
 	const location = useLocation();
 
@@ -86,13 +87,13 @@ const MintWheelsFlowContainer = () => {
 			return;
 		}
 		if (isSaleHalted) {
-			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
+			window?.open('https://discord.gg/7tyggH6eh9', '_blank')?.focus();
 			return;
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold) {
-			history.push('cribs.wiami.southbeach.qube');
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Public) {
+			history.push('market/kicks.airwild.season1');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -184,7 +185,6 @@ const MintWheelsFlowContainer = () => {
 			if (!saleContract) {
 				return;
 			}
-
 			// Get the data related to the drop
 			getDropData(saleContract)
 				.then((d) => {
@@ -198,7 +198,7 @@ const MintWheelsFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						// setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -254,7 +254,12 @@ const MintWheelsFlowContainer = () => {
 		}
 		// Get user data if wallet connected
 		if (account && library && wildTokenContract) {
-			getERC20TokenBalance(wildTokenContract, account).then((d) => {
+			// getERC20TokenBalance(wildTokenContract, account).then((d) => {
+			// 	if (isMounted && d !== undefined) {
+			// 		setBalanceEth(d);
+			// 	}
+			// });
+			getBalanceEth(library.getSigner()).then((d) => {
 				if (isMounted && d !== undefined) {
 					setBalanceEth(d);
 				}
@@ -300,7 +305,7 @@ const MintWheelsFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						// setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -345,6 +350,51 @@ const MintWheelsFlowContainer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dropStage, saleContract, isSaleHalted, account]);
 
+	///////////////
+	// Fragments //
+	///////////////
+
+	const bannerLabel = () => {
+		if (isSaleHalted) {
+			return (
+				<>
+					<span>
+						Wilder Kicks sale has been temporarily paused to ensure a fair sale.
+					</span>
+					<span style={{ display: 'block', marginTop: 4 }}>
+						Join our{' '}
+						<b>
+							<a
+								href={'https://discord.gg/7tyggH6eh9'}
+								target={'_blank'}
+								rel={'noreferrer'}
+							>
+								Discord
+							</a>
+						</b>{' '}
+						for more details.
+					</span>
+				</>
+			);
+		}
+		return failedToLoad
+			? 'Failed to load auction data - refresh to try again'
+			: getBannerLabel(
+					dropStage,
+					wheelsMinted,
+					wheelsTotal,
+					countdownDate,
+					countdownFinished,
+					hasCountdownFinished,
+			  );
+	};
+
+	const buttonText = () => {
+		return failedToLoad || isSaleHalted
+			? 'Learn More'
+			: getBannerButtonText(dropStage, canOpenWizard);
+	};
+
 	////////////
 	// Render //
 	////////////
@@ -370,8 +420,14 @@ const MintWheelsFlowContainer = () => {
 					/>
 				</Overlay>
 			)}
-
-			<Banner />
+			<div style={{ position: 'relative', marginBottom: 16 }}>
+				<MintWheelsBanner
+					title={'Get your Kicks for the Metaverse '}
+					label={bannerLabel()}
+					buttonText={buttonText()}
+					onClick={openWizard}
+				/>
+			</div>
 		</>
 	);
 };

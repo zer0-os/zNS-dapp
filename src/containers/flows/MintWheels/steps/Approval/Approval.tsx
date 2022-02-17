@@ -82,6 +82,7 @@ const Approval: React.FC<ApprovalProps> = ({
 			.catch((e) => {
 				onError(e.message);
 			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const checkingApproval = () => {
@@ -97,7 +98,7 @@ const Approval: React.FC<ApprovalProps> = ({
 		return (
 			<>
 				<span>
-					Before you can mint a Crib, your wallet needs to approve WILD
+					Before you can mint a Craft, your wallet needs to approve WILD
 					spending. You will only need to do this once. This will cost gas.
 				</span>
 				{error !== undefined && <span className="error-text">{error}</span>}
@@ -117,7 +118,7 @@ const Approval: React.FC<ApprovalProps> = ({
 		return (
 			<>
 				<span>
-					Before you can mint a Crib, your wallet needs to approve WILD
+					Before you can mint a Craft, your wallet needs to approve WILD
 					spending. You will only need to do this once. This will cost gas.
 				</span>
 
@@ -132,7 +133,7 @@ const Approval: React.FC<ApprovalProps> = ({
 			<>
 				<span>
 					Approving WILD spending contract. This may take a few minutes. This
-					transaction must finish before you can continue to mint your Crib.
+					transaction must finish before you can continue to mint your Craft.
 				</span>
 				<Spinner />
 			</>
