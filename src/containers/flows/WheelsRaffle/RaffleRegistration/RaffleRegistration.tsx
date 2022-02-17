@@ -97,7 +97,12 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 							<p>
 								Whitelisted members will have early access to the upcoming
 								crafts drop. Sign up to the raffle with your wallet for a chance
-								at joining the whitelist!
+								at joining the whitelist! <br />
+								<br />
+								The minimum requirement is your wallet address, but if you would
+								like us to be able to communicate directly with you, and
+								increase your chance of winning, you can provide us with more
+								detail.
 							</p>
 							{registrationError && (
 								<span className={styles.Error}>{registrationError}</span>
