@@ -22,6 +22,7 @@ export interface Domain {
 	minter: Account;
 	metadata: string;
 	isLocked: boolean;
+	lockedBy: Account;
 }
 
 // We have two different types of Metadata
@@ -150,6 +151,9 @@ export const DefaultDomain: Domain = {
 	},
 	metadata: '',
 	isLocked: false,
+	lockedBy: {
+		id: '',
+	},
 };
 
 // @zachary change these types

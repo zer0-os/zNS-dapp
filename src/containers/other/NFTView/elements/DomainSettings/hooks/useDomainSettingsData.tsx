@@ -1,4 +1,6 @@
 import { useState, useMemo } from 'react';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { getRelativeDomainPath } from 'lib/utils/domains';
@@ -10,6 +12,8 @@ import {
 } from '../DomainSettings.constants';
 
 export const useDomainSettingsData = (domainId: string) => {
+	const { account } = useWeb3React<Web3Provider>();
+
 	const myDomain = useZnsDomain(domainId);
 	const parentDomain = useZnsDomain(myDomain.domain?.parent.id || '');
 
@@ -32,6 +36,17 @@ export const useDomainSettingsData = (domainId: string) => {
 
 		return { domainUri, relativeDomain };
 	}, [myDomain.domain?.name]);
+
+	const unlockable = useMemo(() => {
+		const isDomainOwnedByMe =
+			myDomain.domain?.owner.id.toLowerCase() === account?.toLowerCase();
+		const isLocked = myDomain.domain?.isLocked;
+		const isDomainLockedByMe = isLocked
+			? myDomain.domain?.lockedBy.id.toLowerCase() === account?.toLowerCase()
+			: isDomainOwnedByMe;
+
+		return isDomainOwnedByMe && isDomainLockedByMe;
+	}, [myDomain.domain, account]);
 
 	const unavailableDomainNames = useMemo(() => {
 		if (parentDomain.domain?.name && parentDomain.domain?.subdomains) {
@@ -74,6 +89,7 @@ export const useDomainSettingsData = (domainId: string) => {
 			domainUri,
 			relativeDomain,
 			unavailableDomainNames,
+			unlockable,
 		},
 		registrar,
 	};

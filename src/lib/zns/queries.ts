@@ -63,7 +63,9 @@ export const byIdQuery = gql`
 			minter {
 				id
 			}
-			lockedBy
+			lockedBy {
+				id
+			}
 			isLocked
 			metadata
 		}
@@ -96,7 +98,9 @@ export const byNameQuery = gql`
 			minter {
 				id
 			}
-			lockedBy
+			lockedBy {
+				id
+			}
 			isLocked
 			metadata
 		}
@@ -129,7 +133,9 @@ export const childDomainsQuery = gql`
 			minter {
 				id
 			}
-			lockedBy
+			lockedBy {
+				id
+			}
 			isLocked
 			metadata
 		}
@@ -162,7 +168,9 @@ export const ownedByAccountQuery = gql`
 			minter {
 				id
 			}
-			lockedBy
+			lockedBy {
+				id
+			}
 			isLocked
 			metadata
 		}

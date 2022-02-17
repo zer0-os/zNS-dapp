@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
@@ -305,6 +305,23 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		checkHeight();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isShowMoreAtrributes]);
+
+	const moreOptions = useMemo(() => {
+		const isOwnedByMe =
+			znsDomain?.owner.id.toLowerCase() === account?.toLowerCase();
+		const isLocked = znsDomain?.isLocked;
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const isLockedByMe = isLocked
+			? znsDomain?.lockedBy.id.toLowerCase() === account?.toLowerCase()
+			: isOwnedByMe;
+
+		if (isOwnedByMe) {
+			// only show my domain settings action for now
+			return [MORE_ACTIONS[0]];
+		}
+
+		return [];
+	}, [znsDomain, account]);
 
 	/////////////
 	// Effects //
@@ -787,16 +804,17 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 								<img alt="download asset" src={downloadIcon} />
 							</button>
 						</Tooltip>
-						<OptionDropdown
-							onSelect={handleSelectMoreOption}
-							// only show my domain settings action for now
-							options={[MORE_ACTIONS[0]]}
-							className={styles.MoreDropdown}
-						>
-							<button>
-								<img alt="more actions" src={moreIcon} />
-							</button>
-						</OptionDropdown>
+						{moreOptions.length > 0 && (
+							<OptionDropdown
+								onSelect={handleSelectMoreOption}
+								options={moreOptions}
+								className={styles.MoreDropdown}
+							>
+								<button>
+									<img alt="more actions" src={moreIcon} />
+								</button>
+							</OptionDropdown>
+						)}
 					</div>
 					<div className={styles.Details}>
 						<div>

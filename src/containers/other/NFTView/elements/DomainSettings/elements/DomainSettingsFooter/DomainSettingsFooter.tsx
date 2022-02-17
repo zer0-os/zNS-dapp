@@ -18,6 +18,7 @@ import './_domain-settings-footer.scss';
 type DomainSettingsFooterProps = {
 	isLocked: boolean;
 	isSaved: boolean;
+	unlockable: boolean;
 	warning: Maybe<DomainSettingsWarning>;
 	success: Maybe<DomainSettingsSuccess>;
 	onLock: () => void;
@@ -30,6 +31,7 @@ type DomainSettingsFooterProps = {
 export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 	isLocked,
 	isSaved,
+	unlockable,
 	warning,
 	success,
 	onLock,
@@ -81,7 +83,12 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 					}
 				/>
 				{isLocked && !isSaved && (
-					<FutureButton className="" onClick={onUnlock} glow>
+					<FutureButton
+						className=""
+						onClick={onUnlock}
+						disabled={!unlockable}
+						glow={unlockable}
+					>
 						Unlock MetaData
 					</FutureButton>
 				)}

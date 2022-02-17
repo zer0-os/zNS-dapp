@@ -70,6 +70,7 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 				<DomainSettingsFooter
 					isLocked={localState.isLocked}
 					isSaved={localState.isSaved}
+					unlockable={formattedData.unlockable}
 					warning={localState.warning}
 					success={localState.success}
 					onLock={handlers.handleLock}
