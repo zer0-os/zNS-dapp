@@ -11,6 +11,7 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
+import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Style Imports
 import styles from './PageContainer.module.scss';
@@ -43,9 +44,6 @@ import { MintNewNFT } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { NavBarProvider } from 'lib/providers/NavBarProvider';
-
-//- Utils Imports
-import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 enum Modal {
 	Bid,
