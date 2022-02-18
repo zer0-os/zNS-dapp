@@ -43,7 +43,6 @@ import { useTransfer } from 'lib/hooks/useTransfer';
 import { MintNewNFT } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { NavBarProvider } from 'lib/providers/NavBarProvider';
 
 enum Modal {
 	Bid,
@@ -285,7 +284,7 @@ const PageContainer: FC = ({ children }) => {
 	);
 
 	return (
-		<NavBarProvider>
+		<>
 			{pageWidth > 1000 && modals()}
 			<div
 				className="page-spacing"
@@ -423,7 +422,7 @@ const PageContainer: FC = ({ children }) => {
 				{/* TODO: Encapsulate this */}
 				<div>{children}</div>
 			</div>
-		</NavBarProvider>
+		</>
 	);
 };
 

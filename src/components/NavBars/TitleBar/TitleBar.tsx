@@ -16,7 +16,7 @@ import arrowBackIcon from 'assets/arrow-back.svg';
 
 //- Style Imports
 import styles from './TitleBar.module.scss';
-import { useNavBarContents } from 'lib/providers/NavBarProvider';
+import { useNavbar } from 'lib/hooks/useNavbar';
 
 type TitleBarProps = {
 	style?: React.CSSProperties;
@@ -59,7 +59,7 @@ const TitleBar: React.FC<TitleBarProps> = ({
 	const [isSearchInputHovered, setIsSearchInputHovered] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
 
-	const { title } = useNavBarContents();
+	const { title } = useNavbar();
 
 	///////////////
 	// Functions //

@@ -25,7 +25,7 @@ import useMatchMedia from 'lib/hooks/useMatchMedia';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useLocation } from 'react-router-dom';
-import { useNavBarContents } from 'lib/providers/NavBarProvider';
+import { useNavbar } from 'lib/hooks/useNavbar';
 
 type ZNSProps = {
 	version?: number;
@@ -86,10 +86,10 @@ const ZNS: React.FC<ZNSProps> = () => {
 	///////////////
 	useScrollDetection(setScrollDetectionDown);
 
-	const { setTitle } = useNavBarContents();
+	const { setNavbarTitle } = useNavbar();
 
 	useDidMount(() => {
-		setTitle(undefined);
+		setNavbarTitle(undefined);
 	});
 
 	///////////////
