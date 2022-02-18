@@ -418,11 +418,6 @@ const PageContainer: FC = ({ children }) => {
 				<SideBar />
 				{/* TODO: Encapsulate this */}
 				<div>{children}</div>
-				{isMvpPrototype && (
-					<div style={{ fontSize: '40px', textAlign: 'center' }}>
-						PROTOYPE DEMO
-					</div>
-				)}
 			</div>
 		</NavBarProvider>
 	);
