@@ -1,0 +1,9 @@
+/**
+ * SET_TRANSFERRING action types
+ */
+export const SET_TRANSFERRING_REQUEST = 'SET_TRANSFERRING_REQUEST';
+
+/**
+ * SET_TRANSFERRED action types
+ */
+export const SET_TRANSFERRED_REQUEST = 'SET_TRANSFERRED_REQUEST';

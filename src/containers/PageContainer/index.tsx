@@ -38,7 +38,7 @@ import {
 import { BuyTokenRedirect, ProfileModal } from 'containers';
 
 //- Library Imports
-import { useTransferProvider } from 'lib/providers/TransferProvider';
+import { useTransfer } from 'lib/hooks/useTransfer';
 import { MintNewNFT } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
@@ -64,7 +64,6 @@ const PageContainer: FC = ({ children }) => {
 
 	const { account, active, chainId } = walletContext;
 	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasn't disconnected
-
 	//- Chain Selection (@todo: refactor to provider)
 	const chainSelector = useChainSelector();
 
@@ -116,7 +115,7 @@ const PageContainer: FC = ({ children }) => {
 		stakingProvider.requesting.length +
 		stakingProvider.requested.length;
 
-	const { transferring } = useTransferProvider();
+	const { transferring } = useTransfer();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -164,6 +163,7 @@ const PageContainer: FC = ({ children }) => {
 	const closeModal = () => {
 		setModal(undefined);
 	};
+
 	const openMint = () => setModal(Modal.Mint);
 
 	const openProfile = () => {
@@ -218,12 +218,17 @@ const PageContainer: FC = ({ children }) => {
 	useEffect(() => {
 		//wallet connect wont do this automatically if session its ended from phone
 		if (
-			localStorage.getItem('chosenWallet') === 'walletconnect' &&
+			(localStorage.getItem('chosenWallet') === 'walletconnect' ||
+				localStorage.getItem('chosenWallet') === 'metamask' ||
+				localStorage.getItem('chosenWallet') === 'coinbase' ||
+				localStorage.getItem('chosenWallet') === 'portis' ||
+				localStorage.getItem('chosenWallet') === 'fortmatic') &&
 			!active &&
 			triedEagerConnect
 		) {
-			localStorage.removeItem('walletconnect');
-			localStorage.removeItem('chosenWallet');
+			setTimeout(async () => {
+				localStorage.removeItem('chosenWallet');
+			}, 2000);
 		}
 		if (triedEagerConnect)
 			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
@@ -318,7 +323,6 @@ const PageContainer: FC = ({ children }) => {
 										justifyContent: 'center',
 										verticalAlign: 'center',
 										alignItems: 'center',
-										paddingBottom: '5px',
 									}}
 								>
 									<div
@@ -334,10 +338,11 @@ const PageContainer: FC = ({ children }) => {
 									<p
 										style={{
 											display: 'inline-block',
-											width: '90%',
+											width: '100%',
 											verticalAlign: 'center',
 											height: '18px',
 											marginLeft: '15px',
+											whiteSpace: 'nowrap',
 										}}
 										className={styles.Message}
 									>
