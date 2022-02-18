@@ -45,7 +45,7 @@ import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { NavBarProvider } from 'lib/providers/NavBarProvider';
 
 //- Utils Imports
-import { Flags, getFeatureFlag } from 'lib/utils/featureFlags';
+import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 enum Modal {
 	Bid,
@@ -77,6 +77,10 @@ const PageContainer: FC = ({ children }) => {
 
 	//- Domain Data
 	const { domain: znsDomain, loading, refetch } = useCurrentDomain();
+
+	//- Version Data
+	const { mvpVersion } = useMvpVersion();
+	const isMvpPrototype = mvpVersion === 3;
 
 	////////////////////////
 	// Browser Navigation //
@@ -128,11 +132,6 @@ const PageContainer: FC = ({ children }) => {
 	//- Data
 	const isOwnedByUser: boolean =
 		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
-
-	//- Feature Flags
-	const isTitleBarMintButtonEnabled = getFeatureFlag(
-		Flags.IS_TITLE_BAR_MINT_BUTTON_ENABLED,
-	);
 
 	///////////////
 	// Functions //
@@ -358,7 +357,7 @@ const PageContainer: FC = ({ children }) => {
 						{account && !isSearchActive && (
 							<>
 								{/* Mint button */}
-								{isOwnedByUser && isTitleBarMintButtonEnabled && (
+								{isOwnedByUser && isMvpPrototype && (
 									<FutureButton
 										style={{ padding: '0px 12px' }}
 										glow={account != null}
@@ -419,6 +418,11 @@ const PageContainer: FC = ({ children }) => {
 				<SideBar />
 				{/* TODO: Encapsulate this */}
 				<div>{children}</div>
+				{isMvpPrototype && (
+					<div style={{ fontSize: '40px', textAlign: 'center' }}>
+						PROTOYPE DEMO
+					</div>
+				)}
 			</div>
 		</NavBarProvider>
 	);

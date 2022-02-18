@@ -27,6 +27,7 @@ import TransferProvider from './lib/providers/TransferProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
+import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 
 //- Asset Imports
 import backgroundImage from 'assets/background.jpg';
@@ -97,17 +98,19 @@ function wrappedApp() {
 					<SubgraphProvider>
 						<Web3ReactProvider getLibrary={getLibrary}>
 							{/* Our Hooks  */}
-							<ZNSDomainsProvider>
-								<TransferProvider>
-									<StakingRequestProvider>
-										<MintProvider>
-											<EnlistProvider>
-												<App />
-											</EnlistProvider>
-										</MintProvider>
-									</StakingRequestProvider>
-								</TransferProvider>
-							</ZNSDomainsProvider>
+							<MvpVersionProvider>
+								<ZNSDomainsProvider>
+									<TransferProvider>
+										<StakingRequestProvider>
+											<MintProvider>
+												<EnlistProvider>
+													<App />
+												</EnlistProvider>
+											</MintProvider>
+										</StakingRequestProvider>
+									</TransferProvider>
+								</ZNSDomainsProvider>
+							</MvpVersionProvider>
 						</Web3ReactProvider>
 					</SubgraphProvider>
 				</ChainSelectorProvider>

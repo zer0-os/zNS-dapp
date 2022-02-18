@@ -12,15 +12,13 @@ describe('featureFlags', () => {
 		process.env = originalEnv;
 	});
 
-	describe('when using IS_TITLE_BAR_MINT_BUTTON_ENABLED flag', () => {
+	describe('when using IS_FEATURE_ENABLED flag', () => {
 		it('should be truthy in Development environment', () => {
 			process.env = {
 				...originalEnv,
 				NODE_ENV: Environments.DEVELOPMENT,
 			};
-			expect(
-				getFeatureFlag(Flags.IS_TITLE_BAR_MINT_BUTTON_ENABLED),
-			).toBeTruthy();
+			expect(getFeatureFlag(Flags.IS_FEATURE_ENABLED)).toBeTruthy();
 		});
 
 		it('should be truthy in Test environment', () => {
@@ -28,9 +26,7 @@ describe('featureFlags', () => {
 				...originalEnv,
 				NODE_ENV: Environments.TEST,
 			};
-			expect(
-				getFeatureFlag(Flags.IS_TITLE_BAR_MINT_BUTTON_ENABLED),
-			).toBeTruthy();
+			expect(getFeatureFlag(Flags.IS_FEATURE_ENABLED)).toBeTruthy();
 		});
 
 		it('should be falsy in Production environment', () => {
@@ -38,9 +34,7 @@ describe('featureFlags', () => {
 				...originalEnv,
 				NODE_ENV: Environments.PRODUCTION,
 			};
-			expect(
-				getFeatureFlag(Flags.IS_TITLE_BAR_MINT_BUTTON_ENABLED),
-			).toBeFalsy();
+			expect(getFeatureFlag(Flags.IS_FEATURE_ENABLED)).toBeFalsy();
 		});
 	});
 });

@@ -13,11 +13,11 @@ const isEnvironmentDevelopment = (environment: string) =>
 // const isEnvironmentProduction = (environment: string) =>
 // 	environment === Environments.PRODUCTION;
 
-const isTitleBarMintButtonEnabled = (environment: string) =>
+const isFeatureEnabled = (environment: string) =>
 	isEnvironmentTest(environment) || isEnvironmentDevelopment(environment);
 
 export enum Flags {
-	IS_TITLE_BAR_MINT_BUTTON_ENABLED,
+	IS_FEATURE_ENABLED,
 }
 
 type FeatureType = {
@@ -25,7 +25,7 @@ type FeatureType = {
 };
 
 const FEATURE_FLAGS: FeatureType = {
-	[Flags.IS_TITLE_BAR_MINT_BUTTON_ENABLED]: isTitleBarMintButtonEnabled,
+	[Flags.IS_FEATURE_ENABLED]: isFeatureEnabled,
 };
 
 export const getFeatureFlag = (featureFlagKey: Flags) => {
