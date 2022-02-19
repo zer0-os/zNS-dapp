@@ -103,8 +103,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		updateStatus('Checking your balance for eligibility');
 		try {
 			const response = await fetch(
-				// `https://raffle-entry-microservice.herokuapp.com/balances/${props.account}`,
-				`https://raffle-entry-microservice.herokuapp.com/balances/0x9d79cD0605346f0Fa649D0EEE1DdB3c360aeb038`,
+				`https://raffle-entry-microservice.herokuapp.com/balances/${props.account}`,
+				// `https://raffle-entry-microservice.herokuapp.com/balances/0x9d79cD0605346f0Fa649D0EEE1DdB3c360aeb038`,
 				{
 					method: 'GET',
 				},
