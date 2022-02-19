@@ -58,6 +58,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 		selected: isSelected,
 		Loading: loading,
 		Alt: alt,
+		Disabled: disabled,
 	});
 
 	const washClasses = cx({
