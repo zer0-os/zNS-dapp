@@ -1,0 +1,25 @@
+.Container {
+	display: flex;
+
+	.Image {
+		height: 260px;
+		width: 260px;
+	}
+
+	.Details {
+		padding: 24px;
+
+		h1 {
+			font-size: 24px;
+			font-weight: 700;
+		}
+
+		h2 {
+			color: var(--color-accent-1);
+		}
+
+		> *:not(:first-child) {
+			margin-top: 16px;
+		}
+	}
+}
