@@ -41,6 +41,11 @@
 
 		color: var(--color-error);
 		text-align: center;
+
+		.balanceCriteria {
+			padding-right: 5px;
+			font-weight: bold;
+		}
 	}
 
 	.Loading {

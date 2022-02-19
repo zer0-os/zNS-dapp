@@ -50,9 +50,17 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	const [discord, setDiscord] = useState<string | undefined>();
 	const [telegram, setTelegram] = useState<string | undefined>();
 	const [balances, setBalances] = useState<any | undefined>();
+	const validationCriteria: any = {
+		eth: '0.1',
+		wild: '0.1',
+		nfts: 1,
+	};
 
-	const [hasSufficientBalance, setHasSufficientBalance] =
-		useState<boolean>(false);
+	const [hasSufficientBalance, setHasSufficientBalance] = useState<any>({
+		eth: true,
+		wild: true,
+		nfts: true,
+	});
 	const [requiredBalance, setRequiredBalance] = useState<number>(0);
 
 	const [step, setStep] = useState<Steps>(Steps.AboutRaffle);
@@ -110,10 +118,18 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				},
 			);
 			const data = await response.json();
-
+			setHasSufficientBalance({
+				eth: ethers.utils
+					.parseEther(data.ethBalance)
+					.gte(ethers.utils.parseEther(validationCriteria.eth)),
+				wild: ethers.utils
+					.parseEther(data.wildBalance)
+					.gte(ethers.utils.parseEther(validationCriteria.wild)),
+				nfts: data.nftsCount >= validationCriteria.nfts,
+			});
 			setBalances(data);
 			setStep(Steps.CurrentBalances);
-			setHasSufficientBalance(true);
+
 			// TODO if balance doesn't meet criteria add the amount based on API
 			// setHasSufficientBalance(false);
 			// setRequiredBalance(100);
@@ -207,6 +223,16 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		);
 	};
 
+	const getValidationError = () => {
+		let message = [];
+		for (const key in validationCriteria) {
+			if (!hasSufficientBalance[key]) {
+				message.push(validationCriteria[key] + ' ' + key.toUpperCase());
+			}
+		}
+		return message.join(', ');
+	};
+
 	const currentBalances = () => {
 		return (
 			<>
@@ -215,9 +241,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					<div className={styles.eachBalances}>
 						<div>WILD</div>
 						<div
-							className={`${!hasSufficientBalance ? styles.ErrorColor : ''} ${
-								styles.amount
-							}`}
+							className={`${
+								!hasSufficientBalance.wild ? styles.ErrorColor : ''
+							} ${styles.amount}`}
 						>
 							{balances?.wildBalance || 0}
 						</div>
@@ -229,7 +255,13 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 
 					<div className={styles.eachBalances}>
 						<div> ETH</div>
-						<div className={styles.amount}>{balances?.ethBalance || 0}</div>
+						<div
+							className={`${
+								!hasSufficientBalance.eth ? styles.ErrorColor : ''
+							} ${styles.amount}`}
+						>
+							{balances?.ethBalance || 0}
+						</div>
 						<div>
 							{'$' +
 								formatNumber(wildPriceUsd * Number(balances?.wildBalance || 0))}
@@ -237,26 +269,42 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					</div>
 					<div className={styles.eachBalances}>
 						<div>Wilder NFT</div>
-						<div className={styles.amount}>{balances?.nftsCount || 0}</div>
+						<div
+							className={`${
+								!hasSufficientBalance.nfts ? styles.ErrorColor : ''
+							} ${styles.amount}`}
+						>
+							{balances?.nftsCount || 0}
+						</div>
 						{/* <div>$456.00</div> */}
 					</div>
 				</div>
 
-				{!hasSufficientBalance && (
-					<span className={`${styles.Error} ${styles.marginTop40}`}>
-						You need {requiredBalance} more WILD to meet the requirements for
-						entry
-					</span>
-				)}
-				{hasSufficientBalance && (
+				{hasSufficientBalance.eth &&
+				hasSufficientBalance.wild &&
+				hasSufficientBalance.nftsCount ? (
 					<p className={styles.Success}>
 						Your balances meet the requirements for entry!
 					</p>
+				) : (
+					<span className={`${styles.Error} ${styles.marginTop40}`}>
+						You need atleast &nbsp;
+						<span className={styles.balanceCriteria}>
+							{getValidationError()}
+						</span>
+						&nbsp;to meet the requirements for entry
+					</span>
 				)}
 				<FutureButton
 					glow
 					className={styles.Button}
-					disabled={!hasSufficientBalance}
+					disabled={
+						!(
+							hasSufficientBalance.eth &&
+							hasSufficientBalance.wild &&
+							hasSufficientBalance.nftsCount
+						)
+					}
 					onClick={() => setStep(Steps.PersonalInfo)}
 				>
 					Continue
