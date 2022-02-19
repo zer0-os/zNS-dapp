@@ -160,7 +160,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					<br />
 					The minimum requirement is your wallet address, but if you would like
 					us to be able to communicate directly with you, and increase your
-					chance of winning, you can provide us with more detail.
+					chance of securing a spot, you can provide us with more detail.
 				</p>
 				{registrationError && (
 					<span className={styles.Error}>{registrationError}</span>
