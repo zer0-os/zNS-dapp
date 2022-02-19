@@ -183,7 +183,7 @@ const WheelsRaffleContainer = () => {
 		} else if (!hasRaffleEnded) {
 			return (
 				<Overlay open centered onClose={closeModal}>
-					<RaffleRegistration />
+					<RaffleRegistration closeOverlay={closeModal} />
 				</Overlay>
 			);
 		}
