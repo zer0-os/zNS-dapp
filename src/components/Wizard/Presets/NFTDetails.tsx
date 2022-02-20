@@ -1,6 +1,11 @@
 import styles from './NFTDetails.module.scss';
 import classNames from 'classnames';
-import { Member, NFTMedia } from 'components';
+import {
+	Detail,
+	Detail as DetailComponent,
+	Member,
+	NFTMedia,
+} from 'components';
 
 type Detail = {
 	name: string;
@@ -39,6 +44,9 @@ const NFTDetails = ({
 				<h2>0://{domain}</h2>
 			</div>
 			{creator && <Member id={creator} subtext={'Creator'} />}
+			{otherDetails?.map((detail: Detail) => (
+				<DetailComponent text={detail.value} subtext={detail.name} />
+			))}
 		</div>
 	</div>
 );

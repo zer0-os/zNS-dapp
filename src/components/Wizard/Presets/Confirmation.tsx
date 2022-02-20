@@ -8,7 +8,6 @@ import Buttons, { ButtonsProps } from './Buttons';
 interface ConfirmationProps extends ButtonsProps {
 	error?: string;
 	message: React.ReactNode | string;
-	onClickSecondaryButton: () => void;
 }
 
 const Confirmation = ({
@@ -24,7 +23,7 @@ const Confirmation = ({
 	return (
 		<div className={classNames(styles.Container, className)}>
 			{isMessageString ? <p>{message}</p> : { message }}
-			{error !== undefined && <p className="error-text">{error}</p>}
+			{error !== undefined && <p className="error-text text-center">{error}</p>}
 			<Buttons {...rest} />
 		</div>
 	);

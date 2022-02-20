@@ -9,10 +9,10 @@ import SetBuyNow, { Step } from './SetBuyNow';
 import { useWeb3React } from '@web3-react/core';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { getMetadata } from 'lib/metadata';
 
 // Type Imports
 import { DomainData } from './SetBuyNow';
+import { ethers } from 'ethers';
 
 type SetBuyNowContainerProps = {
 	domainId: string;
@@ -28,6 +28,7 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 	const [currentStep, setCurrentStep] = useState<Step>(0);
 	const [domainData, setDomainData] = useState<DomainData | undefined>();
 	const [isLoadingDomainData, setIsLoadingDomainData] = useState<boolean>(true);
+	const [error, setError] = useState<string | undefined>();
 	const isMounted = useRef<boolean>();
 
 	// Stub functions for navigation
@@ -43,6 +44,7 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 			return;
 		}
 
+		setError(undefined);
 		(async () => {
 			try {
 				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
@@ -71,6 +73,7 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 		if (!sdk || !library || !account) {
 			return;
 		}
+		setError(undefined);
 		setCurrentStep(Step.WaitingForWallet);
 		(async () => {
 			try {
@@ -98,13 +101,14 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 	const setBuyNowPrice = (amount?: number) => {
 		(async () => {
 			try {
+				setError(undefined);
+				setCurrentStep(Step.WaitingForBuyNowConfirmation);
 				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-				// @todo handle "waiting for wallet approval"
 				let tx;
 				if (amount) {
 					tx = await zAuction.setBuyNowPrice(
 						{
-							amount: amount?.toString(),
+							amount: ethers.utils.parseEther(amount.toString()).toString(),
 							tokenId: domainId,
 						},
 						library.getSigner(),
@@ -112,12 +116,19 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 				} else {
 					tx = await zAuction.cancelBuyNow(domainId, library.getSigner());
 				}
-				// @todo handle "wallet rejected"
-				// @todo handle "waiting for tx"
+				setCurrentStep(Step.SettingBuyNow);
 				await tx.wait();
-				// @todo handle tx failed
+				setDomainData({
+					...domainData!,
+					currentBuyNowPrice: amount
+						? ethers.utils.parseEther(amount.toString())
+						: undefined,
+				});
+				setCurrentStep(Step.Success);
 			} catch (e) {
-				console.error('Failed to set buy now price', e);
+				setCurrentStep(Step.SetBuyNow);
+				setError((e as any).message);
+				console.log('Error setting buy now price', e);
 			}
 		})();
 	};
@@ -133,15 +144,14 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 		(async () => {
 			setIsLoadingDomainData(true);
 			try {
-				// Commented out for faster dev process
-				const [domain, events] = await Promise.all([
+				const [domain, events, metadata, buyNow] = await Promise.all([
 					sdk.getDomainById(domainId),
 					sdk.getDomainEvents(domainId),
+					sdk.getDomainMetadata(domainId, library.getSigner()),
+					(
+						await sdk.getZAuctionInstanceForDomain(domainId)
+					).getBuyNowPrice(domainId, library.getSigner()),
 				]);
-				const metadata = await getMetadata(domain.metadataUri);
-				if (isMounted.current !== true) {
-					return;
-				}
 				if (domain && events && metadata) {
 					checkZAuctionApproval();
 					setDomainData({
@@ -155,6 +165,7 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 								metadata.image) as string) || '',
 						creator: domain.minter,
 						highestBid: 0,
+						currentBuyNowPrice: buyNow,
 					});
 				}
 				setIsLoadingDomainData(false);
@@ -177,11 +188,11 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 	return (
 		<Overlay open onClose={closeOverlay}>
 			<SetBuyNow
+				error={error}
 				domainData={domainData}
 				isLoadingDomainData={isLoadingDomainData}
 				step={currentStep}
 				onCancel={onCancel}
-				onNext={onNext}
 				wildPriceUsd={wildPriceUsd}
 				approveZAuction={approveZAuction}
 				setBuyNowPrice={setBuyNowPrice}
