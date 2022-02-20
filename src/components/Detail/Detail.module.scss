@@ -1,0 +1,10 @@
+.Container {
+	> span {
+		display: block;
+
+		&:first-of-type {
+			color: var(--color-primary-lighter-3);
+			font-size: 12px;
+		}
+	}
+}

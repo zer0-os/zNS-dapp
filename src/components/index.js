@@ -56,6 +56,7 @@ export { default as ArrowLink } from './ArrowLink/ArrowLink';
 export { default as Artwork } from './Artwork/Artwork';
 export { default as ConnectToWallet } from './ConnectToWallet/ConnectToWallet';
 export { default as CopyInput } from './CopyInput/CopyInput.js';
+export { default as Detail } from './Detail/Detail';
 export { default as HorizontalScroll } from './HorizontalScroll/HorizontalScroll';
 export { default as Image } from './Image/Image';
 export { default as Member } from './Member/Member';
