@@ -106,8 +106,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				// setIsLoadingEmail(false);
 			} catch (e: any) {
 				// @todo handle API errors here
-				console.error('API call failed');
 				setEmailError(e?.message || 'Failed to register to mailing list');
+				console.error('API call failed');
 				setIsLoadingRegistration(false);
 				// setIsLoadingEmail(false);
 			}
@@ -142,8 +142,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 			setBalances(data);
 			setStep(Steps.CurrentBalances);
 		} catch (err: any) {
-			console.error(err);
 			setRegistrationError(err?.message || `Failed to fetch wallet details`);
+			console.error(err);
 		} finally {
 			setIsLoadingRegistration(false);
 		}
@@ -233,10 +233,10 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	};
 
 	const getValidationError = () => {
-		let message = [];
+		let messages = [];
 		for (const key in validationCriteria) {
 			if (!hasSufficientBalance[key]) {
-				message.push(
+				messages.push(
 					validationCriteria[key] +
 						' ' +
 						key.toUpperCase() +
@@ -244,7 +244,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				);
 			}
 		}
-		return message.join(', ');
+		const last = messages.pop();
+
+		return messages.join(', ') + ' and ' + last;
 	};
 
 	const currentBalances = () => {
@@ -301,13 +303,10 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 						Your balances meet the requirements for entry!
 					</p>
 				) : (
-					<span className={`${styles.Error} ${styles.marginTop40}`}>
-						You need at least &nbsp;
-						<span className={styles.balanceCriteria}>
-							{getValidationError()}
-						</span>
-						&nbsp;to meet the requirements for entry
-					</span>
+					<p className={`${styles.Error} ${styles.marginTop40}`}>
+						You need at least <strong>{getValidationError()}</strong> to meet
+						the requirements for entry
+					</p>
 				)}
 				<FutureButton
 					glow

@@ -28,7 +28,7 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 				telegram,
 			} = accountInfo;
 			if (chainId !== 1) {
-				reject('Please connect to Ethereum Mainnet');
+				reject({ message: 'Please connect to Ethereum Mainnet' });
 				return;
 			}
 
@@ -86,7 +86,7 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 					}
 				})
 				.catch(() => {
-					reject('Failed to connect to Raffle API');
+					reject({ message: 'Failed to connect to Raffle API' });
 				});
 		});
 	};
