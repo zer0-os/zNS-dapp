@@ -20,6 +20,12 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 				ethBalance,
 				wildBalance,
 				nftsCount: wilderNFTsCount,
+				firstName,
+				lastName,
+				email,
+				twitter,
+				discord,
+				telegram,
 			} = accountInfo;
 			if (chainId !== 1) {
 				reject('Please connect to Ethereum Mainnet');
@@ -63,6 +69,12 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 					wilderNFTsCount,
 					signedMessage,
 					drop,
+					firstName,
+					lastName,
+					email,
+					twitter,
+					discord,
+					telegram,
 				}),
 			})
 				.then(async (r) => {
