@@ -121,6 +121,60 @@
 			display: flex;
 			justify-content: space-between;
 			margin-top: 40px;
+			width: 100%;
+
+			.Break {
+				display: none;
+			}
+
+			@media only screen and (max-width: 1200px) {
+				.Break {
+					display: block;
+					flex-basis: 100%;
+				}
+				flex-wrap: wrap;
+
+				> * {
+					border: none !important;
+
+					&:nth-child(3) {
+						margin-top: 40px;
+					}
+				}
+			}
+
+			@media only screen and (max-width: 1000px) {
+				> * > button {
+					display: none;
+				}
+			}
+
+			@media only screen and (max-width: 768px) {
+				.Break {
+					display: none;
+					margin: 0;
+				}
+
+				> * {
+					margin-left: 0 !important;
+				}
+
+				flex-direction: row;
+			}
+
+			@media only screen and (max-width: 600px) {
+				.Break {
+					display: none;
+				}
+
+				flex-direction: column;
+
+				> * {
+					&:not(:first-child) {
+						margin-top: 32px;
+					}
+				}
+			}
 
 			> * {
 				flex: 1;

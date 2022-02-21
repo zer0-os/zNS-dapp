@@ -200,6 +200,7 @@ const NFT = ({
 					<div className={styles.Prices}>
 						{BuyNowPrice()}
 						{HighestBid()}
+						<div className={styles.Break}></div>
 						{YourBid()}
 					</div>
 				</div>
