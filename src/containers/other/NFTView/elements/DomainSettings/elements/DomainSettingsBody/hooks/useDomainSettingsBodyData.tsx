@@ -8,7 +8,9 @@ export const useDomainSettingsBodyData = (
 	currentDomain: Maybe<DisplayDomain>,
 	metadata: Maybe<DomainMetadata>,
 ) => {
-	const [name, setName] = usePropsState<string>(metadata?.name || '');
+	const [name, setName] = usePropsState<string>(
+		metadata?.name || currentDomain?.title || '',
+	);
 	const [domain, setDomain] = usePropsState<string>(
 		(metadata?.domain as string) ||
 			currentDomain?.name

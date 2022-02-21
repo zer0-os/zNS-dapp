@@ -62,7 +62,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 		title: 'Locking Metadata',
 		description: {
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
-				'Waiting wallet confirmation...',
+				'Waiting for Wallet Confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
 				'Locking metadata... This may take up to x mins. Do not close this window or refresh your browser...',
 		},
@@ -74,7 +74,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 			[DomainSettingsModalStatus.NORMAL]:
 				'Unlocking metadata is a blockchain transaction that will cost gas. Additional, optional, transactions are required to save changes and lock the metadata again.',
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
-				'Waiting wallet confirmation...',
+				'Waiting for Wallet Confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
 				'Unlocking metadata... This may take up to x mins. Do not close this window or refresh your browser...',
 		},
@@ -90,7 +90,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 			[DomainSettingsModalStatus.NORMAL]:
 				'If you transfer ownership of the domain while metadata is unlocked, the new owner can edit the metadata and lock it. You may lose access forever.',
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
-				'Waiting wallet confirmation...',
+				'Waiting for Wallet Confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
 				'Saving metadata changes... This may take up to x mins. Do not close this window or refresh your browser...',
 		},
@@ -106,7 +106,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 			[DomainSettingsModalStatus.NORMAL]:
 				'Your changes will be saved and the metadata will be locked. You will be the only one who can unlock it in the feature.',
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
-				'Waiting wallet confirmation...',
+				'Waiting for Wallet Confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
 				'Save & locking metadata changes... This may take up to x mins. Do not close this window or refresh your browser...',
 		},
