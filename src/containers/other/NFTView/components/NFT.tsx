@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 
 // Component Imports
 import { Detail, Member, NFTMedia, TextButton, Tooltip } from 'components';
-import { BuyNowButton } from 'containers';
+import { BuyNowButton, SetBuyNowButton } from 'containers';
 
 // Asset Imports
 import shareIcon from '../assets/share.svg';
@@ -104,12 +104,18 @@ const NFT = ({
 						: '-'
 				}
 			/>
-			{!isOwnedByYou && account && (
-				<BuyNowButton
-					buttonText="Buy Now"
-					disabled={(buyNowPrice ?? 0) === 0}
-					domainId={domainId ?? ''}
-				/>
+			{account && (
+				<>
+					{isOwnedByYou ? (
+						<SetBuyNowButton buttonText="Edit" domainId={domainId ?? ''} />
+					) : (
+						<BuyNowButton
+							buttonText="Buy Now"
+							disabled={(buyNowPrice ?? 0) === 0}
+							domainId={domainId ?? ''}
+						/>
+					)}
+				</>
 			)}
 		</div>
 	);
