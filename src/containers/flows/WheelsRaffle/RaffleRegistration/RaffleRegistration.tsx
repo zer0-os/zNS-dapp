@@ -12,6 +12,7 @@ import { ethers } from 'ethers';
 type RaffleRegistrationProps = {
 	isWalletConnected: boolean;
 	account: string | undefined;
+	drop: string | undefined;
 	onSubmit: (statusCallback: (status: string) => void) => Promise<void>;
 	onSubmitEmail: (email: string) => Promise<boolean>;
 	closeOverlay: () => void;
@@ -61,7 +62,6 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		wild: true,
 		nft: true,
 	});
-	const [requiredBalance, setRequiredBalance] = useState<number>(0);
 
 	const [step, setStep] = useState<Steps>(Steps.AboutRaffle);
 
@@ -119,13 +119,17 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		updateStatus('Checking your balance for eligibility');
 		try {
 			const response = await fetch(
-				// `https://raffle-entry-microservice.herokuapp.com/balances/${props.account}`,
-				`https://raffle-entry-microservice.herokuapp.com/balances/0x9d79cD0605346f0Fa649D0EEE1DdB3c360aeb038`,
+				// `https://raffle-entry-microservice.herokuapp.com/balances/${props.account}/${props.drop}`,
+				`https://raffle-entry-microservice.herokuapp.com/balances/0x9d79cD0605346f0Fa649D0EEE1DdB3c360aeb038/${props.drop}`,
 				{
 					method: 'GET',
 				},
 			);
+
 			const data = await response.json();
+			if (!response.ok) {
+				throw new Error(data.message);
+			}
 			setHasSufficientBalance({
 				eth: ethers.utils
 					.parseEther(data.ethBalance)
@@ -137,12 +141,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 			});
 			setBalances(data);
 			setStep(Steps.CurrentBalances);
-
-			// TODO if balance doesn't meet criteria add the amount based on API
-			// setHasSufficientBalance(false);
-			// setRequiredBalance(100);
-		} catch (err) {
-			setRegistrationError(`Failed to fetch wallet details`);
+		} catch (err: any) {
+			console.error(err);
+			setRegistrationError(err?.message || `Failed to fetch wallet details`);
 		} finally {
 			setIsLoadingRegistration(false);
 		}

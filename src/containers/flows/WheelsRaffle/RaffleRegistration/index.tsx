@@ -139,6 +139,7 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 		<RaffleRegistration
 			isWalletConnected={active}
 			account={account || ''}
+			drop={drop}
 			onSubmit={submit}
 			onSubmitEmail={submitEmail}
 			closeOverlay={props.closeOverlay}
