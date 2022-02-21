@@ -25,8 +25,8 @@ const Wizard = ({ header, subHeader, children, className }: WizardProps) => (
 	>
 		{/* Header */}
 		<div className={styles.Header}>
-			<h1 className={'glow-text-white'}>{header}</h1>
-			{subHeader && <h2>{subHeader}</h2>}
+			<h1 className="glow-text-white">{header}</h1>
+			{subHeader && <h2 className="glow-text-white">{subHeader}</h2>}
 			<hr className="glow" />
 		</div>
 

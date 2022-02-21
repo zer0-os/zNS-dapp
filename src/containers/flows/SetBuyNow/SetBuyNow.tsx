@@ -3,7 +3,6 @@ import { ethers } from 'ethers';
 import DomainStep from './Steps/DomainStep';
 
 export enum Step {
-	LoadingDomainData,
 	CheckingZAuctionApproval,
 	ApproveZAuction,
 	WaitingForWallet,

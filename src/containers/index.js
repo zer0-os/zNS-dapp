@@ -10,8 +10,10 @@
  */
 
 // Buttons
+export { default as BuyNowButton } from './flows/BuyNow/BuyNowButton';
 export { default as BidButton } from './buttons/BidButton/BidButton';
 export { default as ConnectWalletButton } from './buttons/ConnectWalletButton/ConnectWalletButton';
+export { default as SetBuyNowButton } from './flows/SetBuyNow/SetBuyNowButton';
 
 // Cards
 export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/CurrentDomainPreview';
@@ -20,6 +22,7 @@ export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/Cu
 export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/ConnectWalletPrompt';
 
 // Flows
+export { default as BuyNow } from './flows/BuyNow';
 export { default as BuyTokenRedirect } from './flows/BuyTokenRedirect/BuyTokenRedirect';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';

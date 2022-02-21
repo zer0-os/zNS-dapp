@@ -8,19 +8,10 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 import { BigNumber, ethers } from 'ethers';
 
 //- Component Imports
-import {
-	ArrowLink,
-	FutureButton,
-	Member,
-	NFTMedia,
-	Overlay,
-	StatsWidget,
-	Tooltip,
-} from 'components';
-import { BidButton, MakeABid } from 'containers';
+import { ArrowLink, Overlay, StatsWidget } from 'components';
+import { MakeABid, SetBuyNow, BuyNow } from 'containers';
 
 //- Library Imports
-import { randomName, randomImage } from 'lib/random';
 import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
 import { toFiat } from 'lib/currency';
@@ -40,14 +31,22 @@ import styles from './NFTView.module.scss';
 //- Asset Imports
 import background from './assets/bg.jpeg';
 import copyIcon from './assets/copy-icon.svg';
-import downloadIcon from './assets/download.svg';
-import shareIcon from './assets/share.svg';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import NFT from './components/NFT';
+import { Bid } from '@zero-tech/zauction-sdk';
 const moment = require('moment');
 
 const ZNS_SHARE_BASE_URL = process.env.REACT_APP_ZNS_SHARE_BASE_URL as string;
+
+const sortBids = (bids: Bid[]) => {
+	return bids.sort(
+		(a, b) =>
+			Number(ethers.utils.formatEther(b.amount)) -
+			Number(ethers.utils.formatEther(a.amount)),
+	);
+};
 
 type NFTViewProps = {
 	onTransfer: () => void;
@@ -75,14 +74,17 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const isMobilePortrait = useMatchMedia('(max-width: 428px)');
 
 	//- Page State
-	const [isOwnedByYou, setIsOwnedByYou] = useState(false); // Is the current domain owned by you?
+	const [isPriceDataLoading, setIsPriceDataLoading] = useState<boolean>();
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
+	const [isBuyNowOverlayOpen, setIsBuyNowOverlayOpen] =
+		useState<boolean>(false);
 	const [allItems, setAllItems] = useState<DomainEvent[] | undefined>();
-	const [highestBid, setHighestBid] = useState<DomainBidEvent | undefined>();
-	const [highestBidUsd, setHighestBidUsd] = useState<number | undefined>();
+	const [highestBid, setHighestBid] = useState<Bid | undefined>();
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
 		blobCache.current,
 	);
+	const [buyNowPrice, setBuyNowPrice] = useState<number | undefined>();
+	const [yourBid, setYourBid] = useState<number | undefined>();
 	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
 	const [bids, setBids] = useState<DomainBidEvent[] | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
@@ -101,7 +103,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active, chainId } = walletContext;
+	const { account, active, chainId, library } = walletContext;
 
 	const networkType = chainIdToNetworkType(chainId);
 	const contracts = useZnsContracts();
@@ -109,6 +111,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	const etherscanBaseUri = getEtherscanUri(networkType);
 	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
+
+	const isOwnedByYou =
+		znsDomain?.owner.id.toLowerCase() === account?.toLowerCase();
 
 	const sdk = useZnsSdk();
 	//Transfers and mint data from nft
@@ -221,7 +226,17 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		setIsBidOverlayOpen(true);
 	};
 
-	const closeBidOverlay = () => setIsBidOverlayOpen(false);
+	const closeBidOverlay = () => {
+		setIsBidOverlayOpen(false);
+	};
+
+	const openBuyNowOverlay = () => {
+		setIsBuyNowOverlayOpen(true);
+	};
+
+	const closeBuyNowOverlay = () => {
+		setIsBuyNowOverlayOpen(false);
+	};
 
 	const onBid = async () => {
 		// @todo switch this to live data
@@ -237,21 +252,48 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 				const bids = events.filter((e) => e.type === 2) as DomainBidEvent[];
 				setBids(bids);
-				const highest = bids.sort((a, b) => {
-					return (
-						Number(ethers.utils.formatEther(b.amount)) -
-						Number(ethers.utils.formatEther(a.amount))
-					);
-				})[0];
 
 				if (!isMounted.current) return;
 				setAllItems(events);
-				setHighestBid(highest);
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			}
 		}
 	};
+
+	const getPriceData = async () => {
+		if (!znsDomain?.id || !library) {
+			return;
+		}
+		const { id } = znsDomain;
+		setIsPriceDataLoading(true);
+		const zAuction = await sdk.instance.getZAuctionInstanceForDomain(id);
+
+		// // Get buy now and all bids
+		const [buyNow, bids] = await Promise.all([
+			zAuction.getBuyNowPrice(id, library.getSigner()),
+			zAuction.listBids([id]),
+		]);
+
+		// Excuse this monstrosity
+		const highestBid = sortBids(bids[id])[0];
+
+		if (account) {
+			const yourBid = sortBids(
+				bids[id].filter(
+					(b) => b.bidder.toLowerCase() === account.toLowerCase(),
+				),
+			)[0];
+			if (yourBid?.amount) {
+				setYourBid(Number(ethers.utils.formatEther(yourBid.amount)));
+			}
+		}
+
+		setHighestBid(highestBid);
+		setBuyNowPrice(Number(ethers.utils.formatEther(buyNow)));
+		setIsPriceDataLoading(false);
+	};
+
 	const getTradeData = async () => {
 		if (znsDomain) {
 			const data = await sdk.instance.getDomainMetrics([znsDomain.id]);
@@ -287,15 +329,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	/////////////
 
 	useEffect(() => {
-		if (!highestBid) {
-			return;
-		}
-		setHighestBidUsd(
-			Number(ethers.utils.formatEther(highestBid.amount)) * wildPriceUsd,
-		);
-	}, [highestBid, wildPriceUsd]);
-
-	useEffect(() => {
 		isMounted.current = true;
 
 		fetch(background)
@@ -315,9 +348,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		if (znsDomain) {
 			if (!isMounted.current) return;
 
-			setIsOwnedByYou(
-				znsDomain.owner.id.toLowerCase() === account?.toLowerCase(),
-			);
+			getPriceData();
 			getHistory();
 			setStatsLoaded(false);
 			getTradeData();
@@ -325,7 +356,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [znsDomain]);
+	}, [znsDomain, account]);
 
 	const nftStats = () => {
 		let width = '24.2%';
@@ -431,34 +462,16 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		);
 	};
 
-	const overlays = () => (
-		<>
-			{znsDomain && (
-				<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
-					<MakeABid domain={znsDomain} onBid={onBid} />
-				</Overlay>
-			)}
-		</>
-	);
-
-	const price = () => (
-		<>
-			{highestBid && (
-				<div className={styles.Price}>
-					<h2>Highest Bid</h2>
-					<span className={styles.Crypto}>
-						{Number(
-							ethers.utils.formatEther(highestBid.amount!),
-						).toLocaleString()}{' '}
-						WILD{' '}
-						{highestBidUsd !== undefined && wildPriceUsd > 0 && (
-							<span className={styles.Fiat}>(${toFiat(highestBidUsd)})</span>
-						)}
-					</span>
-				</div>
-			)}
-		</>
-	);
+	const overlays = () => {
+		if (!znsDomain?.id) {
+			return;
+		}
+		return (
+			<Overlay onClose={closeBidOverlay} open={isBidOverlayOpen}>
+				<MakeABid domain={znsDomain} onBid={onBid} />
+			</Overlay>
+		);
+	};
 
 	const history = () => {
 		// Sort all history items
@@ -619,29 +632,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		}
 	};
 
-	const actionButtons = () => (
-		<div className={styles.Buttons}>
-			{isOwnedByYou && (
-				<FutureButton
-					glow={isOwnedByYou}
-					onClick={() => isOwnedByYou && onTransfer()}
-					style={{ height: 36, borderRadius: 18 }}
-				>
-					Transfer Ownership
-				</FutureButton>
-			)}
-			{!isOwnedByYou && (
-				<BidButton
-					glow={!isOwnedByYou && active}
-					onClick={openBidOverlay}
-					style={{ height: 36, borderRadius: 18 }}
-				>
-					Make A Bid
-				</BidButton>
-			)}
-		</div>
-	);
-
 	const attributesList = (attribute: Attribute, index: number) => {
 		return (
 			<>
@@ -725,74 +715,33 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	return (
 		<div className={styles.NFTView}>
 			{overlays()}
-			<div
-				className={`${styles.NFT} ${
-					backgroundBlob !== undefined ? styles.Loaded : ''
-				} border-primary`}
-			>
-				<div className={`${styles.Image}`}>
-					<NFTMedia
-						style={{
-							objectFit: 'contain',
-						}}
-						alt="NFT Preview"
-						ipfsUrl={
-							znsDomain?.animation_url ||
-							znsDomain?.image_full ||
-							znsDomain?.image ||
-							''
-						}
-						size="large"
-					/>
-				</div>
-				<div className={styles.Info}>
-					<div className={styles.Tray}>
-						{/* share icon hidden until share functionality is done */}
-						{/* <button>
-							<img src={shareIcon} />
-						</button> */}
-						<Tooltip text={'Share to Twitter'}>
-							<button onClick={shareAsset}>
-								<img src={shareIcon} alt="share asset" />
-							</button>
-						</Tooltip>
-						<Tooltip text={'Download for Twitter'}>
-							<button onClick={downloadAsset}>
-								<img alt="download asset" src={downloadIcon} />
-							</button>
-						</Tooltip>
-					</div>
-					<div className={styles.Details}>
-						<div>
-							<h1 className="glow-text-white">{znsDomain?.title ?? ''}</h1>
-						</div>
-						<div className={styles.Members}>
-							<Member
-								id={znsDomain ? znsDomain.owner.id : ''}
-								name={znsDomain ? randomName(znsDomain.owner.id) : ''}
-								image={znsDomain ? randomImage(znsDomain.owner.id) : ''}
-								subtext={'Owner'}
-							/>
-							<Member
-								id={znsDomain ? znsDomain.minter.id : ''}
-								name={znsDomain ? randomName(znsDomain.minter.id) : ''}
-								image={znsDomain ? randomImage(znsDomain.minter.id) : ''}
-								subtext={'Creator'}
-							/>
-						</div>
-						<div className={styles.Story}>{znsDomain?.description ?? ''}</div>
-						{price()}
-						{actionButtons()}
-					</div>
-					{backgroundBlob !== undefined && (
-						<img
-							alt="NFT panel background"
-							src={backgroundBlob}
-							className={styles.Bg}
-						/>
-					)}
-				</div>
-			</div>
+			<NFT
+				domainId={znsDomain?.id}
+				account={account as string}
+				title={znsDomain?.title as string}
+				owner={znsDomain?.owner.id as string}
+				creator={znsDomain?.minter.id as string}
+				onDownload={downloadAsset}
+				onShare={shareAsset}
+				assetUrl={
+					(znsDomain?.animation_url ||
+						znsDomain?.image_full ||
+						znsDomain?.image) as string
+				}
+				description={znsDomain?.description as string}
+				buyNowPrice={buyNowPrice}
+				highestBid={
+					highestBid?.amount
+						? Number(ethers.utils.formatEther(highestBid.amount))
+						: undefined
+				}
+				yourBid={yourBid}
+				onMakeBid={openBidOverlay}
+				onBuyNow={openBuyNowOverlay}
+				wildPriceUsd={wildPriceUsd}
+				isPriceDataLoading={isPriceDataLoading}
+			/>
+
 			{nftStats()}
 
 			{attributes()}

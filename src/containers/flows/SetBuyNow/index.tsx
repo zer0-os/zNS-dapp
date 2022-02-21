@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Component Imports
-import { Overlay } from 'components';
 import SetBuyNow, { Step } from './SetBuyNow';
 
 // Library Imports
@@ -14,11 +13,15 @@ import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
 
-type SetBuyNowContainerProps = {
+export interface SetBuyNowContainerProps {
 	domainId: string;
-};
+	onCancel: () => void;
+}
 
-const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
+const SetBuyNowContainer = ({
+	domainId,
+	onCancel,
+}: SetBuyNowContainerProps) => {
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
 	const { account, library } = useWeb3React();
@@ -33,7 +36,6 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 
 	// Stub functions for navigation
 	const onNext = () => console.log('next');
-	const onCancel = () => console.log('cancel');
 
 	/*
 	 * Checks a user's wallet has approved zAuction to
@@ -156,7 +158,7 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 					checkZAuctionApproval();
 					setDomainData({
 						id: domainId,
-						title: metadata.title as string,
+						title: (metadata.title || metadata.name) as string,
 						domain: domain.name,
 						owner: domain.owner,
 						assetUrl:
@@ -180,24 +182,17 @@ const SetBuyNowContainer = ({ domainId }: SetBuyNowContainerProps) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [domainId, library]);
 
-	// Functions
-	const closeOverlay = () => {
-		console.log('close');
-	};
-
 	return (
-		<Overlay open onClose={closeOverlay}>
-			<SetBuyNow
-				error={error}
-				domainData={domainData}
-				isLoadingDomainData={isLoadingDomainData}
-				step={currentStep}
-				onCancel={onCancel}
-				wildPriceUsd={wildPriceUsd}
-				approveZAuction={approveZAuction}
-				setBuyNowPrice={setBuyNowPrice}
-			/>
-		</Overlay>
+		<SetBuyNow
+			error={error}
+			domainData={domainData}
+			isLoadingDomainData={isLoadingDomainData}
+			step={currentStep}
+			onCancel={onCancel}
+			wildPriceUsd={wildPriceUsd}
+			approveZAuction={approveZAuction}
+			setBuyNowPrice={setBuyNowPrice}
+		/>
 	);
 };
 

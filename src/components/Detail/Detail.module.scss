@@ -2,8 +2,17 @@
 	> span {
 		display: block;
 
-		&:first-of-type {
+		&.Top {
 			color: var(--color-primary-lighter-3);
+			font-size: 12px;
+		}
+
+		&.Main {
+			margin-top: 2px;
+		}
+
+		&.Bottom {
+			color: var(--color-grey-lighter-2);
 			font-size: 12px;
 		}
 	}
