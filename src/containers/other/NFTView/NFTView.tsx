@@ -270,10 +270,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		const zAuction = await sdk.instance.getZAuctionInstanceForDomain(id);
 
 		// // Get buy now and all bids
-		const [buyNow, bids] = await Promise.all([
+		const [listing, bids] = await Promise.all([
 			zAuction.getBuyNowPrice(id, library.getSigner()),
 			zAuction.listBids([id]),
 		]);
+
+		const buyNow = listing.price;
 
 		// Excuse this monstrosity
 		const highestBid = sortBids(bids[id])[0];

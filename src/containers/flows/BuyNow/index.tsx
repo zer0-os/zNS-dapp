@@ -88,10 +88,11 @@ const BuyNowContainer = ({ domainId, onCancel }: BuyNowContainerProps) => {
 
 		// Get buy now price
 		const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-		const buyNowPrice = await zAuction.getBuyNowPrice(
+		const listing = await zAuction.getBuyNowPrice(
 			domainId,
 			library.getSigner(),
 		);
+		const buyNowPrice = listing.price;
 
 		// Check zAuction approved amount is larger than buy now price
 		const allowance = await zAuction.getZAuctionSpendAllowance(account);

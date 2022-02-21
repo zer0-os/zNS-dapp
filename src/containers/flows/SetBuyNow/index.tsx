@@ -146,7 +146,7 @@ const SetBuyNowContainer = ({
 		(async () => {
 			setIsLoadingDomainData(true);
 			try {
-				const [domain, events, metadata, buyNow] = await Promise.all([
+				const [domain, events, metadata, listing] = await Promise.all([
 					sdk.getDomainById(domainId),
 					sdk.getDomainEvents(domainId),
 					sdk.getDomainMetadata(domainId, library.getSigner()),
@@ -155,6 +155,7 @@ const SetBuyNowContainer = ({
 					).getBuyNowPrice(domainId, library.getSigner()),
 				]);
 				if (domain && events && metadata) {
+					const buyNow = listing.price;
 					checkZAuctionApproval();
 					setDomainData({
 						id: domainId,
