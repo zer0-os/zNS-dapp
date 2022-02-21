@@ -64,7 +64,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
 				'Waiting for Wallet Confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
-				'Locking metadata... This may take up to x mins. Do not close this window or refresh your browser...',
+				'Locking metadata... This may take up to 20 mins. Do not close this window or refresh your browser...',
 		},
 	} as DomainSettingsModalOptions,
 	[DomainSettingsModalType.UNLOCK]: {
@@ -76,7 +76,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
 				'Waiting for Wallet Confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
-				'Unlocking metadata... This may take up to x mins. Do not close this window or refresh your browser...',
+				'Unlocking metadata... This may take up to 20 mins. Do not close this window or refresh your browser...',
 		},
 		buttons: {
 			confirm: 'Unlock',
@@ -92,7 +92,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
 				'Waiting for Wallet Confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
-				'Saving metadata changes... This may take up to x mins. Do not close this window or refresh your browser...',
+				'Saving metadata changes... This may take up to 20 mins. Do not close this window or refresh your browser...',
 		},
 		buttons: {
 			confirm: 'Save without locking',
@@ -108,7 +108,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
 				'Waiting for Wallet Confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
-				'Save & locking metadata changes... This may take up to x mins. Do not close this window or refresh your browser...',
+				'Save & locking metadata changes... This may take up to 20 mins. Do not close this window or refresh your browser...',
 		},
 		buttons: {
 			confirm: 'Save & Lock',
