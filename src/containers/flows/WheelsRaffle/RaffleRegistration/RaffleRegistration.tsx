@@ -53,13 +53,13 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	const validationCriteria: any = {
 		eth: '0.1',
 		wild: '0.1',
-		nfts: 1,
+		nft: 1,
 	};
 
 	const [hasSufficientBalance, setHasSufficientBalance] = useState<any>({
 		eth: true,
 		wild: true,
-		nfts: true,
+		nft: true,
 	});
 	const [requiredBalance, setRequiredBalance] = useState<number>(0);
 
@@ -125,7 +125,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				wild: ethers.utils
 					.parseEther(data.wildBalance)
 					.gte(ethers.utils.parseEther(validationCriteria.wild)),
-				nfts: data.nftsCount >= validationCriteria.nfts,
+				nft: data.nftsCount >= validationCriteria.nft,
 			});
 			setBalances(data);
 			setStep(Steps.CurrentBalances);
@@ -227,7 +227,12 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		let message = [];
 		for (const key in validationCriteria) {
 			if (!hasSufficientBalance[key]) {
-				message.push(validationCriteria[key] + ' ' + key.toUpperCase());
+				message.push(
+					validationCriteria[key] +
+						' ' +
+						key.toUpperCase() +
+						(key === 'nft' && validationCriteria[key] > 1 ? 's' : ''),
+				);
 			}
 		}
 		return message.join(', ');
@@ -271,7 +276,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 						<div>Wilder NFT</div>
 						<div
 							className={`${
-								!hasSufficientBalance.nfts ? styles.ErrorColor : ''
+								!hasSufficientBalance.nft ? styles.ErrorColor : ''
 							} ${styles.amount}`}
 						>
 							{balances?.nftsCount || 0}
@@ -288,7 +293,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					</p>
 				) : (
 					<span className={`${styles.Error} ${styles.marginTop40}`}>
-						You need atleast &nbsp;
+						You need at least &nbsp;
 						<span className={styles.balanceCriteria}>
 							{getValidationError()}
 						</span>
