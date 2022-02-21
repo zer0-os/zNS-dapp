@@ -3,6 +3,7 @@
 
 export const ZAUCTION_BASE_URL: { [key: number]: string } = {
 	1: 'https://mainnet.zauction.api.zero.tech/api',
+	4: 'https://zauction-api-rinkeby.herokuapp.com/api',
 	42: 'https://zauction-kovan-api.herokuapp.com/api',
 };
 

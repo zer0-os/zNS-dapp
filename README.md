@@ -6,8 +6,10 @@ Add a `.env` file to the base of the repository, replacing the brackets with the
 
 ```
 REACT_APP_RPC_URL_1=https://mainnet.infura.io/v3/[someMainnetNode]
+REACT_APP_RPC_URL_4=https://kovan.infura.io/v3/[someRinkebyNode]
 REACT_APP_RPC_URL_42=https://kovan.infura.io/v3/[someKovanNode]
 REACT_APP_SUBGRAPH_URL_42=https://api.thegraph.com/subgraphs/name/[subgraphLocation]
+REACT_APP_SUBGRAPH_URL_4=https://api.thegraph.com/subgraphs/name/[subgraphLocation]
 REACT_APP_DEFAULT_NETWORK=42
 ```
 

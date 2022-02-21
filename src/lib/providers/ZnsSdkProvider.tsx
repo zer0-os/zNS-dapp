@@ -22,6 +22,12 @@ export function useZnsSdk() {
 				);
 			}
 
+			case 4: {
+				return zns.createInstance(
+					zns.configuration.rinkebyConfiguration(web3Context.library),
+				);
+			}
+
 			case 42: {
 				return zns.createInstance(
 					zns.configuration.kovanConfiguration(web3Context.library),
