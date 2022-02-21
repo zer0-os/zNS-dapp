@@ -106,8 +106,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				// setIsLoadingEmail(false);
 			} catch (e: any) {
 				// @todo handle API errors here
-				console.error('API call failed');
 				setEmailError(e?.message || 'Failed to register to mailing list');
+				console.error('API call failed');
 				setIsLoadingRegistration(false);
 				// setIsLoadingEmail(false);
 			}
@@ -142,8 +142,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 			setBalances(data);
 			setStep(Steps.CurrentBalances);
 		} catch (err: any) {
-			console.error(err);
 			setRegistrationError(err?.message || `Failed to fetch wallet details`);
+			console.error(err);
 		} finally {
 			setIsLoadingRegistration(false);
 		}
