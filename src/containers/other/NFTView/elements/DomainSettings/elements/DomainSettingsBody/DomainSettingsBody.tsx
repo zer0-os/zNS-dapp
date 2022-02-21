@@ -93,6 +93,7 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 						text={localState.domain}
 						error={!!localState.errors[ERROR_KEYS.SUB_DOMAIN]}
 						errorText={localState.errors[ERROR_KEYS.SUB_DOMAIN]}
+						disabled
 					/>
 				</div>
 			</div>
