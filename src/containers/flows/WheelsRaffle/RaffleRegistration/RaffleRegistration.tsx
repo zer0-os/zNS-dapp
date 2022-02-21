@@ -86,7 +86,15 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 			setEmailError(undefined);
 			// setIsLoadingEmail(true);
 			try {
-				await props.onSubmit(balances);
+				await props.onSubmit({
+					...balances,
+					email: userEmail,
+					firstName,
+					lastName,
+					twitter,
+					discord,
+					telegram,
+				});
 				const successful = await props.onSubmitEmail(userEmail!);
 				if (!successful) {
 					setEmailError('Failed to register to mailing list');
@@ -287,7 +295,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 
 				{hasSufficientBalance.eth &&
 				hasSufficientBalance.wild &&
-				hasSufficientBalance.nftsCount ? (
+				hasSufficientBalance.nft ? (
 					<p className={styles.Success}>
 						Your balances meet the requirements for entry!
 					</p>
@@ -307,7 +315,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 						!(
 							hasSufficientBalance.eth &&
 							hasSufficientBalance.wild &&
-							hasSufficientBalance.nftsCount
+							hasSufficientBalance.nft
 						)
 					}
 					onClick={() => setStep(Steps.PersonalInfo)}
