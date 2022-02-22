@@ -34,6 +34,7 @@ type NFTProps = {
 	onMakeBid?: () => void;
 	onBuyNow?: () => void;
 	onDownload?: () => void;
+	onSuccessBuyNow?: () => void;
 	onShare?: () => void;
 	highestBid?: number;
 	yourBid?: number;
@@ -52,6 +53,7 @@ const NFT = ({
 	assetUrl,
 	description,
 	buyNowPrice,
+	onSuccessBuyNow,
 	onBuyNow,
 	onDownload,
 	onShare,
@@ -107,9 +109,14 @@ const NFT = ({
 			{account && (
 				<>
 					{isOwnedByYou ? (
-						<SetBuyNowButton buttonText="Edit" domainId={domainId ?? ''} />
+						<SetBuyNowButton
+							onSuccess={onSuccessBuyNow}
+							buttonText="Edit"
+							domainId={domainId ?? ''}
+						/>
 					) : (
 						<BuyNowButton
+							onSuccess={onSuccessBuyNow}
 							buttonText="Buy Now"
 							disabled={(buyNowPrice ?? 0) === 0}
 							domainId={domainId ?? ''}

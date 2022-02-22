@@ -265,8 +265,13 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		if (!znsDomain?.id || !library) {
 			return;
 		}
+		console.log('set');
 		const { id } = znsDomain;
 		setIsPriceDataLoading(true);
+		setBuyNowPrice(undefined);
+		setHighestBid(undefined);
+		setYourBid(undefined);
+
 		const zAuction = await sdk.instance.getZAuctionInstanceForDomain(id);
 
 		// // Get buy now and all bids
@@ -742,6 +747,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				onBuyNow={openBuyNowOverlay}
 				wildPriceUsd={wildPriceUsd}
 				isPriceDataLoading={isPriceDataLoading}
+				onSuccessBuyNow={getPriceData}
 			/>
 
 			{nftStats()}
