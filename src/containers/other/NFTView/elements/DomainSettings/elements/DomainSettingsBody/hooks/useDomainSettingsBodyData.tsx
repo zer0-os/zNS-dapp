@@ -21,8 +21,8 @@ export const useDomainSettingsBodyData = (
 		const isBiddable = Boolean(metadata?.isBiddable);
 		const gridViewByDefault = Boolean(metadata?.gridViewByDefault);
 		const customDomainHeader = Boolean(metadata?.customDomainHeader);
-		const customDomainHeaderText =
-			(metadata?.customDomainHeaderText as string) || '';
+		const customDomainHeaderValue =
+			(metadata?.customDomainHeaderValue as string) || '';
 
 		return {
 			name,
@@ -32,7 +32,7 @@ export const useDomainSettingsBodyData = (
 			isBiddable,
 			gridViewByDefault,
 			customDomainHeader,
-			customDomainHeaderText,
+			customDomainHeaderValue,
 		};
 	}, [currentDomain, metadata]);
 
@@ -55,8 +55,8 @@ export const useDomainSettingsBodyData = (
 	const [customDomainHeader, setCustomDomainHeader] = usePropsState<boolean>(
 		initialDomainSettings.customDomainHeader,
 	);
-	const [customDomainHeaderText, setCustomDomainHeaderText] =
-		usePropsState<string>(initialDomainSettings.customDomainHeaderText);
+	const [customDomainHeaderValue, setCustomDomainHeaderValue] =
+		usePropsState<string>(initialDomainSettings.customDomainHeaderValue);
 
 	const localState = useMemo(
 		() => ({
@@ -68,7 +68,7 @@ export const useDomainSettingsBodyData = (
 			isBiddable,
 			gridViewByDefault,
 			customDomainHeader,
-			customDomainHeaderText,
+			customDomainHeaderValue,
 		}),
 		[
 			name,
@@ -79,7 +79,7 @@ export const useDomainSettingsBodyData = (
 			isBiddable,
 			gridViewByDefault,
 			customDomainHeader,
-			customDomainHeaderText,
+			customDomainHeaderValue,
 		],
 	);
 
@@ -93,7 +93,7 @@ export const useDomainSettingsBodyData = (
 			setIsBiddable,
 			setGridViewByDefault,
 			setCustomDomainHeader,
-			setCustomDomainHeaderText,
+			setCustomDomainHeaderValue,
 		}),
 		[
 			setName,
@@ -104,7 +104,7 @@ export const useDomainSettingsBodyData = (
 			setIsBiddable,
 			setGridViewByDefault,
 			setCustomDomainHeader,
-			setCustomDomainHeaderText,
+			setCustomDomainHeaderValue,
 		],
 	);
 
@@ -121,9 +121,9 @@ export const useDomainSettingsBodyData = (
 		const customDomainHeaderChanged =
 			initialDomainSettings.customDomainHeader !==
 			localState.customDomainHeader;
-		const customDomainHeaderTextChanged =
-			initialDomainSettings.customDomainHeaderText !==
-			localState.customDomainHeaderText;
+		const customDomainHeaderValueChanged =
+			initialDomainSettings.customDomainHeaderValue !==
+			localState.customDomainHeaderValue;
 
 		return (
 			nameChanged ||
@@ -133,7 +133,7 @@ export const useDomainSettingsBodyData = (
 			isBiddableChanged ||
 			gridViewByDefaultChanged ||
 			customDomainHeaderChanged ||
-			customDomainHeaderTextChanged
+			customDomainHeaderValueChanged
 		);
 	}, [initialDomainSettings, localState]);
 

@@ -15,7 +15,7 @@ export const mockMetadata: Maybe<DomainMetadata> = {
 	isBiddable: true,
 	gridViewByDefault: true,
 	customDomainHeader: false,
-	customDomainHeaderText: '',
+	customDomainHeaderValue: '',
 };
 
 export const mockLocalState = {
@@ -27,7 +27,7 @@ export const mockLocalState = {
 	isBiddable: Boolean(mockMetadata.isBiddable),
 	gridViewByDefault: Boolean(mockMetadata.gridViewByDefault),
 	customDomainHeader: Boolean(mockMetadata.customDomainHeader),
-	customDomainHeaderText: String(mockMetadata.customDomainHeaderText),
+	customDomainHeaderValue: String(mockMetadata.customDomainHeaderValue),
 };
 
 export const mockLocalActions = {
@@ -39,7 +39,7 @@ export const mockLocalActions = {
 	setIsBiddable: jest.fn(),
 	setGridViewByDefault: jest.fn(),
 	setCustomDomainHeader: jest.fn(),
-	setCustomDomainHeaderText: jest.fn(),
+	setCustomDomainHeaderValue: jest.fn(),
 };
 
 export const mockFormattedData = {

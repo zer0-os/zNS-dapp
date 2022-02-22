@@ -194,8 +194,8 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 						<div className="domain-settings-body__footer--sub-section no-gutters">
 							<TextInputWithTopPlaceHolder
 								topPlaceholder="Custom Domain Header"
-								onChange={localActions.setCustomDomainHeaderText}
-								text={localState.customDomainHeaderText}
+								onChange={localActions.setCustomDomainHeaderValue}
+								text={localState.customDomainHeaderValue}
 								error={
 									Boolean(localState.customDomainHeader) &&
 									!!localState.errors[ERROR_KEYS.CUSTOM_DOMAIN_HEADER]

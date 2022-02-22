@@ -211,17 +211,17 @@ describe('useDomainSettingsBodyHandlers', () => {
 		});
 	});
 
-	describe('handleCustomDomainHeaderTextChange', () => {
+	describe('handleCustomDomainHeaderValueChange', () => {
 		it('Should show custom domain header required error when input is empty', () => {
-			const { handleCustomDomainHeaderTextChange } = getHandlers({
+			const { handleCustomDomainHeaderValueChange } = getHandlers({
 				localState: {
 					...mockLocalState,
 					customDomainHeader: true,
-					customDomainHeaderText: '',
+					customDomainHeaderValue: '',
 				},
 			});
 
-			handleCustomDomainHeaderTextChange();
+			handleCustomDomainHeaderValueChange();
 
 			expect(mockLocalActions.setErrors).toHaveBeenCalledTimes(1);
 			expect(mockLocalActions.setErrors).toHaveBeenCalledWith({
@@ -232,15 +232,15 @@ describe('useDomainSettingsBodyHandlers', () => {
 		});
 
 		it('Should clear custom domain header required error when the input is not empty', () => {
-			const { handleCustomDomainHeaderTextChange } = getHandlers({
+			const { handleCustomDomainHeaderValueChange } = getHandlers({
 				localState: {
 					...mockLocalState,
 					customDomainHeader: true,
-					customDomainHeaderText: 'some other domain header change',
+					customDomainHeaderValue: 'some other domain header change',
 				},
 			});
 
-			handleCustomDomainHeaderTextChange();
+			handleCustomDomainHeaderValueChange();
 
 			expect(mockLocalActions.setErrors).toHaveBeenCalledTimes(1);
 			expect(mockLocalActions.setErrors).toHaveBeenCalledWith({
@@ -261,7 +261,7 @@ describe('useDomainSettingsBodyHandlers', () => {
 				isBiddable: true,
 				gridViewByDefault: true,
 				customDomainHeader: true,
-				customDomainHeaderText: 'custom domain header',
+				customDomainHeaderValue: 'custom domain header',
 			};
 			const formattedData = {
 				isChanged: true,
@@ -284,7 +284,7 @@ describe('useDomainSettingsBodyHandlers', () => {
 				isBiddable: localState.isBiddable,
 				gridViewByDefault: localState.gridViewByDefault,
 				customDomainHeader: localState.customDomainHeader,
-				customDomainHeaderText: localState.customDomainHeaderText,
+				customDomainHeaderValue: localState.customDomainHeaderValue,
 			});
 		});
 	});

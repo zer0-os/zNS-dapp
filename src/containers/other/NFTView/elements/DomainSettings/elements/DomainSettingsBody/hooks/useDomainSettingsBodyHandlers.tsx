@@ -25,7 +25,7 @@ type UseDomainSettingsBodyHandlersProps = {
 		isBiddable: boolean;
 		gridViewByDefault: boolean;
 		customDomainHeader: boolean;
-		customDomainHeaderText: string;
+		customDomainHeaderValue: string;
 	};
 	localActions: {
 		setErrors: React.Dispatch<React.SetStateAction<DomainSettingsError>>;
@@ -104,9 +104,9 @@ export const useDomainSettingsBodyHandlers = ({
 		}
 	}, [localState, localActions]);
 
-	const handleCustomDomainHeaderTextChange = useCallback(() => {
+	const handleCustomDomainHeaderValueChange = useCallback(() => {
 		if (localState.customDomainHeader) {
-			if (!localState.customDomainHeaderText) {
+			if (!localState.customDomainHeaderValue) {
 				localActions.setErrors({
 					...localState.errors,
 					[ERROR_KEYS.CUSTOM_DOMAIN_HEADER]:
@@ -132,7 +132,7 @@ export const useDomainSettingsBodyHandlers = ({
 			isBiddable,
 			gridViewByDefault,
 			customDomainHeader,
-			customDomainHeaderText,
+			customDomainHeaderValue,
 		} = localState;
 
 		if (
@@ -140,7 +140,7 @@ export const useDomainSettingsBodyHandlers = ({
 			!!domain &&
 			!!story &&
 			(!customDomainHeader ||
-				(customDomainHeader && !!customDomainHeaderText)) &&
+				(customDomainHeader && !!customDomainHeaderValue)) &&
 			formattedData.isChanged
 		) {
 			props.onMetadataChange({
@@ -152,7 +152,7 @@ export const useDomainSettingsBodyHandlers = ({
 				isBiddable,
 				gridViewByDefault,
 				customDomainHeader,
-				customDomainHeaderText,
+				customDomainHeaderValue,
 			});
 		}
 	}, [props, localState, formattedData]);
@@ -163,7 +163,7 @@ export const useDomainSettingsBodyHandlers = ({
 			handleDomainNameChange,
 			handleSubDomainNameChange,
 			handleStoryChange,
-			handleCustomDomainHeaderTextChange,
+			handleCustomDomainHeaderValueChange,
 			handleMetadataChange,
 		}),
 		[
@@ -171,7 +171,7 @@ export const useDomainSettingsBodyHandlers = ({
 			handleDomainNameChange,
 			handleSubDomainNameChange,
 			handleStoryChange,
-			handleCustomDomainHeaderTextChange,
+			handleCustomDomainHeaderValueChange,
 			handleMetadataChange,
 		],
 	);

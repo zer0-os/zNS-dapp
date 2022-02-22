@@ -9,13 +9,13 @@ type UseDomainSettingsBodyLifecycleProps = {
 		isBiddable: boolean;
 		gridViewByDefault: boolean;
 		customDomainHeader: boolean;
-		customDomainHeaderText: string;
+		customDomainHeaderValue: string;
 	};
 	handlers: {
 		handleDomainNameChange: () => void;
 		handleSubDomainNameChange: () => void;
 		handleStoryChange: () => void;
-		handleCustomDomainHeaderTextChange: () => void;
+		handleCustomDomainHeaderValueChange: () => void;
 		handleMetadataChange: () => void;
 	};
 };
@@ -30,8 +30,8 @@ export const useDomainSettingsBodyLifecycle = ({
 
 	useUpdateEffect(handlers.handleStoryChange, [localState.story]);
 
-	useUpdateEffect(handlers.handleCustomDomainHeaderTextChange, [
-		localState.customDomainHeaderText,
+	useUpdateEffect(handlers.handleCustomDomainHeaderValueChange, [
+		localState.customDomainHeaderValue,
 	]);
 
 	useUpdateEffect(handlers.handleMetadataChange, [
@@ -42,6 +42,6 @@ export const useDomainSettingsBodyLifecycle = ({
 		localState.isMintable,
 		localState.gridViewByDefault,
 		localState.customDomainHeader,
-		localState.customDomainHeaderText,
+		localState.customDomainHeaderValue,
 	]);
 };
