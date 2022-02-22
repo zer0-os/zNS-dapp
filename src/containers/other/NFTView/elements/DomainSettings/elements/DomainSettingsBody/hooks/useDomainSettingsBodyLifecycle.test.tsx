@@ -8,6 +8,7 @@ const mockHandlers = {
 	handleDomainNameChange: jest.fn(),
 	handleSubDomainNameChange: jest.fn(),
 	handleStoryChange: jest.fn(),
+	handleCustomDomainHeaderTextChange: jest.fn(),
 	handleMetadataChange: jest.fn(),
 };
 
@@ -17,6 +18,7 @@ describe('useDomainSettingsBodyLifecycle', () => {
 			useUpdateEffect(mockHandlers.handleDomainNameChange);
 			useUpdateEffect(mockHandlers.handleSubDomainNameChange);
 			useUpdateEffect(mockHandlers.handleStoryChange);
+			useUpdateEffect(mockHandlers.handleCustomDomainHeaderTextChange);
 			useUpdateEffect(mockHandlers.handleMetadataChange);
 
 			expect(useUpdateEffect).toHaveBeenCalledWith(
@@ -27,6 +29,9 @@ describe('useDomainSettingsBodyLifecycle', () => {
 			);
 			expect(useUpdateEffect).toHaveBeenCalledWith(
 				mockHandlers.handleStoryChange,
+			);
+			expect(useUpdateEffect).toHaveBeenCalledWith(
+				mockHandlers.handleCustomDomainHeaderTextChange,
 			);
 			expect(useUpdateEffect).toHaveBeenCalledWith(
 				mockHandlers.handleMetadataChange,

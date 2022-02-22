@@ -190,6 +190,20 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 							<QuestionButton small />
 						</Tooltip>
 					</div>
+					{localState.customDomainHeader && (
+						<div className="domain-settings-body__footer--sub-section no-gutters">
+							<TextInputWithTopPlaceHolder
+								topPlaceholder="Custom Domain Header"
+								onChange={localActions.setCustomDomainHeaderText}
+								text={localState.customDomainHeaderText}
+								error={
+									Boolean(localState.customDomainHeader) &&
+									!!localState.errors[ERROR_KEYS.CUSTOM_DOMAIN_HEADER]
+								}
+								errorText={localState.errors[ERROR_KEYS.CUSTOM_DOMAIN_HEADER]}
+							/>
+						</div>
+					)}
 				</div>
 			</div>
 

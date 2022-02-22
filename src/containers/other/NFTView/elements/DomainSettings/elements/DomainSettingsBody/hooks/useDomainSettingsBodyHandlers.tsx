@@ -25,6 +25,7 @@ type UseDomainSettingsBodyHandlersProps = {
 		isBiddable: boolean;
 		gridViewByDefault: boolean;
 		customDomainHeader: boolean;
+		customDomainHeaderText: string;
 	};
 	localActions: {
 		setErrors: React.Dispatch<React.SetStateAction<DomainSettingsError>>;
@@ -103,6 +104,25 @@ export const useDomainSettingsBodyHandlers = ({
 		}
 	}, [localState, localActions]);
 
+	const handleCustomDomainHeaderTextChange = useCallback(() => {
+		if (localState.customDomainHeader) {
+			if (!localState.customDomainHeaderText) {
+				localActions.setErrors({
+					...localState.errors,
+					[ERROR_KEYS.CUSTOM_DOMAIN_HEADER]:
+						ERROR_MESSAGES[ERROR_KEYS.CUSTOM_DOMAIN_HEADER][
+							ERROR_TYPES.REQUIRED
+						],
+				});
+			} else {
+				localActions.setErrors({
+					...localState.errors,
+					[ERROR_KEYS.CUSTOM_DOMAIN_HEADER]: undefined,
+				});
+			}
+		}
+	}, [localState, localActions]);
+
 	const handleMetadataChange = useCallback(() => {
 		const {
 			name,
@@ -112,9 +132,17 @@ export const useDomainSettingsBodyHandlers = ({
 			isBiddable,
 			gridViewByDefault,
 			customDomainHeader,
+			customDomainHeaderText,
 		} = localState;
 
-		if (!!name && !!domain && !!story && formattedData.isChanged) {
+		if (
+			!!name &&
+			!!domain &&
+			!!story &&
+			(!customDomainHeader ||
+				(customDomainHeader && !!customDomainHeaderText)) &&
+			formattedData.isChanged
+		) {
 			props.onMetadataChange({
 				...props.metadata!,
 				name,
@@ -124,6 +152,7 @@ export const useDomainSettingsBodyHandlers = ({
 				isBiddable,
 				gridViewByDefault,
 				customDomainHeader,
+				customDomainHeaderText,
 			});
 		}
 	}, [props, localState, formattedData]);
@@ -134,6 +163,7 @@ export const useDomainSettingsBodyHandlers = ({
 			handleDomainNameChange,
 			handleSubDomainNameChange,
 			handleStoryChange,
+			handleCustomDomainHeaderTextChange,
 			handleMetadataChange,
 		}),
 		[
@@ -141,6 +171,7 @@ export const useDomainSettingsBodyHandlers = ({
 			handleDomainNameChange,
 			handleSubDomainNameChange,
 			handleStoryChange,
+			handleCustomDomainHeaderTextChange,
 			handleMetadataChange,
 		],
 	);

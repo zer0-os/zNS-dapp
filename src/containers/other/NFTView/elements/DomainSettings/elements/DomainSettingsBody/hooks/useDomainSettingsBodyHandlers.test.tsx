@@ -211,6 +211,45 @@ describe('useDomainSettingsBodyHandlers', () => {
 		});
 	});
 
+	describe('handleCustomDomainHeaderTextChange', () => {
+		it('Should show custom domain header required error when input is empty', () => {
+			const { handleCustomDomainHeaderTextChange } = getHandlers({
+				localState: {
+					...mockLocalState,
+					customDomainHeader: true,
+					customDomainHeaderText: '',
+				},
+			});
+
+			handleCustomDomainHeaderTextChange();
+
+			expect(mockLocalActions.setErrors).toHaveBeenCalledTimes(1);
+			expect(mockLocalActions.setErrors).toHaveBeenCalledWith({
+				...mockLocalState.errors,
+				[ERROR_KEYS.CUSTOM_DOMAIN_HEADER]:
+					ERROR_MESSAGES[ERROR_KEYS.CUSTOM_DOMAIN_HEADER][ERROR_TYPES.REQUIRED],
+			});
+		});
+
+		it('Should clear custom domain header required error when the input is not empty', () => {
+			const { handleCustomDomainHeaderTextChange } = getHandlers({
+				localState: {
+					...mockLocalState,
+					customDomainHeader: true,
+					customDomainHeaderText: 'some other domain header change',
+				},
+			});
+
+			handleCustomDomainHeaderTextChange();
+
+			expect(mockLocalActions.setErrors).toHaveBeenCalledTimes(1);
+			expect(mockLocalActions.setErrors).toHaveBeenCalledWith({
+				...mockLocalState.errors,
+				[ERROR_KEYS.CUSTOM_DOMAIN_HEADER]: undefined,
+			});
+		});
+	});
+
 	describe('handleMetadataChange', () => {
 		it('Should handle metadata change when the inputs are good', () => {
 			const localState = {
@@ -222,6 +261,7 @@ describe('useDomainSettingsBodyHandlers', () => {
 				isBiddable: true,
 				gridViewByDefault: true,
 				customDomainHeader: true,
+				customDomainHeaderText: 'custom domain header',
 			};
 			const formattedData = {
 				isChanged: true,
@@ -244,6 +284,7 @@ describe('useDomainSettingsBodyHandlers', () => {
 				isBiddable: localState.isBiddable,
 				gridViewByDefault: localState.gridViewByDefault,
 				customDomainHeader: localState.customDomainHeader,
+				customDomainHeaderText: localState.customDomainHeaderText,
 			});
 		});
 	});

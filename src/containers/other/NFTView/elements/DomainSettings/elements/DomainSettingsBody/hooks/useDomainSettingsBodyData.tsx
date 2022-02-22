@@ -21,6 +21,8 @@ export const useDomainSettingsBodyData = (
 		const isBiddable = Boolean(metadata?.isBiddable);
 		const gridViewByDefault = Boolean(metadata?.gridViewByDefault);
 		const customDomainHeader = Boolean(metadata?.customDomainHeader);
+		const customDomainHeaderText =
+			(metadata?.customDomainHeaderText as string) || '';
 
 		return {
 			name,
@@ -30,6 +32,7 @@ export const useDomainSettingsBodyData = (
 			isBiddable,
 			gridViewByDefault,
 			customDomainHeader,
+			customDomainHeaderText,
 		};
 	}, [currentDomain, metadata]);
 
@@ -52,6 +55,8 @@ export const useDomainSettingsBodyData = (
 	const [customDomainHeader, setCustomDomainHeader] = usePropsState<boolean>(
 		initialDomainSettings.customDomainHeader,
 	);
+	const [customDomainHeaderText, setCustomDomainHeaderText] =
+		usePropsState<string>(initialDomainSettings.customDomainHeaderText);
 
 	const localState = useMemo(
 		() => ({
@@ -63,6 +68,7 @@ export const useDomainSettingsBodyData = (
 			isBiddable,
 			gridViewByDefault,
 			customDomainHeader,
+			customDomainHeaderText,
 		}),
 		[
 			name,
@@ -73,6 +79,7 @@ export const useDomainSettingsBodyData = (
 			isBiddable,
 			gridViewByDefault,
 			customDomainHeader,
+			customDomainHeaderText,
 		],
 	);
 
@@ -86,6 +93,7 @@ export const useDomainSettingsBodyData = (
 			setIsBiddable,
 			setGridViewByDefault,
 			setCustomDomainHeader,
+			setCustomDomainHeaderText,
 		}),
 		[
 			setName,
@@ -96,6 +104,7 @@ export const useDomainSettingsBodyData = (
 			setIsBiddable,
 			setGridViewByDefault,
 			setCustomDomainHeader,
+			setCustomDomainHeaderText,
 		],
 	);
 
@@ -112,6 +121,9 @@ export const useDomainSettingsBodyData = (
 		const customDomainHeaderChanged =
 			initialDomainSettings.customDomainHeader !==
 			localState.customDomainHeader;
+		const customDomainHeaderTextChanged =
+			initialDomainSettings.customDomainHeaderText !==
+			localState.customDomainHeaderText;
 
 		return (
 			nameChanged ||
@@ -120,7 +132,8 @@ export const useDomainSettingsBodyData = (
 			isMintableChanged ||
 			isBiddableChanged ||
 			gridViewByDefaultChanged ||
-			customDomainHeaderChanged
+			customDomainHeaderChanged ||
+			customDomainHeaderTextChanged
 		);
 	}, [initialDomainSettings, localState]);
 
