@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FutureButton, Overlay } from 'components';
+import { FutureButton, Overlay, TextButton } from 'components';
 import SetBuyNow from '.';
 
 interface SetBuyNowButtonProps {
@@ -8,6 +8,7 @@ interface SetBuyNowButtonProps {
 	buttonText?: string;
 	disabled?: boolean;
 	onSuccess?: () => void;
+	isTextButton?: boolean;
 }
 
 const SetBuyNowButton = ({
@@ -16,6 +17,7 @@ const SetBuyNowButton = ({
 	buttonText,
 	disabled,
 	onSuccess,
+	isTextButton,
 }: SetBuyNowButtonProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -36,9 +38,15 @@ const SetBuyNowButton = ({
 					/>
 				</Overlay>
 			)}
-			<FutureButton className={className} glow={!disabled} onClick={onClick}>
-				{buttonText ? buttonText : 'Edit Buy Now'}
-			</FutureButton>
+			{isTextButton ? (
+				<TextButton className={className} onClick={onClick}>
+					{buttonText ? buttonText : 'Edit Buy Now'}
+				</TextButton>
+			) : (
+				<FutureButton className={className} glow={!disabled} onClick={onClick}>
+					{buttonText ? buttonText : 'Edit Buy Now'}
+				</FutureButton>
+			)}
 		</>
 	);
 };

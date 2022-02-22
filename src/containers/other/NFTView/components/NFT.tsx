@@ -111,8 +111,10 @@ const NFT = ({
 					{isOwnedByYou ? (
 						<SetBuyNowButton
 							onSuccess={onSuccessBuyNow}
-							buttonText="Edit"
+							buttonText="Edit Buy Now"
 							domainId={domainId ?? ''}
+							isTextButton
+							className={styles.SetBuyNow}
 						/>
 					) : (
 						<BuyNowButton
