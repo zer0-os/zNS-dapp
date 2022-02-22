@@ -244,9 +244,12 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				);
 			}
 		}
-		const last = messages.pop();
-
-		return messages.join(', ') + ' and ' + last;
+		if (messages.length > 1) {
+			const last = messages.pop();
+			return messages.join(', ') + ' and ' + last;
+		} else {
+			return messages.join(', ');
+		}
 	};
 
 	const currentBalances = () => {
