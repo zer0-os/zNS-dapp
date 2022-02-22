@@ -7,6 +7,7 @@ interface BuyNowButtonProps {
 	domainId?: string;
 	buttonText?: string;
 	disabled?: boolean;
+	onSuccess?: () => void;
 }
 
 const SetBuyNowButton = ({
@@ -14,6 +15,7 @@ const SetBuyNowButton = ({
 	domainId,
 	buttonText,
 	disabled,
+	onSuccess,
 }: BuyNowButtonProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -27,7 +29,11 @@ const SetBuyNowButton = ({
 		<>
 			{isModalOpen && domainId && (
 				<Overlay open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-					<BuyNow domainId={domainId} onCancel={() => setIsModalOpen(false)} />
+					<BuyNow
+						onSuccess={onSuccess}
+						domainId={domainId}
+						onCancel={() => setIsModalOpen(false)}
+					/>
 				</Overlay>
 			)}
 			<FutureButton className={className} glow={!disabled} onClick={onClick}>

@@ -18,9 +18,14 @@ import { ERC20 } from 'types';
 export type BuyNowContainerProps = {
 	domainId: string;
 	onCancel: () => void;
+	onSuccess?: () => void;
 };
 
-const BuyNowContainer = ({ domainId, onCancel }: BuyNowContainerProps) => {
+const BuyNowContainer = ({
+	domainId,
+	onCancel,
+	onSuccess,
+}: BuyNowContainerProps) => {
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
 	const { account, library } = useWeb3React();
@@ -72,6 +77,9 @@ const BuyNowContainer = ({ domainId, onCancel }: BuyNowContainerProps) => {
 			setCurrentStep(Step.Buying);
 			await tx.wait();
 			setCurrentStep(Step.Success);
+			if (onSuccess) {
+				onSuccess();
+			}
 		} catch (e) {
 			setError(e.message);
 			setCurrentStep(Step.Details);

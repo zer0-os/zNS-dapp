@@ -16,11 +16,13 @@ import { ethers } from 'ethers';
 export interface SetBuyNowContainerProps {
 	domainId: string;
 	onCancel: () => void;
+	onSuccess?: () => void;
 }
 
 const SetBuyNowContainer = ({
 	domainId,
 	onCancel,
+	onSuccess,
 }: SetBuyNowContainerProps) => {
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
@@ -127,6 +129,9 @@ const SetBuyNowContainer = ({
 						: undefined,
 				});
 				setCurrentStep(Step.Success);
+				if (onSuccess) {
+					onSuccess();
+				}
 			} catch (e) {
 				setCurrentStep(Step.SetBuyNow);
 				setError((e as any).message);
