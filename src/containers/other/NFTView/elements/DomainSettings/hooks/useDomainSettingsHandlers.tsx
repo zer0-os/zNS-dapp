@@ -22,6 +22,7 @@ type UseDomainSettingsHandlersProps = {
 			React.SetStateAction<Maybe<DomainMetadata>>
 		>;
 		setIsLocked: React.Dispatch<React.SetStateAction<boolean>>;
+		setIsChanged: React.Dispatch<React.SetStateAction<boolean>>;
 		setIsSaved: React.Dispatch<React.SetStateAction<boolean>>;
 		setWarning: React.Dispatch<
 			React.SetStateAction<Maybe<DomainSettingsWarning>>
@@ -92,6 +93,7 @@ export const useDomainSettingsHandlers = ({
 
 	const handleLocalMetadataChange = useCallback(
 		(localMetadata: DomainMetadata) => {
+			localActions.setIsChanged(true);
 			localActions.setLocalMetadata(localMetadata);
 		},
 		[localActions],

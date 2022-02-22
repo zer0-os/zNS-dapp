@@ -21,6 +21,7 @@ export const useDomainSettingsData = (domainId: string) => {
 	const registrar = znsContracts.registry;
 
 	const [isLocked, setIsLocked] = useState<boolean>(true);
+	const [isChanged, setIsChanged] = useState<boolean>(false);
 	const [isSaved, setIsSaved] = useState<boolean>(false);
 	const [warning, setWarning] =
 		useState<Maybe<DomainSettingsWarning>>(undefined);
@@ -69,6 +70,7 @@ export const useDomainSettingsData = (domainId: string) => {
 	return {
 		localState: {
 			isLocked,
+			isChanged,
 			isSaved,
 			warning,
 			success,
@@ -77,6 +79,7 @@ export const useDomainSettingsData = (domainId: string) => {
 		},
 		localActions: {
 			setIsLocked,
+			setIsChanged,
 			setIsSaved,
 			setWarning,
 			setSuccess,

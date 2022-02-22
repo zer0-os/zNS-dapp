@@ -5,6 +5,7 @@ import {
 	mockMetadata,
 	mockLocalState,
 	mockLocalActions,
+	mockFormattedData,
 } from './useDomainSettingsBodyData.test';
 import {
 	ERROR_KEYS,
@@ -24,12 +25,14 @@ const getHandlers = ({
 	props = mockProps,
 	localState = mockLocalState,
 	localActions = mockLocalActions,
+	formattedData = mockFormattedData,
 } = {}) => {
 	return renderHook(() =>
 		useDomainSettingsBodyHandlers({
 			props,
 			localState,
 			localActions,
+			formattedData,
 		}),
 	);
 };
@@ -220,7 +223,14 @@ describe('useDomainSettingsBodyHandlers', () => {
 				gridViewByDefault: true,
 				customDomainHeader: true,
 			};
-			const { handleMetadataChange } = getHandlers({ localState });
+			const formattedData = {
+				isChanged: true,
+			};
+
+			const { handleMetadataChange } = getHandlers({
+				localState,
+				formattedData,
+			});
 
 			handleMetadataChange();
 

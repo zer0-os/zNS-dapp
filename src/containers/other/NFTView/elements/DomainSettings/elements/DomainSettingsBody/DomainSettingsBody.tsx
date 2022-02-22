@@ -37,7 +37,7 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 	onShowLockedWarning,
 	onMetadataChange,
 }) => {
-	const { localState, localActions } = useDomainSettingsBodyData(
+	const { localState, localActions, formattedData } = useDomainSettingsBodyData(
 		domain,
 		metadata,
 	);
@@ -52,6 +52,7 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 		},
 		localState,
 		localActions,
+		formattedData,
 	});
 
 	useDomainSettingsBodyLifecycle({

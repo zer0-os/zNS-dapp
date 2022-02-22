@@ -29,12 +29,16 @@ type UseDomainSettingsBodyHandlersProps = {
 	localActions: {
 		setErrors: React.Dispatch<React.SetStateAction<DomainSettingsError>>;
 	};
+	formattedData: {
+		isChanged: boolean;
+	};
 };
 
 export const useDomainSettingsBodyHandlers = ({
 	props,
 	localState,
 	localActions,
+	formattedData,
 }: UseDomainSettingsBodyHandlersProps) => {
 	const handleBodyClicking = useCallback(() => {
 		if (props.isLocked) {
@@ -110,7 +114,7 @@ export const useDomainSettingsBodyHandlers = ({
 			customDomainHeader,
 		} = localState;
 
-		if (!!name && !!domain && !!story) {
+		if (!!name && !!domain && !!story && formattedData.isChanged) {
 			props.onMetadataChange({
 				...props.metadata!,
 				name,
@@ -122,7 +126,7 @@ export const useDomainSettingsBodyHandlers = ({
 				customDomainHeader,
 			});
 		}
-	}, [props, localState]);
+	}, [props, localState, formattedData]);
 
 	return useMemo(
 		() => ({

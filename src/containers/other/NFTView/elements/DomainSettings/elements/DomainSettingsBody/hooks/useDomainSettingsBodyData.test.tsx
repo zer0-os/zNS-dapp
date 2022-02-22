@@ -39,13 +39,18 @@ export const mockLocalActions = {
 	setCustomDomainHeader: jest.fn(),
 };
 
+export const mockFormattedData = {
+	isChanged: false,
+};
+
 describe('useDomainSettingsBodyData', () => {
 	it('should return the expected data', () => {
-		const { localState, localActions } = renderHook(() =>
+		const { localState, localActions, formattedData } = renderHook(() =>
 			useDomainSettingsBodyData(mocCurrentDomain, mockMetadata),
 		);
 
 		expect(localState).toEqual(mockLocalState);
+		expect(formattedData).toEqual(mockFormattedData);
 
 		Object.entries(localActions).forEach(([localActionName, localAction]) => {
 			expect(localActionName in mockLocalActions).toBe(true);
