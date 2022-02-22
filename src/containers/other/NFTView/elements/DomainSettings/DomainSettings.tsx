@@ -30,6 +30,7 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 		props: {
 			domainId,
 			registrar,
+			onClose,
 		},
 		localState,
 		localActions,

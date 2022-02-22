@@ -12,6 +12,7 @@ type UseDomainSettingsHandlersProps = {
 	props: {
 		domainId: string;
 		registrar: Registrar;
+		onClose: () => void;
 	};
 	localState: {
 		localMetadata: Maybe<DomainMetadata>;
@@ -275,11 +276,8 @@ export const useDomainSettingsHandlers = ({
 
 	/* Finish */
 	const handleFinish = useCallback(() => {
-		localActions.setWarning(undefined);
-		localActions.setSuccess(undefined);
-		localActions.setIsLocked(true);
-		localActions.setIsSaved(false);
-	}, [localActions]);
+		props.onClose();
+	}, [props]);
 
 	return useMemo(
 		() => ({
