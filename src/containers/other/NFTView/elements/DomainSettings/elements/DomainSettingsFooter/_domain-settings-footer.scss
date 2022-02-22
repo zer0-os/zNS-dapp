@@ -41,6 +41,14 @@
 
 		&-icon {
 			margin: 0 12px;
+
+			&.lock--icon {
+				background-color: none;
+
+				&:hover:after {
+					display: none !important;
+				}
+			}
 		}
 	}
 }

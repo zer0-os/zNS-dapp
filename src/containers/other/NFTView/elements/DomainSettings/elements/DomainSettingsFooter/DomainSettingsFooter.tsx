@@ -75,7 +75,7 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 			</div>
 			<div className="domain-settings-footer__buttons">
 				<IconButton
-					className="domain-settings-footer__buttons-icon"
+					className="domain-settings-footer__buttons-icon lock--icon"
 					iconUri={
 						isLocked
 							? warning === DomainSettingsWarning.LOCKED
