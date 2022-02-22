@@ -503,7 +503,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.bidder!}`}
+								href={`${etherscanBaseUri}address/${item.bidder!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.bidder!.substring(0, 4)}...${item.bidder!.substring(
@@ -514,7 +514,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<b>
 							{Number(ethers.utils.formatEther(item.amount!)).toLocaleString()}{' '}
 							WILD
-						</b>
+						</b>{' '}
+						{/* {true && <span className={styles.Expired}>(expired)</span>} */}
 					</div>
 					<div className={styles.From}>
 						<b>{moment(Number(item!.timestamp)).fromNow()}</b>
@@ -528,7 +529,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.minter!}`}
+								href={`${etherscanBaseUri}address/${item.minter!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.minter!.substring(0, 4)}...${item.minter!.substring(
@@ -549,7 +550,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.from!}`}
+								href={`${etherscanBaseUri}address/${item.from!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.from!.substring(0, 4)}...${item.from!.substring(
@@ -560,7 +561,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						<b>
 							<a
 								className="alt-link"
-								href={`https://etherscan.io/address/${item.to!}`}
+								href={`${etherscanBaseUri}address/${item.to!}`}
 								target="_blank"
 								rel="noreferrer"
 							>{`${item.to!.substring(0, 4)}...${item.to!.substring(
