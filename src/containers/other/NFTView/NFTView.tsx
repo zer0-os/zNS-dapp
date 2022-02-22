@@ -309,11 +309,14 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const moreOptions = useMemo(() => {
 		const isOwnedByMe =
 			znsDomain?.owner.id.toLowerCase() === account?.toLowerCase();
-		const isLocked = znsDomain?.isLocked;
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		const isLockedByMe = isLocked
-			? znsDomain?.lockedBy.id.toLowerCase() === account?.toLowerCase()
-			: isOwnedByMe;
+		/* Hide for now (2022/02/22)
+		 * TODO:: Should decide to check lockership or not
+
+			const isLocked = znsDomain?.isLocked;
+			const isLockedByMe = isLocked
+				? znsDomain?.lockedBy.id.toLowerCase() === account?.toLowerCase()
+				: isOwnedByMe;
+		 */
 
 		if (isOwnedByMe) {
 			// only show my domain settings action for now

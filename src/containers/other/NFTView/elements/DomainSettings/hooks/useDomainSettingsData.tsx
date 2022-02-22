@@ -42,6 +42,10 @@ export const useDomainSettingsData = (domainId: string) => {
 		const isDomainOwnedByMe =
 			myDomain.domain?.owner.id.toLowerCase() === account?.toLowerCase();
 		const isLocked = myDomain.domain?.isLocked;
+		const hasLockedBy = Boolean(myDomain.domain?.lockedBy);
+
+		if (!hasLockedBy) return isDomainOwnedByMe;
+
 		const isDomainLockedByMe = isLocked
 			? myDomain.domain?.lockedBy?.id.toLowerCase() === account?.toLowerCase()
 			: isDomainOwnedByMe;
