@@ -32,7 +32,6 @@ type NFTProps = {
 	description?: string;
 	buyNowPrice?: number;
 	onMakeBid?: () => void;
-	onBuyNow?: () => void;
 	onDownload?: () => void;
 	onSuccessBuyNow?: () => void;
 	onShare?: () => void;
@@ -54,7 +53,6 @@ const NFT = ({
 	description,
 	buyNowPrice,
 	onSuccessBuyNow,
-	onBuyNow,
 	onDownload,
 	onShare,
 	highestBid,
