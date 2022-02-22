@@ -29,12 +29,17 @@ export interface Domain {
 // because we changed Schema. This needs to be
 // handled in a better way
 interface Meta {
-	description: string;
+	[key: string]: any | undefined;
 	image: string; // One of: Image, Video, 3d Model
+	animation_url?: string;
+	stakingRequests?: 'disabled' | 'enabled';
+	isBiddable?: boolean;
+	gridViewByDefault?: boolean;
+	customDomainHeader?: boolean;
 	previewImage?: string; // One of: Image, Video
+	customDomainHeaderValue?: string;
 	image_full?: string;
 	attributes?: Attribute[];
-	animation_url?: string;
 }
 
 export interface Attribute {
