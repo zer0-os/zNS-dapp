@@ -239,8 +239,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	};
 
 	const onBid = async () => {
-		// @todo switch this to live data
-		// should refresh on bid rather than add mock data
+		console.log('bid');
+		getPriceData();
 		getHistory();
 		closeBidOverlay();
 	};
