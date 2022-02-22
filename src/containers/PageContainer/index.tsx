@@ -43,6 +43,8 @@ import { MintNewNFT } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { NavBarProvider } from 'lib/providers/NavBarProvider';
+import { useModal } from 'lib/hooks/useModal';
+import { ModalType } from 'lib/providers/ModalProvider/ModalTypes';
 
 enum Modal {
 	Bid,
@@ -172,6 +174,14 @@ const PageContainer: FC = ({ children }) => {
 		setModal(Modal.Wallet);
 	};
 
+	const { openModal } = useModal();
+
+	const openConnectWallet = () => {
+		openModal({
+			modalType: ModalType.CONNECT_WALLET_MODAL_TYPE,
+		});
+	};
+
 	const handleResize = () => {
 		setPageWidth(window.innerWidth);
 	};
@@ -257,11 +267,9 @@ const PageContainer: FC = ({ children }) => {
 			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
-			{modal === Modal.Wallet && (
-				<Overlay centered open={modal === Modal.Wallet} onClose={closeModal}>
-					<ConnectToWallet onConnect={closeModal} />
-				</Overlay>
-			)}
+			{/* {modal === Modal.Wallet && (
+				<ConnectToWallet onConnect={closeModal} closeOverlay={closeModal} />
+			)} */}
 			{modal === Modal.Mint && (
 				<Overlay open onClose={closeModal}>
 					<MintNewNFT
@@ -404,7 +412,7 @@ const PageContainer: FC = ({ children }) => {
 								/>
 
 								{/* TODO: Change the triple dot button to a component */}
-								<div className={styles.Dots} onClick={openWallet}>
+								<div className={styles.Dots} onClick={openConnectWallet}>
 									<div></div>
 									<div></div>
 									<div></div>

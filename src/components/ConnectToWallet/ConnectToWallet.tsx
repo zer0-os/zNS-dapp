@@ -17,7 +17,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import WalletStyles from './Wallet.module.scss';
 
 //- Component Imports
-import { FutureButton, Spinner, Image } from 'components';
+import { FutureButton, Spinner, Image, Overlay } from 'components';
 
 //- Utils Imports
 import { WalletOptionType, getWalletOptionStyle } from './utils';
@@ -32,6 +32,7 @@ import useNotification from 'lib/hooks/useNotification';
 
 type ConnectToWalletProps = {
 	onConnect: () => void;
+	closeOverlay: () => void;
 };
 
 const nameToConnector: { [key: string]: AbstractConnector } = {
@@ -65,7 +66,10 @@ const nameFromConnector = (c: AbstractConnector) => {
 	return 'Wallet';
 };
 
-const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
+const ConnectToWallet: React.FC<ConnectToWalletProps> = ({
+	onConnect,
+	closeOverlay,
+}) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { active, connector, activate, deactivate } = walletContext;
 	const [isLoading, setIsLoading] = useState(false); //state for trigger the loading spinner
@@ -153,126 +157,128 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	};
 
 	return (
-		<div className={`${WalletStyles.connect} border-primary`}>
-			<div className={WalletStyles.header}>
-				<h3 className={`glow-text-white`}>Connect To A Wallet</h3>
-			</div>
-			<hr className="glow" />
+		<Overlay centered open onClose={closeOverlay}>
+			<div className={`${WalletStyles.connect} border-primary`}>
+				<div className={WalletStyles.header}>
+					<h3 className={`glow-text-white`}>Connect To A Wallet</h3>
+				</div>
+				<hr className="glow" />
 
-			{isLoading && (
-				<div className={WalletStyles.Disconnect}>
-					<hr className="glow" />
-					<FutureButton glow onClick={() => {}}>
-						<div
-							style={{
-								display: 'flex',
-								justifyContent: 'center',
-								verticalAlign: 'center',
-								alignItems: 'center',
-							}}
-						>
+				{isLoading && (
+					<div className={WalletStyles.Disconnect}>
+						<hr className="glow" />
+						<FutureButton glow onClick={() => {}}>
 							<div
 								style={{
-									display: 'inline-block',
-									width: '10%',
-									margin: '0px',
-									padding: '0px',
-								}}
-							>
-								<Spinner />
-							</div>
-							<p
-								style={{
-									display: 'inline-block',
-									width: '90%',
+									display: 'flex',
+									justifyContent: 'center',
 									verticalAlign: 'center',
-									height: '18px',
-									marginLeft: '24px',
+									alignItems: 'center',
 								}}
 							>
-								Connecting
-							</p>
-						</div>
-					</FutureButton>
-				</div>
-			)}
+								<div
+									style={{
+										display: 'inline-block',
+										width: '10%',
+										margin: '0px',
+										padding: '0px',
+									}}
+								>
+									<Spinner />
+								</div>
+								<p
+									style={{
+										display: 'inline-block',
+										width: '90%',
+										verticalAlign: 'center',
+										height: '18px',
+										marginLeft: '24px',
+									}}
+								>
+									Connecting
+								</p>
+							</div>
+						</FutureButton>
+					</div>
+				)}
 
-			{!isLoading && (
-				<ul>
-					<li
-						onClick={() => connectToWallet(WalletOptionType.METAMASK)}
-						className={getWalletOptionStyle(WalletOptionType.METAMASK)}
-					>
-						Metamask
-						<div>
-							<Image
-								style={{ height: 36, width: 36 }}
-								alt="metamask"
-								src={metamaskIcon}
-							/>
-						</div>
-					</li>
-					<li
-						onClick={() => connectToWallet(WalletOptionType.WALLET_CONNECT)}
-						className={getWalletOptionStyle(WalletOptionType.WALLET_CONNECT)}
-					>
-						<span>Wallet Connect</span>
-						<div>
-							<Image alt="wallet connect" src={walletConnectIcon} />
-						</div>
-					</li>
-					<li
-						onClick={() => connectToWallet(WalletOptionType.COINBASE)}
-						className={getWalletOptionStyle(WalletOptionType.COINBASE)}
-					>
-						<span>Coinbase Wallet</span>
-						<div>
-							<Image alt="coinbase wallet" src={coinbaseWalletIcon} />
-						</div>
-					</li>
-					<li
-						onClick={() => connectToWallet(WalletOptionType.FORTMATIC)}
-						className={getWalletOptionStyle(WalletOptionType.FORTMATIC)}
-					>
-						<span>Fortmatic</span>
-						<div>
-							<Image alt="fortmatic" src={fortmaticIcon} />
-						</div>
-					</li>
-					<li
-						onClick={() => connectToWallet(WalletOptionType.PORTIS)}
-						className={getWalletOptionStyle(WalletOptionType.PORTIS)}
-					>
-						<span>Portis</span>
-						<div>
-							<Image alt="portis" src={portisIcon} />
-						</div>
-					</li>
-				</ul>
-			)}
-			{active && connector && !isLoading && (
-				<div className={WalletStyles.Disconnect}>
-					<hr className="glow" />
-					<FutureButton glow onClick={disconnect}>
-						Disconnect {nameFromConnector(connector)}
-					</FutureButton>
+				{!isLoading && (
+					<ul>
+						<li
+							onClick={() => connectToWallet(WalletOptionType.METAMASK)}
+							className={getWalletOptionStyle(WalletOptionType.METAMASK)}
+						>
+							Metamask
+							<div>
+								<Image
+									style={{ height: 36, width: 36 }}
+									alt="metamask"
+									src={metamaskIcon}
+								/>
+							</div>
+						</li>
+						<li
+							onClick={() => connectToWallet(WalletOptionType.WALLET_CONNECT)}
+							className={getWalletOptionStyle(WalletOptionType.WALLET_CONNECT)}
+						>
+							<span>Wallet Connect</span>
+							<div>
+								<Image alt="wallet connect" src={walletConnectIcon} />
+							</div>
+						</li>
+						<li
+							onClick={() => connectToWallet(WalletOptionType.COINBASE)}
+							className={getWalletOptionStyle(WalletOptionType.COINBASE)}
+						>
+							<span>Coinbase Wallet</span>
+							<div>
+								<Image alt="coinbase wallet" src={coinbaseWalletIcon} />
+							</div>
+						</li>
+						<li
+							onClick={() => connectToWallet(WalletOptionType.FORTMATIC)}
+							className={getWalletOptionStyle(WalletOptionType.FORTMATIC)}
+						>
+							<span>Fortmatic</span>
+							<div>
+								<Image alt="fortmatic" src={fortmaticIcon} />
+							</div>
+						</li>
+						<li
+							onClick={() => connectToWallet(WalletOptionType.PORTIS)}
+							className={getWalletOptionStyle(WalletOptionType.PORTIS)}
+						>
+							<span>Portis</span>
+							<div>
+								<Image alt="portis" src={portisIcon} />
+							</div>
+						</li>
+					</ul>
+				)}
+				{active && connector && !isLoading && (
+					<div className={WalletStyles.Disconnect}>
+						<hr className="glow" />
+						<FutureButton glow onClick={disconnect}>
+							Disconnect {nameFromConnector(connector)}
+						</FutureButton>
+					</div>
+				)}
+				<hr className="glow" />
+				<div className={WalletStyles.footer}>
+					<p>
+						New to Ethereum?
+						<br />
+						<a
+							rel="noreferrer"
+							href="https://ethereum.org/en/wallets/"
+							target="_blank"
+						>
+							Learn more about wallets
+						</a>
+					</p>
 				</div>
-			)}
-			<hr className="glow" />
-			<div className={WalletStyles.footer}>
-				<p>
-					New to Ethereum?
-					<br />
-					<a
-						rel="noreferrer"
-						href="https://ethereum.org/en/wallets/"
-						target="_blank"
-					>
-						Learn more about wallets
-					</a>
-				</p>
 			</div>
-		</div>
+		</Overlay>
 	);
 };
 
