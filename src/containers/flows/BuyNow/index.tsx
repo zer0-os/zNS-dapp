@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Component Imports
-import { Overlay } from 'components';
 import BuyNow, { Step } from './BuyNow';
 
 // Library Imports

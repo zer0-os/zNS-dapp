@@ -6,7 +6,7 @@
 // Component Imports
 import { Detail, FutureButton, Wizard } from 'components';
 import { ethers } from 'ethers';
-import { Data, Step } from '../BuyNow';
+import { Data } from '../BuyNow';
 
 // Style Imports
 import styles from './Details.module.scss';

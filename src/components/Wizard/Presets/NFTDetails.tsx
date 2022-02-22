@@ -1,11 +1,6 @@
 import styles from './NFTDetails.module.scss';
 import classNames from 'classnames';
-import {
-	Detail,
-	Detail as DetailComponent,
-	Member,
-	NFTMedia,
-} from 'components';
+import { Detail as DetailComponent, Member, NFTMedia } from 'components';
 
 type Detail = {
 	name: string;

@@ -36,9 +36,6 @@ const SetBuyNowContainer = ({
 	const [error, setError] = useState<string | undefined>();
 	const isMounted = useRef<boolean>();
 
-	// Stub functions for navigation
-	const onNext = () => console.log('next');
-
 	/*
 	 * Checks a user's wallet has approved zAuction to
 	 * transfer NFTs
