@@ -24,6 +24,8 @@ const chainIdToSubgraph = (id: number): string => {
 	switch (id) {
 		case 1:
 			return process.env.REACT_APP_SUBGRAPH_URL_1!;
+		case 4:
+			return process.env.REACT_APP_SUBGRAPH_URL_4!;
 		case 42:
 			return process.env.REACT_APP_SUBGRAPH_URL_42!;
 	}

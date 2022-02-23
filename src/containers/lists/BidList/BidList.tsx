@@ -1,5 +1,5 @@
 // React Imports
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Style Imports
 import styles from './BidList.module.scss';
@@ -9,6 +9,8 @@ import { FutureButton } from 'components';
 
 // Type Imports
 import { Bid } from 'lib/types';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
 
 const moment = require('moment');
 
@@ -22,6 +24,27 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 	//////////////////
 	// Data & State //
 	//////////////////
+
+	const [blockNumber, setBlockNumber] = useState<number>();
+	const { library } = useWeb3React<Web3Provider>();
+
+	useEffect(() => {
+		// console.log(library);
+		if (library) {
+			library.getBlockNumber().then((bn) => {
+				setBlockNumber(bn);
+			});
+			library.on('block', setBlockNumber);
+			return () => {
+				library.removeListener('block', setBlockNumber);
+				setBlockNumber(undefined);
+			};
+		}
+	}, [library]);
+
+	// useEffect(() => {
+	// 	console.log({ blockNumber });
+	// }, [blockNumber]);
 
 	const sorted = bids
 		.slice()
@@ -75,10 +98,16 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 								</a>
 							</span>
 						</div>
-						{onAccept !== undefined && (
-							<FutureButton glow onClick={() => accept(bid)}>
-								Accept
-							</FutureButton>
+						{blockNumber && (
+							<>
+								{Number(bid.expireBlock) > blockNumber &&
+									onAccept !== undefined && (
+										<FutureButton glow onClick={() => accept(bid)}>
+											Accept
+										</FutureButton>
+									)}
+								{Number(bid.expireBlock) <= blockNumber && <div>Expired</div>}
+							</>
 						)}
 					</li>
 				))}
