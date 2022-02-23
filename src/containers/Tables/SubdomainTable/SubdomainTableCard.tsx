@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import useCurrency from 'lib/hooks/useCurrency';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import { formatNumber, formatEthers } from 'lib/utils';
@@ -33,6 +34,10 @@ const SubdomainTableCard = (props: any) => {
 
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
+
+	const { domainMetadata } = useCurrentDomain();
+	const isRootDomain = domain.name.split('.').length <= 2;
+	const isBidable = isRootDomain || Boolean(domainMetadata?.isBiddable);
 
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 
@@ -102,12 +107,14 @@ const SubdomainTableCard = (props: any) => {
 						</>
 					)}
 				</div>
-				<BidButton
-					glow={account !== undefined && !isOwnedByUser}
-					onClick={onButtonClick}
-				>
-					Bid
-				</BidButton>
+				{isBidable && (
+					<BidButton
+						glow={account !== undefined && !isOwnedByUser}
+						onClick={onButtonClick}
+					>
+						Bid
+					</BidButton>
+				)}
 			</div>
 		</NFTCard>
 	);

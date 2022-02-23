@@ -6,6 +6,7 @@ import styles from './SubdomainTableRow.module.scss';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useCurrency from 'lib/hooks/useCurrency';
 import { Bid } from 'lib/types';
@@ -23,6 +24,7 @@ const SubdomainTableRow = (props: any) => {
 
 	const { makeABid, updated } = useBid();
 	const { getBidsForDomain } = useBidProvider();
+	const { domainMetadata } = useCurrentDomain();
 
 	const { wildPriceUsd } = useCurrency();
 
@@ -33,6 +35,9 @@ const SubdomainTableRow = (props: any) => {
 
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
+
+	const isRootDomain = domain.name.split('.').length <= 2;
+	const isBidable = isRootDomain || Boolean(domainMetadata?.isBiddable);
 
 	const isOwnedByUser =
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
@@ -181,13 +186,15 @@ const SubdomainTableRow = (props: any) => {
 			</td>
 			{bidColumns()}
 			<td>
-				<BidButton
-					glow={account !== undefined && !isOwnedByUser}
-					onClick={onBidButtonClick}
-					style={{ marginLeft: 'auto' }}
-				>
-					Make A Bid
-				</BidButton>
+				{isBidable && (
+					<BidButton
+						glow={account !== undefined && !isOwnedByUser}
+						onClick={onBidButtonClick}
+						style={{ marginLeft: 'auto' }}
+					>
+						Make A Bid
+					</BidButton>
+				)}
 			</td>
 		</tr>
 	);
