@@ -6,7 +6,7 @@ import { ConnectWalletButton } from 'containers';
 import iconDiscord from '../assets/discord.png';
 import iconTwitter from '../assets/twitter.png';
 import useCurrency from 'lib/hooks/useCurrency';
-import { formatNumber } from 'lib/utils';
+import { formatByDecimalPlace, formatNumber } from 'lib/utils';
 import { ethers } from 'ethers';
 
 type RaffleRegistrationProps = {
@@ -264,7 +264,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 								!hasSufficientBalance.wild ? styles.ErrorColor : ''
 							} ${styles.amount}`}
 						>
-							{balances?.wildBalance || 0}
+							{formatByDecimalPlace(balances?.wildBalance || 0, 2)}
 						</div>
 						<div>
 							{'$' +
@@ -279,7 +279,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 								!hasSufficientBalance.eth ? styles.ErrorColor : ''
 							} ${styles.amount}`}
 						>
-							{balances?.ethBalance || 0}
+							{formatByDecimalPlace(balances?.ethBalance || 0, 2)}
 						</div>
 						<div>
 							{'$' +
@@ -355,9 +355,12 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		return (
 			<>
 				<p>
-					Please add some optional personal info, the more you give the better
-					your chances of making it into the raffle. We recognise this reduces
-					anonymity, but it helps us reduce bots and keep things fair!
+					Please add some additional personal info. Providing additional
+					optional information helps us resolve questions or conflicts that may
+					prevent your entry from being counted. We recognize this reduces
+					anonymity, but it helps us reduce bots and keep things fair! Any
+					attempt to game the system for multiple entries will result in entries
+					being disqualified.
 				</p>
 				<div className={styles.PersonalInfo}>
 					<div className={styles.CombinedFirstAndLastFields}>
