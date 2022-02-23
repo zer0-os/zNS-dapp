@@ -10,6 +10,7 @@ import React, { useRef, useState } from 'react';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useAsyncEffect } from 'use-async-effect';
 import BidProvider, { useBid } from './BidProvider';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 
 // Component Imports
 import SubdomainTableRow from './SubdomainTableRow';
@@ -32,8 +33,9 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 
 	// Domain hook data
 	const { domain, loading } = useCurrentDomain();
-
 	const { domain: biddingOn, close, bidPlaced } = useBid();
+	const domainMetadata = useDomainMetadata(domain?.metadata);
+	const customDomainHeader = domainMetadata?.customDomainHeaderValue;
 
 	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
 	const [data, setData] = useState<
@@ -42,6 +44,8 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 		  })[]
 		| undefined
 	>();
+
+	const domainHeader = !customDomainHeader ? 'Domain' : customDomainHeader;
 
 	useAsyncEffect(async () => {
 		let isMounted = true;
@@ -113,7 +117,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			className: '',
 		},
 		{
-			label: 'Domain',
+			label: domainHeader,
 			accessor: '',
 			className: 'domain',
 		},
