@@ -38,6 +38,7 @@ export const DomainSettingsModal: React.FC<DomainSettingsModalProps> = ({
 		<Overlay
 			classNames="domain-settings-modal__overlay"
 			centered
+			nested
 			open={isOpen}
 			hasCloseButton={false}
 			onClose={onCancel}

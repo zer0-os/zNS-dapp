@@ -56,6 +56,7 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 		<Overlay
 			classNames="domain-settings__overlay"
 			open
+			nested
 			hasCloseButton={false}
 			onClose={onClose}
 		>
