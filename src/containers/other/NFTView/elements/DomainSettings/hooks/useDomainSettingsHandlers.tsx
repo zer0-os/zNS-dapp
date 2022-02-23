@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from 'react';
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
-import { Maybe } from 'lib/types';
+import { Maybe, Metadata } from 'lib/types';
 import { Registrar } from 'types/Registrar';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import {
@@ -10,9 +10,11 @@ import {
 
 type UseDomainSettingsHandlersProps = {
 	props: {
+		isZnsDomain: boolean;
 		domainId: string;
 		registrar: Registrar;
 		onClose: () => void;
+		setDomainMetadata: (v: Maybe<Metadata>) => void;
 	};
 	localState: {
 		localMetadata: Maybe<DomainMetadata>;
@@ -86,6 +88,38 @@ export const useDomainSettingsHandlers = ({
 			console.error('Fetched Metadata Errors = ', e);
 		}
 	}, [sdk, props, localActions]);
+
+	/* Set Metadata (to write to navbar provider) */
+	/* TODO:: This should be moved to redux later */
+	const handleUpdatedMetadata = useCallback(async () => {
+		if (props.isZnsDomain) {
+			try {
+				const updatedMetadata = await sdk.instance.getDomainMetadata(
+					props.domainId,
+					props.registrar.signer,
+				);
+				if (updatedMetadata) {
+					props.setDomainMetadata({
+						attributes: updatedMetadata.attributes,
+						title: updatedMetadata.name || updatedMetadata.title,
+						description: updatedMetadata.description,
+						image: updatedMetadata.image,
+						image_full: updatedMetadata.image_full,
+						previewImage: updatedMetadata.previewImage,
+						animation_url: updatedMetadata.animation_url,
+						stakingRequests: updatedMetadata.stakingRequests,
+						isBiddable: Boolean(updatedMetadata.isBiddable),
+						isMintable: Boolean(updatedMetadata.isMintable),
+						gridViewByDefault: Boolean(updatedMetadata.gridViewByDefault),
+						customDomainHeader: Boolean(updatedMetadata.customDomainHeader),
+						customDomainHeaderValue: updatedMetadata.customDomainHeaderValue,
+					} as Metadata);
+				}
+			} catch (e) {
+				console.error('Fetched Updated Metadata Errors = ', e);
+			}
+		}
+	}, [sdk, props]);
 
 	/* Local Actions */
 	const handleShowingLockedWarning = useCallback(() => {
@@ -202,6 +236,8 @@ export const useDomainSettingsHandlers = ({
 
 				await tx.wait();
 
+				await handleUpdatedMetadata();
+
 				localActions.setSuccess(DomainSettingsSuccess.MEATA_DATA_SAVED);
 
 				localActions.setIsSaved(true);
@@ -223,7 +259,14 @@ export const useDomainSettingsHandlers = ({
 
 		// scroll to top
 		document.getElementById('domain_settings_body__wrapper')!.scrollTop = 0;
-	}, [sdk, props, localState, localActions, modalsActions]);
+	}, [
+		sdk,
+		props,
+		localState,
+		localActions,
+		modalsActions,
+		handleUpdatedMetadata,
+	]);
 
 	/* Save And Lock */
 	const handleSaveAndLock = useCallback(async () => {
@@ -247,6 +290,8 @@ export const useDomainSettingsHandlers = ({
 				modalsActions.handleSaveAndLockModalProcessing();
 
 				await tx.wait();
+
+				await handleUpdatedMetadata();
 
 				localActions.setSuccess(
 					DomainSettingsSuccess.MEATA_DATA_SAVED_AND_LOCKED,
@@ -272,7 +317,14 @@ export const useDomainSettingsHandlers = ({
 
 		// scroll to top
 		document.getElementById('domain_settings_body__wrapper')!.scrollTop = 0;
-	}, [sdk, props, localState, localActions, modalsActions]);
+	}, [
+		sdk,
+		props,
+		localState,
+		localActions,
+		modalsActions,
+		handleUpdatedMetadata,
+	]);
 
 	/* Finish */
 	const handleFinish = useCallback(() => {

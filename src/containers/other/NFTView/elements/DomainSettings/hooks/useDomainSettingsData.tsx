@@ -3,6 +3,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { getRelativeDomainPath } from 'lib/utils/domains';
 import { useZnsContracts } from 'lib/contracts';
 import { Maybe } from 'lib/types';
@@ -15,6 +16,7 @@ export const useDomainSettingsData = (domainId: string) => {
 	const { account } = useWeb3React<Web3Provider>();
 
 	const myDomain = useZnsDomain(domainId);
+	const { domainId: znsDomainId, setDomainMetadata } = useCurrentDomain();
 	const parentDomain = useZnsDomain(myDomain.domain?.parent.id || '');
 
 	const znsContracts = useZnsContracts()!;
@@ -30,6 +32,11 @@ export const useDomainSettingsData = (domainId: string) => {
 	const [metadata, setMetadata] = useState<Maybe<DomainMetadata>>(undefined);
 	const [localMetadata, setLocalMetadata] =
 		useState<Maybe<DomainMetadata>>(undefined);
+
+	const isZnsDomain = useMemo(
+		() => znsDomainId.toString() === domainId.toString(),
+		[domainId, znsDomainId],
+	);
 
 	const { domainUri, relativeDomain } = useMemo(() => {
 		const domainUri = `0://${myDomain.domain?.name}`;
@@ -91,6 +98,7 @@ export const useDomainSettingsData = (domainId: string) => {
 			setLocalMetadata,
 		},
 		formattedData: {
+			isZnsDomain,
 			myDomain,
 			parentDomain,
 			domainUri,
@@ -99,5 +107,6 @@ export const useDomainSettingsData = (domainId: string) => {
 			unlockable,
 		},
 		registrar,
+		setDomainMetadata,
 	};
 };

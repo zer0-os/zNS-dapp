@@ -23,14 +23,21 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 	domainId,
 	onClose,
 }) => {
-	const { localState, localActions, formattedData, registrar } =
-		useDomainSettingsData(domainId);
+	const {
+		localState,
+		localActions,
+		formattedData,
+		registrar,
+		setDomainMetadata,
+	} = useDomainSettingsData(domainId);
 	const { modalsState, modalsActions } = useDomainSettingsModals();
 	const handlers = useDomainSettingsHandlers({
 		props: {
+			isZnsDomain: formattedData.isZnsDomain,
 			domainId,
 			registrar,
 			onClose,
+			setDomainMetadata,
 		},
 		localState,
 		localActions,

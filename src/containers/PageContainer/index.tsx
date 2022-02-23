@@ -72,7 +72,12 @@ const PageContainer: FC = ({ children }) => {
 	}, [chainId]);
 
 	//- Domain Data
-	const { domain: znsDomain, loading, refetch } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		domainMetadata,
+		loading,
+		refetch,
+	} = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
@@ -124,6 +129,7 @@ const PageContainer: FC = ({ children }) => {
 	//- Data
 	const isOwnedByUser: boolean =
 		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
+	const isMintable: boolean = Boolean(domainMetadata?.isMintable);
 
 	///////////////
 	// Functions //
@@ -355,7 +361,7 @@ const PageContainer: FC = ({ children }) => {
 						{account && !isSearchActive && (
 							<>
 								{/* Mint button */}
-								{isOwnedByUser && (
+								{isOwnedByUser && isMintable && (
 									<FutureButton
 										style={{ padding: '0px 12px' }}
 										glow={account != null}

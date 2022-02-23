@@ -4,16 +4,19 @@ import { useHistory } from 'react-router-dom';
 
 // Web3 Imports
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
-import { DisplayParentDomain, Maybe } from 'lib/types';
+import { usePropsState } from 'lib/hooks/usePropsState';
+import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { getDomainId } from 'lib/utils';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
 	domainId: '',
 	domainRaw: '/',
+	domainMetadata: undefined as Maybe<Metadata>,
 	app: '',
 	loading: true,
 	refetch: () => {}, // @todo update this
+	setDomainMetadata: (v: Maybe<Metadata>) => {},
 });
 
 const parseDomainFromURI = (pathname: string) => {
@@ -40,13 +43,19 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 	const domainId = getDomainId(domain);
 	const znsDomain = useZnsDomain(domainId);
 
+	const [domainMetadata, setDomainMetadata] = usePropsState(
+		znsDomain.domainMetadata,
+	);
+
 	const contextValue = {
 		domain: znsDomain.domain,
 		domainId,
 		domainRaw: domain,
+		domainMetadata,
 		app: location.pathname.indexOf('/market') > -1 ? '/market' : '/staking',
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,
+		setDomainMetadata,
 	};
 
 	return (
