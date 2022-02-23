@@ -121,7 +121,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		domainMetadata,
 		domainRaw: domain,
 	} = useCurrentDomain();
-	const isBidable = Boolean(domainMetadata?.isBiddable);
+	const isBiddable = Boolean(domainMetadata?.isBiddable);
 
 	//- Web3 Domain Data
 	// const domainId = getDomainId(domain.substring(1));
@@ -680,7 +680,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 					Transfer Ownership
 				</FutureButton>
 			)}
-			{!isOwnedByYou && isBidable && (
+			{!isOwnedByYou && isBiddable && (
 				<BidButton
 					glow={!isOwnedByYou && active}
 					onClick={openBidOverlay}

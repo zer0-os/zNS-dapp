@@ -35,7 +35,13 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 	const { domain, loading } = useCurrentDomain();
 	const { domain: biddingOn, close, bidPlaced } = useBid();
 	const domainMetadata = useDomainMetadata(domain?.metadata);
-	const customDomainHeader = domainMetadata?.customDomainHeaderValue;
+	const isCustomDomainHeader = domainMetadata?.customDomainHeader;
+	const customDomainHeaderValue = domainMetadata?.customDomainHeaderValue;
+
+	// Set domain header - default or custom
+	const domainHeader = isCustomDomainHeader
+		? customDomainHeaderValue
+		: 'Domain';
 
 	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
 	const [data, setData] = useState<
@@ -44,8 +50,6 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 		  })[]
 		| undefined
 	>();
-
-	const domainHeader = !customDomainHeader ? 'Domain' : customDomainHeader;
 
 	useAsyncEffect(async () => {
 		let isMounted = true;

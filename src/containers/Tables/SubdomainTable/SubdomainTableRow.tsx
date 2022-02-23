@@ -37,7 +37,7 @@ const SubdomainTableRow = (props: any) => {
 	const [areBidsLoading, setAreBidsLoading] = useState<boolean>(true);
 
 	const isRootDomain = domain.name.split('.').length <= 2;
-	const isBidable = isRootDomain || Boolean(domainMetadata?.isBiddable);
+	const isBiddable = isRootDomain || Boolean(domainMetadata?.isBiddable);
 
 	const isOwnedByUser =
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
@@ -186,7 +186,7 @@ const SubdomainTableRow = (props: any) => {
 			</td>
 			{bidColumns()}
 			<td>
-				{isBidable && (
+				{isBiddable && (
 					<BidButton
 						glow={account !== undefined && !isOwnedByUser}
 						onClick={onBidButtonClick}

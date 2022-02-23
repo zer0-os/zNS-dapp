@@ -37,7 +37,7 @@ const SubdomainTableCard = (props: any) => {
 
 	const { domainMetadata } = useCurrentDomain();
 	const isRootDomain = domain.name.split('.').length <= 2;
-	const isBidable = isRootDomain || Boolean(domainMetadata?.isBiddable);
+	const isBiddable = isRootDomain || Boolean(domainMetadata?.isBiddable);
 
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 
@@ -107,7 +107,7 @@ const SubdomainTableCard = (props: any) => {
 						</>
 					)}
 				</div>
-				{isBidable && (
+				{isBiddable && (
 					<BidButton
 						glow={account !== undefined && !isOwnedByUser}
 						onClick={onButtonClick}
