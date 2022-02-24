@@ -8,6 +8,7 @@ import iconTwitter from '../assets/twitter.png';
 import useCurrency from 'lib/hooks/useCurrency';
 import { formatByDecimalPlace, formatNumber } from 'lib/utils';
 import { ethers } from 'ethers';
+import { ethTokenPrice } from 'lib/tokenPrices';
 
 type RaffleRegistrationProps = {
 	isWalletConnected: boolean;
@@ -51,6 +52,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	const [discord, setDiscord] = useState<string | undefined>();
 	const [telegram, setTelegram] = useState<string | undefined>();
 	const [balances, setBalances] = useState<any | undefined>();
+	const [ethPriceUsd, SetEthPriceUsd] = useState<number>();
 	const validationCriteria: any = {
 		eth: '0',
 		wild: '0',
@@ -116,7 +118,11 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 
 	const checkBalanceEligibility = async () => {
 		setIsLoadingRegistration(true);
+
 		updateStatus('Checking your balance for eligibility');
+		const ethPrice = await ethTokenPrice();
+		SetEthPriceUsd(ethPrice);
+
 		try {
 			const response = await fetch(
 				// `https://raffle-entry-microservice.herokuapp.com/balances/${props.account}/${props.drop}`,
@@ -283,7 +289,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 						</div>
 						<div>
 							{'$' +
-								formatNumber(wildPriceUsd * Number(balances?.wildBalance || 0))}
+								formatNumber(
+									(ethPriceUsd || 2400) * Number(balances?.ethBalance || 0),
+								)}
 						</div>
 					</div>
 					<div className={styles.eachBalances}>
