@@ -22,7 +22,7 @@ const WheelsRaffleContainer = () => {
 	// Hardcoded event times
 	// const RAFFLE_START_TIME = 1645819200000;
 	// const RAFFLE_END_TIME = 1646078400000;
-	// const SALE_START_TIME = 1642644000655; //1640181600000;
+	// const SALE_START_TIME = 1648234800000; //1640181600000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -149,7 +149,7 @@ const WheelsRaffleContainer = () => {
 		if (!hasRaffleStarted) {
 			return 'Get Notified';
 		} else if (!hasRaffleEnded) {
-			return 'Enter Raffle';
+			return 'Sign up for Pets Mintlist';
 		} else {
 			return 'Sale Info';
 		}
