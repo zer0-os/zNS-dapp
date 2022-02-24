@@ -63,7 +63,7 @@ const SubdomainTableRow = (props: any) => {
 		setBids(undefined);
 		setBuyNowPrice(undefined);
 
-		if (account && library) {
+		if (library) {
 			const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
 			const buyNow = await zAuction.getBuyNowPrice(
 				domain.id,
@@ -214,6 +214,7 @@ const SubdomainTableRow = (props: any) => {
 						onSuccess={fetchData}
 						buttonText="Buy Now"
 						domainId={domain.id}
+						disabled={isOwnedByUser}
 						style={{ marginLeft: 'auto', width: 160 }}
 					/>
 				) : (
