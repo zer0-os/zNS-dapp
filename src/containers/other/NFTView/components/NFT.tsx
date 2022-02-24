@@ -52,6 +52,7 @@ const NFT = ({
 	assetUrl,
 	description,
 	buyNowPrice,
+	isPriceDataLoading,
 	onSuccessBuyNow,
 	onDownload,
 	onShare,
@@ -95,7 +96,11 @@ const NFT = ({
 		<div>
 			<Detail
 				text={Amount(
-					(buyNowPrice ?? 0) > 0 ? buyNowPrice!.toLocaleString() : '-',
+					(buyNowPrice ?? 0) > 0
+						? buyNowPrice!.toLocaleString()
+						: isPriceDataLoading
+						? '-'
+						: 'No price set',
 				)}
 				subtext={'Buy Now Price (WILD)'}
 				bottomText={
@@ -130,7 +135,13 @@ const NFT = ({
 	const HighestBid = () => (
 		<div>
 			<Detail
-				text={Amount(highestBid?.toLocaleString() ?? '-')}
+				text={Amount(
+					highestBid
+						? highestBid.toLocaleString()
+						: isPriceDataLoading
+						? '-'
+						: 'No bids',
+				)}
 				subtext={'Highest Bid (WILD)'}
 				bottomText={
 					highestBid && wildPriceUsd

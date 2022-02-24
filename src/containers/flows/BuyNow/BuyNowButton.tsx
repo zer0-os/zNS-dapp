@@ -8,6 +8,7 @@ interface BuyNowButtonProps {
 	buttonText?: string;
 	disabled?: boolean;
 	onSuccess?: () => void;
+	style?: React.CSSProperties;
 }
 
 const SetBuyNowButton = ({
@@ -16,6 +17,7 @@ const SetBuyNowButton = ({
 	buttonText,
 	disabled,
 	onSuccess,
+	style,
 }: BuyNowButtonProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -36,7 +38,12 @@ const SetBuyNowButton = ({
 					/>
 				</Overlay>
 			)}
-			<FutureButton className={className} glow={!disabled} onClick={onClick}>
+			<FutureButton
+				style={style}
+				className={className}
+				glow={!disabled}
+				onClick={onClick}
+			>
 				{buttonText ? buttonText : 'Edit Buy Now'}
 			</FutureButton>
 		</>
