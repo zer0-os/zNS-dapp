@@ -18,7 +18,7 @@ export const getBannerButtonText = (
 		return 'Mint Now';
 	}
 	if (dropStage === Stage.Sold) {
-		return 'See Kicks';
+		return 'See Pets';
 	}
 
 	return 'Learn More';
@@ -33,20 +33,16 @@ export const getBannerLabel = (
 	isFinished?: boolean,
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
-		return (
-			<>
-				Wilder Kicks whitelist release starting - waiting for contract to begin
-			</>
-		);
+		return <>Presale Mint Period Coming Soon - waiting for contract to begin</>;
 	}
 	if (dropStage === Stage.Whitelist) {
 		if (isFinished) {
-			<>Wilder Kicks public release starting - you may need to refresh</>;
+			<>Wilder Pets public release starting - you may need to refresh</>;
 		} else {
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<span>
-						Wilder Kicks now available for whitelisted supporters{' '}
+						Wilder Pets now available for whitelisted supporters{' '}
 						{totalLabel(wheelsMinted!, wheelsTotal!)}
 					</span>
 					{/* <span style={{ marginTop: 4 }}>
@@ -82,7 +78,7 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					Wilder Kicks now available for whitelisted supporters{' '}
+					Wilder Pets now available for whitelisted supporters{' '}
 					{totalLabel(wheelsMinted!, wheelsTotal!)}
 				</span>
 				{timer}
@@ -93,23 +89,22 @@ export const getBannerLabel = (
 		if (Math.max(wheelsTotal! - wheelsMinted!, 0) !== 0) {
 			return (
 				<>
-					The Air Wild Season One sale is finished.{' '}
-					{Math.max(wheelsTotal! - wheelsMinted!, 0)} remaining pairs have been
-					transferred to the Wilder DAO.
+					The pets sale is finished. {Math.max(wheelsTotal! - wheelsMinted!, 0)}{' '}
+					remaining pets have been transferred to the Wilder DAO.
 				</>
 			);
 		}
 		return (
 			<>
-				Minting is now open to everyone, act fast to secure your Kicks!{' '}
+				Minting is now open to everyone, act fast to secure your Pets!{' '}
 				{totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);
 	}
 
 	if (dropStage === Stage.Sold) {
-		// return <>All {wheelsTotal} Kicks have been minted</>;
-		return <>Air Wild Season One is sold out!</>;
+		return <>All {wheelsTotal} Pets have been minted</>;
+		// return <>Air Wild Season One is sold out!</>;
 	}
 
 	return <>Loading drop data...</>;

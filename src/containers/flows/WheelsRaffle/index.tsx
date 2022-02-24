@@ -14,15 +14,15 @@ const WheelsRaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	const RAFFLE_START_TIME = currentTime - 10000;
-	const RAFFLE_END_TIME = currentTime + 10000 * 1000;
-	const SALE_START_TIME = currentTime + 10000;
+	// const RAFFLE_START_TIME = currentTime + 10000;
+	// const RAFFLE_END_TIME = currentTime + 10000 * 3;
+	// const SALE_START_TIME = currentTime + 10000;
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
-	// const RAFFLE_START_TIME = 0;
-	// const RAFFLE_END_TIME = 0;
-	// const SALE_START_TIME = 1642644000655; //1640181600000;
+	const RAFFLE_START_TIME = 1645819200000;
+	const RAFFLE_END_TIME = 1646078400000;
+	const SALE_START_TIME = 1642644000655; //1640181600000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -109,7 +109,7 @@ const WheelsRaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Sale starting in{' '}
+					Presale Mint Period Coming Soon{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -121,7 +121,7 @@ const WheelsRaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Join the whitelist raffle. Raffle closes in{' '}
+					Mintlist Signup Period Ending in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
@@ -133,7 +133,7 @@ const WheelsRaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Kicks raffle - starting in{' '}
+					Get notified about the Wilder Pets raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -201,8 +201,8 @@ const WheelsRaffleContainer = () => {
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
-								? 'Your Kicks for the Metaverse await'
-								: 'Get Early Access to Wilder Kicks'
+								? 'Mintlist Signup Period Complete'
+								: 'Your Metaverse Companion Awaits'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

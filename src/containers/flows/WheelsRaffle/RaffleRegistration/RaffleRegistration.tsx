@@ -189,9 +189,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					Sign up to the raffle with your wallet for a chance at joining the
 					mintlist! <br />
 					<br />
-					The minimum requirement is your wallet address, but if you would like
+					{/* The minimum requirement is your wallet address, but if you would like
 					us to be able to communicate directly with you, and increase your
-					chance of securing a spot, you can provide us with more detail.
+					chance of securing a spot, you can provide us with more detail. */}
 				</p>
 				{registrationError && (
 					<span className={styles.Error}>{registrationError}</span>
