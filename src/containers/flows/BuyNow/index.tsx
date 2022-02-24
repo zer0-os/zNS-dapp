@@ -140,7 +140,7 @@ const BuyNowContainer = ({
 				setData({
 					id: domainId,
 					title: (metadata.title || metadata.name) as string,
-					domain: domain.name + '12951.5315321532.532152',
+					domain: domain.name,
 					owner: domain.owner,
 					assetUrl:
 						((metadata.animation_url ||
