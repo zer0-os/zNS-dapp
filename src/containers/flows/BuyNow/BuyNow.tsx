@@ -62,6 +62,7 @@ const BuyNow = ({
 	if (step === Step.ApproveZAuction) {
 		return WrapWizard(
 			<Wizard.Confirmation
+				error={error}
 				message={
 					'Before you can buy this domain, your wallet needs to approve zAuction. This is a one-off transaction costing gas.'
 				}

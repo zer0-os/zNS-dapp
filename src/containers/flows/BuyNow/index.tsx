@@ -53,21 +53,43 @@ const BuyNowContainer = ({
 	};
 
 	const approveZAuction = async () => {
-		const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-		setCurrentStep(Step.ApproveZAuctionWaiting);
-		const approvalTx = await zAuction.approveZAuctionSpendTradeTokens(
-			library.getSigner(),
-		);
-		setCurrentStep(Step.ApproveZAuctionProcessing);
-		await approvalTx.wait();
-		setCurrentStep(Step.Details);
+		let zAuction, approvalTx;
+		setError(undefined);
+		try {
+			try {
+				zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
+			} catch (e) {
+				throw Error('Failed to retrieve zAuction instance');
+			}
+
+			try {
+				setCurrentStep(Step.ApproveZAuctionWaiting);
+				approvalTx = await zAuction.approveZAuctionSpendTradeTokens(
+					library.getSigner(),
+				);
+				setCurrentStep(Step.ApproveZAuctionProcessing);
+			} catch (e) {
+				throw Error('Transaction rejected by wallet');
+			}
+
+			try {
+				await approvalTx.wait();
+				setCurrentStep(Step.Details);
+			} catch {
+				throw Error('Transaction failed - please try again');
+			}
+
+			getData();
+		} catch (e) {
+			setError(e.message);
+			setCurrentStep(Step.ApproveZAuction);
+		}
 	};
 
 	const buy = async () => {
 		setError(undefined);
 		setCurrentStep(Step.WaitingForWalletConfirmation);
 		try {
-			await new Promise((r) => setTimeout(r, 1000));
 			const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
 			const tx = await zAuction.buyNow(
 				{ amount: data!.buyNowPrice.toString(), tokenId: domainId },
@@ -106,7 +128,6 @@ const BuyNowContainer = ({
 		const isApproved = allowance.gte(buyNowPrice);
 		if (!isApproved) {
 			setCurrentStep(Step.ApproveZAuction);
-			setIsLoadingDomainData(false);
 			return;
 		}
 		try {
