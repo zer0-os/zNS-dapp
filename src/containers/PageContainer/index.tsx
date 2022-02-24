@@ -34,8 +34,10 @@ import {
 	Spinner,
 	SideBar,
 } from 'components';
-
 import { BuyTokenRedirect, ProfileModal } from 'containers';
+
+//- Constants Imports
+import { MINT_NFT, REQUEST_TO_MINT } from './constants';
 
 //- Library Imports
 import { useTransfer } from 'lib/hooks/useTransfer';
@@ -130,6 +132,11 @@ const PageContainer: FC = ({ children }) => {
 	const isOwnedByUser: boolean =
 		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
 	const isMintable: boolean = Boolean(domainMetadata?.isMintable);
+
+	//- Mint Button
+	const shouldDisplayMintButton =
+		isOwnedByUser || (!isOwnedByUser && isMintable);
+	const mintButtonTitle = isOwnedByUser ? MINT_NFT : REQUEST_TO_MINT;
 
 	///////////////
 	// Functions //
@@ -361,7 +368,7 @@ const PageContainer: FC = ({ children }) => {
 						{account && !isSearchActive && (
 							<>
 								{/* Mint button */}
-								{isOwnedByUser && isMintable && (
+								{shouldDisplayMintButton && (
 									<FutureButton
 										style={{ padding: '0px 12px' }}
 										glow={account != null}
@@ -372,9 +379,10 @@ const PageContainer: FC = ({ children }) => {
 										}}
 										loading={loading}
 									>
-										MINT
+										{mintButtonTitle}
 									</FutureButton>
 								)}
+
 								{/* Status / Long Running Operation Button */}
 								{showStatus ? (
 									<TooltipLegacy
