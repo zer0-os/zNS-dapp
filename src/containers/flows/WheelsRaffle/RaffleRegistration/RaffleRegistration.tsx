@@ -52,9 +52,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	const [telegram, setTelegram] = useState<string | undefined>();
 	const [balances, setBalances] = useState<any | undefined>();
 	const validationCriteria: any = {
-		eth: '0.1',
-		wild: '0.1',
-		nft: 1,
+		eth: '0',
+		wild: '0',
+		nft: 0,
 	};
 
 	const [hasSufficientBalance, setHasSufficientBalance] = useState<any>({
