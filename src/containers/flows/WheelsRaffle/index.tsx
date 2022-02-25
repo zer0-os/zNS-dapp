@@ -121,7 +121,7 @@ const WheelsRaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Mintlist Signup Period Ending in{' '}
+					Community Presale Mintlist Signup Period Ending in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
@@ -149,7 +149,7 @@ const WheelsRaffleContainer = () => {
 		if (!hasRaffleStarted) {
 			return 'Get Notified';
 		} else if (!hasRaffleEnded) {
-			return 'Sign up for Pets Mintlist';
+			return 'Sign up for Pets Community Presale Mintlist';
 		} else {
 			return 'Sale Info';
 		}
@@ -201,7 +201,7 @@ const WheelsRaffleContainer = () => {
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
-								? 'Mintlist Signup Period Complete'
+								? 'Community Presale Mintlist Signup Period Complete'
 								: 'Your Metaverse Companion Awaits'
 						}
 						label={bannerLabel()}
