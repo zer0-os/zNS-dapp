@@ -77,7 +77,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	};
 
 	const onSubmitEmail = async () => {
-		const valid = isValidEmail(userEmail || '');
+		// const valid = isValidEmail(userEmail || '');
+		const valid = true;
 		if (!valid) {
 			setEmailError('Please enter a valid email address');
 		} else {
@@ -146,7 +147,10 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				nft: data.nftsCount >= validationCriteria.nft,
 			});
 			setBalances(data);
-			setStep(Steps.CurrentBalances);
+			// NOTE: Skip CurrentBalances step entirely and navigate to PersonalInfo Step
+			// setStep(Steps.CurrentBalances);
+
+			setStep(Steps.PersonalInfo);
 		} catch (err: any) {
 			setRegistrationError(err?.message || `Failed to fetch wallet details`);
 			console.error(err);
@@ -185,7 +189,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		return (
 			<>
 				<p>
-					Mintlisted members will have early access to the upcoming crafts drop.
+					Mintlisted members will have early access to the upcoming Pets drop.
 					Sign up to the raffle with your wallet for a chance at joining the
 					mintlist! <br />
 					<br />
