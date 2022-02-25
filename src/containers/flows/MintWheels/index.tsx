@@ -359,7 +359,7 @@ const MintWheelsFlowContainer = () => {
 			return (
 				<>
 					<span>
-						Wilder Kicks sale has been temporarily paused to ensure a fair sale.
+						Wilder Pets sale has been temporarily paused to ensure a fair sale.
 					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
@@ -422,7 +422,7 @@ const MintWheelsFlowContainer = () => {
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
-					title={'Get your Kicks for the Metaverse '}
+					title={'Your Metaverse Companion Awaits '}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}

@@ -77,7 +77,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	};
 
 	const onSubmitEmail = async () => {
-		const valid = isValidEmail(userEmail || '');
+		// const valid = isValidEmail(userEmail || '');
+		const valid = true;
 		if (!valid) {
 			setEmailError('Please enter a valid email address');
 		} else {
@@ -97,15 +98,19 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					discord,
 					telegram,
 				});
-				const successful = await props.onSubmitEmail(userEmail!);
-				if (!successful) {
-					setEmailError('Failed to register to mailing list');
-				} else {
-					setStep(Steps.FollowSocial);
-					setIsLoadingRegistration(false);
-					// setEmailRegistrationSuccess(true);
-				}
+
+				// TODO: Disable adding email to mailchimp mail list
+				// const successful = await props.onSubmitEmail(userEmail!);
+				// if (!successful) {
+				// 	setEmailError('Failed to register to mailing list');
+				// } else {
+				// 	setStep(Steps.FollowSocial);
+				// 	setIsLoadingRegistration(false);
+				// 	// setEmailRegistrationSuccess(true);
+				// }
 				// setIsLoadingEmail(false);
+				setStep(Steps.FollowSocial);
+				setIsLoadingRegistration(false);
 			} catch (e: any) {
 				// @todo handle API errors here
 				setEmailError(e?.message || 'Failed to register to mailing list');
@@ -146,7 +151,10 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				nft: data.nftsCount >= validationCriteria.nft,
 			});
 			setBalances(data);
-			setStep(Steps.CurrentBalances);
+			// NOTE: Skip CurrentBalances step entirely and navigate to PersonalInfo Step
+			// setStep(Steps.CurrentBalances);
+
+			setStep(Steps.PersonalInfo);
 		} catch (err: any) {
 			setRegistrationError(err?.message || `Failed to fetch wallet details`);
 			console.error(err);
@@ -185,13 +193,13 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		return (
 			<>
 				<p>
-					Mintlisted members will have early access to the upcoming crafts drop.
+					Mintlisted members will have early access to the upcoming Pets drop.
 					Sign up to the raffle with your wallet for a chance at joining the
 					mintlist! <br />
 					<br />
-					The minimum requirement is your wallet address, but if you would like
+					{/* The minimum requirement is your wallet address, but if you would like
 					us to be able to communicate directly with you, and increase your
-					chance of securing a spot, you can provide us with more detail.
+					chance of securing a spot, you can provide us with more detail. */}
 				</p>
 				{registrationError && (
 					<span className={styles.Error}>{registrationError}</span>
