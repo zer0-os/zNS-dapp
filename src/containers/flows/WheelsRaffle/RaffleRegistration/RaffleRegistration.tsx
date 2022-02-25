@@ -98,14 +98,16 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					discord,
 					telegram,
 				});
-				const successful = await props.onSubmitEmail(userEmail!);
-				if (!successful) {
-					setEmailError('Failed to register to mailing list');
-				} else {
-					setStep(Steps.FollowSocial);
-					setIsLoadingRegistration(false);
-					// setEmailRegistrationSuccess(true);
-				}
+
+				// TODO: Disable adding email to mailchimp mail list
+				// const successful = await props.onSubmitEmail(userEmail!);
+				// if (!successful) {
+				// 	setEmailError('Failed to register to mailing list');
+				// } else {
+				// 	setStep(Steps.FollowSocial);
+				// 	setIsLoadingRegistration(false);
+				// 	// setEmailRegistrationSuccess(true);
+				// }
 				// setIsLoadingEmail(false);
 			} catch (e: any) {
 				// @todo handle API errors here
