@@ -20,7 +20,8 @@ const WheelsRaffleContainer = () => {
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
-	const RAFFLE_START_TIME = 1645819200000;
+	// const RAFFLE_START_TIME = 1645819200000;
+	const RAFFLE_START_TIME = currentTime - 1000;
 	const RAFFLE_END_TIME = 1646078400000;
 	const SALE_START_TIME = 1648234800000; //1640181600000;
 
