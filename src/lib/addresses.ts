@@ -8,7 +8,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		staking: '0x45b13d8e6579d5C3FeC14bB9998A3640CD4F008D',
 		wildToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
 		lootToken: '0x43b8219aC1883373C0428688eE1a76e19E6B6D9d',
-		zAuction: '0x05cBD37cA528B7ea50800aA80ddD0F9F30C952F0',
+		zAuction: '0x1ee3F16aa8081891CfcfAB59d0DBFe03f2B77ff6',
 		wheelSale: '0x6427CcA6CD4586ec7044Cc138158ba4Eb1633711', //  kicks
 		// wheelSale: '0x19a55608f360f6Df69B7932dC2F65EDEFAa88Dc2', //  wheels
 

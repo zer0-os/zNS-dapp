@@ -299,7 +299,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 			)}
 			{/* ZNS Content */}
 			{/* <WheelsRaffle /> */}
-
 			{!isNftView && (
 				<div
 					className="background-primary border-primary border-rounded"
@@ -314,7 +313,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 					{showDomainTable && subTable}
 				</div>
 			)}
-
 			{znsDomain && isNftView && (
 				<Spring
 					from={{ opacity: 0, marginTop: 16 }}

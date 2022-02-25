@@ -97,9 +97,6 @@
 		padding-top: 0;
 
 		background: none;
-
-		&:hover {
-		}
 	}
 }
 
@@ -578,3 +575,8 @@ button.ToggleAttributes {
 	}
 }
 /* Attributes styles End */
+
+.Expired {
+	padding: 0 !important;
+	opacity: 80%;
+}

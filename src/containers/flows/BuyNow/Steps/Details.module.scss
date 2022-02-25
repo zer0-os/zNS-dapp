@@ -1,0 +1,16 @@
+.Container {
+	> *:not(:first-child) {
+		margin-top: 40px;
+	}
+
+	.Actions {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.Balance {
+		margin-top: 32px;
+		text-align: center;
+	}
+}

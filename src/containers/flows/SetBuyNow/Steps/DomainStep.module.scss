@@ -1,0 +1,32 @@
+.Inputs {
+	margin-top: 72px;
+
+	> *:not(:first-child) {
+		margin-top: 40px;
+	}
+}
+
+.Confirmation {
+	text-align: center;
+}
+
+.Fiat {
+	display: block;
+	margin-top: 7px;
+	padding-left: 24px;
+
+	font-size: 12px;
+
+	color: var(--color-grey-lighter-2);
+}
+
+.Success {
+	p {
+		padding: 0;
+	}
+
+	button {
+		margin: 0 auto;
+		margin-top: 40px;
+	}
+}
