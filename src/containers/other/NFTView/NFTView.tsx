@@ -419,23 +419,26 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		return (
 			<>
 				<div className={styles.Stats}>
-					{data.map((item, index) => (
-						<>
-							{!item.isHidden ? (
-								<StatsWidget
+					{data.map(
+						(item, index) =>
+							!item.isHidden && (
+								<div
 									key={`stats-widget-${index}`}
-									title={item.title}
-									fieldName={item.fieldName}
-									subTitle={item.subTitle}
-									isLoading={!statsLoaded || !allItems}
-									className="previewView"
+									className={styles.StatsItemContainer}
 									style={{
 										width: width,
 									}}
-								></StatsWidget>
-							) : null}
-						</>
-					))}
+								>
+									<StatsWidget
+										title={item.title}
+										fieldName={item.fieldName}
+										subTitle={item.subTitle}
+										isLoading={!statsLoaded || !allItems}
+										className="previewView"
+									></StatsWidget>
+								</div>
+							),
+					)}
 				</div>
 			</>
 		);
@@ -479,7 +482,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				{allHistoryItems && allHistoryItems.length > 0 && (
 					<ul>
 						{allHistoryItems.map((item: DomainEvent, i: number) => (
-							<HistoryItem item={item} index={i} />
+							<div key={i}>
+								<HistoryItem item={item} />
+							</div>
 						))}
 					</ul>
 				)}
