@@ -223,23 +223,26 @@ const ZNS: React.FC<ZNSProps> = () => {
 		return (
 			<>
 				<div className={styles.Stats}>
-					{data.map((item, index) => (
-						<>
-							{!item.isHidden ? (
-								<StatsWidget
+					{data.map(
+						(item, index) =>
+							!item.isHidden && (
+								<div
 									key={`stats-widget=${index}`}
-									className="normalView"
-									fieldName={item.fieldName}
-									isLoading={!statsLoaded}
-									title={item.title}
-									subTitle={item.subTitle}
+									className={styles.WidgetContainer}
 									style={{
 										width: width,
 									}}
-								></StatsWidget>
-							) : null}
-						</>
-					))}
+								>
+									<StatsWidget
+										className="normalView"
+										fieldName={item.fieldName}
+										isLoading={!statsLoaded}
+										title={item.title}
+										subTitle={item.subTitle}
+									></StatsWidget>
+								</div>
+							),
+					)}
 				</div>
 			</>
 		);

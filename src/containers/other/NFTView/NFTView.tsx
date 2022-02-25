@@ -424,7 +424,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 							!item.isHidden && (
 								<div
 									key={`stats-widget-${index}`}
-									className={styles.StatsItemContainer}
+									className={styles.WidgetContainer}
 									style={{
 										width: width,
 									}}
