@@ -74,7 +74,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	const isMobile = useMatchMedia('phone');
 	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
-	const isMobilePortrait = useMatchMedia('(max-width: 428px)');
+	const isMobilePortrait = useMatchMedia('(max-width: 520px)');
 
 	//- Page State
 	const [isPriceDataLoading, setIsPriceDataLoading] = useState<boolean>();
