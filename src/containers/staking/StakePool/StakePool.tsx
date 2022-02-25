@@ -1,13 +1,11 @@
 import styles from './StakePool.module.scss';
 import classNames from 'classnames/bind';
 
-import { truncateAddress } from 'lib/utils';
-
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 import PoolDetails from './PoolDetails/PoolDetails';
 
-import { HISTORY_ITEMS, HistoryItem } from './StakePool.helpers';
+import { HistoryItem } from './StakePool.helpers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { useEffect, useState } from 'react';
@@ -15,10 +13,10 @@ import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider
 import { getPoolByDomain } from 'lib/providers/staking/StakingUtils';
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
 import { MaybeUndefined } from 'lib/types';
-import { ethers } from 'ethers';
 import { toFiat } from 'lib/currency';
 
 const cx = classNames.bind(styles);
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const moment = require('moment');
 
 type StakePoolProps = {
@@ -85,6 +83,7 @@ const StakePool = (props: StakePoolProps) => {
 		'border-rounded',
 	);
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const historyTypeToString = (type: number) => {
 		switch (type) {
 			case HistoryItem.Mint:

@@ -3,9 +3,10 @@ import React from 'react';
 
 // Library Imports
 import { useZnsContracts } from 'lib/contracts';
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 import { useApprovals } from 'lib/hooks/useApprovals';
 import { useWeb3React } from '@web3-react/core';
+import { ethers } from 'ethers';
 
 // Type Imports
 import { Bid, Domain, DomainData } from 'lib/types';
@@ -17,6 +18,7 @@ import styles from './OwnedDomainsTable.module.scss';
 import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
+import { ERC20 } from 'types';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -46,6 +48,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const znsContracts = useZnsContracts()!;
 	const { acceptBid } = useBidProvider();
 	const zAuctionAddress = znsContracts.zAuction.address;
+	const wildContract: ERC20 = znsContracts.wildToken;
 
 	// State
 	const [isTableLoading, setIsTableLoading] = React.useState(true);
@@ -60,6 +63,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [viewingDomain, setViewingDomain] = React.useState<
 		DomainData | undefined
 	>();
+	const [errorWhileAccepting, setErrorWhileAccepting] = React.useState<
+		string | undefined
+	>();
+	const [statusText, setStatusText] = React.useState<string | undefined>();
 
 	///////////////
 	// Functions //
@@ -105,7 +112,11 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		return approved;
 	};
 
-	const closeBid = () => setAcceptingBid(undefined);
+	const closeBid = () => {
+		setIsAccepting(false);
+		setAcceptingBid(undefined);
+		setErrorWhileAccepting(undefined);
+	};
 
 	const closeDomain = () => setViewingDomain(undefined);
 
@@ -113,17 +124,46 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		if (!acceptingBid) {
 			return;
 		}
-		setIsAccepting(true);
-		const tx = await acceptBid(acceptingBid.bid);
-		if (tx) {
-			await tx.wait();
+		try {
+			setIsAccepting(true);
+			setErrorWhileAccepting(undefined);
+
+			const { bidderAccount, amount: bidAmount } = acceptingBid.bid;
+
+			// Check bidder has sufficient balance
+			setStatusText("Checking bidder's WILD balance");
+			const bidAsWei = ethers.utils.parseEther(bidAmount.toString());
+			const checkBalance = await wildContract.balanceOf(bidderAccount);
+			const bidderHasInsufficientBalance = checkBalance.lt(bidAsWei);
+
+			if (bidderHasInsufficientBalance) {
+				throw new Error('Bidder has insufficient balance');
+			}
+
+			try {
+				// Wrapping a try around this as acceptBid doesn't throw any
+				// descriptive errors (yet)
+				setStatusText('Waiting for wallet approval');
+				const tx = await acceptBid(acceptingBid.bid);
+				if (tx) {
+					setStatusText('Processing transaction');
+					await tx.wait();
+				}
+			} catch {
+				throw new Error('Failed to accept bid');
+			}
+
+			setTimeout(() => {
+				//refetch after confirm the transaction, with a delay to wait until backend gets updated
+				ownedQuery.refetch();
+			}, 500);
+			setIsAccepting(false);
+			setAcceptingBid(undefined);
+		} catch (e) {
+			setErrorWhileAccepting((e as Error).message || 'Failed to accept bid');
+			setIsAccepting(false);
 		}
-		setTimeout(() => {
-			//refetch after confirm the transaction, with a delay to wait until backend gets updated
-			ownedQuery.refetch();
-		}, 500);
-		setIsAccepting(false);
-		setAcceptingBid(undefined);
+		setStatusText(undefined);
 	};
 
 	const rowClick = (domain: Domain) => {
@@ -147,29 +187,36 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const canPlaceBid = () => {
 		const id = acceptingBid!.bid.bidderAccount;
 		return (
-			<p style={{ fontSize: 14, fontWeight: 400, lineHeight: '21px' }}>
-				Are you sure you want to accept the bid of{' '}
-				<b className="glow-text-white">
-					{acceptingBid!.bid.amount.toLocaleString()} WILD
-				</b>{' '}
-				tokens by{' '}
-				<b>
-					<a
-						className="alt-link"
-						href={`https://etherscan.io/address/${id}`}
-						target="_blank"
-						rel="noreferrer"
-					>
-						{id.substring(0, 4)}...{id.substring(id.length - 4)}
-					</a>
-				</b>
-				? You will receive{' '}
-				<b className="glow-text-white">
-					{acceptingBid!.bid.amount.toLocaleString()} WILD
-				</b>{' '}
-				tokens in exchange for ownership of{' '}
-				<b className="glow-text-white">0://{acceptingBid!.domain.name}</b>
-			</p>
+			<>
+				<p style={{ fontSize: 14, fontWeight: 400, lineHeight: '21px' }}>
+					Are you sure you want to accept the bid of{' '}
+					<b className="glow-text-white">
+						{acceptingBid!.bid.amount.toLocaleString()} WILD
+					</b>{' '}
+					tokens by{' '}
+					<b>
+						<a
+							className="alt-link"
+							href={`https://etherscan.io/address/${id}`}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{id.substring(0, 4)}...{id.substring(id.length - 4)}
+						</a>
+					</b>
+					? You will receive{' '}
+					<b className="glow-text-white">
+						{acceptingBid!.bid.amount.toLocaleString()} WILD
+					</b>{' '}
+					tokens in exchange for ownership of{' '}
+					<b className="glow-text-white">0://{acceptingBid!.domain.name}</b>
+				</p>
+				{errorWhileAccepting && (
+					<p style={{ fontWeight: 400, padding: 0 }} className="error-text">
+						{errorWhileAccepting}
+					</p>
+				)}
+			</>
 		);
 	};
 
@@ -177,7 +224,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	const bidPending = () => (
 		<>
-			<p>Pending</p>
+			<p>{statusText || 'Pending'}</p>
 			<Spinner style={{ margin: '8px auto' }} />
 		</>
 	);

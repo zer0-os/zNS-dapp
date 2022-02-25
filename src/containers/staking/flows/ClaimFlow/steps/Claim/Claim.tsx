@@ -1,5 +1,4 @@
 import { FutureButton } from 'components';
-import { StakeModule } from 'containers/staking';
 import { ethers } from 'ethers';
 import { displayEther } from 'lib/currency';
 
@@ -28,7 +27,6 @@ const Claim = (props: StakeProps) => {
 		poolDomain,
 		onBack,
 		onClaim,
-		isTransactionPending,
 		rewardAmount,
 	} = props;
 

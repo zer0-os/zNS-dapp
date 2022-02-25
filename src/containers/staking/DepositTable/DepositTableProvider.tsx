@@ -1,8 +1,7 @@
 // React Imports
-import React, { useState } from 'react';
+import React from 'react';
 
 // Web3 Imports
-import { Domain, Maybe } from 'lib/types';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 
 export const BidContext = React.createContext({});
@@ -16,6 +15,7 @@ const DepositProvider: React.FC<DepositProviderType> = ({ children }) => {
 	// Hooks & State & Data //
 	//////////////////////////
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const selectPool = useStakingPoolSelector().selectStakePool;
 
 	const contextValue = {};
@@ -26,8 +26,3 @@ const DepositProvider: React.FC<DepositProviderType> = ({ children }) => {
 };
 
 export default DepositProvider;
-
-export function useBid() {
-	const {} = React.useContext(BidContext);
-	return {};
-}

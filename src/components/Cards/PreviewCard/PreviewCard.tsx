@@ -7,7 +7,6 @@ import styles from './PreviewCard.module.scss';
 //- Component Imports
 import { FutureButton, NFTMedia, TextButton } from 'components';
 import { Maybe } from 'lib/types';
-import { TEST_ID } from 'components/Buttons/FutureButton/FutureButton';
 
 type PreviewCardProps = {
 	preventInteraction?: boolean;

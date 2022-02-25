@@ -6,6 +6,7 @@ import store from 'store/index';
 import { render } from '@testing-library/react';
 import { notificationsReady } from 'store/notifications/notifications.mockData';
 import { currencyReady } from 'store/currency/currency.mockData';
+import { mintReady } from 'store/mint/mint.mockData';
 
 export const renderWithRedux = (
 	component: React.ReactNode,
@@ -21,6 +22,7 @@ export const renderWithRedux = (
 	const initialReduxState = {
 		notifications: notificationsReady,
 		currency: currencyReady,
+		mint: mintReady,
 		...reduxState,
 	};
 

@@ -41,6 +41,11 @@
 
 		color: var(--color-error);
 		text-align: center;
+
+		.balanceCriteria {
+			padding-right: 5px;
+			font-weight: bold;
+		}
 	}
 
 	.Loading {
@@ -50,13 +55,14 @@
 		margin-top: 40px;
 
 		span {
-			font-weight: 700;
+			font-weight: 400;
 			margin-bottom: 24px;
 			text-align: center;
 		}
 	}
 
 	.Success {
+		padding-top: 30px;
 		text-align: center;
 		color: var(--color-success);
 	}
@@ -100,6 +106,55 @@
 		img {
 			height: 64px;
 			width: 64px;
+		}
+	}
+
+	.Balances {
+		display: flex;
+		margin-top: 40px;
+		text-align: center;
+		justify-content: space-around;
+		font-weight: 400;
+		font-size: 12px;
+
+		.eachBalances {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.amount {
+			font-weight: 700;
+			padding: 10px 0;
+			font-size: 18px;
+		}
+
+		.ErrorColor {
+			color: var(--color-error);
+		}
+	}
+
+	.marginTop40 {
+		margin-top: 40px;
+	}
+
+	.CombinedFirstAndLastFields {
+		display: flex;
+
+		.firstName {
+			padding-right: 20px;
+		}
+	}
+
+	.emailError {
+		display: block;
+		color: var(--color-error);
+		padding-left: 25px;
+		font-size: 12px;
+	}
+
+	.PersonalInfo {
+		.Email {
+			margin-top: 25px;
 		}
 	}
 }
