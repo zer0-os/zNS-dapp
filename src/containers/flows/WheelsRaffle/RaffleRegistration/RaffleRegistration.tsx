@@ -109,6 +109,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				// 	// setEmailRegistrationSuccess(true);
 				// }
 				// setIsLoadingEmail(false);
+				setStep(Steps.FollowSocial);
+				setIsLoadingRegistration(false);
 			} catch (e: any) {
 				// @todo handle API errors here
 				setEmailError(e?.message || 'Failed to register to mailing list');
