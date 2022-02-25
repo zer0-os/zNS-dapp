@@ -74,7 +74,7 @@ const SetBuyNow = ({
 				'Before you can set a buy now, your wallet needs to approve zAuction. This is a one-off transaction costing gas.'
 			}
 			onClickPrimaryButton={approveZAuction}
-			onClickSecondaryButton={() => console.log('cancel')}
+			onClickSecondaryButton={onCancel}
 		/>
 	);
 	steps[Step.WaitingForWallet] = (
