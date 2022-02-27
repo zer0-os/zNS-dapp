@@ -1,4 +1,4 @@
-.textButton {
+.TextButton {
 	color: var(--color-accent-1);
 	font-weight: 700;
 
@@ -15,16 +15,16 @@
 		opacity var(--animation-time-short) ease-in-out;
 }
 
-.textButton:hover {
+.TextButton:hover {
 	text-shadow: var(--glow-text-blue);
 }
 
-.selected {
+.Selected {
 	color: white;
 	text-shadow: var(--glow-text-white) !important;
 }
 
-.disabled {
+.Disabled {
 	color: var(--color-grey) !important;
 	opacity: 70%;
 }
