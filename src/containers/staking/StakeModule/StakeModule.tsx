@@ -68,6 +68,7 @@ const StakeModule = (props: StakeModuleProps) => {
 	const setMaxAmount = () => {
 		if (balance) {
 			setAmountString(ethers.utils.formatEther(balance).toString());
+			setAmountIsValid(true);
 		}
 	};
 
