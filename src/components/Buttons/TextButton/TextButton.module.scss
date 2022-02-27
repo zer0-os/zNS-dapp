@@ -11,7 +11,8 @@
 	background-color: rgba(0, 0, 0, 0);
 
 	transition: color var(--animation-time-short) ease-in-out,
-		text-shadow var(--animation-time-short) ease-in-out;
+		text-shadow var(--animation-time-short) ease-in-out,
+		opacity var(--animation-time-short) ease-in-out;
 }
 
 .textButton:hover {
@@ -21,4 +22,9 @@
 .selected {
 	color: white;
 	text-shadow: var(--glow-text-white) !important;
+}
+
+.disabled {
+	color: var(--color-grey) !important;
+	opacity: 70%;
 }

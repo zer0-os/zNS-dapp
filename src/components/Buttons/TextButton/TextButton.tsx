@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
 import styles from './TextButton.module.scss';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(styles);
 
 export const TEST_ID = {
 	BUTTON: 'text-button',
@@ -12,6 +15,7 @@ type TextButtonProps = {
 	toggleable?: boolean;
 	selected?: boolean;
 	children?: React.ReactNode;
+	disabled?: boolean;
 };
 const TextButton: React.FC<TextButtonProps> = ({
 	className,
@@ -20,6 +24,7 @@ const TextButton: React.FC<TextButtonProps> = ({
 	toggleable,
 	selected,
 	children,
+	disabled,
 }) => {
 	const [isSelected, setIsSelected] = useState(false);
 
@@ -31,9 +36,10 @@ const TextButton: React.FC<TextButtonProps> = ({
 	return (
 		<button
 			onClick={handleClick}
-			className={`${styles.textButton} ${
-				(toggleable && isSelected) || selected ? styles.selected : ''
-			} ${className || ''}`}
+			className={cx(className, styles.textButton, {
+				selected: (toggleable && isSelected) || selected,
+				disabled: disabled,
+			})}
 			style={style}
 			data-testid={TEST_ID.BUTTON}
 		>
