@@ -2,7 +2,14 @@
 import { useEffect, useRef, useState } from 'react';
 
 // Component Imports
-import { Detail, Member, NFTMedia, TextButton, Tooltip } from 'components';
+import {
+	Detail,
+	FutureButton,
+	Member,
+	NFTMedia,
+	TextButton,
+	Tooltip,
+} from 'components';
 import { BuyNowButton, SetBuyNowButton } from 'containers';
 
 // Asset Imports
@@ -42,6 +49,7 @@ type NFTProps = {
 	isDomainDataLoading?: boolean;
 	wildPriceUsd?: number;
 	account?: string;
+	onTransfer?: () => void;
 };
 
 const NFT = ({
@@ -61,6 +69,7 @@ const NFT = ({
 	wildPriceUsd,
 	account,
 	onMakeBid,
+	onTransfer,
 }: NFTProps) => {
 	const blobCache = useRef<string>();
 
@@ -221,6 +230,11 @@ const NFT = ({
 						<div className={styles.Break}></div>
 						{YourBid()}
 					</div>
+					{isOwnedByYou && (
+						<FutureButton className={styles.Transfer} glow onClick={onTransfer}>
+							Transfer Ownership
+						</FutureButton>
+					)}
 				</div>
 
 				{backgroundBlob !== undefined && (

@@ -595,6 +595,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				wildPriceUsd={wildPriceUsd}
 				isPriceDataLoading={isPriceDataLoading}
 				onSuccessBuyNow={getPriceData}
+				onTransfer={onTransfer}
 			/>
 
 			{nftStats()}
