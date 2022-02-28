@@ -165,9 +165,7 @@ export const Header: React.FC<HeaderProps> = ({
 					)}
 
 					{/* Info Button */}
-					{formattedData.showInfoButton && (
-						<InfoButton onClick={openModal(Modal.Wallet)} />
-					)}
+					{formattedData.showInfoButton && <InfoButton />}
 				</div>
 			</div>
 

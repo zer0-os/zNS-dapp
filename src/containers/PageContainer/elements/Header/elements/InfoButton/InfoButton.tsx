@@ -1,14 +1,34 @@
-import React from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { IconButton } from 'components';
+import { useOnClickOutside } from 'lib/hooks/useOnClickOutside';
 import dotIcon from 'assets/dot-icon.svg';
+import { InfoPanel } from './elements';
 import './_info-button.scss';
 
-type InfoButtonProps = {
-	onClick: () => void;
-};
+export const InfoButton: React.FC = () => {
+	const infoPanelRef = useRef<HTMLDivElement>(null);
 
-export const InfoButton: React.FC<InfoButtonProps> = ({ onClick }) => {
+	const [isOpen, setIsOpen] = useState(false);
+
+	const handleOnToggle = useCallback(() => {
+		setIsOpen(!isOpen);
+	}, [setIsOpen, isOpen]);
+
+	const handleClose = useCallback(() => {
+		setIsOpen(false);
+	}, [setIsOpen]);
+
+	useOnClickOutside(infoPanelRef, handleClose);
+
 	return (
-		<IconButton className="info-button" iconUri={dotIcon} onClick={onClick} />
+		<div className="info-button__container" ref={infoPanelRef}>
+			<IconButton
+				className="info-button"
+				iconUri={dotIcon}
+				onClick={handleOnToggle}
+			/>
+
+			{isOpen && <InfoPanel />}
+		</div>
 	);
 };
