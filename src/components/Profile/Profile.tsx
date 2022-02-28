@@ -53,7 +53,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 
 	return (
 		<div
-			className={`${ProfileStyle.profile} blur border-primary border-rounded`}
+			className={`${ProfileStyle.profile} border-primary border-rounded background-primary`}
 		>
 			<h1 className={`glow-text-white`}>Profile</h1>
 			<div className={ProfileStyle.body}>
