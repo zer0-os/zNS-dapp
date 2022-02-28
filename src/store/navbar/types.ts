@@ -1,10 +1,11 @@
-import { SET_NAVBAR_TITLE } from './actionTypes';
+import { SET_NAVBAR_TITLE, SET_NAVBAR_SEARCHING_STATUS } from './actionTypes';
 
 /**
  * Navbar state definition
  */
 export type NavbarState = {
 	title?: string;
+	isSearching: boolean;
 };
 
 /**
@@ -14,12 +15,20 @@ export type SetNavbarTitlePayload = {
 	title?: string;
 };
 
+export type SetNavbarSearchingStatusPayload = {
+	isSearching: boolean;
+};
+
 /**
  * Navbar actions definition
  */
 export type SetNavbarTitle = {
 	type: typeof SET_NAVBAR_TITLE;
 	payload: SetNavbarTitlePayload;
+};
+export type SetNavbarSearchingStatus = {
+	type: typeof SET_NAVBAR_SEARCHING_STATUS;
+	payload: SetNavbarSearchingStatusPayload;
 };
 
 /**
@@ -28,4 +37,4 @@ export type SetNavbarTitle = {
  *
  * To be used in Reducer
  */
-export type NavbarActions = SetNavbarTitle;
+export type NavbarActions = SetNavbarTitle | SetNavbarSearchingStatus;

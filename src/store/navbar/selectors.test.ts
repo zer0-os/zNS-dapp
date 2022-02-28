@@ -1,6 +1,6 @@
 import { AppState } from 'store';
 import { REDUCER_NAME } from './reducer';
-import { getNavbarTitle } from './selectors';
+import { getNavbarTitle, getNavbarSearchingStatus } from './selectors';
 import { navbarReady } from './navbar.mockData';
 
 describe('navbar.selectors', () => {
@@ -10,5 +10,13 @@ describe('navbar.selectors', () => {
 		} as AppState);
 
 		expect(navbarTitle).toEqual(navbarReady.title);
+	});
+
+	it('should return navbar searching status from state', () => {
+		const navbarSearchingStatus = getNavbarSearchingStatus({
+			[REDUCER_NAME]: navbarReady,
+		} as AppState);
+
+		expect(navbarSearchingStatus).toEqual(navbarReady.isSearching);
 	});
 });

@@ -16,3 +16,8 @@ export const getNavbarTitle = createSelector(
 	getNavbarReducer,
 	(navbar) => navbar.title,
 );
+
+export const getNavbarSearchingStatus = createSelector(
+	getNavbarReducer,
+	(navbar) => navbar.isSearching,
+);

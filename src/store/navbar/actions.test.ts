@@ -1,7 +1,7 @@
-import { SET_NAVBAR_TITLE } from './actionTypes';
-import { SetNavbarTitle } from './types';
-import { setNavbarTitle } from './actions';
-import { NAVBAR_TITLE } from './navbar.mockData';
+import { SET_NAVBAR_TITLE, SET_NAVBAR_SEARCHING_STATUS } from './actionTypes';
+import { SetNavbarTitle, SetNavbarSearchingStatus } from './types';
+import { setNavbarTitle, setNavbarSearchingStatus } from './actions';
+import { NAVBAR_TITLE, NAVBAR_IS_SEARCHING } from './navbar.mockData';
 
 describe('navbar.actions', () => {
 	it('setNavbarTitle', () => {
@@ -14,5 +14,19 @@ describe('navbar.actions', () => {
 		};
 
 		expect(setNavbarTitle(mockSetNavbarTitlePayload)).toEqual(expectedAction);
+	});
+
+	it('setNavbarSearchingStatus', () => {
+		const mockSetNavbarSearchingStatusPayload = {
+			isSearching: NAVBAR_IS_SEARCHING,
+		};
+		const expectedAction: SetNavbarSearchingStatus = {
+			type: SET_NAVBAR_SEARCHING_STATUS,
+			payload: mockSetNavbarSearchingStatusPayload,
+		};
+
+		expect(
+			setNavbarSearchingStatus(mockSetNavbarSearchingStatusPayload),
+		).toEqual(expectedAction);
 	});
 });
