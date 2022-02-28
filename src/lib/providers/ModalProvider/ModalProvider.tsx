@@ -7,9 +7,11 @@ import { ModalContext } from './ModalContext';
 //- Component Imports
 import { ConnectToWallet } from 'components';
 
+//- Container Imports
+import { MintNewNFT } from 'containers';
+
 //- Modal Type Imports
 import { ModalContent, ModalType } from './ModalTypes';
-import MintWheels from 'containers/flows/MintWheels/MintWheels';
 
 interface ModalProviderProps {
 	children: ReactNode;
@@ -30,29 +32,19 @@ export const ModalProvider = ({ children }: ModalProviderProps) => {
 		<ModalContext.Provider value={{ closeModal, modalContent, openModal }}>
 			{children}
 
-			{modalContent?.modalType === ModalType.CONNECT_WALLET_MODAL_TYPE && (
-				<ConnectToWallet onConnect={closeModal} closeOverlay={closeModal} />
+			{modalContent?.modalType === ModalType.MINT_NEW_NFT && (
+				<MintNewNFT
+					onMint={modalContent?.contentProps.onMint}
+					closeModal={closeModal}
+					domainName={modalContent?.contentProps.domainName}
+					domainId={modalContent?.contentProps.domainId}
+					domainOwner={modalContent?.contentProps.domainOwner}
+					subdomains={modalContent?.contentProps.subdomains}
+				/>
 			)}
 
-			{modalContent?.modalType === ModalType.MINT_WHEELS_MODAL_TYPE && (
-				<MintWheels
-					closeOverlay={closeModal}
-					balanceEth={modalContent?.contentProps.balanceEth}
-					contract={modalContent?.contentProps.contract}
-					dropStage={modalContent?.contentProps.dropStage}
-					isUserWhitelisted={modalContent?.contentProps.isUserWhitelisted}
-					maxPurchasesPerUser={modalContent?.contentProps.maxPurchasesPerUser}
-					numberPurchasedByUser={
-						modalContent?.contentProps.numberPurchasedByUser
-					}
-					onClose={modalContent?.contentProps.onClose}
-					onFinish={modalContent?.contentProps.onFinish}
-					onSubmitTransaction={modalContent?.contentProps.onSubmitTransaction}
-					userId={modalContent?.contentProps.userId}
-					wheelsMinted={modalContent?.contentProps.wheelsMinted}
-					wheelsTotal={modalContent?.contentProps.wheelsTotal}
-					token={modalContent?.contentProps.token}
-				/>
+			{modalContent?.modalType === ModalType.CONNECT_TO_WALLET && (
+				<ConnectToWallet onConnect={closeModal} closeModal={closeModal} />
 			)}
 		</ModalContext.Provider>
 	);

@@ -1,31 +1,30 @@
-import { useState } from 'react';
-
+//- React Imports
 import { useWeb3React } from '@web3-react/core';
 
-import { ConnectToWallet, FutureButton, Overlay } from 'components';
+//- Components Imports
+import { FutureButton } from 'components';
+
+//- Lib Imports
+import { useModal } from 'lib/hooks/useModal';
+import { ModalType } from 'lib/providers/ModalProvider/ModalTypes';
 
 // @todo change props from any type
 const ConnectWalletButton = (props: any) => {
 	const { active } = useWeb3React();
 
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	//- Modal Provider
+	const { openModal } = useModal();
 
-	const openModal = () => {
-		setIsModalOpen(true);
-	};
-
-	const closeModal = () => {
-		setIsModalOpen(false);
+	// Open Connect To Wallet Modal
+	const openConnectToWallet = () => {
+		openModal({
+			modalType: ModalType.CONNECT_TO_WALLET,
+		});
 	};
 
 	return (
 		<>
-			{isModalOpen && (
-				<Overlay centered open onClose={closeModal}>
-					<ConnectToWallet onConnect={closeModal} />
-				</Overlay>
-			)}
-			<FutureButton {...props} glow={!active} onClick={openModal} />
+			<FutureButton {...props} glow={!active} onClick={openConnectToWallet} />
 		</>
 	);
 };

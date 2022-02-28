@@ -1,30 +1,31 @@
-import { MintWheelsProps } from 'containers/flows/MintWheels/MintWheels';
+//- Containers & Components Imports
+import { MintNewNFTProps } from 'containers/flows/MintNewNFT/MintNewNFT';
 
 export enum ModalType {
 	NULL_MODAL_TYPE,
-	CONNECT_WALLET_MODAL_TYPE,
-	MINT_WHEELS_MODAL_TYPE,
+	MINT_NEW_NFT,
+	CONNECT_TO_WALLET,
 }
 
-export type MintWheelsContentProps = Omit<MintWheelsProps, 'closeModal'>;
+export type MintNewNFTContentProps = Omit<MintNewNFTProps, 'closeModal'>;
 
 interface NullContent {
 	modalType: ModalType.NULL_MODAL_TYPE;
 }
 
-interface ConnectWalletContent {
-	modalType: ModalType.CONNECT_WALLET_MODAL_TYPE;
+interface MintNewNFTContent {
+	modalType: ModalType.MINT_NEW_NFT;
+	contentProps: MintNewNFTContentProps;
 }
 
-interface MintWheelsContent {
-	modalType: ModalType.MINT_WHEELS_MODAL_TYPE;
-	contentProps: MintWheelsContentProps;
+interface ConnectToWalletContent {
+	modalType: ModalType.CONNECT_TO_WALLET;
 }
 
 export type ModalContent =
 	| NullContent
-	| ConnectWalletContent
-	| MintWheelsContent;
+	| MintNewNFTContent
+	| ConnectToWalletContent;
 
 export interface ModalContextProps {
 	openModal: (content: ModalContent) => void;

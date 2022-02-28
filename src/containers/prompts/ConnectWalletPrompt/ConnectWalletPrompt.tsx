@@ -72,7 +72,10 @@ const ConnectWalletPrompt: React.FC<ConnectWalletPromptProps> = ({
 				open={isConnectToWalletModalOpen}
 				onClose={closeConnectToWallet}
 			>
-				<ConnectToWallet onConnect={closeConnectToWallet} />
+				<ConnectToWallet
+					onConnect={closeConnectToWallet}
+					closeModal={closeConnectToWallet}
+				/>
 			</Overlay>
 		</>
 	);

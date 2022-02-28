@@ -18,9 +18,6 @@ import Finished from './steps/Finished/Finished';
 
 import { ERC20, WhitelistSimpleSale } from 'types';
 
-//- Component Imports
-import { Overlay } from 'components';
-
 // Configuration
 import { Stage, Step, TransactionData } from './types';
 import { EthPerWheel } from './helpers';
@@ -29,7 +26,6 @@ import { EthPerWheel } from './helpers';
 import styles from './MintWheels.module.scss';
 
 export type MintWheelsProps = {
-	closeOverlay: () => void;
 	balanceEth?: number;
 	contract?: WhitelistSimpleSale;
 	dropStage?: Stage;
@@ -191,23 +187,19 @@ const MintWheels = (props: MintWheelsProps) => {
 	////////////
 
 	return (
-		<Overlay open onClose={props.closeOverlay}>
-			<div className={`${styles.Container} border-primary border-rounded`}>
-				{/* Head section */}
-				<section className={styles.Header}>
-					<h1 className="glow-text-white">Mint Your Kicks</h1>
-					<span className="glow-text-white">
-						Your Kicks in the Metaverse await
-					</span>
-					<hr />
-				</section>
-				{props.dropStage === undefined && (
-					<Loading text={'Loading Kicks Drop'} />
-				)}
+		<div className={`${styles.Container} border-primary border-rounded`}>
+			{/* Head section */}
+			<section className={styles.Header}>
+				<h1 className="glow-text-white">Mint Your Kicks</h1>
+				<span className="glow-text-white">
+					Your Kicks in the Metaverse await
+				</span>
+				<hr />
+			</section>
+			{props.dropStage === undefined && <Loading text={'Loading Kicks Drop'} />}
 
-				{getFlowSection()}
-			</div>
-		</Overlay>
+			{getFlowSection()}
+		</div>
 	);
 };
 

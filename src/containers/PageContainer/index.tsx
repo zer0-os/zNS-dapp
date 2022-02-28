@@ -21,7 +21,6 @@ import wilderIcon from 'assets/WWLogo_SVG.svg';
 
 //- Components & Containers
 import {
-	ConnectToWallet,
 	FutureButton,
 	TitleBar,
 	TooltipLegacy,
@@ -34,12 +33,10 @@ import {
 	Spinner,
 	SideBar,
 } from 'components';
-
 import { BuyTokenRedirect, ProfileModal } from 'containers';
 
 //- Library Imports
 import { useTransfer } from 'lib/hooks/useTransfer';
-import { MintNewNFT } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { NavBarProvider } from 'lib/providers/NavBarProvider';
@@ -75,6 +72,9 @@ const PageContainer: FC = ({ children }) => {
 
 	//- Domain Data
 	const { domain: znsDomain, loading, refetch } = useCurrentDomain();
+
+	//- Modal Provider
+	const { openModal, closeModal: onClose } = useModal();
 
 	////////////////////////
 	// Browser Navigation //
@@ -159,8 +159,6 @@ const PageContainer: FC = ({ children }) => {
 		setModal(undefined);
 	};
 
-	const openMint = () => setModal(Modal.Mint);
-
 	const openProfile = () => {
 		const params = new URLSearchParams(location.search);
 		params.set('profile', 'true');
@@ -170,15 +168,26 @@ const PageContainer: FC = ({ children }) => {
 		});
 	};
 
-	const openWallet = () => {
-		setModal(Modal.Wallet);
+	// Open Mint NFT Modal
+	const openMintNewNFT = () => {
+		openModal({
+			modalType: ModalType.MINT_NEW_NFT,
+			contentProps: {
+				domainId: znsDomain ? znsDomain.id : '',
+				domainName: domain,
+				domainOwner: znsDomain ? znsDomain.owner.id : '',
+				onMint: onClose,
+				subdomains:
+					(znsDomain?.subdomains?.map((sub: any) => sub.name) as string[]) ||
+					[],
+			},
+		});
 	};
 
-	const { openModal } = useModal();
-
-	const openConnectWallet = () => {
+	// Open Connect To Wallet Modal
+	const openConnectToWallet = () => {
 		openModal({
-			modalType: ModalType.CONNECT_WALLET_MODAL_TYPE,
+			modalType: ModalType.CONNECT_TO_WALLET,
 		});
 	};
 
@@ -267,24 +276,6 @@ const PageContainer: FC = ({ children }) => {
 			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
 				<></>
 			</Overlay>
-			{/* {modal === Modal.Wallet && (
-				<ConnectToWallet onConnect={closeModal} closeOverlay={closeModal} />
-			)} */}
-			{modal === Modal.Mint && (
-				<Overlay open onClose={closeModal}>
-					<MintNewNFT
-						onMint={closeModal}
-						domainName={domain}
-						domainId={znsDomain ? znsDomain.id : ''}
-						domainOwner={znsDomain ? znsDomain.owner.id : ''}
-						subdomains={
-							(znsDomain?.subdomains?.map(
-								(sub: any) => sub.name,
-							) as string[]) || []
-						}
-					/>
-				</Overlay>
-			)}
 		</>
 	);
 
@@ -317,7 +308,7 @@ const PageContainer: FC = ({ children }) => {
 				>
 					<>
 						{!account && localStorage.getItem('chosenWallet') && (
-							<FutureButton glow onClick={() => openWallet()}>
+							<FutureButton glow onClick={() => openConnectToWallet()}>
 								<div
 									style={{
 										display: 'flex',
@@ -354,7 +345,7 @@ const PageContainer: FC = ({ children }) => {
 						)}
 						{!account && !localStorage.getItem('chosenWallet') && (
 							<>
-								<FutureButton glow onClick={openWallet}>
+								<FutureButton glow onClick={openConnectToWallet}>
 									Connect {pageWidth > 900 && 'Wallet'}
 								</FutureButton>
 								<BuyTokenRedirect />
@@ -369,7 +360,7 @@ const PageContainer: FC = ({ children }) => {
 										glow={account != null}
 										onClick={() => {
 											account != null
-												? openMint()
+												? openMintNewNFT()
 												: addNotification('Please connect your wallet.');
 										}}
 										loading={loading}
@@ -412,7 +403,7 @@ const PageContainer: FC = ({ children }) => {
 								/>
 
 								{/* TODO: Change the triple dot button to a component */}
-								<div className={styles.Dots} onClick={openConnectWallet}>
+								<div className={styles.Dots} onClick={openConnectToWallet}>
 									<div></div>
 									<div></div>
 									<div></div>

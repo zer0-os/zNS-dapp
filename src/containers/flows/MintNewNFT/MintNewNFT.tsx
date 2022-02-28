@@ -20,7 +20,7 @@ import {
 } from './types';
 
 //- Component Imports
-import { StepBar } from 'components';
+import { Overlay, StepBar } from 'components';
 import TokenInformation from './sections/TokenInformation';
 // import TokenDynamics from './sections/TokenDynamics';
 import Staking from './sections/Staking';
@@ -30,11 +30,12 @@ import Summary from './sections/Summary';
 import styles from './MintNewNFT.module.scss';
 import { rootDomainName } from 'lib/utils/domains';
 
-type MintNewNFTProps = {
+export type MintNewNFTProps = {
 	domainId: string; // Blockchain ID of the domain we're minting to
 	domainName: string; // The name of the domain we're minting to, i.e. wilder.world
 	domainOwner: string; // account that owns the domain we're minting to (parent)
 	onMint: () => void;
+	closeModal: () => void;
 	subdomains: string[];
 };
 
@@ -48,6 +49,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	domainId,
 	domainName,
 	onMint,
+	closeModal,
 	domainOwner,
 	subdomains,
 }) => {
@@ -296,54 +298,57 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	////////////
 
 	return (
-		<div className={`${styles.MintNewNFT} blur border-rounded border-primary`}>
-			{isMintLoading && <div className={styles.Blocker}></div>}
-			{/* // TODO: Pull each section out into a seperate component */}
-			<div className={styles.Header}>
-				<h1 className={`glow-text-white`}>
-					{isOwner ? 'Mint' : 'Request to Mint'} "{name ? name : 'A New NFT'}"
-				</h1>
-				<div style={{ marginBottom: 8 }}>
-					<h2 className={`glow-text-white`}>{domainString()}</h2>
-				</div>
-				<span>
-					By{' '}
-					{account && account.length
-						? account.substring(0, 4) +
-						  '...' +
-						  account.substring(account.length - 4)
-						: ''}
-				</span>
-			</div>
-			<StepBar
-				style={{ marginTop: 24 }}
-				step={step + 1}
-				steps={isOwner ? ['Details'] : ['Details', 'Stake']}
-				onNavigate={(i: number) => setStep(i)}
-			/>
-
+		<Overlay open onClose={closeModal}>
 			<div
-				ref={containerRef}
-				className={styles.Container}
-				style={{ height: containerHeight }}
+				className={`${styles.MintNewNFT} blur border-rounded border-primary`}
 			>
-				{/* SECTION 1: Token Information */}
-				{step === MintState.DomainDetails && (
-					<TokenInformation
-						existingSubdomains={existingSubdomains || []}
-						token={tokenInformation}
-						onContinue={(data: TokenInformationType) =>
-							getTokenInformation(data)
-						}
-						onResize={resize}
-						setNameHeader={(name: string) => setName(name)}
-						setDomainHeader={(domain: string) => setDomain(domain)}
-					/>
-				)}
+				{isMintLoading && <div className={styles.Blocker}></div>}
+				{/* // TODO: Pull each section out into a seperate component */}
+				<div className={styles.Header}>
+					<h1 className={`glow-text-white`}>
+						{isOwner ? 'Mint' : 'Request to Mint'} "{name ? name : 'A New NFT'}"
+					</h1>
+					<div style={{ marginBottom: 8 }}>
+						<h2 className={`glow-text-white`}>{domainString()}</h2>
+					</div>
+					<span>
+						By{' '}
+						{account && account.length
+							? account.substring(0, 4) +
+							  '...' +
+							  account.substring(account.length - 4)
+							: ''}
+					</span>
+				</div>
+				<StepBar
+					style={{ marginTop: 24 }}
+					step={step + 1}
+					steps={isOwner ? ['Details'] : ['Details', 'Stake']}
+					onNavigate={(i: number) => setStep(i)}
+				/>
 
-				{/* SECTION 2: Token Dynamics */}
-				{/* This section is currently disabled. When re-enabling make sure to fix the step counter */}
-				{/* {step === 2 && (
+				<div
+					ref={containerRef}
+					className={styles.Container}
+					style={{ height: containerHeight }}
+				>
+					{/* SECTION 1: Token Information */}
+					{step === MintState.DomainDetails && (
+						<TokenInformation
+							existingSubdomains={existingSubdomains || []}
+							token={tokenInformation}
+							onContinue={(data: TokenInformationType) =>
+								getTokenInformation(data)
+							}
+							onResize={resize}
+							setNameHeader={(name: string) => setName(name)}
+							setDomainHeader={(domain: string) => setDomain(domain)}
+						/>
+					)}
+
+					{/* SECTION 2: Token Dynamics */}
+					{/* This section is currently disabled. When re-enabling make sure to fix the step counter */}
+					{/* {step === 2 && (
 					<TokenDynamics
 						token={tokenDynamics}
 						onBack={() => toStep(1)}
@@ -351,27 +356,28 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					/>
 				)} */}
 
-				{/* SECTION 3: Staking */}
-				{step === MintState.Staking && (
-					<Staking
-						balance={lootBalance}
-						token={tokenStake}
-						onContinue={(data: TokenStakeType) => getTokenStake(data)}
-					/>
-				)}
+					{/* SECTION 3: Staking */}
+					{step === MintState.Staking && (
+						<Staking
+							balance={lootBalance}
+							token={tokenStake}
+							onContinue={(data: TokenStakeType) => getTokenStake(data)}
+						/>
+					)}
 
-				{step === MintState.Summary && (
-					<Summary
-						token={tokenInformation}
-						mintingStatusText={mintingStatusText}
-						onContinue={submit}
-						isMintLoading={isMintLoading}
-						domain={domainName}
-						errorText={error}
-					/>
-				)}
+					{step === MintState.Summary && (
+						<Summary
+							token={tokenInformation}
+							mintingStatusText={mintingStatusText}
+							onContinue={submit}
+							isMintLoading={isMintLoading}
+							domain={domainName}
+							errorText={error}
+						/>
+					)}
+				</div>
 			</div>
-		</div>
+		</Overlay>
 	);
 };
 

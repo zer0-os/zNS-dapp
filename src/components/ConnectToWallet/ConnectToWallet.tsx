@@ -30,9 +30,9 @@ import fortmaticIcon from './assets/fortmatic.svg';
 import portisIcon from './assets/portis.svg';
 import useNotification from 'lib/hooks/useNotification';
 
-type ConnectToWalletProps = {
+export type ConnectToWalletProps = {
 	onConnect: () => void;
-	closeOverlay: () => void;
+	closeModal: () => void;
 };
 
 const nameToConnector: { [key: string]: AbstractConnector } = {
@@ -68,7 +68,7 @@ const nameFromConnector = (c: AbstractConnector) => {
 
 const ConnectToWallet: React.FC<ConnectToWalletProps> = ({
 	onConnect,
-	closeOverlay,
+	closeModal,
 }) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { active, connector, activate, deactivate } = walletContext;
@@ -157,7 +157,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({
 	};
 
 	return (
-		<Overlay centered open onClose={closeOverlay}>
+		<Overlay open centered onClose={closeModal}>
 			<div className={`${WalletStyles.connect} border-primary`}>
 				<div className={WalletStyles.header}>
 					<h3 className={`glow-text-white`}>Connect To A Wallet</h3>
