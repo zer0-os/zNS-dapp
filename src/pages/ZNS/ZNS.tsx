@@ -298,7 +298,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			<WheelsRaffle />
+			{/* <WheelsRaffle /> */}
 
 			{!isNftView && (
 				<div
