@@ -34,6 +34,8 @@ import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 //- Constants Imports
 import { ROUTES } from 'constants/routes';
+import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
+import { WALLETS } from 'constants/wallets';
 import { Modal } from './PageContainer.constants';
 
 //- Elements Imports
@@ -135,16 +137,21 @@ const PageContainer: FC = ({ children }) => {
 	useEffect(() => {
 		//wallet connect wont do this automatically if session its ended from phone
 		if (
-			(localStorage.getItem('chosenWallet') === 'walletconnect' ||
-				localStorage.getItem('chosenWallet') === 'metamask' ||
-				localStorage.getItem('chosenWallet') === 'coinbase' ||
-				localStorage.getItem('chosenWallet') === 'portis' ||
-				localStorage.getItem('chosenWallet') === 'fortmatic') &&
+			(localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+				WALLETS.WALLET_CONNECT ||
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+					WALLETS.METAMASK ||
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+					WALLETS.COINBASE ||
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+					WALLETS.PORTIS ||
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+					WALLETS.FORTMATIC) &&
 			!active &&
 			triedEagerConnect
 		) {
 			setTimeout(async () => {
-				localStorage.removeItem('chosenWallet');
+				localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
 			}, 2000);
 		}
 		if (triedEagerConnect)
