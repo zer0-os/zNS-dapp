@@ -2,6 +2,8 @@ import { render, cleanup } from '@testing-library/react';
 import PreviewCard, { TEST_IDS } from './PreviewCard';
 import '@testing-library/jest-dom/extend-expect';
 
+jest.useFakeTimers();
+
 const renderComponent = ({
 	preventInteraction = false,
 	children = <></>,
