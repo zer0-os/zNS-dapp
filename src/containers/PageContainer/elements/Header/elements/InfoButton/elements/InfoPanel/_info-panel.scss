@@ -45,8 +45,11 @@
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				width: 25%;
 				height: 60px;
+
+				&.max-4 {
+					width: 25%;
+				}
 
 				> a {
 					display: flex;

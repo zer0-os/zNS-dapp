@@ -23,7 +23,7 @@ export const InfoPanel: React.FC = () => {
 				</div>
 				<div className="info-panel__content-section-body">
 					{wilderWorldOptions.map((option) => (
-						<div className="info-panel__content-section-body-item">
+						<div className="info-panel__content-section-body-item max-4">
 							<a
 								target="_blank"
 								rel="noreferrer"
