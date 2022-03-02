@@ -223,23 +223,26 @@ const ZNS: React.FC<ZNSProps> = () => {
 		return (
 			<>
 				<div className={styles.Stats}>
-					{data.map((item, index) => (
-						<>
-							{!item.isHidden ? (
-								<StatsWidget
+					{data.map(
+						(item, index) =>
+							!item.isHidden && (
+								<div
 									key={`stats-widget=${index}`}
-									className="normalView"
-									fieldName={item.fieldName}
-									isLoading={!statsLoaded}
-									title={item.title}
-									subTitle={item.subTitle}
+									className={styles.WidgetContainer}
 									style={{
 										width: width,
 									}}
-								></StatsWidget>
-							) : null}
-						</>
-					))}
+								>
+									<StatsWidget
+										className="normalView"
+										fieldName={item.fieldName}
+										isLoading={!statsLoaded}
+										title={item.title}
+										subTitle={item.subTitle}
+									></StatsWidget>
+								</div>
+							),
+					)}
 				</div>
 			</>
 		);
@@ -299,7 +302,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 			)}
 			{/* ZNS Content */}
 			{/* <WheelsRaffle /> */}
-
 			{!isNftView && (
 				<div
 					className="background-primary border-primary border-rounded"
@@ -314,7 +316,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 					{showDomainTable && subTable}
 				</div>
 			)}
-
 			{znsDomain && isNftView && (
 				<Spring
 					from={{ opacity: 0, marginTop: 16 }}

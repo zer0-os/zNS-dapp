@@ -28,6 +28,7 @@ import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
 import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
 import { ModalProvider } from 'lib/providers/ModalProvider/ModalProvider';
+import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 
 //- Asset Imports
 import backgroundImage from 'assets/background.jpg';
@@ -96,15 +97,15 @@ function wrappedApp() {
 					<SubgraphProvider>
 						<Web3ReactProvider getLibrary={getLibrary}>
 							{/* Our Hooks  */}
-							<ZNSDomainsProvider>
-								<StakingRequestProvider>
-									<EnlistProvider>
-										<ModalProvider>
-											<App />
-										</ModalProvider>
-									</EnlistProvider>
-								</StakingRequestProvider>
-							</ZNSDomainsProvider>
+              <MvpVersionProvider>
+                <ZNSDomainsProvider>
+                  <StakingRequestProvider>
+                    <EnlistProvider>
+                      <App />
+                    </EnlistProvider>
+                  </StakingRequestProvider>
+                </ZNSDomainsProvider>
+              </MvpVersionProvider>
 						</Web3ReactProvider>
 					</SubgraphProvider>
 				</ChainSelectorProvider>

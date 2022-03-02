@@ -5,56 +5,40 @@ import React from 'react';
 import styles from './ToggleButton.module.scss';
 
 type ToggleButtonProps = {
-	toggled: boolean;
-	style?: React.CSSProperties;
+	hideOnOffLabels?: boolean;
+	label?: string | React.ReactNode;
 	onClick: () => void;
-	labels?: string[];
+	style?: React.CSSProperties;
+	toggled: boolean;
 };
 
 const ToggleButton: React.FC<ToggleButtonProps> = ({
-	toggled,
-	style,
+	hideOnOffLabels,
+	label,
 	onClick,
-	labels,
-}) => {
-	const clickLabel = (left: boolean) => {
-		if ((left && toggled) || (!left && !toggled)) onClick();
-	};
-
-	return (
-		<div style={style} className={styles.Container}>
-			{/* Left Label */}
-			{labels && labels.length && (
-				<span
-					title={labels[0]}
-					onClick={() => clickLabel(true)}
-					className={!toggled ? styles.On : ''}
-				>
-					{labels[0]}
-				</span>
-			)}
-
-			{/* Toggle Button */}
-			<div
-				onClick={onClick}
-				className={`${styles.Toggle} ${toggled ? styles.On : ''}`}
-			>
-				{/* Dot */}
-				<div></div>
+	style,
+	toggled,
+}) => (
+	<div style={style} className={styles.Container}>
+		<div
+			onClick={onClick}
+			className={`${styles.Toggle} ${toggled ? styles.On : ''}`}
+		>
+			<div className="no-select">
+				{hideOnOffLabels !== true && (
+					<>
+						<span>On</span>
+						<span>Off</span>
+					</>
+				)}
 			</div>
-
-			{/* Right Label */}
-			{labels && labels.length > 1 && (
-				<span
-					title={labels[1]}
-					onClick={() => clickLabel(false)}
-					className={toggled ? styles.On : ''}
-				>
-					{labels[1]}
-				</span>
-			)}
 		</div>
-	);
-};
+		{typeof label === 'string' ? (
+			<span className={styles.Label}>{label}</span>
+		) : (
+			{ label }
+		)}
+	</div>
+);
 
 export default ToggleButton;
