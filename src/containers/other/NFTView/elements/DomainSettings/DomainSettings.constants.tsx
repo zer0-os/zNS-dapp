@@ -104,7 +104,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 		title: 'Save & Lock?',
 		description: {
 			[DomainSettingsModalStatus.NORMAL]:
-				'Your changes will be saved and the metadata will be locked. You will be the only one who can unlock it in the feature.',
+				'Your changes will be saved and the metadata will be locked. You will be the only one who can unlock it in the future.',
 			[DomainSettingsModalStatus.WALLET_CONFIRMATION]:
 				'Waiting for Wallet Confirmation...',
 			[DomainSettingsModalStatus.PROCESSING]:
