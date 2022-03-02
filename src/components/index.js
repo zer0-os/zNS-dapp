@@ -88,7 +88,7 @@ export { default as StatsWidget } from './StatsWidget/StatsWidget';
 export { default as StepBar } from './ProgressIndicators/StepBar/StepBar';
 
 //- Switches
-export { default as ToggleSwitch } from './Switchs/ToggleSwitch/ToggleSwitch';
+export { default as ToggleSwitch } from './Switch/ToggleSwitch/ToggleSwitch';
 
 //- To be implemented
 // export { default as CopyInput } from './CopyInput/CopyInput.js'
