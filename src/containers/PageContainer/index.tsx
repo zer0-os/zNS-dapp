@@ -373,7 +373,7 @@ const PageContainer: FC = ({ children }) => {
 						{account && !isSearchActive && (
 							<>
 								{/* Mint button */}
-								{shouldDisplayMintButton && isMvpPrototype && (
+								{shouldDisplayMintButton && isMvpPrototype && pageWidth > 900 && (
 									<FutureButton
 										style={{ padding: '0px 12px', whiteSpace: 'nowrap' }}
 										glow={account != null}
