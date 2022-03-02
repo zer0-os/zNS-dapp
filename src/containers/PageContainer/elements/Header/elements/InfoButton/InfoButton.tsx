@@ -1,8 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { IconButton } from 'components';
 import { useOnClickOutside } from 'lib/hooks/useOnClickOutside';
-import dotIcon from 'assets/dot-icon.svg';
-import { InfoPanel } from './elements';
+import { IconDot, InfoPanel } from './elements';
 import './_info-button.scss';
 
 export type InfoButtonProps = {
@@ -27,11 +25,9 @@ export const InfoButton: React.FC<InfoButtonProps> = (props) => {
 
 	return (
 		<div className="info-button__container" ref={infoPanelRef}>
-			<IconButton
-				className="info-button"
-				iconUri={dotIcon}
-				onClick={handleOnToggle}
-			/>
+			<button className="info-button" onClick={handleOnToggle}>
+				<IconDot />
+			</button>
 
 			{isOpen && <InfoPanel onClose={handleClose} {...props} />}
 		</div>
