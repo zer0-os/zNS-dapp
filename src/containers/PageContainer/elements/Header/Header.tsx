@@ -10,7 +10,6 @@ import { Maybe, DisplayParentDomain } from 'lib/types';
 import { BuyTokenRedirect } from 'containers';
 import { ZNALink } from 'components';
 import { URLS } from 'constants/urls';
-import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { useHeaderData, useHeaderHandlers } from './hooks';
 import {
 	SearchDomains,
@@ -128,8 +127,7 @@ export const Header: React.FC<HeaderProps> = ({
 					{/* Connect Wallet Button */}
 					{formattedData.showConnectWalletButton && (
 						<ConnectWalletButton
-							onClick={openModal(Modal.Wallet)}
-							wallet={localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET)}
+							onConnectWallet={openModal(Modal.Wallet)}
 							isDesktop={formattedData.isDesktop}
 						/>
 					)}
@@ -165,7 +163,12 @@ export const Header: React.FC<HeaderProps> = ({
 					)}
 
 					{/* Info Button */}
-					{formattedData.showInfoButton && <InfoButton />}
+					{formattedData.showInfoButton && (
+						<InfoButton
+							isDesktop={formattedData.isDesktop}
+							onConnectWallet={openModal(Modal.Wallet)}
+						/>
+					)}
 				</div>
 			</div>
 

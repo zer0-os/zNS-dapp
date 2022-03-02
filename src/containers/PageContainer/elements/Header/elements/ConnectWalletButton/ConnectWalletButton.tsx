@@ -1,37 +1,58 @@
-import React, { useMemo } from 'react';
+import React from 'react';
+import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { useWeb3React } from '@web3-react/core';
 import { FutureButton, Spinner } from 'components';
+import {
+	useConnectWalletButtonData,
+	useConnectWalletButtonHandlers,
+} from './hooks';
 import './_connect-wallet-button.scss';
 
 type ConnectWalletButtonProps = {
-	wallet: string | null;
 	isDesktop: boolean;
-	onClick: () => void;
+	onConnectWallet: () => void;
 };
 
 export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
-	wallet,
 	isDesktop,
-	onClick,
+	onConnectWallet,
 }) => {
-	const { title, wasConnecting } = useMemo(() => {
-		const wasConnecting = Boolean(wallet);
-		const title = wasConnecting
-			? `Trying to connect ${wallet}`
-			: `Connect ${isDesktop && 'Wallet'}`;
+	const { active, connector, account, deactivate } =
+		useWeb3React<Web3Provider>();
 
-		return {
-			title,
-			wasConnecting,
-		};
-	}, [wallet, isDesktop]);
+	const { formattedData } = useConnectWalletButtonData({
+		props: {
+			isDesktop,
+			account,
+			active,
+			connector,
+		},
+	});
+
+	const handlers = useConnectWalletButtonHandlers({
+		props: {
+			deactivate,
+		},
+		formattedData,
+	});
 
 	return (
-		<FutureButton glow onClick={onClick}>
-			<div className="connect-wallet-button__container">
-				{wasConnecting && <Spinner />}
+		<>
+			{formattedData.isConnected ? (
+				<FutureButton glow onClick={handlers.handleDisconnectWallet}>
+					{formattedData.disconnectTitle}
+				</FutureButton>
+			) : (
+				<FutureButton glow onClick={onConnectWallet}>
+					<div className="connect-wallet-button__container">
+						{formattedData.isConnecting && <Spinner />}
 
-				<strong className="connect-wallet-button__title">{title}</strong>
-			</div>
-		</FutureButton>
+						<strong className="connect-wallet-button__title">
+							{formattedData.connectTitle}
+						</strong>
+					</div>
+				</FutureButton>
+			)}
+		</>
 	);
 };

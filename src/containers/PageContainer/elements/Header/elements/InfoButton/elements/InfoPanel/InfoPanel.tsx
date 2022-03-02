@@ -1,34 +1,49 @@
 import React from 'react';
-import {
-	WILDER_WORLD_KEYS,
-	ZERO_TECK_KEYS,
-	ZNS_INFO_OPTIONS,
-	ZNS_OTHER_OPTIONS,
-} from './InfoPanel.constants';
+import { ConnectWalletButton } from '../../../../elements';
+import { InfoButtonProps } from '../../InfoButton';
+import { useInfoPanelData, useInfoPanelHandlers } from './hooks';
 import './_info-panel.scss';
 
-export const InfoPanel: React.FC = () => {
-	const wilderWorldOptions = WILDER_WORLD_KEYS.map(
-		(key) => ZNS_INFO_OPTIONS[key],
-	);
-	const zeroTechOptions = ZERO_TECK_KEYS.map((key) => ZNS_INFO_OPTIONS[key]);
-	const otherOptions = ZNS_OTHER_OPTIONS;
+interface InfoPanelProps extends InfoButtonProps {
+	onClose: () => void;
+}
+
+export const InfoPanel: React.FC<InfoPanelProps> = ({
+	isDesktop,
+	onClose,
+	onConnectWallet,
+}) => {
+	const { formattedData } = useInfoPanelData();
+
+	const handlers = useInfoPanelHandlers({
+		props: {
+			onClose,
+			onConnectWallet,
+		},
+	});
 
 	return (
 		<div className="info-panel__container border-primary border-rounded blur">
+			<div className="info-panel__content-section connect-wallet">
+				<ConnectWalletButton
+					onConnectWallet={handlers.handleConnectWallet}
+					isDesktop={isDesktop}
+				/>
+			</div>
 			<div className="info-panel__content-section">
 				<div className="info-panel__content-section-title">
 					<h3> Wilder World</h3>
 					<span className="divider"></span>
 				</div>
 				<div className="info-panel__content-section-body">
-					{wilderWorldOptions.map((option) => (
+					{formattedData.wilderWorldOptions.map((option) => (
 						<div className="info-panel__content-section-body-item max-4">
 							<a
 								target="_blank"
 								rel="noreferrer"
 								href={option.link}
 								key={`wilder-options-${option.link}`}
+								onClick={onClose}
 							>
 								<img src={option.icon} alt={option.label} />
 							</a>
@@ -43,13 +58,14 @@ export const InfoPanel: React.FC = () => {
 					<span className="divider"></span>
 				</div>
 				<div className="info-panel__content-section-body">
-					{zeroTechOptions.map((option) => (
+					{formattedData.zeroTechOptions.map((option) => (
 						<div className="info-panel__content-section-body-item">
 							<a
 								target="_blank"
 								rel="noreferrer"
 								href={option.link}
 								key={`zero-tech-options-${option.link}`}
+								onClick={onClose}
 							>
 								<img src={option.icon} alt={option.label} />
 							</a>
@@ -60,13 +76,14 @@ export const InfoPanel: React.FC = () => {
 
 			<div className="info-panel__content-section">
 				<div className="info-panel__content-section-footer">
-					{otherOptions.map((option) => (
+					{formattedData.otherOptions.map((option) => (
 						<div className="info-panel__content-section-footer-item">
 							<a
 								target="_blank"
 								rel="noreferrer"
 								href={option.link}
 								key={`other-options-${option.link}`}
+								onClick={onClose}
 							>
 								{option.label}
 							</a>

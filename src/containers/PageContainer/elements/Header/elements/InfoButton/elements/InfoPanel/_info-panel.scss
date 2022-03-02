@@ -16,6 +16,13 @@
 	&__content-section {
 		width: 100%;
 
+		&.connect-wallet {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 0 0 1rem;
+		}
+
 		&-title {
 			display: flex;
 			justify-content: space-between;

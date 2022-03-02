@@ -5,7 +5,12 @@ import dotIcon from 'assets/dot-icon.svg';
 import { InfoPanel } from './elements';
 import './_info-button.scss';
 
-export const InfoButton: React.FC = () => {
+export type InfoButtonProps = {
+	isDesktop: boolean;
+	onConnectWallet: () => void;
+};
+
+export const InfoButton: React.FC<InfoButtonProps> = (props) => {
 	const infoPanelRef = useRef<HTMLDivElement>(null);
 
 	const [isOpen, setIsOpen] = useState(false);
@@ -28,7 +33,7 @@ export const InfoButton: React.FC = () => {
 				onClick={handleOnToggle}
 			/>
 
-			{isOpen && <InfoPanel />}
+			{isOpen && <InfoPanel onClose={handleClose} {...props} />}
 		</div>
 	);
 };
