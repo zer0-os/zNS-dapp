@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, cleanup } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import PreviewCard, { TEST_IDS } from './PreviewCard';
+import '@testing-library/jest-dom/extend-expect';
+
+jest.useFakeTimers();
 
 const renderComponent = ({
 	preventInteraction = false,
@@ -30,7 +31,9 @@ const renderComponent = ({
 			name={name}
 			ownerId={ownerId}
 			style={style}
-		/>,
+		>
+			{children}
+		</PreviewCard>,
 	);
 };
 

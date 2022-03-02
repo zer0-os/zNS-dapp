@@ -429,8 +429,16 @@ button {
 	text-align: center;
 }
 
+.text-success {
+	color: var(--color-success);
+}
+
 .error-text {
 	color: var(--color-error);
+}
+
+.bold {
+	font-weight: 700;
 }
 
 /*
