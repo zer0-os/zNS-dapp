@@ -1,7 +1,12 @@
 import React from 'react';
 import { ConnectWalletButton } from '../../../../elements';
 import { InfoButtonProps } from '../../InfoButton';
-import { useInfoPanelData, useInfoPanelHandlers } from './hooks';
+import { useInfoPanelHandlers } from './hooks';
+import {
+	WILDER_WORLD_OPTIONS,
+	ZERO_TECH_OPTIONS,
+	ZNS_OTHER_OPTIONS,
+} from './InfoPanel.constants';
 import './_info-panel.scss';
 
 interface InfoPanelProps extends InfoButtonProps {
@@ -13,8 +18,6 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 	onClose,
 	onConnectWallet,
 }) => {
-	const { formattedData } = useInfoPanelData();
-
 	const handlers = useInfoPanelHandlers({
 		props: {
 			onClose,
@@ -36,7 +39,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 					<span className="divider"></span>
 				</div>
 				<div className="info-panel__content-section-body">
-					{formattedData.wilderWorldOptions.map((option) => (
+					{Object.values(WILDER_WORLD_OPTIONS).map((option) => (
 						<div className="info-panel__content-section-body-item max-4">
 							<a
 								target="_blank"
@@ -58,7 +61,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 					<span className="divider"></span>
 				</div>
 				<div className="info-panel__content-section-body">
-					{formattedData.zeroTechOptions.map((option) => (
+					{Object.values(ZERO_TECH_OPTIONS).map((option) => (
 						<div className="info-panel__content-section-body-item">
 							<a
 								target="_blank"
@@ -76,7 +79,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 
 			<div className="info-panel__content-section">
 				<div className="info-panel__content-section-footer">
-					{formattedData.otherOptions.map((option) => (
+					{Object.values(ZNS_OTHER_OPTIONS).map((option) => (
 						<div className="info-panel__content-section-footer-item">
 							<a
 								target="_blank"

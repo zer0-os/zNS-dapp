@@ -20,54 +20,7 @@ export enum ZNS_INFO_KEYS {
 	ZINE = 'zine',
 }
 
-export const WILDER_WORLD_KEYS = [
-	ZNS_INFO_KEYS.WILD,
-	ZNS_INFO_KEYS.ZERO,
-	ZNS_INFO_KEYS.TWITTER,
-	ZNS_INFO_KEYS.DISCORD,
-	ZNS_INFO_KEYS.INSTAGRAM,
-	ZNS_INFO_KEYS.TELEGRAM,
-	ZNS_INFO_KEYS.ZINE,
-	ZNS_INFO_KEYS.MEDIUM,
-];
-
-export const ZERO_TECK_KEYS = [
-	ZNS_INFO_KEYS.INFO,
-	ZNS_INFO_KEYS.ZERO,
-	ZNS_INFO_KEYS.ZINE,
-];
-
-export const ZNS_INFO_OPTIONS = {
-	[ZNS_INFO_KEYS.DISCORD]: {
-		label: 'Discord',
-		link: 'https://discord.zero.com',
-		icon: discordIcon,
-	},
-	[ZNS_INFO_KEYS.INFO]: {
-		label: 'About',
-		link: 'https://info.wilderworld.com/',
-		icon: infoIcon,
-	},
-	[ZNS_INFO_KEYS.INSTAGRAM]: {
-		label: 'Instagram',
-		link: 'https://www.instagram.com/wilder.world/',
-		icon: instagramIcon,
-	},
-	[ZNS_INFO_KEYS.MEDIUM]: {
-		label: 'Medium',
-		link: 'https://wilderworld.medium.com/',
-		icon: mediumIcon,
-	},
-	[ZNS_INFO_KEYS.TELEGRAM]: {
-		label: 'Telegram',
-		link: 'https://t.me/wilder_world/',
-		icon: telegramIcon,
-	},
-	[ZNS_INFO_KEYS.TWITTER]: {
-		label: 'Twitter',
-		link: 'https://twitter.com/WilderWorld',
-		icon: twitterIcon,
-	},
+export const WILDER_WORLD_OPTIONS = {
 	[ZNS_INFO_KEYS.WILD]: {
 		label: 'Wild',
 		link: 'https://www.wilderworld.com/',
@@ -78,9 +31,52 @@ export const ZNS_INFO_OPTIONS = {
 		link: 'https://zer0.io/a/invite/2QJLsawJ9f7J',
 		icon: zeroIcon,
 	},
+	[ZNS_INFO_KEYS.TWITTER]: {
+		label: 'Twitter',
+		link: 'https://twitter.com/WilderWorld',
+		icon: twitterIcon,
+	},
+	[ZNS_INFO_KEYS.DISCORD]: {
+		label: 'Discord',
+		link: 'https://discord.com/invite/wilderworld',
+		icon: discordIcon,
+	},
+	[ZNS_INFO_KEYS.INSTAGRAM]: {
+		label: 'Instagram',
+		link: 'https://www.instagram.com/wilder.world/',
+		icon: instagramIcon,
+	},
+	[ZNS_INFO_KEYS.TELEGRAM]: {
+		label: 'Telegram',
+		link: 'https://t.me/wilder_world/',
+		icon: telegramIcon,
+	},
 	[ZNS_INFO_KEYS.ZINE]: {
 		label: 'Zine',
 		link: 'https://zine.wilderworld.com/',
+		icon: zineIcon,
+	},
+	[ZNS_INFO_KEYS.MEDIUM]: {
+		label: 'Medium',
+		link: 'https://wilderworld.medium.com/',
+		icon: mediumIcon,
+	},
+};
+
+export const ZERO_TECH_OPTIONS = {
+	[ZNS_INFO_KEYS.INFO]: {
+		label: 'About',
+		link: 'https://www.zero.tech/',
+		icon: infoIcon,
+	},
+	[ZNS_INFO_KEYS.ZERO]: {
+		label: 'Zero',
+		link: 'https://zer0.io/a/invite/2QJLsawJ9f7J',
+		icon: zeroIcon,
+	},
+	[ZNS_INFO_KEYS.ZINE]: {
+		label: 'Zine',
+		link: 'https://www.zine.live/',
 		icon: zineIcon,
 	},
 };
