@@ -375,7 +375,7 @@ const PageContainer: FC = ({ children }) => {
 								{/* Mint button */}
 								{shouldDisplayMintButton && isMvpPrototype && (
 									<FutureButton
-										style={{ padding: '0px 12px' }}
+										style={{ padding: '0px 12px', whiteSpace: 'nowrap' }}
 										glow={account != null}
 										onClick={() => {
 											account != null
@@ -384,7 +384,7 @@ const PageContainer: FC = ({ children }) => {
 										}}
 										loading={loading}
 									>
-										{mintButtonTitle}
+										{pageWidth > 1200 ? mintButtonTitle : MINT_NFT}
 									</FutureButton>
 								)}
 
