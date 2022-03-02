@@ -11,6 +11,7 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
+import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Style Imports
 import styles from './PageContainer.module.scss';
@@ -80,6 +81,10 @@ const PageContainer: FC = ({ children }) => {
 		loading,
 		refetch,
 	} = useCurrentDomain();
+
+	//- Version Data
+	const { mvpVersion } = useMvpVersion();
+	const isMvpPrototype = mvpVersion === 3;
 
 	////////////////////////
 	// Browser Navigation //
@@ -368,9 +373,9 @@ const PageContainer: FC = ({ children }) => {
 						{account && !isSearchActive && (
 							<>
 								{/* Mint button */}
-								{shouldDisplayMintButton && (
+								{shouldDisplayMintButton && isMvpPrototype && pageWidth > 900 && (
 									<FutureButton
-										style={{ padding: '0px 12px' }}
+										style={{ padding: '0px 12px', whiteSpace: 'nowrap' }}
 										glow={account != null}
 										onClick={() => {
 											account != null
@@ -379,7 +384,7 @@ const PageContainer: FC = ({ children }) => {
 										}}
 										loading={loading}
 									>
-										{mintButtonTitle}
+										{pageWidth > 1200 ? mintButtonTitle : MINT_NFT}
 									</FutureButton>
 								)}
 

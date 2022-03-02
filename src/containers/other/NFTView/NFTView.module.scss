@@ -95,30 +95,6 @@
 		padding-top: 0;
 
 		background: none;
-
-		&:hover {
-		}
-	}
-}
-
-.MoreDropdown {
-	:global(ul) {
-		top: calc(100% + 5px);
-		left: unset;
-		right: 0;
-		width: 236px;
-		transform: unset;
-		border: 1px solid var(--color-purple-lighter);
-		box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
-
-		li {
-			display: flex;
-			padding: 16px;
-
-			span {
-				margin-left: 16px;
-			}
-		}
 	}
 }
 
@@ -322,6 +298,7 @@
 
 .Stats {
 	display: flex;
+	align-items: unset;
 	justify-content: space-between;
 	margin-top: 24px;
 	flex-wrap: wrap;
@@ -435,10 +412,28 @@
 	.TokenHashContainer {
 		flex-direction: column;
 	}
+
 	.Contract {
 		width: 100%;
 		&:last-child {
 			margin-top: 0;
+		}
+	}
+
+	.Stats {
+		align-items: baseline;
+	}
+}
+
+// Stats Widget Container Styles
+@media only screen and (max-width: 520px) {
+	.WidgetContainer {
+		margin: 4px 0;
+		&:first-child {
+			margin-top: 0px;
+		}
+		&:last-child {
+			margin-bottom: 0px;
 		}
 	}
 }
@@ -597,3 +592,8 @@ button.ToggleAttributes {
 	}
 }
 /* Attributes styles End */
+
+.Expired {
+	padding: 0 !important;
+	opacity: 80%;
+}
