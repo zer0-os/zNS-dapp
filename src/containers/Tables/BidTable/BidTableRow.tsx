@@ -2,6 +2,7 @@ import styles from './BidTable.module.scss';
 
 import { Artwork } from 'components';
 import { ethers } from 'ethers';
+import { CancelBidButton } from 'containers';
 
 export type BidTableRowData = {
 	domainName: string;
@@ -26,9 +27,8 @@ const BidTableRow = (props: any) => {
 	const bid: BidTableRowData = props.data;
 	const isHighestBid = bid.yourBid.gte(bid.highestBid);
 
-	const onCancel = () => {
-		// Successfully cancelled bid
-		console.log('successfully cancelled ???');
+	const onSuccess = () => {
+		console.log('success');
 	};
 
 	return (
@@ -57,7 +57,11 @@ const BidTableRow = (props: any) => {
 				{isHighestBid ? 'You Lead' : 'Outbid'}
 			</td>
 			<td>
-				<>CANCEL BID BUTTON HERE</>
+				<CancelBidButton
+					onSuccess={onSuccess}
+					domainId={bid.domainId}
+					auctionId={bid.auctionId}
+				/>
 			</td>
 		</tr>
 	);

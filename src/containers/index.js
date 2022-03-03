@@ -10,6 +10,7 @@
  */
 
 // Buttons
+export { default as CancelBidButton } from './flows/CancelBid/CancelBidButton';
 export { default as BuyNowButton } from './flows/BuyNow/BuyNowButton';
 export { default as BidButton } from './buttons/BidButton/BidButton';
 export { default as ConnectWalletButton } from './buttons/ConnectWalletButton/ConnectWalletButton';
