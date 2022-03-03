@@ -1,5 +1,5 @@
 // React imports
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 // Type imports
 import { BidData } from '../CancelBid.types';
@@ -9,6 +9,7 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { getMetadata } from 'lib/metadata';
 import { BigNumber } from 'ethers';
+import { useDidMount } from 'lib/hooks/useDidMount';
 
 type UseBidDataReturn = {
 	isLoading: boolean;
@@ -78,13 +79,13 @@ const useBidData = (domainId: string, auctionId: string): UseBidDataReturn => {
 		});
 	};
 
-	useEffect(() => {
+	useDidMount(() => {
 		isMounted.current = true;
 		refetch();
 		return () => {
 			isMounted.current = false;
 		};
-	}, []);
+	});
 
 	return {
 		isLoading,
