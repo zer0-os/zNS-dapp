@@ -1,0 +1,23 @@
+.Container {
+	td {
+		&:first-child {
+			padding-left: 11px !important;
+		}
+
+		&:not(:first-child) {
+			text-align: right;
+		}
+
+		&:last-child > button {
+			margin-left: auto;
+		}
+
+		&.Lead {
+			color: var(--color-success);
+		}
+
+		&.Outbid {
+			color: var(--color-error);
+		}
+	}
+}

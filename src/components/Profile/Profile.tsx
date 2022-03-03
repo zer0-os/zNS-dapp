@@ -7,7 +7,7 @@ import ProfileStyle from './Profile.module.scss';
 
 //- Component Imports
 import { TabBar } from 'components';
-import { OwnedDomainsTable } from 'containers';
+import { OwnedDomainsTable, BidTable } from 'containers';
 
 type ProfileProps = {
 	id: string;
@@ -88,13 +88,11 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<TabBar tabs={['Your Domains']} onSelect={select} />
+			<TabBar tabs={['Your Domains', 'Your Bids']} onSelect={select} />
 			{selected === 'Your Domains' && (
 				<OwnedDomainsTable onNavigate={navigateToDomain} />
 			)}
-			{/* {selected === 'Offers' && (
-				<RequestTable onNavigate={navigateToDomain} userId={id} />
-			)} */}
+			{selected === 'Your Bids' && <BidTable />}
 		</div>
 	);
 };
