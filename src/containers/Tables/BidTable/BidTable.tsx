@@ -4,6 +4,7 @@ import { GenericTable } from 'components';
 type BidTableProps = {
 	bidData?: BidTableRowData[];
 	isLoading: boolean;
+	refetch: () => void;
 };
 
 export const HEADERS = [
@@ -39,7 +40,7 @@ export const HEADERS = [
 	},
 ];
 
-const BidTable = ({ bidData, isLoading }: BidTableProps) => {
+const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 	return (
 		<GenericTable
 			alignments={[0, 1, 1, 1, 1, 0, 0]}
@@ -50,7 +51,9 @@ const BidTable = ({ bidData, isLoading }: BidTableProps) => {
 			itemKey={'id'}
 			loadingText={'Loading Your Bids'}
 			notSearchable
-			rowComponent={BidTableRow}
+			rowComponent={(props: any) => (
+				<BidTableRow {...props} onRefetch={refetch} />
+			)}
 		/>
 	);
 };

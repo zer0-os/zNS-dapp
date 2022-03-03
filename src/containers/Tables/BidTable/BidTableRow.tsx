@@ -28,7 +28,7 @@ const BidTableRow = (props: any) => {
 	const isHighestBid = bid.yourBid.gte(bid.highestBid);
 
 	const onSuccess = () => {
-		console.log('success');
+		props.onRefetch();
 	};
 
 	return (
