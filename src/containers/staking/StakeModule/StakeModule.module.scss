@@ -21,6 +21,27 @@
 	}
 }
 
+.Actions {
+	.Input {
+		position: relative;
+
+		.Max {
+			position: absolute;
+			top: 50%;
+			right: 24px;
+			margin: 0;
+			padding: 0;
+			width: auto;
+
+			font-size: 14px;
+			color: var(--color-text-primary);
+
+			transform: translateY(-50%);
+			z-index: 3;
+		}
+	}
+}
+
 .Balance {
 	margin-top: 32px;
 
