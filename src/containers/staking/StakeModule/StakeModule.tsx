@@ -1,6 +1,6 @@
 import styles from './StakeModule.module.scss';
 
-import { TextInput, FutureButton, Spinner } from 'components';
+import { TextInput, FutureButton, Spinner, TextButton } from 'components';
 import { displayEther } from 'lib/currency';
 
 import classNames from 'classnames/bind';
@@ -65,6 +65,13 @@ const StakeModule = (props: StakeModuleProps) => {
 		}
 	};
 
+	const setMaxAmount = () => {
+		if (balance) {
+			setAmountString(ethers.utils.formatEther(balance).toString());
+			setAmountIsValid(true);
+		}
+	};
+
 	useEffect(() => {
 		setAmountString(amount);
 	}, [amount]);
@@ -72,14 +79,23 @@ const StakeModule = (props: StakeModuleProps) => {
 	return (
 		<div className={cx(styles.Container, className)}>
 			<div className={styles.Actions}>
-				<TextInput
-					text={amountString}
-					numeric
-					placeholder="Amount"
-					onChange={onInput}
-					disabled={isLoading}
-					maxLength={24}
-				/>
+				<div className={styles.Input}>
+					<TextInput
+						text={amountString}
+						numeric
+						placeholder="Amount"
+						onChange={onInput}
+						disabled={isLoading}
+						maxLength={24}
+					/>
+					<TextButton
+						className={styles.Max}
+						disabled={balance === undefined}
+						onClick={setMaxAmount}
+					>
+						MAX
+					</TextButton>
+				</div>
 				<FutureButton
 					loading={isLoading}
 					glow={amountIsValid}
