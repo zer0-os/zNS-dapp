@@ -43,3 +43,15 @@
 		margin-left: 0;
 	}
 }
+
+@media only screen and (max-width: 520px) {
+	.WidgetContainer {
+		margin: 8px 0;
+		&:first-child {
+			margin-top: 16px;
+		}
+		&:last-child {
+			margin-bottom: 0px;
+		}
+	}
+}

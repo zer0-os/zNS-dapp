@@ -11,6 +11,7 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { useMintProvider } from 'lib/providers/MintProvider';
+import useMvpVersion from 'lib/hooks/useMvpVersion';
 
 //- Style Imports
 import styles from './PageContainer.module.scss';
@@ -34,8 +35,10 @@ import {
 	Spinner,
 	SideBar,
 } from 'components';
-
 import { BuyTokenRedirect, ProfileModal } from 'containers';
+
+//- Constants Imports
+import { MINT_NFT, REQUEST_TO_MINT } from './constants';
 
 //- Library Imports
 import { useTransfer } from 'lib/hooks/useTransfer';
@@ -78,6 +81,10 @@ const PageContainer: FC = ({ children }) => {
 		loading,
 		refetch,
 	} = useCurrentDomain();
+
+	//- Version Data
+	const { mvpVersion } = useMvpVersion();
+	const isMvpPrototype = mvpVersion === 3;
 
 	////////////////////////
 	// Browser Navigation //
@@ -130,6 +137,11 @@ const PageContainer: FC = ({ children }) => {
 	const isOwnedByUser: boolean =
 		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
 	const isMintable: boolean = Boolean(domainMetadata?.isMintable);
+
+	//- Mint Button
+	const shouldDisplayMintButton =
+		isOwnedByUser || (!isOwnedByUser && isMintable);
+	const mintButtonTitle = isOwnedByUser ? MINT_NFT : REQUEST_TO_MINT;
 
 	///////////////
 	// Functions //
@@ -361,9 +373,9 @@ const PageContainer: FC = ({ children }) => {
 						{account && !isSearchActive && (
 							<>
 								{/* Mint button */}
-								{isOwnedByUser && isMintable && (
+								{shouldDisplayMintButton && isMvpPrototype && pageWidth > 900 && (
 									<FutureButton
-										style={{ padding: '0px 12px' }}
+										style={{ padding: '0px 12px', whiteSpace: 'nowrap' }}
 										glow={account != null}
 										onClick={() => {
 											account != null
@@ -372,9 +384,10 @@ const PageContainer: FC = ({ children }) => {
 										}}
 										loading={loading}
 									>
-										MINT
+										{pageWidth > 1200 ? mintButtonTitle : MINT_NFT}
 									</FutureButton>
 								)}
+
 								{/* Status / Long Running Operation Button */}
 								{showStatus ? (
 									<TooltipLegacy
