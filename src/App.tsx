@@ -96,15 +96,15 @@ function wrappedApp() {
 					<SubgraphProvider>
 						<Web3ReactProvider getLibrary={getLibrary}>
 							{/* Our Hooks  */}
-              <MvpVersionProvider>
-                <ZNSDomainsProvider>
-                  <StakingRequestProvider>
-                    <EnlistProvider>
-                      <App />
-                    </EnlistProvider>
-                  </StakingRequestProvider>
-                </ZNSDomainsProvider>
-              </MvpVersionProvider>
+							<MvpVersionProvider>
+								<ZNSDomainsProvider>
+									<StakingRequestProvider>
+										<EnlistProvider>
+											<App />
+										</EnlistProvider>
+									</StakingRequestProvider>
+								</ZNSDomainsProvider>
+							</MvpVersionProvider>
 						</Web3ReactProvider>
 					</SubgraphProvider>
 				</ChainSelectorProvider>

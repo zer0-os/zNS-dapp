@@ -185,7 +185,7 @@ const PageContainer: FC = ({ children }) => {
 			{/* Overlays */}
 			<NotificationDrawer />
 			<ProfileModal />
-			<Overlay style={{ zIndex: 3 }} open={isSearching} onClose={() => { }} />
+			<Overlay style={{ zIndex: 3 }} open={isSearching} onClose={() => {}} />
 			{modal === Modal.Wallet && (
 				<Overlay centered open={modal === Modal.Wallet} onClose={closeModal}>
 					<ConnectToWallet onConnect={closeModal} />

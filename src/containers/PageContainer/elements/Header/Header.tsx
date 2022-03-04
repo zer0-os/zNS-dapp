@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
 				title,
 				isSearching,
 			},
-			mvpVersion
+			mvpVersion,
 		},
 	});
 

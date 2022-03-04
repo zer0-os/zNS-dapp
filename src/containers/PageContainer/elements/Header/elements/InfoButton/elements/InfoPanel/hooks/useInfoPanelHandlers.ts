@@ -2,7 +2,6 @@ import { useCallback, useMemo } from 'react';
 
 type UseInfoPanelHandlersProps = {
 	props: {
-		onClose: () => void;
 		onConnectWallet: () => void;
 	};
 };
@@ -16,7 +15,6 @@ export const useInfoPanelHandlers = ({
 }: UseInfoPanelHandlersProps): UseInfoPanelHandlersReturn => {
 	const handleConnectWallet = useCallback(() => {
 		props.onConnectWallet();
-		props.onClose();
 	}, [props]);
 
 	return useMemo(
