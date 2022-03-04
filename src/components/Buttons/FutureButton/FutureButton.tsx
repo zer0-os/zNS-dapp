@@ -35,7 +35,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	glow,
 	loading,
 	alt,
-	disabled = false,
+  disabled = false,
 }) => {
 	const [hasHovered, setHovered] = useState(false);
 	const [isSelected, setSelected] = useState(false);
@@ -58,6 +58,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 		selected: isSelected,
 		Loading: loading,
 		Alt: alt,
+		Disabled: disabled,
 	});
 
 	const washClasses = cx({

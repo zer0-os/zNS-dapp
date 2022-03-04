@@ -174,10 +174,10 @@ const SubdomainTableRow = (props: any) => {
 					<td className={styles.Right}>
 						<Spinner />
 					</td>
-					<td className={styles.Right}>
+					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
 						<Spinner />
 					</td>
-					<td className={styles.Right}>
+					<td className={`${styles.Right} ${styles.volumeCol}`}>
 						<Spinner />
 					</td>
 				</>

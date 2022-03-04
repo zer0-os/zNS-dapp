@@ -12,7 +12,7 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 
-import { SubdomainTable, CurrentDomainPreview } from 'containers';
+import { SubdomainTable, CurrentDomainPreview, WheelsRaffle } from 'containers';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';

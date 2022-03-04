@@ -6,18 +6,22 @@ import TextButton, { TEST_ID } from './TextButton';
 const mockOnClick = jest.fn();
 
 const renderComponent = ({
-	className = 'test-class',
-	toggleable = false,
-	selected = true,
 	children = <></>,
+	className = 'test-class',
+	disabled = false,
+	selected = true,
+	style = {},
+	toggleable = false,
 } = {}) => {
 	return render(
 		<TextButton
-			className={className}
-			toggleable={toggleable}
-			selected={selected}
-			onClick={mockOnClick}
 			children={children}
+			className={className}
+			disabled={disabled}
+			onClick={mockOnClick}
+			selected={selected}
+			style={style}
+			toggleable={toggleable}
 		></TextButton>,
 	);
 };
@@ -28,14 +32,14 @@ afterEach(() => {
 });
 
 describe('TextButton component', () => {
-	it('Renders TextButton', () => {
+	it('should render', () => {
 		const { getByTestId } = renderComponent();
 
 		const container = getByTestId(TEST_ID.BUTTON);
 		expect(container).toBeInTheDocument();
 	});
 
-	it('Does trigger onClick function', () => {
+	it('should trigger onClick function', () => {
 		const { getByTestId } = renderComponent();
 
 		const container = getByTestId(TEST_ID.BUTTON);
@@ -43,29 +47,37 @@ describe('TextButton component', () => {
 		fireEvent.click(container);
 		expect(mockOnClick.mock.calls.length - originalCalls).toEqual(1);
 	});
-	it('Renders children', () => {
-		const child = <p>Test Children</p>;
-		const { getByTestId } = renderComponent({ children: child });
-		const container = getByTestId(TEST_ID.BUTTON);
-		expect(container.childElementCount).toBe(1);
-	});
 
-	it('Renders children text', () => {
+	it('should render children', () => {
 		const child = <p>Test Children</p>;
 		const { getByText } = renderComponent({ children: child });
 
 		expect(getByText('Test Children')).toBeInTheDocument();
 	});
 
-	it('Has className Selected', () => {
+	it('should apply Selected class when selected prop is true', () => {
 		const { getByTestId } = renderComponent({ selected: true });
 		const container = getByTestId(TEST_ID.BUTTON);
-		expect(container).toHaveClass('selected');
+		expect(container).toHaveClass('Selected');
 	});
 
-	it('Has className from props', () => {
+	it('should apply Disabled class when disabled prop is true', () => {
+		const { getByTestId } = renderComponent({ disabled: true });
+		const container = getByTestId(TEST_ID.BUTTON);
+		expect(container).toHaveClass('Disabled');
+	});
+
+	it('should apply className from props', () => {
 		const { getByTestId } = renderComponent({ className: 'class-prop' });
 		const container = getByTestId(TEST_ID.BUTTON);
 		expect(container).toHaveClass('class-prop');
+	});
+
+	it('should apply container styles from props', () => {
+		const { getByTestId } = renderComponent({
+			style: { background: 'yellow' },
+		});
+		const container = getByTestId(TEST_ID.BUTTON);
+		expect(container).toHaveStyle({ background: 'yellow' });
 	});
 });

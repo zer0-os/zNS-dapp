@@ -190,13 +190,13 @@ const MintWheels = (props: MintWheelsProps) => {
 		<div className={`${styles.Container} border-primary border-rounded`}>
 			{/* Head section */}
 			<section className={styles.Header}>
-				<h1 className="glow-text-white">Mint Your Kicks</h1>
+				<h1 className="glow-text-white">Mint Your Pets</h1>
 				<span className="glow-text-white">
-					Your Kicks in the Metaverse await
+					Your Pets in the Metaverse await
 				</span>
 				<hr />
 			</section>
-			{props.dropStage === undefined && <Loading text={'Loading Kicks Drop'} />}
+			{props.dropStage === undefined && <Loading text={'Loading Pets Drop'} />}
 			{getFlowSection()}
 		</div>
 	);

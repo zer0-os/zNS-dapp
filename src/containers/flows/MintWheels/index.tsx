@@ -92,7 +92,7 @@ const MintWheelsFlowContainer = () => {
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold || dropStage === Stage.Public) {
+		} else if (dropStage === Stage.Sold) {
 			history.push('market/kicks.airwild.season1');
 		} else {
 			setIsWizardOpen(true);
@@ -198,7 +198,7 @@ const MintWheelsFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						// setCountdownDate(DATE_PUBLIC);
+						setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -305,7 +305,7 @@ const MintWheelsFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						// setCountdownDate(DATE_PUBLIC);
+						setCountdownDate(DATE_PUBLIC);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -359,7 +359,7 @@ const MintWheelsFlowContainer = () => {
 			return (
 				<>
 					<span>
-						Wilder Kicks sale has been temporarily paused to ensure a fair sale.
+						Wilder Pets sale has been temporarily paused to ensure a fair sale.
 					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
@@ -422,7 +422,7 @@ const MintWheelsFlowContainer = () => {
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintWheelsBanner
-					title={'Get your Kicks for the Metaverse '}
+					title={'Your Metaverse Companion Awaits '}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}

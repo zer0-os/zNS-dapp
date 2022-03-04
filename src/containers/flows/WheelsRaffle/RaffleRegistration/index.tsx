@@ -4,31 +4,45 @@ import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import { Maybe } from 'lib/types';
 
-const RegistrationContainer = () => {
+type RegistrationContainerProps = {
+	closeOverlay: () => void;
+};
+const RegistrationContainer = (props: RegistrationContainerProps) => {
 	const { account, active, library, chainId } = useWeb3React<Web3Provider>();
+	const drop = 'Pets';
 
 	const submit = async (
-		statusCallback: (status: string) => void,
+		// statusCallback: (status: string) => void,
+		accountInfo: any,
 	): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
+			const {
+				ethBalance,
+				wildBalance,
+				nftsCount: wilderNFTsCount,
+				firstName,
+				lastName,
+				email,
+				twitter,
+				discord,
+				telegram,
+			} = accountInfo;
 			if (chainId !== 1) {
-				reject('Please connect to Ethereum Mainnet');
+				reject({ message: 'Please connect to Ethereum Mainnet' });
 				return;
 			}
 
 			// Get user eth balance
-			let ethBalance;
-			try {
-				ethBalance = await getEthBalance();
-			} catch (e) {
-				reject(e);
-				return;
-			}
+			// let ethBalance;
+			// try {
+			// 	ethBalance = await getEthBalance();
+			// } catch (e) {
+			// 	reject(e);
+			// 	return;
+			// }
 
 			// Sign transaction
-			statusCallback(
-				'Please sign transaction in your wallet to be entered in the raffle...',
-			);
+			// statusCallback('Fetching wallet details...');
 
 			let signedMessage;
 			try {
@@ -51,7 +65,16 @@ const RegistrationContainer = () => {
 				body: JSON.stringify({
 					address: account,
 					ethBalance,
+					wildBalance,
+					wilderNFTsCount,
 					signedMessage,
+					drop,
+					firstName,
+					lastName,
+					email,
+					twitter,
+					discord,
+					telegram,
 				}),
 			})
 				.then(async (r) => {
@@ -63,7 +86,7 @@ const RegistrationContainer = () => {
 					}
 				})
 				.catch(() => {
-					reject('Failed to connect to Raffle API');
+					reject({ message: 'Failed to connect to Raffle API' });
 				});
 		});
 	};
@@ -84,9 +107,7 @@ const RegistrationContainer = () => {
 		const signer = library.getSigner();
 		let signedBid: Maybe<string>;
 		try {
-			signedBid = await signer?.signMessage(
-				'Wilder Crafts Raffle Registration',
-			);
+			signedBid = await signer?.signMessage('Wilder Pets Raffle Registration');
 		} catch {
 			throw new Error('Failed to sign message');
 		}
@@ -95,13 +116,13 @@ const RegistrationContainer = () => {
 
 	const submitEmail = (email: string): Promise<boolean> => {
 		return new Promise((resolve) => {
-			fetch('https://zns-mail-microservice.herokuapp.com/cribs', {
+			fetch(`https://zns-mail-microservice.herokuapp.com/drop`, {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ email: email }),
+				body: JSON.stringify({ email, drop }),
 			})
 				.then((r) => {
 					resolve(r.ok);
@@ -117,8 +138,11 @@ const RegistrationContainer = () => {
 	return (
 		<RaffleRegistration
 			isWalletConnected={active}
+			account={account || ''}
+			drop={drop}
 			onSubmit={submit}
 			onSubmitEmail={submitEmail}
+			closeOverlay={props.closeOverlay}
 		/>
 	);
 };
