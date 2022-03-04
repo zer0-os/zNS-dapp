@@ -15,18 +15,12 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 	isDesktop,
 	onConnectWallet,
 }) => {
-	const handlers = useInfoPanelHandlers({
-		props: {
-			onConnectWallet,
-		},
-	});
-
 	return (
 		<div className="info-panel__container">
 			<div className="info-panel__content border-primary border-rounded blur">
 				<div className="info-panel__content-section connect-wallet">
 					<ConnectWalletButton
-						onConnectWallet={handlers.handleConnectWallet}
+						onConnectWallet={onConnectWallet}
 						isDesktop={isDesktop}
 					/>
 				</div>
