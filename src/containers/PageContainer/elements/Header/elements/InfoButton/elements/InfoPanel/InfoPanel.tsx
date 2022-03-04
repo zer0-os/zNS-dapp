@@ -1,7 +1,6 @@
 import React from 'react';
 import { ConnectWalletButton } from '../../../../elements';
 import { InfoButtonProps } from '../../InfoButton';
-import { useInfoPanelHandlers } from './hooks';
 import {
 	WILDER_WORLD_OPTIONS,
 	ZERO_TECH_OPTIONS,
@@ -17,7 +16,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 }) => {
 	return (
 		<div className="info-panel__container">
-			<div className="info-panel__content border-primary border-rounded blur">
+			<div className="info-panel__content border-primary">
 				<div className="info-panel__content-section connect-wallet">
 					<ConnectWalletButton
 						onConnectWallet={onConnectWallet}
