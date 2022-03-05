@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 //- Style Imports
 import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.scss';
+import { TABS } from './Profile.constants';
 
 //- Component Imports
 import { TabBar } from 'components';
@@ -88,11 +89,11 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<TabBar tabs={['Your Domains', 'Your Bids']} onSelect={select} />
-			{selected === 'Your Domains' && (
+			<TabBar tabs={[TABS.YOUR_DOMAINS, TABS.YOUR_BIDS]} onSelect={select} />
+			{selected === TABS.YOUR_DOMAINS && (
 				<OwnedDomainsTable onNavigate={navigateToDomain} />
 			)}
-			{selected === 'Your Bids' && <BidTable />}
+			{selected === TABS.YOUR_BIDS && <BidTable />}
 		</div>
 	);
 };
