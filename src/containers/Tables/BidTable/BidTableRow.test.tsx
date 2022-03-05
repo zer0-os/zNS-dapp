@@ -46,7 +46,7 @@ describe('BidTableRow component', () => {
 		const { getByTestId } = renderComponent();
 		const yourBid = getByTestId(TEST_ID.YOUR_BID);
 		const highsetBid = getByTestId(TEST_ID.HIGHEST_BID);
-		expect(yourBid.textContent).toBe('500.0 WILD');
+		expect(yourBid).toHaveTextContent('500.0 WILD');
 		expect(highsetBid.textContent).toBe('1000.0 WILD');
 	});
 
