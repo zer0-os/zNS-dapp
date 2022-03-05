@@ -3,6 +3,7 @@ import styles from './BidTable.module.scss';
 import { Artwork } from 'components';
 import { ethers } from 'ethers';
 import { CancelBidButton } from 'containers';
+import { TOKEN, STATUS } from './BidTableRow.constants';
 
 export type BidTableRowData = {
 	domainName: string;
@@ -45,16 +46,16 @@ const BidTableRow = (props: any) => {
 			</td>
 			<td data-testid={TEST_ID.DATE}>{bid.date.toLocaleDateString()}</td>
 			<td data-testid={TEST_ID.YOUR_BID}>
-				{ethers.utils.formatEther(bid.yourBid.toString())} WILD
+				{ethers.utils.formatEther(bid.yourBid.toString())} {TOKEN}
 			</td>
 			<td data-testid={TEST_ID.HIGHEST_BID}>
-				{ethers.utils.formatEther(bid.highestBid)} WILD
+				{ethers.utils.formatEther(bid.highestBid)} {TOKEN}
 			</td>
 			<td
 				data-testid={TEST_ID.STATUS}
 				className={isHighestBid ? styles.Lead : styles.Outbid}
 			>
-				{isHighestBid ? 'You Lead' : 'Outbid'}
+				{isHighestBid ? STATUS.LEAD : STATUS.OUTBID}
 			</td>
 			<td>
 				<CancelBidButton

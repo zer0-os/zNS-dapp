@@ -6,6 +6,8 @@ import { HEADERS } from './BidTable';
 import BidTableRow, { TEST_ID } from './BidTableRow';
 import { ethers } from 'ethers';
 
+import { STATUS, TOKEN } from './BidTableRow.constants';
+
 const mockDate = new Date(16461998260001);
 
 const mockData = {
@@ -46,8 +48,8 @@ describe('BidTableRow component', () => {
 		const { getByTestId } = renderComponent();
 		const yourBid = getByTestId(TEST_ID.YOUR_BID);
 		const highsetBid = getByTestId(TEST_ID.HIGHEST_BID);
-		expect(yourBid).toHaveTextContent('500.0 WILD');
-		expect(highsetBid.textContent).toBe('1000.0 WILD');
+		expect(yourBid).toHaveTextContent('500.0 ' + TOKEN);
+		expect(highsetBid.textContent).toBe('1000.0 ' + TOKEN);
 	});
 
 	it('should format date correctly', () => {
@@ -65,7 +67,7 @@ describe('BidTableRow component', () => {
 			},
 		});
 		const status = getByTestId(TEST_ID.STATUS);
-		expect(status.textContent).toBe('You Lead');
+		expect(status.textContent).toBe(STATUS.LEAD);
 	});
 
 	it('should render "Outbid" if user\'s bid is not the highest', () => {
@@ -77,6 +79,6 @@ describe('BidTableRow component', () => {
 			},
 		});
 		const status = getByTestId(TEST_ID.STATUS);
-		expect(status.textContent).toBe('Outbid');
+		expect(status.textContent).toBe(STATUS.OUTBID);
 	});
 });
