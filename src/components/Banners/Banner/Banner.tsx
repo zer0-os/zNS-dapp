@@ -41,8 +41,6 @@ const Banner: React.FC = () => {
 	//////////////////
 	//    Effects   //
 	//////////////////
-	console.log('currentTime', currentTime);
-	console.log(currentTime + 3 * 60 * 1000);
 
 	// Set banner
 	useEffect(() => {
@@ -52,10 +50,8 @@ const Banner: React.FC = () => {
 		setBannerContent(content);
 
 		if (isActive) {
-			console.log('console.log(bannerContent);');
 			if (!bannerContent) {
 				setShouldDisplayBanner(false);
-				console.log('NO DATA');
 			} else {
 				setShouldDisplayBanner(true);
 				if (
@@ -92,24 +88,6 @@ const Banner: React.FC = () => {
 	//////////////////
 	//   Functions  //
 	//////////////////
-
-	// const handleOpenModal = () => {
-	// 	console.log('OPEN MODAL');
-	// if (contractAddress === wheelSale) {
-	// 	setModalContent(Modal.Wheels)
-	// } else if (contractAddress === cribSale) {
-	// 	setModalContent(Modal.Cribs)
-	// }  else if (contractAddress === kickSale) {
-	// 	setModalContent(Modal.Kicks)
-	// } else if (contractAddress === craftSale) {
-	// 	setModalContent(Modal.Crafts)
-	// } else if (contractAddress === landSale) {
-	// 	setModalContent(Modal.Land)
-	// } else {
-	// 	setModalContent(Modal.Pets)
-	// }
-	// setIsModalOpen(true)
-	// };
 
 	const onCountDownFinish = () => {
 		setShouldDisplayCountdown(false);
