@@ -23,6 +23,9 @@ import classNames from 'classnames/bind';
 
 // Library Imports
 import { toFiat } from 'lib/currency';
+import { Bid } from '@zero-tech/zauction-sdk';
+import { ethers } from 'ethers';
+import CancelBidButton from 'containers/flows/CancelBid/CancelBidButton';
 
 export const Amount = (amount: string) => (
 	<span className={styles.Amount}>{amount}</span>
@@ -43,13 +46,14 @@ type NFTProps = {
 	onSuccessBuyNow?: () => void;
 	onShare?: () => void;
 	highestBid?: number;
-	yourBid?: number;
+	yourBid?: Bid;
 	isPriceDataLoading?: boolean;
 	isMetadataLoading?: boolean;
 	isDomainDataLoading?: boolean;
 	wildPriceUsd?: number;
 	account?: string;
 	onTransfer?: () => void;
+	onRefetch: () => void;
 };
 
 const NFT = ({
@@ -70,6 +74,7 @@ const NFT = ({
 	account,
 	onMakeBid,
 	onTransfer,
+	onRefetch,
 }: NFTProps) => {
 	const blobCache = useRef<string>();
 
@@ -79,6 +84,10 @@ const NFT = ({
 
 	const isOwnedByYou =
 		account && owner && account.toLowerCase() === owner.toLowerCase();
+
+	const yourBidAsNumber = yourBid
+		? Number(ethers.utils.formatEther(yourBid.amount))
+		: undefined;
 
 	// Load background
 	useEffect(() => {
@@ -168,17 +177,24 @@ const NFT = ({
 
 	const YourBid = () => (
 		<div>
-			{!isOwnedByYou && (
+			{!isOwnedByYou && yourBidAsNumber !== undefined && (
 				<Detail
-					text={Amount(yourBid?.toLocaleString() ?? '-')}
+					text={Amount(yourBidAsNumber.toLocaleString() ?? '-')}
 					subtext={'Your Bid (WILD)'}
 					bottomText={
-						yourBid && wildPriceUsd
-							? '$' + toFiat(wildPriceUsd * yourBid) + ' USD'
+						wildPriceUsd
+							? '$' + toFiat(wildPriceUsd * yourBidAsNumber) + ' USD'
 							: '-'
 					}
 				/>
 			)}
+			<CancelBidButton
+				className={styles.Action}
+				isTextButton
+				auctionId={yourBid!.auctionId}
+				domainId={domainId!}
+				onSuccess={onRefetch}
+			/>
 		</div>
 	);
 
@@ -228,7 +244,7 @@ const NFT = ({
 						{BuyNowPrice()}
 						{HighestBid()}
 						<div className={styles.Break}></div>
-						{YourBid()}
+						{yourBid !== undefined && YourBid()}
 					</div>
 					{isOwnedByYou && (
 						<FutureButton className={styles.Transfer} glow onClick={onTransfer}>

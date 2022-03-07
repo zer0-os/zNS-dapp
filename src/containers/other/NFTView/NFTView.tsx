@@ -82,7 +82,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const [allItems, setAllItems] = useState<DomainEvent[] | undefined>();
 	const [highestBid, setHighestBid] = useState<Bid | undefined>();
 	const [buyNowPrice, setBuyNowPrice] = useState<number | undefined>();
-	const [yourBid, setYourBid] = useState<number | undefined>();
+	const [yourBid, setYourBid] = useState<Bid | undefined>();
 	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
 	const [bids, setBids] = useState<DomainBidEvent[] | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
@@ -279,8 +279,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 					(b) => b.bidder.toLowerCase() === account.toLowerCase(),
 				),
 			)[0];
-			if (yourBid?.amount) {
-				setYourBid(Number(ethers.utils.formatEther(yourBid.amount)));
+			if (yourBid) {
+				setYourBid(yourBid);
 			}
 		}
 
@@ -596,6 +596,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				isPriceDataLoading={isPriceDataLoading}
 				onSuccessBuyNow={getPriceData}
 				onTransfer={onTransfer}
+				onRefetch={getPriceData}
 			/>
 
 			{nftStats()}

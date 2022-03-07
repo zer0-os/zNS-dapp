@@ -47,7 +47,7 @@ const CancelBidButton = ({
 			)}
 			{isTextButton ? (
 				<TextButton style={style} className={className} onClick={onClick}>
-					yeah
+					{buttonText ? buttonText : 'Cancel Bid'}
 				</TextButton>
 			) : (
 				<FutureButton
