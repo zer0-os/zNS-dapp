@@ -10,7 +10,7 @@ import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 
 // Component imports
 import { Wizard } from 'components';
-import Details from './steps/Details';
+import Details from './components/Details';
 
 type CancelBidContainerProps = {
 	auctionId: string;
@@ -26,7 +26,7 @@ export const CancelBid = ({
 	onClose,
 }: CancelBidContainerProps) => {
 	const { bid, bidData, refetch, isLoading } = useBidData(domainId, auctionId);
-	const { cancel } = useCancelBid();
+	const { cancel, status } = useCancelBid();
 
 	const [currentStep, setCurrentStep] = useState<Step>(Step.LoadingData);
 	const [error, setError] = useState<string | undefined>();
@@ -61,7 +61,9 @@ export const CancelBid = ({
 	};
 
 	const steps = {
-		[Step.LoadingData]: <Wizard.Loading message={constants.TEXT_LOADING} />,
+		[Step.LoadingData]: (
+			<Wizard.Loading message={constants.MESSAGES.TEXT_LOADING} />
+		),
 		[Step.Details]: bidData ? (
 			<Details
 				bidData={bidData}
@@ -70,30 +72,28 @@ export const CancelBid = ({
 			/>
 		) : (
 			<Wizard.Confirmation
-				message={constants.TEXT_FAILED_TO_LOAD}
-				primaryButtonText="Retry"
+				message={constants.MESSAGES.TEXT_FAILED_TO_LOAD}
+				primaryButtonText={constants.BUTTONS[Step.Details].PRIMARY}
 				onClickPrimaryButton={refetch}
-				secondaryButtonText="Close"
+				secondaryButtonText={constants.BUTTONS[Step.Details].SECONDARY}
 				onClickSecondaryButton={onClose}
 			/>
 		),
 		[Step.Confirmation]: (
 			<Wizard.Confirmation
 				error={error}
-				message={constants.TEXT_CONFIRM_CANCEL}
-				primaryButtonText={'Cancel Bid'}
+				message={constants.MESSAGES.TEXT_CONFIRM_CANCEL}
+				primaryButtonText={constants.BUTTONS[Step.Confirmation].PRIMARY}
 				onClickPrimaryButton={onCancelBid}
-				secondaryButtonText={'Back'}
+				secondaryButtonText={constants.BUTTONS[Step.Confirmation].SECONDARY}
 				onClickSecondaryButton={onBack}
 			/>
 		),
-		[Step.Cancelling]: (
-			<Wizard.Loading message={constants.TEXT_CANCELLING_BID} />
-		),
+		[Step.Cancelling]: <Wizard.Loading message={status} />,
 		[Step.Success]: (
 			<Wizard.Confirmation
-				message={constants.TEXT_SUCCESS}
-				primaryButtonText={'Finish'}
+				message={constants.MESSAGES.TEXT_SUCCESS}
+				primaryButtonText={constants.BUTTONS[Step.Success].PRIMARY}
 				onClickPrimaryButton={onFinish}
 			/>
 		),

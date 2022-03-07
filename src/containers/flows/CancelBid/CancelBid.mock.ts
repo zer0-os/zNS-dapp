@@ -54,8 +54,6 @@ const mockBids = [
 const mockContainerProps = {
 	auctionId: mockBidBeingCancelled.auctionId,
 	domainId: mockDomainData.id,
-	onSuccess: () => {},
-	onClose: () => {},
 };
 
 const exports = {

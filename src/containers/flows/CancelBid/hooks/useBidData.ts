@@ -1,3 +1,8 @@
+/*
+ * This hook could be changed into a helper, as
+ * it doesn't require internal state
+ */
+
 // React imports
 import { useRef, useState } from 'react';
 
@@ -11,7 +16,7 @@ import { getMetadata } from 'lib/metadata';
 import { BigNumber } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 
-type UseBidDataReturn = {
+export type UseBidDataReturn = {
 	isLoading: boolean;
 	bid: Bid | undefined;
 	bidData: BidData | undefined;
