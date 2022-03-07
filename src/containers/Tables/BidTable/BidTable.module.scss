@@ -8,8 +8,12 @@
 			text-align: right;
 		}
 
-		&:last-child > button {
-			margin-left: auto;
+		&:last-child {
+			width: 230px;
+
+			> button {
+				margin-left: auto;
+			}
 		}
 
 		&.Lead {
