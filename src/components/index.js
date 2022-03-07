@@ -57,6 +57,7 @@ export { default as ArrowLink } from './ArrowLink/ArrowLink';
 export { default as Artwork } from './Artwork/Artwork';
 export { default as ConnectToWallet } from './ConnectToWallet/ConnectToWallet';
 export { default as CopyInput } from './CopyInput/CopyInput.js';
+export { default as Detail } from './Detail/Detail';
 export { default as HorizontalScroll } from './HorizontalScroll/HorizontalScroll';
 export { default as Image } from './Image/Image';
 export { default as Member } from './Member/Member';
@@ -79,6 +80,7 @@ export { default as Confirmation } from './Confirmation/Confirmation';
 export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator';
 export { default as Countdown } from './Countdown/Countdown';
 export { default as BannerContent } from './Banners/Banner/BannerContent';
+export { default as Wizard } from './Wizard/Wizard';
 
 export { default as StatsWidget } from './StatsWidget/StatsWidget';
 

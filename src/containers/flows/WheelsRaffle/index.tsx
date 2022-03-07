@@ -13,13 +13,24 @@ import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 
 const WheelsRaffleContainer = () => {
-	// Hardcoded event times
-	const RAFFLE_START_TIME = 0;
-	const RAFFLE_END_TIME = 0;
-	const SALE_START_TIME = 1642644000655; //1640181600000;
+	//////////////////
+	// State & Data //
+	//////////////////
 
 	// Current Time
 	const currentTime = new Date().getTime();
+
+	// Temporary values
+	const RAFFLE_START_TIME = currentTime + 10000;
+	const RAFFLE_END_TIME = currentTime + 10000 * 3;
+	const SALE_START_TIME = currentTime + 10000;
+	// const SALE_START_BLOCK = 13719840;
+
+	// Hardcoded event times
+	// const RAFFLE_START_TIME = 1645819200000;
+	// const RAFFLE_START_TIME = currentTime - 1000;
+	// const RAFFLE_END_TIME = 1646078400000;
+	// const SALE_START_TIME = 1648234800000; //1640181600000;
 
 	//////////////////
 	// State & Data //
@@ -109,7 +120,7 @@ const WheelsRaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Sale starting in{' '}
+					Presale Mint Period Coming Soon{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -121,7 +132,7 @@ const WheelsRaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Join the whitelist raffle. Raffle closes in{' '}
+					Community Presale Mintlist Signup Period Ending in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
@@ -133,7 +144,7 @@ const WheelsRaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Kicks raffle - starting in{' '}
+					Get notified about the Wilder Pets raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -149,7 +160,7 @@ const WheelsRaffleContainer = () => {
 		if (!hasRaffleStarted) {
 			return 'Get Notified';
 		} else if (!hasRaffleEnded) {
-			return 'Enter Raffle';
+			return 'Sign up for Pets Community Presale Mintlist';
 		} else {
 			return 'Sale Info';
 		}
@@ -183,7 +194,7 @@ const WheelsRaffleContainer = () => {
 		} else if (!hasRaffleEnded) {
 			return (
 				<Overlay open centered onClose={closeModal}>
-					<RaffleRegistration />
+					<RaffleRegistration closeOverlay={closeModal} />
 				</Overlay>
 			);
 		}
@@ -201,8 +212,8 @@ const WheelsRaffleContainer = () => {
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
-								? 'Your Kicks for the Metaverse await'
-								: 'Get Early Access to Wilder Kicks'
+								? 'Community Presale Mintlist Signup Period Complete'
+								: 'Your Metaverse Companion Awaits'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

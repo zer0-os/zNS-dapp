@@ -12,11 +12,7 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { Banner, StatsWidget } from 'components';
 
-import {
-	SubdomainTable,
-	CurrentDomainPreview,
-	BannerContainer,
-} from 'containers';
+import { SubdomainTable, CurrentDomainPreview, WheelsRaffle } from 'containers';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
@@ -227,23 +223,26 @@ const ZNS: React.FC<ZNSProps> = () => {
 		return (
 			<>
 				<div className={styles.Stats}>
-					{data.map((item, index) => (
-						<>
-							{!item.isHidden ? (
-								<StatsWidget
+					{data.map(
+						(item, index) =>
+							!item.isHidden && (
+								<div
 									key={`stats-widget=${index}`}
-									className="normalView"
-									fieldName={item.fieldName}
-									isLoading={!statsLoaded}
-									title={item.title}
-									subTitle={item.subTitle}
+									className={styles.WidgetContainer}
 									style={{
 										width: width,
 									}}
-								></StatsWidget>
-							) : null}
-						</>
-					))}
+								>
+									<StatsWidget
+										className="normalView"
+										fieldName={item.fieldName}
+										isLoading={!statsLoaded}
+										title={item.title}
+										subTitle={item.subTitle}
+									></StatsWidget>
+								</div>
+							),
+					)}
 				</div>
 			</>
 		);
@@ -302,9 +301,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			{/* <WheelsRaffle /> */}
+			<WheelsRaffle />
 
-			<Banner />
+			{/* <Banner /> */}
 
 			{!isNftView && (
 				<div
@@ -320,7 +319,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 					{showDomainTable && subTable}
 				</div>
 			)}
-
 			{znsDomain && isNftView && (
 				<Spring
 					from={{ opacity: 0, marginTop: 16 }}

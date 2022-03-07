@@ -64,7 +64,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 				onClick={props.onContinue}
 			>
-				Mint Your Kicks
+				Mint Your Pets
 			</FutureButton>
 		);
 	};
@@ -90,13 +90,12 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						You will be able to mint {props.maxPurchasesPerUser} set of Kicks if
+						You will be able to mint {props.maxPurchasesPerUser} set of Pets if
 						your wallet was whitelisted in our raffle on Monday, January 17,
 						2022.
 						<br></br>
 						<br></br>
-						The cost for each pair of Kicks is <b>{EthPerWheel} ETH</b> plus
-						GAS.
+						The cost for each Pet is <b>{EthPerWheel} ETH</b> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -114,8 +113,8 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Kicks. The cost for each pair of Kicks
-							is <b>{EthPerWheel} ETH</b> plus GAS.
+							{props.maxPurchasesPerUser} Pets. The cost for each Pet is{' '}
+							<b>{EthPerWheel} ETH</b> plus GAS.
 						</p>
 						{props.errorMessage !== undefined && (
 							<p className="error-text text-center">{props.errorMessage}</p>
@@ -128,7 +127,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p className={styles.Green}>
 							Congratulations, you have minted {props.numberPurchasedByUser}/
-							{props.maxPurchasesPerUser} of your Kicks.
+							{props.maxPurchasesPerUser} of your Pets.
 						</p>
 						{dismissButton()}
 					</>
@@ -138,7 +137,7 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Kicks are only available to whitelisted supporters of
+						Currently, Pets are only available to whitelisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
 						whitelist sale ends.
 					</p>
@@ -191,8 +190,8 @@ const Info = (props: InfoProps) => {
 			{/* Wheels Available */}
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
-					<span>Kicks Available</span>
-					<h2>{props.wheelsTotal - props.wheelsMinted} Kicks Remaining</h2>
+					<span>Pets Available</span>
+					<h2>{props.wheelsTotal - props.wheelsMinted} Pets Remaining</h2>
 					<ArrowLink href="https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/">
 						View Auction Rules
 					</ArrowLink>
