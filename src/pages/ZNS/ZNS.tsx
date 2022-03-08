@@ -12,7 +12,7 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 
-import { SubdomainTable, CurrentDomainPreview, WheelsRaffle } from 'containers';
+import { SubdomainTable, CurrentDomainPreview } from 'containers';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
@@ -25,7 +25,7 @@ import useMatchMedia from 'lib/hooks/useMatchMedia';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useLocation } from 'react-router-dom';
-import { useNavBarContents } from 'lib/providers/NavBarProvider';
+import { useNavbar } from 'lib/hooks/useNavbar';
 
 type ZNSProps = {
 	version?: number;
@@ -86,10 +86,10 @@ const ZNS: React.FC<ZNSProps> = () => {
 	///////////////
 	useScrollDetection(setScrollDetectionDown);
 
-	const { setTitle } = useNavBarContents();
+	const { setNavbarTitle } = useNavbar();
 
 	useDidMount(() => {
-		setTitle(undefined);
+		setNavbarTitle(undefined);
 	});
 
 	///////////////
@@ -183,19 +183,17 @@ const ZNS: React.FC<ZNSProps> = () => {
 			},
 			{
 				fieldName: 'Floor Price',
-				title: `${
-					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
-				} WILD`,
+				title: `${tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
+					} WILD`,
 				subTitle:
 					wildPriceUsd > 0
-						? `$${
-								tradeData?.lowestSale
-									? formatNumber(
-											Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
-												wildPriceUsd,
-									  )
-									: 0
-						  }`
+						? `$${tradeData?.lowestSale
+							? formatNumber(
+								Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
+								wildPriceUsd,
+							)
+							: 0
+						}`
 						: '',
 			},
 			{
@@ -205,17 +203,16 @@ const ZNS: React.FC<ZNSProps> = () => {
 					: '',
 				subTitle:
 					wildPriceUsd > 0
-						? `$${
-								(tradeData?.volume as any)?.all
-									? formatNumber(
-											Number(
-												ethers.utils.formatEther(
-													(tradeData?.volume as any)?.all,
-												),
-											) * wildPriceUsd,
-									  )
-									: 0
-						  }`
+						? `$${(tradeData?.volume as any)?.all
+							? formatNumber(
+								Number(
+									ethers.utils.formatEther(
+										(tradeData?.volume as any)?.all,
+									),
+								) * wildPriceUsd,
+							)
+							: 0
+						}`
 						: '',
 			},
 		];

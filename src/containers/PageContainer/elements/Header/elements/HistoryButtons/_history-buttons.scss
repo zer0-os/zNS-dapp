@@ -1,0 +1,17 @@
+.history-buttons {
+	&__container {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 4px;
+
+		@media only screen and (max-width: 768px) {
+			display: none;
+		}
+	}
+
+	&__button {
+		width: 32px;
+		height: 32px;
+	}
+}

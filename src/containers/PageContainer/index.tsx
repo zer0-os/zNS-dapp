@@ -1,5 +1,4 @@
-import React, { FC, useMemo } from 'react';
-import { useState, useEffect, useRef } from 'react';
+import React, { FC, useMemo, useState, useEffect, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 //- Web3 Imports
@@ -10,47 +9,37 @@ import { useEagerConnect } from 'lib/hooks/provider-hooks';
 //- Library Imports
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import useNotification from 'lib/hooks/useNotification';
-import { useMintProvider } from 'lib/providers/MintProvider';
-import useMvpVersion from 'lib/hooks/useMvpVersion';
+import useMint from 'lib/hooks/useMint';
+import { useNavbar } from 'lib/hooks/useNavbar';
 
 //- Style Imports
 import styles from './PageContainer.module.scss';
 
 //- Icon Imports
-import userIcon from 'assets/user.svg';
 import wilderIcon from 'assets/WWLogo_SVG.svg';
 
 //- Components & Containers
 import {
 	ConnectToWallet,
-	FutureButton,
-	TitleBar,
-	TooltipLegacy,
-	IconButton,
 	Overlay,
 	NotificationDrawer,
-	NumberButton,
-	MintPreview,
-	TransferPreview,
-	Spinner,
 	SideBar,
 } from 'components';
-
-import { BuyTokenRedirect, ProfileModal } from 'containers';
+import { ProfileModal } from 'containers';
 
 //- Library Imports
-import { useTransfer } from 'lib/hooks/useTransfer';
 import { MintNewNFT } from 'containers';
 import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { NavBarProvider } from 'lib/providers/NavBarProvider';
 
-enum Modal {
-	Bid,
-	Mint,
-	Transfer,
-	Wallet,
-}
+//- Constants Imports
+import { ROUTES } from 'constants/routes';
+import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
+import { WALLETS } from 'constants/wallets';
+import { Modal } from './PageContainer.constants';
+
+//- Elements Imports
+import { Header } from './elements';
 
 const PageContainer: FC = ({ children }) => {
 	///////////////////
@@ -75,9 +64,7 @@ const PageContainer: FC = ({ children }) => {
 	//- Domain Data
 	const { domain: znsDomain, loading, refetch } = useCurrentDomain();
 
-	//- Version Data
-	const { mvpVersion } = useMvpVersion();
-	const isMvpPrototype = mvpVersion === 3;
+	const { isSearching } = useNavbar();
 
 	////////////////////////
 	// Browser Navigation //
@@ -88,13 +75,9 @@ const PageContainer: FC = ({ children }) => {
 	const location = useLocation();
 	const globalDomain = useCurrentDomain();
 	const domain = useMemo(() => location.pathname, [location.pathname]);
-	const [forwardDomain, setForwardDomain] = useState<string | undefined>();
-	const lastDomain = useRef<string>();
-	const canGoBack = domain !== undefined && domain !== '/';
-	const canGoForward = !!forwardDomain;
 
 	// Force to go back to home if invalid domain
-	React.useEffect(() => {
+	useEffect(() => {
 		if (!loading && !znsDomain) {
 			return history.push(globalDomain.app);
 		}
@@ -102,18 +85,8 @@ const PageContainer: FC = ({ children }) => {
 	}, [znsDomain, loading, globalDomain.app]);
 
 	//- Minting State
-	const mintingProvider = useMintProvider();
-	const stakingProvider = useStakingProvider();
-
-	const statusCount =
-		mintingProvider.minting.length + stakingProvider.requesting.length;
-	const showStatus =
-		mintingProvider.minting.length +
-		mintingProvider.minted.length +
-		stakingProvider.requesting.length +
-		stakingProvider.requested.length;
-
-	const { transferring } = useTransfer();
+	const { minted } = useMint();
+	const { fulfilled: stakingFulFilled } = useStakingProvider();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -124,57 +97,18 @@ const PageContainer: FC = ({ children }) => {
 
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
-	const [isSearchActive, setIsSearchActive] = useState(false);
-
-	//- Data
-	const isOwnedByUser: boolean =
-		znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
-
-	///////////////
-	// Functions //
-	///////////////
-
-	// Go back through page history
-	const back = () => {
-		const lastIndex = domain.lastIndexOf('.');
-		if (lastIndex > 0) {
-			history.push(domain.slice(0, domain.lastIndexOf('.')));
-		} else {
-			history.push(domain.slice(0, domain.lastIndexOf('/')));
-		}
-	};
-
-	// Go forward through page history
-	const forward = () => {
-		if (forwardDomain) history.push(forwardDomain);
-		setForwardDomain(undefined);
-	};
-
-	const scrollToTop = () => {
-		document.querySelector('body')?.scrollTo(0, 0);
-	};
 
 	/////////////////////
 	// Overlay Toggles //
 	/////////////////////
 
+	const openModal = useCallback(
+		(modal?: Modal) => () => setModal(modal),
+		[setModal],
+	);
+
 	const closeModal = () => {
 		setModal(undefined);
-	};
-
-	const openMint = () => setModal(Modal.Mint);
-
-	const openProfile = () => {
-		const params = new URLSearchParams(location.search);
-		params.set('profile', 'true');
-		history.push({
-			pathname: domain,
-			search: params.toString(),
-		});
-	};
-
-	const openWallet = () => {
-		setModal(Modal.Wallet);
 	};
 
 	const handleResize = () => {
@@ -192,40 +126,32 @@ const PageContainer: FC = ({ children }) => {
 		};
 	}, []);
 
-	/* Handles the back/forward history */
-	useEffect(() => {
-		if (lastDomain.current) {
-			if (lastDomain.current.length > domain.length) {
-				setForwardDomain(lastDomain.current);
-			} else {
-				setForwardDomain(undefined);
-			}
-		}
-		lastDomain.current = domain;
-		scrollToTop();
-	}, [domain]);
-
 	/* Find the freshly minted NFT */
 	useEffect(() => {
 		if (refetch) {
 			refetch();
 		}
-	}, [mintingProvider.minted, refetch, stakingProvider.fulfilled]);
+	}, [minted, refetch, stakingFulFilled]);
 
 	/* Handle notification for wallet changes */
 	useEffect(() => {
 		//wallet connect wont do this automatically if session its ended from phone
 		if (
-			(localStorage.getItem('chosenWallet') === 'walletconnect' ||
-				localStorage.getItem('chosenWallet') === 'metamask' ||
-				localStorage.getItem('chosenWallet') === 'coinbase' ||
-				localStorage.getItem('chosenWallet') === 'portis' ||
-				localStorage.getItem('chosenWallet') === 'fortmatic') &&
+			(localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+				WALLETS.WALLET_CONNECT ||
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+					WALLETS.METAMASK ||
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+					WALLETS.COINBASE ||
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+					WALLETS.PORTIS ||
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
+					WALLETS.FORTMATIC) &&
 			!active &&
 			triedEagerConnect
 		) {
 			setTimeout(async () => {
-				localStorage.removeItem('chosenWallet');
+				localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
 			}, 2000);
 		}
 		if (triedEagerConnect)
@@ -259,9 +185,7 @@ const PageContainer: FC = ({ children }) => {
 			{/* Overlays */}
 			<NotificationDrawer />
 			<ProfileModal />
-			<Overlay style={{ zIndex: 3 }} open={isSearchActive} onClose={() => {}}>
-				<></>
-			</Overlay>
+			<Overlay style={{ zIndex: 3 }} open={isSearching} onClose={() => {}} />
 			{modal === Modal.Wallet && (
 				<Overlay centered open={modal === Modal.Wallet} onClose={closeModal}>
 					<ConnectToWallet onConnect={closeModal} />
@@ -286,8 +210,9 @@ const PageContainer: FC = ({ children }) => {
 	);
 
 	return (
-		<NavBarProvider>
+		<>
 			{pageWidth > 1000 && modals()}
+
 			<div
 				className="page-spacing"
 				style={{
@@ -300,129 +225,23 @@ const PageContainer: FC = ({ children }) => {
 					<img
 						alt="home icon"
 						src={wilderIcon}
-						onClick={() => history.push('/market')}
+						onClick={() => history.push(ROUTES.MARKET)}
 					/>
 				</div>
-				<TitleBar
-					// domain={domain}
-					canGoBack={canGoBack}
-					canGoForward={canGoForward}
-					onBack={back}
-					onForward={forward}
-					isSearchActive={isSearchActive}
-					setIsSearchActive={setIsSearchActive}
-				>
-					<>
-						{!account && localStorage.getItem('chosenWallet') && (
-							<FutureButton glow onClick={() => openWallet()}>
-								<div
-									style={{
-										display: 'flex',
-										justifyContent: 'center',
-										verticalAlign: 'center',
-										alignItems: 'center',
-									}}
-								>
-									<div
-										style={{
-											display: 'inline-block',
-											width: '10%',
-											margin: '0px',
-											padding: '0px',
-										}}
-									>
-										<Spinner />
-									</div>
-									<p
-										style={{
-											display: 'inline-block',
-											width: '100%',
-											verticalAlign: 'center',
-											height: '18px',
-											marginLeft: '15px',
-											whiteSpace: 'nowrap',
-										}}
-										className={styles.Message}
-									>
-										Trying to connect {localStorage.getItem('chosenWallet')}
-									</p>
-								</div>
-							</FutureButton>
-						)}
-						{!account && !localStorage.getItem('chosenWallet') && (
-							<>
-								<FutureButton glow onClick={openWallet}>
-									Connect {pageWidth > 900 && 'Wallet'}
-								</FutureButton>
-								<BuyTokenRedirect />
-							</>
-						)}
-						{account && !isSearchActive && (
-							<>
-								{/* Mint button */}
-								{isOwnedByUser && isMvpPrototype && (
-									<FutureButton
-										style={{ padding: '0px 12px' }}
-										glow={account != null}
-										onClick={() => {
-											account != null
-												? openMint()
-												: addNotification('Please connect your wallet.');
-										}}
-										loading={loading}
-									>
-										MINT
-									</FutureButton>
-								)}
-								{/* Status / Long Running Operation Button */}
-								{showStatus ? (
-									<TooltipLegacy
-										content={<MintPreview onOpenProfile={openProfile} />}
-									>
-										<NumberButton
-											rotating={statusCount > 0}
-											number={statusCount}
-											onClick={() => {}}
-										/>
-									</TooltipLegacy>
-								) : null}
 
-								{/* Transfer Progress button */}
-								{transferring.length > 0 && (
-									<TooltipLegacy content={<TransferPreview />}>
-										<NumberButton
-											rotating={transferring.length > 0}
-											number={transferring.length}
-											onClick={() => {}}
-										/>
-									</TooltipLegacy>
-								)}
+				<Header
+					pageWidth={pageWidth}
+					znsDomain={znsDomain}
+					account={account}
+					openModal={openModal}
+				/>
 
-								{/* Buy token from external urls */}
-								<BuyTokenRedirect walletConnected />
-
-								{/* Profile Button */}
-								<IconButton
-									onClick={openProfile}
-									style={{ height: 32, width: 32, borderRadius: '50%' }}
-									iconUri={userIcon}
-								/>
-
-								{/* TODO: Change the triple dot button to a component */}
-								<div className={styles.Dots} onClick={openWallet}>
-									<div></div>
-									<div></div>
-									<div></div>
-								</div>
-							</>
-						)}
-					</>
-				</TitleBar>
 				<SideBar />
+
 				{/* TODO: Encapsulate this */}
 				<div>{children}</div>
 			</div>
-		</NavBarProvider>
+		</>
 	);
 };
 

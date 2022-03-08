@@ -1,7 +1,6 @@
 import RaffleRegistration from './RaffleRegistration';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { ethers } from 'ethers';
 import { Maybe } from 'lib/types';
 
 type RegistrationContainerProps = {
@@ -89,15 +88,6 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 					reject({ message: 'Failed to connect to Raffle API' });
 				});
 		});
-	};
-
-	const getEthBalance = async () => {
-		if (!library) {
-			throw new Error('Could not find web3 library');
-		}
-		const ethBalance = await library.getSigner().getBalance();
-		const asString = ethers.utils.formatEther(ethBalance);
-		return Number(asString);
 	};
 
 	const signMessage = async () => {
