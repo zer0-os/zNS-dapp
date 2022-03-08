@@ -180,17 +180,17 @@ const cacheKeyForAccountBids = (baseApiUri: string, account: string) => {
 };
 
 export async function getBidsForAccount(baseApiUri: string, id: string) {
-	const cacheKey = cacheKeyForAccountBids(baseApiUri, id);
+	// const cacheKey = cacheKeyForAccountBids(baseApiUri, id);
 
-	if (getBidsForAccountCache.exists(cacheKey)) {
-		return getBidsForAccountCache.get(cacheKey);
-	}
+	// if (getBidsForAccountCache.exists(cacheKey)) {
+	// 	return getBidsForAccountCache.get(cacheKey);
+	// }
 
 	const endpoints = getApiEndpoints(baseApiUri);
 	const response = await fetch(`${endpoints.accountBidsEndpoint}${id}`);
 	const bids = (await response.json()) as BidDto[];
 
-	getBidsForAccountCache.put(cacheKey, bids);
+	// getBidsForAccountCache.put(cacheKey, bids);
 
 	return bids;
 }
