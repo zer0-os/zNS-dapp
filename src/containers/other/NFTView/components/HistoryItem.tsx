@@ -16,13 +16,12 @@ interface DomainEvents extends DomainEvent {
 
 type HistoryItemProps = {
 	item: DomainEvents;
-	index: number;
 };
 
-const HistoryItem = ({ item, index }: HistoryItemProps) => {
+const HistoryItem = ({ item }: HistoryItemProps) => {
 	if (item.type === 2) {
 		return (
-			<li className={styles.Bid} key={index}>
+			<li className={styles.Bid}>
 				<div>
 					<b>
 						<a
@@ -47,7 +46,7 @@ const HistoryItem = ({ item, index }: HistoryItemProps) => {
 		);
 	} else if (item.type === 0) {
 		return (
-			<li className={styles.Bid} key={index}>
+			<li className={styles.Bid}>
 				<div>
 					<b>
 						<a
@@ -68,7 +67,7 @@ const HistoryItem = ({ item, index }: HistoryItemProps) => {
 		);
 	} else if (item.type === 1) {
 		return (
-			<li className={styles.Bid} key={index}>
+			<li className={styles.Bid}>
 				<div>
 					<b>
 						<a
@@ -99,7 +98,7 @@ const HistoryItem = ({ item, index }: HistoryItemProps) => {
 		);
 	} else if (item.type === 3) {
 		return (
-			<li className={styles.Bid} key={index}>
+			<li className={styles.Bid}>
 				<div>
 					<b>
 						3
