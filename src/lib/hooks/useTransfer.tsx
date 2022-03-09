@@ -58,6 +58,7 @@ export const useTransfer = (): UseTransferReturn => {
 				addNotification(constants.MESSAGES.REQUEST_TRANSFER_STARTED);
 				reduxActions.setTransferring(params);
 				params.onClose();
+
 				// in transferring
 				await tx.wait();
 

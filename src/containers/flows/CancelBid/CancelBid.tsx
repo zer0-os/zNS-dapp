@@ -26,6 +26,7 @@ export const CancelBid = ({
 	onClose,
 }: CancelBidContainerProps) => {
 	const { bid, bidData, refetch, isLoading } = useBidData(domainId, auctionId);
+	console.log(auctionId);
 	const { cancel, status } = useCancelBid();
 
 	const [currentStep, setCurrentStep] = useState<Step>(Step.LoadingData);

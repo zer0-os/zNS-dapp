@@ -14,6 +14,9 @@ import constants from './TransferPreview.constants';
 //- Style Imports
 import styles from './TranferPreview.module.scss';
 
+//- Assets Imports
+import questionMark from './assets/question-mark-icon.svg';
+
 const TransferPreview = () => {
 	const { transferring } = useTransfer();
 
@@ -27,7 +30,7 @@ const TransferPreview = () => {
 					</Link>
 				</div>
 				<div className={styles.Info}>
-					<h5 className="glow-text-white">{nft.name}</h5>
+					<h3 className="glow-text-white">{nft.name}</h3>
 
 					<Link className={styles.Link} to={`${nft.domainName}`}>
 						0://{nft.domainName.substring(1)}
@@ -43,9 +46,14 @@ const TransferPreview = () => {
 						{nft.walletAddress}
 					</a>
 
-					<div>
-						{constants.MESSAGES.TRANSFER_IN_PROGRESS} <br />
-						{constants.MESSAGES.TRANSFER_TIME}
+					<div className={styles.InfoContainer}>
+						<div className={styles.IconContainer}>
+							<img alt={constants.ALT_TEXT.QUESTION_MARK} src={questionMark} />
+						</div>
+						<div className={styles.TextContainer}>
+							{constants.MESSAGES.TRANSFER_IN_PROGRESS} <br />
+							{constants.MESSAGES.TRANSFER_TIME}
+						</div>
 					</div>
 				</div>
 			</div>

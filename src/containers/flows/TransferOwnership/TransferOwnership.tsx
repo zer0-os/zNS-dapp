@@ -93,7 +93,6 @@ const TransferOwnership = ({
 				walletAddress={walletAddress}
 				setWalletAddress={setWalletAddress}
 				onNext={() => valid && onAccept()}
-				onClose={onClose}
 			/>
 		),
 		[Step.Confirmation]: isLoading ? (

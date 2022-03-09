@@ -1,8 +1,13 @@
-import { getMetadata } from 'lib/metadata';
-import { Metadata } from 'lib/types';
+//- React Imports
 import { useEffect, useState } from 'react';
 
+//- Component Imports
 import TransferOwnership from './TransferOwnership';
+
+//- LibraryImports
+
+import { getMetadata } from 'lib/metadata';
+import { Metadata } from 'lib/types';
 
 type TransferOwnershipContainerProps = {
 	metadataUrl: string;

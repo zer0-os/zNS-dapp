@@ -9,8 +9,13 @@ const URLS = {
 	ACCOUNT_ETHERSCAN: 'https://etherscan.io/address/',
 };
 
+const ALT_TEXT = {
+	QUESTION_MARK: 'Question mark',
+};
+
 const exports = {
 	MESSAGES,
 	URLS,
+	ALT_TEXT,
 };
 export default exports;

@@ -1,11 +1,14 @@
 //- Components Imports
 import { Wizard, EtherInput, FutureButton } from 'components';
 
+//- Type Imports
+import { Step } from '../TransferOwnership.types';
+
 //- Constants Imports
 import constants from '../TransferOwnership.constants';
 
 //- Style Imports
-import styles from '../TransferOwnership.module.scss';
+import styles from './NFTDetails.module.scss';
 
 type NFTDetailsProps = {
 	image: string;
@@ -15,7 +18,6 @@ type NFTDetailsProps = {
 	walletAddress: string;
 	valid: boolean;
 	setWalletAddress: (value: string) => void;
-	onClose: () => void;
 	onNext: () => void;
 };
 
@@ -27,7 +29,6 @@ const NFTDetails = ({
 	walletAddress,
 	setWalletAddress,
 	valid,
-	onClose,
 	onNext,
 }: NFTDetailsProps) => (
 	<>
@@ -36,26 +37,17 @@ const NFTDetails = ({
 			creator={creatorId}
 			domain={domainName}
 			title={title}
-			// otherDetails={[
-			// 	{
-			// 		name: constants.OTHER_DETAILS_TITLES[Step.Details].PRIMARY,
-			// 		value:
-			// 			ethers.utils.formatEther(bidData.highestBid).toString() +
-			// 			constants.CURRENCY.WILD,
-			// 	},
-			// ]}
 		/>
-		{/* REMOVE hard code and any unused style */}
 		<div className={styles.InputWrapper}>
 			<p>{constants.MESSAGES.ENTER_ADDRESS}</p>
-			<div style={{ display: 'flex', width: '100%' }}>
+			<div>
 				<div className={styles.Inputs}>
 					<EtherInput
 						ethlogo
 						text={walletAddress}
 						onChange={(text: string) => setWalletAddress(text)}
-						placeholder="Ethereum Wallet"
-						type="text"
+						placeholder={constants.INPUT.TEXT_INPUT_PLACEHOLDER}
+						type={constants.INPUT.TYPE}
 					/>
 				</div>
 			</div>
@@ -63,7 +55,7 @@ const NFTDetails = ({
 
 		<div className={styles.InputSubmitButton}>
 			<FutureButton glow={valid} onClick={() => valid && onNext()}>
-				Transfer
+				{constants.BUTTONS[Step.Details].PRIMARY}
 			</FutureButton>
 		</div>
 	</>
