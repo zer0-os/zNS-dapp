@@ -1,68 +1,101 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
-import { DisplayParentDomain, Maybe } from 'lib/types';
-import React from 'react';
-import { useDomainByIdQuery } from './zNSDomainHooks';
+import { DisplayParentDomain } from 'lib/types';
+import { useEffect, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { getMetadata } from 'lib/metadata';
 
-export const useZnsDomain = (domainId: string) => {
+export type UseZnsDomainReturn = {
+	loading: boolean;
+	domain?: DisplayParentDomain;
+	refetch: (variables?: any) => any;
+};
+
+export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 	const { instance: sdk } = useZnsSdk();
 
-	const loadingDomainId = React.useRef<string | undefined>(undefined);
-	const [loading, setLoading] = React.useState(true);
-	const [domain, setDomain] =
-		React.useState<Maybe<DisplayParentDomain>>(undefined);
+	const isMounted = useRef<boolean>();
 
-	const domainQuery = useDomainByIdQuery(domainId);
-	const rawDomainData = domainQuery.data?.domain;
-	const domainMetadata = useDomainMetadata(rawDomainData?.metadata);
+	const loadingDomainId = useRef<string | undefined>(undefined);
 
-	React.useEffect(() => {
+	const [loading, setLoading] = useState(true);
+	const [domain, setDomain] = useState<DisplayParentDomain | undefined>(
+		undefined,
+	);
+
+	// Get domain using SDK instead
+	const getDomainData = async () => {
 		loadingDomainId.current = domainId;
-		setLoading(true);
-		setDomain(undefined);
-	}, [domainId]);
 
-	React.useEffect(() => {
-		if (domainQuery.data?.domain === null) {
-			console.warn('404: ' + domainId);
-			setDomain(null);
+		const [rawDomain, rawSubdomains] = await Promise.all([
+			sdk.getDomainById(domainId),
+			sdk.getSubdomainsById(domainId),
+		]);
+
+		// Check if domain ID has changed since the above API calls
+		// to prevent unwanted state changes
+		if (
+			loadingDomainId.current !== rawDomain.id ||
+			isMounted.current === false
+		) {
 			setLoading(false);
-		}
-	}, [domainQuery.data]);
-
-	React.useEffect(() => {
-		if (!rawDomainData) {
 			return;
 		}
 
-		if (rawDomainData.subdomains.length > 999) {
-			sdk.getSubdomainsById(domainId).then((s) => {
-				if (loadingDomainId?.current === domainId) {
-					const subs = s.map((sub) => ({
-						id: sub.id,
-						metadata: sub.metadataUri,
-						minter: { id: sub.minter },
-						name: sub.name,
-						owner: { id: sub.owner },
-					}));
-					setDomain({
-						...{ ...rawDomainData, subdomains: subs },
-						...domainMetadata,
-					} as DisplayParentDomain);
-					setLoading(false);
-				} else {
-					console.warn('changed domains, ignoring subdomains');
-				}
-			});
-		} else {
+		// Have to call this one separately as we don't know metadat URI yet
+		const metadata = await getMetadata(rawDomain.metadataUri);
+
+		// We have currently only changed this hook to use the SDK internally
+		// The types in the SDK have changed from what we had previously
+		// so the data needs to be formatted. This should be changed
+		// to handle the new data type
+		// This will be changed in next iteration
+		const formattedDomain = rawDomain as any;
+		formattedDomain.metadata = formattedDomain.metadataUri;
+		formattedDomain.minter = { id: formattedDomain.minter };
+		formattedDomain.owner = { id: formattedDomain.owner };
+		formattedDomain.parent = { id: formattedDomain.parentId };
+		delete formattedDomain.parentId;
+		const formattedSubdomains = rawSubdomains.map((sub) => ({
+			id: sub.id,
+			metadata: sub.metadataUri,
+			minter: { id: sub.minter },
+			name: sub.name,
+			owner: { id: sub.owner },
+		}));
+
+		if (isMounted.current) {
 			setDomain({
-				...rawDomainData,
-				...domainMetadata,
-			} as DisplayParentDomain);
+				...formattedDomain,
+				subdomains: formattedSubdomains,
+				...metadata,
+			});
 			setLoading(false);
 		}
-	}, [rawDomainData, domainMetadata]);
+	};
 
-	return { loading, domain, refetch: domainQuery.refetch };
+	const refetch = () => {
+		setDomain(undefined);
+		setLoading(true);
+		getDomainData().catch((e) => {
+			// Need better error handling here
+			console.error(e);
+			setLoading(false);
+			loadingDomainId.current = undefined;
+		});
+	};
+
+	useEffect(() => {
+		isMounted.current = true;
+		if (!domainId || !sdk) {
+			return;
+		}
+
+		refetch();
+
+		return () => {
+			isMounted.current = false;
+		};
+	}, [domainId, sdk]);
+
+	return { loading, domain, refetch };
 };

@@ -40,6 +40,7 @@ import { Modal } from './PageContainer.constants';
 
 //- Elements Imports
 import { Header } from './elements';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 
 const PageContainer: FC = ({ children }) => {
 	///////////////////
@@ -127,11 +128,9 @@ const PageContainer: FC = ({ children }) => {
 	}, []);
 
 	/* Find the freshly minted NFT */
-	useEffect(() => {
-		if (refetch) {
-			refetch();
-		}
-	}, [minted, refetch, stakingFulFilled]);
+	useUpdateEffect(() => {
+		refetch?.();
+	}, [minted, stakingFulFilled]);
 
 	/* Handle notification for wallet changes */
 	useEffect(() => {
