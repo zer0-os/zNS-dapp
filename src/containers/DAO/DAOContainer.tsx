@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 // Style Imports
-import styles from '../staking/StakingContainer/StakingContainer.module.scss';
 // TODO: Generalize styles for both pages
+import styles from '../staking/StakingContainer/StakingContainer.module.scss';
 import classNames from 'classnames/bind';
 import {
 	useLocation,
@@ -15,6 +15,8 @@ import {
 import { ROUTES } from 'constants/routes';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import { useDidMount } from 'lib/hooks/useDidMount';
+import { Assets } from './Assets/Assets';
+import { Transactions } from './Transactions/Assets';
 
 type StakingContainerProps = {
 	className?: string;
@@ -68,16 +70,12 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 							Transactions
 						</Link>
 					</nav>
-					{/* <Route
-						exact
-						path={path + ROUTES.STAKING_DEPOSITS}
-						component={Deposits}
-					/>
+					<Route exact path={path + ROUTES.ZDAO_ASSETS} component={Assets} />
 					<Route
 						exact
-						path={path + ROUTES.STAKING_POOLS}
-						component={StakePools}
-					/> */}
+						path={path + ROUTES.ZDAO_TRANSACTIONS}
+						component={Transactions}
+					/>
 					<Route exact path={path}>
 						<Redirect to={path + ROUTES.ZDAO_ASSETS} />
 					</Route>
