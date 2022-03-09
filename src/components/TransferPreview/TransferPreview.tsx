@@ -8,6 +8,9 @@ import { Image } from 'components';
 //- Hook Imports
 import { useTransfer } from 'lib/hooks/useTransfer';
 
+//- Constant Imports
+import constants from './TransferPreview.constants';
+
 //- Style Imports
 import styles from './TranferPreview.module.scss';
 
@@ -24,15 +27,15 @@ const TransferPreview = () => {
 					</Link>
 				</div>
 				<div className={styles.Info}>
-					<h5 className="glow-text-blue">{nft.name}</h5>
+					<h5 className="glow-text-white">{nft.name}</h5>
 
-					<Link style={{ color: 'white' }} to={`${nft.domainName}`}>
-						{nft.domainName.substring(1)}
+					<Link className={styles.Link} to={`${nft.domainName}`}>
+						0://{nft.domainName.substring(1)}
 					</Link>
 
-					<p>is being transferred to:</p>
+					<p>{constants.MESSAGES.TRANSFERRING_TO}</p>
 					<a
-						href={'https://etherscan.io/address/' + nft.walletAddress}
+						href={constants.URLS.ACCOUNT_ETHERSCAN + nft.walletAddress}
 						className={styles.Address}
 						target="_blank"
 						rel="noreferrer"
@@ -41,8 +44,8 @@ const TransferPreview = () => {
 					</a>
 
 					<div>
-						Transferring... <br />
-						This may take up to 20 minutes
+						{constants.MESSAGES.TRANSFER_IN_PROGRESS} <br />
+						{constants.MESSAGES.TRANSFER_TIME}
 					</div>
 				</div>
 			</div>
@@ -53,7 +56,7 @@ const TransferPreview = () => {
 		<div
 			className={`${styles.TransferPreview} border-primary border-rounded blur`}
 		>
-			<h4 className="glow-text-white">Transfer In Progress</h4>
+			<h4 className="glow-text-white">{constants.MESSAGES.TRANSFER_TITLE}</h4>
 			<ul>{transferring.map((n: any) => nft(n, false))}</ul>
 		</div>
 	);

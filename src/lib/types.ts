@@ -207,4 +207,5 @@ export interface TransferSubmitParams {
 	image: string;
 	creatorId: string;
 	walletAddress: string;
+	onClose: () => void;
 }

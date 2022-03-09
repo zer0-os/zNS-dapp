@@ -96,14 +96,17 @@
 }
 
 .InputWrapper {
-	margin-bottom: 40px;
+	margin: 40px 0;
 }
 
 .InputWrapper p {
-	color: var(--color-primary-lighter-3);
-	font-weight: 700;
-	margin-bottom: 16px;
-	text-align: center;
+	color: var(--glow-text-white);
+}
+
+.InputSubmitButton {
+	display: flex;
+	justify-content: center;
+	margin: '0 auto';
 }
 
 .Inputs {

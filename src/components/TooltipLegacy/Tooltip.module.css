@@ -5,8 +5,8 @@
 .Content {
 	/* display: none; */
 	position: absolute;
-	padding-top: 12px;
-	right: -86px;
+	padding-top: 20px;
+	left: -290px;
 	z-index: 10;
 
 	opacity: 0;
