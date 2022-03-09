@@ -208,3 +208,10 @@ export interface TransferSubmitParams {
 	creatorId: string;
 	walletAddress: string;
 }
+
+export interface StakingRequest {
+	requestor: string;
+	stakeAmount: string;
+	stakeCurrency: string;
+	nft: NftParams;
+}

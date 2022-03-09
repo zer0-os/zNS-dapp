@@ -26,7 +26,7 @@ import {
 	useRequestsForOwnedDomains,
 } from 'lib/hooks/useDomainRequestsSubgraph';
 import { ethers } from 'ethers';
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
+import { useStaking } from 'lib/hooks/useStaking';
 
 //- Type Imports
 import { DomainRequestAndContents } from 'lib/types';
@@ -55,7 +55,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// Custom Hooks //
 	//////////////////
 	const { account } = useWeb3React();
-	const staking = useStakingProvider();
+	const staking = useStaking();
 	const znsContracts = useZnsContracts()!;
 	const yourRequests = useRequestsMadeByAccount(userId);
 	const requestsForYou = useRequestsForOwnedDomains(userId);

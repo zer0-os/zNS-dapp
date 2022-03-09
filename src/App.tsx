@@ -33,7 +33,6 @@ import backgroundImage from 'assets/background.jpg';
 //- Page Imports
 import { ZNS, Staking } from 'pages';
 import PageContainer from 'containers/PageContainer';
-import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
 import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
 
 // Web3 library to query
@@ -98,11 +97,9 @@ function wrappedApp() {
 							{/* Our Hooks  */}
 							<MvpVersionProvider>
 								<ZNSDomainsProvider>
-									<StakingRequestProvider>
-										<EnlistProvider>
-											<App />
-										</EnlistProvider>
-									</StakingRequestProvider>
+									<EnlistProvider>
+										<App />
+									</EnlistProvider>
 								</ZNSDomainsProvider>
 							</MvpVersionProvider>
 						</Web3ReactProvider>
