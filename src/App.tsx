@@ -35,6 +35,8 @@ import { ZNS, Staking } from 'pages';
 import PageContainer from 'containers/PageContainer';
 import StakingRequestProvider from 'lib/providers/StakingRequestProvider';
 import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
+import { ROUTES } from 'constants/routes';
+import DAO from 'pages/DAO/DAO';
 
 // Web3 library to query
 function getLibrary(provider: any): Web3Provider {
@@ -69,8 +71,9 @@ function App() {
 				<Switch>
 					<CurrentDomainProvider>
 						<PageContainer>
-							<Route path="/market" component={ZNS} />
-							<Route path="/staking" component={Staking} />
+							<Route path={ROUTES.MARKET} component={ZNS} />
+							<Route path={ROUTES.STAKING} component={Staking} />
+							<Route path={ROUTES.ZDAO} component={DAO} />
 							<Route exact path="/">
 								<Redirect to="/market" />
 							</Route>
