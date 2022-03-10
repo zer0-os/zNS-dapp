@@ -9,7 +9,8 @@ import { Image } from 'components';
 import { useTransfer } from 'lib/hooks/useTransfer';
 
 //- Constant Imports
-import constants from './TransferPreview.constants';
+import { URLS } from 'constants/urls';
+import { ALT_TEXT, MESSAGES } from './TransferPreview.constants';
 
 //- Style Imports
 import styles from './TranferPreview.module.scss';
@@ -36,9 +37,9 @@ const TransferPreview = () => {
 						0://{nft.domainName.substring(1)}
 					</Link>
 
-					<p>{constants.MESSAGES.TRANSFERRING_TO}</p>
+					<p>{MESSAGES.TRANSFERRING_TO}</p>
 					<a
-						href={constants.URLS.ACCOUNT_ETHERSCAN + nft.walletAddress}
+						href={URLS.ETHERSCAN + nft.walletAddress}
 						className={styles.Address}
 						target="_blank"
 						rel="noreferrer"
@@ -48,11 +49,11 @@ const TransferPreview = () => {
 
 					<div className={styles.InfoContainer}>
 						<div className={styles.IconContainer}>
-							<img alt={constants.ALT_TEXT.QUESTION_MARK} src={questionMark} />
+							<img alt={ALT_TEXT.QUESTION_MARK} src={questionMark} />
 						</div>
 						<div className={styles.TextContainer}>
-							{constants.MESSAGES.TRANSFER_IN_PROGRESS} <br />
-							{constants.MESSAGES.TRANSFER_TIME}
+							{MESSAGES.TRANSFER_IN_PROGRESS} <br />
+							{MESSAGES.TRANSFER_TIME}
 						</div>
 					</div>
 				</div>
@@ -62,9 +63,9 @@ const TransferPreview = () => {
 
 	return (
 		<div
-			className={`${styles.TransferPreview} border-primary border-rounded blur`}
+			className={`${styles.TransferPreview} border-primary border-rounded background-primary blur`}
 		>
-			<h4 className="glow-text-white">{constants.MESSAGES.TRANSFER_TITLE}</h4>
+			<h4 className="glow-text-white">{MESSAGES.TRANSFER_TITLE}</h4>
 			<ul>{transferring.map((n: any) => nft(n, false))}</ul>
 		</div>
 	);

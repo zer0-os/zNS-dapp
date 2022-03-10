@@ -11,12 +11,9 @@ type LoadingIndicatorProps = {
 const LoadingIndicator = (props: LoadingIndicatorProps) => {
 	return (
 		<div style={props.style} className={styles.Container}>
-			<p>{props.text}</p>
+			<div className={styles.TextContainer}>{props.text}</div>
 			{props.subtext && (
-				<>
-					<br />
-					<p>{props.subtext}</p>
-				</>
+				<div className={styles.SubtextContainer}>{props.subtext}</div>
 			)}
 			<Spinner />
 		</div>

@@ -45,7 +45,7 @@ const NFTDetails = ({
 					<EtherInput
 						ethlogo
 						text={walletAddress}
-						onChange={(text: string) => setWalletAddress(text)}
+						onChange={setWalletAddress}
 						placeholder={constants.INPUT.TEXT_INPUT_PLACEHOLDER}
 						type={constants.INPUT.TYPE}
 					/>

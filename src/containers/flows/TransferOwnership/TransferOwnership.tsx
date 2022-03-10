@@ -11,7 +11,7 @@ import NFTDetails from './components/NFTDetails';
 import { Step } from './TransferOwnership.types';
 
 //- Constant Imports
-import constants from './TransferOwnership.constants';
+import { BUTTONS, MESSAGES, TITLES } from './TransferOwnership.constants';
 
 //- Utils Imports
 import { isValid } from './TransferOwnership.utils';
@@ -46,7 +46,7 @@ const TransferOwnership = ({
 	const [error, setError] = useState<string | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);
 	const [stepTitle, setStepTitle] = useState<string>(
-		constants.TITLES[Step.Details].PRIMARY,
+		TITLES[Step.Details].PRIMARY,
 	);
 
 	// Providers
@@ -59,7 +59,7 @@ const TransferOwnership = ({
 	const onClose = () => onTransfer();
 	const onAccept = () => {
 		setCurrentStep(Step.Confirmation);
-		setStepTitle(constants.TITLES[Step.Confirmation].PRIMARY);
+		setStepTitle(TITLES[Step.Confirmation].PRIMARY);
 	};
 
 	const submitTransfer = async () => {
@@ -77,7 +77,7 @@ const TransferOwnership = ({
 				onClose,
 			});
 		} catch (e) {
-			setError(constants.MESSAGES.TRANSACTION_ERROR);
+			setError(MESSAGES.TRANSACTION_ERROR);
 		}
 		setIsLoading(false);
 	};
@@ -97,16 +97,16 @@ const TransferOwnership = ({
 		),
 		[Step.Confirmation]: isLoading ? (
 			<Wizard.Loading
-				message={constants.MESSAGES.TEXT_CONFIRMATION}
-				subtext={constants.MESSAGES.TEXT_ACCEPT_PROMPT}
+				message={MESSAGES.TEXT_CONFIRMATION}
+				subtext={MESSAGES.TEXT_ACCEPT_PROMPT}
 			/>
 		) : (
 			<Wizard.Confirmation
 				error={error}
-				message={constants.MESSAGES.TEXT_CONFIRMATION}
-				primaryButtonText={constants.BUTTONS[Step.Confirmation].PRIMARY}
+				message={MESSAGES.TEXT_CONFIRMATION}
+				primaryButtonText={BUTTONS[Step.Confirmation].PRIMARY}
 				onClickPrimaryButton={submitTransfer}
-				secondaryButtonText={constants.BUTTONS[Step.Confirmation].SECONDARY}
+				secondaryButtonText={BUTTONS[Step.Confirmation].SECONDARY}
 				onClickSecondaryButton={onClose}
 			/>
 		),
