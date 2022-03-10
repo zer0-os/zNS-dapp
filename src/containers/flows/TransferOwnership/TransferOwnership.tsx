@@ -1,5 +1,5 @@
 //- React Imports
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 //- Global Component Imports
 import { Overlay, Wizard } from 'components';
@@ -49,6 +49,9 @@ const TransferOwnership = ({
 		TITLES[Step.Details].PRIMARY,
 	);
 
+	// Prevent state update to unmounted component
+	const isMounted = useRef(false);
+
 	// Providers
 	const { transferRequest } = useTransfer();
 
@@ -79,8 +82,19 @@ const TransferOwnership = ({
 		} catch (e) {
 			setError(MESSAGES.TRANSACTION_ERROR);
 		}
+		if (!isMounted.current) return;
 		setIsLoading(false);
 	};
+
+	/////////////
+	// Effects //
+	/////////////
+	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	});
 
 	const steps = {
 		[Step.Details]: (
