@@ -1,10 +1,23 @@
+//- React Import
 import { useMemo, useCallback } from 'react';
+
+//- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+
+// - Library Imports
 import { useZnsContracts } from 'lib/contracts';
 import { TransferSubmitParams } from 'lib/types';
 import useNotification from 'lib/hooks/useNotification';
+
+//- Hooks
 import { useTransferRedux } from 'store/transfer/hooks';
+
+//- Constant Imports
+import {
+	getTransferSuccessMessage,
+	MESSAGES,
+} from 'containers/flows/TransferOwnership/TransferOwnership.constants';
 
 export type UseTransferReturn = {
 	transferring: TransferSubmitParams[];
@@ -24,12 +37,14 @@ export const useTransfer = (): UseTransferReturn => {
 
 	const transferRequest = useCallback(
 		async (params: TransferSubmitParams) => {
+			const successNotification = getTransferSuccessMessage(params.name);
+
 			if (!account) {
-				console.error('No wallet detected');
+				console.error(MESSAGES.REQUEST_NO_WALLET);
 				return;
 			}
 			if (account.toLowerCase() !== params.ownerId.toLowerCase()) {
-				console.error('You are not the owner');
+				console.error(MESSAGES.REQUEST_NOT_OWNER);
 				return;
 			}
 
@@ -41,17 +56,18 @@ export const useTransfer = (): UseTransferReturn => {
 				);
 
 				// start transferring
-				addNotification('Started transfer');
+				addNotification(MESSAGES.REQUEST_TRANSFER_STARTED);
 				reduxActions.setTransferring(params);
+				params.onClose();
 
 				// in transferring
 				await tx.wait();
 
 				// completed transferring
-				addNotification(`Ownership of "${params.name}" has been transferred`);
+				addNotification(successNotification);
 				reduxActions.setTransferred(params);
 			} catch (err) {
-				addNotification('Encountered an error while attempting to transfer.');
+				addNotification(MESSAGES.REQUEST_ERROR);
 				throw err;
 			}
 		},

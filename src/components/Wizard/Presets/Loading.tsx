@@ -3,10 +3,11 @@ import React from 'react';
 
 type LoadingProps = {
 	message: React.ReactNode | string;
+	subtext?: React.ReactNode | string;
 };
 
-const Loading = ({ message }: LoadingProps) => (
-	<LoadingIndicator text={message} />
+const Loading = ({ message, subtext }: LoadingProps) => (
+	<LoadingIndicator text={message} subtext={subtext} />
 );
 
 export default Loading;
