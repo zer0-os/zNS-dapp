@@ -14,8 +14,9 @@ import useNotification from 'lib/hooks/useNotification';
 import { useTransferRedux } from 'store/transfer/hooks';
 
 //- Constant Imports
-import constants, {
+import {
 	getTransferSuccessMessage,
+	MESSAGES,
 } from 'containers/flows/TransferOwnership/TransferOwnership.constants';
 
 export type UseTransferReturn = {
@@ -39,11 +40,11 @@ export const useTransfer = (): UseTransferReturn => {
 			const successNotification = getTransferSuccessMessage(params.name);
 
 			if (!account) {
-				console.error(constants.MESSAGES.REQUEST_NO_WALLET);
+				console.error(MESSAGES.REQUEST_NO_WALLET);
 				return;
 			}
 			if (account.toLowerCase() !== params.ownerId.toLowerCase()) {
-				console.error(constants.MESSAGES.REQUEST_NOT_OWNER);
+				console.error(MESSAGES.REQUEST_NOT_OWNER);
 				return;
 			}
 
@@ -55,7 +56,7 @@ export const useTransfer = (): UseTransferReturn => {
 				);
 
 				// start transferring
-				addNotification(constants.MESSAGES.REQUEST_TRANSFER_STARTED);
+				addNotification(MESSAGES.REQUEST_TRANSFER_STARTED);
 				reduxActions.setTransferring(params);
 				params.onClose();
 
@@ -66,7 +67,7 @@ export const useTransfer = (): UseTransferReturn => {
 				addNotification(successNotification);
 				reduxActions.setTransferred(params);
 			} catch (err) {
-				addNotification(constants.MESSAGES.REQUEST_ERROR);
+				addNotification(MESSAGES.REQUEST_ERROR);
 				throw err;
 			}
 		},

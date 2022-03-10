@@ -1,11 +1,11 @@
 //- Components Imports
 import { Wizard, EtherInput, FutureButton } from 'components';
-import { BUTTONS, INPUT, MESSAGES } from '../TransferOwnership.constants';
 
 //- Type Imports
 import { Step } from '../TransferOwnership.types';
 
 //- Constants Imports
+import { BUTTONS, INPUT, MESSAGES } from '../TransferOwnership.constants';
 
 //- Style Imports
 import styles from './NFTDetails.module.scss';
