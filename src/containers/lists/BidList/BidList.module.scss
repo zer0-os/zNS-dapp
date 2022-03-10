@@ -12,6 +12,19 @@
 	overflow: hidden;
 }
 
+.Pending {
+	text-align: center;
+	margin-top: 32px;
+}
+
+.Accepting {
+	opacity: 0.5;
+
+	* {
+		pointer-events: none;
+	}
+}
+
 .Header {
 	padding: 24px;
 	padding-bottom: 0;
