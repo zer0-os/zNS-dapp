@@ -1,11 +1,11 @@
 //- Components Imports
 import { Wizard, EtherInput, FutureButton } from 'components';
+import { BUTTONS, INPUT, MESSAGES } from '../TransferOwnership.constants';
 
 //- Type Imports
 import { Step } from '../TransferOwnership.types';
 
 //- Constants Imports
-import constants from '../TransferOwnership.constants';
 
 //- Style Imports
 import styles from './NFTDetails.module.scss';
@@ -39,15 +39,15 @@ const NFTDetails = ({
 			title={title}
 		/>
 		<div className={styles.InputWrapper}>
-			<p>{constants.MESSAGES.ENTER_ADDRESS}</p>
+			<p>{MESSAGES.ENTER_ADDRESS}</p>
 			<div>
 				<div className={styles.Inputs}>
 					<EtherInput
 						ethlogo
 						text={walletAddress}
 						onChange={setWalletAddress}
-						placeholder={constants.INPUT.TEXT_INPUT_PLACEHOLDER}
-						type={constants.INPUT.TYPE}
+						placeholder={INPUT.TEXT_INPUT_PLACEHOLDER}
+						type={INPUT.TYPE}
 					/>
 				</div>
 			</div>
@@ -55,7 +55,7 @@ const NFTDetails = ({
 
 		<div className={styles.InputSubmitButton}>
 			<FutureButton glow={valid} onClick={() => valid && onNext()}>
-				{constants.BUTTONS[Step.Details].PRIMARY}
+				{BUTTONS[Step.Details].PRIMARY}
 			</FutureButton>
 		</div>
 	</>
