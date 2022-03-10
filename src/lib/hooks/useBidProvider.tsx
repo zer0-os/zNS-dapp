@@ -13,6 +13,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { useZAuctionBaseApiUri } from './useZAuctionBaseApiUri';
 import useNotification from './useNotification';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 
 /////////////////////
 // Mock data stuff //
@@ -97,6 +98,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 	const context = useWeb3React();
 	const { addNotification } = useNotification();
+	const { instance: sdk } = useZnsSdk();
 	const contracts = useZnsContracts();
 	const zAuctionContract = useZnsContracts()?.zAuction;
 	const chainSelector = useChainSelector();
@@ -109,20 +111,14 @@ export const useBidProvider = (): UseBidProviderReturn => {
 					throw Error(`no contract`);
 				}
 
-				const amountInWei = ethers.utils.parseEther(bidData.amount.toString());
-
-				const tx = await zAuctionContract!.acceptBid(
-					bidData.signature,
-					bidData.auctionId,
-					bidData.bidderAccount,
-					amountInWei,
-					bidData.nftAddress,
+				const zAuction = await sdk.getZAuctionInstanceForDomain(
 					bidData.tokenId,
-					bidData.minBid,
-					bidData.startBlock,
-					bidData.expireBlock,
 				);
-
+				const bids = await zAuction.listBids([bidData.tokenId]);
+				const bid = bids[bidData.tokenId].filter(
+					(b: any) => b.auctionId === bidData.auctionId,
+				)[0];
+				const tx = await zAuction.acceptBid(bid, context.library!.getSigner());
 				return tx;
 			}, 'accept bid');
 
