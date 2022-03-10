@@ -177,17 +177,15 @@ const NFT = ({
 
 	const YourBid = () => (
 		<div>
-			{!isOwnedByYou && yourBidAsNumber !== undefined && (
-				<Detail
-					text={Amount(yourBidAsNumber.toLocaleString() ?? '-')}
-					subtext={'Your Bid (WILD)'}
-					bottomText={
-						wildPriceUsd
-							? '$' + toFiat(wildPriceUsd * yourBidAsNumber) + ' USD'
-							: '-'
-					}
-				/>
-			)}
+			<Detail
+				text={Amount(yourBidAsNumber!.toLocaleString() ?? '-')}
+				subtext={'Your Bid (WILD)'}
+				bottomText={
+					wildPriceUsd
+						? '$' + toFiat(wildPriceUsd * yourBidAsNumber!) + ' USD'
+						: '-'
+				}
+			/>
 			<CancelBidButton
 				className={styles.Action}
 				isTextButton
@@ -244,7 +242,7 @@ const NFT = ({
 						{BuyNowPrice()}
 						{HighestBid()}
 						<div className={styles.Break}></div>
-						{yourBid !== undefined && YourBid()}
+						{account && !isOwnedByYou && yourBidAsNumber && YourBid()}
 					</div>
 					{isOwnedByYou && (
 						<FutureButton className={styles.Transfer} glow onClick={onTransfer}>
