@@ -21,45 +21,45 @@ export type StakingState = {
 };
 
 /**
- * Stacking Payloads definition
+ * Staking Payloads definition
  */
-export type StackingRequestPayload = NftStatusCard;
+export type StakingRequestPayload = NftStatusCard;
 
-export type StackingApprovePayload = DomainRequestAndContents;
+export type StakingApprovePayload = DomainRequestAndContents;
 
-export type StackingFulfillPayload = DomainRequestAndContents;
+export type StakingFulfillPayload = DomainRequestAndContents;
 
 /**
  * Staking actions definition
  */
 export type SetStakingRequestingRequest = {
 	type: typeof SET_STAKING_REQUESTING_REQUEST;
-	payload: StackingRequestPayload;
+	payload: StakingRequestPayload;
 };
 
 export type SetStakingRequestedRequest = {
 	type: typeof SET_STAKING_REQUESTED_REQUEST;
-	payload: StackingRequestPayload;
+	payload: StakingRequestPayload;
 };
 
 export type SetStakingApprovingRequest = {
 	type: typeof SET_STAKING_APPROVING_REQUEST;
-	payload: StackingApprovePayload;
+	payload: StakingApprovePayload;
 };
 
 export type SetStakingApprovedRequest = {
 	type: typeof SET_STAKING_APPROVED_REQUEST;
-	payload: StackingApprovePayload;
+	payload: StakingApprovePayload;
 };
 
 export type SetStakingFulfillingRequest = {
 	type: typeof SET_STAKING_FULFILLING_REQUEST;
-	payload: StackingFulfillPayload;
+	payload: StakingFulfillPayload;
 };
 
 export type SetStakingFulfilledRequest = {
 	type: typeof SET_STAKING_FULFILLED_REQUEST;
-	payload: StackingFulfillPayload;
+	payload: StakingFulfillPayload;
 };
 
 /**
@@ -67,7 +67,7 @@ export type SetStakingFulfilledRequest = {
  *
  * To be used in Reducer
  */
-export type StackingActions =
+export type StakingActions =
 	| SetStakingRequestingRequest
 	| SetStakingRequestedRequest
 	| SetStakingApprovingRequest

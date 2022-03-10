@@ -16,7 +16,7 @@ import useNotification from 'lib/hooks/useNotification';
 import { useStakingController } from 'lib/hooks/useStakingController';
 import { useStakingRedux } from 'store/staking/hooks';
 
-export type UseStakingReturn = {
+export interface UseStakingReturn {
 	requesting: NftStatusCard[];
 	requested: NftStatusCard[];
 	approving: DomainRequestAndContents[];
@@ -33,7 +33,7 @@ export type UseStakingReturn = {
 	fulfillRequest: (
 		params: DomainRequestAndContents,
 	) => Promise<ethers.ContractTransaction | void>;
-};
+}
 
 export const useStaking = (): UseStakingReturn => {
 	const { addNotification } = useNotification();

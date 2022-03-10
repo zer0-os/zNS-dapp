@@ -7,7 +7,7 @@ import {
 	SET_STAKING_FULFILLING_REQUEST,
 	SET_STAKING_FULFILLED_REQUEST,
 } from './actionTypes';
-import { StakingState, StackingActions } from './types';
+import { StakingState, StakingActions } from './types';
 
 export const REDUCER_NAME = 'staking';
 
@@ -20,7 +20,7 @@ export const INITIAL_STATE: StakingState = {
 	fulfilled: [],
 };
 
-const reducer = (state = INITIAL_STATE, action: StackingActions) => {
+const reducer = (state = INITIAL_STATE, action: StakingActions) => {
 	switch (action.type) {
 		case SET_STAKING_REQUESTING_REQUEST:
 			return {

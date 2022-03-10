@@ -7,9 +7,9 @@ import {
 	SET_STAKING_FULFILLED_REQUEST,
 } from './actionTypes';
 import {
-	StackingRequestPayload,
-	StackingApprovePayload,
-	StackingFulfillPayload,
+	StakingRequestPayload,
+	StakingApprovePayload,
+	StakingFulfillPayload,
 	SetStakingRequestingRequest,
 	SetStakingRequestedRequest,
 	SetStakingApprovingRequest,
@@ -22,7 +22,7 @@ import {
  *  SET_STAKING_REQUESTING_REQUEST actions
  */
 export const setStakingRequestingRequest = (
-	payload: StackingRequestPayload,
+	payload: StakingRequestPayload,
 ): SetStakingRequestingRequest => ({
 	type: SET_STAKING_REQUESTING_REQUEST,
 	payload,
@@ -32,7 +32,7 @@ export const setStakingRequestingRequest = (
  *  SET_STAKING_REQUESTED_REQUEST actions
  */
 export const setStakingRequestedRequest = (
-	payload: StackingRequestPayload,
+	payload: StakingRequestPayload,
 ): SetStakingRequestedRequest => ({
 	type: SET_STAKING_REQUESTED_REQUEST,
 	payload,
@@ -42,7 +42,7 @@ export const setStakingRequestedRequest = (
  *  SET_STAKING_APPROVING_REQUEST actions
  */
 export const setStakingApprovingRequest = (
-	payload: StackingApprovePayload,
+	payload: StakingApprovePayload,
 ): SetStakingApprovingRequest => ({
 	type: SET_STAKING_APPROVING_REQUEST,
 	payload,
@@ -52,7 +52,7 @@ export const setStakingApprovingRequest = (
  *  SET_STAKING_APPROVED_REQUEST actions
  */
 export const setStakingApprovedRequest = (
-	payload: StackingApprovePayload,
+	payload: StakingApprovePayload,
 ): SetStakingApprovedRequest => ({
 	type: SET_STAKING_APPROVED_REQUEST,
 	payload,
@@ -62,7 +62,7 @@ export const setStakingApprovedRequest = (
  *  SET_STAKING_FULFILLING_REQUEST actions
  */
 export const setStakingFulfillingRequest = (
-	payload: StackingFulfillPayload,
+	payload: StakingFulfillPayload,
 ): SetStakingFulfillingRequest => ({
 	type: SET_STAKING_FULFILLING_REQUEST,
 	payload,
@@ -72,7 +72,7 @@ export const setStakingFulfillingRequest = (
  *  SET_STAKING_FULFILLED_REQUEST actions
  */
 export const setStakingFulfilledRequest = (
-	payload: StackingFulfillPayload,
+	payload: StakingFulfillPayload,
 ): SetStakingFulfilledRequest => ({
 	type: SET_STAKING_FULFILLED_REQUEST,
 	payload,
