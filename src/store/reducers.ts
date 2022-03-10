@@ -12,6 +12,9 @@ import mintRducer, { REDUCER_NAME as MINT_REDUCER_NAME } from './mint/reducer';
 import transferReducer, {
 	REDUCER_NAME as TRANSFER_REDUCER_NAME,
 } from './transfer/reducer';
+import navbarReducer, {
+	REDUCER_NAME as NAVBAR_REDUCER_NAME,
+} from './navbar/reducer';
 
 const createRootReducer = (history: History<any>) =>
 	combineReducers({
@@ -20,6 +23,7 @@ const createRootReducer = (history: History<any>) =>
 		[CURRENCY_REDUCER_NAME]: currencyReducer,
 		[MINT_REDUCER_NAME]: mintRducer,
 		[TRANSFER_REDUCER_NAME]: transferReducer,
+		[NAVBAR_REDUCER_NAME]: navbarReducer,
 		/**
 		 * Other reducers will be added here
 		 */

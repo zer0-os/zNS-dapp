@@ -39,8 +39,12 @@ const NFTDetails = ({
 				<h2>0://{domain}</h2>
 			</div>
 			{creator && <Member id={creator} subtext={'Creator'} />}
-			{otherDetails?.map((detail: Detail) => (
-				<DetailComponent text={detail.value} subtext={detail.name} />
+			{otherDetails?.map((detail: Detail, i) => (
+				<DetailComponent
+					key={i + detail.value}
+					text={detail.value}
+					subtext={detail.name}
+				/>
 			))}
 		</div>
 	</div>

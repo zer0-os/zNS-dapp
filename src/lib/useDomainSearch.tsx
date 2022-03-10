@@ -6,7 +6,7 @@ import {
 	useDomainsByNameContainsQuery,
 } from './hooks/zNSDomainHooks';
 
-interface DomainSearch {
+export interface DomainSearch {
 	exactMatch?: DisplayParentDomain;
 	matches?: DisplayParentDomain[];
 	setPattern: (pattern: string) => void;

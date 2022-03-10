@@ -212,7 +212,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				accessor: ({ name }) => name,
 				Cell: (row: any) => (
 					<Artwork
-						domain={row.row.original.name}
+						domain={
+							row.row.original.name.startsWith('wilder.')
+								? row.row.original.name.split('wilder.')[1]
+								: row.row.original.name
+						}
 						disableInteraction
 						metadataUrl={row.row.original.metadata}
 						id={row.row.original.id}

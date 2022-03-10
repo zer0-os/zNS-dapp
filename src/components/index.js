@@ -45,10 +45,8 @@ export { default as TextInputWithTopPlaceHolder } from './Inputs/TextInput/TextI
 
 //- NavBars
 export { default as TabBar } from './NavBars/TabBar/TabBar';
-export { default as TitleBar } from './NavBars/TitleBar/TitleBar';
 
 //- Tables
-export { default as BidTable } from './Tables/BidTable/BidTable';
 export { default as DomainTable } from './Tables/DomainTable/DomainTable';
 export { default as RequestTable } from './Tables/RequestTable/RequestTable';
 export { default as GenericTable } from './Tables/GenericTable/GenericTable';

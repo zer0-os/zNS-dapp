@@ -10,6 +10,7 @@
  */
 
 // Buttons
+export { default as CancelBidButton } from './flows/CancelBid/CancelBidButton';
 export { default as BuyNowButton } from './flows/BuyNow/BuyNowButton';
 export { default as BidButton } from './buttons/BidButton/BidButton';
 export { default as ConnectWalletButton } from './buttons/ConnectWalletButton/ConnectWalletButton';
@@ -32,6 +33,7 @@ export { default as TransferOwnership } from './flows/TransferOwnership';
 export { default as WheelsRaffle } from './flows/WheelsRaffle';
 
 // Tables
+export { default as BidTable } from './Tables/BidTable';
 export { default as OwnedDomainsTable } from './Tables/OwnedDomainsTable/OwnedDomainsTable';
 export { default as SubdomainTable } from './Tables/SubdomainTable/SubdomainTable';
 
