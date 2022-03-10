@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './BidList.module.scss';
 
 // Component Imports
-import { FutureButton } from 'components';
+import { FutureButton, Wizard } from 'components';
 
 // Type Imports
 import { Bid } from 'lib/types';
@@ -18,9 +18,15 @@ type BidListProps = {
 	bids: Bid[];
 	onAccept?: (bid: Bid) => void;
 	wildPriceUsd?: number;
+	isAccepting?: boolean;
 };
 
-const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
+const BidList: React.FC<BidListProps> = ({
+	bids,
+	onAccept,
+	wildPriceUsd,
+	isAccepting,
+}) => {
 	//////////////////
 	// Data & State //
 	//////////////////
@@ -29,7 +35,6 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 	const { library } = useWeb3React<Web3Provider>();
 
 	useEffect(() => {
-		// console.log(library);
 		if (library) {
 			library.getBlockNumber().then((bn) => {
 				setBlockNumber(bn);
@@ -55,7 +60,7 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 	///////////////
 
 	const accept = (bid: Bid) => {
-		if (onAccept) onAccept(bid);
+		if (onAccept && !isAccepting) onAccept(bid);
 	};
 
 	////////////
@@ -68,7 +73,10 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 				<h4>All bids</h4>
 				<hr className="glow" />
 			</div>
-			<ul>
+			{isAccepting && (
+				<p className={styles.Pending}>Accept bid transaction pending.</p>
+			)}
+			<ul className={isAccepting ? styles.Accepting : ''}>
 				{sorted.map((bid: Bid, i: number) => (
 					<li key={bid.auctionId} className={styles.Bid}>
 						<div>
@@ -102,7 +110,10 @@ const BidList: React.FC<BidListProps> = ({ bids, onAccept, wildPriceUsd }) => {
 							<>
 								{Number(bid.expireBlock) > blockNumber &&
 									onAccept !== undefined && (
-										<FutureButton glow onClick={() => accept(bid)}>
+										<FutureButton
+											glow={!isAccepting}
+											onClick={() => accept(bid)}
+										>
 											Accept
 										</FutureButton>
 									)}
