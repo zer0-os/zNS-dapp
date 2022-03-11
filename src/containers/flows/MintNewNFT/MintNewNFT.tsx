@@ -296,7 +296,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	////////////
 
 	return (
-		<div className={`${styles.MintNewNFT} blur border-rounded border-primary`}>
+		<div
+			className={`${styles.MintNewNFT} blur border-rounded border-primary background-primary`}
+		>
 			{isMintLoading && <div className={styles.Blocker}></div>}
 			{/* // TODO: Pull each section out into a seperate component */}
 			<div className={styles.Header}>

@@ -10,7 +10,7 @@ const Notification: React.FC<NotificationProps> = ({ text, onClick }) => {
 	return (
 		<div
 			onClick={onClick}
-			className={`${styles.Notification} blur ${
+			className={`${styles.Notification} background-primary blur ${
 				onClick ? styles.Clickable : ''
 			}`}
 		>

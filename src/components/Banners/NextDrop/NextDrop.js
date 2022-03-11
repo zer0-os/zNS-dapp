@@ -30,7 +30,7 @@ const NextDrop = (props) => {
 	return (
 		<div
 			style={{ ...props.style }}
-			className={`${styles.nextDrop} border-primary border-rounded blur`}
+			className={`${styles.nextDrop} border-primary border-rounded background-primary blur`}
 		>
 			<img alt="Artist Profile" src={avatar} />
 			<div>

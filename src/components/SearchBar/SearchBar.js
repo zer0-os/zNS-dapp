@@ -5,7 +5,10 @@ import searchBarStyles from './SearchBar.module.scss';
 // TODO: Convert to TypeScript
 const SearchBar = (props) => {
 	return (
-		<div className={searchBarStyles.searchBar + ' blur'} style={props.style}>
+		<div
+			className={searchBarStyles.searchBar + '  background-primary blur'}
+			style={props.style}
+		>
 			<input
 				onChange={props.onChange}
 				type="text"
