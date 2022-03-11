@@ -29,7 +29,7 @@ import { ProfileModal } from 'containers';
 
 //- Library Imports
 import { MintNewNFT } from 'containers';
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
+import { useStaking } from 'lib/hooks/useStaking';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 //- Constants Imports
@@ -86,7 +86,7 @@ const PageContainer: FC = ({ children }) => {
 
 	//- Minting State
 	const { minted } = useMint();
-	const { fulfilled: stakingFulFilled } = useStakingProvider();
+	const { fulfilled: stakingFulFilled } = useStaking();
 
 	//- Notification State
 	const { addNotification } = useNotification();

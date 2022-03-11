@@ -161,7 +161,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		setStatus(status);
 	};
 
-	const onSubmitWalletAddress = async () => { };
+	const onSubmitWalletAddress = async () => {};
 
 	const aboutRaffle = () => {
 		return (
@@ -226,9 +226,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 			if (!hasSufficientBalance[key]) {
 				messages.push(
 					validationCriteria[key] +
-					' ' +
-					key.toUpperCase() +
-					(key === 'nft' && validationCriteria[key] > 1 ? 's' : ''),
+						' ' +
+						key.toUpperCase() +
+						(key === 'nft' && validationCriteria[key] > 1 ? 's' : ''),
 				);
 			}
 		}
@@ -248,8 +248,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					<div className={styles.eachBalances}>
 						<div>WILD</div>
 						<div
-							className={`${!hasSufficientBalance.wild ? styles.ErrorColor : ''
-								} ${styles.amount}`}
+							className={`${
+								!hasSufficientBalance.wild ? styles.ErrorColor : ''
+							} ${styles.amount}`}
 						>
 							{formatByDecimalPlace(balances?.wildBalance || 0, 2)}
 						</div>
@@ -262,8 +263,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					<div className={styles.eachBalances}>
 						<div> ETH</div>
 						<div
-							className={`${!hasSufficientBalance.eth ? styles.ErrorColor : ''
-								} ${styles.amount}`}
+							className={`${
+								!hasSufficientBalance.eth ? styles.ErrorColor : ''
+							} ${styles.amount}`}
 						>
 							{formatByDecimalPlace(balances?.ethBalance || 0, 2)}
 						</div>
@@ -277,8 +279,9 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					<div className={styles.eachBalances}>
 						<div>Wilder NFT</div>
 						<div
-							className={`${!hasSufficientBalance.nft ? styles.ErrorColor : ''
-								} ${styles.amount}`}
+							className={`${
+								!hasSufficientBalance.nft ? styles.ErrorColor : ''
+							} ${styles.amount}`}
 						>
 							{balances?.nftsCount || 0}
 						</div>
@@ -287,8 +290,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				</div>
 
 				{hasSufficientBalance.eth &&
-					hasSufficientBalance.wild &&
-					hasSufficientBalance.nft ? (
+				hasSufficientBalance.wild &&
+				hasSufficientBalance.nft ? (
 					<p className={styles.Success}>
 						Your balances meet the requirements for entry!
 					</p>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classnames from 'classnames';
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
-import useMint from 'lib/hooks/useMint';
+import { useStaking } from 'lib/hooks/useStaking';
+import { useMint } from 'lib/hooks/useMint';
 import { useTransfer } from 'lib/hooks/useTransfer';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
@@ -41,7 +41,7 @@ export const Header: React.FC<HeaderProps> = ({
 	const { mvpVersion } = useMvpVersion();
 
 	const { requesting: stakeRequesting, requested: stakeRequested } =
-		useStakingProvider();
+		useStaking();
 
 	const { minting, minted } = useMint();
 	const { transferring } = useTransfer();

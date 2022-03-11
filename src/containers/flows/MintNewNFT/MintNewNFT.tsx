@@ -7,8 +7,8 @@ import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 
 //- Providers
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
 import { useZnsContracts } from 'lib/contracts';
+import { useStaking } from 'lib/hooks/useStaking';
 import useMint from 'lib/hooks/useMint';
 
 //- Type Imports
@@ -65,7 +65,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 
 	// Mint/Staking Hooks
 	const { mint } = useMint();
-	const staking = useStakingProvider();
+	const staking = useStaking();
 
 	// @todo refactor into useEffect so we don't have to calculate each render
 	let isOwner = account && account.toLowerCase() === domainOwner.toLowerCase();

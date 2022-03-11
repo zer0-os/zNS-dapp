@@ -209,3 +209,10 @@ export interface TransferSubmitParams {
 	walletAddress: string;
 	onClose: () => void;
 }
+
+export interface StakingRequest {
+	requestor: string;
+	stakeAmount: string;
+	stakeCurrency: string;
+	nft: NftParams;
+}

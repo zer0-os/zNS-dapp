@@ -62,7 +62,7 @@ const useMintRedux = () => {
 	return { reduxState, reduxActions };
 };
 
-const useMint = (): UseMintReturn => {
+export const useMint = (): UseMintReturn => {
 	////////////////////////
 	//  Hooks From Out    //
 	////////////////////////

@@ -15,6 +15,9 @@ import transferReducer, {
 import navbarReducer, {
 	REDUCER_NAME as NAVBAR_REDUCER_NAME,
 } from './navbar/reducer';
+import stakingReducer, {
+	REDUCER_NAME as STAKING_REDUCER_NAME,
+} from './staking/reducer';
 
 const createRootReducer = (history: History<any>) =>
 	combineReducers({
@@ -24,6 +27,7 @@ const createRootReducer = (history: History<any>) =>
 		[MINT_REDUCER_NAME]: mintRducer,
 		[TRANSFER_REDUCER_NAME]: transferReducer,
 		[NAVBAR_REDUCER_NAME]: navbarReducer,
+		[STAKING_REDUCER_NAME]: stakingReducer,
 		/**
 		 * Other reducers will be added here
 		 */
