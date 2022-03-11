@@ -1,0 +1,13 @@
+.Container {
+	width: 736px;
+	margin-top: 16px;
+	margin-left: auto;
+	margin-right: auto;
+
+	// Can be removed once routing is set
+	> * {
+		&:not(:first-child) {
+			margin-top: 16px;
+		}
+	}
+}

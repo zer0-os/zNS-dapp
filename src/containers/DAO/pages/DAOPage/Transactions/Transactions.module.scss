@@ -1,0 +1,16 @@
+.Loading {
+	padding: 32px;
+}
+
+.Transaction {
+	display: flex;
+	align-items: center;
+
+	.Icon {
+		height: 32px;
+		width: 32px;
+		background: black;
+		border-radius: 50%;
+		margin-right: 16px;
+	}
+}
