@@ -2,7 +2,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './GenericTable.module.scss';
 import { useInView } from 'react-intersection-observer';
-import { IconButton, SearchBar, Spinner, TextButton } from 'components';
+import {
+	LoadingIndicator,
+	IconButton,
+	SearchBar,
+	TextButton,
+} from 'components';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
@@ -246,9 +251,10 @@ const GenericTable = (props: any) => {
 				)}
 				{!props.isLoading && (isGridView ? GridView : ListView)}
 				{props.isLoading && (
-					<div className={styles.Loading}>
-						<Spinner /> {props.loadingText ? props.loadingText : 'Loading'}
-					</div>
+					<LoadingIndicator
+						className={styles.Loading}
+						text={props.loadingText ? props.loadingText : 'Loading'}
+					/>
 				)}
 				<div ref={ref}></div>
 			</div>
