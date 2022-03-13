@@ -9,6 +9,7 @@ import { displayEther, toFiat } from 'lib/currency';
 import { ethers } from 'ethers';
 import { useWeb3React } from '@web3-react/core';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { useDidMount } from 'lib/hooks/useDidMount';
 
 const StakePoolTableRow = (props: any) => {
 	const selectPool = useStakingPoolSelector().selectStakePool;
@@ -20,6 +21,7 @@ const StakePoolTableRow = (props: any) => {
 	const tvl = pool.metrics.tvl.valueOfTokensUSD;
 
 	const getStake = async (id: string) => {
+		setTotalStake(undefined);
 		try {
 			const { userValueLocked, userValueUnlocked } =
 				await pool.instance.userValueStaked(id);
@@ -34,7 +36,13 @@ const StakePoolTableRow = (props: any) => {
 		if (account) {
 			getStake(account);
 		}
-	}, [pool]);
+	}, [pool, account]);
+
+	useDidMount(() => {
+		if (account) {
+			getStake(account);
+		}
+	});
 
 	const onClick = () => {
 		selectPool(pool);
