@@ -36,6 +36,7 @@ export { default as PreviewCard } from './Cards/PreviewCard';
 
 //- Dropdowns
 export { default as OptionDropdown } from './Dropdowns/OptionDropdown/OptionDropdown';
+export { default as HoverDropDown } from './Dropdowns/HoverDropDown/HoverDropDown';
 
 //- Inputs
 export { default as EtherInput } from './Inputs/EtherInput/EtherInput';

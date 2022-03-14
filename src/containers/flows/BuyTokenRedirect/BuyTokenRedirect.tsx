@@ -17,7 +17,7 @@ import { UrlList, Size } from './utils';
 import { formatByDecimalPlace } from 'lib/utils/number';
 
 //- Component Imports
-import HoverDropDown from 'components/HoverDropDown/HoverDropDown';
+import { HoverDropDown } from 'components';
 
 //- Props
 interface IProps {
@@ -100,6 +100,7 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 			{currentPriceDetails(Size.SML, constants.TICKER_NAME)}
 		</div>
 	);
+
 	const dropdownContent = (
 		<div className={`${styles.DropdownContent} border-primary`}>
 			<div className={`${styles.Section} ${styles.SectionBaseline}`}>

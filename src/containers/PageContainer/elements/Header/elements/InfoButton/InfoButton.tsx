@@ -1,8 +1,14 @@
+//- React Imports
 import React from 'react';
+
+//- Info Element Imports
 import { IconDot, InfoPanel } from './elements';
+
+//- Assets Imports
 import './_info-button.scss';
 
-import HoverDropDown from 'components/HoverDropDown/HoverDropDown';
+//- Components Imports
+import { HoverDropDown } from 'components';
 
 export type InfoButtonProps = {
 	isDesktop: boolean;
