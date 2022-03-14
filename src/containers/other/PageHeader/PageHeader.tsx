@@ -14,7 +14,7 @@ const PageHeader: React.FC<HeaderProps> = ({ style, children, hideNavBar }) => {
 	return (
 		<>
 			<nav
-				className={`${styles.NavBar} background-primary blur ${
+				className={`${styles.NavBar} background-primary ${
 					hideNavBar ? styles.Hidden : ''
 				}`}
 				style={style}

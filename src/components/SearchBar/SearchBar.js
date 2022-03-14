@@ -6,7 +6,7 @@ import searchBarStyles from './SearchBar.module.scss';
 const SearchBar = (props) => {
 	return (
 		<div
-			className={searchBarStyles.searchBar + '  background-primary blur'}
+			className={searchBarStyles.searchBar + '  background-primary'}
 			style={props.style}
 		>
 			<input

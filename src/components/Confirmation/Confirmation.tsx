@@ -57,7 +57,7 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 
 	return (
 		<div
-			className={`${styles.Confirmation} blur border-primary border-rounded background-primary `}
+			className={`${styles.Confirmation} border-primary border-rounded background-primary `}
 		>
 			<h2 className="glow-text-white">{title ?? 'Are you sure?'}</h2>
 			{hasCloseButton && (

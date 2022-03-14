@@ -26,7 +26,7 @@ const NotificationDrawer = () => {
 		<div
 			className={`${
 				styles.NotificationDrawer
-			} blur border-primary background-primary ${
+			} border-primary background-primary ${
 				!notifications.length ? styles.Hidden : ''
 			}`}
 			data-testid={TEST_ID.CONTAINER}
