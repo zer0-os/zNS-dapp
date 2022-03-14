@@ -35,8 +35,8 @@ export { default as NFTCard } from './Cards/NFTCard';
 export { default as PreviewCard } from './Cards/PreviewCard';
 
 //- Dropdowns
-export { default as OptionDropdown } from './Dropdowns/OptionDropdown/OptionDropdown';
 export { default as HoverDropDown } from './Dropdowns/HoverDropDown/HoverDropDown';
+export { default as OptionDropdown } from './Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Inputs
 export { default as EtherInput } from './Inputs/EtherInput/EtherInput';
