@@ -1,11 +1,4 @@
 .info-panel {
-	&__container {
-		position: absolute;
-		top: calc(100% - 14px);
-		right: 0;
-		display: none;
-	}
-
 	&__content {
 		display: flex;
 		flex-direction: column;

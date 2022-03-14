@@ -22,6 +22,7 @@ import {
 } from './elements';
 import { Modal } from '../../PageContainer.constants';
 import './_header.scss';
+import HoverDropDown from 'components/HoverDropDown/HoverDropDown';
 
 type HeaderProps = {
 	pageWidth: number;

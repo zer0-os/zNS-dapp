@@ -16,6 +16,9 @@ import { UrlList, Size } from './utils';
 //- Global Utils Imports
 import { formatByDecimalPlace } from 'lib/utils/number';
 
+//- Component Imports
+import HoverDropDown from 'components/HoverDropDown/HoverDropDown';
+
 //- Props
 interface IProps {
 	walletConnected?: boolean;
@@ -84,11 +87,7 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 			{urlList.map((item) => (
 				<a key={item.title} target="_blank" rel="noreferrer" href={item.href}>
 					<div className={styles.IconWrapper}>
-						<img
-							style={{ width: '40px', height: '40px' }}
-							alt={`${item.title}-logo`}
-							src={item.src}
-						/>
+						<img alt={`${item.title}-logo`} src={item.src} />
 						<p>{item.title}</p>
 					</div>
 				</a>
@@ -96,32 +95,32 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 		</div>
 	);
 
+	const dropdownButton = (
+		<div className={styles.WildPriceContainer}>
+			{currentPriceDetails(Size.SML, constants.TICKER_NAME)}
+		</div>
+	);
+	const dropdownContent = (
+		<div className={`${styles.DropdownContent} border-primary`}>
+			<div className={`${styles.Section} ${styles.SectionBaseline}`}>
+				{currentPriceDetails(Size.LRG)}
+				{externalUrl()}
+			</div>
+			<div className={`${styles.Section} ${styles.SectionCenter}`}>
+				{divider()}
+			</div>
+			<div className={styles.Section}>{externalUrlRow(UrlList)}</div>
+		</div>
+	);
 	////////////
 	// Render //
 	////////////
 
 	return (
 		<>
-			<div className={styles.WildPriceContainer}>
-				{currentPriceDetails(Size.SML, constants.TICKER_NAME)}
-
-				<div
-					className={`${styles.DropdownContentContainer} ${
-						walletConnected ? styles.WalletConnected : ''
-					}`}
-				>
-					<div className={`${styles.DropdownContent} border-primary`}>
-						<div className={styles.Section} style={{ alignItems: 'baseline' }}>
-							{currentPriceDetails(Size.LRG)}
-							{externalUrl()}
-						</div>
-						<div className={styles.Section} style={{ alignItems: 'center' }}>
-							{divider()}
-						</div>
-						<div className={styles.Section}>{externalUrlRow(UrlList)}</div>
-					</div>
-				</div>
-			</div>
+			<HoverDropDown triggerContent={dropdownButton}>
+				{dropdownContent}
+			</HoverDropDown>
 		</>
 	);
 };
