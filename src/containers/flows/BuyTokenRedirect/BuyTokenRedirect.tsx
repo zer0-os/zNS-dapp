@@ -17,7 +17,7 @@ import { UrlList, Size } from './utils';
 import { formatByDecimalPlace } from 'lib/utils/number';
 
 //- Component Imports
-import { HoverDropDown } from 'components';
+import { HoverDropdown } from 'components';
 
 //- Props
 interface IProps {
@@ -119,9 +119,9 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 
 	return (
 		<>
-			<HoverDropDown triggerContent={dropdownButton}>
+			<HoverDropdown triggerContent={dropdownButton}>
 				{dropdownContent}
-			</HoverDropDown>
+			</HoverDropdown>
 		</>
 	);
 };

@@ -8,7 +8,7 @@ import { IconDot, InfoPanel } from './elements';
 import './_info-button.scss';
 
 //- Components Imports
-import { HoverDropDown } from 'components';
+import { HoverDropdown } from 'components';
 
 export type InfoButtonProps = {
 	isDesktop: boolean;
@@ -33,8 +33,8 @@ export const InfoButton: React.FC<InfoButtonProps> = (props) => {
 	// Render //
 	////////////
 	return (
-		<HoverDropDown triggerContent={dropdownButton}>
+		<HoverDropdown triggerContent={dropdownButton}>
 			{dropdownContent}
-		</HoverDropDown>
+		</HoverDropdown>
 	);
 };

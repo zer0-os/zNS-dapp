@@ -1,16 +1,16 @@
 //- Style Imports
-import styles from './HoverDropDown.module.scss';
+import styles from './HoverDropdown.module.scss';
 
 //- Props
-interface HoverDropDownProps {
+interface HoverDropdownProps {
 	triggerContent: React.ReactNode;
 	children: React.ReactNode;
 }
 
-const HoverDropDown: React.FC<HoverDropDownProps> = ({
+const HoverDropdown: React.FC<HoverDropdownProps> = ({
 	triggerContent,
 	children,
-}: HoverDropDownProps) => {
+}: HoverDropdownProps) => {
 	////////////
 	// Render //
 	////////////
@@ -26,4 +26,4 @@ const HoverDropDown: React.FC<HoverDropDownProps> = ({
 	);
 };
 
-export default HoverDropDown;
+export default HoverDropdown;

@@ -1,9 +1,12 @@
+//- React Imports
 import React, { useMemo } from 'react';
+
+//- Component Imports
 import {
 	MintPreview,
 	TransferPreview,
 	NumberButton,
-	HoverDropDown,
+	HoverDropdown,
 } from 'components';
 
 type StatusButtonsProps = {
@@ -59,16 +62,16 @@ export const StatusButtons: React.FC<StatusButtonsProps> = ({
 		<>
 			{/* Status / Long Running Operation Button */}
 			{showStatusButton && (
-				<HoverDropDown triggerContent={mintPreviewDropdownButton}>
+				<HoverDropdown triggerContent={mintPreviewDropdownButton}>
 					{mintPreviewDropdownContent}
-				</HoverDropDown>
+				</HoverDropdown>
 			)}
 
 			{/* Transfer Progress button */}
 			{showTransferringButton && (
-				<HoverDropDown triggerContent={transferPreviewDropdownButton}>
+				<HoverDropdown triggerContent={transferPreviewDropdownButton}>
 					{transferPreviewDropdownContent}
-				</HoverDropDown>
+				</HoverDropdown>
 			)}
 		</>
 	);
