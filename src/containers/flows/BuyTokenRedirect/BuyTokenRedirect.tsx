@@ -17,7 +17,7 @@ import { UrlList, Size } from './utils';
 import { formatByDecimalPlace } from 'lib/utils/number';
 
 //- Component Imports
-import { HoverDropdown } from 'components';
+import { HoverDropdown } from 'components/Dropdowns';
 
 //- Props
 interface IProps {
