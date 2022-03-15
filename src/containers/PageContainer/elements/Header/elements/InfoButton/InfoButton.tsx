@@ -8,7 +8,7 @@ import { IconDot, InfoPanel } from './elements';
 import './_info-button.scss';
 
 //- Components Imports
-import { HoverDropdown } from 'components/Dropdowns';
+import { HoverDropdown } from 'components';
 
 export type InfoButtonProps = {
 	isDesktop: boolean;

@@ -2,8 +2,12 @@
 import React, { useMemo } from 'react';
 
 //- Component Imports
-import { MintPreview, TransferPreview, NumberButton } from 'components';
-import { HoverDropdown } from 'components/Dropdowns';
+import {
+	MintPreview,
+	TransferPreview,
+	NumberButton,
+	HoverDropdown,
+} from 'components';
 
 type StatusButtonsProps = {
 	statusCounts: {
