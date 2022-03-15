@@ -2,38 +2,44 @@
 	position: relative;
 	width: 32px;
 	height: 32px;
-
 	background: none;
 	border-radius: 16px;
-
 	color: white;
 	font-weight: 700;
 	text-align: center;
-	transition: color var(--animation-time-medium) ease-in-out;
-}
 
-.NumberButton::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+	&::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: 16px;
+		border-left: 2px solid white;
+		border-right: 2px solid white;
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
 
-	/* background: rgba(0,0,0,0.3); */
+		transform: rotate(0deg);
+	}
 
-	border-radius: 16px;
-	border-left: 2px solid white;
-	border-right: 2px solid white;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
+	&::after {
+		content: ' ';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		height: 0px;
+		width: 0px;
+		border-radius: var(--box-radius);
+		z-index: -2;
+	}
 
-	transform: rotate(0deg);
-
-	transition: transform var(--animation-time-medium) ease-in-out,
-		border-left-color var(--animation-time-medium),
-		border-right-color var(--animation-time-medium);
+	&:hover {
+		background: var(--color-azure-gradient-25);
+		box-sizing: border-box;
+	}
 }
 
 .Rotating::before {
@@ -42,23 +48,6 @@
 	-ms-animation: rotating 2s linear infinite;
 	-o-animation: rotating 2s linear infinite;
 	animation: rotating 2s linear infinite;
-}
-
-.NumberButton::after {
-	content: ' ';
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	height: 0px;
-	width: 0px;
-	border-radius: var(--box-radius);
-	z-index: -2;
-
-	transition: box-shadow var(--animation-time-medium) ease-in-out;
-}
-
-.NumberButton:hover::after {
-	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.5);
 }
 
 @-webkit-keyframes rotating {

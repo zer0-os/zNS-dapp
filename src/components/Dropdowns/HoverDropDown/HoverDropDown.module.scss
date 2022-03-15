@@ -7,14 +7,10 @@
 
 .DropdownContentContainer {
 	position: absolute;
-	top: calc(100% - 14px);
-	right: 0;
+	top: calc(100% + 6px);
+	right: -1px;
 	display: none;
 	z-index: 1;
-}
-
-.Content {
-	margin-top: 22px;
 }
 
 .TriggerContentContainer:hover .DropdownContentContainer {
