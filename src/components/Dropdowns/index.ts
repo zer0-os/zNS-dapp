@@ -1,2 +1,2 @@
-export { HoverDropdown } from './namechange';
+export { HoverDropdown } from './HoverDropdown';
 export { OptionDropdown } from './OptionDropdown';
