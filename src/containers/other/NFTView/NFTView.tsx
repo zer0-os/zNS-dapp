@@ -578,7 +578,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				<li className={styles.Bid} key={i}>
 					<div>
 						<b>
-							3
 							<a
 								className="alt-link"
 								href={`https://etherscan.io/address/${item.seller!}`}
