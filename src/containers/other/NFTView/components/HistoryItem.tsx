@@ -101,7 +101,6 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 			<li className={styles.Bid}>
 				<div>
 					<b>
-						3
 						<a
 							className="alt-link"
 							href={`https://etherscan.io/address/${item.seller!}`}
