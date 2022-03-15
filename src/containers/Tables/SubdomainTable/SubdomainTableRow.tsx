@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 import { BidButton, BuyNowButton } from 'containers';
 
@@ -29,6 +30,7 @@ const SubdomainTableRow = (props: any) => {
 	const { instance: sdk } = useZnsSdk();
 	const { makeABid, updated } = useBid();
 	const { getBidsForDomain } = useBidProvider();
+	const { domainMetadata } = useCurrentDomain();
 
 	const { wildPriceUsd } = useCurrency();
 
@@ -40,6 +42,9 @@ const SubdomainTableRow = (props: any) => {
 
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 	const [isPriceDataLoading, setIsPriceDataLoading] = useState<boolean>(true);
+
+	const isRootDomain = domain.name.split('.').length <= 2;
+	const isBiddable = isRootDomain || Boolean(domainMetadata?.isBiddable);
 
 	const isOwnedByUser =
 		account?.toLowerCase() === domain?.owner?.id.toLowerCase();
@@ -217,7 +222,7 @@ const SubdomainTableRow = (props: any) => {
 						disabled={isOwnedByUser}
 						style={{ marginLeft: 'auto', width: 160 }}
 					/>
-				) : (
+				) : isBiddable ? (
 					<BidButton
 						glow={account !== undefined && !isOwnedByUser}
 						onClick={onBidButtonClick}
@@ -225,7 +230,7 @@ const SubdomainTableRow = (props: any) => {
 					>
 						Make A Bid
 					</BidButton>
-				)}
+				) : null}
 			</td>
 		</tr>
 	);

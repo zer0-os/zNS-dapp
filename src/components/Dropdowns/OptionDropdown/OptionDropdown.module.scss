@@ -22,8 +22,16 @@
 
 .Drawer li {
 	position: relative;
+	display: flex;
+    align-items: center;
 	padding: 16px 32px;
 	cursor: pointer;
+
+	img {
+		width: 24px;
+		height: 24px;
+		object-fit: contain;
+	}
 
 	transition: text-shadow var(--animation-time-short) ease-in-out,
 		font-weight var(--animation-time-short) ease-in-out;

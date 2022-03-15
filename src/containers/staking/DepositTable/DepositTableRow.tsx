@@ -40,8 +40,8 @@ const DepositTableRow = (props: any) => {
 		});
 	}
 
-	const onDropdownSelect = (selection: string) => {
-		const filter = OPTIONS.filter((o: Option) => o.name === selection);
+	const onDropdownSelect = ({ title }: { title: string }) => {
+		const filter = OPTIONS.filter((o: Option) => o.name === title);
 		if (filter.length) {
 			filter[0].callback();
 		}
@@ -94,7 +94,7 @@ const DepositTableRow = (props: any) => {
 			<td>
 				<OptionDropdown
 					onSelect={onDropdownSelect}
-					options={OPTIONS.map((o: Option) => o.name)}
+					options={OPTIONS.map((o: Option) => ({ title: o.name }))}
 					disableSelection
 					drawerStyle={{
 						width: 222,

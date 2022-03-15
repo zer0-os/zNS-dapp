@@ -8,7 +8,7 @@ type IconButtonProps = {
 	iconUri: string;
 	style?: React.CSSProperties;
 	toggled?: boolean;
-	onClick: () => void;
+	onClick?: () => void;
 	alt?: string;
 	disabled?: boolean;
 };

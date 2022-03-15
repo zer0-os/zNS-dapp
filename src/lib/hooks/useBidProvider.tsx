@@ -124,7 +124,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 			return tx;
 		},
-		[zAuctionContract],
+		[zAuctionContract, sdk, context.library],
 	);
 
 	const getBidsForYourDomains = useCallback(async () => {
