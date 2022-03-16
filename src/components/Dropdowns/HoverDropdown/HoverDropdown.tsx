@@ -16,7 +16,7 @@ const HoverDropdown: React.FC<HoverDropdownProps> = ({
 			<div className={styles.TriggerContentContainer}>
 				{triggerContent}
 				<div className={styles.DropdownContentContainer}>
-					<div className={styles.Content}>{children}</div>
+					<div>{children}</div>
 				</div>
 			</div>
 		</>
