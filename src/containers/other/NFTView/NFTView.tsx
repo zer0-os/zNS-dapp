@@ -521,7 +521,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 		return (
 			<section
-				className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
+				className={`${styles.History} ${styles.Box} border-primary border-rounded background-primary`}
 			>
 				<h4>History</h4>
 				{!allItems && (
@@ -589,7 +589,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			return (
 				<>
 					<section
-						className={`${styles.Attributes}  blur border-primary border-rounded`}
+						className={`${styles.Attributes} border-primary border-rounded background-primary`}
 					>
 						<div className={styles.AttributesContainer}>
 							<h4>Attributes</h4>
@@ -668,7 +668,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			{attributes()}
 			<div className={`${styles.TokenHashContainer}`}>
 				<div
-					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+					className={`${styles.Box} ${styles.Contract} border-primary border-rounded background-primary`}
 				>
 					<h4>Token Id</h4>
 					<p>
@@ -691,7 +691,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 					</ArrowLink>
 				</div>
 				<div
-					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+					className={`${styles.Box} ${styles.Contract} border-primary border-rounded background-primary`}
 				>
 					<h4>IPFS Hash</h4>
 					<p>
