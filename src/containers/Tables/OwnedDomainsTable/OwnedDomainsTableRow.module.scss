@@ -1,0 +1,34 @@
+.Container {
+	cursor: pointer;
+	/* transition: background var(--animation-time-short) linear; */
+
+	&:hover {
+		background: var(--color-background-alt-50);
+	}
+
+	.Right {
+		text-align: right;
+
+		> * {
+			margin-left: auto;
+		}
+	}
+
+	.Left {
+		text-align: left;
+
+		> * {
+			margin-right: auto;
+		}
+	}
+
+	.Button {
+		margin-left: auto;
+	}
+
+	td {
+		&:last-of-type {
+			width: 230px;
+		}
+	}
+}

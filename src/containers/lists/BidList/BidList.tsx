@@ -8,9 +8,10 @@ import styles from './BidList.module.scss';
 import { FutureButton, Wizard } from 'components';
 
 // Type Imports
-import { Bid } from 'lib/types';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+import { Bid } from '@zero-tech/zauction-sdk';
+import { ethers } from 'ethers';
 
 const moment = require('moment');
 
@@ -47,13 +48,9 @@ const BidList: React.FC<BidListProps> = ({
 		}
 	}, [library]);
 
-	// useEffect(() => {
-	// 	console.log({ blockNumber });
-	// }, [blockNumber]);
-
 	const sorted = bids
 		.slice()
-		.sort((a: Bid, b: Bid) => b.date.getTime() - a.date.getTime());
+		.sort((a: Bid, b: Bid) => Number(b.timestamp) - Number(a.timestamp));
 
 	///////////////
 	// Functions //
@@ -80,13 +77,17 @@ const BidList: React.FC<BidListProps> = ({
 				{sorted.map((bid: Bid, i: number) => (
 					<li key={bid.auctionId} className={styles.Bid}>
 						<div>
-							<label>{moment(bid.date).fromNow()}</label>
+							<label>{moment(Number(bid.timestamp)).fromNow()}</label>
 							<span>
-								{bid.amount.toLocaleString()} WILD{' '}
+								{Number(ethers.utils.formatEther(bid.amount)).toLocaleString()}{' '}
+								WILD{' '}
 								{wildPriceUsd !== undefined && wildPriceUsd > 0 && (
 									<>
 										($
-										{(bid.amount * wildPriceUsd)
+										{(
+											Number(ethers.utils.formatEther(bid.amount)) *
+											wildPriceUsd
+										)
 											.toFixed(2)
 											.toLocaleString()}{' '}
 										USD)
@@ -97,12 +98,12 @@ const BidList: React.FC<BidListProps> = ({
 								by{' '}
 								<a
 									className="alt-link"
-									href={`https://etherscan.io/address/${bid.bidderAccount}`}
+									href={`https://etherscan.io/address/${bid.bidder}`}
 									target="_blank"
 									rel="noreferrer"
 								>
-									{bid.bidderAccount.substring(0, 4)}...
-									{bid.bidderAccount.substring(bid.bidderAccount.length - 4)}
+									{bid.bidder.substring(0, 4)}...
+									{bid.bidder.substring(bid.bidder.length - 4)}
 								</a>
 							</span>
 						</div>
