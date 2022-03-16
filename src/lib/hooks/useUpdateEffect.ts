@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, EffectCallback, DependencyList } from 'react';
 
 /**
  * A custom useEffect hook that only triggers on updates, not on initial mount
@@ -6,9 +6,9 @@ import { useEffect, useRef } from 'react';
  * @param {Array<any>} dependencies
  */
 export const useUpdateEffect = (
-	callback: () => void | Promise<void>,
-	dependencies: React.DependencyList = [],
-) => {
+	callback: EffectCallback | (() => void | Promise<void>),
+	dependencies: DependencyList = [],
+): void => {
 	const isInitialMount = useRef(true);
 
 	useEffect(() => {
