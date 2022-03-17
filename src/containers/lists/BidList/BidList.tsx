@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './BidList.module.scss';
 
 // Component Imports
-import { FutureButton, Wizard } from 'components';
+import { FutureButton } from 'components';
 
 // Type Imports
 import { Bid } from 'lib/types';
