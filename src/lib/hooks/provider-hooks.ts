@@ -4,6 +4,8 @@ import { useWeb3React } from '@web3-react/core';
 import { injected } from '../connectors';
 import { connectorFromName } from 'components/ConnectToWallet/ConnectToWallet';
 import { AbstractConnector } from '@web3-react/abstract-connector';
+import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
+import { WALLETS } from 'constants/wallets';
 
 export function useEagerConnect() {
 	const { activate, active } = useWeb3React();
@@ -11,7 +13,7 @@ export function useEagerConnect() {
 	const [tried, setTried] = useState(false);
 
 	useEffect(() => {
-		const wallet = localStorage.getItem('chosenWallet');
+		const wallet = localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
 		const reConnectToWallet = async (wallet: string) => {
 			if (wallet === 'metamask') {
 				await injected.isAuthorized().then((isAuthorized: boolean) => {
@@ -19,15 +21,15 @@ export function useEagerConnect() {
 					if (isAuthorized) activate(injected, undefined, true);
 					//if not authorized then not try to reconnect next time
 					//same case if there is no provider
-					else localStorage.removeItem('chosenWallet');
+					else localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
 				});
 			} else {
 				const c = connectorFromName(wallet) as AbstractConnector;
 				if (c) {
 					await activate(c, async (e: Error) => {
-						localStorage.removeItem('chosenWallet');
-						if (wallet === 'walletconnect')
-							localStorage.removeItem('walletconnect'); //session info of walletconnect
+						localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
+						if (wallet === WALLETS.WALLET_CONNECT)
+							localStorage.removeItem(WALLETS.WALLET_CONNECT); //session info of walletconnect
 						console.error(`Encounter error while connecting to ${wallet}.`);
 						console.error(e);
 					});
@@ -36,7 +38,9 @@ export function useEagerConnect() {
 			setTried(true);
 		};
 
-		if (wallet) reConnectToWallet(wallet); //if was connected to a wallet
+		if (wallet) {
+			reConnectToWallet(wallet); //if was connected to a wallet
+		}
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []); // intentionally only running on mount (make sure it's only mounted once :))

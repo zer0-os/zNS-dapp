@@ -21,12 +21,13 @@
 :root {
 	--font-size-default: 16px;
 	--font-size-smaller: 14px;
+	--font-size-small: 12px;
 	--font-family: 'Inter', serif;
 
 	--color-primary: #8c00ff;
 	--color-primary-lighter-3: #e5baff;
 	--color-primary-darkest: #8c00ff;
-	--color-accent-1: #3ca1ff;
+	--color-accent-1: #52cbff;
 	--color-accent-1-30: #9ed0ff;
 	--color-accent-1-50: rgba(60, 161, 255, 0.5);
 	--color-accent-1-dark: #1e5180;
@@ -45,6 +46,7 @@
 
 	--color-purple-darkest: #10052e;
 	--color-purple-dark: #1d0c4a;
+	--color-purple-medium: #1d154a;
 	--color-purple-light: #29175a;
 	--color-purple-lighter: #50207b;
 	--color-purple-lightest: #c169ff;
@@ -237,10 +239,6 @@ h1 {
 	font-size: 22px;
 }
 
-th {
-	text-transform: uppercase;
-}
-
 hr.glow {
 	position: relative;
 	height: 1px;
@@ -363,6 +361,14 @@ button {
 	transition: opacity var(--animation-time-long) ease-in-out;
 }
 
+.option-buttons {
+	display: flex;
+
+	> *:not(:first-child) {
+		margin-left: 24px;
+	}
+}
+
 .content {
 	display: flex;
 	margin-left: 180px;
@@ -374,12 +380,26 @@ button {
 	flex: 1;
 }
 
-nav {
+.nav {
 	width: calc(
 		100% - (var(--page-padding) * 2) - 6px
-	); /* Not sure why the -6 is needed, temp fix */
+	) !important; /* Not sure why the -6 is needed, temp fix */
 	max-width: calc(var(--width-max) - (var(--page-padding) * 2)) !important;
-	min-width: var(--width-min);
+	min-width: var(--width-min) !important;
+}
+
+.width-full {
+	width: 100%;
+}
+
+.flex-split {
+	display: flex;
+	justify-content: space-between;
+}
+
+.flex-vertical-align {
+	display: flex;
+	align-items: center;
 }
 
 .page-spacing {
@@ -388,7 +408,7 @@ nav {
 	max-width: var(--width-max);
 	min-width: var(--width-min);
 	margin: 0 auto;
-	padding-top: 126px;
+	padding-top: 29px;
 	padding-bottom: 110px;
 	padding-left: var(--page-padding);
 	padding-right: var(--page-padding);
@@ -403,6 +423,31 @@ nav {
 	-moz-user-select: none; /* Firefox */
 	-ms-user-select: none; /* IE10+/Edge */
 	user-select: none; /* Standard */
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-success {
+	color: var(--color-success);
+}
+
+.error-text {
+	color: var(--color-error);
+}
+
+.bold {
+	font-weight: 700;
+}
+
+/*
+ *
+ * Backgrounds
+ *
+ */
+.background-primary {
+	background-color: var(--background-primary);
 }
 
 /*

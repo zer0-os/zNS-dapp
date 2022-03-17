@@ -82,7 +82,12 @@ const PreviewCardContainer: React.FC<PreviewCardContainerProps> = ({
 				description={metadata?.description || ''}
 				disabled={disabled}
 				domain={domain}
-				image={metadata?.image_full || metadata?.image || ''}
+				image={
+					metadata?.animation_url ||
+					metadata?.image_full ||
+					metadata?.image ||
+					''
+				}
 				isLoading={!metadata || domain.length === 0}
 				mvpVersion={mvpVersion}
 				name={metadata?.title || ''}

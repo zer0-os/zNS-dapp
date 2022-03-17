@@ -1,0 +1,54 @@
+.domain-settings-footer {
+	&__container {
+		flex-shrink: 0;
+		padding: 24px;
+		background: radial-gradient(
+			50% 50% at 50% 50%,
+			rgba(0, 0, 0, 0.73) 0%,
+			rgba(0, 0, 0, 0.43) 100%
+		);
+		backdrop-filter: blur(20px);
+		border-bottom-left-radius: 16px;
+		border-bottom-right-radius: 16px;
+	}
+
+	&__label {
+		text-align: center;
+		margin-bottom: 16px;
+
+		label {
+			&.warning {
+				color: var(--color-error);
+
+				&.is_locked_warning {
+					color: var(--color-warning);
+				}
+			}
+			&.success {
+				color: var(--color-success);
+			}
+		}
+	}
+
+	&__buttons {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		button + button {
+			margin-left: 16px;
+		}
+
+		&-icon {
+			margin: 0 12px;
+
+			&.lock--icon {
+				background-color: none;
+
+				&:hover:after {
+					display: none !important;
+				}
+			}
+		}
+	}
+}

@@ -1,15 +1,18 @@
 import { WheelQuantity } from 'containers/flows/MintWheels/types';
 import { BigNumber, ethers } from 'ethers';
-import { WhitelistSimpleSale } from 'types';
+import { ERC20, WhitelistSimpleSale } from 'types';
+import { RPC_URLS } from './connectors';
 import { Maybe } from './types';
 
 const whitelistUriKovan =
-	'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
+	'https://ipfs.io/ipfs/QmeTHvtancDwS2UC4SshQsS89dveLi171pGLc6b1GLxLDM';
+// const whitelistUriKovan =
+// 'https://ipfs.io/ipfs/QmQUDvsZmBAi1Dw1Eo1iS9WmpvMvEC9vJ71MdEk9WsfSXM';
 
 const backupWhitelist =
-	'https://ipfs.io/ipfs/QmUfqAdwAdZ5mar1VHjmn8cXxPJ9hcoXophP2GF7nY5v8S';
+	'https://ipfs.fleek.co/ipfs/QmUVyU4NYiVbAJtQMYjx67bmf9aMTLWrjwn2mYLSWQ22TX';
 const whitelistUriMainnet =
-	'https://d3810nvssqir6b.cloudfront.net/wheels-launch-2-merkleTree.json';
+	'https://d3810nvssqir6b.cloudfront.net/airwilds1whitelist.json';
 
 export interface WheelsWhitelistClaim {
 	index: number;
@@ -75,6 +78,26 @@ export enum SaleStatus {
 	Public,
 }
 
+export const getSaleContractApprovalStatus = async (
+	userAddress: string,
+	saleContract: WhitelistSimpleSale,
+	token: ERC20,
+): Promise<boolean> => {
+	const allowance = await token.allowance(userAddress, saleContract.address);
+	return allowance.gt(ethers.utils.parseEther('1000000'));
+};
+
+export const approveSaleContract = async (
+	saleContract: WhitelistSimpleSale,
+	token: ERC20,
+): Promise<ethers.ContractTransaction> => {
+	const tx = await token.approve(
+		saleContract.address,
+		ethers.constants.MaxUint256,
+	);
+	return tx;
+};
+
 export const getSaleStatus = async (
 	contract: WhitelistSimpleSale,
 ): Promise<SaleStatus> => {
@@ -130,9 +153,7 @@ export const purchaseWheels = async (
 			quantity,
 			claim.index,
 			claim.proof,
-			{
-				value,
-			},
+			{ value },
 		);
 	} else {
 		tx = await contract.purchaseDomains(quantity, { value });
@@ -154,4 +175,12 @@ export const getMaxPurchasesPerUser = async (
 ): Promise<number> => {
 	const max = await contract.currentMaxPurchaseCount();
 	return max.toNumber();
+};
+
+export const getCurrentBlock = async () => {
+	const provider = new ethers.providers.JsonRpcProvider(RPC_URLS[1]);
+
+	const currentBlockNumber = await provider.getBlockNumber();
+	const currentBlock = await provider.getBlock(currentBlockNumber);
+	return currentBlock;
 };

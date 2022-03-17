@@ -1,36 +1,48 @@
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+
+// Library Imports
+import { useOnClickOutside } from 'lib/hooks/useOnClickOutside';
 
 //- Style Imports
 import styles from './OptionDropdown.module.scss';
 
+export type Option = {
+	icon?: string;
+	title: string;
+};
+
 type OptionDropdownProps = {
-	options: string[];
-	onSelect: (selection: string) => void;
+	options: Option[];
+	selected?: Option;
+	onSelect: (selection: Option) => void;
 	children: React.ReactNode;
+	className?: string;
 	drawerStyle?: React.CSSProperties;
+	disableSelection?: boolean;
 };
 
 const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	options,
+	selected,
 	onSelect,
 	children,
+	className,
 	drawerStyle,
+	disableSelection,
 }) => {
 	//////////////////
 	// State & Refs //
 	//////////////////
 
 	const [isOpen, setIsOpen] = useState(false);
-	const [selected, setSelected] = useState(options[0] || '');
-	const wrapperRef = useRef<HTMLUListElement>(null);
+	const wrapperRef = useRef<HTMLDivElement>(null);
 
 	///////////////
 	// Functions //
 	///////////////
 
-	const select = (option: string) => {
-		setSelected(option);
+	const select = (option: Option) => {
 		onSelect(option);
 		close();
 	};
@@ -49,43 +61,29 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 		else open();
 	};
 
-	// Toggles the visibility of the drawer on window click
-	const toggleWindow = (event: Event) => {
-		const t = event.target as HTMLElement;
-		const w = wrapperRef.current;
-		if (!t || !w) return;
-		setIsOpen(w.contains(t));
-	};
-
 	/////////////
 	// Effects //
 	/////////////
 
-	// Adds window click listener when opened, removes it when closed
-	useEffect(() => {
-		if (isOpen) window.addEventListener('click', toggleWindow);
-		else window.removeEventListener('click', toggleWindow);
-		return () => window.removeEventListener('click', toggleWindow);
-	}, [isOpen]);
+	useOnClickOutside(wrapperRef, close);
 
 	return (
-		<div className={styles.Dropdown}>
+		<div className={`${styles.Dropdown} ${className}`} ref={wrapperRef}>
 			<div className={styles.Header} onClick={toggle}>
 				{children}
 			</div>
 			{isOpen && (
-				<ul
-					ref={wrapperRef}
-					style={drawerStyle}
-					className={`${styles.Drawer} blur`}
-				>
-					{options.map((o) => (
+				<ul style={drawerStyle} className={`${styles.Drawer} border-rounded`}>
+					{options.map((o, index) => (
 						<li
-							className={selected === o ? styles.Selected : ''}
+							className={
+								selected === o && !disableSelection ? styles.Selected : ''
+							}
 							onClick={() => select(o)}
-							key={o}
+							key={index}
 						>
-							{o}
+							{o.icon && <img src={o.icon} title={o.title} alt={o.title} />}
+							<span>{o.title}</span>
 						</li>
 					))}
 				</ul>

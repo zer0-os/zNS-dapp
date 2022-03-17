@@ -78,10 +78,15 @@ const getLootPrice = async () => {
 	return usdToLoot;
 };
 
+// Token Price
 export const wildTokenPrice = async () => {
 	return await tokenToUsd('wilder-world');
 };
 
 export const lootTokenPrice = async () => {
 	return await tokenToUsd('LOOT');
+};
+
+export const ethTokenPrice = async () => {
+	return await tokenToUsd('ethereum');
 };

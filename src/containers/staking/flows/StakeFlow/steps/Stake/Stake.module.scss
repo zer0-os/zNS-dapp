@@ -1,0 +1,11 @@
+.Container {
+	> * {
+		&:not(:first-child) {
+			margin-top: 24px;
+		}
+	}
+}
+
+.Connect {
+	width: 100%;
+}

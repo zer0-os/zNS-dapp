@@ -1,31 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // React Imports
 import React, { useState } from 'react';
+
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
-// Library Imports
+
+//- Library Imports
 import { useZnsContracts } from 'lib/contracts';
 import { useApprovals } from 'lib/hooks/useApprovals';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
+import { ethers } from 'ethers';
+
 // Type Imports
 import { Bid, Domain, DomainData } from 'lib/types';
-// Component Imports
-import { DomainTable, Overlay, Spinner } from 'components';
-// Containers Imports
+
+//- Component Imports
+import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
+
+//- Containers Imports
 import { BidList, AcceptBid } from 'containers';
-// Constants
+
+//- Constants
 import {
 	NO_ERROR,
 	FAILED_TO_APPROVE,
 	LOADING_DOMAINS_LABEL,
 } from './constants';
-// Utils
+
+//- Utils
 import { AcceptBidModalData, OwnedDomainTableProps } from './utils';
-// Style Imports
+
+//- Style Imports
 import styles from './OwnedDomainsTable.module.scss';
 
+import { ERC20 } from 'types';
+import useNotification from 'lib/hooks/useNotification';
+
 const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
+	//////////////////
+	// State & Data //
+	//////////////////
+
 	// zAuction Integrations
 	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
 	const znsContracts = useZnsContracts()!;
@@ -40,10 +57,9 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		ownedDomainPollingInterval,
 	);
 	const owned = ownedQuery.data?.domains;
-
-	//////////////////
-	// State & Data //
-	//////////////////
+	const { addNotification } = useNotification();
+	const { acceptBid } = useBidProvider();
+	const wildContract: ERC20 = znsContracts.wildToken;
 
 	// Accepting Bid Data
 	const [acceptingBid, setAcceptingBid] = React.useState<
@@ -54,6 +70,10 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [viewingDomain, setViewingDomain] = React.useState<
 		DomainData | undefined
 	>();
+	const [errorWhileAccepting, setErrorWhileAccepting] = React.useState<
+		string | undefined
+	>();
+	const [statusText, setStatusText] = React.useState<string | undefined>();
 
 	// Loading States
 	const [isTableLoading, setIsTableLoading] = React.useState(true);
@@ -147,7 +167,11 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			)}
 			{viewingDomain !== undefined && (
 				<Overlay onClose={closeDomain} centered open>
-					<BidList bids={viewingDomain.bids} onAccept={accept} />
+					<BidList
+						bids={viewingDomain.bids}
+						onAccept={accept}
+						// isAccepting={isAccepting}
+					/>
 				</Overlay>
 			)}
 		</>
@@ -171,7 +195,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 				ignoreAspectRatios={true}
 				rowButtonText={'View Bids'}
 				onLoad={tableLoaded}
-				onRowButtonClick={viewBid}
+				onButtonClick={viewBid}
 				onRowClick={rowClick}
 				isGridView={isGridView}
 				setIsGridView={(grid: boolean) => setIsGridView(grid)}

@@ -7,9 +7,9 @@ import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 
 //- Providers
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
-import { useMintProvider } from 'lib/providers/MintProvider';
 import { useZnsContracts } from 'lib/contracts';
+import { useStaking } from 'lib/hooks/useStaking';
+import useMint from 'lib/hooks/useMint';
 
 //- Type Imports
 import { ERC20 } from 'types';
@@ -64,8 +64,8 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const lootContract: ERC20 = znsContracts.lootToken;
 
 	// Mint/Staking Hooks
-	const mint = useMintProvider();
-	const staking = useStakingProvider();
+	const { mint } = useMint();
+	const staking = useStaking();
 
 	// @todo refactor into useEffect so we don't have to calculate each render
 	let isOwner = account && account.toLowerCase() === domainOwner.toLowerCase();
@@ -193,7 +193,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		if (!tokenInformation) return setIsMintLoading(false);
 		setStatusText(`Minting domain`);
 
-		const hasSubmitMint = mint.mint(
+		const hasSubmitMint = await mint(
 			{
 				parent: domainId,
 				owner: account,
@@ -296,7 +296,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	////////////
 
 	return (
-		<div className={`${styles.MintNewNFT} blur border-rounded border-primary`}>
+		<div
+			className={`${styles.MintNewNFT} border-rounded border-primary background-primary`}
+		>
 			{isMintLoading && <div className={styles.Blocker}></div>}
 			{/* // TODO: Pull each section out into a seperate component */}
 			<div className={styles.Header}>

@@ -8,9 +8,14 @@ type IconButtonProps = {
 	iconUri: string;
 	style?: React.CSSProperties;
 	toggled?: boolean;
-	onClick: () => void;
+	onClick?: () => void;
 	alt?: string;
 	disabled?: boolean;
+};
+
+export const TEST_ID = {
+	CONTAINER: 'icon-button-container',
+	CONTENT: 'icon-button-image',
 };
 
 const IconButton: React.FC<IconButtonProps> = ({
@@ -40,8 +45,9 @@ const IconButton: React.FC<IconButtonProps> = ({
 			className={`${styles.iconButton} ${
 				(toggleable && selected) || toggled ? styles.selected : ''
 			} ${disabled ? styles.Disabled : ''} ${className ? className : ''}`}
+			data-testid={TEST_ID.CONTAINER}
 		>
-			<img alt={altText} src={iconUri} />
+			<img alt={altText} src={iconUri} data-testid={TEST_ID.CONTENT} />
 		</button>
 	);
 };

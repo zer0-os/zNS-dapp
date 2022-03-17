@@ -3,27 +3,41 @@
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
+export type MaybeUndefined<T> = T | undefined;
 
 export interface Account {
 	id: string;
 }
 
+export interface DomainMin {
+	id: string;
+	name: string;
+}
+
 export interface Domain {
 	id: string;
 	name: string;
-	parent: string;
+	parent: DomainMin;
 	owner: Account;
 	minter: Account;
 	metadata: string;
+	isLocked: boolean;
+	lockedBy: Account;
 }
 
 // We have two different types of Metadata
 // because we changed Schema. This needs to be
 // handled in a better way
 interface Meta {
-	description: string;
+	[key: string]: any | undefined;
 	image: string; // One of: Image, Video, 3d Model
+	animation_url?: string;
+	stakingRequests?: 'disabled' | 'enabled';
+	isBiddable?: boolean;
+	gridViewByDefault?: boolean;
+	customDomainHeader?: boolean;
 	previewImage?: string; // One of: Image, Video
+	customDomainHeaderValue?: string;
 	image_full?: string;
 	attributes?: Attribute[];
 }
@@ -72,6 +86,7 @@ export interface DisplayDomain extends Domain {
 	description: Maybe<string>;
 	title: Maybe<string>;
 	image_full?: Maybe<string>;
+	animation_url?: Maybe<string>;
 }
 
 export interface DisplayParentDomain extends DisplayDomain {
@@ -129,7 +144,10 @@ export interface DisplayDomainRequestAndContents
 export const DefaultDomain: Domain = {
 	id: '',
 	name: '',
-	parent: '',
+	parent: {
+		id: '',
+		name: '',
+	},
 	owner: {
 		id: '',
 	},
@@ -137,6 +155,10 @@ export const DefaultDomain: Domain = {
 		id: '',
 	},
 	metadata: '',
+	isLocked: false,
+	lockedBy: {
+		id: '',
+	},
 };
 
 // @zachary change these types
@@ -194,4 +216,22 @@ export interface minterData {
 
 export interface transfersData {
 	domainTransferreds?: transferDto[];
+}
+
+export interface TransferSubmitParams {
+	name: string;
+	domainId: string;
+	domainName: string;
+	ownerId: string;
+	image: string;
+	creatorId: string;
+	walletAddress: string;
+	onClose: () => void;
+}
+
+export interface StakingRequest {
+	requestor: string;
+	stakeAmount: string;
+	stakeCurrency: string;
+	nft: NftParams;
 }

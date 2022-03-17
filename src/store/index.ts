@@ -19,7 +19,7 @@ const rootReducer = createRootReducer(history);
 
 // Middleweares
 const middlewares = [routerMiddleware(history), sagaMiddleware];
-if (process.env.NODE_ENV === 'development') {
+if (process.env.REACT_APP_REDUX_LOG_ENABLED || false) {
 	middlewares.push(logger);
 }
 

@@ -6,7 +6,7 @@ import {
 	DomainMintEvent,
 	DomainSaleEvent,
 	DomainTransferEvent,
-} from '@zero-tech/zns-sdk';
+} from '@zero-tech/zns-sdk/lib/types';
 import React from 'react';
 import { useChainSelector } from './ChainSelectorProvider';
 
@@ -18,13 +18,19 @@ export function useZnsSdk() {
 		switch (chainSelector.selectedChain) {
 			case 1: {
 				return zns.createInstance(
-					zns.configurations.mainnetConfiguration(web3Context.library),
+					zns.configuration.mainnetConfiguration(web3Context.library),
+				);
+			}
+
+			case 4: {
+				return zns.createInstance(
+					zns.configuration.rinkebyConfiguration(web3Context.library),
 				);
 			}
 
 			case 42: {
 				return zns.createInstance(
-					zns.configurations.kovanConfiguration(web3Context.library),
+					zns.configuration.kovanConfiguration(web3Context.library),
 				);
 			}
 

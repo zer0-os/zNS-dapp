@@ -4,6 +4,7 @@ import { MintWheelsBanner, Overlay, Countdown } from 'components';
 import { MintWheels } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
+import useAsyncEffect from 'use-async-effect';
 
 const WheelsRaffleContainer = () => {
 	//////////////////
@@ -11,10 +12,18 @@ const WheelsRaffleContainer = () => {
 	//////////////////
 
 	const currentTime = new Date().getTime();
+
+	// Temporary values
+	// const RAFFLE_START_TIME = currentTime + 10000;
+	// const RAFFLE_END_TIME = currentTime + 10000 * 3;
+	// const SALE_START_TIME = currentTime + 10000;
+	// const SALE_START_BLOCK = 13719840;
+
 	// Hardcoded event times
-	const RAFFLE_START_TIME = 1634408000000;
-	const RAFFLE_END_TIME = 1635303609000;
-	const SALE_START_TIME = 1635469200000;
+	// const RAFFLE_START_TIME = 1645819200000;
+	const RAFFLE_START_TIME = currentTime - 1000;
+	const RAFFLE_END_TIME = 1646078400000;
+	const SALE_START_TIME = 1648234800000; //1640181600000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -24,9 +33,10 @@ const WheelsRaffleContainer = () => {
 	const [hasRaffleEnded, setHasRaffleEnded] = useState<boolean>(
 		currentTime >= RAFFLE_END_TIME,
 	);
-	const [hasSaleStarted, setHasSaleStarted] = useState<boolean>(
-		currentTime >= SALE_START_TIME,
-	);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [hasSaleStarted, setHasSaleStarted] = useState<boolean>(false);
+	const [hasSaleCountDownEnded, setHasSaleCountDownEnded] =
+		useState<boolean>(false);
 
 	const isMobile =
 		/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i.test(
@@ -51,7 +61,8 @@ const WheelsRaffleContainer = () => {
 	};
 
 	const onFinishSaleStartCountdown = () => {
-		setHasSaleStarted(true);
+		setHasSaleCountDownEnded(true);
+		// setHasSaleStarted(currentBlock >= SALE_START_BLOCK);
 	};
 
 	const handleResize = () => {
@@ -63,7 +74,7 @@ const WheelsRaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/the-deets-wilder-wheels-whitelist-public-sale/',
+				'https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/',
 				'_blank',
 			);
 		}
@@ -81,6 +92,16 @@ const WheelsRaffleContainer = () => {
 		};
 	}, []);
 
+	useAsyncEffect(async () => {
+		const interval = setInterval(async () => {
+			setHasSaleStarted(Date.now() >= SALE_START_TIME);
+			if (Date.now() >= SALE_START_TIME) {
+				clearInterval(interval);
+			}
+		}, 13000);
+		return () => clearInterval(interval);
+	}, []);
+
 	///////////////
 	// Fragments //
 	///////////////
@@ -89,7 +110,7 @@ const WheelsRaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Whitelist sale starting in{' '}
+					Presale Mint Period Coming Soon{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -101,7 +122,7 @@ const WheelsRaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Join the whitelist raffle. Raffle closes in{' '}
+					Community Presale Mintlist Signup Period Ending in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
@@ -113,7 +134,7 @@ const WheelsRaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Wheels raffle - starting in{' '}
+					Get notified about the Wilder Pets raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -129,7 +150,7 @@ const WheelsRaffleContainer = () => {
 		if (!hasRaffleStarted) {
 			return 'Get Notified';
 		} else if (!hasRaffleEnded) {
-			return 'Enter Raffle';
+			return 'Sign up for Pets Community Presale Mintlist';
 		} else {
 			return 'Sale Info';
 		}
@@ -163,7 +184,7 @@ const WheelsRaffleContainer = () => {
 		} else if (!hasRaffleEnded) {
 			return (
 				<Overlay open centered onClose={closeModal}>
-					<RaffleRegistration />
+					<RaffleRegistration closeOverlay={closeModal} />
 				</Overlay>
 			);
 		}
@@ -173,16 +194,16 @@ const WheelsRaffleContainer = () => {
 	// Render //
 	////////////
 
-	if (!hasSaleStarted) {
+	if (!hasSaleCountDownEnded) {
 		return (
 			<>
 				{isModalOpen && overlay()}
-				<div style={{ position: 'relative', marginBottom: 16 }}>
+				<div>
 					<MintWheelsBanner
 						title={
 							hasRaffleEnded
-								? 'Your ride for the Metaverse awaits'
-								: 'Get Early Access to Wilder Wheels'
+								? 'Community Presale Mintlist Signup Period Complete'
+								: 'Your Metaverse Companion Awaits'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

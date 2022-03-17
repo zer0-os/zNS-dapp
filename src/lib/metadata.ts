@@ -27,6 +27,14 @@ export async function getMetadata(
 			description: data.description,
 			image: data.image,
 			image_full: data.image_full,
+			previewImage: data.previewImage,
+			animation_url: data.animation_url,
+			stakingRequests: data.stakingRequests,
+			isBiddable: data.isBiddable === undefined || Boolean(data.isBiddable),
+			isMintable: Boolean(data.isMintable),
+			gridViewByDefault: Boolean(data.gridViewByDefault),
+			customDomainHeader: Boolean(data.customDomainHeader),
+			customDomainHeaderValue: data.customDomainHeaderValue,
 		} as Metadata;
 
 		if (!metadata.title || !metadata.description || !metadata.image) {

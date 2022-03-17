@@ -4,12 +4,20 @@ import { Column, useTable, useGlobalFilter, useFilters } from 'react-table';
 import { Spring, animated } from 'react-spring';
 
 //- Component Imports
-import { Artwork, NFTCard, SearchBar, Overlay, IconButton } from 'components';
+import {
+	Artwork,
+	NFTCard,
+	SearchBar,
+	Overlay,
+	IconButton,
+	Tooltip,
+} from 'components';
 import { BidButton, MakeABid } from 'containers';
 import HighestBid from './components/HighestBid';
 import NumBids from './components/NumBids';
 import NFTCardActions from './components/NFTCardActions';
 import ViewBids from './components/ViewBids';
+import { DomainSettings as MyDomainSettingsModal } from '../../../containers/other/NFTView/elements';
 
 //- Library Imports
 import 'lib/react-table-config.d.ts';
@@ -21,6 +29,7 @@ import styles from './DomainTable.module.scss';
 //- Asset Imports
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import settings from './assets/settings.png';
 
 // TODO: Need some proper type definitions for an array of domains
 type DomainTableProps = {
@@ -35,7 +44,7 @@ type DomainTableProps = {
 	isGridView?: boolean;
 	isRootDomain: boolean;
 	onLoad?: () => void;
-	onRowButtonClick?: (domain: DomainData) => void;
+	onButtonClick?: (domain: DomainData) => void;
 	onRowClick?: (domain: Domain) => void;
 	rowButtonText?: string;
 	// TODO: Find a better way to persist grid view than with props
@@ -47,6 +56,16 @@ type DomainTableProps = {
 enum Modals {
 	Bid,
 }
+
+type DomainSettingsModal = {
+	isOpen: boolean;
+	domainId?: string;
+};
+
+const DEFAUL_DOMAIN_SETTINGS_MODAL: DomainSettingsModal = {
+	isOpen: false,
+	domainId: undefined,
+};
 
 const DomainTable: React.FC<DomainTableProps> = ({
 	className,
@@ -60,7 +79,7 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	isGridView,
 	isRootDomain,
 	onLoad,
-	onRowButtonClick,
+	onButtonClick,
 	onRowClick,
 	rowButtonText,
 	setIsGridView,
@@ -74,6 +93,8 @@ const DomainTable: React.FC<DomainTableProps> = ({
 	const [searchQuery, setSearchQuery] = useState('');
 
 	const [modal, setModal] = useState<Modals | undefined>();
+	const [domainSettingsModal, setDomainSettingsModal] =
+		useState<DomainSettingsModal>(DEFAUL_DOMAIN_SETTINGS_MODAL);
 
 	// Data state
 	const [biddingOn, setBiddingOn] = useState<Domain | undefined>();
@@ -191,7 +212,11 @@ const DomainTable: React.FC<DomainTableProps> = ({
 				accessor: ({ name }) => name,
 				Cell: (row: any) => (
 					<Artwork
-						domain={row.row.original.name}
+						domain={
+							row.row.original.name.startsWith('wilder.')
+								? row.row.original.name.split('wilder.')[1]
+								: row.row.original.name
+						}
 						disableInteraction
 						metadataUrl={row.row.original.metadata}
 						id={row.row.original.id}
@@ -238,15 +263,37 @@ const DomainTable: React.FC<DomainTableProps> = ({
 									Make A Bid
 								</BidButton>
 							)}
-							{!isGlobalTable && onRowButtonClick && (
+							{!isGlobalTable && onButtonClick && (
 								<ViewBids
 									style={{ marginLeft: 'auto', textTransform: 'uppercase' }}
 									domain={domain}
-									onClick={onRowButtonClick}
+									onClick={onButtonClick}
 									filterOwnBids={filterOwnBids}
 								/>
 							)}
 						</>
+					);
+				},
+			},
+			{
+				id: 'settings',
+				accessor: (domain: Domain) => {
+					return (
+						<Tooltip text="My Domain Settings">
+							<button
+								className={styles.DomainSettingsButton}
+								onClick={(e) => {
+									e.stopPropagation();
+
+									setDomainSettingsModal({
+										isOpen: true,
+										domainId: domain.id,
+									});
+								}}
+							>
+								<img src={settings} alt="domain settings" />
+							</button>
+						</Tooltip>
 					);
 				},
 			},
@@ -293,6 +340,13 @@ const DomainTable: React.FC<DomainTableProps> = ({
 						<MakeABid domain={biddingOn!} onBid={onBid} />
 					</Overlay>
 				)}
+
+				{domainSettingsModal.isOpen && domainSettingsModal.domainId && (
+					<MyDomainSettingsModal
+						domainId={domainSettingsModal.domainId}
+						onClose={() => setDomainSettingsModal(DEFAUL_DOMAIN_SETTINGS_MODAL)}
+					/>
+				)}
 			</>
 		);
 	};
@@ -301,12 +355,9 @@ const DomainTable: React.FC<DomainTableProps> = ({
 		return (
 			<NFTCardActions
 				domain={domain}
-				disableButton={
-					!userId || userId?.toLowerCase() === domain.owner.id.toLowerCase()
-				}
-				hideButton={!isGlobalTable}
-				onButtonClick={buttonClick}
+				onButtonClick={onButtonClick}
 				onLoad={checkHeight}
+				filterOwnBids={filterOwnBids}
 			/>
 		);
 	};

@@ -2,12 +2,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './GenericTable.module.scss';
 import { useInView } from 'react-intersection-observer';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import { usePropsState } from 'lib/hooks/usePropsState';
 import { IconButton, SearchBar, Spinner, TextButton } from 'components';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 
 type GenericTableHeader = {
-	label: string;
+	label: string | React.ReactNode;
 	accessor?: string;
 	className?: string;
 };
@@ -16,18 +18,24 @@ const GenericTable = (props: any) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
+	const { domainMetadata } = useCurrentDomain();
+	const isGridViewByDefault = Boolean(domainMetadata?.gridViewByDefault);
 
 	// chunk defines which row we're up to when infinite scroll is enabled
 	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows
 	const [chunk, setChunk] = useState<number>(1);
 
-	const [isGridView, setIsGridView] = useState<boolean>(false);
+	const [isGridView, setIsGridView] =
+		usePropsState<boolean>(isGridViewByDefault);
 	const [searchQuery, setSearchQuery] = useState<string>();
 
 	const contentRef = useRef<HTMLDivElement>(null);
 
 	const rawData = props.data;
 	const chunkSize = isGridView ? 6 : 12;
+
+	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
+	const shouldShowSearchBar = !props.notSearchable;
 
 	// Handler for infinite scroll trigger
 	const {
@@ -174,7 +182,7 @@ const GenericTable = (props: any) => {
 
 	// Grid View container & cards
 	const GridView = useMemo(() => {
-		if (!rawData) {
+		if (!rawData || !props.gridComponent) {
 			return <></>;
 		}
 		const data = props.infiniteScroll
@@ -214,27 +222,33 @@ const GenericTable = (props: any) => {
 	return (
 		<div className={styles.Container} style={props.style}>
 			<div ref={contentRef} className={styles.Content}>
-				<div className={styles.Controls}>
-					<SearchBar
-						placeholder="Search by domain name"
-						onChange={onSearchBarUpdate}
-						style={{ width: '100%', marginRight: 16 }}
-					/>
-					<div className={styles.Buttons}>
-						<IconButton
-							onClick={() => setIsGridView(false)}
-							toggled={!isGridView}
-							iconUri={list}
-							style={{ height: 32, width: 32 }}
-						/>
-						<IconButton
-							onClick={() => setIsGridView(true)}
-							toggled={isGridView}
-							iconUri={grid}
-							style={{ height: 32, width: 32 }}
-						/>
+				{(shouldShowSearchBar || shouldShowViewToggle) && (
+					<div className={styles.Controls}>
+						{shouldShowSearchBar && (
+							<SearchBar
+								placeholder="Search by domain name"
+								onChange={onSearchBarUpdate}
+								style={{ width: '100%', marginRight: 16 }}
+							/>
+						)}
+						{shouldShowViewToggle && (
+							<div className={styles.Buttons}>
+								<IconButton
+									onClick={() => setIsGridView(false)}
+									toggled={!isGridView}
+									iconUri={list}
+									style={{ height: 32, width: 32 }}
+								/>
+								<IconButton
+									onClick={() => setIsGridView(true)}
+									toggled={isGridView}
+									iconUri={grid}
+									style={{ height: 32, width: 32 }}
+								/>
+							</div>
+						)}
 					</div>
-				</div>
+				)}
 				{!props.isLoading && (isGridView ? GridView : ListView)}
 				{props.isLoading && (
 					<div className={styles.Loading}>

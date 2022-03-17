@@ -14,6 +14,7 @@ type FutureButtonProps = {
 	glow?: boolean;
 	loading?: boolean;
 	alt?: boolean;
+	disabled?: boolean;
 };
 
 const cx = classNames.bind(styles);
@@ -34,6 +35,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	glow,
 	loading,
 	alt,
+	disabled = false,
 }) => {
 	const [hasHovered, setHovered] = useState(false);
 	const [isSelected, setSelected] = useState(false);
@@ -44,7 +46,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	};
 
 	const handleClick = (event: any) => {
-		if (loading) return;
+		if (loading || disabled) return;
 		if (onClick) onClick(event);
 		if (toggleable) setSelected(!isSelected);
 	};
@@ -56,6 +58,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 		selected: isSelected,
 		Loading: loading,
 		Alt: alt,
+		Disabled: disabled,
 	});
 
 	const washClasses = cx({
@@ -70,6 +73,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 			onMouseUp={handleClick}
 			style={style}
 			data-testid={TEST_ID.CONTAINER}
+			disabled={disabled}
 		>
 			<div className={styles.Content}>
 				{!loading && children}

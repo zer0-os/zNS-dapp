@@ -10,10 +10,10 @@
 
 	width: calc(100% + 58px);
 
-	background: var(--color-background);
-	box-shadow: 0px 5px 20px rgba(60, 161, 255, 0.7);
+	background: var(--color-purple-dark);
+	border: 1px solid #50207b;
+	box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
 
-	border-radius: var(--box-radius);
 	transform: translateX(-50%);
 
 	z-index: 10;
@@ -22,32 +22,24 @@
 
 .Drawer li {
 	position: relative;
+	display: flex;
+    align-items: center;
 	padding: 16px 32px;
 	cursor: pointer;
-}
 
-.Drawer li::before {
-	content: ' ';
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 85%;
-	height: 5;
-	background: red;
-	z-index: -1;
-	box-shadow: 0px 0px 20px 20px rgba(60, 161, 255, 0.8);
+	img {
+		width: 24px;
+		height: 24px;
+		object-fit: contain;
+	}
 
-	opacity: 0;
-	transition: opacity 0.1s ease-in-out;
-}
+	transition: text-shadow var(--animation-time-short) ease-in-out,
+		font-weight var(--animation-time-short) ease-in-out;
 
-.Drawer li:hover {
-	background: rgba(60, 161, 255, 0.05);
-}
-
-.Drawer li:hover::before {
-	opacity: 1;
+	&:hover {
+		text-shadow: var(--glow-text-white);
+		font-weight: 700;
+	}
 }
 
 .Selected {

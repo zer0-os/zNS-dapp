@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 import { FutureButton, Image } from 'components';
 
 //- Hook Imports
-import { useMintProvider } from 'lib/providers/MintProvider';
+import useMint from 'lib/hooks/useMint';
 
 //- Style Imports
 import styles from './MintPreview.module.scss';
 import { Maybe, NftStatusCard } from 'lib/types';
 import { zNAToLink } from 'lib/utils';
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
+import { useStaking } from 'lib/hooks/useStaking';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
@@ -28,8 +28,8 @@ const MintPreview = (props: MintPreviewProps) => {
 	const networkType = chainIdToNetworkType(chainId);
 	const baseEtherscanUri = getEtherscanUri(networkType);
 
-	const mintProvider = useMintProvider();
-	const stakingProvider = useStakingProvider();
+	const { minting, minted } = useMint();
+	const { requesting, requested } = useStaking();
 
 	const statusCard = (
 		nft: NftStatusCard,
@@ -128,40 +128,31 @@ const MintPreview = (props: MintPreviewProps) => {
 	};
 
 	let mintingSection: Maybe<React.ReactFragment>;
-	if (mintProvider.minting.length > 0 || mintProvider.minted.length > 0) {
+	if (minting.length > 0 || minted.length > 0) {
 		mintingSection = (
 			<>
 				<h4 className="glow-text-white">Minting</h4>
-				{mintProvider.minting.map((n: NftStatusCard) =>
-					mintingStatusCard(n, false),
-				)}
-				{mintProvider.minted.map((n: NftStatusCard) =>
-					mintingStatusCard(n, true),
-				)}
+				{minting.map((n: NftStatusCard) => mintingStatusCard(n, false))}
+				{minted.map((n: NftStatusCard) => mintingStatusCard(n, true))}
 			</>
 		);
 	}
 
 	let requestSection: Maybe<React.ReactFragment>;
-	if (
-		stakingProvider.requesting.length > 0 ||
-		stakingProvider.requested.length > 0
-	) {
+	if (requesting.length > 0 || requested.length > 0) {
 		requestSection = (
 			<>
 				<h4 className="glow-text-white">Requests</h4>
-				{stakingProvider.requesting.map((n: NftStatusCard) =>
-					requestingStatusCard(n, false),
-				)}
-				{stakingProvider.requested.map((n: NftStatusCard) =>
-					requestingStatusCard(n, true),
-				)}
+				{requesting.map((n: NftStatusCard) => requestingStatusCard(n, false))}
+				{requested.map((n: NftStatusCard) => requestingStatusCard(n, true))}
 			</>
 		);
 	}
 
 	return (
-		<ul className={`${styles.MintPreview} border-primary border-rounded blur`}>
+		<ul
+			className={`${styles.MintPreview} border-primary border-rounded background-primary`}
+		>
 			{mintingSection}
 			{requestSection}
 		</ul>

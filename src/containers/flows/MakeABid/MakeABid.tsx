@@ -6,7 +6,7 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 //- Library Imports
 import { Domain, Metadata, Bid, Maybe } from 'lib/types';
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 import { getMetadata } from 'lib/metadata';
 import { toFiat } from 'lib/currency';
 import useCurrency from 'lib/hooks/useCurrency';
@@ -326,7 +326,12 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			<NFTMedia
 				alt="Bid NFT preview"
 				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
-				ipfsUrl={domainMetadata?.image_full || domainMetadata?.image || ''}
+				ipfsUrl={
+					domainMetadata?.animation_url ||
+					domainMetadata?.image_full ||
+					domainMetadata?.image ||
+					''
+				}
 				size="small"
 			/>
 		</div>
@@ -612,7 +617,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	);
 
 	return (
-		<div className={`${styles.Container} border-primary border-rounded blur`}>
+		<div
+			className={`${styles.Container} border-primary border-rounded background-primary`}
+		>
 			{header()}
 			<StepBar
 				step={step + 1}

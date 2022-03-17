@@ -10,6 +10,7 @@ import React, { useRef, useState } from 'react';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useAsyncEffect } from 'use-async-effect';
 import BidProvider, { useBid } from './BidProvider';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 
 // Component Imports
 import SubdomainTableRow from './SubdomainTableRow';
@@ -18,10 +19,9 @@ import { GenericTable, Overlay } from 'components';
 import { MakeABid } from 'containers';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DisplayDomain } from 'lib/types';
-import { DomainMetrics } from '@zero-tech/zns-sdk';
+import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 
 type SubdomainTableProps = {
-	domainName: string;
 	isNftView?: boolean;
 	style?: React.CSSProperties;
 };
@@ -33,8 +33,15 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 
 	// Domain hook data
 	const { domain, loading } = useCurrentDomain();
-
 	const { domain: biddingOn, close, bidPlaced } = useBid();
+	const domainMetadata = useDomainMetadata(domain?.metadata);
+	const isCustomDomainHeader = domainMetadata?.customDomainHeader;
+	const customDomainHeaderValue = domainMetadata?.customDomainHeaderValue;
+
+	// Set domain header - default or custom
+	const domainHeader = isCustomDomainHeader
+		? customDomainHeaderValue
+		: 'Domain';
 
 	const [areDomainMetricsLoading, setAreDomainMetricsLoading] = useState(false);
 	const [data, setData] = useState<
@@ -114,7 +121,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			className: '',
 		},
 		{
-			label: 'Domain',
+			label: domainHeader,
 			accessor: '',
 			className: 'domain',
 		},
