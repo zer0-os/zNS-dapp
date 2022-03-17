@@ -34,7 +34,7 @@ const TransferPreview = () => {
 					<h3 className="glow-text-white">{nft.name}</h3>
 
 					<Link className={styles.Link} to={`${nft.domainName}`}>
-						0://{nft.domainName.substring(1)}
+						0://{nft.domainName}
 					</Link>
 
 					<p>{MESSAGES.TRANSFERRING_TO}</p>

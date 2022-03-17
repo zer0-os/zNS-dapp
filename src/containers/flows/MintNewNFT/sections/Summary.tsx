@@ -1,5 +1,5 @@
 //- React Imports
-import React from 'react';
+import React, { useMemo } from 'react';
 
 //- Type Imports
 import {
@@ -42,9 +42,13 @@ const Summary: React.FC<SummaryProps> = ({
 	domain,
 	errorText,
 }) => {
-	let parentDomain;
-	if (domain.substring(1).length > 0) parentDomain = domain.substring(1) + '.';
-	else parentDomain = domain.substring(1);
+	const parentDomain = useMemo(() => {
+		if (domain.length > 0) {
+			return domain + '.';
+		}
+
+		return domain;
+	}, [domain]);
 
 	if (!token) return <></>;
 
@@ -82,7 +86,7 @@ const Summary: React.FC<SummaryProps> = ({
 							<div className={styles.Icon}>
 								<Image alt="address icon" src={addressIcon} />
 							</div>
-							0://wilder.{parentDomain}
+							0://{parentDomain}
 							{token.domain}
 						</li>
 						<li>
