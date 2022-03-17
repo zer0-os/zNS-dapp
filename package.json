@@ -39,7 +39,7 @@
 		"@web3-react/walletlink-connector": "^6.1.9",
 		"@zero-tech/zauction-sdk": "0.0.38",
 		"@zero-tech/zfi-sdk": "0.1.16",
-		"@zero-tech/zns-sdk": "0.1.7",
+		"@zero-tech/zns-sdk": "^0.1.10",
 		"apollo": "^2.32.5",
 		"autosize": "^5.0.1",
 		"big-integer": "^1.6.48",

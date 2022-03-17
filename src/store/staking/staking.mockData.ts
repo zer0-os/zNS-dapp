@@ -27,7 +27,10 @@ export const DOMAIN_REQUEST_AND_CONTENTS_1: DomainRequestAndContents = {
 		parent: {
 			id: '0x810270aba21bdfd45e997cb16823a017be76daf4822529dce30ee7ea03d58e1c',
 			name: 'parent domain name 1',
-			parent: '0x8123a9b1bdfd45e997cb16823a017be76daf4822529dce30ee7ea03d928d',
+			parent: {
+				id: '0x8123a9b1bdfd45e997cb16823a017be76daf4822529dce30ee7ea03d928d',
+				name: 'parent 1',
+			},
 			owner: {
 				id: '0x0ddda1dd73c063af0a8d4df0cdd2a6818685f9ce',
 			},
@@ -36,6 +39,10 @@ export const DOMAIN_REQUEST_AND_CONTENTS_1: DomainRequestAndContents = {
 			},
 			metadata:
 				'https://ipfs.fleek.co/ipfs/QmevCu3hPcBB3XydNm5Msc7k1PVQiCqfk2g26h5Msvy59x',
+			isLocked: true,
+			lockedBy: {
+				id: '0x0ddda1dd73c063af0a8d4df0cdd2a6818685f9ce',
+			},
 		},
 		offeredAmount: '500',
 		requestUri:
@@ -70,7 +77,10 @@ export const DOMAIN_REQUEST_AND_CONTENTS_2: DomainRequestAndContents = {
 		parent: {
 			id: '0x810270aba21bdfd45e997cb16823a017be76daf4822529dce30ee7ea03d58e1c',
 			name: 'parent domain name 2',
-			parent: '0x8123a9b1bdfd45e997cb16823a017be76daf4822529dce30ee7ea03d928d',
+			parent: {
+				id: '0x8123a9b1bdfd45e997cb16823a017be76daf4822529dce30ee7ea03d928d',
+				name: 'parent 2',
+			},
 			owner: {
 				id: '0x0ddda1dd73c063af0a8d4df0cdd2a6818685f9ce',
 			},
@@ -79,6 +89,10 @@ export const DOMAIN_REQUEST_AND_CONTENTS_2: DomainRequestAndContents = {
 			},
 			metadata:
 				'https://ipfs.fleek.co/ipfs/QmevCu3hPcBB3XydNm5Msc7k1PVQiCqfk2g26h5Msvy59x',
+			isLocked: true,
+			lockedBy: {
+				id: '0x0ddda1dd73c063af0a8d4df0cdd2a6818685f9ce',
+			},
 		},
 		offeredAmount: '500',
 		requestUri:

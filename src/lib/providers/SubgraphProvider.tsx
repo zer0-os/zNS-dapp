@@ -42,7 +42,17 @@ export const SubgraphProvider: React.FC<SubgraphContextProviderType> = ({
 	const apolloClient = React.useMemo(() => {
 		return new ApolloClient({
 			uri: chainIdToSubgraph(chainSelector.selectedChain),
-			cache: new InMemoryCache(),
+			cache: new InMemoryCache({
+				typePolicies: {
+					Query: {
+						fields: {
+							domains: {
+								merge: false,
+							},
+						},
+					},
+				},
+			}),
 		});
 	}, [chainSelector.selectedChain]);
 

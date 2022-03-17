@@ -62,7 +62,12 @@ const PageContainer: FC = ({ children }) => {
 	}, [chainId]);
 
 	//- Domain Data
-	const { domain: znsDomain, loading, refetch } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		domainMetadata,
+		loading,
+		refetch,
+	} = useCurrentDomain();
 
 	const { isSearching } = useNavbar();
 
@@ -232,6 +237,7 @@ const PageContainer: FC = ({ children }) => {
 				<Header
 					pageWidth={pageWidth}
 					znsDomain={znsDomain}
+					domainMetadata={domainMetadata}
 					account={account}
 					openModal={openModal}
 				/>

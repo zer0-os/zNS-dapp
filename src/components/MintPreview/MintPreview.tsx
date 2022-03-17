@@ -150,7 +150,9 @@ const MintPreview = (props: MintPreviewProps) => {
 	}
 
 	return (
-		<ul className={`${styles.MintPreview} border-primary border-rounded blur`}>
+		<ul
+			className={`${styles.MintPreview} border-primary border-rounded background-primary`}
+		>
 			{mintingSection}
 			{requestSection}
 		</ul>
