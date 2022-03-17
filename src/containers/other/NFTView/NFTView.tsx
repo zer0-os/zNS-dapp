@@ -49,6 +49,7 @@ import styles from './NFTView.module.scss';
 import copyIcon from './assets/copy-icon.svg';
 import settingsIcon from './assets/settings.svg';
 import dollarSignIcon from './assets/dollar-sign.svg';
+import transferOwnershipIcon from './assets/transfer.svg';
 
 //- Constants Imports
 import { MORE_ACTION_KEY } from './NFTView.constants';
@@ -57,6 +58,10 @@ const MORE_ACTIONS = [
 	{
 		icon: settingsIcon,
 		title: MORE_ACTION_KEY.MY_DOMAIN_SETTINGS,
+	},
+	{
+		icon: transferOwnershipIcon,
+		title: MORE_ACTION_KEY.TRANSFER_OWNERSHIP,
 	},
 	{
 		icon: dollarSignIcon,
@@ -363,7 +368,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 		if (isOwnedByMe) {
 			// only show my domain settings action for now
-			return [MORE_ACTIONS[0]];
+			return MORE_ACTIONS.slice(0, 2);
 		}
 
 		return [];
@@ -621,6 +626,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const handleSelectMoreOption = (option: Option) => {
 		if (option.title === MORE_ACTION_KEY.MY_DOMAIN_SETTINGS) {
 			setIsDomainSettingsOpen(true);
+		} else if (option.title === MORE_ACTION_KEY.TRANSFER_OWNERSHIP) {
+			onTransfer();
 		}
 	};
 
