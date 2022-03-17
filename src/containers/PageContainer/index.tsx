@@ -1,5 +1,5 @@
-import React, { FC, useMemo, useState, useEffect, useCallback } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React, { FC, useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
@@ -77,9 +77,7 @@ const PageContainer: FC = ({ children }) => {
 
 	//- Browser Navigation State
 	const history = useHistory();
-	const location = useLocation();
 	const globalDomain = useCurrentDomain();
-	const domain = useMemo(() => location.pathname, [location.pathname]);
 
 	// Force to go back to home if invalid domain
 	useEffect(() => {
@@ -184,7 +182,6 @@ const PageContainer: FC = ({ children }) => {
 	/////////////////////
 	// React Fragments //
 	/////////////////////
-
 	const modals = () => (
 		<>
 			{/* Overlays */}
@@ -200,7 +197,7 @@ const PageContainer: FC = ({ children }) => {
 				<Overlay open onClose={closeModal}>
 					<MintNewNFT
 						onMint={closeModal}
-						domainName={domain}
+						domainName={znsDomain?.name || ''}
 						domainId={znsDomain ? znsDomain.id : ''}
 						domainOwner={znsDomain ? znsDomain.owner.id : ''}
 						subdomains={
