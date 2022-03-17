@@ -2,7 +2,7 @@
 // React Imports
 import React, { useEffect, useState } from 'react';
 // Library Imports
-import { useBidProvider } from 'lib/providers/BidProvider';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
 import { toFiat } from 'lib/currency';
 import { getMetadata } from 'lib/metadata';
 import useCurrency from 'lib/hooks/useCurrency';
