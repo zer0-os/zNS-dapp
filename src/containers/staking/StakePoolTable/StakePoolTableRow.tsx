@@ -20,29 +20,31 @@ const StakePoolTableRow = (props: any) => {
 	const apy = pool.metrics.apy;
 	const tvl = pool.metrics.tvl.valueOfTokensUSD;
 
-	const getStake = async (id: string) => {
-		setTotalStake(undefined);
-		try {
-			const { userValueLocked, userValueUnlocked } =
-				await pool.instance.userValueStaked(id);
-			setTotalStake(userValueUnlocked.add(userValueLocked));
-		} catch (e: any) {
+	/**
+	 * Gets user's stake and assigns it to state variables
+	 * @returns void
+	 */
+	const getStake = () => {
+		if (!account) {
 			setTotalStake(ethers.BigNumber.from(0));
-			console.error(e);
+			return;
 		}
+		setTotalStake(undefined);
+		pool.instance
+			.userValueStaked(account)
+			.then((value) => {
+				const { userValueLocked, userValueUnlocked } = value;
+				setTotalStake(userValueUnlocked.add(userValueLocked));
+			})
+			.catch((e: any) => {
+				setTotalStake(ethers.BigNumber.from(0));
+				console.error(e);
+			});
 	};
 
-	useUpdateEffect(() => {
-		if (account) {
-			getStake(account);
-		}
-	}, [pool, account]);
+	useUpdateEffect(getStake, [pool, account]);
 
-	useDidMount(() => {
-		if (account) {
-			getStake(account);
-		}
-	});
+	useDidMount(getStake);
 
 	const onClick = () => {
 		selectPool(pool);
