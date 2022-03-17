@@ -10,14 +10,12 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 import { useZnsContracts } from 'lib/contracts';
 import { useApprovals } from 'lib/hooks/useApprovals';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
-import { useBidProvider } from 'lib/hooks/useBidProvider';
-import { ethers } from 'ethers';
 
 // Type Imports
 import { Bid, Domain, DomainData } from 'lib/types';
 
 //- Component Imports
-import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
+import { DomainTable, Overlay, Spinner } from 'components';
 
 //- Containers Imports
 import { BidList, AcceptBid } from 'containers';
@@ -34,9 +32,6 @@ import { AcceptBidModalData, OwnedDomainTableProps } from './utils';
 
 //- Style Imports
 import styles from './OwnedDomainsTable.module.scss';
-
-import { ERC20 } from 'types';
-import useNotification from 'lib/hooks/useNotification';
 
 const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	//////////////////
@@ -57,9 +52,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		ownedDomainPollingInterval,
 	);
 	const owned = ownedQuery.data?.domains;
-	const { addNotification } = useNotification();
-	const { acceptBid } = useBidProvider();
-	const wildContract: ERC20 = znsContracts.wildToken;
 
 	// Accepting Bid Data
 	const [acceptingBid, setAcceptingBid] = React.useState<
@@ -70,10 +62,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	const [viewingDomain, setViewingDomain] = React.useState<
 		DomainData | undefined
 	>();
-	const [errorWhileAccepting, setErrorWhileAccepting] = React.useState<
-		string | undefined
-	>();
-	const [statusText, setStatusText] = React.useState<string | undefined>();
 
 	// Loading States
 	const [isTableLoading, setIsTableLoading] = React.useState(true);

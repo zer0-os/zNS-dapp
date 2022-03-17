@@ -1,47 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-// React Imports
+//- React Imports
 import React, { useEffect, useState } from 'react';
-// Library Imports
+
+//- Library Imports
 import { useBidProvider } from 'lib/hooks/useBidProvider';
 import { toFiat } from 'lib/currency';
 import { getMetadata } from 'lib/metadata';
 import useCurrency from 'lib/hooks/useCurrency';
 import useNotification from 'lib/hooks/useNotification';
 import { ethers } from 'ethers';
-import { ERC20 } from 'types';
-// Type Imports
 import { Bid, Maybe, Metadata } from 'lib/types';
-// Component Imports
+
+//- Type Imports
+import { ERC20 } from 'types';
+import { Step } from './AcceptBid.types';
+
+//- Component Imports
 import { FutureButton, Member, NFTMedia, Spinner, StepBar } from 'components';
-// Constants
-import {
-	NO_ERROR,
-	LOW_BALANCE,
-	CHECK_GAS_STATUS,
-	ACCEPT_ZAUCTION_PROMPT,
-	APPROVAL_REJECTED,
-	ZAUCTION_PROMPT,
-	CANCEL_BTN,
-	CONTINUE_BTN,
-	FAIL_TO_CALCULATE_GAS,
-	FAILED_TRANSACTION,
-	APPROVING_ZAUCTION,
-	ACCEPTING_BID,
-	WILD_CURRENCY_CODE,
-	LOADING_BIDS,
-	CREATOR_LABEL,
-	HIGHEST_BID_LABEL,
-	SELECTED_BID_LABEL,
-	CONFIRM_BID_AMOUNT,
-	USD_CURRENCY_CODE,
-	AWAITING_APPROVAL,
-	SUCCESS_CONFIRMATION,
-	FINISH_BTN,
-	CHECKING_ZAUCTION_STATUS,
-} from './constants';
-// Utils
+
+//- Constants
+import constants from './AcceptBid.constants';
+
+//- Utils
 import { AcceptBidProps, Steps } from './utils';
-// Style Imports
+
+//- Style Imports
 import styles from './AcceptBid.module.scss';
 
 const AcceptBid: React.FC<AcceptBidProps> = ({
@@ -93,8 +76,8 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 	// Steps Functions
 	const approveZAuction = async () => {
 		setHasApprovedZAuction(true);
-		setError(NO_ERROR);
-		setStatusText(CHECK_GAS_STATUS);
+		setError(constants.ERROR_TEXT.NO_ERROR);
+		setStatusText(constants.STATUS_TEXT.CHECK_GAS_STATUS);
 		setIsApprovalInProgress(true);
 
 		// Check User Balance (Gas)
@@ -108,19 +91,19 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 
 			const totalPrice = gasPrice.mul(gasRequired);
 			if (userBalance.lt(totalPrice)) {
-				setError(LOW_BALANCE);
+				setError(constants.ERROR_TEXT.LOW_BALANCE);
 				setIsApprovalInProgress(false);
 				return;
 			}
 		} catch (e) {
 			console.error(e);
-			setError(FAIL_TO_CALCULATE_GAS);
+			setError(constants.ERROR_TEXT.FAIL_TO_CALCULATE_GAS);
 			setIsApprovalInProgress(false);
 			return;
 		}
 
 		// User Wallet Interaction
-		setStatusText(ACCEPT_ZAUCTION_PROMPT);
+		setStatusText(constants.STATUS_TEXT.ACCEPT_ZAUCTION_PROMPT);
 
 		let tx: Maybe<ethers.ContractTransaction>;
 		try {
@@ -131,20 +114,20 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 		} catch (e) {
 			console.error(e);
 			if (e.code === 4001) {
-				setError(APPROVAL_REJECTED);
+				setError(constants.ERROR_TEXT.APPROVAL_REJECTED);
 			} else {
-				setError(FAILED_TRANSACTION);
+				setError(constants.ERROR_TEXT.FAILED_TRANSACTION);
 			}
 			setIsApprovalInProgress(false);
 			return;
 		}
 
 		// Await Approval
-		setStatusText(APPROVING_ZAUCTION);
+		setStatusText(constants.STATUS_TEXT.APPROVING_ZAUCTION);
 		try {
 			await tx.wait();
 		} catch (e) {
-			setError(FAILED_TRANSACTION);
+			setError(constants.ERROR_TEXT.FAILED_TRANSACTION);
 			console.error(e);
 			setIsApprovalInProgress(false);
 			return;
@@ -156,18 +139,18 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 	};
 
 	const acceptBidConfirmed = async () => {
-		setError(NO_ERROR);
+		setError(constants.ERROR_TEXT.NO_ERROR);
 		if (!acceptingBid) {
 			return;
 		}
 		setIsAccepting(true);
-		setStatusText(AWAITING_APPROVAL);
+		setStatusText(constants.STATUS_TEXT.AWAITING_APPROVAL);
 
 		// User Wallet Interaction
 		let tx: Maybe<ethers.ContractTransaction>;
 		try {
 			tx = await acceptBid(acceptingBid.bid);
-			setStatusText(ACCEPTING_BID);
+			setStatusText(constants.STATUS_TEXT.ACCEPTING_BID);
 			// Set Accept Step
 			setStep(Steps.Accept);
 			if (tx) {
@@ -178,13 +161,13 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 			}, 500);
 			setIsBidConfirmed(true);
 		} catch (e) {
-			setError(APPROVAL_REJECTED);
+			setError(constants.ERROR_TEXT.APPROVAL_REJECTED);
 			setIsAccepting(false);
 		}
 		try {
 			await tx?.wait();
 		} catch (e) {
-			setError(FAILED_TRANSACTION);
+			setError(constants.ERROR_TEXT.FAILED_TRANSACTION);
 			console.error(e);
 			setIsAccepting(false);
 		}
@@ -198,7 +181,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 			.toString();
 		const needsApproving = allowance.lt(bidAsWei);
 		setIsCheckingAllowance(true);
-		setStatusText(CHECKING_ZAUCTION_STATUS);
+		setStatusText(constants.STATUS_TEXT.CHECKING_ZAUCTION_STATUS);
 		await new Promise((r) => setTimeout(r, 800));
 		if (hasApprovedZAuction) {
 			setIsCheckingAllowance(false);
@@ -228,7 +211,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 	}, [hasApprovedZAuction]);
 
 	useEffect(() => {
-		setError(NO_ERROR);
+		setError(constants.ERROR_TEXT.NO_ERROR);
 		if (step === Steps.Approve) {
 			checkZAuctionApproval();
 		}
@@ -311,14 +294,14 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 		const hasBids = bids !== undefined && bids.length > 0;
 		const highestCurrentBid = `${Number(
 			currentHighestBid?.amount,
-		).toLocaleString()} ${WILD_CURRENCY_CODE}`;
+		).toLocaleString()} ${constants.LABELS.WILD_CURRENCY_CODE}`;
 		const isCurrentHighestBidUsd =
 			currentHighestBidUsd !== undefined && currentHighestBidUsd > 0;
 
 		return (
 			<div style={{ display: 'flex', alignItems: 'baseline' }}>
 				<span>
-					{!hasBidDataLoaded && <>{LOADING_BIDS}</>}
+					{!hasBidDataLoaded && <>{constants.LABELS.LOADING_BIDS}</>}
 					{hasBids && currentHighestBid && <>{highestCurrentBid}</>}
 				</span>
 				{isCurrentHighestBidUsd && (
@@ -336,14 +319,14 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 			acceptingBid && acceptingBid.bid.amount * wildPriceUsd;
 		const acceptBidAmount = `${Number(
 			acceptingBid?.bid.amount,
-		).toLocaleString()} ${WILD_CURRENCY_CODE}`;
+		).toLocaleString()} ${constants.LABELS.WILD_CURRENCY_CODE}`;
 		const isAcceptingBidUsd =
 			acceptingBidUsd !== undefined && acceptingBidUsd > 0;
 
 		return (
 			<div style={{ display: 'flex', alignItems: 'baseline' }}>
 				<span>
-					{!hasBidDataLoaded && <>{LOADING_BIDS}</>}
+					{!hasBidDataLoaded && <>{constants.LABELS.LOADING_BIDS}</>}
 					{hasBids && acceptingBid && <>{acceptBidAmount}</>}
 				</span>
 				{isAcceptingBidUsd && (
@@ -360,7 +343,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 			<h2 style={{ lineHeight: '29px' }}>{domainMetadata?.title}</h2>
 			<span className={styles.Domain}>0://{acceptingBid?.domain?.name}</span>
 			<div className={styles.Price}>
-				<h3>{CREATOR_LABEL}</h3>
+				<h3>{constants.LABELS.CREATOR_LABEL}</h3>
 				<Member
 					id={acceptingBid?.domain?.minter?.id || ''}
 					name={''}
@@ -368,11 +351,11 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 				/>
 			</div>
 			<div className={styles.Price}>
-				<h3>{HIGHEST_BID_LABEL}</h3>
+				<h3>{constants.LABELS.HIGHEST_BID_LABEL}</h3>
 				<div>{highestBid()}</div>
 			</div>
 			<div className={styles.Price}>
-				<h3>{SELECTED_BID_LABEL}</h3>
+				<h3>{constants.LABELS.SELECTED_BID_LABEL}</h3>
 				<div>{selectedBid()}</div>
 			</div>
 		</div>
@@ -429,7 +412,9 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 				<>
 					{!hasApprovedZAuction && (
 						<>
-							<p style={{ lineHeight: '24px' }}>{ZAUCTION_PROMPT}</p>
+							<p style={{ lineHeight: '24px' }}>
+								{constants.MESSAGES[Step.ZAuction].ZAUCTION_PROMPT}
+							</p>
 
 							{errorMessage}
 
@@ -447,7 +432,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 										}}
 										onClick={onClose}
 									>
-										{CANCEL_BTN}
+										{constants.BUTTONS[Step.ZAuction].SECONDARY}
 									</FutureButton>
 								</div>
 								<div>
@@ -462,7 +447,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 										}}
 										onClick={approveZAuction}
 									>
-										{CONTINUE_BTN}
+										{constants.BUTTONS[Step.ZAuction].PRIMARY}
 									</FutureButton>
 								</div>
 							</div>
@@ -492,7 +477,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 		)}`;
 		const acceptingBidAmountWild = `${Number(
 			acceptingBid?.bid.amount,
-		).toLocaleString()} ${WILD_CURRENCY_CODE}`;
+		).toLocaleString()} ${constants.LABELS.WILD_CURRENCY_CODE}`;
 		return (
 			<>
 				{!isAccepting && (
@@ -520,10 +505,11 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 					{currentHighestBid && (
 						<div style={{ margin: '0 8px 8px 8px' }}>
 							<p style={{ lineHeight: '24px', paddingBottom: '0' }}>
-								{CONFIRM_BID_AMOUNT}
+								{constants.MESSAGES[Step.Confirmation].CONFIRM_BID_AMOUNT}
 								<br /> <b>{acceptingBidAmountWild}</b> (
-								{toFiat(Number(acceptingBidUSD))} {USD_CURRENCY_CODE}) and
-								transfer ownership of <b>0://{acceptingBid?.domain?.name}</b> to{' '}
+								{toFiat(Number(acceptingBidUSD))}{' '}
+								{constants.LABELS.USD_CURRENCY_CODE}) and transfer ownership of{' '}
+								<b>0://{acceptingBid?.domain?.name}</b> to{' '}
 								<b>{truncatedAccountAddress}</b>?
 							</p>
 						</div>
@@ -544,7 +530,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 									}}
 									onClick={onClose}
 								>
-									{CANCEL_BTN}
+									{constants.BUTTONS[Step.Confirmation].SECONDARY}
 								</FutureButton>
 							</div>
 							<div>
@@ -559,7 +545,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 									}}
 									onClick={acceptBidConfirmed}
 								>
-									{CONTINUE_BTN}
+									{constants.BUTTONS[Step.Confirmation].PRIMARY}
 								</FutureButton>
 							</div>
 						</div>
@@ -609,7 +595,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 								marginTop: '40px',
 							}}
 						>
-							{SUCCESS_CONFIRMATION}
+							{constants.MESSAGES[Step.Success].SUCCESS_CONFIRMATION}
 						</p>
 						<FutureButton
 							glow
@@ -622,7 +608,7 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 							}}
 							onClick={handleClick}
 						>
-							{FINISH_BTN}
+							{constants.BUTTONS[Step.Success].PRIMARY}
 						</FutureButton>
 					</>
 				)}
@@ -638,7 +624,9 @@ const AcceptBid: React.FC<AcceptBidProps> = ({
 	const isAcceptStep = step === Steps.Accept;
 	return (
 		<>
-			<div className={`${styles.Container} border-primary border-rounded blur`}>
+			<div
+				className={`${styles.Container} border-primary border-rounded background-primary`}
+			>
 				{header()}
 				<div style={{ margin: '0 8px' }}>
 					<StepBar
