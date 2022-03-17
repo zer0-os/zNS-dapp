@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 // Component Imports
 import {
 	Detail,
-	FutureButton,
 	Member,
 	NFTMedia,
 	TextButton,
@@ -273,15 +272,6 @@ const NFT = ({
 						<div className={styles.Break}></div>
 						{account && !isOwnedByYou && yourBidAsNumber && YourBid()}
 					</div>
-					{isOwnedByYou && (
-						<FutureButton
-							glow={isOwnedByYou}
-							onClick={onTransfer}
-							className={styles.Transfer}
-						>
-							Transfer Ownership
-						</FutureButton>
-					)}
 				</div>
 
 				{backgroundBlob !== undefined && (
