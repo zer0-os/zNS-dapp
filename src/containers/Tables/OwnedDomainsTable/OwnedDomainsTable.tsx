@@ -1,11 +1,3 @@
-/*
-	This is a container for rendering a subdomain
-	on the *current* domain.
- */
-
-// React Imports
-import React from 'react';
-
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
 import useOwnedDomains from './hooks/useOwnedDomains';
