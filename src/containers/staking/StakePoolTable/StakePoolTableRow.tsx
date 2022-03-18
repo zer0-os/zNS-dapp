@@ -1,20 +1,35 @@
+/**
+ * This component represents a single row rendered by StakePoolTable
+ */
 import { useState } from 'react';
-import { FutureButton, Spinner } from 'components';
-import { Artwork } from 'components';
-import styles from './StakePoolTableRow.module.scss';
 
-import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
-import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
-import { displayEther, toFiat } from 'lib/currency';
-import { ethers } from 'ethers';
+// Hook imports
 import { useWeb3React } from '@web3-react/core';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useDidMount } from 'lib/hooks/useDidMount';
+import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
+
+// Library imports
+import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
+import { displayEther, toFiat } from 'lib/currency';
+import { ethers } from 'ethers';
+
+import { Artwork, FutureButton, Spinner } from 'components';
+
+// Local imports
+import { MESSAGE } from './StakePoolTable.constants';
+import styles from './StakePoolTableRow.module.scss';
+
+export const TEST_ID = {
+	CONTAINER: 'stake-pool-table-container',
+	SPINNER: 'stake-pool-row-spinner',
+};
 
 const StakePoolTableRow = (props: any) => {
 	const selectPool = useStakingPoolSelector().selectStakePool;
 	const { account } = useWeb3React();
 
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [totalStake, setTotalStake] = useState<ethers.BigNumber | undefined>();
 	const pool = props.data as WrappedStakingPool;
 	const apy = pool.metrics.apy;
@@ -30,14 +45,16 @@ const StakePoolTableRow = (props: any) => {
 			return;
 		}
 		setTotalStake(undefined);
+		setIsLoading(true);
 		pool.instance
 			.userValueStaked(account)
 			.then((value) => {
 				const { userValueLocked, userValueUnlocked } = value;
 				setTotalStake(userValueUnlocked.add(userValueLocked));
+				setIsLoading(false);
 			})
 			.catch((e: any) => {
-				setTotalStake(ethers.BigNumber.from(0));
+				setIsLoading(false);
 				console.error(e);
 			});
 	};
@@ -51,7 +68,11 @@ const StakePoolTableRow = (props: any) => {
 	};
 
 	return (
-		<tr className={styles.Row} onClick={onClick}>
+		<tr
+			className={styles.Row}
+			onClick={onClick}
+			data-testid={TEST_ID.CONTAINER}
+		>
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
@@ -68,12 +89,12 @@ const StakePoolTableRow = (props: any) => {
 			</td>
 			{account ? (
 				<td className={styles.Right}>
-					{totalStake === undefined ? (
-						<Spinner />
+					{isLoading ? (
+						<Spinner data-testid={TEST_ID.SPINNER} />
+					) : totalStake ? (
+						`${displayEther(totalStake)} ${pool.content.tokenTicker}`
 					) : (
-						<>
-							{displayEther(totalStake)} {pool.content.tokenTicker}
-						</>
+						MESSAGE.FAILED_TO_LOAD
 					)}
 				</td>
 			) : (
