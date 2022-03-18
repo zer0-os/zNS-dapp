@@ -1,0 +1,21 @@
+.Container {
+	cursor: pointer;
+
+	&:hover {
+		background: var(--color-background-alt-50);
+	}
+
+	td {
+		&:first-of-type {
+			padding-left: 8px !important;
+		}
+
+		&:last-of-type {
+			padding-right: 8px !important;
+		}
+	}
+
+	.Right {
+		text-align: right;
+	}
+}
