@@ -1,22 +1,23 @@
 import { Domain } from '@zero-tech/zns-sdk';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type UseOwnedDomainsReturn = {
 	isLoading: boolean;
 	ownedDomains?: Domain[];
+	refetch: () => void;
 };
 
 const useOwnedDomains = (
 	account: string | undefined | null,
 ): UseOwnedDomainsReturn => {
+	const isMounted = useRef<boolean>();
 	const { instance: sdk } = useZnsSdk();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [ownedDomains, setOwnedDomains] = useState<Domain[] | undefined>();
 
-	useEffect(() => {
+	const getOwnedDomains = () => {
 		setOwnedDomains(undefined);
 		if (!account) {
 			setIsLoading(false);
@@ -26,18 +27,31 @@ const useOwnedDomains = (
 		sdk
 			.getDomainsByOwner(account)
 			.then((owned) => {
-				setOwnedDomains(owned);
-				setIsLoading(false);
+				if (isMounted.current) {
+					setOwnedDomains(owned);
+					setIsLoading(false);
+				}
 			})
 			.catch((e) => {
-				console.error(e);
-				setIsLoading(false);
+				if (isMounted.current) {
+					console.error(e);
+					setIsLoading(false);
+				}
 			});
+	};
+
+	useEffect(() => {
+		isMounted.current = true;
+		getOwnedDomains();
+		return () => {
+			isMounted.current = false;
+		};
 	}, [account, sdk]);
 
 	return {
 		isLoading,
 		ownedDomains,
+		refetch: getOwnedDomains,
 	};
 };
 
