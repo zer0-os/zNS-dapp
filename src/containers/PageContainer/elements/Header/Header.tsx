@@ -6,7 +6,7 @@ import { useMint } from 'lib/hooks/useMint';
 import { useTransfer } from 'lib/hooks/useTransfer';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
-import { Maybe, DisplayParentDomain } from 'lib/types';
+import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
 import { BuyTokenRedirect } from 'containers';
 import { ZNALink } from 'components';
 import { URLS } from 'constants/urls';
@@ -26,6 +26,7 @@ import './_header.scss';
 type HeaderProps = {
 	pageWidth: number;
 	znsDomain: Maybe<DisplayParentDomain>;
+	domainMetadata: Maybe<Metadata>;
 	account: Maybe<string>;
 	openModal: (modal?: Modal | undefined) => () => void;
 };
@@ -33,6 +34,7 @@ type HeaderProps = {
 export const Header: React.FC<HeaderProps> = ({
 	pageWidth,
 	znsDomain,
+	domainMetadata,
 	account,
 	openModal,
 }) => {
@@ -51,6 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
 		props: {
 			pageWidth,
 			znsDomain,
+			domainMetadata,
 			account,
 			navbar: {
 				title,

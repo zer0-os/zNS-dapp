@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
  * @param {Array<any>} dependencies
  */
 export const useUpdateEffect = (
-	callback: React.EffectCallback,
+	callback: () => void | Promise<void>,
 	dependencies: React.DependencyList = [],
 ) => {
 	const isInitialMount = useRef(true);

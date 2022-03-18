@@ -64,5 +64,5 @@ export const useZnsDomain = (domainId: string) => {
 		}
 	}, [rawDomainData, domainMetadata]);
 
-	return { loading, domain, refetch: domainQuery.refetch };
+	return { loading, domain, domainMetadata, refetch: domainQuery.refetch };
 };

@@ -63,7 +63,7 @@ const TransferPreview = () => {
 
 	return (
 		<div
-			className={`${styles.TransferPreview} border-primary border-rounded background-primary blur`}
+			className={`${styles.TransferPreview} border-primary border-rounded background-primary`}
 		>
 			<h4 className="glow-text-white">{MESSAGES.TRANSFER_TITLE}</h4>
 			<ul>{transferring.map((n: any) => nft(n, false))}</ul>
