@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Artwork, FutureButton, Overlay, Spinner } from 'components';
+import { Artwork, OptionDropdown, Overlay, Spinner } from 'components';
 import React, { useMemo, useState } from 'react';
 
 import { BidList } from 'containers';
@@ -11,6 +11,13 @@ import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import styles from './OwnedDomainsTableRow.module.scss';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
+
+import moreIcon from './assets/more-vertical.svg';
+
+import { ACTIONS, ACTION_KEYS } from './OwnedDomainsTable.constants';
+import classNames from 'classnames';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
+import { DomainSettings } from 'containers/other/NFTView/elements';
 
 enum Modal {
 	ViewBids,
@@ -38,15 +45,16 @@ const OwnedDomainsTableRow = ({
 	// Decides which modal is being rendered
 	const [modal, setModal] = useState<Modal | undefined>();
 
-	/**
-	 * Navigates to domain on row click
-	 * Makes sure the button wasn't clicked
-	 * @param event automatically provided by element onClick
-	 */
-	const onRowClick = (event: any) => {
-		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
-		if (!clickedButton) {
-			goTo(`/market/${domain.name.split('wilder.')[1]}`);
+	// Navigates to domain
+	const onRowClick = () => {
+		goTo(`/market/${domain.name.split('wilder.')[1]}`);
+	};
+
+	const onSelectOption = (option: Option) => {
+		if (option.title === ACTION_KEYS.VIEW_BIDS) {
+			onViewBids();
+		} else {
+			setModal(Modal.EditMetadata);
 		}
 	};
 
@@ -69,6 +77,17 @@ const OwnedDomainsTableRow = ({
 					<BidList bids={bids} onAccept={refetch} />
 				</Overlay>
 			);
+		} else if (modal === Modal.EditMetadata) {
+			return (
+				<Overlay onClose={() => setModal(undefined)} open>
+					<DomainSettings
+						domainId={domain.id}
+						onClose={() => setModal(undefined)}
+					/>
+				</Overlay>
+			);
+		} else {
+			return null;
 		}
 		// add other modals here
 	}, [modal]);
@@ -79,8 +98,8 @@ const OwnedDomainsTableRow = ({
 			{ModalElement}
 
 			{/* Row content */}
-			<tr className={styles.Container} onClick={onRowClick}>
-				<td className={styles.Left}>
+			<tr className={styles.Container}>
+				<td className={styles.Left} onClick={onRowClick}>
 					<Artwork
 						domain={domain.name.split('wilder.')[1]}
 						disableInteraction
@@ -91,7 +110,7 @@ const OwnedDomainsTableRow = ({
 				</td>
 
 				{/* Highest Bid */}
-				<td className={styles.Right}>
+				<td className={styles.Right} onClick={onRowClick}>
 					{isLoadingBidData ? (
 						<Spinner />
 					) : highestBid ? (
@@ -104,19 +123,21 @@ const OwnedDomainsTableRow = ({
 				</td>
 
 				{/* Number of Bids */}
-				<td className={styles.Right}>
+				<td className={styles.Right} onClick={onRowClick}>
 					{isLoadingBidData ? <Spinner /> : bids ? bids.length : '-'}
 				</td>
 
-				{/* View Bids */}
+				{/* Actions */}
 				<td>
-					<FutureButton
-						className={styles.Button}
-						glow={(bids?.length || 0) > 0}
-						onClick={onViewBids}
+					<OptionDropdown
+						onSelect={onSelectOption}
+						options={ACTIONS}
+						className={classNames(styles.MoreDropdown)}
 					>
-						View Bids
-					</FutureButton>
+						<button className={styles.Button}>
+							<img alt="more actions" src={moreIcon} />
+						</button>
+					</OptionDropdown>
 				</td>
 			</tr>
 		</>
