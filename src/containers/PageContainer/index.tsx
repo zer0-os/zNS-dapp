@@ -1,5 +1,5 @@
-import React, { FC, useMemo, useState, useEffect, useCallback } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import React, { FC, useState, useEffect, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
@@ -29,7 +29,7 @@ import { ProfileModal } from 'containers';
 
 //- Library Imports
 import { MintNewNFT } from 'containers';
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
+import { useStaking } from 'lib/hooks/useStaking';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 //- Constants Imports
@@ -62,7 +62,12 @@ const PageContainer: FC = ({ children }) => {
 	}, [chainId]);
 
 	//- Domain Data
-	const { domain: znsDomain, loading, refetch } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		domainMetadata,
+		loading,
+		refetch,
+	} = useCurrentDomain();
 
 	const { isSearching } = useNavbar();
 
@@ -72,9 +77,7 @@ const PageContainer: FC = ({ children }) => {
 
 	//- Browser Navigation State
 	const history = useHistory();
-	const location = useLocation();
 	const globalDomain = useCurrentDomain();
-	const domain = useMemo(() => location.pathname, [location.pathname]);
 
 	// Force to go back to home if invalid domain
 	useEffect(() => {
@@ -86,7 +89,7 @@ const PageContainer: FC = ({ children }) => {
 
 	//- Minting State
 	const { minted } = useMint();
-	const { fulfilled: stakingFulFilled } = useStakingProvider();
+	const { fulfilled: stakingFulFilled } = useStaking();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -179,7 +182,6 @@ const PageContainer: FC = ({ children }) => {
 	/////////////////////
 	// React Fragments //
 	/////////////////////
-
 	const modals = () => (
 		<>
 			{/* Overlays */}
@@ -195,7 +197,7 @@ const PageContainer: FC = ({ children }) => {
 				<Overlay open onClose={closeModal}>
 					<MintNewNFT
 						onMint={closeModal}
-						domainName={domain}
+						domainName={znsDomain?.name || ''}
 						domainId={znsDomain ? znsDomain.id : ''}
 						domainOwner={znsDomain ? znsDomain.owner.id : ''}
 						subdomains={
@@ -232,6 +234,7 @@ const PageContainer: FC = ({ children }) => {
 				<Header
 					pageWidth={pageWidth}
 					znsDomain={znsDomain}
+					domainMetadata={domainMetadata}
 					account={account}
 					openModal={openModal}
 				/>

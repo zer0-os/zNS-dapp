@@ -26,10 +26,11 @@ import {
 	useRequestsForOwnedDomains,
 } from 'lib/hooks/useDomainRequestsSubgraph';
 import { ethers } from 'ethers';
-import { useStakingProvider } from 'lib/providers/StakingRequestProvider';
+import { useStaking } from 'lib/hooks/useStaking';
 
 //- Type Imports
 import { DomainRequestAndContents } from 'lib/types';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Style Imports
 import styles from './RequestTable.module.scss';
@@ -39,6 +40,18 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import { useZnsContracts } from 'lib/contracts';
 import { useWeb3React } from '@web3-react/core';
+
+//- Constants
+const DOMAIN_FILTER_OPTIONS = [
+	{ title: 'All Domains' },
+	{ title: 'Your Domains' },
+	{ title: 'Your Requests' },
+];
+const STATUS_FILTER_OPTIONS = [
+	{ title: 'All Statuses' },
+	{ title: 'Open Requests' },
+	{ title: 'Accepted' },
+];
 
 type RequestTableProps = {
 	style?: React.CSSProperties;
@@ -55,7 +68,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	// Custom Hooks //
 	//////////////////
 	const { account } = useWeb3React();
-	const staking = useStakingProvider();
+	const staking = useStaking();
 	const znsContracts = useZnsContracts()!;
 	const yourRequests = useRequestsMadeByAccount(userId);
 	const requestsForYou = useRequestsForOwnedDomains(userId);
@@ -207,8 +220,8 @@ const RequestTable: React.FC<RequestTableProps> = ({
 	/* Sets some search parameters 
 		 There's a hook listening to each of these variables */
 	const search = (query: string) => setSearchQuery(query);
-	const filterByStatus = (filter: string) => setStatusFilter(filter);
-	const filterByDomain = (filter: string) => setDomainFilter(filter);
+	const filterByStatus = (filter: Option) => setStatusFilter(filter.title);
+	const filterByDomain = (filter: Option) => setDomainFilter(filter.title);
 
 	/////////////
 	// Effects //
@@ -487,7 +500,10 @@ const RequestTable: React.FC<RequestTableProps> = ({
 					<div className={styles.searchHeaderButtons}>
 						<OptionDropdown
 							onSelect={filterByDomain}
-							options={['All Domains', 'Your Domains', 'Your Requests']}
+							options={DOMAIN_FILTER_OPTIONS}
+							selected={DOMAIN_FILTER_OPTIONS.find(
+								(option) => option.title === (domainFilter || 'All Domains'),
+							)}
 							drawerStyle={{ width: 179 }}
 						>
 							<FilterButton onClick={() => {}}>
@@ -496,7 +512,10 @@ const RequestTable: React.FC<RequestTableProps> = ({
 						</OptionDropdown>
 						<OptionDropdown
 							onSelect={filterByStatus}
-							options={['All Statuses', 'Open Requests', 'Accepted']}
+							options={STATUS_FILTER_OPTIONS}
+							selected={STATUS_FILTER_OPTIONS.find(
+								(option) => option.title === (statusFilter || 'All Statuses'),
+							)}
 							drawerStyle={{ width: 179 }}
 						>
 							<FilterButton onClick={() => {}}>

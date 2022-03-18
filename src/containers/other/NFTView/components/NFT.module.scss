@@ -103,8 +103,6 @@
 			border-radius: 8px;
 			border: 1px solid var(--color-purple-ligher);
 
-			overflow: hidden;
-
 			button {
 				display: flex;
 				justify-content: center;
@@ -114,6 +112,27 @@
 				padding-top: 0;
 
 				background: none;
+			}
+
+			.MoreDropdown {
+				:global(ul) {
+					top: calc(100% + 5px);
+					left: unset;
+					right: 0;
+					width: 236px;
+					transform: unset;
+					border: 1px solid var(--color-purple-lighter);
+					box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
+
+					li {
+						display: flex;
+						padding: 16px;
+
+						span {
+							margin-left: 16px;
+						}
+					}
+				}
 			}
 		}
 
@@ -226,15 +245,6 @@
 	@media only screen and (max-width: 768px) {
 		max-height: unset;
 	}
-
-	.Transfer {
-		margin-top: 24px;
-		max-width: 350px;
-
-		@media only screen and (max-width: 768px) {
-			display: none;
-		}
-	}
 }
 
 .Details > div:first-of-type {
@@ -278,26 +288,6 @@
 
 .Vertical > div:not(:first-child) {
 	margin-top: 20.5px;
-}
-
-@media only screen and (max-width: 1280px) {
-	.Buttons button {
-		display: none;
-	}
-}
-
-@media only screen and (max-width: 1100px) {
-	.Buttons {
-		flex-direction: column;
-	}
-
-	.Buttons button {
-		margin-left: 0 !important;
-	}
-
-	.Buttons button:not(:first-child) {
-		margin-top: 24px;
-	}
 }
 
 @media only screen and (max-width: 960px) {

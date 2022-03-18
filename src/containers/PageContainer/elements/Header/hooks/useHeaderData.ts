@@ -1,11 +1,17 @@
 import { useState, useRef, useMemo } from 'react';
-import { Maybe, DisplayParentDomain } from 'lib/types';
+import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
+import { MVP_VERSION } from 'constants/mvp';
+import {
+	REQUEST_TO_MINT,
+	MINT_NFT,
+} from '../elements/MintButton/MintButton.constants';
 
 type UseHeaderDataProps = {
 	props: {
 		pageWidth: number;
 		znsDomain: Maybe<DisplayParentDomain>;
+		domainMetadata: Maybe<Metadata>;
 		account: Maybe<string>;
 		navbar: {
 			title?: string;
@@ -26,6 +32,7 @@ type UseHeaderDataReturn = {
 	};
 	formattedData: {
 		searchPlaceholder: string;
+		mintButtonTitle: string;
 		isDesktop: boolean;
 		showHistoryButtons: boolean;
 		showTitle: boolean;
@@ -52,13 +59,22 @@ export const useHeaderData = ({
 	const [searchQuery, setSearchQuery] = useState<string>('');
 
 	const formattedData = useMemo(() => {
-		const { pageWidth, znsDomain, account, navbar, mvpVersion } = props;
+		const {
+			pageWidth,
+			znsDomain,
+			domainMetadata,
+			account,
+			navbar,
+			mvpVersion,
+		} = props;
 
 		const searchPlaceholder = navbar.isSearching ? 'Type to search' : '';
 		const isDesktop = pageWidth > 0;
 		const isOwnedByUser =
 			znsDomain?.owner?.id.toLowerCase() === account?.toLowerCase();
-		const isMvpPrototype = mvpVersion === 3;
+		const isMintable = Boolean(domainMetadata?.isMintable);
+		const isMvpPrototype = mvpVersion === MVP_VERSION;
+		const mintButtonTitle = isOwnedByUser ? MINT_NFT : REQUEST_TO_MINT;
 		const showHistoryButtons = !Boolean(navbar.title);
 		const showTitle = !navbar.isSearching && Boolean(navbar.title);
 		const showZnaLink = !navbar.isSearching && !Boolean(navbar.title);
@@ -66,7 +82,7 @@ export const useHeaderData = ({
 		const showMintButton =
 			Boolean(account) &&
 			!navbar.isSearching &&
-			isOwnedByUser &&
+			(isOwnedByUser || (!isOwnedByUser && isMintable)) &&
 			isMvpPrototype;
 		const showStatusButtons = Boolean(account) && !navbar.isSearching;
 		const showBuyTokenRedirect =
@@ -78,6 +94,7 @@ export const useHeaderData = ({
 
 		return {
 			searchPlaceholder,
+			mintButtonTitle,
 			isDesktop,
 			showHistoryButtons,
 			showTitle,

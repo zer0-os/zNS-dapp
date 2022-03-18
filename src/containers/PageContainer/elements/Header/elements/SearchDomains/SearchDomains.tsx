@@ -48,7 +48,7 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 		<Spring to={{ height: localState.containerHeight || 0 }}>
 			{(animatedStyles) => (
 				<animated.div
-					className="search-domains__results blur"
+					className="search-domains__results background-primary"
 					style={animatedStyles}
 				>
 					<ul ref={listRef}>

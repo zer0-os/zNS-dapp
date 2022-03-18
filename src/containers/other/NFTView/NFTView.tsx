@@ -4,7 +4,7 @@
  */
 
 //- React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { Spring, animated } from 'react-spring';
 
 //- Web3 Imports
@@ -15,6 +15,9 @@ import { BigNumber, ethers } from 'ethers';
 //- Component Imports
 import { ArrowLink, Overlay, StatsWidget } from 'components';
 import { MakeABid } from 'containers';
+import { DomainSettings } from './elements';
+
+//- Library Imports
 import NFT from './components/NFT';
 import HistoryItem from './components/HistoryItem';
 
@@ -26,21 +29,45 @@ import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useZnsContracts } from 'lib/contracts';
 import { Attribute } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import useMatchMedia from 'lib/hooks/useMatchMedia';
-import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
-import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { Bid } from '@zero-tech/zauction-sdk';
 import {
 	DomainBidEvent,
 	DomainEvent,
 	DomainMetrics,
 } from '@zero-tech/zns-sdk/lib/types';
+import useMatchMedia from 'lib/hooks/useMatchMedia';
+import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+
+//- Type Imports
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
 
 //- Asset Imports
 import copyIcon from './assets/copy-icon.svg';
+import settingsIcon from './assets/settings.svg';
+import dollarSignIcon from './assets/dollar-sign.svg';
+import transferOwnershipIcon from './assets/transfer.svg';
+
+//- Constants Imports
+import { MORE_ACTION_KEY } from './NFTView.constants';
+
+const MORE_ACTIONS = [
+	{
+		icon: settingsIcon,
+		title: MORE_ACTION_KEY.MY_DOMAIN_SETTINGS,
+	},
+	{
+		icon: transferOwnershipIcon,
+		title: MORE_ACTION_KEY.TRANSFER_OWNERSHIP,
+	},
+	{
+		icon: dollarSignIcon,
+		title: MORE_ACTION_KEY.VIEW_BIDS,
+	},
+];
 
 const ZNS_SHARE_BASE_URL = process.env.REACT_APP_ZNS_SHARE_BASE_URL as string;
 
@@ -90,8 +117,16 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		useState<boolean>(false);
 	const [containerHeight, setContainerHeight] = useState(0);
 	const [ipfsHash, setIpfsHash] = useState<string>('');
+	const [isDomainSettingsOpen, setIsDomainSettingsOpen] =
+		useState<Boolean>(false);
 
-	const { domainId, domain: znsDomain, domainRaw: domain } = useCurrentDomain();
+	const {
+		domainId,
+		domain: znsDomain,
+		domainMetadata,
+		domainRaw: domain,
+	} = useCurrentDomain();
+	const isBiddable = Boolean(domainMetadata?.isBiddable);
 
 	//- Web3 Domain Data
 	// const domainId = getDomainId(domain.substring(1));
@@ -319,6 +354,26 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isShowMoreAtrributes]);
 
+	const moreOptions = useMemo(() => {
+		const isOwnedByMe =
+			znsDomain?.owner.id.toLowerCase() === account?.toLowerCase();
+		/* Hide for now (2022/02/22)
+		 * TODO:: Should decide to check lockership or not
+
+			const isLocked = znsDomain?.isLocked;
+			const isLockedByMe = isLocked
+				? znsDomain?.lockedBy.id.toLowerCase() === account?.toLowerCase()
+				: isOwnedByMe;
+		 */
+
+		if (isOwnedByMe) {
+			// only show my domain settings action for now
+			return MORE_ACTIONS.slice(0, 2);
+		}
+
+		return [];
+	}, [znsDomain, account]);
+
 	/////////////
 	// Effects //
 	/////////////
@@ -471,7 +526,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 		return (
 			<section
-				className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
+				className={`${styles.History} ${styles.Box} border-primary border-rounded background-primary`}
 			>
 				<h4>History</h4>
 				{!allItems && (
@@ -539,7 +594,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			return (
 				<>
 					<section
-						className={`${styles.Attributes}  blur border-primary border-rounded`}
+						className={`${styles.Attributes} border-primary border-rounded background-primary`}
 					>
 						<div className={styles.AttributesContainer}>
 							<h4>Attributes</h4>
@@ -565,6 +620,14 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 					</section>
 				</>
 			);
+		}
+	};
+
+	const handleSelectMoreOption = (option: Option) => {
+		if (option.title === MORE_ACTION_KEY.MY_DOMAIN_SETTINGS) {
+			setIsDomainSettingsOpen(true);
+		} else if (option.title === MORE_ACTION_KEY.TRANSFER_OWNERSHIP) {
+			onTransfer();
 		}
 	};
 
@@ -601,6 +664,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				isPriceDataLoading={isPriceDataLoading}
 				onSuccessBuyNow={getPriceData}
 				onTransfer={onTransfer}
+				isBiddable={isBiddable}
+				options={moreOptions}
+				onSelectOption={handleSelectMoreOption}
 				onRefetch={getPriceData}
 			/>
 
@@ -609,7 +675,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			{attributes()}
 			<div className={`${styles.TokenHashContainer}`}>
 				<div
-					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+					className={`${styles.Box} ${styles.Contract} border-primary border-rounded background-primary`}
 				>
 					<h4>Token Id</h4>
 					<p>
@@ -632,7 +698,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 					</ArrowLink>
 				</div>
 				<div
-					className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
+					className={`${styles.Box} ${styles.Contract} border-primary border-rounded background-primary`}
 				>
 					<h4>IPFS Hash</h4>
 					<p>
@@ -657,6 +723,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			</div>
 
 			{history()}
+			{isDomainSettingsOpen && (
+				<DomainSettings
+					domainId={domainId}
+					onClose={() => setIsDomainSettingsOpen(false)}
+				/>
+			)}
 		</div>
 	);
 };
