@@ -1,4 +1,5 @@
 import { Bid } from '@zero-tech/zauction-sdk';
+import { Instance } from '@zero-tech/zns-sdk';
 import { BigNumber } from 'ethers';
 
 /**
@@ -9,4 +10,30 @@ export const sortBidsByAmount = (bids: Bid[]) => {
 	return bids.sort((a, b) =>
 		BigNumber.from(a.amount).gte(BigNumber.from(b.amount)) ? -1 : 1,
 	);
+};
+
+/**
+ * Specifically to be used with bids.ts:getBidDataForDomain
+ */
+export type DomainBidData = {
+	highestBid: Bid | undefined;
+	bids: Bid[];
+};
+
+/**
+ * Gets all bids for a domain and the highest bid
+ * @param domainId id for domain we want to get bids for
+ * @param sdk sdk instance for currently connected chain
+ * @returns highest bid and all bids for domain
+ */
+export const getBidDataForDomain = async (
+	domainId: string,
+	sdk: Instance,
+): Promise<DomainBidData | undefined> => {
+	const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
+	const bids = (await zAuction.listBids([domainId]))[domainId];
+	if (!bids) {
+		return { highestBid: undefined, bids: [] };
+	}
+	return { highestBid: sortBidsByAmount(bids)[0], bids: bids };
 };

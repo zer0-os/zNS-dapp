@@ -13,17 +13,13 @@ export function useDomainMetadata(metadataUri: Maybe<string>) {
 			return;
 		}
 
-		setMetadata(null);
+		setMetadata(undefined);
 
-		const fetchMetadata = async () => {
-			const metadata = await getMetadata(metadataUri);
-
+		getMetadata(metadataUri).then((m) => {
 			if (isSubscribed) {
-				setMetadata(metadata);
+				setMetadata(m);
 			}
-		};
-
-		fetchMetadata();
+		});
 
 		return () => {
 			isSubscribed = false;
