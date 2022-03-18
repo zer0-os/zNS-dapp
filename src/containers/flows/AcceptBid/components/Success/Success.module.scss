@@ -1,0 +1,12 @@
+.CloseButton {
+	display: flex;
+	justify-content: center;
+	margin: 0 auto;
+}
+
+.SuccessConfirmation {
+	color: var(--color-success);
+	line-height: 24px;
+	text-align: center;
+	margin: 40px 0;
+}

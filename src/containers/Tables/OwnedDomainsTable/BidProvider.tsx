@@ -3,7 +3,7 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { Domain } from '@zero-tech/zns-sdk';
 import React, { useState } from 'react';
 
-type DomainSelection = {
+export type DomainSelection = {
 	domain: Domain;
 	bids: Bid[];
 };

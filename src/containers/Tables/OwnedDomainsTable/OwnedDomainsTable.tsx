@@ -4,17 +4,19 @@
  */
 
 // React Imports
-import React from 'react';
+import React, { useState } from 'react';
 
 // Library Imports
 import BidProvider, { useBid } from './BidProvider';
+import { useWeb3React } from '@web3-react/core';
+import useOwnedDomains from './hooks/useOwnedDomains';
 
 // Component Imports
 import OwnedDomainsTableRow from './OwnedDomainsTableRow';
 import { GenericTable, Overlay } from 'components';
-import { BidList } from 'containers';
-import { useWeb3React } from '@web3-react/core';
-import useOwnedDomains from './hooks/useOwnedDomains';
+
+//- Containers Imports
+import { AcceptBid, BidList } from 'containers';
 
 type SubdomainTableProps = {
 	isNftView?: boolean;
@@ -46,25 +48,44 @@ const HEADERS = [
 
 const SubdomainTable = (props: SubdomainTableProps) => {
 	const { account } = useWeb3React();
-
 	const { isLoading, ownedDomains } = useOwnedDomains(account);
 	const { selectedDomain, selectDomain } = useBid();
 
-	const closeDomain = () => selectDomain(undefined);
+	const [isAccepting, setIsAccepting] = useState<boolean>(false);
+
+	const closeDomain = () => {
+		selectDomain(undefined);
+		setIsAccepting(false);
+	};
 
 	const onAccept = () => {
+		setIsAccepting(true);
 		console.log('accept');
 	};
 
 	return (
 		<>
+			{!isAccepting && (
+				<Overlay onClose={closeDomain} centered open>
+					<AcceptBid
+						onClose={closeDomain}
+						bid={undefined}
+						bidData={undefined}
+						refetch={undefined}
+						isLoading={undefined}
+						assetUrl={''}
+						creatorId={''}
+						domainName={''}
+						domainId={''}
+						walletAddress={''}
+						highestBid={''}
+						wildPriceUsd={''}
+					/>
+				</Overlay>
+			)}
 			{selectedDomain !== undefined && (
 				<Overlay onClose={closeDomain} centered open>
-					<BidList
-						bids={selectedDomain.bids}
-						onAccept={onAccept}
-						isAccepting={false}
-					/>
+					<BidList bids={selectedDomain.bids} onAccept={onAccept} />
 				</Overlay>
 			)}
 			<GenericTable

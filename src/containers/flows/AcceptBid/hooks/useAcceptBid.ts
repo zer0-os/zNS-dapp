@@ -3,11 +3,16 @@
  * it doesn't require internal state
  */
 
+//- React Imports
+import { useState } from 'react';
+
+//- Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { useState } from 'react';
-import constants from '../AcceptBid.constants';
+
+//- Constants Imports
+import { ERRORS, MESSAGES } from '../AcceptBid.constants';
 
 export type UseAcceptBidReturn = {
 	accept: (bid: Bid) => Promise<void>;
@@ -23,28 +28,28 @@ const useAcceptBid = (): UseAcceptBidReturn => {
 	const accept = async (bid: Bid) => {
 		if (!library) {
 			console.error('Could not find web3 library');
-			throw new Error(constants.ERRORS.LIBRARY);
+			throw new Error(ERRORS.LIBRARY);
 		}
 
 		try {
 			// Signature request
-			setStatus(constants.MESSAGES.TEXT_WAITING_FOR_WALLET);
+			setStatus(MESSAGES.TEXT_WAITING_FOR_WALLET);
 			let tx;
 			try {
 				tx = await sdk.zauction.acceptBid(bid, library.getSigner());
 			} catch (err) {
 				console.error(err);
-				throw new Error(constants.ERRORS.SIGNATURE);
+				throw new Error(ERRORS.SIGNATURE);
 			}
 
 			// Transaction request
 			try {
-				setStatus(constants.MESSAGES.TEXT_ACCEPTING_BID);
+				setStatus(MESSAGES.TEXT_ACCEPTING_BID);
 				await tx?.wait();
 				setStatus(undefined);
 			} catch (err) {
 				console.error(err);
-				throw new Error(constants.ERRORS.TRANSACTION);
+				throw new Error(ERRORS.TRANSACTION);
 			}
 		} catch (err) {
 			setStatus(undefined);

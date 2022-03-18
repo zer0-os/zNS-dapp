@@ -23,6 +23,7 @@ export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/Cu
 export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/ConnectWalletPrompt';
 
 // Flows
+export { default as AcceptBid } from './flows/AcceptBid/AcceptBid';
 export { default as BuyNow } from './flows/BuyNow';
 export { default as BuyTokenRedirect } from './flows/BuyTokenRedirect/BuyTokenRedirect';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';

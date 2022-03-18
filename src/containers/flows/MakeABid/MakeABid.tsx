@@ -307,7 +307,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		<>
 			{isAllBidsModalOpen && bids !== undefined && (
 				<Overlay open onClose={hideAllBidsModal} centered>
-					<BidList bids={bids} wildPriceUsd={wildPriceUsd} />
+					{/* <BidList bids={bids} wildPriceUsd={wildPriceUsd} /> */}
 				</Overlay>
 			)}
 		</>
