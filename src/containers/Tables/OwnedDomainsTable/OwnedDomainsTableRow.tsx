@@ -1,63 +1,48 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Artwork, FutureButton, Spinner } from 'components';
-import React, { useEffect, useRef, useState } from 'react';
+import { Artwork, FutureButton, Overlay, Spinner } from 'components';
+import React, { useMemo, useState } from 'react';
 
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
+import { BidList } from 'containers';
 
-import { BidButton, BuyNowButton } from 'containers';
-
-import { useBidProvider } from 'lib/hooks/useBidProvider';
-import useCurrency from 'lib/hooks/useCurrency';
 import { useHistory } from 'react-router-dom';
-import { useBid } from './BidProvider';
-import { ethers } from 'ethers';
+import { BigNumber } from 'ethers';
 import { Domain } from '@zero-tech/zns-sdk/lib/types';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { sortBidsByAmount } from 'lib/utils/bids';
 
 import styles from './OwnedDomainsTableRow.module.scss';
-import { Bid } from '@zero-tech/zauction-sdk';
+import useBidData from 'lib/hooks/useBidData';
+import { formatEther } from '@ethersproject/units';
 
-const SubdomainTableRow = (props: any) => {
-	const isMounted = useRef<boolean>();
+enum Modal {
+	ViewBids,
+	EditMetadata,
+}
 
-	const walletContext = useWeb3React<Web3Provider>();
-	const { account } = walletContext;
-	const { push: goTo } = useHistory();
+type OwnedDomainsTableRowProps = {
+	refetch: () => void;
+	data: Domain;
+	// this should be refactored when GenericTable has better typing
+	[x: string]: any;
+};
 
-	const { instance: sdk } = useZnsSdk();
-	const { wildPriceUsd } = useCurrency();
-	const { selectDomain } = useBid();
+const OwnedDomainsTableRow = ({
+	refetch,
+	data: domain,
+}: OwnedDomainsTableRowProps) => {
+	const { push: goTo } = useHistory(); // for navigating on row click
 
-	const domain = props.data as Domain;
+	// Split out all the relevant data from hook
+	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
+	const bids = bidData?.bids;
+	const highestBid = bidData?.highestBid;
 
-	const [isBidDataLoading, setIsBidDataLoading] = useState<boolean>(true);
-	const [bids, setBids] = useState<Bid[] | undefined>();
-	const [highestBidAmount, setHighestBidAmount] = useState<
-		number | undefined
-	>();
+	// Decides which modal is being rendered
+	const [modal, setModal] = useState<Modal | undefined>();
 
-	useEffect(() => {
-		if (!sdk) {
-			return;
-		}
-		setBids(undefined);
-		setHighestBidAmount(undefined);
-		setIsBidDataLoading(true);
-		sdk.zauction.listBids(domain.id).then((bids: Bid[]) => {
-			const filteredBids = bids.filter((b) => b.bidder !== account);
-			const highestBid = sortBidsByAmount(filteredBids)[0];
-			if (!filteredBids && highestBid) {
-				setHighestBidAmount(
-					Number(ethers.utils.formatEther(highestBid.amount)),
-				);
-				setBids(filteredBids);
-			}
-			setIsBidDataLoading(false);
-		});
-	}, [domain, sdk]);
-
+	/**
+	 * Navigates to domain on row click
+	 * Makes sure the button wasn't clicked
+	 * @param event automatically provided by element onClick
+	 */
 	const onRowClick = (event: any) => {
 		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
 		if (!clickedButton) {
@@ -65,52 +50,77 @@ const SubdomainTableRow = (props: any) => {
 		}
 	};
 
-	const onViewBids = () => {
-		if (!bids) {
+	/**
+	 * Opens View Bids modal
+	 * @returns void
+	 */
+	const onViewBids = (): void => {
+		if (!bids || !bids.length) {
 			return;
 		}
-		selectDomain({ domain, bids });
+		setModal(Modal.ViewBids);
 	};
 
+	// Defines the modal element to be rendered
+	const ModalElement = useMemo(() => {
+		if (modal === Modal.ViewBids && bids) {
+			return (
+				<Overlay onClose={() => setModal(undefined)} centered open>
+					<BidList bids={bids} onAccept={refetch} />
+				</Overlay>
+			);
+		}
+		// add other modals here
+	}, [modal]);
+
 	return (
-		<tr className={styles.Container} onClick={onRowClick}>
-			<td className={styles.Left}>
-				<Artwork
-					domain={domain.name.split('wilder.')[1]}
-					disableInteraction
-					metadataUrl={domain.metadataUri}
-					id={domain.id}
-					style={{ maxWidth: 200 }}
-				/>
-			</td>
+		<>
+			{/* Modal */}
+			{ModalElement}
 
-			{/* Highest Bid */}
-			<td className={styles.Right}>
-				{isBidDataLoading ? (
-					<Spinner />
-				) : highestBidAmount ? (
-					highestBidAmount.toLocaleString()
-				) : (
-					'-'
-				)}
-			</td>
+			{/* Row content */}
+			<tr className={styles.Container} onClick={onRowClick}>
+				<td className={styles.Left}>
+					<Artwork
+						domain={domain.name.split('wilder.')[1]}
+						disableInteraction
+						metadataUrl={domain.metadataUri}
+						id={domain.id}
+						style={{ maxWidth: 200 }}
+					/>
+				</td>
 
-			{/* Number of Bids */}
-			<td className={styles.Right}>
-				{isBidDataLoading ? <Spinner /> : bids ? bids.length : '-'}
-			</td>
+				{/* Highest Bid */}
+				<td className={styles.Right}>
+					{isLoadingBidData ? (
+						<Spinner />
+					) : highestBid ? (
+						Number(
+							formatEther(BigNumber.from(highestBid.amount + '0')),
+						).toLocaleString()
+					) : (
+						'-'
+					)}
+				</td>
 
-			<td>
-				<FutureButton
-					className={styles.Button}
-					glow={bids !== undefined}
-					onClick={onViewBids}
-				>
-					View Bids
-				</FutureButton>
-			</td>
-		</tr>
+				{/* Number of Bids */}
+				<td className={styles.Right}>
+					{isLoadingBidData ? <Spinner /> : bids ? bids.length : '-'}
+				</td>
+
+				{/* View Bids */}
+				<td>
+					<FutureButton
+						className={styles.Button}
+						glow={(bids?.length || 0) > 0}
+						onClick={onViewBids}
+					>
+						View Bids
+					</FutureButton>
+				</td>
+			</tr>
+		</>
 	);
 };
 
-export default React.memo(SubdomainTableRow);
+export default React.memo(OwnedDomainsTableRow);

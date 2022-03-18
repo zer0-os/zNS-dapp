@@ -1,6 +1,8 @@
 import { Domain } from '@zero-tech/zns-sdk';
+import { useDidMount } from 'lib/hooks/useDidMount';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 type UseOwnedDomainsReturn = {
 	isLoading: boolean;
@@ -40,13 +42,15 @@ const useOwnedDomains = (
 			});
 	};
 
-	useEffect(() => {
+	useUpdateEffect(getOwnedDomains, [account, sdk]);
+
+	useDidMount(() => {
 		isMounted.current = true;
 		getOwnedDomains();
 		return () => {
 			isMounted.current = false;
 		};
-	}, [account, sdk]);
+	});
 
 	return {
 		isLoading,
