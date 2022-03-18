@@ -259,6 +259,7 @@ const GenericTable = (props: any) => {
 					<LoadingIndicator
 						className={styles.Loading}
 						text={props.loadingText ? props.loadingText : 'Loading'}
+						spinnerPosition="left"
 					/>
 				)}
 				<div ref={ref}></div>
