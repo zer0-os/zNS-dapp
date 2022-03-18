@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Maybe, Metadata } from 'lib/types';
-import { getMetadata } from 'lib/metadata';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 
 export function useDomainMetadata(metadataUri: Maybe<string>) {
@@ -29,7 +28,7 @@ export function useDomainMetadata(metadataUri: Maybe<string>) {
 		return () => {
 			isSubscribed = false;
 		};
-	}, [metadataUri]);
+	}, [metadataUri, sdk.utility]);
 
 	return metadata;
 }
