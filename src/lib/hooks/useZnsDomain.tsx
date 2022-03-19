@@ -66,12 +66,11 @@ export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 			name: sub.name,
 			owner: { id: sub.owner },
 		}));
-
 		if (isMounted.current) {
 			setDomain({
+				...metadata,
 				...formattedDomain,
 				subdomains: formattedSubdomains,
-				...metadata,
 			});
 			setDomainMetadata({ ...metadata, ...{ title: metadata.name } });
 			setLoading(false);
