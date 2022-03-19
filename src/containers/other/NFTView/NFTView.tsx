@@ -143,7 +143,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const registrarAddress = contracts ? contracts.registry.address : '';
 
 	const etherscanBaseUri = getEtherscanUri(networkType);
-	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
+	const etherscanLink = `${etherscanBaseUri}token/${
+		znsDomain?.contract
+	}?a=${domainIdInteger.toString()}`;
 
 	const isOwnedByYou =
 		znsDomain?.owner.id.toLowerCase() === account?.toLowerCase();
