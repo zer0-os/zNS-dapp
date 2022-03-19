@@ -17,25 +17,25 @@ export const getDomainMintEvent = gql`
 	}
 `;
 
-export const getDomainTransfers = gql`
-	query DomainTransferred($id: ID!) {
-		domainTransferreds(where: { domain: $id }) {
-			id
-			domain {
-				id
-			}
-			blockNumber
-			timestamp
-			transactionID
-			from {
-				id
-			}
-			to {
-				id
-			}
-		}
-	}
-`;
+// export const getDomainTransfers = gql`
+// 	query DomainTransferred($id: ID!) {
+// 		domainTransferreds(where: { domain: $id }) {
+// 			id
+// 			domain {
+// 				id
+// 			}
+// 			blockNumber
+// 			timestamp
+// 			transactionID
+// 			from {
+// 				id
+// 			}
+// 			to {
+// 				id
+// 			}
+// 		}
+// 	}
+// `;
 
 export const byIdQuery = gql`
 	query Domain($id: ID!) {
@@ -66,6 +66,7 @@ export const byIdQuery = gql`
 			lockedBy {
 				id
 			}
+			contract
 			isLocked
 			metadata
 		}
@@ -101,6 +102,7 @@ export const byNameQuery = gql`
 			lockedBy {
 				id
 			}
+			contract
 			isLocked
 			metadata
 		}
@@ -136,6 +138,7 @@ export const childDomainsQuery = gql`
 			lockedBy {
 				id
 			}
+			contract
 			isLocked
 			metadata
 		}
@@ -171,6 +174,7 @@ export const ownedByAccountQuery = gql`
 			lockedBy {
 				id
 			}
+			contract
 			isLocked
 			metadata
 		}

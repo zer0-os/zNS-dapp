@@ -57,14 +57,14 @@ export function useDomainsOwnedByUserQuery(
 	return query;
 }
 
-export function useDomainsTransfers(domainId: string, pollInterval?: number) {
-	const query = useQueryHook<DomainsQueryResult>(
-		queries.getDomainTransfers,
-		{
-			id: domainId,
-		},
-		pollInterval,
-	);
+// export function useDomainsTransfers(domainId: string, pollInterval?: number) {
+// 	const query = useQueryHook<DomainsQueryResult>(
+// 		queries.getDomainTransfers,
+// 		{
+// 			id: domainId,
+// 		},
+// 		pollInterval,
+// 	);
 
-	return query;
-}
+// 	return query;
+// }

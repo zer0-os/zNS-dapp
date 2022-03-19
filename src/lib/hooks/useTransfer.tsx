@@ -18,6 +18,7 @@ import {
 	getTransferSuccessMessage,
 	MESSAGES,
 } from 'containers/flows/TransferOwnership/TransferOwnership.constants';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 
 export type UseTransferReturn = {
 	transferring: TransferSubmitParams[];
@@ -27,19 +28,20 @@ export type UseTransferReturn = {
 
 export const useTransfer = (): UseTransferReturn => {
 	const { addNotification } = useNotification();
+	const { instance: sdk } = useZnsSdk();
 
 	const { reduxState, reduxActions } = useTransferRedux();
 
 	const registryContract = useZnsContracts()!.registry;
 
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account } = walletContext;
+	const { account, library } = walletContext;
 
 	const transferRequest = useCallback(
 		async (params: TransferSubmitParams) => {
 			const successNotification = getTransferSuccessMessage(params.name);
 
-			if (!account) {
+			if (!account || !library) {
 				console.error(MESSAGES.REQUEST_NO_WALLET);
 				return;
 			}
@@ -49,10 +51,15 @@ export const useTransfer = (): UseTransferReturn => {
 			}
 
 			try {
-				const tx = await registryContract.transferFrom(
-					account,
+				// const tx = await registryContract.transferFrom(
+				// 	account,
+				// 	params.walletAddress,
+				// 	params.domainId,
+				// );
+				const tx = await sdk.transferDomainOwnership(
 					params.walletAddress,
 					params.domainId,
+					library.getSigner(),
 				);
 
 				// start transferring

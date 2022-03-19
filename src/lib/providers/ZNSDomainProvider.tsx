@@ -4,6 +4,7 @@ import { useSubgraphProvider } from './SubgraphProvider';
 
 import { queries } from '../zns';
 import { DomainQueryResult } from 'lib/types';
+import { useZnsSdk } from './ZnsSdkProvider';
 
 interface ZNSDomainsContext {
 	getDomainData: (
@@ -21,6 +22,7 @@ export const zNSDomainProvider = React.createContext<ZNSDomainsContext>(
 
 export function ZNSDomainsProvider({ children }: any) {
 	const subgraphProvider = useSubgraphProvider();
+	const { instance: sdk } = useZnsSdk();
 
 	const getDomainData = async (
 		domainId: string,
