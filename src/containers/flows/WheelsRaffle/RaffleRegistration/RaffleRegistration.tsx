@@ -37,7 +37,6 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	>();
 	const [isLoadingRegistration, setIsLoadingRegistration] =
 		useState<boolean>(false);
-	const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
 
 	// Email submission
 	// const [isLoadingEmail, setIsLoadingEmail] = useState<boolean>(false);
@@ -66,15 +65,6 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	});
 
 	const [step, setStep] = useState<Steps>(Steps.AboutRaffle);
-
-	const isValidEmail = (email: string) => {
-		if (email.length === 0) {
-			return false;
-		}
-		const re =
-			/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-		return re.test(String(email).toLowerCase());
-	};
 
 	const onSubmitEmail = async () => {
 		// const valid = isValidEmail(userEmail || '');
@@ -161,22 +151,6 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		} finally {
 			setIsLoadingRegistration(false);
 		}
-	};
-
-	const onSubmitRegistration = async () => {
-		setRegistrationError(undefined);
-		setIsLoadingRegistration(true);
-
-		try {
-			await props.onSubmit(updateStatus);
-			setHasSubmitted(true);
-			setStep(Steps.WalletAddress);
-		} catch (e) {
-			setRegistrationError(e);
-			console.error(e);
-		}
-
-		setIsLoadingRegistration(false);
 	};
 
 	const onInputChange = (email: string) => {

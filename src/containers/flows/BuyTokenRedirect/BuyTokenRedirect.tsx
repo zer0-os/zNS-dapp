@@ -34,7 +34,7 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 			size === Size.SML ? styles.CurrentPriceSml : styles.CurrentPriceLrg;
 
 		return (
-			<>
+			<div className={size === Size.SML ? styles.Details : ''}>
 				{title && <span className={styles.TickerName}>{title}</span>}
 				<div className={styles.CurrentPriceContainer}>
 					<span className={isSizeSmall}>${wildPriceUsd}</span>
@@ -50,7 +50,7 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 							: `${formatByDecimalPlace(wildPercentageChange, 1)}%`}
 					</span>
 				</div>
-			</>
+			</div>
 		);
 	};
 
@@ -110,9 +110,7 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 						walletConnected ? styles.WalletConnected : ''
 					}`}
 				>
-					<div
-						className={`${styles.DropdownContent} border-primary border-rounded blur`}
-					>
+					<div className={`${styles.DropdownContent} border-primary`}>
 						<div className={styles.Section} style={{ alignItems: 'baseline' }}>
 							{currentPriceDetails(Size.LRG)}
 							{externalUrl()}

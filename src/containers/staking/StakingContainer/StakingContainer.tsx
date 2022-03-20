@@ -16,12 +16,12 @@ import {
 	useRouteMatch,
 } from 'react-router-dom';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
-// import { useNav } from 'lib/providers/NavProvider';
 import { useStakingUserData } from 'lib/providers/staking/StakingUserDataProvider';
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 import { useWeb3React } from '@web3-react/core';
-import { useNavBarContents } from 'lib/providers/NavBarProvider';
+import { useNavbar } from 'lib/hooks/useNavbar';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { ROUTES } from 'constants/routes';
 
 type StakingContainerProps = {
 	className?: string;
@@ -63,18 +63,18 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 		refetchUserData();
 	};
 
-	const { setTitle } = useNavBarContents();
+	const { setNavbarTitle } = useNavbar();
 
 	useUpdateEffect(() => {
-		switch (pathname.replace('/staking', '')) {
-			case '/pools':
-				setTitle('Staking - Pools');
+		switch (pathname.replace(ROUTES.STAKING, '')) {
+			case ROUTES.STAKING_POOLS:
+				setNavbarTitle('Staking - Pools');
 				break;
-			case '/deposits':
-				setTitle('Staking - My Deposits');
+			case ROUTES.STAKING_DEPOSITS:
+				setNavbarTitle('Staking - My Deposits');
 				break;
 			default:
-				setTitle(undefined);
+				setNavbarTitle(undefined);
 				break;
 		}
 	}, [pathname]);
@@ -167,22 +167,34 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				>
 					<nav className={styles.Links}>
 						<Link
-							className={cx({ Active: pathname.includes('/pools') })}
-							to={`${path}/pools`}
+							className={cx({
+								Active: pathname.includes(ROUTES.STAKING_POOLS),
+							})}
+							to={path + ROUTES.STAKING_POOLS}
 						>
 							Pools
 						</Link>
 						<Link
-							className={cx({ Active: pathname.includes('/deposits') })}
-							to={`${path}/deposits`}
+							className={cx({
+								Active: pathname.includes(ROUTES.STAKING_DEPOSITS),
+							})}
+							to={path + ROUTES.STAKING_DEPOSITS}
 						>
 							My Deposits
 						</Link>
 					</nav>
-					<Route exact path={`${path}/deposits`} component={Deposits} />
-					<Route exact path={`${path}/pools`} component={StakePools} />
+					<Route
+						exact
+						path={path + ROUTES.STAKING_DEPOSITS}
+						component={Deposits}
+					/>
+					<Route
+						exact
+						path={path + ROUTES.STAKING_POOLS}
+						component={StakePools}
+					/>
 					<Route exact path={path}>
-						<Redirect to={`${path}/pools`} />
+						<Redirect to={path + ROUTES.STAKING_POOLS} />
 					</Route>
 				</div>
 			</Switch>

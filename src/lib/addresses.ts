@@ -41,7 +41,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		basic: '0x1188dD1a0F42BA4a117EF1c09D884f5183D40B28',
 		staking: '0x7FDd24f30fB8a3E0021e85Fdb737a3483D3C8135', //$LOOT staking controller
 		wildToken: '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79',
-		zAuction: '0xe94a5456Db55af2D6a37FaDd7cEd363EDBcA65CF',
+		zAuction: '0xb2416Aed6f5439Ffa0eCCAaa2b643f3D9828f86B',
 		lootToken: '0x5bAbCA2Af93A9887C86161083b8A90160DA068f2',
 		// NOTE: wheels sale - current address is for kovan and not for rinkeby
 		wheelSale: '0xE744793F0Bd9FDB2d68a9aDd367d3FfE9E4bcE04',

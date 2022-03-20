@@ -35,7 +35,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	glow,
 	loading,
 	alt,
-	disabled,
+	disabled = false,
 }) => {
 	const [hasHovered, setHovered] = useState(false);
 	const [isSelected, setSelected] = useState(false);
@@ -46,7 +46,7 @@ const FutureButton: React.FC<FutureButtonProps> = ({
 	};
 
 	const handleClick = (event: any) => {
-		if (loading) return;
+		if (loading || disabled) return;
 		if (onClick) onClick(event);
 		if (toggleable) setSelected(!isSelected);
 	};

@@ -19,6 +19,7 @@ import { Confirmation, DomainTable, Overlay, Spinner } from 'components';
 import { BidList } from 'containers';
 import { useDomainsOwnedByUserQuery } from 'lib/hooks/zNSDomainHooks';
 import { ERC20 } from 'types';
+import useNotification from 'lib/hooks/useNotification';
 
 type AcceptBidModalData = {
 	domain: Domain;
@@ -45,6 +46,7 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 
 	// zAuction Integrations
 	const { approveAllTokens, isApprovedForAllTokens } = useApprovals();
+	const { addNotification } = useNotification();
 	const znsContracts = useZnsContracts()!;
 	const { acceptBid } = useBidProvider();
 	const zAuctionAddress = znsContracts.zAuction.address;
@@ -113,7 +115,6 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 	};
 
 	const closeBid = () => {
-		setIsAccepting(false);
 		setAcceptingBid(undefined);
 		setErrorWhileAccepting(undefined);
 	};
@@ -127,19 +128,15 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 		try {
 			setIsAccepting(true);
 			setErrorWhileAccepting(undefined);
-
 			const { bidderAccount, amount: bidAmount } = acceptingBid.bid;
-
 			// Check bidder has sufficient balance
 			setStatusText("Checking bidder's WILD balance");
 			const bidAsWei = ethers.utils.parseEther(bidAmount.toString());
 			const checkBalance = await wildContract.balanceOf(bidderAccount);
 			const bidderHasInsufficientBalance = checkBalance.lt(bidAsWei);
-
 			if (bidderHasInsufficientBalance) {
 				throw new Error('Bidder has insufficient balance');
 			}
-
 			try {
 				// Wrapping a try around this as acceptBid doesn't throw any
 				// descriptive errors (yet)
@@ -149,21 +146,27 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 					setStatusText('Processing transaction');
 					await tx.wait();
 				}
-			} catch {
+			} catch (e) {
+				console.error(e);
 				throw new Error('Failed to accept bid');
 			}
-
-			setTimeout(() => {
-				//refetch after confirm the transaction, with a delay to wait until backend gets updated
-				ownedQuery.refetch();
-			}, 500);
-			setIsAccepting(false);
-			setAcceptingBid(undefined);
+			onAcceptBidSuccess();
 		} catch (e) {
 			setErrorWhileAccepting((e as Error).message || 'Failed to accept bid');
 			setIsAccepting(false);
 		}
 		setStatusText(undefined);
+	};
+
+	const onAcceptBidSuccess = () => {
+		setIsAccepting(false);
+		setAcceptingBid(undefined);
+		setViewingDomain(undefined);
+		addNotification('Successfully accepted bid.');
+		setTimeout(() => {
+			//refetch after confirm the transaction, with a delay to wait until backend gets updated
+			ownedQuery.refetch();
+		}, 500);
 	};
 
 	const rowClick = (domain: Domain) => {
@@ -255,7 +258,11 @@ const OwnedDomainTables: React.FC<OwnedDomainTableProps> = ({ onNavigate }) => {
 			)}
 			{viewingDomain !== undefined && (
 				<Overlay onClose={closeDomain} centered open>
-					<BidList bids={viewingDomain.bids} onAccept={accept} />
+					<BidList
+						bids={viewingDomain.bids}
+						onAccept={accept}
+						isAccepting={isAccepting}
+					/>
 				</Overlay>
 			)}
 		</>

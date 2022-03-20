@@ -4,18 +4,21 @@ import { useEffect, useRef, useState } from 'react';
 // Component Imports
 import {
 	Detail,
-	FutureButton,
 	Member,
 	NFTMedia,
 	TextButton,
 	Tooltip,
+	OptionDropdown,
 } from 'components';
+
+// Container Imports
 import { BuyNowButton, SetBuyNowButton } from 'containers';
 
 // Asset Imports
 import shareIcon from '../assets/share.svg';
 import downloadIcon from '../assets/download.svg';
 import background from '../assets/bg.jpeg';
+import moreIcon from '../assets/more-vertical.svg';
 
 // Style Imports
 import styles from './NFT.module.scss';
@@ -27,11 +30,19 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { ethers } from 'ethers';
 import CancelBidButton from 'containers/flows/CancelBid/CancelBidButton';
 
+//- Type Imports
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
+
 export const Amount = (amount: string) => (
 	<span className={styles.Amount}>{amount}</span>
 );
 
 const cx = classNames.bind(styles);
+
+type OptionType = {
+	icon: string;
+	title: string;
+}[];
 
 type NFTProps = {
 	domainId?: string;
@@ -41,7 +52,7 @@ type NFTProps = {
 	assetUrl?: string;
 	description?: string;
 	buyNowPrice?: number;
-	onMakeBid?: () => void;
+	onMakeBid: () => void;
 	onDownload?: () => void;
 	onSuccessBuyNow?: () => void;
 	onShare?: () => void;
@@ -53,6 +64,9 @@ type NFTProps = {
 	wildPriceUsd?: number;
 	account?: string;
 	onTransfer?: () => void;
+	isBiddable?: boolean;
+	options: OptionType;
+	onSelectOption: (option: Option) => void;
 	onRefetch: () => void;
 };
 
@@ -74,6 +88,9 @@ const NFT = ({
 	account,
 	onMakeBid,
 	onTransfer,
+	isBiddable,
+	options,
+	onSelectOption,
 	onRefetch,
 }: NFTProps) => {
 	const blobCache = useRef<string>();
@@ -167,7 +184,7 @@ const NFT = ({
 						: '-'
 				}
 			/>
-			{account && !isOwnedByYou && (
+			{account && !isOwnedByYou && isBiddable && (
 				<TextButton className={styles.Action} onClick={onMakeBid}>
 					Make A Bid
 				</TextButton>
@@ -177,17 +194,15 @@ const NFT = ({
 
 	const YourBid = () => (
 		<div>
-			{!isOwnedByYou && yourBidAsNumber !== undefined && (
-				<Detail
-					text={Amount(yourBidAsNumber.toLocaleString() ?? '-')}
-					subtext={'Your Bid (WILD)'}
-					bottomText={
-						wildPriceUsd
-							? '$' + toFiat(wildPriceUsd * yourBidAsNumber) + ' USD'
-							: '-'
-					}
-				/>
-			)}
+			<Detail
+				text={Amount(yourBidAsNumber!.toLocaleString() ?? '-')}
+				subtext={'Your Bid (WILD)'}
+				bottomText={
+					wildPriceUsd
+						? '$' + toFiat(wildPriceUsd * yourBidAsNumber!) + ' USD'
+						: '-'
+				}
+			/>
 			<CancelBidButton
 				className={styles.Action}
 				isTextButton
@@ -230,6 +245,17 @@ const NFT = ({
 							<img alt="download asset" src={downloadIcon} />
 						</button>
 					</Tooltip>
+					{options.length > 0 && (
+						<OptionDropdown
+							onSelect={onSelectOption}
+							options={options}
+							className={styles.MoreDropdown}
+						>
+							<button>
+								<img alt="more actions" src={moreIcon} />
+							</button>
+						</OptionDropdown>
+					)}
 				</div>
 				<div className={styles.Details}>
 					<div>
@@ -244,13 +270,8 @@ const NFT = ({
 						{BuyNowPrice()}
 						{HighestBid()}
 						<div className={styles.Break}></div>
-						{yourBid !== undefined && YourBid()}
+						{account && !isOwnedByYou && yourBidAsNumber && YourBid()}
 					</div>
-					{isOwnedByYou && (
-						<FutureButton className={styles.Transfer} glow onClick={onTransfer}>
-							Transfer Ownership
-						</FutureButton>
-					)}
 				</div>
 
 				{backgroundBlob !== undefined && (
