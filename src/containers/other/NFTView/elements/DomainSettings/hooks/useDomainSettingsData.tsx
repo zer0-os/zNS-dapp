@@ -21,6 +21,7 @@ export const useDomainSettingsData = (domainId: string) => {
 
 	const znsContracts = useZnsContracts()!;
 	const registrar = znsContracts.registry;
+	const { library } = useWeb3React<Web3Provider>();
 
 	const [isLocked, setIsLocked] = useState<boolean>(true);
 	const [isChanged, setIsChanged] = useState<boolean>(false);
@@ -107,6 +108,7 @@ export const useDomainSettingsData = (domainId: string) => {
 			unlockable,
 		},
 		registrar,
+		library,
 		setDomainMetadata,
 	};
 };
