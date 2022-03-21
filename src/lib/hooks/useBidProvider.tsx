@@ -14,6 +14,12 @@ import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { useZAuctionBaseApiUri } from './useZAuctionBaseApiUri';
 import useNotification from './useNotification';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
+import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
+import {
+	PlaceBidStatus,
+	PlaceBidStatusCallback,
+} from '@zero-tech/zauction-sdk';
 
 /////////////////////
 // Mock data stuff //
@@ -55,25 +61,20 @@ const asyncGetMock = async (amount: number, timeout: number) => {
 	return getMock(amount);
 };
 
-// This will receive either DTOs, and will populate the parameters with the correct data
-const getBidParameters = (
-	dto: zAuction.BidDto,
-	tokenId: string | undefined,
-): Bid => {
-	const amount = Number(ethers.utils.formatEther(dto.bidAmount));
-
+const transformBid = (bid: zAuctionBid) => {
 	return {
-		bidderAccount: dto.account,
-		amount,
-		date: new Date(dto.date),
-		tokenId: dto.tokenId,
-		signature: dto.signedMessage,
-		auctionId: dto.auctionId,
-		nftAddress: dto.contractAddress,
-		minBid: dto.minimumBid,
-		startBlock: dto.startBlock,
-		expireBlock: dto.expireBlock,
-	};
+		bidderAccount: bid.bidder,
+		amount: Number(ethers.utils.formatEther(bid.amount)),
+		date: new Date(Number(bid.timestamp)),
+		tokenId: bid.tokenId,
+		signature: bid.signedMessage,
+		auctionId: bid.auctionId,
+		nftAddress: bid.contract,
+		// TODO: No minBid property on zAuctionBid
+		minBid: '0',
+		startBlock: bid.startBlock,
+		expireBlock: bid.expireBlock,
+	} as Bid;
 };
 
 export type UseBidProviderReturn = {
@@ -99,6 +100,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	const context = useWeb3React();
 	const { addNotification } = useNotification();
 	const { instance: sdk } = useZnsSdk();
+	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const contracts = useZnsContracts();
 	const zAuctionContract = useZnsContracts()?.zAuction;
 	const chainSelector = useChainSelector();
@@ -140,60 +142,50 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 	const getBidsForAccount = useCallback(
 		async (id: string) => {
-			if (baseApiUri === undefined) {
-				console.warn('no api endpoint');
+			if (zAuctionInstance === undefined) {
+				console.warn('No zAuctionInstance');
 				return;
 			}
 
 			try {
-				const bids = await zAuction.getBidsForAccount(baseApiUri, id);
+				const bids = await zAuctionInstance.listBidsByAccount(id);
+				const displayBids = bids.map((e) => transformBid(e));
 
-				try {
-					const displayBids = bids.map((e) => {
-						return getBidParameters(e, undefined);
-					});
+				console.log(displayBids);
 
-					return displayBids;
-				} catch (e) {
-					console.error('Failed to retrieve bids for user ' + id);
-				}
+				return displayBids;
 			} catch (e) {
 				console.error('Failed to retrieve bids for user ' + id);
 				return [];
 			}
 		},
-		[baseApiUri],
+		[zAuctionInstance],
 	);
 
 	const getBidsForDomain = useCallback(
 		async (domain: Domain, filterOwnBids?: boolean) => {
-			if (baseApiUri === undefined) {
-				console.warn('no api endpoint');
+			if (zAuctionInstance === undefined) {
+				console.warn('No zAuctionInstance');
 				return;
 			}
 
 			try {
-				let bids = (await zAuction.getBidsForNft(
-					baseApiUri,
-					contracts!.registry.address,
-					domain.id,
-				)) as zAuction.BidDto[];
+				let data = await zAuctionInstance.listBids([domain.id]);
+				let bids = data[domain.id];
 
 				try {
 					if (filterOwnBids) {
 						bids = bids.filter((e) => {
-							return e.account.toLowerCase() !== domain.owner.id.toLowerCase();
+							return e.bidder.toLowerCase() !== domain.owner.id.toLowerCase();
 						});
 					}
 
-					let displayBids = bids.map((e) => {
-						return getBidParameters(e, domain.id);
-					});
+					let displayBids = bids.map((e) => transformBid(e));
 
 					displayBids.sort((a, b) => {
 						return b.amount - a.amount;
 					});
-
+					console.log(displayBids);
 					// @TODO: Add filtering expired/invalid bids out
 					return displayBids;
 				} catch (e) {
@@ -204,27 +196,61 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				return;
 			}
 		},
-		[baseApiUri, contracts],
+		[zAuctionInstance, contracts],
 	);
+
+	const onPlaceBidStatusChange = (
+		status: PlaceBidStatus,
+		onStep: (status: string) => void,
+	) => {
+		switch (status) {
+			case 0:
+				onStep('Generating bid...');
+				break;
+			case 1:
+				onStep('Waiting for bid to be signed by wallet...');
+				break;
+			case 2:
+				onStep('Submitting bid...');
+				break;
+			case 3:
+				onStep('Validating bid...');
+				break;
+			default:
+				throw Error(`Failed to submit bid.`);
+		}
+	};
 
 	const placeBid = useCallback(
 		async (domain: Domain, bid: number, onStep: (status: string) => void) => {
-			if (baseApiUri === undefined) {
-				console.warn('no api endpoint');
+			if (zAuctionInstance === undefined) {
+				console.warn('No zAuctionInstance');
 				return;
 			}
 
-			await zAuction.placeBid(
-				baseApiUri,
-				context.library!,
-				contracts!.registry.address,
-				domain.id,
-				ethers.utils.parseEther(bid.toString()).toString(),
-				onStep,
-			);
-			addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
+			// await zAuction.placeBid(
+			// 	baseApiUri,
+			// 	context.library!,
+			// 	contracts!.registry.address,
+			// 	domain.id,
+			// 	ethers.utils.parseEther(bid.toString()).toString(),
+			// 	onStep,
+			// );
+			try {
+				await zAuctionInstance.placeBid(
+					{
+						tokenId: domain.id,
+						bidAmount: ethers.utils.parseEther(bid.toString()).toString(),
+					},
+					context.library!.getSigner(),
+					(status) => onPlaceBidStatusChange(status, onStep),
+				);
+				addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
+			} catch (e) {
+				console.log(e);
+			}
 		},
-		[baseApiUri, contracts, context.library, addNotification],
+		[zAuctionInstance, context.library, addNotification],
 	);
 
 	return useMemo(
