@@ -70,15 +70,20 @@ const SubdomainTableRow = (props: any) => {
 
 		if (library) {
 			const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
-			const buyNow = await zAuction.getBuyNowPrice(
-				domain.id,
-				library.getSigner(),
-			);
-			if (isMounted.current === false) {
-				return;
-			}
-			if (buyNow) {
-				setBuyNowPrice(Number(ethers.utils.formatEther(buyNow.price)));
+			try {
+				const buyNow = await zAuction.getBuyNowPrice(
+					domain.id,
+					library.getSigner(),
+				);
+				if (isMounted.current === false) {
+					return;
+				}
+				if (buyNow) {
+					setBuyNowPrice(Number(ethers.utils.formatEther(buyNow.price)));
+				}
+			} catch (err) {
+				setIsPriceDataLoading(false);
+				console.log('Failed to get buy now price', err);
 			}
 		}
 
