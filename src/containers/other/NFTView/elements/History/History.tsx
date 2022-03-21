@@ -11,15 +11,12 @@ import { DomainEvents } from '../../NFTView.types';
 import styles from '../../NFTView.module.scss';
 
 //- Componennt level type definitions
-type HistoriesProps = {
+type HistoryProps = {
 	isLoading: boolean;
-	histories: DomainEvents[];
+	history: DomainEvents[];
 };
 
-export const Histories: React.FC<HistoriesProps> = ({
-	isLoading,
-	histories,
-}) => {
+export const History: React.FC<HistoryProps> = ({ isLoading, history }) => {
 	return (
 		<section
 			className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
@@ -32,9 +29,9 @@ export const Histories: React.FC<HistoriesProps> = ({
 				</div>
 			)}
 
-			{!isLoading && histories.length > 0 && (
+			{!isLoading && History.length > 0 && (
 				<ul>
-					{histories.map((item: DomainEvents, i: number) => (
+					{history.map((item: DomainEvents, i: number) => (
 						<div key={i}>
 							<HistoryItem item={item} />
 						</div>
@@ -45,4 +42,4 @@ export const Histories: React.FC<HistoriesProps> = ({
 	);
 };
 
-export default Histories;
+export default History;

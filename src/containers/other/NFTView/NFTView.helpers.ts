@@ -1,7 +1,6 @@
 import { ethers } from 'ethers';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { DomainEventType } from '@zero-tech/zns-sdk/lib/types';
-import { Maybe, DisplayParentDomain } from 'lib/types';
 import { getHashFromIPFSUrl } from 'lib/ipfs';
 import config from 'config';
 import { DomainEvents } from './NFTView.types';
@@ -30,41 +29,36 @@ export const truncateText = (
 };
 
 export const getDomainAsset = async (
-	znsDomain: Maybe<DisplayParentDomain>,
+	url: string,
 ): Promise<string | undefined> => {
-	if (znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image) {
-		// Get hash from asset
-		const url = (znsDomain.animation_url ||
-			znsDomain.image_full ||
-			znsDomain.image)!;
-		const hash = getHashFromIPFSUrl(url);
+	// Get hash from asset
+	const hash = getHashFromIPFSUrl(url);
 
-		const checkUrl = (url: string) => {
-			return new Promise((resolve, reject) => {
-				fetch(url, { method: 'HEAD' }).then((r) => {
-					if (r.ok) {
-						resolve(url);
-					} else {
-						reject();
-					}
-				});
+	const checkUrl = (url: string) => {
+		return new Promise((resolve, reject) => {
+			fetch(url, { method: 'HEAD' }).then((r) => {
+				if (r.ok) {
+					resolve(url);
+				} else {
+					reject();
+				}
 			});
-		};
+		});
+	};
 
-		try {
-			const asset = await Promise.any([
-				checkUrl(NFT_ASSET_URLS.VIDEO.replace(/NFT_ASSET_HASH/g, hash)),
-				checkUrl(NFT_ASSET_URLS.IMAGE.replace(/NFT_ASSET_HASH/g, hash)),
-			]);
+	try {
+		const asset = await Promise.any([
+			checkUrl(NFT_ASSET_URLS.VIDEO.replace(/NFT_ASSET_HASH/g, hash)),
+			checkUrl(NFT_ASSET_URLS.IMAGE.replace(/NFT_ASSET_HASH/g, hash)),
+		]);
 
-			if (typeof asset !== 'string') {
-				return;
-			}
-
-			return asset;
-		} catch (e) {
-			console.error(e);
+		if (typeof asset !== 'string') {
+			return;
 		}
+
+		return asset;
+	} catch (e) {
+		console.error(e);
 	}
 };
 
@@ -121,11 +115,11 @@ export const sortBidsByAmount = (bids: Bid[], asc: boolean = true): Bid[] => {
 	);
 };
 
-export const sortHistoriesByTimestamp = (
-	histories: DomainEvents[],
+export const sortEventsByTimestamp = (
+	events: DomainEvents[],
 	asc: boolean = true,
 ): DomainEvents[] => {
-	return histories.sort((a: DomainEvents, b: DomainEvents) => {
+	return events.sort((a: DomainEvents, b: DomainEvents) => {
 		const aVal =
 			a.type === DomainEventType.bid
 				? Number(a.timestamp)

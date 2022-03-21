@@ -22,19 +22,19 @@ import {
 	downloadDomainAsset,
 	shareDomainAsset,
 	sortBidsByAmount,
-	sortHistoriesByTimestamp,
+	sortEventsByTimestamp,
 } from '../NFTView.helpers';
 
 //- Hook level type definitions
 interface UseNftDataReturn {
 	isHistoryLoading: boolean;
 	isPriceDataLoading: boolean | undefined;
-	histories: DomainEvents[];
+	history: DomainEvents[];
 	bids: DomainBidEvent[];
 	highestBid: number | undefined;
 	buyNowPrice: number | undefined;
 	yourBid: Bid | undefined;
-	getHistories: () => Promise<void>;
+	getHistory: () => Promise<void>;
 	getPriceData: () => Promise<void>;
 	downloadAsset: () => Promise<void>;
 	shareAsset: () => Promise<void>;
@@ -58,7 +58,7 @@ export const useNftData = (): UseNftDataReturn => {
 	 *
 	 */
 	const [isHistoryLoading, setIsHistoryLoading] = useState<boolean>(false);
-	const [histories, setHistories] = useState<DomainEvents[]>([]);
+	const [history, setHistory] = useState<DomainEvents[]>([]);
 	const [isPriceDataLoading, setIsPriceDataLoading] = useState<boolean>();
 	const [highestBid, setHighestBid] = useState<Bid | undefined>();
 	const [buyNowPrice, setBuyNowPrice] = useState<number | undefined>();
@@ -69,10 +69,10 @@ export const useNftData = (): UseNftDataReturn => {
 	 *
 	 */
 	const bids: DomainBidEvent[] = useMemo(() => {
-		return histories.filter(
+		return history.filter(
 			(e: DomainEvents) => e.type === DomainEventType.bid,
 		) as DomainBidEvent[];
-	}, [histories]);
+	}, [history]);
 
 	const highestBidAmount: number | undefined = useMemo(() => {
 		return highestBid?.amount
@@ -80,11 +80,17 @@ export const useNftData = (): UseNftDataReturn => {
 			: undefined;
 	}, [highestBid]);
 
+	const domainAssetURL = useMemo(() => {
+		return (
+			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image
+		);
+	}, [znsDomain]);
+
 	/**
 	 * Callback functions
 	 *
 	 */
-	const getHistories = useCallback(async () => {
+	const getHistory = useCallback(async () => {
 		if (znsDomain) {
 			setIsHistoryLoading(true);
 
@@ -92,7 +98,7 @@ export const useNftData = (): UseNftDataReturn => {
 				const events = (await sdk.instance?.getDomainEvents(
 					znsDomain.id,
 				)) as DomainEvents[];
-				setHistories(sortHistoriesByTimestamp(events));
+				setHistory(sortEventsByTimestamp(events));
 			} catch (e) {
 				console.error('Failed to retrieve bid data');
 			} finally {
@@ -150,14 +156,18 @@ export const useNftData = (): UseNftDataReturn => {
 	}, [sdk.instance, account, library, znsDomain]);
 
 	const downloadAsset = useCallback(async () => {
-		const asset = await getDomainAsset(znsDomain);
+		if (!domainAssetURL) {
+			return;
+		}
+
+		const asset = await getDomainAsset(domainAssetURL);
 
 		if (asset) {
 			addNotification('Download starting');
 
 			await downloadDomainAsset(asset);
 		}
-	}, [znsDomain, addNotification]);
+	}, [domainAssetURL, addNotification]);
 
 	const shareAsset = useCallback(async () => {
 		if (domain) {
@@ -172,7 +182,7 @@ export const useNftData = (): UseNftDataReturn => {
 	useEffect(() => {
 		if (znsDomain) {
 			getPriceData();
-			getHistories();
+			getHistory();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain, account]);
@@ -180,12 +190,12 @@ export const useNftData = (): UseNftDataReturn => {
 	return {
 		isHistoryLoading,
 		isPriceDataLoading,
-		histories,
+		history,
 		bids,
 		highestBid: highestBidAmount,
 		buyNowPrice,
 		yourBid,
-		getHistories,
+		getHistory,
 		getPriceData,
 		downloadAsset,
 		shareAsset,

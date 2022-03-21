@@ -13,7 +13,7 @@ import {
 	Stats,
 	TokenHashBoxes,
 	Attributes,
-	Histories,
+	History,
 	DomainSettings,
 } from './elements';
 
@@ -56,12 +56,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const {
 		isHistoryLoading,
 		isPriceDataLoading,
-		histories,
+		history,
 		bids,
 		highestBid,
 		buyNowPrice,
 		yourBid,
-		getHistories,
+		getHistory,
 		getPriceData,
 		downloadAsset,
 		shareAsset,
@@ -92,9 +92,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	const onBid = useCallback(async () => {
 		getPriceData();
-		getHistories();
+		getHistory();
 		onCloseBidOverlay();
-	}, [getHistories, getPriceData]);
+	}, [getHistory, getPriceData]);
 
 	const onSelectNFTMoreOption = (option: Option) => {
 		if (option.title === NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS) {
@@ -148,7 +148,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				znsDomain={znsDomain}
 			/>
 
-			<Histories isLoading={isHistoryLoading} histories={histories} />
+			<History isLoading={isHistoryLoading} history={history} />
 
 			{/* Make a Bid Modal */}
 			{isBidOverlayOpen && (

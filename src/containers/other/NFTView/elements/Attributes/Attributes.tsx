@@ -64,7 +64,7 @@ export const Attributes: React.FC<AttributesProps> = ({ znsDomain }) => {
 					{visibleAttributes.map((attribute: Attribute, index: number) => (
 						<li
 							className={`${styles.AttributesWrapper} ${
-								index > 10 && styles.SetOpacityAnimation
+								index > 10 ? styles.SetOpacityAnimation : ''
 							}`}
 							key={index}
 						>
@@ -77,9 +77,8 @@ export const Attributes: React.FC<AttributesProps> = ({ znsDomain }) => {
 					{initialHiddenAttributesCount > 0 && (
 						<button
 							className={`${styles.ToggleAttributes} ${
-								!isCollapsed && styles.SetOpacityAnimation
+								!isCollapsed ? styles.SetOpacityAnimation : ''
 							}`}
-							style={{ background: 'none' }}
 							onClick={() => toggleCollapsed(!isCollapsed)}
 						>
 							{isCollapsed
