@@ -3,10 +3,8 @@ import { useCallback, useMemo } from 'react';
 
 //- Library Imports
 import { Domain, Bid } from 'lib/types';
-import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 import { tryFunction } from 'lib/utils';
-import * as zAuction from '../zAuction';
 
 //- Hook Imports
 import { useWeb3React } from '@web3-react/core';
@@ -94,15 +92,10 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	const context = useWeb3React();
 	const { addNotification } = useNotification();
 	const { instance: zAuctionInstance } = useZAuctionSdk();
-	const contracts = useZnsContracts();
-	const zAuctionContract = useZnsContracts()?.zAuction;
 
 	const acceptBid = useCallback(
 		async (bidData: Bid) => {
 			const tx = await tryFunction(async () => {
-				if (!zAuctionContract) {
-					throw Error(`no contract`);
-				}
 				if (zAuctionInstance === undefined) {
 					throw Error(`No zAuctionInstance`);
 				}
@@ -120,7 +113,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 			return tx;
 		},
-		[zAuctionContract, zAuctionInstance, context.library],
+		[zAuctionInstance, context.library],
 	);
 
 	const getBidsForYourDomains = useCallback(async () => {
@@ -187,7 +180,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				return;
 			}
 		},
-		[zAuctionInstance, contracts],
+		[zAuctionInstance],
 	);
 
 	const onPlaceBidStatusChange = (

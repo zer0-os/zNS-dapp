@@ -55,7 +55,7 @@ const BuyNowContainer = ({
 	};
 
 	const approveZAuction = async () => {
-		let zAuction, approvalTx;
+		let approvalTx;
 		setError(undefined);
 		try {
 			if (!zAuctionInstance) {

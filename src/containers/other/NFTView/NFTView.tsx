@@ -26,7 +26,6 @@ import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
 import { toFiat } from 'lib/currency';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import { useZnsContracts } from 'lib/contracts';
 import { Attribute } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { Bid } from '@zero-tech/zauction-sdk';
@@ -140,8 +139,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const { account, active, chainId, library } = walletContext;
 
 	const networkType = chainIdToNetworkType(chainId);
-	const contracts = useZnsContracts();
-	const registrarAddress = contracts ? contracts.registry.address : '';
 
 	const etherscanBaseUri = getEtherscanUri(networkType);
 	const etherscanLink = `${etherscanBaseUri}token/${

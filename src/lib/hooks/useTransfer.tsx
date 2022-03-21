@@ -32,8 +32,6 @@ export const useTransfer = (): UseTransferReturn => {
 
 	const { reduxState, reduxActions } = useTransferRedux();
 
-	const registryContract = useZnsContracts()!.registry;
-
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account, library } = walletContext;
 
@@ -56,6 +54,8 @@ export const useTransfer = (): UseTransferReturn => {
 				// 	params.walletAddress,
 				// 	params.domainId,
 				// );
+				const signer = library.getSigner();
+				console.log(signer, sdk);
 				const tx = await sdk.transferDomainOwnership(
 					params.walletAddress,
 					params.domainId,
@@ -74,11 +74,12 @@ export const useTransfer = (): UseTransferReturn => {
 				addNotification(successNotification);
 				reduxActions.setTransferred(params);
 			} catch (err) {
+				console.warn(err);
 				addNotification(MESSAGES.REQUEST_ERROR);
 				throw err;
 			}
 		},
-		[account, registryContract, reduxActions, addNotification],
+		[account, library, sdk, reduxActions, addNotification],
 	);
 
 	return useMemo(
