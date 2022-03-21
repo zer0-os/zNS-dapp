@@ -74,7 +74,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active } = walletContext;
+	const { account } = walletContext;
 
 	const znsContracts = useZnsContracts()!;
 	const zAuctionAddress = znsContracts.zAuction.address;

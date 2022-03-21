@@ -5,10 +5,22 @@ import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import { Step } from '../../AcceptBid.types';
 
+//- Utils Imports
+import {
+	getFormattedBidAmount,
+	getFormattedHighestBidAmount,
+	truncatedAddress,
+	truncatedDomain,
+} from '../utils';
+
 //- Constants
 import { LABELS } from 'constants/labels';
 import { CURRENCY } from 'constants/currency';
-import { BUTTONS, MESSAGES } from '../../AcceptBid.constants';
+import {
+	BUTTONS,
+	getNFTConfirmDetailsText,
+	MESSAGES,
+} from '../../AcceptBid.constants';
 
 //- Styles Imports
 import styles from './Details.module.scss';
@@ -22,9 +34,9 @@ type DetailsProps = {
 	domainName: string;
 	title: string;
 	walletAddress: string;
-	acceptingBid: string;
-	highestBid: string;
-	wildPriceUsd: string;
+	bidAmount: string;
+	wildPriceUsd?: number;
+	highestBid?: string;
 	onClose: () => void;
 	onNext: () => void;
 };
@@ -35,50 +47,53 @@ const Details = ({
 	domainName,
 	title,
 	walletAddress,
-	acceptingBid,
-	highestBid,
+	bidAmount,
 	wildPriceUsd,
+	highestBid,
 	onClose,
 	onNext,
 }: DetailsProps) => {
-	const acceptingBidUsd =
-		acceptingBid && Number(acceptingBid) * Number(wildPriceUsd);
+	// Price formatting
+	const bidAmountUSD =
+		bidAmount &&
+		wildPriceUsd &&
+		Number(ethers.utils.formatEther(bidAmount)) * wildPriceUsd;
+
+	///////////////
+	// Functions //
+	///////////////
+	const formattedHighestBidAmount = getFormattedHighestBidAmount(highestBid);
+	const formattedBidAmount = getFormattedBidAmount(bidAmount);
+	const formattedDomainName = truncatedDomain(domainName);
+	const formattedDomainAddress = truncatedAddress(walletAddress);
 
 	return (
 		<>
 			<Wizard.NFTDetails
 				assetUrl={assetUrl}
 				creator={creator}
-				domain={domainName}
+				domain={formattedDomainName}
 				title={title}
 				otherDetails={[
 					// Highest Bid
 					{
 						name: LABELS.HIGHEST_BID_LABEL,
-						value:
-							ethers.utils.formatEther(highestBid).toString() +
-							` ${CURRENCY.WILD}`,
+						value: formattedHighestBidAmount,
 					},
 					// Accepting Bid
 					{
 						name: LABELS.SELECTED_BID_LABEL,
-						value:
-							ethers.utils.formatEther(acceptingBid).toString() +
-							` ${CURRENCY.WILD}`,
+						value: formattedBidAmount,
 					},
 				]}
 			/>
 			<div className={styles.TextContainer}>
-				<p>
-					{MESSAGES.CONFIRM_BID_AMOUNT}
-					<br />{' '}
-					<b>
-						{ethers.utils.formatEther(acceptingBid).toString() +
-							` ${CURRENCY.WILD}`}
-					</b>{' '}
-					({toFiat(Number(acceptingBidUsd))} {CURRENCY.USD}) and transfer
-					ownership of <b>0://{domainName}</b> to <b>{walletAddress}</b>?
-				</p>
+				{MESSAGES.CONFIRM_BID_AMOUNT}
+				{` $${toFiat(Number(bidAmountUSD)) + ' ' + CURRENCY.USD} `}
+				<div>
+					{getNFTConfirmDetailsText(domainName)}
+					{formattedDomainAddress}?
+				</div>
 			</div>
 			<Wizard.Buttons
 				primaryButtonText={BUTTONS[Step.Details].PRIMARY}

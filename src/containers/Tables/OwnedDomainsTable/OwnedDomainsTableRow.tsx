@@ -1,23 +1,34 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Artwork, OptionDropdown, Overlay, Spinner } from 'components';
+
+//- React Imports
 import React, { useMemo, useState } from 'react';
 
-import { BidList } from 'containers';
+//- Components Imports
+import { Artwork, OptionDropdown, Overlay, Spinner } from 'components';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
+//- Containers Imports
+import { BidList } from 'containers';
+import { DomainSettings } from 'containers/other/NFTView/elements';
+
+//- Library Imports
 import { useHistory } from 'react-router-dom';
 import { BigNumber } from 'ethers';
 import { Domain } from '@zero-tech/zns-sdk/lib/types';
-
-import styles from './OwnedDomainsTableRow.module.scss';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
+import classNames from 'classnames';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+import useCurrency from 'lib/hooks/useCurrency';
 
+//- Styles Imports
+import styles from './OwnedDomainsTableRow.module.scss';
+
+//- Assets Imports
 import moreIcon from './assets/more-vertical.svg';
 
+//- Constants Imports
 import { ACTIONS, ACTION_KEYS } from './OwnedDomainsTable.constants';
-import classNames from 'classnames';
-import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
-import { DomainSettings } from 'containers/other/NFTView/elements';
 
 enum Modal {
 	ViewBids,
@@ -41,6 +52,10 @@ const OwnedDomainsTableRow = ({
 	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
 	const bids = bidData?.bids;
 	const highestBid = bidData?.highestBid;
+	const { wildPriceUsd } = useCurrency();
+
+	// Retrieve Metadata
+	const domainMetadata = useDomainMetadata(domain.metadataUri);
 
 	// Decides which modal is being rendered
 	const [modal, setModal] = useState<Modal | undefined>();
@@ -71,10 +86,18 @@ const OwnedDomainsTableRow = ({
 
 	// Defines the modal element to be rendered
 	const ModalElement = useMemo(() => {
-		if (modal === Modal.ViewBids && bids) {
+		if (modal === Modal.ViewBids && bids && domainMetadata) {
 			return (
 				<Overlay onClose={() => setModal(undefined)} centered open>
-					<BidList bids={bids} onAccept={refetch} />
+					<BidList
+						bids={bids}
+						domain={domain}
+						domainMetadata={domainMetadata}
+						onAccept={refetch}
+						isLoading={isLoadingBidData}
+						wildPriceUsd={wildPriceUsd}
+						highestBid={highestBid?.amount}
+					/>
 				</Overlay>
 			);
 		} else if (modal === Modal.EditMetadata) {
@@ -89,7 +112,6 @@ const OwnedDomainsTableRow = ({
 		} else {
 			return null;
 		}
-		// add other modals here
 	}, [modal]);
 
 	return (
@@ -115,7 +137,7 @@ const OwnedDomainsTableRow = ({
 						<Spinner />
 					) : highestBid ? (
 						Number(
-							formatEther(BigNumber.from(highestBid.amount + '0')),
+							formatEther(BigNumber.from(highestBid.amount)),
 						).toLocaleString()
 					) : (
 						'-'

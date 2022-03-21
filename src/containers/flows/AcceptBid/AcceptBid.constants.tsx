@@ -1,15 +1,20 @@
+//- Types
 import { Step } from './AcceptBid.types';
 
 export const TITLES = {
 	[Step.Details]: { PRIMARY: 'Accept Bid' },
+	[Step.CheckingZAuctionApproval]: { PRIMARY: 'zAuction Approval' },
 	[Step.Confirmation]: { PRIMARY: 'Are you sure?' },
-	[Step.Accepting]: { PRIMARY: 'Accepting Bid...' },
 	[Step.Success]: { PRIMARY: 'Bid Accepted' },
 };
 
 export const BUTTONS = {
 	[Step.Details]: { PRIMARY: 'Accept', SECONDARY: 'Cancel', TERTIARY: 'Retry' },
-	[Step.Confirmation]: { PRIMARY: 'Confirm', SECONDARY: 'Cancel' },
+	[Step.Confirmation]: {
+		PRIMARY: 'Confirm',
+		SECONDARY: 'Cancel',
+		TERTIARY: 'Retry',
+	},
 	[Step.Success]: { PRIMARY: 'Finish' },
 };
 
@@ -28,6 +33,7 @@ export const ERRORS = {
 	TRANSACTION: 'Transaction failed.',
 	LIBRARY: 'Failed to connect with Web3 wallet.',
 	CONSOLE_TEXT: 'Failed to check zAuction approval status',
+	REJECTED_WALLET: 'Rejected by wallet',
 };
 
 export const MESSAGES = {
@@ -40,7 +46,10 @@ export const MESSAGES = {
 	TEXT_CONFIRM_ACCEPT:
 		"Are you sure you want to accept this bid? You can't undo this.",
 	TEXT_WAITING_FOR_WALLET:
-		'Waiting for signature and transaction approval. You should receive two requests in your wallet.',
+		'Waiting for transaction approval. You should receive a request in your wallet.',
 	SUCCESS_CONFIRMATION: 'Success! Bid accepted and ownership transferred',
 	CONFIRM_BID_AMOUNT: 'Are you sure you want to accept a bid of',
 };
+
+export const getNFTConfirmDetailsText = (domainName: string) =>
+	`and transfer ownership of ${domainName} to `;
