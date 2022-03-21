@@ -11,7 +11,6 @@ import * as zAuction from '../zAuction';
 //- Hook Imports
 import { useWeb3React } from '@web3-react/core';
 import useNotification from './useNotification';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
@@ -94,7 +93,6 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 	const context = useWeb3React();
 	const { addNotification } = useNotification();
-	const { instance: sdk } = useZnsSdk();
 	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const contracts = useZnsContracts();
 	const zAuctionContract = useZnsContracts()?.zAuction;
@@ -105,21 +103,24 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				if (!zAuctionContract) {
 					throw Error(`no contract`);
 				}
+				if (zAuctionInstance === undefined) {
+					throw Error(`No zAuctionInstance`);
+				}
 
-				const zAuction = await sdk.getZAuctionInstanceForDomain(
-					bidData.tokenId,
-				);
-				const bids = await zAuction.listBids([bidData.tokenId]);
+				const bids = await zAuctionInstance.listBids([bidData.tokenId]);
 				const bid = bids[bidData.tokenId].filter(
 					(b: any) => b.auctionId === bidData.auctionId,
 				)[0];
-				const tx = await zAuction.acceptBid(bid, context.library!.getSigner());
+				const tx = await zAuctionInstance.acceptBid(
+					bid,
+					context.library!.getSigner(),
+				);
 				return tx;
 			}, 'accept bid');
 
 			return tx;
 		},
-		[zAuctionContract, sdk, context.library],
+		[zAuctionContract, zAuctionInstance, context.library],
 	);
 
 	const getBidsForYourDomains = useCallback(async () => {
@@ -143,8 +144,6 @@ export const useBidProvider = (): UseBidProviderReturn => {
 			try {
 				const bids = await zAuctionInstance.listBidsByAccount(id);
 				const displayBids = bids.map((e) => transformBid(e));
-
-				console.log(displayBids);
 
 				return displayBids;
 			} catch (e) {
@@ -178,7 +177,6 @@ export const useBidProvider = (): UseBidProviderReturn => {
 					displayBids.sort((a, b) => {
 						return b.amount - a.amount;
 					});
-					console.log(displayBids);
 					// @TODO: Add filtering expired/invalid bids out
 					return displayBids;
 				} catch (e) {
@@ -240,7 +238,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				);
 				addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
 			} catch (e) {
-				console.log(e);
+				console.warn(e);
 			}
 		},
 		[zAuctionInstance, context.library, addNotification],

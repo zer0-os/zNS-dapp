@@ -16,7 +16,7 @@ import { useBid } from './BidProvider';
 import { ethers } from 'ethers';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { formatNumber, formatEthers } from 'lib/utils';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
 
 import styles from './SubdomainTableRow.module.scss';
 
@@ -27,7 +27,7 @@ const SubdomainTableRow = (props: any) => {
 	const { account, library } = walletContext;
 	const { push: goTo } = useHistory();
 
-	const { instance: sdk } = useZnsSdk();
+	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const { makeABid, updated } = useBid();
 	const { getBidsForDomain } = useBidProvider();
 	const { domainMetadata } = useCurrentDomain();
@@ -69,9 +69,8 @@ const SubdomainTableRow = (props: any) => {
 		setBuyNowPrice(undefined);
 
 		if (library) {
-			const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
 			try {
-				const buyNow = await zAuction.getBuyNowPrice(
+				const buyNow = await zAuctionInstance.getBuyNowPrice(
 					domain.id,
 					library.getSigner(),
 				);
