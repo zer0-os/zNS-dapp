@@ -1,12 +1,15 @@
 /*
  * Unit tests for useCancelBid
  */
-
+//- Test Imports
 import { render, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
+//- Constants Imports
+import { MESSAGES, ERRORS } from '../AcceptBid.constants';
+
+//- Hooks Imports
 import useAcceptBid, { UseAcceptBidReturn } from './useAcceptBid';
-import constants from '../AcceptBid.constants';
 
 //////////
 // Mock //
@@ -96,8 +99,8 @@ test('status updates as expected', async () => {
 		hook.accept(mockBid);
 	});
 
-	expect(hook.status).toBe(constants.MESSAGES.TEXT_WAITING_FOR_WALLET);
-	await (() => expect(hook.status).toBe(constants.MESSAGES.TEXT_ACCEPTING_BID));
+	expect(hook.status).toBe(MESSAGES.TEXT_WAITING_FOR_WALLET);
+	await (() => expect(hook.status).toBe(MESSAGES.TEXT_ACCEPTING_BID));
 	await waitFor(() => expect(mockTx).toHaveBeenCalledTimes(1));
 	expect(hook.status).toBeUndefined();
 });
@@ -116,7 +119,7 @@ test('handles failed/rejected signature', async () => {
 	}
 
 	expect(mockAcceptBid).toBeCalledTimes(1);
-	expect(err?.message).toBe(constants.ERRORS.SIGNATURE);
+	expect(err?.message).toBe(ERRORS.SIGNATURE);
 	expect(console.error).toHaveBeenCalled();
 });
 
@@ -137,6 +140,6 @@ test('handles failed/rejected transaction', async () => {
 	}
 
 	expect(mockTx).toBeCalledTimes(1);
-	expect(err?.message).toBe(constants.ERRORS.TRANSACTION);
+	expect(err?.message).toBe(ERRORS.TRANSACTION);
 	expect(console.error).toHaveBeenCalled();
 });
