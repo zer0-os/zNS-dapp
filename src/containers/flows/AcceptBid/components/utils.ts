@@ -33,7 +33,7 @@ export const getFormattedHighestBidAmount = (highestBid?: string) =>
 		? ethers.utils.formatEther(highestBid).toString() + ` ${CURRENCY.WILD}`
 		: '';
 
-// Formated bid amount
+// Formatted bid amount
 export const getFormattedBidAmount = (bidAmount?: string) =>
 	bidAmount
 		? ethers.utils.formatEther(bidAmount).toString() + ` ${CURRENCY.WILD}`
