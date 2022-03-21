@@ -133,7 +133,7 @@ const PageContainer: FC = ({ children }) => {
 	/* Find the freshly minted NFT */
 	useUpdateEffect(() => {
 		refetch?.();
-	}, [minted, stakingFulFilled]);
+	}, [minted, stakingFulFilled, chainSelector.selectedChain]);
 
 	/* Handle notification for wallet changes */
 	useEffect(() => {
