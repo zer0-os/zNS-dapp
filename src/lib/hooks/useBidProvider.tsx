@@ -10,16 +10,11 @@ import * as zAuction from '../zAuction';
 
 //- Hook Imports
 import { useWeb3React } from '@web3-react/core';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-import { useZAuctionBaseApiUri } from './useZAuctionBaseApiUri';
 import useNotification from './useNotification';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
-import {
-	PlaceBidStatus,
-	PlaceBidStatusCallback,
-} from '@zero-tech/zauction-sdk';
+import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
 
 /////////////////////
 // Mock data stuff //
@@ -103,8 +98,6 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const contracts = useZnsContracts();
 	const zAuctionContract = useZnsContracts()?.zAuction;
-	const chainSelector = useChainSelector();
-	const baseApiUri = useZAuctionBaseApiUri(chainSelector.selectedChain);
 
 	const acceptBid = useCallback(
 		async (bidData: Bid) => {
