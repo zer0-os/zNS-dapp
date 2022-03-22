@@ -11,7 +11,7 @@ import NFTDetails from './components/NFTDetails';
 import { Step } from './TransferOwnership.types';
 
 //- Constant Imports
-import { BUTTONS, MESSAGES, TITLES } from './TransferOwnership.constants';
+import { BUTTONS, MESSAGES, STEP_TITLES } from './TransferOwnership.constants';
 
 //- Utils Imports
 import { isValid } from './TransferOwnership.utils';
@@ -45,7 +45,6 @@ const TransferOwnership = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);
-	const [stepTitle, setStepTitle] = useState<string>(TITLES[Step.Details]);
 
 	// Prevent state update to unmounted component
 	const isMounted = useRef(false);
@@ -60,7 +59,6 @@ const TransferOwnership = ({
 	const onClose = () => onTransfer();
 	const onAccept = () => {
 		setCurrentStep(Step.Confirmation);
-		setStepTitle(TITLES[Step.Confirmation]);
 	};
 
 	const submitTransfer = async () => {
@@ -126,7 +124,7 @@ const TransferOwnership = ({
 
 	return (
 		<Overlay centered open onClose={onClose}>
-			<Wizard header={stepTitle}>{steps[currentStep]}</Wizard>
+			<Wizard header={STEP_TITLES[currentStep]}>{steps[currentStep]}</Wizard>
 		</Overlay>
 	);
 };
