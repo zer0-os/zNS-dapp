@@ -24,7 +24,7 @@ import {
 	ERRORS,
 	MESSAGES,
 	STATUS_TEXT,
-	TITLES,
+	STEP_TITLES,
 } from './AcceptBid.constants';
 
 type AcceptBidProps = {
@@ -68,7 +68,6 @@ const AcceptBid = ({
 
 	const [currentStep, setCurrentStep] = useState<Step>(Step.LoadingData);
 	const [error, setError] = useState<string | undefined>();
-	const [stepTitle, setStepTitle] = useState<string>(TITLES[Step.Details]);
 
 	// Prevent state update to unmounted component
 	const isMounted = useRef(false);
@@ -92,7 +91,6 @@ const AcceptBid = ({
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
 				if (isApproved) {
-					setStepTitle(TITLES[Step.Confirmation]);
 					setCurrentStep(Step.Confirmation);
 				} else {
 					setCurrentStep(Step.ApproveZAuction);
@@ -125,7 +123,6 @@ const AcceptBid = ({
 					setCurrentStep(Step.ApproveZAuction);
 					setError(ERRORS.TRANSACTION);
 				}
-				setStepTitle(TITLES[Step.Confirmation]);
 				setCurrentStep(Step.Confirmation);
 			} catch (e) {
 				setCurrentStep(Step.ApproveZAuction);
@@ -136,7 +133,6 @@ const AcceptBid = ({
 
 	const onDetailsAccept = () => {
 		setCurrentStep(Step.CheckingZAuctionApproval);
-		setStepTitle(TITLES[Step.CheckingZAuctionApproval]);
 		checkZAuctionApproval();
 	};
 
@@ -147,10 +143,8 @@ const AcceptBid = ({
 
 	const onConfirm = async () => {
 		setCurrentStep(Step.Accepting);
-		setStepTitle(TITLES[Step.Details]);
 		try {
 			await accept(acceptingBid!);
-			setStepTitle(TITLES[Step.Success]);
 			setCurrentStep(Step.Success);
 		} catch (e) {
 			setError(e.message);
@@ -200,7 +194,7 @@ const AcceptBid = ({
 				assetUrl={assetUrl}
 				creator={creatorId}
 				domainName={domainName}
-				title={domainTitle}
+				title={STEP_TITLES[currentStep]}
 				walletAddress={walletAddress}
 				bidAmount={acceptingBid.amount}
 				highestBid={highestBid}
@@ -258,7 +252,7 @@ const AcceptBid = ({
 				assetUrl={assetUrl}
 				creator={creatorId}
 				domainName={domainName}
-				title={stepTitle}
+				title={STEP_TITLES[currentStep]}
 				highestBid={highestBid}
 				bidAmount={acceptingBid?.amount ?? ''}
 				onClose={onFinish}
@@ -268,7 +262,7 @@ const AcceptBid = ({
 
 	return (
 		<Overlay centered open onClose={onClose}>
-			<Wizard header={stepTitle}>{steps[currentStep]}</Wizard>
+			<Wizard header={STEP_TITLES[currentStep]}>{steps[currentStep]}</Wizard>
 		</Overlay>
 	);
 };

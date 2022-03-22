@@ -7,11 +7,23 @@ import { Member } from 'components';
 //- Global Constants
 import { CURRENCY } from 'constants/currency';
 
-export const TITLES = {
-	[Step.Details]: 'Accept Bid',
-	[Step.CheckingZAuctionApproval]: 'zAuction Approval',
-	[Step.Confirmation]: 'Are you sure?',
-	[Step.Success]: 'Bid Accepted',
+const TITLES = {
+	ZAUCTION_APPROVAL: 'zAuction Approval',
+	ACCEPT_BID: 'Accept Bid',
+	CONFIRMATION: 'Are you sure?',
+	SUCCESS: 'Bid Accepted',
+};
+
+export const STEP_TITLES = {
+	[Step.CheckingZAuctionApproval]: TITLES.ZAUCTION_APPROVAL,
+	[Step.ApproveZAuction]: TITLES.ZAUCTION_APPROVAL,
+	[Step.WaitingForWallet]: TITLES.ZAUCTION_APPROVAL,
+	[Step.ApprovingZAuction]: TITLES.ZAUCTION_APPROVAL,
+	[Step.LoadingData]: TITLES.ACCEPT_BID,
+	[Step.Details]: TITLES.ACCEPT_BID,
+	[Step.Confirmation]: TITLES.CONFIRMATION,
+	[Step.Accepting]: TITLES.ACCEPT_BID,
+	[Step.Success]: TITLES.SUCCESS,
 };
 
 export const BUTTONS = {
