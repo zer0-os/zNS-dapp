@@ -68,9 +68,7 @@ const AcceptBid = ({
 
 	const [currentStep, setCurrentStep] = useState<Step>(Step.LoadingData);
 	const [error, setError] = useState<string | undefined>();
-	const [stepTitle, setStepTitle] = useState<string>(
-		TITLES[Step.Details].PRIMARY,
-	);
+	const [stepTitle, setStepTitle] = useState<string>(TITLES[Step.Details]);
 
 	// Prevent state update to unmounted component
 	const isMounted = useRef(false);
@@ -94,7 +92,7 @@ const AcceptBid = ({
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
 				if (isApproved) {
-					setStepTitle(TITLES[Step.Confirmation].PRIMARY);
+					setStepTitle(TITLES[Step.Confirmation]);
 					setCurrentStep(Step.Confirmation);
 				} else {
 					setCurrentStep(Step.ApproveZAuction);
@@ -127,7 +125,7 @@ const AcceptBid = ({
 					setCurrentStep(Step.ApproveZAuction);
 					setError(ERRORS.TRANSACTION);
 				}
-				setStepTitle(TITLES[Step.Confirmation].PRIMARY);
+				setStepTitle(TITLES[Step.Confirmation]);
 				setCurrentStep(Step.Confirmation);
 			} catch (e) {
 				setCurrentStep(Step.ApproveZAuction);
@@ -138,7 +136,7 @@ const AcceptBid = ({
 
 	const onDetailsAccept = () => {
 		setCurrentStep(Step.CheckingZAuctionApproval);
-		setStepTitle(TITLES[Step.CheckingZAuctionApproval].PRIMARY);
+		setStepTitle(TITLES[Step.CheckingZAuctionApproval]);
 		checkZAuctionApproval();
 	};
 
@@ -149,10 +147,10 @@ const AcceptBid = ({
 
 	const onConfirm = async () => {
 		setCurrentStep(Step.Accepting);
-		setStepTitle(TITLES[Step.Details].PRIMARY);
+		setStepTitle(TITLES[Step.Details]);
 		try {
 			await accept(acceptingBid!);
-			setStepTitle(TITLES[Step.Success].PRIMARY);
+			setStepTitle(TITLES[Step.Success]);
 			setCurrentStep(Step.Success);
 		} catch (e) {
 			setError(e.message);

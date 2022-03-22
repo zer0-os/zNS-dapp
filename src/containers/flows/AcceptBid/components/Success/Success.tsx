@@ -66,7 +66,7 @@ const Details = ({
 			</div>
 			<div className={styles.CloseButton}>
 				<FutureButton glow onClick={() => onClose()}>
-					{BUTTONS[Step.Success].PRIMARY}
+					{BUTTONS[Step.Success]}
 				</FutureButton>
 			</div>
 		</>

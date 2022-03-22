@@ -2,10 +2,10 @@
 import { Step } from './AcceptBid.types';
 
 export const TITLES = {
-	[Step.Details]: { PRIMARY: 'Accept Bid' },
-	[Step.CheckingZAuctionApproval]: { PRIMARY: 'zAuction Approval' },
-	[Step.Confirmation]: { PRIMARY: 'Are you sure?' },
-	[Step.Success]: { PRIMARY: 'Bid Accepted' },
+	[Step.Details]: 'Accept Bid',
+	[Step.CheckingZAuctionApproval]: 'zAuction Approval',
+	[Step.Confirmation]: 'Are you sure?',
+	[Step.Success]: 'Bid Accepted',
 };
 
 export const BUTTONS = {
@@ -15,7 +15,7 @@ export const BUTTONS = {
 		SECONDARY: 'Cancel',
 		TERTIARY: 'Retry',
 	},
-	[Step.Success]: { PRIMARY: 'Finish' },
+	[Step.Success]: 'Finish',
 };
 
 export const STATUS_TEXT = {

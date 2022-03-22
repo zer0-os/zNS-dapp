@@ -45,9 +45,7 @@ const TransferOwnership = ({
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);
-	const [stepTitle, setStepTitle] = useState<string>(
-		TITLES[Step.Details].PRIMARY,
-	);
+	const [stepTitle, setStepTitle] = useState<string>(TITLES[Step.Details]);
 
 	// Prevent state update to unmounted component
 	const isMounted = useRef(false);
@@ -62,7 +60,7 @@ const TransferOwnership = ({
 	const onClose = () => onTransfer();
 	const onAccept = () => {
 		setCurrentStep(Step.Confirmation);
-		setStepTitle(TITLES[Step.Confirmation].PRIMARY);
+		setStepTitle(TITLES[Step.Confirmation]);
 	};
 
 	const submitTransfer = async () => {

@@ -2,12 +2,12 @@
 import { Step } from './TransferOwnership.types';
 
 export const TITLES = {
-	[Step.Details]: { PRIMARY: 'Transfer Ownership' },
-	[Step.Confirmation]: { PRIMARY: 'Are you sure?' },
+	[Step.Details]: 'Transfer Ownership',
+	[Step.Confirmation]: 'Are you sure?',
 };
 
 export const BUTTONS = {
-	[Step.Details]: { PRIMARY: 'Transfer' },
+	[Step.Details]: 'Transfer',
 	[Step.Confirmation]: {
 		PRIMARY: 'Confirm',
 		SECONDARY: 'Cancel',
