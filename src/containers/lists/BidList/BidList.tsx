@@ -16,7 +16,10 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
+
+//- Library Imports
 import { Metadata } from 'lib/types';
+import { sortBidsByTime } from 'lib/utils/bids';
 
 const moment = require('moment');
 
@@ -62,9 +65,7 @@ const BidList: React.FC<BidListProps> = ({
 		}
 	}, [library]);
 
-	const sorted = bids
-		.slice()
-		.sort((a: Bid, b: Bid) => Number(b.timestamp) - Number(a.timestamp));
+	const sorted = sortBidsByTime(bids);
 
 	///////////////
 	// Functions //

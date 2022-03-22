@@ -37,3 +37,13 @@ export const getBidDataForDomain = async (
 	}
 	return { highestBid: sortBidsByAmount(bids)[0], bids: bids };
 };
+
+/**
+ * Sorts a list of bids, by time, from most recent to oldest.
+ * @param bids list of bids to sort
+ */
+export const sortBidsByTime = (bids: Bid[]) => {
+	return bids
+		.slice()
+		.sort((a: Bid, b: Bid) => Number(b.timestamp) - Number(a.timestamp));
+};
