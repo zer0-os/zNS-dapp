@@ -1,5 +1,5 @@
 import { DocumentNode, OperationVariables, useQuery } from '@apollo/client';
-import { DomainQueryResult, DomainsQueryResult } from 'lib/types';
+import { DomainsQueryResult } from 'lib/types';
 
 import { queries } from '../zns';
 
@@ -17,22 +17,6 @@ function useQueryHook<T>(
 	});
 
 	return hook;
-}
-
-export function useDomainsByNameContainsQuery(pattern: string) {
-	const query = useQueryHook<DomainsQueryResult>(queries.byNameQuery, {
-		name: pattern,
-	});
-
-	return query;
-}
-
-export function useDomainByIdQuery(domainId: string) {
-	const query = useQueryHook<DomainQueryResult>(queries.byIdQuery, {
-		id: domainId,
-	});
-
-	return query;
 }
 
 export function useDomainsOwnedByUserQuery(

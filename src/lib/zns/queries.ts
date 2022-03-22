@@ -29,7 +29,9 @@ export const byIdQuery = gql`
 			lockedBy {
 				id
 			}
-			contract
+			contract {
+				id
+			}
 			isLocked
 			metadata
 		}
@@ -65,7 +67,9 @@ export const byNameQuery = gql`
 			lockedBy {
 				id
 			}
-			contract
+			contract {
+				id
+			}
 			isLocked
 			metadata
 		}
@@ -101,7 +105,9 @@ export const ownedByAccountQuery = gql`
 			lockedBy {
 				id
 			}
-			contract
+			contract {
+				id
+			}
 			isLocked
 			metadata
 		}
