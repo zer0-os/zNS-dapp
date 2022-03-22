@@ -5,13 +5,6 @@ import { Wizard, FutureButton } from 'components';
 import { ethers } from 'ethers';
 import { Step } from '../../AcceptBid.types';
 
-//- Utils Imports
-import {
-	getFormattedBidAmount,
-	getFormattedHighestBidAmount,
-	truncatedDomain,
-} from '../utils';
-
 //- Constants
 import { LABELS } from 'constants/labels';
 import {
@@ -26,6 +19,11 @@ import styles from './Details.module.scss';
 
 //-Library Imports
 import { toFiat } from 'lib/currency';
+import {
+	getFormattedHighestBidAmount,
+	getFormattedBidAmount,
+	truncatedDomain,
+} from 'lib/utils';
 
 type DetailsProps = {
 	currentStep: Step;

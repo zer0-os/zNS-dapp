@@ -1,3 +1,7 @@
+//- Constants Imports
+import { CURRENCY } from 'constants/currency';
+
+//- Lib Imports
 import { ethers } from 'ethers';
 
 export const formatNumber = (number: number) => {
@@ -22,3 +26,15 @@ export const formatByDecimalPlace = (
 	const number = Number(value);
 	return Number.isNaN(number) ? '' : number.toLocaleString(localeCode, config);
 };
+
+// Formatted highest bid in WILD
+export const getFormattedHighestBidAmount = (highestBid?: string) =>
+	highestBid
+		? ethers.utils.formatEther(highestBid).toString() + ` ${CURRENCY.WILD}`
+		: '';
+
+// Formatted bid amount in WILD
+export const getFormattedBidAmount = (bidAmount?: string) =>
+	bidAmount
+		? ethers.utils.formatEther(bidAmount).toString() + ` ${CURRENCY.WILD}`
+		: '';
