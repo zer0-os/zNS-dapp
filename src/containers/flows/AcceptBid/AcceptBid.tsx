@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
 import { useEffect, useRef, useState } from 'react';
 
@@ -13,6 +14,7 @@ import { useWeb3React } from '@web3-react/core';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { Metadata } from 'lib/types';
+import { getFormattedBidAmount } from 'lib/utils';
 
 //- Types Imports
 import { Step } from './AcceptBid.types';
@@ -21,15 +23,18 @@ import { Step } from './AcceptBid.types';
 import {
 	BUTTONS,
 	ERRORS,
+	getSuccessNotification,
 	MESSAGES,
 	STATUS_TEXT,
 	STEP_TITLES,
 } from './AcceptBid.constants';
+import useNotification from 'lib/hooks/useNotification';
+import useCurrency from 'lib/hooks/useCurrency';
 
 type AcceptBidProps = {
 	acceptingBid: Bid | undefined;
 	domainMetadata: Metadata | undefined;
-	refetch?: (bid: Bid) => void;
+	refetch: () => void;
 	isLoading?: boolean;
 	assetUrl: string;
 	creatorId: string;
@@ -38,7 +43,6 @@ type AcceptBidProps = {
 	domainName: string;
 	walletAddress: string;
 	highestBid?: string;
-	wildPriceUsd?: number;
 	onClose: () => void;
 };
 
@@ -53,7 +57,6 @@ const AcceptBid = ({
 	domainName,
 	walletAddress,
 	highestBid,
-	wildPriceUsd,
 	onClose,
 }: AcceptBidProps) => {
 	//////////////////
@@ -64,6 +67,10 @@ const AcceptBid = ({
 	const { accept, status } = useAcceptBid();
 	const { instance: sdk } = useZnsSdk();
 	const { account, library } = useWeb3React();
+	const { wildPriceUsd } = useCurrency();
+
+	//- Notification State
+	const { addNotification } = useNotification();
 
 	const [currentStep, setCurrentStep] = useState<Step>(Step.LoadingData);
 	const [error, setError] = useState<string | undefined>();
@@ -90,13 +97,13 @@ const AcceptBid = ({
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
 				if (isApproved) {
-					setCurrentStep(Step.Confirmation);
+					setCurrentStep(Step.Details);
 				} else {
 					setCurrentStep(Step.ApproveZAuction);
 				}
 			} catch (e) {
 				setError(ERRORS.CONSOLE_TEXT);
-				setCurrentStep(Step.Confirmation);
+				setCurrentStep(Step.Details);
 				console.error(ERRORS.CONSOLE_TEXT, e);
 			}
 		})();
@@ -122,7 +129,7 @@ const AcceptBid = ({
 					setCurrentStep(Step.ApproveZAuction);
 					setError(ERRORS.TRANSACTION);
 				}
-				setCurrentStep(Step.Confirmation);
+				setCurrentStep(Step.Details);
 			} catch (e) {
 				setCurrentStep(Step.ApproveZAuction);
 				setError(ERRORS.REJECTED_WALLET);
@@ -130,39 +137,34 @@ const AcceptBid = ({
 		})();
 	};
 
-	const onDetailsAccept = () => {
-		setCurrentStep(Step.CheckingZAuctionApproval);
-		checkZAuctionApproval();
-	};
-
-	const onBack = () => {
-		setError(undefined);
-		setCurrentStep(Step.Details);
-	};
-
 	const onConfirm = async () => {
+		setError('');
 		setCurrentStep(Step.Accepting);
 		try {
 			await accept(acceptingBid!);
+			addNotification(
+				getSuccessNotification(
+					getFormattedBidAmount(acceptingBid?.amount),
+					domainTitle,
+				),
+			);
 			setCurrentStep(Step.Success);
 		} catch (e) {
-			setError(e.message);
-			setCurrentStep(Step.Confirmation);
+			setError(ERRORS.TRANSACTION);
+			setCurrentStep(Step.Details);
 		}
 		if (!isMounted.current) return;
 	};
 
 	const onFinish = async () => {
-		if (acceptingBid && refetch) {
-			refetch(acceptingBid);
+		if (acceptingBid) {
 			onClose();
+			refetch();
 		}
 	};
 
 	const confirmationErrorButtonText = () =>
-		error
-			? BUTTONS[Step.Confirmation].TERTIARY
-			: BUTTONS[Step.Confirmation].PRIMARY;
+		error ? BUTTONS[Step.Details].TERTIARY : BUTTONS[Step.Details].PRIMARY;
 
 	/////////////
 	// Effects //
@@ -173,7 +175,8 @@ const AcceptBid = ({
 		if (isLoading) {
 			setCurrentStep(Step.LoadingData);
 		} else {
-			setCurrentStep(Step.Details);
+			setCurrentStep(Step.CheckingZAuctionApproval);
+			checkZAuctionApproval();
 		}
 	}, [isLoading]);
 
@@ -187,30 +190,6 @@ const AcceptBid = ({
 	const steps = {
 		// Loading Data
 		[Step.LoadingData]: <Wizard.Loading message={MESSAGES.TEXT_LOADING} />,
-		// Display NFT details
-		[Step.Details]: acceptingBid ? (
-			<Details
-				currentStep={currentStep}
-				assetUrl={assetUrl}
-				creator={creatorId}
-				domainName={domainName}
-				title={domainTitle}
-				walletAddress={walletAddress}
-				bidAmount={acceptingBid.amount}
-				highestBid={highestBid}
-				wildPriceUsd={wildPriceUsd}
-				onClose={onClose}
-				onNext={onDetailsAccept}
-			/>
-		) : (
-			<Wizard.Confirmation
-				message={MESSAGES.TEXT_FAILED_TO_LOAD}
-				primaryButtonText={BUTTONS[Step.Details].TERTIARY}
-				onClickPrimaryButton={onDetailsAccept}
-				secondaryButtonText={BUTTONS[Step.Details].SECONDARY}
-				onClickSecondaryButton={onClose}
-			/>
-		),
 		// Check zAuction Approval
 		[Step.CheckingZAuctionApproval]: (
 			<Wizard.Loading message={STATUS_TEXT.CHECK_ZAUCTION} />
@@ -233,15 +212,21 @@ const AcceptBid = ({
 		[Step.ApprovingZAuction]: (
 			<Wizard.Loading message={STATUS_TEXT.APPROVING_ZAUCTION} />
 		),
-		// Confirm Transaction
-		[Step.Confirmation]: (
-			<Wizard.Confirmation
+		// NFT details confirmation
+		[Step.Details]: acceptingBid && (
+			<Details
 				error={error}
-				message={MESSAGES.TEXT_CONFIRM_ACCEPT}
-				primaryButtonText={confirmationErrorButtonText()}
-				onClickPrimaryButton={onConfirm}
-				secondaryButtonText={BUTTONS[Step.Confirmation].SECONDARY}
-				onClickSecondaryButton={onBack}
+				currentStep={currentStep}
+				assetUrl={assetUrl}
+				creator={creatorId}
+				domainName={domainName}
+				title={domainTitle}
+				walletAddress={walletAddress}
+				bidAmount={acceptingBid.amount}
+				highestBid={highestBid}
+				wildPriceUsd={wildPriceUsd}
+				onClose={onClose}
+				onNext={onConfirm}
 			/>
 		),
 		// Accepting Bid
@@ -249,6 +234,7 @@ const AcceptBid = ({
 		// Bid Accepted
 		[Step.Success]: (
 			<Details
+				error={error}
 				currentStep={currentStep}
 				assetUrl={assetUrl}
 				creator={creatorId}

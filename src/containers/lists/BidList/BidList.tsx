@@ -27,7 +27,7 @@ type BidListProps = {
 	bids: Bid[];
 	domain?: Domain;
 	domainMetadata?: Metadata;
-	onAccept?: (bid: Bid) => void;
+	onAccept?: () => void;
 	wildPriceUsd?: number;
 	isAccepting?: boolean;
 	isLoading?: boolean;
@@ -51,6 +51,7 @@ const BidList: React.FC<BidListProps> = ({
 	const [isAcceptBidModal, setIsAcceptBidModal] = useState(false);
 	const [acceptingBid, setAcceptingBid] = useState<Bid | undefined>(undefined);
 	const { library } = useWeb3React<Web3Provider>();
+	const sorted = sortBidsByTime(bids);
 
 	useEffect(() => {
 		if (library) {
@@ -64,8 +65,6 @@ const BidList: React.FC<BidListProps> = ({
 			};
 		}
 	}, [library]);
-
-	const sorted = sortBidsByTime(bids);
 
 	///////////////
 	// Functions //
@@ -86,7 +85,7 @@ const BidList: React.FC<BidListProps> = ({
 	////////////
 	return (
 		<>
-			{isAcceptBidModal ? (
+			{isAcceptBidModal && onAccept ? (
 				<AcceptBid
 					acceptingBid={acceptingBid}
 					domainMetadata={domainMetadata}
@@ -99,7 +98,6 @@ const BidList: React.FC<BidListProps> = ({
 					domainName={domain?.name ?? ''}
 					walletAddress={acceptingBid?.bidder ?? ''}
 					highestBid={highestBid ?? ''}
-					wildPriceUsd={wildPriceUsd}
 					onClose={toggleAcceptBidModal}
 				/>
 			) : (

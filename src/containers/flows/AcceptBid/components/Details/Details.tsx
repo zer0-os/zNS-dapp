@@ -35,6 +35,7 @@ type DetailsProps = {
 	wildPriceUsd?: number;
 	walletAddress?: string;
 	highestBid?: string;
+	error?: string;
 	onClose: () => void;
 	onNext?: () => void;
 };
@@ -49,6 +50,7 @@ const Details = ({
 	wildPriceUsd,
 	walletAddress,
 	highestBid,
+	error,
 	onClose,
 	onNext,
 }: DetailsProps) => {
@@ -68,7 +70,9 @@ const Details = ({
 	const onSubmit = currentStep === Step.Details ? onNext : onClose;
 	const onSubmitButtonText =
 		currentStep === Step.Details
-			? BUTTONS[Step.Details].PRIMARY
+			? error
+				? BUTTONS[Step.Details].TERTIARY
+				: BUTTONS[Step.Details].PRIMARY
 			: BUTTONS[Step.Success];
 
 	return (
@@ -87,7 +91,10 @@ const Details = ({
 						},
 						// Accepting Bid
 						{
-							name: LABELS.SELECTED_BID_LABEL,
+							name:
+								currentStep === Step.Details
+									? LABELS.SELECTED_BID_LABEL
+									: LABELS.ACCEPTED_BID_LABEL,
 							value: formattedBidAmountWILD,
 						},
 					]}
@@ -112,6 +119,8 @@ const Details = ({
 					{MESSAGES.SUCCESS_CONFIRMATION}
 				</div>
 			)}
+
+			{error !== undefined && <div className={styles.Error}>{error}</div>}
 
 			{/* Buttons */}
 			<div className={styles.Buttons}>

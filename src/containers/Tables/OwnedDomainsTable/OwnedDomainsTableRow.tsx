@@ -19,7 +19,6 @@ import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import classNames from 'classnames';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
-import useCurrency from 'lib/hooks/useCurrency';
 
 //- Styles Imports
 import styles from './OwnedDomainsTableRow.module.scss';
@@ -52,7 +51,6 @@ const OwnedDomainsTableRow = ({
 	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
 	const bids = bidData?.bids;
 	const highestBid = bidData?.highestBid;
-	const { wildPriceUsd } = useCurrency();
 
 	// Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
@@ -95,7 +93,6 @@ const OwnedDomainsTableRow = ({
 						domainMetadata={domainMetadata}
 						onAccept={refetch}
 						isLoading={isLoadingBidData}
-						wildPriceUsd={wildPriceUsd}
 						highestBid={highestBid?.amount}
 					/>
 				</Overlay>

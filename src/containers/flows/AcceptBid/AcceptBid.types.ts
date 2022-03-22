@@ -1,11 +1,10 @@
 export enum Step {
+	LoadingData,
 	CheckingZAuctionApproval,
 	ApproveZAuction,
 	WaitingForWallet,
 	ApprovingZAuction,
-	LoadingData,
 	Details,
-	Confirmation,
 	Accepting,
 	Success,
 }

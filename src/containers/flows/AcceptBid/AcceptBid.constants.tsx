@@ -10,7 +10,6 @@ import { CURRENCY } from 'constants/currency';
 const TITLES = {
 	ZAUCTION_APPROVAL: 'zAuction Approval',
 	ACCEPT_BID: 'Accept Bid',
-	CONFIRMATION: 'Are you sure?',
 	SUCCESS: 'Bid Accepted',
 };
 
@@ -21,18 +20,12 @@ export const STEP_TITLES = {
 	[Step.ApprovingZAuction]: TITLES.ZAUCTION_APPROVAL,
 	[Step.LoadingData]: TITLES.ACCEPT_BID,
 	[Step.Details]: TITLES.ACCEPT_BID,
-	[Step.Confirmation]: TITLES.CONFIRMATION,
 	[Step.Accepting]: TITLES.ACCEPT_BID,
 	[Step.Success]: TITLES.SUCCESS,
 };
 
 export const BUTTONS = {
 	[Step.Details]: { PRIMARY: 'Accept', SECONDARY: 'Cancel', TERTIARY: 'Retry' },
-	[Step.Confirmation]: {
-		PRIMARY: 'Confirm',
-		SECONDARY: 'Cancel',
-		TERTIARY: 'Retry',
-	},
 	[Step.Success]: 'Finish',
 };
 
@@ -91,3 +84,10 @@ export const getConfirmNFTDomainDetails = (
 		?
 	</div>
 );
+
+export const getSuccessNotification = (
+	bidAmount: React.ReactNode,
+	domainTitle: React.ReactNode,
+) =>
+	`Bid of ${bidAmount} for ${domainTitle} accepted.
+		\nOwnership has been transferred`;
