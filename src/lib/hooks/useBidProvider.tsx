@@ -12,6 +12,7 @@ import useNotification from './useNotification';
 import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
+import { Web3Provider } from '@ethersproject/providers';
 
 /////////////////////
 // Mock data stuff //
@@ -89,7 +90,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	// Hooks & State & Data //
 	//////////////////////////
 
-	const context = useWeb3React();
+	const { library } = useWeb3React<Web3Provider>();
 	const { addNotification } = useNotification();
 	const { instance: zAuctionInstance } = useZAuctionSdk();
 
@@ -104,16 +105,13 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				const bid = bids[bidData.tokenId].filter(
 					(b: any) => b.auctionId === bidData.auctionId,
 				)[0];
-				const tx = await zAuctionInstance.acceptBid(
-					bid,
-					context.library!.getSigner(),
-				);
+				const tx = await zAuctionInstance.acceptBid(bid, library!.getSigner());
 				return tx;
 			}, 'accept bid');
 
 			return tx;
 		},
-		[zAuctionInstance, context.library],
+		[zAuctionInstance, library],
 	);
 
 	const getBidsForYourDomains = useCallback(async () => {
@@ -211,22 +209,19 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				console.warn('No zAuctionInstance');
 				return;
 			}
+			if (!library) {
+				console.error('Could not find web3 library');
+				return;
+			}
 
-			// await zAuction.placeBid(
-			// 	baseApiUri,
-			// 	context.library!,
-			// 	contracts!.registry.address,
-			// 	domain.id,
-			// 	ethers.utils.parseEther(bid.toString()).toString(),
-			// 	onStep,
-			// );
+			console.log(library);
 			try {
 				await zAuctionInstance.placeBid(
 					{
 						tokenId: domain.id,
 						bidAmount: ethers.utils.parseEther(bid.toString()).toString(),
 					},
-					context.library!.getSigner(),
+					library!.getSigner(),
 					(status) => onPlaceBidStatusChange(status, onStep),
 				);
 				addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
@@ -234,7 +229,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				console.warn(e);
 			}
 		},
-		[zAuctionInstance, context.library, addNotification],
+		[zAuctionInstance, library, addNotification],
 	);
 
 	return useMemo(
