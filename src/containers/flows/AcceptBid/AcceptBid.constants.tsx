@@ -73,11 +73,10 @@ export const getConfirmNFTPriceDetails = (
 	bidAmountWild: string,
 	bidAmountUsd: string,
 ) => (
-	<>
+	<div>
 		{MESSAGES.CONFIRM_BID_AMOUNT}
-		<br />
 		<b>{` ${bidAmountWild}`}</b> {` (${bidAmountUsd + CURRENCY.USD}) `}
-	</>
+	</div>
 );
 
 export const getConfirmNFTDomainDetails = (
@@ -85,7 +84,7 @@ export const getConfirmNFTDomainDetails = (
 	domainAddress: string,
 ) => (
 	<div>
-		and transfer ownership of <b>{domainName}</b> to
+		and transfer ownership of <b>{domainName}</b> to{' '}
 		<b>
 			<Member id={domainAddress} />
 		</b>

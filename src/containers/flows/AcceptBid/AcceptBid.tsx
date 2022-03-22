@@ -6,7 +6,6 @@ import { Overlay, Wizard } from 'components';
 
 //- Components Imports
 import Details from './components/Details/Details';
-import Success from './components/Success/Success';
 
 //- Library Imports
 import useAcceptBid from './hooks/useAcceptBid';
@@ -191,6 +190,7 @@ const AcceptBid = ({
 		// Display NFT details
 		[Step.Details]: acceptingBid ? (
 			<Details
+				currentStep={currentStep}
 				assetUrl={assetUrl}
 				creator={creatorId}
 				domainName={domainName}
@@ -200,13 +200,13 @@ const AcceptBid = ({
 				highestBid={highestBid}
 				wildPriceUsd={wildPriceUsd}
 				onClose={onClose}
-				onNext={() => onDetailsAccept()}
+				onNext={onDetailsAccept}
 			/>
 		) : (
 			<Wizard.Confirmation
 				message={MESSAGES.TEXT_FAILED_TO_LOAD}
 				primaryButtonText={BUTTONS[Step.Details].TERTIARY}
-				onClickPrimaryButton={() => onDetailsAccept()}
+				onClickPrimaryButton={onDetailsAccept}
 				secondaryButtonText={BUTTONS[Step.Details].SECONDARY}
 				onClickSecondaryButton={onClose}
 			/>
@@ -248,7 +248,8 @@ const AcceptBid = ({
 		[Step.Accepting]: <Wizard.Loading message={status} />,
 		// Bid Accepted
 		[Step.Success]: (
-			<Success
+			<Details
+				currentStep={currentStep}
 				assetUrl={assetUrl}
 				creator={creatorId}
 				domainName={domainName}
