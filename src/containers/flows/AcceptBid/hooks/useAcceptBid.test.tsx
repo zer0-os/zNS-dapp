@@ -119,7 +119,7 @@ test('handles failed/rejected signature', async () => {
 	}
 
 	expect(mockAcceptBid).toBeCalledTimes(1);
-	expect(err?.message).toBe(ERRORS.SIGNATURE);
+	expect(err?.message).toBe(ERRORS.REJECTED_WALLET);
 	expect(console.error).toHaveBeenCalled();
 });
 
