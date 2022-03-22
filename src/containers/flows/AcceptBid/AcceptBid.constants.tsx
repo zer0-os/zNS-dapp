@@ -1,6 +1,12 @@
 //- Types
 import { Step } from './AcceptBid.types';
 
+//- Components
+import { Member } from 'components';
+
+//- Global Constants
+import { CURRENCY } from 'constants/currency';
+
 export const TITLES = {
 	[Step.Details]: 'Accept Bid',
 	[Step.CheckingZAuctionApproval]: 'zAuction Approval',
@@ -51,5 +57,26 @@ export const MESSAGES = {
 	CONFIRM_BID_AMOUNT: 'Are you sure you want to accept a bid of',
 };
 
-export const getNFTConfirmDetailsText = (domainName: string) =>
-	`and transfer ownership of ${domainName} to `;
+export const getConfirmNFTPriceDetails = (
+	bidAmountWild: string,
+	bidAmountUsd: string,
+) => (
+	<>
+		{MESSAGES.CONFIRM_BID_AMOUNT}
+		<br />
+		<b>{` ${bidAmountWild}`}</b> {` (${bidAmountUsd + CURRENCY.USD}) `}
+	</>
+);
+
+export const getConfirmNFTDomainDetails = (
+	domainName: React.ReactNode,
+	domainAddress: string,
+) => (
+	<div>
+		and transfer ownership of <b>{domainName}</b> to
+		<b>
+			<Member id={domainAddress} />
+		</b>
+		?
+	</div>
+);

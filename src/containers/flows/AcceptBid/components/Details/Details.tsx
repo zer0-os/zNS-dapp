@@ -1,5 +1,5 @@
 //- Components Imports
-import { Wizard } from 'components';
+import { Member, Wizard } from 'components';
 
 //- Types Imports
 import { ethers } from 'ethers';
@@ -18,7 +18,8 @@ import { LABELS } from 'constants/labels';
 import { CURRENCY } from 'constants/currency';
 import {
 	BUTTONS,
-	getNFTConfirmDetailsText,
+	getConfirmNFTPriceDetails,
+	getConfirmNFTDomainDetails,
 	MESSAGES,
 } from '../../AcceptBid.constants';
 
@@ -63,9 +64,9 @@ const Details = ({
 	// Functions //
 	///////////////
 	const formattedHighestBidAmount = getFormattedHighestBidAmount(highestBid);
-	const formattedBidAmount = getFormattedBidAmount(bidAmount);
+	const formattedBidAmountWILD = getFormattedBidAmount(bidAmount);
 	const formattedDomainName = truncatedDomain(domainName);
-	const formattedDomainAddress = truncatedAddress(walletAddress);
+	const formattedBidAmountUSD = toFiat(Number(bidAmountUSD));
 
 	return (
 		<>
@@ -83,17 +84,17 @@ const Details = ({
 					// Accepting Bid
 					{
 						name: LABELS.SELECTED_BID_LABEL,
-						value: formattedBidAmount,
+						value: formattedBidAmountWILD,
 					},
 				]}
 			/>
 			<div className={styles.TextContainer}>
-				{MESSAGES.CONFIRM_BID_AMOUNT}
-				{` $${toFiat(Number(bidAmountUSD)) + ' ' + CURRENCY.USD} `}
-				<div>
-					{getNFTConfirmDetailsText(domainName)}
-					{formattedDomainAddress}?
-				</div>
+				{getConfirmNFTPriceDetails(
+					formattedBidAmountWILD,
+					formattedBidAmountUSD,
+				)}
+
+				{getConfirmNFTDomainDetails(domainName, walletAddress)}
 			</div>
 			<Wizard.Buttons
 				primaryButtonText={BUTTONS[Step.Details].PRIMARY}
