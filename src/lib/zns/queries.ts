@@ -1,25 +1,5 @@
 import { gql } from '@apollo/client';
 
-// export const getDomainTransfers = gql`
-// 	query DomainTransferred($id: ID!) {
-// 		domainTransferreds(where: { domain: $id }) {
-// 			id
-// 			domain {
-// 				id
-// 			}
-// 			blockNumber
-// 			timestamp
-// 			transactionID
-// 			from {
-// 				id
-// 			}
-// 			to {
-// 				id
-// 			}
-// 		}
-// 	}
-// `;
-
 export const byIdQuery = gql`
 	query Domain($id: ID!) {
 		domain(id: $id) {
@@ -59,42 +39,6 @@ export const byIdQuery = gql`
 export const byNameQuery = gql`
 	query Domain($name: String!) {
 		domains(where: { name_contains: $name }) {
-			id
-			name
-			parent {
-				id
-				name
-			}
-			subdomains(first: 1000) {
-				id
-				name
-				metadata
-				owner {
-					id
-				}
-				minter {
-					id
-				}
-			}
-			owner {
-				id
-			}
-			minter {
-				id
-			}
-			lockedBy {
-				id
-			}
-			contract
-			isLocked
-			metadata
-		}
-	}
-`;
-
-export const childDomainsQuery = gql`
-	query ChildrenDomains($id: ID!) {
-		domains(where: { parent: $parent }, first: 1000) {
 			id
 			name
 			parent {

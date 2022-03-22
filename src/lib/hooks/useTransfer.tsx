@@ -6,7 +6,6 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 
 // - Library Imports
-import { useZnsContracts } from 'lib/contracts';
 import { TransferSubmitParams } from 'lib/types';
 import useNotification from 'lib/hooks/useNotification';
 
@@ -49,13 +48,6 @@ export const useTransfer = (): UseTransferReturn => {
 			}
 
 			try {
-				// const tx = await registryContract.transferFrom(
-				// 	account,
-				// 	params.walletAddress,
-				// 	params.domainId,
-				// );
-				const signer = library.getSigner();
-				console.log(signer, sdk);
 				const tx = await sdk.transferDomainOwnership(
 					params.walletAddress,
 					params.domainId,
