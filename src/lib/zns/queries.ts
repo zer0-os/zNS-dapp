@@ -1,22 +1,5 @@
 import { gql } from '@apollo/client';
 
-export const getDomainMintEvent = gql`
-	query DomainMinted($id: ID!) {
-		domainMinteds(where: { domain: $id }) {
-			id
-			domain {
-				id
-			}
-			blockNumber
-			timestamp
-			transactionID
-			minter {
-				id
-			}
-		}
-	}
-`;
-
 // export const getDomainTransfers = gql`
 // 	query DomainTransferred($id: ID!) {
 // 		domainTransferreds(where: { domain: $id }) {
