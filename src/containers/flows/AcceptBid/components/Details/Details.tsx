@@ -3,7 +3,7 @@ import { Wizard, FutureButton } from 'components';
 
 //- Types Imports
 import { ethers } from 'ethers';
-import { Step } from '../../AcceptBid.types';
+import { StepContent } from '../../AcceptBid.types';
 
 //- Constants
 import { LABELS } from 'constants/labels';
@@ -26,7 +26,7 @@ import {
 } from 'lib/utils';
 
 type DetailsProps = {
-	currentStep: Step;
+	stepContent: StepContent;
 	assetUrl: string;
 	creator: string;
 	domainName: string;
@@ -41,7 +41,7 @@ type DetailsProps = {
 };
 
 const Details = ({
-	currentStep,
+	stepContent,
 	assetUrl,
 	creator,
 	domainName,
@@ -67,13 +67,13 @@ const Details = ({
 	const formattedBidAmountWILD = getFormattedBidAmount(bidAmount);
 	const formattedDomainName = truncatedDomain(domainName);
 	const formattedBidAmountUSD = toFiat(Number(bidAmountUSD));
-	const onSubmit = currentStep === Step.Details ? onNext : onClose;
+	const onSubmit = stepContent === StepContent.Details ? onNext : onClose;
 	const onSubmitButtonText =
-		currentStep === Step.Details
+		stepContent === StepContent.Details
 			? error
-				? BUTTONS[Step.Details].TERTIARY
-				: BUTTONS[Step.Details].PRIMARY
-			: BUTTONS[Step.Success];
+				? BUTTONS[StepContent.Details].TERTIARY
+				: BUTTONS[StepContent.Details].PRIMARY
+			: BUTTONS[StepContent.Success];
 
 	return (
 		<>
@@ -92,7 +92,7 @@ const Details = ({
 						// Accepting Bid
 						{
 							name:
-								currentStep === Step.Details
+								stepContent === StepContent.Details
 									? LABELS.SELECTED_BID_LABEL
 									: LABELS.ACCEPTED_BID_LABEL,
 							value: formattedBidAmountWILD,
@@ -102,7 +102,7 @@ const Details = ({
 			</div>
 
 			{/* Details Step */}
-			{currentStep === Step.Details && (
+			{stepContent === StepContent.Details && (
 				<div className={styles.TextContainer}>
 					{getConfirmNFTPriceDetails(
 						formattedBidAmountWILD,
@@ -114,7 +114,7 @@ const Details = ({
 			)}
 
 			{/* Success Step */}
-			{currentStep === Step.Success && (
+			{stepContent === StepContent.Success && (
 				<div className={styles.SuccessConfirmation}>
 					{MESSAGES.SUCCESS_CONFIRMATION}
 				</div>
@@ -124,9 +124,9 @@ const Details = ({
 
 			{/* Buttons */}
 			<div className={styles.Buttons}>
-				{currentStep === Step.Details && (
+				{stepContent === StepContent.Details && (
 					<FutureButton alt glow onClick={onClose}>
-						{BUTTONS[Step.Details].SECONDARY}
+						{BUTTONS[StepContent.Details].SECONDARY}
 					</FutureButton>
 				)}
 				<FutureButton glow onClick={onSubmit}>

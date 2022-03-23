@@ -3,21 +3,23 @@
 import { useEffect, useRef, useState } from 'react';
 
 //- Global Component Imports
-import { Overlay, Wizard } from 'components';
+import { Overlay, Wizard, StepBar } from 'components';
 
 //- Components Imports
 import Details from './components/Details/Details';
 
 //- Library Imports
 import useAcceptBid from './hooks/useAcceptBid';
-import { useWeb3React } from '@web3-react/core';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
-import { Bid } from '@zero-tech/zauction-sdk';
 import { Metadata } from 'lib/types';
 import { getFormattedBidAmount } from 'lib/utils';
+import useNotification from 'lib/hooks/useNotification';
+import useCurrency from 'lib/hooks/useCurrency';
+import { useWeb3React } from '@web3-react/core';
+import { Bid } from '@zero-tech/zauction-sdk';
 
 //- Types Imports
-import { Step } from './AcceptBid.types';
+import { StepContent, Step } from './AcceptBid.types';
 
 //- Constants Imports
 import {
@@ -26,10 +28,12 @@ import {
 	getSuccessNotification,
 	MESSAGES,
 	STATUS_TEXT,
-	STEP_TITLES,
+	STEP_BAR_HEADING,
+	STEP_CONTENT_TITLES,
 } from './AcceptBid.constants';
-import useNotification from 'lib/hooks/useNotification';
-import useCurrency from 'lib/hooks/useCurrency';
+
+//- Styles Imports
+import styles from './AcceptBid.module.scss';
 
 type AcceptBidProps = {
 	acceptingBid: Bid | undefined;
@@ -72,7 +76,12 @@ const AcceptBid = ({
 	//- Notification State
 	const { addNotification } = useNotification();
 
-	const [currentStep, setCurrentStep] = useState<Step>(Step.LoadingData);
+	const [stepContent, setStepContent] = useState<StepContent>(
+		StepContent.CheckingZAuctionApproval,
+	);
+	const [currentStep, setCurrentStep] = useState<Step>(Step.zAuction);
+	const [isTransactionComplete, setIsTransactionComplete] =
+		useState<boolean>(false);
 	const [error, setError] = useState<string | undefined>();
 
 	// Prevent state update to unmounted component
@@ -97,14 +106,16 @@ const AcceptBid = ({
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
 				if (isApproved) {
-					setCurrentStep(Step.Details);
+					setCurrentStep(Step.ConfirmDetails);
+					setStepContent(StepContent.Details);
 				} else {
-					setCurrentStep(Step.ApproveZAuction);
+					setStepContent(StepContent.ApproveZAuction);
 				}
 			} catch (e) {
 				setError(ERRORS.CONSOLE_TEXT);
-				setCurrentStep(Step.Details);
 				console.error(ERRORS.CONSOLE_TEXT, e);
+				setCurrentStep(Step.zAuction);
+				setStepContent(StepContent.FailedToCheckZAuction);
 			}
 		})();
 	};
@@ -115,7 +126,7 @@ const AcceptBid = ({
 			return;
 		}
 		setError(undefined);
-		setCurrentStep(Step.WaitingForWallet);
+		setStepContent(StepContent.WaitingForWallet);
 		(async () => {
 			try {
 				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
@@ -123,15 +134,15 @@ const AcceptBid = ({
 					library.getSigner(),
 				);
 				try {
-					setCurrentStep(Step.ApprovingZAuction);
+					setStepContent(StepContent.ApprovingZAuction);
 					await tx.wait();
 				} catch (e) {
-					setCurrentStep(Step.ApproveZAuction);
+					setStepContent(StepContent.ApproveZAuction);
 					setError(ERRORS.TRANSACTION);
 				}
-				setCurrentStep(Step.Details);
+				setStepContent(StepContent.Details);
 			} catch (e) {
-				setCurrentStep(Step.ApproveZAuction);
+				setStepContent(StepContent.ApproveZAuction);
 				setError(ERRORS.REJECTED_WALLET);
 			}
 		})();
@@ -139,19 +150,22 @@ const AcceptBid = ({
 
 	const onConfirm = async () => {
 		setError('');
-		setCurrentStep(Step.Accepting);
+		setCurrentStep(Step.AcceptBid);
+		setStepContent(StepContent.Accepting);
 		try {
 			await accept(acceptingBid!);
 			addNotification(
 				getSuccessNotification(
 					getFormattedBidAmount(acceptingBid?.amount),
-					domainTitle,
+					domainName,
 				),
 			);
-			setCurrentStep(Step.Success);
+			setIsTransactionComplete(true);
+			setStepContent(StepContent.Success);
 		} catch (e) {
+			setCurrentStep(Step.ConfirmDetails);
 			setError(ERRORS.TRANSACTION);
-			setCurrentStep(Step.Details);
+			setStepContent(StepContent.Details);
 		}
 		if (!isMounted.current) return;
 	};
@@ -164,7 +178,14 @@ const AcceptBid = ({
 	};
 
 	const confirmationErrorButtonText = () =>
-		error ? BUTTONS[Step.Details].TERTIARY : BUTTONS[Step.Details].PRIMARY;
+		error
+			? BUTTONS[StepContent.Details].TERTIARY
+			: BUTTONS[StepContent.Details].PRIMARY;
+
+	const onStepNavigation = (i: number) => {
+		setCurrentStep(i);
+		setStepContent(i);
+	};
 
 	/////////////
 	// Effects //
@@ -172,13 +193,12 @@ const AcceptBid = ({
 
 	// Set initial step
 	useEffect(() => {
-		if (isLoading) {
-			setCurrentStep(Step.LoadingData);
-		} else {
-			setCurrentStep(Step.CheckingZAuctionApproval);
+		if (currentStep === Step.zAuction) {
+			setCurrentStep(Step.zAuction);
+			setStepContent(StepContent.CheckingZAuctionApproval);
 			checkZAuctionApproval();
 		}
-	}, [isLoading]);
+	}, [currentStep]);
 
 	useEffect(() => {
 		isMounted.current = true;
@@ -187,15 +207,22 @@ const AcceptBid = ({
 		};
 	});
 
-	const steps = {
-		// Loading Data
-		[Step.LoadingData]: <Wizard.Loading message={MESSAGES.TEXT_LOADING} />,
+	const content = {
+		// Failed to check zAuction
+		[StepContent.FailedToCheckZAuction]: (
+			<Wizard.Confirmation
+				error={error}
+				message={ERRORS.CONSOLE_TEXT}
+				primaryButtonText={BUTTONS[StepContent.FailedToCheckZAuction]}
+				onClickPrimaryButton={onClose}
+			/>
+		),
 		// Check zAuction Approval
-		[Step.CheckingZAuctionApproval]: (
+		[StepContent.CheckingZAuctionApproval]: (
 			<Wizard.Loading message={STATUS_TEXT.CHECK_ZAUCTION} />
 		),
 		// Approve zAuction
-		[Step.ApproveZAuction]: (
+		[StepContent.ApproveZAuction]: (
 			<Wizard.Confirmation
 				error={error}
 				message={STATUS_TEXT.ACCEPT_ZAUCTION_PROMPT}
@@ -205,37 +232,40 @@ const AcceptBid = ({
 			/>
 		),
 		// Wait for Wallet
-		[Step.WaitingForWallet]: (
+		[StepContent.WaitingForWallet]: (
 			<Wizard.Loading message={STATUS_TEXT.AWAITING_APPROVAL} />
 		),
 		// Approving zAuction
-		[Step.ApprovingZAuction]: (
+		[StepContent.ApprovingZAuction]: (
 			<Wizard.Loading message={STATUS_TEXT.APPROVING_ZAUCTION} />
 		),
 		// NFT details confirmation
-		[Step.Details]: acceptingBid && (
-			<Details
-				error={error}
-				currentStep={currentStep}
-				assetUrl={assetUrl}
-				creator={creatorId}
-				domainName={domainName}
-				title={domainTitle}
-				walletAddress={walletAddress}
-				bidAmount={acceptingBid.amount}
-				highestBid={highestBid}
-				wildPriceUsd={wildPriceUsd}
-				onClose={onClose}
-				onNext={onConfirm}
-			/>
-		),
+		[StepContent.Details]:
+			acceptingBid && !isLoading ? (
+				<Details
+					error={error}
+					stepContent={stepContent}
+					assetUrl={assetUrl}
+					creator={creatorId}
+					domainName={domainName}
+					title={domainTitle}
+					walletAddress={walletAddress}
+					bidAmount={acceptingBid.amount}
+					highestBid={highestBid}
+					wildPriceUsd={wildPriceUsd}
+					onClose={onClose}
+					onNext={onConfirm}
+				/>
+			) : (
+				<Wizard.Loading message={MESSAGES.TEXT_LOADING} />
+			),
 		// Accepting Bid
-		[Step.Accepting]: <Wizard.Loading message={status} />,
+		[StepContent.Accepting]: <Wizard.Loading message={status} />,
 		// Bid Accepted
-		[Step.Success]: (
+		[StepContent.Success]: (
 			<Details
 				error={error}
-				currentStep={currentStep}
+				stepContent={stepContent}
 				assetUrl={assetUrl}
 				creator={creatorId}
 				domainName={domainName}
@@ -246,10 +276,24 @@ const AcceptBid = ({
 			/>
 		),
 	};
-
+	console.log(isTransactionComplete);
 	return (
 		<Overlay centered open onClose={onClose}>
-			<Wizard header={STEP_TITLES[currentStep]}>{steps[currentStep]}</Wizard>
+			<Wizard
+				header={STEP_CONTENT_TITLES[stepContent]}
+				sectionDivider={isTransactionComplete}
+			>
+				{!isTransactionComplete && (
+					<div className={styles.StepBarContainer}>
+						<StepBar
+							step={currentStep + 1}
+							steps={STEP_BAR_HEADING}
+							onNavigate={onStepNavigation}
+						/>
+					</div>
+				)}
+				{content[stepContent]}
+			</Wizard>
 		</Overlay>
 	);
 };

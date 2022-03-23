@@ -1,5 +1,5 @@
 //- Types
-import { Step } from './AcceptBid.types';
+import { StepContent } from './AcceptBid.types';
 
 //- Components
 import { Member } from 'components';
@@ -8,25 +8,32 @@ import { Member } from 'components';
 import { CURRENCY } from 'constants/currency';
 
 const TITLES = {
-	ZAUCTION_APPROVAL: 'zAuction Approval',
+	ZAUCTION_APPROVAL: 'Approve zAuction',
 	ACCEPT_BID: 'Accept Bid',
 	SUCCESS: 'Bid Accepted',
 };
 
-export const STEP_TITLES = {
-	[Step.CheckingZAuctionApproval]: TITLES.ZAUCTION_APPROVAL,
-	[Step.ApproveZAuction]: TITLES.ZAUCTION_APPROVAL,
-	[Step.WaitingForWallet]: TITLES.ZAUCTION_APPROVAL,
-	[Step.ApprovingZAuction]: TITLES.ZAUCTION_APPROVAL,
-	[Step.LoadingData]: TITLES.ACCEPT_BID,
-	[Step.Details]: TITLES.ACCEPT_BID,
-	[Step.Accepting]: TITLES.ACCEPT_BID,
-	[Step.Success]: TITLES.SUCCESS,
+export const STEP_CONTENT_TITLES = {
+	[StepContent.FailedToCheckZAuction]: TITLES.ZAUCTION_APPROVAL,
+	[StepContent.CheckingZAuctionApproval]: TITLES.ZAUCTION_APPROVAL,
+	[StepContent.ApproveZAuction]: TITLES.ZAUCTION_APPROVAL,
+	[StepContent.WaitingForWallet]: TITLES.ZAUCTION_APPROVAL,
+	[StepContent.ApprovingZAuction]: TITLES.ZAUCTION_APPROVAL,
+	[StepContent.Details]: TITLES.ACCEPT_BID,
+	[StepContent.Accepting]: TITLES.ACCEPT_BID,
+	[StepContent.Success]: TITLES.SUCCESS,
 };
 
+export const STEP_BAR_HEADING = ['zAuction', 'Confirm', 'Accept'];
+
 export const BUTTONS = {
-	[Step.Details]: { PRIMARY: 'Accept', SECONDARY: 'Cancel', TERTIARY: 'Retry' },
-	[Step.Success]: 'Finish',
+	[StepContent.FailedToCheckZAuction]: 'Close',
+	[StepContent.Details]: {
+		PRIMARY: 'Accept',
+		SECONDARY: 'Cancel',
+		TERTIARY: 'Retry',
+	},
+	[StepContent.Success]: 'Finish',
 };
 
 export const STATUS_TEXT = {
@@ -41,7 +48,7 @@ export const STATUS_TEXT = {
 
 export const ERRORS = {
 	SIGNATURE: 'Failed to generate signature.',
-	TRANSACTION: 'Transaction failed.',
+	TRANSACTION: 'Transaction failed. Please try again',
 	LIBRARY: 'Failed to connect with Web3 wallet.',
 	CONSOLE_TEXT: 'Failed to check zAuction approval status',
 	REJECTED_WALLET: 'Rejected by wallet',
@@ -87,7 +94,6 @@ export const getConfirmNFTDomainDetails = (
 
 export const getSuccessNotification = (
 	bidAmount: React.ReactNode,
-	domainTitle: React.ReactNode,
+	domainName: React.ReactNode,
 ) =>
-	`Bid of ${bidAmount} for ${domainTitle} accepted.
-		\nOwnership has been transferred`;
+	`Bid of ${bidAmount} for ${domainName} accepted. Ownership has been transferred`;
