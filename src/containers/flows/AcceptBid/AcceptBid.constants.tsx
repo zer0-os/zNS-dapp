@@ -75,7 +75,7 @@ export const getConfirmNFTPriceDetails = (
 ) => (
 	<div>
 		{MESSAGES.CONFIRM_BID_AMOUNT}
-		<b>{` ${bidAmountWild}`}</b> {` (${bidAmountUsd + CURRENCY.USD}) `}
+		<b>{` ${bidAmountWild}`}</b> {` ($${bidAmountUsd}) `}
 	</div>
 );
 
