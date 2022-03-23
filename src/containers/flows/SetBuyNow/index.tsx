@@ -153,7 +153,7 @@ const SetBuyNowContainer = ({
 					sdk.getDomainById(domainId),
 					sdk.getDomainEvents(domainId),
 					sdk.getDomainMetadata(domainId, library.getSigner()),
-					zAuctionInstance.getBuyNowPrice(domainId, library.getSigner()),
+					zAuctionInstance.getBuyNowPrice(domainId),
 				]);
 				if (domain && events && metadata) {
 					const buyNow = listing.price;

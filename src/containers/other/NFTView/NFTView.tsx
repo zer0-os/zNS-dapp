@@ -136,7 +136,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active, chainId, library } = walletContext;
+	const { account, active, chainId } = walletContext;
 
 	const networkType = chainIdToNetworkType(chainId);
 
@@ -287,7 +287,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	};
 
 	const getPriceData = async () => {
-		if (!znsDomain?.id || !library) {
+		if (!znsDomain?.id) {
 			return;
 		}
 		const { id } = znsDomain;
@@ -298,7 +298,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		try {
 			// // Get buy now and all bids
 			const [listing, bids] = await Promise.all([
-				zAuctionInstance.getBuyNowPrice(id, library.getSigner()),
+				zAuctionInstance.getBuyNowPrice(id),
 				zAuctionInstance.listBids([id]),
 			]);
 

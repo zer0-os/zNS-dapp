@@ -24,7 +24,7 @@ const SubdomainTableRow = (props: any) => {
 	const isMounted = useRef<boolean>();
 
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, library } = walletContext;
+	const { account } = walletContext;
 	const { push: goTo } = useHistory();
 
 	const { instance: zAuctionInstance } = useZAuctionSdk();
@@ -68,22 +68,17 @@ const SubdomainTableRow = (props: any) => {
 		setBids(undefined);
 		setBuyNowPrice(undefined);
 
-		if (library) {
-			try {
-				const buyNow = await zAuctionInstance.getBuyNowPrice(
-					domain.id,
-					library.getSigner(),
-				);
-				if (isMounted.current === false) {
-					return;
-				}
-				if (buyNow) {
-					setBuyNowPrice(Number(ethers.utils.formatEther(buyNow.price)));
-				}
-			} catch (err) {
-				setIsPriceDataLoading(false);
-				console.log('Failed to get buy now price', err);
+		try {
+			const buyNow = await zAuctionInstance.getBuyNowPrice(domain.id);
+			if (isMounted.current === false) {
+				return;
 			}
+			if (buyNow) {
+				setBuyNowPrice(Number(ethers.utils.formatEther(buyNow.price)));
+			}
+		} catch (err) {
+			setIsPriceDataLoading(false);
+			console.log('Failed to get buy now price', err);
 		}
 
 		try {
@@ -223,7 +218,7 @@ const SubdomainTableRow = (props: any) => {
 						onSuccess={fetchData}
 						buttonText="Buy Now"
 						domainId={domain.id}
-						disabled={isOwnedByUser}
+						disabled={isOwnedByUser || !account}
 						style={{ marginLeft: 'auto', width: 160 }}
 					/>
 				) : isBiddable ? (
