@@ -1,33 +1,45 @@
 import { useWeb3React } from '@web3-react/core';
 import * as zAuction from '@zero-tech/zauction-sdk';
 import * as zns from '@zero-tech/zns-sdk';
+import { ethers } from 'ethers';
+import { RPC_URLS } from 'lib/connectors';
+import {
+	chainIdToNetworkType,
+	defaultNetworkId,
+	NETWORK_TYPES,
+} from 'lib/network';
 import React from 'react';
 import { useChainSelector } from './ChainSelectorProvider';
 
 export function useZAuctionSdk() {
-	const web3Context = useWeb3React();
+	const { library } = useWeb3React();
 	const chainSelector = useChainSelector();
 
 	const instance = React.useMemo(() => {
-		switch (chainSelector.selectedChain) {
-			case 1: {
+		const provider =
+			library ||
+			new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId]);
+		const network = chainIdToNetworkType(chainSelector.selectedChain);
+
+		switch (network) {
+			case NETWORK_TYPES.MAINNET: {
 				return zAuction.createInstance(
-					zns.configuration.mainnetConfiguration(web3Context.library)
-						.zAuctionRoutes[0].config,
+					zns.configuration.mainnetConfiguration(provider).zAuctionRoutes[0]
+						.config,
 				);
 			}
 
-			case 4: {
+			case NETWORK_TYPES.RINKEBY: {
 				return zAuction.createInstance(
-					zns.configuration.rinkebyConfiguration(web3Context.library)
-						.zAuctionRoutes[0].config,
+					zns.configuration.rinkebyConfiguration(provider).zAuctionRoutes[0]
+						.config,
 				);
 			}
 
-			case 42: {
+			case NETWORK_TYPES.KOVAN: {
 				return zAuction.createInstance(
-					zns.configuration.kovanConfiguration(web3Context.library)
-						.zAuctionRoutes[0].config,
+					zns.configuration.kovanConfiguration(provider).zAuctionRoutes[0]
+						.config,
 				);
 			}
 
@@ -35,7 +47,7 @@ export function useZAuctionSdk() {
 				throw new Error('SDK isn´t available for this chainId');
 			}
 		}
-	}, [web3Context.library, chainSelector.selectedChain]);
+	}, [library, chainSelector.selectedChain]);
 
 	return {
 		instance,
