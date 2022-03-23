@@ -140,6 +140,7 @@ const AcceptBid = ({
 					setStepContent(StepContent.ApproveZAuction);
 					setError(ERRORS.TRANSACTION);
 				}
+				setCurrentStep(Step.ConfirmDetails);
 				setStepContent(StepContent.Details);
 			} catch (e) {
 				setStepContent(StepContent.ApproveZAuction);
