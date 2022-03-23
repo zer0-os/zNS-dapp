@@ -22,7 +22,7 @@ const Confirmation = ({
 
 	return (
 		<div className={classNames(styles.Container, className)}>
-			{isMessageString ? <p>{message}</p> : { message }}
+			{isMessageString ? <p>{message}</p> : message}
 			{error !== undefined && <p className="error-text text-center">{error}</p>}
 			<Buttons {...rest} />
 		</div>

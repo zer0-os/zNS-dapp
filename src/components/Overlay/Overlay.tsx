@@ -10,6 +10,7 @@ import styles from './Overlay.module.scss';
 import closeIcon from 'assets/close-icon.svg';
 
 type OverlayProps = {
+	onContentClick?: (e: React.UIEvent<HTMLElement, UIEvent>) => void;
 	onClose: () => void;
 	classNames?: string;
 	open?: boolean;
@@ -24,6 +25,7 @@ type OverlayProps = {
 
 const Overlay: React.FC<OverlayProps> = ({
 	classNames,
+	onContentClick,
 	onClose,
 	open,
 	children,
@@ -112,7 +114,12 @@ const Overlay: React.FC<OverlayProps> = ({
 				/>
 			)}
 			<div className={`overlay ${styles.Container} ${img ? styles.Image : ''}`}>
-				<div className={`overlay ${styles.Content}`}>{children}</div>
+				<div
+					className={`overlay ${styles.Content}`}
+					onClick={onContentClick && onContentClick}
+				>
+					{children}
+				</div>
 				<div style={{ display: centered ? 'none' : 'block', height: 64 }}></div>
 			</div>
 		</div>

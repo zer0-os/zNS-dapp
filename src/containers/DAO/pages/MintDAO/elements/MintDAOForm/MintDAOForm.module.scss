@@ -1,0 +1,13 @@
+.MintDAOFormContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 100%;
+  margin-bottom: 24px;
+  
+  .MintDAOFormField {
+    span {
+      font-weight: normal;
+    }
+  }
+}
