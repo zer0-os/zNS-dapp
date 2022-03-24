@@ -557,7 +557,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 								<b className="glow-text-white">
 									{Number(bid).toLocaleString()} WILD
 								</b>{' '}
-								bid for <b className="glow-text-white">0://{domain.name}</b>
+								bid for <b className="glow-text-white">0://{formattedDomain}</b>
 							</p>
 							<FutureButton
 								glow
