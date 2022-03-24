@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Detail as DetailComponent, Member, NFTMedia } from 'components';
 import { truncateDomain } from 'lib/utils';
 
-const maxCharacterLength = 27;
+const maxCharacterLength = 28;
 
 type Detail = {
 	name: string;

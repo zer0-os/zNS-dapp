@@ -19,7 +19,7 @@ import styles from './Details.module.scss';
 
 //-Library Imports
 import { toFiat } from 'lib/currency';
-import { formatBidAmount, truncateDomain } from 'lib/utils';
+import { formatBidAmount } from 'lib/utils';
 
 type DetailsProps = {
 	stepContent: StepContent;
@@ -61,7 +61,6 @@ const Details = ({
 	///////////////
 	const formattedHighestBidAmount = formatBidAmount(highestBid);
 	const formattedBidAmountWILD = formatBidAmount(bidAmount);
-	const formattedDomainName = truncateDomain(domainName);
 	const formattedBidAmountUSD = toFiat(Number(bidAmountUSD));
 	const onSubmit = stepContent === StepContent.Details ? onNext : onClose;
 	const onSubmitButtonText =
@@ -77,7 +76,7 @@ const Details = ({
 				<Wizard.NFTDetails
 					assetUrl={assetUrl}
 					creator={creator}
-					domain={formattedDomainName}
+					domain={domainName}
 					title={title}
 					otherDetails={[
 						// Highest Bid
