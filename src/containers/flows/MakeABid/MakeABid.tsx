@@ -13,6 +13,7 @@ import useCurrency from 'lib/hooks/useCurrency';
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 import { ERC20 } from 'types';
+import { truncateDomain } from 'lib/utils';
 
 //- Component Imports
 import {
@@ -32,6 +33,8 @@ import styles from './MakeABid.module.scss';
 
 import useBidData from './hooks/useBidData';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+
+const maxCharacterLength = 28;
 
 type MakeABidProps = {
 	domain: Domain;
@@ -101,6 +104,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	///////////////
 	// Functions //
 	///////////////
+
+	// Truncate domain
+	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
 
 	// Conditionally set "all bids modal" state
 	const showAllBidsModal = () => {
@@ -346,7 +352,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const details = () => (
 		<div className={styles.Details}>
 			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
-			<span className={styles.Domain}>0://{domain.name}</span>
+			<span className={styles.Domain}>0://{formattedDomain}</span>
 			<div className={styles.Price}>
 				<h3 className="glow-text-blue">Highest Bid</h3>
 				{highestBid()}
