@@ -4,9 +4,6 @@ import { StepContent } from './AcceptBid.types';
 //- Components
 import { Member } from 'components';
 
-//- Global Constants
-import { CURRENCY } from 'constants/currency';
-
 const TITLES = {
 	ZAUCTION_APPROVAL: 'Approve zAuction',
 	ACCEPT_BID: 'Accept Bid',
