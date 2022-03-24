@@ -27,14 +27,8 @@ export const formatByDecimalPlace = (
 	return Number.isNaN(number) ? '' : number.toLocaleString(localeCode, config);
 };
 
-// Formatted highest bid in WILD
-export const getFormattedHighestBidAmount = (highestBid?: string) =>
-	highestBid
-		? ethers.utils.formatEther(highestBid).toString() + ` ${CURRENCY.WILD}`
-		: '';
-
-// Formatted bid amount in WILD
-export const getFormattedBidAmount = (bidAmount?: string) =>
+// Format bid amount in WILD
+export const formatBidAmount = (bidAmount?: string) =>
 	bidAmount
 		? ethers.utils.formatEther(bidAmount).toString() + ` ${CURRENCY.WILD}`
 		: '';

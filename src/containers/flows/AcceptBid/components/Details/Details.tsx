@@ -19,11 +19,7 @@ import styles from './Details.module.scss';
 
 //-Library Imports
 import { toFiat } from 'lib/currency';
-import {
-	getFormattedHighestBidAmount,
-	getFormattedBidAmount,
-	truncatedDomain,
-} from 'lib/utils';
+import { formatBidAmount, truncateDomain } from 'lib/utils';
 
 type DetailsProps = {
 	stepContent: StepContent;
@@ -63,9 +59,9 @@ const Details = ({
 	///////////////
 	// Functions //
 	///////////////
-	const formattedHighestBidAmount = getFormattedHighestBidAmount(highestBid);
-	const formattedBidAmountWILD = getFormattedBidAmount(bidAmount);
-	const formattedDomainName = truncatedDomain(domainName);
+	const formattedHighestBidAmount = formatBidAmount(highestBid);
+	const formattedBidAmountWILD = formatBidAmount(bidAmount);
+	const formattedDomainName = truncateDomain(domainName);
 	const formattedBidAmountUSD = toFiat(Number(bidAmountUSD));
 	const onSubmit = stepContent === StepContent.Details ? onNext : onClose;
 	const onSubmitButtonText =

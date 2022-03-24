@@ -12,7 +12,7 @@ import Details from './components/Details/Details';
 import useAcceptBid from './hooks/useAcceptBid';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { Metadata } from 'lib/types';
-import { getFormattedBidAmount } from 'lib/utils';
+import { formatBidAmount } from 'lib/utils';
 import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useWeb3React } from '@web3-react/core';
@@ -157,7 +157,7 @@ const AcceptBid = ({
 			await accept(acceptingBid!);
 			addNotification(
 				getSuccessNotification(
-					getFormattedBidAmount(acceptingBid?.amount),
+					formatBidAmount(acceptingBid?.amount),
 					domainName,
 				),
 			);
@@ -277,7 +277,7 @@ const AcceptBid = ({
 			/>
 		),
 	};
-	console.log(isTransactionComplete);
+
 	return (
 		<Overlay centered open onClose={onClose}>
 			<Wizard
