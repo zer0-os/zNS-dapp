@@ -11,6 +11,7 @@ import store, { history } from './store';
 //- Global Stylesheets
 import 'styles/reset.scss';
 import 'styles/main.scss';
+import 'styles/libraries.scss';
 
 //- React Imports
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
@@ -20,6 +21,7 @@ import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
 //- Library Imports
+import 'simplebar';
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
