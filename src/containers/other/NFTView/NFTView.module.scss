@@ -296,12 +296,26 @@
 	margin-top: 12px;
 }
 
-.Stats {
+.NFTStats {
 	display: flex;
 	align-items: unset;
 	justify-content: space-between;
 	margin-top: 24px;
-	flex-wrap: wrap;
+	gap: 12px;
+
+	.NFTStatContainer {
+		flex: 1;
+
+		@media only screen and (max-width: 768px) {
+			&.BidsStat {
+				display: none;
+			}
+		}
+	}
+
+	@media only screen and (max-width: 520px) {
+		flex-direction: column;
+	}
 }
 
 .Stats:first-child {
@@ -422,19 +436,6 @@
 
 	.Stats {
 		align-items: baseline;
-	}
-}
-
-// Stats Widget Container Styles
-@media only screen and (max-width: 520px) {
-	.WidgetContainer {
-		margin: 4px 0;
-		&:first-child {
-			margin-top: 0px;
-		}
-		&:last-child {
-			margin-bottom: 0px;
-		}
 	}
 }
 
