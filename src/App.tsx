@@ -11,6 +11,7 @@ import store, { history } from './store';
 //- Global Stylesheets
 import 'styles/reset.scss';
 import 'styles/main.scss';
+import 'styles/libraries.scss';
 
 //- React Imports
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
@@ -21,6 +22,7 @@ import { Web3Provider } from '@ethersproject/providers';
 
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
+import SimpleBar from 'simplebar-react';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
@@ -98,7 +100,9 @@ function wrappedApp() {
 							<MvpVersionProvider>
 								<ZNSDomainsProvider>
 									<EnlistProvider>
-										<App />
+										<SimpleBar style={{ maxHeight: '100vh' }}>
+											<App />
+										</SimpleBar>
 									</EnlistProvider>
 								</ZNSDomainsProvider>
 							</MvpVersionProvider>
