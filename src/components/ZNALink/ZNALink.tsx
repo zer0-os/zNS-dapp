@@ -1,9 +1,12 @@
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import { truncateDomain } from 'lib/utils';
 import React, { useMemo, useRef } from 'react';
 
 import { Link } from 'react-router-dom';
 
 import styles from './ZNALink.module.scss';
+
+const maxCharacterLength = 90;
 
 type ZNAProps = {
 	className?: string;
@@ -23,13 +26,16 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 		}
 	}, [globalDomain.domain]);
 
+	const isTruncatedDomain = truncateDomain(parsedDomain, maxCharacterLength);
+
 	return (
 		<div
 			className={`${styles.ZNALink} ${className ? className : ''}`}
 			style={style}
 		>
 			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
-			{parsedDomain.split('.').map((part, i) => {
+
+			{isTruncatedDomain.split('.').map((part, i) => {
 				const linkTarget =
 					part === 'wilder'
 						? ''

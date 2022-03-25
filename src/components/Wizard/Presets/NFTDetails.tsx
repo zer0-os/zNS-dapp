@@ -1,7 +1,12 @@
+//- Styles Imports
 import styles from './NFTDetails.module.scss';
+
+//- Library Imports
 import classNames from 'classnames';
-import { Detail as DetailComponent, Member, NFTMedia } from 'components';
 import { truncateDomain } from 'lib/utils';
+
+//- Component Imports
+import { Detail as DetailComponent, Member, NFTMedia } from 'components';
 
 const maxCharacterLength = 28;
 

@@ -1,6 +1,3 @@
-//- React Imports
-import { useState } from 'react';
-
 //- Components Imports
 import { Wizard, EtherInput, FutureButton } from 'components';
 
