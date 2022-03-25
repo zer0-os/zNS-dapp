@@ -13,6 +13,7 @@ import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
 import { Web3Provider } from '@ethersproject/providers';
+import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 
 /////////////////////
 // Mock data stuff //
@@ -61,7 +62,8 @@ const transformBid = (bid: zAuctionBid) => {
 		date: new Date(Number(bid.timestamp)),
 		tokenId: bid.tokenId,
 		signature: bid.signedMessage,
-		auctionId: bid.auctionId,
+		auctionId: bid.bidNonce,
+		bidNonce: bid.bidNonce,
 		nftAddress: bid.contract,
 		// TODO: No minBid property on zAuctionBid
 		minBid: '0',
@@ -93,6 +95,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	const { library } = useWeb3React<Web3Provider>();
 	const { addNotification } = useNotification();
 	const { instance: zAuctionInstance } = useZAuctionSdk();
+	const { instance: sdk } = useZnsSdk();
 
 	const acceptBid = useCallback(
 		async (bidData: Bid) => {
@@ -216,10 +219,10 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 			console.log(library);
 			try {
-				await zAuctionInstance.placeBid(
+				await sdk.zauction.placeBid(
 					{
-						tokenId: domain.id,
-						bidAmount: ethers.utils.parseEther(bid.toString()).toString(),
+						domainId: domain.id,
+						bidAmount: ethers.utils.parseEther(bid.toString()),
 					},
 					library!.getSigner(),
 					(status) => onPlaceBidStatusChange(status, onStep),
