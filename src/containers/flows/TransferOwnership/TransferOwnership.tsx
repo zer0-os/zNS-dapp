@@ -44,6 +44,7 @@ const TransferOwnership = ({
 	const [walletAddress, setWalletAddress] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | undefined>();
+	const [inputError, setInputError] = useState<string>('');
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);
 
 	// Prevent state update to unmounted component
@@ -52,13 +53,25 @@ const TransferOwnership = ({
 	// Providers
 	const { transferRequest } = useTransfer();
 
+	// Input Error Conditions
+	const isOwnersAddress = ownerId.toLowerCase() === walletAddress.toLowerCase();
+	const hasInputError = inputError !== '';
+	const valid = isValid(walletAddress);
+
 	///////////////
 	// Functions //
 	///////////////
-	const valid = isValid(walletAddress);
 	const onClose = () => onTransfer();
-	const onAccept = () => {
+	const onNext = () => {
 		setCurrentStep(Step.Confirmation);
+	};
+
+	const onAccept = () => {
+		if (valid && !isOwnersAddress) {
+			onNext();
+		} else if (valid && isOwnersAddress) {
+			setInputError(MESSAGES.REQUEST_ADDRESS_NOT_VALID_ERROR);
+		} else setInputError(MESSAGES.REQUEST_INVALID_ADDRESS);
 	};
 
 	const submitTransfer = async () => {
@@ -99,10 +112,11 @@ const TransferOwnership = ({
 				domainName={domainName}
 				title={name}
 				image={image}
-				valid={valid}
 				walletAddress={walletAddress}
+				hasError={hasInputError}
+				errorText={inputError}
 				setWalletAddress={setWalletAddress}
-				onNext={() => valid && onAccept()}
+				onNext={onAccept}
 			/>
 		),
 		[Step.Confirmation]: isLoading ? (
