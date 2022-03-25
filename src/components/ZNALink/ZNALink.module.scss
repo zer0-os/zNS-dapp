@@ -56,7 +56,7 @@
 	z-index: 2;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 720px) {
 	.ZNALink > a:not(:first-of-type):not(:last-of-type) {
 		display: none !important;
 		background: red;
