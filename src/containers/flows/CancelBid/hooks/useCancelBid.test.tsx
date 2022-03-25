@@ -34,7 +34,7 @@ jest.mock('@web3-react/core', () => ({
 }));
 
 const mockBid = {
-	auctionId: '1',
+	bidNonce: '1',
 	bidder: '0x000000000000000000000000',
 	signedMessage: 'message',
 	tokenId: 'id',
@@ -86,7 +86,7 @@ test('successfully cancels bid', async () => {
 	expect(mockCancelBid).toBeCalledTimes(1);
 	expect(mockTx).toBeCalledTimes(1);
 	expect(mockCancelBid).toBeCalledWith(
-		mockBid.auctionId,
+		mockBid.bidNonce,
 		mockBid.signedMessage,
 		mockBid.tokenId,
 		true,

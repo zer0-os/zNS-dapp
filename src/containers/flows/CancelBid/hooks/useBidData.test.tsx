@@ -53,7 +53,7 @@ const setupHook = () => {
 	const TestComponent = () => {
 		Object.assign(
 			returnVal,
-			useBidData(mock.mockDomainData.id, mock.mockBidBeingCancelled.auctionId),
+			useBidData(mock.mockDomainData.id, mock.mockBidBeingCancelled.bidNonce),
 		);
 		return null;
 	};
