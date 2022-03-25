@@ -27,6 +27,7 @@ const lowBidAmount = '100000000000000000000000';
 
 const mockBid = {
 	auctionId: '2',
+	bidNonce: '2',
 	bidder: '0x000000000000000000000000',
 	signedMessage: 'message',
 	tokenId: mockDomainData.id,
@@ -34,6 +35,7 @@ const mockBid = {
 
 const mockBidBeingCancelled = {
 	auctionId: '1',
+	bidNonce: '1',
 	bidder: '0x000000000000000000000000',
 	signedMessage: 'message',
 	tokenId: mockDomainData.id,

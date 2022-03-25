@@ -35,6 +35,7 @@ jest.mock('@web3-react/core', () => ({
 
 const mockBid = {
 	auctionId: '1',
+	bidNonce: '1',
 	bidder: '0x000000000000000000000000',
 	signedMessage: 'message',
 	tokenId: 'id',
