@@ -16,9 +16,9 @@ export const formatMintWizard = (
 	stepStatus: StepStatus,
 	mintData: MintData | undefined,
 	error: string | undefined,
-	onChangeStep: (step: Step) => () => void,
 	onChangeStepStatus: (stepStatus: StepStatus) => () => void,
 	onChangeMintData: (mintData: MintData) => void,
+	onClose: () => void,
 ): StepWizard | null => {
 	if (step === Step.Unlock) {
 		const title = TITLES[step][stepStatus];
@@ -30,7 +30,7 @@ export const formatMintWizard = (
 					primaryButtonText={BUTTONS[step].PRIMARY}
 					secondaryButtonText={BUTTONS[step].SECONDARY}
 					onClickPrimaryButton={onChangeStepStatus(StepStatus.Confirm)}
-					onClickSecondaryButton={onChangeStep(Step.None)}
+					onClickSecondaryButton={onClose}
 				/>
 			) : (
 				<Wizard.Loading message={MESSAGES[step][stepStatus]} />
@@ -57,7 +57,7 @@ export const formatMintWizard = (
 					}
 					secondaryButtonText={BUTTONS[step].SECONDARY}
 					onClickPrimaryButton={onChangeStepStatus(StepStatus.Confirm)}
-					onClickSecondaryButton={onChangeStep(Step.None)}
+					onClickSecondaryButton={onClose}
 				/>
 			) : (
 				<Wizard.Loading message={MESSAGES[step][stepStatus]} />

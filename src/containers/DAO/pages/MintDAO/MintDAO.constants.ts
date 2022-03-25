@@ -1,8 +1,8 @@
-import { Step, StepStatus, ErrrorType } from './MintDAO.types';
+import { Step, StepStatus, ErrorType } from './MintDAO.types';
 
 export const TITLES = {
 	[Step.Unlock]: {
-		[StepStatus.Normal]: 'Mint a DAO at This ?',
+		[StepStatus.Normal]: 'Mint a DAO at This Domain?',
 		[StepStatus.Confirm]: 'Mint a DAO at This Domain?',
 		[StepStatus.Processing]: 'Mint a DAO at This Domain?',
 	},
@@ -33,9 +33,8 @@ export const SUCCESS = {
 };
 
 export const ERRORS = {
-	[ErrrorType.Signature]: 'Failed to generate signature.',
-	[ErrrorType.Transaction]: 'Transaction failed.',
-	[ErrrorType.Library]: 'Failed to connect with Web3 wallet.',
+	[ErrorType.Signature]: 'Failed to generate signature.',
+	[ErrorType.Library]: 'Failed to connect with Web3 wallet.',
 };
 
 export const BUTTONS = {

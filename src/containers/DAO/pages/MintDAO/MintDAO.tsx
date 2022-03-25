@@ -1,16 +1,26 @@
 import { useMemo, useState } from 'react';
-import { Overlay, FutureButton, Wizard } from 'components';
+import { Overlay, Wizard } from 'components';
 import { useManyClickHandlers } from 'lib/hooks/useManyClickHandlers';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import useNotification from 'lib/hooks/useNotification';
-import { Step, StepStatus, StepWizard, MintData } from './MintDAO.types';
+import {
+	Step,
+	StepStatus,
+	StepWizard,
+	MintData,
+	ErrorType,
+} from './MintDAO.types';
 import { ERRORS, SUCCESS } from './MintDAO.constants';
 import { formatMintWizard } from './MintDAO.helpers';
 
-export const MintDAO: React.FC = () => {
+interface MintDAOProps {
+	onClose: () => void;
+}
+
+export const MintDAO: React.FC<MintDAOProps> = ({ onClose }) => {
 	const { addNotification } = useNotification();
 
-	const [currentStep, setCurrentStep] = useState<Step>(Step.None);
+	const [currentStep, setCurrentStep] = useState<Step>(Step.Unlock);
 	const [currentStepStatus, setCurrentStepStatus] = useState<StepStatus>(
 		StepStatus.Normal,
 	);
@@ -19,17 +29,15 @@ export const MintDAO: React.FC = () => {
 	>();
 	const [error, setError] = useState<string | undefined>();
 
-	const onChangeStep = (step: Step) => () => setCurrentStep(step);
-
 	const onChangeStepStatus = (stepStatus: StepStatus) => () =>
 		setCurrentStepStatus(stepStatus);
 
 	const onChangeMintData = (mintData: MintData) => setCurrentMintData(mintData);
 
-	const onClose = () => {
+	const onCloseOverlay = () => {
 		// prevent closing overlay while the wallet connection or mintingDAO is in progress
 		if (currentStepStatus === StepStatus.Normal) {
-			setCurrentStep(Step.None);
+			onClose();
 		}
 	};
 
@@ -49,7 +57,7 @@ export const MintDAO: React.FC = () => {
 			currentStepStatus !== StepStatus.Normal
 		) {
 			setCurrentStepStatus(StepStatus.Normal);
-			setError(ERRORS.Transaction);
+			setError(ERRORS[ErrorType.Library]);
 		}
 	};
 
@@ -65,8 +73,8 @@ export const MintDAO: React.FC = () => {
 			if (currentStepStatus === StepStatus.Confirm) {
 				setCurrentStepStatus(StepStatus.Processing);
 			} else if (currentStepStatus === StepStatus.Processing) {
-				setCurrentStep(Step.None);
 				addNotification(SUCCESS[currentStep]);
+				onClose();
 			}
 		}
 	};
@@ -83,20 +91,12 @@ export const MintDAO: React.FC = () => {
 				currentStepStatus,
 				currentMintData,
 				error,
-				onChangeStep,
 				onChangeStepStatus,
 				onChangeMintData,
+				onClose,
 			),
-		[currentStep, currentStepStatus, currentMintData, error],
+		[currentStep, currentStepStatus, currentMintData, error, onClose],
 	);
-
-	useUpdateEffect(() => {
-		if (currentStep === Step.None) {
-			setCurrentStepStatus(StepStatus.Normal);
-			setCurrentMintData(undefined);
-			setError(undefined);
-		}
-	}, [currentStep]);
 
 	useUpdateEffect(() => {
 		if (currentStepStatus !== StepStatus.Normal) {
@@ -104,23 +104,20 @@ export const MintDAO: React.FC = () => {
 		}
 	}, [currentStepStatus]);
 
-	return (
-		<>
-			<FutureButton glow onClick={onChangeStep(Step.Unlock)}>
-				Create a new DAO
-			</FutureButton>
+	if (!wizard) {
+		return null;
+	}
 
-			{wizard && (
-				<Overlay
-					open
-					onClose={onClose}
-					onContentClick={onMockStepResponse}
-					hasCloseButton={currentStepStatus === StepStatus.Normal}
-				>
-					<Wizard header={wizard.title}>{wizard.children}</Wizard>
-				</Overlay>
-			)}
-		</>
+	return (
+		<Overlay
+			open
+			onClose={onCloseOverlay}
+			hasCloseButton={currentStepStatus === StepStatus.Normal}
+		>
+			<Wizard header={wizard.title} onClick={onMockStepResponse}>
+				{wizard.children}
+			</Wizard>
+		</Overlay>
 	);
 };
 

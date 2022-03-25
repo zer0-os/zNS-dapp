@@ -13,15 +13,23 @@ type WizardProps = {
 	subHeader?: string;
 	children: React.ReactNode;
 	className?: string;
+	onClick?: (e: React.UIEvent<HTMLElement, UIEvent>) => void;
 };
 
-const Wizard = ({ header, subHeader, children, className }: WizardProps) => (
+const Wizard = ({
+	header,
+	subHeader,
+	children,
+	className,
+	onClick,
+}: WizardProps) => (
 	<div
 		className={classNames(
 			styles.Container,
 			className,
 			'border-rounded border-primary background-primary',
 		)}
+		onClick={onClick && onClick}
 	>
 		{/* Header */}
 		<div className={styles.Header}>

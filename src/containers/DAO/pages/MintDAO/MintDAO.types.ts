@@ -7,12 +7,11 @@ export enum Step {
 export enum StepStatus {
 	Normal = 'Normal',
 	Confirm = 'Confirm',
-	Processing = 'Propcessing',
+	Processing = 'Processing',
 }
 
-export enum ErrrorType {
+export enum ErrorType {
 	Signature = 'Signature',
-	Transaction = 'Transaction',
 	Library = 'Library',
 }
 
