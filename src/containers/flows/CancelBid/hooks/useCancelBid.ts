@@ -32,7 +32,7 @@ const useCancelBid = (): UseCancelBidReturn => {
 			let tx;
 			try {
 				tx = await sdk.zauction.cancelBid(
-					bid.auctionId,
+					bid.bidNonce,
 					bid.signedMessage,
 					bid.tokenId,
 					true,

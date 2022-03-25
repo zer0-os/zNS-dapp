@@ -70,10 +70,7 @@ const SubdomainTableRow = (props: any) => {
 
 		if (library) {
 			const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
-			const buyNow = await zAuction.getBuyNowPrice(
-				domain.id,
-				library.getSigner(),
-			);
+			const buyNow = await zAuction.getBuyNowPrice(domain.id);
 			if (isMounted.current === false) {
 				return;
 			}
