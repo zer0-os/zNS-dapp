@@ -153,7 +153,7 @@ export const useNftData = (): UseNftDataReturn => {
 		} finally {
 			setIsPriceDataLoading(false);
 		}
-	}, [sdk.instance, account, library, znsDomain]);
+	}, [sdk.instance, account, znsDomain]);
 
 	const downloadAsset = useCallback(async () => {
 		if (!domainAssetURL) {
