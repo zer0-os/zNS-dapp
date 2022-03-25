@@ -108,7 +108,7 @@ export const useNftData = (): UseNftDataReturn => {
 	}, [sdk.instance, znsDomain]);
 
 	const getPriceData = useCallback(async () => {
-		if (!znsDomain?.id || !library) {
+		if (!znsDomain?.id) {
 			return;
 		}
 
@@ -125,7 +125,7 @@ export const useNftData = (): UseNftDataReturn => {
 
 			// Get buy now and all bids
 			const [listing, bids] = await Promise.all([
-				zAuction.getBuyNowPrice(id, library.getSigner()),
+				zAuction.getBuyNowPrice(id),
 				zAuction.listBids([id]),
 			]);
 
