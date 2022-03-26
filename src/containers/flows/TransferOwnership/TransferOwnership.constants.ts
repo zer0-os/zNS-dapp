@@ -1,13 +1,18 @@
 //- Type Imports
 import { Step } from './TransferOwnership.types';
 
-export const TITLES = {
-	[Step.Details]: { PRIMARY: 'Transfer Ownership' },
-	[Step.Confirmation]: { PRIMARY: 'Are you sure?' },
+const TITLES = {
+	TRANSFER_OWNERSHIP: 'Transfer Ownership',
+	CONFIRMATION: 'Are you sure?',
+};
+
+export const STEP_TITLES = {
+	[Step.Details]: TITLES.TRANSFER_OWNERSHIP,
+	[Step.Confirmation]: TITLES.CONFIRMATION,
 };
 
 export const BUTTONS = {
-	[Step.Details]: { PRIMARY: 'Transfer' },
+	[Step.Details]: 'Transfer',
 	[Step.Confirmation]: {
 		PRIMARY: 'Confirm',
 		SECONDARY: 'Cancel',
