@@ -1,9 +1,12 @@
+//- React Imports
 import React, { useMemo } from 'react';
+
+//- Component Imports
 import {
 	MintPreview,
 	TransferPreview,
-	TooltipLegacy,
 	NumberButton,
+	HoverDropdown,
 } from 'components';
 
 type StatusButtonsProps = {
@@ -38,23 +41,37 @@ export const StatusButtons: React.FC<StatusButtonsProps> = ({
 			};
 		}, [statusCounts]);
 
+	const mintPreviewDropdownButton = (
+		<NumberButton rotating={statusCount > 0} number={statusCount} />
+	);
+	const transferPreviewDropdownButton = (
+		<NumberButton
+			rotating={statusCounts.transferring > 0}
+			number={statusCounts.transferring}
+		/>
+	);
+	const mintPreviewDropdownContent = (
+		<MintPreview onOpenProfile={onOpenProfile} />
+	);
+	const transferPreviewDropdownContent = <TransferPreview />;
+
+	////////////
+	// Render //
+	////////////
 	return (
 		<>
 			{/* Status / Long Running Operation Button */}
 			{showStatusButton && (
-				<TooltipLegacy content={<MintPreview onOpenProfile={onOpenProfile} />}>
-					<NumberButton rotating={statusCount > 0} number={statusCount} />
-				</TooltipLegacy>
+				<HoverDropdown triggerContent={mintPreviewDropdownButton}>
+					{mintPreviewDropdownContent}
+				</HoverDropdown>
 			)}
 
 			{/* Transfer Progress button */}
 			{showTransferringButton && (
-				<TooltipLegacy content={<TransferPreview />}>
-					<NumberButton
-						rotating={statusCounts.transferring > 0}
-						number={statusCounts.transferring}
-					/>
-				</TooltipLegacy>
+				<HoverDropdown triggerContent={transferPreviewDropdownButton}>
+					{transferPreviewDropdownContent}
+				</HoverDropdown>
 			)}
 		</>
 	);
