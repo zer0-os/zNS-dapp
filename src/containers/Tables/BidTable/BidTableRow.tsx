@@ -7,7 +7,7 @@ import { TOKEN, STATUS } from './BidTableRow.constants';
 
 export type BidTableRowData = {
 	domainName: string;
-	auctionId: string;
+	bidNonce: string;
 	domainId: string;
 	domainMetadataUrl: string;
 	date: Date;
@@ -65,7 +65,7 @@ const BidTableRow = (props: any) => {
 				<CancelBidButton
 					onSuccess={onSuccess}
 					domainId={bid.domainId}
-					auctionId={bid.auctionId}
+					bidNonce={bid.bidNonce}
 				/>
 			</td>
 		</tr>

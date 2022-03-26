@@ -171,7 +171,7 @@ export type Bid = {
 	tokenId: string;
 
 	signature: ethers.utils.BytesLike;
-	auctionId: string;
+	bidNonce: string;
 	nftAddress: string;
 	minBid: string;
 	startBlock: string;

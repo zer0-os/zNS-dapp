@@ -206,7 +206,7 @@ const NFT = ({
 			<CancelBidButton
 				className={styles.Action}
 				isTextButton
-				auctionId={yourBid!.auctionId}
+				bidNonce={yourBid!.bidNonce}
 				domainId={domainId!}
 				onSuccess={onRefetch}
 			/>

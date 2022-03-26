@@ -77,7 +77,7 @@ const BidTableContainer = () => {
 				.map((bid) => {
 					const domain = domainData.filter((d) => d.id === bid.tokenId)[0];
 					return {
-						auctionId: bid.auctionId,
+						bidNonce: bid.bidNonce,
 						domainName: domain.name,
 						domainId: bid.tokenId,
 						domainMetadataUrl: domain.metadataUri,

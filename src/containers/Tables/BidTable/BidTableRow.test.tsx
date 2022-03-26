@@ -11,7 +11,7 @@ import { STATUS, TOKEN } from './BidTableRow.constants';
 const mockDate = new Date(16461998260001);
 
 const mockData = {
-	auctionId: '7124487995',
+	bidNonce: '7124487995',
 	date: mockDate, // 02/03/2022
 	domainId:
 		'0x617b3c878abfceb89eb62b7a24f393569c822946bbc9175c6c65a7d2647c5402',

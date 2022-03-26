@@ -13,19 +13,19 @@ import { Wizard } from 'components';
 import Details from './components/Details';
 
 type CancelBidContainerProps = {
-	auctionId: string;
+	bidNonce: string;
 	domainId: string;
 	onSuccess: () => void;
 	onClose: () => void;
 };
 
 export const CancelBid = ({
-	auctionId,
+	bidNonce,
 	domainId,
 	onSuccess,
 	onClose,
 }: CancelBidContainerProps) => {
-	const { bid, bidData, refetch, isLoading } = useBidData(domainId, auctionId);
+	const { bid, bidData, refetch, isLoading } = useBidData(domainId, bidNonce);
 	const { cancel, status } = useCancelBid();
 
 	const [currentStep, setCurrentStep] = useState<Step>(Step.LoadingData);
