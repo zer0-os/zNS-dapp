@@ -1,16 +1,18 @@
 import { useEffect, useRef } from 'react';
 
-// modified from https://usehooks.com/usePrevious/
-export default function usePrevious<T>(value: T) {
-	// The ref object is a generic container whose current property is mutable ...
-	// ... and can hold any value, similar to an instance property on a class
-	const ref = useRef<T>();
+/**
+ * Creates and returns reference to a value. The hook will update the reference if the values
+ * will change. `usePrevious` is useful in situations when the value is used in some `useEffect`
+ * but its change shouldn't trigger the effect.
+ */
+export const usePrevious = <T>(value: T): T => {
+	const valueRef = useRef(value);
 
-	// Store current value in ref
 	useEffect(() => {
-		ref.current = value;
-	}, [value]); // Only re-run if value changes
+		valueRef.current = value;
+	}, [value]);
 
-	// Return previous value (happens before update in useEffect above)
-	return ref.current;
-}
+	return valueRef.current;
+};
+
+export default usePrevious;
