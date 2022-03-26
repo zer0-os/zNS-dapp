@@ -5,6 +5,7 @@ import SideBarStyles from './SideBar.module.scss';
 import marketIcon from './assets/icon_market.svg';
 import stakingIcon from './assets/icon_staking.svg';
 import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 
 const SideBar: FC = () => {
 	const history = useHistory();
@@ -12,7 +13,7 @@ const SideBar: FC = () => {
 
 	return (
 		<div className={SideBarStyles.SideBar}>
-			<div className={SideBarStyles.Navigator}>
+			<div className={classNames(SideBarStyles.Navigator, 'border-secondary')}>
 				<div className={SideBarStyles.Icons}>
 					<div
 						className={SideBarStyles.Action}

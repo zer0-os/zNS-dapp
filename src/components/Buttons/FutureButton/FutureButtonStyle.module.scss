@@ -6,7 +6,7 @@
 		rgba(82, 203, 255, 0.25) 100%
 	);
 	--box-shadow: var(--color-accent-1-medium-10);
-	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
+	--box-shadow-heavy: rgba(0, 209, 255, 0.2);
 	--border-color: #3ca1ff;
 	--border-color-hover: #fff;
 }
@@ -17,6 +17,7 @@
 	--bg: none !important;
 	--border-color: #808080;
 	--color: #808080;
+	background: none;
 }
 
 .futureButtonInactive.Content {
@@ -46,7 +47,6 @@
 	padding-left: 25px;
 	padding-right: 25px;
 	color: var(--color);
-	background: var(--bg);
 	border-radius: var(--box-radius);
 	cursor: pointer;
 	text-transform: uppercase;
@@ -195,7 +195,6 @@
 
 .selected .wash {
 	transition: box-shadow 0.3s ease-in-out;
-	background: rgba(255, 255, 255, 0);
 	box-shadow: 0px 0px 20px 10px rgba(255, 255, 255, 0.3);
 
 	opacity: 1;
@@ -211,7 +210,6 @@
 }
 
 .selected {
-	background: rgba(0, 209, 255, 0.05);
 }
 
 .selected .iconImage {
@@ -249,7 +247,7 @@
 	left: 0;
 	width: 100%;
 	height: 0;
-	box-shadow: 0px 0px 40px 15px var(--box-shadow-heavy);
+	box-shadow: 0px 0px 25px 15px var(--box-shadow-heavy);
 }
 
 .glow .content {

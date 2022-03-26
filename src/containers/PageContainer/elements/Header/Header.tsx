@@ -77,7 +77,7 @@ export const Header: React.FC<HeaderProps> = ({
 
 	return (
 		<div
-			className={classnames('header__container border-primary', {
+			className={classnames('header__container', {
 				'header__container--is-searching': isSearching,
 				'header__container--is-active': localState.isSearchInputHovered,
 			})}
@@ -114,64 +114,6 @@ export const Header: React.FC<HeaderProps> = ({
 						ref={refs.searchInputRef}
 						placeholder={formattedData.searchPlaceholder}
 					/>
-				</div>
-
-				{/* WWW Link */}
-				<a
-					className="header__home-link alt-link"
-					href={URLS.WILDERWORLD}
-					target="_blank"
-					rel="noreferrer"
-				>
-					Home
-				</a>
-
-				<div className="header__actions">
-					{/* Connect Wallet Button */}
-					{formattedData.showConnectWalletButton && (
-						<ConnectWalletButton
-							onConnectWallet={openModal(Modal.Wallet)}
-							isDesktop={formattedData.isDesktop}
-						/>
-					)}
-
-					{/* Mint button */}
-					{formattedData.showMintButton && (
-						<MintButton
-							isMinting={minting.length > 0}
-							onClick={openModal(Modal.Mint)}
-						/>
-					)}
-
-					{/* Status Buttons */}
-					{formattedData.showStatusButtons && (
-						<StatusButtons
-							statusCounts={{
-								minting: minting.length,
-								minted: minted.length,
-								stakeRequesting: stakeRequesting.length,
-								stakeRequested: stakeRequested.length,
-								transferring: transferring.length,
-							}}
-							onOpenProfile={handlers.handleOnOpenProfile}
-						/>
-					)}
-
-					{/* Buy token from external urls */}
-					{formattedData.showBuyTokenRedirect && <BuyTokenRedirect />}
-
-					{/* Profile Button */}
-					{formattedData.showProfileButton && (
-						<ProfileButton onOpenProfile={handlers.handleOnOpenProfile} />
-					)}
-
-					{/* Info Button */}
-					{formattedData.showInfoButton && (
-						<InfoButton
-							isDesktop={formattedData.isDesktop}
-							onConnectWallet={openModal(Modal.Wallet)}
-						/>
-					)}
 				</div>
 			</div>
 

@@ -27,6 +27,8 @@ import { useDidMount } from 'lib/hooks/useDidMount';
 import { useLocation } from 'react-router-dom';
 import { useNavbar } from 'lib/hooks/useNavbar';
 
+import classNames from 'classnames';
+
 type ZNSProps = {
 	version?: number;
 	isNftView?: boolean;
@@ -51,7 +53,11 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const { wildPriceUsd } = useCurrency();
 
 	//- Domain Data
-	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		domainRaw: domain,
+		domainMetadata,
+	} = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
@@ -163,11 +169,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 	/////////////////////
 
 	const nftStats = () => {
-		let width = '24.2%';
+		let width = '32%';
 		if (isMobilePortrait) {
 			width = '100%';
-		} else if (isTabletPortrait) {
-			width = '32%';
 		}
 
 		const data = [
@@ -175,11 +179,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 				fieldName: 'Items in Domain',
 				title: tradeData?.items ? formatNumber(tradeData.items) : 0,
 				isHidden: isMobilePortrait,
-			},
-			{
-				fieldName: 'Total Owners',
-				title: tradeData?.holders ? formatNumber(tradeData.holders) : 0,
-				isHidden: isMobile || isTabletPortrait,
 			},
 			{
 				fieldName: 'Floor Price',
@@ -222,7 +221,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 		return (
 			<>
-				<div className={styles.Stats}>
+				<div className={classNames(styles.Stats, 'background-primary')}>
 					{data.map(
 						(item, index) =>
 							!item.isHidden && (
@@ -251,7 +250,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const previewCard = () => {
 		const isVisible = domain !== '' && !isNftView;
 		let to;
-		if (isVisible && previewCardRef) {
+		if (isVisible && previewCardRef && domainMetadata) {
 			// If should be visible, slide down
 			to = { opacity: 1, marginTop: 0, marginBottom: 0 };
 		} else {
@@ -304,9 +303,8 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{/* <WheelsRaffle /> */}
 			{!isNftView && (
 				<div
-					className="background-primary border-primary border-rounded"
+					className="background-primary"
 					style={{
-						background: 'var(--background-primary)',
 						overflow: 'hidden',
 						marginTop: 16,
 					}}

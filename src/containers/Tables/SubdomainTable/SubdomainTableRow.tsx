@@ -148,31 +148,12 @@ const SubdomainTableRow = (props: any) => {
 			return (
 				<>
 					<td className={styles.Right}>{highestBid()}</td>
-					<td className={styles.Right}>
-						{!bids && '-'}
-						{bids && formatNumber(bids.length)}
-					</td>
-					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
-						{formatColumn('lastSale')}
-					</td>
-					<td className={`${styles.Right} ${styles.volumeCol}`}>
-						{formatColumn('volume')}
-					</td>
 				</>
 			);
 		} else {
 			return (
 				<>
 					<td className={styles.Right}>
-						<Spinner />
-					</td>
-					<td className={styles.Right}>
-						<Spinner />
-					</td>
-					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
-						<Spinner />
-					</td>
-					<td className={`${styles.Right} ${styles.volumeCol}`}>
 						<Spinner />
 					</td>
 				</>
@@ -212,18 +193,18 @@ const SubdomainTableRow = (props: any) => {
 				) : buyNowPrice ? (
 					<BuyNowButton
 						onSuccess={fetchData}
-						buttonText="Buy Now"
+						buttonText="Buy"
 						domainId={domain.id}
 						disabled={isOwnedByUser || !account}
-						style={{ marginLeft: 'auto', width: 160 }}
+						style={{ marginLeft: 'auto', width: 70 }}
 					/>
 				) : isBiddable ? (
 					<BidButton
 						glow={account !== undefined && !isOwnedByUser}
 						onClick={onBidButtonClick}
-						style={{ marginLeft: 'auto', width: 160 }}
+						style={{ marginLeft: 'auto', width: 70 }}
 					>
-						Make A Bid
+						Bid
 					</BidButton>
 				) : null}
 			</td>

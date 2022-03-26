@@ -1,14 +1,17 @@
+@import '/src//styles/colors.scss';
+
 .SideBar {
 	top: calc(29px + 54px + 16px);
 	width: 54px;
+	padding: 24px;
 
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 
 	position: fixed;
+	left: 0;
 
-	transform: translateX(calc(-100% - 19px));
 	z-index: 500;
 
 	&:hover {
@@ -21,9 +24,7 @@
 .Navigator {
 	border-radius: 27px;
 	padding: 7px 4px;
-	border: 1px solid var(--color-purple-lighter);
-
-	background-color: var(--color-purple-darkest);
+	background: $color-primary-5;
 }
 
 .Icons {
@@ -51,7 +52,7 @@
 		height: 32px;
 		left: -200px;
 		margin: 6px 0;
-		background-color: var(--color-purple-dark);
+		background-color: $color-primary-5;
 		padding: 8px 16px;
 		border-radius: 16px;
 		box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);

@@ -160,7 +160,6 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 						styles.Container,
 						'main',
 						'background-primary',
-						'border-primary',
 						'border-rounded',
 					)}
 					style={style}

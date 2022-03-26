@@ -18,6 +18,16 @@
  *
  * TODO: Would it be worth changing this to SCSS and having slightly more versatile variables?
  */
+
+// SCSS Variables
+@import './colors.scss';
+
+//
+// Sizes
+//
+$width-max: 736px;
+
+// CSS Variables
 :root {
 	--font-size-default: 16px;
 	--font-size-smaller: 14px;
@@ -139,7 +149,7 @@
 
 	--box-radius: 16px;
 
-	--width-max: 1282px;
+	--width-max: 736px;
 	--width-min: 288px;
 	--page-padding: 24px;
 
@@ -228,6 +238,7 @@ body {
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+	background: $color-almost-black;
 }
 
 body.no-scroll {
@@ -243,27 +254,7 @@ hr.glow {
 	position: relative;
 	height: 1px;
 	border: none;
-	background-color: #6e10bb;
-}
-
-hr.glow::before {
-	content: ' ';
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 1px;
-	width: 8px;
-	background-color: #e0baff;
-}
-
-hr.glow::after {
-	content: ' ';
-	position: absolute;
-	top: 0;
-	right: 0;
-	height: 1px;
-	width: 8px;
-	background-color: #e0baff;
+	background-color: $color-grey-80;
 }
 
 a,
@@ -342,23 +333,6 @@ button {
 	top: 0;
 	left: 0;
 	z-index: 100000;
-}
-
-#backgroundImage {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100vh;
-	width: 100vw;
-
-	background-attachment: fixed;
-	background-repeat: no-repeat;
-	background-size: cover;
-
-	opacity: 0;
-	z-index: -100;
-
-	transition: opacity var(--animation-time-long) ease-in-out;
 }
 
 .option-buttons {
@@ -447,7 +421,7 @@ button {
  *
  */
 .background-primary {
-	background-color: var(--background-primary);
+	background-color: $color-almost-black;
 }
 
 /*
@@ -461,6 +435,11 @@ button {
 
 	border-collapse: separate;
 	box-shadow: 0px 0px 16px 0px #c41dff33;
+}
+
+.border-secondary {
+	border: 1px solid $color-grey-80;
+	border-collapse: separate;
 }
 
 .border-rounded {

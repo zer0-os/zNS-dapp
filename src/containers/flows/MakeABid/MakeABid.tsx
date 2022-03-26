@@ -618,7 +618,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	return (
 		<div
-			className={`${styles.Container} border-primary border-rounded background-primary`}
+			className={`${styles.Container} border-secondary border-rounded background-primary`}
 		>
 			{header()}
 			<StepBar

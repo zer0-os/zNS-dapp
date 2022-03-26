@@ -80,13 +80,17 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	return (
 		<div
 			style={style ? style : {}}
-			className={cx(className, 'border-rounded', {
-				NFTCard: true,
-				HasAspectRatio: hasAspectRatio,
-				'Ratio1-1': hasAspectRatio && isSquare,
-				'Ratio16-9': hasAspectRatio && isLandscape,
-				'Ratio4-5': hasAspectRatio && isPortrait,
-			})}
+			className={cx(
+				className,
+				'background-primary border-secondary border-rounded',
+				{
+					NFTCard: true,
+					HasAspectRatio: hasAspectRatio,
+					'Ratio1-1': hasAspectRatio && isSquare,
+					'Ratio16-9': hasAspectRatio && isLandscape,
+					'Ratio4-5': hasAspectRatio && isPortrait,
+				},
+			)}
 			onClick={onClick}
 		>
 			{media}

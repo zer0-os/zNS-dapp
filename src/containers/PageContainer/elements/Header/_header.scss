@@ -1,12 +1,15 @@
+@import '/src/styles/colors.scss';
+
 .header {
 	&__container {
 		position: relative;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		background: var(--color-background);
+		padding: 4px;
 		border-radius: var(--box-radius);
 		overflow: none;
+		border: 1px solid $color-primary-15;
 		transition: background-color var(--animation-time-medium) ease-in-out,
 			border var(--animation-time-medium) ease-in-out,
 			box-shadow var(--animation-time-medium) ease-in-out;

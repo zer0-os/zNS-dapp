@@ -100,7 +100,7 @@ const TextInput: React.FC<TextInputProps> = ({
 		<>
 			{multiline && (
 				<textarea
-					className={cx(className, styles.TextInput, 'border-blue', {
+					className={cx(className, styles.TextInput, 'border-secondary', {
 						Error: error,
 					})}
 					ref={textArea}
@@ -117,7 +117,7 @@ const TextInput: React.FC<TextInputProps> = ({
 			{!multiline && (
 				<input
 					type={type ? type : ''}
-					className={cx(className, styles.TextInput, 'border-blue', {
+					className={cx(className, styles.TextInput, 'border-secondary', {
 						Error: error,
 					})}
 					onChange={handleChange}
