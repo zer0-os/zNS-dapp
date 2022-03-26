@@ -1,5 +1,5 @@
-export enum Step {
-	LoadingData,
+export enum StepContent {
+	FailedToCheckZAuction,
 	CheckingZAuctionApproval,
 	ApproveZAuction,
 	WaitingForWallet,
@@ -7,4 +7,10 @@ export enum Step {
 	Details,
 	Accepting,
 	Success,
+}
+
+export enum Step {
+	zAuction,
+	ConfirmDetails,
+	AcceptBid,
 }

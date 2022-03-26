@@ -65,7 +65,7 @@ export const truncateAddress = (address: string) => {
 };
 
 // Truncate domain when greater than 45 characters
-export const truncatedDomain = (domainName: string) => {
+export const truncateDomain = (domainName: string) => {
 	let domainText;
 	if (('wilder.' + domainName).length > 45) {
 		domainText = `wilder...${
