@@ -42,7 +42,7 @@ interface UseNftDataReturn {
 
 export const useNftData = (): UseNftDataReturn => {
 	//- Web3 Wallet Data
-	const { account, library } = useWeb3React<Web3Provider>();
+	const { account } = useWeb3React<Web3Provider>();
 
 	//- SDK
 	const sdk = useZnsSdk();
