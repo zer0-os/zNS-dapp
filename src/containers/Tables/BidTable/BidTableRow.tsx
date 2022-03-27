@@ -42,7 +42,7 @@ const BidTableRow = (props: any) => {
 		props.onRefetch();
 	};
 
-	const isDisabled = bid.version === ZAuctionVersionType.V1;
+	const isZAuctionV1 = bid.version === ZAuctionVersionType.V1;
 
 	return (
 		<tr className={styles.Container} data-testid={TEST_ID.CONTAINER}>
@@ -78,7 +78,7 @@ const BidTableRow = (props: any) => {
 					onSuccess={onSuccess}
 					domainId={bid.domainId}
 					bidNonce={bid.bidNonce}
-					isDisabled={isDisabled}
+					isDisabled={isZAuctionV1}
 				/>
 			</td>
 		</tr>
