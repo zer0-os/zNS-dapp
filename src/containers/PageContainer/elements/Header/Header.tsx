@@ -116,16 +116,6 @@ export const Header: React.FC<HeaderProps> = ({
 					/>
 				</div>
 
-				{/* WWW Link */}
-				<a
-					className="header__home-link alt-link"
-					href={URLS.WILDERWORLD}
-					target="_blank"
-					rel="noreferrer"
-				>
-					Home
-				</a>
-
 				<div className="header__actions">
 					{/* Connect Wallet Button */}
 					{formattedData.showConnectWalletButton && (
@@ -158,7 +148,7 @@ export const Header: React.FC<HeaderProps> = ({
 					)}
 
 					{/* Buy token from external urls */}
-					{formattedData.showBuyTokenRedirect && <BuyTokenRedirect />}
+					{/* {formattedData.showBuyTokenRedirect && <BuyTokenRedirect />} */}
 
 					{/* Profile Button */}
 					{formattedData.showProfileButton && (

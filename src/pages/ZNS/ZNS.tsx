@@ -308,7 +308,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 					style={{
 						background: 'var(--background-primary)',
 						overflow: 'hidden',
-						marginTop: 16,
 					}}
 				>
 					{previewCard()}
