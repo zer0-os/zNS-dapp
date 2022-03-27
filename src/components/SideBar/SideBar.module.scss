@@ -20,6 +20,10 @@ $break-hide-image: calc(var(--width-max) + ($full-width * 2));
 		align-items: center;
 	}
 
+	@media only screen and (max-width: 1000px) {
+		display: none;
+	}
+
 	transform: $transform;
 
 	.Icon {

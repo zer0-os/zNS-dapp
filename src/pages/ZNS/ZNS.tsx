@@ -163,11 +163,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 	/////////////////////
 
 	const nftStats = () => {
-		let width = '24.2%';
+		let width = '32%';
 		if (isMobilePortrait) {
 			width = '100%';
-		} else if (isTabletPortrait) {
-			width = '32%';
 		}
 
 		const data = [
@@ -175,11 +173,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 				fieldName: 'Items in Domain',
 				title: tradeData?.items ? formatNumber(tradeData.items) : 0,
 				isHidden: isMobilePortrait,
-			},
-			{
-				fieldName: 'Total Owners',
-				title: tradeData?.holders ? formatNumber(tradeData.holders) : 0,
-				isHidden: isMobile || isTabletPortrait,
 			},
 			{
 				fieldName: 'Floor Price',
@@ -304,10 +297,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{/* <WheelsRaffle /> */}
 			{!isNftView && (
 				<div
-					className="background-primary border-primary border-rounded"
 					style={{
-						background: 'var(--background-primary)',
 						overflow: 'hidden',
+						width: '100%',
 					}}
 				>
 					{previewCard()}

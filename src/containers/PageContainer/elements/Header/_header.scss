@@ -99,7 +99,7 @@ $height: 46px;
 		gap: 16px;
 
 		@media only screen and (max-width: 1000px) {
-			display: none !important;
+			position: relative;
 		}
 	}
 }

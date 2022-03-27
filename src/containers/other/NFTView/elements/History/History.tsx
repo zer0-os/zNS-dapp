@@ -18,9 +18,7 @@ type HistoryProps = {
 
 export const History: React.FC<HistoryProps> = ({ isLoading, history }) => {
 	return (
-		<section
-			className={`${styles.History} ${styles.Box} blur border-primary border-rounded`}
-		>
+		<section className={styles.History}>
 			<h4>History</h4>
 
 			{isLoading && (

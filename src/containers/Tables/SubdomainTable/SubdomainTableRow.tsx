@@ -145,34 +145,11 @@ const SubdomainTableRow = (props: any) => {
 	const bidColumns = () => {
 		// TODO: Avoid directly defining the columns and associated render method.
 		if (!isPriceDataLoading) {
-			return (
-				<>
-					<td className={styles.Right}>{highestBid()}</td>
-					<td className={styles.Right}>
-						{!bids && '-'}
-						{bids && formatNumber(bids.length)}
-					</td>
-					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
-						{formatColumn('lastSale')}
-					</td>
-					<td className={`${styles.Right} ${styles.volumeCol}`}>
-						{formatColumn('volume')}
-					</td>
-				</>
-			);
+			return <td className={styles.Right}>{highestBid()}</td>;
 		} else {
 			return (
 				<>
 					<td className={styles.Right}>
-						<Spinner />
-					</td>
-					<td className={styles.Right}>
-						<Spinner />
-					</td>
-					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
-						<Spinner />
-					</td>
-					<td className={`${styles.Right} ${styles.volumeCol}`}>
 						<Spinner />
 					</td>
 				</>
@@ -206,24 +183,24 @@ const SubdomainTableRow = (props: any) => {
 			{bidColumns()}
 			<td>
 				{isPriceDataLoading ? (
-					<FutureButton style={{ marginLeft: 'auto', width: 160 }} glow loading>
+					<FutureButton style={{ marginLeft: 'auto', width: 93 }} glow loading>
 						Loading
 					</FutureButton>
 				) : buyNowPrice ? (
 					<BuyNowButton
 						onSuccess={fetchData}
-						buttonText="Buy Now"
+						buttonText="Buy"
 						domainId={domain.id}
 						disabled={isOwnedByUser || !account}
-						style={{ marginLeft: 'auto', width: 160 }}
+						style={{ marginLeft: 'auto' }}
 					/>
 				) : isBiddable ? (
 					<BidButton
 						glow={account !== undefined && !isOwnedByUser}
 						onClick={onBidButtonClick}
-						style={{ marginLeft: 'auto', width: 160 }}
+						style={{ marginLeft: 'auto' }}
 					>
-						Make A Bid
+						Bid
 					</BidButton>
 				) : null}
 			</td>

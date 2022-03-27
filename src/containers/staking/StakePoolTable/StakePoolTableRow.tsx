@@ -56,19 +56,6 @@ const StakePoolTableRow = (props: any) => {
 			<td className={styles.Right}>
 				{Number(apy.toFixed(2)).toLocaleString() + '%'}
 			</td>
-			{account ? (
-				<td className={styles.Right}>
-					{totalStake === undefined ? (
-						<Spinner />
-					) : (
-						<>
-							{displayEther(totalStake)} {pool.content.tokenTicker}
-						</>
-					)}
-				</td>
-			) : (
-				<></>
-			)}
 			<td className={styles.Right}>{'$' + toFiat(tvl)}</td>
 			<td>
 				<FutureButton glow onClick={onClick}>

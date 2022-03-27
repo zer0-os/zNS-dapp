@@ -1,4 +1,6 @@
+import { LINKS } from 'constants/nav';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ConnectWalletButton } from '../../../../elements';
 import { InfoButtonProps } from '../../InfoButton';
 import {
@@ -23,6 +25,23 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 						isDesktop={isDesktop}
 					/>
 				</div>
+				<div className="info-panel__content-section">
+					<div className="info-panel__content-section-title">
+						<h3> Apps</h3>
+						<span className="divider"></span>
+					</div>
+					<ul className="info-panel__content-section-nav info-panel__content-section-body">
+						{LINKS.map((l) => (
+							<li key={l.label}>
+								<Link to={l.route}>
+									<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
+									<label>{l.label}</label>
+								</Link>
+							</li>
+						))}
+					</ul>
+				</div>
+
 				<div className="info-panel__content-section">
 					<div className="info-panel__content-section-title">
 						<h3> Wilder World</h3>

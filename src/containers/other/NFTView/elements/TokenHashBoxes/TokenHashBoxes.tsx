@@ -67,9 +67,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 
 	return (
 		<div className={`${styles.TokenHashContainer}`}>
-			<div
-				className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
-			>
+			<div className={`${styles.Box} ${styles.Contract} border-rounded`}>
 				<h4>Token Id</h4>
 				<p>
 					<img
@@ -90,9 +88,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 					View on Etherscan
 				</ArrowLink>
 			</div>
-			<div
-				className={`${styles.Box} ${styles.Contract} blur border-primary border-rounded`}
-			>
+			<div className={`${styles.Box} ${styles.Contract} border-rounded`}>
 				<h4>IPFS Hash</h4>
 				<p>
 					<img

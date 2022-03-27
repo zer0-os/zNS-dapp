@@ -131,21 +131,6 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 			className: '',
 		},
 		{
-			label: '# of Bids',
-			accessor: '',
-			className: '',
-		},
-		{
-			label: 'Last Sale (WILD)',
-			accessor: '',
-			className: 'lastSale',
-		},
-		{
-			label: 'Volume (WILD)',
-			accessor: '',
-			className: 'volume',
-		},
-		{
 			label: '',
 			accessor: '',
 			className: '',

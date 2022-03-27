@@ -32,6 +32,8 @@ import CancelBidButton from 'containers/flows/CancelBid/CancelBidButton';
 
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
+import { truncateAddress } from 'lib/utils';
+import BidButton from 'containers/buttons/BidButton/BidButton';
 
 export const Amount = (amount: string) => (
 	<span className={styles.Amount}>{amount}</span>
@@ -216,22 +218,20 @@ const NFT = ({
 	////////////
 
 	return (
-		<div
-			className={cx(styles.NFT, 'border-primary', {
-				Loaded: true,
-			})}
-		>
-			<div className={`${styles.Image}`}>
-				<NFTMedia
-					style={{
-						objectFit: 'contain',
-					}}
-					alt="NFT Preview"
-					ipfsUrl={assetUrl ?? ''}
-					size="large"
-				/>
+		<div className={styles.Container}>
+			<div className={styles.Banner}>
+				<NFTMedia alt="NFT Preview" ipfsUrl={assetUrl ?? ''} />
 			</div>
-			<div className={styles.Info}>
+			<h1>{title ?? ''}</h1>
+			<div className="flex-split">
+				<ul className={styles.Members}>
+					<li>
+						<Detail text={truncateAddress(creator ?? '')} subtext={'Creator'} />
+					</li>
+					<li>
+						<Detail text={truncateAddress(owner ?? '')} subtext={'Owner'} />
+					</li>
+				</ul>
 				<div className={styles.Tray}>
 					<Tooltip text={'Share to Twitter'}>
 						<button onClick={onShare}>
@@ -255,31 +255,16 @@ const NFT = ({
 						</OptionDropdown>
 					)}
 				</div>
-				<div className={styles.Details}>
-					<div>
-						<h1 className="glow-text-white">{title ?? ''}</h1>
-					</div>
-					<div className={styles.Members}>
-						<Member id={owner ?? ''} subtext={'Owner'} />
-						<Member id={creator ?? ''} subtext={'Creator'} />
-					</div>
-					<div className={styles.Story}>{description ?? ''}</div>
-					<div className={styles.Prices}>
-						{BuyNowPrice()}
-						{HighestBid()}
-						<div className={styles.Break}></div>
-						{account && !isOwnedByYou && yourBidAsNumber && YourBid()}
-					</div>
-				</div>
-
-				{backgroundBlob !== undefined && (
-					<img
-						alt="NFT panel background"
-						src={backgroundBlob}
-						className={styles.Bg}
-					/>
-				)}
 			</div>
+			<p>{description ?? ''}</p>
+			<Detail
+				text={'-'}
+				subtext={'Highest Bid'}
+				bottomText={'No bids placed'}
+			/>
+			<BidButton glow onClick={onMakeBid}>
+				Make A Bid
+			</BidButton>
 		</div>
 	);
 };
