@@ -27,9 +27,6 @@ import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 
-//- Asset Imports
-import backgroundImage from 'assets/background.jpg';
-
 //- Page Imports
 import { ZNS, Staking } from 'pages';
 import PageContainer from 'containers/PageContainer';
@@ -47,20 +44,6 @@ function App() {
 		`%cWilder World Marketplace v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
-
-	// Programatically load the background image
-	const loadImg = new Image();
-	loadImg.src = backgroundImage;
-	if (loadImg.complete) {
-		document.body.style.backgroundImage = `url(${backgroundImage})`;
-	} else {
-		loadImg.onload = () => {
-			const bg = document.getElementById('backgroundImage')?.style;
-			if (!bg) return;
-			bg.backgroundImage = `url(${backgroundImage})`;
-			bg.opacity = '1';
-		};
-	}
 
 	return (
 		<ConnectedRouter history={history}>

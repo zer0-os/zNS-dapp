@@ -25,7 +25,7 @@
 	left: 50%;
 	height: 0px;
 	width: 0px;
-	border-radius: var(--box-radius);
+	border-radius: 100%;
 	z-index: -2;
 
 	transition: box-shadow var(--animation-time-medium) ease-in-out;
@@ -50,7 +50,7 @@
 }
 
 .iconButton.selected:after {
-	box-shadow: 0 0 20px 13px var(--color-accent-1);
+	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.5);
 }
 
 .Disabled {

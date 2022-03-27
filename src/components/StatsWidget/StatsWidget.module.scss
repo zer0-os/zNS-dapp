@@ -1,21 +1,21 @@
 .StatsWidget {
 	border-radius: 16px;
-	padding: 16px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	padding: 16px;
 }
 
 .previewView {
-	background: #10052e;
-	border: 1px solid #50207b;
+	background: #120d16;
+	border: 1px solid #3b3b3b;
 	box-sizing: border-box;
 	box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
 	height: 100%;
 }
 
 .normalView {
-	background: #1d0c4a;
+	background: #120d16;
 	border-radius: 16px;
 	height: 100%;
 }

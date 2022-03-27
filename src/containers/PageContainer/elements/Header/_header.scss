@@ -4,8 +4,8 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		background: var(--color-background);
-		border-radius: var(--box-radius);
+		// background: var(--color-background);
+		border-radius: 28px;
 		overflow: none;
 		transition: background-color var(--animation-time-medium) ease-in-out,
 			border var(--animation-time-medium) ease-in-out,

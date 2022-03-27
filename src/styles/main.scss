@@ -48,7 +48,7 @@
 	--color-purple-dark: #1d0c4a;
 	--color-purple-medium: #1d154a;
 	--color-purple-light: #29175a;
-	--color-purple-lighter: #50207b;
+	--color-purple-lighter: #23142f;
 	--color-purple-lightest: #c169ff;
 
 	--color-black: #000000;
@@ -104,7 +104,7 @@
 
 	--color-baby-blue: #9dd0ff;
 
-	--color-background: rgb(16, 5, 46);
+	--color-background: #0a0a0a;
 	--color-background-50: rgba(16, 5, 46, 0.5);
 	--color-background-alt: rgb(29, 12, 74);
 	--color-background-alt-50: rgba(29, 21, 74, 0.5);
@@ -222,17 +222,19 @@ input[type='number'] {
 body {
 	min-height: 100vh;
 	width: 100%;
-	overflow: auto;
+	overflow-y: scroll;
 
 	color: var(--color-text-primary);
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+	background-color: rgba(10, 10, 10, 1);
 }
 
 body.no-scroll {
 	height: 100%;
 	overflow: hidden;
+	overflow-y: scroll;
 }
 
 h1 {
@@ -457,7 +459,7 @@ button {
  */
 
 .border-primary {
-	border: 1px solid #af4cff67;
+	border: 1px solid #3b3b3b;
 
 	border-collapse: separate;
 	box-shadow: 0px 0px 16px 0px #c41dff33;
