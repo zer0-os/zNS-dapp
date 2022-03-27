@@ -1,51 +1,52 @@
-import { FC } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { BuyTokenRedirect } from 'containers';
 
-import SideBarStyles from './SideBar.module.scss';
+import { ROUTES } from 'constants/routes';
 
 import marketIcon from './assets/icon_market.svg';
 import stakingIcon from './assets/icon_staking.svg';
-import { useHistory } from 'react-router-dom';
 
-const SideBar: FC = () => {
-	const history = useHistory();
-	// Can't use route match without being inside a route
+import styles from './SideBar.module.scss';
+import classNames from 'classnames/bind';
+const cx = classNames.bind(styles);
+
+const LINKS = [
+	{
+		label: 'Market',
+		route: ROUTES.MARKET,
+		icon: marketIcon,
+	},
+	{
+		label: 'Staking',
+		route: ROUTES.STAKING,
+		icon: stakingIcon,
+	},
+];
+
+const SideBar = () => {
+	const { pathname } = useLocation();
 
 	return (
-		<div className={SideBarStyles.SideBar}>
-			<div className={SideBarStyles.Navigator}>
-				<div className={SideBarStyles.Icons}>
-					<div
-						className={SideBarStyles.Action}
-						key="market"
-						onClick={() => history.push('/market')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/market') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="market icon" src={marketIcon} />
-						</div>
-						{/* TODO: Fix overlaying issue with Name */}
-						<div className={SideBarStyles.Name}>Market</div>
-					</div>
-					<div
-						className={SideBarStyles.Action}
-						key="staking"
-						onClick={() => history.push('/staking')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/staking') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="staking icon" src={stakingIcon} />
-						</div>
-						<div className={SideBarStyles.Name}>Staking</div>
-					</div>
-				</div>
+		<div className={styles.Container}>
+			<div>
+				{/* TODO: update src image here */}
+				<div className={styles.Icon}></div>
+				<ul className={styles.Links}>
+					{LINKS.map((l) => (
+						<li key={l.label}>
+							<Link
+								to={l.route}
+								className={cx({ Selected: pathname.startsWith(l.route) })}
+							>
+								<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
+								<label>{l.label}</label>
+							</Link>
+						</li>
+					))}
+				</ul>
+			</div>
+			<div>
+				<BuyTokenRedirect />
 			</div>
 		</div>
 	);

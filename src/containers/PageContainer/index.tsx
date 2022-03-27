@@ -17,7 +17,7 @@ import { WALLETS } from 'constants/wallets';
 import { WALLET_NOTIFICATIONS } from 'constants/notifications';
 import { SideBar, ScrollToTop } from 'components';
 import { Modal } from './PageContainer.constants';
-import { Header, HomeIcon, Modals, useModal } from './elements';
+import { Header, Modals, useModal } from './elements';
 import styles from './PageContainer.module.scss';
 
 const PageContainer: React.FC = ({ children }) => {
@@ -99,9 +99,6 @@ const PageContainer: React.FC = ({ children }) => {
 						Boolean(globalDomain.domain),
 				})}
 			>
-				{/* Home Icon (Navigation Logo) */}
-				<HomeIcon />
-
 				{/* App Header */}
 				<Header
 					pageWidth={pageWidth}
