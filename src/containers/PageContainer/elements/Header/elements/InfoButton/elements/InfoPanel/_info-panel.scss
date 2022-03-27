@@ -51,6 +51,8 @@
 			flex-direction: column;
 			align-items: flex-start !important;
 
+			padding-bottom: 12px !important;
+
 			> li {
 				> a {
 					display: flex;
@@ -120,5 +122,11 @@
 				}
 			}
 		}
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.info-panel_nav {
+		display: none;
 	}
 }

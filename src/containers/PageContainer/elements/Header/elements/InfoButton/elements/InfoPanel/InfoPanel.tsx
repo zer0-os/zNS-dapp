@@ -25,7 +25,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 						isDesktop={isDesktop}
 					/>
 				</div>
-				<div className="info-panel__content-section">
+				<div className="info-panel_nav info-panel__content-section">
 					<div className="info-panel__content-section-title">
 						<h3> Apps</h3>
 						<span className="divider"></span>
