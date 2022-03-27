@@ -2,7 +2,6 @@
 
 //- Library Imports
 import { ethers } from 'ethers';
-import { ZAuctionVersionType } from './zAuction';
 
 export type Maybe<T> = T | undefined | null;
 export type MaybeUndefined<T> = T | undefined;

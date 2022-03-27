@@ -27,6 +27,7 @@ export const CancelBid = ({
 }: CancelBidContainerProps) => {
 	const { bid, bidData, refetch, isLoading } = useBidData(domainId, bidNonce);
 	const { cancel, status } = useCancelBid();
+	console.log(bid);
 
 	const [currentStep, setCurrentStep] = useState<Step>(Step.LoadingData);
 	const [error, setError] = useState<string | undefined>();
@@ -60,6 +61,11 @@ export const CancelBid = ({
 		setCurrentStep(Step.Details);
 	};
 
+	const confirmationErrorButtonText = () =>
+		error
+			? constants.BUTTONS[Step.Confirmation].TERTIARY
+			: constants.BUTTONS[Step.Confirmation].PRIMARY;
+
 	const steps = {
 		[Step.LoadingData]: (
 			<Wizard.Loading message={constants.MESSAGES.TEXT_LOADING} />
@@ -83,7 +89,7 @@ export const CancelBid = ({
 			<Wizard.Confirmation
 				error={error}
 				message={constants.MESSAGES.TEXT_CONFIRM_CANCEL}
-				primaryButtonText={constants.BUTTONS[Step.Confirmation].PRIMARY}
+				primaryButtonText={confirmationErrorButtonText()}
 				onClickPrimaryButton={onCancelBid}
 				secondaryButtonText={constants.BUTTONS[Step.Confirmation].SECONDARY}
 				onClickSecondaryButton={onBack}
@@ -99,7 +105,7 @@ export const CancelBid = ({
 		),
 	};
 
-	return <Wizard header={'Cancel Bid'}>{steps[currentStep]}</Wizard>;
+	return <Wizard header={constants.LABELS.HEADER}>{steps[currentStep]}</Wizard>;
 };
 
 export default CancelBid;
