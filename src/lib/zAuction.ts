@@ -6,7 +6,7 @@ import { Maybe } from './types';
 export interface BidDto {
 	account: string;
 	signedMessage: string;
-	auctionId: string;
+	bidNonce: string;
 	bidAmount: string;
 	minimumBid: string;
 	startBlock: string;
@@ -27,13 +27,13 @@ interface BidPayloadPostInterface {
 
 interface CreateBidDto {
 	payload: string;
-	auctionId: number;
+	bidNonce: number;
 	nftId: string;
 }
 
 interface BidPostInterface {
 	account: string;
-	auctionId: string;
+	bidNonce: string;
 	tokenId: string;
 	contractAddress: string;
 	bidAmount: string;
@@ -291,7 +291,7 @@ export async function placeBid(
 	try {
 		await sendBid(baseApiUri, {
 			account,
-			auctionId: bidData.auctionId.toString(),
+			bidNonce: bidData.bidNonce.toString(),
 			tokenId,
 			contractAddress: contract,
 			bidAmount: amount,

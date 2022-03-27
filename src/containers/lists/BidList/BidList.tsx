@@ -111,7 +111,7 @@ const BidList: React.FC<BidListProps> = ({
 					)}
 					<ul className={isAccepting ? styles.Accepting : ''}>
 						{sorted.map((bid: Bid, i: number) => (
-							<li key={bid.auctionId} className={styles.Bid}>
+							<li key={bid.bidNonce} className={styles.Bid}>
 								<div>
 									<label>{moment(Number(bid.timestamp)).fromNow()}</label>
 									<span>
