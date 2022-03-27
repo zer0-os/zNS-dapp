@@ -19,7 +19,6 @@ export interface BidDto {
 	date: number;
 	tokenId: string;
 	contractAddress: string;
-	version: ZAuctionVersionType;
 }
 
 interface BidPayloadPostInterface {

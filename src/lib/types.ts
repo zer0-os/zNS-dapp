@@ -178,7 +178,6 @@ export type Bid = {
 	minBid: string;
 	startBlock: string;
 	expireBlock: string;
-	version: ZAuctionVersionType;
 };
 
 export type DomainHighestBid = {

@@ -100,8 +100,6 @@ const NFT = ({
 		blobCache.current,
 	);
 
-	const isDisabled = yourBid?.version === ZAuctionVersionType.V1;
-
 	const isOwnedByYou =
 		account && owner && account.toLowerCase() === owner.toLowerCase();
 
@@ -212,7 +210,6 @@ const NFT = ({
 				bidNonce={yourBid!.bidNonce}
 				domainId={domainId!}
 				onSuccess={onRefetch}
-				isDisabled={isDisabled}
 			/>
 		</div>
 	);

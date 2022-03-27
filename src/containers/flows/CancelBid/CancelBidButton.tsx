@@ -3,8 +3,6 @@ import { useState } from 'react';
 
 //- Components Imports
 import { FutureButton, Overlay, TextButton } from 'components';
-
-//- Containers Imports
 import CancelBid from './CancelBid';
 
 interface BuyNowButtonProps {
@@ -13,7 +11,6 @@ interface BuyNowButtonProps {
 	className?: string;
 	domainId: string;
 	isTextButton?: boolean;
-	isDisabled: boolean;
 	onCancel?: () => void;
 	onSuccess?: () => void;
 	style?: React.CSSProperties;
@@ -23,7 +20,6 @@ const CancelBidButton = ({
 	buttonText,
 	className,
 	isTextButton,
-	isDisabled,
 	onCancel,
 	onSuccess: onSuccessParent,
 	style,
@@ -53,21 +49,15 @@ const CancelBidButton = ({
 				</Overlay>
 			)}
 			{isTextButton ? (
-				<TextButton
-					style={style}
-					className={className}
-					onClick={onClick}
-					disabled={isDisabled}
-				>
+				<TextButton style={style} className={className} onClick={onClick}>
 					{buttonText ? buttonText : 'Cancel Bid'}
 				</TextButton>
 			) : (
 				<FutureButton
 					style={style}
 					className={className}
-					glow={!isDisabled}
+					glow
 					onClick={onClick}
-					disabled={isDisabled}
 				>
 					{buttonText ? buttonText : 'Cancel Bid'}
 				</FutureButton>

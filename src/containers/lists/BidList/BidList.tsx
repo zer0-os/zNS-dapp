@@ -20,7 +20,6 @@ import { ethers } from 'ethers';
 //- Library Imports
 import { Metadata } from 'lib/types';
 import { sortBidsByTime } from 'lib/utils/bids';
-import { ZAuctionVersionType } from 'lib/zAuction';
 
 const moment = require('moment');
 
@@ -111,64 +110,59 @@ const BidList: React.FC<BidListProps> = ({
 						<p className={styles.Pending}>Accept bid transaction pending.</p>
 					)}
 					<ul className={isAccepting ? styles.Accepting : ''}>
-						{sorted.map((bid: Bid, i: number) => {
-							const isZAuctionV1 = bid.version === ZAuctionVersionType.V1;
-							console.log(isZAuctionV1);
-							return (
-								<li key={bid.bidNonce} className={styles.Bid}>
-									<div>
-										<label>{moment(Number(bid.timestamp)).fromNow()}</label>
-										<span>
-											{Number(
-												ethers.utils.formatEther(bid.amount),
-											).toLocaleString()}{' '}
-											WILD{' '}
-											{wildPriceUsd !== undefined && wildPriceUsd > 0 && (
-												<>
-													($
-													{(
-														Number(ethers.utils.formatEther(bid.amount)) *
-														wildPriceUsd
-													)
-														.toFixed(2)
-														.toLocaleString()}{' '}
-													USD)
-												</>
+						{sorted.map((bid: Bid, i: number) => (
+							<li key={bid.bidNonce} className={styles.Bid}>
+								<div>
+									<label>{moment(Number(bid.timestamp)).fromNow()}</label>
+									<span>
+										{Number(
+											ethers.utils.formatEther(bid.amount),
+										).toLocaleString()}{' '}
+										WILD{' '}
+										{wildPriceUsd !== undefined && wildPriceUsd > 0 && (
+											<>
+												($
+												{(
+													Number(ethers.utils.formatEther(bid.amount)) *
+													wildPriceUsd
+												)
+													.toFixed(2)
+													.toLocaleString()}{' '}
+												USD)
+											</>
+										)}
+									</span>
+									<span>
+										by{' '}
+										<a
+											className="alt-link"
+											href={`https://etherscan.io/address/${bid.bidder}`}
+											target="_blank"
+											rel="noreferrer"
+										>
+											{bid.bidder.substring(0, 4)}...
+											{bid.bidder.substring(bid.bidder.length - 4)}
+										</a>
+									</span>
+								</div>
+								{blockNumber && (
+									<>
+										{Number(bid.expireBlock) > blockNumber &&
+											onAccept !== undefined && (
+												<FutureButton
+													glow={!isAccepting}
+													onClick={() => accept(bid)}
+												>
+													Accept
+												</FutureButton>
 											)}
-										</span>
-										<span>
-											by{' '}
-											<a
-												className="alt-link"
-												href={`https://etherscan.io/address/${bid.bidder}`}
-												target="_blank"
-												rel="noreferrer"
-											>
-												{bid.bidder.substring(0, 4)}...
-												{bid.bidder.substring(bid.bidder.length - 4)}
-											</a>
-										</span>
-									</div>
-									{blockNumber && (
-										<>
-											{Number(bid.expireBlock) > blockNumber &&
-												onAccept !== undefined && (
-													<FutureButton
-														glow={!isAccepting && !isZAuctionV1}
-														disabled={isZAuctionV1}
-														onClick={() => accept(bid)}
-													>
-														Accept
-													</FutureButton>
-												)}
-											{Number(bid.expireBlock) <= blockNumber && (
-												<div>Expired</div>
-											)}
-										</>
-									)}
-								</li>
-							);
-						})}
+										{Number(bid.expireBlock) <= blockNumber && (
+											<div>Expired</div>
+										)}
+									</>
+								)}
+							</li>
+						))}
 					</ul>
 				</aside>
 			)}
