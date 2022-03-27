@@ -13,7 +13,7 @@ import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 
 //- Constants Imports
 import constants from '../CancelBid.constants';
-import { ZAuctionVersionType } from 'lib/zAuction';
+import { ZAuctionVersionType } from '../CancelBid.types';
 
 export type UseCancelBidReturn = {
 	cancel: (bid: Bid) => Promise<void>;

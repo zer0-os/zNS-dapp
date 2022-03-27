@@ -11,8 +11,8 @@ import { MESSAGES, ERRORS } from '../AcceptBid.constants';
 //- Hooks Imports
 import useAcceptBid, { UseAcceptBidReturn } from './useAcceptBid';
 
-//- Library Imports
-import { ZAuctionVersionType } from 'lib/zAuction';
+//- Type Imports
+import { ZAuctionVersionType } from '../AcceptBid.types';
 
 //////////
 // Mock //

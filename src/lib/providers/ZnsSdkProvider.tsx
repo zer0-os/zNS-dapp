@@ -33,7 +33,6 @@ export function useZnsSdk() {
 		const provider =
 			library ||
 			new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId]);
-
 		const network = chainIdToNetworkType(chainSelector.selectedChain);
 
 		/**

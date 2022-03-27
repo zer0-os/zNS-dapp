@@ -279,10 +279,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 		);
 	};
 
-	const subTable = useMemo(() => {
-		return <SubdomainTable style={{ marginTop: 16 }} isNftView={isNftView} />;
-	}, [isNftView]);
-
 	////////////
 	// Render //
 	////////////
@@ -313,7 +309,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				>
 					{previewCard()}
 					{nftStats()}
-					{showDomainTable && subTable}
+					{showDomainTable && <SubdomainTable style={{ marginTop: 16 }} />}
 				</div>
 			)}
 			{znsDomain && isNftView && (

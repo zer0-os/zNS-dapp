@@ -7,12 +7,14 @@ import {
 	DomainSettingsWarning,
 	DomainSettingsSuccess,
 } from '../DomainSettings.constants';
+import { Web3Provider } from '@ethersproject/providers';
 
 type UseDomainSettingsHandlersProps = {
 	props: {
 		isZnsDomain: boolean;
 		domainId: string;
 		registrar: Registrar;
+		library: Maybe<Web3Provider>;
 		onClose: () => void;
 		setDomainMetadata: (v: Maybe<Metadata>) => void;
 	};
@@ -79,7 +81,7 @@ export const useDomainSettingsHandlers = ({
 		try {
 			const metadata = await sdk.instance.getDomainMetadata(
 				props.domainId,
-				props.registrar.signer,
+				props.library!.getSigner(),
 			);
 
 			localActions.setMetadata(metadata);
@@ -96,7 +98,7 @@ export const useDomainSettingsHandlers = ({
 			try {
 				const updatedMetadata = await sdk.instance.getDomainMetadata(
 					props.domainId,
-					props.registrar.signer,
+					props.library!.getSigner(),
 				);
 				if (updatedMetadata) {
 					props.setDomainMetadata({
@@ -145,7 +147,7 @@ export const useDomainSettingsHandlers = ({
 			const tx = await sdk.instance.lockDomainMetadata(
 				props.domainId,
 				false,
-				props.registrar.signer,
+				props.library!.getSigner(),
 			);
 
 			try {
@@ -184,7 +186,7 @@ export const useDomainSettingsHandlers = ({
 			const tx = await sdk.instance.lockDomainMetadata(
 				props.domainId,
 				true,
-				props.registrar.signer,
+				props.library!.getSigner(),
 			);
 
 			try {
@@ -228,7 +230,7 @@ export const useDomainSettingsHandlers = ({
 			const tx = await sdk.instance.setDomainMetadata(
 				props.domainId,
 				localState.localMetadata,
-				props.registrar.signer,
+				props.library!.getSigner(),
 			);
 
 			try {
@@ -283,7 +285,7 @@ export const useDomainSettingsHandlers = ({
 			const tx = await sdk.instance.setAndLockDomainMetadata(
 				props.domainId,
 				localState.localMetadata,
-				props.registrar.signer,
+				props.library!.getSigner(),
 			);
 
 			try {

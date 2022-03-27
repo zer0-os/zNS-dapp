@@ -1,5 +1,5 @@
 //- Library Imports
-import { ZAuctionVersionType } from 'lib/zAuction';
+import { ZAuctionVersionType } from '../CancelBid.types';
 
 export const mockBidV1 = {
 	bidNonce: '2',
