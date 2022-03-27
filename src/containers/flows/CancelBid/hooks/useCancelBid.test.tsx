@@ -1,12 +1,18 @@
 /*
  * Unit tests for useCancelBid
  */
-
+//- Test Imports
 import { render, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
+//- Hooks Imports
 import useCancelBid, { UseCancelBidReturn } from './useCancelBid';
+
+//- Constants Imports
 import constants from '../CancelBid.constants';
+
+//- Library Imports
+import { ZAuctionVersionType } from 'lib/zAuction';
 
 //////////
 // Mock //
@@ -43,6 +49,7 @@ const mockBid = {
 	contract: '0x000000000000000000000000',
 	startBlock: '0',
 	expireBlock: '0',
+	version: ZAuctionVersionType.V2,
 };
 
 ///////////

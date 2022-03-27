@@ -3,6 +3,11 @@ import { createTimeCache } from './utils/timeCache';
 import { Mutex } from 'async-mutex';
 import { Maybe } from './types';
 
+export enum ZAuctionVersionType {
+	V1 = '1.0',
+	V2 = '2.0',
+}
+
 export interface BidDto {
 	account: string;
 	signedMessage: string;
@@ -14,6 +19,7 @@ export interface BidDto {
 	date: number;
 	tokenId: string;
 	contractAddress: string;
+	version: ZAuctionVersionType;
 }
 
 interface BidPayloadPostInterface {

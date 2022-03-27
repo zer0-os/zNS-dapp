@@ -60,6 +60,8 @@ export const CancelBid = ({
 		setCurrentStep(Step.Details);
 	};
 
+	console.log(bid);
+
 	const steps = {
 		[Step.LoadingData]: (
 			<Wizard.Loading message={constants.MESSAGES.TEXT_LOADING} />

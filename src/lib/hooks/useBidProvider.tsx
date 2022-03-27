@@ -42,6 +42,7 @@ export const getMock = (amount: number) => {
 			startBlock: `0`,
 			expireBlock: `999999999999`,
 			signature: `0x${Math.floor(Math.random() * 100000000000000000)}`,
+			version: zAuction.ZAuctionVersionType.V2,
 		});
 	});
 	// Sort by recent
@@ -73,6 +74,7 @@ const getBidParameters = (
 		minBid: dto.minimumBid,
 		startBlock: dto.startBlock,
 		expireBlock: dto.expireBlock,
+		version: dto.version,
 	};
 };
 

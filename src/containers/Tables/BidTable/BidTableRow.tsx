@@ -1,8 +1,17 @@
+//- Styles Imports
 import styles from './BidTable.module.scss';
 
+//- Components Imports
 import { Artwork } from 'components';
+
+//- Library Imports
 import { ethers } from 'ethers';
+import { ZAuctionVersionType } from 'lib/zAuction';
+
+//- Containers Imports
 import { CancelBidButton } from 'containers';
+
+//- Constants Imports
 import { TOKEN, STATUS } from './BidTableRow.constants';
 
 export type BidTableRowData = {
@@ -13,6 +22,7 @@ export type BidTableRowData = {
 	date: Date;
 	yourBid: ethers.BigNumber;
 	highestBid: ethers.BigNumber;
+	version: ZAuctionVersionType;
 };
 
 export const TEST_ID = {
@@ -31,6 +41,8 @@ const BidTableRow = (props: any) => {
 	const onSuccess = () => {
 		props.onRefetch();
 	};
+
+	const isDisabled = bid.version === ZAuctionVersionType.V1;
 
 	return (
 		<tr className={styles.Container} data-testid={TEST_ID.CONTAINER}>
@@ -66,6 +78,7 @@ const BidTableRow = (props: any) => {
 					onSuccess={onSuccess}
 					domainId={bid.domainId}
 					bidNonce={bid.bidNonce}
+					isDisabled={isDisabled}
 				/>
 			</td>
 		</tr>

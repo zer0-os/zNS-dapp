@@ -29,6 +29,7 @@ import { toFiat } from 'lib/currency';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { ethers } from 'ethers';
 import CancelBidButton from 'containers/flows/CancelBid/CancelBidButton';
+import { ZAuctionVersionType } from 'lib/zAuction';
 
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
@@ -98,6 +99,8 @@ const NFT = ({
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
 		blobCache.current,
 	);
+
+	const isDisabled = yourBid?.version === ZAuctionVersionType.V1;
 
 	const isOwnedByYou =
 		account && owner && account.toLowerCase() === owner.toLowerCase();
@@ -209,6 +212,7 @@ const NFT = ({
 				bidNonce={yourBid!.bidNonce}
 				domainId={domainId!}
 				onSuccess={onRefetch}
+				isDisabled={isDisabled}
 			/>
 		</div>
 	);

@@ -1,6 +1,8 @@
 // Types
 
+//- Library Imports
 import { ethers } from 'ethers';
+import { ZAuctionVersionType } from './zAuction';
 
 export type Maybe<T> = T | undefined | null;
 export type MaybeUndefined<T> = T | undefined;
@@ -176,6 +178,7 @@ export type Bid = {
 	minBid: string;
 	startBlock: string;
 	expireBlock: string;
+	version: ZAuctionVersionType;
 };
 
 export type DomainHighestBid = {
