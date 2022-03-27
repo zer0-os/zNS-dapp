@@ -1,0 +1,19 @@
+.TriggerContentContainer {
+	display: flex;
+	align-items: center;
+	height: 100%;
+	cursor: pointer;
+}
+
+.DropdownContentContainer {
+	position: absolute;
+	top: 100%;
+	right: -1px;
+	display: none;
+	z-index: 1;
+	padding-top: 8px;
+}
+
+.TriggerContentContainer:hover .DropdownContentContainer {
+	display: block;
+}
