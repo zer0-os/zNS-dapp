@@ -1,28 +1,33 @@
-import * as wheels from 'lib/wheelSale';
+import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
-import { Stage, WheelQuantity, DropData } from './types';
-import { ERC20, WhitelistSimpleSale } from 'types';
-
-export const EthPerWheel = 0.21;
+import { Stage, DropData } from './types';
+import { WhitelistSimpleSale, ERC20 } from 'types';
+import {
+	Instance,
+	IPFSGatewayUri,
+	SaleData,
+	SaleStatus,
+} from '@zero-tech/zsale-sdk/lib/types';
 
 export const getDropData = (
-	contract: WhitelistSimpleSale,
+	zSaleInstance: Instance,
+	library: Web3Provider,
+	account: string,
 ): Promise<DropData | undefined> => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const [dropStage, wheelQuantities, maxPurchasesPerUser] =
-				await Promise.all([
-					getDropStage(contract),
-					getWheelQuantities(contract),
-					getMaxPurchasesPerUser(contract),
-				]);
+			const [dropStage, saleData, maxPurchasesPerUser] = await Promise.all([
+				getDropStage(zSaleInstance, library),
+				getWheelQuantities(zSaleInstance, library),
+				getMaxPurchasesPerUser(zSaleInstance, account),
+			]);
 
 			// Check if we somehow got an undefined variable
 			if (
 				dropStage === undefined ||
-				wheelQuantities === undefined ||
-				wheelQuantities.total === undefined ||
-				wheelQuantities.minted === undefined ||
+				saleData === undefined ||
+				saleData.amountForSale === undefined ||
+				saleData.amountSold === undefined ||
 				maxPurchasesPerUser === undefined
 			) {
 				throw Error('Failed to retrieve primary data');
@@ -30,8 +35,8 @@ export const getDropData = (
 
 			resolve({
 				dropStage,
-				wheelsTotal: wheelQuantities.total,
-				wheelsMinted: wheelQuantities.minted,
+				wheelsTotal: saleData.amountForSale,
+				wheelsMinted: saleData.amountSold,
 				maxPurchasesPerUser,
 			} as DropData);
 		} catch (error) {
@@ -41,59 +46,71 @@ export const getDropData = (
 };
 
 const getDropStage = async (
-	contract: WhitelistSimpleSale,
+	zSaleInstance: Instance,
+	library: Web3Provider,
 ): Promise<Stage | undefined> => {
-	const status = await wheels.getSaleStatus(contract);
+	const status = await zSaleInstance.getSaleStatus(library.getSigner());
 
-	if (status === wheels.SaleStatus.NotStarted) {
+	if (status === SaleStatus.NotStarted) {
 		return Stage.Upcoming;
 	}
 
-	const data = await wheels.getWheelsSaleData(contract);
+	const data = await zSaleInstance.getSaleData(library.getSigner());
 
-	if (data.minted === data.total) {
+	if (data.amountSold === data.amountForSale) {
 		return Stage.Sold;
 	}
 
-	if (status === wheels.SaleStatus.WhitelistOnly) {
+	if (status === SaleStatus.MintlistOnly) {
 		return Stage.Whitelist;
 	}
 
-	if (status === wheels.SaleStatus.Public) {
-		return Stage.Public;
+	if (status === SaleStatus.Ended) {
+		return Stage.Ended;
 	}
+	// TODO: Add support for Public SaleStatus
+	// if (status === SaleStatus.Public) {
+	// 	return Stage.Public;
+	// }
 };
 
 export const getNumberPurchasedByUser = async (
-	userId: string,
-	contract: WhitelistSimpleSale,
+	zSaleInstance: Instance,
+	library: Web3Provider,
 ) => {
-	const number = await wheels.getNumberPurchasedByUser(userId, contract);
+	const number = await zSaleInstance.getDomainsPurchasedByAccount(
+		library.getSigner(),
+	);
 	return number;
 };
 
-export const getMaxPurchasesPerUser = async (contract: WhitelistSimpleSale) => {
-	const max = await wheels.getMaxPurchasesPerUser(contract);
-	return max;
+export const getMaxPurchasesPerUser = async (
+	zSaleInstance: Instance,
+	account: string,
+) => {
+	const { quantity } = await zSaleInstance.getMintlistedUserClaim(
+		account,
+		IPFSGatewayUri.fleek,
+	);
+	return quantity;
 };
 
 export const getUserEligibility = async (
 	userId: string,
-	contract: WhitelistSimpleSale,
+	zSaleInstance: Instance,
 ): Promise<boolean | undefined> => {
-	const network = await contract.provider.getNetwork();
-
-	const isWhitelisted = await wheels.isUserOnWhitelist(
+	const isWhitelisted = await zSaleInstance.isUserOnMintlist(
 		userId,
-		network.chainId === 1,
+		IPFSGatewayUri.fleek,
 	);
 	return isWhitelisted;
 };
 
 const getWheelQuantities = async (
-	contract: WhitelistSimpleSale,
-): Promise<WheelQuantity | undefined> => {
-	const data = await wheels.getWheelsSaleData(contract);
+	zSaleInstance: Instance,
+	library: Web3Provider,
+): Promise<SaleData | undefined> => {
+	const data = await zSaleInstance.getSaleData(library.getSigner());
 
 	return data;
 };
@@ -106,6 +123,7 @@ export const getBalanceEth = async (
 	return Number(asString);
 };
 
+// TODO: Migrate these methods to use SDK once they are available
 export const getERC20TokenBalance = async (
 	token: ERC20,
 	user: string,
@@ -115,7 +133,22 @@ export const getERC20TokenBalance = async (
 	return Number(asString);
 };
 
-export const getSaleContractApprovalStatus =
-	wheels.getSaleContractApprovalStatus;
+export const getSaleContractApprovalStatus = async (
+	userAddress: string,
+	saleContract: WhitelistSimpleSale,
+	token: ERC20,
+): Promise<boolean> => {
+	const allowance = await token.allowance(userAddress, saleContract.address);
+	return allowance.gt(ethers.utils.parseEther('1000000'));
+};
 
-export const approveSaleContract = wheels.approveSaleContract;
+export const approveSaleContract = async (
+	saleContract: WhitelistSimpleSale,
+	token: ERC20,
+): Promise<ethers.ContractTransaction> => {
+	const tx = await token.approve(
+		saleContract.address,
+		ethers.constants.MaxUint256,
+	);
+	return tx;
+};
