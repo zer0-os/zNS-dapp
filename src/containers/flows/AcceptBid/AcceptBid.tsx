@@ -113,7 +113,6 @@ const AcceptBid = ({
 				}
 			} catch (e) {
 				setError(ERRORS.CONSOLE_TEXT);
-				console.error(ERRORS.CONSOLE_TEXT, e);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}
