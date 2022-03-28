@@ -107,7 +107,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	////////////
 	// Render //
 	////////////
-	console.log(domainMetadata);
 
 	return (
 		<div className={styles.NFTView}>
