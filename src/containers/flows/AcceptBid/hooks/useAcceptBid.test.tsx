@@ -11,6 +11,9 @@ import { MESSAGES, ERRORS } from '../AcceptBid.constants';
 //- Hooks Imports
 import useAcceptBid, { UseAcceptBidReturn } from './useAcceptBid';
 
+//- Type Imports
+import { ZAuctionVersionType } from '../AcceptBid.types';
+
 //////////
 // Mock //
 //////////
@@ -46,6 +49,7 @@ const mockBid = {
 	contract: '0x000000000000000000000000',
 	startBlock: '0',
 	expireBlock: '0',
+	version: ZAuctionVersionType.V2,
 };
 
 ///////////

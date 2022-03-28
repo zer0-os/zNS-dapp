@@ -1,8 +1,16 @@
+//- Styles Imports
 import styles from './BidTable.module.scss';
 
+//- Components Imports
 import { Artwork } from 'components';
+
+//- Library Imports
 import { ethers } from 'ethers';
+
+//- Containers Imports
 import { CancelBidButton } from 'containers';
+
+//- Constants Imports
 import { TOKEN, STATUS } from './BidTableRow.constants';
 
 export type BidTableRowData = {

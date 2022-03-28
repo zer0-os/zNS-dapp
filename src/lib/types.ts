@@ -1,5 +1,6 @@
 // Types
 
+//- Library Imports
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
@@ -21,6 +22,7 @@ export interface Domain {
 	owner: Account;
 	minter: Account;
 	metadata: string;
+	contract?: string; // TODO: Making it optional so that tests and other scenarios work
 	isLocked: boolean;
 	lockedBy: Account;
 }
@@ -154,6 +156,7 @@ export const DefaultDomain: Domain = {
 	minter: {
 		id: '',
 	},
+	contract: '',
 	metadata: '',
 	isLocked: false,
 	lockedBy: {
