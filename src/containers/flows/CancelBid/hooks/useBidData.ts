@@ -23,7 +23,7 @@ export type UseBidDataReturn = {
 	refetch: () => void;
 };
 
-const useBidData = (domainId: string, auctionId: string): UseBidDataReturn => {
+const useBidData = (domainId: string, bidNonce: string): UseBidDataReturn => {
 	const isMounted = useRef<boolean>();
 	const { instance: sdk } = useZnsSdk();
 
@@ -45,7 +45,7 @@ const useBidData = (domainId: string, auctionId: string): UseBidDataReturn => {
 		const metadata = await getMetadata(domainData.metadataUri);
 
 		// Filter out the correct bids
-		const bid = bidData.filter((bid: Bid) => bid.auctionId === auctionId)[0];
+		const bid = bidData.filter((bid: Bid) => bid.bidNonce === bidNonce)[0];
 		const highestBid = bidData.sort((a: Bid, b: Bid) =>
 			BigNumber.from(a.amount).gte(BigNumber.from(b.amount)) ? -1 : 1,
 		)[0];

@@ -36,16 +36,6 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 		setSelected(option);
 	};
 
-	const navigateToDomain = (domain: string) => {
-		const d =
-			domain.indexOf('wilder.') === 0 ? domain.split('wilder.')[1] : domain;
-		if (onNavigate) onNavigate(d);
-	};
-
-	/////////////
-	// Effects //
-	/////////////
-
 	////////////
 	// Render //
 	////////////
@@ -90,9 +80,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 				</div>
 			</div>
 			<TabBar tabs={[TABS.YOUR_DOMAINS, TABS.YOUR_BIDS]} onSelect={select} />
-			{selected === TABS.YOUR_DOMAINS && (
-				<OwnedDomainsTable onNavigate={navigateToDomain} />
-			)}
+			{selected === TABS.YOUR_DOMAINS && <OwnedDomainsTable />}
 			{selected === TABS.YOUR_BIDS && <BidTable />}
 		</div>
 	);

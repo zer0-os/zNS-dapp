@@ -1,12 +1,18 @@
 /*
  * Unit tests for useCancelBid
  */
-
+//- Test Imports
 import { render, waitFor } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 
+//- Hooks Imports
 import useCancelBid, { UseCancelBidReturn } from './useCancelBid';
+
+//- Constants Imports
 import constants from '../CancelBid.constants';
+
+//- Mocks Imports
+import * as mocks from './useCanceBid.mocks';
 
 //////////
 // Mock //
@@ -32,18 +38,6 @@ jest.mock('@web3-react/core', () => ({
 		},
 	}),
 }));
-
-const mockBid = {
-	auctionId: '1',
-	bidder: '0x000000000000000000000000',
-	signedMessage: 'message',
-	tokenId: 'id',
-	amount: '1000000',
-	timestamp: '0',
-	contract: '0x000000000000000000000000',
-	startBlock: '0',
-	expireBlock: '0',
-};
 
 ///////////
 // Setup //
@@ -75,75 +69,152 @@ const setupHook = () => {
 ///////////
 // Tests //
 ///////////
+describe('useCancelBid', () => {
+	describe('zAuction Version 1 Bid', () => {
+		test('successfully cancels bid', async () => {
+			mockCancelBid.mockResolvedValue({ wait: mockTx });
+			mockTx.mockResolvedValue(undefined);
+			const hook = setupHook();
 
-test('successfully cancels bid', async () => {
-	mockCancelBid.mockResolvedValue({ wait: mockTx });
-	mockTx.mockResolvedValue(undefined);
-	const hook = setupHook();
+			await act(() => hook.cancel(mocks.mockBidV1));
 
-	await act(() => hook.cancel(mockBid));
+			expect(mockCancelBid).toBeCalledTimes(1);
+			expect(mockTx).toBeCalledTimes(1);
+			expect(mockCancelBid).toBeCalledWith(
+				mocks.mockBidV1.bidNonce,
+				mocks.mockBidV1.signedMessage,
+				mocks.mockBidV1.tokenId,
+				false,
+				{ isSigner: true },
+			);
+		});
 
-	expect(mockCancelBid).toBeCalledTimes(1);
-	expect(mockTx).toBeCalledTimes(1);
-	expect(mockCancelBid).toBeCalledWith(
-		mockBid.auctionId,
-		mockBid.signedMessage,
-		mockBid.tokenId,
-		true,
-		{ isSigner: true },
-	);
-});
+		test('status updates as expected for v1 bid', async () => {
+			mockCancelBid.mockResolvedValue({ wait: mockTx });
+			const hook = setupHook();
 
-test('status updates as expected', async () => {
-	mockCancelBid.mockResolvedValue({ wait: mockTx });
-	const hook = setupHook();
+			act(() => {
+				hook.cancel(mocks.mockBidV1);
+			});
 
-	act(() => {
-		hook.cancel(mockBid);
+			expect(hook.status).toBe(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V1);
+			await (() =>
+				expect(hook.status).toBe(constants.MESSAGES.TEXT_CANCELLING_BID));
+			await waitFor(() => expect(mockTx).toHaveBeenCalledTimes(1));
+			expect(hook.status).toBeUndefined();
+		});
+
+		test('handles failed/rejected signature', async () => {
+			mockCancelBid.mockRejectedValue(undefined);
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.cancel(mocks.mockBidV1);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockCancelBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(constants.ERRORS.SIGNATURE);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles failed/rejected transaction', async () => {
+			mockCancelBid.mockResolvedValue({
+				wait: mockTx,
+			});
+			mockTx.mockRejectedValue(undefined);
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.cancel(mocks.mockBidV1);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockTx).toBeCalledTimes(1);
+			expect(err?.message).toBe(constants.ERRORS.TRANSACTION);
+			expect(console.error).toHaveBeenCalled();
+		});
 	});
 
-	expect(hook.status).toBe(constants.MESSAGES.TEXT_WAITING_FOR_WALLET);
-	await (() =>
-		expect(hook.status).toBe(constants.MESSAGES.TEXT_CANCELLING_BID));
-	await waitFor(() => expect(mockTx).toHaveBeenCalledTimes(1));
-	expect(hook.status).toBeUndefined();
-});
+	describe('zAuction Version 2 Bid', () => {
+		test('successfully cancels bid', async () => {
+			mockCancelBid.mockResolvedValue({ wait: mockTx });
+			mockTx.mockResolvedValue(undefined);
+			const hook = setupHook();
 
-test('handles failed/rejected signature', async () => {
-	mockCancelBid.mockRejectedValue(undefined);
-	const hook = setupHook();
+			await act(() => hook.cancel(mocks.mockBidV2));
 
-	var err: Error | undefined;
-	try {
-		await act(async () => {
-			await hook.cancel(mockBid);
+			expect(mockCancelBid).toBeCalledTimes(1);
+			expect(mockTx).toBeCalledTimes(1);
+			expect(mockCancelBid).toBeCalledWith(
+				mocks.mockBidV2.bidNonce,
+				mocks.mockBidV2.signedMessage,
+				mocks.mockBidV2.tokenId,
+				true,
+				{ isSigner: true },
+			);
 		});
-	} catch (e) {
-		err = e as Error;
-	}
 
-	expect(mockCancelBid).toBeCalledTimes(1);
-	expect(err?.message).toBe(constants.ERRORS.SIGNATURE);
-	expect(console.error).toHaveBeenCalled();
-});
+		test('status updates as expected for v2 bid', async () => {
+			mockCancelBid.mockResolvedValue({ wait: mockTx });
+			const hook = setupHook();
 
-test('handles failed/rejected transaction', async () => {
-	mockCancelBid.mockResolvedValue({
-		wait: mockTx,
+			act(() => {
+				hook.cancel(mocks.mockBidV2);
+			});
+
+			expect(hook.status).toBe(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V2);
+			await (() =>
+				expect(hook.status).toBe(constants.MESSAGES.TEXT_CANCELLING_BID));
+			await waitFor(() => expect(mockTx).toHaveBeenCalledTimes(1));
+			expect(hook.status).toBeUndefined();
+		});
+
+		test('handles failed/rejected signature', async () => {
+			mockCancelBid.mockRejectedValue(undefined);
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.cancel(mocks.mockBidV2);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockCancelBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(constants.ERRORS.SIGNATURE);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles failed/rejected transaction', async () => {
+			mockCancelBid.mockResolvedValue({
+				wait: mockTx,
+			});
+			mockTx.mockRejectedValue(undefined);
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.cancel(mocks.mockBidV2);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockTx).toBeCalledTimes(1);
+			expect(err?.message).toBe(constants.ERRORS.TRANSACTION);
+			expect(console.error).toHaveBeenCalled();
+		});
 	});
-	mockTx.mockRejectedValue(undefined);
-	const hook = setupHook();
-
-	var err: Error | undefined;
-	try {
-		await act(async () => {
-			await hook.cancel(mockBid);
-		});
-	} catch (e) {
-		err = e as Error;
-	}
-
-	expect(mockTx).toBeCalledTimes(1);
-	expect(err?.message).toBe(constants.ERRORS.TRANSACTION);
-	expect(console.error).toHaveBeenCalled();
 });

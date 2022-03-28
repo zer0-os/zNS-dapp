@@ -26,7 +26,6 @@ import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
 import { toFiat } from 'lib/currency';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import { useZnsContracts } from 'lib/contracts';
 import { Attribute } from 'lib/types';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { Bid } from '@zero-tech/zauction-sdk';
@@ -53,6 +52,7 @@ import transferOwnershipIcon from './assets/transfer.svg';
 
 //- Constants Imports
 import { MORE_ACTION_KEY } from './NFTView.constants';
+import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
 
 const MORE_ACTIONS = [
 	{
@@ -136,19 +136,20 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active, chainId, library } = walletContext;
+	const { account, active, chainId } = walletContext;
 
 	const networkType = chainIdToNetworkType(chainId);
-	const contracts = useZnsContracts();
-	const registrarAddress = contracts ? contracts.registry.address : '';
 
 	const etherscanBaseUri = getEtherscanUri(networkType);
-	const etherscanLink = `${etherscanBaseUri}token/${registrarAddress}?a=${domainIdInteger.toString()}`;
+	const etherscanLink = `${etherscanBaseUri}token/${
+		znsDomain?.contract
+	}?a=${domainIdInteger.toString()}`;
 
 	const isOwnedByYou =
 		znsDomain?.owner.id.toLowerCase() === account?.toLowerCase();
 
 	const sdk = useZnsSdk();
+	const { instance: zAuctionInstance } = useZAuctionSdk();
 	//Transfers and mint data from nft
 	//- Calls the hook with a polling interval to update the data
 
@@ -286,7 +287,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	};
 
 	const getPriceData = async () => {
-		if (!znsDomain?.id || !library) {
+		if (!znsDomain?.id) {
 			return;
 		}
 		const { id } = znsDomain;
@@ -294,34 +295,35 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		setBuyNowPrice(undefined);
 		setHighestBid(undefined);
 		setYourBid(undefined);
+		try {
+			// // Get buy now and all bids
+			const [listing, bids] = await Promise.all([
+				zAuctionInstance.getBuyNowPrice(id),
+				zAuctionInstance.listBids([id]),
+			]);
 
-		const zAuction = await sdk.instance.getZAuctionInstanceForDomain(id);
+			const buyNow = listing.price;
 
-		// // Get buy now and all bids
-		const [listing, bids] = await Promise.all([
-			zAuction.getBuyNowPrice(id, library.getSigner()),
-			zAuction.listBids([id]),
-		]);
+			// Excuse this monstrosity
+			const highestBid = sortBids(bids[id])[0];
 
-		const buyNow = listing.price;
-
-		// Excuse this monstrosity
-		const highestBid = sortBids(bids[id])[0];
-
-		if (account) {
-			const yourBid = sortBids(
-				bids[id].filter(
-					(b) => b.bidder.toLowerCase() === account.toLowerCase(),
-				),
-			)[0];
-			if (yourBid) {
-				setYourBid(yourBid);
+			if (account) {
+				const yourBid = sortBids(
+					bids[id].filter(
+						(b) => b.bidder.toLowerCase() === account.toLowerCase(),
+					),
+				)[0];
+				if (yourBid) {
+					setYourBid(yourBid);
+				}
 			}
-		}
 
-		setHighestBid(highestBid);
-		setBuyNowPrice(Number(ethers.utils.formatEther(buyNow)));
-		setIsPriceDataLoading(false);
+			setHighestBid(highestBid);
+			setBuyNowPrice(Number(ethers.utils.formatEther(buyNow)));
+			setIsPriceDataLoading(false);
+		} catch (e) {
+			console.error('Failed to retrieve bid data');
+		}
 	};
 
 	const getTradeData = async () => {

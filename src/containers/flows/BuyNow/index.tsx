@@ -13,6 +13,7 @@ import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { Data } from './BuyNow';
 import { useZnsContracts } from 'lib/contracts';
 import { ERC20 } from 'types';
+import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
 
 export type BuyNowContainerProps = {
 	domainId: string;
@@ -27,6 +28,7 @@ const BuyNowContainer = ({
 }: BuyNowContainerProps) => {
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
+	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const { account, library } = useWeb3React();
 	const { wildPriceUsd } = useCurrency();
 
@@ -53,18 +55,16 @@ const BuyNowContainer = ({
 	};
 
 	const approveZAuction = async () => {
-		let zAuction, approvalTx;
+		let approvalTx;
 		setError(undefined);
 		try {
-			try {
-				zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-			} catch (e) {
+			if (!zAuctionInstance) {
 				throw Error('Failed to retrieve zAuction instance');
 			}
 
 			try {
 				setCurrentStep(Step.ApproveZAuctionWaiting);
-				approvalTx = await zAuction.approveZAuctionSpendTradeTokens(
+				approvalTx = await zAuctionInstance.approveZAuctionSpendTradeTokens(
 					library.getSigner(),
 				);
 				setCurrentStep(Step.ApproveZAuctionProcessing);
@@ -90,8 +90,10 @@ const BuyNowContainer = ({
 		setError(undefined);
 		setCurrentStep(Step.WaitingForWalletConfirmation);
 		try {
-			const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-			const tx = await zAuction.buyNow(
+			if (!zAuctionInstance) {
+				throw Error('Failed to retrieve zAuction instance');
+			}
+			const tx = await zAuctionInstance.buyNow(
 				{ amount: data!.buyNowPrice.toString(), tokenId: domainId },
 				library.getSigner(),
 			);
@@ -114,21 +116,26 @@ const BuyNowContainer = ({
 		// Reset some state in case dependency changes
 		setError(undefined);
 		setIsLoadingDomainData(true);
+		let buyNowPrice;
+		if (!zAuctionInstance) {
+			throw Error('Failed to retrieve zAuction instance');
+		}
+		try {
+			// Get buy now price
+			const listing = await zAuctionInstance.getBuyNowPrice(domainId);
+			buyNowPrice = listing.price;
 
-		// Get buy now price
-		const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-		const listing = await zAuction.getBuyNowPrice(
-			domainId,
-			library.getSigner(),
-		);
-		const buyNowPrice = listing.price;
-
-		// Check zAuction approved amount is larger than buy now price
-		const allowance = await zAuction.getZAuctionSpendAllowance(account);
-		const isApproved = allowance.gte(buyNowPrice);
-		if (!isApproved) {
-			setCurrentStep(Step.ApproveZAuction);
-			return;
+			// Check zAuction approved amount is larger than buy now price
+			const allowance = await zAuctionInstance.getZAuctionSpendAllowance(
+				account,
+			);
+			const isApproved = allowance.gte(buyNowPrice);
+			if (!isApproved) {
+				setCurrentStep(Step.ApproveZAuction);
+				return;
+			}
+		} catch (e) {
+			console.warn('<BuyNow> Failed to Get Data', e);
 		}
 		try {
 			const [domain, metadata, balance] = await Promise.all([

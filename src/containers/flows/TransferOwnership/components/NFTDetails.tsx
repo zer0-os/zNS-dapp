@@ -55,7 +55,7 @@ const NFTDetails = ({
 
 		<div className={styles.InputSubmitButton}>
 			<FutureButton glow={valid} onClick={() => valid && onNext()}>
-				{BUTTONS[Step.Details].PRIMARY}
+				{BUTTONS[Step.Details]}
 			</FutureButton>
 		</div>
 	</>

@@ -202,7 +202,7 @@ test('should handle successful cancel bid request', async () => {
 	fireEvent.mouseUp(cancelBidButton);
 
 	expect(
-		screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET),
+		screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V2),
 	).toBeInTheDocument();
 
 	await screen.findByText(constants.MESSAGES.TEXT_CANCELLING_BID);
@@ -230,7 +230,7 @@ test('should handle rejected/failed signature request', async () => {
 	});
 	fireEvent.mouseUp(cancelBidButton);
 
-	screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET);
+	screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V2);
 
 	await screen.findByText(constants.ERRORS.SIGNATURE);
 
@@ -253,7 +253,7 @@ test('should handle rejected/failed transaction', async () => {
 	});
 	fireEvent.mouseUp(cancelBidButton);
 
-	screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET);
+	screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V2);
 	await screen.findByText(constants.MESSAGES.TEXT_CANCELLING_BID);
 
 	await screen.findByText(constants.ERRORS.TRANSACTION);
