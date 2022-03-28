@@ -9,11 +9,17 @@
 	position: absolute;
 	top: 100%;
 	right: -1px;
-	display: none;
+	display: block;
 	z-index: 1;
 	padding-top: 8px;
+	opacity: 0;
+	transition: all var(--animation-time-short) linear;
+	pointer-events: none;
+	max-height: 0;
 }
 
 .TriggerContentContainer:hover .DropdownContentContainer {
 	display: block;
+	opacity: 1;
+	pointer-events: all;
 }

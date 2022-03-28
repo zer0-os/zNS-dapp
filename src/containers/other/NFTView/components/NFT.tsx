@@ -219,7 +219,7 @@ const NFT = ({
 
 	return (
 		<div
-			className={cx(styles.NFT, 'border-primary', {
+			className={cx(styles.NFT, '', {
 				Loaded: true,
 			})}
 		>
@@ -274,13 +274,13 @@ const NFT = ({
 					</div>
 				</div>
 
-				{backgroundBlob !== undefined && (
+				{/* {backgroundBlob !== undefined && (
 					<img
 						alt="NFT panel background"
 						src={backgroundBlob}
 						className={styles.Bg}
 					/>
-				)}
+				)} */}
 			</div>
 		</div>
 	);

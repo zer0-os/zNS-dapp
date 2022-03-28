@@ -91,7 +91,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 		>
 			{media}
 			<div className={styles.Body}>
-				<h5 className={`glow-text-blue`}>{name}</h5>
+				<h5 className={``}>{name}</h5>
 				<ArrowLink>{domainText}</ArrowLink>
 				{/* Need to refactor out actions component */}
 				{actionsComponent}

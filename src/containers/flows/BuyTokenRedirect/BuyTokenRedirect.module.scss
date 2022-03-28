@@ -22,15 +22,13 @@
 			top: 0;
 			width: 99%;
 			transform: scale(1, 0.56);
-			border-left: 1px solid var(--color-purple-lighter);
-			border-right: 1px solid var(--color-purple-lighter);
 		}
 	}
 
 	&:hover {
 		.Details::after {
 			transform: scale(1);
-			background: var(--color-azure-gradient-25);
+			background: #1a1022;
 		}
 	}
 }

@@ -1,4 +1,8 @@
 .info-button {
+	height: 32px;
+	width: 32px;
+	transition: all var(--animation-time-short) linear;
+
 	&__container {
 		.info-button {
 			display: flex;
@@ -8,12 +12,8 @@
 
 		&:hover {
 			.info-button {
-				background: linear-gradient(
-					90deg,
-					rgba(82, 87, 255, 0.25) 0%,
-					rgba(82, 203, 255, 0.25) 100%
-				);
 				border-radius: 8px;
+				background: #1a1022;
 
 				svg {
 					circle {

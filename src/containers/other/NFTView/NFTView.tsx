@@ -525,9 +525,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		);
 
 		return (
-			<section
-				className={`${styles.History} ${styles.Box} border-primary border-rounded background-primary`}
-			>
+			<section className={`${styles.History} ${styles.Box} `}>
 				<h4>History</h4>
 				{!allItems && (
 					<div className={styles.Loading}>
@@ -593,11 +591,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 			return (
 				<>
-					<section
-						className={`${styles.Attributes} border-primary border-rounded background-primary`}
-					>
+					<section className={`${styles.Attributes} `}>
 						<div className={styles.AttributesContainer}>
-							<h4>Attributes</h4>
+							<h4 style={{ marginLeft: '20px' }}>Attributes</h4>
 							<ul className={styles.AttributesGrid}>
 								{znsDomain.attributes
 									.slice(
@@ -674,9 +670,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 			{attributes()}
 			<div className={`${styles.TokenHashContainer}`}>
-				<div
-					className={`${styles.Box} ${styles.Contract} border-primary border-rounded background-primary`}
-				>
+				<div className={`${styles.Box} ${styles.Contract} `}>
 					<h4>Token Id</h4>
 					<p>
 						<img
@@ -697,9 +691,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 						View on Etherscan
 					</ArrowLink>
 				</div>
-				<div
-					className={`${styles.Box} ${styles.Contract} border-primary border-rounded background-primary`}
-				>
+				<div className={`${styles.Box} ${styles.Contract} `}>
 					<h4>IPFS Hash</h4>
 					<p>
 						<img

@@ -13,10 +13,19 @@
 
 	/* Text */
 	text-align: left;
-	color: white;
+	color: #bfbfbf;
 
 	/* Text shadow isn't working as expected - it cuts off for some reason */
 	/* text-shadow: var(--glow-text-white); */
+
+	transition: all var(--animation-time-short) linear;
+	border: 1px solid transparent;
+
+	&:hover,
+	&:active,
+	&:focus {
+		border: 1px solid #6a3991;
+	}
 }
 
 .searchBar button {
@@ -34,5 +43,5 @@
 }
 
 .searchBar input::placeholder {
-	color: white;
+	color: #bfbfbf;
 }
