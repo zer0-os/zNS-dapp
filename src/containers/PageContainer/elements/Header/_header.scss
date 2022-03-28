@@ -20,7 +20,7 @@
 			box-shadow: none;
 		}
 
-		@media only screen and (max-width: 1000px) {
+		@media only screen and (max-width: 1230px) {
 			padding: 11px 17px;
 		}
 	}
@@ -83,8 +83,12 @@
 		font-weight: 700;
 		text-transform: uppercase;
 
-		@media only screen and (max-width: 1000px) {
+		@media only screen and (max-width: 1200px) {
 			margin-right: 0;
+		}
+
+		@media only screen and (max-width: 500px) {
+			display: none;
 		}
 	}
 
@@ -95,7 +99,7 @@
 		gap: 16px;
 		height: 56px;
 
-		@media only screen and (max-width: 1000px) {
+		@media only screen and (max-width: 1230px) {
 			display: none !important;
 		}
 	}

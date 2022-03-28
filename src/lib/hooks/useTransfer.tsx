@@ -47,6 +47,11 @@ export const useTransfer = (): UseTransferReturn => {
 				return;
 			}
 
+			if (account.toLowerCase() === params.walletAddress.toLowerCase()) {
+				console.error(MESSAGES.REQUEST_ADDRESS_NOT_VALID_ERROR);
+				return;
+			}
+
 			try {
 				const tx = await sdk.transferDomainOwnership(
 					params.walletAddress,
