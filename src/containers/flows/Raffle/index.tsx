@@ -5,9 +5,6 @@ import { MintDropNFT } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 import useAsyncEffect from 'use-async-effect';
-import { useZSaleSdk } from 'lib/providers/ZSaleSdkProvider';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
 
 const RaffleContainer = () => {
 	//////////////////
@@ -20,7 +17,6 @@ const RaffleContainer = () => {
 	const RAFFLE_START_TIME = currentTime + 10000;
 	const RAFFLE_END_TIME = currentTime + 10000 * 3;
 	const SALE_START_TIME = currentTime + 10000;
-	const { library } = useWeb3React<Web3Provider>();
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
@@ -28,8 +24,6 @@ const RaffleContainer = () => {
 	// const RAFFLE_START_TIME = currentTime - 1000;
 	// const RAFFLE_END_TIME = 1646078400000;
 	// const SALE_START_TIME = 1648234800000; //1640181600000;
-
-	const { instance: zSaleInstance } = useZSaleSdk();
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -107,13 +101,6 @@ const RaffleContainer = () => {
 		}, 13000);
 		return () => clearInterval(interval);
 	}, []);
-
-	useAsyncEffect(async () => {
-		if (library) {
-			const data = await zSaleInstance.getSalePrice(library.getSigner());
-			console.log(data);
-		}
-	}, [zSaleInstance, library]);
 
 	///////////////
 	// Fragments //
