@@ -36,7 +36,7 @@ export const getMock = (amount: number) => {
 			bidderAccount: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			date: randomDate(),
 			tokenId: `${Math.random() * 10000}`,
-			auctionId: `${Math.random() * 10000}`,
+			bidNonce: `${Math.random() * 10000}`,
 			nftAddress: `0x${Math.floor(Math.random() * 100000000000000000)}`,
 			minBid: `0`,
 			startBlock: `0`,
@@ -106,7 +106,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 				const bids = await zAuctionInstance.listBids([bidData.tokenId]);
 				const bid = bids[bidData.tokenId].filter(
-					(b: any) => b.auctionId === bidData.auctionId,
+					(b: any) => b.bidNonce === bidData.bidNonce,
 				)[0];
 				const tx = await zAuctionInstance.acceptBid(bid, library!.getSigner());
 				return tx;

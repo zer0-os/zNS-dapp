@@ -26,7 +26,6 @@ const mediumBidAmount = '200000000000000000000000';
 const lowBidAmount = '100000000000000000000000';
 
 const mockBid = {
-	auctionId: '2',
 	bidNonce: '2',
 	bidder: '0x000000000000000000000000',
 	signedMessage: 'message',
@@ -34,7 +33,6 @@ const mockBid = {
 };
 
 const mockBidBeingCancelled = {
-	auctionId: '1',
 	bidNonce: '1',
 	bidder: '0x000000000000000000000000',
 	signedMessage: 'message',
@@ -54,7 +52,7 @@ const mockBids = [
 ];
 
 const mockContainerProps = {
-	auctionId: mockBidBeingCancelled.auctionId,
+	bidNonce: mockBidBeingCancelled.bidNonce,
 	domainId: mockDomainData.id,
 };
 
