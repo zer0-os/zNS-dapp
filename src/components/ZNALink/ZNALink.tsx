@@ -1,12 +1,9 @@
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { truncateDomain } from 'lib/utils';
 import React, { useMemo, useRef } from 'react';
 
 import { Link } from 'react-router-dom';
 
 import styles from './ZNALink.module.scss';
-
-const maxCharacterLength = 90;
 
 type ZNAProps = {
 	className?: string;
@@ -17,6 +14,9 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const globalDomain = useCurrentDomain();
 	const oldDomainRef = useRef('');
 
+	const reSizeLink = (linkPart: string) =>
+		window.innerWidth < 800 ? `...${linkPart}` : `.${linkPart}`;
+
 	const parsedDomain = useMemo(() => {
 		if (!globalDomain.domain?.name) {
 			return oldDomainRef.current;
@@ -26,8 +26,6 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 		}
 	}, [globalDomain.domain]);
 
-	const isTruncatedDomain = truncateDomain(parsedDomain, maxCharacterLength);
-
 	return (
 		<div
 			className={`${styles.ZNALink} ${className ? className : ''}`}
@@ -35,7 +33,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 		>
 			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
 
-			{isTruncatedDomain.split('.').map((part, i) => {
+			{parsedDomain.split('.').map((part, i) => {
 				const linkTarget =
 					part === 'wilder'
 						? ''
@@ -50,7 +48,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 						style={{ textDecoration: 'none', color: 'white' }}
 						to={`${globalDomain.app}${linkTarget}`}
 					>
-						{i > 0 ? `.${part}` : part}
+						{i > 0 ? reSizeLink(part) : part}
 					</Link>
 				);
 			})}

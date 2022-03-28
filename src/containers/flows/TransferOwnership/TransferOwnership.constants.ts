@@ -35,9 +35,8 @@ export const MESSAGES = {
 	REQUEST_NOT_OWNER: 'You are not the owner',
 	REQUEST_TRANSFER_STARTED: 'Transfer of ownership has started',
 	REQUEST_ERROR: 'Encountered an error while attempting to transfer.',
-	REQUEST_ADDRESS_NOT_VALID_ERROR:
-		'Unable to transfer to the same Ethereum address',
-	REQUEST_INVALID_ADDRESS: 'Please enter a valid Ethereum wallet',
+	REQUEST_ADDRESS_NOT_VALID_ERROR: 'This address already owns this domain',
+	REQUEST_INVALID_ADDRESS: 'Please enter a valid Ethereum wallet address',
 };
 
 export const INPUT = {
