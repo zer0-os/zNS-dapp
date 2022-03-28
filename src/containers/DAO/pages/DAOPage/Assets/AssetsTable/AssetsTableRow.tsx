@@ -1,54 +1,56 @@
+// Components
 import { Artwork } from 'components';
-import { ethers } from 'ethers';
+
+// Lib
+import { formatEther } from 'ethers/lib/utils';
+import { toFiat } from 'lib/currency';
+import { Asset } from '@zero-tech/zdao-sdk/lib/types';
 import millify from 'millify';
+
+// Styles + assets
+import classNames from 'classnames';
 import styles from './AssetsTableRow.module.scss';
 import openIcon from 'assets/open-external-url.svg';
-import classNames from 'classnames';
 
-export type Asset = {
-	image: string;
-	name: string;
-	ticker: string;
-};
+// Config
+const MILLIFY_PRECISION = 5;
+const MILLIFY_LOWERCASE = false;
 
-type AssetsTableRowData = {
-	asset: Asset | string;
-	quantity: number;
-	value: ethers.BigNumber;
-};
-
+/**
+ * A single row item for the Assets table
+ */
 const AssetsTableRow = (props: any) => {
-	const { data } = props;
-	const { asset, quantity, value } = data as AssetsTableRowData;
-
-	const assetColumn = () => {
-		if (typeof asset === 'string') {
-			return <p>{asset}</p>;
-		} else {
-			return (
-				<Artwork
-					id={'1'}
-					domain={asset.ticker}
-					name={asset.name}
-					image={asset.image}
-				/>
-			);
-		}
-	};
+	const { data, onRowClick, className } = props;
+	const asset = data as Asset;
 
 	return (
 		<tr
-			className={classNames(styles.Container, props.className)}
-			onClick={props.onRowClick}
+			className={classNames(styles.Container, className)}
+			onClick={onRowClick}
 		>
-			<td>{assetColumn()}</td>
+			{/* Asset details */}
+			<td>
+				<Artwork
+					id={'1'}
+					domain={asset.symbol}
+					name={asset.name}
+					image={asset.logoUri}
+					disableAnimation
+				/>
+			</td>
+
+			{/* Total amount of tokens */}
 			<td className={styles.Right}>
-				{millify(quantity, {
-					precision: 2,
-					lowercase: false,
+				{millify(Number(formatEther(asset.amount)), {
+					precision: MILLIFY_PRECISION,
+					lowercase: MILLIFY_LOWERCASE,
 				})}
 			</td>
-			<td className={styles.Right}>{value.toString()}</td>
+
+			{/* Fiat value of tokens */}
+			<td className={styles.Right}>{'$' + toFiat(asset.amountInUSD)}</td>
+
+			{/* Action icon */}
 			<td className={classNames(styles.Right, styles.Action)}>
 				<img
 					alt="open icon"

@@ -1,9 +1,12 @@
-import useDaoAssets from './hooks/useDaoAssets';
 import AssetsTable from './AssetsTable/AssetsTable';
+import { Asset } from '@zero-tech/zdao-sdk/lib/types';
 
-const Assets = () => {
-	const { assets, isLoading } = useDaoAssets('test');
+type AssetsProps = {
+	assets?: Asset[];
+	isLoading: boolean;
+};
 
+const Assets = ({ assets, isLoading }: AssetsProps) => {
 	return <AssetsTable assets={assets} isLoading={isLoading} />;
 };
 

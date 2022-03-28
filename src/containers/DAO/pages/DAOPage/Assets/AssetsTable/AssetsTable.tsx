@@ -1,8 +1,9 @@
+import { Asset } from '@zero-tech/zdao-sdk/lib/types';
 import { GenericTable } from 'components';
 import AssetsTableRow from './AssetsTableRow';
 
 type AssetsTableProps = {
-	assets?: any[];
+	assets?: Asset[];
 	isLoading: boolean;
 };
 
@@ -30,18 +31,13 @@ const HEADERS = [
 ];
 
 const AssetsTable = ({ assets, isLoading }: AssetsTableProps) => {
-	const onRowClick = () => {
-		console.log('yeah');
-	};
-
 	return (
 		<GenericTable
 			alignments={[0, 1, 1, 1, 1, 1, 1]}
 			data={assets}
-			itemKey={'quantity'} // need to change this
+			itemKey={'address'}
 			headers={HEADERS}
 			rowComponent={AssetsTableRow}
-			onRowClick={onRowClick}
 			infiniteScroll
 			isLoading={isLoading}
 			loadingText={'Loading Assets'}

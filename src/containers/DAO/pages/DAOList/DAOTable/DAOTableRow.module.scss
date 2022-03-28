@@ -17,5 +17,9 @@
 
 	.Right {
 		text-align: right;
+
+		> * {
+			margin-left: auto;
+		}
 	}
 }

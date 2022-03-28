@@ -1,4 +1,4 @@
-import { ROUTES } from 'constants/routes';
+// React
 import {
 	Link,
 	Redirect,
@@ -7,18 +7,96 @@ import {
 	useLocation,
 	useRouteMatch,
 } from 'react-router-dom';
-import styles from './DAOPage.module.scss';
-import genericStyles from '../Container.module.scss';
-import { StatsWidget } from 'components';
-import wilderLogo from 'assets/WWLogo_SVG.svg';
-import classNames from 'classnames';
+
+// Components
 import Assets from './Assets/Assets';
 import Transactions from './Transactions/Transactions';
+import { Image, LoadingIndicator, StatsWidget } from 'components';
+
+// Hooks
+import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
+import useTransactions from './hooks/useTransactions';
+import useAssets from './hooks/useAssets';
+
+// Lib
+import { toFiat } from 'lib/currency';
+import { ROUTES } from 'constants/routes';
+
+// Styles
+import styles from './DAOPage.module.scss';
+import genericStyles from '../Container.module.scss';
+import classNames from 'classnames/bind';
 const cx = classNames.bind(genericStyles);
+
+const toDaoPage = (zna: string) => (route: ROUTES) =>
+	ROUTES.ZDAO + '/' + zna + route;
 
 const DAOPage = () => {
 	const { pathname } = useLocation();
 	const { path } = useRouteMatch();
+
+	const { dao, isLoading, zna } = useCurrentDao();
+	const { transactions, isLoading: isLoadingTransactions } =
+		useTransactions(dao);
+	const { assets, totalUsd, isLoading: isLoadingAssets } = useAssets(dao);
+
+	const daoData = dao;
+
+	const to = toDaoPage(zna);
+
+	const Loading = () => (
+		<LoadingIndicator
+			className={styles.Loading}
+			text={
+				<>
+					Loading DAO at <b>{zna}</b>
+				</>
+			}
+		/>
+	);
+
+	const Page = () => (
+		<>
+			<nav className={genericStyles.Links}>
+				<Link
+					className={cx({
+						Active: pathname.includes(ROUTES.ZDAO_ASSETS),
+					})}
+					to={to(ROUTES.ZDAO_ASSETS)}
+				>
+					Assets
+				</Link>
+				<Link
+					className={cx({
+						Active: pathname.includes(ROUTES.ZDAO_TRANSACTIONS),
+					})}
+					to={to(ROUTES.ZDAO_TRANSACTIONS)}
+				>
+					Transactions
+				</Link>
+			</nav>
+			<Route
+				exact
+				path={to(ROUTES.ZDAO_ASSETS)}
+				component={() => <Assets assets={assets} isLoading={isLoadingAssets} />}
+			/>
+			<Route
+				exact
+				path={to(ROUTES.ZDAO_TRANSACTIONS)}
+				render={() => (
+					<Transactions
+						isLoading={isLoadingTransactions}
+						transactions={transactions}
+					/>
+				)}
+			/>
+			<Route exact path={path}>
+				<Redirect to={to(ROUTES.ZDAO_ASSETS)} />
+			</Route>
+		</>
+	);
+
+	const Error = () => <p>No DAO here</p>;
 
 	return (
 		<Switch>
@@ -31,55 +109,34 @@ const DAOPage = () => {
 					'border-rounded',
 				)}
 			>
-				<ul className={genericStyles.Stats}>
-					<div className={styles.DAO}>
-						<div className={styles.Icon}>
-							<img alt="dao logo" src={wilderLogo} />
+				{isLoading ? (
+					<Loading />
+				) : dao ? (
+					<>
+						<div className={styles.Header}>
+							<div className={styles.Icon}>
+								<Image alt="dao logo" src={daoData?.avatar} />
+							</div>
+							<h1>{daoData?.title}</h1>
 						</div>
-						<h1>Wilder DAO</h1>
-					</div>
-					<StatsWidget
-						className="normalView"
-						fieldName={'Value'}
-						isLoading={false}
-						title={'$1,234,567.00'}
-						subTitle={<span className="text-success">(+12% week)</span>}
-					/>
-					<StatsWidget
-						className="normalView"
-						fieldName={'WILD Holders'}
-						isLoading={false}
-						title={'1,234'}
-						subTitle={<span className="text-success">(+12% week)</span>}
-					/>
-				</ul>
-				<nav className={genericStyles.Links}>
-					<Link
-						className={cx({
-							Active: pathname.includes(ROUTES.ZDAO_ASSETS),
-						})}
-						to={path + ROUTES.ZDAO_ASSETS}
-					>
-						Assets
-					</Link>
-					<Link
-						className={cx({
-							Active: pathname.includes(ROUTES.ZDAO_TRANSACTIONS),
-						})}
-						to={path + ROUTES.ZDAO_TRANSACTIONS}
-					>
-						Transactions
-					</Link>
-				</nav>
-				<Route exact path={path + ROUTES.ZDAO_ASSETS} component={Assets} />
-				<Route
-					exact
-					path={path + ROUTES.ZDAO_TRANSACTIONS}
-					component={Transactions}
-				/>
-				<Route exact path={path}>
-					<Redirect to={path + ROUTES.ZDAO_ASSETS} />
-				</Route>
+						<ul className={genericStyles.Stats}>
+							<StatsWidget
+								className="normalView"
+								fieldName={'Value'}
+								isLoading={isLoadingAssets}
+								title={'$' + toFiat(totalUsd ?? 0)}
+							/>
+							<StatsWidget
+								className="normalView"
+								fieldName={'WILD Holders'}
+								title={'TO IMPLEMENT'}
+							/>
+						</ul>
+						<Page />
+					</>
+				) : (
+					<Error />
+				)}
 			</div>
 		</Switch>
 	);

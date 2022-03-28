@@ -1,9 +1,8 @@
 import { GenericTable } from 'components';
-import { DAO } from '../DAOList.types';
 import DAOTableRow from './DAOTableRow';
 
 type DAOTableProps = {
-	daos: DAO[];
+	daoZnas?: string[];
 	isLoading: boolean;
 };
 
@@ -20,22 +19,17 @@ const HEADERS = [
 	},
 ];
 
-const DAOTable = ({ daos, isLoading }: DAOTableProps) => {
-	const onRowClick = () => {
-		console.log('hello');
-	};
-
+const DAOTable = ({ daoZnas, isLoading }: DAOTableProps) => {
 	return (
 		<GenericTable
 			alignments={[0, 1]}
-			data={daos}
-			itemKey={'quantity'} // need to change this
+			data={daoZnas?.map((z) => ({ zna: z }))}
+			itemKey={'zna'}
 			headers={HEADERS}
 			rowComponent={DAOTableRow}
-			onRowClick={onRowClick}
 			infiniteScroll
 			isLoading={isLoading}
-			loadingText={'Loading Assets'}
+			loadingText={'Loading DAOs'}
 			notSearchable
 		/>
 	);

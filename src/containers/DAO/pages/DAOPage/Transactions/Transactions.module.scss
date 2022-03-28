@@ -9,8 +9,16 @@
 	.Icon {
 		height: 32px;
 		width: 32px;
-		background: black;
 		border-radius: 50%;
-		margin-right: 16px;
+		object-fit: cover;
 	}
+
+	span {
+		margin-left: 16px;
+	}
+}
+
+.Empty {
+	font-weight: 700;
+	padding: 35px; // this is an arbitrary amount to match loading spinner
 }

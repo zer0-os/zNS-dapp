@@ -1,45 +1,35 @@
-import useDaoTransactions from './hooks/useDaoTransactions';
-import { Transaction } from './hooks/useDaoTransaction.types';
+// Components
 import History from './components/History/History';
-import { truncateAddress } from 'lib/utils';
-import { ethers } from 'ethers';
-import styles from './Transactions.module.scss';
 import { LoadingIndicator } from 'components';
-import { useState } from 'react';
 
-const toHistoryItem = (transaction: Transaction) => {
-	const asset = transaction.amount
-		? ethers.utils.formatEther(transaction.amount) + ' ' + transaction.asset
-		: transaction.asset;
+// Lib
+import { Transaction } from '@zero-tech/zdao-sdk/lib/types';
+import { toHistoryItem } from './Transactions.helpers';
 
-	return {
-		event: (
-			<span className={styles.Transaction}>
-				<div className={styles.Icon}></div>
-				<span>
-					{transaction.action} <b>{asset}</b> to{' '}
-					<b>{truncateAddress(transaction.address)}</b>
-				</span>
-			</span>
-		),
-		date: transaction.date,
-	};
+// Styles
+import styles from './Transactions.module.scss';
+import classNames from 'classnames';
+
+type TransactionsProps = {
+	isLoading: boolean;
+	transactions?: Transaction[];
 };
 
-const Transactions = () => {
-	const { transactions, isLoading, refetch } = useDaoTransactions('test');
-
+const Transactions = ({ isLoading, transactions }: TransactionsProps) => {
 	if (isLoading) {
 		return (
 			<LoadingIndicator
 				className={styles.Loading}
 				text="Loading Transactions"
+				spinnerPosition="left"
 			/>
 		);
 	}
 
-	if (!transactions) {
-		return <p>Nothing to show</p>;
+	if (!transactions?.length) {
+		return (
+			<p className={classNames(styles.Empty, 'text-center')}>No activity yet</p>
+		);
 	}
 
 	return <History items={transactions?.map(toHistoryItem)} />;

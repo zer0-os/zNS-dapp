@@ -1,38 +1,17 @@
+// React
 import { useMemo } from 'react';
+
+// Lib
 import { HistoryItem } from './History.types';
 import { Groups } from './History.types';
-import {
-	LABELS,
-	WEEK_IN_MILLISECONDS,
-	MONTH_IN_MILLISECONDS,
-} from './History.constants';
+import { LABELS } from './History.constants';
+import { getGroupFromDate } from './History.helpers';
+
+// Styles
 import styles from './History.module.scss';
 
 type HistoryItemProps = {
 	items: HistoryItem[];
-};
-
-const isToday = (date: Date) => date.getDay() === new Date().getDay();
-
-const isLastWeek = (date: Date) =>
-	!isToday(date) &&
-	date.getTime() >= new Date().getTime() - WEEK_IN_MILLISECONDS; // 604,800,000 = 1 week in milis
-
-const isLastMonth = (date: Date) =>
-	!isLastWeek(date) &&
-	date.getTime() >= new Date().getTime() - MONTH_IN_MILLISECONDS;
-
-const getGroupFromDate = (date: Date) => {
-	if (isToday(date)) {
-		return Groups.TODAY;
-	}
-	if (isLastWeek(date)) {
-		return Groups.LAST_WEEK;
-	}
-	if (isLastMonth(date)) {
-		return Groups.LAST_MONTH;
-	}
-	return Groups.EARLIER;
 };
 
 const History = ({ items }: HistoryItemProps) => {
@@ -48,8 +27,6 @@ const History = ({ items }: HistoryItemProps) => {
 		});
 		return segments;
 	}, [items]);
-
-	console.log(groups);
 
 	return (
 		<ul className={styles.Container}>

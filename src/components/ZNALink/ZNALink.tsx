@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import styles from './ZNALink.module.scss';
 import classNames from 'classnames';
+import { appFromPathname, zNAFromPathname } from 'lib/utils';
 
 type ZNAProps = {
 	className?: string;
@@ -12,8 +13,8 @@ type ZNAProps = {
 
 const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const { pathname } = useLocation();
-	const zna = pathname.replace(/^\/[a-zA-Z]*\//, '').split('/')[0];
-	const app = pathname.match(/^\/[a-zA-Z]*/)?.at(0) + '/';
+	const zna = zNAFromPathname(pathname);
+	const app = appFromPathname(pathname) + '/';
 
 	const isRootDomain = zna.length === 0;
 

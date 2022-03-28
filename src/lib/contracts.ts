@@ -32,6 +32,11 @@ export interface ContractAddresses {
 	lpToken: string;
 	wildStakingPool: string;
 	lpStakingPool: string;
+
+	/**
+	 * Currently optional as it's only supported on Rinkeby
+	 */
+	zDao?: string;
 }
 
 export interface Contracts {

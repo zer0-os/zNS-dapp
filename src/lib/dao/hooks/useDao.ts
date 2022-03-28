@@ -1,0 +1,38 @@
+import { zDAO } from '@zero-tech/zdao-sdk';
+import { useEffect, useState } from 'react';
+import { useZdaoSdk } from '../providers/ZdaoSdkProvider';
+
+type UseDaoReturn = {
+	dao: zDAO | undefined;
+	isLoading: boolean;
+};
+
+const useDao = (zna: string): UseDaoReturn => {
+	const { instance: sdk } = useZdaoSdk();
+
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [dao, setDao] = useState<zDAO | undefined>();
+
+	useEffect(() => {
+		if (!sdk || !zna || zna.length === 0) {
+			setIsLoading(false);
+			return;
+		}
+		setDao(undefined);
+		setIsLoading(true);
+		try {
+			sdk.getZDAOByZNA(zna).then((dao) => setDao(dao));
+		} catch (e) {
+			console.error(e);
+		} finally {
+			setIsLoading(false);
+		}
+	}, [zna, sdk]);
+
+	return {
+		dao,
+		isLoading,
+	};
+};
+
+export default useDao;

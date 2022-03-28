@@ -50,6 +50,14 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		lpToken: '0x123c1B5A87E4E11663F2604f3EbCAf4ba86e25E1',
 		wildStakingPool: '0xb1ABFc6C847a15Cb7FA213363CbACC375b1068A0',
 		lpStakingPool: '0x6D3475040CC0F9e48bD916e8559DA5A098eBc613',
+
+		/**
+		 * 25/03/2020 - @colbr
+		 * Not sure if this is the actual Rinkeby address, this is
+		 * just the one I found. This will need to be updated, and put in
+		 * addresses.ts
+		 */
+		zDao: '0xd72450829414b3d3FdA7687952b8Fd9A861F95D4',
 	},
 } as any;
 
