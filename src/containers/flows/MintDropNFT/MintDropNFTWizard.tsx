@@ -20,7 +20,6 @@ import { ERC20, WhitelistSimpleSale } from 'types';
 
 // Configuration
 import { Stage, Step, TransactionData } from './types';
-import { EthPerWheel } from './helpers';
 
 // Style Imports
 import styles from './MintDropNFTWizard.module.scss';
@@ -37,6 +36,7 @@ type MintDropNFTWizardProps = {
 	userId?: string;
 	wheelsTotal?: number;
 	wheelsMinted?: number;
+	pricePerNFT: number;
 	onSubmitTransaction: (data: TransactionData) => void;
 	token?: ERC20;
 };
@@ -61,7 +61,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 
 	const onContinueFromInfo = () => {
 		if (props.balanceEth !== undefined) {
-			if (props.balanceEth < EthPerWheel) {
+			if (props.balanceEth < props.pricePerNFT) {
 				setStep(Step.InsufficientFunds);
 			} else {
 				setStep(Step.SelectAmount);
@@ -135,6 +135,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 					isUserWhitelisted={props.isUserWhitelisted}
 					isWalletConnected={props.userId !== undefined}
 					maxPurchasesPerUser={props.maxPurchasesPerUser}
+					pricePerNFT={props.pricePerNFT}
 					numberPurchasedByUser={props.numberPurchasedByUser}
 					onContinue={onContinueFromInfo!}
 					onDismiss={props.onClose}
@@ -160,6 +161,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 				<SelectAmount
 					balanceEth={props.balanceEth!}
 					error={transactionError}
+					pricePerNFT={props.pricePerNFT}
 					maxPurchasesPerUser={props.maxPurchasesPerUser!}
 					numberPurchasedByUser={props.numberPurchasedByUser!}
 					onBack={onBack}
@@ -175,7 +177,12 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 			return <Loading isMinting text={transactionStatus} />;
 		}
 		if (step === Step.InsufficientFunds) {
-			return <InsufficientFunds onDismiss={props.onClose} />;
+			return (
+				<InsufficientFunds
+					pricePerNFT={props.pricePerNFT}
+					onDismiss={props.onClose}
+				/>
+			);
 		}
 		if (step === Step.Finished) {
 			return <Finished onFinish={props.onFinish} />;

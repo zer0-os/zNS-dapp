@@ -1,5 +1,5 @@
 // React Imports
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Web3 Imports
@@ -21,6 +21,8 @@ import {
 	getNumberPurchasedByUser,
 	getBalanceEth,
 } from './helpers';
+import { useZSaleSdk } from 'lib/providers/ZSaleSdkProvider';
+import useAsyncEffect from 'use-async-effect';
 
 const MintDropNFTFlowContainer = () => {
 	// Hardcoded dates
@@ -42,9 +44,12 @@ const MintDropNFTFlowContainer = () => {
 	const saleContract = contracts?.wheelSale;
 	const wildTokenContract = contracts?.wildToken;
 
+	const { instance: zSaleInstance } = useZSaleSdk();
+
 	// Internal State
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
 	const [canOpenWizard, setCanOpenWizard] = useState<boolean>(false);
+	const [pricePerNFT, setPricePerNFT] = useState<number>(0);
 	const [numMinted, setNumMinted] = useState<number>(0);
 	const [countdownDate, setCountdownDate] = useState<number | undefined>();
 	const [hasCountdownFinished, setHasCountdownFinished] =
@@ -147,15 +152,6 @@ const MintDropNFTFlowContainer = () => {
 		});
 	};
 
-	// Handler for domain purchase events from contract
-	// Method gets called once per wheel
-	const onDomainPurchased = useCallback((d: any) => {
-		if (wheelsMinted !== undefined) {
-			setWheelsMinted(wheelsMinted + 1);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
 	/////////////
 	// Effects //
 	/////////////
@@ -182,11 +178,12 @@ const MintDropNFTFlowContainer = () => {
 		}
 
 		const getData = async () => {
-			if (!saleContract) {
+			if (!zSaleInstance || !library || !account) {
 				return;
 			}
+
 			// Get the data related to the drop
-			getDropData(saleContract)
+			getDropData(zSaleInstance, library, account)
 				.then((d) => {
 					if (!isMounted) {
 						return;
@@ -223,17 +220,17 @@ const MintDropNFTFlowContainer = () => {
 			isMounted = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [library, saleContract, isSaleHalted]);
+	}, [library, zSaleInstance, isSaleHalted]);
 
 	// Get user eligibility
 	useEffect(() => {
 		let isMounted = true;
-		if (!saleContract || isSaleHalted) {
+		if (!zSaleInstance || isSaleHalted) {
 			return;
 		}
 		// Get user data if wallet connected
 		if (account && library) {
-			getUserEligibility(account, saleContract).then((d) => {
+			getUserEligibility(account, zSaleInstance).then((d) => {
 				if (isMounted && d !== undefined) {
 					setIsUserWhitelisted(d);
 				}
@@ -244,12 +241,12 @@ const MintDropNFTFlowContainer = () => {
 		return () => {
 			isMounted = false;
 		};
-	}, [account, library, saleContract, isSaleHalted]);
+	}, [account, library, zSaleInstance, isSaleHalted]);
 
 	// Get user balance and number purchased
 	useEffect(() => {
 		let isMounted = true;
-		if (!saleContract || isSaleHalted) {
+		if (!zSaleInstance || !library || isSaleHalted) {
 			return;
 		}
 		// Get user data if wallet connected
@@ -264,7 +261,8 @@ const MintDropNFTFlowContainer = () => {
 					setBalanceEth(d);
 				}
 			});
-			getNumberPurchasedByUser(account, saleContract).then((d) => {
+
+			getNumberPurchasedByUser(zSaleInstance, library).then((d) => {
 				if (isMounted && d !== undefined) {
 					setNumberPurchasedByUser(d);
 				}
@@ -277,16 +275,16 @@ const MintDropNFTFlowContainer = () => {
 			isMounted = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [numMinted, account, library, saleContract]);
+	}, [numMinted, account, library, zSaleInstance]);
 
 	useEffect(() => {
 		let isMounted = true;
 
-		if (!saleContract || isSaleHalted) {
+		if (!zSaleInstance || isSaleHalted || !library || !account) {
 			return;
 		}
 
-		getDropData(saleContract)
+		getDropData(zSaleInstance, library, account)
 			.then((d) => {
 				if (!isMounted) {
 					return;
@@ -334,21 +332,38 @@ const MintDropNFTFlowContainer = () => {
 			isMounted = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [hasCountdownFinished, refetch]);
+	}, [hasCountdownFinished, refetch, library, zSaleInstance]);
 
 	useEffect(() => {
-		saleContract?.off('DomainPurchased', onDomainPurchased);
+		let timer: any;
 		if (
-			saleContract &&
+			zSaleInstance &&
 			(dropStage === Stage.Public || dropStage === Stage.Whitelist) &&
 			!isSaleHalted &&
-			!account
+			account &&
+			library
 		) {
-			// Listen to mints
-			saleContract.on('DomainPurchased', onDomainPurchased);
+			// Fetch minted count periodically
+			timer = setInterval(async () => {
+				const sold = await zSaleInstance.getNumberOfDomainsSold(
+					library.getSigner(),
+				);
+				if (sold) setWheelsMinted(sold.toNumber());
+			}, 1000);
 		}
+
+		return () => {
+			timer && clearInterval(timer);
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [dropStage, saleContract, isSaleHalted, account]);
+	}, [dropStage, zSaleInstance, isSaleHalted, account, library]);
+
+	useAsyncEffect(async () => {
+		if (library) {
+			const price = await zSaleInstance.getSalePrice(library.getSigner());
+			setPricePerNFT(Number(price));
+		}
+	}, [zSaleInstance, library]);
 
 	///////////////
 	// Fragments //
@@ -410,6 +425,7 @@ const MintDropNFTFlowContainer = () => {
 						isUserWhitelisted={isUserWhitelisted}
 						maxPurchasesPerUser={maxPurchasesPerUser}
 						numberPurchasedByUser={numberPurchasedByUser}
+						pricePerNFT={pricePerNFT}
 						onClose={closeWizard}
 						onFinish={openProfile}
 						onSubmitTransaction={onSubmitTransaction}
