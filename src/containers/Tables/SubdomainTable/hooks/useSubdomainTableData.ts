@@ -1,9 +1,9 @@
 import { DomainMetricsCollection } from '@zero-tech/zns-sdk';
-import { useDidMount } from 'lib/hooks/useDidMount';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DisplayDomain } from 'lib/types';
 import { useState } from 'react';
+import useAsyncEffect from 'use-async-effect';
 
 export type UseSubdomainTableDataReturn = {
 	isLoading: boolean;
@@ -80,7 +80,7 @@ const useSubdomainTableData = (
 		}
 	};
 
-	useDidMount(getData);
+	useAsyncEffect(getData, []);
 	useUpdateEffect(getData, [sdk, subdomains, parentDomainId]);
 
 	return {

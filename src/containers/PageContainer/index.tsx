@@ -1,235 +1,108 @@
-import React, { FC, useState, useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-
-//- Web3 Imports
+import classnames from 'classnames';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useEagerConnect } from 'lib/hooks/provider-hooks';
-
-//- Library Imports
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-import useNotification from 'lib/hooks/useNotification';
-import useMint from 'lib/hooks/useMint';
-import { useNavbar } from 'lib/hooks/useNavbar';
-
-//- Style Imports
-import styles from './PageContainer.module.scss';
-
-//- Icon Imports
-import wilderIcon from 'assets/WWLogo_SVG.svg';
-
-//- Components & Containers
-import {
-	ConnectToWallet,
-	Overlay,
-	NotificationDrawer,
-	SideBar,
-} from 'components';
-import { ProfileModal } from 'containers';
-
-//- Library Imports
-import { MintNewNFT } from 'containers';
-import { useStaking } from 'lib/hooks/useStaking';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-
-//- Constants Imports
-import { ROUTES } from 'constants/routes';
+import { useEagerConnect } from 'lib/hooks/provider-hooks';
+import { usePageWidth } from 'lib/hooks/usePageWidth';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { usePrevious } from 'lib/hooks/usePrevious';
+import { useNotification } from 'lib/hooks/useNotification';
+import { useMint } from 'lib/hooks/useMint';
+import { useStaking } from 'lib/hooks/useStaking';
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { WALLETS } from 'constants/wallets';
+import { WALLET_NOTIFICATIONS } from 'constants/notifications';
+import { SideBar, ScrollToTop } from 'components';
 import { Modal } from './PageContainer.constants';
+import { Header, HomeIcon, Modals, useModal } from './elements';
+import styles from './PageContainer.module.scss';
 
-//- Elements Imports
-import { Header } from './elements';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
-
-const PageContainer: FC = ({ children }) => {
-	///////////////////
-	// Web3 Handling //
-	///////////////////
-
-	//- Wallet Data
-	const walletContext = useWeb3React<Web3Provider>();
-
-	const { account, active, chainId } = walletContext;
-	const triedEagerConnect = useEagerConnect(); // This line will try auto-connect to the last wallet only if the user hasn't disconnected
-	//- Chain Selection (@todo: refactor to provider)
+const PageContainer: React.FC = ({ children }) => {
+	/**
+	 * Hooks Data
+	 */
+	const history = useHistory();
+	const { account, active, chainId } = useWeb3React<Web3Provider>();
+	const triedEagerConnect = useEagerConnect();
 	const chainSelector = useChainSelector();
-
-	React.useEffect(() => {
-		if (chainId && chainSelector.selectedChain !== chainId) {
-			chainSelector.selectChain(chainId);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [chainId]);
-
-	//- Domain Data
+	const globalDomain = useCurrentDomain();
 	const {
 		domain: znsDomain,
 		domainMetadata,
 		loading,
 		refetch,
 	} = useCurrentDomain();
-
-	const { isSearching } = useNavbar();
-
-	////////////////////////
-	// Browser Navigation //
-	////////////////////////
-
-	//- Browser Navigation State
-	const history = useHistory();
-	const globalDomain = useCurrentDomain();
-
-	// Force to go back to home if invalid domain
-	useEffect(() => {
-		if (!loading && !znsDomain) {
-			return history.push(globalDomain.app);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [znsDomain, loading, globalDomain.app]);
-
-	//- Minting State
+	const prevZnsDomain = usePrevious(znsDomain);
 	const { minted } = useMint();
 	const { fulfilled: stakingFulFilled } = useStaking();
-
-	//- Notification State
 	const { addNotification } = useNotification();
+	const { pageWidth } = usePageWidth();
+	const { modal, openModal, closeModal } = useModal();
 
-	//- Page State
-	const [hasLoaded, setHasLoaded] = useState(false);
-	const [pageWidth, setPageWidth] = useState<number>(0);
+	/**
+	 * Callback Functions
+	 */
+	const handleChainSelect = useCallback(() => {
+		if (chainId && chainSelector.selectedChain !== chainId) {
+			chainSelector.selectChain(chainId);
+		}
+	}, [chainId, chainSelector]);
 
-	//- Overlay State
-	const [modal, setModal] = useState<Modal | undefined>();
+	const handleForceBackHome = useCallback(() => {
+		if (!loading && !znsDomain) {
+			history.push(globalDomain.app);
+		}
+	}, [loading, znsDomain, globalDomain, history]);
 
-	/////////////////////
-	// Overlay Toggles //
-	/////////////////////
-
-	const openModal = useCallback(
-		(modal?: Modal) => () => setModal(modal),
-		[setModal],
-	);
-
-	const closeModal = () => {
-		setModal(undefined);
-	};
-
-	const handleResize = () => {
-		setPageWidth(window.innerWidth);
-	};
-
-	/////////////
-	// Effects //
-	/////////////
-	useEffect(() => {
-		window.addEventListener('resize', handleResize);
-		handleResize();
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
-
-	/* Find the freshly minted NFT */
-	useUpdateEffect(() => {
-		refetch?.();
-	}, [minted, stakingFulFilled, chainSelector.selectedChain]);
-
-	/* Handle notification for wallet changes */
-	useEffect(() => {
-		//wallet connect wont do this automatically if session its ended from phone
+	const handleWalletChanges = useCallback(() => {
 		if (
-			(localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
-				WALLETS.WALLET_CONNECT ||
-				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
-					WALLETS.METAMASK ||
-				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
-					WALLETS.COINBASE ||
-				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
-					WALLETS.PORTIS ||
-				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) ===
-					WALLETS.FORTMATIC) &&
+			Object.values(WALLETS).includes(
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) as WALLETS,
+			) &&
 			!active &&
 			triedEagerConnect
 		) {
-			setTimeout(async () => {
-				localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
-			}, 2000);
+			localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
 		}
+
 		if (triedEagerConnect)
-			addNotification(active ? 'Wallet connected.' : 'Wallet disconnected.');
+			addNotification(
+				active
+					? WALLET_NOTIFICATIONS.CONNECTED
+					: WALLET_NOTIFICATIONS.DISCONNECTED,
+			);
 
 		// Check if we need to close a modal
 		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [active]);
+	}, [active, modal, triedEagerConnect, addNotification, closeModal]);
 
-	useEffect(() => {
-		// TODO: Clean this whole hook up
-		if (znsDomain) {
-			// Set the domain data for table view
-			setHasLoaded(true);
-		}
-		window.scrollTo({
-			top: -1000,
-			behavior: 'smooth',
-		});
-	}, [znsDomain, hasLoaded]);
-
-	/////////////////////
-	// React Fragments //
-	/////////////////////
-	const modals = () => (
-		<>
-			{/* Overlays */}
-			<NotificationDrawer />
-			<ProfileModal />
-			<Overlay style={{ zIndex: 3 }} open={isSearching} onClose={() => {}} />
-			{modal === Modal.Wallet && (
-				<Overlay centered open={modal === Modal.Wallet} onClose={closeModal}>
-					<ConnectToWallet onConnect={closeModal} />
-				</Overlay>
-			)}
-			{modal === Modal.Mint && (
-				<Overlay open onClose={closeModal}>
-					<MintNewNFT
-						onMint={closeModal}
-						domainName={znsDomain?.name || ''}
-						domainId={znsDomain ? znsDomain.id : ''}
-						domainOwner={znsDomain ? znsDomain.owner.id : ''}
-						subdomains={
-							(znsDomain?.subdomains?.map(
-								(sub: any) => sub.name,
-							) as string[]) || []
-						}
-					/>
-				</Overlay>
-			)}
-		</>
-	);
+	/**
+	 * Life Cycles
+	 */
+	useUpdateEffect(handleChainSelect, [chainId]);
+	useUpdateEffect(handleForceBackHome, [znsDomain, loading, globalDomain.app]);
+	useUpdateEffect(handleWalletChanges, [active]);
+	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 
 	return (
-		<>
-			{pageWidth > 1000 && modals()}
-
+		<ScrollToTop>
 			<div
-				className="page-spacing"
-				style={{
-					opacity: hasLoaded ? 1 : 0,
-					transition: 'opacity 0.2s ease-in-out',
-				}}
+				className={classnames(styles.PageContainer, {
+					[styles.isVisible]:
+						Boolean(znsDomain) ||
+						Boolean(prevZnsDomain) ||
+						Boolean(globalDomain.domain),
+				})}
 			>
-				{/* Home icon always goes to the market */}
-				<div className={styles.Wilder}>
-					<img
-						alt="home icon"
-						src={wilderIcon}
-						onClick={() => history.push(ROUTES.MARKET)}
-					/>
-				</div>
+				{/* Home Icon (Navigation Logo) */}
+				<HomeIcon />
 
+				{/* App Header */}
 				<Header
 					pageWidth={pageWidth}
 					znsDomain={znsDomain}
@@ -238,12 +111,16 @@ const PageContainer: FC = ({ children }) => {
 					openModal={openModal}
 				/>
 
+				{/* App Sidebar */}
 				<SideBar />
 
-				{/* TODO: Encapsulate this */}
-				<div>{children}</div>
+				{/* App level Modals */}
+				<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
+
+				{/* Children Components */}
+				{children}
 			</div>
-		</>
+		</ScrollToTop>
 	);
 };
 
