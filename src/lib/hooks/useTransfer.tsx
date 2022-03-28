@@ -17,7 +17,7 @@ import {
 	getTransferSuccessMessage,
 	MESSAGES,
 } from 'containers/flows/TransferOwnership/TransferOwnership.constants';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 export type UseTransferReturn = {
 	transferring: TransferSubmitParams[];

@@ -1,7 +1,7 @@
 import * as zsale from '@zero-tech/zsale-sdk';
 import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import React from 'react';
-import { useChainSelector } from './ChainSelectorProvider';
 
 export function useZSaleSdk() {
 	const chainSelector = useChainSelector();

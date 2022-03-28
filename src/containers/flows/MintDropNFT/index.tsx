@@ -21,7 +21,7 @@ import {
 	getNumberPurchasedByUser,
 	getBalanceEth,
 } from './helpers';
-import { useZSaleSdk } from 'lib/providers/ZSaleSdkProvider';
+import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
 const MintDropNFTFlowContainer = () => {

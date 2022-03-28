@@ -1,6 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { useWeb3React } from '@web3-react/core';
-import { useZSaleSdk } from 'lib/providers/ZSaleSdkProvider';
+import { useZSaleSdk } from 'lib/hooks/sdk';
 import { useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import useNotification from 'lib/hooks/useNotification';

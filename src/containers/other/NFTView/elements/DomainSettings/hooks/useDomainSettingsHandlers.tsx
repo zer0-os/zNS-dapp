@@ -2,7 +2,7 @@ import { useMemo, useCallback } from 'react';
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { Maybe, Metadata } from 'lib/types';
 import { Registrar } from 'types/Registrar';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import {
 	DomainSettingsWarning,
 	DomainSettingsSuccess,
