@@ -8,6 +8,7 @@ import SetBuyNow, { Step } from './SetBuyNow';
 import { useWeb3React } from '@web3-react/core';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import useNotification from 'lib/hooks/useNotification';
 
 // Type Imports
 import { DomainData } from './SetBuyNow';
@@ -30,6 +31,7 @@ const SetBuyNowContainer = ({
 	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const { account, library } = useWeb3React();
 	const { wildPriceUsd } = useCurrency();
+	const { addNotification } = useNotification();
 
 	// State
 	const [currentStep, setCurrentStep] = useState<Step>(0);
@@ -126,6 +128,14 @@ const SetBuyNowContainer = ({
 						? ethers.utils.parseEther(amount.toString())
 						: undefined,
 				});
+				if (amount) {
+					addNotification(
+						`You have successfully set a Buy Now price of ${amount} WILD`,
+					);
+				} else {
+					addNotification(`You have successfully removed the Buy Now price`);
+				}
+
 				setCurrentStep(Step.Success);
 				if (onSuccess) {
 					onSuccess();
