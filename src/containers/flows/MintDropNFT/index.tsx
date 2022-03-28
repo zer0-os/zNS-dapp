@@ -8,8 +8,8 @@ import { useZnsContracts } from 'lib/contracts';
 import { Web3Provider } from '@ethersproject/providers';
 
 // Component Imports
-import { MintWheelsBanner, Overlay } from 'components';
-import MintWheels from './MintWheels';
+import { MintDropNFTBanner, Overlay } from 'components';
+import MintDropNFTWizard from './MintDropNFTWizard';
 
 // Library Imports
 import { Stage, DropData, TransactionData } from './types';
@@ -22,7 +22,7 @@ import {
 	getBalanceEth,
 } from './helpers';
 
-const MintWheelsFlowContainer = () => {
+const MintDropNFTFlowContainer = () => {
 	// Hardcoded dates
 	const DATE_PUBLIC = 1642730400655;
 
@@ -403,7 +403,7 @@ const MintWheelsFlowContainer = () => {
 		<>
 			{canOpenWizard && isWizardOpen && !isSaleHalted && (
 				<Overlay open onClose={closeWizard}>
-					<MintWheels
+					<MintDropNFTWizard
 						balanceEth={balanceEth}
 						contract={saleContract}
 						dropStage={dropStage}
@@ -421,7 +421,7 @@ const MintWheelsFlowContainer = () => {
 				</Overlay>
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
-				<MintWheelsBanner
+				<MintDropNFTBanner
 					title={'Your Metaverse Companion Awaits '}
 					label={bannerLabel()}
 					buttonText={buttonText()}
@@ -432,4 +432,4 @@ const MintWheelsFlowContainer = () => {
 	);
 };
 
-export default MintWheelsFlowContainer;
+export default MintDropNFTFlowContainer;

@@ -23,9 +23,9 @@ import { Stage, Step, TransactionData } from './types';
 import { EthPerWheel } from './helpers';
 
 // Style Imports
-import styles from './MintWheels.module.scss';
+import styles from './MintDropNFTWizard.module.scss';
 
-type MintWheelsProps = {
+type MintDropNFTWizardProps = {
 	balanceEth?: number;
 	contract?: WhitelistSimpleSale;
 	dropStage?: Stage;
@@ -41,7 +41,7 @@ type MintWheelsProps = {
 	token?: ERC20;
 };
 
-const MintWheels = (props: MintWheelsProps) => {
+const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -202,4 +202,4 @@ const MintWheels = (props: MintWheelsProps) => {
 	);
 };
 
-export default MintWheels;
+export default MintDropNFTWizard;

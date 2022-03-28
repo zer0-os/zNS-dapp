@@ -1,4 +1,4 @@
-import { WheelQuantity } from 'containers/flows/MintWheels/types';
+import { WheelQuantity } from 'containers/flows/MintDropNFT/types';
 import { BigNumber, ethers } from 'ethers';
 import { ERC20, WhitelistSimpleSale } from 'types';
 import { RPC_URLS } from './connectors';

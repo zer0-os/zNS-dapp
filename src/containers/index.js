@@ -28,10 +28,10 @@ export { default as BuyNow } from './flows/BuyNow';
 export { default as BuyTokenRedirect } from './flows/BuyTokenRedirect/BuyTokenRedirect';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
-export { default as MintWheels } from './flows/MintWheels';
+export { default as MintDropNFT } from './flows/MintDropNFT';
 export { default as SetBuyNow } from './flows/SetBuyNow';
 export { default as TransferOwnership } from './flows/TransferOwnership';
-export { default as WheelsRaffle } from './flows/WheelsRaffle';
+export { default as Raffle } from './flows/Raffle';
 
 // Tables
 export { default as BidTable } from './Tables/BidTable';
