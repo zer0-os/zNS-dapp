@@ -47,6 +47,7 @@ export { default as TextInputWithTopPlaceHolder } from './Inputs/TextInput/TextI
 export { default as TabBar } from './NavBars/TabBar/TabBar';
 
 //- Tables
+export { default as RequestTable } from './Tables/RequestTable/RequestTable';
 export { default as GenericTable } from './Tables/GenericTable/GenericTable';
 
 //- Other
