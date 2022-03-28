@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Maybe, Metadata } from 'lib/types';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
 export function useDomainMetadata(metadataUri: Maybe<string>) {

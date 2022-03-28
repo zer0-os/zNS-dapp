@@ -3,7 +3,6 @@ import React from 'react';
 // Web3 imports
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
-import { useChainSelector } from './ChainSelectorProvider';
 import { RPC_URLS } from 'lib/connectors';
 import {
 	chainIdToNetworkType,
@@ -13,6 +12,7 @@ import {
 
 // SDK imports
 import * as zns from '@zero-tech/zns-sdk';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 
 /**
  * Creates a zNS-SDK instance based on the connected wallet

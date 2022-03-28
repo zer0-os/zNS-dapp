@@ -29,7 +29,10 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 				</div>
 				<div className="info-panel__content-section-body">
 					{Object.values(WILDER_WORLD_OPTIONS).map((option) => (
-						<div className="info-panel__content-section-body-item max-4">
+						<div
+							className="info-panel__content-section-body-item max-4"
+							key={`wilder-options-${option.link}`}
+						>
 							<a
 								target="_blank"
 								rel="noreferrer"
@@ -50,7 +53,10 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 				</div>
 				<div className="info-panel__content-section-body">
 					{Object.values(ZERO_TECH_OPTIONS).map((option) => (
-						<div className="info-panel__content-section-body-item">
+						<div
+							className="info-panel__content-section-body-item"
+							key={`zero-tech-options-${option.link}`}
+						>
 							<a
 								target="_blank"
 								rel="noreferrer"
@@ -67,7 +73,10 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 			<div className="info-panel__content-section">
 				<div className="info-panel__content-section-footer">
 					{Object.values(ZNS_OTHER_OPTIONS).map((option) => (
-						<div className="info-panel__content-section-footer-item">
+						<div
+							className="info-panel__content-section-footer-item"
+							key={`other-options-${option.link}`}
+						>
 							<a
 								target="_blank"
 								rel="noreferrer"

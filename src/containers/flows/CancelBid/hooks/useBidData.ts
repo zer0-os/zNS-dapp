@@ -11,7 +11,7 @@ import { BidData } from '../CancelBid.types';
 
 // Library imports
 import { Bid } from '@zero-tech/zauction-sdk';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import { getMetadata } from 'lib/metadata';
 import { BigNumber } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';

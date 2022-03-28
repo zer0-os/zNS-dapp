@@ -14,9 +14,9 @@ const RaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	const RAFFLE_START_TIME = currentTime + 10000;
-	const RAFFLE_END_TIME = currentTime + 10000 * 3;
-	const SALE_START_TIME = currentTime + 10000;
+	const RAFFLE_START_TIME = currentTime - 20000;
+	const RAFFLE_END_TIME = currentTime - 10000;
+	const SALE_START_TIME = currentTime + 5000;
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times

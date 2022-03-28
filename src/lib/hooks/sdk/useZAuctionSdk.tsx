@@ -8,8 +8,8 @@ import {
 	defaultNetworkId,
 	NETWORK_TYPES,
 } from 'lib/network';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import React from 'react';
-import { useChainSelector } from './ChainSelectorProvider';
 
 export function useZAuctionSdk() {
 	const { library } = useWeb3React();

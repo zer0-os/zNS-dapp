@@ -1,8 +1,8 @@
 import React from 'react';
 import { getDomainId, rootDomainName } from './utils/domains';
 import { DisplayParentDomain, ParentDomain } from './types';
-import { useZnsSdk } from './providers/ZnsSdkProvider';
 import useAsyncEffect from 'use-async-effect';
+import { useZnsSdk } from './hooks/sdk';
 
 export interface DomainSearch {
 	exactMatch?: DisplayParentDomain;

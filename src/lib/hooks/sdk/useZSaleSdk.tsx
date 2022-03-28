@@ -1,7 +1,7 @@
 import * as zsale from '@zero-tech/zsale-sdk';
 import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import React from 'react';
-import { useChainSelector } from './ChainSelectorProvider';
 
 export function useZSaleSdk() {
 	const chainSelector = useChainSelector();
@@ -22,9 +22,9 @@ export function useZSaleSdk() {
 			case NETWORK_TYPES.RINKEBY: {
 				return zsale.createInstance({
 					isEth: true,
-					contractAddress: '0xAeEaC5F790dD98FD7166bBD50d9938Bf542AFeEf',
+					contractAddress: '0xC1f42bff2b07ae3c4c14D19e28d86D947c94B69F',
 					merkleTreeFileUri:
-						'https://ipfs.io/ipfs/QmeTHvtancDwS2UC4SshQsS89dveLi171pGLc6b1GLxLDM',
+						'ipfs://QmSarejrKPohT6peSHAWwLDkfBhy8qwEouFhBMzzw2vCit',
 				});
 			}
 
