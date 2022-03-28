@@ -15,10 +15,10 @@ import {
 import { BuyNowButton, SetBuyNowButton } from 'containers';
 
 // Asset Imports
-import shareIcon from '../assets/share.svg';
-import downloadIcon from '../assets/download.svg';
-import background from '../assets/bg.jpeg';
-import moreIcon from '../assets/more-vertical.svg';
+import shareIcon from '../../assets/share.svg';
+import downloadIcon from '../../assets/download.svg';
+import background from '../../assets/bg.jpeg';
+import moreIcon from '../../assets/more-vertical.svg';
 
 // Style Imports
 import styles from './NFT.module.scss';
@@ -63,7 +63,6 @@ type NFTProps = {
 	isDomainDataLoading?: boolean;
 	wildPriceUsd?: number;
 	account?: string;
-	onTransfer?: () => void;
 	isBiddable?: boolean;
 	options: OptionType;
 	onSelectOption: (option: Option) => void;
@@ -87,7 +86,6 @@ const NFT = ({
 	wildPriceUsd,
 	account,
 	onMakeBid,
-	onTransfer,
 	isBiddable,
 	options,
 	onSelectOption,

@@ -87,6 +87,9 @@ export { default as StepBar } from './ProgressIndicators/StepBar/StepBar';
 //- Switches
 export { default as ToggleSwitch } from './Switch/ToggleSwitch/ToggleSwitch';
 
+//- Scroll To Top
+export { default as ScrollToTop } from './ScrollToTop/ScrollToTop';
+
 //- To be implemented
 // export { default as CopyInput } from './CopyInput/CopyInput.js'
 // export { default as Table } from './Table/Table.js'
