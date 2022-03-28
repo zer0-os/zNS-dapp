@@ -60,7 +60,6 @@ export function useDomainSearch() {
 				});
 			}
 			setMatches(matches);
-			console.log('sdk', exactDomain, fuzzyMatch);
 		} catch (err) {
 			// TODO: Handle it
 			console.log(err);

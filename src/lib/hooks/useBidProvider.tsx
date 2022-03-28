@@ -216,7 +216,6 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				return;
 			}
 
-			console.log(library);
 			try {
 				await sdk.zauction.placeBid(
 					{
