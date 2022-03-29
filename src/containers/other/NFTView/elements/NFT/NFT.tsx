@@ -92,6 +92,7 @@ const NFT = ({
 	onRefetch,
 }: NFTProps) => {
 	const blobCache = useRef<string>();
+	console.log({ isBiddable });
 
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
 		blobCache.current,
@@ -266,9 +267,13 @@ const NFT = ({
 					<div className={styles.Story}>{description ?? ''}</div>
 					<div className={styles.Prices}>
 						{BuyNowPrice()}
-						{HighestBid()}
-						<div className={styles.Break}></div>
-						{account && !isOwnedByYou && yourBidAsNumber && YourBid()}
+						{isBiddable && (
+							<>
+								{HighestBid()}
+								<div className={styles.Break}></div>
+								{account && !isOwnedByYou && yourBidAsNumber && YourBid()}
+							</>
+						)}
 					</div>
 				</div>
 
