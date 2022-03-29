@@ -18,7 +18,7 @@ export const TotalsProvider = ({ children }: TotalsProviderProps) => {
 	const [totals, setTotals] = useState<Total[]>([]);
 
 	const add = (total: Total) => {
-		if (!totals.includes(total)) {
+		if (!totals.map((t) => t.zna).includes(total.zna)) {
 			setTotals([...totals, total]);
 		}
 	};
