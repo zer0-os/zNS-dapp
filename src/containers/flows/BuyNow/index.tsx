@@ -7,6 +7,7 @@ import BuyNow, { Step } from './BuyNow';
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
 import useCurrency from 'lib/hooks/useCurrency';
+import useNotification from 'lib/hooks/useNotification';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
 // Type Imports
@@ -31,6 +32,7 @@ const BuyNowContainer = ({
 	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const { account, library } = useWeb3React();
 	const { wildPriceUsd } = useCurrency();
+	const { addNotification } = useNotification();
 
 	const znsContracts = useZnsContracts()!;
 	const wildContract: ERC20 = znsContracts.wildToken;
@@ -99,6 +101,7 @@ const BuyNowContainer = ({
 			);
 			setCurrentStep(Step.Buying);
 			await tx.wait();
+			addNotification(`You have successfully purchased ${data?.title}`);
 			setCurrentStep(Step.Success);
 			if (onSuccess) {
 				onSuccess();

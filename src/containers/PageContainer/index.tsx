@@ -15,7 +15,7 @@ import { useStaking } from 'lib/hooks/useStaking';
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { WALLETS } from 'constants/wallets';
 import { WALLET_NOTIFICATIONS } from 'constants/notifications';
-import { SideBar, ScrollToTop } from 'components';
+import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
 import { Modal } from './PageContainer.constants';
 import { Header, HomeIcon, Modals, useModal } from './elements';
 import styles from './PageContainer.module.scss';
@@ -99,6 +99,8 @@ const PageContainer: React.FC = ({ children }) => {
 						Boolean(globalDomain.domain),
 				})}
 			>
+				{/* Toast Notifications */}
+				<NotificationDrawer />
 				{/* Home Icon (Navigation Logo) */}
 				<HomeIcon />
 

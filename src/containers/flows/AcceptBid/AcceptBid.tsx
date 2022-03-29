@@ -93,16 +93,15 @@ const AcceptBid = ({
 
 	// Check zAuction Approval
 	const checkZAuctionApproval = () => {
-		if (!sdk || !library || !account || !acceptingBid) {
+		if (!sdk || !library || !account) {
 			return;
 		}
 		setError(undefined);
 		(async () => {
 			try {
 				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-				const isApproved = await zAuction.isZAuctionApprovedToTransferNftByBid(
+				const isApproved = await zAuction.isZAuctionApprovedToTransferNft(
 					account,
-					acceptingBid,
 				);
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
@@ -113,8 +112,7 @@ const AcceptBid = ({
 					setStepContent(StepContent.ApproveZAuction);
 				}
 			} catch (e) {
-				setError(ERRORS.CONSOLE_TEXT);
-				console.error(ERRORS.CONSOLE_TEXT, e);
+				console.log(ERRORS.CONSOLE_TEXT);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}
@@ -123,7 +121,7 @@ const AcceptBid = ({
 
 	// Approve zAuction Flow
 	const approveZAuction = () => {
-		if (!sdk || !library || !account || !acceptingBid) {
+		if (!sdk || !library || !account) {
 			return;
 		}
 		setError(undefined);
@@ -131,9 +129,8 @@ const AcceptBid = ({
 		(async () => {
 			try {
 				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-				const tx = await zAuction.approveZAuctionTransferNftByBid(
+				const tx = await zAuction.approveZAuctionTransferNft(
 					library.getSigner(),
-					acceptingBid,
 				);
 				try {
 					setStepContent(StepContent.ApprovingZAuction);
