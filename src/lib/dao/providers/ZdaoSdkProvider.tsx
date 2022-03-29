@@ -57,6 +57,13 @@ export const ZdaoSdkProvider = ({ children }: DaoSdkProviderProps) => {
 
 		const sdk = createSDKInstance(config);
 
+		/**
+		 * Remap these SDK functions until the contract is ready and working
+		 */
+		sdk.listZNAs = sdk.listZNAsFromParams;
+		sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
+		sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
+
 		await Promise.all(daos.map((d) => sdk.createZDAOFromParams(d)));
 
 		setInstance(sdk);

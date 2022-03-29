@@ -1,15 +1,16 @@
 import { zDAO } from '@zero-tech/zdao-sdk';
-import { zDAOAssets } from '@zero-tech/zdao-sdk/lib/types';
+import { Asset } from 'lib/types/dao';
+import { AssetType } from '@zero-tech/zdao-sdk/lib/types';
 import { useEffect, useState } from 'react';
 
 type UseAssetsReturn = {
-	assets?: zDAOAssets;
+	assets?: Asset[];
 	totalUsd?: number;
 	isLoading: boolean;
 };
 
 const useAssets = (dao?: zDAO): UseAssetsReturn => {
-	const [assets, setAssets] = useState<zDAOAssets | undefined>();
+	const [assets, setAssets] = useState<Asset[] | undefined>();
 	const [totalUsd, setTotalUsd] = useState<number | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -22,8 +23,11 @@ const useAssets = (dao?: zDAO): UseAssetsReturn => {
 		setIsLoading(true);
 		try {
 			dao?.listAssets().then((d) => {
-				console.log('listAssets', d);
-				setAssets(d);
+				const collectibles = d.collectibles.map((c) => ({
+					...c,
+					type: AssetType.ERC721,
+				}));
+				setAssets([...d.coins, ...collectibles]);
 				setTotalUsd(d.amountInUSD);
 			});
 		} catch (e) {

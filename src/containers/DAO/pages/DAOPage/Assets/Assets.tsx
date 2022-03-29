@@ -1,8 +1,8 @@
 import AssetsTable from './AssetsTable/AssetsTable';
-import { zDAOAssets } from '@zero-tech/zdao-sdk/lib/types';
+import { Asset } from 'lib/types/dao';
 
 type AssetsProps = {
-	assets?: zDAOAssets;
+	assets?: Asset[];
 	isLoading: boolean;
 };
 

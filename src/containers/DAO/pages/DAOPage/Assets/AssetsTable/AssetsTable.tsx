@@ -1,9 +1,9 @@
-import { zDAOAssets } from '@zero-tech/zdao-sdk/lib/types';
+import { Asset } from 'lib/types/dao';
 import { GenericTable } from 'components';
 import AssetsTableRow from './AssetsTableRow';
 
 type AssetsTableProps = {
-	assets?: zDAOAssets;
+	assets?: Asset[];
 	isLoading: boolean;
 };
 
@@ -20,11 +20,6 @@ const HEADERS = [
 	},
 	{
 		label: 'Value (USD)',
-		accessor: '',
-		className: '',
-	},
-	{
-		label: '',
 		accessor: '',
 		className: '',
 	},
