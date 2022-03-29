@@ -9,7 +9,7 @@ import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
 import { BuyTokenRedirect } from 'containers';
 import { ZNALink } from 'components';
-import { URLS } from 'constants/urls';
+// import { URLS } from 'constants/urls';
 import { useHeaderData, useHeaderHandlers } from './hooks';
 import {
 	SearchDomains,
@@ -92,28 +92,32 @@ export const Header: React.FC<HeaderProps> = ({
 						<h1 className="header__navigation-title">{title}</h1>
 					)}
 
-					{/* Zns Link */}
-					{formattedData.showZnaLink && (
-						<ZNALink
-							className="header__navigation-zna-link"
-							style={{ marginLeft: 16 }}
-						/>
-					)}
+					{!formattedData.showTitle && (
+						<div className="ZNA__Container">
+							{/* Zns Link */}
+							{formattedData.showZnaLink && (
+								<ZNALink
+									className="header__navigation-zna-link"
+									style={{ marginLeft: 16 }}
+								/>
+							)}
 
-					{/* Search TextField */}
-					<input
-						className="header__navigation-search"
-						onChange={handlers.handleOnSearchChange}
-						onKeyUp={handlers.handleOnSearchEscape}
-						value={localState.searchQuery}
-						type="text"
-						onFocus={handlers.handleOnSearchOpen}
-						onBlur={handlers.handleOnSearchClose}
-						onMouseEnter={handlers.handleOnSearchEnter}
-						onMouseLeave={handlers.handleOnSearchLeave}
-						ref={refs.searchInputRef}
-						placeholder={formattedData.searchPlaceholder}
-					/>
+							{/* Search TextField */}
+							<input
+								className="header__navigation-search"
+								onChange={handlers.handleOnSearchChange}
+								onKeyUp={handlers.handleOnSearchEscape}
+								value={localState.searchQuery}
+								type="text"
+								onFocus={handlers.handleOnSearchOpen}
+								onBlur={handlers.handleOnSearchClose}
+								onMouseEnter={handlers.handleOnSearchEnter}
+								onMouseLeave={handlers.handleOnSearchLeave}
+								ref={refs.searchInputRef}
+								placeholder={formattedData.searchPlaceholder}
+							/>
+						</div>
+					)}
 				</div>
 
 				{/* WWW Link */}

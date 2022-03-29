@@ -77,6 +77,17 @@
 				display: none;
 			}
 		}
+
+		.ZNA__Container {
+			display: flex;
+			flex: 1;
+			flex-grow: 1;
+			align-items: center;
+			padding: 8px 0;
+
+			border: 1px solid #472e5b;
+			border-radius: 24px;
+		}
 	}
 
 	&__home-link {

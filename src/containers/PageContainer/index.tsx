@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
+import { URLS } from 'constants/urls';
 
 //- Library Imports
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
@@ -244,7 +245,7 @@ const PageContainer: FC = ({ children }) => {
 
 				<div
 					className={styles.ZERO}
-					onClick={() => window.open('https://zero.tech/', '_blank')}
+					onClick={() => window.open(URLS.ZERO, '_blank')}
 				>
 					<img alt="zero icon" src={zeroIcon} />
 				</div>
