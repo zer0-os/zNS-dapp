@@ -1,6 +1,10 @@
 .Container {
 	cursor: pointer;
 
+	* {
+		cursor: pointer;
+	}
+
 	&:hover {
 		background: var(--color-background-alt-50);
 	}

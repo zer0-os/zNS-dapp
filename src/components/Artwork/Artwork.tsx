@@ -128,7 +128,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 							{(animatedStyles) => (
 								<animated.div style={animatedStyles}>
 									<span
-										style={{ cursor: pending ? 'default' : 'pointer' }}
+										style={{
+											cursor:
+												pending || disableInteraction ? 'default' : 'pointer',
+										}}
 										className={styles.Title}
 									>
 										{metadata?.title || name}
@@ -139,7 +142,9 @@ const Artwork: React.FC<ArtworkProps> = ({
 					)}
 					{!shouldAnimate && metadata?.title && (
 						<span
-							style={{ cursor: pending ? 'default' : 'pointer' }}
+							style={{
+								cursor: pending || disableInteraction ? 'default' : 'pointer',
+							}}
 							className={styles.Title}
 						>
 							{metadata?.title || name}
