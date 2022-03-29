@@ -1,6 +1,4 @@
 .Container {
-	cursor: pointer;
-
 	> td {
 		&:first-of-type {
 			padding-left: 8px !important;
@@ -8,10 +6,6 @@
 		&:last-of-type {
 			padding-right: 8px !important;
 		}
-	}
-
-	&:hover {
-		background: var(--color-background-alt-50);
 	}
 
 	.Right {
