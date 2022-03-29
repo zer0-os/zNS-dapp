@@ -12,6 +12,7 @@ import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
+import classNames from 'classnames';
 
 type GenericTableHeader = {
 	label: string | React.ReactNode;
@@ -255,7 +256,17 @@ const GenericTable = (props: any) => {
 						)}
 					</div>
 				)}
-				{!props.isLoading && (isGridView ? GridView : ListView)}
+				{!props.isLoading &&
+					((rawData?.length ?? 0) === 0 ? (
+						<p className={classNames(styles.Loading, 'text-center')}>
+							{props.emptyText}
+						</p>
+					) : isGridView ? (
+						GridView
+					) : (
+						ListView
+					))}
+
 				{props.isLoading && (
 					<LoadingIndicator
 						className={styles.Loading}
