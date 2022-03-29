@@ -21,7 +21,7 @@ import { ZAuctionVersionType } from '../AcceptBid.types';
 var mockAcceptBid = jest.fn();
 var mockTx = jest.fn();
 
-jest.mock('lib/providers/ZnsSdkProvider', () => ({
+jest.mock('lib/hooks/sdk', () => ({
 	useZnsSdk: () => ({
 		instance: {
 			zauction: {

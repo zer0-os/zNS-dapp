@@ -7,7 +7,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 import { ethers } from 'ethers';
 
 //- Library Imports
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { DomainEventType, DomainBidEvent } from '@zero-tech/zns-sdk/lib/types';

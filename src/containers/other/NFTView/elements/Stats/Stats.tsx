@@ -9,7 +9,7 @@ import { StatsWidget } from 'components';
 
 //- Library Imports
 import { toFiat } from 'lib/currency';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import {
 	DomainBidEvent,
 	DomainMetrics,

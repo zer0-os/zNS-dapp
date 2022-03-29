@@ -7,13 +7,12 @@ import SetBuyNow, { Step } from './SetBuyNow';
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
 import useCurrency from 'lib/hooks/useCurrency';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import useNotification from 'lib/hooks/useNotification';
+import { useZAuctionSdk, useZnsSdk } from 'lib/hooks/sdk';
 
 // Type Imports
 import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
-import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
 
 export interface SetBuyNowContainerProps {
 	domainId: string;

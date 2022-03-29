@@ -16,7 +16,7 @@ import { ethers } from 'ethers';
 var mockListBids = jest.fn();
 var mockGetDomainById = jest.fn();
 
-jest.mock('lib/providers/ZnsSdkProvider', () => ({
+jest.mock('lib/hooks/sdk', () => ({
 	useZnsSdk: () => ({
 		instance: {
 			getDomainById: mockGetDomainById,

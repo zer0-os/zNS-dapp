@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { useEffect, useRef, useState } from 'react';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 export type UseZnsDomainReturn = {
 	loading: boolean;

@@ -21,7 +21,7 @@ import * as mocks from './useCanceBid.mocks';
 var mockCancelBid = jest.fn();
 var mockTx = jest.fn();
 
-jest.mock('lib/providers/ZnsSdkProvider', () => ({
+jest.mock('lib/hooks/sdk', () => ({
 	useZnsSdk: () => ({
 		instance: {
 			zauction: {

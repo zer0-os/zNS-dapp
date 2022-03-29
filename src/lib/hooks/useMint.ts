@@ -1,10 +1,11 @@
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+import { useZSaleSdk } from 'lib/hooks/sdk';
 import { useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import useNotification from 'lib/hooks/useNotification';
 import { useBasicController } from 'lib/hooks/useBasicController';
 import { Maybe, NftParams, NftStatusCard } from 'lib/types';
-import * as wheels from 'lib/wheelSale';
-import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 import { createDomainMetadata, UploadedDomainMetadata } from 'lib/utils';
 import { AppState } from 'store';
@@ -68,9 +69,9 @@ export const useMint = (): UseMintReturn => {
 	////////////////////////
 
 	const { addNotification } = useNotification();
+	const { instance: zSaleInstance } = useZSaleSdk();
+	const { library } = useWeb3React<Web3Provider>();
 	const basicController = useBasicController();
-	const contracts = useZnsContracts();
-	const saleContract = contracts?.wheelSale;
 	const { reduxState, reduxActions } = useMintRedux();
 
 	////////////////////////////////
@@ -93,7 +94,7 @@ export const useMint = (): UseMintReturn => {
 				transactionHash: '',
 			};
 
-			if (!saleContract) {
+			if (!zSaleInstance || !library) {
 				return;
 			}
 
@@ -104,13 +105,10 @@ export const useMint = (): UseMintReturn => {
 			let tx: Maybe<ethers.ContractTransaction>;
 			setStatus('Confirm wallet transaction to begin minting your Pet');
 
-			const network = await saleContract.provider.getNetwork();
-
 			try {
-				tx = await wheels.purchaseWheels(
-					numWheels,
-					saleContract,
-					network.chainId === 1,
+				tx = await zSaleInstance.purchaseDomains(
+					ethers.BigNumber.from(numWheels),
+					library.getSigner(),
 				);
 			} catch (e) {
 				console.error(e);
@@ -142,9 +140,10 @@ export const useMint = (): UseMintReturn => {
 
 			onFinish();
 		},
-		[reduxActions, addNotification, saleContract],
+		[reduxActions, addNotification, zSaleInstance, library],
 	);
 
+	// TODO: Migrate this once zNS SDK supports minting
 	const mint = useCallback(
 		async (nft: NftParams, setStatus: (status: string) => void) => {
 			// @todo better validation

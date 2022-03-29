@@ -10,7 +10,6 @@ import Details from './components/Details/Details';
 
 //- Library Imports
 import useAcceptBid from './hooks/useAcceptBid';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { Metadata } from 'lib/types';
 import { formatBidAmount } from 'lib/utils';
 import useNotification from 'lib/hooks/useNotification';
@@ -34,6 +33,7 @@ import {
 
 //- Styles Imports
 import styles from './AcceptBid.module.scss';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 type AcceptBidProps = {
 	acceptingBid: Bid | undefined;

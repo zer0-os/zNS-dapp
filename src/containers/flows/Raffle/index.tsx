@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { MintWheelsBanner, Overlay, Countdown } from 'components';
-import { MintWheels } from 'containers';
+import { MintDropNFTBanner, Overlay, Countdown } from 'components';
+import { MintDropNFT } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 import useAsyncEffect from 'use-async-effect';
 
-const WheelsRaffleContainer = () => {
+const RaffleContainer = () => {
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -14,16 +14,16 @@ const WheelsRaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	// const RAFFLE_START_TIME = currentTime + 10000;
-	// const RAFFLE_END_TIME = currentTime + 10000 * 3;
-	// const SALE_START_TIME = currentTime + 10000;
+	const RAFFLE_START_TIME = currentTime - 20000;
+	const RAFFLE_END_TIME = currentTime - 10000;
+	const SALE_START_TIME = currentTime + 5000;
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
 	// const RAFFLE_START_TIME = 1645819200000;
-	const RAFFLE_START_TIME = currentTime - 1000;
-	const RAFFLE_END_TIME = 1646078400000;
-	const SALE_START_TIME = 1648234800000; //1640181600000;
+	// const RAFFLE_START_TIME = currentTime - 1000;
+	// const RAFFLE_END_TIME = 1646078400000;
+	// const SALE_START_TIME = 1648234800000; //1640181600000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -199,7 +199,7 @@ const WheelsRaffleContainer = () => {
 			<>
 				{isModalOpen && overlay()}
 				<div>
-					<MintWheelsBanner
+					<MintDropNFTBanner
 						title={
 							hasRaffleEnded
 								? 'Community Presale Mintlist Signup Period Complete'
@@ -214,7 +214,7 @@ const WheelsRaffleContainer = () => {
 		);
 	}
 
-	return <MintWheels />;
+	return <MintDropNFT />;
 };
 
-export default WheelsRaffleContainer;
+export default RaffleContainer;

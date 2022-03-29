@@ -7,14 +7,14 @@ import BuyNow, { Step } from './BuyNow';
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
 import useCurrency from 'lib/hooks/useCurrency';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import useNotification from 'lib/hooks/useNotification';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 // Type Imports
 import { Data } from './BuyNow';
 import { useZnsContracts } from 'lib/contracts';
 import { ERC20 } from 'types';
-import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
+import { useZAuctionSdk } from 'lib/hooks/sdk';
 
 export type BuyNowContainerProps = {
 	domainId: string;
