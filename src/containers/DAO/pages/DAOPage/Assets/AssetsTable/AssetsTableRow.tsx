@@ -12,6 +12,8 @@ import { AssetType, Coin } from '@zero-tech/zdao-sdk/lib/types';
 import classNames from 'classnames';
 import styles from './AssetsTableRow.module.scss';
 
+import defaultAssetIcon from 'assets/default_asset.png';
+
 // Config
 const MILLIFY_PRECISION = 5;
 const MILLIFY_LOWERCASE = false;
@@ -39,7 +41,7 @@ const AssetsTableRow = (props: any) => {
 					id={'1'}
 					domain={typedAsset.symbol}
 					name={typedAsset.name}
-					image={typedAsset.logoUri}
+					image={defaultAssetIcon}
 					disableAnimation
 				/>
 			</td>
