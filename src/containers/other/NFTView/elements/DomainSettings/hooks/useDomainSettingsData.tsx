@@ -5,7 +5,6 @@ import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { getRelativeDomainPath } from 'lib/utils/domains';
-import { useZnsContracts } from 'lib/contracts';
 import { Maybe } from 'lib/types';
 import {
 	DomainSettingsWarning,
@@ -19,8 +18,6 @@ export const useDomainSettingsData = (domainId: string) => {
 	const { domainId: znsDomainId, setDomainMetadata } = useCurrentDomain();
 	const parentDomain = useZnsDomain(myDomain.domain?.parent.id || '');
 
-	const znsContracts = useZnsContracts()!;
-	const registrar = znsContracts.registry;
 	const { library } = useWeb3React<Web3Provider>();
 
 	const [isLocked, setIsLocked] = useState<boolean>(true);
@@ -107,7 +104,6 @@ export const useDomainSettingsData = (domainId: string) => {
 			unavailableDomainNames,
 			unlockable,
 		},
-		registrar,
 		library,
 		setDomainMetadata,
 	};

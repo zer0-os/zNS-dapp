@@ -27,7 +27,6 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 		localState,
 		localActions,
 		formattedData,
-		registrar,
 		library,
 		setDomainMetadata,
 	} = useDomainSettingsData(domainId);
@@ -36,7 +35,6 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 		props: {
 			isZnsDomain: formattedData.isZnsDomain,
 			domainId,
-			registrar,
 			library,
 			onClose,
 			setDomainMetadata,
@@ -49,7 +47,6 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 	useDomainSettingsLifecycle({
 		props: {
 			domain: formattedData.myDomain.domain!,
-			registrar,
 			library,
 		},
 		handlers,
