@@ -36,7 +36,8 @@ const AssetsTable = ({ assets, isLoading }: AssetsTableProps) => {
 			infiniteScroll
 			isLoading={isLoading}
 			loadingText={'Loading Assets'}
-			notSearchable
+			searchKey={'symbol'}
+			searchBy={'token ticker'}
 		/>
 	);
 };
