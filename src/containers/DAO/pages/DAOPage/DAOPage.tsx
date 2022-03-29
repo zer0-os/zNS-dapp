@@ -22,11 +22,18 @@ import useAssets from './hooks/useAssets';
 import { toFiat } from 'lib/currency';
 import { ROUTES } from 'constants/routes';
 
+// Assets
+import defaultDaoIcon from 'assets/default_dao.png';
+
 // Styles
 import styles from './DAOPage.module.scss';
 import genericStyles from '../Container.module.scss';
 import classNames from 'classnames/bind';
+import millify from 'millify';
 const cx = classNames.bind(genericStyles);
+
+const MILLIFY_THRESHOLD = 1000000;
+const MILLIFY_PRECISION = 3;
 
 const toDaoPage = (zna: string) => (route: ROUTES) =>
 	ROUTES.ZDAO + '/' + zna + route;
@@ -113,24 +120,37 @@ const DAOPage = () => {
 					<Loading />
 				) : dao ? (
 					<>
-						<div className={styles.Header}>
-							<div className={styles.Icon}>
-								<Image alt="dao logo" src={daoData?.avatar} />
-							</div>
-							<h1>{daoData?.title}</h1>
-						</div>
 						<ul className={genericStyles.Stats}>
-							<StatsWidget
-								className="normalView"
-								fieldName={'Value'}
-								isLoading={isLoadingAssets}
-								title={'$' + toFiat(totalUsd ?? 0)}
-							/>
-							<StatsWidget
-								className="normalView"
-								fieldName={'WILD Holders'}
-								title={'TO IMPLEMENT'}
-							/>
+							<div className={styles.Header}>
+								<div className={styles.Icon}>
+									<Image
+										alt="dao logo"
+										src={daoData?.avatar ?? defaultDaoIcon}
+									/>
+								</div>
+								<h1>{daoData?.title}</h1>
+							</div>
+							<div className={styles.Stat}>
+								<StatsWidget
+									className="normalView"
+									fieldName="Value"
+									isLoading={isLoadingAssets}
+									// Millify if above threshold
+									title={
+										'$' +
+										((totalUsd ?? 0) >= MILLIFY_THRESHOLD
+											? millify(totalUsd!, { precision: MILLIFY_PRECISION })
+											: toFiat(totalUsd ?? 0))
+									}
+								/>
+							</div>
+							<div className={styles.Stat}>
+								<StatsWidget
+									className="normalView"
+									fieldName="WILD Holders"
+									title={'TO IMPLEMENT'}
+								/>
+							</div>
 						</ul>
 						<Page />
 					</>

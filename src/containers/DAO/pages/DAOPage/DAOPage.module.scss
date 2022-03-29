@@ -16,13 +16,22 @@
 
 		height: 40px;
 		width: 40px;
+		min-width: 40px;
+		min-height: 40px;
 
 		border-radius: 8px;
+		overflow: hidden;
 
 		img {
-			width: 60%;
+			object-fit: contain;
+			height: 40px;
+			width: 40px;
 		}
 	}
+}
+
+.Stat {
+	max-width: 160px !important;
 }
 
 .Loading {
