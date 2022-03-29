@@ -1,15 +1,15 @@
 import { zDAO } from '@zero-tech/zdao-sdk';
-import { Asset } from '@zero-tech/zdao-sdk/lib/types';
+import { zDAOAssets } from '@zero-tech/zdao-sdk/lib/types';
 import { useEffect, useState } from 'react';
 
 type UseAssetsReturn = {
-	assets?: Asset[];
+	assets?: zDAOAssets;
 	totalUsd?: number;
 	isLoading: boolean;
 };
 
 const useAssets = (dao?: zDAO): UseAssetsReturn => {
-	const [assets, setAssets] = useState<Asset[] | undefined>();
+	const [assets, setAssets] = useState<zDAOAssets | undefined>();
 	const [totalUsd, setTotalUsd] = useState<number | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -22,7 +22,8 @@ const useAssets = (dao?: zDAO): UseAssetsReturn => {
 		setIsLoading(true);
 		try {
 			dao?.listAssets().then((d) => {
-				setAssets(d.assets);
+				console.log('listAssets', d);
+				setAssets(d);
 				setTotalUsd(d.amountInUSD);
 			});
 		} catch (e) {

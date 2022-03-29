@@ -2,7 +2,16 @@ import { CreateZDAOParams } from '@zero-tech/zdao-sdk/lib/types';
 import { NETWORK_TYPES } from 'lib/network';
 
 export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
-	[NETWORK_TYPES.MAINNET]: [],
+	[NETWORK_TYPES.MAINNET]: [
+		// {
+		// 	zNA: 'real',
+		// 	title: 'zDAO Testing 1',
+		// 	creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
+		// 	network: 1, // for Rinkeby
+		// 	safeAddress: '0x9CA53E3E249Abe500bEbA7aC8BDC8476bfc06bC6',
+		// 	votingToken: '0x10F6A2795B14f13771d885D72e5925Aff647B565',
+		// },
+	],
 	[NETWORK_TYPES.RINKEBY]: [
 		{
 			zNA: 'one',

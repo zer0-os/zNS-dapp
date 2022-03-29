@@ -58,10 +58,11 @@ const DAOTableRow = (props: any) => {
 		if (!sdk || !zna) {
 			return;
 		}
-		sdk
-			.getZDAOByZNA(zna)
-			.then(setDao)
-			.catch((e) => console.error(e));
+		try {
+			sdk.getZDAOByZNA(zna).then(setDao);
+		} catch (e) {
+			console.error(e);
+		}
 	};
 
 	// Lifecycle

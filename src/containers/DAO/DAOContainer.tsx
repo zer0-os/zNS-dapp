@@ -40,7 +40,6 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 	 * Handle loading a DAO which does not exist
 	 */
 	useUpdateEffect(() => {
-		console.log(sdk, isLoading, zna, dao);
 		if (sdk && !isLoading && zna.length > 0 && !dao) {
 			addNotification(`Could not find a DAO at ${zna} - redirected home`);
 			history.replace(ROUTES.ZDAO);

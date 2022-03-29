@@ -1,9 +1,9 @@
-import { Asset } from '@zero-tech/zdao-sdk/lib/types';
+import { zDAOAssets } from '@zero-tech/zdao-sdk/lib/types';
 import { GenericTable } from 'components';
 import AssetsTableRow from './AssetsTableRow';
 
 type AssetsTableProps = {
-	assets?: Asset[];
+	assets?: zDAOAssets;
 	isLoading: boolean;
 };
 

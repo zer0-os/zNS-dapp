@@ -32,14 +32,13 @@ const DAOList = () => {
 	const getZnas = () => {
 		if (sdk) {
 			setIsLoading(true);
-			sdk
-				.listZDAOs()
-				.then(setDaoZnas)
-				.catch((e) => {
-					console.error(e);
-					console.warn('failed');
-				})
-				.finally(() => setIsLoading(false));
+			try {
+				sdk.listZNAs().then(setDaoZnas);
+			} catch (e) {
+				console.error(e);
+			} finally {
+				setIsLoading(false);
+			}
 		}
 	};
 
