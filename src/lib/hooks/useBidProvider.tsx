@@ -9,7 +9,7 @@ import { tryFunction } from 'lib/utils';
 //- Hook Imports
 import { useWeb3React } from '@web3-react/core';
 import useNotification from './useNotification';
-import { useZnsSdk, useZAuctionSdk } from 'lib/hooks/sdk';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
 import { Web3Provider } from '@ethersproject/providers';
@@ -93,27 +93,24 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 	const { library } = useWeb3React<Web3Provider>();
 	const { addNotification } = useNotification();
-	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const { instance: sdk } = useZnsSdk();
 
 	const acceptBid = useCallback(
 		async (bidData: Bid) => {
 			const tx = await tryFunction(async () => {
-				if (zAuctionInstance === undefined) {
+				if (sdk === undefined || sdk.zauction === undefined) {
 					throw Error(`No zAuctionInstance`);
 				}
 
-				const bids = await zAuctionInstance.listBids([bidData.tokenId]);
-				const bid = bids[bidData.tokenId].filter(
-					(b: any) => b.bidNonce === bidData.bidNonce,
-				)[0];
-				const tx = await zAuctionInstance.acceptBid(bid, library!.getSigner());
+				const bids = await sdk.zauction.listBids(bidData.tokenId);
+				const bid = bids.filter((b: any) => b.bidNonce === bidData.bidNonce)[0];
+				const tx = await sdk.zauction.acceptBid(bid, library!.getSigner());
 				return tx;
 			}, 'accept bid');
 
 			return tx;
 		},
-		[zAuctionInstance, library],
+		[sdk, library],
 	);
 
 	const getBidsForYourDomains = useCallback(async () => {
@@ -129,13 +126,13 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 	const getBidsForAccount = useCallback(
 		async (id: string) => {
-			if (zAuctionInstance === undefined) {
+			if (sdk === undefined || sdk.zauction === undefined) {
 				console.warn('No zAuctionInstance');
 				return;
 			}
 
 			try {
-				const bids = await zAuctionInstance.listBidsByAccount(id);
+				const bids = await sdk.zauction.listBidsByAccount(id);
 				const displayBids = bids.map((e) => transformBid(e));
 
 				return displayBids;
@@ -144,19 +141,18 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				return [];
 			}
 		},
-		[zAuctionInstance],
+		[sdk],
 	);
 
 	const getBidsForDomain = useCallback(
 		async (domain: Domain, filterOwnBids?: boolean) => {
-			if (zAuctionInstance === undefined) {
+			if (sdk === undefined || sdk.zauction === undefined) {
 				console.warn('No zAuctionInstance');
 				return;
 			}
 
 			try {
-				let data = await zAuctionInstance.listBids([domain.id]);
-				let bids = data[domain.id];
+				let bids = await sdk.zauction.listBids(domain.id);
 
 				try {
 					if (filterOwnBids) {
@@ -180,7 +176,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				return;
 			}
 		},
-		[zAuctionInstance],
+		[sdk],
 	);
 
 	const onPlaceBidStatusChange = (

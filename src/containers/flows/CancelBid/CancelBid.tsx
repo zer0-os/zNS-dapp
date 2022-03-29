@@ -49,7 +49,7 @@ export const CancelBid = ({
 		try {
 			await cancel(bid!);
 			setCurrentStep(Step.Success);
-		} catch (e) {
+		} catch (e: any) {
 			setError(e.message);
 			setCurrentStep(Step.Confirmation);
 		}

@@ -30,8 +30,7 @@ export const getBidDataForDomain = async (
 	domainId: string,
 	sdk: Instance,
 ): Promise<DomainBidData | undefined> => {
-	const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-	const bids = (await zAuction.listBids([domainId]))[domainId];
+	const bids = await sdk.zauction.listBids(domainId);
 	if (!bids) {
 		return { highestBid: undefined, bids: [] };
 	}

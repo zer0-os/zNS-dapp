@@ -8,7 +8,7 @@ import SetBuyNow, { Step } from './SetBuyNow';
 import { useWeb3React } from '@web3-react/core';
 import useCurrency from 'lib/hooks/useCurrency';
 import useNotification from 'lib/hooks/useNotification';
-import { useZAuctionSdk, useZnsSdk } from 'lib/hooks/sdk';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 // Type Imports
 import { DomainData } from './SetBuyNow';
@@ -27,7 +27,6 @@ const SetBuyNowContainer = ({
 }: SetBuyNowContainerProps) => {
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
-	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const { account, library } = useWeb3React();
 	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
@@ -44,7 +43,7 @@ const SetBuyNowContainer = ({
 	 * transfer NFTs
 	 */
 	const checkZAuctionApproval = () => {
-		if (!zAuctionInstance || !library || !account) {
+		if (!sdk || !sdk.zauction || !library || !account) {
 			return;
 		}
 
@@ -52,7 +51,10 @@ const SetBuyNowContainer = ({
 		(async () => {
 			try {
 				const isApproved =
-					await zAuctionInstance.isZAuctionApprovedToTransferNft(account);
+					await sdk.zauction.needsToApproveZAuctionToTransferNfts(
+						domainId,
+						account,
+					);
 				// Wait for a sec so the UI doesn't look broken if the above
 				// checks resolve quickly
 				await new Promise((r) => setTimeout(r, 1500));
@@ -72,14 +74,15 @@ const SetBuyNowContainer = ({
 	 * Takes the user through the "approve zAuction" flow
 	 */
 	const approveZAuction = () => {
-		if (!zAuctionInstance || !library || !account) {
+		if (!sdk || !sdk.zauction || !library || !account) {
 			return;
 		}
 		setError(undefined);
 		setCurrentStep(Step.WaitingForWallet);
 		(async () => {
 			try {
-				const tx = await zAuctionInstance.approveZAuctionTransferNft(
+				const tx = await sdk.zauction.approveZAuctionToTransferNfts(
+					domainId,
 					library.getSigner(),
 				);
 				// @todo handle wallet rejected
@@ -106,7 +109,7 @@ const SetBuyNowContainer = ({
 				setCurrentStep(Step.WaitingForBuyNowConfirmation);
 				let tx;
 				if (amount) {
-					tx = await zAuctionInstance.setBuyNowPrice(
+					tx = await sdk.zauction.setBuyNowPrice(
 						{
 							amount: ethers.utils.parseEther(amount.toString()).toString(),
 							tokenId: domainId,
@@ -114,10 +117,7 @@ const SetBuyNowContainer = ({
 						library.getSigner(),
 					);
 				} else {
-					tx = await zAuctionInstance.cancelBuyNow(
-						domainId,
-						library.getSigner(),
-					);
+					tx = await sdk.zauction.cancelBuyNow(domainId, library.getSigner());
 				}
 				setCurrentStep(Step.SettingBuyNow);
 				await tx.wait();
@@ -158,14 +158,14 @@ const SetBuyNowContainer = ({
 		(async () => {
 			setIsLoadingDomainData(true);
 			try {
-				const [domain, events, metadata, listing] = await Promise.all([
+				const [domain, events, metadata, price] = await Promise.all([
 					sdk.getDomainById(domainId),
 					sdk.getDomainEvents(domainId),
 					sdk.getDomainMetadata(domainId, library.getSigner()),
-					zAuctionInstance.getBuyNowPrice(domainId),
+					sdk.zauction.getBuyNowPrice(domainId),
 				]);
 				if (domain && events && metadata) {
-					const buyNow = listing.price;
+					const buyNow = ethers.utils.parseEther(price);
 					checkZAuctionApproval();
 					setDomainData({
 						id: domainId,
@@ -191,7 +191,7 @@ const SetBuyNowContainer = ({
 			isMounted.current = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [domainId, library, zAuctionInstance]);
+	}, [domainId, library, sdk]);
 
 	return (
 		<SetBuyNow
