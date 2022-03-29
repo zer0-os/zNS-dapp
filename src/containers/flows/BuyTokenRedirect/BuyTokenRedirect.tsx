@@ -102,7 +102,7 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 	);
 
 	const dropdownContent = (
-		<div className={`${styles.DropdownContent} border-primary`}>
+		<div className={`${styles.DropdownContent}`}>
 			<div className={`${styles.Section} ${styles.SectionBaseline}`}>
 				{currentPriceDetails(Size.LRG)}
 				{externalUrl()}

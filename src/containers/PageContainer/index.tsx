@@ -17,6 +17,7 @@ import styles from './PageContainer.module.scss';
 
 //- Icon Imports
 import wilderIcon from 'assets/WWLogo_SVG.svg';
+import zeroIcon from 'assets/zero.svg';
 
 //- Components & Containers
 import {
@@ -240,6 +241,13 @@ const PageContainer: FC = ({ children }) => {
 				/>
 
 				<SideBar />
+
+				<div
+					className={styles.ZERO}
+					onClick={() => window.open('https://zero.tech/', '_blank')}
+				>
+					<img alt="zero icon" src={zeroIcon} />
+				</div>
 
 				{/* TODO: Encapsulate this */}
 				<div>{children}</div>

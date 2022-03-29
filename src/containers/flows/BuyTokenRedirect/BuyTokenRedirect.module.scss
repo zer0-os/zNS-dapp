@@ -28,7 +28,7 @@
 	&:hover {
 		.Details::after {
 			transform: scale(1);
-			background: #1a1022;
+			background: #23142f;
 		}
 	}
 }
@@ -38,7 +38,8 @@
 	cursor: default;
 	padding: 32px;
 	border-radius: 16px;
-	background: var(--color-purple-darkest);
+	background: #1a1022;
+	border: 1px solid #472e5b;
 }
 
 .CurrentPriceContainer {

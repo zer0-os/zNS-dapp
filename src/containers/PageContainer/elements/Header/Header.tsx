@@ -117,14 +117,14 @@ export const Header: React.FC<HeaderProps> = ({
 				</div>
 
 				{/* WWW Link */}
-				<a
+				{/* <a
 					className="header__home-link alt-link"
 					href={URLS.WILDERWORLD}
 					target="_blank"
 					rel="noreferrer"
 				>
 					Home
-				</a>
+				</a> */}
 
 				<div className="header__actions">
 					{/* Connect Wallet Button */}

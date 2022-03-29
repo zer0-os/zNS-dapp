@@ -95,6 +95,11 @@
 			transition: all var(--animation-time-medium) ease-in-out;
 		}
 
+		&:hover,
+		&.Selected {
+			background-color: #23142f;
+		}
+
 		&.Selected {
 			transform: scale(1);
 
