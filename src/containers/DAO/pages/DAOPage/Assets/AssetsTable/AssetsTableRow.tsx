@@ -39,7 +39,7 @@ const AssetsTableRow = (props: any) => {
 			<td>
 				<Artwork
 					id={'1'}
-					domain={typedAsset.symbol}
+					subtext={typedAsset.symbol}
 					name={typedAsset.name}
 					image={typedAsset.logoUri ?? defaultAssetIcon}
 					disableAnimation

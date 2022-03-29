@@ -17,6 +17,9 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildStakingPool: '0x3aC551725ac98C5DCdeA197cEaaE7cDb8a71a2B4',
 		lpStakingPool: '0x9E87a268D42B0Aba399C121428fcE2c626Ea01FF',
 		// wheelSale: '0x7bA5faff747a3cA7E4ebe65F64e3EDFAEE136846', //  crafts
+
+		// Not yet deployed
+		zDao: '',
 	},
 	[NETWORK_TYPES.KOVAN]: {
 		registrar: '0xC613fCc3f81cC2888C5Cccc1620212420FFe4931',
@@ -35,6 +38,9 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		wildStakingPool: '0x4E226a8BbECAa435d2c77D3E4a096F87322Ef1Ae',
 		lpStakingPool: '0x9CF0DaD38E4182d944a1A4463c56CFD1e6fa8fE7',
 		// wheelSale: '0x946911623663e1526165Cc1eFf37DdE0834e7786', // crafts sale
+
+		// Not yet deployed
+		zDao: '',
 	},
 	[NETWORK_TYPES.RINKEBY]: {
 		registrar: '0xa4F6C921f914ff7972D7C55c15f015419326e0Ca',
@@ -57,7 +63,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		 * just the one I found. This will need to be updated, and put in
 		 * addresses.ts
 		 */
-		zDao: '0xd72450829414b3d3FdA7687952b8Fd9A861F95D4',
+		zDao: '0x0FE5c0564E5F2dcE6a2c77A14A32d12461D23E78',
 	},
 } as any;
 

@@ -1,6 +1,6 @@
 // React
 import React from 'react';
-import { Switch, useHistory } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 
 // Components
 import DAOList from './pages/DAOList/DAOList';
@@ -9,7 +9,6 @@ import DAOPage from './pages/DAOPage/DAOPage';
 // Hooks
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
-import useNotification from 'lib/hooks/useNotification';
 import { useZdaoSdk } from 'lib/dao/providers/ZdaoSdkProvider';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import { useDidMount } from 'lib/hooks/useDidMount';
@@ -20,6 +19,7 @@ import { ROUTES } from 'constants/routes';
 // Style Imports
 import styles from './DAOContainer.module.scss';
 import classNames from 'classnames';
+import useRedirect from 'lib/hooks/useRedirect';
 
 type StakingContainerProps = {
 	className?: string;
@@ -30,21 +30,24 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 	className,
 	style,
 }) => {
-	const history = useHistory();
+	const { redirect } = useRedirect();
 	const { setNavbarTitle } = useNavbar();
-	const { addNotification } = useNotification();
-	const { dao, isLoading, zna } = useCurrentDao();
+	const { zna } = useCurrentDao();
 	const { instance: sdk } = useZdaoSdk();
 
 	/**
 	 * Handle loading a DAO which does not exist
 	 */
 	useUpdateEffect(() => {
-		if (sdk && !isLoading && zna.length > 0 && !dao) {
-			addNotification(`Could not find a DAO at ${zna} - redirected home`);
-			history.replace(ROUTES.ZDAO);
+		if (!zna.length) {
+			return;
 		}
-	}, [isLoading, sdk]);
+		sdk?.doesZDAOExist(zna).then((exists) => {
+			if (!exists) {
+				redirect(ROUTES.ZDAO, 'Could not find a DAO for ' + zna);
+			}
+		});
+	}, [sdk, zna]);
 
 	useDidMount(setNavbarTitle);
 

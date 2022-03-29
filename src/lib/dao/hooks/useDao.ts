@@ -14,6 +14,7 @@ const useDao = (zna: string): UseDaoReturn => {
 	const [dao, setDao] = useState<zDAO | undefined>();
 
 	useEffect(() => {
+		let isMounted = true;
 		if (!sdk || !zna || zna.length === 0) {
 			setIsLoading(false);
 			return;
@@ -21,12 +22,21 @@ const useDao = (zna: string): UseDaoReturn => {
 		setDao(undefined);
 		setIsLoading(true);
 		try {
-			sdk.getZDAOByZNA(zna).then((dao) => setDao(dao));
+			sdk.getZDAOByZNA(zna).then((d) => {
+				if (isMounted) {
+					setDao(d);
+					setIsLoading(false);
+				}
+			});
 		} catch (e) {
-			console.error(e);
-		} finally {
-			setIsLoading(false);
+			if (isMounted) {
+				console.error(e);
+				setIsLoading(false);
+			}
 		}
+		return () => {
+			isMounted = false;
+		};
 	}, [zna, sdk]);
 
 	return {

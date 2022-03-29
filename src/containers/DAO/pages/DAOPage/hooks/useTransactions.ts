@@ -12,18 +12,28 @@ const useTransactions = (dao?: zDAO): UseTransactionsReturn => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
+		let isMounted = true;
 		if (!dao) {
 			return;
 		}
 		setIsLoading(true);
 		setTransactions(undefined);
 		try {
-			dao?.listTransactions().then(setTransactions);
+			dao?.listTransactions().then((t) => {
+				if (isMounted) {
+					setTransactions(t);
+					setIsLoading(false);
+				}
+			});
 		} catch (e) {
-			console.error(e);
-		} finally {
-			setIsLoading(false);
+			if (isMounted) {
+				console.error(e);
+				setIsLoading(false);
+			}
 		}
+		return () => {
+			isMounted = false;
+		};
 	}, [dao]);
 
 	return {

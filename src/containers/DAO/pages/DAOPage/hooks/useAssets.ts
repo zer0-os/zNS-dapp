@@ -15,6 +15,9 @@ const useAssets = (dao?: zDAO): UseAssetsReturn => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
+		console.log('call');
+		let isMounted = true;
+		setIsLoading(true);
 		if (!dao) {
 			return;
 		}
@@ -22,19 +25,35 @@ const useAssets = (dao?: zDAO): UseAssetsReturn => {
 		setAssets(undefined);
 		setIsLoading(true);
 		try {
-			dao?.listAssets().then((d) => {
-				const collectibles = d.collectibles.map((c) => ({
-					...c,
-					type: AssetType.ERC721,
-				}));
-				setAssets([...d.coins, ...collectibles]);
-				setTotalUsd(d.amountInUSD);
-			});
+			dao
+				?.listAssets()
+				.then((d) => {
+					const collectibles = d.collectibles.map((c) => ({
+						...c,
+						type: AssetType.ERC721,
+					}));
+					if (isMounted) {
+						setAssets([
+							...d.coins.filter((d) => d.amount !== '0'),
+							...collectibles,
+						]);
+						setTotalUsd(d.amountInUSD);
+					}
+				})
+				.then(() => {
+					if (isMounted) {
+						setIsLoading(false);
+					}
+				});
 		} catch (e) {
-			console.error(e);
-		} finally {
-			setIsLoading(false);
+			if (isMounted) {
+				console.error(e);
+				setIsLoading(false);
+			}
 		}
+		return () => {
+			isMounted = false;
+		};
 	}, [dao]);
 
 	return {

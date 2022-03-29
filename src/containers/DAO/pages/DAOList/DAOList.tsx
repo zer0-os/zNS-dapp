@@ -1,5 +1,5 @@
 // React
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Components
 import { StatsWidget } from 'components';
@@ -7,8 +7,6 @@ import DAOTable from './DAOTable/DAOTable';
 
 // Hooks
 import { useZdaoSdk } from 'lib/dao/providers/ZdaoSdkProvider';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
-import { useDidMount } from 'lib/hooks/useDidMount';
 import { useTotals, TotalsProvider } from './TotalProvider';
 
 // Lib
@@ -26,25 +24,28 @@ const DAOList = () => {
 
 	const { totals } = useTotals(); // totals from table rows
 
-	/**
-	 * Gets list for zNAs for current
-	 */
-	const getZnas = () => {
+	useEffect(() => {
+		let isMounted = true;
 		if (sdk) {
 			setIsLoading(true);
 			try {
-				sdk.listZNAs().then(setDaoZnas);
+				sdk.listZNAs().then((z) => {
+					if (isMounted) {
+						setDaoZnas(z);
+						setIsLoading(false);
+					}
+				});
 			} catch (e) {
-				console.error(e);
-			} finally {
-				setIsLoading(false);
+				if (isMounted) {
+					console.error(e);
+					setIsLoading(false);
+				}
 			}
 		}
-	};
-
-	// Lifecycle
-	useUpdateEffect(getZnas, [sdk]);
-	useDidMount(getZnas);
+		return () => {
+			isMounted = false;
+		};
+	}, [sdk]);
 
 	return (
 		<div

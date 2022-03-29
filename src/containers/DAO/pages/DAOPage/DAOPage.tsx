@@ -21,6 +21,7 @@ import useAssets from './hooks/useAssets';
 // Lib
 import { toFiat } from 'lib/currency';
 import { ROUTES } from 'constants/routes';
+import millify from 'millify';
 
 // Assets
 import defaultDaoIcon from 'assets/default_dao.png';
@@ -29,7 +30,6 @@ import defaultDaoIcon from 'assets/default_dao.png';
 import styles from './DAOPage.module.scss';
 import genericStyles from '../Container.module.scss';
 import classNames from 'classnames/bind';
-import millify from 'millify';
 const cx = classNames.bind(genericStyles);
 
 const MILLIFY_THRESHOLD = 1000000;
@@ -103,8 +103,6 @@ const DAOPage = () => {
 		</>
 	);
 
-	const Error = () => <p>No DAO here</p>;
-
 	return (
 		<Switch>
 			<div
@@ -135,7 +133,7 @@ const DAOPage = () => {
 									className="normalView"
 									fieldName="Value"
 									isLoading={isLoadingAssets}
-									// Millify if above threshold
+									// Millify if above
 									title={
 										'$' +
 										((totalUsd ?? 0) >= MILLIFY_THRESHOLD
@@ -155,7 +153,8 @@ const DAOPage = () => {
 						<Page />
 					</>
 				) : (
-					<Error />
+					<></>
+					// <Error />
 				)}
 			</div>
 		</Switch>

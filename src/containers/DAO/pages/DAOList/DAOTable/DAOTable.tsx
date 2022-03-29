@@ -30,6 +30,7 @@ const DAOTable = ({ daoZnas, isLoading }: DAOTableProps) => {
 			infiniteScroll
 			isLoading={isLoading}
 			loadingText={'Loading DAOs'}
+			emptyText={'Could not find any DAOs'}
 			notSearchable
 		/>
 	);
