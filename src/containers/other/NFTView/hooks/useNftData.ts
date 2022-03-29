@@ -45,7 +45,7 @@ export const useNftData = (): UseNftDataReturn => {
 	const { account } = useWeb3React<Web3Provider>();
 
 	//- SDK
-	const sdk = useZnsSdk();
+	const { instance: sdk } = useZnsSdk();
 
 	//- Current domain
 	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
@@ -95,7 +95,7 @@ export const useNftData = (): UseNftDataReturn => {
 			setIsHistoryLoading(true);
 
 			try {
-				const events = (await sdk.instance?.getDomainEvents(
+				const events = (await sdk?.getDomainEvents(
 					znsDomain.id,
 				)) as DomainEvents[];
 				setHistory(sortEventsByTimestamp(events));
@@ -105,7 +105,7 @@ export const useNftData = (): UseNftDataReturn => {
 				setIsHistoryLoading(false);
 			}
 		}
-	}, [sdk.instance, znsDomain]);
+	}, [sdk, znsDomain]);
 
 	const getPriceData = useCallback(async () => {
 		if (!znsDomain?.id) {
@@ -121,24 +121,18 @@ export const useNftData = (): UseNftDataReturn => {
 			setHighestBid(undefined);
 			setYourBid(undefined);
 
-			const zAuction = await sdk.instance.getZAuctionInstanceForDomain(id);
-
 			// Get buy now and all bids
-			const [listing, bids] = await Promise.all([
-				zAuction.getBuyNowPrice(id),
-				zAuction.listBids([id]),
+			const [buyNow, bids] = await Promise.all([
+				sdk.zauction.getBuyNowPrice(id),
+				sdk.zauction.listBids(id),
 			]);
 
-			const buyNow = listing.price;
-
 			// Excuse this monstrosity
-			const highestBid = sortBidsByAmount(bids[id])[0];
+			const highestBid = sortBidsByAmount(bids)[0];
 
 			if (account) {
 				const yourBid = sortBidsByAmount(
-					bids[id].filter(
-						(b) => b.bidder.toLowerCase() === account.toLowerCase(),
-					),
+					bids.filter((b) => b.bidder.toLowerCase() === account.toLowerCase()),
 				)[0];
 
 				if (yourBid) {
@@ -147,13 +141,13 @@ export const useNftData = (): UseNftDataReturn => {
 			}
 
 			setHighestBid(highestBid);
-			setBuyNowPrice(Number(ethers.utils.formatEther(buyNow)));
+			setBuyNowPrice(Number(buyNow));
 		} catch (e) {
-			console.error('Failed to retrieve price data');
+			console.error('Failed to retrieve price data', e);
 		} finally {
 			setIsPriceDataLoading(false);
 		}
-	}, [sdk.instance, account, znsDomain]);
+	}, [sdk, account, znsDomain]);
 
 	const downloadAsset = useCallback(async () => {
 		if (!domainAssetURL) {
