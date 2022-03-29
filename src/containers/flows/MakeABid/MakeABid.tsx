@@ -155,7 +155,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				zAuctionAddress,
 				ethers.constants.MaxUint256,
 			);
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			if (e.code === 4001) {
 				setError(`Transaction rejected`);
@@ -213,7 +213,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		try {
 			await placeBid(domain, bidAmount, onStep);
 			onBid();
-		} catch (e) {
+		} catch (e: any) {
 			setError(e && (e.message ?? ''));
 			setIsMetamaskWaiting(false);
 		}

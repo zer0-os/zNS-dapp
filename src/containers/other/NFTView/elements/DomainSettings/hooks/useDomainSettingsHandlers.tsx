@@ -163,7 +163,7 @@ export const useDomainSettingsHandlers = ({
 				localActions.setIsLocked(true);
 				return;
 			}
-		} catch (e) {
+		} catch (e: any) {
 			console.log(e);
 
 			if (e.code === 4001) {
@@ -200,7 +200,7 @@ export const useDomainSettingsHandlers = ({
 				localActions.setWarning(DomainSettingsWarning.TRANSACTION_FAILED);
 				localActions.setIsLocked(false);
 			}
-		} catch (e) {
+		} catch (e: any) {
 			console.log(e);
 
 			if (e.code === 4001) {
@@ -248,7 +248,7 @@ export const useDomainSettingsHandlers = ({
 				localActions.setWarning(DomainSettingsWarning.TRANSACTION_FAILED);
 				localActions.setIsSaved(false);
 			}
-		} catch (e) {
+		} catch (e: any) {
 			console.log(e);
 
 			if (e.code === 4001) {
@@ -305,7 +305,7 @@ export const useDomainSettingsHandlers = ({
 				localActions.setWarning(DomainSettingsWarning.TRANSACTION_FAILED);
 				localActions.setIsSaved(false);
 			}
-		} catch (e) {
+		} catch (e: any) {
 			console.log(e);
 
 			if (e.code === 4001) {

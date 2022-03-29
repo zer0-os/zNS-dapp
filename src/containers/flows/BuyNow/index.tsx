@@ -14,7 +14,7 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 import { Data } from './BuyNow';
 import { useZnsContracts } from 'lib/contracts';
 import { ERC20 } from 'types';
-import { useZAuctionSdk } from 'lib/hooks/sdk';
+import { ethers } from 'ethers';
 
 export type BuyNowContainerProps = {
 	domainId: string;
@@ -29,7 +29,6 @@ const BuyNowContainer = ({
 }: BuyNowContainerProps) => {
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
-	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const { account, library } = useWeb3React();
 	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
@@ -60,13 +59,14 @@ const BuyNowContainer = ({
 		let approvalTx;
 		setError(undefined);
 		try {
-			if (!zAuctionInstance) {
+			if (!sdk || !sdk.zauction) {
 				throw Error('Failed to retrieve zAuction instance');
 			}
 
 			try {
 				setCurrentStep(Step.ApproveZAuctionWaiting);
-				approvalTx = await zAuctionInstance.approveZAuctionSpendTradeTokens(
+				approvalTx = await sdk.zauction.approveZAuctionToSpendTokens(
+					domainId,
 					library.getSigner(),
 				);
 				setCurrentStep(Step.ApproveZAuctionProcessing);
@@ -82,7 +82,7 @@ const BuyNowContainer = ({
 			}
 
 			getData();
-		} catch (e) {
+		} catch (e: any) {
 			setError(e.message);
 			setCurrentStep(Step.ApproveZAuction);
 		}
@@ -92,10 +92,10 @@ const BuyNowContainer = ({
 		setError(undefined);
 		setCurrentStep(Step.WaitingForWalletConfirmation);
 		try {
-			if (!zAuctionInstance) {
+			if (!sdk || !sdk.zauction) {
 				throw Error('Failed to retrieve zAuction instance');
 			}
-			const tx = await zAuctionInstance.buyNow(
+			const tx = await sdk.zauction.buyNow(
 				{ amount: data!.buyNowPrice.toString(), tokenId: domainId },
 				library.getSigner(),
 			);
@@ -106,7 +106,8 @@ const BuyNowContainer = ({
 			if (onSuccess) {
 				onSuccess();
 			}
-		} catch (e) {
+		} catch (e: any) {
+			console.log(e);
 			setError(e.message);
 			setCurrentStep(Step.Details);
 		}
@@ -120,19 +121,20 @@ const BuyNowContainer = ({
 		setError(undefined);
 		setIsLoadingDomainData(true);
 		let buyNowPrice;
-		if (!zAuctionInstance) {
+		if (!sdk || !sdk.zauction) {
 			throw Error('Failed to retrieve zAuction instance');
 		}
 		try {
 			// Get buy now price
-			const listing = await zAuctionInstance.getBuyNowPrice(domainId);
-			buyNowPrice = listing.price;
+			const price = await sdk.zauction.getBuyNowPrice(domainId);
+			buyNowPrice = ethers.utils.parseEther(price);
 
 			// Check zAuction approved amount is larger than buy now price
-			const allowance = await zAuctionInstance.getZAuctionSpendAllowance(
+			const isApproved = await sdk.zauction.needsToApproveZAuctionToSpendTokens(
+				domainId,
 				account,
+				buyNowPrice,
 			);
-			const isApproved = allowance.gte(buyNowPrice);
 			if (!isApproved) {
 				setCurrentStep(Step.ApproveZAuction);
 				return;

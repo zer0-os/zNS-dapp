@@ -16,7 +16,7 @@ import { useBid } from './BidProvider';
 import { ethers } from 'ethers';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { formatNumber, formatEthers } from 'lib/utils';
-import { useZAuctionSdk } from 'lib/hooks/sdk';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 import styles from './SubdomainTableRow.module.scss';
 
@@ -27,10 +27,10 @@ const SubdomainTableRow = (props: any) => {
 	const { account } = walletContext;
 	const { push: goTo } = useHistory();
 
-	const { instance: zAuctionInstance } = useZAuctionSdk();
 	const { makeABid, updated } = useBid();
 	const { getBidsForDomain } = useBidProvider();
 	const { domainMetadata } = useCurrentDomain();
+	const { instance: sdk } = useZnsSdk();
 
 	const { wildPriceUsd } = useCurrency();
 
@@ -61,7 +61,7 @@ const SubdomainTableRow = (props: any) => {
 		return () => {
 			isMounted.current = false;
 		};
-	}, [domain, hasUpdated, account, zAuctionInstance]);
+	}, [domain, hasUpdated, account, sdk]);
 
 	const fetchData = async () => {
 		setIsPriceDataLoading(true);
@@ -72,9 +72,9 @@ const SubdomainTableRow = (props: any) => {
 			if (isMounted.current === false) {
 				return;
 			}
-			const buyNow = await zAuctionInstance.getBuyNowPrice(domain.id);
-			if (buyNow) {
-				setBuyNowPrice(Number(ethers.utils.formatEther(buyNow.price)));
+			const buyNowPrice = await sdk.zauction.getBuyNowPrice(domain.id);
+			if (buyNowPrice) {
+				setBuyNowPrice(Number(buyNowPrice));
 			}
 		} catch (err) {
 			setIsPriceDataLoading(false);

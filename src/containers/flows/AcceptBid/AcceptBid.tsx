@@ -93,16 +93,18 @@ const AcceptBid = ({
 
 	// Check zAuction Approval
 	const checkZAuctionApproval = () => {
-		if (!sdk || !library || !account) {
+		if (!sdk || !library || !account || !acceptingBid) {
 			return;
 		}
 		setError(undefined);
 		(async () => {
 			try {
-				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-				const isApproved = await zAuction.isZAuctionApprovedToTransferNft(
-					account,
-				);
+				const isApproved =
+					await sdk.zauction.needsToApproveZAuctionToTransferNftsByBid(
+						domainId,
+						account,
+						acceptingBid,
+					);
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
 				if (isApproved) {
@@ -121,15 +123,16 @@ const AcceptBid = ({
 
 	// Approve zAuction Flow
 	const approveZAuction = () => {
-		if (!sdk || !library || !account) {
+		if (!sdk || !library || !account || !acceptingBid) {
 			return;
 		}
 		setError(undefined);
 		setStepContent(StepContent.WaitingForWallet);
 		(async () => {
 			try {
-				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-				const tx = await zAuction.approveZAuctionTransferNft(
+				const tx = await sdk.zauction.approveZAuctionToTransferNftsByBid(
+					domainId,
+					acceptingBid,
 					library.getSigner(),
 				);
 				try {
