@@ -29,7 +29,7 @@ export async function getMetadata(
 			image_full: data.image_full,
 			previewImage: data.previewImage,
 			animation_url: data.animation_url,
-			stakingRequests: data.stakingRequests,
+			stakingRequests: data.stakingRequests || data.stakingrequests,
 			isBiddable: data.isBiddable === undefined || Boolean(data.isBiddable),
 			isMintable: Boolean(data.isMintable),
 			gridViewByDefault: Boolean(data.gridViewByDefault),
