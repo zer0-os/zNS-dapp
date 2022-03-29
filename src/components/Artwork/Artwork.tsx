@@ -27,6 +27,7 @@ type ArtworkProps = {
 	name?: string;
 	pending?: boolean;
 	style?: React.CSSProperties;
+	subtext?: string;
 };
 
 const cx = classNames.bind(styles);
@@ -42,6 +43,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 	name,
 	pending,
 	style,
+	subtext,
 }) => {
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
@@ -156,6 +158,9 @@ const Artwork: React.FC<ArtworkProps> = ({
 								<span className={styles.Domain}>
 									{truncatedDomain || 'wilder.' + domain}
 								</span>
+							)}
+							{subtext && !domain && (
+								<span className={styles.Domain}>{subtext}</span>
 							)}
 							{!disableInteraction && domain && (
 								<Link
