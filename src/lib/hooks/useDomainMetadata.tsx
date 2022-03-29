@@ -1,11 +1,12 @@
-import React from 'react';
-
+import { useState } from 'react';
+import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { Maybe, Metadata } from 'lib/types';
+import { parseDomainMetadata } from 'lib/metadata';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
 export function useDomainMetadata(metadataUri: Maybe<string>) {
-	const [metadata, setMetadata] = React.useState<Maybe<Metadata>>(undefined);
+	const [metadata, setMetadata] = useState<Maybe<Metadata>>(undefined);
 	const { instance: sdk } = useZnsSdk();
 
 	useAsyncEffect(async () => {
@@ -15,9 +16,12 @@ export function useDomainMetadata(metadataUri: Maybe<string>) {
 		if (!metadataUri) {
 			return;
 		}
-		const metadata = await sdk.utility.getMetadataFromUri(metadataUri);
+		const domainMetadata: DomainMetadata = await sdk.utility.getMetadataFromUri(
+			metadataUri,
+		);
 		if (isSubscribed) {
-			setMetadata({ ...metadata, ...{ title: metadata.name } });
+			const parsedMetadata: Metadata = parseDomainMetadata(domainMetadata);
+			setMetadata(parsedMetadata);
 		}
 
 		return () => {

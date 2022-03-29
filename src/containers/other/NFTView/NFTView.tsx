@@ -69,9 +69,11 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	//- Memoized data
 	const { isBiddable, isOwnedByYou, assetUrl, nftMoreOptions } = useMemo(() => {
-		const isBiddable = Boolean(domainMetadata?.isBiddable);
+		const isRootDomain = (znsDomain?.name || '').split('.').length <= 2;
 		const isOwnedByYou =
 			znsDomain?.owner.id.toLowerCase() === account?.toLowerCase();
+		const isBiddable =
+			(isRootDomain && !isOwnedByYou) || Boolean(domainMetadata?.isBiddable);
 		const assetUrl =
 			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image;
 		const nftMoreOptions = isOwnedByYou ? NFT_MORE_ACTIONS.slice(0, 2) : [];
