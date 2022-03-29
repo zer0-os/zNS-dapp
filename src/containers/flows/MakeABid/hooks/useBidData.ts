@@ -2,7 +2,7 @@
  * This hook is just a wrapper for getBidDataForDomain which adds some lifecycle
  * This was needed in a few different components, so it was made generic
  */
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import { DomainBidData, getBidDataForDomain } from 'lib/utils/bids';
 import { useEffect, useState } from 'react';
 

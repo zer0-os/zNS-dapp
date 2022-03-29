@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from 'react';
 
 //- Style Imports
-import styles from './MintWheelsBanner.module.scss';
+import styles from './MintDropNFTBanner.module.scss';
 import arrow from './assets/bidarrow.svg';
 import banner from './assets/pets-banner.gif';
 
-type MintWheelsBannerProps = {
+type MintDropNFTBannerProps = {
 	title: string;
 	label: React.ReactNode;
 	buttonText: string;
@@ -14,7 +14,7 @@ type MintWheelsBannerProps = {
 	style?: React.CSSProperties;
 };
 
-const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
+const MintDropNFTBanner: React.FC<MintDropNFTBannerProps> = ({
 	title,
 	label,
 	buttonText,
@@ -66,4 +66,4 @@ const MintWheelsBanner: React.FC<MintWheelsBannerProps> = ({
 	);
 };
 
-export default MintWheelsBanner;
+export default MintDropNFTBanner;

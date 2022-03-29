@@ -50,7 +50,7 @@ jest.mock('lib/metadata', () => ({
 	getMetadata: () => Promise.resolve(mock.mockMetadata),
 }));
 
-jest.mock('lib/providers/ZnsSdkProvider', () => ({
+jest.mock('lib/hooks/sdk', () => ({
 	useZnsSdk: () => ({
 		instance: {
 			getDomainById: mockGetDomainById,

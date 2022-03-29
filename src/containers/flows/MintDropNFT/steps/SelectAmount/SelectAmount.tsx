@@ -8,7 +8,6 @@ import { FutureButton, TextInput } from 'components';
 import styles from './SelectAmount.module.scss';
 
 // Library Imports
-import { EthPerWheel } from '../../helpers';
 
 type SelectAmountProps = {
 	balanceEth: number;
@@ -18,6 +17,7 @@ type SelectAmountProps = {
 	onBack: () => void;
 	onContinue: (numWheels: number) => void;
 	remainingWheels: number;
+	pricePerNFT: number;
 };
 
 const SelectAmount = (props: SelectAmountProps) => {
@@ -27,7 +27,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 
 	const remainingUserWheels =
 		props.maxPurchasesPerUser - props.numberPurchasedByUser;
-	const maxUserCanAfford = Math.floor(props.balanceEth / EthPerWheel);
+	const maxUserCanAfford = Math.floor(props.balanceEth / props.pricePerNFT);
 
 	const maxWheelsRemaining = Math.min(
 		remainingUserWheels,
@@ -46,7 +46,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 	// We should never hit this, but just in case
 	// there are no wheels remaining
 	// or the user has 0 eth but somehow snuck through
-	if (props.remainingWheels <= 0 || props.balanceEth < EthPerWheel) {
+	if (props.remainingWheels <= 0 || props.balanceEth < props.pricePerNFT) {
 		props.onBack();
 	}
 
@@ -77,7 +77,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 				setInputError(
 					`Please enter a number between 1 & ${props.maxPurchasesPerUser}`,
 				);
-			} else if (numWheels * EthPerWheel > props.balanceEth) {
+			} else if (numWheels * props.pricePerNFT > props.balanceEth) {
 				setInputError(`You do not have enough ETH to mint ${numWheels} Pets`);
 			} else if (numWheels > remainingUserWheels) {
 				setInputError(
@@ -128,7 +128,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 					<p>
 						How many pairs of Pets would you like to Mint? The number you enter
 						will be minted in one transaction, saving on GAS fees. Each Pet
-						costs <b>{EthPerWheel} ETH</b>.
+						costs <b>{props.pricePerNFT} ETH</b>.
 					</p>
 					<TextInput
 						onChange={onInputChange}

@@ -9,7 +9,7 @@ import { useState } from 'react';
 //- Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { Bid } from '@zero-tech/zauction-sdk';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 //- Constants Imports
 import constants from '../CancelBid.constants';

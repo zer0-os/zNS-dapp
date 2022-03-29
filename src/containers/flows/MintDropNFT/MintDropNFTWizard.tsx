@@ -20,12 +20,11 @@ import { ERC20, WhitelistSimpleSale } from 'types';
 
 // Configuration
 import { Stage, Step, TransactionData } from './types';
-import { EthPerWheel } from './helpers';
 
 // Style Imports
-import styles from './MintWheels.module.scss';
+import styles from './MintDropNFTWizard.module.scss';
 
-type MintWheelsProps = {
+type MintDropNFTWizardProps = {
 	balanceEth?: number;
 	contract?: WhitelistSimpleSale;
 	dropStage?: Stage;
@@ -37,11 +36,12 @@ type MintWheelsProps = {
 	userId?: string;
 	wheelsTotal?: number;
 	wheelsMinted?: number;
+	pricePerNFT: number;
 	onSubmitTransaction: (data: TransactionData) => void;
 	token?: ERC20;
 };
 
-const MintWheels = (props: MintWheelsProps) => {
+const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -61,7 +61,7 @@ const MintWheels = (props: MintWheelsProps) => {
 
 	const onContinueFromInfo = () => {
 		if (props.balanceEth !== undefined) {
-			if (props.balanceEth < EthPerWheel) {
+			if (props.balanceEth < props.pricePerNFT) {
 				setStep(Step.InsufficientFunds);
 			} else {
 				setStep(Step.SelectAmount);
@@ -135,6 +135,7 @@ const MintWheels = (props: MintWheelsProps) => {
 					isUserWhitelisted={props.isUserWhitelisted}
 					isWalletConnected={props.userId !== undefined}
 					maxPurchasesPerUser={props.maxPurchasesPerUser}
+					pricePerNFT={props.pricePerNFT}
 					numberPurchasedByUser={props.numberPurchasedByUser}
 					onContinue={onContinueFromInfo!}
 					onDismiss={props.onClose}
@@ -160,6 +161,7 @@ const MintWheels = (props: MintWheelsProps) => {
 				<SelectAmount
 					balanceEth={props.balanceEth!}
 					error={transactionError}
+					pricePerNFT={props.pricePerNFT}
 					maxPurchasesPerUser={props.maxPurchasesPerUser!}
 					numberPurchasedByUser={props.numberPurchasedByUser!}
 					onBack={onBack}
@@ -175,7 +177,12 @@ const MintWheels = (props: MintWheelsProps) => {
 			return <Loading isMinting text={transactionStatus} />;
 		}
 		if (step === Step.InsufficientFunds) {
-			return <InsufficientFunds onDismiss={props.onClose} />;
+			return (
+				<InsufficientFunds
+					pricePerNFT={props.pricePerNFT}
+					onDismiss={props.onClose}
+				/>
+			);
 		}
 		if (step === Step.Finished) {
 			return <Finished onFinish={props.onFinish} />;
@@ -202,4 +209,4 @@ const MintWheels = (props: MintWheelsProps) => {
 	);
 };
 
-export default MintWheels;
+export default MintDropNFTWizard;

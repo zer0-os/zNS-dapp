@@ -9,11 +9,10 @@ import { tryFunction } from 'lib/utils';
 //- Hook Imports
 import { useWeb3React } from '@web3-react/core';
 import useNotification from './useNotification';
-import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
+import { useZnsSdk, useZAuctionSdk } from 'lib/hooks/sdk';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
 import { Web3Provider } from '@ethersproject/providers';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 
 /////////////////////
 // Mock data stuff //
@@ -208,7 +207,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 	const placeBid = useCallback(
 		async (domain: Domain, bid: number, onStep: (status: string) => void) => {
-			if (zAuctionInstance === undefined) {
+			if (sdk?.zauction === undefined) {
 				console.warn('No zAuctionInstance');
 				return;
 			}
@@ -217,7 +216,6 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				return;
 			}
 
-			console.log(library);
 			try {
 				await sdk.zauction.placeBid(
 					{
@@ -232,7 +230,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				console.warn(e);
 			}
 		},
-		[zAuctionInstance, library, addNotification],
+		[sdk, library, addNotification],
 	);
 
 	return useMemo(

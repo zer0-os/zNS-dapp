@@ -16,7 +16,7 @@ import { useBid } from './BidProvider';
 import { ethers } from 'ethers';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { formatNumber, formatEthers } from 'lib/utils';
-import { useZAuctionSdk } from 'lib/providers/ZAuctionSdkProvider';
+import { useZAuctionSdk } from 'lib/hooks/sdk';
 
 import styles from './SubdomainTableRow.module.scss';
 
