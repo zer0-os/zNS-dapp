@@ -1,0 +1,55 @@
+.Container {
+	cursor: pointer;
+	position: relative !important;
+	min-width: 280px;
+	/* max-width: 388px; */
+	border-radius: var(--box-radius);
+	overflow: hidden;
+
+	background: rgba(0, 0, 0, 0.2);
+
+	padding-top: 100%;
+
+	@media only screen and (max-width: 414px) {
+		min-width: unset;
+	}
+
+	h5 {
+		margin-bottom: 1px;
+		color: white;
+		font-size: 18px;
+		font-weight: 700;
+	}
+
+	.Body {
+		padding: 16px;
+	}
+
+	.Image {
+		position: absolute !important;
+		top: 0;
+		left: 0;
+		height: auto !important;
+		width: 100% !important;
+
+		border-radius: var(--box-radius) var(--box-radius) 0 0;
+		background: rgba(0, 0, 0, 0.3);
+
+		img,
+		video {
+			width: 100%;
+		}
+
+		// This is coupled to the Image component
+		// Should be decoupled
+		div[class*='Spinner'] {
+			margin-top: 100%;
+		}
+	}
+
+	.Footer {
+		padding: 16px;
+
+		background-color: var(--color-background-alt);
+	}
+}

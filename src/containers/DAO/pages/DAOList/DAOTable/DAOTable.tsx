@@ -1,4 +1,5 @@
 import { GenericTable } from 'components';
+import DAOTableCard from './DAOTableCard';
 import DAOTableRow from './DAOTableRow';
 
 type DAOTableProps = {
@@ -23,15 +24,16 @@ const DAOTable = ({ daoZnas, isLoading }: DAOTableProps) => {
 	return (
 		<GenericTable
 			alignments={[0, 1]}
-			data={daoZnas?.map((z) => ({ zna: z }))}
+			data={daoZnas?.map((z) => ({ zna: z })) ?? []}
 			itemKey={'zna'}
 			headers={HEADERS}
 			rowComponent={DAOTableRow}
-			infiniteScroll
+			gridComponent={DAOTableCard}
 			isLoading={isLoading}
 			loadingText={'Loading DAOs'}
 			emptyText={'Could not find any DAOs'}
-			notSearchable
+			searchKey={'zna'}
+			searchBy={'zNA'}
 		/>
 	);
 };

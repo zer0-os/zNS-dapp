@@ -1,31 +1,21 @@
-// React
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-
-// Components
-import { Artwork, Spinner } from 'components';
-
-// Hooks
+import { zDAO } from '@zero-tech/zdao-sdk';
+import { Detail, Spinner } from 'components';
+import { ROUTES } from 'constants/routes';
 import { useZdaoSdk } from 'lib/dao/providers/ZdaoSdkProvider';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import useAssets from '../../DAOPage/hooks/useAssets';
 import { useTotals } from '../TotalProvider';
 
-// Lib
-import { zDAO } from '@zero-tech/zdao-sdk';
-import { toFiat } from 'lib/currency';
-import { ROUTES } from 'constants/routes';
-
-// Styles
-import styles from './DAOTableRow.module.scss';
-
 import defaultDaoIcon from 'assets/default_dao.png';
+import { toFiat } from 'lib/currency';
 
-/**
- * Defines a single row in a DAO table
- */
-const DAOTableRow = (props: any) => {
+import styles from './DAOTableCard.module.scss';
+import ImageCard from 'components/Cards/ImageCard/ImageCard';
+
+const DAOTableCard = (props: any) => {
 	// Data
 	const { zna } = props.data;
 	const [dao, setDao] = useState<zDAO | undefined>();
@@ -39,7 +29,7 @@ const DAOTableRow = (props: any) => {
 	/**
 	 * Navigates to the selected DAO zNA
 	 */
-	const onClickRow = () => {
+	const onClick = () => {
 		history.push(`${ROUTES.ZDAO}/${zna}/assets`);
 	};
 
@@ -72,27 +62,27 @@ const DAOTableRow = (props: any) => {
 	useUpdateEffect(getData, [zna, sdk]);
 
 	return (
-		<tr className={styles.Container} onClick={onClickRow}>
-			<td>
-				<Artwork
-					id={'1'}
-					domain={zna}
-					name={dao?.title}
-					image={dao?.avatar ?? defaultDaoIcon}
-					disableInteraction
-					disableAnimation
-				/>
-			</td>
-			<td className={styles.Right}>
-				{totalUsd !== undefined ? (
-					'$' + toFiat(totalUsd!)
-				) : isLoadingAssets ? (
-					<Spinner />
-				) : (
-					'Failed to load'
-				)}
-			</td>
-		</tr>
+		<ImageCard
+			imageUri={dao?.avatar ?? defaultDaoIcon}
+			header={dao?.title}
+			subHeader={zna && '0://wilder.' + zna}
+			onClick={onClick}
+		>
+			<Detail
+				className={styles.Total}
+				text={
+					isLoadingAssets ? (
+						<Spinner />
+					) : totalUsd === undefined ? (
+						'Failed to retrieve'
+					) : (
+						'$' + toFiat(totalUsd!)
+					)
+				}
+				subtext={'Total Value'}
+			/>
+		</ImageCard>
 	);
 };
-export default DAOTableRow;
+
+export default DAOTableCard;

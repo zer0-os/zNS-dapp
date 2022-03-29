@@ -3,7 +3,7 @@
 
 	> * {
 		&:not(:first-child) {
-			margin-top: 24px;
+			margin-top: 9px;
 		}
 	}
 
@@ -15,6 +15,22 @@
 
 			&:not(:last-child) {
 				margin-right: 16px;
+			}
+		}
+
+		@media only screen and (max-width: 700px) {
+			flex-direction: column;
+
+			> * {
+				margin-right: 0 !important;
+
+				&:not(:first-child) {
+					margin-top: 8px;
+				}
+
+				&:last-child {
+					display: none;
+				}
 			}
 		}
 	}
@@ -42,5 +58,14 @@
 				text-shadow: none;
 			}
 		}
+	}
+
+	div[class*='GenericTable_Grid'] {
+		padding: 0;
+	}
+
+	div[class*='GenericTable_Controls'] {
+		padding-left: 0;
+		padding-right: 0;
 	}
 }

@@ -195,11 +195,15 @@ const GenericTable = (props: any) => {
 		const data = props.infiniteScroll
 			? rawData
 					.filter((d: any) =>
-						searchQuery ? d.name.includes(searchQuery) : true,
+						searchQuery && !props.notSearchable
+							? d[props.searchKey].includes(searchQuery)
+							: true,
 					)
 					.slice(0, chunk * chunkSize)
 			: rawData.filter((d: any) =>
-					searchQuery ? d.name.includes(searchQuery) : true,
+					searchQuery && !props.notSearchable
+						? d[props.searchKey].includes(searchQuery)
+						: true,
 			  );
 
 		return (

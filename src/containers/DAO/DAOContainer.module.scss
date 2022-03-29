@@ -4,6 +4,10 @@
 	margin-left: auto;
 	margin-right: auto;
 
+	@media only screen and (max-width: 780px) {
+		width: 100%;
+	}
+
 	// Can be removed once routing is set
 	> * {
 		&:not(:first-child) {

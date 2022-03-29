@@ -15,7 +15,6 @@ const useAssets = (dao?: zDAO): UseAssetsReturn => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	useEffect(() => {
-		console.log('call');
 		let isMounted = true;
 		setIsLoading(true);
 		if (!dao) {

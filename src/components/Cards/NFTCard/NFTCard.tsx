@@ -64,7 +64,11 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	}
 
 	const media = useMemo(() => {
-		return (
+		console.log('image uri:', imageUri);
+		return imageUri?.startsWith('http://') ||
+			imageUri?.startsWith('https://') ? (
+			<>hello</>
+		) : (
 			<NFTMedia
 				className={styles.NFT}
 				ipfsUrl={imageUri ? imageUri : ''}
