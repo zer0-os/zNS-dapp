@@ -113,7 +113,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			<NFT
 				domainId={znsDomain?.id}
 				account={account as string}
-				title={znsDomain?.title as string}
+				title={domainMetadata?.name as string}
 				owner={znsDomain?.owner.id as string}
 				creator={znsDomain?.minter.id as string}
 				onDownload={downloadAsset}

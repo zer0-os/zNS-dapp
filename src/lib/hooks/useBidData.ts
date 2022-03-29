@@ -1,4 +1,4 @@
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import { DomainBidData, getBidDataForDomain } from 'lib/utils/bids';
 import { useEffect, useState } from 'react';
 

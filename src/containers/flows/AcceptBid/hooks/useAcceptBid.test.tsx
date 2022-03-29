@@ -11,6 +11,9 @@ import { MESSAGES, ERRORS } from '../AcceptBid.constants';
 //- Hooks Imports
 import useAcceptBid, { UseAcceptBidReturn } from './useAcceptBid';
 
+//- Type Imports
+import { ZAuctionVersionType } from '../AcceptBid.types';
+
 //////////
 // Mock //
 //////////
@@ -18,7 +21,7 @@ import useAcceptBid, { UseAcceptBidReturn } from './useAcceptBid';
 var mockAcceptBid = jest.fn();
 var mockTx = jest.fn();
 
-jest.mock('lib/providers/ZnsSdkProvider', () => ({
+jest.mock('lib/hooks/sdk', () => ({
 	useZnsSdk: () => ({
 		instance: {
 			zauction: {
@@ -37,7 +40,7 @@ jest.mock('@web3-react/core', () => ({
 }));
 
 const mockBid = {
-	auctionId: '1',
+	bidNonce: '1',
 	bidder: '0x000000000000000000000000',
 	signedMessage: 'message',
 	tokenId: 'id',
@@ -46,6 +49,7 @@ const mockBid = {
 	contract: '0x000000000000000000000000',
 	startBlock: '0',
 	expireBlock: '0',
+	version: ZAuctionVersionType.V2,
 };
 
 ///////////

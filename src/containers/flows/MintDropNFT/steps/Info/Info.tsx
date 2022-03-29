@@ -5,7 +5,6 @@ import Loading from '../Loading/Loading';
 
 // Library Imports
 import { Stage } from '../../types';
-import { EthPerWheel } from '../../helpers';
 
 // Style Imports
 import styles from './Info.module.scss';
@@ -21,6 +20,7 @@ type InfoProps = {
 	onDismiss: () => void;
 	wheelsMinted: number;
 	wheelsTotal: number;
+	pricePerNFT: number;
 };
 
 const Info = (props: InfoProps) => {
@@ -95,7 +95,7 @@ const Info = (props: InfoProps) => {
 						2022.
 						<br></br>
 						<br></br>
-						The cost for each Pet is <b>{EthPerWheel} ETH</b> plus GAS.
+						The cost for each Pet is <b>{props.pricePerNFT} ETH</b> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -114,7 +114,7 @@ const Info = (props: InfoProps) => {
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
 							{props.maxPurchasesPerUser} Pets. The cost for each Pet is{' '}
-							<b>{EthPerWheel} ETH</b> plus GAS.
+							<b>{props.pricePerNFT} ETH</b> plus GAS.
 						</p>
 						{props.errorMessage !== undefined && (
 							<p className="error-text text-center">{props.errorMessage}</p>

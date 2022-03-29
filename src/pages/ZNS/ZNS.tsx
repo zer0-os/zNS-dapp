@@ -12,12 +12,11 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 
-import { SubdomainTable, CurrentDomainPreview } from 'containers';
+import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
@@ -26,6 +25,7 @@ import useScrollDetection from 'lib/hooks/useScrollDetection';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useLocation } from 'react-router-dom';
 import { useNavbar } from 'lib/hooks/useNavbar';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 type ZNSProps = {
 	version?: number;
@@ -279,10 +279,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 		);
 	};
 
-	const subTable = useMemo(() => {
-		return <SubdomainTable style={{ marginTop: 16 }} isNftView={isNftView} />;
-	}, [isNftView]);
-
 	////////////
 	// Render //
 	////////////
@@ -301,7 +297,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			{/* <WheelsRaffle /> */}
+			<Raffle />
 			{!isNftView && (
 				<div
 					className="background-primary border-primary border-rounded"
@@ -313,7 +309,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				>
 					{previewCard()}
 					{nftStats()}
-					{showDomainTable && subTable}
+					{showDomainTable && <SubdomainTable style={{ marginTop: 16 }} />}
 				</div>
 			)}
 			{znsDomain && isNftView && (

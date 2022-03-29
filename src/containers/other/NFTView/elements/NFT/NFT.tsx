@@ -13,6 +13,7 @@ import {
 
 // Container Imports
 import { BuyNowButton, SetBuyNowButton } from 'containers';
+import CancelBidButton from 'containers/flows/CancelBid/CancelBidButton';
 
 // Asset Imports
 import shareIcon from '../../assets/share.svg';
@@ -28,7 +29,6 @@ import classNames from 'classnames/bind';
 import { toFiat } from 'lib/currency';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { ethers } from 'ethers';
-import CancelBidButton from 'containers/flows/CancelBid/CancelBidButton';
 
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
@@ -204,7 +204,7 @@ const NFT = ({
 			<CancelBidButton
 				className={styles.Action}
 				isTextButton
-				auctionId={yourBid!.auctionId}
+				bidNonce={yourBid!.bidNonce}
 				domainId={domainId!}
 				onSuccess={onRefetch}
 			/>

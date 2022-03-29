@@ -1,5 +1,10 @@
 import { BigNumber } from 'ethers';
 
+export enum ZAuctionVersionType {
+	V1 = '1.0',
+	V2 = '2.0',
+}
+
 export type BidData = {
 	assetUrl: string;
 	creator: string;

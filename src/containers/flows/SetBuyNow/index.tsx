@@ -7,7 +7,8 @@ import SetBuyNow, { Step } from './SetBuyNow';
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
 import useCurrency from 'lib/hooks/useCurrency';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import useNotification from 'lib/hooks/useNotification';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 // Type Imports
 import { DomainData } from './SetBuyNow';
@@ -28,6 +29,7 @@ const SetBuyNowContainer = ({
 	const { instance: sdk } = useZnsSdk();
 	const { account, library } = useWeb3React();
 	const { wildPriceUsd } = useCurrency();
+	const { addNotification } = useNotification();
 
 	// State
 	const [currentStep, setCurrentStep] = useState<Step>(0);
@@ -41,17 +43,18 @@ const SetBuyNowContainer = ({
 	 * transfer NFTs
 	 */
 	const checkZAuctionApproval = () => {
-		if (!sdk || !library || !account) {
+		if (!sdk || !sdk.zauction || !library || !account) {
 			return;
 		}
 
 		setError(undefined);
 		(async () => {
 			try {
-				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-				const isApproved = await zAuction.isZAuctionApprovedToTransferNft(
-					account,
-				);
+				const isApproved =
+					await sdk.zauction.needsToApproveZAuctionToTransferNfts(
+						domainId,
+						account,
+					);
 				// Wait for a sec so the UI doesn't look broken if the above
 				// checks resolve quickly
 				await new Promise((r) => setTimeout(r, 1500));
@@ -71,15 +74,15 @@ const SetBuyNowContainer = ({
 	 * Takes the user through the "approve zAuction" flow
 	 */
 	const approveZAuction = () => {
-		if (!sdk || !library || !account) {
+		if (!sdk || !sdk.zauction || !library || !account) {
 			return;
 		}
 		setError(undefined);
 		setCurrentStep(Step.WaitingForWallet);
 		(async () => {
 			try {
-				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
-				const tx = await zAuction.approveZAuctionTransferNft(
+				const tx = await sdk.zauction.approveZAuctionToTransferNfts(
+					domainId,
 					library.getSigner(),
 				);
 				// @todo handle wallet rejected
@@ -104,10 +107,9 @@ const SetBuyNowContainer = ({
 			try {
 				setError(undefined);
 				setCurrentStep(Step.WaitingForBuyNowConfirmation);
-				const zAuction = await sdk.getZAuctionInstanceForDomain(domainId);
 				let tx;
 				if (amount) {
-					tx = await zAuction.setBuyNowPrice(
+					tx = await sdk.zauction.setBuyNowPrice(
 						{
 							amount: ethers.utils.parseEther(amount.toString()).toString(),
 							tokenId: domainId,
@@ -115,7 +117,7 @@ const SetBuyNowContainer = ({
 						library.getSigner(),
 					);
 				} else {
-					tx = await zAuction.cancelBuyNow(domainId, library.getSigner());
+					tx = await sdk.zauction.cancelBuyNow(domainId, library.getSigner());
 				}
 				setCurrentStep(Step.SettingBuyNow);
 				await tx.wait();
@@ -125,6 +127,14 @@ const SetBuyNowContainer = ({
 						? ethers.utils.parseEther(amount.toString())
 						: undefined,
 				});
+				if (amount) {
+					addNotification(
+						`You have successfully set a Buy Now price of ${amount} WILD`,
+					);
+				} else {
+					addNotification(`You have successfully removed the Buy Now price`);
+				}
+
 				setCurrentStep(Step.Success);
 				if (onSuccess) {
 					onSuccess();
@@ -148,16 +158,14 @@ const SetBuyNowContainer = ({
 		(async () => {
 			setIsLoadingDomainData(true);
 			try {
-				const [domain, events, metadata, listing] = await Promise.all([
+				const [domain, events, metadata, price] = await Promise.all([
 					sdk.getDomainById(domainId),
 					sdk.getDomainEvents(domainId),
 					sdk.getDomainMetadata(domainId, library.getSigner()),
-					(
-						await sdk.getZAuctionInstanceForDomain(domainId)
-					).getBuyNowPrice(domainId),
+					sdk.zauction.getBuyNowPrice(domainId),
 				]);
 				if (domain && events && metadata) {
-					const buyNow = listing.price;
+					const buyNow = ethers.utils.parseEther(price);
 					checkZAuctionApproval();
 					setDomainData({
 						id: domainId,
@@ -183,7 +191,7 @@ const SetBuyNowContainer = ({
 			isMounted.current = false;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [domainId, library]);
+	}, [domainId, library, sdk]);
 
 	return (
 		<SetBuyNow

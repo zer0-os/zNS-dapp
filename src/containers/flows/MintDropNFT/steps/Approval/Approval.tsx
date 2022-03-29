@@ -55,7 +55,7 @@ const Approval: React.FC<ApprovalProps> = ({
 					await tx.wait();
 					setHasApproved(true);
 					onApproval();
-				} catch (e) {
+				} catch (e: any) {
 					setError(e.message);
 					setIsWaitingForConfirmation(false);
 					setIsApprovalInProgress(false);
