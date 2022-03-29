@@ -137,7 +137,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 
 				return displayBids;
 			} catch (e) {
-				console.error('Failed to retrieve bids for user ' + id);
+				console.error('Failed to retrieve bids for user ' + id, e);
 				return [];
 			}
 		},
@@ -183,6 +183,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 		status: PlaceBidStatus,
 		onStep: (status: string) => void,
 	) => {
+		console.log(status);
 		switch (status) {
 			case 0:
 				onStep('Generating bid...');
@@ -221,6 +222,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 					library!.getSigner(),
 					(status) => onPlaceBidStatusChange(status, onStep),
 				);
+				onStep('Generating bid...');
 				addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
 			} catch (e) {
 				console.warn(e);
