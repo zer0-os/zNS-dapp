@@ -41,7 +41,7 @@ const AssetsTableRow = (props: any) => {
 					id={'1'}
 					domain={typedAsset.symbol}
 					name={typedAsset.name}
-					image={defaultAssetIcon}
+					image={typedAsset.logoUri ?? defaultAssetIcon}
 					disableAnimation
 				/>
 			</td>
