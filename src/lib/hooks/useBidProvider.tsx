@@ -225,7 +225,6 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				onStep('Generating bid...');
 				addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
 			} catch (e) {
-				onStep(e.message);
 				console.warn(e);
 			}
 		},
