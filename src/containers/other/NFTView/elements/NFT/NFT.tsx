@@ -92,7 +92,6 @@ const NFT = ({
 	onRefetch,
 }: NFTProps) => {
 	const blobCache = useRef<string>();
-	console.log({ isBiddable });
 
 	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
 		blobCache.current,

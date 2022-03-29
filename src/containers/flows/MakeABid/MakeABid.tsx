@@ -429,7 +429,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					)}
 					{!isDomainOwner && !isBiddable && (
 						<p className={styles.Error} style={{ paddingTop: '16px' }}>
-							You can not bid on this domain because it is disabled bid
+							Bidding has been disabled on this domain
 						</p>
 					)}
 					{!isDomainOwner && isBiddable && (
