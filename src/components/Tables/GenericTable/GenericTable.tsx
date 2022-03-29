@@ -72,7 +72,8 @@ const GenericTable = (props: any) => {
 	// Since due date is coming up, I'm rushing the search algo
 	// This will need to be expanded to be generic
 	const matchesSearch = (d: any) => {
-		return d.name.includes(searchQuery);
+		const value = d[props.searchKey ?? 'name'].toLowerCase();
+		return value.includes(searchQuery?.toLowerCase());
 	};
 
 	// Toggles to grid view when viewport
@@ -231,7 +232,7 @@ const GenericTable = (props: any) => {
 					<div className={styles.Controls}>
 						{shouldShowSearchBar && (
 							<SearchBar
-								placeholder="Search by domain name"
+								placeholder={'Search by ' + (props.searchBy ?? 'domain name')}
 								onChange={onSearchBarUpdate}
 								style={{ width: '100%', marginRight: 16 }}
 							/>
