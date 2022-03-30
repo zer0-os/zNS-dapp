@@ -12,7 +12,7 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 
-import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
+import { SubdomainTable, CurrentDomainPreview } from 'containers';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
@@ -297,7 +297,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			<Raffle />
 			{!isNftView && (
 				<div
 					className="background-primary border-primary border-rounded"
