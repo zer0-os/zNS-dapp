@@ -1,3 +1,4 @@
+import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { Metadata } from './types';
 
 interface MetadataCache {
@@ -21,21 +22,7 @@ export async function getMetadata(
 
 		const response = await fetch(requestUrl);
 		const data = await response.json();
-		const metadata = {
-			attributes: data.attributes,
-			title: data.name || data.title,
-			description: data.description,
-			image: data.image,
-			image_full: data.image_full,
-			previewImage: data.previewImage,
-			animation_url: data.animation_url,
-			stakingRequests: data.stakingRequests || data.stakingrequests,
-			isBiddable: data.isBiddable === undefined || Boolean(data.isBiddable),
-			isMintable: Boolean(data.isMintable),
-			gridViewByDefault: Boolean(data.gridViewByDefault),
-			customDomainHeader: Boolean(data.customDomainHeader),
-			customDomainHeaderValue: data.customDomainHeaderValue,
-		} as Metadata;
+		const metadata = parseDomainMetadata(data);
 
 		if (!metadata.title || !metadata.description || !metadata.image) {
 			throw Error();
@@ -49,3 +36,26 @@ export async function getMetadata(
 		return;
 	}
 }
+
+export const parseDomainMetadata = (
+	domainMetadata: DomainMetadata,
+): Metadata => {
+	return {
+		attributes: domainMetadata.attributes,
+		title: domainMetadata.name || domainMetadata.title,
+		description: domainMetadata.description,
+		image: domainMetadata.image,
+		image_full: domainMetadata.image_full,
+		previewImage: domainMetadata.previewImage,
+		animation_url: domainMetadata.animation_url,
+		stakingRequests:
+			domainMetadata.stakingRequests || domainMetadata.stakingrequests,
+		isBiddable:
+			domainMetadata.isBiddable === undefined ||
+			Boolean(domainMetadata.isBiddable),
+		isMintable: Boolean(domainMetadata.isMintable),
+		gridViewByDefault: Boolean(domainMetadata.gridViewByDefault),
+		customDomainHeader: Boolean(domainMetadata.customDomainHeader),
+		customDomainHeaderValue: domainMetadata.customDomainHeaderValue,
+	} as Metadata;
+};

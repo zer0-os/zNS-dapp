@@ -84,7 +84,8 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const wildContract: ERC20 = znsContracts.wildToken;
 
 	const { isBiddable, isDomainOwner } = useMemo(() => {
-		const isBiddable = Boolean(domainMetadata?.isBiddable);
+		const isRootDomain = domain.name.split('.').length <= 2;
+		const isBiddable = isRootDomain || Boolean(domainMetadata?.isBiddable);
 		const isDomainOwner =
 			domain.owner.id.toLowerCase() === account?.toLowerCase();
 
