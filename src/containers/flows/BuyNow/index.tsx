@@ -15,7 +15,7 @@ import { Data } from './BuyNow';
 import { useZnsContracts } from 'lib/contracts';
 import { ERC20 } from 'types';
 import { ethers } from 'ethers';
-import { getMetadata } from 'lib/metadata';
+import useMetadata from 'lib/hooks/useMetadata';
 
 export type BuyNowContainerProps = {
 	domainId: string;
@@ -30,6 +30,7 @@ const BuyNowContainer = ({
 }: BuyNowContainerProps) => {
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
+	const { getMetadata } = useMetadata();
 	const { account, library } = useWeb3React();
 	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();

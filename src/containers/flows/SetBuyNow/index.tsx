@@ -13,7 +13,7 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 // Type Imports
 import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
-import { getMetadata } from 'lib/metadata';
+import useMetadata from 'lib/hooks/useMetadata';
 
 export interface SetBuyNowContainerProps {
 	domainId: string;
@@ -31,6 +31,7 @@ const SetBuyNowContainer = ({
 	const { account, library } = useWeb3React();
 	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
+	const { getMetadata } = useMetadata();
 
 	// State
 	const [currentStep, setCurrentStep] = useState<Step>(0);
