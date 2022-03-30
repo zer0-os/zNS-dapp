@@ -1,10 +1,11 @@
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+import { useZSaleSdk } from 'lib/hooks/sdk';
 import { useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import useNotification from 'lib/hooks/useNotification';
 import { useBasicController } from 'lib/hooks/useBasicController';
 import { Maybe, NftParams, NftStatusCard } from 'lib/types';
-import * as wheels from 'lib/wheelSale';
-import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 import { createDomainMetadata, UploadedDomainMetadata } from 'lib/utils';
 import { AppState } from 'store';
@@ -62,15 +63,15 @@ const useMintRedux = () => {
 	return { reduxState, reduxActions };
 };
 
-const useMint = (): UseMintReturn => {
+export const useMint = (): UseMintReturn => {
 	////////////////////////
 	//  Hooks From Out    //
 	////////////////////////
 
 	const { addNotification } = useNotification();
+	const { instance: zSaleInstance } = useZSaleSdk();
+	const { library } = useWeb3React<Web3Provider>();
 	const basicController = useBasicController();
-	const contracts = useZnsContracts();
-	const saleContract = contracts?.wheelSale;
 	const { reduxState, reduxActions } = useMintRedux();
 
 	////////////////////////////////
@@ -86,14 +87,14 @@ const useMint = (): UseMintReturn => {
 			// Set up default wheel to render
 			const wheel = {
 				zNA: '',
-				title: 'Your Wheels',
+				title: 'Your Pet',
 				imageUri:
-					'https://res.cloudinary.com/fact0ry/image/upload/c_fill,h_200,w_296/v1632961649/zns/minting-in-progress.gif',
+					'https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_290,w_542/v1645732684/zns/pets-mint-progress.gif',
 				story: '',
 				transactionHash: '',
 			};
 
-			if (!saleContract) {
+			if (!zSaleInstance || !library) {
 				return;
 			}
 
@@ -102,15 +103,12 @@ const useMint = (): UseMintReturn => {
 			//////////////////////////////////////
 
 			let tx: Maybe<ethers.ContractTransaction>;
-			setStatus('Pending wallet approval');
-
-			const network = await saleContract.provider.getNetwork();
+			setStatus('Confirm wallet transaction to begin minting your Pet');
 
 			try {
-				tx = await wheels.purchaseWheels(
-					numWheels,
-					saleContract,
-					network.chainId === 1,
+				tx = await zSaleInstance.purchaseDomains(
+					ethers.BigNumber.from(numWheels),
+					library.getSigner(),
 				);
 			} catch (e) {
 				console.error(e);
@@ -123,7 +121,7 @@ const useMint = (): UseMintReturn => {
 			//////////////////////////
 
 			setStatus(
-				'Minting your wheels... The transaction will continue in the backround if you close this window. Your Wheels will be in your profile when complete.',
+				'Minting your Pet... this may take up to 20 minutes if the network is busy. You may close this and the transaction will continue in the background. When minting is complete, your Pet will be in your profile.',
 			);
 
 			reduxActions.setMinting(wheel);
@@ -135,16 +133,17 @@ const useMint = (): UseMintReturn => {
 			//////////////////////////
 
 			addNotification(
-				`Successfully minted ${numWheels} Wheels. Open your Profile to view them`,
+				'Successfully minted your Pet. Open your Profile to view it',
 			);
 
 			reduxActions.setMinted(wheel);
 
 			onFinish();
 		},
-		[reduxActions, addNotification, saleContract],
+		[reduxActions, addNotification, zSaleInstance, library],
 	);
 
+	// TODO: Migrate this once zNS SDK supports minting
 	const mint = useCallback(
 		async (nft: NftParams, setStatus: (status: string) => void) => {
 			// @todo better validation

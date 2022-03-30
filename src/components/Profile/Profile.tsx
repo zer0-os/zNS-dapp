@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 //- Style Imports
 import CopyInput from '../CopyInput/CopyInput.js';
 import ProfileStyle from './Profile.module.scss';
+import { TABS } from './Profile.constants';
 
 //- Component Imports
 import { TabBar } from 'components';
-import { OwnedDomainsTable } from 'containers';
+import { OwnedDomainsTable, BidTable } from 'containers';
 
 type ProfileProps = {
 	id: string;
@@ -35,16 +36,6 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 		setSelected(option);
 	};
 
-	const navigateToDomain = (domain: string) => {
-		const d =
-			domain.indexOf('wilder.') === 0 ? domain.split('wilder.')[1] : domain;
-		if (onNavigate) onNavigate(d);
-	};
-
-	/////////////
-	// Effects //
-	/////////////
-
 	////////////
 	// Render //
 	////////////
@@ -53,7 +44,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 
 	return (
 		<div
-			className={`${ProfileStyle.profile} blur border-primary border-rounded`}
+			className={`${ProfileStyle.profile} border-primary border-rounded background-primary`}
 		>
 			<h1 className={`glow-text-white`}>Profile</h1>
 			<div className={ProfileStyle.body}>
@@ -88,13 +79,9 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 					<CopyInput value={id} />
 				</div>
 			</div>
-			<TabBar tabs={['Your Domains']} onSelect={select} />
-			{selected === 'Your Domains' && (
-				<OwnedDomainsTable onNavigate={navigateToDomain} />
-			)}
-			{/* {selected === 'Offers' && (
-				<RequestTable onNavigate={navigateToDomain} userId={id} />
-			)} */}
+			<TabBar tabs={[TABS.YOUR_DOMAINS, TABS.YOUR_BIDS]} onSelect={select} />
+			{selected === TABS.YOUR_DOMAINS && <OwnedDomainsTable />}
+			{selected === TABS.YOUR_BIDS && <BidTable />}
 		</div>
 	);
 };

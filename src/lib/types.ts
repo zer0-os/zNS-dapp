@@ -1,5 +1,6 @@
 // Types
 
+//- Library Imports
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
@@ -9,25 +10,38 @@ export interface Account {
 	id: string;
 }
 
+export interface DomainMin {
+	id: string;
+	name: string;
+}
+
 export interface Domain {
 	id: string;
 	name: string;
-	parent: string;
+	parent: DomainMin;
 	owner: Account;
 	minter: Account;
 	metadata: string;
+	contract?: string; // TODO: Making it optional so that tests and other scenarios work
+	isLocked: boolean;
+	lockedBy: Account;
 }
 
 // We have two different types of Metadata
 // because we changed Schema. This needs to be
 // handled in a better way
 interface Meta {
-	description: string;
+	[key: string]: any | undefined;
 	image: string; // One of: Image, Video, 3d Model
+	animation_url?: string;
+	stakingRequests?: 'disabled' | 'enabled';
+	isBiddable?: boolean;
+	gridViewByDefault?: boolean;
+	customDomainHeader?: boolean;
 	previewImage?: string; // One of: Image, Video
+	customDomainHeaderValue?: string;
 	image_full?: string;
 	attributes?: Attribute[];
-	animation_url?: string;
 }
 
 export interface Attribute {
@@ -132,14 +146,22 @@ export interface DisplayDomainRequestAndContents
 export const DefaultDomain: Domain = {
 	id: '',
 	name: '',
-	parent: '',
+	parent: {
+		id: '',
+		name: '',
+	},
 	owner: {
 		id: '',
 	},
 	minter: {
 		id: '',
 	},
+	contract: '',
 	metadata: '',
+	isLocked: false,
+	lockedBy: {
+		id: '',
+	},
 };
 
 // @zachary change these types
@@ -152,7 +174,7 @@ export type Bid = {
 	tokenId: string;
 
 	signature: ethers.utils.BytesLike;
-	auctionId: string;
+	bidNonce: string;
 	nftAddress: string;
 	minBid: string;
 	startBlock: string;
@@ -197,4 +219,22 @@ export interface minterData {
 
 export interface transfersData {
 	domainTransferreds?: transferDto[];
+}
+
+export interface TransferSubmitParams {
+	name: string;
+	domainId: string;
+	domainName: string;
+	ownerId: string;
+	image: string;
+	creatorId: string;
+	walletAddress: string;
+	onClose: () => void;
+}
+
+export interface StakingRequest {
+	requestor: string;
+	stakeAmount: string;
+	stakeCurrency: string;
+	nft: NftParams;
 }

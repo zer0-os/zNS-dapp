@@ -27,4 +27,5 @@
 .Disabled {
 	color: var(--color-grey) !important;
 	opacity: 70%;
+	pointer-events: none;
 }

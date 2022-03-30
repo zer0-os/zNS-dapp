@@ -1,0 +1,36 @@
+.question-button {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 24px;
+	height: 24px;
+	background: rgba(255, 255, 255, 0.25);
+	border-radius: 50%;
+	z-index: 1;
+
+	&::after {
+		content: ' ';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		height: 0px;
+		width: 0px;
+		border-radius: var(--box-radius);
+		z-index: -2;
+		transition: box-shadow var(--animation-time-medium) ease-in-out;
+	}
+
+	&:hover::after {
+		box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.5);
+	}
+
+	&.small {
+		width: 16px;
+		height: 16px;
+
+		img {
+			width: 6px;
+		}
+	}
+}

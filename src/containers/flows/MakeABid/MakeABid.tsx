@@ -1,18 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
+
 //- Library Imports
-import { Domain, Metadata, Bid, Maybe } from 'lib/types';
+import { Domain, Maybe } from 'lib/types';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
-import { getMetadata } from 'lib/metadata';
-import { toFiat } from 'lib/currency';
+import { displayEtherToFiat, toFiat } from 'lib/currency';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 import { ERC20 } from 'types';
+import { truncateDomain } from 'lib/utils';
+
 //- Component Imports
 import {
 	StepBar,
@@ -29,6 +31,11 @@ import { BidList } from 'containers';
 //- Style Imports
 import styles from './MakeABid.module.scss';
 
+import useBidData from './hooks/useBidData';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+
+const maxCharacterLength = 28;
+
 type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
@@ -41,10 +48,10 @@ enum Steps {
 }
 
 const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
-	//- Bid hooks
-	const { getBidsForDomain, placeBid } = useBidProvider();
-
-	// Wild to usd
+	// Custom hooks
+	const { placeBid } = useBidProvider();
+	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
+	const domainMetadata = useDomainMetadata(domain.metadata);
 	const { wildPriceUsd } = useCurrency();
 
 	///////////
@@ -54,12 +61,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [step, setStep] = useState<Steps>(Steps.Bid);
 	const [bid, setBid] = useState<string>('');
 
-	const [bids, setBids] = useState<Bid[] | undefined>([]);
-	const [currentHighestBid, setCurrentHighestBid] = useState<Bid | undefined>();
-	const [currentHighestBidUsd, setCurrentHighestBidUsd] = useState<
-		number | undefined
-	>();
-	const [domainMetadata, setDomainMetadata] = useState<Metadata | undefined>();
 	const [error, setError] = useState('');
 	const [wildBalance, setWildBalance] = useState<number | undefined>();
 	const [hasApprovedTokenTransfer, setHasApprovedTokenTransfer] = useState<
@@ -69,7 +70,6 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const [isAllBidsModalOpen, setIsAllBidsModalOpen] = useState(false);
 
 	// Loading States
-	const [hasBidDataLoaded, setHasBidDataLoaded] = useState(false);
 	const [isBidPending] = useState(false);
 	const [isCheckingAllowance, setIsCheckingAllowance] = useState(false);
 	const [isMetamaskWaiting, setIsMetamaskWaiting] = useState(false);
@@ -77,24 +77,55 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 
 	//- Web3 Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
-	const { account, active } = walletContext;
+	const { account } = walletContext;
 
 	const znsContracts = useZnsContracts()!;
 	const zAuctionAddress = znsContracts.zAuction.address;
 	const wildContract: ERC20 = znsContracts.wildToken;
 
-	const isBidValid =
-		(Number(bid) &&
-			wildBalance &&
-			Number(bid) <= wildBalance &&
-			Number(bid) > 0) === true;
+	const { isBiddable, isDomainOwner } = useMemo(() => {
+		const isRootDomain = domain.name.split('.').length <= 2;
+		const isBiddable = isRootDomain || Boolean(domainMetadata?.isBiddable);
+		const isDomainOwner =
+			domain.owner.id.toLowerCase() === account?.toLowerCase();
+
+		return {
+			isBiddable,
+			isDomainOwner,
+		};
+	}, [domain, domainMetadata, account]);
+
+	const isBidValid = useMemo(() => {
+		return (
+			(Number(bid) &&
+				wildBalance &&
+				Number(bid) <= wildBalance &&
+				Number(bid) > 0) === true
+		);
+	}, [bid]);
+
+	const ipfsUrl = useMemo(() => {
+		return (
+			domainMetadata?.animation_url ||
+			domainMetadata?.image_full ||
+			domainMetadata?.image ||
+			''
+		);
+	}, [domainMetadata]);
 
 	///////////////
 	// Functions //
 	///////////////
 
-	const showAllBidsModal = () => setIsAllBidsModalOpen(true);
-	const hideAllBidsModal = () => setIsAllBidsModalOpen(false);
+	// Truncate domain
+	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
+
+	// Conditionally set "all bids modal" state
+	const showAllBidsModal = () => {
+		if (bidData?.bids.length) {
+			setIsAllBidsModalOpen(true);
+		}
+	};
 
 	const formSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
@@ -136,7 +167,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 				zAuctionAddress,
 				ethers.constants.MaxUint256,
 			);
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			if (e.code === 4001) {
 				setError(`Transaction rejected`);
@@ -165,11 +196,14 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const continueBid = async () => {
 		// Validate bid
 		const bidAmount = Number(bid);
-		if (!bidAmount) return setError('Invalid bid');
-		if (bidAmount <= 0) return setError('Invalid bid');
+		if (!bidAmount || bidAmount <= 0) {
+			setError('Invalid bid amount');
+			return;
+		}
 
-		if (wildBalance && bidAmount > wildBalance)
+		if (wildBalance && bidAmount > wildBalance) {
 			return setError('You have insufficient WILD to make this bid');
+		}
 
 		setError('');
 		setStep(Steps.Approve);
@@ -191,7 +225,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		try {
 			await placeBid(domain, bidAmount, onStep);
 			onBid();
-		} catch (e) {
+		} catch (e: any) {
 			setError(e && (e.message ?? ''));
 			setIsMetamaskWaiting(false);
 		}
@@ -246,79 +280,30 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		}
 	}, [step]);
 
-	useEffect(() => {
-		let isSubscribed = true;
-
-		const loadDomainData = async () => {
-			const metadata = await getMetadata(domain.metadata);
-			if (!metadata) return;
-
-			if (isSubscribed) {
-				setDomainMetadata(metadata);
-			}
-		};
-
-		loadDomainData();
-
-		return () => {
-			isSubscribed = false;
-		};
-	}, [domain, wildPriceUsd]);
-
-	useEffect(() => {
-		let isSubscribed = true;
-
-		const getCurrentHighestBid = async () => {
-			// Get highest bid
-			const allBids = await getBidsForDomain(domain);
-
-			if (!allBids || allBids.length === 0) {
-				setHasBidDataLoaded(true);
-				return;
-			}
-			const highestBid = allBids.reduce(function (prev, current) {
-				return prev.amount > current.amount ? prev : current;
-			});
-
-			if (isSubscribed) {
-				setHasBidDataLoaded(true);
-				setBids(allBids);
-				setCurrentHighestBid(highestBid);
-				if (wildPriceUsd > 0) {
-					setCurrentHighestBidUsd(highestBid.amount * wildPriceUsd);
-				}
-			}
-		};
-
-		getCurrentHighestBid();
-
-		return () => {
-			isSubscribed = false;
-		};
-	}, [domain, wildPriceUsd]);
-
 	/////////////////////
 	// React Fragments //
 	/////////////////////
 
-	if (!active) return <></>; // Render nothing if wallet disconnected
+	if (!account) {
+		return <></>; // Render nothing if wallet disconnected
+	}
 
-	const modals = () => (
-		<>
-			{isAllBidsModalOpen && bids !== undefined && (
-				<Overlay open onClose={hideAllBidsModal} centered>
-					<BidList bids={bids} wildPriceUsd={wildPriceUsd} />
+	const modals = () => {
+		if (isAllBidsModalOpen && bidData?.bids !== undefined) {
+			return (
+				<Overlay open onClose={() => setIsAllBidsModalOpen(false)} centered>
+					<BidList bids={bidData.bids} wildPriceUsd={wildPriceUsd} />
 				</Overlay>
-			)}
-		</>
-	);
+			);
+		} else {
+			return <></>;
+		}
+	};
 
 	const header = () => (
-		<>
-			<div className={styles.Header}>
-				<h1 className={`glow-text-white`}>Make A Bid</h1>
-			</div>
-		</>
+		<div className={styles.Header}>
+			<h1 className={`glow-text-white`}>Make A Bid</h1>
+		</div>
 	);
 
 	const nft = () => (
@@ -326,50 +311,52 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			<NFTMedia
 				alt="Bid NFT preview"
 				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
-				ipfsUrl={
-					domainMetadata?.animation_url ||
-					domainMetadata?.image_full ||
-					domainMetadata?.image ||
-					''
-				}
+				ipfsUrl={ipfsUrl}
 				size="small"
 			/>
 		</div>
 	);
 
 	const highestBid = () => {
-		const hasBids = bids !== undefined && bids.length > 0;
-
 		// @todo in serious need of tidy-up
+
+		const getHighestBidLabel = (): string => {
+			if (isLoadingBidData) {
+				return 'Loading bids...';
+			} else if (bidData?.highestBid) {
+				return `${Number(
+					ethers.utils.formatEther(bidData.highestBid.amount),
+				).toLocaleString()} WILD`;
+			} else {
+				return 'No bids';
+			}
+		};
+
 		return (
 			<>
-				<>
-					<span className={hasBids ? 'glow-text-white' : ''}>
-						{/* @todo change dp amount */}
-						{!hasBidDataLoaded && <>Loading bids...</>}
-						{hasBids && currentHighestBid && (
-							<>{Number(currentHighestBid.amount).toLocaleString()} WILD</>
-						)}
-						{hasBidDataLoaded && !currentHighestBid && (
-							<span className="glow-text-white">No bids found</span>
-						)}
+				<span className={bidData?.bids.length ? 'glow-text-white' : ''}>
+					{getHighestBidLabel()}
+				</span>
+				{bidData?.highestBid !== undefined && (
+					<span className="glow-text-white">
+						($
+						{displayEtherToFiat(
+							ethers.BigNumber.from(bidData.highestBid.amount),
+							wildPriceUsd,
+						)}{' '}
+						USD)
 					</span>
-					{currentHighestBidUsd !== undefined && currentHighestBidUsd > 0 && (
-						<span className="glow-text-white">
-							(${toFiat(currentHighestBidUsd)} USD)
-						</span>
-					)}
-					<TextButton
-						style={{
-							opacity: hasBids ? 1 : 0.5,
-							cursor: hasBids ? 'pointer' : 'default',
-						}}
-						onClick={hasBids ? showAllBidsModal : () => {}}
-						className={styles.ViewAll}
-					>
-						View all bids
-					</TextButton>
-				</>
+				)}
+				<TextButton
+					style={{
+						opacity: bidData?.bids.length ? 1 : 0.5,
+						cursor: bidData?.bids.length ? 'pointer' : 'default',
+					}}
+					onClick={showAllBidsModal}
+					className={styles.ViewAll}
+				>
+					View all bids
+				</TextButton>
 			</>
 		);
 	};
@@ -377,17 +364,21 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const details = () => (
 		<div className={styles.Details}>
 			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
-			<span className={styles.Domain}>0://{domain.name}</span>
-			<div className={styles.Price}>
-				<h3 className="glow-text-blue">Highest Bid</h3>
-				{highestBid()}
+			<span className={styles.Domain}>0://{formattedDomain}</span>
+			{isBiddable && (
+				<div className={styles.Price}>
+					<h3 className="glow-text-blue">Highest Bid</h3>
+					{highestBid()}
+				</div>
+			)}
+			<div className={styles.Member}>
+				<Member
+					id={domain?.minter?.id || ''}
+					name={''}
+					image={''}
+					subtext={'Creator'}
+				/>
 			</div>
-			<Member
-				id={domain?.minter?.id || ''}
-				name={''}
-				image={''}
-				subtext={'Creator'}
-			/>
 		</div>
 	);
 
@@ -432,12 +423,17 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					{details()}
 				</div>
 				<div className={styles.InputWrapper}>
-					{domain.owner.id.toLowerCase() === account?.toLowerCase() && (
+					{isDomainOwner && (
 						<p className={styles.Error} style={{ paddingTop: '16px' }}>
 							You can not bid on your own domain
 						</p>
 					)}
-					{domain.owner.id.toLowerCase() !== account?.toLowerCase() && (
+					{!isDomainOwner && !isBiddable && (
+						<p className={styles.Error} style={{ paddingTop: '16px' }}>
+							Bidding has been disabled on this domain
+						</p>
+					)}
+					{!isDomainOwner && isBiddable && (
 						<>
 							{loadingWildBalance && (
 								<>
@@ -582,7 +578,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 								<b className="glow-text-white">
 									{Number(bid).toLocaleString()} WILD
 								</b>{' '}
-								bid for <b className="glow-text-white">0://{domain.name}</b>
+								bid for <b className="glow-text-white">0://{formattedDomain}</b>
 							</p>
 							<FutureButton
 								glow
@@ -617,7 +613,9 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	);
 
 	return (
-		<div className={`${styles.Container} border-primary border-rounded blur`}>
+		<div
+			className={`${styles.Container} border-primary border-rounded background-primary`}
+		>
 			{header()}
 			<StepBar
 				step={step + 1}

@@ -12,7 +12,7 @@ import classNames from 'classnames';
 //- Local Imports
 import { isAlphanumeric, isNumber } from './validation';
 
-type TextInputProps = {
+export type TextInputProps = {
 	alphanumeric?: boolean; // No symbols
 	autosize?: boolean;
 	className?: string;

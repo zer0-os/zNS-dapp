@@ -43,7 +43,7 @@ const TokenDynamics: React.FC<TokenDynamicsProps> = ({ token, onContinue }) => {
 			<ToggleButton
 				toggled={dynamic}
 				onClick={() => setDynamic(!dynamic)}
-				labels={['Default', 'Dynamic']}
+				// labels={['Default', 'Dynamic']}
 				style={{ marginTop: 9 }}
 			/>
 			<TextInput

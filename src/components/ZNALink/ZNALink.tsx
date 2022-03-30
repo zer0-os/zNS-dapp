@@ -14,6 +14,9 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const globalDomain = useCurrentDomain();
 	const oldDomainRef = useRef('');
 
+	const reSizeLink = (linkPart: string) =>
+		window.innerWidth < 800 ? `...${linkPart}` : `.${linkPart}`;
+
 	const parsedDomain = useMemo(() => {
 		if (!globalDomain.domain?.name) {
 			return oldDomainRef.current;
@@ -29,6 +32,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 			style={style}
 		>
 			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
+
 			{parsedDomain.split('.').map((part, i) => {
 				const linkTarget =
 					part === 'wilder'
@@ -44,7 +48,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 						style={{ textDecoration: 'none', color: 'white' }}
 						to={`${globalDomain.app}${linkTarget}`}
 					>
-						{i > 0 ? `.${part}` : part}
+						{i > 0 ? reSizeLink(part) : part}
 					</Link>
 				);
 			})}

@@ -12,12 +12,11 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 
-import { SubdomainTable, CurrentDomainPreview, WheelsRaffle } from 'containers';
+import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
@@ -25,7 +24,8 @@ import useMatchMedia from 'lib/hooks/useMatchMedia';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useLocation } from 'react-router-dom';
-import { useNavBarContents } from 'lib/providers/NavBarProvider';
+import { useNavbar } from 'lib/hooks/useNavbar';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 type ZNSProps = {
 	version?: number;
@@ -86,10 +86,10 @@ const ZNS: React.FC<ZNSProps> = () => {
 	///////////////
 	useScrollDetection(setScrollDetectionDown);
 
-	const { setTitle } = useNavBarContents();
+	const { setNavbarTitle } = useNavbar();
 
 	useDidMount(() => {
-		setTitle(undefined);
+		setNavbarTitle(undefined);
 	});
 
 	///////////////
@@ -223,23 +223,26 @@ const ZNS: React.FC<ZNSProps> = () => {
 		return (
 			<>
 				<div className={styles.Stats}>
-					{data.map((item, index) => (
-						<>
-							{!item.isHidden ? (
-								<StatsWidget
+					{data.map(
+						(item, index) =>
+							!item.isHidden && (
+								<div
 									key={`stats-widget=${index}`}
-									className="normalView"
-									fieldName={item.fieldName}
-									isLoading={!statsLoaded}
-									title={item.title}
-									subTitle={item.subTitle}
+									className={styles.WidgetContainer}
 									style={{
 										width: width,
 									}}
-								></StatsWidget>
-							) : null}
-						</>
-					))}
+								>
+									<StatsWidget
+										className="normalView"
+										fieldName={item.fieldName}
+										isLoading={!statsLoaded}
+										title={item.title}
+										subTitle={item.subTitle}
+									></StatsWidget>
+								</div>
+							),
+					)}
 				</div>
 			</>
 		);
@@ -276,10 +279,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 		);
 	};
 
-	const subTable = useMemo(() => {
-		return <SubdomainTable style={{ marginTop: 16 }} isNftView={isNftView} />;
-	}, [isNftView]);
-
 	////////////
 	// Render //
 	////////////
@@ -298,8 +297,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			{/* <WheelsRaffle /> */}
-
+			<Raffle />
 			{!isNftView && (
 				<div
 					className="background-primary border-primary border-rounded"
@@ -311,10 +309,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 				>
 					{previewCard()}
 					{nftStats()}
-					{showDomainTable && subTable}
+					{showDomainTable && <SubdomainTable style={{ marginTop: 16 }} />}
 				</div>
 			)}
-
 			{znsDomain && isNftView && (
 				<Spring
 					from={{ opacity: 0, marginTop: 16 }}

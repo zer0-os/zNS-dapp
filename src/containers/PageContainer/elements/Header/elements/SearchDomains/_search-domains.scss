@@ -1,0 +1,58 @@
+.search-domains {
+	&__results {
+		$borderWidth: 1px;
+		$top-margin: var(--box-radius);
+
+		position: absolute;
+		top: calc(100% - $top-margin);
+		padding-top: $top-margin;
+		left: -$borderWidth;
+		right: -$borderWidth;
+		overflow: hidden;
+		z-index: -1;
+
+		border: $borderWidth solid #af4cff67;
+		border-top: unset !important;
+		border-radius: 0 0 var(--box-radius) var(--box-radius);
+		box-shadow: none;
+
+		overflow-y: auto;
+		max-height: 80vh;
+
+		ul {
+			width: 100%;
+
+			li {
+				width: 100%;
+				padding: 17px 17px 17px 103px;
+				cursor: pointer;
+
+				&.exact__match {
+					font-weight: bold;
+				}
+
+				span {
+					display: inline-block;
+					margin-left: 8px;
+					font-size: 14px;
+					color: var(--color-accent-1);
+				}
+
+				&:hover {
+					background: var(--background-purple-card-20);
+				}
+
+				@media only screen and (max-width: 768px) {
+					display: flex;
+					flex-direction: column;
+					padding-left: 17px;
+
+					span {
+						margin: 0;
+						margin-top: 4px;
+					}
+				}
+			}
+		}
+	}
+}

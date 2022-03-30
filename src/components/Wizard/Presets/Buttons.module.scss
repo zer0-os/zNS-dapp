@@ -1,0 +1,9 @@
+.Container {
+	display: flex;
+	justify-content: center;
+	margin-top: 40px;
+
+	> *:not(:first-of-type) {
+		margin-left: 24px;
+	}
+}
