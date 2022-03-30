@@ -29,7 +29,7 @@ const AssetsTable = ({ assets, isLoading }: AssetsTableProps) => (
 	<GenericTable
 		alignments={[0, 1, 1, 1, 1, 1, 1]}
 		data={assets}
-		itemKey={'address'}
+		itemKey={'key'}
 		headers={HEADERS}
 		rowComponent={AssetsTableRow}
 		infiniteScroll

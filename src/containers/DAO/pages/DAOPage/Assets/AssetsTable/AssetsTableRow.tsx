@@ -11,8 +11,6 @@ import millify from 'millify';
 import classNames from 'classnames';
 import styles from './AssetsTableRow.module.scss';
 
-import defaultAssetIcon from 'assets/default_asset.png';
-import { AssetType } from '@zero-tech/zdao-sdk';
 import { convertAsset } from './AssetsTable.helpers';
 
 // Config
@@ -23,9 +21,9 @@ export type TableAsset = {
 	amount: string | number;
 	decimals?: number;
 	image: string;
+	key: string;
 	name: string;
 	subtext: string;
-	type: AssetType;
 };
 
 /**
@@ -35,8 +33,7 @@ const AssetsTableRow = (props: any) => {
 	const { data, onRowClick, className } = props;
 
 	const asset = data as Asset;
-	const { amount, decimals, image, name, subtext, type } = convertAsset(asset);
-	const metadata = (asset as any).metadata;
+	const { amount, decimals, image, name, subtext } = convertAsset(asset);
 
 	return (
 		<tr
