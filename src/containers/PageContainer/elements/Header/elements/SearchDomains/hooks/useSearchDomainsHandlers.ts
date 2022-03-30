@@ -5,6 +5,7 @@ import { getRelativeDomainPath } from 'lib/utils/domains';
 import { ROUTES } from 'constants/routes';
 import {
 	MIN_SEARCH_QUERY_LENGTH,
+	DEFAULT_SEARCH_CONTAINER_PADDING,
 	DEFAULT_SEARCH_CONTAINER_HEIGHT,
 } from '../SearchDomains.constants';
 
@@ -44,8 +45,11 @@ export const useSearchDomainsHandlers = ({
 	}, [searchQuery, domainSearch]);
 
 	const handleSearchContainerHeightChange = useCallback(() => {
+		const searchContainerHeight =
+			listRef?.current?.clientHeight || DEFAULT_SEARCH_CONTAINER_HEIGHT;
+
 		localActions.setContainerHeight(
-			listRef?.current?.clientHeight || DEFAULT_SEARCH_CONTAINER_HEIGHT,
+			searchContainerHeight + DEFAULT_SEARCH_CONTAINER_PADDING,
 		);
 
 		if (searchQuery.length === 0) localActions.setContainerHeight(0);
