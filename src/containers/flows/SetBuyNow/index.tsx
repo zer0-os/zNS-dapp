@@ -13,6 +13,7 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 // Type Imports
 import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
+import { getMetadata } from 'lib/metadata';
 
 export interface SetBuyNowContainerProps {
 	domainId: string;
@@ -158,12 +159,12 @@ const SetBuyNowContainer = ({
 		(async () => {
 			setIsLoadingDomainData(true);
 			try {
-				const [domain, events, metadata, price] = await Promise.all([
+				const [domain, events, price] = await Promise.all([
 					sdk.getDomainById(domainId),
 					sdk.getDomainEvents(domainId),
-					sdk.getDomainMetadata(domainId, library.getSigner()),
 					sdk.zauction.getBuyNowPrice(domainId),
 				]);
+				const metadata = await getMetadata(domain.metadataUri);
 				if (domain && events && metadata) {
 					const buyNow = ethers.utils.parseEther(price);
 					checkZAuctionApproval();
