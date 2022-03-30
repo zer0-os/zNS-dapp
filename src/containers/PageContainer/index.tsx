@@ -101,8 +101,12 @@ const PageContainer: React.FC = ({ children }) => {
 			>
 				{/* Toast Notifications */}
 				<NotificationDrawer />
+
 				{/* Home Icon (Navigation Logo) */}
 				<HomeIcon />
+
+				{/* App Sidebar */}
+				<SideBar />
 
 				{/* App Header */}
 				<Header
@@ -112,9 +116,6 @@ const PageContainer: React.FC = ({ children }) => {
 					account={account}
 					openModal={openModal}
 				/>
-
-				{/* App Sidebar */}
-				<SideBar />
 
 				{/* App level Modals */}
 				<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />

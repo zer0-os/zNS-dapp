@@ -298,6 +298,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 			)}
 			{/* ZNS Content */}
 			<Raffle />
+
 			{!isNftView && (
 				<div
 					className="background-primary border-primary border-rounded"
