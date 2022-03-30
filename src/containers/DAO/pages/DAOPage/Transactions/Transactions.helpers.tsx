@@ -3,7 +3,7 @@ import { Image } from 'components';
 
 // Lib
 import { truncateAddress } from 'lib/utils';
-import { formatEther } from '@ethersproject/units';
+import { formatEther, formatUnits } from '@ethersproject/units';
 import { startCase, toLower } from 'lodash';
 import {
 	AssetType,
@@ -52,7 +52,7 @@ export const toHistoryItem = (transaction: Transaction) => {
 		case AssetType.ERC20:
 			typed = transaction.asset as unknown as ERC20Transfer;
 			assetString =
-				formatEther(typed.value) +
+				formatUnits(typed.value, typed.decimals) +
 				' ' +
 				(typed.tokenSymbol ??
 					typed.tokenName ??
