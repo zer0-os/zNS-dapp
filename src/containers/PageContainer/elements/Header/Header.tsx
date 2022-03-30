@@ -77,7 +77,7 @@ export const Header: React.FC<HeaderProps> = ({
 
 	return (
 		<div
-			className={classnames('header__container border-primary', {
+			className={classnames('header__container', {
 				'header__container--is-searching': isSearching,
 				'header__container--is-active': localState.isSearchInputHovered,
 			})}

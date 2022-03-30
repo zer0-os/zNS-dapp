@@ -1,6 +1,3 @@
-// React Imports
-import { useEffect, useRef, useState } from 'react';
-
 // Component Imports
 import {
 	Detail,
@@ -17,7 +14,6 @@ import { BuyNowButton, SetBuyNowButton } from 'containers';
 // Asset Imports
 import shareIcon from '../assets/share.svg';
 import downloadIcon from '../assets/download.svg';
-import background from '../assets/bg.jpeg';
 import moreIcon from '../assets/more-vertical.svg';
 
 // Style Imports
@@ -93,35 +89,12 @@ const NFT = ({
 	onSelectOption,
 	onRefetch,
 }: NFTProps) => {
-	const blobCache = useRef<string>();
-
-	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
-		blobCache.current,
-	);
-
 	const isOwnedByYou =
 		account && owner && account.toLowerCase() === owner.toLowerCase();
 
 	const yourBidAsNumber = yourBid
 		? Number(ethers.utils.formatEther(yourBid.amount))
 		: undefined;
-
-	// Load background
-	useEffect(() => {
-		let isMounted = true;
-		fetch(background)
-			.then((r) => r.blob())
-			.then((blob) => {
-				const url = URL.createObjectURL(blob);
-				blobCache.current = url;
-				if (isMounted) {
-					setBackgroundBlob(url);
-				}
-			});
-		return () => {
-			isMounted = false;
-		};
-	}, []);
 
 	///////////////
 	// Fragments //
