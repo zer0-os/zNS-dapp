@@ -20,31 +20,39 @@ export function useDomainSearch() {
 
 	useAsyncEffect(async () => {
 		const id = getDomainId(pattern);
-		try {
-			const rawDomain = await sdk.getDomainById(id);
-			const exactDomain = rawDomain as any;
-			exactDomain.metadata = exactDomain.metadataUri;
-			exactDomain.minter = { id: exactDomain.minter };
-			exactDomain.owner = { id: exactDomain.owner };
-			exactDomain.parent = { id: exactDomain.parentId };
-			exactDomain.lockedBy = { id: exactDomain.lockedBy };
+		if (id) {
+			try {
+				const rawDomain = await sdk.getDomainById(id);
+				if (rawDomain) {
+					const exactDomain = rawDomain as any;
+					exactDomain.metadata = exactDomain.metadataUri;
+					exactDomain.minter = { id: exactDomain.minter };
+					exactDomain.owner = { id: exactDomain.owner };
+					exactDomain.parent = { id: exactDomain.parentId };
+					exactDomain.lockedBy = { id: exactDomain.lockedBy };
 
-			delete exactDomain.parentId;
+					delete exactDomain.parentId;
 
-			let exactMatch: DisplayParentDomain | undefined = undefined;
+					let match: DisplayParentDomain | undefined = undefined;
 
-			if (exactDomain) {
-				exactMatch = {
-					...exactDomain,
-				} as DisplayParentDomain;
+					if (exactDomain) {
+						match = {
+							...exactDomain,
+						} as DisplayParentDomain;
+					}
+					setExactMatch(match);
+				}
+			} catch (err) {
+				// TODO: Handle it
+				console.log(err);
 			}
-			setExactMatch(exactMatch);
-
+		}
+		try {
 			const rawDomains = await sdk.getDomainsByName(
 				`${rootDomainName}.%${pattern}`,
 			);
 
-			let matches: DisplayParentDomain[] = [];
+			let matchesResult: DisplayParentDomain[] = [];
 			const fuzzyMatch = rawDomains.map((item) => {
 				const domain = item as any;
 				domain.metadata = domain.metadataUri;
@@ -55,11 +63,11 @@ export function useDomainSearch() {
 				return domain;
 			});
 			if (fuzzyMatch) {
-				matches = fuzzyMatch.map((e: ParentDomain) => {
+				matchesResult = fuzzyMatch.map((e: ParentDomain) => {
 					return { ...e } as DisplayParentDomain;
 				});
 			}
-			setMatches(matches);
+			setMatches(matchesResult);
 		} catch (err) {
 			// TODO: Handle it
 			console.log(err);
