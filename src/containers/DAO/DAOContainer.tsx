@@ -38,15 +38,20 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 	/**
 	 * Handle loading a DAO which does not exist
 	 */
-	useUpdateEffect(() => {
-		if (!zna.length) {
+	useUpdateEffect(async () => {
+		if (!sdk || !zna.length) {
 			return;
 		}
-		sdk?.doesZDAOExist(zna).then((exists) => {
+
+		try {
+			const exists: boolean = await sdk.doesZDAOExist(zna);
+
 			if (!exists) {
 				redirect(ROUTES.ZDAO, 'Could not find a DAO for ' + zna);
 			}
-		});
+		} catch (e) {
+			console.error(e);
+		}
 	}, [sdk, zna]);
 
 	useDidMount(setNavbarTitle);

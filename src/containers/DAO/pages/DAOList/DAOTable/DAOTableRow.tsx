@@ -55,13 +55,14 @@ const DAOTableRow = (props: any) => {
 	/**
 	 * Gets all DAO data, and stores it in state
 	 */
-	const getData = (): void => {
+	const getData = async () => {
 		setDao(undefined);
 		if (!sdk || !zna) {
 			return;
 		}
 		try {
-			sdk.getZDAOByZNA(zna).then(setDao);
+			const zDao: zDAO = await sdk.getZDAOByZNA(zna);
+			setDao(zDao);
 		} catch (e) {
 			console.error(e);
 		}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import {
@@ -17,7 +17,6 @@ import {
 	SDKInstance,
 } from '@zero-tech/zdao-sdk';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
-import { useDidMount } from 'lib/hooks/useDidMount';
 import addresses from 'lib/addresses';
 
 export const zDaoContext = React.createContext({
@@ -34,15 +33,18 @@ export const ZdaoSdkProvider = ({ children }: DaoSdkProviderProps) => {
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
-	const createInstance = async () => {
+	const network = useMemo(
+		() => chainIdToNetworkType(chainSelector.selectedChain),
+		[chainSelector.selectedChain],
+	);
+
+	const createInstance = useCallback(async () => {
 		setInstance(undefined);
 
 		// Get provider, or initialise default provider if wallet is not connected
 		const provider =
 			library ||
 			new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId]);
-
-		const network = chainIdToNetworkType(chainSelector.selectedChain);
 
 		if (
 			network !== NETWORK_TYPES.MAINNET &&
@@ -71,12 +73,9 @@ export const ZdaoSdkProvider = ({ children }: DaoSdkProviderProps) => {
 		await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
 
 		setInstance(sdk);
-	};
+	}, [library, network]);
 
-	useUpdateEffect(() => {
-		createInstance();
-	}, [library, chainSelector.selectedChain]);
-	useDidMount(createInstance);
+	useUpdateEffect(createInstance, [library, network]);
 
 	const contextValue = {
 		instance,
