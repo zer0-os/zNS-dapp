@@ -20,7 +20,7 @@ const RegistrationContainer = () => {
 			let ethBalance;
 			try {
 				ethBalance = await getEthBalance();
-			} catch (e) {
+			} catch (e: any) {
 				reject(e);
 				return;
 			}
@@ -33,7 +33,7 @@ const RegistrationContainer = () => {
 			let signedMessage;
 			try {
 				signedMessage = await signMessage();
-			} catch (e) {
+			} catch (e: any) {
 				reject(e);
 				return;
 			}

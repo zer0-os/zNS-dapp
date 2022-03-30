@@ -18,7 +18,7 @@ export function* getWildPriceUsd() {
 	try {
 		const price: number = yield call(wildTokenPrice);
 		yield put(getWildPriceUsdSuccess(price));
-	} catch (e) {
+	} catch (e: any) {
 		yield put(getWildPriceUsdError('Error in getting wild price usd'));
 	}
 
@@ -36,7 +36,7 @@ export function* getLootPriceUsd() {
 	try {
 		const price: number = yield call(lootTokenPrice);
 		yield put(getLootPriceUsdSuccess(price));
-	} catch (e) {
+	} catch (e: any) {
 		yield put(getLootPriceUsdError('Error in getting loot price usd'));
 	}
 }

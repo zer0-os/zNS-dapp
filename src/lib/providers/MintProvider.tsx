@@ -80,7 +80,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 				saleContract,
 				network.chainId === 1,
 			);
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			onError('Failed to submit transaction');
 			return;
@@ -127,7 +127,7 @@ const MintProvider: React.FC<MintProviderType> = ({ children }) => {
 				name: nft.name,
 				story: nft.story,
 			});
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			throw Error(`Failed to upload metadata.`);
 		}

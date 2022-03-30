@@ -41,7 +41,7 @@ export function useZnsSdk() {
 				return element.type === 0;
 			}) as DomainMintEvent[];
 			return mintEvents;
-		} catch (e) {
+		} catch (e: any) {
 			console.error('Failed to retrieve mint event data');
 			return;
 		}

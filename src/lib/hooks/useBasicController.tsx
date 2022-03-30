@@ -27,7 +27,7 @@ export function useBasicController() {
 				0,
 				params.isLocked,
 			);
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			if (e.code === 4001) {
 				throw Error(`Transaction rejected by wallet.`);

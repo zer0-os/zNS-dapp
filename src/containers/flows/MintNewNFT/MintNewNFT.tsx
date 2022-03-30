@@ -265,7 +265,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				}
 
 				onMint();
-			} catch (e) {
+			} catch (e: any) {
 				setError(e && (e.message ?? ''));
 				setIsMintLoading(false);
 			}

@@ -129,7 +129,7 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 			// return bids from owned domains or undefined
 			const mockBids = await asyncGetMock(5, 150);
 			return mockBids;
-		} catch (e) {
+		} catch (e: any) {
 			console.error("Failed to retrieve bids for user's domains");
 		}
 	};
@@ -147,10 +147,10 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 				});
 
 				return displayBids;
-			} catch (e) {
+			} catch (e: any) {
 				console.error('Failed to retrieve bids for user ' + id);
 			}
-		} catch (e) {
+		} catch (e: any) {
 			console.error('Failed to retrieve bids for user ' + id);
 			return [];
 		}
@@ -205,10 +205,10 @@ const BidProvider: React.FC<BidProviderType> = ({ children }) => {
 
 				// @TODO: Add filtering expired/invalid bids out
 				return displayBids;
-			} catch (e) {
+			} catch (e: any) {
 				return;
 			}
-		} catch (e) {
+		} catch (e: any) {
 			console.error(`Failed to retrieve bids for ${domain.id}: ${e}`);
 			return;
 		}

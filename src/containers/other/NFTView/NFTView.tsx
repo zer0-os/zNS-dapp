@@ -115,7 +115,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 		addNotification(`Copied ${label} to clipboard.`);
 		try {
 			navigator?.clipboard?.writeText(content);
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 		}
 	};
@@ -192,7 +192,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 					.catch((err) => {
 						console.error(err);
 					});
-			} catch (e) {
+			} catch (e: any) {
 				console.error(e);
 			}
 		}
@@ -241,7 +241,7 @@ const NFTView: React.FC<NFTViewProps> = ({ domain, onTransfer }) => {
 				if (!isMounted.current) return;
 				setAllItems(events);
 				setHighestBid(highest);
-			} catch (e) {
+			} catch (e: any) {
 				console.error('Failed to retrieve bid data');
 			}
 		}

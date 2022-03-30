@@ -44,7 +44,7 @@ const CloudinaryMedia = (props: CloudinaryMediaProps) => {
 			} else {
 				videoRef.current?.pause();
 			}
-		} catch (e) {
+		} catch (e: any) {
 			console.warn('Weird play bug');
 		}
 	}, [entry]);

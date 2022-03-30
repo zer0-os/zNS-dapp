@@ -135,7 +135,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		try {
 			await staking.approveRequest(request);
 			setViewing(undefined);
-		} catch (e) {
+		} catch (e: any) {
 			// Catch thrown when user rejects transaction
 			console.error(e);
 			if (e.message.includes('code: 4001')) {
@@ -162,7 +162,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 			setApprovingText('Waiting for transaction to complete');
 			await approveTx.wait();
 			setApproveTokenTransfer(undefined); //close modal
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			//if user rejects transaction
 			if (e.code === 4001) {
@@ -191,7 +191,7 @@ const RequestTable: React.FC<RequestTableProps> = ({
 		try {
 			await staking.fulfillRequest(request);
 			setViewing(undefined);
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			//if user rejects transaction
 			if (e.message.includes('code: 4001')) {

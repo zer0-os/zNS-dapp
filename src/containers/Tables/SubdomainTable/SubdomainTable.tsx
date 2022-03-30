@@ -80,7 +80,7 @@ const SubdomainTable = (props: SubdomainTableProps) => {
 					for (var m = 0; m < rawData.length; m++) {
 						tradeData = { ...tradeData, ...rawData[m] };
 					}
-				} catch (e) {
+				} catch (e: any) {
 					console.error(e);
 				}
 				const subDomainsData = domain.subdomains.map((item) =>

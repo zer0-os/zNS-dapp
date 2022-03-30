@@ -134,7 +134,7 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 				name: params.nft.name,
 				story: params.nft.story,
 			});
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			throw Error(`Failed to upload metadata`);
 		}
@@ -155,7 +155,7 @@ const StakingRequestProvider: React.FC<StakingRequestProviderType> = ({
 
 		try {
 			domainRequestUri = await uploadToIPFS(JSON.stringify(fullRequestData));
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			throw Error(`Failed to upload domain request`);
 		}

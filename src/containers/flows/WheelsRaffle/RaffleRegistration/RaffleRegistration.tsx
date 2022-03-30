@@ -68,7 +68,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		try {
 			await props.onSubmit(updateStatus);
 			setHasSubmitted(true);
-		} catch (e) {
+		} catch (e: any) {
 			setRegistrationError(e);
 			console.error(e);
 		}

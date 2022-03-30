@@ -104,7 +104,7 @@ const BidTable: React.FC<BidTableProps> = ({ style, userId, onNavigate }) => {
 				const allBidData = await Promise.all(allBidDataPromises);
 
 				setDisplayData(allBidData);
-			} catch (e) {
+			} catch (e: any) {
 				console.error(e);
 				console.error('Failed to retrieve bid data');
 			}
