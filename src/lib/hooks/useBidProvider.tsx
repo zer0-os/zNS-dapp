@@ -183,7 +183,6 @@ export const useBidProvider = (): UseBidProviderReturn => {
 		status: PlaceBidStatus,
 		onStep: (status: string) => void,
 	) => {
-		console.log(status);
 		switch (status) {
 			case 0:
 				onStep('Generating bid...');

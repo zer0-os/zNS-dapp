@@ -83,6 +83,18 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const zAuctionAddress = znsContracts.zAuction.address;
 	const wildContract: ERC20 = znsContracts.wildToken;
 
+	const { isBiddable, isDomainOwner } = useMemo(() => {
+		const isRootDomain = domain.name.split('.').length <= 2;
+		const isBiddable = isRootDomain || Boolean(domainMetadata?.isBiddable);
+		const isDomainOwner =
+			domain.owner.id.toLowerCase() === account?.toLowerCase();
+
+		return {
+			isBiddable,
+			isDomainOwner,
+		};
+	}, [domain, domainMetadata, account]);
+
 	const isBidValid = useMemo(() => {
 		return (
 			(Number(bid) &&
@@ -353,16 +365,20 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 		<div className={styles.Details}>
 			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
 			<span className={styles.Domain}>0://{formattedDomain}</span>
-			<div className={styles.Price}>
-				<h3 className="glow-text-blue">Highest Bid</h3>
-				{highestBid()}
+			{isBiddable && (
+				<div className={styles.Price}>
+					<h3 className="glow-text-blue">Highest Bid</h3>
+					{highestBid()}
+				</div>
+			)}
+			<div className={styles.Member}>
+				<Member
+					id={domain?.minter?.id || ''}
+					name={''}
+					image={''}
+					subtext={'Creator'}
+				/>
 			</div>
-			<Member
-				id={domain?.minter?.id || ''}
-				name={''}
-				image={''}
-				subtext={'Creator'}
-			/>
 		</div>
 	);
 
@@ -407,12 +423,17 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 					{details()}
 				</div>
 				<div className={styles.InputWrapper}>
-					{domain.owner.id.toLowerCase() === account?.toLowerCase() && (
+					{isDomainOwner && (
 						<p className={styles.Error} style={{ paddingTop: '16px' }}>
 							You can not bid on your own domain
 						</p>
 					)}
-					{domain.owner.id.toLowerCase() !== account?.toLowerCase() && (
+					{!isDomainOwner && !isBiddable && (
+						<p className={styles.Error} style={{ paddingTop: '16px' }}>
+							Bidding has been disabled on this domain
+						</p>
+					)}
+					{!isDomainOwner && isBiddable && (
 						<>
 							{loadingWildBalance && (
 								<>

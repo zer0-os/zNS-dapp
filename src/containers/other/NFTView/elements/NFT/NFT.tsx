@@ -266,9 +266,13 @@ const NFT = ({
 					<div className={styles.Story}>{description ?? ''}</div>
 					<div className={styles.Prices}>
 						{BuyNowPrice()}
-						{HighestBid()}
-						<div className={styles.Break}></div>
-						{account && !isOwnedByYou && yourBidAsNumber && YourBid()}
+						{isBiddable && (
+							<>
+								{HighestBid()}
+								<div className={styles.Break}></div>
+								{account && !isOwnedByYou && yourBidAsNumber && YourBid()}
+							</>
+						)}
 					</div>
 				</div>
 

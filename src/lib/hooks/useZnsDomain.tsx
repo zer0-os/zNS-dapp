@@ -2,6 +2,7 @@
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { useEffect, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
+import { parseDomainMetadata } from 'lib/metadata';
 
 export type UseZnsDomainReturn = {
 	loading: boolean;
@@ -74,7 +75,7 @@ export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 				...formattedDomain,
 				subdomains: formattedSubdomains,
 			});
-			setDomainMetadata({ ...metadata, ...{ title: metadata.name } });
+			setDomainMetadata(parseDomainMetadata(metadata));
 			setLoading(false);
 		}
 	};
