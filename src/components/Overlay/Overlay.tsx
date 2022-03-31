@@ -11,6 +11,7 @@ import closeIcon from 'assets/close-icon.svg';
 
 type OverlayProps = {
 	onClose: () => void;
+	classNames?: string;
 	open?: boolean;
 	children?: React.ReactNode;
 	centered?: boolean;
@@ -22,6 +23,7 @@ type OverlayProps = {
 };
 
 const Overlay: React.FC<OverlayProps> = ({
+	classNames,
 	onClose,
 	open,
 	children,
@@ -96,7 +98,7 @@ const Overlay: React.FC<OverlayProps> = ({
 			onAnimationEnd={removeFromDOM}
 			onClick={closeOverlay}
 			style={style}
-			className={`overlay ${styles.Overlay} ${
+			className={`overlay ${classNames || ''} ${styles.Overlay} ${
 				open ? styles.Open : styles.Closed
 			} ${centered ? styles.Centered : ''}
 			${fullScreen ? styles.FullScreen : ''}`}

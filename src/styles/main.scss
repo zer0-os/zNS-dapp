@@ -402,22 +402,6 @@ button {
 	align-items: center;
 }
 
-.page-spacing {
-	position: relative;
-	width: 100%;
-	max-width: var(--width-max);
-	min-width: var(--width-min);
-	margin: 0 auto;
-	padding-top: 29px;
-	padding-bottom: 110px;
-	padding-left: var(--page-padding);
-	padding-right: var(--page-padding);
-
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
 .no-select {
 	-webkit-user-select: none; /* Safari */
 	-moz-user-select: none; /* Firefox */
@@ -429,8 +413,16 @@ button {
 	text-align: center;
 }
 
+.text-success {
+	color: var(--color-success);
+}
+
 .error-text {
 	color: var(--color-error);
+}
+
+.bold {
+	font-weight: 700;
 }
 
 /*

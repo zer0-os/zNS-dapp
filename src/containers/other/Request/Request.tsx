@@ -143,7 +143,7 @@ const Request: React.FC<RequestProps> = ({
 			{isModalOpen && (
 				<Overlay centered open onClose={closeModal}>
 					<div
-						className={`${styles.Confirmation} blur border-primary border-rounded`}
+						className={`${styles.Confirmation} border-primary border-rounded background-primary`}
 					>
 						<h2 className="glow-text-white">Are you sure?</h2>
 						<hr className="glow" />

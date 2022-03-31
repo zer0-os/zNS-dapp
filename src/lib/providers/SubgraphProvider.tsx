@@ -24,6 +24,8 @@ const chainIdToSubgraph = (id: number): string => {
 	switch (id) {
 		case 1:
 			return process.env.REACT_APP_SUBGRAPH_URL_1!;
+		case 4:
+			return process.env.REACT_APP_SUBGRAPH_URL_4!;
 		case 42:
 			return process.env.REACT_APP_SUBGRAPH_URL_42!;
 	}
@@ -40,7 +42,17 @@ export const SubgraphProvider: React.FC<SubgraphContextProviderType> = ({
 	const apolloClient = React.useMemo(() => {
 		return new ApolloClient({
 			uri: chainIdToSubgraph(chainSelector.selectedChain),
-			cache: new InMemoryCache(),
+			cache: new InMemoryCache({
+				typePolicies: {
+					Query: {
+						fields: {
+							domains: {
+								merge: false,
+							},
+						},
+					},
+				},
+			}),
 		});
 	}, [chainSelector.selectedChain]);
 

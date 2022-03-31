@@ -86,8 +86,6 @@
 	border-radius: 8px;
 	border: 1px solid var(--color-purple-ligher);
 
-	overflow: hidden;
-
 	button {
 		display: flex;
 		justify-content: center;
@@ -97,9 +95,6 @@
 		padding-top: 0;
 
 		background: none;
-
-		&:hover {
-		}
 	}
 }
 
@@ -301,11 +296,26 @@
 	margin-top: 12px;
 }
 
-.Stats {
+.NFTStats {
 	display: flex;
+	align-items: unset;
 	justify-content: space-between;
 	margin-top: 24px;
-	flex-wrap: wrap;
+	gap: 12px;
+
+	.NFTStatContainer {
+		flex: 1;
+
+		@media only screen and (max-width: 768px) {
+			&.BidsStat {
+				display: none;
+			}
+		}
+	}
+
+	@media only screen and (max-width: 520px) {
+		flex-direction: column;
+	}
 }
 
 .Stats:first-child {
@@ -416,11 +426,16 @@
 	.TokenHashContainer {
 		flex-direction: column;
 	}
+
 	.Contract {
 		width: 100%;
 		&:last-child {
 			margin-top: 0;
 		}
+	}
+
+	.Stats {
+		align-items: baseline;
 	}
 }
 
@@ -578,3 +593,8 @@ button.ToggleAttributes {
 	}
 }
 /* Attributes styles End */
+
+.Expired {
+	padding: 0 !important;
+	opacity: 80%;
+}

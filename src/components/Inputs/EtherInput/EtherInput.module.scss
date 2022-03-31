@@ -1,6 +1,6 @@
 .TextInput {
 	width: 100%;
-	padding: 16.5px 0px 12.5px 24px;
+	padding: 16.5px 0px 16.5px 24px;
 
 	border-radius: 24px;
 
@@ -8,10 +8,6 @@
 
 	background: var(--background-field-bg);
 	transition: border var(--animation-time-medium) ease-in-out;
-}
-
-.Error {
-	border: 1px solid var(--color-invalid);
 }
 
 .TextInput::placeholder {
@@ -46,15 +42,15 @@
 
 .title > span {
 	position: absolute;
-	top: 10px;
+	top: 6px;
 	left: 25px;
-	color: var(--color-grey-lighter);
+	color: var(--color-accent-1);
 	font-size: 12px;
 }
 
 .title input {
 	width: 100%;
-	padding: 22.5px 0px 6.5px 24px;
+	padding: 22.5px 0px 10.5px 24px;
 
 	text-align: left;
 	font-weight: 400;
@@ -127,9 +123,13 @@
 	border: 1px solid #88d7ff;
 
 	border-radius: 30px;
+
+	&.Error {
+		border: 1px solid var(--color-invalid);
+	}
 }
 
 .ethlogo > span {
-	top: 10px;
+	top: 8px;
 	left: 55px;
 }

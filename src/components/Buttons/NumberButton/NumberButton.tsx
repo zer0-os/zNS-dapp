@@ -6,7 +6,7 @@ import styles from './NumberButton.module.scss';
 
 type NumberButtonProps = {
 	number: number;
-	onClick: () => void;
+	onClick?: () => void;
 	rotating?: boolean;
 	style?: React.CSSProperties;
 };

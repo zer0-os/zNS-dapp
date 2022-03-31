@@ -1,0 +1,34 @@
+.info-button {
+	&__container {
+		.info-button {
+			display: flex;
+			padding: 0;
+			background: none;
+		}
+
+		&:hover {
+			.info-button {
+				background: linear-gradient(
+					90deg,
+					rgba(82, 87, 255, 0.25) 0%,
+					rgba(82, 203, 255, 0.25) 100%
+				);
+				border-radius: 8px;
+
+				svg {
+					circle {
+						fill: white;
+					}
+				}
+
+				&::after {
+					box-shadow: none !important;
+				}
+			}
+
+			.info-panel__container {
+				display: block;
+			}
+		}
+	}
+}
