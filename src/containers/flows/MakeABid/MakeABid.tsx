@@ -86,6 +86,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 	const { isBiddable, isDomainOwner } = useMemo(() => {
 		const isRootDomain = domain.name.split('.').length <= 2;
 		const isBiddable = isRootDomain || Boolean(domainMetadata?.isBiddable);
+
 		const isDomainOwner =
 			domain.owner.id.toLowerCase() === account?.toLowerCase();
 
@@ -93,7 +94,7 @@ const MakeABid: React.FC<MakeABidProps> = ({ domain, onBid }) => {
 			isBiddable,
 			isDomainOwner,
 		};
-	}, [domain, domainMetadata, account]);
+	}, [domain, account]);
 
 	const isBidValid = useMemo(() => {
 		return (
