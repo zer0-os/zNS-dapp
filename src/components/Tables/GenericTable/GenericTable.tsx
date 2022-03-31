@@ -14,6 +14,8 @@ import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import classNames from 'classnames';
 
+const DEFAULT_SEARCH_KEY = 'name';
+
 type GenericTableHeader = {
 	label: string | React.ReactNode;
 	accessor?: string;
@@ -72,9 +74,25 @@ const GenericTable = (props: any) => {
 
 	// Since due date is coming up, I'm rushing the search algo
 	// This will need to be expanded to be generic
-	const matchesSearch = (d: any) => {
-		const value = d[props.searchKey ?? 'name'].toLowerCase();
-		return value.includes(searchQuery?.toLowerCase());
+	const matchesSearch = (d: any): boolean => {
+		if (!searchQuery) return true;
+
+		if (!d || typeof d !== 'object') return false;
+
+		const searchKey: string | string[] = props.searchKey ?? DEFAULT_SEARCH_KEY;
+
+		if (Array.isArray(searchKey)) {
+			return searchKey.some(
+				(key: string) =>
+					Boolean(d[key]) &&
+					d[key].toLowerCase().includes(searchQuery.toLocaleLowerCase()),
+			);
+		}
+
+		return (
+			Boolean(d[searchKey]) &&
+			d[searchKey].toLowerCase().includes(searchQuery.toLocaleLowerCase())
+		);
 	};
 
 	// Toggles to grid view when viewport
@@ -195,15 +213,11 @@ const GenericTable = (props: any) => {
 		const data = props.infiniteScroll
 			? rawData
 					.filter((d: any) =>
-						searchQuery && !props.notSearchable
-							? d[props.searchKey].includes(searchQuery)
-							: true,
+						searchQuery && !props.notSearchable ? matchesSearch(d) : true,
 					)
 					.slice(0, chunk * chunkSize)
 			: rawData.filter((d: any) =>
-					searchQuery && !props.notSearchable
-						? d[props.searchKey].includes(searchQuery)
-						: true,
+					searchQuery && !props.notSearchable ? matchesSearch(d) : true,
 			  );
 
 		return (

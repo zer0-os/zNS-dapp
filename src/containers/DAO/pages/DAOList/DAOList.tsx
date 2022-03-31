@@ -78,7 +78,7 @@ const DAOList = () => {
 					title={'TO IMPLEMENT'}
 				/>
 			</ul>
-			<DAOTable daoZnas={daoZnas} isLoading={false} />
+			<DAOTable daoZnas={daoZnas} />
 		</div>
 	);
 };
