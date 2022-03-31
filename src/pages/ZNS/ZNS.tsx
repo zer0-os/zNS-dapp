@@ -307,7 +307,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 					}}
 				>
 					{previewCard()}
-					{nftStats()}
+					{!(isMobile || isMobilePortrait) && nftStats()}
 					{showDomainTable && <SubdomainTable style={{ marginTop: 16 }} />}
 				</div>
 			)}
