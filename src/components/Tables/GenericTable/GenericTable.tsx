@@ -75,7 +75,6 @@ const GenericTable = (props: any) => {
 	// resizes to below 700px
 	const handleResize = () => {
 		if (window.innerWidth <= 700) {
-			console.log('inside resize');
 			setIsGridView(true);
 		}
 	};
