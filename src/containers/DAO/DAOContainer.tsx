@@ -53,7 +53,10 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 
 	return (
 		<Switch>
-			<main className={classNames(styles.Container, className)} style={style}>
+			<main
+				className={classNames(styles.Container, className, 'main')}
+				style={style}
+			>
 				{zna === '' ? <DAOList /> : <DAOPage />}
 			</main>
 		</Switch>
