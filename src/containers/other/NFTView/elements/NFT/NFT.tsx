@@ -1,34 +1,16 @@
-// React Imports
-import { useEffect, useRef, useState } from 'react';
-
 // Component Imports
-import {
-	Detail,
-	Member,
-	NFTMedia,
-	TextButton,
-	Tooltip,
-	OptionDropdown,
-} from 'components';
-
-// Container Imports
-import { BuyNowButton, SetBuyNowButton } from 'containers';
-import CancelBidButton from 'containers/flows/CancelBid/CancelBidButton';
+import { Detail, NFTMedia, Tooltip, OptionDropdown } from 'components';
 
 // Asset Imports
 import shareIcon from '../../assets/share.svg';
 import downloadIcon from '../../assets/download.svg';
-import background from '../../assets/bg.jpeg';
 import moreIcon from '../../assets/more-vertical.svg';
 
 // Style Imports
 import styles from './NFT.module.scss';
-import classNames from 'classnames/bind';
 
 // Library Imports
-import { toFiat } from 'lib/currency';
 import { Bid } from '@zero-tech/zauction-sdk';
-import { ethers } from 'ethers';
 
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
@@ -38,8 +20,6 @@ import BidButton from 'containers/buttons/BidButton/BidButton';
 export const Amount = (amount: string) => (
 	<span className={styles.Amount}>{amount}</span>
 );
-
-const cx = classNames.bind(styles);
 
 type OptionType = {
 	icon: string;

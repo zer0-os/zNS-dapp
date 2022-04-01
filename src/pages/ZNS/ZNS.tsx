@@ -59,8 +59,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	const previewCardRef = useRef<HTMLDivElement>(null);
 
-	const isMobile = useMatchMedia('phone');
-	const isTabletPortrait = useMatchMedia('(max-width: 768px)');
 	const isMobilePortrait = useMatchMedia('(max-width: 520px)');
 
 	const location = useLocation();
