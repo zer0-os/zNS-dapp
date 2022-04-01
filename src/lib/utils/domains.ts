@@ -58,8 +58,26 @@ export const zNAToLink = (domain: string): string => {
 	return '/market/' + domain;
 };
 
-export const truncateAddress = (address: string) => {
+// Truncate wallet address
+export const truncateWalletAddress = (address: string) => {
 	return `${address.substring(0, 2)}...${address.substring(
 		address.length - 4,
 	)}`;
+};
+
+// Truncate domain
+export const truncateDomain = (
+	domainName: string,
+	maxCharacterLength: number,
+) => {
+	let domainText;
+	if (('wilder.' + domainName).length > maxCharacterLength) {
+		domainText = `wilder...${
+			domainName.split('.')[domainName.split('.').length - 1]
+		}`;
+		return domainText;
+	} else {
+		domainText = `${domainName}`;
+		return domainText;
+	}
 };

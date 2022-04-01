@@ -13,6 +13,7 @@ import {
 
 // Container Imports
 import { BuyNowButton, SetBuyNowButton } from 'containers';
+import CancelBidButton from 'containers/flows/CancelBid/CancelBidButton';
 
 // Asset Imports
 import shareIcon from '../../assets/share.svg';
@@ -28,11 +29,10 @@ import classNames from 'classnames/bind';
 import { toFiat } from 'lib/currency';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { ethers } from 'ethers';
-import CancelBidButton from 'containers/flows/CancelBid/CancelBidButton';
 
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
-import { truncateAddress } from 'lib/utils';
+import { truncateWalletAddress } from 'lib/utils';
 import BidButton from 'containers/buttons/BidButton/BidButton';
 
 export const Amount = (amount: string) => (
@@ -93,126 +93,6 @@ const NFT = ({
 	onSelectOption,
 	onRefetch,
 }: NFTProps) => {
-	const blobCache = useRef<string>();
-
-	const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
-		blobCache.current,
-	);
-
-	const isOwnedByYou =
-		account && owner && account.toLowerCase() === owner.toLowerCase();
-
-	const yourBidAsNumber = yourBid
-		? Number(ethers.utils.formatEther(yourBid.amount))
-		: undefined;
-
-	// Load background
-	useEffect(() => {
-		let isMounted = true;
-		fetch(background)
-			.then((r) => r.blob())
-			.then((blob) => {
-				const url = URL.createObjectURL(blob);
-				blobCache.current = url;
-				if (isMounted) {
-					setBackgroundBlob(url);
-				}
-			});
-		return () => {
-			isMounted = false;
-		};
-	}, []);
-
-	///////////////
-	// Fragments //
-	///////////////
-
-	const BuyNowPrice = () => (
-		<div>
-			<Detail
-				text={Amount(
-					(buyNowPrice ?? 0) > 0
-						? buyNowPrice!.toLocaleString()
-						: isPriceDataLoading
-						? '-'
-						: 'No price set',
-				)}
-				subtext={'Buy Now Price (WILD)'}
-				bottomText={
-					buyNowPrice && wildPriceUsd
-						? '$' + toFiat(wildPriceUsd * buyNowPrice) + ' USD'
-						: '-'
-				}
-			/>
-			{account && (
-				<>
-					{isOwnedByYou ? (
-						<SetBuyNowButton
-							onSuccess={onSuccessBuyNow}
-							buttonText="Edit Buy Now"
-							domainId={domainId ?? ''}
-							isTextButton
-							className={styles.SetBuyNow}
-						/>
-					) : (
-						<BuyNowButton
-							onSuccess={onSuccessBuyNow}
-							buttonText="Buy Now"
-							disabled={(buyNowPrice ?? 0) === 0}
-							domainId={domainId ?? ''}
-						/>
-					)}
-				</>
-			)}
-		</div>
-	);
-
-	const HighestBid = () => (
-		<div>
-			<Detail
-				text={Amount(
-					highestBid
-						? highestBid.toLocaleString()
-						: isPriceDataLoading
-						? '-'
-						: 'No bids',
-				)}
-				subtext={'Highest Bid (WILD)'}
-				bottomText={
-					highestBid && wildPriceUsd
-						? '$' + toFiat(wildPriceUsd * highestBid) + ' USD'
-						: '-'
-				}
-			/>
-			{account && !isOwnedByYou && isBiddable && (
-				<TextButton className={styles.Action} onClick={onMakeBid}>
-					Make A Bid
-				</TextButton>
-			)}
-		</div>
-	);
-
-	const YourBid = () => (
-		<div>
-			<Detail
-				text={Amount(yourBidAsNumber!.toLocaleString() ?? '-')}
-				subtext={'Your Bid (WILD)'}
-				bottomText={
-					wildPriceUsd
-						? '$' + toFiat(wildPriceUsd * yourBidAsNumber!) + ' USD'
-						: '-'
-				}
-			/>
-			<CancelBidButton
-				className={styles.Action}
-				isTextButton
-				auctionId={yourBid!.auctionId}
-				domainId={domainId!}
-				onSuccess={onRefetch}
-			/>
-		</div>
-	);
-
 	////////////
 	// Render //
 	////////////
@@ -226,10 +106,16 @@ const NFT = ({
 			<div className="flex-split">
 				<ul className={styles.Members}>
 					<li>
-						<Detail text={truncateAddress(creator ?? '')} subtext={'Creator'} />
+						<Detail
+							text={truncateWalletAddress(creator ?? '')}
+							subtext={'Creator'}
+						/>
 					</li>
 					<li>
-						<Detail text={truncateAddress(owner ?? '')} subtext={'Owner'} />
+						<Detail
+							text={truncateWalletAddress(owner ?? '')}
+							subtext={'Owner'}
+						/>
 					</li>
 				</ul>
 				<div className={styles.Tray}>

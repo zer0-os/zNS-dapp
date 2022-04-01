@@ -13,19 +13,19 @@ import { Wizard } from 'components';
 import Details from './components/Details';
 
 type CancelBidContainerProps = {
-	auctionId: string;
+	bidNonce: string;
 	domainId: string;
 	onSuccess: () => void;
 	onClose: () => void;
 };
 
 export const CancelBid = ({
-	auctionId,
+	bidNonce,
 	domainId,
 	onSuccess,
 	onClose,
 }: CancelBidContainerProps) => {
-	const { bid, bidData, refetch, isLoading } = useBidData(domainId, auctionId);
+	const { bid, bidData, refetch, isLoading } = useBidData(domainId, bidNonce);
 	const { cancel, status } = useCancelBid();
 
 	const [currentStep, setCurrentStep] = useState<Step>(Step.LoadingData);
@@ -49,7 +49,7 @@ export const CancelBid = ({
 		try {
 			await cancel(bid!);
 			setCurrentStep(Step.Success);
-		} catch (e) {
+		} catch (e: any) {
 			setError(e.message);
 			setCurrentStep(Step.Confirmation);
 		}
@@ -59,6 +59,11 @@ export const CancelBid = ({
 		setError(undefined);
 		setCurrentStep(Step.Details);
 	};
+
+	const confirmationErrorButtonText = () =>
+		error
+			? constants.BUTTONS[Step.Confirmation].TERTIARY
+			: constants.BUTTONS[Step.Confirmation].PRIMARY;
 
 	const steps = {
 		[Step.LoadingData]: (
@@ -83,7 +88,7 @@ export const CancelBid = ({
 			<Wizard.Confirmation
 				error={error}
 				message={constants.MESSAGES.TEXT_CONFIRM_CANCEL}
-				primaryButtonText={constants.BUTTONS[Step.Confirmation].PRIMARY}
+				primaryButtonText={confirmationErrorButtonText()}
 				onClickPrimaryButton={onCancelBid}
 				secondaryButtonText={constants.BUTTONS[Step.Confirmation].SECONDARY}
 				onClickSecondaryButton={onBack}
@@ -99,7 +104,7 @@ export const CancelBid = ({
 		),
 	};
 
-	return <Wizard header={'Cancel Bid'}>{steps[currentStep]}</Wizard>;
+	return <Wizard header={constants.LABELS.HEADER}>{steps[currentStep]}</Wizard>;
 };
 
 export default CancelBid;

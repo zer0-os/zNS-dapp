@@ -16,7 +16,8 @@ type NFTDetailsProps = {
 	domainName: string;
 	title: string;
 	walletAddress: string;
-	valid: boolean;
+	hasError: boolean;
+	errorText: string;
 	setWalletAddress: (value: string) => void;
 	onNext: () => void;
 };
@@ -27,8 +28,9 @@ const NFTDetails = ({
 	domainName,
 	title,
 	walletAddress,
+	hasError,
+	errorText,
 	setWalletAddress,
-	valid,
 	onNext,
 }: NFTDetailsProps) => (
 	<>
@@ -48,14 +50,16 @@ const NFTDetails = ({
 						onChange={setWalletAddress}
 						placeholder={INPUT.TEXT_INPUT_PLACEHOLDER}
 						type={INPUT.TYPE}
+						error={hasError}
+						errorText={errorText}
 					/>
 				</div>
 			</div>
 		</div>
 
 		<div className={styles.InputSubmitButton}>
-			<FutureButton glow={valid} onClick={() => valid && onNext()}>
-				{BUTTONS[Step.Details].PRIMARY}
+			<FutureButton glow onClick={onNext}>
+				{BUTTONS[Step.Details]}
 			</FutureButton>
 		</div>
 	</>

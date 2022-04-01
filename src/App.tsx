@@ -30,7 +30,6 @@ import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 //- Page Imports
 import { ZNS, Staking } from 'pages';
 import PageContainer from 'containers/PageContainer';
-import { ZNSDomainsProvider } from 'lib/providers/ZNSDomainProvider';
 
 // Web3 library to query
 function getLibrary(provider: any): Web3Provider {
@@ -79,11 +78,9 @@ function wrappedApp() {
 						<Web3ReactProvider getLibrary={getLibrary}>
 							{/* Our Hooks  */}
 							<MvpVersionProvider>
-								<ZNSDomainsProvider>
-									<EnlistProvider>
-										<App />
-									</EnlistProvider>
-								</ZNSDomainsProvider>
+								<EnlistProvider>
+									<App />
+								</EnlistProvider>
 							</MvpVersionProvider>
 						</Web3ReactProvider>
 					</SubgraphProvider>

@@ -83,8 +83,12 @@ $height: 46px;
 		font-weight: 700;
 		text-transform: uppercase;
 
-		@media only screen and (max-width: 1000px) {
+		@media only screen and (max-width: 1200px) {
 			margin-right: 0;
+		}
+
+		@media only screen and (max-width: 500px) {
+			display: none;
 		}
 	}
 

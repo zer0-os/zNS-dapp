@@ -15,7 +15,7 @@
 export { default as CountdownBanner } from './Banners/CountdownBanner/CountdownBanner';
 export { default as MessageBanner } from './Banners/MessageBanner/MessageBanner';
 export { default as NextDrop } from './Banners/NextDrop/NextDrop.js';
-export { default as MintWheelsBanner } from './Banners/MintWheelsBanner/MintWheelsBanner';
+export { default as MintDropNFTBanner } from './Banners/MintDropNFTBanner/MintDropNFTBanner';
 
 //- Buttons
 export { default as FilterButton } from './Buttons/FilterButton/FilterButton';
@@ -47,7 +47,6 @@ export { default as TextInputWithTopPlaceHolder } from './Inputs/TextInput/TextI
 export { default as TabBar } from './NavBars/TabBar/TabBar';
 
 //- Tables
-export { default as DomainTable } from './Tables/DomainTable/DomainTable';
 export { default as RequestTable } from './Tables/RequestTable/RequestTable';
 export { default as GenericTable } from './Tables/GenericTable/GenericTable';
 

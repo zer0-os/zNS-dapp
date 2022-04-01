@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import { ethers } from 'ethers';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
-import { useZnsSdk } from 'lib/providers/ZnsSdkProvider';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import { useEffect, useRef, useState } from 'react';
 import { BigNumber } from 'ethers';
 
@@ -77,7 +77,7 @@ const BidTableContainer = () => {
 				.map((bid) => {
 					const domain = domainData.filter((d) => d.id === bid.tokenId)[0];
 					return {
-						auctionId: bid.auctionId,
+						bidNonce: bid.bidNonce,
 						domainName: domain.name,
 						domainId: bid.tokenId,
 						domainMetadataUrl: domain.metadataUri,
