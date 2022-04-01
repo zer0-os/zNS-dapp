@@ -46,7 +46,7 @@ const Profile: React.FC<ProfileProps> = ({ id, yours, onNavigate }) => {
 		<div
 			className={`${ProfileStyle.profile} border-primary border-rounded background-primary`}
 		>
-			<h1 className={`glow-text-white`}>Profile</h1>
+			<h1 className={``}>Profile</h1>
 			<div className={ProfileStyle.body}>
 				{/* Hide DP for now */}
 				{/* <div className={ProfileStyle.First}>

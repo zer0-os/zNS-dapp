@@ -64,21 +64,16 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	}
 
 	const media = useMemo(() => {
-		console.log('image uri:', imageUri);
-		return imageUri?.startsWith('http://') ||
-			imageUri?.startsWith('https://') ? (
-			<>hello</>
-		) : (
-			<NFTMedia
-				className={styles.NFT}
-				ipfsUrl={imageUri ? imageUri : ''}
-				style={{ height: hasAspectRatio ? 'auto' : 348 }}
-				size="medium"
-				alt={`NFT preview for ${name}`}
-				disableLightbox
-				fit={!hasAspectRatio ? 'cover' : undefined}
-			/>
-		);
+		console.log('img:', imageUri);
+		<NFTMedia
+			className={styles.NFT}
+			ipfsUrl={imageUri ? imageUri : ''}
+			style={{ height: hasAspectRatio ? 'auto' : 348 }}
+			size="medium"
+			alt={`NFT preview for ${name}`}
+			disableLightbox
+			fit={!hasAspectRatio ? 'cover' : undefined}
+		/>;
 	}, [imageUri, name, hasAspectRatio]);
 
 	return (
@@ -95,7 +90,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 		>
 			{media}
 			<div className={styles.Body}>
-				<h5 className={`glow-text-blue`}>{name}</h5>
+				<h5 className={``}>{name}</h5>
 				<ArrowLink>{domainText}</ArrowLink>
 				{/* Need to refactor out actions component */}
 				{actionsComponent}
@@ -105,4 +100,4 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	);
 };
 
-export default React.memo(NFTCard);
+export default NFTCard;

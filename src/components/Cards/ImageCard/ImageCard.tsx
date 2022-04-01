@@ -5,7 +5,7 @@ type ImageCardProps = {
 	children: React.ReactNode;
 	imageUri?: string;
 	header?: string;
-	onClick?: () => void;
+	onClick?: (event?: any) => void;
 	subHeader?: string;
 };
 

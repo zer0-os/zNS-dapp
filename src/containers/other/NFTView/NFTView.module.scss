@@ -165,7 +165,8 @@
 .Box {
 	/* height: 95.5px; */
 	padding: 20px;
-	background: var(--color-background);
+	background: #120d16;
+	border-radius: 16px;
 }
 
 .Box h4 {
@@ -457,7 +458,6 @@
 
 .Attributes {
 	margin-top: 24px;
-	padding: 24px;
 	background: var(--color-background);
 }
 
@@ -477,7 +477,7 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(194px, 1fr));
 	grid-row-start: 1;
-	column-gap: 4px;
+	column-gap: 8px;
 	margin-top: 16px;
 	position: relative;
 }
@@ -490,8 +490,8 @@
 	flex-direction: column;
 	justify-content: center;
 	padding: 8px 16px 8px 20px;
-	border: 1px solid #50207b;
-	border-radius: 999px;
+	border-radius: 8px;
+	background: #120d16;
 }
 
 @media only screen and (max-width: 768px) {

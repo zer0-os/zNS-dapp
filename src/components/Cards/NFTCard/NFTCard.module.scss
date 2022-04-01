@@ -3,7 +3,8 @@
 	min-width: 280px;
 	/* max-width: 388px; */
 
-	background-color: var(--color-background-alt);
+	// background-color: var(--color-background-alt);
+	border: 1px solid #232323;
 
 	@media only screen and (max-width: 414px) {
 		min-width: unset;

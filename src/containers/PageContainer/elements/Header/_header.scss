@@ -9,20 +9,24 @@ $height: 46px;
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		background: var(--color-background);
-		border-radius: var(--box-radius);
+		// background: var(--color-background);
+		border-radius: 28px;
 		overflow: none;
 		transition: background-color var(--animation-time-medium) ease-in-out,
 			border var(--animation-time-medium) ease-in-out,
 			box-shadow var(--animation-time-medium) ease-in-out;
 		z-index: 4;
 
+		border: 1px solid #23142f;
+
 		&--is-active {
 			box-shadow: 0 0 20px 0 rgb(235 0 255 / 40%);
+			border: 1px solid #6a3991;
 		}
 
 		&--is-searching {
 			box-shadow: none;
+			border: 1px solid #6a3991;
 		}
 	}
 
@@ -75,6 +79,17 @@ $height: 46px;
 				display: none;
 			}
 		}
+
+		.ZNA__Container {
+			display: flex;
+			flex: 1;
+			flex-grow: 1;
+			align-items: center;
+			padding: 8px 0;
+
+			border: 1px solid #472e5b;
+			border-radius: 24px;
+		}
 	}
 
 	&__home-link {
@@ -101,6 +116,7 @@ $height: 46px;
 		align-items: center;
 		padding: 24px;
 		gap: 16px;
+		height: 56px;
 
 		@media only screen and (max-width: 1000px) {
 			position: relative;

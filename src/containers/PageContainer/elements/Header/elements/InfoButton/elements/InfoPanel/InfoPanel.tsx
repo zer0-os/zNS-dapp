@@ -17,7 +17,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 	onConnectWallet,
 }) => {
 	return (
-		<div className="info-panel__content border-primary">
+		<div className="info-panel__content">
 			<div className="info-panel__content-section connect-wallet">
 				<ConnectWalletButton
 					onConnectWallet={onConnectWallet}
@@ -25,10 +25,6 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 				/>
 			</div>
 			<div className="info-panel__content-section">
-				<div className="info-panel__content-section-title">
-					<h3> Wilder World</h3>
-					<span className="divider"></span>
-				</div>
 				<div className="info-panel_nav info-panel__content-section">
 					<div className="info-panel__content-section-title">
 						<h3> Apps</h3>

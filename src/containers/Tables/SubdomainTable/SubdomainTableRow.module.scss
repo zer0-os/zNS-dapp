@@ -1,10 +1,9 @@
 .Row {
 	cursor: pointer;
-	/* transition: background var(--animation-time-short) linear; */
 }
 
 .Row:hover {
-	background: var(--color-background-alt-50);
+	background: #1a1022;
 }
 
 .Row td:first-of-type {

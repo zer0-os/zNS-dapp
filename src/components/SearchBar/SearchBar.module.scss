@@ -1,21 +1,32 @@
 .searchBar {
 	position: relative;
 	border-radius: var(--box-radius);
+	border: 1px solid #232323;
 }
 
 .searchBar input {
 	width: 100%;
 	height: 32px;
-	background: var(--color-cosmic-gradient-25);
-	border-radius: 31px;
+	background: inherit;
+	border-radius: 32px;
 	padding: 0 24px 1px 39px;
+	border: 1px solid #232323;
 
 	/* Text */
 	text-align: left;
-	color: white;
+	color: #bfbfbf;
 
 	/* Text shadow isn't working as expected - it cuts off for some reason */
 	/* text-shadow: var(--glow-text-white); */
+
+	transition: all var(--animation-time-short) linear;
+	border: 1px solid transparent;
+
+	&:hover,
+	&:active,
+	&:focus {
+		border: 1px solid #6a3991;
+	}
 }
 
 .searchBar button {
@@ -33,5 +44,5 @@
 }
 
 .searchBar input::placeholder {
-	color: white;
+	color: #bfbfbf;
 }

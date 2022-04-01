@@ -8,6 +8,8 @@
 		padding-top: $top-margin;
 		left: -$borderWidth;
 		right: -$borderWidth;
+		width: calc(100% + 2px);
+		background: inherit;
 		overflow: hidden;
 		z-index: -1;
 
@@ -38,9 +40,9 @@
 					color: var(--color-accent-1);
 				}
 
-				&:hover {
-					background: var(--background-purple-card-20);
-				}
+				// &:hover {
+				// 	background: var(--background-purple-card-20);
+				// }
 
 				@media only screen and (max-width: 768px) {
 					display: flex;

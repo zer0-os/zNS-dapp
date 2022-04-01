@@ -9,7 +9,7 @@
 		height: 500px;
 		padding: 16px;
 
-		background: yellow;
+		background: #1a1022;
 
 		img {
 			max-height: 100%;
@@ -29,10 +29,9 @@
 
 	.Tray {
 		display: flex;
-		background: var(--color-purple-darkest);
+		background: #1a1022;
 
 		border-radius: 8px;
-		border: 1px solid var(--color-purple-ligher);
 
 		button {
 			display: flex;

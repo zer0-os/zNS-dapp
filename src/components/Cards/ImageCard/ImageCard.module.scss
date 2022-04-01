@@ -6,7 +6,7 @@
 	border-radius: var(--box-radius);
 	overflow: hidden;
 
-	background: rgba(0, 0, 0, 0.2);
+	border: 1px solid #232323;
 
 	padding-top: 100%;
 
@@ -33,7 +33,6 @@
 		width: 100% !important;
 
 		border-radius: var(--box-radius) var(--box-radius) 0 0;
-		background: rgba(0, 0, 0, 0.3);
 
 		img,
 		video {
@@ -49,7 +48,5 @@
 
 	.Footer {
 		padding: 16px;
-
-		background-color: var(--color-background-alt);
 	}
 }
