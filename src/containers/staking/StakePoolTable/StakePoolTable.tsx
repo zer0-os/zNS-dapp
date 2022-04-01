@@ -8,7 +8,7 @@ import styles from './StakePoolTable.module.scss';
 import {
 	TABLE_HEADERS,
 	TABLE_HEADERS_DISCONNECTED,
-} from './StakePoolTable.helpers';
+} from './StakePoolTable.constants';
 import { useWeb3React } from '@web3-react/core';
 
 const StakePoolTable = () => {

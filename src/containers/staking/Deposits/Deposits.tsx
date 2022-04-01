@@ -113,11 +113,11 @@ const Deposits = () => {
 					<StatsWidget
 						className="normalView"
 						fieldName={'Your Total Stake (USD)'}
-						isLoading={account !== null && !totalStakedUsd}
+						isLoading={totalStakedUsd === undefined}
 						title={
 							account && totalStakedUsd !== undefined
 								? '$' + toFiat(totalStakedUsd) + ' USD'
-								: '-'
+								: '$0'
 						}
 					/>
 				</ul>
