@@ -7,7 +7,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 
 //- Component Imports
 import { Overlay } from 'components';
-import MakeABid from 'containers/flows/MakeABid/MakeABid2';
+import MakeABid from 'containers/flows/MakeABid/MakeABid';
 import {
 	NFT,
 	Stats,
