@@ -291,12 +291,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 			)}
 			{/* ZNS Content */}
 			{!isNftView && (
-				<div
-					style={{
-						overflow: 'hidden',
-						width: '100%',
-					}}
-				>
+				<div className="main">
 					{previewCard()}
 					{nftStats()}
 					{showDomainTable && <SubdomainTable style={{ marginTop: 16 }} />}
