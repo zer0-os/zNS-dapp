@@ -33,11 +33,11 @@ export const STEP_BAR_HEADING = ['zAuction', 'Confirm', 'Place Bid'];
 
 export const ERRORS = {
 	SIGNATURE: 'Failed to generate signature.',
-	TRANSACTION: 'Transaction failed. Please try again',
+	TRANSACTION: 'Transaction failed. Please try again.',
 	LIBRARY: 'Failed to connect with Web3 wallet.',
 	CONSOLE_TEXT: 'Failed to check zAuction approval status',
-	REJECTED_WALLET: 'Rejected by wallet',
-	INSUFFICIENT_FUNDS: 'You don’t have enough WILD to make that large of a bid',
+	REJECTED_WALLET: 'Rejected by wallet. Please try again.',
+	INSUFFICIENT_FUNDS: 'You don’t have enough WILD to make that large of a bid.',
 };
 
 export const STATUS_TEXT = {
@@ -52,7 +52,7 @@ export const STATUS_TEXT = {
 export const MESSAGES = {
 	TEXT_LOADING: 'Loading Bid Data..',
 	ENTER_AMOUNT: 'Enter the amount you wish to bid:',
-	SUCCESSFUL_BID: `Your bid was successfully placed`,
+	SUCCESSFUL_BID: `Your bid was successfully placed.`,
 };
 
 export const PLACE_BID_LABELS = {

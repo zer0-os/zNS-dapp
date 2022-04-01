@@ -165,7 +165,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 			setStepContent(StepContent.Success);
 		} catch (e) {
 			setCurrentStep(Step.ConfirmDetails);
-			setError(ERRORS.TRANSACTION);
+			setError(ERRORS.REJECTED_WALLET);
 			setStepContent(StepContent.Details);
 		}
 
@@ -294,13 +294,13 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				wildBalance={wildBalance}
 				highestBid={bidData?.highestBid?.amount}
 				bid={bid}
-				onClose={onClose}
+				onClose={onBid}
 			/>
 		),
 	};
 
 	return (
-		<Overlay centered open onClose={onBid}>
+		<Overlay centered open onClose={onClose}>
 			<Wizard
 				header={STEP_CONTENT_TITLES[stepContent]}
 				sectionDivider={isBidPlaced}

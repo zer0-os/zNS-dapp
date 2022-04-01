@@ -8,6 +8,7 @@ import { tryFunction } from 'lib/utils';
 
 //- Hook Imports
 import { useWeb3React } from '@web3-react/core';
+import useNotification from './useNotification';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
@@ -219,8 +220,10 @@ export const useBidProvider = (): UseBidProviderReturn => {
 					library!.getSigner(),
 					(status) => onPlaceBidStatusChange(status, onStep),
 				);
+				onStep('Generating bid...');
 			} catch (e) {
 				console.warn(e);
+				throw new Error('Rejected by wallet');
 			}
 		},
 		[sdk, library],

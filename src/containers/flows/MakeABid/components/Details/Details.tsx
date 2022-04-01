@@ -74,15 +74,7 @@ const Details = ({
 	const formattedBidAmountWILD = getBidAmountText(bid);
 	// Balance loading
 	const loadingWildBalance = wildBalance === undefined;
-	// Set button glow
-	const isButtonGlow = stepContent === StepContent.Details ? isBidValid : true;
 	// Step content
-	const onSubmit =
-		stepContent === StepContent.Details
-			? !isBidValid
-				? undefined
-				: onConfirm
-			: onClose;
 	const onSubmitButtonText =
 		stepContent === StepContent.Details
 			? error
@@ -94,6 +86,7 @@ const Details = ({
 			? toFiat(parseFloat(bid) * wildPriceUsd)
 			: PLACE_BID_LABELS.ZERO_VALUE;
 	const hasViewAllBids = stepContent === StepContent.Details;
+	const onSubmit = stepContent === StepContent.Details ? onConfirm : onClose;
 
 	/////////////////////
 	// React Fragments //
@@ -147,7 +140,6 @@ const Details = ({
 						<TextInput
 							numeric
 							text={bid}
-							errorText={error}
 							error={Boolean(error)}
 							className={styles.TextInput}
 							onChange={(text: string) => setBid && setBid(text)}
@@ -171,13 +163,27 @@ const Details = ({
 			{/* Buttons */}
 			<div className={styles.Buttons}>
 				{stepContent === StepContent.Details && (
-					<FutureButton alt glow onClick={onClose}>
-						{BUTTONS[StepContent.Details].SECONDARY}
-					</FutureButton>
+					<>
+						<FutureButton alt glow onClick={onClose}>
+							{BUTTONS[StepContent.Details].SECONDARY}
+						</FutureButton>
+
+						<FutureButton
+							glow={isBidValid && Number(bid) < wildBalance!}
+							disabled={isBidValid && Number(bid) > wildBalance!}
+							onClick={onSubmit}
+						>
+							{onSubmitButtonText}
+						</FutureButton>
+					</>
 				)}
-				<FutureButton glow={isButtonGlow} onClick={onSubmit}>
-					{onSubmitButtonText}
-				</FutureButton>
+				{stepContent === StepContent.Success && (
+					<>
+						<FutureButton glow onClick={onSubmit}>
+							{onSubmitButtonText}
+						</FutureButton>
+					</>
+				)}
 			</div>
 		</>
 	);
