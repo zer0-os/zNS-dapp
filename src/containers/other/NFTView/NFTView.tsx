@@ -81,6 +81,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		return { isBiddable, isOwnedByYou, assetUrl, nftMoreOptions };
 	}, [znsDomain, domainMetadata, account]);
 
+	///////////////
+	// Functions //
+	///////////////
+
 	//- Callback functions
 	const onOpenBidOverlay = useCallback(() => {
 		if (!znsDomain || isOwnedByYou || !active) {
@@ -90,14 +94,17 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		setIsBidOverlayOpen(true);
 	}, [znsDomain, active, isOwnedByYou]);
 
+	// Close Make A Bid
 	const onCloseBidOverlay = () => setIsBidOverlayOpen(false);
-
+	// Close Domain Settings
+	const onCloseDomainSettingsOverlay = () => setIsDomainSettingsOpen(false);
 	const onBid = useCallback(async () => {
 		getPriceData();
 		getHistory();
 		onCloseBidOverlay();
 	}, [getHistory, getPriceData]);
 
+	// Dropdown Option Select
 	const onSelectNFTMoreOption = (option: Option) => {
 		if (option.title === NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS) {
 			setIsDomainSettingsOpen(true);
@@ -155,7 +162,11 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			{/* Make a Bid Modal */}
 			{isBidOverlayOpen && (
 				<Overlay onClose={onCloseBidOverlay} open={isBidOverlayOpen}>
-					<MakeABid domain={znsDomain!} onBid={onBid} />
+					<MakeABid
+						domain={znsDomain!}
+						onBid={onBid}
+						onClose={onCloseBidOverlay}
+					/>
 				</Overlay>
 			)}
 
@@ -163,7 +174,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			{isDomainSettingsOpen && (
 				<DomainSettings
 					domainId={domainId}
-					onClose={() => setIsDomainSettingsOpen(false)}
+					onClose={onCloseDomainSettingsOverlay}
 				/>
 			)}
 		</div>

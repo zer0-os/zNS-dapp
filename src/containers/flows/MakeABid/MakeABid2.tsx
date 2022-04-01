@@ -3,30 +3,32 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 //- Global Component Imports
-import {
-	FutureButton,
-	LoadingIndicator,
-	NFTMedia,
-	Overlay,
-	StepBar,
-	TextInput,
-	Wizard,
-} from 'components';
+import { Overlay, StepBar, Wizard } from 'components';
 
 //- Components Imports
+import Details from './components/Details/Details';
 
-//- Containers Imports
-import { BidList } from 'containers';
+//- Constants Imports
+import {
+	BUTTONS,
+	ERRORS,
+	getBidAmountText,
+	getSuccessNotification,
+	MESSAGES,
+	STATUS_TEXT,
+	STEP_BAR_HEADING,
+	STEP_CONTENT_TITLES,
+} from './MakeABid.constants';
 
 //- Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { useZnsSdk } from 'lib/hooks/sdk';
-import { Domain, Maybe } from 'lib/types';
+import { Domain } from 'lib/types';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useNotification from 'lib/hooks/useNotification';
-import { formatBidAmount } from 'lib/utils';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+import { truncateDomain } from 'lib/utils';
 
 //- Hooks
 import useBidData from './hooks/useBidData';
@@ -40,54 +42,46 @@ import { ERC20 } from 'types';
 import { useZnsContracts } from 'lib/contracts';
 import { ethers } from 'ethers';
 
-//- Constants Imports
-import {
-	BUTTONS,
-	ERRORS,
-	getSuccessNotification,
-	MESSAGES,
-	STATUS_TEXT,
-	STEP_BAR_HEADING,
-	STEP_CONTENT_TITLES,
-} from './MakeABid.constants';
-import { toFiat } from 'lib/currency';
+const maxCharacterLength = 28;
 
 type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
+	onClose: () => void;
 };
 
-const MakeABid = ({ domain, onBid }: MakeABidProps) => {
-	//////////////////
-	// State & Data //
-	//////////////////
+const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
+	//////////
+	// Data //
+	//////////
+
+	const znsContracts = useZnsContracts()!;
+	const wildContract: ERC20 = znsContracts.wildToken;
 
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
 	const { account, library } = useWeb3React();
 	const { placeBid } = useBidProvider();
-	const { bidData } = useBidData(domain.id);
+	const { bidData, isLoading } = useBidData(domain.id);
 	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
-	const domainMetadata = useDomainMetadata(domain.metadata);
 
-	const [stepContent, setStepContent] = useState<StepContent>(
-		StepContent.CheckingZAuctionApproval,
-	);
+	// Refs
+	const isMounted = useRef(false);
+
+	// State
 	const [wildBalance, setWildBalance] = useState<number | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.zAuction);
 	const [bid, setBid] = useState<string>('');
 	const [isBidPlaced, setIsBidPlaced] = useState<boolean>(false);
 	const [statusText, setStatusText] = useState<string>('Processing bid');
 	const [error, setError] = useState<string | undefined>();
-	const [isAllBidsModalOpen, setIsAllBidsModalOpen] = useState(false);
-	const [isBidPending] = useState(false);
-
-	// Prevent state update to unmounted component
-	const isMounted = useRef(false);
-
-	const znsContracts = useZnsContracts()!;
-	const wildContract: ERC20 = znsContracts.wildToken;
+	const [stepContent, setStepContent] = useState<StepContent>(
+		StepContent.CheckingZAuctionApproval,
+	);
+	const domainMetadata = useDomainMetadata(domain.metadata);
+	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
+	const isBidValid = !Number.isNaN(parseFloat(bid));
 
 	///////////////
 	// Functions //
@@ -150,21 +144,22 @@ const MakeABid = ({ domain, onBid }: MakeABidProps) => {
 		})();
 	};
 
+	// Set status text
 	const onStep = async (status: string) => {
 		setStatusText(status);
 	};
 
+	// Confirm bid
 	const onConfirm = async () => {
 		const bidAmount = Number(bid);
 		if (!bidAmount) return;
-
 		setError('');
 		setCurrentStep(Step.PlaceBid);
 		setStepContent(StepContent.PlacingBid);
 		try {
 			await placeBid(domain, bidAmount, onStep);
 			addNotification(
-				getSuccessNotification(formatBidAmount(String(bidAmount)), domain.name),
+				getSuccessNotification(getBidAmountText(bid), domain.name),
 			);
 			setIsBidPlaced(true);
 			setStepContent(StepContent.Success);
@@ -177,24 +172,26 @@ const MakeABid = ({ domain, onBid }: MakeABidProps) => {
 		if (!isMounted.current) return;
 	};
 
-	// const onFinish = async () => {
-	// 	if (bid) {
-	// 		onBid();
-	// 	}
-	// };
-
-	console.log(currentStep);
-	console.log(stepContent);
-
+	// Set confirm step button text
 	const confirmationErrorButtonText = () =>
 		error
 			? BUTTONS[StepContent.Details].TERTIARY
 			: BUTTONS[StepContent.Details].PRIMARY;
 
+	// Step bar navigation
 	const onStepNavigation = (i: number) => {
 		setCurrentStep(i);
 		setStepContent(i);
 	};
+
+	const assetUrl = useMemo(() => {
+		return (
+			domainMetadata?.animation_url ||
+			domainMetadata?.image_full ||
+			domainMetadata?.image ||
+			''
+		);
+	}, [domainMetadata]);
 
 	/////////////
 	// Effects //
@@ -228,167 +225,6 @@ const MakeABid = ({ domain, onBid }: MakeABidProps) => {
 		};
 	});
 
-	const loadingWildBalance = wildBalance === undefined;
-
-	const modals = () => {
-		if (isAllBidsModalOpen && bidData?.bids !== undefined) {
-			return (
-				<Overlay open onClose={() => setIsAllBidsModalOpen(false)} centered>
-					<BidList bids={bidData.bids} wildPriceUsd={wildPriceUsd} />
-				</Overlay>
-			);
-		} else {
-			return <></>;
-		}
-	};
-
-	const ipfsUrl = useMemo(() => {
-		return (
-			domainMetadata?.animation_url ||
-			domainMetadata?.image_full ||
-			domainMetadata?.image ||
-			''
-		);
-	}, [domainMetadata]);
-
-	const nft = () => (
-		<div className={styles.NFT}>
-			<NFTMedia
-				alt="Bid NFT preview"
-				style={{ objectFit: 'contain', position: 'absolute', zIndex: 2 }}
-				ipfsUrl={ipfsUrl}
-				size="small"
-			/>
-		</div>
-	);
-
-	const estimation = () => {
-		const isBidValid = !Number.isNaN(parseFloat(bid));
-		const bidString = isBidValid
-			? toFiat(parseFloat(bid) * wildPriceUsd)
-			: '0.00';
-
-		return (
-			wildPriceUsd > 0 && (
-				<>
-					<span className={styles.Estimate}>Approx. ${bidString} USD</span>
-				</>
-			)
-		);
-	};
-
-	const formSubmit = (event: React.FormEvent) => {
-		event.preventDefault();
-		onConfirm();
-	};
-
-	const details = () => (
-		<div className={styles.Details}>
-			<h2 className="glow-text-white">{domainMetadata?.title}</h2>
-			<span className={styles.Domain}>0://{'formattedDomain'}</span>
-			<div className={styles.Price}>
-				<h3 className="glow-text-blue">Highest Bid</h3>
-			</div>
-		</div>
-	);
-
-	const isBidValid = useMemo(() => {
-		return (
-			(Number(bid) &&
-				wildBalance &&
-				Number(bid) <= wildBalance &&
-				Number(bid) > 0) === true
-		);
-	}, [bid]);
-
-	const bidStep = () => {
-		let bidTooHighWarning: Maybe<React.ReactFragment> = null;
-
-		if (!loadingWildBalance && Number(bid) > wildBalance!) {
-			bidTooHighWarning = (
-				<>
-					<p className={styles.Error} style={{ paddingTop: '16px' }}>
-						You don't have enough WILD to make that large of a bid
-					</p>
-				</>
-			);
-		}
-
-		return (
-			<>
-				{modals()}
-				<div
-					className={styles.Section}
-					style={{ display: 'flex', padding: '0 37.5px' }}
-				>
-					{nft()}
-					{details()}
-				</div>
-				<div className={styles.InputWrapper}>
-					{domain.owner.id.toLowerCase() === account?.toLowerCase() && (
-						<p className={styles.Error} style={{ paddingTop: '16px' }}>
-							You can not bid on your own domain
-						</p>
-					)}
-					{domain.owner.id.toLowerCase() !== account?.toLowerCase() && (
-						<>
-							{loadingWildBalance && (
-								<>
-									<LoadingIndicator text="Checking WILD Balance" />
-								</>
-							)}
-							{!loadingWildBalance && (
-								<>
-									<p className="glow-text-blue">
-										Enter the amount you wish to bid:
-									</p>
-									<span
-										style={{ marginBottom: 16 }}
-										className={styles.Estimate}
-									>
-										Your Balance: {Number(wildBalance).toLocaleString()} WILD
-									</span>
-									<form onSubmit={formSubmit}>
-										<TextInput
-											onChange={(text: string) => setBid(text)}
-											placeholder="Bid amount (WILD)"
-											error={Boolean(error)}
-											errorText={error}
-											numeric
-											text={bid}
-											style={{ width: 268, margin: '0 auto' }}
-										/>
-									</form>
-									{estimation()}
-									{bidTooHighWarning}
-									<FutureButton
-										style={{
-											height: 36,
-											borderRadius: 18,
-											textTransform: 'uppercase',
-											margin: '32px auto 0 auto',
-										}}
-										loading={isBidPending}
-										onClick={() => {
-											if (!isBidValid) {
-												return;
-											}
-
-											onConfirm();
-										}}
-										glow={isBidValid}
-									>
-										Continue
-									</FutureButton>
-								</>
-							)}
-						</>
-					)}
-				</div>
-			</>
-		);
-	};
-
 	const content = {
 		// Failed to check zAuction
 		[StepContent.FailedToCheckZAuction]: (
@@ -396,7 +232,7 @@ const MakeABid = ({ domain, onBid }: MakeABidProps) => {
 				error={error}
 				message={ERRORS.CONSOLE_TEXT}
 				primaryButtonText={BUTTONS[StepContent.FailedToCheckZAuction]}
-				onClickPrimaryButton={onBid}
+				onClickPrimaryButton={onClose}
 			/>
 		),
 		// Check zAuction Approval
@@ -410,7 +246,7 @@ const MakeABid = ({ domain, onBid }: MakeABidProps) => {
 				message={STATUS_TEXT.ACCEPT_ZAUCTION_PROMPT}
 				primaryButtonText={confirmationErrorButtonText()}
 				onClickPrimaryButton={approveZAuction}
-				onClickSecondaryButton={onBid}
+				onClickSecondaryButton={onClose}
 			/>
 		),
 		// Wait for Wallet
@@ -422,12 +258,45 @@ const MakeABid = ({ domain, onBid }: MakeABidProps) => {
 			<Wizard.Loading message={STATUS_TEXT.APPROVING_ZAUCTION} />
 		),
 		// NFT details confirmation
-		[StepContent.Details]: bidStep(),
+		[StepContent.Details]:
+			wildBalance && !isLoading ? (
+				<Details
+					stepContent={stepContent}
+					bidData={bidData}
+					assetUrl={assetUrl}
+					creator={domain?.minter?.id || ''}
+					domainName={formattedDomain}
+					title={domainMetadata?.title ?? ''}
+					wildBalance={wildBalance}
+					wildPriceUsd={wildPriceUsd}
+					highestBid={bidData?.highestBid?.amount}
+					error={error}
+					bid={bid}
+					isBidValid={isBidValid}
+					setBid={setBid}
+					onClose={onClose}
+					onConfirm={onConfirm}
+				/>
+			) : (
+				<Wizard.Loading message={MESSAGES.TEXT_LOADING} />
+			),
 
 		// Placing Bid
 		[StepContent.PlacingBid]: <Wizard.Loading message={statusText} />,
 		// Bid Placed
-		[StepContent.Success]: 'YOLO2',
+		[StepContent.Success]: wildBalance && (
+			<Details
+				stepContent={stepContent}
+				assetUrl={assetUrl}
+				creator={domain?.minter?.id || ''}
+				domainName={formattedDomain}
+				title={domainMetadata?.title ?? ''}
+				wildBalance={wildBalance}
+				highestBid={bidData?.highestBid?.amount}
+				bid={bid}
+				onClose={onClose}
+			/>
+		),
 	};
 
 	return (

@@ -7,6 +7,7 @@ export const BUTTONS = {
 		PRIMARY: 'Make Bid',
 		SECONDARY: 'Cancel',
 		TERTIARY: 'Retry',
+		VIEW_ALL: 'View all bids',
 	},
 	[StepContent.Success]: 'Finish',
 };
@@ -36,6 +37,7 @@ export const ERRORS = {
 	LIBRARY: 'Failed to connect with Web3 wallet.',
 	CONSOLE_TEXT: 'Failed to check zAuction approval status',
 	REJECTED_WALLET: 'Rejected by wallet',
+	INSUFFICIENT_FUNDS: 'You don’t have enough WILD to make that large of a bid',
 };
 
 export const STATUS_TEXT = {
@@ -48,10 +50,28 @@ export const STATUS_TEXT = {
 };
 
 export const MESSAGES = {
-	TEXT_LOADING: 'Loading Bid Data...',
+	TEXT_LOADING: 'Loading Bid Data..',
+	ENTER_AMOUNT: 'Enter the amount you wish to bid:',
+	SUCCESSFUL_BID: `Your bid was successfully placed`,
+};
+
+export const PLACE_BID_LABELS = {
+	INPUT_PLACEHOLDER: 'Bid amount (WILD)',
+	ZERO_VALUE: '0.00',
+	YOUR_BID: 'Your Bid',
 };
 
 export const getSuccessNotification = (
 	bidAmount: React.ReactNode,
 	domainName: React.ReactNode,
 ) => `Bid of ${bidAmount} for ${domainName} has been placed.`;
+
+export const getWildBalance = (balance: number) =>
+	`Your Balance: ${Number(balance).toLocaleString()} WILD`;
+
+export const getUsdEstimation = (bid: string) => `Approx. ${bid} USD`;
+
+export const getSueccessText = (bid: string, domainName: string) =>
+	`You have successfully placed a bid of ${bid} USD on ${domainName}`;
+
+export const getBidAmountText = (bid: string) => `${bid} WILD`;
