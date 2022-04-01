@@ -2,7 +2,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './GenericTable.module.scss';
 import { useInView } from 'react-intersection-observer';
-import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { IconButton, SearchBar, Spinner, TextButton } from 'components';
 import grid from './assets/grid.svg';
@@ -18,8 +17,7 @@ const GenericTable = (props: any) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
-	const { domainMetadata } = useCurrentDomain();
-	const isGridViewByDefault = Boolean(domainMetadata?.gridViewByDefault);
+	const isGridViewByDefault = props.isGridViewByDefault;
 
 	// chunk defines which row we're up to when infinite scroll is enabled
 	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows
