@@ -287,6 +287,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		[StepContent.Success]: wildBalance && (
 			<Details
 				stepContent={stepContent}
+				bidData={bidData}
 				assetUrl={assetUrl}
 				creator={domain?.minter?.id || ''}
 				domainName={formattedDomain}

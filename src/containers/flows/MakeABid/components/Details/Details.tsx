@@ -85,7 +85,6 @@ const Details = ({
 		isBidValid && wildPriceUsd
 			? toFiat(parseFloat(bid) * wildPriceUsd)
 			: PLACE_BID_LABELS.ZERO_VALUE;
-	const hasViewAllBids = stepContent === StepContent.Details;
 	const onSubmit = stepContent === StepContent.Details ? onConfirm : onClose;
 
 	/////////////////////
@@ -108,7 +107,7 @@ const Details = ({
 					creator={creator}
 					domain={domainName}
 					title={title}
-					hasViewAllBids={hasViewAllBids}
+					hasViewAllBids
 					setIsModalOpen={setIsModalOpen}
 					bidData={bidData}
 					otherDetails={[
