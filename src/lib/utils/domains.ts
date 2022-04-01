@@ -81,3 +81,23 @@ export const truncateDomain = (
 		return domainText;
 	}
 };
+
+/**
+ * Extracts a zNA from a full pathname
+ * e.g. /market/test.name/hello => test.name
+ * @param pathname from react-router-dom::useLocation
+ * @returns zNA from pathname, or empty string
+ */
+export const zNAFromPathname = (pathname: string): string => {
+	return pathname.replace(/^\/[a-zA-Z]*\//, '').split('/')[0] ?? '';
+};
+
+/**
+ * Extracts app name from pathname
+ * e.g. /market/test.name/hello => /market
+ * @param pathname from react-router-dom::useLocation
+ * @returns app from pathname, or empty string
+ */
+export const appFromPathname = (pathname: string): string => {
+	return pathname.match(/^\/[a-zA-Z]*/)?.at(0) ?? '';
+};

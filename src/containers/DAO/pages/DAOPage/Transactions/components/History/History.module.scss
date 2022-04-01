@@ -1,0 +1,27 @@
+.Container {
+	.Group {
+		&:not(:first-of-type) {
+			margin-top: 8px;
+		}
+
+		h2 {
+			font-weight: 700;
+			color: var(--color-grey-lighter-2);
+			padding: 8px;
+		}
+
+		.Event {
+			display: flex;
+			justify-content: space-between;
+
+			margin-top: 8px;
+			padding: 8px 0;
+
+			color: var(--color-grey-lighter-3);
+
+			b {
+				color: white;
+			}
+		}
+	}
+}

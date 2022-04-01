@@ -27,6 +27,7 @@ type ArtworkProps = {
 	name?: string;
 	pending?: boolean;
 	style?: React.CSSProperties;
+	subtext?: string;
 };
 
 const cx = classNames.bind(styles);
@@ -42,6 +43,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 	name,
 	pending,
 	style,
+	subtext,
 }) => {
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
@@ -128,7 +130,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 							{(animatedStyles) => (
 								<animated.div style={animatedStyles}>
 									<span
-										style={{ cursor: pending ? 'default' : 'pointer' }}
+										style={{
+											cursor:
+												pending || disableInteraction ? 'default' : 'pointer',
+										}}
 										className={styles.Title}
 									>
 										{metadata?.title || name}
@@ -139,7 +144,9 @@ const Artwork: React.FC<ArtworkProps> = ({
 					)}
 					{!shouldAnimate && metadata?.title && (
 						<span
-							style={{ cursor: pending ? 'default' : 'pointer' }}
+							style={{
+								cursor: pending || disableInteraction ? 'default' : 'pointer',
+							}}
 							className={styles.Title}
 						>
 							{metadata?.title || name}
@@ -151,6 +158,9 @@ const Artwork: React.FC<ArtworkProps> = ({
 								<span className={styles.Domain}>
 									{truncatedDomain || 'wilder.' + domain}
 								</span>
+							)}
+							{subtext && !domain && (
+								<span className={styles.Domain}>{subtext}</span>
 							)}
 							{!disableInteraction && domain && (
 								<Link

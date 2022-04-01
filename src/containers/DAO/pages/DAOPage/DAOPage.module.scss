@@ -1,0 +1,49 @@
+.Header {
+	display: flex;
+	align-items: center;
+	padding: 16px;
+
+	font-weight: 700;
+
+	h1 {
+		margin-left: 8px;
+	}
+
+	.Icon {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		height: 40px;
+		width: 40px;
+		min-width: 40px;
+		min-height: 40px;
+
+		border-radius: 8px;
+		overflow: hidden;
+
+		img {
+			object-fit: contain;
+			height: 40px;
+			width: 40px;
+		}
+	}
+}
+
+.Stat {
+	max-width: 160px !important;
+}
+
+.Loading {
+	padding: 24px;
+}
+
+.Error {
+	padding: 32px;
+	text-align: center;
+
+	a {
+		display: block;
+		margin-top: 16px;
+	}
+}
