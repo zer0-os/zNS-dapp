@@ -4,6 +4,8 @@ import { BuyTokenRedirect } from 'containers';
 import { LINKS } from 'constants/nav';
 import styles from './SideBar.module.scss';
 import classNames from 'classnames/bind';
+import { LOGO, ZERO } from 'constants/assets';
+import { URLS } from 'constants/urls';
 const cx = classNames.bind(styles);
 
 const SideBar = () => {
@@ -13,7 +15,7 @@ const SideBar = () => {
 		<div className={styles.Container}>
 			<div>
 				{/* TODO: update src image here */}
-				<div className={styles.Icon}></div>
+				<img alt="app logo" src={LOGO} className={styles.Icon} />
 				<ul className={styles.Links}>
 					{LINKS.map((l) => (
 						<li key={l.label}>
@@ -28,7 +30,15 @@ const SideBar = () => {
 					))}
 				</ul>
 			</div>
-			<div>
+			<div className={styles.Footer}>
+				<a
+					className={styles.Zero}
+					target="_blank"
+					href={URLS.ZERO}
+					rel="noreferrer"
+				>
+					<img alt="zero logo" src={ZERO} />
+				</a>
 				<BuyTokenRedirect />
 			</div>
 		</div>

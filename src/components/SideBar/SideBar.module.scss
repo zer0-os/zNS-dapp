@@ -27,11 +27,11 @@ $break-hide-image: calc(var(--width-max) + ($full-width * 2));
 	transform: $transform;
 
 	.Icon {
-		height: 54px;
-		width: 54px;
-		border-radius: 50%;
+		height: 30px;
+		width: 30px;
+		object-fit: contain;
 
-		background: yellow;
+		border-radius: 50%;
 	}
 
 	.Links {
@@ -39,7 +39,7 @@ $break-hide-image: calc(var(--width-max) + ($full-width * 2));
 		font-size: 20px;
 
 		> li {
-			padding: 12px 8px;
+			padding: 12px 0;
 
 			> a {
 				display: flex;
@@ -76,6 +76,25 @@ $break-hide-image: calc(var(--width-max) + ($full-width * 2));
 					}
 				}
 			}
+		}
+	}
+
+	.Footer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		> * {
+			width: 100%;
+
+			&:not(:first-child) {
+				margin-top: 16px;
+			}
+		}
+
+		.Zero {
+			height: 32px;
+			width: 32px;
 		}
 	}
 }
