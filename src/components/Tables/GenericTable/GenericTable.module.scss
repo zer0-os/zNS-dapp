@@ -10,7 +10,6 @@
 	display: flex;
 
 	width: 100%;
-	padding: 16px 0;
 
 	align-items: center;
 }
@@ -79,9 +78,8 @@
 .Grid {
 	width: 100%;
 
-	padding: 11px 16px 16px 16px;
-
 	display: grid;
+	margin-top: 16px;
 	/* justify-content: space-evenly; */
 	grid-template-columns: repeat(auto-fit, minmax(32%, 0.5fr));
 	grid-row-start: 1;
