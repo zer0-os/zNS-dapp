@@ -1,6 +1,14 @@
+//- React Imports
 import React from 'react';
+
+//- Info Element Imports
 import { IconDot, InfoPanel } from './elements';
+
+//- Assets Imports
 import './_info-button.scss';
+
+//- Components Imports
+import { HoverDropdown } from 'components';
 
 export type InfoButtonProps = {
 	isDesktop: boolean;
@@ -8,13 +16,25 @@ export type InfoButtonProps = {
 };
 
 export const InfoButton: React.FC<InfoButtonProps> = (props) => {
-	return (
+	/////////////////////
+	// React Fragments //
+	/////////////////////
+	const dropdownButton = (
 		<div className="info-button__container">
 			<button className="info-button">
 				<IconDot />
 			</button>
-
-			<InfoPanel {...props} />
 		</div>
+	);
+
+	const dropdownContent = <InfoPanel {...props} />;
+
+	////////////
+	// Render //
+	////////////
+	return (
+		<HoverDropdown triggerContent={dropdownButton}>
+			{dropdownContent}
+		</HoverDropdown>
 	);
 };

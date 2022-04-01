@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
@@ -28,7 +28,6 @@ import Summary from './sections/Summary';
 
 //- Style Imports
 import styles from './MintNewNFT.module.scss';
-import { rootDomainName } from 'lib/utils/domains';
 
 type MintNewNFTProps = {
 	domainId: string; // Blockchain ID of the domain we're minting to
@@ -201,7 +200,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				story: tokenInformation.story,
 				image: tokenInformation.image,
 				domain: tokenInformation.domain,
-				zna: newDomainZna(),
+				zna: newDomainZna,
 				// @TODO Reimplement ticker when we enable dynamic tokens
 				ticker: '',
 				dynamic: false,
@@ -230,7 +229,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					story: tokenInformation.story,
 					image: tokenInformation.image,
 					domain: tokenInformation.domain,
-					zna: newDomainZna(),
+					zna: newDomainZna,
 					// @TODO Reimplement ticker when we enable dynamic tokens
 					ticker: '',
 					dynamic: false,
@@ -265,7 +264,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				}
 
 				onMint();
-			} catch (e) {
+			} catch (e: any) {
 				setError(e && (e.message ?? ''));
 				setIsMintLoading(false);
 			}
@@ -278,18 +277,11 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	// Fragments //
 	///////////////
 
-	const newDomainZna = () => {
-		const parentDomain =
-			domainName.length > 1 ? `.${domainName.substring(1)}` : '';
+	const newDomainZna = useMemo(() => {
 		const newDomain = domain.length > 0 ? `.${domain}` : '';
-		const str = `0://${rootDomainName}${parentDomain}${newDomain}`;
 
-		return str;
-	};
-
-	const domainString = () => {
-		return <>{newDomainZna()}</>;
-	};
+		return `0://${domainName}${newDomain}`;
+	}, [domainName, domain]);
 
 	////////////
 	// Render //
@@ -306,7 +298,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					{isOwner ? 'Mint' : 'Request to Mint'} "{name ? name : 'A New NFT'}"
 				</h1>
 				<div style={{ marginBottom: 8 }}>
-					<h2 className={`glow-text-white`}>{domainString()}</h2>
+					<h2 className={`glow-text-white`}>{newDomainZna}</h2>
 				</div>
 				<span>
 					By{' '}

@@ -15,7 +15,7 @@ export type NotificationHook = {
 	removeNotification(id: string): void;
 };
 
-const useNotification = (): NotificationHook => {
+export const useNotification = (): NotificationHook => {
 	const notifications = useSelector(getNotifications);
 
 	const dispatch = useDispatch();

@@ -1,0 +1,1 @@
+export { useNftData } from './useNftData';

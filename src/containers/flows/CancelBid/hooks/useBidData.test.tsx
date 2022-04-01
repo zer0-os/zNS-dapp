@@ -16,7 +16,7 @@ import { ethers } from 'ethers';
 var mockListBids = jest.fn();
 var mockGetDomainById = jest.fn();
 
-jest.mock('lib/providers/ZnsSdkProvider', () => ({
+jest.mock('lib/hooks/sdk', () => ({
 	useZnsSdk: () => ({
 		instance: {
 			getDomainById: mockGetDomainById,
@@ -53,7 +53,7 @@ const setupHook = () => {
 	const TestComponent = () => {
 		Object.assign(
 			returnVal,
-			useBidData(mock.mockDomainData.id, mock.mockBidBeingCancelled.auctionId),
+			useBidData(mock.mockDomainData.id, mock.mockBidBeingCancelled.bidNonce),
 		);
 		return null;
 	};

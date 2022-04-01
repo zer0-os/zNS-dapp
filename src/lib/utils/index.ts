@@ -74,7 +74,7 @@ export const createDomainMetadata = async (params: DomainMetadataParams) => {
 		};
 
 		return uploadedMetadata;
-	} catch (e) {
+	} catch (e: any) {
 		console.error(e);
 		throw Error(e);
 	}
@@ -93,7 +93,7 @@ export const uploadToIPFS = async (data: string | Buffer) => {
 export async function tryFunction<T>(func: () => Promise<T>, msg: string) {
 	try {
 		return await func();
-	} catch (e) {
+	} catch (e: any) {
 		if (e.message || e.data || e.code) {
 			throw Error(`Failed to ${msg}: ${e.data} ${e.message} code: ${e.code}`);
 		}

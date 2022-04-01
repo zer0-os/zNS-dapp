@@ -1,10 +1,18 @@
 .search-domains {
 	&__results {
-		width: calc(100% + 2px);
-		/* background: inherit; */
-		overflow: hidden;
+		$borderWidth: 1px;
+		$top-margin: var(--box-radius);
 
-		border-top: 0px solid white !important;
+		position: absolute;
+		top: calc(100% - $top-margin);
+		padding-top: $top-margin;
+		left: -$borderWidth;
+		right: -$borderWidth;
+		overflow: hidden;
+		z-index: -1;
+
+		border: $borderWidth solid #af4cff67;
+		border-top: unset !important;
 		border-radius: 0 0 var(--box-radius) var(--box-radius);
 		box-shadow: none;
 

@@ -44,7 +44,7 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 		domainSearch,
 	});
 
-	return (
+	return searchQuery ? (
 		<Spring to={{ height: localState.containerHeight || 0 }}>
 			{(animatedStyles) => (
 				<animated.div
@@ -85,5 +85,5 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 				</animated.div>
 			)}
 		</Spring>
-	);
+	) : null;
 };
