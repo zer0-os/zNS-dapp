@@ -5,6 +5,9 @@
 	> * {
 		flex: 1;
 
+		height: unset;
+		align-content: stretch;
+
 		&:not(:last-child) {
 			margin-right: 16px;
 		}

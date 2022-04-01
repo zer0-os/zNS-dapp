@@ -58,3 +58,7 @@ export const TABLE_HEADERS_DISCONNECTED = [
 		className: '',
 	},
 ];
+
+export enum MESSAGE {
+	FAILED_TO_LOAD = 'Failed to load',
+}
