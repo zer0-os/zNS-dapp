@@ -16,8 +16,8 @@ export interface ButtonsProps {
 
 const Buttons = ({
 	className,
-	isPrimaryButtonActive,
-	isSecondaryButtonActive,
+	isPrimaryButtonActive = true,
+	isSecondaryButtonActive = true,
 	onClickPrimaryButton,
 	onClickSecondaryButton,
 	primaryButtonText,
@@ -27,14 +27,16 @@ const Buttons = ({
 		{onClickSecondaryButton && (
 			<FutureButton
 				alt
-				glow={isSecondaryButtonActive === undefined || isSecondaryButtonActive}
+				glow={isSecondaryButtonActive}
+				disabled={!isSecondaryButtonActive}
 				onClick={onClickSecondaryButton}
 			>
 				{secondaryButtonText ? secondaryButtonText : 'Cancel'}
 			</FutureButton>
 		)}
 		<FutureButton
-			glow={isPrimaryButtonActive === undefined || isPrimaryButtonActive}
+			glow={isPrimaryButtonActive}
+			disabled={!isPrimaryButtonActive}
 			onClick={onClickPrimaryButton}
 		>
 			{primaryButtonText ? primaryButtonText : 'Continue'}
