@@ -54,7 +54,6 @@ export const Stats: React.FC<StatsProps> = ({
 	const fetchStats = useCallback(async () => {
 		if (znsDomain) {
 			try {
-				console.log('getting', znsDomain.name, znsDomain.id);
 				const domainMetricsCollection: DomainMetricsCollection =
 					await sdk.instance.getDomainMetrics([znsDomain.id]);
 				console.log(domainMetricsCollection.volume);
