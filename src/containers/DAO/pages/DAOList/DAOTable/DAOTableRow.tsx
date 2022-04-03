@@ -20,10 +20,10 @@ import styles from './DAOTableRow.module.scss';
 import defaultDaoIcon from 'assets/default_dao.png';
 
 // Types
-import { TableDataItem } from './DAOTable';
+import { DAOTableDataItem } from './DAOTable.types';
 
 type DAOTableRowProps = {
-	data: TableDataItem;
+	data: DAOTableDataItem;
 };
 
 /**

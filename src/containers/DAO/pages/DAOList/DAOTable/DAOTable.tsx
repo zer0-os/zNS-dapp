@@ -5,21 +5,11 @@ import { useZdaoSdk } from 'lib/dao/providers/ZdaoSdkProvider';
 import { GenericTable } from 'components';
 import DAOTableCard from './DAOTableCard';
 import DAOTableRow from './DAOTableRow';
+import { TABLE_KEYS } from './DAOTable.constants';
+import { DAOTableDataItem } from './DAOTable.types';
 
 type DAOTableProps = {
 	daoZnas?: string[];
-};
-
-enum TABLE_KEYS {
-	TITLE = 'title',
-	ZNA = 'zna',
-	DAO = 'dao',
-}
-
-export type TableDataItem = {
-	[TABLE_KEYS.TITLE]: string;
-	[TABLE_KEYS.ZNA]: string;
-	[TABLE_KEYS.DAO]: zDAO;
 };
 
 const HEADERS = [
@@ -41,7 +31,7 @@ const DAOTable = ({ daoZnas }: DAOTableProps) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [daos, setDaos] = useState<Array<zDAO>>([]);
 
-	const tableData: TableDataItem[] = useMemo(() => {
+	const tableData: DAOTableDataItem[] = useMemo(() => {
 		if (!daoZnas?.length || !daos.length) return [];
 
 		return daoZnas.map((zna, index) => {
