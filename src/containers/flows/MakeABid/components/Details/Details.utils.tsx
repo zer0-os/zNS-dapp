@@ -14,9 +14,7 @@ export const getUsdFiatEstimation = (bidString: string, wildPrice?: number) => {
 
 	return (
 		wildPrice > 0 && (
-			<>
-				<span className={styles.Estimate}>{getUsdEstimation(bidString)}</span>
-			</>
+			<span className={styles.Estimate}>{getUsdEstimation(bidString)}</span>
 		)
 	);
 };
