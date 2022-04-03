@@ -2,8 +2,8 @@
 	width: 640px;
 	padding: 40px;
 
-	color: white !important;
-	background: var(--background-blue-card-wilder);
+	color: var(--color-text-primary) !important;
+	background: var(--color-background);
 }
 
 .Header {
@@ -15,7 +15,7 @@
 }
 
 .Header h1 {
-	color: white;
+	color: var(--color-text-primary);
 	font-size: 24px;
 	font-weight: 700;
 	margin-bottom: 32px;
@@ -80,7 +80,7 @@
 
 .Price h3 {
 	color: var(--color-primary-lighter-3);
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	font-weight: 700;
 	margin-bottom: 4px;
 }
@@ -90,12 +90,12 @@
 }
 
 .Price span:first-of-type {
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	font-weight: 700;
 }
 
 .Price span:nth-of-type(2) {
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 	font-weight: 700;
 	margin-top: 8px;
 }
@@ -118,7 +118,7 @@
 .InputWrapper p {
 	margin: 0;
 	padding: 0;
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	font-weight: 400;
 	text-align: center;
 }

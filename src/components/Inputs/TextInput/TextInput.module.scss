@@ -27,13 +27,13 @@
 
 	border-radius: 24px;
 
-	color: white;
+	color: var(--color-text-primary);
 
 	background: none;
 	transition: border var(--animation-time-medium) ease-in-out;
 
 	&::placeholder {
-		color: #bfbfbf;
+		color: var(--color-grey-lighter-2);
 	}
 
 	&:disabled {
@@ -55,7 +55,7 @@
 	margin-top: 12px;
 
 	color: var(--color-invalid);
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 	font-weight: 700;
 	text-align: center;
 }

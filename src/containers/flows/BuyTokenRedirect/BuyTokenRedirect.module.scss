@@ -23,7 +23,7 @@
 	width: 535px;
 	cursor: default;
 	padding: 32px;
-	border-radius: 16px;
+	border-radius: var(--box-radius);
 	background: #1a1022;
 	border: 1px solid #472e5b;
 }
@@ -42,7 +42,7 @@
 }
 
 .CurrentPriceSml {
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	font-weight: bold;
 	line-height: 14.5px;
 	padding: 2px 6px 0 0;
@@ -51,7 +51,7 @@
 }
 
 .CurrentPriceLrg {
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	font-weight: bold;
 	line-height: 24px;
 	padding: 0 6px 0 0;
@@ -60,7 +60,7 @@
 }
 
 .PercentageChange {
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	font-weight: 400;
 	line-height: 14.5px;
 }
@@ -82,7 +82,7 @@
 	align-items: flex-end;
 
 	a {
-		font-size: 12px;
+		font-size: var(--font-size-small);
 		line-height: 15px;
 		text-shadow: none;
 		background-color: transparent;
@@ -111,7 +111,7 @@
 
 .DividerCopy {
 	font-weight: bold;
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	line-height: 14px;
 	margin-top: 24px;
 	color: var(--color-grey-lighter-3);
@@ -131,7 +131,7 @@
 	a {
 		max-width: 140px;
 		width: 100%;
-		font-size: 14px;
+		font-size: var(--font-size-smaller);
 		line-height: 17px;
 		text-shadow: unset;
 		color: var(--color-accent-blue-100);

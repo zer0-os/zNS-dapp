@@ -13,7 +13,7 @@
 }
 
 .Bid label {
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	color: var(--color-primary-lighter-3);
 }
 
@@ -24,7 +24,7 @@
 }
 
 .Fiat {
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 	color: var(--color-grey);
 	margin-top: 2px;
 }

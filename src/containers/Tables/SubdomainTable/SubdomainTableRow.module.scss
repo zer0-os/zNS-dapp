@@ -33,7 +33,7 @@
 .Bid:not(:first-child) {
 	margin-top: 2px;
 	color: var(--color-grey);
-	font-size: 12px;
+	font-size: var(--font-size-small);
 }
 
 // .volumeCol {

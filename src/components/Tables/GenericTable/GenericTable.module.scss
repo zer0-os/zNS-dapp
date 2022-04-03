@@ -38,9 +38,9 @@
 }
 
 .Table thead th {
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 	font-weight: 700;
-	color: #bfbfbf;
+	color: var(--color-grey-lighter-2);
 }
 
 .Table tbody tr td:first-of-type {
