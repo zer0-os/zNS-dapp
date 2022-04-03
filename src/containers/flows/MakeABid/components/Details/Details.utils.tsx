@@ -1,6 +1,3 @@
-//- Library Imports
-import { Maybe } from 'lib/types';
-
 //- Constants Imports
 import { ERRORS, getUsdEstimation } from '../../MakeABid.constants';
 
