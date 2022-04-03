@@ -45,19 +45,21 @@ $break-hide-image: calc(var(--width-max) + ($full-width * 2));
 				display: flex;
 				align-items: center;
 				padding: 0;
+				color: #e6e6e6; // TODO: change this to variable
+
+				font-weight: 400;
 
 				@media only screen and (max-width: 1216px) {
 					justify-content: center;
 				}
 
 				&.Selected {
-					text-shadow: var(--glow-text-blue);
+					text-shadow: var(--glow-text-primary);
+					font-weight: 600;
+					color: var(--color-text-primary);
 				}
 
 				label {
-					font-weight: 500;
-					color: var(--color-text-primary);
-
 					cursor: pointer;
 
 					@media only screen and (max-width: 1216px) {

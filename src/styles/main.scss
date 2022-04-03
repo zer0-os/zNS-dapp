@@ -19,6 +19,28 @@
 	--font-family: #{typography.$font};
 
 	--color-primary: #{colors.$primary};
+
+	--color-background: #{colors.$background};
+	--color-background-50: #{transparentize(colors.$background, 0.5)};
+
+	--color-text-primary: #{colors.$text-primary};
+
+	--glow-text-primary: #{0px 0px 24px transparentize(colors.$primary, 0.6),
+		0px 0px 12px transparentize(colors.$primary, 0.6),
+		0px 0px 6px transparentize(colors.$primary, 0.6)};
+
+	--box-radius: #{borders.$radius};
+
+	--width-max: #{dimensions.$width-max};
+	--width-min: #{dimensions.$width-min};
+
+	--animation-time-short: #{animations.$time-short};
+	--animation-time-medium: #{animations.$time-medium};
+	--animation-time-long: #{animations.$time-long};
+
+	/*
+	 * Legacy values to be replaced
+	 */
 	--color-primary-lighter-3: #e5baff;
 	--color-primary-darkest: #8c00ff;
 	--color-accent-1: #52cbff;
@@ -31,7 +53,6 @@
 	--color-invalid: #d379ff;
 	--color-grey: #808080;
 	--color-grey-lighter-2: #bfbfbf;
-	--color-text-primary: #{colors.$text-primary};
 
 	--color-purple-darkest: #10052e;
 	--color-purple-dark: #1d0c4a;
@@ -68,23 +89,11 @@
 
 	--color-baby-blue: #9dd0ff;
 
-	--color-background: #{colors.$background};
-	--color-background-50: rgba(16, 5, 46, 0.5);
 	--color-background-alt: rgb(29, 12, 74);
 	--color-background-alt-50: rgba(29, 21, 74, 0.5);
 
-	--box-radius: #{borders.$radius};
-
-	--width-max: #{dimensions.$width-max};
-	--width-min: #{dimensions.$width-min};
 	--page-padding: 24px;
-
-	--glow-text-blue: 0px 0px 10px rgba(60, 161, 255, 0.7);
 	--glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
-
-	--animation-time-short: #{animations.$time-short};
-	--animation-time-medium: #{animations.$time-medium};
-	--animation-time-long: #{animations.$time-long};
 }
 
 /* Mobile Lrg */
@@ -202,7 +211,11 @@ button.text-button {
 a:hover,
 button.text-button:hover {
 	color: var(--color-accent-1);
-	text-shadow: var(--glow-text-blue), var(--glow-text-blue);
+	text-shadow: var(--glow-text-primary);
+}
+
+a.selected {
+	text-shadow: var(--glow-text-primary);
 }
 
 a.alt-link {
@@ -420,5 +433,5 @@ button {
 }
 
 .glow-text-blue {
-	text-shadow: var(--glow-text-blue);
+	text-shadow: var(--glow-text-primary);
 }
