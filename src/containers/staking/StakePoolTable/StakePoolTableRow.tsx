@@ -1,10 +1,19 @@
-import { FutureButton } from 'components';
-import { Artwork } from 'components';
-import styles from './StakePoolTableRow.module.scss';
+/**
+ * This component represents a single row rendered by StakePoolTable
+ */
 
+import styles from './StakePoolTableRow.module.scss';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
+
+// Library imports
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
 import { toFiat } from 'lib/currency';
+
+import { FutureButton, Artwork } from 'components';
+
+export const TEST_ID = {
+	CONTAINER: 'stake-pool-table-container',
+};
 
 const StakePoolTableRow = (props: any) => {
 	const selectPool = useStakingPoolSelector().selectStakePool;
@@ -18,7 +27,11 @@ const StakePoolTableRow = (props: any) => {
 	};
 
 	return (
-		<tr className={styles.Row} onClick={onClick}>
+		<tr
+			className={styles.Row}
+			onClick={onClick}
+			data-testid={TEST_ID.CONTAINER}
+		>
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork

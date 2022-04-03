@@ -92,6 +92,7 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 				infiniteScroll
 				isLoading={isLoading || isDomainLoading}
 				loadingText={'Loading Subdomains'}
+				isGridViewByDefault={domainMetadata?.gridViewByDefault}
 				style={style}
 			/>
 		</>
