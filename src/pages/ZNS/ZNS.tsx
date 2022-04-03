@@ -298,7 +298,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 					to={{ opacity: 1, marginTop: 16 }}
 				>
 					{(styles) => (
-						<animated.div style={styles}>
+						<animated.div style={{ ...styles, flex: 1 }}>
 							<NFTView
 								// domain={domain}
 								onTransfer={openTransferOwnershipModal}

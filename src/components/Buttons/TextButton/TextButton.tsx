@@ -14,7 +14,7 @@ type TextButtonProps = {
 	children?: React.ReactNode;
 	className?: string;
 	disabled?: boolean;
-	onClick?: () => any | void;
+	onClick?: (event?: any) => any | void;
 	selected?: boolean;
 	style?: React.CSSProperties;
 	toggleable?: boolean;

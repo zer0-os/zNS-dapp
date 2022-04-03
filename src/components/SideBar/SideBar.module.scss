@@ -28,6 +28,15 @@ $icon-container-size: 54px;
 
 	transform: $transform;
 
+	.Network {
+		display: block;
+		width: 100%;
+		padding: 11px;
+		background: var(--color-success);
+		border-radius: var(--box-radius);
+		margin-top: 32px;
+	}
+
 	.Icon {
 		display: flex;
 		justify-content: center;

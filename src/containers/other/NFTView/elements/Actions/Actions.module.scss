@@ -1,13 +1,22 @@
+$gap: 40px;
+
 .Container {
 	display: flex;
+	flex-wrap: wrap;
+	gap: $gap;
 
-	> *:not(:first-child) {
-		margin-left: 40px;
+	.Border {
+		border-right: 1px solid #232323; // TODO: change to variable
+		padding-right: $gap;
+
+		@media only screen and (max-width: 700px) {
+			border-right: unset;
+			padding-right: unset;
+		}
 	}
 
 	.Action {
 		display: flex;
-		justify-content: center;
 		align-items: center;
 
 		height: 32px;
@@ -16,5 +25,10 @@
 		.TextButton {
 			padding-left: 0;
 		}
+	}
+
+	.Label {
+		font-weight: 600;
+		font-size: 20px;
 	}
 }
