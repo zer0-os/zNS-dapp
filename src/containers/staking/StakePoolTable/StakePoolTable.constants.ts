@@ -25,7 +25,3 @@ export const TABLE_HEADERS = [
 		className: '',
 	},
 ];
-
-export enum MESSAGE {
-	FAILED_TO_LOAD = 'Failed to load',
-}

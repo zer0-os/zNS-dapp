@@ -31,6 +31,8 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 	const isMounted = useRef<boolean>();
 	const contractAddresses = useContractAddresses();
 
+	console.log(contractAddresses);
+
 	const [instance, setInstance] =
 		React.useState<MaybeUndefined<Instance>>(undefined);
 	const [pools, setPools] =
