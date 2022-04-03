@@ -14,8 +14,9 @@ const SideBar = () => {
 	return (
 		<div className={styles.Container}>
 			<div>
-				{/* TODO: update src image here */}
-				<img alt="app logo" src={LOGO} className={styles.Icon} />
+				<div className={styles.Icon}>
+					<img alt="app logo" src={LOGO} />
+				</div>
 				<ul className={styles.Links}>
 					{LINKS.map((l) => (
 						<li key={l.label}>
