@@ -71,7 +71,4 @@ export const getWildBalance = (balance: number) =>
 
 export const getUsdEstimation = (bid: string) => `Approx. ${bid} USD`;
 
-export const getSueccessText = (bid: string, domainName: string) =>
-	`You have successfully placed a bid of ${bid} USD on ${domainName}`;
-
 export const getBidAmountText = (bid: string) => `${bid} WILD`;
