@@ -2,7 +2,7 @@
 	width: 304px;
 	position: relative;
 
-	background: var(--background-blue-card-wilder);
+	background: var(--color-background);
 	border-radius: var(--box-radius);
 
 	overflow: hidden;
@@ -24,7 +24,7 @@
 .header h3 {
 	font-size: 18px;
 	font-weight: 700;
-	color: white;
+	color: var(--color-text-primary);
 }
 
 .connect ul {
@@ -41,8 +41,8 @@
 	width: 100%;
 	padding: 4px 40px;
 
-	color: white;
-	font-size: 16px;
+	color: var(--color-text-primary);
+	font-size: var(--font-size-default);
 
 	cursor: pointer;
 }
@@ -63,7 +63,7 @@
 	z-index: -1;
 
 	opacity: 0;
-	transition: opacity 0.1s ease-in-out;
+	transition: opacity var(--animation-time-short) ease-in-out;
 }
 
 .wallet:hover {
@@ -110,7 +110,7 @@
 .footer {
 	width: 100%;
 	text-align: center;
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 	padding: 18px;
 }
 

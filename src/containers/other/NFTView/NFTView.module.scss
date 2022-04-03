@@ -166,13 +166,13 @@
 	/* height: 95.5px; */
 	padding: 20px;
 	background: #120d16;
-	border-radius: 16px;
+	border-radius: var(--box-radius);
 }
 
 .Box h4 {
 	margin-bottom: 4px;
-	font-size: 12px;
-	color: #bfbfbf;
+	font-size: var(--font-size-small);
+	color: var(--color-grey-lighter-2);
 }
 
 .Box span {
@@ -394,7 +394,7 @@
 	}
 
 	.Bid .From b {
-		font-size: 14px;
+		font-size: var(--font-size-smaller);
 		font-weight: 400;
 	}
 }
@@ -464,7 +464,7 @@
 .Attributes h4 {
 	padding: 0;
 	color: var(--color-grey-lighter-2);
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	text-transform: capitalize;
 	font-weight: normal;
 }
@@ -533,12 +533,12 @@
 }
 
 .Traits {
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	color: #bcbcbc;
 }
 
 .Properties {
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	margin-top: 2px;
 }
 
@@ -552,7 +552,7 @@
 button.ToggleAttributes {
 	background: none;
 	color: #52cbff;
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	width: 190px;
 	height: 48px;
 	display: flex;

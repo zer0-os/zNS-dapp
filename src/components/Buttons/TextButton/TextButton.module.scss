@@ -16,11 +16,11 @@
 }
 
 .TextButton:hover {
-	text-shadow: var(--glow-text-blue);
+	text-shadow: var(--glow-text-primary);
 }
 
 .Selected {
-	color: white;
+	color: var(--color-text-primary);
 	text-shadow: var(--glow-text-white) !important;
 }
 

@@ -36,7 +36,7 @@
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
-			border-radius: 16px;
+			border-radius: var(--box-radius);
 			overflow: hidden;
 			cursor: pointer;
 			transition: transform var(--animation-time-medium) ease-in-out,
@@ -62,7 +62,7 @@
 		border-top: 2px solid var(--color-grey-lighter-2);
 
 		h3 {
-			font-size: 16px;
+			font-size: var(--font-size-default);
 			font-weight: 700;
 			line-height: 24px;
 			margin-bottom: 16px;

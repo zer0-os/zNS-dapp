@@ -6,6 +6,7 @@ import styles from './SideBar.module.scss';
 import classNames from 'classnames/bind';
 import { LOGO, ZERO } from 'constants/assets';
 import { URLS } from 'constants/urls';
+import { appFromPathname } from 'lib/utils';
 const cx = classNames.bind(styles);
 
 const SideBar = () => {
@@ -14,8 +15,9 @@ const SideBar = () => {
 	return (
 		<div className={styles.Container}>
 			<div>
-				{/* TODO: update src image here */}
-				<img alt="app logo" src={LOGO} className={styles.Icon} />
+				<Link to={appFromPathname(pathname)}>
+					<img alt="app logo" src={LOGO} />
+				</Link>
 				<ul className={styles.Links}>
 					{LINKS.map((l) => (
 						<li key={l.label}>

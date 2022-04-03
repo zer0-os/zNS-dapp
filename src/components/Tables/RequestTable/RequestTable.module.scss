@@ -1,6 +1,6 @@
 .RequestTableContainer {
 	width: 100%;
-	color: white;
+	color: var(--color-text-primary);
 }
 
 .RequestTable {
@@ -78,7 +78,7 @@
 }
 
 .RequestTable > tbody > tr:hover {
-	background: var(--background-purple-card-20);
+	background: var(--color-background);
 }
 
 .RequestTable > tbody > tr img {

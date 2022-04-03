@@ -59,6 +59,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	const previewCardRef = useRef<HTMLDivElement>(null);
 
+	const isMobile = useMatchMedia('phone');
 	const isMobilePortrait = useMatchMedia('(max-width: 520px)');
 
 	const location = useLocation();
@@ -291,7 +292,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}
-					{nftStats()}
+					{!(isMobile || isMobilePortrait) && nftStats()}
 					{showDomainTable && <SubdomainTable style={{ marginTop: 16 }} />}
 				</div>
 			)}

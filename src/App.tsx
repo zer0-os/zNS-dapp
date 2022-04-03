@@ -32,6 +32,7 @@ import { ZNS, Staking } from 'pages';
 import PageContainer from 'containers/PageContainer';
 import { ROUTES } from 'constants/routes';
 import DAO from 'pages/DAO/DAO';
+import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
 
 // Web3 library to query
 function getLibrary(provider: any): Web3Provider {
@@ -79,12 +80,14 @@ function wrappedApp() {
 				<ChainSelectorProvider>
 					<SubgraphProvider>
 						<Web3ReactProvider getLibrary={getLibrary}>
-							{/* Our Hooks  */}
-							<MvpVersionProvider>
-								<EnlistProvider>
-									<App />
-								</EnlistProvider>
-							</MvpVersionProvider>
+							<ZnsSdkProvider>
+								{/* Our Hooks  */}
+								<MvpVersionProvider>
+									<EnlistProvider>
+										<App />
+									</EnlistProvider>
+								</MvpVersionProvider>
+							</ZnsSdkProvider>
 						</Web3ReactProvider>
 					</SubgraphProvider>
 				</ChainSelectorProvider>

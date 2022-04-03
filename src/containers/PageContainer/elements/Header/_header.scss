@@ -62,11 +62,11 @@ $height: 46px;
 			flex: 1;
 			margin-left: 16px;
 			background: none;
-			color: white;
+			color: var(--color-text-primary);
 			font-weight: bold;
 
 			&::placeholder {
-				color: #e5baff70;
+				color: var(--color-primary-lighter-3) 70;
 				font-weight: 400;
 			}
 

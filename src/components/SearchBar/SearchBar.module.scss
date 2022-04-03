@@ -14,7 +14,7 @@
 
 	/* Text */
 	text-align: left;
-	color: #bfbfbf;
+	color: var(--color-grey-lighter-2);
 
 	/* Text shadow isn't working as expected - it cuts off for some reason */
 	/* text-shadow: var(--glow-text-white); */
@@ -44,5 +44,5 @@
 }
 
 .searchBar input::placeholder {
-	color: #bfbfbf;
+	color: var(--color-grey-lighter-2);
 }

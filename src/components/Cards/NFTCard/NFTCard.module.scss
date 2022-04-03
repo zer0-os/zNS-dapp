@@ -19,14 +19,14 @@
 	display: flex;
 	align-items: center;
 
-	color: white;
+	color: var(--color-text-primary);
 }
 
 .Creator > div {
 	height: 32px;
 	width: 32px;
 
-	background: var(--background-purple-card);
+	background: var(--color-background);
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -40,7 +40,7 @@
 
 .NFTCard h5 {
 	margin-bottom: 1px;
-	color: white;
+	color: var(--color-text-primary);
 	font-size: 24px;
 	font-weight: 700;
 }
@@ -82,7 +82,7 @@
 	margin-top: 8px;
 
 	font-size: 24px;
-	color: white;
+	color: var(--color-text-primary);
 }
 
 .HasAspectRatio {

@@ -37,16 +37,16 @@
 }
 
 .iconButton:not(.Disabled):hover {
-	text-shadow: var(--glow-text-blue);
+	text-shadow: var(--glow-text-primary);
 }
 
 .iconButton:not(.Disabled).iconButton:hover {
-	text-shadow: var(--glow-text-blue);
+	text-shadow: var(--glow-text-primary);
 	background: #23142f;
 }
 
 .selected {
-	color: white;
+	color: var(--color-text-primary);
 	background: #23142f;
 }
 

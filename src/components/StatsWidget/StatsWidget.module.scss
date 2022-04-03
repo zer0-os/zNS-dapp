@@ -1,5 +1,5 @@
 .StatsWidget {
-	border-radius: 16px;
+	border-radius: var(--box-radius);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -16,13 +16,13 @@
 
 .normalView {
 	background: #1a1022;
-	border-radius: 16px;
+	border-radius: var(--box-radius);
 	height: 100%;
 }
 
 .StatsFieldName {
-	color: #bfbfbf;
-	font-size: 12px;
+	color: var(--color-grey-lighter-2);
+	font-size: var(--font-size-small);
 	line-height: 15px;
 	margin-bottom: 2px;
 }
@@ -35,9 +35,9 @@
 }
 
 .StatsSubText {
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	line-height: 15px;
-	color: #bfbfbf;
+	color: var(--color-grey-lighter-2);
 	margin-top: 2px;
 }
 

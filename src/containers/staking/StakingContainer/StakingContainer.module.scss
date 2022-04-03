@@ -23,11 +23,7 @@
 
 			&.Active {
 				color: var(--color-text-primary);
-				text-shadow: var(--glow-text-white) !important;
-			}
-
-			&:hover {
-				text-shadow: none;
+				text-shadow: var(--glow-text-primary) !important;
 			}
 		}
 	}

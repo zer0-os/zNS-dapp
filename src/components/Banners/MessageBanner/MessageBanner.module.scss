@@ -40,7 +40,7 @@
 .Label {
 	font-family: var(--font-family);
 	font-weight: 400;
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	margin-right: 8px;
 	padding-bottom: 0;
 	color: var(--color-white-secondary);
@@ -48,7 +48,7 @@
 
 .Countdown {
 	font-weight: 700;
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 	margin-right: 8px;
 	padding-bottom: 0;
 	color: var(--color-white-secondary);
@@ -63,7 +63,7 @@
 	padding-bottom: 0;
 
 	font-weight: 700;
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 
 	display: flex;
 	align-items: center;
@@ -82,15 +82,15 @@
 	}
 
 	.Label {
-		font-size: 16px;
+		font-size: var(--font-size-default);
 	}
 
 	.Countdown {
-		font-size: 16px;
+		font-size: var(--font-size-default);
 	}
 
 	.Button {
-		font-size: 16px;
+		font-size: var(--font-size-default);
 		top: 50px;
 		right: 40px;
 		bottom: auto;

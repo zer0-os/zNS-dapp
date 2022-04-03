@@ -37,7 +37,7 @@ const SubdomainTableCard = (props: any) => {
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
 
-	const domainMetadata = useDomainMetadata(domain.metadata);
+	const domainMetadata = useDomainMetadata(domain?.metadata);
 	const isRootDomain = domain.name.split('.').length <= 2;
 	const isBiddable =
 		isRootDomain || Boolean(domainMetadata?.isBiddable ?? true);

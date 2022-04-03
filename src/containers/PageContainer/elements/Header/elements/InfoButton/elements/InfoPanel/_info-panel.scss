@@ -5,7 +5,7 @@
 		gap: 1rem;
 		width: 340px;
 		padding: 32px;
-		border-radius: 16px;
+		border-radius: var(--box-radius);
 		background: #1a1022;
 		cursor: default;
 		border: 1px solid #472e5b;
@@ -111,7 +111,7 @@
 				flex: 1;
 
 				> a {
-					font-size: 14px;
+					font-size: var(--font-size-smaller);
 				}
 			}
 		}

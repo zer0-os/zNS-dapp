@@ -5,7 +5,7 @@ import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
 import styles from './StakePoolTable.module.scss';
 
-import { TABLE_HEADERS } from './StakePoolTable.helpers';
+import { TABLE_HEADERS } from './StakePoolTable.constants';
 
 const StakePoolTable = () => {
 	const staking = useStaking();

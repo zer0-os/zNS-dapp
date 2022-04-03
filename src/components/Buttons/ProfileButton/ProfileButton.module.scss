@@ -31,16 +31,16 @@
 }
 
 .ProfileButton:hover {
-	text-shadow: var(--glow-text-blue);
+	text-shadow: var(--glow-text-primary);
 }
 
 .ProfileButton:hover {
-	text-shadow: var(--glow-text-blue);
+	text-shadow: var(--glow-text-primary);
 	background-color: rgba(255, 255, 255, 0.02);
 }
 
 .Selected {
-	color: white;
+	color: var(--color-text-primary);
 	background-color: rgba(255, 255, 255, 0.02);
 }
 
