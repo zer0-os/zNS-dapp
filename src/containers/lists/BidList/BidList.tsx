@@ -50,14 +50,10 @@ const BidList: React.FC<BidListProps> = ({
 	const [blockNumber, setBlockNumber] = useState<number>();
 	const [isAcceptBidModal, setIsAcceptBidModal] = useState(false);
 	const [acceptingBid, setAcceptingBid] = useState<Bid | undefined>(undefined);
-	const { library, account } = useWeb3React<Web3Provider>();
+	const { library } = useWeb3React<Web3Provider>();
 
 	// Sort bids by date
-	const sorted = sortBidsByTime(bids);
-	// Filter out own bids
-	const filteredBids = sorted.filter(
-		(bid) => bid.bidder.toLowerCase() !== account?.toLowerCase(),
-	);
+	const sortedBids = sortBidsByTime(bids);
 
 	useEffect(() => {
 		if (library) {
@@ -116,7 +112,7 @@ const BidList: React.FC<BidListProps> = ({
 						<p className={styles.Pending}>Accept bid transaction pending.</p>
 					)}
 					<ul className={isAccepting ? styles.Accepting : ''}>
-						{filteredBids.map((bid: Bid, i: number) => (
+						{sortedBids.map((bid: Bid, i: number) => (
 							<li key={bid.bidNonce} className={styles.Bid}>
 								<div>
 									<label>{moment(Number(bid.timestamp)).fromNow()}</label>
