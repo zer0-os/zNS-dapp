@@ -24,14 +24,7 @@ export const getBidToHighWarning = (
 	bid: string,
 	wildBalance: number,
 ) => {
-	let bidTooHighWarning: Maybe<React.ReactFragment> = null;
-
 	if (!isLoading && Number(bid) > wildBalance!) {
-		bidTooHighWarning = (
-			<>
-				<p className={styles.Error}>{ERRORS.INSUFFICIENT_FUNDS}</p>
-			</>
-		);
+		return <p className={styles.Error}>{ERRORS.INSUFFICIENT_FUNDS}</p>;
 	}
-	return bidTooHighWarning;
 };
