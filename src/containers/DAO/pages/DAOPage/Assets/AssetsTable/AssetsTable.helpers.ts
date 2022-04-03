@@ -1,4 +1,5 @@
 import { Asset } from 'lib/types/dao';
+import { toFiat } from 'lib/currency';
 import { TableAsset } from './AssetsTableRow';
 import defaultAssetIcon from 'assets/default_asset.png';
 
@@ -19,5 +20,7 @@ export const convertAsset = (asset: Asset): TableAsset => {
 		key: amount + a.address,
 		name: a.metadata?.name ?? a.metadata?.title ?? a.name ?? a.tokenName,
 		subtext: a.symbol ?? a.tokenSymbol,
+		amountInUSD:
+			a.amountInUSD !== undefined ? '$' + toFiat(a.amountInUSD) : '-',
 	};
 };

@@ -3,15 +3,11 @@ import { Artwork } from 'components';
 
 // Lib
 import { formatUnits } from 'ethers/lib/utils';
-import { toFiat } from 'lib/currency';
-import { Asset } from 'lib/types/dao';
 import millify from 'millify';
 
 // Styles + assets
 import classNames from 'classnames';
 import styles from './AssetsTableRow.module.scss';
-
-import { convertAsset } from './AssetsTable.helpers';
 
 // Config
 const MILLIFY_PRECISION = 5;
@@ -24,6 +20,7 @@ export type TableAsset = {
 	key: string;
 	name: string;
 	subtext: string;
+	amountInUSD: string;
 };
 
 /**
@@ -32,8 +29,8 @@ export type TableAsset = {
 const AssetsTableRow = (props: any) => {
 	const { data, onRowClick, className } = props;
 
-	const asset = data as Asset;
-	const { amount, decimals, image, name, subtext } = convertAsset(asset);
+	const { amount, decimals, image, name, subtext, amountInUSD } =
+		data as TableAsset;
 
 	return (
 		<tr
@@ -62,11 +59,7 @@ const AssetsTableRow = (props: any) => {
 			</td>
 
 			{/* Fiat value of tokens */}
-			<td className={styles.Right}>
-				{asset.amountInUSD !== undefined
-					? '$' + toFiat(asset.amountInUSD)
-					: '-'}
-			</td>
+			<td className={styles.Right}>{amountInUSD}</td>
 		</tr>
 	);
 };
