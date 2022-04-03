@@ -11,13 +11,13 @@ export const LINKS = [
 		icon: marketIcon,
 	},
 	{
+		label: 'DAOs',
+		route: ROUTES.ZDAO,
+		icon: daoIcon,
+	},
+	{
 		label: 'Staking',
 		route: ROUTES.STAKING,
 		icon: stakingIcon,
-	},
-	{
-		label: 'DAO',
-		route: ROUTES.ZDAO,
-		icon: daoIcon,
 	},
 ];
