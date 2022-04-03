@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 
 import { BidButton, BuyNowButton } from 'containers';
 
@@ -29,13 +29,14 @@ const SubdomainTableRow = (props: any) => {
 
 	const { makeABid, updated } = useBid();
 	const { getBidsForDomain } = useBidProvider();
-	const { domainMetadata } = useCurrentDomain();
 	const { instance: sdk } = useZnsSdk();
 
 	const { wildPriceUsd } = useCurrency();
 
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
+
+	const domainMetadata = useDomainMetadata(domain?.metadata);
 
 	const [bids, setBids] = useState<Bid[] | undefined>();
 	const [buyNowPrice, setBuyNowPrice] = useState<number | undefined>();
