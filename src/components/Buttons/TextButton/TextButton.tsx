@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styles from './TextButton.module.scss';
 import classNames from 'classnames/bind';
 
+import externalIcon from 'assets/external-link.svg';
+
 export const TEST_ID = {
 	BUTTON: 'text-button',
 };
@@ -44,7 +46,7 @@ const TextButton: React.FC<TextButtonProps> = ({
 			style={style}
 			data-testid={TEST_ID.BUTTON}
 		>
-			{children}
+			{children} <img alt="button icon" src={externalIcon} />
 		</button>
 	);
 };
