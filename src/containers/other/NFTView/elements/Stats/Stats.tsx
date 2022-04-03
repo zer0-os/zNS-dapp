@@ -118,8 +118,6 @@ export const Stats: React.FC<StatsProps> = ({
 		return [bidsStat, lastSaleStat, volumeStat];
 	}, [domainMetrics, wildPriceUsd, bids]);
 
-	console.log(domainMetrics);
-
 	return (
 		<div className={styles.NFTStats}>
 			{stats.map((stat: Stat, index) => (

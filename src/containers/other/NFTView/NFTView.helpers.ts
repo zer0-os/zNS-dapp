@@ -10,6 +10,10 @@ import {
 	NFT_ASSET_SHARE_OPTIONS,
 } from './NFTView.constants';
 
+/**
+ * Copies a value to clipboard
+ * @param content to copy to clipboard
+ */
 export const copyToClipboard = (content: string): void => {
 	try {
 		navigator?.clipboard?.writeText(content);
@@ -18,16 +22,11 @@ export const copyToClipboard = (content: string): void => {
 	}
 };
 
-export const truncateText = (
-	text: string,
-	startLength: number,
-	endLength: number = 4,
-): string => {
-	return `${text.slice(0, startLength)}...${text.slice(
-		text.length - endLength,
-	)}`;
-};
-
+/**
+ * Gets domain asset URL for downloading
+ * @param url input - this will be an IPFS link
+ * @returns
+ */
 export const getDomainAsset = async (
 	url: string,
 ): Promise<string | undefined> => {

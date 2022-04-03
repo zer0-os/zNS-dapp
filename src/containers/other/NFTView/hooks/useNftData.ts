@@ -38,6 +38,7 @@ interface UseNftDataReturn {
 	getPriceData: () => Promise<void>;
 	downloadAsset: () => Promise<void>;
 	shareAsset: () => Promise<void>;
+	refetch: () => void;
 }
 
 export const useNftData = (): UseNftDataReturn => {
@@ -163,11 +164,22 @@ export const useNftData = (): UseNftDataReturn => {
 		}
 	}, [domainAssetURL, addNotification]);
 
+	/**
+	 * Opens share
+	 */
 	const shareAsset = useCallback(async () => {
 		if (domain) {
 			shareDomainAsset(domain);
 		}
 	}, [domain]);
+
+	/**
+	 * Refreshes data for the current NFT
+	 */
+	const refetch = () => {
+		getHistory();
+		getPriceData();
+	};
 
 	/**
 	 * Life cycle
@@ -193,6 +205,7 @@ export const useNftData = (): UseNftDataReturn => {
 		getPriceData,
 		downloadAsset,
 		shareAsset,
+		refetch,
 	};
 };
 

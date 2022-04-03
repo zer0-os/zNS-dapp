@@ -1,0 +1,20 @@
+.Container {
+	display: flex;
+
+	> *:not(:first-child) {
+		margin-left: 40px;
+	}
+
+	.Action {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		height: 32px;
+		margin-top: 16px;
+
+		.TextButton {
+			padding-left: 0;
+		}
+	}
+}
