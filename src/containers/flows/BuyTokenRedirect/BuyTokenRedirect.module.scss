@@ -1,8 +1,11 @@
 .WildPriceContainer {
 	height: 100%;
 	width: 100%;
-
 	cursor: pointer;
+
+	&:hover .Details {
+		background-color: #1a1022;
+	}
 
 	.Details {
 		position: relative;
@@ -20,7 +23,7 @@
 }
 
 .DropdownContent {
-	width: 535px;
+	width: 340px;
 	cursor: default;
 	padding: 32px;
 	border-radius: var(--box-radius);
@@ -99,6 +102,7 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	gap: 16px;
 }
 
 .SectionBaseline {
@@ -118,7 +122,8 @@
 }
 
 .Divider {
-	width: 82%;
+	// width: 70%;
+	flex-grow: 1;
 	margin-top: 10px;
 	border-top: 1px solid var(--color-purple-lighter);
 }

@@ -2,18 +2,26 @@
 	display: flex;
 	align-items: center;
 	cursor: pointer;
+	position: relative;
 }
 
 .DropdownContentContainer {
 	position: absolute;
-	top: 100%;
-	right: -1px;
-	display: block;
-	z-index: 1;
-	margin-top: -12px;
-	opacity: 0;
-	transition: all var(--animation-time-short) linear;
 	pointer-events: none;
+	transition: all var(--animation-time-short) linear;
+	opacity: 0;
+	display: block;
+	z-index: 10000;
+
+	&.down {
+		top: 100%;
+		right: -1px;
+		padding-top: 8px;
+	}
+
+	&.up {
+		bottom: 100%;
+	}
 }
 
 .TriggerContentContainer:hover .DropdownContentContainer {

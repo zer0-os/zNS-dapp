@@ -119,7 +119,7 @@ const BuyTokenRedirect = ({ walletConnected }: IProps) => {
 
 	return (
 		<>
-			<HoverDropdown triggerContent={dropdownButton}>
+			<HoverDropdown triggerContent={dropdownButton} direction="up">
 				{dropdownContent}
 			</HoverDropdown>
 		</>

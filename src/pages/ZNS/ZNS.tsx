@@ -258,15 +258,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 		return (
 			<>
 				{/* Preview Card */}
-				<Spring to={to}>
-					{(styles) => (
-						<animated.div style={styles}>
-							<div ref={previewCardRef}>
-								<CurrentDomainPreview />
-							</div>
-						</animated.div>
-					)}
-				</Spring>
+				{isVisible && <CurrentDomainPreview />}
 			</>
 		);
 	};
@@ -297,19 +289,10 @@ const ZNS: React.FC<ZNSProps> = () => {
 				</div>
 			)}
 			{znsDomain && isNftView && (
-				<Spring
-					from={{ opacity: 0, marginTop: 16 }}
-					to={{ opacity: 1, marginTop: 16 }}
-				>
-					{(styles) => (
-						<animated.div style={styles}>
-							<NFTView
-								// domain={domain}
-								onTransfer={openTransferOwnershipModal}
-							/>
-						</animated.div>
-					)}
-				</Spring>
+				<NFTView
+					// domain={domain}
+					onTransfer={openTransferOwnershipModal}
+				/>
 			)}
 		</>
 	);
