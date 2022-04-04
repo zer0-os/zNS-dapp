@@ -28,7 +28,7 @@ import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 
 //- Page Imports
-import { ZNS, Staking } from 'pages';
+import { ZNS, Staking, Profile } from 'pages';
 import PageContainer from 'containers/PageContainer';
 import { ROUTES } from 'constants/routes';
 import DAO from 'pages/DAO/DAO';
@@ -56,6 +56,7 @@ function App() {
 							<Route path={ROUTES.MARKET} component={ZNS} />
 							<Route path={ROUTES.STAKING} component={Staking} />
 							<Route path={ROUTES.ZDAO} component={DAO} />
+							<Route path={ROUTES.PROFILE} component={Profile} />
 							<Route exact path="/">
 								<Redirect to="/market" />
 							</Route>

@@ -118,7 +118,7 @@ const PageContainer: React.FC = ({ children }) => {
 				<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
 
 				{/* Children Components */}
-				{children}
+				<main className="main">{children}</main>
 			</div>
 		</ScrollToTop>
 	);

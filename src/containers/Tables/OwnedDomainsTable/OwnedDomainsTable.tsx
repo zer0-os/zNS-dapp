@@ -24,6 +24,7 @@ const OwnedDomainsTable = () => {
 			infiniteScroll
 			isLoading={isLoading}
 			loadingText={MESSAGES.LOADING}
+			emptyText={'You do not own any domains.'}
 		/>
 	);
 };
