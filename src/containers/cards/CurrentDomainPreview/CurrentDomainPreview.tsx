@@ -17,7 +17,7 @@ const PreviewContainer = () => {
 			banner={metadata?.image_full ?? metadata?.image}
 			href={
 				domain?.name &&
-				ROUTES.MARKET + '/' + domain?.name.split('wilder.')[1] + '?view=true'
+				ROUTES.MARKET + '/' + domain.name.split('wilder.')[1] + '?view=true'
 			}
 		/>
 	);
