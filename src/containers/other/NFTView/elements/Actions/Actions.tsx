@@ -87,9 +87,6 @@ const Actions = ({
 	domain,
 }: ActionsProps) => {
 	//- Condition helpers
-	console.log('bidData', bidData);
-	console.log('meta', domainMetadata);
-	console.log('domain', domain);
 	const isBidData = bidData && bidData?.length > 0;
 	const isYourBids = !isOwnedByUser && Boolean(yourBid);
 	const isPlaceBid = !isOwnedByUser && isBiddable === true;
