@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { FutureButton, Overlay, TextButton } from 'components';
 import SetBuyNow from '.';
 
@@ -9,6 +8,8 @@ interface SetBuyNowButtonProps {
 	disabled?: boolean;
 	onSuccess?: () => void;
 	isTextButton?: boolean;
+	setIsSetBuyNowOpen?: (state: boolean) => void;
+	isSetBuyNowOpen?: boolean;
 }
 
 const SetBuyNowButton = ({
@@ -18,23 +19,26 @@ const SetBuyNowButton = ({
 	disabled,
 	onSuccess,
 	isTextButton,
+	setIsSetBuyNowOpen,
+	isSetBuyNowOpen,
 }: SetBuyNowButtonProps) => {
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
 	const onClick = () => {
-		if (!disabled) {
-			setIsModalOpen(true);
+		if (!disabled && setIsSetBuyNowOpen) {
+			setIsSetBuyNowOpen(true);
 		}
 	};
 
 	return (
 		<>
-			{isModalOpen && domainId && (
-				<Overlay open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+			{isSetBuyNowOpen && domainId && (
+				<Overlay
+					open={isSetBuyNowOpen}
+					onClose={() => setIsSetBuyNowOpen && setIsSetBuyNowOpen(false)}
+				>
 					<SetBuyNow
 						onSuccess={onSuccess}
 						domainId={domainId}
-						onCancel={() => setIsModalOpen(false)}
+						onCancel={() => setIsSetBuyNowOpen && setIsSetBuyNowOpen(false)}
 					/>
 				</Overlay>
 			)}

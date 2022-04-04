@@ -65,6 +65,10 @@ type ActionsProps = {
 	isLoading?: boolean;
 	domainMetadata?: Maybe<Metadata>;
 	domain?: Domain;
+	setIsViewBidsOpen?: (state: boolean) => void;
+	isViewBidsOpen?: boolean;
+	setIsSetBuyNowOpen?: (state: boolean) => void;
+	isSetBuyNowOpen?: boolean;
 };
 
 const wrapFiat = (number: number) => {
@@ -85,6 +89,10 @@ const Actions = ({
 	isLoading,
 	domainMetadata,
 	domain,
+	setIsViewBidsOpen,
+	isViewBidsOpen,
+	setIsSetBuyNowOpen,
+	isSetBuyNowOpen,
 }: ActionsProps) => {
 	//- Condition helpers
 	const isBidData = bidData && bidData?.length > 0;
@@ -146,6 +154,8 @@ const Actions = ({
 					domainId={domainId ?? ''}
 					isTextButton={isTextButton}
 					className={cx({ TextButton: isTextButton })}
+					setIsSetBuyNowOpen={setIsSetBuyNowOpen}
+					isSetBuyNowOpen={isSetBuyNowOpen}
 				/>
 			),
 			isVisible: isSetBuyNow,
@@ -198,6 +208,8 @@ const Actions = ({
 					isLoading={isLoading}
 					className={cx({ TextButton: isTextButton })}
 					domainMetadata={domainMetadata}
+					setIsViewBidsOpen={setIsViewBidsOpen}
+					isViewBidsOpen={isViewBidsOpen}
 				/>
 			),
 			isVisible: isViewBids,

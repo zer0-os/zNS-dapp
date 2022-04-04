@@ -60,6 +60,7 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 		if (isOpen) close();
 		else open();
 	};
+	console.log(options);
 
 	/////////////
 	// Effects //

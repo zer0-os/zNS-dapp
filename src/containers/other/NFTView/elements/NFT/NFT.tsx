@@ -48,7 +48,6 @@ const NFT = ({
 	////////////
 	// Render //
 	////////////
-
 	return (
 		<div className={styles.Container}>
 			<div className={styles.Banner}>

@@ -44,7 +44,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
 	const [isDomainSettingsOpen, setIsDomainSettingsOpen] =
 		useState<Boolean>(false);
-	// const [domainData, setDomainData] = useState<Domain | undefined>();
+	const [isViewBidsOpen, setIsViewBidsOpen] = useState<boolean>(false);
+	const [isSetBuyNowOpen, setIsSetBuyNowOpen] = useState<boolean>(false);
 
 	//- Web3 Wallet Data
 	const { account, active, chainId } = useWeb3React<Web3Provider>();
@@ -82,7 +83,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			(isRootDomain && !isOwnedByYou) || Boolean(domainMetadata?.isBiddable);
 		const assetUrl =
 			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image;
-		const nftMoreOptions = isOwnedByYou ? NFT_MORE_ACTIONS.slice(0, 2) : [];
+		const nftMoreOptions = isOwnedByYou ? NFT_MORE_ACTIONS : [];
 
 		return {
 			isBiddable,
@@ -121,6 +122,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			setIsDomainSettingsOpen(true);
 		} else if (option.title === NFT_MORE_ACTIONS_TITLE.TRANSFER_OWNERSHIP) {
 			onTransfer();
+		} else if (option.title === NFT_MORE_ACTIONS_TITLE.SET_BUY_NOW) {
+			setIsSetBuyNowOpen(true);
+		} else {
+			setIsViewBidsOpen(true);
 		}
 	};
 
@@ -156,6 +161,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				isLoading={isBidDataLoading}
 				domainMetadata={domainMetadata}
 				domain={domainData}
+				setIsViewBidsOpen={setIsViewBidsOpen}
+				isViewBidsOpen={isViewBidsOpen}
+				setIsSetBuyNowOpen={setIsSetBuyNowOpen}
+				isSetBuyNowOpen={isSetBuyNowOpen}
 			/>
 
 			<Stats

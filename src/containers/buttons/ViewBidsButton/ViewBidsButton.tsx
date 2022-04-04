@@ -1,6 +1,3 @@
-//- React Imports
-import { useState } from 'react';
-
 //- Containers Imports
 import { BidList } from 'containers';
 
@@ -26,6 +23,8 @@ interface ViewBidButtonProps {
 	highestBid?: number;
 	isLoading?: boolean;
 	domainMetadata?: Maybe<Metadata>;
+	setIsViewBidsOpen?: (state: boolean) => void;
+	isViewBidsOpen?: boolean;
 }
 
 const ViewBidsButton = ({
@@ -39,11 +38,19 @@ const ViewBidsButton = ({
 	highestBid,
 	isLoading,
 	domainMetadata,
+	setIsViewBidsOpen,
+	isViewBidsOpen,
 }: ViewBidButtonProps) => {
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
 	const onClose = () => {
-		setIsModalOpen(false);
+		if (setIsViewBidsOpen) {
+			setIsViewBidsOpen(false);
+		}
+	};
+
+	const onClick = () => {
+		if (setIsViewBidsOpen) {
+			setIsViewBidsOpen(true);
+		}
 	};
 
 	const onAccept = () => {
@@ -51,14 +58,10 @@ const ViewBidsButton = ({
 		onClose();
 	};
 
-	const onClick = () => {
-		setIsModalOpen(true);
-	};
-
 	return (
 		<>
-			{isModalOpen && domainMetadata && bids && (
-				<Overlay open={isModalOpen} centered onClose={onClose}>
+			{isViewBidsOpen && domainMetadata && bids && (
+				<Overlay open={isViewBidsOpen} centered onClose={onClose}>
 					<BidList
 						bids={bids}
 						domain={domain}
