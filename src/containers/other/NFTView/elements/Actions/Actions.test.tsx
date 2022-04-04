@@ -226,7 +226,7 @@ test('should render correct actions for: not owner, bids, outbid, no buy now', a
 	expect(getByText(EXPECTED_LABELS.CANCEL_BID_BUTTON)).toBeInTheDocument();
 });
 
-test('should render correct actions for: not owner, bids, no user bid, no buy now', async () => {
+test('should render correct actions for: not owner, bids, no user bid, buy now', async () => {
 	const { getByTestId, getByText } = renderComponent({
 		isOwnedByUser: false,
 		highestBid: 500,
