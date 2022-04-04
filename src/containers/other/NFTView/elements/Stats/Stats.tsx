@@ -56,7 +56,6 @@ export const Stats: React.FC<StatsProps> = ({
 			try {
 				const domainMetricsCollection: DomainMetricsCollection =
 					await sdk.instance.getDomainMetrics([znsDomain.id]);
-				console.log(domainMetricsCollection.volume);
 				setDomainMetrics(domainMetricsCollection[znsDomain.id]);
 				setIsDomainMetricsLoaded(true);
 			} catch (e) {
