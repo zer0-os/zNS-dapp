@@ -13,11 +13,6 @@ export const HEADERS = [
 		className: '',
 	},
 	{
-		label: 'Bids',
-		accessor: '',
-		className: '',
-	},
-	{
 		label: '',
 		accessor: '',
 		className: '',

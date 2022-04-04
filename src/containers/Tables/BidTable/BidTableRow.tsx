@@ -1,17 +1,34 @@
 //- Styles Imports
 import styles from './BidTable.module.scss';
+import moreIcon from 'assets/more-vertical.svg';
+import { DollarSign, X } from 'react-feather';
 
 //- Components Imports
-import { Artwork } from 'components';
+import { Artwork, OptionDropdown } from 'components';
 
 //- Library Imports
 import { ethers } from 'ethers';
 
-//- Containers Imports
-import { CancelBidButton } from 'containers';
-
 //- Constants Imports
-import { TOKEN, STATUS } from './BidTableRow.constants';
+import { TOKEN } from './BidTableRow.constants';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
+import { Domain } from 'lib/types';
+
+export const ACTION_KEYS = {
+	REBID: 'Rebid',
+	CANCEL_BID: 'Cancel Bid',
+};
+
+export const ACTIONS = [
+	{
+		icon: <DollarSign />,
+		title: ACTION_KEYS.REBID,
+	},
+	{
+		icon: <X />,
+		title: ACTION_KEYS.CANCEL_BID,
+	},
+];
 
 export type BidTableRowData = {
 	domainName: string;
@@ -21,6 +38,7 @@ export type BidTableRowData = {
 	date: Date;
 	yourBid: ethers.BigNumber;
 	highestBid: ethers.BigNumber;
+	domain: Domain;
 };
 
 export const TEST_ID = {
@@ -34,10 +52,16 @@ export const TEST_ID = {
 
 const BidTableRow = (props: any) => {
 	const bid: BidTableRowData = props.data;
-	const isHighestBid = bid.yourBid.gte(bid.highestBid);
 
-	const onSuccess = () => {
-		props.onRefetch();
+	const onSelectOption = (option: Option) => {
+		switch (option.title) {
+			case ACTION_KEYS.REBID:
+				props.openMakeBid?.(bid);
+				return;
+			case ACTION_KEYS.CANCEL_BID:
+				props.openCancelBid?.(bid);
+				return;
+		}
 	};
 
 	return (
@@ -56,25 +80,22 @@ const BidTableRow = (props: any) => {
 					style={{ maxWidth: 200 }}
 				/>
 			</td>
-			<td data-testid={TEST_ID.DATE}>{bid.date.toLocaleDateString()}</td>
 			<td data-testid={TEST_ID.YOUR_BID}>
 				{ethers.utils.formatEther(bid.yourBid.toString())} {TOKEN}
 			</td>
 			<td data-testid={TEST_ID.HIGHEST_BID}>
 				{ethers.utils.formatEther(bid.highestBid)} {TOKEN}
 			</td>
-			<td
-				data-testid={TEST_ID.STATUS}
-				className={isHighestBid ? styles.Lead : styles.Outbid}
-			>
-				{isHighestBid ? STATUS.LEAD : STATUS.OUTBID}
-			</td>
 			<td>
-				<CancelBidButton
-					onSuccess={onSuccess}
-					domainId={bid.domainId}
-					bidNonce={bid.bidNonce}
-				/>
+				<OptionDropdown
+					className={styles.MoreDropdown}
+					onSelect={onSelectOption}
+					options={ACTIONS}
+				>
+					<button className={styles.Button}>
+						<img alt="more actions" src={moreIcon} />
+					</button>
+				</OptionDropdown>
 			</td>
 		</tr>
 	);

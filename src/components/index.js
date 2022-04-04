@@ -65,7 +65,6 @@ export { default as TransferPreview } from './TransferPreview/TransferPreview';
 export { default as Notification } from './Notification/Notification';
 export { default as NotificationDrawer } from './NotificationDrawer/NotificationDrawer';
 export { default as Overlay } from './Overlay/Overlay';
-export { default as Profile } from './Profile/Profile';
 export { default as SearchBar } from './SearchBar/SearchBar.js';
 export { default as SideBar } from './SideBar/SideBar';
 export { default as Spinner } from './Spinner/Spinner';

@@ -8,7 +8,7 @@ import { useOnClickOutside } from 'lib/hooks/useOnClickOutside';
 import styles from './OptionDropdown.module.scss';
 
 export type Option = {
-	icon?: string;
+	icon?: string | React.ReactNode;
 	title: string;
 };
 
@@ -82,7 +82,15 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 							onClick={() => select(o)}
 							key={index}
 						>
-							{o.icon && <img src={o.icon} title={o.title} alt={o.title} />}
+							{o.icon && (
+								<>
+									{typeof o.icon === 'string' ? (
+										<img src={o.icon} title={o.title} alt={o.title} />
+									) : (
+										<>{o.icon}</>
+									)}
+								</>
+							)}
 							<span>{o.title}</span>
 						</li>
 					))}
