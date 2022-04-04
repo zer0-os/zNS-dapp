@@ -1,7 +1,6 @@
 //- React Imports
 import React, { useMemo } from 'react';
-import { useState, useEffect, useRef } from 'react';
-import { Spring, animated } from 'react-spring';
+import { useState, useEffect } from 'react';
 
 //- Library Imports
 import { formatNumber, formatEthers } from 'lib/utils';
@@ -55,8 +54,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 	////////////////////////
 	// Browser Navigation //
 	////////////////////////
-
-	const previewCardRef = useRef<HTMLDivElement>(null);
 
 	const isMobile = useMatchMedia('phone');
 	const isMobilePortrait = useMatchMedia('(max-width: 520px)');
@@ -238,25 +235,8 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	const previewCard = () => {
 		const isVisible = domain !== '' && !isNftView;
-		let to;
-		if (isVisible && previewCardRef) {
-			// If should be visible, slide down
-			to = { opacity: 1, marginTop: 0, marginBottom: 0 };
-		} else {
-			// If root view, slide up
-			to = {
-				opacity: 0,
-				marginTop: -(previewCardRef?.current?.clientHeight || 0) - 14,
-				marginBottom: 16,
-			};
-		}
 
-		return (
-			<>
-				{/* Preview Card */}
-				{isVisible && <CurrentDomainPreview />}
-			</>
-		);
+		return isVisible ? <CurrentDomainPreview /> : <></>;
 	};
 
 	////////////
