@@ -27,6 +27,15 @@ $icon-container-size: 54px;
 		display: none;
 	}
 
+	.LinkContainer {
+		display: flex;
+		flex-direction: column;
+
+		@media only screen and (max-width: 1216px) {
+			align-items: center;
+		}
+	}
+
 	transform: $transform;
 
 	.Network {

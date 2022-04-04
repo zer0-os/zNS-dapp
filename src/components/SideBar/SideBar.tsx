@@ -20,7 +20,7 @@ const SideBar = () => {
 
 	return (
 		<div className={styles.Container}>
-			<div>
+			<div className={styles.LinkContainer}>
 				<Link to={appFromPathname(pathname)}>
 					<img alt="app logo" src={LOGO} />
 				</Link>
