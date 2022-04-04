@@ -21,7 +21,6 @@ import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
-import useScrollDetection from 'lib/hooks/useScrollDetection';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useLocation } from 'react-router-dom';
 import { useNavbar } from 'lib/hooks/useNavbar';
@@ -72,18 +71,15 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const [hasLoaded, setHasLoaded] = useState(false);
 	const [showDomainTable, setShowDomainTable] = useState(true);
 	const [isNftView, setIsNftView] = useState(nftView === true);
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 
 	//- Overlay State
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
 
-	///////////////
+	///////////
 	// Hooks //
-	///////////////
-	useScrollDetection(setScrollDetectionDown);
+	///////////
 
 	const { setNavbarTitle } = useNavbar();
 

@@ -109,6 +109,7 @@ const SetBuyNowContainer = ({
 				setCurrentStep(Step.WaitingForBuyNowConfirmation);
 				let tx;
 				if (amount) {
+					console.log('setting buy now', amount);
 					tx = await sdk.zauction.setBuyNowPrice(
 						{
 							amount: ethers.utils.parseEther(amount.toString()).toString(),
@@ -117,6 +118,7 @@ const SetBuyNowContainer = ({
 						library.getSigner(),
 					);
 				} else {
+					console.log('cancelling buy now');
 					tx = await sdk.zauction.cancelBuyNow(domainId, library.getSigner());
 				}
 				setCurrentStep(Step.SettingBuyNow);

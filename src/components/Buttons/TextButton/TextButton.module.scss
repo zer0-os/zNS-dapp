@@ -1,18 +1,20 @@
 .TextButton {
 	color: var(--color-accent-1);
-	font-weight: 700;
 
 	display: flex;
 	align-items: center;
-
-	padding-top: 3px;
-	padding-bottom: 0;
 
 	background-color: rgba(0, 0, 0, 0);
 
 	transition: color var(--animation-time-short) ease-in-out,
 		text-shadow var(--animation-time-short) ease-in-out,
 		opacity var(--animation-time-short) ease-in-out;
+
+	img {
+		height: 14px;
+		width: 14px;
+		margin-left: 6px;
+	}
 }
 
 .TextButton:hover {

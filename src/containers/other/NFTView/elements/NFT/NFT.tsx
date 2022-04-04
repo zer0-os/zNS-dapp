@@ -9,13 +9,9 @@ import moreIcon from '../../assets/more-vertical.svg';
 // Style Imports
 import styles from './NFT.module.scss';
 
-// Library Imports
-import { Bid } from '@zero-tech/zauction-sdk';
-
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { truncateWalletAddress } from 'lib/utils';
-import BidButton from 'containers/buttons/BidButton/BidButton';
 
 export const Amount = (amount: string) => (
 	<span className={styles.Amount}>{amount}</span>
@@ -27,51 +23,27 @@ type OptionType = {
 }[];
 
 type NFTProps = {
-	domainId?: string;
-	title?: string;
-	creator?: string;
-	owner?: string;
 	assetUrl?: string;
+	creator?: string;
 	description?: string;
-	buyNowPrice?: number;
-	onMakeBid: () => void;
 	onDownload?: () => void;
-	onSuccessBuyNow?: () => void;
-	onShare?: () => void;
-	highestBid?: number;
-	yourBid?: Bid;
-	isPriceDataLoading?: boolean;
-	isMetadataLoading?: boolean;
-	isDomainDataLoading?: boolean;
-	wildPriceUsd?: number;
-	account?: string;
-	isBiddable?: boolean;
-	options: OptionType;
 	onSelectOption: (option: Option) => void;
-	onRefetch: () => void;
+	onShare?: () => void;
+	options: OptionType;
+	owner?: string;
+	title?: string;
 };
 
 const NFT = ({
-	domainId,
-	title,
-	creator,
-	owner,
 	assetUrl,
+	creator,
 	description,
-	buyNowPrice,
-	isPriceDataLoading,
-	onSuccessBuyNow,
 	onDownload,
-	onShare,
-	highestBid,
-	yourBid,
-	wildPriceUsd,
-	account,
-	onMakeBid,
-	isBiddable,
-	options,
 	onSelectOption,
-	onRefetch,
+	onShare,
+	options,
+	owner,
+	title,
 }: NFTProps) => {
 	////////////
 	// Render //
@@ -123,14 +95,6 @@ const NFT = ({
 				</div>
 			</div>
 			<p>{description ?? ''}</p>
-			<Detail
-				text={'-'}
-				subtext={'Highest Bid'}
-				bottomText={'No bids placed'}
-			/>
-			<BidButton glow onClick={onMakeBid}>
-				Make A Bid
-			</BidButton>
 		</div>
 	);
 };

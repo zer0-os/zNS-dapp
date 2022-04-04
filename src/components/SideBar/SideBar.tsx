@@ -7,10 +7,16 @@ import classNames from 'classnames/bind';
 import { LOGO, ZERO } from 'constants/assets';
 import { URLS } from 'constants/urls';
 import { appFromPathname } from 'lib/utils';
+import { useWeb3React } from '@web3-react/core';
+import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
+import { startCase, toLower } from 'lodash';
 const cx = classNames.bind(styles);
 
 const SideBar = () => {
 	const { pathname } = useLocation();
+	const { chainId } = useWeb3React();
+
+	const network = chainIdToNetworkType(chainId);
 
 	return (
 		<div className={styles.Container}>
@@ -41,6 +47,11 @@ const SideBar = () => {
 				>
 					<img alt="zero logo" src={ZERO} />
 				</a>
+				{network !== NETWORK_TYPES.MAINNET && (
+					<label className={styles.Network}>
+						Network: {startCase(toLower(network))}
+					</label>
+				)}
 				<BuyTokenRedirect />
 			</div>
 		</div>

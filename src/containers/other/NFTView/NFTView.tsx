@@ -9,6 +9,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 import { Overlay } from 'components';
 import { MakeABid } from 'containers';
 import {
+	Actions,
 	NFT,
 	Stats,
 	TokenHashBoxes,
@@ -55,7 +56,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	//- NFT Hook Data
 	const {
 		isHistoryLoading,
-		isPriceDataLoading,
 		history,
 		bids,
 		highestBid,
@@ -65,6 +65,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		getPriceData,
 		downloadAsset,
 		shareAsset,
+		refetch,
 	} = useNftData();
 
 	//- Memoized data
@@ -113,8 +114,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	return (
 		<div className={styles.NFTView}>
 			<NFT
-				domainId={znsDomain?.id}
-				account={account as string}
 				title={domainMetadata?.title as string}
 				owner={znsDomain?.owner.id as string}
 				creator={znsDomain?.minter.id as string}
@@ -122,17 +121,20 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				onShare={shareAsset}
 				assetUrl={assetUrl as string}
 				description={znsDomain?.description as string}
-				buyNowPrice={buyNowPrice}
-				highestBid={highestBid}
-				yourBid={yourBid}
-				onMakeBid={onOpenBidOverlay}
-				wildPriceUsd={wildPriceUsd}
-				isPriceDataLoading={isPriceDataLoading}
-				onSuccessBuyNow={getPriceData}
-				isBiddable={isBiddable}
 				options={nftMoreOptions}
 				onSelectOption={onSelectNFTMoreOption}
-				onRefetch={getPriceData}
+			/>
+
+			<Actions
+				domainId={znsDomain?.id}
+				highestBid={highestBid}
+				buyNowPrice={buyNowPrice}
+				yourBid={yourBid}
+				onMakeBid={onOpenBidOverlay}
+				isOwnedByUser={isOwnedByYou}
+				wildPriceUsd={wildPriceUsd}
+				refetch={refetch}
+				isBiddable={isBiddable}
 			/>
 
 			<Stats

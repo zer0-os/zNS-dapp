@@ -11,12 +11,13 @@ import { ArrowLink } from 'components';
 import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import useNotification from 'lib/hooks/useNotification';
+import { truncateWalletAddress } from 'lib/utils';
 
 //- Type Imports
 import { Maybe, DisplayParentDomain } from 'lib/types';
 
 //- Helper Imports
-import { copyToClipboard, truncateText } from '../../NFTView.helpers';
+import { copyToClipboard } from '../../NFTView.helpers';
 
 //- Asset Imports
 import copyIcon from '../../assets/copy-icon.svg';
@@ -74,7 +75,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 						src={copyIcon}
 						alt="Copy Contract Icon"
 					/>
-					{truncateText(domainId, 18)}
+					{truncateWalletAddress(domainId)}
 				</p>
 				<ArrowLink
 					style={{
@@ -95,7 +96,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 						src={copyIcon}
 						alt="Copy IPFS Hash Icon"
 					/>
-					{truncateText(ipfsHash, 15)}
+					{truncateWalletAddress(ipfsHash)}
 				</p>
 				<ArrowLink
 					style={{

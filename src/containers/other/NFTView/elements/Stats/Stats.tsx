@@ -72,29 +72,6 @@ export const Stats: React.FC<StatsProps> = ({
 	}, [znsDomain]);
 
 	const stats: Stat[] = useMemo(() => {
-		const topBidStat: Stat = {
-			fieldName: 'Top Bid',
-			title: `${
-				domainMetrics?.highestBid
-					? Number(
-							ethers.utils.formatEther(domainMetrics?.highestBid),
-					  ).toLocaleString()
-					: 0
-			} WILD`,
-			subTitle:
-				wildPriceUsd > 0
-					? `$${
-							domainMetrics?.highestBid
-								? toFiat(
-										Number(
-											ethers.utils.formatEther(domainMetrics?.highestBid),
-										) * wildPriceUsd,
-								  )
-								: 0
-					  }`
-					: '',
-		};
-
 		const bidsStat: Stat = {
 			fieldName: 'Bids',
 			title: (bids?.length || 0).toLocaleString(),
@@ -103,50 +80,40 @@ export const Stats: React.FC<StatsProps> = ({
 
 		const lastSaleStat: Stat = {
 			fieldName: 'Last Sale',
-			title: `${
-				domainMetrics?.lastSale
+			title:
+				(domainMetrics?.lastSale ?? 0) > 0
 					? Number(
-							ethers.utils.formatEther(domainMetrics?.lastSale),
-					  ).toLocaleString()
-					: 0
-			} WILD`,
+							ethers.utils.formatEther(domainMetrics!.lastSale),
+					  ).toLocaleString() + ' WILD'
+					: 'No sales',
 			subTitle:
-				wildPriceUsd > 0
-					? `$${
-							domainMetrics?.lastSale
-								? toFiat(
-										Number(ethers.utils.formatEther(domainMetrics?.lastSale)) *
-											wildPriceUsd,
-								  )
-								: 0
-					  }`
+				(domainMetrics?.lastSale ?? 0) > 0 && wildPriceUsd > 0
+					? `$${toFiat(
+							Number(ethers.utils.formatEther(domainMetrics!.lastSale)) *
+								wildPriceUsd,
+					  )}`
 					: '',
 		};
 
 		const volumeStat: Stat = {
 			fieldName: 'Volume',
-			title: (domainMetrics?.volume as any)?.all
-				? `${Number(
-						ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
-				  ).toLocaleString()} WILD`
-				: '',
+			title:
+				(domainMetrics?.volume as any)?.all > 0
+					? `${Number(
+							ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
+					  ).toLocaleString()} WILD`
+					: '0',
 			subTitle:
-				wildPriceUsd > 0
-					? `$${
-							(domainMetrics?.volume as any)?.all
-								? toFiat(
-										Number(
-											ethers.utils.formatEther(
-												(domainMetrics?.volume as any)?.all,
-											),
-										) * wildPriceUsd,
-								  )
-								: 0
-					  }`
+				(domainMetrics?.volume as any)?.all > 0 && wildPriceUsd > 0
+					? toFiat(
+							Number(
+								ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
+							) * wildPriceUsd,
+					  )
 					: '',
 		};
 
-		return [topBidStat, bidsStat, lastSaleStat, volumeStat];
+		return [bidsStat, lastSaleStat, volumeStat];
 	}, [domainMetrics, wildPriceUsd, bids]);
 
 	return (
