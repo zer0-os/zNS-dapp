@@ -21,7 +21,10 @@ import {
 //- Library Imports
 import useCurrency from 'lib/hooks/useCurrency';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import { Domain } from '@zero-tech/zns-sdk/lib/types';
 
+//- Hooks
+import useBidData from 'lib/hooks/useBidData';
 import { useNftData } from './hooks';
 
 //- Type Imports
@@ -43,12 +46,16 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
 	const [isDomainSettingsOpen, setIsDomainSettingsOpen] =
 		useState<Boolean>(false);
+	const [domainData, setDomainData] = useState<Domain | undefined>();
 
 	//- Web3 Wallet Data
 	const { account, active, chainId } = useWeb3React<Web3Provider>();
 
 	//- Current Domain Data
 	const { domainId, domain: znsDomain, domainMetadata } = useCurrentDomain();
+
+	//- Hooks
+	const { bidData, isLoading: isLoadingBidData } = useBidData(domainId);
 
 	//- Wild Currency Price
 	const { wildPriceUsd } = useCurrency();
@@ -78,6 +85,21 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		const assetUrl =
 			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image;
 		const nftMoreOptions = isOwnedByYou ? NFT_MORE_ACTIONS.slice(0, 2) : [];
+
+		if (znsDomain) {
+			setDomainData({
+				id: znsDomain.id,
+				name: znsDomain.name,
+				parentId: znsDomain.parent.id,
+				owner: znsDomain.owner.id,
+				minter: znsDomain.minter.id,
+				metadataUri: znsDomain.metadata,
+				isLocked: znsDomain.isLocked,
+				lockedBy: znsDomain.lockedBy.id,
+				contract: String(znsDomain.contract),
+				isRoot: isRootDomain,
+			});
+		}
 
 		return { isBiddable, isOwnedByYou, assetUrl, nftMoreOptions };
 	}, [znsDomain, domainMetadata, account]);
@@ -142,6 +164,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				wildPriceUsd={wildPriceUsd}
 				refetch={refetch}
 				isBiddable={isBiddable}
+				bidData={bidData?.bids}
+				isLoading={isLoadingBidData}
+				domainMetadata={domainMetadata}
+				domain={domainData}
 			/>
 
 			<Stats

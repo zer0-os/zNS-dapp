@@ -5,12 +5,15 @@ import {
 	BuyNowButton,
 	CancelBidButton,
 	SetBuyNowButton,
+	ViewBidsButton,
 } from 'containers';
 
 // Library
 import { toFiat } from 'lib/currency';
 import { formatEther } from '@ethersproject/units';
 import { Bid } from '@zero-tech/zns-sdk/lib/zAuction';
+import { Maybe, Metadata } from 'lib/types';
+import { Domain } from '@zero-tech/zns-sdk/lib/types';
 
 // Styles
 import styles from './Actions.module.scss';
@@ -52,6 +55,10 @@ type ActionsProps = {
 	isOwnedByUser?: boolean;
 	wildPriceUsd?: number;
 	refetch: () => void;
+	bidData?: Bid[];
+	isLoading?: boolean;
+	domainMetadata?: Maybe<Metadata>;
+	domain?: Domain;
 };
 
 const wrapFiat = (number: number) => {
@@ -68,6 +75,10 @@ const Actions = ({
 	isOwnedByUser,
 	wildPriceUsd,
 	refetch,
+	bidData,
+	isLoading,
+	domainMetadata,
+	domain,
 }: ActionsProps) => {
 	/**
 	 * This is a pretty messy structure - could be refactored moving forward
@@ -132,7 +143,15 @@ const Actions = ({
 							: 'Rebid'}
 					</BidButton>
 				) : (
-					<></>
+					<ViewBidsButton
+						bids={bidData}
+						domain={domain}
+						highestBid={highestBid}
+						refetch={refetch}
+						isLoading={isLoading}
+						className={cx({ TextButton: isTextButton })}
+						domainMetadata={domainMetadata}
+					/>
 				);
 			},
 			isVisible: isBiddable === true,
