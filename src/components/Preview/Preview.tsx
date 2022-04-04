@@ -1,5 +1,5 @@
+import { ArrowLink } from 'components';
 import NFTMedia from 'components/NFTMedia';
-import { Link } from 'react-router-dom';
 import styles from './Preview.module.scss';
 
 type PreviewProps = {
@@ -18,7 +18,6 @@ const Preview = ({ title, description, icon, banner, href }: PreviewProps) => {
 				className={styles.Banner}
 				ipfsUrl={banner ?? ''}
 				fit="cover"
-				// src="https://res.cloudinary.com/fact0ry/image/upload/c_fill,h_120,q_60,w_120/v1/zns/QmPtAcgQFvzXHpteRUED7chUpkHK9qZ94LPumFLBJhfk1K"
 			/>
 			<div className={styles.Content}>
 				<NFTMedia
@@ -27,9 +26,13 @@ const Preview = ({ title, description, icon, banner, href }: PreviewProps) => {
 					ipfsUrl={icon ?? ''}
 					fit="cover"
 				/>
-				<h1 className="glow-text-white">{title}</h1>
+				<h1>{title}</h1>
 				<p>{description}</p>
-				{href && <Link to={href}>View NFT Page</Link>}
+				{href && (
+					<ArrowLink className={styles.Link} href={href} replace>
+						View Domain NFT
+					</ArrowLink>
+				)}
 			</div>
 		</div>
 	);

@@ -4,18 +4,23 @@
 		height: 225px;
 		object-fit: cover;
 		background: #1a1022;
+		border-radius: calc(var(--box-radius) / 2);
 	}
 
 	.Content {
 		margin-top: -60px;
-		padding: 16px;
+		padding-bottom: 16px;
 
 		.Icon {
 			height: 120px;
 			width: 120px;
+			margin-left: 8px;
 			border-radius: 50%;
-			object-fit: cover;
+
 			background: #1a1022;
+
+			object-fit: cover;
+			box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.5);
 		}
 
 		h1 {
@@ -28,8 +33,9 @@
 			margin-top: 8px;
 		}
 
-		a {
+		.Link {
 			margin-top: 8px;
+			font-size: 12px;
 		}
 	}
 }
