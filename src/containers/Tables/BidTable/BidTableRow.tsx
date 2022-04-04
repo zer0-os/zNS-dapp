@@ -46,8 +46,7 @@ export const TEST_ID = {
 	ARTWORK: 'bid-table-row-artwork',
 	HIGHEST_BID: 'bid-table-row-highest-bid',
 	YOUR_BID: 'bid-table-row-your-bid',
-	DATE: 'bid-table-row-date',
-	STATUS: 'bid-table-row-status',
+	OPTIONS: 'bid-table-options',
 };
 
 const BidTableRow = (props: any) => {
@@ -91,6 +90,7 @@ const BidTableRow = (props: any) => {
 					className={styles.MoreDropdown}
 					onSelect={onSelectOption}
 					options={ACTIONS}
+					data-testid="bid-table-options"
 				>
 					<button className={styles.Button}>
 						<img alt="more actions" src={moreIcon} />

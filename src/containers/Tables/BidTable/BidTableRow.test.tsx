@@ -3,10 +3,10 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { HEADERS } from './BidTable';
-import BidTableRow, { TEST_ID } from './BidTableRow';
+import BidTableRow, { ACTIONS, TEST_ID } from './BidTableRow';
 import { ethers } from 'ethers';
 
-import { STATUS, TOKEN } from './BidTableRow.constants';
+import { TOKEN } from './BidTableRow.constants';
 
 const mockDate = new Date(16461998260001);
 
@@ -20,6 +20,16 @@ const mockData = {
 	highestBid: ethers.utils.parseEther('1000'),
 	yourBid: ethers.utils.parseEther('500'),
 };
+
+var mockOptionDropdown = jest.fn();
+
+jest.mock(
+	'../../../components/Dropdowns/OptionDropdown/OptionDropdown',
+	() => (props: any) => {
+		mockOptionDropdown(props);
+		return <div>@@</div>;
+	},
+);
 
 const renderComponent = ({ data = mockData } = {}) => {
 	return render(
@@ -52,33 +62,10 @@ describe('BidTableRow component', () => {
 		expect(highsetBid.textContent).toBe('1000.0 ' + TOKEN);
 	});
 
-	it('should format date correctly', () => {
-		const { getByTestId } = renderComponent();
-		const yourBid = getByTestId(TEST_ID.DATE);
-		expect(yourBid.textContent).toBe(mockDate.toLocaleDateString());
-	});
-
-	it('should render "You Lead" if user\'s bid is highest', () => {
-		const { getByTestId } = renderComponent({
-			data: {
-				...mockData,
-				highestBid: ethers.utils.parseEther('100'),
-				yourBid: ethers.utils.parseEther('100'),
-			},
-		});
-		const status = getByTestId(TEST_ID.STATUS);
-		expect(status.textContent).toBe(STATUS.LEAD);
-	});
-
-	it('should render "Outbid" if user\'s bid is not the highest', () => {
-		const { getByTestId } = renderComponent({
-			data: {
-				...mockData,
-				highestBid: ethers.utils.parseEther('200'),
-				yourBid: ethers.utils.parseEther('100'),
-			},
-		});
-		const status = getByTestId(TEST_ID.STATUS);
-		expect(status.textContent).toBe(STATUS.OUTBID);
+	it('should render options menu correctly', () => {
+		renderComponent();
+		expect(mockOptionDropdown).toBeCalledWith(
+			expect.objectContaining({ options: ACTIONS }),
+		);
 	});
 });
