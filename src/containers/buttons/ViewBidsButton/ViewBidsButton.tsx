@@ -21,7 +21,7 @@ interface ViewBidButtonProps {
 	buttonText?: string;
 	className?: string;
 	isTextButton?: boolean;
-	refetch?: () => void;
+	refetch: () => void;
 	style?: React.CSSProperties;
 	highestBid?: number;
 	isLoading?: boolean;
@@ -46,6 +46,11 @@ const ViewBidsButton = ({
 		setIsModalOpen(false);
 	};
 
+	const onAccept = () => {
+		refetch();
+		onClose();
+	};
+
 	const onClick = () => {
 		setIsModalOpen(true);
 	};
@@ -58,7 +63,7 @@ const ViewBidsButton = ({
 						bids={bids}
 						domain={domain}
 						domainMetadata={domainMetadata}
-						onAccept={refetch}
+						onAccept={onAccept}
 						highestBid={String(highestBid)}
 						isLoading={isLoading}
 					/>

@@ -81,7 +81,7 @@ const BidList: React.FC<BidListProps> = ({
 			toggleAcceptBidModal();
 		}
 	};
-
+	console.log('Accept', acceptingBid);
 	////////////
 	// Render //
 	////////////
