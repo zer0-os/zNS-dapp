@@ -5,14 +5,23 @@
  * - border-right on first action if actions > 2
  */
 
-// Testing imports
+//- Testing imports
 import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-// Other library imports
+//- Other library imports
 import Actions, { TEST_ID } from './Actions';
 import { parseEther } from '@ethersproject/units';
 import { Bid } from '@zero-tech/zauction-sdk';
+
+//- Mocks Imports
+import {
+	EXPECTED_LABELS,
+	mockBidData,
+	mockDomain,
+	mockMetadata,
+	yourBidTemplate,
+} from './Actions.mocks';
 
 /////////////////////////////
 // Mock external functions //
@@ -33,40 +42,13 @@ jest.mock('@web3-react/core', () => ({
 	}),
 }));
 
-// Expected Labels as per Figma
-const EXPECTED_LABELS = {
-	HIGHEST_BID: 'Highest Bid (WILD)',
-	YOUR_BID: 'Your Bid (WILD)',
-	BUY_NOW: 'Buy Now (WILD)',
-	NO_BIDS: 'No bids placed',
-
-	PLACE_BID_BUTTON: 'Place A Bid',
-	REBID_BUTTON: 'Rebid',
-	BUY_NOW_BUTTON: 'Buy Now',
-	EDIT_BUY_NOW_BUTTON: 'Edit Buy Now',
-	SET_BUY_NOW_BUTTON: 'Set Buy Now',
-	CANCEL_BID_BUTTON: 'Cancel Bid',
-};
-
 type Props = {
 	isBiddable?: boolean;
 	buyNowPrice?: number;
 	highestBid?: number;
 	yourBid?: number;
 	isOwnedByUser: boolean;
-};
-
-const yourBidTemplate: Bid = {
-	bidNonce: '',
-	bidder: '',
-	contract: '',
-	tokenId: '',
-	startBlock: '',
-	amount: '',
-	expireBlock: '',
-	signedMessage: '',
-	timestamp: '',
-	version: '2.0',
+	bidData?: Bid[];
 };
 
 const renderComponent = ({ yourBid, isBiddable = true, ...props }: Props) => {
@@ -86,6 +68,10 @@ const renderComponent = ({ yourBid, isBiddable = true, ...props }: Props) => {
 			yourBid={mockYourBid}
 			isBiddable={isBiddable}
 			wildPriceUsd={2} // Going to use static value here
+			bidData={mockBidData}
+			domainMetadata={mockMetadata}
+			domain={mockDomain}
+			isLoading={false}
 			{...props}
 		/>,
 	);
@@ -192,25 +178,26 @@ test('should render correct actions for: not owner, bids, buy now, no user bid',
 });
 
 test('should render correct actions for: owner, no bids, no buy now', async () => {
-	const { getByTestId, queryByText, getByText } = renderComponent({
+	const { getByTestId, getByText } = renderComponent({
 		isOwnedByUser: true,
+		bidData: undefined,
 	});
 
-	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
-	expect(getByTestId(TEST_ID.PLACE_BID)).toBeInTheDocument();
-	expect(queryByText(EXPECTED_LABELS.PLACE_BID_BUTTON)).toBeNull();
+	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(1);
 	expect(getByText(EXPECTED_LABELS.SET_BUY_NOW_BUTTON)).toBeInTheDocument();
 });
 
 test('should render correct actions for: owner, bids, buy now', async () => {
-	const { getByTestId, getByText, queryByText } = renderComponent({
+	const { getByTestId, getByText } = renderComponent({
 		isOwnedByUser: true,
 		highestBid: 500,
 		buyNowPrice: 500,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
-	expect(queryByText(EXPECTED_LABELS.PLACE_BID_BUTTON)).toBeNull();
+	expect(getByTestId(TEST_ID.VIEW_BIDS)).toBeInTheDocument();
+	expect(getByTestId(TEST_ID.SET_BUY_NOW)).toBeInTheDocument();
+	expect(getByText(EXPECTED_LABELS.VIEW_BIDS_BUTTON)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.EDIT_BUY_NOW_BUTTON)).toBeInTheDocument();
 });
 
@@ -239,26 +226,27 @@ test('should render correct actions for: not owner, bids, no user bid, buy now',
 });
 
 test('should render correct actions for: owner, bids, no buy now', async () => {
-	const { getByTestId, getByText, queryByText } = renderComponent({
+	const { getByTestId, getByText } = renderComponent({
 		isOwnedByUser: true,
 		highestBid: 500,
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
-	expect(getByTestId(TEST_ID.PLACE_BID)).toBeInTheDocument();
-	expect(queryByText(EXPECTED_LABELS.PLACE_BID_BUTTON)).toBeNull();
+	expect(getByTestId(TEST_ID.VIEW_BIDS)).toBeInTheDocument();
+	expect(getByTestId(TEST_ID.SET_BUY_NOW)).toBeInTheDocument();
+	expect(getByText(EXPECTED_LABELS.VIEW_BIDS_BUTTON)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.SET_BUY_NOW_BUTTON)).toBeInTheDocument();
 });
 
 test('should render correct actions for: owner, no bids, buy now', async () => {
-	const { getByTestId, getByText, queryByText } = renderComponent({
+	const { getByTestId, getByText } = renderComponent({
 		isOwnedByUser: true,
 		buyNowPrice: 500,
+		bidData: undefined,
 	});
 
-	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
-	expect(getByTestId(TEST_ID.PLACE_BID)).toBeInTheDocument();
-	expect(queryByText(EXPECTED_LABELS.PLACE_BID_BUTTON)).toBeNull();
+	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(1);
+	expect(getByTestId(TEST_ID.SET_BUY_NOW)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.EDIT_BUY_NOW_BUTTON)).toBeInTheDocument();
 });
 
