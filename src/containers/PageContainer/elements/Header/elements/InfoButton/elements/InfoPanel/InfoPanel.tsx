@@ -50,8 +50,8 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 					<div className="info-panel__content-section-body">
 						{Object.values(WILDER_WORLD_OPTIONS).map((option) => (
 							<div
-								key={`wilder-options-${option.link}`}
 								className="info-panel__content-section-body-item max-4"
+								key={`wilder-options-${option.link}`}
 							>
 								<a target="_blank" rel="noreferrer" href={option.link}>
 									<img src={option.icon} alt={option.label} />

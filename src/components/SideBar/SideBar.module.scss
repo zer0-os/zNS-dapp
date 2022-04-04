@@ -16,6 +16,7 @@ $icon-container-size: 54px;
 	height: 100vh;
 	width: $full-width;
 	padding: 24px;
+	z-index: 10000;
 
 	@media only screen and (max-width: 1216px) {
 		width: auto !important;

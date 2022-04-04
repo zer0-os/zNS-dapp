@@ -8,7 +8,7 @@
 
 	border: 1px solid #232323;
 
-	padding-top: 100%;
+	padding-top: 56.25%;
 
 	@media only screen and (max-width: 414px) {
 		min-width: unset;
@@ -31,6 +31,7 @@
 		left: 0;
 		height: auto !important;
 		width: 100% !important;
+		object-fit: cover;
 
 		border-radius: var(--box-radius) var(--box-radius) 0 0;
 
