@@ -24,6 +24,14 @@ enum ACTION_TYPES {
 	YourBid,
 }
 
+export const TEST_ID = {
+	CONTAINER: 'actions-container',
+	BUY_NOW: 'actions-buy-now',
+	SET_BUY_NOW: 'actions-set-buy-now',
+	PLACE_BID: 'actions-place-bid',
+	YOUR_BID: 'actions-your-bid',
+};
+
 type ActionBlock = {
 	amount: number | string | undefined;
 	label: string;
@@ -31,6 +39,7 @@ type ActionBlock = {
 	buttonComponent: (isTextButton?: boolean) => JSX.Element;
 	isVisible: boolean;
 	shouldShowBorder?: boolean;
+	testId: string;
 };
 
 type ActionsProps = {
@@ -70,7 +79,7 @@ const Actions = ({
 			amountUsd:
 				buyNowPrice && wildPriceUsd
 					? wrapFiat(buyNowPrice * wildPriceUsd)
-					: '-',
+					: 'No buy now set',
 			buttonComponent: (isTextButton?: boolean) => (
 				<BuyNowButton
 					onSuccess={refetch}
@@ -81,25 +90,26 @@ const Actions = ({
 				/>
 			),
 			isVisible: Boolean(buyNowPrice) && !isOwnedByUser && Boolean(domainId),
+			testId: TEST_ID.BUY_NOW,
 		},
 		[ACTION_TYPES.SetBuyNow]: {
-			amount: buyNowPrice,
+			amount: buyNowPrice ? buyNowPrice : '-',
 			label: 'Buy Now (WILD)',
 			amountUsd:
 				buyNowPrice && wildPriceUsd
 					? wrapFiat(buyNowPrice * wildPriceUsd)
-					: '-',
+					: 'No buy now set',
 			buttonComponent: (isTextButton?: boolean) => (
 				<SetBuyNowButton
 					onSuccess={refetch}
-					buttonText={buyNowPrice ? 'Edit Buy Now' : undefined}
+					buttonText={buyNowPrice ? 'Edit Buy Now' : 'Set Buy Now'}
 					domainId={domainId ?? ''}
 					isTextButton={isTextButton}
 					className={cx({ TextButton: isTextButton })}
 				/>
 			),
-			isVisible:
-				isOwnedByUser === true && Boolean(domainId) && Boolean(buyNowPrice),
+			isVisible: isOwnedByUser === true && Boolean(domainId),
+			testId: TEST_ID.SET_BUY_NOW,
 		},
 		[ACTION_TYPES.PlaceBid]: {
 			amount: highestBid ?? '-',
@@ -116,7 +126,8 @@ const Actions = ({
 						glow
 						onClick={onMakeBid}
 					>
-						{!yourBid || Number(yourBid.amount) <= highestBid!
+						{!yourBid ||
+						(yourBid && Number(formatEther(yourBid.amount)) === highestBid)!
 							? 'Place A Bid'
 							: 'Rebid'}
 					</BidButton>
@@ -125,11 +136,15 @@ const Actions = ({
 				);
 			},
 			isVisible: isBiddable === true,
+			testId: TEST_ID.PLACE_BID,
 		},
 		[ACTION_TYPES.YourBid]: {
 			amount: yourBid ? Number(formatEther(yourBid.amount)) : '-',
 			label: 'Your Bid (WILD)',
-			amountUsd: wrapFiat(100),
+			amountUsd:
+				yourBid && wildPriceUsd
+					? wrapFiat(Number(formatEther(yourBid.amount)) * wildPriceUsd)
+					: '',
 			buttonComponent: (isTextButton?: boolean) => (
 				<CancelBidButton
 					isTextButton
@@ -140,6 +155,7 @@ const Actions = ({
 				/>
 			),
 			isVisible: !isOwnedByUser && Boolean(yourBid),
+			testId: TEST_ID.YOUR_BID,
 		},
 	};
 
@@ -149,9 +165,9 @@ const Actions = ({
 	 */
 	const ordered = isOwnedByUser
 		? [
+				actions[ACTION_TYPES.PlaceBid],
 				actions[ACTION_TYPES.BuyNow],
 				actions[ACTION_TYPES.SetBuyNow],
-				actions[ACTION_TYPES.PlaceBid],
 		  ]
 		: [
 				actions[ACTION_TYPES.BuyNow],
@@ -162,11 +178,19 @@ const Actions = ({
 	const toRender = ordered.filter((a: ActionBlock) => Boolean(a.isVisible));
 
 	return (
-		<ul className={styles.Container}>
+		<ul className={styles.Container} data-testid={TEST_ID.CONTAINER}>
 			{toRender.map((a: ActionBlock, index: number) => (
-				<li className={cx({ Border: index === 0 && toRender.length > 2 })}>
+				<li
+					className={cx({ Border: index === 0 && toRender.length > 2 })}
+					data-testid={a.testId}
+					key={a.testId}
+				>
 					<Detail
-						text={a.amount ?? ''}
+						text={
+							!isNaN(Number(a.amount))
+								? Number(a.amount).toLocaleString()
+								: a.amount
+						}
 						subtext={a.label ?? ''}
 						bottomText={a.amountUsd ?? ''}
 						mainClassName={styles.Label}

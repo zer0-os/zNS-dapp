@@ -142,7 +142,7 @@ export const useNftData = (): UseNftDataReturn => {
 			}
 
 			setHighestBid(highestBid);
-			setBuyNowPrice(Number(buyNow));
+			setBuyNowPrice(Number(buyNow) > 0 ? Number(buyNow) : undefined);
 		} catch (e) {
 			console.error('Failed to retrieve price data', e);
 		} finally {
