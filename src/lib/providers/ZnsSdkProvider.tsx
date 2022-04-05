@@ -61,7 +61,12 @@ export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
 	}, [library, chainSelector.selectedChain]);
 
 	useEffect(() => {
-		(global as any).sdk = instance;
+		const keys = Object.keys(instance).filter((k) => k.includes('get'));
+		const s: any = {};
+		keys.forEach((key) => {
+			s[key] = (instance as any)[key];
+		});
+		(global as any).sdk = s;
 	}, [instance]);
 
 	const contextValue = {
