@@ -2,7 +2,7 @@
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { useEffect, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
-import { parseDomainMetadata } from 'lib/metadata';
+import { getMetadata } from 'lib/metadata';
 
 export type UseZnsDomainReturn = {
 	loading: boolean;
@@ -45,9 +45,7 @@ export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 		}
 
 		// TODO: Fetch this data from the SDK
-		const metadata = await sdk.utility.getMetadataFromUri(
-			rawDomain.metadataUri,
-		);
+		const metadata = await getMetadata(rawDomain.metadataUri);
 
 		// We have currently only changed this hook to use the SDK internally
 		// The types in the SDK have changed from what we had previously
@@ -75,7 +73,7 @@ export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 				...formattedDomain,
 				subdomains: formattedSubdomains,
 			});
-			setDomainMetadata(parseDomainMetadata(metadata));
+			setDomainMetadata(metadata);
 			setLoading(false);
 		}
 	};

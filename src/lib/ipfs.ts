@@ -1,21 +1,16 @@
-// Pulls the IPFS hash from an IPFS url
-// https://ipfs.fleek.co/ipfs/QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
-// or
-// ipfs://QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
-// turns into
-// QmNr4mi2T4Qm5ErtnSdxA7a5nCPT2YkF5gAPnLm8oSCXY8
+import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 
+/**
+ * Pulls the IPFS hash from an IPFS url
+ * Note: this will currently not handle nested IPFS content, i.e. ipfs.io/ipfs/[hash]/content
+ * @param url IPFS url to get hash from
+ * @returns IPFS hash from url
+ */
 export const getHashFromIPFSUrl = (url: string) => {
-	if (url.startsWith('ipfs://')) {
-		// ipfs://
-		return url.slice(7);
-	} else {
-		// http(s)://
-		const hashIndex = url.lastIndexOf('/') + 1;
-		return url.slice(hashIndex);
-	}
+	const hashIndex = url.lastIndexOf('/') + 1;
+	return url.slice(hashIndex);
 };
 
 export const getWebIPFSUrlFromHash = (hash: string) => {
-	return `https://ipfs.fleek.co/ipfs/${hash}`;
+	return `${DEFAULT_IPFS_GATEWAY}${hash}`;
 };
