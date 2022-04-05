@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import * as zns from '@zero-tech/zns-sdk';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { ethers } from 'ethers';
 import {
@@ -59,6 +59,10 @@ export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
 			}
 		}
 	}, [library, chainSelector.selectedChain]);
+
+	useEffect(() => {
+		(global as any).sdk = instance;
+	}, [instance]);
 
 	const contextValue = {
 		instance,
