@@ -38,7 +38,7 @@ const SetBuyNowButton = ({
 					<SetBuyNow
 						onSuccess={onSuccess}
 						domainId={domainId}
-						onCancel={() => setIsSetBuyNowOpen && setIsSetBuyNowOpen(false)}
+						onCancel={() => setIsSetBuyNowOpen?.(false)}
 					/>
 				</Overlay>
 			)}
