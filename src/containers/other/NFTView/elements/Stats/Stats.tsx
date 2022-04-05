@@ -1,5 +1,11 @@
 //- React Imports
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, {
+	useState,
+	useCallback,
+	useEffect,
+	useMemo,
+	useRef,
+} from 'react';
 
 //- Web3 Imports
 import { ethers } from 'ethers';
@@ -43,6 +49,7 @@ export const Stats: React.FC<StatsProps> = ({
 	bids,
 	isLoading,
 }) => {
+	const isMounted = useRef<boolean>();
 	const sdk = useZnsSdk();
 
 	const [isDomainMetricsLoaded, setIsDomainMetricsLoaded] =
@@ -57,6 +64,7 @@ export const Stats: React.FC<StatsProps> = ({
 				const domainMetricsCollection: DomainMetricsCollection =
 					await sdk.instance.getDomainMetrics([znsDomain.id]);
 				setDomainMetrics(domainMetricsCollection[znsDomain.id]);
+				if (!isMounted.current) return;
 				setIsDomainMetricsLoaded(true);
 			} catch (e) {
 				console.error(e);
@@ -65,9 +73,13 @@ export const Stats: React.FC<StatsProps> = ({
 	}, [sdk, znsDomain]);
 
 	useEffect(() => {
+		isMounted.current = true;
 		if (znsDomain) {
 			fetchStats();
 		}
+		return () => {
+			isMounted.current = false;
+		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain]);
 
