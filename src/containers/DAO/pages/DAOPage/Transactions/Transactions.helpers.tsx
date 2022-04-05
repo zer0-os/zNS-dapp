@@ -2,7 +2,7 @@
 import { Image } from 'components';
 
 // Lib
-import { truncateAddress } from 'lib/utils';
+import { truncateWalletAddress } from 'lib/utils';
 import { formatEther, formatUnits } from '@ethersproject/units';
 import { startCase, toLower } from 'lodash';
 import {
@@ -46,7 +46,7 @@ export const toHistoryItem = (transaction: Transaction) => {
 			assetString =
 				typed.tokenSymbol ??
 				typed.tokenName ??
-				truncateAddress(typed.tokenAddress);
+				truncateWalletAddress(typed.tokenAddress);
 			image = typed.logoUri;
 			break;
 		case AssetType.ERC20:
@@ -56,7 +56,7 @@ export const toHistoryItem = (transaction: Transaction) => {
 				' ' +
 				(typed.tokenSymbol ??
 					typed.tokenName ??
-					truncateAddress(typed.tokenAddress));
+					truncateWalletAddress(typed.tokenAddress));
 			image = typed.logoUri;
 			break;
 	}
@@ -78,7 +78,7 @@ export const toHistoryItem = (transaction: Transaction) => {
 				)}
 				<span>
 					{startCase(toLower(transaction.type))} <b>{assetString}</b> {toOrFrom}{' '}
-					<b>{truncateAddress(transaction.to)}</b>
+					<b>{truncateWalletAddress(transaction.to)}</b>
 				</span>
 			</span>
 		),

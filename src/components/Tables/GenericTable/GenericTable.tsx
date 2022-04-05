@@ -8,7 +8,6 @@ import {
 	SearchBar,
 	TextButton,
 } from 'components';
-import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
@@ -26,8 +25,8 @@ const GenericTable = (props: any) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
-	const { domainMetadata } = useCurrentDomain();
-	const isGridViewByDefault = Boolean(domainMetadata?.gridViewByDefault);
+	const isGridViewByDefault =
+		window.innerWidth <= 700 || props.isGridViewByDefault;
 
 	// chunk defines which row we're up to when infinite scroll is enabled
 	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows

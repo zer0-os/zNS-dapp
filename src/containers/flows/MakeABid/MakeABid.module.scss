@@ -1,3 +1,7 @@
+.StepBarContainer {
+	margin: -14px 6px 40px 6px;
+}
+
 .Container {
 	width: 640px;
 	padding: 40px;
@@ -71,10 +75,11 @@
 	overflow-wrap: anywhere;
 	display: block;
 	margin-top: 4px;
+	color: var(--color-accent-1);
 }
 
 .Price {
-	margin: 24px 0;
+	margin-top: 24px;
 }
 
 .Price h3 {
@@ -99,10 +104,8 @@
 	margin-top: 8px;
 }
 
-.ViewAll {
-	display: block;
+.Member {
 	margin-top: 24px;
-	padding: 0;
 }
 
 .InputWrapper {

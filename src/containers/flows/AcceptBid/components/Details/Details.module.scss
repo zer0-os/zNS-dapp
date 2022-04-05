@@ -1,0 +1,39 @@
+.NFTDetailsContainer {
+	margin-bottom: 28px;
+}
+
+.TextContainer {
+	display: inline-block;
+	text-align: center;
+	word-break: break-word;
+	line-height: 24px;
+	padding-bottom: 0;
+
+	div {
+		display: inline-block;
+	}
+}
+
+.Buttons {
+	display: flex;
+	justify-content: center;
+	margin-top: 40px;
+}
+
+.Buttons > button:not(:first-child) {
+	margin-left: 24px;
+}
+
+.SuccessConfirmation {
+	color: var(--color-success);
+	line-height: 24px;
+	text-align: center;
+	margin: 40px 0;
+}
+
+.Error {
+	color: var(--color-error);
+	line-height: 24px;
+	text-align: center;
+	margin: 40px 0;
+}

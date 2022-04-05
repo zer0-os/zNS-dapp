@@ -1,36 +1,56 @@
 import { useWeb3React } from '@web3-react/core';
 import * as zns from '@zero-tech/zns-sdk';
-import {
-	DomainBidEvent,
-	DomainMetricsCollection,
-	DomainMintEvent,
-	DomainSaleEvent,
-	DomainTransferEvent,
-} from '@zero-tech/zns-sdk/lib/types';
 import React from 'react';
-import { useChainSelector } from './ChainSelectorProvider';
+import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
+import { ethers } from 'ethers';
+import {
+	chainIdToNetworkType,
+	defaultNetworkId,
+	NETWORK_TYPES,
+} from 'lib/network';
+import { RPC_URLS } from 'lib/connectors';
 
-export function useZnsSdk() {
-	const web3Context = useWeb3React();
+type ZnsSdkProviderProps = {
+	children: React.ReactNode;
+};
+
+export const SdkContext = React.createContext({
+	instance: {} as zns.Instance,
+});
+
+export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
+	const { library } = useWeb3React();
 	const chainSelector = useChainSelector();
 
 	const instance = React.useMemo(() => {
-		switch (chainSelector.selectedChain) {
-			case 1: {
+		/**
+		 * Use connected wallet's provider if it exists, otherwise create
+		 * a provider using the Infura URL for the selected chain
+		 */
+		const provider =
+			library ||
+			new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId]);
+		const network = chainIdToNetworkType(chainSelector.selectedChain);
+
+		/**
+		 * Configure the SDK using provider based on selected network
+		 */
+		switch (network) {
+			case NETWORK_TYPES.MAINNET: {
 				return zns.createInstance(
-					zns.configuration.mainnetConfiguration(web3Context.library),
+					zns.configuration.mainnetConfiguration(provider),
 				);
 			}
 
-			case 4: {
+			case NETWORK_TYPES.RINKEBY: {
 				return zns.createInstance(
-					zns.configuration.rinkebyConfiguration(web3Context.library),
+					zns.configuration.rinkebyConfiguration(provider),
 				);
 			}
 
-			case 42: {
+			case NETWORK_TYPES.KOVAN: {
 				return zns.createInstance(
-					zns.configuration.kovanConfiguration(web3Context.library),
+					zns.configuration.kovanConfiguration(provider),
 				);
 			}
 
@@ -38,78 +58,13 @@ export function useZnsSdk() {
 				throw new Error('SDK isn´t available for this chainId');
 			}
 		}
-	}, [web3Context.library, chainSelector.selectedChain]);
+	}, [library, chainSelector.selectedChain]);
 
-	const getMintEvents = async (domainId: string) => {
-		try {
-			const events = await instance?.getDomainEvents(domainId);
-			const mintEvents = events?.filter((element) => {
-				return element.type === 0;
-			}) as DomainMintEvent[];
-			return mintEvents;
-		} catch (e) {
-			console.error('Failed to retrieve mint event data');
-			return;
-		}
-	};
-
-	const getTransferEvents = async (domainId: string) => {
-		try {
-			const events = await instance?.getDomainEvents(domainId);
-			const transferEvents = events?.filter((element) => {
-				return element.type === 1;
-			}) as DomainTransferEvent[];
-			return transferEvents;
-		} catch {
-			console.error('Failed to retrieve transfer event data');
-			return;
-		}
-	};
-
-	const getBids = async (domainId: string) => {
-		try {
-			const events = await instance?.getDomainEvents(domainId);
-			const bids = events?.filter((element) => {
-				return element.type === 2;
-			}) as DomainBidEvent[];
-			return bids;
-		} catch {
-			console.error('Failed to retrive bid data');
-			return;
-		}
-	};
-
-	const getSaleEvents = async (domainId: string) => {
-		try {
-			const events = await instance?.getDomainEvents(domainId);
-			const sales = events?.filter((element) => {
-				return element.type === 3;
-			}) as DomainSaleEvent[];
-			return sales;
-		} catch {
-			console.error('Failed to retrieve sale event data');
-			return;
-		}
-	};
-
-	const getDomainMetrics = async (domainIds: string[]) => {
-		try {
-			const data: DomainMetricsCollection = await instance?.getDomainMetrics(
-				domainIds,
-			);
-			return data;
-		} catch {
-			console.error('Failed to retrieve sale event data');
-			return;
-		}
-	};
-
-	return {
+	const contextValue = {
 		instance,
-		getMintEvents,
-		getTransferEvents,
-		getBids,
-		getSaleEvents,
-		getDomainMetrics,
 	};
-}
+
+	return (
+		<SdkContext.Provider value={contextValue}>{children}</SdkContext.Provider>
+	);
+};
