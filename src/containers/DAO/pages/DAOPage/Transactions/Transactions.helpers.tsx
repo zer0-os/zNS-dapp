@@ -2,7 +2,7 @@
 import { Image } from 'components';
 
 // Lib
-import { truncateWalletAddress } from 'lib/utils';
+import { formatNumber, truncateWalletAddress } from 'lib/utils';
 import { formatEther, formatUnits } from '@ethersproject/units';
 import { startCase, toLower } from 'lodash';
 import {
@@ -15,6 +15,7 @@ import {
 } from '@zero-tech/zdao-sdk';
 
 // Styles
+import { ArrowDownLeft, ArrowUpRight } from 'react-feather';
 import styles from './Transactions.module.scss';
 import ethIcon from './assets/gnosis-eth.png';
 
@@ -31,6 +32,12 @@ export const toHistoryItem = (transaction: Transaction) => {
 
 	const assetType = transaction.asset.type;
 
+	let valueString;
+	if (Object.keys(transaction.asset).includes('value')) {
+		const asAny = transaction.asset as any;
+		valueString = formatNumber(formatUnits(asAny.value, asAny.decimals ?? 18));
+	}
+
 	/**
 	 * Handle formatting for different asset types
 	 */
@@ -38,7 +45,7 @@ export const toHistoryItem = (transaction: Transaction) => {
 	switch (assetType) {
 		case AssetType.NATIVE_TOKEN:
 			typed = transaction.asset as unknown as NativeCoinTransfer;
-			assetString = formatEther(typed.value) + ' ETH';
+			assetString = valueString + ' ETH';
 			image = ethIcon;
 			break;
 		case AssetType.ERC721:
@@ -52,7 +59,7 @@ export const toHistoryItem = (transaction: Transaction) => {
 		case AssetType.ERC20:
 			typed = transaction.asset as unknown as ERC20Transfer;
 			assetString =
-				formatUnits(typed.value, typed.decimals) +
+				valueString +
 				' ' +
 				(typed.tokenSymbol ??
 					typed.tokenName ??
@@ -67,12 +74,18 @@ export const toHistoryItem = (transaction: Transaction) => {
 		event: (
 			<span className={styles.Transaction}>
 				{image !== undefined ? (
-					<Image
-						alt="asset icon"
-						src={image}
-						style={{ height: 32, width: 32 }}
-						className={styles.Icon}
-					/>
+					<div className={styles.Icon}>
+						<Image
+							alt="asset icon"
+							src={image}
+							style={{ height: '100%', width: '100%', borderRadius: '50%' }}
+						/>
+						{toOrFrom === 'from' ? (
+							<ArrowDownLeft className={styles.Arrow} color="#52CBFF" />
+						) : (
+							<ArrowUpRight className={styles.Arrow} color="#52CBFF" />
+						)}
+					</div>
 				) : (
 					<img alt="asset icon" src={DEFAULT_ICON} className={styles.Icon} />
 				)}

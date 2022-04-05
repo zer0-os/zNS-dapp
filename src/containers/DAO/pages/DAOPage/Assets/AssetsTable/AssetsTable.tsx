@@ -48,8 +48,8 @@ const AssetsTable: React.FC<AssetsTableProps> = ({ assets, isLoading }) => {
 			isLoading={isLoading}
 			loadingText={'Loading Assets'}
 			searchKey={['name', 'subtext']}
-			searchBy={'token ticker'}
-			emptyText={'This DAO has no assets'}
+			searchBy={'asset name'}
+			emptyText={'This DAO has no assets.'}
 		/>
 	);
 };

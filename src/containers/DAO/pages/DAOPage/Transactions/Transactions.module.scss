@@ -6,11 +6,35 @@
 	display: flex;
 	align-items: center;
 
+	@media only screen and (max-width: 800px) {
+		.Icon {
+			display: none;
+		}
+
+		span {
+			margin-left: 0 !important;
+		}
+	}
+
 	.Icon {
+		position: relative;
 		height: 32px;
 		width: 32px;
 		border-radius: 50%;
+		padding: 4px;
 		object-fit: cover;
+		background: #0a0a0a;
+
+		.Arrow {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			height: 12px;
+			width: 12px;
+			border-radius: 50%;
+			background: #0a0a0a;
+			z-index: 2;
+		}
 	}
 
 	span {

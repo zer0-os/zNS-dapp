@@ -1,7 +1,7 @@
 .Header {
 	display: flex;
 	align-items: center;
-	padding: 16px;
+	padding: 16px 0;
 
 	font-weight: 700;
 
@@ -28,10 +28,6 @@
 			width: 40px;
 		}
 	}
-}
-
-.Stat {
-	max-width: 160px !important;
 }
 
 .Loading {

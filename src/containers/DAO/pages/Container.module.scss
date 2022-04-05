@@ -12,6 +12,7 @@
 
 		> * {
 			flex: 1;
+			align-self: stretch;
 
 			&:not(:last-child) {
 				margin-right: 16px;

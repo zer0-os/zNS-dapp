@@ -91,14 +91,7 @@ const PageContainer: React.FC = ({ children }) => {
 
 	return (
 		<ScrollToTop>
-			<div
-				className={classnames(styles.PageContainer, {
-					[styles.isVisible]:
-						Boolean(znsDomain) ||
-						Boolean(prevZnsDomain) ||
-						Boolean(globalDomain.domain),
-				})}
-			>
+			<div className={classnames(styles.PageContainer)}>
 				{/* Toast Notifications */}
 				<NotificationDrawer />
 				{/* Home Icon (Navigation Logo) */}

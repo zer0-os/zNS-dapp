@@ -119,16 +119,13 @@ const DAOPage: React.FC = () => {
 					<Loading />
 				) : dao ? (
 					<>
-						<ul className={genericStyles.Stats}>
-							<div className={styles.Header}>
-								<div className={styles.Icon}>
-									<Image
-										alt="dao logo"
-										src={daoData?.avatar ?? defaultDaoIcon}
-									/>
-								</div>
-								<h1>{daoData?.title}</h1>
+						<div className={styles.Header}>
+							<div className={styles.Icon}>
+								<Image alt="dao logo" src={daoData?.avatar ?? defaultDaoIcon} />
 							</div>
+							<h1>{daoData?.title}</h1>
+						</div>
+						<ul className={genericStyles.Stats}>
 							<div className={styles.Stat}>
 								<StatsWidget
 									className="normalView"

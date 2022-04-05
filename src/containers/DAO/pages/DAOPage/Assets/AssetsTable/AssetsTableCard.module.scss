@@ -3,6 +3,10 @@
 		width: auto !important;
 	}
 
+	&:hover {
+		cursor: default;
+	}
+
 	.Details {
 		display: flex;
 		flex-direction: row;
@@ -10,9 +14,12 @@
 		align-items: baseline;
 		margin-top: 1rem;
 
-		.Quantity > span:last-child,
-		.AmountInUSD > span:last-child {
-			text-align: center;
+		> div:first-of-type {
+			text-align: left;
+		}
+
+		> div:last-of-type {
+			text-align: right;
 		}
 	}
 }
