@@ -5,6 +5,7 @@ import {
 	DomainMintEvent,
 	DomainBidEvent,
 	DomainSaleEvent,
+	DomainBuyNowSaleEvent,
 } from '@zero-tech/zns-sdk/lib/types';
 import { URLS } from 'constants/urls';
 import { ethers } from 'ethers';
@@ -105,7 +106,8 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 			);
 
 		case DomainEventType.sale:
-			item = item as DomainSaleEvent;
+		case DomainEventType.buyNow:
+			item = item as DomainSaleEvent | DomainBuyNowSaleEvent;
 
 			return (
 				<li className={styles.Bid}>
