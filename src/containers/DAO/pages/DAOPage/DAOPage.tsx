@@ -1,4 +1,5 @@
 // React
+import React from 'react';
 import {
 	Link,
 	Redirect,
@@ -38,7 +39,7 @@ const MILLIFY_PRECISION = 3;
 const toDaoPage = (zna: string) => (route: ROUTES) =>
 	ROUTES.ZDAO + '/' + zna + route;
 
-const DAOPage = () => {
+const DAOPage: React.FC = () => {
 	const { pathname } = useLocation();
 	const { path } = useRouteMatch();
 

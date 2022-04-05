@@ -1,5 +1,5 @@
 // React
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Components
 import { StatsWidget } from 'components';
@@ -16,7 +16,7 @@ import { toFiat } from 'lib/currency';
 import classNames from 'classnames';
 import genericStyles from '../Container.module.scss';
 
-const DAOList = () => {
+const DAOList: React.FC = () => {
 	const { instance: sdk } = useZdaoSdk();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);

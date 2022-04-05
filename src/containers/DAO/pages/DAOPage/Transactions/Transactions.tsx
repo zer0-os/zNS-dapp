@@ -1,3 +1,4 @@
+import React from 'react';
 // Components
 import History from './components/History/History';
 import { LoadingIndicator } from 'components';
@@ -15,7 +16,10 @@ type TransactionsProps = {
 	transactions?: Transaction[];
 };
 
-const Transactions = ({ isLoading, transactions }: TransactionsProps) => {
+const Transactions: React.FC<TransactionsProps> = ({
+	isLoading,
+	transactions,
+}) => {
 	if (isLoading) {
 		return (
 			<LoadingIndicator

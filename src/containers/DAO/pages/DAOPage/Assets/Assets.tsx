@@ -1,12 +1,13 @@
-import AssetsTable from './AssetsTable/AssetsTable';
+import React from 'react';
 import { Asset } from 'lib/types/dao';
+import AssetsTable from './AssetsTable/AssetsTable';
 
 type AssetsProps = {
 	assets?: Asset[];
 	isLoading: boolean;
 };
 
-const Assets = ({ assets, isLoading }: AssetsProps) => {
+const Assets: React.FC<AssetsProps> = ({ assets, isLoading }) => {
 	return <AssetsTable assets={assets} isLoading={isLoading} />;
 };
 

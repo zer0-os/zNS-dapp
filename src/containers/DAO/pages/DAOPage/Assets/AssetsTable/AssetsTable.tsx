@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { Asset } from 'lib/types/dao';
 import { GenericTable } from 'components';
-import AssetsTableRow, { TableAsset } from './AssetsTableRow';
+import AssetsTableRow from './AssetsTableRow';
+import AssetsTableCard from './AssetsTableCard';
+import { AssetTableDataItem } from './AssetsTable.type';
 import { convertAsset } from './AssetsTable.helpers';
 
 type AssetsTableProps = {
@@ -27,8 +29,8 @@ const HEADERS = [
 	},
 ];
 
-const AssetsTable = ({ assets, isLoading }: AssetsTableProps) => {
-	const tableData: TableAsset[] = useMemo(() => {
+const AssetsTable: React.FC<AssetsTableProps> = ({ assets, isLoading }) => {
+	const tableData: AssetTableDataItem[] = useMemo(() => {
 		if (!assets) return [];
 
 		return assets.map(convertAsset);
@@ -38,9 +40,10 @@ const AssetsTable = ({ assets, isLoading }: AssetsTableProps) => {
 		<GenericTable
 			alignments={[0, 1, 1, 1, 1, 1, 1]}
 			data={tableData}
-			itemKey={'key'}
+			infiniteScroll
 			headers={HEADERS}
 			rowComponent={AssetsTableRow}
+			gridComponent={AssetsTableCard}
 			isLoading={isLoading}
 			loadingText={'Loading Assets'}
 			searchKey={['name', 'subtext']}

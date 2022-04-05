@@ -10,6 +10,7 @@ import {
 } from 'components';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { usePropsState } from 'lib/hooks/usePropsState';
+import { randomUUID } from 'lib/random';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import classNames from 'classnames';
@@ -156,7 +157,7 @@ const GenericTable = (props: any) => {
 					<>
 						{filteredData.map((d: any, index: number) => (
 							<props.rowComponent
-								key={index}
+								key={randomUUID()}
 								rowNumber={index}
 								data={d}
 								headers={props.headers}
@@ -171,7 +172,7 @@ const GenericTable = (props: any) => {
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
 								<props.rowComponent
-									key={d[props.itemKey]}
+									key={randomUUID()}
 									rowNumber={index}
 									data={d}
 									headers={props.headers}
@@ -193,7 +194,7 @@ const GenericTable = (props: any) => {
 										? styles.Right
 										: styles.Left
 								} ${h?.className && styles[h?.className]}`}
-								key={index}
+								key={randomUUID()}
 							>
 								{h?.label}
 							</th>
@@ -219,15 +220,10 @@ const GenericTable = (props: any) => {
 			: rawData.filter((d: any) =>
 					searchQuery && !props.notSearchable ? matchesSearch(d) : true,
 			  );
-
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					<props.gridComponent
-						key={d[props.itemKey]}
-						rowNumber={index}
-						data={d}
-					/>
+					<props.gridComponent key={randomUUID()} rowNumber={index} data={d} />
 				))}
 				{data.length === 2 && <div></div>}
 				{data.length === 1 && (
@@ -238,7 +234,7 @@ const GenericTable = (props: any) => {
 				)}
 			</div>
 		);
-	}, [rawData, chunk, searchQuery]);
+	}, [props, rawData, chunk, chunkSize, searchQuery]);
 
 	////////////
 	// Render //
@@ -294,16 +290,20 @@ const GenericTable = (props: any) => {
 				)}
 				<div ref={ref}></div>
 			</div>
-			{rawData && !searchQuery && chunk * chunkSize < rawData.length && (
-				<TextButton
-					onClick={() =>
-						isGridView ? increaseChunkSize() : increaseChunkSize(2)
-					}
-					className={styles.LoadMore}
-				>
-					Load More
-				</TextButton>
-			)}
+
+			{props.infiniteScroll &&
+				rawData &&
+				!searchQuery &&
+				chunk * chunkSize < rawData.length && (
+					<TextButton
+						onClick={() =>
+							isGridView ? increaseChunkSize() : increaseChunkSize(2)
+						}
+						className={styles.LoadMore}
+					>
+						Load More
+					</TextButton>
+				)}
 		</div>
 	);
 };

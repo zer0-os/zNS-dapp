@@ -1,36 +1,33 @@
+import React from 'react';
+
 // Components
 import { Artwork } from 'components';
 
 // Lib
-import { formatUnits } from 'ethers/lib/utils';
-import millify from 'millify';
+import { formatTotalAmountOfTokens } from './AssetsTable.helpers';
 
 // Styles + assets
 import classNames from 'classnames';
 import styles from './AssetsTableRow.module.scss';
 
-// Config
-const MILLIFY_PRECISION = 5;
-const MILLIFY_LOWERCASE = false;
+// Types
+import { AssetTableDataItem } from './AssetsTable.type';
 
-export type TableAsset = {
-	amount: string | number;
-	decimals?: number;
-	image: string;
-	key: string;
-	name: string;
-	subtext: string;
-	amountInUSD: string;
-};
+interface AssetsTableRowProps {
+	data: AssetTableDataItem;
+	onRowClick: () => void;
+	className: string;
+}
 
 /**
  * A single row item for the Assets table
  */
-const AssetsTableRow = (props: any) => {
-	const { data, onRowClick, className } = props;
-
-	const { amount, decimals, image, name, subtext, amountInUSD } =
-		data as TableAsset;
+const AssetsTableRow: React.FC<AssetsTableRowProps> = ({
+	data,
+	onRowClick,
+	className,
+}) => {
+	const { image, name, subtext, amountInUSD } = data;
 
 	return (
 		<tr
@@ -51,12 +48,7 @@ const AssetsTableRow = (props: any) => {
 			</td>
 
 			{/* Total amount of tokens */}
-			<td className={styles.Right}>
-				{millify(Number(formatUnits(amount, decimals)), {
-					precision: MILLIFY_PRECISION,
-					lowercase: MILLIFY_LOWERCASE,
-				})}
-			</td>
+			<td className={styles.Right}>{formatTotalAmountOfTokens(data)}</td>
 
 			{/* Fiat value of tokens */}
 			<td className={styles.Right}>{amountInUSD}</td>

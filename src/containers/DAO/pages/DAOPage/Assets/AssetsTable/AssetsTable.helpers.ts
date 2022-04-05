@@ -1,14 +1,17 @@
+import millify from 'millify';
+import { formatUnits } from 'ethers/lib/utils';
 import { Asset } from 'lib/types/dao';
 import { toFiat } from 'lib/currency';
-import { TableAsset } from './AssetsTableRow';
+import { AssetTableDataItem } from './AssetsTable.type';
+import { MILLIFY_PRECISION, MILLIFY_LOWERCASE } from './AssetsTable.constants';
 import defaultAssetIcon from 'assets/default_asset.png';
 
 /**
- * Converts an Asset to a TableAsset
+ * Converts an Asset to AssetTableDataItem
  * @param asset to convert
- * @returns asset as TableAsset
+ * @returns asset as AssetTableDataItem
  */
-export const convertAsset = (asset: Asset): TableAsset => {
+export const convertAsset = (asset: Asset): AssetTableDataItem => {
 	const a = asset as any;
 
 	const amount = a.amount ?? 1;
@@ -23,4 +26,18 @@ export const convertAsset = (asset: Asset): TableAsset => {
 		amountInUSD:
 			a.amountInUSD !== undefined ? '$' + toFiat(a.amountInUSD) : '-',
 	};
+};
+
+/**
+ * Format a total amount of asset tokens
+ * @param item to format
+ * @returns formatted total ammount of asset tockens
+ */
+export const formatTotalAmountOfTokens = (item: AssetTableDataItem): string => {
+	const { amount, decimals } = item;
+
+	return millify(Number(formatUnits(amount, decimals)), {
+		precision: MILLIFY_PRECISION,
+		lowercase: MILLIFY_LOWERCASE,
+	});
 };

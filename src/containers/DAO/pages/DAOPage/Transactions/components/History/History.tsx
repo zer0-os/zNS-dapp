@@ -1,5 +1,5 @@
 // React
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 // Lib
 import { HistoryItem } from './History.types';
@@ -14,7 +14,7 @@ type HistoryItemProps = {
 	items: HistoryItem[];
 };
 
-const History = ({ items }: HistoryItemProps) => {
+const History: React.FC<HistoryItemProps> = ({ items }) => {
 	const groups = useMemo(() => {
 		const segments: any = {};
 		items.forEach((item: HistoryItem) => {

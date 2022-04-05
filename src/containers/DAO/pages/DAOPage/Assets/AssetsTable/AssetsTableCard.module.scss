@@ -1,0 +1,18 @@
+.ImageCard {
+	img {
+		width: auto !important;
+	}
+
+	.Details {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: baseline;
+		margin-top: 1rem;
+
+		.Quantity > span:last-child,
+		.AmountInUSD > span:last-child {
+			text-align: center;
+		}
+	}
+}
