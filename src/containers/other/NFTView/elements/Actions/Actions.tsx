@@ -14,6 +14,7 @@ import { formatEther } from '@ethersproject/units';
 import { Bid } from '@zero-tech/zns-sdk/lib/zAuction';
 import { Maybe, Metadata } from 'lib/types';
 import { Domain } from '@zero-tech/zns-sdk/lib/types';
+import { ethers } from 'ethers';
 
 //- Constants Imports
 import { LABELS } from 'constants/labels';
@@ -102,6 +103,10 @@ const Actions = ({
 	const isBuyNow = Boolean(buyNowPrice) && !isOwnedByUser && Boolean(domainId);
 	const isViewBids =
 		isOwnedByUser !== undefined && isBiddable === true && Boolean(isBidData);
+
+	// Convert highest bid as wei
+	const highestBidAsWei =
+		highestBid && ethers.utils.parseEther(highestBid.toString()).toString();
 
 	const highestBidTextValue =
 		Boolean(highestBid) && Boolean(wildPriceUsd)
@@ -203,7 +208,7 @@ const Actions = ({
 					bids={bidData}
 					domain={domain}
 					isTextButton={isTextButton}
-					highestBid={highestBid}
+					highestBidAsWei={String(highestBidAsWei)}
 					refetch={refetch}
 					isLoading={isLoading}
 					className={cx({ TextButton: isTextButton })}

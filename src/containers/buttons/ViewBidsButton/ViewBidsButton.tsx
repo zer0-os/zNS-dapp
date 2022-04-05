@@ -20,7 +20,7 @@ interface ViewBidButtonProps {
 	isTextButton?: boolean;
 	refetch: () => void;
 	style?: React.CSSProperties;
-	highestBid?: number;
+	highestBidAsWei?: string;
 	isLoading?: boolean;
 	domainMetadata?: Maybe<Metadata>;
 	setIsViewBidsOpen?: (state: boolean) => void;
@@ -35,7 +35,7 @@ const ViewBidsButton = ({
 	isTextButton,
 	refetch,
 	style,
-	highestBid,
+	highestBidAsWei,
 	isLoading,
 	domainMetadata,
 	setIsViewBidsOpen,
@@ -67,7 +67,7 @@ const ViewBidsButton = ({
 						domain={domain}
 						domainMetadata={domainMetadata}
 						onAccept={onAccept}
-						highestBid={String(highestBid)}
+						highestBid={String(highestBidAsWei)}
 						isLoading={isLoading}
 					/>
 				</Overlay>
