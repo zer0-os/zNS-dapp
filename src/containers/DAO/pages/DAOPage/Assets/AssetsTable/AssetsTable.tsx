@@ -40,6 +40,7 @@ const AssetsTable: React.FC<AssetsTableProps> = ({ assets, isLoading }) => {
 		<GenericTable
 			alignments={[0, 1, 1, 1, 1, 1, 1]}
 			data={tableData}
+			itemKey={'uuid'}
 			infiniteScroll
 			headers={HEADERS}
 			rowComponent={AssetsTableRow}

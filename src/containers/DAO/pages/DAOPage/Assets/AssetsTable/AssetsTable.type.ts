@@ -6,4 +6,5 @@ export type AssetTableDataItem = {
 	name: string;
 	subtext: string;
 	amountInUSD: string;
+	uuid: string;
 };

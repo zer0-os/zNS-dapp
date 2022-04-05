@@ -10,7 +10,6 @@ import {
 } from 'components';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { usePropsState } from 'lib/hooks/usePropsState';
-import { randomUUID } from 'lib/random';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import classNames from 'classnames';
@@ -157,7 +156,7 @@ const GenericTable = (props: any) => {
 					<>
 						{filteredData.map((d: any, index: number) => (
 							<props.rowComponent
-								key={randomUUID()}
+								key={index}
 								rowNumber={index}
 								data={d}
 								headers={props.headers}
@@ -172,7 +171,7 @@ const GenericTable = (props: any) => {
 							.slice(0, chunk * chunkSize)
 							.map((d: any, index: number) => (
 								<props.rowComponent
-									key={randomUUID()}
+									key={d[props.itemKey]}
 									rowNumber={index}
 									data={d}
 									headers={props.headers}
@@ -194,7 +193,7 @@ const GenericTable = (props: any) => {
 										? styles.Right
 										: styles.Left
 								} ${h?.className && styles[h?.className]}`}
-								key={randomUUID()}
+								key={index}
 							>
 								{h?.label}
 							</th>
@@ -220,10 +219,15 @@ const GenericTable = (props: any) => {
 			: rawData.filter((d: any) =>
 					searchQuery && !props.notSearchable ? matchesSearch(d) : true,
 			  );
+
 		return (
 			<div className={styles.Grid}>
 				{data.map((d: any, index: number) => (
-					<props.gridComponent key={randomUUID()} rowNumber={index} data={d} />
+					<props.gridComponent
+						key={d[props.itemKey]}
+						rowNumber={index}
+						data={d}
+					/>
 				))}
 				{data.length === 2 && <div></div>}
 				{data.length === 1 && (
