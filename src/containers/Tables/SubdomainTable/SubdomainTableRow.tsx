@@ -102,14 +102,14 @@ const SubdomainTableRow = (props: any) => {
 			return (
 				<>
 					<span className={styles.Bid}>
-						{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}
+						{tradeData.volume.all ? formatEthers(tradeData.volume.all) : 0} WILD
 					</span>
 					{wildPriceUsd > 0 && (
 						<span className={styles.Bid}>
 							$
-							{tradeData.highestBid
+							{tradeData.volume.all
 								? formatNumber(
-										Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+										Number(ethers.utils.formatEther(tradeData.volume.all)) *
 											wildPriceUsd,
 								  )
 								: 0}{' '}

@@ -2,8 +2,8 @@ export const IconDot: React.FC = () => {
 	return (
 		<svg
 			id="info-button__icon"
-			width="32"
-			height="32"
+			width="40"
+			height="40"
 			viewBox="0 0 28 28"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"

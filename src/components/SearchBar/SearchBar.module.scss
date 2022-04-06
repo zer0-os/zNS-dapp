@@ -1,7 +1,6 @@
 .searchBar {
 	position: relative;
 	border-radius: var(--box-radius);
-	border: 1px solid #232323;
 }
 
 .searchBar input {
@@ -20,7 +19,6 @@
 	/* text-shadow: var(--glow-text-white); */
 
 	transition: all var(--animation-time-short) linear;
-	border: 1px solid transparent;
 
 	&:hover,
 	&:active,

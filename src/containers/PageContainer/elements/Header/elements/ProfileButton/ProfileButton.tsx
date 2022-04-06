@@ -12,8 +12,8 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({
 		<div className="profile-button__container">
 			<button className="profile-button" onClick={onOpenProfile}>
 				<svg
-					width="32"
-					height="32"
+					width="40"
+					height="40"
 					viewBox="0 0 40 40"
 					fill="none"
 					xmlns="http://www.w3.org/2000/svg"
