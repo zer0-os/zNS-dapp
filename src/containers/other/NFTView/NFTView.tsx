@@ -6,7 +6,6 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 
 //- Component Imports
-import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import {
 	Actions,
 	NFT,
@@ -14,7 +13,6 @@ import {
 	TokenHashBoxes,
 	Attributes,
 	History,
-	DomainSettings,
 } from './elements';
 
 //- Library Imports
@@ -28,10 +26,11 @@ import { useNftData, useViewBidsData, useAsset } from './hooks';
 import { NFTViewModalProvider } from './providers/NFTViewModalProvider/NFTViewModalProvider';
 
 //- Constants Imports
-import { NFT_MORE_ACTIONS_TITLE, NFT_MORE_ACTIONS } from './NFTView.constants';
+import { NFT_MORE_ACTIONS } from './NFTView.constants';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
+import { ethers } from 'ethers';
 
 //- Componennt level type definitions
 type NFTViewProps = {
@@ -40,8 +39,6 @@ type NFTViewProps = {
 
 const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	//- Page State
-	const [isDomainSettingsOpen, setIsDomainSettingsOpen] =
-		useState<Boolean>(false);
 	const [isViewBidsOpen, setIsViewBidsOpen] = useState<boolean>(false);
 	const [isSetBuyNowOpen, setIsSetBuyNowOpen] = useState<boolean>(false);
 
@@ -92,27 +89,17 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		};
 	}, [znsDomain, domainMetadata, account]);
 
+	// Convert highest bid as wei
+	const highestBidAsWei =
+		highestBid && ethers.utils.parseEther(highestBid.toString()).toString();
+
 	///////////////
 	// Functions //
 	///////////////
-	const onCloseDomainSettingsOverlay = () => setIsDomainSettingsOpen(false);
 	const onBid = useCallback(async () => {
 		getPriceData();
 		getHistory();
 	}, [getHistory, getPriceData]);
-
-	// Dropdown Option Select
-	const onSelectNFTMoreOption = (option: Option) => {
-		if (option.title === NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS) {
-			setIsDomainSettingsOpen(true);
-		} else if (option.title === NFT_MORE_ACTIONS_TITLE.TRANSFER_OWNERSHIP) {
-			onTransfer();
-		} else if (option.title === NFT_MORE_ACTIONS_TITLE.SET_BUY_NOW) {
-			setIsSetBuyNowOpen(true);
-		} else {
-			setIsViewBidsOpen(true);
-		}
-	};
 
 	////////////
 	// Render //
@@ -122,15 +109,23 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		<NFTViewModalProvider>
 			<div className={styles.NFTView}>
 				<NFT
-					title={domainMetadata?.title as string}
+					bids={allBids ?? []}
+					domainMetadata={domainMetadata}
 					owner={znsDomain?.owner.id as string}
+					title={domainMetadata?.title as string}
+					domainId={domainId}
+					assetUrl={assetUrl as string}
 					creator={znsDomain?.minter.id as string}
+					options={nftMoreOptions}
+					wildPriceUsd={wildPriceUsd}
+					description={znsDomain?.description as string}
+					isLoading={isBidDataLoading}
+					highestBid={String(highestBidAsWei)}
+					viewBidsDomainData={viewBidsDomainData}
+					refetch={refetch}
+					onTransfer={onTransfer}
 					onDownload={downloadAsset}
 					onShare={shareAsset}
-					assetUrl={assetUrl as string}
-					description={znsDomain?.description as string}
-					options={nftMoreOptions}
-					onSelectOption={onSelectNFTMoreOption}
 				/>
 
 				<Actions
@@ -170,14 +165,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				/>
 
 				<History isLoading={isHistoryLoading} history={history} />
-
-				{/* Domain Settings Modal */}
-				{isDomainSettingsOpen && (
-					<DomainSettings
-						domainId={domainId}
-						onClose={onCloseDomainSettingsOverlay}
-					/>
-				)}
 			</div>
 		</NFTViewModalProvider>
 	);

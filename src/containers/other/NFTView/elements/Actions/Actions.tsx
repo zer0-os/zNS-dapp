@@ -50,7 +50,6 @@ type ActionsProps = {
 	refetch: () => void;
 	bidData?: Bid[];
 	isLoading?: boolean;
-
 	setIsViewBidsOpen?: (state: boolean) => void;
 	isViewBidsOpen?: boolean;
 	setIsSetBuyNowOpen?: (state: boolean) => void;
