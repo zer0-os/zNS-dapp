@@ -10,9 +10,12 @@ import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 //- Other library imports
-import Actions, { TEST_ID } from './Actions';
+import Actions from './Actions';
 import { parseEther } from '@ethersproject/units';
 import { Bid } from '@zero-tech/zauction-sdk';
+
+//- Constants Imports
+import { TEST_ID } from './Actions.constants';
 
 //- Mocks Imports
 import {
@@ -162,7 +165,7 @@ test('should render correct actions for: not owner, no bids, no buy now', async 
 		isOwnedByUser: false,
 	});
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(1);
-	expect(getByTestId(TEST_ID.PLACE_BID)).toBeInTheDocument();
+	expect(getByTestId(TEST_ID.BID)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.PLACE_BID_BUTTON)).toBeInTheDocument();
 });
 
@@ -173,7 +176,7 @@ test('should render correct actions for: not owner, bids, buy now, no user bid',
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(1);
-	expect(getByTestId(TEST_ID.PLACE_BID)).toBeInTheDocument();
+	expect(getByTestId(TEST_ID.BID)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.PLACE_BID_BUTTON)).toBeInTheDocument();
 });
 
@@ -195,7 +198,7 @@ test('should render correct actions for: owner, bids, buy now', async () => {
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
-	expect(getByTestId(TEST_ID.VIEW_BIDS)).toBeInTheDocument();
+	expect(getByTestId(TEST_ID.BID)).toBeInTheDocument();
 	expect(getByTestId(TEST_ID.SET_BUY_NOW)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.VIEW_BIDS_BUTTON)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.EDIT_BUY_NOW_BUTTON)).toBeInTheDocument();
@@ -232,7 +235,7 @@ test('should render correct actions for: owner, bids, no buy now', async () => {
 	});
 
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
-	expect(getByTestId(TEST_ID.VIEW_BIDS)).toBeInTheDocument();
+	expect(getByTestId(TEST_ID.BID)).toBeInTheDocument();
 	expect(getByTestId(TEST_ID.SET_BUY_NOW)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.VIEW_BIDS_BUTTON)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.SET_BUY_NOW_BUTTON)).toBeInTheDocument();

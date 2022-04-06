@@ -9,48 +9,25 @@ import {
 } from 'containers';
 
 // Library
-import { toFiat } from 'lib/currency';
 import { formatEther } from '@ethersproject/units';
 import { Bid } from '@zero-tech/zns-sdk/lib/zAuction';
 import { Maybe, Metadata } from 'lib/types';
 import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 
+//- Types Imports
+import { ActionBlock, ACTION_TYPES } from './Actions.types';
+
 //- Constants Imports
 import { LABELS } from 'constants/labels';
 import { CURRENCY } from 'constants/currency';
+import { TEST_ID, wrapFiat } from './Actions.constants';
 
 // Styles
 import styles from './Actions.module.scss';
 import classNames from 'classnames/bind';
+
 const cx = classNames.bind(styles);
-
-enum ACTION_TYPES {
-	BuyNow,
-	SetBuyNow,
-	PlaceBid,
-	YourBid,
-	ViewBids,
-}
-
-export const TEST_ID = {
-	CONTAINER: 'actions-container',
-	BUY_NOW: 'actions-buy-now',
-	SET_BUY_NOW: 'actions-set-buy-now',
-	PLACE_BID: 'actions-place-bid',
-	YOUR_BID: 'actions-your-bid',
-	VIEW_BIDS: 'actions-view-bids',
-};
-
-type ActionBlock = {
-	amount: number | string | undefined;
-	label: string;
-	amountUsd: string;
-	buttonComponent: (isTextButton?: boolean) => JSX.Element;
-	isVisible: boolean;
-	shouldShowBorder?: boolean;
-	testId: string;
-};
 
 type ActionsProps = {
 	domainId?: string;
@@ -70,10 +47,6 @@ type ActionsProps = {
 	isViewBidsOpen?: boolean;
 	setIsSetBuyNowOpen?: (state: boolean) => void;
 	isSetBuyNowOpen?: boolean;
-};
-
-const wrapFiat = (number: number) => {
-	return '$' + toFiat(number);
 };
 
 const Actions = ({
@@ -166,22 +139,37 @@ const Actions = ({
 			isVisible: isSetBuyNow,
 			testId: TEST_ID.SET_BUY_NOW,
 		},
-		[ACTION_TYPES.PlaceBid]: {
+		[ACTION_TYPES.Bid]: {
 			amount: highestBid ?? '-',
 			label: `${LABELS.HIGHEST_BID_LABEL} (${CURRENCY.WILD})`,
 			amountUsd: highestBidTextValue,
-			buttonComponent: (isTextButton?: boolean) => (
-				<BidButton
-					className={cx({ TextButton: isTextButton })}
-					isTextButton={isTextButton}
-					glow
-					onClick={onMakeBid}
-				>
-					{placeBidButtonTextValue}
-				</BidButton>
-			),
-			isVisible: isPlaceBid,
-			testId: TEST_ID.PLACE_BID,
+			buttonComponent: (isTextButton?: boolean) => {
+				return !isOwnedByUser ? (
+					<BidButton
+						className={cx({ TextButton: isTextButton })}
+						isTextButton={isTextButton}
+						glow
+						onClick={onMakeBid}
+					>
+						{placeBidButtonTextValue}
+					</BidButton>
+				) : (
+					<ViewBidsButton
+						bids={bidData}
+						domain={domain}
+						isTextButton={isTextButton}
+						highestBidAsWei={String(highestBidAsWei)}
+						refetch={refetch}
+						isLoading={isLoading}
+						className={cx({ TextButton: isTextButton })}
+						domainMetadata={domainMetadata}
+						setIsViewBidsOpen={setIsViewBidsOpen}
+						isViewBidsOpen={isViewBidsOpen}
+					/>
+				);
+			},
+			isVisible: isPlaceBid || isViewBids,
+			testId: TEST_ID.BID,
 		},
 		[ACTION_TYPES.YourBid]: {
 			amount: yourBid ? Number(formatEther(yourBid.amount)) : '-',
@@ -199,27 +187,6 @@ const Actions = ({
 			isVisible: isYourBids,
 			testId: TEST_ID.YOUR_BID,
 		},
-		[ACTION_TYPES.ViewBids]: {
-			amount: highestBid ?? '-',
-			label: `${LABELS.HIGHEST_BID_LABEL} (${CURRENCY.WILD})`,
-			amountUsd: highestBidTextValue,
-			buttonComponent: (isTextButton?: boolean) => (
-				<ViewBidsButton
-					bids={bidData}
-					domain={domain}
-					isTextButton={isTextButton}
-					highestBidAsWei={String(highestBidAsWei)}
-					refetch={refetch}
-					isLoading={isLoading}
-					className={cx({ TextButton: isTextButton })}
-					domainMetadata={domainMetadata}
-					setIsViewBidsOpen={setIsViewBidsOpen}
-					isViewBidsOpen={isViewBidsOpen}
-				/>
-			),
-			isVisible: isViewBids,
-			testId: TEST_ID.VIEW_BIDS,
-		},
 	};
 
 	/**
@@ -228,13 +195,13 @@ const Actions = ({
 	 */
 	const ordered = isOwnedByUser
 		? [
-				actions[ACTION_TYPES.ViewBids],
+				actions[ACTION_TYPES.Bid],
 				actions[ACTION_TYPES.BuyNow],
 				actions[ACTION_TYPES.SetBuyNow],
 		  ]
 		: [
 				actions[ACTION_TYPES.BuyNow],
-				actions[ACTION_TYPES.PlaceBid],
+				actions[ACTION_TYPES.Bid],
 				actions[ACTION_TYPES.YourBid],
 		  ];
 
