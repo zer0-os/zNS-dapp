@@ -15,9 +15,12 @@ import { toFiat } from 'lib/currency';
 // Styles
 import classNames from 'classnames';
 import genericStyles from '../Container.module.scss';
+import { useNavbar } from 'lib/hooks/useNavbar';
+import { useDidMount } from 'lib/hooks/useDidMount';
 
 const DAOList: React.FC = () => {
 	const { instance: sdk } = useZdaoSdk();
+	const { setNavbarTitle } = useNavbar();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [daoZnas, setDaoZnas] = useState<string[] | undefined>();
@@ -46,6 +49,10 @@ const DAOList: React.FC = () => {
 			isMounted = false;
 		};
 	}, [sdk]);
+
+	useDidMount(() => {
+		setNavbarTitle('DAOs');
+	});
 
 	return (
 		<div

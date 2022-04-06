@@ -29,6 +29,7 @@ type ArtworkProps = {
 	style?: React.CSSProperties;
 	subtext?: string;
 	shouldUseCloudinary?: boolean;
+	shouldHideRoot?: boolean;
 };
 
 const cx = classNames.bind(styles);
@@ -46,12 +47,15 @@ const Artwork: React.FC<ArtworkProps> = ({
 	style,
 	subtext,
 	shouldUseCloudinary,
+	shouldHideRoot,
 }) => {
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
 	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
+
+	const root = shouldHideRoot ? '' : 'wilder.';
 
 	useEffect(() => {
 		// Get metadata
@@ -73,10 +77,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 		}
 
 		// Truncate
-		if (domain && ('wilder.' + domain).length > 30) {
+		if (domain && (root + domain).length > 30) {
 			const split = domain.split('.');
 			if (isMounted.current === true) {
-				setTruncatedDomain('wilder...' + split[split.length - 1]);
+				setTruncatedDomain(root + split[split.length - 1]);
 			}
 		} else {
 			if (isMounted.current === true) {
@@ -158,7 +162,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && domain && (
 								<span className={styles.Domain}>
-									{truncatedDomain || 'wilder.' + domain}
+									{truncatedDomain || root + domain}
 								</span>
 							)}
 							{subtext && !domain && (
@@ -167,7 +171,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 							{!disableInteraction && domain && (
 								<Link
 									className={styles.Domain}
-									to={domain.split('wilder.')[1]}
+									to={domain.split(root)[1]}
 									target="_blank"
 									rel="noreferrer"
 								>

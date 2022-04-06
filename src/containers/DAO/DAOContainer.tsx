@@ -31,7 +31,6 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 	style,
 }) => {
 	const { redirect } = useRedirect();
-	const { setNavbarTitle } = useNavbar();
 	const { zna } = useCurrentDao();
 	const { instance: sdk } = useZdaoSdk();
 
@@ -53,8 +52,6 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 			console.error(e);
 		}
 	}, [sdk, zna]);
-
-	useDidMount(setNavbarTitle);
 
 	return (
 		<Switch>

@@ -4,7 +4,7 @@ import { NETWORK_TYPES } from 'lib/network';
 export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 	[NETWORK_TYPES.MAINNET]: [
 		{
-			zNA: 'dao',
+			zNA: 'wilder',
 			title: 'Wilder DAO',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
 			network: 1, // for Mainnet
@@ -12,7 +12,7 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 			votingToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
 		},
 		{
-			zNA: 'wheels',
+			zNA: 'wilder.wheels',
 			title: 'Wilder Wheels DAO',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
 			network: 1, // for Mainnet

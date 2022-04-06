@@ -31,6 +31,8 @@ import defaultDaoIcon from 'assets/default_dao.png';
 import styles from './DAOPage.module.scss';
 import genericStyles from '../Container.module.scss';
 import classNames from 'classnames/bind';
+import { useNavbar } from 'lib/hooks/useNavbar';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 const cx = classNames.bind(genericStyles);
 
 const MILLIFY_THRESHOLD = 1000000;
@@ -42,6 +44,7 @@ const toDaoPage = (zna: string) => (route: ROUTES) =>
 const DAOPage: React.FC = () => {
 	const { pathname } = useLocation();
 	const { path } = useRouteMatch();
+	const { setNavbarTitle } = useNavbar();
 
 	const { dao, isLoading, zna } = useCurrentDao();
 	const { transactions, isLoading: isLoadingTransactions } =
@@ -51,6 +54,14 @@ const DAOPage: React.FC = () => {
 	const daoData = dao;
 
 	const to = toDaoPage(zna);
+
+	useUpdateEffect(() => {
+		if (dao) {
+			setNavbarTitle('DAOs - ' + dao.title);
+		} else {
+			setNavbarTitle('DAOs');
+		}
+	}, [dao]);
 
 	const Loading = () => (
 		<LoadingIndicator
