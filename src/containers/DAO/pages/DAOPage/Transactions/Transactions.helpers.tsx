@@ -68,9 +68,9 @@ export const toHistoryItem = (
 		case AssetType.ERC721:
 			typed = transaction.asset as unknown as ERC721Transfer;
 			assetString =
-				typed.tokenSymbol ??
-				typed.tokenName ??
-				truncateWalletAddress(typed.tokenAddress);
+				(typed.tokenSymbol ??
+					typed.tokenName ??
+					truncateWalletAddress(typed.tokenAddress)) + ' (NFT)';
 			image = erc721Icon;
 			break;
 		case AssetType.ERC20:
