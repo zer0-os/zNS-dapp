@@ -26,6 +26,7 @@ import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
+import { ROUTES } from 'constants/routes';
 
 //- Asset Imports
 import backgroundImage from 'assets/background.jpg';
@@ -33,9 +34,9 @@ import backgroundImage from 'assets/background.jpg';
 //- Page Imports
 import { ZNS, Staking } from 'pages';
 import PageContainer from 'containers/PageContainer';
+import DAO from 'pages/DAO/DAO';
 import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
 
-// Web3 library to query
 function getLibrary(provider: any): Web3Provider {
 	const library = new Web3Provider(provider);
 	library.pollingInterval = 12000;
@@ -68,8 +69,9 @@ function App() {
 				<Switch>
 					<CurrentDomainProvider>
 						<PageContainer>
-							<Route path="/market" component={ZNS} />
-							<Route path="/staking" component={Staking} />
+							<Route path={ROUTES.MARKET} component={ZNS} />
+							<Route path={ROUTES.STAKING} component={Staking} />
+							<Route path={ROUTES.ZDAO} component={DAO} />
 							<Route exact path="/">
 								<Redirect to="/market" />
 							</Route>
