@@ -67,7 +67,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 		return (
 			<NFTMedia
 				className={styles.NFT}
-				ipfsUrl={imageUri ? imageUri : ''}
+				ipfsUrl={imageUri ?? ''}
 				style={{ height: hasAspectRatio ? 'auto' : 348 }}
 				size="medium"
 				alt={`NFT preview for ${name}`}
