@@ -4,7 +4,6 @@ import SideBarStyles from './SideBar.module.scss';
 
 import marketIcon from './assets/icon_market.svg';
 import stakingIcon from './assets/icon_staking.svg';
-import daoIcon from './assets/icon_dao.svg';
 import { useHistory } from 'react-router-dom';
 
 const SideBar: FC = () => {
@@ -30,21 +29,6 @@ const SideBar: FC = () => {
 						</div>
 						{/* TODO: Fix overlaying issue with Name */}
 						<div className={SideBarStyles.Name}>Market</div>
-					</div>
-					<div
-						className={SideBarStyles.Action}
-						key="dao"
-						onClick={() => history.push('/dao')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/dao') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="staking icon" src={daoIcon} />
-						</div>
-						<div className={SideBarStyles.Name}>DAOs</div>
 					</div>
 					<div
 						className={SideBarStyles.Action}

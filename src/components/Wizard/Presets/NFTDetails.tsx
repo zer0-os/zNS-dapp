@@ -4,18 +4,9 @@ import styles from './NFTDetails.module.scss';
 //- Library Imports
 import classNames from 'classnames';
 import { truncateDomain } from 'lib/utils';
-import { DomainBidData } from 'lib/utils/bids';
-
-//- Constants Imports
-import { LABELS } from 'constants/labels';
 
 //- Component Imports
-import {
-	Detail as DetailComponent,
-	Member,
-	NFTMedia,
-	TextButton,
-} from 'components';
+import { Detail as DetailComponent, Member, NFTMedia } from 'components';
 
 const maxCharacterLength = 28;
 
@@ -31,9 +22,6 @@ type NFTDetailsProps = {
 	domain: string;
 	title: string;
 	otherDetails?: Detail[];
-	hasViewAllBids?: boolean;
-	bidData?: DomainBidData | undefined;
-	setIsModalOpen?: (state: boolean) => void;
 };
 
 const NFTDetails = ({
@@ -43,21 +31,7 @@ const NFTDetails = ({
 	domain,
 	title,
 	otherDetails,
-	hasViewAllBids = false,
-	bidData,
-	setIsModalOpen,
 }: NFTDetailsProps) => {
-	///////////////
-	// Functions //
-	///////////////
-
-	// Conditionally set "all bids modal" state
-	const showAllBidsModal = () => {
-		if (bidData?.bids.length && setIsModalOpen) {
-			setIsModalOpen(true);
-		}
-	};
-
 	// Truncate domain
 	const formattedDomain = truncateDomain(domain, maxCharacterLength);
 	return (
@@ -83,18 +57,6 @@ const NFTDetails = ({
 						subtext={detail.name}
 					/>
 				))}
-				{hasViewAllBids && (
-					<TextButton
-						className={styles.ViewAll}
-						style={{
-							opacity: bidData?.bids.length ? 1 : 0.5,
-							cursor: bidData?.bids.length ? 'pointer' : 'default',
-						}}
-						onClick={showAllBidsModal}
-					>
-						{LABELS.VIEW_ALL_BIDS}
-					</TextButton>
-				)}
 			</div>
 		</div>
 	);

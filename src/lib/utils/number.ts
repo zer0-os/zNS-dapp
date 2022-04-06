@@ -2,11 +2,14 @@
 import { CURRENCY } from 'constants/currency';
 
 //- Lib Imports
-import { BigNumber, ethers } from 'ethers';
-import jsBigDecimal from 'js-big-decimal';
+import { ethers } from 'ethers';
 
-export const formatNumber = (number: number | string) => {
-	return Number(number).toLocaleString();
+export const formatNumber = (number: number) => {
+	// return millify(number, {
+	// 	precision: 2,
+	// 	lowercase: false,
+	// });
+	return number.toLocaleString();
 };
 
 export const formatEthers = (number: string) => {
@@ -29,22 +32,3 @@ export const formatBidAmount = (bidAmount?: string) =>
 	bidAmount
 		? ethers.utils.formatEther(bidAmount).toString() + ` ${CURRENCY.WILD}`
 		: '';
-
-/**
- * Formats a big number to something readable.
- * e.g. 1000000 -> 1,000,000
- * @param number to format
- * @returns formatted string
- */
-export const formatBigNumber = (
-	number: BigNumber | string | number,
-): string => {
-	try {
-		return jsBigDecimal
-			.getPrettyValue(number.toString(), undefined, undefined)
-			.replace(/\.0+$/, '');
-	} catch (e) {
-		console.error(e);
-		throw new Error('Attempted to prettify invalid number');
-	}
-};

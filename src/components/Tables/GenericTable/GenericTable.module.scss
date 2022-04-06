@@ -41,7 +41,7 @@
 .Table thead th {
 	font-size: 14px;
 	font-weight: 700;
-	color: var(--color-grey-lighter-2);
+	color: var(--color-primary-lighter-3);
 }
 
 .Table tbody tr td:first-of-type {
@@ -127,7 +127,19 @@
 /* Loading Styles */
 
 .Loading {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+
 	padding: 32px 0;
+
+	font-weight: 700;
+	font-size: 14px;
+}
+
+.Loading div {
+	margin-right: 24px;
 }
 
 .LoadMore {
