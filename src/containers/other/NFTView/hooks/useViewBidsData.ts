@@ -12,13 +12,16 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import { sortBidsByTime } from 'lib/utils/bids';
 
-interface UseNftDataReturn {
+//- Constants Imports
+import { MESSAGES } from '../NFTView.constants';
+
+interface UseViewBidsDataReturn {
 	isBidDataLoading: boolean | undefined;
 	allBids: Bid[] | undefined;
 	domainData: Domain | undefined;
 }
 
-export const useViewBidsData = (): UseNftDataReturn => {
+export const useViewBidsData = (): UseViewBidsDataReturn => {
 	//- Web3 Wallet Data
 	const { account } = useWeb3React<Web3Provider>();
 
@@ -77,7 +80,7 @@ export const useViewBidsData = (): UseNftDataReturn => {
 				isRoot: domainData.isRoot,
 			});
 		} catch (e) {
-			console.error('Failed to retrieve bid data', e);
+			console.error(MESSAGES.CONSOLE_ERROR, e);
 		} finally {
 			setIsBidDataLoading(false);
 		}

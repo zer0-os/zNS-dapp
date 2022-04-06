@@ -24,7 +24,7 @@ import useCurrency from 'lib/hooks/useCurrency';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 //- Hooks
-import { useNftData, useViewBidsData } from './hooks';
+import { useNftData, useViewBidsData, useAsset } from './hooks';
 
 //- Constants Imports
 import { NFT_MORE_ACTIONS_TITLE, NFT_MORE_ACTIONS } from './NFTView.constants';
@@ -64,13 +64,14 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		yourBid,
 		getHistory,
 		getPriceData,
-		downloadAsset,
-		shareAsset,
 		refetch,
 	} = useNftData();
 
 	//- View Bids Hook Data
 	const { isBidDataLoading, allBids, domainData } = useViewBidsData();
+
+	//- Asset Hook Data
+	const { downloadAsset, shareAsset } = useAsset();
 
 	//- Memoized data
 	const { isBiddable, isOwnedByYou, assetUrl, nftMoreOptions } = useMemo(() => {

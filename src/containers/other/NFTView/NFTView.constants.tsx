@@ -34,6 +34,11 @@ export enum NFT_MORE_ACTIONS_TITLE {
 	MY_DOMAIN_SETTINGS = 'My Domain Settings',
 }
 
+export enum MESSAGES {
+	DOWNLOAD = 'Download starting',
+	CONSOLE_ERROR = 'Failed to retrieve bid data',
+}
+
 export const NFT_MORE_ACTIONS = [
 	{
 		icon: dollarSignIcon,
