@@ -4,7 +4,7 @@ import React from 'react';
 import { Artwork } from 'components';
 
 // Lib
-import { formatTotalAmountOfTokens } from './AssetsTable.helpers';
+import { formatTotalAmountOfTokens, isZnsToken } from './AssetsTable.helpers';
 
 // Styles + assets
 import classNames from 'classnames';
@@ -44,6 +44,7 @@ const AssetsTableRow: React.FC<AssetsTableRowProps> = ({
 					image={image}
 					disableAnimation
 					disableInteraction={true}
+					shouldUseCloudinary={isZnsToken(subtext)}
 				/>
 			</td>
 

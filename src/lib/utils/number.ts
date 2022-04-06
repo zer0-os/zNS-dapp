@@ -2,34 +2,16 @@
 import { CURRENCY } from 'constants/currency';
 
 //- Lib Imports
-import { BigNumber } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import jsBigDecimal from 'js-big-decimal';
-import millify from 'millify';
 
-export const formatNumber = (
-	number: number | string,
-	shouldMillify?: boolean,
-) => {
-	try {
-		if (shouldMillify) {
-			return millify(Number(number), { precision: 3 });
-		}
-		if (number < 0.01) {
-			return formatBigNumber(number);
-		} else {
-			return Number(number).toLocaleString();
-		}
-	} catch (e) {
-		console.error(e);
-		throw new Error(`Failed to convert ${typeof number}: ${number}`);
-	}
+export const formatNumber = (number: number | string) => {
+	return Number(number).toLocaleString();
 };
 
-/**
- * This should be deprecated, as it just calls formatBigNumber now
- */
 export const formatEthers = (number: string) => {
-	return formatBigNumber(number);
+	const asNumber = Number(ethers.utils.formatEther(number));
+	return formatNumber(asNumber);
 };
 
 export const formatByDecimalPlace = (
@@ -44,7 +26,9 @@ export const formatByDecimalPlace = (
 
 // Format bid amount in WILD
 export const formatBidAmount = (bidAmount?: string) =>
-	bidAmount ? formatBigNumber(bidAmount).toString() + ` ${CURRENCY.WILD}` : '';
+	bidAmount
+		? ethers.utils.formatEther(bidAmount).toString() + ` ${CURRENCY.WILD}`
+		: '';
 
 /**
  * Formats a big number to something readable.

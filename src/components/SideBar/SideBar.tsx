@@ -33,6 +33,21 @@ const SideBar: FC = () => {
 					</div>
 					<div
 						className={SideBarStyles.Action}
+						key="dao"
+						onClick={() => history.push('/dao')}
+					>
+						<div
+							className={`${SideBarStyles.Hype} ${
+								history.location.pathname.indexOf('/dao') > -1 &&
+								SideBarStyles.Selected
+							}`}
+						>
+							<img alt="staking icon" src={daoIcon} />
+						</div>
+						<div className={SideBarStyles.Name}>DAOs</div>
+					</div>
+					<div
+						className={SideBarStyles.Action}
 						key="staking"
 						onClick={() => history.push('/staking')}
 					>
@@ -45,21 +60,6 @@ const SideBar: FC = () => {
 							<img alt="staking icon" src={stakingIcon} />
 						</div>
 						<div className={SideBarStyles.Name}>Staking</div>
-					</div>
-					<div
-						className={SideBarStyles.Action}
-						key="dao"
-						onClick={() => history.push('/dao')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/dao') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="staking icon" src={daoIcon} />
-						</div>
-						<div className={SideBarStyles.Name}>DAO</div>
 					</div>
 				</div>
 			</div>

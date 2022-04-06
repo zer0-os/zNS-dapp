@@ -17,7 +17,7 @@ import { ROUTES } from 'constants/routes';
 // Styles
 import styles from './DAOTableRow.module.scss';
 
-import defaultDaoIcon from 'assets/default_dao.png';
+import defaultDaoIcon from 'assets/default_dao.svg';
 
 // Types
 import { DAOTableDataItem } from './DAOTable.types';
@@ -61,9 +61,10 @@ const DAOTableRow: React.FC<DAOTableRowProps> = ({ data }) => {
 					id={dao.id}
 					domain={zna}
 					name={title}
-					image={dao.avatar ?? defaultDaoIcon}
+					image={defaultDaoIcon}
 					disableInteraction
 					disableAnimation
+					shouldHideRoot
 				/>
 			</td>
 			<td className={styles.Right}>

@@ -2,24 +2,27 @@
 	cursor: pointer;
 	min-width: 280px;
 	border-radius: var(--box-radius);
-	background: rgba(0, 0, 0, 0.2);
 	overflow: hidden;
+	background-color: var(--color-background-alt);
 
 	@media only screen and (max-width: 414px) {
 		min-width: unset;
 	}
 
-	h5 {
+	.Header {
 		margin-bottom: 1px;
 		color: white;
 		font-size: 18px;
 		font-weight: 700;
 	}
 
+	.Subheader {
+		color: #bfbfbf;
+	}
+
 	.Body {
 		position: relative;
 		padding-top: 100%;
-		background: rgba(0, 0, 0, 0.3);
 	}
 
 	.Image {
@@ -38,6 +41,5 @@
 
 	.Footer {
 		padding: 16px;
-		background-color: var(--color-background-alt);
 	}
 }
