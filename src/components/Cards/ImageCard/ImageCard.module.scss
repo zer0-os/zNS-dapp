@@ -2,8 +2,8 @@
 	cursor: pointer;
 	min-width: 280px;
 	border-radius: var(--box-radius);
-	background: rgba(0, 0, 0, 0.2);
 	overflow: hidden;
+	background-color: var(--color-background-alt);
 
 	@media only screen and (max-width: 414px) {
 		min-width: unset;
@@ -19,7 +19,6 @@
 	.Body {
 		position: relative;
 		padding-top: 100%;
-		background: rgba(0, 0, 0, 0.3);
 	}
 
 	.Image {
@@ -38,6 +37,5 @@
 
 	.Footer {
 		padding: 16px;
-		background-color: var(--color-background-alt);
 	}
 }
