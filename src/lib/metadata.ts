@@ -1,5 +1,8 @@
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
+import { getHashFromIPFSUrl } from './ipfs';
 import { Metadata } from './types';
+
+import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 
 interface MetadataCache {
 	[url: string]: Metadata | undefined;
@@ -16,9 +19,8 @@ export async function getMetadata(
 		}
 
 		let requestUrl = metadataUrl;
-		if (metadataUrl.startsWith('ipfs://')) {
-			requestUrl = 'https://ipfs.fleek.co/ipfs/' + metadataUrl.slice(7);
-		}
+		const hash = getHashFromIPFSUrl(metadataUrl);
+		requestUrl = DEFAULT_IPFS_GATEWAY + hash;
 
 		const response = await fetch(requestUrl);
 		const data = await response.json();
