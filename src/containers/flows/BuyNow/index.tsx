@@ -15,7 +15,6 @@ import { Data } from './BuyNow';
 import { useZnsContracts } from 'lib/contracts';
 import { ERC20 } from 'types';
 import { ethers } from 'ethers';
-import useMetadata from 'lib/hooks/useMetadata';
 
 export type BuyNowContainerProps = {
 	domainId: string;
@@ -30,7 +29,6 @@ const BuyNowContainer = ({
 }: BuyNowContainerProps) => {
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
-	const { getMetadata } = useMetadata();
 	const { account, library } = useWeb3React();
 	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
@@ -145,11 +143,11 @@ const BuyNowContainer = ({
 			console.warn('<BuyNow> Failed to Get Data', e);
 		}
 		try {
-			const [domain, balance] = await Promise.all([
+			const [domain, metadata, balance] = await Promise.all([
 				sdk.getDomainById(domainId),
+				sdk.getDomainMetadata(domainId, library.getSigner()),
 				wildContract.balanceOf(account),
 			]);
-			const metadata = await getMetadata(domain.metadataUri);
 			if (domain && metadata && buyNowPrice && balance) {
 				setData({
 					id: domainId,

@@ -27,9 +27,6 @@ type ArtworkProps = {
 	name?: string;
 	pending?: boolean;
 	style?: React.CSSProperties;
-	subtext?: string;
-	shouldUseCloudinary?: boolean;
-	shouldHideRoot?: boolean;
 };
 
 const cx = classNames.bind(styles);
@@ -45,17 +42,12 @@ const Artwork: React.FC<ArtworkProps> = ({
 	name,
 	pending,
 	style,
-	subtext,
-	shouldUseCloudinary,
-	shouldHideRoot,
 }) => {
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
 	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
-
-	const root = shouldHideRoot ? '' : 'wilder.';
 
 	useEffect(() => {
 		// Get metadata
@@ -77,10 +69,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 		}
 
 		// Truncate
-		if (domain && (root + domain).length > 30) {
+		if (domain && ('wilder.' + domain).length > 30) {
 			const split = domain.split('.');
 			if (isMounted.current === true) {
-				setTruncatedDomain(root + split[split.length - 1]);
+				setTruncatedDomain('wilder...' + split[split.length - 1]);
 			}
 		} else {
 			if (isMounted.current === true) {
@@ -91,11 +83,13 @@ const Artwork: React.FC<ArtworkProps> = ({
 		return () => {
 			isMounted.current = false;
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [domain, metadataUrl]);
 
 	const artwork = React.useMemo(() => {
-		if (shouldUseCloudinary || metadata) {
+		if (image) {
+			return <Image alt="pool icon" src={image} />;
+		}
+		if (metadata) {
 			return (
 				<NFTMedia
 					disableLightbox
@@ -105,14 +99,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 					size="tiny"
 					className={`${styles.Image} border-rounded`}
 					alt="NFT Preview"
-					ipfsUrl={image ?? metadata?.image_full ?? metadata?.image ?? ''}
+					ipfsUrl={metadata?.image_full || metadata?.image || ''}
 				/>
 			);
 		}
-		if (image) {
-			return <Image alt="pool icon" src={image} />;
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [image, metadata]);
 
 	return (
@@ -138,10 +128,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 							{(animatedStyles) => (
 								<animated.div style={animatedStyles}>
 									<span
-										style={{
-											cursor:
-												pending || disableInteraction ? 'default' : 'pointer',
-										}}
+										style={{ cursor: pending ? 'default' : 'pointer' }}
 										className={styles.Title}
 									>
 										{metadata?.title || name}
@@ -152,9 +139,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 					)}
 					{!shouldAnimate && metadata?.title && (
 						<span
-							style={{
-								cursor: pending || disableInteraction ? 'default' : 'pointer',
-							}}
+							style={{ cursor: pending ? 'default' : 'pointer' }}
 							className={styles.Title}
 						>
 							{metadata?.title || name}
@@ -164,16 +149,13 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && domain && (
 								<span className={styles.Domain}>
-									{truncatedDomain || root + domain}
+									{truncatedDomain || 'wilder.' + domain}
 								</span>
-							)}
-							{subtext && !domain && (
-								<span className={styles.Domain}>{subtext}</span>
 							)}
 							{!disableInteraction && domain && (
 								<Link
 									className={styles.Domain}
-									to={domain.split(root)[1]}
+									to={domain.split('wilder.')[1]}
 									target="_blank"
 									rel="noreferrer"
 								>

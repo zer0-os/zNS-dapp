@@ -94,7 +94,7 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 		<>
 			{biddingOn !== undefined && (
 				<Overlay onClose={close} open={biddingOn !== undefined}>
-					<MakeABid domain={biddingOn!} onBid={bidPlaced} onClose={close} />
+					<MakeABid domain={biddingOn!} onBid={bidPlaced} />
 				</Overlay>
 			)}
 			<GenericTable

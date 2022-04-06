@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import styles from './Image.module.scss';
 // import placeholder from './'
@@ -18,15 +18,17 @@ const Image = (props: any) => {
 		}
 	};
 
-	const load = () => {
-		setLoaded(true);
-	};
-
+	const load = () => setLoaded(true);
 	const err = (e: any) => {
 		if (props.src) {
 			setTryVideo(true);
 		}
 	};
+
+	useEffect(() => {
+		setTryVideo(false);
+		setLoaded(false);
+	}, [props.src]);
 
 	return (
 		<div

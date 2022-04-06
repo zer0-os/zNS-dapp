@@ -16,7 +16,6 @@ import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useWeb3React } from '@web3-react/core';
 import { Bid } from '@zero-tech/zauction-sdk';
-import { useZnsSdk } from 'lib/hooks/sdk';
 
 //- Types Imports
 import { StepContent, Step } from './AcceptBid.types';
@@ -34,6 +33,7 @@ import {
 
 //- Styles Imports
 import styles from './AcceptBid.module.scss';
+import { useZnsSdk } from 'lib/hooks/sdk';
 
 type AcceptBidProps = {
 	acceptingBid: Bid | undefined;
