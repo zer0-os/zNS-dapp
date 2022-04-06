@@ -91,6 +91,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		return () => {
 			isMounted.current = false;
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [domain, metadataUrl]);
 
 	const artwork = React.useMemo(() => {
@@ -111,6 +112,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		if (image) {
 			return <Image alt="pool icon" src={image} />;
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [image, metadata]);
 
 	return (

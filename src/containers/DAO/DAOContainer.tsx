@@ -10,8 +10,6 @@ import DAOPage from './pages/DAOPage/DAOPage';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import { useZdaoSdk } from 'lib/dao/providers/ZdaoSdkProvider';
-import { useNavbar } from 'lib/hooks/useNavbar';
-import { useDidMount } from 'lib/hooks/useDidMount';
 
 // Lib
 import { ROUTES } from 'constants/routes';
