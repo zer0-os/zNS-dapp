@@ -7,8 +7,6 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wa
 
 //- Component Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
-import { Overlay } from 'components';
-import MakeABid from 'containers/flows/MakeABid/MakeABid';
 import {
 	Actions,
 	NFT,
@@ -26,6 +24,9 @@ import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 //- Hooks
 import { useNftData, useViewBidsData, useAsset } from './hooks';
 
+//- Modal Provider Imports
+import { NFTViewModalProvider } from './providers/NFTViewModalProvider/NFTViewModalProvider';
+
 //- Constants Imports
 import { NFT_MORE_ACTIONS_TITLE, NFT_MORE_ACTIONS } from './NFTView.constants';
 
@@ -39,14 +40,13 @@ type NFTViewProps = {
 
 const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	//- Page State
-	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
 	const [isDomainSettingsOpen, setIsDomainSettingsOpen] =
 		useState<Boolean>(false);
 	const [isViewBidsOpen, setIsViewBidsOpen] = useState<boolean>(false);
 	const [isSetBuyNowOpen, setIsSetBuyNowOpen] = useState<boolean>(false);
 
 	//- Web3 Wallet Data
-	const { account, active, chainId } = useWeb3React<Web3Provider>();
+	const { account, chainId } = useWeb3React<Web3Provider>();
 
 	//- Current Domain Data
 	const { domainId, domain: znsDomain, domainMetadata } = useCurrentDomain();
@@ -68,7 +68,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	} = useNftData();
 
 	//- View Bids Hook Data
-	const { isBidDataLoading, allBids, domainData } = useViewBidsData();
+	const { isBidDataLoading, allBids, viewBidsDomainData } = useViewBidsData();
 
 	//- Asset Hook Data
 	const { downloadAsset, shareAsset } = useAsset();
@@ -95,24 +95,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	///////////////
 	// Functions //
 	///////////////
-
-	//- Callback functions
-	const onOpenBidOverlay = useCallback(() => {
-		if (!znsDomain || isOwnedByYou || !active) {
-			return;
-		}
-
-		setIsBidOverlayOpen(true);
-	}, [znsDomain, active, isOwnedByYou]);
-
-	// Close Make A Bid
-	const onCloseBidOverlay = () => setIsBidOverlayOpen(false);
-	// Close Domain Settings
 	const onCloseDomainSettingsOverlay = () => setIsDomainSettingsOpen(false);
 	const onBid = useCallback(async () => {
 		getPriceData();
 		getHistory();
-		onCloseBidOverlay();
 	}, [getHistory, getPriceData]);
 
 	// Dropdown Option Select
@@ -133,75 +119,67 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	////////////
 
 	return (
-		<div className={styles.NFTView}>
-			<NFT
-				title={domainMetadata?.title as string}
-				owner={znsDomain?.owner.id as string}
-				creator={znsDomain?.minter.id as string}
-				onDownload={downloadAsset}
-				onShare={shareAsset}
-				assetUrl={assetUrl as string}
-				description={znsDomain?.description as string}
-				options={nftMoreOptions}
-				onSelectOption={onSelectNFTMoreOption}
-			/>
-
-			<Actions
-				domainId={znsDomain?.id}
-				highestBid={highestBid}
-				buyNowPrice={buyNowPrice}
-				yourBid={yourBid}
-				onMakeBid={onOpenBidOverlay}
-				isOwnedByUser={isOwnedByYou}
-				wildPriceUsd={wildPriceUsd}
-				refetch={refetch}
-				isBiddable={isBiddable}
-				bidData={allBids}
-				isLoading={isBidDataLoading}
-				domainMetadata={domainMetadata}
-				domain={domainData}
-				setIsViewBidsOpen={setIsViewBidsOpen}
-				isViewBidsOpen={isViewBidsOpen}
-				setIsSetBuyNowOpen={setIsSetBuyNowOpen}
-				isSetBuyNowOpen={isSetBuyNowOpen}
-			/>
-
-			<Stats
-				znsDomain={znsDomain}
-				wildPriceUsd={wildPriceUsd}
-				bids={bids}
-				isLoading={isHistoryLoading}
-			/>
-
-			<Attributes znsDomain={znsDomain} />
-
-			<TokenHashBoxes
-				domainId={domainId}
-				chainId={chainId}
-				znsDomain={znsDomain}
-			/>
-
-			<History isLoading={isHistoryLoading} history={history} />
-
-			{/* Make a Bid Modal */}
-			{isBidOverlayOpen && (
-				<Overlay onClose={onCloseBidOverlay} open={isBidOverlayOpen}>
-					<MakeABid
-						domain={znsDomain!}
-						onBid={onBid}
-						onClose={onCloseBidOverlay}
-					/>
-				</Overlay>
-			)}
-
-			{/* Domain Settings Modal */}
-			{isDomainSettingsOpen && (
-				<DomainSettings
-					domainId={domainId}
-					onClose={onCloseDomainSettingsOverlay}
+		<NFTViewModalProvider>
+			<div className={styles.NFTView}>
+				<NFT
+					title={domainMetadata?.title as string}
+					owner={znsDomain?.owner.id as string}
+					creator={znsDomain?.minter.id as string}
+					onDownload={downloadAsset}
+					onShare={shareAsset}
+					assetUrl={assetUrl as string}
+					description={znsDomain?.description as string}
+					options={nftMoreOptions}
+					onSelectOption={onSelectNFTMoreOption}
 				/>
-			)}
-		</div>
+
+				<Actions
+					domainId={znsDomain?.id}
+					domainMetadata={domainMetadata}
+					makeABidDomainData={znsDomain}
+					viewBidsDomainData={viewBidsDomainData}
+					highestBid={highestBid}
+					buyNowPrice={buyNowPrice}
+					onMakeBid={onBid}
+					yourBid={yourBid}
+					isOwnedByUser={isOwnedByYou}
+					wildPriceUsd={wildPriceUsd}
+					refetch={refetch}
+					isBiddable={isBiddable}
+					bidData={allBids}
+					isLoading={isBidDataLoading}
+					setIsViewBidsOpen={setIsViewBidsOpen}
+					isViewBidsOpen={isViewBidsOpen}
+					setIsSetBuyNowOpen={setIsSetBuyNowOpen}
+					isSetBuyNowOpen={isSetBuyNowOpen}
+				/>
+
+				<Stats
+					znsDomain={znsDomain}
+					wildPriceUsd={wildPriceUsd}
+					bids={bids}
+					isLoading={isHistoryLoading}
+				/>
+
+				<Attributes znsDomain={znsDomain} />
+
+				<TokenHashBoxes
+					domainId={domainId}
+					chainId={chainId}
+					znsDomain={znsDomain}
+				/>
+
+				<History isLoading={isHistoryLoading} history={history} />
+
+				{/* Domain Settings Modal */}
+				{isDomainSettingsOpen && (
+					<DomainSettings
+						domainId={domainId}
+						onClose={onCloseDomainSettingsOverlay}
+					/>
+				)}
+			</div>
+		</NFTViewModalProvider>
 	);
 };
 

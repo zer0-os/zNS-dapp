@@ -11,7 +11,7 @@ import {
 // Library
 import { formatEther } from '@ethersproject/units';
 import { Bid } from '@zero-tech/zns-sdk/lib/zAuction';
-import { Maybe, Metadata } from 'lib/types';
+import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 
@@ -23,6 +23,12 @@ import { LABELS } from 'constants/labels';
 import { CURRENCY } from 'constants/currency';
 import { TEST_ID, wrapFiat } from './Actions.constants';
 
+//- NFTView Hooks Imports
+import { useNFTViewModal } from '../../hooks';
+
+//- Modal Provider Imports
+import { NFTViewModalType } from '../../providers/NFTViewModalProvider/NFTViewModalProvider.types';
+
 // Styles
 import styles from './Actions.module.scss';
 import classNames from 'classnames/bind';
@@ -31,6 +37,9 @@ const cx = classNames.bind(styles);
 
 type ActionsProps = {
 	domainId?: string;
+	makeABidDomainData?: Maybe<DisplayParentDomain>;
+	viewBidsDomainData?: Domain;
+	domainMetadata?: Maybe<Metadata>;
 	buyNowPrice?: number;
 	highestBid?: number;
 	onMakeBid: () => void;
@@ -41,8 +50,7 @@ type ActionsProps = {
 	refetch: () => void;
 	bidData?: Bid[];
 	isLoading?: boolean;
-	domainMetadata?: Maybe<Metadata>;
-	domain?: Domain;
+
 	setIsViewBidsOpen?: (state: boolean) => void;
 	isViewBidsOpen?: boolean;
 	setIsSetBuyNowOpen?: (state: boolean) => void;
@@ -51,6 +59,9 @@ type ActionsProps = {
 
 const Actions = ({
 	domainId,
+	domainMetadata,
+	makeABidDomainData,
+	viewBidsDomainData,
 	buyNowPrice,
 	highestBid,
 	onMakeBid,
@@ -61,13 +72,14 @@ const Actions = ({
 	refetch,
 	bidData,
 	isLoading,
-	domainMetadata,
-	domain,
 	setIsViewBidsOpen,
 	isViewBidsOpen,
 	setIsSetBuyNowOpen,
 	isSetBuyNowOpen,
 }: ActionsProps) => {
+	//- Modal Provider
+	const { openModal, closeModal } = useNFTViewModal();
+
 	//- Condition helpers
 	const isBidData = bidData && bidData?.length > 0;
 	const isYourBids = !isOwnedByUser && Boolean(yourBid);
@@ -100,6 +112,27 @@ const Actions = ({
 		buyNowPrice && wildPriceUsd
 			? wrapFiat(buyNowPrice * wildPriceUsd)
 			: LABELS.NO_BUY_NOW;
+
+	///////////////
+	// Functions //
+	///////////////
+
+	const handleOnBid = () => {
+		onMakeBid();
+		closeModal();
+	};
+
+	// Open Make A Bid Modal
+	const openMakeABid = () => {
+		openModal({
+			modalType: NFTViewModalType.MAKE_A_BID,
+			contentProps: {
+				domain: makeABidDomainData!,
+				onBid: handleOnBid,
+				onClose: closeModal,
+			},
+		});
+	};
 
 	/**
 	 * This is a pretty messy structure - could be refactored moving forward
@@ -149,14 +182,14 @@ const Actions = ({
 						className={cx({ TextButton: isTextButton })}
 						isTextButton={isTextButton}
 						glow
-						onClick={onMakeBid}
+						onClick={openMakeABid}
 					>
 						{placeBidButtonTextValue}
 					</BidButton>
 				) : (
 					<ViewBidsButton
 						bids={bidData}
-						domain={domain}
+						domain={viewBidsDomainData}
 						isTextButton={isTextButton}
 						highestBidAsWei={String(highestBidAsWei)}
 						refetch={refetch}

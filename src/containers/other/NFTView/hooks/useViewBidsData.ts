@@ -18,7 +18,7 @@ import { MESSAGES } from '../NFTView.constants';
 interface UseViewBidsDataReturn {
 	isBidDataLoading: boolean | undefined;
 	allBids: Bid[] | undefined;
-	domainData: Domain | undefined;
+	viewBidsDomainData: Domain | undefined;
 }
 
 export const useViewBidsData = (): UseViewBidsDataReturn => {
@@ -37,7 +37,9 @@ export const useViewBidsData = (): UseViewBidsDataReturn => {
 	 */
 	const [isBidDataLoading, setIsBidDataLoading] = useState<boolean>(true);
 	const [allBids, setAllBids] = useState<Bid[] | undefined>();
-	const [domainData, setDomainData] = useState<Domain | undefined>();
+	const [viewBidsDomainData, setViewBidsDomainData] = useState<
+		Domain | undefined
+	>();
 
 	/**
 	 * Callback functions
@@ -52,7 +54,7 @@ export const useViewBidsData = (): UseViewBidsDataReturn => {
 
 		try {
 			setAllBids(undefined);
-			setDomainData(undefined);
+			setViewBidsDomainData(undefined);
 
 			// Get all relevant domain info
 			const [domainData, bidData] = await Promise.all([
@@ -67,7 +69,7 @@ export const useViewBidsData = (): UseViewBidsDataReturn => {
 			);
 
 			setAllBids(filteredBids);
-			setDomainData({
+			setViewBidsDomainData({
 				id: domainData.id,
 				name: domainData.name,
 				parentId: domainData.parentId,
@@ -100,7 +102,7 @@ export const useViewBidsData = (): UseViewBidsDataReturn => {
 	return {
 		isBidDataLoading,
 		allBids,
-		domainData,
+		viewBidsDomainData,
 	};
 };
 

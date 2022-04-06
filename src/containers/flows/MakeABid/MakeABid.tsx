@@ -44,7 +44,7 @@ import { ethers } from 'ethers';
 
 const maxCharacterLength = 28;
 
-type MakeABidProps = {
+export type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
 	onClose: () => void;
