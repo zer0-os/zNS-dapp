@@ -105,9 +105,53 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 				</li>
 			);
 
-		case DomainEventType.sale:
 		case DomainEventType.buyNow:
-			item = item as DomainSaleEvent | DomainBuyNowSaleEvent;
+			item = item as DomainSaleEvent;
+
+			return (
+				<li className={styles.Bid}>
+					<div>
+						<b>
+							<a
+								className="alt-link"
+								href={URLS.ETHERSCAN + item.buyer!}
+								target="_blank"
+								rel="noreferrer"
+							>
+								{truncateText(item.buyer!, 4)}
+							</a>
+						</b>{' '}
+						bought this NFT from{' '}
+						<b>
+							<a
+								className="alt-link"
+								href={URLS.ETHERSCAN + item.seller!}
+								target="_blank"
+								rel="noreferrer"
+							>
+								{truncateText(item.seller!, 4)}
+							</a>
+						</b>{' '}
+						{item.amount && (
+							<>
+								for{' '}
+								<b>
+									{Number(
+										ethers.utils.formatEther(item.amount!),
+									).toLocaleString()}{' '}
+									WILD
+								</b>
+							</>
+						)}
+					</div>
+					<div className={styles.From}>
+						<b>{moment(Number(item.timestamp) * 1000).fromNow()}</b>
+					</div>
+				</li>
+			);
+
+		case DomainEventType.sale:
+			item = item as DomainBuyNowSaleEvent;
 
 			return (
 				<li className={styles.Bid}>
