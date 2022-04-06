@@ -5,7 +5,7 @@ import { Detail } from 'components';
 import ImageCard from 'components/Cards/ImageCard/ImageCard';
 
 // Lib
-import { formatTotalAmountOfTokens, isZnsToken } from './AssetsTable.helpers';
+import { isZnsToken } from './AssetsTable.helpers';
 
 // Styles + assets
 import styles from './AssetsTableCard.module.scss';
@@ -40,13 +40,8 @@ const AssetsTableCard: React.FC<AssetsTableCardProps> = ({
 		>
 			<div className={styles.Details}>
 				<Detail
-					className={styles.Quantity}
-					text={formatTotalAmountOfTokens(data)}
-					subtext={'Quantity'}
-				/>
-				<Detail
 					className={styles.AmountInUSD}
-					text={amountInUSD}
+					text={<span className={styles.Amount}>{amountInUSD}</span>}
 					subtext={'Value (USD)'}
 				/>
 			</div>

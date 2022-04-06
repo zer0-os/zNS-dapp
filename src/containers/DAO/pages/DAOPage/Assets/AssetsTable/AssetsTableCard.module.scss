@@ -8,18 +8,16 @@
 	}
 
 	.Details {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: baseline;
 		margin-top: 1rem;
+		text-align: left;
 
-		> div:first-of-type {
-			text-align: left;
+		span:first-of-type {
+			font-weight: 700;
+			color: #bfbfbf;
 		}
 
-		> div:last-of-type {
-			text-align: right;
+		.Amount {
+			font-size: 18px;
 		}
 	}
 }
