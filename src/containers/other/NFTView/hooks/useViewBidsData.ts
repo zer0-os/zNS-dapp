@@ -16,8 +16,6 @@ interface UseNftDataReturn {
 	isBidDataLoading: boolean | undefined;
 	allBids: Bid[] | undefined;
 	domainData: Domain | undefined;
-	getViewBidsData: () => Promise<void>;
-	refetch: () => void;
 }
 
 export const useViewBidsData = (): UseNftDataReturn => {
@@ -86,13 +84,6 @@ export const useViewBidsData = (): UseNftDataReturn => {
 	}, [account, sdk, znsDomain]);
 
 	/**
-	 * Refreshes data for the current NFT
-	 */
-	const refetch = () => {
-		getViewBidsData();
-	};
-
-	/**
 	 * Life cycle
 	 *
 	 */
@@ -107,8 +98,6 @@ export const useViewBidsData = (): UseNftDataReturn => {
 		isBidDataLoading,
 		allBids,
 		domainData,
-		refetch,
-		getViewBidsData,
 	};
 };
 

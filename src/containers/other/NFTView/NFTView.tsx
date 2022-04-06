@@ -6,6 +6,7 @@ import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 
 //- Component Imports
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { Overlay } from 'components';
 import MakeABid from 'containers/flows/MakeABid/MakeABid';
 import {
@@ -23,10 +24,7 @@ import useCurrency from 'lib/hooks/useCurrency';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 //- Hooks
-import { useNftData } from './hooks';
-
-//- Type Imports
-import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
+import { useNftData, useViewBidsData } from './hooks';
 
 //- Constants Imports
 import { NFT_MORE_ACTIONS_TITLE, NFT_MORE_ACTIONS } from './NFTView.constants';
@@ -69,10 +67,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		downloadAsset,
 		shareAsset,
 		refetch,
-		allBids,
-		domainData,
-		isBidDataLoading,
 	} = useNftData();
+
+	//- View Bids Hook Data
+	const { isBidDataLoading, allBids, domainData } = useViewBidsData();
 
 	//- Memoized data
 	const { isBiddable, isOwnedByYou, assetUrl, nftMoreOptions } = useMemo(() => {

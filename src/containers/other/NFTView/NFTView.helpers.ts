@@ -1,9 +1,14 @@
+//- Library Imports
 import { ethers } from 'ethers';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { DomainEventType } from '@zero-tech/zns-sdk/lib/types';
 import { getHashFromIPFSUrl } from 'lib/ipfs';
 import config from 'config';
+
+//- Types Imports
 import { DomainEvents } from './NFTView.types';
+
+//- Constants Imports
 import {
 	NFT_ASSET_URLS,
 	NFT_ASSET_SHARE_KEYS,

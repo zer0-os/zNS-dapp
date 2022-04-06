@@ -12,7 +12,6 @@ import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { DomainEventType, DomainBidEvent } from '@zero-tech/zns-sdk/lib/types';
 import { Bid } from '@zero-tech/zauction-sdk';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
 
 //- Type Imports
 import { DomainEvents } from '../NFTView.types';
@@ -25,23 +24,18 @@ import {
 	sortBidsByAmount,
 	sortEventsByTimestamp,
 } from '../NFTView.helpers';
-import { sortBidsByTime } from 'lib/utils/bids';
 
 //- Hook level type definitions
 interface UseNftDataReturn {
 	isHistoryLoading: boolean;
 	isPriceDataLoading: boolean | undefined;
-	isBidDataLoading: boolean | undefined;
 	history: DomainEvents[];
 	bids: DomainBidEvent[];
 	highestBid: number | undefined;
 	buyNowPrice: number | undefined;
 	yourBid: Bid | undefined;
-	allBids: Bid[] | undefined;
-	domainData: Domain | undefined;
 	getHistory: () => Promise<void>;
 	getPriceData: () => Promise<void>;
-	getViewBidsData: () => Promise<void>;
 	downloadAsset: () => Promise<void>;
 	shareAsset: () => Promise<void>;
 	refetch: () => void;
@@ -65,9 +59,6 @@ export const useNftData = (): UseNftDataReturn => {
 	 *
 	 */
 	const [isHistoryLoading, setIsHistoryLoading] = useState<boolean>(false);
-	const [isBidDataLoading, setIsBidDataLoading] = useState<boolean>(true);
-	const [allBids, setAllBids] = useState<Bid[] | undefined>();
-	const [domainData, setDomainData] = useState<Domain | undefined>();
 	const [history, setHistory] = useState<DomainEvents[]>([]);
 	const [isPriceDataLoading, setIsPriceDataLoading] = useState<boolean>();
 	const [highestBid, setHighestBid] = useState<Bid | undefined>();
@@ -159,49 +150,6 @@ export const useNftData = (): UseNftDataReturn => {
 		}
 	}, [sdk, account, znsDomain]);
 
-	const getViewBidsData = useCallback(async () => {
-		if (!znsDomain?.id) {
-			return;
-		}
-		const { id } = znsDomain;
-		setIsBidDataLoading(true);
-
-		try {
-			setAllBids(undefined);
-			setDomainData(undefined);
-
-			// Get all relevant domain info
-			const [domainData, bidData] = await Promise.all([
-				sdk.getDomainById(id),
-				sdk.zauction.listBids(id),
-			]);
-
-			// Filter bids
-			const sorted = sortBidsByTime(bidData);
-			const filteredBids = sorted.filter(
-				(bid) => bid.bidder.toLowerCase() !== account?.toLowerCase(),
-			);
-
-			setAllBids(filteredBids);
-			setDomainData({
-				id: domainData.id,
-				name: domainData.name,
-				parentId: domainData.parentId,
-				owner: domainData.owner,
-				minter: domainData.minter,
-				metadataUri: domainData.metadataUri,
-				isLocked: domainData.isLocked,
-				lockedBy: domainData.lockedBy,
-				contract: domainData.contract,
-				isRoot: domainData.isRoot,
-			});
-		} catch (e) {
-			console.error('Failed to retrieve bid data', e);
-		} finally {
-			setIsBidDataLoading(false);
-		}
-	}, [account, sdk, znsDomain]);
-
 	const downloadAsset = useCallback(async () => {
 		if (!domainAssetURL) {
 			return;
@@ -231,7 +179,6 @@ export const useNftData = (): UseNftDataReturn => {
 	const refetch = () => {
 		getHistory();
 		getPriceData();
-		getViewBidsData();
 	};
 
 	/**
@@ -242,7 +189,6 @@ export const useNftData = (): UseNftDataReturn => {
 		if (znsDomain) {
 			getPriceData();
 			getHistory();
-			getViewBidsData();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain, account]);
@@ -257,13 +203,9 @@ export const useNftData = (): UseNftDataReturn => {
 		yourBid,
 		getHistory,
 		getPriceData,
-		isBidDataLoading,
-		allBids,
-		domainData,
 		downloadAsset,
 		shareAsset,
 		refetch,
-		getViewBidsData,
 	};
 };
 
