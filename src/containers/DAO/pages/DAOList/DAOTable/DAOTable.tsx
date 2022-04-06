@@ -32,7 +32,8 @@ const DAOTable = ({ daoZnas }: DAOTableProps) => {
 	const [daos, setDaos] = useState<Array<zDAO>>([]);
 
 	const tableData: DAOTableDataItem[] = useMemo(() => {
-		if (!daoZnas?.length || !daos.length) return [];
+		if (!daoZnas?.length || !daos.length || daoZnas.length !== daos.length)
+			return [];
 
 		return daoZnas.map((zna, index) => {
 			const dao: zDAO = daos[index];
