@@ -78,7 +78,9 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 	}, [library, network, selectedChain]);
 
 	useUpdateEffect(createInstance, [library, network, selectedChain]);
-	useDidMount(createInstance);
+	useDidMount(() => {
+		createInstance();
+	});
 
 	const contextValue = {
 		instance,
