@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import useAssets from '../../DAOPage/hooks/useAssets';
 import { useTotals } from '../TotalProvider';
 
-import defaultDaoIcon from 'assets/default_dao.png';
+import defaultDaoIcon from 'assets/default_dao.svg';
 import { toFiat } from 'lib/currency';
 
 import styles from './DAOTableCard.module.scss';

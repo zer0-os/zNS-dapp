@@ -25,7 +25,7 @@ import { ROUTES } from 'constants/routes';
 import millify from 'millify';
 
 // Assets
-import defaultDaoIcon from 'assets/default_dao.png';
+import defaultDaoIcon from 'assets/default_dao.svg';
 import { ArrowLeft } from 'react-feather';
 
 // Styles
