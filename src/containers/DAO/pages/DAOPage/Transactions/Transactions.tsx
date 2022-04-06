@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 // Components
 import History from './components/History/History';
 import { LoadingIndicator } from 'components';
@@ -26,6 +26,11 @@ const Transactions: React.FC<TransactionsProps> = ({
 	const networkType = chainIdToNetworkType(chainId);
 	const etherscanUri = getEtherscanUri(networkType);
 
+	const formattedTransactions = useMemo(() => {
+		return (transactions ?? []).map((tx) => toHistoryItem(tx, etherscanUri));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [transactions]);
+
 	if (isLoading) {
 		return (
 			<LoadingIndicator
@@ -42,11 +47,7 @@ const Transactions: React.FC<TransactionsProps> = ({
 		);
 	}
 
-	return (
-		<History
-			items={transactions?.map((tx) => toHistoryItem(tx, etherscanUri))}
-		/>
-	);
+	return <History items={formattedTransactions} />;
 };
 
 export default Transactions;
