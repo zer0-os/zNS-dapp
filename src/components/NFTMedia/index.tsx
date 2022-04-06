@@ -24,6 +24,7 @@ import CloudinaryMedia from './CloudinaryMedia';
 import classNames from 'classnames/bind';
 import { getHashFromIPFSUrl } from 'lib/ipfs';
 import { generateCloudinaryUrl } from './config';
+import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 
 // Possible media types based on
 // MIME type of content
@@ -176,7 +177,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 			return (
 				<IPFSMedia
 					alt={alt}
-					ipfsUrl={'https://ipfs.fleek.co/ipfs/' + mediaLocation!}
+					ipfsUrl={DEFAULT_IPFS_GATEWAY + mediaLocation!}
 					onClick={toggleLightbox}
 					onLoad={onLoadMedia}
 					size={matchSize ? size : undefined}
