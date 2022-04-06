@@ -1,11 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-import {
-	chainIdToNetworkType,
-	defaultNetworkId,
-	NETWORK_TYPES,
-} from 'lib/network';
+import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
 import { RPC_URLS } from 'lib/connectors';
 import { ethers } from 'ethers';
 import { DAOS } from 'constants/daos';
@@ -17,6 +13,7 @@ import {
 	SDKInstance,
 } from '@zero-tech/zdao-sdk';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { useDidMount } from 'lib/hooks/useDidMount';
 import addresses from 'lib/addresses';
 
 export const zDaoContext = React.createContext({
@@ -27,24 +24,29 @@ type DaoSdkProviderProps = {
 	children: React.ReactNode;
 };
 
-export const ZdaoSdkProvider = ({ children }: DaoSdkProviderProps) => {
+export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
+	children,
+}) => {
 	const { library } = useWeb3React(); // get provider for connected wallet
 	const chainSelector = useChainSelector();
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
-	const network = useMemo(
-		() => chainIdToNetworkType(chainSelector.selectedChain),
-		[chainSelector.selectedChain],
-	);
+	const { network, selectedChain } = useMemo(() => {
+		const selectedChain = chainSelector.selectedChain;
+		const network = chainIdToNetworkType(selectedChain);
+		return {
+			network,
+			selectedChain,
+		};
+	}, [chainSelector.selectedChain]);
 
 	const createInstance = useCallback(async () => {
 		setInstance(undefined);
 
 		// Get provider, or initialise default provider if wallet is not connected
 		const provider =
-			library ||
-			new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId]);
+			library || new ethers.providers.JsonRpcProvider(RPC_URLS[selectedChain]);
 
 		if (
 			network !== NETWORK_TYPES.MAINNET &&
@@ -73,9 +75,10 @@ export const ZdaoSdkProvider = ({ children }: DaoSdkProviderProps) => {
 		await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
 
 		setInstance(sdk);
-	}, [library, network]);
+	}, [library, network, selectedChain]);
 
-	useUpdateEffect(createInstance, [library, network]);
+	useUpdateEffect(createInstance, [library, network, selectedChain]);
+	useDidMount(createInstance);
 
 	const contextValue = {
 		instance,
