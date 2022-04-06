@@ -61,7 +61,7 @@ const DAOTableRow: React.FC<DAOTableRowProps> = ({ data }) => {
 					id={dao.id}
 					domain={zna}
 					name={title}
-					image={dao.avatar ?? defaultDaoIcon}
+					image={defaultDaoIcon}
 					disableInteraction
 					disableAnimation
 					shouldHideRoot

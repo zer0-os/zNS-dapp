@@ -7,7 +7,7 @@ import {
 	formatNumber,
 	truncateWalletAddress,
 } from 'lib/utils';
-import { formatEther, formatUnits } from '@ethersproject/units';
+import { formatUnits } from '@ethersproject/units';
 import { startCase, toLower } from 'lodash';
 import {
 	AssetType,
@@ -20,6 +20,8 @@ import {
 
 // Styles
 import { ArrowDownLeft, ArrowUpRight } from 'react-feather';
+import erc721Icon from 'assets/erc721-default.svg';
+import erc20Icon from 'assets/erc20-default.svg';
 import styles from './Transactions.module.scss';
 import ethIcon from './assets/gnosis-eth.png';
 
@@ -30,7 +32,10 @@ const DEFAULT_ICON = '';
  * @param transaction to convert
  * @returns a history item
  */
-export const toHistoryItem = (transaction: Transaction) => {
+export const toHistoryItem = (
+	transaction: Transaction,
+	etherscanUri: string,
+) => {
 	let assetString;
 	let image;
 
@@ -66,7 +71,7 @@ export const toHistoryItem = (transaction: Transaction) => {
 				typed.tokenSymbol ??
 				typed.tokenName ??
 				truncateWalletAddress(typed.tokenAddress);
-			image = typed.logoUri;
+			image = erc721Icon;
 			break;
 		case AssetType.ERC20:
 			typed = transaction.asset as unknown as ERC20Transfer;
@@ -76,7 +81,7 @@ export const toHistoryItem = (transaction: Transaction) => {
 				(typed.tokenSymbol ??
 					typed.tokenName ??
 					truncateWalletAddress(typed.tokenAddress));
-			image = typed.logoUri;
+			image = erc20Icon;
 			break;
 	}
 
@@ -103,7 +108,16 @@ export const toHistoryItem = (transaction: Transaction) => {
 				)}
 				<span>
 					{startCase(toLower(transaction.type))} <b>{assetString}</b> {toOrFrom}{' '}
-					<b>{truncateWalletAddress(transaction.to)}</b>
+					<b>
+						<a
+							target="_blank"
+							rel="noreferrer"
+							href={`${etherscanUri}address/${transaction.to}`}
+							className="alt-link"
+						>
+							{truncateWalletAddress(transaction.to)}
+						</a>
+					</b>
 				</span>
 			</span>
 		),
