@@ -2,7 +2,11 @@
 import { Image } from 'components';
 
 // Lib
-import { formatNumber, truncateWalletAddress } from 'lib/utils';
+import {
+	formatBigNumber,
+	formatNumber,
+	truncateWalletAddress,
+} from 'lib/utils';
 import { formatEther, formatUnits } from '@ethersproject/units';
 import { startCase, toLower } from 'lodash';
 import {
@@ -35,7 +39,15 @@ export const toHistoryItem = (transaction: Transaction) => {
 	let valueString;
 	if (Object.keys(transaction.asset).includes('value')) {
 		const asAny = transaction.asset as any;
-		valueString = formatNumber(formatUnits(asAny.value, asAny.decimals ?? 18));
+		if (Number(asAny.value) < 0.01) {
+			valueString = formatBigNumber(
+				formatUnits(asAny.value as string, asAny.decimals ?? (18 as number)),
+			);
+		} else {
+			valueString = formatNumber(
+				formatUnits(asAny.value as string, asAny.decimals ?? (18 as number)),
+			);
+		}
 	}
 
 	/**
