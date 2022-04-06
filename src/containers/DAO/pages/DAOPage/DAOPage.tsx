@@ -132,7 +132,7 @@ const DAOPage: React.FC = () => {
 				) : dao ? (
 					<>
 						<Link className={styles.Back} to={ROUTES.ZDAO}>
-							<ArrowLeft color="#BFBFBF" /> All DAOs
+							<ArrowLeft /> All DAOs
 						</Link>
 						<div className={styles.Header}>
 							<div className={styles.Icon}>

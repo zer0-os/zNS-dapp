@@ -2,18 +2,18 @@
 	display: flex;
 	align-items: center;
 
-	color: #bfbfbf;
-	font-size: 12px;
+	color: var(--color-text-primary);
+	font-size: 14px;
 	font-weight: bold;
 
 	&:hover {
-		color: #bfbfbf;
-		text-shadow: none;
+		color: var(--color-text-primary);
+		text-shadow: var(--glow-text-white);
 	}
 
 	svg {
-		height: 16px;
-		width: 16px;
+		height: 1rem;
+		width: 1rem;
 		margin-right: 4px;
 	}
 }
