@@ -7,6 +7,9 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { ConnectWalletPrompt } from 'containers';
 
+//- Constants Imports
+import { LABELS } from './BidButton.constants';
+
 type BidButtonProps = {
 	onClick: (event?: any) => void;
 	className?: string;
@@ -47,6 +50,7 @@ const BidButton: React.FC<BidButtonProps> = ({
 				<ConnectWalletPrompt
 					open={isModalOpen}
 					onClose={() => setIsModalOpen(false)}
+					promptText={LABELS.PROMPT_TEXT}
 				/>
 			)}
 			{isTextButton ? (
