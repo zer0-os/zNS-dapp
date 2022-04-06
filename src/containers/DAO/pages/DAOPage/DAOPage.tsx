@@ -132,19 +132,19 @@ const DAOPage: React.FC = () => {
 				) : dao ? (
 					<>
 						<Link className={styles.Back} to={ROUTES.ZDAO}>
-							<ArrowLeft color="#BFBFBF" /> All DAOs
+							<ArrowLeft /> All DAOs
 						</Link>
-						<div className={styles.Header}>
-							<div className={styles.Icon}>
-								<img alt="dao logo" src={defaultDaoIcon} />
-							</div>
-							<h1>{daoData?.title}</h1>
-						</div>
 						<ul className={genericStyles.Stats}>
+							<div className={styles.Header}>
+								<div className={styles.Icon}>
+									<img alt="dao logo" src={defaultDaoIcon} />
+								</div>
+								<h1>{daoData?.title}</h1>
+							</div>
 							<div className={styles.Stat}>
 								<StatsWidget
 									className="normalView"
-									fieldName="Value"
+									fieldName="Total Value"
 									isLoading={isLoadingAssets}
 									// Millify if above
 									title={
@@ -153,13 +153,6 @@ const DAOPage: React.FC = () => {
 											? millify(totalUsd!, { precision: MILLIFY_PRECISION })
 											: toFiat(totalUsd ?? 0))
 									}
-								/>
-							</div>
-							<div className={styles.Stat}>
-								<StatsWidget
-									className="normalView"
-									fieldName="WILD Holders"
-									title={'TO IMPLEMENT'}
 								/>
 							</div>
 						</ul>

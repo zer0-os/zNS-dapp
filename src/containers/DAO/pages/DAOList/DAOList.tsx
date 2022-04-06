@@ -78,12 +78,6 @@ const DAOList: React.FC = () => {
 					isLoading={isLoading}
 					title={daoZnas?.length ?? 'Failed to find DAOs'}
 				/>
-				<StatsWidget
-					className="normalView"
-					fieldName={'WILD Holders'}
-					isLoading={false}
-					title={'TO IMPLEMENT'}
-				/>
 			</ul>
 			<DAOTable daoZnas={daoZnas} />
 		</div>
