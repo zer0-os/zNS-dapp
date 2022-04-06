@@ -8,7 +8,7 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 			title: 'Wilder DAO',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
 			network: 1, // for Mainnet
-			safeAddress: '0xEe7Ad892Fdf8d95223d7E94E4fF42E9d0cfeCAFA',
+			safeAddress: '0xeD42f85554530B6D5f149d60E5656715BCd4AfdA',
 			votingToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
 		},
 		{
@@ -16,7 +16,7 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 			title: 'Wilder Wheels DAO',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
 			network: 1, // for Mainnet
-			safeAddress: '0xeD42f85554530B6D5f149d60E5656715BCd4AfdA',
+			safeAddress: '0xEe7Ad892Fdf8d95223d7E94E4fF42E9d0cfeCAFA',
 			votingToken: '0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
 		},
 	],
