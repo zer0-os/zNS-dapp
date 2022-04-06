@@ -44,14 +44,14 @@ export const toHistoryItem = (
 	let valueString;
 	if (Object.keys(transaction.asset).includes('value')) {
 		const asAny = transaction.asset as any;
-		if (Number(asAny.value) < 0.01) {
-			valueString = formatBigNumber(
-				formatUnits(asAny.value as string, asAny.decimals ?? (18 as number)),
-			);
+		const formattedValue = formatUnits(
+			asAny.value as string,
+			asAny.decimals ?? (18 as number),
+		);
+		if (Number(formattedValue) < 1) {
+			valueString = formatBigNumber(formattedValue);
 		} else {
-			valueString = formatNumber(
-				formatUnits(asAny.value as string, asAny.decimals ?? (18 as number)),
-			);
+			valueString = formatNumber(formattedValue);
 		}
 	}
 
