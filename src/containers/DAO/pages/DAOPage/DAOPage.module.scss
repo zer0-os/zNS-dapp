@@ -1,3 +1,23 @@
+.Back {
+	display: flex;
+	align-items: center;
+
+	color: #bfbfbf;
+	font-size: 12px;
+	font-weight: bold;
+
+	&:hover {
+		color: #bfbfbf;
+		text-shadow: none;
+	}
+
+	svg {
+		height: 16px;
+		width: 16px;
+		margin-right: 4px;
+	}
+}
+
 .Header {
 	display: flex;
 	align-items: center;

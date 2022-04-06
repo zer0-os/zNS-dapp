@@ -12,7 +12,7 @@ import {
 // Components
 import Assets from './Assets/Assets';
 import Transactions from './Transactions/Transactions';
-import { Image, LoadingIndicator, StatsWidget } from 'components';
+import { LoadingIndicator, StatsWidget } from 'components';
 
 // Hooks
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
@@ -26,6 +26,7 @@ import millify from 'millify';
 
 // Assets
 import defaultDaoIcon from 'assets/default_dao.png';
+import { ArrowLeft } from 'react-feather';
 
 // Styles
 import styles from './DAOPage.module.scss';
@@ -130,9 +131,12 @@ const DAOPage: React.FC = () => {
 					<Loading />
 				) : dao ? (
 					<>
+						<Link className={styles.Back} to={ROUTES.ZDAO}>
+							<ArrowLeft color="#BFBFBF" /> All DAOs
+						</Link>
 						<div className={styles.Header}>
 							<div className={styles.Icon}>
-								<Image alt="dao logo" src={daoData?.avatar ?? defaultDaoIcon} />
+								<img alt="dao logo" src={defaultDaoIcon} />
 							</div>
 							<h1>{daoData?.title}</h1>
 						</div>
