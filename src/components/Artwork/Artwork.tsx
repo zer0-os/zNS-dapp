@@ -28,6 +28,7 @@ type ArtworkProps = {
 	pending?: boolean;
 	style?: React.CSSProperties;
 	subtext?: string;
+	shouldUseCloudinary?: boolean;
 };
 
 const cx = classNames.bind(styles);
@@ -44,6 +45,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 	pending,
 	style,
 	subtext,
+	shouldUseCloudinary,
 }) => {
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
@@ -88,10 +90,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 	}, [domain, metadataUrl]);
 
 	const artwork = React.useMemo(() => {
-		if (image) {
-			return <Image alt="pool icon" src={image} />;
-		}
-		if (metadata) {
+		if (shouldUseCloudinary || metadata) {
 			return (
 				<NFTMedia
 					disableLightbox
@@ -101,9 +100,12 @@ const Artwork: React.FC<ArtworkProps> = ({
 					size="tiny"
 					className={`${styles.Image} border-rounded`}
 					alt="NFT Preview"
-					ipfsUrl={metadata?.image_full || metadata?.image || ''}
+					ipfsUrl={image ?? metadata?.image_full ?? metadata?.image ?? ''}
 				/>
 			);
+		}
+		if (image) {
+			return <Image alt="pool icon" src={image} />;
 		}
 	}, [image, metadata]);
 

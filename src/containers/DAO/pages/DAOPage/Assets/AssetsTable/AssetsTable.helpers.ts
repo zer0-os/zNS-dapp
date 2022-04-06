@@ -30,6 +30,10 @@ export const convertAsset = (asset: Asset): AssetTableDataItem => {
 	};
 };
 
+export const isZnsToken = (label: string): boolean => {
+	return label.toLowerCase() === 'zns';
+};
+
 /**
  * Format a total amount of asset tokens
  * @param item to format
