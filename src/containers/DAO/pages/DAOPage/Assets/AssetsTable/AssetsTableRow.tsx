@@ -39,7 +39,6 @@ const AssetsTableRow: React.FC<AssetsTableRowProps> = ({
 				<Artwork
 					id={'1'}
 					subtext={subtext}
-					// handle both title and name so Wilder NFTs work
 					name={name}
 					image={image}
 					disableAnimation
