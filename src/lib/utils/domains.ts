@@ -82,7 +82,8 @@ export const zNAFromPathname = (pathname: string): string => {
  * @returns app from pathname, or empty string
  */
 export const appFromPathname = (pathname: string): string => {
-	return pathname.match(/^\/[a-zA-Z]*/)?.at(0) ?? '';
+	const matches = pathname.match(/^\/[a-zA-Z]*/);
+	return matches ? matches[0] : '';
 };
 
 // Truncate domain
