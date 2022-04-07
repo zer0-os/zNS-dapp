@@ -30,6 +30,7 @@ export const NFT_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT = {
 export enum NFT_MORE_ACTIONS_TITLE {
 	VIEW_BIDS = 'View Bids',
 	SET_BUY_NOW = 'Set Buy Now Price',
+	EDIT_BUY_NOW = 'Edit Buy Now Price',
 	TRANSFER_OWNERSHIP = 'Transfer Ownership',
 	MY_DOMAIN_SETTINGS = 'My Domain Settings',
 }
@@ -39,21 +40,26 @@ export enum MESSAGES {
 	CONSOLE_ERROR = 'Failed to retrieve bid data',
 }
 
-export const NFT_MORE_ACTIONS = [
-	{
-		icon: dollarSignIcon,
-		title: NFT_MORE_ACTIONS_TITLE.VIEW_BIDS,
-	},
-	{
-		icon: tagIcon,
-		title: NFT_MORE_ACTIONS_TITLE.SET_BUY_NOW,
-	},
-	{
-		icon: transferOwnershipIcon,
-		title: NFT_MORE_ACTIONS_TITLE.TRANSFER_OWNERSHIP,
-	},
-	{
-		icon: cubeIcon,
-		title: NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS,
-	},
-];
+export const getActionFeatures = (isBuyNowPriceSet: boolean) => {
+	const NFT_MORE_ACTIONS = [
+		{
+			icon: dollarSignIcon,
+			title: NFT_MORE_ACTIONS_TITLE.VIEW_BIDS,
+		},
+		{
+			icon: tagIcon,
+			title: isBuyNowPriceSet
+				? NFT_MORE_ACTIONS_TITLE.EDIT_BUY_NOW
+				: NFT_MORE_ACTIONS_TITLE.SET_BUY_NOW,
+		},
+		{
+			icon: transferOwnershipIcon,
+			title: NFT_MORE_ACTIONS_TITLE.TRANSFER_OWNERSHIP,
+		},
+		{
+			icon: cubeIcon,
+			title: NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS,
+		},
+	];
+	return NFT_MORE_ACTIONS;
+};
