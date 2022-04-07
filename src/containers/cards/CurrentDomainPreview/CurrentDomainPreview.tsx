@@ -37,7 +37,11 @@ const CurrentDomainPreview = (props: any) => {
 		<>
 			{isBidModalOpen && domain && (
 				<Overlay onClose={closeBidModal} open={isBidModalOpen}>
-					<MakeABid domain={domain} onBid={closeBidModal} />
+					<MakeABid
+						domain={domain}
+						onBid={closeBidModal}
+						onClose={closeBidModal}
+					/>
 				</Overlay>
 			)}
 			<PreviewCard

@@ -1,9 +1,10 @@
-import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import React, { useMemo, useRef } from 'react';
+import React from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import styles from './ZNALink.module.scss';
+import classNames from 'classnames';
+import { appFromPathname, zNAFromPathname } from 'lib/utils';
 
 type ZNAProps = {
 	className?: string;
@@ -11,47 +12,35 @@ type ZNAProps = {
 };
 
 const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
-	const globalDomain = useCurrentDomain();
-	const oldDomainRef = useRef('');
+	const { pathname } = useLocation();
+	const zna = zNAFromPathname(pathname);
+	const app = appFromPathname(pathname) + '/';
 
-	const reSizeLink = (linkPart: string) =>
-		window.innerWidth < 800 ? `...${linkPart}` : `.${linkPart}`;
+	const isRootDomain = zna.length === 0;
 
-	const parsedDomain = useMemo(() => {
-		if (!globalDomain.domain?.name) {
-			return oldDomainRef.current;
-		} else {
-			oldDomainRef.current = globalDomain.domain?.name;
-			return globalDomain.domain?.name;
-		}
-	}, [globalDomain.domain]);
+	const adjustedZna = isRootDomain ? 'wilder' : 'wilder.' + zna;
+	const segments = adjustedZna.split('.').map((s, index) => ({
+		name: index === 0 ? s : '.' + s,
+		location:
+			app +
+			adjustedZna
+				.split('.')
+				.slice(1, index + 1)
+				.join('.'),
+	}));
 
 	return (
-		<div
-			className={`${styles.ZNALink} ${className ? className : ''}`}
-			style={style}
-		>
-			<span style={{ cursor: 'default', opacity: 0.75 }}>0://</span>
-
-			{parsedDomain.split('.').map((part, i) => {
-				const linkTarget =
-					part === 'wilder'
-						? ''
-						: `/${parsedDomain
-								.split('.')
-								.slice(0, i + 1)
-								.join('.')
-								.replace('wilder.', '')}`;
-				return (
-					<Link
-						key={i + part}
-						style={{ textDecoration: 'none', color: 'white' }}
-						to={`${globalDomain.app}${linkTarget}`}
-					>
-						{i > 0 ? reSizeLink(part) : part}
-					</Link>
-				);
-			})}
+		<div className={classNames(styles.ZNALink, className)} style={style}>
+			<span className={styles.Root}>0://</span>
+			{segments.map((s) => (
+				<Link
+					key={s.location}
+					style={{ textDecoration: 'none', color: 'white' }}
+					to={s.location}
+				>
+					{s.name}
+				</Link>
+			))}
 		</div>
 	);
 };
