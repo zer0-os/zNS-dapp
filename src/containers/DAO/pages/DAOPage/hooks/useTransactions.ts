@@ -7,6 +7,16 @@ type UseTransactionsReturn = {
 	isLoading: boolean;
 };
 
+type TransactionCache = {
+	[zna: string]: {
+		transactions?: Transaction[];
+	};
+};
+
+const cache: TransactionCache = {};
+
+const cacheKey = 'safeAddress';
+
 const useTransactions = (dao?: zDAO): UseTransactionsReturn => {
 	const [transactions, setTransactions] = useState<Transaction[] | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -19,7 +29,14 @@ const useTransactions = (dao?: zDAO): UseTransactionsReturn => {
 		setIsLoading(true);
 		setTransactions(undefined);
 		try {
+			if (cache[dao[cacheKey]]) {
+				setTransactions(cache[dao[cacheKey]].transactions);
+				setIsLoading(false);
+			}
 			dao?.listTransactions().then((t) => {
+				cache[dao[cacheKey]] = {
+					transactions: t,
+				};
 				if (isMounted) {
 					setTransactions(t);
 					setIsLoading(false);

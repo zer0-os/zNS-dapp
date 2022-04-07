@@ -10,6 +10,7 @@
 
 		> * {
 			flex: 1;
+			align-self: stretch;
 
 			&:not(:last-child) {
 				margin-right: 16px;
@@ -28,6 +29,7 @@
 
 				&:last-child {
 					display: none;
+					margin-top: 16px;
 				}
 			}
 		}
@@ -36,10 +38,18 @@
 	.Links {
 		padding: 8px 16px;
 
+		@media only screen and (max-width: 700px) {
+			margin-top: 16px;
+		}
+
 		> a {
 			color: var(--color-grey-lighter-2);
 			font-size: 24px;
 			font-weight: 700;
+
+			@media only screen and (max-width: 700px) {
+				font-size: 18px;
+			}
 
 			transition: color var(--animation-time-short) ease-in-out;
 

@@ -65,23 +65,6 @@ export const truncateWalletAddress = (address: string) => {
 	)}`;
 };
 
-// Truncate domain
-export const truncateDomain = (
-	domainName: string,
-	maxCharacterLength: number,
-) => {
-	let domainText;
-	if (('wilder.' + domainName).length > maxCharacterLength) {
-		domainText = `wilder...${
-			domainName.split('.')[domainName.split('.').length - 1]
-		}`;
-		return domainText;
-	} else {
-		domainText = `${domainName}`;
-		return domainText;
-	}
-};
-
 /**
  * Extracts a zNA from a full pathname
  * e.g. /market/test.name/hello => test.name
@@ -100,4 +83,21 @@ export const zNAFromPathname = (pathname: string): string => {
  */
 export const appFromPathname = (pathname: string): string => {
 	return pathname.match(/^\/[a-zA-Z]*/)?.at(0) ?? '';
+};
+
+// Truncate domain
+export const truncateDomain = (
+	domainName: string,
+	maxCharacterLength: number,
+) => {
+	let domainText;
+	if (('wilder.' + domainName).length > maxCharacterLength) {
+		domainText = `wilder...${
+			domainName.split('.')[domainName.split('.').length - 1]
+		}`;
+		return domainText;
+	} else {
+		domainText = `${domainName}`;
+		return domainText;
+	}
 };

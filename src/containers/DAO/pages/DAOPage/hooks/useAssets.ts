@@ -9,6 +9,17 @@ type UseAssetsReturn = {
 	isLoading: boolean;
 };
 
+type AssetCache = {
+	[daoSafeAddress: string]: {
+		assets?: Asset[];
+		totalUsd?: number;
+	};
+};
+
+const cache: AssetCache = {};
+
+const cacheKey = 'safeAddress';
+
 const useAssets = (dao?: zDAO): UseAssetsReturn => {
 	const [assets, setAssets] = useState<Asset[] | undefined>();
 	const [totalUsd, setTotalUsd] = useState<number | undefined>();
@@ -24,6 +35,13 @@ const useAssets = (dao?: zDAO): UseAssetsReturn => {
 		setAssets(undefined);
 		setIsLoading(true);
 		try {
+			if (cache[dao[cacheKey]]) {
+				const cached = cache[dao[cacheKey]];
+				setTotalUsd(cached.totalUsd);
+				setAssets(cached.assets);
+				setIsLoading(false);
+				return;
+			}
 			dao
 				?.listAssets()
 				.then((d) => {
@@ -32,11 +50,16 @@ const useAssets = (dao?: zDAO): UseAssetsReturn => {
 						type: AssetType.ERC721,
 					}));
 					if (isMounted) {
-						setAssets([
+						const allAssets = [
 							...d.coins.filter((d) => d.amount !== '0'),
 							...collectibles,
-						]);
+						];
+						setAssets(allAssets);
 						setTotalUsd(d.amountInUSD);
+						cache[dao[cacheKey]] = {
+							assets: allAssets,
+							totalUsd: d.amountInUSD,
+						};
 					}
 				})
 				.then(() => {

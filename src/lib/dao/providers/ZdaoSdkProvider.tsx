@@ -1,11 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-import {
-	chainIdToNetworkType,
-	defaultNetworkId,
-	NETWORK_TYPES,
-} from 'lib/network';
+import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
 import { RPC_URLS } from 'lib/connectors';
 import { ethers } from 'ethers';
 import { DAOS } from 'constants/daos';
@@ -28,21 +24,29 @@ type DaoSdkProviderProps = {
 	children: React.ReactNode;
 };
 
-export const ZdaoSdkProvider = ({ children }: DaoSdkProviderProps) => {
+export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
+	children,
+}) => {
 	const { library } = useWeb3React(); // get provider for connected wallet
 	const chainSelector = useChainSelector();
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
-	const createInstance = async () => {
+	const { network, selectedChain } = useMemo(() => {
+		const selectedChain = chainSelector.selectedChain;
+		const network = chainIdToNetworkType(selectedChain);
+		return {
+			network,
+			selectedChain,
+		};
+	}, [chainSelector.selectedChain]);
+
+	const createInstance = useCallback(async () => {
 		setInstance(undefined);
 
 		// Get provider, or initialise default provider if wallet is not connected
 		const provider =
-			library ||
-			new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId]);
-
-		const network = chainIdToNetworkType(chainSelector.selectedChain);
+			library || new ethers.providers.JsonRpcProvider(RPC_URLS[selectedChain]);
 
 		if (
 			network !== NETWORK_TYPES.MAINNET &&
@@ -71,11 +75,9 @@ export const ZdaoSdkProvider = ({ children }: DaoSdkProviderProps) => {
 		await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
 
 		setInstance(sdk);
-	};
+	}, [library, network, selectedChain]);
 
-	useUpdateEffect(() => {
-		createInstance();
-	}, [library, chainSelector.selectedChain]);
+	useUpdateEffect(createInstance, [library, network, selectedChain]);
 	useDidMount(() => {
 		createInstance();
 	});

@@ -10,8 +10,6 @@ import DAOPage from './pages/DAOPage/DAOPage';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import { useZdaoSdk } from 'lib/dao/providers/ZdaoSdkProvider';
-import { useNavbar } from 'lib/hooks/useNavbar';
-import { useDidMount } from 'lib/hooks/useDidMount';
 
 // Lib
 import { ROUTES } from 'constants/routes';
@@ -31,32 +29,31 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 	style,
 }) => {
 	const { redirect } = useRedirect();
-	const { setNavbarTitle } = useNavbar();
 	const { zna } = useCurrentDao();
 	const { instance: sdk } = useZdaoSdk();
 
 	/**
 	 * Handle loading a DAO which does not exist
 	 */
-	useUpdateEffect(() => {
-		if (!zna.length) {
+	useUpdateEffect(async () => {
+		if (!sdk || !zna.length) {
 			return;
 		}
-		sdk?.doesZDAOExist(zna).then((exists) => {
+
+		try {
+			const exists: boolean = await sdk.doesZDAOExist(zna);
+
 			if (!exists) {
 				redirect(ROUTES.ZDAO, 'Could not find a DAO for ' + zna);
 			}
-		});
+		} catch (e) {
+			console.error(e);
+		}
 	}, [sdk, zna]);
-
-	useDidMount(setNavbarTitle);
 
 	return (
 		<Switch>
-			<main
-				className={classNames(styles.Container, className, 'main')}
-				style={style}
-			>
+			<main className={classNames(styles.Container, className)} style={style}>
 				{zna === '' ? <DAOList /> : <DAOPage />}
 			</main>
 		</Switch>

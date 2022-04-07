@@ -1,4 +1,5 @@
 // React
+import React from 'react';
 import {
 	Link,
 	Redirect,
@@ -11,7 +12,7 @@ import {
 // Components
 import Assets from './Assets/Assets';
 import Transactions from './Transactions/Transactions';
-import { Image, LoadingIndicator, StatsWidget } from 'components';
+import { LoadingIndicator, StatsWidget } from 'components';
 
 // Hooks
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
@@ -24,12 +25,15 @@ import { ROUTES } from 'constants/routes';
 import millify from 'millify';
 
 // Assets
-import defaultDaoIcon from 'assets/default_dao.png';
+import defaultDaoIcon from 'assets/default_dao.svg';
+import { ArrowLeft } from 'react-feather';
 
 // Styles
 import styles from './DAOPage.module.scss';
 import genericStyles from '../Container.module.scss';
 import classNames from 'classnames/bind';
+import { useNavbar } from 'lib/hooks/useNavbar';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 const cx = classNames.bind(genericStyles);
 
 const MILLIFY_THRESHOLD = 1000000;
@@ -38,9 +42,10 @@ const MILLIFY_PRECISION = 3;
 const toDaoPage = (zna: string) => (route: ROUTES) =>
 	ROUTES.ZDAO + '/' + zna + route;
 
-const DAOPage = () => {
+const DAOPage: React.FC = () => {
 	const { pathname } = useLocation();
 	const { path } = useRouteMatch();
+	const { setNavbarTitle } = useNavbar();
 
 	const { dao, isLoading, zna } = useCurrentDao();
 	const { transactions, isLoading: isLoadingTransactions } =
@@ -50,6 +55,14 @@ const DAOPage = () => {
 	const daoData = dao;
 
 	const to = toDaoPage(zna);
+
+	useUpdateEffect(() => {
+		if (dao) {
+			setNavbarTitle('DAOs - ' + dao.title);
+		} else {
+			setNavbarTitle('DAOs');
+		}
+	}, [dao]);
 
 	const Loading = () => (
 		<LoadingIndicator
@@ -105,25 +118,27 @@ const DAOPage = () => {
 
 	return (
 		<Switch>
-			<div className={cx(genericStyles.Container, 'main')}>
+			<div
+				className={cx(genericStyles.Container, 'main', 'background-primary')}
+			>
 				{isLoading ? (
 					<Loading />
 				) : dao ? (
 					<>
+						<Link className={styles.Back} to={ROUTES.ZDAO}>
+							<ArrowLeft /> All DAOs
+						</Link>
 						<ul className={genericStyles.Stats}>
 							<div className={styles.Header}>
 								<div className={styles.Icon}>
-									<Image
-										alt="dao logo"
-										src={daoData?.avatar ?? defaultDaoIcon}
-									/>
+									<img alt="dao logo" src={defaultDaoIcon} />
 								</div>
 								<h1>{daoData?.title}</h1>
 							</div>
 							<div className={styles.Stat}>
 								<StatsWidget
 									className="normalView"
-									fieldName="Value"
+									fieldName="Total Value"
 									isLoading={isLoadingAssets}
 									// Millify if above
 									title={
@@ -132,13 +147,6 @@ const DAOPage = () => {
 											? millify(totalUsd!, { precision: MILLIFY_PRECISION })
 											: toFiat(totalUsd ?? 0))
 									}
-								/>
-							</div>
-							<div className={styles.Stat}>
-								<StatsWidget
-									className="normalView"
-									fieldName="WILD Holders"
-									title={'TO IMPLEMENT'}
 								/>
 							</div>
 						</ul>

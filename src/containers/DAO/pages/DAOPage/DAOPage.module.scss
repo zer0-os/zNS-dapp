@@ -1,12 +1,37 @@
+.Back {
+	display: flex;
+	align-items: center;
+
+	color: var(--color-text-primary);
+	font-size: 14px;
+	font-weight: bold;
+
+	&:hover {
+		color: var(--color-text-primary);
+		text-shadow: var(--glow-text-white);
+	}
+
+	svg {
+		height: 1rem;
+		width: 1rem;
+		margin-right: 4px;
+	}
+}
+
 .Header {
 	display: flex;
 	align-items: center;
-	padding: 16px;
+	padding: 16px 0;
 
 	font-weight: 700;
 
 	h1 {
+		font-size: 24px;
 		margin-left: 8px;
+
+		@media only screen and (max-width: 500px) {
+			font-size: 18px;
+		}
 	}
 
 	.Icon {
@@ -28,10 +53,6 @@
 			width: 40px;
 		}
 	}
-}
-
-.Stat {
-	max-width: 160px !important;
 }
 
 .Loading {

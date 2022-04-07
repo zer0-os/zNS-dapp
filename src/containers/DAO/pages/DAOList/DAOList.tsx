@@ -1,5 +1,5 @@
 // React
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Components
 import { StatsWidget } from 'components';
@@ -15,9 +15,12 @@ import { toFiat } from 'lib/currency';
 // Styles
 import classNames from 'classnames';
 import genericStyles from '../Container.module.scss';
+import { useNavbar } from 'lib/hooks/useNavbar';
+import { useDidMount } from 'lib/hooks/useDidMount';
 
-const DAOList = () => {
+const DAOList: React.FC = () => {
 	const { instance: sdk } = useZdaoSdk();
+	const { setNavbarTitle } = useNavbar();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [daoZnas, setDaoZnas] = useState<string[] | undefined>();
@@ -47,8 +50,18 @@ const DAOList = () => {
 		};
 	}, [sdk]);
 
+	useDidMount(() => {
+		setNavbarTitle('DAOs');
+	});
+
 	return (
-		<div className={classNames(genericStyles.Container)}>
+		<div
+			className={classNames(
+				genericStyles.Container,
+				'main',
+				'background-primary',
+			)}
+		>
 			<ul className={genericStyles.Stats}>
 				<StatsWidget
 					className="normalView"
@@ -63,14 +76,8 @@ const DAOList = () => {
 					isLoading={isLoading}
 					title={daoZnas?.length ?? 'Failed to find DAOs'}
 				/>
-				<StatsWidget
-					className="normalView"
-					fieldName={'WILD Holders'}
-					isLoading={false}
-					title={'TO IMPLEMENT'}
-				/>
 			</ul>
-			<DAOTable daoZnas={daoZnas} isLoading={false} />
+			<DAOTable daoZnas={daoZnas} />
 		</div>
 	);
 };

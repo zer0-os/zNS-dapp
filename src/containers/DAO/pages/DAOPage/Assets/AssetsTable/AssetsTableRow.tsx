@@ -1,39 +1,33 @@
+import React from 'react';
+
 // Components
 import { Artwork } from 'components';
 
 // Lib
-import { formatUnits } from 'ethers/lib/utils';
-import { toFiat } from 'lib/currency';
-import { Asset } from 'lib/types/dao';
-import millify from 'millify';
+import { formatTotalAmountOfTokens, isZnsToken } from './AssetsTable.helpers';
 
 // Styles + assets
 import classNames from 'classnames';
 import styles from './AssetsTableRow.module.scss';
 
-import { convertAsset } from './AssetsTable.helpers';
+// Types
+import { AssetTableDataItem } from './AssetsTable.type';
 
-// Config
-const MILLIFY_PRECISION = 5;
-const MILLIFY_LOWERCASE = false;
-
-export type TableAsset = {
-	amount: string | number;
-	decimals?: number;
-	image: string;
-	key: string;
-	name: string;
-	subtext: string;
-};
+interface AssetsTableRowProps {
+	data: AssetTableDataItem;
+	onRowClick: () => void;
+	className: string;
+}
 
 /**
  * A single row item for the Assets table
  */
-const AssetsTableRow = (props: any) => {
-	const { data, onRowClick, className } = props;
-
-	const asset = data as Asset;
-	const { amount, decimals, image, name, subtext } = convertAsset(asset);
+const AssetsTableRow: React.FC<AssetsTableRowProps> = ({
+	data,
+	onRowClick,
+	className,
+}) => {
+	const { image, name, subtext, amountInUSD } = data;
 
 	return (
 		<tr
@@ -45,28 +39,19 @@ const AssetsTableRow = (props: any) => {
 				<Artwork
 					id={'1'}
 					subtext={subtext}
-					// handle both title and name so Wilder NFTs work
 					name={name}
 					image={image}
 					disableAnimation
 					disableInteraction={true}
+					shouldUseCloudinary={isZnsToken(subtext)}
 				/>
 			</td>
 
 			{/* Total amount of tokens */}
-			<td className={styles.Right}>
-				{millify(Number(formatUnits(amount, decimals)), {
-					precision: MILLIFY_PRECISION,
-					lowercase: MILLIFY_LOWERCASE,
-				})}
-			</td>
+			<td className={styles.Right}>{formatTotalAmountOfTokens(data)}</td>
 
 			{/* Fiat value of tokens */}
-			<td className={styles.Right}>
-				{asset.amountInUSD !== undefined
-					? '$' + toFiat(asset.amountInUSD)
-					: '-'}
-			</td>
+			<td className={styles.Right}>{amountInUSD}</td>
 		</tr>
 	);
 };

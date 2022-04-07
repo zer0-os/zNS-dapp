@@ -2,16 +2,18 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './GenericTable.module.scss';
 import { useInView } from 'react-intersection-observer';
+import {
+	LoadingIndicator,
+	IconButton,
+	SearchBar,
+	TextButton,
+} from 'components';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import classNames from 'classnames';
-import {
-	SearchBar,
-	IconButton,
-	LoadingIndicator,
-	TextButton,
-} from 'components';
+
+const DEFAULT_SEARCH_KEY = 'name';
 
 type GenericTableHeader = {
 	label: string | React.ReactNode;
@@ -71,9 +73,25 @@ const GenericTable = (props: any) => {
 
 	// Since due date is coming up, I'm rushing the search algo
 	// This will need to be expanded to be generic
-	const matchesSearch = (d: any) => {
-		const value = d[props.searchKey ?? 'name'].toLowerCase();
-		return value.includes(searchQuery?.toLowerCase());
+	const matchesSearch = (d: any): boolean => {
+		if (!searchQuery) return true;
+
+		if (!d || typeof d !== 'object') return false;
+
+		const searchKey: string | string[] = props.searchKey ?? DEFAULT_SEARCH_KEY;
+
+		if (Array.isArray(searchKey)) {
+			return searchKey.some(
+				(key: string) =>
+					Boolean(d[key]) &&
+					d[key].toLowerCase().includes(searchQuery.toLocaleLowerCase()),
+			);
+		}
+
+		return (
+			Boolean(d[searchKey]) &&
+			d[searchKey].toLowerCase().includes(searchQuery.toLocaleLowerCase())
+		);
 	};
 
 	// Toggles to grid view when viewport
@@ -194,15 +212,11 @@ const GenericTable = (props: any) => {
 		const data = props.infiniteScroll
 			? rawData
 					.filter((d: any) =>
-						searchQuery && !props.notSearchable
-							? d[props.searchKey].includes(searchQuery)
-							: true,
+						searchQuery && !props.notSearchable ? matchesSearch(d) : true,
 					)
 					.slice(0, chunk * chunkSize)
 			: rawData.filter((d: any) =>
-					searchQuery && !props.notSearchable
-						? d[props.searchKey].includes(searchQuery)
-						: true,
+					searchQuery && !props.notSearchable ? matchesSearch(d) : true,
 			  );
 
 		return (
@@ -223,7 +237,7 @@ const GenericTable = (props: any) => {
 				)}
 			</div>
 		);
-	}, [rawData, chunk, searchQuery]);
+	}, [props, rawData, chunk, chunkSize, searchQuery]);
 
 	////////////
 	// Render //
@@ -234,11 +248,13 @@ const GenericTable = (props: any) => {
 			<div ref={contentRef} className={styles.Content}>
 				{shouldShowSearchBar && (
 					<div className={styles.Controls}>
-						<SearchBar
-							placeholder={'Search by ' + (props.searchBy ?? 'domain name')}
-							onChange={onSearchBarUpdate}
-							style={{ width: '100%', marginRight: 16 }}
-						/>
+						{shouldShowSearchBar && (
+							<SearchBar
+								placeholder={'Search by ' + (props.searchBy ?? 'domain name')}
+								onChange={onSearchBarUpdate}
+								style={{ width: '100%', marginRight: 16 }}
+							/>
+						)}
 						{shouldShowViewToggle && (
 							<div className={styles.Buttons}>
 								<IconButton
@@ -277,16 +293,20 @@ const GenericTable = (props: any) => {
 				)}
 				<div ref={ref}></div>
 			</div>
-			{rawData && !searchQuery && chunk * chunkSize < rawData.length && (
-				<TextButton
-					onClick={() =>
-						isGridView ? increaseChunkSize() : increaseChunkSize(2)
-					}
-					className={styles.LoadMore}
-				>
-					Load More
-				</TextButton>
-			)}
+
+			{props.infiniteScroll &&
+				rawData &&
+				!searchQuery &&
+				chunk * chunkSize < rawData.length && (
+					<TextButton
+						onClick={() =>
+							isGridView ? increaseChunkSize() : increaseChunkSize(2)
+						}
+						className={styles.LoadMore}
+					>
+						Load More
+					</TextButton>
+				)}
 		</div>
 	);
 };

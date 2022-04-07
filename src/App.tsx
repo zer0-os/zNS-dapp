@@ -26,15 +26,14 @@ import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
 import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
+import { ROUTES } from 'constants/routes';
 
 //- Page Imports
 import { ZNS, Staking, Profile } from 'pages';
 import PageContainer from 'containers/PageContainer';
-import { ROUTES } from 'constants/routes';
 import DAO from 'pages/DAO/DAO';
 import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
 
-// Web3 library to query
 function getLibrary(provider: any): Web3Provider {
 	const library = new Web3Provider(provider);
 	library.pollingInterval = 12000;

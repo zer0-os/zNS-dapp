@@ -6,12 +6,6 @@
 	padding-top: 24px + 48px + 16px;
 	padding-bottom: 110px;
 	box-sizing: border-box;
-	transition: opacity 0.2s ease-in-out;
-	opacity: 0;
-
-	&.isVisible {
-		opacity: 1;
-	}
 
 	@media only screen and (max-width: 1000px) {
 		display: flex;

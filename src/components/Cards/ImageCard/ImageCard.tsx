@@ -1,5 +1,8 @@
 import styles from './ImageCard.module.scss';
-import { Image } from 'components';
+import { Image, NFTMedia } from 'components';
+import classNames from 'classnames/bind';
+
+const cx = classNames.bind(styles);
 
 type ImageCardProps = {
 	children: React.ReactNode;
@@ -7,6 +10,8 @@ type ImageCardProps = {
 	header?: string;
 	onClick?: (event?: any) => void;
 	subHeader?: string;
+	className?: string;
+	shouldUseCloudinary?: boolean;
 };
 
 const ImageCard = ({
@@ -15,15 +20,31 @@ const ImageCard = ({
 	imageUri,
 	onClick,
 	subHeader,
+	className,
+	shouldUseCloudinary,
 }: ImageCardProps) => {
 	return (
-		<div className={styles.Container} onClick={onClick}>
-			<div className={styles.Image}>
-				<Image src={imageUri} />
+		<div className={cx(styles.Container, className)} onClick={onClick}>
+			<div className={styles.Body}>
+				<div className={styles.Image}>
+					{shouldUseCloudinary ? (
+						<NFTMedia
+							disableLightbox
+							style={{
+								zIndex: 2,
+							}}
+							size="medium"
+							alt="NFT Preview"
+							ipfsUrl={imageUri ?? ''}
+						/>
+					) : (
+						<Image src={imageUri} />
+					)}
+				</div>
 			</div>
 			<div className={styles.Footer}>
-				<h5>{header ?? ''}</h5>
-				<span>{subHeader ?? ''}</span>
+				<h5 className={styles.Header}>{header ?? ''}</h5>
+				<span className={styles.Subheader}>{subHeader ?? ''}</span>
 				{children}
 			</div>
 		</div>
