@@ -74,7 +74,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	//- Modal Provider Hook
 	const { openModal, closeModal } = useNFTViewModal();
-
 	//- Memoized data
 	const { isBiddable, isOwnedByYou, assetUrl, nftMoreOptions } = useMemo(() => {
 		const isRootDomain = (znsDomain?.name || '').split('.').length <= 2;
@@ -85,7 +84,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		const assetUrl =
 			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image;
 		const nftMoreOptions = isOwnedByYou
-			? getActionFeatures(Boolean(buyNowPrice))
+			? getActionFeatures(Boolean(buyNowPrice), allBids?.length !== 0)
 			: [];
 
 		return {
@@ -94,7 +93,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			assetUrl,
 			nftMoreOptions,
 		};
-	}, [znsDomain, domainMetadata, account, buyNowPrice]);
+	}, [znsDomain, domainMetadata, account, buyNowPrice, allBids]);
 
 	// Convert highest bid as wei
 	const highestBidAsWei =
@@ -172,17 +171,19 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	// Dropdown Option Select
 	const onSelectOption = (option: Option) => {
-		if (option.title === NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS) {
-			openDomainSettings();
-		} else if (option.title === NFT_MORE_ACTIONS_TITLE.TRANSFER_OWNERSHIP) {
-			onTransfer();
-		} else if (
-			option.title === NFT_MORE_ACTIONS_TITLE.SET_BUY_NOW ||
-			NFT_MORE_ACTIONS_TITLE.EDIT_BUY_NOW
-		) {
-			openSetBuyNow();
-		} else {
-			openBidList();
+		switch (option.title) {
+			case NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS:
+				return openDomainSettings();
+			case NFT_MORE_ACTIONS_TITLE.TRANSFER_OWNERSHIP:
+				return onTransfer();
+			case NFT_MORE_ACTIONS_TITLE.SET_BUY_NOW:
+				return openSetBuyNow();
+			case NFT_MORE_ACTIONS_TITLE.EDIT_BUY_NOW:
+				return openSetBuyNow();
+			case NFT_MORE_ACTIONS_TITLE.VIEW_BIDS:
+				return openBidList();
+			default:
+				return '';
 		}
 	};
 

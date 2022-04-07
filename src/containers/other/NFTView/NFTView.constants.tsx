@@ -40,12 +40,16 @@ export enum MESSAGES {
 	CONSOLE_ERROR = 'Failed to retrieve bid data',
 }
 
-export const getActionFeatures = (isBuyNowPriceSet: boolean) => {
+export const getActionFeatures = (
+	isBuyNowPriceSet: boolean,
+	isViewBids: boolean,
+) => {
 	const NFT_MORE_ACTIONS = [
 		{
 			icon: dollarSignIcon,
 			title: NFT_MORE_ACTIONS_TITLE.VIEW_BIDS,
 		},
+
 		{
 			icon: tagIcon,
 			title: isBuyNowPriceSet
@@ -61,5 +65,12 @@ export const getActionFeatures = (isBuyNowPriceSet: boolean) => {
 			title: NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS,
 		},
 	];
-	return NFT_MORE_ACTIONS;
+
+	const filteredActions = NFT_MORE_ACTIONS.filter(
+		(item) => item.title !== NFT_MORE_ACTIONS_TITLE.VIEW_BIDS,
+	);
+
+	const actions = isViewBids ? NFT_MORE_ACTIONS : filteredActions;
+
+	return actions;
 };
