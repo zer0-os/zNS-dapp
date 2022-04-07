@@ -86,7 +86,7 @@
 	div {
 		overflow: hidden;
 		transition: transform var(--animation-time-medium) ease-in-out;
-		border-radius: 16px;
+		border-radius: var(--box-radius);
 		z-index: 2;
 	}
 }
@@ -131,7 +131,7 @@
 		}
 
 		h5 {
-			color: white;
+			color: var(--color-text-primary);
 			font-size: 36px;
 			font-weight: 700;
 
@@ -146,7 +146,7 @@
 
 		.Description {
 			margin-top: 16px;
-			color: white;
+			color: var(--color-text-primary);
 			line-height: 19.2px;
 			padding-bottom: 0;
 
@@ -193,7 +193,7 @@
 		.ViewLink {
 			margin-top: 16px;
 			padding: 0;
-			font-size: 16px;
+			font-size: var(--font-size-default);
 			font-weight: 400;
 			color: var(--color-accent-blue-100);
 			cursor: pointer;
@@ -201,7 +201,7 @@
 
 		.ViewLink:hover {
 			color: var(--color-accent-1);
-			text-shadow: var(--glow-text-blue), var(--glow-text-blue);
+			text-shadow: var(--glow-text-primary), var(--glow-text-primary);
 		}
 
 		* {

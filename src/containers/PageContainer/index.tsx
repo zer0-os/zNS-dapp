@@ -16,7 +16,7 @@ import { WALLETS } from 'constants/wallets';
 import { WALLET_NOTIFICATIONS } from 'constants/notifications';
 import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
 import { Modal } from './PageContainer.constants';
-import { Header, HomeIcon, Modals, useModal } from './elements';
+import { Header, Modals, useModal } from './elements';
 import styles from './PageContainer.module.scss';
 
 const PageContainer: React.FC = ({ children }) => {
@@ -92,8 +92,6 @@ const PageContainer: React.FC = ({ children }) => {
 			<div className={classnames(styles.PageContainer)}>
 				{/* Toast Notifications */}
 				<NotificationDrawer />
-				{/* Home Icon (Navigation Logo) */}
-				<HomeIcon />
 
 				{/* App Header */}
 				<Header
@@ -111,7 +109,7 @@ const PageContainer: React.FC = ({ children }) => {
 				<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
 
 				{/* Children Components */}
-				{children}
+				<main className="main">{children}</main>
 			</div>
 		</ScrollToTop>
 	);

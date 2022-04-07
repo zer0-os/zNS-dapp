@@ -119,13 +119,7 @@ const DAOPage: React.FC = () => {
 	return (
 		<Switch>
 			<div
-				className={cx(
-					genericStyles.Container,
-					'main',
-					'background-primary',
-					'border-primary',
-					'border-rounded',
-				)}
+				className={cx(genericStyles.Container, 'main', 'background-primary')}
 			>
 				{isLoading ? (
 					<Loading />

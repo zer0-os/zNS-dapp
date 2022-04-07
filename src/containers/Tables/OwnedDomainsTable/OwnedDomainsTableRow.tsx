@@ -24,7 +24,7 @@ import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import styles from './OwnedDomainsTableRow.module.scss';
 
 //- Assets Imports
-import moreIcon from './assets/more-vertical.svg';
+import moreIcon from 'assets/more-vertical.svg';
 
 //- Constants Imports
 import { ACTIONS, ACTION_KEYS } from './OwnedDomainsTable.constants';
@@ -139,11 +139,6 @@ const OwnedDomainsTableRow = ({
 					) : (
 						'-'
 					)}
-				</td>
-
-				{/* Number of Bids */}
-				<td className={styles.Right} onClick={onRowClick}>
-					{isLoadingBidData ? <Spinner /> : bids ? bids.length : '-'}
 				</td>
 
 				{/* Actions */}

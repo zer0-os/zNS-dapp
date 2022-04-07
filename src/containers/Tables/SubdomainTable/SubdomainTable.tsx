@@ -41,6 +41,8 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 		domain?.subdomains,
 	);
 
+	console.log({ data });
+
 	/*
 	 * This pattern was previously used for bidirectional data
 	 * between row and table, but should not be used in the future.
@@ -64,24 +66,9 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 			className: 'domain',
 		},
 		{
-			label: 'Highest Bid (WILD)',
+			label: 'Volume (all time)',
 			accessor: '',
 			className: '',
-		},
-		{
-			label: '# of Bids',
-			accessor: '',
-			className: '',
-		},
-		{
-			label: 'Last Sale (WILD)',
-			accessor: '',
-			className: 'lastSale',
-		},
-		{
-			label: 'Volume (WILD)',
-			accessor: '',
-			className: 'volume',
 		},
 		{
 			label: '',

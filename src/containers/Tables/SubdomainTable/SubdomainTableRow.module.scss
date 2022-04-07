@@ -1,14 +1,14 @@
 .Row {
 	cursor: pointer;
-	/* transition: background var(--animation-time-short) linear; */
 }
 
 .Row:hover {
-	background: var(--color-background-alt-50);
+	background: #1a1022;
 }
 
 .Row td:first-of-type {
 	width: 50px;
+	text-align: center;
 }
 
 .Right {
@@ -34,7 +34,7 @@
 .Bid:not(:first-child) {
 	margin-top: 2px;
 	color: var(--color-grey);
-	font-size: 12px;
+	font-size: var(--font-size-small);
 }
 
 // .volumeCol {

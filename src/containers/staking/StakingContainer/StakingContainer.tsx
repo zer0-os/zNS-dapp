@@ -154,17 +154,7 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 				)}
 			</Overlay>
 			<Switch>
-				<div
-					className={cx(
-						className,
-						styles.Container,
-						'main',
-						'background-primary',
-						'border-primary',
-						'border-rounded',
-					)}
-					style={style}
-				>
+				<div className={cx(className, styles.Container)} style={style}>
 					<nav className={styles.Links}>
 						<Link
 							className={cx({

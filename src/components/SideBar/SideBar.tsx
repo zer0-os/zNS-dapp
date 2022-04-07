@@ -1,67 +1,58 @@
-import { FC } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { BuyTokenRedirect } from 'containers';
 
-import SideBarStyles from './SideBar.module.scss';
+import { LINKS } from 'constants/nav';
+import styles from './SideBar.module.scss';
+import classNames from 'classnames/bind';
+import { LOGO, ZERO } from 'constants/assets';
+import { URLS } from 'constants/urls';
+import { appFromPathname } from 'lib/utils';
+import { useWeb3React } from '@web3-react/core';
+import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
+import { startCase, toLower } from 'lodash';
+const cx = classNames.bind(styles);
 
-import marketIcon from './assets/icon_market.svg';
-import stakingIcon from './assets/icon_staking.svg';
-import daoIcon from './assets/icon_dao.svg';
-import { useHistory } from 'react-router-dom';
+const SideBar = () => {
+	const { pathname } = useLocation();
+	const { chainId } = useWeb3React();
 
-const SideBar: FC = () => {
-	const history = useHistory();
-	// Can't use route match without being inside a route
+	const network = chainIdToNetworkType(chainId);
 
 	return (
-		<div className={SideBarStyles.SideBar}>
-			<div className={SideBarStyles.Navigator}>
-				<div className={SideBarStyles.Icons}>
-					<div
-						className={SideBarStyles.Action}
-						key="market"
-						onClick={() => history.push('/market')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/market') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="market icon" src={marketIcon} />
-						</div>
-						{/* TODO: Fix overlaying issue with Name */}
-						<div className={SideBarStyles.Name}>Market</div>
-					</div>
-					<div
-						className={SideBarStyles.Action}
-						key="dao"
-						onClick={() => history.push('/dao')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/dao') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="staking icon" src={daoIcon} />
-						</div>
-						<div className={SideBarStyles.Name}>DAOs</div>
-					</div>
-					<div
-						className={SideBarStyles.Action}
-						key="staking"
-						onClick={() => history.push('/staking')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/staking') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="staking icon" src={stakingIcon} />
-						</div>
-						<div className={SideBarStyles.Name}>Staking</div>
-					</div>
-				</div>
+		<div className={styles.Container}>
+			<div className={styles.LinkContainer}>
+				<Link to={appFromPathname(pathname)}>
+					<img alt="app logo" src={LOGO} />
+				</Link>
+				<ul className={styles.Links}>
+					{LINKS.map((l) => (
+						<li key={l.label}>
+							<Link
+								to={l.route}
+								className={cx({ Selected: pathname.startsWith(l.route) })}
+							>
+								<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
+								<label>{l.label}</label>
+							</Link>
+						</li>
+					))}
+				</ul>
+			</div>
+			<div className={styles.Footer}>
+				<a
+					className={styles.Zero}
+					target="_blank"
+					href={URLS.ZERO}
+					rel="noreferrer"
+				>
+					<img alt="zero logo" src={ZERO} />
+				</a>
+				{network !== NETWORK_TYPES.MAINNET && (
+					<label className={styles.Network}>
+						Network: {startCase(toLower(network))}
+					</label>
+				)}
+				<BuyTokenRedirect />
 			</div>
 		</div>
 	);

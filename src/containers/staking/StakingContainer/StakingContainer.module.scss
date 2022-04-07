@@ -1,7 +1,5 @@
 .Container {
 	width: 100%;
-	padding: 16px;
-	margin-top: 16px;
 
 	> * {
 		&:not(:first-child) {
@@ -25,11 +23,7 @@
 
 			&.Active {
 				color: var(--color-text-primary);
-				text-shadow: var(--glow-text-white) !important;
-			}
-
-			&:hover {
-				text-shadow: none;
+				text-shadow: var(--glow-text-primary) !important;
 			}
 		}
 	}

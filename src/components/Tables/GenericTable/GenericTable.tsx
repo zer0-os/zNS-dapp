@@ -42,7 +42,7 @@ const GenericTable = (props: any) => {
 	const chunkSize = isGridView ? 6 : 12;
 
 	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
-	const shouldShowSearchBar = !props.notSearchable;
+	const shouldShowSearchBar = !props.notSearchable && props.data?.length > 0;
 
 	// Handler for infinite scroll trigger
 	const {
@@ -246,7 +246,7 @@ const GenericTable = (props: any) => {
 	return (
 		<div className={styles.Container} style={props.style}>
 			<div ref={contentRef} className={styles.Content}>
-				{(shouldShowSearchBar || shouldShowViewToggle) && (
+				{shouldShowSearchBar && (
 					<div className={styles.Controls}>
 						{shouldShowSearchBar && (
 							<SearchBar

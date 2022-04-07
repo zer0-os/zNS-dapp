@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FutureButton, Overlay } from 'components';
+import { FutureButton, Overlay, TextButton } from 'components';
 import BuyNow from '.';
 
 interface BuyNowButtonProps {
@@ -9,15 +9,17 @@ interface BuyNowButtonProps {
 	disabled?: boolean;
 	onSuccess?: () => void;
 	style?: React.CSSProperties;
+	isTextButton?: boolean;
 }
 
 const SetBuyNowButton = ({
 	className,
 	domainId,
-	buttonText,
+	buttonText = 'Set Buy Now',
 	disabled,
 	onSuccess,
 	style,
+	isTextButton,
 }: BuyNowButtonProps) => {
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -38,14 +40,20 @@ const SetBuyNowButton = ({
 					/>
 				</Overlay>
 			)}
-			<FutureButton
-				style={style}
-				className={className}
-				glow={!disabled}
-				onClick={onClick}
-			>
-				{buttonText ? buttonText : 'Edit Buy Now'}
-			</FutureButton>
+			{isTextButton ? (
+				<TextButton className={className} style={style} onClick={onClick}>
+					{buttonText}
+				</TextButton>
+			) : (
+				<FutureButton
+					style={style}
+					className={className}
+					glow={!disabled}
+					onClick={onClick}
+				>
+					{buttonText}
+				</FutureButton>
+			)}
 		</>
 	);
 };

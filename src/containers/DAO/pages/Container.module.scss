@@ -1,6 +1,4 @@
 .Container {
-	padding: 16px;
-
 	> * {
 		&:not(:first-child) {
 			margin-top: 9px;
@@ -26,6 +24,11 @@
 				margin-right: 0 !important;
 
 				&:not(:first-child) {
+					margin-top: 8px;
+				}
+
+				&:last-child {
+					display: none;
 					margin-top: 16px;
 				}
 			}
@@ -56,7 +59,7 @@
 
 			&.Active {
 				color: var(--color-text-primary);
-				text-shadow: var(--glow-text-white) !important;
+				text-shadow: var(--glow-text-primary) !important;
 			}
 
 			&:hover {

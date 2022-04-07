@@ -40,7 +40,6 @@ export const CancelBid = ({
 	}, [isLoading]);
 
 	const onFinish = () => {
-		onSuccess();
 		onClose();
 	};
 
@@ -48,6 +47,7 @@ export const CancelBid = ({
 		setCurrentStep(Step.Cancelling);
 		try {
 			await cancel(bid!);
+			onSuccess();
 			setCurrentStep(Step.Success);
 		} catch (e: any) {
 			setError(e.message);

@@ -5,4 +5,5 @@ export enum URLS {
 	ETHERSCAN = 'https://etherscan.io/address/',
 	// ----- ZERO_ROOT ----- //
 	ZERO_ROOT = '0://',
+	ZERO = 'https://www.zero.tech/',
 }

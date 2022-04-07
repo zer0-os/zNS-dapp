@@ -2,7 +2,7 @@
 	width: 588px;
 	padding: 25.5px 40px 40px 40px;
 
-	background: var(--background-blue-card-wilder);
+	background: var(--color-background);
 
 	p {
 		text-align: center;
@@ -115,7 +115,7 @@
 		text-align: center;
 		justify-content: space-around;
 		font-weight: 400;
-		font-size: 12px;
+		font-size: var(--font-size-small);
 
 		.eachBalances {
 			display: flex;
@@ -149,7 +149,7 @@
 		display: block;
 		color: var(--color-error);
 		padding-left: 25px;
-		font-size: 12px;
+		font-size: var(--font-size-small);
 	}
 
 	.PersonalInfo {

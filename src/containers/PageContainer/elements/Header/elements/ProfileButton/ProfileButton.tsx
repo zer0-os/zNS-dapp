@@ -1,6 +1,4 @@
 import React from 'react';
-import { IconButton } from 'components';
-import userIcon from 'assets/user.svg';
 import './_profile-button.scss';
 
 type ProfileButtonProps = {
@@ -11,10 +9,29 @@ export const ProfileButton: React.FC<ProfileButtonProps> = ({
 	onOpenProfile,
 }) => {
 	return (
-		<IconButton
-			className="profile-button"
-			iconUri={userIcon}
-			onClick={onOpenProfile}
-		/>
+		<div className="profile-button__container">
+			<button className="profile-button" onClick={onOpenProfile}>
+				<svg
+					width="40"
+					height="40"
+					viewBox="0 0 40 40"
+					fill="none"
+					xmlns="http://www.w3.org/2000/svg"
+				>
+					<path
+						d="M28 29V27C28 25.9391 27.5786 24.9217 26.8284 24.1716C26.0783 23.4214 25.0609 23 24 23H16C14.9391 23 13.9217 23.4214 13.1716 24.1716C12.4214 24.9217 12 25.9391 12 27V29"
+						stroke="#D9D9D9"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
+					<path
+						d="M20 19C22.2091 19 24 17.2091 24 15C24 12.7909 22.2091 11 20 11C17.7909 11 16 12.7909 16 15C16 17.2091 17.7909 19 20 19Z"
+						stroke="#D9D9D9"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+					/>
+				</svg>
+			</button>
+		</div>
 	);
 };
