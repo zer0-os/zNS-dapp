@@ -1,0 +1,57 @@
+.NFTDetailsContainer {
+	margin-bottom: 28px;
+}
+
+.PlaceBidContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.TextContainer {
+	display: inline-block;
+	text-align: center;
+	word-break: break-word;
+	line-height: 24px;
+	padding-bottom: 0;
+
+	div {
+		display: inline-block;
+	}
+}
+
+.Estimate {
+	font-weight: 700;
+	color: var(--color-primary-lighter-3);
+	margin: 16px auto;
+}
+
+.TextInput {
+	color: var(--glow-text-white);
+	width: 268px;
+	margin: '0 auto';
+}
+
+.Buttons {
+	display: flex;
+	justify-content: center;
+	margin-top: 40px;
+}
+
+.Buttons > button:not(:first-child) {
+	margin-left: 24px;
+}
+
+.SuccessConfirmation {
+	color: var(--color-success);
+	line-height: 24px;
+	text-align: center;
+	margin: 40px 0;
+}
+
+.Error {
+	color: var(--color-error);
+	line-height: 24px;
+	text-align: center;
+	margin-top: 10px;
+}

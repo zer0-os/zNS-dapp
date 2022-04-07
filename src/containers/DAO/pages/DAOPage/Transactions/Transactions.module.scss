@@ -1,0 +1,46 @@
+.Loading {
+	padding: 32px;
+}
+
+.Transaction {
+	display: flex;
+	align-items: center;
+
+	@media only screen and (max-width: 800px) {
+		.Icon {
+			display: none;
+		}
+
+		span {
+			margin-left: 0 !important;
+		}
+	}
+
+	.Icon {
+		position: relative;
+		height: 32px;
+		width: 32px;
+		border-radius: 50%;
+		object-fit: cover;
+		background: #0a0a0a;
+
+		.Arrow {
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			height: 12px;
+			width: 12px;
+			border-radius: 50%;
+			background: #0a0a0a;
+			z-index: 2;
+		}
+	}
+
+	span {
+		margin-left: 16px;
+	}
+}
+
+.Empty {
+	padding: 35px; // this is an arbitrary amount to match loading spinner
+}

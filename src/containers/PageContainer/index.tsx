@@ -8,7 +8,6 @@ import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
-import { usePrevious } from 'lib/hooks/usePrevious';
 import { useNotification } from 'lib/hooks/useNotification';
 import { useMint } from 'lib/hooks/useMint';
 import { useStaking } from 'lib/hooks/useStaking';
@@ -35,7 +34,6 @@ const PageContainer: React.FC = ({ children }) => {
 		loading,
 		refetch,
 	} = useCurrentDomain();
-	const prevZnsDomain = usePrevious(znsDomain);
 	const { minted } = useMint();
 	const { fulfilled: stakingFulFilled } = useStaking();
 	const { addNotification } = useNotification();
@@ -91,14 +89,7 @@ const PageContainer: React.FC = ({ children }) => {
 
 	return (
 		<ScrollToTop>
-			<div
-				className={classnames(styles.PageContainer, {
-					[styles.isVisible]:
-						Boolean(znsDomain) ||
-						Boolean(prevZnsDomain) ||
-						Boolean(globalDomain.domain),
-				})}
-			>
+			<div className={classnames(styles.PageContainer)}>
 				{/* Toast Notifications */}
 				<NotificationDrawer />
 				{/* Home Icon (Navigation Logo) */}

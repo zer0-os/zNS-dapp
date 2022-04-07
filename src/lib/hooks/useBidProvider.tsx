@@ -8,7 +8,6 @@ import { tryFunction } from 'lib/utils';
 
 //- Hook Imports
 import { useWeb3React } from '@web3-react/core';
-import useNotification from './useNotification';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
@@ -92,7 +91,6 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	//////////////////////////
 
 	const { library } = useWeb3React<Web3Provider>();
-	const { addNotification } = useNotification();
 	const { instance: sdk } = useZnsSdk();
 
 	const acceptBid = useCallback(
@@ -222,12 +220,12 @@ export const useBidProvider = (): UseBidProviderReturn => {
 					(status) => onPlaceBidStatusChange(status, onStep),
 				);
 				onStep('Generating bid...');
-				addNotification(`Placed ${bid} WILD bid for ${domain.name}`);
 			} catch (e) {
 				console.warn(e);
+				throw new Error('Rejected by wallet');
 			}
 		},
-		[sdk, library, addNotification],
+		[sdk, library],
 	);
 
 	return useMemo(
