@@ -59,10 +59,11 @@ const BidList: React.FC<BidListProps> = ({
 
 	// Sort bids by date
 	const sortedBids = sortBidsByTime(bids);
-	const filteredBids = sortedBids.filter(
-		(bid) => bid.bidder.toLowerCase() !== account?.toLowerCase(),
-	);
-	const isFilteredBids = isAcceptBidEnabled ? filteredBids : sortedBids;
+	const bidsToShow = isAcceptBidEnabled
+		? sortedBids.filter(
+				(bid) => bid.bidder.toLowerCase() !== account?.toLowerCase(),
+		  )
+		: sortedBids;
 
 	useEffect(() => {
 		if (library) {
@@ -121,7 +122,7 @@ const BidList: React.FC<BidListProps> = ({
 						<p className={styles.Pending}>Accept bid transaction pending.</p>
 					)}
 					<ul className={isAccepting ? styles.Accepting : ''}>
-						{isFilteredBids.map((bid: Bid, i: number) => (
+						{bidsToShow.map((bid: Bid, i: number) => (
 							<li key={bid.bidNonce} className={styles.Bid}>
 								<div>
 									<label>{moment(Number(bid.timestamp)).fromNow()}</label>
