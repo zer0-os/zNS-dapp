@@ -94,6 +94,7 @@ const OwnedDomainsTableRow = ({
 						onAccept={refetch}
 						isLoading={isLoadingBidData}
 						highestBid={highestBid?.amount}
+						isAcceptBidEnabled
 					/>
 				</Overlay>
 			);
