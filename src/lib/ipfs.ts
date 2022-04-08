@@ -2,7 +2,6 @@ import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 
 /**
  * Pulls the IPFS hash from an IPFS url
- * Note: this will currently not handle nested IPFS content, i.e. ipfs.io/ipfs/[hash]/content
  * @param url IPFS url to get hash from
  * @returns IPFS hash from url
  */
