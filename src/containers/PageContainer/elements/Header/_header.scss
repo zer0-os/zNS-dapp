@@ -40,7 +40,7 @@ $height: 46px;
 		align-items: center;
 		justify-content: space-between;
 		height: $height;
-		padding: 0px 17px;
+		padding: 0px 4px;
 	}
 
 	&__navigation {
@@ -58,9 +58,9 @@ $height: 46px;
 		&-zna-link {
 			flex-shrink: 0;
 
-			@media only screen and (max-width: 768px) {
-				margin-left: 0 !important;
-			}
+			// @media only screen and (max-width: 768px) {
+			// 	margin-left: 0 !important;
+			// }
 		}
 
 		&-search {
@@ -113,10 +113,11 @@ $height: 46px;
 	}
 
 	&__actions {
+		display: none;
 		position: fixed;
 		right: 0;
 
-		display: flex;
+		// display: flex;
 		flex-direction: row;
 		align-items: center;
 		padding: 24px;
