@@ -18,6 +18,10 @@ $height: 46px;
 		border: 1px solid #23142f;
 		z-index: 4;
 
+		@media only screen and (min-width: 834px) {
+			margin-top: 8px;
+		}
+
 		@media only screen and (min-width: 1200px) {
 			margin-top: 24px;
 		}
