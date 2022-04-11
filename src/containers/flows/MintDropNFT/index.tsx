@@ -20,6 +20,7 @@ import {
 	getUserEligibility,
 	getNumberPurchasedByUser,
 	getBalanceEth,
+	getMaxPurchasesPerUser,
 } from './helpers';
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
@@ -178,12 +179,12 @@ const MintDropNFTFlowContainer = () => {
 		}
 
 		const getData = async () => {
-			if (!zSaleInstance || !library || !account) {
+			if (!zSaleInstance || !library) {
 				return;
 			}
 
 			// Get the data related to the drop
-			getDropData(zSaleInstance, library, account)
+			getDropData(zSaleInstance)
 				.then((d) => {
 					if (!isMounted) {
 						return;
@@ -205,7 +206,6 @@ const MintDropNFTFlowContainer = () => {
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
-					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 					setFailedToLoad(false);
 				})
 				.catch((e) => {
@@ -235,6 +235,11 @@ const MintDropNFTFlowContainer = () => {
 					setIsUserWhitelisted(d);
 				}
 			});
+			getMaxPurchasesPerUser(zSaleInstance, account).then((d) => {
+				if (isMounted && d !== undefined) {
+					setMaxPurchasesPerUser(d);
+				}
+			});
 		} else {
 			setIsUserWhitelisted(undefined);
 		}
@@ -262,7 +267,7 @@ const MintDropNFTFlowContainer = () => {
 				}
 			});
 
-			getNumberPurchasedByUser(zSaleInstance, library).then((d) => {
+			getNumberPurchasedByUser(zSaleInstance, account).then((d) => {
 				if (isMounted && d !== undefined) {
 					setNumberPurchasedByUser(d);
 				}
@@ -279,12 +284,11 @@ const MintDropNFTFlowContainer = () => {
 
 	useEffect(() => {
 		let isMounted = true;
-
-		if (!zSaleInstance || isSaleHalted || !library || !account) {
+		if (!zSaleInstance || isSaleHalted || !library) {
 			return;
 		}
 
-		getDropData(zSaleInstance, library, account)
+		getDropData(zSaleInstance)
 			.then((d) => {
 				if (!isMounted) {
 					return;
@@ -345,9 +349,7 @@ const MintDropNFTFlowContainer = () => {
 		) {
 			// Fetch minted count periodically
 			timer = setInterval(async () => {
-				const sold = await zSaleInstance.getNumberOfDomainsSold(
-					library.getSigner(),
-				);
+				const sold = await zSaleInstance.getNumberOfDomainsSold();
 				if (sold) setWheelsMinted(sold.toNumber());
 			}, 1000);
 		}
@@ -360,7 +362,7 @@ const MintDropNFTFlowContainer = () => {
 
 	useAsyncEffect(async () => {
 		if (library) {
-			const price = await zSaleInstance.getSalePrice(library.getSigner());
+			const price = await zSaleInstance.getSalePrice();
 			setPricePerNFT(Number(price));
 		}
 	}, [zSaleInstance, library]);

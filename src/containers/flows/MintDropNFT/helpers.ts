@@ -1,25 +1,16 @@
-import { Web3Provider } from '@ethersproject/providers';
 import { ethers } from 'ethers';
 import { Stage, DropData } from './types';
 import { WhitelistSimpleSale, ERC20 } from 'types';
-import {
-	Instance,
-	IPFSGatewayUri,
-	SaleData,
-	SaleStatus,
-} from '@zero-tech/zsale-sdk/lib/types';
+import { Instance, SaleData, SaleStatus } from '@zero-tech/zsale-sdk/lib/types';
 
 export const getDropData = (
 	zSaleInstance: Instance,
-	library: Web3Provider,
-	account: string,
 ): Promise<DropData | undefined> => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const [dropStage, saleData, maxPurchasesPerUser] = await Promise.all([
-				getDropStage(zSaleInstance, library),
-				getWheelQuantities(zSaleInstance, library),
-				getMaxPurchasesPerUser(zSaleInstance, account),
+			const [dropStage, saleData] = await Promise.all([
+				getDropStage(zSaleInstance),
+				getWheelQuantities(zSaleInstance),
 			]);
 
 			// Check if we somehow got an undefined variable
@@ -27,8 +18,7 @@ export const getDropData = (
 				dropStage === undefined ||
 				saleData === undefined ||
 				saleData.amountForSale === undefined ||
-				saleData.amountSold === undefined ||
-				maxPurchasesPerUser === undefined
+				saleData.amountSold === undefined
 			) {
 				throw Error('Failed to retrieve primary data');
 			}
@@ -37,9 +27,9 @@ export const getDropData = (
 				dropStage,
 				wheelsTotal: saleData.amountForSale,
 				wheelsMinted: saleData.amountSold,
-				maxPurchasesPerUser,
 			} as DropData);
 		} catch (error) {
+			console.log(error);
 			reject(error);
 		}
 	});
@@ -47,40 +37,36 @@ export const getDropData = (
 
 const getDropStage = async (
 	zSaleInstance: Instance,
-	library: Web3Provider,
 ): Promise<Stage | undefined> => {
-	const status = await zSaleInstance.getSaleStatus(library.getSigner());
-
+	const status = await zSaleInstance.getSaleStatus();
+	console.log(status);
 	if (status === SaleStatus.NotStarted) {
 		return Stage.Upcoming;
 	}
 
-	const data = await zSaleInstance.getSaleData(library.getSigner());
+	const data = await zSaleInstance.getSaleData();
 
 	if (data.amountSold === data.amountForSale) {
 		return Stage.Sold;
 	}
 
-	if (status === SaleStatus.MintlistOnly) {
+	if (status === SaleStatus.PrivateSale) {
 		return Stage.Whitelist;
 	}
 
 	if (status === SaleStatus.Ended) {
 		return Stage.Ended;
 	}
-	// TODO: Add support for Public SaleStatus
-	// if (status === SaleStatus.Public) {
-	// 	return Stage.Public;
-	// }
+	if (status === SaleStatus.PublicSale) {
+		return Stage.Public;
+	}
 };
 
 export const getNumberPurchasedByUser = async (
 	zSaleInstance: Instance,
-	library: Web3Provider,
+	account: string,
 ) => {
-	const number = await zSaleInstance.getDomainsPurchasedByAccount(
-		library.getSigner(),
-	);
+	const number = await zSaleInstance.getDomainsPurchasedByAccount(account);
 	return number;
 };
 
@@ -88,29 +74,22 @@ export const getMaxPurchasesPerUser = async (
 	zSaleInstance: Instance,
 	account: string,
 ) => {
-	const { quantity } = await zSaleInstance.getMintlistedUserClaim(
-		account,
-		IPFSGatewayUri.fleek,
-	);
+	const { quantity } = await zSaleInstance.getMintlistedUserClaim(account);
 	return quantity;
 };
 
 export const getUserEligibility = async (
-	userId: string,
+	account: string,
 	zSaleInstance: Instance,
 ): Promise<boolean | undefined> => {
-	const isWhitelisted = await zSaleInstance.isUserOnMintlist(
-		userId,
-		IPFSGatewayUri.fleek,
-	);
+	const isWhitelisted = await zSaleInstance.isUserOnMintlist(account);
 	return isWhitelisted;
 };
 
 const getWheelQuantities = async (
 	zSaleInstance: Instance,
-	library: Web3Provider,
 ): Promise<SaleData | undefined> => {
-	const data = await zSaleInstance.getSaleData(library.getSigner());
+	const data = await zSaleInstance.getSaleData();
 
 	return data;
 };
