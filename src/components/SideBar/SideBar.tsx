@@ -1,11 +1,19 @@
+//- React Imports
 import { Link, useLocation } from 'react-router-dom';
+
+//- Containers Imports
 import { BuyTokenRedirect } from 'containers';
 
+//- Constants Imports
 import { LINKS } from 'constants/nav';
-import styles from './SideBar.module.scss';
-import classNames from 'classnames/bind';
 import { LOGO, ZERO } from 'constants/assets';
 import { URLS } from 'constants/urls';
+
+//- Styles Imports
+import styles from './SideBar.module.scss';
+
+//- Library Imports
+import classNames from 'classnames/bind';
 import { appFromPathname } from 'lib/utils';
 import { useWeb3React } from '@web3-react/core';
 import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';

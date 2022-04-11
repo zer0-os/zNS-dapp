@@ -4,6 +4,11 @@
 	margin: 0 auto;
 	padding: 8px;
 	box-sizing: border-box;
+	// Tablet
+	@media only screen and (min-width: 834px) {
+		margin: 0;
+		padding: 0;
+	}
 
 	.Main {
 		margin-top: 16px;
@@ -19,14 +24,17 @@
 		width: 100%;
 
 		.Actions {
+			// Mobile + Tablet
 			display: none;
-
+			// Laptop
 			@media only screen and (min-width: 1200px) {
 				display: flex;
 				position: relative;
-				align-items: baseline;
+				align-items: center;
+				height: 0;
 				right: 0;
 				padding: 28px;
+				margin-top: 20px;
 				gap: 16px;
 			}
 		}
@@ -42,12 +50,6 @@
 			margin: 0 auto;
 			max-width: 736px;
 		}
-	}
-
-	// Tablet
-	@media only screen and (min-width: 834px) {
-		margin: 0;
-		padding: 0;
 	}
 }
 

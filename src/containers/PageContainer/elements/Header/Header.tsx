@@ -1,5 +1,8 @@
+//- React Imports
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+
+//- library Imports
 import classnames from 'classnames';
 import { useStaking } from 'lib/hooks/useStaking';
 import { useMint } from 'lib/hooks/useMint';
@@ -7,8 +10,9 @@ import { useTransfer } from 'lib/hooks/useTransfer';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
+
+//- Components Imports
 import { ZNALink } from 'components';
-import { useHeaderData, useHeaderHandlers } from './hooks';
 import {
 	SearchDomains,
 	ConnectWalletButton,
@@ -18,7 +22,14 @@ import {
 	InfoButton,
 	HistoryButtons,
 } from './elements';
+
+//- Hooks Imports
+import { useHeaderData, useHeaderHandlers } from './hooks';
+
+//- Constants Imports
 import { Modal } from '../../PageContainer.constants';
+
+//- Styles Imports
 import './_header.scss';
 
 type HeaderProps = {
@@ -159,9 +170,6 @@ export const Header: React.FC<HeaderProps> = ({
 						onOpenProfile={handlers.handleOnOpenProfile}
 					/>
 				)}
-
-				{/* Buy token from external urls */}
-				{/* {formattedData.showBuyTokenRedirect && <BuyTokenRedirect />} */}
 
 				{/* Profile Button */}
 				{formattedData.showProfileButton && (

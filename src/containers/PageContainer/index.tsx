@@ -1,5 +1,8 @@
+//- React Imports
 import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+
+//- Library Imports
 import classnames from 'classnames';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
@@ -11,16 +14,20 @@ import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useNotification } from 'lib/hooks/useNotification';
 import { useMint } from 'lib/hooks/useMint';
 import { useStaking } from 'lib/hooks/useStaking';
+import useScrollDetection from 'lib/hooks/useScrollDetection';
+
+//- Components Imports
+import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
+import { Header, Modals, useModal, Actions } from './elements';
+
+//- Constants Imports
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { WALLETS } from 'constants/wallets';
 import { WALLET_NOTIFICATIONS } from 'constants/notifications';
-import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
 import { Modal } from './PageContainer.constants';
-import { Header, Modals, useModal } from './elements';
-import useScrollDetection from 'lib/hooks/useScrollDetection';
 
+//- Styles Imports
 import styles from './PageContainer.module.scss';
-import { Actions } from './elements/Actions';
 
 const PageContainer: React.FC = ({ children }) => {
 	/**
@@ -121,6 +128,7 @@ const PageContainer: React.FC = ({ children }) => {
 							{/* Children Components */}
 							<main className={styles.Main}>{children}</main>
 						</div>
+						{/* Actions */}
 						<Actions
 							pageWidth={pageWidth}
 							znsDomain={znsDomain}

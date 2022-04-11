@@ -1,5 +1,8 @@
+//- React Imports
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+
+//- Library Imports
 import { useStaking } from 'lib/hooks/useStaking';
 import { useMint } from 'lib/hooks/useMint';
 import { useTransfer } from 'lib/hooks/useTransfer';
@@ -7,7 +10,10 @@ import { useNavbar } from 'lib/hooks/useNavbar';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
 
+//- Hooks Imports
 import { useHeaderData, useHeaderHandlers } from '../Header/hooks';
+
+//- Components Imports
 import {
 	ConnectWalletButton,
 	MintButton,
@@ -15,10 +21,14 @@ import {
 	ProfileButton,
 	InfoButton,
 } from '../Header/elements';
+
+//- Constants Imports
 import { Modal } from '../../PageContainer.constants';
+
+//- Styles Imports
 import styles from '../../PageContainer.module.scss';
 
-type HeaderProps = {
+type ActionsProps = {
 	pageWidth: number;
 	znsDomain: Maybe<DisplayParentDomain>;
 	domainMetadata: Maybe<Metadata>;
@@ -26,7 +36,7 @@ type HeaderProps = {
 	openModal: (modal?: Modal | undefined) => () => void;
 };
 
-export const Actions: React.FC<HeaderProps> = ({
+export const Actions: React.FC<ActionsProps> = ({
 	pageWidth,
 	znsDomain,
 	domainMetadata,

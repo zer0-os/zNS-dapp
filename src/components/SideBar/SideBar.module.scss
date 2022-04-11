@@ -17,18 +17,8 @@ $icon-container-size: 54px;
 }
 
 .Container {
+	// Container Mobile
 	display: none;
-	// flex-direction: column;
-	// justify-content: space-between;
-
-	// // position: fixed;
-	// top: 0;
-	// left: 50%;
-	// height: 100vh;
-	// width: $full-width;
-	// // padding: 24px;
-	// padding: 18px 0;
-	// z-index: 10000;
 
 	// Container Tablet
 	@media only screen and (min-width: 834px) {
@@ -38,30 +28,25 @@ $icon-container-size: 54px;
 		position: sticky;
 		top: 18px;
 		height: 96vh;
-		width: $full-width;
+		width: auto !important;
+		align-items: center;
+		padding: 0 10px;
 		z-index: 10000;
 	}
 
 	// Container Desktop
 	@media only screen and (min-width: 1200px) {
 		margin: 0 10px;
-	}
-
-	@media only screen and (min-width: 834px) {
-		width: auto !important;
-		align-items: center;
-		padding: 0 10px;
-
-		@media only screen and (min-width: 1200px) {
-			align-items: flex-start;
-			padding: 0 24px;
-		}
+		align-items: flex-start;
+		padding: 0 24px;
 	}
 
 	.LinkContainer {
+		// Mobile + Tablet
 		display: flex;
 		flex-direction: column;
 
+		// Laptop/Desktop
 		@media only screen and (min-width: 1200px) {
 			align-items: flex-start;
 			margin: 24px 0 0 0;
@@ -72,11 +57,11 @@ $icon-container-size: 54px;
 		}
 	}
 
-	// transform: $transform;
-
 	.Network {
+		// Mobile
 		display: none;
 
+		// Tablet + Laptop/Desktop
 		@media only screen and (min-width: 1200px) {
 			display: block;
 			width: 100%;
@@ -162,6 +147,7 @@ $icon-container-size: 54px;
 				display: none;
 				margin: 8px;
 
+				// Laptop/Desktop
 				@media only screen and (min-width: 1200px) {
 					display: flex;
 				}
@@ -173,6 +159,7 @@ $icon-container-size: 54px;
 			width: 32px;
 			align-self: baseline;
 
+			// Laptop/Desktop
 			@media only screen and (min-width: 1200px) {
 				margin: 4px 0 0 8px;
 			}
