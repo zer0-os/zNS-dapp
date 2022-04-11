@@ -2,10 +2,9 @@ $height: 46px;
 
 .header {
 	&__container {
-		position: fixed;
-		top: 24px;
+		position: sticky;
+		top: 8px;
 		max-width: var(--width-max);
-
 		display: flex;
 		flex-direction: column;
 		width: 100%;
@@ -26,11 +25,14 @@ $height: 46px;
 				border: 1px solid #6a3991 !important;
 			}
 		}
-
-		// &--is-searching {
-		// 	box-shadow: none;
-		// 	border: 1px solid #6a3991;
-		// }
+		&--on-scroll-up {
+			top: 8px;
+			transition: opacity 0.4s ease-in-out, 0.4s ease-in-out;
+		}
+		&--on-scroll-down {
+			top: -50px;
+			transition: opacity 0.4s ease-in-out, 0.4s ease-in-out;
+		}
 	}
 
 	&__content {

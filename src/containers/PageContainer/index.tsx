@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 import { useWeb3React } from '@web3-react/core';
@@ -17,6 +17,8 @@ import { WALLET_NOTIFICATIONS } from 'constants/notifications';
 import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
 import { Modal } from './PageContainer.constants';
 import { Header, Modals, useModal } from './elements';
+import useScrollDetection from 'lib/hooks/useScrollDetection';
+
 import styles from './PageContainer.module.scss';
 
 const PageContainer: React.FC = ({ children }) => {
@@ -39,6 +41,10 @@ const PageContainer: React.FC = ({ children }) => {
 	const { addNotification } = useNotification();
 	const { pageWidth } = usePageWidth();
 	const { modal, openModal, closeModal } = useModal();
+
+	// Scroll Detection
+	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
+	useScrollDetection(setScrollDetectionDown);
 
 	/**
 	 * Callback Functions
@@ -93,23 +99,26 @@ const PageContainer: React.FC = ({ children }) => {
 				{/* Toast Notifications */}
 				<NotificationDrawer />
 
-				{/* App Header */}
-				<Header
-					pageWidth={pageWidth}
-					znsDomain={znsDomain}
-					domainMetadata={domainMetadata}
-					account={account}
-					openModal={openModal}
-				/>
-
 				{/* App Sidebar */}
 				<SideBar />
 
 				{/* App level Modals */}
 				<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
 
-				{/* Children Components */}
-				<main className="main">{children}</main>
+				<div className={styles.InnerContainer}>
+					{/* App Header */}
+					<Header
+						pageWidth={pageWidth}
+						znsDomain={znsDomain}
+						domainMetadata={domainMetadata}
+						account={account}
+						openModal={openModal}
+						isScrollDetectionDown={isScrollDetectionDown}
+					/>
+
+					{/* Children Components */}
+					<main className="main">{children}</main>
+				</div>
 			</div>
 		</ScrollToTop>
 	);

@@ -27,6 +27,7 @@ type HeaderProps = {
 	znsDomain: Maybe<DisplayParentDomain>;
 	domainMetadata: Maybe<Metadata>;
 	account: Maybe<string>;
+	isScrollDetectionDown: boolean;
 	openModal: (modal?: Modal | undefined) => () => void;
 };
 
@@ -35,6 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
 	znsDomain,
 	domainMetadata,
 	account,
+	isScrollDetectionDown,
 	openModal,
 }) => {
 	const history = useHistory();
@@ -79,6 +81,8 @@ export const Header: React.FC<HeaderProps> = ({
 			className={classnames('header__container', {
 				'header__container--is-searching': isSearching,
 				'header__container--is-active': localState.isSearchInputHovered,
+				'header__container--on-scroll-up': !isScrollDetectionDown,
+				'header__container--on-scroll-down': isScrollDetectionDown,
 			})}
 		>
 			<div className="header__content">
