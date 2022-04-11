@@ -37,7 +37,7 @@ export function useZSaleSdk() {
 			case NETWORK_TYPES.RINKEBY: {
 				return zsale.createInstance({
 					web3Provider,
-					contractAddress: '0x86d879a4788B9e5D3D166BcD7210F967c1182Dab',
+					contractAddress: '0xC82E9E9B1e28F10a4C13a915a0BDCD4Db00d086d',
 					merkleTreeFileUri:
 						'https://ipfs.io/ipfs/QmSarejrKPohT6peSHAWwLDkfBhy8qwEouFhBMzzw2vCit',
 				});
