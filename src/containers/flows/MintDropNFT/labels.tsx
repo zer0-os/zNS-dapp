@@ -39,6 +39,27 @@ export const getBannerLabel = (
 		if (isFinished) {
 			<>Wilder Beasts public release starting - you may need to refresh</>;
 		} else {
+			if (countdownDate && !isFinished) {
+				return (
+					<div style={{ display: 'flex', flexDirection: 'column' }}>
+						<span>
+							Available to everyone in{' '}
+							{countdownDate && (
+								<Countdown to={countdownDate} onFinish={onFinish} />
+							)}
+						</span>
+					</div>
+				);
+			}
+			if (countdownDate && isFinished) {
+				return (
+					<div style={{ display: 'flex', flexDirection: 'column' }}>
+						<span>
+							Public release starting now - waiting for contract to begin
+						</span>
+					</div>
+				);
+			}
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
 					<span>
@@ -55,45 +76,16 @@ export const getBannerLabel = (
 			);
 		}
 	}
-	if (dropStage === Stage.Whitelist) {
-		let timer;
-		if (countdownDate && !isFinished) {
-			timer = (
-				<span style={{ display: 'inline-block', marginTop: 6 }}>
-					Available to everyone in{' '}
-					{countdownDate && (
-						<Countdown to={countdownDate} onFinish={onFinish} />
-					)}
-				</span>
-			);
-		}
-		if (countdownDate && isFinished) {
-			timer = (
-				<span style={{ display: 'inline-block', marginTop: 4 }}>
-					Public release starting now - waiting for contract to begin
-				</span>
-			);
-		}
-
-		return (
-			<div style={{ display: 'flex', flexDirection: 'column' }}>
-				<span>
-					Presale Minting is now Open! {totalLabel(wheelsMinted!, wheelsTotal!)}
-				</span>
-				{timer}
-			</div>
-		);
-	}
 	if (dropStage === Stage.Public) {
-		if (Math.max(wheelsTotal! - wheelsMinted!, 0) !== 0) {
-			return (
-				<>
-					The beasts sale is finished.{' '}
-					{Math.max(wheelsTotal! - wheelsMinted!, 0)} remaining beasts have been
-					transferred to the Wilder DAO.
-				</>
-			);
-		}
+		// if (Math.max(wheelsTotal! - wheelsMinted!, 0) !== 0) {
+		// 	return (
+		// 		<>
+		// 			The beasts sale is finished.{' '}
+		// 			{Math.max(wheelsTotal! - wheelsMinted!, 0)} remaining beasts have been
+		// 			transferred to the Wilder DAO.
+		// 		</>
+		// 	);
+		// }
 		return (
 			<>
 				Minting is now open to everyone, act fast to secure your Beasts!{' '}
@@ -104,7 +96,6 @@ export const getBannerLabel = (
 
 	if (dropStage === Stage.Sold) {
 		return <>Wolves Sale is Complete</>;
-		// return <>Air Wild Season One is sold out!</>;
 	}
 
 	return <>Loading drop data...</>;

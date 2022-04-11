@@ -47,7 +47,9 @@ const Info = (props: InfoProps) => {
 		!isUserDataLoading &&
 		!isAuctionDataLoading &&
 		(props.dropStage === Stage.Public ||
-			(props.dropStage === Stage.Whitelist && props.isUserWhitelisted));
+			(props.dropStage === Stage.Whitelist &&
+				props.isUserWhitelisted &&
+				props.maxPurchasesPerUser! > 0));
 
 	// If the user has any wheels left to mint
 	const userHasWheelsRemaining =
@@ -191,7 +193,7 @@ const Info = (props: InfoProps) => {
 				<div className={styles.Available}>
 					<span>Beasts Available</span>
 					<h2>{props.wheelsTotal - props.wheelsMinted} Beasts Remaining</h2>
-					<ArrowLink href="https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/">
+					<ArrowLink href="https://zine.wilderworld.com/wolfpack-genesis-drop/">
 						View Auction Rules
 					</ArrowLink>
 				</div>

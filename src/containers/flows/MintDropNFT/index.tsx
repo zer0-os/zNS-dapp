@@ -27,7 +27,14 @@ import useAsyncEffect from 'use-async-effect';
 
 const MintDropNFTFlowContainer = () => {
 	// Hardcoded dates
-	const DATE_PUBLIC = 1642730400655;
+	const currentTime = new Date().getTime();
+
+	// Temporary values
+
+	const PRIVATE_SALE_END_DATE = currentTime + 10000;
+	const PUBLIC_SALE_START_TIME = currentTime + 20000;
+
+	// const PUBLIC_SALE_START_TIME = 1642730400655;
 
 	//////////////////
 	// State & Data //
@@ -96,10 +103,16 @@ const MintDropNFTFlowContainer = () => {
 			window?.open('https://discord.gg/7tyggH6eh9', '_blank')?.focus();
 			return;
 		}
+		if (dropStage === Stage.Whitelist && countdownDate) {
+			window?.open(
+				'https://zine.wilderworld.com/wolfpack-genesis-drop/',
+				'_blank',
+			);
+		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold) {
-			history.push('market/kicks.airwild.season1');
+			history.push('market/beasts.wolf');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -169,11 +182,11 @@ const MintDropNFTFlowContainer = () => {
 	useEffect(() => {
 		let isMounted = true;
 
-		// Generally this would be < DATE_WHITELIST & < DATE_PUBLIC
+		// Generally this would be < DATE_WHITELIST & < PUBLIC_SALE_START_TIME
 		// but given time constraints we're just going to compare
-		// to DATE_PUBLIC
+		// to PUBLIC_SALE_START_TIME
 		if (isSaleHalted) {
-			setCountdownDate(DATE_PUBLIC);
+			setCountdownDate(PUBLIC_SALE_START_TIME);
 			setFailedToLoad(false);
 			return;
 		}
@@ -196,7 +209,11 @@ const MintDropNFTFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						if (Date.now() > PRIVATE_SALE_END_DATE) {
+							setCountdownDate(PUBLIC_SALE_START_TIME);
+						} else {
+							setCountdownDate(undefined);
+						}
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -307,7 +324,12 @@ const MintDropNFTFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						// setCountdownDate(PUBLIC_SALE_START_TIME);
+						if (Date.now() > PRIVATE_SALE_END_DATE) {
+							setCountdownDate(PUBLIC_SALE_START_TIME);
+						} else {
+							setCountdownDate(undefined);
+						}
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -367,6 +389,18 @@ const MintDropNFTFlowContainer = () => {
 		}
 	}, [zSaleInstance, library]);
 
+	useAsyncEffect(async () => {
+		const interval = setInterval(async () => {
+			if (Date.now() > PRIVATE_SALE_END_DATE) {
+				setCountdownDate(PUBLIC_SALE_START_TIME);
+				clearInterval(interval);
+			} else {
+				setCountdownDate(undefined);
+			}
+		}, 13000);
+		return () => clearInterval(interval);
+	}, []);
+
 	///////////////
 	// Fragments //
 	///////////////
@@ -408,7 +442,9 @@ const MintDropNFTFlowContainer = () => {
 	};
 
 	const buttonText = () => {
-		return failedToLoad || isSaleHalted
+		return failedToLoad ||
+			isSaleHalted ||
+			(dropStage === Stage.Whitelist && countdownDate)
 			? 'Learn More'
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
