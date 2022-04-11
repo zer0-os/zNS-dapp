@@ -20,6 +20,7 @@ import { Header, Modals, useModal } from './elements';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
 
 import styles from './PageContainer.module.scss';
+import { Actions } from './elements/Actions';
 
 const PageContainer: React.FC = ({ children }) => {
 	/**
@@ -106,7 +107,6 @@ const PageContainer: React.FC = ({ children }) => {
 					<div className={styles.FlexRowWrapper}>
 						{/* App Sidebar */}
 						<SideBar />
-
 						<div className={styles.FlexColumnWrapper}>
 							{/* App Header */}
 							<Header
@@ -121,6 +121,13 @@ const PageContainer: React.FC = ({ children }) => {
 							{/* Children Components */}
 							<main className={styles.Main}>{children}</main>
 						</div>
+						<Actions
+							pageWidth={pageWidth}
+							znsDomain={znsDomain}
+							domainMetadata={domainMetadata}
+							account={account}
+							openModal={openModal}
+						/>
 					</div>
 				</div>
 			</div>

@@ -1,6 +1,10 @@
 $height: 46px;
 
 .header {
+	&__flex-wrapper {
+		display: flex;
+		flex-direction: row;
+	}
 	&__outer-container {
 		position: sticky;
 		top: 8px;
@@ -13,6 +17,10 @@ $height: 46px;
 		overflow: none;
 		border: 1px solid #23142f;
 		z-index: 4;
+
+		@media only screen and (min-width: 1200px) {
+			margin-top: 24px;
+		}
 	}
 
 	&__container {
@@ -108,21 +116,6 @@ $height: 46px;
 		}
 	}
 
-	&__home-link {
-		flex-shrink: 0;
-		margin-right: 16px;
-		font-weight: 700;
-		text-transform: uppercase;
-
-		@media only screen and (max-width: 1200px) {
-			margin-right: 0;
-		}
-
-		@media only screen and (max-width: 500px) {
-			display: none;
-		}
-	}
-
 	&__actions {
 		display: none;
 
@@ -137,9 +130,7 @@ $height: 46px;
 		}
 
 		@media only screen and (min-width: 1200px) {
-			padding: 24px;
-			gap: 16px;
-			height: 56px;
+			display: none;
 		}
 	}
 }

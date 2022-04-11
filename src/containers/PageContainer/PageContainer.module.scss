@@ -5,10 +5,8 @@
 	padding: 8px;
 	box-sizing: border-box;
 
-	// Tablet
-	@media only screen and (min-width: 834px) {
-		margin: 0;
-		padding: 0;
+	.Main {
+		margin-top: 16px;
 	}
 
 	.InnerContainer {
@@ -18,20 +16,38 @@
 	.FlexRowWrapper {
 		display: flex;
 		flex-direction: row;
+		width: 100%;
+
+		.Actions {
+			display: none;
+
+			@media only screen and (min-width: 1200px) {
+				display: flex;
+				position: relative;
+				align-items: baseline;
+				right: 0;
+				padding: 28px;
+				gap: 16px;
+			}
+		}
 	}
 
 	.FlexColumnWrapper {
 		// Mobile
 		margin: 0;
+		width: 100%;
 
 		// Tablet
 		@media only screen and (min-width: 834px) {
-			margin: 0 16px;
+			margin: 0 auto;
+			max-width: 736px;
 		}
 	}
 
-	.Main {
-		margin-top: 16px;
+	// Tablet
+	@media only screen and (min-width: 834px) {
+		margin: 0;
+		padding: 0;
 	}
 }
 

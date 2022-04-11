@@ -22,7 +22,7 @@ const SideBar = () => {
 		<div className={styles.BorderContainer}>
 			<div className={styles.Container}>
 				<div className={styles.LinkContainer}>
-					<Link to={appFromPathname(pathname)}>
+					<Link className={styles.HomeLink} to={appFromPathname(pathname)}>
 						<img alt="app logo" src={LOGO} />
 					</Link>
 					<ul className={styles.Links}>
@@ -39,7 +39,9 @@ const SideBar = () => {
 						))}
 					</ul>
 				</div>
+
 				<div className={styles.Footer}>
+					<BuyTokenRedirect />
 					<a
 						className={styles.Zero}
 						target="_blank"
@@ -53,7 +55,6 @@ const SideBar = () => {
 							Network: {startCase(toLower(network))}
 						</label>
 					)}
-					<BuyTokenRedirect />
 				</div>
 			</div>
 		</div>

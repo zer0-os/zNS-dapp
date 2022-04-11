@@ -8,7 +8,6 @@ import { useNavbar } from 'lib/hooks/useNavbar';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
 import { ZNALink } from 'components';
-// import { URLS } from 'constants/urls';
 import { useHeaderData, useHeaderHandlers } from './hooks';
 import {
 	SearchDomains,
