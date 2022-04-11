@@ -23,7 +23,7 @@ const ViewBidsButton = ({
 		<>
 			{isTextButton ? (
 				<TextButton style={style} className={className} onClick={onClick}>
-					{buttonText ? buttonText : LABELS.BUTTON_TEXT}
+					{buttonText ?? LABELS.BUTTON_TEXT}
 				</TextButton>
 			) : (
 				<FutureButton
@@ -32,7 +32,7 @@ const ViewBidsButton = ({
 					glow
 					onClick={onClick}
 				>
-					{buttonText ? buttonText : LABELS.BUTTON_TEXT}
+					{buttonText ?? LABELS.BUTTON_TEXT}
 				</FutureButton>
 			)}
 		</>
