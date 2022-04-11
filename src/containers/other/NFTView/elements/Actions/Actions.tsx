@@ -5,57 +5,39 @@ import {
 	BuyNowButton,
 	CancelBidButton,
 	SetBuyNowButton,
+	ViewBidsButton,
 } from 'containers';
 
 // Library
-import { toFiat } from 'lib/currency';
 import { formatEther } from '@ethersproject/units';
 import { Bid } from '@zero-tech/zns-sdk/lib/zAuction';
+
+//- Types Imports
+import { ActionBlock, ACTION_TYPES } from './Actions.types';
+
+//- Constants Imports
+import { LABELS } from 'constants/labels';
+import { CURRENCY } from 'constants/currency';
+import { TEST_ID, wrapFiat } from './Actions.constants';
 
 // Styles
 import styles from './Actions.module.scss';
 import classNames from 'classnames/bind';
+
 const cx = classNames.bind(styles);
-
-enum ACTION_TYPES {
-	BuyNow,
-	SetBuyNow,
-	PlaceBid,
-	YourBid,
-}
-
-export const TEST_ID = {
-	CONTAINER: 'actions-container',
-	BUY_NOW: 'actions-buy-now',
-	SET_BUY_NOW: 'actions-set-buy-now',
-	PLACE_BID: 'actions-place-bid',
-	YOUR_BID: 'actions-your-bid',
-};
-
-type ActionBlock = {
-	amount: number | string | undefined;
-	label: string;
-	amountUsd: string;
-	buttonComponent: (isTextButton?: boolean) => JSX.Element;
-	isVisible: boolean;
-	shouldShowBorder?: boolean;
-	testId: string;
-};
 
 type ActionsProps = {
 	domainId?: string;
 	buyNowPrice?: number;
 	highestBid?: number;
 	onMakeBid: () => void;
+	onViewBids: () => void;
 	yourBid?: Bid;
 	isBiddable?: boolean;
 	isOwnedByUser?: boolean;
 	wildPriceUsd?: number;
 	refetch: () => void;
-};
-
-const wrapFiat = (number: number) => {
-	return '$' + toFiat(number);
+	bidData?: Bid[];
 };
 
 const Actions = ({
@@ -63,61 +45,80 @@ const Actions = ({
 	buyNowPrice,
 	highestBid,
 	onMakeBid,
+	onViewBids,
 	yourBid,
 	isBiddable,
 	isOwnedByUser,
 	wildPriceUsd,
 	refetch,
+	bidData,
 }: ActionsProps) => {
-	/**
-	 * This is a pretty messy structure - could be refactored moving forward
-	 */
+	//- Condition helpers
+	const isBidData = bidData && bidData?.length > 0;
+	const isYourBids = !isOwnedByUser && Boolean(yourBid);
+	const isPlaceBid = !isOwnedByUser && isBiddable === true;
+	const isSetBuyNow = isOwnedByUser === true && Boolean(domainId);
+	const isBuyNow = Boolean(buyNowPrice) && !isOwnedByUser && Boolean(domainId);
+	const isViewBids =
+		isOwnedByUser !== undefined && isBiddable === true && Boolean(isBidData);
+
+	const highestBidTextValue =
+		Boolean(highestBid) && Boolean(wildPriceUsd)
+			? wrapFiat(highestBid! * wildPriceUsd!)
+			: LABELS.NO_BIDS_PLACED;
+
+	const yourBidTextValue =
+		yourBid && wildPriceUsd
+			? wrapFiat(Number(formatEther(yourBid.amount)) * wildPriceUsd)
+			: '';
+
+	const placeBidButtonTextValue =
+		!yourBid || (yourBid && Number(formatEther(yourBid.amount)) === highestBid)!
+			? LABELS.PLACE_A_BID
+			: LABELS.REBID;
+
+	const buyNowPriceValue =
+		buyNowPrice && wildPriceUsd
+			? wrapFiat(buyNowPrice * wildPriceUsd)
+			: LABELS.NO_BUY_NOW;
+
 	const actions: { [action in ACTION_TYPES]: ActionBlock } = {
 		[ACTION_TYPES.BuyNow]: {
 			amount: buyNowPrice,
-			label: 'Buy Now (WILD)',
-			amountUsd:
-				buyNowPrice && wildPriceUsd
-					? wrapFiat(buyNowPrice * wildPriceUsd)
-					: 'No buy now set',
+			label: `${LABELS.BUY_NOW} (${CURRENCY.WILD})`,
+			amountUsd: buyNowPriceValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<BuyNowButton
 					onSuccess={refetch}
-					buttonText="Buy Now"
+					buttonText={LABELS.BUY_NOW}
 					domainId={domainId ?? ''}
 					isTextButton={isTextButton}
 					className={cx({ TextButton: isTextButton })}
 				/>
 			),
-			isVisible: Boolean(buyNowPrice) && !isOwnedByUser && Boolean(domainId),
+			isVisible: isBuyNow,
 			testId: TEST_ID.BUY_NOW,
 		},
 		[ACTION_TYPES.SetBuyNow]: {
 			amount: buyNowPrice ? buyNowPrice : '-',
-			label: 'Buy Now (WILD)',
-			amountUsd:
-				buyNowPrice && wildPriceUsd
-					? wrapFiat(buyNowPrice * wildPriceUsd)
-					: 'No buy now set',
+			label: `${LABELS.BUY_NOW} (${CURRENCY.WILD})`,
+			amountUsd: buyNowPriceValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<SetBuyNowButton
 					onSuccess={refetch}
-					buttonText={buyNowPrice ? 'Edit Buy Now' : 'Set Buy Now'}
+					buttonText={buyNowPrice ? LABELS.EDIT_BUY_NOW : LABELS.SET_BUY_NOW}
 					domainId={domainId ?? ''}
 					isTextButton={isTextButton}
 					className={cx({ TextButton: isTextButton })}
 				/>
 			),
-			isVisible: isOwnedByUser === true && Boolean(domainId),
+			isVisible: isSetBuyNow,
 			testId: TEST_ID.SET_BUY_NOW,
 		},
-		[ACTION_TYPES.PlaceBid]: {
+		[ACTION_TYPES.Bid]: {
 			amount: highestBid ?? '-',
-			label: 'Highest Bid (WILD)',
-			amountUsd:
-				Boolean(highestBid) && Boolean(wildPriceUsd)
-					? wrapFiat(highestBid! * wildPriceUsd!)
-					: 'No bids placed',
+			label: `${LABELS.HIGHEST_BID_LABEL} (${CURRENCY.WILD})`,
+			amountUsd: highestBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => {
 				return !isOwnedByUser ? (
 					<BidButton
@@ -126,25 +127,23 @@ const Actions = ({
 						glow
 						onClick={onMakeBid}
 					>
-						{!yourBid ||
-						(yourBid && Number(formatEther(yourBid.amount)) === highestBid)!
-							? 'Place A Bid'
-							: 'Rebid'}
+						{placeBidButtonTextValue}
 					</BidButton>
 				) : (
-					<></>
+					<ViewBidsButton
+						isTextButton={isTextButton}
+						onClick={onViewBids}
+						className={cx({ TextButton: isTextButton })}
+					/>
 				);
 			},
-			isVisible: isBiddable === true,
-			testId: TEST_ID.PLACE_BID,
+			isVisible: isPlaceBid || isViewBids,
+			testId: TEST_ID.BID,
 		},
 		[ACTION_TYPES.YourBid]: {
 			amount: yourBid ? Number(formatEther(yourBid.amount)) : '-',
-			label: 'Your Bid (WILD)',
-			amountUsd:
-				yourBid && wildPriceUsd
-					? wrapFiat(Number(formatEther(yourBid.amount)) * wildPriceUsd)
-					: '',
+			label: `${LABELS.YOUR_BID} (${CURRENCY.WILD})`,
+			amountUsd: yourBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<CancelBidButton
 					isTextButton
@@ -154,7 +153,7 @@ const Actions = ({
 					className={cx({ TextButton: isTextButton })}
 				/>
 			),
-			isVisible: !isOwnedByUser && Boolean(yourBid),
+			isVisible: isYourBids,
 			testId: TEST_ID.YOUR_BID,
 		},
 	};
@@ -165,13 +164,13 @@ const Actions = ({
 	 */
 	const ordered = isOwnedByUser
 		? [
-				actions[ACTION_TYPES.PlaceBid],
+				actions[ACTION_TYPES.Bid],
 				actions[ACTION_TYPES.BuyNow],
 				actions[ACTION_TYPES.SetBuyNow],
 		  ]
 		: [
 				actions[ACTION_TYPES.BuyNow],
-				actions[ACTION_TYPES.PlaceBid],
+				actions[ACTION_TYPES.Bid],
 				actions[ACTION_TYPES.YourBid],
 		  ];
 

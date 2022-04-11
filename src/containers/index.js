@@ -15,6 +15,7 @@ export { default as BuyNowButton } from './flows/BuyNow/BuyNowButton';
 export { default as BidButton } from './buttons/BidButton/BidButton';
 export { default as ConnectWalletButton } from './buttons/ConnectWalletButton/ConnectWalletButton';
 export { default as SetBuyNowButton } from './flows/SetBuyNow/SetBuyNowButton';
+export { default as ViewBidsButton } from './buttons/ViewBidsButton/ViewBidsButton';
 
 // Cards
 export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/CurrentDomainPreview';

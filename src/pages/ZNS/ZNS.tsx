@@ -10,6 +10,7 @@ import styles from './ZNS.module.scss';
 
 //- Components & Containers
 import { StatsWidget } from 'components';
+import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
 
 import { SubdomainTable, CurrentDomainPreview } from 'containers';
 
@@ -265,10 +266,12 @@ const ZNS: React.FC<ZNSProps> = () => {
 				</div>
 			)}
 			{znsDomain && isNftView && (
-				<NFTView
-					// domain={domain}
-					onTransfer={openTransferOwnershipModal}
-				/>
+				<NFTViewModalProvider>
+					<NFTView
+						// domain={domain}
+						onTransfer={openTransferOwnershipModal}
+					/>
+				</NFTViewModalProvider>
 			)}
 		</>
 	);

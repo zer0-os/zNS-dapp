@@ -14,7 +14,7 @@ import {
 } from './hooks';
 import './_domain-settings.scss';
 
-type DomainSettingsProps = {
+export type DomainSettingsProps = {
 	domainId: string;
 	onClose: () => void;
 };

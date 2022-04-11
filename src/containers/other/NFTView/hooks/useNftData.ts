@@ -9,7 +9,6 @@ import { ethers } from 'ethers';
 //- Library Imports
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import useNotification from 'lib/hooks/useNotification';
 import { DomainEventType, DomainBidEvent } from '@zero-tech/zns-sdk/lib/types';
 import { Bid } from '@zero-tech/zauction-sdk';
 
@@ -17,13 +16,10 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { DomainEvents } from '../NFTView.types';
 
 //- Helper Imports
-import {
-	getDomainAsset,
-	downloadDomainAsset,
-	shareDomainAsset,
-	sortBidsByAmount,
-	sortEventsByTimestamp,
-} from '../NFTView.helpers';
+import { sortBidsByAmount, sortEventsByTimestamp } from '../NFTView.helpers';
+
+//- Constants Imports
+import { MESSAGES } from '../NFTView.constants';
 
 //- Hook level type definitions
 interface UseNftDataReturn {
@@ -36,8 +32,6 @@ interface UseNftDataReturn {
 	yourBid: Bid | undefined;
 	getHistory: () => Promise<void>;
 	getPriceData: () => Promise<void>;
-	downloadAsset: () => Promise<void>;
-	shareAsset: () => Promise<void>;
 	refetch: () => void;
 }
 
@@ -49,10 +43,7 @@ export const useNftData = (): UseNftDataReturn => {
 	const { instance: sdk } = useZnsSdk();
 
 	//- Current domain
-	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
-
-	//- Notification
-	const { addNotification } = useNotification();
+	const { domain: znsDomain } = useCurrentDomain();
 
 	/**
 	 * State data
@@ -81,12 +72,6 @@ export const useNftData = (): UseNftDataReturn => {
 			: undefined;
 	}, [highestBid]);
 
-	const domainAssetURL = useMemo(() => {
-		return (
-			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image
-		);
-	}, [znsDomain]);
-
 	/**
 	 * Callback functions
 	 *
@@ -101,7 +86,7 @@ export const useNftData = (): UseNftDataReturn => {
 				)) as DomainEvents[];
 				setHistory(sortEventsByTimestamp(events));
 			} catch (e) {
-				console.error('Failed to retrieve bid data');
+				console.error(MESSAGES.CONSOLE_ERROR);
 			} finally {
 				setIsHistoryLoading(false);
 			}
@@ -144,34 +129,11 @@ export const useNftData = (): UseNftDataReturn => {
 			setHighestBid(highestBid);
 			setBuyNowPrice(Number(buyNow) > 0 ? Number(buyNow) : undefined);
 		} catch (e) {
-			console.error('Failed to retrieve price data', e);
+			console.error(MESSAGES.CONSOLE_ERROR, e);
 		} finally {
 			setIsPriceDataLoading(false);
 		}
 	}, [sdk, account, znsDomain]);
-
-	const downloadAsset = useCallback(async () => {
-		if (!domainAssetURL) {
-			return;
-		}
-
-		const asset = await getDomainAsset(domainAssetURL);
-
-		if (asset) {
-			addNotification('Download starting');
-
-			await downloadDomainAsset(asset);
-		}
-	}, [domainAssetURL, addNotification]);
-
-	/**
-	 * Opens share
-	 */
-	const shareAsset = useCallback(async () => {
-		if (domain) {
-			shareDomainAsset(domain);
-		}
-	}, [domain]);
 
 	/**
 	 * Refreshes data for the current NFT
@@ -203,8 +165,6 @@ export const useNftData = (): UseNftDataReturn => {
 		yourBid,
 		getHistory,
 		getPriceData,
-		downloadAsset,
-		shareAsset,
 		refetch,
 	};
 };

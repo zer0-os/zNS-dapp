@@ -1,17 +1,18 @@
-// Component Imports
+//- Component Imports
 import { Detail, NFTMedia, Tooltip, OptionDropdown } from 'components';
 
-// Asset Imports
+//- Asset Imports
 import shareIcon from '../../assets/share.svg';
 import downloadIcon from '../../assets/download.svg';
 import moreIcon from '../../assets/more-vertical.svg';
 
-// Style Imports
+//- Style Imports
 import styles from './NFT.module.scss';
 
+//- Library Imports
+import { truncateWalletAddress } from 'lib/utils';
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
-import { truncateWalletAddress } from 'lib/utils';
 
 export const Amount = (amount: string) => (
 	<span className={styles.Amount}>{amount}</span>
@@ -23,32 +24,31 @@ type OptionType = {
 }[];
 
 type NFTProps = {
-	assetUrl?: string;
-	creator?: string;
-	description?: string;
-	onDownload?: () => void;
-	onSelectOption: (option: Option) => void;
-	onShare?: () => void;
+	owner: string;
+	title: string;
+	assetUrl: string;
+	creator: string;
 	options: OptionType;
-	owner?: string;
-	title?: string;
+	description?: string;
+	onSelectOption: (option: Option) => void;
+	onDownload?: () => void;
+	onShare?: () => void;
 };
 
 const NFT = ({
-	assetUrl,
-	creator,
-	description,
-	onDownload,
-	onSelectOption,
-	onShare,
-	options,
 	owner,
 	title,
+	assetUrl,
+	creator,
+	options,
+	description,
+	onSelectOption,
+	onDownload,
+	onShare,
 }: NFTProps) => {
 	////////////
 	// Render //
 	////////////
-
 	return (
 		<div className={styles.Container}>
 			<div className={styles.Banner}>

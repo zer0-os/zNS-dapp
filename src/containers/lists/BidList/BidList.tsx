@@ -26,7 +26,7 @@ import { sortBidsByTime } from 'lib/utils/bids';
 
 const moment = require('moment');
 
-type BidListProps = {
+export type BidListProps = {
 	bids: Bid[];
 	domain?: Domain;
 	domainMetadata?: Metadata;
