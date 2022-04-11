@@ -30,7 +30,7 @@ export function useZSaleSdk() {
 					web3Provider,
 					contractAddress: '0x0', // TODO: Replace with proper contract address
 					merkleTreeFileUri:
-						'https://d3810nvssqir6b.cloudfront.net/airwilds1whitelist.json',
+						'https://ipfs.io/ipfs/Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
 				});
 			}
 
@@ -39,7 +39,10 @@ export function useZSaleSdk() {
 					web3Provider,
 					contractAddress: '0xC82E9E9B1e28F10a4C13a915a0BDCD4Db00d086d',
 					merkleTreeFileUri:
-						'https://ipfs.io/ipfs/QmSarejrKPohT6peSHAWwLDkfBhy8qwEouFhBMzzw2vCit',
+						'https://d3810nvssqir6b.cloudfront.net/kovan-test-merkleTree.json',
+					{
+						merkleTreeFileIPFSHash = "Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV",A
+					}
 				});
 			}
 
