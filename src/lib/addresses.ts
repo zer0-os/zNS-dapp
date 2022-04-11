@@ -43,14 +43,13 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		zDao: '',
 	},
 	[NETWORK_TYPES.RINKEBY]: {
-		registrar: '0xa4F6C921f914ff7972D7C55c15f015419326e0Ca',
+		registrar: '0x06b3FB925b342411fc7420FDc7Bd5433f7a7261B',
 		basic: '0x1188dD1a0F42BA4a117EF1c09D884f5183D40B28',
 		staking: '0x7FDd24f30fB8a3E0021e85Fdb737a3483D3C8135', //$LOOT staking controller
 		wildToken: '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79',
 		zAuction: '0xb2416Aed6f5439Ffa0eCCAaa2b643f3D9828f86B',
 		lootToken: '0x5bAbCA2Af93A9887C86161083b8A90160DA068f2',
-		// NOTE: wheels sale - current address is for kovan and not for rinkeby
-		wheelSale: '0xE744793F0Bd9FDB2d68a9aDd367d3FfE9E4bcE04',
+		wheelSale: '0xC82E9E9B1e28F10a4C13a915a0BDCD4Db00d086d', // Beasts
 		// Staking dApp contracts
 		stakeFactory: '0xfC4D4b3d4d83f383FA30B2357a956cD718f0C991',
 		lpToken: '0x123c1B5A87E4E11663F2604f3EbCAf4ba86e25E1',
