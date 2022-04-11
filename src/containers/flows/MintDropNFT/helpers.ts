@@ -39,7 +39,6 @@ const getDropStage = async (
 	zSaleInstance: Instance,
 ): Promise<Stage | undefined> => {
 	const status = await zSaleInstance.getSaleStatus();
-	console.log(status);
 	if (status === SaleStatus.NotStarted) {
 		return Stage.Upcoming;
 	}
