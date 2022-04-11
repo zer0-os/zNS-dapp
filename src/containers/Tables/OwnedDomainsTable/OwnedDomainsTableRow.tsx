@@ -27,7 +27,10 @@ import styles from './OwnedDomainsTableRow.module.scss';
 import moreIcon from 'assets/more-vertical.svg';
 
 //- Constants Imports
-import { ACTIONS, ACTION_KEYS } from './OwnedDomainsTable.constants';
+import { ACTION_KEYS } from './OwnedDomainsTable.constants';
+
+//- Utils Imports
+import { getActions } from './OwnedDomainsTable.utils';
 
 enum Modal {
 	ViewBids,
@@ -62,6 +65,8 @@ const OwnedDomainsTableRow = ({
 	const onRowClick = () => {
 		goTo(`/market/${domain.name.split('wilder.')[1]}`);
 	};
+
+	const actions = getActions(bids?.length !== 0);
 
 	const onSelectOption = (option: Option) => {
 		if (option.title === ACTION_KEYS.VIEW_BIDS) {
@@ -146,7 +151,7 @@ const OwnedDomainsTableRow = ({
 				<td>
 					<OptionDropdown
 						onSelect={onSelectOption}
-						options={ACTIONS}
+						options={actions}
 						className={classNames(styles.MoreDropdown)}
 					>
 						<button className={styles.Button}>
