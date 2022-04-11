@@ -78,17 +78,17 @@ const SelectAmount = (props: SelectAmountProps) => {
 					`Please enter a number between 1 & ${props.maxPurchasesPerUser}`,
 				);
 			} else if (numWheels * props.pricePerNFT > props.balanceEth) {
-				setInputError(`You do not have enough ETH to mint ${numWheels} Pets`);
+				setInputError(`You do not have enough ETH to mint ${numWheels} Beasts`);
 			} else if (numWheels > remainingUserWheels) {
 				setInputError(
-					`You have already minted ${props.numberPurchasedByUser}/${props.maxPurchasesPerUser} of the maximum allowed Pets. Please choose a lower number`,
+					`You have already minted ${props.numberPurchasedByUser}/${props.maxPurchasesPerUser} of the maximum allowed Beasts. Please choose a lower number`,
 				);
 			} else if (numWheels > props.remainingWheels) {
 				if (props.remainingWheels === 1) {
-					setInputError(`There is only 1 Pet left in this drop`);
+					setInputError(`There is only 1 Beast left in this drop`);
 				} else {
 					setInputError(
-						`There are only ${props.remainingWheels} Pets left in this drop`,
+						`There are only ${props.remainingWheels} Beasts left in this drop`,
 					);
 				}
 			}
@@ -126,13 +126,13 @@ const SelectAmount = (props: SelectAmountProps) => {
 			{props.numberPurchasedByUser < props.maxPurchasesPerUser && (
 				<form onSubmit={formSubmit}>
 					<p>
-						How many pairs of Pets would you like to Mint? The number you enter
-						will be minted in one transaction, saving on GAS fees. Each Pet
-						costs <b>{props.pricePerNFT} ETH</b>.
+						How many Beasts would you like to Mint? The number you enter will be
+						minted in one transaction, saving on GAS fees. Each Beast costs{' '}
+						<b>{props.pricePerNFT} ETH</b>.
 					</p>
 					<TextInput
 						onChange={onInputChange}
-						placeholder={`Number of Pets (Maximum of ${props.maxPurchasesPerUser})`}
+						placeholder={`Number of Beasts (Maximum of ${props.maxPurchasesPerUser})`}
 						numeric
 						text={amount}
 					/>
@@ -180,7 +180,7 @@ const SelectAmount = (props: SelectAmountProps) => {
 			{props.numberPurchasedByUser >= props.maxPurchasesPerUser && (
 				<p className={styles.Green} style={{ textAlign: 'center' }}>
 					You have already minted {props.numberPurchasedByUser}/
-					{props.maxPurchasesPerUser} Pets
+					{props.maxPurchasesPerUser} Beasts
 				</p>
 			)}
 		</section>

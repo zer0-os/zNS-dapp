@@ -64,7 +64,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 				onClick={props.onContinue}
 			>
-				Mint Your Pets
+				Mint Your Beasts
 			</FutureButton>
 		);
 	};
@@ -90,12 +90,11 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						You will be able to mint {props.maxPurchasesPerUser} set of Pets if
-						your wallet was whitelisted in our raffle on Monday, January 17,
-						2022.
+						You will be able to mint {props.maxPurchasesPerUser} Beasts if your
+						wallet was whitelisted in our raffle on Monday, January 17, 2022.
 						<br></br>
 						<br></br>
-						The cost for each Pet is <b>{props.pricePerNFT} ETH</b> plus GAS.
+						The cost for each Beast is <b>{props.pricePerNFT} ETH</b> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -113,7 +112,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Pets. The cost for each Pet is{' '}
+							{props.maxPurchasesPerUser} Beasts. The cost for each Beast is{' '}
 							<b>{props.pricePerNFT} ETH</b> plus GAS.
 						</p>
 						{props.errorMessage !== undefined && (
@@ -127,7 +126,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p className={styles.Green}>
 							Congratulations, you have minted {props.numberPurchasedByUser}/
-							{props.maxPurchasesPerUser} of your Pets.
+							{props.maxPurchasesPerUser} of your Beasts.
 						</p>
 						{dismissButton()}
 					</>
@@ -137,7 +136,7 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Pets are only available to whitelisted supporters of
+						Currently, Beasts are only available to whitelisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
 						whitelist sale ends.
 					</p>
@@ -163,25 +162,25 @@ const Info = (props: InfoProps) => {
 				disablePictureInPicture
 				controlsList="nodownload noremoteplayback noplaybackrate"
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1649690004/zns/beasts-mint-main.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1649690004/zns/beasts-mint-main.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1649690004/zns/beasts-mint-main.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/v1642269545/zns/kicks-mint-main.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1649690004/zns/beasts-mint-main.ogv'
 					}
 					type="video/ogg"
 				></source>
@@ -190,8 +189,8 @@ const Info = (props: InfoProps) => {
 			{/* Wheels Available */}
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
-					<span>Pets Available</span>
-					<h2>{props.wheelsTotal - props.wheelsMinted} Pets Remaining</h2>
+					<span>Beasts Available</span>
+					<h2>{props.wheelsTotal - props.wheelsMinted} Beasts Remaining</h2>
 					<ArrowLink href="https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/">
 						View Auction Rules
 					</ArrowLink>

@@ -23,7 +23,7 @@ const RaffleContainer = () => {
 	// const RAFFLE_START_TIME = 1645819200000;
 	// const RAFFLE_START_TIME = currentTime - 1000;
 	// const RAFFLE_END_TIME = 1646078400000;
-	// const SALE_START_TIME = 1648234800000; //1640181600000;
+	// const SALE_START_TIME = 1649898000000; //1640181600000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -74,7 +74,7 @@ const RaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/',
+				'https://zine.wilderworld.com/wolfpack-genesis-drop/',
 				'_blank',
 			);
 		}
@@ -110,7 +110,7 @@ const RaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Presale Mint Period Coming Soon{' '}
+					Mintlist Sale Begins in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -122,7 +122,7 @@ const RaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Community Presale Mintlist Signup Period Ending in{' '}
+					Mintlist Signup Period Ending in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
@@ -134,7 +134,7 @@ const RaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Pets raffle - starting in{' '}
+					Get notified about the Wilder Beasts raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -150,9 +150,9 @@ const RaffleContainer = () => {
 		if (!hasRaffleStarted) {
 			return 'Get Notified';
 		} else if (!hasRaffleEnded) {
-			return 'Sign up for Pets Community Presale Mintlist';
+			return 'Sign up for Public Sale Mintlist';
 		} else {
-			return 'Sale Info';
+			return 'Learn More';
 		}
 	};
 
@@ -202,8 +202,8 @@ const RaffleContainer = () => {
 					<MintDropNFTBanner
 						title={
 							hasRaffleEnded
-								? 'Community Presale Mintlist Signup Period Complete'
-								: 'Your Metaverse Companion Awaits'
+								? 'Join the Wilder Wolf Pack'
+								: 'Join the Wilder Wolf Pack'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

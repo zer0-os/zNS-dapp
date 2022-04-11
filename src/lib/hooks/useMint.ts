@@ -87,9 +87,9 @@ export const useMint = (): UseMintReturn => {
 			// Set up default wheel to render
 			const wheel = {
 				zNA: '',
-				title: 'Your Pet',
+				title: 'Your Beast',
 				imageUri:
-					'https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_290,w_542/v1645732684/zns/pets-mint-progress.gif',
+					'https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_290,w_542/v1649689972/zns/beasts-mint-progress.gif',
 				story: '',
 				transactionHash: '',
 			};
@@ -103,7 +103,7 @@ export const useMint = (): UseMintReturn => {
 			//////////////////////////////////////
 
 			let tx: Maybe<ethers.ContractTransaction>;
-			setStatus('Confirm wallet transaction to begin minting your Pet');
+			setStatus('Confirm wallet transaction to begin minting your Beast');
 
 			try {
 				tx = await zSaleInstance.purchaseDomains(
@@ -121,7 +121,7 @@ export const useMint = (): UseMintReturn => {
 			//////////////////////////
 
 			setStatus(
-				'Minting your Pet... this may take up to 20 minutes if the network is busy. You may close this and the transaction will continue in the background. When minting is complete, your Pet will be in your profile.',
+				'Minting your Beast... this may take up to 20 minutes if the network is busy. You may close this and the transaction will continue in the background. When minting is complete, your Beast will be in your profile.',
 			);
 
 			reduxActions.setMinting(wheel);
@@ -133,7 +133,7 @@ export const useMint = (): UseMintReturn => {
 			//////////////////////////
 
 			addNotification(
-				'Successfully minted your Pet. Open your Profile to view it',
+				'Successfully minted your Beast. Open your Profile to view it',
 			);
 
 			reduxActions.setMinted(wheel);

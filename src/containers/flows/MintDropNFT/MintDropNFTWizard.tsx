@@ -197,13 +197,15 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 		<div className={`${styles.Container} border-primary border-rounded`}>
 			{/* Head section */}
 			<section className={styles.Header}>
-				<h1 className="glow-text-white">Mint Your Pets</h1>
+				<h1 className="glow-text-white">Mint Your Beasts</h1>
 				<span className="glow-text-white">
-					Your Pets in the Metaverse await
+					Your Beasts in the Metaverse await
 				</span>
 				<hr />
 			</section>
-			{props.dropStage === undefined && <Loading text={'Loading Pets Drop'} />}
+			{props.dropStage === undefined && (
+				<Loading text={'Loading Beasts Drop'} />
+			)}
 			{getFlowSection()}
 		</div>
 	);

@@ -376,7 +376,8 @@ const MintDropNFTFlowContainer = () => {
 			return (
 				<>
 					<span>
-						Wilder Pets sale has been temporarily paused to ensure a fair sale.
+						Wilder Beasts sale has been temporarily paused to ensure a fair
+						sale.
 					</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
@@ -440,7 +441,7 @@ const MintDropNFTFlowContainer = () => {
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintDropNFTBanner
-					title={'Your Metaverse Companion Awaits '}
+					title={'Join the Wilder Wolf Pack '}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}
