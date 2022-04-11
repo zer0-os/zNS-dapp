@@ -430,7 +430,7 @@ const MintDropNFTFlowContainer = () => {
 			);
 		}
 		return failedToLoad
-			? 'Failed to load auction data - refresh to try again'
+			? 'Failed to load sale data - refresh to try again'
 			: getBannerLabel(
 					dropStage,
 					wheelsMinted,
