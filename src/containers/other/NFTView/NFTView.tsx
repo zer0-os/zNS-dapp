@@ -182,8 +182,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				return openSetBuyNow();
 			case NFT_MORE_ACTIONS_TITLE.VIEW_BIDS:
 				return openBidList();
-			default:
-				return '';
 		}
 	};
 

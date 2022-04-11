@@ -37,7 +37,10 @@ export enum NFT_MORE_ACTIONS_TITLE {
 
 export enum MESSAGES {
 	DOWNLOAD = 'Download starting',
+	DOWNLOAD_SUCCESSFUL = 'Download successful',
+	DOWNLOAD_ERROR = 'Failed to download',
 	CONSOLE_ERROR = 'Failed to retrieve bid data',
+	ASSET_ERROR = 'Failed to retrieve domain asset data',
 }
 
 export const getActionFeatures = (

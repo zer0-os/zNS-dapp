@@ -42,12 +42,24 @@ export const useAsset = (): useAssetsReturn => {
 			return;
 		}
 
-		const asset = await getDomainAsset(domainAssetURL);
-
-		if (asset) {
-			addNotification(MESSAGES.DOWNLOAD);
-
-			await downloadDomainAsset(asset);
+		try {
+			const asset = await getDomainAsset(domainAssetURL);
+			if (asset) {
+				addNotification(MESSAGES.DOWNLOAD, 1000);
+				try {
+					await downloadDomainAsset(asset);
+					// Set timeout to prevent overlapping notifications
+					setTimeout(() => {
+						addNotification(MESSAGES.DOWNLOAD_SUCCESSFUL);
+					}, 1500);
+				} catch (e) {
+					console.error(e);
+					addNotification(MESSAGES.DOWNLOAD_ERROR);
+				}
+			}
+		} catch (e) {
+			console.error(e);
+			addNotification(MESSAGES.ASSET_ERROR);
 		}
 	}, [domainAssetURL, addNotification]);
 
