@@ -78,102 +78,105 @@ export const Header: React.FC<HeaderProps> = ({
 
 	return (
 		<div
-			className={classnames('header__container', {
+			className={classnames('header__outer-container', {
 				'header__container--is-searching': isSearching,
 				'header__container--is-active': localState.isSearchInputHovered,
 				'header__container--on-scroll-up': !isScrollDetectionDown,
 				'header__container--on-scroll-down': isScrollDetectionDown,
 			})}
 		>
-			<div className="header__content">
-				<div className="header__navigation">
-					{/* History buttons */}
-					{formattedData.showHistoryButtons && <HistoryButtons />}
+			<div className={'header__container'}>
+				<div className="header__content">
+					<div className="header__navigation">
+						{/* History buttons */}
+						{formattedData.showHistoryButtons && <HistoryButtons />}
 
-					{/* Title Text */}
-					{formattedData.showTitle && (
-						<h1 className="header__navigation-title">{title}</h1>
-					)}
+						{/* Title Text */}
+						{formattedData.showTitle && (
+							<h1 className="header__navigation-title">{title}</h1>
+						)}
 
-					{!formattedData.showTitle && (
-						<div className="ZNA__Container">
-							{/* Zns Link */}
-							{formattedData.showZnaLink && (
-								<ZNALink
-									className="header__navigation-zna-link"
-									style={{ marginLeft: 16 }}
+						{!formattedData.showTitle && (
+							<div className="ZNA__Container">
+								{/* Zns Link */}
+								{formattedData.showZnaLink && (
+									<ZNALink
+										className="header__navigation-zna-link"
+										style={{ marginLeft: 16 }}
+									/>
+								)}
+
+								{/* Search TextField */}
+								<input
+									className="header__navigation-search"
+									onChange={handlers.handleOnSearchChange}
+									onKeyUp={handlers.handleOnSearchEscape}
+									value={localState.searchQuery}
+									type="text"
+									onFocus={handlers.handleOnSearchOpen}
+									onBlur={handlers.handleOnSearchClose}
+									onMouseEnter={handlers.handleOnSearchEnter}
+									onMouseLeave={handlers.handleOnSearchLeave}
+									ref={refs.searchInputRef}
+									placeholder={formattedData.searchPlaceholder}
 								/>
-							)}
+							</div>
+						)}
+					</div>
 
-							{/* Search TextField */}
-							<input
-								className="header__navigation-search"
-								onChange={handlers.handleOnSearchChange}
-								onKeyUp={handlers.handleOnSearchEscape}
-								value={localState.searchQuery}
-								type="text"
-								onFocus={handlers.handleOnSearchOpen}
-								onBlur={handlers.handleOnSearchClose}
-								onMouseEnter={handlers.handleOnSearchEnter}
-								onMouseLeave={handlers.handleOnSearchLeave}
-								ref={refs.searchInputRef}
-								placeholder={formattedData.searchPlaceholder}
-							/>
-						</div>
-					)}
-				</div>
-
-				<div className="header__actions">
-					{/* Connect Wallet Button */}
-					{formattedData.showConnectWalletButton && (
-						<ConnectWalletButton
-							onConnectWallet={openModal(Modal.Wallet)}
-							isDesktop={formattedData.isDesktop}
-						/>
-					)}
-
-					{/* Mint button */}
-					{formattedData.showMintButton && (
-						<MintButton
-							isMinting={minting.length > 0}
-							onClick={openModal(Modal.Mint)}
-						/>
-					)}
-
-					{/* Status Buttons */}
-					{formattedData.showStatusButtons && (
-						<StatusButtons
-							statusCounts={{
-								minting: minting.length,
-								minted: minted.length,
-								stakeRequesting: stakeRequesting.length,
-								stakeRequested: stakeRequested.length,
-								transferring: transferring.length,
-							}}
-							onOpenProfile={handlers.handleOnOpenProfile}
-						/>
-					)}
-
-					{/* Buy token from external urls */}
-					{/* {formattedData.showBuyTokenRedirect && <BuyTokenRedirect />} */}
-
-					{/* Profile Button */}
-					{formattedData.showProfileButton && (
-						<ProfileButton onOpenProfile={handlers.handleOnOpenProfile} />
-					)}
-
-					{/* Info Button */}
-					{formattedData.showInfoButton && (
-						<InfoButton
-							isDesktop={formattedData.isDesktop}
-							onConnectWallet={openModal(Modal.Wallet)}
-						/>
+					{/* Search Domains List */}
+					{isSearching && (
+						<SearchDomains searchQuery={localState.searchQuery} />
 					)}
 				</div>
 			</div>
+			<div className="header__actions">
+				{/* Connect Wallet Button */}
+				{formattedData.showConnectWalletButton && (
+					<ConnectWalletButton
+						onConnectWallet={openModal(Modal.Wallet)}
+						isDesktop={formattedData.isDesktop}
+					/>
+				)}
 
-			{/* Search Domains List */}
-			{isSearching && <SearchDomains searchQuery={localState.searchQuery} />}
+				{/* Mint button */}
+				{formattedData.showMintButton && (
+					<MintButton
+						isMinting={minting.length > 0}
+						onClick={openModal(Modal.Mint)}
+					/>
+				)}
+
+				{/* Status Buttons */}
+				{formattedData.showStatusButtons && (
+					<StatusButtons
+						statusCounts={{
+							minting: minting.length,
+							minted: minted.length,
+							stakeRequesting: stakeRequesting.length,
+							stakeRequested: stakeRequested.length,
+							transferring: transferring.length,
+						}}
+						onOpenProfile={handlers.handleOnOpenProfile}
+					/>
+				)}
+
+				{/* Buy token from external urls */}
+				{/* {formattedData.showBuyTokenRedirect && <BuyTokenRedirect />} */}
+
+				{/* Profile Button */}
+				{formattedData.showProfileButton && (
+					<ProfileButton onOpenProfile={handlers.handleOnOpenProfile} />
+				)}
+
+				{/* Info Button */}
+				{formattedData.showInfoButton && (
+					<InfoButton
+						isDesktop={formattedData.isDesktop}
+						onConnectWallet={openModal(Modal.Wallet)}
+					/>
+				)}
+			</div>
 		</div>
 	);
 };

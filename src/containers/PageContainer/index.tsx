@@ -117,7 +117,7 @@ const PageContainer: React.FC = ({ children }) => {
 					/>
 
 					{/* Children Components */}
-					<main className="main">{children}</main>
+					<main className={styles.Main}>{children}</main>
 				</div>
 			</div>
 		</ScrollToTop>

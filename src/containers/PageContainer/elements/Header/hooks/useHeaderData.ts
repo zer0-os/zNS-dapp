@@ -89,7 +89,7 @@ export const useHeaderData = ({
 			(!Boolean(account) &&
 				!Boolean(localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET))) ||
 			(Boolean(account) && !navbar.isSearching);
-		const showProfileButton = Boolean(account) && !navbar.isSearching;
+		const showProfileButton = Boolean(account);
 		const showInfoButton = true;
 
 		return {
