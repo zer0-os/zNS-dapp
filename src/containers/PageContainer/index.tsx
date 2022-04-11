@@ -99,25 +99,29 @@ const PageContainer: React.FC = ({ children }) => {
 				{/* Toast Notifications */}
 				<NotificationDrawer />
 
-				{/* App Sidebar */}
-				<SideBar />
-
 				{/* App level Modals */}
 				<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
 
 				<div className={styles.InnerContainer}>
-					{/* App Header */}
-					<Header
-						pageWidth={pageWidth}
-						znsDomain={znsDomain}
-						domainMetadata={domainMetadata}
-						account={account}
-						openModal={openModal}
-						isScrollDetectionDown={isScrollDetectionDown}
-					/>
+					<div className={styles.FlexRowWrapper}>
+						{/* App Sidebar */}
+						<SideBar />
 
-					{/* Children Components */}
-					<main className={styles.Main}>{children}</main>
+						<div className={styles.FlexColumnWrapper}>
+							{/* App Header */}
+							<Header
+								pageWidth={pageWidth}
+								znsDomain={znsDomain}
+								domainMetadata={domainMetadata}
+								account={account}
+								openModal={openModal}
+								isScrollDetectionDown={isScrollDetectionDown}
+							/>
+
+							{/* Children Components */}
+							<main className={styles.Main}>{children}</main>
+						</div>
+					</div>
 				</div>
 			</div>
 		</ScrollToTop>

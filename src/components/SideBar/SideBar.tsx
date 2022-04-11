@@ -19,40 +19,42 @@ const SideBar = () => {
 	const network = chainIdToNetworkType(chainId);
 
 	return (
-		<div className={styles.Container}>
-			<div className={styles.LinkContainer}>
-				<Link to={appFromPathname(pathname)}>
-					<img alt="app logo" src={LOGO} />
-				</Link>
-				<ul className={styles.Links}>
-					{LINKS.map((l) => (
-						<li key={l.label}>
-							<Link
-								to={l.route}
-								className={cx({ Selected: pathname.startsWith(l.route) })}
-							>
-								<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
-								<label>{l.label}</label>
-							</Link>
-						</li>
-					))}
-				</ul>
-			</div>
-			<div className={styles.Footer}>
-				<a
-					className={styles.Zero}
-					target="_blank"
-					href={URLS.ZERO}
-					rel="noreferrer"
-				>
-					<img alt="zero logo" src={ZERO} />
-				</a>
-				{network !== NETWORK_TYPES.MAINNET && (
-					<label className={styles.Network}>
-						Network: {startCase(toLower(network))}
-					</label>
-				)}
-				<BuyTokenRedirect />
+		<div className={styles.BorderContainer}>
+			<div className={styles.Container}>
+				<div className={styles.LinkContainer}>
+					<Link to={appFromPathname(pathname)}>
+						<img alt="app logo" src={LOGO} />
+					</Link>
+					<ul className={styles.Links}>
+						{LINKS.map((l) => (
+							<li key={l.label}>
+								<Link
+									to={l.route}
+									className={cx({ Selected: pathname.startsWith(l.route) })}
+								>
+									<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
+									<label>{l.label}</label>
+								</Link>
+							</li>
+						))}
+					</ul>
+				</div>
+				<div className={styles.Footer}>
+					<a
+						className={styles.Zero}
+						target="_blank"
+						href={URLS.ZERO}
+						rel="noreferrer"
+					>
+						<img alt="zero logo" src={ZERO} />
+					</a>
+					{network !== NETWORK_TYPES.MAINNET && (
+						<label className={styles.Network}>
+							Network: {startCase(toLower(network))}
+						</label>
+					)}
+					<BuyTokenRedirect />
+				</div>
 			</div>
 		</div>
 	);

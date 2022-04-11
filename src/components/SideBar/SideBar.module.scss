@@ -5,26 +5,48 @@ $break-hide-image: calc(var(--width-max) + ($full-width * 2));
 
 $icon-container-size: 54px;
 
-.Container {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+.BorderContainer {
+	// Mobile
+	display: none;
+	border-right: 1px solid var(--color-grey-mine-shaft);
+	box-sizing: border-box;
 
-	position: fixed;
-	top: 0;
-	left: 50%;
-	height: 100vh;
-	width: $full-width;
-	padding: 24px;
-	z-index: 10000;
+	// Tablet
+	@media only screen and (min-width: 834px) {
+		display: flex;
+	}
+}
+
+.Container {
+	display: none;
+	// flex-direction: column;
+	// justify-content: space-between;
+
+	// // position: fixed;
+	// top: 0;
+	// left: 50%;
+	// height: 100vh;
+	// width: $full-width;
+	// // padding: 24px;
+	// padding: 18px 0;
+	// z-index: 10000;
+
+	// Tablet
+	@media only screen and (min-width: 834px) {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		position: sticky;
+		top: 18px;
+		height: 96vh;
+		width: $full-width;
+		z-index: 10000;
+		margin: 0 10px;
+	}
 
 	@media only screen and (max-width: 1216px) {
 		width: auto !important;
 		align-items: center;
-	}
-
-	@media only screen and (max-width: 1000px) {
-		display: none;
 	}
 
 	.LinkContainer {
@@ -36,7 +58,7 @@ $icon-container-size: 54px;
 		}
 	}
 
-	transform: $transform;
+	// transform: $transform;
 
 	.Network {
 		display: block;
@@ -64,7 +86,7 @@ $icon-container-size: 54px;
 	}
 
 	.Links {
-		margin-top: 24px;
+		margin-top: 8px;
 		font-size: 20px;
 
 		> li {
@@ -114,18 +136,24 @@ $icon-container-size: 54px;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		width: 100%;
 
 		> * {
 			width: 100%;
-
 			&:not(:first-child) {
+				display: none;
 				margin-top: 16px;
+
+				@media only screen and (min-width: 1200px) {
+					display: flex;
+				}
 			}
 		}
 
 		.Zero {
 			height: 32px;
 			width: 32px;
+			align-self: baseline;
 		}
 	}
 }
