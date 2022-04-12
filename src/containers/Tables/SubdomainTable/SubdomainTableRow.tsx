@@ -38,7 +38,7 @@ const SubdomainTableRow = (props: any) => {
 
 	const domainMetadata = useDomainMetadata(domain?.metadata);
 
-	const [bids, setBids] = useState<Bid[] | undefined>();
+	const [, setBids] = useState<Bid[] | undefined>();
 	const [buyNowPrice, setBuyNowPrice] = useState<number | undefined>();
 
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
@@ -120,6 +120,7 @@ const SubdomainTableRow = (props: any) => {
 		}
 	};
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const formatColumn = (columnName: keyof DomainMetrics) => {
 		const value =
 			columnName === 'volume'
