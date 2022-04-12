@@ -3,7 +3,7 @@ import { Stage, DropData } from './types';
 import { WhitelistSimpleSale, ERC20 } from 'types';
 import { Instance, SaleData, SaleStatus } from '@zero-tech/zsale-sdk/lib/types';
 
-const TEST_MODE = false;
+const TEST_MODE = true;
 const TEST_STATE: SaleStatus = SaleStatus.PrivateSale;
 const IS_ON_WHITELIST = true;
 

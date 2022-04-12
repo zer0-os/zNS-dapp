@@ -40,29 +40,27 @@ export const getBannerLabel = (
 		// if (isFinished) {
 		// 	<>Wilder Beasts public release starting - you may need to refresh</>;
 		// } else {
-		if (isInTransitionMode) {
-			if (countdownDate && !isFinished) {
-				return (
-					<div style={{ display: 'flex', flexDirection: 'column' }}>
-						<span>
-							Available to public in{' '}
-							{countdownDate && (
-								<Countdown to={countdownDate} onFinish={onFinish} />
-							)}
-						</span>
-					</div>
-				);
-			}
-			if (countdownDate && isFinished) {
-				return (
-					<div style={{ display: 'flex', flexDirection: 'column' }}>
-						<span>
-							Public release starting now - waiting for contract to begin
-						</span>
-					</div>
-				);
-			}
+		// if (isInTransitionMode) {
+		// if (countdownDate && !isFinished) {
+		// 	return (
+		// 		<div style={{ display: 'flex', flexDirection: 'column' }}>
+		// 			<span>
+		// 				Available to public in{' '}
+		// 				{countdownDate && (
+		// 					<Countdown to={countdownDate} onFinish={onFinish} />
+		// 				)}
+		// 			</span>
+		// 		</div>
+		// 	);
+		// }
+		if (countdownDate && isFinished) {
+			return (
+				<div style={{ display: 'flex', flexDirection: 'column' }}>
+					<span>Public sale starting now - waiting for contract to begin</span>
+				</div>
+			);
 		}
+		// }
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
