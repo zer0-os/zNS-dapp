@@ -103,7 +103,7 @@ export const useMint = (): UseMintReturn => {
 			//////////////////////////////////////
 
 			let tx: Maybe<ethers.ContractTransaction>;
-			setStatus('Confirm wallet transaction to begin minting your Beast');
+			setStatus('Confirm wallet transaction to begin minting your Beast(s)');
 
 			try {
 				tx = await zSaleInstance.purchaseDomains(
@@ -121,7 +121,7 @@ export const useMint = (): UseMintReturn => {
 			//////////////////////////
 
 			setStatus(
-				'Minting your Beast... this may take up to 20 minutes if the network is busy. You may close this and the transaction will continue in the background. When minting is complete, your Beast will be in your profile.',
+				'Minting your Beast(s)... this may take up to 20 minutes if the network is busy. You may close this and the transaction will continue in the background. When minting is complete, your Beast will be in your profile.',
 			);
 
 			reduxActions.setMinting(wheel);
@@ -133,7 +133,7 @@ export const useMint = (): UseMintReturn => {
 			//////////////////////////
 
 			addNotification(
-				'Successfully minted your Beast. Open your Profile to view it',
+				'Successfully minted your Beast(s). Open your Profile to view it',
 			);
 
 			reduxActions.setMinted(wheel);

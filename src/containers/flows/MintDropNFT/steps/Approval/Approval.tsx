@@ -133,7 +133,7 @@ const Approval: React.FC<ApprovalProps> = ({
 			<>
 				<span>
 					Approving WILD spending contract. This may take a few minutes. This
-					transaction must finish before you can continue to mint your Beast.
+					transaction must finish before you can continue to mint your Beast(s).
 				</span>
 				<Spinner />
 			</>
