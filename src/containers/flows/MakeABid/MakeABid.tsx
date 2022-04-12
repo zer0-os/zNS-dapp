@@ -273,7 +273,6 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 			<Wizard.Confirmation
 				error={error}
 				message={STATUS_TEXT.ACCEPT_ZAUCTION_PROMPT}
-				primaryButtonText={confirmationErrorButtonText()}
 				onClickPrimaryButton={approveZAuction}
 				onClickSecondaryButton={onClose}
 			/>
