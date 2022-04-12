@@ -3,6 +3,7 @@ import { Stage, DropData } from './types';
 import { WhitelistSimpleSale, ERC20 } from 'types';
 import { Instance, SaleData, SaleStatus } from '@zero-tech/zsale-sdk/lib/types';
 
+const TEST_MODE = false;
 const TEST_STATE: SaleStatus = SaleStatus.PublicSale;
 const IS_ON_WHITELIST = true;
 
@@ -100,14 +101,20 @@ export const getDropData = (
 const getDropStage = async (
 	zSaleInstance: Instance,
 ): Promise<Stage | undefined> => {
-	await new Promise((r) => setTimeout(r, 2000));
-	const status = TEST_STATE;
+	let status, data;
+
+	if (TEST_MODE) {
+		await new Promise((r) => setTimeout(r, 2000));
+		status = TEST_STATE;
+		data = TEST[TEST_STATE];
+	} else {
+		status = await zSaleInstance.getSaleStatus();
+		data = await zSaleInstance.getSaleData();
+	}
+
 	if ((status as unknown) === SaleStatus.NotStarted) {
 		return Stage.Upcoming;
 	}
-
-	const data = TEST[TEST_STATE];
-
 	if (data.amountSold === data.amountForSale) {
 		return Stage.Sold;
 	}
@@ -144,14 +151,24 @@ export const getUserEligibility = async (
 	account: string,
 	zSaleInstance: Instance,
 ): Promise<boolean | undefined> => {
-	return IS_ON_WHITELIST;
+	if (TEST_MODE) {
+		return IS_ON_WHITELIST;
+	} else {
+		const isWhitelisted = await zSaleInstance.isUserOnMintlist(account);
+		return isWhitelisted;
+	}
 };
 
 const getWheelQuantities = async (
 	zSaleInstance: Instance,
 ): Promise<SaleData | undefined> => {
-	await new Promise((r) => setTimeout(r, 2000));
-	return TEST[TEST_STATE];
+	if (TEST_MODE) {
+		await new Promise((r) => setTimeout(r, 2000));
+		return TEST[TEST_STATE];
+	} else {
+		const data = await zSaleInstance.getSaleData();
+		return data;
+	}
 };
 
 export const getBalanceEth = async (
