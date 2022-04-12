@@ -18,6 +18,7 @@ import { appFromPathname } from 'lib/utils';
 import { useWeb3React } from '@web3-react/core';
 import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
 import { startCase, toLower } from 'lodash';
+
 const cx = classNames.bind(styles);
 
 const SideBar = () => {

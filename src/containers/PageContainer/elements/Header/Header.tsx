@@ -146,6 +146,7 @@ export const Header: React.FC<HeaderProps> = ({
 					<ConnectWalletButton
 						onConnectWallet={openModal(Modal.Wallet)}
 						isDesktop={formattedData.isDesktop}
+						className="header__actions-connect-button"
 					/>
 				)}
 

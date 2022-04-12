@@ -4,11 +4,17 @@
 	margin: 0 auto;
 	padding: 8px 8px 48px 8px;
 	box-sizing: border-box;
+
 	// Tablet
-	@media only screen and (min-width: 834px) {
+	@media only screen and (min-width: 744px) {
 		margin: 0;
 		padding: 0;
 	}
+
+	// Laptop
+	// @media only screen and (min-width: 834px) {
+	// 	margin: 0 auto;
+	// }
 
 	.Main {
 		margin: 16px 0 16px 0;
@@ -26,6 +32,7 @@
 		.Actions {
 			// Mobile + Tablet
 			display: none;
+
 			// Laptop
 			@media only screen and (min-width: 1200px) {
 				display: flex;
@@ -42,13 +49,17 @@
 
 	.FlexColumnWrapper {
 		// Mobile
-		margin: 0;
 		width: 100%;
 
 		// Tablet
-		@media only screen and (min-width: 834px) {
-			margin: 0 auto;
+		@media only screen and (min-width: 744px) {
+			margin: 8px 16px;
 			max-width: 736px;
+		}
+
+		// Tablet M
+		@media only screen and (min-width: 834px) {
+			margin: 8px auto;
 		}
 	}
 }
