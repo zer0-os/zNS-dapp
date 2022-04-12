@@ -205,7 +205,7 @@ const Info = (props: InfoProps) => {
 					<span>Beasts Available</span>
 					<h2>{props.wheelsTotal - props.wheelsMinted} Beasts Remaining</h2>
 					<ArrowLink href="https://zine.wilderworld.com/wolfpack-genesis-drop/">
-						View Auction Rules
+						View Sale Details
 					</ArrowLink>
 				</div>
 			)}
