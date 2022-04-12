@@ -201,7 +201,7 @@ const MintDropNFTFlowContainer = ({
 		// but given time constraints we're just going to compare
 		// to PUBLIC_SALE_START_TIME
 		if (isSaleHalted) {
-			setCountdownDate(PUBLIC_SALE_START_TIME);
+			// setCountdownDate(PUBLIC_SALE_START_TIME);
 			setFailedToLoad(false);
 			return;
 		}
