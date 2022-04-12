@@ -4,7 +4,7 @@ import { WhitelistSimpleSale, ERC20 } from 'types';
 import { Instance, SaleData, SaleStatus } from '@zero-tech/zsale-sdk/lib/types';
 
 const TEST_MODE = false;
-const TEST_STATE: SaleStatus = SaleStatus.PublicSale;
+const TEST_STATE: SaleStatus = SaleStatus.PrivateSale;
 const IS_ON_WHITELIST = true;
 
 const TEST: { [status in SaleStatus]: SaleData } = {
@@ -111,7 +111,6 @@ const getDropStage = async (
 		status = await zSaleInstance.getSaleStatus();
 		data = await zSaleInstance.getSaleData();
 	}
-
 	if ((status as unknown) === SaleStatus.NotStarted) {
 		return Stage.Upcoming;
 	}

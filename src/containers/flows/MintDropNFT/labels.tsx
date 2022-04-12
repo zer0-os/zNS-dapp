@@ -31,19 +31,21 @@ export const getBannerLabel = (
 	countdownDate?: number,
 	onFinish?: () => void,
 	isFinished?: boolean,
+	isInTransitionMode?: boolean,
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
 		return <>Presale Mint Period Coming Soon - waiting for contract to begin</>;
 	}
 	if (dropStage === Stage.Whitelist) {
-		if (isFinished) {
-			<>Wilder Beasts public release starting - you may need to refresh</>;
-		} else {
+		// if (isFinished) {
+		// 	<>Wilder Beasts public release starting - you may need to refresh</>;
+		// } else {
+		if (isInTransitionMode) {
 			if (countdownDate && !isFinished) {
 				return (
 					<div style={{ display: 'flex', flexDirection: 'column' }}>
 						<span>
-							Available to everyone in{' '}
+							Available to public in{' '}
 							{countdownDate && (
 								<Countdown to={countdownDate} onFinish={onFinish} />
 							)}
@@ -60,21 +62,19 @@ export const getBannerLabel = (
 					</div>
 				);
 			}
-			return (
-				<div style={{ display: 'flex', flexDirection: 'column' }}>
-					<span>
-						Presale Minting is now Open!{' '}
-						{totalLabel(wheelsMinted!, wheelsTotal!)}
-					</span>
-					{/* <span style={{ marginTop: 4 }}>
-						Available to public in{' '}
-						{countdownDate && (
-							<Countdown to={countdownDate} onFinish={onFinish} />
-						)}
-					</span> */}
-				</div>
-			);
 		}
+		return (
+			<div style={{ display: 'flex', flexDirection: 'column' }}>
+				<span>
+					Presale Minting is now Open! Ending in{' '}
+					{countdownDate && (
+						<Countdown to={countdownDate} onFinish={onFinish} />
+					)}{' '}
+					({totalLabel(wheelsMinted!, wheelsTotal!)})
+				</span>
+			</div>
+		);
+		// }
 	}
 	if (dropStage === Stage.Public) {
 		// if (Math.max(wheelsTotal! - wheelsMinted!, 0) !== 0) {
@@ -94,7 +94,7 @@ export const getBannerLabel = (
 		);
 	}
 
-	if (dropStage === Stage.Sold) {
+	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
 		return <>Wolves Sale is Complete</>;
 	}
 
