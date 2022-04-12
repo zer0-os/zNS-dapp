@@ -18,7 +18,7 @@ import useScrollDetection from 'lib/hooks/useScrollDetection';
 
 //- Components Imports
 import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
-import { Header, Modals, useModal, Actions } from './elements';
+import { Header, Modals, useModal, Actions, Touchbar } from './elements';
 
 //- Constants Imports
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
@@ -128,7 +128,8 @@ const PageContainer: React.FC = ({ children }) => {
 							{/* Children Components */}
 							<main className={styles.Main}>{children}</main>
 						</div>
-						{/* Actions */}
+
+						{/* Desktop Actions */}
 						<Actions
 							pageWidth={pageWidth}
 							znsDomain={znsDomain}
@@ -139,6 +140,8 @@ const PageContainer: React.FC = ({ children }) => {
 					</div>
 				</div>
 			</div>
+			{/* Touchbar */}
+			<Touchbar />
 		</ScrollToTop>
 	);
 };

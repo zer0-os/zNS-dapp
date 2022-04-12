@@ -2,7 +2,7 @@
 	// Mobile
 	width: 100%;
 	margin: 0 auto;
-	padding: 8px;
+	padding: 8px 8px 48px 8px;
 	box-sizing: border-box;
 	// Tablet
 	@media only screen and (min-width: 834px) {
@@ -11,7 +11,7 @@
 	}
 
 	.Main {
-		margin-top: 16px;
+		margin: 16px 0 16px 0;
 	}
 
 	.InnerContainer {
