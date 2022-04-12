@@ -26,8 +26,8 @@ import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
 type MintDropNFTFlowContainerProps = {
-	privateSaleEndTime?: number;
-	publicSaleStartTime?: number;
+	privateSaleEndTime: number;
+	publicSaleStartTime: number;
 };
 
 const MintDropNFTFlowContainer = ({
@@ -35,14 +35,11 @@ const MintDropNFTFlowContainer = ({
 	publicSaleStartTime,
 }: MintDropNFTFlowContainerProps) => {
 	// Hardcoded dates
-	const currentTime = new Date().getTime();
 
 	// Temporary values
 
-	const PRIVATE_SALE_END_DATE = privateSaleEndTime ?? currentTime + 10000;
-	const PUBLIC_SALE_START_TIME = publicSaleStartTime ?? currentTime + 20000;
-
-	// const PUBLIC_SALE_START_TIME = 1642730400655;
+	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
+	const PUBLIC_SALE_START_TIME = publicSaleStartTime;
 
 	//////////////////
 	// State & Data //
@@ -70,6 +67,7 @@ const MintDropNFTFlowContainer = ({
 	const [countdownDate, setCountdownDate] = useState<number | undefined>();
 	const [hasCountdownFinished, setHasCountdownFinished] =
 		useState<boolean>(false);
+	const [isInTransitionMode, setIsInTransitionMode] = useState<boolean>(false);
 
 	// Auction data
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
@@ -137,7 +135,16 @@ const MintDropNFTFlowContainer = ({
 	};
 
 	const countdownFinished = () => {
-		setHasCountdownFinished(true);
+		if (
+			Date.now() > PRIVATE_SALE_END_TIME &&
+			Date.now() < PUBLIC_SALE_START_TIME
+		) {
+			setHasCountdownFinished(false);
+			setIsInTransitionMode(true);
+			setCountdownDate(PUBLIC_SALE_START_TIME);
+		} else {
+			setHasCountdownFinished(true);
+		}
 	};
 
 	// Run a few things after the transaction succeeds
@@ -217,11 +224,7 @@ const MintDropNFTFlowContainer = ({
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						if (Date.now() > PRIVATE_SALE_END_DATE) {
-							setCountdownDate(PUBLIC_SALE_START_TIME);
-						} else {
-							setCountdownDate(undefined);
-						}
+						setCountdownDate(PRIVATE_SALE_END_TIME);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -319,6 +322,7 @@ const MintDropNFTFlowContainer = ({
 					return;
 				}
 				const primaryData = d as DropData;
+
 				if (dropStage !== undefined) {
 					if (hasCountdownFinished && primaryData.dropStage === dropStage) {
 						setTimeout(() => {
@@ -332,12 +336,18 @@ const MintDropNFTFlowContainer = ({
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						// setCountdownDate(PUBLIC_SALE_START_TIME);
-						if (Date.now() > PRIVATE_SALE_END_DATE) {
+						if (Date.now() > PRIVATE_SALE_END_TIME) {
 							setCountdownDate(PUBLIC_SALE_START_TIME);
 						} else {
-							setCountdownDate(undefined);
+							setCountdownDate(PRIVATE_SALE_END_TIME);
 						}
+						// setCountdownDate(PUBLIC_SALE_START_TIME);
+
+						// if (Date.now() > PRIVATE_SALE_END_TIME) {
+						// 	setCountdownDate(PUBLIC_SALE_START_TIME);
+						// } else {
+						// 	setCountdownDate(undefined);
+						// }
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -399,11 +409,19 @@ const MintDropNFTFlowContainer = ({
 
 	useAsyncEffect(async () => {
 		const interval = setInterval(async () => {
-			if (Date.now() > PRIVATE_SALE_END_DATE) {
+			// if (Date.now() > PRIVATE_SALE_END_TIME) {
+			// 	setCountdownDate(PUBLIC_SALE_START_TIME);
+			// 	clearInterval(interval);
+			// } else {
+			// 	setCountdownDate(undefined);
+			// }
+
+			if (Date.now() > PRIVATE_SALE_END_TIME) {
+				setHasCountdownFinished(false);
+				setIsInTransitionMode(true);
 				setCountdownDate(PUBLIC_SALE_START_TIME);
-				clearInterval(interval);
 			} else {
-				setCountdownDate(undefined);
+				setCountdownDate(PRIVATE_SALE_END_TIME);
 			}
 		}, 13000);
 		return () => clearInterval(interval);
@@ -446,6 +464,7 @@ const MintDropNFTFlowContainer = ({
 					countdownDate,
 					countdownFinished,
 					hasCountdownFinished,
+					isInTransitionMode,
 			  );
 	};
 
