@@ -259,7 +259,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		),
 		// NFT details confirmation
 		[StepContent.Details]:
-			wildBalance && !isLoading ? (
+			wildBalance !== undefined && !isLoading ? (
 				<Details
 					stepContent={stepContent}
 					bidData={bidData}
