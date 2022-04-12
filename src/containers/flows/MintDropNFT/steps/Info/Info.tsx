@@ -123,7 +123,7 @@ const Info = (props: InfoProps) => {
 						{mintButton()}
 					</>
 				);
-			} else {
+			} else if (Boolean(props.maxPurchasesPerUser)) {
 				return (
 					<>
 						<p className={styles.Green}>
@@ -131,6 +131,17 @@ const Info = (props: InfoProps) => {
 							{props.maxPurchasesPerUser} of your Beasts.
 						</p>
 						{dismissButton()}
+					</>
+				);
+			} else {
+				return (
+					<>
+						<p>
+							You have minted {props.numberPurchasedByUser} Beasts. The cost for
+							each Beast is <b>{props.pricePerNFT} ETH</b> plus GAS.
+						</p>
+
+						{mintButton()}
 					</>
 				);
 			}
@@ -162,27 +173,27 @@ const Info = (props: InfoProps) => {
 				playsInline
 				controls
 				disablePictureInPicture
-				controlsList="nodownload noremoteplayback noplaybackrate"
+				controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1649690004/zns/beasts-mint-main.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_426,w_672/v1649690004/zns/beasts-mint-main.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1649690004/zns/beasts-mint-main.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1649690004/zns/beasts-mint-main.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1649690004/zns/beasts-mint-main.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1649690004/zns/beasts-mint-main.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1649690004/zns/beasts-mint-main.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1649690004/zns/beasts-mint-main.ogv'
 					}
 					type="video/ogg"
 				></source>
@@ -194,7 +205,7 @@ const Info = (props: InfoProps) => {
 					<span>Beasts Available</span>
 					<h2>{props.wheelsTotal - props.wheelsMinted} Beasts Remaining</h2>
 					<ArrowLink href="https://zine.wilderworld.com/wolfpack-genesis-drop/">
-						View Auction Rules
+						View Sale Details
 					</ArrowLink>
 				</div>
 			)}

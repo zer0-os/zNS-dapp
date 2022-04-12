@@ -25,14 +25,22 @@ import {
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
-const MintDropNFTFlowContainer = () => {
+type MintDropNFTFlowContainerProps = {
+	privateSaleEndTime?: number;
+	publicSaleStartTime?: number;
+};
+
+const MintDropNFTFlowContainer = ({
+	privateSaleEndTime,
+	publicSaleStartTime,
+}: MintDropNFTFlowContainerProps) => {
 	// Hardcoded dates
 	const currentTime = new Date().getTime();
 
 	// Temporary values
 
-	const PRIVATE_SALE_END_DATE = currentTime + 10000;
-	const PUBLIC_SALE_START_TIME = currentTime + 20000;
+	const PRIVATE_SALE_END_DATE = privateSaleEndTime ?? currentTime + 10000;
+	const PUBLIC_SALE_START_TIME = publicSaleStartTime ?? currentTime + 20000;
 
 	// const PUBLIC_SALE_START_TIME = 1642730400655;
 
@@ -430,7 +438,7 @@ const MintDropNFTFlowContainer = () => {
 			);
 		}
 		return failedToLoad
-			? 'Failed to load auction data - refresh to try again'
+			? 'Failed to load sale data - refresh to try again'
 			: getBannerLabel(
 					dropStage,
 					wheelsMinted,

@@ -12,7 +12,7 @@ import styles from './SelectAmount.module.scss';
 type SelectAmountProps = {
 	balanceEth: number;
 	error?: string;
-	maxPurchasesPerUser: number;
+	maxPurchasesPerUser?: number;
 	numberPurchasedByUser: number;
 	onBack: () => void;
 	onContinue: (numWheels: number) => void;
@@ -26,7 +26,9 @@ const SelectAmount = (props: SelectAmountProps) => {
 	//////////////////
 
 	const remainingUserWheels =
-		props.maxPurchasesPerUser - props.numberPurchasedByUser;
+		props.maxPurchasesPerUser !== undefined
+			? props.maxPurchasesPerUser - props.numberPurchasedByUser
+			: props.remainingWheels;
 	const maxUserCanAfford = Math.floor(props.balanceEth / props.pricePerNFT);
 
 	const maxWheelsRemaining = Math.min(
@@ -73,13 +75,20 @@ const SelectAmount = (props: SelectAmountProps) => {
 				return;
 			}
 			const numWheels = Number(amount);
-			if (numWheels <= 0 || numWheels > props.maxPurchasesPerUser) {
+			if (
+				numWheels <= 0 ||
+				(Boolean(props.maxPurchasesPerUser) &&
+					numWheels > props.maxPurchasesPerUser!)
+			) {
 				setInputError(
 					`Please enter a number between 1 & ${props.maxPurchasesPerUser}`,
 				);
 			} else if (numWheels * props.pricePerNFT > props.balanceEth) {
 				setInputError(`You do not have enough ETH to mint ${numWheels} Beasts`);
-			} else if (numWheels > remainingUserWheels) {
+			} else if (
+				numWheels > remainingUserWheels &&
+				Boolean(props.maxPurchasesPerUser)
+			) {
 				setInputError(
 					`You have already minted ${props.numberPurchasedByUser}/${props.maxPurchasesPerUser} of the maximum allowed Beasts. Please choose a lower number`,
 				);
@@ -123,7 +132,8 @@ const SelectAmount = (props: SelectAmountProps) => {
 
 	return (
 		<section>
-			{props.numberPurchasedByUser < props.maxPurchasesPerUser && (
+			{(!props.maxPurchasesPerUser ||
+				props.numberPurchasedByUser < props.maxPurchasesPerUser) && (
 				<form onSubmit={formSubmit}>
 					<p>
 						How many Beasts would you like to Mint? The number you enter will be
@@ -132,7 +142,11 @@ const SelectAmount = (props: SelectAmountProps) => {
 					</p>
 					<TextInput
 						onChange={onInputChange}
-						placeholder={`Number of Beasts (Maximum of ${props.maxPurchasesPerUser})`}
+						placeholder={`Number of Beasts${
+							Boolean(props.maxPurchasesPerUser)
+								? `(Maximum of ${props.maxPurchasesPerUser})`
+								: ''
+						}`}
 						numeric
 						text={amount}
 					/>
@@ -177,12 +191,13 @@ const SelectAmount = (props: SelectAmountProps) => {
 					</FutureButton>
 				</form>
 			)}
-			{props.numberPurchasedByUser >= props.maxPurchasesPerUser && (
-				<p className={styles.Green} style={{ textAlign: 'center' }}>
-					You have already minted {props.numberPurchasedByUser}/
-					{props.maxPurchasesPerUser} Beasts
-				</p>
-			)}
+			{props.maxPurchasesPerUser !== undefined &&
+				props.numberPurchasedByUser >= props.maxPurchasesPerUser && (
+					<p className={styles.Green} style={{ textAlign: 'center' }}>
+						You have already minted {props.numberPurchasedByUser}/
+						{props.maxPurchasesPerUser} Beasts
+					</p>
+				)}
 		</section>
 	);
 };
