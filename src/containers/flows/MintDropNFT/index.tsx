@@ -135,16 +135,16 @@ const MintDropNFTFlowContainer = ({
 	};
 
 	const countdownFinished = () => {
-		if (
-			Date.now() > PRIVATE_SALE_END_TIME &&
-			Date.now() < PUBLIC_SALE_START_TIME
-		) {
-			setHasCountdownFinished(false);
-			setIsInTransitionMode(true);
-			setCountdownDate(PUBLIC_SALE_START_TIME);
-		} else {
-			setHasCountdownFinished(true);
-		}
+		// if (
+		// 	Date.now() > PRIVATE_SALE_END_TIME &&
+		// 	Date.now() < PUBLIC_SALE_START_TIME
+		// ) {
+		// 	setHasCountdownFinished(false);
+		// 	setIsInTransitionMode(true);
+		// 	setCountdownDate(PUBLIC_SALE_START_TIME);
+		// } else {
+		setHasCountdownFinished(true);
+		// }
 	};
 
 	// Run a few things after the transaction succeeds
@@ -336,11 +336,11 @@ const MintDropNFTFlowContainer = ({
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						if (Date.now() > PRIVATE_SALE_END_TIME) {
-							setCountdownDate(PUBLIC_SALE_START_TIME);
-						} else {
-							setCountdownDate(PRIVATE_SALE_END_TIME);
-						}
+						// if (Date.now() > PRIVATE_SALE_END_TIME) {
+						// 	setCountdownDate(PUBLIC_SALE_START_TIME);
+						// } else {
+						setCountdownDate(PRIVATE_SALE_END_TIME);
+						// }
 						// setCountdownDate(PUBLIC_SALE_START_TIME);
 
 						// if (Date.now() > PRIVATE_SALE_END_TIME) {
@@ -407,25 +407,25 @@ const MintDropNFTFlowContainer = ({
 		}
 	}, [zSaleInstance, library]);
 
-	useAsyncEffect(async () => {
-		const interval = setInterval(async () => {
-			// if (Date.now() > PRIVATE_SALE_END_TIME) {
-			// 	setCountdownDate(PUBLIC_SALE_START_TIME);
-			// 	clearInterval(interval);
-			// } else {
-			// 	setCountdownDate(undefined);
-			// }
+	// useAsyncEffect(async () => {
+	// 	const interval = setInterval(async () => {
+	// 		// if (Date.now() > PRIVATE_SALE_END_TIME) {
+	// 		// 	setCountdownDate(PUBLIC_SALE_START_TIME);
+	// 		// 	clearInterval(interval);
+	// 		// } else {
+	// 		// 	setCountdownDate(undefined);
+	// 		// }
 
-			if (Date.now() > PRIVATE_SALE_END_TIME) {
-				setHasCountdownFinished(false);
-				setIsInTransitionMode(true);
-				setCountdownDate(PUBLIC_SALE_START_TIME);
-			} else {
-				setCountdownDate(PRIVATE_SALE_END_TIME);
-			}
-		}, 13000);
-		return () => clearInterval(interval);
-	}, []);
+	// 		if (Date.now() > PRIVATE_SALE_END_TIME) {
+	// 			setHasCountdownFinished(false);
+	// 			setIsInTransitionMode(true);
+	// 			setCountdownDate(PUBLIC_SALE_START_TIME);
+	// 		} else {
+	// 			setCountdownDate(PRIVATE_SALE_END_TIME);
+	// 		}
+	// 	}, 13000);
+	// 	return () => clearInterval(interval);
+	// }, []);
 
 	///////////////
 	// Fragments //

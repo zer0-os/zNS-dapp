@@ -93,7 +93,7 @@ const Info = (props: InfoProps) => {
 				<>
 					<p>
 						You will be able to mint {props.maxPurchasesPerUser} Beasts if your
-						wallet was whitelisted in our raffle on Monday, January 17, 2022.
+						wallet was mintlisted in our raffle.
 						<br></br>
 						<br></br>
 						The cost for each Beast is <b>{props.pricePerNFT} ETH</b> plus GAS.
@@ -149,9 +149,9 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Beasts are only available to whitelisted supporters of
+						Currently, Beasts are only available to mintlisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
-						whitelist sale ends.
+						mintlist sale ends.
 					</p>
 					{dismissButton()}
 				</>
