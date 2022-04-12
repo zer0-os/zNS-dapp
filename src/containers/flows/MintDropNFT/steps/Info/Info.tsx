@@ -123,7 +123,7 @@ const Info = (props: InfoProps) => {
 						{mintButton()}
 					</>
 				);
-			} else {
+			} else if (Boolean(props.maxPurchasesPerUser)) {
 				return (
 					<>
 						<p className={styles.Green}>
@@ -131,6 +131,17 @@ const Info = (props: InfoProps) => {
 							{props.maxPurchasesPerUser} of your Beasts.
 						</p>
 						{dismissButton()}
+					</>
+				);
+			} else {
+				return (
+					<>
+						<p>
+							You have minted {props.numberPurchasedByUser} Beasts. The cost for
+							each Beast is <b>{props.pricePerNFT} ETH</b> plus GAS.
+						</p>
+
+						{mintButton()}
 					</>
 				);
 			}
