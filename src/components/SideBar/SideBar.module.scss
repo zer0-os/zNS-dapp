@@ -4,21 +4,21 @@ $break-hide-image: calc(var(--width-max) + ($full-width * 2));
 $icon-container-size: 54px;
 
 .BorderContainer {
-	// Mobile
+	// Mobile Breakpoints
 	display: none;
 	border-right: 1px solid var(--color-grey-mine-shaft);
 
-	// Tablet
+	// Tablet Breakpoints
 	@media only screen and (min-width: 744px) {
 		display: flex;
 	}
 }
 
 .Container {
-	// Container Mobile
+	// Container Mobile Breakpoints
 	display: none;
 
-	// Container Tablet
+	// Container Tablet Breakpoints
 	@media only screen and (min-width: 744px) {
 		display: flex;
 		flex-direction: column;
@@ -30,40 +30,51 @@ $icon-container-size: 54px;
 		overflow: auto;
 		width: auto !important;
 		align-items: center;
-		padding: 18px 4px 6px 4px;
+		padding: 18px 4px 12px 4px;
 		z-index: 10000;
+
+		// Container Desktp Breakpoints
+		@media only screen and (min-width: 1440px) {
+			padding: 35px 24px;
+			align-items: unset;
+			overflow: unset;
+		}
 	}
 
-	// Container Desktop
-	// @media only screen and (min-width: 1200px) {
-	// 	margin: 0 10px;
-	// 	align-items: flex-start;
-	// 	padding: 0 24px;
-	// }
+	// Container Desktp Breakpoints
+	@media only screen and (min-width: 1440px) {
+		// margin: 0 10px;
+		// align-items: flex-start;
+		// padding: 0 24px;
+	}
 
 	.LinkContainer {
-		// Mobile + Tablet
+		// Mobile + Tablet Breakpoints
 		display: flex;
 		flex-direction: column;
 
-		// Laptop/Desktop
-		// @media only screen and (min-width: 1200px) {
-		// 	align-items: flex-start;
-		// 	margin: 24px 0 0 0;
-		// }
+		// Desktop Breakpoints
+		@media only screen and (min-width: 1440px) {
+			align-items: flex-start;
+		}
 
 		.HomeLink {
 			display: flex;
 			justify-content: center;
+
+			// Desktop Breakpoints
+			@media only screen and (min-width: 1440px) {
+				margin-left: 10px;
+			}
 		}
 	}
 
 	.Network {
-		// Mobile
+		// Mobile + Tablet Breakpoints
 		display: none;
 
-		// Tablet + Laptop/Desktop
-		// @media only screen and (min-width: 1200px) {
+		// Desktop Breakpoints
+		// @media only screen and (min-width: 1440px) {
 		// 	display: block;
 		// 	width: 100%;
 		// 	padding: 11px;
@@ -90,6 +101,9 @@ $icon-container-size: 54px;
 	}
 
 	.Links {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
 		margin-top: 8px;
 		font-size: 20px;
 
@@ -112,7 +126,12 @@ $icon-container-size: 54px;
 
 				label {
 					display: none;
-					// cursor: pointer;
+
+					// Desktop Breakpoints
+					@media only screen and (min-width: 1440px) {
+						display: flex;
+						cursor: pointer;
+					}
 				}
 
 				> img {
@@ -120,7 +139,10 @@ $icon-container-size: 54px;
 					width: 22px;
 					margin-right: 0;
 
-					// margin-right: 12px;
+					// Desktop Breakpoints
+					@media only screen and (min-width: 1440px) {
+						margin-right: 12px;
+					}
 				}
 			}
 		}
@@ -128,27 +150,31 @@ $icon-container-size: 54px;
 
 	.Footer {
 		> * {
-			width: 100%;
 			&:first-child {
 				display: none;
-				margin: 8px;
 
-				// Laptop/Desktop
-				// @media only screen and (min-width: 1200px) {
-				// 	display: flex;
-				// }
+				// Desktop Breakpoints
+				@media only screen and (min-width: 1440px) {
+					display: flex;
+					margin-bottom: 12px;
+					width: 192px;
+				}
 			}
 		}
 
-		.Zero {
-			height: 32px;
-			width: 32px;
-			align-self: baseline;
+		.ZeroIconContainer {
+			display: flex;
+			justify-content: center;
+			width: 54px;
 
-			// Laptop/Desktop
-			// @media only screen and (min-width: 1200px) {
-			// 	margin: 4px 0 0 8px;
-			// }
+			.Zero {
+				height: 36px;
+				width: 36px;
+				// Laptop/Desktop
+				// @media only screen and (min-width: 1200px) {
+				// 	margin: 4px 0 0 8px;
+				// }
+			}
 		}
 	}
 }

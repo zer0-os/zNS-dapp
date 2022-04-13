@@ -51,14 +51,16 @@ const SideBar = () => {
 
 				<div className={styles.Footer}>
 					<BuyTokenRedirect />
-					<a
-						className={styles.Zero}
-						target="_blank"
-						href={URLS.ZERO}
-						rel="noreferrer"
-					>
-						<img alt="zero logo" src={ZERO} />
-					</a>
+					<div className={styles.ZeroIconContainer}>
+						<a
+							className={styles.Zero}
+							target="_blank"
+							href={URLS.ZERO}
+							rel="noreferrer"
+						>
+							<img alt="zero logo" src={ZERO} />
+						</a>
+					</div>
 					{network !== NETWORK_TYPES.MAINNET && (
 						<label className={styles.Network}>
 							Network: {startCase(toLower(network))}
