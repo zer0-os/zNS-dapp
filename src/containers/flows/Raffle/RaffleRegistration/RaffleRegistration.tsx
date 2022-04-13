@@ -167,7 +167,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		return (
 			<>
 				<p>
-					Mintlisted members will have early access to the upcoming Pets drop.
+					Mintlisted members will have early access to the upcoming Beasts drop.
 					Sign up to the raffle with your wallet for a chance at joining the
 					mintlist! <br />
 					<br />

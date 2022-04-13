@@ -1,30 +1,49 @@
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
 import * as zsale from '@zero-tech/zsale-sdk';
-import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
+import { ethers } from 'ethers';
+import { RPC_URLS } from 'lib/connectors';
+import {
+	chainIdToNetworkType,
+	defaultNetworkId,
+	NETWORK_TYPES,
+} from 'lib/network';
 import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import React from 'react';
 
 export function useZSaleSdk() {
-	const chainSelector = useChainSelector();
 	// TODO: Add suport to handle multiple contracts
+
+	const { library } = useWeb3React<Web3Provider>();
+	const chainSelector = useChainSelector();
 	const instance = React.useMemo(() => {
+		const web3Provider =
+			library ||
+			(new ethers.providers.JsonRpcProvider(
+				RPC_URLS[defaultNetworkId],
+			) as Web3Provider);
 		const network = chainIdToNetworkType(chainSelector.selectedChain);
 
 		switch (network) {
 			case NETWORK_TYPES.MAINNET: {
 				return zsale.createInstance({
-					isEth: true,
+					web3Provider,
 					contractAddress: '0x0', // TODO: Replace with proper contract address
 					merkleTreeFileUri:
-						'https://d3810nvssqir6b.cloudfront.net/airwilds1whitelist.json',
+						'https://ipfs.io/ipfs/Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
 				});
 			}
 
 			case NETWORK_TYPES.RINKEBY: {
 				return zsale.createInstance({
-					isEth: true,
-					contractAddress: '0xC1f42bff2b07ae3c4c14D19e28d86D947c94B69F',
+					web3Provider,
+					contractAddress: '0xC82E9E9B1e28F10a4C13a915a0BDCD4Db00d086d',
 					merkleTreeFileUri:
-						'ipfs://QmSarejrKPohT6peSHAWwLDkfBhy8qwEouFhBMzzw2vCit',
+						'https://d3810nvssqir6b.cloudfront.net/kovan-test-merkleTree.json',
+					advanced: {
+						merkleTreeFileIPFSHash:
+							'Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
+					},
 				});
 			}
 
@@ -32,7 +51,7 @@ export function useZSaleSdk() {
 				throw new Error('SDK isn´t available for this chainId');
 			}
 		}
-	}, [chainSelector.selectedChain]);
+	}, [chainSelector.selectedChain, library]);
 
 	return {
 		instance,

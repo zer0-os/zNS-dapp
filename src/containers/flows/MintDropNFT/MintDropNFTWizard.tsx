@@ -134,7 +134,11 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 					errorMessage={transactionError}
 					isUserWhitelisted={props.isUserWhitelisted}
 					isWalletConnected={props.userId !== undefined}
-					maxPurchasesPerUser={props.maxPurchasesPerUser}
+					maxPurchasesPerUser={
+						props.dropStage === Stage.Public
+							? undefined
+							: props.maxPurchasesPerUser
+					}
 					pricePerNFT={props.pricePerNFT}
 					numberPurchasedByUser={props.numberPurchasedByUser}
 					onContinue={onContinueFromInfo!}
@@ -162,7 +166,11 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 					balanceEth={props.balanceEth!}
 					error={transactionError}
 					pricePerNFT={props.pricePerNFT}
-					maxPurchasesPerUser={props.maxPurchasesPerUser!}
+					maxPurchasesPerUser={
+						props.dropStage === Stage.Public
+							? undefined
+							: props.maxPurchasesPerUser!
+					}
 					numberPurchasedByUser={props.numberPurchasedByUser!}
 					onBack={onBack}
 					onContinue={submitTransaction}
@@ -197,13 +205,15 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 		<div className={`${styles.Container} border-primary border-rounded`}>
 			{/* Head section */}
 			<section className={styles.Header}>
-				<h1 className="glow-text-white">Mint Your Pets</h1>
+				<h1 className="glow-text-white">Mint Your Beasts</h1>
 				<span className="glow-text-white">
-					Your Pets in the Metaverse await
+					Your Beasts in the Metaverse await
 				</span>
 				<hr />
 			</section>
-			{props.dropStage === undefined && <Loading text={'Loading Pets Drop'} />}
+			{props.dropStage === undefined && (
+				<Loading text={'Loading Beasts Drop'} />
+			)}
 			{getFlowSection()}
 		</div>
 	);
