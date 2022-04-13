@@ -105,7 +105,7 @@ const MintDropNFTFlowContainer = ({
 			window?.open('https://discord.gg/7tyggH6eh9', '_blank')?.focus();
 			return;
 		}
-		if (dropStage === Stage.Whitelist && countdownDate) {
+		if (dropStage === Stage.Whitelist && !countdownDate) {
 			window?.open(
 				'https://zine.wilderworld.com/wolfpack-genesis-drop/',
 				'_blank',
@@ -471,7 +471,7 @@ const MintDropNFTFlowContainer = ({
 	const buttonText = () => {
 		return failedToLoad ||
 			isSaleHalted ||
-			(dropStage === Stage.Whitelist && countdownDate)
+			(dropStage === Stage.Whitelist && !countdownDate)
 			? 'Learn More'
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
