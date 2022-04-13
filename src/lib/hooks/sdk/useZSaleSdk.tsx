@@ -28,9 +28,13 @@ export function useZSaleSdk() {
 			case NETWORK_TYPES.MAINNET: {
 				return zsale.createInstance({
 					web3Provider,
-					contractAddress: '0x0', // TODO: Replace with proper contract address
+					contractAddress: '0x63E34f60EA13b34681B76Dcb1614dD985dD8E11e',
 					merkleTreeFileUri:
-						'https://ipfs.io/ipfs/Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
+						'https://d3810nvssqir6b.cloudfront.net/final-wolf-beast-mintlist-merkleTree.json',
+					advanced: {
+						merkleTreeFileIPFSHash:
+							'QmRUkCPbiFtw8zPAQ6nY9iUgwJeGVsAGYcv8iYc66tYs4H',
+					},
 				});
 			}
 
