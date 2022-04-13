@@ -34,10 +34,6 @@ const MintDropNFTFlowContainer = ({
 	privateSaleEndTime,
 	publicSaleStartTime,
 }: MintDropNFTFlowContainerProps) => {
-	// Hardcoded dates
-
-	// Temporary values
-
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
 	const PUBLIC_SALE_START_TIME = publicSaleStartTime;
 
@@ -109,7 +105,7 @@ const MintDropNFTFlowContainer = ({
 			window?.open('https://discord.gg/7tyggH6eh9', '_blank')?.focus();
 			return;
 		}
-		if (dropStage === Stage.Whitelist && countdownDate) {
+		if (dropStage === Stage.Whitelist && !countdownDate) {
 			window?.open(
 				'https://zine.wilderworld.com/wolfpack-genesis-drop/',
 				'_blank',
@@ -193,7 +189,9 @@ const MintDropNFTFlowContainer = ({
 		};
 	}, []);
 
-	// Get sale data
+	/**
+	 * This is the initial "get data"
+	 */
 	useEffect(() => {
 		let isMounted = true;
 
@@ -250,7 +248,9 @@ const MintDropNFTFlowContainer = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [library, zSaleInstance, isSaleHalted]);
 
-	// Get user eligibility
+	/**
+	 * Gets user eligibility
+	 */
 	useEffect(() => {
 		let isMounted = true;
 		if (!zSaleInstance || isSaleHalted) {
@@ -276,7 +276,9 @@ const MintDropNFTFlowContainer = ({
 		};
 	}, [account, library, zSaleInstance, isSaleHalted]);
 
-	// Get user balance and number purchased
+	/**
+	 * Get user-specific variables whenever mint amount or account changes
+	 */
 	useEffect(() => {
 		let isMounted = true;
 		if (!zSaleInstance || !library || isSaleHalted) {
@@ -284,11 +286,6 @@ const MintDropNFTFlowContainer = ({
 		}
 		// Get user data if wallet connected
 		if (account && library && wildTokenContract) {
-			// getERC20TokenBalance(wildTokenContract, account).then((d) => {
-			// 	if (isMounted && d !== undefined) {
-			// 		setBalanceEth(d);
-			// 	}
-			// });
 			getBalanceEth(library.getSigner()).then((d) => {
 				if (isMounted && d !== undefined) {
 					setBalanceEth(d);
@@ -310,6 +307,9 @@ const MintDropNFTFlowContainer = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [numMinted, account, library, zSaleInstance]);
 
+	/**
+	 * Gets and sets what stage the sale is in
+	 */
 	useEffect(() => {
 		let isMounted = true;
 		if (!zSaleInstance || isSaleHalted || !library) {
@@ -336,18 +336,7 @@ const MintDropNFTFlowContainer = ({
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						// if (Date.now() > PRIVATE_SALE_END_TIME) {
-						// 	setCountdownDate(PUBLIC_SALE_START_TIME);
-						// } else {
 						setCountdownDate(PRIVATE_SALE_END_TIME);
-						// }
-						// setCountdownDate(PUBLIC_SALE_START_TIME);
-
-						// if (Date.now() > PRIVATE_SALE_END_TIME) {
-						// 	setCountdownDate(PUBLIC_SALE_START_TIME);
-						// } else {
-						// 	setCountdownDate(undefined);
-						// }
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -378,6 +367,9 @@ const MintDropNFTFlowContainer = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasCountdownFinished, refetch, library, zSaleInstance]);
 
+	/**
+	 * Listens for changes to drop stage, and handles UI accordingly
+	 */
 	useEffect(() => {
 		let timer: any;
 		if (
@@ -390,8 +382,13 @@ const MintDropNFTFlowContainer = ({
 			// Fetch minted count periodically
 			timer = setInterval(async () => {
 				const sold = await zSaleInstance.getNumberOfDomainsSold();
-				if (sold) setWheelsMinted(sold.toNumber());
-			}, 1000);
+				if (sold) {
+					if (wheelsTotal !== undefined && sold.toNumber() >= wheelsTotal) {
+						setDropStage(Stage.Sold);
+					}
+					setWheelsMinted(sold.toNumber());
+				}
+			}, 5000);
 		}
 
 		return () => {
@@ -400,6 +397,9 @@ const MintDropNFTFlowContainer = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dropStage, zSaleInstance, isSaleHalted, account, library]);
 
+	/**
+	 * Gets sale price on SDK instance or library change
+	 */
 	useAsyncEffect(async () => {
 		if (library) {
 			const price = await zSaleInstance.getSalePrice();
@@ -471,7 +471,7 @@ const MintDropNFTFlowContainer = ({
 	const buttonText = () => {
 		return failedToLoad ||
 			isSaleHalted ||
-			(dropStage === Stage.Whitelist && countdownDate)
+			(dropStage === Stage.Whitelist && !countdownDate)
 			? 'Learn More'
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
