@@ -1,8 +1,6 @@
 $full-width: 240px;
 $transform: translateX(calc(-100% - (var(--width-max) / 2)));
-
 $break-hide-image: calc(var(--width-max) + ($full-width * 2));
-
 $icon-container-size: 54px;
 
 .BorderContainer {
