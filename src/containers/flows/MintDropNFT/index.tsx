@@ -34,11 +34,6 @@ const MintDropNFTFlowContainer = ({
 	privateSaleEndTime,
 	publicSaleStartTime,
 }: MintDropNFTFlowContainerProps) => {
-	console.log('yeah');
-	// Hardcoded dates
-
-	// Temporary values
-
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
 	const PUBLIC_SALE_START_TIME = publicSaleStartTime;
 
@@ -136,7 +131,16 @@ const MintDropNFTFlowContainer = ({
 	};
 
 	const countdownFinished = () => {
+		// if (
+		// 	Date.now() > PRIVATE_SALE_END_TIME &&
+		// 	Date.now() < PUBLIC_SALE_START_TIME
+		// ) {
+		// 	setHasCountdownFinished(false);
+		// 	setIsInTransitionMode(true);
+		// 	setCountdownDate(PUBLIC_SALE_START_TIME);
+		// } else {
 		setHasCountdownFinished(true);
+		// }
 	};
 
 	// Run a few things after the transaction succeeds
@@ -195,7 +199,7 @@ const MintDropNFTFlowContainer = ({
 		// but given time constraints we're just going to compare
 		// to PUBLIC_SALE_START_TIME
 		if (isSaleHalted) {
-			setCountdownDate(PUBLIC_SALE_START_TIME);
+			// setCountdownDate(PUBLIC_SALE_START_TIME);
 			setFailedToLoad(false);
 			return;
 		}
@@ -402,6 +406,26 @@ const MintDropNFTFlowContainer = ({
 			setPricePerNFT(Number(price));
 		}
 	}, [zSaleInstance, library]);
+
+	// useAsyncEffect(async () => {
+	// 	const interval = setInterval(async () => {
+	// 		// if (Date.now() > PRIVATE_SALE_END_TIME) {
+	// 		// 	setCountdownDate(PUBLIC_SALE_START_TIME);
+	// 		// 	clearInterval(interval);
+	// 		// } else {
+	// 		// 	setCountdownDate(undefined);
+	// 		// }
+
+	// 		if (Date.now() > PRIVATE_SALE_END_TIME) {
+	// 			setHasCountdownFinished(false);
+	// 			setIsInTransitionMode(true);
+	// 			setCountdownDate(PUBLIC_SALE_START_TIME);
+	// 		} else {
+	// 			setCountdownDate(PRIVATE_SALE_END_TIME);
+	// 		}
+	// 	}, 13000);
+	// 	return () => clearInterval(interval);
+	// }, []);
 
 	///////////////
 	// Fragments //
