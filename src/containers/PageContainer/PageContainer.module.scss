@@ -1,18 +1,23 @@
 .PageContainer {
-	// Mobile
+	// Mobile Breakpoints
 	width: 100%;
 	margin: 0 auto;
 	padding: 8px 8px 48px 8px;
 	box-sizing: border-box;
 
-	// Tablet
+	// Tablet Breakpoints
 	@media only screen and (min-width: 744px) {
 		margin: 0;
 		padding: 0;
 	}
 
 	.Main {
-		margin: 16px 0 16px 0;
+		margin-top: 16px;
+
+		// Desktop Breakpoints
+		@media only screen and (min-width: 1440px) {
+			margin-top: 24px;
+		}
 	}
 
 	.InnerContainer {
@@ -25,65 +30,69 @@
 		width: 100%;
 
 		.Actions {
-			// Mobile + Tablet
+			// Mobile + Tablet Breakpoints
 			display: none;
 
-			// Laptop
-			// @media only screen and (min-width: 1200px) {
-			// 	display: flex;
-			// 	position: relative;
-			// 	align-items: center;
-			// 	height: 0;
-			// 	right: 0;
-			// 	padding: 28px;
-			// 	margin-top: 20px;
-			// 	gap: 16px;
-			// }
+			// Desktop Breakpoints
+			@media only screen and (min-width: 1440px) {
+				display: flex;
+				position: relative;
+				align-items: center;
+				height: 0;
+				right: 0;
+				padding: 28px;
+				margin-top: 20px;
+				gap: 16px;
+			}
 		}
 	}
 
 	.FlexColumnWrapper {
-		// Mobile
+		// Mobile Breakpoints
 		width: 100%;
 
-		// Tablet
+		// Tablet Breakpoints
 		@media only screen and (min-width: 744px) {
 			margin: 8px 16px;
 			max-width: 736px;
 		}
 
-		// Tablet M
 		@media only screen and (min-width: 834px) {
 			margin: 8px auto;
+		}
+
+		// Desktop Breakpoints
+		@media only screen and (min-width: 1440px) {
+			margin-top: 24px;
 		}
 	}
 }
 
-.ZERO {
-	position: fixed;
-	bottom: 29px;
-	height: 54px;
-	width: 54px;
-	z-index: 4;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border-radius: 50%;
-	transform: translateX(calc(-100% - 19px));
-	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out;
+// .ZERO {
+// 	position: fixed;
+// 	bottom: 29px;
+// 	height: 54px;
+// 	width: 54px;
+// 	z-index: 4;
+// 	display: flex;
+// 	justify-content: center;
+// 	align-items: center;
+// 	border-radius: 50%;
+// 	transform: translateX(calc(-100% - 19px));
+// 	cursor: pointer;
+// 	transition: transform var(--animation-time-medium) ease-in-out;
 
-	& img {
-		max-width: calc(65% - 1px);
-		height: auto;
-		margin-left: 1px;
-		border-radius: 50%;
+// 	& img {
+// 		max-width: calc(65% - 1px);
+// 		height: auto;
+// 		margin-left: 1px;
+// 		border-radius: 50%;
 
-		user-drag: none;
-		-webkit-user-drag: none;
-		user-select: none;
-		-moz-user-select: none;
-		-webkit-user-select: none;
-		-ms-user-select: none;
-	}
-}
+// 		user-drag: none;
+// 		-webkit-user-drag: none;
+// 		user-select: none;
+// 		-moz-user-select: none;
+// 		-webkit-user-select: none;
+// 		-ms-user-select: none;
+// 	}
+// }

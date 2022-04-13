@@ -129,8 +129,9 @@ const PageContainer: React.FC = ({ children }) => {
 							<main className={styles.Main}>{children}</main>
 						</div>
 
-						{/* Desktop Actions */}
+						{/* Header Actions - Desktop */}
 						<Actions
+							className={styles.Actions}
 							pageWidth={pageWidth}
 							znsDomain={znsDomain}
 							domainMetadata={domainMetadata}

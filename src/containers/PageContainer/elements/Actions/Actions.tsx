@@ -25,15 +25,13 @@ import {
 //- Constants Imports
 import { Modal } from '../../PageContainer.constants';
 
-//- Styles Imports
-import styles from '../../PageContainer.module.scss';
-
 type ActionsProps = {
 	pageWidth: number;
 	znsDomain: Maybe<DisplayParentDomain>;
 	domainMetadata: Maybe<Metadata>;
 	account: Maybe<string>;
 	openModal: (modal?: Modal | undefined) => () => void;
+	className: string;
 };
 
 export const Actions: React.FC<ActionsProps> = ({
@@ -42,6 +40,7 @@ export const Actions: React.FC<ActionsProps> = ({
 	domainMetadata,
 	account,
 	openModal,
+	className,
 }) => {
 	const history = useHistory();
 	const location = useLocation();
@@ -81,7 +80,7 @@ export const Actions: React.FC<ActionsProps> = ({
 	});
 
 	return (
-		<div className={styles.Actions}>
+		<div className={className}>
 			{/* Connect Wallet Button */}
 			{formattedData.showConnectWalletButton && (
 				<ConnectWalletButton

@@ -4,24 +4,14 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 //- library Imports
 import classnames from 'classnames';
-import { useStaking } from 'lib/hooks/useStaking';
-import { useMint } from 'lib/hooks/useMint';
-import { useTransfer } from 'lib/hooks/useTransfer';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
 
 //- Components Imports
 import { ZNALink } from 'components';
-import {
-	SearchDomains,
-	ConnectWalletButton,
-	MintButton,
-	StatusButtons,
-	ProfileButton,
-	InfoButton,
-	HistoryButtons,
-} from './elements';
+import { SearchDomains, HistoryButtons } from './elements';
+import { Actions } from '../Actions';
 
 //- Hooks Imports
 import { useHeaderData, useHeaderHandlers } from './hooks';
@@ -53,11 +43,6 @@ export const Header: React.FC<HeaderProps> = ({
 	const location = useLocation();
 	const { mvpVersion } = useMvpVersion();
 
-	const { requesting: stakeRequesting, requested: stakeRequested } =
-		useStaking();
-
-	const { minting, minted } = useMint();
-	const { transferring } = useTransfer();
 	const { title, isSearching, setNavbarSearchingStatus } = useNavbar();
 
 	const { localState, localActions, formattedData, refs } = useHeaderData({
@@ -140,51 +125,15 @@ export const Header: React.FC<HeaderProps> = ({
 					)}
 				</div>
 			</div>
-			<div className="header__actions">
-				{/* Connect Wallet Button */}
-				{formattedData.showConnectWalletButton && (
-					<ConnectWalletButton
-						onConnectWallet={openModal(Modal.Wallet)}
-						isDesktop={formattedData.isDesktop}
-						className="header__actions-connect-button"
-					/>
-				)}
-
-				{/* Mint button */}
-				{formattedData.showMintButton && (
-					<MintButton
-						isMinting={minting.length > 0}
-						onClick={openModal(Modal.Mint)}
-					/>
-				)}
-
-				{/* Status Buttons */}
-				{formattedData.showStatusButtons && (
-					<StatusButtons
-						statusCounts={{
-							minting: minting.length,
-							minted: minted.length,
-							stakeRequesting: stakeRequesting.length,
-							stakeRequested: stakeRequested.length,
-							transferring: transferring.length,
-						}}
-						onOpenProfile={handlers.handleOnOpenProfile}
-					/>
-				)}
-
-				{/* Profile Button */}
-				{formattedData.showProfileButton && (
-					<ProfileButton onOpenProfile={handlers.handleOnOpenProfile} />
-				)}
-
-				{/* Info Button */}
-				{formattedData.showInfoButton && (
-					<InfoButton
-						isDesktop={formattedData.isDesktop}
-						onConnectWallet={openModal(Modal.Wallet)}
-					/>
-				)}
-			</div>
+			{/* Header Actions - Mobile / Tablet */}
+			<Actions
+				className="header__actions"
+				pageWidth={pageWidth}
+				znsDomain={znsDomain}
+				domainMetadata={domainMetadata}
+				account={account}
+				openModal={openModal}
+			/>
 		</div>
 	);
 };
