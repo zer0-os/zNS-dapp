@@ -9,6 +9,11 @@ $icon-container-size: 54px;
 	@media only screen and (min-width: 744px) {
 		display: flex;
 	}
+
+	// Desktp Breakpoints
+	@media only screen and (min-width: 1440px) {
+		width: 240px;
+	}
 }
 
 .Container {
