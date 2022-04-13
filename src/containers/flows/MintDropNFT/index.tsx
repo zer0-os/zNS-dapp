@@ -85,7 +85,7 @@ const MintDropNFTFlowContainer = ({
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted = false;
+	const isSaleHalted = true;
 
 	///////////////
 	// Functions //
@@ -435,10 +435,7 @@ const MintDropNFTFlowContainer = ({
 		if (isSaleHalted) {
 			return (
 				<>
-					<span>
-						Wilder Beasts sale has been temporarily paused to ensure a fair
-						sale.
-					</span>
+					<span>Wilder Beasts sale has been temporarily paused.</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
