@@ -346,7 +346,6 @@ const MintDropNFTFlowContainer = ({
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
-					// setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 				}
 				if (!isSaleHalted) {
 					setFailedToLoad(false);
