@@ -205,7 +205,7 @@ const MintDropNFTFlowContainer = ({
 		}
 
 		const getData = async () => {
-			if (!zSaleInstance || !library) {
+			if (!zSaleInstance) {
 				return;
 			}
 
