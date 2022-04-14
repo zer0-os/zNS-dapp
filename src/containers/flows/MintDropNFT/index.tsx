@@ -346,7 +346,6 @@ const MintDropNFTFlowContainer = ({
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
-					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 				}
 				if (!isSaleHalted) {
 					setFailedToLoad(false);
@@ -401,10 +400,8 @@ const MintDropNFTFlowContainer = ({
 	 * Gets sale price on SDK instance or library change
 	 */
 	useAsyncEffect(async () => {
-		if (library) {
-			const price = await zSaleInstance.getSalePrice();
-			setPricePerNFT(Number(price));
-		}
+		const price = await zSaleInstance.getSalePrice();
+		setPricePerNFT(Number(price));
 	}, [zSaleInstance, library]);
 
 	// useAsyncEffect(async () => {

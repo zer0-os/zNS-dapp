@@ -96,7 +96,7 @@ const Info = (props: InfoProps) => {
 						wallet was mintlisted in our raffle.
 						<br></br>
 						<br></br>
-						The cost for each Beast is <b>0.07 ETH</b> plus GAS.
+						The cost for each Beast is <b>{props.pricePerNFT}</b> plus GAS.
 					</p>
 					{connectWalletButton()}
 				</>
