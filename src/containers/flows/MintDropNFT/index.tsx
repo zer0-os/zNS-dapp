@@ -88,7 +88,7 @@ const MintDropNFTFlowContainer = ({
 	>();
 
 	// NOTE: TEMPORARY FOR SALE HALT
-	const isSaleHalted = true;
+	const isSaleHalted = false;
 
 	///////////////
 	// Functions //
