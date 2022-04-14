@@ -401,10 +401,8 @@ const MintDropNFTFlowContainer = ({
 	 * Gets sale price on SDK instance or library change
 	 */
 	useAsyncEffect(async () => {
-		if (library) {
-			const price = await zSaleInstance.getSalePrice();
-			setPricePerNFT(Number(price));
-		}
+		const price = await zSaleInstance.getSalePrice();
+		setPricePerNFT(Number(price));
 	}, [zSaleInstance, library]);
 
 	// useAsyncEffect(async () => {
