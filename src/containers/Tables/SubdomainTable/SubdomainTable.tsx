@@ -41,8 +41,6 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 		domain?.subdomains,
 	);
 
-	console.log({ data });
-
 	/*
 	 * This pattern was previously used for bidirectional data
 	 * between row and table, but should not be used in the future.
