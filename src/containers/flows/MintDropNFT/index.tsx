@@ -20,13 +20,22 @@ import {
 	getUserEligibility,
 	getNumberPurchasedByUser,
 	getBalanceEth,
+	getMaxPurchasesPerUser,
 } from './helpers';
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
-const MintDropNFTFlowContainer = () => {
-	// Hardcoded dates
-	const DATE_PUBLIC = 1642730400655;
+type MintDropNFTFlowContainerProps = {
+	privateSaleEndTime: number;
+	publicSaleStartTime: number;
+};
+
+const MintDropNFTFlowContainer = ({
+	privateSaleEndTime,
+	publicSaleStartTime,
+}: MintDropNFTFlowContainerProps) => {
+	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
+	const PUBLIC_SALE_START_TIME = publicSaleStartTime;
 
 	//////////////////
 	// State & Data //
@@ -54,6 +63,7 @@ const MintDropNFTFlowContainer = () => {
 	const [countdownDate, setCountdownDate] = useState<number | undefined>();
 	const [hasCountdownFinished, setHasCountdownFinished] =
 		useState<boolean>(false);
+	const [isInTransitionMode, setIsInTransitionMode] = useState<boolean>(false);
 
 	// Auction data
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
@@ -95,10 +105,16 @@ const MintDropNFTFlowContainer = () => {
 			window?.open('https://discord.gg/7tyggH6eh9', '_blank')?.focus();
 			return;
 		}
+		if (dropStage === Stage.Whitelist && !countdownDate) {
+			window?.open(
+				'https://zine.wilderworld.com/wolfpack-genesis-drop/',
+				'_blank',
+			);
+		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold) {
-			history.push('market/kicks.airwild.season1');
+			history.push('market/beasts.wolf');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -115,7 +131,16 @@ const MintDropNFTFlowContainer = () => {
 	};
 
 	const countdownFinished = () => {
+		// if (
+		// 	Date.now() > PRIVATE_SALE_END_TIME &&
+		// 	Date.now() < PUBLIC_SALE_START_TIME
+		// ) {
+		// 	setHasCountdownFinished(false);
+		// 	setIsInTransitionMode(true);
+		// 	setCountdownDate(PUBLIC_SALE_START_TIME);
+		// } else {
 		setHasCountdownFinished(true);
+		// }
 	};
 
 	// Run a few things after the transaction succeeds
@@ -164,26 +189,28 @@ const MintDropNFTFlowContainer = () => {
 		};
 	}, []);
 
-	// Get sale data
+	/**
+	 * This is the initial "get data"
+	 */
 	useEffect(() => {
 		let isMounted = true;
 
-		// Generally this would be < DATE_WHITELIST & < DATE_PUBLIC
+		// Generally this would be < DATE_WHITELIST & < PUBLIC_SALE_START_TIME
 		// but given time constraints we're just going to compare
-		// to DATE_PUBLIC
+		// to PUBLIC_SALE_START_TIME
 		if (isSaleHalted) {
-			setCountdownDate(DATE_PUBLIC);
+			// setCountdownDate(PUBLIC_SALE_START_TIME);
 			setFailedToLoad(false);
 			return;
 		}
 
 		const getData = async () => {
-			if (!zSaleInstance || !library || !account) {
+			if (!zSaleInstance) {
 				return;
 			}
 
 			// Get the data related to the drop
-			getDropData(zSaleInstance, library, account)
+			getDropData(zSaleInstance)
 				.then((d) => {
 					if (!isMounted) {
 						return;
@@ -195,7 +222,7 @@ const MintDropNFTFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						setCountdownDate(PRIVATE_SALE_END_TIME);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -205,7 +232,6 @@ const MintDropNFTFlowContainer = () => {
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
-					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 					setFailedToLoad(false);
 				})
 				.catch((e) => {
@@ -222,7 +248,9 @@ const MintDropNFTFlowContainer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [library, zSaleInstance, isSaleHalted]);
 
-	// Get user eligibility
+	/**
+	 * Gets user eligibility
+	 */
 	useEffect(() => {
 		let isMounted = true;
 		if (!zSaleInstance || isSaleHalted) {
@@ -235,6 +263,11 @@ const MintDropNFTFlowContainer = () => {
 					setIsUserWhitelisted(d);
 				}
 			});
+			getMaxPurchasesPerUser(zSaleInstance, account).then((d) => {
+				if (isMounted && d !== undefined) {
+					setMaxPurchasesPerUser(d);
+				}
+			});
 		} else {
 			setIsUserWhitelisted(undefined);
 		}
@@ -243,7 +276,9 @@ const MintDropNFTFlowContainer = () => {
 		};
 	}, [account, library, zSaleInstance, isSaleHalted]);
 
-	// Get user balance and number purchased
+	/**
+	 * Get user-specific variables whenever mint amount or account changes
+	 */
 	useEffect(() => {
 		let isMounted = true;
 		if (!zSaleInstance || !library || isSaleHalted) {
@@ -251,18 +286,13 @@ const MintDropNFTFlowContainer = () => {
 		}
 		// Get user data if wallet connected
 		if (account && library && wildTokenContract) {
-			// getERC20TokenBalance(wildTokenContract, account).then((d) => {
-			// 	if (isMounted && d !== undefined) {
-			// 		setBalanceEth(d);
-			// 	}
-			// });
 			getBalanceEth(library.getSigner()).then((d) => {
 				if (isMounted && d !== undefined) {
 					setBalanceEth(d);
 				}
 			});
 
-			getNumberPurchasedByUser(zSaleInstance, library).then((d) => {
+			getNumberPurchasedByUser(zSaleInstance, account).then((d) => {
 				if (isMounted && d !== undefined) {
 					setNumberPurchasedByUser(d);
 				}
@@ -277,19 +307,22 @@ const MintDropNFTFlowContainer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [numMinted, account, library, zSaleInstance]);
 
+	/**
+	 * Gets and sets what stage the sale is in
+	 */
 	useEffect(() => {
 		let isMounted = true;
-
-		if (!zSaleInstance || isSaleHalted || !library || !account) {
+		if (!zSaleInstance || isSaleHalted || !library) {
 			return;
 		}
 
-		getDropData(zSaleInstance, library, account)
+		getDropData(zSaleInstance)
 			.then((d) => {
 				if (!isMounted) {
 					return;
 				}
 				const primaryData = d as DropData;
+
 				if (dropStage !== undefined) {
 					if (hasCountdownFinished && primaryData.dropStage === dropStage) {
 						setTimeout(() => {
@@ -303,7 +336,7 @@ const MintDropNFTFlowContainer = () => {
 							setRefetch(refetch + 1);
 						}, 7000);
 					} else if (primaryData.dropStage === Stage.Whitelist) {
-						setCountdownDate(DATE_PUBLIC);
+						setCountdownDate(PRIVATE_SALE_END_TIME);
 					} else {
 						setCountdownDate(undefined);
 					}
@@ -313,7 +346,6 @@ const MintDropNFTFlowContainer = () => {
 					setDropStage(primaryData.dropStage);
 					setWheelsTotal(primaryData.wheelsTotal);
 					setWheelsMinted(primaryData.wheelsMinted);
-					setMaxPurchasesPerUser(primaryData.maxPurchasesPerUser);
 				}
 				if (!isSaleHalted) {
 					setFailedToLoad(false);
@@ -334,6 +366,9 @@ const MintDropNFTFlowContainer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [hasCountdownFinished, refetch, library, zSaleInstance]);
 
+	/**
+	 * Listens for changes to drop stage, and handles UI accordingly
+	 */
 	useEffect(() => {
 		let timer: any;
 		if (
@@ -345,11 +380,14 @@ const MintDropNFTFlowContainer = () => {
 		) {
 			// Fetch minted count periodically
 			timer = setInterval(async () => {
-				const sold = await zSaleInstance.getNumberOfDomainsSold(
-					library.getSigner(),
-				);
-				if (sold) setWheelsMinted(sold.toNumber());
-			}, 1000);
+				const sold = await zSaleInstance.getNumberOfDomainsSold();
+				if (sold) {
+					if (wheelsTotal !== undefined && sold.toNumber() >= wheelsTotal) {
+						setDropStage(Stage.Sold);
+					}
+					setWheelsMinted(sold.toNumber());
+				}
+			}, 5000);
 		}
 
 		return () => {
@@ -358,12 +396,33 @@ const MintDropNFTFlowContainer = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dropStage, zSaleInstance, isSaleHalted, account, library]);
 
+	/**
+	 * Gets sale price on SDK instance or library change
+	 */
 	useAsyncEffect(async () => {
-		if (library) {
-			const price = await zSaleInstance.getSalePrice(library.getSigner());
-			setPricePerNFT(Number(price));
-		}
+		const price = await zSaleInstance.getSalePrice();
+		setPricePerNFT(Number(price));
 	}, [zSaleInstance, library]);
+
+	// useAsyncEffect(async () => {
+	// 	const interval = setInterval(async () => {
+	// 		// if (Date.now() > PRIVATE_SALE_END_TIME) {
+	// 		// 	setCountdownDate(PUBLIC_SALE_START_TIME);
+	// 		// 	clearInterval(interval);
+	// 		// } else {
+	// 		// 	setCountdownDate(undefined);
+	// 		// }
+
+	// 		if (Date.now() > PRIVATE_SALE_END_TIME) {
+	// 			setHasCountdownFinished(false);
+	// 			setIsInTransitionMode(true);
+	// 			setCountdownDate(PUBLIC_SALE_START_TIME);
+	// 		} else {
+	// 			setCountdownDate(PRIVATE_SALE_END_TIME);
+	// 		}
+	// 	}, 13000);
+	// 	return () => clearInterval(interval);
+	// }, []);
 
 	///////////////
 	// Fragments //
@@ -373,9 +432,7 @@ const MintDropNFTFlowContainer = () => {
 		if (isSaleHalted) {
 			return (
 				<>
-					<span>
-						Wilder Pets sale has been temporarily paused to ensure a fair sale.
-					</span>
+					<span>Wilder Beasts sale has been temporarily paused.</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
@@ -393,7 +450,7 @@ const MintDropNFTFlowContainer = () => {
 			);
 		}
 		return failedToLoad
-			? 'Failed to load auction data - refresh to try again'
+			? 'Failed to load sale data - refresh to try again'
 			: getBannerLabel(
 					dropStage,
 					wheelsMinted,
@@ -401,11 +458,14 @@ const MintDropNFTFlowContainer = () => {
 					countdownDate,
 					countdownFinished,
 					hasCountdownFinished,
+					isInTransitionMode,
 			  );
 	};
 
 	const buttonText = () => {
-		return failedToLoad || isSaleHalted
+		return failedToLoad ||
+			isSaleHalted ||
+			(dropStage === Stage.Whitelist && !countdownDate)
 			? 'Learn More'
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
@@ -438,7 +498,7 @@ const MintDropNFTFlowContainer = () => {
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintDropNFTBanner
-					title={'Your Metaverse Companion Awaits '}
+					title={'Join the Wilder Wolf Pack '}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}
