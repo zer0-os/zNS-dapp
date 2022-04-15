@@ -7,8 +7,9 @@
 		rgba(82, 87, 255, 0.25) 0%,
 		rgba(82, 203, 255, 0.25) 100%
 	);
-	--box-shadow: var(--color-accent-1-medium-10);
+	--box-shadow: rgba(0, 209, 255, 0.2);
 	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
+	--box-shadow-light: rgba(0, 209, 255, 0.2);
 	--border-color: #3ca1ff;
 	--border-color-hover: #fff;
 
@@ -28,8 +29,9 @@
 	--bg: rgba(247, 99, 176, 0.25);
 	--box-shadow: rgba(247, 99, 176, 0.25);
 	--box-shadow-heavy: #7000ff;
+	--box-shadow-light: rgba(112, 0, 255, 0.25);
 	--border-color: #f763b0;
-	--border-color-hover: #f763b0;
+	--border-color-hover: #fff;
 	--color: #fff;
 
 	&:not(.Glow) {
@@ -58,44 +60,45 @@
 	background: var(--bg);
 	border-radius: var(--box-radius);
 	opacity: 0.6;
+	box-shadow: 0 0 15px 4px var(--box-shadow-light);
+	overflow: hidden;
 
 	cursor: pointer;
 	text-transform: uppercase;
 	transition: opacity var(--animation-time-short) ease-in-out;
+
+	&:active {
+		--box-shadow: none;
+	}
 
 	.Content {
 		margin: 0 8px;
 
 		color: white;
 		text-align: center;
-		font-size: var(--font-size-default);
+		font-size: 14px;
 		font-weight: 700;
 		text-shadow: var(--glow-text-white);
 
 		z-index: 2;
-		transition: color var(--animation-time-medium) ease-in-out,
-			text-shadow var(--animation-time-medium) ease-in-out;
+		transition: color var(--animation-time-short) ease-in-out,
+			text-shadow var(--animation-time-short) ease-in-out;
 	}
 
 	.Wash {
 		position: absolute;
-		top: 50%;
-		left: 50%;
+		top: 0;
+		left: 0;
 
-		height: 0;
-		width: 0;
+		height: 100%;
+		width: 100%;
 
 		background: var(--box-shadow);
 
-		transition: background var(--animation-time-medium) ease-in-out;
+		transition: opacity var(--animation-time-short) ease-in-out;
 
 		opacity: 0;
 		z-index: 0;
-
-		&.Hovered {
-			animation: shrink 0.5s;
-			animation-timing-function: ease-in-out;
-		}
 	}
 
 	&:after {
@@ -109,19 +112,7 @@
 		border-radius: inherit;
 		border-left: 2px solid var(--border-color);
 		border-right: 2px solid var(--border-color);
-		transition: border-color var(--animation-time-medium) ease-in-out;
-	}
-
-	// ????
-	&:not(:not(.Glow)):hover {
-		&::after {
-			border-color: var(--border-color-hover);
-		}
-
-		.Wash {
-			animation: expand 0.2s forwards;
-			animation-timing-function: ease-in-out;
-		}
+		transition: border-color var(--animation-time-short) ease-in-out;
 	}
 
 	/*
@@ -138,7 +129,20 @@
 			left: 0;
 			width: 100%;
 			height: 0;
-			box-shadow: 0px 0px 40px 15px var(--box-shadow-heavy);
+			box-shadow: 0px 0px 25px 9px var(--box-shadow-heavy);
+		}
+
+		// To prevent hover on touch devices
+		@media (hover: hover) {
+			&:hover {
+				&::after {
+					border-color: var(--border-color-hover);
+				}
+
+				.Wash {
+					opacity: 1;
+				}
+			}
 		}
 	}
 
@@ -164,68 +168,5 @@
 	 */
 	.Loading {
 		padding-top: 0;
-	}
-}
-
-/*
- * "tv static" expand/shrink animation
- */
-@keyframes expand {
-	0% {
-		opacity: 1;
-		left: 50%;
-		height: 0;
-		width: 0;
-		border-radius: 0;
-	}
-	25% {
-		box-shadow: 0px 0px 10px 5px var(--box-shadow);
-	}
-	75% {
-		box-shadow: 0px 0px 10px 5px var(--box-shadow);
-	}
-	100% {
-		opacity: 1;
-		box-shadow: 0px 0px 0px 0px var(--box-shadow);
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		border-radius: 18px;
-	}
-}
-
-@keyframes shrink {
-	100% {
-		opacity: 0;
-		top: 50%;
-		left: 50%;
-		height: 0;
-		width: 0;
-		border-radius: 0;
-	}
-	70% {
-		opacity: 1;
-		top: 50%;
-		left: calc(50% - 2px);
-		width: 2px;
-		height: 0;
-	}
-	25% {
-		opacity: 1;
-		top: 0;
-		left: calc(50% - 2px);
-		width: 2px;
-		height: 100%;
-		box-shadow: 0px 0px 10px 5px var(--box-shadow);
-	}
-	0% {
-		opacity: 1;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		border-radius: 18px;
-		box-shadow: 0px 0px 0px 0px var(--box-shadow);
 	}
 }
