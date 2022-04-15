@@ -8,7 +8,7 @@ type RegistrationContainerProps = {
 };
 const RegistrationContainer = (props: RegistrationContainerProps) => {
 	const { account, active, library, chainId } = useWeb3React<Web3Provider>();
-	const drop = 'Pets';
+	const drop = 'Beasts';
 
 	const submit = async (
 		// statusCallback: (status: string) => void,
@@ -97,7 +97,9 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 		const signer = library.getSigner();
 		let signedBid: Maybe<string>;
 		try {
-			signedBid = await signer?.signMessage('Wilder Pets Raffle Registration');
+			signedBid = await signer?.signMessage(
+				'Wilder Beasts Raffle Registration',
+			);
 		} catch {
 			throw new Error('Failed to sign message');
 		}
