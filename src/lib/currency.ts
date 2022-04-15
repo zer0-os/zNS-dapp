@@ -7,12 +7,10 @@ import { ethers } from 'ethers';
  * @returns number as locale string converted to 2dp
  */
 export const toFiat = (n: number) => {
-	if (!isNaN(n)) {
-		return n.toLocaleString(undefined, {
-			maximumFractionDigits: 2,
-			minimumFractionDigits: 2,
-		});
-	}
+	return (n ?? 0).toLocaleString(undefined, {
+		maximumFractionDigits: 2,
+		minimumFractionDigits: 2,
+	});
 };
 
 /**
