@@ -19,7 +19,7 @@ import { isValid } from './TransferOwnership.utils';
 //- Library Imports
 import { useTransfer } from 'lib/hooks/useTransfer';
 
-type TransferOwnershipProps = {
+export type TransferOwnershipProps = {
 	name: string;
 	image: string;
 	domainName: string;

@@ -3,8 +3,8 @@
 	width: 32px;
 	height: 32px;
 	background: none;
-	border-radius: 16px;
-	color: white;
+	border-radius: var(--box-radius);
+	color: var(--color-text-primary);
 	font-weight: 700;
 	text-align: center;
 
@@ -15,7 +15,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		border-radius: 16px;
+		border-radius: var(--box-radius);
 		border-left: 1.5px solid white;
 		border-right: 1.5px solid white;
 		box-sizing: border-box;

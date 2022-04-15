@@ -31,8 +31,8 @@ export const useConnectWalletButtonData = ({
 		const isConnecting = !isConnected && Boolean(wallet);
 		const connectTitle = isConnecting
 			? `Trying to connect ${wallet}`
-			: `Connect ${props.isDesktop && 'Wallet'}`;
-		const disconnectTitle = `Disconnect ${props.isDesktop && 'Wallet'}`;
+			: `Connect`;
+		const disconnectTitle = `Disconnect`;
 
 		return {
 			wallet,

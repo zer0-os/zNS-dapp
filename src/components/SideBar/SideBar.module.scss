@@ -1,142 +1,131 @@
-.SideBar {
-	top: calc(29px + 54px + 16px);
-	width: 54px;
+$full-width: 240px;
+$transform: translateX(calc(-100% - (var(--width-max) / 2)));
 
+$break-hide-image: calc(var(--width-max) + ($full-width * 2));
+
+$icon-container-size: 54px;
+
+.Container {
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	justify-content: space-between;
 
 	position: fixed;
+	top: 0;
+	left: 50%;
+	height: 100vh;
+	width: $full-width;
+	padding: 24px;
+	z-index: 10000;
 
-	transform: translateX(calc(-100% - 19px));
-	z-index: 500;
+	@media only screen and (max-width: 1216px) {
+		width: auto !important;
+		align-items: center;
+	}
 
-	&:hover {
-		.Icons {
-			pointer-events: all;
+	@media only screen and (max-width: 1000px) {
+		display: none;
+	}
+
+	.LinkContainer {
+		display: flex;
+		flex-direction: column;
+
+		@media only screen and (max-width: 1216px) {
+			align-items: center;
 		}
 	}
-}
 
-.Navigator {
-	border-radius: 27px;
-	padding: 7px 4px;
-	border: 1px solid var(--color-purple-lighter);
+	transform: $transform;
 
-	background-color: var(--color-purple-darkest);
-}
-
-.Icons {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-
-	overflow: hidden;
-	padding-right: 200px;
-	padding-left: 22px;
-
-	pointer-events: none;
-
-	& .Action:hover .Name {
-		left: 54px;
-	}
-
-	.Name {
-		transition: all var(--animation-time-medium) ease-in-out;
-		pointer-events: none;
-		position: absolute;
-		top: 0;
-		height: 32px;
-		left: -200px;
-		margin: 6px 0;
-		background-color: var(--color-purple-dark);
-		padding: 8px 16px;
-		border-radius: 16px;
-		box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
-		font-size: var(--font-size-smaller);
-	}
-}
-
-.Icons .Action {
-	position: relative;
-	height: 44px;
-	width: 44px;
-
-	background-color: #00d1ff1a;
-	border-radius: 50%;
-	background: var(--color-cosmic-gradient-25);
-
-	cursor: pointer;
-	transition: all var(--animation-time-medium) ease-in-out;
-
-	& img {
-		height: 100%;
+	.Network {
+		display: block;
 		width: 100%;
+		padding: 11px;
+		background: var(--color-success);
+		border-radius: var(--box-radius);
+		margin-top: 32px;
 	}
 
-	&:not(:first-child) {
-		margin-top: 12px;
-	}
+	.Icon {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: $icon-container-size;
+		width: $icon-container-size;
 
-	.Hype {
+		img {
+			max-height: 100%;
+			max-width: 100%;
+			object-fit: contain;
+		}
+
 		border-radius: 50%;
-		overflow: hidden;
-		z-index: 3;
-		height: 100%;
+	}
 
-		&::after,
-		&::before {
-			z-index: -5;
-			transition: all var(--animation-time-medium) ease-in-out;
-		}
+	.Links {
+		margin-top: 24px;
+		font-size: 20px;
 
-		&.Selected {
-			transform: scale(1);
+		> li {
+			padding: 12px 11px;
 
-			&::before {
-				content: ' ';
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				width: 0px;
-				height: 0px;
-				box-shadow: 0px 0px 36px 12px rgb(136, 219, 255);
-				transform: translate(-50%, -50%);
-				transition: box-shadow var(--animation-time-short) ease-in-out;
-			}
+			> a {
+				display: flex;
+				align-items: center;
+				padding: 0;
+				color: #e6e6e6; // TODO: change this to variable
 
-			&::after {
-				content: ' ';
-				position: absolute;
-				width: calc(100% - 4px);
-				height: calc(100% + 2px);
-				margin: -1px 0;
-				top: 0;
-				left: 0;
-				border-radius: inherit;
-				border-style: solid;
-				border-width: 0 2px;
-				border-color: var(--color-accent-blue-100);
-				transition: border-color var(--animation-time-short) ease-in-out;
-				z-index: 1;
+				font-weight: 400;
+
+				@media only screen and (max-width: 1216px) {
+					justify-content: center;
+				}
+
+				&.Selected {
+					text-shadow: var(--glow-text-primary);
+					font-weight: 600;
+					color: var(--color-text-primary);
+				}
+
+				label {
+					cursor: pointer;
+
+					@media only screen and (max-width: 1216px) {
+						display: none;
+					}
+				}
+
+				> img {
+					height: 22px;
+					width: 22px;
+
+					margin-right: 12px;
+
+					@media only screen and (max-width: 1216px) {
+						margin-right: 0;
+					}
+				}
 			}
 		}
 	}
 
-	&:hover {
-		transform: scale(1);
-		background: var(--color-azure-gradient-25);
+	.Footer {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 
-		.Hype {
-			&::before {
-				box-shadow: 0px 0px 25px 12px rgb(136, 219, 255);
-			}
+		> * {
+			width: 100%;
 
-			&::after {
-				border-color: var(--color-accent-blue-100);
+			&:not(:first-child) {
+				margin-top: 16px;
 			}
+		}
+
+		.Zero {
+			height: 32px;
+			width: 32px;
 		}
 	}
 }

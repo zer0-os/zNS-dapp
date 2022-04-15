@@ -15,6 +15,7 @@ export { default as BuyNowButton } from './flows/BuyNow/BuyNowButton';
 export { default as BidButton } from './buttons/BidButton/BidButton';
 export { default as ConnectWalletButton } from './buttons/ConnectWalletButton/ConnectWalletButton';
 export { default as SetBuyNowButton } from './flows/SetBuyNow/SetBuyNowButton';
+export { default as ViewBidsButton } from './buttons/ViewBidsButton/ViewBidsButton';
 
 // Cards
 export { default as CurrentDomainPreview } from './cards/CurrentDomainPreview/CurrentDomainPreview';
@@ -26,6 +27,7 @@ export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/Co
 export { default as AcceptBid } from './flows/AcceptBid/AcceptBid';
 export { default as BuyNow } from './flows/BuyNow';
 export { default as BuyTokenRedirect } from './flows/BuyTokenRedirect/BuyTokenRedirect';
+export { default as CancelBid } from './flows/CancelBid/CancelBid';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
 export { default as MintDropNFT } from './flows/MintDropNFT';
@@ -37,9 +39,6 @@ export { default as Raffle } from './flows/Raffle';
 export { default as BidTable } from './Tables/BidTable';
 export { default as OwnedDomainsTable } from './Tables/OwnedDomainsTable/OwnedDomainsTable';
 export { default as SubdomainTable } from './Tables/SubdomainTable/SubdomainTable';
-
-// Modals
-export { default as ProfileModal } from './modals/ProfileModal/ProfileModal';
 
 // Lists
 export { default as BidList } from './lists/BidList/BidList';

@@ -15,12 +15,12 @@
 	box-shadow: none;
 	--box-shadow-heavy: none;
 	--bg: none !important;
-	--border-color: #808080;
-	--color: #808080;
+	--border-color: var(--color-grey);
+	--color: var(--color-grey);
 }
 
 .futureButtonInactive.Content {
-	color: #808080;
+	color: var(--color-grey);
 }
 
 .futureButtonInactive.Alt {
@@ -76,7 +76,7 @@
 	border-left-width: 2px;
 	border-right-width: 2px;
 	border-color: var(--border-color);
-	transition: border-color 0.3s ease-in-out;
+	transition: border-color var(--animation-time-medium) ease-in-out;
 	/* box-shadow: 0px 0px 7px -px rgba(0, 178, 255, 0.7); */
 }
 
@@ -87,12 +87,13 @@
 	text-align: center;
 	font-size: var(--font-size-default);
 	font-weight: 700;
-	transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+	transition: color var(--animation-time-medium) ease-in-out,
+		text-shadow var(--animation-time-medium) ease-in-out;
 }
 
 .ContentActive {
 	color: var(--color-gray);
-	text-shadow: var(--glow-text-blue);
+	text-shadow: var(--glow-text-primary);
 }
 
 .ContentInActive .iconImage {
@@ -103,7 +104,7 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	border-radius: 50%;
-	transition: filter 0.3s ease-in-out;
+	transition: filter var(--animation-time-medium) ease-in-out;
 }
 
 .iconImage:not(:first-of-type) {
@@ -181,7 +182,7 @@
 	background: var(--box-shadow);
 	/* box-shadow: 0px 0px 10px 5px var(--box-shadow); */
 
-	transition: background 0.3s ease-in-out;
+	transition: background var(--animation-time-medium) ease-in-out;
 
 	opacity: 0;
 	z-index: 0;
@@ -194,7 +195,7 @@
 }
 
 .selected .wash {
-	transition: box-shadow 0.3s ease-in-out;
+	transition: box-shadow var(--animation-time-medium) ease-in-out;
 	background: rgba(255, 255, 255, 0);
 	box-shadow: 0px 0px 20px 10px rgba(255, 255, 255, 0.3);
 

@@ -1,41 +1,49 @@
 .Container {
 	cursor: pointer;
+	position: relative !important;
 	min-width: 280px;
+	/* max-width: 388px; */
 	border-radius: var(--box-radius);
 	overflow: hidden;
-	background-color: var(--color-background-alt);
+
+	border: 1px solid #232323;
+
+	padding-top: 56.25%;
 
 	@media only screen and (max-width: 414px) {
 		min-width: unset;
 	}
 
-	.Header {
+	h5 {
 		margin-bottom: 1px;
-		color: white;
+		color: var(--color-text-primary);
 		font-size: 18px;
 		font-weight: 700;
 	}
 
-	.Subheader {
-		color: #bfbfbf;
-	}
-
 	.Body {
-		position: relative;
-		padding-top: 100%;
+		padding: 16px;
 	}
 
 	.Image {
-		position: absolute;
+		position: absolute !important;
 		top: 0;
 		left: 0;
-		bottom: 0;
-		right: 0;
+		height: auto !important;
+		width: 100% !important;
+		object-fit: cover;
+
 		border-radius: var(--box-radius) var(--box-radius) 0 0;
 
 		img,
 		video {
 			width: 100%;
+		}
+
+		// This is coupled to the Image component
+		// Should be decoupled
+		div[class*='Spinner'] {
+			margin-top: 100%;
 		}
 	}
 

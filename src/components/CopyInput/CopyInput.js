@@ -1,5 +1,6 @@
 import React from 'react';
 
+import classNames from 'classnames';
 import CopyInputStyle from './CopyInput.module.scss';
 
 import useNotification from 'lib/hooks/useNotification';
@@ -15,7 +16,10 @@ const CopyInput = (props) => {
 	};
 
 	return (
-		<div style={props.style} className={CopyInputStyle.wallet}>
+		<div
+			style={props.style}
+			className={classNames(CopyInputStyle.wallet, props.className)}
+		>
 			<img alt="ethereum icon" src={ethIcon} />
 			<span>Ethereum Address</span>
 			<input

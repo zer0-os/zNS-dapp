@@ -153,36 +153,26 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 					/>
 				)}
 			</Overlay>
-			<Switch>
-				<div
-					className={cx(
-						className,
-						styles.Container,
-						'main',
-						'background-primary',
-						'border-primary',
-						'border-rounded',
-					)}
-					style={style}
-				>
-					<nav className={styles.Links}>
-						<Link
-							className={cx({
-								Active: pathname.includes(ROUTES.STAKING_POOLS),
-							})}
-							to={path + ROUTES.STAKING_POOLS}
-						>
-							Pools
-						</Link>
-						<Link
-							className={cx({
-								Active: pathname.includes(ROUTES.STAKING_DEPOSITS),
-							})}
-							to={path + ROUTES.STAKING_DEPOSITS}
-						>
-							My Deposits
-						</Link>
-					</nav>
+			<div className={cx(className, styles.Container)} style={style}>
+				<nav className={styles.Links}>
+					<Link
+						className={cx({
+							Active: pathname.includes(ROUTES.STAKING_POOLS),
+						})}
+						to={path + ROUTES.STAKING_POOLS}
+					>
+						Pools
+					</Link>
+					<Link
+						className={cx({
+							Active: pathname.includes(ROUTES.STAKING_DEPOSITS),
+						})}
+						to={path + ROUTES.STAKING_DEPOSITS}
+					>
+						My Deposits
+					</Link>
+				</nav>
+				<Switch>
 					<Route
 						exact
 						path={path + ROUTES.STAKING_DEPOSITS}
@@ -196,8 +186,8 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 					<Route exact path={path}>
 						<Redirect to={path + ROUTES.STAKING_POOLS} />
 					</Route>
-				</div>
-			</Switch>
+				</Switch>
+			</div>
 		</>
 	);
 };

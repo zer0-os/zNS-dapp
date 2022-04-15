@@ -1,5 +1,31 @@
 .profile-button {
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+
+	transition: all var(--animation-time-short) linear;
+
+	&__container {
+		.profile-button {
+			display: flex;
+			padding: 0;
+			background: none;
+		}
+
+		&:hover {
+			.profile-button {
+				border-radius: 8px;
+				background: #1a1022;
+
+				svg {
+					path {
+						stroke: white;
+					}
+				}
+
+				&::after {
+					box-shadow: none !important;
+				}
+			}
+		}
+	}
 }

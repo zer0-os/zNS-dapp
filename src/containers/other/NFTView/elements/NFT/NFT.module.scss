@@ -1,358 +1,424 @@
-.Loaded {
-	background-color: rgba(0, 0, 0, 0);
-
-	.BG {
-		opacity: 1;
+.Container {
+	h1 {
+		font-size: 36px;
+		font-weight: bold;
 	}
-}
 
-.Bg {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -1;
-	object-fit: cover;
-	border-radius: var(--box-radius);
-}
+	.Banner {
+		width: 100%;
+		height: 500px;
+		padding: 16px;
 
-.NFT {
-	position: relative;
-	display: flex;
-	justify-content: space-between;
-	padding: 40px;
-	filter: drop-shadow(0px 0px 16px rgba(140, 84, 221, 0.25));
-	border-radius: var(--box-radius);
-	border: 1px solid #50207b;
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-color: var(--color-background);
-	transition: background var(--animation-time-medium) ease-in-out;
-	overflow: hidden;
-
-	> div {
-		flex: 1 1;
-		height: 568px;
-		min-width: 0;
-
-		+ div {
-			margin-left: 40px;
+		img {
+			max-height: 100%;
+			border-radius: 0;
+			cursor: pointer;
 		}
 	}
 
-	.Image {
-		cursor: pointer;
-
-		> div {
-			transition: transform var(--animation-time-medium) ease-in-out;
-		}
-
-		&:hover > div {
-			transform: scale(1.03);
-			-webkit-transform: scale(1.03);
-		}
-	}
-
-	.Info {
-		// position: relative;
+	.Members {
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
+		justify-content: space-between;
 
-		*:not(html) {
-			-webkit-transform: translate3d(0, 0, 0);
+		> *:not(:first-child) {
+			margin-left: 32px;
 		}
-
-		h1 {
-			font-size: 36px;
-			font-weight: bold;
-			line-height: 44px;
-
-			&::after {
-				content: 'holder';
-				opacity: 0;
-			}
-		}
-
-		.Story {
-			display: block; /* Fallback for non-webkit */
-			display: -webkit-box;
-			max-height: 216px;
-			margin-top: 32px;
-			line-height: 24px;
-			-webkit-line-clamp: 9;
-			-webkit-box-orient: vertical;
-			overflow: hidden;
-			text-overflow: ellipsis;
-
-			@media only screen and (max-width: 768px) {
-				max-height: unset;
-				margin: 16px 0;
-				line-height: 24px;
-				-webkit-line-clamp: unset;
-				overflow: visible;
-				text-overflow: unset;
-			}
-		}
-
-		.Tray {
-			position: absolute;
-			display: flex;
-			top: 40px;
-			right: 40px;
-
-			background: var(--color-purple-darkest);
-
-			border-radius: 8px;
-			border: 1px solid var(--color-purple-ligher);
-
-			button {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				width: 56px;
-				height: 37px;
-				padding-top: 0;
-
-				background: none;
-			}
-
-			.MoreDropdown {
-				:global(ul) {
-					top: calc(100% + 5px);
-					left: unset;
-					right: 0;
-					width: 236px;
-					transform: unset;
-					border: 1px solid var(--color-purple-lighter);
-					box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
-
-					li {
-						display: flex;
-						padding: 16px;
-
-						span {
-							margin-left: 16px;
-						}
-					}
-				}
-			}
-		}
-
-		.Prices {
-			display: flex;
-			justify-content: space-between;
-			margin-top: 40px;
-			width: 100%;
-
-			.Break {
-				display: none;
-			}
-
-			@media only screen and (max-width: 1200px) {
-				.Break {
-					display: block;
-					flex-basis: 100%;
-				}
-				flex-wrap: wrap;
-
-				> * {
-					border: none !important;
-
-					&:nth-child(3) {
-						margin-top: 40px;
-					}
-				}
-			}
-
-			@media only screen and (max-width: 1000px) {
-				> * > button {
-					display: none;
-				}
-			}
-
-			@media only screen and (max-width: 768px) {
-				.Break {
-					display: none;
-					margin: 0;
-				}
-
-				> * {
-					margin-left: 0 !important;
-				}
-
-				flex-direction: row;
-			}
-
-			@media only screen and (max-width: 600px) {
-				.Break {
-					display: none;
-				}
-
-				flex-direction: column;
-
-				> * {
-					&:not(:first-child) {
-						margin-top: 32px;
-					}
-				}
-			}
-
-			> * {
-				flex: 1;
-
-				&:first-child:not(:last-child) {
-					margin-right: 16px;
-					border-right: 1px solid var(--color-purple-lighter);
-				}
-
-				&:nth-child(2) {
-					margin-left: 16px;
-				}
-			}
-
-			.Action {
-				font-weight: 400;
-				text-align: left;
-				padding-left: 0;
-			}
-
-			.Amount {
-				font-weight: 700;
-				font-size: 20px;
-			}
-
-			button {
-				margin-top: 16px;
-			}
-
-			.Divider {
-				height: 100%;
-				width: 1px;
-				border-left: 1px solid var(--color-purple-lighter);
-			}
-		}
-	}
-}
-
-.SetBuyNow {
-	padding-left: 0;
-	font-weight: 400;
-}
-
-.Details {
-	display: flex;
-	flex-direction: column;
-	max-height: 568px;
-
-	@media only screen and (max-width: 768px) {
-		max-height: unset;
-	}
-}
-
-.Details > div:first-of-type {
-	width: 100%;
-}
-
-.Details > div:first-of-type span {
-	display: inline-block;
-	width: 100%;
-	word-break: break-all;
-}
-
-.Members {
-	display: flex;
-	margin-top: 32px;
-}
-
-.Members > *:not(:first-child) {
-	margin-left: 64px;
-}
-
-.Price h2 {
-	color: var(--color-primary-lighter-3);
-	margin-bottom: 4px;
-}
-
-.Crypto {
-	font-size: 24px;
-	font-weight: 700;
-}
-
-.Fiat {
-	font-size: 18px;
-	font-weight: 400;
-	color: var(--color-primary-lighter-3);
-}
-
-.Buttons {
-	margin: 32px 0;
-}
-
-.Vertical > div:not(:first-child) {
-	margin-top: 20.5px;
-}
-
-@media only screen and (max-width: 960px) {
-	.NFT {
-		padding: 32px;
-	}
-
-	.NFT > div + div {
-		margin-left: 32px;
-	}
-
-	.Copy {
-		display: none; /* Hide for now since it breaks mobile/tablet */
-	}
-
-	.Contract p {
-		padding-right: 0;
-	}
-}
-
-@media only screen and (max-width: 768px) {
-	.NFT {
-		flex-direction: column;
 	}
 
 	.Tray {
-		display: none;
+		display: flex;
+		background: #1a1022;
+
+		border-radius: 8px;
+
+		button {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 56px;
+			height: 37px;
+			padding-top: 0;
+
+			background: none;
+		}
+
+		.MoreDropdown {
+			:global(ul) {
+				top: calc(100% + 5px);
+				left: unset;
+				right: 0;
+				width: 236px;
+				transform: unset;
+				border: 1px solid var(--color-purple-lighter);
+				box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
+
+				li {
+					display: flex;
+					padding: 16px;
+
+					span {
+						margin-left: 16px;
+					}
+				}
+			}
+		}
 	}
 
-	.NFT > div + div {
-		margin-left: 0;
-	}
-
-	.Info {
-		padding: 32px 0;
-	}
-
-	.Fiat {
-		margin-top: 6px;
-	}
-
-	.Details {
-		flex-direction: column;
-		align-items: flex-start;
-	}
-
-	.Price {
+	> *:not(:first-child) {
 		margin-top: 24px;
 	}
-
-	.Bid {
-		flex-direction: column-reverse;
-	}
-
-	.Bid > *:first-child {
-		margin-top: 4px;
-	}
-
-	.Bid .From b {
-		font-size: 14px;
-		font-weight: 400;
-	}
 }
+
+// .Loaded {
+// 	background-color: rgba(0, 0, 0, 0);
+
+// 	.BG {
+// 		opacity: 1;
+// 	}
+// }
+
+// .Bg {
+// 	position: absolute;
+// 	top: 0;
+// 	left: 0;
+// 	width: 100%;
+// 	height: 100%;
+// 	z-index: -1;
+// 	object-fit: cover;
+// 	border-radius: var(--box-radius);
+// }
+
+// .NFT {
+// 	position: relative;
+// 	display: flex;
+// 	justify-content: space-between;
+// 	padding: 40px;
+// 	filter: drop-shadow(0px 0px 16px rgba(140, 84, 221, 0.25));
+// 	border-radius: var(--box-radius);
+// 	border: 1px solid #50207b;
+// 	background-size: cover;
+// 	background-position: center;
+// 	background-repeat: no-repeat;
+// 	background-color: var(--color-background);
+// 	transition: background var(--animation-time-medium) ease-in-out;
+// 	overflow: hidden;
+
+// 	> div {
+// 		flex: 1 1;
+// 		height: 568px;
+// 		min-width: 0;
+
+// 		+ div {
+// 			margin-left: 40px;
+// 		}
+// 	}
+
+// 	.Image {
+// 		cursor: pointer;
+
+// 		> div {
+// 			transition: transform var(--animation-time-medium) ease-in-out;
+// 		}
+
+// 		&:hover > div {
+// 			transform: scale(1.03);
+// 		}
+// 	}
+
+// 	.Info {
+// 		// position: relative;
+// 		display: flex;
+// 		flex-direction: column;
+// 		justify-content: center;
+
+// 		h1 {
+// 			font-size: 36px;
+// 			font-weight: bold;
+// 			line-height: 44px;
+
+// 			&::after {
+// 				content: 'holder';
+// 				opacity: 0;
+// 			}
+// 		}
+
+// 		.Story {
+// 			display: block; /* Fallback for non-webkit */
+// 			display: -webkit-box;
+// 			max-height: 216px;
+// 			margin-top: 32px;
+// 			line-height: 24px;
+// 			-webkit-line-clamp: 9;
+// 			-webkit-box-orient: vertical;
+// 			overflow: hidden;
+// 			text-overflow: ellipsis;
+
+// 			@media only screen and (max-width: 768px) {
+// 				max-height: unset;
+// 				margin: 16px 0;
+// 				line-height: 24px;
+// 				-webkit-line-clamp: unset;
+// 				overflow: visible;
+// 				text-overflow: unset;
+// 			}
+// 		}
+
+// 		.Tray {
+// 			position: absolute;
+// 			display: flex;
+// 			top: 40px;
+// 			right: 40px;
+
+// 			background: var(--color-purple-darkest);
+
+// 			border-radius: 8px;
+// 			border: 1px solid var(--color-purple-ligher);
+
+// 			button {
+// 				display: flex;
+// 				justify-content: center;
+// 				align-items: center;
+// 				width: 56px;
+// 				height: 37px;
+// 				padding-top: 0;
+
+// 				background: none;
+// 			}
+
+// 			.MoreDropdown {
+// 				:global(ul) {
+// 					top: calc(100% + 5px);
+// 					left: unset;
+// 					right: 0;
+// 					width: 236px;
+// 					transform: unset;
+// 					border: 1px solid var(--color-purple-lighter);
+// 					box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
+
+// 					li {
+// 						display: flex;
+// 						padding: 16px;
+
+// 						span {
+// 							margin-left: 16px;
+// 						}
+// 					}
+// 				}
+// 			}
+// 		}
+
+// 		.Prices {
+// 			display: flex;
+// 			justify-content: space-between;
+// 			margin-top: 40px;
+// 			width: 100%;
+
+// 			.Break {
+// 				display: none;
+// 			}
+
+// 			@media only screen and (max-width: 1200px) {
+// 				.Break {
+// 					display: block;
+// 					flex-basis: 100%;
+// 				}
+// 				flex-wrap: wrap;
+
+// 				> * {
+// 					border: none !important;
+
+// 					&:nth-child(3) {
+// 						margin-top: 40px;
+// 					}
+// 				}
+// 			}
+
+// 			@media only screen and (max-width: 1000px) {
+// 				> * > button {
+// 					display: none;
+// 				}
+// 			}
+
+// 			@media only screen and (max-width: 768px) {
+// 				.Break {
+// 					display: none;
+// 					margin: 0;
+// 				}
+
+// 				> * {
+// 					margin-left: 0 !important;
+// 				}
+
+// 				flex-direction: row;
+// 			}
+
+// 			@media only screen and (max-width: 600px) {
+// 				.Break {
+// 					display: none;
+// 				}
+
+// 				flex-direction: column;
+
+// 				> * {
+// 					&:not(:first-child) {
+// 						margin-top: 32px;
+// 					}
+// 				}
+// 			}
+
+// 			> * {
+// 				flex: 1;
+
+// 				&:first-child {
+// 					margin-right: 16px;
+// 					border-right: 1px solid var(--color-purple-lighter);
+// 				}
+
+// 				&:nth-child(2) {
+// 					margin-left: 16px;
+// 				}
+// 			}
+
+// 			.Action {
+// 				font-weight: 400;
+// 				text-align: left;
+// 				padding-left: 0;
+// 			}
+
+// 			.Amount {
+// 				font-weight: 700;
+// 				font-size: 20px;
+// 			}
+
+// 			button {
+// 				margin-top: 16px;
+// 			}
+
+// 			.Divider {
+// 				height: 100%;
+// 				width: 1px;
+// 				border-left: 1px solid var(--color-purple-lighter);
+// 			}
+// 		}
+// 	}
+// }
+
+// .SetBuyNow {
+// 	padding-left: 0;
+// 	font-weight: 400;
+// }
+
+// .Details {
+// 	display: flex;
+// 	flex-direction: column;
+// 	max-height: 568px;
+
+// 	@media only screen and (max-width: 768px) {
+// 		max-height: unset;
+// 	}
+// }
+
+// .Details > div:first-of-type {
+// 	width: 100%;
+// }
+
+// .Details > div:first-of-type span {
+// 	display: inline-block;
+// 	width: 100%;
+// 	word-break: break-all;
+// }
+
+// .Members {
+// 	display: flex;
+// 	margin-top: 32px;
+// }
+
+// .Members > *:not(:first-child) {
+// 	margin-left: 64px;
+// }
+
+// .Price h2 {
+// 	color: var(--color-primary-lighter-3);
+// 	margin-bottom: 4px;
+// }
+
+// .Crypto {
+// 	font-size: 24px;
+// 	font-weight: 700;
+// }
+
+// .Fiat {
+// 	font-size: 18px;
+// 	font-weight: 400;
+// 	color: var(--color-primary-lighter-3);
+// }
+
+// .Buttons {
+// 	margin: 32px 0;
+// }
+
+// .Vertical > div:not(:first-child) {
+// 	margin-top: 20.5px;
+// }
+
+// @media only screen and (max-width: 960px) {
+// 	.NFT {
+// 		padding: 32px;
+// 	}
+
+// 	.NFT > div + div {
+// 		margin-left: 32px;
+// 	}
+
+// 	.Copy {
+// 		display: none; /* Hide for now since it breaks mobile/tablet */
+// 	}
+
+// 	.Contract p {
+// 		padding-right: 0;
+// 	}
+// }
+
+// @media only screen and (max-width: 768px) {
+// 	.NFT {
+// 		flex-direction: column;
+// 	}
+
+// 	.Tray {
+// 		display: none;
+// 	}
+
+// 	.NFT > div + div {
+// 		margin-left: 0;
+// 	}
+
+// 	.Info {
+// 		padding: 32px 0;
+// 	}
+
+// 	.Fiat {
+// 		margin-top: 6px;
+// 	}
+
+// 	.Details {
+// 		flex-direction: column;
+// 		align-items: flex-start;
+// 	}
+
+// 	.Price {
+// 		margin-top: 24px;
+// 	}
+
+// 	.Bid {
+// 		flex-direction: column-reverse;
+// 	}
+
+// 	.Bid > *:first-child {
+// 		margin-top: 4px;
+// 	}
+
+// 	.Bid .From b {
+// 		font-size: var(--font-size-smaller);
+// 		font-weight: 400;
+// 	}
+// }

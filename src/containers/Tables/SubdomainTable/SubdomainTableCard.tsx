@@ -6,19 +6,21 @@ import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import useCurrency from 'lib/hooks/useCurrency';
-import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import { formatNumber, formatEthers } from 'lib/utils';
 
 // Component Imports
-import { Spinner, NFTCard } from 'components';
+import { Spinner } from 'components';
 import { BidButton } from 'containers';
 
 // Local Imports
 import { useBid } from './BidProvider';
 
 import styles from './SubdomainTableCard.module.scss';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+import ImageCard from 'components/Cards/ImageCard/ImageCard';
+import { ROUTES } from 'constants/routes';
 
 const SubdomainTableCard = (props: any) => {
 	//////////////////
@@ -36,7 +38,6 @@ const SubdomainTableCard = (props: any) => {
 	const tradeData: DomainMetrics = domain?.metrics;
 
 	const domainMetadata = useDomainMetadata(domain?.metadata);
-
 	const isRootDomain = domain.name.split('.').length <= 2;
 	const isBiddable =
 		isRootDomain || Boolean(domainMetadata?.isBiddable ?? true);
@@ -56,7 +57,7 @@ const SubdomainTableCard = (props: any) => {
 
 	const onClick = (event: any) => {
 		if (!event.target.className.includes('FutureButton')) {
-			goTo('/market/' + domain.name.split('wilder.')[1]);
+			goTo(ROUTES.MARKET + '/' + domain.name.split('wilder.')[1]);
 		}
 	};
 
@@ -75,13 +76,10 @@ const SubdomainTableCard = (props: any) => {
 	////////////
 
 	return (
-		<NFTCard
-			domain={domain.name}
-			metadataUrl={domain.metadata}
-			nftOwnerId={domain.owner?.id || ''}
-			nftMinterId={domain.minter?.id || ''}
-			showCreator
-			showOwner
+		<ImageCard
+			subHeader={domain.name}
+			imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
+			header={domainMetadata?.title}
 			onClick={onClick}
 		>
 			<div className={styles.Container}>
@@ -116,7 +114,7 @@ const SubdomainTableCard = (props: any) => {
 					Bid
 				</BidButton>
 			</div>
-		</NFTCard>
+		</ImageCard>
 	);
 };
 

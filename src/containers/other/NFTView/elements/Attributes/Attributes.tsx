@@ -55,9 +55,7 @@ export const Attributes: React.FC<AttributesProps> = ({ znsDomain }) => {
 	}
 
 	return (
-		<section
-			className={`${styles.Attributes}  blur border-primary border-rounded`}
-		>
+		<section className={styles.Attributes}>
 			<div className={styles.AttributesContainer}>
 				<h4>Attributes</h4>
 				<ul className={styles.AttributesGrid}>

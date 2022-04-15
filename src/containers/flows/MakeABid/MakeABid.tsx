@@ -44,7 +44,7 @@ import { ethers } from 'ethers';
 
 const maxCharacterLength = 28;
 
-type MakeABidProps = {
+export type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
 	onClose: () => void;
@@ -79,7 +79,11 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	const [stepContent, setStepContent] = useState<StepContent>(
 		StepContent.CheckingZAuctionApproval,
 	);
-	const domainMetadata = useDomainMetadata(domain.metadata);
+	// NOTE: has to handle metadataUri as we are currently working with
+	// 2 Domain types - one in lib/types and one from SDK
+	const domainMetadata = useDomainMetadata(
+		domain.metadata ?? (domain as any).metadataUri,
+	);
 	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
 	const isBidValid = !Number.isNaN(parseFloat(bid));
 

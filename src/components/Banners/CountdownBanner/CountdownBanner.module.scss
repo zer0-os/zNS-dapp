@@ -88,6 +88,6 @@
 
 @media only screen and (max-width: 400px) {
 	.nextDrop {
-		font-size: 14px;
+		font-size: var(--font-size-smaller);
 	}
 }

@@ -64,24 +64,9 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 			className: 'domain',
 		},
 		{
-			label: 'Highest Bid (WILD)',
+			label: 'Volume (all time)',
 			accessor: '',
 			className: '',
-		},
-		{
-			label: '# of Bids',
-			accessor: '',
-			className: '',
-		},
-		{
-			label: 'Last Sale (WILD)',
-			accessor: '',
-			className: 'lastSale',
-		},
-		{
-			label: 'Volume (WILD)',
-			accessor: '',
-			className: 'volume',
 		},
 		{
 			label: '',

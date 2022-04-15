@@ -7,9 +7,8 @@ import { useTransfer } from 'lib/hooks/useTransfer';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import useMvpVersion from 'lib/hooks/useMvpVersion';
 import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
-import { BuyTokenRedirect } from 'containers';
 import { ZNALink } from 'components';
-import { URLS } from 'constants/urls';
+// import { URLS } from 'constants/urls';
 import { useHeaderData, useHeaderHandlers } from './hooks';
 import {
 	SearchDomains,
@@ -77,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
 
 	return (
 		<div
-			className={classnames('header__container border-primary', {
+			className={classnames('header__container', {
 				'header__container--is-searching': isSearching,
 				'header__container--is-active': localState.isSearchInputHovered,
 			})}
@@ -92,39 +91,33 @@ export const Header: React.FC<HeaderProps> = ({
 						<h1 className="header__navigation-title">{title}</h1>
 					)}
 
-					{/* Zns Link */}
-					{formattedData.showZnaLink && (
-						<ZNALink
-							className="header__navigation-zna-link"
-							style={{ marginLeft: 16 }}
-						/>
+					{!formattedData.showTitle && (
+						<div className="ZNA__Container">
+							{/* Zns Link */}
+							{formattedData.showZnaLink && (
+								<ZNALink
+									className="header__navigation-zna-link"
+									style={{ marginLeft: 16 }}
+								/>
+							)}
+
+							{/* Search TextField */}
+							<input
+								className="header__navigation-search"
+								onChange={handlers.handleOnSearchChange}
+								onKeyUp={handlers.handleOnSearchEscape}
+								value={localState.searchQuery}
+								type="text"
+								onFocus={handlers.handleOnSearchOpen}
+								onBlur={handlers.handleOnSearchClose}
+								onMouseEnter={handlers.handleOnSearchEnter}
+								onMouseLeave={handlers.handleOnSearchLeave}
+								ref={refs.searchInputRef}
+								placeholder={formattedData.searchPlaceholder}
+							/>
+						</div>
 					)}
-
-					{/* Search TextField */}
-					<input
-						className="header__navigation-search"
-						onChange={handlers.handleOnSearchChange}
-						onKeyUp={handlers.handleOnSearchEscape}
-						value={localState.searchQuery}
-						type="text"
-						onFocus={handlers.handleOnSearchOpen}
-						onBlur={handlers.handleOnSearchClose}
-						onMouseEnter={handlers.handleOnSearchEnter}
-						onMouseLeave={handlers.handleOnSearchLeave}
-						ref={refs.searchInputRef}
-						placeholder={formattedData.searchPlaceholder}
-					/>
 				</div>
-
-				{/* WWW Link */}
-				<a
-					className="header__home-link alt-link"
-					href={URLS.WILDERWORLD}
-					target="_blank"
-					rel="noreferrer"
-				>
-					Home
-				</a>
 
 				<div className="header__actions">
 					{/* Connect Wallet Button */}
@@ -158,7 +151,7 @@ export const Header: React.FC<HeaderProps> = ({
 					)}
 
 					{/* Buy token from external urls */}
-					{formattedData.showBuyTokenRedirect && <BuyTokenRedirect />}
+					{/* {formattedData.showBuyTokenRedirect && <BuyTokenRedirect />} */}
 
 					{/* Profile Button */}
 					{formattedData.showProfileButton && (
