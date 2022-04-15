@@ -67,10 +67,6 @@
 	text-transform: uppercase;
 	transition: opacity var(--animation-time-short) ease-in-out;
 
-	&:active {
-		--box-shadow: none;
-	}
-
 	.Content {
 		margin: 0 8px;
 
@@ -121,6 +117,10 @@
 	&.Glow {
 		background: var(--bg);
 		opacity: 1;
+
+		&:active .Wash {
+			opacity: 0 !important;
+		}
 
 		&:before {
 			content: ' ';
