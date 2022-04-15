@@ -1,6 +1,6 @@
 {
 	"name": "zns-dapp",
-	"version": "0.14.1",
+	"version": "0.14.7",
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
@@ -41,7 +41,7 @@
 		"@zero-tech/zauction-sdk": "0.0.60",
 		"@zero-tech/zfi-sdk": "0.1.16",
 		"@zero-tech/zns-sdk": "^0.1.32",
-		"@zero-tech/zsale-sdk": "0.0.5",
+		"@zero-tech/zsale-sdk": "0.0.12",
 		"apollo": "^2.32.5",
 		"autosize": "^5.0.1",
 		"big-integer": "^1.6.48",
