@@ -10,6 +10,14 @@
 
 	padding-top: 100%;
 
+	background: linear-gradient(
+			to bottom,
+			var(--color-background) 0%,
+			var(--color-background) 100%
+		),
+		linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%);
+	background-clip: content-box, padding-box;
+
 	&.Landscape {
 		padding-top: 56.25%;
 	}
@@ -42,12 +50,6 @@
 		img,
 		video {
 			width: 100%;
-		}
-
-		// This is coupled to the Image component
-		// Should be decoupled
-		div[class*='Spinner'] {
-			margin-top: 50%;
 		}
 	}
 
