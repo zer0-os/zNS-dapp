@@ -8,7 +8,12 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import useCurrency from 'lib/hooks/useCurrency';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
-import { formatNumber, formatEthers } from 'lib/utils';
+import {
+	formatNumber,
+	formatEthers,
+	getParentZna,
+	getAspectRatioForZna,
+} from 'lib/utils';
 
 // Component Imports
 import { Spinner } from 'components';
@@ -81,6 +86,7 @@ const SubdomainTableCard = (props: any) => {
 			imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
 			header={domainMetadata?.title}
 			onClick={onClick}
+			aspectRatio={getAspectRatioForZna(getParentZna(domain.name))}
 		>
 			<div className={styles.Container}>
 				<div className={styles.Bid}>

@@ -8,7 +8,15 @@
 
 	border: 1px solid #232323;
 
-	padding-top: 56.25%;
+	padding-top: 100%;
+
+	&.Landscape {
+		padding-top: 56.25%;
+	}
+
+	&.Portrait {
+		padding-top: 125%;
+	}
 
 	@media only screen and (max-width: 414px) {
 		min-width: unset;
@@ -19,10 +27,6 @@
 		color: var(--color-text-primary);
 		font-size: 18px;
 		font-weight: 700;
-	}
-
-	.Body {
-		padding: 16px;
 	}
 
 	.Image {
@@ -43,7 +47,7 @@
 		// This is coupled to the Image component
 		// Should be decoupled
 		div[class*='Spinner'] {
-			margin-top: 100%;
+			margin-top: 50%;
 		}
 	}
 
