@@ -1,5 +1,6 @@
 import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 import { getMetadata, parseDomainMetadata } from './metadata';
+import { HASH } from './ipfs.test';
 
 const MOCK_METADATA = {
 	description: 'loves testing javascript',
@@ -91,10 +92,8 @@ describe('getMetadata', () => {
 		jest.spyOn(global, 'fetch').mockReturnValue({
 			json: () => Promise.resolve(MOCK_METADATA_WITH_TITLE),
 		} as any);
-		const metadata = await getMetadata('ipfs://Qmtejtei9t03u2st');
-		expect(global.fetch).toHaveBeenCalledWith(
-			DEFAULT_IPFS_GATEWAY + 'Qmtejtei9t03u2st',
-		);
+		const metadata = await getMetadata('ipfs://' + HASH);
+		expect(global.fetch).toHaveBeenCalledWith(DEFAULT_IPFS_GATEWAY + HASH);
 		expect(metadata).toEqual(MOCK_METADATA_DEFAULT);
 	});
 });

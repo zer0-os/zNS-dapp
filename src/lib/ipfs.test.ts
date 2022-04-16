@@ -6,7 +6,7 @@ import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 ////////////////////////////
 
 // Hashes all follow the format Qm
-const HASH = 'QmXuTHUeqMqABWTcX8mYVMtH4sG3nuTxTzZL8t6zSLZVxN';
+export const HASH = 'QmXuTHUeqMqABWTcX8mYVMtH4sG3nuTxTzZL8t6zSLZVxN';
 
 const nesting = [...Array(10)]
 	.map(() => (Math.random() + 1).toString(36).substring(7))
