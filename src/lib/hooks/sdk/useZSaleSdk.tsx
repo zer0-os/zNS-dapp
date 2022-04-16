@@ -31,6 +31,7 @@ export function useZSaleSdk() {
 					contractAddress: '0x63E34f60EA13b34681B76Dcb1614dD985dD8E11e',
 					merkleTreeFileUri:
 						'https://d3810nvssqir6b.cloudfront.net/final-wolf-beast-mintlist-merkleTree.json',
+					publicSalePurchaseLimit: 10,
 					advanced: {
 						merkleTreeFileIPFSHash:
 							'QmRUkCPbiFtw8zPAQ6nY9iUgwJeGVsAGYcv8iYc66tYs4H',
@@ -44,6 +45,7 @@ export function useZSaleSdk() {
 					contractAddress: '0xC82E9E9B1e28F10a4C13a915a0BDCD4Db00d086d',
 					merkleTreeFileUri:
 						'https://d3810nvssqir6b.cloudfront.net/kovan-test-merkleTree.json',
+					publicSalePurchaseLimit: 10,
 					advanced: {
 						merkleTreeFileIPFSHash:
 							'Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
