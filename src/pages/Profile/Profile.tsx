@@ -10,7 +10,6 @@ import { useWeb3React } from '@web3-react/core';
 
 // Components
 import { BidTable, ConnectWalletButton, OwnedDomainsTable } from 'containers';
-import { CopyInput } from 'components';
 
 // Library
 import { ROUTES } from 'constants/routes';
@@ -21,6 +20,10 @@ import { useNavbar } from 'lib/hooks/useNavbar';
 import styles from './Profile.module.scss';
 import classNames from 'classnames/bind';
 import { ArrowLeft } from 'react-feather';
+import { truncateWalletAddress } from 'lib/utils';
+import userIcon from 'assets/user_icon.svg';
+import useNotification from 'lib/hooks/useNotification';
+import { chainIdToNetworkName } from 'lib/network';
 const cx = classNames.bind(styles);
 
 // Keeping these in here to reduce number of files
@@ -56,9 +59,10 @@ const TABS: Tab[] = [
  * @returns
  */
 const Profile = () => {
-	const { account } = useWeb3React();
+	const { account, chainId } = useWeb3React();
 
 	// React-router stuff
+	const { addNotification } = useNotification();
 	const { length: canGoBack, goBack, push, location } = useHistory();
 	const { path } = useRouteMatch();
 	const { setNavbarTitle } = useNavbar();
@@ -75,14 +79,42 @@ const Profile = () => {
 		}
 	};
 
+	/**
+	 * Copies the profile wallet address
+	 */
+	const copyAddress = () => {
+		if (account) {
+			navigator.clipboard.writeText(account);
+			addNotification('Copied address to clipboard.');
+		}
+	};
+
 	return (
 		<main className={styles.Container}>
-			<button className={styles.Back} onClick={onBack}>
-				<ArrowLeft color="white" /> <span>Back</span>
-			</button>
+			<div className={styles.Header}>
+				<button className={styles.Back} onClick={onBack}>
+					<ArrowLeft color="white" /> <span>My Profile</span>
+				</button>
+				{account && chainId && (
+					<button
+						className={classNames(
+							styles.Account,
+							'border-rounded',
+							'no-select',
+						)}
+						onClick={copyAddress}
+					>
+						<img alt="user icon" src={userIcon} />
+						<div className={styles.Details}>
+							<span>{chainIdToNetworkName(chainId)}</span>
+							<span>{truncateWalletAddress(account, 4)}</span>
+						</div>
+					</button>
+				)}
+			</div>
 			{account ? (
 				<>
-					<CopyInput className={styles.Address} value={account} />
+					{/* <CopyInput className={styles.Address} value={account} /> */}
 					<nav className={styles.Nav}>
 						{TABS.map((route) => (
 							<Link
