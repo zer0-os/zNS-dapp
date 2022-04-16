@@ -49,6 +49,16 @@ describe('getHashFromIPFSUrl', () => {
 			HASH + '/test',
 		);
 	});
+
+	// CIDv0 is CID which has 46 characters starting with "Qm"
+	// More info - https://docs.ipfs.io/concepts/content-addressing/#cid-conversion
+	it('should handle URLs containing Qm but invalid CIDv0 length', () => {
+		const invalidCID = HASH.slice(0, 42);
+		expect(getHashFromIPFSUrl('test.com/Qm/' + invalidCID)).toBe('');
+		expect(getHashFromIPFSUrl('Qm.com/' + invalidCID)).toBe('');
+		expect(getHashFromIPFSUrl('test.com/' + invalidCID + '/Qm')).toBe('');
+		expect(getHashFromIPFSUrl('ipfs.com/Qmg/' + invalidCID + '/test')).toBe('');
+	});
 });
 
 describe('getWebIPFSUrlFromHash', () => {
