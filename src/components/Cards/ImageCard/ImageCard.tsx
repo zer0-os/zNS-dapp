@@ -1,5 +1,5 @@
 import styles from './ImageCard.module.scss';
-import { Image, NFTMedia } from 'components';
+import { Image, NFTMedia, Spinner } from 'components';
 import classNames from 'classnames/bind';
 import { AspectRatio } from 'constants/aspectRatios';
 
@@ -37,6 +37,11 @@ const ImageCard = ({
 			onClick={onClick}
 		>
 			<div className={styles.Body}>
+				<div className={styles.Placeholder}>
+					<div className={styles.Spinner}>
+						<Spinner />
+					</div>
+				</div>
 				<div className={styles.Image}>
 					{shouldUseCloudinary ? (
 						<NFTMedia

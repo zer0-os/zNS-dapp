@@ -1,29 +1,40 @@
+$placeholder-background: #000;
+
 .Container {
-	cursor: pointer;
+	--image-card-padding: 100%;
+
 	position: relative !important;
 	min-width: 280px;
-	/* max-width: 388px; */
+
+	background: var(--color-background);
+	border: 1px solid #232323;
 	border-radius: var(--box-radius);
+
+	cursor: pointer;
 	overflow: hidden;
 
-	border: 1px solid #232323;
+	.Body {
+		.Placeholder {
+			position: relative;
+			padding-top: var(--image-card-padding);
+			background: $placeholder-background;
 
-	padding-top: 100%;
-
-	background: linear-gradient(
-			to bottom,
-			var(--color-background) 0%,
-			var(--color-background) 100%
-		),
-		linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%);
-	background-clip: content-box, padding-box;
+			.Spinner {
+				display: block;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+	}
 
 	&.Landscape {
-		padding-top: 56.25%;
+		--image-card-padding: 56.25%;
 	}
 
 	&.Portrait {
-		padding-top: 125%;
+		--image-card-padding: 125%;
 	}
 
 	@media only screen and (max-width: 414px) {
@@ -50,6 +61,11 @@
 		img,
 		video {
 			width: 100%;
+		}
+
+		// Hide default spinner in image
+		div[class*='Spinner'] {
+			display: none;
 		}
 	}
 
