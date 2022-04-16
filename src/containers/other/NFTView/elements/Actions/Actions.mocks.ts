@@ -34,35 +34,6 @@ export const mockBidData = [
 	},
 ];
 
-export const mockMetadata = {
-	animation_url: undefined,
-	attributes: undefined,
-	customDomainHeader: false,
-	customDomainHeaderValue: '',
-	description: 'Some test description',
-	gridViewByDefault: false,
-	image: 'https://testurl.com',
-	image_full: undefined,
-	isBiddable: true,
-	isMintable: false,
-	previewImage: undefined,
-	stakingRequests: undefined,
-	title: 'Test Title',
-};
-
-export const mockDomain = {
-	contract: '0x00000000000000000000',
-	id: '0x00000000000000000000',
-	isLocked: false,
-	isRoot: false,
-	lockedBy: '0x10000000000000000000',
-	metadataUri: 'ipfs://testurl.com',
-	minter: '0x10000000000000000000',
-	name: 'some.test.domain.string',
-	owner: '0x20000000000000000000',
-	parentId: '0x30000000000000000000',
-};
-
 // Expected Labels as per Figma
 export const EXPECTED_LABELS = {
 	HIGHEST_BID: 'Highest Bid (WILD)',

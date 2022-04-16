@@ -12,7 +12,7 @@ import styles from './ZNS.module.scss';
 import { StatsWidget } from 'components';
 import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
 
-import { SubdomainTable, CurrentDomainPreview } from 'containers';
+import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
@@ -58,6 +58,8 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	const isMobile = useMatchMedia('phone');
 	const isMobilePortrait = useMatchMedia('(max-width: 520px)');
+
+	const enableBanner = true;
 
 	const location = useLocation();
 	const nftView = useMemo(
@@ -258,6 +260,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
+			{enableBanner && <Raffle />}
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}
