@@ -44,10 +44,6 @@ describe('toFiat', () => {
 	it('should handle negative numbers', () => {
 		expect(toFiat(-10)).toBe('-10.00');
 	});
-
-	it('should handle NaN', () => {
-		expect(toFiat(NaN)).toBe(undefined);
-	});
 });
 
 ////////////////////////////
