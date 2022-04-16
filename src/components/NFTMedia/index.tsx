@@ -156,7 +156,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		style: React.CSSProperties | undefined,
 	) => {
 		if (!mediaLocation) {
-			return;
+			return <div></div>;
 		}
 		if (!hasCloudinaryFailed) {
 			return (
