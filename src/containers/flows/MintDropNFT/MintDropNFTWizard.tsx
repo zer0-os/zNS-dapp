@@ -135,11 +135,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 					errorMessage={transactionError}
 					isUserWhitelisted={props.isUserWhitelisted}
 					isWalletConnected={props.userId !== undefined}
-					maxPurchasesPerUser={
-						props.dropStage === Stage.Public
-							? undefined
-							: props.maxPurchasesPerUser
-					}
+					maxPurchasesPerUser={props.maxPurchasesPerUser}
 					pricePerNFT={props.pricePerNFT}
 					numberPurchasedByUser={props.numberPurchasedByUser}
 					onContinue={onContinueFromInfo!}
