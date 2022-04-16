@@ -41,12 +41,14 @@ describe('getHashFromIPFSUrl', () => {
 		expect(getHashFromIPFSUrl(`${`${WEB_URL}/${HASH}/4`}`)).toBe(`${HASH}/4`);
 	});
 
-	// @TODO: handle this case
-	// it('should handle URLs containing Qm', () => {
-	// 	expect(getHashFromIPFSUrl('test.com/Qm/' + HASH)).toBe(HASH);
-	// 	expect(getHashFromIPFSUrl('Qm.com/' + HASH)).toBe(HASH);
-	// 	expect(getHashFromIPFSUrl('test.com/' + HASH + '/Qm')).toBe(HASH);
-	// });
+	it('should handle URLs containing Qm', () => {
+		expect(getHashFromIPFSUrl('test.com/Qm/' + HASH)).toBe(HASH);
+		expect(getHashFromIPFSUrl('Qm.com/' + HASH)).toBe(HASH);
+		expect(getHashFromIPFSUrl('test.com/' + HASH + '/Qm')).toBe(HASH + '/Qm');
+		expect(getHashFromIPFSUrl('ipfs.com/Qmg/' + HASH + '/test')).toBe(
+			HASH + '/test',
+		);
+	});
 });
 
 describe('getWebIPFSUrlFromHash', () => {
