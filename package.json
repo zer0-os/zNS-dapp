@@ -38,7 +38,7 @@
 		"@web3-react/walletconnect-connector": "6.2.4",
 		"@web3-react/walletlink-connector": "^6.1.9",
 		"@zero-tech/zauction-sdk": "0.0.60",
-		"@zero-tech/zdao-sdk": "^0.0.3",
+		"@zero-tech/zdao-sdk": "0.0.4",
 		"@zero-tech/zfi-sdk": "0.1.16",
 		"@zero-tech/zns-sdk": "^0.1.32",
 		"@zero-tech/zsale-sdk": "0.0.12",
