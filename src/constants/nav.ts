@@ -6,7 +6,7 @@ import { ROUTES } from './routes';
 
 export const LINKS = [
 	{
-		label: 'Market',
+		label: 'NFTs',
 		route: ROUTES.MARKET,
 		icon: marketIcon,
 	},
