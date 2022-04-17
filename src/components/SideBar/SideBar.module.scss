@@ -1,50 +1,72 @@
-$full-width: 240px;
-$transform: translateX(calc(-100% - (var(--width-max) / 2)));
-
-$break-hide-image: calc(var(--width-max) + ($full-width * 2));
-
 $icon-container-size: 54px;
 
+.BorderContainer {
+	// Mobile Breakpoints
+	display: none;
+	border-right: 1px solid var(--color-grey-mine-shaft);
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 744px) {
+		display: flex;
+	}
+
+	// Desktp Breakpoints
+	@media only screen and (min-width: 1440px) {
+		width: 240px;
+	}
+}
+
 .Container {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	// Mobile Breakpoints
+	display: none;
 
-	position: fixed;
-	top: 0;
-	left: 50%;
-	height: 100vh;
-	width: $full-width;
-	padding: 24px;
-	z-index: 10000;
-
-	@media only screen and (max-width: 1216px) {
-		width: auto !important;
-		align-items: center;
-	}
-
-	@media only screen and (max-width: 1000px) {
-		display: none;
-	}
-
-	.LinkContainer {
+	// Tablet Breakpoints
+	@media only screen and (min-width: 744px) {
 		display: flex;
 		flex-direction: column;
+		justify-content: space-between;
+		position: sticky;
+		top: 0;
+		height: 100vh;
+		max-height: 100vh;
+		overflow: auto;
+		width: auto !important;
+		align-items: center;
+		padding: 18px 4px 12px 4px;
+		z-index: 10000;
 
-		@media only screen and (max-width: 1216px) {
-			align-items: center;
+		// Desktp Breakpoints
+		@media only screen and (min-width: 1440px) {
+			padding: 35px 24px;
+			align-items: unset;
+			overflow: unset;
 		}
 	}
 
-	transform: $transform;
+	.LinkContainer {
+		// Mobile + Tablet Breakpoints
+		display: flex;
+		flex-direction: column;
+
+		// Desktop Breakpoints
+		@media only screen and (min-width: 1440px) {
+			align-items: flex-start;
+		}
+
+		.HomeLink {
+			display: flex;
+			justify-content: center;
+
+			// Desktop Breakpoints
+			@media only screen and (min-width: 1440px) {
+				margin-left: 10px;
+			}
+		}
+	}
 
 	.Network {
-		display: block;
-		width: 100%;
-		padding: 11px;
-		background: var(--color-success);
-		border-radius: var(--box-radius);
-		margin-top: 32px;
+		// Mobile + Tablet Breakpoints
+		display: none;
 	}
 
 	.Icon {
@@ -53,18 +75,20 @@ $icon-container-size: 54px;
 		align-items: center;
 		height: $icon-container-size;
 		width: $icon-container-size;
+		border-radius: 50%;
 
 		img {
 			max-height: 100%;
 			max-width: 100%;
 			object-fit: contain;
 		}
-
-		border-radius: 50%;
 	}
 
 	.Links {
-		margin-top: 24px;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		margin-top: 8px;
 		font-size: 20px;
 
 		> li {
@@ -73,14 +97,10 @@ $icon-container-size: 54px;
 			> a {
 				display: flex;
 				align-items: center;
+				justify-content: center;
 				padding: 0;
-				color: #e6e6e6; // TODO: change this to variable
-
+				color: var(--color-cornflower-blue);
 				font-weight: 400;
-
-				@media only screen and (max-width: 1216px) {
-					justify-content: center;
-				}
 
 				&.Selected {
 					text-shadow: var(--glow-text-primary);
@@ -89,21 +109,23 @@ $icon-container-size: 54px;
 				}
 
 				label {
-					cursor: pointer;
+					display: none;
 
-					@media only screen and (max-width: 1216px) {
-						display: none;
+					// Desktop Breakpoints
+					@media only screen and (min-width: 1440px) {
+						display: flex;
+						cursor: pointer;
 					}
 				}
 
 				> img {
 					height: 22px;
 					width: 22px;
+					margin-right: 0;
 
-					margin-right: 12px;
-
-					@media only screen and (max-width: 1216px) {
-						margin-right: 0;
+					// Desktop Breakpoints
+					@media only screen and (min-width: 1440px) {
+						margin-right: 12px;
 					}
 				}
 			}
@@ -111,21 +133,28 @@ $icon-container-size: 54px;
 	}
 
 	.Footer {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-
 		> * {
-			width: 100%;
+			&:first-child {
+				display: none;
 
-			&:not(:first-child) {
-				margin-top: 16px;
+				// Desktop Breakpoints
+				@media only screen and (min-width: 1440px) {
+					display: flex;
+					margin-bottom: 12px;
+					width: 192px;
+				}
 			}
 		}
 
-		.Zero {
-			height: 32px;
-			width: 32px;
+		.ZeroIconContainer {
+			display: flex;
+			justify-content: center;
+			width: $icon-container-size;
+
+			.Zero {
+				height: 36px;
+				width: 36px;
+			}
 		}
 	}
 }
