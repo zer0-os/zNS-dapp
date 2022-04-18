@@ -18,19 +18,14 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { TEST_ID } from './Actions.constants';
 
 //- Mocks Imports
-import {
-	EXPECTED_LABELS,
-	mockBidData,
-	mockDomain,
-	mockMetadata,
-	yourBidTemplate,
-} from './Actions.mocks';
+import { EXPECTED_LABELS, mockBidData, yourBidTemplate } from './Actions.mocks';
 
 /////////////////////////////
 // Mock external functions //
 /////////////////////////////
 
 var mockOnMakeBid = jest.fn();
+var mockOnViewBids = jest.fn();
 var mockRefetch = jest.fn();
 
 ///////////
@@ -72,9 +67,7 @@ const renderComponent = ({ yourBid, isBiddable = true, ...props }: Props) => {
 			isBiddable={isBiddable}
 			wildPriceUsd={2} // Going to use static value here
 			bidData={mockBidData}
-			domainMetadata={mockMetadata}
-			domain={mockDomain}
-			isLoading={false}
+			onViewBids={mockOnViewBids}
 			{...props}
 		/>,
 	);
@@ -186,8 +179,9 @@ test('should render correct actions for: owner, no bids, no buy now', async () =
 		bidData: undefined,
 	});
 
-	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(1);
+	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
 	expect(getByText(EXPECTED_LABELS.SET_BUY_NOW_BUTTON)).toBeInTheDocument();
+	expect(getByText(EXPECTED_LABELS.NO_BIDS)).toBeInTheDocument();
 });
 
 test('should render correct actions for: owner, bids, buy now', async () => {
@@ -248,9 +242,10 @@ test('should render correct actions for: owner, no bids, buy now', async () => {
 		bidData: undefined,
 	});
 
-	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(1);
+	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(2);
 	expect(getByTestId(TEST_ID.SET_BUY_NOW)).toBeInTheDocument();
 	expect(getByText(EXPECTED_LABELS.EDIT_BUY_NOW_BUTTON)).toBeInTheDocument();
+	expect(getByText(EXPECTED_LABELS.NO_BIDS)).toBeInTheDocument();
 });
 
 test('should render correct actions for: not owner, bids, leading, no buy now', async () => {

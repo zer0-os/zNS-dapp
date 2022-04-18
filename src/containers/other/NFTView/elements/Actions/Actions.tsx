@@ -56,7 +56,6 @@ const Actions = ({
 	//- Condition helpers
 	const isBidData = bidData && bidData?.length > 0;
 	const isYourBids = !isOwnedByUser && Boolean(yourBid);
-	const isPlaceBid = !isOwnedByUser && isBiddable === true;
 	const isSetBuyNow = isOwnedByUser === true && Boolean(domainId);
 	const isBuyNow = Boolean(buyNowPrice) && !isOwnedByUser && Boolean(domainId);
 	const isViewBids =
@@ -120,6 +119,8 @@ const Actions = ({
 			label: `${LABELS.HIGHEST_BID_LABEL} (${CURRENCY.WILD})`,
 			amountUsd: highestBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => {
+				if (isOwnedByUser && !isViewBids) return <></>;
+
 				return !isOwnedByUser ? (
 					<BidButton
 						className={cx({ TextButton: isTextButton })}
@@ -137,7 +138,7 @@ const Actions = ({
 					/>
 				);
 			},
-			isVisible: isPlaceBid || isViewBids,
+			isVisible: isBiddable || isViewBids,
 			testId: TEST_ID.BID,
 		},
 		[ACTION_TYPES.YourBid]: {

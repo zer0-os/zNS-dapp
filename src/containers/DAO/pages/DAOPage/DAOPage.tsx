@@ -95,69 +95,69 @@ const DAOPage: React.FC = () => {
 					Transactions
 				</Link>
 			</nav>
-			<Route
-				exact
-				path={to(ROUTES.ZDAO_ASSETS)}
-				component={() => <Assets assets={assets} isLoading={isLoadingAssets} />}
-			/>
-			<Route
-				exact
-				path={to(ROUTES.ZDAO_TRANSACTIONS)}
-				render={() => (
-					<Transactions
-						isLoading={isLoadingTransactions}
-						transactions={transactions}
-					/>
-				)}
-			/>
-			<Route exact path={path}>
-				<Redirect to={to(ROUTES.ZDAO_ASSETS)} />
-			</Route>
+			<Switch>
+				<Route
+					exact
+					path={to(ROUTES.ZDAO_ASSETS)}
+					component={() => (
+						<Assets assets={assets} isLoading={isLoadingAssets} />
+					)}
+				/>
+				<Route
+					exact
+					path={to(ROUTES.ZDAO_TRANSACTIONS)}
+					render={() => (
+						<Transactions
+							isLoading={isLoadingTransactions}
+							transactions={transactions}
+						/>
+					)}
+				/>
+				<Route exact path={path}>
+					<Redirect to={to(ROUTES.ZDAO_ASSETS)} />
+				</Route>
+			</Switch>
 		</>
 	);
 
 	return (
-		<Switch>
-			<div
-				className={cx(genericStyles.Container, 'main', 'background-primary')}
-			>
-				{isLoading ? (
-					<Loading />
-				) : dao ? (
-					<>
-						<Link className={styles.Back} to={ROUTES.ZDAO}>
-							<ArrowLeft /> All DAOs
-						</Link>
-						<ul className={genericStyles.Stats}>
-							<div className={styles.Header}>
-								<div className={styles.Icon}>
-									<img alt="dao logo" src={defaultDaoIcon} />
-								</div>
-								<h1>{daoData?.title}</h1>
+		<div className={cx(genericStyles.Container, 'main', 'background-primary')}>
+			{isLoading ? (
+				<Loading />
+			) : dao ? (
+				<>
+					<Link className={styles.Back} to={ROUTES.ZDAO}>
+						<ArrowLeft /> All DAOs
+					</Link>
+					<ul className={genericStyles.Stats}>
+						<div className={styles.Header}>
+							<div className={styles.Icon}>
+								<img alt="dao logo" src={defaultDaoIcon} />
 							</div>
-							<div className={styles.Stat}>
-								<StatsWidget
-									className="normalView"
-									fieldName="Total Value"
-									isLoading={isLoadingAssets}
-									// Millify if above
-									title={
-										'$' +
-										((totalUsd ?? 0) >= MILLIFY_THRESHOLD
-											? millify(totalUsd!, { precision: MILLIFY_PRECISION })
-											: toFiat(totalUsd ?? 0))
-									}
-								/>
-							</div>
-						</ul>
-						<Page />
-					</>
-				) : (
-					<></>
-					// <Error />
-				)}
-			</div>
-		</Switch>
+							<h1>{daoData?.title}</h1>
+						</div>
+						<div className={styles.Stat}>
+							<StatsWidget
+								className="normalView"
+								fieldName="Total Value"
+								isLoading={isLoadingAssets}
+								// Millify if above
+								title={
+									'$' +
+									((totalUsd ?? 0) >= MILLIFY_THRESHOLD
+										? millify(totalUsd!, { precision: MILLIFY_PRECISION })
+										: toFiat(totalUsd ?? 0))
+								}
+							/>
+						</div>
+					</ul>
+					<Page />
+				</>
+			) : (
+				<></>
+				// <Error />
+			)}
+		</div>
 	);
 };
 
