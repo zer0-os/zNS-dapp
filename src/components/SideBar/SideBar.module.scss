@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 $icon-container-size: 54px;
 
 .BorderContainer {
@@ -6,12 +8,12 @@ $icon-container-size: 54px;
 	border-right: 1px solid var(--color-grey-mine-shaft);
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-small}) {
 		display: flex;
 	}
 
 	// Desktp Breakpoints
-	@media only screen and (min-width: 1440px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-max}) {
 		width: 240px;
 	}
 }
@@ -36,7 +38,7 @@ $icon-container-size: 54px;
 		z-index: 10000;
 
 		// Desktp Breakpoints
-		@media only screen and (min-width: 1440px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-max}) {
 			padding: 35px 24px;
 			align-items: unset;
 			overflow: unset;
@@ -49,7 +51,7 @@ $icon-container-size: 54px;
 		flex-direction: column;
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1440px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-max}) {
 			align-items: flex-start;
 		}
 
@@ -58,7 +60,7 @@ $icon-container-size: 54px;
 			justify-content: center;
 
 			// Desktop Breakpoints
-			@media only screen and (min-width: 1440px) {
+			@media only screen and (min-width: #{dimensions.$breakpoint-max}) {
 				margin-left: 10px;
 			}
 		}
@@ -98,6 +100,7 @@ $icon-container-size: 54px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				gap: 12px;
 				padding: 0;
 				color: var(--color-cornflower-blue);
 				font-weight: 400;
@@ -106,13 +109,29 @@ $icon-container-size: 54px;
 					text-shadow: var(--glow-text-primary);
 					font-weight: 600;
 					color: var(--color-text-primary);
+
+					@media only screen and (max-width: #{dimensions.$breakpoint-max}) {
+						img {
+							position: relative;
+
+							&::before {
+								content: ' ';
+								position: absolute;
+								top: 0;
+								left: 0;
+								background: red;
+								height: 48px;
+								width: 48px;
+							}
+						}
+					}
 				}
 
 				label {
 					display: none;
 
 					// Desktop Breakpoints
-					@media only screen and (min-width: 1440px) {
+					@media only screen and (min-width: #{dimensions.$breakpoint-max}) {
 						display: flex;
 						cursor: pointer;
 					}
@@ -122,11 +141,6 @@ $icon-container-size: 54px;
 					height: 22px;
 					width: 22px;
 					margin-right: 0;
-
-					// Desktop Breakpoints
-					@media only screen and (min-width: 1440px) {
-						margin-right: 12px;
-					}
 				}
 			}
 		}
@@ -138,7 +152,7 @@ $icon-container-size: 54px;
 				display: none;
 
 				// Desktop Breakpoints
-				@media only screen and (min-width: 1440px) {
+				@media only screen and (min-width: #{dimensions.$breakpoint-max}) {
 					display: flex;
 					margin-bottom: 12px;
 					width: 192px;

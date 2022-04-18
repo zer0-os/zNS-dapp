@@ -52,12 +52,6 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	// 	console.log(path);
 	// }, [path]);
 
-	const [isBelowBreakpoint, setIsBelowBreakpoint] = useState<boolean>();
-
-	const handleResize = () => {
-		setIsBelowBreakpoint(window.innerWidth <= 701);
-	};
-
 	const refetchAll = () => {
 		refetchPoolData();
 		refetchUserData();
@@ -79,36 +73,9 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 		}
 	}, [pathname]);
 
-	useEffect(() => {
-		window.addEventListener('resize', handleResize);
-		handleResize();
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
-
 	useUpdateEffect(() => {
 		poolSelection.claim(undefined);
 	}, [account]);
-
-	if (isBelowBreakpoint) {
-		return (
-			<div
-				style={{
-					position: 'fixed',
-					top: '50%',
-					left: '50%',
-					transform: 'translate(-50%, -100%)',
-					width: '100%',
-					padding: 16,
-					textAlign: 'center',
-					fontWeight: 700,
-				}}
-			>
-				Staking is currently only available on desktop
-			</div>
-		);
-	}
 
 	return (
 		<>

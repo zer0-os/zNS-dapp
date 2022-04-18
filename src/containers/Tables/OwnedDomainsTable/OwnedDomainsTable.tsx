@@ -7,6 +7,7 @@ import OwnedDomainsTableRow from './OwnedDomainsTableRow';
 import { GenericTable } from 'components';
 
 import { HEADERS, MESSAGES } from './OwnedDomainsTable.constants';
+import OwnedDomainsTableCard from './OwnedDomainsTableCard';
 
 const OwnedDomainsTable = () => {
 	const { account } = useWeb3React();
@@ -20,6 +21,9 @@ const OwnedDomainsTable = () => {
 			headers={HEADERS}
 			rowComponent={(props: any) => (
 				<OwnedDomainsTableRow {...props} refetch={refetch} />
+			)}
+			gridComponent={(props: any) => (
+				<OwnedDomainsTableCard {...props} refetch={refetch} />
 			)}
 			infiniteScroll
 			isLoading={isLoading}

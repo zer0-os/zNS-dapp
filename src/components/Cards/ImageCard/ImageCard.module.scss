@@ -4,11 +4,10 @@
 	min-width: 280px;
 	/* max-width: 388px; */
 	border-radius: var(--box-radius);
-	overflow: hidden;
 
 	border: 1px solid #232323;
 
-	padding-top: 56.25%;
+	padding-top: 100%;
 
 	@media only screen and (max-width: 414px) {
 		min-width: unset;
@@ -34,6 +33,7 @@
 		object-fit: cover;
 
 		border-radius: var(--box-radius) var(--box-radius) 0 0;
+		overflow: hidden;
 
 		img,
 		video {

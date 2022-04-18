@@ -1,0 +1,31 @@
+.Container {
+	border-radius: var(--box-radius);
+	overflow: hidden;
+
+	.Header {
+		padding: 16px;
+	}
+
+	.Body {
+		background: rgba(255, 255, 255, 0.03);
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+		ul li {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			padding: 16px;
+
+			label,
+			span {
+				display: block;
+			}
+
+			label {
+				font-size: 12px;
+				color: var(--color-grey-lighter-2);
+			}
+		}
+	}
+}
