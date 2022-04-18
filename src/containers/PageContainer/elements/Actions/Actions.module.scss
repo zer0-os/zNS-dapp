@@ -1,0 +1,10 @@
+.ConnectButton {
+	padding-left: 8px;
+	padding-right: 8px;
+
+	// Desktop Breakpoints
+	@media only screen and (min-width: 1440px) {
+		padding-left: 25px;
+		padding-right: 25px;
+	}
+}
