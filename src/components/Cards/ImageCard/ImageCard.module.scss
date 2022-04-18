@@ -1,14 +1,41 @@
+$placeholder-background: #000;
+
 .Container {
-	cursor: pointer;
+	--image-card-padding: 100%;
+
 	position: relative !important;
 	min-width: 280px;
-	/* max-width: 388px; */
+
+	background: var(--color-background);
+	border: 1px solid #232323;
 	border-radius: var(--box-radius);
+
+	cursor: pointer;
 	overflow: hidden;
 
-	border: 1px solid #232323;
+	.Body {
+		.Placeholder {
+			position: relative;
+			padding-top: var(--image-card-padding);
+			background: $placeholder-background;
 
-	padding-top: 56.25%;
+			.Spinner {
+				display: block;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+	}
+
+	&.Landscape {
+		--image-card-padding: 56.25%;
+	}
+
+	&.Portrait {
+		--image-card-padding: 125%;
+	}
 
 	@media only screen and (max-width: 414px) {
 		min-width: unset;
@@ -19,10 +46,6 @@
 		color: var(--color-text-primary);
 		font-size: 18px;
 		font-weight: 700;
-	}
-
-	.Body {
-		padding: 16px;
 	}
 
 	.Image {
@@ -40,10 +63,9 @@
 			width: 100%;
 		}
 
-		// This is coupled to the Image component
-		// Should be decoupled
+		// Hide default spinner in image
 		div[class*='Spinner'] {
-			margin-top: 100%;
+			display: none;
 		}
 	}
 
