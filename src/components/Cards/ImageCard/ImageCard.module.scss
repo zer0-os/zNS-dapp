@@ -14,6 +14,9 @@ $placeholder-background: #000;
 	overflow: hidden;
 
 	.Body {
+		position: relative;
+		overflow: hidden;
+
 		.Placeholder {
 			position: relative;
 			padding-top: var(--image-card-padding);
