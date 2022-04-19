@@ -4,7 +4,6 @@
 	position: relative;
 	border-radius: var(--box-radius);
 	overflow: hidden;
-	z-index: 2;
 	transition: box-shadow var(--animation-time-medium) ease-in-out;
 	transition: filter var(--animation-time-medium) ease-in-out;
 	transition: transform var(--animation-time-medium) ease-in-out;
