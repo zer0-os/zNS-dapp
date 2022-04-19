@@ -288,8 +288,7 @@ const GenericTable = (props: any) => {
 							{props.emptyText}
 						</p>
 					) : props.gridComponent !== undefined &&
-					  isGridView &&
-					  isSmallScreen ? (
+					  (isGridView || isSmallScreen) ? (
 						GridView
 					) : (
 						ListView
