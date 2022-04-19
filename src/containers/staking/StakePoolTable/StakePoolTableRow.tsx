@@ -2,14 +2,16 @@
  * This component represents a single row rendered by StakePoolTable
  */
 
-import styles from './StakePoolTableRow.module.scss';
-import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
-
 // Library imports
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
 import { toFiat } from 'lib/currency';
+import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 
+// Component imports
 import { FutureButton, Artwork } from 'components';
+
+// Styles Imports
+import styles from './StakePoolTableRow.module.scss';
 
 export const TEST_ID = {
 	CONTAINER: 'stake-pool-table-container',

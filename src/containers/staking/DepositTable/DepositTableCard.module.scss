@@ -3,7 +3,40 @@
 	overflow: hidden;
 
 	.Header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
 		padding: 16px;
+
+		.Dots {
+			--dot-size: 5px;
+			--dot-gap: 2.8px;
+
+			position: relative;
+			height: 32px;
+			width: 16px;
+			cursor: pointer;
+			background: none;
+
+			> div {
+				position: absolute;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				height: var(--dot-size);
+				width: var(--dot-size);
+				border-radius: 50%;
+				background: var(--color-accent-1);
+
+				&:first-child {
+					transform: translate(-50%, calc(-50% - calc(100% + var(--dot-gap))));
+				}
+
+				&:last-child {
+					transform: translate(-50%, calc(-50% + calc(100% + var(--dot-gap))));
+				}
+			}
+		}
 	}
 
 	.Body {
