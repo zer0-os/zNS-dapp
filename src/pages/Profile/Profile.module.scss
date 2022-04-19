@@ -51,6 +51,20 @@ $gap: 40px;
 			color: var(--color-text-primary);
 			text-align: left;
 
+			transition: background-color var(--animation-time-short) ease;
+
+			&:active {
+				background-color: #1a102270 !important;
+			}
+
+			&:hover {
+				background-color: #1a1022;
+
+				.Details > span:not(:first-child) {
+					text-shadow: var(--glow-text-white);
+				}
+			}
+
 			.Details {
 				display: flex;
 				flex-direction: column;
