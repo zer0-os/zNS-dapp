@@ -1,4 +1,4 @@
-import { Artwork, FutureButton, TextButton } from 'components';
+import { Artwork, TextButton } from 'components';
 import { toFiat } from 'lib/currency';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';

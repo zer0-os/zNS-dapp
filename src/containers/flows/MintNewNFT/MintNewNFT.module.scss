@@ -1,9 +1,16 @@
+$width: 640px;
+$gutter: 16px;
+
 .MintNewNFT {
-	width: 640px;
+	width: $width;
 	padding: 48px;
 
 	background: var(--color-background);
 	overflow: hidden;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		flex-direction: column;
+	}
 }
 
 .Blocker {
