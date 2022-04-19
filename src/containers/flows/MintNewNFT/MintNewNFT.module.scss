@@ -9,7 +9,8 @@ $gutter: 16px;
 	overflow: hidden;
 
 	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
-		flex-direction: column;
+		width: calc(100vw - $gutter - $gutter);
+		padding-bottom: 0;
 	}
 }
 
@@ -66,6 +67,37 @@ $gutter: 16px;
 	top: 0;
 	left: 0;
 	padding-top: 80px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		padding-top: 24px;
+	}
+
+	.FlexWrapper {
+		display: flex;
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			align-items: center;
+			flex-direction: column;
+		}
+	}
+
+	.TextStoryInput {
+		margin-top: 40px;
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			margin-top: 0;
+		}
+	}
+
+	.SubmitButton {
+		margin: 40px auto 0 auto;
+		height: 36px;
+		border-radius: 18px;
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			margin: 24px auto;
+		}
+	}
 }
 
 .NFT {
@@ -87,6 +119,11 @@ $gutter: 16px;
 	cursor: pointer;
 	transition: transform var(--animation-time-medium) ease-in-out,
 		border-color var(--animation-time-medium) ease-in-out;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		width: auto;
+		max-width: 224px;
+	}
 }
 
 /* .NFT:not(.Uploaded):hover {
@@ -122,6 +159,11 @@ $gutter: 16px;
 	flex-direction: column;
 	flex: 1;
 	margin-left: 24px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		margin: 24px 0;
+		max-width: 244px;
+	}
 }
 
 .Inputs > input:not(:first-child) {

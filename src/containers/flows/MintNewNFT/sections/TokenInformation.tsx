@@ -160,7 +160,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	return (
 		<div className={styles.Section}>
 			<form>
-				<div style={{ display: 'flex' }}>
+				<div className={styles.FlexWrapper}>
 					<div
 						onClick={openUploadDialog}
 						className={`${styles.NFT} border-rounded ${
@@ -218,7 +218,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 					autosize
 					multiline
 					placeholder={'Story (400 characters max)'}
-					style={{ marginTop: 40 }}
+					className={styles.TextStoryInput}
 					onChange={(story: string) => setStory(story)}
 					text={story}
 					error={hasError('story')}
@@ -226,7 +226,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 				/>
 			</form>
 			<FutureButton
-				style={{ margin: '80px auto 0 auto', height: 36, borderRadius: 18 }}
+				className={styles.SubmitButton}
 				onClick={pressContinue}
 				glow
 			>
