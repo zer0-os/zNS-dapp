@@ -1,15 +1,23 @@
+$width: 400px;
+$gutter: 16px;
+
 .Container {
 	display: flex;
 	flex-direction: column;
 
-	width: 400px;
-	min-width: 400px;
-	max-width: 400px;
+	width: $width;
+	min-width: $width;
+	max-width: $width;
 	max-height: 80vh;
 
 	background: var(--color-background);
 
 	overflow: hidden;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		width: calc(100vw - $gutter - $gutter);
+		min-width: unset;
+	}
 }
 
 .Pending {
