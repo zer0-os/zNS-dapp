@@ -9,8 +9,8 @@ import {
 import './_connect-wallet-button.scss';
 
 type ConnectWalletButtonProps = {
-	isDesktop: boolean;
-	onConnectWallet: () => void;
+	isDesktop?: boolean;
+	onConnectWallet?: () => void;
 	className?: string;
 };
 
@@ -41,7 +41,11 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
 	return (
 		<>
 			{formattedData.isConnected ? (
-				<FutureButton glow onClick={handlers.handleDisconnectWallet}>
+				<FutureButton
+					glow
+					onClick={handlers.handleDisconnectWallet}
+					className={className}
+				>
 					{formattedData.disconnectTitle}
 				</FutureButton>
 			) : (
