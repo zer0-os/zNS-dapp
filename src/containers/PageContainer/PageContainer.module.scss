@@ -50,6 +50,7 @@
 				width: 240px;
 				padding: 28px;
 				gap: 16px;
+				z-index: 9999;
 			}
 
 			@media only screen and (min-width: 1600px) {
@@ -79,7 +80,6 @@
 
 		@media only screen and (min-width: 1568px) {
 			margin: 24px auto;
-
 		}
 
 		@media only screen and (min-width: 1600px) {
