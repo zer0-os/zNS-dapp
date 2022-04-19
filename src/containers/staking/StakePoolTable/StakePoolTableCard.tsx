@@ -1,4 +1,4 @@
-import { Artwork } from 'components';
+import { Artwork, TextButton } from 'components';
 import { toFiat } from 'lib/currency';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { WrappedStakingPool } from 'lib/providers/staking/StakingProviderTypes';
@@ -10,6 +10,10 @@ const StakePoolTableCard = (props: any) => {
 	const pool = props.data as WrappedStakingPool;
 	const apy = pool.metrics.apy;
 	const tvl = pool.metrics.tvl.valueOfTokensUSD;
+
+	const onClick = () => {
+		selectPool(pool);
+	};
 
 	return (
 		<div className={styles.Container}>
@@ -34,6 +38,9 @@ const StakePoolTableCard = (props: any) => {
 						<span>{'$' + toFiat(tvl)}</span>
 					</li>
 				</ul>
+			</div>
+			<div className={styles.TextButtonContainer}>
+				<TextButton onClick={onClick}>Stake</TextButton>
 			</div>
 		</div>
 	);

@@ -127,7 +127,7 @@ const MintDropNFTFlowContainer = ({
 	// Toggles to grid view when viewport
 	// resizes to below 700px
 	const handleResize = () => {
-		setCanOpenWizard(window.innerWidth >= 900);
+		setCanOpenWizard(window.innerWidth >= 320);
 	};
 
 	const countdownFinished = () => {

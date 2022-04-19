@@ -4,7 +4,7 @@ import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 
 type UseConnectWalletButtonDataProps = {
 	props: {
-		isDesktop: boolean;
+		isDesktop: boolean | undefined;
 		account: string | null | undefined;
 		active: boolean;
 		connector: AbstractConnector | undefined;
