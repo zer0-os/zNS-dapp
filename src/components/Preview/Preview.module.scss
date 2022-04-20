@@ -38,9 +38,13 @@
 
 		h1 {
 			margin-top: 24px;
-
-			font-size: 36px;
+			font-size: 24px;
 			font-weight: bold;
+
+			// Tablet Breakpoints
+			@media only screen and (min-width: 744px) {
+				font-size: 36px;
+			}
 		}
 
 		p {
