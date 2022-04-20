@@ -124,10 +124,6 @@
 	the container rendering the generic table */
 
 @media only screen and (max-width: 1000px) {
-	.Table tr td:last-child,
-	.Table tr th:last-child {
-		display: none;
-	}
 	.Table tr td:nth-last-child(2),
 	.Table tr th:nth-last-child(2) {
 		padding-right: 32px;
