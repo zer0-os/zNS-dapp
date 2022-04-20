@@ -9,7 +9,11 @@
 
 	.Content {
 		margin-top: -60px;
-		padding-bottom: 16px;
+		padding-bottom: 8px;
+
+		@media only screen and (min-width: 569px) {
+			padding-bottom: 32px;
+		}
 
 		.Icon {
 			height: 120px;
@@ -23,8 +27,18 @@
 			box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.5);
 		}
 
+		.TextContainer {
+			padding: 0 8px;
+
+			// Breakpoints
+			@media only screen and (min-width: 569px) {
+				padding: 0;
+			}
+		}
+
 		h1 {
 			margin-top: 24px;
+
 			font-size: 36px;
 			font-weight: bold;
 		}
