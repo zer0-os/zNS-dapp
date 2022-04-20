@@ -63,7 +63,7 @@ const SubdomainTableCard = ({
 	const [modal, setModal] = useState<Modal | undefined>();
 
 	// Navigates to domain
-	const onClick = () => {
+	const onClick = (event: any) => {
 		goTo(`/market/${domain.name.split('wilder.')[1]}`);
 	};
 
@@ -146,15 +146,6 @@ const SubdomainTableCard = ({
 						}
 						subtext={'Top Bid (WILD)'}
 					/>
-					<OptionDropdown
-						onSelect={onSelectOption}
-						options={actions}
-						className={classNames(styles.MoreDropdown)}
-					>
-						<button className={styles.Button}>
-							<img alt="more actions" src={moreIcon} />
-						</button>
-					</OptionDropdown>
 				</div>
 			</ImageCard>
 		</>

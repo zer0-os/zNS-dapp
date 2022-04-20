@@ -1,12 +1,9 @@
 .Container {
 	border-radius: var(--box-radius);
-	overflow: hidden;
 
 	.Header {
 		display: flex;
-		flex-direction: row;
 		justify-content: space-between;
-		align-items: center;
 		padding: 16px;
 
 		.Dots {
@@ -21,6 +18,7 @@
 
 			> div {
 				position: absolute;
+				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
 				height: var(--dot-size);
@@ -34,6 +32,27 @@
 
 				&:last-child {
 					transform: translate(-50%, calc(-50% + calc(100% + var(--dot-gap))));
+				}
+			}
+		}
+
+		.Dropdown {
+			:global(ul) {
+				top: calc(100% + 5px);
+				left: unset;
+				right: 0;
+				width: 236px;
+				transform: unset;
+				border: 1px solid var(--color-purple-lighter);
+				box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
+
+				li {
+					display: flex;
+					padding: 16px;
+
+					span {
+						margin-left: 16px;
+					}
 				}
 			}
 		}

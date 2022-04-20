@@ -73,7 +73,7 @@ const Summary: React.FC<SummaryProps> = ({
 						<video autoPlay controls src={token.previewImage} />
 					)}
 				</div>
-				<div style={{ marginLeft: 16 }}>
+				<div>
 					<h2>Summary</h2>
 					<ul>
 						<li className={styles.Name}>

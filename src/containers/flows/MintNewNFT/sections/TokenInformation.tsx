@@ -15,7 +15,6 @@ type TokenInformationProps = {
 	existingSubdomains: string[];
 	token: TokenInformationType | null;
 	onContinue: (data: TokenInformationType) => void;
-	onResize: () => void;
 	setNameHeader: (name: string) => void;
 	setDomainHeader: (domain: string) => void;
 };
@@ -29,7 +28,6 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	existingSubdomains,
 	token,
 	onContinue,
-	onResize,
 	setNameHeader,
 	setDomainHeader,
 }) => {
@@ -134,10 +132,6 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 	/////////////
 	// Effects //
 	/////////////
-
-	useEffect(() => {
-		if (onResize) onResize();
-	}, [errors, story]);
 
 	useEffect(() => {
 		// @todo refactor

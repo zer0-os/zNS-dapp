@@ -16,7 +16,7 @@ const StakePoolTableCard = (props: any) => {
 	};
 
 	return (
-		<div className={styles.Container}>
+		<div onClick={() => selectPool(pool)} className={styles.Container}>
 			<div className={styles.Header}>
 				<Artwork
 					disableAnimation

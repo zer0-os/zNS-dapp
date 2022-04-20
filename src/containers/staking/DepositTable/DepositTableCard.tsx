@@ -13,19 +13,12 @@ type Option = {
 
 const DepositTableCard = (props: any) => {
 	const deposit = props.data as WrappedDeposit;
+
 	const buttonRef = useRef<HTMLButtonElement>(null);
+
 	const stake = useStakingPoolSelector().selectStakePool;
 	const claim = useStakingPoolSelector().claim;
 	const unstake = useStakingPoolSelector().unstake;
-
-	const timestampLabel = (timestamp: ethers.BigNumber) => {
-		if (timestamp.gt(0)) {
-			return new Date(timestamp.toNumber() * 1000)
-				.toLocaleString()
-				.split(',')[0];
-		}
-		return '-';
-	};
 
 	const OPTIONS: Option[] = [
 		{
@@ -50,6 +43,15 @@ const DepositTableCard = (props: any) => {
 		if (filter.length) {
 			filter[0].callback();
 		}
+	};
+
+	const timestampLabel = (timestamp: ethers.BigNumber) => {
+		if (timestamp.gt(0)) {
+			return new Date(timestamp.toNumber() * 1000)
+				.toLocaleString()
+				.split(',')[0];
+		}
+		return '-';
 	};
 
 	return (

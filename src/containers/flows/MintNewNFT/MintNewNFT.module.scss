@@ -2,16 +2,9 @@ $width: 640px;
 $gutter: 16px;
 
 .MintNewNFT {
-	width: $width;
+	max-width: $width;
 	padding: 48px;
-
-	background: var(--color-background);
 	overflow: hidden;
-
-	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
-		width: calc(100vw - $gutter - $gutter);
-		padding-bottom: 0;
-	}
 }
 
 .Blocker {
@@ -57,15 +50,10 @@ $gutter: 16px;
 
 .Container {
 	position: relative;
-	height: 542px;
-	transition: height var(--animation-time-long) ease-out;
+	height: auto;
 }
 
 .Section {
-	position: absolute;
-	width: 100%;
-	top: 0;
-	left: 0;
 	padding-top: 80px;
 
 	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
@@ -78,6 +66,14 @@ $gutter: 16px;
 		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
 			align-items: center;
 			flex-direction: column;
+
+			> * {
+				width: 100%;
+			}
+
+			.Inputs {
+				max-width: unset;
+			}
 		}
 	}
 
@@ -135,6 +131,7 @@ $gutter: 16px;
 	border: none;
 	overflow: visible;
 	border-radius: 0;
+	margin: 0 auto;
 }
 
 .Uploaded:hover > img,
@@ -172,6 +169,11 @@ $gutter: 16px;
 
 .Summary {
 	display: flex;
+	gap: 16px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		flex-direction: column;
+	}
 }
 
 .Summary h2 {
