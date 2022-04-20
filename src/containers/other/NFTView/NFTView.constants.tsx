@@ -30,7 +30,7 @@ export const NFT_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT = {
 };
 
 export enum NFT_DOWNLOAD_ACTIONS_TITLE {
-	DOWNLOAD_IMAGE = 'Static Image(PFP)',
+	DOWNLOAD_IMAGE = 'Static Image (PFP)',
 	DOWNLOAD_VIDEO = 'Full Animation',
 }
 
