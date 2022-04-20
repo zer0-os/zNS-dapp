@@ -165,7 +165,9 @@ const SubdomainTableRow = (props: any) => {
 	};
 
 	const onBidButtonClick = () => {
-		makeABid(domain);
+		if (account !== undefined && !isOwnedByUser && isBiddable) {
+			makeABid(domain);
+		}
 	};
 
 	const onRowClick = (event: any) => {
