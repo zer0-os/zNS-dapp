@@ -35,6 +35,7 @@ const MintDropNFTFlowContainer = ({
 	publicSaleStartTime,
 }: MintDropNFTFlowContainerProps) => {
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const PUBLIC_SALE_START_TIME = publicSaleStartTime;
 
 	//////////////////
@@ -63,6 +64,7 @@ const MintDropNFTFlowContainer = ({
 	const [countdownDate, setCountdownDate] = useState<number | undefined>();
 	const [hasCountdownFinished, setHasCountdownFinished] =
 		useState<boolean>(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isInTransitionMode, setIsInTransitionMode] = useState<boolean>(false);
 
 	// Auction data

@@ -21,13 +21,18 @@ import {
 import useCurrency from 'lib/hooks/useCurrency';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
-import { useNftData } from './hooks';
+import { useNftData, useNftMediaAsset } from './hooks';
 
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
+import { MediaType } from 'components/NFTMedia/config';
 
 //- Constants Imports
-import { NFT_MORE_ACTIONS_TITLE, NFT_MORE_ACTIONS } from './NFTView.constants';
+import {
+	NFT_MORE_ACTIONS_TITLE,
+	NFT_MORE_ACTIONS,
+	NFT_DOWNLOAD_ACTIONS,
+} from './NFTView.constants';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
@@ -67,8 +72,17 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		shareAsset,
 	} = useNftData();
 
+	//- NFT Media Asset
+	const mediaAsset = useNftMediaAsset({ znsDomain });
+
 	//- Memoized data
-	const { isBiddable, isOwnedByYou, assetUrl, nftMoreOptions } = useMemo(() => {
+	const {
+		isBiddable,
+		isOwnedByYou,
+		assetUrl,
+		nftDownloadOptions,
+		nftMoreOptions,
+	} = useMemo(() => {
 		const isRootDomain = (znsDomain?.name || '').split('.').length <= 2;
 		const isOwnedByYou =
 			znsDomain?.owner.id.toLowerCase() === account?.toLowerCase();
@@ -78,8 +92,28 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image;
 		const nftMoreOptions = isOwnedByYou ? NFT_MORE_ACTIONS.slice(0, 2) : [];
 
-		return { isBiddable, isOwnedByYou, assetUrl, nftMoreOptions };
-	}, [znsDomain, domainMetadata, account]);
+		const nftDownloadOptions = [];
+		if (mediaAsset.imageAsset.isAvailable) {
+			nftDownloadOptions.push({
+				...NFT_DOWNLOAD_ACTIONS[MediaType.Image],
+				assetUrl: mediaAsset.imageAsset.url!,
+			});
+		}
+		if (mediaAsset.videoAsset.isAvailable) {
+			nftDownloadOptions.push({
+				...NFT_DOWNLOAD_ACTIONS[MediaType.Video],
+				assetUrl: mediaAsset.videoAsset.url!,
+			});
+		}
+
+		return {
+			isBiddable,
+			isOwnedByYou,
+			assetUrl,
+			nftDownloadOptions,
+			nftMoreOptions,
+		};
+	}, [znsDomain, domainMetadata, account, mediaAsset]);
 
 	///////////////
 	// Functions //
@@ -137,8 +171,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				isPriceDataLoading={isPriceDataLoading}
 				onSuccessBuyNow={getPriceData}
 				isBiddable={isBiddable}
-				options={nftMoreOptions}
-				onSelectOption={onSelectNFTMoreOption}
+				downloadOptions={nftDownloadOptions}
+				moreOptions={nftMoreOptions}
+				onMoreSelectOption={onSelectNFTMoreOption}
 				onRefetch={getPriceData}
 			/>
 
