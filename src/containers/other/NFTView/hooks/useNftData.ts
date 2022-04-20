@@ -36,7 +36,7 @@ interface UseNftDataReturn {
 	yourBid: Bid | undefined;
 	getHistory: () => Promise<void>;
 	getPriceData: () => Promise<void>;
-	downloadAsset: () => Promise<void>;
+	downloadAsset: (assetUrl: string) => Promise<void>;
 	shareAsset: () => Promise<void>;
 }
 
@@ -79,12 +79,6 @@ export const useNftData = (): UseNftDataReturn => {
 			? Number(ethers.utils.formatEther(highestBid.amount))
 			: undefined;
 	}, [highestBid]);
-
-	const domainAssetURL = useMemo(() => {
-		return (
-			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image
-		);
-	}, [znsDomain]);
 
 	/**
 	 * Callback functions
@@ -149,19 +143,18 @@ export const useNftData = (): UseNftDataReturn => {
 		}
 	}, [sdk, account, znsDomain]);
 
-	const downloadAsset = useCallback(async () => {
-		if (!domainAssetURL) {
-			return;
-		}
+	const downloadAsset = useCallback(
+		async (assetUrl: string) => {
+			const asset = await getDomainAsset(assetUrl);
 
-		const asset = await getDomainAsset(domainAssetURL);
+			if (asset) {
+				addNotification('Download starting');
 
-		if (asset) {
-			addNotification('Download starting');
-
-			await downloadDomainAsset(asset);
-		}
-	}, [domainAssetURL, addNotification]);
+				await downloadDomainAsset(asset);
+			}
+		},
+		[addNotification],
+	);
 
 	const shareAsset = useCallback(async () => {
 		if (domain) {
