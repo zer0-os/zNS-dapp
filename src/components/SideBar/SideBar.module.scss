@@ -4,6 +4,7 @@ $icon-container-size: 54px;
 	// Mobile Breakpoints
 	display: none;
 	border-right: 1px solid var(--color-grey-mine-shaft);
+	z-index: 0;
 
 	// Tablet Breakpoints
 	@media only screen and (min-width: 744px) {
