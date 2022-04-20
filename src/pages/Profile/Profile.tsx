@@ -1,3 +1,8 @@
+import { useState } from 'react';
+
+// Components
+import { ConnectWalletButton } from 'containers';
+import { Tooltip } from 'components';
 import {
 	Link,
 	Redirect,
@@ -6,49 +11,34 @@ import {
 	useHistory,
 	useRouteMatch,
 } from 'react-router-dom';
-import { useWeb3React } from '@web3-react/core';
-
-// Components
-import { BidTable, ConnectWalletButton, OwnedDomainsTable } from 'containers';
-import { CopyInput } from 'components';
 
 // Library
 import { ROUTES } from 'constants/routes';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useNavbar } from 'lib/hooks/useNavbar';
+import { COPY_LABELS, TABS } from './Profile.constants';
+import { chainIdToNetworkName } from 'lib/network';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { useWeb3React } from '@web3-react/core';
+import { truncateWalletAddress } from 'lib/utils';
 
 // Styles
 import styles from './Profile.module.scss';
 import classNames from 'classnames/bind';
 import { ArrowLeft } from 'react-feather';
+import userIcon from 'assets/user_icon.svg';
+
 const cx = classNames.bind(styles);
 
-// Keeping these in here to reduce number of files
+/**
+ * Converts a route to a Profile route
+ * i.e., prepends the Profile route
+ * @param route to convert
+ * @returns route with profile route prepended
+ */
 const r = (route: string) => {
 	return ROUTES.PROFILE + route;
 };
-
-type Tab = {
-	title: string;
-	component: () => any;
-	location: string;
-};
-
-/**
- * NOTE: Default route will always be first tab
- */
-const TABS: Tab[] = [
-	{
-		title: 'Owned Domains',
-		component: () => <OwnedDomainsTable />,
-		location: ROUTES.OWNED_DOMAINS,
-	},
-	{
-		title: 'Your Bids',
-		component: () => <BidTable />,
-		location: ROUTES.YOUR_BIDS,
-	},
-];
 
 /**
  * User profile page for the currenctly connected user.
@@ -56,17 +46,45 @@ const TABS: Tab[] = [
  * @returns
  */
 const Profile = () => {
-	const { account } = useWeb3React();
+	const { account, chainId } = useWeb3React();
 
 	// React-router stuff
 	const { length: canGoBack, goBack, push, location } = useHistory();
 	const { path } = useRouteMatch();
+
 	const { setNavbarTitle } = useNavbar();
+
+	/**
+	 * Need to handle account hovers here, as we have a label
+	 * change depending on "is hovered" and "has been clicked"
+	 */
+	const [copyLabel, setCopyLabel] = useState<string>(COPY_LABELS.DEFAULT);
+	const [isAccountHovered, setIsAccountHovered] = useState<boolean>(false);
+
+	/////////////
+	// Effects //
+	/////////////
+
+	/**
+	 * Reset the copy label every time we hover/unhover
+	 */
+	useUpdateEffect(() => {
+		if (isAccountHovered) {
+			setCopyLabel(COPY_LABELS.DEFAULT);
+		}
+	}, [isAccountHovered]);
 
 	useDidMount(() => {
 		setNavbarTitle('Your Profile');
 	});
 
+	///////////////
+	// Functions //
+	///////////////
+
+	/**
+	 * Returns from profile back to where the user arrived from
+	 */
 	const onBack = () => {
 		if (canGoBack) {
 			goBack();
@@ -75,14 +93,50 @@ const Profile = () => {
 		}
 	};
 
+	/**
+	 * Copies the profile wallet address
+	 * Changes copy label to "copied"
+	 */
+	const copyAddress = () => {
+		if (account) {
+			navigator.clipboard.writeText(account);
+			setCopyLabel(COPY_LABELS.COPIED);
+		}
+	};
+
+	////////////
+	// Render //
+	////////////
+
 	return (
 		<main className={styles.Container}>
-			<button className={styles.Back} onClick={onBack}>
-				<ArrowLeft color="white" /> <span>Back</span>
-			</button>
+			<div className={styles.Header}>
+				<button className={styles.Back} onClick={onBack}>
+					<ArrowLeft color="white" /> <span>My Profile</span>
+				</button>
+				{account && chainId && (
+					<Tooltip placement="bottom-center" text={copyLabel}>
+						<button
+							className={classNames(
+								styles.Account,
+								'border-rounded',
+								'no-select',
+							)}
+							onClick={copyAddress}
+							onMouseEnter={() => setIsAccountHovered(true)}
+							onMouseLeave={() => setIsAccountHovered(false)}
+						>
+							<img alt="user icon" src={userIcon} />
+							<div className={styles.Details}>
+								<span>{chainIdToNetworkName(chainId)}</span>
+								<span>{truncateWalletAddress(account, 4)}</span>
+							</div>
+						</button>
+					</Tooltip>
+				)}
+			</div>
 			{account ? (
 				<>
-					<CopyInput className={styles.Address} value={account} />
 					<nav className={styles.Nav}>
 						{TABS.map((route) => (
 							<Link

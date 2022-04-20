@@ -46,3 +46,23 @@ export const chainIdToNetworkType = (
 			return NETWORK_TYPES.LOCAL;
 	}
 };
+
+/**
+ * Returns a network name for a given chain ID
+ * @param chainId to get network name from
+ * @returns network name
+ */
+export const chainIdToNetworkName = (chainId: number): string => {
+	switch (chainId) {
+		case 1:
+			return 'Ethereum Mainnet';
+		case 3:
+			return 'Ropsten Testnet';
+		case 4:
+			return 'Rinkeby Testnet';
+		case 42:
+			return 'Kovan Testnet';
+		default:
+			return 'Unknown Network';
+	}
+};
