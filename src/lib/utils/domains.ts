@@ -60,10 +60,14 @@ export const zNAToLink = (domain: string): string => {
 };
 
 // Truncate wallet address
-export const truncateWalletAddress = (address: string) => {
-	return `${address.substring(0, 2)}...${address.substring(
-		address.length - 4,
-	)}`;
+export const truncateWalletAddress = (
+	address: string,
+	startingCharacters?: number,
+) => {
+	return `${address.substring(
+		0,
+		2 + (startingCharacters ?? 0),
+	)}...${address.substring(address.length - 4)}`;
 };
 
 /**

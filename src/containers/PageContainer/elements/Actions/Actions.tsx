@@ -25,6 +25,9 @@ import {
 //- Constants Imports
 import { Modal } from '../../PageContainer.constants';
 
+//- Styles Imports
+import styles from './Actions.module.scss';
+
 type ActionsProps = {
 	pageWidth: number;
 	znsDomain: Maybe<DisplayParentDomain>;
@@ -84,6 +87,7 @@ export const Actions: React.FC<ActionsProps> = ({
 			{/* Connect Wallet Button */}
 			{formattedData.showConnectWalletButton && (
 				<ConnectWalletButton
+					className={styles.ConnectButton}
 					onConnectWallet={openModal(Modal.Wallet)}
 					isDesktop={formattedData.isDesktop}
 				/>

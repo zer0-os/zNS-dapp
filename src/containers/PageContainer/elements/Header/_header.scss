@@ -140,13 +140,8 @@ $height: 46px;
 		}
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1440px) {
+		@media only screen and (min-width: 1264px) {
 			display: none;
 		}
-	}
-
-	&__actions-connect-button {
-		padding-left: 8px;
-		padding-right: 8px;
 	}
 }
