@@ -57,7 +57,9 @@ const SubdomainTableCard = (props: any) => {
 	///////////////
 
 	const onButtonClick = (event: any) => {
-		makeABid(domain);
+		if (account !== undefined && !isOwnedByUser && isBiddable) {
+			makeABid(domain);
+		}
 	};
 
 	const onClick = (event: any) => {

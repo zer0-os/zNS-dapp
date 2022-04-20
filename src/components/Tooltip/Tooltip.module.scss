@@ -6,7 +6,7 @@ $color: #1a1022;
 	align-items: flex-start;
 
 	max-width: 400px;
-	padding: 24px;
+	padding: 2.5px 16px;
 
 	font-size: var(--font-size-default);
 	line-height: 24px;
@@ -14,7 +14,7 @@ $color: #1a1022;
 
 	background: $color;
 
-	border-radius: var(--box-radius);
+	border-radius: 8px;
 	z-index: 2;
 }
 
