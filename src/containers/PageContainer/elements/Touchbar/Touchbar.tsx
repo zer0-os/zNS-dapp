@@ -23,7 +23,14 @@ export const Touchbar: React.FC = () => {
 							to={l.route}
 							className={cx({ Selected: pathname.startsWith(l.route) })}
 						>
-							<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
+							<div
+								className={cx(
+									{ Selected: pathname.startsWith(l.route) },
+									styles.ImageContainer,
+								)}
+							>
+								<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
+							</div>
 						</Link>
 					</li>
 				))}

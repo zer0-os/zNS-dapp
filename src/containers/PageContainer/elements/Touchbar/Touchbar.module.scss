@@ -48,9 +48,23 @@
 					color: var(--color-text-primary);
 				}
 
-				> img {
+				.ImageContainer {
+					display: flex;
 					height: 22px;
 					width: 22px;
+
+					&.Selected {
+						display: flex;
+						justify-content: center;
+						background: var(--color-revolver);
+						height: 48px;
+						width: 48px;
+						border-radius: 50%;
+
+						img {
+							margin: auto;
+						}
+					}
 				}
 			}
 		}
