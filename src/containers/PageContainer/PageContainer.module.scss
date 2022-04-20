@@ -68,11 +68,12 @@
 	.FlexColumnWrapper {
 		// Mobile Breakpoints
 		width: 100%;
-		margin: 8px 16px 150px 16px;
+		margin: 8px 0px 150px 0px;
 
 		// Tablet Breakpoints
 		@media only screen and (min-width: 744px) {
 			max-width: 736px;
+			margin: 8px 16px 150px 16px;
 		}
 
 		@media only screen and (min-width: 834px) {
