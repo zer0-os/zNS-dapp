@@ -75,5 +75,9 @@ $placeholder-background: #000;
 
 	.Footer {
 		padding: 16px;
+
+		.Subheader {
+			word-break: break-all;
+		}
 	}
 }
