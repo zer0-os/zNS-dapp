@@ -90,11 +90,14 @@ $icon-container-size: 54px;
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
-		margin-top: 8px;
+		margin-top: 12px;
 		font-size: 20px;
 
 		> li {
-			padding: 12px 11px;
+			// Desktop Breakpoints
+			@media only screen and (min-width: 1264px) {
+				padding: 12px 11px;
+			}
 
 			> a {
 				display: flex;
@@ -137,14 +140,22 @@ $icon-container-size: 54px;
 					}
 				}
 
-				> img {
-					height: 22px;
-					width: 22px;
-					margin-right: 0;
+				.ImageContainer {
+					display: flex;
+					border-radius: 60px;
+					padding: 13px;
 
-					// Desktop Breakpoints
+					&.Selected {
+						background: var(--color-revolver);
+					}
+
 					@media only screen and (min-width: 1264px) {
-						margin-right: 12px;
+						border-radius: 0;
+						padding: 0;
+
+						&.Selected {
+							background: unset;
+						}
 					}
 				}
 			}

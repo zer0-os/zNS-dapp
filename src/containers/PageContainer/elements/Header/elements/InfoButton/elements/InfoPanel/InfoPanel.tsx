@@ -10,7 +10,7 @@ import { InfoButtonProps } from '../../InfoButton';
 import classnames from 'classnames';
 
 //- Constants Imports
-import { LINKS } from 'constants/nav';
+import { getNavLinks } from 'constants/nav';
 import {
 	WILDER_WORLD_OPTIONS,
 	ZERO_TECH_OPTIONS,
@@ -27,6 +27,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 	isWalletConnected,
 	onConnectWallet,
 }) => {
+	const LINKS = getNavLinks();
 	return (
 		<div className="info-panel__content">
 			<div
@@ -52,7 +53,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 						{LINKS.map((l) => (
 							<li key={l.label}>
 								<Link to={l.route}>
-									<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
+									{l.icon}
 									<label>{l.label}</label>
 								</Link>
 							</li>

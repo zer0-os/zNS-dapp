@@ -2,23 +2,26 @@
 import { Link, useLocation } from 'react-router-dom';
 
 //- Constant Imports
-import { MOBILE_LINKS } from 'constants/nav';
+import { getMobileNavLinks } from 'constants/nav';
+import { COLOURS } from './Touchbar.constants';
 
 //- Styles Imports
 import styles from './Touchbar.module.scss';
 
 //- Class Names
 import classNames from 'classnames/bind';
+
 const cx = classNames.bind(styles);
 
 export const Touchbar: React.FC = () => {
 	const { pathname } = useLocation();
+	const navLinks = getMobileNavLinks();
 
 	return (
 		<div className={styles.TouchbarContainer}>
 			<ul className={styles.NavLinks}>
-				{MOBILE_LINKS.map((l) => (
-					<li key={l.label}>
+				{navLinks.map((l) => (
+					<li key={`${l.label}${Math.random()}`}>
 						<Link
 							to={l.route}
 							className={cx({ Selected: pathname.startsWith(l.route) })}
@@ -29,7 +32,10 @@ export const Touchbar: React.FC = () => {
 									styles.ImageContainer,
 								)}
 							>
-								<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
+								{l.icon &&
+									l.icon(
+										pathname.startsWith(l.route) ? COLOURS.WHITE : COLOURS.ALTO,
+									)}
 							</div>
 						</Link>
 					</li>
