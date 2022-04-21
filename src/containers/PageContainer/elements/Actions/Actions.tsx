@@ -72,6 +72,8 @@ export const Actions: React.FC<ActionsProps> = ({
 		},
 	});
 
+	const isWalletConnected = account !== undefined;
+
 	const handlers = useHeaderHandlers({
 		props: {
 			history,
@@ -126,6 +128,7 @@ export const Actions: React.FC<ActionsProps> = ({
 			{formattedData.showInfoButton && (
 				<InfoButton
 					isDesktop={formattedData.isDesktop}
+					isWalletConnected={isWalletConnected}
 					onConnectWallet={openModal(Modal.Wallet)}
 				/>
 			)}
