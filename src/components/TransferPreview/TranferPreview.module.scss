@@ -1,14 +1,17 @@
 .TransferPreview {
 	// Mobile Breakpoints
+	width: 542px;
+	padding: 20px 40px 10px 40px;
+	max-height: 70vh;
+	overflow: auto;
 	background: var(--color-revolver);
 	border: 1px solid var(--color-bossanova);
-	padding: 20px 48px;
-	width: 552px;
 
 	// Tablet Breakpoints
 	@media only screen and (min-width: 1000px) {
-		width: 640px;
-		padding: 27.5px 40px;
+		width: 100%;
+		// Needs tidying up
+		padding: 27.5px 40px 10px 45px;
 	}
 }
 
@@ -21,7 +24,7 @@
 
 .TransferPreview li > div {
 	display: flex;
-	margin-bottom: 24px;
+	margin-bottom: 32px;
 }
 
 .TransferPreview li hr {
@@ -39,18 +42,10 @@
 }
 
 .Image {
-	// Mobile Breakpoints
 	cursor: pointer;
-	height: 174px;
-	width: 100%;
+	height: 200px;
+	width: 200px;
 	overflow: hidden;
-	transition: transform var(--animation-time-medium) ease-in-out;
-
-	// Tablet Breakpoints
-	@media only screen and (min-width: 1000px) {
-		height: 200px;
-		width: 200px;
-	}
 }
 
 .Image:hover {
@@ -59,17 +54,17 @@
 
 .Image img {
 	height: 100%;
-	object-fit: contain;
 	width: 100%;
+	object-fit: contain;
 }
 
 .Info {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	margin-left: 32px;
-	max-width: 328px;
-	position: relative;
-	width: 100%;
+	width: 240px;
+	max-width: 240px;
 	word-wrap: break-word;
 
 	.Link {
@@ -100,7 +95,7 @@
 	color: var(--color-text-primary);
 }
 
-.InfoContainer {
+.Container {
 	display: flex;
 	flex-direction: row;
 	margin-top: 18px;
