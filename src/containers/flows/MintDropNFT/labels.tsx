@@ -86,14 +86,14 @@ export const getBannerLabel = (
 		// }
 		return (
 			<>
-				Minting is now open to everyone, act fast to secure your Beasts!{' '}
+				Minting is now open to everyone, act fast to secure your Kicks!{' '}
 				{totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);
 	}
 
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-		return <>Wolves Sale is Complete</>;
+		return <>Kicks Sale is Complete</>;
 	}
 
 	return <>Loading drop data...</>;

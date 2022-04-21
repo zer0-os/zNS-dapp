@@ -15,18 +15,18 @@ const RaffleContainer = () => {
 
 	// Temporary values
 	const RAFFLE_START_TIME = currentTime - 10000;
-	const RAFFLE_END_TIME = currentTime + 50000;
-	const SALE_START_TIME = currentTime + 50000;
+	// const RAFFLE_END_TIME = currentTime + 50000;
+	// const SALE_START_TIME = currentTime + 50000;
 	// const PRIVATE_SALE_END_TIME = currentTime + 10000;
 	// const PUBLIC_SALE_START_TIME = currentTime + 100000;
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
-	// const RAFFLE_START_TIME = 1650416400000;
-	// const RAFFLE_END_TIME = 1650589200000;
-	// const SALE_START_TIME = 1650934800000;
-	const PRIVATE_SALE_END_TIME = 1651107600000;
-	const PUBLIC_SALE_START_TIME = 1651107600000;
+	// const RAFFLE_START_TIME = 1650589200000;
+	const RAFFLE_END_TIME = 1650762000000;
+	const SALE_START_TIME = 1651194000000;
+	const PRIVATE_SALE_END_TIME = 1651280400000;
+	const PUBLIC_SALE_START_TIME = 1651280400000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
