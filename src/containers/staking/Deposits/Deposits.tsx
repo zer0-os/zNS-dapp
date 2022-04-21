@@ -3,7 +3,6 @@ import { useWeb3React } from '@web3-react/core';
 import { StatsWidget } from 'components';
 import { DepositTable } from 'containers/staking';
 import { ethers } from 'ethers';
-import { useZnsContracts } from 'lib/contracts';
 import { displayEther, displayEtherToFiat, toFiat } from 'lib/currency';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
@@ -13,14 +12,10 @@ import styles from './Deposits.module.scss';
 
 const Deposits = () => {
 	const staking = useStaking();
-	const contracts = useZnsContracts();
-	const { active, account } = useWeb3React<Web3Provider>();
+	const { account } = useWeb3React<Web3Provider>();
 	const { wildPriceUsd } = useCurrency();
 
 	const [totalRewardsClaimable, setTotalRewardsClaimable] =
-		useState<MaybeUndefined<ethers.BigNumber>>();
-
-	const [wildBalance, setWildBalance] =
 		useState<MaybeUndefined<ethers.BigNumber>>();
 
 	const [totalStakedUsd, setTotalStakedUsd] =
@@ -29,7 +24,6 @@ const Deposits = () => {
 	useEffect(() => {
 		let isMounted = true;
 
-		setWildBalance(undefined);
 		setTotalStakedUsd(undefined);
 		setTotalRewardsClaimable(undefined);
 
@@ -37,11 +31,6 @@ const Deposits = () => {
 			if (!account || !staking.pools) {
 				return;
 			}
-
-			// Gets user's WILD balance
-			contracts!.wildToken.balanceOf(account).then((balance) => {
-				setWildBalance(balance);
-			});
 
 			// Gets total claimable rewards
 			Promise.all([
@@ -82,17 +71,12 @@ const Deposits = () => {
 				<ul className={styles.Stats}>
 					<StatsWidget
 						className="normalView"
-						fieldName={'Wallet WILD Balance'}
-						isLoading={active !== null && wildBalance === undefined}
+						fieldName={'Your Total Stake (USD)'}
+						isLoading={totalStakedUsd === undefined}
 						title={
-							account && wildBalance !== undefined
-								? displayEther(wildBalance)
-								: '-'
-						}
-						subTitle={
-							wildBalance &&
-							wildPriceUsd &&
-							`$${displayEtherToFiat(wildBalance, wildPriceUsd)}`
+							account && totalStakedUsd !== undefined
+								? '$' + toFiat(totalStakedUsd) + ' USD'
+								: '$0'
 						}
 					/>
 					<StatsWidget
@@ -108,16 +92,6 @@ const Deposits = () => {
 							totalRewardsClaimable &&
 							wildPriceUsd &&
 							'$' + displayEtherToFiat(totalRewardsClaimable, wildPriceUsd)
-						}
-					/>
-					<StatsWidget
-						className="normalView"
-						fieldName={'Your Total Stake (USD)'}
-						isLoading={totalStakedUsd === undefined}
-						title={
-							account && totalStakedUsd !== undefined
-								? '$' + toFiat(totalStakedUsd) + ' USD'
-								: '$0'
 						}
 					/>
 				</ul>

@@ -23,6 +23,7 @@ import { Stage, Step, TransactionData } from './types';
 
 // Style Imports
 import styles from './MintDropNFTWizard.module.scss';
+import { Wizard } from 'components';
 
 type MintDropNFTWizardProps = {
 	balanceEth?: number;
@@ -202,20 +203,16 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 	////////////
 
 	return (
-		<div className={`${styles.Container} border-primary border-rounded`}>
-			{/* Head section */}
-			<section className={styles.Header}>
-				<h1 className="glow-text-white">Mint Your Beasts</h1>
-				<span className="glow-text-white">
-					Your Beasts in the Metaverse await
-				</span>
-				<hr />
-			</section>
+		<Wizard
+			header="Mint Your Beasts"
+			subHeader="Your Beasts in the Metaverse await"
+			className={`${styles.Container} border-primary border-rounded`}
+		>
 			{props.dropStage === undefined && (
 				<Loading text={'Loading Beasts Drop'} />
 			)}
 			{getFlowSection()}
-		</div>
+		</Wizard>
 	);
 };
 

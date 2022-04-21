@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 $icon-container-size: 54px;
 
 .BorderContainer {
@@ -6,7 +8,7 @@ $icon-container-size: 54px;
 	border-right: 1px solid var(--color-grey-mine-shaft);
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-small}) {
 		display: flex;
 	}
 
@@ -98,6 +100,7 @@ $icon-container-size: 54px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				gap: 12px;
 				padding: 0;
 				color: var(--color-cornflower-blue);
 				font-weight: 400;
@@ -106,6 +109,22 @@ $icon-container-size: 54px;
 					text-shadow: var(--glow-text-primary);
 					font-weight: 600;
 					color: var(--color-text-primary);
+
+					@media only screen and (max-width: #{dimensions.$breakpoint-max}) {
+						img {
+							position: relative;
+
+							&::before {
+								content: ' ';
+								position: absolute;
+								top: 0;
+								left: 0;
+								background: red;
+								height: 48px;
+								width: 48px;
+							}
+						}
+					}
 				}
 
 				label {

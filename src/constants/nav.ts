@@ -1,6 +1,7 @@
 import marketIcon from 'assets/icon_market.svg';
 import stakingIcon from 'assets/icon_staking.svg';
 import daoIcon from 'assets/icon_dao.svg';
+import profileIcon from 'assets/profile-icon.svg';
 
 import { ROUTES } from './routes';
 
@@ -20,4 +21,9 @@ export const LINKS = [
 		route: ROUTES.STAKING,
 		icon: stakingIcon,
 	},
+];
+
+export const MOBILE_LINKS = [
+	...LINKS,
+	{ label: 'Profile', route: ROUTES.PROFILE, icon: profileIcon },
 ];
