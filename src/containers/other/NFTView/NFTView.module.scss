@@ -259,8 +259,13 @@
 }
 
 .History {
-	padding: 20px 0 20px 0;
+	padding: 24px 12px 0 12px;
 	margin-top: 24px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 744px) {
+		padding: 24px 0 0 0;
+	}
 }
 
 .History span {
@@ -283,6 +288,11 @@
 
 .Bid:first-child {
 	margin-top: 12px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 744px) {
+		margin-top: 24px;
+	}
 }
 
 .NFTStats {
@@ -290,7 +300,13 @@
 	align-items: unset;
 	justify-content: space-between;
 	margin-top: 24px;
-	gap: 12px;
+	gap: 8px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 744px) {
+		gap: 16px;
+		margin-top: 48px;
+	}
 
 	.NFTStatContainer {
 		flex: 1;
