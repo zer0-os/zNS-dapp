@@ -25,6 +25,9 @@ import {
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
+//- Style Imports
+import styles from './MintDropNFT.module.scss';
+
 type MintDropNFTFlowContainerProps = {
 	privateSaleEndTime: number;
 	publicSaleStartTime: number;
@@ -496,7 +499,7 @@ const MintDropNFTFlowContainer = ({
 					/>
 				</Overlay>
 			)}
-			<div style={{ position: 'relative', marginBottom: 16 }}>
+			<div className={styles.BannerContainer}>
 				<MintDropNFTBanner
 					title={'Join the Wilder Wolf Pack '}
 					label={bannerLabel()}
