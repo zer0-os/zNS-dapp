@@ -1,12 +1,31 @@
+@use 'styles/variables/dimensions';
+
 .Container {
 	width: 100%;
 	padding: 32px;
-	background: var(--color-purple-dark);
+	background: #1a1022; // @TODO use global color var
+
+	.Divider {
+		display: none;
+
+		@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+			display: block;
+		}
+	}
+
+	@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+		padding: 0;
+		background: none;
+	}
 
 	button {
 		width: 100%;
 
 		margin-top: 41px;
+
+		@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+			margin-top: 26px;
+		}
 	}
 
 	hr {
@@ -22,8 +41,12 @@
 }
 
 .Actions {
-	.Input {
+	.InputContainer {
 		position: relative;
+
+		.Input {
+			padding-right: 82px;
+		}
 
 		.Max {
 			position: absolute;
@@ -40,29 +63,36 @@
 			z-index: 3;
 		}
 	}
+
+	@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+		margin-top: 24px;
+	}
 }
 
-.Balance {
-	margin-top: 32px;
+.Balances {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	margin-top: 24px;
+	gap: 32px;
 
-	.Tokens {
-		font-size: 18px;
-		display: block;
-	}
-
-	.Fiat {
-		font-size: var(--font-size-small);
-		display: block;
-	}
-
-	> span {
-		font-size: var(--font-size-small);
-		color: var(--color-grey-lighter-2);
-	}
-
-	.Amounts {
-		display: flex;
+	.Balance {
 		flex-direction: column;
-		align-items: flex-end;
+		text-align: left;
+
+		.Tokens {
+			font-size: 18px;
+			display: block;
+		}
+
+		.Fiat {
+			font-size: var(--font-size-small);
+			display: block;
+		}
+
+		> span {
+			font-size: var(--font-size-small);
+			color: var(--color-grey-lighter-2);
+		}
 	}
 }

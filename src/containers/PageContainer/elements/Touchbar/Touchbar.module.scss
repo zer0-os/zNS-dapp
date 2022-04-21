@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 .TouchbarContainer {
 	// Mobile + Tablet
 	display: flex;
@@ -13,7 +15,7 @@
 	z-index: 999;
 
 	// Laptop/Desktop
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-small}) {
 		display: none;
 	}
 
@@ -21,7 +23,7 @@
 		display: flex;
 		align-items: center;
 
-		@media only screen and (min-width: 480px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-smaller}) {
 			width: 100%;
 			justify-content: space-evenly;
 		}

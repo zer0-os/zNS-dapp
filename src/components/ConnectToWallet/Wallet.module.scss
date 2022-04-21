@@ -1,6 +1,8 @@
 .connect {
-	width: 304px;
+	max-width: 304px;
 	position: relative;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
 
 	background: var(--color-background);
 	border-radius: var(--box-radius);
@@ -14,17 +16,12 @@
 	margin: 0 33px;
 }
 
-.header {
-	width: 100%;
-	padding-top: 38px;
-	padding-bottom: 31px;
-	text-align: center;
+.Header {
+	margin-bottom: 0 !important;
 }
 
-.header h3 {
-	font-size: 18px;
-	font-weight: 700;
-	color: var(--color-text-primary);
+.Header h1 {
+	font-size: 18px !important;
 }
 
 .connect ul {

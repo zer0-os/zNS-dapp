@@ -48,15 +48,14 @@ const ConnectWalletPrompt: React.FC<ConnectWalletPromptProps> = ({
 				onClose={closeConnectWalletPrompt}
 				centered
 				open={isModalOpen}
-				hasCloseButton={false}
+				hasCloseButton={true}
 			>
 				<Confirmation
-					title={'Connect your Wallet'}
+					title={'Connect Your Wallet'}
 					confirmText={'Connect'}
 					onConfirm={() => {
 						connectToWallet();
 					}}
-					hasCloseButton={true}
 					onCancel={() => {
 						closeConnectWalletPrompt();
 					}}

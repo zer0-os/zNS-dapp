@@ -4,7 +4,7 @@ import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 
 type UseConnectWalletButtonDataProps = {
 	props: {
-		isDesktop: boolean;
+		isDesktop: boolean | undefined;
 		account: string | null | undefined;
 		active: boolean;
 		connector: AbstractConnector | undefined;
@@ -29,9 +29,7 @@ export const useConnectWalletButtonData = ({
 		const isConnected =
 			props.active && Boolean(props.account) && Boolean(props.connector);
 		const isConnecting = !isConnected && Boolean(wallet);
-		const connectTitle = isConnecting
-			? `Trying to connect ${wallet}`
-			: `Connect`;
+		const connectTitle = isConnecting ? `` : `Connect`;
 		const disconnectTitle = `Disconnect`;
 
 		return {

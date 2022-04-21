@@ -50,6 +50,20 @@ $height: 46px;
 		justify-content: space-between;
 		height: $height;
 		padding: 0px 4px;
+
+		&-disconnect-button-container {
+			padding-right: 4px;
+
+			// Visible up to tablet breakpoint
+			@media only screen and (min-width: 744px) {
+				display: none;
+			}
+		}
+
+		&-disconnect-button {
+			padding-left: 4px;
+			padding-right: 4px;
+		}
 	}
 
 	&__navigation {

@@ -1,5 +1,6 @@
 import { GenericTable } from 'components';
 import StakePoolTableRow from './StakePoolTableRow';
+import StakePoolTableCard from './StakePoolTableCard';
 
 import { useStaking } from 'lib/providers/staking/StakingSDKProvider';
 
@@ -22,6 +23,7 @@ const StakePoolTable = () => {
 			itemKey={'id'}
 			loadingText={'Loading Stake Pools'}
 			rowComponent={StakePoolTableRow}
+			gridComponent={StakePoolTableCard}
 			notSearchable
 		/>
 	);

@@ -5,7 +5,7 @@ export enum Modal {
 	Wallet = 'Wallet',
 }
 
-export const MODAL_VISIBILITY_WINDOW_MIN_WIDTH = 744;
+export const MODAL_VISIBILITY_WINDOW_MIN_WIDTH = 320;
 
 export enum ALT_TEXT {
 	MARKET_ICON = 'Click to go to Market',

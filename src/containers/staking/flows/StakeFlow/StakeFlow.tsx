@@ -15,7 +15,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 import useCurrency from 'lib/hooks/useCurrency';
 import { Header } from '..';
-import { FutureButton, Spinner } from 'components';
+import { FutureButton, Spinner, Wizard } from 'components';
 import { displayEther } from 'lib/currency';
 
 enum Steps {
@@ -309,7 +309,8 @@ const StakeFlow = (props: StakeFlowProps) => {
 	};
 
 	return (
-		<div
+		<Wizard
+			header={unstake ? 'Unstake' : 'Stake'}
 			className={cx(
 				styles.Container,
 				'background-primary',
@@ -318,7 +319,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 			)}
 		>
 			{stepNode()}
-		</div>
+		</Wizard>
 	);
 };
 
