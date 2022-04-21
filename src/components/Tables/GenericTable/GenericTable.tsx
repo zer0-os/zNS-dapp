@@ -15,7 +15,7 @@ import classNames from 'classnames';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 
 const DEFAULT_SEARCH_KEY = 'name';
-const GRID_BREAKPOINT = 700;
+const GRID_BREAKPOINT = 744;
 
 type GenericTableHeader = {
 	label: string | React.ReactNode;
