@@ -8,7 +8,7 @@ $placeholder-background: #000;
 
 	background: var(--color-background);
 	border: 1px solid #232323;
-	border-radius: var(--box-radius);
+	border-radius: calc(var(--box-radius) / 2) !important;
 
 	cursor: pointer;
 	overflow: hidden;
@@ -58,8 +58,6 @@ $placeholder-background: #000;
 		height: auto !important;
 		width: 100% !important;
 		object-fit: cover;
-
-		border-radius: var(--box-radius) var(--box-radius) 0 0;
 		overflow: hidden;
 
 		img,
