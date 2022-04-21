@@ -11,6 +11,10 @@ $gap: 40px;
 		flex-direction: column;
 		align-items: center;
 		margin-top: calc($gap * 2);
+
+		p {
+			text-align: center;
+		}
 	}
 
 	.Header {

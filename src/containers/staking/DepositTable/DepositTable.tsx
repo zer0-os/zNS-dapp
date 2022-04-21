@@ -1,5 +1,6 @@
 import { GenericTable } from 'components';
 import DepositTableRow from './DepositTableRow';
+import DepositTableCard from './DepositTableCard';
 
 import styles from './DepositTable.module.scss';
 
@@ -44,6 +45,7 @@ const DepositTable = (props: DepositTableProps) => {
 					headers={TABLE_HEADERS}
 					empty={deposits?.length === 0}
 					rowComponent={DepositTableRow}
+					gridComponent={DepositTableCard}
 					notSearchable
 				/>
 			</DepositProvider>

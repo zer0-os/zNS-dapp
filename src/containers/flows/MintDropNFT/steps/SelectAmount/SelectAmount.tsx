@@ -108,14 +108,6 @@ const SelectAmount = (props: SelectAmountProps) => {
 		setHasUserAcceptedTerms(!hasUserAcceptedTerms);
 	};
 
-	const openTerms = (event: React.MouseEvent<HTMLElement>) => {
-		event.stopPropagation();
-		event.preventDefault();
-		window
-			.open('https://zine.wilderworld.com/terms-and-conditions/', '_blank')
-			?.focus();
-	};
-
 	const isAmountValid = () => {
 		return (
 			amount !== undefined &&
@@ -167,9 +159,14 @@ const SelectAmount = (props: SelectAmountProps) => {
 						/>
 						<label className="no-select" htmlFor="termsAndConditions">
 							I agree to the auction{' '}
-							<button className="text-button" onClick={openTerms}>
+							<a
+								href="https://zine.wilderworld.com/terms-and-conditions/"
+								className="text-button"
+								target="_blank"
+								rel="noreferrer"
+							>
 								terms and conditions
-							</button>
+							</a>
 						</label>
 					</div>
 

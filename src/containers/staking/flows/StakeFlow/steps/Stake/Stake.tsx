@@ -67,7 +67,6 @@ const Stake = (props: StakeProps) => {
 					onStake={onStake}
 					tokenName={token}
 					isLoading={isTransactionPending}
-					pendingRewards={pendingRewards}
 					unstake={unstake}
 				/>
 			) : (

@@ -1,6 +1,25 @@
+@use 'styles/variables/dimensions';
+
+$width: 640px;
+$gutter: 16px;
+
 .Container {
-	width: 640px;
+	display: flex;
+	flex-direction: column;
+	width: $width;
 	padding: 48px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		width: calc(100vw - $gutter - $gutter);
+		padding: 48px 16px;
+	}
+
+	@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+		width: 100vw;
+		height: 100vh;
+		border: none;
+		max-width: unset !important;
+	}
 
 	.Header {
 		width: 100%;
@@ -10,6 +29,10 @@
 		h1 {
 			font-size: 24px;
 			font-weight: 700;
+
+			// @media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			// 	font-size: 18px;
+			// }
 		}
 
 		h2 {

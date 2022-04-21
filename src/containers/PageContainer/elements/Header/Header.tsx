@@ -10,7 +10,7 @@ import { Maybe, DisplayParentDomain, Metadata } from 'lib/types';
 
 //- Components Imports
 import { ZNALink } from 'components';
-import { SearchDomains, HistoryButtons } from './elements';
+import { SearchDomains, HistoryButtons, ConnectWalletButton } from './elements';
 import { Actions } from '../Actions';
 
 //- Hooks Imports
@@ -18,6 +18,7 @@ import { useHeaderData, useHeaderHandlers } from './hooks';
 
 //- Constants Imports
 import { Modal } from '../../PageContainer.constants';
+import { ROUTES } from 'constants/routes';
 
 //- Styles Imports
 import './_header.scss';
@@ -42,6 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 	const { mvpVersion } = useMvpVersion();
+	const isProfileRoute = location.pathname.includes(ROUTES.PROFILE);
 
 	const { title, isSearching, setNavbarSearchingStatus } = useNavbar();
 
@@ -118,10 +120,15 @@ export const Header: React.FC<HeaderProps> = ({
 							</div>
 						)}
 					</div>
-
 					{/* Search Domains List */}
 					{isSearching && (
 						<SearchDomains searchQuery={localState.searchQuery} />
+					)}
+					{/* Display Disconnect Button Mobile */}
+					{isProfileRoute && account && (
+						<div className="header__content-disconnect-button-container">
+							<ConnectWalletButton className="header__content-disconnect-button" />
+						</div>
 					)}
 				</div>
 			</div>

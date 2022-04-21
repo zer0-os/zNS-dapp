@@ -26,13 +26,15 @@ const Preview = ({ title, description, icon, banner, href }: PreviewProps) => {
 					ipfsUrl={icon ?? ''}
 					fit="cover"
 				/>
-				<h1>{title}</h1>
-				<p>{description}</p>
-				{href && (
-					<ArrowLink className={styles.Link} href={href} replace>
-						View Domain NFT
-					</ArrowLink>
-				)}
+				<div className={styles.TextContainer}>
+					<h1>{title}</h1>
+					<p>{description}</p>
+					{href && (
+						<ArrowLink className={styles.Link} href={href} replace>
+							View Domain NFT
+						</ArrowLink>
+					)}
+				</div>
 			</div>
 		</div>
 	);
