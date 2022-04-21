@@ -5,8 +5,8 @@ import { MarketIcon, DAOIcon, StakingIcon, ProfileIcon } from 'components';
 export const TITLES = {
 	MARKET: 'MARKET',
 	ZDAO: 'ZDAO',
-	STAKING: 'Staking',
-	PROFILE: 'Profile',
+	STAKING: 'STAKING',
+	PROFILE: 'PROFILE',
 };
 
 export const getNavLinks = () => {
