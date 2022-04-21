@@ -94,7 +94,7 @@ const NFT = ({
 					)}
 				</div>
 			</div>
-			<p>{description ?? ''}</p>
+			<div className={styles.Description}>{description ?? ''}</div>
 		</div>
 	);
 };
