@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 .Container {
 	h1 {
 		font-size: 24px;
@@ -40,11 +42,14 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			width: 56px;
+			width: 37px;
 			height: 37px;
 			padding-top: 0;
-
 			background: none;
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-smaller}) {
+				width: 56px;
+			}
 		}
 
 		.MoreDropdown {
