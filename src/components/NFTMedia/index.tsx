@@ -23,35 +23,10 @@ import CloudinaryMedia from './CloudinaryMedia';
 // Library Imports
 import classNames from 'classnames/bind';
 import { getHashFromIPFSUrl } from 'lib/ipfs';
-import { generateCloudinaryUrl } from './config';
+import { checkMediaType, MediaType } from './config';
 import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 
-// Possible media types based on
-// MIME type of content
-export enum MediaType {
-	Image, // image/*
-	Video, // video/*
-	Unknown, // unhandled
-}
-
 const cx = classNames.bind(styles);
-
-// Gets MIME type of media at URL
-// Useful because our IPFS links don't have
-// a file extension
-export const checkMediaType = (hash: string) => {
-	return new Promise((resolve) => {
-		fetch(generateCloudinaryUrl(hash, 'video'), { method: 'HEAD' }).then(
-			(d: Response) => {
-				if (d.status === 200) {
-					resolve(MediaType.Video);
-				} else {
-					resolve(MediaType.Image);
-				}
-			},
-		);
-	});
-};
 
 const NFTMediaContainer = (props: MediaContainerProps) => {
 	//////////////////
