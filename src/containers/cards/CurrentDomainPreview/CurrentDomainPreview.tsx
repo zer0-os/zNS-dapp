@@ -14,7 +14,7 @@ const PreviewContainer = () => {
 			description={metadata?.description}
 			icon={metadata?.previewImage ?? metadata?.image}
 			banner={metadata?.image_full ?? metadata?.image}
-			href={domainRaw && domainRaw + '?view=true'}
+			href={`${domain?.name}?view=true`}
 		/>
 	);
 };

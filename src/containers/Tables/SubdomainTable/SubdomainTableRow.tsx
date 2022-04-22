@@ -173,7 +173,7 @@ const SubdomainTableRow = (props: any) => {
 	const onRowClick = (event: any) => {
 		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
 		if (!clickedButton) {
-			goTo(`/market/${domain.name.split('wilder.')[1]}`);
+			goTo(`/market/${domain.name}`);
 		}
 	};
 
@@ -182,7 +182,7 @@ const SubdomainTableRow = (props: any) => {
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
-					domain={domain.name.split('wilder.')[1]}
+					domain={domain.name}
 					disableInteraction
 					metadataUrl={domain.metadata}
 					id={domain.id}

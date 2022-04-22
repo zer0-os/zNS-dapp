@@ -116,24 +116,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		fetchTokenBalance();
 	}, [lootContract, account]);
 
-	useEffect(() => {
-		const parent = domainName.substring(1);
-		let existingNames;
-		if (!parent.length) {
-			existingNames = subdomains.map((sub: string) => {
-				const split = sub.split('wilder.');
-				return split[split.length - 1];
-			});
-		} else {
-			existingNames = subdomains.map((sub: string) => {
-				const split = sub.split(domainName.substring(1));
-				const dot = split[split.length - 1].split('.');
-				return dot[dot.length - 1];
-			});
-		}
-		setExistingSubdomains(existingNames);
-	}, [domainName, subdomains]);
-
 	///////////////
 	// Functions //
 	///////////////
@@ -293,7 +275,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				{/* SECTION 1: Token Information */}
 				{step === MintState.DomainDetails && (
 					<TokenInformation
-						existingSubdomains={existingSubdomains || []}
+						existingSubdomains={subdomains || []}
 						token={tokenInformation}
 						onContinue={(data: TokenInformationType) =>
 							getTokenInformation(data)

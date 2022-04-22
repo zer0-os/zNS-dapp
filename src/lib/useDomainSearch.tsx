@@ -44,7 +44,7 @@ export function useDomainSearch() {
 				}
 			} catch (err) {
 				// TODO: Handle it
-				console.log(err);
+				// console.log(err);
 			}
 		}
 		try {

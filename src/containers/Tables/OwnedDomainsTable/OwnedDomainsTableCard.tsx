@@ -65,7 +65,7 @@ const SubdomainTableCard = ({
 
 	// Navigates to domain
 	const onClick = (event: any) => {
-		goTo(`/market/${domain.name.split('wilder.')[1]}`);
+		goTo(`/market/${domain.name}`);
 	};
 
 	////////////

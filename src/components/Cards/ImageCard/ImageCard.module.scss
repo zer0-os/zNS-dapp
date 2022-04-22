@@ -57,6 +57,7 @@ $placeholder-background: #000;
 		object-fit: cover;
 		overflow: hidden;
 		border-radius: #{borders.$radius-secondary-top};
+		background-color: var(--color-background);
 
 		img,
 		video {

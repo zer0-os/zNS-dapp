@@ -68,11 +68,7 @@ const BidTableRow = (props: any) => {
 			<td>
 				<Artwork
 					data-testid={TEST_ID.ARTWORK}
-					domain={
-						bid.domainName.startsWith('wilder.')
-							? bid.domainName.split('wilder.')[1]
-							: bid.domainName
-					}
+					domain={bid.domainName}
 					disableInteraction
 					metadataUrl={bid.domainMetadataUrl}
 					id={bid.domainId}
