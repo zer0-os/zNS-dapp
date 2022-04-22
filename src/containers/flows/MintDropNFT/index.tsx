@@ -500,7 +500,7 @@ const MintDropNFTFlowContainer = ({
 			)}
 			<div style={{ position: 'relative', marginBottom: 16 }}>
 				<MintDropNFTBanner
-					title={'Join the Wilder Wolf Pack '}
+					title={'Get Your Kicks for the Metaverse'}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}
