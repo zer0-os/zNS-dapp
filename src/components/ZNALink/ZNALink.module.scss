@@ -34,9 +34,6 @@
 	opacity: 1;
 }
 
-.ZNALink > a:not(:last-child):hover {
-}
-
 .ZNALink > a:last-child::after {
 	content: ' ';
 	position: absolute;
@@ -65,6 +62,10 @@
 	.ZNALink > a:not(:first-of-type):not(:last-of-type) {
 		display: none !important;
 		background: red;
+	}
+
+	.ZNALink > a:not(:first-of-type) ~ a:last-of-type::before {
+		content: '..';
 	}
 
 	.Dots {

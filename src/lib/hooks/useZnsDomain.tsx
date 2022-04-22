@@ -58,6 +58,7 @@ export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 		formattedDomain.owner = { id: formattedDomain.owner };
 		formattedDomain.parent = { id: formattedDomain.parentId };
 		formattedDomain.lockedBy = { id: formattedDomain.lockedBy };
+		formattedDomain.name = formattedDomain.name ?? '';
 
 		delete formattedDomain.parentId;
 		const formattedSubdomains = rawSubdomains.map((sub) => ({

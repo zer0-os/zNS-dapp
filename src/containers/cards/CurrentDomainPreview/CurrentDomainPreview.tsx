@@ -14,7 +14,7 @@ const PreviewContainer = () => {
 			description={metadata?.description}
 			icon={metadata?.previewImage ?? metadata?.image}
 			banner={metadata?.image_full ?? metadata?.image}
-			href={domain?.name && domain.name.split('wilder.')[1] + '?view=true'}
+			href={`${domain?.name}?view=true`}
 		/>
 	);
 };

@@ -70,7 +70,7 @@ const Member: React.FC<MemberProps> = ({
 								className="text-button"
 								data-testid={TEST_ID.MEMBER_ZNA_BUTTON}
 							>
-								0://wilder.{name.toLowerCase().split(' ').join('.')}
+								0://{name.toLowerCase().split(' ').join('.')}
 							</button>
 						</>
 					)}

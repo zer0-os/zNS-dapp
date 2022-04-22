@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
 import { MintNewNFT } from 'containers';
 import { ConnectToWallet, Overlay } from 'components';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
@@ -47,13 +46,12 @@ export const Modals: React.FC<ModalsProps> = ({
 }) => {
 	const { domain } = useCurrentDomain();
 	const { isSearching } = useNavbar();
-	const location = useLocation();
 
 	const { domainId, domainName, domainOwner, subDomains } = useMemo(() => {
-		const domainName = location.pathname;
-		const domainId = domain?.id || '';
-		const domainOwner = domain?.owner.id || '';
-		const subDomains = domain?.subdomains.map(({ name }) => name) || [];
+		const domainName = domain?.name ?? '';
+		const domainId = domain?.id ?? '';
+		const domainOwner = domain?.owner.id ?? '';
+		const subDomains = domain?.subdomains.map(({ name }) => name) ?? [];
 
 		return {
 			domainId,
@@ -61,7 +59,7 @@ export const Modals: React.FC<ModalsProps> = ({
 			domainOwner,
 			subDomains,
 		};
-	}, [location, domain]);
+	}, [domain]);
 
 	if (pageWidth < MODAL_VISIBILITY_WINDOW_MIN_WIDTH) {
 		return null;
