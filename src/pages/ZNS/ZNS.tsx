@@ -61,8 +61,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	const enableBanner = false;
 
-	const enableBanner = false;
-
 	const location = useLocation();
 	const nftView = useMemo(
 		() => location.search.includes('view=true'),
