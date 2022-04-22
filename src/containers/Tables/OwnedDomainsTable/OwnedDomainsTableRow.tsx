@@ -63,7 +63,7 @@ const OwnedDomainsTableRow = ({
 
 	// Navigates to domain
 	const onRowClick = () => {
-		goTo(`/market/${domain.name.split('wilder.')[1]}`);
+		goTo(`/market/${domain.name}`);
 	};
 
 	const actions = getActions(bids?.length !== 0);
@@ -126,7 +126,7 @@ const OwnedDomainsTableRow = ({
 			<tr className={styles.Container}>
 				<td className={styles.Left} onClick={onRowClick}>
 					<Artwork
-						domain={domain.name.split('wilder.')[1]}
+						domain={domain.name}
 						disableInteraction
 						metadataUrl={domain.metadataUri}
 						id={domain.id}

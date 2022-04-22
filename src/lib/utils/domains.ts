@@ -1,9 +1,8 @@
 import { AspectRatio, ASPECT_RATIOS } from 'constants/aspectRatios';
 import { ethers } from 'ethers';
 
-export const rootDomainName = 'wilder';
-export const rootDomainId =
-	'0x196c0a1e30004b9998c97b363e44f1f4e97497e59d52ad151208e9393d70bb3b';
+export const rootDomainName = '';
+export const rootDomainId = ethers.constants.HashZero;
 
 export const hash = (x: string): string => {
 	const hash = ethers.utils.id(x);
@@ -36,7 +35,7 @@ export const getDomainId = (name: string): string => {
 };
 
 export const getRelativeDomainPath = (domain: string): string => {
-	const fixedPath = domain.replace(`${rootDomainName}.`, '');
+	const fixedPath = domain;
 
 	return fixedPath;
 };
@@ -109,10 +108,6 @@ export const getParentZna = (zna: string): string => {
  * @returns
  */
 export const getAspectRatioForZna = (zna: string): AspectRatio | undefined => {
-	if (zna === 'wilder') {
-		return AspectRatio.LANDSCAPE;
-	}
-
 	if (ASPECT_RATIOS[AspectRatio.LANDSCAPE])
 		for (const key in ASPECT_RATIOS) {
 			const znas = ASPECT_RATIOS[key as unknown as AspectRatio];
@@ -131,14 +126,12 @@ export const truncateDomain = (
 	domainName: string,
 	maxCharacterLength: number,
 ) => {
-	let domainText;
-	if (('wilder.' + domainName).length > maxCharacterLength) {
-		domainText = `wilder...${
-			domainName.split('.')[domainName.split('.').length - 1]
-		}`;
-		return domainText;
-	} else {
-		domainText = `${domainName}`;
-		return domainText;
+	if (domainName.length > maxCharacterLength) {
+		const splits = domainName.split('.');
+		if (splits.length > 2) {
+			return `${splits[0]}...${splits[1]}`;
+		}
+		return domainName;
 	}
+	return domainName;
 };

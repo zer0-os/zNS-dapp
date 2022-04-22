@@ -29,7 +29,6 @@ type ArtworkProps = {
 	style?: React.CSSProperties;
 	subtext?: string;
 	shouldUseCloudinary?: boolean;
-	shouldHideRoot?: boolean;
 };
 
 const cx = classNames.bind(styles);
@@ -47,7 +46,6 @@ const Artwork: React.FC<ArtworkProps> = ({
 	style,
 	subtext,
 	shouldUseCloudinary,
-	shouldHideRoot,
 }) => {
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
@@ -55,7 +53,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
 
-	const root = shouldHideRoot ? '' : 'wilder.';
+	const root = '';
 
 	useEffect(() => {
 		// Get metadata

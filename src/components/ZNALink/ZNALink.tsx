@@ -18,7 +18,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 
 	const isRootDomain = zna.length === 0;
 
-	const adjustedZna = isRootDomain ? 'wilder' : 'wilder.' + zna;
+	const adjustedZna = isRootDomain ? '' : '' + zna;
 	const segments = adjustedZna.split('.').map((s, index) => ({
 		name: index === 0 ? s : '.' + s,
 		location:

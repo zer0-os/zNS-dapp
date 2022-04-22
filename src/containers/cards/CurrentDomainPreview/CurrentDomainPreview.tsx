@@ -2,7 +2,7 @@ import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import Preview from 'components/Preview/Preview';
 
 const PreviewContainer = () => {
-	const { domain, domainMetadata: metadata, domainRaw } = useCurrentDomain();
+	const { domain, domainMetadata: metadata } = useCurrentDomain();
 
 	if (domain?.name === '') {
 		return <></>;
@@ -14,7 +14,7 @@ const PreviewContainer = () => {
 			description={metadata?.description}
 			icon={metadata?.previewImage ?? metadata?.image}
 			banner={metadata?.image_full ?? metadata?.image}
-			href={domainRaw && domainRaw + '?view=true'}
+			href={`${domain?.name}?view=true`}
 		/>
 	);
 };

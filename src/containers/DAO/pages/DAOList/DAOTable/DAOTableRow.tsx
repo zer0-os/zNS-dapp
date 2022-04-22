@@ -64,7 +64,6 @@ const DAOTableRow: React.FC<DAOTableRowProps> = ({ data }) => {
 					image={defaultDaoIcon}
 					disableInteraction
 					disableAnimation
-					shouldHideRoot
 				/>
 			</td>
 			<td className={styles.Right}>
