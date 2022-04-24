@@ -21,8 +21,12 @@
 		}
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1264px) {
+		@media only screen and (min-width: 1328px) {
 			margin-top: 24px;
+		}
+
+		@media only screen and (min-width: 3440px) {
+			margin-top: 56px;
 		}
 	}
 
@@ -45,7 +49,7 @@
 			display: none;
 
 			// Desktop Breakpoints
-			@media only screen and (min-width: 1264px) {
+			@media only screen and (min-width: 1328px) {
 				display: flex;
 				position: sticky;
 				top: 0;
@@ -68,7 +72,7 @@
 	.FlexColumnWrapper {
 		// Mobile Breakpoints
 		width: 100%;
-		margin: 8px 0px 16px 0px;
+		margin: 0 0 16px 0px;
 
 		// Tablet Breakpoints
 		@media only screen and (min-width: 744px) {
@@ -81,7 +85,7 @@
 		}
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1264px) {
+		@media only screen and (min-width: 1328px) {
 			margin: 24px auto;
 		}
 

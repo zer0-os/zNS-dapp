@@ -1,9 +1,9 @@
 .BannerContainer {
-	position: 'relative';
+	position: relative;
 	margin: 16px 0;
 
 	// Desktop Breakpoint
-	@media only screen and (min-width: 1264px) {
+	@media only screen and (min-width: 1328px) {
 		margin-top: -8px;
 	}
 }

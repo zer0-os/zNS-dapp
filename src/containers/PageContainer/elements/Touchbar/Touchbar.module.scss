@@ -15,7 +15,7 @@
 	z-index: 999;
 
 	// Laptop/Desktop
-	@media only screen and (min-width: #{dimensions.$breakpoint-small}) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet}) {
 		display: none;
 	}
 
