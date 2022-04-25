@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 //- Style Imports
 import styles from './MintDropNFTBanner.module.scss';
 import arrow from './assets/bidarrow.svg';
-import banner from './assets/wolf-banner.gif';
+import banner from './assets/kicks-s2-banner.gif';
 
 type MintDropNFTBannerProps = {
 	title: string;

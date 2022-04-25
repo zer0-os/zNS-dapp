@@ -61,10 +61,6 @@
 		flex-direction: column;
 		justify-content: center;
 
-		*:not(html) {
-			-webkit-transform: translate3d(0, 0, 0);
-		}
-
 		h1 {
 			font-size: 36px;
 			font-weight: bold;

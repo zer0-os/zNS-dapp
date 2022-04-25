@@ -134,11 +134,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 					errorMessage={transactionError}
 					isUserWhitelisted={props.isUserWhitelisted}
 					isWalletConnected={props.userId !== undefined}
-					maxPurchasesPerUser={
-						props.dropStage === Stage.Public
-							? undefined
-							: props.maxPurchasesPerUser
-					}
+					maxPurchasesPerUser={props.maxPurchasesPerUser}
 					pricePerNFT={props.pricePerNFT}
 					numberPurchasedByUser={props.numberPurchasedByUser}
 					onContinue={onContinueFromInfo!}
@@ -166,11 +162,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 					balanceEth={props.balanceEth!}
 					error={transactionError}
 					pricePerNFT={props.pricePerNFT}
-					maxPurchasesPerUser={
-						props.dropStage === Stage.Public
-							? undefined
-							: props.maxPurchasesPerUser!
-					}
+					maxPurchasesPerUser={props.maxPurchasesPerUser}
 					numberPurchasedByUser={props.numberPurchasedByUser!}
 					onBack={onBack}
 					onContinue={submitTransaction}
