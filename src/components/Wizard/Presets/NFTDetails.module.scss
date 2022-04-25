@@ -17,7 +17,7 @@ $gutter: 16px;
 		flex-shrink: 0;
 
 		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
-			width: 100%;
+			margin: 0 auto;
 		}
 	}
 
