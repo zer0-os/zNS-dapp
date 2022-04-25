@@ -6,7 +6,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 48px 48px 24px 48px;
+	padding: 48px 8px 24px 8px;
 
 	h1 {
 		font-size: 24px;
@@ -18,6 +18,8 @@
 	h2 {
 		margin: 8px;
 		font-size: var(--font-size-default);
+		word-break: break-all;
+		text-align: center;
 	}
 
 	&--close-icon {
