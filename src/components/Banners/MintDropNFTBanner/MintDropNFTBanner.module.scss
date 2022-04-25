@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 /* Mobile First */
 .Container {
 	width: 100%;
@@ -12,13 +14,6 @@
 	background: var(--color-purple-lighter);
 	padding: 0;
 	text-align: left;
-}
-
-.Mobile {
-	display: block;
-	@media only screen and (min-width: 900px) {
-		display: none;
-	}
 }
 
 .Container:hover {
@@ -98,8 +93,8 @@
 	margin-left: 6px;
 }
 
-/* PC Resolution */
-@media only screen and (min-width: 744px) {
+/* Tablet Resolution */
+@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 	.Content {
 		display: flex;
 		flex-direction: row;
@@ -125,11 +120,11 @@
 
 	.Background {
 		opacity: 0.6;
-		right: 0;
+		right: -48px;
 	}
 }
 
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 	.Background {
 		opacity: 0.7;
 		background-position: 70%;

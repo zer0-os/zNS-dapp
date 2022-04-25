@@ -8,12 +8,12 @@ $icon-container-size: 54px;
 	border-right: 1px solid var(--color-grey-mine-shaft);
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: #{dimensions.$breakpoint-tablet}) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		display: flex;
 	}
 
 	// Desktop Breakpoints
-	@media only screen and (min-width: 1328px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 		width: 240px;
 	}
 }
@@ -23,7 +23,7 @@ $icon-container-size: 54px;
 	display: none;
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -38,7 +38,7 @@ $icon-container-size: 54px;
 		z-index: 10000;
 
 		// Desktp Breakpoints
-		@media only screen and (min-width: 1328px) {
+		@media only screen and  (min-width: #{dimensions.$breakpoint-desktop-s}) {
 			padding: 35px 24px;
 			align-items: unset;
 			overflow: unset;
@@ -51,7 +51,7 @@ $icon-container-size: 54px;
 		flex-direction: column;
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1328px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 			align-items: flex-start;
 		}
 
@@ -60,7 +60,7 @@ $icon-container-size: 54px;
 			justify-content: center;
 
 			// Desktop Breakpoints
-			@media only screen and (min-width: 1328px) {
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 				margin-left: 10px;
 			}
 		}
@@ -95,7 +95,7 @@ $icon-container-size: 54px;
 
 		> li {
 			// Desktop Breakpoints
-			@media only screen and (min-width: 1328px) {
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 				padding: 12px 11px;
 			}
 
@@ -113,7 +113,7 @@ $icon-container-size: 54px;
 					font-weight: 600;
 					color: var(--color-text-primary);
 
-					@media only screen and (max-width: #{dimensions.$breakpoint-max}) {
+					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 						img {
 							position: relative;
 
@@ -121,8 +121,7 @@ $icon-container-size: 54px;
 								content: ' ';
 								position: absolute;
 								top: 0;
-								left: 0;
-								background: red;
+								left: 100px;
 								height: 48px;
 								width: 48px;
 							}
@@ -134,7 +133,7 @@ $icon-container-size: 54px;
 					display: none;
 
 					// Desktop Breakpoints
-					@media only screen and (min-width: 1328px) {
+					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 						display: flex;
 						cursor: pointer;
 					}
@@ -149,7 +148,7 @@ $icon-container-size: 54px;
 						background: var(--color-revolver);
 					}
 
-					@media only screen and (min-width: 1328px) {
+					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 						border-radius: 0;
 						padding: 0;
 
@@ -168,7 +167,7 @@ $icon-container-size: 54px;
 				display: none;
 
 				// Desktop Breakpoints
-				@media only screen and (min-width: 1328px) {
+				@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 					display: flex;
 					margin-bottom: 12px;
 					width: 192px;

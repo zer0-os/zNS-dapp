@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 $height: 46px;
 
 .header {
@@ -55,7 +57,7 @@ $height: 46px;
 			padding-right: 4px;
 
 			// Visible up to tablet breakpoint
-			@media only screen and (min-width: 744px) {
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 				display: none;
 			}
 		}
@@ -129,7 +131,7 @@ $height: 46px;
 	&__actions {
 		display: none;
 
-		@media only screen and (min-width: 744px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			display: flex;
 			position: relative;
 			right: 0;
@@ -140,7 +142,7 @@ $height: 46px;
 		}
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1328px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 			display: none;
 		}
 	}

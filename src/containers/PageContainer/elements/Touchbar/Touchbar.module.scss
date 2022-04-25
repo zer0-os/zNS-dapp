@@ -15,7 +15,7 @@
 	z-index: 999;
 
 	// Laptop/Desktop
-	@media only screen and (min-width: #{dimensions.$breakpoint-tablet}) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		display: none;
 	}
 
@@ -25,7 +25,7 @@
 		justify-content: space-around;
 		width: 100%;
 
-		@media only screen and (min-width: #{dimensions.$breakpoint-smaller}) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			width: 100%;
 			justify-content: space-evenly;
 		}

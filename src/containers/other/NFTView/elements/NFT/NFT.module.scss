@@ -6,7 +6,7 @@
 		font-weight: bold;
 
 		// Tablet Breakpoints
-		@media only screen and (min-width: 744px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			font-size: 36px;
 		}
 	}
@@ -51,7 +51,7 @@
 			padding-top: 0;
 			background: none;
 
-			@media only screen and (min-width: #{dimensions.$breakpoint-smaller}) {
+			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
 				width: 56px;
 			}
 		}

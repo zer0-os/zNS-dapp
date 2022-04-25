@@ -3,7 +3,7 @@
 .StepBarContainer {
 	margin: -14px 6px 40px 6px;
 
-	@media only screen and (max-width: #{dimensions.$breakpoint-medium}) {
+	@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 		display: none;
 	}
 }

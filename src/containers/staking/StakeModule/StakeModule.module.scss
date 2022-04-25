@@ -8,12 +8,12 @@
 	.Divider {
 		display: none;
 
-		@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+		@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 			display: block;
 		}
 	}
 
-	@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+	@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 		padding: 0;
 		background: none;
 	}
@@ -23,7 +23,7 @@
 
 		margin-top: 41px;
 
-		@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+		@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 			margin-top: 26px;
 		}
 	}
@@ -64,7 +64,7 @@
 		}
 	}
 
-	@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+	@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 		margin-top: 24px;
 	}
 }
