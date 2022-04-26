@@ -29,7 +29,6 @@ const GenericTable = (props: any) => {
 	///////////////////////
 
 	const isGridViewByDefault = props.isGridViewByDefault;
-	console.log(isGridViewByDefault);
 
 	// chunk defines which row we're up to when infinite scroll is enabled
 	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows
