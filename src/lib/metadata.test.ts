@@ -43,7 +43,7 @@ const MOCK_METADATA_DEFAULT = {
 	attributes: undefined,
 	isBiddable: true,
 	isMintable: false,
-	gridViewByDefault: false,
+	gridViewByDefault: true,
 	customDomainHeader: false,
 	customDomainHeaderValue: undefined,
 };
