@@ -27,8 +27,8 @@ const GenericTable = (props: any) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
-	const isGridViewByDefault =
-		window.innerWidth <= GRID_BREAKPOINT || props.isGridViewByDefault;
+
+	const isGridViewByDefault = props.isGridViewByDefault;
 
 	// chunk defines which row we're up to when infinite scroll is enabled
 	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows
@@ -45,9 +45,7 @@ const GenericTable = (props: any) => {
 
 	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
 	const shouldShowSearchBar = !props.notSearchable && props.data?.length > 0;
-
 	const isSmallScreen = useMatchMedia(`(max-width: ${GRID_BREAKPOINT}px)`);
-
 	// Handler for infinite scroll trigger
 	const {
 		ref,

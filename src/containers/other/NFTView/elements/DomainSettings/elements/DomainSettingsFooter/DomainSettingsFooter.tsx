@@ -110,14 +110,14 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 					</div>
 				)}
 				{!isLocked && isSaved && (
-					<>
+					<div className="domain-settings-footer__buttons-wrapper">
 						<FutureButton className="" onClick={onLock} glow>
 							Lock Metadata
 						</FutureButton>
 						<FutureButton className="" onClick={onFinish} glow>
 							Finish
 						</FutureButton>
-					</>
+					</div>
 				)}
 				{isLocked && isSaved && (
 					<FutureButton className="" onClick={onFinish} glow>
