@@ -1,33 +1,31 @@
+@use 'styles/variables/dimensions';
+
 .search-domains {
 	&__results {
 		$borderWidth: 1px;
 		$top-margin: var(--box-radius);
 
 		position: absolute;
-		top: calc(100% - $top-margin);
-		padding-top: $top-margin;
-		left: -$borderWidth;
-		right: -$borderWidth;
-		width: calc(100% + 2px);
-		background: inherit;
+		top: $top-margin;
+		padding: 24px 8px 0 8px;
+		background: var(--color-revolver);
 		overflow: hidden;
 		z-index: -1;
-
 		border: $borderWidth solid #af4cff67;
-		border-top: unset !important;
-		border-radius: 0 0 var(--box-radius) var(--box-radius);
+		border-radius: var(--box-radius);
 		box-shadow: none;
-
 		overflow-y: auto;
 		max-height: 80vh;
+		width: calc(100% + 2px);
 
 		ul {
 			width: 100%;
 
 			li {
 				width: 100%;
-				padding: 17px 17px 17px 103px;
+				padding: 16px 16px 16px 6px;
 				cursor: pointer;
+				border-radius: 16px;
 
 				&.exact__match {
 					font-weight: bold;
@@ -40,9 +38,9 @@
 					color: var(--color-accent-1);
 				}
 
-				// &:hover {
-				// 	background: var(--color-background-20);
-				// }
+				&:hover {
+					background: var(--color-purple-lighter);
+				}
 
 				@media only screen and (max-width: 768px) {
 					display: flex;

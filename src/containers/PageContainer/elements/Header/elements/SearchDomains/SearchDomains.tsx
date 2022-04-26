@@ -53,7 +53,7 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 				>
 					<ul ref={listRef}>
 						{/* @TODO: Implement exact domain properly */}
-						{IS_EXACT_MATCH_ENABLED && domainSearch?.exactMatch?.name && (
+						{/* {IS_EXACT_MATCH_ENABLED && domainSearch?.exactMatch?.name && (
 							<li
 								className="exact__match"
 								key={domainSearch.exactMatch.name}
@@ -64,7 +64,7 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 								{getLastDomainName(domainSearch.exactMatch.name)}{' '}
 								<span>{domainSearch.exactMatch.name}</span>
 							</li>
-						)}
+						)} */}
 
 						{domainSearch?.matches
 							?.filter((d) => d.name.length > 1)
