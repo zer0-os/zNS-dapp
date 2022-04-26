@@ -565,36 +565,21 @@
 	text-overflow: ellipsis;
 }
 
+.ButtonContainer {
+	width: 100%;
+}
+
 button.ToggleAttributes {
 	background: none;
-	color: #52cbff;
-	font-size: var(--font-size-default);
-	width: 190px;
+	color: var(--color-accent-1);
 	height: 48px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 8px 20px;
 	margin: 4px 0;
-	position: absolute;
-	right: 8px;
-	bottom: 0px;
 	cursor: pointer;
-}
-
-@media only screen and (max-width: 768px) {
-	button.ToggleAttributes {
-		width: 150px;
-	}
-}
-
-@media only screen and (max-width: 414px) {
-	button.ToggleAttributes {
-		position: relative;
-		width: 100%;
-		margin: 8px;
-	}
+	width: 100%;
 }
 /* Attributes styles End */
 

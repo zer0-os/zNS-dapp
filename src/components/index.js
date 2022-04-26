@@ -78,6 +78,12 @@ export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator
 export { default as Countdown } from './Countdown/Countdown';
 export { default as Wizard } from './Wizard/Wizard';
 
+//- Glyphs
+export { default as StakingIcon } from './Glyphs/StakingIcon';
+export { default as MarketIcon } from './Glyphs/MarketIcon';
+export { default as DAOIcon } from './Glyphs/DAOIcon';
+export { default as ProfileIcon } from './Glyphs/ProfileIcon';
+
 export { default as StatsWidget } from './StatsWidget/StatsWidget';
 
 //- Progress Indicators

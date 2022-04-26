@@ -1,14 +1,15 @@
+@use 'styles/variables/dimensions';
+
 $placeholder-background: #000;
 
 .Container {
 	--image-card-padding: 100%;
 
 	position: relative !important;
-	min-width: 280px;
 
 	background: var(--color-background);
 	border: 1px solid #232323;
-	border-radius: var(--box-radius);
+	border-radius: calc(var(--box-radius) / 2) !important;
 
 	cursor: pointer;
 	overflow: hidden;
@@ -16,6 +17,7 @@ $placeholder-background: #000;
 	.Body {
 		position: relative;
 		overflow: hidden;
+		max-height: 170px;
 
 		.Placeholder {
 			position: relative;
@@ -45,10 +47,28 @@ $placeholder-background: #000;
 	}
 
 	h5 {
-		margin-bottom: 1px;
 		color: var(--color-text-primary);
-		font-size: 18px;
+		font-size: var(--font-size-smaller);
 		font-weight: 700;
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
+			font-size: var(--font-size-smaller);
+			line-height: 20px;
+		}
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+			font-size: var(--font-size-default);
+			line-height: 24px;
+		}
+	}
+
+	.Subheader {
+		font-size: var(--font-size-small);
+		color: var(--color-grey-lighter-2);
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			line-height: 14.5px;
+		}
 	}
 
 	.Image {
@@ -58,8 +78,6 @@ $placeholder-background: #000;
 		height: auto !important;
 		width: 100% !important;
 		object-fit: cover;
-
-		border-radius: var(--box-radius) var(--box-radius) 0 0;
 		overflow: hidden;
 
 		img,
@@ -75,5 +93,9 @@ $placeholder-background: #000;
 
 	.Footer {
 		padding: 16px;
+
+		.Subheader {
+			word-break: break-all;
+		}
 	}
 }

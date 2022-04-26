@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 .StatsWidget {
 	border-radius: var(--box-radius);
 	display: flex;
@@ -52,7 +54,7 @@
 	align-items: center;
 }
 
-@media only screen and (max-width: 520px) {
+@media only screen and (max-width:  #{dimensions.$breakpoint-tablet-s}) {
 	.previewView {
 		margin: 4px 0;
 		&:first-child {

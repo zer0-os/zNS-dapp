@@ -44,7 +44,6 @@ export const Header: React.FC<HeaderProps> = ({
 	const location = useLocation();
 	const { mvpVersion } = useMvpVersion();
 	const isProfileRoute = location.pathname.includes(ROUTES.PROFILE);
-
 	const { title, isSearching, setNavbarSearchingStatus } = useNavbar();
 
 	const { localState, localActions, formattedData, refs } = useHeaderData({
@@ -92,9 +91,12 @@ export const Header: React.FC<HeaderProps> = ({
 						{formattedData.showTitle && (
 							<h1 className="header__navigation-title">{title}</h1>
 						)}
-
 						{!formattedData.showTitle && (
-							<div className="ZNA__Container">
+							<div
+								className={`${'ZNA__Container'} ${
+									isSearching ? 'ZNA__Container-searching' : ''
+								}`}
+							>
 								{/* Zns Link */}
 								{formattedData.showZnaLink && (
 									<ZNALink
@@ -117,13 +119,14 @@ export const Header: React.FC<HeaderProps> = ({
 									ref={refs.searchInputRef}
 									placeholder={formattedData.searchPlaceholder}
 								/>
+								{isSearching && (
+									<SearchDomains searchQuery={localState.searchQuery} />
+								)}
 							</div>
 						)}
 					</div>
 					{/* Search Domains List */}
-					{isSearching && (
-						<SearchDomains searchQuery={localState.searchQuery} />
-					)}
+
 					{/* Display Disconnect Button Mobile */}
 					{isProfileRoute && account && (
 						<div className="header__content-disconnect-button-container">

@@ -84,7 +84,7 @@ const SubdomainTableCard = (props: any) => {
 
 	return (
 		<ImageCard
-			subHeader={domain.name}
+			subHeader={`0://${domain.name}`}
 			imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
 			header={domainMetadata?.title}
 			onClick={onClick}
@@ -95,8 +95,8 @@ const SubdomainTableCard = (props: any) => {
 					{!tradeData && <Spinner style={{ marginTop: 1 }} />}
 					{tradeData && (
 						<>
-							<label>Highest Bid</label>
-							<span className={`${styles.Crypto} glow-text-blue`}>
+							<label>Top Bid</label>
+							<span className={styles.Crypto}>
 								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}{' '}
 								WILD
 							</span>
@@ -115,12 +115,15 @@ const SubdomainTableCard = (props: any) => {
 						</>
 					)}
 				</div>
-				<BidButton
-					glow={account !== undefined && !isOwnedByUser && isBiddable}
-					onClick={onButtonClick}
-				>
-					Bid
-				</BidButton>
+				<div className={styles.ButtonContainer}>
+					<BidButton
+						glow={account !== undefined && !isOwnedByUser && isBiddable}
+						onClick={onButtonClick}
+						className={styles.BidButton}
+					>
+						Bid
+					</BidButton>
+				</div>
 			</div>
 		</ImageCard>
 	);

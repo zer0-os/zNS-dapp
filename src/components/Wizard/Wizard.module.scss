@@ -14,9 +14,8 @@ $gutter: 16px;
 		padding: 48px 16px;
 	}
 
-	@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+	@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
 		width: 100vw;
-		height: 100vh;
 		border: none;
 		max-width: unset !important;
 	}
@@ -25,14 +24,11 @@ $gutter: 16px;
 		width: 100%;
 		text-align: center;
 		margin-bottom: 40px;
+		word-break: break-all;
 
 		h1 {
 			font-size: 24px;
 			font-weight: 700;
-
-			// @media only screen and (max-width: #{$width + $gutter + $gutter}) {
-			// 	font-size: 18px;
-			// }
 		}
 
 		h2 {

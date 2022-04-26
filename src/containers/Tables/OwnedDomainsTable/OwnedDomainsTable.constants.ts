@@ -24,3 +24,7 @@ export const ACTION_KEYS = {
 	SETTINGS: 'Domain Settings',
 	VIEW_BIDS: 'View Bids',
 };
+
+export const LABELS = {
+	TOP_BID: 'Top Bid (WILD)',
+};

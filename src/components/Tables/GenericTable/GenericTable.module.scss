@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 .Container {
 	position: relative;
 	width: 100%;
@@ -5,13 +7,10 @@
 }
 
 /* Control Styles */
-
 .Controls {
 	display: flex;
 	gap: 16px;
-
 	width: 100%;
-
 	align-items: center;
 }
 
@@ -64,48 +63,33 @@
 	Might want to think about making these more generic in the future
 */
 .Grid {
+	// Mobile Breakpoints
 	width: 100%;
-
 	display: grid;
 	margin-top: 16px;
-	/* justify-content: space-evenly; */
 	grid-template-columns: repeat(auto-fit, minmax(32%, 0.5fr));
 	grid-row-start: 1;
-
-	grid-gap: 20px;
-
 	list-style: none;
+	grid-gap: 14px 12px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		grid-gap: 14px 12px;
+	}
+
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-m}) {
+		grid-gap: 20px 16px;
+		> div:hover {
+			transform: scale(1.02);
+		}
+	}
 }
 
 .Grid > div {
 	transition: transform var(--animation-time-long) ease;
 }
 
-@media only screen and (min-width: 1000px) {
-	.Grid > div:hover {
-		transform: scale(1.02);
-	}
-}
-
-@media only screen and (max-width: 950px) {
-	.Grid {
-		grid-template-columns: repeat(auto-fit, minmax(311px, 1fr));
-	}
-}
-
-@media only screen and (max-width: 414px) {
-	.Container {
-		overflow: visible;
-	}
-
-	.Grid {
-		grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
-		// padding: 8px;
-	}
-}
-
 /* Loading Styles */
-
 .Loading {
 	padding: 32px 0;
 }

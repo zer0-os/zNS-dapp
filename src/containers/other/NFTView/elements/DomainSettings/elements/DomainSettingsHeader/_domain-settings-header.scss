@@ -1,10 +1,12 @@
+@use 'styles/variables/dimensions';
+
 .domain-settings__modal-header {
 	flex-shrink: 0;
 	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 48px 48px 10px 48px;
+	padding: 48px 8px 24px 8px;
 
 	h1 {
 		font-size: 24px;
@@ -16,16 +18,23 @@
 	h2 {
 		margin: 8px;
 		font-size: var(--font-size-default);
+		word-break: break-all;
+		text-align: center;
 	}
 
 	&--close-icon {
 		position: absolute;
-		top: 48px;
-		right: 48px;
+		top: 22px;
+		right: 22px;
 		color: var(--color-grey);
 
 		&:hover {
 			background-color: unset !important;
+		}
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+			top: 48px;
+			right: 48px;
 		}
 	}
 

@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 .Container {
 	display: flex;
 	justify-content: space-between;
@@ -14,17 +16,36 @@
 
 .Bid label {
 	font-size: var(--font-size-small);
-	color: var(--color-primary-lighter-3);
+	color: var(--color-grey-lighter-2);
 }
 
 .Crypto {
 	margin-top: 2px;
-	font-size: 18px;
+	font-size: var(--font-size-smaller);
+	font-weight: 700;
+	line-height: 16px;
 	color: var(--color-text-primary);
 }
 
 .Fiat {
-	font-size: var(--font-size-smaller);
-	color: var(--color-grey);
+	font-size: var(--font-size-small);
+	color: var(--color-grey-lighter-2);
 	margin-top: 2px;
+}
+
+.ButtonContainer {
+	display: none;
+
+	@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.BidButton {
+		padding: 0 8px;
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			padding: 0 16px;
+		}
+	}
 }
