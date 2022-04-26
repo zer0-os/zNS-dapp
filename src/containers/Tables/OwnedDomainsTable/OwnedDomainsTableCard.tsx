@@ -5,7 +5,6 @@ import React, { useMemo, useState } from 'react';
 
 //- Components Imports
 import { Detail, Overlay, Spinner } from 'components';
-import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Containers Imports
 import { BidList } from 'containers';
@@ -23,10 +22,9 @@ import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import styles from './OwnedDomainsTableCard.module.scss';
 
 //- Constants Imports
-import { ACTION_KEYS, LABELS } from './OwnedDomainsTable.constants';
+import { LABELS } from './OwnedDomainsTable.constants';
 
 //- Utils Imports
-import { getActions } from './OwnedDomainsTable.utils';
 import ImageCard from 'components/Cards/ImageCard/ImageCard';
 
 enum Modal {
