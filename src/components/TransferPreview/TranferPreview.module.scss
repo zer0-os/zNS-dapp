@@ -1,7 +1,7 @@
 .TransferPreview {
 	// Mobile Breakpoints
-	width: 542px;
-	padding: 20px 40px 10px 40px;
+	width: 580px;
+	padding: 20px 40px 20px 40px;
 	max-height: 70vh;
 	overflow: auto;
 	background: var(--color-revolver);
@@ -9,7 +9,7 @@
 
 	// Tablet Breakpoints
 	@media only screen and (min-width: 1000px) {
-		width: 100%;
+		width: 640px;
 		// Needs tidying up
 		padding: 27.5px 40px 10px 45px;
 	}
@@ -63,7 +63,7 @@
 	display: flex;
 	flex-direction: column;
 	margin-left: 32px;
-	width: 240px;
+	width: 328px;
 	max-width: 240px;
 	word-wrap: break-word;
 
