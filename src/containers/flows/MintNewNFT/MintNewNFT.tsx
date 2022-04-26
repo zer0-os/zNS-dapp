@@ -191,6 +191,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				ticker: '',
 				dynamic: false,
 				locked: tokenInformation.locked,
+				additionalMetadata: {
+					gridViewByDefault: true,
+				},
 			},
 			setStatusText,
 		);
