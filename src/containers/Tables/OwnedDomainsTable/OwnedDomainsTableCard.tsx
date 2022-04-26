@@ -4,7 +4,7 @@
 import React, { useMemo, useState } from 'react';
 
 //- Components Imports
-import { Artwork, Detail, OptionDropdown, Overlay, Spinner } from 'components';
+import { Detail, Overlay, Spinner } from 'components';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Containers Imports
@@ -17,17 +17,13 @@ import { BigNumber } from 'ethers';
 import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
-import classNames from 'classnames';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 
 //- Styles Imports
 import styles from './OwnedDomainsTableCard.module.scss';
 
-//- Assets Imports
-import moreIcon from 'assets/more-vertical.svg';
-
 //- Constants Imports
-import { ACTION_KEYS } from './OwnedDomainsTable.constants';
+import { ACTION_KEYS, LABELS } from './OwnedDomainsTable.constants';
 
 //- Utils Imports
 import { getActions } from './OwnedDomainsTable.utils';
@@ -65,27 +61,6 @@ const SubdomainTableCard = ({
 	// Navigates to domain
 	const onClick = (event: any) => {
 		goTo(`/market/${domain.name.split('wilder.')[1]}`);
-	};
-
-	const actions = getActions(bids?.length !== 0);
-
-	const onSelectOption = (option: Option) => {
-		if (option.title === ACTION_KEYS.VIEW_BIDS) {
-			onViewBids();
-		} else {
-			setModal(Modal.EditMetadata);
-		}
-	};
-
-	/**
-	 * Opens View Bids modal
-	 * @returns void
-	 */
-	const onViewBids = (): void => {
-		if (!bids || !bids.length) {
-			return;
-		}
-		setModal(Modal.ViewBids);
 	};
 
 	// Defines the modal element to be rendered
@@ -126,7 +101,7 @@ const SubdomainTableCard = ({
 		<>
 			{ModalElement}
 			<ImageCard
-				subHeader={domain.name}
+				subHeader={`0://${domain.name}`}
 				imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
 				header={domainMetadata?.title}
 				onClick={onClick}
@@ -144,7 +119,7 @@ const SubdomainTableCard = ({
 								'-'
 							)
 						}
-						subtext={'Top Bid (WILD)'}
+						subtext={LABELS.TOP_BID}
 					/>
 				</div>
 			</ImageCard>
