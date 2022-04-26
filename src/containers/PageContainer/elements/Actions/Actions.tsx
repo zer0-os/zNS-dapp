@@ -55,7 +55,7 @@ export const Actions: React.FC<ActionsProps> = ({
 		useStaking();
 
 	const { minting, minted } = useMint();
-	const { transferring } = useTransfer();
+	const { transferring, transferred } = useTransfer();
 	const { title, isSearching, setNavbarSearchingStatus } = useNavbar();
 
 	const { localActions, formattedData, refs } = useHeaderData({
@@ -114,6 +114,7 @@ export const Actions: React.FC<ActionsProps> = ({
 						stakeRequesting: stakeRequesting.length,
 						stakeRequested: stakeRequested.length,
 						transferring: transferring.length,
+						transferred: transferred.length,
 					}}
 					onOpenProfile={handlers.handleOnOpenProfile}
 				/>
