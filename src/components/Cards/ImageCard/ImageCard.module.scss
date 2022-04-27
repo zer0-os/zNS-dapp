@@ -46,31 +46,6 @@ $placeholder-background: #000;
 		min-width: unset;
 	}
 
-	h5 {
-		color: var(--color-text-primary);
-		font-size: var(--font-size-smaller);
-		font-weight: 700;
-
-		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
-			font-size: var(--font-size-smaller);
-			line-height: 20px;
-		}
-
-		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
-			font-size: var(--font-size-default);
-			line-height: 24px;
-		}
-	}
-
-	.Subheader {
-		font-size: var(--font-size-small);
-		color: var(--color-grey-lighter-2);
-
-		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-			line-height: 14.5px;
-		}
-	}
-
 	.Image {
 		position: absolute !important;
 		top: 0;
@@ -94,8 +69,30 @@ $placeholder-background: #000;
 	.Footer {
 		padding: 16px;
 
+		h5 {
+			color: var(--color-text-primary);
+			font-size: var(--font-size-smaller);
+			font-weight: 700;
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
+				font-size: var(--font-size-smaller);
+				line-height: 20px;
+			}
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+				font-size: var(--font-size-default);
+				line-height: 24px;
+			}
+		}
+
 		.Subheader {
+			font-size: var(--font-size-small);
+			color: var(--color-grey-lighter-2);
 			word-break: break-all;
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				line-height: 14.5px;
+			}
 		}
 	}
 }
