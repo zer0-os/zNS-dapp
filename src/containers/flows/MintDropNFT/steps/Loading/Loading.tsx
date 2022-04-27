@@ -16,7 +16,7 @@ const Loading = (props: LoadingProps) => {
 				<img
 					alt="loading spinner"
 					className={styles.Image}
-					src="https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_290,w_542/v1649689972/zns/beasts-mint-progress.gif"
+					src="https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_290,w_542/v1651090354/zns/kicks-s2-mint-progress.gif"
 				/>
 			)}
 			<span>{props.text}</span>

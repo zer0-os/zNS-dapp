@@ -176,25 +176,25 @@ const Info = (props: InfoProps) => {
 				disablePictureInPicture
 				controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_426,w_672/v1649690004/zns/beasts-mint-main.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_426,w_672/v1651090385/zns/kicks-s2-mint-main.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1649690004/zns/beasts-mint-main.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1651090385/zns/kicks-s2-mint-main.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1649690004/zns/beasts-mint-main.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1651090385/zns/kicks-s2-mint-main.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1649690004/zns/beasts-mint-main.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1651090385/zns/kicks-s2-mint-main.ogv'
 					}
 					type="video/ogg"
 				></source>
