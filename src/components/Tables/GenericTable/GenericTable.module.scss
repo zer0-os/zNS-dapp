@@ -66,11 +66,18 @@
 	// Mobile Breakpoints
 	width: 100%;
 	display: grid;
-	margin-top: 16px;
-	grid-template-columns: repeat(auto-fit, minmax(32%, 0.5fr));
+	margin-top: 24px;
+	padding: 0 8px;
+	grid-template-columns: repeat(auto-fit, minmax(100%, 0.5fr));
 	grid-row-start: 1;
 	list-style: none;
-	grid-gap: 14px 12px;
+	grid-gap: 20px 0;
+
+	@media only screen and (min-width: #{dimensions.$breakpoint-mobile-m}) {
+		grid-gap: 14px 12px;
+		padding: 0;
+		grid-template-columns: repeat(auto-fit, minmax(32%, 0.5fr));
+	}
 
 	// Tablet Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {

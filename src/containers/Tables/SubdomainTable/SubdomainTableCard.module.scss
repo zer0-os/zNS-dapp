@@ -34,11 +34,15 @@
 }
 
 .ButtonContainer {
-	display: none;
+	display: flex;
+	justify-content: flex-end;
+
+	@media only screen and (min-width: #{dimensions.$breakpoint-mobile-m}) {
+		display: none;
+	}
 
 	@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
 		display: flex;
-		justify-content: flex-end;
 	}
 
 	.BidButton {
