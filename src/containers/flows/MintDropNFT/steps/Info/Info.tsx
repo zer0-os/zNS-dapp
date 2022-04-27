@@ -66,7 +66,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 				onClick={props.onContinue}
 			>
-				Mint Your Beasts
+				Mint Your Kicks
 			</FutureButton>
 		);
 	};
@@ -92,11 +92,12 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						You will be able to mint {props.maxPurchasesPerUser} Beasts if your
+						You will be able to mint {props.maxPurchasesPerUser} Kicks if your
 						wallet was mintlisted in our raffle.
 						<br></br>
 						<br></br>
-						The cost for each Beast is <b>{props.pricePerNFT}</b> plus GAS.
+						The cost for each pair of Kicks is <b>{props.pricePerNFT}</b> plus
+						GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -114,8 +115,8 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Beasts. The cost for each Beast is{' '}
-							<b>{props.pricePerNFT} ETH</b> plus GAS.
+							{props.maxPurchasesPerUser} Kicks. The cost for each pair of Kicks
+							is <b>{props.pricePerNFT} ETH</b> plus GAS.
 						</p>
 						{props.errorMessage !== undefined && (
 							<p className="error-text text-center">{props.errorMessage}</p>
@@ -128,7 +129,7 @@ const Info = (props: InfoProps) => {
 					<>
 						<p className={styles.Green}>
 							Congratulations, you have minted {props.numberPurchasedByUser}/
-							{props.maxPurchasesPerUser} of your Beasts.
+							{props.maxPurchasesPerUser} of your Kicks.
 						</p>
 						{dismissButton()}
 					</>
@@ -137,8 +138,8 @@ const Info = (props: InfoProps) => {
 				return (
 					<>
 						<p>
-							You have minted {props.numberPurchasedByUser} Beasts. The cost for
-							each Beast is <b>{props.pricePerNFT} ETH</b> plus GAS.
+							You have minted {props.numberPurchasedByUser} Kicks. The cost for
+							each pair of Kicks is <b>{props.pricePerNFT} ETH</b> plus GAS.
 						</p>
 
 						{mintButton()}
@@ -149,7 +150,7 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Beasts are only available to mintlisted supporters of
+						Currently, Kicks are only available to mintlisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
 						mintlist sale ends.
 					</p>
@@ -202,9 +203,9 @@ const Info = (props: InfoProps) => {
 			{/* Wheels Available */}
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
-					<span>Beasts Available</span>
-					<h2>{props.wheelsTotal - props.wheelsMinted} Beasts Remaining</h2>
-					<ArrowLink href="https://zine.wilderworld.com/wolfpack-genesis-drop/">
+					<span>Kicks Available</span>
+					<h2>{props.wheelsTotal - props.wheelsMinted} Kicks Remaining</h2>
+					<ArrowLink href="https://zine.wilderworld.com/aws2-raffle-winners/">
 						View Sale Details
 					</ArrowLink>
 				</div>

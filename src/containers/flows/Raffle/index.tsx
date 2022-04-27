@@ -77,7 +77,7 @@ const RaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/wolfpack-genesis-drop/',
+				'https://zine.wilderworld.com/aws2-raffle-winners/',
 				'_blank',
 			);
 		}
@@ -113,7 +113,7 @@ const RaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Mintlist Sale Begins in{' '}
+					AIR WILD Season Two Mintlist Sale Begins in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
