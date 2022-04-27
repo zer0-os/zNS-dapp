@@ -9,6 +9,7 @@ export enum ROUTES {
 
 	// ----- zDao ----- //
 	ZDAO = '/dao',
+	ZDAO_CREATE = '/create',
 	ZDAO_ASSETS = '/assets',
 	ZDAO_TRANSACTIONS = '/transactions',
 

@@ -1,0 +1,23 @@
+/**
+* MarkDownEditor Styles
+*/
+.MarkDownEditorContainer {
+	.CustomTextToolbarButton {
+		padding: 4px 8px !important;
+		font-size: 0.75rem !important;
+	}
+
+	:global(.content) {
+		display: inherit;
+		margin: 0;
+		padding: 0;
+	}
+}
+
+/**
+* MarkDownViewer Styles
+*/
+.MarkDownViewerContainer {
+	/* TODO:: update the markdown viewer styles here */
+	visibility: visible;
+}
