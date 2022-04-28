@@ -142,6 +142,11 @@
 		"ts-essentials": "^7.0.1",
 		"typechain": "^4.0.3"
 	},
+	"jest": {
+		"transformIgnorePatterns": [
+			"node_modules/@uiw/react-markdown-preview"
+		]
+	},
 	"husky": {
 		"hooks": {
 			"pre-commit": "lint-staged"
