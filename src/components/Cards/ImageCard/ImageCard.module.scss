@@ -17,8 +17,7 @@ $placeholder-background: #000;
 	.Body {
 		position: relative;
 		overflow: hidden;
-		max-height: 170px;
-
+		// max-height: 170px;
 		.Placeholder {
 			position: relative;
 			padding-top: var(--image-card-padding);

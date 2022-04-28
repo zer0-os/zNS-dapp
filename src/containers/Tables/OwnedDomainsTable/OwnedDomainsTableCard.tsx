@@ -1,14 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 //- React Imports
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 
 //- Components Imports
-import { Overlay, Spinner } from 'components';
-
-//- Containers Imports
-import { BidList } from 'containers';
-import { DomainSettings } from 'containers/other/NFTView/elements';
+import { Spinner } from 'components';
 
 //- Library Imports
 import { useHistory } from 'react-router-dom';
@@ -17,7 +13,6 @@ import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
-import { getParentZna, getAspectRatioForZna } from 'lib/utils';
 import { ethers } from 'ethers';
 import { formatNumber } from 'lib/utils';
 
@@ -30,11 +25,6 @@ import { CURRENCY } from 'constants/currency';
 
 //- Utils Imports
 import ImageCard from 'components/Cards/ImageCard/ImageCard';
-
-enum Modal {
-	ViewBids,
-	EditMetadata,
-}
 
 type OwnedDomainsTableRowProps = {
 	refetch: () => void;
@@ -53,14 +43,11 @@ const SubdomainTableCard = ({
 
 	// Split out all the relevant data from hook
 	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
-	const bids = bidData?.bids;
+
 	const highestBid = bidData?.highestBid;
 
 	// Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
-
-	// Decides which modal is being rendered
-	const [modal, setModal] = useState<Modal | undefined>();
 
 	// Bid amount wild
 	const bidAmountWild = highestBid
@@ -81,50 +68,17 @@ const SubdomainTableCard = ({
 		goTo(`/market/${domain.name.split('wilder.')[1]}`);
 	};
 
-	// Defines the modal element to be rendered
-	const ModalElement = useMemo(() => {
-		if (modal === Modal.ViewBids && bids && domainMetadata) {
-			return (
-				<Overlay onClose={() => setModal(undefined)} centered open>
-					<BidList
-						bids={bids}
-						domain={domain}
-						domainMetadata={domainMetadata}
-						onAccept={refetch}
-						isLoading={isLoadingBidData}
-						highestBid={highestBid?.amount}
-						isAcceptBidEnabled
-					/>
-				</Overlay>
-			);
-		} else if (modal === Modal.EditMetadata) {
-			return (
-				<Overlay onClose={() => setModal(undefined)} open>
-					<DomainSettings
-						domainId={domain.id}
-						onClose={() => setModal(undefined)}
-					/>
-				</Overlay>
-			);
-		} else {
-			return null;
-		}
-	}, [modal]);
-
 	////////////
 	// Render //
 	////////////
 
 	return (
 		<>
-			{ModalElement}
-
 			<ImageCard
 				subHeader={`0://${domain.name}`}
 				imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
 				header={domainMetadata?.title}
 				onClick={onClick}
-				aspectRatio={getAspectRatioForZna(getParentZna(domain.name))}
 			>
 				<div className={styles.Container}>
 					<div className={styles.Bid}>
