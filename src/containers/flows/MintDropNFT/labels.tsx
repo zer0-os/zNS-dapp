@@ -95,7 +95,7 @@ export const getBannerLabel = (
 	}
 
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-		return <>AIR WILD Season Two Sale is Complete</>;
+		return <>AIR WILD Season Two Mintsale is Complete</>;
 	}
 
 	return <>Loading drop data...</>;
