@@ -113,9 +113,9 @@ export const Header: React.FC<HeaderProps> = ({
 									value={localState.searchQuery}
 									type="text"
 									onFocus={handlers.handleOnSearchOpen}
-									onBlur={handlers.handleOnSearchClose}
+									// onBlur={handlers.handleOnSearchClose}
 									onMouseEnter={handlers.handleOnSearchEnter}
-									onMouseLeave={handlers.handleOnSearchLeave}
+									// onMouseLeave={handlers.handleOnSearchLeave}
 									ref={refs.searchInputRef}
 									placeholder={formattedData.searchPlaceholder}
 								/>
