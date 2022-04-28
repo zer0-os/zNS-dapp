@@ -51,9 +51,10 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 					className="search-domains__results background-primary"
 					style={animatedStyles}
 				>
-					<ul ref={listRef}>
-						{/* @TODO: Implement exact domain properly */}
-						{/* {IS_EXACT_MATCH_ENABLED && domainSearch?.exactMatch?.name && (
+					<div className="search-domains__results-content">
+						<ul ref={listRef}>
+							{/* @TODO: Implement exact domain properly */}
+							{/* {IS_EXACT_MATCH_ENABLED && domainSearch?.exactMatch?.name && (
 							<li
 								className="exact__match"
 								key={domainSearch.exactMatch.name}
@@ -66,22 +67,23 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 							</li>
 						)} */}
 
-						{domainSearch?.matches
-							?.filter((d) => d.name.length > 1)
-							.map((s, i) => (
-								<li
-									onMouseDown={handlers.handleDomainClick(s.name)}
-									key={i + s.name}
-								>
-									{getLastDomainName(s.name)}
-									<span>{s.name}</span>
-								</li>
-							))}
+							{domainSearch?.matches
+								?.filter((d) => d.name.length > 1)
+								.map((s, i) => (
+									<li
+										onMouseDown={handlers.handleDomainClick(s.name)}
+										key={i + s.name}
+									>
+										{getLastDomainName(s.name)}
+										<span>{s.name}</span>
+									</li>
+								))}
 
-						{formattedData.isNotFound && (
-							<li key={SEARCH_NOT_FOUND}>{SEARCH_NOT_FOUND}</li>
-						)}
-					</ul>
+							{formattedData.isNotFound && (
+								<li key={SEARCH_NOT_FOUND}>{SEARCH_NOT_FOUND}</li>
+							)}
+						</ul>
+					</div>
 				</animated.div>
 			)}
 		</Spring>

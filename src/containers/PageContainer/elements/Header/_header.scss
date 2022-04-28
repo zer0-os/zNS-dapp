@@ -103,6 +103,7 @@ $height: 46px;
 			background: none;
 			width: 100%;
 			color: var(--color-text-primary);
+			z-index: 11;
 
 			&::placeholder {
 				color: #6c6c6c;
@@ -117,6 +118,7 @@ $height: 46px;
 		}
 
 		.ZNA__Container {
+			position: relative;
 			display: flex;
 			flex: 1;
 			flex-grow: 1;
