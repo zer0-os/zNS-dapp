@@ -29,16 +29,15 @@ export function useZSaleSdk() {
 				// TODO: Modify with actual contractAddress & merkleTreeFileUris
 				return zsale.createInstance({
 					web3Provider,
-					contractAddress: '0x63E34f60EA13b34681B76Dcb1614dD985dD8E11e',
+					contractAddress: '0x66cA971F1fE3d3d526cAbb0314633F6a7Ef3F887',
 					merkleTreeFileUris: [
-						'https://d3810nvssqir6b.cloudfront.net/final-wolf-beast-mintlist-merkleTree.json',
-						'https://d3810nvssqir6b.cloudfront.net/final-wolf-beast-mintlist-merkleTree.json',
+						'https://d3810nvssqir6b.cloudfront.net/airwild-private-merkleTree.json',
+						'https://d3810nvssqir6b.cloudfront.net/airwild-public-merkleTree.json',
 					],
-					publicSalePurchaseLimit: 10,
 					advanced: {
 						merkleTreeFileIPFSHashes: [
-							'QmRUkCPbiFtw8zPAQ6nY9iUgwJeGVsAGYcv8iYc66tYs4H',
-							'QmRUkCPbiFtw8zPAQ6nY9iUgwJeGVsAGYcv8iYc66tYs4H',
+							'0x173e953de636f4cb6bf20d27bf5967c4815c166fc3a6a63742f420470f74ba67',
+							'0x651403e66855022e0463212a4caa404762968b5252deb781908cf9dd1d7e5744',
 						],
 					},
 				});
@@ -52,7 +51,6 @@ export function useZSaleSdk() {
 						'https://ipfs.io/ipfs/QmXQLJN49XRAgdgeJ8Hz6zf7izQGokPnQ5MZ6p79m2avpk',
 						'https://ipfs.io/ipfs/QmXn7C5GrzHU8tgdGRT1g25WQe1rrvrfy1rEWjw6Cjm5sL',
 					],
-					publicSalePurchaseLimit: 10,
 					advanced: {
 						merkleTreeFileIPFSHashes: [
 							'QmXQLJN49XRAgdgeJ8Hz6zf7izQGokPnQ5MZ6p79m2avpk',
