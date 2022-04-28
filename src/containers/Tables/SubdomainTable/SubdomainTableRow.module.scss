@@ -3,7 +3,7 @@
 }
 
 .Row:hover {
-	background: #1a1022;
+	background: var(--color-revolver);
 }
 
 .Row td:first-of-type {
@@ -36,12 +36,6 @@
 	color: var(--color-grey);
 	font-size: var(--font-size-small);
 }
-
-// .volumeCol {
-// 	@media only screen and (max-width: 768px) {
-// 		display: none;
-// 	}
-// }
 
 @media only screen and (max-width: 1024px) {
 	.volumeCol {
