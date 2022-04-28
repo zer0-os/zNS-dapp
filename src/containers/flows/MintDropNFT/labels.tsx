@@ -18,7 +18,7 @@ export const getBannerButtonText = (
 		return 'Mint Now';
 	}
 	if (dropStage === Stage.Sold) {
-		return 'Beasts Secondary Market';
+		return 'Kicks Secondary Market';
 	}
 
 	return 'Learn More';
@@ -64,7 +64,7 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					Presale Minting is now Open! Ending in{' '}
+					AIR WILD Season Two Presale Minting is now Open! Ending in{' '}
 					{countdownDate && (
 						<Countdown to={countdownDate} onFinish={onFinish} />
 					)}{' '}

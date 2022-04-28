@@ -16,7 +16,7 @@ const InsufficientFunds = (props: InsufficientFundsProps) => {
 		<section className={styles.Container}>
 			<span>
 				Insufficient funds. You must have at least{' '}
-				<b>{props.pricePerNFT} ETH</b> in your wallet to mint Beasts
+				<b>{props.pricePerNFT} ETH</b> in your wallet to mint Kicks
 			</span>
 			<FutureButton glow onClick={props.onDismiss}>
 				Dismiss
