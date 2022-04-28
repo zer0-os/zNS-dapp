@@ -4,7 +4,7 @@
 import React, { useMemo, useState } from 'react';
 
 //- Components Imports
-import { Detail, Overlay, Spinner } from 'components';
+import { Overlay, Spinner } from 'components';
 
 //- Containers Imports
 import { BidList } from 'containers';
@@ -17,12 +17,16 @@ import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+import { getParentZna, getAspectRatioForZna } from 'lib/utils';
+import { ethers } from 'ethers';
+import { formatNumber } from 'lib/utils';
 
 //- Styles Imports
 import styles from './OwnedDomainsTableCard.module.scss';
 
 //- Constants Imports
 import { LABELS } from './OwnedDomainsTable.constants';
+import { CURRENCY } from 'constants/currency';
 
 //- Utils Imports
 import ImageCard from 'components/Cards/ImageCard/ImageCard';
@@ -34,6 +38,7 @@ enum Modal {
 
 type OwnedDomainsTableRowProps = {
 	refetch: () => void;
+	wildPriceUsd: number;
 	data: Domain;
 	// this should be refactored when GenericTable has better typing
 	[x: string]: any;
@@ -41,6 +46,7 @@ type OwnedDomainsTableRowProps = {
 
 const SubdomainTableCard = ({
 	refetch,
+	wildPriceUsd,
 	data: domain,
 }: OwnedDomainsTableRowProps) => {
 	const { push: goTo } = useHistory(); // for navigating on row click
@@ -55,6 +61,20 @@ const SubdomainTableCard = ({
 
 	// Decides which modal is being rendered
 	const [modal, setModal] = useState<Modal | undefined>();
+
+	// Bid amount wild
+	const bidAmountWild = highestBid
+		? `${Number(
+				formatEther(BigNumber.from(highestBid.amount)),
+		  ).toLocaleString()} ${CURRENCY.WILD}`
+		: '-';
+
+	// Bid amount usd
+	const bidAmountUsd =
+		highestBid &&
+		`$${formatNumber(
+			Number(ethers.utils.formatEther(highestBid.amount)) * wildPriceUsd,
+		)}`;
 
 	// Navigates to domain
 	const onClick = (event: any) => {
@@ -98,27 +118,27 @@ const SubdomainTableCard = ({
 	return (
 		<>
 			{ModalElement}
+
 			<ImageCard
 				subHeader={`0://${domain.name}`}
 				imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
 				header={domainMetadata?.title}
 				onClick={onClick}
+				aspectRatio={getAspectRatioForZna(getParentZna(domain.name))}
 			>
 				<div className={styles.Container}>
-					<Detail
-						text={
-							isLoadingBidData ? (
-								<Spinner />
-							) : highestBid ? (
-								Number(
-									formatEther(BigNumber.from(highestBid.amount)),
-								).toLocaleString()
-							) : (
-								'-'
-							)
-						}
-						subtext={LABELS.TOP_BID}
-					/>
+					<div className={styles.Bid}>
+						{isLoadingBidData && <Spinner />}
+						{!isLoadingBidData && (
+							<>
+								<label>{LABELS.TOP_BID}</label>
+								<span className={styles.Crypto}>{bidAmountWild}</span>
+								{wildPriceUsd > 0 && (
+									<span className={styles.Fiat}>{bidAmountUsd}</span>
+								)}
+							</>
+						)}
+					</div>
 				</div>
 			</ImageCard>
 		</>

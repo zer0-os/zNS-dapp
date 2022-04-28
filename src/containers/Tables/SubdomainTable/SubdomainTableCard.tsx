@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-// Library Imports
+//-Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import useCurrency from 'lib/hooks/useCurrency';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
+import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import {
 	formatNumber,
 	formatEthers,
@@ -15,17 +16,22 @@ import {
 	getAspectRatioForZna,
 } from 'lib/utils';
 
-// Component Imports
-import { Spinner } from 'components';
+//-Component Imports
+import { Spinner, ImageCard } from 'components';
+
+//-Containers Imports
 import { BidButton } from 'containers';
 
-// Local Imports
+//-Local Imports
 import { useBid } from './BidProvider';
 
-import styles from './SubdomainTableCard.module.scss';
-import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
-import ImageCard from 'components/Cards/ImageCard/ImageCard';
+//-Constants Imports
+import { LABELS } from './SubdomainTableCard.constants';
 import { ROUTES } from 'constants/routes';
+import { CURRENCY } from 'constants/currency';
+
+//-Styles Imports
+import styles from './SubdomainTableCard.module.scss';
 
 const SubdomainTableCard = (props: any) => {
 	//////////////////
@@ -92,13 +98,13 @@ const SubdomainTableCard = (props: any) => {
 		>
 			<div className={styles.Container}>
 				<div className={styles.Bid}>
-					{!tradeData && <Spinner style={{ marginTop: 1 }} />}
+					{!tradeData && <Spinner />}
 					{tradeData && (
 						<>
-							<label>Top Bid</label>
+							<label>{LABELS.TOP_BID}</label>
 							<span className={styles.Crypto}>
 								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}{' '}
-								WILD
+								{CURRENCY.WILD}
 							</span>
 							{wildPriceUsd > 0 && (
 								<span className={styles.Fiat}>
@@ -121,7 +127,7 @@ const SubdomainTableCard = (props: any) => {
 						onClick={onButtonClick}
 						className={styles.BidButton}
 					>
-						Bid
+						{LABELS.BID}
 					</BidButton>
 				</div>
 			</div>

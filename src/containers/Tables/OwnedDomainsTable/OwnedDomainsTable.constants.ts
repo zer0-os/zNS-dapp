@@ -21,10 +21,14 @@ export enum MESSAGES {
 }
 
 export const ACTION_KEYS = {
-	SETTINGS: 'Domain Settings',
+	SETTINGS: 'My Domain Settings',
 	VIEW_BIDS: 'View Bids',
 };
 
 export const LABELS = {
-	TOP_BID: 'Top Bid (WILD)',
+	TOP_BID: 'Top Bid',
+};
+
+export const ALT_TEXT = {
+	MORE_ICON: 'More Icon',
 };

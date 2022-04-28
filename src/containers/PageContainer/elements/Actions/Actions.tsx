@@ -27,7 +27,6 @@ import { Modal } from '../../PageContainer.constants';
 
 //- Styles Imports
 import styles from './Actions.module.scss';
-import { ROUTES } from 'constants/routes';
 
 type ActionsProps = {
 	pageWidth: number;
@@ -49,7 +48,6 @@ export const Actions: React.FC<ActionsProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 	const { mvpVersion } = useMvpVersion();
-	const isProfileRoute = location.pathname.includes(ROUTES.PROFILE);
 
 	const { requesting: stakeRequesting, requested: stakeRequested } =
 		useStaking();
@@ -121,7 +119,7 @@ export const Actions: React.FC<ActionsProps> = ({
 			)}
 
 			{/* Profile Button */}
-			{formattedData.showProfileButton && !isProfileRoute && (
+			{formattedData.showProfileButton && (
 				<ProfileButton onOpenProfile={handlers.handleOnOpenProfile} />
 			)}
 
