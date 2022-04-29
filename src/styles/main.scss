@@ -62,7 +62,6 @@
 	--color-bossanova: #472e5b;
 	--color-heliotrope: #c169ff;
 
-
 	--color-black: #{colors.$black};
 	--color-grey-lighter-3: #d9d9d9;
 	--color-grey-lighter-4: #f2f2f2;
@@ -184,11 +183,7 @@ hr.glow {
 	position: relative;
 	border: 0;
 	height: 1px;
-	background: linear-gradient(
-		270deg,
-		rgba(82, 87, 255, 0.5) 0%,
-		rgba(82, 203, 255, 0.5) 100%
-	);
+	background: var(--color-grey-mine-shaft);
 }
 
 a,

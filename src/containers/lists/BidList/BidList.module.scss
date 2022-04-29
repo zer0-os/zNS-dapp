@@ -34,7 +34,10 @@ $gutter: 16px;
 }
 
 .Header {
-	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 24px 40px 2px 40px;
 	padding-bottom: 0;
 }
 
@@ -45,25 +48,44 @@ $gutter: 16px;
 }
 
 .Container hr {
-	margin-top: 24px;
+	margin: 27px 0 0 0;
 	width: 100%;
 }
 
 .Container ul {
 	height: 100%;
 	max-height: 100%;
-	padding-top: 24px;
 	padding-bottom: 24px;
 
 	overflow-y: auto;
 	overflow-x: visible;
+
+	&::-webkit-scrollbar-corner {
+		background: rgba(0, 0, 0, 0);
+		height: 0;
+		width: 0;
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: none;
+	}
+
+	&::-webkit-scrollbar {
+		width: 6px;
+		background-color: none;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color: rgba(177, 78, 255, 0.2);
+	}
 }
 
 .Bid {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	padding: 12px 24px;
+	padding: 12px 40px;
 	overflow: visible;
 	justify-content: space-between;
 }
@@ -75,7 +97,7 @@ $gutter: 16px;
 }
 
 .Bid:hover {
-	background: var(--color-background-alt-50);
+	background: var(--color-revolver);
 }
 
 .Bid:hover button {
