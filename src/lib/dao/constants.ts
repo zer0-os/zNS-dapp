@@ -1,1 +1,1 @@
-export const DAO_CREATE = 'create';
+export const DAO_CREATE_PROPPAL = 'create';

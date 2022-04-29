@@ -1,6 +1,6 @@
 import { zDAO } from '@zero-tech/zdao-sdk';
 import { useEffect, useState } from 'react';
-import { DAO_CREATE } from '../constants';
+import { DAO_CREATE_PROPPAL } from '../constants';
 import { useZdaoSdk } from '../providers/ZdaoSdkProvider';
 
 type UseDaoReturn = {
@@ -16,7 +16,7 @@ const useDao = (zna: string): UseDaoReturn => {
 
 	useEffect(() => {
 		let isMounted = true;
-		if (!sdk || !zna || zna.length === 0 || zna === DAO_CREATE) {
+		if (!sdk || !zna || zna.length === 0 || zna === DAO_CREATE_PROPPAL) {
 			setIsLoading(false);
 			return;
 		}

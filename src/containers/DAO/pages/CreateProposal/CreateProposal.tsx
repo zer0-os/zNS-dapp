@@ -15,7 +15,7 @@ A simple markdown editor with preview, implemented with React.js and TypeScript.
 - 💡 Support [next.js](https://github.com/uiwjs/react-md-editor/issues/52#issuecomment-848969341), [Use examples](#support-nextjs) in [next.js](https://nextjs.org/).
 `;
 
-export const DAOCreate: React.FC = () => {
+export const CreateProposal: React.FC = () => {
 	return (
 		<>
 			<h2>Markdown Editor Example</h2>
@@ -29,4 +29,4 @@ export const DAOCreate: React.FC = () => {
 	);
 };
 
-export default DAOCreate;
+export default CreateProposal;

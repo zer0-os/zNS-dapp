@@ -4,7 +4,7 @@ import React, { useMemo } from 'react';
 // Components
 import DAOList from './pages/DAOList/DAOList';
 import DAOPage from './pages/DAOPage/DAOPage';
-import DAOCreate from './pages/DAOCreate/DAOCreate';
+import CreateProposal from './pages/CreateProposal/CreateProposal';
 
 // Hooks
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
@@ -15,7 +15,7 @@ import { useZdaoSdk } from 'lib/dao/providers/ZdaoSdkProvider';
 import { ROUTES } from 'constants/routes';
 
 // Constants
-import { DAO_CREATE } from 'lib/dao/constants';
+import { DAO_CREATE_PROPPAL } from 'lib/dao/constants';
 
 // Style Imports
 import styles from './DAOContainer.module.scss';
@@ -36,7 +36,7 @@ const DAOContainer: React.FC<DAOContainerProps> = ({ className, style }) => {
 	 * Handle loading a DAO which does not exist
 	 */
 	useUpdateEffect(async () => {
-		if (!sdk || !zna.length || zna === DAO_CREATE) {
+		if (!sdk || !zna.length || zna === DAO_CREATE_PROPPAL) {
 			return;
 		}
 
@@ -52,12 +52,12 @@ const DAOContainer: React.FC<DAOContainerProps> = ({ className, style }) => {
 	}, [sdk, zna]);
 
 	const page = useMemo(() => {
-		const isDAOCreate = zna === DAO_CREATE;
+		const isCreateProposal = zna === DAO_CREATE_PROPPAL;
 		const isDAOList = zna === '';
-		const isDAODetail = !isDAOList && !isDAOCreate;
+		const isDAODetail = !isDAOList && !isCreateProposal;
 
 		return {
-			isDAOCreate,
+			isCreateProposal,
 			isDAOList,
 			isDAODetail,
 		};
@@ -65,7 +65,7 @@ const DAOContainer: React.FC<DAOContainerProps> = ({ className, style }) => {
 
 	return (
 		<main className={classNames(styles.Container, className)} style={style}>
-			{page.isDAOCreate && <DAOCreate />}
+			{page.isCreateProposal && <CreateProposal />}
 			{page.isDAOList && <DAOList />}
 			{page.isDAODetail && zna !== '' && <DAOPage />}
 		</main>
