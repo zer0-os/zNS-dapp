@@ -75,14 +75,23 @@ const NFTDetails = ({
 					<h1 className="glow-text-white">{title}</h1>
 					<h2>0://{formattedDomain}</h2>
 				</div>
-				{creator && <Member id={creator} subtext={'Creator'} />}
+
 				{otherDetails?.map((detail: Detail, i) => (
 					<DetailComponent
 						key={i + detail.value}
 						text={detail.value}
 						subtext={detail.name}
+						className={styles.DetailComponent}
+						mainClassName={styles.Bid}
 					/>
 				))}
+				{creator && (
+					<Member
+						className={styles.MemberLabel}
+						id={creator}
+						subtext={'Creator'}
+					/>
+				)}
 				{hasViewAllBids && (
 					<TextButton
 						className={styles.ViewAll}
