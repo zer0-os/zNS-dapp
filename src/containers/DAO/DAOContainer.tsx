@@ -1,5 +1,5 @@
 // React
-import React from 'react';
+import React, { useMemo } from 'react';
 
 // Components
 import DAOList from './pages/DAOList/DAOList';
@@ -51,11 +51,23 @@ const DAOContainer: React.FC<DAOContainerProps> = ({ className, style }) => {
 		}
 	}, [sdk, zna]);
 
+	const page = useMemo(() => {
+		const isDAOCreate = zna === DAO_CREATE;
+		const isDAOList = zna === '';
+		const isDAODetail = !isDAOList && !isDAOCreate;
+
+		return {
+			isDAOCreate,
+			isDAOList,
+			isDAODetail,
+		};
+	}, [zna]);
+
 	return (
 		<main className={classNames(styles.Container, className)} style={style}>
-			{zna === DAO_CREATE && <DAOCreate />}
-			{zna === '' && <DAOList />}
-			{zna !== DAO_CREATE && zna !== '' && <DAOPage />}
+			{page.isDAOCreate && <DAOCreate />}
+			{page.isDAOList && <DAOList />}
+			{page.isDAODetail && zna !== '' && <DAOPage />}
 		</main>
 	);
 };

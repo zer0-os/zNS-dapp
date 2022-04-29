@@ -19,5 +19,7 @@
 */
 .MarkDownViewerContainer {
 	/* TODO:: update the markdown viewer styles here */
-	visibility: visible;
+	:global(.wmde-markdown) {
+		padding: 1rem;
+	}
 }
