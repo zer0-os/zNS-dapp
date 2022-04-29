@@ -77,7 +77,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		}
 
 		// Truncate
-		if (domain && (root + domain).length > 30) {
+		if (domain && (root + domain).length > 40) {
 			const split = domain.split('.');
 			if (isMounted.current === true) {
 				setTruncatedDomain(root + split[split.length - 1]);
