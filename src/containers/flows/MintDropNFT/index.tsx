@@ -115,7 +115,7 @@ const MintDropNFTFlowContainer = ({
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold) {
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
 			history.push('market/kicks.airwild.season2');
 		} else {
 			setIsWizardOpen(true);
@@ -276,7 +276,7 @@ const MintDropNFTFlowContainer = ({
 		return () => {
 			isMounted = false;
 		};
-	}, [account, library, zSaleInstance, isSaleHalted]);
+	}, [account, library, zSaleInstance, isSaleHalted, dropStage]);
 
 	/**
 	 * Get user-specific variables whenever mint amount or account changes
