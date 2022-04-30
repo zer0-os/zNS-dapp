@@ -206,7 +206,7 @@ const SubdomainTableRow = (props: any) => {
 					disableInteraction
 					metadataUrl={domain.metadata}
 					id={domain.id}
-					style={{ maxWidth: 200 }}
+					style={{ maxWidth: 220 }}
 				/>
 			</td>
 			{bidColumns()}
