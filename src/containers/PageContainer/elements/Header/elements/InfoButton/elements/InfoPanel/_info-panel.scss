@@ -43,30 +43,6 @@
 			}
 		}
 
-		&-nav {
-			display: flex;
-			flex-direction: column;
-			align-items: flex-start !important;
-
-			padding-bottom: 12px !important;
-
-			> li {
-				> a {
-					display: flex;
-					align-items: center;
-					font-size: 18px;
-					color: var(--text-primary);
-
-					> img {
-						margin-right: 16px;
-					}
-				}
-				&:not(:first-of-type) {
-					margin-top: 16px;
-				}
-			}
-		}
-
 		&-body {
 			display: flex;
 			justify-content: space-around;

@@ -15,6 +15,7 @@ import { ALT_TEXT, MESSAGES, TITLE } from './TransferPreview.constants';
 //- Library Imports
 import { Maybe } from 'lib/types';
 import { truncateDomain, truncateWalletAddress } from 'lib/utils';
+import { randomUUID } from 'lib/random';
 
 //- Utils Imports
 import {
@@ -41,7 +42,7 @@ const TransferPreview = () => {
 	const previewCard = (nft: any, exists: boolean) => {
 		return (
 			<>
-				<li key={`${nft.name}${Math.random()}`}>
+				<li key={`${nft.name}${randomUUID()}`}>
 					<hr className={styles.Divider} />
 					<div>
 						<div className={`${styles.Image} border-rounded`}>

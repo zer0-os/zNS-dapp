@@ -61,12 +61,6 @@ const MintPreview = (props: MintPreviewProps) => {
 			fontWeight: 700,
 		};
 
-		const openProfile = () => {
-			if (props.onOpenProfile) {
-				props.onOpenProfile();
-			}
-		};
-
 		return (
 			<>
 				<li key={`${nft.title}${Math.random()}`}>

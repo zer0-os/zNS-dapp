@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { BuyTokenRedirect } from 'containers';
 
 //- Constants Imports
-import { getNavLinks } from 'constants/nav';
+import { getNavLinks } from 'lib/utils/nav';
 import { LOGO, ZERO } from 'constants/assets';
 import { URLS } from 'constants/urls';
 import { ALT_TEXT, COLOURS } from './SideBar.constants';
@@ -19,6 +19,7 @@ import { appFromPathname } from 'lib/utils';
 import { useWeb3React } from '@web3-react/core';
 import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
 import { startCase, toLower } from 'lodash';
+import { randomUUID } from 'lib/random';
 
 const cx = classNames.bind(styles);
 
@@ -38,7 +39,7 @@ const SideBar = () => {
 					</Link>
 					<ul className={styles.Links}>
 						{navLinks.map((l) => (
-							<li key={`${l.label}${Math.random()}`}>
+							<li key={`${l.label}${randomUUID()}`}>
 								<Link
 									to={l.route}
 									className={cx({ Selected: pathname.startsWith(l.route) })}

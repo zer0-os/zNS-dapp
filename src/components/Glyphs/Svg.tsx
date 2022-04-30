@@ -1,8 +1,4 @@
-//- React Imports
-import { ReactChild, ReactChildren } from 'react';
-
 interface SvgProps {
-	children: ReactChild | ReactChildren;
 	className?: string;
 	dataTestId?: string;
 	height: string;
@@ -13,7 +9,7 @@ interface SvgProps {
 	fill: string;
 }
 
-export const Svg = ({
+export const Svg: React.FC<SvgProps> = ({
 	children,
 	className,
 	dataTestId,
@@ -23,7 +19,7 @@ export const Svg = ({
 	viewBox,
 	fill,
 	stroke,
-}: SvgProps) => (
+}) => (
 	<svg
 		className={className}
 		data-testid={dataTestId}

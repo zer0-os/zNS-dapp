@@ -1,6 +1,5 @@
 //- React Imports
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 //- Components Imports
 import { ConnectWalletButton } from '../../../../elements';
@@ -9,8 +8,6 @@ import { InfoButtonProps } from '../../InfoButton';
 //- Library Imports
 import classnames from 'classnames';
 
-//- Constants Imports
-import { getNavLinks } from 'constants/nav';
 import {
 	WILDER_WORLD_OPTIONS,
 	ZERO_TECH_OPTIONS,
@@ -27,7 +24,6 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 	isWalletConnected,
 	onConnectWallet,
 }) => {
-	const LINKS = getNavLinks();
 	return (
 		<div className="info-panel__content">
 			<div
@@ -44,23 +40,6 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({
 				)}
 			</div>
 			<div className="info-panel__content-section">
-				<div className="info-panel_nav info-panel__content-section">
-					<div className="info-panel__content-section-title">
-						<h3> Apps</h3>
-						<span className="divider"></span>
-					</div>
-					<ul className="info-panel__content-section-nav info-panel__content-section-body">
-						{LINKS.map((l) => (
-							<li key={l.label}>
-								<Link to={l.route}>
-									{l.icon}
-									<label>{l.label}</label>
-								</Link>
-							</li>
-						))}
-					</ul>
-				</div>
-
 				<div className="info-panel__content-section">
 					<div className="info-panel__content-section-title">
 						<h3> Wilder World</h3>

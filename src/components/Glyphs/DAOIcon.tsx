@@ -6,7 +6,7 @@ interface DAOIconProps {
 	stroke?: string;
 }
 
-const DAOIcon = ({ title, stroke }: DAOIconProps) => (
+const DAOIcon = ({ title = '', stroke = '' }: DAOIconProps) => (
 	<Svg title={title} width="24" height="24" viewBox="0 0 24 24" fill="none">
 		<>
 			<path
@@ -20,10 +20,5 @@ const DAOIcon = ({ title, stroke }: DAOIconProps) => (
 		</>
 	</Svg>
 );
-
-DAOIcon.defaultProps = {
-	title: '',
-	stroke: '',
-};
 
 export default DAOIcon;

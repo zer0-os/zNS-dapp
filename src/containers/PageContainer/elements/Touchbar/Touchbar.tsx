@@ -2,7 +2,7 @@
 import { Link, useLocation } from 'react-router-dom';
 
 //- Constant Imports
-import { getMobileNavLinks } from 'constants/nav';
+import { getMobileNavLinks } from 'lib/utils/nav';
 import { COLOURS } from './Touchbar.constants';
 
 //- Styles Imports
@@ -10,6 +10,9 @@ import styles from './Touchbar.module.scss';
 
 //- Class Names
 import classNames from 'classnames/bind';
+
+//- Library Imports
+import { randomUUID } from 'lib/random';
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +24,7 @@ export const Touchbar: React.FC = () => {
 		<div className={styles.TouchbarContainer}>
 			<ul className={styles.NavLinks}>
 				{navLinks.map((l) => (
-					<li key={`${l.label}${Math.random()}`}>
+					<li key={`${l.label}${randomUUID()}`}>
 						<Link
 							to={l.route}
 							className={cx({ Selected: pathname.startsWith(l.route) })}

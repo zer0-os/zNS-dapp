@@ -6,7 +6,7 @@ interface ProfileIconProps {
 	stroke?: string;
 }
 
-const ProfileIcon = ({ title, stroke }: ProfileIconProps) => (
+const ProfileIcon = ({ title = '', stroke = '' }: ProfileIconProps) => (
 	<Svg title={title} width="24" height="24" viewBox="0 0 24 24" fill="none">
 		<g>
 			<title>Layer 1</title>
@@ -34,10 +34,5 @@ const ProfileIcon = ({ title, stroke }: ProfileIconProps) => (
 		</g>
 	</Svg>
 );
-
-ProfileIcon.defaultProps = {
-	title: '',
-	stroke: '',
-};
 
 export default ProfileIcon;

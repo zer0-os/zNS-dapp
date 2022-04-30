@@ -21,6 +21,7 @@ import { chainIdToNetworkName } from 'lib/network';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useWeb3React } from '@web3-react/core';
 import { truncateWalletAddress } from 'lib/utils';
+import { randomUUID } from 'crypto';
 
 // Styles
 import styles from './Profile.module.scss';
@@ -140,6 +141,7 @@ const Profile = () => {
 					<nav className={styles.Nav}>
 						{TABS.map((route) => (
 							<Link
+								key={route.title}
 								className={cx({
 									Selected: location.pathname === r(route.location),
 								})}
@@ -154,6 +156,7 @@ const Profile = () => {
 					<Switch>
 						{TABS.map((route) => (
 							<Route
+								key={route.title}
 								exact
 								path={r(route.location)}
 								component={route.component}
