@@ -47,7 +47,9 @@ const Info = (props: InfoProps) => {
 		!isUserDataLoading &&
 		!isAuctionDataLoading &&
 		(props.dropStage === Stage.Public ||
-			(props.dropStage === Stage.Whitelist && props.isUserWhitelisted));
+			(props.dropStage === Stage.Whitelist &&
+				props.isUserWhitelisted &&
+				props.maxPurchasesPerUser! > 0));
 
 	// If the user has any wheels left to mint
 	const userHasWheelsRemaining =
@@ -64,7 +66,7 @@ const Info = (props: InfoProps) => {
 				glow={props.isUserWhitelisted || props.dropStage === Stage.Public}
 				onClick={props.onContinue}
 			>
-				Mint Your Pets
+				Mint Your Kicks
 			</FutureButton>
 		);
 	};
@@ -90,12 +92,12 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p>
-						You will be able to mint {props.maxPurchasesPerUser} set of Pets if
-						your wallet was whitelisted in our raffle on Monday, January 17,
-						2022.
+						You will be able to mint {props.maxPurchasesPerUser} Kicks if your
+						wallet was mintlisted in our raffle.
 						<br></br>
 						<br></br>
-						The cost for each Pet is <b>{props.pricePerNFT} ETH</b> plus GAS.
+						The cost for each pair of Kicks is <b>{props.pricePerNFT}</b> plus
+						GAS.
 					</p>
 					{connectWalletButton()}
 				</>
@@ -113,8 +115,8 @@ const Info = (props: InfoProps) => {
 					<>
 						<p>
 							You have minted {props.numberPurchasedByUser} /{' '}
-							{props.maxPurchasesPerUser} Pets. The cost for each Pet is{' '}
-							<b>{props.pricePerNFT} ETH</b> plus GAS.
+							{props.maxPurchasesPerUser} Kicks. The cost for each pair of Kicks
+							is <b>{props.pricePerNFT} ETH</b> plus GAS.
 						</p>
 						{props.errorMessage !== undefined && (
 							<p className="error-text text-center">{props.errorMessage}</p>
@@ -122,14 +124,25 @@ const Info = (props: InfoProps) => {
 						{mintButton()}
 					</>
 				);
-			} else {
+			} else if (Boolean(props.maxPurchasesPerUser)) {
 				return (
 					<>
 						<p className={styles.Green}>
 							Congratulations, you have minted {props.numberPurchasedByUser}/
-							{props.maxPurchasesPerUser} of your Pets.
+							{props.maxPurchasesPerUser} of your Kicks.
 						</p>
 						{dismissButton()}
+					</>
+				);
+			} else {
+				return (
+					<>
+						<p>
+							You have minted {props.numberPurchasedByUser} Kicks. The cost for
+							each pair of Kicks is <b>{props.pricePerNFT} ETH</b> plus GAS.
+						</p>
+
+						{mintButton()}
 					</>
 				);
 			}
@@ -137,9 +150,9 @@ const Info = (props: InfoProps) => {
 			return (
 				<>
 					<p className={styles.Orange}>
-						Currently, Pets are only available to whitelisted supporters of
+						Currently, Kicks are only available to mintlisted supporters of
 						Wilder World. If supply lasts, you will be able to mint when the
-						whitelist sale ends.
+						mintlist sale ends.
 					</p>
 					{dismissButton()}
 				</>
@@ -161,27 +174,27 @@ const Info = (props: InfoProps) => {
 				playsInline
 				controls
 				disablePictureInPicture
-				controlsList="nodownload noremoteplayback noplaybackrate"
+				controlsList="nodownload noremoteplayback noplaybackrate nofullscreen"
 				poster={
-					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.jpg'
+					'https://res.cloudinary.com/fact0ry/video/upload/so_0/c_fit,h_426,w_672/v1651090385/zns/kicks-s2-mint-main.jpg'
 				}
 				preload="metadata"
 			>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.webm'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1651090385/zns/kicks-s2-mint-main.webm'
 					}
 					type="video/webm"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1642269545/zns/kicks-mint-main.mp4'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1651090385/zns/kicks-s2-mint-main.mp4'
 					}
 					type="video/mp4"
 				></source>
 				<source
 					src={
-						'https://res.cloudinary.com/fact0ry/video/upload/q_60,c_fit,h_396,w_642/v1633058067/zns/v1642269545/zns/kicks-mint-main.ogv'
+						'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1651090385/zns/kicks-s2-mint-main.ogv'
 					}
 					type="video/ogg"
 				></source>
@@ -190,10 +203,10 @@ const Info = (props: InfoProps) => {
 			{/* Wheels Available */}
 			{!isAuctionDataLoading && (
 				<div className={styles.Available}>
-					<span>Pets Available</span>
-					<h2>{props.wheelsTotal - props.wheelsMinted} Pets Remaining</h2>
-					<ArrowLink href="https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/">
-						View Auction Rules
+					<span>Kicks Available</span>
+					<h2>{props.wheelsTotal - props.wheelsMinted} Kicks Remaining</h2>
+					<ArrowLink href="https://zine.wilderworld.com/aws2-raffle-winners/">
+						View Sale Details
 					</ArrowLink>
 				</div>
 			)}

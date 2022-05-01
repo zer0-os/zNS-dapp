@@ -98,7 +98,7 @@ const Approval: React.FC<ApprovalProps> = ({
 		return (
 			<>
 				<span>
-					Before you can mint a Pet, your wallet needs to approve WILD spending.
+					Before you can mint Kicks, your wallet needs to approve WILD spending.
 					You will only need to do this once. This will cost gas.
 				</span>
 				{error !== undefined && <span className="error-text">{error}</span>}
@@ -118,7 +118,7 @@ const Approval: React.FC<ApprovalProps> = ({
 		return (
 			<>
 				<span>
-					Before you can mint a Pet, your wallet needs to approve WILD spending.
+					Before you can mint Kicks, your wallet needs to approve WILD spending.
 					You will only need to do this once. This will cost gas.
 				</span>
 
@@ -133,7 +133,7 @@ const Approval: React.FC<ApprovalProps> = ({
 			<>
 				<span>
 					Approving WILD spending contract. This may take a few minutes. This
-					transaction must finish before you can continue to mint your Pet.
+					transaction must finish before you can continue to mint your Kicks.
 				</span>
 				<Spinner />
 			</>

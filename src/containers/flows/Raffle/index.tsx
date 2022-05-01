@@ -14,16 +14,19 @@ const RaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	const RAFFLE_START_TIME = currentTime - 20000;
-	const RAFFLE_END_TIME = currentTime - 10000;
-	const SALE_START_TIME = currentTime + 5000;
+	const RAFFLE_START_TIME = currentTime - 10000;
+	const RAFFLE_END_TIME = currentTime - 50000;
+	// const SALE_START_TIME = currentTime + 5000;
+	// const PRIVATE_SALE_END_TIME = currentTime + 10000;
+	// const PUBLIC_SALE_START_TIME = currentTime + 100000;
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
-	// const RAFFLE_START_TIME = 1645819200000;
-	// const RAFFLE_START_TIME = currentTime - 1000;
-	// const RAFFLE_END_TIME = 1646078400000;
-	// const SALE_START_TIME = 1648234800000; //1640181600000;
+	// const RAFFLE_START_TIME = 1650589200000;
+	// const RAFFLE_END_TIME = 1650762000000;
+	const SALE_START_TIME = 1651194000000;
+	const PRIVATE_SALE_END_TIME = 1651280400000;
+	const PUBLIC_SALE_START_TIME = 1651280400000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -74,7 +77,7 @@ const RaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/air-wild-season-one-whitelist-raffle-now-open/',
+				'https://zine.wilderworld.com/aws2-raffle-winners/',
 				'_blank',
 			);
 		}
@@ -110,7 +113,7 @@ const RaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Presale Mint Period Coming Soon{' '}
+					AIR WILD Season Two Mintlist Sale Begins in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -122,7 +125,7 @@ const RaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Community Presale Mintlist Signup Period Ending in{' '}
+					AIR WILD Season Two Mintlist Signup Period Ending in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
@@ -134,7 +137,7 @@ const RaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Pets raffle - starting in{' '}
+					Get notified about the AIR WILD Season Two raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -150,9 +153,9 @@ const RaffleContainer = () => {
 		if (!hasRaffleStarted) {
 			return 'Get Notified';
 		} else if (!hasRaffleEnded) {
-			return 'Sign up for Pets Community Presale Mintlist';
+			return 'Sign up for Mintlist';
 		} else {
-			return 'Sale Info';
+			return 'Learn More';
 		}
 	};
 
@@ -202,8 +205,8 @@ const RaffleContainer = () => {
 					<MintDropNFTBanner
 						title={
 							hasRaffleEnded
-								? 'Community Presale Mintlist Signup Period Complete'
-								: 'Your Metaverse Companion Awaits'
+								? 'Get Your Kicks for the Metaverse'
+								: 'Get Your Kicks for the Metaverse'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}
@@ -214,7 +217,12 @@ const RaffleContainer = () => {
 		);
 	}
 
-	return <MintDropNFT />;
+	return (
+		<MintDropNFT
+			privateSaleEndTime={PRIVATE_SALE_END_TIME}
+			publicSaleStartTime={PUBLIC_SALE_START_TIME}
+		/>
+	);
 };
 
 export default RaffleContainer;

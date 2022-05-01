@@ -25,7 +25,7 @@ export type DropData = {
 	dropStage: Stage;
 	wheelsTotal: number;
 	wheelsMinted: number;
-	maxPurchasesPerUser: number;
+	maxPurchasesPerUser?: number;
 };
 
 export type WheelQuantity = {

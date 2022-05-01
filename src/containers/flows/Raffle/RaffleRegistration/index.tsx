@@ -8,7 +8,7 @@ type RegistrationContainerProps = {
 };
 const RegistrationContainer = (props: RegistrationContainerProps) => {
 	const { account, active, library, chainId } = useWeb3React<Web3Provider>();
-	const drop = 'Pets';
+	const drop = 'Kicks-S2';
 
 	const submit = async (
 		// statusCallback: (status: string) => void,
@@ -25,6 +25,8 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 				twitter,
 				discord,
 				telegram,
+				tokens,
+				nftFromGenesis: genesisNFTsCount,
 			} = accountInfo;
 			if (chainId !== 1) {
 				reject({ message: 'Please connect to Ethereum Mainnet' });
@@ -55,7 +57,7 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 			if (!account || ethBalance === undefined || !signedMessage) {
 				reject('Something went wrong');
 			}
-			fetch('https://raffle-entry-microservice.herokuapp.com/', {
+			fetch('https://zns-raffle-microservice.herokuapp.com/', {
 				method: 'POST',
 				headers: {
 					Accept: 'application/json',
@@ -74,6 +76,8 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 					twitter,
 					discord,
 					telegram,
+					tokens,
+					nftFromGenesis: genesisNFTsCount,
 				}),
 			})
 				.then(async (r) => {
@@ -97,7 +101,9 @@ const RegistrationContainer = (props: RegistrationContainerProps) => {
 		const signer = library.getSigner();
 		let signedBid: Maybe<string>;
 		try {
-			signedBid = await signer?.signMessage('Wilder Pets Raffle Registration');
+			signedBid = await signer?.signMessage(
+				'Air Wild - S2 Raffle Registration',
+			);
 		} catch {
 			throw new Error('Failed to sign message');
 		}

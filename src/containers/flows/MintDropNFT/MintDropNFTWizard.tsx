@@ -162,7 +162,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 					balanceEth={props.balanceEth!}
 					error={transactionError}
 					pricePerNFT={props.pricePerNFT}
-					maxPurchasesPerUser={props.maxPurchasesPerUser!}
+					maxPurchasesPerUser={props.maxPurchasesPerUser}
 					numberPurchasedByUser={props.numberPurchasedByUser!}
 					onBack={onBack}
 					onContinue={submitTransaction}
@@ -197,13 +197,13 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 		<div className={`${styles.Container} border-primary border-rounded`}>
 			{/* Head section */}
 			<section className={styles.Header}>
-				<h1 className="glow-text-white">Mint Your Pets</h1>
+				<h1 className="glow-text-white">Mint Your Kicks</h1>
 				<span className="glow-text-white">
-					Your Pets in the Metaverse await
+					Your Kicks in the Metaverse await
 				</span>
 				<hr />
 			</section>
-			{props.dropStage === undefined && <Loading text={'Loading Pets Drop'} />}
+			{props.dropStage === undefined && <Loading text={'Loading Kicks Drop'} />}
 			{getFlowSection()}
 		</div>
 	);

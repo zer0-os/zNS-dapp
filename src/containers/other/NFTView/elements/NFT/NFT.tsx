@@ -1,5 +1,5 @@
 // React Imports
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // Component Imports
 import {
@@ -39,11 +39,6 @@ export const Amount = (amount: string) => (
 
 const cx = classNames.bind(styles);
 
-type OptionType = {
-	icon: string;
-	title: string;
-}[];
-
 type NFTProps = {
 	domainId?: string;
 	title?: string;
@@ -53,7 +48,7 @@ type NFTProps = {
 	description?: string;
 	buyNowPrice?: number;
 	onMakeBid: () => void;
-	onDownload?: () => void;
+	onDownload: (assetUrl: string) => void;
 	onSuccessBuyNow?: () => void;
 	onShare?: () => void;
 	highestBid?: number;
@@ -64,8 +59,9 @@ type NFTProps = {
 	wildPriceUsd?: number;
 	account?: string;
 	isBiddable?: boolean;
-	options: OptionType;
-	onSelectOption: (option: Option) => void;
+	downloadOptions: Option[];
+	moreOptions: Option[];
+	onMoreSelectOption: (option: Option) => void;
 	onRefetch: () => void;
 };
 
@@ -87,8 +83,9 @@ const NFT = ({
 	account,
 	onMakeBid,
 	isBiddable,
-	options,
-	onSelectOption,
+	downloadOptions,
+	moreOptions,
+	onMoreSelectOption,
 	onRefetch,
 }: NFTProps) => {
 	const blobCache = useRef<string>();
@@ -120,6 +117,15 @@ const NFT = ({
 			isMounted = false;
 		};
 	}, []);
+
+	const onDownloadSelectOption = useCallback(
+		(option: Option) => {
+			if (option.assetUrl) {
+				onDownload(option.assetUrl);
+			}
+		},
+		[onDownload],
+	);
 
 	///////////////
 	// Fragments //
@@ -238,15 +244,23 @@ const NFT = ({
 							<img src={shareIcon} alt="share asset" />
 						</button>
 					</Tooltip>
-					<Tooltip text={'Download for Twitter'}>
-						<button onClick={onDownload}>
-							<img alt="download asset" src={downloadIcon} />
-						</button>
-					</Tooltip>
-					{options.length > 0 && (
+					{downloadOptions.length > 0 && (
 						<OptionDropdown
-							onSelect={onSelectOption}
-							options={options}
+							onSelect={onDownloadSelectOption}
+							options={downloadOptions}
+							className={styles.MoreDropdown}
+						>
+							<Tooltip text={'Download for Twitter'}>
+								<button>
+									<img alt="download asset" src={downloadIcon} />
+								</button>
+							</Tooltip>
+						</OptionDropdown>
+					)}
+					{moreOptions.length > 0 && (
+						<OptionDropdown
+							onSelect={onMoreSelectOption}
+							options={moreOptions}
 							className={styles.MoreDropdown}
 						>
 							<button>
