@@ -130,6 +130,7 @@ const SubdomainTableCard = ({
 				imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
 				header={domainMetadata?.title}
 				onClick={onClick}
+				shouldUseCloudinary={true}
 			>
 				<div className={styles.Container}>
 					<Detail

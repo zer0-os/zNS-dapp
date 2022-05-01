@@ -89,6 +89,7 @@ const SubdomainTableCard = (props: any) => {
 			header={domainMetadata?.title}
 			onClick={onClick}
 			aspectRatio={getAspectRatioForZna(getParentZna(domain.name))}
+			shouldUseCloudinary={true}
 		>
 			<div className={styles.Container}>
 				<div className={styles.Bid}>
