@@ -21,7 +21,6 @@ import { chainIdToNetworkName } from 'lib/network';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useWeb3React } from '@web3-react/core';
 import { truncateWalletAddress } from 'lib/utils';
-import { randomUUID } from 'crypto';
 
 // Styles
 import styles from './Profile.module.scss';
