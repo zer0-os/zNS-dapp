@@ -17,13 +17,16 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { Domain } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 
+//- Constants Imports
+import { MESSAGES } from './BidList.constants';
+
 //- Library Imports
 import { Metadata } from 'lib/types';
 import { sortBidsByTime } from 'lib/utils/bids';
 
 const moment = require('moment');
 
-type BidListProps = {
+export type BidListProps = {
 	bids: Bid[];
 	domain?: Domain;
 	domainMetadata?: Metadata;
@@ -32,6 +35,7 @@ type BidListProps = {
 	isAccepting?: boolean;
 	isLoading?: boolean;
 	highestBid?: string;
+	isAcceptBidEnabled?: boolean;
 };
 
 const BidList: React.FC<BidListProps> = ({
@@ -43,6 +47,7 @@ const BidList: React.FC<BidListProps> = ({
 	isAccepting,
 	isLoading,
 	highestBid,
+	isAcceptBidEnabled = false,
 }) => {
 	//////////////////
 	// Data & State //
@@ -50,10 +55,15 @@ const BidList: React.FC<BidListProps> = ({
 	const [blockNumber, setBlockNumber] = useState<number>();
 	const [isAcceptBidModal, setIsAcceptBidModal] = useState(false);
 	const [acceptingBid, setAcceptingBid] = useState<Bid | undefined>(undefined);
-	const { library } = useWeb3React<Web3Provider>();
+	const { library, account } = useWeb3React<Web3Provider>();
 
 	// Sort bids by date
 	const sortedBids = sortBidsByTime(bids);
+	const bidsToShow = isAcceptBidEnabled
+		? sortedBids.filter(
+				(bid) => bid.bidder.toLowerCase() !== account?.toLowerCase(),
+		  )
+		: sortedBids;
 
 	useEffect(() => {
 		if (library) {
@@ -112,7 +122,7 @@ const BidList: React.FC<BidListProps> = ({
 						<p className={styles.Pending}>Accept bid transaction pending.</p>
 					)}
 					<ul className={isAccepting ? styles.Accepting : ''}>
-						{sortedBids.map((bid: Bid, i: number) => (
+						{bidsToShow.map((bid: Bid, i: number) => (
 							<li key={bid.bidNonce} className={styles.Bid}>
 								<div>
 									<label>{moment(Number(bid.timestamp)).fromNow()}</label>
@@ -145,6 +155,7 @@ const BidList: React.FC<BidListProps> = ({
 											{bid.bidder.substring(0, 4)}...
 											{bid.bidder.substring(bid.bidder.length - 4)}
 										</a>
+										{account === bid.bidder && MESSAGES.YOUR_WALLET}
 									</span>
 								</div>
 								{blockNumber && (

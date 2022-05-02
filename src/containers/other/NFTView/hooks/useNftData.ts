@@ -9,9 +9,9 @@ import { ethers } from 'ethers';
 //- Library Imports
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
-import useNotification from 'lib/hooks/useNotification';
 import { DomainEventType, DomainBidEvent } from '@zero-tech/zns-sdk/lib/types';
 import { Bid } from '@zero-tech/zauction-sdk';
+import useNotification from 'lib/hooks/useNotification';
 
 //- Type Imports
 import { DomainEvents } from '../NFTView.types';
@@ -24,6 +24,9 @@ import {
 	sortBidsByAmount,
 	sortEventsByTimestamp,
 } from '../NFTView.helpers';
+
+//- Constants Imports
+import { MESSAGES } from '../NFTView.constants';
 
 //- Hook level type definitions
 interface UseNftDataReturn {
@@ -38,6 +41,7 @@ interface UseNftDataReturn {
 	getPriceData: () => Promise<void>;
 	downloadAsset: (assetUrl: string) => Promise<void>;
 	shareAsset: () => Promise<void>;
+	refetch: () => void;
 }
 
 export const useNftData = (): UseNftDataReturn => {
@@ -94,7 +98,7 @@ export const useNftData = (): UseNftDataReturn => {
 				)) as DomainEvents[];
 				setHistory(sortEventsByTimestamp(events));
 			} catch (e) {
-				console.error('Failed to retrieve bid data');
+				console.error(MESSAGES.CONSOLE_ERROR);
 			} finally {
 				setIsHistoryLoading(false);
 			}
@@ -135,9 +139,9 @@ export const useNftData = (): UseNftDataReturn => {
 			}
 
 			setHighestBid(highestBid);
-			setBuyNowPrice(Number(buyNow));
+			setBuyNowPrice(Number(buyNow) > 0 ? Number(buyNow) : undefined);
 		} catch (e) {
-			console.error('Failed to retrieve price data', e);
+			console.error(MESSAGES.CONSOLE_ERROR, e);
 		} finally {
 			setIsPriceDataLoading(false);
 		}
@@ -161,6 +165,13 @@ export const useNftData = (): UseNftDataReturn => {
 			shareDomainAsset(domain);
 		}
 	}, [domain]);
+	/**
+	 * Refreshes data for the current NFT
+	 */
+	const refetch = () => {
+		getHistory();
+		getPriceData();
+	};
 
 	/**
 	 * Life cycle
@@ -186,6 +197,7 @@ export const useNftData = (): UseNftDataReturn => {
 		getPriceData,
 		downloadAsset,
 		shareAsset,
+		refetch,
 	};
 };
 

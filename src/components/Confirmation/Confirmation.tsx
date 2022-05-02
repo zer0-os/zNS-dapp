@@ -74,14 +74,6 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 				<div className={styles.Buttons}>
 					<FutureButton
 						style={{ textTransform: 'uppercase' }}
-						alt
-						glow
-						onClick={onCancel}
-					>
-						{cancelText ?? 'Cancel'}
-					</FutureButton>
-					<FutureButton
-						style={{ textTransform: 'uppercase' }}
 						glow
 						onClick={onConfirm}
 					>

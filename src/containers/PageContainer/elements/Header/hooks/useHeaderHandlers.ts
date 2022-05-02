@@ -1,5 +1,6 @@
 import { useMemo, useCallback } from 'react';
 import { History, Location } from 'history';
+import { ROUTES } from 'constants/routes';
 
 type UseHeaderHandlersProps = {
 	props: {
@@ -66,15 +67,13 @@ export const useHeaderHandlers = ({
 	);
 
 	const handleOnOpenProfile = useCallback(() => {
-		const { history, location } = props;
-		const params = new URLSearchParams(location.search);
-		const { pathname } = location;
-
-		params.set('profile', 'true');
-		history.push({
-			pathname,
-			search: params.toString(),
-		});
+		const { location, history } = props;
+		if (!location.pathname.includes(ROUTES.PROFILE)) {
+			history.push({
+				pathname: ROUTES.PROFILE,
+				state: { previous: location.pathname },
+			});
+		}
 	}, [props]);
 
 	return useMemo(

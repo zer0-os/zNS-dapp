@@ -17,7 +17,7 @@ import { AbstractConnector } from '@web3-react/abstract-connector';
 import WalletStyles from './Wallet.module.scss';
 
 //- Component Imports
-import { FutureButton, Spinner, Image } from 'components';
+import { FutureButton, Spinner, Image, Wizard } from 'components';
 
 //- Utils Imports
 import { getWalletOptionStyle } from './utils';
@@ -159,12 +159,11 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 	};
 
 	return (
-		<div className={`${WalletStyles.connect} border-primary`}>
-			<div className={WalletStyles.header}>
-				<h3 className={`glow-text-white`}>Connect To A Wallet</h3>
-			</div>
-			<hr className="glow" />
-
+		<Wizard
+			header="Connect To A Wallet"
+			headerClassName={WalletStyles.Header}
+			className={`${WalletStyles.connect} border-primary`}
+		>
 			{isLoading && (
 				<div className={WalletStyles.Disconnect}>
 					<hr className="glow" />
@@ -278,7 +277,7 @@ const ConnectToWallet: React.FC<ConnectToWalletProps> = ({ onConnect }) => {
 					</a>
 				</p>
 			</div>
-		</div>
+		</Wizard>
 	);
 };
 

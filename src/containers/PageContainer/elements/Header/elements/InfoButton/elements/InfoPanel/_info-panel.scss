@@ -5,9 +5,10 @@
 		gap: 1rem;
 		width: 340px;
 		padding: 32px;
-		border-radius: 16px;
-		background: var(--color-purple-darkest);
+		border-radius: var(--box-radius);
+		background: var(--color-revolver);
 		cursor: default;
+		border: 1px solid var(--color-bossanova);
 	}
 
 	&__content-section {
@@ -18,6 +19,10 @@
 			justify-content: center;
 			align-items: center;
 			margin: 0 0 1rem;
+
+			&--is-wallet-connected {
+				display: none;
+			}
 		}
 
 		&-title {
@@ -86,9 +91,15 @@
 				flex: 1;
 
 				> a {
-					font-size: 14px;
+					font-size: var(--font-size-smaller);
 				}
 			}
 		}
+	}
+}
+
+@media only screen and (min-width: 320px) {
+	.info-panel_nav {
+		display: none;
 	}
 }

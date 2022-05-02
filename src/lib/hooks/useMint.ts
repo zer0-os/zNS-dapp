@@ -163,6 +163,7 @@ export const useMint = (): UseMintReturn => {
 					image: nft.image,
 					name: nft.name,
 					story: nft.story,
+					additionalMetadata: nft.additionalMetadata,
 				});
 			} catch (e) {
 				console.error(e);

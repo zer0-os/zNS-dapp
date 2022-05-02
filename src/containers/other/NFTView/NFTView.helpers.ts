@@ -1,15 +1,24 @@
+//- Library Imports
 import { ethers } from 'ethers';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { DomainEventType } from '@zero-tech/zns-sdk/lib/types';
 import { getHashFromIPFSUrl } from 'lib/ipfs';
 import config from 'config';
+
+//- Types Imports
 import { DomainEvents } from './NFTView.types';
+
+//- Constants Imports
 import {
 	NFT_ASSET_URLS,
 	NFT_ASSET_SHARE_KEYS,
 	NFT_ASSET_SHARE_OPTIONS,
 } from './NFTView.constants';
 
+/**
+ * Copies a value to clipboard
+ * @param content to copy to clipboard
+ */
 export const copyToClipboard = (content: string): void => {
 	try {
 		navigator?.clipboard?.writeText(content);
@@ -18,16 +27,11 @@ export const copyToClipboard = (content: string): void => {
 	}
 };
 
-export const truncateText = (
-	text: string,
-	startLength: number,
-	endLength: number = 4,
-): string => {
-	return `${text.slice(0, startLength)}...${text.slice(
-		text.length - endLength,
-	)}`;
-};
-
+/**
+ * Gets domain asset URL for downloading
+ * @param url input - this will be an IPFS link
+ * @returns
+ */
 export const getDomainAsset = async (
 	url: string,
 ): Promise<string | undefined> => {

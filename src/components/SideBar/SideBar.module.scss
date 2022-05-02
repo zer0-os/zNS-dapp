@@ -1,141 +1,188 @@
-.SideBar {
-	top: calc(29px + 54px + 16px);
-	width: 54px;
+@use 'styles/variables/dimensions';
 
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+$icon-container-size: 54px;
 
-	position: fixed;
+.BorderContainer {
+	// Mobile Breakpoints
+	display: none;
+	border-right: 1px solid var(--color-grey-mine-shaft);
 
-	transform: translateX(calc(-100% - 19px));
-	z-index: 500;
+	// Tablet Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		display: flex;
+	}
 
-	&:hover {
-		.Icons {
-			pointer-events: all;
-		}
+	// Desktop Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+		width: 240px;
 	}
 }
 
-.Navigator {
-	border-radius: 27px;
-	padding: 7px 4px;
-	border: 1px solid var(--color-purple-lighter);
+.Container {
+	// Mobile Breakpoints
+	display: none;
 
-	background-color: var(--color-purple-darkest);
-}
-
-.Icons {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-
-	overflow: hidden;
-	padding-right: 200px;
-	padding-left: 22px;
-
-	pointer-events: none;
-
-	& .Action:hover .Name {
-		left: 54px;
-	}
-
-	.Name {
-		transition: all var(--animation-time-medium) ease-in-out;
-		pointer-events: none;
-		position: absolute;
+	// Tablet Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		position: sticky;
 		top: 0;
-		height: 32px;
-		left: -200px;
-		margin: 6px 0;
-		background-color: var(--color-purple-dark);
-		padding: 8px 16px;
-		border-radius: 16px;
-		box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
-		font-size: var(--font-size-smaller);
-	}
-}
+		height: 100vh;
+		max-height: 100vh;
+		overflow: auto;
+		width: auto !important;
+		align-items: center;
+		padding: 18px 4px 12px 4px;
+		z-index: 10000;
 
-.Icons .Action {
-	position: relative;
-	height: 44px;
-	width: 44px;
-
-	background-color: #00d1ff1a;
-	border-radius: 50%;
-	background: var(--color-cosmic-gradient-25);
-
-	cursor: pointer;
-	transition: all var(--animation-time-medium) ease-in-out;
-
-	& img {
-		height: 100%;
-		width: 100%;
+		// Desktp Breakpoints
+		@media only screen and  (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			padding: 35px 24px;
+			align-items: unset;
+			overflow: unset;
+		}
 	}
 
-	&:not(:first-child) {
-		margin-top: 12px;
+	.LinkContainer {
+		// Mobile + Tablet Breakpoints
+		display: flex;
+		flex-direction: column;
+
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			align-items: flex-start;
+		}
+
+		.HomeLink {
+			display: flex;
+			justify-content: center;
+
+			// Desktop Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+				margin-left: 10px;
+			}
+		}
 	}
 
-	.Hype {
+	.Network {
+		// Mobile + Tablet Breakpoints
+		display: none;
+	}
+
+	.Icon {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: $icon-container-size;
+		width: $icon-container-size;
 		border-radius: 50%;
-		overflow: hidden;
-		z-index: 3;
-		height: 100%;
 
-		&::after,
-		&::before {
-			z-index: -5;
-			transition: all var(--animation-time-medium) ease-in-out;
+		img {
+			max-height: 100%;
+			max-width: 100%;
+			object-fit: contain;
 		}
+	}
 
-		&.Selected {
-			transform: scale(1);
+	.Links {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		margin-top: 12px;
+		font-size: 20px;
 
-			&::before {
-				content: ' ';
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				width: 0px;
-				height: 0px;
-				box-shadow: 0px 0px 36px 12px rgb(136, 219, 255);
-				transform: translate(-50%, -50%);
-				transition: box-shadow var(--animation-time-short) ease-in-out;
+		> li {
+			// Desktop Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+				padding: 12px 11px;
 			}
 
-			&::after {
-				content: ' ';
-				position: absolute;
-				width: calc(100% - 4px);
-				height: calc(100% + 2px);
-				margin: -1px 0;
-				top: 0;
-				left: 0;
-				border-radius: inherit;
-				border-style: solid;
-				border-width: 0 2px;
-				border-color: var(--color-accent-blue-100);
-				transition: border-color var(--animation-time-short) ease-in-out;
-				z-index: 1;
+			> a {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 12px;
+				padding: 0;
+				color: var(--color-cornflower-blue);
+				font-weight: 400;
+
+				&.Selected {
+					text-shadow: var(--glow-text-primary);
+					font-weight: 600;
+					color: var(--color-text-primary);
+
+					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+						img {
+							position: relative;
+
+							&::before {
+								content: ' ';
+								position: absolute;
+								top: 0;
+								left: 100px;
+								height: 48px;
+								width: 48px;
+							}
+						}
+					}
+				}
+
+				label {
+					display: none;
+
+					// Desktop Breakpoints
+					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+						display: flex;
+						cursor: pointer;
+					}
+				}
+
+				.ImageContainer {
+					display: flex;
+					border-radius: 60px;
+					padding: 13px;
+
+					&.Selected {
+						background: var(--color-revolver);
+					}
+
+					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+						border-radius: 0;
+						padding: 0;
+
+						&.Selected {
+							background: unset;
+						}
+					}
+				}
 			}
 		}
 	}
 
-	&:hover {
-		transform: scale(1);
-		background: var(--color-azure-gradient-25);
+	.Footer {
+		> * {
+			&:first-child {
+				display: none;
 
-		.Hype {
-			&::before {
-				box-shadow: 0px 0px 25px 12px rgb(136, 219, 255);
+				// Desktop Breakpoints
+				@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+					display: flex;
+					margin-bottom: 12px;
+					width: 192px;
+				}
 			}
+		}
 
-			&::after {
-				border-color: var(--color-accent-blue-100);
+		.ZeroIconContainer {
+			display: flex;
+			justify-content: center;
+			width: $icon-container-size;
+
+			.Zero {
+				height: 36px;
+				width: 36px;
 			}
 		}
 	}

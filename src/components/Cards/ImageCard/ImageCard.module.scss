@@ -1,45 +1,97 @@
+@use 'styles/variables/dimensions';
+
+$placeholder-background: #000;
+
 .Container {
+	--image-card-padding: 100%;
+
+	position: relative !important;
+
+	background: var(--color-background);
+	border: 1px solid #232323;
+	border-radius: calc(var(--box-radius) / 2) !important;
+
 	cursor: pointer;
-	min-width: 280px;
-	border-radius: var(--box-radius);
 	overflow: hidden;
-	background-color: var(--color-background-alt);
+
+	.Body {
+		position: relative;
+		overflow: hidden;
+		// max-height: 170px;
+		.Placeholder {
+			position: relative;
+			padding-top: var(--image-card-padding);
+			background: $placeholder-background;
+
+			.Spinner {
+				display: block;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+	}
+
+	&.Landscape {
+		--image-card-padding: 56.25%;
+	}
+
+	&.Portrait {
+		--image-card-padding: 125%;
+	}
 
 	@media only screen and (max-width: 414px) {
 		min-width: unset;
 	}
 
-	.Header {
-		margin-bottom: 1px;
-		color: white;
-		font-size: 18px;
-		font-weight: 700;
-	}
-
-	.Subheader {
-		color: #bfbfbf;
-	}
-
-	.Body {
-		position: relative;
-		padding-top: 100%;
-	}
-
 	.Image {
-		position: absolute;
+		position: absolute !important;
 		top: 0;
 		left: 0;
-		bottom: 0;
-		right: 0;
-		border-radius: var(--box-radius) var(--box-radius) 0 0;
+		height: 100% !important;
+		width: 100% !important;
+		object-fit: cover;
+		overflow: hidden;
 
 		img,
 		video {
 			width: 100%;
 		}
+
+		// Hide default spinner in image
+		div[class*='Spinner'] {
+			display: none;
+		}
 	}
 
 	.Footer {
 		padding: 16px;
+
+		h5 {
+			color: var(--color-text-primary);
+			font-size: var(--font-size-smaller);
+			font-weight: 700;
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
+				font-size: var(--font-size-smaller);
+				line-height: 20px;
+			}
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+				font-size: var(--font-size-default);
+				line-height: 24px;
+			}
+		}
+
+		.Subheader {
+			font-size: var(--font-size-small);
+			color: var(--color-grey-lighter-2);
+			word-break: break-all;
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				line-height: 14.5px;
+			}
+		}
 	}
 }

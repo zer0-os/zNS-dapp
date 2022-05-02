@@ -2,20 +2,36 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-//- Component Imports
-import { FutureButton, Image } from 'components';
-
-//- Hook Imports
-import useMint from 'lib/hooks/useMint';
-
-//- Style Imports
-import styles from './MintPreview.module.scss';
+//- Library Imports
 import { Maybe, NftStatusCard } from 'lib/types';
-import { zNAToLink } from 'lib/utils';
+import { truncateDomain, zNAToLink } from 'lib/utils';
 import { useStaking } from 'lib/hooks/useStaking';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+
+//- Component Imports
+import { Image } from 'components';
+
+//- Hook Imports
+import useMint from 'lib/hooks/useMint';
+
+//- Utils Imports
+import { getPreviewPrompt, MAX_CHARACTER_VALUE } from './MintPreview.utils';
+
+//- Style Imports
+import styles from './MintPreview.module.scss';
+
+//- Contants Imports
+import {
+	TITLE,
+	ALT_TEXT,
+	MESSAGES,
+	BUTTON_TEXT,
+} from './MintPreview.constants';
+
+//- Assets Imports
+import questionMark from './assets/question-mark-icon.svg';
 
 type MintPreviewProps = {
 	onOpenProfile: () => void;
@@ -35,7 +51,7 @@ const MintPreview = (props: MintPreviewProps) => {
 		nft: NftStatusCard,
 		exists: boolean,
 		isCompleted: boolean,
-		statusText: string,
+		statusText?: string,
 	) => {
 		const link = zNAToLink(nft.zNA);
 		const etherscanLink = `${baseEtherscanUri}tx/${nft.transactionHash}`;
@@ -45,69 +61,69 @@ const MintPreview = (props: MintPreviewProps) => {
 			fontWeight: 700,
 		};
 
-		const openProfile = () => {
-			if (props.onOpenProfile) {
-				props.onOpenProfile();
-			}
-		};
-
 		return (
 			<>
-				<hr className="glow" />
 				<li key={`${nft.title}${Math.random()}`}>
-					<div className={`${styles.Image} border-rounded`}>
-						{/* @todo fix hardcoded handling of name */}
-						{nft.imageUri.indexOf('cloudinary') > -1 ? (
-							<img
-								alt="nft preview"
-								style={{ objectFit: 'cover' }}
-								src={nft.imageUri}
-							/>
-						) : (
-							<Image src={nft.imageUri} />
-						)}
-					</div>
-					<div className={styles.Info}>
-						<div>
-							<h5 className="glow-text-blue">{nft.title}</h5>
-
-							{nft.zNA.length > 0 && (
-								<>
-									{exists ? (
-										<Link to={link}>{nft.zNA}</Link>
-									) : (
-										<span
-											style={{ color: 'var(--color-grey)', fontWeight: 700 }}
-										>
-											{nft.zNA}
-										</span>
-									)}
-								</>
-							)}
+					<hr className={styles.Divider} />
+					<div>
+						<div className={`${styles.Image} border-rounded`}>
+							{/* @todo fix hardcoded handling of name */}
+							<Link to={link}>
+								{nft.imageUri.indexOf('cloudinary') > -1 ? (
+									<img
+										alt={ALT_TEXT.NFT_PREVIEW}
+										style={{ objectFit: 'cover' }}
+										src={nft.imageUri}
+									/>
+								) : (
+									<Image src={nft.imageUri} />
+								)}
+							</Link>
 						</div>
+						<div className={styles.Info}>
+							<h3>{nft.title}</h3>
 
-						{isCompleted &&
-							nft.zNA.length === 0 &&
-							props.onOpenProfile !== undefined && (
-								<FutureButton glow onClick={openProfile}>
-									View In Profile
-								</FutureButton>
-							)}
+							<Link className={styles.Link} to={link}>
+								0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
+							</Link>
 
-						<div>
-							{nft.stakeAmount && nft.stakeAmount.length > 0 ? (
-								<p style={{ marginTop: '16px' }}>
-									Stake Amount: {nft.stakeAmount} LOOT
-								</p>
-							) : null}
-							<div style={statusStyle}>{statusText}</div>
-							{nft.transactionHash.length > 0 && (
-								<p>
-									<a target={'_blank'} href={etherscanLink} rel="noreferrer">
-										View on Etherscan
-									</a>
-								</p>
-							)}
+							<p>{nft.story}</p>
+
+							<div className={styles.Container}>
+								{!exists && (
+									<div className={styles.IconContainer}>
+										<img alt={ALT_TEXT.QUESTION_MARK} src={questionMark} />
+									</div>
+								)}
+								<div
+									className={`${styles.TextContainer} ${
+										exists ? styles.Success : ''
+									}`}
+								>
+									<div>{getPreviewPrompt(exists)}</div>
+									<div>{!exists && MESSAGES.MINTING_TIME}</div>
+									<div className={styles.ButtonContainer}>
+										{nft.transactionHash.length > 0 && (
+											<a
+												target={'_blank'}
+												href={etherscanLink}
+												rel="noreferrer"
+											>
+												{BUTTON_TEXT.ETHERSCAN}
+											</a>
+										)}
+									</div>
+								</div>
+							</div>
+
+							<div>
+								{nft.stakeAmount && nft.stakeAmount.length > 0 ? (
+									<p style={{ marginTop: '16px' }}>
+										Stake Amount: {nft.stakeAmount} LOOT
+									</p>
+								) : null}
+								<div style={statusStyle}>{statusText}</div>
+							</div>
 						</div>
 					</div>
 				</li>
@@ -116,8 +132,7 @@ const MintPreview = (props: MintPreviewProps) => {
 	};
 
 	const mintingStatusCard = (nft: NftStatusCard, exists: boolean) => {
-		const statusText = exists ? 'Minting completed!' : 'Minting domain...';
-		return statusCard(nft, exists, exists, statusText);
+		return statusCard(nft, exists, exists);
 	};
 
 	const requestingStatusCard = (nft: NftStatusCard, placed: boolean) => {
@@ -131,7 +146,7 @@ const MintPreview = (props: MintPreviewProps) => {
 	if (minting.length > 0 || minted.length > 0) {
 		mintingSection = (
 			<>
-				<h4 className="glow-text-white">Minting</h4>
+				<h4>{TITLE.MINT_NFT}</h4>
 				{minting.map((n: NftStatusCard) => mintingStatusCard(n, false))}
 				{minted.map((n: NftStatusCard) => mintingStatusCard(n, true))}
 			</>

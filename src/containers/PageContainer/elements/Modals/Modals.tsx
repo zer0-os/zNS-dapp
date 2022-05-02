@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ProfileModal, MintNewNFT } from 'containers';
+import { MintNewNFT } from 'containers';
 import { ConnectToWallet, Overlay } from 'components';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useNavbar } from 'lib/hooks/useNavbar';
@@ -69,11 +69,13 @@ export const Modals: React.FC<ModalsProps> = ({
 
 	return (
 		<>
-			{/* Profile Modal */}
-			<ProfileModal />
-
 			{/* Backdrop of header searching */}
-			<Overlay style={{ zIndex: 3 }} open={isSearching} onClose={() => {}} />
+			<Overlay
+				style={{ zIndex: 3 }}
+				hasCloseButton={false}
+				open={isSearching}
+				onClose={() => {}}
+			/>
 
 			{/* Connect Wallet Modal */}
 			{modal === Modal.Wallet && (

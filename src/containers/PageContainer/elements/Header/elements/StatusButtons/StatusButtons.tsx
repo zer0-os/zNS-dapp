@@ -16,6 +16,7 @@ type StatusButtonsProps = {
 		stakeRequesting: number;
 		stakeRequested: number;
 		transferring: number;
+		transferred: number;
 	};
 	onOpenProfile: () => void;
 };
@@ -26,13 +27,19 @@ export const StatusButtons: React.FC<StatusButtonsProps> = ({
 }) => {
 	const { showStatusButton, showTransferringButton, statusCount } =
 		useMemo(() => {
-			const { minting, minted, stakeRequesting, stakeRequested, transferring } =
-				statusCounts;
+			const {
+				minting,
+				minted,
+				stakeRequesting,
+				stakeRequested,
+				transferring,
+				transferred,
+			} = statusCounts;
 
 			const showStatusButton =
 				minting + minted + stakeRequesting + stakeRequested > 0;
 			const statusCount = minting + stakeRequesting;
-			const showTransferringButton = transferring > 0;
+			const showTransferringButton = transferred + transferring > 0;
 
 			return {
 				showStatusButton,

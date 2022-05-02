@@ -46,7 +46,7 @@ type DomainSettingsModalOptions = {
 	type: DomainSettingsModalType;
 	title: string;
 	buttons?: {
-		confirm: string;
+		confirm: { small: string; large: string };
 		cancel: string;
 	};
 	description: {
@@ -79,7 +79,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 				'Unlocking metadata... This may take up to 20 mins. Do not close this window or refresh your browser...',
 		},
 		buttons: {
-			confirm: 'Unlock',
+			confirm: { small: 'Unlock', large: 'Unlock' },
 			cancel: 'Cancel',
 		},
 	} as DomainSettingsModalOptions,
@@ -95,7 +95,10 @@ export const DOMAIN_SETTINGS_MODALS = {
 				'Saving metadata changes... This may take up to 20 mins. Do not close this window or refresh your browser...',
 		},
 		buttons: {
-			confirm: 'Save without locking',
+			confirm: {
+				small: 'Save',
+				large: 'Save without locking',
+			},
 			cancel: 'Return',
 		},
 	} as DomainSettingsModalOptions,
@@ -111,7 +114,7 @@ export const DOMAIN_SETTINGS_MODALS = {
 				'Save & locking metadata changes... This may take up to 20 mins. Do not close this window or refresh your browser...',
 		},
 		buttons: {
-			confirm: 'Save & Lock',
+			confirm: { small: 'Save', large: 'Save & Lock' },
 			cancel: 'Return',
 		},
 	} as DomainSettingsModalOptions,

@@ -57,6 +57,15 @@ export interface UploadMetadata extends Meta {
 	name: string;
 }
 
+export type AdditionalMetadata = Pick<
+	Metadata,
+	| 'stakingRequests'
+	| 'isBiddable'
+	| 'gridViewByDefault'
+	| 'customDomainHeader'
+	| 'customDomainHeaderValue'
+>;
+
 export interface ParentDomain extends Domain {
 	subdomains: SubDomain[];
 }
@@ -108,6 +117,7 @@ export interface NftParams {
 	previewImage?: Buffer;
 	dynamic: boolean;
 	locked: boolean;
+	additionalMetadata?: AdditionalMetadata;
 }
 
 // Interface for an NFT Status Card

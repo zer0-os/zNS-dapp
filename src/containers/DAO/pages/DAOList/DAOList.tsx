@@ -60,8 +60,6 @@ const DAOList: React.FC = () => {
 				genericStyles.Container,
 				'main',
 				'background-primary',
-				'border-primary',
-				'border-rounded',
 			)}
 		>
 			<ul className={genericStyles.Stats}>

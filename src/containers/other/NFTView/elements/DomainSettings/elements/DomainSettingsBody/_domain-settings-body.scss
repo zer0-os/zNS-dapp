@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 .domain-settings-body {
 	&__blocked {
 		position: absolute;
@@ -12,8 +14,14 @@
 	&__container {
 		position: relative;
 		flex-grow: 1;
-		padding: 48px;
+		margin-top: 40px;
 		overflow-y: auto;
+
+		// Mobile XL Breakpoint
+		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+			padding: 40px 48px 8px 48px;
+			margin-top: 0;
+		}
 
 		&.locked {
 			overflow-y: hidden;
@@ -23,8 +31,22 @@
 
 	&__top {
 		display: flex;
+		flex-direction: column;
 		justify-content: space-between;
+		align-items: center;
 		width: 100%;
+		margin: 0 auto;
+
+		// Mobile XL Breakpoint
+		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+			flex-direction: column;
+			align-items: center;
+		}
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+			flex-direction: row;
+			align-items: flex-start;
+		}
 
 		&--left {
 			display: flex;
@@ -36,11 +58,12 @@
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
-			border-radius: 16px;
+			border-radius: var(--box-radius);
 			overflow: hidden;
 			cursor: pointer;
 			transition: transform var(--animation-time-medium) ease-in-out,
 				border-color var(--animation-time-medium) ease-in-out;
+			margin-bottom: 16px;
 		}
 
 		&--right {
@@ -48,13 +71,25 @@
 			min-width: 260px;
 
 			> div + div {
-				margin-top: 32px;
+				margin-top: 16px;
+				// Mobile Tablet XS Breakpoint
+				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+					margin-top: 24px;
+				}
 			}
 		}
 	}
 
 	&__center {
-		margin: 40px 0;
+		margin: 16px auto;
+		max-width: 350px;
+
+		// Mobile XL Breakpoint
+		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+			width: 100%;
+			margin: 16px auto 20px auto;
+			max-width: unset;
+		}
 	}
 
 	&__footer {
@@ -62,17 +97,18 @@
 		border-top: 2px solid var(--color-grey-lighter-2);
 
 		h3 {
-			font-size: 16px;
+			text-align: center;
+			font-size: var(--font-size-default);
 			font-weight: 700;
 			line-height: 24px;
-			margin-bottom: 16px;
+			margin-bottom: 8px;
 		}
 
 		&--section {
 			display: flex;
 			flex-direction: column;
 			padding: 16px 0;
-			border-bottom: 1px solid var(--color-purple-lighter);
+			border-bottom: 1px solid var(--color-grey-mine-shaft);
 		}
 
 		&--main-section {
@@ -81,6 +117,12 @@
 
 			> label {
 				margin-right: 8px;
+				font-size: 14px;
+
+				// Tablet Small Breakpoint
+				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+					font-size: var(--font-size-default);
+				}
 			}
 		}
 

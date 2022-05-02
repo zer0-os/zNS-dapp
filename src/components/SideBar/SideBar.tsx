@@ -1,66 +1,86 @@
-import { FC } from 'react';
+//- React Imports
+import { Link, useLocation } from 'react-router-dom';
 
-import SideBarStyles from './SideBar.module.scss';
+//- Containers Imports
+import { BuyTokenRedirect } from 'containers';
 
-import marketIcon from './assets/icon_market.svg';
-import stakingIcon from './assets/icon_staking.svg';
-import daoIcon from './assets/icon_dao.svg';
-import { useHistory } from 'react-router-dom';
+//- Constants Imports
+import { getNavLinks } from 'lib/utils/nav';
+import { LOGO, ZERO } from 'constants/assets';
+import { URLS } from 'constants/urls';
+import { ALT_TEXT, COLOURS } from './SideBar.constants';
 
-const SideBar: FC = () => {
-	const history = useHistory();
-	// Can't use route match without being inside a route
+//- Styles Imports
+import styles from './SideBar.module.scss';
+
+//- Library Imports
+import classNames from 'classnames/bind';
+import { appFromPathname } from 'lib/utils';
+import { useWeb3React } from '@web3-react/core';
+import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
+import { startCase, toLower } from 'lodash';
+import { randomUUID } from 'lib/random';
+
+const cx = classNames.bind(styles);
+
+const SideBar = () => {
+	const { pathname } = useLocation();
+	const { chainId } = useWeb3React();
+	const navLinks = getNavLinks();
+
+	const network = chainIdToNetworkType(chainId);
 
 	return (
-		<div className={SideBarStyles.SideBar}>
-			<div className={SideBarStyles.Navigator}>
-				<div className={SideBarStyles.Icons}>
-					<div
-						className={SideBarStyles.Action}
-						key="market"
-						onClick={() => history.push('/market')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/market') > -1 &&
-								SideBarStyles.Selected
-							}`}
+		<div className={styles.BorderContainer}>
+			<div className={styles.Container}>
+				<div className={styles.LinkContainer}>
+					<Link className={styles.HomeLink} to={appFromPathname(pathname)}>
+						<img alt={ALT_TEXT.APP_LOGO} src={LOGO} />
+					</Link>
+					<ul className={styles.Links}>
+						{navLinks.map((l) => (
+							<li key={`${l.label}${randomUUID()}`}>
+								<Link
+									to={l.route}
+									className={cx({ Selected: pathname.startsWith(l.route) })}
+								>
+									<div
+										className={cx(
+											{ Selected: pathname.startsWith(l.route) },
+											styles.ImageContainer,
+										)}
+									>
+										{l.icon &&
+											l.icon(
+												pathname.startsWith(l.route)
+													? COLOURS.WHITE
+													: COLOURS.ALTO,
+											)}
+									</div>
+									<label>{l.label}</label>
+								</Link>
+							</li>
+						))}
+					</ul>
+				</div>
+
+				<div className={styles.Footer}>
+					<BuyTokenRedirect />
+					<div className={styles.ZeroIconContainer}>
+						<a
+							className={styles.Zero}
+							target="_blank"
+							href={URLS.ZERO}
+							rel="noreferrer"
 						>
-							<img alt="market icon" src={marketIcon} />
-						</div>
-						{/* TODO: Fix overlaying issue with Name */}
-						<div className={SideBarStyles.Name}>Market</div>
+							<img alt={ALT_TEXT.ZERO_LOGO} src={ZERO} />
+						</a>
 					</div>
-					<div
-						className={SideBarStyles.Action}
-						key="dao"
-						onClick={() => history.push('/dao')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/dao') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="staking icon" src={daoIcon} />
-						</div>
-						<div className={SideBarStyles.Name}>DAOs</div>
-					</div>
-					<div
-						className={SideBarStyles.Action}
-						key="staking"
-						onClick={() => history.push('/staking')}
-					>
-						<div
-							className={`${SideBarStyles.Hype} ${
-								history.location.pathname.indexOf('/staking') > -1 &&
-								SideBarStyles.Selected
-							}`}
-						>
-							<img alt="staking icon" src={stakingIcon} />
-						</div>
-						<div className={SideBarStyles.Name}>Staking</div>
-					</div>
+					{network !== NETWORK_TYPES.MAINNET && (
+						<label className={styles.Network}>
+							Network: {startCase(toLower(network))}
+						</label>
+					)}
 				</div>
 			</div>
 		</div>

@@ -3,18 +3,18 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
 	height: 100%;
 	width: 100%;
 	overflow: hidden;
+	border-radius: 8px;
 }
 
 .Media {
 	object-fit: contain;
 	max-width: 100%;
 	max-height: 100%;
-	border-radius: 8px;
 	transition: opacity var(--animation-time-medium) ease-in-out;
+	border-radius: 8px;
 }
 
 .Cover {

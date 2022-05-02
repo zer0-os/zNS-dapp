@@ -4,7 +4,7 @@ import { getMetadata } from 'lib/metadata';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
-export function useDomainMetadata(metadataUri: Maybe<string>) {
+export function useDomainMetadata(metadataUri: Maybe<string>): Maybe<Metadata> {
 	const [metadata, setMetadata] = useState<Maybe<Metadata>>(undefined);
 	const { instance: sdk } = useZnsSdk();
 

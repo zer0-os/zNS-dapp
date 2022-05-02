@@ -166,32 +166,26 @@ const Details = ({
 			{error !== undefined && <div className={styles.Error}>{error}</div>}
 
 			{/* Buttons */}
-			{wildBalance > 0 && (
-				<div className={styles.Buttons}>
-					{stepContent === StepContent.Details && (
-						<>
-							<FutureButton alt glow onClick={onClose}>
-								{BUTTONS[StepContent.Details].SECONDARY}
-							</FutureButton>
-
-							<FutureButton
-								glow={isBidValid && Number(bid) < wildBalance!}
-								disabled={isBidValid && Number(bid) > wildBalance!}
-								onClick={onSubmit}
-							>
-								{onSubmitButtonText}
-							</FutureButton>
-						</>
-					)}
-					{stepContent === StepContent.Success && (
-						<>
-							<FutureButton glow onClick={onSubmit}>
-								{onSubmitButtonText}
-							</FutureButton>
-						</>
-					)}
-				</div>
-			)}
+			<div className={styles.Buttons}>
+				{stepContent === StepContent.Details && (
+					<>
+						<FutureButton
+							glow={isBidValid && Number(bid) < wildBalance!}
+							disabled={isBidValid && Number(bid) > wildBalance!}
+							onClick={onSubmit}
+						>
+							{onSubmitButtonText}
+						</FutureButton>
+					</>
+				)}
+				{stepContent === StepContent.Success && (
+					<>
+						<FutureButton glow onClick={onSubmit}>
+							{onSubmitButtonText}
+						</FutureButton>
+					</>
+				)}
+			</div>
 		</>
 	);
 };

@@ -52,9 +52,6 @@ const MintDropNFTBanner: React.FC<MintDropNFTBannerProps> = ({
 				<div className={`${styles.TextContainer}`}>
 					<h2 className={`${styles.Title}`}>{title}</h2>
 					<p className={`${styles.Label}`}>{label}</p>
-					<p className={`${styles.Label} ${styles.Mobile}`}>
-						Minting is available on desktop only
-					</p>
 				</div>
 
 				<p className={`${styles.Button}`}>

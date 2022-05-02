@@ -12,8 +12,10 @@ import { usePropsState } from 'lib/hooks/usePropsState';
 import grid from './assets/grid.svg';
 import list from './assets/list.svg';
 import classNames from 'classnames';
+import useMatchMedia from 'lib/hooks/useMatchMedia';
 
 const DEFAULT_SEARCH_KEY = 'name';
+const GRID_BREAKPOINT = 744;
 
 type GenericTableHeader = {
 	label: string | React.ReactNode;
@@ -25,8 +27,8 @@ const GenericTable = (props: any) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
-	const isGridViewByDefault =
-		window.innerWidth <= 700 || props.isGridViewByDefault;
+
+	const isGridViewByDefault = props.isGridViewByDefault;
 
 	// chunk defines which row we're up to when infinite scroll is enabled
 	// i.e., chunk 2 with chunkSize 6 means we've loaded 12 rows
@@ -34,6 +36,7 @@ const GenericTable = (props: any) => {
 
 	const [isGridView, setIsGridView] =
 		usePropsState<boolean>(isGridViewByDefault);
+
 	const [searchQuery, setSearchQuery] = useState<string>();
 
 	const contentRef = useRef<HTMLDivElement>(null);
@@ -42,8 +45,8 @@ const GenericTable = (props: any) => {
 	const chunkSize = isGridView ? 6 : 12;
 
 	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
-	const shouldShowSearchBar = !props.notSearchable;
-
+	const shouldShowSearchBar = !props.notSearchable && props.data?.length > 0;
+	const isSmallScreen = useMatchMedia(`(max-width: ${GRID_BREAKPOINT}px)`);
 	// Handler for infinite scroll trigger
 	const {
 		ref,
@@ -95,10 +98,15 @@ const GenericTable = (props: any) => {
 	};
 
 	// Toggles to grid view when viewport
-	// resizes to below 700px
+	// resizes to below set px
 	const handleResize = () => {
-		if (window.innerWidth <= 700) {
+		if (
+			window.innerWidth <= GRID_BREAKPOINT &&
+			props.gridComponent !== undefined
+		) {
 			setIsGridView(true);
+		} else if (props.notSearchable) {
+			setIsGridView(false);
 		}
 	};
 
@@ -246,16 +254,16 @@ const GenericTable = (props: any) => {
 	return (
 		<div className={styles.Container} style={props.style}>
 			<div ref={contentRef} className={styles.Content}>
-				{(shouldShowSearchBar || shouldShowViewToggle) && (
+				{shouldShowSearchBar && (
 					<div className={styles.Controls}>
 						{shouldShowSearchBar && (
 							<SearchBar
 								placeholder={'Search by ' + (props.searchBy ?? 'domain name')}
 								onChange={onSearchBarUpdate}
-								style={{ width: '100%', marginRight: 16 }}
+								style={{ width: '100%' }}
 							/>
 						)}
-						{shouldShowViewToggle && (
+						{shouldShowViewToggle && !isSmallScreen && (
 							<div className={styles.Buttons}>
 								<IconButton
 									onClick={() => setIsGridView(false)}
@@ -278,7 +286,8 @@ const GenericTable = (props: any) => {
 						<p className={classNames(styles.Loading, 'text-center')}>
 							{props.emptyText}
 						</p>
-					) : isGridView ? (
+					) : props.gridComponent !== undefined &&
+					  (isGridView || isSmallScreen) ? (
 						GridView
 					) : (
 						ListView
