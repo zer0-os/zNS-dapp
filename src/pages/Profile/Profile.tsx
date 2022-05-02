@@ -140,6 +140,7 @@ const Profile = () => {
 					<nav className={styles.Nav}>
 						{TABS.map((route) => (
 							<Link
+								key={route.title}
 								className={cx({
 									Selected: location.pathname === r(route.location),
 								})}
@@ -154,6 +155,7 @@ const Profile = () => {
 					<Switch>
 						{TABS.map((route) => (
 							<Route
+								key={route.title}
 								exact
 								path={r(route.location)}
 								component={route.component}

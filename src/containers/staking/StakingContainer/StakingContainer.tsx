@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Overlay } from 'components';
 
@@ -45,12 +45,8 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	const { refetch: refetchUserData } = useStakingUserData();
 
 	const { pathname } = useLocation();
-	// const { setLocation } = useNav();
-	const { path } = useRouteMatch();
 
-	// useEffect(() => {
-	// 	console.log(path);
-	// }, [path]);
+	const { path } = useRouteMatch();
 
 	const refetchAll = () => {
 		refetchPoolData();

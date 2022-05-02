@@ -1,4 +1,4 @@
-import { UploadMetadata } from 'lib/types';
+import { UploadMetadata, AdditionalMetadata } from 'lib/types';
 
 export * from './domains';
 export * from './number';
@@ -8,6 +8,7 @@ interface DomainMetadataParams {
 	image: Buffer;
 	name: string;
 	story: string;
+	additionalMetadata?: AdditionalMetadata;
 }
 
 interface UploadResponseDTO {
@@ -39,6 +40,7 @@ const uploadMetadata = async (params: DomainMetadataParams) => {
 		name: params.name,
 		description: params.story,
 		image: image.url,
+		...params.additionalMetadata,
 	};
 
 	if (params.previewImage) {

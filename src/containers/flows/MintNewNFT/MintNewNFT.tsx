@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
@@ -83,8 +83,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const [existingSubdomains, setExistingSubdomains] = useState<
 		string[] | undefined
 	>();
-
-	const containerRef = useRef<HTMLDivElement>(null);
 
 	const [tokenInformation, setTokenInformation] =
 		useState<TokenInformationType | null>(null);
@@ -191,6 +189,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				ticker: '',
 				dynamic: false,
 				locked: tokenInformation.locked,
+				additionalMetadata: {
+					gridViewByDefault: true,
+				},
 			},
 			setStatusText,
 		);

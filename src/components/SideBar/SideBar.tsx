@@ -5,9 +5,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { BuyTokenRedirect } from 'containers';
 
 //- Constants Imports
-import { LINKS } from 'constants/nav';
+import { getNavLinks } from 'lib/utils/nav';
 import { LOGO, ZERO } from 'constants/assets';
 import { URLS } from 'constants/urls';
+import { ALT_TEXT, COLOURS } from './SideBar.constants';
 
 //- Styles Imports
 import styles from './SideBar.module.scss';
@@ -18,12 +19,14 @@ import { appFromPathname } from 'lib/utils';
 import { useWeb3React } from '@web3-react/core';
 import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
 import { startCase, toLower } from 'lodash';
+import { randomUUID } from 'lib/random';
 
 const cx = classNames.bind(styles);
 
 const SideBar = () => {
 	const { pathname } = useLocation();
 	const { chainId } = useWeb3React();
+	const navLinks = getNavLinks();
 
 	const network = chainIdToNetworkType(chainId);
 
@@ -32,16 +35,28 @@ const SideBar = () => {
 			<div className={styles.Container}>
 				<div className={styles.LinkContainer}>
 					<Link className={styles.HomeLink} to={appFromPathname(pathname)}>
-						<img alt="app logo" src={LOGO} />
+						<img alt={ALT_TEXT.APP_LOGO} src={LOGO} />
 					</Link>
 					<ul className={styles.Links}>
-						{LINKS.map((l) => (
-							<li key={l.label}>
+						{navLinks.map((l) => (
+							<li key={`${l.label}${randomUUID()}`}>
 								<Link
 									to={l.route}
 									className={cx({ Selected: pathname.startsWith(l.route) })}
 								>
-									<img alt={`${l.label.toLowerCase()} icon`} src={l.icon} />
+									<div
+										className={cx(
+											{ Selected: pathname.startsWith(l.route) },
+											styles.ImageContainer,
+										)}
+									>
+										{l.icon &&
+											l.icon(
+												pathname.startsWith(l.route)
+													? COLOURS.WHITE
+													: COLOURS.ALTO,
+											)}
+									</div>
 									<label>{l.label}</label>
 								</Link>
 							</li>
@@ -58,7 +73,7 @@ const SideBar = () => {
 							href={URLS.ZERO}
 							rel="noreferrer"
 						>
-							<img alt="zero logo" src={ZERO} />
+							<img alt={ALT_TEXT.ZERO_LOGO} src={ZERO} />
 						</a>
 					</div>
 					{network !== NETWORK_TYPES.MAINNET && (

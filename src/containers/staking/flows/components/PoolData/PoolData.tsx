@@ -4,7 +4,7 @@ import styles from './PoolData.module.scss';
 
 import classNames from 'classnames/bind';
 import { ethers } from 'ethers';
-import { displayEther, displayEtherToFiat } from 'lib/currency';
+import { displayEtherToFiat } from 'lib/currency';
 import { formatBigNumber } from 'lib/utils';
 import { formatEther } from '@ethersproject/units';
 

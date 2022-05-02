@@ -1,5 +1,14 @@
+@use 'styles/variables/dimensions';
+
 .Inputs {
-	margin-top: 72px;
+	margin-top: 24px;
+
+	// Tablet Breakpoint
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		> * {
+			margin-top: 52px;
+		}
+	}
 
 	> *:not(:first-child) {
 		margin-top: 40px;

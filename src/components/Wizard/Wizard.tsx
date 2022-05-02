@@ -35,7 +35,7 @@ const Wizard = ({
 		{/* Header */}
 		<div className={classNames(styles.Header, headerClassName)}>
 			<h1 className="glow-text-white">{header}</h1>
-			{subHeader && <h2 className="glow-text-white">{subHeader}</h2>}
+			{subHeader && <h2>{subHeader}</h2>}
 			{sectionDivider && <hr className="glow" />}
 		</div>
 

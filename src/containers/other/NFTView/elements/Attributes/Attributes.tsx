@@ -73,16 +73,18 @@ export const Attributes: React.FC<AttributesProps> = ({ znsDomain }) => {
 
 					{/* Show / Hide more button */}
 					{initialHiddenAttributesCount > 0 && (
-						<button
-							className={`${styles.ToggleAttributes} ${
-								!isCollapsed ? styles.SetOpacityAnimation : ''
-							}`}
-							onClick={() => toggleCollapsed(!isCollapsed)}
-						>
-							{isCollapsed
-								? initialHiddenAttributesCount + ' More'
-								: 'Show Less'}
-						</button>
+						<div className={styles.ButtonContainer}>
+							<button
+								className={`${styles.ToggleAttributes} ${
+									!isCollapsed ? styles.SetOpacityAnimation : ''
+								}`}
+								onClick={() => toggleCollapsed(!isCollapsed)}
+							>
+								{isCollapsed
+									? initialHiddenAttributesCount + ' More'
+									: 'Show Less'}
+							</button>
+						</div>
 					)}
 				</ul>
 			</div>

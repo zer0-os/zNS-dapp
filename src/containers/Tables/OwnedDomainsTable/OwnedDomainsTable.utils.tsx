@@ -1,6 +1,6 @@
 //- Assets Imports
-import settingsIcon from './assets/settings.svg';
-import dollarSignIcon from './assets/dollar-sign.svg';
+import { Box } from 'react-feather';
+import { DollarSign } from 'react-feather';
 
 //- Constants Imports
 import { ACTION_KEYS } from './OwnedDomainsTable.constants';
@@ -8,11 +8,11 @@ import { ACTION_KEYS } from './OwnedDomainsTable.constants';
 export const getActions = (isViewBids: boolean) => {
 	const ACTIONS = [
 		{
-			icon: settingsIcon,
+			icon: <Box />,
 			title: ACTION_KEYS.SETTINGS,
 		},
 		{
-			icon: dollarSignIcon,
+			icon: <DollarSign />,
 			title: ACTION_KEYS.VIEW_BIDS,
 		},
 	];
@@ -28,11 +28,11 @@ export const getActions = (isViewBids: boolean) => {
 
 export const ACTIONS = [
 	{
-		icon: settingsIcon,
+		icon: <Box />,
 		title: ACTION_KEYS.SETTINGS,
 	},
 	{
-		icon: dollarSignIcon,
+		icon: <DollarSign />,
 		title: ACTION_KEYS.VIEW_BIDS,
 	},
 ];

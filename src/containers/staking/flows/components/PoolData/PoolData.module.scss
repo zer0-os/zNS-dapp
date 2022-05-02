@@ -3,7 +3,7 @@
 .Stats {
 	gap: 16px;
 
-	@media only screen and (max-width: #{dimensions.$breakpoint-small}) {
+	@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 		flex-direction: column;
 		gap: 12px;
 	}

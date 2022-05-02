@@ -60,7 +60,7 @@ const ImageCard = ({
 			</div>
 			<div className={styles.Footer}>
 				<h5 className={styles.Header}>{header ?? ''}</h5>
-				<span className={styles.Subheader}>{subHeader ?? ''}</span>
+				<div className={styles.Subheader}>{subHeader ?? ''}</div>
 				{children}
 			</div>
 		</div>

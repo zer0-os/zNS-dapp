@@ -42,7 +42,7 @@ const DomainStep = ({
 		currentBuyNow = Number(ethers.utils.formatEther(domain.currentBuyNowPrice));
 		details = [
 			{
-				name: 'Current Buy Now Price',
+				name: 'Buy Now Price',
 				value: currentBuyNow.toLocaleString() + ' WILD',
 			},
 		];

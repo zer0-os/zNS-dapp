@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 $height: 46px;
 
 .header {
@@ -55,7 +57,7 @@ $height: 46px;
 			padding-right: 4px;
 
 			// Visible up to tablet breakpoint
-			@media only screen and (min-width: 744px) {
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 				display: none;
 			}
 		}
@@ -81,6 +83,7 @@ $height: 46px;
 		&-zna-link {
 			flex-shrink: 0;
 		}
+
 		.searchBar button {
 			position: absolute;
 			padding: 0;
@@ -100,6 +103,7 @@ $height: 46px;
 			background: none;
 			width: 100%;
 			color: var(--color-text-primary);
+			z-index: 11;
 
 			&::placeholder {
 				color: #6c6c6c;
@@ -114,22 +118,30 @@ $height: 46px;
 		}
 
 		.ZNA__Container {
+			position: relative;
 			display: flex;
 			flex: 1;
 			flex-grow: 1;
 			align-items: center;
 			padding: 6px 0;
-
-			border: 1px solid #472e5b;
+			border: 1px solid var(--color-bossanova);
 			border-radius: 24px;
 			transition: all var(--animation-time-short) ease-in-out;
+
+			&:hover {
+				background: var(--color-revolver);
+			}
+
+			&-searching {
+				background: var(--color-revolver);
+			}
 		}
 	}
 
 	&__actions {
 		display: none;
 
-		@media only screen and (min-width: 744px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			display: flex;
 			position: relative;
 			right: 0;
@@ -140,7 +152,7 @@ $height: 46px;
 		}
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1264px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 			display: none;
 		}
 	}

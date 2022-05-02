@@ -1,12 +1,14 @@
+@use 'styles/variables/dimensions';
+
 .PageContainer {
 	// Mobile Breakpoints
 	width: 100%;
 	margin: 0 auto;
-	padding: 8px 8px 96px 8px;
+	padding: 8px 8px 120px 8px;
 	box-sizing: border-box;
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		margin: 0;
 		padding: 0;
 	}
@@ -16,13 +18,17 @@
 		margin-top: 8px;
 
 		// Rogue Breakpoint - Stats Widget Intro
-		@media only screen and (min-width: 569px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
 			margin-top: 16px;
 		}
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1264px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 			margin-top: 24px;
+		}
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-l}) {
+			margin-top: 56px;
 		}
 	}
 
@@ -36,7 +42,7 @@
 		width: 100%;
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1600px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-m}) {
 			justify-content: center;
 		}
 
@@ -45,7 +51,7 @@
 			display: none;
 
 			// Desktop Breakpoints
-			@media only screen and (min-width: 1264px) {
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 				display: flex;
 				position: sticky;
 				top: 0;
@@ -59,7 +65,7 @@
 				z-index: 9999;
 			}
 
-			@media only screen and (min-width: 1600px) {
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-m}) {
 				justify-content: center;
 			}
 		}
@@ -68,24 +74,24 @@
 	.FlexColumnWrapper {
 		// Mobile Breakpoints
 		width: 100%;
-		margin: 8px 0px 150px 0px;
+		margin: 0 0 16px 0px;
 
 		// Tablet Breakpoints
-		@media only screen and (min-width: 744px) {
-			max-width: 736px;
-			margin: 8px 16px 150px 16px;
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			max-width: #{dimensions.$width-max};
+			margin: 8px 16px 16px 16px;
 		}
 
-		@media only screen and (min-width: 834px) {
-			margin: 8px auto 150px auto;
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-m}) {
+			margin: 8px auto 16px auto;
 		}
 
 		// Desktop Breakpoints
-		@media only screen and (min-width: 1264px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 			margin: 24px auto;
 		}
 
-		@media only screen and (min-width: 1600px) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-m}) {
 			margin: 24px;
 		}
 	}
