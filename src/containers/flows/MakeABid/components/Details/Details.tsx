@@ -132,7 +132,7 @@ const Details = ({
 
 			{stepContent === StepContent.Details && wildBalance === 0 && (
 				<div className={styles.Error}>
-					WILD balance is required to place a bid
+					You do not have enough WILD tokens to place a bid on this domain.
 				</div>
 			)}
 
