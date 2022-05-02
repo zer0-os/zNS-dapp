@@ -1,5 +1,5 @@
 import React from 'react';
-import { getDomainId, rootDomainName } from './utils/domains';
+import { getDomainId } from './utils/domains';
 import { DisplayParentDomain, ParentDomain } from './types';
 import useAsyncEffect from 'use-async-effect';
 import { useZnsSdk } from './hooks/sdk';
@@ -48,9 +48,7 @@ export function useDomainSearch() {
 			}
 		}
 		try {
-			const rawDomains = await sdk.getDomainsByName(
-				`${rootDomainName}.%${pattern}`,
-			);
+			const rawDomains = await sdk.getDomainsByName(pattern);
 
 			let matchesResult: DisplayParentDomain[] = [];
 			const fuzzyMatch = rawDomains.map((item) => {
