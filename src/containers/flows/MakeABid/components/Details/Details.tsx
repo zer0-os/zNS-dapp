@@ -130,8 +130,14 @@ const Details = ({
 				/>
 			</div>
 
+			{stepContent === StepContent.Details && wildBalance === 0 && (
+				<div className={styles.Error}>
+					You do not have enough WILD tokens to place a bid on this domain.
+				</div>
+			)}
+
 			{/* Details Step */}
-			{stepContent === StepContent.Details && (
+			{stepContent === StepContent.Details && wildBalance > 0 && (
 				<div className={styles.PlaceBidContainer}>
 					<div className={styles.TextContainer}>{MESSAGES.ENTER_AMOUNT}</div>
 					<span className={styles.Estimate}>{getWildBalance(wildBalance)}</span>

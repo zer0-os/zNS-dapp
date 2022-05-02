@@ -1,3 +1,6 @@
+//- React Imports
+import { useCallback } from 'react';
+
 //- Component Imports
 import { Detail, NFTMedia, Tooltip, OptionDropdown } from 'components';
 
@@ -18,21 +21,18 @@ export const Amount = (amount: string) => (
 	<span className={styles.Amount}>{amount}</span>
 );
 
-type OptionType = {
-	icon: string;
-	title: string;
-}[];
-
 type NFTProps = {
 	owner: string;
 	title: string;
 	assetUrl: string;
 	creator: string;
-	options: OptionType;
 	description?: string;
-	onSelectOption: (option: Option) => void;
-	onDownload?: () => void;
+	account?: string;
+	onDownload: (assetUrl: string) => void;
 	onShare?: () => void;
+	downloadOptions: Option[];
+	moreOptions: Option[];
+	onMoreSelectOption: (option: Option) => void;
 };
 
 const NFT = ({
@@ -40,12 +40,22 @@ const NFT = ({
 	title,
 	assetUrl,
 	creator,
-	options,
 	description,
-	onSelectOption,
 	onDownload,
 	onShare,
+	downloadOptions,
+	moreOptions,
+	onMoreSelectOption,
 }: NFTProps) => {
+	const onDownloadSelectOption = useCallback(
+		(option: Option) => {
+			if (option.assetUrl) {
+				onDownload(option.assetUrl);
+			}
+		},
+		[onDownload],
+	);
+
 	////////////
 	// Render //
 	////////////
@@ -76,15 +86,23 @@ const NFT = ({
 							<img src={shareIcon} alt="share asset" />
 						</button>
 					</Tooltip>
-					<Tooltip text={'Download for Twitter'}>
-						<button onClick={onDownload}>
-							<img alt="download asset" src={downloadIcon} />
-						</button>
-					</Tooltip>
-					{options.length > 0 && (
+					{downloadOptions.length > 0 && (
 						<OptionDropdown
-							onSelect={onSelectOption}
-							options={options}
+							onSelect={onDownloadSelectOption}
+							options={downloadOptions}
+							className={styles.MoreDropdown}
+						>
+							<Tooltip text={'Download for Twitter'}>
+								<button>
+									<img alt="download asset" src={downloadIcon} />
+								</button>
+							</Tooltip>
+						</OptionDropdown>
+					)}
+					{moreOptions.length > 0 && (
+						<OptionDropdown
+							onSelect={onMoreSelectOption}
+							options={moreOptions}
 							className={styles.MoreDropdown}
 						>
 							<button>

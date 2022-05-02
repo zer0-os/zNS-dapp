@@ -50,7 +50,7 @@ export const STATUS_TEXT = {
 };
 
 export const MESSAGES = {
-	TEXT_LOADING: 'Loading Bid Data..',
+	TEXT_LOADING: 'Loading Domain Data...',
 	ENTER_AMOUNT: 'Enter the amount you wish to bid:',
 	SUCCESSFUL_BID: `Your bid was successfully placed.`,
 };

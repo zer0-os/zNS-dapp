@@ -21,6 +21,7 @@ import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
+import { MediaType } from 'components/NFTMedia/config';
 
 //- Hooks
 import {
@@ -28,10 +29,15 @@ import {
 	useViewBidsData,
 	useAsset,
 	useNFTViewModal,
+	useNftMediaAsset,
 } from './hooks';
 
 //- Constants Imports
-import { getActionFeatures, NFT_MORE_ACTIONS_TITLE } from './NFTView.constants';
+import {
+	getActionFeatures,
+	NFT_MORE_ACTIONS_TITLE,
+	NFT_DOWNLOAD_ACTIONS,
+} from './NFTView.constants';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
@@ -66,6 +72,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		refetch,
 	} = useNftData();
 
+	//- NFT Media Asset
+	const mediaAsset = useNftMediaAsset({ znsDomain });
+
 	//- View Bids Hook Data
 	const { isBidDataLoading, allBids, viewBidsDomainData } = useViewBidsData();
 
@@ -75,7 +84,13 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	//- Modal Provider Hook
 	const { openModal, closeModal } = useNFTViewModal();
 	//- Memoized data
-	const { isBiddable, isOwnedByYou, assetUrl, nftMoreOptions } = useMemo(() => {
+	const {
+		isBiddable,
+		isOwnedByYou,
+		assetUrl,
+		nftDownloadOptions,
+		nftMoreOptions,
+	} = useMemo(() => {
 		const isRootDomain = (znsDomain?.name || '').split('.').length <= 2;
 		const isOwnedByYou =
 			znsDomain?.owner.id.toLowerCase() === account?.toLowerCase();
@@ -87,13 +102,28 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			? getActionFeatures(Boolean(buyNowPrice), allBids?.length !== 0)
 			: [];
 
+		const nftDownloadOptions = [];
+		if (mediaAsset.imageAsset.isAvailable) {
+			nftDownloadOptions.push({
+				...NFT_DOWNLOAD_ACTIONS[MediaType.Image],
+				assetUrl: mediaAsset.imageAsset.url!,
+			});
+		}
+		if (mediaAsset.videoAsset.isAvailable) {
+			nftDownloadOptions.push({
+				...NFT_DOWNLOAD_ACTIONS[MediaType.Video],
+				assetUrl: mediaAsset.videoAsset.url!,
+			});
+		}
+
 		return {
 			isBiddable,
 			isOwnedByYou,
 			assetUrl,
+			nftDownloadOptions,
 			nftMoreOptions,
 		};
-	}, [znsDomain, domainMetadata, account, buyNowPrice, allBids]);
+	}, [znsDomain, domainMetadata, account, mediaAsset, buyNowPrice, allBids]);
 
 	// Convert highest bid as wei
 	const highestBidAsWei =
@@ -193,11 +223,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				title={domainMetadata?.title as string}
 				assetUrl={assetUrl as string}
 				creator={znsDomain?.minter.id as string}
-				options={nftMoreOptions}
+				downloadOptions={nftDownloadOptions}
 				description={znsDomain?.description as string}
 				onDownload={downloadAsset}
 				onShare={shareAsset}
-				onSelectOption={onSelectOption}
+				moreOptions={nftMoreOptions}
+				onMoreSelectOption={onSelectOption}
 			/>
 
 			<Actions

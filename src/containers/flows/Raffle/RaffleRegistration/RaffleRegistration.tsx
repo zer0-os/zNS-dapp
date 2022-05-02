@@ -55,13 +55,15 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 	const validationCriteria: any = {
 		eth: '0',
 		wild: '0',
-		nft: 0,
+		nft: 1,
+		genesisNft: 1,
 	};
 
 	const [hasSufficientBalance, setHasSufficientBalance] = useState<any>({
 		eth: true,
 		wild: true,
 		nft: true,
+		genesisNft: true,
 	});
 
 	const [step, setStep] = useState<Steps>(Steps.AboutRaffle);
@@ -120,7 +122,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 
 		try {
 			const response = await fetch(
-				`https://raffle-entry-microservice.herokuapp.com/balances/${props.account}/${props.drop}`,
+				`https://zns-raffle-microservice.herokuapp.com/balances/${props.account}/${props.drop}`,
 				// `https://raffle-entry-microservice.herokuapp.com/balances/0x9d79cD0605346f0Fa649D0EEE1DdB3c360aeb038/${props.drop}`,
 				{
 					method: 'GET',
@@ -139,12 +141,13 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 					.parseEther(data.wildBalance)
 					.gte(ethers.utils.parseEther(validationCriteria.wild)),
 				nft: data.nftsCount >= validationCriteria.nft,
+				genesisNft: data.nftFromGenesis >= validationCriteria.genesisNft,
 			});
 			setBalances(data);
 			// NOTE: Skip CurrentBalances step entirely and navigate to PersonalInfo Step
-			// setStep(Steps.CurrentBalances);
+			setStep(Steps.CurrentBalances);
 
-			setStep(Steps.PersonalInfo);
+			// setStep(Steps.PersonalInfo);
 		} catch (err: any) {
 			setRegistrationError(err?.message || `Failed to fetch wallet details`);
 			console.error(err);
@@ -167,7 +170,7 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 		return (
 			<>
 				<p>
-					Mintlisted members will have early access to the upcoming Beasts drop.
+					Mintlisted members will have early access to the upcoming Kicks drop.
 					Sign up to the raffle with your wallet for a chance at joining the
 					mintlist! <br />
 					<br />
@@ -227,8 +230,11 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 				messages.push(
 					validationCriteria[key] +
 						' ' +
-						key.toUpperCase() +
-						(key === 'nft' && validationCriteria[key] > 1 ? 's' : ''),
+						(key === 'genesisNft' ? 'GENESIS NFT' : key.toUpperCase()) +
+						((key === 'nft' || key === 'genesisNft') &&
+						validationCriteria[key] > 1
+							? 's'
+							: ''),
 				);
 			}
 		}
@@ -287,11 +293,23 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 						</div>
 						{/* <div>$456.00</div> */}
 					</div>
+					<div className={styles.eachBalances}>
+						<div>Genesis NFT</div>
+						<div
+							className={`${
+								!hasSufficientBalance.genesisNft ? styles.ErrorColor : ''
+							} ${styles.amount}`}
+						>
+							{balances?.nftFromGenesis || 0}
+						</div>
+						{/* <div>$456.00</div> */}
+					</div>
 				</div>
 
 				{hasSufficientBalance.eth &&
 				hasSufficientBalance.wild &&
-				hasSufficientBalance.nft ? (
+				hasSufficientBalance.nft &&
+				hasSufficientBalance.genesisNft ? (
 					<p className={styles.Success}>
 						Your balances meet the requirements for entry!
 					</p>
@@ -308,7 +326,8 @@ const RaffleRegistration = (props: RaffleRegistrationProps) => {
 						!(
 							hasSufficientBalance.eth &&
 							hasSufficientBalance.wild &&
-							hasSufficientBalance.nft
+							hasSufficientBalance.nft &&
+							hasSufficientBalance.genesisNft
 						)
 					}
 					onClick={() => setStep(Steps.PersonalInfo)}

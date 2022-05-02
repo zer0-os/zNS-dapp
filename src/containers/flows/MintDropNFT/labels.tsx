@@ -17,8 +17,8 @@ export const getBannerButtonText = (
 	if (dropStage === Stage.Public || dropStage === Stage.Whitelist) {
 		return 'Mint Now';
 	}
-	if (dropStage === Stage.Sold) {
-		return 'Beasts Secondary Market';
+	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
+		return 'Kicks Secondary Market';
 	}
 
 	return 'Learn More';
@@ -31,6 +31,7 @@ export const getBannerLabel = (
 	countdownDate?: number,
 	onFinish?: () => void,
 	isFinished?: boolean,
+	isInTransitionMode?: boolean,
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
 		return <>Presale Mint Period Coming Soon - waiting for contract to begin</>;
@@ -55,7 +56,9 @@ export const getBannerLabel = (
 		if (countdownDate && isFinished) {
 			return (
 				<div style={{ display: 'flex', flexDirection: 'column' }}>
-					<span>Public sale starting now - waiting for contract to begin</span>
+					<span>
+						Community sale starting now - waiting for contract to begin
+					</span>
 				</div>
 			);
 		}
@@ -63,7 +66,7 @@ export const getBannerLabel = (
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
-					Presale Minting is now Open! Ending in{' '}
+					AIR WILD Season Two Presale Minting is now Open! Ending in{' '}
 					{countdownDate && (
 						<Countdown to={countdownDate} onFinish={onFinish} />
 					)}{' '}
@@ -85,14 +88,14 @@ export const getBannerLabel = (
 		// }
 		return (
 			<>
-				Minting is now open to everyone, act fast to secure your Beasts!{' '}
+				AIR WILD Season Two Community Minting is now Open!{' '}
 				{totalLabel(wheelsMinted!, wheelsTotal!)}
 			</>
 		);
 	}
 
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-		return <>Wolves Sale is Complete</>;
+		return <>AIR WILD Season Two Mintsale is Complete</>;
 	}
 
 	return <>Loading drop data...</>;

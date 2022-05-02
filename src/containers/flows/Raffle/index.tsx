@@ -14,20 +14,19 @@ const RaffleContainer = () => {
 	const currentTime = new Date().getTime();
 
 	// Temporary values
-	const RAFFLE_START_TIME = currentTime - 20000;
-	const RAFFLE_END_TIME = currentTime - 10000;
+	const RAFFLE_START_TIME = currentTime - 10000;
+	const RAFFLE_END_TIME = currentTime - 50000;
 	// const SALE_START_TIME = currentTime + 5000;
 	// const PRIVATE_SALE_END_TIME = currentTime + 10000;
 	// const PUBLIC_SALE_START_TIME = currentTime + 100000;
 	// const SALE_START_BLOCK = 13719840;
 
 	// Hardcoded event times
-	// const RAFFLE_START_TIME = 1645819200000;
-	// const RAFFLE_START_TIME = currentTime - 1000;
-	// const RAFFLE_END_TIME = 1646078400000;
-	const SALE_START_TIME = 1649898000000;
-	const PRIVATE_SALE_END_TIME = 1650157200000;
-	const PUBLIC_SALE_START_TIME = 1650157200000;
+	// const RAFFLE_START_TIME = 1650589200000;
+	// const RAFFLE_END_TIME = 1650762000000;
+	const SALE_START_TIME = 1651194000000;
+	const PRIVATE_SALE_END_TIME = 1651280400000;
+	const PUBLIC_SALE_START_TIME = 1651280400000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -78,7 +77,7 @@ const RaffleContainer = () => {
 			setIsModalOpen(true);
 		} else {
 			window.open(
-				'https://zine.wilderworld.com/wolfpack-genesis-drop/',
+				'https://zine.wilderworld.com/aws2-raffle-winners/',
 				'_blank',
 			);
 		}
@@ -114,7 +113,7 @@ const RaffleContainer = () => {
 		if (hasRaffleEnded) {
 			return (
 				<>
-					Mintlist Sale Begins in{' '}
+					AIR WILD Season Two Mintlist Sale Begins in{' '}
 					<b>
 						<Countdown
 							to={SALE_START_TIME}
@@ -126,7 +125,7 @@ const RaffleContainer = () => {
 		} else if (hasRaffleStarted) {
 			return (
 				<>
-					Mintlist Signup Period Ending in{' '}
+					AIR WILD Season Two Mintlist Signup Period Ending in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_END_TIME}
@@ -138,7 +137,7 @@ const RaffleContainer = () => {
 		} else {
 			return (
 				<>
-					Get notified about the Wilder Beasts raffle - starting in{' '}
+					Get notified about the AIR WILD Season Two raffle - starting in{' '}
 					<b>
 						<Countdown
 							to={RAFFLE_START_TIME}
@@ -154,7 +153,7 @@ const RaffleContainer = () => {
 		if (!hasRaffleStarted) {
 			return 'Get Notified';
 		} else if (!hasRaffleEnded) {
-			return 'Sign up for Public Sale Mintlist';
+			return 'Sign up for Mintlist';
 		} else {
 			return 'Learn More';
 		}
@@ -206,8 +205,8 @@ const RaffleContainer = () => {
 					<MintDropNFTBanner
 						title={
 							hasRaffleEnded
-								? 'Join the Wilder Wolf Pack'
-								: 'Join the Wilder Wolf Pack'
+								? 'Get Your Kicks for the Metaverse'
+								: 'Get Your Kicks for the Metaverse'
 						}
 						label={bannerLabel()}
 						buttonText={bannerButtonLabel()}

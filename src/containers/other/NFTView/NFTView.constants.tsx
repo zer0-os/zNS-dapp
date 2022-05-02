@@ -1,8 +1,13 @@
 //- Asset Imports
+import downloadImageIcon from './assets/image.svg';
+import downloadVideoIcon from './assets/video.svg';
 import cubeIcon from './assets/cube-icon.svg';
 import transferOwnershipIcon from './assets/transfer.svg';
 import dollarSignIcon from './assets/dollar-sign.svg';
 import tagIcon from './assets/tag-icon.svg';
+
+//- Component Imports
+import { MediaType } from 'components/NFTMedia/config';
 
 export enum NFT_ASSET_URLS {
 	VIDEO = 'https://res.cloudinary.com/fact0ry/video/upload/c_fit,h_900,w_900,fps_1-24,f_mp4,vc_h264,ac_aac/v1631501273/zns/NFT_ASSET_HASH.mp4',
@@ -25,6 +30,22 @@ export const NFT_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT = {
 	MOBILE: 5,
 	TABLET: 7,
 	DESKTOP: 11,
+};
+
+export enum NFT_DOWNLOAD_ACTIONS_TITLE {
+	DOWNLOAD_IMAGE = 'Static Image (PFP)',
+	DOWNLOAD_VIDEO = 'Full Animation',
+}
+
+export const NFT_DOWNLOAD_ACTIONS = {
+	[MediaType.Image]: {
+		icon: downloadImageIcon,
+		title: NFT_DOWNLOAD_ACTIONS_TITLE.DOWNLOAD_IMAGE,
+	},
+	[MediaType.Video]: {
+		icon: downloadVideoIcon,
+		title: NFT_DOWNLOAD_ACTIONS_TITLE.DOWNLOAD_VIDEO,
+	},
 };
 
 export enum NFT_MORE_ACTIONS_TITLE {
