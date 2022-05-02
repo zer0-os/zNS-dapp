@@ -33,7 +33,6 @@ type NFTProps = {
 	downloadOptions: Option[];
 	moreOptions: Option[];
 	onMoreSelectOption: (option: Option) => void;
-	onRefetch: () => void;
 };
 
 const NFT = ({
@@ -48,28 +47,6 @@ const NFT = ({
 	moreOptions,
 	onMoreSelectOption,
 }: NFTProps) => {
-	// const blobCache = useRef<string>();
-
-	// const [backgroundBlob, setBackgroundBlob] = useState<string | undefined>(
-	// 	blobCache.current,
-	// );
-	// // Load background
-	// useEffect(() => {
-	// 	let isMounted = true;
-	// 	fetch(background)
-	// 		.then((r) => r.blob())
-	// 		.then((blob) => {
-	// 			const url = URL.createObjectURL(blob);
-	// 			blobCache.current = url;
-	// 			if (isMounted) {
-	// 				setBackgroundBlob(url);
-	// 			}
-	// 		});
-	// 	return () => {
-	// 		isMounted = false;
-	// 	};
-	// }, []);
-
 	const onDownloadSelectOption = useCallback(
 		(option: Option) => {
 			if (option.assetUrl) {

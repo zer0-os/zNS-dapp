@@ -229,7 +229,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				onShare={shareAsset}
 				moreOptions={nftMoreOptions}
 				onMoreSelectOption={onSelectOption}
-				onRefetch={getPriceData}
 			/>
 
 			<Actions
