@@ -1,10 +1,5 @@
 // React
-import React, { useMemo } from 'react';
-
-// Components
-import DAOList from './pages/DAOList/DAOList';
-import DAOPage from './pages/DAOPage/DAOPage';
-import CreateProposal from './pages/CreateProposal/CreateProposal';
+import React, { useMemo, lazy, Suspense } from 'react';
 
 // Hooks
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
@@ -21,6 +16,14 @@ import { DAO_CREATE_PROPPAL } from 'lib/dao/constants';
 import styles from './DAOContainer.module.scss';
 import classNames from 'classnames';
 import useRedirect from 'lib/hooks/useRedirect';
+
+// Components
+import { LoadingIndicator } from 'components';
+const DAOList = lazy(() => import('./pages/DAOList/DAOList'));
+const DAOPage = lazy(() => import('./pages/DAOPage/DAOPage'));
+const CreateProposal = lazy(
+	() => import('./pages/CreateProposal/CreateProposal'),
+);
 
 type DAOContainerProps = {
 	className?: string;
@@ -64,11 +67,13 @@ const DAOContainer: React.FC<DAOContainerProps> = ({ className, style }) => {
 	}, [zna]);
 
 	return (
-		<main className={classNames(styles.Container, className)} style={style}>
-			{page.isCreateProposal && <CreateProposal />}
-			{page.isDAOList && <DAOList />}
-			{page.isDAODetail && zna !== '' && <DAOPage />}
-		</main>
+		<Suspense fallback={<LoadingIndicator text="" />}>
+			<main className={classNames(styles.Container, className)} style={style}>
+				{page.isCreateProposal && <CreateProposal />}
+				{page.isDAOList && <DAOList />}
+				{page.isDAODetail && zna !== '' && <DAOPage />}
+			</main>
+		</Suspense>
 	);
 };
 
