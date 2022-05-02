@@ -29,6 +29,9 @@ import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { truncateDomain } from 'lib/utils';
+import { ethers } from 'ethers';
+import { useDidMount } from 'lib/hooks/useDidMount';
+import { useZnsContracts } from 'lib/contracts';
 
 //- Hooks
 import useBidData from './hooks/useBidData';
@@ -39,8 +42,6 @@ import styles from './MakeABid.module.scss';
 //- Types Imports
 import { Step, StepContent } from './MakeABid.types';
 import { ERC20 } from 'types';
-import { useZnsContracts } from 'lib/contracts';
-import { ethers } from 'ethers';
 
 const maxCharacterLength = 28;
 
@@ -55,6 +56,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	// Data //
 	//////////
 
+	// Contracts
 	const znsContracts = useZnsContracts()!;
 	const wildContract: ERC20 = znsContracts.wildToken;
 
@@ -65,6 +67,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	const { bidData, isLoading } = useBidData(domain.id);
 	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
+	const domainMetadata = useDomainMetadata(domain.metadata);
 
 	// Refs
 	const isMounted = useRef(false);
@@ -79,7 +82,8 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	const [stepContent, setStepContent] = useState<StepContent>(
 		StepContent.CheckingZAuctionApproval,
 	);
-	const domainMetadata = useDomainMetadata(domain.metadata);
+
+	// Other
 	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
 	const isBidValid = !Number.isNaN(parseFloat(bid));
 
@@ -87,12 +91,18 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	// Functions //
 	///////////////
 
-	// Check zAuction Approval
+	/**
+	 * Controls modal state and calls SDK methods for what happens
+	 * when the modal checks zAuction approval status
+	 * @returns void
+	 */
 	const checkZAuctionApproval = () => {
 		if (!sdk || !library || !account) {
 			return;
 		}
 		setError(undefined);
+		setCurrentStep(Step.zAuction);
+		setStepContent(StepContent.CheckingZAuctionApproval);
 		(async () => {
 			try {
 				const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
@@ -115,7 +125,11 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		})();
 	};
 
-	// Approve zAuction Flow
+	/**
+	 * Controls modal state and calls SDK methods for what happens
+	 * when the user approves zAuction
+	 * @returns void
+	 */
 	const approveZAuction = () => {
 		if (!sdk || !library || !account) {
 			return;
@@ -149,7 +163,11 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		setStatusText(status);
 	};
 
-	// Confirm bid
+	/**
+	 * Controls modal state and calls SDK methods for what happens
+	 * when the user confirms their bid
+	 * @returns void
+	 */
 	const onConfirm = async () => {
 		const bidAmount = Number(bid);
 		if (!bidAmount) return;
@@ -158,18 +176,22 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		setStepContent(StepContent.PlacingBid);
 		try {
 			await placeBid(domain, bidAmount, onStep);
+			if (!isMounted.current) {
+				return;
+			}
 			addNotification(
 				getSuccessNotification(getBidAmountText(bid), domain.name),
 			);
 			setIsBidPlaced(true);
 			setStepContent(StepContent.Success);
 		} catch (e) {
+			if (!isMounted.current) {
+				return;
+			}
 			setCurrentStep(Step.ConfirmDetails);
 			setError(ERRORS.REJECTED_WALLET);
 			setStepContent(StepContent.Details);
 		}
-
-		if (!isMounted.current) return;
 	};
 
 	// Set confirm step button text
@@ -178,12 +200,18 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 			? BUTTONS[StepContent.Details].TERTIARY
 			: BUTTONS[StepContent.Details].PRIMARY;
 
-	// Step bar navigation
+	/**
+	 * Handles navigating between steps
+	 * @param i step number to navigate to
+	 */
 	const onStepNavigation = (i: number) => {
 		setCurrentStep(i);
 		setStepContent(i);
 	};
 
+	/**
+	 * URL to the image for the NFT being bidded on
+	 */
 	const assetUrl = useMemo(() => {
 		return (
 			domainMetadata?.animation_url ||
@@ -193,37 +221,38 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		);
 	}, [domainMetadata]);
 
+	/**
+	 * Triggers calls to get zAuction approval status and WILD balance
+	 * for the connect account/wallet.
+	 * Saves these variables to state, rather than returns them.
+	 * @returns void
+	 */
+	const getAccountData = () => {
+		if (!account) {
+			return;
+		}
+		checkZAuctionApproval();
+		wildContract.balanceOf(account).then((balance) => {
+			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
+		});
+	};
+
 	/////////////
 	// Effects //
 	/////////////
 
-	useEffect(() => {
-		if (!account) {
-			return;
-		}
-
-		const fetchTokenBalance = async () => {
-			const balance = await wildContract.balanceOf(account);
-			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
-		};
-		fetchTokenBalance();
-	}, [wildContract, account]);
-
-	// Set initial step
-	useEffect(() => {
-		if (currentStep === Step.zAuction) {
-			setCurrentStep(Step.zAuction);
-			setStepContent(StepContent.CheckingZAuctionApproval);
-			checkZAuctionApproval();
-		}
-	}, [currentStep]);
-
-	useEffect(() => {
+	useEffect(getAccountData, [wildContract, account]);
+	useDidMount(() => {
 		isMounted.current = true;
+		getAccountData();
 		return () => {
 			isMounted.current = false;
 		};
 	});
+
+	///////////////////
+	// Modal Content //
+	///////////////////
 
 	const content = {
 		// Failed to check zAuction
@@ -244,7 +273,6 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 			<Wizard.Confirmation
 				error={error}
 				message={STATUS_TEXT.ACCEPT_ZAUCTION_PROMPT}
-				primaryButtonText={confirmationErrorButtonText()}
 				onClickPrimaryButton={approveZAuction}
 				onClickSecondaryButton={onClose}
 			/>
@@ -259,7 +287,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		),
 		// NFT details confirmation
 		[StepContent.Details]:
-			wildBalance && !isLoading ? (
+			wildBalance !== undefined && !isLoading ? (
 				<Details
 					stepContent={stepContent}
 					bidData={bidData}

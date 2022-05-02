@@ -130,8 +130,14 @@ const Details = ({
 				/>
 			</div>
 
+			{stepContent === StepContent.Details && wildBalance === 0 && (
+				<div className={styles.Error}>
+					You do not have enough WILD tokens to place a bid on this domain.
+				</div>
+			)}
+
 			{/* Details Step */}
-			{stepContent === StepContent.Details && (
+			{stepContent === StepContent.Details && wildBalance > 0 && (
 				<div className={styles.PlaceBidContainer}>
 					<div className={styles.TextContainer}>{MESSAGES.ENTER_AMOUNT}</div>
 					<span className={styles.Estimate}>{getWildBalance(wildBalance)}</span>
@@ -160,30 +166,32 @@ const Details = ({
 			{error !== undefined && <div className={styles.Error}>{error}</div>}
 
 			{/* Buttons */}
-			<div className={styles.Buttons}>
-				{stepContent === StepContent.Details && (
-					<>
-						<FutureButton alt glow onClick={onClose}>
-							{BUTTONS[StepContent.Details].SECONDARY}
-						</FutureButton>
+			{wildBalance > 0 && (
+				<div className={styles.Buttons}>
+					{stepContent === StepContent.Details && (
+						<>
+							<FutureButton alt glow onClick={onClose}>
+								{BUTTONS[StepContent.Details].SECONDARY}
+							</FutureButton>
 
-						<FutureButton
-							glow={isBidValid && Number(bid) < wildBalance!}
-							disabled={isBidValid && Number(bid) > wildBalance!}
-							onClick={onSubmit}
-						>
-							{onSubmitButtonText}
-						</FutureButton>
-					</>
-				)}
-				{stepContent === StepContent.Success && (
-					<>
-						<FutureButton glow onClick={onSubmit}>
-							{onSubmitButtonText}
-						</FutureButton>
-					</>
-				)}
-			</div>
+							<FutureButton
+								glow={isBidValid && Number(bid) < wildBalance!}
+								disabled={isBidValid && Number(bid) > wildBalance!}
+								onClick={onSubmit}
+							>
+								{onSubmitButtonText}
+							</FutureButton>
+						</>
+					)}
+					{stepContent === StepContent.Success && (
+						<>
+							<FutureButton glow onClick={onSubmit}>
+								{onSubmitButtonText}
+							</FutureButton>
+						</>
+					)}
+				</div>
+			)}
 		</>
 	);
 };
