@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 .Dots {
 	--dot-size: 5px;
 	--dot-gap: 2.8px;
@@ -48,7 +50,7 @@
 	margin-top: 8px;
 
 	// Rogue Breakpoint - Stats Widget Intro
-	@media only screen and (min-width: 569px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
 		margin-top: 16px;
 	}
 }

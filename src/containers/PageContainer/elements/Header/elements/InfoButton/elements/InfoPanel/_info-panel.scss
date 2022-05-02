@@ -6,9 +6,9 @@
 		width: 340px;
 		padding: 32px;
 		border-radius: var(--box-radius);
-		background: #1a1022;
+		background: var(--color-revolver);
 		cursor: default;
-		border: 1px solid #472e5b;
+		border: 1px solid var(--color-bossanova);
 	}
 
 	&__content-section {
@@ -19,6 +19,10 @@
 			justify-content: center;
 			align-items: center;
 			margin: 0 0 1rem;
+
+			&--is-wallet-connected {
+				display: none;
+			}
 		}
 
 		&-title {
@@ -36,30 +40,6 @@
 			.divider {
 				flex: 1;
 				border-top: 1px solid var(--color-purple-lighter);
-			}
-		}
-
-		&-nav {
-			display: flex;
-			flex-direction: column;
-			align-items: flex-start !important;
-
-			padding-bottom: 12px !important;
-
-			> li {
-				> a {
-					display: flex;
-					align-items: center;
-					font-size: 18px;
-					color: var(--text-primary);
-
-					> img {
-						margin-right: 16px;
-					}
-				}
-				&:not(:first-of-type) {
-					margin-top: 16px;
-				}
 			}
 		}
 

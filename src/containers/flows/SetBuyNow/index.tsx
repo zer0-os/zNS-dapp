@@ -207,6 +207,7 @@ const SetBuyNowContainer = ({
 			wildPriceUsd={wildPriceUsd}
 			approveZAuction={approveZAuction}
 			setBuyNowPrice={setBuyNowPrice}
+			account={account ?? ''}
 		/>
 	);
 };

@@ -71,7 +71,7 @@ const DepositTableCard = (props: any) => {
 					disableSelection
 					drawerStyle={{
 						width: 222,
-						transform: 'translateX(calc(-100% + 8px))',
+						transform: 'translateX(calc(-100% + 34px))',
 					}}
 				>
 					<button ref={buttonRef} className={styles.Dots} onClick={() => {}}>

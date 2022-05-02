@@ -1,3 +1,10 @@
+@use 'styles/variables/dimensions';
+
 .mint-button {
 	padding: 0px 1rem;
+
+	@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+		margin-top: 4px;
+		padding: 0 32px;
+	}
 }

@@ -3,9 +3,30 @@
 	justify-content: space-between;
 	align-items: center;
 
-	margin-top: 24px;
+	min-height: 40px;
+	margin-top: 16px;
+}
 
-	button {
-		background: none;
-	}
+.Bid {
+	display: flex;
+	flex-direction: column;
+}
+
+.Bid label {
+	font-size: var(--font-size-small);
+	color: var(--color-grey-lighter-2);
+}
+
+.Crypto {
+	margin-top: 2px;
+	font-size: var(--font-size-smaller);
+	font-weight: 700;
+	line-height: 16px;
+	color: var(--color-text-primary);
+}
+
+.Fiat {
+	font-size: var(--font-size-small);
+	color: var(--color-grey-lighter-2);
+	margin-top: 2px;
 }

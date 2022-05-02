@@ -1,3 +1,8 @@
+@use 'styles/variables/dimensions';
+
+$width: 640px;
+$gutter: 16px;
+
 .domain-settings {
 	&__overlay {
 		background: radial-gradient(
@@ -20,10 +25,22 @@
 		display: flex;
 		flex-direction: column;
 		flex-wrap: nowrap;
-		width: 640px;
+		width: $width;
 		max-height: calc(100vh - 16px);
 		margin: 8px 0;
 		background: var(--color-background);
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			width: calc(100vw - $gutter - $gutter);
+			padding: 0 16px;
+		}
+
+		@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
+			width: 100vw;
+			height: 100vh;
+			border: none;
+			max-width: unset !important;
+		}
 	}
 
 	&__disable-outside-clicks {

@@ -56,7 +56,9 @@ export const parseDomainMetadata = (
 			domainMetadata.isBiddable === undefined ||
 			Boolean(domainMetadata.isBiddable),
 		isMintable: Boolean(domainMetadata.isMintable),
-		gridViewByDefault: Boolean(domainMetadata.gridViewByDefault),
+		gridViewByDefault:
+			domainMetadata.gridViewByDefault === undefined ||
+			Boolean(domainMetadata.gridViewByDefault),
 		customDomainHeader: Boolean(domainMetadata.customDomainHeader),
 		customDomainHeaderValue: domainMetadata.customDomainHeaderValue,
 	} as Metadata;

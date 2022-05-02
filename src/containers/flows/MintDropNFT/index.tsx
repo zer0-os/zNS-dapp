@@ -25,6 +25,9 @@ import {
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
+//- Style Imports
+import styles from './MintDropNFT.module.scss';
+
 type MintDropNFTFlowContainerProps = {
 	privateSaleEndTime: number;
 	publicSaleStartTime: number;
@@ -35,7 +38,6 @@ const MintDropNFTFlowContainer = ({
 	publicSaleStartTime,
 }: MintDropNFTFlowContainerProps) => {
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
-	const PUBLIC_SALE_START_TIME = publicSaleStartTime;
 
 	//////////////////
 	// State & Data //
@@ -63,7 +65,6 @@ const MintDropNFTFlowContainer = ({
 	const [countdownDate, setCountdownDate] = useState<number | undefined>();
 	const [hasCountdownFinished, setHasCountdownFinished] =
 		useState<boolean>(false);
-	const [isInTransitionMode, setIsInTransitionMode] = useState<boolean>(false);
 
 	// Auction data
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
@@ -458,7 +459,6 @@ const MintDropNFTFlowContainer = ({
 					countdownDate,
 					countdownFinished,
 					hasCountdownFinished,
-					isInTransitionMode,
 			  );
 	};
 
@@ -496,7 +496,7 @@ const MintDropNFTFlowContainer = ({
 					/>
 				</Overlay>
 			)}
-			<div style={{ position: 'relative', marginBottom: 16 }}>
+			<div className={styles.BannerContainer}>
 				<MintDropNFTBanner
 					title={'Join the Wilder Wolf Pack '}
 					label={bannerLabel()}

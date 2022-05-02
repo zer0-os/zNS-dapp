@@ -1,6 +1,9 @@
 //- React Imports
 import React from 'react';
 
+//- Library imports
+import classNames from 'classnames';
+
 //- Style Imports
 import styles from './Member.module.scss';
 
@@ -10,6 +13,7 @@ type MemberProps = {
 	image?: string;
 	subtext?: string;
 	showZna?: boolean;
+	className?: string;
 	style?: React.CSSProperties;
 };
 
@@ -28,6 +32,7 @@ const Member: React.FC<MemberProps> = ({
 	subtext,
 	showZna,
 	style,
+	className,
 }) => {
 	return (
 		<>
@@ -47,7 +52,7 @@ const Member: React.FC<MemberProps> = ({
 					{subtext && (
 						<>
 							<span
-								className={styles.Subtext}
+								className={classNames(styles.Subtextn, className)}
 								data-testid={TEST_ID.MEMBER_TEXT}
 							>
 								{subtext}

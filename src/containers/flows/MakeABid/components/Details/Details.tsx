@@ -163,10 +163,6 @@ const Details = ({
 			<div className={styles.Buttons}>
 				{stepContent === StepContent.Details && (
 					<>
-						<FutureButton alt glow onClick={onClose}>
-							{BUTTONS[StepContent.Details].SECONDARY}
-						</FutureButton>
-
 						<FutureButton
 							glow={isBidValid && Number(bid) < wildBalance!}
 							disabled={isBidValid && Number(bid) > wildBalance!}

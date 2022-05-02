@@ -85,7 +85,8 @@ const Details = ({
 							ethers.utils.formatEther(data.balanceWild),
 						).toLocaleString() + ' WILD'
 					}
-					subtext={'Your Balance'}
+					subtext="Your Balance"
+					mainClassName={styles.Value}
 				/>
 			)}
 			{error && <p className="text-center error-text">{error}</p>}

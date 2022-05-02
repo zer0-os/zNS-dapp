@@ -9,37 +9,28 @@
 	position: fixed;
 	left: 0;
 	bottom: 0;
-	height: 56px;
+	height: 60px;
 	background: var(--color-background);
 	border-top: 1px solid var(--color-grey-mine-shaft);
 	z-index: 999;
 
 	// Laptop/Desktop
-	@media only screen and (min-width: #{dimensions.$breakpoint-small}) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		display: none;
 	}
 
 	.NavLinks {
 		display: flex;
 		align-items: center;
+		justify-content: space-around;
+		width: 100%;
 
-		@media only screen and (min-width: #{dimensions.$breakpoint-smaller}) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			width: 100%;
 			justify-content: space-evenly;
 		}
 
 		> li {
-			display: flex;
-			justify-content: center;
-			height: 48px;
-			width: 48px;
-
-			margin-right: 48px;
-
-			&:last-child {
-				margin-right: 0;
-			}
-
 			> a {
 				display: flex;
 				align-items: center;
@@ -52,20 +43,11 @@
 
 				.ImageContainer {
 					display: flex;
-					height: 22px;
-					width: 22px;
+					border-radius: 60px;
+					padding: 13px;
 
 					&.Selected {
-						display: flex;
-						justify-content: center;
 						background: var(--color-revolver);
-						height: 48px;
-						width: 48px;
-						border-radius: 50%;
-
-						img {
-							margin: auto;
-						}
 					}
 				}
 			}

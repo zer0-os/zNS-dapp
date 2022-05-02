@@ -31,7 +31,6 @@ export const getBannerLabel = (
 	countdownDate?: number,
 	onFinish?: () => void,
 	isFinished?: boolean,
-	isInTransitionMode?: boolean,
 ): React.ReactNode => {
 	if (dropStage === Stage.Upcoming) {
 		return <>Presale Mint Period Coming Soon - waiting for contract to begin</>;
