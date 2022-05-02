@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 // Components
 import { ConnectWalletButton } from 'containers';
@@ -104,6 +104,36 @@ const Profile = () => {
 		}
 	};
 
+	const Content = useMemo(
+		() => (
+			<>
+				<nav className={styles.Nav}>
+					{TABS.map((route) => (
+						<Link
+							className={cx({
+								Selected: location.pathname === r(route.location),
+							})}
+							to={r(route.location)}
+							data-title={route.title} // set title here for css bold trick
+							replace // hitting back should take to last non-profile page
+						>
+							{route.title}
+						</Link>
+					))}
+				</nav>
+				<Switch>
+					{TABS.map((route) => (
+						<Route exact path={r(route.location)} component={route.component} />
+					))}
+					<Route exact path={path}>
+						<Redirect to={r(TABS[0].location)} />
+					</Route>
+				</Switch>
+			</>
+		),
+		[location, path],
+	);
+
 	////////////
 	// Render //
 	////////////
@@ -136,34 +166,7 @@ const Profile = () => {
 				)}
 			</div>
 			{account ? (
-				<>
-					<nav className={styles.Nav}>
-						{TABS.map((route) => (
-							<Link
-								className={cx({
-									Selected: location.pathname === r(route.location),
-								})}
-								to={r(route.location)}
-								data-title={route.title} // set title here for css bold trick
-								replace // hitting back should take to last non-profile page
-							>
-								{route.title}
-							</Link>
-						))}
-					</nav>
-					<Switch>
-						{TABS.map((route) => (
-							<Route
-								exact
-								path={r(route.location)}
-								component={route.component}
-							/>
-						))}
-						<Route exact path={path}>
-							<Redirect to={r(TABS[0].location)} />
-						</Route>
-					</Switch>
-				</>
+				Content
 			) : (
 				<div className={styles.Connect}>
 					<p>Please connect a wallet to view your profile.</p>
