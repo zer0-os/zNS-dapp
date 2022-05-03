@@ -59,7 +59,7 @@ const DAOTableRow: React.FC<DAOTableRowProps> = ({ data }) => {
 			<td>
 				<Artwork
 					id={dao.id}
-					domain={zna}
+					domain={'0://' + zna}
 					name={title}
 					image={defaultDaoIcon}
 					disableInteraction
