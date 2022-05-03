@@ -15,6 +15,7 @@ import { Metadata } from 'lib/types';
 //- Style Imports
 import styles from './Artwork.module.scss';
 import classNames from 'classnames/bind';
+import { ROOT_DOMAIN } from '../../constants/domains';
 
 type ArtworkProps = {
 	circleIcon?: boolean;
@@ -38,7 +39,6 @@ const Artwork: React.FC<ArtworkProps> = ({
 	domain,
 	disableAnimation,
 	disableInteraction,
-	id,
 	image,
 	metadataUrl,
 	name,
@@ -53,7 +53,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
 
-	const root = '';
+	const zna = (ROOT_DOMAIN.length ? ROOT_DOMAIN + '.' : '') + name;
 
 	useEffect(() => {
 		// Get metadata
@@ -68,20 +68,20 @@ const Artwork: React.FC<ArtworkProps> = ({
 					const loadedInMs = new Date().getTime() - loadTime.current.getTime();
 					setShouldAnimate(loadedInMs > 60);
 				}
-				if (isMounted.current === true) {
+				if (isMounted.current) {
 					setMetadata(m);
 				}
 			});
 		}
 
 		// Truncate
-		if (domain && (root + domain).length > 40) {
+		if (domain && zna.length > 40) {
 			const split = domain.split('.');
-			if (isMounted.current === true) {
-				setTruncatedDomain(root + split[split.length - 1]);
+			if (isMounted.current) {
+				setTruncatedDomain(ROOT_DOMAIN + '.' + split[split.length - 1]);
 			}
 		} else {
-			if (isMounted.current === true) {
+			if (isMounted.current) {
 				setTruncatedDomain(undefined);
 			}
 		}
@@ -162,20 +162,20 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && domain && (
 								<span className={styles.Domain}>
-									{truncatedDomain || root + domain}
+									{truncatedDomain || ROOT_DOMAIN + domain}
 								</span>
 							)}
 							{subtext && !domain && (
 								<span className={styles.Domain}>{subtext}</span>
 							)}
-							{!disableInteraction && domain && (
+							{!disableInteraction && zna && domain && (
 								<Link
 									className={styles.Domain}
-									to={domain.split(root)[1]}
+									to={domain.split(ROOT_DOMAIN)[1]}
 									target="_blank"
 									rel="noreferrer"
 								>
-									{truncatedDomain || domain}
+									{truncatedDomain || zna}
 								</Link>
 							)}
 						</>

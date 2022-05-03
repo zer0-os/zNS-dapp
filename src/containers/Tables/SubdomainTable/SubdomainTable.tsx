@@ -47,7 +47,7 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	 * Instead, data and callbacks should be sent directly to the row component
 	 */
 	const { domain: biddingOn, close, bidPlaced } = useBid();
-	const isRootDomain = domain && domain?.name.split('.').length <= 2;
+	const isRootDomain = domain?.name && domain?.name.split('.').length <= 2;
 	const isGridViewByDefault = isRootDomain
 		? true
 		: domainMetadata?.gridViewByDefault;
@@ -82,7 +82,7 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	return (
 		<>
 			{biddingOn !== undefined && (
-				<Overlay onClose={close} open={biddingOn !== undefined}>
+				<Overlay onClose={close} open={true}>
 					<MakeABid domain={biddingOn!} onBid={bidPlaced} onClose={close} />
 				</Overlay>
 			)}
