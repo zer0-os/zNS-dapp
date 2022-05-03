@@ -14,7 +14,6 @@ import { MaybeUndefined } from 'lib/types';
 import { Web3Provider } from '@ethersproject/providers';
 import { useRefreshToken } from 'lib/hooks/useRefreshToken';
 import useCurrency from 'lib/hooks/useCurrency';
-import { Header } from '..';
 import { FutureButton, Spinner, Wizard } from 'components';
 import { displayEther } from 'lib/currency';
 
@@ -225,6 +224,8 @@ const StakeFlow = (props: StakeFlowProps) => {
 			return unstake ? 'Unstake' : 'Stake';
 		} else if (step === Steps.Claim) {
 			return `${unstake ? 'Unstake' : 'Stake'} & Claim Rewards`;
+		} else if (step === Steps.Approve) {
+			return 'Approve Pool Spending';
 		} else if (step === Steps.Pending) {
 			return 'Processing Transaction';
 		}

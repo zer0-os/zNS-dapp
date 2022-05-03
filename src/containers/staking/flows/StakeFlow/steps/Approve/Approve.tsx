@@ -1,5 +1,5 @@
 import { LoadingIndicator } from 'components';
-import { Confirm, Header } from '../../../';
+import { Confirm } from '../../../';
 
 import styles from './Approve.module.scss';
 
@@ -74,7 +74,6 @@ const Approve = (props: ApproveProps) => {
 
 	return (
 		<>
-			<Header text="Approve Pool Spending" />
 			<div className={styles.Container}>{view()}</div>
 		</>
 	);
