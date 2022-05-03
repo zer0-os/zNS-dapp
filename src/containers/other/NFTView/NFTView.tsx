@@ -205,7 +205,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			return openDomainSettings();
 		} else if (option.title === NFT_MORE_ACTIONS_TITLE.TRANSFER_OWNERSHIP) {
 			return onTransfer();
-		} else if (option.title === NFT_MORE_ACTIONS_TITLE.SET_BUY_NOW) {
+		} else if (
+			option.title === NFT_MORE_ACTIONS_TITLE.SET_BUY_NOW ||
+			option.title === NFT_MORE_ACTIONS_TITLE.EDIT_BUY_NOW
+		) {
 			return openSetBuyNow();
 		} else if (option.title === NFT_MORE_ACTIONS_TITLE.VIEW_BIDS) {
 			return openBidList();
