@@ -68,7 +68,12 @@ export const Modals: React.FC<ModalsProps> = ({
 	return (
 		<>
 			{/* Backdrop of header searching */}
-			<Overlay style={{ zIndex: 3 }} open={isSearching} onClose={() => {}} />
+			<Overlay
+				style={{ zIndex: 3 }}
+				hasCloseButton={false}
+				open={isSearching}
+				onClose={() => {}}
+			/>
 
 			{/* Connect Wallet Modal */}
 			{modal === Modal.Wallet && (

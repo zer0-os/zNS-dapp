@@ -3,17 +3,16 @@
 .Container {
 	width: 100%;
 	padding: 32px;
-	background: #1a1022; // @TODO use global color var
 
 	.Divider {
 		display: none;
 
-		@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+		@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 			display: block;
 		}
 	}
 
-	@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+	@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 		padding: 0;
 		background: none;
 	}
@@ -23,7 +22,7 @@
 
 		margin-top: 41px;
 
-		@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+		@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 			margin-top: 26px;
 		}
 	}
@@ -32,11 +31,7 @@
 		margin-top: 26px;
 		border: 0;
 		height: 1px;
-		background: linear-gradient(
-			270deg,
-			rgba(82, 87, 255, 0.5) 0%,
-			rgba(82, 203, 255, 0.5) 100%
-		);
+		background: var(--color-grey-mine-shaft);
 	}
 }
 
@@ -61,10 +56,14 @@
 
 			transform: translateY(-50%);
 			z-index: 3;
+
+			img {
+				display: none;
+			}
 		}
 	}
 
-	@media only screen and (max-width: #{dimensions.$breakpoint-smaller}) {
+	@media only screen and (max-width: #{dimensions.$breakpoint-tablet-s}) {
 		margin-top: 24px;
 	}
 }

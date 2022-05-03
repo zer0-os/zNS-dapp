@@ -10,6 +10,7 @@ import styles from './OptionDropdown.module.scss';
 export type Option = {
 	icon?: string | React.ReactNode;
 	title: string;
+	[key: string]: any;
 };
 
 type OptionDropdownProps = {

@@ -7,7 +7,7 @@
 */
 
 // React Imports
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Type Imports
 import { MediaContainerProps } from './types';
@@ -23,43 +23,23 @@ import CloudinaryMedia from './CloudinaryMedia';
 // Library Imports
 import classNames from 'classnames/bind';
 import { getHashFromIPFSUrl } from 'lib/ipfs';
-import { generateCloudinaryUrl } from './config';
+import { checkMediaType, MediaType } from './config';
 import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
-
-// Possible media types based on
-// MIME type of content
-export enum MediaType {
-	Image, // image/*
-	Video, // video/*
-	Unknown, // unhandled
-}
 
 const cx = classNames.bind(styles);
 
-// Gets MIME type of media at URL
-// Useful because our IPFS links don't have
-// a file extension
-export const checkMediaType = (hash: string) => {
-	return new Promise((resolve) => {
-		fetch(generateCloudinaryUrl(hash, 'video'), { method: 'HEAD' }).then(
-			(d: Response) => {
-				if (d.status === 200) {
-					resolve(MediaType.Video);
-				} else {
-					resolve(MediaType.Image);
-				}
-			},
-		);
-	});
-};
-
-const NFTMediaContainer = (props: MediaContainerProps) => {
+const NFTMediaContainer: React.FC<MediaContainerProps> = ({
+	alt,
+	className,
+	disableLightbox,
+	fit,
+	ipfsUrl,
+	size,
+	style,
+}) => {
 	//////////////////
 	// State & Data //
 	//////////////////
-
-	const { alt, className, disableLightbox, ipfsUrl, size, style } = props;
-	const isMounted = useRef(false);
 
 	// Handling lightbox open/close
 	const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
@@ -96,53 +76,37 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		}
 	};
 
-	// Gets data for media
-	const getMediaData = async () => {
-		const hash = getHashFromIPFSUrl(ipfsUrl);
-		const mediaType = (await checkMediaType(hash)) as MediaType;
-		if (isMounted.current) {
-			setMediaType(mediaType);
-			setMediaLocation(hash);
-		}
-	};
-
-	// Resets relevant state objects
-	// Sometimes react-table does weird stuff
-	// to enhance performance - this should handle those
-	// cases
-	const resetState = () => {
-		if (isMounted.current) {
-			setIsMediaLoading(true);
-			setMediaLocation(undefined);
-		}
-	};
-
 	/////////////
 	// Effects //
 	/////////////
 
-	// Sets isMounted flag to help prevent
-	// state updates to unmounted components
-	// after an async call finishes
-	useEffect(() => {
-		isMounted.current = true;
-		return () => {
-			isMounted.current = false;
-		};
-	});
-
 	// Gets all media data when IPFS url changes
 	// @todo clean this up
 	useEffect(() => {
-		if (!props.ipfsUrl || !props.ipfsUrl.length) {
+		let isMounted = true;
+
+		setIsMediaLoading(true);
+		setMediaLocation(undefined);
+
+		if (!ipfsUrl || !ipfsUrl.length) {
 			// By returning nothing here this container
 			// will just render the Spinner component
 			// @todo render an error icon/message
 			return;
 		}
-		resetState();
-		getMediaData();
-	}, [props.ipfsUrl]);
+
+		const hash = getHashFromIPFSUrl(ipfsUrl);
+		checkMediaType(hash).then((t) => {
+			if (isMounted) {
+				setMediaType(t as MediaType);
+				setMediaLocation(hash);
+			}
+		});
+
+		return () => {
+			isMounted = false;
+		};
+	}, [ipfsUrl]);
 
 	///////////////
 	// Fragments //
@@ -170,7 +134,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 					onLoad={onLoadMedia}
 					size={matchSize ? size : undefined}
 					style={{ ...style, opacity: isMediaLoading ? 0 : 1 }}
-					fit={props.fit}
+					fit={fit}
 				/>
 			);
 		} else {
@@ -191,7 +155,7 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 		<div
 			className={cx(className, {
 				Container: true,
-				Cover: props.fit === 'cover',
+				Cover: fit === 'cover',
 			})}
 			style={style}
 		>
@@ -234,4 +198,4 @@ const NFTMediaContainer = (props: MediaContainerProps) => {
 	);
 };
 
-export default React.memo(NFTMediaContainer);
+export default NFTMediaContainer;

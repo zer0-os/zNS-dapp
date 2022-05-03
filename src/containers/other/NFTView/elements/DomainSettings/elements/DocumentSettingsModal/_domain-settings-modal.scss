@@ -1,3 +1,6 @@
+$width: 640px;
+$gutter: 16px;
+
 .domain-settings-modal {
 	&__overlay {
 		align-content: center;
@@ -14,9 +17,14 @@
 	}
 
 	&__modal {
-		width: 588px;
+		width: $width;
 		padding: 30px 48px 48px;
 		background: var(--color-background);
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			width: calc(100vw - $gutter - $gutter);
+			padding: 48px 16px;
+		}
 
 		&-header {
 			position: relative;
@@ -34,7 +42,7 @@
 
 			&--close-icon {
 				position: absolute;
-				top: 0;
+				top: -24px;
 				right: 0;
 				color: var(--color-grey);
 
@@ -49,7 +57,7 @@
 				bottom: 0;
 				left: 0;
 				right: 0;
-				border-bottom: 1px solid var(--color-purple-lighter);
+				border-bottom: 1px solid var(--color-grey-mine-shaft);
 			}
 		}
 
@@ -62,6 +70,12 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
+
+			button {
+				@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+					padding: 0 25px;
+				}
+			}
 
 			button + button {
 				margin-left: 20px;

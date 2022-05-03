@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 $width: 640px;
 $gutter: 16px;
 
@@ -15,10 +17,9 @@ $gutter: 16px;
 		height: 260px;
 		width: 260px;
 		flex-shrink: 0;
-		margin: 0 auto;
 
 		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
-			width: 100%;
+			margin: 0 auto;
 		}
 	}
 
@@ -32,16 +33,38 @@ $gutter: 16px;
 
 		h2 {
 			color: var(--color-accent-1);
+			margin-top: 4px;
 		}
 
 		> *:not(:first-child) {
 			margin-top: 16px;
 		}
+
+		// Tablet Breakpoint
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+			> * {
+				margin-top: 16px;
+			}
+		}
 	}
 
 	.ViewAll {
 		display: flex;
-
 		padding: 4px 0 0 0;
+	}
+
+	.DetailComponent {
+		span {
+			color: var(--color-grey-lighter-2);
+		}
+
+		.Bid {
+			color: unset;
+		}
+	}
+
+	.MemberLabel {
+		font-size: 12px;
+		color: var(--color-grey-lighter-2);
 	}
 }

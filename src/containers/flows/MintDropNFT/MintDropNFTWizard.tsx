@@ -167,11 +167,7 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 					balanceEth={props.balanceEth!}
 					error={transactionError}
 					pricePerNFT={props.pricePerNFT}
-					maxPurchasesPerUser={
-						props.dropStage === Stage.Public
-							? undefined
-							: props.maxPurchasesPerUser!
-					}
+					maxPurchasesPerUser={props.maxPurchasesPerUser}
 					numberPurchasedByUser={props.numberPurchasedByUser!}
 					onBack={onBack}
 					onContinue={submitTransaction}
@@ -204,13 +200,11 @@ const MintDropNFTWizard = (props: MintDropNFTWizardProps) => {
 
 	return (
 		<Wizard
-			header="Mint Your Beasts"
-			subHeader="Your Beasts in the Metaverse await"
+			header="Mint Your Kicks"
+			subHeader="Your Kicks in the Metaverse await"
 			className={`${styles.Container} border-primary border-rounded`}
 		>
-			{props.dropStage === undefined && (
-				<Loading text={'Loading Beasts Drop'} />
-			)}
+			{props.dropStage === undefined && <Loading text={'Loading Kicks Drop'} />}
 			{getFlowSection()}
 		</Wizard>
 	);

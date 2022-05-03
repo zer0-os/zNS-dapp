@@ -25,6 +25,9 @@ import {
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
+//- Style Imports
+import styles from './MintDropNFT.module.scss';
+
 type MintDropNFTFlowContainerProps = {
 	privateSaleEndTime: number;
 	publicSaleStartTime: number;
@@ -35,7 +38,6 @@ const MintDropNFTFlowContainer = ({
 	publicSaleStartTime,
 }: MintDropNFTFlowContainerProps) => {
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
-	const PUBLIC_SALE_START_TIME = publicSaleStartTime;
 
 	//////////////////
 	// State & Data //
@@ -63,6 +65,7 @@ const MintDropNFTFlowContainer = ({
 	const [countdownDate, setCountdownDate] = useState<number | undefined>();
 	const [hasCountdownFinished, setHasCountdownFinished] =
 		useState<boolean>(false);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isInTransitionMode, setIsInTransitionMode] = useState<boolean>(false);
 
 	// Auction data
@@ -107,14 +110,14 @@ const MintDropNFTFlowContainer = ({
 		}
 		if (dropStage === Stage.Whitelist && !countdownDate) {
 			window?.open(
-				'https://zine.wilderworld.com/wolfpack-genesis-drop/',
+				'https://zine.wilderworld.com/aws2-raffle-winners/',
 				'_blank',
 			);
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold) {
-			history.push('market/beasts.wolf');
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
+			history.push('market/kicks.airwild.season2');
 		} else {
 			setIsWizardOpen(true);
 		}
@@ -274,7 +277,7 @@ const MintDropNFTFlowContainer = ({
 		return () => {
 			isMounted = false;
 		};
-	}, [account, library, zSaleInstance, isSaleHalted]);
+	}, [account, library, zSaleInstance, isSaleHalted, dropStage]);
 
 	/**
 	 * Get user-specific variables whenever mint amount or account changes
@@ -432,7 +435,7 @@ const MintDropNFTFlowContainer = ({
 		if (isSaleHalted) {
 			return (
 				<>
-					<span>Wilder Beasts sale has been temporarily paused.</span>
+					<span>Air Wild Season Two sale has been temporarily paused.</span>
 					<span style={{ display: 'block', marginTop: 4 }}>
 						Join our{' '}
 						<b>
@@ -496,9 +499,9 @@ const MintDropNFTFlowContainer = ({
 					/>
 				</Overlay>
 			)}
-			<div style={{ position: 'relative', marginBottom: 16 }}>
+			<div className={styles.BannerContainer}>
 				<MintDropNFTBanner
-					title={'Join the Wilder Wolf Pack '}
+					title={'Get Your Kicks for the Metaverse'}
 					label={bannerLabel()}
 					buttonText={buttonText()}
 					onClick={openWizard}

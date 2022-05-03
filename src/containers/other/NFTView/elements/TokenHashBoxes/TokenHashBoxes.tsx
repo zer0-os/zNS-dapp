@@ -83,6 +83,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 						width: 150,
 					}}
 					href={etherscanLink}
+					isLinkToExternalUrl
 				>
 					View on Etherscan
 				</ArrowLink>
@@ -104,6 +105,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 						width: 105,
 					}}
 					href={getWebIPFSUrlFromHash(ipfsHash)}
+					isLinkToExternalUrl
 				>
 					View on IPFS
 				</ArrowLink>

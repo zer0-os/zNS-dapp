@@ -46,7 +46,7 @@ const Stake = (props: StakeProps) => {
 
 	return (
 		<div className={styles.Container}>
-			<Back onBack={onBack} text={'Back'} />
+			<Back onBack={onBack} text={'All Pools'} />
 			{message && <Message message={message.content} error={message.error} />}
 			<PoolData
 				domain={poolDomain}

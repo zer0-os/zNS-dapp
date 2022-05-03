@@ -37,9 +37,14 @@ const useAssets = (dao?: zDAO): UseAssetsReturn => {
 		try {
 			if (cache[dao[cacheKey]]) {
 				const cached = cache[dao[cacheKey]];
-				setTotalUsd(cached.totalUsd);
-				setAssets(cached.assets);
-				setIsLoading(false);
+				/* Wrapped this in a setTimeout to force it
+					 to run after state is reset above - there
+					 are probably better solutions!	*/
+				setTimeout(() => {
+					setTotalUsd(cached.totalUsd);
+					setAssets(cached.assets);
+					setIsLoading(false);
+				}, 0);
 				return;
 			}
 			dao

@@ -47,6 +47,10 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	 * Instead, data and callbacks should be sent directly to the row component
 	 */
 	const { domain: biddingOn, close, bidPlaced } = useBid();
+	const isRootDomain = domain && domain?.name.split('.').length <= 2;
+	const isGridViewByDefault = isRootDomain
+		? true
+		: domainMetadata?.gridViewByDefault;
 
 	/*
 	 * Not being stored as a constant as one of the headers depends
@@ -92,7 +96,7 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 				infiniteScroll
 				isLoading={isLoading || isDomainLoading}
 				loadingText={'Loading Subdomains'}
-				isGridViewByDefault={domainMetadata?.gridViewByDefault}
+				isGridViewByDefault={isGridViewByDefault}
 				style={style}
 			/>
 		</>

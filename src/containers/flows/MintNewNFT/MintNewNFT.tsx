@@ -81,6 +81,10 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const [mintingStatusText, setMintingStatusText] = useState('');
 	const [lootBalance, setLootBalance] = useState<number | undefined>();
 
+	const [existingSubdomains, setExistingSubdomains] = useState<
+		string[] | undefined
+	>();
+
 	const [tokenInformation, setTokenInformation] =
 		useState<TokenInformationType | null>(null);
 	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
@@ -168,6 +172,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				ticker: '',
 				dynamic: false,
 				locked: tokenInformation.locked,
+				additionalMetadata: {
+					gridViewByDefault: true,
+				},
 			},
 			setStatusText,
 		);

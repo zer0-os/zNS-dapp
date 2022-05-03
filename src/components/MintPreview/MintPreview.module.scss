@@ -1,43 +1,60 @@
 .MintPreview {
-	width: 552px;
-	padding: 27.5px 40px;
-
+	// Mobile Breakpoints
+	width: 580px;
+	padding: 20px 40px 20px 40px;
 	max-height: 70vh;
-
 	overflow: auto;
+	background: var(--color-revolver);
+	border: 1px solid var(--color-bossanova);
 
-	background: radial-gradient(
-			56.93% 56.93% at 50% 50%,
-			rgba(206, 183, 255, 0) 0%,
-			rgba(103, 79, 255, 0.2) 100%
-		),
-		linear-gradient(0deg, #000000, #000000);
+	// Tablet Breakpoints
+	@media only screen and (min-width: 1000px) {
+		width: 640px;
+		// Needs tidying up
+		padding: 27.5px 40px 10px 45px;
+	}
 }
 
 .MintPreview > h4 {
-	margin-bottom: 19px;
 	font-size: 24px;
 	font-weight: 700;
+	margin-bottom: 19px;
 	text-align: center;
 }
 
-.MintPreview > li {
+.MintPreview li > div {
 	display: flex;
-	margin-top: 34px;
-	margin-bottom: 34px;
+	margin-bottom: 32px;
+}
+
+.MintPreview li hr {
+	// Mobile Breakpoints
+	margin-bottom: 32px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 1262px) {
+		margin-bottom: 42px;
+	}
+}
+
+.Divider {
+	border: 1px solid var(--color-purple-lighter);
 }
 
 .Image {
+	cursor: pointer;
 	height: 200px;
 	width: 200px;
-
 	overflow: hidden;
+}
+
+.Image:hover {
+	transform: scale(1.05);
 }
 
 .Image img {
 	height: 100%;
 	width: 100%;
-
 	object-fit: contain;
 }
 
@@ -45,33 +62,60 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-
+	margin-left: 32px;
 	width: 240px;
 	max-width: 240px;
-	margin-left: 32px;
-	padding-top: 5px;
+	word-wrap: break-word;
+
+	.Link {
+		font-size: var(--font-size-default);
+		color: var(--color-grey);
+	}
+
+	h3 {
+		font-size: 24px;
+		margin-bottom: 12px;
+	}
+
+	p {
+		padding: 0;
+		margin-bottom: 12px;
+		line-height: 24px;
+	}
 }
 
-.Info h5 {
-	font-size: 24px;
+.Container {
+	display: flex;
+	flex-direction: row;
+	margin-top: 18px;
+	line-height: 24px;
+
+	div {
+		white-space: nowrap;
+	}
+
+	.TextContainer {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.ButtonContainer {
+		margin-top: 24px;
+
+		a {
+			font-size: 14px;
+		}
+	}
+
+	.Success {
+		color: var(--color-success);
+	}
 }
 
-.Info a {
-	margin-top: 12px;
-	overflow-wrap: break-word;
-
-	font-weight: 700;
-}
-
-.Info span {
-	overflow-wrap: break-word;
-}
-
-.Info p {
-	padding: 0;
-
-	line-height: 19px;
+.IconContainer {
+	display: flex;
+	align-items: flex-start;
+	margin: 2px 6px 0 0;
 }
 
 .Info p:first-of-type {

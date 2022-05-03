@@ -1,6 +1,6 @@
 {
 	"name": "zns-dapp",
-	"version": "0.14.7",
+	"version": "0.14.18",
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
@@ -38,10 +38,10 @@
 		"@web3-react/walletconnect-connector": "6.2.4",
 		"@web3-react/walletlink-connector": "^6.1.9",
 		"@zero-tech/zauction-sdk": "0.0.60",
-		"@zero-tech/zdao-sdk": "0.0.5",
+		"@zero-tech/zdao-sdk": "0.0.6",
 		"@zero-tech/zfi-sdk": "0.1.16",
 		"@zero-tech/zns-sdk": "^0.1.32",
-		"@zero-tech/zsale-sdk": "0.0.12",
+		"@zero-tech/zsale-sdk": "0.0.19",
 		"apollo": "^2.32.5",
 		"autosize": "^5.0.1",
 		"big-integer": "^1.6.48",

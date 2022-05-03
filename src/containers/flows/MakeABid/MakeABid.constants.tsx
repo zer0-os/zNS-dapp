@@ -4,7 +4,7 @@ import { StepContent } from './MakeABid.types';
 export const BUTTONS = {
 	[StepContent.FailedToCheckZAuction]: 'Close',
 	[StepContent.Details]: {
-		PRIMARY: 'Make Bid',
+		PRIMARY: 'Continue',
 		SECONDARY: 'Cancel',
 		TERTIARY: 'Retry',
 		VIEW_ALL: 'View all bids',
@@ -50,13 +50,13 @@ export const STATUS_TEXT = {
 };
 
 export const MESSAGES = {
-	TEXT_LOADING: 'Loading Bid Data..',
+	TEXT_LOADING: 'Loading Domain Data...',
 	ENTER_AMOUNT: 'Enter the amount you wish to bid:',
 	SUCCESSFUL_BID: `Your bid was successfully placed.`,
 };
 
 export const PLACE_BID_LABELS = {
-	INPUT_PLACEHOLDER: 'Bid amount (WILD)',
+	INPUT_PLACEHOLDER: 'Bid Amount (WILD)',
 	ZERO_VALUE: '0.00',
 	YOUR_BID: 'Your Bid',
 };
@@ -67,7 +67,7 @@ export const getSuccessNotification = (
 ) => `Bid of ${bidAmount} for ${domainName} has been placed.`;
 
 export const getWildBalance = (balance: number) =>
-	`Your Balance: ${Number(balance).toLocaleString()} WILD`;
+	`Your balance: ${Number(balance).toLocaleString()} WILD`;
 
 export const getUsdEstimation = (bid: string) => `Approx. ${bid} USD`;
 

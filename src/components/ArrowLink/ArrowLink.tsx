@@ -13,6 +13,7 @@ type ArrowLinkProps = {
 	replace?: boolean;
 	className?: string;
 	back?: boolean;
+	isLinkToExternalUrl?: boolean;
 };
 
 export const TEST_ID = {
@@ -30,6 +31,7 @@ const ArrowLink: React.FC<ArrowLinkProps> = ({
 	replace,
 	style,
 	back,
+	isLinkToExternalUrl,
 }) => {
 	const content = (
 		<>
@@ -58,7 +60,7 @@ const ArrowLink: React.FC<ArrowLinkProps> = ({
 	 * refactor this in the future.
 	 */
 	return href ? (
-		<Link {...sharedProps} to={href}>
+		<Link {...sharedProps} to={isLinkToExternalUrl ? { pathname: href } : href}>
 			{content}
 		</Link>
 	) : (

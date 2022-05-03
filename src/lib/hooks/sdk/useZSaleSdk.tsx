@@ -26,14 +26,19 @@ export function useZSaleSdk() {
 
 		switch (network) {
 			case NETWORK_TYPES.MAINNET: {
+				// TODO: Modify with actual contractAddress & merkleTreeFileUris
 				return zsale.createInstance({
 					web3Provider,
-					contractAddress: '0x63E34f60EA13b34681B76Dcb1614dD985dD8E11e',
-					merkleTreeFileUri:
-						'https://d3810nvssqir6b.cloudfront.net/final-wolf-beast-mintlist-merkleTree.json',
+					contractAddress: '0x66cA971F1fE3d3d526cAbb0314633F6a7Ef3F887',
+					merkleTreeFileUris: [
+						'https://d3810nvssqir6b.cloudfront.net/airwild-private-merkleTree.json',
+						'https://d3810nvssqir6b.cloudfront.net/airwild-public-merkleTree.json',
+					],
 					advanced: {
-						merkleTreeFileIPFSHash:
-							'QmRUkCPbiFtw8zPAQ6nY9iUgwJeGVsAGYcv8iYc66tYs4H',
+						merkleTreeFileIPFSHashes: [
+							'QmesUxVUF54mUgMXEVRYoELHa6VGB7DMm7KnMwENAR7dVz',
+							'QmYQXu1gYNUrZF8jBzop6qpqGtENVWaXZuZnqRnzPAHLpV',
+						],
 					},
 				});
 			}
@@ -41,12 +46,16 @@ export function useZSaleSdk() {
 			case NETWORK_TYPES.RINKEBY: {
 				return zsale.createInstance({
 					web3Provider,
-					contractAddress: '0xC82E9E9B1e28F10a4C13a915a0BDCD4Db00d086d',
-					merkleTreeFileUri:
-						'https://d3810nvssqir6b.cloudfront.net/kovan-test-merkleTree.json',
+					contractAddress: '0x9e903BB3c48BC2b679B20959F365c0be7Ab88961',
+					merkleTreeFileUris: [
+						'https://ipfs.io/ipfs/QmXQLJN49XRAgdgeJ8Hz6zf7izQGokPnQ5MZ6p79m2avpk',
+						'https://ipfs.io/ipfs/QmXn7C5GrzHU8tgdGRT1g25WQe1rrvrfy1rEWjw6Cjm5sL',
+					],
 					advanced: {
-						merkleTreeFileIPFSHash:
-							'Qmf8XuYT181zdvhNXSeYUhkptgezzK8QJnrAD16GGj8TrV',
+						merkleTreeFileIPFSHashes: [
+							'QmXQLJN49XRAgdgeJ8Hz6zf7izQGokPnQ5MZ6p79m2avpk',
+							'QmXn7C5GrzHU8tgdGRT1g25WQe1rrvrfy1rEWjw6Cjm5sL',
+						],
 					},
 				});
 			}

@@ -142,7 +142,7 @@ export const getMaxPurchasesPerUser = async (
 	zSaleInstance: Instance,
 	account: string,
 ) => {
-	const { quantity } = await zSaleInstance.getMintlistedUserClaim(account);
+	const quantity = await zSaleInstance.numberPurchasableByAccount(account);
 	return quantity;
 };
 

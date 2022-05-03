@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 import Claim from './steps/Claim/Claim';
-import { Confirm, Header } from '../';
+import { Confirm } from '../';
 
 import styles from './ClaimFlow.module.scss';
 
 import classNames from 'classnames/bind';
-import { LoadingIndicator, Wizard } from 'components';
+import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import { useStakingPoolSelector } from 'lib/providers/staking/PoolSelectProvider';
 import { displayEther } from 'lib/currency';

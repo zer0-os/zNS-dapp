@@ -27,7 +27,6 @@ import { Modal } from '../../PageContainer.constants';
 
 //- Styles Imports
 import styles from './Actions.module.scss';
-import { ROUTES } from 'constants/routes';
 
 type ActionsProps = {
 	pageWidth: number;
@@ -49,13 +48,12 @@ export const Actions: React.FC<ActionsProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 	const { mvpVersion } = useMvpVersion();
-	const isProfileRoute = location.pathname.includes(ROUTES.PROFILE);
 
 	const { requesting: stakeRequesting, requested: stakeRequested } =
 		useStaking();
 
 	const { minting, minted } = useMint();
-	const { transferring } = useTransfer();
+	const { transferring, transferred } = useTransfer();
 	const { title, isSearching, setNavbarSearchingStatus } = useNavbar();
 
 	const { localActions, formattedData, refs } = useHeaderData({
@@ -71,6 +69,8 @@ export const Actions: React.FC<ActionsProps> = ({
 			mvpVersion,
 		},
 	});
+
+	const isWalletConnected = account !== undefined;
 
 	const handlers = useHeaderHandlers({
 		props: {
@@ -112,13 +112,14 @@ export const Actions: React.FC<ActionsProps> = ({
 						stakeRequesting: stakeRequesting.length,
 						stakeRequested: stakeRequested.length,
 						transferring: transferring.length,
+						transferred: transferred.length,
 					}}
 					onOpenProfile={handlers.handleOnOpenProfile}
 				/>
 			)}
 
 			{/* Profile Button */}
-			{formattedData.showProfileButton && !isProfileRoute && (
+			{formattedData.showProfileButton && (
 				<ProfileButton onOpenProfile={handlers.handleOnOpenProfile} />
 			)}
 
@@ -126,6 +127,7 @@ export const Actions: React.FC<ActionsProps> = ({
 			{formattedData.showInfoButton && (
 				<InfoButton
 					isDesktop={formattedData.isDesktop}
+					isWalletConnected={isWalletConnected}
 					onConnectWallet={openModal(Modal.Wallet)}
 				/>
 			)}
