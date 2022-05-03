@@ -8,11 +8,6 @@ export enum AspectRatio {
  * solution for this
  */
 export const ASPECT_RATIOS: { [ratio in AspectRatio]: string[] } = {
-	[AspectRatio.LANDSCAPE]: [
-		'wilder.wheels',
-		'wilder.cribs',
-		'wilder.craft',
-		'wilder',
-	],
+	[AspectRatio.LANDSCAPE]: ['wilder.wheels', 'wilder.cribs', 'wilder.craft'],
 	[AspectRatio.PORTRAIT]: ['wilder.WoW'],
 };
