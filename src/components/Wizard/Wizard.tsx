@@ -9,7 +9,7 @@ import Confirmation from './Presets/Confirmation';
 import NFTDetails from './Presets/NFTDetails';
 
 type WizardProps = {
-	header: string;
+	header?: string;
 	headerClassName?: string;
 	subHeader?: string;
 	children: React.ReactNode;
@@ -33,11 +33,14 @@ const Wizard = ({
 		)}
 	>
 		{/* Header */}
-		<div className={classNames(styles.Header, headerClassName)}>
-			<h1 className="glow-text-white">{header}</h1>
-			{subHeader && <h2>{subHeader}</h2>}
-			{sectionDivider && <hr className="glow" />}
-		</div>
+		{header && (
+			<div className={classNames(styles.Header, headerClassName)}>
+				<h1 className="glow-text-white">{header}</h1>
+				{subHeader && <h2>{subHeader}</h2>}
+
+				{sectionDivider && <hr className="glow" />}
+			</div>
+		)}
 
 		{/* Wizard Body */}
 		{children}

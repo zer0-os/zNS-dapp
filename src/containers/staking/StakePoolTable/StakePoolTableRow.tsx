@@ -50,9 +50,11 @@ const StakePoolTableRow = (props: any) => {
 			</td>
 			<td className={styles.Right}>{'$' + toFiat(tvl)}</td>
 			<td>
-				<FutureButton glow onClick={onClick}>
-					Stake
-				</FutureButton>
+				<div className={styles.ButtonContainer}>
+					<FutureButton glow onClick={onClick}>
+						Stake
+					</FutureButton>
+				</div>
 			</td>
 		</tr>
 	);

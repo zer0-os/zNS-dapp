@@ -36,6 +36,10 @@
 			}
 		}
 
+		.ButtonContainer {
+			padding-bottom: 2px;
+		}
+
 		.Dropdown {
 			:global(ul) {
 				left: unset;
