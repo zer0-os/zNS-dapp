@@ -1,4 +1,4 @@
-import { AspectRatio, ASPECT_RATIOS } from 'constants/aspectRatios';
+import { ASPECT_RATIOS, AspectRatio } from 'constants/aspectRatios';
 import { ethers } from 'ethers';
 
 export const rootDomainName = '';
@@ -108,17 +108,19 @@ export const getParentZna = (zna: string): string => {
  * @returns
  */
 export const getAspectRatioForZna = (zna: string): AspectRatio | undefined => {
-	if (ASPECT_RATIOS[AspectRatio.LANDSCAPE])
-		for (const key in ASPECT_RATIOS) {
-			const znas = ASPECT_RATIOS[key as unknown as AspectRatio];
-			for (var i = 0; i < znas.length; i++) {
-				const z = znas[i];
-				if (zna.startsWith(z)) {
-					return key as AspectRatio;
-				}
+	/* This if is not a long term solution */
+	if (zna === 'wilder') {
+		return AspectRatio.LANDSCAPE;
+	}
+	for (const key in ASPECT_RATIOS) {
+		const znas = ASPECT_RATIOS[key as unknown as AspectRatio];
+		for (var i = 0; i < znas.length; i++) {
+			const z = znas[i];
+			if (zna.startsWith(z)) {
+				return key as AspectRatio;
 			}
 		}
-	return undefined;
+	}
 };
 
 // Truncate domain
