@@ -81,10 +81,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const [mintingStatusText, setMintingStatusText] = useState('');
 	const [lootBalance, setLootBalance] = useState<number | undefined>();
 
-	const [existingSubdomains, setExistingSubdomains] = useState<
-		string[] | undefined
-	>();
-
 	const [tokenInformation, setTokenInformation] =
 		useState<TokenInformationType | null>(null);
 	const [tokenStake, setTokenStake] = useState<TokenStakeType | null>(null);
@@ -159,7 +155,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		if (!tokenInformation) return setIsMintLoading(false);
 		setStatusText(`Minting domain`);
 
-		const hasSubmitMint = await mint(
+		return await mint(
 			{
 				parent: domainId,
 				owner: account,
@@ -178,8 +174,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 			},
 			setStatusText,
 		);
-
-		return hasSubmitMint;
 	};
 
 	// Submits stake request through user's wallet
@@ -190,7 +184,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 
 		setStatusText(`Placing domain request`);
 
-		const hasSubmitRequest = staking.placeRequest(
+		return staking.placeRequest(
 			{
 				nft: {
 					parent: domainId,
@@ -211,8 +205,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 			},
 			setStatusText,
 		);
-
-		return hasSubmitRequest;
 	};
 
 	// Start submit process - call function for minting or requesting
