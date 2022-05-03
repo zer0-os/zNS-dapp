@@ -30,7 +30,7 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 	],
 	[NETWORK_TYPES.RINKEBY]: [
 		{
-			zNA: 'one',
+			zNA: 'wilder.one',
 			title: 'zDAO Testing 1',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
 			network: 4, // for Rinkeby
@@ -38,7 +38,7 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 			votingToken: '0x10F6A2795B14f13771d885D72e5925Aff647B565',
 		},
 		{
-			zNA: 'two',
+			zNA: 'redliw.two',
 			title: 'zDAO Testing 2',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
 			network: 4, // for Rinkeby
@@ -46,7 +46,7 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 			votingToken: '0x10F6A2795B14f13771d885D72e5925Aff647B565',
 		},
 		{
-			zNA: 'three',
+			zNA: 'rewild.three',
 			title: 'zDAO Testing 3',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
 			network: 4, // for Rinkeby
