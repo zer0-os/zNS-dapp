@@ -48,15 +48,18 @@ const SetBuyNow = ({
 	account,
 }: SetBuyNowProps) => {
 	const editText = account !== domain?.owner ? 'selecting' : 'purchasing';
+	const getTitle = () =>
+		domain?.currentBuyNowPrice?.gt(0) ? 'Edit Buy Now' : 'Set Buy Now';
+	const wizardHeader = getTitle();
 	if (isLoadingDomainData) {
 		return (
-			<Wizard header="Set Buy Now">
+			<Wizard header={wizardHeader}>
 				<Wizard.Loading message="Loading domain data..." />
 			</Wizard>
 		);
 	} else if (!domain) {
 		return (
-			<Wizard header="Set Buy Now">
+			<Wizard header={wizardHeader}>
 				<Wizard.Confirmation
 					message={'Failed to load domain data'}
 					primaryButtonText={'Cancel'}
@@ -107,7 +110,7 @@ const SetBuyNow = ({
 
 	return (
 		<Wizard
-			header="Set Buy Now"
+			header={wizardHeader}
 			subHeader={`Please review the information and the art to make sure you are ${editText} the right NFT.`}
 		>
 			{steps[step]}
