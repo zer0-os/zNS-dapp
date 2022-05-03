@@ -145,24 +145,6 @@ test('handles failed/rejected signature when rejected by wallet', async () => {
 	expect(console.error).toHaveBeenCalled();
 });
 
-test('handles failed/rejected signature when incorrect bidder recovered', async () => {
-	mockAcceptBid.mockRejectedValue(new Error('recovered incorrect bidder'));
-	const hook = setupHook();
-
-	var err: Error | undefined;
-	try {
-		await act(async () => {
-			await hook.accept(mockBid);
-		});
-	} catch (e) {
-		err = e as Error;
-	}
-
-	expect(mockAcceptBid).toBeCalledTimes(1);
-	expect(err?.message).toBe(ERRORS.INCORRECT_BIDDER);
-	expect(console.error).toHaveBeenCalled();
-});
-
 test('handles failed/rejected transaction', async () => {
 	mockAcceptBid.mockResolvedValue({
 		wait: mockTx,

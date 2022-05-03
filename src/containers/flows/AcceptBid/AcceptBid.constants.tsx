@@ -50,8 +50,7 @@ export const ERRORS = {
 	CONSOLE_TEXT: 'Failed to check zAuction approval status',
 	REJECTED_WALLET: 'Rejected by wallet.',
 	DATA_CONSUMED:
-		'The bid you are attempting to accept has previously been consumed. Please check the transaction history.',
-	INCORRECT_BIDDER: 'Rejected by wallet due to incorrect bidder recovered.',
+		'The bid you are trying to accept is no longer valid. Please select another bid to accept',
 };
 
 export const MESSAGES = {
