@@ -87,6 +87,8 @@ const NFTMediaContainer: React.FC<MediaContainerProps> = ({
 
 		setIsMediaLoading(true);
 		setMediaLocation(undefined);
+		setMediaType(undefined);
+		setHasCloudinaryFailed(false);
 
 		if (!ipfsUrl || !ipfsUrl.length) {
 			// By returning nothing here this container

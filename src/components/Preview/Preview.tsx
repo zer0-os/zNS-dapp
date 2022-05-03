@@ -18,6 +18,8 @@ const Preview = ({ title, description, icon, banner, href }: PreviewProps) => {
 				className={styles.Banner}
 				ipfsUrl={banner ?? ''}
 				fit="cover"
+				size="large"
+				disableLightbox={true}
 			/>
 			<div className={styles.Content}>
 				<NFTMedia
@@ -25,6 +27,8 @@ const Preview = ({ title, description, icon, banner, href }: PreviewProps) => {
 					className={styles.Icon}
 					ipfsUrl={icon ?? ''}
 					fit="cover"
+					size="tiny"
+					disableLightbox={true}
 				/>
 				<div className={styles.TextContainer}>
 					{(title || description) && (
