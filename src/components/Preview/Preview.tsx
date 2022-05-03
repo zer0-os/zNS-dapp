@@ -27,12 +27,16 @@ const Preview = ({ title, description, icon, banner, href }: PreviewProps) => {
 					fit="cover"
 				/>
 				<div className={styles.TextContainer}>
-					<h1>{title}</h1>
-					<p>{description}</p>
-					{href && (
-						<ArrowLink className={styles.Link} href={href} replace>
-							View Domain NFT
-						</ArrowLink>
+					{(title || description) && (
+						<>
+							<h1>{title}</h1>
+							<p>{description}</p>
+							{href && (
+								<ArrowLink className={styles.Link} href={href} replace>
+									View Domain NFT
+								</ArrowLink>
+							)}
+						</>
 					)}
 				</div>
 			</div>

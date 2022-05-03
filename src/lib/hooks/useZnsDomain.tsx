@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { getMetadata } from 'lib/metadata';
+import { Domain } from '@zero-tech/zns-sdk/lib/types';
 
 export type UseZnsDomainReturn = {
 	loading: boolean;
@@ -11,83 +12,103 @@ export type UseZnsDomainReturn = {
 	domainMetadata: Maybe<Metadata>;
 };
 
+/**
+ * Changes an SDK subdomain type to dApp subdomain type
+ * This won't be needed when we properly integrate SDK types
+ * @param subdomains -
+ * @returns
+ */
+const formatSubdomains = (
+	subdomains: Domain[],
+): {
+	owner: { id: string };
+	metadata: string;
+	minter: { id: string };
+	name: string;
+	id: string;
+}[] => {
+	return subdomains.map((sub) => ({
+		id: sub.id,
+		metadata: sub.metadataUri,
+		minter: { id: sub.minter },
+		name: sub.name,
+		owner: { id: sub.owner },
+	}));
+};
+
+/**
+ * Changes an SDK domain type to dApp domain type
+ * This won't be needed when we properly integrate SDK types
+ * @param domain
+ * @returns
+ */
+const formatDomain = (domain: Domain): DisplayParentDomain => {
+	const formattedDomain = domain as any;
+
+	formattedDomain.metadata = formattedDomain.metadataUri;
+	delete formattedDomain.metadataUri;
+	formattedDomain.minter = { id: formattedDomain.minter };
+	formattedDomain.owner = { id: formattedDomain.owner };
+	formattedDomain.parent = { id: formattedDomain.parentId };
+	delete formattedDomain.parentId;
+	formattedDomain.lockedBy = { id: formattedDomain.lockedBy };
+
+	return formattedDomain;
+};
+
 export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 	const { instance: sdk } = useZnsSdk();
 
 	const isMounted = useRef<boolean>();
-
-	const loadingDomainId = useRef<string | undefined>(undefined);
+	const loadingDomainId = useRef<string | undefined>();
 
 	const [loading, setLoading] = useState(true);
-	const [domain, setDomain] = useState<DisplayParentDomain | undefined>(
-		undefined,
-	);
-	const [domainMetadata, setDomainMetadata] =
-		useState<Maybe<Metadata>>(undefined);
+	const [domain, setDomain] = useState<DisplayParentDomain | undefined>();
+	const [domainMetadata, setDomainMetadata] = useState<Maybe<Metadata>>();
 
-	// Get domain using SDK instead
-	const getDomainData = async () => {
-		loadingDomainId.current = domainId;
+	const getDomain = async (id: string) => {
+		const domain = formatDomain(await sdk.getDomainById(id));
+		const metadata = await getMetadata(domain.metadata);
+		return { domain, metadata };
+	};
 
-		const [rawDomain, rawSubdomains] = await Promise.all([
-			sdk.getDomainById(domainId),
-			sdk.getSubdomainsById(domainId),
-		]);
+	const getSubdomains = async (id: string) => {
+		const subs = formatSubdomains(await sdk.getSubdomainsById(id));
+		return subs;
+	};
 
-		// Check if domain ID has changed since the above API calls
-		// to prevent unwanted state changes
-		if (
-			loadingDomainId.current !== rawDomain.id ||
-			isMounted.current === false
-		) {
-			setLoading(false);
-			return;
-		}
+	/**
+	 * This method gets all of the data relevant to a domain
+	 */
+	const refetch = useCallback(async () => {
+		try {
+			loadingDomainId.current = domainId;
 
-		// TODO: Fetch this data from the SDK
-		const metadata = await getMetadata(rawDomain.metadataUri);
+			// Reset state objects
+			setDomainMetadata(undefined);
+			setDomain(undefined);
+			setLoading(true);
 
-		// We have currently only changed this hook to use the SDK internally
-		// The types in the SDK have changed from what we had previously
-		// so the data needs to be formatted. This should be changed
-		// to handle the new data type
-		// This will be changed in next iteration
-		const formattedDomain = rawDomain as any;
-		formattedDomain.metadata = formattedDomain.metadataUri;
-		formattedDomain.minter = { id: formattedDomain.minter };
-		formattedDomain.owner = { id: formattedDomain.owner };
-		formattedDomain.parent = { id: formattedDomain.parentId };
-		formattedDomain.lockedBy = { id: formattedDomain.lockedBy };
-
-		delete formattedDomain.parentId;
-		const formattedSubdomains = rawSubdomains.map((sub) => ({
-			id: sub.id,
-			metadata: sub.metadataUri,
-			minter: { id: sub.minter },
-			name: sub.name,
-			owner: { id: sub.owner },
-		}));
-		if (isMounted.current) {
+			const d = await getDomain(domainId);
+			if (loadingDomainId.current !== domainId) {
+				setLoading(false);
+				return;
+			}
+			setDomainMetadata(d.metadata);
+			const s = await getSubdomains(domainId);
+			if (loadingDomainId.current !== domainId) {
+				setLoading(false);
+				return;
+			}
 			setDomain({
-				...metadata,
-				...formattedDomain,
-				subdomains: formattedSubdomains,
-			});
-			setDomainMetadata(metadata);
-			setLoading(false);
-		}
-	};
+				...d.domain,
+				...d.metadata,
+				subdomains: s,
+			} as DisplayParentDomain);
 
-	const refetch = () => {
-		setDomain(undefined);
-		setLoading(true);
-		getDomainData().catch((e) => {
-			// Need better error handling here
-			console.error(e);
 			setLoading(false);
-			loadingDomainId.current = undefined;
-		});
-	};
+		} catch (e) {}
+	}, [domainId]);
 
 	useEffect(() => {
 		isMounted.current = true;
