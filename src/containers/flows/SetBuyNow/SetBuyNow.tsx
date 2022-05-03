@@ -49,7 +49,11 @@ const SetBuyNow = ({
 }: SetBuyNowProps) => {
 	const editText = account !== domain?.owner ? 'selecting' : 'purchasing';
 	const getTitle = () =>
-		domain?.currentBuyNowPrice?.gt(0) ? 'Edit Buy Now' : 'Set Buy Now';
+		isLoadingDomainData
+			? ''
+			: domain?.currentBuyNowPrice?.gt(0)
+			? 'Edit Buy Now'
+			: 'Set Buy Now';
 	const wizardHeader = getTitle();
 	if (isLoadingDomainData) {
 		return (
