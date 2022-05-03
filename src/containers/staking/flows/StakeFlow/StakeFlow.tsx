@@ -220,6 +220,19 @@ const StakeFlow = (props: StakeFlowProps) => {
 		doStake(amountAsWei);
 	};
 
+	const handleHeader = () => {
+		if (step === Steps.Stake) {
+			return unstake ? 'Unstake' : 'Stake';
+		} else if (step === Steps.Claim) {
+			return `${unstake ? 'Unstake' : 'Stake'} & Claim Rewards`;
+		} else if (step === Steps.Pending) {
+			return 'Processing Transaction';
+		}
+		return '';
+	};
+
+	const wizardHeader = handleHeader();
+
 	const stepNode = () => {
 		switch (step) {
 			case Steps.Stake:
@@ -253,7 +266,6 @@ const StakeFlow = (props: StakeFlowProps) => {
 			case Steps.Claim:
 				return (
 					<>
-						<Header text={`${unstake ? 'Unstake' : 'Stake'} & Claim Rewards`} />
 						<div className={styles.Content}>
 							{unstake ? (
 								<p>
@@ -294,7 +306,6 @@ const StakeFlow = (props: StakeFlowProps) => {
 			case Steps.Pending:
 				return (
 					<>
-						<Header text="Processing Transaction" />
 						<div className={styles.Content}>
 							<p>Your transaction is being processed...</p>
 							<div>
@@ -310,7 +321,7 @@ const StakeFlow = (props: StakeFlowProps) => {
 
 	return (
 		<Wizard
-			header={unstake ? 'Unstake' : 'Stake'}
+			header={wizardHeader}
 			className={cx(
 				styles.Container,
 				'background-primary',
