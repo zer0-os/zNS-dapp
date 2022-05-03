@@ -48,7 +48,10 @@ export const ERRORS = {
 	TRANSACTION: 'Transaction failed. Please try again',
 	LIBRARY: 'Failed to connect with Web3 wallet.',
 	CONSOLE_TEXT: 'Failed to check zAuction approval status',
-	REJECTED_WALLET: 'Rejected by wallet',
+	REJECTED_WALLET: 'Rejected by wallet.',
+	DATA_CONSUMED:
+		'The bid you are attempting to accept has previously been consumed. Please check the transaction history.',
+	INCORRECT_BIDDER: 'Rejected by wallet due to incorrect bidder recovered.',
 };
 
 export const MESSAGES = {
@@ -64,6 +67,8 @@ export const MESSAGES = {
 		'Waiting for transaction approval. You should receive a request in your wallet.',
 	SUCCESS_CONFIRMATION: 'Success! Bid accepted and ownership transferred',
 	CONFIRM_BID_AMOUNT: 'Are you sure you want to accept a bid of',
+	DATA_CONSUMED: 'data already consumed',
+	INCORRECT_BIDDER: 'recovered incorrect bidder',
 };
 
 export const getConfirmNFTPriceDetails = (
