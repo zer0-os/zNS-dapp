@@ -115,7 +115,9 @@ const Details = ({
 				</div>
 			)}
 
-			{error !== undefined && <div className={styles.Error}>{error}</div>}
+			{error && error !== undefined && (
+				<div className={styles.Error}>{error}</div>
+			)}
 
 			{/* Buttons */}
 			<div className={styles.Buttons}>

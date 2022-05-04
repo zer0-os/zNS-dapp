@@ -1,43 +1,50 @@
+@use 'styles/variables/dimensions';
+
 .StepBarContainer {
-	margin: -14px 6px 40px 6px;
+	display: none;
+
+	@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+		display: flex;
+		margin: -14px 6px 40px 6px;
+	}
 }
 
 .Container {
+	h2 {
+		font-size: 24px;
+		font-weight: 700;
+		line-height: 28px;
+	}
+
 	width: 640px;
 	padding: 40px;
 
-	color: white !important;
-	background: var(--background-blue-card-wilder);
-}
+	color: var(--color-text-primary) !important;
+	background: var(--color-background);
 
-.Header {
-	display: flex;
-	align-items: center;
-	flex-direction: column;
+	.Header {
+		display: flex;
+		align-items: center;
+		flex-direction: column;
 
-	width: 100%;
-}
+		width: 100%;
+	}
 
-.Header h1 {
-	color: white;
-	font-size: 24px;
-	font-weight: 700;
-	margin-bottom: 32px;
-}
+	.Header h1 {
+		color: var(--color-text-primary);
+		font-size: 24px;
+		font-weight: 700;
+		margin-bottom: 32px;
+	}
 
-.Container h2 {
-	font-size: 24px;
-	font-weight: 700;
-	line-height: 28px;
-}
+	.Section {
+		margin-top: 40px;
+		margin-bottom: 56px;
 
-.Section {
-	margin-top: 40px;
-	margin-bottom: 56px;
-}
-
-.Section > div:nth-of-type(2) {
-	margin-left: 12px;
+		> div:nth-of-type(2) {
+			margin-left: 12px;
+		}
+	}
 }
 
 .NFT {
@@ -52,30 +59,30 @@
 	background: rgba(255, 255, 255, 0.05);
 
 	width: 224px;
-}
 
-.NFT img {
-	border-radius: inherit;
-	height: 100%;
-	width: 100%;
-	transition: transform var(--animation-time-medium) ease-in-out;
-}
+	&:hover img {
+		transform: scale(1.05);
+	}
 
-.NFT:hover img {
-	transform: scale(1.05);
+	img {
+		border-radius: inherit;
+		height: 100%;
+		width: 100%;
+		transition: transform var(--animation-time-medium) ease-in-out;
+	}
 }
 
 .Details {
 	flex: 1;
 	margin-left: 12px;
 	width: 272px;
-}
 
-.Domain {
-	overflow-wrap: anywhere;
-	display: block;
-	margin-top: 4px;
-	color: var(--color-accent-1);
+	.Domain {
+		overflow-wrap: anywhere;
+		display: block;
+		margin-top: 4px;
+		color: var(--color-accent-1);
+	}
 }
 
 .Price {
@@ -84,7 +91,7 @@
 
 .Price h3 {
 	color: var(--color-primary-lighter-3);
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	font-weight: 700;
 	margin-bottom: 4px;
 }
@@ -94,12 +101,12 @@
 }
 
 .Price span:first-of-type {
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	font-weight: 700;
 }
 
 .Price span:nth-of-type(2) {
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 	font-weight: 700;
 	margin-top: 8px;
 }
@@ -116,7 +123,7 @@
 .InputWrapper p {
 	margin: 0;
 	padding: 0;
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	font-weight: 400;
 	text-align: center;
 }

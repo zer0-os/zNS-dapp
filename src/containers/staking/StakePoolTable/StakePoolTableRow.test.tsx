@@ -1,19 +1,10 @@
 import '@testing-library/jest-dom/extend-expect';
-import {
-	fireEvent,
-	render,
-	screen,
-	waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { ethers } from 'ethers';
 
-import {
-	MESSAGE,
-	TABLE_HEADERS,
-	TABLE_HEADERS_DISCONNECTED,
-} from './StakePoolTable.constants';
+import { TABLE_HEADERS } from './StakePoolTable.constants';
 import StakePoolTableRow, { TEST_ID } from './StakePoolTableRow';
 
 //////////
@@ -55,7 +46,6 @@ const mockUserData = {
 };
 
 var mockAccountValid = { account: '1' };
-var mockAccountInvalid = { account: undefined };
 var mockAccount: { account: string | undefined } = mockAccountValid;
 
 jest.mock('@web3-react/core', () => ({
@@ -107,21 +97,12 @@ test('should render', async () => {
 	await screen.findByText(mockPoolData.content.name);
 });
 
-test('should render correct number of columns with wallet connected', async () => {
+test('should render correct number of columns', async () => {
 	mockUserValueStaked.mockResolvedValue(mockUserData);
 	const { getByTestId } = renderComponent();
 	await screen.findByText(mockPoolData.content.name);
 	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(
 		TABLE_HEADERS.length,
-	);
-});
-
-test('should render correct number of columns with wallet disconnected', async () => {
-	mockAccount = mockAccountInvalid;
-	const { getByTestId } = renderComponent();
-	await screen.findByText(mockPoolData.content.name);
-	expect(getByTestId(TEST_ID.CONTAINER).childElementCount).toBe(
-		TABLE_HEADERS_DISCONNECTED.length,
 	);
 });
 
@@ -143,21 +124,6 @@ test('should handle button click event', async () => {
 	expect(mockSelectStakePool).toBeCalledWith(mockPoolData);
 });
 
-test('should render spinner while loading', async () => {
-	mockUserValueStaked.mockResolvedValue(mockUserData);
-	const { getByTestId } = renderComponent();
-	const spinner = getByTestId(TEST_ID.SPINNER);
-	expect(spinner).toBeInTheDocument();
-	await waitForElementToBeRemoved(spinner);
-});
-
-test('should handle failed load', async () => {
-	mockUserValueStaked.mockRejectedValue(undefined);
-	renderComponent();
-	await screen.findByText(MESSAGE.FAILED_TO_LOAD);
-	expect(console.error).toBeCalledTimes(1);
-});
-
 test('should format apy correctly', async () => {
 	mockUserValueStaked.mockResolvedValue(mockUserData);
 	renderComponent();
@@ -168,10 +134,4 @@ test('should format total stake correctly', async () => {
 	mockUserValueStaked.mockResolvedValue(mockUserData);
 	renderComponent();
 	await screen.findByText('$6,971,564.46');
-});
-
-test('should format user stake correctly', async () => {
-	mockUserValueStaked.mockResolvedValue(mockUserData);
-	renderComponent();
-	await screen.findByText('2,000.00 ' + mockPoolData.content.tokenTicker);
 });

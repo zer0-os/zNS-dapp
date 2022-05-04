@@ -1,11 +1,25 @@
+@use 'styles/variables/dimensions';
+
 .NFTDetailsContainer {
 	margin-bottom: 28px;
+	display: flex;
+	justify-content: center;
+
+	// Tablet Breakpoint
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		justify-content: unset;
+	}
 }
 
 .PlaceBidContainer {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	// Tablet Breakpoint
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		margin-top: 12px;
+	}
 }
 
 .TextContainer {
@@ -13,29 +27,39 @@
 	text-align: center;
 	word-break: break-word;
 	line-height: 24px;
-	padding-bottom: 0;
+	padding-bottom: 0px;
 
 	div {
 		display: inline-block;
 	}
+
+	// Tablet Breakpoint
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		padding-bottom: 8px;
+	}
 }
 
 .Estimate {
-	font-weight: 700;
-	color: var(--color-primary-lighter-3);
 	margin: 16px auto;
 }
 
 .TextInput {
 	color: var(--glow-text-white);
-	width: 268px;
-	margin: '0 auto';
+	width: 304px;
+	margin: 0 auto;
+	padding: 14px 24px 10px 24px;
+
+	background: linear-gradient(
+		94.23deg,
+		rgba(60, 161, 255, 0.2) 0%,
+		rgba(30, 81, 128, 0.2) 100%
+	);
 }
 
 .Buttons {
 	display: flex;
 	justify-content: center;
-	margin-top: 40px;
+	margin-top: 26px;
 }
 
 .Buttons > button:not(:first-child) {
@@ -46,7 +70,7 @@
 	color: var(--color-success);
 	line-height: 24px;
 	text-align: center;
-	margin: 40px 0;
+	margin: 20px 0 20px 0;
 }
 
 .Error {

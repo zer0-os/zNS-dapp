@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 /* Mobile First */
 .Container {
 	width: 100%;
@@ -8,19 +10,10 @@
 	transition: box-shadow var(--animation-time-medium) ease-in-out;
 	transition: filter var(--animation-time-medium) ease-in-out;
 	transition: transform var(--animation-time-medium) ease-in-out;
-
+	border: none;
 	background: var(--color-purple-lighter);
 	padding: 0;
 	text-align: left;
-
-	margin-top: 16px;
-}
-
-.Mobile {
-	display: block;
-	@media only screen and (min-width: 900px) {
-		display: none;
-	}
 }
 
 .Container:hover {
@@ -46,15 +39,8 @@
 	flex-direction: column;
 	justify-content: space-between;
 	width: 100%;
-
+	height: 124px;
 	padding: 26px 16px;
-
-	background: linear-gradient(
-		90deg,
-		rgba(0, 0, 0, 0.35) 0%,
-		rgba(0, 0, 0, 0) 51.04%
-	);
-
 	position: relative;
 }
 
@@ -70,18 +56,18 @@
 
 	font-family: var(--font-family);
 	font-weight: 700;
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	line-height: 24px;
 }
 
 .Label {
 	font-family: var(--font-family);
 	font-weight: 400;
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	padding-bottom: 0;
 	margin-top: 4px;
 
-	color: white;
+	color: var(--color-text-primary);
 }
 
 /*Button*/
@@ -95,7 +81,7 @@
 	margin-top: 8px;
 
 	font-weight: 700;
-	font-size: 16px;
+	font-size: var(--font-size-default);
 
 	display: flex;
 	align-items: center;
@@ -106,12 +92,12 @@
 	margin-left: 6px;
 }
 
-/* PC Resolution */
-@media only screen and (min-width: 768px) {
+/* Tablet Resolution */
+@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 	.Content {
 		display: flex;
 		flex-direction: row;
-		padding: 37px 40px;
+		padding: 37px 16px;
 	}
 
 	.Title {
@@ -120,7 +106,7 @@
 	}
 
 	.Label {
-		font-size: 14px;
+		font-size: var(--font-size-smaller);
 		margin-top: 4px;
 	}
 
@@ -137,7 +123,7 @@
 	}
 }
 
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 	.Background {
 		opacity: 0.7;
 		background-position: 70%;

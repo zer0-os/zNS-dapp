@@ -85,6 +85,7 @@ const BidTableContainer = () => {
 						yourBid: ethers.utils.parseEther(bid.amount.toString()),
 						highestBid: highestBids.filter((d) => d.id === bid.tokenId)[0]
 							.amount,
+						domain: domain,
 					};
 				})
 				.sort((a, b) => b.date.getTime() - a.date.getTime());

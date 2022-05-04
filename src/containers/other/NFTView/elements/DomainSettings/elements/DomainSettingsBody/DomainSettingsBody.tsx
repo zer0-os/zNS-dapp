@@ -159,7 +159,7 @@ export const DomainSettingsBody: React.FC<DomainSettingsBodyProps> = ({
 							checked={localState.gridViewByDefault}
 							onChange={localActions.setGridViewByDefault}
 						/>
-						<label>Display Domain in Grid View by Default</label>
+						<label>Domain in Grid View by Default</label>
 						<Tooltip
 							text={
 								DOMAIN_SETTINGS_TOOLTIPS[

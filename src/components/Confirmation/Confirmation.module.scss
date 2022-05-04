@@ -1,3 +1,6 @@
+$width: 588px;
+$gutter: 16px;
+
 .Request {
 	display: flex;
 
@@ -98,10 +101,10 @@
 .Buttons {
 	display: flex;
 	margin-top: 32px;
-}
 
-.Buttons > button:not(:first-child) {
-	margin-left: 16px;
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		margin: 8px 48px;
+	}
 }
 
 .Close {
@@ -111,30 +114,50 @@
 }
 
 .Confirmation {
-	width: 588px;
+	width: $width;
 	padding: 32px 40px 40px 40px;
 	background: var(--color-background);
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		display: flex;
+		flex-direction: column;
+		width: calc(100vw - $gutter - $gutter);
+		padding: 28px;
+	}
 }
 
 .Confirmation h2 {
 	font-size: 36px;
 	font-weight: 700;
 	text-align: center;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		font-size: 18px;
+	}
 }
 
 .Confirmation hr {
 	margin-top: 34px;
 	margin-bottom: 42px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		margin: 16px 0;
+	}
 }
 
 .Confirmation p {
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	font-weight: 700;
 	line-height: 28.8px;
 	text-align: center;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		line-height: 21px;
+	}
 }
 
 .Confirmation .Buttons {
+	display: flex;
 	justify-content: center;
 }
 

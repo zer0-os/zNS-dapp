@@ -1,8 +1,9 @@
-.MintNewNFT {
-	width: 640px;
-	padding: 48px;
+$width: 640px;
+$gutter: 16px;
 
-	background: var(--background-purple-card-20);
+.MintNewNFT {
+	max-width: $width;
+	padding: 48px;
 	overflow: hidden;
 }
 
@@ -31,7 +32,7 @@
 }
 
 .Header h2 {
-	font-size: 16px;
+	font-size: var(--font-size-default);
 }
 
 .Header > div {
@@ -49,16 +50,50 @@
 
 .Container {
 	position: relative;
-	height: 542px;
-	transition: height var(--animation-time-long) ease-out;
+	height: auto;
 }
 
 .Section {
-	position: absolute;
-	width: 100%;
-	top: 0;
-	left: 0;
 	padding-top: 80px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		padding-top: 24px;
+	}
+
+	.FlexWrapper {
+		display: flex;
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			align-items: center;
+			flex-direction: column;
+
+			> * {
+				width: 100%;
+			}
+
+			.Inputs {
+				max-width: unset;
+			}
+		}
+	}
+
+	.TextStoryInput {
+		margin-top: 40px;
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			margin-top: 0;
+		}
+	}
+
+	.SubmitButton {
+		margin: 40px auto 0 auto;
+		height: 36px;
+		border-radius: 18px;
+
+		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+			margin: 24px auto;
+		}
+	}
 }
 
 .NFT {
@@ -80,6 +115,11 @@
 	cursor: pointer;
 	transition: transform var(--animation-time-medium) ease-in-out,
 		border-color var(--animation-time-medium) ease-in-out;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		width: auto;
+		max-width: 224px;
+	}
 }
 
 /* .NFT:not(.Uploaded):hover {
@@ -91,6 +131,7 @@
 	border: none;
 	overflow: visible;
 	border-radius: 0;
+	margin: 0 auto;
 }
 
 .Uploaded:hover > img,
@@ -115,6 +156,11 @@
 	flex-direction: column;
 	flex: 1;
 	margin-left: 24px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		margin: 24px 0;
+		max-width: 244px;
+	}
 }
 
 .Inputs > input:not(:first-child) {
@@ -123,6 +169,11 @@
 
 .Summary {
 	display: flex;
+	gap: 16px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		flex-direction: column;
+	}
 }
 
 .Summary h2 {

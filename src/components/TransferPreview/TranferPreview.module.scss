@@ -1,7 +1,18 @@
 .TransferPreview {
-	background: var(--color-purple-darkest);
-	padding: 27.5px 40px;
-	width: 640px;
+	// Mobile Breakpoints
+	width: 555px;
+	padding: 20px 40px 20px 40px;
+	max-height: 70vh;
+	overflow: auto;
+	background: var(--color-revolver);
+	border: 1px solid var(--color-bossanova);
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 1000px) {
+		width: 640px;
+		// Needs tidying up
+		padding: 27.5px 40px 10px 45px;
+	}
 }
 
 .TransferPreview h4 {
@@ -13,20 +24,28 @@
 
 .TransferPreview li > div {
 	display: flex;
-	margin-top: 34px;
-	margin-bottom: 34px;
+	margin-bottom: 32px;
 }
 
 .TransferPreview li hr {
-	margin-bottom: 42px;
+	// Mobile Breakpoints
+	margin-bottom: 32px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 1262px) {
+		margin-bottom: 42px;
+	}
+}
+
+.Divider {
+	border: 1px solid var(--color-purple-lighter);
 }
 
 .Image {
 	cursor: pointer;
 	height: 200px;
-	overflow: hidden;
-	transition: transform var(--animation-time-medium) ease-in-out;
 	width: 200px;
+	overflow: hidden;
 }
 
 .Image:hover {
@@ -35,22 +54,22 @@
 
 .Image img {
 	height: 100%;
-	object-fit: contain;
 	width: 100%;
+	object-fit: contain;
 }
 
 .Info {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	margin-left: 32px;
+	width: 328px;
 	max-width: 240px;
-	position: relative;
-	width: 240px;
 	word-wrap: break-word;
 
-	Link {
-		font-size: 16px;
-		color: var(--color-accent-1);
+	.Link {
+		font-size: var(--font-size-default);
+		color: var(--color-grey);
 	}
 
 	h3 {
@@ -71,12 +90,12 @@
 }
 
 .Info .Address {
-	font-size: 16px;
+	font-size: var(--font-size-default);
 	line-height: 24px;
 	color: var(--color-text-primary);
 }
 
-.InfoContainer {
+.Container {
 	display: flex;
 	flex-direction: row;
 	margin-top: 18px;
@@ -84,6 +103,15 @@
 
 	div {
 		white-space: nowrap;
+	}
+
+	.TextContainer {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.Success {
+		color: var(--color-success);
 	}
 }
 

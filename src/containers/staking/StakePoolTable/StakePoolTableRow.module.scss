@@ -2,7 +2,7 @@
 	cursor: pointer;
 
 	&:hover {
-		background: var(--color-background-alt-50);
+		background: var(--color-revolver);
 	}
 
 	td {
@@ -34,4 +34,8 @@
 	& > * {
 		margin-right: auto;
 	}
+}
+
+.ButtonContainer {
+	padding: 4px 0;
 }

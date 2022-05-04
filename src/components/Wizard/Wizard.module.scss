@@ -1,6 +1,24 @@
+@use 'styles/variables/dimensions';
+
+$width: 640px;
+$gutter: 16px;
+
 .Container {
-	width: 640px;
+	display: flex;
+	flex-direction: column;
+	width: $width;
 	padding: 48px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		width: calc(100vw - $gutter - $gutter);
+		padding: 48px 16px;
+	}
+
+	@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
+		width: 100vw;
+		border: none;
+		max-width: unset !important;
+	}
 
 	.Header {
 		width: 100%;

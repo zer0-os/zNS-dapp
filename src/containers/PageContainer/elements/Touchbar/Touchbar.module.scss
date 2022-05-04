@@ -1,0 +1,56 @@
+@use 'styles/variables/dimensions';
+
+.TouchbarContainer {
+	// Mobile + Tablet
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	width: 100%;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	height: 60px;
+	background: var(--color-background);
+	border-top: 1px solid var(--color-grey-mine-shaft);
+	z-index: 999;
+
+	// Laptop/Desktop
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		display: none;
+	}
+
+	.NavLinks {
+		display: flex;
+		align-items: center;
+		justify-content: space-around;
+		width: 100%;
+
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			width: 100%;
+			justify-content: space-evenly;
+		}
+
+		> li {
+			> a {
+				display: flex;
+				align-items: center;
+
+				&.Selected {
+					text-shadow: var(--glow-text-primary);
+					font-weight: 600;
+					color: var(--color-text-primary);
+				}
+
+				.ImageContainer {
+					display: flex;
+					border-radius: 60px;
+					padding: 13px;
+
+					&.Selected {
+						background: var(--color-revolver);
+					}
+				}
+			}
+		}
+	}
+}

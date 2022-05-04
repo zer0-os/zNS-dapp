@@ -1,4 +1,11 @@
+$width: 640px;
+$gutter: 16px;
+
 .Container {
-	width: 640px;
+	width: $width;
 	padding: 40px;
+
+	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
+		width: calc(100vw - $gutter - $gutter);
+	}
 }

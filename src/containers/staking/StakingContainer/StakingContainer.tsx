@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Overlay } from 'components';
 
@@ -45,18 +45,8 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 	const { refetch: refetchUserData } = useStakingUserData();
 
 	const { pathname } = useLocation();
-	// const { setLocation } = useNav();
+
 	const { path } = useRouteMatch();
-
-	// useEffect(() => {
-	// 	console.log(path);
-	// }, [path]);
-
-	const [isBelowBreakpoint, setIsBelowBreakpoint] = useState<boolean>();
-
-	const handleResize = () => {
-		setIsBelowBreakpoint(window.innerWidth <= 701);
-	};
 
 	const refetchAll = () => {
 		refetchPoolData();
@@ -79,36 +69,9 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 		}
 	}, [pathname]);
 
-	useEffect(() => {
-		window.addEventListener('resize', handleResize);
-		handleResize();
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
-
 	useUpdateEffect(() => {
 		poolSelection.claim(undefined);
 	}, [account]);
-
-	if (isBelowBreakpoint) {
-		return (
-			<div
-				style={{
-					position: 'fixed',
-					top: '50%',
-					left: '50%',
-					transform: 'translate(-50%, -100%)',
-					width: '100%',
-					padding: 16,
-					textAlign: 'center',
-					fontWeight: 700,
-				}}
-			>
-				Staking is currently only available on desktop
-			</div>
-		);
-	}
 
 	return (
 		<>
@@ -153,36 +116,26 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 					/>
 				)}
 			</Overlay>
-			<Switch>
-				<div
-					className={cx(
-						className,
-						styles.Container,
-						'main',
-						'background-primary',
-						'border-primary',
-						'border-rounded',
-					)}
-					style={style}
-				>
-					<nav className={styles.Links}>
-						<Link
-							className={cx({
-								Active: pathname.includes(ROUTES.STAKING_POOLS),
-							})}
-							to={path + ROUTES.STAKING_POOLS}
-						>
-							Pools
-						</Link>
-						<Link
-							className={cx({
-								Active: pathname.includes(ROUTES.STAKING_DEPOSITS),
-							})}
-							to={path + ROUTES.STAKING_DEPOSITS}
-						>
-							My Deposits
-						</Link>
-					</nav>
+			<div className={cx(className, styles.Container)} style={style}>
+				<nav className={styles.Links}>
+					<Link
+						className={cx({
+							Active: pathname.includes(ROUTES.STAKING_POOLS),
+						})}
+						to={path + ROUTES.STAKING_POOLS}
+					>
+						Pools
+					</Link>
+					<Link
+						className={cx({
+							Active: pathname.includes(ROUTES.STAKING_DEPOSITS),
+						})}
+						to={path + ROUTES.STAKING_DEPOSITS}
+					>
+						My Deposits
+					</Link>
+				</nav>
+				<Switch>
 					<Route
 						exact
 						path={path + ROUTES.STAKING_DEPOSITS}
@@ -196,8 +149,8 @@ const StakingContainer: React.FC<StakingContainerProps> = ({
 					<Route exact path={path}>
 						<Redirect to={path + ROUTES.STAKING_POOLS} />
 					</Route>
-				</div>
-			</Switch>
+				</Switch>
+			</div>
 		</>
 	);
 };

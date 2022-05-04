@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { IconButton } from 'components';
-import arrowForwardIcon from 'assets/arrow-forward.svg';
-import arrowBackIcon from 'assets/arrow-back.svg';
+import chevronForwardIcon from 'assets/chevron-forward.svg';
+import chevronBackIcon from 'assets/chevron-back.svg';
 import {
 	useHistoryButtonsData,
 	useHistoryButtonsHandlers,
@@ -32,14 +32,14 @@ export const HistoryButtons: React.FC = () => {
 	return (
 		<div className="history-buttons__container">
 			<IconButton
-				iconUri={arrowBackIcon}
+				iconUri={chevronBackIcon}
 				onClick={handlers.handleOnBackClick}
 				className="history-buttons__button"
 				disabled={!formattedData.canGoBack}
 				alt="Click to go back"
 			/>
 			<IconButton
-				iconUri={arrowForwardIcon}
+				iconUri={chevronForwardIcon}
 				onClick={handlers.handleOnForwardClick}
 				className="history-buttons__button"
 				disabled={!formattedData.canGoForward}

@@ -33,6 +33,7 @@ type SetBuyNowProps = {
 	setBuyNowPrice: (buyNowPrice?: number) => void;
 	step: Step;
 	wildPriceUsd: number;
+	account?: string;
 };
 
 const SetBuyNow = ({
@@ -44,16 +45,25 @@ const SetBuyNow = ({
 	onCancel,
 	step,
 	wildPriceUsd,
+	account,
 }: SetBuyNowProps) => {
+	const editText = account !== domain?.owner ? 'selecting' : 'purchasing';
+
+	const wizardHeader = isLoadingDomainData
+		? ''
+		: domain?.currentBuyNowPrice?.gt(0)
+		? 'Edit Buy Now'
+		: 'Set Buy Now';
+
 	if (isLoadingDomainData) {
 		return (
-			<Wizard header="Set Buy Now">
+			<Wizard header={wizardHeader}>
 				<Wizard.Loading message="Loading domain data..." />
 			</Wizard>
 		);
 	} else if (!domain) {
 		return (
-			<Wizard header="Set Buy Now">
+			<Wizard header={wizardHeader}>
 				<Wizard.Confirmation
 					message={'Failed to load domain data'}
 					primaryButtonText={'Cancel'}
@@ -62,7 +72,6 @@ const SetBuyNow = ({
 			</Wizard>
 		);
 	}
-
 	const steps = [];
 	steps[Step.CheckingZAuctionApproval] = (
 		<Wizard.Loading message="Checking status of zAuction approval..." />
@@ -103,7 +112,18 @@ const SetBuyNow = ({
 				/>
 			);
 
-	return <Wizard header="Set Buy Now">{steps[step]}</Wizard>;
+	return (
+		<Wizard
+			header={wizardHeader}
+			subHeader={
+				step === Step.SetBuyNow || step === Step.WaitingForBuyNowConfirmation
+					? `Please review the information and the art to make sure you are ${editText} the right NFT.`
+					: ''
+			}
+		>
+			{steps[step]}
+		</Wizard>
+	);
 };
 
 export default SetBuyNow;

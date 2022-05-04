@@ -9,13 +9,15 @@ import {
 import './_connect-wallet-button.scss';
 
 type ConnectWalletButtonProps = {
-	isDesktop: boolean;
-	onConnectWallet: () => void;
+	isDesktop?: boolean;
+	onConnectWallet?: () => void;
+	className?: string;
 };
 
 export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
 	isDesktop,
 	onConnectWallet,
+	className,
 }) => {
 	const { active, connector, account, deactivate } =
 		useWeb3React<Web3Provider>();
@@ -39,11 +41,15 @@ export const ConnectWalletButton: React.FC<ConnectWalletButtonProps> = ({
 	return (
 		<>
 			{formattedData.isConnected ? (
-				<FutureButton glow onClick={handlers.handleDisconnectWallet}>
+				<FutureButton
+					glow
+					onClick={handlers.handleDisconnectWallet}
+					className={className}
+				>
 					{formattedData.disconnectTitle}
 				</FutureButton>
 			) : (
-				<FutureButton glow onClick={onConnectWallet}>
+				<FutureButton glow onClick={onConnectWallet} className={className}>
 					<div className="connect-wallet-button__container">
 						{formattedData.isConnecting && <Spinner />}
 

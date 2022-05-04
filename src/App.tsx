@@ -28,11 +28,8 @@ import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ROUTES } from 'constants/routes';
 
-//- Asset Imports
-import backgroundImage from 'assets/background.jpg';
-
 //- Page Imports
-import { ZNS, Staking } from 'pages';
+import { ZNS, Staking, Profile } from 'pages';
 import PageContainer from 'containers/PageContainer';
 import DAO from 'pages/DAO/DAO';
 import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
@@ -49,20 +46,6 @@ function App() {
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
 
-	// Programatically load the background image
-	const loadImg = new Image();
-	loadImg.src = backgroundImage;
-	if (loadImg.complete) {
-		document.body.style.backgroundImage = `url(${backgroundImage})`;
-	} else {
-		loadImg.onload = () => {
-			const bg = document.getElementById('backgroundImage')?.style;
-			if (!bg) return;
-			bg.backgroundImage = `url(${backgroundImage})`;
-			bg.opacity = '1';
-		};
-	}
-
 	return (
 		<ConnectedRouter history={history}>
 			<BrowserRouter>
@@ -72,6 +55,7 @@ function App() {
 							<Route path={ROUTES.MARKET} component={ZNS} />
 							<Route path={ROUTES.STAKING} component={Staking} />
 							<Route path={ROUTES.ZDAO} component={DAO} />
+							<Route path={ROUTES.PROFILE} component={Profile} />
 							<Route exact path="/">
 								<Redirect to="/market" />
 							</Route>

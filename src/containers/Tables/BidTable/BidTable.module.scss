@@ -24,4 +24,32 @@
 			color: var(--color-error);
 		}
 	}
+
+	.Button {
+		margin-left: auto;
+		background: none;
+	}
+
+	td {
+		&:last-of-type {
+			width: 32px;
+			padding-left: 32px !important;
+		}
+	}
+
+	.MoreDropdown {
+		:global(ul) {
+			left: unset;
+			right: 0;
+			transform: unset;
+
+			li {
+				display: flex;
+
+				span {
+					margin-left: 10px;
+				}
+			}
+		}
+	}
 }

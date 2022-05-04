@@ -9,11 +9,13 @@ import { Confirmation, ConnectToWallet, Overlay } from 'components';
 type ConnectWalletPromptProps = {
 	open?: boolean;
 	onClose?: () => void;
+	promptText: string;
 };
 
 const ConnectWalletPrompt: React.FC<ConnectWalletPromptProps> = ({
 	onClose,
 	open,
+	promptText,
 }) => {
 	//////////////////
 	// State & Data //
@@ -46,15 +48,14 @@ const ConnectWalletPrompt: React.FC<ConnectWalletPromptProps> = ({
 				onClose={closeConnectWalletPrompt}
 				centered
 				open={isModalOpen}
-				hasCloseButton={false}
+				hasCloseButton={true}
 			>
 				<Confirmation
-					title={'Connect your Wallet'}
+					title={'Connect Your Wallet'}
 					confirmText={'Connect'}
 					onConfirm={() => {
 						connectToWallet();
 					}}
-					hasCloseButton={true}
 					onCancel={() => {
 						closeConnectWalletPrompt();
 					}}
@@ -62,9 +63,7 @@ const ConnectWalletPrompt: React.FC<ConnectWalletPromptProps> = ({
 						closeConnectWalletPrompt();
 					}}
 				>
-					<p className={styles.DialogText}>
-						Before you can make a bid, you must connect a wallet.
-					</p>
+					<p className={styles.DialogText}>{promptText}</p>
 				</Confirmation>{' '}
 			</Overlay>
 			<Overlay
