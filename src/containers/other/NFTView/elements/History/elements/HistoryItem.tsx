@@ -9,7 +9,7 @@ import {
 } from '@zero-tech/zns-sdk/lib/types';
 import { URLS } from 'constants/urls';
 import { ethers } from 'ethers';
-import { truncateText } from '../../../NFTView.helpers';
+import { truncateWalletAddress } from 'lib/utils';
 import { DomainEvents } from '../../../NFTView.types';
 import styles from '../../../NFTView.module.scss';
 
@@ -32,7 +32,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								{truncateText(item.bidder!, 4)}
+								{truncateWalletAddress(item.bidder!)}
 							</a>
 						</b>{' '}
 						made an offer of{' '}
@@ -60,7 +60,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								{truncateText(item.minter!, 4)}
+								{truncateWalletAddress(item.minter!)}
 							</a>
 						</b>{' '}
 						minted the domain
@@ -84,7 +84,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								{truncateText(item.from!, 4)}
+								{truncateWalletAddress(item.from!)}
 							</a>
 						</b>{' '}
 						transferred ownership to{' '}
@@ -95,7 +95,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								{truncateText(item.to!, 4)}
+								{truncateWalletAddress(item.to!)}
 							</a>
 						</b>{' '}
 					</div>
@@ -118,7 +118,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								{truncateText(item.buyer!, 4)}
+								{truncateWalletAddress(item.buyer!)}
 							</a>
 						</b>{' '}
 						bought this NFT from{' '}
@@ -129,7 +129,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								{truncateText(item.seller!, 4)}
+								{truncateWalletAddress(item.seller!)}
 							</a>
 						</b>{' '}
 						{item.amount && (
@@ -163,7 +163,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								{truncateText(item.seller!, 4)}
+								{truncateWalletAddress(item.seller!)}
 							</a>
 						</b>{' '}
 						sold this NFT to{' '}
@@ -174,7 +174,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 								target="_blank"
 								rel="noreferrer"
 							>
-								{truncateText(item.buyer!, 4)}
+								{truncateWalletAddress(item.buyer!)}
 							</a>
 						</b>{' '}
 						{item.amount && (

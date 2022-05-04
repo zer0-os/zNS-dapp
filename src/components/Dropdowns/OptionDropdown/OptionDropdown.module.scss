@@ -1,30 +1,28 @@
 .Dropdown {
 	position: relative;
+	display: flex;
+	align-items: flex-end;
 }
 
 .Drawer {
 	position: absolute;
-	top: calc(100% + 8px);
+	top: calc(100%);
 	left: 50%;
-	padding: 8px 0;
-
-	width: calc(100% + 58px);
-
-	background: var(--color-purple-dark);
-	border: 1px solid #50207b;
-	box-shadow: 0px 0px 16px rgba(140, 84, 221, 0.25);
-
+	width: 224px;
+	background: var(--color-revolver);
+	border: 1px solid var(--color-bossanova);
 	transform: translateX(-50%);
-
 	z-index: 10;
 	overflow: hidden;
+	padding: 8px 0 8px 0;
 }
 
 .Drawer li {
 	position: relative;
 	display: flex;
-    align-items: center;
-	padding: 16px 32px;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 8px 0 8px 16px;
 	cursor: pointer;
 
 	img {
@@ -38,7 +36,6 @@
 
 	&:hover {
 		text-shadow: var(--glow-text-white);
-		font-weight: 700;
 	}
 }
 

@@ -1,3 +1,4 @@
+export * from './Actions';
 export * from './Header';
-export * from './HomeIcon';
 export * from './Modals';
+export * from './Touchbar';

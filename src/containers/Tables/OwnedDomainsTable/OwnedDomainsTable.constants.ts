@@ -1,6 +1,3 @@
-import settingsIcon from './assets/settings.svg';
-import dollarSignIcon from './assets/dollar-sign.svg';
-
 export const HEADERS = [
 	{
 		label: 'Domain',
@@ -9,11 +6,6 @@ export const HEADERS = [
 	},
 	{
 		label: 'Top Bid (WILD)',
-		accessor: '',
-		className: '',
-	},
-	{
-		label: 'Bids',
 		accessor: '',
 		className: '',
 	},
@@ -29,17 +21,14 @@ export enum MESSAGES {
 }
 
 export const ACTION_KEYS = {
-	SETTINGS: 'Domain Settings',
+	SETTINGS: 'My Domain Settings',
 	VIEW_BIDS: 'View Bids',
 };
 
-export const ACTIONS = [
-	{
-		icon: settingsIcon,
-		title: ACTION_KEYS.SETTINGS,
-	},
-	{
-		icon: dollarSignIcon,
-		title: ACTION_KEYS.VIEW_BIDS,
-	},
-];
+export const LABELS = {
+	TOP_BID: 'Top Bid',
+};
+
+export const ALT_TEXT = {
+	MORE_ICON: 'More Icon',
+};

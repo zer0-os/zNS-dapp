@@ -2,8 +2,8 @@
 	width: 640px;
 	padding: 40px;
 
-	color: white !important;
-	background: var(--background-blue-card-wilder);
+	color: var(--color-text-primary) !important;
+	background: var(--color-background);
 }
 
 .Header {
@@ -15,14 +15,14 @@
 }
 
 .Header h1 {
-	color: white;
+	color: var(--color-text-primary);
 	font-size: 36px;
 	font-weight: 700;
 	margin-bottom: 0;
 }
 
 .Header h2 {
-	color: white;
+	color: var(--color-text-primary);
 	font-size: 24px;
 }
 

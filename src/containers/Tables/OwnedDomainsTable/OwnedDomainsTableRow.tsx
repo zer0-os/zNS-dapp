@@ -24,10 +24,13 @@ import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import styles from './OwnedDomainsTableRow.module.scss';
 
 //- Assets Imports
-import moreIcon from './assets/more-vertical.svg';
+import moreIcon from 'assets/more-vertical.svg';
 
 //- Constants Imports
-import { ACTIONS, ACTION_KEYS } from './OwnedDomainsTable.constants';
+import { ACTION_KEYS } from './OwnedDomainsTable.constants';
+
+//- Utils Imports
+import { getActions } from './OwnedDomainsTable.utils';
 
 enum Modal {
 	ViewBids,
@@ -63,6 +66,8 @@ const OwnedDomainsTableRow = ({
 		goTo(`/market/${domain.name.split('wilder.')[1]}`);
 	};
 
+	const actions = getActions(bids?.length !== 0);
+
 	const onSelectOption = (option: Option) => {
 		if (option.title === ACTION_KEYS.VIEW_BIDS) {
 			onViewBids();
@@ -94,6 +99,7 @@ const OwnedDomainsTableRow = ({
 						onAccept={refetch}
 						isLoading={isLoadingBidData}
 						highestBid={highestBid?.amount}
+						isAcceptBidEnabled
 					/>
 				</Overlay>
 			);
@@ -141,16 +147,11 @@ const OwnedDomainsTableRow = ({
 					)}
 				</td>
 
-				{/* Number of Bids */}
-				<td className={styles.Right} onClick={onRowClick}>
-					{isLoadingBidData ? <Spinner /> : bids ? bids.length : '-'}
-				</td>
-
 				{/* Actions */}
 				<td>
 					<OptionDropdown
 						onSelect={onSelectOption}
-						options={ACTIONS}
+						options={actions}
 						className={classNames(styles.MoreDropdown)}
 					>
 						<button className={styles.Button}>

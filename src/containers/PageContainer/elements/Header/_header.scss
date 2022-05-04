@@ -1,36 +1,71 @@
+@use 'styles/variables/dimensions';
+
+$height: 46px;
+
 .header {
-	&__container {
-		position: relative;
+	&__flex-wrapper {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+	}
+	&__outer-container {
+		position: sticky;
+		top: 8px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 		width: 100%;
 		background: var(--color-background);
-		border-radius: var(--box-radius);
+		border-radius: 28px;
 		overflow: none;
+		border: 1px solid #23142f;
+		z-index: 4;
+	}
+
+	&__container {
+		width: 100%;
 		transition: background-color var(--animation-time-medium) ease-in-out,
 			border var(--animation-time-medium) ease-in-out,
 			box-shadow var(--animation-time-medium) ease-in-out;
-		z-index: 4;
-
-		&--is-active {
-			box-shadow: 0 0 20px 0 rgb(235 0 255 / 40%);
-		}
-
+		&--is-active,
 		&--is-searching {
-			box-shadow: none;
+			.ZNA__Container {
+				border: 1px solid #6a3991 !important;
+			}
+		}
+		&--on-scroll-up {
+			top: 8px;
+			transition: opacity 0.4s ease-in-out, 0.4s ease-in-out;
+		}
+		&--on-scroll-down {
+			top: -70px;
+			transition: opacity 0.4s ease-in-out, 0.4s ease-in-out;
 		}
 
-		@media only screen and (max-width: 1230px) {
-			padding: 11px 17px;
+		@media only screen and (min-width: 834px) {
+			max-width: 100%;
 		}
 	}
 
 	&__content {
-		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0px 17px;
+		height: $height;
+		padding: 0px 4px;
+
+		&-disconnect-button-container {
+			padding-right: 4px;
+
+			// Visible up to tablet breakpoint
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				display: none;
+			}
+		}
+
+		&-disconnect-button {
+			padding-left: 4px;
+			padding-right: 4px;
+		}
 	}
 
 	&__navigation {
@@ -38,7 +73,6 @@
 		flex: 1;
 		flex-grow: 1;
 		align-items: center;
-		height: 32px;
 
 		&-title {
 			margin-left: 16px;
@@ -48,59 +82,78 @@
 
 		&-zna-link {
 			flex-shrink: 0;
+		}
 
-			@media only screen and (max-width: 768px) {
-				margin-left: 0 !important;
-			}
+		.searchBar button {
+			position: absolute;
+			padding: 0;
+			left: 16px;
+			top: 9px;
+			height: 14px;
+			width: 14px;
+			background-color: rgba(0, 0, 0, 0);
+			background-position: center;
+			background-size: 14px 14px;
+			background-repeat: no-repeat;
 		}
 
 		&-search {
 			flex: 1;
-			margin-left: 16px;
+			margin: 0 12px;
 			background: none;
-			color: white;
-			font-weight: bold;
+			width: 100%;
+			color: var(--color-text-primary);
+			z-index: 11;
 
 			&::placeholder {
-				color: #e5baff70;
+				color: #6c6c6c;
 				font-weight: 400;
 			}
 
-			@media only screen and (max-width: 768px) {
-				min-width: 0px;
-				margin-left: 0 !important;
-			}
-
-			@media only screen and (max-width: 500px) {
-				display: none;
+			@media only screen and (min-width: 500px) {
+				background-image: url('/assets/header-search-icon.svg');
+				background-repeat: no-repeat;
+				background-position: right;
 			}
 		}
-	}
 
-	&__home-link {
-		flex-shrink: 0;
-		margin-right: 16px;
-		font-weight: 700;
-		text-transform: uppercase;
+		.ZNA__Container {
+			position: relative;
+			display: flex;
+			flex: 1;
+			flex-grow: 1;
+			align-items: center;
+			padding: 6px 0;
+			border: 1px solid var(--color-bossanova);
+			border-radius: 24px;
+			transition: all var(--animation-time-short) ease-in-out;
 
-		@media only screen and (max-width: 1200px) {
-			margin-right: 0;
-		}
+			&:hover {
+				background: var(--color-revolver);
+			}
 
-		@media only screen and (max-width: 500px) {
-			display: none;
+			&-searching {
+				background: var(--color-revolver);
+			}
 		}
 	}
 
 	&__actions {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		gap: 16px;
-		height: 56px;
+		display: none;
 
-		@media only screen and (max-width: 1230px) {
-			display: none !important;
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			display: flex;
+			position: relative;
+			right: 0;
+			flex-direction: row;
+			align-items: center;
+			padding: 0 16px 0 16px;
+			gap: 8px;
+		}
+
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			display: none;
 		}
 	}
 }

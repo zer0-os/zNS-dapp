@@ -1,4 +1,7 @@
+//- React Imports
 import { useState } from 'react';
+
+//- Components Imports
 import { FutureButton, Overlay, TextButton } from 'components';
 import SetBuyNow from '.';
 
@@ -50,5 +53,4 @@ const SetBuyNowButton = ({
 		</>
 	);
 };
-
 export default SetBuyNowButton;

@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core';
@@ -20,7 +20,7 @@ import {
 } from './types';
 
 //- Component Imports
-import { StepBar } from 'components';
+import { StepBar, Wizard } from 'components';
 import TokenInformation from './sections/TokenInformation';
 // import TokenDynamics from './sections/TokenDynamics';
 import Staking from './sections/Staking';
@@ -80,12 +80,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const [isMintLoading, setIsMintLoading] = useState(false);
 	const [mintingStatusText, setMintingStatusText] = useState('');
 	const [lootBalance, setLootBalance] = useState<number | undefined>();
-	const [containerHeight, setContainerHeight] = useState(0);
 	const [existingSubdomains, setExistingSubdomains] = useState<
 		string[] | undefined
 	>();
-
-	const containerRef = useRef<HTMLDivElement>(null);
 
 	const [tokenInformation, setTokenInformation] =
 		useState<TokenInformationType | null>(null);
@@ -120,10 +117,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	}, [lootContract, account]);
 
 	useEffect(() => {
-		resize();
-	}, [step, isMintLoading]);
-
-	useEffect(() => {
 		const parent = domainName.substring(1);
 		let existingNames;
 		if (!parent.length) {
@@ -144,15 +137,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	///////////////
 	// Functions //
 	///////////////
-
-	const resize = () => {
-		const el = containerRef.current;
-		if (el) {
-			const child = el.children[0];
-			if (child && child.clientHeight > 0)
-				return setContainerHeight(child.clientHeight);
-		}
-	};
 
 	const checkIsNftValid = () => {
 		let valid = true;
@@ -205,6 +189,9 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				ticker: '',
 				dynamic: false,
 				locked: tokenInformation.locked,
+				additionalMetadata: {
+					gridViewByDefault: true,
+				},
 			},
 			setStatusText,
 		);
@@ -288,39 +275,21 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	////////////
 
 	return (
-		<div
+		<Wizard
+			header={`${isOwner ? 'Mint' : 'Request to Mint'} ${
+				name ? `"${name}"` : ''
+			}`}
+			subHeader={newDomainZna}
 			className={`${styles.MintNewNFT} border-rounded border-primary background-primary`}
+			sectionDivider={false}
 		>
-			{isMintLoading && <div className={styles.Blocker}></div>}
-			{/* // TODO: Pull each section out into a seperate component */}
-			<div className={styles.Header}>
-				<h1 className={`glow-text-white`}>
-					{isOwner ? 'Mint' : 'Request to Mint'} "{name ? name : 'A New NFT'}"
-				</h1>
-				<div style={{ marginBottom: 8 }}>
-					<h2 className={`glow-text-white`}>{newDomainZna}</h2>
-				</div>
-				<span>
-					By{' '}
-					{account && account.length
-						? account.substring(0, 4) +
-						  '...' +
-						  account.substring(account.length - 4)
-						: ''}
-				</span>
-			</div>
 			<StepBar
-				style={{ marginTop: 24 }}
 				step={step + 1}
 				steps={isOwner ? ['Details'] : ['Details', 'Stake']}
 				onNavigate={(i: number) => setStep(i)}
 			/>
 
-			<div
-				ref={containerRef}
-				className={styles.Container}
-				style={{ height: containerHeight }}
-			>
+			<div className={styles.Container}>
 				{/* SECTION 1: Token Information */}
 				{step === MintState.DomainDetails && (
 					<TokenInformation
@@ -329,7 +298,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 						onContinue={(data: TokenInformationType) =>
 							getTokenInformation(data)
 						}
-						onResize={resize}
 						setNameHeader={(name: string) => setName(name)}
 						setDomainHeader={(domain: string) => setDomain(domain)}
 					/>
@@ -365,7 +333,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 					/>
 				)}
 			</div>
-		</div>
+		</Wizard>
 	);
 };
 

@@ -1,3 +1,3 @@
-export const ALT_TEXT = {
-	QUESTION_MARK: 'Question mark',
+export const MESSAGES = {
+	YOUR_WALLET: ' (Your Ethereum Wallet) ',
 };

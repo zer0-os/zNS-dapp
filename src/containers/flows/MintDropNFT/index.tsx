@@ -25,6 +25,9 @@ import {
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import useAsyncEffect from 'use-async-effect';
 
+//- Style Imports
+import styles from './MintDropNFT.module.scss';
+
 type MintDropNFTFlowContainerProps = {
 	privateSaleEndTime: number;
 	publicSaleStartTime: number;
@@ -35,8 +38,6 @@ const MintDropNFTFlowContainer = ({
 	publicSaleStartTime,
 }: MintDropNFTFlowContainerProps) => {
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const PUBLIC_SALE_START_TIME = publicSaleStartTime;
 
 	//////////////////
 	// State & Data //
@@ -129,7 +130,7 @@ const MintDropNFTFlowContainer = ({
 	// Toggles to grid view when viewport
 	// resizes to below 700px
 	const handleResize = () => {
-		setCanOpenWizard(window.innerWidth >= 900);
+		setCanOpenWizard(window.innerWidth >= 320);
 	};
 
 	const countdownFinished = () => {
@@ -498,7 +499,7 @@ const MintDropNFTFlowContainer = ({
 					/>
 				</Overlay>
 			)}
-			<div style={{ position: 'relative', marginBottom: 16 }}>
+			<div className={styles.BannerContainer}>
 				<MintDropNFTBanner
 					title={'Get Your Kicks for the Metaverse'}
 					label={bannerLabel()}

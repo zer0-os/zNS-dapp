@@ -1,8 +1,10 @@
 .connect {
-	width: 304px;
+	max-width: 304px;
 	position: relative;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
 
-	background: var(--background-blue-card-wilder);
+	background: var(--color-background);
 	border-radius: var(--box-radius);
 
 	overflow: hidden;
@@ -14,17 +16,12 @@
 	margin: 0 33px;
 }
 
-.header {
-	width: 100%;
-	padding-top: 38px;
-	padding-bottom: 31px;
-	text-align: center;
+.Header {
+	margin-bottom: 0 !important;
 }
 
-.header h3 {
-	font-size: 18px;
-	font-weight: 700;
-	color: white;
+.Header h1 {
+	font-size: 18px !important;
 }
 
 .connect ul {
@@ -41,8 +38,8 @@
 	width: 100%;
 	padding: 4px 40px;
 
-	color: white;
-	font-size: 16px;
+	color: var(--color-text-primary);
+	font-size: var(--font-size-default);
 
 	cursor: pointer;
 }
@@ -63,7 +60,7 @@
 	z-index: -1;
 
 	opacity: 0;
-	transition: opacity 0.1s ease-in-out;
+	transition: opacity var(--animation-time-short) ease-in-out;
 }
 
 .wallet:hover {
@@ -110,7 +107,7 @@
 .footer {
 	width: 100%;
 	text-align: center;
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 	padding: 18px;
 }
 

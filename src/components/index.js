@@ -32,6 +32,7 @@ export { default as AssetCard } from './Cards/AssetCard/AssetCard';
 export { default as AssetGraphCard } from './Cards/AssetCard/AssetGraphCard/AssetGraphCard';
 export { default as AssetMarketCapCard } from './Cards/AssetCard/AssetMarketCapCard/AssetMarketCapCard';
 export { default as AssetPriceCard } from './Cards/AssetCard/AssetPriceCard/AssetPriceCard';
+export { default as ImageCard } from './Cards/ImageCard/ImageCard';
 export { default as NFTCard } from './Cards/NFTCard';
 export { default as PreviewCard } from './Cards/PreviewCard';
 
@@ -65,7 +66,6 @@ export { default as TransferPreview } from './TransferPreview/TransferPreview';
 export { default as Notification } from './Notification/Notification';
 export { default as NotificationDrawer } from './NotificationDrawer/NotificationDrawer';
 export { default as Overlay } from './Overlay/Overlay';
-export { default as Profile } from './Profile/Profile';
 export { default as SearchBar } from './SearchBar/SearchBar.js';
 export { default as SideBar } from './SideBar/SideBar';
 export { default as Spinner } from './Spinner/Spinner';
@@ -78,6 +78,12 @@ export { default as Confirmation } from './Confirmation/Confirmation';
 export { default as LoadingIndicator } from './LoadingIndicator/LoadingIndicator';
 export { default as Countdown } from './Countdown/Countdown';
 export { default as Wizard } from './Wizard/Wizard';
+
+//- Glyphs
+export { default as StakingIcon } from './Glyphs/StakingIcon';
+export { default as MarketIcon } from './Glyphs/MarketIcon';
+export { default as DAOIcon } from './Glyphs/DAOIcon';
+export { default as ProfileIcon } from './Glyphs/ProfileIcon';
 
 export { default as StatsWidget } from './StatsWidget/StatsWidget';
 

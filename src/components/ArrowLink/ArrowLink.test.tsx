@@ -13,6 +13,15 @@ afterEach(() => {
 	jest.clearAllMocks();
 });
 
+/**
+ * 04/04/2022
+ * This tests are not comprehensive, and should be expanded.
+ * They miss:
+ * - Does href get applied to link
+ * - Does backwards arrow work
+ * - Does link replace or redirect on click
+ * And a few other cases
+ */
 describe('ArrowLink component', () => {
 	it('Renders ArrowLink', () => {
 		const { getByTestId } = renderComponent();

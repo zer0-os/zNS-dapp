@@ -1,3 +1,5 @@
+@use 'styles/variables/dimensions';
+
 .Dots {
 	--dot-size: 5px;
 	--dot-gap: 2.8px;
@@ -30,8 +32,7 @@
 .Stats {
 	display: flex;
 	justify-content: space-between;
-	background: var(--background-purple-card-20);
-	padding: 16px;
+	background: var(--color-background);
 	flex-wrap: wrap;
 
 	@media only screen and (max-width: 415px) {
@@ -44,14 +45,12 @@
 	}
 }
 
-@media only screen and (max-width: 520px) {
-	.WidgetContainer {
-		margin: 8px 0;
-		&:first-child {
-			margin-top: 16px;
-		}
-		&:last-child {
-			margin-bottom: 0px;
-		}
+.TableContainer {
+	// Mobile Breakpoints
+	margin-top: 8px;
+
+	// Rogue Breakpoint - Stats Widget Intro
+	@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+		margin-top: 16px;
 	}
 }

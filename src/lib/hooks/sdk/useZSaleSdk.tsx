@@ -36,9 +36,9 @@ export function useZSaleSdk() {
 					],
 					advanced: {
 						merkleTreeFileIPFSHashes: [
-							"QmesUxVUF54mUgMXEVRYoELHa6VGB7DMm7KnMwENAR7dVz", 
-							"QmYQXu1gYNUrZF8jBzop6qpqGtENVWaXZuZnqRnzPAHLpV"
-						]
+							'QmesUxVUF54mUgMXEVRYoELHa6VGB7DMm7KnMwENAR7dVz',
+							'QmYQXu1gYNUrZF8jBzop6qpqGtENVWaXZuZnqRnzPAHLpV',
+						],
 					},
 				});
 			}

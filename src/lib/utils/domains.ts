@@ -1,3 +1,4 @@
+import { AspectRatio, ASPECT_RATIOS } from 'constants/aspectRatios';
 import { ethers } from 'ethers';
 
 export const rootDomainName = 'wilder';
@@ -59,10 +60,14 @@ export const zNAToLink = (domain: string): string => {
 };
 
 // Truncate wallet address
-export const truncateWalletAddress = (address: string) => {
-	return `${address.substring(0, 2)}...${address.substring(
-		address.length - 4,
-	)}`;
+export const truncateWalletAddress = (
+	address: string,
+	startingCharacters?: number,
+) => {
+	return `${address.substring(
+		0,
+		2 + (startingCharacters ?? 0),
+	)}...${address.substring(address.length - 4)}`;
 };
 
 /**
@@ -84,6 +89,41 @@ export const zNAFromPathname = (pathname: string): string => {
 export const appFromPathname = (pathname: string): string => {
 	const matches = pathname.match(/^\/[a-zA-Z]*/);
 	return matches ? matches[0] : '';
+};
+
+/**
+ * Gets zNA of parent, e.g. wilder.wheels.genesis -> wilder.wheels
+ * @param zna to get parent of
+ * @returns zNA of parent, or the original zNA if at root
+ */
+export const getParentZna = (zna: string): string => {
+	if (!zna.includes('.')) {
+		return zna;
+	}
+	return zna.slice(0, zna.lastIndexOf('.'));
+};
+
+/**
+ * Gets a hardcoded aspect ratio for a zNA
+ * @param zna to get aspect ratio for
+ * @returns
+ */
+export const getAspectRatioForZna = (zna: string): AspectRatio | undefined => {
+	if (zna === 'wilder') {
+		return AspectRatio.LANDSCAPE;
+	}
+
+	if (ASPECT_RATIOS[AspectRatio.LANDSCAPE])
+		for (const key in ASPECT_RATIOS) {
+			const znas = ASPECT_RATIOS[key as unknown as AspectRatio];
+			for (var i = 0; i < znas.length; i++) {
+				const z = znas[i];
+				if (zna.startsWith(z)) {
+					return key as AspectRatio;
+				}
+			}
+		}
+	return undefined;
 };
 
 // Truncate domain

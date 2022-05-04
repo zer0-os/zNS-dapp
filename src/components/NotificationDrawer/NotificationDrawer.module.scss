@@ -10,7 +10,7 @@
 
 	z-index: 10000;
 
-	background: var(--background-purple-card-20);
+	background: var(--color-background);
 
 	transform: translateY(0%) translateX(-50%);
 
@@ -29,7 +29,7 @@
 	font-size: 18px;
 	font-weight: medium;
 
-	color: white;
+	color: var(--color-text-primary);
 
 	cursor: pointer;
 	word-break: break-word;

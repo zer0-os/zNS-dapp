@@ -12,6 +12,7 @@ import { HoverDropdown } from 'components';
 
 export type InfoButtonProps = {
 	isDesktop: boolean;
+	isWalletConnected: boolean;
 	onConnectWallet: () => void;
 };
 

@@ -165,13 +165,14 @@
 .Box {
 	/* height: 95.5px; */
 	padding: 20px;
-	background: var(--color-background);
+	background: #120d16;
+	border-radius: var(--box-radius);
 }
 
 .Box h4 {
 	margin-bottom: 4px;
-	font-size: 12px;
-	color: #bfbfbf;
+	font-size: var(--font-size-small);
+	color: var(--color-grey-lighter-2);
 }
 
 .Box span {
@@ -258,23 +259,16 @@
 }
 
 .History {
-	padding: 20px 0 20px 0;
+	padding: 24px 12px 0 12px;
 	margin-top: 24px;
-}
-.HistoryNoBids {
-	padding: 20px 0 0 0;
-}
 
-.History h4 {
-	padding: 0 20px;
-}
-
-.History ul {
-	padding: 0 20px;
+	// Tablet Breakpoints
+	@media only screen and (min-width: 744px) {
+		padding: 24px 0 0 0;
+	}
 }
 
 .History span {
-	padding: 20px;
 	padding-top: 0;
 	font-weight: 400;
 }
@@ -294,6 +288,11 @@
 
 .Bid:first-child {
 	margin-top: 12px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 744px) {
+		margin-top: 24px;
+	}
 }
 
 .NFTStats {
@@ -301,7 +300,13 @@
 	align-items: unset;
 	justify-content: space-between;
 	margin-top: 24px;
-	gap: 12px;
+	gap: 8px;
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: 744px) {
+		gap: 16px;
+		margin-top: 48px;
+	}
 
 	.NFTStatContainer {
 		flex: 1;
@@ -405,7 +410,7 @@
 	}
 
 	.Bid .From b {
-		font-size: 14px;
+		font-size: var(--font-size-smaller);
 		font-weight: 400;
 	}
 }
@@ -469,14 +474,13 @@
 
 .Attributes {
 	margin-top: 24px;
-	padding: 24px;
 	background: var(--color-background);
 }
 
 .Attributes h4 {
 	padding: 0;
 	color: var(--color-grey-lighter-2);
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	text-transform: capitalize;
 	font-weight: normal;
 }
@@ -489,7 +493,7 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(194px, 1fr));
 	grid-row-start: 1;
-	column-gap: 4px;
+	column-gap: 8px;
 	margin-top: 16px;
 	position: relative;
 }
@@ -502,8 +506,8 @@
 	flex-direction: column;
 	justify-content: center;
 	padding: 8px 16px 8px 20px;
-	border: 1px solid #50207b;
-	border-radius: 999px;
+	border-radius: 8px;
+	background: #120d16;
 }
 
 @media only screen and (max-width: 768px) {
@@ -545,12 +549,12 @@
 }
 
 .Traits {
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	color: #bcbcbc;
 }
 
 .Properties {
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	margin-top: 2px;
 }
 
@@ -561,36 +565,21 @@
 	text-overflow: ellipsis;
 }
 
+.ButtonContainer {
+	width: 100%;
+}
+
 button.ToggleAttributes {
 	background: none;
-	color: #52cbff;
-	font-size: 16px;
-	width: 190px;
+	color: var(--color-accent-1);
 	height: 48px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 8px 20px;
 	margin: 4px 0;
-	position: absolute;
-	right: 8px;
-	bottom: 0px;
 	cursor: pointer;
-}
-
-@media only screen and (max-width: 768px) {
-	button.ToggleAttributes {
-		width: 150px;
-	}
-}
-
-@media only screen and (max-width: 414px) {
-	button.ToggleAttributes {
-		position: relative;
-		width: 100%;
-		margin: 8px;
-	}
+	width: 100%;
 }
 /* Attributes styles End */
 

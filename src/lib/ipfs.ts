@@ -6,7 +6,7 @@ import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
  * @returns IPFS hash from url
  */
 export const getHashFromIPFSUrl = (url: string) => {
-	const regex = /Qm[a-zA-Z0-9/]*/;
+	const regex = /Qm(\w{44})[/\w]*/;
 
 	if (regex.test(url)) {
 		const matches = url.match(regex) as string[];
@@ -16,6 +16,11 @@ export const getHashFromIPFSUrl = (url: string) => {
 	return '';
 };
 
+/**
+ * Appends an IPFS hash to the default IPFS gateway URL
+ * @param hash of IPFS content
+ * @returns web URL -> default IPFS gateway + hash
+ */
 export const getWebIPFSUrlFromHash = (hash: string) => {
 	return `${DEFAULT_IPFS_GATEWAY}${hash}`;
 };

@@ -1,17 +1,29 @@
+//- React Imports
 import React from 'react';
+
+//- Components Imports
 import {
 	Overlay,
 	IconButton,
 	FutureButton,
 	LoadingIndicator,
 } from 'components';
+
+//- Constants Imports
 import {
 	DomainSettingsModalType,
 	DomainSettingsModalStatus,
 	DOMAIN_SETTINGS_MODALS,
 } from '../../DomainSettings.constants';
+
+//- Assets Imports
 import closeIcon from './assets/close-icon.svg';
+
+//- Styles Imports
 import './_domain-settings-modal.scss';
+
+//- Library Imports
+import useMatchMedia from 'lib/hooks/useMatchMedia';
 
 type DomainSettingsModalProps = {
 	type: DomainSettingsModalType;
@@ -21,6 +33,8 @@ type DomainSettingsModalProps = {
 	onConfirm: () => void;
 };
 
+const MOBILE_BREAKPOINT = 481;
+
 export const DomainSettingsModal: React.FC<DomainSettingsModalProps> = ({
 	type,
 	status,
@@ -28,6 +42,8 @@ export const DomainSettingsModal: React.FC<DomainSettingsModalProps> = ({
 	onConfirm,
 	onCancel,
 }) => {
+	const isSmallScreen = useMatchMedia(`(max-width: ${MOBILE_BREAKPOINT}px)`);
+
 	if (!isOpen) {
 		return null;
 	}
@@ -72,7 +88,9 @@ export const DomainSettingsModal: React.FC<DomainSettingsModalProps> = ({
 						)}
 						{modalOptions.buttons?.confirm && (
 							<FutureButton className="confirm-btn" onClick={onConfirm} glow>
-								{modalOptions.buttons?.confirm}
+								{isSmallScreen
+									? modalOptions.buttons?.confirm.small
+									: modalOptions.buttons?.confirm.large}
 							</FutureButton>
 						)}
 					</div>

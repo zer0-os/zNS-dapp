@@ -38,7 +38,7 @@ const SubdomainTableRow = (props: any) => {
 
 	const domainMetadata = useDomainMetadata(domain?.metadata);
 
-	const [bids, setBids] = useState<Bid[] | undefined>();
+	const [, setBids] = useState<Bid[] | undefined>();
 	const [buyNowPrice, setBuyNowPrice] = useState<number | undefined>();
 
 	const [hasUpdated, setHasUpdated] = useState<boolean>(false);
@@ -102,14 +102,14 @@ const SubdomainTableRow = (props: any) => {
 			return (
 				<>
 					<span className={styles.Bid}>
-						{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}
+						{tradeData.volume.all ? formatEthers(tradeData.volume.all) : 0} WILD
 					</span>
 					{wildPriceUsd > 0 && (
 						<span className={styles.Bid}>
 							$
-							{tradeData.highestBid
+							{tradeData.volume.all
 								? formatNumber(
-										Number(ethers.utils.formatEther(tradeData?.highestBid)) *
+										Number(ethers.utils.formatEther(tradeData.volume.all)) *
 											wildPriceUsd,
 								  )
 								: 0}{' '}
@@ -120,6 +120,7 @@ const SubdomainTableRow = (props: any) => {
 		}
 	};
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const formatColumn = (columnName: keyof DomainMetrics) => {
 		const value =
 			columnName === 'volume'
@@ -151,34 +152,11 @@ const SubdomainTableRow = (props: any) => {
 	const bidColumns = () => {
 		// TODO: Avoid directly defining the columns and associated render method.
 		if (!isPriceDataLoading) {
-			return (
-				<>
-					<td className={styles.Right}>{highestBid()}</td>
-					<td className={styles.Right}>
-						{!bids && '-'}
-						{bids && formatNumber(bids.length)}
-					</td>
-					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
-						{formatColumn('lastSale')}
-					</td>
-					<td className={`${styles.Right} ${styles.volumeCol}`}>
-						{formatColumn('volume')}
-					</td>
-				</>
-			);
+			return <td className={styles.Right}>{highestBid()}</td>;
 		} else {
 			return (
 				<>
 					<td className={styles.Right}>
-						<Spinner />
-					</td>
-					<td className={styles.Right}>
-						<Spinner />
-					</td>
-					<td className={`${styles.Right} ${styles.lastSaleCol}`}>
-						<Spinner />
-					</td>
-					<td className={`${styles.Right} ${styles.volumeCol}`}>
 						<Spinner />
 					</td>
 				</>
@@ -187,7 +165,9 @@ const SubdomainTableRow = (props: any) => {
 	};
 
 	const onBidButtonClick = () => {
-		makeABid(domain);
+		if (account !== undefined && !isOwnedByUser && isBiddable) {
+			makeABid(domain);
+		}
 	};
 
 	const onRowClick = (event: any) => {
@@ -212,24 +192,24 @@ const SubdomainTableRow = (props: any) => {
 			{bidColumns()}
 			<td>
 				{isPriceDataLoading ? (
-					<FutureButton style={{ marginLeft: 'auto', width: 160 }} glow loading>
+					<FutureButton style={{ marginLeft: 'auto', width: 93 }} glow loading>
 						Loading
 					</FutureButton>
 				) : buyNowPrice ? (
 					<BuyNowButton
 						onSuccess={fetchData}
-						buttonText="Buy Now"
+						buttonText="Buy"
 						domainId={domain.id}
 						disabled={isOwnedByUser || !account}
-						style={{ marginLeft: 'auto', width: 160 }}
+						style={{ marginLeft: 'auto' }}
 					/>
 				) : (
 					<BidButton
 						glow={account !== undefined && !isOwnedByUser && isBiddable}
 						onClick={onBidButtonClick}
-						style={{ marginLeft: 'auto', width: 160 }}
+						style={{ marginLeft: 'auto' }}
 					>
-						Make A Bid
+						Bid
 					</BidButton>
 				)}
 			</td>

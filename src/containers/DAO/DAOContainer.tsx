@@ -1,6 +1,5 @@
 // React
 import React from 'react';
-import { Switch } from 'react-router-dom';
 
 // Components
 import DAOList from './pages/DAOList/DAOList';
@@ -52,11 +51,9 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 	}, [sdk, zna]);
 
 	return (
-		<Switch>
-			<main className={classNames(styles.Container, className)} style={style}>
-				{zna === '' ? <DAOList /> : <DAOPage />}
-			</main>
-		</Switch>
+		<main className={classNames(styles.Container, className)} style={style}>
+			{zna === '' ? <DAOList /> : <DAOPage />}
+		</main>
 	);
 };
 

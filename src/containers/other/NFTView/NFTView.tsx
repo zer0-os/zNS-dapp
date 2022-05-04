@@ -1,41 +1,48 @@
 //- React Imports
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider'; // Wallet data
 
 //- Component Imports
-import { Overlay } from 'components';
-import MakeABid from 'containers/flows/MakeABid/MakeABid';
 import {
+	Actions,
 	NFT,
 	Stats,
 	TokenHashBoxes,
 	Attributes,
 	History,
-	DomainSettings,
 } from './elements';
 
 //- Library Imports
 import useCurrency from 'lib/hooks/useCurrency';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
-import { useNftData, useNftMediaAsset } from './hooks';
-
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { MediaType } from 'components/NFTMedia/config';
 
+//- Hooks
+import {
+	useNftData,
+	useViewBidsData,
+	useAsset,
+	useNFTViewModal,
+	useNftMediaAsset,
+} from './hooks';
+
 //- Constants Imports
 import {
+	getActionFeatures,
 	NFT_MORE_ACTIONS_TITLE,
-	NFT_MORE_ACTIONS,
 	NFT_DOWNLOAD_ACTIONS,
 } from './NFTView.constants';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
+import { ethers } from 'ethers';
+import { NFTViewModalType } from './providers/NFTViewModalProvider/NFTViewModalProvider.types';
 
 //- Componennt level type definitions
 type NFTViewProps = {
@@ -43,13 +50,8 @@ type NFTViewProps = {
 };
 
 const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
-	//- Page State
-	const [isBidOverlayOpen, setIsBidOverlayOpen] = useState(false);
-	const [isDomainSettingsOpen, setIsDomainSettingsOpen] =
-		useState<Boolean>(false);
-
 	//- Web3 Wallet Data
-	const { account, active, chainId } = useWeb3React<Web3Provider>();
+	const { account, chainId } = useWeb3React<Web3Provider>();
 
 	//- Current Domain Data
 	const { domainId, domain: znsDomain, domainMetadata } = useCurrentDomain();
@@ -60,7 +62,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	//- NFT Hook Data
 	const {
 		isHistoryLoading,
-		isPriceDataLoading,
 		history,
 		bids,
 		highestBid,
@@ -68,13 +69,20 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		yourBid,
 		getHistory,
 		getPriceData,
-		downloadAsset,
-		shareAsset,
+		refetch,
 	} = useNftData();
 
 	//- NFT Media Asset
 	const mediaAsset = useNftMediaAsset({ znsDomain });
 
+	//- View Bids Hook Data
+	const { isBidDataLoading, allBids, viewBidsDomainData } = useViewBidsData();
+
+	//- Asset Hook Data
+	const { downloadAsset, shareAsset } = useAsset();
+
+	//- Modal Provider Hook
+	const { openModal, closeModal } = useNFTViewModal();
 	//- Memoized data
 	const {
 		isBiddable,
@@ -90,7 +98,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			(isRootDomain && !isOwnedByYou) || Boolean(domainMetadata?.isBiddable);
 		const assetUrl =
 			znsDomain?.animation_url || znsDomain?.image_full || znsDomain?.image;
-		const nftMoreOptions = isOwnedByYou ? NFT_MORE_ACTIONS.slice(0, 2) : [];
+		const nftMoreOptions = isOwnedByYou
+			? getActionFeatures(Boolean(buyNowPrice), allBids?.length !== 0)
+			: [];
 
 		const nftDownloadOptions = [];
 		if (mediaAsset.imageAsset.isAvailable) {
@@ -113,37 +123,95 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			nftDownloadOptions,
 			nftMoreOptions,
 		};
-	}, [znsDomain, domainMetadata, account, mediaAsset]);
+	}, [znsDomain, domainMetadata, account, mediaAsset, buyNowPrice, allBids]);
+
+	// Convert highest bid as wei
+	const highestBidAsWei =
+		highestBid && ethers.utils.parseEther(highestBid.toString()).toString();
 
 	///////////////
 	// Functions //
 	///////////////
 
-	//- Callback functions
-	const onOpenBidOverlay = useCallback(() => {
-		if (!znsDomain || isOwnedByYou || !active) {
-			return;
-		}
+	const handleOnAccept = () => {
+		refetch();
+		closeModal();
+	};
 
-		setIsBidOverlayOpen(true);
-	}, [znsDomain, active, isOwnedByYou]);
-
-	// Close Make A Bid
-	const onCloseBidOverlay = () => setIsBidOverlayOpen(false);
-	// Close Domain Settings
-	const onCloseDomainSettingsOverlay = () => setIsDomainSettingsOpen(false);
 	const onBid = useCallback(async () => {
 		getPriceData();
 		getHistory();
-		onCloseBidOverlay();
 	}, [getHistory, getPriceData]);
 
+	const handleOnBid = () => {
+		onBid();
+		closeModal();
+	};
+
+	// Open Make A Bid Modal
+	const openMakeABid = () => {
+		openModal({
+			modalType: NFTViewModalType.MAKE_A_BID,
+			contentProps: {
+				domain: znsDomain!,
+				onBid: handleOnBid,
+				onClose: closeModal,
+			},
+		});
+	};
+
+	// Open Domain Settings Modal
+	const openDomainSettings = () => {
+		openModal({
+			modalType: NFTViewModalType.DOMAIN_SETTINGS,
+			contentProps: {
+				domainId: domainId,
+				onClose: closeModal,
+			},
+		});
+	};
+
+	// Open Domain Settings Modal
+	const openSetBuyNow = () => {
+		openModal({
+			modalType: NFTViewModalType.SET_BUY_NOW,
+			contentProps: {
+				domainId: domainId,
+				onCancel: closeModal,
+				onSuccess: refetch,
+			},
+		});
+	};
+
+	// Open Bid List Modal
+	const openBidList = () => {
+		openModal({
+			modalType: NFTViewModalType.BID_LIST,
+			contentProps: {
+				bids: allBids ?? [],
+				domain: viewBidsDomainData,
+				domainMetadata: domainMetadata ?? undefined,
+				onAccept: handleOnAccept,
+				wildPriceUsd,
+				isLoading: isBidDataLoading,
+				highestBid: String(highestBidAsWei),
+			},
+		});
+	};
+
 	// Dropdown Option Select
-	const onSelectNFTMoreOption = (option: Option) => {
+	const onSelectOption = (option: Option) => {
 		if (option.title === NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS) {
-			setIsDomainSettingsOpen(true);
+			return openDomainSettings();
 		} else if (option.title === NFT_MORE_ACTIONS_TITLE.TRANSFER_OWNERSHIP) {
-			onTransfer();
+			return onTransfer();
+		} else if (
+			option.title === NFT_MORE_ACTIONS_TITLE.SET_BUY_NOW ||
+			option.title === NFT_MORE_ACTIONS_TITLE.EDIT_BUY_NOW
+		) {
+			return openSetBuyNow();
+		} else if (option.title === NFT_MORE_ACTIONS_TITLE.VIEW_BIDS) {
+			return openBidList();
 		}
 	};
 
@@ -154,27 +222,30 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	return (
 		<div className={styles.NFTView}>
 			<NFT
-				domainId={znsDomain?.id}
-				account={account as string}
-				title={domainMetadata?.title as string}
 				owner={znsDomain?.owner.id as string}
+				title={domainMetadata?.title as string}
+				assetUrl={assetUrl as string}
 				creator={znsDomain?.minter.id as string}
+				downloadOptions={nftDownloadOptions}
+				description={znsDomain?.description as string}
 				onDownload={downloadAsset}
 				onShare={shareAsset}
-				assetUrl={assetUrl as string}
-				description={znsDomain?.description as string}
-				buyNowPrice={buyNowPrice}
-				highestBid={highestBid}
-				yourBid={yourBid}
-				onMakeBid={onOpenBidOverlay}
-				wildPriceUsd={wildPriceUsd}
-				isPriceDataLoading={isPriceDataLoading}
-				onSuccessBuyNow={getPriceData}
-				isBiddable={isBiddable}
-				downloadOptions={nftDownloadOptions}
 				moreOptions={nftMoreOptions}
-				onMoreSelectOption={onSelectNFTMoreOption}
-				onRefetch={getPriceData}
+				onMoreSelectOption={onSelectOption}
+			/>
+
+			<Actions
+				domainId={znsDomain?.id}
+				highestBid={highestBid}
+				buyNowPrice={buyNowPrice}
+				onMakeBid={openMakeABid}
+				onViewBids={openBidList}
+				yourBid={yourBid}
+				isOwnedByUser={isOwnedByYou}
+				wildPriceUsd={wildPriceUsd}
+				refetch={refetch}
+				isBiddable={isBiddable}
+				bidData={allBids}
 			/>
 
 			<Stats
@@ -193,25 +264,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			/>
 
 			<History isLoading={isHistoryLoading} history={history} />
-
-			{/* Make a Bid Modal */}
-			{isBidOverlayOpen && (
-				<Overlay onClose={onCloseBidOverlay} open={isBidOverlayOpen}>
-					<MakeABid
-						domain={znsDomain!}
-						onBid={onBid}
-						onClose={onCloseBidOverlay}
-					/>
-				</Overlay>
-			)}
-
-			{/* Domain Settings Modal */}
-			{isDomainSettingsOpen && (
-				<DomainSettings
-					domainId={domainId}
-					onClose={onCloseDomainSettingsOverlay}
-				/>
-			)}
 		</div>
 	);
 };

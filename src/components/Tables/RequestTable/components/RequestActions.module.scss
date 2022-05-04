@@ -9,7 +9,7 @@
 	display: inline-block;
 	font-weight: 700;
 	text-transform: uppercase;
-	font-size: 14px;
+	font-size: var(--font-size-smaller);
 	margin-top: 4px;
 }
 
@@ -22,7 +22,7 @@
 
 .Date {
 	display: inline-block;
-	font-size: 12px;
+	font-size: var(--font-size-small);
 	margin-top: 4px;
 }
 

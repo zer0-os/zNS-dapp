@@ -11,4 +11,9 @@ export enum ROUTES {
 	ZDAO = '/dao',
 	ZDAO_ASSETS = '/assets',
 	ZDAO_TRANSACTIONS = '/transactions',
+
+	// ----- Menus ----- //
+	PROFILE = '/profile',
+	OWNED_DOMAINS = '/domains',
+	YOUR_BIDS = '/bids',
 }

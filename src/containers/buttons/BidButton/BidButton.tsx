@@ -2,10 +2,13 @@
 import React, { useState } from 'react';
 
 // Component Imports
-import { FutureButton } from 'components';
+import { FutureButton, TextButton } from 'components';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { ConnectWalletPrompt } from 'containers';
+
+//- Constants Imports
+import { LABELS } from './BidButton.constants';
 
 type BidButtonProps = {
 	onClick: (event?: any) => void;
@@ -16,9 +19,14 @@ type BidButtonProps = {
 	glow?: boolean;
 	loading?: boolean;
 	alt?: boolean;
+	isTextButton?: boolean;
 };
 
-const BidButton: React.FC<BidButtonProps> = ({ onClick, ...rest }) => {
+const BidButton: React.FC<BidButtonProps> = ({
+	onClick,
+	isTextButton,
+	...rest
+}) => {
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
 	const { account } = walletContext;
@@ -42,9 +50,14 @@ const BidButton: React.FC<BidButtonProps> = ({ onClick, ...rest }) => {
 				<ConnectWalletPrompt
 					open={isModalOpen}
 					onClose={() => setIsModalOpen(false)}
+					promptText={LABELS.PROMPT_TEXT}
 				/>
 			)}
-			<FutureButton onClick={handleClick} {...rest} />
+			{isTextButton ? (
+				<TextButton onClick={handleClick} {...rest} />
+			) : (
+				<FutureButton onClick={handleClick} {...rest} />
+			)}
 		</>
 	);
 };
