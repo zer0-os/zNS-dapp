@@ -69,6 +69,6 @@ export const getSuccessNotification = (
 export const getWildBalance = (balance: number) =>
 	`Your balance: ${Number(balance).toLocaleString()} WILD`;
 
-export const getUsdEstimation = (bid: string) => `Approx. ${bid} USD`;
+export const getUsdEstimation = (bid: string) => `Approx. $${bid} USD`;
 
 export const getBidAmountText = (bid: string) => `${bid} WILD`;

@@ -52,6 +52,7 @@ export const useDomainSettingsBodyData = (
 	const [gridViewByDefault, setGridViewByDefault] = usePropsState<boolean>(
 		initialDomainSettings.gridViewByDefault,
 	);
+	
 	const [customDomainHeader, setCustomDomainHeader] = usePropsState<boolean>(
 		initialDomainSettings.customDomainHeader,
 	);

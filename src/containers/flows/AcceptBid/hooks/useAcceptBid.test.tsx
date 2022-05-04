@@ -109,8 +109,26 @@ test('status updates as expected', async () => {
 	expect(hook.status).toBeUndefined();
 });
 
-test('handles failed/rejected signature', async () => {
-	mockAcceptBid.mockRejectedValue(undefined);
+test('handles failed/rejected signature when data has already been consumed', async () => {
+	mockAcceptBid.mockRejectedValue(new Error('data already consumed'));
+	const hook = setupHook();
+
+	var err: Error | undefined;
+	try {
+		await act(async () => {
+			await hook.accept(mockBid);
+		});
+	} catch (e) {
+		err = e as Error;
+	}
+
+	expect(mockAcceptBid).toBeCalledTimes(1);
+	expect(err?.message).toBe(ERRORS.DATA_CONSUMED);
+	expect(console.error).toHaveBeenCalled();
+});
+
+test('handles failed/rejected signature when rejected by wallet', async () => {
+	mockAcceptBid.mockRejectedValue(new Error('Rejected by wallet.'));
 	const hook = setupHook();
 
 	var err: Error | undefined;
