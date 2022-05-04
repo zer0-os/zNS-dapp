@@ -18,8 +18,8 @@ export const useDomainSettingsBodyData = (
 			'';
 		const story = metadata?.description || '';
 		const isMintable = Boolean(metadata?.isMintable);
-		const isBiddable = Boolean(metadata?.isBiddable);
-		const gridViewByDefault = Boolean(metadata?.gridViewByDefault);
+		const isBiddable = true;
+		const gridViewByDefault = true;
 		const customDomainHeader = Boolean(metadata?.customDomainHeader);
 		const customDomainHeaderValue =
 			(metadata?.customDomainHeaderValue as string) || '';
@@ -52,6 +52,7 @@ export const useDomainSettingsBodyData = (
 	const [gridViewByDefault, setGridViewByDefault] = usePropsState<boolean>(
 		initialDomainSettings.gridViewByDefault,
 	);
+
 	const [customDomainHeader, setCustomDomainHeader] = usePropsState<boolean>(
 		initialDomainSettings.customDomainHeader,
 	);
