@@ -6,8 +6,9 @@ import { BuyTokenRedirect } from 'containers';
 
 //- Constants Imports
 import { getNavLinks } from 'lib/utils/nav';
-import { LOGO, ZERO } from 'constants/assets';
 import { URLS } from 'constants/urls';
+import { ROUTES } from 'constants/routes';
+import { DOMAIN_LOGOS } from 'constants/domains';
 import { ALT_TEXT, COLOURS } from './SideBar.constants';
 
 //- Styles Imports
@@ -15,7 +16,7 @@ import styles from './SideBar.module.scss';
 
 //- Library Imports
 import classNames from 'classnames/bind';
-import { appFromPathname } from 'lib/utils';
+import { appFromPathname, zNAFromPathname } from 'lib/utils';
 import { useWeb3React } from '@web3-react/core';
 import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
 import { startCase, toLower } from 'lodash';
@@ -26,16 +27,25 @@ const cx = classNames.bind(styles);
 const SideBar = () => {
 	const { pathname } = useLocation();
 	const { chainId } = useWeb3React();
+
 	const navLinks = getNavLinks();
 
+	/* Get location context */
 	const network = chainIdToNetworkType(chainId);
+	const zna = zNAFromPathname(pathname);
+	const app = appFromPathname(pathname);
+
+	const isRoot = app !== ROUTES.MARKET || zna.length === 0;
 
 	return (
 		<div className={styles.BorderContainer}>
 			<div className={styles.Container}>
 				<div className={styles.LinkContainer}>
 					<Link className={styles.HomeLink} to={appFromPathname(pathname)}>
-						<img alt={ALT_TEXT.APP_LOGO} src={LOGO} />
+						<img
+							alt={ALT_TEXT.APP_LOGO}
+							src={isRoot ? DOMAIN_LOGOS.ZERO : DOMAIN_LOGOS.WILDER_WORLD}
+						/>
 					</Link>
 					<ul className={styles.Links}>
 						{navLinks.map((l) => (
@@ -66,14 +76,14 @@ const SideBar = () => {
 
 				<div className={styles.Footer}>
 					<BuyTokenRedirect />
-					<div className={styles.ZeroIconContainer}>
+					<div className={cx(styles.ZeroIconContainer, { Hidden: isRoot })}>
 						<a
 							className={styles.Zero}
 							target="_blank"
 							href={URLS.ZERO}
 							rel="noreferrer"
 						>
-							<img alt={ALT_TEXT.ZERO_LOGO} src={ZERO} />
+							<img alt={ALT_TEXT.ZERO_LOGO} src={DOMAIN_LOGOS.ZERO} />
 						</a>
 					</div>
 					{network !== NETWORK_TYPES.MAINNET && (
