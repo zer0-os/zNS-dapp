@@ -54,10 +54,12 @@ $placeholder-background: #000;
 		object-fit: cover;
 		overflow: hidden;
 		background-color: var(--color-background);
+		border-radius: 8px 8px 0 0;
 
 		img,
 		video {
 			width: 100%;
+			border-radius: 8px 8px 0 0;
 		}
 
 		// Hide default spinner in image

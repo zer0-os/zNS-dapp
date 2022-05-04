@@ -48,13 +48,13 @@ const SetBuyNow = ({
 	account,
 }: SetBuyNowProps) => {
 	const editText = account !== domain?.owner ? 'selecting' : 'purchasing';
-	const getTitle = () =>
-		isLoadingDomainData
-			? ''
-			: domain?.currentBuyNowPrice?.gt(0)
-			? 'Edit Buy Now'
-			: 'Set Buy Now';
-	const wizardHeader = getTitle();
+
+	const wizardHeader = isLoadingDomainData
+		? ''
+		: domain?.currentBuyNowPrice?.gt(0)
+		? 'Edit Buy Now'
+		: 'Set Buy Now';
+
 	if (isLoadingDomainData) {
 		return (
 			<Wizard header={wizardHeader}>
@@ -115,7 +115,11 @@ const SetBuyNow = ({
 	return (
 		<Wizard
 			header={wizardHeader}
-			subHeader={`Please review the information and the art to make sure you are ${editText} the right NFT.`}
+			subHeader={
+				step === Step.SetBuyNow || step === Step.WaitingForBuyNowConfirmation
+					? `Please review the information and the art to make sure you are ${editText} the right NFT.`
+					: ''
+			}
 		>
 			{steps[step]}
 		</Wizard>
