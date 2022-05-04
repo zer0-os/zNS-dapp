@@ -1,6 +1,6 @@
 {
-	"name": "zns-dapp",
-	"version": "0.14.18",
+	"name": "zero-live",
+	"version": "0.16.0",
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
