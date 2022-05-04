@@ -58,6 +58,8 @@ $icon-container-size: 54px;
 		.HomeLink {
 			display: flex;
 			justify-content: center;
+			height: 32px;
+			width: 32px;
 
 			// Desktop Breakpoints
 			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
@@ -179,6 +181,10 @@ $icon-container-size: 54px;
 			display: flex;
 			justify-content: center;
 			width: $icon-container-size;
+
+			&.Hidden {
+				opacity: 0;
+			}
 
 			.Zero {
 				height: 36px;
