@@ -25,17 +25,18 @@ const GenericTable = (props: any) => {
 
 	const isGridViewByDefault = props.isGridViewByDefault;
 
-	const [isGridView, setIsGridView] =
-		usePropsState<boolean>(isGridViewByDefault);
-
 	const [searchQuery, setSearchQuery] = useState<string>();
-
-	const rawData = props.data || [];
-	const chunkSize = isGridView ? 6 : 12;
 
 	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
 	const shouldShowSearchBar = !props.notSearchable && props.data?.length > 0;
 	const isSmallScreen = useMatchMedia(`(max-width: ${GRID_BREAKPOINT}px)`);
+
+	const [isGridView, setIsGridView] = usePropsState<boolean>(
+		!isSmallScreen && isGridViewByDefault,
+	);
+
+	const rawData = props.data || [];
+	const chunkSize = isGridView ? 6 : 12;
 
 	//////////////
 	// Ddata    //
