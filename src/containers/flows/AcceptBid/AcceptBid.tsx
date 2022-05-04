@@ -167,7 +167,7 @@ const AcceptBid = ({
 			setStepContent(StepContent.Success);
 		} catch (e) {
 			setCurrentStep(Step.ConfirmDetails);
-			setError(ERRORS.TRANSACTION);
+			setError(e.message);
 			setStepContent(StepContent.Details);
 		}
 		if (!isMounted.current) return;

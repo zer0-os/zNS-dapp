@@ -101,11 +101,13 @@ const DepositTableRow = (props: any) => {
 						transform: 'translateX(calc(-100% + 8px))',
 					}}
 				>
-					<button ref={buttonRef} className={styles.Dots} onClick={() => {}}>
-						<div></div>
-						<div></div>
-						<div></div>
-					</button>
+					<div className={styles.ButtonContainer}>
+						<button ref={buttonRef} className={styles.Dots} onClick={() => {}}>
+							<div></div>
+							<div></div>
+							<div></div>
+						</button>
+					</div>
 				</OptionDropdown>
 			</td>
 		</tr>

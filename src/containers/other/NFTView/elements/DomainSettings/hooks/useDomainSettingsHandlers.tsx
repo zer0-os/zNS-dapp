@@ -1,6 +1,7 @@
 import { useMemo, useCallback } from 'react';
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
 import { Maybe, Metadata } from 'lib/types';
+import { parseDomainMetadata } from 'lib/metadata';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import {
 	DomainSettingsWarning,
@@ -78,10 +79,15 @@ export const useDomainSettingsHandlers = ({
 	/* Get Metadata */
 	const handleFetchMetadata = useCallback(async () => {
 		try {
-			const metadata = await sdk.instance.getDomainMetadata(
+			const rawMetadata = await sdk.instance.getDomainMetadata(
 				props.domainId,
 				props.library!.getSigner(),
 			);
+
+			const metadata: DomainMetadata = {
+				...rawMetadata,
+				...parseDomainMetadata(rawMetadata),
+			};
 
 			localActions.setMetadata(metadata);
 			localActions.setLocalMetadata(metadata);

@@ -74,11 +74,13 @@ const DepositTableCard = (props: any) => {
 						transform: 'translateX(calc(-100% + 34px))',
 					}}
 				>
-					<button ref={buttonRef} className={styles.Dots} onClick={() => {}}>
-						<div></div>
-						<div></div>
-						<div></div>
-					</button>
+					<div className={styles.ButtonContainer}>
+						<button ref={buttonRef} className={styles.Dots} onClick={() => {}}>
+							<div></div>
+							<div></div>
+							<div></div>
+						</button>
+					</div>
 				</OptionDropdown>
 			</div>
 			<div className={styles.Body}>

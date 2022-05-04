@@ -310,7 +310,6 @@ const StakeFlow = (props: StakeFlowProps) => {
 
 	return (
 		<Wizard
-			header={unstake ? 'Unstake' : 'Stake'}
 			className={cx(
 				styles.Container,
 				'background-primary',
