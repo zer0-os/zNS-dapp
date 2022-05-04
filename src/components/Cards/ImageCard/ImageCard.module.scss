@@ -58,6 +58,7 @@ $placeholder-background: #000;
 		overflow: hidden;
 		border-radius: #{borders.$radius-secondary-top};
 		background-color: var(--color-background);
+		border-radius: 8px 8px 0 0;
 
 		img,
 		video {
