@@ -120,6 +120,13 @@ const GenericTable = (props: any) => {
 		};
 	}, []);
 
+	/**
+	 * Reset search query whenever raw data changes
+	 */
+	useEffect(() => {
+		setSearchQuery(undefined);
+	}, [rawData]);
+
 	///////////////
 	// Fragments //
 	///////////////
