@@ -74,8 +74,8 @@ const GenericTable = (props: any) => {
 		);
 	}, [props.notSearchable, searchQuery, rawData]);
 
-	const { ref, data, hasMore, reset } = useInfiniteScroll(
-		filteredData,
+	const { ref, page, reset } = useInfiniteScroll(
+		filteredData.length,
 		chunkSize,
 	);
 
@@ -126,7 +126,7 @@ const GenericTable = (props: any) => {
 	///////////////
 
 	// List view container and rows
-	const renderListView = useCallback(() => {
+	const ListView = useMemo(() => {
 		return (
 			<table className={styles.Table}>
 				<thead>
@@ -146,32 +146,37 @@ const GenericTable = (props: any) => {
 					</tr>
 				</thead>
 				<tbody>
-					{data.map((d: any, index: number) => (
-						<props.rowComponent
-							key={d[props.itemKey] ?? index}
-							rowNumber={index}
-							data={d}
-							headers={props.headers}
-						/>
-					))}
+					{filteredData
+						.slice(0, page * chunkSize)
+						.map((d: any, index: number) => (
+							<props.rowComponent
+								key={d[props.itemKey] ?? index}
+								rowNumber={index}
+								data={d}
+								headers={props.headers}
+							/>
+						))}
 				</tbody>
 			</table>
 		);
-	}, [props, data]);
+	}, [props, filteredData, page]);
 
 	// Grid View container & cards
-	const renderGridView = useCallback(() => {
+	const GridView = useMemo(() => {
 		return (
 			<div className={styles.Grid}>
-				{data.map((d: any, index: number) => (
-					<props.gridComponent
-						key={d[props.itemKey]}
-						rowNumber={index}
-						data={d}
-					/>
-				))}
-				{data.length === 2 && <div></div>}
-				{data.length === 1 && (
+				{filteredData
+					.slice(0, page * chunkSize)
+					.map((d: any, index: number) => (
+						<props.gridComponent
+							key={d[props.itemKey]}
+							rowNumber={index}
+							data={d}
+							randomId={d[props.itemKey]}
+						/>
+					))}
+				{filteredData.length === 2 && <div></div>}
+				{filteredData.length === 1 && (
 					<>
 						<div></div>
 						<div></div>
@@ -179,7 +184,7 @@ const GenericTable = (props: any) => {
 				)}
 			</div>
 		);
-	}, [props, data]);
+	}, [props, filteredData, page]);
 
 	////////////
 	// Render //
@@ -221,9 +226,9 @@ const GenericTable = (props: any) => {
 							{props.emptyText}
 						</p>
 					) : isGridView ? (
-						renderGridView()
+						GridView
 					) : (
-						renderListView()
+						ListView
 					))}
 
 				{props.isLoading && (
@@ -234,7 +239,7 @@ const GenericTable = (props: any) => {
 					/>
 				)}
 
-				<div ref={hasMore ? ref : undefined} />
+				<div ref={ref}></div>
 			</div>
 		</div>
 	);

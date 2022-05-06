@@ -1,38 +1,31 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useInterval } from './useInterval';
+const DEFAULT_PER_PAGE = 10;
 
-const INVIEW_CHECK_INTERVAL_DURATION = 1000; // mmilliseconds
-
-export const useInfiniteScroll = (collection: any[], perPage = 10) => {
+export const useInfiniteScroll = (
+	total: number,
+	perPage: number = DEFAULT_PER_PAGE,
+) => {
 	const [page, setPage] = useState<number>(1);
-	const { ref, inView } = useInView({ initialInView: true });
-
-	const { data, hasMore } = useMemo(() => {
-		return {
-			data: collection.slice(0, page * perPage),
-			hasMore: Math.ceil(collection.length / perPage) > page,
-		};
-	}, [collection, perPage, page]);
+	const { ref, inView } = useInView({
+		initialInView: true,
+		rootMargin: '1000px 0px',
+	});
+	const hasMore = Math.ceil(total / perPage) > page;
 
 	const reset = useCallback(() => {
 		return setPage(1);
 	}, [setPage]);
 
-	useInterval(
-		() => {
-			if (inView && hasMore) {
-				setPage(page + 1);
-			}
-		},
-		// Delay in milliseconds or null to stop it
-		inView && hasMore ? INVIEW_CHECK_INTERVAL_DURATION : null,
-	);
+	useEffect(() => {
+		if (inView && hasMore) {
+			setPage((page) => page + 1);
+		}
+	}, [inView, hasMore]);
 
 	return {
 		ref,
-		data,
-		hasMore,
+		page,
 		reset,
 	};
 };
