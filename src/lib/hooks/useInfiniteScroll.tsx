@@ -9,7 +9,7 @@ export const useInfiniteScroll = (
 	const [page, setPage] = useState<number>(1);
 	const { ref, inView } = useInView({
 		initialInView: true,
-		rootMargin: '1000px 0px',
+		rootMargin: '100% 0px',
 	});
 	const hasMore = Math.ceil(total / perPage) > page;
 
@@ -26,6 +26,7 @@ export const useInfiniteScroll = (
 	return {
 		ref,
 		page,
+		hasMore,
 		reset,
 	};
 };

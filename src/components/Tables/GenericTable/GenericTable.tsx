@@ -74,7 +74,7 @@ const GenericTable = (props: any) => {
 		);
 	}, [props.notSearchable, searchQuery, rawData]);
 
-	const { ref, page, reset } = useInfiniteScroll(
+	const { ref, page, hasMore, reset } = useInfiniteScroll(
 		filteredData.length,
 		chunkSize,
 	);
@@ -239,7 +239,15 @@ const GenericTable = (props: any) => {
 					/>
 				)}
 
-				<div ref={ref}></div>
+				<div ref={ref}>
+					{hasMore && (
+						<LoadingIndicator
+							className={styles.Loading}
+							text="Loading More"
+							spinnerPosition="left"
+						/>
+					)}
+				</div>
 			</div>
 		</div>
 	);
