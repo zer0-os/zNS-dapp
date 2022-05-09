@@ -36,3 +36,7 @@ export const tokenPricePercentageChange = async (
 export const wildPricePercentageChange = async () => {
 	return await tokenPricePercentageChange('wilder-world');
 };
+
+export const zeroPricePercentageChange = async () => {
+	return await tokenPricePercentageChange('zero-tech');
+};
