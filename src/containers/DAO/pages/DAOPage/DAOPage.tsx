@@ -34,6 +34,7 @@ import genericStyles from '../Container.module.scss';
 import classNames from 'classnames/bind';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import useProposals from './hooks/useProposals';
 const cx = classNames.bind(genericStyles);
 
 const MILLIFY_THRESHOLD = 1000000;
@@ -50,6 +51,7 @@ const DAOPage: React.FC = () => {
 	const { dao, isLoading, zna } = useCurrentDao();
 	const { transactions, isLoading: isLoadingTransactions } =
 		useTransactions(dao);
+	const { proposals, isLoading: isLoadingProposals } = useProposals(dao);
 	const { assets, totalUsd, isLoading: isLoadingAssets } = useAssets(dao);
 
 	const daoData = dao;
