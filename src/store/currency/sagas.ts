@@ -38,8 +38,6 @@ export function* getWildPriceUsd() {
 	} catch (e) {
 		yield put(getWildPriceUsdError('Error in getting wild price usd'));
 	}
-
-	// getWildPriceUsd();
 }
 
 export function* getWildPriceUsdSaga() {
@@ -52,7 +50,7 @@ export function* getWildPriceUsdSaga() {
 export function* getWildPricePercentageChange() {
 	try {
 		const percentage: number = yield call(wildPricePercentageChange);
-		yield put(getWildPricePercentageChangeSuccess(percentage)); //
+		yield put(getWildPricePercentageChangeSuccess(percentage));
 	} catch (e) {
 		yield put(
 			getWildPricePercentageChangeError(
@@ -66,7 +64,7 @@ export function* getWildPricePercentageChangeSaga() {
 	yield takeEvery(
 		GET_WILD_PRICE_PERCENTAGE_CHANGE_REQUEST,
 		getWildPricePercentageChange,
-	); //
+	);
 }
 
 /**
@@ -107,7 +105,7 @@ export function* getZeroPriceUsdSaga() {
 export function* getZeroPricePercentageChange() {
 	try {
 		const percentage: number = yield call(zeroPricePercentageChange);
-		yield put(getZeroPricePercentageChangeSuccess(percentage)); //
+		yield put(getZeroPricePercentageChangeSuccess(percentage));
 	} catch (e) {
 		yield put(
 			getZeroPricePercentageChangeError(
@@ -121,5 +119,5 @@ export function* getZeroPricePercentageChangeSaga() {
 	yield takeEvery(
 		GET_ZERO_PRICE_PERCENTAGE_CHANGE_REQUEST,
 		getZeroPricePercentageChange,
-	); //
+	);
 }
