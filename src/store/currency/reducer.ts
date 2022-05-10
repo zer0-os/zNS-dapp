@@ -1,20 +1,4 @@
-import {
-	GET_WILD_PRICE_USD_REQUEST,
-	GET_WILD_PRICE_USD_SUCCESS,
-	GET_WILD_PRICE_USD_ERROR,
-	GET_LOOT_PRICE_USD_REQUEST,
-	GET_LOOT_PRICE_USD_SUCCESS,
-	GET_LOOT_PRICE_USD_ERROR,
-	GET_ZERO_PRICE_USD_REQUEST,
-	GET_ZERO_PRICE_USD_SUCCESS,
-	GET_ZERO_PRICE_USD_ERROR,
-	GET_WILD_PRICE_PERCENTAGE_CHANGE_REQUEST,
-	GET_WILD_PRICE_PERCENTAGE_CHANGE_SUCCESS,
-	GET_WILD_PRICE_PERCENTAGE_CHANGE_ERROR,
-	GET_ZERO_PRICE_PERCENTAGE_CHANGE_REQUEST,
-	GET_ZERO_PRICE_PERCENTAGE_CHANGE_SUCCESS,
-	GET_ZERO_PRICE_PERCENTAGE_CHANGE_ERROR,
-} from './actionTypes';
+import * as actionType from './actionTypes';
 import { CurrencyState, CurrencyActions } from './types';
 
 export const REDUCER_NAME = 'currency';
@@ -36,7 +20,7 @@ export const INITIAL_STATE: CurrencyState = {
 
 const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 	switch (action.type) {
-		case GET_WILD_PRICE_USD_REQUEST:
+		case actionType.GET_WILD_PRICE_USD_REQUEST:
 			return {
 				...state,
 				error: {
@@ -44,12 +28,12 @@ const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 					wildPriceUsd: undefined,
 				},
 			};
-		case GET_WILD_PRICE_USD_SUCCESS:
+		case actionType.GET_WILD_PRICE_USD_SUCCESS:
 			return {
 				...state,
 				wildPriceUsd: action.payload,
 			};
-		case GET_WILD_PRICE_USD_ERROR:
+		case actionType.GET_WILD_PRICE_USD_ERROR:
 			return {
 				...state,
 				error: {
@@ -57,7 +41,7 @@ const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 					wildPriceUsd: action.payload,
 				},
 			};
-		case GET_WILD_PRICE_PERCENTAGE_CHANGE_REQUEST:
+		case actionType.GET_WILD_PRICE_PERCENTAGE_CHANGE_REQUEST:
 			return {
 				...state,
 				error: {
@@ -65,12 +49,12 @@ const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 					wildPercentageChange: undefined,
 				},
 			};
-		case GET_WILD_PRICE_PERCENTAGE_CHANGE_SUCCESS:
+		case actionType.GET_WILD_PRICE_PERCENTAGE_CHANGE_SUCCESS:
 			return {
 				...state,
 				wildPercentageChange: action.payload,
 			};
-		case GET_WILD_PRICE_PERCENTAGE_CHANGE_ERROR:
+		case actionType.GET_WILD_PRICE_PERCENTAGE_CHANGE_ERROR:
 			return {
 				...state,
 				error: {
@@ -78,7 +62,7 @@ const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 					wildPercentageChange: action.payload,
 				},
 			};
-		case GET_LOOT_PRICE_USD_REQUEST:
+		case actionType.GET_LOOT_PRICE_USD_REQUEST:
 			return {
 				...state,
 				error: {
@@ -86,12 +70,12 @@ const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 					lootPriceUsd: undefined,
 				},
 			};
-		case GET_LOOT_PRICE_USD_SUCCESS:
+		case actionType.GET_LOOT_PRICE_USD_SUCCESS:
 			return {
 				...state,
 				lootPriceUsd: action.payload,
 			};
-		case GET_LOOT_PRICE_USD_ERROR:
+		case actionType.GET_LOOT_PRICE_USD_ERROR:
 			return {
 				...state,
 				error: {
@@ -99,7 +83,7 @@ const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 					lootPriceUsd: action.payload,
 				},
 			};
-		case GET_ZERO_PRICE_USD_REQUEST:
+		case actionType.GET_ZERO_PRICE_USD_REQUEST:
 			return {
 				...state,
 				error: {
@@ -107,12 +91,12 @@ const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 					zeroPriceUsd: undefined,
 				},
 			};
-		case GET_ZERO_PRICE_USD_SUCCESS:
+		case actionType.GET_ZERO_PRICE_USD_SUCCESS:
 			return {
 				...state,
 				zeroPriceUsd: action.payload,
 			};
-		case GET_ZERO_PRICE_USD_ERROR:
+		case actionType.GET_ZERO_PRICE_USD_ERROR:
 			return {
 				...state,
 				error: {
@@ -120,7 +104,7 @@ const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 					zeroPriceUsd: action.payload,
 				},
 			};
-		case GET_ZERO_PRICE_PERCENTAGE_CHANGE_REQUEST:
+		case actionType.GET_ZERO_PRICE_PERCENTAGE_CHANGE_REQUEST:
 			return {
 				...state,
 				error: {
@@ -128,12 +112,12 @@ const reducer = (state = INITIAL_STATE, action: CurrencyActions) => {
 					zeroPercentageChange: undefined,
 				},
 			};
-		case GET_ZERO_PRICE_PERCENTAGE_CHANGE_SUCCESS:
+		case actionType.GET_ZERO_PRICE_PERCENTAGE_CHANGE_SUCCESS:
 			return {
 				...state,
 				zeroPercentageChange: action.payload,
 			};
-		case GET_ZERO_PRICE_PERCENTAGE_CHANGE_ERROR:
+		case actionType.GET_ZERO_PRICE_PERCENTAGE_CHANGE_ERROR:
 			return {
 				...state,
 				error: {
