@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 $gap: 40px;
 
 .Container {
@@ -6,7 +8,7 @@ $gap: 40px;
 	gap: $gap;
 
 	.Border {
-		border-right: 1px solid #232323; // TODO: change to variable
+		border-right: 1px solid #{colors.$mine-shaft};
 		padding-right: $gap;
 
 		@media only screen and (max-width: 700px) {

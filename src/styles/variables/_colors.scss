@@ -3,9 +3,12 @@ $black: #000000;
 
 // Blues
 $anakiwa: #a1d2ff;
+$anakiwa-darker: #88d7ff;
 $anakiwa-lighter: #9ed0ff;
 $baby-blue: #9dd0ff;
+$blumine-darker: rgba(30, 81, 128, 0.2);
 $doger-blue-lighter: #3ca1ff;
+$doger-blue-darker: rgba(60, 161, 255, 0.2);
 $dodger-blue: #5257ff;
 $dodger-blue-op: rgba(82, 87, 255, 0.25);
 $malibu: #52cbff;
@@ -23,12 +26,14 @@ $warning: #f58c61;
 // Green
 $japanese-laurel: #008000;
 $success: #58c573;
+$success-darker: #58c57310;
 
 // Grey
 $alto: #d9d9d9;
 $cod-gray: #0a0a0a;
 $concrete: #f2f2f2;
 $gray: #808080;
+$iron: #dadcdf;
 $mercury: #e6e6e6;
 $mine-shaft: #232323;
 $silver: #bfbfbf;
@@ -51,6 +56,7 @@ $lovely-purple: #8930ee;
 $lovely-purple-op: rgba(137, 48, 238, 0.25);
 $revolver: #23142f;
 $revolver-darker: #1a1022;
+$revolver-darker-op: #1a102270;
 
 // Red
 $error: #f6677c;
@@ -80,3 +86,8 @@ $cosmic-gradient: linear-gradient(
 	$helitrope-darker 100%
 );
 $ocean-gradient-10: linear-gradient(90deg, $ocean-op 0%, $malibu-op-2 100%);
+$text-input-background-gradient: linear-gradient(
+	94.23deg,
+	$doger-blue-darker 0%,
+	$blumine-darker 100%
+);

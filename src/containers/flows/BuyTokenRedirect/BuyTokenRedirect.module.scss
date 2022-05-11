@@ -8,7 +8,7 @@
 	cursor: pointer;
 
 	&:hover .Details {
-		background-color: #1a1022;
+		background-color: #{colors.$revolver-darker};
 	}
 
 	.Details {
@@ -31,8 +31,8 @@
 	cursor: default;
 	padding: 32px;
 	border-radius: #{borders.$radius-primary};
-	background: #1a1022;
-	border: 1px solid #472e5b;
+	background: #{colors.$revolver-darker};
+	border: 1px solid #{colors.$bossanova};
 }
 
 .CurrentPriceContainer {

@@ -49,7 +49,7 @@ $gap: 40px;
 			display: flex;
 			align-items: center;
 			padding: 8px 16px;
-			border: 1px solid #23142f;
+			border: 1px solid #{colors.$revolver};
 
 			gap: 10px;
 
@@ -62,11 +62,11 @@ $gap: 40px;
 			transition: background-color #{animations.$time-short} ease;
 
 			&:active {
-				background-color: #1a102270 !important;
+				background-color: #{colors.$revolver-darker-op} !important;
 			}
 
 			&:hover {
-				background-color: #1a1022;
+				background-color: #{colors.$revolver-darker};
 
 				.Details > span:not(:first-child) {
 					text-shadow: #{colors.$text-glow-primary};
@@ -102,11 +102,11 @@ $gap: 40px;
 
 		a {
 			padding: 0 12px 8px 12px;
-			color: #d9d9d9; // grey-lighter-3
+			color: #{colors.$alto};
 			text-align: center;
 
 			&.Selected {
-				border-bottom: 1px solid #472e5b; // purple-25
+				border-bottom: 1px solid #{colors.$bossanova};
 				font-weight: 700;
 				color: #{colors.$text-primary};
 			}

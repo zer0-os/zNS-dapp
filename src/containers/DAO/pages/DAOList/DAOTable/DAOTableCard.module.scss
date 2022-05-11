@@ -1,11 +1,12 @@
 @use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .Total {
 	margin-top: 16px;
 
 	span:first-of-type {
 		font-weight: 700;
-		color: #bfbfbf;
+		color: #{colors.$silver};
 	}
 
 	span,

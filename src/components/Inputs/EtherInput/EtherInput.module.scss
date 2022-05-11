@@ -60,13 +60,9 @@
 	font-weight: 400;
 	line-height: 19.2px;
 
-	background: linear-gradient(
-		94.23deg,
-		rgba(60, 161, 255, 0.2) 0%,
-		rgba(30, 81, 128, 0.2) 100%
-	);
-	color: #dadcdf;
-	border: 1px solid #88d7ff;
+	background: #{colors.$text-input-background-gradient};
+	color: #{colors.$iron};
+	border: 1px solid #{colors.$anakiwa-darker};
 
 	border-radius: 30px;
 }
@@ -85,7 +81,7 @@
 	background-image: url('./assets/copy-icon.svg');
 	background-position: center;
 	background-size: cover;
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 
 	transition: transform #{animations.$time-short} ease-in-out;
 }
@@ -118,13 +114,9 @@
 	font-weight: 400;
 	line-height: 19.2px;
 
-	background: linear-gradient(
-		94.23deg,
-		rgba(60, 161, 255, 0.2) 0%,
-		rgba(30, 81, 128, 0.2) 100%
-	);
-	color: #dadcdf;
-	border: 1px solid #88d7ff;
+	background: #{colors.$text-input-background-gradient};
+	color: #{colors.$iron};
+	border: 1px solid #{colors.$anakiwa-darker};
 
 	border-radius: 30px;
 

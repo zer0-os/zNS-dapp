@@ -11,7 +11,7 @@ $placeholder-background: #000;
 	position: relative !important;
 
 	background: #{colors.$background-primary};
-	border: 1px solid #232323;
+	border: 1px solid #{colors.$mine-shaft};
 	border-radius: calc(#{borders.$radius-primary} / 2) !important;
 
 	cursor: pointer;

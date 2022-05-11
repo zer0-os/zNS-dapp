@@ -31,11 +31,7 @@
 	font-weight: 400;
 	line-height: 19.2px;
 
-	background: linear-gradient(
-		94.23deg,
-		rgba(60, 161, 255, 0.2) 0%,
-		rgba(30, 81, 128, 0.2) 100%
-	);
+	background: #{colors.$text-input-background-gradient};
 	color: #dadcdf;
 	border: 1px solid #88d7ff;
 	font-weight: 700;

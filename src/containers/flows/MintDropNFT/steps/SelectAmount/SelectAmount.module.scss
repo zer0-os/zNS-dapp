@@ -45,7 +45,7 @@
 
 .Terms .Selected {
 	border-color: #{colors.$japanese-laurel};
-	background-color: #58c57310;
+	background-color: #{colors.$success-darker};
 }
 
 .Terms div::after {

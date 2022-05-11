@@ -47,11 +47,7 @@
 			padding-left: 8px;
 			text-transform: uppercase;
 			color: #{colors.$malibu};
-			background-color: linear-gradient(
-				90deg,
-				rgba(82, 174, 255, 0.1) 0%,
-				rgba(82, 203, 255, 0.1) 100%
-			);
+			background: #{colors.$ocean-gradient-10} !important;
 		}
 
 		&:after {

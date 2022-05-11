@@ -17,12 +17,12 @@
 }
 
 .previewView {
-	background: #1a1022;
+	background: #{colors.$revolver-darker};
 	box-sizing: border-box;
 }
 
 .normalView {
-	background: #1a1022;
+	background: #{colors.$revolver-darker};
 	border-radius: #{borders.$radius-primary};
 }
 
@@ -48,7 +48,7 @@
 }
 
 .StatsAccentText {
-	color: #58c573;
+	color: #{colors.$success};
 }
 
 .SpinnerContainer {

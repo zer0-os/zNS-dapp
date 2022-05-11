@@ -1,5 +1,6 @@
 @use 'styles/variables/dimensions';
 @use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .Container {
 	h1 {
@@ -39,7 +40,7 @@
 
 	.Tray {
 		display: flex;
-		background: #1a1022;
+		background: #{colors.$revolver-darker};
 
 		border-radius: 8px;
 

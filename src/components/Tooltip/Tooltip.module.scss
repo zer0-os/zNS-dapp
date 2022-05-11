@@ -1,7 +1,7 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/colors';
 
-$color: #1a1022;
+$color: #{colors.$revolver-darker};
 
 .Tooltip {
 	display: flex;
