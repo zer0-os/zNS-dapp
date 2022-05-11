@@ -1,7 +1,6 @@
 @use 'styles/variables/dimensions';
 
 $placeholder-background: #000;
-$media-background: #000;
 
 .Container {
 	--image-card-padding: 100%;
@@ -60,7 +59,7 @@ $media-background: #000;
 		video {
 			width: 100%;
 			border-radius: 8px 8px 0 0;
-			background: $media-background;
+			background: $placeholder-background;
 		}
 
 		// Hide default spinner in image
