@@ -1,3 +1,5 @@
+@use 'styles/variables/typography';
+
 .Container {
 	padding: 16px;
 
@@ -31,7 +33,7 @@
 
 	h4 {
 		margin-bottom: 4px;
-		font-size: var(--font-size-small);
+		font-size: #{typography.$size-tiny};
 		color: var(--color-grey-lighter-2);
 		padding: 0 20px;
 	}

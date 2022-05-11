@@ -1,4 +1,5 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/borders';
 
 .Container {
 	.Banner {
@@ -6,7 +7,7 @@
 		height: 240px;
 		object-fit: cover;
 		background: #1a1022;
-		border-radius: calc(var(--box-radius) / 2);
+		border-radius: calc(#{borders.$radius-primary} / 2);
 	}
 
 	.Content {

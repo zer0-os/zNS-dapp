@@ -1,9 +1,11 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/animations';
 
 .Container {
 	position: relative;
 	width: 100%;
-	transition: height var(--animation-time-medium) ease;
+	transition: height #{animations.$time-medium} ease;
 }
 
 /* Control Styles */
@@ -35,7 +37,7 @@
 }
 
 .Table thead th {
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	font-weight: 700;
 	color: var(--color-grey-lighter-2);
 }
@@ -93,7 +95,7 @@
 }
 
 .Grid > div {
-	transition: transform var(--animation-time-long) ease;
+	transition: transform #{animations.$time-long} ease;
 }
 
 /* Loading Styles */

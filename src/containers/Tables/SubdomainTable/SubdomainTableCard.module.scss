@@ -1,4 +1,6 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .Container {
 	display: flex;
@@ -15,20 +17,20 @@
 }
 
 .Bid label {
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	color: var(--color-grey-lighter-2);
 }
 
 .Crypto {
 	margin-top: 2px;
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	font-weight: 700;
 	line-height: 16px;
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 }
 
 .Fiat {
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	color: var(--color-grey-lighter-2);
 	margin-top: 2px;
 }

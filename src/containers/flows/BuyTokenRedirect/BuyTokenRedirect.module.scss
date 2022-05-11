@@ -1,3 +1,7 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+
 .WildPriceContainer {
 	height: 100%;
 	width: 100%;
@@ -16,7 +20,7 @@
 		height: 100%;
 		padding: 16px;
 		border: 1px solid var(--color-purple-lighter);
-		border-radius: var(--box-radius);
+		border-radius: #{borders.$radius-primary};
 		z-index: 0;
 		transition: all 0.2s ease-in-out 0s;
 	}
@@ -26,7 +30,7 @@
 	width: 340px;
 	cursor: default;
 	padding: 32px;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	background: #1a1022;
 	border: 1px solid #472e5b;
 }
@@ -45,25 +49,25 @@
 }
 
 .CurrentPriceSml {
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	font-weight: bold;
 	line-height: 14.5px;
 	padding: 2px 6px 0 0;
-	color: var(--color-text-primary);
-	text-shadow: var(--glow-text-primary);
+	color: #{colors.$text-primary};
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .CurrentPriceLrg {
-	font-size: var(--font-size-default);
+	font-size: #{typography.$size-default};
 	font-weight: bold;
 	line-height: 24px;
 	padding: 0 6px 0 0;
-	color: var(--color-text-primary);
-	text-shadow: var(--glow-text-primary);
+	color: #{colors.$text-primary};
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .PercentageChange {
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	font-weight: 400;
 	line-height: 14.5px;
 }
@@ -85,7 +89,7 @@
 	align-items: flex-end;
 
 	a {
-		font-size: var(--font-size-small);
+		font-size: #{typography.$size-tiny};
 		line-height: 15px;
 		text-shadow: none;
 		background-color: transparent;
@@ -115,7 +119,7 @@
 
 .DividerCopy {
 	font-weight: bold;
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	line-height: 14px;
 	margin-top: 24px;
 	color: var(--color-grey-lighter-3);
@@ -136,7 +140,7 @@
 	a {
 		max-width: 140px;
 		width: 100%;
-		font-size: var(--font-size-smaller);
+		font-size: #{typography.$size-small};
 		line-height: 17px;
 		text-shadow: unset;
 		color: var(--color-accent-blue-100);

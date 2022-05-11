@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .iconButton {
 	position: relative;
 	padding: 0;
@@ -7,7 +10,7 @@
 
 	border-radius: 8px;
 
-	transition: all var(--animation-time-medium) ease-in-out;
+	transition: all #{animations.$time-medium} ease-in-out;
 	z-index: 1;
 }
 
@@ -28,7 +31,7 @@
 	border-radius: 8px;
 	z-index: -2;
 
-	transition: box-shadow var(--animation-time-medium) ease-in-out;
+	transition: box-shadow #{animations.$time-medium} ease-in-out;
 }
 
 .iconButton:not(.Disabled).iconButton:hover::after {
@@ -37,16 +40,16 @@
 }
 
 .iconButton:not(.Disabled):hover {
-	text-shadow: var(--glow-text-primary);
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .iconButton:not(.Disabled).iconButton:hover {
-	text-shadow: var(--glow-text-primary);
+	text-shadow: #{colors.$text-glow-primary};
 	background: #23142f;
 }
 
 .selected {
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 	background: #23142f;
 }
 

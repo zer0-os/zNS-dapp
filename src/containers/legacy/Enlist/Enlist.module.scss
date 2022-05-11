@@ -1,9 +1,12 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .Enlist {
 	width: 640px;
 	padding: 40px;
 
-	color: var(--color-text-primary) !important;
-	background: var(--color-background);
+	color: #{colors.$text-primary} !important;
+	background: #{colors.$primary-background};
 }
 
 .Header {
@@ -15,14 +18,14 @@
 }
 
 .Header h1 {
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 	font-size: 36px;
 	font-weight: 700;
 	margin-bottom: 0;
 }
 
 .Header h2 {
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 	font-size: 24px;
 }
 
@@ -57,7 +60,7 @@
 	overflow: hidden;
 
 	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .NFT > img {

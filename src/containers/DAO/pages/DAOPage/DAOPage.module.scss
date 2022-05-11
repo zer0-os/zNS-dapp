@@ -1,13 +1,15 @@
+@use 'styles/variables/colors';
+
 .Back {
 	display: flex;
 	align-items: center;
 
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 	font-size: 14px;
 	font-weight: bold;
 
 	&:hover {
-		color: var(--color-text-primary);
+		color: #{colors.$text-primary};
 		text-shadow: var(--glow-text-white);
 	}
 

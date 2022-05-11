@@ -1,3 +1,6 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/animations';
+
 $width: 640px;
 $gutter: 16px;
 
@@ -32,7 +35,7 @@ $gutter: 16px;
 }
 
 .Header h2 {
-	font-size: var(--font-size-default);
+	font-size: #{typography.$size-default};
 }
 
 .Header > div {
@@ -113,8 +116,8 @@ $gutter: 16px;
 	overflow: hidden;
 
 	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out,
-		border-color var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out,
+		border-color #{animations.$time-medium} ease-in-out;
 
 	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
 		width: auto;
@@ -148,7 +151,7 @@ $gutter: 16px;
 	max-height: 100%;
 	max-width: 100%;
 	object-fit: contain;
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Inputs {

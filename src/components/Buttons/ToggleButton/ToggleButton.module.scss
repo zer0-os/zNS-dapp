@@ -1,3 +1,5 @@
+@use 'styles/variables/animations';
+
 .Container {
 	/*
 	 * Set up colour values
@@ -32,7 +34,7 @@
 		border-radius: 12px;
 		border: 1px solid var(--toggle-button-color);
 
-		transition: border var(--animation-time-medium) ease;
+		transition: border #{animations.$time-medium} ease;
 
 		overflow: hidden;
 		cursor: pointer;
@@ -51,8 +53,8 @@
 
 			background-color: var(--toggle-button-color);
 
-			transition: left var(--animation-time-medium) ease-in-out,
-				background-color var(--animation-time-medium) ease;
+			transition: left #{animations.$time-medium} ease-in-out,
+				background-color #{animations.$time-medium} ease;
 
 			> span {
 				position: absolute;
@@ -61,7 +63,7 @@
 				font-weight: 700;
 				text-transform: uppercase;
 				color: var(--toggle-button-color);
-				transition: color var(--animation-time-medium) ease;
+				transition: color #{animations.$time-medium} ease;
 
 				&:first-of-type {
 					left: 0;

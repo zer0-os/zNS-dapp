@@ -1,8 +1,11 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+
 .Container {
 	width: 588px;
 	padding: 25.5px 40px 40px 40px;
 
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 
 	p {
 		text-align: center;
@@ -115,7 +118,7 @@
 		text-align: center;
 		justify-content: space-around;
 		font-weight: 400;
-		font-size: var(--font-size-small);
+		font-size: #{typography.$size-tiny};
 
 		.eachBalances {
 			display: flex;
@@ -149,7 +152,7 @@
 		display: block;
 		color: var(--color-error);
 		padding-left: 25px;
-		font-size: var(--font-size-small);
+		font-size: #{typography.$size-tiny};
 	}
 
 	.PersonalInfo {

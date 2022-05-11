@@ -1,4 +1,7 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
 
 .StepBarContainer {
 	display: none;
@@ -19,8 +22,8 @@
 	width: 640px;
 	padding: 40px;
 
-	color: var(--color-text-primary) !important;
-	background: var(--color-background);
+	color: #{colors.$text-primary} !important;
+	background: #{colors.$primary-background};
 
 	.Header {
 		display: flex;
@@ -31,7 +34,7 @@
 	}
 
 	.Header h1 {
-		color: var(--color-text-primary);
+		color: #{colors.$text-primary};
 		font-size: 24px;
 		font-weight: 700;
 		margin-bottom: 32px;
@@ -68,7 +71,7 @@
 		border-radius: inherit;
 		height: 100%;
 		width: 100%;
-		transition: transform var(--animation-time-medium) ease-in-out;
+		transition: transform #{animations.$time-medium} ease-in-out;
 	}
 }
 
@@ -91,7 +94,7 @@
 
 .Price h3 {
 	color: var(--color-primary-lighter-3);
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	font-weight: 700;
 	margin-bottom: 4px;
 }
@@ -101,12 +104,12 @@
 }
 
 .Price span:first-of-type {
-	font-size: var(--font-size-default);
+	font-size: #{typography.$size-default};
 	font-weight: 700;
 }
 
 .Price span:nth-of-type(2) {
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	font-weight: 700;
 	margin-top: 8px;
 }
@@ -123,7 +126,7 @@
 .InputWrapper p {
 	margin: 0;
 	padding: 0;
-	font-size: var(--font-size-default);
+	font-size: #{typography.$size-default};
 	font-weight: 400;
 	text-align: center;
 }

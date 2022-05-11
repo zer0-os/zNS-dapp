@@ -1,4 +1,5 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/colors';
 
 .Dots {
 	--dot-size: 5px;
@@ -32,7 +33,7 @@
 .Stats {
 	display: flex;
 	justify-content: space-between;
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 	flex-wrap: wrap;
 
 	@media only screen and (max-width: 415px) {

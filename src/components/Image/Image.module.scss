@@ -1,3 +1,5 @@
+@use 'styles/variables/animations';
+
 .Container {
 	display: flex;
 	justify-content: center;
@@ -19,7 +21,7 @@
 .Image {
 	max-height: 100%;
 	max-width: 100%;
-	transition: opacity var(--animation-time-medium) ease-in-out;
+	transition: opacity #{animations.$time-medium} ease-in-out;
 }
 
 .Spinner {

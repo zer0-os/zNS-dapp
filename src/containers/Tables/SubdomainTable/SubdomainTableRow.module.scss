@@ -1,3 +1,5 @@
+@use 'styles/variables/typography';
+
 .Row {
 	cursor: pointer;
 }
@@ -34,7 +36,7 @@
 .Bid:not(:first-child) {
 	margin-top: 2px;
 	color: var(--color-grey);
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 }
 
 @media only screen and (max-width: 1024px) {

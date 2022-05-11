@@ -1,3 +1,5 @@
+@use 'styles/variables/typography';
+
 .Container {
 	display: flex;
 	flex-direction: column;
@@ -9,7 +11,7 @@
 	display: inline-block;
 	font-weight: 700;
 	text-transform: uppercase;
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	margin-top: 4px;
 }
 
@@ -22,7 +24,7 @@
 
 .Date {
 	display: inline-block;
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	margin-top: 4px;
 }
 

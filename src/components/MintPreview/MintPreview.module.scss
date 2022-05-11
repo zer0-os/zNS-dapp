@@ -1,3 +1,5 @@
+@use 'styles/variables/typography';
+
 .MintPreview {
 	// Mobile Breakpoints
 	width: 580px;
@@ -68,7 +70,7 @@
 	word-wrap: break-word;
 
 	.Link {
-		font-size: var(--font-size-default);
+		font-size: #{typography.$size-default};
 		color: var(--color-grey);
 	}
 

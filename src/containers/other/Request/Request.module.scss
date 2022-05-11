@@ -1,3 +1,7 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+
 .Request {
 	display: flex;
 
@@ -21,7 +25,7 @@
 .Image {
 	width: 543px;
 	max-width: 543px;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	cursor: pointer;
 	background: rgba(0, 0, 0, 0.3);
 }
@@ -31,7 +35,7 @@
 }
 
 .Image > * {
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 	height: 100%;
 	width: 100%;
 	object-fit: contain !important;
@@ -105,7 +109,7 @@
 .Confirmation {
 	width: 588px;
 	padding: 32px 40px 40px 40px;
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 }
 
 .Confirmation h2 {

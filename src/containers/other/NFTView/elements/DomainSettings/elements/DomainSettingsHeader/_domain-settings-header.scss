@@ -1,4 +1,5 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
 
 .domain-settings__modal-header {
 	flex-shrink: 0;
@@ -17,7 +18,7 @@
 
 	h2 {
 		margin: 8px;
-		font-size: var(--font-size-default);
+		font-size: #{typography.$size-default};
 		word-break: break-all;
 		text-align: center;
 	}

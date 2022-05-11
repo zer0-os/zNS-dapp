@@ -1,4 +1,7 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
 
 $placeholder-background: #000;
 
@@ -7,9 +10,9 @@ $placeholder-background: #000;
 
 	position: relative !important;
 
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 	border: 1px solid #232323;
-	border-radius: calc(var(--box-radius) / 2) !important;
+	border-radius: calc(#{borders.$radius-primary} / 2) !important;
 
 	cursor: pointer;
 	overflow: hidden;
@@ -71,23 +74,23 @@ $placeholder-background: #000;
 		padding: 16px;
 
 		h5 {
-			color: var(--color-text-primary);
-			font-size: var(--font-size-smaller);
+			color: #{colors.$text-primary};
+			font-size: #{typography.$size-small};
 			font-weight: 700;
 
 			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
-				font-size: var(--font-size-smaller);
+				font-size: #{typography.$size-small};
 				line-height: 20px;
 			}
 
 			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
-				font-size: var(--font-size-default);
+				font-size: #{typography.$size-default};
 				line-height: 24px;
 			}
 		}
 
 		.Subheader {
-			font-size: var(--font-size-small);
+			font-size: #{typography.$size-tiny};
 			color: var(--color-grey-lighter-2);
 			word-break: break-all;
 

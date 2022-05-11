@@ -1,6 +1,8 @@
+@use 'styles/variables/animations';
+
 .Container {
 	cursor: pointer;
-	/* transition: background var(--animation-time-short) linear; */
+	/* transition: background #{animations.$time-short} linear; */
 
 	&:hover {
 		background: var(--color-revolver);

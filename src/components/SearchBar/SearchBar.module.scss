@@ -1,6 +1,9 @@
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+
 .searchBar {
 	position: relative;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 }
 
 .searchBar input {
@@ -18,7 +21,7 @@
 	/* Text shadow isn't working as expected - it cuts off for some reason */
 	/* text-shadow: var(--glow-text-white); */
 
-	transition: all var(--animation-time-short) linear;
+	transition: all #{animations.$time-short} linear;
 
 	&:hover,
 	&:active,

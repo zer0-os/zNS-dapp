@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 $gap: 40px;
 
 .Container {
@@ -51,11 +54,11 @@ $gap: 40px;
 
 			cursor: pointer;
 
-			background: var(--color-background);
-			color: var(--color-text-primary);
+			background: #{colors.$primary-background};
+			color: #{colors.$text-primary};
 			text-align: left;
 
-			transition: background-color var(--animation-time-short) ease;
+			transition: background-color #{animations.$time-short} ease;
 
 			&:active {
 				background-color: #1a102270 !important;
@@ -104,7 +107,7 @@ $gap: 40px;
 			&.Selected {
 				border-bottom: 1px solid #472e5b; // purple-25
 				font-weight: 700;
-				color: var(--color-text-primary);
+				color: #{colors.$text-primary};
 			}
 
 			&::before {

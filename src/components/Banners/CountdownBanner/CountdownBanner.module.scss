@@ -1,3 +1,7 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .nextDrop {
 	display: flex;
 	align-items: center;
@@ -22,7 +26,7 @@
 	border-radius: inherit;
 	background: var(--color-cosmic-gradient);
 	opacity: 0.25;
-	transition: opacity var(--animation-time-medium) ease-in-out;
+	transition: opacity #{animations.$time-medium} ease-in-out;
 	z-index: -1;
 }
 
@@ -31,7 +35,7 @@
 }
 
 .nextDrop span {
-	color: var(--color-text-primary) !important;
+	color: #{colors.$text-primary} !important;
 }
 
 .nextDrop > img {
@@ -88,6 +92,6 @@
 
 @media only screen and (max-width: 400px) {
 	.nextDrop {
-		font-size: var(--font-size-smaller);
+		font-size: #{typography.$size-small};
 	}
 }

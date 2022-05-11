@@ -1,13 +1,17 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .TextInput {
 	width: 100%;
 	padding: 16.5px 0px 16.5px 24px;
 
 	border-radius: 24px;
 
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 
-	background: var(--color-background);
-	transition: border var(--animation-time-medium) ease-in-out;
+	background: #{colors.$primary-background};
+	transition: border #{animations.$time-medium} ease-in-out;
 }
 
 .TextInput::placeholder {
@@ -19,7 +23,7 @@
 	margin-top: 12px;
 
 	color: var(--color-invalid);
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	font-weight: 700;
 	text-align: center;
 }
@@ -45,7 +49,7 @@
 	top: 6px;
 	left: 25px;
 	color: var(--color-accent-1);
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 }
 
 .title input {
@@ -83,7 +87,7 @@
 	background-size: cover;
 	background-color: rgba(0, 0, 0, 0);
 
-	transition: transform var(--animation-time-short) ease-in-out;
+	transition: transform #{animations.$time-short} ease-in-out;
 }
 
 .title button:hover {

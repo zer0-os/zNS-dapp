@@ -1,3 +1,5 @@
+@use 'styles/variables/animations';
+
 .Wilder {
 	position: absolute;
 	top: 0;
@@ -16,7 +18,7 @@
 
 	cursor: pointer;
 
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Wilder img {

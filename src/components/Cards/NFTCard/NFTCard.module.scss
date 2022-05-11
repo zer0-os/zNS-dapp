@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+
 .NFTCard {
 	cursor: pointer;
 	min-width: 280px;
@@ -19,14 +22,14 @@
 	display: flex;
 	align-items: center;
 
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 }
 
 .Creator > div {
 	height: 32px;
 	width: 32px;
 
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -40,7 +43,7 @@
 
 .NFTCard h5 {
 	margin-bottom: 1px;
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 	font-size: 24px;
 	font-weight: 700;
 }
@@ -48,7 +51,7 @@
 .NFT {
 	height: 450px;
 	width: 100% !important;
-	border-radius: var(--box-radius) var(--box-radius) 0 0;
+	border-radius: #{borders.$radius-primary} #{borders.$radius-primary} 0 0;
 	background: rgba(0, 0, 0, 0.3);
 
 	img,
@@ -82,7 +85,7 @@
 	margin-top: 8px;
 
 	font-size: 24px;
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 }
 
 .HasAspectRatio {

@@ -1,3 +1,6 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+
 .TransferPreview {
 	// Mobile Breakpoints
 	width: 555px;
@@ -68,7 +71,7 @@
 	word-wrap: break-word;
 
 	.Link {
-		font-size: var(--font-size-default);
+		font-size: #{typography.$size-default};
 		color: var(--color-grey);
 	}
 
@@ -90,9 +93,9 @@
 }
 
 .Info .Address {
-	font-size: var(--font-size-default);
+	font-size: #{typography.$size-default};
 	line-height: 24px;
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 }
 
 .Container {

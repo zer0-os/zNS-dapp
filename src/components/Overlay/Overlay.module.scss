@@ -1,5 +1,7 @@
+@use 'styles/variables/animations';
+
 .Overlay {
-	--speed: var(--animation-time-short);
+	--speed: #{animations.$time-short};
 
 	display: flex;
 	justify-content: center;
@@ -64,7 +66,7 @@
 }
 
 .Closed {
-	animation: close var(--animation-time-short) ease-in-out;
+	animation: close #{animations.$time-short} ease-in-out;
 	opacity: 0;
 
 	/* @todo temporarily disabled backdrop blur for performance */

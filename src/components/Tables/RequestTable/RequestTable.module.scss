@@ -1,6 +1,10 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .RequestTableContainer {
 	width: 100%;
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 }
 
 .RequestTable {
@@ -11,7 +15,7 @@
 }
 
 .Expander {
-	transition: height var(--animation-time-long) ease-in-out;
+	transition: height #{animations.$time-long} ease-in-out;
 }
 
 .RequestTable {
@@ -57,7 +61,7 @@
 
 .RequestTable th {
 	color: var(--color-primary-lighter-3);
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	font-weight: 700;
 }
 
@@ -74,15 +78,15 @@
 
 .RequestTable > tbody > tr {
 	cursor: pointer;
-	transition: background var(--animation-time-short) linear;
+	transition: background #{animations.$time-short} linear;
 }
 
 .RequestTable > tbody > tr:hover {
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 }
 
 .RequestTable > tbody > tr img {
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .RequestTable > tbody > tr:hover > td > img {
@@ -187,7 +191,7 @@
 .Grid > li {
 	cursor: pointer;
 
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Grid > li:hover {

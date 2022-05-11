@@ -1,3 +1,6 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+
 $color: #1a1022;
 
 .Tooltip {
@@ -8,9 +11,9 @@ $color: #1a1022;
 	max-width: 400px;
 	padding: 2.5px 16px;
 
-	font-size: var(--font-size-default);
+	font-size: #{typography.$size-default};
 	line-height: 24px;
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 
 	background: $color;
 

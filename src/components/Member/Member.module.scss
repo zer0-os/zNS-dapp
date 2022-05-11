@@ -1,3 +1,6 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/animations';
+
 .Member {
 	display: flex;
 }
@@ -10,7 +13,7 @@
 	/* background-color: rgba(0,0,0,0.5); */
 	overflow: hidden;
 	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Image:hover {
@@ -31,6 +34,6 @@
 }
 
 .Subtext {
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	color: var(--color-primary-lighter-3);
 }

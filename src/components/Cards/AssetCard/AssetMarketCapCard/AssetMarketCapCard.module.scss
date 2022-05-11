@@ -1,3 +1,5 @@
+@use 'styles/variables/typography';
+
 .price {
 	margin-top: 16px;
 
@@ -7,7 +9,7 @@
 .bottom {
 	margin-top: 15px;
 
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	line-height: 14px;
 }
 

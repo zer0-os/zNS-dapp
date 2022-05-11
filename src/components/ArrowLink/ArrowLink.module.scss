@@ -1,3 +1,5 @@
+@use 'styles/variables/animations';
+
 .Link {
 	position: relative;
 }
@@ -21,7 +23,7 @@
 	height: 100%;
 	width: 12px;
 
-	transition: margin-left var(--animation-time-medium) ease-in-out;
+	transition: margin-left #{animations.$time-medium} ease-in-out;
 }
 
 .ArrowContainer::after {
@@ -35,7 +37,7 @@
 
 	transform: translate(-60%, -50%);
 
-	transition: box-shadow var(--animation-time-short) ease-in-out;
+	transition: box-shadow #{animations.$time-short} ease-in-out;
 }
 
 .Arrow {

@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 $width: 640px;
 $gutter: 16px;
 
@@ -5,7 +7,7 @@ $gutter: 16px;
 	width: $width;
 	padding: 48px;
 
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 
 	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
 		width: calc(100vw - $gutter - $gutter);

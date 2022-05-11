@@ -1,11 +1,16 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+
 .connect {
 	max-width: 304px;
 	position: relative;
 	padding-left: 0 !important;
 	padding-right: 0 !important;
 
-	background: var(--color-background);
-	border-radius: var(--box-radius);
+	background: #{colors.$primary-background};
+	border-radius: #{borders.$radius-primary};
 
 	overflow: hidden;
 
@@ -38,8 +43,8 @@
 	width: 100%;
 	padding: 4px 40px;
 
-	color: var(--color-text-primary);
-	font-size: var(--font-size-default);
+	color: #{colors.$text-primary};
+	font-size: #{typography.$size-default};
 
 	cursor: pointer;
 }
@@ -60,7 +65,7 @@
 	z-index: -1;
 
 	opacity: 0;
-	transition: opacity var(--animation-time-short) ease-in-out;
+	transition: opacity #{animations.$time-short} ease-in-out;
 }
 
 .wallet:hover {
@@ -107,7 +112,7 @@
 .footer {
 	width: 100%;
 	text-align: center;
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	padding: 18px;
 }
 

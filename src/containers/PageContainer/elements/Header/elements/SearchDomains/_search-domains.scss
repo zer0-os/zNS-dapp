@@ -1,4 +1,5 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
 
 .search-domains {
 	&__results {
@@ -65,7 +66,7 @@
 				span {
 					display: inline-block;
 					margin-left: 8px;
-					font-size: var(--font-size-smaller);
+					font-size: #{typography.$size-small};
 					color: var(--color-accent-1);
 				}
 

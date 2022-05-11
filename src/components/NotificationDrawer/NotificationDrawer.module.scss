@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .NotificationDrawer {
 	display: flex;
 	position: fixed;
@@ -10,11 +13,11 @@
 
 	z-index: 10000;
 
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 
 	transform: translateY(0%) translateX(-50%);
 
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .NotificationDrawer ul {
@@ -29,7 +32,7 @@
 	font-size: 18px;
 	font-weight: medium;
 
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 
 	cursor: pointer;
 	word-break: break-word;

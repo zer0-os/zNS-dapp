@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .Container {
 	.Group {
 		&:not(:first-of-type) {
@@ -32,7 +34,7 @@
 			color: var(--color-grey-lighter-3);
 
 			b {
-				color: var(--color-text-primary);
+				color: #{colors.$text-primary};
 			}
 		}
 	}

@@ -1,8 +1,10 @@
+@use 'styles/variables/colors';
+
 .Container {
 	width: 588px;
 	padding: 25.5px 40px 40px 40px;
 
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 }
 
 .Header {

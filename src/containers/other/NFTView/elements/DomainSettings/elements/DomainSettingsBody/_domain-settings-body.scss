@@ -1,4 +1,7 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
 
 .domain-settings-body {
 	&__blocked {
@@ -58,11 +61,11 @@
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
-			border-radius: var(--box-radius);
+			border-radius: #{borders.$radius-primary};
 			overflow: hidden;
 			cursor: pointer;
-			transition: transform var(--animation-time-medium) ease-in-out,
-				border-color var(--animation-time-medium) ease-in-out;
+			transition: transform #{animations.$time-medium} ease-in-out,
+				border-color #{animations.$time-medium} ease-in-out;
 			margin-bottom: 16px;
 		}
 
@@ -98,7 +101,7 @@
 
 		h3 {
 			text-align: center;
-			font-size: var(--font-size-default);
+			font-size: #{typography.$size-default};
 			font-weight: 700;
 			line-height: 24px;
 			margin-bottom: 8px;
@@ -121,7 +124,7 @@
 
 				// Tablet Small Breakpoint
 				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-					font-size: var(--font-size-default);
+					font-size: #{typography.$size-default};
 				}
 			}
 		}

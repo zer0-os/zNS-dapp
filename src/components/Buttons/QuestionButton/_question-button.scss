@@ -1,3 +1,6 @@
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+
 .question-button {
 	position: relative;
 	display: flex;
@@ -16,9 +19,9 @@
 		left: 50%;
 		height: 0px;
 		width: 0px;
-		border-radius: var(--box-radius);
+		border-radius: #{borders.$radius-primary};
 		z-index: -2;
-		transition: box-shadow var(--animation-time-medium) ease-in-out;
+		transition: box-shadow #{animations.$time-medium} ease-in-out;
 	}
 
 	&:hover::after {

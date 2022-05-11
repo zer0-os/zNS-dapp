@@ -1,3 +1,7 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .Artwork {
 	display: flex;
 }
@@ -15,7 +19,7 @@
 	margin-right: 12px;
 	overflow: hidden;
 	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 
 	&.Circle {
 		border-radius: 50%;
@@ -24,7 +28,7 @@
 
 .Domain {
 	display: block;
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	color: var(--color-grey-lighter-2);
 }
 
@@ -52,7 +56,7 @@
 }
 
 .Info > *:first-child {
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 	font-weight: 400;
 }
 

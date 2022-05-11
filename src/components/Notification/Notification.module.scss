@@ -1,3 +1,7 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+
 .Notification {
 	top: 24px;
 	right: 32px;
@@ -9,7 +13,7 @@
 	max-width: 400px;
 	width: 100%;
 	padding: 16px 32px 14px 32px;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 
 	background: rgba(182, 181, 255, 0.3);
 	box-shadow: 0px 0px 20px rgba(152, 150, 255, 0.4);
@@ -19,8 +23,8 @@
 
 	z-index: 10000;
 
-	transition: transform var(--animation-time-medium) ease-in-out,
-		opacity var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out,
+		opacity #{animations.$time-medium} ease-in-out;
 }
 
 .Notification p {
@@ -34,8 +38,8 @@
 	color: #28024b;
 	-webkit-text-stroke-width: 2px;
 	-webkit-text-stroke-color: rgba(221, 178, 255, 0.2);
-	text-shadow: 0px 0px 40px var(--color-text-primary),
-		0px 0px 20px var(--color-text-primary);
+	text-shadow: 0px 0px 40px #{colors.$text-primary},
+		0px 0px 20px #{colors.$text-primary};
 }
 
 .Hidden {

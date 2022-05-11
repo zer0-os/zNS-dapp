@@ -1,3 +1,5 @@
+@use 'styles/variables/animations';
+
 .Container {
 	position: relative;
 	display: flex;
@@ -12,7 +14,7 @@
 	object-fit: contain;
 	max-width: 100%;
 	max-height: 100%;
-	transition: opacity var(--animation-time-medium) ease-in-out;
+	transition: opacity #{animations.$time-medium} ease-in-out;
 	border-radius: 8px;
 }
 

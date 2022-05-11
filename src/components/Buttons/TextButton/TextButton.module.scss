@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .TextButton {
 	color: var(--color-accent-1);
 
@@ -6,9 +9,9 @@
 
 	background-color: rgba(0, 0, 0, 0);
 
-	transition: color var(--animation-time-short) ease-in-out,
-		text-shadow var(--animation-time-short) ease-in-out,
-		opacity var(--animation-time-short) ease-in-out;
+	transition: color #{animations.$time-short} ease-in-out,
+		text-shadow #{animations.$time-short} ease-in-out,
+		opacity #{animations.$time-short} ease-in-out;
 
 	img {
 		height: 14px;
@@ -18,11 +21,11 @@
 }
 
 .TextButton:hover {
-	text-shadow: var(--glow-text-primary);
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .Selected {
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 	text-shadow: var(--glow-text-white) !important;
 }
 

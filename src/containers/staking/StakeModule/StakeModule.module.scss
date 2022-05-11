@@ -1,4 +1,6 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .Container {
 	width: 100%;
@@ -51,8 +53,8 @@
 			padding: 0;
 			width: auto;
 
-			font-size: var(--font-size-smaller);
-			color: var(--color-text-primary);
+			font-size: #{typography.$size-small};
+			color: #{colors.$text-primary};
 
 			transform: translateY(-50%);
 			z-index: 3;
@@ -85,12 +87,12 @@
 		}
 
 		.Fiat {
-			font-size: var(--font-size-small);
+			font-size: #{typography.$size-tiny};
 			display: block;
 		}
 
 		> span {
-			font-size: var(--font-size-small);
+			font-size: #{typography.$size-tiny};
 			color: var(--color-grey-lighter-2);
 		}
 	}

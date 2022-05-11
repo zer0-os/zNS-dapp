@@ -1,7 +1,9 @@
+@use 'styles/variables/colors';
+
 .Back {
 	padding: 0;
 	background: none;
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 
 	img {
 		margin-right: 8px;

@@ -1,5 +1,7 @@
+@use 'styles/variables/borders';
+
 .Container {
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	overflow: hidden;
 
 	.Header {

@@ -1,8 +1,11 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/animations';
+
 .StepBar {
 	position: relative;
 	width: 100%;
 
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	text-align: center;
 	font-weight: 700;
 }
@@ -19,7 +22,7 @@
 .Placeholder {
 	opacity: 0;
 	z-index: 2;
-	transition: opacity var(--animation-time-long) ease-in-out;
+	transition: opacity #{animations.$time-long} ease-in-out;
 }
 
 .Show {
@@ -33,7 +36,7 @@
 	color: var(--color-accent-1);
 	border-bottom: 1px solid var(--color-accent-1);
 
-	transition: all var(--animation-time-long) ease-in-out;
+	transition: all #{animations.$time-long} ease-in-out;
 }
 
 .Bar::after {

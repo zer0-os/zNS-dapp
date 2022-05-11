@@ -1,3 +1,8 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+
 $width: 588px;
 $gutter: 16px;
 
@@ -24,10 +29,10 @@ $gutter: 16px;
 .Image {
 	width: 543px;
 	max-width: 543px;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	overflow: hidden;
 	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Image:hover {
@@ -116,7 +121,7 @@ $gutter: 16px;
 .Confirmation {
 	width: $width;
 	padding: 32px 40px 40px 40px;
-	background: var(--color-background);
+	background: #{colors.$primary-background};
 
 	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
 		display: flex;
@@ -146,7 +151,7 @@ $gutter: 16px;
 }
 
 .Confirmation p {
-	font-size: var(--font-size-default);
+	font-size: #{typography.$size-default};
 	font-weight: 700;
 	line-height: 28.8px;
 	text-align: center;

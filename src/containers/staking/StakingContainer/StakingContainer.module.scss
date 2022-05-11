@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .Container {
 	width: 100%;
 
@@ -15,15 +18,15 @@
 			font-size: 24px;
 			font-weight: 700;
 
-			transition: color var(--animation-time-short) ease-in-out;
+			transition: color #{animations.$time-short} ease-in-out;
 
 			&:not(:first-of-type) {
 				margin-left: 40px;
 			}
 
 			&.Active {
-				color: var(--color-text-primary);
-				text-shadow: var(--glow-text-primary) !important;
+				color: #{colors.$text-primary};
+				text-shadow: #{colors.$text-glow-primary} !important;
 			}
 		}
 	}

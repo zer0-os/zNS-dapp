@@ -1,3 +1,6 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/borders';
+
 .Container {
 	width: 100%;
 }
@@ -5,7 +8,7 @@
 .Image {
 	width: 100%;
 	height: 296px;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	object-fit: cover;
 }
 
@@ -15,7 +18,7 @@
 }
 
 .Available span {
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	color: var(--color-grey);
 }
 

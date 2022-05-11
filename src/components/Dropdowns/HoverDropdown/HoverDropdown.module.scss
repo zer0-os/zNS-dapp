@@ -1,3 +1,5 @@
+@use 'styles/variables/animations';
+
 .TriggerContentContainer {
 	display: flex;
 	align-items: center;
@@ -8,7 +10,7 @@
 .DropdownContentContainer {
 	position: absolute;
 	pointer-events: none;
-	transition: all var(--animation-time-short) linear;
+	transition: all #{animations.$time-short} linear;
 	opacity: 0;
 	display: block;
 	z-index: 10000;
