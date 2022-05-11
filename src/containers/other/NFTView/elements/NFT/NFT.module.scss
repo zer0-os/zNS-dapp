@@ -6,7 +6,7 @@
 .Container {
 	h1 {
 		font-size: #{typography.$size-large};
-		font-weight: #{typography.$font-weight-bold};
+		font-weight: bold;
 
 		// Tablet Breakpoints
 		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
