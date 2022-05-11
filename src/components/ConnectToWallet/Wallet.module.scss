@@ -26,7 +26,7 @@
 }
 
 .Header h1 {
-	font-size: 18px !important;
+	font-size: #{typography.$size-medium} !important;
 }
 
 .connect ul {
@@ -86,7 +86,7 @@
 
 	border-radius: 50%;
 
-	background-color: #{colors.$prussian-blue-darker};
+	background-color: #{colors.$prussian-blue-darker-1};
 }
 
 .wallet > div > div {

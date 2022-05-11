@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/borders';
+@use 'styles/variables/typography';
 
 .NFTCard {
 	cursor: pointer;
@@ -41,7 +42,7 @@
 .NFTCard h5 {
 	margin-bottom: 1px;
 	color: #{colors.$text-primary};
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	font-weight: 700;
 }
 
@@ -81,7 +82,7 @@
 .Foot > div > span:last-child {
 	margin-top: 8px;
 
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	color: #{colors.$text-primary};
 }
 

@@ -11,7 +11,7 @@
 	padding: 48px 8px 24px 8px;
 
 	h1 {
-		font-size: 24px;
+		font-size: #{typography.$size-large};
 		font-weight: 700;
 		text-align: center;
 		overflow-wrap: anywhere;

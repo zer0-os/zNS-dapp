@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
+@use 'styles/variables/typography';
 
 $gap: 40px;
 
@@ -31,7 +32,7 @@ $gap: 40px;
 			align-items: center;
 			background: none;
 			color: #{colors.$white};
-			font-size: 24px;
+			font-size: #{typography.$size-large};
 			font-weight: 700;
 
 			span {
@@ -81,7 +82,7 @@ $gap: 40px;
 					display: block;
 
 					&:first-child {
-						font-size: 12px;
+						font-size: #{typography.$size-tiny};
 						color: #{colors.$silver};
 					}
 				}

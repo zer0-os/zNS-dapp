@@ -1,6 +1,7 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/borders';
 @use 'styles/variables/animations';
+@use 'styles/variables/typography';
 
 .Notification {
 	top: 24px;
@@ -32,7 +33,7 @@
 	margin: 0;
 	padding: 0;
 
-	font-size: 18px;
+	font-size: #{typography.$size-medium};
 	text-align: center;
 
 	color: #28024b;

@@ -1,5 +1,6 @@
 @use 'styles/variables/borders';
 @use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 .Container {
 	border-radius: #{borders.$radius-primary};
@@ -77,7 +78,7 @@
 			}
 
 			label {
-				font-size: 12px;
+				font-size: #{typography.$size-tiny};
 				color: #{colors.$silver};
 			}
 		}

@@ -14,7 +14,7 @@
 
 .Container {
 	h2 {
-		font-size: 24px;
+		font-size: #{typography.$size-large};
 		font-weight: 700;
 		line-height: 28px;
 	}
@@ -35,7 +35,7 @@
 
 	.Header h1 {
 		color: #{colors.$text-primary};
-		font-size: 24px;
+		font-size: #{typography.$size-large};
 		font-weight: 700;
 		margin-bottom: 32px;
 	}

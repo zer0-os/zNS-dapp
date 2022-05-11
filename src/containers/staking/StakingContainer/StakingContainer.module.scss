@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
+@use 'styles/variables/typography';
 
 .Container {
 	width: 100%;
@@ -15,7 +16,7 @@
 
 		> a {
 			color: #{colors.$silver};
-			font-size: 24px;
+			font-size: #{typography.$size-large};
 			font-weight: 700;
 
 			transition: color #{animations.$time-short} ease-in-out;

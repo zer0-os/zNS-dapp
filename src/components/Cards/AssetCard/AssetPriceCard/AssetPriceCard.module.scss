@@ -4,7 +4,7 @@
 .price {
 	margin-top: 16px;
 
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 }
 
 .bottom {

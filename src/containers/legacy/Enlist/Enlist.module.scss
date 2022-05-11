@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
+@use 'styles/variables/typography';
 
 .Enlist {
 	width: 640px;
@@ -26,7 +27,7 @@
 
 .Header h2 {
 	color: #{colors.$text-primary};
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 }
 
 .Header > div {
@@ -85,6 +86,6 @@
 }
 
 .Bid {
-	font-size: 18px;
+	font-size: #{typography.$size-medium};
 	text-align: right;
 }

@@ -1,8 +1,9 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
 
 .Container {
 	h1 {
-		font-size: 24px;
+		font-size: #{typography.$size-large};
 		font-weight: bold;
 
 		// Tablet Breakpoints

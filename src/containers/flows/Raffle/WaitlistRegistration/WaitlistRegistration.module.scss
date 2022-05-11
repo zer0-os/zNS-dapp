@@ -1,4 +1,5 @@
 @use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 .Container {
 	width: 588px;
@@ -100,7 +101,7 @@
 	}
 
 	.Header h1 {
-		font-size: 18px;
+		font-size: #{typography.$size-medium};
 	}
 
 	.Input {

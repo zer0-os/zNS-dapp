@@ -5,14 +5,17 @@ $black: #000000;
 $anakiwa: #a1d2ff;
 $anakiwa-lighter: #9ed0ff;
 $baby-blue: #9dd0ff;
+$doger-blue-lighter: #3ca1ff;
 $dodger-blue: #5257ff;
-$dodger-blue-op: #5257ff40;
+$dodger-blue-op: rgba(82, 87, 255, 0.25);
 $malibu: #52cbff;
-$malibu-op: #52cbff40;
-$malibu-op-2: #52cbff1a;
+$malibu-op: rgba(82, 203, 255, 0.25);
+$malibu-op-2: rgba(82, 203, 255, 0.1);
 $prussian-blue: #002f5b;
-$prussian-blue-darker: #00d1ff1a;
-$ocean-op: #52aeff1a;
+$prussian-blue-darker-1: rgba(0, 209, 255, 0.1);
+$prussian-blue-darker-2: rgba(0, 209, 255, 0.2);
+$prussian-blue-darker-5: rgba(0, 209, 255, 0.5);
+$ocean-op: rgba(82, 174, 255, 0.1);
 
 // Brown
 $warning: #f58c61;
@@ -35,17 +38,17 @@ $easter-purple: #c169ff;
 $electric-violet: #eb00ff;
 $helitrope: #d379ff;
 $helitrope-darker: #af72f3;
-$helitrope-darker-op: #af72f340;
-$lovely-purple: #8930ee;
-$lovely-purple-op: #8930ee40;
+$helitrope-darker-op: rgba(175, 114, 243, 0.25);
 $mauve: #e5baff;
 $primary: #b14eff;
 $violet: #1d0c4a;
 
 // Purple
 $black-rock: #10052e;
-$bunting-op: #1d154a80;
 $bossanova: #472e5b;
+$bunting-op: rgba(29, 21, 74, 0.5);
+$lovely-purple: #8930ee;
+$lovely-purple-op: rgba(137, 48, 238, 0.25);
 $revolver: #23142f;
 $revolver-darker: #1a1022;
 
@@ -63,7 +66,7 @@ $background-50: transparentize($background-primary, 0.5);
 
 // Text
 $text-primary: $white;
-$text-glow-white: 0px 0px 10px #ffffffb3;
+$text-glow-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
 $text-glow-primary: 0px 0px 24px transparentize($primary, 0.6),
 	0px 0px 12px transparentize($primary, 0.6),
 	0px 0px 6px transparentize($primary, 0.6);

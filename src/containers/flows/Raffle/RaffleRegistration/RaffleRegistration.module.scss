@@ -128,7 +128,7 @@
 		.amount {
 			font-weight: 700;
 			padding: 10px 0;
-			font-size: 18px;
+			font-size: #{typography.$size-medium};
 		}
 
 		.ErrorColor {

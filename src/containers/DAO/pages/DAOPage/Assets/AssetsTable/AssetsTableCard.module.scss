@@ -1,3 +1,5 @@
+@use 'styles/variables/typography';
+
 .ImageCard {
 	img {
 		width: auto !important;
@@ -17,7 +19,7 @@
 		}
 
 		.Amount {
-			font-size: 18px;
+			font-size: #{typography.$size-medium};
 		}
 	}
 }

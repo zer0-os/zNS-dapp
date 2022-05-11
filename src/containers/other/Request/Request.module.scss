@@ -1,6 +1,7 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/borders';
 @use 'styles/variables/animations';
+@use 'styles/variables/typography';
 
 .Request {
 	display: flex;
@@ -91,7 +92,7 @@
 }
 
 .Offer > span:last-of-type {
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	color: #{colors.$mauve};
 	margin-left: 16px;
 }
@@ -124,7 +125,7 @@
 }
 
 .Confirmation p {
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	font-weight: 700;
 	line-height: 28.8px;
 	text-align: center;
@@ -135,7 +136,7 @@
 }
 
 .FulfillIndicator > div > p {
-	font-size: 24px !important;
+	font-size: #{typography.$size-large} !important;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -163,7 +164,7 @@
 	}
 
 	.Offer > span {
-		font-size: 24px !important;
+		font-size: #{typography.$size-large} !important;
 	}
 }
 

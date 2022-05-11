@@ -149,12 +149,12 @@
 }
 
 .Crypto {
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	font-weight: 700;
 }
 
 .Fiat {
-	font-size: 18px;
+	font-size: #{typography.$size-medium};
 	font-weight: 400;
 	color: #{colors.$mauve};
 }
@@ -422,15 +422,15 @@
 
 @media only screen and (max-width: 600px) {
 	.Price h2 {
-		font-size: 18px !important;
+		font-size: #{typography.$size-medium} !important;
 	}
 
 	.Crypto {
-		font-size: 24px !important;
+		font-size: #{typography.$size-large} !important;
 	}
 
 	.Fiat {
-		font-size: 18px !important;
+		font-size: #{typography.$size-medium} !important;
 	}
 
 	.TokenHashContainer {

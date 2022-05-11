@@ -18,7 +18,7 @@
 }
 
 .TransferPreview h4 {
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	font-weight: 700;
 	margin-bottom: 19px;
 	text-align: center;
@@ -75,7 +75,7 @@
 	}
 
 	h3 {
-		font-size: 24px;
+		font-size: #{typography.$size-large};
 		margin-bottom: 12px;
 	}
 

@@ -98,7 +98,7 @@ $gutter: 16px;
 }
 
 .Offer > span:last-of-type {
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	color: #{colors.$mauve};
 	margin-left: 16px;
 }
@@ -137,7 +137,7 @@ $gutter: 16px;
 	text-align: center;
 
 	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
-		font-size: 18px;
+		font-size: #{typography.$size-medium};
 	}
 }
 
@@ -191,7 +191,7 @@ $gutter: 16px;
 	}
 
 	.Offer > span {
-		font-size: 24px !important;
+		font-size: #{typography.$size-large} !important;
 	}
 }
 

@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
+@use 'styles/variables/typography';
 
 .Bar {
 	position: relative;
@@ -11,7 +12,7 @@
 }
 
 .Tab button {
-	font-size: 18px;
+	font-size: #{typography.$size-medium};
 	font-weight: 700;
 	color: #{colors.$silver};
 	background: none;

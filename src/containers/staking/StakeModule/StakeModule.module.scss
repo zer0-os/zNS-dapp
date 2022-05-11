@@ -82,7 +82,7 @@
 		text-align: left;
 
 		.Tokens {
-			font-size: 18px;
+			font-size: #{typography.$size-medium};
 			display: block;
 		}
 

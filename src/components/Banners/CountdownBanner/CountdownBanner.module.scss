@@ -48,7 +48,7 @@
 }
 
 .nextDrop h5 {
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	font-weight: 700;
 
 	color: #{colors.$malibu};

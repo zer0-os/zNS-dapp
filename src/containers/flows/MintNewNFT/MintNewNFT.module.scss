@@ -29,7 +29,7 @@ $gutter: 16px;
 }
 
 .Header h1 {
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	font-weight: 700;
 	text-align: center;
 	overflow-wrap: anywhere;
@@ -181,7 +181,7 @@ $gutter: 16px;
 }
 
 .Summary h2 {
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 }
 
 .Summary li {

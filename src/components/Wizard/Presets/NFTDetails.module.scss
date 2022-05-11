@@ -1,5 +1,6 @@
 @use 'styles/variables/dimensions';
 @use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 $width: 640px;
 $gutter: 16px;
@@ -28,7 +29,7 @@ $gutter: 16px;
 		padding: 0;
 
 		h1 {
-			font-size: 24px;
+			font-size: #{typography.$size-large};
 			font-weight: 700;
 		}
 
@@ -65,7 +66,7 @@ $gutter: 16px;
 	}
 
 	.MemberLabel {
-		font-size: 12px;
+		font-size: #{typography.$size-tiny};
 		color: #{colors.$silver};
 	}
 }

@@ -1,3 +1,5 @@
+@use 'styles/variables/typography';
+
 .Total {
 	margin-top: 16px;
 
@@ -9,6 +11,6 @@
 	span,
 	div {
 		margin-top: 4px;
-		font-size: 18px;
+		font-size: #{typography.$size-medium};
 	}
 }

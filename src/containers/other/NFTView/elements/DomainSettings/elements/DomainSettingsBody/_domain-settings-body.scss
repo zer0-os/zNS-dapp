@@ -121,7 +121,7 @@
 
 			> label {
 				margin-right: 8px;
-				font-size: 14px;
+				font-size: #{typography.$size-small};
 
 				// Tablet Small Breakpoint
 				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {

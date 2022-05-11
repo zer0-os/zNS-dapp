@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
+@use 'styles/variables/typography';
 
 .NotificationDrawer {
 	display: flex;
@@ -29,7 +30,7 @@
 	width: 100%;
 
 	text-align: center;
-	font-size: 18px;
+	font-size: #{typography.$size-medium};
 	font-weight: medium;
 
 	color: #{colors.$text-primary};

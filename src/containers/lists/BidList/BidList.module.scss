@@ -46,7 +46,7 @@ $gutter: 16px;
 }
 
 .Container h4 {
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 	font-weight: bold;
 	text-align: center;
 }

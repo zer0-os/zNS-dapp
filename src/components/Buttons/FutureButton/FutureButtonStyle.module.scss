@@ -1,6 +1,7 @@
 @use 'styles/variables/borders';
 @use 'styles/variables/animations';
 @use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 /*
  * Default color scheme
@@ -8,14 +9,14 @@
 .Container {
 	--bg: linear-gradient(
 		90deg,
-		rgba(82, 87, 255, 0.25) 0%,
-		rgba(82, 203, 255, 0.25) 100%
+		#{colors.$dodger-blue-op} 0%,
+		#{colors.$malibu-op} 100%
 	);
-	--box-shadow: rgba(0, 209, 255, 0.2);
-	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
-	--box-shadow-light: rgba(0, 209, 255, 0.2);
-	--border-color: #3ca1ff;
-	--border-color-hover: #fff;
+	--box-shadow: #{colors.$prussian-blue-darker-2};
+	--box-shadow-heavy: #{colors.$prussian-blue-darker-5};
+	--box-shadow-light: #{colors.$prussian-blue-darker-2};
+	--border-color: #{colors.$doger-blue-lighter};
+	--border-color-hover: #{colors.$white};
 
 	&:not(.Glow) {
 		box-shadow: none;
@@ -35,8 +36,8 @@
 	--box-shadow-heavy: #7000ff;
 	--box-shadow-light: rgba(112, 0, 255, 0.25);
 	--border-color: #f763b0;
-	--border-color-hover: #fff;
-	--color: #fff;
+	--border-color-hover: #{colors.$white};
+	--color: #{colors.$white};
 
 	&:not(.Glow) {
 		--border-color: #{colors.$gray};
@@ -76,7 +77,7 @@
 
 		color: white;
 		text-align: center;
-		font-size: 14px;
+		font-size: #{typography.$size-small};
 		font-weight: 700;
 		text-shadow: #{colors.$text-glow-white};
 

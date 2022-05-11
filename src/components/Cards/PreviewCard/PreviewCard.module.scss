@@ -145,7 +145,7 @@
 			text-overflow: ellipsis;
 
 			@media only screen and (max-width: 550px) {
-				font-size: 24px;
+				font-size: #{typography.$size-large};
 			}
 		}
 
@@ -219,7 +219,7 @@
 		span {
 			&:first-of-type {
 				margin-top: 20px;
-				font-size: 24px;
+				font-size: #{typography.$size-large};
 			}
 
 			&:last-of-type {
