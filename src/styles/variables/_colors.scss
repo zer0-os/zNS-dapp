@@ -1,9 +1,85 @@
+// Black
 $black: #000000;
-$white: #ffffff;
-$background: #0a0a0a;
 
-$primary: #b14eff;
-$warn: #e2dc4f;
+// Blues
+$anakiwa: #a1d2ff;
+$anakiwa-lighter: #9ed0ff;
+$baby-blue: #9dd0ff;
+$dodger-blue: #5257ff;
+$dodger-blue-op: #5257ff40;
+$malibu: #52cbff;
+$malibu-op: #52cbff40;
+$malibu-op-2: #52cbff1a;
+$prussian-blue: #002f5b;
+$prussian-blue-darker: #00d1ff1a;
+$ocean-op: #52aeff1a;
+
+// Brown
+$sandy-brown: #f58c61;
+
+// Green
 $success: #58c573;
 
+// Grey
+$alto: #d9d9d9;
+$cod-gray: #0a0a0a;
+$concrete: #f2f2f2;
+$gray: #808080;
+$mercury: #e6e6e6;
+$mine-shaft: #232323;
+$silver: #bfbfbf;
+
+// Pink
+$easter-purple: #c169ff;
+$electric-violet: #8c00ff;
+$electric-violet-lighter: #eb00ff;
+$helitrope: #d379ff;
+$helitrope-darker: #af72f3;
+$helitrope-darker-op: #af72f340;
+$lovely-purple: #8930ee;
+$lovely-purple-op: #8930ee40;
+$mauve: #e5baff;
+$primary: #b14eff;
+
+// Purple
+$black-rock: #10052e;
+$bunting-op: #1d154a80;
+$bossanova: #472e5b;
+$revolver: #23142f;
+$revolver-darker: #1a1022;
+$violet: #1d0c4a;
+
+// Red
+$error: #f6677c;
+
+// White
+$glow-white: 0px 0px 10px #ffffffb3;
+$white: #ffffff;
+
+// Yellow
+$warn: #e2dc4f;
+
+// Background
+$background: $cod-gray;
+$background-50: transparentize($background, 0.5);
+
+// Text
 $text-primary: $white;
+$glow-text-primary: 0px 0px 24px transparentize(colors.$primary, 0.6),
+	0px 0px 12px transparentize(colors.$primary, 0.6),
+	0px 0px 6px transparentize(colors.$primary, 0.6);
+
+// Gradient Colours
+$azure-gradient: linear-gradient(90deg, $dodger-blue 0%, $malibu 100%);
+$azure-gradient-25: linear-gradient(90deg, $dodger-blue-op 0%, $malibu-op 100%);
+$cosmic-gradient: linear-gradient(
+	90deg,
+	$lovely-purple 0%,
+	$helitrope-darker 100%
+);
+$cosmic-gradient-25: linear-gradient(
+	90deg,
+	$lovely-purple-op 0%,
+	$helitrope-darker-op: 100%
+);
+$ocean-gradient-10: linear-gradient(90deg, $ocean-op 0%, $malibu-op-2 100%);
