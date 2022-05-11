@@ -7,11 +7,7 @@
  * Default color scheme
  */
 .Container {
-	--bg: linear-gradient(
-		90deg,
-		#{colors.$dodger-blue-op} 0%,
-		#{colors.$malibu-op} 100%
-	);
+	--bg: #{colors.$azure-gradient-25};
 	--box-shadow: #{colors.$prussian-blue-darker-2};
 	--box-shadow-heavy: #{colors.$prussian-blue-darker-5};
 	--box-shadow-light: #{colors.$prussian-blue-darker-2};

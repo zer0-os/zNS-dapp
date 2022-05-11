@@ -1,5 +1,6 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/colors';
+@use 'styles/variables/borders';
 
 $color: #{colors.$revolver-darker};
 
@@ -17,7 +18,7 @@ $color: #{colors.$revolver-darker};
 
 	background: $color;
 
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	z-index: 2;
 }
 

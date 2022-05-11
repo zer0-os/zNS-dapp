@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/typography';
+@use 'styles/variables/borders';
 
 .Back {
 	display: flex;
@@ -47,7 +48,7 @@
 		min-width: 40px;
 		min-height: 40px;
 
-		border-radius: 8px;
+		border-radius: calc(#{borders.$radius-primary} / 2);
 		overflow: hidden;
 
 		img {

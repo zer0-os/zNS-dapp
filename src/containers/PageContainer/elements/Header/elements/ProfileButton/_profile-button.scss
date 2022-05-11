@@ -1,5 +1,6 @@
 @use 'styles/variables/animations';
 @use 'styles/variables/colors';
+@use 'styles/variables/borders';
 
 .profile-button {
 	width: 40px;
@@ -16,7 +17,7 @@
 
 		&:hover {
 			.profile-button {
-				border-radius: 8px;
+				border-radius: calc(#{borders.$radius-primary} / 2);
 				background: #{colors.$revolver-darker};
 
 				svg {

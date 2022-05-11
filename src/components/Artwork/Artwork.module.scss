@@ -1,6 +1,7 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
+@use 'styles/variables/borders';
 
 .Artwork {
 	display: flex;
@@ -15,7 +16,7 @@
 	width: 40px;
 	min-height: 40px;
 	min-width: 40px;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	margin-right: 12px;
 	overflow: hidden;
 	cursor: pointer;

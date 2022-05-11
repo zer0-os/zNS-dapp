@@ -70,7 +70,7 @@
 
 .Image img {
 	object-fit: cover;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 }
 
 .Info {
@@ -88,7 +88,7 @@
 
 	background: #{colors.$black-rock};
 
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	border: 1px solid #{colors.$revolver};
 
 	button {
@@ -511,7 +511,7 @@
 	flex-direction: column;
 	justify-content: center;
 	padding: 8px 16px 8px 20px;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	background: #120d16;
 }
 

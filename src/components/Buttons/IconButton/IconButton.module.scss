@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
+@use 'styles/variables/borders';
 
 .iconButton {
 	position: relative;
@@ -8,7 +9,7 @@
 	color: #{colors.$malibu};
 	background-color: rgba(0, 0, 0, 0);
 
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 
 	transition: all #{animations.$time-medium} ease-in-out;
 	z-index: 1;
@@ -17,7 +18,7 @@
 .iconButton > img {
 	height: 100%;
 	width: 100%;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	z-index: 2;
 }
 
@@ -28,7 +29,7 @@
 	left: 50%;
 	height: 0px;
 	width: 0px;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	z-index: -2;
 
 	transition: box-shadow #{animations.$time-medium} ease-in-out;

@@ -1,5 +1,6 @@
 @use 'styles/variables/animations';
 @use 'styles/variables/colors';
+@use 'styles/variables/borders';
 
 .info-button {
 	height: 40px;
@@ -18,7 +19,7 @@
 
 		&:hover {
 			.info-button {
-				border-radius: 8px;
+				border-radius: calc(#{borders.$radius-primary} / 2);
 				background: #{colors.$revolver-darker};
 
 				svg {
