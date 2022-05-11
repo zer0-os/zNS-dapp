@@ -8,7 +8,7 @@
 
 	color: #{colors.$text-primary};
 	font-size: #{typography.$size-small};
-	font-weight: #{typography.$font-weight-bold};
+	font-weight: bold;
 
 	&:hover {
 		color: #{colors.$text-primary};
