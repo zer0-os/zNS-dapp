@@ -22,7 +22,7 @@ $gutter: 16px;
 
 .Error {
 	padding: 0;
-	font-weight: 700 !important;
+	font-weight: #{typography.$font-weight-bold} !important;
 	color: #{colors.$mauve};
 }
 
@@ -56,7 +56,7 @@ $gutter: 16px;
 
 .Info h1 {
 	font-size: 36px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Info > div:first-of-type > span:first-of-type {
@@ -75,7 +75,7 @@ $gutter: 16px;
 }
 
 .Domain {
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Story {
@@ -133,7 +133,7 @@ $gutter: 16px;
 
 .Confirmation h2 {
 	font-size: 36px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 
 	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
@@ -152,7 +152,7 @@ $gutter: 16px;
 
 .Confirmation p {
 	font-size: #{typography.$size-default};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	line-height: 28.8px;
 	text-align: center;
 

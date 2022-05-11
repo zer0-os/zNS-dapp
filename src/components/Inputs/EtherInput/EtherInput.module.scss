@@ -24,7 +24,7 @@
 
 	color: #{colors.$helitrope};
 	font-size: #{typography.$size-small};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 }
 
@@ -57,7 +57,7 @@
 	padding: 22.5px 0px 10.5px 24px;
 
 	text-align: left;
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 	line-height: 19.2px;
 
 	background: #{colors.$text-input-background-gradient};
@@ -111,7 +111,7 @@
 	padding-left: 54px;
 
 	text-align: left;
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 	line-height: 19.2px;
 
 	background: #{colors.$text-input-background-gradient};

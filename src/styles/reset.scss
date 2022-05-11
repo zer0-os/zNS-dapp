@@ -137,7 +137,7 @@ input {
 }
 b,
 strong {
-	font-weight: bold;
+	font-weight: #{typography.$font-weight-bold};
 }
 i,
 em {

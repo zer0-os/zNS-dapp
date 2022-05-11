@@ -62,12 +62,12 @@
 .RequestTable th {
 	color: #{colors.$mauve};
 	font-size: #{typography.$size-small};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 /* Table */
 .RequestTable tbody {
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .RequestTable th,
@@ -106,7 +106,7 @@
 
 .ticker {
 	color: #{colors.$anakiwa};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Accepted span {
@@ -161,7 +161,7 @@
 .Message {
 	padding: 32px 32px 40px 32px;
 	text-align: center;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 @keyframes spin {

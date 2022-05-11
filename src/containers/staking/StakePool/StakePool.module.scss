@@ -20,7 +20,7 @@
 	h1 {
 		margin-left: 24px;
 		font-size: 36px;
-		font-weight: 700;
+		font-weight: #{typography.$font-weight-bold};
 	}
 
 	img {
@@ -52,7 +52,7 @@
 	span {
 		padding: 20px;
 		padding-top: 0;
-		font-weight: 400;
+		font-weight: #{typography.$font-weight-regular};
 	}
 
 	.Loading {

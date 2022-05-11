@@ -5,7 +5,7 @@
 	margin-top: 16px;
 
 	span:first-of-type {
-		font-weight: 700;
+		font-weight: #{typography.$font-weight-bold};
 		color: #{colors.$silver};
 	}
 

@@ -56,6 +56,6 @@
 
 	color: #{colors.$helitrope};
 	font-size: #{typography.$size-small};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 }

@@ -50,7 +50,7 @@
 		> a {
 			color: #{colors.$silver};
 			font-size: #{typography.$size-large};
-			font-weight: 700;
+			font-weight: #{typography.$font-weight-bold};
 
 			@media only screen and (max-width: 700px) {
 				font-size: #{typography.$size-medium};

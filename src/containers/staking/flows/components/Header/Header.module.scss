@@ -12,7 +12,7 @@
 	h1 {
 		padding: 5.5px 0;
 		font-size: #{typography.$size-large};
-		font-weight: 700;
+		font-weight: #{typography.$font-weight-bold};
 	}
 
 	hr {

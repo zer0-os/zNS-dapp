@@ -35,7 +35,7 @@
 }
 
 .StatsTitle {
-	font-weight: bold;
+	font-weight: #{typography.$font-weight-bold};
 	font-size: #{typography.$size-medium};
 	line-height: 22px;
 	margin: 2px 0px;

@@ -36,7 +36,7 @@
 			height: 24px;
 			padding: 0;
 			font-size: 8px;
-			font-weight: bold;
+			font-weight: #{typography.$font-weight-bold};
 			color: #{colors.$alto};
 			line-height: 24px;
 			box-sizing: border-box;

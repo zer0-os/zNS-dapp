@@ -103,7 +103,7 @@
 		h3 {
 			text-align: center;
 			font-size: #{typography.$size-default};
-			font-weight: 700;
+			font-weight: #{typography.$font-weight-bold};
 			line-height: 24px;
 			margin-bottom: 8px;
 		}

@@ -24,7 +24,7 @@
 .Crypto {
 	margin-top: 2px;
 	font-size: #{typography.$size-small};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	line-height: 16px;
 	color: #{colors.$text-primary};
 }

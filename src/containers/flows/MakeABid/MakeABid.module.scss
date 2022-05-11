@@ -15,7 +15,7 @@
 .Container {
 	h2 {
 		font-size: #{typography.$size-large};
-		font-weight: 700;
+		font-weight: #{typography.$font-weight-bold};
 		line-height: 28px;
 	}
 
@@ -36,7 +36,7 @@
 	.Header h1 {
 		color: #{colors.$text-primary};
 		font-size: #{typography.$size-large};
-		font-weight: 700;
+		font-weight: #{typography.$font-weight-bold};
 		margin-bottom: 32px;
 	}
 
@@ -95,7 +95,7 @@
 .Price h3 {
 	color: #{colors.$mauve};
 	font-size: #{typography.$size-tiny};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	margin-bottom: 4px;
 }
 
@@ -105,12 +105,12 @@
 
 .Price span:first-of-type {
 	font-size: #{typography.$size-default};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Price span:nth-of-type(2) {
 	font-size: #{typography.$size-small};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	margin-top: 8px;
 }
 
@@ -127,7 +127,7 @@
 	margin: 0;
 	padding: 0;
 	font-size: #{typography.$size-default};
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 	text-align: center;
 }
 
@@ -141,7 +141,7 @@
 }
 
 .Estimate {
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	color: #{colors.$mauve};
 	margin: 16px auto 0 auto;
 }
@@ -158,7 +158,7 @@
 
 .Error {
 	padding: 0;
-	font-weight: 700 !important;
+	font-weight: #{typography.$font-weight-bold} !important;
 	color: #{colors.$mauve};
 }
 

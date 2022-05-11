@@ -74,7 +74,7 @@
 		color: white;
 		text-align: center;
 		font-size: #{typography.$size-small};
-		font-weight: 700;
+		font-weight: #{typography.$font-weight-bold};
 		text-shadow: #{colors.$text-glow-white};
 
 		z-index: 2;

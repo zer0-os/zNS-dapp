@@ -19,7 +19,7 @@
 
 .TransferPreview h4 {
 	font-size: #{typography.$size-large};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	margin-bottom: 19px;
 	text-align: center;
 }

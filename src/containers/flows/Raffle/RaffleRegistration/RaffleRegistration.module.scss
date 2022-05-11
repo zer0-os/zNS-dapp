@@ -19,7 +19,7 @@
 		margin-bottom: 40px;
 
 		h1 {
-			font-weight: 700;
+			font-weight: #{typography.$font-weight-bold};
 		}
 
 		span {
@@ -47,7 +47,7 @@
 
 		.balanceCriteria {
 			padding-right: 5px;
-			font-weight: bold;
+			font-weight: #{typography.$font-weight-bold};
 		}
 	}
 
@@ -58,7 +58,7 @@
 		margin-top: 40px;
 
 		span {
-			font-weight: 400;
+			font-weight: #{typography.$font-weight-regular};
 			margin-bottom: 24px;
 			text-align: center;
 		}
@@ -87,7 +87,7 @@
 
 		span {
 			display: block;
-			font-weight: 700;
+			font-weight: #{typography.$font-weight-bold};
 			text-align: center;
 		}
 		a {
@@ -117,7 +117,7 @@
 		margin-top: 40px;
 		text-align: center;
 		justify-content: space-around;
-		font-weight: 400;
+		font-weight: #{typography.$font-weight-regular};
 		font-size: #{typography.$size-tiny};
 
 		.eachBalances {
@@ -126,7 +126,7 @@
 		}
 
 		.amount {
-			font-weight: 700;
+			font-weight: #{typography.$font-weight-bold};
 			padding: 10px 0;
 			font-size: #{typography.$size-medium};
 		}

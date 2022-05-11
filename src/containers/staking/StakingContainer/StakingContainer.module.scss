@@ -17,7 +17,7 @@
 		> a {
 			color: #{colors.$silver};
 			font-size: #{typography.$size-large};
-			font-weight: 700;
+			font-weight: #{typography.$font-weight-bold};
 
 			transition: color #{animations.$time-short} ease-in-out;
 

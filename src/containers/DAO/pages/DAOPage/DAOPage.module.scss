@@ -8,7 +8,7 @@
 
 	color: #{colors.$text-primary};
 	font-size: #{typography.$size-small};
-	font-weight: bold;
+	font-weight: #{typography.$font-weight-bold};
 
 	&:hover {
 		color: #{colors.$text-primary};
@@ -27,7 +27,7 @@
 	align-items: center;
 	padding: 16px 0;
 
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 
 	h1 {
 		font-size: #{typography.$size-large};

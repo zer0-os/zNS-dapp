@@ -1,5 +1,6 @@
 @use 'styles/variables/dimensions';
 @use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 .TouchbarContainer {
 	// Mobile + Tablet
@@ -38,7 +39,7 @@
 
 				&.Selected {
 					text-shadow: #{colors.$text-glow-primary};
-					font-weight: 600;
+					font-weight: #{typography.$font-weight-demi-bold};
 					color: #{colors.$text-primary};
 				}
 

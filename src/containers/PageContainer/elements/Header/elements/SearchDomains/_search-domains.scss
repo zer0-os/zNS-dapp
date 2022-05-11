@@ -61,7 +61,7 @@
 				border-radius: 16px;
 
 				&.exact__match {
-					font-weight: bold;
+					font-weight: #{typography.$font-weight-bold};
 				}
 
 				span {

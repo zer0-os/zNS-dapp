@@ -1,5 +1,6 @@
 @use 'styles/variables/dimensions';
 @use 'styles/variables/colors';
+@use 'styles/variables/typography';
 @use 'styles/variables/animations';
 
 $height: 46px;
@@ -79,7 +80,7 @@ $height: 46px;
 		&-title {
 			margin-left: 16px;
 			font-size: 1rem;
-			font-weight: bold;
+			font-weight: #{typography.$font-weight-bold};
 		}
 
 		&-zna-link {
@@ -109,7 +110,7 @@ $height: 46px;
 
 			&::placeholder {
 				color: #6c6c6c;
-				font-weight: 400;
+				font-weight: #{typography.$font-weight-regular};
 			}
 
 			@media only screen and (min-width: 500px) {

@@ -105,7 +105,7 @@
 
 .Info h1 {
 	font-size: 36px;
-	font-weight: bold;
+	font-weight: #{typography.$font-weight-bold};
 	line-height: 44px;
 }
 
@@ -150,12 +150,12 @@
 
 .Crypto {
 	font-size: #{typography.$size-large};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Fiat {
 	font-size: #{typography.$size-medium};
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 	color: #{colors.$mauve};
 }
 
@@ -183,7 +183,7 @@
 .Box span {
 	width: 100%;
 	text-overflow: ellipsis;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Story {
@@ -275,7 +275,7 @@
 
 .History span {
 	padding-top: 0;
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .History .Loading {
@@ -416,7 +416,7 @@
 
 	.Bid .From b {
 		font-size: #{typography.$size-small};
-		font-weight: 400;
+		font-weight: #{typography.$font-weight-regular};
 	}
 }
 

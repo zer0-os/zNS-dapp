@@ -1,4 +1,5 @@
 @use 'styles/variables/animations';
+@use 'styles/variables/typography';
 @use 'styles/variables/colors';
 
 .wallet {
@@ -28,13 +29,13 @@
 	padding: 21.5px 61px 6.5px 54px;
 
 	text-align: left;
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 	line-height: 19.2px;
 
 	background: #{colors.$text-input-background-gradient};
 	color: #dadcdf;
 	border: 1px solid #88d7ff;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 
 	border-radius: 30px;
 }

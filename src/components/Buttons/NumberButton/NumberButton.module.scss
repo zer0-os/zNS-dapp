@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/borders';
+@use 'styles/variables/typography';
 
 .ButtonContainer {
 	display: flex;
@@ -15,7 +16,7 @@
 	background: none;
 	border-radius: #{borders.$radius-primary};
 	color: #{colors.$text-primary};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 
 	&::before {

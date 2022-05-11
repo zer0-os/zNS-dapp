@@ -1,5 +1,6 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
+@use 'styles/variables/typography';
 
 .ZNALink {
 	display: flex;
@@ -12,7 +13,7 @@
 }
 
 .ZNALink > a:last-of-type {
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .ZNALink > a::after {
@@ -59,7 +60,7 @@
 
 .Dots {
 	display: none;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	color: #{colors.$text-primary};
 	z-index: 2;
 }

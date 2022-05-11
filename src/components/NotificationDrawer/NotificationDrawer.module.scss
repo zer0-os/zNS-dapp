@@ -31,7 +31,7 @@
 
 	text-align: center;
 	font-size: #{typography.$size-medium};
-	font-weight: medium;
+	font-weight: #{typography.$font-weight-medium};
 
 	color: #{colors.$text-primary};
 

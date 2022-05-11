@@ -58,7 +58,7 @@
 
 .Info > *:first-child {
 	color: #{colors.$text-primary};
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .Info > *:not(:first-child) {

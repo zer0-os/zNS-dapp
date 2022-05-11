@@ -1,5 +1,6 @@
 @use 'styles/variables/animations';
 @use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 .Button {
 	margin: 40px auto 0 auto;
@@ -67,7 +68,7 @@
 }
 
 .Terms button {
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .Terms label {

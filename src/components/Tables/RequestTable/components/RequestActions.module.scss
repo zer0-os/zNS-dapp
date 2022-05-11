@@ -9,7 +9,7 @@
 
 .Status {
 	display: inline-block;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	text-transform: uppercase;
 	font-size: #{typography.$size-small};
 	margin-top: 4px;
@@ -17,7 +17,7 @@
 
 .Amount {
 	display: inline-block;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	font-size: #{typography.$size-large};
 	margin-top: 4px;
 }

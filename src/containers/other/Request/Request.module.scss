@@ -19,7 +19,7 @@
 
 .Error {
 	padding: 0;
-	font-weight: 700 !important;
+	font-weight: #{typography.$font-weight-bold} !important;
 	color: #{colors.$mauve};
 }
 
@@ -53,7 +53,7 @@
 
 .Info h1 {
 	font-size: 36px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Info > div {
@@ -88,7 +88,7 @@
 
 .Offer > span:first-of-type {
 	font-size: 40px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Offer > span:last-of-type {
@@ -115,7 +115,7 @@
 
 .Confirmation h2 {
 	font-size: 36px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 }
 
@@ -126,7 +126,7 @@
 
 .Confirmation p {
 	font-size: #{typography.$size-large};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	line-height: 28.8px;
 	text-align: center;
 }

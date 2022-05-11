@@ -26,7 +26,7 @@
 
 .nextDrop h5 {
 	font-size: #{typography.$size-large};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 
 	color: #{colors.$malibu};
 }
@@ -39,7 +39,7 @@
 	margin-top: 12px;
 	padding-bottom: 0;
 
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .nextDrop p > span {

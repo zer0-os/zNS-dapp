@@ -38,7 +38,7 @@ $gutter: 16px;
 
 			h1 {
 				font-size: #{typography.$size-large};
-				font-weight: 700;
+				font-weight: #{typography.$font-weight-bold};
 				text-align: center;
 				overflow-wrap: anywhere;
 			}

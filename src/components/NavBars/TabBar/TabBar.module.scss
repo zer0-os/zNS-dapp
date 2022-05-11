@@ -13,7 +13,7 @@
 
 .Tab button {
 	font-size: #{typography.$size-medium};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	color: #{colors.$silver};
 	background: none;
 	/* transition: font-weight #{animations.$time-medium} ease-in-out; */

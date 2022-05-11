@@ -39,7 +39,7 @@
 
 .Table thead th {
 	font-size: #{typography.$size-small};
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	color: #{colors.$silver};
 }
 
@@ -108,5 +108,5 @@
 	position: absolute;
 	right: 0;
 	top: calc(100% + 8px);
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }

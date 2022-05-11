@@ -1,5 +1,6 @@
 @use 'styles/variables/dimensions';
 @use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 $icon-container-size: 54px;
 
@@ -107,11 +108,11 @@ $icon-container-size: 54px;
 				gap: 12px;
 				padding: 0;
 				color: #{colors.$mercury};
-				font-weight: 400;
+				font-weight: #{typography.$font-weight-regular};
 
 				&.Selected {
 					text-shadow: #{colors.$text-glow-primary};
-					font-weight: 600;
+					font-weight: #{typography.$font-weight-demi-bold};
 					color: #{colors.$text-primary};
 
 					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {

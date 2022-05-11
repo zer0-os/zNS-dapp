@@ -138,7 +138,7 @@
 		h5 {
 			color: #{colors.$text-primary};
 			font-size: 36px;
-			font-weight: 700;
+			font-weight: #{typography.$font-weight-bold};
 
 			/* white-space: nowrap; */
 			overflow: hidden;
@@ -199,7 +199,7 @@
 			margin-top: 16px;
 			padding: 0;
 			font-size: #{typography.$size-default};
-			font-weight: 400;
+			font-weight: #{typography.$font-weight-regular};
 			color: #{colors.$malibu};
 			cursor: pointer;
 		}
@@ -259,7 +259,7 @@
 .Member {
 	margin-top: 12px;
 	margin-left: 16px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Member > span:last-of-type {
