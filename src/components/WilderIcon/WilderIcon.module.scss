@@ -10,14 +10,9 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
-	background: var(--color-purple-gradient-darker);
 	border-radius: 50%;
-
 	transform: translateX(-100%);
-
 	cursor: pointer;
-
 	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
@@ -25,9 +20,6 @@
 	max-width: calc(65% - 1px);
 	height: auto;
 	margin-left: 1px;
-
-	// are these styles used?
-	user-drag: none;
 	-webkit-user-drag: none;
 	user-select: none;
 	-moz-user-select: none;

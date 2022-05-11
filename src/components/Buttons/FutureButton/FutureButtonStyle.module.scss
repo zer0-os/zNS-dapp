@@ -78,7 +78,7 @@
 		text-align: center;
 		font-size: 14px;
 		font-weight: 700;
-		text-shadow: var(--glow-text-white);
+		text-shadow: #{colors.$text-glow-white};
 
 		z-index: 2;
 		transition: color #{animations.$time-short} ease-in-out,

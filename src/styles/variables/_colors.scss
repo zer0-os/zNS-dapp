@@ -53,7 +53,6 @@ $revolver-darker: #1a1022;
 $error: #f6677c;
 
 // White
-$glow-white: 0px 0px 10px #ffffffb3;
 $white: #ffffff;
 
 // Background
@@ -64,6 +63,7 @@ $background-50: transparentize($background-primary, 0.5);
 
 // Text
 $text-primary: $white;
+$text-glow-white: 0px 0px 10px #ffffffb3;
 $text-glow-primary: 0px 0px 24px transparentize($primary, 0.6),
 	0px 0px 12px transparentize($primary, 0.6),
 	0px 0px 6px transparentize($primary, 0.6);
@@ -76,3 +76,4 @@ $cosmic-gradient: linear-gradient(
 	$lovely-purple 0%,
 	$helitrope-darker 100%
 );
+$ocean-gradient-10: linear-gradient(90deg, $ocean-op 0%, $malibu-op-2 100%);

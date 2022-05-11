@@ -79,8 +79,7 @@
 		}
 
 		&.On {
-			background: var(--color-ocean-gradient-1);
-
+			background: #{colors.$ocean-gradient-10};
 			> div {
 				left: calc(100% - (var(--toggle-button-dimension) / 2) + 3px);
 			}
