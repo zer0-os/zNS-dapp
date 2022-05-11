@@ -19,7 +19,7 @@
 .Error {
 	padding: 0;
 	font-weight: 700 !important;
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 }
 
 .Image {
@@ -92,7 +92,7 @@
 
 .Offer > span:last-of-type {
 	font-size: 24px;
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 	margin-left: 16px;
 }
 
@@ -109,7 +109,7 @@
 .Confirmation {
 	width: 588px;
 	padding: 32px 40px 40px 40px;
-	background: #{colors.$primary-background};
+	background: #{colors.$background-primary};
 }
 
 .Confirmation h2 {

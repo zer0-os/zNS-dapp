@@ -10,7 +10,7 @@
 
 	&:hover {
 		color: #{colors.$text-primary};
-		text-shadow: var(--glow-text-white);
+		text-shadow: #{colors.$text-glow-primary};
 	}
 
 	svg {

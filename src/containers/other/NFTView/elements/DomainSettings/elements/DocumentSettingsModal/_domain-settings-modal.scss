@@ -21,7 +21,7 @@ $gutter: 16px;
 	&__modal {
 		width: $width;
 		padding: 30px 48px 48px;
-		background: #{colors.$primary-background};
+		background: #{colors.$background-primary};
 
 		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
 			width: calc(100vw - $gutter - $gutter);
@@ -46,7 +46,7 @@ $gutter: 16px;
 				position: absolute;
 				top: 0;
 				right: 0;
-				color: var(--color-grey);
+				color: #{colors.$gray};
 
 				&:hover {
 					background-color: unset !important;
@@ -59,7 +59,7 @@ $gutter: 16px;
 				bottom: 0;
 				left: 0;
 				right: 0;
-				border-bottom: 1px solid var(--color-grey-mine-shaft);
+				border-bottom: 1px solid #{colors.$mine-shaft};
 			}
 		}
 

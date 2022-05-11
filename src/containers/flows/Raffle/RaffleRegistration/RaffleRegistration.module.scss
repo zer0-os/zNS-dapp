@@ -5,7 +5,7 @@
 	width: 588px;
 	padding: 25.5px 40px 40px 40px;
 
-	background: #{colors.$primary-background};
+	background: #{colors.$background-primary};
 
 	p {
 		text-align: center;
@@ -42,7 +42,7 @@
 		margin-top: 16px;
 		width: 100%;
 
-		color: var(--color-error);
+		color: #{colors.$error};
 		text-align: center;
 
 		.balanceCriteria {
@@ -67,7 +67,7 @@
 	.Success {
 		padding-top: 30px;
 		text-align: center;
-		color: var(--color-success);
+		color: #{colors.$success};
 	}
 
 	.Email {
@@ -132,7 +132,7 @@
 		}
 
 		.ErrorColor {
-			color: var(--color-error);
+			color: #{colors.$error};
 		}
 	}
 
@@ -150,7 +150,7 @@
 
 	.emailError {
 		display: block;
-		color: var(--color-error);
+		color: #{colors.$error};
 		padding-left: 25px;
 		font-size: #{typography.$size-tiny};
 	}

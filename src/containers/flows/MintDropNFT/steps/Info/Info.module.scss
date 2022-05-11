@@ -1,5 +1,6 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/borders';
+@use 'styles/variables/colors';
 
 .Container {
 	width: 100%;
@@ -19,7 +20,7 @@
 
 .Available span {
 	font-size: #{typography.$size-tiny};
-	color: var(--color-grey);
+	color: #{colors.$gray};
 }
 
 .Available h2 {
@@ -31,11 +32,11 @@
 }
 
 .Green {
-	color: var(--color-success);
+	color: #{colors.$success};
 }
 
 .Orange {
-	color: var(--color-warning);
+	color: #{colors.$warning};
 }
 
 .Checking {

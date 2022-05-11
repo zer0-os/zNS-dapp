@@ -47,7 +47,7 @@
 	}
 
 	&:hover {
-		background: var(--color-azure-gradient-25);
+		background: #{colors.$azure-gradient-25};
 		box-sizing: border-box;
 	}
 }

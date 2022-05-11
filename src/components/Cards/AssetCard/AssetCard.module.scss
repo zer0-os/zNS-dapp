@@ -9,11 +9,11 @@
 
 	padding: 18px 20px 22.5px;
 
-	background: #{colors.$primary-background};
+	background: #{colors.$background-primary};
 }
 
 .AssetCard h4 {
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 	font-weight: 700;
 
 	text-transform: uppercase;
@@ -27,7 +27,7 @@
 	margin-left: 8px;
 	margin-top: -1px;
 
-	background-color: var(--color-accent-1-darker);
+	background-color: #{colors.$prussian-blue};
 
 	border-radius: 50%;
 }

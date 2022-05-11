@@ -1,4 +1,5 @@
 @use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .MintPreview {
 	// Mobile Breakpoints
@@ -6,8 +7,8 @@
 	padding: 20px 40px 20px 40px;
 	max-height: 70vh;
 	overflow: auto;
-	background: var(--color-revolver);
-	border: 1px solid var(--color-bossanova);
+	background: #{colors.$revolver-darker};
+	border: 1px solid #{colors.$bossanova};
 
 	// Tablet Breakpoints
 	@media only screen and (min-width: 1000px) {
@@ -40,7 +41,7 @@
 }
 
 .Divider {
-	border: 1px solid var(--color-purple-lighter);
+	border: 1px solid #{colors.$revolver};
 }
 
 .Image {
@@ -71,7 +72,7 @@
 
 	.Link {
 		font-size: #{typography.$size-default};
-		color: var(--color-grey);
+		color: #{colors.$gray};
 	}
 
 	h3 {
@@ -110,7 +111,7 @@
 	}
 
 	.Success {
-		color: var(--color-success);
+		color: #{colors.$success};
 	}
 }
 

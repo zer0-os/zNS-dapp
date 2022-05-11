@@ -29,7 +29,7 @@ $gutter: 16px;
 		width: $width;
 		max-height: calc(100vh - 16px);
 		margin: 8px 0;
-		background: #{colors.$primary-background};
+		background: #{colors.$background-primary};
 
 		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
 			width: calc(100vw - $gutter - $gutter);

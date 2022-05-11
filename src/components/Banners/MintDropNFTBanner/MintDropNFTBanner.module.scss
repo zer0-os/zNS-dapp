@@ -15,7 +15,7 @@
 	transition: filter #{animations.$time-medium} ease-in-out;
 	transition: transform #{animations.$time-medium} ease-in-out;
 	border: none;
-	background: var(--color-purple-lighter);
+	background: #{colors.$revolver};
 	padding: 0;
 	text-align: left;
 }
@@ -54,7 +54,7 @@
 
 /* Text */
 .Title {
-	background: var(--color-cosmic-gradient);
+	background: #{colors.$cosmic-gradient};
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 
@@ -77,7 +77,7 @@
 /*Button*/
 .Button {
 	font-family: #{typography.$font};
-	color: var(--color-accent-blue-100);
+	color: #{colors.$malibu};
 	background: none;
 	z-index: 2;
 	transition: text-shadow #{animations.$time-medium} ease-in-out;

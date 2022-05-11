@@ -33,7 +33,7 @@
 		margin-top: 26px;
 		border: 0;
 		height: 1px;
-		background: var(--color-grey-mine-shaft);
+		background: #{colors.$mine-shaft};
 	}
 }
 
@@ -93,7 +93,7 @@
 
 		> span {
 			font-size: #{typography.$size-tiny};
-			color: var(--color-grey-lighter-2);
+			color: #{colors.$silver};
 		}
 	}
 }

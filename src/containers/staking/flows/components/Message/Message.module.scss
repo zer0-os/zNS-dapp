@@ -1,10 +1,12 @@
+@use 'styles/variables/colors';
+
 .Message {
 	display: flex;
 	align-items: center;
 	width: 100%;
 	padding: 16px;
 
-	background: var(--color-purple-lighter);
+	background: #{colors.$revolver};
 
 	.Content {
 		flex: 1;

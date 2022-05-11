@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .Container {
 	display: flex;
 	flex-direction: column;
@@ -17,6 +19,6 @@
 		margin-top: 18px;
 		border: 0;
 		height: 0;
-		border-top: 1px solid var(--color-purple-lighter);
+		border-top: 1px solid #{colors.$revolver};
 	}
 }

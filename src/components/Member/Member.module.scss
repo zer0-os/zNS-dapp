@@ -1,5 +1,6 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .Member {
 	display: flex;
@@ -35,5 +36,5 @@
 
 .Subtext {
 	font-size: #{typography.$size-tiny};
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 }

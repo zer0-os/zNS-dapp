@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .nextDrop {
 	display: flex;
 	align-items: center;
@@ -25,11 +27,11 @@
 	font-size: 24px;
 	font-weight: 700;
 
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 }
 
 .nextDrop h5 > span {
-	color: var(--color-baby-blue);
+	color: #{colors.$baby-blue};
 }
 
 .nextDrop p {
@@ -40,5 +42,5 @@
 }
 
 .nextDrop p > span {
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 }

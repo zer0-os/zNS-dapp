@@ -1,4 +1,5 @@
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .wallet {
 	position: relative;
@@ -18,7 +19,7 @@
 	position: absolute;
 	top: 3px;
 	left: 54px;
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 	font-size: 10px;
 }
 

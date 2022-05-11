@@ -8,7 +8,7 @@
 
 		h2 {
 			font-weight: 700;
-			color: var(--color-grey-lighter-2);
+			color: #{colors.$silver};
 			padding: 8px;
 		}
 
@@ -31,7 +31,7 @@
 			margin-top: 8px;
 			padding: 8px 0;
 
-			color: var(--color-grey-lighter-3);
+			color: #{colors.$alto};
 
 			b {
 				color: #{colors.$text-primary};

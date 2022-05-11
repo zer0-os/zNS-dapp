@@ -1,11 +1,12 @@
 @use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .Container {
 	> span {
 		display: block;
 
 		&.Top {
-			color: var(--color-heliotrope);
+			color: #{colors.$easter-purple};
 			font-size: #{typography.$size-tiny};
 		}
 
@@ -14,7 +15,7 @@
 		}
 
 		&.Bottom {
-			color: var(--color-grey-lighter-2);
+			color: #{colors.$silver};
 			font-size: #{typography.$size-tiny};
 		}
 	}

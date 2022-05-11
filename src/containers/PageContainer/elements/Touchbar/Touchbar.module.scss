@@ -11,8 +11,8 @@
 	left: 0;
 	bottom: 0;
 	height: 60px;
-	background: #{colors.$primary-background};
-	border-top: 1px solid var(--color-grey-mine-shaft);
+	background: #{colors.$background-primary};
+	border-top: 1px solid #{colors.$mine-shaft};
 	z-index: 999;
 
 	// Laptop/Desktop
@@ -48,7 +48,7 @@
 					padding: 13px;
 
 					&.Selected {
-						background: var(--color-revolver);
+						background: #{colors.$revolver-darker};
 					}
 				}
 			}

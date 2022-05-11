@@ -2,7 +2,7 @@
 @use 'styles/variables/animations';
 
 .TextButton {
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 
 	display: flex;
 	align-items: center;
@@ -26,11 +26,11 @@
 
 .Selected {
 	color: #{colors.$text-primary};
-	text-shadow: var(--glow-text-white) !important;
+	text-shadow: #{colors.$text-glow-primary} !important;
 }
 
 .Disabled {
-	color: var(--color-grey) !important;
+	color: #{colors.$gray} !important;
 	opacity: 70%;
 	pointer-events: none;
 }

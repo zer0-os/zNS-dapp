@@ -1,4 +1,5 @@
 @use 'styles/variables/borders';
+@use 'styles/variables/colors';
 
 .Container {
 	border-radius: #{borders.$radius-primary};
@@ -26,7 +27,7 @@
 				height: var(--dot-size);
 				width: var(--dot-size);
 				border-radius: 50%;
-				background: var(--color-accent-1);
+				background: #{colors.$malibu};
 
 				&:first-child {
 					transform: translate(-50%, calc(-50% - calc(100% + var(--dot-gap))));
@@ -77,7 +78,7 @@
 
 			label {
 				font-size: 12px;
-				color: var(--color-grey-lighter-2);
+				color: #{colors.$silver};
 			}
 		}
 	}

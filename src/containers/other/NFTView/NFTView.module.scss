@@ -22,7 +22,7 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-color: #{colors.$primary-background};
+	background-color: #{colors.$background-primary};
 	transition: background #{animations.$time-medium} ease-in-out;
 	overflow: hidden;
 }
@@ -86,7 +86,7 @@
 	top: 40px;
 	right: 40px;
 
-	background: var(--color-purple-darkest);
+	background: #{colors.$black-rock};
 
 	border-radius: 8px;
 	border: 1px solid var(--color-purple-ligher);
@@ -144,7 +144,7 @@
 }
 
 .Price h2 {
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 	margin-bottom: 4px;
 }
 
@@ -156,7 +156,7 @@
 .Fiat {
 	font-size: 18px;
 	font-weight: 400;
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 }
 
 .Buttons {
@@ -177,7 +177,7 @@
 .Box h4 {
 	margin-bottom: 4px;
 	font-size: #{typography.$size-tiny};
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 }
 
 .Box span {
@@ -479,12 +479,12 @@
 
 .Attributes {
 	margin-top: 24px;
-	background: #{colors.$primary-background};
+	background: #{colors.$background-primary};
 }
 
 .Attributes h4 {
 	padding: 0;
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 	font-size: #{typography.$size-tiny};
 	text-transform: capitalize;
 	font-weight: normal;
@@ -576,7 +576,7 @@
 
 button.ToggleAttributes {
 	background: none;
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 	height: 48px;
 	display: flex;
 	flex-direction: column;

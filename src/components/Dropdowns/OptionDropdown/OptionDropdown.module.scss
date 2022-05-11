@@ -1,4 +1,5 @@
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .Dropdown {
 	position: relative;
@@ -11,8 +12,8 @@
 	top: calc(100%);
 	left: 50%;
 	width: 224px;
-	background: var(--color-revolver);
-	border: 1px solid var(--color-bossanova);
+	background: #{colors.$revolver-darker};
+	border: 1px solid #{colors.$bossanova};
 	transform: translateX(-50%);
 	z-index: 10;
 	overflow: hidden;
@@ -37,7 +38,7 @@
 		font-weight #{animations.$time-short} ease-in-out;
 
 	&:hover {
-		text-shadow: var(--glow-text-white);
+		text-shadow: #{colors.$text-glow-primary};
 	}
 }
 

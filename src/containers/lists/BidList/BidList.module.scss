@@ -14,7 +14,7 @@ $gutter: 16px;
 	max-width: $width;
 	max-height: 80vh;
 
-	background: #{colors.$primary-background};
+	background: #{colors.$background-primary};
 
 	overflow: hidden;
 
@@ -101,7 +101,7 @@ $gutter: 16px;
 }
 
 .Bid:hover {
-	background: var(--color-revolver);
+	background: #{colors.$revolver-darker};
 }
 
 .Bid:hover button {

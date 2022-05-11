@@ -1,6 +1,7 @@
 @use 'styles/variables/dimensions';
 @use 'styles/variables/typography';
 @use 'styles/variables/borders';
+@use 'styles/variables/colors';
 
 .StatsWidget {
 	border-radius: #{borders.$radius-primary};
@@ -22,7 +23,7 @@
 }
 
 .StatsFieldName {
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 	font-size: #{typography.$size-tiny};
 	line-height: 15px;
 	margin-bottom: 2px;
@@ -38,7 +39,7 @@
 .StatsSubText {
 	font-size: #{typography.$size-tiny};
 	line-height: 15px;
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 	margin-top: 2px;
 }
 

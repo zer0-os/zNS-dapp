@@ -1,5 +1,6 @@
 @use 'styles/variables/dimensions';
 @use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .search-domains {
 	&__results {
@@ -12,7 +13,7 @@
 		left: -1px;
 		right: -1px;
 		padding: $top-margin 8px;
-		background: var(--color-revolver);
+		background: #{colors.$revolver-darker};
 		overflow: hidden;
 		border: $borderWidth solid #af4cff67;
 		border-radius: $border-radius;
@@ -67,11 +68,11 @@
 					display: inline-block;
 					margin-left: 8px;
 					font-size: #{typography.$size-small};
-					color: var(--color-accent-1);
+					color: #{colors.$malibu};
 				}
 
 				&:hover {
-					background: var(--color-purple-lighter);
+					background: #{colors.$revolver};
 				}
 
 				@media only screen and (max-width: 768px) {

@@ -1,4 +1,5 @@
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .Container {
 	display: flex;
@@ -28,7 +29,7 @@
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	border-top: 2px solid var(--color-accent-1);
+	border-top: 2px solid #{colors.$malibu};
 	animation: spin 1s linear infinite;
 	z-index: 2;
 }

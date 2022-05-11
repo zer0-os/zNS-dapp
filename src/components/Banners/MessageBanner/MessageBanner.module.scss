@@ -2,6 +2,7 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/borders';
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .Container {
 	width: 100%;
@@ -12,7 +13,7 @@
 	transition: box-shadow #{animations.$time-medium} ease-in-out;
 	transition: filter #{animations.$time-medium} ease-in-out;
 	transition: transform #{animations.$time-medium} ease-in-out;
-	background: var(--color-azure-gradient-100);
+	background: #{colors.$azure-gradient};
 }
 
 .Mobile {
@@ -34,7 +35,7 @@
 	align-items: center;
 	width: 100%;
 	padding: 16px 0;
-	background: var(--color-black-gradient-40);
+	background: #{colors.$bunting-op};
 }
 
 .Content:hover {
@@ -47,7 +48,7 @@
 	font-size: #{typography.$size-default};
 	margin-right: 8px;
 	padding-bottom: 0;
-	color: var(--color-white-secondary);
+	color: #{colors.$text-primary};
 }
 
 .Countdown {
@@ -55,12 +56,12 @@
 	font-size: #{typography.$size-small};
 	margin-right: 8px;
 	padding-bottom: 0;
-	color: var(--color-white-secondary);
+	color: #{colors.$text-primary};
 }
 
 .Button {
 	font-family: #{typography.$font};
-	color: var(--color-accent-blue-100);
+	color: #{colors.$malibu};
 	background: none;
 	z-index: 2;
 	transition: text-shadow #{animations.$time-medium} ease-in-out;

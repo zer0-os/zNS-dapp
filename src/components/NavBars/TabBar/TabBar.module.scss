@@ -13,14 +13,14 @@
 .Tab button {
 	font-size: 18px;
 	font-weight: 700;
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 	background: none;
 	/* transition: font-weight #{animations.$time-medium} ease-in-out; */
 }
 
 .Selected button {
 	color: #{colors.$text-primary};
-	text-shadow: var(--glow-text-white);
+	text-shadow: #{colors.$text-glow-primary};
 	transition: text-shadow #{animations.$time-medium} ease-in-out,
 		color #{animations.$time-short} ease-in-out;
 }
@@ -37,7 +37,7 @@
 	position: absolute;
 	top: calc(100% - 1px);
 	height: 0px;
-	box-shadow: 0px 0px 5px 0px var(--color-accent-2);
+	box-shadow: 0px 0px 5px 0px #{colors.$electric-violet};
 	border: 1px solid #e0baff;
 	z-index: 1;
 	left: 0;

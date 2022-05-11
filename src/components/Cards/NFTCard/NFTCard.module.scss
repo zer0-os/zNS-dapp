@@ -4,9 +4,6 @@
 .NFTCard {
 	cursor: pointer;
 	min-width: 280px;
-	/* max-width: 388px; */
-
-	// background-color: var(--color-background-alt);
 	border: 1px solid #232323;
 
 	@media only screen and (max-width: 414px) {
@@ -29,7 +26,7 @@
 	height: 32px;
 	width: 32px;
 
-	background: #{colors.$primary-background};
+	background: #{colors.$background-primary};
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -76,7 +73,7 @@
 }
 
 .Foot > div > span:first-child {
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 
 	text-transform: uppercase;
 }

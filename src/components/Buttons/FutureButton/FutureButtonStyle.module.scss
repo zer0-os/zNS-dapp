@@ -1,5 +1,6 @@
 @use 'styles/variables/borders';
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 /*
  * Default color scheme
@@ -20,8 +21,8 @@
 		box-shadow: none;
 		--box-shadow-heavy: none;
 		--bg: none !important;
-		--border-color: var(--color-grey);
-		--color: var(--color-grey);
+		--border-color: #{colors.$gray};
+		--color: #{colors.$gray};
 	}
 }
 
@@ -38,8 +39,8 @@
 	--color: #fff;
 
 	&:not(.Glow) {
-		--border-color: var(--color-grey);
-		--color: var(--color-grey);
+		--border-color: #{colors.$gray};
+		--color: #{colors.$gray};
 	}
 }
 
@@ -153,7 +154,7 @@
 	 * Inactive button
 	 */
 	&:not(.Glow) .Content {
-		color: var(--color-grey);
+		color: #{colors.$gray};
 		text-shadow: none;
 	}
 

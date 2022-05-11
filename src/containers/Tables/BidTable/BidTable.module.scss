@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .Container {
 	td {
 		&:first-child {
@@ -17,11 +19,11 @@
 		}
 
 		&.Lead {
-			color: var(--color-success);
+			color: #{colors.$success};
 		}
 
 		&.Outbid {
-			color: var(--color-error);
+			color: #{colors.$error};
 		}
 	}
 

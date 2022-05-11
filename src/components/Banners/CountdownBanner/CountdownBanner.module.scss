@@ -24,7 +24,7 @@
 	width: 100%;
 	height: 100%;
 	border-radius: inherit;
-	background: var(--color-cosmic-gradient);
+	background: #{colors.$cosmic-gradient};
 	opacity: 0.25;
 	transition: opacity #{animations.$time-medium} ease-in-out;
 	z-index: -1;
@@ -51,11 +51,11 @@
 	font-size: 24px;
 	font-weight: 700;
 
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 }
 
 .nextDrop h5 > span {
-	color: var(--color-baby-blue);
+	color: #{colors.$baby-blue};
 }
 
 .nextDrop p {
@@ -66,7 +66,7 @@
 }
 
 .nextDrop p > span {
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 }
 
 .Remaining {
@@ -76,7 +76,7 @@
 .Bid {
 	margin-left: 16px;
 	font-weight: 700;
-	color: var(--color-accent-blue-100);
+	color: #{colors.$malibu};
 }
 
 .Arrow {

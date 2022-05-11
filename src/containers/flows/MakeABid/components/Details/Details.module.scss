@@ -1,4 +1,5 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/colors';
 
 .NFTDetailsContainer {
 	margin-bottom: 28px;
@@ -44,7 +45,7 @@
 }
 
 .TextInput {
-	color: var(--glow-text-white);
+	color: #{colors.$text-glow-primary};
 	width: 304px;
 	margin: 0 auto;
 	padding: 14px 24px 10px 24px;
@@ -67,14 +68,14 @@
 }
 
 .SuccessConfirmation {
-	color: var(--color-success);
+	color: #{colors.$success};
 	line-height: 24px;
 	text-align: center;
 	margin: 20px 0 20px 0;
 }
 
 .Error {
-	color: var(--color-error);
+	color: #{colors.$error};
 	line-height: 24px;
 	text-align: center;
 	margin-top: 10px;

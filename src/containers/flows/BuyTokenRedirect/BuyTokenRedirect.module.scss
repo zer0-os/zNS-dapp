@@ -19,7 +19,7 @@
 		background: none;
 		height: 100%;
 		padding: 16px;
-		border: 1px solid var(--color-purple-lighter);
+		border: 1px solid #{colors.$revolver};
 		border-radius: #{borders.$radius-primary};
 		z-index: 0;
 		transition: all 0.2s ease-in-out 0s;
@@ -45,7 +45,7 @@
 	font-size: 10px;
 	font-weight: 400;
 	line-height: 12.1px;
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 }
 
 .CurrentPriceSml {
@@ -73,11 +73,11 @@
 }
 
 .PercentageChangePositive {
-	color: var(--color-success);
+	color: #{colors.$success};
 }
 
 .PercentageChangeNegative {
-	color: var(--color-error);
+	color: #{colors.$error};
 }
 
 .WalletConnected {
@@ -94,7 +94,7 @@
 		text-shadow: none;
 		background-color: transparent;
 		padding-right: 6px;
-		color: var(--color-grey-lighter-4);
+		color: #{colors.$concrete};
 	}
 
 	&:hover {
@@ -122,14 +122,14 @@
 	font-size: #{typography.$size-tiny};
 	line-height: 14px;
 	margin-top: 24px;
-	color: var(--color-grey-lighter-3);
+	color: #{colors.$alto};
 }
 
 .Divider {
 	// width: 70%;
 	flex-grow: 1;
 	margin-top: 10px;
-	border-top: 1px solid var(--color-purple-lighter);
+	border-top: 1px solid #{colors.$revolver};
 }
 
 .UrlRowContainer {
@@ -143,7 +143,7 @@
 		font-size: #{typography.$size-small};
 		line-height: 17px;
 		text-shadow: unset;
-		color: var(--color-accent-blue-100);
+		color: #{colors.$malibu};
 		padding-top: 10px;
 	}
 }
@@ -163,6 +163,6 @@
 	}
 
 	&:hover {
-		background: var(--color-azure-gradient-25);
+		background: #{colors.$azure-gradient-25};
 	}
 }

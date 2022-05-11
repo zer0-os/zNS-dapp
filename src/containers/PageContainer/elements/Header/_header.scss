@@ -16,7 +16,7 @@ $height: 46px;
 		flex-direction: row;
 		justify-content: space-between;
 		width: 100%;
-		background: #{colors.$primary-background};
+		background: #{colors.$background-primary};
 		border-radius: 28px;
 		overflow: none;
 		border: 1px solid #23142f;
@@ -126,16 +126,16 @@ $height: 46px;
 			flex-grow: 1;
 			align-items: center;
 			padding: 6px 0;
-			border: 1px solid var(--color-bossanova);
+			border: 1px solid #{colors.$bossanova};
 			border-radius: 24px;
 			transition: all #{animations.$time-short} ease-in-out;
 
 			&:hover {
-				background: var(--color-revolver);
+				background: #{colors.$revolver-darker};
 			}
 
 			&-searching {
-				background: var(--color-revolver);
+				background: #{colors.$revolver-darker};
 			}
 		}
 	}

@@ -43,7 +43,7 @@
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	border-top: 2px solid var(--color-accent-1);
+	border-top: 2px solid #{colors.$malibu};
 	animation: spin 1s linear infinite;
 }
 
@@ -200,12 +200,12 @@
 			padding: 0;
 			font-size: #{typography.$size-default};
 			font-weight: 400;
-			color: var(--color-accent-blue-100);
+			color: #{colors.$malibu};
 			cursor: pointer;
 		}
 
 		.ViewLink:hover {
-			color: var(--color-accent-1);
+			color: #{colors.$malibu};
 			text-shadow: #{colors.$text-glow-primary}, #{colors.$text-glow-primary};
 		}
 
@@ -224,14 +224,14 @@
 
 			&:last-of-type {
 				margin-top: 8px;
-				color: var(--color-primary-lighter-3);
+				color: #{colors.$mauve};
 			}
 		}
 	}
 }
 
 .Domain {
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 }
 
 .Members {
@@ -250,7 +250,7 @@
 	height: 32px;
 	width: 32px;
 	border-radius: 50%;
-	background-color: var(--color-accent-1-lighter);
+	background-color: #{colors.$anakiwa};
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -263,7 +263,7 @@
 }
 
 .Member > span:last-of-type {
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 	margin-top: 4px;
 }
 

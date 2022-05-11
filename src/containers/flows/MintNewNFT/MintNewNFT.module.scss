@@ -1,5 +1,6 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 $width: 640px;
 $gutter: 16px;
@@ -210,12 +211,12 @@ $gutter: 16px;
 
 .Estimate {
 	font-weight: 700;
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 	margin: 16px auto 0 auto;
 }
 
 .Error {
 	padding: 0;
 	font-weight: 700 !important;
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 }

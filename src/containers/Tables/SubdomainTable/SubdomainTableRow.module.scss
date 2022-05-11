@@ -1,11 +1,12 @@
 @use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .Row {
 	cursor: pointer;
 }
 
 .Row:hover {
-	background: var(--color-revolver);
+	background: #{colors.$revolver-darker};
 }
 
 .Row td:first-of-type {
@@ -35,7 +36,7 @@
 
 .Bid:not(:first-child) {
 	margin-top: 2px;
-	color: var(--color-grey);
+	color: #{colors.$gray};
 	font-size: #{typography.$size-tiny};
 }
 

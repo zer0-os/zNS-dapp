@@ -1,5 +1,6 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/borders';
+@use 'styles/variables/colors';
 
 .info-panel {
 	&__content {
@@ -9,9 +10,9 @@
 		width: 340px;
 		padding: 32px;
 		border-radius: #{borders.$radius-primary};
-		background: var(--color-revolver);
+		background: #{colors.$revolver-darker};
 		cursor: default;
-		border: 1px solid var(--color-bossanova);
+		border: 1px solid #{colors.$bossanova};
 	}
 
 	&__content-section {
@@ -42,7 +43,7 @@
 
 			.divider {
 				flex: 1;
-				border-top: 1px solid var(--color-purple-lighter);
+				border-top: 1px solid #{colors.$revolver};
 			}
 		}
 
@@ -73,7 +74,7 @@
 					border-radius: 50%;
 
 					&:hover {
-						background: var(--color-azure-gradient-25);
+						background: #{colors.$azure-gradient-25};
 					}
 				}
 			}
@@ -85,7 +86,7 @@
 			align-items: center;
 			flex-wrap: wrap;
 			padding: 1.25rem 0 0;
-			border-top: 1px solid var(--color-purple-lighter);
+			border-top: 1px solid #{colors.$revolver};
 
 			&-item {
 				display: flex;

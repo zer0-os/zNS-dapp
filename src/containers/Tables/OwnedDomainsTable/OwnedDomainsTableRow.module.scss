@@ -1,11 +1,12 @@
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .Container {
 	cursor: pointer;
 	/* transition: background #{animations.$time-short} linear; */
 
 	&:hover {
-		background: var(--color-revolver);
+		background: #{colors.$revolver-darker};
 	}
 
 	.Right {

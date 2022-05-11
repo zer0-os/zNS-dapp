@@ -54,7 +54,7 @@ $gap: 40px;
 
 			cursor: pointer;
 
-			background: #{colors.$primary-background};
+			background: #{colors.$background-primary};
 			color: #{colors.$text-primary};
 			text-align: left;
 
@@ -68,7 +68,7 @@ $gap: 40px;
 				background-color: #1a1022;
 
 				.Details > span:not(:first-child) {
-					text-shadow: var(--glow-text-white);
+					text-shadow: #{colors.$text-glow-primary};
 				}
 			}
 
@@ -82,7 +82,7 @@ $gap: 40px;
 
 					&:first-child {
 						font-size: 12px;
-						color: var(--color-grey-lighter-2);
+						color: #{colors.$silver};
 					}
 				}
 			}

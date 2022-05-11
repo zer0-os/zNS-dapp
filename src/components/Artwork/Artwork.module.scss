@@ -29,7 +29,7 @@
 .Domain {
 	display: block;
 	font-size: #{typography.$size-small};
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 }
 
 .Image:hover {

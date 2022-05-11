@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .Container {
 	cursor: pointer;
 
@@ -6,7 +8,7 @@
 	}
 
 	&:hover {
-		background: var(--color-revolver);
+		background: #{colors.$revolver-darker};
 	}
 
 	td {

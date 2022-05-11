@@ -1,5 +1,6 @@
 @use 'styles/variables/borders';
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .searchBar {
 	position: relative;
@@ -16,7 +17,7 @@
 
 	/* Text */
 	text-align: left;
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 
 	/* Text shadow isn't working as expected - it cuts off for some reason */
 	/* text-shadow: var(--glow-text-white); */
@@ -45,5 +46,5 @@
 }
 
 .searchBar input::placeholder {
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 }

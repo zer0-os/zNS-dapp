@@ -21,7 +21,7 @@
 	position: absolute;
 	top: 5px;
 	left: 24px;
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 	font-size: 10px;
 }
 
@@ -37,28 +37,28 @@
 	transition: border #{animations.$time-medium} ease-in-out;
 
 	&::placeholder {
-		color: var(--color-grey-lighter-2);
+		color: #{colors.$silver};
 	}
 
 	&:disabled {
-		border-color: var(--color-grey);
-		color: var(--color-grey);
+		border-color: #{colors.$gray};
+		color: #{colors.$gray};
 
 		&::placeholder {
-			color: var(--color-grey);
+			color: #{colors.$gray};
 		}
 	}
 }
 
 .Error {
-	border: 1px solid var(--color-invalid);
+	border: 1px solid #{colors.$helitrope};
 }
 
 .ErrorMessage {
 	display: block;
 	margin-top: 12px;
 
-	color: var(--color-invalid);
+	color: #{colors.$helitrope};
 	font-size: #{typography.$size-small};
 	font-weight: 700;
 	text-align: center;

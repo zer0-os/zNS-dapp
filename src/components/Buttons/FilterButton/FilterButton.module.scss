@@ -8,7 +8,7 @@
 	height: 32px;
 	padding: 0 24px;
 
-	background: var(--color-background-alt);
+	background: #{colors.$background-alt};
 
 	color: #{colors.$text-primary};
 

@@ -39,7 +39,7 @@
 .Table thead th {
 	font-size: #{typography.$size-small};
 	font-weight: 700;
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$silver};
 }
 
 .Table tbody tr td:first-of-type {

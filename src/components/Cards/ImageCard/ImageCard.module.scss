@@ -10,7 +10,7 @@ $placeholder-background: #000;
 
 	position: relative !important;
 
-	background: #{colors.$primary-background};
+	background: #{colors.$background-primary};
 	border: 1px solid #232323;
 	border-radius: calc(#{borders.$radius-primary} / 2) !important;
 
@@ -91,7 +91,7 @@ $placeholder-background: #000;
 
 		.Subheader {
 			font-size: #{typography.$size-tiny};
-			color: var(--color-grey-lighter-2);
+			color: #{colors.$silver};
 			word-break: break-all;
 
 			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {

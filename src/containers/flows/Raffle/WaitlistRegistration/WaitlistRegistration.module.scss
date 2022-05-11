@@ -4,7 +4,7 @@
 	width: 588px;
 	padding: 25.5px 40px 40px 40px;
 
-	background: #{colors.$primary-background};
+	background: #{colors.$background-primary};
 }
 
 .Header {
@@ -41,7 +41,7 @@
 	margin-top: 16px;
 	width: 100%;
 
-	color: var(--color-error);
+	color: #{colors.$error};
 	text-align: center;
 }
 
@@ -59,7 +59,7 @@
 
 .Success {
 	text-align: center;
-	color: var(--color-success);
+	color: #{colors.$success};
 }
 
 .Socials {

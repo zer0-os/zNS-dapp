@@ -60,7 +60,7 @@
 /* Table Header */
 
 .RequestTable th {
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 	font-size: #{typography.$size-small};
 	font-weight: 700;
 }
@@ -82,7 +82,7 @@
 }
 
 .RequestTable > tbody > tr:hover {
-	background: #{colors.$primary-background};
+	background: #{colors.$background-primary};
 }
 
 .RequestTable > tbody > tr img {
@@ -95,7 +95,7 @@
 
 .RequestTable > tbody > tr:hover,
 .RequestTable > tbody > tr:hover {
-	background: var(--color-background-alt-50);
+	background: #{colors.$background-alt-50};
 }
 
 .RequestTable tbody tr td:first-of-type,
@@ -105,7 +105,7 @@
 }
 
 .ticker {
-	color: var(--color-accent-1-light);
+	color: #{colors.$anakiwa};
 	font-weight: 700;
 }
 
@@ -117,7 +117,7 @@
 }
 
 .Accepted span:first-of-type {
-	color: var(--color-accent-1);
+	color: #{colors.$malibu};
 }
 
 .Accepted span:not(:first-of-type) {
@@ -154,7 +154,7 @@
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	border-top: 2px solid var(--color-accent-1);
+	border-top: 2px solid #{colors.$malibu};
 	animation: spin 1s linear infinite;
 }
 

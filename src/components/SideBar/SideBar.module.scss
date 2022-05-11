@@ -6,7 +6,7 @@ $icon-container-size: 54px;
 .BorderContainer {
 	// Mobile Breakpoints
 	display: none;
-	border-right: 1px solid var(--color-grey-mine-shaft);
+	border-right: 1px solid #{colors.$mine-shaft};
 
 	// Tablet Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
@@ -106,7 +106,7 @@ $icon-container-size: 54px;
 				justify-content: center;
 				gap: 12px;
 				padding: 0;
-				color: var(--color-cornflower-blue);
+				color: #{colors.$mercury};
 				font-weight: 400;
 
 				&.Selected {
@@ -146,7 +146,7 @@ $icon-container-size: 54px;
 					padding: 13px;
 
 					&.Selected {
-						background: var(--color-revolver);
+						background: #{colors.$revolver-darker};
 					}
 
 					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
