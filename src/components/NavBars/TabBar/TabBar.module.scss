@@ -20,7 +20,7 @@
 
 .Selected button {
 	color: #{colors.$text-primary};
-	text-shadow: #{colors.$text-glow-primary};
+	text-shadow: #{colors.$text-glow-white};
 	transition: text-shadow #{animations.$time-medium} ease-in-out,
 		color #{animations.$time-short} ease-in-out;
 }
