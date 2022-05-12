@@ -24,13 +24,16 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 		? ROOT_DOMAIN
 		: (ROOT_DOMAIN.length ? ROOT_DOMAIN + '.' : ROOT_DOMAIN) + zna;
 
-	const segments = adjustedZna.split('.').map((s, index) => {
-		const name = index === 0 ? s : '.' + s;
-		let location = name;
+	const splitZna = adjustedZna.split('.').map((z) => z.replace('.', ''));
 
-		if (ROOT_DOMAIN.length) {
-			location = name.split(ROOT_DOMAIN)[1];
-		}
+	const segments = splitZna.map((s, index) => {
+		const name = index === 0 ? s : s;
+
+		/**
+		 * NOTE: this will not work when a root domain is configured
+		 */
+		let location =
+			index === 0 ? name : splitZna.slice(0, index).concat(name).join('.');
 
 		return {
 			name,
@@ -44,12 +47,13 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 				0://
 			</Link>
 			{zna.length > 0 &&
-				segments.map((s) => (
+				segments.map((s, index) => (
 					<Link
 						key={s.location}
 						style={{ textDecoration: 'none', color: 'white' }}
 						to={s.location}
 					>
+						{index > 0 && '.'}
 						{s.name}
 					</Link>
 				))}
