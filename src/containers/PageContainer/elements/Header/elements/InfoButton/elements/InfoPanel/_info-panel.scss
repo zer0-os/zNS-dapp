@@ -1,6 +1,7 @@
 @use 'styles/variables/typography';
 @use 'styles/variables/borders';
 @use 'styles/variables/colors';
+@use 'styles/variables/dimensions';
 
 .info-panel {
 	&__content {
