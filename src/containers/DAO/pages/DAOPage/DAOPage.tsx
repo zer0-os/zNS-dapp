@@ -12,9 +12,12 @@ import {
 // Components
 import Assets from './Assets/Assets';
 import Transactions from './Transactions/Transactions';
+import { Proposals, ProposalDetail } from './Proposals';
 import { LoadingIndicator, StatsWidget } from 'components';
 
 // Hooks
+import { useNavbar } from 'lib/hooks/useNavbar';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import useTransactions from './hooks/useTransactions';
 import useAssets from './hooks/useAssets';
@@ -32,9 +35,6 @@ import { ArrowLeft } from 'react-feather';
 import styles from './DAOPage.module.scss';
 import genericStyles from '../Container.module.scss';
 import classNames from 'classnames/bind';
-import { useNavbar } from 'lib/hooks/useNavbar';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
-import useProposals from './hooks/useProposals';
 const cx = classNames.bind(genericStyles);
 
 const MILLIFY_THRESHOLD = 1000000;
@@ -51,7 +51,6 @@ const DAOPage: React.FC = () => {
 	const { dao, isLoading, zna } = useCurrentDao();
 	const { transactions, isLoading: isLoadingTransactions } =
 		useTransactions(dao);
-	const { proposals, isLoading: isLoadingProposals } = useProposals(dao);
 	const { assets, totalUsd, isLoading: isLoadingAssets } = useAssets(dao);
 
 	const daoData = dao;
@@ -96,7 +95,16 @@ const DAOPage: React.FC = () => {
 				>
 					Transactions
 				</Link>
+				<Link
+					className={cx({
+						Active: pathname.includes(ROUTES.ZDAO_PROPOSALS),
+					})}
+					to={to(ROUTES.ZDAO_PROPOSALS)}
+				>
+					Proposals
+				</Link>
 			</nav>
+
 			<Switch>
 				<Route
 					exact
@@ -114,6 +122,16 @@ const DAOPage: React.FC = () => {
 							transactions={transactions}
 						/>
 					)}
+				/>
+				<Route
+					exact
+					path={to(ROUTES.ZDAO_PROPOSALS)}
+					component={() => <Proposals dao={dao} />}
+				/>
+				<Route
+					exact
+					path={`${to(ROUTES.ZDAO_PROPOSALS)}/:proposalId`}
+					component={() => <ProposalDetail dao={dao} />}
 				/>
 				<Route exact path={path}>
 					<Redirect to={to(ROUTES.ZDAO_ASSETS)} />
