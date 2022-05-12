@@ -7,6 +7,7 @@ import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { getDomainId } from 'lib/utils';
+import { ROOT_DOMAIN } from '../../constants/domains';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
@@ -40,7 +41,8 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 
 	// Get current domain details from web3 hooks
 	const domain = parseDomainFromURI(location.pathname);
-	const domainId = getDomainId(domain);
+	const zna = ROOT_DOMAIN + (domain.length ? '.' + domain : '');
+	const domainId = getDomainId(zna);
 	const znsDomain = useZnsDomain(domainId);
 
 	const [domainMetadata, setDomainMetadata] = usePropsState(
