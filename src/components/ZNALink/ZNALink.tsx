@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Link, useLocation } from 'react-router-dom';
 
-import { ROOT_DOMAIN } from 'constants/domains';
+import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from 'constants/domains';
 
 import styles from './ZNALink.module.scss';
 import classNames from 'classnames';
@@ -22,7 +22,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 
 	const adjustedZna = isRootDomain
 		? ROOT_DOMAIN
-		: (ROOT_DOMAIN.length ? ROOT_DOMAIN + '.' : ROOT_DOMAIN) + zna;
+		: (IS_DEFAULT_NETWORK ? '' : ROOT_DOMAIN + '.') + zna;
 
 	const splitZna = adjustedZna.split('.').map((z) => z.replace('.', ''));
 
@@ -43,20 +43,23 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 
 	return (
 		<div className={classNames(styles.ZNALink, className)} style={style}>
-			<Link to={app} className={styles.Root}>
-				0://
-			</Link>
-			{zna.length > 0 &&
-				segments.map((s, index) => (
-					<Link
-						key={s.location}
-						style={{ textDecoration: 'none', color: 'white' }}
-						to={s.location}
-					>
-						{index > 0 && '.'}
-						{s.name}
-					</Link>
-				))}
+			{IS_DEFAULT_NETWORK ? (
+				<Link to={app} className={styles.Root}>
+					0://
+				</Link>
+			) : (
+				<span className={styles.Root}>0://</span>
+			)}
+			{segments.map((s, index) => (
+				<Link
+					key={s.location}
+					style={{ textDecoration: 'none', color: 'white' }}
+					to={s.location}
+				>
+					{index > 0 && '.'}
+					{s.name}
+				</Link>
+			))}
 		</div>
 	);
 };
