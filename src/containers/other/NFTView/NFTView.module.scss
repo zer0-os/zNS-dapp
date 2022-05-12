@@ -2,6 +2,7 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/borders';
 @use 'styles/variables/animations';
+@use 'styles/variables/dimensions';
 
 .NFTView {
 	width: 100%;
@@ -268,7 +269,7 @@
 	margin-top: 24px;
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		padding: 24px 0 0 0;
 	}
 }
@@ -295,7 +296,7 @@
 	margin-top: 12px;
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		margin-top: 24px;
 	}
 }
@@ -308,7 +309,7 @@
 	gap: 8px;
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		gap: 16px;
 		margin-top: 48px;
 	}

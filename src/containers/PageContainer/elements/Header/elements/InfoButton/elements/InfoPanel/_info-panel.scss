@@ -102,7 +102,7 @@
 	}
 }
 
-@media only screen and (min-width: 320px) {
+@media only screen and (min-width: #{dimensions.$breakpoint-mobile-s}) {
 	.info-panel_nav {
 		display: none;
 	}
