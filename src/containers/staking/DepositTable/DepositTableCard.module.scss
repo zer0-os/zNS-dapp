@@ -62,8 +62,8 @@
 	}
 
 	.Body {
-		background: rgba(255, 255, 255, 0.03);
-		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		background: #{colors.$off-white-03};
+		border-top: 1px solid #{colors.$off-white-1};
 
 		ul li {
 			display: flex;

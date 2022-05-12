@@ -50,7 +50,7 @@
 	height: 450px;
 	width: 100% !important;
 	border-radius: #{borders.$radius-primary} #{borders.$radius-primary} 0 0;
-	background: rgba(0, 0, 0, 0.3);
+	background: #{colors.$off-black-3};
 
 	img,
 	video {

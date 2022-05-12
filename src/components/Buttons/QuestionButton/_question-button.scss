@@ -1,5 +1,6 @@
 @use 'styles/variables/borders';
 @use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .question-button {
 	position: relative;
@@ -8,7 +9,7 @@
 	align-items: center;
 	width: 24px;
 	height: 24px;
-	background: rgba(255, 255, 255, 0.25);
+	background: #{colors.$off-white-25};
 	border-radius: 50%;
 	z-index: 1;
 
@@ -25,7 +26,7 @@
 	}
 
 	&:hover::after {
-		box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.5);
+		box-shadow: 0 0 20px 13px #{colors.$off-white-50};
 	}
 
 	&.small {

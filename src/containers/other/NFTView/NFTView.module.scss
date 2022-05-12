@@ -28,7 +28,7 @@
 }
 
 .Loaded {
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 }
 
 .Loaded .BG {
@@ -208,7 +208,7 @@
 }
 
 .History ul::-webkit-scrollbar-corner {
-	background: rgba(0, 0, 0, 0);
+	background: #{colors.$black};
 	height: 0;
 	width: 0;
 }
@@ -224,7 +224,7 @@
 
 .History ul::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-	background-color: rgba(60, 161, 255, 0.2);
+	background-color: #{colors.$doger-blue-darker-2};
 }
 
 .Contract {

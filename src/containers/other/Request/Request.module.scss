@@ -28,7 +28,7 @@
 	max-width: 543px;
 	border-radius: #{borders.$radius-primary};
 	cursor: pointer;
-	background: rgba(0, 0, 0, 0.3);
+	background: #{colors.$off-black-3};
 }
 
 .Image:hover > * {

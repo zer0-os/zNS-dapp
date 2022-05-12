@@ -43,7 +43,7 @@
 }
 
 .Selected {
-	background: rgba(60, 161, 255, 0.05) !important;
+	background: #{colors.$doger-blue-darker-05} !important;
 }
 
 .Selected::before {

@@ -7,7 +7,7 @@
 	display: flex;
 	align-items: center;
 
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 
 	transition: color #{animations.$time-short} ease-in-out,
 		text-shadow #{animations.$time-short} ease-in-out,

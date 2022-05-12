@@ -27,11 +27,11 @@
  * Alternative color scheme
  */
 .Container.Alt {
-	--bg: rgba(247, 99, 176, 0.25);
-	--box-shadow: rgba(247, 99, 176, 0.25);
-	--box-shadow-heavy: #7000ff;
-	--box-shadow-light: rgba(112, 0, 255, 0.25);
-	--border-color: #f763b0;
+	--bg: #{colors.$white};
+	--box-shadow: #{colors.$white};
+	--box-shadow-heavy: #{colors.$electric-violet-darker};
+	--box-shadow-light: #{colors.$electric-violet-darker-op};
+	--border-color: #{colors.$brilliant-rose};
 	--border-color-hover: #{colors.$white};
 	--color: #{colors.$white};
 

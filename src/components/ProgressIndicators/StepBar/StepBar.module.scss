@@ -45,7 +45,7 @@
 }
 
 .Hide {
-	border-bottom: 1px solid rgba(0, 0, 0, 0);
-	color: rgba(0, 0, 0, 0);
+	border-bottom: 1px solid #{colors.$black};
+	color: #{colors.$black};
 	z-index: -1;
 }

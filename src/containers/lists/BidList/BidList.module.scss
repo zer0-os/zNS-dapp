@@ -65,7 +65,7 @@ $gutter: 16px;
 	overflow-x: visible;
 
 	&::-webkit-scrollbar-corner {
-		background: rgba(0, 0, 0, 0);
+		background: #{colors.$black};
 		height: 0;
 		width: 0;
 	}

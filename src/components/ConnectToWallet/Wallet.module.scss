@@ -14,7 +14,7 @@
 
 	overflow: hidden;
 
-	filter: drop-shadow(0px 20px 20px rgba(0, 0, 0, 0.5));
+	filter: drop-shadow(0px 20px 20px #{colors.$off-black-5});
 }
 
 .connect hr {
@@ -61,7 +61,7 @@
 	transform: translateX(-50%);
 	width: 85%;
 	height: 0;
-	box-shadow: 0px 0px 20px 20px rgba(60, 161, 255, 0.8);
+	box-shadow: 0px 0px 20px 20px #{colors.$doger-blue-darker-08};
 	z-index: -1;
 
 	opacity: 0;
@@ -69,7 +69,7 @@
 }
 
 .wallet:hover {
-	background: rgba(60, 161, 255, 0.05);
+	background: #{colors.$doger-blue-darker-05};
 }
 
 .wallet:hover::before {

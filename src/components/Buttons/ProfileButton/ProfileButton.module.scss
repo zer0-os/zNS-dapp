@@ -10,7 +10,7 @@
 	width: 32px;
 
 	color: #{colors.$malibu};
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 
 	border-radius: 50%;
 
@@ -40,14 +40,14 @@
 
 .ProfileButton:hover {
 	text-shadow: #{colors.$text-glow-primary};
-	background-color: rgba(255, 255, 255, 0.02);
+	background-color: #{colors.$off-white-02};
 }
 
 .Selected {
 	color: #{colors.$text-primary};
-	background-color: rgba(255, 255, 255, 0.02);
+	background-color: #{colors.$off-white-02};
 }
 
 .Selected:after {
-	box-shadow: 0px 0px 17px 12px rgba(255, 255, 255, 0.5);
+	box-shadow: 0px 0px 17px 12px #{colors.$off-white-50};
 }

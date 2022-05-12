@@ -54,7 +54,7 @@
 	background-image: url('./assets/copy-icon.svg');
 	background-position: center;
 	background-size: cover;
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 
 	transition: transform #{animations.$time-short} ease-in-out;
 }

@@ -1,4 +1,8 @@
 // Black
+$off-black-9: rgba(0, 0, 0, 0.9);
+$off-black-73: rgba(0, 0, 0, 0.73);
+$off-black-5: rgba(0, 0, 0, 0.5);
+$off-black-3: rgba(0, 0, 0, 0.3);
 $black: #000000;
 
 // Blues
@@ -8,7 +12,9 @@ $anakiwa-lighter: #9ed0ff;
 $baby-blue: #9dd0ff;
 $blumine-darker: rgba(30, 81, 128, 0.2);
 $doger-blue-lighter: #3ca1ff;
-$doger-blue-darker: rgba(60, 161, 255, 0.2);
+$doger-blue-darker-2: rgba(60, 161, 255, 0.2);
+$doger-blue-darker-05: rgba(60, 161, 255, 0.05);
+$doger-blue-darker-08: rgba(60, 161, 255, 0.08);
 $dodger-blue: #5257ff;
 $dodger-blue-op: rgba(82, 87, 255, 0.25);
 $malibu: #52cbff;
@@ -39,8 +45,12 @@ $mine-shaft: #232323;
 $silver: #bfbfbf;
 
 // Pink
+$brilliant-rose: #f763b0;
+$brilliant-rose-darker: rgba(247, 99, 176, 0.25);
 $easter-purple: #c169ff;
 $electric-violet: #eb00ff;
+$electric-violet-darker: #7000ff;
+$electric-violet-darker-op: rgba(112, 0, 255, 0.25);
 $helitrope: #d379ff;
 $helitrope-darker: #af72f3;
 $helitrope-darker-op: rgba(175, 114, 243, 0.25);
@@ -62,6 +72,12 @@ $revolver-darker-op: #1a102270;
 $error: #f6677c;
 
 // White
+$off-white-50: rgba(255, 255, 255, 0.5);
+$off-white-25: rgba(255, 255, 255, 0.25);
+$off-white-05: rgba(255, 255, 255, 0.05);
+$off-white-03: rgba(255, 255, 255, 0.03);
+$off-white-02: rgba(255, 255, 255, 0.02);
+$off-white-1: rgba(255, 255, 255, 0.1);
 $white: #ffffff;
 
 // Background
@@ -88,6 +104,6 @@ $cosmic-gradient: linear-gradient(
 $ocean-gradient-10: linear-gradient(90deg, $ocean-op 0%, $malibu-op-2 100%);
 $text-input-background-gradient: linear-gradient(
 	94.23deg,
-	$doger-blue-darker 0%,
+	$doger-blue-darker-2 0%,
 	$blumine-darker 100%
 );

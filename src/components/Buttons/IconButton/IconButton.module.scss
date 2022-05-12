@@ -7,7 +7,7 @@
 	padding: 0;
 
 	color: #{colors.$malibu};
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 
 	border-radius: calc(#{borders.$radius-primary} / 2);
 
@@ -36,7 +36,6 @@
 }
 
 .iconButton:not(.Disabled).iconButton:hover::after {
-	// box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.5);
 	background: #{colors.$revolver};
 }
 
@@ -55,7 +54,7 @@
 }
 
 .iconButton.selected:after {
-	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.5);
+	box-shadow: 0 0 20px 13px #{colors.$off-white-50};
 }
 
 .Disabled {
