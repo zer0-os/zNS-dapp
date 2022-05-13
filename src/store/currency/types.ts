@@ -5,9 +5,15 @@ import {
 	GET_LOOT_PRICE_USD_REQUEST,
 	GET_LOOT_PRICE_USD_SUCCESS,
 	GET_LOOT_PRICE_USD_ERROR,
+	GET_ZERO_PRICE_USD_REQUEST,
+	GET_ZERO_PRICE_USD_SUCCESS,
+	GET_ZERO_PRICE_USD_ERROR,
 	GET_WILD_PRICE_PERCENTAGE_CHANGE_REQUEST,
 	GET_WILD_PRICE_PERCENTAGE_CHANGE_SUCCESS,
 	GET_WILD_PRICE_PERCENTAGE_CHANGE_ERROR,
+	GET_ZERO_PRICE_PERCENTAGE_CHANGE_REQUEST,
+	GET_ZERO_PRICE_PERCENTAGE_CHANGE_SUCCESS,
+	GET_ZERO_PRICE_PERCENTAGE_CHANGE_ERROR,
 } from './actionTypes';
 
 /**
@@ -16,11 +22,15 @@ import {
 export type CurrencyState = {
 	wildPriceUsd: number;
 	lootPriceUsd: number;
+	zeroPriceUsd: number;
 	wildPercentageChange: number;
+	zeroPercentageChange: number;
 	error: {
 		wildPriceUsd: string | undefined;
 		lootPriceUsd: string | undefined;
+		zeroPriceUsd: string | undefined;
 		wildPercentageChange: string | undefined;
+		zeroPercentageChange: string | undefined;
 	};
 };
 
@@ -51,6 +61,18 @@ export type GetLootPriceUsdError = {
 	payload: string;
 };
 
+export type GetZeroPriceUsdRequest = {
+	type: typeof GET_ZERO_PRICE_USD_REQUEST;
+};
+export type GetZeroPriceUsdSuccess = {
+	type: typeof GET_ZERO_PRICE_USD_SUCCESS;
+	payload: number;
+};
+export type GetZeroPriceUsdError = {
+	type: typeof GET_ZERO_PRICE_USD_ERROR;
+	payload: string;
+};
+
 export type GetWildPricePercentageChangeRequest = {
 	type: typeof GET_WILD_PRICE_PERCENTAGE_CHANGE_REQUEST;
 };
@@ -60,6 +82,18 @@ export type GetWildPricePercentageChangeSuccess = {
 };
 export type GetWildPricePercentageChangeError = {
 	type: typeof GET_WILD_PRICE_PERCENTAGE_CHANGE_ERROR;
+	payload: string;
+};
+
+export type GetZeroPricePercentageChangeRequest = {
+	type: typeof GET_ZERO_PRICE_PERCENTAGE_CHANGE_REQUEST;
+};
+export type GetZeroPricePercentageChangeSuccess = {
+	type: typeof GET_ZERO_PRICE_PERCENTAGE_CHANGE_SUCCESS;
+	payload: number;
+};
+export type GetZeroPricePercentageChangeError = {
+	type: typeof GET_ZERO_PRICE_PERCENTAGE_CHANGE_ERROR;
 	payload: string;
 };
 
@@ -75,6 +109,12 @@ export type CurrencyActions =
 	| GetLootPriceUsdRequest
 	| GetLootPriceUsdSuccess
 	| GetLootPriceUsdError
+	| GetZeroPriceUsdRequest
+	| GetZeroPriceUsdSuccess
+	| GetZeroPriceUsdError
 	| GetWildPricePercentageChangeRequest
 	| GetWildPricePercentageChangeSuccess
-	| GetWildPricePercentageChangeError;
+	| GetWildPricePercentageChangeError
+	| GetZeroPricePercentageChangeRequest
+	| GetZeroPricePercentageChangeSuccess
+	| GetZeroPricePercentageChangeError;
