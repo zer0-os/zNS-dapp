@@ -1,17 +1,23 @@
+//- React Imports
 import React from 'react';
-
 import { Link, useLocation } from 'react-router-dom';
 
+//- Library Imports
+import { appFromPathname, zNAFromPathname } from 'lib/utils';
+
+//- Constants Imports
 import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from 'constants/domains';
 
+//- Styles Imports
 import styles from './ZNALink.module.scss';
-import classNames from 'classnames';
-import { appFromPathname, zNAFromPathname } from 'lib/utils';
+import classNames from 'classnames/bind';
 
 type ZNAProps = {
 	className?: string;
 	style?: React.CSSProperties;
 };
+
+const cx = classNames.bind(styles);
 
 const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const { pathname } = useLocation();
@@ -19,10 +25,11 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const app = appFromPathname(pathname) + '/';
 
 	const isRootDomain = zna.length === 0;
+	const isRootWithSubDomain = zna.split('.').length > 2;
 
 	const adjustedZna = isRootDomain
 		? ROOT_DOMAIN
-		: (IS_DEFAULT_NETWORK ? '' : ROOT_DOMAIN + '.') + zna;
+		: (IS_DEFAULT_NETWORK ? '' : isRootDomain ? ROOT_DOMAIN + '.' : '') + zna;
 
 	const splitZna = adjustedZna.split('.').map((z) => z.replace('.', ''));
 
@@ -42,7 +49,12 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	});
 
 	return (
-		<div className={classNames(styles.ZNALink, className)} style={style}>
+		<div
+			className={cx(styles.ZNALink, className, {
+				isRootWithSubdomain: isRootWithSubDomain,
+			})}
+			style={style}
+		>
 			{IS_DEFAULT_NETWORK ? (
 				<Link to={app} className={styles.Root}>
 					0://

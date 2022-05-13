@@ -7,7 +7,7 @@ import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { getDomainId } from 'lib/utils';
-import { ROOT_DOMAIN } from '../../constants/domains';
+import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from '../../constants/domains';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
@@ -31,6 +31,15 @@ const parseDomainFromURI = (pathname: string) => {
 	return '';
 };
 
+const parseZNA = (zna: string, pathname: string) => {
+	if (pathname.endsWith('/market' || '/market/')) {
+		return zna;
+	}
+	const parsedZna = zna.split('.').splice(1).join('.');
+	const result = ROOT_DOMAIN === '' ? zna : parsedZna;
+	return result;
+};
+
 const CurrentDomainProvider: React.FC = ({ children }) => {
 	//////////////////////////
 	// Hooks & State & Data //
@@ -41,10 +50,13 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 
 	// Get current domain details from web3 hooks
 	const domain = parseDomainFromURI(location.pathname);
-	const zna = ROOT_DOMAIN + (domain.length ? '.' + domain : '');
-	const domainId = getDomainId(zna);
-	const znsDomain = useZnsDomain(domainId);
+	const zna =
+		ROOT_DOMAIN +
+		(domain.length ? (IS_DEFAULT_NETWORK ? domain : '.' + domain) : '');
 
+	const parsedZNA = parseZNA(zna, location.pathname);
+	const domainId = getDomainId(parsedZNA);
+	const znsDomain = useZnsDomain(domainId);
 	const [domainMetadata, setDomainMetadata] = usePropsState(
 		znsDomain.domainMetadata,
 	);
