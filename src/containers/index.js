@@ -26,7 +26,6 @@ export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/Co
 // Flows
 export { default as AcceptBid } from './flows/AcceptBid/AcceptBid';
 export { default as BuyNow } from './flows/BuyNow';
-export { default as BuyTokenRedirect } from './flows/BuyTokenRedirect/BuyTokenRedirect';
 export { default as CancelBid } from './flows/CancelBid/CancelBid';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
@@ -47,6 +46,7 @@ export { default as BidList } from './lists/BidList/BidList';
 export { default as BannerContainer } from './other/BannerContainer/BannerContainer';
 export { default as NFTView } from './other/NFTView/NFTView';
 export { default as PageHeader } from './other/PageHeader/PageHeader';
+export { default as PriceWidget } from './other/PriceWidget/PriceWidget';
 export { default as Request } from './other/Request/Request';
 
 // Legacy

@@ -27,7 +27,7 @@
 }
 
 .DropdownContent {
-	width: 340px;
+	width: 360px;
 	cursor: default;
 	padding: 32px;
 	border-radius: #{borders.$radius-primary};
@@ -134,11 +134,11 @@
 
 .UrlRowContainer {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	width: 100%;
 
 	a {
-		max-width: 140px;
+		max-width: 270px;
 		width: 100%;
 		font-size: #{typography.$size-small};
 		line-height: 17px;
