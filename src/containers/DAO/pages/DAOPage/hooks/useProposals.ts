@@ -1,12 +1,12 @@
 import { zDAO, Proposal } from '@zero-tech/zdao-sdk';
 import { useEffect, useState } from 'react';
 
-type UseAssetsReturn = {
+type UseProposalsReturn = {
 	proposals?: Proposal[];
 	isLoading: boolean;
 };
 
-const useProposals = (dao?: zDAO): UseAssetsReturn => {
+const useProposals = (dao?: zDAO): UseProposalsReturn => {
 	const [proposals, setProposals] = useState<Proposal[] | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
