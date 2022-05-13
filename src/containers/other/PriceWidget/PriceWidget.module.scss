@@ -1,4 +1,4 @@
-.WildPriceContainer {
+.PriceContainer {
 	height: 100%;
 	width: 100%;
 	cursor: pointer;
@@ -23,7 +23,7 @@
 }
 
 .DropdownContent {
-	width: 340px;
+	width: 360px;
 	cursor: default;
 	padding: 32px;
 	border-radius: var(--box-radius);
@@ -130,11 +130,11 @@
 
 .UrlRowContainer {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	width: 100%;
 
 	a {
-		max-width: 140px;
+		max-width: 270px;
 		width: 100%;
 		font-size: var(--font-size-smaller);
 		line-height: 17px;

@@ -90,3 +90,7 @@ export const lootTokenPrice = async () => {
 export const ethTokenPrice = async () => {
 	return await tokenToUsd('ethereum');
 };
+
+export const zeroTokenPrice = async () => {
+	return await tokenToUsd('zero-tech');
+};

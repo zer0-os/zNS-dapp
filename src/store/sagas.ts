@@ -6,7 +6,9 @@ import {
 import {
 	getWildPriceUsdSaga,
 	getLootPriceUsdSaga,
+	getZeroPriceUsdSaga,
 	getWildPricePercentageChangeSaga,
+	getZeroPricePercentageChangeSaga,
 } from './currency/sagas';
 
 /**
@@ -18,7 +20,9 @@ export function* rootSaga() {
 		fork(removeNotificationSaga),
 		fork(getWildPriceUsdSaga),
 		fork(getLootPriceUsdSaga),
+		fork(getZeroPriceUsdSaga),
 		fork(getWildPricePercentageChangeSaga),
+		fork(getZeroPricePercentageChangeSaga),
 		/**
 		 * Other sagas will be added here
 		 */
