@@ -50,6 +50,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
 			searchKey={['title', 'author']}
 			searchBy={'proposal title'}
 			emptyText={'This DAO has no proposals.'}
+			isSingleGridColumn
 		/>
 	);
 };
