@@ -162,7 +162,11 @@ const GenericTable = (props: any) => {
 	// Grid View container & cards
 	const renderGridView = useCallback(() => {
 		return (
-			<div className={styles.Grid}>
+			<div
+				className={`${styles.Grid} ${
+					props.isSingleGridColumn && styles.GridWithSingleColumn
+				}`}
+			>
 				{data.map((d: any, index: number) => (
 					<props.gridComponent
 						key={d[props.itemKey]}
