@@ -1,0 +1,22 @@
+.Chiclet {
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	padding: 8px 16px;
+	font-size: 12px;
+	color: #D9D9D9;
+	border: 1px solid #3B3B3B;
+	border-radius: 9999px;
+
+	& + & {
+		margin-left: 16px;
+	}
+}
+
+.Warning {
+	color: #F58C61;
+}
+
+.Error {
+	color: #F6677C;
+}
