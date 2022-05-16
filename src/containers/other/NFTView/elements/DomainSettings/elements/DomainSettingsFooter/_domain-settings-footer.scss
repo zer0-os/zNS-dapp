@@ -21,10 +21,10 @@
 
 		label {
 			&.warning {
-				color: #{colors.$error};
+				color: #{colors.$red-300};
 
 				&.is_locked_warning {
-					color: #{colors.$warning};
+					color: #{colors.$red-100};
 				}
 			}
 			&.success {

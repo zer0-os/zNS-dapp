@@ -42,7 +42,7 @@
 		margin-top: 16px;
 		width: 100%;
 
-		color: #{colors.$error};
+		color: #{colors.$red-300};
 		text-align: center;
 
 		.balanceCriteria {
@@ -132,7 +132,7 @@
 		}
 
 		.ErrorColor {
-			color: #{colors.$error};
+			color: #{colors.$red-300};
 		}
 	}
 
@@ -150,7 +150,7 @@
 
 	.emailError {
 		display: block;
-		color: #{colors.$error};
+		color: #{colors.$red-300};
 		padding-left: 25px;
 		font-size: #{typography.$size-tiny};
 	}
