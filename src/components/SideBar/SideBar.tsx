@@ -8,7 +8,7 @@ import { BuyTokenRedirect } from 'containers';
 import { getNavLinks } from 'lib/utils/nav';
 import { URLS } from 'constants/urls';
 import { ROUTES } from 'constants/routes';
-import { DOMAIN_LOGOS } from 'constants/domains';
+import { DOMAIN_LOGOS, IS_DEFAULT_NETWORK } from 'constants/domains';
 import { ALT_TEXT, COLOURS } from './SideBar.constants';
 
 //- Styles Imports
@@ -35,7 +35,8 @@ const SideBar = () => {
 	const zna = zNAFromPathname(pathname);
 	const app = appFromPathname(pathname);
 
-	const isRoot = app !== ROUTES.MARKET || zna.length === 0;
+	const isRoot =
+		(IS_DEFAULT_NETWORK && app !== ROUTES.MARKET) || zna.length === 0;
 
 	return (
 		<div className={styles.BorderContainer}>
