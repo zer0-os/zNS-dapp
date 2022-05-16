@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 /**
  * Format seconds as humanized string
  * @param seconds to format
@@ -16,4 +18,16 @@ export const secondsToDhms = (seconds: number, showSeconds = false): string => {
 	var sDisplay = showSeconds ? (s > 0 ? s + 's' : '') : '';
 
 	return dDisplay + hDisplay + mDisplay + sDisplay;
+};
+
+/**
+ * Format datetime
+ * @param date to format
+ * @param formatter formatter string
+ * @returns formatted humanized string
+ */
+export const formatDateTime = (date: Date, formatter?: string): string => {
+	if (!moment(date).isValid()) return '';
+
+	return moment(date).format(formatter);
 };
