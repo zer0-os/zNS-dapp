@@ -36,7 +36,7 @@ const SideBar = () => {
 	const app = appFromPathname(pathname);
 
 	const isRoot =
-		(IS_DEFAULT_NETWORK && app !== ROUTES.MARKET) || zna.length === 0;
+		IS_DEFAULT_NETWORK && (app !== ROUTES.MARKET || zna.length === 0);
 
 	return (
 		<div className={styles.BorderContainer}>
