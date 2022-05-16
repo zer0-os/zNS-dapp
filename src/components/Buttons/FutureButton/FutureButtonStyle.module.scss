@@ -18,8 +18,8 @@
 		box-shadow: none;
 		--box-shadow-heavy: none;
 		--bg: none !important;
-		--border-color: #{colors.$gray};
-		--color: #{colors.$gray};
+		--border-color: #{colors.$grey};
+		--color: #{colors.$grey};
 	}
 }
 
@@ -36,8 +36,8 @@
 	--color: #{colors.$white};
 
 	&:not(.Glow) {
-		--border-color: #{colors.$gray};
-		--color: #{colors.$gray};
+		--border-color: #{colors.$grey};
+		--color: #{colors.$grey};
 	}
 }
 
@@ -151,7 +151,7 @@
 	 * Inactive button
 	 */
 	&:not(.Glow) .Content {
-		color: #{colors.$gray};
+		color: #{colors.$grey};
 		text-shadow: none;
 	}
 

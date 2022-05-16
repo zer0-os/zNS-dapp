@@ -37,11 +37,11 @@
 	}
 
 	&:disabled {
-		border-color: #{colors.$gray};
-		color: #{colors.$gray};
+		border-color: #{colors.$grey};
+		color: #{colors.$grey};
 
 		&::placeholder {
-			color: #{colors.$gray};
+			color: #{colors.$grey};
 		}
 	}
 }

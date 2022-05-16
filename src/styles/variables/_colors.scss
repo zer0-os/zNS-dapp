@@ -34,7 +34,7 @@ $success-darker: #58c57310;
 $alto: #d9d9d9;
 $almost-black: #0a0a0a;
 $concrete: #f2f2f2;
-$gray: #808080;
+$grey: #808080;
 $iron: #dadcdf;
 $mercury: #e6e6e6;
 $mine-shaft: #232323;
@@ -97,3 +97,4 @@ $text-input-background-gradient: linear-gradient(
 	$doger-blue-darker-2 0%,
 	$blumine-darker 100%
 );
+$grey-darker: linear-gradient(0deg, #404040, #404040), $grey;
