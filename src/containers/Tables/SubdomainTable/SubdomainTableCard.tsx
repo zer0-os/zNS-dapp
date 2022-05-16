@@ -14,6 +14,7 @@ import {
 	formatEthers,
 	getParentZna,
 	getAspectRatioForZna,
+	parseZNA,
 } from 'lib/utils';
 
 //-Component Imports
@@ -32,6 +33,7 @@ import { CURRENCY } from 'constants/currency';
 
 //-Styles Imports
 import styles from './SubdomainTableCard.module.scss';
+import { ROOT_DOMAIN } from 'constants/domains';
 
 const SubdomainTableCard = (props: any) => {
 	//////////////////
@@ -70,7 +72,7 @@ const SubdomainTableCard = (props: any) => {
 
 	const onClick = (event: any) => {
 		if (!event.target.className.includes('FutureButton')) {
-			goTo(ROUTES.MARKET + '/' + domain.name);
+			goTo(ROUTES.MARKET + '/' + parseZNA(ROOT_DOMAIN, domain.name));
 		}
 	};
 

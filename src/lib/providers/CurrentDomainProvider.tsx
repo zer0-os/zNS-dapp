@@ -34,15 +34,6 @@ const parseDomainFromURI = (pathname: string) => {
 	return '';
 };
 
-const parseZNA = (zna: string, pathname: string) => {
-	if (pathname.endsWith(ROUTES.MARKET || ROUTES.MARKET + '/')) {
-		return zna;
-	}
-	const parsedZna = zna.split('.').splice(1).join('.');
-	const result = ROOT_DOMAIN === '' ? zna : parsedZna;
-	return result;
-};
-
 const CurrentDomainProvider: React.FC = ({ children }) => {
 	//////////////////////////
 	// Hooks & State & Data //
@@ -57,8 +48,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		ROOT_DOMAIN +
 		(domain.length ? (IS_DEFAULT_NETWORK ? domain : '.' + domain) : '');
 
-	const parsedZNA = parseZNA(zna, location.pathname);
-	const domainId = getDomainId(parsedZNA);
+	const domainId = getDomainId(zna);
 	const znsDomain = useZnsDomain(domainId);
 	const [domainMetadata, setDomainMetadata] = usePropsState(
 		znsDomain.domainMetadata,

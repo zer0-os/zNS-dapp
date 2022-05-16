@@ -137,3 +137,7 @@ export const truncateDomain = (
 	}
 	return domainName;
 };
+
+// Parse ZNA
+export const parseZNA = (rootDomain: string, domainName: string) =>
+	rootDomain !== '' ? domainName.split('.').splice(1).join('.') : domainName;
