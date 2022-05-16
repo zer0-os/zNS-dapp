@@ -23,7 +23,6 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const { pathname } = useLocation();
 	const zna = zNAFromPathname(pathname);
 	const app = appFromPathname(pathname) + '/';
-
 	const isRootDomain = zna.length === 0;
 	const isRootWithSubDomain = zna.split('.').length > 2;
 
@@ -36,11 +35,13 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const segments = splitZna.map((s, index) => {
 		const name = index === 0 ? s : s;
 
-		/**
-		 * NOTE: this will not work when a root domain is configured
-		 */
-		let location =
-			index === 0 ? name : splitZna.slice(0, index).concat(name).join('.');
+		let location = IS_DEFAULT_NETWORK
+			? index === 0
+				? name
+				: splitZna.slice(0, index).concat(name).join('.')
+			: isRootDomain
+			? ''
+			: splitZna.slice(0, index).concat(name).join('.');
 
 		return {
 			name,
@@ -65,7 +66,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 			)}
 			{segments.map((s, index) => (
 				<Link
-					key={s.location}
+					key={s.location !== '' ? s.location : s.name}
 					style={{ textDecoration: 'none', color: 'white' }}
 					to={s.location}
 				>
