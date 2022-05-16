@@ -117,7 +117,7 @@
 }
 
 .Accepted span:first-of-type {
-	color: #{colors.$malibu};
+	color: #{colors.$blue};
 }
 
 .Accepted span:not(:first-of-type) {
@@ -154,7 +154,7 @@
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	border-top: 2px solid #{colors.$malibu};
+	border-top: 2px solid #{colors.$blue};
 	animation: spin 1s linear infinite;
 }
 

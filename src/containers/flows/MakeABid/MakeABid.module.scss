@@ -84,7 +84,7 @@
 		overflow-wrap: anywhere;
 		display: block;
 		margin-top: 4px;
-		color: #{colors.$malibu};
+		color: #{colors.$blue};
 	}
 }
 
@@ -149,11 +149,11 @@
 .Authorize {
 	padding: 16px;
 	background: none;
-	border: 1px solid #{colors.$malibu};
+	border: 1px solid #{colors.$blue};
 	border-radius: 50%;
 	width: 150px;
 	height: 150px;
-	color: #{colors.$malibu};
+	color: #{colors.$blue};
 }
 
 .Error {
@@ -175,7 +175,7 @@
 	width: 18px;
 	height: 18px;
 	border-radius: 50%;
-	border-top: 2px solid #{colors.$malibu};
+	border-top: 2px solid #{colors.$blue};
 	animation: spin 1s linear infinite;
 }
 

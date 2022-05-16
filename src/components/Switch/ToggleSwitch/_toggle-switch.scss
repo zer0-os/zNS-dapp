@@ -46,7 +46,7 @@
 			content: attr(data-yes);
 			padding-left: 8px;
 			text-transform: uppercase;
-			color: #{colors.$malibu};
+			color: #{colors.$blue};
 			background: #{colors.$ocean-gradient-10} !important;
 		}
 
@@ -75,14 +75,14 @@
 	}
 
 	&-checkbox:checked + &-label {
-		border: 1px solid #{colors.$malibu};
+		border: 1px solid #{colors.$blue};
 
 		.toggle-switch-inner {
 			margin-left: 0;
 		}
 		.toggle-switch-switch {
 			right: 0px;
-			background: #{colors.$malibu};
+			background: #{colors.$blue};
 		}
 	}
 }

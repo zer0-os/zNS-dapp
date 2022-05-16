@@ -34,8 +34,8 @@
 .Bar {
 	padding-bottom: 4px;
 
-	color: #{colors.$malibu};
-	border-bottom: 1px solid #{colors.$malibu};
+	color: #{colors.$blue};
+	border-bottom: 1px solid #{colors.$blue};
 
 	transition: all #{animations.$time-long} ease-in-out;
 }

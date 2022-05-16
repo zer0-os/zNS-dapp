@@ -43,7 +43,7 @@
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	border-top: 2px solid #{colors.$malibu};
+	border-top: 2px solid #{colors.$blue};
 	animation: spin 1s linear infinite;
 }
 
@@ -200,12 +200,12 @@
 			padding: 0;
 			font-size: #{typography.$size-default};
 			font-weight: #{typography.$font-weight-regular};
-			color: #{colors.$malibu};
+			color: #{colors.$blue};
 			cursor: pointer;
 		}
 
 		.ViewLink:hover {
-			color: #{colors.$malibu};
+			color: #{colors.$blue};
 			text-shadow: #{colors.$text-glow-primary}, #{colors.$text-glow-primary};
 		}
 
@@ -231,7 +231,7 @@
 }
 
 .Domain {
-	color: #{colors.$malibu};
+	color: #{colors.$blue};
 }
 
 .Members {

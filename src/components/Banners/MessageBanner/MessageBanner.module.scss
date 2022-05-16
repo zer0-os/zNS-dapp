@@ -61,7 +61,7 @@
 
 .Button {
 	font-family: #{typography.$font};
-	color: #{colors.$malibu};
+	color: #{colors.$blue};
 	background: none;
 	z-index: 2;
 	transition: text-shadow #{animations.$time-medium} ease-in-out;

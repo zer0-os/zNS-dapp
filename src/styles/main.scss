@@ -103,14 +103,14 @@ hr.glow {
 
 a,
 button.text-button {
-	color: #{colors.$malibu};
+	color: #{colors.$blue};
 	text-decoration: none;
 	transition: text-shadow #{animations.$time-short} ease-in-out;
 }
 
 a:hover,
 button.text-button:hover {
-	color: #{colors.$malibu};
+	color: #{colors.$blue};
 	text-shadow: #{colors.$text-glow-primary};
 }
 

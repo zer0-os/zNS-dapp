@@ -28,7 +28,7 @@
 	font-size: #{typography.$size-large};
 	font-weight: #{typography.$font-weight-bold};
 
-	color: #{colors.$malibu};
+	color: #{colors.$blue};
 }
 
 .nextDrop h5 > span {
@@ -43,5 +43,5 @@
 }
 
 .nextDrop p > span {
-	color: #{colors.$malibu};
+	color: #{colors.$blue};
 }

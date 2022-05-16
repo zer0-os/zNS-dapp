@@ -14,7 +14,7 @@
 }
 
 .Link:hover .ArrowContainer::after {
-	box-shadow: 0px 0px 10px 3px #{colors.$malibu};
+	box-shadow: 0px 0px 10px 3px #{colors.$blue};
 }
 
 .ArrowContainer {
@@ -48,7 +48,7 @@
 	left: 0;
 	top: 50%;
 
-	background: #{colors.$malibu};
+	background: #{colors.$blue};
 }
 
 .Arrow::after,
