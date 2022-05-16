@@ -83,7 +83,11 @@ $text-glow-primary: 0px 0px 24px transparentize($primary, 0.6),
 
 // Gradient Colours
 $azure: linear-gradient(90deg, #5257ff 0%, $blue 100%);
-$azure-gradient-25: linear-gradient(90deg, $dodger-blue-op 0%, $malibu-op 100%);
+$azure-25: linear-gradient(
+	90deg,
+	rgba(82, 87, 255, 0.25) 0%,
+	rgba($blue, 0.25) 100%
+);
 $cosmic-gradient: linear-gradient(
 	90deg,
 	$lovely-purple 0%,
