@@ -47,6 +47,10 @@ export { default as EtherInput } from './Inputs/EtherInput/EtherInput';
 export { default as TextInput } from './Inputs/TextInput/TextInput';
 export { default as TextInputWithTopPlaceHolder } from './Inputs/TextInput/TextInputWithTopPlaceHolder';
 
+// - Markdown
+export { default as MarkDownEditor } from './MarkDown/MarkDownEditor';
+export { default as MarkDownViewer } from './MarkDown/MarkDownViewer';
+
 //- NavBars
 export { default as TabBar } from './NavBars/TabBar/TabBar';
 

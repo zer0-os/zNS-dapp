@@ -10,7 +10,7 @@ import useProposalMetadata from '../../hooks/useProposalMetadata';
 
 // - Component
 import { ArrowLeft } from 'react-feather';
-import { LoadingIndicator } from 'components';
+import { LoadingIndicator, MarkDownViewer } from 'components';
 import { VoteBar } from './VoteBar';
 import { VoteAttributes } from './VoteAttributes';
 
@@ -21,7 +21,6 @@ type ProposalDetailProps = {
 	dao?: zDAO;
 };
 
-// TODO:: Styling and add components cc @Eric
 export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 	const history = useHistory();
 	const { proposalId } = useParams<{ proposalId: ProposalId }>();
@@ -52,8 +51,7 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 
 						<VoteAttributes proposal={proposal} metadata={metadata} />
 
-						{/* TODO:: Implement Markdown Viewer */}
-						<p>{proposal?.body}</p>
+						<MarkDownViewer text={proposal?.body} />
 					</div>
 				)}
 			</div>
