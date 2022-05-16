@@ -19,7 +19,7 @@
 	z-index: 900000;
 	opacity: 0;
 
-	background: #{colors.$off-black-9} !important;
+	background: rgba(colors.$black, 0.9) !important;
 	transition: backdrop-filter 0.2s;
 }
 
