@@ -16,7 +16,7 @@
 	&-label {
 		display: block;
 		margin: 0;
-		border: 1px solid #{colors.$alto};
+		border: 1px solid #{colors.$grey-lighter-3};
 		border-radius: 20px;
 		cursor: pointer;
 		overflow: hidden;
@@ -37,7 +37,7 @@
 			padding: 0;
 			font-size: 8px;
 			font-weight: bold;
-			color: #{colors.$alto};
+			color: #{colors.$grey-lighter-3};
 			line-height: 24px;
 			box-sizing: border-box;
 		}
@@ -55,7 +55,7 @@
 			padding-right: 5px;
 			text-transform: uppercase;
 			text-align: right;
-			color: #{colors.$alto};
+			color: #{colors.$grey-lighter-3};
 			background-color: rgba(colors.$white, 0.1);
 		}
 	}
@@ -69,7 +69,7 @@
 		width: 20px;
 		height: 20px;
 		margin: 3px;
-		background: #{colors.$alto};
+		background: #{colors.$grey-lighter-3};
 		border-radius: 10px;
 		transition: all #{animations.$time-short} ease-in 0s;
 	}
