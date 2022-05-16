@@ -57,7 +57,7 @@ $gutter: 16px;
 
 	.DetailComponent {
 		span {
-			color: #{colors.$silver};
+			color: #{colors.$grey-lighter-2};
 		}
 
 		.Bid {
@@ -67,6 +67,6 @@ $gutter: 16px;
 
 	.MemberLabel {
 		font-size: #{typography.$size-tiny};
-		color: #{colors.$silver};
+		color: #{colors.$grey-lighter-2};
 	}
 }

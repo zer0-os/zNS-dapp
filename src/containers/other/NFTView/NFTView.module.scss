@@ -178,7 +178,7 @@
 .Box h4 {
 	margin-bottom: 4px;
 	font-size: #{typography.$size-tiny};
-	color: #{colors.$silver};
+	color: #{colors.$grey-lighter-2};
 }
 
 .Box span {
@@ -485,7 +485,7 @@
 
 .Attributes h4 {
 	padding: 0;
-	color: #{colors.$silver};
+	color: #{colors.$grey-lighter-2};
 	font-size: #{typography.$size-tiny};
 	text-transform: capitalize;
 	font-weight: normal;

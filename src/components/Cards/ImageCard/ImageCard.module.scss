@@ -92,7 +92,7 @@ $placeholder-background: #000;
 
 		.Subheader {
 			font-size: #{typography.$size-tiny};
-			color: #{colors.$silver};
+			color: #{colors.$grey-lighter-2};
 			word-break: break-all;
 
 			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {

@@ -7,7 +7,7 @@
 	 * Set up colour values
 	 */
 	--toggle-button-color-on: #{colors.$malibu};
-	--toggle-button-color-off: #{colors.$silver};
+	--toggle-button-color-off: #{colors.$grey-lighter-2};
 	--toggle-button-color: var(--toggle-button-color-off); // set default color
 
 	.Toggle.On {

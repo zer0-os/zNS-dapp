@@ -33,7 +33,7 @@
 	transition: border #{animations.$time-medium} ease-in-out;
 
 	&::placeholder {
-		color: #{colors.$silver};
+		color: #{colors.$grey-lighter-2};
 	}
 
 	&:disabled {
