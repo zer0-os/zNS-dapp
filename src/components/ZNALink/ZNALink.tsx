@@ -52,6 +52,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 		<div
 			className={cx(styles.ZNALink, className, {
 				isRootWithSubdomain: isRootWithSubDomain,
+				isNetworkSet: ROOT_DOMAIN !== '',
 			})}
 			style={style}
 		>

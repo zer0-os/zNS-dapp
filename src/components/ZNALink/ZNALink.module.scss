@@ -75,6 +75,12 @@
 		}
 	}
 
+	.isNetworkSet {
+		a:not(:first-of-type):not(:nth-of-type(1)):not(:last-of-type) {
+			display: none !important;
+		}
+	}
+
 	.Dots {
 		display: inline-block;
 	}
