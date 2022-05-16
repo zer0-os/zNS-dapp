@@ -9,7 +9,7 @@
 	align-items: center;
 	width: 24px;
 	height: 24px;
-	background: #{colors.$off-white-25};
+	background: rgba(colors.$white, 0.25);
 	border-radius: 50%;
 	z-index: 1;
 
@@ -26,7 +26,7 @@
 	}
 
 	&:hover::after {
-		box-shadow: 0 0 20px 13px #{colors.$off-white-50};
+		box-shadow: 0 0 20px 13px rgba(colors.$white, 0.5);
 	}
 
 	&.small {

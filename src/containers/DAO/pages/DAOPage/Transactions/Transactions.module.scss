@@ -24,7 +24,7 @@
 		width: 32px;
 		border-radius: 50%;
 		object-fit: cover;
-		background: #{colors.$cod-gray};
+		background: #{colors.$almost-black};
 
 		.Arrow {
 			position: absolute;
@@ -33,7 +33,7 @@
 			height: 12px;
 			width: 12px;
 			border-radius: 50%;
-			background: #{colors.$cod-gray};
+			background: #{colors.$almost-black};
 			z-index: 2;
 		}
 	}

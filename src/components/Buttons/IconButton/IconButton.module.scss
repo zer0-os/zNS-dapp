@@ -54,7 +54,7 @@
 }
 
 .iconButton.selected:after {
-	box-shadow: 0 0 20px 13px #{colors.$off-white-50};
+	box-shadow: 0 0 20px 13px rgba(colors.$white, 0.5);
 }
 
 .Disabled {

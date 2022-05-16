@@ -78,7 +78,7 @@
 	position: fixed;
 	top: 32px;
 	right: 32px;
-	background: #{colors.$off-white-1};
+	background: rgba(colors.$white, 0.1);
 }
 
 @keyframes open {

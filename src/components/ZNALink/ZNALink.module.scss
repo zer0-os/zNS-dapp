@@ -25,7 +25,7 @@
 	-webkit-transform: translate(-50%);
 	transform: translate(-50%);
 	width: calc(100% - 16px);
-	box-shadow: 0 0 20px 13px #{colors.$off-white-03};
+	box-shadow: 0 0 20px 13px rgba(colors.$white, 0.03);
 	opacity: 0;
 	z-index: -1;
 }

@@ -40,14 +40,14 @@
 
 .ProfileButton:hover {
 	text-shadow: #{colors.$text-glow-primary};
-	background-color: #{colors.$off-white-02};
+	background-color: rgba(colors.$white, 0.02);
 }
 
 .Selected {
 	color: #{colors.$text-primary};
-	background-color: #{colors.$off-white-02};
+	background-color: rgba(colors.$white, 0.02);
 }
 
 .Selected:after {
-	box-shadow: 0px 0px 17px 12px #{colors.$off-white-50};
+	box-shadow: 0px 0px 17px 12px rgba(colors.$white, 0.5);
 }
