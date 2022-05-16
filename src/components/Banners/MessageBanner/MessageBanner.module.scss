@@ -13,7 +13,7 @@
 	transition: box-shadow #{animations.$time-medium} ease-in-out;
 	transition: filter #{animations.$time-medium} ease-in-out;
 	transition: transform #{animations.$time-medium} ease-in-out;
-	background: #{colors.$azure-gradient};
+	background: #{colors.$azure};
 }
 
 .Mobile {
