@@ -2,7 +2,7 @@
 import { Link, useLocation } from 'react-router-dom';
 
 //- Containers Imports
-import { BuyTokenRedirect } from 'containers';
+import { PriceWidget } from 'containers';
 
 //- Constants Imports
 import { getNavLinks } from 'lib/utils/nav';
@@ -76,7 +76,7 @@ const SideBar = () => {
 				</div>
 
 				<div className={styles.Footer}>
-					<BuyTokenRedirect />
+					<PriceWidget isRoot={isRoot} />
 					<div className={cx(styles.ZeroIconContainer, { Hidden: isRoot })}>
 						<a
 							className={styles.Zero}

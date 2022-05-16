@@ -49,6 +49,7 @@ $icon-container-size: 54px;
 		// Mobile + Tablet Breakpoints
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 
 		// Desktop Breakpoints
 		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
