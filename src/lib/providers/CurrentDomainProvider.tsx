@@ -7,6 +7,9 @@ import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { getDomainId } from 'lib/utils';
+
+// Constants Imports
+import { ROUTES } from 'constants/routes';
 import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from '../../constants/domains';
 
 export const CurrentDomainContext = React.createContext({
@@ -21,18 +24,18 @@ export const CurrentDomainContext = React.createContext({
 });
 
 const parseDomainFromURI = (pathname: string) => {
-	if (pathname.startsWith('/market')) {
+	if (pathname.startsWith(ROUTES.MARKET)) {
 		return (
-			pathname.replace('/market', '') === ''
+			pathname.replace(ROUTES.MARKET, '') === ''
 				? '/'
-				: pathname.replace('/market', '')
+				: pathname.replace(ROUTES.MARKET, '')
 		).substring(1);
 	}
 	return '';
 };
 
 const parseZNA = (zna: string, pathname: string) => {
-	if (pathname.endsWith('/market' || '/market/')) {
+	if (pathname.endsWith(ROUTES.MARKET || ROUTES.MARKET + '/')) {
 		return zna;
 	}
 	const parsedZna = zna.split('.').splice(1).join('.');
@@ -66,7 +69,10 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		domainId,
 		domainRaw: domain,
 		domainMetadata,
-		app: location.pathname.indexOf('/market') > -1 ? '/market' : '/staking',
+		app:
+			location.pathname.indexOf(ROUTES.MARKET) > -1
+				? ROUTES.MARKET
+				: ROUTES.STAKING,
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,
 		setDomainMetadata,
