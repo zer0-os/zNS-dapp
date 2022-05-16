@@ -89,6 +89,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 		return () => {
 			isMounted.current = false;
 		};
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [domain, metadataUrl]);
 
@@ -162,7 +163,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && domain && (
 								<span className={styles.Domain}>
-									{truncatedDomain || ROOT_DOMAIN + domain}
+									{truncatedDomain || domain}
 								</span>
 							)}
 							{subtext && !domain && (

@@ -1,4 +1,4 @@
-import { getAspectRatioForZna, getParentZna, parseZNA } from './domains';
+import { getAspectRatioForZna, getParentZna, getNetworkZNA } from './domains';
 import { AspectRatio } from 'constants/aspectRatios';
 
 //////////////////////////////
@@ -41,31 +41,33 @@ describe('getParentZna', () => {
 });
 
 //////////////////////
-// f:: parseZNA //
+// f:: getNetworkZNA //
 //////////////////////
 
-describe('parseZNA', () => {
+describe('getNetworkZNA', () => {
 	it('when .env network variable is not set - Default Network - two subdomains', () => {
-		expect(parseZNA('', 'wilder.dogs.beast')).toBe('wilder.dogs.beast');
+		expect(getNetworkZNA('', 'wilder.dogs.beast')).toBe('wilder.dogs.beast');
 	});
 
 	it('when .env network variable is not set - Default Network - one subdomain', () => {
-		expect(parseZNA('', 'wilder.cats')).toBe('wilder.cats');
+		expect(getNetworkZNA('', 'wilder.cats')).toBe('wilder.cats');
 	});
 
 	it('when .env network variable is not set - Default Network - no subdomains', () => {
-		expect(parseZNA('', 'wilder')).toBe('wilder');
+		expect(getNetworkZNA('', 'wilder')).toBe('wilder');
 	});
 
 	it('when .env network variable is set - Network variable - two subdomains', () => {
-		expect(parseZNA('testNetwork', 'wilder.dogs.beast')).toBe('dogs.beast');
+		expect(getNetworkZNA('testNetwork', 'wilder.dogs.beast')).toBe(
+			'dogs.beast',
+		);
 	});
 
 	it('when .env network variable is set - Network variable - one subdomain', () => {
-		expect(parseZNA('testNetwork', 'wilder.dogs')).toBe('dogs');
+		expect(getNetworkZNA('testNetwork', 'wilder.dogs')).toBe('dogs');
 	});
 
 	it('when .env network variable is set - Network variable - no subdomains', () => {
-		expect(parseZNA('testNetwork', 'wilder')).toBe('');
+		expect(getNetworkZNA('testNetwork', 'wilder')).toBe('');
 	});
 });

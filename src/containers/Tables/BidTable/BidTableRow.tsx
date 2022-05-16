@@ -5,14 +5,16 @@ import { DollarSign, X } from 'react-feather';
 
 //- Components Imports
 import { Artwork, OptionDropdown } from 'components';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Library Imports
 import { ethers } from 'ethers';
+import { getNetworkZNA } from 'lib/utils';
+import { Domain } from 'lib/types';
 
 //- Constants Imports
 import { TOKEN } from './BidTableRow.constants';
-import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
-import { Domain } from 'lib/types';
+import { ROOT_DOMAIN } from 'constants/domains';
 
 export const ACTION_KEYS = {
 	REBID: 'Rebid',
@@ -68,7 +70,7 @@ const BidTableRow = (props: any) => {
 			<td>
 				<Artwork
 					data-testid={TEST_ID.ARTWORK}
-					domain={bid.domainName}
+					domain={getNetworkZNA(ROOT_DOMAIN, bid.domainName)}
 					disableInteraction
 					metadataUrl={bid.domainMetadataUrl}
 					id={bid.domainId}

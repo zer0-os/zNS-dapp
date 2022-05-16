@@ -22,7 +22,7 @@ import { getPreviewPrompt, MAX_CHARACTER_VALUE } from './MintPreview.utils';
 //- Style Imports
 import styles from './MintPreview.module.scss';
 
-//- Contants Imports
+//- Constants Imports
 import {
 	TITLE,
 	ALT_TEXT,
@@ -82,9 +82,8 @@ const MintPreview = (props: MintPreviewProps) => {
 						</div>
 						<div className={styles.Info}>
 							<h3>{nft.title}</h3>
-
 							<Link className={styles.Link} to={link}>
-								0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
+								{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
 							</Link>
 
 							<p>{nft.story}</p>
