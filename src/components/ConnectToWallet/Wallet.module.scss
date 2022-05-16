@@ -61,7 +61,7 @@
 	transform: translateX(-50%);
 	width: 85%;
 	height: 0;
-	box-shadow: 0px 0px 20px 20px #{colors.$doger-blue-darker-08};
+	box-shadow: 0px 0px 20px 20px rgba(82, 87, 255, 0.08);
 	z-index: -1;
 
 	opacity: 0;
@@ -69,7 +69,7 @@
 }
 
 .wallet:hover {
-	background: #{colors.$doger-blue-darker-05};
+	background: rgba(82, 87, 255, 0.05);
 }
 
 .wallet:hover::before {
@@ -86,7 +86,7 @@
 
 	border-radius: 50%;
 
-	background-color: #{colors.$prussian-blue-darker-1};
+	background-color: rgba(0, 209, 255, 0.1);
 }
 
 .wallet > div > div {

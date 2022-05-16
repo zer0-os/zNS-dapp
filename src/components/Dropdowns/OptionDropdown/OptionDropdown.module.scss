@@ -12,7 +12,7 @@
 	top: calc(100%);
 	left: 50%;
 	width: 224px;
-	background: #{colors.$revolver-darker};
+	background: #{colors.$purple-10};
 	border: 1px solid #{colors.$bossanova};
 	transform: translateX(-50%);
 	z-index: 10;
@@ -43,7 +43,7 @@
 }
 
 .Selected {
-	background: #{colors.$doger-blue-darker-05} !important;
+	background: rgba(82, 87, 255, 0.05) !important;
 }
 
 .Selected::before {

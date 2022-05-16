@@ -20,7 +20,7 @@ $height: 46px;
 		background: #{colors.$background-primary};
 		border-radius: 28px;
 		overflow: none;
-		border: 1px solid #{colors.$revolver};
+		border: 1px solid #{colors.$purple-15};
 		z-index: 4;
 	}
 
@@ -32,7 +32,7 @@ $height: 46px;
 		&--is-active,
 		&--is-searching {
 			.ZNA__Container {
-				border: 1px solid #6a3991 !important;
+				border: 1px solid #{colors.$purple-50} !important;
 			}
 		}
 		&--on-scroll-up {
@@ -132,11 +132,11 @@ $height: 46px;
 			transition: all #{animations.$time-short} ease-in-out;
 
 			&:hover {
-				background: #{colors.$revolver-darker};
+				background: #{colors.$purple-10};
 			}
 
 			&-searching {
-				background: #{colors.$revolver-darker};
+				background: #{colors.$purple-10};
 			}
 		}
 	}

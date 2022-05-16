@@ -7,12 +7,16 @@
  * Default color scheme
  */
 .Container {
-	--bg: #{colors.$azure-25};
-	--box-shadow: #{colors.$prussian-blue-darker-2};
-	--box-shadow-heavy: #{colors.$prussian-blue-darker-5};
-	--box-shadow-light: #{colors.$prussian-blue-darker-2};
-	--border-color: #{colors.$doger-blue-lighter};
-	--border-color-hover: #{colors.$white};
+	--bg: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 0.25) 0%,
+		rgba(82, 203, 255, 0.25) 100%
+	);
+	--box-shadow: rgba(0, 209, 255, 0.2);
+	--box-shadow-heavy: rgba(0, 209, 255, 0.5);
+	--box-shadow-light: rgba(0, 209, 255, 0.2);
+	--border-color: #3ca1ff;
+	--border-color-hover: #fff;
 
 	&:not(.Glow) {
 		box-shadow: none;
@@ -27,13 +31,13 @@
  * Alternative color scheme
  */
 .Container.Alt {
-	--bg: #{colors.$white};
-	--box-shadow: #{colors.$white};
-	--box-shadow-heavy: #{colors.$electric-violet-darker};
-	--box-shadow-light: #{colors.$electric-violet-darker-op};
-	--border-color: #{colors.$brilliant-rose};
-	--border-color-hover: #{colors.$white};
-	--color: #{colors.$white};
+	--bg: rgba(247, 99, 176, 0.25);
+	--box-shadow: rgba(247, 99, 176, 0.25);
+	--box-shadow-heavy: #7000ff;
+	--box-shadow-light: rgba(112, 0, 255, 0.25);
+	--border-color: #f763b0;
+	--border-color-hover: #fff;
+	--color: #fff;
 
 	&:not(.Glow) {
 		--border-color: #{colors.$grey};

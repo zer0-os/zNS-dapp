@@ -19,7 +19,7 @@
 	padding: 40px;
 	filter: drop-shadow(0px 0px 16px rgba(140, 84, 221, 0.25));
 	border-radius: #{borders.$radius-primary};
-	border: 1px solid #50207b;
+	border: 1px solid #{colors.$purple-lighter};
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -87,10 +87,10 @@
 	top: 40px;
 	right: 40px;
 
-	background: #{colors.$black-rock};
+	background: #{colors.$purple-darkest};
 
 	border-radius: calc(#{borders.$radius-primary} / 2);
-	border: 1px solid #{colors.$revolver};
+	border: 1px solid #{colors.$purple-15};
 
 	button {
 		display: flex;
@@ -171,7 +171,7 @@
 .Box {
 	/* height: 95.5px; */
 	padding: 20px;
-	background: #120d16;
+	background: #{colors.$purple-5};
 	border-radius: #{borders.$radius-primary};
 }
 
@@ -225,7 +225,7 @@
 
 .History ul::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-	background-color: #{colors.$doger-blue-darker-2};
+	background-color: rgba(82, 87, 255, 0.2);
 }
 
 .Contract {
@@ -513,7 +513,7 @@
 	justify-content: center;
 	padding: 8px 16px 8px 20px;
 	border-radius: calc(#{borders.$radius-primary} / 2);
-	background: #120d16;
+	background: #{colors.$purple-5};
 }
 
 @media only screen and (max-width: 768px) {

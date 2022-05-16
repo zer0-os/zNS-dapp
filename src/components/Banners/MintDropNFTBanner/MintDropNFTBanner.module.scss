@@ -15,7 +15,7 @@
 	transition: filter #{animations.$time-medium} ease-in-out;
 	transition: transform #{animations.$time-medium} ease-in-out;
 	border: none;
-	background: #{colors.$revolver};
+	background: #{colors.$purple-15};
 	padding: 0;
 	text-align: left;
 }
@@ -54,7 +54,7 @@
 
 /* Text */
 .Title {
-	background: #{colors.$cosmic-gradient};
+	background: #{colors.$cosmic};
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 

@@ -11,7 +11,7 @@
 		width: 340px;
 		padding: 32px;
 		border-radius: #{borders.$radius-primary};
-		background: #{colors.$revolver-darker};
+		background: #{colors.$purple-10};
 		cursor: default;
 		border: 1px solid #{colors.$bossanova};
 	}
@@ -44,7 +44,7 @@
 
 			.divider {
 				flex: 1;
-				border-top: 1px solid #{colors.$revolver};
+				border-top: 1px solid #{colors.$purple-15};
 			}
 		}
 
@@ -87,7 +87,7 @@
 			align-items: center;
 			flex-wrap: wrap;
 			padding: 1.25rem 0 0;
-			border-top: 1px solid #{colors.$revolver};
+			border-top: 1px solid #{colors.$purple-15};
 
 			&-item {
 				display: flex;

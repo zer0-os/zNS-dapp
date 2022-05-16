@@ -24,7 +24,7 @@
 	width: 100%;
 	height: 100%;
 	border-radius: inherit;
-	background: #{colors.$cosmic-gradient};
+	background: #{colors.$cosmic};
 	opacity: 0.25;
 	transition: opacity #{animations.$time-medium} ease-in-out;
 	z-index: -1;

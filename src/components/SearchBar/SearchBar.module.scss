@@ -27,7 +27,7 @@
 	&:hover,
 	&:active,
 	&:focus {
-		border: 1px solid #6a3991;
+		border: 1px solid #{colors.$purple-50};
 	}
 }
 

@@ -36,7 +36,7 @@
 }
 
 .iconButton:not(.Disabled).iconButton:hover::after {
-	background: #{colors.$revolver};
+	background: #{colors.$purple-15};
 }
 
 .iconButton:not(.Disabled):hover {
@@ -45,12 +45,12 @@
 
 .iconButton:not(.Disabled).iconButton:hover {
 	text-shadow: #{colors.$text-glow-primary};
-	background: #{colors.$revolver};
+	background: #{colors.$purple-15};
 }
 
 .selected {
 	color: #{colors.$text-primary};
-	background: #{colors.$revolver};
+	background: #{colors.$purple-15};
 }
 
 .iconButton.selected:after {

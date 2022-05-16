@@ -1,102 +1,113 @@
 // Black
 $black: #000000;
+$almost-black: #0a0a0a;
+
+// Grey
+$grey: #808080;
+$grey-lighter-2: #bfbfbf;
+$grey-lighter-3: #d9d9d9;
+$grey-lighter-4: #f2f2f2;
+$grey-darker: linear-gradient(0deg, #404040, #404040), $grey;
+
+// White
+$white: #ffffff;
 
 // Blues
+$blue: #52cbff;
+$blue-200: #52aeff;
+$blue-300: #5291ff;
+$blue-400: #5274ff;
+
+// Green
+$success-green: #58c573;
+
+// Red
+$red-100: #f58c61;
+$red-200: #f67f7c;
+$red-300: #f6677c;
+$red-400: #f66596;
+$red-500: #f763b0;
+
+// Purple
+$purple-5: #120d16;
+$purple-10: #1a1022;
+$purple-15: #23142f;
+$purple-50: #6a3991;
+$purple-100: #b14eff;
+$purple-dark: #1d0c4a;
+$purple-darkest: #10052e;
+$purple-light: #29175a;
+$purple-lighter: #50207b;
+$purple-lightest: #c169ff;
+$purple-dark-50: rgba(29, 12, 74, 0.5);
+
+// Not named in figma
+$japanese-laurel: #008000;
+$success-darker: #58c57310;
+$iron: #dadcdf;
+$mercury: #e6e6e6;
+$mine-shaft: #232323;
+$electric-violet: #eb00ff;
+$electric-violet-darker: #7000ff;
+$helitrope: #d379ff;
+$helitrope-darker: #af72f3;
+$mauve: #e5baff;
+$bossanova: #472e5b;
+$bunting-op: rgba(29, 21, 74, 0.5);
 $anakiwa: #a1d2ff;
 $anakiwa-darker: #88d7ff;
 $anakiwa-lighter: #9ed0ff;
 $baby-blue: #9dd0ff;
 $blumine-darker: rgba(30, 81, 128, 0.2);
-$doger-blue-lighter: #3ca1ff;
-$doger-blue-darker-2: rgba(60, 161, 255, 0.2);
-$doger-blue-darker-05: rgba(60, 161, 255, 0.05);
-$doger-blue-darker-08: rgba(60, 161, 255, 0.08);
 $dodger-blue: #5257ff;
-$dodger-blue-op: rgba(82, 87, 255, 0.25);
-$blue: #52cbff;
-$malibu-op: rgba(82, 203, 255, 0.25);
-$malibu-op-2: rgba(82, 203, 255, 0.1);
+$dodger-blue-lighter: #3ca1ff;
 $prussian-blue: #002f5b;
-$prussian-blue-darker-1: rgba(0, 209, 255, 0.1);
-$prussian-blue-darker-2: rgba(0, 209, 255, 0.2);
-$prussian-blue-darker-5: rgba(0, 209, 255, 0.5);
-$ocean-op: rgba(82, 174, 255, 0.1);
-
-// Green
-$japanese-laurel: #008000;
-$success-green: #58c573;
-$success-darker: #58c57310;
-
-// Grey
-$grey-lighter-3: #d9d9d9;
-$almost-black: #0a0a0a;
-$grey-lighter-4: #f2f2f2;
-$grey: #808080;
-$iron: #dadcdf;
-$mercury: #e6e6e6;
-$mine-shaft: #232323;
-$grey-lighter-2: #bfbfbf;
-
-// Pink
-$brilliant-rose: #f763b0;
-$brilliant-rose-darker: rgba(247, 99, 176, 0.25);
-$easter-purple: #c169ff;
-$electric-violet: #eb00ff;
-$electric-violet-darker: #7000ff;
-$electric-violet-darker-op: rgba(112, 0, 255, 0.25);
-$helitrope: #d379ff;
-$helitrope-darker: #af72f3;
-$helitrope-darker-op: rgba(175, 114, 243, 0.25);
-$mauve: #e5baff;
-$primary: #b14eff;
-$violet: #1d0c4a;
-
-// Purple
-$black-rock: #10052e;
-$bossanova: #472e5b;
-$bunting-op: rgba(29, 21, 74, 0.5);
-$lovely-purple: #8930ee;
-$lovely-purple-op: rgba(137, 48, 238, 0.25);
-$revolver: #23142f;
-$revolver-darker: #1a1022;
-$revolver-darker-op: #1a102270;
-
-// Red
-$red-300: #f6677c;
-$red-100: #f58c61;
-
-// White
-$white: #ffffff;
+$prussian-blue-lighter: #00d1ff;
 
 // Background
-$background-primary: $cod-gray;
-$background-alt: $violet;
+$background-primary: $almost-black;
+$background-alt: $purple-dark;
 $background-alt-50: $bunting-op;
 $background-50: transparentize($background-primary, 0.5);
 
 // Text
 $text-primary: $white;
 $text-glow-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
-$text-glow-primary: 0px 0px 24px transparentize($primary, 0.6),
-	0px 0px 12px transparentize($primary, 0.6),
-	0px 0px 6px transparentize($primary, 0.6);
+$text-glow-primary: 0px 0px 24px transparentize($purple-100, 0.6),
+	0px 0px 12px transparentize($purple-100, 0.6),
+	0px 0px 6px transparentize($purple-100, 0.6);
 
 // Gradient Colours
-$azure: linear-gradient(90deg, #5257ff 0%, $blue 100%);
+$azure: linear-gradient(90deg, $dodger-blue 0%, $blue 100%);
 $azure-25: linear-gradient(
 	90deg,
 	rgba(82, 87, 255, 0.25) 0%,
 	rgba($blue, 0.25) 100%
 );
-$cosmic-gradient: linear-gradient(
+$azure-50: linear-gradient(
 	90deg,
-	$lovely-purple 0%,
-	$helitrope-darker 100%
+	rgba(82, 87, 255, 0.5) 0%,
+	rgba($blue, 0.5) 100%
 );
-$ocean-gradient-10: linear-gradient(90deg, $ocean-op 0%, $malibu-op-2 100%);
+$coral: linear-gradient(90deg, #f46b47 0%, $red-500, 100%);
+$cosmic: linear-gradient(90deg, #8930ee 0%, #af72f3 100%);
+$cosmic-25: linear-gradient(
+	90deg,
+	rgba(137, 48, 238, 0.25) 0%,
+	rgba(175, 114, 243, 0.25) 100%
+);
+$horizon: linear-gradient(270deg, $blue-200 0%, #8930ee 100%);
+$miami: linear-gradient(90deg, $red-400 0%, $blue 100%);
+$ocean: linear-gradient(90deg, $blue-200 0%, $blue 100%);
+$ocean-10: linear-gradient(
+	90deg,
+	rgba($blue-200, 0.1) 0%,
+	rgba($blue, 0.1) 100%
+);
+$purpink: linear-gradient(90deg, $red-500 0%, #7614e7 100%);
+$sunset: linear-gradient(270deg, $red-300 0%, $red-100 100%);
 $text-input-background-gradient: linear-gradient(
 	94.23deg,
-	$doger-blue-darker-2 0%,
+	rgba($dodger-blue-lighter, 0.2) 0%,
 	$blumine-darker 100%
 );
-$grey-darker: linear-gradient(0deg, #404040, #404040), $grey;

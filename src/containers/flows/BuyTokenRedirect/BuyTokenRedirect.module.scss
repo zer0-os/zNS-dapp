@@ -8,7 +8,7 @@
 	cursor: pointer;
 
 	&:hover .Details {
-		background-color: #{colors.$revolver-darker};
+		background-color: #{colors.$purple-10};
 	}
 
 	.Details {
@@ -19,7 +19,7 @@
 		background: none;
 		height: 100%;
 		padding: 16px;
-		border: 1px solid #{colors.$revolver};
+		border: 1px solid #{colors.$purple-15};
 		border-radius: #{borders.$radius-primary};
 		z-index: 0;
 		transition: all 0.2s ease-in-out 0s;
@@ -31,7 +31,7 @@
 	cursor: default;
 	padding: 32px;
 	border-radius: #{borders.$radius-primary};
-	background: #{colors.$revolver-darker};
+	background: #{colors.$purple-10};
 	border: 1px solid #{colors.$bossanova};
 }
 
@@ -94,7 +94,7 @@
 		text-shadow: none;
 		background-color: transparent;
 		padding-right: 6px;
-		color: #{colors.$concrete};
+		color: #{colors.$grey-lighter-4};
 	}
 
 	&:hover {
@@ -129,7 +129,7 @@
 	// width: 70%;
 	flex-grow: 1;
 	margin-top: 10px;
-	border-top: 1px solid #{colors.$revolver};
+	border-top: 1px solid #{colors.$purple-15};
 }
 
 .UrlRowContainer {

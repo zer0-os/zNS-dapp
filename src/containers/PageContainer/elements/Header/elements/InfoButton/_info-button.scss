@@ -20,7 +20,7 @@
 		&:hover {
 			.info-button {
 				border-radius: calc(#{borders.$radius-primary} / 2);
-				background: #{colors.$revolver-darker};
+				background: #{colors.$purple-10};
 
 				svg {
 					circle {

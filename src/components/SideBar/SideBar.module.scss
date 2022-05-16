@@ -147,7 +147,7 @@ $icon-container-size: 54px;
 					padding: 13px;
 
 					&.Selected {
-						background: #{colors.$revolver-darker};
+						background: #{colors.$purple-10};
 					}
 
 					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
