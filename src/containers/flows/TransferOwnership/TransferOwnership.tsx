@@ -12,6 +12,7 @@ import { Step } from './TransferOwnership.types';
 
 //- Constant Imports
 import { BUTTONS, MESSAGES, STEP_TITLES } from './TransferOwnership.constants';
+import { ROOT_DOMAIN } from 'constants/domains';
 
 //- Utils Imports
 import { isValid } from './TransferOwnership.utils';
@@ -57,6 +58,7 @@ const TransferOwnership = ({
 	const isOwnersAddress = ownerId.toLowerCase() === walletAddress.toLowerCase();
 	const hasInputError = inputError !== '';
 	const valid = isValid(walletAddress);
+	const zna = (ROOT_DOMAIN.length ? ROOT_DOMAIN + '.' : '') + domainName;
 
 	///////////////
 	// Functions //
@@ -109,7 +111,7 @@ const TransferOwnership = ({
 		[Step.Details]: (
 			<NFTDetails
 				creatorId={creatorId}
-				domainName={domainName}
+				domainName={zna}
 				title={name}
 				image={image}
 				walletAddress={walletAddress}

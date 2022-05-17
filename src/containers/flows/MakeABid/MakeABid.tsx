@@ -19,7 +19,6 @@ import {
 	STEP_BAR_HEADING,
 	STEP_CONTENT_TITLES,
 } from './MakeABid.constants';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 //- Library Imports
 import { useWeb3React } from '@web3-react/core';
@@ -29,7 +28,7 @@ import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
-import { getNetworkZNA, truncateDomain } from 'lib/utils';
+import { truncateDomain } from 'lib/utils';
 import { ethers } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useZnsContracts } from 'lib/contracts';
@@ -87,8 +86,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		domain.metadata ?? (domain as any).metadataUri,
 	);
 	const isBidValid = !Number.isNaN(parseFloat(bid));
-	const networkDomainName = getNetworkZNA(ROOT_DOMAIN, domain.name);
-	const formattedDomain = truncateDomain(networkDomainName, maxCharacterLength);
+	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
 
 	///////////////
 	// Functions //

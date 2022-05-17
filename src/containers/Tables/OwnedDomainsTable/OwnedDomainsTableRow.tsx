@@ -129,7 +129,7 @@ const OwnedDomainsTableRow = ({
 			<tr className={styles.Container}>
 				<td className={styles.Left} onClick={onRowClick}>
 					<Artwork
-						domain={getNetworkZNA(ROOT_DOMAIN, domain.name)}
+						domain={domain.name}
 						disableInteraction
 						metadataUrl={domain.metadataUri}
 						id={domain.id}

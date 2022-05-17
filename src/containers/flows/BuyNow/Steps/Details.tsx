@@ -6,12 +6,8 @@
 // Component Imports
 import { Detail, FutureButton, Wizard } from 'components';
 
-// Constants Imports
-import { ROOT_DOMAIN } from 'constants/domains';
-
 // Library Imports
 import { ethers } from 'ethers';
-import { getNetworkZNA } from 'lib/utils';
 import { Data } from '../BuyNow';
 
 // Style Imports
@@ -62,14 +58,12 @@ const Details = ({
 		}
 	};
 
-	const networkDomainName = getNetworkZNA(ROOT_DOMAIN, data.domain);
-
 	return (
 		<div className={styles.Container}>
 			<Wizard.NFTDetails
 				assetUrl={data.assetUrl}
 				creator={data.creator}
-				domain={networkDomainName}
+				domain={data.domain}
 				title={data.title}
 				otherDetails={
 					!didSucceed

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 //- Library Imports
 import { Maybe, NftStatusCard } from 'lib/types';
-import { truncateDomain, zNAToLink } from 'lib/utils';
+import { getNetworkZNA, truncateDomain, zNAToLink } from 'lib/utils';
 import { useStaking } from 'lib/hooks/useStaking';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import { useWeb3React } from '@web3-react/core';
@@ -32,6 +32,7 @@ import {
 
 //- Assets Imports
 import questionMark from './assets/question-mark-icon.svg';
+import { ROOT_DOMAIN } from 'constants/domains';
 
 type MintPreviewProps = {
 	onOpenProfile: () => void;
@@ -54,6 +55,7 @@ const MintPreview = (props: MintPreviewProps) => {
 		statusText?: string,
 	) => {
 		const link = zNAToLink(nft.zNA);
+		const parsedLink = getNetworkZNA(ROOT_DOMAIN, link);
 		const etherscanLink = `${baseEtherscanUri}tx/${nft.transactionHash}`;
 
 		const statusStyle = {
@@ -68,7 +70,7 @@ const MintPreview = (props: MintPreviewProps) => {
 					<div>
 						<div className={`${styles.Image} border-rounded`}>
 							{/* @todo fix hardcoded handling of name */}
-							<Link to={link}>
+							<Link to={parsedLink}>
 								{nft.imageUri.indexOf('cloudinary') > -1 ? (
 									<img
 										alt={ALT_TEXT.NFT_PREVIEW}
@@ -82,7 +84,7 @@ const MintPreview = (props: MintPreviewProps) => {
 						</div>
 						<div className={styles.Info}>
 							<h3>{nft.title}</h3>
-							<Link className={styles.Link} to={link}>
+							<Link className={styles.Link} to={parsedLink}>
 								{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
 							</Link>
 

@@ -127,8 +127,9 @@ export const getAspectRatioForZna = (zna: string): AspectRatio | undefined => {
 };
 
 // Parse ZNA
-export const getNetworkZNA = (rootDomain: string, zna: string) =>
-	rootDomain !== '' ? zna.split('.').splice(1).join('.') : zna;
+export const getNetworkZNA = (rootDomain: string, zna: string) => {
+	return rootDomain !== '' ? zna.split('.').splice(1).join('.') : zna;
+};
 
 // Truncate domain
 export const truncateDomain = (

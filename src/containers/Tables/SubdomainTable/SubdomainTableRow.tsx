@@ -185,7 +185,7 @@ const SubdomainTableRow = (props: any) => {
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
-					domain={getNetworkZNA(ROOT_DOMAIN, domain.name)}
+					domain={domain.name}
 					disableInteraction
 					metadataUrl={domain.metadata}
 					id={domain.id}

@@ -16,8 +16,6 @@ import { DomainData } from '../SetBuyNow';
 // Style Imports
 import styles from './DomainStep.module.scss';
 import { ethers } from 'ethers';
-import { getNetworkZNA } from 'lib/utils';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 type DomainStepProps = {
 	domainData: DomainData;
@@ -50,7 +48,6 @@ const DomainStep = ({
 		];
 	}
 	const hasValidBuyNow = (currentBuyNow ?? 0) > 0;
-	const networkDomainName = getNetworkZNA(ROOT_DOMAIN, domain.domain);
 
 	///////////////////////
 	// State & Variables //
@@ -203,7 +200,7 @@ const DomainStep = ({
 		<>
 			<Wizard.NFTDetails
 				{...domain}
-				domain={networkDomainName}
+				domain={domain.domain}
 				otherDetails={details}
 			/>
 			<div className={styles.Inputs}>{didSucceed ? Success() : Main()}</div>

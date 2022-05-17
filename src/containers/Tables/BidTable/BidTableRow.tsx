@@ -9,12 +9,10 @@ import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Library Imports
 import { ethers } from 'ethers';
-import { getNetworkZNA } from 'lib/utils';
 import { Domain } from 'lib/types';
 
 //- Constants Imports
 import { TOKEN } from './BidTableRow.constants';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 export const ACTION_KEYS = {
 	REBID: 'Rebid',
@@ -70,7 +68,7 @@ const BidTableRow = (props: any) => {
 			<td>
 				<Artwork
 					data-testid={TEST_ID.ARTWORK}
-					domain={getNetworkZNA(ROOT_DOMAIN, bid.domainName)}
+					domain={bid.domainName}
 					disableInteraction
 					metadataUrl={bid.domainMetadataUrl}
 					id={bid.domainId}

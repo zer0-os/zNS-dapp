@@ -10,14 +10,12 @@ import { ConnectToWallet, Overlay } from 'components';
 //-Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useNavbar } from 'lib/hooks/useNavbar';
-import { getNetworkZNA } from 'lib/utils';
 
 //- Constants Imports
 import {
 	Modal,
 	MODAL_VISIBILITY_WINDOW_MIN_WIDTH,
 } from '../../PageContainer.constants';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 interface UseModalReturn {
 	modal?: Modal;
@@ -59,14 +57,14 @@ export const Modals: React.FC<ModalsProps> = ({
 	const { isSearching } = useNavbar();
 
 	const { domainId, domainName, domainOwner, subDomains } = useMemo(() => {
-		const networkDomainName = getNetworkZNA(ROOT_DOMAIN, domain?.name ?? '');
+		const domainName = domain?.name ?? '';
 		const domainId = domain?.id ?? '';
 		const domainOwner = domain?.owner.id ?? '';
 		const subDomains = domain?.subdomains.map(({ name }) => name) ?? [];
 
 		return {
 			domainId,
-			domainName: networkDomainName,
+			domainName,
 			domainOwner,
 			subDomains,
 		};

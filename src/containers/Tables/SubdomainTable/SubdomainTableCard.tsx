@@ -92,7 +92,7 @@ const SubdomainTableCard = (props: any) => {
 
 	return (
 		<ImageCard
-			subHeader={`0://${getNetworkZNA(ROOT_DOMAIN, domain.name)}`}
+			subHeader={`0://${domain.name}`}
 			imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
 			header={domainMetadata?.title}
 			onClick={onClick}

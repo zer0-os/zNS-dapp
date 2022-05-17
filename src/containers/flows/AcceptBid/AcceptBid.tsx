@@ -11,7 +11,7 @@ import Details from './components/Details/Details';
 //- Library Imports
 import useAcceptBid from './hooks/useAcceptBid';
 import { Metadata } from 'lib/types';
-import { formatBidAmount, getNetworkZNA } from 'lib/utils';
+import { formatBidAmount } from 'lib/utils';
 import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useWeb3React } from '@web3-react/core';
@@ -31,7 +31,6 @@ import {
 	STEP_BAR_HEADING,
 	STEP_CONTENT_TITLES,
 } from './AcceptBid.constants';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 //- Styles Imports
 import styles from './AcceptBid.module.scss';
@@ -87,8 +86,6 @@ const AcceptBid = ({
 
 	// Prevent state update to unmounted component
 	const isMounted = useRef(false);
-
-	const networkDomainName = getNetworkZNA(ROOT_DOMAIN, domainName);
 
 	///////////////
 	// Functions //
@@ -253,7 +250,7 @@ const AcceptBid = ({
 					stepContent={stepContent}
 					assetUrl={assetUrl}
 					creator={creatorId}
-					domainName={networkDomainName}
+					domainName={domainName}
 					title={domainTitle}
 					walletAddress={walletAddress}
 					bidAmount={acceptingBid.amount}
@@ -274,7 +271,7 @@ const AcceptBid = ({
 				stepContent={stepContent}
 				assetUrl={assetUrl}
 				creator={creatorId}
-				domainName={networkDomainName}
+				domainName={domainName}
 				title={domainTitle}
 				highestBid={highestBid}
 				bidAmount={acceptingBid?.amount ?? ''}
