@@ -1,0 +1,64 @@
+@use 'styles/variables/dimensions';
+
+.Container {
+	margin-bottom: 24px;
+
+	.Wrapper {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(194px, 1fr));
+		grid-row-start: 1;
+		column-gap: 8px;
+		margin-top: 16px;
+		position: relative;
+
+		.Attribute {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			width: 100%;
+			height: 48px;
+			margin: 4px 0;
+			padding: 8px 16px 8px 20px;
+			background: #120d16;
+			border-radius: 9999px;
+
+			.Traits {
+				font-size: var(--font-size-small);
+				color: #bcbcbc;
+			}
+
+			.Properties {
+				font-size: var(--font-size-small);
+				margin-top: 2px;
+			}
+		}
+
+		.ButtonContainer {
+			width: 100%;
+
+			.ToggleAttributes {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 48px;
+				margin: 4px 0;
+				color: var(--color-accent-1);
+				background: none;
+				cursor: pointer;
+			}
+
+			.SetOpacityAnimation {
+				animation: animatedOpacity var(--animation-time-medium) ease-in-out;
+			}
+		}
+	}
+
+	@media only screen and (max-width: #{dimensions.$breakpoint-mobile-s}) {
+		.Wrapper {
+			grid-template-columns: 1fr;
+			column-gap: 8px;
+		}
+	}
+}

@@ -1,0 +1,104 @@
+@use 'styles/variables/dimensions';
+
+.Container {
+	margin: 16px 0;
+	padding: 16px 0;
+	border-top: 1px solid #1a1022;
+
+	.Title {
+		font-size: 18px;
+		font-weight: 700;
+		line-height: 22px;
+	}
+
+	.Content {
+		margin: 16px 0;
+
+		.HistoryHeader {
+			display: flex;
+			align-items: center;
+			gap: 24px;
+
+			> span {
+				min-width: 100px;
+				flex: 0;
+				font-size: 12px;
+				font-weight: 700;
+				line-height: 15px;
+				text-align: right;
+
+				&.Address {
+					flex: 1 1;
+					text-align: left;
+				}
+			}
+
+			@media only screen and (max-width: #{dimensions.$breakpoint-mobile-xl}) {
+				display: none;
+			}
+		}
+
+		.Histories {
+			margin: 16px 0;
+
+			.HistoryRow {
+				display: flex;
+				align-items: center;
+				gap: 24px;
+				padding: 12px 0;
+
+				> span {
+					display: flex;
+					justify-content: flex-end;
+					min-width: 100px;
+					flex: 0;
+					font-size: 14px;
+					font-weight: 400;
+					line-height: 17px;
+					text-align: right;
+
+					> strong {
+						display: none;
+					}
+
+					&.Address {
+						flex: 1 1;
+						justify-content: flex-start;
+					}
+
+					&.Direction {
+						justify-content: center;
+					}
+				}
+
+				@media only screen and (max-width: #{dimensions.$breakpoint-mobile-xl}) {
+					flex-direction: column;
+					gap: 16px;
+					margin-bottom: 8px;
+					padding: 16px 24px;
+					border: 1px solid #3b3b3b;
+					border-radius: 16px;
+
+					> span {
+						width: 100%;
+						justify-content: space-between !important;
+
+						> strong {
+							display: block;
+						}
+					}
+				}
+			}
+		}
+
+		.Empty {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 14px;
+			font-weight: 400;
+			line-height: 15px;
+			padding: 36px 0;
+		}
+	}
+}
