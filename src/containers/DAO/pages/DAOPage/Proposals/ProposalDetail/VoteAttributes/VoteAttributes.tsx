@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 
 // - Library
 import moment from 'moment';
+import { capitalize } from 'lodash';
 import { Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
-import { capitalizeString } from 'lib/utils/string';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
 import { formatTotalAmountOfTokenMetadata } from '../../PropsalsTable/ProposalsTable.helpers';
 import { truncateWalletAddress } from 'lib/utils';
@@ -11,7 +11,7 @@ import { truncateWalletAddress } from 'lib/utils';
 // - Types
 import { VoteAttribute } from './VoteAttributes.types';
 
-// Constants
+// - Constants
 import { CURRENCY } from 'constants/currency';
 import { VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT } from './VoteAttributes.constants';
 
@@ -39,85 +39,69 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 	}, []);
 
 	const attributes: VoteAttribute[] = useMemo(() => {
-		const result: VoteAttribute[] = [];
-
 		if (!proposal || !metadata) {
-			return result;
+			return [];
 		}
 
 		const wild = formatTotalAmountOfTokenMetadata(metadata);
 
 		// TODO: Should align the attributes
-		result.push({
-			label: 'Status',
-			value: capitalizeString(proposal.state),
-		});
-
-		result.push({
-			label: 'Time Remaining',
-			value: secondsToDhms(moment(proposal.end).diff(moment()) / 1000) || '-',
-		});
-
-		result.push({
-			label: 'Type',
-			value: capitalizeString(proposal.type),
-		});
-
-		result.push({
-			label: 'Amount',
-			value: wild ? wild + ' ' + CURRENCY.WILD : '-',
-		});
-
-		result.push({
-			label: 'Voting Started',
-			value: formatDateTime(proposal.start, 'M/D/YYYY h:m A Z') || '-',
-		});
-
-		result.push({
-			label: 'Voting Ends',
-			value: formatDateTime(proposal.start, 'M/D/YYYY h:m A Z') || '-',
-		});
-
-		result.push({
-			label: 'Voting System',
-			value: '-',
-		});
-
-		result.push({
-			label: 'Execution Criteria',
-			value: '-',
-		});
-
-		result.push({
-			label: 'Creator',
-			value: truncateWalletAddress(proposal.author, 4) || '-',
-		});
-
-		result.push({
-			label: 'Source of Funds',
-			value: '-',
-		});
-
-		result.push({
-			label: 'Recipient',
-			value: truncateWalletAddress(metadata.recipient, 4) || '-',
-		});
-
-		result.push({
-			label: 'Votes Submitted',
-			value: '-',
-		});
-
-		return result;
+		return [
+			{
+				label: 'Status',
+				value: capitalize(proposal.state),
+			},
+			{
+				label: 'Time Remaining',
+				value: secondsToDhms(moment(proposal.end).diff(moment()) / 1000) || '-',
+			},
+			{
+				label: 'Type',
+				value: capitalize(proposal.type),
+			},
+			{
+				label: 'Amount',
+				value: wild ? wild + ' ' + CURRENCY.WILD : '-',
+			},
+			{
+				label: 'Voting Started',
+				value: formatDateTime(proposal.start, 'M/D/YYYY h:m A Z') || '-',
+			},
+			{
+				label: 'Voting Ends',
+				value: formatDateTime(proposal.start, 'M/D/YYYY h:m A Z') || '-',
+			},
+			{
+				label: 'Voting System',
+				value: '-',
+			},
+			{
+				label: 'Execution Criteria',
+				value: '-',
+			},
+			{
+				label: 'Creator',
+				value: truncateWalletAddress(proposal.author, 4) || '-',
+			},
+			{
+				label: 'Source of Funds',
+				value: '-',
+			},
+			{
+				label: 'Recipient',
+				value: truncateWalletAddress(metadata.recipient || '', 4) || '-',
+			},
+			{
+				label: 'Votes Submitted',
+				value: '-',
+			},
+		];
 	}, [proposal, metadata]);
 
-	const initialHiddenAttributesCount: number = useMemo(() => {
-		if (attributes.length > initialVisibleAttributesCount) {
-			return attributes.length - initialVisibleAttributesCount;
-		}
-
-		return 0;
-	}, [attributes, initialVisibleAttributesCount]);
+	const initialHiddenAttributesCount: number = Math.max(
+		attributes.length - initialVisibleAttributesCount,
+		0,
+	);
 
 	const visibleAttributes: VoteAttribute[] = useMemo(() => {
 		if (!attributes) {

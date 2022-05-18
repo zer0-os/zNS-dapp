@@ -1,5 +1,3 @@
-import { capitalize } from 'lodash';
-
 /**
  * Truncate string
  * @param str to truncate
@@ -15,10 +13,3 @@ export const truncateString = (
 	str.length > len
 		? str.slice(0, len > tail.length ? len - tail.length : len) + tail
 		: str;
-
-/**
- * Capitalize string
- * @param str to capitalize
- * @returns capitalized string
- */
-export const capitalizeString = (str: string) => capitalize(str);

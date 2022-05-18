@@ -28,7 +28,8 @@ export const isZnsToken = (label: string): boolean => {
  */
 export const formatTotalAmountOfTokenMetadata = (
 	tokenMetaData?: TokenMetaData,
-): string | null => {
+	asNumber: boolean = false,
+): string | number | null => {
 	if (!tokenMetaData) return null;
 
 	const { amount, decimals } = tokenMetaData;
@@ -39,6 +40,10 @@ export const formatTotalAmountOfTokenMetadata = (
 		Number(formatUnits(amount, decimals)),
 		Number.MAX_SAFE_INTEGER,
 	);
+
+	if (asNumber) {
+		return amountInWILD;
+	}
 
 	return toFiat(amountInWILD);
 };
@@ -52,16 +57,9 @@ export const formatAmountInUSDOfTokenMetadata = (
 	wildPriceUsd: number,
 	tokenMetaData?: TokenMetaData,
 ): string | null => {
-	if (!tokenMetaData) return null;
+	const amountInWILD = formatTotalAmountOfTokenMetadata(tokenMetaData, true);
 
-	const { amount, decimals } = tokenMetaData;
+	if (!amountInWILD) return null;
 
-	if (!amount || !decimals) return null;
-
-	const amountInWILD = Math.min(
-		Number(formatUnits(amount, decimals)),
-		Number.MAX_SAFE_INTEGER,
-	);
-
-	return '$' + toFiat(amountInWILD * wildPriceUsd);
+	return '$' + toFiat(Number(amountInWILD) * wildPriceUsd);
 };
