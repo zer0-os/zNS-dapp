@@ -30,8 +30,8 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 	],
 	[NETWORK_TYPES.RINKEBY]: [
 		{
-			id: 'joshupgig.eth',
-			ens: 'joshupgig.eth',
+			id: 'zdao-sky.eth',
+			ens: 'zdao-sky.eth',
 			zNA: 'one',
 			title: 'zDAO Testing 1',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',

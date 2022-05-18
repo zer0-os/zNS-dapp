@@ -1,0 +1,33 @@
+@use 'styles/variables/dimensions';
+
+.Container {
+	.NavLink {
+		display: flex;
+		align-items: center;
+
+		color: var(--color-text-primary);
+		font-size: 14px;
+		font-weight: bold;
+
+		&:hover {
+			color: var(--color-text-primary);
+			text-shadow: var(--glow-text-white);
+		}
+
+		svg {
+			height: 1rem;
+			width: 1rem;
+			margin-right: 4px;
+		}
+	}
+
+	.Wrapper {
+		padding: 16px 0;
+
+		.Title {
+			font-size: 36px;
+			font-weight: 700;
+			line-height: 44px;
+		}
+	}
+}
