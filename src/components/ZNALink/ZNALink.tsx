@@ -35,8 +35,6 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const segments = splitZna.map((s, index) => {
 		const name = index === 0 ? s : s;
 
-		console.log(index);
-
 		let location =
 			ROOT_DOMAIN !== ''
 				? index === 0
