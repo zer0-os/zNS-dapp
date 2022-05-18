@@ -1,6 +1,6 @@
 import { useMemo, useCallback } from 'react';
 import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
-import { Maybe, Metadata } from 'lib/types';
+import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { parseDomainMetadata } from 'lib/metadata';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import {
@@ -16,6 +16,7 @@ type UseDomainSettingsHandlersProps = {
 		library: Maybe<Web3Provider>;
 		onClose: () => void;
 		setDomainMetadata: (v: Maybe<Metadata>) => void;
+		domain: Maybe<DisplayParentDomain>;
 	};
 	localState: {
 		localMetadata: Maybe<DomainMetadata>;
@@ -130,8 +131,13 @@ export const useDomainSettingsHandlers = ({
 
 	/* Local Actions */
 	const handleShowingLockedWarning = useCallback(() => {
-		localActions.setWarning(DomainSettingsWarning.LOCKED);
-	}, [localActions]);
+		localActions.setSuccess(undefined);
+		localActions.setWarning(
+			props.domain?.lockedBy.id === props.domain?.owner.id
+				? DomainSettingsWarning.LOCKED
+				: DomainSettingsWarning.LOCKED_BY,
+		);
+	}, [localActions, props]);
 
 	const handleLocalMetadataChange = useCallback(
 		(localMetadata: DomainMetadata) => {

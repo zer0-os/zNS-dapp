@@ -1,7 +1,21 @@
+//-React Imports
 import React, { useMemo } from 'react';
+
+//- Library Improts
+import { Maybe, DisplayDomain } from 'lib/types';
 import classnames from 'classnames';
-import { FutureButton, QuestionButton, Tooltip, IconButton } from 'components';
-import { Maybe } from 'lib/types';
+
+//-Component Imports
+import {
+	FutureButton,
+	QuestionButton,
+	Tooltip,
+	IconButton,
+	Member,
+} from 'components';
+import './_domain-settings-footer.scss';
+
+//- Constants Imports
 import {
 	DomainSettingsWarning,
 	DomainSettingsSuccess,
@@ -10,12 +24,14 @@ import {
 	DomainSettingsTooltipType,
 	DOMAIN_SETTINGS_TOOLTIPS,
 } from '../../DomainSettings.constants';
+
+//- Assets Imports
 import unlockIcon from './assets/unlock.svg';
 import lockIcon from './assets/lock.svg';
 import lockWarningIcon from './assets/lock-warning.svg';
-import './_domain-settings-footer.scss';
 
 type DomainSettingsFooterProps = {
+	domain: Maybe<DisplayDomain>;
 	isLocked: boolean;
 	isChanged: boolean;
 	isSaved: boolean;
@@ -30,6 +46,7 @@ type DomainSettingsFooterProps = {
 };
 
 export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
+	domain,
 	isLocked,
 	isChanged,
 	isSaved,
@@ -61,10 +78,17 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 				{warning && (
 					<label
 						className={classnames('warning', {
-							is_locked_warning: warning === DomainSettingsWarning.LOCKED,
+							is_locked_warning:
+								warning === DomainSettingsWarning.LOCKED ||
+								warning === DomainSettingsWarning.LOCKED_BY,
 						})}
 					>
 						{DOMAIN_SETTINGS_WARNING_MESSAGES[warning]}
+						{warning === DomainSettingsWarning.LOCKED_BY && domain ? (
+							<Member id={domain?.lockedBy.id} />
+						) : (
+							''
+						)}
 					</label>
 				)}
 				{success && (

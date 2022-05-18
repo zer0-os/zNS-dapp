@@ -3,6 +3,7 @@
  */
 export enum DomainSettingsWarning {
 	LOCKED = 'LOCKED',
+	LOCKED_BY = 'LOCKED_BY',
 	TRANSACTION_DENIED = 'TRANSACTION_DENIED',
 	TRANSACTION_FAILED = 'TRANSACTION_FAILED',
 }
@@ -14,6 +15,8 @@ export enum DomainSettingsSuccess {
 
 export const DOMAIN_SETTINGS_WARNING_MESSAGES = {
 	[DomainSettingsWarning.LOCKED]: 'Please unlock to make changes.',
+	[DomainSettingsWarning.LOCKED_BY]:
+		'You cannot unlock the Metadata to make changes as it was locked by ',
 	[DomainSettingsWarning.TRANSACTION_DENIED]: 'Transaction denied by wallet.',
 	[DomainSettingsWarning.TRANSACTION_FAILED]:
 		'Transaction failed, try again later.',
