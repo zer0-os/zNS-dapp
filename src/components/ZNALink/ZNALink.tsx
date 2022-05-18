@@ -37,7 +37,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 
 		let location =
 			ROOT_DOMAIN !== ''
-				? ''
+				? splitZna.slice(1, index).concat(name).join('.')
 				: index === 0
 				? name
 				: splitZna.slice(0, index).concat(name).join('.');
