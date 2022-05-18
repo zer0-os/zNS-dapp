@@ -6,7 +6,9 @@ type UseProposalMetadataReturn = {
 	isLoading: boolean;
 };
 
-const useProposalMetadata = (proposal: Proposal): UseProposalMetadataReturn => {
+const useProposalMetadata = (
+	proposal?: Proposal,
+): UseProposalMetadataReturn => {
 	const [metadata, setMetadata] = useState<TokenMetaData | undefined>();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -14,7 +16,7 @@ const useProposalMetadata = (proposal: Proposal): UseProposalMetadataReturn => {
 		setMetadata(undefined);
 		setIsLoading(true);
 		proposal
-			.getTokenMetadata()
+			?.getTokenMetadata()
 			.then((m: TokenMetaData) => {
 				setMetadata(m);
 			})

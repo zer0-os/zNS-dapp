@@ -1,0 +1,45 @@
+.Container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 16px 0;
+
+	.ValueLabel {
+		flex: 0;
+		font-weight: 700;
+		font-size: 12px;
+		line-height: 15px;
+
+		&.ValueLabelLeft {
+			color: #52cbff;
+		}
+
+		&.ValueLabelRight {
+			color: #f763b0;
+		}
+	}
+
+	.Progressbar {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 8px;
+		margin: 0 8px;
+		flex: 1;
+		border-radius: 8px;
+		overflow: hidden;
+
+		.ProgressbarItem {
+			height: 100%;
+			opacity: 0.75;
+
+			&.ProgressbarItemLeft {
+				background: linear-gradient(90deg, #5257ff 0%, #52cbff 100%);
+			}
+
+			&.ProgressbarItemRight {
+				background: linear-gradient(90deg, #f763b0 0%, #7614e7 100%);
+			}
+		}
+	}
+}

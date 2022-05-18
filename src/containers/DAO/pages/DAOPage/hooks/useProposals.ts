@@ -17,7 +17,6 @@ const useProposals = (dao?: zDAO): UseProposalsReturn => {
 			?.listProposals()
 			.then((p) => {
 				setProposals(p);
-				console.log('found proposals:', p);
 			})
 			.catch((e) => {
 				console.error(e);
