@@ -45,7 +45,10 @@ export const formatTotalAmountOfTokenMetadata = (
 		return amountInWILD;
 	}
 
-	return toFiat(amountInWILD);
+	return toFiat(amountInWILD, {
+		maximumFractionDigits: 2,
+		minimumFractionDigits: 0,
+	});
 };
 
 /**

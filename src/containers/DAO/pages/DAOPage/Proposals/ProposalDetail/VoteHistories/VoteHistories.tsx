@@ -59,8 +59,15 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 				id: index,
 				address: truncateWalletAddress(vote.voter, 4),
 				direction: proposal.choices[vote.choice],
-				amount: toFiat((vote.power / sumScores) * Number(wild)),
-				power: toFiat((vote.power / sumScores) * 100) + '%',
+				amount: toFiat((vote.power / sumScores) * Number(wild), {
+					maximumFractionDigits: 2,
+					minimumFractionDigits: 0,
+				}),
+				power:
+					toFiat((vote.power / sumScores) * 100, {
+						maximumFractionDigits: 2,
+						minimumFractionDigits: 0,
+					}) + '%',
 			};
 		});
 	}, [proposal, metadata, votes]);
@@ -72,7 +79,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 				<div className={styles.HistoryHeader}>
 					<span className={styles.Address}>Address</span>
 					<span className={styles.Direction}>Vote Direction</span>
-					<span className={styles.Amount}>Amount (WILD)</span>
+					<span className={styles.Amount}>Amount ({metadata?.symbol})</span>
 					<span className={styles.Power}>Voting Power</span>
 				</div>
 
@@ -102,7 +109,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 
 										{/* Amount (WILD) */}
 										<span className={styles.Amount}>
-											<strong>Amount (WILD)</strong>
+											<strong>Amount ({metadata?.symbol})</strong>
 											{history.amount}
 										</span>
 

@@ -12,7 +12,6 @@ import { truncateWalletAddress } from 'lib/utils';
 import { VoteAttribute } from './VoteAttributes.types';
 
 // - Constants
-import { CURRENCY } from 'constants/currency';
 import { VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT } from './VoteAttributes.constants';
 
 //- Style Imports
@@ -57,11 +56,11 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Type',
-				value: capitalize(proposal.type),
+				value: 'Voting System',
 			},
 			{
 				label: 'Amount',
-				value: wild ? wild + ' ' + CURRENCY.WILD : '-',
+				value: wild ? wild + ' ' + metadata.symbol : '-',
 			},
 			{
 				label: 'Voting Started',
@@ -73,11 +72,11 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Voting System',
-				value: '-',
+				value: 'single-choice-voting',
 			},
 			{
 				label: 'Execution Criteria',
-				value: '-',
+				value: 'Absolute Majority',
 			},
 			{
 				label: 'Creator',

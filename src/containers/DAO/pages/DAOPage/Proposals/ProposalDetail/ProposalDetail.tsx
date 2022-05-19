@@ -5,6 +5,8 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { zDAO, ProposalId } from '@zero-tech/zdao-sdk';
 
 // - Hooks
+import { useDidMount } from 'lib/hooks/useDidMount';
+import { useWillUnmount } from 'lib/hooks/useWillUnmount';
 import useProposal from '../../hooks/useProposal';
 import useProposalMetadata from '../../hooks/useProposalMetadata';
 
@@ -23,6 +25,14 @@ type ProposalDetailProps = {
 };
 
 export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
+	useDidMount(() => {
+		document.getElementById('dao-page-nav-tabs')!.style.display = 'none';
+	});
+
+	useWillUnmount(() => {
+		document.getElementById('dao-page-nav-tabs')!.style.display = 'block';
+	});
+
 	const history = useHistory();
 	const { proposalId } = useParams<{ proposalId: ProposalId }>();
 
@@ -52,7 +62,10 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 
 						<VoteAttributes proposal={proposal} metadata={metadata} />
 
-						<MarkDownViewer text={proposal?.body} />
+						<MarkDownViewer
+							text={proposal?.body}
+							className={styles.MarkDownViewerContent}
+						/>
 
 						<VoteHistories proposal={proposal} metadata={metadata} />
 					</div>
