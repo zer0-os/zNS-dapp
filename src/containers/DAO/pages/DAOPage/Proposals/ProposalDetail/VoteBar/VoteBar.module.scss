@@ -29,6 +29,10 @@
 		border-radius: 8px;
 		overflow: hidden;
 
+		&.Empty {
+			border: 1px solid #3b3b3b;
+		}
+
 		.ProgressbarItem {
 			height: 100%;
 			opacity: 0.75;
