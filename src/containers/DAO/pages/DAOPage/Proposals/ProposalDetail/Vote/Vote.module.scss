@@ -1,0 +1,89 @@
+.Container {
+	position: sticky;
+	bottom: 0;
+
+	width: 100%;
+	display:flex;
+	justify-content: center;
+	align-items: center;
+
+	padding: 42px 16px 16px 16px;
+	background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, #0A0A0A 28.34%);
+}
+
+.Choices {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 100%;
+	gap: 32px;
+
+	button {
+		padding: 8px 48.5px;
+		font-size: 18px;
+		font-weight: 700;
+		background: none;
+		border-radius: 1000px;
+		color: white;
+		border: 1px solid var(--color-primary);
+	}
+}
+
+.Approve {
+	background: linear-gradient(90deg, #5257ff 0%, #52cbff 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.Deny {
+	background: linear-gradient(90deg, #f763b0 0%, #7614e7 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+// MODAL STUFF
+
+.Modal {
+
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+
+	.Header {
+		margin-bottom: 0;
+	}
+
+	> * {
+		margin: 0;
+	}
+
+	p {
+		padding: 0;
+		margin: 0;
+		text-align: center;
+	}
+
+	.Error {
+		text-align: center;
+	}
+
+	.Details {
+		display: flex;
+		flex-direction: column;
+		gap: 3.5px;
+
+		> li {
+			display: flex;
+			justify-content: space-between;
+
+			font-weight: 700;
+
+			> span:first-of-type {
+				color: var(--color-grey-lighter-2);
+				font-weight: 400;
+			}
+		}
+	}
+
+}

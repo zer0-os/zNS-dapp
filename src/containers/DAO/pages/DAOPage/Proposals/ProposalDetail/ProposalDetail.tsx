@@ -18,6 +18,7 @@ import { VoteHistories } from './VoteHistories';
 
 // - Styles
 import styles from './ProposalDetail.module.scss';
+import Vote from './Vote/Vote';
 
 type ProposalDetailProps = {
 	dao?: zDAO;
@@ -77,12 +78,7 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 				)}
 			</div>
 
-			{!isLoading && (
-				<div>
-					{/* TODO:: This is Footer component cc @Brett */}
-					Footer
-				</div>
-			)}
+			{!isLoading && proposal && <Vote proposal={proposal} />}
 		</div>
 	);
 };
