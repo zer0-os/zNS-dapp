@@ -6,7 +6,10 @@ import { capitalize, sum } from 'lodash';
 import { Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
 import { toFiat } from 'lib/currency';
-import { formatTotalAmountOfTokenMetadata } from '../../PropsalsTable/ProposalsTable.helpers';
+import {
+	formatProposalStatus,
+	formatTotalAmountOfTokenMetadata,
+} from '../../Proposals.helpers';
 import { truncateWalletAddress } from 'lib/utils';
 
 // - Types
@@ -62,7 +65,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 		return [
 			{
 				label: 'Status',
-				value: capitalize(proposal.state),
+				value: formatProposalStatus(proposal),
 			},
 			{
 				label: 'Time Remaining',

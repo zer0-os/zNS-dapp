@@ -5,7 +5,7 @@ import { sum } from 'lodash';
 import { Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { toFiat } from 'lib/currency';
 import { truncateWalletAddress } from 'lib/utils';
-import { formatTotalAmountOfTokenMetadata } from '../../PropsalsTable/ProposalsTable.helpers';
+import { formatTotalAmountOfTokenMetadata } from '../../Proposals.helpers';
 
 // - Component
 import { LoadingIndicator } from 'components';

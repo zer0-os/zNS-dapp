@@ -8,12 +8,13 @@ import useTimer from 'lib/hooks/useTimer';
 
 // Lib
 import moment from 'moment';
+import { truncateString } from 'lib/utils/string';
 import {
+	formatProposalStatus,
 	formatProposalEndTime,
 	formatTotalAmountOfTokenMetadata,
 	formatAmountInUSDOfTokenMetadata,
-} from './ProposalsTable.helpers';
-import { truncateString } from 'lib/utils/string';
+} from '../Proposals.helpers';
 
 // Components
 import { LoadingIndicator } from 'components';
@@ -26,7 +27,7 @@ import styles from './ProposalsTableRow.module.scss';
 import { Proposal } from '@zero-tech/zdao-sdk';
 
 // Constants
-import { DEFAULT_TIMMER_INTERVAL } from './ProposalsTable.constants';
+import { DEFAULT_TIMMER_INTERVAL } from '../Proposals.constants';
 import { CURRENCY } from 'constants/currency';
 
 interface ProposalsTableRowProps {
@@ -95,7 +96,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 			<td className={styles.Title}>{truncateString(title, 150)}</td>
 
 			{/* Status */}
-			<td className={styles.Status}>{state}</td>
+			<td className={styles.Status}>{formatProposalStatus(data)}</td>
 
 			{/* Closes with humanized format */}
 			<td

@@ -6,7 +6,10 @@ import useProposalMetadata from '../../hooks/useProposalMetadata';
 
 // Lib
 import moment from 'moment';
-import { formatTotalAmountOfTokenMetadata } from './ProposalsTable.helpers';
+import {
+	formatProposalStatus,
+	formatTotalAmountOfTokenMetadata,
+} from '../Proposals.helpers';
 import { truncateString } from 'lib/utils/string';
 
 // Components
@@ -20,7 +23,7 @@ import styles from './ProposalsTableCard.module.scss';
 import { Proposal } from '@zero-tech/zdao-sdk';
 
 // Constants
-import { DEFAULT_TIMMER_EXPIRED_LABEL } from './ProposalsTable.constants';
+import { DEFAULT_TIMMER_EXPIRED_LABEL } from '../Proposals.constants';
 import { CURRENCY } from 'constants/currency';
 import { ChicletType } from 'components/Chiclet/Chiclet';
 
@@ -91,7 +94,9 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 				<Chiclet type={cardData.closing.type}>
 					{cardData.closing.message}
 				</Chiclet>
-				<Chiclet className={styles.Status}>{state}</Chiclet>
+				<Chiclet className={styles.Status}>
+					{formatProposalStatus(data)}
+				</Chiclet>
 			</div>
 		</div>
 	);
