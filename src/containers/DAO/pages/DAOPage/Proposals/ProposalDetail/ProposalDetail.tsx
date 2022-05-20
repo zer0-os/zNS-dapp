@@ -25,11 +25,17 @@ type ProposalDetailProps = {
 
 export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 	useDidMount(() => {
-		document.getElementById('dao-page-nav-tabs')!.style.display = 'none';
+		const nav = document.getElementById('dao-page-nav-tabs');
+		if (nav) {
+			nav.style.display = 'none';
+		}
 	});
 
 	useWillUnmount(() => {
-		document.getElementById('dao-page-nav-tabs')!.style.display = 'block';
+		const nav = document.getElementById('dao-page-nav-tabs');
+		if (nav) {
+			nav.style.display = 'block';
+		}
 	});
 
 	const history = useHistory();
