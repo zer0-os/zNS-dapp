@@ -62,7 +62,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 		});
 
 		// TODO: Should align the attributes
-		return [
+		const parsedAttributes = [
 			{
 				label: 'Status',
 				value: formatProposalStatus(proposal),
@@ -115,6 +115,10 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 					: '-',
 			},
 		];
+
+		return parsedAttributes.filter(
+			({ value }) => value !== '' && value !== '-',
+		);
 	}, [proposal, votes]);
 
 	const initialHiddenAttributesCount: number = Math.max(
