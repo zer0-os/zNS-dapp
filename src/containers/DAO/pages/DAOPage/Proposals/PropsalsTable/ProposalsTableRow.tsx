@@ -118,7 +118,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 				) : (
 					<>
 						<p>{amount.wild}</p>
-						<p>{amount.usd}</p>
+						<p>{amount.usd ?? ''}</p>
 					</>
 				)}
 			</td>
