@@ -1,8 +1,30 @@
 import { formatUnits } from 'ethers/lib/utils';
-import { TokenMetaData } from '@zero-tech/zdao-sdk';
+import { Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
+import { isEmpty } from 'lodash';
 import { toFiat } from 'lib/currency';
 import { secondsToDhms } from 'lib/utils/datetime';
-import { DEFAULT_TIMMER_EXPIRED_LABEL } from './ProposalsTable.constants';
+import { DEFAULT_TIMMER_EXPIRED_LABEL } from './Proposals.constants';
+
+/**
+ * Format proposal status
+ * @param proposal to format
+ * @returns formatted proposal status string
+ */
+export const formatProposalStatus = (proposal?: Proposal): string => {
+	if (proposal) {
+		const isClosed = proposal.state === 'closed';
+		if (isEmpty(proposal.scores))
+			return isClosed ? 'Expired' : 'More Votes Needed';
+
+		if (proposal.scores[0] > proposal.scores[1]) {
+			return isClosed ? 'Approved' : 'Approval Favoured';
+		} else {
+			return isClosed ? 'Denied' : 'Denial Favoured';
+		}
+	}
+
+	return '';
+};
 
 /**
  * Format a time diff as humanized string
@@ -15,10 +37,6 @@ export const formatProposalEndTime = (timeDiff: number): string => {
 	}
 
 	return secondsToDhms(timeDiff / 1000);
-};
-
-export const isZnsToken = (label: string): boolean => {
-	return label.toLowerCase() === 'zns';
 };
 
 /**
@@ -45,7 +63,10 @@ export const formatTotalAmountOfTokenMetadata = (
 		return amountInWILD;
 	}
 
-	return toFiat(amountInWILD);
+	return toFiat(amountInWILD, {
+		maximumFractionDigits: 2,
+		minimumFractionDigits: 0,
+	});
 };
 
 /**
