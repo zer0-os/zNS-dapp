@@ -3,6 +3,7 @@ import { Proposal } from '@zero-tech/zdao-sdk';
 import { GenericTable } from 'components';
 import ProposalsTableRow from './ProposalsTableRow';
 import ProposalsTableCard from './ProposalsTableCard';
+import styles from './ProposalsTable.module.scss';
 
 type ProposalsTableProps = {
 	proposals?: Proposal[];
@@ -37,21 +38,23 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
 	isLoading,
 }) => {
 	return (
-		<GenericTable
-			alignments={[0, 0, 0, 1]}
-			data={proposals}
-			itemKey={'id'}
-			infiniteScroll
-			headers={HEADERS}
-			rowComponent={ProposalsTableRow}
-			gridComponent={ProposalsTableCard}
-			isLoading={isLoading}
-			loadingText={'Loading Proposals'}
-			searchKey={['title', 'author']}
-			searchBy={'proposal title'}
-			emptyText={'This DAO has no proposals.'}
-			isSingleGridColumn
-		/>
+		<div className={styles.Container}>
+			<GenericTable
+				alignments={[0, 0, 0, 1]}
+				data={proposals}
+				itemKey={'id'}
+				infiniteScroll
+				headers={HEADERS}
+				rowComponent={ProposalsTableRow}
+				gridComponent={ProposalsTableCard}
+				isLoading={isLoading}
+				loadingText={'Loading Proposals'}
+				searchKey={['title', 'author']}
+				searchBy={'proposal title'}
+				emptyText={'This DAO has no proposals.'}
+				isSingleGridColumn
+			/>
+		</div>
 	);
 };
 

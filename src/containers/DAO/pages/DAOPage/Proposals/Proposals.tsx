@@ -1,15 +1,16 @@
 import React from 'react';
-import { zDAO } from '@zero-tech/zdao-sdk';
-import useProposals from '../hooks/useProposals';
+import { Proposal } from '@zero-tech/zdao-sdk';
 import ProposalsTable from './PropsalsTable/ProposalsTable';
 
 type ProposalsProps = {
-	dao?: zDAO;
+	proposals?: Proposal[];
+	isLoading: boolean;
 };
 
-export const Proposals: React.FC<ProposalsProps> = ({ dao }) => {
-	const { proposals, isLoading } = useProposals(dao);
-
+export const Proposals: React.FC<ProposalsProps> = ({
+	proposals,
+	isLoading,
+}) => {
 	return <ProposalsTable proposals={proposals} isLoading={isLoading} />;
 };
 

@@ -13,12 +13,13 @@ import {
 	formatTotalAmountOfTokenMetadata,
 	formatAmountInUSDOfTokenMetadata,
 } from './ProposalsTable.helpers';
+import { truncateString } from 'lib/utils/string';
 
 // Components
 import { LoadingIndicator } from 'components';
 
 // Styles
-import classNames from 'classnames';
+import classNames from 'classnames/bind';
 import styles from './ProposalsTableRow.module.scss';
 
 // Types
@@ -33,6 +34,8 @@ interface ProposalsTableRowProps {
 	onRowClick?: () => void;
 	className: string;
 }
+
+const cx = classNames.bind(styles);
 
 /**
  * A single row item for the Proposals table
@@ -65,6 +68,19 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 		};
 	}, [metadata, wildPriceUsd]);
 
+	const closingStatus = useMemo(() => {
+		let status = 'normal';
+		if (!isConcluded && time < 24 * 3600 * 1000) {
+			// less than 1 hour
+			status = 'error';
+		} else if (!isConcluded && time <= 24 * 3600 * 1000) {
+			// less than 1 day
+			status = 'warning';
+		}
+
+		return status;
+	}, [isConcluded, time]);
+
 	const handleRowClick = useCallback(() => {
 		history.push(`${location.pathname}/${id}`);
 		onRowClick && onRowClick();
@@ -76,18 +92,26 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 			onClick={handleRowClick}
 		>
 			{/* Title */}
-			<td className={styles.Title}>{title}</td>
+			<td className={styles.Title}>{truncateString(title, 150)}</td>
 
 			{/* Status */}
 			<td className={styles.Status}>{state}</td>
 
 			{/* Closes with humanized format */}
-			<td className={styles.Timer}>{formatProposalEndTime(time)}</td>
+			<td
+				className={cx(styles.Timer, {
+					Concluded: isConcluded,
+					Warning: closingStatus === 'warning',
+					Error: closingStatus === 'error',
+				})}
+			>
+				{formatProposalEndTime(time)}
+			</td>
 
 			{/* Total amount of tokens */}
 			<td className={styles.Amount}>
 				{isMetadataLoading ? (
-					<LoadingIndicator text="" />
+					<LoadingIndicator text="" className={styles.LoadingMetadata} />
 				) : (
 					<>
 						<p>{amount.wild}</p>
