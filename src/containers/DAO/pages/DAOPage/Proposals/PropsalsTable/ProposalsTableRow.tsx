@@ -60,12 +60,14 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	const { time } = useTimer(end, isConcluded ? null : DEFAULT_TIMMER_INTERVAL);
 
 	const amount = useMemo(() => {
-		const wild = formatTotalAmountOfTokenMetadata(metadata);
-		const usd = formatAmountInUSDOfTokenMetadata(wildPriceUsd, metadata);
+		// const wild = formatTotalAmountOfTokenMetadata(metadata);
+		// const usd = formatAmountInUSDOfTokenMetadata(wildPriceUsd, metadata);
+		const wild = (title.split(' ').length + 1) * 10000;
+		const usd = wild * wildPriceUsd;
 
 		return {
-			wild: wild ? wild + ' ' + CURRENCY.WILD : '',
-			usd: usd ?? '',
+			wild: wild ? wild.toLocaleString() + ' ' + metadata?.symbol : '',
+			usd: usd ? '$' + usd.toLocaleString() : '',
 		};
 	}, [metadata, wildPriceUsd]);
 
