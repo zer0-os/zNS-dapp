@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { zDAO, Proposal, ProposalId, Vote } from '@zero-tech/zdao-sdk';
 
 type UseProposalReturn = {
@@ -18,27 +18,24 @@ const useProposal = (
 	const [votes, setVotes] = useState<Vote[]>([]);
 	const [isLoadingVotes, setIsLoadingVotes] = useState<boolean>(false);
 
-	const fetchVotes = useCallback(
-		async (proposal: Proposal) => {
-			if (proposal) {
-				setIsLoadingVotes(true);
-				setVotes([]);
+	const fetchVotes = async (proposal: Proposal) => {
+		if (proposal) {
+			setIsLoadingVotes(true);
+			setVotes([]);
 
-				try {
-					const votes = await proposal.listVotes();
+			try {
+				const votes = await proposal.listVotes();
 
-					setVotes(votes);
-				} catch (e) {
-					console.error(e);
-				} finally {
-					setIsLoadingVotes(false);
-				}
+				setVotes(votes);
+			} catch (e) {
+				console.error(e);
+			} finally {
+				setIsLoadingVotes(false);
 			}
-		},
-		[setIsLoadingVotes, setVotes],
-	);
+		}
+	};
 
-	const fetchProposal = useCallback(async () => {
+	const fetchProposal = async () => {
 		if (dao) {
 			setProposal(undefined);
 			setIsLoading(true);
@@ -59,7 +56,7 @@ const useProposal = (
 				setIsLoading(false);
 			}
 		}
-	}, [dao, id, shouldLoadVotes, setProposal, setIsLoading, fetchVotes]);
+	};
 
 	React.useEffect(() => {
 		fetchProposal();

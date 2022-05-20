@@ -162,7 +162,12 @@ const DAOPage: React.FC = () => {
 						<Route
 							exact
 							path={to(ROUTES.ZDAO_PROPOSALS)}
-							component={() => <Proposals dao={dao} />}
+							render={() => (
+								<Proposals
+									proposals={proposals}
+									isLoading={isLoadingProposals}
+								/>
+							)}
 						/>
 						<Route
 							exact
