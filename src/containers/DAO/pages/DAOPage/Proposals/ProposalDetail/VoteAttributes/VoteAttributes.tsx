@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 
 // - Library
 import moment from 'moment';
-import { capitalize, sum } from 'lodash';
+import { sum } from 'lodash';
 import { Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
 import { toFiat } from 'lib/currency';

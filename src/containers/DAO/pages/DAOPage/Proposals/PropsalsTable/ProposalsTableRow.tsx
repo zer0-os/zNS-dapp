@@ -53,7 +53,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 
 	const { wildPriceUsd } = useCurrency(false);
 
-	const { id, title, state, end } = data;
+	const { id, title, end } = data;
 
 	const isConcluded = moment(end).isBefore(moment());
 

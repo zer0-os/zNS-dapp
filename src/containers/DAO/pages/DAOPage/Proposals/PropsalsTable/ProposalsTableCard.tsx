@@ -43,7 +43,7 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 
 	const { metadata, isLoading: isMetadataLoading } = useProposalMetadata(data);
 
-	const { id, title, body, state, end } = data;
+	const { id, title, body, end } = data;
 
 	const cardData = useMemo(() => {
 		const wild = formatTotalAmountOfTokenMetadata(metadata);
