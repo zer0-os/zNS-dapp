@@ -1,0 +1,40 @@
+/**
+* MarkDownEditor Styles
+*/
+.MarkDownEditorContainer {
+	.CustomTextToolbarButton {
+		padding: 4px 8px !important;
+		font-size: 0.75rem !important;
+	}
+
+	:global(.content) {
+		display: inherit;
+		margin: 0;
+		padding: 0;
+	}
+}
+
+/**
+* MarkDownViewer Styles
+*/
+.MarkDownViewerContainer {
+	/* TODO:: update the markdown viewer styles here */
+	:global(.wmde-markdown) {
+		padding: 1rem;
+		background-color: unset;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		border: none;
+	}
+
+	a {
+		color: var(--color-accent-1);
+		text-decoration: none !important;
+		transition: text-shadow var(--animation-time-short) ease-in-out;
+
+		&:hover {
+			text-shadow: var(--glow-text-primary) !important;
+		}
+	}
+}

@@ -1,0 +1,1 @@
+export { VoteBar } from './VoteBar';
