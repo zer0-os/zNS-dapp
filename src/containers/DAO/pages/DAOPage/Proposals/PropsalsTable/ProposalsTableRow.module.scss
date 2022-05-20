@@ -47,9 +47,14 @@
 	}
 
 	.Amount {
-		max-width: 176px;
+		max-width: 132px;
+		width: 132px;
 		margin-left: auto;
 		text-align: right;
+
+		* {
+			margin-left: auto;
+		}
 
 		> p {
 			padding-bottom: 0;
