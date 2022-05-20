@@ -21,6 +21,7 @@ import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import useTransactions from './hooks/useTransactions';
 import useAssets from './hooks/useAssets';
+import useProposals from './hooks/useProposals';
 
 // Lib
 import { toFiat } from 'lib/currency';
@@ -52,6 +53,7 @@ const DAOPage: React.FC = () => {
 	const { transactions, isLoading: isLoadingTransactions } =
 		useTransactions(dao);
 	const { assets, totalUsd, isLoading: isLoadingAssets } = useAssets(dao);
+	const { proposals, isLoading: isLoadingProposals } = useProposals(dao);
 
 	const daoData = dao;
 
@@ -126,7 +128,9 @@ const DAOPage: React.FC = () => {
 				<Route
 					exact
 					path={to(ROUTES.ZDAO_PROPOSALS)}
-					component={() => <Proposals dao={dao} />}
+					render={() => (
+						<Proposals isLoading={isLoadingProposals} proposals={proposals} />
+					)}
 				/>
 				<Route
 					exact
