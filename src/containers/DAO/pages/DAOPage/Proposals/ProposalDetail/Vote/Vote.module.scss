@@ -9,6 +9,13 @@
 
 	padding: 42px 16px 16px 16px;
 	background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, #0A0A0A 28.34%);
+
+	.FooterText {
+		font-size: 18px;
+		font-weight: 700;
+		color: var(--color-grey-lighter-2);
+		text-align: center;
+	}
 }
 
 .Choices {
@@ -20,7 +27,8 @@
 	gap: 32px;
 
 	button {
-		padding: 8px 48.5px;
+		width: 240px;
+		padding: 8px 44px;
 		font-size: 18px;
 		font-weight: 700;
 		background: none;
