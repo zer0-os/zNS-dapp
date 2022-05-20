@@ -60,7 +60,9 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 					<div className={styles.Wrapper}>
 						<h1 className={styles.Title}>{proposal?.title}</h1>
 
-						<VoteBar scores={proposal?.scores} />
+						{proposal && (proposal.scores[0] > 0 || proposal.scores[1] > 0) && (
+							<VoteBar scores={proposal?.scores} />
+						)}
 
 						<VoteAttributes proposal={proposal} votes={votes} />
 
