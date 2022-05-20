@@ -76,6 +76,7 @@
 	list-style: none;
 	grid-gap: 20px 0;
 
+
 	@media only screen and (min-width: #{dimensions.$breakpoint-mobile-m}) {
 		&:not(.GridWithSingleColumn) {
 			grid-gap: 14px 12px;
