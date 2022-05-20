@@ -65,7 +65,7 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 		const config: Config = createConfig(
 			addresses[network].zDao,
 			provider,
-			DEFAULT_IPFS_GATEWAY,
+			'ipfs.io',
 		);
 
 		const sdk = createSDKInstance(config);
