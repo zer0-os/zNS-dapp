@@ -31,7 +31,7 @@ export const VoteBar: React.FC<VoteBarProps> = ({ scores = [] }) => {
 	return (
 		<div className={styles.Container}>
 			<span className={`${styles.ValueLabel} ${styles.ValueLabelLeft}`}>
-				{pecentage.value1}%
+				{pecentage.value1.toFixed(2)}%
 			</span>
 			<div
 				className={cx(styles.Progressbar, {
@@ -48,7 +48,7 @@ export const VoteBar: React.FC<VoteBarProps> = ({ scores = [] }) => {
 				></div>
 			</div>
 			<span className={`${styles.ValueLabel} ${styles.ValueLabelRight}`}>
-				{pecentage.value2}%
+				{pecentage.value2.toFixed(2)}%
 			</span>
 		</div>
 	);
