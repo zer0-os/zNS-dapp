@@ -129,7 +129,7 @@ const Action: React.FC<ActionProps> = ({
 	}
 
 	if (voteStatus === VoteStatus.PENDING) {
-		return <LoadingIndicator spinnerPosition="left" text="Vote in progress" />;
+		return <LoadingIndicator spinnerPosition="left" text="" />;
 	}
 
 	if (userVote !== undefined) {
