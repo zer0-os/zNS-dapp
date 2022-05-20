@@ -46,20 +46,13 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			return [];
 		}
 
-		const amount = formatTotalAmountOfTokenMetadata(proposal.metadata, true);
-		const formattedAmount = amount
-			? toFiat(Number(amount), {
-					maximumFractionDigits: 2,
-					minimumFractionDigits: 0,
-			  }) + proposal.metadata.symbol
-			: '-';
+		// NOTE: using a hardcoded value for prototype
+		const formattedAmount =
+			((proposal.title.split(' ').length + 1) * 10000).toLocaleString() +
+			' ' +
+			proposal.metadata.symbol;
 
-		const sumScores = sum(proposal.scores);
-		const votesPowers = sum(votes.map((vote) => vote.power));
-		const votesSubmited = toFiat((votesPowers / sumScores) * Number(amount), {
-			maximumFractionDigits: 2,
-			minimumFractionDigits: 0,
-		});
+		const votesSubmited = sum(proposal.scores);
 
 		// TODO: Should align the attributes
 		const parsedAttributes = [
@@ -73,7 +66,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Type',
-				value: 'Voting System',
+				value: 'Funding',
 			},
 			{
 				label: 'Amount',
@@ -89,7 +82,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Voting System',
-				value: 'single-choice-voting',
+				value: 'Single Choice Voting',
 			},
 			{
 				label: 'Execution Criteria',
@@ -101,7 +94,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Source of Funds',
-				value: '-',
+				value: 'DAO Wallet',
 			},
 			{
 				label: 'Recipient',
