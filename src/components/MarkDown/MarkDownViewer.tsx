@@ -13,7 +13,7 @@ export const MarkDownViewer: React.FC<MarkDownViewerProps> = ({
 }) => {
 	return (
 		<div className={`${styles.MarkDownViewerContainer} ${className}`}>
-			<MDEditor.Markdown source={text} />
+			<MDEditor.Markdown linkTarget="_blank" source={text} />
 		</div>
 	);
 };

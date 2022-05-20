@@ -1,5 +1,13 @@
 @use 'styles/variables/dimensions';
 
+/*
+ * NOTE: had to lift this out of .Container because
+ * it wasn't applying for some reason
+ */
+.Direction span {
+	font-weight: 700 !important;
+}
+
 .Container {
 	margin: 16px 0;
 	padding: 16px 0;
@@ -66,10 +74,6 @@
 					&.Address {
 						flex: 1 1;
 						justify-content: flex-start;
-					}
-
-					&.Direction {
-						justify-content: center;
 					}
 				}
 
