@@ -2,9 +2,10 @@ import React, { useState, useMemo } from 'react';
 
 // - Library
 import moment from 'moment';
-import { capitalize } from 'lodash';
-import { Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
+import { capitalize, sum } from 'lodash';
+import { Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
+import { toFiat } from 'lib/currency';
 import { formatTotalAmountOfTokenMetadata } from '../../PropsalsTable/ProposalsTable.helpers';
 import { truncateWalletAddress } from 'lib/utils';
 
@@ -19,12 +20,12 @@ import styles from './VoteAttributes.module.scss';
 
 type VoteAttributesProps = {
 	proposal?: Proposal;
-	metadata?: TokenMetaData;
+	votes: Vote[];
 };
 
 export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 	proposal,
-	metadata,
+	votes = [],
 }) => {
 	const [isCollapsed, toggleCollapsed] = useState<boolean>(true);
 
@@ -38,11 +39,24 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 	}, []);
 
 	const attributes: VoteAttribute[] = useMemo(() => {
-		if (!proposal || !metadata) {
+		if (!proposal || !proposal.metadata) {
 			return [];
 		}
 
-		const wild = formatTotalAmountOfTokenMetadata(metadata);
+		const amount = formatTotalAmountOfTokenMetadata(proposal.metadata, true);
+		const formattedAmount = amount
+			? toFiat(Number(amount), {
+					maximumFractionDigits: 2,
+					minimumFractionDigits: 0,
+			  }) + proposal.metadata.symbol
+			: '-';
+
+		const sumScores = sum(proposal.scores);
+		const votesPowers = sum(votes.map((vote) => vote.power));
+		const votesSubmited = toFiat((votesPowers / sumScores) * Number(amount), {
+			maximumFractionDigits: 2,
+			minimumFractionDigits: 0,
+		});
 
 		// TODO: Should align the attributes
 		return [
@@ -60,7 +74,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Amount',
-				value: wild ? wild + ' ' + metadata.symbol : '-',
+				value: formattedAmount,
 			},
 			{
 				label: 'Voting Started',
@@ -88,14 +102,17 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Recipient',
-				value: truncateWalletAddress(metadata.recipient || '', 4) || '-',
+				value:
+					truncateWalletAddress(proposal.metadata.recipient || '', 4) || '-',
 			},
 			{
 				label: 'Votes Submitted',
-				value: '-',
+				value: votesSubmited
+					? votesSubmited + ' ' + proposal.metadata.symbol
+					: '-',
 			},
 		];
-	}, [proposal, metadata]);
+	}, [proposal, votes]);
 
 	const initialHiddenAttributesCount: number = Math.max(
 		attributes.length - initialVisibleAttributesCount,

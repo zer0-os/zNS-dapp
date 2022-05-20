@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useMemo } from 'react';
 
 // - Library
 import { sum } from 'lodash';
-import { Proposal, TokenMetaData, Vote } from '@zero-tech/zdao-sdk';
+import { Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { toFiat } from 'lib/currency';
 import { truncateWalletAddress } from 'lib/utils';
 import { formatTotalAmountOfTokenMetadata } from '../../PropsalsTable/ProposalsTable.helpers';
@@ -15,43 +15,21 @@ import styles from './VoteHistories.module.scss';
 
 type VoteHistoriesProps = {
 	proposal?: Proposal;
-	metadata?: TokenMetaData;
+	isLoading: boolean;
+	votes: Vote[];
 };
 
 export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 	proposal,
-	metadata,
+	isLoading = true,
+	votes = [],
 }) => {
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [votes, setVotes] = useState<Vote[]>([]);
-
-	const fetchVotes = useCallback(async () => {
-		if (proposal) {
-			setIsLoading(true);
-
-			try {
-				const votes = await proposal.listVotes();
-				setVotes(votes);
-			} catch (e) {
-				console.error(e);
-			} finally {
-				setIsLoading(false);
-			}
-		}
-	}, [proposal]);
-
-	useEffect(() => {
-		if (proposal) {
-			fetchVotes();
-		}
-	}, [proposal, fetchVotes]);
-
 	const histories = useMemo(() => {
-		if (!proposal || !metadata || votes.length === 0) {
+		if (!proposal || !proposal.metadata || votes.length === 0) {
 			return [];
 		}
 
-		const wild = formatTotalAmountOfTokenMetadata(metadata, true);
+		const wild = formatTotalAmountOfTokenMetadata(proposal.metadata, true);
 		const sumScores = sum(proposal.scores);
 
 		return votes.map((vote, index) => {
@@ -70,7 +48,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 					}) + '%',
 			};
 		});
-	}, [proposal, metadata, votes]);
+	}, [proposal, votes]);
 
 	return (
 		<div className={styles.Container}>
@@ -79,7 +57,9 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 				<div className={styles.HistoryHeader}>
 					<span className={styles.Address}>Address</span>
 					<span className={styles.Direction}>Vote Direction</span>
-					<span className={styles.Amount}>Amount ({metadata?.symbol})</span>
+					<span className={styles.Amount}>
+						Amount ({proposal?.metadata?.symbol})
+					</span>
 					<span className={styles.Power}>Voting Power</span>
 				</div>
 
@@ -109,7 +89,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 
 										{/* Amount (WILD) */}
 										<span className={styles.Amount}>
-											<strong>Amount ({metadata?.symbol})</strong>
+											<strong>Amount ({proposal?.metadata?.symbol})</strong>
 											{history.amount}
 										</span>
 

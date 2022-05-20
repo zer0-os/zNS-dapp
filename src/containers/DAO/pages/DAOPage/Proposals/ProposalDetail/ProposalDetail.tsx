@@ -8,7 +8,6 @@ import { zDAO, ProposalId } from '@zero-tech/zdao-sdk';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useWillUnmount } from 'lib/hooks/useWillUnmount';
 import useProposal from '../../hooks/useProposal';
-import useProposalMetadata from '../../hooks/useProposalMetadata';
 
 // - Component
 import { ArrowLeft } from 'react-feather';
@@ -36,14 +35,10 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 	const history = useHistory();
 	const { proposalId } = useParams<{ proposalId: ProposalId }>();
 
-	const { proposal, isLoading: isProposalLoading } = useProposal(
+	const { proposal, isLoading, votes, isLoadingVotes } = useProposal(
 		proposalId as ProposalId,
 		dao,
 	);
-	const { metadata, isLoading: isMetadataLoading } =
-		useProposalMetadata(proposal);
-
-	const isLoading = isProposalLoading || isMetadataLoading;
 
 	return (
 		<div className={styles.Container}>
@@ -58,16 +53,20 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 					<div className={styles.Wrapper}>
 						<h1 className={styles.Title}>{proposal?.title}</h1>
 
-						<VoteBar value1={75} value2={25} />
+						<VoteBar scores={proposal?.scores} />
 
-						<VoteAttributes proposal={proposal} metadata={metadata} />
+						<VoteAttributes proposal={proposal} votes={votes} />
 
 						<MarkDownViewer
 							text={proposal?.body}
 							className={styles.MarkDownViewerContent}
 						/>
 
-						<VoteHistories proposal={proposal} metadata={metadata} />
+						<VoteHistories
+							proposal={proposal}
+							isLoading={isLoadingVotes}
+							votes={votes}
+						/>
 					</div>
 				)}
 			</div>
