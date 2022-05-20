@@ -57,7 +57,10 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 		}
 
 		return {
-			wild: (wild || '0.00') + ' ' + CURRENCY.WILD,
+			wild: {
+				value: wild,
+				formatted: (wild || '0.00') + ' ' + CURRENCY.WILD,
+			},
 			closing: {
 				type: closingType,
 				message: isConcluded
@@ -82,7 +85,9 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 				<p className={styles.Description}>{truncateString(body, 150)}</p>
 			</div>
 			<div className={styles.Buttons}>
-				{!isMetadataLoading && <Chiclet>{cardData.wild}</Chiclet>}
+				{!isMetadataLoading && cardData.wild.value && (
+					<Chiclet>{cardData.wild.formatted}</Chiclet>
+				)}
 				<Chiclet type={cardData.closing.type}>
 					{cardData.closing.message}
 				</Chiclet>
