@@ -134,7 +134,7 @@ const Action: React.FC<ActionProps> = ({
 
 	if (userVote !== undefined) {
 		return (
-			<span>
+			<span className={styles.FooterText}>
 				You voted to{' '}
 				{userVote === 1 ? <Approve>Approve</Approve> : <Deny>Deny</Deny>} this
 				proposal
@@ -144,7 +144,7 @@ const Action: React.FC<ActionProps> = ({
 
 	if (isProposalClosed) {
 		return (
-			<span>
+			<span className={styles.FooterText}>
 				This proposal is <Deny>closed</Deny>
 			</span>
 		);
