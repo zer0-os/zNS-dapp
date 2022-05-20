@@ -18,7 +18,7 @@ export type CurrencyHook = {
 	zeroPercentageChange: number;
 };
 
-const useCurrency = (): CurrencyHook => {
+const useCurrency = (refresh = true): CurrencyHook => {
 	const currency = useSelector(getCurrency);
 
 	const dispatch = useDispatch();

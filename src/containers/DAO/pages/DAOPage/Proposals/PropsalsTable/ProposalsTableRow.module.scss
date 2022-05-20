@@ -1,0 +1,82 @@
+.Container {
+	cursor: pointer;
+
+	&:hover {
+		background-color: #1a1022;
+	}
+	
+	> td {
+		&:first-of-type {
+			padding-left: 8px !important;
+		}
+		&:last-of-type {
+			padding-right: 8px !important;
+		}
+	}
+
+	.Right {
+		text-align: right;
+		margin-left: auto;
+	}
+
+	.Title {
+		font-weight: 400;
+		font-size: 16px;
+		line-height: 24px;
+	}
+
+	.Status {
+		width: 105px;
+		text-transform: capitalize;
+	}
+
+	.Timer {
+		width: 125px;
+
+		&.Concluded {
+			color: #BFBFBF;
+		}
+
+		&.Warning {
+			color: #F58C61;
+		}
+
+		&.Error {
+			color: #F6677C;
+		}
+	}
+
+	.Amount {
+		max-width: 132px;
+		width: 132px;
+		margin-left: auto;
+		text-align: right;
+
+		* {
+			margin-left: auto;
+		}
+
+		> p {
+			padding-bottom: 0;
+
+			&:first-child {
+				font-size: 16px;
+				font-weight: 400;
+				line-height: 24px;
+			}
+
+			&:last-child {
+				font-size: 12px;
+				font-weight: 400;
+				line-height: 15px;
+				color: #BFBFBF;
+			}
+		}
+	}
+
+	.LoadingMetadata {
+		> div:first-child {
+			margin-bottom: unset;
+		}
+	}
+}
