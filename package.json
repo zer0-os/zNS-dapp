@@ -40,7 +40,7 @@
 		"@zero-tech/zauction-sdk": "0.1.5",
 		"@zero-tech/zdao-sdk": "0.0.6",
 		"@zero-tech/zfi-sdk": "0.1.16",
-		"@zero-tech/zns-sdk": "0.2.5",
+		"@zero-tech/zns-sdk": "0.3.0",
 		"@zero-tech/zsale-sdk": "0.0.19",
 		"apollo": "^2.32.5",
 		"autosize": "^5.0.1",
