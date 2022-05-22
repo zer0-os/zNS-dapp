@@ -50,7 +50,11 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const { wildPriceUsd } = useCurrency();
 
 	//- Domain Data
-	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
+	const {
+		domain: znsDomain,
+		domainRaw: domain,
+		paymentTokenInfo: paymentToken,
+	} = useCurrentDomain();
 
 	////////////////////////
 	// Browser Navigation //
@@ -173,14 +177,14 @@ const ZNS: React.FC<ZNSProps> = () => {
 				fieldName: 'Floor Price',
 				title: `${
 					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
-				} WILD`,
+				} ${paymentToken?.name}`,
 				subTitle:
 					wildPriceUsd > 0
 						? `$${
 								tradeData?.lowestSale
 									? formatNumber(
 											Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
-												wildPriceUsd,
+												paymentToken?.price,
 									  )
 									: 0
 						  }`
@@ -189,7 +193,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{
 				fieldName: 'Volume',
 				title: (tradeData?.volume as any)?.all
-					? `${formatEthers((tradeData?.volume as any)?.all)} WILD`
+					? `${formatEthers((tradeData?.volume as any)?.all)} ${
+							paymentToken?.name
+					  }`
 					: '',
 				subTitle:
 					wildPriceUsd > 0
@@ -200,7 +206,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 												ethers.utils.formatEther(
 													(tradeData?.volume as any)?.all,
 												),
-											) * wildPriceUsd,
+											) * paymentToken?.price,
 									  )
 									: 0
 						  }`
