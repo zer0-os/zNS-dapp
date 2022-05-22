@@ -16,6 +16,7 @@ import { useZnsContracts } from 'lib/contracts';
 import { ERC20 } from 'types';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
+import { BuyNowParams } from '@zero-tech/zauction-sdk';
 
 export type BuyNowContainerProps = {
 	domainId: string;
@@ -67,7 +68,7 @@ const BuyNowContainer = ({
 
 			try {
 				setCurrentStep(Step.ApproveZAuctionWaiting);
-				approvalTx = await sdk.zauction.approveZAuctionToSpendTokens(
+				approvalTx = await sdk.zauction.approveZAuctionToSpendTokensByDomain(
 					domainId,
 					library.getSigner(),
 				);
@@ -98,7 +99,10 @@ const BuyNowContainer = ({
 				throw Error('Failed to retrieve zAuction instance');
 			}
 			const tx = await sdk.zauction.buyNow(
-				{ amount: data!.buyNowPrice.toString(), tokenId: domainId },
+				{
+					amount: data!.buyNowPrice.toString(),
+					tokenId: domainId,
+				} as BuyNowParams,
 				library.getSigner(),
 			);
 			setCurrentStep(Step.Buying);
@@ -132,12 +136,13 @@ const BuyNowContainer = ({
 			buyNowPrice = ethers.utils.parseEther(price);
 
 			// Check zAuction approved amount is larger than buy now price
-			const isApproved = await sdk.zauction.needsToApproveZAuctionToSpendTokens(
-				domainId,
-				account,
-				buyNowPrice,
-			);
-			if (!isApproved) {
+			const needsApproval =
+				await sdk.zauction.needsToApproveZAuctionToSpendTokensByDomain(
+					domainId,
+					account,
+					buyNowPrice,
+				);
+			if (needsApproval) {
 				setCurrentStep(Step.ApproveZAuction);
 				return;
 			}

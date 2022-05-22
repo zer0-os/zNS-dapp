@@ -107,17 +107,18 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		setStepContent(StepContent.CheckingZAuctionApproval);
 		(async () => {
 			try {
-				const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
-				const isApproved = await zAuction.isZAuctionApprovedToTransferNft(
-					account,
-				);
+				const needsApproval =
+					await sdk.zauction.needsToApproveZAuctionToTransferNftsByDomain(
+						domain.id,
+						account,
+					);
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
-				if (isApproved) {
+				if (needsApproval) {
+					setStepContent(StepContent.ApproveZAuction);
+				} else {
 					setCurrentStep(Step.ConfirmDetails);
 					setStepContent(StepContent.Details);
-				} else {
-					setStepContent(StepContent.ApproveZAuction);
 				}
 			} catch (e) {
 				console.log(ERRORS.CONSOLE_TEXT);
@@ -140,8 +141,8 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		setStepContent(StepContent.WaitingForWallet);
 		(async () => {
 			try {
-				const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
-				const tx = await zAuction.approveZAuctionTransferNft(
+				const tx = await sdk.zauction.approveZAuctionToTransferNftsByDomain(
+					domain.id,
 					library.getSigner(),
 				);
 				try {

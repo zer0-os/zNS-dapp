@@ -7,6 +7,7 @@ import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { getDomainId } from 'lib/utils';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
@@ -17,6 +18,8 @@ export const CurrentDomainContext = React.createContext({
 	loading: true,
 	refetch: () => {}, // @todo update this
 	setDomainMetadata: (v: Maybe<Metadata>) => {},
+	paymentToken: undefined as Maybe<string>,
+	paymentTokenInfo: {} as TokenPriceInfo,
 });
 
 const parseDomainFromURI = (pathname: string) => {
@@ -56,6 +59,8 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,
 		setDomainMetadata,
+		paymentToken: znsDomain.paymentToken,
+		paymentTokenInfo: znsDomain.paymentTokenInfo,
 	};
 
 	return (

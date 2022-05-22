@@ -99,19 +99,18 @@ const AcceptBid = ({
 		setError(undefined);
 		(async () => {
 			try {
-				const isApproved =
+				const needsApproval =
 					await sdk.zauction.needsToApproveZAuctionToTransferNftsByBid(
-						domainId,
 						account,
 						acceptingBid,
 					);
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
-				if (isApproved) {
+				if (needsApproval) {
+					setStepContent(StepContent.ApproveZAuction);
+				} else {
 					setCurrentStep(Step.ConfirmDetails);
 					setStepContent(StepContent.Details);
-				} else {
-					setStepContent(StepContent.ApproveZAuction);
 				}
 			} catch (e) {
 				console.log(ERRORS.CONSOLE_TEXT);
@@ -131,7 +130,6 @@ const AcceptBid = ({
 		(async () => {
 			try {
 				const tx = await sdk.zauction.approveZAuctionToTransferNftsByBid(
-					domainId,
 					acceptingBid,
 					library.getSigner(),
 				);

@@ -14,6 +14,7 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
+import { BuyNowParams } from '@zero-tech/zns-sdk/lib/zAuction';
 
 export interface SetBuyNowContainerProps {
 	domainId: string;
@@ -52,18 +53,18 @@ const SetBuyNowContainer = ({
 		setError(undefined);
 		(async () => {
 			try {
-				const isApproved =
-					await sdk.zauction.needsToApproveZAuctionToTransferNfts(
+				const needsApproval =
+					await sdk.zauction.needsToApproveZAuctionToTransferNftsByDomain(
 						domainId,
 						account,
 					);
 				// Wait for a sec so the UI doesn't look broken if the above
 				// checks resolve quickly
 				await new Promise((r) => setTimeout(r, 1500));
-				if (isApproved) {
-					setCurrentStep(Step.SetBuyNow);
-				} else {
+				if (needsApproval) {
 					setCurrentStep(Step.ApproveZAuction);
+				} else {
+					setCurrentStep(Step.SetBuyNow);
 				}
 			} catch (e) {
 				// @todo handle error
@@ -83,7 +84,7 @@ const SetBuyNowContainer = ({
 		setCurrentStep(Step.WaitingForWallet);
 		(async () => {
 			try {
-				const tx = await sdk.zauction.approveZAuctionToTransferNfts(
+				const tx = await sdk.zauction.approveZAuctionToTransferNftsByDomain(
 					domainId,
 					library.getSigner(),
 				);
@@ -116,7 +117,7 @@ const SetBuyNowContainer = ({
 						{
 							amount: ethers.utils.parseEther(amount.toString()).toString(),
 							tokenId: domainId,
-						},
+						} as BuyNowParams,
 						library.getSigner(),
 					);
 				} else {
