@@ -42,6 +42,7 @@ import styles from './MakeABid.module.scss';
 //- Types Imports
 import { Step, StepContent } from './MakeABid.types';
 import { ERC20 } from 'types';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 const maxCharacterLength = 28;
 
@@ -49,9 +50,15 @@ export type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
 	onClose: () => void;
+	paymentTokenInfo: TokenPriceInfo;
 };
 
-const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
+const MakeABid = ({
+	domain,
+	onBid,
+	onClose,
+	paymentTokenInfo,
+}: MakeABidProps) => {
 	//////////
 	// Data //
 	//////////
