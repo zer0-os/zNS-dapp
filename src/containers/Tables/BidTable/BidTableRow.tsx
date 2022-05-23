@@ -13,6 +13,7 @@ import { ethers } from 'ethers';
 import { TOKEN } from './BidTableRow.constants';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { Domain } from 'lib/types';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 export const ACTION_KEYS = {
 	REBID: 'Rebid',
@@ -39,6 +40,7 @@ export type BidTableRowData = {
 	yourBid: ethers.BigNumber;
 	highestBid: ethers.BigNumber;
 	domain: Domain;
+	paymentTokenInfo: TokenPriceInfo;
 };
 
 export const TEST_ID = {
@@ -80,10 +82,11 @@ const BidTableRow = (props: any) => {
 				/>
 			</td>
 			<td data-testid={TEST_ID.YOUR_BID}>
-				{ethers.utils.formatEther(bid.yourBid.toString())} {TOKEN}
+				{ethers.utils.formatEther(bid.yourBid.toString())}{' '}
+				{bid.paymentTokenInfo.name}
 			</td>
 			<td data-testid={TEST_ID.HIGHEST_BID}>
-				{ethers.utils.formatEther(bid.highestBid)} {TOKEN}
+				{ethers.utils.formatEther(bid.highestBid)} {bid.paymentTokenInfo.name}
 			</td>
 			<td>
 				<OptionDropdown
