@@ -6,24 +6,25 @@ import { DomainBidData } from 'lib/utils/bids';
 
 //- Container Imports
 import BidList from 'containers/lists/BidList/BidList';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 interface getModalProps {
 	setIsModalOpen: (state: boolean) => void;
 	isModalOpen: boolean;
 	bidData: DomainBidData | undefined;
-	wildPriceUsd?: number;
+	paymentTokenInfo: TokenPriceInfo;
 }
 
 export const Modals = ({
 	setIsModalOpen,
 	isModalOpen,
 	bidData,
-	wildPriceUsd,
+	paymentTokenInfo,
 }: getModalProps) => {
 	if (isModalOpen && bidData?.bids !== undefined) {
 		return (
 			<Overlay open onClose={() => setIsModalOpen(false)} centered>
-				<BidList bids={bidData.bids} wildPriceUsd={wildPriceUsd} />
+				<BidList bids={bidData.bids} paymentTokenInfo={paymentTokenInfo} />
 			</Overlay>
 		);
 	} else {

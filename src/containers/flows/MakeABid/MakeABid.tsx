@@ -26,7 +26,6 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 import { Domain } from 'lib/types';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useNotification from 'lib/hooks/useNotification';
-import useCurrency from 'lib/hooks/useCurrency';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { truncateDomain } from 'lib/utils';
 import { ethers } from 'ethers';
@@ -72,7 +71,6 @@ const MakeABid = ({
 	const { account, library } = useWeb3React();
 	const { placeBid } = useBidProvider();
 	const { bidData, isLoading } = useBidData(domain.id);
-	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
 
 	// Refs
@@ -190,7 +188,10 @@ const MakeABid = ({
 				return;
 			}
 			addNotification(
-				getSuccessNotification(getBidAmountText(bid), domain.name),
+				getSuccessNotification(
+					getBidAmountText(bid, paymentTokenInfo.name),
+					domain.name,
+				),
 			);
 			setIsBidPlaced(true);
 			setStepContent(StepContent.Success);
@@ -232,7 +233,7 @@ const MakeABid = ({
 	}, [domainMetadata]);
 
 	/**
-	 * Triggers calls to get zAuction approval status and WILD balance
+	 * Triggers calls to get zAuction approval status and Token balance
 	 * for the connect account/wallet.
 	 * Saves these variables to state, rather than returns them.
 	 * @returns void
@@ -307,7 +308,6 @@ const MakeABid = ({
 					domainName={formattedDomain}
 					title={domainMetadata?.title ?? ''}
 					wildBalance={wildBalance}
-					wildPriceUsd={wildPriceUsd}
 					highestBid={bidData?.highestBid?.amount}
 					error={error}
 					bid={bid}
@@ -315,6 +315,7 @@ const MakeABid = ({
 					setBid={setBid}
 					onClose={onClose}
 					onConfirm={onConfirm}
+					paymentTokenInfo={paymentTokenInfo}
 				/>
 			) : (
 				<Wizard.Loading message={MESSAGES.TEXT_LOADING} />
@@ -335,6 +336,7 @@ const MakeABid = ({
 				highestBid={bidData?.highestBid?.amount}
 				bid={bid}
 				onClose={onBid}
+				paymentTokenInfo={paymentTokenInfo}
 			/>
 		),
 	};
