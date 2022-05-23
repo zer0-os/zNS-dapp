@@ -10,7 +10,6 @@ import { Artwork, OptionDropdown } from 'components';
 import { ethers } from 'ethers';
 
 //- Constants Imports
-import { TOKEN } from './BidTableRow.constants';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { Domain } from 'lib/types';
 import { TokenPriceInfo } from '@zero-tech/zns-sdk';
