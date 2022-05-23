@@ -54,7 +54,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const { account, chainId } = useWeb3React<Web3Provider>();
 
 	//- Current Domain Data
-	const { domainId, domain: znsDomain, domainMetadata } = useCurrentDomain();
+	const {
+		domainId,
+		domain: znsDomain,
+		domainMetadata,
+		paymentTokenInfo,
+	} = useCurrentDomain();
 
 	//- Wild Currency Price
 	const { wildPriceUsd } = useCurrency();
@@ -242,16 +247,16 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				onViewBids={openBidList}
 				yourBid={yourBid}
 				isOwnedByUser={isOwnedByYou}
-				wildPriceUsd={wildPriceUsd}
 				refetch={refetch}
 				isBiddable={isBiddable}
 				bidData={allBids}
+				paymentTokenInfo={paymentTokenInfo}
 			/>
 
 			<Stats
 				znsDomain={znsDomain}
-				wildPriceUsd={wildPriceUsd}
 				bids={bids}
+				paymentTokenInfo={paymentTokenInfo}
 				isLoading={isHistoryLoading}
 			/>
 
