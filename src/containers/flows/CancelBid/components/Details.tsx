@@ -1,14 +1,21 @@
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import { BidData } from '../CancelBid.types';
 
 type DetailsProps = {
 	bidData: BidData;
+	paymentTokenInfo: TokenPriceInfo;
 	onClose: () => void;
 	onNext: () => void;
 };
 
-const Details = ({ bidData, onClose, onNext }: DetailsProps) => (
+const Details = ({
+	bidData,
+	onClose,
+	onNext,
+	paymentTokenInfo,
+}: DetailsProps) => (
 	<>
 		<Wizard.NFTDetails
 			assetUrl={bidData.assetUrl}
@@ -19,11 +26,16 @@ const Details = ({ bidData, onClose, onNext }: DetailsProps) => (
 				{
 					name: 'Highest Bid',
 					value:
-						ethers.utils.formatEther(bidData.highestBid).toString() + ' WILD',
+						ethers.utils.formatEther(bidData.highestBid).toString() +
+						' ' +
+						paymentTokenInfo.name,
 				},
 				{
 					name: 'Your Bid',
-					value: ethers.utils.formatEther(bidData.yourBid).toString() + ' WILD',
+					value:
+						ethers.utils.formatEther(bidData.yourBid).toString() +
+						' ' +
+						paymentTokenInfo.name,
 				},
 			]}
 		/>

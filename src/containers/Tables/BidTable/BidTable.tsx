@@ -2,6 +2,7 @@ import BidTableRow, { BidTableRowData } from './BidTableRow';
 import { GenericTable, Overlay } from 'components';
 import { useMemo, useState } from 'react';
 import { CancelBid, MakeABid } from 'containers';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 type BidTableProps = {
 	bidData?: BidTableRowData[];
@@ -81,6 +82,7 @@ const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 							domainId={selectedBid.domainId}
 							onSuccess={refetch}
 							onClose={closeModal}
+							paymentTokenInfo={{} as TokenPriceInfo}
 						/>
 					</Overlay>
 				);

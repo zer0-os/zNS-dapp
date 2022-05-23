@@ -11,12 +11,14 @@ import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 // Component imports
 import { Wizard } from 'components';
 import Details from './components/Details';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 type CancelBidContainerProps = {
 	bidNonce: string;
 	domainId: string;
 	onSuccess: () => void;
 	onClose: () => void;
+	paymentTokenInfo: TokenPriceInfo;
 };
 
 export const CancelBid = ({
@@ -24,6 +26,7 @@ export const CancelBid = ({
 	domainId,
 	onSuccess,
 	onClose,
+	paymentTokenInfo,
 }: CancelBidContainerProps) => {
 	const { bid, bidData, refetch, isLoading } = useBidData(domainId, bidNonce);
 	const { cancel, status } = useCancelBid();
@@ -72,6 +75,7 @@ export const CancelBid = ({
 		[Step.Details]: bidData ? (
 			<Details
 				bidData={bidData}
+				paymentTokenInfo={paymentTokenInfo}
 				onClose={onClose}
 				onNext={() => setCurrentStep(Step.Confirmation)}
 			/>
