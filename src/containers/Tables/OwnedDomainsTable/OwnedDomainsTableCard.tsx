@@ -28,16 +28,16 @@ import ImageCard from 'components/Cards/ImageCard/ImageCard';
 
 type OwnedDomainsTableRowProps = {
 	refetch: () => void;
-	wildPriceUsd: number;
 	data: Domain;
 	// this should be refactored when GenericTable has better typing
 	[x: string]: any;
+	domainsPaymentTokenInfo: any[];
 };
 
 const SubdomainTableCard = ({
 	refetch,
-	wildPriceUsd,
 	data: domain,
+	domainsPaymentTokenInfo,
 }: OwnedDomainsTableRowProps) => {
 	const { push: goTo } = useHistory(); // for navigating on row click
 
@@ -46,21 +46,24 @@ const SubdomainTableCard = ({
 
 	const highestBid = bidData?.highestBid;
 
-	// Retrieve Metadata
+	const paymentTokenInfo = domainsPaymentTokenInfo.find(
+		(item) => item.id === domain.id,
+	); // Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
 
 	// Bid amount wild
 	const bidAmountWild = highestBid
 		? `${Number(
 				formatEther(BigNumber.from(highestBid.amount)),
-		  ).toLocaleString()} ${CURRENCY.WILD}`
+		  ).toLocaleString()} ${paymentTokenInfo.name}`
 		: '-';
 
 	// Bid amount usd
 	const bidAmountUsd =
 		highestBid &&
 		`$${formatNumber(
-			Number(ethers.utils.formatEther(highestBid.amount)) * wildPriceUsd,
+			Number(ethers.utils.formatEther(highestBid.amount)) *
+				paymentTokenInfo.price,
 		)}`;
 
 	// Navigates to domain
@@ -88,7 +91,7 @@ const SubdomainTableCard = ({
 							<>
 								<label>{LABELS.TOP_BID}</label>
 								<span className={styles.Crypto}>{bidAmountWild}</span>
-								{wildPriceUsd > 0 && (
+								{paymentTokenInfo?.price > 0 && (
 									<span className={styles.Fiat}>{bidAmountUsd}</span>
 								)}
 							</>
