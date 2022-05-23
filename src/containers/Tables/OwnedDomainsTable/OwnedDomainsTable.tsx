@@ -12,9 +12,8 @@ import OwnedDomainsTableCard from './OwnedDomainsTableCard';
 
 const OwnedDomainsTable = () => {
 	const { account } = useWeb3React();
-	const { isLoading, ownedDomains, refetch } = useOwnedDomains(account);
-	const { wildPriceUsd } = useCurrency();
-
+	const { isLoading, ownedDomains, refetch, domainsPaymentTokenInfo } =
+		useOwnedDomains(account);
 	return (
 		<GenericTable
 			alignments={[0, 1, 1, 1]}
@@ -22,13 +21,17 @@ const OwnedDomainsTable = () => {
 			itemKey={'id'}
 			headers={HEADERS}
 			rowComponent={(props: any) => (
-				<OwnedDomainsTableRow {...props} refetch={refetch} />
+				<OwnedDomainsTableRow
+					{...props}
+					refetch={refetch}
+					domainsPaymentTokenInfo={domainsPaymentTokenInfo}
+				/>
 			)}
 			gridComponent={(props: any) => (
 				<OwnedDomainsTableCard
 					{...props}
 					refetch={refetch}
-					wildPriceUsd={wildPriceUsd}
+					domainsPaymentTokenInfo={domainsPaymentTokenInfo}
 				/>
 			)}
 			infiniteScroll

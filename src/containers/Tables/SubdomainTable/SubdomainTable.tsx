@@ -28,7 +28,11 @@ type SubdomainTableProps = {
 
 const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	// Domain hook data
-	const { domain, loading: isDomainLoading } = useCurrentDomain();
+	const {
+		domain,
+		loading: isDomainLoading,
+		paymentTokenInfo,
+	} = useCurrentDomain();
 
 	// Get metadata and custom header
 	const domainMetadata = useDomainMetadata(domain?.metadata);
@@ -83,7 +87,12 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 		<>
 			{biddingOn !== undefined && (
 				<Overlay onClose={close} open={true}>
-					<MakeABid domain={biddingOn!} onBid={bidPlaced} onClose={close} />
+					<MakeABid
+						domain={biddingOn!}
+						onBid={bidPlaced}
+						onClose={close}
+						paymentTokenInfo={paymentTokenInfo}
+					/>
 				</Overlay>
 			)}
 			<GenericTable
@@ -91,8 +100,12 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 				data={data}
 				itemKey={'id'}
 				headers={headers}
-				rowComponent={SubdomainTableRow}
-				gridComponent={SubdomainTableCard}
+				rowComponent={(props: any) => (
+					<SubdomainTableRow {...props} paymentTokenInfo={paymentTokenInfo} />
+				)}
+				gridComponent={(props: any) => (
+					<SubdomainTableCard {...props} paymentTokenInfo={paymentTokenInfo} />
+				)}
 				infiniteScroll
 				isLoading={isLoading || isDomainLoading}
 				loadingText={'Loading Subdomains'}

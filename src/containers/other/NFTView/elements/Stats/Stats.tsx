@@ -20,6 +20,7 @@ import {
 	DomainBidEvent,
 	DomainMetrics,
 	DomainMetricsCollection,
+	TokenPriceInfo,
 } from '@zero-tech/zns-sdk/lib/types';
 
 //- Type Imports
@@ -38,16 +39,16 @@ type Stat = {
 
 type StatsProps = {
 	znsDomain: Maybe<DisplayParentDomain>;
-	wildPriceUsd: number;
 	bids?: DomainBidEvent[];
 	isLoading: boolean;
+	paymentTokenInfo: TokenPriceInfo;
 };
 
 export const Stats: React.FC<StatsProps> = ({
 	znsDomain,
-	wildPriceUsd,
 	bids,
 	isLoading,
+	paymentTokenInfo,
 }) => {
 	const isMounted = useRef<boolean>();
 	const sdk = useZnsSdk();
@@ -96,13 +97,15 @@ export const Stats: React.FC<StatsProps> = ({
 				(domainMetrics?.lastSale ?? 0) > 0
 					? Number(
 							ethers.utils.formatEther(domainMetrics!.lastSale),
-					  ).toLocaleString() + ' WILD'
+					  ).toLocaleString() +
+					  ' ' +
+					  paymentTokenInfo.name
 					: 'No sales',
 			subTitle:
-				(domainMetrics?.lastSale ?? 0) > 0 && wildPriceUsd > 0
+				(domainMetrics?.lastSale ?? 0) > 0 && paymentTokenInfo.price > 0
 					? `$${toFiat(
 							Number(ethers.utils.formatEther(domainMetrics!.lastSale)) *
-								wildPriceUsd,
+								paymentTokenInfo.price,
 					  )}`
 					: '',
 		};
@@ -113,20 +116,20 @@ export const Stats: React.FC<StatsProps> = ({
 				(domainMetrics?.volume as any)?.all > 0
 					? `${Number(
 							ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
-					  ).toLocaleString()} WILD`
+					  ).toLocaleString()} ${paymentTokenInfo.name}`
 					: '0',
 			subTitle:
-				(domainMetrics?.volume as any)?.all > 0 && wildPriceUsd > 0
+				(domainMetrics?.volume as any)?.all > 0 && paymentTokenInfo.price > 0
 					? toFiat(
 							Number(
 								ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
-							) * wildPriceUsd,
+							) * paymentTokenInfo.price,
 					  )
 					: '',
 		};
 
 		return [bidsStat, lastSaleStat, volumeStat];
-	}, [domainMetrics, wildPriceUsd, bids]);
+	}, [domainMetrics, paymentTokenInfo, bids]);
 
 	return (
 		<div className={styles.NFTStats}>

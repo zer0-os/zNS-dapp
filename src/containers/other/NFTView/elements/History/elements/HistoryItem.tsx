@@ -6,6 +6,7 @@ import {
 	DomainBidEvent,
 	DomainSaleEvent,
 	DomainBuyNowSaleEvent,
+	TokenPriceInfo,
 } from '@zero-tech/zns-sdk/lib/types';
 import { URLS } from 'constants/urls';
 import { ethers } from 'ethers';
@@ -15,9 +16,10 @@ import styles from '../../../NFTView.module.scss';
 
 type HistoryItemProps = {
 	item: DomainEvents;
+	paymentTokenInfo: TokenPriceInfo;
 };
 
-const HistoryItem = ({ item }: HistoryItemProps) => {
+const HistoryItem = ({ item, paymentTokenInfo }: HistoryItemProps) => {
 	switch (item.type) {
 		case DomainEventType.bid:
 			item = item as DomainBidEvent;
@@ -38,7 +40,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 						made an offer of{' '}
 						<b>
 							{Number(ethers.utils.formatEther(item.amount!)).toLocaleString()}{' '}
-							WILD
+							{paymentTokenInfo.name}
 						</b>
 					</div>
 					<div className={styles.From}>
@@ -139,7 +141,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 									{Number(
 										ethers.utils.formatEther(item.amount!),
 									).toLocaleString()}{' '}
-									WILD
+									{paymentTokenInfo.name}
 								</b>
 							</>
 						)}
@@ -184,7 +186,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 									{Number(
 										ethers.utils.formatEther(item.amount!),
 									).toLocaleString()}{' '}
-									WILD
+									{paymentTokenInfo.name}
 								</b>
 							</>
 						)}

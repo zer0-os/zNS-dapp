@@ -54,7 +54,12 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const { account, chainId } = useWeb3React<Web3Provider>();
 
 	//- Current Domain Data
-	const { domainId, domain: znsDomain, domainMetadata } = useCurrentDomain();
+	const {
+		domainId,
+		domain: znsDomain,
+		domainMetadata,
+		paymentTokenInfo,
+	} = useCurrentDomain();
 
 	//- Wild Currency Price
 	const { wildPriceUsd } = useCurrency();
@@ -156,6 +161,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				domain: znsDomain!,
 				onBid: handleOnBid,
 				onClose: closeModal,
+				paymentTokenInfo: paymentTokenInfo,
 			},
 		});
 	};
@@ -179,6 +185,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				domainId: domainId,
 				onCancel: closeModal,
 				onSuccess: refetch,
+				paymentTokenInfo: paymentTokenInfo,
 			},
 		});
 	};
@@ -192,9 +199,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				domain: viewBidsDomainData,
 				domainMetadata: domainMetadata ?? undefined,
 				onAccept: handleOnAccept,
-				wildPriceUsd,
 				isLoading: isBidDataLoading,
 				highestBid: String(highestBidAsWei),
+				paymentTokenInfo: paymentTokenInfo,
 			},
 		});
 	};
@@ -242,16 +249,16 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				onViewBids={openBidList}
 				yourBid={yourBid}
 				isOwnedByUser={isOwnedByYou}
-				wildPriceUsd={wildPriceUsd}
 				refetch={refetch}
 				isBiddable={isBiddable}
 				bidData={allBids}
+				paymentTokenInfo={paymentTokenInfo}
 			/>
 
 			<Stats
 				znsDomain={znsDomain}
-				wildPriceUsd={wildPriceUsd}
 				bids={bids}
+				paymentTokenInfo={paymentTokenInfo}
 				isLoading={isHistoryLoading}
 			/>
 
@@ -263,7 +270,11 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				znsDomain={znsDomain}
 			/>
 
-			<History isLoading={isHistoryLoading} history={history} />
+			<History
+				isLoading={isHistoryLoading}
+				history={history}
+				paymentTokenInfo={paymentTokenInfo}
+			/>
 		</div>
 	);
 };

@@ -1,3 +1,4 @@
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import DomainStep from './Steps/DomainStep';
@@ -32,8 +33,8 @@ type SetBuyNowProps = {
 	onCancel: () => void;
 	setBuyNowPrice: (buyNowPrice?: number) => void;
 	step: Step;
-	wildPriceUsd: number;
 	account?: string;
+	paymentTokenInfo: TokenPriceInfo;
 };
 
 const SetBuyNow = ({
@@ -44,7 +45,7 @@ const SetBuyNow = ({
 	setBuyNowPrice,
 	onCancel,
 	step,
-	wildPriceUsd,
+	paymentTokenInfo,
 	account,
 }: SetBuyNowProps) => {
 	const editText = account !== domain?.owner ? 'selecting' : 'purchasing';
@@ -103,7 +104,7 @@ const SetBuyNow = ({
 					error={error}
 					onNext={(buyNowPrice?: number) => setBuyNowPrice(buyNowPrice)}
 					domainData={domain}
-					wildPriceUsd={wildPriceUsd}
+					paymentTokenInfo={paymentTokenInfo}
 					isWaitingForWalletConfirmation={
 						step === Step.WaitingForBuyNowConfirmation
 					}

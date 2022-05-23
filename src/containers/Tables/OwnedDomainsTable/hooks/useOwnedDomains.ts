@@ -8,6 +8,7 @@ type UseOwnedDomainsReturn = {
 	isLoading: boolean;
 	ownedDomains?: Domain[];
 	refetch: () => void;
+	domainsPaymentTokenInfo?: any[];
 };
 
 const useOwnedDomains = (
@@ -18,28 +19,38 @@ const useOwnedDomains = (
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [ownedDomains, setOwnedDomains] = useState<Domain[] | undefined>();
+	const [domainsPaymentTokenInfo, setDomainsPaymentTokenInfo] = useState<
+		any[] | undefined
+	>();
 
-	const getOwnedDomains = () => {
+	const getOwnedDomains = async () => {
 		setOwnedDomains(undefined);
 		if (!account) {
 			setIsLoading(false);
 			return;
 		}
 		setIsLoading(true);
-		sdk
-			.getDomainsByOwner(account)
-			.then((owned) => {
-				if (isMounted.current) {
-					setOwnedDomains(owned);
-					setIsLoading(false);
-				}
-			})
-			.catch((e) => {
-				if (isMounted.current) {
-					console.error(e);
-					setIsLoading(false);
-				}
+		try {
+			const owned = await sdk.getDomainsByOwner(account);
+			// TODO: Optimize this
+			const domainsPaymentTokenData = owned.map(async ({ id }) => {
+				const paymentToken = await sdk.zauction.getPaymentTokenForDomain(id);
+				const paymentTokenInfo = await sdk.zauction.getPaymentTokenInfo(
+					paymentToken,
+				);
+				return { id, paymentTokenInfo };
 			});
+			setDomainsPaymentTokenInfo(await Promise.all(domainsPaymentTokenData));
+			if (isMounted.current) {
+				setOwnedDomains(owned);
+				setIsLoading(false);
+			}
+		} catch (e) {
+			if (isMounted.current) {
+				console.error(e);
+				setIsLoading(false);
+			}
+		}
 	};
 
 	useUpdateEffect(getOwnedDomains, [account, sdk]);
@@ -56,6 +67,7 @@ const useOwnedDomains = (
 		isLoading,
 		ownedDomains,
 		refetch: getOwnedDomains,
+		domainsPaymentTokenInfo,
 	};
 };
 

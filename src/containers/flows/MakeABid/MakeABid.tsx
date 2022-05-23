@@ -26,7 +26,6 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 import { Domain } from 'lib/types';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useNotification from 'lib/hooks/useNotification';
-import useCurrency from 'lib/hooks/useCurrency';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { truncateDomain } from 'lib/utils';
 import { ethers } from 'ethers';
@@ -42,6 +41,7 @@ import styles from './MakeABid.module.scss';
 //- Types Imports
 import { Step, StepContent } from './MakeABid.types';
 import { ERC20 } from 'types';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 const maxCharacterLength = 28;
 
@@ -49,9 +49,15 @@ export type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
 	onClose: () => void;
+	paymentTokenInfo: TokenPriceInfo;
 };
 
-const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
+const MakeABid = ({
+	domain,
+	onBid,
+	onClose,
+	paymentTokenInfo,
+}: MakeABidProps) => {
 	//////////
 	// Data //
 	//////////
@@ -65,7 +71,6 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	const { account, library } = useWeb3React();
 	const { placeBid } = useBidProvider();
 	const { bidData, isLoading } = useBidData(domain.id);
-	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
 
 	// Refs
@@ -183,7 +188,10 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				return;
 			}
 			addNotification(
-				getSuccessNotification(getBidAmountText(bid), domain.name),
+				getSuccessNotification(
+					getBidAmountText(bid, paymentTokenInfo.name),
+					domain.name,
+				),
 			);
 			setIsBidPlaced(true);
 			setStepContent(StepContent.Success);
@@ -225,7 +233,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	}, [domainMetadata]);
 
 	/**
-	 * Triggers calls to get zAuction approval status and WILD balance
+	 * Triggers calls to get zAuction approval status and Token balance
 	 * for the connect account/wallet.
 	 * Saves these variables to state, rather than returns them.
 	 * @returns void
@@ -300,7 +308,6 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 					domainName={formattedDomain}
 					title={domainMetadata?.title ?? ''}
 					wildBalance={wildBalance}
-					wildPriceUsd={wildPriceUsd}
 					highestBid={bidData?.highestBid?.amount}
 					error={error}
 					bid={bid}
@@ -308,6 +315,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 					setBid={setBid}
 					onClose={onClose}
 					onConfirm={onConfirm}
+					paymentTokenInfo={paymentTokenInfo}
 				/>
 			) : (
 				<Wizard.Loading message={MESSAGES.TEXT_LOADING} />
@@ -328,6 +336,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				highestBid={bidData?.highestBid?.amount}
 				bid={bid}
 				onClose={onBid}
+				paymentTokenInfo={paymentTokenInfo}
 			/>
 		),
 	};

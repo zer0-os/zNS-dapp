@@ -14,6 +14,7 @@ import { Web3Provider } from '@ethersproject/providers';
 
 //- Constants Imports
 import { LABELS } from './BuyNowButton.constants';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 interface BuyNowButtonProps {
 	className?: string;
@@ -23,9 +24,10 @@ interface BuyNowButtonProps {
 	onSuccess?: () => void;
 	style?: React.CSSProperties;
 	isTextButton?: boolean;
+	paymentTokenInfo: TokenPriceInfo;
 }
 
-const SetBuyNowButton = ({
+const BuyNowButton = ({
 	className,
 	domainId,
 	buttonText = LABELS.BUTTON_TEXT,
@@ -33,6 +35,7 @@ const SetBuyNowButton = ({
 	onSuccess,
 	style,
 	isTextButton,
+	paymentTokenInfo,
 }: BuyNowButtonProps) => {
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -61,6 +64,7 @@ const SetBuyNowButton = ({
 						onSuccess={onSuccess}
 						domainId={domainId}
 						onCancel={() => setIsModalOpen(false)}
+						paymentTokenInfo={paymentTokenInfo}
 					/>
 				</Overlay>
 			)}
@@ -82,4 +86,4 @@ const SetBuyNowButton = ({
 	);
 };
 
-export default SetBuyNowButton;
+export default BuyNowButton;

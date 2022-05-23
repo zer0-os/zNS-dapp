@@ -23,12 +23,13 @@ import {
 import styles from './Details.module.scss';
 
 //-Library Imports
-import { formatBidAmount } from 'lib/utils';
+import { formatBidAmount, replaceWildWithProperToken } from 'lib/utils';
 import { DomainBidData } from 'lib/utils/bids';
 import { toFiat } from 'lib/currency';
 
 //- Utils Imports
 import { getBidToHighWarning, getUsdFiatEstimation } from './Details.utils';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 type DetailsProps = {
 	stepContent: StepContent;
@@ -39,12 +40,12 @@ type DetailsProps = {
 	title: string;
 	wildBalance: number;
 	isModalOpen?: boolean;
-	wildPriceUsd?: number;
 	walletAddress?: string;
 	highestBid?: string;
 	error?: string;
 	bid: string;
 	isBidValid?: boolean;
+	paymentTokenInfo: TokenPriceInfo;
 	setBid?: (bid: string) => void;
 	onClose: () => void;
 	onConfirm?: () => void;
@@ -58,11 +59,11 @@ const Details = ({
 	domainName,
 	title,
 	wildBalance,
-	wildPriceUsd,
 	highestBid,
 	error,
 	bid,
 	isBidValid,
+	paymentTokenInfo,
 	setBid,
 	onClose,
 	onConfirm,
@@ -70,8 +71,11 @@ const Details = ({
 	// State
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	// Format numbers
-	const formattedHighestBidAmount = formatBidAmount(highestBid);
-	const formattedBidAmountWILD = getBidAmountText(bid);
+	const formattedHighestBidAmount = formatBidAmount(
+		highestBid,
+		paymentTokenInfo.name,
+	);
+	const formattedBidAmount = getBidAmountText(bid, paymentTokenInfo.name);
 	// Balance loading
 	const loadingWildBalance = wildBalance === undefined;
 	// Step content
@@ -82,8 +86,8 @@ const Details = ({
 				: BUTTONS[StepContent.Details].PRIMARY
 			: BUTTONS[StepContent.Success];
 	const bidString =
-		isBidValid && wildPriceUsd
-			? toFiat(parseFloat(bid) * wildPriceUsd)
+		isBidValid && paymentTokenInfo.price
+			? toFiat(parseFloat(bid) * paymentTokenInfo.price)
 			: PLACE_BID_LABELS.ZERO_VALUE;
 	const onSubmit = stepContent === StepContent.Details ? onConfirm : onClose;
 
@@ -98,7 +102,7 @@ const Details = ({
 					setIsModalOpen={setIsModalOpen}
 					isModalOpen={isModalOpen}
 					bidData={bidData}
-					wildPriceUsd={wildPriceUsd}
+					paymentTokenInfo={paymentTokenInfo}
 				/>
 			)}
 			<div className={styles.NFTDetailsContainer}>
@@ -122,9 +126,7 @@ const Details = ({
 									? PLACE_BID_LABELS.YOUR_BID
 									: '',
 							value:
-								stepContent === StepContent.Success
-									? formattedBidAmountWILD
-									: '',
+								stepContent === StepContent.Success ? formattedBidAmount : '',
 						},
 					]}
 				/>
@@ -132,7 +134,8 @@ const Details = ({
 
 			{stepContent === StepContent.Details && wildBalance === 0 && (
 				<div className={styles.Error}>
-					You do not have enough WILD tokens to place a bid on this domain.
+					You do not have enough {paymentTokenInfo.name} tokens to place a bid
+					on this domain.
 				</div>
 			)}
 
@@ -140,7 +143,9 @@ const Details = ({
 			{stepContent === StepContent.Details && wildBalance > 0 && (
 				<div className={styles.PlaceBidContainer}>
 					<div className={styles.TextContainer}>{MESSAGES.ENTER_AMOUNT}</div>
-					<span className={styles.Estimate}>{getWildBalance(wildBalance)}</span>
+					<span className={styles.Estimate}>
+						{getWildBalance(wildBalance, paymentTokenInfo.name)}
+					</span>
 					<form onSubmit={onConfirm}>
 						<TextInput
 							numeric
@@ -148,11 +153,19 @@ const Details = ({
 							error={Boolean(error)}
 							className={styles.TextInput}
 							onChange={(text: string) => setBid && setBid(text)}
-							placeholder={PLACE_BID_LABELS.INPUT_PLACEHOLDER}
+							placeholder={replaceWildWithProperToken(
+								PLACE_BID_LABELS.INPUT_PLACEHOLDER,
+								paymentTokenInfo.name,
+							)}
 						/>
 					</form>
-					{getUsdFiatEstimation(bidString, wildPriceUsd)}
-					{getBidToHighWarning(loadingWildBalance, bid, wildBalance)}
+					{getUsdFiatEstimation(bidString, paymentTokenInfo.price)}
+					{getBidToHighWarning(
+						loadingWildBalance,
+						bid,
+						wildBalance,
+						paymentTokenInfo.name,
+					)}
 				</div>
 			)}
 

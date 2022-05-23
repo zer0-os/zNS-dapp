@@ -14,7 +14,7 @@ import { DomainSettings } from 'containers/other/NFTView/elements';
 //- Library Imports
 import { useHistory } from 'react-router-dom';
 import { BigNumber } from 'ethers';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
+import { Domain, TokenPriceInfo } from '@zero-tech/zns-sdk';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import classNames from 'classnames';
@@ -42,11 +42,13 @@ type OwnedDomainsTableRowProps = {
 	data: Domain;
 	// this should be refactored when GenericTable has better typing
 	[x: string]: any;
+	domainsPaymentTokenInfo: any[];
 };
 
 const OwnedDomainsTableRow = ({
 	refetch,
 	data: domain,
+	domainsPaymentTokenInfo,
 }: OwnedDomainsTableRowProps) => {
 	const { push: goTo } = useHistory(); // for navigating on row click
 
@@ -54,6 +56,9 @@ const OwnedDomainsTableRow = ({
 	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
 	const bids = bidData?.bids;
 	const highestBid = bidData?.highestBid;
+	const paymentTokenInfo = domainsPaymentTokenInfo.find(
+		(item) => item.id === domain.id,
+	);
 
 	// Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
@@ -100,6 +105,7 @@ const OwnedDomainsTableRow = ({
 						isLoading={isLoadingBidData}
 						highestBid={highestBid?.amount}
 						isAcceptBidEnabled
+						paymentTokenInfo={paymentTokenInfo}
 					/>
 				</Overlay>
 			);

@@ -45,14 +45,26 @@ const BidTableContainer = () => {
 		const getDomainDataPromises = Promise.all(
 			uniqueDomainIds.map((id) => sdk.getDomainById(id)),
 		);
-		let existingBids: any[], domainData: any[];
+
+		// TODO: Optimize this
+		const getPaymentTokenPromises = Promise.all(
+			uniqueDomainIds.map(async (id) =>
+				sdk.zauction.getPaymentTokenInfo(
+					await sdk.zauction.getPaymentTokenForDomain(id),
+				),
+			),
+		);
+		let existingBids: any[], domainData: any[], paymentTokenData: any[];
 		try {
 			const data = await Promise.all([
 				getExistingBidsPromises,
 				getDomainDataPromises,
+				getPaymentTokenPromises,
 			]);
 			existingBids = data[0];
 			domainData = data[1];
+			paymentTokenData = data[2];
+			console.log(paymentTokenData, domainData, existingBids);
 		} catch (e) {
 			console.error(e);
 			throw new Error('Failed to retrieve bid data.');
@@ -61,13 +73,14 @@ const BidTableContainer = () => {
 		let highestBids: any[], tableData: BidTableRowData[];
 		try {
 			// Convert existing bids into "highest bid"
-			highestBids = existingBids.map((domain) => {
+			highestBids = existingBids.map((domain, index) => {
 				const highestBid = domain.sort((a: Bid, b: Bid) =>
 					BigNumber.from(a.amount).gte(b.amount) ? 0 : 1,
 				)[0] as Bid;
 				return {
 					id: highestBid.tokenId,
 					amount: BigNumber.from(highestBid.amount),
+					paymentTokenInfo: paymentTokenData[index],
 				};
 			});
 
@@ -76,6 +89,9 @@ const BidTableContainer = () => {
 			tableData = bids!
 				.map((bid) => {
 					const domain = domainData.filter((d) => d.id === bid.tokenId)[0];
+					const highestBidData = highestBids.filter(
+						(d) => d.id === bid.tokenId,
+					)[0];
 					return {
 						bidNonce: bid.bidNonce,
 						domainName: domain.name,
@@ -83,9 +99,9 @@ const BidTableContainer = () => {
 						domainMetadataUrl: domain.metadataUri,
 						date: bid.date,
 						yourBid: ethers.utils.parseEther(bid.amount.toString()),
-						highestBid: highestBids.filter((d) => d.id === bid.tokenId)[0]
-							.amount,
+						highestBid: highestBidData.amount,
 						domain: domain,
+						paymentTokenInfo: highestBidData.paymentTokenInfo,
 					};
 				})
 				.sort((a, b) => b.date.getTime() - a.date.getTime());

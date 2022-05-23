@@ -17,23 +17,25 @@ import { ERC20 } from 'types';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 import { BuyNowParams } from '@zero-tech/zauction-sdk';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 export type BuyNowContainerProps = {
 	domainId: string;
 	onCancel: () => void;
 	onSuccess?: () => void;
+	paymentTokenInfo: TokenPriceInfo;
 };
 
 const BuyNowContainer = ({
 	domainId,
 	onCancel,
 	onSuccess,
+	paymentTokenInfo,
 }: BuyNowContainerProps) => {
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
 	const { getMetadata } = useMetadata();
 	const { account, library } = useWeb3React();
-	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
 
 	const znsContracts = useZnsContracts()!;
@@ -198,7 +200,7 @@ const BuyNowContainer = ({
 			onCancel={onCancel}
 			onNext={onNext}
 			step={currentStep}
-			wildPriceUsd={wildPriceUsd}
+			paymentTokenInfo={paymentTokenInfo}
 		/>
 	);
 };

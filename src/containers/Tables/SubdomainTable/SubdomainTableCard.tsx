@@ -28,7 +28,6 @@ import { useBid } from './BidProvider';
 //-Constants Imports
 import { LABELS } from './SubdomainTableCard.constants';
 import { ROUTES } from 'constants/routes';
-import { CURRENCY } from 'constants/currency';
 
 //-Styles Imports
 import styles from './SubdomainTableCard.module.scss';
@@ -43,9 +42,8 @@ const SubdomainTableCard = (props: any) => {
 	const { push: goTo } = useHistory();
 	const { makeABid, updated } = useBid();
 
-	const { wildPriceUsd } = useCurrency();
-
 	const domain = props.data;
+	const paymentTokenInfo = props.paymentTokenInfo;
 	const tradeData: DomainMetrics = domain?.metrics;
 
 	const domainMetadata = useDomainMetadata(domain?.metadata);
@@ -105,16 +103,16 @@ const SubdomainTableCard = (props: any) => {
 							<label>{LABELS.TOP_BID}</label>
 							<span className={styles.Crypto}>
 								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}{' '}
-								{CURRENCY.WILD}
+								{paymentTokenInfo.name}
 							</span>
-							{wildPriceUsd > 0 && (
+							{paymentTokenInfo.price > 0 && (
 								<span className={styles.Fiat}>
 									$
 									{tradeData.highestBid
 										? formatNumber(
 												Number(
 													ethers.utils.formatEther(tradeData?.highestBid),
-												) * wildPriceUsd,
+												) * paymentTokenInfo.price,
 										  )
 										: 0}{' '}
 								</span>

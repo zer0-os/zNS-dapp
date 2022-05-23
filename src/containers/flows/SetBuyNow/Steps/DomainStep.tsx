@@ -16,13 +16,14 @@ import { DomainData } from '../SetBuyNow';
 // Style Imports
 import styles from './DomainStep.module.scss';
 import { ethers } from 'ethers';
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 type DomainStepProps = {
 	domainData: DomainData;
 	error?: string;
 	onCancel: () => void;
 	onNext: (buyNowPrice?: number) => void;
-	wildPriceUsd: number;
+	paymentTokenInfo: TokenPriceInfo;
 	isWaitingForWalletConfirmation?: boolean;
 	didSucceed?: boolean;
 };
@@ -32,7 +33,7 @@ const DomainStep = ({
 	error: externalError,
 	onCancel: onCancelParent,
 	onNext: onNextParent,
-	wildPriceUsd,
+	paymentTokenInfo,
 	isWaitingForWalletConfirmation,
 	didSucceed,
 }: DomainStepProps) => {
@@ -43,7 +44,7 @@ const DomainStep = ({
 		details = [
 			{
 				name: 'Buy Now Price',
-				value: currentBuyNow.toLocaleString() + ' WILD',
+				value: currentBuyNow.toLocaleString() + ' ' + paymentTokenInfo.name,
 			},
 		];
 	}
@@ -88,7 +89,10 @@ const DomainStep = ({
 		// If proposed by now price is same as current
 		if (currentBuyNow && Number(amount) === currentBuyNow) {
 			return setInternalError(
-				'Buy now price is already ' + currentBuyNow.toLocaleString() + ' WILD',
+				'Buy now price is already ' +
+					currentBuyNow.toLocaleString() +
+					' ' +
+					paymentTokenInfo.name,
 			);
 		}
 
@@ -111,13 +115,18 @@ const DomainStep = ({
 			{!isRemovingBuyNow ? (
 				<>
 					Are you sure you want to set a buy now price of{' '}
-					<b>{Number(amount).toLocaleString()} WILD</b> for{' '}
-					<b>{domain.title}</b>?
+					<b>
+						{Number(amount).toLocaleString()} {paymentTokenInfo.name}
+					</b>{' '}
+					for <b>{domain.title}</b>?
 				</>
 			) : (
 				<>
 					Are you sure you want to remove the buy now price of{' '}
-					<b>{currentBuyNow} WILD</b> for <b>{domain.title}</b>?
+					<b>
+						{currentBuyNow} {paymentTokenInfo.name}
+					</b>{' '}
+					for <b>{domain.title}</b>?
 				</>
 			)}
 		</p>
@@ -130,7 +139,9 @@ const DomainStep = ({
 				<div>
 					<p>
 						This NFT has an existing buy now price of{' '}
-						<b>{currentBuyNow!.toLocaleString()} WILD</b>
+						<b>
+							{currentBuyNow!.toLocaleString()} {paymentTokenInfo.name}{' '}
+						</b>
 					</p>
 					<ToggleButton
 						label={'Enable Buy Now price?'}
@@ -144,14 +155,14 @@ const DomainStep = ({
 					<TextInput
 						className={styles.Input}
 						onChange={(text: string) => setAmount(text)}
-						placeholder="New Buy Now Price (WILD)"
+						placeholder={`New Buy Now Price (${paymentTokenInfo.name})`}
 						numeric
 						text={amount}
 						error={true}
 					/>
 					{amount !== undefined && (
 						<span className={styles.Fiat}>
-							${toFiat(Number(amount) * wildPriceUsd)} USD
+							${toFiat(Number(amount) * paymentTokenInfo.price)} USD
 						</span>
 					)}
 				</div>

@@ -69,6 +69,7 @@ const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 				return (
 					<MakeABid
 						domain={selectedBid.domain}
+						paymentTokenInfo={selectedBid.paymentTokenInfo}
 						onBid={refetch}
 						onClose={closeModal}
 					/>
@@ -81,6 +82,7 @@ const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 							domainId={selectedBid.domainId}
 							onSuccess={refetch}
 							onClose={closeModal}
+							paymentTokenInfo={selectedBid.paymentTokenInfo}
 						/>
 					</Overlay>
 				);

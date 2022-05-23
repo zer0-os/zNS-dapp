@@ -1,3 +1,4 @@
+import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import React from 'react';
@@ -33,7 +34,7 @@ type BuyNowProps = {
 	onNext: () => void;
 	onCancel: () => void;
 	step: Step;
-	wildPriceUsd: number;
+	paymentTokenInfo: TokenPriceInfo;
 };
 
 const getSubHeader = (step: Step) => {
@@ -57,7 +58,7 @@ const BuyNow = ({
 	onNext,
 	onCancel,
 	step,
-	wildPriceUsd,
+	paymentTokenInfo,
 }: BuyNowProps) => {
 	if (step === Step.ApproveZAuction) {
 		return WrapWizard(
@@ -125,7 +126,7 @@ const BuyNow = ({
 					error={error}
 					onNext={onNext}
 					data={data}
-					wildPriceUsd={wildPriceUsd}
+					paymentTokenInfo={paymentTokenInfo}
 					onCancel={onCancel}
 					isWaitingForWalletConfirmation={
 						step === Step.WaitingForWalletConfirmation
