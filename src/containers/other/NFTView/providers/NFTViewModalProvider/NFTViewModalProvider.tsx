@@ -49,6 +49,7 @@ export const NFTViewModalProvider = ({
 					<MakeABid
 						domain={modalContent.contentProps.domain!}
 						onBid={modalContent.contentProps.onBid}
+						paymentTokenInfo={modalContent.contentProps.paymentTokenInfo}
 						onClose={closeModal}
 					/>
 				)}

@@ -161,6 +161,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				domain: znsDomain!,
 				onBid: handleOnBid,
 				onClose: closeModal,
+				paymentTokenInfo: paymentTokenInfo,
 			},
 		});
 	};
