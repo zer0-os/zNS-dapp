@@ -100,8 +100,12 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 				data={data}
 				itemKey={'id'}
 				headers={headers}
-				rowComponent={SubdomainTableRow}
-				gridComponent={SubdomainTableCard}
+				rowComponent={(props: any) => (
+					<SubdomainTableRow {...props} paymentTokenInfo={paymentTokenInfo} />
+				)}
+				gridComponent={(props: any) => (
+					<SubdomainTableCard {...props} paymentTokenInfo={paymentTokenInfo} />
+				)}
 				infiniteScroll
 				isLoading={isLoading || isDomainLoading}
 				loadingText={'Loading Subdomains'}

@@ -92,6 +92,7 @@ const Actions = ({
 					onSuccess={refetch}
 					buttonText={LABELS.BUY_NOW}
 					domainId={domainId ?? ''}
+					paymentTokenInfo={paymentTokenInfo}
 					isTextButton={isTextButton}
 					className={cx({ TextButton: isTextButton })}
 				/>
@@ -110,6 +111,7 @@ const Actions = ({
 					domainId={domainId ?? ''}
 					isTextButton={isTextButton}
 					className={cx({ TextButton: isTextButton })}
+					paymentTokenInfo={paymentTokenInfo}
 				/>
 			),
 			isVisible: isSetBuyNow,

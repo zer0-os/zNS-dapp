@@ -60,7 +60,7 @@ const Details = ({
 	// Functions //
 	///////////////
 	const formattedHighestBidAmount = formatBidAmount(highestBid);
-	const formattedBidAmountWILD = formatBidAmount(bidAmount);
+	const formattedBidAmount = formatBidAmount(bidAmount);
 	const formattedBidAmountUSD = toFiat(Number(bidAmountUSD));
 	const onSubmit = stepContent === StepContent.Details ? onNext : onClose;
 	const onSubmitButtonText =
@@ -90,7 +90,7 @@ const Details = ({
 								stepContent === StepContent.Details
 									? LABELS.SELECTED_BID_LABEL
 									: LABELS.ACCEPTED_BID_LABEL,
-							value: formattedBidAmountWILD,
+							value: formattedBidAmount,
 						},
 					]}
 				/>
@@ -99,10 +99,7 @@ const Details = ({
 			{/* Details Step */}
 			{stepContent === StepContent.Details && (
 				<div className={styles.TextContainer}>
-					{getConfirmNFTPriceDetails(
-						formattedBidAmountWILD,
-						formattedBidAmountUSD,
-					)}
+					{getConfirmNFTPriceDetails(formattedBidAmount, formattedBidAmountUSD)}
 					{walletAddress &&
 						getConfirmNFTDomainDetails(domainName, walletAddress)}
 				</div>

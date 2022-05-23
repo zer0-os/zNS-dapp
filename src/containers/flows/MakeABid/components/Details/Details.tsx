@@ -75,7 +75,7 @@ const Details = ({
 		highestBid,
 		paymentTokenInfo.name,
 	);
-	const formattedBidAmountWILD = getBidAmountText(bid, paymentTokenInfo.name);
+	const formattedBidAmount = getBidAmountText(bid, paymentTokenInfo.name);
 	// Balance loading
 	const loadingWildBalance = wildBalance === undefined;
 	// Step content
@@ -126,9 +126,7 @@ const Details = ({
 									? PLACE_BID_LABELS.YOUR_BID
 									: '',
 							value:
-								stepContent === StepContent.Success
-									? formattedBidAmountWILD
-									: '',
+								stepContent === StepContent.Success ? formattedBidAmount : '',
 						},
 					]}
 				/>

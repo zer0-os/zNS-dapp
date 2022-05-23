@@ -142,3 +142,9 @@ export const truncateDomain = (
 		return domainText;
 	}
 };
+
+// Used to replace hardcoded WILD Token name in the constants string with the required domain token
+export const replaceWildWithProperToken = (
+	sourceString: string,
+	paymentTokenName: string,
+) => sourceString.replaceAll('WILD', paymentTokenName);

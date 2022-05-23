@@ -185,6 +185,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				domainId: domainId,
 				onCancel: closeModal,
 				onSuccess: refetch,
+				paymentTokenInfo: paymentTokenInfo,
 			},
 		});
 	};
@@ -198,9 +199,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				domain: viewBidsDomainData,
 				domainMetadata: domainMetadata ?? undefined,
 				onAccept: handleOnAccept,
-				wildPriceUsd,
 				isLoading: isBidDataLoading,
 				highestBid: String(highestBidAsWei),
+				paymentTokenInfo: paymentTokenInfo,
 			},
 		});
 	};
@@ -269,7 +270,11 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				znsDomain={znsDomain}
 			/>
 
-			<History isLoading={isHistoryLoading} history={history} />
+			<History
+				isLoading={isHistoryLoading}
+				history={history}
+				paymentTokenInfo={paymentTokenInfo}
+			/>
 		</div>
 	);
 };
