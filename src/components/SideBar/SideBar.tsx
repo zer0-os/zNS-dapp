@@ -7,8 +7,13 @@ import { PriceWidget } from 'containers';
 //- Constants Imports
 import { getNavLinks } from 'lib/utils/nav';
 import { ROUTES } from 'constants/routes';
-import { DOMAIN_LOGOS, IS_DEFAULT_NETWORK } from 'constants/domains';
+import {
+	DOMAIN_LOGOS,
+	IS_DEFAULT_NETWORK,
+	ROOT_DOMAIN,
+} from 'constants/domains';
 import { ALT_TEXT, COLOURS } from './SideBar.constants';
+import { URLS } from 'constants/urls';
 
 //- Styles Imports
 import styles from './SideBar.module.scss';
@@ -36,12 +41,22 @@ const SideBar = () => {
 
 	const isRoot =
 		IS_DEFAULT_NETWORK && (app !== ROUTES.MARKET || zna.length === 0);
+	const isRootNetworkSet = ROOT_DOMAIN !== '';
 
 	return (
 		<div className={styles.BorderContainer}>
 			<div className={styles.Container}>
 				<div className={styles.LinkContainer}>
-					<Link className={styles.HomeLink} to={app}>
+					<Link
+						className={styles.HomeLink}
+						to={
+							isRoot
+								? app
+								: isRootNetworkSet
+								? ROUTES.MARKET
+								: ROUTES.MARKET + '/' + zna.split('.')[0]
+						}
+					>
 						<img
 							alt={ALT_TEXT.APP_LOGO}
 							src={isRoot ? DOMAIN_LOGOS.ZERO : DOMAIN_LOGOS.WILDER_WORLD}
@@ -77,9 +92,20 @@ const SideBar = () => {
 				<div className={styles.Footer}>
 					<PriceWidget isRoot={isRoot} />
 					<div className={cx(styles.ZeroIconContainer, { Hidden: isRoot })}>
-						<Link className={styles.Zero} to={app}>
-							<img alt={ALT_TEXT.ZERO_LOGO} src={DOMAIN_LOGOS.ZERO} />
-						</Link>
+						{isRootNetworkSet ? (
+							<a
+								className={styles.Zero}
+								target="_blank"
+								href={URLS.ZERO}
+								rel="noreferrer"
+							>
+								<img alt={ALT_TEXT.ZERO_LOGO} src={DOMAIN_LOGOS.ZERO} />
+							</a>
+						) : (
+							<Link className={styles.Zero} to={app}>
+								<img alt={ALT_TEXT.ZERO_LOGO} src={DOMAIN_LOGOS.ZERO} />
+							</Link>
+						)}
 					</div>
 					{network !== NETWORK_TYPES.MAINNET && (
 						<label className={styles.Network}>
