@@ -3,7 +3,6 @@
  */
 export enum DomainSettingsWarning {
 	LOCKED = 'LOCKED',
-	LOCKED_BY = 'LOCKED_BY',
 	TRANSACTION_DENIED = 'TRANSACTION_DENIED',
 	TRANSACTION_FAILED = 'TRANSACTION_FAILED',
 }
@@ -15,8 +14,6 @@ export enum DomainSettingsSuccess {
 
 export const DOMAIN_SETTINGS_WARNING_MESSAGES = {
 	[DomainSettingsWarning.LOCKED]: 'Please unlock to make changes.',
-	[DomainSettingsWarning.LOCKED_BY]:
-		'You cannot unlock the Metadata to make changes as it was locked by ',
 	[DomainSettingsWarning.TRANSACTION_DENIED]: 'Transaction denied by wallet.',
 	[DomainSettingsWarning.TRANSACTION_FAILED]:
 		'Transaction failed, try again later.',
@@ -27,6 +24,9 @@ export const DOMAIN_SETTINGS_SUCCESS_MESSAGES = {
 	[DomainSettingsSuccess.MEATA_DATA_SAVED_AND_LOCKED]:
 		'Your changes have been saved and locked',
 };
+
+export const DOMAIN_SETTINGS_UNLOCKABLE_PROMPT =
+	'You cannot unlock the Metadata to make changes as it was locked by ';
 
 /**
  * Modals
@@ -151,4 +151,15 @@ export const DOMAIN_SETTINGS_TOOLTIPS = {
 		'Grid view has larger image previews which can benefit domains with a focus on art rather than statistics.',
 	[DomainSettingsTooltipType.SETTINGS_CUSTOM_DOMAIN_HEADER]:
 		'Change the first column header of list view. By default this is ‘Domain’.',
+};
+
+/**
+ * Button Labels
+ */
+export const DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS = {
+	LOCK_METADATA: 'Lock Metadata',
+	UNLOCK_METADATA: 'Unlock MetaData',
+	SAVE_CHANGES: 'Save Changes',
+	SAVE_AND_LOCK: 'Save & Lock',
+	FINISH: 'Finish',
 };

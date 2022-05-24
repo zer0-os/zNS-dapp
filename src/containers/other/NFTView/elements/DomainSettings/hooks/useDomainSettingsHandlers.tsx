@@ -135,7 +135,7 @@ export const useDomainSettingsHandlers = ({
 		localActions.setWarning(
 			props.domain?.lockedBy.id === props.domain?.owner.id
 				? DomainSettingsWarning.LOCKED
-				: DomainSettingsWarning.LOCKED_BY,
+				: undefined,
 		);
 	}, [localActions, props]);
 

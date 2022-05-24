@@ -23,6 +23,8 @@ import {
 	DOMAIN_SETTINGS_SUCCESS_MESSAGES,
 	DomainSettingsTooltipType,
 	DOMAIN_SETTINGS_TOOLTIPS,
+	DOMAIN_SETTINGS_UNLOCKABLE_PROMPT,
+	DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS,
 } from '../../DomainSettings.constants';
 
 //- Assets Imports
@@ -78,17 +80,20 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 				{warning && (
 					<label
 						className={classnames('warning', {
-							is_locked_warning:
-								warning === DomainSettingsWarning.LOCKED ||
-								warning === DomainSettingsWarning.LOCKED_BY,
+							is_locked_warning: warning === DomainSettingsWarning.LOCKED,
 						})}
 					>
 						{DOMAIN_SETTINGS_WARNING_MESSAGES[warning]}
-						{warning === DomainSettingsWarning.LOCKED_BY && domain ? (
-							<Member id={domain?.lockedBy.id} />
-						) : (
-							''
-						)}
+					</label>
+				)}
+				{isLocked && domain && !unlockable && (
+					<label
+						className={classnames('warning', {
+							is_locked_warning: !unlockable,
+						})}
+					>
+						{DOMAIN_SETTINGS_UNLOCKABLE_PROMPT}
+						<Member id={domain?.lockedBy.id} />
 					</label>
 				)}
 				{success && (
@@ -115,7 +120,7 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 						disabled={!unlockable}
 						glow={unlockable}
 					>
-						Unlock MetaData
+						{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.UNLOCK_METADATA}
 					</FutureButton>
 				)}
 				{!isLocked && !isSaved && (
@@ -126,28 +131,39 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 							glow={isChanged}
 							disabled={!isChanged}
 						>
-							Save Changes
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.SAVE_CHANGES}
 						</FutureButton>
 						<FutureButton className="" onClick={onSaveAndLock} glow>
-							Save & Lock
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.SAVE_AND_LOCK}
 						</FutureButton>
 					</div>
 				)}
 				{!isLocked && isSaved && (
 					<div className="domain-settings-footer__buttons-wrapper">
 						<FutureButton className="" onClick={onLock} glow>
-							Lock Metadata
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.LOCK_METADATA}
 						</FutureButton>
 						<FutureButton className="" onClick={onFinish} glow>
-							Finish
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.FINISH}
 						</FutureButton>
 					</div>
 				)}
-				{isLocked && isSaved && (
-					<FutureButton className="" onClick={onFinish} glow>
-						Finish
-					</FutureButton>
-				)}
+				{isLocked &&
+					isSaved &&
+					(!warning ? (
+						<FutureButton className="" onClick={onFinish} glow>
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.FINISH}
+						</FutureButton>
+					) : (
+						<FutureButton
+							className=""
+							onClick={onUnlock}
+							disabled={!unlockable}
+							glow={unlockable}
+						>
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.UNLOCK_METADATA}
+						</FutureButton>
+					))}
 				{tooltipText && (
 					<Tooltip text={tooltipText}>
 						<QuestionButton className="domain-settings-footer__buttons-icon" />
