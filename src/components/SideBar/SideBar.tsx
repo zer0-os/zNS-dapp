@@ -6,7 +6,6 @@ import { PriceWidget } from 'containers';
 
 //- Constants Imports
 import { getNavLinks } from 'lib/utils/nav';
-import { URLS } from 'constants/urls';
 import { ROUTES } from 'constants/routes';
 import { DOMAIN_LOGOS, IS_DEFAULT_NETWORK } from 'constants/domains';
 import { ALT_TEXT, COLOURS } from './SideBar.constants';
@@ -42,7 +41,7 @@ const SideBar = () => {
 		<div className={styles.BorderContainer}>
 			<div className={styles.Container}>
 				<div className={styles.LinkContainer}>
-					<Link className={styles.HomeLink} to={appFromPathname(pathname)}>
+					<Link className={styles.HomeLink} to={app}>
 						<img
 							alt={ALT_TEXT.APP_LOGO}
 							src={isRoot ? DOMAIN_LOGOS.ZERO : DOMAIN_LOGOS.WILDER_WORLD}
@@ -78,14 +77,9 @@ const SideBar = () => {
 				<div className={styles.Footer}>
 					<PriceWidget isRoot={isRoot} />
 					<div className={cx(styles.ZeroIconContainer, { Hidden: isRoot })}>
-						<a
-							className={styles.Zero}
-							target="_blank"
-							href={URLS.ZERO}
-							rel="noreferrer"
-						>
+						<Link className={styles.Zero} to={app}>
 							<img alt={ALT_TEXT.ZERO_LOGO} src={DOMAIN_LOGOS.ZERO} />
-						</a>
+						</Link>
 					</div>
 					{network !== NETWORK_TYPES.MAINNET && (
 						<label className={styles.Network}>
