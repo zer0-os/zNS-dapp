@@ -4,6 +4,7 @@ import React from 'react';
 // Library Imports
 import { useLayer, useHover, Arrow } from 'react-laag';
 import { motion, AnimatePresence, MotionProps } from 'framer-motion';
+import classNames from 'classnames/bind';
 
 //- Style Imports
 import styles from './Tooltip.module.scss';
@@ -30,7 +31,10 @@ type TooltipProps = {
 	delayLeave?: number;
 	hideOnScroll?: boolean;
 	animationProps?: MotionProps;
+	deepPadding?: boolean;
 };
+
+const cx = classNames.bind(styles);
 
 const Tooltip: React.FC<TooltipProps> = ({
 	children,
@@ -47,6 +51,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 		exit: { opacity: 0, scale: 0.9 },
 		transition: { duration: 0.1 },
 	},
+	deepPadding,
 }) => {
 	const [isOver, hoverProps] = useHover({
 		delayEnter,
@@ -76,7 +81,9 @@ const Tooltip: React.FC<TooltipProps> = ({
 				<AnimatePresence>
 					{isOver && (
 						<motion.div
-							className={styles.Tooltip}
+							className={cx(styles.Tooltip, {
+								Padded: deepPadding,
+							})}
 							{...animationProps}
 							{...layerProps}
 						>

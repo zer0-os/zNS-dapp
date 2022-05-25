@@ -1,17 +1,25 @@
 //- React Imports
 import React, { useMemo, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 
 //- Web3 Imports
 import { BigNumber } from 'ethers';
 
 //- Component Imports
-import { ArrowLink } from 'components';
+import { ArrowLink, QuestionButton, TextButton, Tooltip } from 'components';
+
+//- Constant Imports
+import { BOX_CONTENT, LINK_TEXT, LABELS } from './TokenHashBoxes.constants';
+
+//  Utils Imports
+import { getStatusText, getTooltipText } from './TokenHashBoxes.utils';
 
 //- Library Imports
 import { getHashFromIPFSUrl, getWebIPFSUrlFromHash } from 'lib/ipfs';
 import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
 import useNotification from 'lib/hooks/useNotification';
-import { truncateWalletAddress } from 'lib/utils';
+import { truncateWalletAddress, zNAFromPathname } from 'lib/utils';
+import classNames from 'classnames/bind';
 
 //- Type Imports
 import { Maybe, DisplayParentDomain } from 'lib/types';
@@ -19,8 +27,7 @@ import { Maybe, DisplayParentDomain } from 'lib/types';
 //- Helper Imports
 import { copyToClipboard } from '../../NFTView.helpers';
 
-//- Asset Imports
-import copyIcon from '../../assets/copy-icon.svg';
+import { Copy } from 'react-feather';
 
 //- Style Imports
 import styles from '../../NFTView.module.scss';
@@ -32,12 +39,24 @@ type TokenHashBoxesProps = {
 	znsDomain: Maybe<DisplayParentDomain>;
 };
 
+const cx = classNames.bind(styles);
+
 export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 	domainId,
 	chainId,
 	znsDomain,
 }) => {
 	const { addNotification } = useNotification();
+
+	// replace with claimed data
+	const isClaimed = false;
+	const statusText = getStatusText(isClaimed);
+	const tooltipText = getTooltipText(isClaimed);
+
+	// redo
+	const { pathname } = useLocation();
+	const zna = zNAFromPathname(pathname);
+	const isWheelPath = zna.includes(LABELS.WILDER_WHEELS_ZNA);
 
 	const ipfsHash = useMemo(() => {
 		if (znsDomain) {
@@ -65,49 +84,55 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 	);
 
 	return (
-		<div className={`${styles.TokenHashContainer}`}>
-			<div className={`${styles.Box} ${styles.Contract} border-rounded`}>
-				<h4>Token Id</h4>
+		<div className={styles.TokenHashContainer}>
+			{isWheelPath && (
+				<div className={cx(styles.Box, styles.Contract)}>
+					<div className={styles.FlexWrapper}>
+						<h4>{BOX_CONTENT.CLAIM_STATUS}</h4>
+						<Tooltip deepPadding text={tooltipText}>
+							<QuestionButton small />
+						</Tooltip>
+					</div>
+					<p>{statusText}</p>
+					{!isClaimed && (
+						<TextButton className={styles.TextButton} onClick={() => {}}>
+							{LINK_TEXT[BOX_CONTENT.CLAIM_STATUS]}
+						</TextButton>
+					)}
+				</div>
+			)}
+			<div className={cx(styles.Box, styles.Contract)}>
+				<h4>{BOX_CONTENT.TOKEN_ID}</h4>
 				<p>
-					<img
-						onClick={onCopyToClipboard(domainId, 'Token ID')}
+					<Copy
 						className={styles.Copy}
-						src={copyIcon}
-						alt="Copy Contract Icon"
+						onClick={onCopyToClipboard(domainId, BOX_CONTENT.TOKEN_ID)}
 					/>
 					{truncateWalletAddress(domainId)}
 				</p>
 				<ArrowLink
-					style={{
-						marginTop: 8,
-						width: 150,
-					}}
+					className={styles.BoxArrowLink}
 					href={etherscanLink}
 					isLinkToExternalUrl
 				>
-					View on Etherscan
+					{LINK_TEXT[BOX_CONTENT.TOKEN_ID]}
 				</ArrowLink>
 			</div>
-			<div className={`${styles.Box} ${styles.Contract} border-rounded`}>
-				<h4>IPFS Hash</h4>
+			<div className={cx(styles.Box, styles.Contract)}>
+				<h4>{BOX_CONTENT.IPFS_HASH}</h4>
 				<p>
-					<img
-						onClick={onCopyToClipboard(ipfsHash, 'IPFS Hash')}
+					<Copy
 						className={styles.Copy}
-						src={copyIcon}
-						alt="Copy IPFS Hash Icon"
+						onClick={onCopyToClipboard(ipfsHash, BOX_CONTENT.IPFS_HASH)}
 					/>
 					{truncateWalletAddress(ipfsHash)}
 				</p>
 				<ArrowLink
-					style={{
-						marginTop: 8,
-						width: 105,
-					}}
+					className={styles.BoxArrowLink}
 					href={getWebIPFSUrlFromHash(ipfsHash)}
 					isLinkToExternalUrl
 				>
-					View on IPFS
+					{LINK_TEXT[BOX_CONTENT.IPFS_HASH]}
 				</ArrowLink>
 			</div>
 		</div>

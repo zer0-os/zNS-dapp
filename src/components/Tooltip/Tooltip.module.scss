@@ -16,6 +16,10 @@ $color: #1a1022;
 
 	border-radius: 8px;
 	z-index: 2;
+
+	&.Padded {
+		padding: 24px;
+	}
 }
 
 .Arrow path {

@@ -331,6 +331,34 @@
 	display: flex;
 	justify-content: space-between;
 	grid-gap: 16px;
+	font-size: 12px;
+
+	h4:first-of-type {
+		white-space: nowrap;
+		margin-right: 4px;
+	}
+
+	.FlexWrapper {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.BoxArrowLink {
+		margin-top: 4px;
+		width: fit-content;
+		padding-right: 4px;
+		font-size: 12px;
+	}
+
+	.TextButton {
+		margin-top: 4px;
+		padding-left: 0;
+		font-size: 12px;
+
+		img {
+			display: none;
+		}
+	}
 }
 
 @media only screen and (max-width: 1280px) {
