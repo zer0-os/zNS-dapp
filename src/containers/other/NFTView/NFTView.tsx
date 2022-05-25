@@ -199,6 +199,20 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		});
 	};
 
+	// Open Claim Modal
+	const openClaim = () => {
+		openModal({
+			modalType: NFTViewModalType.CLAIM_NFT,
+			contentProps: {
+				// replace with claim props
+				onClose: closeModal,
+				onFinish: closeModal,
+				pricePerNFT: 0,
+				onSubmitTransaction: () => {},
+			},
+		});
+	};
+
 	// Dropdown Option Select
 	const onSelectOption = (option: Option) => {
 		if (option.title === NFT_MORE_ACTIONS_TITLE.MY_DOMAIN_SETTINGS) {
@@ -261,6 +275,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				domainId={domainId}
 				chainId={chainId}
 				znsDomain={znsDomain}
+				onClaim={openClaim}
 			/>
 
 			<History isLoading={isHistoryLoading} history={history} />

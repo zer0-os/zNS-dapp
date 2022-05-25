@@ -69,6 +69,10 @@ export const NFTViewModalProvider = ({
 						isLoading={modalContent.contentProps.isLoading}
 					/>
 				)}
+				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && (
+					// replace with component
+					<>Claim NFT Modal / Mint Drop NFT Modal</>
+				)}
 			</Overlay>
 
 			{modalContent?.modalType === NFTViewModalType.DOMAIN_SETTINGS && (

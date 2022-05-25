@@ -1,5 +1,6 @@
 //- Container Props Imports
 import { MakeABidProps } from 'containers/flows/MakeABid/MakeABid';
+import { MintDropNFTWizardProps } from 'containers/flows/MintDropNFT/MintDropNFTWizard';
 import { SetBuyNowContainerProps } from 'containers/flows/SetBuyNow';
 import { TransferOwnershipProps } from 'containers/flows/TransferOwnership/TransferOwnership';
 import { BidListProps } from 'containers/lists/BidList/BidList';
@@ -12,6 +13,7 @@ export enum NFTViewModalType {
 	TRANSFER_OWNERSHIP,
 	SET_BUY_NOW,
 	BID_LIST,
+	CLAIM_NFT,
 }
 
 export type MakeABidContentProps = Omit<MakeABidProps, 'closeModal'>;
@@ -29,6 +31,9 @@ export type TransferOwnershipContentProps = Omit<
 export type SetBuyNowContentProps = Omit<SetBuyNowContainerProps, 'closeModal'>;
 
 export type BidListContentProps = Omit<BidListProps, 'closeModal'>;
+
+// replace with claim nft props
+export type ClaimNFTContentProps = Omit<MintDropNFTWizardProps, 'closeModal'>;
 
 interface NullContent {
 	modalType: NFTViewModalType.NULL_MODAL_TYPE;
@@ -59,13 +64,19 @@ interface BidListContent {
 	contentProps: BidListContentProps;
 }
 
+interface ClaimNFTContent {
+	modalType: NFTViewModalType.CLAIM_NFT;
+	contentProps: ClaimNFTContentProps;
+}
+
 export type NFTViewModalContent =
 	| NullContent
 	| MakeABidContent
 	| DomainSettingsContent
 	| TransferOwnershipContent
 	| SetBuyNowContent
-	| BidListContent;
+	| BidListContent
+	| ClaimNFTContent;
 
 export interface NFTViewModalContextProps {
 	openModal: (content: NFTViewModalContent) => void;

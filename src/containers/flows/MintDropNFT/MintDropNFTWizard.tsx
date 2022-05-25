@@ -25,7 +25,7 @@ import { Stage, Step, TransactionData } from './types';
 import styles from './MintDropNFTWizard.module.scss';
 import { Wizard } from 'components';
 
-type MintDropNFTWizardProps = {
+export type MintDropNFTWizardProps = {
 	balanceEth?: number;
 	contract?: WhitelistSimpleSale;
 	dropStage?: Stage;

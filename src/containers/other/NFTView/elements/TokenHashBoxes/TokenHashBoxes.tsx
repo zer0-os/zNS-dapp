@@ -37,6 +37,7 @@ type TokenHashBoxesProps = {
 	domainId: string;
 	chainId?: number;
 	znsDomain: Maybe<DisplayParentDomain>;
+	onClaim: () => void;
 };
 
 const cx = classNames.bind(styles);
@@ -45,6 +46,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 	domainId,
 	chainId,
 	znsDomain,
+	onClaim,
 }) => {
 	const { addNotification } = useNotification();
 
@@ -95,7 +97,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 					</div>
 					<p>{statusText}</p>
 					{!isClaimed && (
-						<TextButton className={styles.TextButton} onClick={() => {}}>
+						<TextButton className={styles.TextButton} onClick={onClaim}>
 							{LINK_TEXT[BOX_CONTENT.CLAIM_STATUS]}
 						</TextButton>
 					)}
