@@ -86,6 +86,8 @@ const Tooltip: React.FC<TooltipProps> = ({
 							})}
 							{...animationProps}
 							{...layerProps}
+							// replace
+							{...(layerProps.style.zIndex = 999999)}
 						>
 							{text}
 							<Arrow {...arrowProps} className={styles.Arrow} />

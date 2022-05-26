@@ -27,6 +27,7 @@ import { Maybe, DisplayParentDomain } from 'lib/types';
 //- Helper Imports
 import { copyToClipboard } from '../../NFTView.helpers';
 
+//- Assets
 import { Copy } from 'react-feather';
 
 //- Style Imports

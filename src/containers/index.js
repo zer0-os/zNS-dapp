@@ -28,6 +28,7 @@ export { default as AcceptBid } from './flows/AcceptBid/AcceptBid';
 export { default as BuyNow } from './flows/BuyNow';
 export { default as BuyTokenRedirect } from './flows/BuyTokenRedirect/BuyTokenRedirect';
 export { default as CancelBid } from './flows/CancelBid/CancelBid';
+export { default as ClaimNFT } from './flows/ClaimNFT';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
 export { default as MintDropNFT } from './flows/MintDropNFT';
