@@ -1,11 +1,7 @@
-// React Imports
+//- React Imports
 import { useState } from 'react';
 
-// Web3 Imports
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-
-// Component Imports
+//- Component Imports
 import { MintDropNFTBanner, Overlay, ConnectToWallet } from 'components';
 
 //- Style Imports
@@ -18,8 +14,6 @@ const ClaimNFTContainer = ({}: ClaimNFTContainerProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
-
-	const { active } = useWeb3React<Web3Provider>();
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
 	const [isConnectPromptOpen, setIsConnectPromptOpen] =
 		useState<boolean>(false);
@@ -57,7 +51,11 @@ const ClaimNFTContainer = ({}: ClaimNFTContainerProps) => {
 			)}
 			{isWizardOpen && (
 				<Overlay open onClose={closeWizard}>
-					<ClaimNFT openConnect={openConnect} isWalletConnected={active} />
+					<ClaimNFT
+						isClaimable={true}
+						openConnect={openConnect}
+						onClose={closeWizard}
+					/>
 				</Overlay>
 			)}
 			<div className={styles.BannerContainer}>

@@ -8,7 +8,7 @@ import {
 	VIDEO_SETTINGS,
 	TEXT_INPUT,
 	MESSAGES,
-	BUTTONS,
+	TOOLTIP,
 } from './Details.constants';
 
 // Library Imports
@@ -21,42 +21,68 @@ import {
 	Wizard,
 	QuestionButton,
 	Tooltip,
+	ArrowLink,
 } from 'components';
 
 // Utils Imports
-import { isValidTokenId } from './Details.utils';
+import {
+	getButtonText,
+	isValidTokenId,
+	getQuantityText,
+	getQuantityTooltip,
+} from './Details.utils';
 
 // Style Imports
 import styles from './Details.module.scss';
 
 type DetailsProps = {
 	isWalletConnected: boolean;
-	error: string;
+	isClaimable: boolean;
+	error?: string;
 	connectToWallet: () => void;
+	onStartClaim: () => void;
+	onRedirect: () => void;
 };
 
 const cx = classNames.bind(styles);
 
 const Details = ({
 	isWalletConnected,
+	isClaimable,
 	error,
 	connectToWallet,
+	onStartClaim,
+	onRedirect,
 }: DetailsProps) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
 
 	const [tokenID, setTokenID] = useState<string | undefined>();
+
 	const validTokenId = isValidTokenId(tokenID ?? '');
 	// replace
 	const isClaimDataLoading = false;
 	const hasValue = Boolean(tokenID?.length);
+	const buttonText = getButtonText(isWalletConnected, isClaimable);
+	const quantityText = getQuantityText(isClaimable, 0);
+	const quantityTooltip = getQuantityTooltip(isClaimable);
 
 	///////////////
 	// Functions //
 	///////////////
 
 	const onCheck = () => console.log('onCheck');
+
+	const onSubmit = () => {
+		if (!isWalletConnected) {
+			connectToWallet();
+		} else if (isWalletConnected && isClaimable) {
+			onStartClaim();
+		} else {
+			onRedirect();
+		}
+	};
 
 	return (
 		<>
@@ -90,7 +116,7 @@ const Details = ({
 					<div className={styles.InfoContainer}>
 						<div className={styles.HeaderContainer}>
 							<div className={styles.Header}>{TEXT_INPUT.HEADER}</div>
-							<Tooltip deepPadding text={TEXT_INPUT.TOOLTIP}>
+							<Tooltip deepPadding text={TOOLTIP.TEXT_INPUT}>
 								<QuestionButton small />
 							</Tooltip>
 						</div>
@@ -100,25 +126,23 @@ const Details = ({
 								hasError: error,
 							})}
 						>
-							<div
-								className={cx(styles.FlexRowWrapper, {
+							{tokenID && <span>{TEXT_INPUT.PLACEHOLDER}</span>}
+							<TextInput
+								className={cx(styles.Input, {
 									hasValue: hasValue,
 								})}
-							>
-								{tokenID && <span>{TEXT_INPUT.PLACEHOLDER}</span>}
-								<TextInput
-									className={cx(styles.Input, {
-										hasValue: hasValue,
-									})}
-									onChange={(text: string) => setTokenID(text)}
-									placeholder={TEXT_INPUT.PLACEHOLDER}
-									text={tokenID}
-									type={TEXT_INPUT.TYPE}
-								/>
-							</div>
+								onChange={(text: string) => setTokenID(text)}
+								placeholder={TEXT_INPUT.PLACEHOLDER}
+								text={tokenID}
+								type={TEXT_INPUT.TYPE}
+							/>
+
 							<div className={styles.ButtonContainer}>
-								<FutureButton glow={validTokenId} onClick={onCheck}>
-									{/* replace - get button text to add */}
+								<FutureButton
+									glow={validTokenId}
+									disabled={!validTokenId}
+									onClick={onCheck}
+								>
 									{TEXT_INPUT.BUTTON}
 								</FutureButton>
 							</div>
@@ -129,18 +153,40 @@ const Details = ({
 									hasError: error,
 								})}
 							>
-								{'error'}
+								{error}
 							</div>
 						)}
 
-						{!isWalletConnected && (
+						{!isWalletConnected ? (
 							<div className={styles.Warning}>
 								{MESSAGES.CONNECT_WALLET_PROMPT}
 							</div>
+						) : (
+							<div className={styles.TextContainer}>
+								<div className={styles.FlexRowWrapper}>
+									<div className={styles.QuantityText}>{quantityText}</div>
+									<Tooltip deepPadding text={quantityTooltip}>
+										<QuestionButton small />
+									</Tooltip>
+								</div>
+								<ArrowLink
+									className={styles.ArrowLink}
+									href={'url to claim zine'}
+									isLinkToExternalUrl
+								>
+									{MESSAGES.READ_MORE}
+								</ArrowLink>
+								{isClaimable && (
+									<div className={styles.CostPrompt}>
+										{MESSAGES.COST_PROMPT}
+									</div>
+								)}
+							</div>
 						)}
+
 						<Wizard.Buttons
-							primaryButtonText={BUTTONS.CONNECT_WALLET}
-							onClickPrimaryButton={connectToWallet}
+							primaryButtonText={buttonText}
+							onClickPrimaryButton={onSubmit}
 						/>
 					</div>
 				)}

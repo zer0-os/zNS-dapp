@@ -1,0 +1,126 @@
+.Container {
+	width: 100%;
+
+	.Media {
+		width: 100%;
+		max-height: 306px;
+		border-radius: var(--box-radius);
+		object-fit: cover;
+		margin: 40px 0;
+	}
+
+	.InfoContainer {
+		.HeaderContainer {
+			display: flex;
+			flex-direction: row;
+
+			.Header {
+				margin: 0 8px 8px 0;
+			}
+		}
+
+		.InputContainer {
+			display: flex;
+			flex-direction: row;
+			align-items: baseline;
+			margin-bottom: 40px;
+
+			.Input {
+				padding: 12px 24px;
+				height: 48px;
+				text-overflow: ellipsis;
+
+				&.hasValue {
+					border: 1px solid #88d7ff;
+				}
+
+				&:not(:focus):not(.hasValue) {
+					border: 1px solid var(--color-grey);
+				}
+
+				&::placeholder {
+					color: var(--color-grey);
+				}
+			}
+
+			&.hasError {
+				margin-bottom: 2px;
+			}
+
+			&.hasValue {
+				align-items: center;
+				position: relative;
+				color: var(--color-grey);
+
+				> span {
+					position: absolute;
+					top: 8px;
+					left: 25px;
+					color: var(--color-grey-lighter-3);
+					font-size: 10px;
+				}
+
+				input {
+					width: 100%;
+					padding: 22.5px 24px 10.5px 24px;
+					line-height: 19.2px;
+					background: linear-gradient(
+						94.23deg,
+						rgba(60, 161, 255, 0.2) 0%,
+						rgba(30, 81, 128, 0.2) 100%
+					);
+				}
+			}
+
+			.ButtonContainer {
+				display: flex;
+				align-self: center;
+				margin-left: 16px;
+			}
+		}
+
+		.Error {
+			font-size: 12px;
+			color: var(--color-error);
+			margin: 2px 0 0 26px;
+
+			&.hasError {
+				margin-bottom: 38px;
+			}
+		}
+
+		.Warning {
+			display: flex;
+			justify-content: center;
+			color: var(--color-warning);
+		}
+
+		.TextContainer {
+			.FlexRowWrapper {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+
+				.QuantityText {
+					margin-right: 8px;
+					font-size: 24px;
+					font-weight: 700;
+					line-height: 29px;
+				}
+			}
+
+			.ArrowLink {
+				font-size: 12px;
+				// color: var(--color-grey);
+				// &:hover {
+				// 	text-shadow: none;
+				// }
+			}
+
+			.CostPrompt {
+				margin-top: 40px;
+				text-align: center;
+			}
+		}
+	}
+}

@@ -22,14 +22,23 @@ export const TEXT_INPUT = {
 		'Optional: Enter a Wheel token ID to check if it can be used to claim',
 	PLACEHOLDER: 'Token ID',
 	BUTTON: 'Check',
-	TOOLTIP:
-		'You can find the Token ID of a Wheel here in the NFTs app or in the ‘Details’ section on Opensea.',
 	TYPE: 'text',
+};
+
+export const TOOLTIP = {
+	TEXT_INPUT:
+		'You can find the Token ID of a Wheel here in the NFTs app or in the ‘Details’ section on Opensea.',
+	UNCLAIMABLE:
+		'Your wallet must hold Wilder Wheels with an unused claim to claim a moto.',
+	CLAIMABLE:
+		'You can claim up to the maximum number of Wheels you hold in this wallet.',
 };
 
 export const MESSAGES = {
 	CONNECT_WALLET_PROMPT:
 		'Connect a wallet which holds Wilder Wheels to claim Motos',
+	READ_MORE: 'Read more about claiming',
+	COST_PROMPT: 'You only need to pay gas!',
 };
 
 export const BUTTONS = {
