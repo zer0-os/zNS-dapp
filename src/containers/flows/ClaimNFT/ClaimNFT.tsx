@@ -72,6 +72,7 @@ const ClaimNFT = ({ isClaimable, openConnect, onClose }: ClaimNFTProps) => {
 	const content = {
 		[StepContent.Details]: (
 			<Details
+				maxQuantity={0}
 				isWalletConnected={active}
 				isClaimable={isClaimable}
 				error={error}
@@ -81,7 +82,7 @@ const ClaimNFT = ({ isClaimable, openConnect, onClose }: ClaimNFTProps) => {
 			/>
 		),
 		[StepContent.Claim]: (
-			<Claiming maxQuantity={5} onClaim={onClaim} error={error} />
+			<Claiming maxQuantity={0} onClaim={onClaim} error={error} />
 		),
 		[StepContent.Minting]: <>MINTING</>,
 	};

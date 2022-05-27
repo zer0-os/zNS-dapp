@@ -36,6 +36,7 @@ import {
 import styles from './Details.module.scss';
 
 type DetailsProps = {
+	maxQuantity: number;
 	isWalletConnected: boolean;
 	isClaimable: boolean;
 	error?: string;
@@ -47,6 +48,7 @@ type DetailsProps = {
 const cx = classNames.bind(styles);
 
 const Details = ({
+	maxQuantity,
 	isWalletConnected,
 	isClaimable,
 	error,
@@ -65,7 +67,7 @@ const Details = ({
 	const isClaimDataLoading = false;
 	const hasValue = Boolean(tokenID?.length);
 	const buttonText = getButtonText(isWalletConnected, isClaimable);
-	const quantityText = getQuantityText(isClaimable, 0);
+	const quantityText = getQuantityText(isClaimable, maxQuantity);
 	const quantityTooltip = getQuantityTooltip(isClaimable);
 
 	///////////////
