@@ -37,10 +37,12 @@
 
 			&.hasValue {
 				border: 1px solid #88d7ff;
+				transition: unset;
 			}
 
 			&.hasError {
 				background: none;
+
 				border: solid 1px transparent;
 				border-radius: 24px;
 				background-image: linear-gradient(#0a0a0a, #0a0a0a),
@@ -51,6 +53,8 @@
 					);
 				background-origin: border-box;
 				background-clip: padding-box, border-box;
+
+				transition: background-image var(--animation-time-medium) ease-out;
 			}
 
 			&:not(:focus):not(.hasValue) {
