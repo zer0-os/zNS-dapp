@@ -23,3 +23,8 @@ export const MESSAGES = {
 	APPEND_UNCLAIMABLE_TEXT: `${[LABELS.MOTOS]} ${[LABELS.CLAIMABLE]}`,
 	APPEND_CLAIMABLE_TEXT: `You can claim`,
 };
+
+export const ERRORS = {
+	UNABLE_TO_RETRIEVE: 'Unable to retrieve Token ID.',
+	CLAIM_CONSUMED: 'This Wheel has already been used to claim a Moto',
+};

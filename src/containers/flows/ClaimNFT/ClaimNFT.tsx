@@ -17,7 +17,11 @@ import Claiming from './components/WizardSteps/Claiming/Claiming';
 import { StepContent, Step } from './ClaimNFT.types';
 
 //- Constants Imports
-import { STEP_BAR_HEADING, STEP_CONTENT_TITLES } from './ClaimNFT.constants';
+import {
+	STEP_BAR_HEADING,
+	STEP_CONTENT_TITLES,
+	ERRORS,
+} from './ClaimNFT.constants';
 import { ROUTES } from 'constants/routes';
 
 //- Styles Imports
@@ -79,6 +83,18 @@ const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 		onClose();
 	};
 
+	const onCheck = () => {
+		console.log('onCheck');
+		// replace
+		const tokenClaimed = true;
+		const unableToRetrieve = false;
+		if (tokenClaimed) {
+			setError(ERRORS.CLAIM_CONSUMED);
+		} else if (unableToRetrieve) {
+			setError(ERRORS.UNABLE_TO_RETRIEVE);
+		}
+	};
+
 	/////////////
 	// Effects //
 	/////////////
@@ -113,6 +129,7 @@ const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 				connectToWallet={openConnect}
 				onStartClaim={onStartClaim}
 				onRedirect={onRedirect}
+				onCheck={onCheck}
 			/>
 		),
 		[StepContent.Claim]: (

@@ -49,6 +49,7 @@ type DetailsProps = {
 	onStartClaim?: () => void;
 	onRedirect?: () => void;
 	onFinish?: () => void;
+	onCheck?: () => void;
 };
 
 const cx = classNames.bind(styles);
@@ -63,6 +64,7 @@ const Details = ({
 	onStartClaim,
 	onRedirect,
 	onFinish,
+	onCheck,
 }: DetailsProps) => {
 	///////////////////////
 	// State & Variables //
@@ -95,8 +97,6 @@ const Details = ({
 	///////////////
 	// Functions //
 	///////////////
-
-	const onCheck = () => console.log('onCheck');
 
 	const onSubmit = () => {
 		if (!isWalletConnected && connectToWallet) {
@@ -161,10 +161,19 @@ const Details = ({
 										hasError: error,
 									})}
 								>
-									{tokenID && <span>{TEXT_INPUT.PLACEHOLDER}</span>}
+									{tokenID && (
+										<span
+											className={cx(styles.SecondaryPlaceholder, {
+												hasError: error,
+											})}
+										>
+											{TEXT_INPUT.PLACEHOLDER}
+										</span>
+									)}
 									<TextInput
 										className={cx(styles.Input, {
 											hasValue: hasValue,
+											hasError: error,
 										})}
 										onChange={(text: string) => setTokenID(text)}
 										placeholder={TEXT_INPUT.PLACEHOLDER}
