@@ -13,8 +13,14 @@
 		.HeaderContainer {
 			display: flex;
 			flex-direction: row;
+			justify-content: center;
+			align-items: baseline;
 
-			.Header {
+			&.isDetailsStep {
+				justify-content: unset;
+			}
+
+			.HeaderPrompt {
 				margin: 0 8px 8px 0;
 			}
 		}
@@ -117,9 +123,10 @@
 				// }
 			}
 
-			.CostPrompt {
-				margin-top: 40px;
+			.Prompt {
 				text-align: center;
+				line-height: 24px;
+				margin: 40px -2px 0 -2px;
 			}
 		}
 	}

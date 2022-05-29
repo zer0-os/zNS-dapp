@@ -28,7 +28,7 @@
 	.InputContainer {
 		display: flex;
 		flex-direction: column;
-		margin-bottom: 47.5px;
+		margin-bottom: 40px;
 
 		.Input {
 			padding: 12px 24px;
@@ -39,12 +39,22 @@
 				border: 1px solid #88d7ff;
 			}
 
+			&.hasError {
+				background: none;
+			}
+
 			&:not(:focus):not(.hasValue) {
 				border: 1px solid var(--color-grey);
 			}
 
 			&::placeholder {
 				color: var(--color-grey);
+			}
+		}
+
+		.SecondaryPlaceholder {
+			&.hasError {
+				color: #f6677c;
 			}
 		}
 
@@ -78,6 +88,10 @@
 		}
 	}
 
+	.WarningPrompt {
+		margin-bottom: 40px;
+	}
+
 	.ButtonContainer {
 		display: flex;
 		justify-content: center;
@@ -89,7 +103,7 @@
 		margin: 2px 0 0 26px;
 
 		&.hasError {
-			margin-bottom: 40px;
+			margin-bottom: 23px;
 		}
 	}
 }

@@ -9,32 +9,41 @@ import { TextInput, QuestionButton, Tooltip, FutureButton } from 'components';
 
 //- Constants Imports
 import { LABELS, MESSAGES } from 'containers/flows/ClaimNFT/ClaimNFT.constants';
-import { TOOLTIP, INPUT, BUTTON_TEXT } from './Claiming.constants';
+import { TOOLTIP, INPUT, BUTTON_TEXT, WARNINGS } from './Claiming.constants';
 
 //- Utils Imports
-import { getPlaceholder } from './Claiming.utils';
+import {
+	getPlaceholder,
+	handleInputError,
+	maxQuantityLimit,
+} from './Claiming.utils';
 
 //- Style Imports
 import styles from './Claiming.module.scss';
 
 type ClaimingProps = {
-	maxQuantity: number;
+	ownedQuantity: number;
 	error?: string;
 	onClaim: () => void;
 };
 
 const cx = classNames.bind(styles);
 
-const Claiming = ({ maxQuantity, onClaim, error }: ClaimingProps) => {
+const Claiming = ({ ownedQuantity, onClaim, error }: ClaimingProps) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
 
 	const [quantity, setQuantity] = useState<string | undefined>();
+	const [inputError, setInputError] = useState<string | undefined>();
 
-	const validQuantity = Number(quantity) === maxQuantity;
+	const exceedsQuantityMintLimit = ownedQuantity > maxQuantityLimit;
+	const validQuantity =
+		Number(quantity) <= ownedQuantity &&
+		Number(quantity) > 0 &&
+		Number(quantity) <= maxQuantityLimit;
 	const hasValue = Boolean(quantity);
-	const placeholder = getPlaceholder(maxQuantity);
+	const placeholder = getPlaceholder(ownedQuantity, exceedsQuantityMintLimit);
 
 	///////////////
 	// Functions //
@@ -44,45 +53,68 @@ const Claiming = ({ maxQuantity, onClaim, error }: ClaimingProps) => {
 		onClaim();
 	};
 
+	const handleChange = (total: string) => {
+		setInputError('');
+		setQuantity(total);
+		handleInputError(
+			total,
+			ownedQuantity,
+			exceedsQuantityMintLimit,
+			setInputError,
+		);
+	};
+
 	return (
 		<>
 			<section className={styles.Container}>
 				<div className={styles.TextContainer}>
 					<div
 						className={styles.QuantityText}
-					>{`${MESSAGES.APPEND_CLAIMABLE_TEXT} ${maxQuantity} ${LABELS.MOTOS}`}</div>
+					>{`${MESSAGES.APPEND_CLAIMABLE_TEXT} ${ownedQuantity} ${LABELS.MOTOS}`}</div>
 					<Tooltip deepPadding text={TOOLTIP.MAX_QUANTITY}>
 						<QuestionButton small />
 					</Tooltip>
 				</div>
+				{exceedsQuantityMintLimit && (
+					<div className={styles.WarningPrompt}>{WARNINGS.MINT_LIMIT}</div>
+				)}
 				<div className={styles.InputHeaderContainer}>
 					<div className={styles.Header}>{INPUT.HEADER}</div>
 				</div>
 				<div
 					className={cx(styles.InputContainer, {
 						hasValue: hasValue,
-						hasError: error,
+						hasError: inputError,
 					})}
 				>
-					{quantity && <span>{placeholder}</span>}
+					{quantity && (
+						<span
+							className={cx(styles.SecondaryPlaceholder, {
+								hasError: inputError,
+							})}
+						>
+							{placeholder}
+						</span>
+					)}
 					<TextInput
 						className={cx(styles.Input, {
 							hasValue: hasValue,
+							hasError: inputError,
 						})}
 						numeric
-						onChange={(total: string) => setQuantity(total)}
+						onChange={handleChange}
 						placeholder={placeholder}
 						text={quantity}
-						type={''}
+						type={INPUT.TYPE}
 					/>
 				</div>
-				{error && (
+				{inputError && (
 					<div
 						className={cx(styles.Error, {
-							hasError: error,
+							hasError: inputError,
 						})}
 					>
-						{error}
+						{inputError}
 					</div>
 				)}
 

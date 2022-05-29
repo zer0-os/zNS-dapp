@@ -1,5 +1,5 @@
 // React Imports
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
@@ -24,12 +24,11 @@ import { ROUTES } from 'constants/routes';
 import styles from './ClaimNFT.module.scss';
 
 export type ClaimNFTProps = {
-	isClaimable: boolean;
 	openConnect: () => void;
 	onClose: () => void;
 };
 
-const ClaimNFT = ({ isClaimable, openConnect, onClose }: ClaimNFTProps) => {
+const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -39,8 +38,15 @@ const ClaimNFT = ({ isClaimable, openConnect, onClose }: ClaimNFTProps) => {
 	const [stepContent, setStepContent] = useState<StepContent>(
 		StepContent.Details,
 	);
-	const [isClaimingNFT, setIsClaimingNFT] = useState<boolean>(false);
 	const [error, setError] = useState<string | undefined>();
+
+	// Prevent state update to unmounted component
+	const isMounted = useRef(false);
+
+	// replace
+	const ownedQuantity = 5;
+	// update to ownedQuantity > 0 && hasUnclaimedMotos or something
+	const isClaimable = ownedQuantity > 0;
 
 	///////////////
 	// Functions //
@@ -51,19 +57,46 @@ const ClaimNFT = ({ isClaimable, openConnect, onClose }: ClaimNFTProps) => {
 		setStepContent(i);
 	};
 
-	const onStartClaimStep = () => {
+	const onStartClaim = () => {
 		setError('');
 		setCurrentStep(Step.Claim);
 		setStepContent(StepContent.Claim);
 	};
 
-	const onClaim = () => console.log('trigger claim');
+	const onClaim = () => {
+		// try / catch
+		setCurrentStep(Step.Minting);
+		setStepContent(StepContent.Minting);
+	};
+
+	const onFinish = () => {
+		onClose();
+	};
 
 	// replace hardcode
 	const onRedirect = () => {
 		goTo(ROUTES.MARKET + '/wheels.genesis');
 		onClose();
 	};
+
+	/////////////
+	// Effects //
+	/////////////
+
+	// Set step if disconnected
+	useEffect(() => {
+		if (!active && currentStep !== Step.Details) {
+			setCurrentStep(Step.Details);
+			setStepContent(StepContent.Details);
+		}
+	}, [active, currentStep]);
+
+	useEffect(() => {
+		isMounted.current = true;
+		return () => {
+			isMounted.current = false;
+		};
+	}, []);
 
 	///////////////
 	// Fragments //
@@ -72,39 +105,41 @@ const ClaimNFT = ({ isClaimable, openConnect, onClose }: ClaimNFTProps) => {
 	const content = {
 		[StepContent.Details]: (
 			<Details
-				maxQuantity={0}
+				ownedQuantity={ownedQuantity}
 				isWalletConnected={active}
 				isClaimable={isClaimable}
+				currentStep={currentStep}
 				error={error}
 				connectToWallet={openConnect}
-				onStartClaim={onStartClaimStep}
+				onStartClaim={onStartClaim}
 				onRedirect={onRedirect}
 			/>
 		),
 		[StepContent.Claim]: (
-			<Claiming maxQuantity={0} onClaim={onClaim} error={error} />
+			<Claiming ownedQuantity={ownedQuantity} onClaim={onClaim} error={error} />
 		),
-		[StepContent.Minting]: <>MINTING</>,
+		[StepContent.Minting]: (
+			<Details
+				isWalletConnected={active}
+				isClaimable={isClaimable}
+				currentStep={currentStep}
+				onFinish={onFinish}
+			/>
+		),
 	};
 
 	////////////
 	// Render //
 	////////////
 	return (
-		<Wizard
-			header={STEP_CONTENT_TITLES[stepContent]}
-			sectionDivider={isClaimingNFT}
-		>
-			{!isClaimingNFT && (
-				<div className={styles.StepBarContainer}>
-					<StepBar
-						step={currentStep + 1}
-						steps={STEP_BAR_HEADING}
-						onNavigate={onStepNavigation}
-					/>
-				</div>
-			)}
-
+		<Wizard header={STEP_CONTENT_TITLES[stepContent]} sectionDivider={false}>
+			<div className={styles.StepBarContainer}>
+				<StepBar
+					step={currentStep + 1}
+					steps={STEP_BAR_HEADING}
+					onNavigate={onStepNavigation}
+				/>
+			</div>
 			{content[stepContent]}
 		</Wizard>
 	);

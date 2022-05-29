@@ -51,11 +51,7 @@ const ClaimNFTContainer = ({}: ClaimNFTContainerProps) => {
 			)}
 			{isWizardOpen && (
 				<Overlay open onClose={closeWizard}>
-					<ClaimNFT
-						isClaimable={true}
-						openConnect={openConnect}
-						onClose={closeWizard}
-					/>
+					<ClaimNFT openConnect={openConnect} onClose={closeWizard} />
 				</Overlay>
 			)}
 			<div className={styles.BannerContainer}>

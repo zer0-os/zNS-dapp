@@ -9,10 +9,14 @@ import {
 	TEXT_INPUT,
 	MESSAGES,
 	TOOLTIP,
+	BUTTONS,
 } from './Details.constants';
 
 // Library Imports
 import classNames from 'classnames/bind';
+
+//- Types Imports
+import { Step } from 'containers/flows/ClaimNFT/ClaimNFT.types';
 
 // Component Imports
 import {
@@ -36,39 +40,57 @@ import {
 import styles from './Details.module.scss';
 
 type DetailsProps = {
-	maxQuantity: number;
+	ownedQuantity?: number;
 	isWalletConnected: boolean;
 	isClaimable: boolean;
+	currentStep: Step;
 	error?: string;
-	connectToWallet: () => void;
-	onStartClaim: () => void;
-	onRedirect: () => void;
+	connectToWallet?: () => void;
+	onStartClaim?: () => void;
+	onRedirect?: () => void;
+	onFinish?: () => void;
 };
 
 const cx = classNames.bind(styles);
 
 const Details = ({
-	maxQuantity,
+	ownedQuantity,
 	isWalletConnected,
 	isClaimable,
+	currentStep,
 	error,
 	connectToWallet,
 	onStartClaim,
 	onRedirect,
+	onFinish,
 }: DetailsProps) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
-
 	const [tokenID, setTokenID] = useState<string | undefined>();
 
 	const validTokenId = isValidTokenId(tokenID ?? '');
 	// replace
 	const isClaimDataLoading = false;
 	const hasValue = Boolean(tokenID?.length);
-	const buttonText = getButtonText(isWalletConnected, isClaimable);
-	const quantityText = getQuantityText(isClaimable, maxQuantity);
+	const isDetailsStep = currentStep === Step.Details;
+	const quantityText = getQuantityText(isClaimable, ownedQuantity ?? 0);
 	const quantityTooltip = getQuantityTooltip(isClaimable);
+
+	const headerPrompt = isDetailsStep
+		? MESSAGES.SEARCH_PROMPT
+		: MESSAGES.MINTING_PROMPT;
+
+	const buttonText =
+		currentStep === Step.Details
+			? getButtonText(isWalletConnected, isClaimable)
+			: BUTTONS.FINISH;
+
+	const promptText = isDetailsStep
+		? isClaimable
+			? MESSAGES.COST_PROMPT
+			: ''
+		: MESSAGES.CLOSE_PROMPT;
 
 	///////////////
 	// Functions //
@@ -77,12 +99,12 @@ const Details = ({
 	const onCheck = () => console.log('onCheck');
 
 	const onSubmit = () => {
-		if (!isWalletConnected) {
+		if (!isWalletConnected && connectToWallet) {
 			connectToWallet();
-		} else if (isWalletConnected && isClaimable) {
-			onStartClaim();
-		} else {
+		} else if (!isClaimable && onRedirect) {
 			onRedirect();
+		} else {
+			isDetailsStep ? onStartClaim && onStartClaim() : onFinish && onFinish();
 		}
 	};
 
@@ -117,46 +139,59 @@ const Details = ({
 				{!isClaimDataLoading && (
 					<div className={styles.InfoContainer}>
 						<div className={styles.HeaderContainer}>
-							<div className={styles.Header}>{TEXT_INPUT.HEADER}</div>
-							<Tooltip deepPadding text={TOOLTIP.TEXT_INPUT}>
+							<div
+								className={cx(styles.HeaderPrompt, {
+									isDetailsStep: isDetailsStep,
+								})}
+							>
+								{headerPrompt}
+							</div>
+							<Tooltip
+								deepPadding
+								text={isDetailsStep ? TOOLTIP.DETAILS : TOOLTIP.MINTING}
+							>
 								<QuestionButton small />
 							</Tooltip>
 						</div>
-						<div
-							className={cx(styles.InputContainer, {
-								hasValue: hasValue,
-								hasError: error,
-							})}
-						>
-							{tokenID && <span>{TEXT_INPUT.PLACEHOLDER}</span>}
-							<TextInput
-								className={cx(styles.Input, {
-									hasValue: hasValue,
-								})}
-								onChange={(text: string) => setTokenID(text)}
-								placeholder={TEXT_INPUT.PLACEHOLDER}
-								text={tokenID}
-								type={TEXT_INPUT.TYPE}
-							/>
-
-							<div className={styles.ButtonContainer}>
-								<FutureButton
-									glow={validTokenId}
-									disabled={!validTokenId}
-									onClick={onCheck}
+						{isDetailsStep && (
+							<>
+								<div
+									className={cx(styles.InputContainer, {
+										hasValue: hasValue,
+										hasError: error,
+									})}
 								>
-									{TEXT_INPUT.BUTTON}
-								</FutureButton>
-							</div>
-						</div>
-						{error && (
-							<div
-								className={cx(styles.Error, {
-									hasError: error,
-								})}
-							>
-								{error}
-							</div>
+									{tokenID && <span>{TEXT_INPUT.PLACEHOLDER}</span>}
+									<TextInput
+										className={cx(styles.Input, {
+											hasValue: hasValue,
+										})}
+										onChange={(text: string) => setTokenID(text)}
+										placeholder={TEXT_INPUT.PLACEHOLDER}
+										text={tokenID}
+										type={TEXT_INPUT.TYPE}
+									/>
+
+									<div className={styles.ButtonContainer}>
+										<FutureButton
+											glow={validTokenId}
+											disabled={!validTokenId}
+											onClick={onCheck}
+										>
+											{TEXT_INPUT.BUTTON}
+										</FutureButton>
+									</div>
+								</div>
+								{error && (
+									<div
+										className={cx(styles.Error, {
+											hasError: error,
+										})}
+									>
+										{error}
+									</div>
+								)}
+							</>
 						)}
 
 						{!isWalletConnected ? (
@@ -165,24 +200,25 @@ const Details = ({
 							</div>
 						) : (
 							<div className={styles.TextContainer}>
-								<div className={styles.FlexRowWrapper}>
-									<div className={styles.QuantityText}>{quantityText}</div>
-									<Tooltip deepPadding text={quantityTooltip}>
-										<QuestionButton small />
-									</Tooltip>
-								</div>
-								<ArrowLink
-									className={styles.ArrowLink}
-									href={'url to claim zine'}
-									isLinkToExternalUrl
-								>
-									{MESSAGES.READ_MORE}
-								</ArrowLink>
-								{isClaimable && (
-									<div className={styles.CostPrompt}>
-										{MESSAGES.COST_PROMPT}
-									</div>
+								{isDetailsStep && (
+									<>
+										<div className={styles.FlexRowWrapper}>
+											<div className={styles.QuantityText}>{quantityText}</div>
+											<Tooltip deepPadding text={quantityTooltip}>
+												<QuestionButton small />
+											</Tooltip>
+										</div>
+										<ArrowLink
+											className={styles.ArrowLink}
+											href={'url to claim zine'}
+											isLinkToExternalUrl
+										>
+											{MESSAGES.READ_MORE}
+										</ArrowLink>
+									</>
 								)}
+
+								<div className={styles.Prompt}>{promptText}</div>
 							</div>
 						)}
 
