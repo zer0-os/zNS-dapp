@@ -19,8 +19,8 @@ export const getButtonText = (isConnected: boolean, isClaimable: boolean) => {
 	}
 };
 
-export const getQuantityText = (isClaimable: boolean, total: number) =>
-	isClaimable
+export const getQuantityText = (total: number) =>
+	total > 0
 		? `${MESSAGES.APPEND_CLAIMABLE_TEXT} ${total} ${LABELS.MOTOS}`
 		: `${total} ${MESSAGES.APPEND_UNCLAIMABLE_TEXT}`;
 

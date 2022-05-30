@@ -20,7 +20,12 @@ import Claiming from './components/WizardSteps/Claiming/Claiming';
 import { StepContent, Step } from './ClaimNFT.types';
 
 //- Constants Imports
-import { STEP_BAR_HEADING, STEP_CONTENT_TITLES } from './ClaimNFT.constants';
+import {
+	STEP_BAR_HEADING,
+	STEP_CONTENT_TITLES,
+	STATUS_TEXT,
+	DOMAINS,
+} from './ClaimNFT.constants';
 import { ROUTES } from 'constants/routes';
 
 //- Styles Imports
@@ -42,18 +47,15 @@ const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 	const [stepContent, setStepContent] = useState<StepContent>(
 		StepContent.Details,
 	);
+	// const [isClaimComplete, setIsClaimComplete] = useState<boolean>(false);
 	const { active, account } = useWeb3React<Web3Provider>();
 	const { push: goTo } = useHistory();
 	const isMounted = useRef(false);
-
 	const { isLoading, ownedDomains } = useOwnedDomains(account);
-
-	// replace
-	const ownedQuantity = 5;
-	// update to ownedQuantity > 0 && hasUnclaimedMotos or something
-	const isClaimable = ownedQuantity > 0;
-
-	console.log(ownedDomains);
+	const eligibleDomains = ownedDomains?.filter((domain) =>
+		// DOMAINS.WHEELS_DOMAIN_NAME in place
+		domain.name.includes('.'),
+	);
 
 	///////////////
 	// Functions //
@@ -70,19 +72,34 @@ const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 		setStepContent(StepContent.Claim);
 	};
 
-	const onClaim = () => {
-		// try / catch
+	const onClaim = async () => {
+		console.log('onClaim');
+		setError('');
 		setCurrentStep(Step.Minting);
 		setStepContent(StepContent.Minting);
+
+		try {
+			// claim nft
+			// await claimNFT();
+			// setIsClaimComplete(true);
+			setCurrentStep(Step.Minting);
+			setStepContent(StepContent.Minting);
+		} catch (e) {
+			setCurrentStep(Step.Claim);
+			setError(e.message);
+			setStepContent(StepContent.Claim);
+		}
+		if (!isMounted.current) return;
 	};
 
 	const onFinish = () => {
+		console.log('onFinish');
 		onClose();
 	};
 
 	// replace hardcode
 	const onRedirect = () => {
-		goTo(ROUTES.MARKET + '/wheels.genesis');
+		goTo(ROUTES.MARKET + DOMAINS.ELIGIBLE_NFT_ROUTE);
 		onClose();
 	};
 
@@ -110,28 +127,33 @@ const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 	///////////////
 
 	const content = {
-		[StepContent.Details]: (
+		[StepContent.Details]: !isLoading ? (
 			<Details
 				tokenID={tokenID}
 				isClaimDataLoading={isLoading}
-				ownedQuantity={ownedQuantity}
+				eligibleDomains={eligibleDomains}
 				isWalletConnected={active}
-				isClaimable={isClaimable}
 				currentStep={currentStep}
-				error={error}
 				connectToWallet={openConnect}
 				onStartClaim={onStartClaim}
 				onRedirect={onRedirect}
 				setTokenID={setTokenID}
 			/>
+		) : (
+			<div className={styles.LoadingContent}>
+				<Wizard.Loading message={STATUS_TEXT.LOADING_DETAILS} />
+			</div>
 		),
 		[StepContent.Claim]: (
-			<Claiming ownedQuantity={ownedQuantity} onClaim={onClaim} error={error} />
+			<Claiming
+				eligibleDomains={eligibleDomains}
+				onClaim={onClaim}
+				apiError={error}
+			/>
 		),
 		[StepContent.Minting]: (
 			<Details
 				isWalletConnected={active}
-				isClaimable={isClaimable}
 				currentStep={currentStep}
 				onFinish={onFinish}
 			/>

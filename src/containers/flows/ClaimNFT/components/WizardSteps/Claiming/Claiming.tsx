@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 //- Library Imports
 import classNames from 'classnames/bind';
+import { Domain } from '@zero-tech/zns-sdk';
 
 //- Component Imports
 import { TextInput, QuestionButton, Tooltip, FutureButton } from 'components';
@@ -22,28 +23,31 @@ import {
 import styles from './Claiming.module.scss';
 
 type ClaimingProps = {
-	ownedQuantity: number;
-	error?: string;
+	eligibleDomains?: Domain[];
+	apiError?: string;
 	onClaim: () => void;
 };
 
 const cx = classNames.bind(styles);
 
-const Claiming = ({ ownedQuantity, onClaim, error }: ClaimingProps) => {
+const Claiming = ({ eligibleDomains, onClaim, apiError }: ClaimingProps) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
 
 	const [quantity, setQuantity] = useState<string | undefined>();
 	const [inputError, setInputError] = useState<string | undefined>();
-
-	const exceedsQuantityMintLimit = ownedQuantity > maxQuantityLimit;
+	const totalEligibleDomains = eligibleDomains?.length ?? 0;
+	const exceedsQuantityMintLimit = totalEligibleDomains > maxQuantityLimit;
 	const validQuantity =
-		Number(quantity) <= ownedQuantity &&
+		Number(quantity) <= totalEligibleDomains &&
 		Number(quantity) > 0 &&
 		Number(quantity) <= maxQuantityLimit;
 	const hasValue = Boolean(quantity);
-	const placeholder = getPlaceholder(ownedQuantity, exceedsQuantityMintLimit);
+	const placeholder = getPlaceholder(
+		totalEligibleDomains,
+		exceedsQuantityMintLimit,
+	);
 
 	///////////////
 	// Functions //
@@ -58,7 +62,7 @@ const Claiming = ({ ownedQuantity, onClaim, error }: ClaimingProps) => {
 		setQuantity(total);
 		handleInputError(
 			total,
-			ownedQuantity,
+			totalEligibleDomains,
 			exceedsQuantityMintLimit,
 			setInputError,
 		);
@@ -70,7 +74,7 @@ const Claiming = ({ ownedQuantity, onClaim, error }: ClaimingProps) => {
 				<div className={styles.TextContainer}>
 					<div
 						className={styles.QuantityText}
-					>{`${MESSAGES.APPEND_CLAIMABLE_TEXT} ${ownedQuantity} ${LABELS.MOTOS}`}</div>
+					>{`${MESSAGES.APPEND_CLAIMABLE_TEXT} ${totalEligibleDomains} ${LABELS.MOTOS}`}</div>
 					<Tooltip deepPadding text={TOOLTIP.MAX_QUANTITY}>
 						<QuestionButton small />
 					</Tooltip>
@@ -117,7 +121,15 @@ const Claiming = ({ ownedQuantity, onClaim, error }: ClaimingProps) => {
 						{inputError}
 					</div>
 				)}
-
+				{apiError && (
+					<div
+						className={cx(styles.ApiError, {
+							apiError: apiError,
+						})}
+					>
+						{apiError}
+					</div>
+				)}
 				<div className={styles.ButtonContainer}>
 					<FutureButton
 						glow={validQuantity}

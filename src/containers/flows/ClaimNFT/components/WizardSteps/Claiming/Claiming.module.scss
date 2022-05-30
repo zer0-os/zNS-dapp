@@ -120,4 +120,13 @@
 			margin-bottom: 23px;
 		}
 	}
+
+	.ApiError {
+		color: var(--color-error);
+		text-align: center;
+
+		&.apiError {
+			margin-bottom: 40px;
+		}
+	}
 }

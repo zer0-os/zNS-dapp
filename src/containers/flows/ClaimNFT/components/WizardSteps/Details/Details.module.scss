@@ -22,6 +22,33 @@
 
 			.HeaderPrompt {
 				margin: 0 8px 8px 0;
+
+				&.isMintingStep {
+					width: 150px;
+					margin: 0 8px 0 0;
+				}
+
+				&.isMintingStep:after {
+					overflow: hidden;
+					display: inline-block;
+					vertical-align: bottom;
+					-webkit-animation: ellipsis steps(4, end) 2000ms infinite;
+					animation: ellipsis steps(4, end) 2000ms infinite;
+					content: '...'; /* ascii code for the ellipsis character */
+					width: 0px;
+
+					@keyframes ellipsis {
+						to {
+							width: 16px;
+						}
+					}
+
+					@-webkit-keyframes ellipsis {
+						to {
+							width: 16px;
+						}
+					}
+				}
 			}
 		}
 

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 //- Library Imports
 import { useZnsSdk } from 'lib/hooks/sdk';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
+import { Domain } from '@zero-tech/zns-sdk';
 
 //- Constants Imports
 import { MESSAGES } from '../ClaimNFT.constants';

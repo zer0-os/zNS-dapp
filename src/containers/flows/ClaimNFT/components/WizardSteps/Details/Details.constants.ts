@@ -42,7 +42,7 @@ export const MESSAGES = {
 		'Connect a wallet which holds Wilder Wheels to claim Motos',
 	SEARCH_PROMPT:
 		'Optional: Enter a Wheel token ID to check if it can be used to claim',
-	MINTING_PROMPT: 'Minting your moto... ',
+	MINTING_PROMPT: 'Minting your moto',
 	READ_MORE: 'Read more about claiming',
 	COST_PROMPT: 'You only need to pay gas!',
 	CLOSE_PROMPT:

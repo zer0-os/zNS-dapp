@@ -14,6 +14,7 @@ import {
 
 // Library Imports
 import classNames from 'classnames/bind';
+import { Domain } from '@zero-tech/zns-sdk';
 
 //- Hook Imports
 import useClaimDomainData from '../../../hooks/useClaimDomainData';
@@ -48,9 +49,8 @@ import styles from './Details.module.scss';
 type DetailsProps = {
 	tokenID?: string;
 	isClaimDataLoading?: boolean;
-	ownedQuantity?: number;
+	eligibleDomains?: Domain[];
 	isWalletConnected: boolean;
-	isClaimable: boolean;
 	currentStep: Step;
 	error?: string;
 	connectToWallet?: () => void;
@@ -65,9 +65,8 @@ const cx = classNames.bind(styles);
 const Details = ({
 	tokenID,
 	isClaimDataLoading,
-	ownedQuantity,
+	eligibleDomains,
 	isWalletConnected,
-	isClaimable,
 	currentStep,
 	error,
 	connectToWallet,
@@ -87,14 +86,15 @@ const Details = ({
 
 	const { isDomainDataLoading: isCheckDataLoading, domainData } =
 		useClaimDomainData(tokenID ?? '', requestCheck);
-	console.log(domainData);
-	console.log(requestCheck);
+	//replace
 	const isTokenClaimed = domainData?.isLocked;
 	const validTokenId = isValidTokenId(tokenID ?? '');
 	const hasValue = Boolean(tokenID?.length);
 	const isDetailsStep = currentStep === Step.Details;
-	const quantityText = getQuantityText(isClaimable, ownedQuantity ?? 0);
-	const quantityTooltip = getQuantityTooltip(isClaimable);
+	const totalEligibleDomains = eligibleDomains?.length ?? 0;
+	const hasEligibleDomains = totalEligibleDomains > 0;
+	const quantityText = getQuantityText(totalEligibleDomains);
+	const quantityTooltip = getQuantityTooltip(hasEligibleDomains);
 	const hasError = error || notificationType === NotificationType.ERROR;
 	const hasSuccess = notificationType === NotificationType.SUCCESS;
 
@@ -104,11 +104,11 @@ const Details = ({
 
 	const buttonText =
 		currentStep === Step.Details
-			? getButtonText(isWalletConnected, isClaimable)
+			? getButtonText(isWalletConnected, hasEligibleDomains)
 			: BUTTONS.FINISH;
 
 	const promptText = isDetailsStep
-		? isClaimable
+		? hasEligibleDomains
 			? MESSAGES.COST_PROMPT
 			: ''
 		: MESSAGES.CLOSE_PROMPT;
@@ -120,7 +120,7 @@ const Details = ({
 	const onSubmit = () => {
 		if (!isWalletConnected && connectToWallet) {
 			connectToWallet();
-		} else if (!isClaimable && onRedirect) {
+		} else if (!hasEligibleDomains && onRedirect) {
 			onRedirect();
 		} else {
 			isDetailsStep ? onStartClaim && onStartClaim() : onFinish && onFinish();
@@ -176,6 +176,7 @@ const Details = ({
 						<div
 							className={cx(styles.HeaderPrompt, {
 								isDetailsStep: isDetailsStep,
+								isMintingStep: currentStep === Step.Minting,
 							})}
 						>
 							{headerPrompt}
