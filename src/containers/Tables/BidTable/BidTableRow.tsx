@@ -12,7 +12,7 @@ import { ethers } from 'ethers';
 //- Constants Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { Domain } from 'lib/types';
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { PaymentTokenInfo } from 'lib/types';
 
 export const ACTION_KEYS = {
 	REBID: 'Rebid',
@@ -39,7 +39,7 @@ export type BidTableRowData = {
 	yourBid: ethers.BigNumber;
 	highestBid: ethers.BigNumber;
 	domain: Domain;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 export const TEST_ID = {

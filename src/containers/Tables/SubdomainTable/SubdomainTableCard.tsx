@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 //-Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import useCurrency from 'lib/hooks/useCurrency';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';

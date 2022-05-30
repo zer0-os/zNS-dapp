@@ -1,6 +1,3 @@
-//- Constants Imports
-import { CURRENCY } from 'constants/currency';
-
 //- Lib Imports
 import { BigNumber, ethers } from 'ethers';
 import jsBigDecimal from 'js-big-decimal';

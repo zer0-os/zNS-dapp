@@ -12,6 +12,7 @@ export const yourBidTemplate: Bid = {
 	signedMessage: '',
 	timestamp: '',
 	version: '2.0',
+	bidToken: '',
 };
 
 export enum ZAuctionVersionType {

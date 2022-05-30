@@ -9,13 +9,13 @@ import { DomainEvents } from '../../NFTView.types';
 
 //- Style Imports
 import styles from '../../NFTView.module.scss';
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { PaymentTokenInfo } from 'lib/types';
 
 //- Componennt level type definitions
 type HistoryProps = {
 	isLoading: boolean;
 	history: DomainEvents[];
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 export const History: React.FC<HistoryProps> = ({

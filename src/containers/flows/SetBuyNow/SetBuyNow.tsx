@@ -1,4 +1,4 @@
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { PaymentTokenInfo } from 'lib/types';
 import { Wizard } from 'components';
 import { ethers } from 'ethers';
 import DomainStep from './Steps/DomainStep';
@@ -34,7 +34,7 @@ type SetBuyNowProps = {
 	setBuyNowPrice: (buyNowPrice?: number) => void;
 	step: Step;
 	account?: string;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 const SetBuyNow = ({

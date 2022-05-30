@@ -5,9 +5,13 @@ import { useHistory } from 'react-router-dom';
 // Web3 Imports
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { usePropsState } from 'lib/hooks/usePropsState';
-import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
+import {
+	DisplayParentDomain,
+	Maybe,
+	Metadata,
+	PaymentTokenInfo,
+} from 'lib/types';
 import { getDomainId } from 'lib/utils';
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
@@ -19,7 +23,7 @@ export const CurrentDomainContext = React.createContext({
 	refetch: () => {}, // @todo update this
 	setDomainMetadata: (v: Maybe<Metadata>) => {},
 	paymentToken: undefined as Maybe<string>,
-	paymentTokenInfo: {} as TokenPriceInfo,
+	paymentTokenInfo: {} as PaymentTokenInfo,
 });
 
 const parseDomainFromURI = (pathname: string) => {
@@ -60,7 +64,10 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		refetch: znsDomain.refetch,
 		setDomainMetadata,
 		paymentToken: znsDomain.paymentToken,
-		paymentTokenInfo: znsDomain.paymentTokenInfo,
+		paymentTokenInfo: {
+			...znsDomain.paymentTokenInfo,
+			id: znsDomain.paymentToken || '',
+		},
 	};
 
 	return (
