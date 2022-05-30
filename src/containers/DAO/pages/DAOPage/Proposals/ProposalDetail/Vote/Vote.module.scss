@@ -1,14 +1,16 @@
+@use 'styles/variables/dimensions';
+
 .Container {
 	position: sticky;
 	bottom: 0;
 
 	width: 100%;
-	display:flex;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 
 	padding: 42px 16px 16px 16px;
-	background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, #0A0A0A 28.34%);
+	background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, #0a0a0a 28.34%);
 
 	.FooterText {
 		font-size: 18px;
@@ -50,10 +52,27 @@
 	-webkit-text-fill-color: transparent;
 }
 
+@media only screen and (max-width: #{dimensions.$breakpoint-mobile-m}) {
+	.Container {
+		bottom: 60px;
+	}
+	.Choices {
+		flex-direction: column;
+		gap: 16px;
+
+		> li {
+			width: 100%;
+
+			> button {
+				width: 100%;
+			}
+		}
+	}
+}
+
 // MODAL STUFF
 
 .Modal {
-
 	display: flex;
 	flex-direction: column;
 	gap: 40px;
@@ -93,5 +112,4 @@
 			}
 		}
 	}
-
 }

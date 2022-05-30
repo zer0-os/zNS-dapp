@@ -1,49 +1,46 @@
-import React, { FC, useState } from 'react';
-
-import { LoadingIndicator } from 'components';
-import { ConnectWalletButton } from 'containers';
-import VoteModal from './VoteModal';
-import VoteButtons from './VoteButtons';
-
-import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
-import { Wallet } from 'ethers';
+import React, { useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
+import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
+import VoteModal from './VoteModal';
+import VoteAction from './VoteAction';
 import useVoteData from './useVoteData';
-
+import { VoteStatus } from './Vote.constants';
 import styles from './Vote.module.scss';
 
 type VoteProps = {
 	proposal: Proposal;
+	onCompleteVoting: () => void;
 };
-
-enum VoteStatus {
-	NOT_STARTED,
-	PENDING_CONFIRMATION,
-	SIGNING,
-	PENDING,
-	COMPLETE,
-	ERROR,
-}
 
 /**
  * Grabs relevant data and pipes it into a component
  */
-const Vote: React.FC<VoteProps> = ({ proposal }) => {
+const Vote: React.FC<VoteProps> = ({ proposal, onCompleteVoting }) => {
 	const { account, library } = useWeb3React();
 	const { isLoading, userVote, userVotingPower } = useVoteData(
 		proposal,
 		account as string | undefined,
 	);
-	const { vote, status } = useVote(proposal);
 
+	console.log({ isLoading, userVote, userVotingPower });
+
+	const [status, setStatus] = useState<VoteStatus>(VoteStatus.NOT_STARTED);
 	const [choice, setChoice] = useState<Choice | undefined>();
 	const [completedVote, setCompletedVote] = useState<Choice | undefined>();
-	const isProposalClosed = proposal.state === 'closed';
 
 	const onVote = async () => {
-		if (choice && library) {
-			await vote(library.getSigner(), choice);
-			return;
+		if (choice && library && account) {
+			setStatus(VoteStatus.PENDING);
+
+			try {
+				await proposal.vote(library.getSigner(), account, choice);
+				setStatus(VoteStatus.COMPLETE);
+				onCompleteVoting();
+			} catch (e) {
+				console.error(e);
+				setStatus(VoteStatus.ERROR);
+				throw e;
+			}
 		} else {
 			throw new Error('Invalid vote data');
 		}
@@ -70,9 +67,10 @@ const Vote: React.FC<VoteProps> = ({ proposal }) => {
 					onComplete={onCompleteModal}
 				/>
 			)}
+
 			<footer className={styles.Container}>
-				<Action
-					isProposalClosed={isProposalClosed}
+				<VoteAction
+					proposal={proposal}
 					account={account as string | undefined}
 					isLoading={isLoading}
 					userVote={completedVote ?? userVote}
@@ -86,105 +84,3 @@ const Vote: React.FC<VoteProps> = ({ proposal }) => {
 };
 
 export default Vote;
-
-type ActionProps = {
-	isProposalClosed: boolean;
-	account: string | undefined;
-	isLoading: boolean;
-	userVote: Choice | undefined;
-	voteStatus: VoteStatus;
-	onClickApprove: () => void;
-	onClickDeny: () => void;
-};
-
-/**
- * Renders actions based on props.
- * @param isProposalClosed has proposal voting ended
- * @param account wallet ID of connected account
- * @param isLoading is user vote data loading
- * @param userVote the vote the user made, if any
- * @param voteStatus current progress of voting modal
- * @param onClickApprove event fired when approve is clicked
- * @param onClickDeny event fired when deny is clicked
- */
-const Action: React.FC<ActionProps> = ({
-	isProposalClosed,
-	account,
-	isLoading,
-	userVote,
-	voteStatus,
-	onClickApprove,
-	onClickDeny,
-}) => {
-	if (!account) {
-		return (
-			<ConnectWalletButton>
-				{isProposalClosed ? 'Connect Wallet' : 'Connect Wallet To Vote'}
-			</ConnectWalletButton>
-		);
-	}
-
-	if (isLoading) {
-		return null;
-	}
-
-	if (voteStatus === VoteStatus.PENDING) {
-		return <LoadingIndicator spinnerPosition="left" text="" />;
-	}
-
-	if (userVote !== undefined) {
-		return (
-			<span className={styles.FooterText}>
-				You voted to{' '}
-				{userVote === 1 ? <Approve>Approve</Approve> : <Deny>Deny</Deny>} this
-				proposal
-			</span>
-		);
-	}
-
-	if (isProposalClosed) {
-		return (
-			<span className={styles.FooterText}>
-				This proposal is <Deny>closed</Deny>
-			</span>
-		);
-	}
-
-	return (
-		<VoteButtons onClickApprove={onClickApprove} onClickDeny={onClickDeny} />
-	);
-};
-
-/*
- * Approve / Deny buttons
- */
-
-export const Approve: FC = ({ children }) => (
-	<span className={styles.Approve}>{children}</span>
-);
-
-export const Deny: FC = ({ children }) => (
-	<span className={styles.Deny}>{children}</span>
-);
-
-const useVote = (proposal: Proposal) => {
-	const [status, setStatus] = useState<VoteStatus>(VoteStatus.NOT_STARTED);
-
-	const vote = async (signer: Wallet, choice: Choice) => {
-		setStatus(VoteStatus.PENDING);
-		try {
-			await new Promise((r) => setTimeout(r, 2000));
-			// TODO: enable sdk voting
-			setStatus(VoteStatus.COMPLETE);
-		} catch (e) {
-			console.error(e);
-			setStatus(VoteStatus.ERROR);
-			throw e;
-		}
-	};
-
-	return {
-		vote,
-		status,
-	};
-};

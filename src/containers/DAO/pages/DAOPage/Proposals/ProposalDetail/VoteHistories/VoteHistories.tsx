@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 // - Library
-import { Proposal, Vote } from '@zero-tech/zdao-sdk';
+import type { Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { truncateWalletAddress } from 'lib/utils';
 
 // - Component
@@ -9,7 +9,7 @@ import { LoadingIndicator } from 'components';
 
 //- Style Imports
 import styles from './VoteHistories.module.scss';
-import { Approve, Deny } from '../Vote/Vote';
+import { Approve, Deny } from '../Vote/VoteButtons';
 
 type VoteHistoriesProps = {
 	proposal?: Proposal;
@@ -69,9 +69,13 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 											<span className={styles.Direction}>
 												<strong>Vote Direction</strong>
 												{history.direction === 1 ? (
-													<Approve>Yes</Approve>
+													<Approve>
+														{proposal?.choices[history.direction - 1]}
+													</Approve>
 												) : (
-													<Deny>No</Deny>
+													<Deny>
+														{proposal?.choices[history.direction - 1]}
+													</Deny>
 												)}
 											</span>
 

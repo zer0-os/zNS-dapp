@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 
 // - Library
-import { zDAO, ProposalId } from '@zero-tech/zdao-sdk';
+import type { zDAO, ProposalId } from '@zero-tech/zdao-sdk';
 
 // - Hooks
 import { useDidMount } from 'lib/hooks/useDidMount';
@@ -25,6 +25,8 @@ type ProposalDetailProps = {
 };
 
 export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
+	const [triggerRefresh, setTriggerRefresh] = useState<boolean>(false);
+
 	useDidMount(() => {
 		const nav = document.getElementById('dao-page-nav-tabs');
 		if (nav) {
@@ -45,7 +47,12 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 	const { proposal, isLoading, votes, isLoadingVotes } = useProposal(
 		proposalId as ProposalId,
 		dao,
+		triggerRefresh,
 	);
+
+	const refresh = () => {
+		setTriggerRefresh(!triggerRefresh);
+	};
 
 	return (
 		<div className={styles.Container}>
@@ -60,11 +67,9 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 					<div className={styles.Wrapper}>
 						<h1 className={styles.Title}>{proposal?.title}</h1>
 
-						{proposal && (proposal.scores[0] > 0 || proposal.scores[1] > 0) && (
-							<VoteBar scores={proposal?.scores} />
-						)}
+						{proposal && votes?.length > 0 && <VoteBar votes={votes} />}
 
-						<VoteAttributes proposal={proposal} votes={votes} />
+						{proposal && <VoteAttributes proposal={proposal} votes={votes} />}
 
 						<MarkDownViewer
 							text={proposal?.body}
@@ -80,7 +85,9 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 				)}
 			</div>
 
-			{!isLoading && proposal && <Vote proposal={proposal} />}
+			{!isLoading && proposal && (
+				<Vote proposal={proposal} onCompleteVoting={refresh} />
+			)}
 		</div>
 	);
 };

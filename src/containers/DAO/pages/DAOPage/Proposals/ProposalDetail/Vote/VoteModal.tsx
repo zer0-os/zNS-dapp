@@ -1,19 +1,11 @@
+import classNames from 'classnames';
 import React, { FC, useState } from 'react';
 import { Choice } from '@zero-tech/zdao-sdk';
-
 import { truncateWalletAddress } from 'lib/utils';
-
 import { Overlay, Wizard } from 'components';
-import { Approve, Deny } from './Vote';
-
+import { Approve, Deny } from './VoteButtons';
+import { VoteModalStep } from './Vote.constants';
 import styles from './Vote.module.scss';
-import classNames from 'classnames';
-
-enum VoteModalStep {
-	CONFIRM,
-	PENDING,
-	ERROR,
-}
 
 type VoteModalProps = {
 	votingAddress: string;
@@ -62,10 +54,7 @@ const VoteModal: FC<VoteModalProps> = ({
 						Are you sure you want to vote to{' '}
 						{choice === 1 ? <Approve>approve</Approve> : <Deny>deny</Deny>} this
 						proposal? This will be processed by the blockchain and cannot be
-						reversed.{' '}
-						<span className="error-text">
-							Votes are currently mock, and will not be stored anywhere.
-						</span>
+						reversed
 					</p>
 				)}
 				<ul className={styles.Details}>

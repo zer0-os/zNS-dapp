@@ -11,18 +11,20 @@ import {
 	formatTotalAmountOfTokenMetadata,
 } from '../../Proposals.helpers';
 import { truncateWalletAddress } from 'lib/utils';
+import useTimer from 'lib/hooks/useTimer';
 
 // - Types
 import { VoteAttribute } from './VoteAttributes.types';
 
 // - Constants
 import { VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT } from './VoteAttributes.constants';
+import { DEFAULT_TIMMER_INTERVAL } from '../../Proposals.constants';
 
 //- Style Imports
 import styles from './VoteAttributes.module.scss';
 
 type VoteAttributesProps = {
-	proposal?: Proposal;
+	proposal: Proposal;
 	votes: Vote[];
 };
 
@@ -40,6 +42,12 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 		if (isTablet) return VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.TABLET;
 		return VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.DESKTOP;
 	}, []);
+
+	const isConcluded = moment(proposal.end).isBefore(moment());
+	const { time: timeRemaining } = useTimer(
+		proposal.end,
+		isConcluded ? null : DEFAULT_TIMMER_INTERVAL,
+	);
 
 	const attributes: VoteAttribute[] = useMemo(() => {
 		if (!proposal || !proposal.metadata) {
@@ -62,7 +70,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Time Remaining',
-				value: secondsToDhms(moment(proposal.end).diff(moment()) / 1000) || '-',
+				value: secondsToDhms(timeRemaining / 1000) || '-',
 			},
 			{
 				label: 'Type',
@@ -78,7 +86,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Voting Ends',
-				value: formatDateTime(proposal.start, 'M/D/YYYY h:m A Z') || '-',
+				value: formatDateTime(proposal.end, 'M/D/YYYY h:m A Z') || '-',
 			},
 			{
 				label: 'Voting System',
@@ -112,7 +120,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 		return parsedAttributes.filter(
 			({ value }) => value !== '' && value !== '-',
 		);
-	}, [proposal, votes]);
+	}, [proposal, votes, timeRemaining]);
 
 	const initialHiddenAttributesCount: number = Math.max(
 		attributes.length - initialVisibleAttributesCount,
