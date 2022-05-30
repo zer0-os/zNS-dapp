@@ -3,7 +3,7 @@ import React, { useState, useMemo } from 'react';
 // - Library
 import moment from 'moment';
 import { sum } from 'lodash';
-import { Proposal, Vote } from '@zero-tech/zdao-sdk';
+import type { zDAO, Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
 import { toFiat } from 'lib/currency';
 import {
@@ -24,11 +24,13 @@ import { DEFAULT_TIMMER_INTERVAL } from '../../Proposals.constants';
 import styles from './VoteAttributes.module.scss';
 
 type VoteAttributesProps = {
+	dao: zDAO;
 	proposal: Proposal;
 	votes: Vote[];
 };
 
 export const VoteAttributes: React.FC<VoteAttributesProps> = ({
+	dao,
 	proposal,
 	votes = [],
 }) => {
@@ -50,19 +52,10 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 	);
 
 	const attributes: VoteAttribute[] = useMemo(() => {
-		if (!proposal || !proposal.metadata) {
+		if (!dao || !proposal || !proposal.metadata) {
 			return [];
 		}
 
-		// NOTE: using a hardcoded value for prototype
-		const formattedAmount =
-			((proposal.title.split(' ').length + 1) * 10000).toLocaleString() +
-			' ' +
-			proposal.metadata.symbol;
-
-		const votesSubmited = sum(proposal.scores);
-
-		// TODO: Should align the attributes
 		const parsedAttributes = [
 			{
 				label: 'Status',
@@ -78,7 +71,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Amount',
-				value: formattedAmount,
+				value: sum(proposal.scores) + ' ' + dao.votingToken.symbol,
 			},
 			{
 				label: 'Voting Started',
@@ -104,6 +97,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 				label: 'Source of Funds',
 				value: 'DAO Wallet',
 			},
+			// TODO: Should align this attribute @cc Brett
 			{
 				label: 'Recipient',
 				value:
@@ -111,16 +105,14 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Votes Submitted',
-				value: votesSubmited
-					? votesSubmited + ' ' + proposal.metadata.symbol
-					: '-',
+				value: votes.length.toString(),
 			},
 		];
 
 		return parsedAttributes.filter(
 			({ value }) => value !== '' && value !== '-',
 		);
-	}, [proposal, votes, timeRemaining]);
+	}, [dao, proposal, votes, timeRemaining]);
 
 	const initialHiddenAttributesCount: number = Math.max(
 		attributes.length - initialVisibleAttributesCount,

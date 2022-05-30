@@ -69,7 +69,9 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 
 						{proposal && votes?.length > 0 && <VoteBar votes={votes} />}
 
-						{proposal && <VoteAttributes proposal={proposal} votes={votes} />}
+						{dao && proposal && (
+							<VoteAttributes dao={dao} proposal={proposal} votes={votes} />
+						)}
 
 						<MarkDownViewer
 							text={proposal?.body}

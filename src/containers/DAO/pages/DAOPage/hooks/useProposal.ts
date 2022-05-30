@@ -19,10 +19,15 @@ const useProposal = (
 	const [votes, setVotes] = useState<Vote[]>([]);
 	const [isLoadingVotes, setIsLoadingVotes] = useState<boolean>(false);
 
-	const fetchVotes = async (proposal: Proposal) => {
+	const fetchVotes = async (
+		proposal: Proposal,
+		isBackgroundFetching = false,
+	) => {
 		if (proposal) {
-			setIsLoadingVotes(true);
-			setVotes([]);
+			if (!isBackgroundFetching) {
+				setIsLoadingVotes(true);
+				setVotes([]);
+			}
 
 			try {
 				const votes = await proposal.listVotes();
@@ -36,10 +41,12 @@ const useProposal = (
 		}
 	};
 
-	const fetchProposal = async () => {
+	const fetchProposal = async (isBackgroundFetching = false) => {
 		if (dao) {
-			setProposal(undefined);
-			setIsLoading(true);
+			if (!isBackgroundFetching) {
+				setProposal(undefined);
+				setIsLoading(true);
+			}
 
 			try {
 				const proposal = await dao.getProposal(id);
@@ -65,7 +72,7 @@ const useProposal = (
 	}, [dao, id]);
 
 	useEffect(() => {
-		fetchProposal();
+		fetchProposal(true);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [triggerRefresh]);
 
