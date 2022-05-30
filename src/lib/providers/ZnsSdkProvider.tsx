@@ -1,7 +1,6 @@
 import { useWeb3React } from '@web3-react/core';
 import * as zns from '@zero-tech/zns-sdk';
 import React, { useEffect } from 'react';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { ethers } from 'ethers';
 import {
 	chainIdToNetworkType,
@@ -9,6 +8,7 @@ import {
 	NETWORK_TYPES,
 } from 'lib/network';
 import { RPC_URLS } from 'lib/connectors';
+import { Web3Provider } from '@ethersproject/providers';
 
 type ZnsSdkProviderProps = {
 	children: React.ReactNode;
@@ -19,8 +19,7 @@ export const SdkContext = React.createContext({
 });
 
 export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
-	const { library } = useWeb3React();
-	const chainSelector = useChainSelector();
+	const { library, chainId } = useWeb3React<Web3Provider>();
 
 	const instance = React.useMemo(() => {
 		/**
@@ -30,7 +29,7 @@ export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
 		const provider =
 			library ||
 			new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId]);
-		const network = chainIdToNetworkType(chainSelector.selectedChain);
+		const network = chainIdToNetworkType(chainId);
 
 		/**
 		 * Configure the SDK using provider based on selected network
@@ -58,7 +57,7 @@ export const ZnsSdkProvider = ({ children }: ZnsSdkProviderProps) => {
 				throw new Error('SDK isn´t available for this chainId');
 			}
 		}
-	}, [library, chainSelector.selectedChain]);
+	}, [library, chainId]);
 
 	useEffect(() => {
 		const keys = Object.keys(instance).filter((k) => k.includes('get'));
