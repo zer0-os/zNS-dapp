@@ -22,7 +22,7 @@ import { TEST_ID, wrapFiat } from './Actions.constants';
 // Styles
 import styles from './Actions.module.scss';
 import classNames from 'classnames/bind';
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { PaymentTokenInfo } from 'lib/types';
 
 const cx = classNames.bind(styles);
 
@@ -37,7 +37,7 @@ type ActionsProps = {
 	isOwnedByUser?: boolean;
 	refetch: () => void;
 	bidData?: Bid[];
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 const Actions = ({

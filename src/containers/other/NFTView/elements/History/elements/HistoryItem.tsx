@@ -6,17 +6,17 @@ import {
 	DomainBidEvent,
 	DomainSaleEvent,
 	DomainBuyNowSaleEvent,
-	TokenPriceInfo,
 } from '@zero-tech/zns-sdk/lib/types';
 import { URLS } from 'constants/urls';
 import { ethers } from 'ethers';
 import { truncateWalletAddress } from 'lib/utils';
 import { DomainEvents } from '../../../NFTView.types';
 import styles from '../../../NFTView.module.scss';
+import { PaymentTokenInfo } from 'lib/types';
 
 type HistoryItemProps = {
 	item: DomainEvents;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 const HistoryItem = ({ item, paymentTokenInfo }: HistoryItemProps) => {

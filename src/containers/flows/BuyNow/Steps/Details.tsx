@@ -4,9 +4,9 @@
  */
 
 // Component Imports
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 import { Detail, FutureButton, Wizard } from 'components';
 import { ethers } from 'ethers';
+import { PaymentTokenInfo } from 'lib/types';
 import { Data } from '../BuyNow';
 
 // Style Imports
@@ -17,7 +17,7 @@ type DetailsProps = {
 	error?: string;
 	onCancel: () => void;
 	onNext: () => void;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 	isWaitingForWalletConfirmation?: boolean;
 	didSucceed?: boolean;
 };

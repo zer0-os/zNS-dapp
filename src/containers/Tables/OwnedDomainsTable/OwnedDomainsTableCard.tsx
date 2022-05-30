@@ -21,7 +21,6 @@ import styles from './OwnedDomainsTableCard.module.scss';
 
 //- Constants Imports
 import { LABELS } from './OwnedDomainsTable.constants';
-import { CURRENCY } from 'constants/currency';
 
 //- Utils Imports
 import ImageCard from 'components/Cards/ImageCard/ImageCard';

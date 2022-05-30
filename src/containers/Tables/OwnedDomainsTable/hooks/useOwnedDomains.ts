@@ -3,6 +3,7 @@ import { useDidMount } from 'lib/hooks/useDidMount';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useRef, useState } from 'react';
+import { PaymentTokenInfo } from 'lib/types';
 
 type UseOwnedDomainsReturn = {
 	isLoading: boolean;
@@ -35,9 +36,10 @@ const useOwnedDomains = (
 			// TODO: Optimize this
 			const domainsPaymentTokenData = owned.map(async ({ id }) => {
 				const paymentToken = await sdk.zauction.getPaymentTokenForDomain(id);
-				const paymentTokenInfo = await sdk.zauction.getPaymentTokenInfo(
-					paymentToken,
-				);
+				const paymentTokenInfo: PaymentTokenInfo = {
+					...(await sdk.zauction.getPaymentTokenInfo(paymentToken)),
+					...{ id: paymentToken },
+				};
 				return { id, paymentTokenInfo };
 			});
 			setDomainsPaymentTokenInfo(await Promise.all(domainsPaymentTokenData));

@@ -9,12 +9,11 @@ import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { BidButton, BuyNowButton } from 'containers';
 
 import { useBidProvider } from 'lib/hooks/useBidProvider';
-import useCurrency from 'lib/hooks/useCurrency';
-import { Bid } from 'lib/types';
+import { Bid, PaymentTokenInfo } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { ethers } from 'ethers';
-import { DomainMetrics, TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { DomainMetrics } from '@zero-tech/zns-sdk';
 import { formatNumber, formatEthers } from 'lib/utils';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
@@ -34,7 +33,7 @@ const SubdomainTableRow = (props: any) => {
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
 
-	const paymentTokenInfo = props.paymentTokenInfo;
+	const paymentTokenInfo: PaymentTokenInfo = props.paymentTokenInfo;
 
 	const domainMetadata = useDomainMetadata(domain?.metadata);
 

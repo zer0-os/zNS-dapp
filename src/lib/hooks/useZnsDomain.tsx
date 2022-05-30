@@ -1,5 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
+import {
+	DisplayParentDomain,
+	Maybe,
+	Metadata,
+	PaymentTokenInfo,
+} from 'lib/types';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { getMetadata } from 'lib/metadata';
@@ -12,7 +17,7 @@ export type UseZnsDomainReturn = {
 	refetch: (variables?: any) => any;
 	domainMetadata: Maybe<Metadata>;
 	paymentToken: Maybe<string>;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 /**
@@ -70,8 +75,8 @@ export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 	const [domainMetadata, setDomainMetadata] = useState<Maybe<Metadata>>();
 
 	const [paymentToken, setPaymentToken] = useState<Maybe<string>>();
-	const [paymentTokenInfo, setPaymentTokenInfo] = useState<TokenPriceInfo>(
-		{} as TokenPriceInfo,
+	const [paymentTokenInfo, setPaymentTokenInfo] = useState<PaymentTokenInfo>(
+		{} as PaymentTokenInfo,
 	);
 
 	const getDomain = async (id: string) => {
@@ -92,7 +97,11 @@ export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 	}, [paymentToken]);
 
 	useAsyncEffect(async () => {
-		setPaymentTokenInfo((await getTokenInfo) as TokenPriceInfo);
+		if (!paymentToken) return {};
+		setPaymentTokenInfo({
+			...((await getTokenInfo) as TokenPriceInfo),
+			...{ id: paymentToken },
+		});
 	}, [paymentToken]);
 
 	/**

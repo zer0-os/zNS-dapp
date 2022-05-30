@@ -14,14 +14,14 @@ import { AcceptBid } from 'containers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Bid } from '@zero-tech/zauction-sdk';
-import { Domain, TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { Domain } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 
 //- Constants Imports
 import { MESSAGES } from './BidList.constants';
 
 //- Library Imports
-import { Metadata } from 'lib/types';
+import { Metadata, PaymentTokenInfo } from 'lib/types';
 import { sortBidsByTime } from 'lib/utils/bids';
 
 const moment = require('moment');
@@ -35,7 +35,7 @@ export type BidListProps = {
 	isLoading?: boolean;
 	highestBid?: string;
 	isAcceptBidEnabled?: boolean;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 const BidList: React.FC<BidListProps> = ({

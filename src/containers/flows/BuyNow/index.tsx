@@ -6,24 +6,21 @@ import BuyNow, { Step } from './BuyNow';
 
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
-import useCurrency from 'lib/hooks/useCurrency';
 import useNotification from 'lib/hooks/useNotification';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
 // Type Imports
 import { Data } from './BuyNow';
-import { useZnsContracts } from 'lib/contracts';
-import { ERC20 } from 'types';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 import { BuyNowParams } from '@zero-tech/zauction-sdk';
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { PaymentTokenInfo } from 'lib/types';
 
 export type BuyNowContainerProps = {
 	domainId: string;
 	onCancel: () => void;
 	onSuccess?: () => void;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 const BuyNowContainer = ({
@@ -37,9 +34,6 @@ const BuyNowContainer = ({
 	const { getMetadata } = useMetadata();
 	const { account, library } = useWeb3React();
 	const { addNotification } = useNotification();
-
-	const znsContracts = useZnsContracts()!;
-	const wildContract: ERC20 = znsContracts.wildToken;
 
 	// State
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);
@@ -154,7 +148,10 @@ const BuyNowContainer = ({
 		try {
 			const [domain, balance] = await Promise.all([
 				sdk.getDomainById(domainId),
-				wildContract.balanceOf(account),
+				sdk.zauction.getZAuctionSpendAllowance(
+					{ paymentTokenAddress: paymentTokenInfo.id },
+					account,
+				),
 			]);
 			const metadata = await getMetadata(domain.metadataUri);
 			if (domain && metadata && buyNowPrice && balance) {

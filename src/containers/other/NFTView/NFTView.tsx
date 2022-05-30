@@ -16,7 +16,6 @@ import {
 } from './elements';
 
 //- Library Imports
-import useCurrency from 'lib/hooks/useCurrency';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 
 //- Type Imports
@@ -60,9 +59,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		domainMetadata,
 		paymentTokenInfo,
 	} = useCurrentDomain();
-
-	//- Wild Currency Price
-	const { wildPriceUsd } = useCurrency();
 
 	//- NFT Hook Data
 	const {

@@ -28,8 +28,8 @@ import { DomainBidData } from 'lib/utils/bids';
 import { toFiat } from 'lib/currency';
 
 //- Utils Imports
-import { getBidToHighWarning, getUsdFiatEstimation } from './Details.utils';
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { getBidTooHighWarning, getUsdFiatEstimation } from './Details.utils';
+import { PaymentTokenInfo } from 'lib/types';
 
 type DetailsProps = {
 	stepContent: StepContent;
@@ -38,14 +38,14 @@ type DetailsProps = {
 	creator: string;
 	domainName: string;
 	title: string;
-	wildBalance: number;
+	tokenBalance: number;
 	isModalOpen?: boolean;
 	walletAddress?: string;
 	highestBid?: string;
 	error?: string;
 	bid: string;
 	isBidValid?: boolean;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 	setBid?: (bid: string) => void;
 	onClose: () => void;
 	onConfirm?: () => void;
@@ -58,7 +58,7 @@ const Details = ({
 	creator,
 	domainName,
 	title,
-	wildBalance,
+	tokenBalance,
 	highestBid,
 	error,
 	bid,
@@ -77,7 +77,7 @@ const Details = ({
 	);
 	const formattedBidAmount = getBidAmountText(bid, paymentTokenInfo.name);
 	// Balance loading
-	const loadingWildBalance = wildBalance === undefined;
+	const loadingTokenBalance = tokenBalance === undefined;
 	// Step content
 	const onSubmitButtonText =
 		stepContent === StepContent.Details
@@ -132,7 +132,7 @@ const Details = ({
 				/>
 			</div>
 
-			{stepContent === StepContent.Details && wildBalance === 0 && (
+			{stepContent === StepContent.Details && tokenBalance === 0 && (
 				<div className={styles.Error}>
 					You do not have enough {paymentTokenInfo.name} tokens to place a bid
 					on this domain.
@@ -140,11 +140,11 @@ const Details = ({
 			)}
 
 			{/* Details Step */}
-			{stepContent === StepContent.Details && wildBalance > 0 && (
+			{stepContent === StepContent.Details && tokenBalance > 0 && (
 				<div className={styles.PlaceBidContainer}>
 					<div className={styles.TextContainer}>{MESSAGES.ENTER_AMOUNT}</div>
 					<span className={styles.Estimate}>
-						{getWildBalance(wildBalance, paymentTokenInfo.name)}
+						{getWildBalance(tokenBalance, paymentTokenInfo.name)}
 					</span>
 					<form onSubmit={onConfirm}>
 						<TextInput
@@ -160,10 +160,10 @@ const Details = ({
 						/>
 					</form>
 					{getUsdFiatEstimation(bidString, paymentTokenInfo.price)}
-					{getBidToHighWarning(
-						loadingWildBalance,
+					{getBidTooHighWarning(
+						loadingTokenBalance,
 						bid,
-						wildBalance,
+						tokenBalance,
 						paymentTokenInfo.name,
 					)}
 				</div>
@@ -183,8 +183,8 @@ const Details = ({
 				{stepContent === StepContent.Details && (
 					<>
 						<FutureButton
-							glow={isBidValid && Number(bid) < wildBalance!}
-							disabled={isBidValid && Number(bid) > wildBalance!}
+							glow={isBidValid && Number(bid) < tokenBalance!}
+							disabled={isBidValid && Number(bid) > tokenBalance!}
 							onClick={onSubmit}
 						>
 							{onSubmitButtonText}

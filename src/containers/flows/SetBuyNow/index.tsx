@@ -6,7 +6,6 @@ import SetBuyNow, { Step } from './SetBuyNow';
 
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
-import useCurrency from 'lib/hooks/useCurrency';
 import useNotification from 'lib/hooks/useNotification';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
@@ -15,13 +14,13 @@ import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 import { BuyNowParams } from '@zero-tech/zns-sdk/lib/zAuction';
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { PaymentTokenInfo } from 'lib/types';
 
 export interface SetBuyNowContainerProps {
 	domainId: string;
 	onCancel: () => void;
 	onSuccess?: () => void;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 }
 
 const SetBuyNowContainer = ({
@@ -33,7 +32,6 @@ const SetBuyNowContainer = ({
 	// Hooks
 	const { instance: sdk } = useZnsSdk();
 	const { account, library } = useWeb3React();
-	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
 	const { getMetadata } = useMetadata();
 

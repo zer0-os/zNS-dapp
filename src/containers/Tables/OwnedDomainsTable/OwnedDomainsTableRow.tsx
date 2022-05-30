@@ -14,7 +14,7 @@ import { DomainSettings } from 'containers/other/NFTView/elements';
 //- Library Imports
 import { useHistory } from 'react-router-dom';
 import { BigNumber } from 'ethers';
-import { Domain, TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { Domain } from '@zero-tech/zns-sdk';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import classNames from 'classnames';

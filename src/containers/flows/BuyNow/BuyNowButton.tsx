@@ -14,7 +14,7 @@ import { Web3Provider } from '@ethersproject/providers';
 
 //- Constants Imports
 import { LABELS } from './BuyNowButton.constants';
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { PaymentTokenInfo } from 'lib/types';
 
 interface BuyNowButtonProps {
 	className?: string;
@@ -24,7 +24,7 @@ interface BuyNowButtonProps {
 	onSuccess?: () => void;
 	style?: React.CSSProperties;
 	isTextButton?: boolean;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 }
 
 const BuyNowButton = ({

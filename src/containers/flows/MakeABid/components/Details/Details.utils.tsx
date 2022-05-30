@@ -17,13 +17,13 @@ export const getUsdFiatEstimation = (bidString: string, wildPrice?: number) => {
 	);
 };
 
-export const getBidToHighWarning = (
+export const getBidTooHighWarning = (
 	isLoading: boolean,
 	bid: string,
-	wildBalance: number,
+	tokenBalance: number,
 	paymentTokenName: string,
 ) => {
-	if (!isLoading && Number(bid) > wildBalance!) {
+	if (!isLoading && Number(bid) > tokenBalance!) {
 		<p className={styles.Error}>
 			{replaceWildWithProperToken(ERRORS.INSUFFICIENT_FUNDS, paymentTokenName)}
 		</p>;

@@ -20,11 +20,10 @@ import {
 	DomainBidEvent,
 	DomainMetrics,
 	DomainMetricsCollection,
-	TokenPriceInfo,
-} from '@zero-tech/zns-sdk/lib/types';
+} from '@zero-tech/zns-sdk';
 
 //- Type Imports
-import { Maybe, DisplayParentDomain } from 'lib/types';
+import { Maybe, DisplayParentDomain, PaymentTokenInfo } from 'lib/types';
 
 //- Style Imports
 import styles from '../../NFTView.module.scss';
@@ -41,7 +40,7 @@ type StatsProps = {
 	znsDomain: Maybe<DisplayParentDomain>;
 	bids?: DomainBidEvent[];
 	isLoading: boolean;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 export const Stats: React.FC<StatsProps> = ({
