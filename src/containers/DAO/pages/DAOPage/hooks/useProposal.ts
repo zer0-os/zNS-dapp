@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { zDAO, Proposal, ProposalId, Vote } from '@zero-tech/zdao-sdk';
 
 type UseProposalReturn = {
@@ -11,6 +11,7 @@ type UseProposalReturn = {
 const useProposal = (
 	id: ProposalId,
 	dao?: zDAO,
+	triggerRefresh: boolean = false,
 	shouldLoadVotes: boolean = true,
 ): UseProposalReturn => {
 	const [proposal, setProposal] = useState<Proposal | undefined>();
@@ -58,10 +59,15 @@ const useProposal = (
 		}
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		fetchProposal();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dao, id]);
+
+	useEffect(() => {
+		fetchProposal();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [triggerRefresh]);
 
 	return {
 		proposal,
