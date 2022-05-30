@@ -11,14 +11,14 @@ import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 // Component imports
 import { Wizard } from 'components';
 import Details from './components/Details';
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { PaymentTokenInfo } from 'lib/types';
 
 type CancelBidContainerProps = {
 	bidNonce: string;
 	domainId: string;
 	onSuccess: () => void;
 	onClose: () => void;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 export const CancelBid = ({
