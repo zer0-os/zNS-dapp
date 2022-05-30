@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
+import type { Vote } from '@zero-tech/zdao-sdk';
 import { isEmpty } from 'lodash';
 import classNames from 'classnames/bind';
 import styles from './VoteBar.module.scss';
 
 type VoteBarProps = {
-	scores?: number[];
+	votes: Vote[];
 };
 
 const DEFAULT_PERCENTAGE_VALUE = {
@@ -14,11 +15,19 @@ const DEFAULT_PERCENTAGE_VALUE = {
 
 const cx = classNames.bind(styles);
 
-export const VoteBar: React.FC<VoteBarProps> = ({ scores = [] }) => {
+export const VoteBar: React.FC<VoteBarProps> = ({ votes = [] }) => {
 	const pecentage = useMemo(() => {
-		if (isEmpty(scores) || scores.length !== 2) return DEFAULT_PERCENTAGE_VALUE;
+		if (isEmpty(votes)) return DEFAULT_PERCENTAGE_VALUE;
 
-		const [v1, v2] = scores;
+		const { v1, v2 } = votes.reduce(
+			(accur, vote) => {
+				if (vote.choice === 1) accur.v1 = accur.v1 + 1;
+				else if (vote.choice === 2) accur.v2 = accur.v2 + 1;
+
+				return accur;
+			},
+			{ v1: 0, v2: 0 },
+		);
 
 		if (v1 === 0 && v2 === 0) return DEFAULT_PERCENTAGE_VALUE;
 
@@ -26,7 +35,7 @@ export const VoteBar: React.FC<VoteBarProps> = ({ scores = [] }) => {
 			value1: (v1 * 100) / (v1 + v2),
 			value2: (v2 * 100) / (v1 + v2),
 		};
-	}, [scores]);
+	}, [votes]);
 
 	return (
 		<div className={styles.Container}>
