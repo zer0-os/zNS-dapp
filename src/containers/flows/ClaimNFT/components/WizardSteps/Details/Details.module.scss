@@ -67,12 +67,16 @@
 
 			.SecondaryPlaceholder {
 				&.hasError {
-					color: #f6677c;
+					color: var(--color-error);
+				}
+
+				&.hasSuccess {
+					color: var(--color-success);
 				}
 			}
 
-			&.hasError {
-				margin-bottom: 2px;
+			&.hasNotification {
+				margin-bottom: 0px;
 			}
 
 			&.hasValue {
@@ -107,13 +111,18 @@
 			}
 		}
 
-		.Error {
+		.InputNotification {
 			font-size: 12px;
-			color: var(--color-error);
 			margin: 2px 0 0 26px;
 
 			&.hasError {
-				margin-bottom: 38px;
+				color: var(--color-error);
+				margin-bottom: 23px;
+			}
+
+			&.hasSuccess {
+				color: var(--color-success);
+				margin-bottom: 23px;
 			}
 		}
 

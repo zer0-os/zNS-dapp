@@ -34,6 +34,8 @@ import {
 	isValidTokenId,
 	getQuantityText,
 	getQuantityTooltip,
+	handleInputNotification,
+	NotificationType,
 } from './Details.utils';
 
 // Style Imports
@@ -49,7 +51,6 @@ type DetailsProps = {
 	onStartClaim?: () => void;
 	onRedirect?: () => void;
 	onFinish?: () => void;
-	onCheck?: () => void;
 };
 
 const cx = classNames.bind(styles);
@@ -64,20 +65,27 @@ const Details = ({
 	onStartClaim,
 	onRedirect,
 	onFinish,
-	onCheck,
 }: DetailsProps) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
 	const [tokenID, setTokenID] = useState<string | undefined>();
-
+	const [inputNotification, setInputNotification] = useState<
+		string | undefined
+	>();
+	const [notificationType, setNotificationType] = useState<NotificationType>();
 	const validTokenId = isValidTokenId(tokenID ?? '');
 	// replace
 	const isClaimDataLoading = false;
+	// replace
+	const isTokenClaimed = false;
+
 	const hasValue = Boolean(tokenID?.length);
 	const isDetailsStep = currentStep === Step.Details;
 	const quantityText = getQuantityText(isClaimable, ownedQuantity ?? 0);
 	const quantityTooltip = getQuantityTooltip(isClaimable);
+	const hasError = error || notificationType === NotificationType.ERROR;
+	const hasSuccess = notificationType === NotificationType.SUCCESS;
 
 	const headerPrompt = isDetailsStep
 		? MESSAGES.SEARCH_PROMPT
@@ -106,6 +114,22 @@ const Details = ({
 		} else {
 			isDetailsStep ? onStartClaim && onStartClaim() : onFinish && onFinish();
 		}
+	};
+
+	const handleChange = (id: string) => {
+		setInputNotification('');
+		setNotificationType(undefined);
+		setTokenID(id);
+	};
+
+	const onCheck = () => {
+		setInputNotification('');
+		// Trigger Check
+		handleInputNotification(
+			setInputNotification,
+			setNotificationType,
+			isTokenClaimed,
+		);
 	};
 
 	return (
@@ -158,13 +182,14 @@ const Details = ({
 								<div
 									className={cx(styles.InputContainer, {
 										hasValue: hasValue,
-										hasError: error,
+										hasNotification: hasError || hasSuccess,
 									})}
 								>
 									{tokenID && (
 										<span
 											className={cx(styles.SecondaryPlaceholder, {
-												hasError: error,
+												hasError: hasError,
+												hasSuccess: hasSuccess,
 											})}
 										>
 											{TEXT_INPUT.PLACEHOLDER}
@@ -173,9 +198,9 @@ const Details = ({
 									<TextInput
 										className={cx(styles.Input, {
 											hasValue: hasValue,
-											hasError: error,
+											hasError: hasError,
 										})}
-										onChange={(text: string) => setTokenID(text)}
+										onChange={handleChange}
 										placeholder={TEXT_INPUT.PLACEHOLDER}
 										text={tokenID}
 										type={TEXT_INPUT.TYPE}
@@ -191,13 +216,14 @@ const Details = ({
 										</FutureButton>
 									</div>
 								</div>
-								{error && (
+								{inputNotification && (
 									<div
-										className={cx(styles.Error, {
-											hasError: error,
+										className={cx(styles.InputNotification, {
+											hasError: hasError,
+											hasSuccess: hasSuccess,
 										})}
 									>
-										{error}
+										{inputNotification}
 									</div>
 								)}
 							</>

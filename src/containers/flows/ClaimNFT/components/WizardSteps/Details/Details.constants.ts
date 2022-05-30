@@ -21,6 +21,9 @@ export const TEXT_INPUT = {
 	PLACEHOLDER: 'Token ID',
 	BUTTON: 'Check',
 	TYPE: 'text',
+	CLAIM_CONSUMED_ERROR: 'This Wheel has already been used to claim a Moto',
+	CLAIM_CONSUMED_SUCCESS: 'This Wheel has a moto claim available',
+	UNABLE_TO_RETRIEVE: 'Unable to retrieve Token ID.',
 };
 
 export const TOOLTIP = {

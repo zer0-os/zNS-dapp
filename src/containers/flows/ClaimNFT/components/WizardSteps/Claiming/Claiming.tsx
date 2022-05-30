@@ -1,4 +1,4 @@
-//-s React Imports
+//- React Imports
 import { useState } from 'react';
 
 //- Library Imports

@@ -1,6 +1,6 @@
 //- Constants Imports
 import { MESSAGES, LABELS } from 'containers/flows/ClaimNFT/ClaimNFT.constants';
-import { BUTTONS, TOOLTIP } from './Details.constants';
+import { BUTTONS, TOOLTIP, TEXT_INPUT } from './Details.constants';
 
 // Validation
 export const isValidTokenId = (text: string) =>
@@ -26,3 +26,27 @@ export const getQuantityText = (isClaimable: boolean, total: number) =>
 
 export const getQuantityTooltip = (isClaimable: boolean) =>
 	isClaimable ? `${TOOLTIP.CLAIMABLE}` : `${TOOLTIP.UNCLAIMABLE}`;
+
+export enum NotificationType {
+	SUCCESS = 'SUCCESS',
+	ERROR = 'ERROR',
+}
+
+export const handleInputNotification = (
+	setInputNotification: (text: string) => void,
+	setNotificationType: (type: NotificationType) => void,
+	tokenClaimed?: boolean,
+) => {
+	if (tokenClaimed) {
+		setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_ERROR);
+		setNotificationType(NotificationType.ERROR);
+	} else if (tokenClaimed === false) {
+		setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_SUCCESS);
+		setNotificationType(NotificationType.SUCCESS);
+	} else if (tokenClaimed === undefined) {
+		setInputNotification(TEXT_INPUT.UNABLE_TO_RETRIEVE);
+		setNotificationType(NotificationType.ERROR);
+	} else {
+		return;
+	}
+};
