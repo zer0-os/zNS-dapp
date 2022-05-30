@@ -27,3 +27,15 @@ const VoteButtons: React.FC<VoteButtonsProps> = ({
 };
 
 export default VoteButtons;
+
+/*
+ * Approve / Deny buttons
+ */
+
+export const Approve: React.FC = ({ children }) => (
+	<span className={styles.Approve}>{children}</span>
+);
+
+export const Deny: React.FC = ({ children }) => (
+	<span className={styles.Deny}>{children}</span>
+);

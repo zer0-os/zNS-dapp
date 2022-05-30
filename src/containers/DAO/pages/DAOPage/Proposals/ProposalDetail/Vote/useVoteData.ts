@@ -21,7 +21,7 @@ const useVoteData = (proposal?: Proposal, user?: string): UseVoteDataReturn => {
 		/* Batch the API calls */
 		const promises: Promise<any>[] = [proposal!.listVotes()];
 		if (user) {
-			// promises.push(proposal!.getVotingPowerOfUser(user));
+			promises.push(proposal!.getVotingPowerOfUser(user));
 		}
 		const [votes, power] = await Promise.all(promises);
 		const vote = find(
@@ -37,7 +37,7 @@ const useVoteData = (proposal?: Proposal, user?: string): UseVoteDataReturn => {
 		if (proposal && user) {
 			getVotes();
 		}
-	}, [proposal, user]);
+	}, [proposal, user, getVotes]);
 
 	return { isLoading, userVote, userVotingPower };
 };
