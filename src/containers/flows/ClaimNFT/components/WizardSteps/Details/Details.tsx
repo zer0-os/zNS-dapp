@@ -15,6 +15,9 @@ import {
 // Library Imports
 import classNames from 'classnames/bind';
 
+//- Hook Imports
+import useClaimDomainData from '../../../hooks/useClaimDomainData';
+
 //- Types Imports
 import { Step } from 'containers/flows/ClaimNFT/ClaimNFT.types';
 
@@ -26,6 +29,7 @@ import {
 	QuestionButton,
 	Tooltip,
 	ArrowLink,
+	Spinner,
 } from 'components';
 
 // Utils Imports
@@ -42,6 +46,8 @@ import {
 import styles from './Details.module.scss';
 
 type DetailsProps = {
+	tokenID?: string;
+	isClaimDataLoading?: boolean;
 	ownedQuantity?: number;
 	isWalletConnected: boolean;
 	isClaimable: boolean;
@@ -51,11 +57,14 @@ type DetailsProps = {
 	onStartClaim?: () => void;
 	onRedirect?: () => void;
 	onFinish?: () => void;
+	setTokenID?: (id: string) => void;
 };
 
 const cx = classNames.bind(styles);
 
 const Details = ({
+	tokenID,
+	isClaimDataLoading,
 	ownedQuantity,
 	isWalletConnected,
 	isClaimable,
@@ -65,21 +74,23 @@ const Details = ({
 	onStartClaim,
 	onRedirect,
 	onFinish,
+	setTokenID,
 }: DetailsProps) => {
 	///////////////////////
 	// State & Variables //
 	///////////////////////
-	const [tokenID, setTokenID] = useState<string | undefined>();
+	const [notificationType, setNotificationType] = useState<NotificationType>();
 	const [inputNotification, setInputNotification] = useState<
 		string | undefined
 	>();
-	const [notificationType, setNotificationType] = useState<NotificationType>();
-	const validTokenId = isValidTokenId(tokenID ?? '');
-	// replace
-	const isClaimDataLoading = false;
-	// replace
-	const isTokenClaimed = false;
+	const [requestCheck, setRequestCheck] = useState<boolean>(false);
 
+	const { isDomainDataLoading: isCheckDataLoading, domainData } =
+		useClaimDomainData(tokenID ?? '', requestCheck);
+	console.log(domainData);
+	console.log(requestCheck);
+	const isTokenClaimed = domainData?.isLocked;
+	const validTokenId = isValidTokenId(tokenID ?? '');
 	const hasValue = Boolean(tokenID?.length);
 	const isDetailsStep = currentStep === Step.Details;
 	const quantityText = getQuantityText(isClaimable, ownedQuantity ?? 0);
@@ -119,17 +130,17 @@ const Details = ({
 	const handleChange = (id: string) => {
 		setInputNotification('');
 		setNotificationType(undefined);
-		setTokenID(id);
+		setTokenID && setTokenID(id);
+		setRequestCheck(false);
 	};
 
 	const onCheck = () => {
-		setInputNotification('');
-		// Trigger Check
 		handleInputNotification(
 			setInputNotification,
 			setNotificationType,
 			isTokenClaimed,
 		);
+		setRequestCheck(true);
 	};
 
 	return (
@@ -160,109 +171,117 @@ const Details = ({
 					></source>
 				</video>
 
-				{!isClaimDataLoading && (
-					<div className={styles.InfoContainer}>
-						<div className={styles.HeaderContainer}>
+				<div className={styles.InfoContainer}>
+					<div className={styles.HeaderContainer}>
+						<div
+							className={cx(styles.HeaderPrompt, {
+								isDetailsStep: isDetailsStep,
+							})}
+						>
+							{headerPrompt}
+						</div>
+						<Tooltip
+							deepPadding
+							text={isDetailsStep ? TOOLTIP.DETAILS : TOOLTIP.MINTING}
+						>
+							<QuestionButton small />
+						</Tooltip>
+					</div>
+					{isDetailsStep && (
+						<>
 							<div
-								className={cx(styles.HeaderPrompt, {
-									isDetailsStep: isDetailsStep,
+								className={cx(styles.InputContainer, {
+									hasValue: hasValue,
+									hasNotification: hasError || hasSuccess,
 								})}
 							>
-								{headerPrompt}
-							</div>
-							<Tooltip
-								deepPadding
-								text={isDetailsStep ? TOOLTIP.DETAILS : TOOLTIP.MINTING}
-							>
-								<QuestionButton small />
-							</Tooltip>
-						</div>
-						{isDetailsStep && (
-							<>
-								<div
-									className={cx(styles.InputContainer, {
-										hasValue: hasValue,
-										hasNotification: hasError || hasSuccess,
-									})}
-								>
-									{tokenID && (
-										<span
-											className={cx(styles.SecondaryPlaceholder, {
-												hasError: hasError,
-												hasSuccess: hasSuccess,
-											})}
-										>
-											{TEXT_INPUT.PLACEHOLDER}
-										</span>
-									)}
-									<TextInput
-										className={cx(styles.Input, {
-											hasValue: hasValue,
-											hasError: hasError,
-										})}
-										onChange={handleChange}
-										placeholder={TEXT_INPUT.PLACEHOLDER}
-										text={tokenID}
-										type={TEXT_INPUT.TYPE}
-									/>
-
-									<div className={styles.ButtonContainer}>
-										<FutureButton
-											glow={validTokenId}
-											disabled={!validTokenId}
-											onClick={onCheck}
-										>
-											{TEXT_INPUT.BUTTON}
-										</FutureButton>
-									</div>
-								</div>
-								{inputNotification && (
-									<div
-										className={cx(styles.InputNotification, {
+								{tokenID && (
+									<span
+										className={cx(styles.SecondaryPlaceholder, {
 											hasError: hasError,
 											hasSuccess: hasSuccess,
 										})}
 									>
-										{inputNotification}
-									</div>
+										{TEXT_INPUT.PLACEHOLDER}
+									</span>
 								)}
-							</>
-						)}
+								<TextInput
+									className={cx(styles.Input, {
+										hasValue: hasValue,
+										hasError: hasError,
+									})}
+									onChange={handleChange}
+									placeholder={TEXT_INPUT.PLACEHOLDER}
+									text={tokenID}
+									type={TEXT_INPUT.TYPE}
+								/>
 
-						{!isWalletConnected ? (
-							<div className={styles.Warning}>
-								{MESSAGES.CONNECT_WALLET_PROMPT}
+								<div className={styles.ButtonContainer}>
+									<FutureButton
+										glow={validTokenId}
+										disabled={!validTokenId}
+										onClick={onCheck}
+										loading={isCheckDataLoading}
+									>
+										{TEXT_INPUT.BUTTON}
+									</FutureButton>
+								</div>
 							</div>
-						) : (
-							<div className={styles.TextContainer}>
-								{isDetailsStep && (
-									<>
-										<div className={styles.FlexRowWrapper}>
-											<div className={styles.QuantityText}>{quantityText}</div>
-											<Tooltip deepPadding text={quantityTooltip}>
-												<QuestionButton small />
-											</Tooltip>
-										</div>
-										<ArrowLink
-											className={styles.ArrowLink}
-											href={'url to claim zine'}
-											isLinkToExternalUrl
-										>
-											{MESSAGES.READ_MORE}
-										</ArrowLink>
-									</>
-								)}
+							{inputNotification && (
+								<div
+									className={cx(styles.InputNotification, {
+										hasError: hasError,
+										hasSuccess: hasSuccess,
+									})}
+								>
+									{inputNotification}
+								</div>
+							)}
+						</>
+					)}
+					{!isClaimDataLoading ? (
+						<>
+							{!isWalletConnected ? (
+								<div className={styles.Warning}>
+									{MESSAGES.CONNECT_WALLET_PROMPT}
+								</div>
+							) : (
+								<div className={styles.TextContainer}>
+									{isDetailsStep && (
+										<>
+											<div className={styles.FlexRowWrapper}>
+												<div className={styles.QuantityText}>
+													{quantityText}
+												</div>
+												<Tooltip deepPadding text={quantityTooltip}>
+													<QuestionButton small />
+												</Tooltip>
+											</div>
+											<ArrowLink
+												className={styles.ArrowLink}
+												href={'url to claim zine'}
+												isLinkToExternalUrl
+											>
+												{MESSAGES.READ_MORE}
+											</ArrowLink>
+										</>
+									)}
 
-								<div className={styles.Prompt}>{promptText}</div>
-							</div>
-						)}
+									<div className={styles.Prompt}>{promptText}</div>
+								</div>
+							)}
 
-						<Wizard.Buttons
-							primaryButtonText={buttonText}
-							onClickPrimaryButton={onSubmit}
-						/>
-					</div>
-				)}
+							<Wizard.Buttons
+								primaryButtonText={buttonText}
+								onClickPrimaryButton={onSubmit}
+							/>
+						</>
+					) : (
+						<div className={styles.Spinner}>
+							<Spinner />
+						</div>
+					)}
+				</div>
 			</section>
 		</>
 	);

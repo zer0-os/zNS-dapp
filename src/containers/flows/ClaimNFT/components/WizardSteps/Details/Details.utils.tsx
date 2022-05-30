@@ -5,7 +5,7 @@ import { BUTTONS, TOOLTIP, TEXT_INPUT } from './Details.constants';
 // Validation
 export const isValidTokenId = (text: string) =>
 	// good enough tokenID validation ?
-	/^0x[a-fA-F0-9]{66}$/.test(String(text).toLowerCase());
+	/^0x[a-fA-F0-9]{64}$/.test(String(text).toLowerCase());
 
 export const isValid = (tokenID: string) => isValidTokenId(tokenID);
 
