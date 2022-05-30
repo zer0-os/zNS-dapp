@@ -1,6 +1,6 @@
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
 import { Wizard } from 'components';
 import { ethers } from 'ethers';
+import { PaymentTokenInfo } from 'lib/types';
 import React from 'react';
 import Details from './Steps/Details';
 
@@ -34,7 +34,7 @@ type BuyNowProps = {
 	onNext: () => void;
 	onCancel: () => void;
 	step: Step;
-	paymentTokenInfo: TokenPriceInfo;
+	paymentTokenInfo: PaymentTokenInfo;
 };
 
 const getSubHeader = (step: Step) => {
