@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
-import { LoadingIndicator } from 'components';
+import { LoadingIndicator, Tooltip, QuestionButton } from 'components';
 import { ConnectWalletButton } from 'containers';
 import VoteButtons, { Approve, Deny } from './VoteButtons';
 import { VoteStatus } from './Vote.constants';
@@ -11,6 +11,7 @@ interface VoteActionProps {
 	account: string | undefined;
 	isLoading: boolean;
 	userVote: Choice | undefined;
+	uservotingPower: number;
 	voteStatus: VoteStatus;
 	onClickApprove: () => void;
 	onClickDeny: () => void;
@@ -22,6 +23,7 @@ interface VoteActionProps {
  * @param account wallet ID of connected account
  * @param isLoading is user vote data loading
  * @param userVote the vote the user made, if any
+ * @param uservotingPower the voting power of the account
  * @param voteStatus current progress of voting modal
  * @param onClickApprove event fired when approve is clicked
  * @param onClickDeny event fired when deny is clicked
@@ -31,6 +33,7 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 	account,
 	isLoading,
 	userVote,
+	uservotingPower,
 	voteStatus,
 	onClickApprove,
 	onClickDeny,
@@ -51,6 +54,17 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 
 	if (voteStatus === VoteStatus.PENDING) {
 		return <LoadingIndicator spinnerPosition="left" text="" />;
+	}
+
+	if (!uservotingPower) {
+		return (
+			<span className={styles.FooterText}>
+				Your wallet is not eligible to vote on this proposal
+				<Tooltip text="In order to have voting power, you must hold the voting token at the time this proposal was created.">
+					<QuestionButton small />
+				</Tooltip>
+			</span>
+		);
 	}
 
 	if (userVote !== undefined) {
