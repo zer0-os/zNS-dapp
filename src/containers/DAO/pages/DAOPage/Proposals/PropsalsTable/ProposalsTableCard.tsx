@@ -7,6 +7,7 @@ import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 // Lib
 import moment from 'moment';
 import { sum } from 'lodash';
+import removeMarkdown from 'markdown-to-text';
 import { formatProposalStatus } from '../Proposals.helpers';
 import { truncateString } from 'lib/utils/string';
 
@@ -82,7 +83,9 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 		>
 			<div className={styles.Content}>
 				<h2 className={styles.Title}>{title}</h2>
-				<p className={styles.Description}>{truncateString(body, 150)}</p>
+				<p className={styles.Description}>
+					{truncateString(removeMarkdown(body), 180)}
+				</p>
 			</div>
 			<div className={styles.Buttons}>
 				{!isDaoLoading && cardData.amount.value > 0 && (
