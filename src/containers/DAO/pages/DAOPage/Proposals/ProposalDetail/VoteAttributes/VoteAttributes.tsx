@@ -5,11 +5,7 @@ import moment from 'moment';
 import { sum } from 'lodash';
 import type { zDAO, Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
-import { toFiat } from 'lib/currency';
-import {
-	formatProposalStatus,
-	formatTotalAmountOfTokenMetadata,
-} from '../../Proposals.helpers';
+import { formatProposalStatus } from '../../Proposals.helpers';
 import { truncateWalletAddress } from 'lib/utils';
 import useTimer from 'lib/hooks/useTimer';
 

@@ -22,8 +22,6 @@ const Vote: React.FC<VoteProps> = ({ proposal, onCompleteVoting }) => {
 		account as string | undefined,
 	);
 
-	console.log({ isLoading, userVote, userVotingPower });
-
 	const [status, setStatus] = useState<VoteStatus>(VoteStatus.NOT_STARTED);
 	const [choice, setChoice] = useState<Choice | undefined>();
 	const [completedVote, setCompletedVote] = useState<Choice | undefined>();

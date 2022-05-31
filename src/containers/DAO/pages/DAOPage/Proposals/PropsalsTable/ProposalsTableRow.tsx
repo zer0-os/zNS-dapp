@@ -2,18 +2,16 @@ import React, { useCallback, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Hooks
-import useProposalMetadata from '../../hooks/useProposalMetadata';
-import useCurrency from 'lib/hooks/useCurrency';
+import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import useTimer from 'lib/hooks/useTimer';
 
 // Lib
 import moment from 'moment';
+import { sum } from 'lodash';
 import { truncateString } from 'lib/utils/string';
 import {
 	formatProposalStatus,
 	formatProposalEndTime,
-	formatTotalAmountOfTokenMetadata,
-	formatAmountInUSDOfTokenMetadata,
 } from '../Proposals.helpers';
 
 // Components
@@ -24,11 +22,10 @@ import classNames from 'classnames/bind';
 import styles from './ProposalsTableRow.module.scss';
 
 // Types
-import { Proposal } from '@zero-tech/zdao-sdk';
+import type { Proposal } from '@zero-tech/zdao-sdk';
 
 // Constants
 import { DEFAULT_TIMMER_INTERVAL } from '../Proposals.constants';
-import { CURRENCY } from 'constants/currency';
 
 interface ProposalsTableRowProps {
 	data: Proposal;
@@ -49,27 +46,13 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 
-	const { metadata, isLoading: isMetadataLoading } = useProposalMetadata(data);
+	const { dao, isLoading: isDaoLoading } = useCurrentDao();
 
-	const { wildPriceUsd } = useCurrency(false);
-
-	const { id, title, end } = data;
+	const { id, title, end, scores } = data;
 
 	const isConcluded = moment(end).isBefore(moment());
 
 	const { time } = useTimer(end, isConcluded ? null : DEFAULT_TIMMER_INTERVAL);
-
-	const amount = useMemo(() => {
-		// const wild = formatTotalAmountOfTokenMetadata(metadata);
-		// const usd = formatAmountInUSDOfTokenMetadata(wildPriceUsd, metadata);
-		const wild = (title.split(' ').length + 1) * 10000;
-		const usd = wild * wildPriceUsd;
-
-		return {
-			wild: wild ? wild.toLocaleString() + ' ' + metadata?.symbol : '',
-			usd: usd ? '$' + usd.toLocaleString() : '',
-		};
-	}, [metadata, wildPriceUsd]);
 
 	const closingStatus = useMemo(() => {
 		let status = 'normal';
@@ -113,13 +96,10 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 
 			{/* Total amount of tokens */}
 			<td className={styles.Amount}>
-				{isMetadataLoading ? (
-					<LoadingIndicator text="" className={styles.LoadingMetadata} />
+				{isDaoLoading ? (
+					<LoadingIndicator text="" className={styles.LoadingDao} />
 				) : (
-					<>
-						<p>{amount.wild}</p>
-						<p>{amount.usd ?? ''}</p>
-					</>
+					<p>{sum(scores) + ' ' + dao?.votingToken.symbol}</p>
 				)}
 			</td>
 		</tr>
