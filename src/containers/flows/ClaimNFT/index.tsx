@@ -56,9 +56,9 @@ const ClaimNFTContainer = ({}: ClaimNFTContainerProps) => {
 			)}
 			<div className={styles.BannerContainer}>
 				<MintDropNFTBanner
-					title={''}
-					label={''}
-					buttonText={''}
+					title={'Placeholder'}
+					label={'Placeholder'}
+					buttonText={'Placeholder'}
 					onClick={openWizard}
 				/>
 			</div>

@@ -25,6 +25,7 @@ import {
 	STEP_CONTENT_TITLES,
 	STATUS_TEXT,
 	DOMAINS,
+	MESSAGES,
 } from './ClaimNFT.constants';
 import { ROUTES } from 'constants/routes';
 
@@ -86,7 +87,7 @@ const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 			setStepContent(StepContent.Minting);
 		} catch (e) {
 			setCurrentStep(Step.Claim);
-			setError(e.message);
+			setError(MESSAGES.REJECTED_WALLET);
 			setStepContent(StepContent.Claim);
 		}
 		if (!isMounted.current) return;

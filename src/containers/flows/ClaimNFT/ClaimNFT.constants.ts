@@ -28,6 +28,7 @@ export const MESSAGES = {
 	APPEND_UNCLAIMABLE_TEXT: `${[LABELS.MOTOS]} ${[LABELS.CLAIMABLE]}`,
 	APPEND_CLAIMABLE_TEXT: `You can claim`,
 	ASSET_ERROR: 'Failed to retrieve domain asset data',
+	REJECTED_WALLET: 'Transaction denied by wallet',
 };
 
 export const STATUS_TEXT = {
