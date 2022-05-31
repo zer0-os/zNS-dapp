@@ -10,7 +10,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Wizard, StepBar } from 'components';
 
 //- Hook Imports
-import useOwnedDomains from './hooks/useOwnedDomains';
+import useOwnedDomains from 'lib/hooks/useOwnedDomains';
 
 //- Components Imports
 import Details from './components/WizardSteps/Details/Details';
