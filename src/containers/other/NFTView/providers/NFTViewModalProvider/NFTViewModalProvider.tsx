@@ -11,9 +11,10 @@ import {
 } from './NFTViewModalProvider.types';
 
 //- Components Imports
-import { Overlay } from 'components';
+import { ConnectToWallet, Overlay } from 'components';
 
 //- Containers Imports
+import ClaimNFT from 'containers/flows/ClaimNFT/ClaimNFT';
 import MakeABid from 'containers/flows/MakeABid/MakeABid';
 import SetBuyNow from 'containers/flows/SetBuyNow';
 import { BidList } from 'containers';
@@ -70,8 +71,13 @@ export const NFTViewModalProvider = ({
 					/>
 				)}
 				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && (
-					// replace with component
-					<>Claim NFT Modal / Mint Drop NFT Modal</>
+					<ClaimNFT
+						openConnect={modalContent.contentProps.openConnect}
+						onClose={modalContent.contentProps.onClose}
+					/>
+				)}
+				{modalContent?.modalType === NFTViewModalType.CONNECT_WALLET && (
+					<ConnectToWallet onConnect={modalContent.contentProps.onConnect} />
 				)}
 			</Overlay>
 

@@ -33,7 +33,7 @@ import useNotification from 'lib/hooks/useNotification';
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { WALLETS } from 'constants/wallets';
 
-type ConnectToWalletProps = {
+export type ConnectToWalletProps = {
 	onConnect: () => void;
 };
 

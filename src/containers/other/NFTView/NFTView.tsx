@@ -199,16 +199,23 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		});
 	};
 
+	// Open Connect Wallet Modal
+	const openConnectWallet = () => {
+		openModal({
+			modalType: NFTViewModalType.CONNECT_WALLET,
+			contentProps: {
+				onConnect: closeModal,
+			},
+		});
+	};
+
 	// Open Claim Modal
 	const openClaim = () => {
 		openModal({
 			modalType: NFTViewModalType.CLAIM_NFT,
 			contentProps: {
-				// replace with claim props
+				openConnect: openConnectWallet,
 				onClose: closeModal,
-				onFinish: closeModal,
-				pricePerNFT: 0,
-				onSubmitTransaction: () => {},
 			},
 		});
 	};
