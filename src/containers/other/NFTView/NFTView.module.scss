@@ -462,8 +462,9 @@
 
 	.Contract {
 		width: 100%;
-		&:last-child {
-			margin-top: 0;
+		margin-top: 0;
+		&:first-of-type {
+			margin-top: 16px;
 		}
 	}
 
