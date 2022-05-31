@@ -4,7 +4,7 @@
 	&:hover {
 		background-color: #1a1022;
 	}
-	
+
 	> td {
 		&:first-of-type {
 			padding-left: 8px !important;
@@ -34,15 +34,15 @@
 		width: 125px;
 
 		&.Concluded {
-			color: #BFBFBF;
+			color: #bfbfbf;
 		}
 
 		&.Warning {
-			color: #F58C61;
+			color: #f58c61;
 		}
 
 		&.Error {
-			color: #F6677C;
+			color: #f6677c;
 		}
 	}
 
@@ -69,12 +69,12 @@
 				font-size: 12px;
 				font-weight: 400;
 				line-height: 15px;
-				color: #BFBFBF;
+				color: #bfbfbf;
 			}
 		}
 	}
 
-	.LoadingMetadata {
+	.LoadingDao {
 		> div:first-child {
 			margin-bottom: unset;
 		}
