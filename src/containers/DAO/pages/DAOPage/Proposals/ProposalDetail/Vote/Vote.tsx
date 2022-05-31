@@ -73,6 +73,7 @@ const Vote: React.FC<VoteProps> = ({ proposal, onCompleteVoting }) => {
 					proposal={proposal}
 					account={account as string | undefined}
 					isLoading={isLoading}
+					uservotingPower={userVotingPower ?? 0}
 					userVote={completedVote ?? userVote}
 					voteStatus={status}
 					onClickApprove={() => setChoice(1)}
