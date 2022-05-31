@@ -16,7 +16,11 @@
 		font-size: 18px;
 		font-weight: 700;
 		color: var(--color-grey-lighter-2);
-		text-align: center;
+
+		:global(.question-button) {
+			display: inline-flex;
+			margin-left: 8px;
+		}
 	}
 }
 

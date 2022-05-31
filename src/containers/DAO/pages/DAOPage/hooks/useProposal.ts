@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { zDAO, Proposal, ProposalId, Vote } from '@zero-tech/zdao-sdk';
 
 type UseProposalReturn = {
