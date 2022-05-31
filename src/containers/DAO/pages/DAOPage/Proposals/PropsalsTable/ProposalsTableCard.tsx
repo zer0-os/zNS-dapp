@@ -2,14 +2,12 @@ import React, { useMemo, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Hooks
-import useProposalMetadata from '../../hooks/useProposalMetadata';
+import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 
 // Lib
 import moment from 'moment';
-import {
-	formatProposalStatus,
-	formatTotalAmountOfTokenMetadata,
-} from '../Proposals.helpers';
+import { sum } from 'lodash';
+import { formatProposalStatus } from '../Proposals.helpers';
 import { truncateString } from 'lib/utils/string';
 
 // Components
@@ -20,11 +18,10 @@ import classNames from 'classnames';
 import styles from './ProposalsTableCard.module.scss';
 
 // Types
-import { Proposal } from '@zero-tech/zdao-sdk';
+import type { Proposal } from '@zero-tech/zdao-sdk';
 
 // Constants
 import { DEFAULT_TIMMER_EXPIRED_LABEL } from '../Proposals.constants';
-import { CURRENCY } from 'constants/currency';
 import { ChicletType } from 'components/Chiclet/Chiclet';
 
 interface ProposalsTableCardProps {
@@ -41,12 +38,12 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 
-	const { metadata, isLoading: isMetadataLoading } = useProposalMetadata(data);
+	const { dao, isLoading: isDaoLoading } = useCurrentDao();
 
-	const { id, title, body, end } = data;
+	const { id, title, body, end, scores } = data;
 
 	const cardData = useMemo(() => {
-		const wild = formatTotalAmountOfTokenMetadata(metadata);
+		const amount = sum(scores);
 		const isConcluded = moment(end).isBefore(moment());
 		const timeDiff = moment(end).diff(moment());
 
@@ -60,9 +57,9 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 		}
 
 		return {
-			wild: {
-				value: wild,
-				formatted: (wild || '0.00') + ' ' + CURRENCY.WILD,
+			amount: {
+				value: amount,
+				formatted: (amount ?? 0) + ' ' + dao?.votingToken.symbol,
 			},
 			closing: {
 				type: closingType,
@@ -71,7 +68,7 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 					: 'Closing in ' + moment.duration(timeDiff).humanize(),
 			},
 		};
-	}, [metadata, end]);
+	}, [dao, scores, end]);
 
 	const handleCardClick = useCallback(() => {
 		history.push(`${location.pathname}/${id}`);
@@ -88,8 +85,8 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 				<p className={styles.Description}>{truncateString(body, 150)}</p>
 			</div>
 			<div className={styles.Buttons}>
-				{!isMetadataLoading && cardData.wild.value && (
-					<Chiclet>{cardData.wild.formatted}</Chiclet>
+				{!isDaoLoading && cardData.amount.value > 0 && (
+					<Chiclet>{cardData.amount.formatted}</Chiclet>
 				)}
 				<Chiclet type={cardData.closing.type}>
 					{cardData.closing.message}

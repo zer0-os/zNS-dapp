@@ -15,7 +15,6 @@ import {
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import addresses from 'lib/addresses';
-import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 
 export const zDaoContext = React.createContext({
 	instance: undefined as SDKInstance | undefined,
