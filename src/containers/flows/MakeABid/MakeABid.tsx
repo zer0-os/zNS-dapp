@@ -114,8 +114,8 @@ const MakeABid = ({
 		(async () => {
 			try {
 				const allowance = await sdk.zauction.getZAuctionSpendAllowance(
-					{ paymentTokenAddress: paymentTokenInfo.id },
 					account,
+					{ paymentTokenAddress: paymentTokenInfo.id },
 				);
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
@@ -246,10 +246,9 @@ const MakeABid = ({
 			return;
 		}
 		checkZAuctionApproval();
-		const balance = await sdk.zauction.getZAuctionSpendAllowance(
-			{ paymentTokenAddress: paymentTokenInfo.id },
-			account,
-		);
+		const balance = await sdk.zauction.getZAuctionSpendAllowance(account, {
+			paymentTokenAddress: paymentTokenInfo.id,
+		});
 		setTokenBalance(parseInt(ethers.utils.formatEther(balance), 10));
 	};
 

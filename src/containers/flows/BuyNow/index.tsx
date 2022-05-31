@@ -148,10 +148,9 @@ const BuyNowContainer = ({
 		try {
 			const [domain, balance] = await Promise.all([
 				sdk.getDomainById(domainId),
-				sdk.zauction.getZAuctionSpendAllowance(
-					{ paymentTokenAddress: paymentTokenInfo.id },
-					account,
-				),
+				sdk.zauction.getZAuctionSpendAllowance(account, {
+					paymentTokenAddress: paymentTokenInfo.id,
+				}),
 			]);
 			const metadata = await getMetadata(domain.metadataUri);
 			if (domain && metadata && buyNowPrice && balance) {
