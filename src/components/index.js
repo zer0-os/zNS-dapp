@@ -42,6 +42,9 @@ export { default as Chiclet } from './Chiclet/Chiclet';
 //- Dropdowns
 export * from './Dropdowns';
 
+// - EtherscanLink
+export * from './EtherscanLink';
+
 //- Inputs
 export { default as EtherInput } from './Inputs/EtherInput/EtherInput';
 export { default as TextInput } from './Inputs/TextInput/TextInput';
