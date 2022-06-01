@@ -4,15 +4,20 @@
 	align-items: center;
 	width: 40px;
 	height: 40px;
+
+	&:hover {
+		border-radius: 8px;
+		background: #1a1022;
+	}
 }
 .NumberButton {
 	position: relative;
-	width: 32px;
-	height: 32px;
+	width: 26px;
+	height: 24px;
 	background: none;
 	border-radius: var(--box-radius);
 	color: var(--color-text-primary);
-	font-weight: 700;
+	font-weight: 400;
 	text-align: center;
 
 	&::before {
@@ -41,11 +46,6 @@
 		width: 0px;
 		border-radius: var(--box-radius);
 		z-index: -2;
-	}
-
-	&:hover {
-		background: var(--color-azure-gradient-25);
-		box-sizing: border-box;
 	}
 }
 

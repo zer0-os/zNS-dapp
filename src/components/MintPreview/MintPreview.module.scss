@@ -79,15 +79,14 @@
 
 	p {
 		padding: 0;
-		margin-bottom: 12px;
 		line-height: 24px;
 	}
 }
 
 .Container {
 	display: flex;
-	flex-direction: row;
-	margin-top: 18px;
+	flex-direction: column;
+	margin-top: 24px;
 	line-height: 24px;
 
 	div {
@@ -96,19 +95,16 @@
 
 	.TextContainer {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 	}
 
 	.ButtonContainer {
-		margin-top: 24px;
-
-		a {
-			font-size: 14px;
-		}
+		margin-bottom: 24px;
 	}
 
 	.Success {
 		color: var(--color-success);
+		font-weight: 700;
 	}
 }
 

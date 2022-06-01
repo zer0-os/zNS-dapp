@@ -1,6 +1,6 @@
 //- React Imports
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 
 //- Library Imports
 import { Maybe, NftStatusCard } from 'lib/types';
@@ -11,7 +11,7 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 
 //- Component Imports
-import { Image } from 'components';
+import { Image, FutureButton } from 'components';
 
 //- Hook Imports
 import useMint from 'lib/hooks/useMint';
@@ -41,6 +41,8 @@ const MintPreview = (props: MintPreviewProps) => {
 	const walletContext = useWeb3React<Web3Provider>();
 	const { chainId } = walletContext;
 
+	const location = useLocation();
+	const history = useHistory();
 	const networkType = chainIdToNetworkType(chainId);
 	const baseEtherscanUri = getEtherscanUri(networkType);
 
@@ -54,11 +56,19 @@ const MintPreview = (props: MintPreviewProps) => {
 		statusText?: string,
 	) => {
 		const link = zNAToLink(nft.zNA);
-		const etherscanLink = `${baseEtherscanUri}tx/${nft.transactionHash}`;
 
 		const statusStyle = {
 			color: isCompleted ? 'var(--color-success)' : 'var(--color-grey)',
 			fontWeight: 700,
+		};
+
+		const openProfile = () => {
+			const params = new URLSearchParams(location.search);
+			params.set('profile', 'true');
+			history.push({
+				pathname: location.pathname,
+				search: params.toString(),
+			});
 		};
 
 		return (
@@ -90,29 +100,23 @@ const MintPreview = (props: MintPreviewProps) => {
 							<p>{nft.story}</p>
 
 							<div className={styles.Container}>
-								{!exists && (
-									<div className={styles.IconContainer}>
-										<img alt={ALT_TEXT.QUESTION_MARK} src={questionMark} />
-									</div>
-								)}
+								<div className={styles.ButtonContainer}>
+									{nft.transactionHash.length > 0 && (
+										<FutureButton glow onClick={openProfile}>
+											{BUTTON_TEXT.VIEW_PROFILE}
+										</FutureButton>
+									)}
+								</div>
 								<div
 									className={`${styles.TextContainer} ${
 										exists ? styles.Success : ''
 									}`}
 								>
+									<div className={styles.IconContainer}>
+										<img alt={ALT_TEXT.QUESTION_MARK} src={questionMark} />
+									</div>
 									<div>{getPreviewPrompt(exists)}</div>
 									<div>{!exists && MESSAGES.MINTING_TIME}</div>
-									<div className={styles.ButtonContainer}>
-										{nft.transactionHash.length > 0 && (
-											<a
-												target={'_blank'}
-												href={etherscanLink}
-												rel="noreferrer"
-											>
-												{BUTTON_TEXT.ETHERSCAN}
-											</a>
-										)}
-									</div>
 								</div>
 							</div>
 
@@ -146,7 +150,7 @@ const MintPreview = (props: MintPreviewProps) => {
 	if (minting.length > 0 || minted.length > 0) {
 		mintingSection = (
 			<>
-				<h4>{TITLE.MINT_NFT}</h4>
+				<h4>{Boolean(minted) ? TITLE.MINTED_NFT : TITLE.MINTING_NFT}</h4>
 				{minting.map((n: NftStatusCard) => mintingStatusCard(n, false))}
 				{minted.map((n: NftStatusCard) => mintingStatusCard(n, true))}
 			</>
