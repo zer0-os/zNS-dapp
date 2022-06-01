@@ -33,7 +33,6 @@ import { Copy } from 'react-feather';
 //- Style Imports
 import styles from '../../NFTView.module.scss';
 
-//- Componennt level type definitions
 type TokenHashBoxesProps = {
 	domainId: string;
 	chainId?: number;
@@ -51,12 +50,11 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 }) => {
 	const { addNotification } = useNotification();
 
-	// replace with claimed data
+	// REPLACE WITH CLAIMED DATA
 	const isClaimed = false;
 	const statusText = getStatusText(isClaimed);
 	const tooltipText = getTooltipText(isClaimed);
 
-	// redo
 	const { pathname } = useLocation();
 	const zna = zNAFromPathname(pathname);
 	const isWheelPath = zna.includes(LABELS.WILDER_WHEELS_ZNA);
@@ -88,7 +86,8 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 
 	return (
 		<div className={styles.TokenHashContainer}>
-			{isWheelPath && (
+			{/* REMOVE BANG */}
+			{!isWheelPath && (
 				<div className={cx(styles.Box, styles.Contract)}>
 					<div className={styles.FlexWrapper}>
 						<h4>{BOX_CONTENT.CLAIM_STATUS}</h4>

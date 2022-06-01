@@ -11,7 +11,7 @@ export const getPlaceholder = (
 	})`;
 
 export const handleInputError = (
-	total: string,
+	total: string | undefined,
 	ownedQuantity: number,
 	exceedsQuantityMintLimit: boolean,
 	setInputError: (errorText: string) => void,

@@ -11,10 +11,10 @@ import {
 } from './NFTViewModalProvider.types';
 
 //- Components Imports
-import { ConnectToWallet, Overlay } from 'components';
+import { Overlay } from 'components';
 
 //- Containers Imports
-import ClaimNFT from 'containers/flows/ClaimNFT/ClaimNFT';
+import ClaimNFT from 'containers/flows/ClaimNFT';
 import MakeABid from 'containers/flows/MakeABid/MakeABid';
 import SetBuyNow from 'containers/flows/SetBuyNow';
 import { BidList } from 'containers';
@@ -70,15 +70,7 @@ export const NFTViewModalProvider = ({
 						isLoading={modalContent.contentProps.isLoading}
 					/>
 				)}
-				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && (
-					<ClaimNFT
-						openConnect={modalContent.contentProps.openConnect}
-						onClose={modalContent.contentProps.onClose}
-					/>
-				)}
-				{modalContent?.modalType === NFTViewModalType.CONNECT_WALLET && (
-					<ConnectToWallet onConnect={modalContent.contentProps.onConnect} />
-				)}
+				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && <ClaimNFT />}
 			</Overlay>
 
 			{modalContent?.modalType === NFTViewModalType.DOMAIN_SETTINGS && (

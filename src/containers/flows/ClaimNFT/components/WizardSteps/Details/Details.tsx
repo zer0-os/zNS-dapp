@@ -17,7 +17,7 @@ import classNames from 'classnames/bind';
 import { Domain } from '@zero-tech/zns-sdk';
 
 //- Hook Imports
-import useClaimDomainData from '../../../hooks/useClaimDomainData';
+import useClaimCheck from '../../../hooks/useClaimCheck';
 
 //- Types Imports
 import { Step } from 'containers/flows/ClaimNFT/ClaimNFT.types';
@@ -84,10 +84,12 @@ const Details = ({
 	>();
 	const [requestCheck, setRequestCheck] = useState<boolean>(false);
 
-	const { isDomainDataLoading: isCheckDataLoading, domainData } =
-		useClaimDomainData(tokenID ?? '', requestCheck);
-	//replace
-	const isTokenClaimed = domainData?.isLocked;
+	// REPLACE WITH CAN BE CLAIMED METHOD
+	const { isTokenClaimed, isCheckDataLoading } = useClaimCheck(
+		tokenID ?? '',
+		requestCheck,
+	);
+
 	const validTokenId = isValidTokenId(tokenID ?? '');
 	const hasValue = Boolean(tokenID?.length);
 	const isDetailsStep = currentStep === Step.Details;
@@ -176,7 +178,7 @@ const Details = ({
 						<div
 							className={cx(styles.HeaderPrompt, {
 								isDetailsStep: isDetailsStep,
-								isMintingStep: currentStep === Step.Minting,
+								isMintingStep: !isDetailsStep,
 							})}
 						>
 							{headerPrompt}

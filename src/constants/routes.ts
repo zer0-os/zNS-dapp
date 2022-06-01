@@ -16,4 +16,7 @@ export enum ROUTES {
 	PROFILE = '/profile',
 	OWNED_DOMAINS = '/domains',
 	YOUR_BIDS = '/bids',
+
+	// ----- NEWLY CLAIMED ROOT ----- //
+	CLAIMED_NFT_ROOT_DOMAIN = '/market/motos',
 }

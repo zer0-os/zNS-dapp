@@ -260,7 +260,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			{enableBanner && <ClaimNFT />}
+			{enableBanner && <ClaimNFT requireBanner />}
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}

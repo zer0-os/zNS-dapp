@@ -17,15 +17,14 @@ import Details from './components/WizardSteps/Details/Details';
 import Claiming from './components/WizardSteps/Claiming/Claiming';
 
 //- Types Imports
-import { StepContent, Step } from './ClaimNFT.types';
+import { StepContent, Step, ClaimData } from './ClaimNFT.types';
 
 //- Constants Imports
 import {
 	STEP_BAR_HEADING,
 	STEP_CONTENT_TITLES,
-	STATUS_TEXT,
+	LOADING_TEXT,
 	DOMAINS,
-	MESSAGES,
 } from './ClaimNFT.constants';
 import { ROUTES } from 'constants/routes';
 
@@ -35,27 +34,29 @@ import styles from './ClaimNFT.module.scss';
 export type ClaimNFTProps = {
 	openConnect: () => void;
 	onClose: () => void;
+	onSubmit: (data: ClaimData) => void;
 };
 
-const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
+const ClaimNFT = ({ openConnect, onClose, onSubmit }: ClaimNFTProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
 
 	const [tokenID, setTokenID] = useState<string | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);
-	const [error, setError] = useState<string | undefined>();
+	const [transactionError, setTransactionError] = useState<
+		string | undefined
+	>();
+	const [transactionStatus, setTransactionStatus] = useState<string>();
 	const [stepContent, setStepContent] = useState<StepContent>(
 		StepContent.Details,
 	);
-	// const [isClaimComplete, setIsClaimComplete] = useState<boolean>(false);
+	const isMounted = useRef(false);
 	const { active, account } = useWeb3React<Web3Provider>();
 	const { push: goTo } = useHistory();
-	const isMounted = useRef(false);
 	const { isLoading, ownedDomains } = useOwnedDomains(account);
 	const eligibleDomains = ownedDomains?.filter((domain) =>
-		// DOMAINS.WHEELS_DOMAIN_NAME in place
-		domain.name.includes('.'),
+		domain.name.includes(DOMAINS.WHEELS_DOMAIN_NAME),
 	);
 
 	///////////////
@@ -68,37 +69,43 @@ const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 	};
 
 	const onStartClaim = () => {
-		setError('');
+		setTransactionError('');
 		setCurrentStep(Step.Claim);
 		setStepContent(StepContent.Claim);
 	};
 
-	const onClaim = async () => {
-		console.log('onClaim');
-		setError('');
+	const onClaim = (quantity: number) => {
+		setTransactionError('');
+
+		// REMOVE STEPS WHEN TX ADDED AND CALLBACKS WIRED UP
 		setCurrentStep(Step.Minting);
 		setStepContent(StepContent.Minting);
 
-		try {
-			// claim nft
-			// await claimNFT();
-			// setIsClaimComplete(true);
+		const statusCallback = (status: string) => {
+			setTransactionStatus(status);
+		};
+
+		const errorCallback = (error: string) => {
+			setTransactionError(error);
+		};
+
+		// Set Minting Step
+		const finishedCallback = () => {
 			setCurrentStep(Step.Minting);
 			setStepContent(StepContent.Minting);
-		} catch (e) {
-			setCurrentStep(Step.Claim);
-			setError(MESSAGES.REJECTED_WALLET);
-			setStepContent(StepContent.Claim);
-		}
-		if (!isMounted.current) return;
+		};
+
+		// ADD CLAIMS DOMAINS AND PASS eligibleDomains
+		const data: ClaimData = {
+			quantity,
+			statusCallback,
+			finishedCallback,
+			errorCallback,
+		};
+
+		onSubmit(data);
 	};
 
-	const onFinish = () => {
-		console.log('onFinish');
-		onClose();
-	};
-
-	// replace hardcode
 	const onRedirect = () => {
 		goTo(ROUTES.MARKET + DOMAINS.ELIGIBLE_NFT_ROUTE);
 		onClose();
@@ -122,7 +129,6 @@ const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 			isMounted.current = false;
 		};
 	}, []);
-
 	///////////////
 	// Fragments //
 	///////////////
@@ -142,21 +148,22 @@ const ClaimNFT = ({ openConnect, onClose }: ClaimNFTProps) => {
 			/>
 		) : (
 			<div className={styles.LoadingContent}>
-				<Wizard.Loading message={STATUS_TEXT.LOADING_DETAILS} />
+				<Wizard.Loading message={LOADING_TEXT.LOADING_DETAILS} />
 			</div>
 		),
 		[StepContent.Claim]: (
 			<Claiming
 				eligibleDomains={eligibleDomains}
+				apiError={transactionError}
+				statusText={transactionStatus}
 				onClaim={onClaim}
-				apiError={error}
 			/>
 		),
 		[StepContent.Minting]: (
 			<Details
 				isWalletConnected={active}
 				currentStep={currentStep}
-				onFinish={onFinish}
+				onFinish={onClose}
 			/>
 		),
 	};

@@ -29,9 +29,9 @@ export const MESSAGES = {
 	APPEND_CLAIMABLE_TEXT: `You can claim`,
 	ASSET_ERROR: 'Failed to retrieve domain asset data',
 	REJECTED_WALLET: 'Transaction denied by wallet',
+	FAILED_TO_RETRIEVE_DATA: 'Failed to retrieve primary data',
 };
 
-export const STATUS_TEXT = {
+export const LOADING_TEXT = {
 	LOADING_DETAILS: 'Loading Details...',
-	AWAITING_APPROVAL: 'Please approve in your wallet...',
 };

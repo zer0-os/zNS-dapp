@@ -1,6 +1,6 @@
 //- Container Props Imports
 import { ConnectToWalletProps } from 'components/ConnectToWallet/ConnectToWallet';
-import { ClaimNFTProps } from 'containers/flows/ClaimNFT/ClaimNFT';
+import { ClaimNFTContainerProps } from 'containers/flows/ClaimNFT';
 import { MakeABidProps } from 'containers/flows/MakeABid/MakeABid';
 import { SetBuyNowContainerProps } from 'containers/flows/SetBuyNow';
 import { TransferOwnershipProps } from 'containers/flows/TransferOwnership/TransferOwnership';
@@ -34,7 +34,7 @@ export type SetBuyNowContentProps = Omit<SetBuyNowContainerProps, 'closeModal'>;
 
 export type BidListContentProps = Omit<BidListProps, 'closeModal'>;
 
-export type ClaimNFTContentProps = Omit<ClaimNFTProps, 'closeModal'>;
+export type ClaimNFTContentProps = Omit<ClaimNFTContainerProps, 'closeModal'>;
 
 export type ConnectToWalletContentProps = Omit<
 	ConnectToWalletProps,

@@ -34,7 +34,7 @@
 					vertical-align: bottom;
 					-webkit-animation: ellipsis steps(4, end) 2000ms infinite;
 					animation: ellipsis steps(4, end) 2000ms infinite;
-					content: '...'; /* ascii code for the ellipsis character */
+					content: '...';
 					width: 0px;
 
 					@keyframes ellipsis {

@@ -111,13 +111,35 @@
 		justify-content: center;
 	}
 
-	.Error {
-		font-size: 12px;
-		color: var(--color-error);
-		margin: 2px 0 0 26px;
+	.StatusContainer {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 40px;
 
-		&.hasError {
-			margin-bottom: 23px;
+		.Status {
+			width: 234px;
+
+			&.Status:after {
+				overflow: hidden;
+				display: inline-block;
+				vertical-align: bottom;
+				-webkit-animation: ellipsis steps(4, end) 2000ms infinite;
+				animation: ellipsis steps(4, end) 2000ms infinite;
+				content: '...';
+				width: 0px;
+
+				@keyframes ellipsis {
+					to {
+						width: 16px;
+					}
+				}
+
+				@-webkit-keyframes ellipsis {
+					to {
+						width: 16px;
+					}
+				}
+			}
 		}
 	}
 
@@ -127,6 +149,16 @@
 
 		&.apiError {
 			margin-bottom: 40px;
+		}
+	}
+
+	.Error {
+		font-size: 12px;
+		color: var(--color-error);
+		margin: 2px 0 0 26px;
+
+		&.hasError {
+			margin-bottom: 23px;
 		}
 	}
 }
