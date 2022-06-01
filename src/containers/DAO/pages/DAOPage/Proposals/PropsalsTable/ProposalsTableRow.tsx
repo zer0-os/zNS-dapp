@@ -25,7 +25,11 @@ import styles from './ProposalsTableRow.module.scss';
 import type { Proposal } from '@zero-tech/zdao-sdk';
 
 // Constants
-import { DEFAULT_TIMMER_INTERVAL } from '../Proposals.constants';
+import {
+	DEFAULT_TIMMER_INTERVAL,
+	PROPOSAL_TABLE_LOCATION_STATE_KEY,
+	PROPOSAL_TABLE_LOCATION_STATE,
+} from '../Proposals.constants';
 
 interface ProposalsTableRowProps {
 	data: Proposal;
@@ -68,7 +72,9 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	}, [isConcluded, time]);
 
 	const handleRowClick = useCallback(() => {
-		history.push(`${location.pathname}/${id}`);
+		history.push(`${location.pathname}/${id}`, {
+			[PROPOSAL_TABLE_LOCATION_STATE_KEY]: PROPOSAL_TABLE_LOCATION_STATE.ROW,
+		});
 		onRowClick && onRowClick();
 	}, [onRowClick, history, location, id]);
 

@@ -22,7 +22,11 @@ import styles from './ProposalsTableCard.module.scss';
 import type { Proposal } from '@zero-tech/zdao-sdk';
 
 // Constants
-import { DEFAULT_TIMMER_EXPIRED_LABEL } from '../Proposals.constants';
+import {
+	DEFAULT_TIMMER_EXPIRED_LABEL,
+	PROPOSAL_TABLE_LOCATION_STATE_KEY,
+	PROPOSAL_TABLE_LOCATION_STATE,
+} from '../Proposals.constants';
 import { ChicletType } from 'components/Chiclet/Chiclet';
 
 interface ProposalsTableCardProps {
@@ -72,7 +76,9 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 	}, [dao, scores, end]);
 
 	const handleCardClick = useCallback(() => {
-		history.push(`${location.pathname}/${id}`);
+		history.push(`${location.pathname}/${id}`, {
+			[PROPOSAL_TABLE_LOCATION_STATE_KEY]: PROPOSAL_TABLE_LOCATION_STATE.CARD,
+		});
 		onRowClick && onRowClick();
 	}, [onRowClick, history, location, id]);
 

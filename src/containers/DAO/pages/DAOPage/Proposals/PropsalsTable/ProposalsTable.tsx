@@ -1,8 +1,14 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { get } from 'lodash';
 import { Proposal } from '@zero-tech/zdao-sdk';
 import { GenericTable } from 'components';
 import ProposalsTableRow from './ProposalsTableRow';
 import ProposalsTableCard from './ProposalsTableCard';
+import {
+	PROPOSAL_TABLE_LOCATION_STATE_KEY,
+	PROPOSAL_TABLE_LOCATION_STATE,
+} from '../Proposals.constants';
 import styles from './ProposalsTable.module.scss';
 
 type ProposalsTableProps = {
@@ -37,6 +43,15 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
 	proposals,
 	isLoading,
 }) => {
+	const location = useLocation();
+
+	const isGridViewByDefault =
+		get(
+			location.state,
+			PROPOSAL_TABLE_LOCATION_STATE_KEY,
+			PROPOSAL_TABLE_LOCATION_STATE.ROW,
+		) === PROPOSAL_TABLE_LOCATION_STATE.CARD;
+
 	return (
 		<div className={styles.Container}>
 			<GenericTable
@@ -53,6 +68,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
 				searchBy={'proposal title'}
 				emptyText={'This DAO has no proposals.'}
 				isSingleGridColumn
+				isGridViewByDefault={isGridViewByDefault}
 			/>
 		</div>
 	);
