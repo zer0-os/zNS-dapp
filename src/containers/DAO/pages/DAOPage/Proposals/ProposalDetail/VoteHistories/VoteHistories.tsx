@@ -2,10 +2,9 @@ import React, { useMemo } from 'react';
 
 // - Library
 import type { Proposal, Vote } from '@zero-tech/zdao-sdk';
-import { truncateWalletAddress } from 'lib/utils';
 
 // - Component
-import { LoadingIndicator } from 'components';
+import { LoadingIndicator, EtherscanLink } from 'components';
 
 //- Style Imports
 import styles from './VoteHistories.module.scss';
@@ -30,7 +29,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 		return votes.map((vote, index) => {
 			return {
 				id: index,
-				address: truncateWalletAddress(vote.voter, 4),
+				address: vote.voter,
 				direction: vote.choice,
 				power: vote.power,
 			};
@@ -62,7 +61,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 											{/* Address */}
 											<span className={styles.Address}>
 												<strong>Address</strong>
-												{history.address}
+												<EtherscanLink address={history.address} />
 											</span>
 
 											{/* Vote Direction */}

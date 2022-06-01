@@ -2,11 +2,10 @@ import React, { useState, useMemo } from 'react';
 
 // - Library
 import moment from 'moment';
-import { sum } from 'lodash';
+import { sum, isEmpty } from 'lodash';
 import type { zDAO, Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
 import { formatProposalStatus } from '../../Proposals.helpers';
-import { truncateWalletAddress } from 'lib/utils';
 import useTimer from 'lib/hooks/useTimer';
 
 // - Types
@@ -15,6 +14,9 @@ import { VoteAttribute } from './VoteAttributes.types';
 // - Constants
 import { VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT } from './VoteAttributes.constants';
 import { DEFAULT_TIMMER_INTERVAL } from '../../Proposals.constants';
+
+// - Components
+import { EtherscanLink } from 'components';
 
 //- Style Imports
 import styles from './VoteAttributes.module.scss';
@@ -74,7 +76,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 				value: formatDateTime(proposal.start, 'M/D/YYYY h:m A Z') || '-',
 			},
 			{
-				label: 'Voting Ends',
+				label: isConcluded ? 'Voting Ended' : 'Voting Ends',
 				value: formatDateTime(proposal.end, 'M/D/YYYY h:m A Z') || '-',
 			},
 			{
@@ -87,17 +89,19 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Creator',
-				value: truncateWalletAddress(proposal.author, 4) || '-',
+				value: <EtherscanLink address={proposal.author} />,
 			},
 			{
 				label: 'Source of Funds',
 				value: 'DAO Wallet',
 			},
-			// TODO: Should align this attribute @cc Brett
 			{
 				label: 'Recipient',
-				value:
-					truncateWalletAddress(proposal.metadata.recipient || '', 4) || '-',
+				value: (
+					<EtherscanLink
+						address={proposal.metadata.recipient || proposal.author}
+					/>
+				),
 			},
 			{
 				label: 'Votes Submitted',
@@ -106,9 +110,9 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 		];
 
 		return parsedAttributes.filter(
-			({ value }) => value !== '' && value !== '-',
+			({ value }) => !isEmpty(value) && value !== '-',
 		);
-	}, [dao, proposal, votes, timeRemaining]);
+	}, [dao, proposal, votes, isConcluded, timeRemaining]);
 
 	const initialHiddenAttributesCount: number = Math.max(
 		attributes.length - initialVisibleAttributesCount,

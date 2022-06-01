@@ -1,0 +1,6 @@
+.Link {
+    &, &:hover, &:active {
+        color: var(--color-text-primary);
+        text-shadow: none;
+    }
+}
