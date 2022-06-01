@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 
 // - Library
 import type { zDAO, ProposalId } from '@zero-tech/zdao-sdk';
+import { cloneDeep } from 'lodash';
 
 // - Hooks
 import { useDidMount } from 'lib/hooks/useDidMount';
@@ -54,9 +55,19 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 		setTriggerRefresh(!triggerRefresh);
 	};
 
+	const toAllProposals = useMemo(() => {
+		const pathname = history.location.pathname.replace(`/${proposalId}`, '');
+		const state = cloneDeep(history.location.state);
+
+		return {
+			pathname,
+			state,
+		};
+	}, [history, proposalId]);
+
 	return (
 		<div className={styles.Container}>
-			<Link className={styles.NavLink} to="#" onClick={history.goBack}>
+			<Link className={styles.NavLink} to={toAllProposals}>
 				<ArrowLeft /> All Proposals
 			</Link>
 
