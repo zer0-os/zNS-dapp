@@ -36,9 +36,9 @@ const VoteModal: FC<VoteModalProps> = ({
 		try {
 			await onVote();
 			onComplete();
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
-			setStep(VoteModalStep.ERROR);
+			setStep(e.code === 4001 ? VoteModalStep.DECLINED : VoteModalStep.ERROR);
 		}
 	};
 
@@ -49,7 +49,9 @@ const VoteModal: FC<VoteModalProps> = ({
 				className={styles.Modal}
 				headerClassName={styles.Header}
 			>
-				{(step === VoteModalStep.CONFIRM || step === VoteModalStep.ERROR) && (
+				{(step === VoteModalStep.CONFIRM ||
+					step === VoteModalStep.DECLINED ||
+					step === VoteModalStep.ERROR) && (
 					<p>
 						Are you sure you want to vote to{' '}
 						{choice === 1 ? <Approve>approve</Approve> : <Deny>deny</Deny>} this
@@ -77,12 +79,20 @@ const VoteModal: FC<VoteModalProps> = ({
 						<span>{votingPower}</span>
 					</li>
 				</ul>
+
+				{step === VoteModalStep.DECLINED && (
+					<span className={classNames('error-text', styles.Error)}>
+						Vote denied by wallet
+					</span>
+				)}
 				{step === VoteModalStep.ERROR && (
 					<span className={classNames('error-text', styles.Error)}>
 						Failed to submit vote - please try again.
 					</span>
 				)}
-				{(step === VoteModalStep.CONFIRM || step === VoteModalStep.ERROR) && (
+				{(step === VoteModalStep.CONFIRM ||
+					step === VoteModalStep.DECLINED ||
+					step === VoteModalStep.ERROR) && (
 					<Wizard.Buttons
 						onClickPrimaryButton={vote}
 						onClickSecondaryButton={onClose}
