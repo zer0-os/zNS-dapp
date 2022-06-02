@@ -99,7 +99,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 				label: 'Recipient',
 				value: (
 					<EtherscanLink
-						address={proposal.metadata.recipient || proposal.author}
+						address={proposal.metadata.recipient || dao.safeAddress}
 					/>
 				),
 			},
