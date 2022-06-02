@@ -55,7 +55,7 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 		const timeDiff = moment(end).diff(moment());
 
 		let closingType: ChicletType = 'normal';
-		if (!isConcluded && timeDiff < 24 * 3600 * 1000) {
+		if (!isConcluded && timeDiff < 1 * 3600 * 1000) {
 			// less than 1 hour
 			closingType = 'error';
 		} else if (!isConcluded && timeDiff <= 24 * 3600 * 1000) {
