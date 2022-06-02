@@ -62,7 +62,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 
 	const closingStatus = useMemo(() => {
 		let status = 'normal';
-		if (!isConcluded && time < 24 * 3600 * 1000) {
+		if (!isConcluded && time < 1 * 3600 * 1000) {
 			// less than 1 hour
 			status = 'error';
 		} else if (!isConcluded && time <= 24 * 3600 * 1000) {
