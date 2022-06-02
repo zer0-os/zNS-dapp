@@ -13,6 +13,7 @@ interface VoteActionProps {
 	userVote: Choice | undefined;
 	uservotingPower: number;
 	voteStatus: VoteStatus;
+	votesCount: number;
 	onClickApprove: () => void;
 	onClickDeny: () => void;
 }
@@ -25,6 +26,7 @@ interface VoteActionProps {
  * @param userVote the vote the user made, if any
  * @param uservotingPower the voting power of the account
  * @param voteStatus current progress of voting modal
+ * @param votesCount current votes count of proposal
  * @param onClickApprove event fired when approve is clicked
  * @param onClickDeny event fired when deny is clicked
  */
@@ -35,6 +37,7 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 	userVote,
 	uservotingPower,
 	voteStatus,
+	votesCount,
 	onClickApprove,
 	onClickDeny,
 }) => {
@@ -77,10 +80,19 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 		);
 	}
 
-	if (proposal.state !== 'active') {
+	if (proposal.state === 'closed') {
+		const hasVotes = votesCount > 0;
+		const isApproved = proposal.scores[0] > proposal.scores[1];
+
 		return (
 			<span className={styles.FooterText}>
-				This proposal is <Deny>{proposal.state}</Deny>
+				Voting has concluded.{' '}
+				{hasVotes && (
+					<>
+						This proposal is{' '}
+						{isApproved ? <Approve>Approved</Approve> : <Deny>Denied</Deny>}
+					</>
+				)}
 			</span>
 		);
 	}
