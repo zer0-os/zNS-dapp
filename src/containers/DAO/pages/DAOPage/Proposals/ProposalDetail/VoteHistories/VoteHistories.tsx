@@ -45,7 +45,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 				{!isLoading && (
 					<>
 						{histories.length === 0 && (
-							<div className={styles.Empty}>No votes found!</div>
+							<div className={styles.Empty}>No votes yet...</div>
 						)}
 
 						{histories.length > 0 && (
