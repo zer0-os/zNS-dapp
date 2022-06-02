@@ -57,7 +57,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 		const parsedAttributes = [
 			{
 				label: 'Status',
-				value: formatProposalStatus(proposal),
+				value: formatProposalStatus(proposal, votes.length),
 			},
 			{
 				label: 'Time Remaining',
