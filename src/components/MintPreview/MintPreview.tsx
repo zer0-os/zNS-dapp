@@ -1,15 +1,11 @@
 //- React Imports
 import React from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 //- Library Imports
 import { Maybe, NftStatusCard } from 'lib/types';
 import { truncateDomain, zNAToLink } from 'lib/utils';
 import { useStaking } from 'lib/hooks/useStaking';
-import { chainIdToNetworkType, getEtherscanUri } from 'lib/network';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-
 //- Component Imports
 import { Image, FutureButton } from 'components';
 
@@ -38,14 +34,6 @@ type MintPreviewProps = {
 };
 
 const MintPreview = (props: MintPreviewProps) => {
-	const walletContext = useWeb3React<Web3Provider>();
-	const { chainId } = walletContext;
-
-	const location = useLocation();
-	const history = useHistory();
-	const networkType = chainIdToNetworkType(chainId);
-	const baseEtherscanUri = getEtherscanUri(networkType);
-
 	const { minting, minted } = useMint();
 	const { requesting, requested } = useStaking();
 
@@ -60,15 +48,6 @@ const MintPreview = (props: MintPreviewProps) => {
 		const statusStyle = {
 			color: isCompleted ? 'var(--color-success)' : 'var(--color-grey)',
 			fontWeight: 700,
-		};
-
-		const openProfile = () => {
-			const params = new URLSearchParams(location.search);
-			params.set('profile', 'true');
-			history.push({
-				pathname: location.pathname,
-				search: params.toString(),
-			});
 		};
 
 		return (
@@ -91,22 +70,24 @@ const MintPreview = (props: MintPreviewProps) => {
 							</Link>
 						</div>
 						<div className={styles.Info}>
-							<h3>{nft.title}</h3>
+							<div className={styles.InfoSection}>
+								<h3>{nft.title}</h3>
 
-							<Link className={styles.Link} to={link}>
-								0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
-							</Link>
-
-							<p>{nft.story}</p>
+								<Link className={styles.Link} to={link}>
+									0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
+								</Link>
+							</div>
 
 							<div className={styles.Container}>
-								<div className={styles.ButtonContainer}>
-									{nft.transactionHash.length > 0 && (
-										<FutureButton glow onClick={openProfile}>
-											{BUTTON_TEXT.VIEW_PROFILE}
-										</FutureButton>
-									)}
-								</div>
+								{exists && (
+									<div className={styles.ButtonContainer}>
+										{nft.transactionHash.length > 0 && (
+											<FutureButton glow onClick={props.onOpenProfile}>
+												{BUTTON_TEXT.VIEW_PROFILE}
+											</FutureButton>
+										)}
+									</div>
+								)}
 								<div
 									className={`${styles.TextContainer} ${
 										exists ? styles.Success : ''
@@ -120,14 +101,16 @@ const MintPreview = (props: MintPreviewProps) => {
 								</div>
 							</div>
 
-							<div>
-								{nft.stakeAmount && nft.stakeAmount.length > 0 ? (
-									<p style={{ marginTop: '16px' }}>
-										Stake Amount: {nft.stakeAmount} LOOT
-									</p>
-								) : null}
-								<div style={statusStyle}>{statusText}</div>
-							</div>
+							{nft.stakeAmount && (
+								<div>
+									{nft.stakeAmount && nft.stakeAmount.length > 0 ? (
+										<p style={{ marginTop: '16px' }}>
+											Stake Amount: {nft.stakeAmount} LOOT
+										</p>
+									) : null}
+									<div style={statusStyle}>{statusText}</div>
+								</div>
+							)}
 						</div>
 					</div>
 				</li>
@@ -150,7 +133,7 @@ const MintPreview = (props: MintPreviewProps) => {
 	if (minting.length > 0 || minted.length > 0) {
 		mintingSection = (
 			<>
-				<h4>{Boolean(minted) ? TITLE.MINTED_NFT : TITLE.MINTING_NFT}</h4>
+				<h4>{TITLE.MINT_NFT}</h4>
 				{minting.map((n: NftStatusCard) => mintingStatusCard(n, false))}
 				{minted.map((n: NftStatusCard) => mintingStatusCard(n, true))}
 			</>

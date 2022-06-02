@@ -62,6 +62,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 	margin-left: 32px;
 	width: 240px;
 	max-width: 240px;
@@ -99,7 +100,7 @@
 	}
 
 	.ButtonContainer {
-		margin-bottom: 24px;
+		margin-bottom: 40px;
 	}
 
 	.Success {
