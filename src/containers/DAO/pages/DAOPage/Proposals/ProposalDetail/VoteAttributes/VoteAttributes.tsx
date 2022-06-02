@@ -7,6 +7,7 @@ import type { zDAO, Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
 import { formatProposalStatus } from '../../Proposals.helpers';
 import useTimer from 'lib/hooks/useTimer';
+import { usePageWidth } from 'lib/hooks/usePageWidth';
 
 // - Types
 import { VoteAttribute } from './VoteAttributes.types';
@@ -34,14 +35,16 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 }) => {
 	const [isCollapsed, toggleCollapsed] = useState<boolean>(true);
 
+	const { pageWidth } = usePageWidth();
+
 	const initialVisibleAttributesCount: number = useMemo(() => {
-		const isTablet = window.innerWidth > 414 && window.innerWidth < 768;
-		const isMobile = window.innerWidth <= 414;
+		const isTablet = pageWidth > 414 && pageWidth < 768;
+		const isMobile = pageWidth <= 414;
 
 		if (isMobile) return VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.MOBILE;
 		if (isTablet) return VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.TABLET;
 		return VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.DESKTOP;
-	}, []);
+	}, [pageWidth]);
 
 	const isConcluded = moment(proposal.end).isBefore(moment());
 	const { time: timeRemaining } = useTimer(
