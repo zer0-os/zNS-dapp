@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { MintDropNFTBanner, Overlay, Countdown } from 'components';
-import { MintDropNFT } from 'containers';
+import { ClaimNFT } from 'containers';
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 import useAsyncEffect from 'use-async-effect';
@@ -217,12 +217,7 @@ const RaffleContainer = () => {
 		);
 	}
 
-	return (
-		<MintDropNFT
-			privateSaleEndTime={PRIVATE_SALE_END_TIME}
-			publicSaleStartTime={PUBLIC_SALE_START_TIME}
-		/>
-	);
+	return <ClaimNFT requireBanner />;
 };
 
 export default RaffleContainer;
