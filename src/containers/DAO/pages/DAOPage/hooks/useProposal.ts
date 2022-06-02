@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { zDAO, Proposal, ProposalId, Vote } from '@zero-tech/zdao-sdk';
+import type { zDAO, Proposal, ProposalId, Vote } from '@zero-tech/zdao-sdk';
 
 type UseProposalReturn = {
 	proposal?: Proposal;
@@ -56,7 +56,7 @@ const useProposal = (
 				setProposal(proposal);
 
 				if (shouldLoadVotes) {
-					await fetchVotes(proposal);
+					await fetchVotes(proposal, isBackgroundFetching);
 				}
 			} catch (e) {
 				console.error(e);
