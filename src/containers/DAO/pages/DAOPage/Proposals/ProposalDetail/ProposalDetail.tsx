@@ -99,7 +99,7 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 			</div>
 
 			{!isLoading && proposal && (
-				<Vote proposal={proposal} onCompleteVoting={refresh} />
+				<Vote proposal={proposal} votes={votes} onCompleteVoting={refresh} />
 			)}
 		</div>
 	);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
+import type { Choice, Proposal, Vote as SDKVote } from '@zero-tech/zdao-sdk';
 import VoteModal from './VoteModal';
 import VoteAction from './VoteAction';
 import useVoteData from './useVoteData';
@@ -9,13 +9,14 @@ import styles from './Vote.module.scss';
 
 type VoteProps = {
 	proposal: Proposal;
+	votes: SDKVote[];
 	onCompleteVoting: () => void;
 };
 
 /**
  * Grabs relevant data and pipes it into a component
  */
-const Vote: React.FC<VoteProps> = ({ proposal, onCompleteVoting }) => {
+const Vote: React.FC<VoteProps> = ({ proposal, votes, onCompleteVoting }) => {
 	const { account, library } = useWeb3React();
 	const { isLoading, userVote, userVotingPower } = useVoteData(
 		proposal,
@@ -74,6 +75,7 @@ const Vote: React.FC<VoteProps> = ({ proposal, onCompleteVoting }) => {
 					uservotingPower={userVotingPower ?? 0}
 					userVote={completedVote ?? userVote}
 					voteStatus={status}
+					votesCount={votes.length}
 					onClickApprove={() => setChoice(1)}
 					onClickDeny={() => setChoice(2)}
 				/>
