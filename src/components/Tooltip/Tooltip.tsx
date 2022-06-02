@@ -86,7 +86,7 @@ const Tooltip: React.FC<TooltipProps> = ({
 							})}
 							{...animationProps}
 							{...layerProps}
-							// replace
+							// TODO :: this ensures tooltip content is displayed when on a modal - also fixes domain settings tooltips that were hidden
 							{...(layerProps.style.zIndex = 999999)}
 						>
 							{text}
