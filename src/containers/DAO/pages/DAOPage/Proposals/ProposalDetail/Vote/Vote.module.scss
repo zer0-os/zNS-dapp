@@ -56,7 +56,7 @@
 	-webkit-text-fill-color: transparent;
 }
 
-@media only screen and (max-width: #{dimensions.$breakpoint-mobile-m}) {
+@media only screen and (max-width: #{dimensions.$breakpoint-mobile-xl}) {
 	.Container {
 		bottom: 60px;
 	}
