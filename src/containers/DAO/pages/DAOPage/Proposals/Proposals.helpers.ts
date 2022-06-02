@@ -23,8 +23,10 @@ export const formatProposalStatus = (
 
 		if (proposal.scores[0] > proposal.scores[1]) {
 			return isClosed ? 'Approved' : 'Approval Favoured';
-		} else {
+		} else if (proposal.scores[0] < proposal.scores[1]) {
 			return isClosed ? 'Denied' : 'Denial Favoured';
+		} else {
+			return 'More Votes Needed';
 		}
 	}
 
