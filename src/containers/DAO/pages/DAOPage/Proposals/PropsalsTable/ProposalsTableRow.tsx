@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 // Hooks
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
+import useProposalVotes from '../../hooks/useProposalVotes';
 import useTimer from 'lib/hooks/useTimer';
 
 // Lib
@@ -51,6 +52,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	const location = useLocation();
 
 	const { dao, isLoading: isDaoLoading } = useCurrentDao();
+	const { votes, isLoading: isVotesLoading } = useProposalVotes(data);
 
 	const { id, title, end, scores } = data;
 
@@ -87,7 +89,13 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 			<td className={styles.Title}>{truncateString(title, 150)}</td>
 
 			{/* Status */}
-			<td className={styles.Status}>{formatProposalStatus(data)}</td>
+			<td className={styles.Status}>
+				{isVotesLoading ? (
+					<LoadingIndicator text="" className={styles.Loading} />
+				) : (
+					formatProposalStatus(data, votes.length)
+				)}
+			</td>
 
 			{/* Closes with humanized format */}
 			<td
