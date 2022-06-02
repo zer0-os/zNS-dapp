@@ -11,4 +11,5 @@ export enum VoteModalStep {
 	CONFIRM,
 	PENDING,
 	ERROR,
+	DECLINED,
 }
