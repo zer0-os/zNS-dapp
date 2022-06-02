@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 // Hooks
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
+import useProposalVotes from '../../hooks/useProposalVotes';
 
 // Lib
 import moment from 'moment';
@@ -44,6 +45,7 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 	const location = useLocation();
 
 	const { dao, isLoading: isDaoLoading } = useCurrentDao();
+	const { votes, isLoading: isVotesLoading } = useProposalVotes(data);
 
 	const { id, title, body, end, scores } = data;
 
@@ -100,9 +102,11 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 				<Chiclet type={cardData.closing.type}>
 					{cardData.closing.message}
 				</Chiclet>
-				<Chiclet className={styles.Status}>
-					{formatProposalStatus(data)}
-				</Chiclet>
+				{!isVotesLoading && (
+					<Chiclet className={styles.Status}>
+						{formatProposalStatus(data, votes.length)}
+					</Chiclet>
+				)}
 			</div>
 		</div>
 	);

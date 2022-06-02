@@ -1,5 +1,5 @@
 import { formatUnits } from 'ethers/lib/utils';
-import { Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
+import type { Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
 import { isEmpty } from 'lodash';
 import { toFiat } from 'lib/currency';
 import { secondsToDhms } from 'lib/utils/datetime';
@@ -10,8 +10,13 @@ import { DEFAULT_TIMMER_EXPIRED_LABEL } from './Proposals.constants';
  * @param proposal to format
  * @returns formatted proposal status string
  */
-export const formatProposalStatus = (proposal?: Proposal): string => {
+export const formatProposalStatus = (
+	proposal?: Proposal,
+	votesCount: number = 0,
+): string => {
 	if (proposal) {
+		if (!votesCount) return 'No Votes Yet';
+
 		const isClosed = proposal.state === 'closed';
 		if (isEmpty(proposal.scores))
 			return isClosed ? 'Expired' : 'More Votes Needed';
