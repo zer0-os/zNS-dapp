@@ -1,21 +1,22 @@
 import { formatUnits } from 'ethers/lib/utils';
 import type { Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
 import { isEmpty } from 'lodash';
+import millify from 'millify';
 import { toFiat } from 'lib/currency';
 import { secondsToDhms } from 'lib/utils/datetime';
 import { DEFAULT_TIMMER_EXPIRED_LABEL } from './Proposals.constants';
+
+const MILLIFY_THRESHOLD = 1000000;
+const MILLIFY_PRECISION = 3;
 
 /**
  * Format proposal status
  * @param proposal to format
  * @returns formatted proposal status string
  */
-export const formatProposalStatus = (
-	proposal?: Proposal,
-	votesCount: number = 0,
-): string => {
+export const formatProposalStatus = (proposal?: Proposal): string => {
 	if (proposal) {
-		if (!votesCount) return 'No Votes Yet';
+		if (!proposal.votes) return 'No Votes Yet';
 
 		const isClosed = proposal.state === 'closed';
 		if (isEmpty(proposal.scores))
@@ -47,6 +48,29 @@ export const formatProposalEndTime = (timeDiff: number): string => {
 };
 
 /**
+ * Format a voting power amount
+ * @param proposal Proposal of the vote
+ * @param amount to format
+ * @returns formatted total ammount of proposal metadata
+ */
+export const formatVotingPowerAmount = (
+	proposal: Proposal,
+	amount: number,
+): string | null => {
+	if (!proposal || !proposal.metadata || !amount) return null;
+
+	const formattedAmount =
+		amount >= MILLIFY_THRESHOLD
+			? millify(amount, { precision: MILLIFY_PRECISION })
+			: toFiat(amount, {
+					maximumFractionDigits: 2,
+					minimumFractionDigits: 0,
+			  });
+
+	return formattedAmount + ' ' + proposal.metadata.symbol;
+};
+
+/**
  * Format a total amount of proposal metadata
  * @param tokenMetaData to format
  * @returns formatted total ammount of proposal metadata
@@ -61,19 +85,26 @@ export const formatTotalAmountOfTokenMetadata = (
 
 	if (!amount || !decimals) return null;
 
-	const amountInWILD = Math.min(
+	const calculatedAmount = Math.min(
 		Number(formatUnits(amount, decimals)),
 		Number.MAX_SAFE_INTEGER,
 	);
 
+	if (!calculatedAmount) return null;
+
 	if (asNumber) {
-		return amountInWILD;
+		return calculatedAmount;
 	}
 
-	return toFiat(amountInWILD, {
-		maximumFractionDigits: 2,
-		minimumFractionDigits: 0,
-	});
+	const formattedAmount =
+		calculatedAmount >= MILLIFY_THRESHOLD
+			? millify(calculatedAmount, { precision: MILLIFY_PRECISION })
+			: toFiat(calculatedAmount, {
+					maximumFractionDigits: 2,
+					minimumFractionDigits: 0,
+			  });
+
+	return formattedAmount + ' ' + tokenMetaData.symbol;
 };
 
 /**
