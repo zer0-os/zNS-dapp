@@ -1,13 +1,15 @@
 import classNames from 'classnames';
 import React, { FC, useState } from 'react';
-import { Choice } from '@zero-tech/zdao-sdk';
+import type { Proposal, Choice } from '@zero-tech/zdao-sdk';
 import { truncateWalletAddress } from 'lib/utils';
 import { Overlay, Wizard } from 'components';
 import { Approve, Deny } from './VoteButtons';
 import { VoteModalStep } from './Vote.constants';
 import styles from './Vote.module.scss';
+import { formatVotingPowerAmount } from '../../Proposals.helpers';
 
 type VoteModalProps = {
+	proposal: Proposal;
 	votingAddress: string;
 	choice: Choice;
 	votingPower: number;
@@ -17,6 +19,7 @@ type VoteModalProps = {
 };
 
 const VoteModal: FC<VoteModalProps> = ({
+	proposal,
 	votingAddress,
 	votingPower,
 	choice,
@@ -76,7 +79,7 @@ const VoteModal: FC<VoteModalProps> = ({
 					</li>
 					<li>
 						<span>Your Voting Power</span>
-						<span>{votingPower}</span>
+						<span>{formatVotingPowerAmount(proposal, votingPower)}</span>
 					</li>
 				</ul>
 

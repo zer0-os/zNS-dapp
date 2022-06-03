@@ -51,8 +51,6 @@ const useProposal = (
 			try {
 				const proposal = await dao.getProposal(id);
 
-				await proposal.getTokenMetadata();
-
 				setProposal(proposal);
 
 				if (shouldLoadVotes) {

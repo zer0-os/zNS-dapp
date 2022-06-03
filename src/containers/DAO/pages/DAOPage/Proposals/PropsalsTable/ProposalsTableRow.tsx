@@ -2,21 +2,16 @@ import React, { useCallback, useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Hooks
-import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
-import useProposalVotes from '../../hooks/useProposalVotes';
 import useTimer from 'lib/hooks/useTimer';
 
 // Lib
 import moment from 'moment';
-import { sum } from 'lodash';
 import { truncateString } from 'lib/utils/string';
 import {
 	formatProposalStatus,
 	formatProposalEndTime,
+	formatTotalAmountOfTokenMetadata,
 } from '../Proposals.helpers';
-
-// Components
-import { LoadingIndicator } from 'components';
 
 // Styles
 import classNames from 'classnames/bind';
@@ -51,10 +46,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 
-	const { dao, isLoading: isDaoLoading } = useCurrentDao();
-	const { votes, isLoading: isVotesLoading } = useProposalVotes(data);
-
-	const { id, title, end, scores } = data;
+	const { id, title, end, metadata } = data;
 
 	const isConcluded = moment(end).isBefore(moment());
 
@@ -89,13 +81,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 			<td className={styles.Title}>{truncateString(title, 150)}</td>
 
 			{/* Status */}
-			<td className={styles.Status}>
-				{isVotesLoading ? (
-					<LoadingIndicator text="" className={styles.Loading} />
-				) : (
-					formatProposalStatus(data, votes.length)
-				)}
-			</td>
+			<td className={styles.Status}>{formatProposalStatus(data)}</td>
 
 			{/* Closes with humanized format */}
 			<td
@@ -110,11 +96,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 
 			{/* Total amount of tokens */}
 			<td className={styles.Amount}>
-				{isDaoLoading ? (
-					<LoadingIndicator text="" className={styles.LoadingDao} />
-				) : (
-					<p>{sum(scores) + ' ' + dao?.votingToken.symbol}</p>
-				)}
+				<p>{formatTotalAmountOfTokenMetadata(metadata)}</p>
 			</td>
 		</tr>
 	);
