@@ -1,15 +1,14 @@
 import React, { useMemo, useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-// Hooks
-import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
-import useProposalVotes from '../../hooks/useProposalVotes';
-
 // Lib
 import moment from 'moment';
-import { sum } from 'lodash';
+import { isEmpty } from 'lodash';
 import removeMarkdown from 'markdown-to-text';
-import { formatProposalStatus } from '../Proposals.helpers';
+import {
+	formatProposalStatus,
+	formatTotalAmountOfTokenMetadata,
+} from '../Proposals.helpers';
 import { truncateString } from 'lib/utils/string';
 
 // Components
@@ -44,13 +43,10 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 
-	const { dao, isLoading: isDaoLoading } = useCurrentDao();
-	const { votes, isLoading: isVotesLoading } = useProposalVotes(data);
-
-	const { id, title, body, end, scores } = data;
+	const { id, title, body, end, metadata } = data;
 
 	const cardData = useMemo(() => {
-		const amount = sum(scores);
+		const amount = formatTotalAmountOfTokenMetadata(metadata);
 		const isConcluded = moment(end).isBefore(moment());
 		const timeDiff = moment(end).diff(moment());
 
@@ -64,10 +60,7 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 		}
 
 		return {
-			amount: {
-				value: amount,
-				formatted: (amount ?? 0) + ' ' + dao?.votingToken.symbol,
-			},
+			amount,
 			closing: {
 				type: closingType,
 				message: isConcluded
@@ -75,7 +68,7 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 					: 'Closing in ' + moment.duration(timeDiff).humanize(),
 			},
 		};
-	}, [dao, scores, end]);
+	}, [metadata, end]);
 
 	const handleCardClick = useCallback(() => {
 		history.push(`${location.pathname}/${id}`, {
@@ -96,17 +89,13 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 				</p>
 			</div>
 			<div className={styles.Buttons}>
-				{!isDaoLoading && cardData.amount.value > 0 && (
-					<Chiclet>{cardData.amount.formatted}</Chiclet>
-				)}
+				{!isEmpty(cardData.amount) && <Chiclet>{cardData.amount}</Chiclet>}
 				<Chiclet type={cardData.closing.type}>
 					{cardData.closing.message}
 				</Chiclet>
-				{!isVotesLoading && (
-					<Chiclet className={styles.Status}>
-						{formatProposalStatus(data, votes.length)}
-					</Chiclet>
-				)}
+				<Chiclet className={styles.Status}>
+					{formatProposalStatus(data)}
+				</Chiclet>
 			</div>
 		</div>
 	);

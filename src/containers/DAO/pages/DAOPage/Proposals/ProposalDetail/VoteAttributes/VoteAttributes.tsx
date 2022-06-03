@@ -2,10 +2,13 @@ import React, { useState, useMemo } from 'react';
 
 // - Library
 import moment from 'moment';
-import { sum, isEmpty } from 'lodash';
-import type { zDAO, Proposal, Vote } from '@zero-tech/zdao-sdk';
+import { isEmpty } from 'lodash';
+import type { zDAO, Proposal } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
-import { formatProposalStatus } from '../../Proposals.helpers';
+import {
+	formatProposalStatus,
+	formatTotalAmountOfTokenMetadata,
+} from '../../Proposals.helpers';
 import useTimer from 'lib/hooks/useTimer';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
 
@@ -25,13 +28,11 @@ import styles from './VoteAttributes.module.scss';
 type VoteAttributesProps = {
 	dao: zDAO;
 	proposal: Proposal;
-	votes: Vote[];
 };
 
 export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 	dao,
 	proposal,
-	votes = [],
 }) => {
 	const [isCollapsed, toggleCollapsed] = useState<boolean>(true);
 
@@ -60,7 +61,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 		const parsedAttributes = [
 			{
 				label: 'Status',
-				value: formatProposalStatus(proposal, votes.length),
+				value: formatProposalStatus(proposal),
 			},
 			{
 				label: 'Time Remaining',
@@ -72,7 +73,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Amount',
-				value: sum(proposal.scores) + ' ' + dao.votingToken.symbol,
+				value: formatTotalAmountOfTokenMetadata(proposal.metadata),
 			},
 			{
 				label: 'Voting Started',
@@ -100,22 +101,18 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Recipient',
-				value: (
-					<EtherscanLink
-						address={proposal.metadata.recipient || dao.safeAddress}
-					/>
-				),
+				value: <EtherscanLink address={proposal.metadata.recipient ?? '-'} />,
 			},
 			{
 				label: 'Votes Submitted',
-				value: votes.length.toString(),
+				value: proposal.votes.toString(),
 			},
 		];
 
 		return parsedAttributes.filter(
 			({ value }) => !isEmpty(value) && value !== '-',
 		);
-	}, [dao, proposal, votes, isConcluded, timeRemaining]);
+	}, [dao, proposal, isConcluded, timeRemaining]);
 
 	const initialHiddenAttributesCount: number = Math.max(
 		attributes.length - initialVisibleAttributesCount,

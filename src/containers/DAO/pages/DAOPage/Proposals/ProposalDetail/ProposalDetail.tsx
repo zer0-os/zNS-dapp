@@ -81,7 +81,7 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 						{proposal && votes?.length > 0 && <VoteBar votes={votes} />}
 
 						{dao && proposal && (
-							<VoteAttributes dao={dao} proposal={proposal} votes={votes} />
+							<VoteAttributes dao={dao} proposal={proposal} />
 						)}
 
 						<MarkDownViewer
@@ -99,7 +99,7 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 			</div>
 
 			{!isLoading && proposal && (
-				<Vote proposal={proposal} votes={votes} onCompleteVoting={refresh} />
+				<Vote proposal={proposal} onCompleteVoting={refresh} />
 			)}
 		</div>
 	);

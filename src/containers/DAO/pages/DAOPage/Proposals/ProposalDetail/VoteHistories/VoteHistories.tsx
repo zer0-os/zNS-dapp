@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 // - Library
 import type { Proposal, Vote } from '@zero-tech/zdao-sdk';
+import { formatVotingPowerAmount } from '../../Proposals.helpers';
 
 // - Component
 import { LoadingIndicator, EtherscanLink } from 'components';
@@ -31,7 +32,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 				id: index,
 				address: vote.voter,
 				direction: vote.choice,
-				power: vote.power,
+				power: formatVotingPowerAmount(proposal, vote.power),
 			};
 		});
 	}, [proposal, votes]);
@@ -81,7 +82,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 											{/* Voting Power */}
 											<span className={styles.Power}>
 												<strong>Voting Power</strong>
-												{history.power} {proposal?.metadata?.symbol}
+												{history.power}
 											</span>
 										</div>
 									))}
