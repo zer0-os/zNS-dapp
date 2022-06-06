@@ -106,7 +106,7 @@ const TransferOwnership = ({
 			isMounted.current = false;
 		};
 	});
-	console.log(domainName);
+
 	const steps = {
 		[Step.Details]: (
 			<NFTDetails
