@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //-Library Imports
@@ -8,6 +8,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import useCurrency from 'lib/hooks/useCurrency';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import {
 	formatNumber,
@@ -20,7 +21,7 @@ import {
 import { Spinner, ImageCard } from 'components';
 
 //-Containers Imports
-import { BidButton } from 'containers';
+import { BidButton, BuyNowButton } from 'containers';
 
 //-Local Imports
 import { useBid } from './BidProvider';
@@ -62,6 +63,30 @@ const SubdomainTableCard = (props: any) => {
 	// Functions //
 	///////////////
 
+	const [buyNowPrice, setBuyNowPrice] = useState<number | undefined>();
+	const [isPriceDataLoading, setIsPriceDataLoading] = useState<boolean>(true);
+	const { instance: sdk } = useZnsSdk();
+	const isMounted = useRef<boolean>();
+
+	const fetchData = async () => {
+		setIsPriceDataLoading(true);
+		setBuyNowPrice(undefined);
+
+		try {
+			if (isMounted.current === false) {
+				return;
+			}
+			const buyNowPrice = await sdk.zauction.getBuyNowPrice(domain.id);
+			if (buyNowPrice) {
+				setBuyNowPrice(Number(buyNowPrice));
+				setIsPriceDataLoading(false);
+			}
+		} catch (err) {
+			setIsPriceDataLoading(false);
+			console.log('Failed to get buy now price', err);
+		}
+	};
+
 	const onButtonClick = (event: any) => {
 		if (account !== undefined && !isOwnedByUser && isBiddable) {
 			makeABid(domain);
@@ -83,6 +108,14 @@ const SubdomainTableCard = (props: any) => {
 			setHasUpdated(!hasUpdated);
 		}
 	}, [updated]);
+
+	useEffect(() => {
+		isMounted.current = true;
+		fetchData();
+		return () => {
+			isMounted.current = false;
+		};
+	}, [domain, account, sdk]);
 
 	////////////
 	// Render //
@@ -123,13 +156,25 @@ const SubdomainTableCard = (props: any) => {
 					)}
 				</div>
 				<div className={styles.ButtonContainer}>
-					<BidButton
-						glow={account !== undefined && !isOwnedByUser && isBiddable}
-						onClick={onButtonClick}
-						className={styles.BidButton}
-					>
-						{LABELS.BID}
-					</BidButton>
+					{buyNowPrice ? (
+						<BuyNowButton
+							onSuccess={fetchData}
+							buttonText={LABELS.BUY}
+							domainId={domain.id}
+							disabled={isOwnedByUser || !account}
+							isLoading={isPriceDataLoading}
+							className={styles.Button}
+						/>
+					) : (
+						<BidButton
+							glow={account !== undefined && !isOwnedByUser && isBiddable}
+							onClick={onButtonClick}
+							className={styles.Button}
+							loading={isPriceDataLoading}
+						>
+							{LABELS.BID}
+						</BidButton>
+					)}
 				</div>
 			</div>
 		</ImageCard>
