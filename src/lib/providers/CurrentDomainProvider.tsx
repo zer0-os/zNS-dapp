@@ -7,6 +7,9 @@ import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { getDomainId } from 'lib/utils';
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+import { defaultNetworkId } from 'lib/network';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
@@ -41,7 +44,9 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 	// Get current domain details from web3 hooks
 	const domain = parseDomainFromURI(location.pathname);
 	const domainId = getDomainId(domain);
-	const znsDomain = useZnsDomain(domainId);
+	const { chainId } = useWeb3React<Web3Provider>(); // get provider for connected wallet
+
+	const znsDomain = useZnsDomain(domainId, chainId || defaultNetworkId);
 
 	const [domainMetadata, setDomainMetadata] = usePropsState(
 		znsDomain.domainMetadata,
