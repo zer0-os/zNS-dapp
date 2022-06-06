@@ -252,7 +252,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{modal === Modal.Transfer && (
 				<TransferOwnership
 					metadataUrl={znsDomain?.metadata ?? ''}
-					domainName={domain}
+					domainName={znsDomain?.name ?? ''}
 					domainId={znsDomain?.id ?? ''}
 					onTransfer={closeModal}
 					creatorId={znsDomain?.minter?.id || ''}

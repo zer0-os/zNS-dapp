@@ -19,6 +19,7 @@ import { isValid } from './TransferOwnership.utils';
 
 //- Library Imports
 import { useTransfer } from 'lib/hooks/useTransfer';
+import { getNetworkZNA } from 'lib/utils';
 
 export type TransferOwnershipProps = {
 	name: string;
@@ -58,7 +59,6 @@ const TransferOwnership = ({
 	const isOwnersAddress = ownerId.toLowerCase() === walletAddress.toLowerCase();
 	const hasInputError = inputError !== '';
 	const valid = isValid(walletAddress);
-	const zna = (ROOT_DOMAIN.length ? ROOT_DOMAIN + '.' : '') + domainName;
 
 	///////////////
 	// Functions //
@@ -106,12 +106,12 @@ const TransferOwnership = ({
 			isMounted.current = false;
 		};
 	});
-
+	console.log(domainName);
 	const steps = {
 		[Step.Details]: (
 			<NFTDetails
 				creatorId={creatorId}
-				domainName={zna}
+				domainName={domainName}
 				title={name}
 				image={image}
 				walletAddress={walletAddress}
