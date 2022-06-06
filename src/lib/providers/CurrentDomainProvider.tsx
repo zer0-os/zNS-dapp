@@ -1,6 +1,6 @@
 // React Imports
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 // Web3 Imports
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
@@ -23,27 +23,16 @@ export const CurrentDomainContext = React.createContext({
 	setDomainMetadata: (v: Maybe<Metadata>) => {},
 });
 
-const parseDomainFromURI = (pathname: string) => {
-	if (pathname.startsWith(ROUTES.MARKET)) {
-		return (
-			pathname.replace(ROUTES.MARKET, '') === ''
-				? '/'
-				: pathname.replace(ROUTES.MARKET, '')
-		).substring(1);
-	}
-	return '';
-};
-
 const CurrentDomainProvider: React.FC = ({ children }) => {
 	//////////////////////////
 	// Hooks & State & Data //
 	//////////////////////////
 
 	// Get current domain from react-router-dom
-	const { location } = useHistory();
+	const { pathname } = useLocation();
 
 	// Get current domain details from web3 hooks
-	const domain = zNAFromPathname(location.pathname);
+	const domain = zNAFromPathname(pathname);
 
 	const zna =
 		ROOT_DOMAIN +
@@ -60,10 +49,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		domainId,
 		domainRaw: domain,
 		domainMetadata,
-		app:
-			location.pathname.indexOf(ROUTES.MARKET) > -1
-				? ROUTES.MARKET
-				: ROUTES.STAKING,
+		app: pathname.indexOf(ROUTES.MARKET) > -1 ? ROUTES.MARKET : ROUTES.STAKING,
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,
 		setDomainMetadata,
