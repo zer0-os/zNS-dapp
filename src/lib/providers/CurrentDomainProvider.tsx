@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
-import { getDomainId } from 'lib/utils';
+import { getDomainId, zNAFromPathname } from 'lib/utils';
 
 // Constants Imports
 import { ROUTES } from 'constants/routes';
@@ -43,7 +43,8 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 	const { location } = useHistory();
 
 	// Get current domain details from web3 hooks
-	const domain = parseDomainFromURI(location.pathname);
+	const domain = zNAFromPathname(location.pathname);
+
 	const zna =
 		ROOT_DOMAIN +
 		(domain.length ? (IS_DEFAULT_NETWORK ? domain : '.' + domain) : '');
