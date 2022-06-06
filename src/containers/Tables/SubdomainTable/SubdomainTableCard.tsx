@@ -27,7 +27,7 @@ import { BidButton, BuyNowButton } from 'containers';
 import { useBid } from './BidProvider';
 
 //-Constants Imports
-import { LABELS } from './SubdomainTableCard.constants';
+import { LABELS, ERROR } from './SubdomainTableCard.constants';
 import { ROUTES } from 'constants/routes';
 import { CURRENCY } from 'constants/currency';
 
@@ -83,7 +83,7 @@ const SubdomainTableCard = (props: any) => {
 			}
 		} catch (err) {
 			setIsPriceDataLoading(false);
-			console.log('Failed to get buy now price', err);
+			console.log(ERROR.FAIL_TO_RETRIEVE, err);
 		}
 	};
 
