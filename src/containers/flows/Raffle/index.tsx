@@ -25,8 +25,8 @@ const RaffleContainer = () => {
 	// const RAFFLE_START_TIME = 1650589200000;
 	// const RAFFLE_END_TIME = 1650762000000;
 	const SALE_START_TIME = 1651194000000;
-	const PRIVATE_SALE_END_TIME = 1651280400000;
-	const PUBLIC_SALE_START_TIME = 1651280400000;
+	// const PRIVATE_SALE_END_TIME = 1651280400000;
+	// const PUBLIC_SALE_START_TIME = 1651280400000;
 
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
