@@ -12,14 +12,12 @@ import { Step } from './TransferOwnership.types';
 
 //- Constant Imports
 import { BUTTONS, MESSAGES, STEP_TITLES } from './TransferOwnership.constants';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 //- Utils Imports
 import { isValid } from './TransferOwnership.utils';
 
 //- Library Imports
 import { useTransfer } from 'lib/hooks/useTransfer';
-import { getNetworkZNA } from 'lib/utils';
 
 export type TransferOwnershipProps = {
 	name: string;

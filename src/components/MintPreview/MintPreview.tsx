@@ -32,7 +32,6 @@ import {
 
 //- Assets Imports
 import questionMark from './assets/question-mark-icon.svg';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 type MintPreviewProps = {
 	onOpenProfile: () => void;
@@ -55,7 +54,7 @@ const MintPreview = (props: MintPreviewProps) => {
 		statusText?: string,
 	) => {
 		const link = zNAToLink(nft.zNA);
-		const parsedLink = getNetworkZNA(ROOT_DOMAIN, link);
+		const parsedLink = getNetworkZNA(link);
 		const etherscanLink = `${baseEtherscanUri}tx/${nft.transactionHash}`;
 
 		const statusStyle = {

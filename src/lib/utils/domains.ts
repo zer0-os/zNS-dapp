@@ -1,5 +1,6 @@
 //- Constants Imports
 import { ASPECT_RATIOS, AspectRatio } from 'constants/aspectRatios';
+import { ROOT_DOMAIN } from 'constants/domains';
 
 //- Library Imports
 import { ethers } from 'ethers';
@@ -127,8 +128,8 @@ export const getAspectRatioForZna = (zna: string): AspectRatio | undefined => {
 };
 
 // Parse ZNA
-export const getNetworkZNA = (rootDomain: string, zna: string) => {
-	return rootDomain !== '' ? zna.split('.').splice(1).join('.') : zna;
+export const getNetworkZNA = (zna: string) => {
+	return ROOT_DOMAIN !== '' ? zna.split('.').splice(1).join('.') : zna;
 };
 
 // Truncate domain

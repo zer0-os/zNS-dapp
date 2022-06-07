@@ -19,7 +19,6 @@ import { formatNumber, formatEthers, getNetworkZNA } from 'lib/utils';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
 import { ROUTES } from 'constants/routes';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 import styles from './SubdomainTableRow.module.scss';
 
@@ -176,10 +175,9 @@ const SubdomainTableRow = (props: any) => {
 	const onRowClick = (event: any) => {
 		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
 		if (!clickedButton) {
-			goTo(ROUTES.MARKET + '/' + getNetworkZNA(ROOT_DOMAIN, domain.name));
+			goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 		}
 	};
-
 	return (
 		<tr className={styles.Row} onClick={onRowClick}>
 			<td>{props.rowNumber + 1}</td>

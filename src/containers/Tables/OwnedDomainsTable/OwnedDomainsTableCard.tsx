@@ -23,7 +23,6 @@ import styles from './OwnedDomainsTableCard.module.scss';
 import { LABELS } from './OwnedDomainsTable.constants';
 import { CURRENCY } from 'constants/currency';
 import { ROUTES } from 'constants/routes';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 //- Utils Imports
 import ImageCard from 'components/Cards/ImageCard/ImageCard';
@@ -67,7 +66,7 @@ const SubdomainTableCard = ({
 
 	// Navigates to domain
 	const onClick = (event: any) => {
-		goTo(ROUTES.MARKET + '/' + getNetworkZNA(ROOT_DOMAIN, domain.name));
+		goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 	};
 
 	////////////

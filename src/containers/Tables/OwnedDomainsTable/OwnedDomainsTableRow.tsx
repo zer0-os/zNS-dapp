@@ -28,7 +28,6 @@ import moreIcon from 'assets/more-vertical.svg';
 
 //- Constants Imports
 import { ACTION_KEYS } from './OwnedDomainsTable.constants';
-import { ROOT_DOMAIN } from 'constants/domains';
 import { ROUTES } from 'constants/routes';
 
 //- Utils Imports
@@ -66,7 +65,7 @@ const OwnedDomainsTableRow = ({
 
 	// Navigates to domain
 	const onRowClick = () => {
-		goTo(ROUTES.MARKET + '/' + getNetworkZNA(ROOT_DOMAIN, domain.name));
+		goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 	};
 
 	const actions = getActions(bids?.length !== 0);

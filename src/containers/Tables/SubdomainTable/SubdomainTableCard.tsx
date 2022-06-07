@@ -33,7 +33,6 @@ import { CURRENCY } from 'constants/currency';
 
 //-Styles Imports
 import styles from './SubdomainTableCard.module.scss';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 const SubdomainTableCard = (props: any) => {
 	//////////////////
@@ -72,7 +71,7 @@ const SubdomainTableCard = (props: any) => {
 
 	const onClick = (event: any) => {
 		if (!event.target.className.includes('FutureButton')) {
-			goTo(ROUTES.MARKET + '/' + getNetworkZNA(ROOT_DOMAIN, domain.name));
+			goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 		}
 	};
 
