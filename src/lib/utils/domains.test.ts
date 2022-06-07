@@ -72,13 +72,16 @@ describe('getParentZna', () => {
 
 describe('getNetworkZNA', () => {
 	describe('Default Network (no network set)', () => {
+		const network = process.env.REACT_APP_NETWORK;
+
 		beforeEach(() => {
+			jest.resetModules();
 			process.env.REACT_APP_NETWORK = '';
 		});
 
-		// afterEach(() => {
-		// 	delete process.env.REACT_APP_NETWORK;
-		// });
+		afterEach(() => {
+			process.env.REACT_APP_NETWORK = network;
+		});
 
 		it('mock REACT_APP_NETWORK success', () => {
 			expect(process.env.REACT_APP_NETWORK).toBe('');
@@ -99,13 +102,16 @@ describe('getNetworkZNA', () => {
 	});
 
 	describe('Network Variable (network set)', () => {
+		const network = process.env.REACT_APP_NETWORK;
+
 		beforeEach(() => {
+			jest.resetModules();
 			process.env.REACT_APP_NETWORK = 'wilder';
 		});
 
-		// afterEach(() => {
-		// 	delete process.env.REACT_APP_NETWORK;
-		// });
+		afterEach(() => {
+			process.env.REACT_APP_NETWORK = network;
+		});
 
 		it('mock REACT_APP_NETWORK success', () => {
 			expect(process.env.REACT_APP_NETWORK).toBe('wilder');
