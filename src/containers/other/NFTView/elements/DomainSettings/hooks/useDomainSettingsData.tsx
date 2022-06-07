@@ -10,13 +10,17 @@ import {
 	DomainSettingsWarning,
 	DomainSettingsSuccess,
 } from '../DomainSettings.constants';
+import { defaultNetworkId } from 'lib/network';
 
 export const useDomainSettingsData = (domainId: string) => {
-	const { account } = useWeb3React<Web3Provider>();
-
-	const myDomain = useZnsDomain(domainId);
+	const { account, chainId } = useWeb3React<Web3Provider>();
+	const currentChainId = chainId || defaultNetworkId;
+	const myDomain = useZnsDomain(domainId, currentChainId);
 	const { domainId: znsDomainId, setDomainMetadata } = useCurrentDomain();
-	const parentDomain = useZnsDomain(myDomain.domain?.parent.id || '');
+	const parentDomain = useZnsDomain(
+		myDomain.domain?.parent.id || '',
+		currentChainId,
+	);
 
 	const { library } = useWeb3React<Web3Provider>();
 
