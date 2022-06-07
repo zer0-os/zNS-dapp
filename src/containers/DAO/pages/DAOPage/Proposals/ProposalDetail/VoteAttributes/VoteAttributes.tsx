@@ -54,7 +54,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 	);
 
 	const attributes: VoteAttribute[] = useMemo(() => {
-		if (!dao || !proposal || !proposal.metadata) {
+		if (!dao || !proposal) {
 			return [];
 		}
 
@@ -101,7 +101,11 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Recipient',
-				value: <EtherscanLink address={proposal.metadata.recipient ?? '-'} />,
+				value: proposal?.metadata?.recipient ? (
+					<EtherscanLink address={proposal.metadata.recipient ?? '-'} />
+				) : (
+					''
+				),
 			},
 			{
 				label: 'Votes Submitted',
