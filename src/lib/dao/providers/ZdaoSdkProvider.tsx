@@ -1,7 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
+import {
+	chainIdToNetworkType,
+	defaultNetworkId,
+	NETWORK_TYPES,
+} from 'lib/network';
 import { RPC_URLS } from 'lib/connectors';
 import { ethers } from 'ethers';
 import { DAOS } from 'constants/daos';
@@ -15,7 +18,7 @@ import {
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import addresses from 'lib/addresses';
-import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
+import { Web3Provider } from '@ethersproject/providers';
 
 export const zDaoContext = React.createContext({
 	instance: undefined as SDKInstance | undefined,
@@ -28,19 +31,12 @@ type DaoSdkProviderProps = {
 export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 	children,
 }) => {
-	const { library } = useWeb3React(); // get provider for connected wallet
-	const chainSelector = useChainSelector();
+	const { library, chainId } = useWeb3React<Web3Provider>(); // get provider for connected wallet
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
-	const { network, selectedChain } = useMemo(() => {
-		const selectedChain = chainSelector.selectedChain;
-		const network = chainIdToNetworkType(selectedChain);
-		return {
-			network,
-			selectedChain,
-		};
-	}, [chainSelector.selectedChain]);
+	const selectedChain = chainId || defaultNetworkId;
+	const network = chainIdToNetworkType(selectedChain);
 
 	const createInstance = useCallback(async () => {
 		setInstance(undefined);
