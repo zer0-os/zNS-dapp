@@ -1,6 +1,7 @@
 //- React Imports
 import React, { useMemo } from 'react';
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 //- Library Imports
 import { formatNumber, formatEthers } from 'lib/utils';
@@ -22,7 +23,6 @@ import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import { useDidMount } from 'lib/hooks/useDidMount';
-import { useLocation } from 'react-router-dom';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import { useZnsSdk } from 'lib/hooks/sdk';
 

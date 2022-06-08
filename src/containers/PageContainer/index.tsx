@@ -20,6 +20,9 @@ import useScrollDetection from 'lib/hooks/useScrollDetection';
 import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
 import { Header, Modals, useModal, Actions, Touchbar } from './elements';
 
+//- Container Imports
+import CustomHead from 'containers/other/CustomHead/CustomHead';
+
 //- Constants Imports
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { WALLETS } from 'constants/wallets';
@@ -102,48 +105,51 @@ const PageContainer: React.FC = ({ children }) => {
 	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 
 	return (
-		<ScrollToTop>
-			<div className={classnames(styles.PageContainer)}>
-				{/* Toast Notifications */}
-				<NotificationDrawer />
+		<>
+			<CustomHead />
+			<ScrollToTop>
+				<div className={classnames(styles.PageContainer)}>
+					{/* Toast Notifications */}
+					<NotificationDrawer />
 
-				{/* App level Modals */}
-				<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
+					{/* App level Modals */}
+					<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
 
-				<div className={styles.InnerContainer}>
-					<div className={styles.FlexRowWrapper}>
-						{/* App Sidebar */}
-						<SideBar />
-						<div className={styles.FlexColumnWrapper}>
-							{/* App Header */}
-							<Header
+					<div className={styles.InnerContainer}>
+						<div className={styles.FlexRowWrapper}>
+							{/* App Sidebar */}
+							<SideBar />
+							<div className={styles.FlexColumnWrapper}>
+								{/* App Header */}
+								<Header
+									pageWidth={pageWidth}
+									znsDomain={znsDomain}
+									domainMetadata={domainMetadata}
+									account={account}
+									openModal={openModal}
+									isScrollDetectionDown={isScrollDetectionDown}
+								/>
+
+								{/* Children Components */}
+								<main className={styles.Main}>{children}</main>
+							</div>
+
+							{/* Header Actions - Desktop */}
+							<Actions
+								className={styles.Actions}
 								pageWidth={pageWidth}
 								znsDomain={znsDomain}
 								domainMetadata={domainMetadata}
 								account={account}
 								openModal={openModal}
-								isScrollDetectionDown={isScrollDetectionDown}
 							/>
-
-							{/* Children Components */}
-							<main className={styles.Main}>{children}</main>
 						</div>
-
-						{/* Header Actions - Desktop */}
-						<Actions
-							className={styles.Actions}
-							pageWidth={pageWidth}
-							znsDomain={znsDomain}
-							domainMetadata={domainMetadata}
-							account={account}
-							openModal={openModal}
-						/>
 					</div>
 				</div>
-			</div>
-			{/* Touchbar */}
-			<Touchbar />
-		</ScrollToTop>
+				{/* Touchbar */}
+				<Touchbar />
+			</ScrollToTop>
+		</>
 	);
 };
 
