@@ -129,14 +129,16 @@ const DAOPage: React.FC = () => {
 							>
 								Transactions
 							</Link>
-							<Link
-								className={cx({
-									Active: pathname.includes(ROUTES.ZDAO_PROPOSALS),
-								})}
-								to={to(ROUTES.ZDAO_PROPOSALS)}
-							>
-								Proposals
-							</Link>
+							{!!dao.ens && (
+								<Link
+									className={cx({
+										Active: pathname.includes(ROUTES.ZDAO_PROPOSALS),
+									})}
+									to={to(ROUTES.ZDAO_PROPOSALS)}
+								>
+									Proposals
+								</Link>
+							)}
 						</nav>
 					</div>
 
