@@ -17,7 +17,11 @@ const useProposals = (dao?: zDAO): UseProposalsReturn => {
 			?.listProposals()
 			.then((p) => {
 				// Filtering by date for prototype
-				setProposals(p.filter((p) => p.created.getTime() > 1653041437000));
+				setProposals(
+					p.filter(
+						(p) => p.created.getTime() > 1653041437000 && Boolean(p.metadata),
+					),
+				);
 			})
 			.catch((e) => {
 				console.error(e);
