@@ -44,43 +44,17 @@ describe('getParentZna', () => {
 // f:: getNetworkZNA //
 //////////////////////
 
-// describe('getNetworkZNA', () => {
-// 	it('when .env network variable is not set - Default Network - two subdomains', () => {
-// 		expect(getNetworkZNA('wilder.dogs.beast')).toBe('wilder.dogs.beast');
-// 	});
-
-// 	it('when .env network variable is not set - Default Network - one subdomain', () => {
-// 		expect(getNetworkZNA('wilder.cats')).toBe('wilder.cats');
-// 	});
-
-// 	it('when .env network variable is not set - Default Network - no subdomains', () => {
-// 		expect(getNetworkZNA('wilder')).toBe('wilder');
-// 	});
-
-// 	it('when .env network variable is set - Network variable - two subdomains', () => {
-// 		expect(getNetworkZNA('wilder.dogs.beast')).toBe('dogs.beast');
-// 	});
-
-// 	it('when .env network variable is set - Network variable - one subdomain', () => {
-// 		expect(getNetworkZNA('wilder.dogs')).toBe('dogs');
-// 	});
-
-// 	it('when .env network variable is set - Network variable - no subdomains', () => {
-// 		expect(getNetworkZNA('wilder')).toBe('');
-// 	});
-// });
-
 describe('getNetworkZNA', () => {
 	describe('Default Network (no network set)', () => {
-		const network = process.env.REACT_APP_NETWORK;
+		const env = process.env;
 
 		beforeEach(() => {
 			jest.resetModules();
-			process.env.REACT_APP_NETWORK = '';
+			process.env = { ...env, REACT_APP_NETWORK: '' };
 		});
 
 		afterEach(() => {
-			process.env.REACT_APP_NETWORK = network;
+			process.env = env;
 		});
 
 		it('mock REACT_APP_NETWORK success', () => {
@@ -102,15 +76,15 @@ describe('getNetworkZNA', () => {
 	});
 
 	describe('Network Variable (network set)', () => {
-		const network = process.env.REACT_APP_NETWORK;
+		const env = process.env;
 
 		beforeEach(() => {
 			jest.resetModules();
-			process.env.REACT_APP_NETWORK = 'wilder';
+			process.env = { ...env, REACT_APP_NETWORK: 'wilder' };
 		});
 
 		afterEach(() => {
-			process.env.REACT_APP_NETWORK = network;
+			process.env = env;
 		});
 
 		it('mock REACT_APP_NETWORK success', () => {
