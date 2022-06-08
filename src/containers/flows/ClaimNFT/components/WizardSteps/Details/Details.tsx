@@ -156,7 +156,7 @@ const Details = ({
 					controls
 					disablePictureInPicture
 					controlsList={VIDEO_SETTINGS.CONTROL_LIST}
-					poster={VIDEO_FORMAT_SRC.NFT_JPEG}
+					poster={VIDEO_FORMAT_SRC[VIDEO_FORMAT_TYPE.NFT_JPEG]}
 					preload={VIDEO_SETTINGS.PRELOAD}
 				>
 					<source
