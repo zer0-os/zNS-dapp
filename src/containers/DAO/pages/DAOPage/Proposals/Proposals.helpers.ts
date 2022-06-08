@@ -16,9 +16,10 @@ const MILLIFY_PRECISION = 3;
  */
 export const formatProposalStatus = (proposal?: Proposal): string => {
 	if (proposal) {
-		if (!proposal.votes) return 'No Votes Yet';
-
 		const isClosed = proposal.state === 'closed';
+
+		if (!proposal.votes) return isClosed ? 'No Votes' : 'No Votes Yet';
+
 		if (isEmpty(proposal.scores))
 			return isClosed ? 'Expired' : 'More Votes Needed';
 
