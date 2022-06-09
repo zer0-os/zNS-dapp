@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { get } from 'lodash';
 import { Proposal } from '@zero-tech/zdao-sdk';
-import { GenericTable } from 'components';
+import { LoadingIndicator, GenericTable } from 'components';
 import ProposalsTableRow from './ProposalsTableRow';
 import ProposalsTableCard from './ProposalsTableCard';
 import {
@@ -14,6 +14,7 @@ import styles from './ProposalsTable.module.scss';
 type ProposalsTableProps = {
 	proposals?: Proposal[];
 	isLoading: boolean;
+	isReloading: boolean;
 };
 
 const HEADERS = [
@@ -42,6 +43,7 @@ const HEADERS = [
 const ProposalsTable: React.FC<ProposalsTableProps> = ({
 	proposals,
 	isLoading,
+	isReloading,
 }) => {
 	const location = useLocation();
 
@@ -54,6 +56,8 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
 
 	return (
 		<div className={styles.Container}>
+			{isReloading && <LoadingIndicator className={styles.Loading} text="" />}
+
 			<GenericTable
 				alignments={[0, 0, 0, 1]}
 				data={proposals}
