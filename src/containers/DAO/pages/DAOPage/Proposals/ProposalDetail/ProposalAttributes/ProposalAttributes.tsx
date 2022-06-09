@@ -5,7 +5,10 @@ import moment from 'moment';
 import { isEmpty } from 'lodash';
 import type { zDAO, Proposal } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
-import { formatProposalStatus } from '../../Proposals.helpers';
+import {
+	isFromSnapshotWithMultipleChoices,
+	formatProposalStatus,
+} from '../../Proposals.helpers';
 import useTimer from 'lib/hooks/useTimer';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
 
@@ -55,7 +58,7 @@ export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 			return [];
 		}
 
-		const parsedAttributes = [
+		let parsedAttributes = [
 			{
 				label: 'Status',
 				value: formatProposalStatus(proposal),
@@ -89,6 +92,10 @@ export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 				value: <EtherscanLink address={proposal.author} />,
 			},
 		];
+
+		if (isFromSnapshotWithMultipleChoices(proposal)) {
+			parsedAttributes = parsedAttributes.slice(1);
+		}
 
 		return parsedAttributes.filter(
 			({ value }) => !isEmpty(value) && value !== '-',

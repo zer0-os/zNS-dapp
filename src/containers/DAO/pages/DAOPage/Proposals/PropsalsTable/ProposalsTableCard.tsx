@@ -39,11 +39,12 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 
-	const { id, title, body, end } = data;
+	const { id, title, body } = data;
 
 	const cardData = useMemo(() => {
-		const isConcluded = moment(end).isBefore(moment());
-		const timeDiff = moment(end).diff(moment());
+		const isConcluded = moment(data.end).isBefore(moment());
+		const timeDiff = moment(data.end).diff(moment());
+		const status = formatProposalStatus(data) || '-';
 
 		let closingType: ChicletType = 'normal';
 		if (!isConcluded && timeDiff < 1 * 3600 * 1000) {
@@ -61,8 +62,9 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 					? DEFAULT_TIMMER_EXPIRED_LABEL
 					: 'Closing in ' + moment.duration(timeDiff).humanize(),
 			},
+			status,
 		};
-	}, [end]);
+	}, [data]);
 
 	const handleCardClick = useCallback(() => {
 		history.push(`${location.pathname}/${id}`, {
@@ -86,9 +88,9 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 				<Chiclet type={cardData.closing.type}>
 					{cardData.closing.message}
 				</Chiclet>
-				<Chiclet className={styles.Status}>
-					{formatProposalStatus(data)}
-				</Chiclet>
+				{cardData.status !== '-' && (
+					<Chiclet className={styles.Status}>{cardData.status}</Chiclet>
+				)}
 			</div>
 		</div>
 	);

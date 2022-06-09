@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { get } from 'lodash';
-import { Proposal } from '@zero-tech/zdao-sdk';
+import type { Proposal } from '@zero-tech/zdao-sdk';
 import { LoadingIndicator, GenericTable } from 'components';
 import ProposalsTableRow from './ProposalsTableRow';
 import ProposalsTableCard from './ProposalsTableCard';
