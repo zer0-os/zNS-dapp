@@ -17,7 +17,6 @@ import { LoadingIndicator, StatsWidget } from 'components';
 
 // Hooks
 import { useNavbar } from 'lib/hooks/useNavbar';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import useTransactions from './hooks/useTransactions';
 import useAssets from './hooks/useAssets';
@@ -57,13 +56,13 @@ const DAOPage: React.FC = () => {
 
 	const to = toDaoPage(zna);
 
-	useUpdateEffect(() => {
+	React.useEffect(() => {
 		if (dao) {
 			setNavbarTitle('DAOs - ' + dao.title);
 		} else {
 			setNavbarTitle('DAOs');
 		}
-	}, [dao]);
+	}, [dao, setNavbarTitle]);
 
 	const Loading = () => (
 		<LoadingIndicator
