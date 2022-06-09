@@ -1,19 +1,26 @@
 .Container {
 	margin-top: 9px !important;
 
+	.Loading {
+		margin: 1.5rem auto;
+
+		> div:first-child {
+			margin-bottom: unset;
+		}
+	}
+
 	table {
 		margin: 16px 0;
 
 		thead {
 			tr {
-
 				th {
 					margin: 24px 0;
 					padding-bottom: 24px;
 					font-size: 12px;
 					font-weight: 700;
 					line-height: 15px;
-					color: #BFBFBF;
+					color: #bfbfbf;
 				}
 			}
 		}
