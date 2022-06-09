@@ -4,6 +4,7 @@ import { version } from '../package.json';
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import { HelmetProvider } from 'react-helmet-async';
 
 //- Redux Store Imports
 import store, { history } from './store';
@@ -84,7 +85,9 @@ function wrappedApp() {
 								{/* Our Hooks  */}
 								<MvpVersionProvider>
 									<EnlistProvider>
-										<App />
+										<HelmetProvider>
+											<App />
+										</HelmetProvider>
 									</EnlistProvider>
 								</MvpVersionProvider>
 							</ZnsSdkProvider>

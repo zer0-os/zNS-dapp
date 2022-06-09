@@ -107,6 +107,7 @@ const PageContainer: React.FC = ({ children }) => {
 	return (
 		<>
 			<CustomHead />
+
 			<ScrollToTop>
 				<div className={classnames(styles.PageContainer)}>
 					{/* Toast Notifications */}

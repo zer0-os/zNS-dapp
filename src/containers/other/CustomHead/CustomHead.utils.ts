@@ -1,24 +1,39 @@
 //- Constants Imports
 import { NETWORK, NETWORK_TITLE } from './CustomHead.constants';
 
+//- Assets Imports
+import wilderFaviconSml from '../../../assets/favicon-wilder-16x16.png';
+import zeroFaviconSml from '../../../assets/favicon-zero-16x16.png';
+import testerFaviconSml from '../../../assets/favicon-tester-16x16.png';
+import wilderFaviconLrg from '../../../assets/favicon-wilder-32x32.png';
+import zeroFaviconLrg from '../../../assets/favicon-zero-32x32.png';
+import testerFaviconLrg from '../../../assets/favicon-tester-32x32.png';
+
+export type HeadDataType = {
+	network: string;
+	title: string;
+	iconSml: string;
+	iconLrg: string;
+};
+
 export const NetworkHeadData = {
 	zero: {
 		network: NETWORK.DEFAULT,
 		title: NETWORK_TITLE[NETWORK.DEFAULT],
-		iconSml: '%PUBLIC_URL%/zero-favicon-32x32.png',
-		iconLrg: '%PUBLIC_URL%/zero-favicon-32x32.png',
+		iconSml: zeroFaviconSml,
+		iconLrg: zeroFaviconLrg,
 	},
 	wilder: {
 		network: NETWORK.WILDER,
 		title: NETWORK_TITLE[NETWORK.WILDER],
-		iconSml: '',
-		iconLrg: '',
+		iconSml: wilderFaviconSml,
+		iconLrg: wilderFaviconLrg,
 	},
 	tester: {
 		network: NETWORK.TESTER,
 		title: NETWORK_TITLE[NETWORK.TESTER],
-		iconSml: '',
-		iconLrg: '',
+		iconSml: testerFaviconSml,
+		iconLrg: testerFaviconLrg,
 	},
 };
 
