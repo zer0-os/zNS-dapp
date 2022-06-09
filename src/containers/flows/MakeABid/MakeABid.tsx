@@ -28,7 +28,7 @@ import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { truncateDomain } from 'lib/utils';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useZnsContracts } from 'lib/contracts';
 
@@ -117,8 +117,8 @@ const MakeABid = ({
 
 				const needsApproval =
 					await sdk.zauction.needsToApproveZAuctionToSpendTokensByPaymentToken(
-						paymentTokenInfo.id,
 						account,
+						paymentTokenInfo.id,
 						'1000000000',
 					);
 				// Timeout to prevent jolt
@@ -247,9 +247,10 @@ const MakeABid = ({
 			return;
 		}
 		checkZAuctionApproval();
-		const balance = await sdk.zauction.getZAuctionSpendAllowance(account, {
-			paymentTokenAddress: paymentTokenInfo.id,
-		});
+		const balance = await sdk.zauction.getUserBalanceForPaymentToken(
+			account,
+			paymentTokenInfo.id,
+		);
 		setTokenBalance(parseInt(ethers.utils.formatEther(balance), 10));
 	};
 
