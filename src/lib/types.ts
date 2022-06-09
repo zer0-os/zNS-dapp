@@ -1,7 +1,7 @@
 // Types
 
 //- Library Imports
-import { TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { StakingRequests, TokenPriceInfo } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
@@ -35,7 +35,7 @@ interface Meta {
 	[key: string]: any | undefined;
 	image: string; // One of: Image, Video, 3d Model
 	animation_url?: string;
-	stakingRequests?: 'disabled' | 'enabled';
+	stakingRequests?: StakingRequests;
 	isBiddable?: boolean;
 	gridViewByDefault?: boolean;
 	customDomainHeader?: boolean;

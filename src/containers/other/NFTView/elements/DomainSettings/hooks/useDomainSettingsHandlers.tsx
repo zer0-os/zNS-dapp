@@ -1,5 +1,5 @@
 import { useMemo, useCallback } from 'react';
-import { DomainMetadata } from '@zero-tech/zns-sdk/lib/types';
+import { DomainMetadata } from '@zero-tech/zns-sdk';
 import { Maybe, Metadata } from 'lib/types';
 import { parseDomainMetadata } from 'lib/metadata';
 import { useZnsSdk } from 'lib/hooks/sdk';
