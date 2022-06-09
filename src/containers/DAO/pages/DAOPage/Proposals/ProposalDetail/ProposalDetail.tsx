@@ -4,6 +4,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 // - Library
 import type { zDAO, ProposalId } from '@zero-tech/zdao-sdk';
 import { cloneDeep } from 'lodash';
+import { isFromSnapshotWithMultipleChoices } from '../Proposals.helpers';
 
 // - Hooks
 import { useDidMount } from 'lib/hooks/useDidMount';
@@ -78,7 +79,9 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 					<div className={styles.Wrapper}>
 						<h1 className={styles.Title}>{proposal?.title}</h1>
 
-						{proposal && votes?.length > 0 && <VoteBar votes={votes} />}
+						{proposal &&
+							!isFromSnapshotWithMultipleChoices(proposal) &&
+							votes?.length > 0 && <VoteBar votes={votes} />}
 
 						{dao && proposal && (
 							<ProposalAttributes dao={dao} proposal={proposal} />

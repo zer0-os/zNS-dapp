@@ -1,5 +1,5 @@
 import { formatUnits } from 'ethers/lib/utils';
-import type { Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
+import type { zDAO, Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
 import { isEmpty } from 'lodash';
 import millify from 'millify';
 import { toFiat } from 'lib/currency';
@@ -10,12 +10,39 @@ const MILLIFY_THRESHOLD = 1000000;
 const MILLIFY_PRECISION = 3;
 
 /**
+ * Check if proposal is from snapshot and have multiple choices
+ * @param proposal to check
+ * @returns true if the proposal is from snapshot with multiple choices
+ */
+export const isFromSnapshotWithMultipleChoices = (
+	proposal: Proposal,
+): boolean => {
+	return !proposal.metadata && proposal.choices.length > 2;
+};
+
+/**
+ * Get snapshot proposal link
+ * @param proposal to get
+ * @returns snapshot proposal link to vote
+ */
+export const getSnpashotProposalLink = (
+	dao: zDAO,
+	proposal: Proposal,
+): string => {
+	return `https://snapshot.org/#/${dao.ens}/proposal/${proposal.id}`;
+};
+
+/**
  * Format proposal status
  * @param proposal to format
  * @returns formatted proposal status string
  */
 export const formatProposalStatus = (proposal?: Proposal): string => {
 	if (proposal) {
+		if (isFromSnapshotWithMultipleChoices(proposal)) {
+			return '-';
+		}
+
 		const isClosed = proposal.state === 'closed';
 
 		if (!proposal.votes) return isClosed ? 'No Votes' : 'No Votes Yet';

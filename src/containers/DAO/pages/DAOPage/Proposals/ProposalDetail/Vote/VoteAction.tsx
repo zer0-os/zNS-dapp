@@ -1,9 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import type { Choice, Proposal } from '@zero-tech/zdao-sdk';
-import { LoadingIndicator, Tooltip, QuestionButton } from 'components';
+import {
+	LoadingIndicator,
+	Tooltip,
+	QuestionButton,
+	TextButton,
+} from 'components';
 import { ConnectWalletButton } from 'containers';
+import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import VoteButtons, { Approve, Deny } from './VoteButtons';
 import { VoteStatus } from './Vote.constants';
+import {
+	isFromSnapshotWithMultipleChoices,
+	getSnpashotProposalLink,
+} from '../../Proposals.helpers';
 import styles from './Vote.module.scss';
 
 interface VoteActionProps {
@@ -38,6 +49,8 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 	onClickApprove,
 	onClickDeny,
 }) => {
+	const { dao } = useCurrentDao();
+
 	if (!account) {
 		return (
 			<ConnectWalletButton>
@@ -63,6 +76,24 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 				<Tooltip text="In order to have voting power, you must hold the voting token at the time this proposal was created.">
 					<QuestionButton small />
 				</Tooltip>
+			</span>
+		);
+	}
+
+	if (isFromSnapshotWithMultipleChoices(proposal)) {
+		const snapshotProposalLink = getSnpashotProposalLink(dao!, proposal);
+		return (
+			<span className={`${styles.FooterText} ${styles.Snapshot}`}>
+				Please vote on this proposal using
+				<Link
+					to={{ pathname: snapshotProposalLink }}
+					target="_blank"
+					rel="noreferrer"
+				>
+					<TextButton>
+						<strong> Snapshot</strong>
+					</TextButton>
+				</Link>
 			</span>
 		);
 	}
