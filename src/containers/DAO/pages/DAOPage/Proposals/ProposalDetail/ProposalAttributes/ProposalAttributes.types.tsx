@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export type VoteAttribute = {
+export type ProposalAttribute = {
 	label: string;
 	value: ReactNode;
 };

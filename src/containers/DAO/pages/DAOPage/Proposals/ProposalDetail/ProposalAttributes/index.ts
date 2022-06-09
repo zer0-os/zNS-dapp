@@ -1,0 +1,1 @@
+export { ProposalAttributes } from './ProposalAttributes';

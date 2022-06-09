@@ -24,12 +24,8 @@ export const ProposalsProvider: React.FC = ({ children }) => {
 			dao
 				?.listProposals()
 				.then((p) => {
-					// Filtering by date for prototype & metadata
-					setProposals(
-						p.filter(
-							(p) => p.created.getTime() > 1653041437000 && Boolean(p.metadata),
-						),
-					);
+					// Filtering by date for proposal
+					setProposals(p.filter((p) => p.created.getTime() > 1653041437000));
 				})
 				.catch((e) => {
 					console.error(e);

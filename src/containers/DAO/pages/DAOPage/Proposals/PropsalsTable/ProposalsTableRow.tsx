@@ -10,7 +10,6 @@ import { truncateString } from 'lib/utils/string';
 import {
 	formatProposalStatus,
 	formatProposalEndTime,
-	formatTotalAmountOfTokenMetadata,
 } from '../Proposals.helpers';
 
 // Styles
@@ -46,7 +45,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 
-	const { id, title, end, metadata } = data;
+	const { id, title, end, votes } = data;
 
 	const isConcluded = moment(end).isBefore(moment());
 
@@ -94,9 +93,9 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 				{formatProposalEndTime(time)}
 			</td>
 
-			{/* Total amount of tokens */}
-			<td className={styles.Amount}>
-				<p>{formatTotalAmountOfTokenMetadata(metadata)}</p>
+			{/* Total votes count of proposal */}
+			<td className={styles.Votes}>
+				<p>{votes}</p>
 			</td>
 		</tr>
 	);

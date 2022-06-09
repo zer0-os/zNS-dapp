@@ -5,32 +5,29 @@ import moment from 'moment';
 import { isEmpty } from 'lodash';
 import type { zDAO, Proposal } from '@zero-tech/zdao-sdk';
 import { secondsToDhms, formatDateTime } from 'lib/utils/datetime';
-import {
-	formatProposalStatus,
-	formatTotalAmountOfTokenMetadata,
-} from '../../Proposals.helpers';
+import { formatProposalStatus } from '../../Proposals.helpers';
 import useTimer from 'lib/hooks/useTimer';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
 
 // - Types
-import { VoteAttribute } from './VoteAttributes.types';
+import { ProposalAttribute } from './ProposalAttributes.types';
 
 // - Constants
-import { VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT } from './VoteAttributes.constants';
+import { PROPOSAL_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT } from './ProposalAttributes.constants';
 import { DEFAULT_TIMMER_INTERVAL } from '../../Proposals.constants';
 
 // - Components
 import { EtherscanLink } from 'components';
 
 //- Style Imports
-import styles from './VoteAttributes.module.scss';
+import styles from './ProposalAttributes.module.scss';
 
-type VoteAttributesProps = {
+type ProposalAttributesProps = {
 	dao: zDAO;
 	proposal: Proposal;
 };
 
-export const VoteAttributes: React.FC<VoteAttributesProps> = ({
+export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 	dao,
 	proposal,
 }) => {
@@ -39,12 +36,12 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 	const { pageWidth } = usePageWidth();
 
 	const initialVisibleAttributesCount: number = useMemo(() => {
-		const isTablet = pageWidth > 414 && pageWidth < 768;
-		const isMobile = pageWidth <= 414;
+		const isTablet = pageWidth > 628 && pageWidth < 896;
+		const isMobile = pageWidth <= 628;
 
-		if (isMobile) return VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.MOBILE;
-		if (isTablet) return VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.TABLET;
-		return VOTE_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.DESKTOP;
+		if (isMobile) return PROPOSAL_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.MOBILE;
+		if (isTablet) return PROPOSAL_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.TABLET;
+		return PROPOSAL_ATTRIBUTES_VISIBLE_COUNTS_BY_VIEWPORT.DESKTOP;
 	}, [pageWidth]);
 
 	const isConcluded = moment(proposal.end).isBefore(moment());
@@ -53,7 +50,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 		isConcluded ? null : DEFAULT_TIMMER_INTERVAL,
 	);
 
-	const attributes: VoteAttribute[] = useMemo(() => {
+	const attributes: ProposalAttribute[] = useMemo(() => {
 		if (!dao || !proposal) {
 			return [];
 		}
@@ -68,14 +65,6 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 				value: secondsToDhms(timeRemaining / 1000) || '-',
 			},
 			{
-				label: 'Type',
-				value: 'Funding',
-			},
-			{
-				label: 'Amount',
-				value: formatTotalAmountOfTokenMetadata(proposal.metadata),
-			},
-			{
 				label: 'Voting Started',
 				value: formatDateTime(proposal.start, 'M/D/YYYY h:m A Z') || '-',
 			},
@@ -85,31 +74,19 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 			},
 			{
 				label: 'Voting System',
-				value: 'Single Choice Voting',
+				value: 'Weighted Single Choice Voting',
 			},
 			{
 				label: 'Execution Criteria',
 				value: 'Absolute Majority',
 			},
 			{
-				label: 'Creator',
-				value: <EtherscanLink address={proposal.author} />,
-			},
-			{
-				label: 'Source of Funds',
-				value: 'DAO Wallet',
-			},
-			{
-				label: 'Recipient',
-				value: proposal?.metadata?.recipient ? (
-					<EtherscanLink address={proposal.metadata.recipient ?? '-'} />
-				) : (
-					''
-				),
-			},
-			{
 				label: 'Votes Submitted',
 				value: proposal.votes.toString(),
+			},
+			{
+				label: 'Creator',
+				value: <EtherscanLink address={proposal.author} />,
 			},
 		];
 
@@ -123,7 +100,7 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 		0,
 	);
 
-	const visibleAttributes: VoteAttribute[] = useMemo(() => {
+	const visibleAttributes: ProposalAttribute[] = useMemo(() => {
 		if (!attributes) {
 			return [];
 		}
@@ -142,17 +119,19 @@ export const VoteAttributes: React.FC<VoteAttributesProps> = ({
 	return (
 		<div className={styles.Container}>
 			<ul className={styles.Wrapper}>
-				{visibleAttributes.map((attribute: VoteAttribute, index: number) => (
-					<li
-						className={`${styles.Attribute} ${
-							index > 10 ? styles.SetOpacityAnimation : ''
-						}`}
-						key={index}
-					>
-						<span className={styles.Traits}>{attribute.label}</span>
-						<span className={styles.Properties}>{attribute.value} </span>
-					</li>
-				))}
+				{visibleAttributes.map(
+					(attribute: ProposalAttribute, index: number) => (
+						<li
+							className={`${styles.Attribute} ${
+								index > 10 ? styles.SetOpacityAnimation : ''
+							}`}
+							key={index}
+						>
+							<span className={styles.Traits}>{attribute.label}</span>
+							<span className={styles.Properties}>{attribute.value} </span>
+						</li>
+					),
+				)}
 
 				{/* Show / Hide more button */}
 				{initialHiddenAttributesCount > 0 && (

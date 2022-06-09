@@ -3,12 +3,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 // Lib
 import moment from 'moment';
-import { isEmpty } from 'lodash';
 import removeMarkdown from 'markdown-to-text';
-import {
-	formatProposalStatus,
-	formatTotalAmountOfTokenMetadata,
-} from '../Proposals.helpers';
+import { formatProposalStatus } from '../Proposals.helpers';
 import { truncateString } from 'lib/utils/string';
 
 // Components
@@ -43,10 +39,9 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 	const history = useHistory();
 	const location = useLocation();
 
-	const { id, title, body, end, metadata } = data;
+	const { id, title, body, end } = data;
 
 	const cardData = useMemo(() => {
-		const amount = formatTotalAmountOfTokenMetadata(metadata);
 		const isConcluded = moment(end).isBefore(moment());
 		const timeDiff = moment(end).diff(moment());
 
@@ -60,7 +55,6 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 		}
 
 		return {
-			amount,
 			closing: {
 				type: closingType,
 				message: isConcluded
@@ -68,7 +62,7 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 					: 'Closing in ' + moment.duration(timeDiff).humanize(),
 			},
 		};
-	}, [metadata, end]);
+	}, [end]);
 
 	const handleCardClick = useCallback(() => {
 		history.push(`${location.pathname}/${id}`, {
@@ -89,7 +83,6 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 				</p>
 			</div>
 			<div className={styles.Buttons}>
-				{!isEmpty(cardData.amount) && <Chiclet>{cardData.amount}</Chiclet>}
 				<Chiclet type={cardData.closing.type}>
 					{cardData.closing.message}
 				</Chiclet>
