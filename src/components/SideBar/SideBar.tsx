@@ -34,7 +34,7 @@ const SideBar = () => {
 	const network = chainIdToNetworkType(chainId);
 	const zna = zNAFromPathname(pathname);
 	const app = appFromPathname(pathname);
-	const isProfilePath = app === ROUTES.PROFILE;
+	const isProfilePath = app.includes(ROUTES.PROFILE);
 	const isDefaultNetworkRootPath =
 		IS_DEFAULT_NETWORK && (app !== ROUTES.MARKET || zna.length === 0);
 

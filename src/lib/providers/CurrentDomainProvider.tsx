@@ -49,7 +49,10 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		domainId,
 		domainRaw: domain,
 		domainMetadata,
-		app: pathname.indexOf(ROUTES.MARKET) > -1 ? ROUTES.MARKET : ROUTES.STAKING,
+		app:
+			pathname.indexOf(ROUTES.MARKET) > -1
+				? ROUTES.MARKET
+				: ROUTES.STAKING + ROUTES.STAKING_POOLS,
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,
 		setDomainMetadata,
