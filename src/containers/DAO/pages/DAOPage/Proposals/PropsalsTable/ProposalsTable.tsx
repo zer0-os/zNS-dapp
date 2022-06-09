@@ -34,7 +34,7 @@ const HEADERS = [
 		className: '',
 	},
 	{
-		label: 'Amount',
+		label: 'Votes',
 		accessor: '',
 		className: '',
 	},

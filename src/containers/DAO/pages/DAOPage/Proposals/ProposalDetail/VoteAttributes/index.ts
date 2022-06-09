@@ -1,1 +1,0 @@
-export { VoteAttributes } from './VoteAttributes';

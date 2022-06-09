@@ -14,7 +14,7 @@ import useProposal from '../../hooks/useProposal';
 import { ArrowLeft } from 'react-feather';
 import { LoadingIndicator, MarkDownViewer } from 'components';
 import { VoteBar } from './VoteBar';
-import { VoteAttributes } from './VoteAttributes';
+import { ProposalAttributes } from './ProposalAttributes';
 import { VoteHistories } from './VoteHistories';
 
 // - Styles
@@ -81,7 +81,7 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 						{proposal && votes?.length > 0 && <VoteBar votes={votes} />}
 
 						{dao && proposal && (
-							<VoteAttributes dao={dao} proposal={proposal} />
+							<ProposalAttributes dao={dao} proposal={proposal} />
 						)}
 
 						<MarkDownViewer
