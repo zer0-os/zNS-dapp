@@ -38,9 +38,15 @@ export const NetworkHeadData = {
 };
 
 export const getHeadData = (zna: string) => {
-	if (zna.includes(NetworkHeadData.tester.network)) {
+	if (
+		zna.includes(NetworkHeadData.tester.network) ||
+		process.env.REACT_APP_NETWORK === NetworkHeadData.tester.network
+	) {
 		return NetworkHeadData.tester;
-	} else if (zna.includes(NetworkHeadData.wilder.network)) {
+	} else if (
+		zna.includes(NetworkHeadData.wilder.network) ||
+		process.env.REACT_APP_NETWORK === NetworkHeadData.wilder.network
+	) {
 		return NetworkHeadData.wilder;
 	} else {
 		return NetworkHeadData.zero;
