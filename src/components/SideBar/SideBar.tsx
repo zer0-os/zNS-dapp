@@ -7,11 +7,7 @@ import { PriceWidget } from 'containers';
 //- Constants Imports
 import { getNavLinks } from 'lib/utils/nav';
 import { ROUTES } from 'constants/routes';
-import {
-	DOMAIN_LOGOS,
-	IS_DEFAULT_NETWORK,
-	ROOT_DOMAIN,
-} from 'constants/domains';
+import { DOMAIN_LOGOS, IS_DEFAULT_NETWORK } from 'constants/domains';
 import { ALT_TEXT, COLOURS } from './SideBar.constants';
 import { URLS } from 'constants/urls';
 
@@ -38,10 +34,9 @@ const SideBar = () => {
 	const network = chainIdToNetworkType(chainId);
 	const zna = zNAFromPathname(pathname);
 	const app = appFromPathname(pathname);
-
-	const isRoot =
+	const isProfilePath = app === ROUTES.PROFILE;
+	const isDefaultNetworkRootPath =
 		IS_DEFAULT_NETWORK && (app !== ROUTES.MARKET || zna.length === 0);
-	const isRootNetworkSet = ROOT_DOMAIN !== '';
 
 	return (
 		<div className={styles.BorderContainer}>
@@ -50,16 +45,22 @@ const SideBar = () => {
 					<Link
 						className={styles.HomeLink}
 						to={
-							isRoot
-								? app
-								: isRootNetworkSet
+							isDefaultNetworkRootPath
+								? isProfilePath
+									? ROUTES.MARKET
+									: app
+								: !IS_DEFAULT_NETWORK
 								? ROUTES.MARKET
 								: ROUTES.MARKET + '/' + zna.split('.')[0]
 						}
 					>
 						<img
 							alt={ALT_TEXT.APP_LOGO}
-							src={isRoot ? DOMAIN_LOGOS.ZERO : DOMAIN_LOGOS.WILDER_WORLD}
+							src={
+								isDefaultNetworkRootPath
+									? DOMAIN_LOGOS.ZERO
+									: DOMAIN_LOGOS.WILDER_WORLD
+							}
 						/>
 					</Link>
 					<ul className={styles.Links}>
@@ -90,9 +91,13 @@ const SideBar = () => {
 				</div>
 
 				<div className={styles.Footer}>
-					<PriceWidget isRoot={isRoot} />
-					<div className={cx(styles.ZeroIconContainer, { Hidden: isRoot })}>
-						{isRootNetworkSet ? (
+					<PriceWidget isRoot={isDefaultNetworkRootPath} />
+					<div
+						className={cx(styles.ZeroIconContainer, {
+							Hidden: isDefaultNetworkRootPath,
+						})}
+					>
+						{!IS_DEFAULT_NETWORK ? (
 							<a
 								className={styles.Zero}
 								target="_blank"
