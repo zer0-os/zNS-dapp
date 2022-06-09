@@ -28,7 +28,7 @@ import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { truncateDomain } from 'lib/utils';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useZnsContracts } from 'lib/contracts';
 
@@ -113,23 +113,24 @@ const MakeABid = ({
 		setStepContent(StepContent.CheckingZAuctionApproval);
 		(async () => {
 			try {
-				const allowance = await sdk.zauction.getZAuctionSpendAllowance(
-					account,
-					{ paymentTokenAddress: paymentTokenInfo.id },
-				);
+				console.log(paymentTokenInfo.id, account, bid, bidData);
+
+				const needsApproval =
+					await sdk.zauction.needsToApproveZAuctionToSpendTokensByPaymentToken(
+						account,
+						paymentTokenInfo.id,
+						'1000000000',
+					);
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
-				if (allowance.gte(BigNumber.from(bid))) {
+				if (needsApproval) {
+					setStepContent(StepContent.ApproveZAuction);
+				} else {
 					setCurrentStep(Step.ConfirmDetails);
 					setStepContent(StepContent.Details);
-				} else {
-					setStepContent(StepContent.ApproveZAuction);
-
-					// setCurrentStep(Step.zAuction);
-					// setStepContent(StepContent.FailedToCheckZAuction);
 				}
 			} catch (e) {
-				console.log(ERRORS.CONSOLE_TEXT);
+				console.log(ERRORS.CONSOLE_TEXT, e);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}
@@ -149,8 +150,8 @@ const MakeABid = ({
 		setStepContent(StepContent.WaitingForWallet);
 		(async () => {
 			try {
-				const tx = await sdk.zauction.approveZAuctionToTransferNftsByDomain(
-					domain.id,
+				const tx = await sdk.zauction.approveZAuctionToSpendPaymentToken(
+					paymentTokenInfo.id,
 					library.getSigner(),
 				);
 				try {
@@ -246,9 +247,10 @@ const MakeABid = ({
 			return;
 		}
 		checkZAuctionApproval();
-		const balance = await sdk.zauction.getZAuctionSpendAllowance(account, {
-			paymentTokenAddress: paymentTokenInfo.id,
-		});
+		const balance = await sdk.zauction.getUserBalanceForPaymentToken(
+			account,
+			paymentTokenInfo.id,
+		);
 		setTokenBalance(parseInt(ethers.utils.formatEther(balance), 10));
 	};
 
