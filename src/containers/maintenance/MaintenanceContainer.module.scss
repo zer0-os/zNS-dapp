@@ -1,22 +1,43 @@
+@use 'styles/variables/dimensions';
+
 .MaintenanceContainer {
-	font-weight: 100;
-	font-size: 20px;
+	width: 100%;
+	height: 100%;
 
-	.Heading {
-		padding: 15px 0;
-		font-size: 50px;
-		font-weight: 100;
-		text-align: center;
-	}
+	.NavBar {
+		// Mobile Breakpoints
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin: 22px 16px;
 
-	.Logo {
-		height: 150px !important;
-		width: 150px !important;
-	}
+		// Tablet Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+			margin: 24px;
+		}
 
-	.Article {
-		display: block;
-		width: 700px;
-		margin: 0 auto;
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			margin: 28px;
+		}
+
+		.HomeLink {
+			display: flex;
+			justify-content: center;
+
+			// Mobile Breakpoints
+			img {
+				height: 32px !important;
+				width: 36px !important;
+			}
+
+			// Tablet Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+				img {
+					height: 47px !important;
+					width: 52px !important;
+				}
+			}
+		}
 	}
 }

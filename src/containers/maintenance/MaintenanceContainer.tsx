@@ -1,17 +1,27 @@
+//- React Imports
+import { Link } from 'react-router-dom';
+
+//- Constants Imports
+import { ROUTES } from 'constants/routes';
+
 //- Styles Imports
 import styles from './MaintenanceContainer.module.scss';
 
 //- Assets Imports
-// import logo from './assets/WWLogo_SVG.svg';
+import logo from 'assets/WWLogo_SVG.svg';
 
 type MaintenanceProps = {};
 
 const MaintenanceContainer: React.FC<MaintenanceProps> = () => {
 	return (
 		<main className={styles.MaintenanceContainer}>
-			{/* <img alt="logo" src={logo} className={styles.Logo} />
+			<nav className={styles.NavBar}>
+				<Link className={styles.HomeLink} to={ROUTES.MARKET}>
+					<img alt="logo" src={logo} className={styles.Logo} />
+				</Link>
+			</nav>
 
-			<h1 className={styles.Heading}>We&rsquo;ll be back soon!</h1>
+			{/* <h1 className={styles.Heading}>We&rsquo;ll be back soon!</h1>
 
 			<p>
 				Sorry for the inconvenience. We&rsquo;re performing some maintenance at
