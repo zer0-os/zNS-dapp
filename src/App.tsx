@@ -51,12 +51,12 @@ function App() {
 			<BrowserRouter>
 				<Switch>
 					<CurrentDomainProvider>
-						<Route path={ROUTES.MAINTENANCE} component={Maintenance} />
 						<PageContainer>
 							<Route path={ROUTES.MARKET} component={ZNS} />
 							<Route path={ROUTES.STAKING} component={Staking} />
 							<Route path={ROUTES.ZDAO} component={DAO} />
 							<Route path={ROUTES.PROFILE} component={Profile} />
+							<Route path={ROUTES.MAINTENANCE} component={Maintenance} />
 							<Route exact path="/">
 								<Redirect to="/market" />
 							</Route>

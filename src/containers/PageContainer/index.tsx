@@ -1,6 +1,6 @@
 //- React Imports
 import React, { useCallback, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 //- Library Imports
 import classnames from 'classnames';
@@ -24,6 +24,7 @@ import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { WALLETS } from 'constants/wallets';
 import { WALLET_NOTIFICATIONS } from 'constants/notifications';
 import { Modal } from './PageContainer.constants';
+import { ROUTES } from 'constants/routes';
 
 //- Styles Imports
 import styles from './PageContainer.module.scss';
@@ -34,6 +35,7 @@ const PageContainer: React.FC = ({ children }) => {
 	 */
 	const history = useHistory();
 	const { account, active } = useWeb3React<Web3Provider>();
+	const { pathname } = useLocation();
 	const triedEagerConnect = useEagerConnect();
 	const globalDomain = useCurrentDomain();
 	const {
@@ -51,6 +53,9 @@ const PageContainer: React.FC = ({ children }) => {
 	// Scroll Detection
 	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 	useScrollDetection(setScrollDetectionDown);
+
+	// Check Pathname to determine container type
+	const isMaintenance = pathname === ROUTES.MAINTENANCE;
 
 	/**
 	 * Callback Functions
@@ -94,49 +99,63 @@ const PageContainer: React.FC = ({ children }) => {
 	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 
 	return (
-		<ScrollToTop>
-			<div className={classnames(styles.PageContainer)}>
-				{/* Toast Notifications */}
-				<NotificationDrawer />
-
-				{/* App level Modals */}
-				<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
-
-				<div className={styles.InnerContainer}>
-					<div className={styles.FlexRowWrapper}>
-						{/* App Sidebar */}
-						<SideBar />
-
-						<div className={styles.FlexColumnWrapper}>
-							{/* App Header */}
-							<Header
-								pageWidth={pageWidth}
-								znsDomain={znsDomain}
-								domainMetadata={domainMetadata}
-								account={account}
-								openModal={openModal}
-								isScrollDetectionDown={isScrollDetectionDown}
-							/>
-
-							{/* Children Components */}
-							<main className={styles.Main}>{children}</main>
-						</div>
-
-						{/* Header Actions - Desktop */}
-						<Actions
-							className={styles.Actions}
-							pageWidth={pageWidth}
-							znsDomain={znsDomain}
-							domainMetadata={domainMetadata}
-							account={account}
-							openModal={openModal}
-						/>
-					</div>
+		<>
+			{isMaintenance ? (
+				<div className={classnames(styles.PlaceholderPageContainer)}>
+					<div className={styles.BackgroundContainer} />
+					<div className={styles.BackgroundImage} />
+					{children}
 				</div>
-			</div>
-			{/* Touchbar */}
-			<Touchbar />
-		</ScrollToTop>
+			) : (
+				<ScrollToTop>
+					<div className={classnames(styles.PageContainer)}>
+						{/* Toast Notifications */}
+						<NotificationDrawer />
+
+						{/* App level Modals */}
+						<Modals
+							pageWidth={pageWidth}
+							modal={modal}
+							closeModal={closeModal}
+						/>
+
+						<div className={styles.InnerContainer}>
+							<div className={styles.FlexRowWrapper}>
+								{/* App Sidebar */}
+								<SideBar />
+
+								<div className={styles.FlexColumnWrapper}>
+									{/* App Header */}
+									<Header
+										pageWidth={pageWidth}
+										znsDomain={znsDomain}
+										domainMetadata={domainMetadata}
+										account={account}
+										openModal={openModal}
+										isScrollDetectionDown={isScrollDetectionDown}
+									/>
+
+									{/* Children Components */}
+									<main className={styles.Main}>{children}</main>
+								</div>
+
+								{/* Header Actions - Desktop */}
+								<Actions
+									className={styles.Actions}
+									pageWidth={pageWidth}
+									znsDomain={znsDomain}
+									domainMetadata={domainMetadata}
+									account={account}
+									openModal={openModal}
+								/>
+							</div>
+						</div>
+					</div>
+					{/* Touchbar */}
+					<Touchbar />
+				</ScrollToTop>
+			)}
+		</>
 	);
 };
 
