@@ -17,4 +17,7 @@ export enum ROUTES {
 	PROFILE = '/profile',
 	OWNED_DOMAINS = '/domains',
 	YOUR_BIDS = '/bids',
+
+	// ----- Maintenance ----- //
+	MAINTENANCE = '/maintenance',
 }

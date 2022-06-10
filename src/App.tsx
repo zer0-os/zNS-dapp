@@ -24,13 +24,15 @@ import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
 import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
-import { ROUTES } from 'constants/routes';
+import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
 
 //- Page Imports
-import { ZNS, Staking, Profile } from 'pages';
+import { ZNS, Staking, Profile, Maintenance } from 'pages';
 import PageContainer from 'containers/PageContainer';
 import DAO from 'pages/DAO/DAO';
-import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
+
+//- Constants Imports
+import { ROUTES } from 'constants/routes';
 
 function getLibrary(provider: any): Web3Provider {
 	const library = new Web3Provider(provider);
@@ -49,14 +51,15 @@ function App() {
 			<BrowserRouter>
 				<Switch>
 					<CurrentDomainProvider>
+						<Route path={ROUTES.MAINTENANCE} component={Maintenance} />
 						<PageContainer>
-							{/* <Route path={ROUTES.MARKET} component={ZNS} />
+							<Route path={ROUTES.MARKET} component={ZNS} />
 							<Route path={ROUTES.STAKING} component={Staking} />
 							<Route path={ROUTES.ZDAO} component={DAO} />
-							<Route path={ROUTES.PROFILE} component={Profile} /> */}
-							{/* <Route exact path="/">
+							<Route path={ROUTES.PROFILE} component={Profile} />
+							<Route exact path="/">
 								<Redirect to="/market" />
-							</Route> */}
+							</Route>
 						</PageContainer>
 					</CurrentDomainProvider>
 				</Switch>
