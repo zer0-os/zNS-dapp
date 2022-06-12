@@ -217,6 +217,11 @@ const GenericTable = (props: any) => {
 						)}
 					</div>
 				)}
+
+				{props.isReloading && (
+					<LoadingIndicator className={styles.Reloading} text="" />
+				)}
+
 				{!props.isLoading &&
 					((rawData?.length ?? 0) === 0 ? (
 						<p className={classNames(styles.Loading, 'text-center')}>

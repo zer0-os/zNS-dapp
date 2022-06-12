@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 // - Library
-import type { Proposal, Vote } from '@zero-tech/zdao-sdk';
+import type { zDAO, Proposal, Vote } from '@zero-tech/zdao-sdk';
 import { formatVotingPowerAmount } from '../../Proposals.helpers';
 
 // - Component
@@ -12,18 +12,20 @@ import styles from './VoteHistories.module.scss';
 import { Approve, Deny } from '../Vote/VoteButtons';
 
 type VoteHistoriesProps = {
+	dao?: zDAO;
 	proposal?: Proposal;
 	isLoading: boolean;
 	votes: Vote[];
 };
 
 export const VoteHistories: React.FC<VoteHistoriesProps> = ({
+	dao,
 	proposal,
 	isLoading = true,
 	votes = [],
 }) => {
 	const histories = useMemo(() => {
-		if (!proposal || !proposal.metadata || votes.length === 0) {
+		if (!proposal || votes.length === 0) {
 			return [];
 		}
 
@@ -32,10 +34,10 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 				id: index,
 				address: vote.voter,
 				direction: vote.choice,
-				power: formatVotingPowerAmount(proposal, vote.power),
+				power: formatVotingPowerAmount(vote.power, dao?.votingToken.symbol),
 			};
 		});
-	}, [proposal, votes]);
+	}, [dao, proposal, votes]);
 
 	return (
 		<div className={styles.Container}>
