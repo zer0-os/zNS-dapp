@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React, { FC, useState } from 'react';
 import type { Proposal, Choice } from '@zero-tech/zdao-sdk';
 import { truncateWalletAddress } from 'lib/utils';
+import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import { Overlay, Wizard } from 'components';
 import { Approve, Deny } from './VoteButtons';
 import { VoteModalStep } from './Vote.constants';
@@ -27,6 +28,8 @@ const VoteModal: FC<VoteModalProps> = ({
 	onClose,
 	onComplete,
 }) => {
+	const { dao } = useCurrentDao();
+
 	const [step, setStep] = useState<VoteModalStep>(VoteModalStep.CONFIRM);
 
 	/**
@@ -79,7 +82,9 @@ const VoteModal: FC<VoteModalProps> = ({
 					</li>
 					<li>
 						<span>Your Voting Power</span>
-						<span>{formatVotingPowerAmount(proposal, votingPower)}</span>
+						<span>
+							{formatVotingPowerAmount(votingPower, dao?.votingToken.symbol)}
+						</span>
 					</li>
 				</ul>
 
