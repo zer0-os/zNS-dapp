@@ -10,6 +10,20 @@ const MILLIFY_THRESHOLD = 1000000;
 const MILLIFY_PRECISION = 3;
 
 /**
+ * Format the proposal body
+ * @param body string to format
+ * @returns formatted proposal bod
+ */
+export const formatProposalBody = (body: string = ''): string => {
+	// 1. Convert ipfs:// formated image into https://snapshot image because snapshot image is not showing correctly
+	let convertedBody = body;
+	return convertedBody.replace(
+		'ipfs://',
+		'https://snapshot.mypinata.cloud/ipfs/',
+	);
+};
+
+/**
  * Check if proposal is from snapshot and have multiple choices
  * @param proposal to check
  * @returns true if the proposal is from snapshot with multiple choices
@@ -17,7 +31,15 @@ const MILLIFY_PRECISION = 3;
 export const isFromSnapshotWithMultipleChoices = (
 	proposal: Proposal,
 ): boolean => {
-	return !proposal.metadata && proposal.choices.length > 2;
+	/**
+	 * 06/10/2022 Note - https://www.notion.so/zerotech/For-any-proposal-created-in-snapshot-display-the-Please-vote-on-this-proposal-in-Snapshot-footer-171742b056a445169bdaffe840d358a1
+	 *
+	 * To work around this in the MVP, lets just show the
+	 * ‘‘Please vote on this proposal in Snapshot’ footer’ for ANY Snapshot proposals
+	 *
+	 */
+	//  return !proposal.metadata && proposal.choices.length > 2;
+	return !proposal.metadata;
 };
 
 /**
@@ -77,15 +99,15 @@ export const formatProposalEndTime = (timeDiff: number): string => {
 
 /**
  * Format a voting power amount
- * @param proposal Proposal of the vote
  * @param amount to format
- * @returns formatted total ammount of proposal metadata
+ * @param symbol voting token symbol
+ * @returns formatted ammount of voting power
  */
 export const formatVotingPowerAmount = (
-	proposal: Proposal,
 	amount: number,
+	symbol?: string,
 ): string | null => {
-	if (!proposal || !proposal.metadata || !amount) return null;
+	if (!amount || !symbol) return null;
 
 	const formattedAmount =
 		amount >= MILLIFY_THRESHOLD
@@ -95,7 +117,7 @@ export const formatVotingPowerAmount = (
 					minimumFractionDigits: 0,
 			  });
 
-	return formattedAmount + ' ' + proposal.metadata.symbol;
+	return formattedAmount + ' ' + symbol;
 };
 
 /**

@@ -4,7 +4,10 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 // - Library
 import type { zDAO, ProposalId } from '@zero-tech/zdao-sdk';
 import { cloneDeep } from 'lodash';
-import { isFromSnapshotWithMultipleChoices } from '../Proposals.helpers';
+import {
+	isFromSnapshotWithMultipleChoices,
+	formatProposalBody,
+} from '../Proposals.helpers';
 
 // - Hooks
 import { useDidMount } from 'lib/hooks/useDidMount';
@@ -88,11 +91,12 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 						)}
 
 						<MarkDownViewer
-							text={proposal?.body}
+							text={formatProposalBody(proposal?.body)}
 							className={styles.MarkDownViewerContent}
 						/>
 
 						<VoteHistories
+							dao={dao}
 							proposal={proposal}
 							isLoading={isLoadingVotes}
 							votes={votes}

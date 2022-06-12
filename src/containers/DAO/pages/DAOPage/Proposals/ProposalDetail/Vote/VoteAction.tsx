@@ -73,7 +73,14 @@ export const VoteAction: React.FC<VoteActionProps> = ({
 		return (
 			<span className={styles.FooterText}>
 				Your wallet is not eligible to vote on this proposal
-				<Tooltip text="In order to have voting power, you must hold the voting token at the time this proposal was created.">
+				<Tooltip
+					text={
+						<span className={styles.Tooltip}>
+							In order to have voting power, you must hold the voting token at
+							the time this proposal was created.
+						</span>
+					}
+				>
 					<QuestionButton small />
 				</Tooltip>
 			</span>
