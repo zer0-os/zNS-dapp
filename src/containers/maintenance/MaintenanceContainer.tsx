@@ -9,7 +9,7 @@ import { ROUTES } from 'constants/routes';
 import { ALT_TEXT } from './MaintenanceContainer.constants';
 
 //- Components Imports
-import MaintenanceContent from './content/MaintenanceContent';
+import MaintenanceContent from './Content/MaintenanceContent';
 
 //- Styles Imports
 import styles from './MaintenanceContainer.module.scss';

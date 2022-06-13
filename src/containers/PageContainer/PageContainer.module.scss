@@ -139,7 +139,7 @@
 		background-repeat: no-repeat;
 
 		// Tablet Breakpoints
-		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			max-height: 392px;
 			max-width: 416px;
 		}

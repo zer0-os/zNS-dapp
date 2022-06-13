@@ -16,8 +16,15 @@ export const SUBTEXT = {
 		'Sorry for the inconvenience, we’re undergoing some maintenance.',
 };
 
-export const LINK_TEXT = {
-	MAINTENANCE: 'Follow our Discord for further updates.',
+export const BUTTON_TEXT = 'Back to Home';
+
+export const LABELS = {
+	DISCORD: 'Discord',
+	FOLLOW_OUR: 'Follow our ',
+	FURTHER_UPDATES: ' for further updates.',
 };
 
-export const BUTTON_TEXT = 'Back to Home';
+export const ATTRIBUTES = {
+	TARGET: '_blank',
+	REL: 'noreferrer',
+};
