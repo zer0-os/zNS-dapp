@@ -1,0 +1,115 @@
+@use 'styles/variables/dimensions';
+
+.Content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.HeadingContainer {
+		margin-bottom: 8px;
+
+		:first-child {
+			margin-bottom: 8px;
+		}
+
+		// Tablet Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			display: flex;
+			align-items: center;
+		}
+
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			margin-bottom: 0;
+		}
+
+		h1 {
+			// Mobile Breakpoints
+			font-size: 80px;
+			line-height: 96px;
+			white-space: nowrap;
+
+			// Tablet Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				font-size: 94px;
+				line-height: 113px;
+			}
+
+			// Desktop Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+				font-size: 152px;
+				line-height: 183px;
+			}
+		}
+
+		h2 {
+			// Mobile Breakpoints
+			font-size: 14px;
+			line-height: 16px;
+
+			// Tablet Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				font-size: 34px;
+				line-height: 45px;
+			}
+
+			// Desktop Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+				font-size: 55px;
+				line-height: 74px;
+			}
+		}
+	}
+
+	.SubTextContainer {
+		// Mobile Breakpoints
+		max-width: 208px;
+
+		// Tablet Breakpoints
+		@media only screen and (
+					min-width: #{dimensions.$breakpoint-tablet-s}) {
+			max-width: none;
+		}
+
+		p {
+			// Mobile Breakpoints
+			font-weight: 400px;
+			font-size: 12px;
+			line-height: 14.5px;
+			text-align: center;
+			padding: 0;
+
+			// Tablet Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				font-size: 20px;
+				line-height: 24px;
+			}
+
+			// Desktop Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+				font-size: 31px;
+				line-height: 37.5px;
+			}
+		}
+	}
+
+	.ButtonContainer {
+		margin-top: 24px;
+
+		// Tablet Breakpoints
+		@media only screen and (
+			min-width: #{dimensions.$breakpoint-tablet-s}) {
+			margin-top: 32px;
+		}
+
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			margin-top: 40px;
+		}
+
+		.Button {
+			padding-left: 15px;
+			padding-right: 15px;
+		}
+	}
+}

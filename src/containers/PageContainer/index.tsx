@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 //- Library Imports
@@ -29,6 +29,9 @@ import { ROUTES } from 'constants/routes';
 //- Styles Imports
 import styles from './PageContainer.module.scss';
 
+//- Asset Imports
+import backgroundImage from 'assets/background.jpg';
+
 const PageContainer: React.FC = ({ children }) => {
 	/**
 	 * Hooks Data
@@ -55,7 +58,11 @@ const PageContainer: React.FC = ({ children }) => {
 	useScrollDetection(setScrollDetectionDown);
 
 	// Check Pathname to determine container type
-	const isMaintenance = pathname === ROUTES.MAINTENANCE;
+	const isRouteValid =
+		pathname.includes(ROUTES.MARKET) ||
+		pathname.includes(ROUTES.STAKING) ||
+		pathname.includes(ROUTES.ZDAO) ||
+		pathname.includes(ROUTES.PROFILE);
 
 	/**
 	 * Callback Functions
@@ -91,6 +98,33 @@ const PageContainer: React.FC = ({ children }) => {
 		}
 	}, [active, modal, triedEagerConnect, addNotification, closeModal]);
 
+	/////////////
+	// Effects //
+	/////////////
+
+	// Update background image
+	useEffect(() => {
+		if (pathname === ROUTES.MAINTENANCE) {
+			// Background Image ID - index.html
+			const loadImg = new Image();
+			loadImg.src = backgroundImage;
+			if (loadImg.complete) {
+				document.body.style.backgroundImage = `url(${backgroundImage})`;
+			} else {
+				loadImg.onload = () => {
+					const bg = document.getElementById('backgroundImage')?.style;
+					if (!bg) return;
+					bg.backgroundImage = `url(${backgroundImage})`;
+					bg.opacity = '1';
+				};
+			}
+		} else {
+			const bg = document.getElementById('backgroundImage')?.style;
+			if (!bg) return;
+			bg.backgroundImage = '';
+		}
+	}, [pathname]);
+
 	/**
 	 * Life Cycles
 	 */
@@ -100,7 +134,7 @@ const PageContainer: React.FC = ({ children }) => {
 
 	return (
 		<>
-			{isMaintenance ? (
+			{!isRouteValid ? (
 				<div className={classnames(styles.PlaceholderPageContainer)}>
 					<div className={styles.BackgroundContainer} />
 					<div className={styles.BackgroundImage} />

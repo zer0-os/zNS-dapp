@@ -10,7 +10,7 @@
 		padding: 22px 16px;
 
 		// Tablet Breakpoints
-		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			padding: 24px;
 		}
 
@@ -30,7 +30,7 @@
 			}
 
 			// Tablet Breakpoints
-			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-xs}) {
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 				img {
 					height: 47px !important;
 					width: 52px !important;
@@ -48,73 +48,5 @@
 		bottom: 0;
 		left: 0;
 		right: 0;
-
-		.Content {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-
-			.Title {
-				// Mobile Breakpoints
-				font-weight: 600px;
-				font-size: 80px;
-				line-height: 96px;
-
-				// Tablet Breakpoints
-				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-					font-size: 94px;
-					line-height: 113px;
-				}
-
-				// Desktop Breakpoints
-				@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
-					font-size: 152px;
-					line-height: 183px;
-				}
-			}
-
-			.SecondaryTitle {
-				// Mobile Breakpoints
-				font-weight: 600px;
-				font-size: 14px;
-				line-height: 16px;
-
-				// Tablet Breakpoints
-				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-					font-size: 34px;
-					line-height: 45px;
-				}
-
-				// Desktop Breakpoints
-				@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
-					font-size: 55px;
-					line-height: 74px;
-				}
-			}
-
-			.Subtext {
-				// Mobile Breakpoints
-				font-weight: 400px;
-				font-size: 12px;
-				line-height: 14.5px;
-
-				// Tablet Breakpoints
-				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-					font-size: 20px;
-					line-height: 24px;
-				}
-
-				// Desktop Breakpoints
-				@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
-					font-size: 31px;
-					line-height: 37.5px;
-				}
-			}
-
-			.Button {
-				padding-left: 15px;
-				padding-right: 15px;
-			}
-		}
 	}
 }
