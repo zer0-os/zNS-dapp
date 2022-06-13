@@ -57,7 +57,7 @@ const PageContainer: React.FC = ({ children }) => {
 	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 	useScrollDetection(setScrollDetectionDown);
 
-	// Check Pathname to determine container type
+	// Check pathname to determine container type
 	const isRouteValid =
 		pathname.includes(ROUTES.MARKET) ||
 		pathname.includes(ROUTES.STAKING) ||
@@ -135,7 +135,7 @@ const PageContainer: React.FC = ({ children }) => {
 	return (
 		<>
 			{!isRouteValid ? (
-				<div className={classnames(styles.PlaceholderPageContainer)}>
+				<div className={styles.ErrorPageContainer}>
 					<div className={styles.BackgroundContainer} />
 					<div className={styles.BackgroundImage} />
 					{children}

@@ -61,6 +61,7 @@ function App() {
 							<Route path={ROUTES.PROFILE} component={Profile} />
 
 							<Route component={Maintenance} />
+							{/* <Redirect from="*" to={ROUTES.MAINTENANCE} /> */}
 						</PageContainer>
 					</CurrentDomainProvider>
 				</Switch>
