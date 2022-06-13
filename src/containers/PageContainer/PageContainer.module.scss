@@ -99,22 +99,22 @@
 
 // Placeholder Page Container
 .PlaceholderPageContainer {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	height: 100vh;
-
 	.BackgroundContainer {
 		position: absolute;
 		height: 100vh;
 		width: 100vw;
 		z-index: -1;
-		backdrop-filter: blur(10px);
+		backdrop-filter: blur(6px);
 		background: radial-gradient(
 			50% 50% at 50% 50%,
 			rgba(0, 0, 0, 0.73) 0%,
 			rgba(0, 0, 0, 0.43) 100%
 		);
+
+		// Tablet Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			backdrop-filter: blur(8px);
+		}
 	}
 
 	.BackgroundImage {
@@ -126,6 +126,8 @@
 		max-width: 264px;
 		left: 0;
 		right: 0;
+		top: 50%;
+		transform: translateY(-50%);
 		margin-left: auto;
 		margin-right: auto;
 		z-index: -2;

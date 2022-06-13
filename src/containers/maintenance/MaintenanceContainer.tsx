@@ -1,8 +1,15 @@
 //- React Imports
 import { Link } from 'react-router-dom';
 
+//- Library Imports
+import { useHistory } from 'react-router-dom';
+
 //- Constants Imports
 import { ROUTES } from 'constants/routes';
+import { BUTTON_TEXT } from './MaintenanceContainer.constants';
+
+//- Components Imports
+import { FutureButton } from 'components';
 
 //- Styles Imports
 import styles from './MaintenanceContainer.module.scss';
@@ -13,6 +20,13 @@ import logo from 'assets/WWLogo_SVG.svg';
 type MaintenanceProps = {};
 
 const MaintenanceContainer: React.FC<MaintenanceProps> = () => {
+	const { push: goTo } = useHistory();
+
+	// Navigate to Market
+	const onClick = () => {
+		goTo(ROUTES.MARKET);
+	};
+
 	return (
 		<main className={styles.MaintenanceContainer}>
 			<nav className={styles.NavBar}>
@@ -21,15 +35,20 @@ const MaintenanceContainer: React.FC<MaintenanceProps> = () => {
 				</Link>
 			</nav>
 
-			{/* <h1 className={styles.Heading}>We&rsquo;ll be back soon!</h1>
+			<div className={styles.ContentContainer}>
+				<div className={styles.Content}>
+					<h1 className={styles.Title}>404</h1>
+					<h2 className={styles.SecondaryTitle}>Lost in the Metaverse</h2>
 
-			<p>
-				Sorry for the inconvenience. We&rsquo;re performing some maintenance at
-				the moment. If you need to you can always follow us on{' '}
-				<a href="https://discord.gg/7tyggH6eh9">Discord</a> for updates,
-				otherwise we&rsquo;ll be back up shortly!
-			</p>
-			<p>&mdash; The Wilder World Team</p> */}
+					<div className={styles.Subtext}>
+						We're sorry, we couldn't find the page you're looking for.
+					</div>
+
+					<FutureButton glow className={styles.Button} onClick={onClick}>
+						{BUTTON_TEXT}
+					</FutureButton>
+				</div>
+			</div>
 		</main>
 	);
 };

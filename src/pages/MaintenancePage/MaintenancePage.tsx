@@ -4,7 +4,7 @@ import { MaintenanceContainer } from 'containers/maintenance';
 //- Asset Imports
 import backgroundImage from 'assets/background.jpg';
 
-const Maintenance: React.FC = () => {
+const MaintenancePage: React.FC = () => {
 	// Background Image ID - index.html
 	const loadImg = new Image();
 	loadImg.src = backgroundImage;
@@ -26,4 +26,4 @@ const Maintenance: React.FC = () => {
 	);
 };
 
-export default Maintenance;
+export default MaintenancePage;
