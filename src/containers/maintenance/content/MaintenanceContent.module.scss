@@ -1,27 +1,38 @@
 @use 'styles/variables/dimensions';
 
-.Content {
+.ContentContainer {
+	position: absolute;
 	display: flex;
-	flex-direction: column;
 	align-items: center;
+	justify-content: center;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 
-	.ButtonContainer {
-		margin-top: 24px;
+	.Content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 
-		// Tablet Breakpoints
-		@media only screen and (
+		.ButtonContainer {
+			margin-top: 24px;
+
+			// Tablet Breakpoints
+			@media only screen and (
 			min-width: #{dimensions.$breakpoint-tablet-s}) {
-			margin-top: 32px;
-		}
+				margin-top: 32px;
+			}
 
-		// Desktop Breakpoints
-		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
-			margin-top: 40px;
-		}
+			// Desktop Breakpoints
+			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+				margin-top: 40px;
+			}
 
-		.Button {
-			padding-left: 15px;
-			padding-right: 15px;
+			.Button {
+				padding-left: 15px;
+				padding-right: 15px;
+			}
 		}
 	}
 }

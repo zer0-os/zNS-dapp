@@ -108,6 +108,15 @@
 	}
 }
 
+/* Font Family */
+@font-face {
+	font-family: 'DDTERegular';
+	src: local('DDTERegular'),
+		url(../assets/fonts/DDTExSb-Regular.otf) format('ttf'),
+		url(../assets/fonts/DDTExSb-Regular.otf) format('otf'),
+		url(../assets/fonts/DDTExSb-Regular.otf) format('woff');
+}
+
 /*
  *
  * Default HTML Elements

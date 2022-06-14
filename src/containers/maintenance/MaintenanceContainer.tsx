@@ -17,9 +17,7 @@ import styles from './MaintenanceContainer.module.scss';
 //- Assets Imports
 import networkLogo from 'assets/WWLogo_SVG.svg';
 
-type MaintenanceProps = {};
-
-const MaintenanceContainer: React.FC<MaintenanceProps> = () => {
+const MaintenanceContainer: React.FC = () => {
 	const { push: goTo } = useHistory();
 
 	// Navigate to Market
@@ -39,9 +37,7 @@ const MaintenanceContainer: React.FC<MaintenanceProps> = () => {
 				</Link>
 			</nav>
 
-			<div className={styles.ContentContainer}>
-				<MaintenanceContent onClick={onClick} />
-			</div>
+			<MaintenanceContent onClick={onClick} />
 		</main>
 	);
 };
