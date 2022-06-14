@@ -52,16 +52,15 @@ function App() {
 				<Switch>
 					<CurrentDomainProvider>
 						<PageContainer>
-							<Route exact path="/">
-								<Redirect to={ROUTES.MARKET} />
-							</Route>
 							<Route path={ROUTES.MARKET} component={ZNS} />
 							<Route path={ROUTES.STAKING} component={Staking} />
 							<Route path={ROUTES.ZDAO} component={DAO} />
 							<Route path={ROUTES.PROFILE} component={Profile} />
-
+							<Route exact path="/">
+								<Redirect to={ROUTES.MARKET} />
+							</Route>
+							{/* TODO :: Maintenance page displays on every route - fix */}
 							<Route component={Maintenance} />
-							{/* <Redirect from="*" to={ROUTES.MAINTENANCE} /> */}
 						</PageContainer>
 					</CurrentDomainProvider>
 				</Switch>

@@ -99,6 +99,10 @@
 
 // Placeholder Page Container
 .ErrorPageContainer {
+	&.isRouteValid {
+		display: none;
+	}
+
 	.BackgroundContainer {
 		position: absolute;
 		height: 100vh;

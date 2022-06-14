@@ -4,6 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 //- Library Imports
 import classnames from 'classnames';
+import classNames from 'classnames/bind';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
@@ -31,6 +32,8 @@ import styles from './PageContainer.module.scss';
 
 //- Asset Imports
 import backgroundImage from 'assets/background.jpg';
+
+const cx = classNames.bind(styles);
 
 const PageContainer: React.FC = ({ children }) => {
 	/**
@@ -98,13 +101,17 @@ const PageContainer: React.FC = ({ children }) => {
 		}
 	}, [active, modal, triedEagerConnect, addNotification, closeModal]);
 
-	/////////////
-	// Effects //
-	/////////////
+	/**
+	 * Life Cycles
+	 */
+	useUpdateEffect(handleChainSelect, [chainId]);
+	useUpdateEffect(handleForceBackHome, [znsDomain, loading, globalDomain.app]);
+	useUpdateEffect(handleWalletChanges, [active]);
+	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 
 	// Update background image
 	useEffect(() => {
-		if (pathname === ROUTES.MAINTENANCE) {
+		if (!isRouteValid) {
 			// Background Image ID - index.html
 			const loadImg = new Image();
 			loadImg.src = backgroundImage;
@@ -123,24 +130,21 @@ const PageContainer: React.FC = ({ children }) => {
 			if (!bg) return;
 			bg.backgroundImage = '';
 		}
-	}, [pathname]);
-
-	/**
-	 * Life Cycles
-	 */
-	useUpdateEffect(handleForceBackHome, [znsDomain, loading, globalDomain.app]);
-	useUpdateEffect(handleWalletChanges, [active]);
-	useUpdateEffect(refetch, [minted, stakingFulFilled]);
+	}, [isRouteValid]);
 
 	return (
 		<>
-			{!isRouteValid ? (
-				<div className={styles.ErrorPageContainer}>
-					<div className={styles.BackgroundContainer} />
-					<div className={styles.BackgroundImage} />
-					{children}
-				</div>
-			) : (
+			<div
+				className={cx(styles.ErrorPageContainer, {
+					isRouteValid: isRouteValid,
+				})}
+			>
+				<div className={styles.BackgroundContainer} />
+				<div className={styles.BackgroundImage} />
+				{children}
+			</div>
+
+			{isRouteValid && (
 				<ScrollToTop>
 					<div className={classnames(styles.PageContainer)}>
 						{/* Toast Notifications */}
