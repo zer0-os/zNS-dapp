@@ -31,6 +31,19 @@
 				color: #{colors.$success-green};
 			}
 		}
+
+		div {
+			display: unset;
+		}
+
+		a {
+			color: var(--color-warning);
+			font-weight: bold;
+
+			&:hover {
+				color: var(--color-warning);
+			}
+		}
 	}
 
 	&__buttons {
