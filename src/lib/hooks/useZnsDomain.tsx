@@ -56,7 +56,10 @@ const formatDomain = (domain: Domain): DisplayParentDomain => {
 	return formattedDomain;
 };
 
-export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
+export const useZnsDomain = (
+	domainId: string,
+	chainId: number,
+): UseZnsDomainReturn => {
 	const { instance: sdk } = useZnsSdk();
 
 	const isMounted = useRef<boolean>();
@@ -108,7 +111,7 @@ export const useZnsDomain = (domainId: string): UseZnsDomainReturn => {
 
 			setLoading(false);
 		} catch (e) {}
-	}, [domainId]);
+	}, [domainId, chainId]);
 
 	useEffect(() => {
 		isMounted.current = true;

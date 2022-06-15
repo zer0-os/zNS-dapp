@@ -8,21 +8,19 @@ import {
 	defaultNetworkId,
 	NETWORK_TYPES,
 } from 'lib/network';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import React from 'react';
 
 export function useZSaleSdk() {
 	// TODO: Add suport to handle multiple contracts
 
-	const { library } = useWeb3React<Web3Provider>();
-	const chainSelector = useChainSelector();
+	const { library, chainId } = useWeb3React<Web3Provider>();
 	const instance = React.useMemo(() => {
 		const web3Provider =
 			library ||
 			(new ethers.providers.JsonRpcProvider(
 				RPC_URLS[defaultNetworkId],
 			) as Web3Provider);
-		const network = chainIdToNetworkType(chainSelector.selectedChain);
+		const network = chainIdToNetworkType(chainId);
 
 		switch (network) {
 			case NETWORK_TYPES.MAINNET: {
@@ -64,7 +62,7 @@ export function useZSaleSdk() {
 				throw new Error('SDK isn´t available for this chainId');
 			}
 		}
-	}, [chainSelector.selectedChain, library]);
+	}, [chainId, library]);
 
 	return {
 		instance,
