@@ -1,4 +1,7 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
 
 .StepBarContainer {
 	display: none;
@@ -11,16 +14,16 @@
 
 .Container {
 	h2 {
-		font-size: 24px;
-		font-weight: 700;
+		font-size: #{typography.$size-large};
+		font-weight: #{typography.$font-weight-bold};
 		line-height: 28px;
 	}
 
 	width: 640px;
 	padding: 40px;
 
-	color: var(--color-text-primary) !important;
-	background: var(--color-background);
+	color: #{colors.$text-primary} !important;
+	background: #{colors.$background-primary};
 
 	.Header {
 		display: flex;
@@ -31,9 +34,9 @@
 	}
 
 	.Header h1 {
-		color: var(--color-text-primary);
-		font-size: 24px;
-		font-weight: 700;
+		color: #{colors.$text-primary};
+		font-size: #{typography.$size-large};
+		font-weight: #{typography.$font-weight-bold};
 		margin-bottom: 32px;
 	}
 
@@ -56,7 +59,7 @@
 	margin-right: 12px;
 	min-width: 224px;
 
-	background: rgba(255, 255, 255, 0.05);
+	background: rgba(colors.$white, 0.05);
 
 	width: 224px;
 
@@ -68,7 +71,7 @@
 		border-radius: inherit;
 		height: 100%;
 		width: 100%;
-		transition: transform var(--animation-time-medium) ease-in-out;
+		transition: transform #{animations.$time-medium} ease-in-out;
 	}
 }
 
@@ -81,7 +84,7 @@
 		overflow-wrap: anywhere;
 		display: block;
 		margin-top: 4px;
-		color: var(--color-accent-1);
+		color: #{colors.$blue};
 	}
 }
 
@@ -90,9 +93,9 @@
 }
 
 .Price h3 {
-	color: var(--color-primary-lighter-3);
-	font-size: var(--font-size-small);
-	font-weight: 700;
+	color: #{colors.$mauve};
+	font-size: #{typography.$size-tiny};
+	font-weight: #{typography.$font-weight-bold};
 	margin-bottom: 4px;
 }
 
@@ -101,13 +104,13 @@
 }
 
 .Price span:first-of-type {
-	font-size: var(--font-size-default);
-	font-weight: 700;
+	font-size: #{typography.$size-default};
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Price span:nth-of-type(2) {
-	font-size: var(--font-size-smaller);
-	font-weight: 700;
+	font-size: #{typography.$size-small};
+	font-weight: #{typography.$font-weight-bold};
 	margin-top: 8px;
 }
 
@@ -123,8 +126,8 @@
 .InputWrapper p {
 	margin: 0;
 	padding: 0;
-	font-size: var(--font-size-default);
-	font-weight: 400;
+	font-size: #{typography.$size-default};
+	font-weight: #{typography.$font-weight-regular};
 	text-align: center;
 }
 
@@ -138,25 +141,25 @@
 }
 
 .Estimate {
-	font-weight: 700;
-	color: var(--color-primary-lighter-3);
+	font-weight: #{typography.$font-weight-bold};
+	color: #{colors.$mauve};
 	margin: 16px auto 0 auto;
 }
 
 .Authorize {
 	padding: 16px;
 	background: none;
-	border: 1px solid var(--color-accent-1);
+	border: 1px solid #{colors.$blue};
 	border-radius: 50%;
 	width: 150px;
 	height: 150px;
-	color: var(--color-accent-1);
+	color: #{colors.$blue};
 }
 
 .Error {
 	padding: 0;
-	font-weight: 700 !important;
-	color: var(--color-primary-lighter-3);
+	font-weight: #{typography.$font-weight-bold} !important;
+	color: #{colors.$mauve};
 }
 
 .Wait {
@@ -172,7 +175,7 @@
 	width: 18px;
 	height: 18px;
 	border-radius: 50%;
-	border-top: 2px solid var(--color-accent-1);
+	border-top: 2px solid #{colors.$blue};
 	animation: spin 1s linear infinite;
 }
 

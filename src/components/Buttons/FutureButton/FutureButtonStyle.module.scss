@@ -1,3 +1,8 @@
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 /*
  * Default color scheme
  */
@@ -17,8 +22,8 @@
 		box-shadow: none;
 		--box-shadow-heavy: none;
 		--bg: none !important;
-		--border-color: var(--color-grey);
-		--color: var(--color-grey);
+		--border-color: #{colors.$grey};
+		--color: #{colors.$grey};
 	}
 }
 
@@ -35,8 +40,8 @@
 	--color: #fff;
 
 	&:not(.Glow) {
-		--border-color: var(--color-grey);
-		--color: var(--color-grey);
+		--border-color: #{colors.$grey};
+		--color: #{colors.$grey};
 	}
 }
 
@@ -58,27 +63,27 @@
 	color: var(--color);
 
 	background: var(--bg);
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	opacity: 0.6;
 	box-shadow: 0 0 15px 4px var(--box-shadow-light);
 	overflow: hidden;
 
 	cursor: pointer;
 	text-transform: uppercase;
-	transition: opacity var(--animation-time-short) ease-in-out;
+	transition: opacity #{animations.$time-short} ease-in-out;
 
 	.Content {
 		margin: 0 8px;
 
 		color: white;
 		text-align: center;
-		font-size: 14px;
-		font-weight: 700;
-		text-shadow: var(--glow-text-white);
+		font-size: #{typography.$size-small};
+		font-weight: #{typography.$font-weight-bold};
+		text-shadow: #{colors.$text-glow-white};
 
 		z-index: 2;
-		transition: color var(--animation-time-short) ease-in-out,
-			text-shadow var(--animation-time-short) ease-in-out;
+		transition: color #{animations.$time-short} ease-in-out,
+			text-shadow #{animations.$time-short} ease-in-out;
 	}
 
 	.Wash {
@@ -91,7 +96,7 @@
 
 		background: var(--box-shadow);
 
-		transition: opacity var(--animation-time-short) ease-in-out;
+		transition: opacity #{animations.$time-short} ease-in-out;
 
 		opacity: 0;
 		z-index: 0;
@@ -108,7 +113,7 @@
 		border-radius: inherit;
 		border-left: 2px solid var(--border-color);
 		border-right: 2px solid var(--border-color);
-		transition: border-color var(--animation-time-short) ease-in-out;
+		transition: border-color #{animations.$time-short} ease-in-out;
 	}
 
 	/*
@@ -150,7 +155,7 @@
 	 * Inactive button
 	 */
 	&:not(.Glow) .Content {
-		color: var(--color-grey);
+		color: #{colors.$grey};
 		text-shadow: none;
 	}
 

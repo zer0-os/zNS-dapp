@@ -1,8 +1,12 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+
 .profile-button {
 	width: 40px;
 	height: 40px;
 
-	transition: all var(--animation-time-short) linear;
+	transition: all #{animations.$time-short} linear;
 
 	&__container {
 		.profile-button {
@@ -13,12 +17,12 @@
 
 		&:hover {
 			.profile-button {
-				border-radius: 8px;
-				background: #1a1022;
+				border-radius: calc(#{borders.$radius-primary} / 2);
+				background: #{colors.$purple-10};
 
 				svg {
 					path {
-						stroke: white;
+						stroke: #{colors.$white};
 					}
 				}
 

@@ -1,3 +1,7 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/typography';
+
 .ButtonContainer {
 	display: flex;
 	justify-content: center;
@@ -10,9 +14,9 @@
 	width: 32px;
 	height: 32px;
 	background: none;
-	border-radius: var(--box-radius);
-	color: var(--color-text-primary);
-	font-weight: 700;
+	border-radius: #{borders.$radius-primary};
+	color: #{colors.$text-primary};
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 
 	&::before {
@@ -22,7 +26,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		border-radius: var(--box-radius);
+		border-radius: #{borders.$radius-primary};
 		border-left: 1.5px solid white;
 		border-right: 1.5px solid white;
 		box-sizing: border-box;
@@ -39,12 +43,12 @@
 		left: 50%;
 		height: 0px;
 		width: 0px;
-		border-radius: var(--box-radius);
+		border-radius: #{borders.$radius-primary};
 		z-index: -2;
 	}
 
 	&:hover {
-		background: var(--color-azure-gradient-25);
+		background: #{colors.$azure-25};
 		box-sizing: border-box;
 	}
 }

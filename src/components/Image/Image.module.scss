@@ -1,3 +1,6 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .Container {
 	display: flex;
 	justify-content: center;
@@ -19,14 +22,14 @@
 .Image {
 	max-height: 100%;
 	max-width: 100%;
-	transition: opacity var(--animation-time-medium) ease-in-out;
+	transition: opacity #{animations.$time-medium} ease-in-out;
 }
 
 .Spinner {
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	border-top: 2px solid var(--color-accent-1);
+	border-top: 2px solid #{colors.$blue};
 	animation: spin 1s linear infinite;
 	z-index: 2;
 }

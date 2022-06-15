@@ -1,3 +1,5 @@
+@use 'styles/variables/animations';
+
 .ToggleSection {
 	width: 100%;
 }
@@ -12,7 +14,7 @@
 }
 
 .Header > img {
-	transition: transform var(--animation-time-short) ease-in-out;
+	transition: transform #{animations.$time-short} ease-in-out;
 }
 
 .Open {

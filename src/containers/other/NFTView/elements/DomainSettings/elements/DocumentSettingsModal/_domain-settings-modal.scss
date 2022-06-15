@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 $width: 640px;
 $gutter: 16px;
 
@@ -6,8 +9,8 @@ $gutter: 16px;
 		align-content: center;
 		background: radial-gradient(
 			50% 50% at 50% 50%,
-			var(--color-background-alt-50) 0%,
-			var(--color-background-50) 100%
+			#{colors.$background-alt-50} 0%,
+			#{colors.$background-50} 100%
 		) !important;
 		backdrop-filter: blur(20px);
 
@@ -19,7 +22,7 @@ $gutter: 16px;
 	&__modal {
 		width: $width;
 		padding: 30px 48px 48px;
-		background: var(--color-background);
+		background: #{colors.$background-primary};
 
 		@media only screen and (max-width: #{$width + $gutter + $gutter}) {
 			width: calc(100vw - $gutter - $gutter);
@@ -34,8 +37,8 @@ $gutter: 16px;
 			padding-bottom: 24px;
 
 			h1 {
-				font-size: 24px;
-				font-weight: 700;
+				font-size: #{typography.$size-large};
+				font-weight: #{typography.$font-weight-bold};
 				text-align: center;
 				overflow-wrap: anywhere;
 			}
@@ -44,7 +47,7 @@ $gutter: 16px;
 				position: absolute;
 				top: 0;
 				right: 0;
-				color: var(--color-grey);
+				color: #{colors.$grey};
 
 				&:hover {
 					background-color: unset !important;
@@ -57,7 +60,7 @@ $gutter: 16px;
 				bottom: 0;
 				left: 0;
 				right: 0;
-				border-bottom: 1px solid var(--color-grey-mine-shaft);
+				border-bottom: 1px solid #{colors.$mine-shaft};
 			}
 		}
 

@@ -1,4 +1,5 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/colors';
 
 .Dots {
 	--dot-size: 5px;
@@ -18,7 +19,7 @@
 	height: var(--dot-size);
 	width: var(--dot-size);
 	border-radius: 50%;
-	background: var(--color-accent-1);
+	background: #{colors.$blue};
 }
 
 .Dots > div:first-child {
@@ -32,7 +33,7 @@
 .Stats {
 	display: flex;
 	justify-content: space-between;
-	background: var(--color-background);
+	background: #{colors.$background-primary};
 	flex-wrap: wrap;
 
 	@media only screen and (max-width: 415px) {

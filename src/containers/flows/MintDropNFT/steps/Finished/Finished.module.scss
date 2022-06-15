@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .Container {
 	display: flex;
 	align-items: center;
@@ -11,7 +13,7 @@
 	margin-left: 12px;
 	margin-bottom: 40px;
 
-	color: var(--color-success);
+	color: #{colors.$success-green};
 	text-align: center;
 
 	line-height: 24px;

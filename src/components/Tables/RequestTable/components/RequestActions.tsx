@@ -42,9 +42,7 @@ const RequestActions: React.FC<RequestActionsProps> = ({
 			<span
 				className={styles.Status}
 				style={{
-					color: request.request.approved
-						? 'var(--color-success)'
-						: 'var(--color-primary-lighter-3)',
+					color: request.request.approved ? '#58c573' : '#e5baff',
 				}}
 			>
 				{offerStatusAsText()}

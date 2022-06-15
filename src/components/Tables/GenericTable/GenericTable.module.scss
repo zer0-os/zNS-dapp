@@ -1,9 +1,12 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .Container {
 	position: relative;
 	width: 100%;
-	transition: height var(--animation-time-medium) ease;
+	transition: height #{animations.$time-medium} ease;
 }
 
 /* Control Styles */
@@ -35,9 +38,9 @@
 }
 
 .Table thead th {
-	font-size: var(--font-size-smaller);
-	font-weight: 700;
-	color: var(--color-grey-lighter-2);
+	font-size: #{typography.$size-small};
+	font-weight: #{typography.$font-weight-bold};
+	color: #{colors.$grey-lighter-2};
 }
 
 .Table tbody tr td:first-of-type {
@@ -66,7 +69,7 @@
 	// Mobile Breakpoints
 	width: 100%;
 	display: grid;
-	margin-top: 24px;
+	margin-top: 16px;
 	padding: 0 8px;
 	grid-template-columns: repeat(auto-fit, minmax(100%, 0.5fr));
 	grid-row-start: 1;
@@ -93,7 +96,7 @@
 }
 
 .Grid > div {
-	transition: transform var(--animation-time-long) ease;
+	transition: transform #{animations.$time-long} ease;
 }
 
 /* Loading Styles */
@@ -105,5 +108,5 @@
 	position: absolute;
 	right: 0;
 	top: calc(100% + 8px);
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }

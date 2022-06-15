@@ -1,8 +1,11 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
 
 .Container {
 	h1 {
-		font-size: 24px;
+		font-size: #{typography.$size-large};
 		font-weight: bold;
 
 		// Tablet Breakpoints
@@ -23,7 +26,7 @@
 			max-height: 370px;
 			border-radius: 0;
 			cursor: pointer;
-			border-radius: 8px;
+			border-radius: calc(#{borders.$radius-primary} / 2);
 		}
 	}
 
@@ -38,9 +41,9 @@
 
 	.Tray {
 		display: flex;
-		background: #1a1022;
+		background: #{colors.$purple-10};
 
-		border-radius: 8px;
+		border-radius: calc(#{borders.$radius-primary} / 2);
 
 		button {
 			display: flex;

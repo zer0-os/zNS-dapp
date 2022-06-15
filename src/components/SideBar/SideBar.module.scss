@@ -1,11 +1,13 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 $icon-container-size: 54px;
 
 .BorderContainer {
 	// Mobile Breakpoints
 	display: none;
-	border-right: 1px solid var(--color-grey-mine-shaft);
+	border-right: 1px solid #{colors.$mine-shaft};
 
 	// Tablet Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
@@ -105,13 +107,13 @@ $icon-container-size: 54px;
 				justify-content: center;
 				gap: 12px;
 				padding: 0;
-				color: var(--color-cornflower-blue);
-				font-weight: 400;
+				color: #{colors.$mercury};
+				font-weight: #{typography.$font-weight-regular};
 
 				&.Selected {
-					text-shadow: var(--glow-text-primary);
-					font-weight: 600;
-					color: var(--color-text-primary);
+					text-shadow: #{colors.$text-glow-primary};
+					font-weight: #{typography.$font-weight-demi-bold};
+					color: #{colors.$text-primary};
 
 					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 						img {
@@ -145,7 +147,7 @@ $icon-container-size: 54px;
 					padding: 13px;
 
 					&.Selected {
-						background: var(--color-revolver);
+						background: #{colors.$purple-10};
 					}
 
 					@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {

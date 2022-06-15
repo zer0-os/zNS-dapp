@@ -1,5 +1,8 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .Overlay {
-	--speed: var(--animation-time-short);
+	--speed: #{animations.$time-short};
 
 	display: flex;
 	justify-content: center;
@@ -16,7 +19,7 @@
 	z-index: 900000;
 	opacity: 0;
 
-	background: rgba(0, 0, 0, 0.9) !important;
+	background: rgba(colors.$black, 0.9) !important;
 	transition: backdrop-filter 0.2s;
 }
 
@@ -64,7 +67,7 @@
 }
 
 .Closed {
-	animation: close var(--animation-time-short) ease-in-out;
+	animation: close #{animations.$time-short} ease-in-out;
 	opacity: 0;
 
 	/* @todo temporarily disabled backdrop blur for performance */
@@ -75,7 +78,7 @@
 	position: fixed;
 	top: 32px;
 	right: 32px;
-	background: rgba(255, 255, 255, 0.1);
+	background: rgba(colors.$white, 0.1);
 }
 
 @keyframes open {

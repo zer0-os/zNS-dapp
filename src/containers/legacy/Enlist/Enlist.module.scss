@@ -1,9 +1,13 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+@use 'styles/variables/typography';
+
 .Enlist {
 	width: 640px;
 	padding: 40px;
 
-	color: var(--color-text-primary) !important;
-	background: var(--color-background);
+	color: #{colors.$text-primary} !important;
+	background: #{colors.$background-primary};
 }
 
 .Header {
@@ -15,15 +19,15 @@
 }
 
 .Header h1 {
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 	font-size: 36px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 	margin-bottom: 0;
 }
 
 .Header h2 {
-	color: var(--color-text-primary);
-	font-size: 24px;
+	color: #{colors.$text-primary};
+	font-size: #{typography.$size-large};
 }
 
 .Header > div {
@@ -57,7 +61,7 @@
 	overflow: hidden;
 
 	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .NFT > img {
@@ -82,6 +86,6 @@
 }
 
 .Bid {
-	font-size: 18px;
+	font-size: #{typography.$size-medium};
 	text-align: right;
 }

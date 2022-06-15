@@ -1,3 +1,7 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .TextInputTopPlaceholderWrapper {
 	position: relative;
 	flex: 1;
@@ -6,18 +10,14 @@
 .TextInputTopPlaceholder {
 	padding-top: 20px !important;
 	padding-bottom: 5px !important;
-	background: linear-gradient(
-		90deg,
-		rgba(82, 174, 255, 0.1) 0%,
-		rgba(82, 203, 255, 0.1) 100%
-	) !important;
+	background: #{colors.$ocean-10} !important;
 }
 
 .TopPlaceholder {
 	position: absolute;
 	top: 5px;
 	left: 24px;
-	color: var(--color-accent-1);
+	color: #{colors.$blue};
 	font-size: 10px;
 }
 
@@ -27,35 +27,35 @@
 
 	border-radius: 24px;
 
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 
 	background: none;
-	transition: border var(--animation-time-medium) ease-in-out;
+	transition: border #{animations.$time-medium} ease-in-out;
 
 	&::placeholder {
-		color: var(--color-grey-lighter-2);
+		color: #{colors.$grey-lighter-2};
 	}
 
 	&:disabled {
-		border-color: var(--color-grey);
-		color: var(--color-grey);
+		border-color: #{colors.$grey};
+		color: #{colors.$grey};
 
 		&::placeholder {
-			color: var(--color-grey);
+			color: #{colors.$grey};
 		}
 	}
 }
 
 .Error {
-	border: 1px solid var(--color-invalid);
+	border: 1px solid #{colors.$helitrope};
 }
 
 .ErrorMessage {
 	display: block;
 	margin-top: 12px;
 
-	color: var(--color-invalid);
-	font-size: var(--font-size-smaller);
-	font-weight: 700;
+	color: #{colors.$helitrope};
+	font-size: #{typography.$size-small};
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 }
