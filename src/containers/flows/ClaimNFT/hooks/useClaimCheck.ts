@@ -1,8 +1,6 @@
+import { useZSaleSdk } from 'lib/hooks/sdk';
 //- React Imports
 import { useState, useEffect, useCallback } from 'react';
-
-//- Library Imports
-import { useZnsSdk } from 'lib/hooks/sdk';
 
 //- Constants Imports
 import { MESSAGES } from '../ClaimNFT.constants';
@@ -16,7 +14,7 @@ const useClaimCheck = (
 	tokenID: string,
 	requestCheck: boolean,
 ): UseClaimCheckReturn => {
-	const { instance: sdk } = useZnsSdk();
+	const { claimInstance: sdk } = useZSaleSdk();
 	const [isCheckDataLoading, setIsCheckDataLoading] = useState<boolean>(true);
 	const [isTokenClaimed, setIsTokenClaimed] = useState<boolean | undefined>();
 
@@ -32,11 +30,8 @@ const useClaimCheck = (
 		setIsCheckDataLoading(true);
 
 		try {
-			// REPLACE WITH SDK METHOD
-			// const [checkData] = await Promise.all([sdk.canBeClaimed(tokenID)]);
-			const checkData = false;
-
-			setIsTokenClaimed(checkData);
+			const isClaimable = await sdk.canBeClaimed(tokenID);
+			setIsTokenClaimed(isClaimable);
 		} catch (e) {
 			console.error(MESSAGES.ASSET_ERROR, e);
 		} finally {
