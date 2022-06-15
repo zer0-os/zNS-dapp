@@ -21,6 +21,7 @@ import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
 import { ethers } from 'ethers';
 import { Maybe } from 'lib/types';
 import useNotification from 'lib/hooks/useNotification';
+import { useHistory } from 'react-router-dom';
 
 export type ClaimNFTContainerProps = {
 	requireBanner?: boolean;
@@ -51,6 +52,7 @@ const ClaimNFTContainer = ({
 	);
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
 	const { addNotification } = useNotification();
+	const history = useHistory();
 
 	const { claimInstance } = useZSaleSdk();
 	const { account, library } = useWeb3React<Web3Provider>();
@@ -69,7 +71,23 @@ const ClaimNFTContainer = ({
 	///////////////
 
 	const openWizard = (event: any) => {
-		setIsWizardOpen(true);
+		if (event.target.nodeName.toLowerCase() === 'a') {
+			return;
+		}
+
+		if (dropStage === Stage.Whitelist && !countdownDate) {
+			window?.open(
+				'https://zine.wilderworld.com/aws2-raffle-winners/',
+				'_blank',
+			);
+		}
+		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
+			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
+			history.push('market/moto.genesis ');
+		} else {
+			setIsWizardOpen(true);
+		}
 	};
 
 	const closeWizard = () => {
