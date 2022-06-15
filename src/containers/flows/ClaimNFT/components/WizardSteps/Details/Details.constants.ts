@@ -6,10 +6,14 @@ export const VIDEO_FORMAT_TYPE = {
 };
 
 export const VIDEO_FORMAT_SRC = {
-	[VIDEO_FORMAT_TYPE.NFT_JPEG]: '',
-	[VIDEO_FORMAT_TYPE.NFT_WEBM]: '',
-	[VIDEO_FORMAT_TYPE.NFT_MP4]: '',
-	[VIDEO_FORMAT_TYPE.NFT_OGG]: '',
+	[VIDEO_FORMAT_TYPE.NFT_JPEG]:
+		'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1655297742/zns/moto-claim-main.jpg',
+	[VIDEO_FORMAT_TYPE.NFT_WEBM]:
+		'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1655297742/zns/moto-claim-main.webm',
+	[VIDEO_FORMAT_TYPE.NFT_MP4]:
+		'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1655297742/zns/moto-claim-main.mp4',
+	[VIDEO_FORMAT_TYPE.NFT_OGG]:
+		'https://res.cloudinary.com/fact0ry/video/upload/q_100,c_fit,h_426,w_672/v1655297742/zns/moto-claim-main.ogv',
 };
 
 export const VIDEO_SETTINGS = {

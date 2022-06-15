@@ -70,7 +70,11 @@ export const NFTViewModalProvider = ({
 						isLoading={modalContent.contentProps.isLoading}
 					/>
 				)}
-				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && <ClaimNFT />}
+				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && (
+					<ClaimNFT
+						privateSaleEndTime={modalContent.contentProps.privateSaleEndTime}
+					/>
+				)}
 			</Overlay>
 
 			{modalContent?.modalType === NFTViewModalType.DOMAIN_SETTINGS && (

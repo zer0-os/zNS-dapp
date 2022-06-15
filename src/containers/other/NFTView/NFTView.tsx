@@ -43,6 +43,7 @@ import {
 import styles from './NFTView.module.scss';
 import { ethers } from 'ethers';
 import { NFTViewModalType } from './providers/NFTViewModalProvider/NFTViewModalProvider.types';
+import { PRIVATE_SALE_END_TIME } from 'containers/flows/Raffle/Drop.constants';
 
 //- Componennt level type definitions
 type NFTViewProps = {
@@ -203,7 +204,9 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 	const openClaim = () => {
 		openModal({
 			modalType: NFTViewModalType.CLAIM_NFT,
-			contentProps: {},
+			contentProps: {
+				privateSaleEndTime: PRIVATE_SALE_END_TIME,
+			},
 		});
 	};
 

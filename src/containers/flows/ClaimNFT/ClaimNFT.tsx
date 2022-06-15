@@ -30,6 +30,7 @@ import { ROUTES } from 'constants/routes';
 
 //- Styles Imports
 import styles from './ClaimNFT.module.scss';
+import { useZSaleSdk } from 'lib/hooks/sdk';
 
 export type ClaimNFTProps = {
 	openConnect: () => void;
@@ -38,10 +39,10 @@ export type ClaimNFTProps = {
 };
 
 const ClaimNFT = ({ openConnect, onClose, onSubmit }: ClaimNFTProps) => {
+	const { claimInstance } = useZSaleSdk();
 	//////////////////
 	// State & Data //
 	//////////////////
-
 	const [tokenID, setTokenID] = useState<string | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.Details);
 	const [transactionError, setTransactionError] = useState<
@@ -63,9 +64,11 @@ const ClaimNFT = ({ openConnect, onClose, onSubmit }: ClaimNFTProps) => {
 	// Functions //
 	///////////////
 
-	const onStepNavigation = (i: number) => {
+	const onStepNavigation = async (i: number) => {
 		setCurrentStep(i);
 		setStepContent(i);
+		const saleData = await claimInstance.getSaleData();
+		console.log(saleData);
 	};
 
 	const onStartClaim = () => {
