@@ -5,9 +5,9 @@ export const TOOLTIP = {
 
 export const WARNINGS = {
 	MINT_LIMIT:
-		'Due to Ethereum limits, you may only claim x motos per transaction. You can claim multiple times to get all of the motos you have available.',
+		'Due to Ethereum limits, you may only claim 50 motos per transaction. You can claim multiple times to get all of the motos you have available.',
 	INPUT_EXCEED_MINT_LIMIT:
-		'You can only claim a maximum of X motos per transaction',
+		'You can only claim a maximum of 50 motos per transaction',
 	INPUT_EXCEED_OWNED_QUANTITY: 'Please enter a number between 1-',
 };
 

@@ -1,12 +1,12 @@
 import { INPUT, WARNINGS } from './Claiming.constants';
 
-export const maxQuantityLimit = 10;
+export const maxQuantityLimit = 50;
 
 export const getPlaceholder = (
 	quantity: number,
 	exceedsQuantityMintLimit: boolean,
 ) =>
-	`${INPUT.PLACEHOLDER} (${exceedsQuantityMintLimit ? 'X' : quantity} ${
+	`${INPUT.PLACEHOLDER} (${exceedsQuantityMintLimit ? '50' : quantity} ${
 		INPUT.APPEND_MAX
 	})`;
 

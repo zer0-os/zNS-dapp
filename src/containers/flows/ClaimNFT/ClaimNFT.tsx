@@ -31,14 +31,21 @@ import { ROUTES } from 'constants/routes';
 //- Styles Imports
 import styles from './ClaimNFT.module.scss';
 import { useZSaleSdk } from 'lib/hooks/sdk';
+import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
 
 export type ClaimNFTProps = {
 	openConnect: () => void;
 	onClose: () => void;
 	onSubmit: (data: ClaimData) => void;
+	eligibleDomains: IDWithClaimStatus[];
 };
 
-const ClaimNFT = ({ openConnect, onClose, onSubmit }: ClaimNFTProps) => {
+const ClaimNFT = ({
+	openConnect,
+	onClose,
+	onSubmit,
+	eligibleDomains,
+}: ClaimNFTProps) => {
 	const { claimInstance } = useZSaleSdk();
 	//////////////////
 	// State & Data //
@@ -56,9 +63,9 @@ const ClaimNFT = ({ openConnect, onClose, onSubmit }: ClaimNFTProps) => {
 	const { active, account } = useWeb3React<Web3Provider>();
 	const { push: goTo } = useHistory();
 	const { isLoading, ownedDomains } = useOwnedDomains(account);
-	const eligibleDomains = ownedDomains?.filter((domain) =>
-		domain.name.includes(DOMAINS.WHEELS_DOMAIN_NAME),
-	);
+	// const eligibleDomains = ownedDomains?.filter((domain) =>
+	// 	domain.name.includes(DOMAINS.WHEELS_DOMAIN_NAME),
+	// );
 
 	///////////////
 	// Functions //
@@ -81,8 +88,8 @@ const ClaimNFT = ({ openConnect, onClose, onSubmit }: ClaimNFTProps) => {
 		setTransactionError('');
 
 		// REMOVE STEPS WHEN TX ADDED AND CALLBACKS WIRED UP
-		setCurrentStep(Step.Minting);
-		setStepContent(StepContent.Minting);
+		// setCurrentStep(Step.Minting);
+		// setStepContent(StepContent.Minting);
 
 		const statusCallback = (status: string) => {
 			setTransactionStatus(status);

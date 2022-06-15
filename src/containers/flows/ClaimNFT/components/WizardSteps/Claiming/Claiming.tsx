@@ -15,8 +15,9 @@ import {
 } from './Claiming.utils';
 //- Style Imports
 import styles from './Claiming.module.scss';
+import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
 type ClaimingProps = {
-	eligibleDomains?: Domain[];
+	eligibleDomains?: IDWithClaimStatus[];
 	apiError?: string;
 	statusText?: string;
 	onClaim: (quantity: number) => void;

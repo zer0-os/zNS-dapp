@@ -17,6 +17,10 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { getDropStage } from '../MintDropNFT/helpers';
 import { Stage } from '../MintDropNFT/types';
+import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
+import { ethers } from 'ethers';
+import { Maybe } from 'lib/types';
+import useNotification from 'lib/hooks/useNotification';
 
 export type ClaimNFTContainerProps = {
 	requireBanner?: boolean;
@@ -42,7 +46,11 @@ const ClaimNFTContainer = ({
 	const [countdownDate, setCountdownDate] = useState<number | undefined>();
 	const [refetch, setRefetch] = useState<number>(0);
 	const [canOpenWizard, setCanOpenWizard] = useState<boolean>(false);
+	const [eligibleDomains, setEligibleDomains] = useState<IDWithClaimStatus[]>(
+		[],
+	);
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
+	const { addNotification } = useNotification();
 
 	const { claimInstance } = useZSaleSdk();
 	const { account, library } = useWeb3React<Web3Provider>();
@@ -81,9 +89,33 @@ const ClaimNFTContainer = ({
 	};
 
 	const onSubmit = async (data: ClaimData) => {
-		// ADD CLAIM DOMAINS
-		// const { quantity, statusCallback, finishedCallback, errorCallback } = data;
-		// claimNFT(quantity, statusCallback, combinedFinishedCallback, errorCallback);
+		const { quantity, statusCallback, finishedCallback, errorCallback } = data;
+		try {
+			if (!library) {
+				return;
+			}
+			let tx: Maybe<ethers.ContractTransaction>;
+
+			const domainsForClaiming = eligibleDomains
+				.splice(0, quantity)
+				.map((i) => i.id);
+
+			statusCallback('Please approve in your wallet');
+
+			tx = await claimInstance.claimDomains(
+				domainsForClaiming,
+				library?.getSigner(),
+			);
+			statusCallback('Minting your moto');
+
+			await tx.wait();
+			addNotification('Claim Success');
+
+			finishedCallback();
+		} catch (err) {
+			errorCallback('Failed Transaction');
+			console.log(err);
+		}
 	};
 
 	const handleResize = () => {
@@ -155,25 +187,18 @@ const ClaimNFTContainer = ({
 	useAsyncEffect(async () => {
 		let isMounted = true;
 
-		console.log('useAsyncEffect', account, library);
-
 		if (!claimInstance || !library || !account) {
 			return;
 		}
 		// Get user data if wallet connected
 		if (account && library) {
 			try {
-				// if (!isMounted) {
-				// 	return;
-				// }
-				console.log('here');
+				if (!isMounted) {
+					return;
+				}
 				const claimingIDs = await claimInstance.getClaimingIDsForUser(account);
-				console.log('claimingIDs', claimingIDs);
-				const requests = claimingIDs.map(
-					async (item) => await claimInstance.canBeClaimed(item),
-				);
-				const claimData = await Promise.all(requests);
-				console.log(claimData, isMounted, 'text');
+				// console.log('claimingIDs', claimingIDs);
+				setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
 			} catch (err) {
 				console.log(err);
 			}
@@ -301,6 +326,7 @@ const ClaimNFTContainer = ({
 						openConnect={openConnect}
 						onClose={closeWizard}
 						onSubmit={onSubmit}
+						eligibleDomains={eligibleDomains}
 					/>
 				</Overlay>
 			)}
@@ -318,6 +344,7 @@ const ClaimNFTContainer = ({
 					openConnect={openConnect}
 					onClose={closeWizard}
 					onSubmit={onSubmit}
+					eligibleDomains={eligibleDomains}
 				/>
 			)}
 		</>
