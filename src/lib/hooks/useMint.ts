@@ -51,8 +51,8 @@ export type UseMintReturn = {
 		>,
 		setIsClaimingInProgress: (state: boolean) => void,
 		setStatus: (status: string) => void,
-		onFinish: () => void,
 		onError: (error: string) => void,
+		onFinish: () => void,
 	) => Promise<void>;
 };
 
@@ -176,8 +176,8 @@ export const useMint = (): UseMintReturn => {
 			>,
 			setIsClaimingInProgress: (state: boolean) => void,
 			setStatus: (status: string) => void,
-			onFinish: () => void,
 			onError: (error: string) => void,
+			onFinish: () => void,
 		) => {
 			const nft = {
 				zNA: '',
@@ -186,34 +186,6 @@ export const useMint = (): UseMintReturn => {
 				story: '',
 				transactionHash: '',
 			};
-
-			// if (!zSaleInstance || !library) {
-			// 	return;
-			// }
-
-			// let tx: Maybe<ethers.ContractTransaction>;
-			// setStatus(STATUS.PLEASE_APPROVE);
-
-			// try {
-			// 	tx = await zSaleInstance.purchaseDomains(
-			// 		ethers.BigNumber.from(quantity),
-			// 		library.getSigner(),
-			// 	);
-			// } catch (e) {
-			// 	console.error(e);
-			// 	console.log('here');
-			// 	onError(ERRORS.FAILED_TRANSACTION);
-			// 	setStatus('');
-			// 	return;
-			// }
-
-			// reduxActions.setMinting(nft);
-
-			// await tx.wait();
-
-			// addNotification(MINTING_FLOW_NOTIFICATIONS.REFRESH);
-			// reduxActions.setMinted(nft);
-			// onFinish();
 
 			try {
 				if (!library) {

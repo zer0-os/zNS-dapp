@@ -111,8 +111,8 @@ const ClaimNFT = ({
 			setEligibleDomains,
 			setIsClaimingInProgress,
 			statusCallback,
-			finishedCallback,
 			errorCallback,
+			finishedCallback,
 		};
 
 		onSubmit(data);
@@ -124,8 +124,9 @@ const ClaimNFT = ({
 	};
 
 	const onFinish = () => {
-		onClose();
 		setTransactionStatus('');
+		onClose();
+		console.log('Close Wizard');
 	};
 
 	/////////////

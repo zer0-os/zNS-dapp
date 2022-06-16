@@ -23,8 +23,6 @@ import { useZSaleSdk } from 'lib/hooks/sdk';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
-import { ethers } from 'ethers';
-import { Maybe } from 'lib/types';
 import useMint from 'lib/hooks/useMint';
 
 //- Style Imports
@@ -79,28 +77,29 @@ const ClaimNFTContainer = ({
 		const saleStatus = await claimInstance.getSaleStatus();
 		console.log('saleStatus', saleStatus);
 	}, [claimInstance, library, account]);
+
 	///////////////
 	// Functions //
 	///////////////
 
 	const openWizard = (event: any) => {
-		// if (event.target.nodeName.toLowerCase() === 'a') {
-		// 	return;
-		// }
+		if (event.target.nodeName.toLowerCase() === 'a') {
+			return;
+		}
 
-		// if (dropStage === Stage.Whitelist && !countdownDate) {
-		// 	window?.open(
-		// 		'https://zine.wilderworld.com/aws2-raffle-winners/',
-		// 		'_blank',
-		// 	);
-		// }
-		// if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
-		// 	window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		// } else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-		// 	history.push('market/moto.genesis ');
-		// } else {
-		setIsWizardOpen(true);
-		// }
+		if (dropStage === Stage.Whitelist && !countdownDate) {
+			window?.open(
+				'https://zine.wilderworld.com/aws2-raffle-winners/',
+				'_blank',
+			);
+		}
+		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
+			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
+			history.push('market/moto.genesis ');
+		} else {
+			setIsWizardOpen(true);
+		}
 	};
 
 	const closeWizard = () => {
@@ -126,8 +125,8 @@ const ClaimNFTContainer = ({
 			setEligibleDomains,
 			setIsClaimingInProgress,
 			statusCallback,
-			finishedCallback,
 			errorCallback,
+			finishedCallback,
 		} = data;
 		if (!isSaleHalted) {
 			claimNFT(
@@ -136,51 +135,12 @@ const ClaimNFTContainer = ({
 				setEligibleDomains,
 				setIsClaimingInProgress,
 				statusCallback,
-				finishedCallback,
 				errorCallback,
+				finishedCallback,
 			);
 		} else {
 			errorCallback(MESSAGES.SALE_ENDED);
 		}
-
-		// try {
-		// 	if (!library) {
-		// 		return;
-		// 	}
-		// 	let tx: Maybe<ethers.ContractTransaction>;
-
-		// 	const domainsForClaiming = eligibleDomains
-		// 		.splice(0, quantity)
-		// 		.map((i) => i.id);
-
-		// 	statusCallback(STATUS.PLEASE_APPROVE);
-		// 	setIsClaimingInProgress(true);
-
-		// 	tx = await claimInstance.claimDomains(
-		// 		domainsForClaiming,
-		// 		library?.getSigner(),
-		// 	);
-		// 	statusCallback(MESSAGES.MINTING_MOTO);
-		// 	finishedCallback();
-		// 	await tx.wait();
-		// 	addNotification(MESSAGES.CLAIM_SUCCESS);
-		// 	setIsClaimingInProgress(false);
-		// } catch (err) {
-		// 	errorCallback(MESSAGES.REJECTED_WALLET);
-		// 	statusCallback('');
-		// 	setIsClaimingInProgress(false);
-		// 	console.log(err);
-		// 	if (account && library) {
-		// 		try {
-		// 			const claimingIDs = await claimInstance.getClaimingIDsForUser(
-		// 				account,
-		// 			);
-		// 			setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
-		// 		} catch (err) {
-		// 			console.log(err);
-		// 		}
-		// 	}
-		// }
 	};
 
 	const handleResize = () => {

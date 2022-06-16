@@ -63,10 +63,6 @@ const useClaimCheck = (
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tokenID, requestCheck, domainName]);
 
-	console.log(isTokenClaimable, 'isTokenClaimable');
-	console.log(isValidSubdomain, 'isValidSubdomain');
-	console.log('domainName', domainName?.includes('wilder.candy.wolfsale'));
-
 	return {
 		isCheckDataLoading,
 		isTokenClaimable,
