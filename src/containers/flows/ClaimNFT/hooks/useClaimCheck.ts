@@ -55,6 +55,7 @@ const useClaimCheck = (
 		if (!tokenID || !requestCheck) {
 			preventCheck();
 		} else if (tokenID && requestCheck) {
+			// REPLACE URL - LABELS.WILDER_WHEELS_ZNA
 			if (domainName?.includes('wilder.candy.wolfsale')) {
 				setIsValidSubdomain(true);
 			}
