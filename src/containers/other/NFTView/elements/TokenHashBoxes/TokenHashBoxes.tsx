@@ -63,7 +63,8 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 	const statusText = getStatusText(isTokenClaimable);
 	const tooltipText = getTooltipText(isTokenClaimable);
 	const zna = zNAFromPathname(pathname);
-	const isWheelPath = zna.includes(LABELS.WILDER_WHEELS_ZNA);
+	// REPLACE URL WITH LABELS.WILDER_WHEELS_ZNA
+	const isWheelPath = zna.includes('candy.wolfsale');
 	const ipfsHash = useMemo(() => {
 		if (znsDomain) {
 			return getHashFromIPFSUrl(znsDomain.metadata);
@@ -91,8 +92,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 
 	return (
 		<div className={styles.TokenHashContainer}>
-			{/* REMOVE BANG */}
-			{!isWheelPath && (
+			{isWheelPath && (
 				<div className={cx(styles.Box, styles.Contract)}>
 					{isCheckDataLoading ? (
 						<div className={styles.Spinner}>
