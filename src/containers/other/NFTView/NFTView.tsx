@@ -230,9 +230,10 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		}
 	};
 
-	const { isTokenClaimable, isCheckDataLoading, isValidSubdomain } =
-		useClaimCheck(domainId, requestCheck);
-	console.log(isValidSubdomain, 'nftview');
+	const { isTokenClaimable, isCheckDataLoading } = useClaimCheck(
+		domainId,
+		requestCheck,
+	);
 
 	/////////////
 	// Effects //

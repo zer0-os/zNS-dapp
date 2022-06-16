@@ -43,7 +43,6 @@ const useClaimCheck = (
 
 		try {
 			const isClaimable = await sdk.canBeClaimed(tokenID);
-			console.log(isClaimable, 'isClaimable');
 			setIsTokenClaimable(isClaimable);
 		} catch (e) {
 			console.error(MESSAGES.ASSET_ERROR, e);
