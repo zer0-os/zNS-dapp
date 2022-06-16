@@ -14,7 +14,6 @@ import {
 
 // Library Imports
 import classNames from 'classnames/bind';
-import { Domain } from '@zero-tech/zns-sdk';
 
 //- Hook Imports
 import useClaimCheck from '../../../hooks/useClaimCheck';
@@ -85,11 +84,8 @@ const Details = ({
 	>();
 	const [requestCheck, setRequestCheck] = useState<boolean>(false);
 
-	// REPLACE WITH CAN BE CLAIMED METHOD
-	const { isTokenClaimed, isCheckDataLoading } = useClaimCheck(
-		tokenID ?? '',
-		requestCheck,
-	);
+	const { isTokenClaimable, isCheckDataLoading, isValidSubdomain } =
+		useClaimCheck(tokenID ?? '', requestCheck);
 
 	const validTokenId = isValidTokenId(tokenID ?? '');
 	const hasValue = Boolean(tokenID?.length);
@@ -141,7 +137,8 @@ const Details = ({
 		handleInputNotification(
 			setInputNotification,
 			setNotificationType,
-			isTokenClaimed,
+			isTokenClaimable,
+			isValidSubdomain,
 		);
 		setRequestCheck(true);
 	};

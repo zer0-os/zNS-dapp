@@ -35,18 +35,24 @@ export enum NotificationType {
 export const handleInputNotification = (
 	setInputNotification: (text: string) => void,
 	setNotificationType: (type: NotificationType) => void,
-	tokenClaimed?: boolean,
+	tokenClaimable?: boolean,
+	isValidSubdomain?: boolean,
 ) => {
-	if (tokenClaimed) {
-		setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_ERROR);
-		setNotificationType(NotificationType.ERROR);
-	} else if (tokenClaimed === false) {
-		setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_SUCCESS);
-		setNotificationType(NotificationType.SUCCESS);
-	} else if (tokenClaimed === undefined) {
-		setInputNotification(TEXT_INPUT.UNABLE_TO_RETRIEVE);
+	if (!isValidSubdomain) {
+		setInputNotification(TEXT_INPUT.INVALID_SUBDOMAIN);
 		setNotificationType(NotificationType.ERROR);
 	} else {
-		return;
+		if (tokenClaimable) {
+			setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_SUCCESS);
+			setNotificationType(NotificationType.SUCCESS);
+		} else if (tokenClaimable === false) {
+			setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_ERROR);
+			setNotificationType(NotificationType.ERROR);
+		} else if (tokenClaimable === undefined) {
+			setInputNotification(TEXT_INPUT.UNABLE_TO_RETRIEVE);
+			setNotificationType(NotificationType.ERROR);
+		} else {
+			return;
+		}
 	}
 };

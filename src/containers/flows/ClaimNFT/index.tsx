@@ -1,27 +1,35 @@
 //- React Imports
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 //- Component Imports
 import { MintDropNFTBanner, Overlay, ConnectToWallet } from 'components';
+import ClaimNFT from '../ClaimNFT/ClaimNFT';
 
 //- Types Imports
 import { ClaimData } from './ClaimNFT.types';
+import { Stage } from '../MintDropNFT/types';
 
-//- Style Imports
-import styles from './ClaimNFTContainer.module.scss';
-import ClaimNFT from '../ClaimNFT/ClaimNFT';
+//- Constants Imports
 import { getBannerButtonText, getBannerLabel } from './labels';
+import { MESSAGES } from './ClaimNFT.constants';
+import { STATUS } from 'constants/status';
+
+//- Utils Imports
+import { getDropStage } from '../MintDropNFT/helpers';
+
+//- Library Imports
 import useAsyncEffect from 'use-async-effect';
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { getDropStage } from '../MintDropNFT/helpers';
-import { Stage } from '../MintDropNFT/types';
 import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
 import { ethers } from 'ethers';
 import { Maybe } from 'lib/types';
 import useNotification from 'lib/hooks/useNotification';
-import { useHistory } from 'react-router-dom';
+
+//- Style Imports
+import styles from './ClaimNFTContainer.module.scss';
 
 export type ClaimNFTContainerProps = {
 	requireBanner?: boolean;
@@ -35,11 +43,18 @@ const ClaimNFTContainer = ({
 	//////////////////
 	// State & Data //
 	//////////////////
+	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
+	const history = useHistory();
+	const { addNotification } = useNotification();
+	const { claimInstance } = useZSaleSdk();
+	const { account, library } = useWeb3React<Web3Provider>();
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
 	const [isConnectPromptOpen, setIsConnectPromptOpen] =
 		useState<boolean>(false);
 	const [failedToLoad, setFailedToLoad] = useState<boolean>(false);
 	const [hasCountdownFinished, setHasCountdownFinished] =
+		useState<boolean>(false);
+	const [isClaimingInProgress, setIsClaimingInProgress] =
 		useState<boolean>(false);
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
 	const [wheelsTotal, setWheelsTotal] = useState<number | undefined>();
@@ -47,47 +62,42 @@ const ClaimNFTContainer = ({
 	const [countdownDate, setCountdownDate] = useState<number | undefined>();
 	const [refetch, setRefetch] = useState<number>(0);
 	const [canOpenWizard, setCanOpenWizard] = useState<boolean>(false);
+	const [isClaimDataLoading, setIsClaimDataLoading] = useState<boolean>(false);
 	const [eligibleDomains, setEligibleDomains] = useState<IDWithClaimStatus[]>(
 		[],
 	);
-	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
-	const { addNotification } = useNotification();
-	const history = useHistory();
-
-	const { claimInstance } = useZSaleSdk();
-	const { account, library } = useWeb3React<Web3Provider>();
 
 	useAsyncEffect(async () => {
 		const saleData = await claimInstance.getSaleData();
-		console.log(saleData);
+		console.log('saleData', saleData);
 	}, [claimInstance, library, account]);
 
 	useAsyncEffect(async () => {
 		const saleStatus = await claimInstance.getSaleStatus();
-		console.log(saleStatus);
+		console.log('saleStatus', saleStatus);
 	}, [claimInstance, library, account]);
 	///////////////
 	// Functions //
 	///////////////
 
 	const openWizard = (event: any) => {
-		if (event.target.nodeName.toLowerCase() === 'a') {
-			return;
-		}
+		// if (event.target.nodeName.toLowerCase() === 'a') {
+		// 	return;
+		// }
 
-		if (dropStage === Stage.Whitelist && !countdownDate) {
-			window?.open(
-				'https://zine.wilderworld.com/aws2-raffle-winners/',
-				'_blank',
-			);
-		}
-		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
-			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-			history.push('market/moto.genesis ');
-		} else {
-			setIsWizardOpen(true);
-		}
+		// if (dropStage === Stage.Whitelist && !countdownDate) {
+		// 	window?.open(
+		// 		'https://zine.wilderworld.com/aws2-raffle-winners/',
+		// 		'_blank',
+		// 	);
+		// }
+		// if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
+		// 	window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
+		// } else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
+		// 	history.push('market/moto.genesis ');
+		// } else {
+		setIsWizardOpen(true);
+		// }
 	};
 
 	const closeWizard = () => {
@@ -118,21 +128,35 @@ const ClaimNFTContainer = ({
 				.splice(0, quantity)
 				.map((i) => i.id);
 
-			statusCallback('Please approve in your wallet');
+			statusCallback(STATUS.PLEASE_APPROVE);
+			setIsClaimingInProgress(true);
 
 			tx = await claimInstance.claimDomains(
 				domainsForClaiming,
 				library?.getSigner(),
 			);
-			statusCallback('Minting your moto');
+			statusCallback(MESSAGES.MINTING_MOTO);
 
 			await tx.wait();
-			addNotification('Claim Success');
+			addNotification(MESSAGES.CLAIM_SUCCESS);
+			setIsClaimingInProgress(false);
 
 			finishedCallback();
 		} catch (err) {
-			errorCallback('Failed Transaction');
+			errorCallback(MESSAGES.REJECTED_WALLET);
+			statusCallback('');
+			setIsClaimingInProgress(false);
 			console.log(err);
+			if (account && library) {
+				try {
+					const claimingIDs = await claimInstance.getClaimingIDsForUser(
+						account,
+					);
+					setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
+				} catch (err) {
+					console.log(err);
+				}
+			}
 		}
 	};
 
@@ -211,15 +235,16 @@ const ClaimNFTContainer = ({
 		// Get user data if wallet connected
 		if (account && library) {
 			try {
+				setIsClaimDataLoading(true);
 				if (!isMounted) {
 					return;
 				}
 				const claimingIDs = await claimInstance.getClaimingIDsForUser(account);
-				// console.log('claimingIDs', claimingIDs);
 				setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
 			} catch (err) {
 				console.log(err);
 			}
+			setIsClaimDataLoading(false);
 		}
 		return () => {
 			isMounted = false;
@@ -345,6 +370,8 @@ const ClaimNFTContainer = ({
 						onClose={closeWizard}
 						onSubmit={onSubmit}
 						eligibleDomains={eligibleDomains}
+						isClaimingInProgress={isClaimingInProgress}
+						isClaimDataLoading={isClaimDataLoading}
 					/>
 				</Overlay>
 			)}
@@ -363,6 +390,8 @@ const ClaimNFTContainer = ({
 					onClose={closeWizard}
 					onSubmit={onSubmit}
 					eligibleDomains={eligibleDomains}
+					isClaimingInProgress={isClaimingInProgress}
+					isClaimDataLoading={isClaimDataLoading}
 				/>
 			)}
 		</>

@@ -19,7 +19,11 @@ export const handleInputError = (
 	if (exceedsQuantityMintLimit && Number(total) > maxQuantityLimit) {
 		setInputError(WARNINGS.INPUT_EXCEED_MINT_LIMIT);
 	} else if (Number(total) > ownedQuantity) {
-		setInputError(WARNINGS.INPUT_EXCEED_OWNED_QUANTITY + String(ownedQuantity));
+		const errorText =
+			ownedQuantity === 1
+				? WARNINGS.INPUT_EXCEED_OWNED_ONE
+				: WARNINGS.INPUT_EXCEED_OWNED_QUANTITY + String(ownedQuantity);
+		setInputError(errorText);
 	} else {
 		return;
 	}

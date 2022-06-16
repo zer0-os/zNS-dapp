@@ -28,6 +28,7 @@ export const TEXT_INPUT = {
 	CLAIM_CONSUMED_ERROR: 'This Wheel has already been used to claim a Moto',
 	CLAIM_CONSUMED_SUCCESS: 'This Wheel has a moto claim available',
 	UNABLE_TO_RETRIEVE: 'Unable to retrieve data for Token ID.',
+	INVALID_SUBDOMAIN: 'Token ID is not a valid Wilder Wheels ID',
 };
 
 export const TOOLTIP = {

@@ -9,6 +9,7 @@ export const WARNINGS = {
 	INPUT_EXCEED_MINT_LIMIT:
 		'You can only claim a maximum of 50 motos per transaction',
 	INPUT_EXCEED_OWNED_QUANTITY: 'Please enter a number between 1-',
+	INPUT_EXCEED_OWNED_ONE: 'Please enter 1 to claim',
 };
 
 export const INPUT = {

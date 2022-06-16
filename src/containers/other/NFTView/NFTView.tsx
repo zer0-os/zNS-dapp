@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState, useEffect } from 'react';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
@@ -44,6 +44,7 @@ import styles from './NFTView.module.scss';
 import { ethers } from 'ethers';
 import { NFTViewModalType } from './providers/NFTViewModalProvider/NFTViewModalProvider.types';
 import { PRIVATE_SALE_END_TIME } from 'containers/flows/Raffle/Drop.constants';
+import useClaimCheck from 'containers/flows/ClaimNFT/hooks/useClaimCheck';
 
 //- Componennt level type definitions
 type NFTViewProps = {
@@ -84,6 +85,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	//- Modal Provider Hook
 	const { openModal, closeModal } = useNFTViewModal();
+
 	//- Memoized data
 	const {
 		isBiddable,
@@ -125,6 +127,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			nftMoreOptions,
 		};
 	}, [znsDomain, domainMetadata, account, mediaAsset, buyNowPrice, allBids]);
+
+	const [requestCheck, setRequestCheck] = useState<boolean>(false);
 
 	// Convert highest bid as wei
 	const highestBidAsWei =
@@ -226,6 +230,35 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 		}
 	};
 
+	const { isTokenClaimable, isCheckDataLoading, isValidSubdomain } =
+		useClaimCheck(domainId, requestCheck);
+	console.log(isValidSubdomain, 'nftview');
+
+	/////////////
+	// Effects //
+	/////////////
+
+	useEffect(() => {
+		let isMounted = true;
+
+		if (!domainId) {
+			return;
+		}
+		if (domainId) {
+			try {
+				if (!isMounted) {
+					return;
+				}
+				setRequestCheck(true);
+			} catch (err) {
+				console.log(err);
+			}
+		}
+		return () => {
+			isMounted = false;
+		};
+	}, [domainId]);
+
 	////////////
 	// Render //
 	////////////
@@ -272,6 +305,8 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 				domainId={domainId}
 				chainId={chainId}
 				znsDomain={znsDomain}
+				isTokenClaimable={isTokenClaimable}
+				isCheckDataLoading={isCheckDataLoading}
 				onClaim={openClaim}
 			/>
 

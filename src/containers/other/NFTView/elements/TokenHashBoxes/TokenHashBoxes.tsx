@@ -6,7 +6,13 @@ import { useLocation } from 'react-router-dom';
 import { BigNumber } from 'ethers';
 
 //- Component Imports
-import { ArrowLink, QuestionButton, TextButton, Tooltip } from 'components';
+import {
+	ArrowLink,
+	QuestionButton,
+	TextButton,
+	Tooltip,
+	Spinner,
+} from 'components';
 
 //- Constant Imports
 import { BOX_CONTENT, LINK_TEXT, LABELS } from './TokenHashBoxes.constants';
@@ -37,6 +43,8 @@ type TokenHashBoxesProps = {
 	domainId: string;
 	chainId?: number;
 	znsDomain: Maybe<DisplayParentDomain>;
+	isTokenClaimable: boolean;
+	isCheckDataLoading: boolean;
 	onClaim: () => void;
 };
 
@@ -46,19 +54,16 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 	domainId,
 	chainId,
 	znsDomain,
+	isTokenClaimable,
+	isCheckDataLoading,
 	onClaim,
 }) => {
-	const { addNotification } = useNotification();
-
-	// REPLACE WITH CLAIMED DATA
-	const isClaimed = false;
-	const statusText = getStatusText(isClaimed);
-	const tooltipText = getTooltipText(isClaimed);
-
 	const { pathname } = useLocation();
+	const { addNotification } = useNotification();
+	const statusText = getStatusText(isTokenClaimable);
+	const tooltipText = getTooltipText(isTokenClaimable);
 	const zna = zNAFromPathname(pathname);
 	const isWheelPath = zna.includes(LABELS.WILDER_WHEELS_ZNA);
-
 	const ipfsHash = useMemo(() => {
 		if (znsDomain) {
 			return getHashFromIPFSUrl(znsDomain.metadata);
@@ -89,17 +94,25 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 			{/* REMOVE BANG */}
 			{!isWheelPath && (
 				<div className={cx(styles.Box, styles.Contract)}>
-					<div className={styles.FlexWrapper}>
-						<h4>{BOX_CONTENT.CLAIM_STATUS}</h4>
-						<Tooltip deepPadding text={tooltipText}>
-							<QuestionButton small />
-						</Tooltip>
-					</div>
-					<p>{statusText}</p>
-					{!isClaimed && (
-						<TextButton className={styles.TextButton} onClick={onClaim}>
-							{LINK_TEXT[BOX_CONTENT.CLAIM_STATUS]}
-						</TextButton>
+					{isCheckDataLoading ? (
+						<div className={styles.Spinner}>
+							<Spinner />
+						</div>
+					) : (
+						<>
+							<div className={styles.FlexWrapper}>
+								<h4>{BOX_CONTENT.CLAIM_STATUS}</h4>
+								<Tooltip deepPadding text={tooltipText}>
+									<QuestionButton small />
+								</Tooltip>
+							</div>
+							<p>{statusText}</p>
+							{isTokenClaimable && (
+								<TextButton className={styles.TextButton} onClick={onClaim}>
+									{LINK_TEXT[BOX_CONTENT.CLAIM_STATUS]}
+								</TextButton>
+							)}
+						</>
 					)}
 				</div>
 			)}

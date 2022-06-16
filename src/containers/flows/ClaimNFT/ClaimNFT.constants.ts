@@ -30,6 +30,8 @@ export const MESSAGES = {
 	ASSET_ERROR: 'Failed to retrieve domain asset data',
 	REJECTED_WALLET: 'Transaction denied by wallet',
 	FAILED_TO_RETRIEVE_DATA: 'Failed to retrieve primary data',
+	CLAIM_SUCCESS: 'Your Motos were successfully minted!',
+	MINTING_MOTO: 'Minting your moto',
 };
 
 export const LOADING_TEXT = {

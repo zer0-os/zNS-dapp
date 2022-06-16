@@ -354,10 +354,18 @@
 		margin-top: 4px;
 		padding-left: 0;
 		font-size: 12px;
+		width: fit-content;
 
 		img {
 			display: none;
 		}
+	}
+
+	.Spinner {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
 	}
 }
 

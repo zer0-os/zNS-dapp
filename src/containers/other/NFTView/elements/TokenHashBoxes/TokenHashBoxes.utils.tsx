@@ -1,7 +1,7 @@
 import { TOOLTIP, STATUS, STATUS_TEXT } from './TokenHashBoxes.constants';
 
-export const getTooltipText = (isClaimed: boolean) =>
-	isClaimed ? TOOLTIP[STATUS.CLAIMED] : TOOLTIP[STATUS.CLAIM];
+export const getTooltipText = (isClaimable: boolean) =>
+	isClaimable ? TOOLTIP[STATUS.CLAIM] : TOOLTIP[STATUS.CLAIMED];
 
-export const getStatusText = (isClaimed: boolean) =>
-	isClaimed ? STATUS_TEXT[STATUS.CLAIMED] : STATUS_TEXT[STATUS.CLAIM];
+export const getStatusText = (isClaimable: boolean) =>
+	isClaimable ? STATUS_TEXT[STATUS.CLAIM] : STATUS_TEXT[STATUS.CLAIMED];

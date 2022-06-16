@@ -1,33 +1,49 @@
+//- React Imports
 import { FormEvent, useState } from 'react';
+
 //- Library Imports
 import classNames from 'classnames/bind';
-import { Domain } from '@zero-tech/zns-sdk';
+import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
+
 //- Component Imports
-import { TextInput, QuestionButton, Tooltip, FutureButton } from 'components';
+import {
+	TextInput,
+	QuestionButton,
+	Tooltip,
+	FutureButton,
+	Spinner,
+} from 'components';
+
 //- Constants Imports
 import { LABELS, MESSAGES } from 'containers/flows/ClaimNFT/ClaimNFT.constants';
 import { TOOLTIP, INPUT, BUTTON_TEXT, WARNINGS } from './Claiming.constants';
+
 //- Utils Imports
 import {
 	getPlaceholder,
 	handleInputError,
 	maxQuantityLimit,
 } from './Claiming.utils';
+
 //- Style Imports
 import styles from './Claiming.module.scss';
-import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
+
 type ClaimingProps = {
 	eligibleDomains?: IDWithClaimStatus[];
 	apiError?: string;
 	statusText?: string;
 	onClaim: (quantity: number) => void;
+	isClaiming?: boolean;
 };
+
 const cx = classNames.bind(styles);
+
 const Claiming = ({
 	eligibleDomains,
 	apiError,
 	statusText,
 	onClaim,
+	isClaiming,
 }: ClaimingProps) => {
 	///////////////////////
 	// State & Variables //
@@ -48,6 +64,7 @@ const Claiming = ({
 		quantity !== undefined &&
 		!isNaN(Number(quantity)) &&
 		Number(quantity) % 1 === 0;
+
 	///////////////
 	// Functions //
 	///////////////
@@ -139,14 +156,19 @@ const Claiming = ({
 							{apiError}
 						</div>
 					)}
+
 					<div className={styles.ButtonContainer}>
-						<FutureButton
-							glow={validQuantity}
-							disabled={!validQuantity}
-							onClick={() => {}}
-						>
-							{BUTTON_TEXT}
-						</FutureButton>
+						{!isClaiming ? (
+							<FutureButton
+								glow={validQuantity}
+								disabled={!validQuantity}
+								onClick={() => {}}
+							>
+								{BUTTON_TEXT}
+							</FutureButton>
+						) : (
+							<Spinner />
+						)}
 					</div>
 				</form>
 			</section>
