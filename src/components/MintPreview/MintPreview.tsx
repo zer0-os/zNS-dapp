@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import { Maybe, NftStatusCard } from 'lib/types';
 import { truncateDomain, zNAToLink } from 'lib/utils';
 import { useStaking } from 'lib/hooks/useStaking';
+import useNotification from 'lib/hooks/useNotification';
+
 //- Component Imports
 import { Image, FutureButton } from 'components';
 
@@ -19,6 +21,7 @@ import { getPreviewPrompt, MAX_CHARACTER_VALUE } from './MintPreview.utils';
 import styles from './MintPreview.module.scss';
 
 //- Contants Imports
+import { CLAIM_FLOW_NOTIFICATIONS } from 'constants/notifications';
 import {
 	TITLE,
 	ALT_TEXT,
@@ -36,6 +39,12 @@ type MintPreviewProps = {
 const MintPreview = (props: MintPreviewProps) => {
 	const { minting, minted } = useMint();
 	const { requesting, requested } = useStaking();
+	const { addNotification } = useNotification();
+
+	const handleClick = () => {
+		props.onOpenProfile();
+		addNotification(CLAIM_FLOW_NOTIFICATIONS.REFRESH);
+	};
 
 	const statusCard = (
 		nft: NftStatusCard,
@@ -82,7 +91,7 @@ const MintPreview = (props: MintPreviewProps) => {
 								{exists && (
 									<div className={styles.ButtonContainer}>
 										{nft.transactionHash.length > 0 && (
-											<FutureButton glow onClick={props.onOpenProfile}>
+											<FutureButton glow onClick={handleClick}>
 												{BUTTON_TEXT.VIEW_PROFILE}
 											</FutureButton>
 										)}

@@ -1,3 +1,5 @@
+import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
+
 export enum StepContent {
 	Details,
 	Claim,
@@ -24,6 +26,9 @@ export type ClaimDropData = {
 
 export type ClaimData = {
 	quantity: number;
+	eligibleDomains: IDWithClaimStatus[];
+	setEligibleDomains: React.Dispatch<React.SetStateAction<IDWithClaimStatus[]>>;
+	setIsClaimingInProgress: (state: boolean) => void;
 	statusCallback: (status: string) => void;
 	errorCallback: (error: string) => void;
 	finishedCallback: () => void;

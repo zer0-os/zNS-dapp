@@ -37,6 +37,8 @@ export type ClaimNFTProps = {
 	eligibleDomains: IDWithClaimStatus[];
 	isClaimingInProgress?: boolean;
 	isClaimDataLoading?: boolean;
+	setEligibleDomains: React.Dispatch<React.SetStateAction<IDWithClaimStatus[]>>;
+	setIsClaimingInProgress: (state: boolean) => void;
 };
 
 const ClaimNFT = ({
@@ -46,6 +48,8 @@ const ClaimNFT = ({
 	eligibleDomains,
 	isClaimingInProgress,
 	isClaimDataLoading,
+	setEligibleDomains,
+	setIsClaimingInProgress,
 }: ClaimNFTProps) => {
 	const isMounted = useRef(false);
 	//////////////////
@@ -69,6 +73,9 @@ const ClaimNFT = ({
 	///////////////
 
 	const onStepNavigation = async (i: number) => {
+		if (currentStep === Step.Minting) {
+			return;
+		}
 		setCurrentStep(i);
 		setStepContent(i);
 		const saleData = await claimInstance.getSaleData();
@@ -100,6 +107,9 @@ const ClaimNFT = ({
 
 		const data: ClaimData = {
 			quantity,
+			eligibleDomains,
+			setEligibleDomains,
+			setIsClaimingInProgress,
 			statusCallback,
 			finishedCallback,
 			errorCallback,
@@ -111,6 +121,11 @@ const ClaimNFT = ({
 	const onRedirect = () => {
 		goTo(ROUTES.MARKET + DOMAINS.ELIGIBLE_NFT_ROUTE);
 		onClose();
+	};
+
+	const onFinish = () => {
+		onClose();
+		setTransactionStatus('');
 	};
 
 	/////////////
@@ -166,7 +181,7 @@ const ClaimNFT = ({
 			<Details
 				isWalletConnected={active}
 				currentStep={currentStep}
-				onFinish={onClose}
+				onFinish={onFinish}
 			/>
 		),
 	};

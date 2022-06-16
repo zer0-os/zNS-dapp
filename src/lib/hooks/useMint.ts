@@ -14,6 +14,7 @@ import useNotification from 'lib/hooks/useNotification';
 import { useBasicController } from 'lib/hooks/useBasicController';
 import { Maybe, NftParams, NftStatusCard } from 'lib/types';
 import { createDomainMetadata, UploadedDomainMetadata } from 'lib/utils';
+import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
 
 //- Store Imports
 import { getMinting, getMinted } from 'store/mint/selectors';
@@ -27,7 +28,10 @@ import { LABELS } from 'constants/labels';
 import { IMAGE_URI } from 'constants/uris';
 import { ERRORS } from 'constants/errors';
 import { STATUS } from 'constants/status';
-import { MINTING_FLOW_NOTIFICATIONS } from 'constants/notifications';
+import {
+	MINTING_FLOW_NOTIFICATIONS,
+	CLAIM_FLOW_NOTIFICATIONS,
+} from 'constants/notifications';
 
 export type UseMintReturn = {
 	minting: NftStatusCard[];
@@ -39,12 +43,17 @@ export type UseMintReturn = {
 		onFinish: () => void,
 		onError: (error: string) => void,
 	) => Promise<void>;
-	// claimNFT: (
-	// 	quantity: number,
-	// 	setStatus: (status: string) => void,
-	// 	onFinish: () => void,
-	// 	onError: (error: string) => void,
-	// ) => Promise<void>;
+	claimNFT: (
+		quantity: number,
+		eligibleDomains: IDWithClaimStatus[],
+		setEligibleDomains: React.Dispatch<
+			React.SetStateAction<IDWithClaimStatus[]>
+		>,
+		setIsClaimingInProgress: (state: boolean) => void,
+		setStatus: (status: string) => void,
+		onFinish: () => void,
+		onError: (error: string) => void,
+	) => Promise<void>;
 };
 
 const useMintRedux = () => {
@@ -89,8 +98,8 @@ export const useMint = (): UseMintReturn => {
 	////////////////////////
 
 	const { addNotification } = useNotification();
-	const { instance: zSaleInstance } = useZSaleSdk();
-	const { library } = useWeb3React<Web3Provider>();
+	const { instance: zSaleInstance, claimInstance } = useZSaleSdk();
+	const { account, library } = useWeb3React<Web3Provider>();
 	const basicController = useBasicController();
 	const { reduxState, reduxActions } = useMintRedux();
 
@@ -158,51 +167,103 @@ export const useMint = (): UseMintReturn => {
 		[reduxActions, addNotification, zSaleInstance, library],
 	);
 
-	// const claimNFT = useCallback(
-	// 	async (
-	// 		quantity: number,
-	// 		setStatus: (status: string) => void,
-	// 		onFinish: () => void,
-	// 		onError: (error: string) => void,
-	// 	) => {
-	// 		const nft = {
-	// 			zNA: '',
-	// 			title: LABELS.CLAIM_NFT_DROP_DEFAULT_TITLE,
-	// 			imageUri: IMAGE_URI.CLAIM_NFT_DROP_DEFAULT_IMAGE_URI,
-	// 			story: '',
-	// 			transactionHash: '',
-	// 		};
+	const claimNFT = useCallback(
+		async (
+			quantity: number,
+			eligibleDomains: IDWithClaimStatus[],
+			setEligibleDomains: React.Dispatch<
+				React.SetStateAction<IDWithClaimStatus[]>
+			>,
+			setIsClaimingInProgress: (state: boolean) => void,
+			setStatus: (status: string) => void,
+			onFinish: () => void,
+			onError: (error: string) => void,
+		) => {
+			const nft = {
+				zNA: '',
+				title: LABELS.CLAIM_NFT_DROP_DEFAULT_TITLE,
+				imageUri: IMAGE_URI.CLAIM_NFT_DROP_DEFAULT_IMAGE_URI,
+				story: '',
+				transactionHash: '',
+			};
 
-	// 		if (!zSaleInstance || !library) {
-	// 			return;
-	// 		}
+			// if (!zSaleInstance || !library) {
+			// 	return;
+			// }
 
-	// 		let tx: Maybe<ethers.ContractTransaction>;
-	// 		setStatus(STATUS.PLEASE_APPROVE);
+			// let tx: Maybe<ethers.ContractTransaction>;
+			// setStatus(STATUS.PLEASE_APPROVE);
 
-	// 		try {
-	// 			tx = await zSaleInstance.purchaseDomains(
-	// 				ethers.BigNumber.from(quantity),
-	// 				library.getSigner(),
-	// 			);
-	// 		} catch (e) {
-	// 			console.error(e);
-	// 			console.log('here');
-	// 			onError(ERRORS.FAILED_TRANSACTION);
-	// 			setStatus('');
-	// 			return;
-	// 		}
+			// try {
+			// 	tx = await zSaleInstance.purchaseDomains(
+			// 		ethers.BigNumber.from(quantity),
+			// 		library.getSigner(),
+			// 	);
+			// } catch (e) {
+			// 	console.error(e);
+			// 	console.log('here');
+			// 	onError(ERRORS.FAILED_TRANSACTION);
+			// 	setStatus('');
+			// 	return;
+			// }
 
-	// 		reduxActions.setMinting(nft);
+			// reduxActions.setMinting(nft);
 
-	// 		await tx.wait();
+			// await tx.wait();
 
-	// 		addNotification(MINTING_FLOW_NOTIFICATIONS.REFRESH);
-	// 		reduxActions.setMinted(nft);
-	// 		onFinish();
-	// 	},
-	// 	[reduxActions, addNotification, zSaleInstance, library],
-	// );
+			// addNotification(MINTING_FLOW_NOTIFICATIONS.REFRESH);
+			// reduxActions.setMinted(nft);
+			// onFinish();
+
+			try {
+				if (!library) {
+					return;
+				}
+				let tx: Maybe<ethers.ContractTransaction>;
+
+				const domainsForClaiming = eligibleDomains
+					.splice(0, quantity)
+					.map((i) => i.id);
+
+				setStatus(STATUS.PLEASE_APPROVE);
+				setIsClaimingInProgress(true);
+
+				tx = await claimInstance.claimDomains(
+					domainsForClaiming,
+					library?.getSigner(),
+				);
+
+				setStatus(CLAIM_FLOW_NOTIFICATIONS.MINTING_MOTO);
+				onFinish();
+
+				reduxActions.setMinting(nft);
+
+				await tx.wait();
+
+				addNotification(CLAIM_FLOW_NOTIFICATIONS.CLAIM_SUCCESS);
+				reduxActions.setMinted(nft);
+				setIsClaimingInProgress(false);
+			} catch (err) {
+				onError(ERRORS.REJECTED_WALLET);
+				setStatus('');
+				setIsClaimingInProgress(false);
+				console.log(err);
+
+				// Reset claimable total if error
+				if (account && library) {
+					try {
+						const claimingIDs = await claimInstance.getClaimingIDsForUser(
+							account,
+						);
+						setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
+					} catch (err) {
+						console.log(err);
+					}
+				}
+			}
+		},
+		[account, addNotification, claimInstance, library, reduxActions],
+	);
 
 	// TODO: Migrate this once zNS SDK supports minting
 	const mint = useCallback(
@@ -274,14 +335,9 @@ export const useMint = (): UseMintReturn => {
 			minted: reduxState.minted,
 			mint,
 			mintWheels,
-			// claimNFT,
+			claimNFT,
 		}),
-		[
-			reduxState,
-			mint,
-			mintWheels,
-			// claimNFT
-		],
+		[reduxState, mint, mintWheels, claimNFT],
 	);
 };
 

@@ -7,9 +7,14 @@ export enum WALLET_NOTIFICATIONS {
 
 export enum MINTING_FLOW_NOTIFICATIONS {
 	STARTED_MINTING = 'Started minting',
-	REFRESH = 'You may need to refresh this page to see your newly minted NFTs',
 	MINT_SUCCESSFUL = 'Successfully minted your Kicks. Open your Profile to view it',
 	FINISH_MINTING = 'Finished minting',
 	INVALID_DOMAIN_NAME = 'Invalid domain name:',
 	INVALID_PROMPT_LABEL = '(Uppercase characters)',
+}
+
+export enum CLAIM_FLOW_NOTIFICATIONS {
+	CLAIM_SUCCESS = 'Your Motos were successfully minted!',
+	MINTING_MOTO = 'Minting your moto',
+	REFRESH = 'You may need to refresh this page to see your newly minted NFTs',
 }

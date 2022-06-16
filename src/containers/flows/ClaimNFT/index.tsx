@@ -13,7 +13,6 @@ import { Stage } from '../MintDropNFT/types';
 //- Constants Imports
 import { getBannerButtonText, getBannerLabel } from './labels';
 import { MESSAGES } from './ClaimNFT.constants';
-import { STATUS } from 'constants/status';
 
 //- Utils Imports
 import { getDropStage } from '../MintDropNFT/helpers';
@@ -26,7 +25,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
 import { ethers } from 'ethers';
 import { Maybe } from 'lib/types';
-import useNotification from 'lib/hooks/useNotification';
+import useMint from 'lib/hooks/useMint';
 
 //- Style Imports
 import styles from './ClaimNFTContainer.module.scss';
@@ -45,7 +44,8 @@ const ClaimNFTContainer = ({
 	//////////////////
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
 	const history = useHistory();
-	const { addNotification } = useNotification();
+	const { claimNFT } = useMint();
+
 	const { claimInstance } = useZSaleSdk();
 	const { account, library } = useWeb3React<Web3Provider>();
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
@@ -66,6 +66,9 @@ const ClaimNFTContainer = ({
 	const [eligibleDomains, setEligibleDomains] = useState<IDWithClaimStatus[]>(
 		[],
 	);
+
+	// NOTE: TEMPORARY FOR SALE HALT
+	const isSaleHalted = false;
 
 	useAsyncEffect(async () => {
 		const saleData = await claimInstance.getSaleData();
@@ -117,47 +120,67 @@ const ClaimNFTContainer = ({
 	};
 
 	const onSubmit = async (data: ClaimData) => {
-		const { quantity, statusCallback, finishedCallback, errorCallback } = data;
-		try {
-			if (!library) {
-				return;
-			}
-			let tx: Maybe<ethers.ContractTransaction>;
-
-			const domainsForClaiming = eligibleDomains
-				.splice(0, quantity)
-				.map((i) => i.id);
-
-			statusCallback(STATUS.PLEASE_APPROVE);
-			setIsClaimingInProgress(true);
-
-			tx = await claimInstance.claimDomains(
-				domainsForClaiming,
-				library?.getSigner(),
+		const {
+			quantity,
+			eligibleDomains,
+			setEligibleDomains,
+			setIsClaimingInProgress,
+			statusCallback,
+			finishedCallback,
+			errorCallback,
+		} = data;
+		if (!isSaleHalted) {
+			claimNFT(
+				quantity,
+				eligibleDomains,
+				setEligibleDomains,
+				setIsClaimingInProgress,
+				statusCallback,
+				finishedCallback,
+				errorCallback,
 			);
-			statusCallback(MESSAGES.MINTING_MOTO);
-
-			await tx.wait();
-			addNotification(MESSAGES.CLAIM_SUCCESS);
-			setIsClaimingInProgress(false);
-
-			finishedCallback();
-		} catch (err) {
-			errorCallback(MESSAGES.REJECTED_WALLET);
-			statusCallback('');
-			setIsClaimingInProgress(false);
-			console.log(err);
-			if (account && library) {
-				try {
-					const claimingIDs = await claimInstance.getClaimingIDsForUser(
-						account,
-					);
-					setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
-				} catch (err) {
-					console.log(err);
-				}
-			}
+		} else {
+			errorCallback(MESSAGES.SALE_ENDED);
 		}
+
+		// try {
+		// 	if (!library) {
+		// 		return;
+		// 	}
+		// 	let tx: Maybe<ethers.ContractTransaction>;
+
+		// 	const domainsForClaiming = eligibleDomains
+		// 		.splice(0, quantity)
+		// 		.map((i) => i.id);
+
+		// 	statusCallback(STATUS.PLEASE_APPROVE);
+		// 	setIsClaimingInProgress(true);
+
+		// 	tx = await claimInstance.claimDomains(
+		// 		domainsForClaiming,
+		// 		library?.getSigner(),
+		// 	);
+		// 	statusCallback(MESSAGES.MINTING_MOTO);
+		// 	finishedCallback();
+		// 	await tx.wait();
+		// 	addNotification(MESSAGES.CLAIM_SUCCESS);
+		// 	setIsClaimingInProgress(false);
+		// } catch (err) {
+		// 	errorCallback(MESSAGES.REJECTED_WALLET);
+		// 	statusCallback('');
+		// 	setIsClaimingInProgress(false);
+		// 	console.log(err);
+		// 	if (account && library) {
+		// 		try {
+		// 			const claimingIDs = await claimInstance.getClaimingIDsForUser(
+		// 				account,
+		// 			);
+		// 			setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
+		// 		} catch (err) {
+		// 			console.log(err);
+		// 		}
+		// 	}
+		// }
 	};
 
 	const handleResize = () => {
@@ -372,6 +395,8 @@ const ClaimNFTContainer = ({
 						eligibleDomains={eligibleDomains}
 						isClaimingInProgress={isClaimingInProgress}
 						isClaimDataLoading={isClaimDataLoading}
+						setEligibleDomains={setEligibleDomains}
+						setIsClaimingInProgress={setIsClaimingInProgress}
 					/>
 				</Overlay>
 			)}
@@ -392,6 +417,8 @@ const ClaimNFTContainer = ({
 					eligibleDomains={eligibleDomains}
 					isClaimingInProgress={isClaimingInProgress}
 					isClaimDataLoading={isClaimDataLoading}
+					setEligibleDomains={setEligibleDomains}
+					setIsClaimingInProgress={setIsClaimingInProgress}
 				/>
 			)}
 		</>
