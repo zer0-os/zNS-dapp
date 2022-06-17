@@ -13,14 +13,9 @@
 	.Stats {
 		display: flex;
 		flex-direction: column;
+		gap: 16px;
 
 		> * {
-			margin-right: 0 !important;
-
-			&:not(:first-child) {
-				margin-top: 8px;
-			}
-
 			&:last-child {
 				display: none;
 			}
@@ -28,19 +23,14 @@
 
 		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			flex-direction: row;
-			margin-bottom: 16px;
+			margin: 16px 0;
 
 			> * {
 				flex: 1;
 				align-self: stretch;
 
-				&:not(:last-child) {
-					margin-right: 16px;
-				}
-
 				&:last-child {
-					display: unset;
-					margin-top: 16px;
+					display: flex;
 				}
 			}
 		}
