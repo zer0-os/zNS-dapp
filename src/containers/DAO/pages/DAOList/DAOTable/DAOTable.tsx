@@ -53,6 +53,13 @@ const DAOTable = ({ daoZnas }: DAOTableProps) => {
 			setIsLoading(true);
 			setDaos([]);
 
+			for (var i = 0; i < daoZnas.length; i++) {
+				const zna = daoZnas[i];
+				console.log('getting:', zna);
+				const data = await sdk.getZDAOByZNA(zna);
+				console.log('zDAO for zna:', data);
+			}
+
 			const daos: zDAO[] = await Promise.all(
 				daoZnas.map((zna) => sdk.getZDAOByZNA(zna)),
 			);
