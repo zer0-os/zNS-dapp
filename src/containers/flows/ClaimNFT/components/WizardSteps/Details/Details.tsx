@@ -44,12 +44,12 @@ import {
 
 // Style Imports
 import styles from './Details.module.scss';
-import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
+import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 type DetailsProps = {
 	tokenID?: string;
 	isClaimDataLoading?: boolean;
-	eligibleDomains?: IDWithClaimStatus[];
+	eligibleDomains?: ClaimableDomain[];
 	isWalletConnected: boolean;
 	currentStep: Step;
 	error?: string;

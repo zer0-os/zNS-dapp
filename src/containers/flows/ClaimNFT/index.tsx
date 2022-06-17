@@ -22,7 +22,7 @@ import useAsyncEffect from 'use-async-effect';
 import { useZSaleSdk } from 'lib/hooks/sdk';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
-import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
+import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 import useMint from 'lib/hooks/useMint';
 
 //- Style Imports
@@ -61,9 +61,7 @@ const ClaimNFTContainer = ({
 	const [refetch, setRefetch] = useState<number>(0);
 	const [canOpenWizard, setCanOpenWizard] = useState<boolean>(false);
 	const [isClaimDataLoading, setIsClaimDataLoading] = useState<boolean>(false);
-	const [eligibleDomains, setEligibleDomains] = useState<IDWithClaimStatus[]>(
-		[],
-	);
+	const [eligibleDomains, setEligibleDomains] = useState<ClaimableDomain[]>([]);
 
 	// NOTE: TEMPORARY FOR SALE HALT
 	const isSaleHalted = false;

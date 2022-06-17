@@ -3,7 +3,7 @@ import { FormEvent, useState } from 'react';
 
 //- Library Imports
 import classNames from 'classnames/bind';
-import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
+import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 //- Component Imports
 import {
@@ -29,7 +29,7 @@ import {
 import styles from './Claiming.module.scss';
 
 type ClaimingProps = {
-	eligibleDomains?: IDWithClaimStatus[];
+	eligibleDomains?: ClaimableDomain[];
 	apiError?: string;
 	statusText?: string;
 	onClaim: (quantity: number) => void;

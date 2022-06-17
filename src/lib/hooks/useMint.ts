@@ -14,7 +14,7 @@ import useNotification from 'lib/hooks/useNotification';
 import { useBasicController } from 'lib/hooks/useBasicController';
 import { Maybe, NftParams, NftStatusCard } from 'lib/types';
 import { createDomainMetadata, UploadedDomainMetadata } from 'lib/utils';
-import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
+import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 //- Store Imports
 import { getMinting, getMinted } from 'store/mint/selectors';
@@ -45,10 +45,8 @@ export type UseMintReturn = {
 	) => Promise<void>;
 	claimNFT: (
 		quantity: number,
-		eligibleDomains: IDWithClaimStatus[],
-		setEligibleDomains: React.Dispatch<
-			React.SetStateAction<IDWithClaimStatus[]>
-		>,
+		eligibleDomains: ClaimableDomain[],
+		setEligibleDomains: React.Dispatch<React.SetStateAction<ClaimableDomain[]>>,
 		setIsClaimingInProgress: (state: boolean) => void,
 		setStatus: (status: string) => void,
 		onError: (error: string) => void,
@@ -170,9 +168,9 @@ export const useMint = (): UseMintReturn => {
 	const claimNFT = useCallback(
 		async (
 			quantity: number,
-			eligibleDomains: IDWithClaimStatus[],
+			eligibleDomains: ClaimableDomain[],
 			setEligibleDomains: React.Dispatch<
-				React.SetStateAction<IDWithClaimStatus[]>
+				React.SetStateAction<ClaimableDomain[]>
 			>,
 			setIsClaimingInProgress: (state: boolean) => void,
 			setStatus: (status: string) => void,

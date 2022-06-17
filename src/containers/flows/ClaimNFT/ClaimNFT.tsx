@@ -28,16 +28,16 @@ import { ROUTES } from 'constants/routes';
 //- Styles Imports
 import styles from './ClaimNFT.module.scss';
 import { useZSaleSdk } from 'lib/hooks/sdk';
-import { IDWithClaimStatus } from '@zero-tech/zsale-sdk';
+import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 export type ClaimNFTProps = {
 	openConnect: () => void;
 	onClose: () => void;
 	onSubmit: (data: ClaimData) => void;
-	eligibleDomains: IDWithClaimStatus[];
+	eligibleDomains: ClaimableDomain[];
 	isClaimingInProgress?: boolean;
 	isClaimDataLoading?: boolean;
-	setEligibleDomains: React.Dispatch<React.SetStateAction<IDWithClaimStatus[]>>;
+	setEligibleDomains: React.Dispatch<React.SetStateAction<ClaimableDomain[]>>;
 	setIsClaimingInProgress: (state: boolean) => void;
 };
 
