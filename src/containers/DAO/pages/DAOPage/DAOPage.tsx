@@ -17,9 +17,11 @@ import { LoadingIndicator, StatsWidget } from 'components';
 
 // Hooks
 import { useNavbar } from 'lib/hooks/useNavbar';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import useTransactions from './hooks/useTransactions';
 import useAssets from './hooks/useAssets';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 
 // Lib
 import { toFiat } from 'lib/currency';
@@ -51,6 +53,7 @@ const DAOPage: React.FC = () => {
 	const { transactions, isLoading: isLoadingTransactions } =
 		useTransactions(dao);
 	const { assets, totalUsd, isLoading: isLoadingAssets } = useAssets(dao);
+	const { fetch: fetchProposals } = useProposals();
 
 	const daoData = dao;
 
@@ -63,6 +66,12 @@ const DAOPage: React.FC = () => {
 			setNavbarTitle('DAOs');
 		}
 	}, [dao, setNavbarTitle]);
+
+	useUpdateEffect(() => {
+		if (dao) {
+			fetchProposals();
+		}
+	}, [dao]);
 
 	const Loading = () => (
 		<LoadingIndicator

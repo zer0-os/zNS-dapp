@@ -29,7 +29,7 @@ const GenericTable = (props: any) => {
 
 	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
 	const shouldShowSearchBar = !props.notSearchable && props.data?.length > 0;
-	const isSmallScreen = useMatchMedia(`(max-width: ${GRID_BREAKPOINT}px)`);
+	const isSmallScreen = !useMatchMedia(`(min-width: ${GRID_BREAKPOINT}px)`);
 
 	const [isGridView, setIsGridView] = usePropsState<boolean>(
 		!isSmallScreen && isGridViewByDefault,
@@ -101,9 +101,9 @@ const GenericTable = (props: any) => {
 	);
 
 	// Toggles to grid view when viewport
-	// resizes to below 700px
+	// resizes to below 744px
 	const handleResize = useCallback(() => {
-		if (window.innerWidth <= 700) {
+		if (window.innerWidth < GRID_BREAKPOINT) {
 			changeView(true);
 		}
 	}, [changeView]);
