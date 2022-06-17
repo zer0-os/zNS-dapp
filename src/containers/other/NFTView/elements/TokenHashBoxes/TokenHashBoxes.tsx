@@ -15,7 +15,7 @@ import {
 } from 'components';
 
 //- Constant Imports
-import { BOX_CONTENT, LINK_TEXT, LABELS } from './TokenHashBoxes.constants';
+import { BOX_CONTENT, LINK_TEXT } from './TokenHashBoxes.constants';
 
 //  Utils Imports
 import { getStatusText, getTooltipText } from './TokenHashBoxes.utils';

@@ -83,23 +83,23 @@ const ClaimNFTContainer = ({
 	///////////////
 
 	const openWizard = (event: any) => {
-		if (event.target.nodeName.toLowerCase() === 'a') {
-			return;
-		}
+		// if (event.target.nodeName.toLowerCase() === 'a') {
+		// 	return;
+		// }
 
-		if (dropStage === Stage.Whitelist && !countdownDate) {
-			window?.open(
-				'https://zine.wilderworld.com/aws2-raffle-winners/',
-				'_blank',
-			);
-		}
-		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
-			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-			history.push('market/moto.genesis ');
-		} else {
-			setIsWizardOpen(true);
-		}
+		// if (dropStage === Stage.Whitelist && !countdownDate) {
+		// 	window?.open(
+		// 		'https://zine.wilderworld.com/aws2-raffle-winners/',
+		// 		'_blank',
+		// 	);
+		// }
+		// if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
+		// 	window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
+		// } else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
+		// 	history.push('market/moto.genesis ');
+		// } else {
+		setIsWizardOpen(true);
+		// }
 	};
 
 	const closeWizard = () => {
