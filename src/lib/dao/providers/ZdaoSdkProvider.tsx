@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import {
 	chainIdToNetworkType,
@@ -19,7 +19,6 @@ import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import addresses from 'lib/addresses';
 import { Web3Provider } from '@ethersproject/providers';
-import { DEFAULT_IPFS_GATEWAY } from 'constants/ipfs';
 
 export const zDaoContext = React.createContext({
 	instance: undefined as SDKInstance | undefined,

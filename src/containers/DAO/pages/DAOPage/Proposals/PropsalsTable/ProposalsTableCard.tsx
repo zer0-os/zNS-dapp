@@ -1,11 +1,18 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Lib
 import moment from 'moment';
+import { isEqual } from 'lodash';
 import removeMarkdown from 'markdown-to-text';
-import { formatProposalStatus } from '../Proposals.helpers';
 import { truncateString } from 'lib/utils/string';
+import { formatProposalStatus } from '../Proposals.helpers';
+
+// Hooks
+import { useDidMount } from 'lib/hooks/useDidMount';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { usePrevious } from 'lib/hooks/usePrevious';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 
 // Components
 import { Chiclet } from 'components';
@@ -36,15 +43,22 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 	onRowClick,
 	className,
 }) => {
+	/**
+	 * Hooks and Data
+	 */
+	const { updateProposal } = useProposals();
+
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [proposal, setProposal] = useState<Proposal>(data);
+	const prevProposal = usePrevious<Proposal>(proposal);
+
 	const history = useHistory();
 	const location = useLocation();
 
-	const { id, title, body } = data;
-
 	const cardData = useMemo(() => {
-		const isConcluded = moment(data.end).isBefore(moment());
-		const timeDiff = moment(data.end).diff(moment());
-		const status = formatProposalStatus(data) || '-';
+		const isConcluded = moment(proposal.end).isBefore(moment());
+		const timeDiff = moment(proposal.end).diff(moment());
+		const status = formatProposalStatus(isLoading ? data : proposal) || '-';
 
 		let closingType: ChicletType = 'normal';
 		if (!isConcluded && timeDiff < 1 * 3600 * 1000) {
@@ -56,6 +70,7 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 		}
 
 		return {
+			isConcluded,
 			closing: {
 				type: closingType,
 				message: isConcluded
@@ -64,14 +79,48 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 			},
 			status,
 		};
-	}, [data]);
+	}, [proposal, isLoading, data]);
+
+	/**
+	 * Callbacks
+	 */
+	const refetchProposalData = useCallback(async () => {
+		if (proposal.state !== 'closed') {
+			setIsLoading(true);
+			try {
+				const updatedProposal = await proposal.updateScoresAndVotes();
+				setProposal(updatedProposal);
+			} catch (e) {
+				console.error(e);
+			} finally {
+				setIsLoading(false);
+			}
+		}
+	}, [proposal, setProposal]);
 
 	const handleCardClick = useCallback(() => {
-		history.push(`${location.pathname}/${id}`, {
+		history.push(`${location.pathname}/${proposal.id}`, {
 			[PROPOSAL_TABLE_LOCATION_STATE_KEY]: PROPOSAL_TABLE_LOCATION_STATE.CARD,
 		});
 		onRowClick && onRowClick();
-	}, [onRowClick, history, location, id]);
+	}, [onRowClick, history, location, proposal]);
+
+	/**
+	 * Life Cycle
+	 */
+	useDidMount(refetchProposalData);
+
+	useUpdateEffect(() => {
+		if (!isEqual(proposal, prevProposal)) {
+			updateProposal(proposal);
+		}
+	}, [proposal, prevProposal]);
+
+	useUpdateEffect(() => {
+		if (cardData.isConcluded) {
+			updateProposal(proposal);
+		}
+	}, [cardData.isConcluded]);
 
 	return (
 		<div
@@ -79,9 +128,9 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 			onClick={handleCardClick}
 		>
 			<div className={styles.Content}>
-				<h2 className={styles.Title}>{title}</h2>
+				<h2 className={styles.Title}>{proposal.title}</h2>
 				<p className={styles.Description}>
-					{truncateString(removeMarkdown(body), 180)}
+					{truncateString(removeMarkdown(proposal.body), 180)}
 				</p>
 			</div>
 			<div className={styles.Buttons}>

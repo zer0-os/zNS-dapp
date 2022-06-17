@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 
 // - Library
-import type { zDAO, ProposalId } from '@zero-tech/zdao-sdk';
-import { cloneDeep } from 'lodash';
+import type { zDAO, Proposal, ProposalId } from '@zero-tech/zdao-sdk';
+import { cloneDeep, isEqual } from 'lodash';
 import {
 	isFromSnapshotWithMultipleChoices,
 	formatProposalBody,
@@ -12,6 +12,9 @@ import {
 // - Hooks
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useWillUnmount } from 'lib/hooks/useWillUnmount';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { usePrevious } from 'lib/hooks/usePrevious';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 import useProposal from '../../hooks/useProposal';
 
 // - Component
@@ -54,6 +57,8 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 		dao,
 		triggerRefresh,
 	);
+	const prevProposal = usePrevious<Proposal | undefined>(proposal);
+	const { updateProposal } = useProposals();
 
 	const refresh = () => {
 		setTriggerRefresh(!triggerRefresh);
@@ -68,6 +73,12 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 			state,
 		};
 	}, [history, proposalId]);
+
+	useUpdateEffect(() => {
+		if (proposal && !isEqual(proposal, prevProposal)) {
+			updateProposal(proposal);
+		}
+	}, [proposal, prevProposal]);
 
 	return (
 		<div className={styles.Container}>

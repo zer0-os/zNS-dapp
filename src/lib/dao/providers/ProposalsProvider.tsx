@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import moment from 'moment';
 import type { Proposal } from '@zero-tech/zdao-sdk';
 import { useCurrentDao } from './CurrentDaoProvider';
+import { sortProposals } from 'containers/DAO/pages/DAOPage/Proposals/Proposals.helpers';
 
 export const ProposalsContext = React.createContext({
 	proposals: undefined as Proposal[] | undefined,
 	isInitialFetching: false,
 	isRefetching: false,
 	fetch: () => {},
+	updateProposal: (proposal: Proposal) => {},
 });
 
 /**
@@ -24,33 +25,8 @@ export const ProposalsProvider: React.FC = ({ children }) => {
 			setIsLoading(true);
 			dao
 				?.listProposals()
-				.then((p) => {
-					// Filtering by date for proposal
-					const filteredProposals = p.filter(
-						(p) => p.created.getTime() > 1653041437000,
-					);
-					const closedProposals = filteredProposals.filter(
-						(p) => p.state === 'closed',
-					);
-					const activeProposals = filteredProposals.filter(
-						(p) => p.state === 'active',
-					);
-					const almostClosedProposals = activeProposals.filter(
-						(p) => moment(p.end).diff(moment()) < 24 * 3600 * 1000,
-					);
-					const shouldCloseProposals = activeProposals.filter(
-						(p) => !almostClosedProposals.includes(p),
-					);
-
-					almostClosedProposals.sort((a, b) =>
-						moment(a.end).isAfter(moment(b.end)) ? 1 : -1,
-					);
-
-					setProposals([
-						...almostClosedProposals,
-						...shouldCloseProposals,
-						...closedProposals,
-					]);
+				.then((proposals) => {
+					setProposals(sortProposals(proposals));
 				})
 				.catch((e) => {
 					console.error(e);
@@ -61,11 +37,23 @@ export const ProposalsProvider: React.FC = ({ children }) => {
 		}
 	};
 
+	const updateProposal = (proposal: Proposal) => {
+		const matchingProposal = proposals?.find((p) => p.id === proposal.id);
+
+		if (matchingProposal) {
+			const excludedProposals = proposals?.filter(
+				(p) => p.id !== matchingProposal.id,
+			)!;
+			setProposals(sortProposals([...excludedProposals, proposal]));
+		}
+	};
+
 	const context = {
 		proposals,
 		isInitialFetching: !Boolean(proposals) && isLoading,
 		isRefetching: Boolean(proposals) && isLoading,
 		fetch,
+		updateProposal,
 	};
 
 	return (

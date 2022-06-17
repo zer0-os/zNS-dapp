@@ -1,11 +1,16 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Hooks
 import useTimer from 'lib/hooks/useTimer';
+import { useDidMount } from 'lib/hooks/useDidMount';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { usePrevious } from 'lib/hooks/usePrevious';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 
 // Lib
 import moment from 'moment';
+import { isEqual } from 'lodash';
 import { truncateString } from 'lib/utils/string';
 import {
 	formatProposalStatus,
@@ -42,14 +47,24 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 	onRowClick,
 	className,
 }) => {
+	/**
+	 * Hooks and Data
+	 */
+	const { updateProposal } = useProposals();
+
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [proposal, setProposal] = useState<Proposal>(data);
+	const prevProposal = usePrevious<Proposal>(proposal);
+
 	const history = useHistory();
 	const location = useLocation();
 
-	const { id, title, end, votes } = data;
+	const isConcluded = moment(proposal.end).isBefore(moment());
 
-	const isConcluded = moment(end).isBefore(moment());
-
-	const { time } = useTimer(end, isConcluded ? null : DEFAULT_TIMMER_INTERVAL);
+	const { time } = useTimer(
+		proposal.end,
+		isConcluded ? null : DEFAULT_TIMMER_INTERVAL,
+	);
 
 	const closingStatus = useMemo(() => {
 		let status = 'normal';
@@ -64,12 +79,46 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 		return status;
 	}, [isConcluded, time]);
 
+	/**
+	 * Callbacks
+	 */
+	const refetchProposalData = useCallback(async () => {
+		if (proposal.state !== 'closed') {
+			setIsLoading(true);
+			try {
+				const updatedProposal = await proposal.updateScoresAndVotes();
+				setProposal(updatedProposal);
+			} catch (e) {
+				console.error(e);
+			} finally {
+				setIsLoading(false);
+			}
+		}
+	}, [proposal, setProposal]);
+
 	const handleRowClick = useCallback(() => {
-		history.push(`${location.pathname}/${id}`, {
+		history.push(`${location.pathname}/${proposal.id}`, {
 			[PROPOSAL_TABLE_LOCATION_STATE_KEY]: PROPOSAL_TABLE_LOCATION_STATE.ROW,
 		});
 		onRowClick && onRowClick();
-	}, [onRowClick, history, location, id]);
+	}, [onRowClick, history, location, proposal]);
+
+	/**
+	 * Life Cycle
+	 */
+	useDidMount(refetchProposalData);
+
+	useUpdateEffect(() => {
+		if (!isEqual(proposal, prevProposal)) {
+			updateProposal(proposal);
+		}
+	}, [proposal, prevProposal]);
+
+	useUpdateEffect(() => {
+		if (isConcluded) {
+			updateProposal(proposal);
+		}
+	}, [isConcluded]);
 
 	return (
 		<tr
@@ -77,10 +126,12 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 			onClick={handleRowClick}
 		>
 			{/* Title */}
-			<td className={styles.Title}>{truncateString(title, 150)}</td>
+			<td className={styles.Title}>{truncateString(proposal.title, 150)}</td>
 
 			{/* Status */}
-			<td className={styles.Status}>{formatProposalStatus(data)}</td>
+			<td className={styles.Status}>
+				{formatProposalStatus(isLoading ? data : proposal)}
+			</td>
 
 			{/* Closes with humanized format */}
 			<td
@@ -95,7 +146,7 @@ const ProposalsTableRow: React.FC<ProposalsTableRowProps> = ({
 
 			{/* Total votes count of proposal */}
 			<td className={styles.Votes}>
-				<p>{votes}</p>
+				<p>{isLoading ? data.votes : proposal.votes}</p>
 			</td>
 		</tr>
 	);
