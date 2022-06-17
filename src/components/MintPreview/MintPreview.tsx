@@ -42,6 +42,7 @@ const MintPreview = (props: MintPreviewProps) => {
 	const { addNotification } = useNotification();
 
 	const handleClick = () => {
+		props.onOpenProfile();
 		addNotification(CLAIM_FLOW_NOTIFICATIONS.REFRESH);
 	};
 

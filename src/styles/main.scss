@@ -13,7 +13,92 @@
  */
 
 :root {
+	--font-size-default: #{typography.$size-default};
+	--font-size-smaller: #{typography.$size-small};
+	--font-size-small: #{typography.$size-tiny};
+	--font-family: #{typography.$font};
+
+	--color-primary: #{colors.$primary};
+
+	--color-background: #{colors.$background};
+	--color-background-50: #{transparentize(colors.$background, 0.5)};
+
+	--color-text-primary: #{colors.$text-primary};
+
+	--glow-text-primary: #{0px 0px 24px transparentize(colors.$primary, 0.6),
+		0px 0px 12px transparentize(colors.$primary, 0.6),
+		0px 0px 6px transparentize(colors.$primary, 0.6)};
+
+	--box-radius: #{borders.$radius};
+
+	--width-max: #{dimensions.$width-max};
+	--width-min: #{dimensions.$width-min};
+
+	--animation-time-short: #{animations.$time-short};
+	--animation-time-medium: #{animations.$time-medium};
+	--animation-time-long: #{animations.$time-long};
+
+	/*
+	 * Legacy values to be replaced
+	 */
+	--color-primary-lighter-3: #e5baff;
+	--color-primary-darkest: #8c00ff;
+	--color-accent-1: #52cbff;
+	--color-accent-1-darker: #002f5b;
+	--color-accent-1-medium-10: rgba(0, 209, 255, 0.1);
+	--color-accent-1-light: #a1d2ff;
+	--color-accent-1-lighter: #9ed0ff;
+	--color-accent-2: #eb00ff;
+	--color-warning: #f58c61;
+	--color-invalid: #d379ff;
+	--color-grey: #808080;
+	--color-grey-mine-shaft: #232323;
+	--color-grey-lighter-2: #bfbfbf;
+
+	--color-purple-darkest: #10052e;
+	--color-purple-dark: #1d0c4a;
+	--color-purple-lighter: #23142f;
+	--color-revolver: #1a1022;
+	--color-bossanova: #472e5b;
+	--color-heliotrope: #c169ff;
+
+	--color-black: #{colors.$black};
+	--color-grey-lighter-3: #d9d9d9;
+	--color-grey-lighter-4: #f2f2f2;
+
+	--color-accent-blue-100: #52cbff;
+
+	--color-success: #58c573;
+	--color-error: #f6677c;
+
+	--color-azure-gradient: linear-gradient(90deg, #5257ff 0%, #52cbff 100%);
+	--color-azure-gradient-25: linear-gradient(
+		90deg,
+		rgba(82, 87, 255, 0.25) 0%,
+		rgba(82, 203, 255, 0.25) 100%
+	);
+
+	--color-cosmic-gradient: linear-gradient(90deg, #8930ee 0%, #af72f3 100%);
+	--color-cosmic-gradient-25: linear-gradient(
+		90deg,
+		rgba(137, 48, 238, 0.25) 0%,
+		rgba(175, 114, 243, 0.25) 100%
+	);
+
+	--color-ocean-gradient-10: linear-gradient(
+		90deg,
+		rgba(82, 174, 255, 0.1) 0%,
+		rgba(82, 203, 255, 0.1) 100%
+	);
+
+	--color-baby-blue: #9dd0ff;
+	--color-cornflower-blue: #e6e6e6;
+
+	--color-background-alt: rgb(29, 12, 74);
+	--color-background-alt-50: rgba(29, 21, 74, 0.5);
+
 	--page-padding: 24px;
+	--glow-text-white: 0px 0px 10px rgba(255, 255, 255, 0.7);
 }
 
 /* Mobile Lrg */
