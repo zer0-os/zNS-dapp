@@ -38,6 +38,7 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 			library,
 			onClose,
 			setDomainMetadata,
+			domain: formattedData.myDomain.domain,
 		},
 		localState,
 		localActions,
@@ -77,6 +78,7 @@ const DomainSettings: React.FC<DomainSettingsProps> = ({
 					/>
 					{/* Footer */}
 					<DomainSettingsFooter
+						domain={formattedData.myDomain.domain}
 						isLocked={localState.isLocked}
 						isChanged={localState.isChanged}
 						isSaved={localState.isSaved}

@@ -1,3 +1,7 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+@use 'styles/variables/typography';
+
 .Bar {
 	position: relative;
 	width: 100%;
@@ -8,18 +12,18 @@
 }
 
 .Tab button {
-	font-size: 18px;
-	font-weight: 700;
-	color: var(--color-grey-lighter-2);
+	font-size: #{typography.$size-medium};
+	font-weight: #{typography.$font-weight-bold};
+	color: #{colors.$grey-lighter-2};
 	background: none;
-	/* transition: font-weight var(--animation-time-medium) ease-in-out; */
+	/* transition: font-weight #{animations.$time-medium} ease-in-out; */
 }
 
 .Selected button {
-	color: var(--color-text-primary);
-	text-shadow: var(--glow-text-white);
-	transition: text-shadow var(--animation-time-medium) ease-in-out,
-		color var(--animation-time-short) ease-in-out;
+	color: #{colors.$text-primary};
+	text-shadow: #{colors.$text-glow-white};
+	transition: text-shadow #{animations.$time-medium} ease-in-out,
+		color #{animations.$time-short} ease-in-out;
 }
 
 .Tab:not(:last-child) {
@@ -34,10 +38,10 @@
 	position: absolute;
 	top: calc(100% - 1px);
 	height: 0px;
-	box-shadow: 0px 0px 5px 0px var(--color-accent-2);
+	box-shadow: 0px 0px 5px 0px #{colors.$electric-violet};
 	border: 1px solid #e0baff;
 	z-index: 1;
 	left: 0;
-	transition: left var(--animation-time-medium) ease-in-out,
-		width var(--animation-time-medium) ease-in-out;
+	transition: left #{animations.$time-medium} ease-in-out,
+		width #{animations.$time-medium} ease-in-out;
 }

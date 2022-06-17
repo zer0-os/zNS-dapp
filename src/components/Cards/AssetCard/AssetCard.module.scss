@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 .AssetCard {
 	position: relative;
 	width: 295px;
@@ -7,12 +10,12 @@
 
 	padding: 18px 20px 22.5px;
 
-	background: var(--color-background);
+	background: #{colors.$background-primary};
 }
 
 .AssetCard h4 {
-	color: var(--color-primary-lighter-3);
-	font-weight: 700;
+	color: #{colors.$mauve};
+	font-weight: #{typography.$font-weight-bold};
 
 	text-transform: uppercase;
 }
@@ -25,7 +28,7 @@
 	margin-left: 8px;
 	margin-top: -1px;
 
-	background-color: var(--color-accent-1-darker);
+	background-color: #{colors.$prussian-blue};
 
 	border-radius: 50%;
 }

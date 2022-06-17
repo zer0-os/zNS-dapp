@@ -1,3 +1,7 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .Member {
 	display: flex;
 }
@@ -7,10 +11,9 @@
 	width: 32px;
 	border-radius: 50%;
 	margin-right: 12px;
-	/* background-color: rgba(0,0,0,0.5); */
 	overflow: hidden;
 	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Image:hover {
@@ -31,6 +34,6 @@
 }
 
 .Subtext {
-	font-size: var(--font-size-small);
-	color: var(--color-primary-lighter-3);
+	font-size: #{typography.$size-tiny};
+	color: #{colors.$mauve};
 }

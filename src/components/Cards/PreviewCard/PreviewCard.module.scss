@@ -1,3 +1,8 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+
 :root {
 	--height: 236px;
 }
@@ -38,7 +43,7 @@
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	border-top: 2px solid var(--color-accent-1);
+	border-top: 2px solid #{colors.$blue};
 	animation: spin 1s linear infinite;
 }
 
@@ -58,7 +63,7 @@
 	width: 400px;
 	height: 225px;
 	cursor: pointer;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	overflow: hidden;
 
 	@media (hover: hover) and (pointer: fine) {
@@ -85,8 +90,8 @@
 
 	div {
 		overflow: hidden;
-		transition: transform var(--animation-time-medium) ease-in-out;
-		border-radius: var(--box-radius);
+		transition: transform #{animations.$time-medium} ease-in-out;
+		border-radius: #{borders.$radius-primary};
 		z-index: 2;
 	}
 }
@@ -131,22 +136,22 @@
 		}
 
 		h5 {
-			color: var(--color-text-primary);
+			color: #{colors.$text-primary};
 			font-size: 36px;
-			font-weight: 700;
+			font-weight: #{typography.$font-weight-bold};
 
 			/* white-space: nowrap; */
 			overflow: hidden;
 			text-overflow: ellipsis;
 
 			@media only screen and (max-width: 550px) {
-				font-size: 24px;
+				font-size: #{typography.$size-large};
 			}
 		}
 
 		.Description {
 			margin-top: 16px;
-			color: var(--color-text-primary);
+			color: #{colors.$text-primary};
 			line-height: 19.2px;
 			padding-bottom: 0;
 
@@ -193,15 +198,15 @@
 		.ViewLink {
 			margin-top: 16px;
 			padding: 0;
-			font-size: var(--font-size-default);
-			font-weight: 400;
-			color: var(--color-accent-blue-100);
+			font-size: #{typography.$size-default};
+			font-weight: #{typography.$font-weight-regular};
+			color: #{colors.$blue};
 			cursor: pointer;
 		}
 
 		.ViewLink:hover {
-			color: var(--color-accent-1);
-			text-shadow: var(--glow-text-primary), var(--glow-text-primary);
+			color: #{colors.$blue};
+			text-shadow: #{colors.$text-glow-primary}, #{colors.$text-glow-primary};
 		}
 
 		* {
@@ -214,19 +219,19 @@
 		span {
 			&:first-of-type {
 				margin-top: 20px;
-				font-size: 24px;
+				font-size: #{typography.$size-large};
 			}
 
 			&:last-of-type {
 				margin-top: 8px;
-				color: var(--color-primary-lighter-3);
+				color: #{colors.$mauve};
 			}
 		}
 	}
 }
 
 .Domain {
-	color: var(--color-accent-1);
+	color: #{colors.$blue};
 }
 
 .Members {
@@ -245,7 +250,7 @@
 	height: 32px;
 	width: 32px;
 	border-radius: 50%;
-	background-color: var(--color-accent-1-lighter);
+	background-color: #{colors.$anakiwa};
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -254,11 +259,11 @@
 .Member {
 	margin-top: 12px;
 	margin-left: 16px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Member > span:last-of-type {
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 	margin-top: 4px;
 }
 
@@ -274,104 +279,3 @@
 	height: 100%;
 	z-index: 5;
 }
-
-// @media only screen and (max-width: 1000px) {
-// 	.Bid {
-// 		display: none;
-// 	}
-// }
-
-// @media only screen and (max-width: 768px) {
-// 	.InfoContainer {
-// 		flex-direction: column;
-// 		padding-bottom: 16px;
-// 	}
-
-// 	.Asset {
-// 		width: 326.5px;
-// 		height: 437px;
-// 		background: none;
-// 	}
-
-// 	.Body {
-// 		justify-content: flex-start;
-// 		margin-right: 0;
-// 	}
-
-// 	.Description {
-// 		margin-top: 40px !important;
-// 		max-height: 76px;
-// 	}
-
-// 	.Buy {
-// 		margin: 0 auto;
-// 	}
-// }
-
-// @media only screen and (max-width: 710px) {
-// 	.Members {
-// 		flex-direction: column;
-// 	}
-
-// 	.Members > *:not(:first-child) {
-// 		margin-top: 16px;
-// 	}
-// }
-
-// @media only screen and (max-width: 660px) {
-// 	.Members > div:not(:first-child) > div {
-// 		/* margin-left: auto; */
-// 	}
-
-// 	.Buy {
-// 		margin: 0 auto;
-// 	}
-
-// 	.View {
-// 		margin-top: 8px !important;
-// 	}
-// }
-
-// @media only screen and (max-width: 600px) {
-// 	.Preview {
-// 		flex-direction: column;
-// 	}
-
-// 	.Description {
-// 		margin-top: 16px !important;
-// 	}
-
-// 	.Body {
-// 		padding: 16px;
-// 		margin: 0;
-// 		margin-top: 24px;
-// 	}
-
-// 	.Asset {
-// 		width: 100%;
-// 		height: auto;
-// 		max-height: 437px;
-// 		border-radius: var(--box-radius);
-// 	}
-
-// 	.Asset * {
-// 		max-height: 437px;
-// 		height: auto;
-// 		border-radius: var(--box-radius);
-// 	}
-
-// 	.Members {
-// 		margin-top: 24px;
-// 		flex-direction: row;
-// 		justify-content: flex-start;
-// 	}
-
-// 	.Members > * {
-// 		margin-top: 0 !important;
-// 		width: auto !important;
-// 	}
-
-// 	.Members > *:not(:first-child) {
-// 		margin-left: 56px;
-// 	}
-// }

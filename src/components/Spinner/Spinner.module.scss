@@ -1,8 +1,10 @@
+@use 'styles/variables/colors';
+
 .Spinner {
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	border-top: 2px solid var(--color-accent-1);
+	border-top: 2px solid #{colors.$blue};
 	animation: spin 1s linear infinite;
 }
 

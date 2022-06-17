@@ -54,7 +54,7 @@ const MintPreview = (props: MintPreviewProps) => {
 		const link = zNAToLink(nft.zNA);
 
 		const statusStyle = {
-			color: isCompleted ? 'var(--color-success)' : 'var(--color-grey)',
+			color: isCompleted ? '#58c573' : '#808080',
 			fontWeight: 700,
 		};
 

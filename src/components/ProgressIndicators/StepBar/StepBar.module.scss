@@ -1,10 +1,14 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .StepBar {
 	position: relative;
 	width: 100%;
 
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	text-align: center;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .StepBar::before {
@@ -13,13 +17,13 @@
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	border-bottom: 1px solid #232323;
+	border-bottom: 1px solid #{colors.$mine-shaft};
 }
 
 .Placeholder {
 	opacity: 0;
 	z-index: 2;
-	transition: opacity var(--animation-time-long) ease-in-out;
+	transition: opacity #{animations.$time-long} ease-in-out;
 }
 
 .Show {
@@ -30,10 +34,10 @@
 .Bar {
 	padding-bottom: 4px;
 
-	color: var(--color-accent-1);
-	border-bottom: 1px solid var(--color-accent-1);
+	color: #{colors.$blue};
+	border-bottom: 1px solid #{colors.$blue};
 
-	transition: all var(--animation-time-long) ease-in-out;
+	transition: all #{animations.$time-long} ease-in-out;
 }
 
 .Bar::after {
@@ -41,7 +45,7 @@
 }
 
 .Hide {
-	border-bottom: 1px solid rgba(0, 0, 0, 0);
-	color: rgba(0, 0, 0, 0);
+	border-bottom: 1px solid #{colors.$black};
+	color: #{colors.$black};
 	z-index: -1;
 }

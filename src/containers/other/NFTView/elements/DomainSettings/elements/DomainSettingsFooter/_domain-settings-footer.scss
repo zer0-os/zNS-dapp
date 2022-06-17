@@ -1,4 +1,5 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/colors';
 
 .domain-settings-footer {
 	&__container {
@@ -20,14 +21,27 @@
 
 		label {
 			&.warning {
-				color: var(--color-error);
+				color: #{colors.$red-300};
 
 				&.is_locked_warning {
-					color: var(--color-warning);
+					color: #{colors.$red-100};
 				}
 			}
 			&.success {
-				color: var(--color-success);
+				color: #{colors.$success-green};
+			}
+		}
+
+		div {
+			display: unset;
+		}
+
+		a {
+			color: var(--color-warning);
+			font-weight: bold;
+
+			&:hover {
+				color: var(--color-warning);
 			}
 		}
 	}
