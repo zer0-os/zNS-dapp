@@ -7,6 +7,7 @@ import {
 } from 'lib/network';
 import { RPC_URLS } from 'lib/connectors';
 import { ethers } from 'ethers';
+import { DAOS } from 'constants/daos';
 import {
 	Config,
 	createSDKInstance,
@@ -70,7 +71,21 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 		);
 
 		const sdk = createSDKInstance(config);
-		setInstance(sdk);
+
+		/**
+		 * 30/03/2022
+		 * Remap functions for mainnet as the contract isn't live yet
+		 */
+		if (network === NETWORK_TYPES.RINKEBY) {
+			sdk.listZNAs = sdk.listZNAsFromParams;
+			sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
+			sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
+			await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
+			setInstance(sdk);
+		} else {
+			// main net
+			setInstance(sdk);
+		}
 	}, [library, network, selectedChain]);
 
 	useUpdateEffect(createInstance, [library, network, selectedChain]);
