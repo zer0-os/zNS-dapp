@@ -66,16 +66,6 @@ const ClaimNFTContainer = ({
 	// NOTE: TEMPORARY FOR SALE HALT
 	const isSaleHalted = false;
 
-	useAsyncEffect(async () => {
-		const saleData = await claimInstance.getSaleData();
-		console.log('saleData', saleData);
-	}, [claimInstance, library, account]);
-
-	useAsyncEffect(async () => {
-		const saleStatus = await claimInstance.getSaleStatus();
-		console.log('saleStatus', saleStatus);
-	}, [claimInstance, library, account]);
-
 	///////////////
 	// Functions //
 	///////////////
@@ -87,7 +77,7 @@ const ClaimNFTContainer = ({
 
 		// if (dropStage === Stage.Whitelist && !countdownDate) {
 		// 	window?.open(
-		// 		'https://zine.wilderworld.com/aws2-raffle-winners/',
+		// 		'https://zine.wilderworld.com/moto-genesis-nft-rewards/',
 		// 		'_blank',
 		// 	);
 		// }
@@ -192,7 +182,6 @@ const ClaimNFTContainer = ({
 				setFailedToLoad(false);
 			} catch (err) {
 				console.error(err);
-				console.log('failed to get');
 				setRefetch(refetch + 1);
 				setFailedToLoad(true);
 			}
