@@ -69,11 +69,11 @@ export const ProposalAttributes: React.FC<ProposalAttributesProps> = ({
 			},
 			{
 				label: 'Voting Started',
-				value: formatDateTime(proposal.start, 'M/D/YYYY h:m A Z') || '-',
+				value: formatDateTime(proposal.start, 'M/D/YYYY h:mm A Z') || '-',
 			},
 			{
 				label: isConcluded ? 'Voting Ended' : 'Voting Ends',
-				value: formatDateTime(proposal.end, 'M/D/YYYY h:m A Z') || '-',
+				value: formatDateTime(proposal.end, 'M/D/YYYY h:mm A Z') || '-',
 			},
 			{
 				label: 'Voting System',

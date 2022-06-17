@@ -1,6 +1,7 @@
 import { formatUnits } from 'ethers/lib/utils';
 import type { zDAO, Proposal, TokenMetaData } from '@zero-tech/zdao-sdk';
 import { isEmpty } from 'lodash';
+import moment from 'moment';
 import millify from 'millify';
 import { toFiat } from 'lib/currency';
 import { secondsToDhms } from 'lib/utils/datetime';
@@ -8,6 +9,40 @@ import { DEFAULT_TIMMER_EXPIRED_LABEL } from './Proposals.constants';
 
 const MILLIFY_THRESHOLD = 1000000;
 const MILLIFY_PRECISION = 3;
+
+/**
+ * Sort proposals by active & ending time
+ * @param proposals to sort
+ * @returns sorted proposals
+ */
+export const sortProposals = (proposals?: Proposal[]): Proposal[] => {
+	if (!proposals) {
+		return [];
+	}
+
+	// 1. Filter by date first
+	const filteredProposals = proposals.filter(
+		(p) => p.created.getTime() > 1653041437000, // After Fri May 20 2022 10:10:37 GMT+0000
+	);
+
+	// 2. Sort by state and endting time
+	const closedProposals = filteredProposals.filter(
+		(p) => p.state === 'closed' || moment(p.end).isBefore(moment()),
+	);
+	const activeProposals = filteredProposals.filter(
+		(p) => !closedProposals.includes(p),
+	);
+
+	activeProposals.sort((a, b) =>
+		moment(a.end).isAfter(moment(b.end)) ? 1 : -1,
+	);
+
+	closedProposals.sort((a, b) =>
+		moment(a.end).isBefore(moment(b.end)) ? 1 : -1,
+	);
+
+	return [...activeProposals, ...closedProposals];
+};
 
 /**
  * Format the proposal body

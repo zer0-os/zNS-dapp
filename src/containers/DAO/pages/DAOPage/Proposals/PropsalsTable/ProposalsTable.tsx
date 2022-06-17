@@ -14,7 +14,11 @@ import styles from './ProposalsTable.module.scss';
 type ProposalsTableProps = {
 	proposals?: Proposal[];
 	isLoading: boolean;
-	isReloading: boolean;
+	/*
+	 * 06/15/2022 Note:
+	 * We decided to make disable reloading every time at the moment
+	 */
+	isReloading?: boolean;
 };
 
 const HEADERS = [
@@ -43,7 +47,6 @@ const HEADERS = [
 const ProposalsTable: React.FC<ProposalsTableProps> = ({
 	proposals,
 	isLoading,
-	isReloading,
 }) => {
 	const location = useLocation();
 
@@ -65,7 +68,6 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
 				rowComponent={ProposalsTableRow}
 				gridComponent={ProposalsTableCard}
 				isLoading={isLoading}
-				isReloading={isReloading}
 				loadingText={'Loading Proposals'}
 				searchKey={['title', 'author']}
 				searchBy={'proposal title'}
