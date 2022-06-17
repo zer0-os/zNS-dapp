@@ -21,6 +21,7 @@ export const LABELS = {
 
 export const DOMAINS = {
 	ELIGIBLE_NFT_ROUTE: '/wheels.genesis',
+	CURRENT_CLAIM_ROUTE: '/moto.genesis',
 	WHEELS_DOMAIN_NAME: 'wilder.wheels.genesis',
 };
 

@@ -12,7 +12,7 @@ import { Stage } from '../MintDropNFT/types';
 
 //- Constants Imports
 import { getBannerButtonText, getBannerLabel } from './labels';
-import { MESSAGES } from './ClaimNFT.constants';
+import { DOMAINS, MESSAGES } from './ClaimNFT.constants';
 
 //- Utils Imports
 import { getDropStage } from '../MintDropNFT/helpers';
@@ -27,6 +27,7 @@ import useMint from 'lib/hooks/useMint';
 
 //- Style Imports
 import styles from './ClaimNFTContainer.module.scss';
+import { ROUTES } from 'constants/routes';
 
 export type ClaimNFTContainerProps = {
 	requireBanner?: boolean;
@@ -41,7 +42,8 @@ const ClaimNFTContainer = ({
 	// State & Data //
 	//////////////////
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
-	const history = useHistory();
+	const { push: goTo } = useHistory();
+
 	const { claimNFT } = useMint();
 
 	const { claimInstance } = useZSaleSdk();
@@ -71,23 +73,23 @@ const ClaimNFTContainer = ({
 	///////////////
 
 	const openWizard = (event: any) => {
-		// if (event.target.nodeName.toLowerCase() === 'a') {
-		// 	return;
-		// }
+		if (event.target.nodeName.toLowerCase() === 'a') {
+			return;
+		}
 
-		// if (dropStage === Stage.Whitelist && !countdownDate) {
-		// 	window?.open(
-		// 		'https://zine.wilderworld.com/moto-genesis-nft-rewards/',
-		// 		'_blank',
-		// 	);
-		// }
-		// if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
-		// 	window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
-		// } else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
-		// 	history.push('market/moto.genesis ');
-		// } else {
-		setIsWizardOpen(true);
-		// }
+		if (dropStage === Stage.Whitelist && !countdownDate) {
+			window?.open(
+				'https://zine.wilderworld.com/moto-genesis-nft-rewards/',
+				'_blank',
+			);
+		}
+		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
+			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
+		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
+			goTo(ROUTES.MARKET + DOMAINS.CURRENT_CLAIM_ROUTE);
+		} else {
+			setIsWizardOpen(true);
+		}
 	};
 
 	const closeWizard = () => {
