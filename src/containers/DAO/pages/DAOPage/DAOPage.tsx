@@ -102,20 +102,18 @@ const DAOPage: React.FC = () => {
 								</div>
 								<h1>{daoData?.title}</h1>
 							</div>
-							<div className={styles.Stat}>
-								<StatsWidget
-									className="normalView"
-									fieldName="Total Value"
-									isLoading={isLoadingAssets}
-									// Millify if above
-									title={
-										'$' +
-										((totalUsd ?? 0) >= MILLIFY_THRESHOLD
-											? millify(totalUsd!, { precision: MILLIFY_PRECISION })
-											: toFiat(totalUsd ?? 0))
-									}
-								/>
-							</div>
+							<StatsWidget
+								className="normalView"
+								fieldName="Total Value"
+								isLoading={isLoadingAssets}
+								// Millify if above
+								title={
+									'$' +
+									((totalUsd ?? 0) >= MILLIFY_THRESHOLD
+										? millify(totalUsd!, { precision: MILLIFY_PRECISION })
+										: toFiat(totalUsd ?? 0))
+								}
+							/>
 						</ul>
 
 						<nav className={genericStyles.Links}>
