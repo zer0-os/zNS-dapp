@@ -70,10 +70,10 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 		 * 30/03/2022
 		 * Remap functions for mainnet as the contract isn't live yet
 		 */
-		sdk.listZNAs = sdk.listZNAsFromParams;
-		sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
-		sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
-		await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
+		// sdk.listZNAs = sdk.listZNAsFromParams;
+		// sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
+		// sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
+		// await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
 
 		setInstance(sdk);
 	}, [library, network, selectedChain]);
