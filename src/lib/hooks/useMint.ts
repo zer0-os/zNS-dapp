@@ -177,12 +177,13 @@ export const useMint = (): UseMintReturn => {
 			onError: (error: string) => void,
 			onFinish: () => void,
 		) => {
-			const nft = {
-				zNA: '',
+			// To generate mint preview data
+			const asset = {
+				zNA: 'wilder.candy.motoTest',
 				title: LABELS.CLAIM_NFT_DROP_DEFAULT_TITLE,
 				imageUri: IMAGE_URI.CLAIM_NFT_DROP_DEFAULT_IMAGE_URI,
 				story: '',
-				transactionHash: '',
+				transactionHash: '0x00000',
 			};
 
 			try {
@@ -206,12 +207,12 @@ export const useMint = (): UseMintReturn => {
 				setStatus(CLAIM_FLOW_NOTIFICATIONS.MINTING_MOTO);
 				onFinish();
 
-				reduxActions.setMinting(nft);
+				reduxActions.setMinting(asset);
 
 				await tx.wait();
 
 				addNotification(CLAIM_FLOW_NOTIFICATIONS.CLAIM_SUCCESS);
-				reduxActions.setMinted(nft);
+				reduxActions.setMinted(asset);
 				setIsClaimingInProgress(false);
 			} catch (err) {
 				onError(ERRORS.REJECTED_WALLET);

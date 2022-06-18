@@ -5,7 +5,7 @@ export const MESSAGES = {
 };
 
 export const TITLE = {
-	MINT_NFT: 'Mint NFT',
+	MINT_NFT: 'Mint Preview',
 };
 
 export const ALT_TEXT = {
