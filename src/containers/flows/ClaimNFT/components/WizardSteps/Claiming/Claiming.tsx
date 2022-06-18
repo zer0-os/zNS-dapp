@@ -1,5 +1,5 @@
 //- React Imports
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 
 //- Library Imports
 import classNames from 'classnames/bind';
@@ -50,6 +50,8 @@ const Claiming = ({
 	///////////////////////
 	const [quantity, setQuantity] = useState<string | undefined>();
 	const [inputError, setInputError] = useState<string | undefined>();
+	const [displayTotal, setDisplayTotal] = useState<number>();
+	const [isSubmitted, setSubmitted] = useState<boolean>();
 	const totalEligibleDomains = eligibleDomains?.length ?? 0;
 	const exceedsQuantityMintLimit = totalEligibleDomains > maxQuantityLimit;
 	const hasValue = Boolean(quantity);
@@ -57,6 +59,7 @@ const Claiming = ({
 		totalEligibleDomains,
 		exceedsQuantityMintLimit,
 	);
+
 	const validQuantity =
 		Number(quantity) <= totalEligibleDomains &&
 		Number(quantity) > 0 &&
@@ -79,7 +82,10 @@ const Claiming = ({
 			setInputError,
 		);
 	};
+
 	const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+		setSubmitted(true);
+		setDisplayTotal(totalEligibleDomains);
 		setInputError('');
 		e.preventDefault();
 		if (validQuantity) {
@@ -88,6 +94,17 @@ const Claiming = ({
 			return;
 		}
 	};
+
+	/////////////
+	// EFfects //
+	/////////////
+
+	useEffect(() => {
+		if (!isSubmitted) {
+			setDisplayTotal(totalEligibleDomains);
+		}
+	}, [isSubmitted, totalEligibleDomains]);
+
 	return (
 		<>
 			<section className={styles.Container}>
@@ -95,7 +112,7 @@ const Claiming = ({
 					<div className={styles.TextContainer}>
 						<div
 							className={styles.QuantityText}
-						>{`${MESSAGES.APPEND_CLAIMABLE_TEXT} ${totalEligibleDomains} ${LABELS.MOTOS}`}</div>
+						>{`${MESSAGES.APPEND_CLAIMABLE_TEXT} ${displayTotal} ${LABELS.MOTOS}`}</div>
 						<Tooltip deepPadding text={TOOLTIP.MAX_QUANTITY}>
 							<QuestionButton small />
 						</Tooltip>
