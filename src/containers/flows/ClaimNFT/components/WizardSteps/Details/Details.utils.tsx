@@ -45,14 +45,9 @@ export const handleInputNotification = (
 		if (tokenClaimable) {
 			setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_SUCCESS);
 			setNotificationType(NotificationType.SUCCESS);
-		} else if (tokenClaimable === false) {
+		} else {
 			setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_ERROR);
 			setNotificationType(NotificationType.ERROR);
-		} else if (tokenClaimable === undefined) {
-			setInputNotification(TEXT_INPUT.UNABLE_TO_RETRIEVE);
-			setNotificationType(NotificationType.ERROR);
-		} else {
-			return;
 		}
 	}
 };
