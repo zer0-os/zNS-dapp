@@ -1,4 +1,4 @@
-// React Imports
+//- React Imports
 import { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -8,6 +8,9 @@ import { Web3Provider } from '@ethersproject/providers';
 
 //- Global Component Imports
 import { Wizard, StepBar } from 'components';
+
+//- Library Imports
+import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 //- Components Imports
 import Details from './components/WizardSteps/Details/Details';
@@ -27,8 +30,6 @@ import { ROUTES } from 'constants/routes';
 
 //- Styles Imports
 import styles from './ClaimNFT.module.scss';
-import { useZSaleSdk } from 'lib/hooks/sdk';
-import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 export type ClaimNFTProps = {
 	openConnect: () => void;
@@ -55,7 +56,6 @@ const ClaimNFT = ({
 	//////////////////
 	// State & Data //
 	//////////////////
-	const { claimInstance } = useZSaleSdk();
 	const { active } = useWeb3React<Web3Provider>();
 	const { push: goTo } = useHistory();
 	const [tokenID, setTokenID] = useState<string | undefined>();
@@ -78,8 +78,6 @@ const ClaimNFT = ({
 		}
 		setCurrentStep(i);
 		setStepContent(i);
-		const saleData = await claimInstance.getSaleData();
-		console.log('saleData', saleData);
 	};
 
 	const onStartClaim = () => {
@@ -126,7 +124,6 @@ const ClaimNFT = ({
 	const onFinish = () => {
 		setTransactionStatus('');
 		onClose();
-		console.log('Close Wizard');
 	};
 
 	/////////////
@@ -147,6 +144,7 @@ const ClaimNFT = ({
 			isMounted.current = false;
 		};
 	}, []);
+
 	///////////////
 	// Fragments //
 	///////////////
@@ -190,6 +188,7 @@ const ClaimNFT = ({
 	////////////
 	// Render //
 	////////////
+
 	return (
 		<Wizard header={STEP_CONTENT_TITLES[stepContent]} sectionDivider={false}>
 			<div className={styles.StepBarContainer}>
