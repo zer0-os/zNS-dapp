@@ -39,7 +39,6 @@ import {
 	isValidTokenId,
 	getQuantityText,
 	getQuantityTooltip,
-	handleInputNotification,
 	NotificationType,
 } from './Details.utils';
 
@@ -84,8 +83,13 @@ const Details = ({
 	>();
 	const [requestCheck, setRequestCheck] = useState<boolean>(false);
 
-	const { isTokenClaimable, isCheckDataLoading, isValidSubdomain } =
-		useClaimCheck(tokenID ?? '', requestCheck);
+	const { isCheckDataLoading, isValidSubdomain, setIsValidSubdomain } =
+		useClaimCheck(
+			tokenID ?? '',
+			requestCheck,
+			setInputNotification,
+			setNotificationType,
+		);
 
 	const validTokenId = isValidTokenId(tokenID ?? '');
 	const hasValue = Boolean(tokenID?.length);
@@ -129,17 +133,12 @@ const Details = ({
 	const handleChange = (id: string) => {
 		setInputNotification('');
 		setNotificationType(undefined);
+		setIsValidSubdomain(undefined);
 		setTokenID && setTokenID(id);
 		setRequestCheck(false);
 	};
 
 	const onCheck = () => {
-		handleInputNotification(
-			setInputNotification,
-			setNotificationType,
-			isTokenClaimable,
-			isValidSubdomain,
-		);
 		setRequestCheck(true);
 	};
 
@@ -222,7 +221,7 @@ const Details = ({
 										glow={validTokenId}
 										disabled={!validTokenId}
 										onClick={onCheck}
-										loading={isCheckDataLoading}
+										loading={isCheckDataLoading && isValidSubdomain}
 									>
 										{TEXT_INPUT.BUTTON}
 									</FutureButton>

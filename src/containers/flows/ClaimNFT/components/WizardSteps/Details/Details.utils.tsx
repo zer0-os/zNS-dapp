@@ -30,6 +30,7 @@ export const getQuantityTooltip = (isClaimable: boolean) =>
 export enum NotificationType {
 	SUCCESS = 'SUCCESS',
 	ERROR = 'ERROR',
+	NULL = 'NULL',
 }
 
 export const handleInputNotification = (
@@ -45,6 +46,9 @@ export const handleInputNotification = (
 		if (tokenClaimable) {
 			setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_SUCCESS);
 			setNotificationType(NotificationType.SUCCESS);
+		} else if (tokenClaimable === undefined) {
+			setInputNotification('');
+			setNotificationType(NotificationType.NULL);
 		} else {
 			setInputNotification(TEXT_INPUT.CLAIM_CONSUMED_ERROR);
 			setNotificationType(NotificationType.ERROR);

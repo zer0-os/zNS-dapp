@@ -43,7 +43,7 @@ type TokenHashBoxesProps = {
 	domainId: string;
 	chainId?: number;
 	znsDomain: Maybe<DisplayParentDomain>;
-	isTokenClaimable: boolean;
+	isTokenClaimable?: boolean;
 	isCheckDataLoading: boolean;
 	onClaim: () => void;
 };
