@@ -1,16 +1,27 @@
+//- React Imports
 import { useEffect, useState } from 'react';
+import useAsyncEffect from 'use-async-effect';
 
+//- Components Imports
 import { MintDropNFTBanner, Overlay, Countdown } from 'components';
+
+//- Containers Imports
 import { ClaimNFT } from 'containers';
+
+//- Components Imports
 import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
-import useAsyncEffect from 'use-async-effect';
+
+//- Constants Imports
 import {
 	PRIVATE_SALE_END_TIME,
 	RAFFLE_END_TIME,
 	RAFFLE_START_TIME,
 	SALE_START_TIME,
 } from './Drop.constants';
+
+// Style Imports
+import styles from './Raffle.module.scss';
 
 const RaffleContainer = () => {
 	//////////////////
@@ -207,7 +218,7 @@ const RaffleContainer = () => {
 		return (
 			<>
 				{isModalOpen && overlay()}
-				<div>
+				<div className={styles.BannerContainer}>
 					<MintDropNFTBanner
 						title={
 							hasRaffleEnded

@@ -14,6 +14,7 @@ import {
 
 // Library Imports
 import classNames from 'classnames/bind';
+import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 //- Hook Imports
 import useClaimCheck from '../../../hooks/useClaimCheck';
@@ -44,7 +45,6 @@ import {
 
 // Style Imports
 import styles from './Details.module.scss';
-import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 
 type DetailsProps = {
 	tokenID?: string;
