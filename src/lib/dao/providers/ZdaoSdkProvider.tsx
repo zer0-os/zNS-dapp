@@ -79,7 +79,7 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 		const config: Config = createConfig(
 			addresses[network].zDao,
 			provider,
-			'ipfs.io',
+			'snapshot.mypinata.cloud',
 		);
 
 		const sdk = createSDKInstance(config);
