@@ -24,6 +24,8 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 	isLoading = true,
 	votes = [],
 }) => {
+	const isSnapshotProposal = !proposal?.metadata;
+
 	const histories = useMemo(() => {
 		if (!proposal || votes.length === 0) {
 			return [];
@@ -70,14 +72,20 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 											{/* Vote Direction */}
 											<span className={styles.Direction}>
 												<strong>Vote Direction</strong>
-												{history.direction === 1 ? (
-													<Approve>
-														{proposal?.choices[history.direction - 1]}
-													</Approve>
+												{!isSnapshotProposal ? (
+													history.direction === 1 ? (
+														<Approve>
+															{proposal?.choices[history.direction - 1]}
+														</Approve>
+													) : (
+														<Deny>
+															{proposal?.choices[history.direction - 1]}
+														</Deny>
+													)
 												) : (
-													<Deny>
+													<span className={styles.SnapshotDirection}>
 														{proposal?.choices[history.direction - 1]}
-													</Deny>
+													</span>
 												)}
 											</span>
 
