@@ -7,6 +7,8 @@ import {
 } from 'lib/network';
 import { RPC_URLS } from 'lib/connectors';
 import { ethers } from 'ethers';
+import { WALLETS } from 'constants/wallets';
+import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { DAOS } from 'constants/daos';
 import {
 	Config,
@@ -31,7 +33,7 @@ type DaoSdkProviderProps = {
 export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 	children,
 }) => {
-	const { library, chainId } = useWeb3React<Web3Provider>(); // get provider for connected wallet
+	const { library, chainId, active } = useWeb3React<Web3Provider>(); // get provider for connected wallet
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
@@ -50,6 +52,16 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 			network !== NETWORK_TYPES.RINKEBY
 		) {
 			throw new Error('Network not supported');
+		}
+
+		if (
+			Object.values(WALLETS).includes(
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) as WALLETS,
+			) &&
+			!active
+		) {
+			// it is still loading wallet connected account
+			return;
 		}
 
 		const createConfig =
@@ -75,14 +87,12 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 			sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
 			sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
 			await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
-			setInstance(sdk);
-		} else {
-			// main net
-			setInstance(sdk);
 		}
-	}, [library, network, selectedChain]);
 
-	useUpdateEffect(createInstance, [library, network, selectedChain]);
+		setInstance(sdk);
+	}, [library, active, network, selectedChain]);
+
+	useUpdateEffect(createInstance, [library, active, network, selectedChain]);
 	useDidMount(() => {
 		createInstance();
 	});
