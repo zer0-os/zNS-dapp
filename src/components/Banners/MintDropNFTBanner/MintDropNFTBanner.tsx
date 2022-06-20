@@ -51,7 +51,7 @@ const MintDropNFTBanner: React.FC<MintDropNFTBannerProps> = ({
 			<div className={`${styles.Content}`}>
 				<div className={`${styles.TextContainer}`}>
 					<h2 className={`${styles.Title}`}>{title}</h2>
-					<p className={`${styles.Label}`}>{label}</p>
+					<div className={`${styles.Label}`}>{label}</div>
 				</div>
 
 				<p className={`${styles.Button}`}>
