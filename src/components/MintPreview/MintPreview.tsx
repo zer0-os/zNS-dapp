@@ -56,10 +56,7 @@ const MintPreview = (props: MintPreviewProps) => {
 		const link = zNAToLink(nft.zNA);
 
 		// Check for Claim domain name
-		const domainName =
-			nft.zNA === ZNA.CLAIM_NFT_DOMAIN_ROOT
-				? ZNA.CLAIM_NFT_DOMAIN_ROOT + '.?'
-				: truncateDomain(nft.zNA, MAX_CHARACTER_VALUE);
+		const claimDomainName = nft.zNA === ZNA.CLAIM_NFT_DOMAIN_ROOT;
 
 		const statusStyle = {
 			color: isCompleted ? '#58c573' : '#808080',
@@ -88,13 +85,11 @@ const MintPreview = (props: MintPreviewProps) => {
 						<div className={styles.Info}>
 							<div className={styles.InfoSection}>
 								<h3>{nft.title}</h3>
-								{domainName ? (
-									<div className={styles.Link}>0://{domainName}</div>
-								) : (
-									<Link className={styles.Link} to={link}>
-										0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
-									</Link>
-								)}
+
+								<Link className={styles.Link} to={link}>
+									0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
+									{claimDomainName && '.?'}
+								</Link>
 							</div>
 
 							<div className={styles.Container}>
