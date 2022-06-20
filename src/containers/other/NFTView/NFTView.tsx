@@ -210,6 +210,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			modalType: NFTViewModalType.CLAIM_NFT,
 			contentProps: {
 				privateSaleEndTime: PRIVATE_SALE_END_TIME,
+				onClose: closeModal,
 			},
 		});
 	};

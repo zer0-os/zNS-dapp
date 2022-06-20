@@ -73,6 +73,7 @@ export const NFTViewModalProvider = ({
 				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && (
 					<ClaimNFT
 						privateSaleEndTime={modalContent.contentProps.privateSaleEndTime}
+						onClose={closeModal}
 					/>
 				)}
 			</Overlay>

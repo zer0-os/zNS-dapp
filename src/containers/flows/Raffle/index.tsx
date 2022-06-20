@@ -234,7 +234,13 @@ const RaffleContainer = () => {
 		);
 	}
 
-	return <ClaimNFT requireBanner privateSaleEndTime={PRIVATE_SALE_END_TIME} />;
+	return (
+		<ClaimNFT
+			requireBanner
+			privateSaleEndTime={PRIVATE_SALE_END_TIME}
+			onClose={closeModal}
+		/>
+	);
 };
 
 export default RaffleContainer;

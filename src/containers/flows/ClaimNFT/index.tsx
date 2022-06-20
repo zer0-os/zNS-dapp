@@ -32,11 +32,13 @@ import { ROUTES } from 'constants/routes';
 export type ClaimNFTContainerProps = {
 	requireBanner?: boolean;
 	privateSaleEndTime: number;
+	onClose: () => void;
 };
 
 const ClaimNFTContainer = ({
 	requireBanner,
 	privateSaleEndTime,
+	onClose,
 }: ClaimNFTContainerProps) => {
 	//////////////////
 	// State & Data //
@@ -359,7 +361,7 @@ const ClaimNFTContainer = ({
 			) : (
 				<ClaimNFT
 					openConnect={openConnect}
-					onClose={closeWizard}
+					onClose={onClose}
 					onSubmit={onSubmit}
 					eligibleDomains={eligibleDomains}
 					isClaimingInProgress={isClaimingInProgress}
