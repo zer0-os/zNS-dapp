@@ -6,6 +6,10 @@
  */
 .Direction span {
 	font-weight: 700 !important;
+
+	&.SnapshotDirection {
+		color: #6b6b6b;
+	}
 }
 
 .Container {
