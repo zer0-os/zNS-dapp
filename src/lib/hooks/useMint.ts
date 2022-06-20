@@ -32,6 +32,7 @@ import {
 	MINTING_FLOW_NOTIFICATIONS,
 	CLAIM_FLOW_NOTIFICATIONS,
 } from 'constants/notifications';
+import { ZNA } from 'constants/zna';
 
 export type UseMintReturn = {
 	minting: NftStatusCard[];
@@ -179,7 +180,7 @@ export const useMint = (): UseMintReturn => {
 		) => {
 			// To generate mint preview data
 			const asset = {
-				zNA: 'wilder.candy.motoTest',
+				zNA: ZNA.CLAIM_NFT_DOMAIN_ROOT,
 				title: LABELS.CLAIM_NFT_DROP_DEFAULT_TITLE,
 				imageUri: IMAGE_URI.CLAIM_NFT_DROP_DEFAULT_IMAGE_URI,
 				story: '',

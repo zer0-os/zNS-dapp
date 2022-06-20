@@ -28,6 +28,7 @@ import {
 	MESSAGES,
 	BUTTON_TEXT,
 } from './MintPreview.constants';
+import { ZNA } from 'constants/zna';
 
 //- Assets Imports
 import questionMark from './assets/question-mark-icon.svg';
@@ -53,6 +54,12 @@ const MintPreview = (props: MintPreviewProps) => {
 		statusText?: string,
 	) => {
 		const link = zNAToLink(nft.zNA);
+
+		// Check for Claim domain name
+		const domainName =
+			nft.zNA === ZNA.CLAIM_NFT_DOMAIN_ROOT
+				? ZNA.CLAIM_NFT_DOMAIN_ROOT + '.?'
+				: truncateDomain(nft.zNA, MAX_CHARACTER_VALUE);
 
 		const statusStyle = {
 			color: isCompleted ? '#58c573' : '#808080',
@@ -81,10 +88,13 @@ const MintPreview = (props: MintPreviewProps) => {
 						<div className={styles.Info}>
 							<div className={styles.InfoSection}>
 								<h3>{nft.title}</h3>
-
-								<Link className={styles.Link} to={link}>
-									0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
-								</Link>
+								{domainName ? (
+									<div className={styles.Link}>0://{domainName}</div>
+								) : (
+									<Link className={styles.Link} to={link}>
+										0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
+									</Link>
+								)}
 							</div>
 
 							<div className={styles.Container}>
