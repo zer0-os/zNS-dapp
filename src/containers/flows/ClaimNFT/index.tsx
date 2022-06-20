@@ -148,23 +148,21 @@ const ClaimNFTContainer = ({
 	/**
 	 * This is the initial "get data"
 	 */
-	useEffect(() => {
-		let isMounted = true;
+	useAsyncEffect(
+		async (isActive) => {
+			// Generally this would be < DATE_WHITELIST & < PUBLIC_SALE_START_TIME
+			// but given time constraints we're just going to compare
+			// to PUBLIC_SALE_START_TIME
 
-		// Generally this would be < DATE_WHITELIST & < PUBLIC_SALE_START_TIME
-		// but given time constraints we're just going to compare
-		// to PUBLIC_SALE_START_TIME
-
-		const getData = async () => {
 			if (!claimInstance) {
 				return;
 			}
 			try {
-				if (!isMounted) {
-					return;
-				}
 				const saleData = await claimInstance.getSaleData();
 				const currentDropStage = await getDropStage(claimInstance);
+				if (!isActive()) {
+					return;
+				}
 				if (currentDropStage === Stage.Upcoming) {
 					setCountdownDate(undefined);
 					setTimeout(() => {
@@ -187,94 +185,94 @@ const ClaimNFTContainer = ({
 				setRefetch(refetch + 1);
 				setFailedToLoad(true);
 			}
-		};
-		getData();
-		return () => {
-			isMounted = false;
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [library, claimInstance]);
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		},
+		[library, claimInstance],
+	);
 
 	/**
 	 * Get user-specific variables whenever mint amount or account changes
 	 */
-	useAsyncEffect(async () => {
-		let isMounted = true;
-
-		if (!claimInstance || !library || !account) {
-			return;
-		}
-		// Get user data if wallet connected
-		if (account && library) {
-			try {
-				setIsClaimDataLoading(true);
-				if (!isMounted) {
-					return;
-				}
-				const claimingIDs = await claimInstance.getClaimingIDsForUser(account);
-				setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
-			} catch (err) {
-				console.log(err);
+	useAsyncEffect(
+		async (isActive) => {
+			if (!claimInstance || !library || !account) {
+				return;
 			}
-			setIsClaimDataLoading(false);
-		}
-		return () => {
-			isMounted = false;
-		};
-	}, [account, library, claimInstance]);
+			// Get user data if wallet connected
+			if (account && library) {
+				try {
+					setIsClaimDataLoading(true);
+					const claimingIDs = await claimInstance.getClaimingIDsForUser(
+						account,
+					);
+
+					if (!isActive()) {
+						return;
+					}
+					setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
+				} catch (err) {
+					console.log(err);
+				}
+				setIsClaimDataLoading(false);
+			}
+		},
+		[account, library, claimInstance, dropStage],
+	);
 
 	/**
 	 * Gets and sets what stage the sale is in
 	 */
-	useAsyncEffect(async () => {
-		let isMounted = true;
-		if (!claimInstance || !library) {
-			return;
-		}
-
-		try {
-			if (!isMounted) {
+	useAsyncEffect(
+		async (isActive) => {
+			if (!claimInstance || !library) {
 				return;
 			}
-			const saleData = await claimInstance.getSaleData();
-			const currentDropStage = await getDropStage(claimInstance);
-			if (dropStage !== undefined) {
-				if (hasCountdownFinished && currentDropStage === dropStage) {
-					setTimeout(() => {
-						setRefetch(refetch + 1);
-					}, 7000);
+
+			try {
+				const saleData = await claimInstance.getSaleData();
+				const currentDropStage = await getDropStage(claimInstance);
+
+				if (!isActive()) {
 					return;
 				}
-				if (currentDropStage === Stage.Upcoming) {
-					setCountdownDate(undefined);
+				if (dropStage !== undefined) {
+					if (hasCountdownFinished && currentDropStage === dropStage) {
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
+						return;
+					}
+					if (currentDropStage === Stage.Upcoming) {
+						setCountdownDate(undefined);
+						setTimeout(() => {
+							setRefetch(refetch + 1);
+						}, 7000);
+					} else if (currentDropStage === Stage.Whitelist) {
+						setCountdownDate(PRIVATE_SALE_END_TIME);
+					} else {
+						setCountdownDate(undefined);
+					}
+					if (refetch > 0) {
+						setCountdownDate(undefined);
+					}
+					setDropStage(currentDropStage);
+					setWheelsTotal(saleData.amountForSale);
+					setWheelsMinted(saleData.amountSold);
+					setFailedToLoad(false);
+				}
+			} catch (err) {
+				if (!failedToLoad) {
 					setTimeout(() => {
 						setRefetch(refetch + 1);
 					}, 7000);
-				} else if (currentDropStage === Stage.Whitelist) {
-					setCountdownDate(PRIVATE_SALE_END_TIME);
-				} else {
-					setCountdownDate(undefined);
 				}
-				if (refetch > 0) {
-					setCountdownDate(undefined);
-				}
-				setDropStage(currentDropStage);
-				setWheelsTotal(saleData.amountForSale);
-				setWheelsMinted(saleData.amountSold);
+				setFailedToLoad(true);
 			}
-		} catch (err) {
-			if (!failedToLoad) {
-				setTimeout(() => {
-					setRefetch(refetch + 1);
-				}, 7000);
-			}
-			setFailedToLoad(true);
-		}
-		return () => {
-			isMounted = false;
-		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [hasCountdownFinished, refetch, library, claimInstance]);
+
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		},
+		[hasCountdownFinished, refetch, library, claimInstance],
+	);
 
 	/**
 	 * Listens for changes to drop stage, and handles UI accordingly
