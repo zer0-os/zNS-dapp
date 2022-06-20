@@ -85,8 +85,8 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 		const sdk = createSDKInstance(config);
 
 		/**
-		 * 30/03/2022
-		 * Remap functions for mainnet as the contract isn't live yet
+		 * 20/06/2022
+		 * Rinkeby is not released yet
 		 */
 		if (network === NETWORK_TYPES.RINKEBY) {
 			sdk.listZNAs = sdk.listZNAsFromParams;
