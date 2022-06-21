@@ -8,7 +8,7 @@ import WaitlistRegistration from './WaitlistRegistration';
 import RaffleRegistration from './RaffleRegistration';
 
 //- Containers Imports
-import { ClaimNFT } from 'containers';
+import { ClaimNFTContainer } from 'containers';
 
 //- Types Imports
 import { Stage } from '../MintDropNFT/types';
@@ -240,7 +240,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 	}
 
 	return (
-		<ClaimNFT
+		<ClaimNFTContainer
 			requireBanner
 			privateSaleEndTime={PRIVATE_SALE_END_TIME}
 			onClose={closeModal}
