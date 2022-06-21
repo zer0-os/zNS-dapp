@@ -8,11 +8,12 @@ import ClaimNFT from '../ClaimNFT/ClaimNFT';
 
 //- Types Imports
 import { ClaimData } from './ClaimNFT.types';
-import { Stage } from '../MintDropNFT/types';
+import { Stage } from './ClaimNFT.types';
 
 //- Constants Imports
 import { getBannerButtonText, getBannerLabel } from './labels';
 import { DOMAINS, MESSAGES } from './ClaimNFT.constants';
+import { ROUTES } from 'constants/routes';
 
 //- Utils Imports
 import { getDropStage } from '../MintDropNFT/helpers';
@@ -27,7 +28,6 @@ import useMint from 'lib/hooks/useMint';
 
 //- Style Imports
 import styles from './ClaimNFTContainer.module.scss';
-import { ROUTES } from 'constants/routes';
 
 export type ClaimNFTContainerProps = {
 	requireBanner?: boolean;
@@ -59,8 +59,8 @@ const ClaimNFTContainer = ({
 	const [isClaimingInProgress, setIsClaimingInProgress] =
 		useState<boolean>(false);
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
-	const [wheelsTotal, setWheelsTotal] = useState<number | undefined>();
-	const [wheelsMinted, setWheelsMinted] = useState<number | undefined>();
+	const [assetTotal, setAssetTotal] = useState<number | undefined>();
+	const [assetsMinted, setAssetsMinted] = useState<number | undefined>();
 	const [countdownDate, setCountdownDate] = useState<number | undefined>();
 	const [refetch, setRefetch] = useState<number>(0);
 	const [canOpenWizard, setCanOpenWizard] = useState<boolean>(false);
@@ -179,8 +179,8 @@ const ClaimNFTContainer = ({
 					setCountdownDate(undefined);
 				}
 				setDropStage(currentDropStage);
-				setWheelsTotal(saleData.amountForSale);
-				setWheelsMinted(saleData.amountSold);
+				setAssetTotal(saleData.amountForSale);
+				setAssetsMinted(saleData.amountSold);
 				setFailedToLoad(false);
 			} catch (err) {
 				console.error(err);
@@ -258,8 +258,8 @@ const ClaimNFTContainer = ({
 						setCountdownDate(undefined);
 					}
 					setDropStage(currentDropStage);
-					setWheelsTotal(saleData.amountForSale);
-					setWheelsMinted(saleData.amountSold);
+					setAssetTotal(saleData.amountForSale);
+					setAssetsMinted(saleData.amountSold);
 					setFailedToLoad(false);
 				}
 			} catch (err) {
@@ -291,10 +291,10 @@ const ClaimNFTContainer = ({
 			timer = setInterval(async () => {
 				const sold = await claimInstance.getNumberOfDomainsSold();
 				if (sold) {
-					if (wheelsTotal !== undefined && sold.toNumber() >= wheelsTotal) {
+					if (assetTotal !== undefined && sold.toNumber() >= assetTotal) {
 						setDropStage(Stage.Sold);
 					}
-					setWheelsMinted(sold.toNumber());
+					setAssetsMinted(sold.toNumber());
 				}
 			}, 5000);
 		}
@@ -310,8 +310,8 @@ const ClaimNFTContainer = ({
 			? 'Failed to load sale data - refresh to try again'
 			: getBannerLabel(
 					dropStage,
-					wheelsMinted,
-					wheelsTotal,
+					assetsMinted,
+					assetTotal,
 					countdownDate,
 					countdownFinished,
 					hasCountdownFinished,

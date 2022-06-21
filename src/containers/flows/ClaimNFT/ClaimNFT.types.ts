@@ -12,6 +12,14 @@ export enum Step {
 	Minting,
 }
 
+export enum Stage {
+	Upcoming,
+	Whitelist,
+	Public,
+	Ended,
+	Sold,
+}
+
 export type ClaimData = {
 	quantity: number;
 	eligibleDomains: ClaimableDomain[];
