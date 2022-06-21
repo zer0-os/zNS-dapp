@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import {
 	chainIdToNetworkType,
