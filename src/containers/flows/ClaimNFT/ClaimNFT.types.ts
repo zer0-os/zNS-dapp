@@ -12,18 +12,6 @@ export enum Step {
 	Minting,
 }
 
-export enum Stage {
-	Countdown,
-	Claim,
-	Concluded,
-}
-
-export type ClaimDropData = {
-	dropStage: Stage;
-	nftTotal: number;
-	totalMinted: number;
-};
-
 export type ClaimData = {
 	quantity: number;
 	eligibleDomains: ClaimableDomain[];
