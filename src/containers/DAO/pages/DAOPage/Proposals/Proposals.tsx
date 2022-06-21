@@ -1,17 +1,17 @@
 import React from 'react';
-import { Proposal } from '@zero-tech/zdao-sdk';
 import ProposalsTable from './PropsalsTable/ProposalsTable';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 
-type ProposalsProps = {
-	proposals?: Proposal[];
-	isLoading: boolean;
-};
+export const Proposals: React.FC = () => {
+	const { proposals, isInitialFetching, isRefetching } = useProposals();
 
-export const Proposals: React.FC<ProposalsProps> = ({
-	proposals,
-	isLoading,
-}) => {
-	return <ProposalsTable proposals={proposals} isLoading={isLoading} />;
+	return (
+		<ProposalsTable
+			proposals={proposals}
+			isLoading={isInitialFetching}
+			isReloading={isRefetching}
+		/>
+	);
 };
 
 export default Proposals;

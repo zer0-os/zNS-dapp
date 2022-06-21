@@ -1,16 +1,18 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-
-// Hooks
-import useProposalMetadata from '../../hooks/useProposalMetadata';
 
 // Lib
 import moment from 'moment';
-import {
-	formatProposalStatus,
-	formatTotalAmountOfTokenMetadata,
-} from '../Proposals.helpers';
+import { isEqual } from 'lodash';
+import removeMarkdown from 'markdown-to-text';
 import { truncateString } from 'lib/utils/string';
+import { formatProposalStatus } from '../Proposals.helpers';
+
+// Hooks
+import { useDidMount } from 'lib/hooks/useDidMount';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { usePrevious } from 'lib/hooks/usePrevious';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 
 // Components
 import { Chiclet } from 'components';
@@ -20,11 +22,14 @@ import classNames from 'classnames';
 import styles from './ProposalsTableCard.module.scss';
 
 // Types
-import { Proposal } from '@zero-tech/zdao-sdk';
+import type { Proposal } from '@zero-tech/zdao-sdk';
 
 // Constants
-import { DEFAULT_TIMMER_EXPIRED_LABEL } from '../Proposals.constants';
-import { CURRENCY } from 'constants/currency';
+import {
+	DEFAULT_TIMMER_EXPIRED_LABEL,
+	PROPOSAL_TABLE_LOCATION_STATE_KEY,
+	PROPOSAL_TABLE_LOCATION_STATE,
+} from '../Proposals.constants';
 import { ChicletType } from 'components/Chiclet/Chiclet';
 
 interface ProposalsTableCardProps {
@@ -38,20 +43,25 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 	onRowClick,
 	className,
 }) => {
+	/**
+	 * Hooks and Data
+	 */
+	const { updateProposal } = useProposals();
+
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [proposal, setProposal] = useState<Proposal>(data);
+	const prevProposal = usePrevious<Proposal>(proposal);
+
 	const history = useHistory();
 	const location = useLocation();
 
-	const { metadata, isLoading: isMetadataLoading } = useProposalMetadata(data);
-
-	const { id, title, body, end } = data;
-
 	const cardData = useMemo(() => {
-		const wild = formatTotalAmountOfTokenMetadata(metadata);
-		const isConcluded = moment(end).isBefore(moment());
-		const timeDiff = moment(end).diff(moment());
+		const isConcluded = moment(proposal.end).isBefore(moment());
+		const timeDiff = moment(proposal.end).diff(moment());
+		const status = formatProposalStatus(isLoading ? data : proposal) || '-';
 
 		let closingType: ChicletType = 'normal';
-		if (!isConcluded && timeDiff < 24 * 3600 * 1000) {
+		if (!isConcluded && timeDiff < 1 * 3600 * 1000) {
 			// less than 1 hour
 			closingType = 'error';
 		} else if (!isConcluded && timeDiff <= 24 * 3600 * 1000) {
@@ -60,23 +70,57 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 		}
 
 		return {
-			wild: {
-				value: wild,
-				formatted: (wild || '0.00') + ' ' + CURRENCY.WILD,
-			},
+			isConcluded,
 			closing: {
 				type: closingType,
 				message: isConcluded
 					? DEFAULT_TIMMER_EXPIRED_LABEL
 					: 'Closing in ' + moment.duration(timeDiff).humanize(),
 			},
+			status,
 		};
-	}, [metadata, end]);
+	}, [proposal, isLoading, data]);
+
+	/**
+	 * Callbacks
+	 */
+	const refetchProposalData = useCallback(async () => {
+		if (proposal.state !== 'closed') {
+			setIsLoading(true);
+			try {
+				const updatedProposal = await proposal.updateScoresAndVotes();
+				setProposal(updatedProposal);
+			} catch (e) {
+				console.error(e);
+			} finally {
+				setIsLoading(false);
+			}
+		}
+	}, [proposal, setProposal]);
 
 	const handleCardClick = useCallback(() => {
-		history.push(`${location.pathname}/${id}`);
+		history.push(`${location.pathname}/${proposal.id}`, {
+			[PROPOSAL_TABLE_LOCATION_STATE_KEY]: PROPOSAL_TABLE_LOCATION_STATE.CARD,
+		});
 		onRowClick && onRowClick();
-	}, [onRowClick, history, location, id]);
+	}, [onRowClick, history, location, proposal]);
+
+	/**
+	 * Life Cycle
+	 */
+	useDidMount(refetchProposalData);
+
+	useUpdateEffect(() => {
+		if (!isEqual(proposal, prevProposal)) {
+			updateProposal(proposal);
+		}
+	}, [proposal, prevProposal]);
+
+	useUpdateEffect(() => {
+		if (cardData.isConcluded) {
+			updateProposal(proposal);
+		}
+	}, [cardData.isConcluded]);
 
 	return (
 		<div
@@ -84,19 +128,18 @@ const ProposalsTableCard: React.FC<ProposalsTableCardProps> = ({
 			onClick={handleCardClick}
 		>
 			<div className={styles.Content}>
-				<h2 className={styles.Title}>{title}</h2>
-				<p className={styles.Description}>{truncateString(body, 150)}</p>
+				<h2 className={styles.Title}>{proposal.title}</h2>
+				<p className={styles.Description}>
+					{truncateString(removeMarkdown(proposal.body), 180)}
+				</p>
 			</div>
 			<div className={styles.Buttons}>
-				{!isMetadataLoading && cardData.wild.value && (
-					<Chiclet>{cardData.wild.formatted}</Chiclet>
-				)}
 				<Chiclet type={cardData.closing.type}>
 					{cardData.closing.message}
 				</Chiclet>
-				<Chiclet className={styles.Status}>
-					{formatProposalStatus(data)}
-				</Chiclet>
+				{cardData.status !== '-' && (
+					<Chiclet className={styles.Status}>{cardData.status}</Chiclet>
+				)}
 			</div>
 		</div>
 	);

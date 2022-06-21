@@ -1,19 +1,27 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { Link, useHistory, useParams } from 'react-router-dom';
 
 // - Library
-import { zDAO, ProposalId } from '@zero-tech/zdao-sdk';
+import type { zDAO, Proposal, ProposalId } from '@zero-tech/zdao-sdk';
+import { cloneDeep, isEqual } from 'lodash';
+import {
+	isFromSnapshotWithMultipleChoices,
+	formatProposalBody,
+} from '../Proposals.helpers';
 
 // - Hooks
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useWillUnmount } from 'lib/hooks/useWillUnmount';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+import { usePrevious } from 'lib/hooks/usePrevious';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 import useProposal from '../../hooks/useProposal';
 
 // - Component
 import { ArrowLeft } from 'react-feather';
 import { LoadingIndicator, MarkDownViewer } from 'components';
 import { VoteBar } from './VoteBar';
-import { VoteAttributes } from './VoteAttributes';
+import { ProposalAttributes } from './ProposalAttributes';
 import { VoteHistories } from './VoteHistories';
 
 // - Styles
@@ -25,6 +33,8 @@ type ProposalDetailProps = {
 };
 
 export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
+	const [triggerRefresh, setTriggerRefresh] = useState<boolean>(false);
+
 	useDidMount(() => {
 		const nav = document.getElementById('dao-page-nav-tabs');
 		if (nav) {
@@ -45,11 +55,34 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 	const { proposal, isLoading, votes, isLoadingVotes } = useProposal(
 		proposalId as ProposalId,
 		dao,
+		triggerRefresh,
 	);
+	const prevProposal = usePrevious<Proposal | undefined>(proposal);
+	const { updateProposal } = useProposals();
+
+	const refresh = () => {
+		setTriggerRefresh(!triggerRefresh);
+	};
+
+	const toAllProposals = useMemo(() => {
+		const pathname = history.location.pathname.replace(`/${proposalId}`, '');
+		const state = cloneDeep(history.location.state);
+
+		return {
+			pathname,
+			state,
+		};
+	}, [history, proposalId]);
+
+	useUpdateEffect(() => {
+		if (proposal && !isEqual(proposal, prevProposal)) {
+			updateProposal(proposal);
+		}
+	}, [proposal, prevProposal]);
 
 	return (
 		<div className={styles.Container}>
-			<Link className={styles.NavLink} to="#" onClick={history.goBack}>
+			<Link className={styles.NavLink} to={toAllProposals}>
 				<ArrowLeft /> All Proposals
 			</Link>
 
@@ -60,18 +93,21 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 					<div className={styles.Wrapper}>
 						<h1 className={styles.Title}>{proposal?.title}</h1>
 
-						{proposal && (proposal.scores[0] > 0 || proposal.scores[1] > 0) && (
-							<VoteBar scores={proposal?.scores} />
+						{proposal &&
+							!isFromSnapshotWithMultipleChoices(proposal) &&
+							votes?.length > 0 && <VoteBar votes={votes} />}
+
+						{dao && proposal && (
+							<ProposalAttributes dao={dao} proposal={proposal} />
 						)}
 
-						<VoteAttributes proposal={proposal} votes={votes} />
-
 						<MarkDownViewer
-							text={proposal?.body}
+							text={formatProposalBody(proposal?.body)}
 							className={styles.MarkDownViewerContent}
 						/>
 
 						<VoteHistories
+							dao={dao}
 							proposal={proposal}
 							isLoading={isLoadingVotes}
 							votes={votes}
@@ -80,7 +116,9 @@ export const ProposalDetail: React.FC<ProposalDetailProps> = ({ dao }) => {
 				)}
 			</div>
 
-			{!isLoading && proposal && <Vote proposal={proposal} />}
+			{!isLoading && proposal && (
+				<Vote proposal={proposal} onCompleteVoting={refresh} />
+			)}
 		</div>
 	);
 };

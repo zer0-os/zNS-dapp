@@ -1,41 +1,45 @@
 import React, { useMemo } from 'react';
 
 // - Library
-import { Proposal, Vote } from '@zero-tech/zdao-sdk';
-import { truncateWalletAddress } from 'lib/utils';
+import type { zDAO, Proposal, Vote } from '@zero-tech/zdao-sdk';
+import { formatVotingPowerAmount } from '../../Proposals.helpers';
 
 // - Component
-import { LoadingIndicator } from 'components';
+import { LoadingIndicator, EtherscanLink } from 'components';
 
 //- Style Imports
 import styles from './VoteHistories.module.scss';
-import { Approve, Deny } from '../Vote/Vote';
+import { Approve, Deny } from '../Vote/VoteButtons';
 
 type VoteHistoriesProps = {
+	dao?: zDAO;
 	proposal?: Proposal;
 	isLoading: boolean;
 	votes: Vote[];
 };
 
 export const VoteHistories: React.FC<VoteHistoriesProps> = ({
+	dao,
 	proposal,
 	isLoading = true,
 	votes = [],
 }) => {
+	const isSnapshotProposal = !proposal?.metadata;
+
 	const histories = useMemo(() => {
-		if (!proposal || !proposal.metadata || votes.length === 0) {
+		if (!proposal || votes.length === 0) {
 			return [];
 		}
 
 		return votes.map((vote, index) => {
 			return {
 				id: index,
-				address: truncateWalletAddress(vote.voter, 4),
+				address: vote.voter,
 				direction: vote.choice,
-				power: vote.power,
+				power: formatVotingPowerAmount(vote.power, dao?.votingToken.symbol),
 			};
 		});
-	}, [proposal, votes]);
+	}, [dao, proposal, votes]);
 
 	return (
 		<div className={styles.Container}>
@@ -46,7 +50,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 				{!isLoading && (
 					<>
 						{histories.length === 0 && (
-							<div className={styles.Empty}>No votes found!</div>
+							<div className={styles.Empty}>No votes yet...</div>
 						)}
 
 						{histories.length > 0 && (
@@ -62,23 +66,33 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 											{/* Address */}
 											<span className={styles.Address}>
 												<strong>Address</strong>
-												{history.address}
+												<EtherscanLink address={history.address} />
 											</span>
 
 											{/* Vote Direction */}
 											<span className={styles.Direction}>
 												<strong>Vote Direction</strong>
-												{history.direction === 1 ? (
-													<Approve>Yes</Approve>
+												{!isSnapshotProposal ? (
+													history.direction === 1 ? (
+														<Approve>
+															{proposal?.choices[history.direction - 1]}
+														</Approve>
+													) : (
+														<Deny>
+															{proposal?.choices[history.direction - 1]}
+														</Deny>
+													)
 												) : (
-													<Deny>No</Deny>
+													<span className={styles.SnapshotDirection}>
+														{proposal?.choices[history.direction - 1]}
+													</span>
 												)}
 											</span>
 
 											{/* Voting Power */}
 											<span className={styles.Power}>
 												<strong>Voting Power</strong>
-												{history.power} {proposal?.metadata?.symbol}
+												{history.power}
 											</span>
 										</div>
 									))}

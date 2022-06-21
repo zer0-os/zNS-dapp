@@ -1,21 +1,16 @@
-import React, { FC, useState } from 'react';
-import { Choice } from '@zero-tech/zdao-sdk';
-
-import { truncateWalletAddress } from 'lib/utils';
-
-import { Overlay, Wizard } from 'components';
-import { Approve, Deny } from './Vote';
-
-import styles from './Vote.module.scss';
 import classNames from 'classnames';
-
-enum VoteModalStep {
-	CONFIRM,
-	PENDING,
-	ERROR,
-}
+import React, { FC, useState } from 'react';
+import type { Proposal, Choice } from '@zero-tech/zdao-sdk';
+import { truncateWalletAddress } from 'lib/utils';
+import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
+import { Overlay, Wizard } from 'components';
+import { Approve, Deny } from './VoteButtons';
+import { VoteModalStep } from './Vote.constants';
+import styles from './Vote.module.scss';
+import { formatVotingPowerAmount } from '../../Proposals.helpers';
 
 type VoteModalProps = {
+	proposal: Proposal;
 	votingAddress: string;
 	choice: Choice;
 	votingPower: number;
@@ -25,6 +20,7 @@ type VoteModalProps = {
 };
 
 const VoteModal: FC<VoteModalProps> = ({
+	proposal,
 	votingAddress,
 	votingPower,
 	choice,
@@ -32,6 +28,8 @@ const VoteModal: FC<VoteModalProps> = ({
 	onClose,
 	onComplete,
 }) => {
+	const { dao } = useCurrentDao();
+
 	const [step, setStep] = useState<VoteModalStep>(VoteModalStep.CONFIRM);
 
 	/**
@@ -44,9 +42,9 @@ const VoteModal: FC<VoteModalProps> = ({
 		try {
 			await onVote();
 			onComplete();
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
-			setStep(VoteModalStep.ERROR);
+			setStep(e.code === 4001 ? VoteModalStep.DECLINED : VoteModalStep.ERROR);
 		}
 	};
 
@@ -57,15 +55,14 @@ const VoteModal: FC<VoteModalProps> = ({
 				className={styles.Modal}
 				headerClassName={styles.Header}
 			>
-				{(step === VoteModalStep.CONFIRM || step === VoteModalStep.ERROR) && (
+				{(step === VoteModalStep.CONFIRM ||
+					step === VoteModalStep.DECLINED ||
+					step === VoteModalStep.ERROR) && (
 					<p>
 						Are you sure you want to vote to{' '}
 						{choice === 1 ? <Approve>approve</Approve> : <Deny>deny</Deny>} this
 						proposal? This will be processed by the blockchain and cannot be
-						reversed.{' '}
-						<span className="error-text">
-							Votes are currently mock, and will not be stored anywhere.
-						</span>
+						reversed
 					</p>
 				)}
 				<ul className={styles.Details}>
@@ -85,15 +82,25 @@ const VoteModal: FC<VoteModalProps> = ({
 					</li>
 					<li>
 						<span>Your Voting Power</span>
-						<span>{votingPower}</span>
+						<span>
+							{formatVotingPowerAmount(votingPower, dao?.votingToken.symbol)}
+						</span>
 					</li>
 				</ul>
+
+				{step === VoteModalStep.DECLINED && (
+					<span className={classNames('error-text', styles.Error)}>
+						Vote denied by wallet
+					</span>
+				)}
 				{step === VoteModalStep.ERROR && (
 					<span className={classNames('error-text', styles.Error)}>
 						Failed to submit vote - please try again.
 					</span>
 				)}
-				{(step === VoteModalStep.CONFIRM || step === VoteModalStep.ERROR) && (
+				{(step === VoteModalStep.CONFIRM ||
+					step === VoteModalStep.DECLINED ||
+					step === VoteModalStep.ERROR) && (
 					<Wizard.Buttons
 						onClickPrimaryButton={vote}
 						onClickSecondaryButton={onClose}

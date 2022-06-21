@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { zDAO, Proposal, ProposalId, Vote } from '@zero-tech/zdao-sdk';
+import { useState, useEffect } from 'react';
+import type { zDAO, Proposal, ProposalId, Vote } from '@zero-tech/zdao-sdk';
 
 type UseProposalReturn = {
 	proposal?: Proposal;
@@ -11,6 +11,7 @@ type UseProposalReturn = {
 const useProposal = (
 	id: ProposalId,
 	dao?: zDAO,
+	triggerRefresh: boolean = false,
 	shouldLoadVotes: boolean = true,
 ): UseProposalReturn => {
 	const [proposal, setProposal] = useState<Proposal | undefined>();
@@ -18,10 +19,15 @@ const useProposal = (
 	const [votes, setVotes] = useState<Vote[]>([]);
 	const [isLoadingVotes, setIsLoadingVotes] = useState<boolean>(false);
 
-	const fetchVotes = async (proposal: Proposal) => {
+	const fetchVotes = async (
+		proposal: Proposal,
+		isBackgroundFetching = false,
+	) => {
 		if (proposal) {
-			setIsLoadingVotes(true);
-			setVotes([]);
+			if (!isBackgroundFetching) {
+				setIsLoadingVotes(true);
+				setVotes([]);
+			}
 
 			try {
 				const votes = await proposal.listVotes();
@@ -35,20 +41,20 @@ const useProposal = (
 		}
 	};
 
-	const fetchProposal = async () => {
+	const fetchProposal = async (isBackgroundFetching = false) => {
 		if (dao) {
-			setProposal(undefined);
-			setIsLoading(true);
+			if (!isBackgroundFetching) {
+				setProposal(undefined);
+				setIsLoading(true);
+			}
 
 			try {
 				const proposal = await dao.getProposal(id);
 
-				await proposal.getTokenMetadata();
-
 				setProposal(proposal);
 
 				if (shouldLoadVotes) {
-					await fetchVotes(proposal);
+					await fetchVotes(proposal, isBackgroundFetching);
 				}
 			} catch (e) {
 				console.error(e);
@@ -58,10 +64,15 @@ const useProposal = (
 		}
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		fetchProposal();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dao, id]);
+
+	useEffect(() => {
+		fetchProposal(true);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [triggerRefresh]);
 
 	return {
 		proposal,

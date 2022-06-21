@@ -21,7 +21,7 @@ import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import useTransactions from './hooks/useTransactions';
 import useAssets from './hooks/useAssets';
-import useProposals from './hooks/useProposals';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 
 // Lib
 import { toFiat } from 'lib/currency';
@@ -53,17 +53,23 @@ const DAOPage: React.FC = () => {
 	const { transactions, isLoading: isLoadingTransactions } =
 		useTransactions(dao);
 	const { assets, totalUsd, isLoading: isLoadingAssets } = useAssets(dao);
-	const { proposals, isLoading: isLoadingProposals } = useProposals(dao);
+	const { fetch: fetchProposals } = useProposals();
 
 	const daoData = dao;
 
 	const to = toDaoPage(zna);
 
-	useUpdateEffect(() => {
+	React.useEffect(() => {
 		if (dao) {
 			setNavbarTitle('DAOs - ' + dao.title);
 		} else {
 			setNavbarTitle('DAOs');
+		}
+	}, [dao, setNavbarTitle]);
+
+	useUpdateEffect(() => {
+		if (dao) {
+			fetchProposals();
 		}
 	}, [dao]);
 
@@ -96,20 +102,18 @@ const DAOPage: React.FC = () => {
 								</div>
 								<h1>{daoData?.title}</h1>
 							</div>
-							<div className={styles.Stat}>
-								<StatsWidget
-									className="normalView"
-									fieldName="Total Value"
-									isLoading={isLoadingAssets}
-									// Millify if above
-									title={
-										'$' +
-										((totalUsd ?? 0) >= MILLIFY_THRESHOLD
-											? millify(totalUsd!, { precision: MILLIFY_PRECISION })
-											: toFiat(totalUsd ?? 0))
-									}
-								/>
-							</div>
+							<StatsWidget
+								className="normalView"
+								fieldName="Total Value"
+								isLoading={isLoadingAssets}
+								// Millify if above
+								title={
+									'$' +
+									((totalUsd ?? 0) >= MILLIFY_THRESHOLD
+										? millify(totalUsd!, { precision: MILLIFY_PRECISION })
+										: toFiat(totalUsd ?? 0))
+								}
+							/>
 						</ul>
 
 						<nav className={genericStyles.Links}>
@@ -129,14 +133,16 @@ const DAOPage: React.FC = () => {
 							>
 								Transactions
 							</Link>
-							<Link
-								className={cx({
-									Active: pathname.includes(ROUTES.ZDAO_PROPOSALS),
-								})}
-								to={to(ROUTES.ZDAO_PROPOSALS)}
-							>
-								Proposals
-							</Link>
+							{!!dao.ens && (
+								<Link
+									className={cx({
+										Active: pathname.includes(ROUTES.ZDAO_PROPOSALS),
+									})}
+									to={to(ROUTES.ZDAO_PROPOSALS)}
+								>
+									Proposals
+								</Link>
+							)}
 						</nav>
 					</div>
 
@@ -162,12 +168,7 @@ const DAOPage: React.FC = () => {
 						<Route
 							exact
 							path={to(ROUTES.ZDAO_PROPOSALS)}
-							render={() => (
-								<Proposals
-									proposals={proposals}
-									isLoading={isLoadingProposals}
-								/>
-							)}
+							render={() => <Proposals />}
 						/>
 						<Route
 							exact

@@ -6,12 +6,16 @@
  */
 .Direction span {
 	font-weight: 700 !important;
+
+	&.SnapshotDirection {
+		color: #6b6b6b;
+	}
 }
 
 .Container {
 	margin: 16px 0;
 	padding: 16px 0;
-	border-top: 1px solid #1a1022;
+	border-top: 1px solid #232323;
 
 	.Title {
 		font-size: 18px;
@@ -29,7 +33,7 @@
 			padding: 16px 0;
 
 			> span {
-				min-width: 100px;
+				min-width: 150px;
 				flex: 0;
 				font-size: 12px;
 				font-weight: 700;
@@ -60,7 +64,7 @@
 				> span {
 					display: flex;
 					justify-content: flex-end;
-					min-width: 100px;
+					min-width: 150px;
 					flex: 0;
 					font-size: 14px;
 					font-weight: 400;
@@ -103,7 +107,8 @@
 			justify-content: center;
 			font-size: 14px;
 			font-weight: 400;
-			line-height: 15px;
+			line-height: 24px;
+			color: #bfbfbf;
 			padding: 36px 0;
 		}
 	}
