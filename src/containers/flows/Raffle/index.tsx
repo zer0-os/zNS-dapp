@@ -4,13 +4,14 @@ import useAsyncEffect from 'use-async-effect';
 
 //- Components Imports
 import { MintDropNFTBanner, Overlay, Countdown } from 'components';
+import WaitlistRegistration from './WaitlistRegistration';
+import RaffleRegistration from './RaffleRegistration';
 
 //- Containers Imports
 import { ClaimNFT } from 'containers';
 
-//- Components Imports
-import WaitlistRegistration from './WaitlistRegistration';
-import RaffleRegistration from './RaffleRegistration';
+//- Types Imports
+import { Stage } from '../MintDropNFT/types';
 
 //- Constants Imports
 import {
@@ -23,7 +24,11 @@ import {
 // Style Imports
 import styles from './Raffle.module.scss';
 
-const RaffleContainer = () => {
+type RaffleContainerProps = {
+	setClaimDropStage: (stage?: Stage) => void;
+};
+
+const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -239,6 +244,7 @@ const RaffleContainer = () => {
 			requireBanner
 			privateSaleEndTime={PRIVATE_SALE_END_TIME}
 			onClose={closeModal}
+			setClaimDropStage={setClaimDropStage}
 		/>
 	);
 };

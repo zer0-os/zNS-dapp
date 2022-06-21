@@ -1,12 +1,15 @@
+//- Library Imports
 import { ethers } from 'ethers';
-import { Stage, DropData } from './types';
-import { WhitelistSimpleSale, ERC20 } from 'types';
 import {
 	AirWildS2Instance,
 	AirWildS2SaleData,
 	ClaimWithChildInstance,
 	SaleStatus,
 } from '@zero-tech/zsale-sdk/';
+
+//- Types Improts
+import { Stage, DropData } from './types';
+import { WhitelistSimpleSale, ERC20 } from 'types';
 
 const TEST_MODE = false;
 const TEST_STATE: SaleStatus = SaleStatus.PrivateSale;

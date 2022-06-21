@@ -29,6 +29,7 @@ import classNames from 'classnames/bind';
 
 //- Type Imports
 import { Maybe, DisplayParentDomain } from 'lib/types';
+import { Stage } from 'containers/flows/MintDropNFT/types';
 
 //- Helper Imports
 import { copyToClipboard } from '../../NFTView.helpers';
@@ -42,6 +43,7 @@ import styles from '../../NFTView.module.scss';
 type TokenHashBoxesProps = {
 	domainId: string;
 	chainId?: number;
+	claimDropStage?: Stage;
 	znsDomain: Maybe<DisplayParentDomain>;
 	isTokenClaimable?: boolean;
 	isCheckDataLoading: boolean;
@@ -53,6 +55,7 @@ const cx = classNames.bind(styles);
 export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 	domainId,
 	chainId,
+	claimDropStage,
 	znsDomain,
 	isTokenClaimable,
 	isCheckDataLoading,
@@ -66,8 +69,9 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 	// REPLACE URL WITH LABELS.WILDER_WHEELS_ZNA
 	const isWheelPath = zna.includes('candy.wolfsale');
 
-	// Set to false when claiming period is concluded
-	const enableClaimStatusBox = true;
+	// Check stage to enable claim status box
+	const saleStageActive =
+		claimDropStage === Stage.Whitelist || claimDropStage === Stage.Public;
 
 	const ipfsHash = useMemo(() => {
 		if (znsDomain) {
@@ -96,7 +100,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 
 	return (
 		<div className={styles.TokenHashContainer}>
-			{enableClaimStatusBox && isWheelPath && (
+			{saleStageActive && isWheelPath && (
 				<div className={cx(styles.Box, styles.Contract)}>
 					{isCheckDataLoading ? (
 						<div className={styles.Spinner}>

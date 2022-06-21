@@ -18,10 +18,13 @@ import {
 //- Library Imports
 import useCurrency from 'lib/hooks/useCurrency';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
+import { ethers } from 'ethers';
 
 //- Type Imports
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { MediaType } from 'components/NFTMedia/config';
+import { Stage } from 'containers/flows/MintDropNFT/types';
+import { NFTViewModalType } from './providers/NFTViewModalProvider/NFTViewModalProvider.types';
 
 //- Hooks
 import {
@@ -31,6 +34,7 @@ import {
 	useNFTViewModal,
 	useNftMediaAsset,
 } from './hooks';
+import useClaimCheck from 'containers/flows/ClaimNFT/hooks/useClaimCheck';
 
 //- Constants Imports
 import {
@@ -38,20 +42,23 @@ import {
 	NFT_MORE_ACTIONS_TITLE,
 	NFT_DOWNLOAD_ACTIONS,
 } from './NFTView.constants';
+import { PRIVATE_SALE_END_TIME } from 'containers/flows/Raffle/Drop.constants';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
-import { ethers } from 'ethers';
-import { NFTViewModalType } from './providers/NFTViewModalProvider/NFTViewModalProvider.types';
-import { PRIVATE_SALE_END_TIME } from 'containers/flows/Raffle/Drop.constants';
-import useClaimCheck from 'containers/flows/ClaimNFT/hooks/useClaimCheck';
 
 //- Componennt level type definitions
 type NFTViewProps = {
 	onTransfer: () => void;
+	claimDropStage?: Stage;
+	setClaimDropStage: (status?: Stage) => void;
 };
 
-const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
+const NFTView: React.FC<NFTViewProps> = ({
+	onTransfer,
+	claimDropStage,
+	setClaimDropStage,
+}) => {
 	//- Web3 Wallet Data
 	const { account, chainId } = useWeb3React<Web3Provider>();
 
@@ -85,6 +92,13 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 
 	//- Modal Provider Hook
 	const { openModal, closeModal } = useNFTViewModal();
+
+	//- Claim Check state and data
+	const [requestCheck, setRequestCheck] = useState<boolean>(false);
+	const { isTokenClaimable, isCheckDataLoading } = useClaimCheck(
+		domainId,
+		requestCheck,
+	);
 
 	//- Memoized data
 	const {
@@ -127,8 +141,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			nftMoreOptions,
 		};
 	}, [znsDomain, domainMetadata, account, mediaAsset, buyNowPrice, allBids]);
-
-	const [requestCheck, setRequestCheck] = useState<boolean>(false);
 
 	// Convert highest bid as wei
 	const highestBidAsWei =
@@ -211,6 +223,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			contentProps: {
 				privateSaleEndTime: PRIVATE_SALE_END_TIME,
 				onClose: closeModal,
+				setClaimDropStage: setClaimDropStage,
 			},
 		});
 	};
@@ -230,11 +243,6 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			return openBidList();
 		}
 	};
-
-	const { isTokenClaimable, isCheckDataLoading } = useClaimCheck(
-		domainId,
-		requestCheck,
-	);
 
 	/////////////
 	// Effects //
@@ -306,6 +314,7 @@ const NFTView: React.FC<NFTViewProps> = ({ onTransfer }) => {
 			<TokenHashBoxes
 				domainId={domainId}
 				chainId={chainId}
+				claimDropStage={claimDropStage}
 				znsDomain={znsDomain}
 				isTokenClaimable={isTokenClaimable}
 				isCheckDataLoading={isCheckDataLoading}

@@ -8,7 +8,7 @@ import ClaimNFT from '../ClaimNFT/ClaimNFT';
 
 //- Types Imports
 import { ClaimData } from './ClaimNFT.types';
-import { Stage } from './ClaimNFT.types';
+import { Stage } from '../MintDropNFT/types';
 
 //- Constants Imports
 import { getBannerButtonText, getBannerLabel } from './labels';
@@ -33,12 +33,14 @@ export type ClaimNFTContainerProps = {
 	requireBanner?: boolean;
 	privateSaleEndTime: number;
 	onClose: () => void;
+	setClaimDropStage: (status?: Stage) => void;
 };
 
 const ClaimNFTContainer = ({
 	requireBanner,
 	privateSaleEndTime,
 	onClose,
+	setClaimDropStage,
 }: ClaimNFTContainerProps) => {
 	//////////////////
 	// State & Data //
@@ -179,6 +181,7 @@ const ClaimNFTContainer = ({
 					setCountdownDate(undefined);
 				}
 				setDropStage(currentDropStage);
+				setClaimDropStage(currentDropStage);
 				setAssetTotal(saleData.amountForSale);
 				setAssetsMinted(saleData.amountSold);
 				setFailedToLoad(false);
@@ -258,6 +261,7 @@ const ClaimNFTContainer = ({
 						setCountdownDate(undefined);
 					}
 					setDropStage(currentDropStage);
+					setClaimDropStage(currentDropStage);
 					setAssetTotal(saleData.amountForSale);
 					setAssetsMinted(saleData.amountSold);
 					setFailedToLoad(false);
@@ -293,6 +297,7 @@ const ClaimNFTContainer = ({
 				if (sold) {
 					if (assetTotal !== undefined && sold.toNumber() >= assetTotal) {
 						setDropStage(Stage.Sold);
+						setClaimDropStage(Stage.Sold);
 					}
 					setAssetsMinted(sold.toNumber());
 				}
