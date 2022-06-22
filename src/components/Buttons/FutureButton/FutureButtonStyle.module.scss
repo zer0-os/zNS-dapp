@@ -154,9 +154,15 @@
 	/*
 	 * Inactive button
 	 */
-	&:not(.Glow) .Content {
-		color: #{colors.$grey};
-		text-shadow: none;
+	&:not(.Glow) {
+		.Spinner {
+			border-top-color: #{colors.$grey};
+		}
+
+		.Content {
+			color: #{colors.$grey};
+			text-shadow: none;
+		}
 	}
 
 	/*
