@@ -1,6 +1,7 @@
 @use 'styles/variables/colors';
 @use 'styles/variables/animations';
 @use 'styles/variables/typography';
+@use 'styles/variables/dimensions';
 
 .Container {
 	> * {
@@ -11,30 +12,25 @@
 
 	.Stats {
 		display: flex;
-		margin-bottom: 16px;
+		flex-direction: column;
+		gap: 16px;
 
 		> * {
-			flex: 1;
-			align-self: stretch;
-
-			&:not(:last-child) {
-				margin-right: 16px;
+			&:last-child {
+				display: none;
 			}
 		}
 
-		@media only screen and (max-width: 700px) {
-			flex-direction: column;
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			flex-direction: row;
+			margin: 16px 0;
 
 			> * {
-				margin-right: 0 !important;
-
-				&:not(:first-child) {
-					margin-top: 8px;
-				}
+				flex: 1;
+				align-self: stretch;
 
 				&:last-child {
-					display: none;
-					margin-top: 16px;
+					display: flex;
 				}
 			}
 		}
@@ -42,9 +38,10 @@
 
 	.Links {
 		padding: 8px 16px;
+		margin-top: 16px;
 
-		@media only screen and (max-width: 700px) {
-			margin-top: 16px;
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			margin-top: 0;
 		}
 
 		> a {
@@ -52,8 +49,8 @@
 			font-size: #{typography.$size-large};
 			font-weight: #{typography.$font-weight-bold};
 
-			@media only screen and (max-width: 700px) {
-				font-size: #{typography.$size-medium};
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				font-size: 24px;
 			}
 
 			transition: color #{animations.$time-short} ease-in-out;

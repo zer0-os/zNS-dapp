@@ -7,6 +7,8 @@ import {
 } from 'lib/network';
 import { RPC_URLS } from 'lib/connectors';
 import { ethers } from 'ethers';
+import { WALLETS } from 'constants/wallets';
+import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { DAOS } from 'constants/daos';
 import {
 	Config,
@@ -31,7 +33,7 @@ type DaoSdkProviderProps = {
 export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 	children,
 }) => {
-	const { library, chainId } = useWeb3React<Web3Provider>(); // get provider for connected wallet
+	const { library, chainId, active } = useWeb3React<Web3Provider>(); // get provider for connected wallet
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
@@ -58,29 +60,45 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 			throw new Error('Network not supported');
 		}
 
+		if (
+			Object.values(WALLETS).includes(
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) as WALLETS,
+			) &&
+			!active
+		) {
+			// it is still loading wallet connected account
+			return;
+		}
+
 		const createConfig =
 			network === NETWORK_TYPES.MAINNET
 				? productionConfiguration
 				: developmentConfiguration;
 
 		// Create SDK configuration object
-		const config: Config = createConfig(addresses[network].zDao, provider);
+		const config: Config = createConfig(
+			addresses[network].zDao,
+			provider,
+			'snapshot.mypinata.cloud',
+		);
 
 		const sdk = createSDKInstance(config);
 
 		/**
-		 * 30/03/2022
-		 * Remap functions for mainnet as the contract isn't live yet
+		 * 20/06/2022
+		 * Rinkeby is not released yet
 		 */
-		sdk.listZNAs = sdk.listZNAsFromParams;
-		sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
-		sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
-		await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
+		if (network === NETWORK_TYPES.RINKEBY) {
+			sdk.listZNAs = sdk.listZNAsFromParams;
+			sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
+			sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
+			await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
+		}
 
 		setInstance(sdk);
-	}, [library, network, selectedChain]);
+	}, [library, active, network, selectedChain]);
 
-	useUpdateEffect(createInstance, [library, network, selectedChain]);
+	useUpdateEffect(createInstance, [library, active, network, selectedChain]);
 	useDidMount(() => {
 		createInstance();
 	});
