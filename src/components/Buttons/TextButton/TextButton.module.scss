@@ -1,14 +1,17 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .TextButton {
-	color: var(--color-accent-1);
+	color: #{colors.$blue};
 
 	display: flex;
 	align-items: center;
 
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 
-	transition: color var(--animation-time-short) ease-in-out,
-		text-shadow var(--animation-time-short) ease-in-out,
-		opacity var(--animation-time-short) ease-in-out;
+	transition: color #{animations.$time-short} ease-in-out,
+		text-shadow #{animations.$time-short} ease-in-out,
+		opacity #{animations.$time-short} ease-in-out;
 
 	img {
 		height: 14px;
@@ -18,16 +21,16 @@
 }
 
 .TextButton:hover {
-	text-shadow: var(--glow-text-primary);
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .Selected {
-	color: var(--color-text-primary);
-	text-shadow: var(--glow-text-white) !important;
+	color: #{colors.$text-primary};
+	text-shadow: #{colors.$text-glow-white} !important;
 }
 
 .Disabled {
-	color: var(--color-grey) !important;
+	color: #{colors.$grey} !important;
 	opacity: 70%;
 	pointer-events: none;
 }

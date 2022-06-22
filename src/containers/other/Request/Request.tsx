@@ -224,7 +224,7 @@ const Request: React.FC<RequestProps> = ({
 				<div>
 					<span
 						style={{
-							color: 'var(--color-primary-lighter-3)',
+							color: '#e5baff',
 							textAlign: 'center',
 							fontSize: 16,
 						}}

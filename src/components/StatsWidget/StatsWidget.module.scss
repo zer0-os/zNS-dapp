@@ -1,51 +1,59 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/borders';
+@use 'styles/variables/colors';
 
 .StatsWidget {
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	padding: 16px;
+	min-height: 92px;
 	height: 100%;
+
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		height: auto;
+	}
 }
 
 .previewView {
-	background: #1a1022;
+	background: #{colors.$purple-10};
 	box-sizing: border-box;
 }
 
 .normalView {
-	background: #1a1022;
-	border-radius: var(--box-radius);
+	background: #{colors.$purple-10};
+	border-radius: #{borders.$radius-primary};
 }
 
 .StatsFieldName {
-	color: var(--color-grey-lighter-2);
-	font-size: var(--font-size-small);
+	color: #{colors.$grey-lighter-2};
+	font-size: #{typography.$size-tiny};
 	line-height: 15px;
 	margin-bottom: 2px;
 }
 
 .StatsTitle {
 	font-weight: bold;
-	font-size: 18px;
+	font-size: #{typography.$size-medium};
 	line-height: 22px;
 	margin: 2px 0px;
 }
 
 .StatsSubText {
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	line-height: 15px;
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$grey-lighter-2};
 	margin-top: 2px;
 }
 
 .StatsAccentText {
-	color: #58c573;
+	color: #{colors.$success-green};
 }
 
 .SpinnerContainer {
-	margin: 9.5px 0;
+	margin: 4.5px 0 0;
 	text-align: center;
 	display: flex;
 	align-items: center;

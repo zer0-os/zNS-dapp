@@ -1,4 +1,6 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .domain-settings__modal-header {
 	flex-shrink: 0;
@@ -9,15 +11,15 @@
 	padding: 48px 8px 24px 8px;
 
 	h1 {
-		font-size: 24px;
-		font-weight: 700;
+		font-size: #{typography.$size-large};
+		font-weight: #{typography.$font-weight-bold};
 		text-align: center;
 		overflow-wrap: anywhere;
 	}
 
 	h2 {
 		margin: 8px;
-		font-size: var(--font-size-default);
+		font-size: #{typography.$size-default};
 		word-break: break-all;
 		text-align: center;
 	}
@@ -26,7 +28,7 @@
 		position: absolute;
 		top: 22px;
 		right: 22px;
-		color: var(--color-grey);
+		color: #{colors.$grey};
 
 		&:hover {
 			background-color: unset !important;
@@ -45,6 +47,6 @@
 		left: 0;
 		right: 0;
 		margin: 0 48px;
-		border-bottom: 1px solid var(--color-grey-mine-shaft);
+		border-bottom: 1px solid #{colors.$mine-shaft};
 	}
 }

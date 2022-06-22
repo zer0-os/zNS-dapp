@@ -1,20 +1,24 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+@use 'styles/variables/borders';
+
 .iconButton {
 	position: relative;
 	padding: 0;
 
-	color: var(--color-accent-1);
-	background-color: rgba(0, 0, 0, 0);
+	color: #{colors.$blue};
+	background-color: #{colors.$black};
 
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 
-	transition: all var(--animation-time-medium) ease-in-out;
+	transition: all #{animations.$time-medium} ease-in-out;
 	z-index: 1;
 }
 
 .iconButton > img {
 	height: 100%;
 	width: 100%;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	z-index: 2;
 }
 
@@ -25,33 +29,32 @@
 	left: 50%;
 	height: 0px;
 	width: 0px;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	z-index: -2;
 
-	transition: box-shadow var(--animation-time-medium) ease-in-out;
+	transition: box-shadow #{animations.$time-medium} ease-in-out;
 }
 
 .iconButton:not(.Disabled).iconButton:hover::after {
-	// box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.5);
-	background: #23142f;
+	background: #{colors.$purple-15};
 }
 
 .iconButton:not(.Disabled):hover {
-	text-shadow: var(--glow-text-primary);
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .iconButton:not(.Disabled).iconButton:hover {
-	text-shadow: var(--glow-text-primary);
-	background: #23142f;
+	text-shadow: #{colors.$text-glow-primary};
+	background: #{colors.$purple-15};
 }
 
 .selected {
-	color: var(--color-text-primary);
-	background: #23142f;
+	color: #{colors.$text-primary};
+	background: #{colors.$purple-15};
 }
 
 .iconButton.selected:after {
-	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.5);
+	box-shadow: 0 0 20px 13px rgba(colors.$white, 0.5);
 }
 
 .Disabled {

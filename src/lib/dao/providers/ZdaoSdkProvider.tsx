@@ -1,9 +1,14 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
-import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
+import {
+	chainIdToNetworkType,
+	defaultNetworkId,
+	NETWORK_TYPES,
+} from 'lib/network';
 import { RPC_URLS } from 'lib/connectors';
 import { ethers } from 'ethers';
+import { WALLETS } from 'constants/wallets';
+import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { DAOS } from 'constants/daos';
 import {
 	Config,
@@ -15,6 +20,7 @@ import {
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import addresses from 'lib/addresses';
+import { Web3Provider } from '@ethersproject/providers';
 
 export const zDaoContext = React.createContext({
 	instance: undefined as SDKInstance | undefined,
@@ -27,19 +33,18 @@ type DaoSdkProviderProps = {
 export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 	children,
 }) => {
-	const { library } = useWeb3React(); // get provider for connected wallet
-	const chainSelector = useChainSelector();
+	const { library, chainId, active } = useWeb3React<Web3Provider>(); // get provider for connected wallet
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
 	const { network, selectedChain } = useMemo(() => {
-		const selectedChain = chainSelector.selectedChain;
+		const selectedChain = chainId || defaultNetworkId;
 		const network = chainIdToNetworkType(selectedChain);
 		return {
 			network,
 			selectedChain,
 		};
-	}, [chainSelector.selectedChain]);
+	}, [chainId]);
 
 	const createInstance = useCallback(async () => {
 		setInstance(undefined);
@@ -55,29 +60,45 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 			throw new Error('Network not supported');
 		}
 
+		if (
+			Object.values(WALLETS).includes(
+				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) as WALLETS,
+			) &&
+			!active
+		) {
+			// it is still loading wallet connected account
+			return;
+		}
+
 		const createConfig =
 			network === NETWORK_TYPES.MAINNET
 				? productionConfiguration
 				: developmentConfiguration;
 
 		// Create SDK configuration object
-		const config: Config = createConfig(addresses[network].zDao, provider);
+		const config: Config = createConfig(
+			addresses[network].zDao,
+			provider,
+			'snapshot.mypinata.cloud',
+		);
 
 		const sdk = createSDKInstance(config);
 
 		/**
-		 * 30/03/2022
-		 * Remap functions for mainnet as the contract isn't live yet
+		 * 20/06/2022
+		 * Rinkeby is not released yet
 		 */
-		sdk.listZNAs = sdk.listZNAsFromParams;
-		sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
-		sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
-		await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
+		if (network === NETWORK_TYPES.RINKEBY) {
+			sdk.listZNAs = sdk.listZNAsFromParams;
+			sdk.doesZDAOExist = sdk.doesZDAOExistFromParams;
+			sdk.getZDAOByZNA = sdk.getZDAOByZNAFromParams;
+			await Promise.all(DAOS[network].map((d) => sdk.createZDAOFromParams(d)));
+		}
 
 		setInstance(sdk);
-	}, [library, network, selectedChain]);
+	}, [library, active, network, selectedChain]);
 
-	useUpdateEffect(createInstance, [library, network, selectedChain]);
+	useUpdateEffect(createInstance, [library, active, network, selectedChain]);
 	useDidMount(() => {
 		createInstance();
 	});

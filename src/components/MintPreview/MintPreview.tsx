@@ -57,7 +57,7 @@ const MintPreview = (props: MintPreviewProps) => {
 		const etherscanLink = `${baseEtherscanUri}tx/${nft.transactionHash}`;
 
 		const statusStyle = {
-			color: isCompleted ? 'var(--color-success)' : 'var(--color-grey)',
+			color: isCompleted ? '#58c573' : '#808080',
 			fontWeight: 700,
 		};
 

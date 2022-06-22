@@ -29,7 +29,7 @@ import useNotification from 'lib/hooks/useNotification';
 import useCurrency from 'lib/hooks/useCurrency';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { truncateDomain } from 'lib/utils';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useZnsContracts } from 'lib/contracts';
 
@@ -107,13 +107,15 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		setStepContent(StepContent.CheckingZAuctionApproval);
 		(async () => {
 			try {
-				const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
-				const isApproved = await zAuction.isZAuctionApprovedToTransferNft(
-					account,
-				);
+				const needsApproval =
+					await sdk.zauction.needsToApproveZAuctionToSpendTokens(
+						domain.id,
+						account,
+						BigNumber.from('1000000000'),
+					);
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
-				if (isApproved) {
+				if (needsApproval) {
 					setCurrentStep(Step.ConfirmDetails);
 					setStepContent(StepContent.Details);
 				} else {
@@ -140,8 +142,8 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		setStepContent(StepContent.WaitingForWallet);
 		(async () => {
 			try {
-				const zAuction = await sdk.getZAuctionInstanceForDomain(domain.id);
-				const tx = await zAuction.approveZAuctionTransferNft(
+				const tx = await sdk.zauction.approveZAuctionToSpendTokens(
+					domain.id,
 					library.getSigner(),
 				);
 				try {

@@ -1,3 +1,6 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .Dropdown {
 	position: relative;
 	display: flex;
@@ -9,8 +12,8 @@
 	top: calc(100%);
 	left: 50%;
 	width: 224px;
-	background: var(--color-revolver);
-	border: 1px solid var(--color-bossanova);
+	background: #{colors.$purple-10};
+	border: 1px solid #{colors.$bossanova};
 	transform: translateX(-50%);
 	z-index: 10;
 	overflow: hidden;
@@ -31,16 +34,16 @@
 		object-fit: contain;
 	}
 
-	transition: text-shadow var(--animation-time-short) ease-in-out,
-		font-weight var(--animation-time-short) ease-in-out;
+	transition: text-shadow #{animations.$time-short} ease-in-out,
+		font-weight #{animations.$time-short} ease-in-out;
 
 	&:hover {
-		text-shadow: var(--glow-text-white);
+		text-shadow: #{colors.$text-glow-white};
 	}
 }
 
 .Selected {
-	background: rgba(60, 161, 255, 0.05) !important;
+	background: rgba(82, 87, 255, 0.05) !important;
 }
 
 .Selected::before {

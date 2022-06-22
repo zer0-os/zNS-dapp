@@ -1,7 +1,21 @@
+//-React Imports
 import React, { useMemo } from 'react';
+
+//- Library Improts
+import { Maybe, DisplayDomain } from 'lib/types';
 import classnames from 'classnames';
-import { FutureButton, QuestionButton, Tooltip, IconButton } from 'components';
-import { Maybe } from 'lib/types';
+
+//-Component Imports
+import {
+	FutureButton,
+	QuestionButton,
+	Tooltip,
+	IconButton,
+	Member,
+} from 'components';
+import './_domain-settings-footer.scss';
+
+//- Constants Imports
 import {
 	DomainSettingsWarning,
 	DomainSettingsSuccess,
@@ -9,13 +23,17 @@ import {
 	DOMAIN_SETTINGS_SUCCESS_MESSAGES,
 	DomainSettingsTooltipType,
 	DOMAIN_SETTINGS_TOOLTIPS,
+	DOMAIN_SETTINGS_UNLOCKABLE_PROMPT,
+	DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS,
 } from '../../DomainSettings.constants';
+
+//- Assets Imports
 import unlockIcon from './assets/unlock.svg';
 import lockIcon from './assets/lock.svg';
 import lockWarningIcon from './assets/lock-warning.svg';
-import './_domain-settings-footer.scss';
 
 type DomainSettingsFooterProps = {
+	domain: Maybe<DisplayDomain>;
 	isLocked: boolean;
 	isChanged: boolean;
 	isSaved: boolean;
@@ -30,6 +48,7 @@ type DomainSettingsFooterProps = {
 };
 
 export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
+	domain,
 	isLocked,
 	isChanged,
 	isSaved,
@@ -67,6 +86,16 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 						{DOMAIN_SETTINGS_WARNING_MESSAGES[warning]}
 					</label>
 				)}
+				{isLocked && domain && !unlockable && (
+					<label
+						className={classnames('warning', {
+							is_locked_warning: !unlockable,
+						})}
+					>
+						{DOMAIN_SETTINGS_UNLOCKABLE_PROMPT}
+						<Member id={domain?.lockedBy.id} />
+					</label>
+				)}
 				{success && (
 					<label className="success">
 						{DOMAIN_SETTINGS_SUCCESS_MESSAGES[success]}
@@ -91,7 +120,7 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 						disabled={!unlockable}
 						glow={unlockable}
 					>
-						Unlock MetaData
+						{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.UNLOCK_METADATA}
 					</FutureButton>
 				)}
 				{!isLocked && !isSaved && (
@@ -102,28 +131,39 @@ export const DomainSettingsFooter: React.FC<DomainSettingsFooterProps> = ({
 							glow={isChanged}
 							disabled={!isChanged}
 						>
-							Save Changes
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.SAVE_CHANGES}
 						</FutureButton>
 						<FutureButton className="" onClick={onSaveAndLock} glow>
-							Save & Lock
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.SAVE_AND_LOCK}
 						</FutureButton>
 					</div>
 				)}
 				{!isLocked && isSaved && (
 					<div className="domain-settings-footer__buttons-wrapper">
 						<FutureButton className="" onClick={onLock} glow>
-							Lock Metadata
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.LOCK_METADATA}
 						</FutureButton>
 						<FutureButton className="" onClick={onFinish} glow>
-							Finish
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.FINISH}
 						</FutureButton>
 					</div>
 				)}
-				{isLocked && isSaved && (
-					<FutureButton className="" onClick={onFinish} glow>
-						Finish
-					</FutureButton>
-				)}
+				{isLocked &&
+					isSaved &&
+					(!warning ? (
+						<FutureButton className="" onClick={onFinish} glow>
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.FINISH}
+						</FutureButton>
+					) : (
+						<FutureButton
+							className=""
+							onClick={onUnlock}
+							disabled={!unlockable}
+							glow={unlockable}
+						>
+							{DOMAIN_SETTINGS_INITIAL_BUTTON_LABELS.UNLOCK_METADATA}
+						</FutureButton>
+					))}
 				{tooltipText && (
 					<Tooltip text={tooltipText}>
 						<QuestionButton className="domain-settings-footer__buttons-icon" />

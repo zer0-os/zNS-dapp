@@ -1,0 +1,133 @@
+@use 'styles/variables/dimensions';
+
+.Container {
+	position: sticky;
+	bottom: 0;
+
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	padding: 42px 16px 16px 16px;
+	background: linear-gradient(180deg, rgba(10, 10, 10, 0) 0%, #0a0a0a 28.34%);
+
+	.FooterText {
+		font-size: 18px;
+		font-weight: 700;
+		color: var(--color-grey-lighter-2);
+
+		&.Snapshot {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 16px;
+			font-weight: 400;
+			line-height: 24px;
+			color: #52cbff;
+		}
+
+		:global(.question-button) {
+			display: inline-flex;
+			margin-left: 8px;
+		}
+	}
+}
+
+.Choices {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 100%;
+	gap: 32px;
+
+	button {
+		width: 240px;
+		padding: 8px 44px;
+		font-size: 18px;
+		font-weight: 700;
+		background: none;
+		border-radius: 1000px;
+		color: white;
+		border: 1px solid var(--color-primary);
+	}
+}
+
+.Approve {
+	background: linear-gradient(90deg, #5257ff 0%, #52cbff 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.Deny {
+	background: linear-gradient(90deg, #f763b0 0%, #7614e7 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+@media only screen and (max-width: #{dimensions.$breakpoint-mobile-xl}) {
+	.Container {
+		bottom: 60px;
+	}
+	.Choices {
+		flex-direction: column;
+		gap: 16px;
+
+		> li {
+			width: 100%;
+
+			> button {
+				width: 100%;
+			}
+		}
+	}
+}
+
+// MODAL STUFF
+
+.Modal {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+
+	.Header {
+		margin-bottom: 0;
+	}
+
+	> * {
+		margin: 0;
+	}
+
+	p {
+		padding: 0;
+		margin: 0;
+		text-align: center;
+	}
+
+	.Error {
+		text-align: center;
+	}
+
+	.Details {
+		display: flex;
+		flex-direction: column;
+		gap: 3.5px;
+
+		> li {
+			display: flex;
+			justify-content: space-between;
+
+			font-weight: 700;
+
+			> span:first-of-type {
+				color: var(--color-grey-lighter-2);
+				font-weight: 400;
+			}
+		}
+	}
+}
+
+.Tooltip {
+	padding: 12px;
+}

@@ -1,19 +1,23 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+@use 'styles/variables/typography';
+
 .ZNALink {
 	display: flex;
 }
 
 .ZNALink > a {
 	position: relative;
-	transition: all var(--animation-time-short) ease-in-out;
+	transition: all #{animations.$time-short} ease-in-out;
 	z-index: 1;
 }
 
 .ZNALink > a:last-of-type {
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .ZNALink > a::after {
-	transition: opacity var(--animation-time-medium) ease-in-out;
+	transition: opacity #{animations.$time-medium} ease-in-out;
 	content: ' ';
 	position: absolute;
 	top: 50%;
@@ -21,7 +25,7 @@
 	-webkit-transform: translate(-50%);
 	transform: translate(-50%);
 	width: calc(100% - 16px);
-	box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.3);
+	box-shadow: 0 0 20px 13px rgba(colors.$white, 0.03);
 	opacity: 0;
 	z-index: -1;
 }
@@ -56,8 +60,8 @@
 
 .Dots {
 	display: none;
-	font-weight: 700;
-	color: var(--color-text-primary);
+	font-weight: #{typography.$font-weight-bold};
+	color: #{colors.$text-primary};
 	z-index: 2;
 }
 

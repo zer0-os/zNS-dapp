@@ -1,10 +1,14 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+
 .WildPriceContainer {
 	height: 100%;
 	width: 100%;
 	cursor: pointer;
 
 	&:hover .Details {
-		background-color: #1a1022;
+		background-color: #{colors.$purple-10};
 	}
 
 	.Details {
@@ -15,8 +19,8 @@
 		background: none;
 		height: 100%;
 		padding: 16px;
-		border: 1px solid var(--color-purple-lighter);
-		border-radius: var(--box-radius);
+		border: 1px solid #{colors.$purple-15};
+		border-radius: #{borders.$radius-primary};
 		z-index: 0;
 		transition: all 0.2s ease-in-out 0s;
 	}
@@ -26,9 +30,9 @@
 	width: 340px;
 	cursor: default;
 	padding: 32px;
-	border-radius: var(--box-radius);
-	background: #1a1022;
-	border: 1px solid #472e5b;
+	border-radius: #{borders.$radius-primary};
+	background: #{colors.$purple-10};
+	border: 1px solid #{colors.$bossanova};
 }
 
 .CurrentPriceContainer {
@@ -39,41 +43,41 @@
 
 .TickerName {
 	font-size: 10px;
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 	line-height: 12.1px;
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$grey-lighter-2};
 }
 
 .CurrentPriceSml {
-	font-size: var(--font-size-small);
-	font-weight: bold;
+	font-size: #{typography.$size-tiny};
+	font-weight: #{typography.$font-weight-bold};
 	line-height: 14.5px;
 	padding: 2px 6px 0 0;
-	color: var(--color-text-primary);
-	text-shadow: var(--glow-text-primary);
+	color: #{colors.$text-primary};
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .CurrentPriceLrg {
-	font-size: var(--font-size-default);
-	font-weight: bold;
+	font-size: #{typography.$size-default};
+	font-weight: #{typography.$font-weight-bold};
 	line-height: 24px;
 	padding: 0 6px 0 0;
-	color: var(--color-text-primary);
-	text-shadow: var(--glow-text-primary);
+	color: #{colors.$text-primary};
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .PercentageChange {
-	font-size: var(--font-size-small);
-	font-weight: 400;
+	font-size: #{typography.$size-tiny};
+	font-weight: #{typography.$font-weight-regular};
 	line-height: 14.5px;
 }
 
 .PercentageChangePositive {
-	color: var(--color-success);
+	color: #{colors.$success-green};
 }
 
 .PercentageChangeNegative {
-	color: var(--color-error);
+	color: #{colors.$red-300};
 }
 
 .WalletConnected {
@@ -85,12 +89,12 @@
 	align-items: flex-end;
 
 	a {
-		font-size: var(--font-size-small);
+		font-size: #{typography.$size-tiny};
 		line-height: 15px;
 		text-shadow: none;
 		background-color: transparent;
 		padding-right: 6px;
-		color: var(--color-grey-lighter-4);
+		color: #{colors.$grey-lighter-4};
 	}
 
 	&:hover {
@@ -114,18 +118,18 @@
 }
 
 .DividerCopy {
-	font-weight: bold;
-	font-size: var(--font-size-small);
+	font-weight: #{typography.$font-weight-bold};
+	font-size: #{typography.$size-tiny};
 	line-height: 14px;
 	margin-top: 24px;
-	color: var(--color-grey-lighter-3);
+	color: #{colors.$grey-lighter-3};
 }
 
 .Divider {
 	// width: 70%;
 	flex-grow: 1;
 	margin-top: 10px;
-	border-top: 1px solid var(--color-purple-lighter);
+	border-top: 1px solid #{colors.$purple-15};
 }
 
 .UrlRowContainer {
@@ -136,10 +140,10 @@
 	a {
 		max-width: 140px;
 		width: 100%;
-		font-size: var(--font-size-smaller);
+		font-size: #{typography.$size-small};
 		line-height: 17px;
 		text-shadow: unset;
-		color: var(--color-accent-blue-100);
+		color: #{colors.$blue};
 		padding-top: 10px;
 	}
 }
@@ -148,7 +152,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	img {
 		width: 40px;
 		height: 40px;
@@ -159,6 +163,6 @@
 	}
 
 	&:hover {
-		background: var(--color-azure-gradient-25);
+		background: #{colors.$azure-25};
 	}
 }

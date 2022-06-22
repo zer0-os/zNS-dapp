@@ -1,21 +1,24 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+
 .price {
 	margin-top: 16px;
 
-	font-size: 24px;
+	font-size: #{typography.$size-large};
 }
 
 .bottom {
 	margin-top: 15px;
 
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 	line-height: 14px;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .positive {
-	color: var(--color-success);
+	color: #{colors.$success-green};
 }
 
 .negative {
-	color: var(--color-error);
+	color: #{colors.$red-300};
 }

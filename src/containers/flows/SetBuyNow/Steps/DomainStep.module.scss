@@ -1,4 +1,6 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .Inputs {
 	margin-top: 24px;
@@ -24,9 +26,9 @@
 	margin-top: 7px;
 	padding-left: 24px;
 
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$grey-lighter-2};
 }
 
 .Success {

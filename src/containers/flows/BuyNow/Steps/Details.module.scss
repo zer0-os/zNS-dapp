@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .Container {
 	> *:not(:first-child) {
 		margin-top: 40px;
@@ -14,7 +16,7 @@
 		text-align: center;
 
 		> span:first-child {
-			color: var(--color-grey-lighter-2);
+			color: #{colors.$grey-lighter-2};
 		}
 
 		.Value {
