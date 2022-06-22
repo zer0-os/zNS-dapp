@@ -38,7 +38,7 @@ const DAOList: React.FC = () => {
 						 * 06/17/2022 Noted
 						 * For MVP, we would like to hide 'wilder' zna
 						 */
-						setDaoZnas(z.filter((zna) => zna !== 'wilder'));
+						setDaoZnas(z.filter((zna) => zna.startsWith('wilder.')));
 						setIsLoading(false);
 					}
 				});
