@@ -10,6 +10,12 @@ import { TOKEN } from './BidTableRow.constants';
 
 const mockDate = new Date(16461998260001);
 
+const mockPaymentTokenInfo = {
+	id: '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79',
+	name: 'WILD',
+	price: 0.17677,
+};
+
 const mockData = {
 	bidNonce: '7124487995',
 	date: mockDate, // 02/03/2022
@@ -19,6 +25,7 @@ const mockData = {
 	domainName: 'wilder.cats',
 	highestBid: ethers.utils.parseEther('1000'),
 	yourBid: ethers.utils.parseEther('500'),
+	paymentTokenInfo: mockPaymentTokenInfo,
 };
 
 var mockOptionDropdown = jest.fn();
