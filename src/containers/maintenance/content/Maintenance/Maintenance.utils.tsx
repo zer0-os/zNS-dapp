@@ -1,5 +1,6 @@
+//- Constants Imports
 import { URLS } from 'constants/urls';
-import { LABELS, ATTRIBUTES } from './MaintenanceContent.constants';
+import { LABELS, ATTRIBUTES } from './Maintenance.constants';
 
 export const getLinkText = () => (
 	<>

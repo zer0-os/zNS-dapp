@@ -1,10 +1,12 @@
 @use 'styles/variables/dimensions';
+
 .PageContainer {
 	// Mobile Breakpoints
 	width: 100%;
 	margin: 0 auto;
 	padding: 8px 8px 120px 8px;
 	box-sizing: border-box;
+
 	// Tablet Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		margin: 0;
@@ -13,14 +15,17 @@
 	.Main {
 		// Mobile Breakpoints
 		margin-top: 8px;
+
 		// Rogue Breakpoint - Stats Widget Intro
 		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
 			margin-top: 16px;
 		}
+
 		// Desktop Breakpoints
 		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 			margin-top: 24px;
 		}
+
 		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-l}) {
 			margin-top: 56px;
 		}
@@ -28,17 +33,21 @@
 	.InnerContainer {
 		width: 100%;
 	}
+
 	.FlexRowWrapper {
 		display: flex;
 		flex-direction: row;
 		width: 100%;
+
 		// Desktop Breakpoints
 		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-m}) {
 			justify-content: center;
 		}
+
 		.Actions {
 			// Mobile + Tablet Breakpoints
 			display: none;
+
 			// Desktop Breakpoints
 			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 				display: flex;
@@ -53,6 +62,7 @@
 				gap: 16px;
 				z-index: 9999;
 			}
+
 			@media only screen and (min-width: #{dimensions.$breakpoint-desktop-m}) {
 				justify-content: center;
 			}
@@ -62,74 +72,24 @@
 		// Mobile Breakpoints
 		width: 100%;
 		margin: 0 0 16px 0px;
+
 		// Tablet Breakpoints
 		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			max-width: #{dimensions.$width-max};
 			margin: 8px 16px 16px 16px;
 		}
+
 		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-m}) {
 			margin: 8px auto 16px auto;
 		}
+
 		// Desktop Breakpoints
 		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 			margin: 24px auto;
 		}
+
 		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-m}) {
 			margin: 24px;
-		}
-	}
-}
-// Placeholder Page Container
-.ErrorPageContainer {
-	&.isRouteValid {
-		display: none;
-	}
-
-	.BackgroundContainer {
-		position: absolute;
-		height: 100vh;
-		width: 100vw;
-		z-index: -1;
-		backdrop-filter: blur(6px);
-		background: radial-gradient(
-			50% 50% at 50% 50%,
-			rgba(0, 0, 0, 0.73) 0%,
-			rgba(0, 0, 0, 0.43) 100%
-		);
-		// Tablet Breakpoints
-		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-			backdrop-filter: blur(8px);
-		}
-	}
-	.BackgroundImage {
-		// Mobile Breakpoints
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		max-height: 258px;
-		max-width: 275px;
-		left: 0;
-		right: 0;
-		top: 50%;
-		transform: translateY(-50%);
-		margin-left: auto;
-		margin-right: auto;
-		z-index: -2;
-		opacity: 0.5;
-		background-image: url('./assets/WWLogo_SVG.svg');
-		background-position: center;
-		background-size: contain;
-		background-repeat: no-repeat;
-
-		// Tablet Breakpoints
-		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-			max-height: 392px;
-			max-width: 416px;
-		}
-		// Desktop Breakpoints
-		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
-			max-height: 608px;
-			max-width: 645px;
 		}
 	}
 }

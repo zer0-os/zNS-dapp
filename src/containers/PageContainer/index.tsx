@@ -1,10 +1,10 @@
 //- React Imports
 import React, { useCallback, useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 //- Library Imports
 import classnames from 'classnames';
-import classNames from 'classnames/bind';
+
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
@@ -15,21 +15,19 @@ import { useNotification } from 'lib/hooks/useNotification';
 import { useMint } from 'lib/hooks/useMint';
 import { useStaking } from 'lib/hooks/useStaking';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
+
 //- Components Imports
 import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
 import { Header, Modals, useModal, Actions, Touchbar } from './elements';
+
 //- Constants Imports
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { WALLETS } from 'constants/wallets';
 import { WALLET_NOTIFICATIONS } from 'constants/notifications';
 import { Modal } from './PageContainer.constants';
-import { ROUTES } from 'constants/routes';
+
 //- Styles Imports
 import styles from './PageContainer.module.scss';
-//- Asset Imports
-import backgroundImage from 'assets/background.jpg';
-
-const cx = classNames.bind(styles);
 
 const PageContainer: React.FC = ({ children }) => {
 	/**
@@ -37,29 +35,24 @@ const PageContainer: React.FC = ({ children }) => {
 	 */
 	const history = useHistory();
 	const { account, active } = useWeb3React<Web3Provider>();
-	const { pathname } = useLocation();
 	const triedEagerConnect = useEagerConnect();
 	const globalDomain = useCurrentDomain();
+	const { minted } = useMint();
+	const { fulfilled: stakingFulFilled } = useStaking();
+	const { addNotification } = useNotification();
+	const { pageWidth } = usePageWidth();
+	const { modal, openModal, closeModal } = useModal();
 	const {
 		domain: znsDomain,
 		domainMetadata,
 		loading,
 		refetch,
 	} = useCurrentDomain();
-	const { minted } = useMint();
-	const { fulfilled: stakingFulFilled } = useStaking();
-	const { addNotification } = useNotification();
-	const { pageWidth } = usePageWidth();
-	const { modal, openModal, closeModal } = useModal();
+
 	// Scroll Detection
 	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 	useScrollDetection(setScrollDetectionDown);
-	// Check pathname to determine container type
-	const isRouteValid =
-		pathname.includes(ROUTES.MARKET) ||
-		pathname.includes(ROUTES.STAKING) ||
-		pathname.includes(ROUTES.ZDAO) ||
-		pathname.includes(ROUTES.PROFILE);
+
 	/**
 	 * Callback Functions
 	 */
@@ -84,6 +77,7 @@ const PageContainer: React.FC = ({ children }) => {
 					? WALLET_NOTIFICATIONS.CONNECTED
 					: WALLET_NOTIFICATIONS.DISCONNECTED,
 			);
+
 		// Check if we need to close a modal
 		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
@@ -93,90 +87,62 @@ const PageContainer: React.FC = ({ children }) => {
 	/**
 	 * Life Cycles
 	 */
-
 	useUpdateEffect(handleForceBackHome, [znsDomain, loading, globalDomain.app]);
 	useUpdateEffect(handleWalletChanges, [active]);
 	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 
 	// Update background image
 	useEffect(() => {
-		if (!isRouteValid) {
-			// Background Image ID - index.html
-			const loadImg = new Image();
-			loadImg.src = backgroundImage;
-			if (loadImg.complete) {
-				document.body.style.backgroundImage = `url(${backgroundImage})`;
-			} else {
-				loadImg.onload = () => {
-					const bg = document.getElementById('backgroundImage')?.style;
-					if (!bg) return;
-					bg.backgroundImage = `url(${backgroundImage})`;
-					bg.opacity = '1';
-				};
-			}
-		} else {
-			const bg = document.getElementById('backgroundImage')?.style;
-			if (!bg) return;
-			bg.backgroundImage = '';
-		}
-	}, [isRouteValid]);
+		// Background Image ID - index.html
+		const bg = document.getElementById('backgroundImage')?.style;
+		if (!bg) return;
+		bg.backgroundImage = '';
+	}, []);
 
 	return (
 		<>
-			<div
-				className={cx(styles.ErrorPageContainer, {
-					isRouteValid: isRouteValid,
-				})}
-			>
-				<div className={styles.BackgroundContainer} />
-				<div className={styles.BackgroundImage} />
-				{children}
-			</div>
+			<ScrollToTop>
+				<div className={classnames(styles.PageContainer)}>
+					{/* Toast Notifications */}
+					<NotificationDrawer />
 
-			{isRouteValid && (
-				<ScrollToTop>
-					<div className={classnames(styles.PageContainer)}>
-						{/* Toast Notifications */}
-						<NotificationDrawer />
-						{/* App level Modals */}
-						<Modals
-							pageWidth={pageWidth}
-							modal={modal}
-							closeModal={closeModal}
-						/>
-						<div className={styles.InnerContainer}>
-							<div className={styles.FlexRowWrapper}>
-								{/* App Sidebar */}
-								<SideBar />
-								<div className={styles.FlexColumnWrapper}>
-									{/* App Header */}
-									<Header
-										pageWidth={pageWidth}
-										znsDomain={znsDomain}
-										domainMetadata={domainMetadata}
-										account={account}
-										openModal={openModal}
-										isScrollDetectionDown={isScrollDetectionDown}
-									/>
-									{/* Children Components */}
-									<main className={styles.Main}>{children}</main>
-								</div>
-								{/* Header Actions - Desktop */}
-								<Actions
-									className={styles.Actions}
+					{/* App level Modals */}
+					<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
+					<div className={styles.InnerContainer}>
+						<div className={styles.FlexRowWrapper}>
+							{/* App Sidebar */}
+							<SideBar />
+							<div className={styles.FlexColumnWrapper}>
+								{/* App Header */}
+								<Header
 									pageWidth={pageWidth}
 									znsDomain={znsDomain}
 									domainMetadata={domainMetadata}
 									account={account}
 									openModal={openModal}
+									isScrollDetectionDown={isScrollDetectionDown}
 								/>
+
+								{/* Children Components */}
+								<main className={styles.Main}>{children}</main>
 							</div>
+
+							{/* Header Actions - Desktop */}
+							<Actions
+								className={styles.Actions}
+								pageWidth={pageWidth}
+								znsDomain={znsDomain}
+								domainMetadata={domainMetadata}
+								account={account}
+								openModal={openModal}
+							/>
 						</div>
 					</div>
-					{/* Touchbar */}
-					<Touchbar />
-				</ScrollToTop>
-			)}
+				</div>
+
+				{/* Touchbar */}
+				<Touchbar />
+			</ScrollToTop>
 		</>
 	);
 };

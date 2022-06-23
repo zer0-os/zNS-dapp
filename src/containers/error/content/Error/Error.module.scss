@@ -1,4 +1,6 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 .HeadingContainer {
 	max-width: 236px;
@@ -8,18 +10,28 @@
 	// Tablet Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		max-width: 518px;
-		margin-bottom: 16px;
+		margin-bottom: 18px;
 	}
 
 	// Desktop Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 		max-width: unset;
+		margin-bottom: 24px;
 	}
 
 	h1 {
 		// Mobile Breakpoints
 		font-size: 28px;
 		line-height: 33px;
+		font-family: typography.$ddt;
+		background: linear-gradient(
+			90deg,
+			rgba(82, 87, 255, 0.5) 0%,
+			rgba(82, 203, 255, 0.5) 100%
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 
 		// Tablet Breakpoints
 		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
@@ -28,14 +40,13 @@
 		}
 	}
 }
-
 .SubTextContainer {
 	// Mobile Breakpoints
 	max-width: 225px;
 
 	// Tablet Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-		max-width: 508px;
+		max-width: 528px;
 	}
 
 	// Desktop Breakpoints
@@ -45,7 +56,6 @@
 
 	p {
 		// Mobile Breakpoints
-		font-weight: 400px;
 		font-size: 12px;
 		line-height: 14.5px;
 		text-align: center;

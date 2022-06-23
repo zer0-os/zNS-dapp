@@ -6,16 +6,19 @@
 	max-width: 236px;
 	margin-bottom: 8px;
 	text-align: center;
+
 	// Tablet Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		max-width: 518px;
 		margin-bottom: 18px;
 	}
+
 	// Desktop Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 		max-width: unset;
 		margin-bottom: 24px;
 	}
+
 	h1 {
 		// Mobile Breakpoints
 		font-size: 28px;
@@ -40,20 +43,24 @@
 .SubTextContainer {
 	// Mobile Breakpoints
 	max-width: 225px;
+
 	// Tablet Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		max-width: 528px;
 	}
+
 	// Desktop Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
 		max-width: unset;
 	}
+
 	p {
 		// Mobile Breakpoints
 		font-size: 12px;
 		line-height: 14.5px;
 		text-align: center;
 		padding: 0;
+
 		// Tablet Breakpoints
 		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 			font-size: 24px;
@@ -61,16 +68,19 @@
 		}
 	}
 }
+
 .LinkText {
 	font-size: 10px;
 	line-height: 12px;
 	margin-top: 4px;
+
 	// Tablet Breakpoints
 	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		font-size: 20px;
 		line-height: 24px;
 		margin-top: 8px;
 	}
+
 	a {
 		color: #{colors.$text-primary};
 		text-decoration: underline;

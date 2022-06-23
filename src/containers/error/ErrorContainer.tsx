@@ -5,9 +5,9 @@ import { useHistory } from 'react-router-dom';
 import { ROUTES } from 'constants/routes';
 
 //- Components Imports
-import Maintenance from './content/Maintenance/Maintenance';
+import Error from './content/Error/Error';
 
-const MaintenanceContainer: React.FC = () => {
+const ErrorContainer: React.FC = () => {
 	const { push: goTo } = useHistory();
 
 	// Navigate to Market
@@ -17,8 +17,8 @@ const MaintenanceContainer: React.FC = () => {
 
 	return (
 		<>
-			<Maintenance onClick={onClick} />
+			<Error onClick={onClick} />
 		</>
 	);
 };
-export default MaintenanceContainer;
+export default ErrorContainer;

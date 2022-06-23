@@ -1,36 +1,32 @@
 //- Constants Imports
 import {
 	TITLE,
+	SECONDARY_TITLE,
 	SUBTEXT,
 } from 'containers/ServicePageContainer/ServicePageContentContainer/ServicePageContentContainer.constants';
 
 //- Container Imports
 import ServicePageContentContainer from 'containers/ServicePageContainer/ServicePageContentContainer/ServicePageContentContainer';
 
-//- Utils Imports
-import { getLinkText } from './Maintenance.utils';
-
 //- Styles Imports
-import styles from './Maintenance.module.scss';
+import styles from './PageNotFound.module.scss';
 
-type MaintenanceProps = { onClick: () => void };
+type PageNotFoundProps = { onClick: () => void };
 
-const Maintenance: React.FC<MaintenanceProps> = ({ onClick }) => {
-	const linkText = getLinkText();
-
+const PageNotFound: React.FC<PageNotFoundProps> = ({ onClick }) => {
 	return (
 		<ServicePageContentContainer onClick={onClick}>
 			<div className={styles.HeadingContainer}>
-				<h1>{TITLE.MAINTENANCE}</h1>
+				<h1>{TITLE.PAGE_NOT_FOUND}</h1>
+
+				<h2>{SECONDARY_TITLE.PAGE_NOT_FOUND}</h2>
 			</div>
 
 			<div className={styles.SubTextContainer}>
-				<p>{SUBTEXT.MAINTENANCE}</p>
+				<p>{SUBTEXT.PAGE_NOT_FOUND}</p>
 			</div>
-
-			<div className={styles.LinkText}>{linkText}</div>
 		</ServicePageContentContainer>
 	);
 };
 
-export default Maintenance;
+export default PageNotFound;
