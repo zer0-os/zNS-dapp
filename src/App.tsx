@@ -22,7 +22,6 @@ import { Web3Provider } from '@ethersproject/providers';
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
-import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ROUTES } from 'constants/routes';
 
@@ -48,17 +47,15 @@ function App() {
 		<ConnectedRouter history={history}>
 			<BrowserRouter>
 				<Switch>
-					<CurrentDomainProvider>
-						<PageContainer>
-							<Route path={ROUTES.MARKET} component={ZNS} />
-							<Route path={ROUTES.STAKING} component={Staking} />
-							<Route path={ROUTES.ZDAO} component={DAO} />
-							<Route path={ROUTES.PROFILE} component={Profile} />
-							<Route exact path="/">
-								<Redirect to="/market" />
-							</Route>
-						</PageContainer>
-					</CurrentDomainProvider>
+					<PageContainer>
+						<Route path={ROUTES.MARKET} component={ZNS} />
+						<Route path={ROUTES.STAKING} component={Staking} />
+						<Route path={ROUTES.ZDAO} component={DAO} />
+						<Route path={ROUTES.PROFILE} component={Profile} />
+						<Route exact path="/">
+							<Redirect to="/market" />
+						</Route>
+					</PageContainer>
 				</Switch>
 			</BrowserRouter>
 		</ConnectedRouter>

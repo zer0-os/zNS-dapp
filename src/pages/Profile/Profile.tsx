@@ -21,6 +21,7 @@ import { chainIdToNetworkName } from 'lib/network';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useWeb3React } from '@web3-react/core';
 import { truncateWalletAddress } from 'lib/utils';
+import { randomUUID } from 'lib/random';
 
 // Styles
 import styles from './Profile.module.scss';
@@ -76,6 +77,7 @@ const Profile = () => {
 
 	useDidMount(() => {
 		setNavbarTitle('Your Profile');
+		document.title = 'Profile | ' + process.env.REACT_APP_TITLE;
 	});
 
 	///////////////
@@ -110,6 +112,7 @@ const Profile = () => {
 				<nav className={styles.Nav}>
 					{TABS.map((route) => (
 						<Link
+							key={randomUUID()}
 							className={cx({
 								Selected: location.pathname === r(route.location),
 							})}
@@ -123,7 +126,12 @@ const Profile = () => {
 				</nav>
 				<Switch>
 					{TABS.map((route) => (
-						<Route exact path={r(route.location)} component={route.component} />
+						<Route
+							key={randomUUID()}
+							exact
+							path={r(route.location)}
+							component={route.component}
+						/>
 					))}
 					<Route exact path={path}>
 						<Redirect to={r(TABS[0].location)} />

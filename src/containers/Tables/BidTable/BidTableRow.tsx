@@ -5,14 +5,14 @@ import { DollarSign, X } from 'react-feather';
 
 //- Components Imports
 import { Artwork, OptionDropdown } from 'components';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Library Imports
 import { ethers } from 'ethers';
+import { Domain } from 'lib/types';
 
 //- Constants Imports
 import { TOKEN } from './BidTableRow.constants';
-import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
-import { Domain } from 'lib/types';
 
 export const ACTION_KEYS = {
 	REBID: 'Rebid',
