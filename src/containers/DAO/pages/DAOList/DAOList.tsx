@@ -17,6 +17,7 @@ import classNames from 'classnames';
 import genericStyles from '../Container.module.scss';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import { useDidMount } from 'lib/hooks/useDidMount';
+import { ROOT_DOMAIN } from 'constants/domains';
 
 const DAOList: React.FC = () => {
 	const { instance: sdk } = useZdaoSdk();
@@ -34,7 +35,8 @@ const DAOList: React.FC = () => {
 			try {
 				sdk.listZNAs().then((z) => {
 					if (isMounted) {
-						setDaoZnas(z);
+						// Filter zNAs by network
+						setDaoZnas(z.filter((x) => x.startsWith(ROOT_DOMAIN)));
 						setIsLoading(false);
 					}
 				});
