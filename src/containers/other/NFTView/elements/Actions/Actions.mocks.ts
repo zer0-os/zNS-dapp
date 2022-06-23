@@ -20,6 +20,12 @@ export enum ZAuctionVersionType {
 	V2 = '2.0',
 }
 
+export const mockPaymentTokenInfo = {
+	id: '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79',
+	name: 'WILD',
+	price: 2,
+};
+
 export const mockBidData = [
 	{
 		bidNonce: '2',
@@ -32,6 +38,7 @@ export const mockBidData = [
 		startBlock: '0',
 		expireBlock: '0',
 		version: ZAuctionVersionType.V2,
+		bidToken: '0x000000000000000000000000',
 	},
 ];
 
