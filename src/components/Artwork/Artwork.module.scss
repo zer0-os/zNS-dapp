@@ -1,3 +1,8 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+@use 'styles/variables/borders';
+
 .Artwork {
 	display: flex;
 }
@@ -11,11 +16,11 @@
 	width: 40px;
 	min-height: 40px;
 	min-width: 40px;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 	margin-right: 12px;
 	overflow: hidden;
 	cursor: pointer;
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 
 	&.Circle {
 		border-radius: 50%;
@@ -24,8 +29,8 @@
 
 .Domain {
 	display: block;
-	font-size: var(--font-size-smaller);
-	color: var(--color-grey-lighter-2);
+	font-size: #{typography.$size-small};
+	color: #{colors.$grey-lighter-2};
 }
 
 .Image:hover {
@@ -52,8 +57,8 @@
 }
 
 .Info > *:first-child {
-	color: var(--color-text-primary);
-	font-weight: 400;
+	color: #{colors.$text-primary};
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .Info > *:not(:first-child) {

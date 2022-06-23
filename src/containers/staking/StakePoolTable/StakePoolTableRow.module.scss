@@ -1,8 +1,10 @@
+@use 'styles/variables/colors';
+
 .Row {
 	cursor: pointer;
 
 	&:hover {
-		background: var(--color-revolver);
+		background: #{colors.$purple-10};
 	}
 
 	td {

@@ -161,7 +161,7 @@ const TokenInformation: React.FC<TokenInformationProps> = ({
 							previewImage && styles.Uploaded
 						}`}
 						style={{
-							borderColor: hasError('image') ? 'var(--color-invalid)' : '',
+							borderColor: hasError('image') ? '#d379ff' : '',
 						}}
 					>
 						{!previewImage && (

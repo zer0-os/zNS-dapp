@@ -1,6 +1,10 @@
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .searchBar {
 	position: relative;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 }
 
 .searchBar input {
@@ -9,21 +13,21 @@
 	background: inherit;
 	border-radius: 32px;
 	padding: 0 24px 1px 39px;
-	border: 1px solid #232323;
+	border: 1px solid #{colors.$mine-shaft};
 
 	/* Text */
 	text-align: left;
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$grey-lighter-2};
 
 	/* Text shadow isn't working as expected - it cuts off for some reason */
 	/* text-shadow: var(--glow-text-white); */
 
-	transition: all var(--animation-time-short) linear;
+	transition: all #{animations.$time-short} linear;
 
 	&:hover,
 	&:active,
 	&:focus {
-		border: 1px solid #6a3991;
+		border: 1px solid #{colors.$purple-50};
 	}
 }
 
@@ -34,7 +38,7 @@
 	top: 9px;
 	height: 14px;
 	width: 14px;
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 	background-image: url('./assets/search-icon.svg');
 	background-position: center;
 	background-size: 14px 14px;
@@ -42,5 +46,5 @@
 }
 
 .searchBar input::placeholder {
-	color: var(--color-grey-lighter-2);
+	color: #{colors.$grey-lighter-2};
 }

@@ -1,14 +1,18 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+@use 'styles/variables/borders';
+
 .Back {
 	display: flex;
 	align-items: center;
 
-	color: var(--color-text-primary);
-	font-size: 14px;
+	color: #{colors.$text-primary};
+	font-size: #{typography.$size-small};
 	font-weight: bold;
 
 	&:hover {
-		color: var(--color-text-primary);
-		text-shadow: var(--glow-text-white);
+		color: #{colors.$text-primary};
+		text-shadow: #{colors.$text-glow-white};
 	}
 
 	svg {
@@ -23,14 +27,14 @@
 	align-items: center;
 	padding: 16px 0;
 
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 
 	h1 {
-		font-size: 24px;
+		font-size: #{typography.$size-large};
 		margin-left: 8px;
 
 		@media only screen and (max-width: 500px) {
-			font-size: 18px;
+			font-size: #{typography.$size-medium};
 		}
 	}
 
@@ -44,7 +48,7 @@
 		min-width: 40px;
 		min-height: 40px;
 
-		border-radius: 8px;
+		border-radius: calc(#{borders.$radius-primary} / 2);
 		overflow: hidden;
 
 		img {

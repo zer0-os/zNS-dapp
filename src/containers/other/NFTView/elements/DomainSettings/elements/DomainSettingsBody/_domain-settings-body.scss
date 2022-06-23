@@ -1,4 +1,8 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
 
 .domain-settings-body {
 	&__blocked {
@@ -58,11 +62,11 @@
 			background-size: cover;
 			background-position: center;
 			background-repeat: no-repeat;
-			border-radius: var(--box-radius);
+			border-radius: #{borders.$radius-primary};
 			overflow: hidden;
 			cursor: pointer;
-			transition: transform var(--animation-time-medium) ease-in-out,
-				border-color var(--animation-time-medium) ease-in-out;
+			transition: transform #{animations.$time-medium} ease-in-out,
+				border-color #{animations.$time-medium} ease-in-out;
 			margin-bottom: 16px;
 		}
 
@@ -94,12 +98,12 @@
 
 	&__footer {
 		padding: 8px 0;
-		border-top: 2px solid var(--color-grey-lighter-2);
+		border-top: 2px solid #{colors.$grey-lighter-2};
 
 		h3 {
 			text-align: center;
-			font-size: var(--font-size-default);
-			font-weight: 700;
+			font-size: #{typography.$size-default};
+			font-weight: #{typography.$font-weight-bold};
 			line-height: 24px;
 			margin-bottom: 8px;
 		}
@@ -108,7 +112,7 @@
 			display: flex;
 			flex-direction: column;
 			padding: 16px 0;
-			border-bottom: 1px solid var(--color-grey-mine-shaft);
+			border-bottom: 1px solid #{colors.$mine-shaft};
 		}
 
 		&--main-section {
@@ -117,11 +121,11 @@
 
 			> label {
 				margin-right: 8px;
-				font-size: 14px;
+				font-size: #{typography.$size-small};
 
 				// Tablet Small Breakpoint
 				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-					font-size: var(--font-size-default);
+					font-size: #{typography.$size-default};
 				}
 			}
 		}

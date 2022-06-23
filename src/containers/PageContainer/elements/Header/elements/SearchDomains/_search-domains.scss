@@ -1,4 +1,6 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .search-domains {
 	&__results {
@@ -11,7 +13,7 @@
 		left: -1px;
 		right: -1px;
 		padding: $top-margin 8px;
-		background: var(--color-revolver);
+		background: #{colors.$purple-10};
 		overflow: hidden;
 		border: $borderWidth solid #af4cff67;
 		border-radius: $border-radius;
@@ -29,7 +31,7 @@
 			overflow-y: auto;
 
 			&::-webkit-scrollbar-corner {
-				background: rgba(0, 0, 0, 0);
+				background: #{colors.$black};
 				height: 0;
 				width: 0;
 			}
@@ -59,18 +61,18 @@
 				border-radius: 16px;
 
 				&.exact__match {
-					font-weight: bold;
+					font-weight: #{typography.$font-weight-bold};
 				}
 
 				span {
 					display: inline-block;
 					margin-left: 8px;
-					font-size: var(--font-size-smaller);
-					color: var(--color-accent-1);
+					font-size: #{typography.$size-small};
+					color: #{colors.$blue};
 				}
 
 				&:hover {
-					background: var(--color-purple-lighter);
+					background: #{colors.$purple-15};
 				}
 
 				@media only screen and (max-width: 768px) {

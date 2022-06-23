@@ -1,3 +1,9 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+@use 'styles/variables/dimensions';
+
 .NFTView {
 	width: 100%;
 }
@@ -12,18 +18,18 @@
 	justify-content: space-between;
 	padding: 40px;
 	filter: drop-shadow(0px 0px 16px rgba(140, 84, 221, 0.25));
-	border-radius: var(--box-radius);
-	border: 1px solid #50207b;
+	border-radius: #{borders.$radius-primary};
+	border: 1px solid #{colors.$purple-lighter};
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-color: var(--color-background);
-	transition: background var(--animation-time-medium) ease-in-out;
+	background-color: #{colors.$background-primary};
+	transition: background #{animations.$time-medium} ease-in-out;
 	overflow: hidden;
 }
 
 .Loaded {
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 }
 
 .Loaded .BG {
@@ -38,7 +44,7 @@
 	height: 100%;
 	z-index: -1;
 	object-fit: cover;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 }
 
 .NFT > div {
@@ -56,7 +62,7 @@
 }
 
 .Image > div {
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Image:hover > div {
@@ -65,7 +71,7 @@
 
 .Image img {
 	object-fit: cover;
-	border-radius: 8px;
+	border-radius: calc(#{borders.$radius-primary} / 2);
 }
 
 .Info {
@@ -81,10 +87,10 @@
 	top: 40px;
 	right: 40px;
 
-	background: var(--color-purple-darkest);
+	background: #{colors.$purple-darkest};
 
-	border-radius: 8px;
-	border: 1px solid var(--color-purple-ligher);
+	border-radius: calc(#{borders.$radius-primary} / 2);
+	border: 1px solid #{colors.$purple-15};
 
 	button {
 		display: flex;
@@ -100,7 +106,7 @@
 
 .Info h1 {
 	font-size: 36px;
-	font-weight: bold;
+	font-weight: #{typography.$font-weight-bold};
 	line-height: 44px;
 }
 
@@ -139,19 +145,19 @@
 }
 
 .Price h2 {
-	color: var(--color-primary-lighter-3);
+	color: #{colors.$mauve};
 	margin-bottom: 4px;
 }
 
 .Crypto {
-	font-size: 24px;
-	font-weight: 700;
+	font-size: #{typography.$size-large};
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Fiat {
-	font-size: 18px;
-	font-weight: 400;
-	color: var(--color-primary-lighter-3);
+	font-size: #{typography.$size-medium};
+	font-weight: #{typography.$font-weight-regular};
+	color: #{colors.$mauve};
 }
 
 .Buttons {
@@ -165,20 +171,20 @@
 .Box {
 	/* height: 95.5px; */
 	padding: 20px;
-	background: #120d16;
-	border-radius: var(--box-radius);
+	background: #{colors.$purple-5};
+	border-radius: #{borders.$radius-primary};
 }
 
 .Box h4 {
 	margin-bottom: 4px;
-	font-size: var(--font-size-small);
-	color: var(--color-grey-lighter-2);
+	font-size: #{typography.$size-tiny};
+	color: #{colors.$grey-lighter-2};
 }
 
 .Box span {
 	width: 100%;
 	text-overflow: ellipsis;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Story {
@@ -203,7 +209,7 @@
 }
 
 .History ul::-webkit-scrollbar-corner {
-	background: rgba(0, 0, 0, 0);
+	background: #{colors.$black};
 	height: 0;
 	width: 0;
 }
@@ -219,7 +225,7 @@
 
 .History ul::-webkit-scrollbar-thumb {
 	border-radius: 10px;
-	background-color: rgba(60, 161, 255, 0.2);
+	background-color: rgba(82, 87, 255, 0.2);
 }
 
 .Contract {
@@ -243,7 +249,7 @@
 
 	cursor: pointer;
 
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Copy:hover {
@@ -263,14 +269,14 @@
 	margin-top: 24px;
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		padding: 24px 0 0 0;
 	}
 }
 
 .History span {
 	padding-top: 0;
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .History .Loading {
@@ -290,7 +296,7 @@
 	margin-top: 12px;
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		margin-top: 24px;
 	}
 }
@@ -303,7 +309,7 @@
 	gap: 8px;
 
 	// Tablet Breakpoints
-	@media only screen and (min-width: 744px) {
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 		gap: 16px;
 		margin-top: 48px;
 	}
@@ -410,22 +416,22 @@
 	}
 
 	.Bid .From b {
-		font-size: var(--font-size-smaller);
-		font-weight: 400;
+		font-size: #{typography.$size-small};
+		font-weight: #{typography.$font-weight-regular};
 	}
 }
 
 @media only screen and (max-width: 600px) {
 	.Price h2 {
-		font-size: 18px !important;
+		font-size: #{typography.$size-medium} !important;
 	}
 
 	.Crypto {
-		font-size: 24px !important;
+		font-size: #{typography.$size-large} !important;
 	}
 
 	.Fiat {
-		font-size: 18px !important;
+		font-size: #{typography.$size-medium} !important;
 	}
 
 	.TokenHashContainer {
@@ -474,13 +480,13 @@
 
 .Attributes {
 	margin-top: 24px;
-	background: var(--color-background);
+	background: #{colors.$background-primary};
 }
 
 .Attributes h4 {
 	padding: 0;
-	color: var(--color-grey-lighter-2);
-	font-size: var(--font-size-small);
+	color: #{colors.$grey-lighter-2};
+	font-size: #{typography.$size-tiny};
 	text-transform: capitalize;
 	font-weight: normal;
 }
@@ -506,8 +512,8 @@
 	flex-direction: column;
 	justify-content: center;
 	padding: 8px 16px 8px 20px;
-	border-radius: 8px;
-	background: #120d16;
+	border-radius: calc(#{borders.$radius-primary} / 2);
+	background: #{colors.$purple-5};
 }
 
 @media only screen and (max-width: 768px) {
@@ -533,7 +539,7 @@
 }
 
 .SetOpacityAnimation {
-	animation: animatedOpacity var(--animation-time-medium) ease-in-out;
+	animation: animatedOpacity #{animations.$time-medium} ease-in-out;
 }
 
 @keyframes animatedOpacity {
@@ -549,12 +555,12 @@
 }
 
 .Traits {
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	color: #bcbcbc;
 }
 
 .Properties {
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 	margin-top: 2px;
 }
 
@@ -571,7 +577,7 @@
 
 button.ToggleAttributes {
 	background: none;
-	color: var(--color-accent-1);
+	color: #{colors.$blue};
 	height: 48px;
 	display: flex;
 	flex-direction: column;

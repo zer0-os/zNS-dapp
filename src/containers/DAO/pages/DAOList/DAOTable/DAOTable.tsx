@@ -28,7 +28,7 @@ const HEADERS = [
 const DAOTable = ({ daoZnas }: DAOTableProps) => {
 	const { instance: sdk } = useZdaoSdk();
 
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [daos, setDaos] = useState<Array<zDAO>>([]);
 
 	const tableData: DAOTableDataItem[] = useMemo(() => {

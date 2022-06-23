@@ -1,8 +1,10 @@
+@use 'styles/variables/colors';
+
 .Row {
 	cursor: pointer;
 
 	&:hover {
-		background: var(--color-revolver);
+		background: #{colors.$purple-10};
 	}
 
 	td {
@@ -53,7 +55,7 @@
 		height: var(--dot-size);
 		width: var(--dot-size);
 		border-radius: 50%;
-		background: var(--color-accent-1);
+		background: #{colors.$blue};
 
 		&:first-child {
 			transform: translate(-50%, calc(-50% - calc(100% + var(--dot-gap))));

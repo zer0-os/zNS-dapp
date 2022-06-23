@@ -1,14 +1,19 @@
 /* Mobile First */
+@use 'styles/variables/typography';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .Container {
 	width: 100%;
 	position: relative;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	overflow: hidden;
 	z-index: 2;
-	transition: box-shadow var(--animation-time-medium) ease-in-out;
-	transition: filter var(--animation-time-medium) ease-in-out;
-	transition: transform var(--animation-time-medium) ease-in-out;
-	background: var(--color-azure-gradient-100);
+	transition: box-shadow #{animations.$time-medium} ease-in-out;
+	transition: filter #{animations.$time-medium} ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
+	background: #{colors.$azure};
 }
 
 .Mobile {
@@ -30,7 +35,7 @@
 	align-items: center;
 	width: 100%;
 	padding: 16px 0;
-	background: var(--color-black-gradient-40);
+	background: #{colors.$bunting-op};
 }
 
 .Content:hover {
@@ -38,32 +43,32 @@
 }
 
 .Label {
-	font-family: var(--font-family);
-	font-weight: 400;
-	font-size: var(--font-size-default);
+	font-family: #{typography.$font};
+	font-weight: #{typography.$font-weight-regular};
+	font-size: #{typography.$size-default};
 	margin-right: 8px;
 	padding-bottom: 0;
-	color: var(--color-white-secondary);
+	color: #{colors.$text-primary};
 }
 
 .Countdown {
-	font-weight: 700;
-	font-size: var(--font-size-smaller);
+	font-weight: #{typography.$font-weight-bold};
+	font-size: #{typography.$size-small};
 	margin-right: 8px;
 	padding-bottom: 0;
-	color: var(--color-white-secondary);
+	color: #{colors.$text-primary};
 }
 
 .Button {
-	font-family: var(--font-family);
-	color: var(--color-accent-blue-100);
+	font-family: #{typography.$font};
+	color: #{colors.$blue};
 	background: none;
 	z-index: 2;
-	transition: text-shadow var(--animation-time-medium) ease-in-out;
+	transition: text-shadow #{animations.$time-medium} ease-in-out;
 	padding-bottom: 0;
 
-	font-weight: 700;
-	font-size: var(--font-size-smaller);
+	font-weight: #{typography.$font-weight-bold};
+	font-size: #{typography.$size-small};
 
 	display: flex;
 	align-items: center;
@@ -82,15 +87,15 @@
 	}
 
 	.Label {
-		font-size: var(--font-size-default);
+		font-size: #{typography.$size-default};
 	}
 
 	.Countdown {
-		font-size: var(--font-size-default);
+		font-size: #{typography.$size-default};
 	}
 
 	.Button {
-		font-size: var(--font-size-default);
+		font-size: #{typography.$size-default};
 		top: 50px;
 		right: 40px;
 		bottom: auto;

@@ -1,3 +1,7 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+
 .ProfileButton {
 	position: relative;
 	padding: 0;
@@ -5,12 +9,12 @@
 	height: 32px;
 	width: 32px;
 
-	color: var(--color-accent-1);
-	background-color: rgba(0, 0, 0, 0);
+	color: #{colors.$blue};
+	background-color: #{colors.$black};
 
 	border-radius: 50%;
 
-	transition: background-color var(--animation-time-short) ease-in-out;
+	transition: background-color #{animations.$time-short} ease-in-out;
 }
 
 .ProfileButton > img {
@@ -25,25 +29,25 @@
 	left: 50%;
 	height: 0px;
 	width: 0px;
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 
-	transition: box-shadow var(--animation-time-short) ease-in-out;
+	transition: box-shadow #{animations.$time-short} ease-in-out;
 }
 
 .ProfileButton:hover {
-	text-shadow: var(--glow-text-primary);
+	text-shadow: #{colors.$text-glow-primary};
 }
 
 .ProfileButton:hover {
-	text-shadow: var(--glow-text-primary);
-	background-color: rgba(255, 255, 255, 0.02);
+	text-shadow: #{colors.$text-glow-primary};
+	background-color: rgba(colors.$white, 0.02);
 }
 
 .Selected {
-	color: var(--color-text-primary);
-	background-color: rgba(255, 255, 255, 0.02);
+	color: #{colors.$text-primary};
+	background-color: rgba(colors.$white, 0.02);
 }
 
 .Selected:after {
-	box-shadow: 0px 0px 17px 12px rgba(255, 255, 255, 0.5);
+	box-shadow: 0px 0px 17px 12px rgba(colors.$white, 0.5);
 }

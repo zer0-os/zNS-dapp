@@ -1,3 +1,7 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 $width: 400px;
 $gutter: 16px;
 
@@ -10,7 +14,7 @@ $gutter: 16px;
 	max-width: $width;
 	max-height: 80vh;
 
-	background: var(--color-background);
+	background: #{colors.$background-primary};
 
 	overflow: hidden;
 
@@ -42,8 +46,8 @@ $gutter: 16px;
 }
 
 .Container h4 {
-	font-size: 24px;
-	font-weight: bold;
+	font-size: #{typography.$size-large};
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 }
 
@@ -61,7 +65,7 @@ $gutter: 16px;
 	overflow-x: visible;
 
 	&::-webkit-scrollbar-corner {
-		background: rgba(0, 0, 0, 0);
+		background: #{colors.$black};
 		height: 0;
 		width: 0;
 	}
@@ -92,12 +96,12 @@ $gutter: 16px;
 
 .Bid button {
 	margin-left: auto;
-	transition: transform var(--animation-time-short) ease-in-out,
-		opacity var(--animation-time-short) ease-in-out;
+	transition: transform #{animations.$time-short} ease-in-out,
+		opacity #{animations.$time-short} ease-in-out;
 }
 
 .Bid:hover {
-	background: var(--color-revolver);
+	background: #{colors.$purple-10};
 }
 
 .Bid:hover button {
@@ -105,7 +109,7 @@ $gutter: 16px;
 }
 
 .Bid label {
-	font-size: var(--font-size-smaller);
+	font-size: #{typography.$size-small};
 }
 
 .Bid > div {
@@ -115,10 +119,10 @@ $gutter: 16px;
 
 .Bid > div > span:first-of-type {
 	margin-top: 6px;
-	font-weight: bold;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Bid > div > span:not(:first-of-type) {
 	margin-top: 6px;
-	font-size: var(--font-size-small);
+	font-size: #{typography.$size-tiny};
 }

@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+
 .Button {
 	display: flex;
 	justify-content: center;
@@ -5,11 +8,11 @@
 	height: 32px;
 	padding: 0 24px;
 
-	background: var(--color-background-alt);
+	background: #{colors.$background-alt};
 
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 }
 
 .Button > img {

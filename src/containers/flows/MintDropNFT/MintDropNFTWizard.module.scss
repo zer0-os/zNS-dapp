@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 $width: 640px;
 $gutter: 16px;
 
@@ -5,7 +8,7 @@ $gutter: 16px;
 	width: $width;
 	padding: 48px;
 
-	background: var(--color-background);
+	background: #{colors.$background-primary};
 
 	@media only screen and (max-width: #{$width + $gutter + $gutter}) {
 		width: calc(100vw - $gutter - $gutter);
@@ -19,7 +22,7 @@ $gutter: 16px;
 }
 
 .Header h1 {
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Header span {
@@ -30,5 +33,5 @@ $gutter: 16px;
 .Header hr {
 	margin-top: 16px;
 	border: 0;
-	border-bottom: 1px solid var(--color-purple-lighter);
+	border-bottom: 1px solid #{colors.$purple-15};
 }

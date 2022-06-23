@@ -1,4 +1,6 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
 
 .Container {
 	width: 100%;
@@ -31,7 +33,7 @@
 		margin-top: 26px;
 		border: 0;
 		height: 1px;
-		background: var(--color-grey-mine-shaft);
+		background: #{colors.$mine-shaft};
 	}
 }
 
@@ -51,8 +53,8 @@
 			padding: 0;
 			width: auto;
 
-			font-size: var(--font-size-smaller);
-			color: var(--color-text-primary);
+			font-size: #{typography.$size-small};
+			color: #{colors.$text-primary};
 
 			transform: translateY(-50%);
 			z-index: 3;
@@ -80,18 +82,18 @@
 		text-align: left;
 
 		.Tokens {
-			font-size: 18px;
+			font-size: #{typography.$size-medium};
 			display: block;
 		}
 
 		.Fiat {
-			font-size: var(--font-size-small);
+			font-size: #{typography.$size-tiny};
 			display: block;
 		}
 
 		> span {
-			font-size: var(--font-size-small);
-			color: var(--color-grey-lighter-2);
+			font-size: #{typography.$size-tiny};
+			color: #{colors.$grey-lighter-2};
 		}
 	}
 }

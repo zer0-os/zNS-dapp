@@ -11,13 +11,13 @@
 }
 
 .Open {
-	animation: open var(--animation-time-short) forwards;
+	animation: open 0.1s forwards;
 	animation-timing-function: ease-in-out;
 	opacity: 1;
 }
 
 .Closed {
-	animation: close var(--animation-time-short) forwards;
+	animation: close 0.1s forwards;
 	animation-timing-function: ease-in-out;
 	display: none;
 }

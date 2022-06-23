@@ -1,3 +1,6 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 .Container {
 	.Group {
 		&:not(:first-of-type) {
@@ -5,8 +8,8 @@
 		}
 
 		h2 {
-			font-weight: 700;
-			color: var(--color-grey-lighter-2);
+			font-weight: #{typography.$font-weight-bold};
+			color: #{colors.$grey-lighter-2};
 			padding: 8px;
 		}
 
@@ -22,17 +25,17 @@
 				}
 
 				> span:last-child {
-					font-size: 12px;
+					font-size: #{typography.$size-tiny};
 				}
 			}
 
 			margin-top: 8px;
 			padding: 8px 0;
 
-			color: var(--color-grey-lighter-3);
+			color: #{colors.$grey-lighter-3};
 
 			b {
-				color: var(--color-text-primary);
+				color: #{colors.$text-primary};
 			}
 		}
 	}

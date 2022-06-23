@@ -1,3 +1,8 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+@use 'styles/variables/typography';
+@use 'styles/variables/dimensions';
+
 .Container {
 	> * {
 		&:not(:first-child) {
@@ -7,30 +12,25 @@
 
 	.Stats {
 		display: flex;
-		margin-bottom: 16px;
+		flex-direction: column;
+		gap: 16px;
 
 		> * {
-			flex: 1;
-			align-self: stretch;
-
-			&:not(:last-child) {
-				margin-right: 16px;
+			&:last-child {
+				display: none;
 			}
 		}
 
-		@media only screen and (max-width: 700px) {
-			flex-direction: column;
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			flex-direction: row;
+			margin: 16px 0;
 
 			> * {
-				margin-right: 0 !important;
-
-				&:not(:first-child) {
-					margin-top: 8px;
-				}
+				flex: 1;
+				align-self: stretch;
 
 				&:last-child {
-					display: none;
-					margin-top: 16px;
+					display: flex;
 				}
 			}
 		}
@@ -38,29 +38,30 @@
 
 	.Links {
 		padding: 8px 16px;
+		margin-top: 16px;
 
-		@media only screen and (max-width: 700px) {
-			margin-top: 16px;
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			margin-top: 0;
 		}
 
 		> a {
-			color: var(--color-grey-lighter-2);
-			font-size: 24px;
-			font-weight: 700;
+			color: #{colors.$grey-lighter-2};
+			font-size: #{typography.$size-large};
+			font-weight: #{typography.$font-weight-bold};
 
-			@media only screen and (max-width: 700px) {
-				font-size: 18px;
+			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+				font-size: 24px;
 			}
 
-			transition: color var(--animation-time-short) ease-in-out;
+			transition: color #{animations.$time-short} ease-in-out;
 
 			&:not(:first-of-type) {
 				margin-left: 40px;
 			}
 
 			&.Active {
-				color: var(--color-text-primary);
-				text-shadow: var(--glow-text-primary) !important;
+				color: #{colors.$text-primary};
+				text-shadow: #{colors.$text-glow-primary} !important;
 			}
 
 			&:hover {
