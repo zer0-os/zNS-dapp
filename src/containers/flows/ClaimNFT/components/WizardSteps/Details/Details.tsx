@@ -1,20 +1,11 @@
 // React Imports
-import { useState } from 'react';
-
-// Constants Imports
-import {
-	VIDEO_FORMAT_SRC,
-	VIDEO_FORMAT_TYPE,
-	VIDEO_SETTINGS,
-	TEXT_INPUT,
-	MESSAGES,
-	TOOLTIP,
-	BUTTONS,
-} from './Details.constants';
+import { useState, useCallback } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 // Library Imports
 import classNames from 'classnames/bind';
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
+import useNotification from 'lib/hooks/useNotification';
 
 //- Hook Imports
 import useClaimCheck from '../../../hooks/useClaimCheck';
@@ -42,12 +33,26 @@ import {
 	NotificationType,
 } from './Details.utils';
 
+// Constants Imports
+import {
+	VIDEO_FORMAT_SRC,
+	VIDEO_FORMAT_TYPE,
+	VIDEO_SETTINGS,
+	TEXT_INPUT,
+	MESSAGES,
+	TOOLTIP,
+	BUTTONS,
+} from './Details.constants';
+import { ROUTES } from 'constants/routes';
+import { CLAIM_FLOW_NOTIFICATIONS } from 'constants/notifications';
+
 // Style Imports
 import styles from './Details.module.scss';
 
 type DetailsProps = {
 	tokenID?: string;
 	isClaimDataLoading?: boolean;
+	isClaiming?: boolean;
 	eligibleDomains?: ClaimableDomain[];
 	isWalletConnected: boolean;
 	currentStep: Step;
@@ -64,6 +69,7 @@ const cx = classNames.bind(styles);
 const Details = ({
 	tokenID,
 	isClaimDataLoading,
+	isClaiming,
 	eligibleDomains,
 	isWalletConnected,
 	currentStep,
@@ -77,6 +83,9 @@ const Details = ({
 	///////////////////////
 	// State & Variables //
 	///////////////////////
+	const history = useHistory();
+	const location = useLocation();
+	const { addNotification } = useNotification();
 	const [notificationType, setNotificationType] = useState<NotificationType>();
 	const [inputNotification, setInputNotification] = useState<
 		string | undefined
@@ -103,12 +112,16 @@ const Details = ({
 
 	const headerPrompt = isDetailsStep
 		? MESSAGES.SEARCH_PROMPT
-		: MESSAGES.MINTING_PROMPT;
+		: isClaiming
+		? MESSAGES.MINTING_PROMPT
+		: MESSAGES.MINTING_SUCCESS;
 
 	const buttonText =
 		currentStep === Step.Details
 			? getButtonText(isWalletConnected, hasEligibleDomains)
-			: BUTTONS.FINISH;
+			: isClaiming
+			? BUTTONS.FINISH
+			: BUTTONS.VIEW_IN_PROFILE;
 
 	const promptText = isDetailsStep
 		? hasEligibleDomains
@@ -120,13 +133,25 @@ const Details = ({
 	// Functions //
 	///////////////
 
+	const handleOnOpenProfile = useCallback(() => {
+		history.push({
+			pathname: ROUTES.PROFILE,
+			state: { previous: location.pathname },
+		});
+		addNotification(CLAIM_FLOW_NOTIFICATIONS.CLAIM_SUCCESS);
+	}, [addNotification, history, location.pathname]);
+
 	const onSubmit = () => {
 		if (!isWalletConnected && connectToWallet) {
 			connectToWallet();
 		} else if (!hasEligibleDomains && onRedirect) {
 			onRedirect();
 		} else {
-			isDetailsStep ? onStartClaim && onStartClaim() : onFinish && onFinish();
+			isDetailsStep
+				? onStartClaim && onStartClaim()
+				: isClaiming
+				? onFinish && onFinish()
+				: handleOnOpenProfile();
 		}
 	};
 
@@ -175,17 +200,20 @@ const Details = ({
 						<div
 							className={cx(styles.HeaderPrompt, {
 								isDetailsStep: isDetailsStep,
-								isMintingStep: !isDetailsStep,
+								isMintingStep: !isDetailsStep && isClaiming,
+								claimComplete: !isClaiming,
 							})}
 						>
 							{headerPrompt}
 						</div>
-						<Tooltip
-							deepPadding
-							text={isDetailsStep ? TOOLTIP.DETAILS : TOOLTIP.MINTING}
-						>
-							<QuestionButton small />
-						</Tooltip>
+						{isClaiming && (
+							<Tooltip
+								deepPadding
+								text={isDetailsStep ? TOOLTIP.DETAILS : TOOLTIP.MINTING}
+							>
+								<QuestionButton small />
+							</Tooltip>
+						)}
 					</div>
 					{isDetailsStep && (
 						<>
@@ -267,7 +295,9 @@ const Details = ({
 										</>
 									)}
 
-									<div className={styles.Prompt}>{promptText}</div>
+									{isClaiming && (
+										<div className={styles.Prompt}>{promptText}</div>
+									)}
 								</div>
 							)}
 

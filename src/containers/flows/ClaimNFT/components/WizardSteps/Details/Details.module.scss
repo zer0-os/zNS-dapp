@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .Container {
 	width: 100%;
 
@@ -26,6 +28,11 @@
 				&.isMintingStep {
 					width: 150px;
 					margin: 0 8px 0 0;
+				}
+
+				&.claimComplete {
+					margin: 0;
+					color: #{colors.$success-green};
 				}
 
 				&.isMintingStep:after {

@@ -181,6 +181,7 @@ const ClaimNFT = ({
 				isWalletConnected={active}
 				currentStep={currentStep}
 				onFinish={onFinish}
+				isClaiming={isClaimingInProgress}
 			/>
 		),
 	};

@@ -214,7 +214,6 @@ export const useMint = (): UseMintReturn => {
 
 				addNotification(CLAIM_FLOW_NOTIFICATIONS.CLAIM_SUCCESS);
 				reduxActions.setMinted(asset);
-				setIsClaimingInProgress(false);
 			} catch (err) {
 				onError(ERRORS.REJECTED_WALLET);
 				setStatus('');
@@ -233,6 +232,8 @@ export const useMint = (): UseMintReturn => {
 					}
 				}
 			}
+			setStatus('');
+			setIsClaimingInProgress(false);
 		},
 		[account, addNotification, claimInstance, library, reduxActions],
 	);

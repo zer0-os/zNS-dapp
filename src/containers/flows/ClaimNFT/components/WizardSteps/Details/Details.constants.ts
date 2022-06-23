@@ -52,6 +52,7 @@ export const MESSAGES = {
 	COST_PROMPT: 'You only need to pay gas!',
 	CLOSE_PROMPT:
 		'You may close this and minting will continue in the backround. When minting is complete, you can view your Moto in your profile (may require a page refresh).',
+	MINTING_SUCCESS: 'Minting successful!',
 };
 
 export const BUTTONS = {
@@ -59,4 +60,5 @@ export const BUTTONS = {
 	BUY_WHEELS: 'Buy Wheels',
 	START_CLAIMING: 'Start Claiming',
 	FINISH: 'Finish',
+	VIEW_IN_PROFILE: 'View in profile',
 };

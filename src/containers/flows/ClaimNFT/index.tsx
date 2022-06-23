@@ -47,9 +47,7 @@ const ClaimNFTContainer = ({
 	//////////////////
 	const PRIVATE_SALE_END_TIME = privateSaleEndTime;
 	const { push: goTo } = useHistory();
-
 	const { claimNFT } = useMint();
-
 	const { claimInstance } = useZSaleSdk();
 	const { account, library } = useWeb3React<Web3Provider>();
 	const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
