@@ -201,7 +201,7 @@ const Details = ({
 							className={cx(styles.HeaderPrompt, {
 								isDetailsStep: isDetailsStep,
 								isMintingStep: !isDetailsStep && isClaiming,
-								claimComplete: !isClaiming,
+								claimComplete: !isDetailsStep && !isClaiming,
 							})}
 						>
 							{headerPrompt}
