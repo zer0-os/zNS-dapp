@@ -20,9 +20,6 @@ import useScrollDetection from 'lib/hooks/useScrollDetection';
 import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
 import { Header, Modals, useModal, Actions, Touchbar } from './elements';
 
-//- Container Imports
-import CustomHead from 'containers/other/CustomHead/CustomHead';
-
 //- Constants Imports
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { WALLETS } from 'constants/wallets';
@@ -106,8 +103,6 @@ const PageContainer: React.FC = ({ children }) => {
 
 	return (
 		<>
-			<CustomHead />
-
 			<ScrollToTop>
 				<div className={classnames(styles.PageContainer)}>
 					{/* Toast Notifications */}

@@ -44,7 +44,6 @@ export { default as BidList } from './lists/BidList/BidList';
 
 // Other
 export { default as BannerContainer } from './other/BannerContainer/BannerContainer';
-export { default as CustomHead } from './other/CustomHead/CustomHead';
 export { default as NFTView } from './other/NFTView/NFTView';
 export { default as PageHeader } from './other/PageHeader/PageHeader';
 export { default as PriceWidget } from './other/PriceWidget/PriceWidget';

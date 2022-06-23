@@ -44,6 +44,17 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		znsDomain.domainMetadata,
 	);
 
+	// Change document title based on current network
+	if (
+		zna.length > 0 &&
+		zna !== process.env.REACT_APP_NETWORK &&
+		domainMetadata?.title
+	) {
+		document.title = domainMetadata.title + ' | ' + process.env.REACT_APP_TITLE;
+	} else {
+		document.title = 'Market | ' + process.env.REACT_APP_TITLE;
+	}
+
 	const contextValue = {
 		domain: znsDomain.domain,
 		domainId,
