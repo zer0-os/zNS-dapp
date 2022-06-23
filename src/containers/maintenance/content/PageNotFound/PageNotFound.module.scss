@@ -1,0 +1,107 @@
+@use 'styles/variables/dimensions';
+@use 'styles/variables/typography';
+
+.HeadingContainer {
+	margin-bottom: 8px;
+
+	:first-child {
+		margin-bottom: -6px;
+	}
+
+	// Tablet Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		display: flex;
+		align-items: center;
+		margin-bottom: 0;
+
+		:first-child {
+			margin-bottom: 0;
+		}
+	}
+
+	// Desktop Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+		margin-bottom: 0;
+	}
+
+	h1 {
+		// Mobile Breakpoints
+		font-size: 80px;
+		line-height: 96px;
+		font-family: typography.$ddt;
+		background: linear-gradient(
+			rgba(82, 87, 255, 0.25) 0%,
+			rgba(82, 203, 255, 0.25) 100%
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+
+		// Tablet Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			font-size: 94px;
+			line-height: 113px;
+		}
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			font-size: 152px;
+			line-height: 183px;
+		}
+	}
+
+	h2 {
+		// Mobile Breakpoints
+
+		font-size: 14px;
+		line-height: 16px;
+		font-family: typography.$ddt;
+		background: linear-gradient(
+			90deg,
+			rgba(82, 87, 255, 0.5) 0%,
+			rgba(82, 203, 255, 0.5) 100%
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+
+		// Tablet Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			max-width: 260px;
+			font-size: 34px;
+			line-height: 45px;
+		}
+
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			max-width: 421px;
+			font-size: 55px;
+			line-height: 74px;
+		}
+	}
+}
+.SubTextContainer {
+	// Mobile Breakpoints
+	max-width: 208px;
+	// Tablet Breakpoints
+	@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		max-width: none;
+	}
+	p {
+		// Mobile Breakpoints
+		font-weight: 400px;
+		font-size: 12px;
+		line-height: 14.5px;
+		text-align: center;
+		padding: 0;
+		// Tablet Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+			font-size: 20px;
+			line-height: 24px;
+		}
+		// Desktop Breakpoints
+		@media only screen and (min-width: #{dimensions.$breakpoint-desktop-s}) {
+			font-size: 31px;
+			line-height: 37.5px;
+		}
+	}
+}

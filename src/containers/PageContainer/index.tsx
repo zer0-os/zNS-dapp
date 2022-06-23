@@ -1,12 +1,12 @@
 //- React Imports
-import React, { useCallback, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 //- Library Imports
 import classnames from 'classnames';
+import classNames from 'classnames/bind';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
@@ -15,37 +15,30 @@ import { useNotification } from 'lib/hooks/useNotification';
 import { useMint } from 'lib/hooks/useMint';
 import { useStaking } from 'lib/hooks/useStaking';
 import useScrollDetection from 'lib/hooks/useScrollDetection';
-
 //- Components Imports
-import {
-	SideBar,
-	ScrollToTop,
-	NotificationDrawer,
-	Image,
-	WilderIcon,
-} from 'components';
+import { SideBar, ScrollToTop, NotificationDrawer } from 'components';
 import { Header, Modals, useModal, Actions, Touchbar } from './elements';
-
 //- Constants Imports
 import { LOCAL_STORAGE_KEYS } from 'constants/localStorage';
 import { WALLETS } from 'constants/wallets';
 import { WALLET_NOTIFICATIONS } from 'constants/notifications';
 import { Modal } from './PageContainer.constants';
-import logo from 'assets/WWLogo_SVG.svg';
-
-import warningIcon from './warning.svg';
-
+import { ROUTES } from 'constants/routes';
 //- Styles Imports
 import styles from './PageContainer.module.scss';
+//- Asset Imports
+import backgroundImage from 'assets/background.jpg';
+
+const cx = classNames.bind(styles);
 
 const PageContainer: React.FC = ({ children }) => {
 	/**
 	 * Hooks Data
 	 */
 	const history = useHistory();
-	const { account, active, chainId } = useWeb3React<Web3Provider>();
+	const { account, active } = useWeb3React<Web3Provider>();
+	const { pathname } = useLocation();
 	const triedEagerConnect = useEagerConnect();
-	const chainSelector = useChainSelector();
 	const globalDomain = useCurrentDomain();
 	const {
 		domain: znsDomain,
@@ -58,26 +51,23 @@ const PageContainer: React.FC = ({ children }) => {
 	const { addNotification } = useNotification();
 	const { pageWidth } = usePageWidth();
 	const { modal, openModal, closeModal } = useModal();
-
 	// Scroll Detection
 	const [isScrollDetectionDown, setScrollDetectionDown] = useState(false);
 	useScrollDetection(setScrollDetectionDown);
-
+	// Check pathname to determine container type
+	const isRouteValid =
+		pathname.includes(ROUTES.MARKET) ||
+		pathname.includes(ROUTES.STAKING) ||
+		pathname.includes(ROUTES.ZDAO) ||
+		pathname.includes(ROUTES.PROFILE);
 	/**
 	 * Callback Functions
 	 */
-	const handleChainSelect = useCallback(() => {
-		if (chainId && chainSelector.selectedChain !== chainId) {
-			chainSelector.selectChain(chainId);
-		}
-	}, [chainId, chainSelector]);
-
 	const handleForceBackHome = useCallback(() => {
 		if (!loading && !znsDomain) {
 			history.push(globalDomain.app);
 		}
 	}, [loading, znsDomain, globalDomain, history]);
-
 	const handleWalletChanges = useCallback(() => {
 		if (
 			Object.values(WALLETS).includes(
@@ -88,14 +78,12 @@ const PageContainer: React.FC = ({ children }) => {
 		) {
 			localStorage.removeItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET);
 		}
-
 		if (triedEagerConnect)
 			addNotification(
 				active
 					? WALLET_NOTIFICATIONS.CONNECTED
 					: WALLET_NOTIFICATIONS.DISCONNECTED,
 			);
-
 		// Check if we need to close a modal
 		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
@@ -105,78 +93,91 @@ const PageContainer: React.FC = ({ children }) => {
 	/**
 	 * Life Cycles
 	 */
-	useUpdateEffect(handleChainSelect, [chainId]);
+
 	useUpdateEffect(handleForceBackHome, [znsDomain, loading, globalDomain.app]);
 	useUpdateEffect(handleWalletChanges, [active]);
 	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 
+	// Update background image
+	useEffect(() => {
+		if (!isRouteValid) {
+			// Background Image ID - index.html
+			const loadImg = new Image();
+			loadImg.src = backgroundImage;
+			if (loadImg.complete) {
+				document.body.style.backgroundImage = `url(${backgroundImage})`;
+			} else {
+				loadImg.onload = () => {
+					const bg = document.getElementById('backgroundImage')?.style;
+					if (!bg) return;
+					bg.backgroundImage = `url(${backgroundImage})`;
+					bg.opacity = '1';
+				};
+			}
+		} else {
+			const bg = document.getElementById('backgroundImage')?.style;
+			if (!bg) return;
+			bg.backgroundImage = '';
+		}
+	}, [isRouteValid]);
+
 	return (
 		<>
-			<div className={styles.MaintenanceContainer}>
-				{/* <div className={styles.FlexRowWrapper}> */}
-
-				<article className={styles.Article}>
-					<img alt="logo" src={logo} className={styles.Logo} />
-
-					<h1 className={styles.Heading}>We&rsquo;ll be back soon!</h1>
-					<div>
-						<p>
-							Sorry for the inconvenience. We&rsquo;re performing some
-							maintenance at the moment. If you need to you can always follow us
-							on <a href="https://discord.gg/7tyggH6eh9">Discord</a> for
-							updates, otherwise we&rsquo;ll be back up shortly!
-						</p>
-						<p>&mdash; The Wilder World Team</p>
-					</div>
-				</article>
+			<div
+				className={cx(styles.ErrorPageContainer, {
+					isRouteValid: isRouteValid,
+				})}
+			>
+				<div className={styles.BackgroundContainer} />
+				<div className={styles.BackgroundImage} />
+				{children}
 			</div>
+
+			{isRouteValid && (
+				<ScrollToTop>
+					<div className={classnames(styles.PageContainer)}>
+						{/* Toast Notifications */}
+						<NotificationDrawer />
+						{/* App level Modals */}
+						<Modals
+							pageWidth={pageWidth}
+							modal={modal}
+							closeModal={closeModal}
+						/>
+						<div className={styles.InnerContainer}>
+							<div className={styles.FlexRowWrapper}>
+								{/* App Sidebar */}
+								<SideBar />
+								<div className={styles.FlexColumnWrapper}>
+									{/* App Header */}
+									<Header
+										pageWidth={pageWidth}
+										znsDomain={znsDomain}
+										domainMetadata={domainMetadata}
+										account={account}
+										openModal={openModal}
+										isScrollDetectionDown={isScrollDetectionDown}
+									/>
+									{/* Children Components */}
+									<main className={styles.Main}>{children}</main>
+								</div>
+								{/* Header Actions - Desktop */}
+								<Actions
+									className={styles.Actions}
+									pageWidth={pageWidth}
+									znsDomain={znsDomain}
+									domainMetadata={domainMetadata}
+									account={account}
+									openModal={openModal}
+								/>
+							</div>
+						</div>
+					</div>
+					{/* Touchbar */}
+					<Touchbar />
+				</ScrollToTop>
+			)}
 		</>
 	);
-
-	// return (
-	// 	<ScrollToTop>
-	// 		<div className={classnames(styles.PageContainer)}>
-	// 			Toast Notifications
-	// 			<NotificationDrawer />
-
-	// 			{/* App level Modals */}
-	// 			<Modals pageWidth={pageWidth} modal={modal} closeModal={closeModal} />
-
-	// 			<div className={styles.InnerContainer}>
-	// 				<div className={styles.FlexRowWrapper}>
-	// 					{/* App Sidebar */}
-	// 					<SideBar />
-	// 					<div className={styles.FlexColumnWrapper}>
-	// 						{/* App Header */}
-	// 						<Header
-	// 							pageWidth={pageWidth}
-	// 							znsDomain={znsDomain}
-	// 							domainMetadata={domainMetadata}
-	// 							account={account}
-	// 							openModal={openModal}
-	// 							isScrollDetectionDown={isScrollDetectionDown}
-	// 						/>
-
-	// 						{/* Children Components */}
-	// 						<main className={styles.Main}>{children}</main>
-	// 					</div>
-
-	// 					{/* Header Actions - Desktop */}
-	// 					<Actions
-	// 						className={styles.Actions}
-	// 						pageWidth={pageWidth}
-	// 						znsDomain={znsDomain}
-	// 						domainMetadata={domainMetadata}
-	// 						account={account}
-	// 						openModal={openModal}
-	// 					/>
-	// 				</div>
-	// 			</div>
-	// 		</div>
-	// 		{/* Touchbar */}
-	// 		<Touchbar />
-	// 	</ScrollToTop>
-	// );
 };
-
 export default PageContainer;

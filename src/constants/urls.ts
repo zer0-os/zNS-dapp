@@ -6,4 +6,6 @@ export enum URLS {
 	// ----- ZERO_ROOT ----- //
 	ZERO_ROOT = '0://',
 	ZERO = 'https://www.zero.tech/',
+	// ----- DISCORD ----- //
+	DISCORD = 'https://discord.gg/7tyggH6eh9',
 }
