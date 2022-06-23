@@ -22,6 +22,7 @@ import { Web3Provider } from '@ethersproject/providers';
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
+import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
 
@@ -46,17 +47,19 @@ function App() {
 		<ConnectedRouter history={history}>
 			<BrowserRouter>
 				<Switch>
-					<Route exact path="/">
-						<Redirect to={ROUTES.MARKET} />
-					</Route>
-					<Route path={ROUTES.MARKET} component={ZNS} />
-					<Route path={ROUTES.STAKING} component={Staking} />
-					<Route path={ROUTES.ZDAO} component={DAO} />
-					<Route path={ROUTES.PROFILE} component={Profile} />
+					<CurrentDomainProvider>
+						<Route exact path="/">
+							<Redirect to={ROUTES.MARKET} />
+						</Route>
+						<Route path={ROUTES.MARKET} component={ZNS} />
+						<Route path={ROUTES.STAKING} component={Staking} />
+						<Route path={ROUTES.ZDAO} component={DAO} />
+						<Route path={ROUTES.PROFILE} component={Profile} />
 
-					<Route path={ROUTES.ERROR} component={Error} />
-					<Route path={ROUTES.MAINTENANCE} component={Maintenance} />
-					{/* <Route component={PageNotFound} /> */}
+						<Route path={ROUTES.ERROR} component={Error} />
+						<Route path={ROUTES.MAINTENANCE} component={Maintenance} />
+						{/* <Route component={PageNotFound} /> */}
+					</CurrentDomainProvider>
 				</Switch>
 			</BrowserRouter>
 		</ConnectedRouter>
