@@ -54,7 +54,8 @@ const TransferPreview = () => {
 							<h3>{nft.name}</h3>
 
 							<Link className={styles.Link} to={`${nft.domainName}`}>
-								0://{truncateDomain(nft.domainName, MAX_CHARACTER_VALUE)}
+								0://
+								{truncateDomain(nft.domainName, MAX_CHARACTER_VALUE)}
 							</Link>
 
 							<p>{getPreviewSubtitle(exists)}</p>

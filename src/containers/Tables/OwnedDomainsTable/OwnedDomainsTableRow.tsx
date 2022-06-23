@@ -28,9 +28,11 @@ import moreIcon from 'assets/more-vertical.svg';
 
 //- Constants Imports
 import { ACTION_KEYS } from './OwnedDomainsTable.constants';
+import { ROUTES } from 'constants/routes';
 
 //- Utils Imports
 import { getActions } from './OwnedDomainsTable.utils';
+import { getNetworkZNA } from 'lib/utils';
 
 enum Modal {
 	ViewBids,
@@ -63,7 +65,7 @@ const OwnedDomainsTableRow = ({
 
 	// Navigates to domain
 	const onRowClick = () => {
-		goTo(`/market/${domain.name}`);
+		goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 	};
 
 	const actions = getActions(bids?.length !== 0);

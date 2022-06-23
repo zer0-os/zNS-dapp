@@ -1,4 +1,7 @@
+//- Constants Imports
 import { ASPECT_RATIOS, AspectRatio } from 'constants/aspectRatios';
+
+//- Library Imports
 import { ethers } from 'ethers';
 
 export const rootDomainName = '';
@@ -123,6 +126,13 @@ export const getAspectRatioForZna = (zna: string): AspectRatio | undefined => {
 	}
 };
 
+// Parse ZNA
+export const getNetworkZNA = (zna: string) => {
+	return (process.env.REACT_APP_NETWORK ?? '') !== ''
+		? zna.split('.').splice(1).join('.')
+		: zna;
+};
+
 // Truncate domain
 export const truncateDomain = (
 	domainName: string,
@@ -131,7 +141,7 @@ export const truncateDomain = (
 	if (domainName.length > maxCharacterLength) {
 		const splits = domainName.split('.');
 		if (splits.length > 2) {
-			return `${splits[0]}...${splits[1]}`;
+			return `${splits[0]}...${splits[splits.length - 1]}`;
 		}
 		return domainName;
 	}
