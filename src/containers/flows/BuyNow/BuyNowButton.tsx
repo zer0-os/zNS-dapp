@@ -23,6 +23,7 @@ interface BuyNowButtonProps {
 	onSuccess?: () => void;
 	style?: React.CSSProperties;
 	isTextButton?: boolean;
+	isLoading?: boolean;
 }
 
 const SetBuyNowButton = ({
@@ -33,6 +34,7 @@ const SetBuyNowButton = ({
 	onSuccess,
 	style,
 	isTextButton,
+	isLoading,
 }: BuyNowButtonProps) => {
 	//- Wallet Data
 	const walletContext = useWeb3React<Web3Provider>();
@@ -74,6 +76,7 @@ const SetBuyNowButton = ({
 					className={className}
 					glow={!disabled}
 					onClick={onClick}
+					loading={isLoading}
 				>
 					{buttonText}
 				</FutureButton>

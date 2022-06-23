@@ -22,8 +22,6 @@ import { Web3Provider } from '@ethersproject/providers';
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
-import { ChainSelectorProvider } from 'lib/providers/ChainSelectorProvider';
-import { SubgraphProvider } from 'lib/providers/SubgraphProvider';
 import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ROUTES } from 'constants/routes';
@@ -77,20 +75,16 @@ function wrappedApp() {
 			isVerboseMode={true}
 		>
 			<ReduxProvider store={store}>
-				<ChainSelectorProvider>
-					<SubgraphProvider>
-						<Web3ReactProvider getLibrary={getLibrary}>
-							<ZnsSdkProvider>
-								{/* Our Hooks  */}
-								<MvpVersionProvider>
-									<EnlistProvider>
-										<App />
-									</EnlistProvider>
-								</MvpVersionProvider>
-							</ZnsSdkProvider>
-						</Web3ReactProvider>
-					</SubgraphProvider>
-				</ChainSelectorProvider>
+				<Web3ReactProvider getLibrary={getLibrary}>
+					<ZnsSdkProvider>
+						{/* Our Hooks  */}
+						<MvpVersionProvider>
+							<EnlistProvider>
+								<App />
+							</EnlistProvider>
+						</MvpVersionProvider>
+					</ZnsSdkProvider>
+				</Web3ReactProvider>
 			</ReduxProvider>
 		</CacheBuster>
 	);

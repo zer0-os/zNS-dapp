@@ -1,3 +1,7 @@
+@use 'styles/variables/borders';
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+
 .question-button {
 	position: relative;
 	display: flex;
@@ -5,7 +9,7 @@
 	align-items: center;
 	width: 24px;
 	height: 24px;
-	background: rgba(255, 255, 255, 0.25);
+	background: rgba(colors.$white, 0.25);
 	border-radius: 50%;
 	z-index: 1;
 
@@ -16,13 +20,13 @@
 		left: 50%;
 		height: 0px;
 		width: 0px;
-		border-radius: var(--box-radius);
+		border-radius: #{borders.$radius-primary};
 		z-index: -2;
-		transition: box-shadow var(--animation-time-medium) ease-in-out;
+		transition: box-shadow #{animations.$time-medium} ease-in-out;
 	}
 
 	&:hover::after {
-		box-shadow: 0 0 20px 13px rgba(255, 255, 255, 0.5);
+		box-shadow: 0 0 20px 13px rgba(colors.$white, 0.5);
 	}
 
 	&.small {

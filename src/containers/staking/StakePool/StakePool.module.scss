@@ -1,3 +1,6 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+
 .Container {
 	padding: 16px;
 
@@ -17,7 +20,7 @@
 	h1 {
 		margin-left: 24px;
 		font-size: 36px;
-		font-weight: 700;
+		font-weight: #{typography.$font-weight-bold};
 	}
 
 	img {
@@ -31,8 +34,8 @@
 
 	h4 {
 		margin-bottom: 4px;
-		font-size: var(--font-size-small);
-		color: var(--color-grey-lighter-2);
+		font-size: #{typography.$size-tiny};
+		color: #{colors.$grey-lighter-2};
 		padding: 0 20px;
 	}
 
@@ -49,7 +52,7 @@
 	span {
 		padding: 20px;
 		padding-top: 0;
-		font-weight: 400;
+		font-weight: #{typography.$font-weight-regular};
 	}
 
 	.Loading {

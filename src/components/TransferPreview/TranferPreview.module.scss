@@ -1,12 +1,14 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+
 .TransferPreview {
 	// Mobile Breakpoints
 	width: 555px;
 	padding: 20px 40px 20px 40px;
 	max-height: 70vh;
 	overflow: auto;
-	background: var(--color-revolver);
-	border: 1px solid var(--color-bossanova);
-
+	background: #{colors.$purple-10};
+	border: 1px solid #{colors.$bossanova};
 	// Tablet Breakpoints
 	@media only screen and (min-width: 1000px) {
 		width: 640px;
@@ -16,8 +18,8 @@
 }
 
 .TransferPreview h4 {
-	font-size: 24px;
-	font-weight: 700;
+	font-size: #{typography.$size-large};
+	font-weight: #{typography.$font-weight-bold};
 	margin-bottom: 19px;
 	text-align: center;
 }
@@ -38,7 +40,7 @@
 }
 
 .Divider {
-	border: 1px solid var(--color-purple-lighter);
+	border: 1px solid #{colors.$purple-15};
 }
 
 .Image {
@@ -68,12 +70,12 @@
 	word-wrap: break-word;
 
 	.Link {
-		font-size: var(--font-size-default);
-		color: var(--color-grey);
+		font-size: #{typography.$size-default};
+		color: #{colors.$grey};
 	}
 
 	h3 {
-		font-size: 24px;
+		font-size: #{typography.$size-large};
 		margin-bottom: 12px;
 	}
 
@@ -90,9 +92,9 @@
 }
 
 .Info .Address {
-	font-size: var(--font-size-default);
+	font-size: #{typography.$size-default};
 	line-height: 24px;
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 }
 
 .Container {
@@ -111,7 +113,7 @@
 	}
 
 	.Success {
-		color: var(--color-success);
+		color: #{colors.$success-green};
 	}
 }
 

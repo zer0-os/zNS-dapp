@@ -1,16 +1,20 @@
+@use 'styles/variables/animations';
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 .Button {
 	margin: 40px auto 0 auto;
 }
 
 .Green {
-	color: var(--color-success);
+	color: #{colors.$success-green};
 }
 
 .Error {
 	display: inline-block;
 	width: 100%;
 	margin-top: 40px;
-	color: var(--color-error);
+	color: #{colors.$red-300};
 	text-align: center;
 }
 
@@ -35,14 +39,14 @@
 	position: relative;
 	height: 16px;
 	width: 16px;
-	border: 1px solid var(--color-accent-1);
+	border: 1px solid #{colors.$blue};
 	border-radius: 4px;
-	transition: border-color var(--animation-time-short) ease;
+	transition: border-color #{animations.$time-short} ease;
 }
 
 .Terms .Selected {
-	border-color: green;
-	background-color: #58c57310;
+	border-color: #{colors.$japanese-laurel};
+	background-color: #{colors.$success-darker};
 }
 
 .Terms div::after {
@@ -56,7 +60,7 @@
 	background-repeat: no-repeat;
 	background-position: center;
 	opacity: 0;
-	transition: opacity var(--animation-time-short) ease;
+	transition: opacity #{animations.$time-short} ease;
 }
 
 .Terms .Selected::after {
@@ -64,7 +68,7 @@
 }
 
 .Terms button {
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .Terms label {

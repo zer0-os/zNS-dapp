@@ -1,6 +1,10 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .RequestTableContainer {
 	width: 100%;
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 }
 
 .RequestTable {
@@ -11,7 +15,7 @@
 }
 
 .Expander {
-	transition: height var(--animation-time-long) ease-in-out;
+	transition: height #{animations.$time-long} ease-in-out;
 }
 
 .RequestTable {
@@ -56,14 +60,14 @@
 /* Table Header */
 
 .RequestTable th {
-	color: var(--color-primary-lighter-3);
-	font-size: var(--font-size-smaller);
-	font-weight: 700;
+	color: #{colors.$mauve};
+	font-size: #{typography.$size-small};
+	font-weight: #{typography.$font-weight-bold};
 }
 
 /* Table */
 .RequestTable tbody {
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 }
 
 .RequestTable th,
@@ -74,15 +78,15 @@
 
 .RequestTable > tbody > tr {
 	cursor: pointer;
-	transition: background var(--animation-time-short) linear;
+	transition: background #{animations.$time-short} linear;
 }
 
 .RequestTable > tbody > tr:hover {
-	background: var(--color-background);
+	background: #{colors.$background-primary};
 }
 
 .RequestTable > tbody > tr img {
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .RequestTable > tbody > tr:hover > td > img {
@@ -91,7 +95,7 @@
 
 .RequestTable > tbody > tr:hover,
 .RequestTable > tbody > tr:hover {
-	background: var(--color-background-alt-50);
+	background: #{colors.$background-alt-50};
 }
 
 .RequestTable tbody tr td:first-of-type,
@@ -101,8 +105,8 @@
 }
 
 .ticker {
-	color: var(--color-accent-1-light);
-	font-weight: 700;
+	color: #{colors.$anakiwa};
+	font-weight: #{typography.$font-weight-bold};
 }
 
 .Accepted span {
@@ -113,7 +117,7 @@
 }
 
 .Accepted span:first-of-type {
-	color: var(--color-accent-1);
+	color: #{colors.$blue};
 }
 
 .Accepted span:not(:first-of-type) {
@@ -150,14 +154,14 @@
 	width: 24px;
 	height: 24px;
 	border-radius: 50%;
-	border-top: 2px solid var(--color-accent-1);
+	border-top: 2px solid #{colors.$blue};
 	animation: spin 1s linear infinite;
 }
 
 .Message {
 	padding: 32px 32px 40px 32px;
 	text-align: center;
-	font-weight: 700;
+	font-weight: #{typography.$font-weight-bold};
 }
 
 @keyframes spin {
@@ -187,7 +191,7 @@
 .Grid > li {
 	cursor: pointer;
 
-	transition: transform var(--animation-time-medium) ease-in-out;
+	transition: transform #{animations.$time-medium} ease-in-out;
 }
 
 .Grid > li:hover {

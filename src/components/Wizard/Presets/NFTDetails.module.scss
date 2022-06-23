@@ -1,4 +1,6 @@
 @use 'styles/variables/dimensions';
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
 
 $width: 640px;
 $gutter: 16px;
@@ -27,12 +29,12 @@ $gutter: 16px;
 		padding: 0;
 
 		h1 {
-			font-size: 24px;
-			font-weight: 700;
+			font-size: #{typography.$size-large};
+			font-weight: #{typography.$font-weight-bold};
 		}
 
 		h2 {
-			color: var(--color-accent-1);
+			color: #{colors.$blue};
 			margin-top: 4px;
 		}
 
@@ -55,7 +57,7 @@ $gutter: 16px;
 
 	.DetailComponent {
 		span {
-			color: var(--color-grey-lighter-2);
+			color: #{colors.$grey-lighter-2};
 		}
 
 		.Bid {
@@ -64,7 +66,7 @@ $gutter: 16px;
 	}
 
 	.MemberLabel {
-		font-size: 12px;
-		color: var(--color-grey-lighter-2);
+		font-size: #{typography.$size-tiny};
+		color: #{colors.$grey-lighter-2};
 	}
 }

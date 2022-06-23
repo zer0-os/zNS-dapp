@@ -1,3 +1,7 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+@use 'styles/variables/typography';
+
 $gap: 40px;
 
 .Container {
@@ -27,9 +31,9 @@ $gap: 40px;
 			display: flex;
 			align-items: center;
 			background: none;
-			color: var(--color-white);
-			font-size: 24px;
-			font-weight: 700;
+			color: #{colors.$white};
+			font-size: #{typography.$size-large};
+			font-weight: #{typography.$font-weight-bold};
 
 			span {
 				display: block;
@@ -45,27 +49,27 @@ $gap: 40px;
 			display: flex;
 			align-items: center;
 			padding: 8px 16px;
-			border: 1px solid #23142f;
+			border: 1px solid #{colors.$purple-15};
 
 			gap: 10px;
 
 			cursor: pointer;
 
-			background: var(--color-background);
-			color: var(--color-text-primary);
+			background: #{colors.$background-primary};
+			color: #{colors.$text-primary};
 			text-align: left;
 
-			transition: background-color var(--animation-time-short) ease;
+			transition: background-color #{animations.$time-short} ease;
 
 			&:active {
-				background-color: #1a102270 !important;
+				background-color: rgb(26, 16, 34, 0.4) !important;
 			}
 
 			&:hover {
-				background-color: #1a1022;
+				background-color: #{colors.$purple-10};
 
 				.Details > span:not(:first-child) {
-					text-shadow: var(--glow-text-white);
+					text-shadow: #{colors.$text-glow-primary};
 				}
 			}
 
@@ -78,8 +82,8 @@ $gap: 40px;
 					display: block;
 
 					&:first-child {
-						font-size: 12px;
-						color: var(--color-grey-lighter-2);
+						font-size: #{typography.$size-tiny};
+						color: #{colors.$grey-lighter-2};
 					}
 				}
 			}
@@ -98,13 +102,13 @@ $gap: 40px;
 
 		a {
 			padding: 0 12px 8px 12px;
-			color: #d9d9d9; // grey-lighter-3
+			color: #{colors.$grey-lighter-3};
 			text-align: center;
 
 			&.Selected {
-				border-bottom: 1px solid #472e5b; // purple-25
-				font-weight: 700;
-				color: var(--color-text-primary);
+				border-bottom: 1px solid #{colors.$bossanova};
+				font-weight: #{typography.$font-weight-bold};
+				color: #{colors.$text-primary};
 			}
 
 			&::before {
@@ -113,7 +117,7 @@ $gap: 40px;
 				overflow: hidden;
 				height: 0;
 				visibility: hidden;
-				font-weight: 700;
+				font-weight: #{typography.$font-weight-bold};
 			}
 		}
 	}

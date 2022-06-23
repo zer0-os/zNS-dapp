@@ -1,3 +1,5 @@
+@use 'styles/variables/colors';
+
 .NFTDetailsContainer {
 	margin-bottom: 28px;
 }
@@ -25,14 +27,14 @@
 }
 
 .SuccessConfirmation {
-	color: var(--color-success);
+	color: #{colors.$success-green};
 	line-height: 24px;
 	text-align: center;
 	margin: 20px 0 20px 0;
 }
 
 .Error {
-	color: var(--color-error);
+	color: #{colors.$red-300};
 	line-height: 24px;
 	text-align: center;
 	margin: 20px 0 20px 0;

@@ -1,5 +1,9 @@
+@use 'styles/variables/borders';
+@use 'styles/variables/colors';
+@use 'styles/variables/typography';
+
 .Container {
-	border-radius: var(--box-radius);
+	border-radius: #{borders.$radius-primary};
 	overflow: hidden;
 
 	.Header {
@@ -7,8 +11,8 @@
 	}
 
 	.Body {
-		background: rgba(255, 255, 255, 0.03);
-		border-top: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(colors.$white, 0.03);
+		border-top: 1px solid rgba(colors.$white, 0.1);
 
 		ul li {
 			display: flex;
@@ -23,8 +27,8 @@
 			}
 
 			label {
-				font-size: 12px;
-				color: var(--color-grey-lighter-2);
+				font-size: #{typography.$size-tiny};
+				color: #{colors.$grey-lighter-2};
 			}
 		}
 	}

@@ -1,13 +1,17 @@
+@use 'styles/variables/typography';
+@use 'styles/variables/colors';
+@use 'styles/variables/animations';
+
 .TextInput {
 	width: 100%;
 	padding: 16.5px 0px 16.5px 24px;
 
 	border-radius: 24px;
 
-	color: var(--color-text-primary);
+	color: #{colors.$text-primary};
 
-	background: var(--color-background);
-	transition: border var(--animation-time-medium) ease-in-out;
+	background: #{colors.$background-primary};
+	transition: border #{animations.$time-medium} ease-in-out;
 }
 
 .TextInput::placeholder {
@@ -18,9 +22,9 @@
 	display: block;
 	margin-top: 12px;
 
-	color: var(--color-invalid);
-	font-size: var(--font-size-smaller);
-	font-weight: 700;
+	color: #{colors.$helitrope};
+	font-size: #{typography.$size-small};
+	font-weight: #{typography.$font-weight-bold};
 	text-align: center;
 }
 
@@ -44,8 +48,8 @@
 	position: absolute;
 	top: 6px;
 	left: 25px;
-	color: var(--color-accent-1);
-	font-size: var(--font-size-small);
+	color: #{colors.$blue};
+	font-size: #{typography.$size-tiny};
 }
 
 .title input {
@@ -53,16 +57,12 @@
 	padding: 22.5px 0px 10.5px 24px;
 
 	text-align: left;
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 	line-height: 19.2px;
 
-	background: linear-gradient(
-		94.23deg,
-		rgba(60, 161, 255, 0.2) 0%,
-		rgba(30, 81, 128, 0.2) 100%
-	);
-	color: #dadcdf;
-	border: 1px solid #88d7ff;
+	background: #{colors.$text-input-background-gradient};
+	color: #{colors.$iron};
+	border: 1px solid #{colors.$anakiwa-darker};
 
 	border-radius: 30px;
 }
@@ -81,9 +81,9 @@
 	background-image: url('./assets/copy-icon.svg');
 	background-position: center;
 	background-size: cover;
-	background-color: rgba(0, 0, 0, 0);
+	background-color: #{colors.$black};
 
-	transition: transform var(--animation-time-short) ease-in-out;
+	transition: transform #{animations.$time-short} ease-in-out;
 }
 
 .title button:hover {
@@ -111,21 +111,17 @@
 	padding-left: 54px;
 
 	text-align: left;
-	font-weight: 400;
+	font-weight: #{typography.$font-weight-regular};
 	line-height: 19.2px;
 
-	background: linear-gradient(
-		94.23deg,
-		rgba(60, 161, 255, 0.2) 0%,
-		rgba(30, 81, 128, 0.2) 100%
-	);
-	color: #dadcdf;
-	border: 1px solid #88d7ff;
+	background: #{colors.$text-input-background-gradient};
+	color: #{colors.$iron};
+	border: 1px solid #{colors.$anakiwa-darker};
 
 	border-radius: 30px;
 
 	&.Error {
-		border: 1px solid var(--color-invalid);
+		border: 1px solid #{colors.$helitrope};
 	}
 }
 

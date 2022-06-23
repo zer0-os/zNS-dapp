@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { useChainSelector } from 'lib/providers/ChainSelectorProvider';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useEagerConnect } from 'lib/hooks/provider-hooks';
 import { usePageWidth } from 'lib/hooks/usePageWidth';
@@ -43,9 +42,8 @@ const PageContainer: React.FC = ({ children }) => {
 	 * Hooks Data
 	 */
 	const history = useHistory();
-	const { account, active, chainId } = useWeb3React<Web3Provider>();
+	const { account, active } = useWeb3React<Web3Provider>();
 	const triedEagerConnect = useEagerConnect();
-	const chainSelector = useChainSelector();
 	const globalDomain = useCurrentDomain();
 	const {
 		domain: znsDomain,
@@ -66,11 +64,6 @@ const PageContainer: React.FC = ({ children }) => {
 	/**
 	 * Callback Functions
 	 */
-	const handleChainSelect = useCallback(() => {
-		if (chainId && chainSelector.selectedChain !== chainId) {
-			chainSelector.selectChain(chainId);
-		}
-	}, [chainId, chainSelector]);
 
 	const handleForceBackHome = useCallback(() => {
 		if (!loading && !znsDomain) {
@@ -105,7 +98,6 @@ const PageContainer: React.FC = ({ children }) => {
 	/**
 	 * Life Cycles
 	 */
-	useUpdateEffect(handleChainSelect, [chainId]);
 	useUpdateEffect(handleForceBackHome, [znsDomain, loading, globalDomain.app]);
 	useUpdateEffect(handleWalletChanges, [active]);
 	useUpdateEffect(refetch, [minted, stakingFulFilled]);

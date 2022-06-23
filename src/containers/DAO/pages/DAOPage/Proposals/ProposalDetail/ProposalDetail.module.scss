@@ -1,0 +1,63 @@
+@use 'styles/variables/dimensions';
+
+.Container {
+	margin: 24px 0 !important;
+
+	.NavLink {
+		display: flex;
+		align-items: center;
+		margin: 8px 0;
+		color: var(--color-text-primary);
+		font-size: 14px;
+		font-weight: bold;
+
+		&:hover {
+			color: var(--color-text-primary);
+			text-shadow: var(--glow-text-white);
+		}
+
+		svg {
+			height: 1rem;
+			width: 1rem;
+			margin-right: 4px;
+		}
+	}
+
+	.Content {
+		padding: 16px 0;
+
+		.Wrapper {
+			.Title {
+				padding: 8px 0;
+				font-size: 36px;
+				font-weight: 700;
+				line-height: 44px;
+
+				@media only screen and (max-width: #{dimensions.$breakpoint-mobile-xl}) {
+					font-size: 24px;
+					line-height: 30px;
+				}
+			}
+
+			.MarkDownViewerContent {
+				:global(.wmde-markdown) {
+					color: #fff;
+					padding-left: 0;
+					padding-right: 0;
+
+					a {
+						text-shadow: none;
+
+						> svg {
+							display: none;
+						}
+					}
+
+					img {
+						border-radius: 8px;
+					}
+				}
+			}
+		}
+	}
+}
