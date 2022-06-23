@@ -11,7 +11,7 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
-
+import PageContainer from 'containers/PageContainer';
 import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
 
 //- Library Imports
@@ -248,38 +248,40 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	return (
 		<>
-			{/* TODO: Convert page width into a hook to add condition here */}
-			{modal === Modal.Transfer && (
-				<TransferOwnership
-					metadataUrl={znsDomain?.metadata ?? ''}
-					domainName={domain}
-					domainId={znsDomain?.id ?? ''}
-					onTransfer={closeModal}
-					creatorId={znsDomain?.minter?.id || ''}
-					ownerId={znsDomain?.owner?.id || ''}
-				/>
-			)}
-			{/* ZNS Content */}
-			{enableBanner && <Raffle />}
-			{!isNftView && (
-				<div className="main">
-					{previewCard()}
-					{!(isMobile || isMobilePortrait) && nftStats()}
-					{showDomainTable && (
-						<div className={styles.TableContainer}>
-							<SubdomainTable />
-						</div>
-					)}
-				</div>
-			)}
-			{znsDomain && isNftView && (
-				<NFTViewModalProvider>
-					<NFTView
-						// domain={domain}
-						onTransfer={openTransferOwnershipModal}
+			<PageContainer>
+				{/* TODO: Convert page width into a hook to add condition here */}
+				{modal === Modal.Transfer && (
+					<TransferOwnership
+						metadataUrl={znsDomain?.metadata ?? ''}
+						domainName={domain}
+						domainId={znsDomain?.id ?? ''}
+						onTransfer={closeModal}
+						creatorId={znsDomain?.minter?.id || ''}
+						ownerId={znsDomain?.owner?.id || ''}
 					/>
-				</NFTViewModalProvider>
-			)}
+				)}
+				{/* ZNS Content */}
+				{enableBanner && <Raffle />}
+				{!isNftView && (
+					<div className="main">
+						{previewCard()}
+						{!(isMobile || isMobilePortrait) && nftStats()}
+						{showDomainTable && (
+							<div className={styles.TableContainer}>
+								<SubdomainTable />
+							</div>
+						)}
+					</div>
+				)}
+				{znsDomain && isNftView && (
+					<NFTViewModalProvider>
+						<NFTView
+							// domain={domain}
+							onTransfer={openTransferOwnershipModal}
+						/>
+					</NFTViewModalProvider>
+				)}
+			</PageContainer>
 		</>
 	);
 };

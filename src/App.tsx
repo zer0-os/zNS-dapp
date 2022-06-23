@@ -1,30 +1,37 @@
 import { version } from '../package.json';
+
 //- React Imports
 import React from 'react';
 import { Provider as ReduxProvider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+
 //- Redux Store Imports
 import store, { history } from './store';
+
 //- Global Stylesheets
 import 'styles/reset.scss';
 import 'styles/main.scss';
+
 //- React Imports
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+
 //- Web3 Imports
 import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
+
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
-import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
+
 //- Page Imports
-import { ZNS, Staking, Profile, Maintenance } from 'pages';
-import PageContainer from 'containers/PageContainer';
+import { ZNS, Staking, Profile, Maintenance, Error } from 'pages';
 import DAO from 'pages/DAO/DAO';
+
 //- Constants Imports
 import { ROUTES } from 'constants/routes';
+
 function getLibrary(provider: any): Web3Provider {
 	const library = new Web3Provider(provider);
 	library.pollingInterval = 12000;
@@ -39,20 +46,17 @@ function App() {
 		<ConnectedRouter history={history}>
 			<BrowserRouter>
 				<Switch>
-					<CurrentDomainProvider>
-						<PageContainer>
-							<Route exact path="/">
-								<Redirect to={ROUTES.MARKET} />
-							</Route>
-							<Route path={ROUTES.MARKET} component={ZNS} />
-							<Route path={ROUTES.STAKING} component={Staking} />
-							<Route path={ROUTES.ZDAO} component={DAO} />
-							<Route path={ROUTES.PROFILE} component={Profile} />
+					<Route exact path="/">
+						<Redirect to={ROUTES.MARKET} />
+					</Route>
+					<Route path={ROUTES.MARKET} component={ZNS} />
+					<Route path={ROUTES.STAKING} component={Staking} />
+					<Route path={ROUTES.ZDAO} component={DAO} />
+					<Route path={ROUTES.PROFILE} component={Profile} />
 
-							<Route component={Maintenance} />
-							{/* <Redirect from="*" to={ROUTES.MAINTENANCE} /> */}
-						</PageContainer>
-					</CurrentDomainProvider>
+					<Route path={ROUTES.ERROR} component={Error} />
+					<Route path={ROUTES.MAINTENANCE} component={Maintenance} />
+					{/* <Route component={PageNotFound} /> */}
 				</Switch>
 			</BrowserRouter>
 		</ConnectedRouter>

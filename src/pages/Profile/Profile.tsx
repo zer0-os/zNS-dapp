@@ -12,6 +12,9 @@ import {
 	useRouteMatch,
 } from 'react-router-dom';
 
+//- Container Imports
+import PageContainer from 'containers/PageContainer';
+
 // Library
 import { ROUTES } from 'constants/routes';
 import { useDidMount } from 'lib/hooks/useDidMount';
@@ -139,41 +142,43 @@ const Profile = () => {
 	////////////
 
 	return (
-		<main className={styles.Container}>
-			<div className={styles.Header}>
-				<button className={styles.Back} onClick={onBack}>
-					<ArrowLeft color="white" /> <span>My Profile</span>
-				</button>
-				{account && chainId && (
-					<Tooltip placement="bottom-center" text={copyLabel}>
-						<button
-							className={classNames(
-								styles.Account,
-								'border-rounded',
-								'no-select',
-							)}
-							onClick={copyAddress}
-							onMouseEnter={() => setIsAccountHovered(true)}
-							onMouseLeave={() => setIsAccountHovered(false)}
-						>
-							<img alt="user icon" src={userIcon} />
-							<div className={styles.Details}>
-								<span>{chainIdToNetworkName(chainId)}</span>
-								<span>{truncateWalletAddress(account, 4)}</span>
-							</div>
-						</button>
-					</Tooltip>
-				)}
-			</div>
-			{account ? (
-				Content
-			) : (
-				<div className={styles.Connect}>
-					<p>Please connect a wallet to view your profile.</p>
-					<ConnectWalletButton>Connect Wallet</ConnectWalletButton>
+		<PageContainer>
+			<main className={styles.Container}>
+				<div className={styles.Header}>
+					<button className={styles.Back} onClick={onBack}>
+						<ArrowLeft color="white" /> <span>My Profile</span>
+					</button>
+					{account && chainId && (
+						<Tooltip placement="bottom-center" text={copyLabel}>
+							<button
+								className={classNames(
+									styles.Account,
+									'border-rounded',
+									'no-select',
+								)}
+								onClick={copyAddress}
+								onMouseEnter={() => setIsAccountHovered(true)}
+								onMouseLeave={() => setIsAccountHovered(false)}
+							>
+								<img alt="user icon" src={userIcon} />
+								<div className={styles.Details}>
+									<span>{chainIdToNetworkName(chainId)}</span>
+									<span>{truncateWalletAddress(account, 4)}</span>
+								</div>
+							</button>
+						</Tooltip>
+					)}
 				</div>
-			)}
-		</main>
+				{account ? (
+					Content
+				) : (
+					<div className={styles.Connect}>
+						<p>Please connect a wallet to view your profile.</p>
+						<ConnectWalletButton>Connect Wallet</ConnectWalletButton>
+					</div>
+				)}
+			</main>
+		</PageContainer>
 	);
 };
 
