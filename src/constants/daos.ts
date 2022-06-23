@@ -33,7 +33,17 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 			id: 'joshupgig.eth',
 			ens: 'joshupgig.eth',
 			zNA: 'wilder.test',
-			title: 'Wilder Test DAO',
+			title: 'Test DAO',
+			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
+			network: 4, // for Rinkeby
+			safeAddress: '0x7a935d07d097146f143A45aA79FD8624353abD5D',
+			votingToken: '0xD53C3bddf27b32ad204e859EB677f709c80E6840',
+		},
+		{
+			id: 'joshupgig.eth',
+			ens: 'joshupgig.eth',
+			zNA: 'zero.dao',
+			title: 'Test DAO (Copy)',
 			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
 			network: 4, // for Rinkeby
 			safeAddress: '0x7a935d07d097146f143A45aA79FD8624353abD5D',
