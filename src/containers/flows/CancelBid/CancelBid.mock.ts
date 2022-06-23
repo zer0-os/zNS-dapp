@@ -1,3 +1,4 @@
+import { PaymentTokenInfo } from './../../../lib/types';
 /////////////////
 // Domain Data //
 /////////////////
@@ -8,6 +9,12 @@ const mockDomainData = {
 	minter: '0x7829afa127494ca8b4ceef4fb81b78fee9d0e471',
 	name: 'wilder.candy',
 	owner: '0xbb6a3a7ea2bc5cf840016843fa01d799be975320',
+};
+
+const mockPaymentTokenInfo = {
+	id: '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79',
+	name: 'WILD',
+	price: 0.17677,
 };
 
 const mockMetadata = {
@@ -54,6 +61,7 @@ const mockBids = [
 const mockContainerProps = {
 	bidNonce: mockBidBeingCancelled.bidNonce,
 	domainId: mockDomainData.id,
+	paymentTokenInfo: mockPaymentTokenInfo,
 };
 
 const exports = {

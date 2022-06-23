@@ -80,13 +80,9 @@ describe('useCancelBid', () => {
 
 			expect(mockCancelBid).toBeCalledTimes(1);
 			expect(mockTx).toBeCalledTimes(1);
-			expect(mockCancelBid).toBeCalledWith(
-				mocks.mockBidV1.bidNonce,
-				mocks.mockBidV1.signedMessage,
-				mocks.mockBidV1.tokenId,
-				false,
-				{ isSigner: true },
-			);
+			expect(mockCancelBid).toBeCalledWith(mocks.mockBidV1, false, {
+				isSigner: true,
+			});
 		});
 
 		test('status updates as expected for v1 bid', async () => {
@@ -154,13 +150,9 @@ describe('useCancelBid', () => {
 
 			expect(mockCancelBid).toBeCalledTimes(1);
 			expect(mockTx).toBeCalledTimes(1);
-			expect(mockCancelBid).toBeCalledWith(
-				mocks.mockBidV2.bidNonce,
-				mocks.mockBidV2.signedMessage,
-				mocks.mockBidV2.tokenId,
-				true,
-				{ isSigner: true },
-			);
+			expect(mockCancelBid).toBeCalledWith(mocks.mockBidV2, true, {
+				isSigner: true,
+			});
 		});
 
 		test('status updates as expected for v2 bid', async () => {

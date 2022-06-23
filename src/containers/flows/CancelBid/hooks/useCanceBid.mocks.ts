@@ -12,6 +12,7 @@ export const mockBidV1 = {
 	startBlock: '0',
 	expireBlock: '0',
 	version: ZAuctionVersionType.V1,
+	bidToken: '0x000000000000000000000000',
 };
 
 export const mockBidV2 = {
@@ -25,4 +26,5 @@ export const mockBidV2 = {
 	startBlock: '0',
 	expireBlock: '0',
 	version: ZAuctionVersionType.V2,
+	bidToken: '0x000000000000000000000000',
 };
