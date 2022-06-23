@@ -44,7 +44,6 @@ import { Step, StepContent } from './MakeABid.types';
 import { ERC20 } from 'types';
 
 const maxCharacterLength = 28;
-
 export type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
@@ -86,8 +85,8 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	const domainMetadata = useDomainMetadata(
 		domain.metadata ?? (domain as any).metadataUri,
 	);
-	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
 	const isBidValid = !Number.isNaN(parseFloat(bid));
+	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
 
 	///////////////
 	// Functions //
@@ -182,7 +181,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				return;
 			}
 			addNotification(
-				getSuccessNotification(getBidAmountText(bid), domain.name),
+				getSuccessNotification(getBidAmountText(bid), formattedDomain),
 			);
 			setIsBidPlaced(true);
 			setStepContent(StepContent.Success);

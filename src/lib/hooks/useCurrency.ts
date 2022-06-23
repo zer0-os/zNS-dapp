@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
 	getWildPriceUsdRequest,
 	getLootPriceUsdRequest,
+	getZeroPriceUsdRequest,
 	getWildPricePercentageChangeRequest,
+	getZeroPricePercentageChangeRequest,
 } from 'store/currency/actions';
 import { getCurrency } from 'store/currency/selectors';
 import { useDidMount } from './useDidMount';
@@ -11,7 +13,9 @@ import { useDidMount } from './useDidMount';
 export type CurrencyHook = {
 	wildPriceUsd: number;
 	lootPriceUsd: number;
+	zeroPriceUsd: number;
 	wildPercentageChange: number;
+	zeroPercentageChange: number;
 };
 
 const useCurrency = (): CurrencyHook => {
@@ -27,14 +31,24 @@ const useCurrency = (): CurrencyHook => {
 		dispatch(getLootPriceUsdRequest());
 	}, [dispatch]);
 
+	const getZeroPriceUsd = useCallback(() => {
+		dispatch(getZeroPriceUsdRequest());
+	}, [dispatch]);
+
 	const getWildPricePercentageChange = useCallback(() => {
 		dispatch(getWildPricePercentageChangeRequest());
+	}, [dispatch]);
+
+	const getZeroPricePercentageChange = useCallback(() => {
+		dispatch(getZeroPricePercentageChangeRequest());
 	}, [dispatch]);
 
 	useDidMount(() => {
 		getWildPriceUsd();
 		getLootPriceUsd();
+		getZeroPriceUsd();
 		getWildPricePercentageChange();
+		getZeroPricePercentageChange();
 	});
 
 	return useMemo(() => currency, [currency]);

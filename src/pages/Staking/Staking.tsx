@@ -1,9 +1,14 @@
 import { StakingContainer } from 'containers/staking';
+import { useDidMount } from 'lib/hooks/useDidMount';
 import { PoolSelectProvider } from 'lib/providers/staking/PoolSelectProvider';
 import { StakingSDKProvider } from 'lib/providers/staking/StakingSDKProvider';
 import { StakingUserDataProvider } from 'lib/providers/staking/StakingUserDataProvider';
 
 const Staking: React.FC = () => {
+	useDidMount(() => {
+		document.title = 'Staking | ' + process.env.REACT_APP_TITLE;
+	});
+
 	return (
 		<StakingSDKProvider>
 			<PoolSelectProvider>
