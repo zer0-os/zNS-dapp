@@ -53,8 +53,6 @@ const Artwork: React.FC<ArtworkProps> = ({
 	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
 
-	const zna = (ROOT_DOMAIN.length ? ROOT_DOMAIN + '.' : '') + name;
-
 	useEffect(() => {
 		// Get metadata
 		isMounted.current = true;
@@ -75,10 +73,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 		}
 
 		// Truncate
-		if (domain && zna.length > 40) {
+		if (domain && name && name.length > 40) {
 			const split = domain.split('.');
 			if (isMounted.current) {
-				setTruncatedDomain(ROOT_DOMAIN + '.' + split[split.length - 1]);
+				setTruncatedDomain(split[0] + '...' + split[split.length - 1]);
 			}
 		} else {
 			if (isMounted.current) {
@@ -169,14 +167,14 @@ const Artwork: React.FC<ArtworkProps> = ({
 							{subtext && !domain && (
 								<span className={styles.Domain}>{subtext}</span>
 							)}
-							{!disableInteraction && zna && domain && (
+							{!disableInteraction && name && domain && (
 								<Link
 									className={styles.Domain}
 									to={domain.split(ROOT_DOMAIN)[1]}
 									target="_blank"
 									rel="noreferrer"
 								>
-									{truncatedDomain || zna}
+									{truncatedDomain || name}
 								</Link>
 							)}
 						</>

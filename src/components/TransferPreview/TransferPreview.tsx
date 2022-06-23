@@ -11,7 +11,6 @@ import { useTransfer } from 'lib/hooks/useTransfer';
 //- Constant Imports
 import { URLS } from 'constants/urls';
 import { ALT_TEXT, MESSAGES, TITLE } from './TransferPreview.constants';
-import { ROOT_DOMAIN } from 'constants/domains';
 
 //- Library Imports
 import { Maybe } from 'lib/types';
@@ -56,11 +55,7 @@ const TransferPreview = () => {
 
 							<Link className={styles.Link} to={`${nft.domainName}`}>
 								0://
-								{truncateDomain(
-									(ROOT_DOMAIN.length ? ROOT_DOMAIN + '.' : '') +
-										nft.domainName,
-									MAX_CHARACTER_VALUE,
-								)}
+								{truncateDomain(nft.domainName, MAX_CHARACTER_VALUE)}
 							</Link>
 
 							<p>{getPreviewSubtitle(exists)}</p>
