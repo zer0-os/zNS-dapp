@@ -30,6 +30,9 @@ import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
 import { ZNS, Staking, Profile, Maintenance, Error } from 'pages';
 import DAO from 'pages/DAO/DAO';
 
+//- Container Imports
+import PageNotFound from 'containers/404/content/PageNotFound/PageNotFound';
+
 //- Constants Imports
 import { ROUTES } from 'constants/routes';
 
