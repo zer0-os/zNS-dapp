@@ -49,8 +49,8 @@ function App() {
 	return (
 		<ConnectedRouter history={history}>
 			<BrowserRouter>
-				<Switch>
-					<CurrentDomainProvider>
+				<CurrentDomainProvider>
+					<Switch>
 						<Route exact path="/">
 							<Redirect to={ROUTES.MARKET} />
 						</Route>
@@ -61,9 +61,9 @@ function App() {
 
 						<Route path={ROUTES.ERROR} component={Error} />
 						<Route path={ROUTES.MAINTENANCE} component={Maintenance} />
-						{/* <Route component={PageNotFound} /> */}
-					</CurrentDomainProvider>
-				</Switch>
+						<Route component={PageNotFound} />
+					</Switch>
+				</CurrentDomainProvider>
 			</BrowserRouter>
 		</ConnectedRouter>
 	);
