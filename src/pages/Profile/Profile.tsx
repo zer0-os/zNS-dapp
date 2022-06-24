@@ -77,7 +77,7 @@ const Profile = () => {
 
 	useDidMount(() => {
 		setNavbarTitle('Your Profile');
-		document.title = 'Profile | ' + process.env.REACT_APP_TITLE;
+		document.title = process.env.REACT_APP_TITLE + ' | Profile';
 	});
 
 	///////////////
