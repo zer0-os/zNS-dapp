@@ -31,7 +31,7 @@ import { ZNS, Staking, Profile, Maintenance, Error } from 'pages';
 import DAO from 'pages/DAO/DAO';
 
 //- Container Imports
-import PageNotFound from 'containers/404/content/PageNotFound/PageNotFound';
+import { PageNotFoundContainer } from 'containers/404';
 
 //- Constants Imports
 import { ROUTES } from 'constants/routes';
@@ -46,24 +46,27 @@ function App() {
 		`%cWilder World Marketplace v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
+
 	return (
 		<ConnectedRouter history={history}>
 			<BrowserRouter>
-				<CurrentDomainProvider>
-					<Switch>
-						<Route exact path="/">
-							<Redirect to={ROUTES.MARKET} />
-						</Route>
-						<Route path={ROUTES.MARKET} component={ZNS} />
-						<Route path={ROUTES.STAKING} component={Staking} />
-						<Route path={ROUTES.ZDAO} component={DAO} />
-						<Route path={ROUTES.PROFILE} component={Profile} />
+				<Switch>
+					<CurrentDomainProvider>
+						<Switch>
+							<Route exact path="/">
+								<Redirect to={ROUTES.MARKET} />
+							</Route>
+							<Route path={ROUTES.MARKET} component={ZNS} />
+							<Route path={ROUTES.STAKING} component={Staking} />
+							<Route path={ROUTES.ZDAO} component={DAO} />
+							<Route path={ROUTES.PROFILE} component={Profile} />
 
-						<Route path={ROUTES.ERROR} component={Error} />
-						<Route path={ROUTES.MAINTENANCE} component={Maintenance} />
-						<Route component={PageNotFound} />
-					</Switch>
-				</CurrentDomainProvider>
+							<Route path={ROUTES.ERROR} component={Error} />
+							<Route path={ROUTES.MAINTENANCE} component={Maintenance} />
+							<Route component={PageNotFoundContainer} />
+						</Switch>
+					</CurrentDomainProvider>
+				</Switch>
 			</BrowserRouter>
 		</ConnectedRouter>
 	);

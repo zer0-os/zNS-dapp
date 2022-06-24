@@ -1,9 +1,9 @@
 //- React Imports
-import React, { useMemo } from 'react';
-import { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 //- Library Imports
-import { formatNumber, formatEthers } from 'lib/utils';
+import { formatNumber, formatEthers, zNAFromPathname } from 'lib/utils';
 
 //- Style Imports
 import styles from './ZNS.module.scss';
@@ -13,18 +13,20 @@ import { StatsWidget } from 'components';
 import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
 import PageContainer from 'containers/PageContainer';
 import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
+import { NFTView, TransferOwnership } from 'containers';
 
 //- Library Imports
-import { NFTView, TransferOwnership } from 'containers';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import { useDidMount } from 'lib/hooks/useDidMount';
-import { useLocation } from 'react-router-dom';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import { useZnsSdk } from 'lib/hooks/sdk';
+
+//- Constants Imports
+import { ROUTES } from 'constants/routes';
 
 type ZNSProps = {
 	version?: number;
@@ -41,12 +43,11 @@ enum Modal {
 // @TODO: Rewrite this whole page
 
 const ZNS: React.FC<ZNSProps> = () => {
-	// TODO: Need to handle domains that don't exist!
+	const isMounted = useRef<boolean>();
 
 	///////////////////
 	// Web3 Handling //
 	///////////////////
-	const sdk = useZnsSdk();
 	const { wildPriceUsd } = useCurrency();
 
 	//- Domain Data
@@ -61,7 +62,11 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	const enableBanner = false;
 
+	const sdk = useZnsSdk();
+	const { push: goTo } = useHistory();
 	const location = useLocation();
+	const zna = zNAFromPathname(location.pathname);
+
 	const nftView = useMemo(
 		() => location.search.includes('view=true'),
 		[location.search],
@@ -152,6 +157,32 @@ const ZNS: React.FC<ZNSProps> = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [znsDomain]);
+
+	// Handle domains that don't exist
+	useEffect(() => {
+		isMounted.current = true;
+
+		(async () => {
+			if (!sdk) {
+				return;
+			}
+
+			try {
+				const allDomains = await sdk.instance.getAllDomains();
+				const domainNames = allDomains.map((d) =>
+					d.name.split('.').slice(1).join('.'),
+				);
+				if (!domainNames.includes(zna) || !domainNames.includes(domain)) {
+					goTo(ROUTES.PAGE_NOT_FOUND);
+				}
+			} catch (e) {
+				console.error(e);
+			}
+		})();
+		return () => {
+			isMounted.current = false;
+		};
+	}, [domain, goTo, sdk, zna]);
 
 	/////////////////////
 	// React Fragments //

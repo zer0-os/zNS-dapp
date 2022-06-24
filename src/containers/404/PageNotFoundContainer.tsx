@@ -7,6 +7,9 @@ import { ROUTES } from 'constants/routes';
 //- Components Imports
 import PageNotFound from './content/PageNotFound/PageNotFound';
 
+//- Container Imports
+import ServicePageContainer from 'containers/ServicePageContainer';
+
 const PageNotFoundContainer: React.FC = () => {
 	const { push: goTo } = useHistory();
 
@@ -16,9 +19,9 @@ const PageNotFoundContainer: React.FC = () => {
 	};
 
 	return (
-		<>
+		<ServicePageContainer>
 			<PageNotFound onClick={onClick} />
-		</>
+		</ServicePageContainer>
 	);
 };
 export default PageNotFoundContainer;

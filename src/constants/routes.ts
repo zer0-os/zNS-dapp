@@ -18,4 +18,5 @@ export enum ROUTES {
 	// ----- Service Pages ----- //
 	MAINTENANCE = '/maintenance',
 	ERROR = '/error',
+	PAGE_NOT_FOUND = '/404',
 }
