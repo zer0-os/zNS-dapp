@@ -138,7 +138,7 @@ const Details = ({
 			pathname: ROUTES.PROFILE,
 			state: { previous: location.pathname },
 		});
-		addNotification(CLAIM_FLOW_NOTIFICATIONS.CLAIM_SUCCESS);
+		addNotification(CLAIM_FLOW_NOTIFICATIONS.REFRESH);
 	}, [addNotification, history, location.pathname]);
 
 	const onSubmit = () => {
