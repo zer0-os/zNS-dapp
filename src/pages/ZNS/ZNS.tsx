@@ -1,12 +1,6 @@
 //- React Imports
-import React, { useMemo, useState, useEffect, useRef } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-
-//- Library Imports
-import { formatNumber, formatEthers, zNAFromPathname } from 'lib/utils';
-
-//- Style Imports
-import styles from './ZNS.module.scss';
 
 //- Components & Containers
 import { StatsWidget } from 'components';
@@ -16,6 +10,7 @@ import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
 import { NFTView, TransferOwnership } from 'containers';
 
 //- Library Imports
+import { formatNumber, formatEthers } from 'lib/utils';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
@@ -25,8 +20,11 @@ import { useDidMount } from 'lib/hooks/useDidMount';
 import { useNavbar } from 'lib/hooks/useNavbar';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
-//- Constants Imports
-import { ROUTES } from 'constants/routes';
+//- Hook Imports
+import useServicePage from 'lib/hooks/useServicePage';
+
+//- Style Imports
+import styles from './ZNS.module.scss';
 
 type ZNSProps = {
 	version?: number;
@@ -43,8 +41,6 @@ enum Modal {
 // @TODO: Rewrite this whole page
 
 const ZNS: React.FC<ZNSProps> = () => {
-	const isMounted = useRef<boolean>();
-
 	///////////////////
 	// Web3 Handling //
 	///////////////////
@@ -63,10 +59,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const enableBanner = false;
 
 	const sdk = useZnsSdk();
-	const { push: goTo } = useHistory();
 	const location = useLocation();
-	const zna = zNAFromPathname(location.pathname);
-
+	const { push: goTo } = useHistory();
+	const { route, isInvalidPath } = useServicePage(domain);
 	const nftView = useMemo(
 		() => location.search.includes('view=true'),
 		[location.search],
@@ -160,29 +155,10 @@ const ZNS: React.FC<ZNSProps> = () => {
 
 	// Handle domains that don't exist
 	useEffect(() => {
-		isMounted.current = true;
-
-		(async () => {
-			if (!sdk) {
-				return;
-			}
-
-			try {
-				const allDomains = await sdk.instance.getAllDomains();
-				const domainNames = allDomains.map((d) =>
-					d.name.split('.').slice(1).join('.'),
-				);
-				if (!domainNames.includes(zna) || !domainNames.includes(domain)) {
-					goTo(ROUTES.PAGE_NOT_FOUND);
-				}
-			} catch (e) {
-				console.error(e);
-			}
-		})();
-		return () => {
-			isMounted.current = false;
-		};
-	}, [domain, goTo, sdk, zna]);
+		if (isInvalidPath) {
+			goTo(route);
+		}
+	}, [goTo, isInvalidPath, route]);
 
 	/////////////////////
 	// React Fragments //
