@@ -37,14 +37,8 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
-	const { network, selectedChain } = useMemo(() => {
-		const selectedChain = chainId || defaultNetworkId;
-		const network = chainIdToNetworkType(selectedChain);
-		return {
-			network,
-			selectedChain,
-		};
-	}, [chainId]);
+	const selectedChain = chainId || defaultNetworkId;
+	const network = chainIdToNetworkType(selectedChain);
 
 	const createInstance = useCallback(async () => {
 		setInstance(undefined);
