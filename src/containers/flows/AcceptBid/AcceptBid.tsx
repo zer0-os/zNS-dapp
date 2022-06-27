@@ -24,13 +24,13 @@ import { StepContent, Step } from './AcceptBid.types';
 //- Constants Imports
 import {
 	BUTTONS,
-	ERRORS,
 	getSuccessNotification,
 	MESSAGES,
 	STATUS_TEXT,
 	STEP_BAR_HEADING,
 	STEP_CONTENT_TITLES,
 } from './AcceptBid.constants';
+import { ERRORS } from 'constants/errors';
 
 //- Styles Imports
 import styles from './AcceptBid.module.scss';
@@ -167,7 +167,7 @@ const AcceptBid = ({
 			setStepContent(StepContent.Success);
 		} catch (e) {
 			setCurrentStep(Step.ConfirmDetails);
-			setError(e.message);
+			setError(ERRORS.PROBLEM_OCCURRED);
 			setStepContent(StepContent.Details);
 		}
 		if (!isMounted.current) return;

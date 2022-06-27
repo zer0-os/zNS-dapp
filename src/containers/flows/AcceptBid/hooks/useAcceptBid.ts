@@ -9,10 +9,14 @@ import { useState } from 'react';
 //- Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { Bid } from '@zero-tech/zauction-sdk';
+
+//- Utils Imports
 import { useZnsSdk } from 'lib/hooks/sdk';
 
 //- Constants Imports
-import { ERRORS, MESSAGES } from '../AcceptBid.constants';
+import { MESSAGES } from '../AcceptBid.constants';
+import { ERRORS } from 'constants/errors';
+import { getError } from 'lib/utils/error';
 
 export type UseAcceptBidReturn = {
 	accept: (bid: Bid) => Promise<void>;
@@ -39,13 +43,7 @@ const useAcceptBid = (): UseAcceptBidReturn => {
 				tx = await sdk.zauction.acceptBid(bid, library.getSigner());
 			} catch (err) {
 				console.error(err);
-				if (err.message.includes(MESSAGES.TRANSACTION_DENIED)) {
-					throw new Error(ERRORS.REJECTED_WALLET);
-				}
-				if (err.message.includes(MESSAGES.DATA_CONSUMED)) {
-					throw new Error(ERRORS.DATA_CONSUMED);
-				}
-				throw new Error(ERRORS.PROBLEM_OCCURRED);
+				getError(err);
 			}
 
 			// Transaction request

@@ -15,6 +15,12 @@ import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 
+//- Utils Imports
+import { getError } from 'lib/utils/error';
+
+// Constants Imports
+import { MESSAGES, ERRORS } from 'constants/errors';
+
 export interface SetBuyNowContainerProps {
 	domainId: string;
 	onCancel: () => void;
@@ -67,7 +73,7 @@ const SetBuyNowContainer = ({
 				}
 			} catch (e) {
 				// @todo handle error
-				console.error('Failed to check zAuction approval status', e);
+				console.error(ERRORS.CONSOLE_TEXT, e);
 			}
 		})();
 	};
@@ -145,8 +151,8 @@ const SetBuyNowContainer = ({
 				}
 			} catch (e) {
 				setCurrentStep(Step.SetBuyNow);
-				setError((e as any).message);
-				console.log('Error setting buy now price', e);
+				console.error(e);
+				getError(e);
 			}
 		})();
 	};
