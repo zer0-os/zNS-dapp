@@ -34,11 +34,8 @@ const useServicePage = (domain: string): UseServicePageReturn => {
 			}
 
 			try {
-				const allDomains = await sdk.instance.getAllDomains();
-				const domainNames = allDomains.map((d) =>
-					d.name.split('.').slice(1).join('.'),
-				);
-				if (!domainNames.includes(zna) || !domainNames.includes(domain)) {
+				const domains = await sdk.instance.getDomainsByName(domain);
+				if (domains.length === 0) {
 					setRoute(ROUTES.PAGE_NOT_FOUND);
 					setisInvalidPath(true);
 				}
