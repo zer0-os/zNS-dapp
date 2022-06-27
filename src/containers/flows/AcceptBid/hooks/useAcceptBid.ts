@@ -31,7 +31,7 @@ const useAcceptBid = (): UseAcceptBidReturn => {
 
 	const accept = async (bid: Bid) => {
 		if (!library) {
-			console.error('Could not find web3 library');
+			console.error(ERRORS.LIBRARY_NOT_FOUND);
 			throw new Error(ERRORS.LIBRARY);
 		}
 

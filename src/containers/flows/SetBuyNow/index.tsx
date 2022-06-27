@@ -15,9 +15,6 @@ import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 
-//- Utils Imports
-import { getError } from 'lib/utils/error';
-
 // Constants Imports
 import { MESSAGES, ERRORS } from 'constants/errors';
 
@@ -152,7 +149,11 @@ const SetBuyNowContainer = ({
 			} catch (e) {
 				setCurrentStep(Step.SetBuyNow);
 				console.error(e);
-				getError(e);
+				if (e.message.includes(MESSAGES.TRANSACTION_DENIED)) {
+					setError(ERRORS.REJECTED_WALLET);
+				} else {
+					setError(ERRORS.PROBLEM_OCCURRED);
+				}
 			}
 		})();
 	};
