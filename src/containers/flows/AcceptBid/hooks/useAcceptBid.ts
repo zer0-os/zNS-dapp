@@ -39,10 +39,13 @@ const useAcceptBid = (): UseAcceptBidReturn => {
 				tx = await sdk.zauction.acceptBid(bid, library.getSigner());
 			} catch (err) {
 				console.error(err);
+				if (err.message.includes(MESSAGES.TRANSACTION_DENIED)) {
+					throw new Error(ERRORS.REJECTED_WALLET);
+				}
 				if (err.message.includes(MESSAGES.DATA_CONSUMED)) {
 					throw new Error(ERRORS.DATA_CONSUMED);
 				}
-				throw new Error(ERRORS.REJECTED_WALLET);
+				throw new Error(ERRORS.PROBLEM_OCCURRED);
 			}
 
 			// Transaction request

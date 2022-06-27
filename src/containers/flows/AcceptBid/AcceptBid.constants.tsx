@@ -51,11 +51,13 @@ export const ERRORS = {
 	REJECTED_WALLET: 'Rejected by wallet.',
 	DATA_CONSUMED:
 		'The bid you are trying to accept is no longer valid. Please select another bid to accept',
+	PROBLEM_OCCURRED: 'An unexpected problem has occurred. Please try again.',
 };
 
 export const MESSAGES = {
 	TEXT_LOADING: 'Loading Bid Data...',
 	TEXT_FAILED_TO_LOAD: 'Failed to load bid data.',
+	TRANSACTION_DENIED: 'denied transaction signature',
 	TEXT_CONFIRMATION:
 		'This transaction is about to be seared upon the blockchain. There’s no going back.',
 	TEXT_ACCEPT_PROMPT: 'Please accept wallet transaction...',
