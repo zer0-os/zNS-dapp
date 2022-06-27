@@ -7,7 +7,7 @@ import { act } from 'react-dom/test-utils';
 
 //- Constants Imports
 import { MESSAGES } from '../AcceptBid.constants';
-import { ERRORS } from 'constants/errors';
+import * as ERROR_TEXT from 'constants/errors';
 
 //- Hooks Imports
 import useAcceptBid, { UseAcceptBidReturn } from './useAcceptBid';
@@ -111,7 +111,7 @@ test('status updates as expected', async () => {
 });
 
 test('handles failed/rejected signature when data has already been consumed', async () => {
-	mockAcceptBid.mockRejectedValue(new Error('data already consumed'));
+	mockAcceptBid.mockRejectedValue(new Error(ERROR_TEXT.MESSAGES.DATA_CONSUMED));
 	const hook = setupHook();
 
 	var err: Error | undefined;
@@ -124,12 +124,14 @@ test('handles failed/rejected signature when data has already been consumed', as
 	}
 
 	expect(mockAcceptBid).toBeCalledTimes(1);
-	expect(err?.message).toBe(ERRORS.DATA_CONSUMED);
+	expect(err?.message).toBe(ERROR_TEXT.ERRORS.DATA_CONSUMED);
 	expect(console.error).toHaveBeenCalled();
 });
 
 test('handles failed/rejected signature when rejected by wallet', async () => {
-	mockAcceptBid.mockRejectedValue(new Error('Rejected by wallet.'));
+	mockAcceptBid.mockRejectedValue(
+		new Error(ERROR_TEXT.MESSAGES.TRANSACTION_DENIED),
+	);
 	const hook = setupHook();
 
 	var err: Error | undefined;
@@ -142,7 +144,7 @@ test('handles failed/rejected signature when rejected by wallet', async () => {
 	}
 
 	expect(mockAcceptBid).toBeCalledTimes(1);
-	expect(err?.message).toBe(ERRORS.REJECTED_WALLET);
+	expect(err?.message).toBe(ERROR_TEXT.ERRORS.REJECTED_WALLET);
 	expect(console.error).toHaveBeenCalled();
 });
 
@@ -163,6 +165,6 @@ test('handles failed/rejected transaction', async () => {
 	}
 
 	expect(mockTx).toBeCalledTimes(1);
-	expect(err?.message).toBe(ERRORS.TRANSACTION);
+	expect(err?.message).toBe(ERROR_TEXT.ERRORS.TRANSACTION);
 	expect(console.error).toHaveBeenCalled();
 });
