@@ -43,7 +43,7 @@ const DAOContainer: React.FC<StakingContainerProps> = ({
 			const exists: boolean = await sdk.doesZDAOExist(zna);
 
 			if (!exists) {
-				redirect(ROUTES.ZDAO, 'Could not find a DAO for ' + zna);
+				redirect(ROUTES.PAGE_NOT_FOUND, 'Could not find a DAO for ' + zna);
 			}
 		} catch (e) {
 			console.error(e);
