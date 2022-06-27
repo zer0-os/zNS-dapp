@@ -33,10 +33,10 @@ export const CurrentDaoProvider = ({ children }: CurrentDaoProviderProps) => {
 	};
 
 	if (zna.length === 0) {
-		document.title = 'DAOs | ' + process.env.REACT_APP_TITLE;
+		document.title = process.env.REACT_APP_TITLE + ' | DAOs';
 	} else {
 		if (dao) {
-			document.title = dao.title + ' | ' + process.env.REACT_APP_TITLE;
+			document.title = process.env.REACT_APP_TITLE + ' | ' + dao.title;
 		}
 	}
 

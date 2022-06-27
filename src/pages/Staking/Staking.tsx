@@ -6,7 +6,7 @@ import { StakingUserDataProvider } from 'lib/providers/staking/StakingUserDataPr
 
 const Staking: React.FC = () => {
 	useDidMount(() => {
-		document.title = 'Staking | ' + process.env.REACT_APP_TITLE;
+		document.title = process.env.REACT_APP_TITLE + ' | Staking';
 	});
 
 	return (

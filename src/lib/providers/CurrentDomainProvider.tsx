@@ -54,9 +54,9 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		zna !== process.env.REACT_APP_NETWORK &&
 		domainMetadata?.title
 	) {
-		document.title = domainMetadata.title + ' | ' + process.env.REACT_APP_TITLE;
+		document.title = process.env.REACT_APP_TITLE + ' | ' + domainMetadata.title;
 	} else {
-		document.title = 'Market | ' + process.env.REACT_APP_TITLE;
+		document.title = process.env.REACT_APP_TITLE + ' | Market';
 	}
 
 	const contextValue = {
