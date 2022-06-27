@@ -1,3 +1,12 @@
+/**
+ * Note 27/06/2022:
+ * There's a few instances of startsWith(wilder)
+ * This is because we only want to show WILD token and
+ * the WW icon on the wilder network. We don't have anything
+ * specified for other networks, so for now, we will just
+ * handle WW.
+ */
+
 //- React Imports
 import { Link, useLocation } from 'react-router-dom';
 
@@ -9,7 +18,6 @@ import { getNavLinks } from 'lib/utils/nav';
 import { ROUTES } from 'constants/routes';
 import { DOMAIN_LOGOS, IS_DEFAULT_NETWORK } from 'constants/domains';
 import { ALT_TEXT, COLOURS } from './SideBar.constants';
-import { URLS } from 'constants/urls';
 
 //- Styles Imports
 import styles from './SideBar.module.scss';
@@ -57,9 +65,9 @@ const SideBar = () => {
 						<img
 							alt={ALT_TEXT.APP_LOGO}
 							src={
-								isDefaultNetworkRootPath
-									? DOMAIN_LOGOS.ZERO
-									: DOMAIN_LOGOS.WILDER_WORLD
+								zna.startsWith('wilder')
+									? DOMAIN_LOGOS.WILDER_WORLD
+									: DOMAIN_LOGOS.ZERO
 							}
 						/>
 					</Link>
@@ -91,22 +99,13 @@ const SideBar = () => {
 				</div>
 
 				<div className={styles.Footer}>
-					<PriceWidget isRoot={isDefaultNetworkRootPath} />
+					<PriceWidget isRoot={!zna.startsWith('wilder')} />
 					<div
 						className={cx(styles.ZeroIconContainer, {
 							Hidden: isDefaultNetworkRootPath,
 						})}
 					>
-						{!IS_DEFAULT_NETWORK ? (
-							<a
-								className={styles.Zero}
-								target="_blank"
-								href={URLS.ZERO}
-								rel="noreferrer"
-							>
-								<img alt={ALT_TEXT.ZERO_LOGO} src={DOMAIN_LOGOS.ZERO} />
-							</a>
-						) : (
+						{zna.startsWith('wilder') && (
 							<Link className={styles.Zero} to={app}>
 								<img alt={ALT_TEXT.ZERO_LOGO} src={DOMAIN_LOGOS.ZERO} />
 							</Link>
