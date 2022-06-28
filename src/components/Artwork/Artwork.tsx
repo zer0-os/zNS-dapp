@@ -8,6 +8,8 @@ import { NFTMedia, Image } from 'components';
 
 //- Library Imports
 import { getMetadata } from 'lib/metadata';
+import { ROOT_DOMAIN } from '../../constants/domains';
+import { truncateDomain } from 'lib/utils/domains';
 
 //- Type Imports
 import { Metadata } from 'lib/types';
@@ -15,7 +17,8 @@ import { Metadata } from 'lib/types';
 //- Style Imports
 import styles from './Artwork.module.scss';
 import classNames from 'classnames/bind';
-import { ROOT_DOMAIN } from '../../constants/domains';
+
+const DOMAIN_MAX_LENGTH = 40;
 
 type ArtworkProps = {
 	circleIcon?: boolean;
@@ -50,7 +53,6 @@ const Artwork: React.FC<ArtworkProps> = ({
 	const isMounted = useRef(false);
 	const loadTime = useRef<Date | undefined>();
 	const [metadata, setMetadata] = useState<Metadata | undefined>();
-	const [truncatedDomain, setTruncatedDomain] = useState<string | undefined>();
 	const [shouldAnimate, setShouldAnimate] = useState<boolean>(true);
 
 	useEffect(() => {
@@ -70,18 +72,6 @@ const Artwork: React.FC<ArtworkProps> = ({
 					setMetadata(m);
 				}
 			});
-		}
-
-		// Truncate
-		if (domain && name && name.length > 40) {
-			const split = domain.split('.');
-			if (isMounted.current) {
-				setTruncatedDomain(split[0] + '...' + split[split.length - 1]);
-			}
-		} else {
-			if (isMounted.current) {
-				setTruncatedDomain(undefined);
-			}
 		}
 
 		return () => {
@@ -161,7 +151,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && domain && (
 								<span className={styles.Domain}>
-									{truncatedDomain || domain}
+									{domain && truncateDomain(domain, DOMAIN_MAX_LENGTH)}
 								</span>
 							)}
 							{subtext && !domain && (
@@ -174,7 +164,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 									target="_blank"
 									rel="noreferrer"
 								>
-									{truncatedDomain || name}
+									{domain && truncateDomain(domain, DOMAIN_MAX_LENGTH)}
 								</Link>
 							)}
 						</>
