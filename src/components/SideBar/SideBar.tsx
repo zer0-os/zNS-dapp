@@ -19,6 +19,9 @@ import { ROUTES } from 'constants/routes';
 import { DOMAIN_LOGOS, IS_DEFAULT_NETWORK } from 'constants/domains';
 import { ALT_TEXT, COLOURS } from './SideBar.constants';
 
+//- Utils Imports
+import { getNetworkLogo, getPriceWidget } from './SideBar.utils';
+
 //- Styles Imports
 import styles from './SideBar.module.scss';
 
@@ -45,6 +48,9 @@ const SideBar = () => {
 	const isDefaultNetworkRootPath =
 		IS_DEFAULT_NETWORK && (app !== ROUTES.MARKET || zna.length === 0);
 
+	const networkLogo = getNetworkLogo(zna, app);
+	const priceWidget = getPriceWidget(zna, app);
+
 	return (
 		<div className={styles.BorderContainer}>
 			<div className={styles.Container}>
@@ -61,14 +67,7 @@ const SideBar = () => {
 								: ROUTES.MARKET + '/' + zna.split('.')[0]
 						}
 					>
-						<img
-							alt={ALT_TEXT.APP_LOGO}
-							src={
-								zna.startsWith('wilder')
-									? DOMAIN_LOGOS.WILDER_WORLD
-									: DOMAIN_LOGOS.ZERO
-							}
-						/>
+						<img alt={ALT_TEXT.APP_LOGO} src={networkLogo} />
 					</Link>
 					<ul className={styles.Links}>
 						{navLinks.map((l) => (
@@ -98,7 +97,7 @@ const SideBar = () => {
 				</div>
 
 				<div className={styles.Footer}>
-					<PriceWidget isRoot={!zna.startsWith('wilder')} />
+					<PriceWidget isRoot={priceWidget} />
 					<div
 						className={cx(styles.ZeroIconContainer, {
 							Hidden: isDefaultNetworkRootPath,
