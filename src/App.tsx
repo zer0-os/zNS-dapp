@@ -22,8 +22,6 @@ import { Web3Provider } from '@ethersproject/providers';
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
-import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
-import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ROUTES } from 'constants/routes';
 
 //- Page Imports
@@ -31,6 +29,7 @@ import { ZNS, Staking, Profile } from 'pages';
 import PageContainer from 'containers/PageContainer';
 import DAO from 'pages/DAO/DAO';
 import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
+import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 
 function getLibrary(provider: any): Web3Provider {
 	const library = new Web3Provider(provider);
@@ -40,7 +39,7 @@ function getLibrary(provider: any): Web3Provider {
 
 function App() {
 	console.log(
-		`%cWilder World Marketplace v${version}`,
+		`%c${process.env.REACT_APP_TITLE} - v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
 
@@ -77,12 +76,9 @@ function wrappedApp() {
 			<ReduxProvider store={store}>
 				<Web3ReactProvider getLibrary={getLibrary}>
 					<ZnsSdkProvider>
-						{/* Our Hooks  */}
-						<MvpVersionProvider>
-							<EnlistProvider>
-								<App />
-							</EnlistProvider>
-						</MvpVersionProvider>
+						<EnlistProvider>
+							<App />
+						</EnlistProvider>
 					</ZnsSdkProvider>
 				</Web3ReactProvider>
 			</ReduxProvider>

@@ -32,6 +32,14 @@ export const CurrentDaoProvider = ({ children }: CurrentDaoProviderProps) => {
 		zna,
 	};
 
+	if (zna.length === 0) {
+		document.title = process.env.REACT_APP_TITLE + ' | DAOs';
+	} else {
+		if (dao) {
+			document.title = process.env.REACT_APP_TITLE + ' | ' + dao.title;
+		}
+	}
+
 	return (
 		<CurrentDaoContext.Provider value={context}>
 			{children}

@@ -1,17 +1,10 @@
-# Zer0 Namespace Dapp
+# Zero Namespace dApp
+
+**Currently, this repo contains code for a whole suite of dApps. We are working on migrating each one to its own repo, and using [zOS](https://github.com/zer0-os/zOS) as a container app.**
 
 ## Developing Locally
 
-Add a `.env` file to the base of the repository, replacing the brackets with the appropriate values:
-
-```
-REACT_APP_RPC_URL_1=https://mainnet.infura.io/v3/[someMainnetNode]
-REACT_APP_RPC_URL_4=https://kovan.infura.io/v3/[someRinkebyNode]
-REACT_APP_RPC_URL_42=https://kovan.infura.io/v3/[someKovanNode]
-REACT_APP_SUBGRAPH_URL_42=https://api.thegraph.com/subgraphs/name/[subgraphLocation]
-REACT_APP_SUBGRAPH_URL_4=https://api.thegraph.com/subgraphs/name/[subgraphLocation]
-REACT_APP_DEFAULT_NETWORK=42
-```
+Copy the contents of `.env.sample` to a `.env` file in the root project folder, and provide values for all variables.
 
 Run [Node Version Manager](https://github.com/nvm-sh/nvm) to use the supported version of Node, ensuring it is installed on your system:
 
@@ -31,41 +24,8 @@ Finally, start the development server:
 npm start
 ```
 
-# Default React Docs
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser. The page will reload if you make edits. You will also see any lint errors in the console.
 
-## Available Scripts
+## Contributing
 
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+There is always work to be done, so if you've noticed a bug or want to get involved at a deeper level, feel free to open a PR, or get in touch with the dApp team. Be sure to check out the [contributing guidelines](CONTRIBUTING.md) before opening a PR.

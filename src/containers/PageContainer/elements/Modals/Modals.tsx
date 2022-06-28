@@ -1,8 +1,17 @@
+// React-Imports
 import React, { useState, useCallback, useMemo } from 'react';
+
+// Container-Imports
 import { MintNewNFT } from 'containers';
+
+// Component-Imports
 import { ConnectToWallet, Overlay } from 'components';
+
+//-Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useNavbar } from 'lib/hooks/useNavbar';
+
+//- Constants Imports
 import {
 	Modal,
 	MODAL_VISIBILITY_WINDOW_MIN_WIDTH,

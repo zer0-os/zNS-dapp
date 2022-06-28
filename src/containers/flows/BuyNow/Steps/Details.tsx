@@ -5,6 +5,8 @@
 
 // Component Imports
 import { Detail, FutureButton, Wizard } from 'components';
+
+// Library Imports
 import { ethers } from 'ethers';
 import { Data } from '../BuyNow';
 
