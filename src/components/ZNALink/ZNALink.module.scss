@@ -72,6 +72,15 @@
 		content: '';
 	}
 
+	.ZNALink > a:nth-last-child(1) {
+		display: block !important;
+		content: '';
+
+		&:before {
+			content: '..' !important;
+		}
+	}
+
 	.isRootWithSubdomain {
 		a:not(:first-of-type) ~ a:last-of-type::before {
 			content: '..';
