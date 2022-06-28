@@ -22,7 +22,6 @@ import { Web3Provider } from '@ethersproject/providers';
 //- Library Imports
 import CacheBuster from 'react-cache-buster';
 import EnlistProvider from 'lib/providers/EnlistProvider';
-import MvpVersionProvider from 'lib/providers/MvpVersionProvider';
 import { ROUTES } from 'constants/routes';
 
 //- Page Imports
@@ -39,7 +38,7 @@ function getLibrary(provider: any): Web3Provider {
 
 function App() {
 	console.log(
-		`%cWilder World Marketplace v${version}`,
+		`%c${process.env.REACT_APP_TITLE} - v${version}`,
 		'display: block; border: 3px solid #52cbff; border-radius: 7px; padding: 10px; margin: 8px;',
 	);
 
@@ -74,12 +73,9 @@ function wrappedApp() {
 			<ReduxProvider store={store}>
 				<Web3ReactProvider getLibrary={getLibrary}>
 					<ZnsSdkProvider>
-						{/* Our Hooks  */}
-						<MvpVersionProvider>
-							<EnlistProvider>
-								<App />
-							</EnlistProvider>
-						</MvpVersionProvider>
+						<EnlistProvider>
+							<App />
+						</EnlistProvider>
 					</ZnsSdkProvider>
 				</Web3ReactProvider>
 			</ReduxProvider>

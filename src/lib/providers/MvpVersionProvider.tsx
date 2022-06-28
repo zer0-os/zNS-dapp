@@ -9,12 +9,6 @@ type MvpVersionProviderType = {
 	children: React.ReactNode;
 };
 
-// Console message to let users know they can switch MVP versions
-console.log(
-	'%cHello fellow devs and tinkerers! If you would like to try different versions of this dapp, production() or prototype()\nCurrent Mode: Production',
-	'display: block; border: 3px solid #3ca1ff; border-radius: 7px; padding: 10px; margin: 8px;',
-);
-
 const MvpVersionProvider: React.FC<MvpVersionProviderType> = ({ children }) => {
 	const [mvpVersion, set] = useState(1);
 
