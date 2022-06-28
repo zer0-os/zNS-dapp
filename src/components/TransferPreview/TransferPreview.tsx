@@ -19,7 +19,6 @@ import {
 	truncateDomain,
 	truncateWalletAddress,
 } from 'lib/utils';
-import { randomUUID } from 'lib/random';
 
 //- Utils Imports
 import {
@@ -46,7 +45,7 @@ const TransferPreview = () => {
 	const previewCard = (nft: any, exists: boolean) => {
 		return (
 			<>
-				<li key={`${nft.name}${randomUUID()}`}>
+				<li key={JSON.stringify(nft)}>
 					<hr className={styles.Divider} />
 					<div>
 						<div className={`${styles.Image} border-rounded`}>

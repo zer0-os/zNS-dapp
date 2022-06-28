@@ -28,7 +28,6 @@ import { appFromPathname, zNAFromPathname } from 'lib/utils';
 import { useWeb3React } from '@web3-react/core';
 import { chainIdToNetworkType, NETWORK_TYPES } from 'lib/network';
 import { startCase, toLower } from 'lodash';
-import { randomUUID } from 'lib/random';
 
 const cx = classNames.bind(styles);
 
@@ -73,7 +72,7 @@ const SideBar = () => {
 					</Link>
 					<ul className={styles.Links}>
 						{navLinks.map((l) => (
-							<li key={`${l.label}${randomUUID()}`}>
+							<li key={`${l.label}`}>
 								<Link
 									to={l.route}
 									className={cx({ Selected: pathname.startsWith(l.route) })}
