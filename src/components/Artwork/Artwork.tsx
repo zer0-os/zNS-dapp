@@ -151,7 +151,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 						<>
 							{disableInteraction && domain && (
 								<span className={styles.Domain}>
-									{domain && truncateDomain(domain, DOMAIN_MAX_LENGTH)}
+									{truncateDomain(domain, DOMAIN_MAX_LENGTH)}
 								</span>
 							)}
 							{subtext && !domain && (
@@ -164,7 +164,7 @@ const Artwork: React.FC<ArtworkProps> = ({
 									target="_blank"
 									rel="noreferrer"
 								>
-									{domain && truncateDomain(domain, DOMAIN_MAX_LENGTH)}
+									{truncateDomain(domain, DOMAIN_MAX_LENGTH)}
 								</Link>
 							)}
 						</>
