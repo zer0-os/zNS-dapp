@@ -29,6 +29,7 @@ import { ZNS, Staking, Profile } from 'pages';
 import PageContainer from 'containers/PageContainer';
 import DAO from 'pages/DAO/DAO';
 import { ZnsSdkProvider } from 'lib/providers/ZnsSdkProvider';
+import CurrentDomainProvider from 'lib/providers/CurrentDomainProvider';
 
 function getLibrary(provider: any): Web3Provider {
 	const library = new Web3Provider(provider);
@@ -46,15 +47,17 @@ function App() {
 		<ConnectedRouter history={history}>
 			<BrowserRouter>
 				<Switch>
-					<PageContainer>
-						<Route path={ROUTES.MARKET} component={ZNS} />
-						<Route path={ROUTES.STAKING} component={Staking} />
-						<Route path={ROUTES.ZDAO} component={DAO} />
-						<Route path={ROUTES.PROFILE} component={Profile} />
-						<Route exact path="/">
-							<Redirect to="/market" />
-						</Route>
-					</PageContainer>
+					<CurrentDomainProvider>
+						<PageContainer>
+							<Route path={ROUTES.MARKET} component={ZNS} />
+							<Route path={ROUTES.STAKING} component={Staking} />
+							<Route path={ROUTES.ZDAO} component={DAO} />
+							<Route path={ROUTES.PROFILE} component={Profile} />
+							<Route exact path="/">
+								<Redirect to="/market" />
+							</Route>
+						</PageContainer>
+					</CurrentDomainProvider>
 				</Switch>
 			</BrowserRouter>
 		</ConnectedRouter>

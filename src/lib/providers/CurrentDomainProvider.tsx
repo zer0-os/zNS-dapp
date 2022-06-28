@@ -9,10 +9,9 @@ import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { defaultNetworkId } from 'lib/network';
-import { getDomainId, zNAFromPathname } from 'lib/utils';
+import { appFromPathname, getDomainId, zNAFromPathname } from 'lib/utils';
 
 // Constants Imports
-import { ROUTES } from 'constants/routes';
 import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from '../../constants/domains';
 
 export const CurrentDomainContext = React.createContext({
@@ -64,10 +63,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		domainId,
 		domainRaw: domain,
 		domainMetadata,
-		app:
-			pathname.indexOf(ROUTES.MARKET) > -1
-				? ROUTES.MARKET
-				: ROUTES.STAKING + ROUTES.STAKING_POOLS,
+		app: appFromPathname(pathname),
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,
 		setDomainMetadata,

@@ -17,9 +17,7 @@ import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
-import CurrentDomainProvider, {
-	useCurrentDomain,
-} from 'lib/providers/CurrentDomainProvider';
+import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import useCurrency from 'lib/hooks/useCurrency';
@@ -286,12 +284,4 @@ const ZNS: React.FC<ZNSProps> = () => {
 	);
 };
 
-const Wrapped = (props: ZNSProps) => {
-	return (
-		<CurrentDomainProvider>
-			<ZNS {...props} />
-		</CurrentDomainProvider>
-	);
-};
-
-export default Wrapped;
+export default ZNS;
