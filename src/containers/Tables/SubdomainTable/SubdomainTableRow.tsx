@@ -183,7 +183,7 @@ const SubdomainTableRow = (props: any) => {
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
-					domain={domain.name}
+					domain={'0://' + domain.name}
 					disableInteraction
 					metadataUrl={domain.metadata}
 					id={domain.id}

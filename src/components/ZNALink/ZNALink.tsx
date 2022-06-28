@@ -67,7 +67,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 			)}
 			{segments.map((s, index) => (
 				<Link
-					key={`segment-key: ${s.name}`}
+					key={`segment-key: ${s.location}`}
 					style={{ textDecoration: 'none', color: 'white' }}
 					to={s.location}
 				>

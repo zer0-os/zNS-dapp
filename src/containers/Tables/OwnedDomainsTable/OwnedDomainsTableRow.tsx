@@ -128,7 +128,7 @@ const OwnedDomainsTableRow = ({
 			<tr className={styles.Container}>
 				<td className={styles.Left} onClick={onRowClick}>
 					<Artwork
-						domain={domain.name}
+						domain={'0://' + domain.name}
 						disableInteraction
 						metadataUrl={domain.metadataUri}
 						id={domain.id}

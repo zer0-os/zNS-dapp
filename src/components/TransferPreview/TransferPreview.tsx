@@ -14,7 +14,11 @@ import { ALT_TEXT, MESSAGES, TITLE } from './TransferPreview.constants';
 
 //- Library Imports
 import { Maybe } from 'lib/types';
-import { truncateDomain, truncateWalletAddress } from 'lib/utils';
+import {
+	getNetworkZNA,
+	truncateDomain,
+	truncateWalletAddress,
+} from 'lib/utils';
 import { randomUUID } from 'lib/random';
 
 //- Utils Imports
@@ -46,14 +50,17 @@ const TransferPreview = () => {
 					<hr className={styles.Divider} />
 					<div>
 						<div className={`${styles.Image} border-rounded`}>
-							<Link to={`${nft.domainName}`}>
+							<Link to={`${getNetworkZNA(nft.domainName)}`}>
 								<Image src={nft.image} />
 							</Link>
 						</div>
 						<div className={styles.Info}>
 							<h3>{nft.name}</h3>
 
-							<Link className={styles.Link} to={`${nft.domainName}`}>
+							<Link
+								className={styles.Link}
+								to={`${getNetworkZNA(nft.domainName)}`}
+							>
 								0://
 								{truncateDomain(nft.domainName, MAX_CHARACTER_VALUE)}
 							</Link>
