@@ -11,7 +11,6 @@ import Details from './components/Details/Details';
 //- Constants Imports
 import {
 	BUTTONS,
-	ERRORS,
 	getBidAmountText,
 	getSuccessNotification,
 	MESSAGES,
@@ -19,6 +18,7 @@ import {
 	STEP_BAR_HEADING,
 	STEP_CONTENT_TITLES,
 } from './MakeABid.constants';
+import { ERRORS } from 'constants/errors';
 
 //- Library Imports
 import { useWeb3React } from '@web3-react/core';
@@ -33,15 +33,18 @@ import { BigNumber, ethers } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useZnsContracts } from 'lib/contracts';
 
-//- Hooks
+//- Hooks Imports
 import useBidData from './hooks/useBidData';
 
-//- Styles Imports
-import styles from './MakeABid.module.scss';
+//- Utils Imports
+import { getErrorMessage } from 'lib/utils/error';
 
 //- Types Imports
 import { Step, StepContent } from './MakeABid.types';
 import { ERC20 } from 'types';
+
+//- Styles Imports
+import styles from './MakeABid.module.scss';
 
 const maxCharacterLength = 28;
 
@@ -122,7 +125,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 					setStepContent(StepContent.ApproveZAuction);
 				}
 			} catch (e) {
-				console.log(ERRORS.CONSOLE_TEXT);
+				console.log(ERRORS.FAILED_TO_CHECK_ZAUCTION);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}
@@ -157,7 +160,8 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				setStepContent(StepContent.Details);
 			} catch (e) {
 				setStepContent(StepContent.ApproveZAuction);
-				setError(ERRORS.REJECTED_WALLET);
+				const errorText = getErrorMessage(e);
+				setError(errorText);
 			}
 		})();
 	};
@@ -193,7 +197,8 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				return;
 			}
 			setCurrentStep(Step.ConfirmDetails);
-			setError(ERRORS.REJECTED_WALLET);
+			const errorText = getErrorMessage(e);
+			setError(errorText);
 			setStepContent(StepContent.Details);
 		}
 	};
@@ -263,7 +268,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		[StepContent.FailedToCheckZAuction]: (
 			<Wizard.Confirmation
 				error={error}
-				message={ERRORS.CONSOLE_TEXT}
+				message={ERRORS.FAILED_TO_CHECK_ZAUCTION}
 				primaryButtonText={BUTTONS[StepContent.FailedToCheckZAuction]}
 				onClickPrimaryButton={onClose}
 			/>

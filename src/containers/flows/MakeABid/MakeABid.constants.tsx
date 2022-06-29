@@ -31,15 +31,6 @@ export const STEP_CONTENT_TITLES = {
 
 export const STEP_BAR_HEADING = ['zAuction', 'Confirm', 'Place Bid'];
 
-export const ERRORS = {
-	SIGNATURE: 'Failed to generate signature.',
-	TRANSACTION: 'Transaction failed. Please try again.',
-	LIBRARY: 'Failed to connect with Web3 wallet.',
-	CONSOLE_TEXT: 'Failed to check zAuction approval status',
-	REJECTED_WALLET: 'Rejected by wallet. Please try again.',
-	INSUFFICIENT_FUNDS: 'You don’t have enough WILD to make that large of a bid.',
-};
-
 export const STATUS_TEXT = {
 	CHECK_ZAUCTION: 'Checking status of zAuction approval...',
 	ACCEPT_ZAUCTION_PROMPT:

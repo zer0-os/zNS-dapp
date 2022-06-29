@@ -12,6 +12,7 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
 import { Web3Provider } from '@ethersproject/providers';
+import { ERRORS, MESSAGES } from 'constants/errors';
 
 /////////////////////
 // Mock data stuff //
@@ -202,11 +203,11 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	const placeBid = useCallback(
 		async (domain: Domain, bid: number, onStep: (status: string) => void) => {
 			if (sdk?.zauction === undefined) {
-				console.warn('No zAuctionInstance');
+				console.warn(ERRORS.FAILED_TO_CHECK_ZAUCTION);
 				return;
 			}
 			if (!library) {
-				console.error('Could not find web3 library');
+				console.error(ERRORS.LIBRARY_NOT_FOUND);
 				return;
 			}
 
@@ -222,7 +223,7 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				onStep('Generating bid...');
 			} catch (e) {
 				console.warn(e);
-				throw new Error('Rejected by wallet');
+				throw new Error(MESSAGES.MESSAGE_DENIED);
 			}
 		},
 		[sdk, library],

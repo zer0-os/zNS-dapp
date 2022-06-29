@@ -11,6 +11,8 @@ export const ERRORS = {
 	FAILED_TO_LOAD_DOMAIN_ID: 'Failed to load domain ID',
 	FAILED_TO_RETRIEVE_BID_DATA: 'Failed to retrieve bid data',
 	FAILED_TO_GET_DATA: 'Failed to Get Data',
+	INSUFFICIENT_FUNDS_BID:
+		'You don’t have enough WILD to make that large of a bid.',
 };
 
 export const MESSAGES = {
