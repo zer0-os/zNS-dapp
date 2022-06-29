@@ -117,7 +117,7 @@ const AcceptBid = ({
 					setStepContent(StepContent.ApproveZAuction);
 				}
 			} catch (e) {
-				console.log(ERRORS.CONSOLE_TEXT);
+				console.log(ERRORS.FAILED_TO_CHECK_ZAUCTION);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}
@@ -220,7 +220,7 @@ const AcceptBid = ({
 		[StepContent.FailedToCheckZAuction]: (
 			<Wizard.Confirmation
 				error={error}
-				message={ERRORS.CONSOLE_TEXT}
+				message={ERRORS.FAILED_TO_CHECK_ZAUCTION}
 				primaryButtonText={BUTTONS[StepContent.FailedToCheckZAuction]}
 				onClickPrimaryButton={onClose}
 			/>

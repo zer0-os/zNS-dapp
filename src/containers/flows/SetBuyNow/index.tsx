@@ -73,7 +73,7 @@ const SetBuyNowContainer = ({
 					setCurrentStep(Step.ApproveZAuction);
 				}
 			} catch (e) {
-				console.error(ERRORS.CONSOLE_TEXT, e);
+				console.error(ERRORS.FAILED_TO_CHECK_ZAUCTION, e);
 				setCurrentStep(Step.FailedToCheckZAuction);
 			}
 		})();

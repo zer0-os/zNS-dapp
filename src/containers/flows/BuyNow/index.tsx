@@ -17,6 +17,13 @@ import { ERC20 } from 'types';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 
+// Utils Imports
+import { getErrorMessage } from 'lib/utils/error';
+
+// Constants Imports
+import { ERRORS } from 'constants/errors';
+import { NOTIFICATIONS } from './BuyNowButton.constants';
+
 export type BuyNowContainerProps = {
 	domainId: string;
 	onCancel: () => void;
@@ -62,7 +69,7 @@ const BuyNowContainer = ({
 		setError(undefined);
 		try {
 			if (!sdk || !sdk.zauction) {
-				throw Error('Failed to retrieve zAuction instance');
+				throw Error(ERRORS.FAILED_TO_CHECK_ZAUCTION);
 			}
 
 			try {
@@ -73,14 +80,14 @@ const BuyNowContainer = ({
 				);
 				setCurrentStep(Step.ApproveZAuctionProcessing);
 			} catch (e) {
-				throw Error('Transaction rejected by wallet');
+				throw Error(ERRORS.REJECTED_WALLET);
 			}
 
 			try {
 				await approvalTx.wait();
 				setCurrentStep(Step.Details);
 			} catch {
-				throw Error('Transaction failed - please try again');
+				throw Error(ERRORS.TRANSACTION);
 			}
 
 			getData();
@@ -95,22 +102,28 @@ const BuyNowContainer = ({
 		setCurrentStep(Step.WaitingForWalletConfirmation);
 		try {
 			if (!sdk || !sdk.zauction) {
-				throw Error('Failed to retrieve zAuction instance');
+				throw Error(ERRORS.FAILED_TO_CHECK_ZAUCTION);
 			}
 			const tx = await sdk.zauction.buyNow(
 				{ amount: data!.buyNowPrice.toString(), tokenId: domainId },
 				library.getSigner(),
 			);
-			setCurrentStep(Step.Buying);
-			await tx.wait();
-			addNotification(`You have successfully purchased ${data?.title}`);
+			try {
+				setCurrentStep(Step.Buying);
+				await tx.wait();
+			} catch (e) {
+				setCurrentStep(Step.Details);
+				setError(ERRORS.TRANSACTION);
+			}
+			addNotification(`${NOTIFICATIONS.BUY_NOW_SUCCESSFUL} ${data?.title}`);
 			setCurrentStep(Step.Success);
 			if (onSuccess) {
 				onSuccess();
 			}
-		} catch (e: any) {
+		} catch (e) {
 			console.log(e);
-			setError(e.message);
+			const errorText = getErrorMessage(e);
+			setError(errorText);
 			setCurrentStep(Step.Details);
 		}
 	};
@@ -124,7 +137,7 @@ const BuyNowContainer = ({
 		setIsLoadingDomainData(true);
 		let buyNowPrice;
 		if (!sdk || !sdk.zauction) {
-			throw Error('Failed to retrieve zAuction instance');
+			throw Error(ERRORS.FAILED_TO_CHECK_ZAUCTION);
 		}
 		try {
 			// Get buy now price
@@ -137,12 +150,15 @@ const BuyNowContainer = ({
 				account,
 				buyNowPrice,
 			);
+			// Timeout to prevent jolt
+			await new Promise((r) => setTimeout(r, 1500));
 			if (!isApproved) {
 				setCurrentStep(Step.ApproveZAuction);
 				return;
 			}
 		} catch (e) {
-			console.warn('<BuyNow> Failed to Get Data', e);
+			console.warn(ERRORS.FAILED_TO_GET_DATA, e);
+			setCurrentStep(Step.FailedToCheckZAuction);
 		}
 		try {
 			const [domain, balance] = await Promise.all([
@@ -168,7 +184,7 @@ const BuyNowContainer = ({
 				});
 			}
 		} catch {
-			console.error('<BuyNow> Failed to load domain ID', domainId);
+			console.error(ERRORS.FAILED_TO_LOAD_DOMAIN_ID, domainId);
 		}
 		setIsLoadingDomainData(false);
 	};

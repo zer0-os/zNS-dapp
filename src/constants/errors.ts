@@ -7,8 +7,9 @@ export const ERRORS = {
 	TRANSACTION: 'Transaction failed. Please try again',
 	LIBRARY: 'Failed to connect with Web3 wallet.',
 	LIBRARY_NOT_FOUND: 'Could not find web3 library',
-	CONSOLE_TEXT: 'Failed to check zAuction approval status',
+	FAILED_TO_CHECK_ZAUCTION: 'Failed to check zAuction approval status',
 	FAILED_TO_LOAD_DOMAIN_ID: 'Failed to load domain ID',
+	FAILED_TO_GET_DATA: 'Failed to Get Data',
 };
 
 export const MESSAGES = {

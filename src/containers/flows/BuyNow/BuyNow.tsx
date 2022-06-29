@@ -6,6 +6,7 @@ import Details from './Steps/Details';
 export enum Step {
 	ApproveZAuction,
 	ApproveZAuctionWaiting,
+	FailedToCheckZAuction,
 	ApproveZAuctionProcessing,
 	Details,
 	WaitingForWalletConfirmation,
@@ -69,6 +70,17 @@ const BuyNow = ({
 				primaryButtonText={'Continue'}
 				onClickSecondaryButton={onCancel}
 				onClickPrimaryButton={onNext}
+			/>,
+		);
+	}
+
+	if (step === Step.FailedToCheckZAuction) {
+		return WrapWizard(
+			<Wizard.Confirmation
+				error={error}
+				message={'Failed to check zAuction approval status'}
+				primaryButtonText={'Close'}
+				onClickPrimaryButton={onCancel}
 			/>,
 		);
 	}
