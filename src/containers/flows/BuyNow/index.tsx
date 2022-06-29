@@ -80,7 +80,8 @@ const BuyNowContainer = ({
 				);
 				setCurrentStep(Step.ApproveZAuctionProcessing);
 			} catch (e) {
-				throw Error(ERRORS.REJECTED_WALLET);
+				const errorText = getErrorMessage(e);
+				throw Error(errorText);
 			}
 
 			try {
