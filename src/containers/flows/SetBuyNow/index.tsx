@@ -20,6 +20,8 @@ import { getErrorMessage } from 'lib/utils/error';
 
 // Constants Imports
 import { ERRORS } from 'constants/errors';
+import { NOTIFICATIONS } from './SetBuyNow.constants';
+import { CURRENCY } from 'constants/currency';
 
 export interface SetBuyNowContainerProps {
 	domainId: string;
@@ -45,7 +47,6 @@ const SetBuyNowContainer = ({
 	const [isLoadingDomainData, setIsLoadingDomainData] = useState<boolean>(true);
 	const [error, setError] = useState<string | undefined>();
 	const isMounted = useRef<boolean>();
-
 	/*
 	 * Checks a user's wallet has approved zAuction to
 	 * transfer NFTs
@@ -116,10 +117,12 @@ const SetBuyNowContainer = ({
 	 */
 	const setBuyNowPrice = (amount?: number) => {
 		(async () => {
+			// Handle signature request
 			try {
 				setError(undefined);
 				setCurrentStep(Step.WaitingForBuyNowConfirmation);
 				let tx;
+
 				if (amount) {
 					tx = await sdk.zauction.setBuyNowPrice(
 						{
@@ -131,8 +134,20 @@ const SetBuyNowContainer = ({
 				} else {
 					tx = await sdk.zauction.cancelBuyNow(domainId, library.getSigner());
 				}
-				setCurrentStep(Step.SettingBuyNow);
-				await tx.wait();
+
+				// Handle transaction request
+				try {
+					setCurrentStep(Step.SettingBuyNow);
+					await tx?.wait();
+					// Timeout to prevent jolt
+					if (!amount) {
+						await new Promise((r) => setTimeout(r, 500));
+					}
+				} catch (e) {
+					setCurrentStep(Step.SetBuyNow);
+					setError(ERRORS.TRANSACTION);
+				}
+
 				setDomainData({
 					...domainData!,
 					currentBuyNowPrice: amount
@@ -141,10 +156,10 @@ const SetBuyNowContainer = ({
 				});
 				if (amount) {
 					addNotification(
-						`You have successfully set a Buy Now price of ${amount} WILD`,
+						`${NOTIFICATIONS.SET_BUY_NOW_SUCCESSFUL} ${amount} ${CURRENCY.WILD}`,
 					);
 				} else {
-					addNotification(`You have successfully removed the Buy Now price`);
+					addNotification(NOTIFICATIONS.REMOVE_BUY_NOW_SUCCESSFUL);
 				}
 
 				setCurrentStep(Step.Success);
