@@ -10,6 +10,7 @@ import useCancelBid, { UseCancelBidReturn } from './useCancelBid';
 
 //- Constants Imports
 import constants from '../CancelBid.constants';
+import { ERRORS } from 'constants/errors';
 
 //- Mocks Imports
 import * as mocks from './useCanceBid.mocks';
@@ -118,7 +119,7 @@ describe('useCancelBid', () => {
 			}
 
 			expect(mockCancelBid).toBeCalledTimes(1);
-			expect(err?.message).toBe(constants.ERRORS.SIGNATURE);
+			expect(err?.message).toBe(ERRORS.SIGNATURE);
 			expect(console.error).toHaveBeenCalled();
 		});
 
@@ -139,7 +140,7 @@ describe('useCancelBid', () => {
 			}
 
 			expect(mockTx).toBeCalledTimes(1);
-			expect(err?.message).toBe(constants.ERRORS.TRANSACTION);
+			expect(err?.message).toBe(ERRORS.TRANSACTION);
 			expect(console.error).toHaveBeenCalled();
 		});
 	});
@@ -192,7 +193,7 @@ describe('useCancelBid', () => {
 			}
 
 			expect(mockCancelBid).toBeCalledTimes(1);
-			expect(err?.message).toBe(constants.ERRORS.SIGNATURE);
+			expect(err?.message).toBe(ERRORS.SIGNATURE);
 			expect(console.error).toHaveBeenCalled();
 		});
 
@@ -213,7 +214,7 @@ describe('useCancelBid', () => {
 			}
 
 			expect(mockTx).toBeCalledTimes(1);
-			expect(err?.message).toBe(constants.ERRORS.TRANSACTION);
+			expect(err?.message).toBe(ERRORS.TRANSACTION);
 			expect(console.error).toHaveBeenCalled();
 		});
 	});
