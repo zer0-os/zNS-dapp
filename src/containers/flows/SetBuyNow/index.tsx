@@ -15,8 +15,11 @@ import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 
+//- Utils Imports
+import { getErrorMessage } from 'lib/utils/error';
+
 // Constants Imports
-import { MESSAGES, ERRORS } from 'constants/errors';
+import { ERRORS } from 'constants/errors';
 
 export interface SetBuyNowContainerProps {
 	domainId: string;
@@ -69,8 +72,8 @@ const SetBuyNowContainer = ({
 					setCurrentStep(Step.ApproveZAuction);
 				}
 			} catch (e) {
-				// @todo handle error
 				console.error(ERRORS.CONSOLE_TEXT, e);
+				setCurrentStep(Step.FailedToCheckZAuction);
 			}
 		})();
 	};
@@ -90,15 +93,19 @@ const SetBuyNowContainer = ({
 					domainId,
 					library.getSigner(),
 				);
-				// @todo handle wallet rejected
-				setCurrentStep(Step.ApprovingZAuction);
-				await tx.wait();
-				// @todo handle tx failed
+				try {
+					setCurrentStep(Step.ApprovingZAuction);
+					await tx.wait();
+				} catch (e) {
+					setCurrentStep(Step.ApproveZAuction);
+					setError(ERRORS.TRANSACTION);
+				}
 				setCurrentStep(Step.SetBuyNow);
 			} catch (e) {
-				// @todo handle errors more specifically
 				setCurrentStep(Step.ApproveZAuction);
-				console.error('Approved', e);
+				const errorText = getErrorMessage(e);
+				setError(errorText);
+				console.error(e);
 			}
 		})();
 	};
@@ -149,11 +156,8 @@ const SetBuyNowContainer = ({
 			} catch (e) {
 				setCurrentStep(Step.SetBuyNow);
 				console.error(e);
-				if (e.message.includes(MESSAGES.TRANSACTION_DENIED)) {
-					setError(ERRORS.REJECTED_WALLET);
-				} else {
-					setError(ERRORS.PROBLEM_OCCURRED);
-				}
+				const errorText = getErrorMessage(e);
+				setError(errorText);
 			}
 		})();
 	};

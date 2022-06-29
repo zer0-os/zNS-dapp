@@ -4,6 +4,7 @@ import DomainStep from './Steps/DomainStep';
 
 export enum Step {
 	CheckingZAuctionApproval,
+	FailedToCheckZAuction,
 	ApproveZAuction,
 	WaitingForWallet,
 	ApprovingZAuction,
@@ -49,6 +50,8 @@ const SetBuyNow = ({
 }: SetBuyNowProps) => {
 	const editText = account !== domain?.owner ? 'selecting' : 'purchasing';
 
+	const confirmationErrorButtonText = () => (error ? 'Retry' : 'Accept');
+
 	const wizardHeader = isLoadingDomainData
 		? ''
 		: domain?.currentBuyNowPrice?.gt(0)
@@ -76,12 +79,21 @@ const SetBuyNow = ({
 	steps[Step.CheckingZAuctionApproval] = (
 		<Wizard.Loading message="Checking status of zAuction approval..." />
 	);
+	steps[Step.FailedToCheckZAuction] = (
+		<Wizard.Confirmation
+			error={error}
+			message={'Failed to check zAuction approval status'}
+			primaryButtonText="Close"
+			onClickPrimaryButton={onCancel}
+		/>
+	);
 	steps[Step.ApproveZAuction] = (
 		<Wizard.Confirmation
 			error={error}
 			message={
 				'Before you can set a buy now, your wallet needs to approve zAuction. This is a one-off transaction costing gas.'
 			}
+			primaryButtonText={confirmationErrorButtonText()}
 			onClickPrimaryButton={approveZAuction}
 			onClickSecondaryButton={onCancel}
 		/>
