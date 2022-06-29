@@ -11,9 +11,6 @@ import styles from './Touchbar.module.scss';
 //- Class Names
 import classNames from 'classnames/bind';
 
-//- Library Imports
-import { randomUUID } from 'lib/random';
-
 const cx = classNames.bind(styles);
 
 export const Touchbar: React.FC = () => {
@@ -24,7 +21,7 @@ export const Touchbar: React.FC = () => {
 		<div className={styles.TouchbarContainer}>
 			<ul className={styles.NavLinks}>
 				{navLinks.map((l) => (
-					<li key={`${l.label}${randomUUID()}`}>
+					<li key={`${l.label}`}>
 						<Link
 							to={l.route}
 							className={cx({ Selected: pathname.startsWith(l.route) })}

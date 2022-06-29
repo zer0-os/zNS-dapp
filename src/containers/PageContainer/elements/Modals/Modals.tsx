@@ -1,9 +1,17 @@
+// React-Imports
 import React, { useState, useCallback, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+
+// Container-Imports
 import { MintNewNFT } from 'containers';
+
+// Component-Imports
 import { ConnectToWallet, Overlay } from 'components';
+
+//-Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { useNavbar } from 'lib/hooks/useNavbar';
+
+//- Constants Imports
 import {
 	Modal,
 	MODAL_VISIBILITY_WINDOW_MIN_WIDTH,
@@ -47,13 +55,12 @@ export const Modals: React.FC<ModalsProps> = ({
 }) => {
 	const { domain } = useCurrentDomain();
 	const { isSearching } = useNavbar();
-	const location = useLocation();
 
 	const { domainId, domainName, domainOwner, subDomains } = useMemo(() => {
-		const domainName = location.pathname;
-		const domainId = domain?.id || '';
-		const domainOwner = domain?.owner.id || '';
-		const subDomains = domain?.subdomains.map(({ name }) => name) || [];
+		const domainName = domain?.name ?? '';
+		const domainId = domain?.id ?? '';
+		const domainOwner = domain?.owner.id ?? '';
+		const subDomains = domain?.subdomains.map(({ name }) => name) ?? [];
 
 		return {
 			domainId,
@@ -61,7 +68,7 @@ export const Modals: React.FC<ModalsProps> = ({
 			domainOwner,
 			subDomains,
 		};
-	}, [location, domain]);
+	}, [domain]);
 
 	if (pageWidth < MODAL_VISIBILITY_WINDOW_MIN_WIDTH) {
 		return null;

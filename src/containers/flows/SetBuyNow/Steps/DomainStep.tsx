@@ -198,7 +198,11 @@ const DomainStep = ({
 
 	return (
 		<>
-			<Wizard.NFTDetails {...domain} otherDetails={details} />
+			<Wizard.NFTDetails
+				{...domain}
+				domain={domain.domain}
+				otherDetails={details}
+			/>
 			<div className={styles.Inputs}>{didSucceed ? Success() : Main()}</div>
 		</>
 	);

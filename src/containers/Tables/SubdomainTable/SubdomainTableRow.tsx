@@ -15,8 +15,10 @@ import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { ethers } from 'ethers';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
-import { formatNumber, formatEthers } from 'lib/utils';
+import { formatNumber, formatEthers, getNetworkZNA } from 'lib/utils';
 import { useZnsSdk } from 'lib/hooks/sdk';
+
+import { ROUTES } from 'constants/routes';
 
 import styles from './SubdomainTableRow.module.scss';
 
@@ -173,16 +175,15 @@ const SubdomainTableRow = (props: any) => {
 	const onRowClick = (event: any) => {
 		const clickedButton = event.target.className.indexOf('FutureButton') >= 0;
 		if (!clickedButton) {
-			goTo(`/market/${domain.name.split('wilder.')[1]}`);
+			goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 		}
 	};
-
 	return (
 		<tr className={styles.Row} onClick={onRowClick}>
 			<td>{props.rowNumber + 1}</td>
 			<td>
 				<Artwork
-					domain={domain.name.split('wilder.')[1]}
+					domain={'0://' + domain.name}
 					disableInteraction
 					metadataUrl={domain.metadata}
 					id={domain.id}

@@ -80,9 +80,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 	const [isMintLoading, setIsMintLoading] = useState(false);
 	const [mintingStatusText, setMintingStatusText] = useState('');
 	const [lootBalance, setLootBalance] = useState<number | undefined>();
-	const [existingSubdomains, setExistingSubdomains] = useState<
-		string[] | undefined
-	>();
 
 	const [tokenInformation, setTokenInformation] =
 		useState<TokenInformationType | null>(null);
@@ -115,24 +112,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		};
 		fetchTokenBalance();
 	}, [lootContract, account]);
-
-	useEffect(() => {
-		const parent = domainName.substring(1);
-		let existingNames;
-		if (!parent.length) {
-			existingNames = subdomains.map((sub: string) => {
-				const split = sub.split('wilder.');
-				return split[split.length - 1];
-			});
-		} else {
-			existingNames = subdomains.map((sub: string) => {
-				const split = sub.split(domainName.substring(1));
-				const dot = split[split.length - 1].split('.');
-				return dot[dot.length - 1];
-			});
-		}
-		setExistingSubdomains(existingNames);
-	}, [domainName, subdomains]);
 
 	///////////////
 	// Functions //
@@ -176,7 +155,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 		if (!tokenInformation) return setIsMintLoading(false);
 		setStatusText(`Minting domain`);
 
-		const hasSubmitMint = await mint(
+		return await mint(
 			{
 				parent: domainId,
 				owner: account,
@@ -195,8 +174,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 			},
 			setStatusText,
 		);
-
-		return hasSubmitMint;
 	};
 
 	// Submits stake request through user's wallet
@@ -207,7 +184,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 
 		setStatusText(`Placing domain request`);
 
-		const hasSubmitRequest = staking.placeRequest(
+		return staking.placeRequest(
 			{
 				nft: {
 					parent: domainId,
@@ -228,8 +205,6 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 			},
 			setStatusText,
 		);
-
-		return hasSubmitRequest;
 	};
 
 	// Start submit process - call function for minting or requesting
@@ -293,7 +268,7 @@ const MintNewNFT: React.FC<MintNewNFTProps> = ({
 				{/* SECTION 1: Token Information */}
 				{step === MintState.DomainDetails && (
 					<TokenInformation
-						existingSubdomains={existingSubdomains || []}
+						existingSubdomains={subdomains || []}
 						token={tokenInformation}
 						onContinue={(data: TokenInformationType) =>
 							getTokenInformation(data)
