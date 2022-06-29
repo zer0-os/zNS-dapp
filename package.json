@@ -4,6 +4,7 @@
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.3.13",
+		"@craco/craco": "^6.4.3",
 		"@ethersproject/abi": "^5.1.0",
 		"@ethersproject/abstract-signer": "^5.1.0",
 		"@ethersproject/address": "^5.1.0",
@@ -91,10 +92,10 @@
 		"web-vitals": "^1.1.1"
 	},
 	"scripts": {
-		"start": "react-scripts start",
-		"build": "npm run generate-meta-tag && react-scripts build",
-		"test": "react-scripts test --detectOpenHandles --maxWorkers=2",
-		"testci": "react-scripts test --coverage",
+		"start": "craco start",
+		"build": "npm run generate-meta-tag && craco build",
+		"test": "craco test --detectOpenHandles --maxWorkers=2",
+		"testci": "craco test --coverage",
 		"eject": "react-scripts eject",
 		"typegen": "typechain --target ethers-v5 --outDir src/types \"src/abi/**/*.json\"",
 		"lint": "eslint src --ext .ts",
@@ -138,6 +139,7 @@
 		"@types/react-dom": "^17.0.3",
 		"@types/react-table": "^7.0.29",
 		"@types/react-window": "^1.8.2",
+		"craco-babel-loader": "^1.0.3",
 		"husky": "^4.3.8",
 		"lint-staged": "^11.1.2",
 		"prettier": "^2.2.1",
