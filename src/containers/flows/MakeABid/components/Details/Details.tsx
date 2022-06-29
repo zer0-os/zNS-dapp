@@ -15,8 +15,8 @@ import {
 	MESSAGES,
 	BUTTONS,
 	PLACE_BID_LABELS,
-	getWildBalance,
 	getBidAmountText,
+	getBalanceString,
 } from '../../MakeABid.constants';
 
 //- Styles Imports
@@ -144,7 +144,7 @@ const Details = ({
 				<div className={styles.PlaceBidContainer}>
 					<div className={styles.TextContainer}>{MESSAGES.ENTER_AMOUNT}</div>
 					<span className={styles.Estimate}>
-						{getWildBalance(tokenBalance, paymentTokenInfo.name)}
+						{getBalanceString(tokenBalance, paymentTokenInfo.name)}
 					</span>
 					<form onSubmit={onConfirm}>
 						<TextInput

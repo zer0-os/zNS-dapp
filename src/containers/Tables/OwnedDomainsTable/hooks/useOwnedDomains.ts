@@ -38,7 +38,7 @@ const useOwnedDomains = (
 				const paymentToken = await sdk.zauction.getPaymentTokenForDomain(id);
 				const paymentTokenInfo: PaymentTokenInfo = {
 					...(await sdk.zauction.getPaymentTokenInfo(paymentToken)),
-					...{ id: paymentToken },
+					id: paymentToken,
 				};
 				return { id, paymentTokenInfo };
 			});

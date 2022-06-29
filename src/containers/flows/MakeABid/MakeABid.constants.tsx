@@ -66,7 +66,7 @@ export const getSuccessNotification = (
 	domainName: React.ReactNode,
 ) => `Bid of ${bidAmount} for ${domainName} has been placed.`;
 
-export const getWildBalance = (balance: number, paymentTokenName: string) =>
+export const getBalanceString = (balance: number, paymentTokenName: string) =>
 	`Your balance: ${Number(balance).toLocaleString()} ${paymentTokenName}`;
 
 export const getUsdEstimation = (bid: string) => `Approx. $${bid} USD`;
