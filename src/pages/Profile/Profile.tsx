@@ -76,6 +76,7 @@ const Profile = () => {
 
 	useDidMount(() => {
 		setNavbarTitle('Your Profile');
+		document.title = process.env.REACT_APP_TITLE + ' | Profile';
 	});
 
 	///////////////
@@ -110,6 +111,7 @@ const Profile = () => {
 				<nav className={styles.Nav}>
 					{TABS.map((route) => (
 						<Link
+							key={route.title}
 							className={cx({
 								Selected: location.pathname === r(route.location),
 							})}
@@ -123,7 +125,12 @@ const Profile = () => {
 				</nav>
 				<Switch>
 					{TABS.map((route) => (
-						<Route exact path={r(route.location)} component={route.component} />
+						<Route
+							key={route.title}
+							exact
+							path={r(route.location)}
+							component={route.component}
+						/>
 					))}
 					<Route exact path={path}>
 						<Redirect to={r(TABS[0].location)} />

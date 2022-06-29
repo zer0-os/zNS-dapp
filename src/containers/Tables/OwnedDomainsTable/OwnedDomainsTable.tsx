@@ -5,18 +5,29 @@ import useOwnedDomains from './hooks/useOwnedDomains';
 // Component Imports
 import OwnedDomainsTableRow from './OwnedDomainsTableRow';
 import { GenericTable } from 'components';
-
-import { HEADERS, MESSAGES } from './OwnedDomainsTable.constants';
 import OwnedDomainsTableCard from './OwnedDomainsTableCard';
 
+//- Utils Imports
+import { filterOwnedDomainsByNetwork } from './OwnedDomainsTable.utils';
+
+// Contants Imports
+import { HEADERS, MESSAGES } from './OwnedDomainsTable.constants';
+
 const OwnedDomainsTable = () => {
+	///////////
+	//  Data //
+	///////////
 	const { account } = useWeb3React();
 	const { isLoading, ownedDomains, refetch, domainsPaymentTokenInfo } =
 		useOwnedDomains(account);
+
+	// filter owned domains by network
+	const onNetworkOwnedDomains = filterOwnedDomainsByNetwork(ownedDomains);
+
 	return (
 		<GenericTable
 			alignments={[0, 1, 1, 1]}
-			data={ownedDomains}
+			data={onNetworkOwnedDomains}
 			itemKey={'id'}
 			headers={HEADERS}
 			rowComponent={(props: any) => (

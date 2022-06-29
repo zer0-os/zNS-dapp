@@ -14,13 +14,14 @@ import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { ethers } from 'ethers';
-import { formatNumber } from 'lib/utils';
+import { formatNumber, getNetworkZNA } from 'lib/utils';
 
 //- Styles Imports
 import styles from './OwnedDomainsTableCard.module.scss';
 
 //- Constants Imports
 import { LABELS } from './OwnedDomainsTable.constants';
+import { ROUTES } from 'constants/routes';
 
 //- Utils Imports
 import ImageCard from 'components/Cards/ImageCard/ImageCard';
@@ -67,7 +68,7 @@ const SubdomainTableCard = ({
 
 	// Navigates to domain
 	const onClick = (event: any) => {
-		goTo(`/market/${domain.name.split('wilder.')[1]}`);
+		goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 	};
 
 	////////////

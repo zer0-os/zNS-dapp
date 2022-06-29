@@ -6,10 +6,13 @@
 // React Imports
 import React from 'react';
 
+import { useLocation } from 'react-router-dom';
+
 // Library Imports
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import BidProvider, { useBid } from './BidProvider';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
+import { zNAFromPathname } from 'lib/utils';
 
 // Component Imports
 import SubdomainTableRow from './SubdomainTableRow';
@@ -51,11 +54,12 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	 * Instead, data and callbacks should be sent directly to the row component
 	 */
 	const { domain: biddingOn, close, bidPlaced } = useBid();
-	const isRootDomain = domain && domain?.name.split('.').length <= 2;
-	const isGridViewByDefault = isRootDomain
+	const { pathname } = useLocation();
+	const zna = zNAFromPathname(pathname);
+	const isNetworkRootDomain = zna.length === 0 || zna.split('.').length === 1;
+	const isGridViewByDefault = isNetworkRootDomain
 		? true
 		: domainMetadata?.gridViewByDefault;
-
 	/*
 	 * Not being stored as a constant as one of the headers depends
 	 * on a value in the domain's metadata
@@ -86,7 +90,7 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	return (
 		<>
 			{biddingOn !== undefined && (
-				<Overlay onClose={close} open={biddingOn !== undefined}>
+				<Overlay onClose={close} open={true}>
 					<MakeABid
 						domain={biddingOn!}
 						onBid={bidPlaced}

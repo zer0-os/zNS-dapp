@@ -45,7 +45,6 @@ import { PaymentTokenInfo } from 'lib/types';
 import useAsyncEffect from 'use-async-effect';
 
 const maxCharacterLength = 28;
-
 export type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
@@ -92,8 +91,8 @@ const MakeABid = ({
 	const domainMetadata = useDomainMetadata(
 		domain.metadata ?? (domain as any).metadataUri,
 	);
-	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
 	const isBidValid = !Number.isNaN(parseFloat(bid));
+	const formattedDomain = truncateDomain(domain.name, maxCharacterLength);
 
 	///////////////
 	// Functions //
@@ -194,7 +193,7 @@ const MakeABid = ({
 			addNotification(
 				getSuccessNotification(
 					getBidAmountText(bid, paymentTokenInfo.name),
-					domain.name,
+					formattedDomain,
 				),
 			);
 			setIsBidPlaced(true);

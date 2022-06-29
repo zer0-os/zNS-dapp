@@ -7,6 +7,7 @@ import styles from './NFTCard.module.scss';
 
 //- Component Imports
 import { ArrowLink, NFTMedia } from 'components';
+import { truncateDomain } from 'lib/utils/domains';
 
 export interface NFTCardProps {
 	actionsComponent?: React.ReactNode;
@@ -53,16 +54,6 @@ const NFTCard: React.FC<NFTCardProps> = ({
 	const hasAspectRatio =
 		!ignoreAspectRatio && (isSquare || isLandscape || isPortrait);
 
-	// If the domain is super long, truncate it
-	let domainText;
-	if (('wilder.' + domain).length > 38) {
-		domainText = `0://wilder...${
-			domain.split('.')[domain.split('.').length - 1]
-		}`;
-	} else {
-		domainText = `0://${domain}`;
-	}
-
 	const media = useMemo(() => {
 		return (
 			<NFTMedia
@@ -92,7 +83,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
 			{media}
 			<div className={styles.Body}>
 				<h5 className={``}>{name}</h5>
-				<ArrowLink>{domainText}</ArrowLink>
+				<ArrowLink>{truncateDomain(domain, 38)}</ArrowLink>
 				{/* Need to refactor out actions component */}
 				{actionsComponent}
 				{children}

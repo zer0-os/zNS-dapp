@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import {
 	chainIdToNetworkType,
@@ -37,14 +37,8 @@ export const ZdaoSdkProvider: React.FC<DaoSdkProviderProps> = ({
 
 	const [instance, setInstance] = useState<SDKInstance | undefined>();
 
-	const { network, selectedChain } = useMemo(() => {
-		const selectedChain = chainId || defaultNetworkId;
-		const network = chainIdToNetworkType(selectedChain);
-		return {
-			network,
-			selectedChain,
-		};
-	}, [chainId]);
+	const selectedChain = chainId || defaultNetworkId;
+	const network = chainIdToNetworkType(selectedChain);
 
 	const createInstance = useCallback(async () => {
 		setInstance(undefined);

@@ -5,14 +5,11 @@ import { DollarSign, X } from 'react-feather';
 
 //- Components Imports
 import { Artwork, OptionDropdown } from 'components';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Library Imports
 import { ethers } from 'ethers';
-
-//- Constants Imports
-import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
-import { Domain } from 'lib/types';
-import { PaymentTokenInfo } from 'lib/types';
+import { Domain, PaymentTokenInfo } from 'lib/types';
 
 export const ACTION_KEYS = {
 	REBID: 'Rebid',
@@ -69,11 +66,7 @@ const BidTableRow = (props: any) => {
 			<td>
 				<Artwork
 					data-testid={TEST_ID.ARTWORK}
-					domain={
-						bid.domainName.startsWith('wilder.')
-							? bid.domainName.split('wilder.')[1]
-							: bid.domainName
-					}
+					domain={bid.domainName}
 					disableInteraction
 					metadataUrl={bid.domainMetadataUrl}
 					id={bid.domainId}

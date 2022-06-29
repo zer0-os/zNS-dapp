@@ -117,8 +117,8 @@ const Details = ({
 					otherDetails={[
 						// Highest Bid
 						{
-							name: LABELS.HIGHEST_BID_LABEL,
-							value: formattedHighestBidAmount,
+							name: highestBid ? LABELS.HIGHEST_BID_LABEL : '',
+							value: highestBid ? formattedHighestBidAmount : '',
 						},
 						{
 							name:

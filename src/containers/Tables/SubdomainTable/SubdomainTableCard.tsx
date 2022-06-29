@@ -14,6 +14,7 @@ import {
 	formatEthers,
 	getParentZna,
 	getAspectRatioForZna,
+	getNetworkZNA,
 } from 'lib/utils';
 
 //-Component Imports
@@ -92,7 +93,7 @@ const SubdomainTableCard = (props: any) => {
 
 	const onClick = (event: any) => {
 		if (!event.target.className.includes('FutureButton')) {
-			goTo(ROUTES.MARKET + '/' + domain.name.split('wilder.')[1]);
+			goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 		}
 	};
 
