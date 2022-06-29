@@ -41,13 +41,13 @@ export const CancelBid = ({
 
 	const onFinish = () => {
 		onClose();
+		onSuccess();
 	};
 
 	const onCancelBid = async () => {
 		setCurrentStep(Step.Cancelling);
 		try {
 			await cancel(bid!);
-			onSuccess();
 			setCurrentStep(Step.Success);
 		} catch (e: any) {
 			setError(e.message);

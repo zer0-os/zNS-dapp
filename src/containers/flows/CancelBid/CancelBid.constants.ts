@@ -28,17 +28,9 @@ const BUTTONS = {
 	[Step.Success]: { PRIMARY: 'Finish' },
 };
 
-const ERRORS = {
-	SIGNATURE: 'Failed to generate signature.',
-	TRANSACTION: 'Transaction failed.',
-	LIBRARY: 'Failed to connect with Web3 wallet.',
-	CONSOLE: 'Could not find web3 library',
-};
-
 const exports = {
 	MESSAGES,
 	BUTTONS,
-	ERRORS,
 	LABELS,
 };
 export default exports;

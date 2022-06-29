@@ -11,9 +11,13 @@ import { useWeb3React } from '@web3-react/core';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
+//- Utils Imports
+import { getErrorMessage } from 'lib/utils/error';
+
 //- Constants Imports
 import constants from '../CancelBid.constants';
 import { ZAuctionVersionType } from '../CancelBid.types';
+import { ERRORS } from 'constants/errors';
 
 export type UseCancelBidReturn = {
 	cancel: (bid: Bid) => Promise<void>;
@@ -36,8 +40,8 @@ const useCancelBid = (): UseCancelBidReturn => {
 			bid.version === ZAuctionVersionType.V1 ? false : true;
 
 		if (!library) {
-			console.error(constants.ERRORS.CONSOLE);
-			throw new Error(constants.ERRORS.LIBRARY);
+			console.error(ERRORS.LIBRARY_NOT_FOUND);
+			throw new Error(ERRORS.LIBRARY);
 		}
 
 		try {
@@ -54,7 +58,8 @@ const useCancelBid = (): UseCancelBidReturn => {
 				);
 			} catch (e) {
 				console.error(e);
-				throw new Error(constants.ERRORS.SIGNATURE);
+				const errorText = getErrorMessage(e);
+				throw new Error(errorText);
 			}
 
 			// Transaction request
@@ -64,7 +69,7 @@ const useCancelBid = (): UseCancelBidReturn => {
 				setStatus(undefined);
 			} catch (e) {
 				console.error(e);
-				throw new Error(constants.ERRORS.TRANSACTION);
+				throw new Error(ERRORS.TRANSACTION);
 			}
 		} catch (e) {
 			setStatus(undefined);

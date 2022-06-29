@@ -17,7 +17,10 @@ import mock from './CancelBid.mock';
 // Other library imports
 import { ethers } from 'ethers';
 import CancelBid from './CancelBid';
+
+// Constants Imports
 import constants from './CancelBid.constants';
+import { ERRORS } from 'constants/errors';
 
 /////////////////////////////
 // Mock external functions //
@@ -232,7 +235,7 @@ test('should handle rejected/failed signature request', async () => {
 
 	screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V2);
 
-	await screen.findByText(constants.ERRORS.SIGNATURE);
+	await screen.findByText(ERRORS.SIGNATURE);
 
 	expect(console.error).toHaveBeenCalled();
 });
@@ -256,7 +259,7 @@ test('should handle rejected/failed transaction', async () => {
 	screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V2);
 	await screen.findByText(constants.MESSAGES.TEXT_CANCELLING_BID);
 
-	await screen.findByText(constants.ERRORS.TRANSACTION);
+	await screen.findByText(ERRORS.TRANSACTION);
 
 	expect(console.error).toHaveBeenCalled();
 });

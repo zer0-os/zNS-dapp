@@ -15,5 +15,6 @@ export const ERRORS = {
 
 export const MESSAGES = {
 	TRANSACTION_DENIED: 'denied transaction signature',
+	MESSAGE_DENIED: 'denied message signature',
 	DATA_CONSUMED: 'data already consumed',
 };

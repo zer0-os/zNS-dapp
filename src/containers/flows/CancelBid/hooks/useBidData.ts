@@ -16,6 +16,9 @@ import { getMetadata } from 'lib/metadata';
 import { BigNumber } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 
+//- Constants Imports
+import { ERRORS } from 'constants/errors';
+
 export type UseBidDataReturn = {
 	isLoading: boolean;
 	bid: Bid | undefined;
@@ -52,7 +55,7 @@ const useBidData = (domainId: string, bidNonce: string): UseBidDataReturn => {
 
 		if (!metadata) {
 			setIsLoading(false);
-			throw new Error('Failed to retrieve bid data');
+			throw new Error(ERRORS.FAILED_TO_RETRIEVE_BID_DATA);
 		}
 
 		if (!isMounted.current) {
@@ -81,6 +84,7 @@ const useBidData = (domainId: string, bidNonce: string): UseBidDataReturn => {
 		getData().catch((e) => {
 			console.error(e);
 			setIsLoading(false);
+			throw new Error(ERRORS.FAILED_TO_RETRIEVE_BID_DATA);
 		});
 	};
 
