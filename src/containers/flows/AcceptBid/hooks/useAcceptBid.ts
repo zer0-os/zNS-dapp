@@ -16,7 +16,7 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 //- Constants Imports
 import { MESSAGES } from '../AcceptBid.constants';
 import { ERRORS } from 'constants/errors';
-import { getError } from 'lib/utils/error';
+import { getErrorMessage } from 'lib/utils/error';
 
 export type UseAcceptBidReturn = {
 	accept: (bid: Bid) => Promise<void>;
@@ -43,7 +43,8 @@ const useAcceptBid = (): UseAcceptBidReturn => {
 				tx = await sdk.zauction.acceptBid(bid, library.getSigner());
 			} catch (err) {
 				console.error(err);
-				getError(err);
+				const errorText = getErrorMessage(err);
+				throw new Error(errorText);
 			}
 
 			// Transaction request
@@ -57,7 +58,8 @@ const useAcceptBid = (): UseAcceptBidReturn => {
 			}
 		} catch (err) {
 			setStatus(undefined);
-			throw err;
+			const errorText = getErrorMessage(err);
+			throw new Error(errorText);
 		}
 	};
 

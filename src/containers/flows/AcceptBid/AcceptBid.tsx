@@ -21,6 +21,9 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 //- Types Imports
 import { StepContent, Step } from './AcceptBid.types';
 
+//- Utils Imports
+import { getErrorMessage } from 'lib/utils/error';
+
 //- Constants Imports
 import {
 	BUTTONS,
@@ -146,7 +149,8 @@ const AcceptBid = ({
 				setStepContent(StepContent.Details);
 			} catch (e) {
 				setStepContent(StepContent.ApproveZAuction);
-				setError(ERRORS.REJECTED_WALLET);
+				const errorText = getErrorMessage(e);
+				setError(errorText);
 			}
 		})();
 	};
@@ -167,7 +171,8 @@ const AcceptBid = ({
 			setStepContent(StepContent.Success);
 		} catch (e) {
 			setCurrentStep(Step.ConfirmDetails);
-			setError(e.message);
+			const errorText = getErrorMessage(e);
+			setError(errorText);
 			setStepContent(StepContent.Details);
 		}
 		if (!isMounted.current) return;
