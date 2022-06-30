@@ -90,7 +90,8 @@ const TransferOwnership = ({
 				onClose,
 			});
 		} catch (e: any) {
-			setError(e.message);
+			const errorText = getDisplayErrorMessage(e.message);
+			setError(errorText);
 		}
 		if (!isMounted.current) return;
 		setIsLoading(false);

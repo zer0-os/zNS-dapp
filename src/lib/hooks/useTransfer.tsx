@@ -66,8 +66,7 @@ export const useTransfer = (): UseTransferReturn => {
 					);
 				} catch (e: any) {
 					console.error(e);
-					const errorText = getDisplayErrorMessage(e.message);
-					throw new Error(errorText);
+					throw new Error(e.message);
 				}
 
 				// start transferring
