@@ -12,7 +12,7 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 import { Bid as zAuctionBid } from '@zero-tech/zauction-sdk/lib/api/types';
 import { PlaceBidStatus } from '@zero-tech/zauction-sdk';
 import { Web3Provider } from '@ethersproject/providers';
-import { ERRORS, MESSAGES } from 'constants/errors';
+import { ERRORS } from 'constants/errors';
 
 /////////////////////
 // Mock data stuff //
@@ -211,6 +211,11 @@ export const useBidProvider = (): UseBidProviderReturn => {
 				return;
 			}
 
+			if (!domain.id) {
+				console.error(ERRORS.FAILED_TO_LOAD_DOMAIN_ID);
+				return;
+			}
+
 			try {
 				await sdk.zauction.placeBid(
 					{
@@ -221,9 +226,10 @@ export const useBidProvider = (): UseBidProviderReturn => {
 					(status) => onPlaceBidStatusChange(status, onStep),
 				);
 				onStep('Generating bid...');
-			} catch (e) {
+			} catch (e: any) {
 				console.warn(e);
-				throw new Error(MESSAGES.MESSAGE_DENIED);
+				console.log(e);
+				throw new Error(e);
 			}
 		},
 		[sdk, library],

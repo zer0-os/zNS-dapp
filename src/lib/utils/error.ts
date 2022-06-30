@@ -6,6 +6,8 @@ export const getDisplayErrorMessage = (message: string) => {
 		return ERRORS.REJECTED_WALLET;
 	} else if (message.includes(MESSAGES.MESSAGE_DENIED)) {
 		return ERRORS.REJECTED_WALLET;
+	} else if (message.includes(MESSAGES.FAILED_TO_SIGN_BID)) {
+		return ERRORS.REJECTED_WALLET;
 	} else if (message.includes(MESSAGES.DATA_CONSUMED)) {
 		return ERRORS.DATA_CONSUMED;
 	} else {
