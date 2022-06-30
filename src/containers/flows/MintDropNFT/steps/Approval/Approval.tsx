@@ -1,16 +1,24 @@
-// Component Imports
-import { FutureButton, Spinner } from 'components';
+//- React Imports
 import React, { useEffect, useState } from 'react';
 
-import { ERC20, WhitelistSimpleSale } from 'types';
-
+//-Component Imports
+import { FutureButton, Spinner } from 'components';
 import {
 	getSaleContractApprovalStatus,
 	approveSaleContract,
 } from '../../helpers';
 
+//- Type Imports
+import { ERC20, WhitelistSimpleSale } from 'types';
+
+//- Library Imports
+import { getDisplayErrorMessage } from 'lib/utils/error';
+
 // Style Imports
 import styles from './Approval.module.scss';
+
+//- Constants Imports
+import { ERRORS } from 'constants/errors';
 
 type ApprovalProps = {
 	contract: WhitelistSimpleSale;
@@ -56,13 +64,14 @@ const Approval: React.FC<ApprovalProps> = ({
 					setHasApproved(true);
 					onApproval();
 				} catch (e: any) {
-					setError(e.message);
+					setError(ERRORS.TRANSACTION);
 					setIsWaitingForConfirmation(false);
 					setIsApprovalInProgress(false);
 				}
 			})
 			.catch((e) => {
-				setError(e.message);
+				const errorText = getDisplayErrorMessage(e.message);
+				setError(errorText);
 				setIsWaitingForConfirmation(false);
 				setIsApprovalInProgress(false);
 			});
@@ -80,7 +89,8 @@ const Approval: React.FC<ApprovalProps> = ({
 				}
 			})
 			.catch((e) => {
-				onError(e.message);
+				const errorText = getDisplayErrorMessage(e.message);
+				onError(errorText);
 			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
