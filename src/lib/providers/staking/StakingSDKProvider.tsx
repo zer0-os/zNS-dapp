@@ -101,23 +101,32 @@ export const StakingSDKProvider: React.FC<StakingProviderType> = ({
 			return;
 		}
 
-		if (!library) {
-			const instance = zfi.createInstance({
-				wildPoolAddress: contractAddresses.wildStakingPool,
-				lpTokenPoolAddress: contractAddresses.lpStakingPool,
-				factoryAddress: contractAddresses.stakeFactory,
-				provider: new ethers.providers.JsonRpcProvider(
-					RPC_URLS[defaultNetworkId],
-				),
-			});
+		let instance;
 
-			setInstance(instance);
+		if (chainId === 4) {
+			instance = zfi.createInstance({
+				wildPoolAddress: '0xE0Bb298Afc5dC12918d02732c824DA44e7D61E2a',
+				lpTokenPoolAddress: '0xe7BEeedAf11eE695C4aE64A01b24F3F7eA294aB6',
+				factoryAddress: '0xb1d051095B6b2f6C93198Cbaa9bb7cB2d607215C',
+				provider:
+					library ??
+					new ethers.providers.JsonRpcProvider(
+						'https://rinkeby.infura.io/v3/fa959ead3761429bafa6995a4b25397e',
+						4,
+					),
+			});
+			instance.wildPool
+				.poolApr()
+				.then((d) => console.log(d))
+				.catch((e) => console.error('Staking SDK Error:', e));
 		} else {
-			const instance = zfi.createInstance({
+			instance = zfi.createInstance({
 				wildPoolAddress: contractAddresses.wildStakingPool,
 				lpTokenPoolAddress: contractAddresses.lpStakingPool,
 				factoryAddress: contractAddresses.stakeFactory,
-				provider: library,
+				provider:
+					library ??
+					new ethers.providers.JsonRpcProvider(RPC_URLS[defaultNetworkId]),
 			});
 
 			setInstance(instance);
