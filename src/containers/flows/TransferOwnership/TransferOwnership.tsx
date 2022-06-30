@@ -15,6 +15,7 @@ import { BUTTONS, MESSAGES, STEP_TITLES } from './TransferOwnership.constants';
 
 //- Utils Imports
 import { isValid } from './TransferOwnership.utils';
+import { getDisplayErrorMessage } from 'lib/utils/error';
 
 //- Library Imports
 import { useTransfer } from 'lib/hooks/useTransfer';
@@ -88,8 +89,8 @@ const TransferOwnership = ({
 				walletAddress,
 				onClose,
 			});
-		} catch (e) {
-			setError(MESSAGES.TRANSACTION_ERROR);
+		} catch (e: any) {
+			setError(e.message);
 		}
 		if (!isMounted.current) return;
 		setIsLoading(false);

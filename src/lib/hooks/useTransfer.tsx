@@ -8,16 +8,18 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 // - Library Imports
 import { TransferSubmitParams } from 'lib/types';
 import useNotification from 'lib/hooks/useNotification';
+import { useZnsSdk } from 'lib/hooks/sdk';
+import { getDisplayErrorMessage } from 'lib/utils/error';
 
 //- Hooks
 import { useTransferRedux } from 'store/transfer/hooks';
 
 //- Constant Imports
+import { ERRORS } from 'constants/errors';
 import {
 	getTransferSuccessMessage,
 	MESSAGES,
 } from 'containers/flows/TransferOwnership/TransferOwnership.constants';
-import { useZnsSdk } from 'lib/hooks/sdk';
 
 export type UseTransferReturn = {
 	transferring: TransferSubmitParams[];
@@ -40,32 +42,47 @@ export const useTransfer = (): UseTransferReturn => {
 
 			if (!account || !library) {
 				console.error(MESSAGES.REQUEST_NO_WALLET);
-				return;
+				throw new Error(MESSAGES.REQUEST_NO_WALLET);
 			}
+
 			if (account.toLowerCase() !== params.ownerId.toLowerCase()) {
 				console.error(MESSAGES.REQUEST_NOT_OWNER);
-				return;
+				throw new Error(MESSAGES.REQUEST_NOT_OWNER);
 			}
 
 			if (account.toLowerCase() === params.walletAddress.toLowerCase()) {
 				console.error(MESSAGES.REQUEST_ADDRESS_NOT_VALID_ERROR);
-				return;
+				throw new Error(MESSAGES.REQUEST_ADDRESS_NOT_VALID_ERROR);
 			}
 
 			try {
-				const tx = await sdk.transferDomainOwnership(
-					params.walletAddress,
-					params.domainId,
-					library.getSigner(),
-				);
+				let tx;
+				// Signature request
+				try {
+					tx = await sdk.transferDomainOwnership(
+						params.walletAddress,
+						params.domainId,
+						library.getSigner(),
+					);
+				} catch (e: any) {
+					console.error(e);
+					const errorText = getDisplayErrorMessage(e.message);
+					throw new Error(errorText);
+				}
 
 				// start transferring
 				addNotification(MESSAGES.REQUEST_TRANSFER_STARTED);
 				reduxActions.setTransferring(params);
 				params.onClose();
 
-				// in transferring
-				await tx.wait();
+				// Transaction request
+				try {
+					// in transferring
+					await tx.wait();
+				} catch (e: any) {
+					console.error(e);
+					throw new Error(ERRORS.TRANSACTION);
+				}
 
 				// completed transferring
 				addNotification(successNotification);
