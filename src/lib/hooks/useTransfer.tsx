@@ -9,7 +9,6 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import { TransferSubmitParams } from 'lib/types';
 import useNotification from 'lib/hooks/useNotification';
 import { useZnsSdk } from 'lib/hooks/sdk';
-import { getDisplayErrorMessage } from 'lib/utils/error';
 
 //- Hooks
 import { useTransferRedux } from 'store/transfer/hooks';
