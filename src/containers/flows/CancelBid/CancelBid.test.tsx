@@ -20,7 +20,7 @@ import CancelBid from './CancelBid';
 
 // Constants Imports
 import constants from './CancelBid.constants';
-import { ERRORS } from 'constants/errors';
+import * as ERROR_TEXT from 'constants/errors';
 
 /////////////////////////////
 // Mock external functions //
@@ -64,6 +64,8 @@ jest.mock('lib/hooks/sdk', () => ({
 		},
 	}),
 }));
+
+const OTHER_ERROR = 'some other error';
 
 ///////////
 // Setup //
@@ -219,7 +221,9 @@ test('should handle successful cancel bid request', async () => {
 });
 
 test('should handle rejected/failed signature request', async () => {
-	mockCancelBid.mockRejectedValue(undefined);
+	mockCancelBid.mockRejectedValue(
+		new Error(ERROR_TEXT.MESSAGES.MESSAGE_DENIED),
+	);
 
 	standardSetup();
 
@@ -235,7 +239,7 @@ test('should handle rejected/failed signature request', async () => {
 
 	screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V2);
 
-	await screen.findByText(ERRORS.SIGNATURE);
+	await screen.findByText(ERROR_TEXT.ERRORS.REJECTED_WALLET);
 
 	expect(console.error).toHaveBeenCalled();
 });
@@ -259,7 +263,29 @@ test('should handle rejected/failed transaction', async () => {
 	screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V2);
 	await screen.findByText(constants.MESSAGES.TEXT_CANCELLING_BID);
 
-	await screen.findByText(ERRORS.TRANSACTION);
+	await screen.findByText(ERROR_TEXT.ERRORS.TRANSACTION);
+
+	expect(console.error).toHaveBeenCalled();
+});
+
+test('should handle any other error thrown for generic error messaging', async () => {
+	mockCancelBid.mockRejectedValue(new Error(OTHER_ERROR));
+
+	standardSetup();
+
+	await screen.findByText(constants.MESSAGES.TEXT_LOADING);
+
+	var confirmButton = await screen.findByText(/confirm/i);
+	fireEvent.mouseUp(confirmButton);
+
+	const cancelBidButton = await screen.findByRole('button', {
+		name: /cancel bid/i,
+	});
+	fireEvent.mouseUp(cancelBidButton);
+
+	screen.getByText(constants.MESSAGES.TEXT_WAITING_FOR_WALLET_V2);
+
+	await screen.findByText(ERROR_TEXT.ERRORS.PROBLEM_OCCURRED);
 
 	expect(console.error).toHaveBeenCalled();
 });

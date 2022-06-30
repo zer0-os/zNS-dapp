@@ -16,7 +16,7 @@ import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 
 //- Utils Imports
-import { getErrorMessage } from 'lib/utils/error';
+import { getDisplayErrorMessage } from 'lib/utils/error';
 
 // Constants Imports
 import { ERRORS } from 'constants/errors';
@@ -102,9 +102,9 @@ const SetBuyNowContainer = ({
 					setError(ERRORS.TRANSACTION);
 				}
 				setCurrentStep(Step.SetBuyNow);
-			} catch (e) {
+			} catch (e: any) {
 				setCurrentStep(Step.ApproveZAuction);
-				const errorText = getErrorMessage(e);
+				const errorText = getDisplayErrorMessage(e.message);
 				setError(errorText);
 				console.error(e);
 			}
@@ -166,10 +166,10 @@ const SetBuyNowContainer = ({
 				if (onSuccess) {
 					onSuccess();
 				}
-			} catch (e) {
+			} catch (e: any) {
 				setCurrentStep(Step.SetBuyNow);
 				console.error(e);
-				const errorText = getErrorMessage(e);
+				const errorText = getDisplayErrorMessage(e.message);
 				setError(errorText);
 			}
 		})();

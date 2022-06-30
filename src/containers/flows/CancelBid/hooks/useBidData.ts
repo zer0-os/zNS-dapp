@@ -84,7 +84,6 @@ const useBidData = (domainId: string, bidNonce: string): UseBidDataReturn => {
 		getData().catch((e) => {
 			console.error(e);
 			setIsLoading(false);
-			throw new Error(ERRORS.FAILED_TO_RETRIEVE_BID_DATA);
 		});
 	};
 

@@ -10,7 +10,7 @@ import useCancelBid, { UseCancelBidReturn } from './useCancelBid';
 
 //- Constants Imports
 import constants from '../CancelBid.constants';
-import { ERRORS } from 'constants/errors';
+import * as ERROR_TEXT from 'constants/errors';
 
 //- Mocks Imports
 import * as mocks from './useCanceBid.mocks';
@@ -39,6 +39,8 @@ jest.mock('@web3-react/core', () => ({
 		},
 	}),
 }));
+
+const OTHER_ERROR = 'some other error';
 
 ///////////
 // Setup //
@@ -106,7 +108,9 @@ describe('useCancelBid', () => {
 		});
 
 		test('handles failed/rejected signature', async () => {
-			mockCancelBid.mockRejectedValue(undefined);
+			mockCancelBid.mockRejectedValue(
+				new Error(ERROR_TEXT.MESSAGES.MESSAGE_DENIED),
+			);
 			const hook = setupHook();
 
 			var err: Error | undefined;
@@ -119,7 +123,25 @@ describe('useCancelBid', () => {
 			}
 
 			expect(mockCancelBid).toBeCalledTimes(1);
-			expect(err?.message).toBe(ERRORS.SIGNATURE);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.REJECTED_WALLET);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles "other" errors - generic output', async () => {
+			mockCancelBid.mockRejectedValue(new Error(OTHER_ERROR));
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.cancel(mocks.mockBidV1);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockCancelBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.PROBLEM_OCCURRED);
 			expect(console.error).toHaveBeenCalled();
 		});
 
@@ -140,7 +162,7 @@ describe('useCancelBid', () => {
 			}
 
 			expect(mockTx).toBeCalledTimes(1);
-			expect(err?.message).toBe(ERRORS.TRANSACTION);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.TRANSACTION);
 			expect(console.error).toHaveBeenCalled();
 		});
 	});
@@ -180,7 +202,9 @@ describe('useCancelBid', () => {
 		});
 
 		test('handles failed/rejected signature', async () => {
-			mockCancelBid.mockRejectedValue(undefined);
+			mockCancelBid.mockRejectedValue(
+				new Error(ERROR_TEXT.MESSAGES.MESSAGE_DENIED),
+			);
 			const hook = setupHook();
 
 			var err: Error | undefined;
@@ -188,12 +212,30 @@ describe('useCancelBid', () => {
 				await act(async () => {
 					await hook.cancel(mocks.mockBidV2);
 				});
-			} catch (e) {
+			} catch (e: any) {
 				err = e as Error;
 			}
 
 			expect(mockCancelBid).toBeCalledTimes(1);
-			expect(err?.message).toBe(ERRORS.SIGNATURE);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.REJECTED_WALLET);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles "other" errors - generic output', async () => {
+			mockCancelBid.mockRejectedValue(new Error(OTHER_ERROR));
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.cancel(mocks.mockBidV2);
+				});
+			} catch (e: any) {
+				err = e as Error;
+			}
+
+			expect(mockCancelBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.PROBLEM_OCCURRED);
 			expect(console.error).toHaveBeenCalled();
 		});
 
@@ -214,7 +256,7 @@ describe('useCancelBid', () => {
 			}
 
 			expect(mockTx).toBeCalledTimes(1);
-			expect(err?.message).toBe(ERRORS.TRANSACTION);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.TRANSACTION);
 			expect(console.error).toHaveBeenCalled();
 		});
 	});

@@ -12,8 +12,8 @@ import * as ERROR_TEXT from 'constants/errors';
 //- Hooks Imports
 import useAcceptBid, { UseAcceptBidReturn } from './useAcceptBid';
 
-//- Type Imports
-import { ZAuctionVersionType } from '../AcceptBid.types';
+//- Mocks Imports
+import * as mocks from './useAcceptBid.mocks';
 
 //////////
 // Mock //
@@ -40,18 +40,7 @@ jest.mock('@web3-react/core', () => ({
 	}),
 }));
 
-const mockBid = {
-	bidNonce: '1',
-	bidder: '0x000000000000000000000000',
-	signedMessage: 'message',
-	tokenId: 'id',
-	amount: '1000000',
-	timestamp: '0',
-	contract: '0x000000000000000000000000',
-	startBlock: '0',
-	expireBlock: '0',
-	version: ZAuctionVersionType.V2,
-};
+const OTHER_ERROR = 'some other error';
 
 ///////////
 // Setup //
@@ -83,88 +72,218 @@ const setupHook = () => {
 ///////////
 // Tests //
 ///////////
+describe('useAcceptBid', () => {
+	describe('zAuction Version 1 Bid', () => {
+		test('successfully accepts bid', async () => {
+			mockAcceptBid.mockResolvedValue({ wait: mockTx });
+			mockTx.mockResolvedValue(undefined);
+			const hook = setupHook();
 
-test('successfully accepts bid', async () => {
-	mockAcceptBid.mockResolvedValue({ wait: mockTx });
-	mockTx.mockResolvedValue(undefined);
-	const hook = setupHook();
+			await act(() => hook.accept(mocks.mockBidV1));
 
-	await act(() => hook.accept(mockBid));
+			expect(mockAcceptBid).toBeCalledTimes(1);
+			expect(mockTx).toBeCalledTimes(1);
+			expect(mockAcceptBid).toBeCalledWith(mocks.mockBidV1, { isSigner: true });
+		});
 
-	expect(mockAcceptBid).toBeCalledTimes(1);
-	expect(mockTx).toBeCalledTimes(1);
-	expect(mockAcceptBid).toBeCalledWith(mockBid, { isSigner: true });
-});
+		test('status updates as expected', async () => {
+			mockAcceptBid.mockResolvedValue({ wait: mockTx });
+			const hook = setupHook();
 
-test('status updates as expected', async () => {
-	mockAcceptBid.mockResolvedValue({ wait: mockTx });
-	const hook = setupHook();
+			act(() => {
+				hook.accept(mocks.mockBidV1);
+			});
 
-	act(() => {
-		hook.accept(mockBid);
+			expect(hook.status).toBe(MESSAGES.TEXT_WAITING_FOR_WALLET);
+			await (() => expect(hook.status).toBe(MESSAGES.TEXT_ACCEPTING_BID));
+			await waitFor(() => expect(mockTx).toHaveBeenCalledTimes(1));
+			expect(hook.status).toBeUndefined();
+		});
+
+		test('handles failed/rejected signature when data has already been consumed', async () => {
+			mockAcceptBid.mockRejectedValue(
+				new Error(ERROR_TEXT.MESSAGES.DATA_CONSUMED),
+			);
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.accept(mocks.mockBidV1);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockAcceptBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.DATA_CONSUMED);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles failed/rejected signature when rejected by wallet', async () => {
+			mockAcceptBid.mockRejectedValue(
+				new Error(ERROR_TEXT.MESSAGES.TRANSACTION_DENIED),
+			);
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.accept(mocks.mockBidV1);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockAcceptBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.REJECTED_WALLET);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles alternative errors thrown for generic error messaging', async () => {
+			mockAcceptBid.mockRejectedValue(new Error(OTHER_ERROR));
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.accept(mocks.mockBidV1);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockAcceptBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.PROBLEM_OCCURRED);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles failed/rejected transaction', async () => {
+			mockAcceptBid.mockResolvedValue({
+				wait: mockTx,
+			});
+			mockTx.mockRejectedValue(undefined);
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.accept(mocks.mockBidV1);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockTx).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.TRANSACTION);
+			expect(console.error).toHaveBeenCalled();
+		});
 	});
 
-	expect(hook.status).toBe(MESSAGES.TEXT_WAITING_FOR_WALLET);
-	await (() => expect(hook.status).toBe(MESSAGES.TEXT_ACCEPTING_BID));
-	await waitFor(() => expect(mockTx).toHaveBeenCalledTimes(1));
-	expect(hook.status).toBeUndefined();
-});
+	describe('zAuction Version 2 Bid', () => {
+		test('successfully accepts bid', async () => {
+			mockAcceptBid.mockResolvedValue({ wait: mockTx });
+			mockTx.mockResolvedValue(undefined);
+			const hook = setupHook();
 
-test('handles failed/rejected signature when data has already been consumed', async () => {
-	mockAcceptBid.mockRejectedValue(new Error(ERROR_TEXT.MESSAGES.DATA_CONSUMED));
-	const hook = setupHook();
+			await act(() => hook.accept(mocks.mockBidV2));
 
-	var err: Error | undefined;
-	try {
-		await act(async () => {
-			await hook.accept(mockBid);
+			expect(mockAcceptBid).toBeCalledTimes(1);
+			expect(mockTx).toBeCalledTimes(1);
+			expect(mockAcceptBid).toBeCalledWith(mocks.mockBidV2, { isSigner: true });
 		});
-	} catch (e) {
-		err = e as Error;
-	}
 
-	expect(mockAcceptBid).toBeCalledTimes(1);
-	expect(err?.message).toBe(ERROR_TEXT.ERRORS.DATA_CONSUMED);
-	expect(console.error).toHaveBeenCalled();
-});
+		test('status updates as expected', async () => {
+			mockAcceptBid.mockResolvedValue({ wait: mockTx });
+			const hook = setupHook();
 
-test('handles failed/rejected signature when rejected by wallet', async () => {
-	mockAcceptBid.mockRejectedValue(
-		new Error(ERROR_TEXT.MESSAGES.TRANSACTION_DENIED),
-	);
-	const hook = setupHook();
+			act(() => {
+				hook.accept(mocks.mockBidV2);
+			});
 
-	var err: Error | undefined;
-	try {
-		await act(async () => {
-			await hook.accept(mockBid);
+			expect(hook.status).toBe(MESSAGES.TEXT_WAITING_FOR_WALLET);
+			await (() => expect(hook.status).toBe(MESSAGES.TEXT_ACCEPTING_BID));
+			await waitFor(() => expect(mockTx).toHaveBeenCalledTimes(1));
+			expect(hook.status).toBeUndefined();
 		});
-	} catch (e) {
-		err = e as Error;
-	}
 
-	expect(mockAcceptBid).toBeCalledTimes(1);
-	expect(err?.message).toBe(ERROR_TEXT.ERRORS.REJECTED_WALLET);
-	expect(console.error).toHaveBeenCalled();
-});
+		test('handles failed/rejected signature when data has already been consumed', async () => {
+			mockAcceptBid.mockRejectedValue(
+				new Error(ERROR_TEXT.MESSAGES.DATA_CONSUMED),
+			);
+			const hook = setupHook();
 
-test('handles failed/rejected transaction', async () => {
-	mockAcceptBid.mockResolvedValue({
-		wait: mockTx,
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.accept(mocks.mockBidV2);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockAcceptBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.DATA_CONSUMED);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles failed/rejected signature when rejected by wallet', async () => {
+			mockAcceptBid.mockRejectedValue(
+				new Error(ERROR_TEXT.MESSAGES.TRANSACTION_DENIED),
+			);
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.accept(mocks.mockBidV2);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockAcceptBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.REJECTED_WALLET);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles alternative errors thrown for generic error messaging', async () => {
+			mockAcceptBid.mockRejectedValue(new Error(OTHER_ERROR));
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.accept(mocks.mockBidV2);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockAcceptBid).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.PROBLEM_OCCURRED);
+			expect(console.error).toHaveBeenCalled();
+		});
+
+		test('handles failed/rejected transaction', async () => {
+			mockAcceptBid.mockResolvedValue({
+				wait: mockTx,
+			});
+			mockTx.mockRejectedValue(undefined);
+			const hook = setupHook();
+
+			var err: Error | undefined;
+			try {
+				await act(async () => {
+					await hook.accept(mocks.mockBidV2);
+				});
+			} catch (e) {
+				err = e as Error;
+			}
+
+			expect(mockTx).toBeCalledTimes(1);
+			expect(err?.message).toBe(ERROR_TEXT.ERRORS.TRANSACTION);
+			expect(console.error).toHaveBeenCalled();
+		});
 	});
-	mockTx.mockRejectedValue(undefined);
-	const hook = setupHook();
-
-	var err: Error | undefined;
-	try {
-		await act(async () => {
-			await hook.accept(mockBid);
-		});
-	} catch (e) {
-		err = e as Error;
-	}
-
-	expect(mockTx).toBeCalledTimes(1);
-	expect(err?.message).toBe(ERROR_TEXT.ERRORS.TRANSACTION);
-	expect(console.error).toHaveBeenCalled();
 });

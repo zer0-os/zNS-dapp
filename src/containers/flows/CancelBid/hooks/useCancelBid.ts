@@ -12,7 +12,7 @@ import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
 //- Utils Imports
-import { getErrorMessage } from 'lib/utils/error';
+import { getDisplayErrorMessage } from 'lib/utils/error';
 
 //- Constants Imports
 import constants from '../CancelBid.constants';
@@ -56,9 +56,9 @@ const useCancelBid = (): UseCancelBidReturn => {
 					cancelBidOnChain,
 					library.getSigner(),
 				);
-			} catch (e) {
+			} catch (e: any) {
 				console.error(e);
-				const errorText = getErrorMessage(e);
+				const errorText = getDisplayErrorMessage(e.message);
 				throw new Error(errorText);
 			}
 

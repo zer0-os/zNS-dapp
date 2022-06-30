@@ -37,7 +37,7 @@ import { useZnsContracts } from 'lib/contracts';
 import useBidData from './hooks/useBidData';
 
 //- Utils Imports
-import { getErrorMessage } from 'lib/utils/error';
+import { getDisplayErrorMessage } from 'lib/utils/error';
 
 //- Types Imports
 import { Step, StepContent } from './MakeABid.types';
@@ -158,9 +158,9 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				}
 				setCurrentStep(Step.ConfirmDetails);
 				setStepContent(StepContent.Details);
-			} catch (e) {
+			} catch (e: any) {
 				setStepContent(StepContent.ApproveZAuction);
-				const errorText = getErrorMessage(e);
+				const errorText = getDisplayErrorMessage(e.message);
 				setError(errorText);
 			}
 		})();
@@ -192,12 +192,12 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 			);
 			setIsBidPlaced(true);
 			setStepContent(StepContent.Success);
-		} catch (e) {
+		} catch (e: any) {
 			if (!isMounted.current) {
 				return;
 			}
 			setCurrentStep(Step.ConfirmDetails);
-			const errorText = getErrorMessage(e);
+			const errorText = getDisplayErrorMessage(e.message);
 			setError(errorText);
 			setStepContent(StepContent.Details);
 		}

@@ -22,7 +22,7 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 import { StepContent, Step } from './AcceptBid.types';
 
 //- Utils Imports
-import { getErrorMessage } from 'lib/utils/error';
+import { getDisplayErrorMessage } from 'lib/utils/error';
 
 //- Constants Imports
 import {
@@ -147,9 +147,9 @@ const AcceptBid = ({
 				}
 				setCurrentStep(Step.ConfirmDetails);
 				setStepContent(StepContent.Details);
-			} catch (e) {
+			} catch (e: any) {
 				setStepContent(StepContent.ApproveZAuction);
-				const errorText = getErrorMessage(e);
+				const errorText = getDisplayErrorMessage(e.message);
 				setError(errorText);
 			}
 		})();
@@ -169,9 +169,9 @@ const AcceptBid = ({
 			);
 			setIsTransactionComplete(true);
 			setStepContent(StepContent.Success);
-		} catch (e) {
+		} catch (e: any) {
 			setCurrentStep(Step.ConfirmDetails);
-			const errorText = getErrorMessage(e);
+			const errorText = getDisplayErrorMessage(e.message);
 			setError(errorText);
 			setStepContent(StepContent.Details);
 		}
