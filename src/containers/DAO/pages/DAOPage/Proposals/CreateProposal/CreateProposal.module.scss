@@ -1,0 +1,329 @@
+@use 'styles/variables/dimensions';
+
+.Container {
+	margin: 24px 0 !important;
+
+	.NavLink {
+		display: flex;
+		align-items: center;
+		margin: 8px 0;
+		color: var(--color-text-primary);
+		font-size: 14px;
+		font-weight: bold;
+
+		&:hover {
+			color: var(--color-text-primary);
+			text-shadow: var(--glow-text-white);
+		}
+
+		svg {
+			height: 1rem;
+			width: 1rem;
+			margin-right: 4px;
+		}
+	}
+
+	.Content {
+		.Title {
+			margin-top: 24px;
+			font-size: 36px;
+			font-weight: 700;
+			line-height: 44px;
+
+			@media only screen and (max-width: #{dimensions.$breakpoint-mobile-xl}) {
+				font-size: 24px;
+				line-height: 30px;
+			}
+		}
+
+		.Section {
+			margin-top: 48px;
+
+			&__Title {
+				display: flex;
+				align-items: center;
+				font-size: 18px;
+				font-weight: 700;
+				line-height: 22px;
+
+				>span {
+					margin-left: 5px;
+				}
+			}
+
+			&__Content {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				column-gap: 24px;
+				row-gap: 24px;
+				padding: 24px 0;
+
+				@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
+					grid-template-columns: repeat(1, 1fr);
+				}
+
+				&_Col {
+					.TokenDropdown {
+						width: 100%;
+						cursor: pointer;
+
+						>div {
+							width: 100%;
+						}
+
+						>ul {
+							top: 0;
+							width: 100%;
+							padding: 0 16px 8px 16px;
+
+							>li {
+								padding: 8px 0;
+							}
+
+							>li.TokenDropdownSelectedItem {
+								padding: 16px 0;
+								font-weight: bold;
+								background: unset !important;
+								border-bottom: 1px solid #333333;
+
+								&:hover {
+									text-shadow: unset;
+								}
+							}
+						}
+
+						.ChevronDownIcon {
+							position: absolute;
+							top: 20px;
+							right: 20px;
+						}
+
+						.TextInputWithTopPlaceHolder>input {
+							color: #fff;
+							cursor: pointer;
+						}
+					}
+
+					&.MarkdownEditorCol {
+						margin-top: 24px;
+						grid-column: 1 / -1;
+
+						.MarkdownEditor {
+							&__Container {
+								:global(.w-md-editor-toolbar) {
+									height: 40px !important;
+									background: #1A1927;
+									border: unset;
+
+									>ul:first-child {
+										flex: 1;
+										display: flex;
+										align-items: center;
+										justify-content: center;
+										flex-wrap: wrap;
+
+										>li>button {
+											color: #fff;
+											height: 24px;
+
+											>svg {
+												width: 18px;
+												height: 18px;
+											}
+
+											@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
+												height: 20px;
+
+												>svg {
+													width: 12px;
+													height: 12px;
+												}
+											}
+										}
+
+										:global(.w-md-editor-toolbar-divider) {
+											margin: 0 10px !important;
+											background-color: unset;
+
+											@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
+												margin: 0 5px !important;
+											}
+										}
+									}
+
+									>ul:last-child {
+										display: none;
+									}
+								}
+
+								:global(.w-md-editor) {
+									height: auto !important;
+									color: #fff;
+									background-color: #0a0a0a;
+									box-shadow: unset;
+								}
+
+								:global(.w-md-editor-content) {
+									margin-top: 2px;
+									padding: 24px;
+									min-height: 240px;
+									border: 1px solid #6A3991;
+									border-radius: 24px;
+
+									textarea {
+										font-size: 16px;
+										line-height: 24px;
+
+										&::placeholder {
+											color: #bfbfbf;
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				&.VotingDetail__Section__Content {
+					grid-template-columns: repeat(4, 1fr);
+					column-gap: 8px;
+					row-gap: 8px;
+
+					@media only screen and (max-width: #{dimensions.$breakpoint-tablet-m}) {
+						grid-template-columns: repeat(2, 1fr);
+					}
+
+					@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
+						grid-template-columns: repeat(1, 1fr);
+					}
+
+					.VotingDetailCol {
+						display: flex;
+						flex-direction: column;
+						justify-content: center;
+						width: 100%;
+						height: 48px;
+						margin: 4px 0;
+						padding: 8px 8px 8px 20px;
+						background: #120d16;
+						border-radius: 9999px;
+
+						>span:first-child {
+							font-size: var(--font-size-small);
+							color: #bcbcbc;
+						}
+
+						>span:last-child {
+							font-size: var(--font-size-small);
+							margin-top: 2px;
+						}
+					}
+				}
+			}
+
+			.TextInputWithTopPlaceHolder {
+				>span {
+					color: #bfbfbf;
+				}
+
+				>input {
+					border-color: #6a3991;
+					background: unset !important;
+				}
+
+				:global(.input-error-message) {
+					color: #d379ff;
+				}
+			}
+
+			.InputField {
+				&__Title {}
+			}
+
+			.DaoAddress {
+				&__Wrapper {
+					width: 100%;
+					height: 48px;
+					padding: 5px 24px;
+					border-radius: 24px;
+					color: var(--color-text-primary);
+					background: #120D16;
+					border-radius: 24px;
+				}
+
+				&__Header {
+					display: flex;
+					font-size: 12px;
+					font-weight: 400;
+					line-height: 15px;
+					color: #BFBFBF;
+
+					>span {
+						margin-left: 5px;
+					}
+				}
+
+				&__Content {
+					margin-top: 5px;
+					font-size: 12px;
+					font-weight: 400;
+					line-height: 15px;
+				}
+			}
+
+			.SubmitButton {
+				margin: 0 auto;
+			}
+		}
+	}
+}
+
+.TooltipContent {
+	padding: 12px;
+}
+
+.Confirmation {
+	text-align: center;
+
+	h2 {
+		font-size: 24px;
+	}
+
+	.Publishing {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&_Error {
+			margin-top: 24px;
+			color: #f6677c;
+		}
+	}
+}
+
+.Notes {
+	display: flex;
+	justify-content: center;
+	padding: 64px 24px 24px;
+
+	&_Section {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 24px;
+		max-width: 512px;
+
+		&_Note {
+			text-align: center;
+
+			&_Warning {
+				color: #f58c61;
+			}
+		}
+
+		&_Action {
+			margin-top: 24px;
+		}
+	}
+}

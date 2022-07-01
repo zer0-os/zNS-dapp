@@ -1,5 +1,5 @@
 // React
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
 	Link,
 	Redirect,
@@ -7,13 +7,14 @@ import {
 	Switch,
 	useLocation,
 	useRouteMatch,
+	useHistory,
 } from 'react-router-dom';
 
 // Components
 import Assets from './Assets/Assets';
 import Transactions from './Transactions/Transactions';
-import { Proposals, ProposalDetail } from './Proposals';
-import { LoadingIndicator, StatsWidget } from 'components';
+import { Proposals, ProposalDetail, CreateProposal } from './Proposals';
+import { LoadingIndicator, StatsWidget, FutureButton } from 'components';
 
 // Hooks
 import { useNavbar } from 'lib/hooks/useNavbar';
@@ -36,6 +37,9 @@ import { ArrowLeft } from 'react-feather';
 import styles from './DAOPage.module.scss';
 import genericStyles from '../Container.module.scss';
 import classNames from 'classnames/bind';
+
+// Constants
+import { DAO_CREATE_PROPPAL } from './Proposals/Proposals.constants';
 const cx = classNames.bind(genericStyles);
 
 const MILLIFY_THRESHOLD = 1000000;
@@ -47,6 +51,7 @@ const toDaoPage = (zna: string) => (route: ROUTES) =>
 const DAOPage: React.FC = () => {
 	const { pathname } = useLocation();
 	const { path } = useRouteMatch();
+	const history = useHistory();
 	const { setNavbarTitle } = useNavbar();
 
 	const { dao, isLoading, zna } = useCurrentDao();
@@ -59,7 +64,7 @@ const DAOPage: React.FC = () => {
 
 	const to = toDaoPage(zna);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (dao) {
 			setNavbarTitle('DAOs - ' + dao.title);
 		} else {
@@ -83,6 +88,10 @@ const DAOPage: React.FC = () => {
 			}
 		/>
 	);
+
+	const handleNewProposalButtonClick = useCallback(() => {
+		history.push(`${to(ROUTES.ZDAO_PROPOSALS)}/${DAO_CREATE_PROPPAL}`);
+	}, [history, to]);
 
 	return (
 		<div className={cx(genericStyles.Container, 'main', 'background-primary')}>
@@ -117,31 +126,40 @@ const DAOPage: React.FC = () => {
 						</ul>
 
 						<nav className={genericStyles.Links}>
-							<Link
-								className={cx({
-									Active: pathname.includes(ROUTES.ZDAO_ASSETS),
-								})}
-								to={to(ROUTES.ZDAO_ASSETS)}
-							>
-								Assets
-							</Link>
-							<Link
-								className={cx({
-									Active: pathname.includes(ROUTES.ZDAO_TRANSACTIONS),
-								})}
-								to={to(ROUTES.ZDAO_TRANSACTIONS)}
-							>
-								Transactions
-							</Link>
-							{!!dao.ens && (
+							<div className={genericStyles.LinksWrapper}>
 								<Link
 									className={cx({
-										Active: pathname.includes(ROUTES.ZDAO_PROPOSALS),
+										Active: pathname.includes(ROUTES.ZDAO_ASSETS),
 									})}
-									to={to(ROUTES.ZDAO_PROPOSALS)}
+									to={to(ROUTES.ZDAO_ASSETS)}
 								>
-									Proposals
+									Assets
 								</Link>
+								<Link
+									className={cx({
+										Active: pathname.includes(ROUTES.ZDAO_TRANSACTIONS),
+									})}
+									to={to(ROUTES.ZDAO_TRANSACTIONS)}
+								>
+									Transactions
+								</Link>
+								{!!dao.ens && (
+									<Link
+										className={cx({
+											Active: pathname.includes(ROUTES.ZDAO_PROPOSALS),
+										})}
+										to={to(ROUTES.ZDAO_PROPOSALS)}
+									>
+										Proposals
+									</Link>
+								)}
+							</div>
+
+							{/* New Proposal Button */}
+							{pathname === to(ROUTES.ZDAO_PROPOSALS) && (
+								<FutureButton glow onClick={handleNewProposalButtonClick}>
+									NEW PROPOSALS
+								</FutureButton>
 							)}
 						</nav>
 					</div>
@@ -169,6 +187,11 @@ const DAOPage: React.FC = () => {
 							exact
 							path={to(ROUTES.ZDAO_PROPOSALS)}
 							render={() => <Proposals />}
+						/>
+						<Route
+							exact
+							path={`${to(ROUTES.ZDAO_PROPOSALS)}/${DAO_CREATE_PROPPAL}`}
+							render={() => <CreateProposal dao={dao} />}
 						/>
 						<Route
 							exact

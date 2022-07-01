@@ -4,7 +4,7 @@
 @use 'styles/variables/dimensions';
 
 .Container {
-	> * {
+	>* {
 		&:not(:first-child) {
 			margin-top: 9px;
 		}
@@ -15,7 +15,7 @@
 		flex-direction: column;
 		gap: 16px;
 
-		> * {
+		>* {
 			&:last-child {
 				display: none;
 			}
@@ -25,7 +25,7 @@
 			flex-direction: row;
 			margin: 16px 0;
 
-			> * {
+			>* {
 				flex: 1;
 				align-self: stretch;
 
@@ -37,6 +37,9 @@
 	}
 
 	.Links {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 		padding: 8px 16px;
 		margin-top: 16px;
 
@@ -44,28 +47,30 @@
 			margin-top: 0;
 		}
 
-		> a {
-			color: #{colors.$grey-lighter-2};
-			font-size: #{typography.$size-large};
-			font-weight: #{typography.$font-weight-bold};
+		.LinksWrapper {
+			>a {
+				color: #{colors.$grey-lighter-2};
+				font-size: #{typography.$size-large};
+				font-weight: #{typography.$font-weight-bold};
 
-			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-				font-size: 24px;
-			}
+				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+					font-size: 24px;
+				}
 
-			transition: color #{animations.$time-short} ease-in-out;
+				transition: color #{animations.$time-short} ease-in-out;
 
-			&:not(:first-of-type) {
-				margin-left: 40px;
-			}
+				&:not(:first-of-type) {
+					margin-left: 40px;
+				}
 
-			&.Active {
-				color: #{colors.$text-primary};
-				text-shadow: #{colors.$text-glow-primary} !important;
-			}
+				&.Active {
+					color: #{colors.$text-primary};
+					text-shadow: #{colors.$text-glow-primary} !important;
+				}
 
-			&:hover {
-				text-shadow: none;
+				&:hover {
+					text-shadow: none;
+				}
 			}
 		}
 	}

@@ -4,5 +4,8 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "[xml]": {
         "editor.defaultFormatter": "DotJoshJohnson.xml"
+    },
+    "[scss]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
     }
 }

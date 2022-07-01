@@ -19,18 +19,20 @@ type OptionDropdownProps = {
 	onSelect: (selection: Option) => void;
 	children: React.ReactNode;
 	className?: string;
+	selectedClassName?: string;
 	drawerStyle?: React.CSSProperties;
 	disableSelection?: boolean;
 };
 
-const OptionDropdown: React.FC<OptionDropdownProps> = ({
+export const OptionDropdown: React.FC<OptionDropdownProps> = ({
 	options,
 	selected,
 	onSelect,
 	children,
-	className,
 	drawerStyle,
 	disableSelection,
+	className,
+	selectedClassName,
 }) => {
 	//////////////////
 	// State & Refs //
@@ -78,7 +80,9 @@ const OptionDropdown: React.FC<OptionDropdownProps> = ({
 					{options.map((o, index) => (
 						<li
 							className={
-								selected === o && !disableSelection ? styles.Selected : ''
+								selected === o && !disableSelection
+									? `${styles.Selected} ${selectedClassName}`
+									: ''
 							}
 							onClick={() => select(o)}
 							key={index}

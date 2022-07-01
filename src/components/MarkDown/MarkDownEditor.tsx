@@ -1,6 +1,6 @@
 import React from 'react';
+import classNames from 'classnames/bind';
 import MDEditor, { ICommand } from '@uiw/react-md-editor';
-import { usePropsState } from 'lib/hooks/usePropsState';
 import {
 	MARKDOWN_EDITOR_MODES,
 	MARKDOWN_EDITOR_TOOLBAR_TITLES,
@@ -9,13 +9,19 @@ import styles from './MarkDown.module.scss';
 
 type MarkDownEditorProps = {
 	text?: string;
+	placeholder?: string;
+	containerClassName?: string;
+	onChange?: (value?: string) => void;
+	errorText?: string;
 };
 
 export const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
 	text = '',
+	placeholder,
+	containerClassName = '',
+	onChange,
+	errorText = '',
 }) => {
-	const [value, setValue] = usePropsState<string>(text);
-
 	const onCommandsFilter = (command: ICommand<string>) => {
 		switch (command.name) {
 			case MARKDOWN_EDITOR_MODES.LIVE:
@@ -51,13 +57,21 @@ export const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
 	};
 
 	return (
-		<div className={styles.MarkDownEditorContainer}>
+		<div
+			className={classNames(styles.MarkDownEditorContainer, containerClassName)}
+		>
 			<MDEditor
-				value={value}
-				onChange={(v: string = '') => setValue(v)}
+				value={text}
+				onChange={onChange}
 				commandsFilter={onCommandsFilter}
 				preview={MARKDOWN_EDITOR_MODES.EDIT}
+				textareaProps={{
+					placeholder,
+				}}
 			/>
+			{errorText && (
+				<span className={classNames(styles.ErrorMessage)}>{errorText}</span>
+			)}
 		</div>
 	);
 };
