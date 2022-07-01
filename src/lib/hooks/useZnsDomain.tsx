@@ -8,8 +8,9 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { getMetadata } from 'lib/metadata';
-import { Domain, TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { Domain, ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import useAsyncEffect from 'use-async-effect';
+import { isRootDomain } from 'lib/utils';
 
 export type UseZnsDomainReturn = {
 	loading: boolean;
@@ -84,7 +85,9 @@ export const useZnsDomain = (
 
 	const getDomain = async (id: string) => {
 		const domain = formatDomain(await sdk.getDomainById(id));
-		const metadata = await getMetadata(domain.metadata);
+		const metadata = isRootDomain(domain.id)
+			? undefined
+			: await getMetadata(domain.metadata);
 		return { domain, metadata };
 	};
 
@@ -102,7 +105,7 @@ export const useZnsDomain = (
 	useAsyncEffect(async () => {
 		if (!paymentToken) return {};
 		setPaymentTokenInfo({
-			...((await getTokenInfo) as TokenPriceInfo),
+			...((await getTokenInfo) as ConvertedTokenInfo),
 			...{ id: paymentToken },
 		});
 	}, [paymentToken]);
@@ -120,7 +123,9 @@ export const useZnsDomain = (
 			setLoading(true);
 
 			const d = await getDomain(domainId);
-			const token = await sdk.zauction.getPaymentTokenForDomain(domainId);
+			const token = isRootDomain(d.domain.id)
+				? undefined
+				: await sdk.zauction.getPaymentTokenForDomain(domainId);
 			setPaymentToken(token);
 			if (loadingDomainId.current !== domainId) {
 				setLoading(false);

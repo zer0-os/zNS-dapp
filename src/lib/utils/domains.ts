@@ -23,6 +23,9 @@ const getSubnodeHash = (parentHash: string, labelHash: string): string => {
 	return calculatedHash;
 };
 
+export const isRootDomain = (domainId: string | undefined): boolean =>
+	domainId === rootDomainId;
+
 export const getDomainId = (name: string): string => {
 	let hashReturn = rootDomainId;
 

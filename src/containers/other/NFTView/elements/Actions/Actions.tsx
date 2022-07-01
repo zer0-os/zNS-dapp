@@ -60,7 +60,7 @@ const Actions = ({
 	const isBuyNow = Boolean(buyNowPrice) && !isOwnedByUser && Boolean(domainId);
 	const isViewBids =
 		isOwnedByUser !== undefined && isBiddable === true && Boolean(isBidData);
-	const tokenPriceUsd = paymentTokenInfo.price;
+	const tokenPriceUsd = Number(paymentTokenInfo.priceInUsd);
 
 	const highestBidTextValue =
 		Boolean(highestBid) && Boolean(tokenPriceUsd)

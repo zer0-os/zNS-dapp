@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 //- Library Imports
-import { formatNumber, formatEthers } from 'lib/utils';
+import { formatNumber, formatEthers, isRootDomain } from 'lib/utils';
 
 //- Style Imports
 import styles from './ZNS.module.scss';
@@ -184,7 +184,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 								tradeData?.lowestSale
 									? formatNumber(
 											Number(ethers.utils.formatEther(tradeData?.lowestSale)) *
-												paymentToken?.price,
+												Number(paymentToken?.priceInUsd),
 									  )
 									: 0
 						  }`
@@ -206,7 +206,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 												ethers.utils.formatEther(
 													(tradeData?.volume as any)?.all,
 												),
-											) * paymentToken?.price,
+											) * Number(paymentToken?.priceInUsd),
 									  )
 									: 0
 						  }`
@@ -270,7 +270,12 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}
-					{!(isMobile || isMobilePortrait) && nftStats()}
+					{!(
+						isMobile ||
+						isMobilePortrait ||
+						isRootDomain(znsDomain?.id) ||
+						true
+					) && nftStats()}
 					{showDomainTable && (
 						<div className={styles.TableContainer}>
 							<SubdomainTable />

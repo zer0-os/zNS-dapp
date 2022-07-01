@@ -101,10 +101,11 @@ export const Stats: React.FC<StatsProps> = ({
 					  paymentTokenInfo.name
 					: 'No sales',
 			subTitle:
-				(domainMetrics?.lastSale ?? 0) > 0 && paymentTokenInfo.price > 0
+				(domainMetrics?.lastSale ?? 0) > 0 &&
+				Number(paymentTokenInfo.priceInUsd) > 0
 					? `$${toFiat(
 							Number(ethers.utils.formatEther(domainMetrics!.lastSale)) *
-								paymentTokenInfo.price,
+								Number(paymentTokenInfo.priceInUsd),
 					  )}`
 					: '',
 		};
@@ -118,11 +119,12 @@ export const Stats: React.FC<StatsProps> = ({
 					  ).toLocaleString()} ${paymentTokenInfo.name}`
 					: '0',
 			subTitle:
-				(domainMetrics?.volume as any)?.all > 0 && paymentTokenInfo.price > 0
+				(domainMetrics?.volume as any)?.all > 0 &&
+				Number(paymentTokenInfo.priceInUsd) > 0
 					? toFiat(
 							Number(
 								ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
-							) * paymentTokenInfo.price,
+							) * Number(paymentTokenInfo.priceInUsd),
 					  )
 					: '',
 		};

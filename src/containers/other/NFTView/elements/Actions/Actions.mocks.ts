@@ -23,7 +23,9 @@ export enum ZAuctionVersionType {
 export const mockPaymentTokenInfo = {
 	id: '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79',
 	name: 'WILD',
-	price: 2,
+	priceInUsd: 2,
+	symbol: 'WILD',
+	decimals: '18',
 };
 
 export const mockBidData = [

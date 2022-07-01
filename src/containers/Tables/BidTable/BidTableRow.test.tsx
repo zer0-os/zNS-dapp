@@ -13,7 +13,9 @@ const mockDate = new Date(16461998260001);
 const mockPaymentTokenInfo = {
 	id: '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79',
 	name: 'WILD',
-	price: 0.17677,
+	priceInUsd: 0.17677,
+	symbol: 'WILD',
+	decimals: '18',
 };
 
 const mockData = {

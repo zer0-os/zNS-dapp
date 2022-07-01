@@ -40,7 +40,12 @@ const DomainStep = ({
 	// Check existing buy now
 	let currentBuyNow: number | undefined, details;
 	if (domain.currentBuyNowPrice?.gt(0)) {
-		currentBuyNow = Number(ethers.utils.formatEther(domain.currentBuyNowPrice));
+		currentBuyNow = Number(
+			ethers.utils.formatUnits(
+				domain.currentBuyNowPrice,
+				paymentTokenInfo.decimals,
+			),
+		);
 		details = [
 			{
 				name: 'Buy Now Price',
@@ -162,7 +167,8 @@ const DomainStep = ({
 					/>
 					{amount !== undefined && (
 						<span className={styles.Fiat}>
-							${toFiat(Number(amount) * paymentTokenInfo.price)} USD
+							${toFiat(Number(amount) * Number(paymentTokenInfo.priceInUsd))}{' '}
+							USD
 						</span>
 					)}
 				</div>

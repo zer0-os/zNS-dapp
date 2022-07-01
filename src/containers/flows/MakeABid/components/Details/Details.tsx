@@ -86,8 +86,8 @@ const Details = ({
 				: BUTTONS[StepContent.Details].PRIMARY
 			: BUTTONS[StepContent.Success];
 	const bidString =
-		isBidValid && paymentTokenInfo.price
-			? toFiat(parseFloat(bid) * paymentTokenInfo.price)
+		isBidValid && paymentTokenInfo.priceInUsd
+			? toFiat(parseFloat(bid) * Number(paymentTokenInfo.priceInUsd))
 			: PLACE_BID_LABELS.ZERO_VALUE;
 	const onSubmit = stepContent === StepContent.Details ? onConfirm : onClose;
 
@@ -159,7 +159,7 @@ const Details = ({
 							)}
 						/>
 					</form>
-					{getUsdFiatEstimation(bidString, paymentTokenInfo.price)}
+					{getUsdFiatEstimation(bidString, Number(paymentTokenInfo.priceInUsd))}
 					{getBidTooHighWarning(
 						loadingTokenBalance,
 						bid,

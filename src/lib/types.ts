@@ -1,7 +1,7 @@
 // Types
 
 //- Library Imports
-import { StakingRequests, TokenPriceInfo } from '@zero-tech/zns-sdk';
+import { StakingRequests, ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
@@ -254,4 +254,4 @@ export interface PaymentToken {
 	id: string;
 }
 
-export type PaymentTokenInfo = TokenPriceInfo & PaymentToken;
+export type PaymentTokenInfo = ConvertedTokenInfo & PaymentToken;
