@@ -1,19 +1,38 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { useWeb3React } from '@web3-react/core';
-import { useZSaleSdk } from 'lib/hooks/sdk';
+//- React Imports
 import { useMemo, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
+//- Web3 Imports
+import { Web3Provider } from '@ethersproject/providers';
+import { useWeb3React } from '@web3-react/core';
+
+//- Library Imports
+import { ethers } from 'ethers';
+import { AppState } from 'store';
+import { useZSaleSdk } from 'lib/hooks/sdk';
 import useNotification from 'lib/hooks/useNotification';
 import { useBasicController } from 'lib/hooks/useBasicController';
 import { Maybe, NftParams, NftStatusCard } from 'lib/types';
-import { ethers } from 'ethers';
 import { createDomainMetadata, UploadedDomainMetadata } from 'lib/utils';
-import { AppState } from 'store';
+import { ClaimableDomain } from '@zero-tech/zsale-sdk';
+
+//- Store Imports
+import { getMinting, getMinted } from 'store/mint/selectors';
 import {
 	setMintingRequest as reduxSetMintingRequest,
 	setMintedRequest as reduxSetMintedRequest,
 } from 'store/mint/actions';
-import { getMinting, getMinted } from 'store/mint/selectors';
+
+//- Constants Imports
+import { LABELS } from 'constants/labels';
+import { IMAGE_URI } from 'constants/uris';
+import { ERRORS } from 'constants/errors';
+import { STATUS } from 'constants/status';
+import {
+	MINTING_FLOW_NOTIFICATIONS,
+	CLAIM_FLOW_NOTIFICATIONS,
+} from 'constants/notifications';
+import { ZNA } from 'constants/zna';
 
 export type UseMintReturn = {
 	minting: NftStatusCard[];
@@ -24,6 +43,15 @@ export type UseMintReturn = {
 		setStatus: (status: string) => void,
 		onFinish: () => void,
 		onError: (error: string) => void,
+	) => Promise<void>;
+	claimNFT: (
+		quantity: number,
+		eligibleDomains: ClaimableDomain[],
+		setEligibleDomains: React.Dispatch<React.SetStateAction<ClaimableDomain[]>>,
+		setIsClaimingInProgress: (state: boolean) => void,
+		setStatus: (status: string) => void,
+		onError: (error: string) => void,
+		onFinish: () => void,
 	) => Promise<void>;
 };
 
@@ -69,8 +97,8 @@ export const useMint = (): UseMintReturn => {
 	////////////////////////
 
 	const { addNotification } = useNotification();
-	const { instance: zSaleInstance } = useZSaleSdk();
-	const { library } = useWeb3React<Web3Provider>();
+	const { instance: zSaleInstance, claimInstance } = useZSaleSdk();
+	const { account, library } = useWeb3React<Web3Provider>();
 	const basicController = useBasicController();
 	const { reduxState, reduxActions } = useMintRedux();
 
@@ -87,9 +115,8 @@ export const useMint = (): UseMintReturn => {
 			// Set up default wheel to render
 			const wheel = {
 				zNA: '',
-				title: 'Your Kicks',
-				imageUri:
-					'https://res.cloudinary.com/fact0ry/image/upload/fl_lossy,q_50,c_fill,h_290,w_542/v1651090354/zns/kicks-s2-mint-progress.gif',
+				title: LABELS.MINT_NFT_DROP_DEFAULT_TITLE,
+				imageUri: IMAGE_URI.MINT_NFT_DROP_DEFAULT_IMAGE_URI,
 				story: '',
 				transactionHash: '',
 			};
@@ -103,7 +130,7 @@ export const useMint = (): UseMintReturn => {
 			//////////////////////////////////////
 
 			let tx: Maybe<ethers.ContractTransaction>;
-			setStatus('Confirm wallet transaction to begin minting your Kicks');
+			setStatus(STATUS.CONFIRM_WALLET);
 
 			try {
 				tx = await zSaleInstance.purchaseDomains(
@@ -112,7 +139,7 @@ export const useMint = (): UseMintReturn => {
 				);
 			} catch (e) {
 				console.error(e);
-				onError('Failed to submit transaction');
+				onError(ERRORS.FAILED_TRANSACTION);
 				return;
 			}
 
@@ -120,9 +147,7 @@ export const useMint = (): UseMintReturn => {
 			// Send the transaction //
 			//////////////////////////
 
-			setStatus(
-				'Minting your Kicks... this may take up to 20 minutes if the network is busy. You may close this and the transaction will continue in the background. When minting is complete, your Kicks will be in your profile.',
-			);
+			setStatus(STATUS.MINTING);
 
 			reduxActions.setMinting(wheel);
 
@@ -132,9 +157,7 @@ export const useMint = (): UseMintReturn => {
 			// Transaction complete //
 			//////////////////////////
 
-			addNotification(
-				'Successfully minted your Kicks. Open your Profile to view it',
-			);
+			addNotification(MINTING_FLOW_NOTIFICATIONS.MINT_SUCCESSFUL);
 
 			reduxActions.setMinted(wheel);
 
@@ -143,19 +166,93 @@ export const useMint = (): UseMintReturn => {
 		[reduxActions, addNotification, zSaleInstance, library],
 	);
 
+	const claimNFT = useCallback(
+		async (
+			quantity: number,
+			eligibleDomains: ClaimableDomain[],
+			setEligibleDomains: React.Dispatch<
+				React.SetStateAction<ClaimableDomain[]>
+			>,
+			setIsClaimingInProgress: (state: boolean) => void,
+			setStatus: (status: string) => void,
+			onError: (error: string) => void,
+			onFinish: () => void,
+		) => {
+			// To generate mint preview data
+			const asset = {
+				zNA: ZNA.CLAIM_NFT_DOMAIN_ROOT,
+				title: LABELS.CLAIM_NFT_DROP_DEFAULT_TITLE,
+				imageUri: IMAGE_URI.CLAIM_NFT_DROP_DEFAULT_IMAGE_URI,
+				story: '',
+				transactionHash: '0x00000',
+			};
+
+			try {
+				if (!library) {
+					return;
+				}
+				let tx: Maybe<ethers.ContractTransaction>;
+
+				const domainsForClaiming = eligibleDomains
+					.splice(0, quantity)
+					.map((i) => i.id);
+
+				setStatus(STATUS.PLEASE_APPROVE);
+				setIsClaimingInProgress(true);
+
+				tx = await claimInstance.claimDomains(
+					domainsForClaiming,
+					library?.getSigner(),
+				);
+
+				setStatus(CLAIM_FLOW_NOTIFICATIONS.MINTING_MOTO);
+				onFinish();
+
+				reduxActions.setMinting(asset);
+
+				await tx.wait();
+
+				addNotification(CLAIM_FLOW_NOTIFICATIONS.CLAIM_SUCCESS);
+				reduxActions.setMinted(asset);
+			} catch (err) {
+				onError(ERRORS.REJECTED_WALLET);
+				setStatus('');
+				setIsClaimingInProgress(false);
+				console.log(err);
+
+				// Reset claimable total if error
+				if (account && library) {
+					try {
+						const claimingIDs = await claimInstance.getClaimingIDsForUser(
+							account,
+						);
+						setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
+					} catch (err) {
+						console.log(err);
+					}
+				}
+			}
+			setStatus('');
+			setIsClaimingInProgress(false);
+		},
+		[account, addNotification, claimInstance, library, reduxActions],
+	);
+
 	// TODO: Migrate this once zNS SDK supports minting
 	const mint = useCallback(
 		async (nft: NftParams, setStatus: (status: string) => void) => {
 			// @todo better validation
 			if (/[A-Z]/.test(nft.zna)) {
-				throw Error(`Invalid domain name: ${nft.zna} (Uppercase characters)`);
+				throw Error(
+					`${MINTING_FLOW_NOTIFICATIONS.INVALID_DOMAIN_NAME}Invalid domain name: ${nft.zna} ${MINTING_FLOW_NOTIFICATIONS.INVALID_DOMAIN_NAME}`,
+				);
 			}
 
 			let tx: Maybe<ethers.ContractTransaction>;
 
 			// get metadata uri
 			let metadata: Maybe<UploadedDomainMetadata>;
-			setStatus(`Uploading metadata`);
+			setStatus(STATUS.UPLOADING_METADATA);
 
 			try {
 				metadata = await createDomainMetadata({
@@ -167,10 +264,10 @@ export const useMint = (): UseMintReturn => {
 				});
 			} catch (e) {
 				console.error(e);
-				throw Error(`Failed to upload metadata.`);
+				throw Error(ERRORS.FAILED_METADATA_UPLOAD);
 			}
 
-			setStatus(`Waiting for transaction to be approved by wallet`);
+			setStatus(STATUS.PENDING_WALLET_APPROVAL);
 
 			tx = await basicController.registerSubdomain({
 				parentId: nft.parent,
@@ -180,7 +277,9 @@ export const useMint = (): UseMintReturn => {
 				metadataUri: metadata.url,
 			});
 
-			addNotification(`Started minting ${nft.name}`);
+			addNotification(
+				`${MINTING_FLOW_NOTIFICATIONS.STARTED_MINTING} ${nft.name}`,
+			);
 
 			const nftStatusCard: NftStatusCard = {
 				zNA: nft.zna,
@@ -194,7 +293,9 @@ export const useMint = (): UseMintReturn => {
 
 			await tx.wait();
 
-			addNotification(`Finished minting ${nftStatusCard.title}.`);
+			addNotification(
+				`${MINTING_FLOW_NOTIFICATIONS.FINISH_MINTING} ${nftStatusCard.title}.`,
+			);
 
 			reduxActions.setMinted(nftStatusCard);
 		},
@@ -207,8 +308,9 @@ export const useMint = (): UseMintReturn => {
 			minted: reduxState.minted,
 			mint,
 			mintWheels,
+			claimNFT,
 		}),
-		[reduxState, mint, mintWheels],
+		[reduxState, mint, mintWheels, claimNFT],
 	);
 };
 

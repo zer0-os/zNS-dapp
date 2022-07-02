@@ -13,4 +13,6 @@ export enum LABELS {
 	REBID = 'Rebid',
 	NO_BIDS_PLACED = 'No bids placed',
 	NO_BUY_NOW = 'No buy now set',
+	MINT_NFT_DROP_DEFAULT_TITLE = 'Your Kicks',
+	CLAIM_NFT_DROP_DEFAULT_TITLE = 'Your Motos',
 }

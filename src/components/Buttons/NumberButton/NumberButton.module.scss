@@ -8,15 +8,20 @@
 	align-items: center;
 	width: 40px;
 	height: 40px;
+
+	&:hover {
+		border-radius: 8px;
+		background: #1a1022;
+	}
 }
 .NumberButton {
 	position: relative;
-	width: 32px;
-	height: 32px;
+	width: 26px;
+	height: 24px;
 	background: none;
 	border-radius: #{borders.$radius-primary};
 	color: #{colors.$text-primary};
-	font-weight: #{typography.$font-weight-bold};
+	font-weight: #{typography.$font-weight-regular};
 	text-align: center;
 
 	&::before {
@@ -47,10 +52,10 @@
 		z-index: -2;
 	}
 
-	&:hover {
-		background: #{colors.$azure-25};
-		box-sizing: border-box;
-	}
+	// &:hover {
+	// 	background: #{colors.$azure-25};
+	// 	box-sizing: border-box;
+	// }
 }
 
 .Rotating::before {

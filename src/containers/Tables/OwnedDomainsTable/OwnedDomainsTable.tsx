@@ -1,6 +1,6 @@
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
-import useOwnedDomains from './hooks/useOwnedDomains';
+import useOwnedDomains from 'lib/hooks/useOwnedDomains';
 
 // Component Imports
 import OwnedDomainsTableRow from './OwnedDomainsTableRow';

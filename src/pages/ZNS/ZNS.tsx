@@ -12,8 +12,8 @@ import styles from './ZNS.module.scss';
 //- Components & Containers
 import { StatsWidget } from 'components';
 import { NFTViewModalProvider } from 'containers/other/NFTView/providers/NFTViewModalProvider/NFTViewModalProvider';
-
 import { SubdomainTable, CurrentDomainPreview, Raffle } from 'containers';
+import { Stage } from 'containers/flows/MintDropNFT/types';
 
 //- Library Imports
 import { NFTView, TransferOwnership } from 'containers';
@@ -63,7 +63,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const isMobile = useMatchMedia('phone');
 	const isMobilePortrait = useMatchMedia('(max-width: 569px)');
 
-	const enableBanner = false;
+	const enableBanner = true;
 
 	const location = useLocation();
 	const nftView = useMemo(
@@ -80,6 +80,9 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [tradeData, setTradeData] = useState<DomainMetrics | undefined>();
 	const [statsLoaded, setStatsLoaded] = useState(false);
+
+	//- Claim Drop Stage state
+	const [claimDropStage, setClaimDropStage] = useState<Stage>();
 
 	///////////
 	// Hooks //
@@ -266,7 +269,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 				/>
 			)}
 			{/* ZNS Content */}
-			{enableBanner && <Raffle />}
+			{enableBanner && <Raffle setClaimDropStage={setClaimDropStage} />}
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}
@@ -288,6 +291,8 @@ const ZNS: React.FC<ZNSProps> = () => {
 					<NFTView
 						// domain={domain}
 						onTransfer={openTransferOwnershipModal}
+						claimDropStage={claimDropStage}
+						setClaimDropStage={setClaimDropStage}
 					/>
 				</NFTViewModalProvider>
 			)}
