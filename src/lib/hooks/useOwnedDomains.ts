@@ -40,7 +40,10 @@ const useOwnedDomains = (
 			const domainsPaymentTokenData = owned.map(async ({ id }) => {
 				const paymentToken = await sdk.zauction.getPaymentTokenForDomain(id);
 				const paymentTokenInfo: PaymentTokenInfo = {
-					...(await sdk.zauction.getPaymentTokenInfo(paymentToken)),
+					...(await sdk.zauction.getPaymentTokenInfo(
+						// TODO :: REPLACE WITH paymentToken
+						'0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
+					)),
 					id: paymentToken,
 				};
 				return { id, paymentTokenInfo };
