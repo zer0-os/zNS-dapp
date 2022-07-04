@@ -1,8 +1,16 @@
+//- React Imports
 import React from 'react';
-import { getDomainId } from './utils/domains';
-import { DisplayParentDomain, ParentDomain } from './types';
+
+//- Library Imports
 import useAsyncEffect from 'use-async-effect';
-import { useZnsSdk } from './hooks/sdk';
+import { useZnsSdk } from './sdk';
+
+//- Utils Imports
+import { getDomainId } from '../utils/domains';
+import { filterSearchResultsByNetwork } from 'lib/utils/searchResults';
+
+//- Types Imports
+import { DisplayParentDomain, ParentDomain } from '../types';
 
 export interface DomainSearch {
 	exactMatch?: DisplayParentDomain;
@@ -65,7 +73,11 @@ export function useDomainSearch() {
 					return { ...e } as DisplayParentDomain;
 				});
 			}
-			setMatches(matchesResult);
+
+			// filter network specific search results
+			const networkSearchResults = filterSearchResultsByNetwork(matchesResult);
+
+			setMatches(networkSearchResults);
 		} catch (err) {
 			// TODO: Handle it
 			console.log(err);
