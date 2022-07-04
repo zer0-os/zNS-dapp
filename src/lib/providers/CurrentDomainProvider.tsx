@@ -5,12 +5,7 @@ import { useLocation } from 'react-router-dom';
 // Web3 Imports
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { usePropsState } from 'lib/hooks/usePropsState';
-import {
-	DisplayParentDomain,
-	Maybe,
-	Metadata,
-	PaymentTokenInfo,
-} from 'lib/types';
+import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { defaultNetworkId } from 'lib/network';
@@ -19,6 +14,7 @@ import { getDomainId, zNAFromPathname } from 'lib/utils';
 // Constants Imports
 import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from '../../constants/domains';
 import { ROUTES } from 'constants/routes';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,
@@ -30,7 +26,7 @@ export const CurrentDomainContext = React.createContext({
 	refetch: () => {}, // @todo update this
 	setDomainMetadata: (v: Maybe<Metadata>) => {},
 	paymentToken: undefined as Maybe<string>,
-	paymentTokenInfo: {} as PaymentTokenInfo,
+	paymentTokenInfo: {} as ConvertedTokenInfo,
 });
 
 const CurrentDomainProvider: React.FC = ({ children }) => {

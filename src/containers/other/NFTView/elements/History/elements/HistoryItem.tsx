@@ -17,13 +17,13 @@ import { Maybe } from 'lib/types';
 import useAsyncEffect from 'use-async-effect';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useState } from 'react';
+import getPaymentTokenInfo from 'lib/paymentToken';
 
 type HistoryItemProps = {
 	item: DomainEvents;
 };
 
 const HistoryItem = ({ item }: HistoryItemProps) => {
-	// const tokenInfo = await sdk.zauction.getPaymentTokenInfo(paymentToken);
 	const { instance: sdk } = useZnsSdk();
 	const [paymentTokenInfo, setPaymentTokenInfo] =
 		useState<Maybe<ConvertedTokenInfo>>();
@@ -39,7 +39,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 				item.type === DomainEventType.buyNow) &&
 			data.paymentToken
 		) {
-			const token = await sdk.zauction.getPaymentTokenInfo(data.paymentToken);
+			const token = await getPaymentTokenInfo(sdk, data.paymentToken);
 			setPaymentTokenInfo(token);
 		}
 	}, [sdk]);

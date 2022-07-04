@@ -16,14 +16,14 @@ import { DomainData } from '../SetBuyNow';
 // Style Imports
 import styles from './DomainStep.module.scss';
 import { ethers } from 'ethers';
-import { PaymentTokenInfo } from 'lib/types';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 type DomainStepProps = {
 	domainData: DomainData;
 	error?: string;
 	onCancel: () => void;
 	onNext: (buyNowPrice?: number) => void;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 	isWaitingForWalletConfirmation?: boolean;
 	didSucceed?: boolean;
 };

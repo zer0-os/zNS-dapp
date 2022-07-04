@@ -2,11 +2,11 @@
 import { useRef, useState } from 'react';
 
 //- Library Imports
-import { Domain } from '@zero-tech/zns-sdk';
+import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useZnsSdk } from 'lib/hooks/sdk';
-import { PaymentTokenInfo } from 'lib/types';
+import getPaymentTokenInfo from 'lib/paymentToken';
 
 type UseOwnedDomainsReturn = {
 	isLoading: boolean;
@@ -38,14 +38,11 @@ const useOwnedDomains = (
 			const owned = await sdk.getDomainsByOwner(account);
 			// TODO: Optimize this
 			const domainsPaymentTokenData = owned.map(async ({ id }) => {
-				// const paymentToken = await sdk.zauction.getPaymentTokenForDomain(id);
-				const paymentTokenInfo: PaymentTokenInfo = {
-					...(await sdk.zauction.getPaymentTokenInfo(
-						// TODO :: REPLACE WITH paymentToken
-						'0x2a3bFF78B79A009976EeA096a51A948a3dC00e34',
-					)),
-					id: 'paymentToken',
-				};
+				const paymentToken = await sdk.zauction.getPaymentTokenForDomain(id);
+				const paymentTokenInfo: ConvertedTokenInfo = await getPaymentTokenInfo(
+					sdk,
+					paymentToken,
+				);
 				return { id, paymentTokenInfo };
 			});
 			setDomainsPaymentTokenInfo(await Promise.all(domainsPaymentTokenData));

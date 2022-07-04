@@ -6,13 +6,13 @@ import { DomainBidData } from 'lib/utils/bids';
 
 //- Container Imports
 import BidList from 'containers/lists/BidList/BidList';
-import { PaymentTokenInfo } from 'lib/types';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 interface getModalProps {
 	setIsModalOpen: (state: boolean) => void;
 	isModalOpen: boolean;
 	bidData: DomainBidData | undefined;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 }
 
 export const Modals = ({

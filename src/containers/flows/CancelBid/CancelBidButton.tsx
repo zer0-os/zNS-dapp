@@ -4,7 +4,7 @@ import { useState } from 'react';
 //- Components Imports
 import { FutureButton, Overlay, TextButton } from 'components';
 import CancelBid from './CancelBid';
-import { PaymentTokenInfo } from 'lib/types';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 interface BuyNowButtonProps {
 	bidNonce: string;
@@ -15,7 +15,7 @@ interface BuyNowButtonProps {
 	onCancel?: () => void;
 	onSuccess?: () => void;
 	style?: React.CSSProperties;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 }
 
 const CancelBidButton = ({

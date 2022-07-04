@@ -29,7 +29,7 @@ import { toFiat } from 'lib/currency';
 
 //- Utils Imports
 import { getBidTooHighWarning, getUsdFiatEstimation } from './Details.utils';
-import { PaymentTokenInfo } from 'lib/types';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 type DetailsProps = {
 	stepContent: StepContent;
@@ -45,7 +45,7 @@ type DetailsProps = {
 	error?: string;
 	bid: string;
 	isBidValid?: boolean;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 	setBid?: (bid: string) => void;
 	onClose: () => void;
 	onConfirm?: () => void;

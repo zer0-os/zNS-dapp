@@ -4,11 +4,11 @@
  */
 
 // Component Imports
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import { Detail, FutureButton, Wizard } from 'components';
 
 // Library Imports
 import { ethers } from 'ethers';
-import { PaymentTokenInfo } from 'lib/types';
 import { Data } from '../BuyNow';
 
 // Style Imports
@@ -19,7 +19,7 @@ type DetailsProps = {
 	error?: string;
 	onCancel: () => void;
 	onNext: () => void;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 	isWaitingForWalletConfirmation?: boolean;
 	didSucceed?: boolean;
 };
