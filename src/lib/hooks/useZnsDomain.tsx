@@ -1,16 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-	DisplayParentDomain,
-	Maybe,
-	Metadata,
-	PaymentTokenInfo,
-} from 'lib/types';
+import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { getMetadata } from 'lib/metadata';
 import { Domain, ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import useAsyncEffect from 'use-async-effect';
 import { isRootDomain } from 'lib/utils';
+import getPaymentTokenInfo from 'lib/paymentToken';
 
 export type UseZnsDomainReturn = {
 	loading: boolean;
@@ -18,7 +14,7 @@ export type UseZnsDomainReturn = {
 	refetch: (variables?: any) => any;
 	domainMetadata: Maybe<Metadata>;
 	paymentToken: Maybe<string>;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 };
 
 /**
@@ -79,8 +75,8 @@ export const useZnsDomain = (
 	const [domainMetadata, setDomainMetadata] = useState<Maybe<Metadata>>();
 
 	const [paymentToken, setPaymentToken] = useState<Maybe<string>>();
-	const [paymentTokenInfo, setPaymentTokenInfo] = useState<PaymentTokenInfo>(
-		{} as PaymentTokenInfo,
+	const [paymentTokenInfo, setPaymentTokenInfo] = useState<ConvertedTokenInfo>(
+		{} as ConvertedTokenInfo,
 	);
 
 	const getDomain = async (id: string) => {
@@ -98,7 +94,7 @@ export const useZnsDomain = (
 
 	const getTokenInfo = useMemo(async () => {
 		if (!paymentToken) return {};
-		const token = await sdk.zauction.getPaymentTokenInfo(paymentToken);
+		const token = await getPaymentTokenInfo(sdk, paymentToken);
 		return token;
 	}, [paymentToken]);
 
@@ -123,10 +119,7 @@ export const useZnsDomain = (
 			setLoading(true);
 
 			const d = await getDomain(domainId);
-			const token = isRootDomain(d.domain.id)
-				? undefined
-				: await sdk.zauction.getPaymentTokenForDomain(domainId);
-			setPaymentToken(token);
+
 			if (loadingDomainId.current !== domainId) {
 				setLoading(false);
 				return;
@@ -143,6 +136,11 @@ export const useZnsDomain = (
 				...d.metadata,
 				subdomains: s,
 			} as DisplayParentDomain);
+
+			const token = isRootDomain(d.domain.id)
+				? undefined
+				: await sdk.zauction.getPaymentTokenForDomain(domainId);
+			setPaymentToken(token);
 
 			setLoading(false);
 		} catch (e) {}

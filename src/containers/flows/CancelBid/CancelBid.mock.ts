@@ -1,4 +1,3 @@
-import { PaymentTokenInfo } from './../../../lib/types';
 /////////////////
 // Domain Data //
 /////////////////

@@ -4,7 +4,7 @@ import { useState } from 'react';
 //- Components Imports
 import { FutureButton, Overlay, TextButton } from 'components';
 import SetBuyNow from '.';
-import { PaymentTokenInfo } from 'lib/types';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 interface SetBuyNowButtonProps {
 	className?: string;
@@ -13,7 +13,7 @@ interface SetBuyNowButtonProps {
 	disabled?: boolean;
 	onSuccess?: () => void;
 	isTextButton?: boolean;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 }
 
 const SetBuyNowButton = ({

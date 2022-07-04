@@ -14,13 +14,13 @@ import { DomainData } from './SetBuyNow';
 import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 import { BuyNowParams } from '@zero-tech/zns-sdk/lib/zAuction';
-import { PaymentTokenInfo } from 'lib/types';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 export interface SetBuyNowContainerProps {
 	domainId: string;
 	onCancel: () => void;
 	onSuccess?: () => void;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 }
 
 const SetBuyNowContainer = ({

@@ -41,15 +41,15 @@ import styles from './MakeABid.module.scss';
 //- Types Imports
 import { Step, StepContent } from './MakeABid.types';
 import { ERC20 } from 'types';
-import { PaymentTokenInfo } from 'lib/types';
 import useAsyncEffect from 'use-async-effect';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 const maxCharacterLength = 28;
 export type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
 	onClose: () => void;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 };
 
 const MakeABid = ({

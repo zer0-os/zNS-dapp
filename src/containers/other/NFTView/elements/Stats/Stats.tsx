@@ -17,13 +17,14 @@ import { StatsWidget } from 'components';
 import { toFiat } from 'lib/currency';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import {
+	ConvertedTokenInfo,
 	DomainBidEvent,
 	DomainMetrics,
 	DomainMetricsCollection,
 } from '@zero-tech/zns-sdk';
 
 //- Type Imports
-import { Maybe, DisplayParentDomain, PaymentTokenInfo } from 'lib/types';
+import { Maybe, DisplayParentDomain } from 'lib/types';
 
 //- Style Imports
 import styles from '../../NFTView.module.scss';
@@ -40,7 +41,7 @@ type StatsProps = {
 	znsDomain: Maybe<DisplayParentDomain>;
 	bids?: DomainBidEvent[];
 	isLoading: boolean;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 };
 
 export const Stats: React.FC<StatsProps> = ({

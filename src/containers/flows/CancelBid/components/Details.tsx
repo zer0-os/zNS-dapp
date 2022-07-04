@@ -1,11 +1,11 @@
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import { Wizard } from 'components';
 import { ethers } from 'ethers';
-import { PaymentTokenInfo } from 'lib/types';
 import { BidData } from '../CancelBid.types';
 
 type DetailsProps = {
 	bidData: BidData;
-	paymentTokenInfo: PaymentTokenInfo;
+	paymentTokenInfo: ConvertedTokenInfo;
 	onClose: () => void;
 	onNext: () => void;
 };

@@ -8,6 +8,7 @@ import { BigNumber } from 'ethers';
 import { BidTableRowData } from './BidTableRow';
 import { Bid } from '@zero-tech/zauction-sdk';
 import BidTable from './BidTable';
+import getPaymentTokenInfo from 'lib/paymentToken';
 
 const BidTableContainer = () => {
 	const isMounted = useRef<boolean>();
@@ -49,7 +50,8 @@ const BidTableContainer = () => {
 		// TODO: Optimize this
 		const getPaymentTokenPromises = Promise.all(
 			uniqueDomainIds.map(async (id) =>
-				sdk.zauction.getPaymentTokenInfo(
+				getPaymentTokenInfo(
+					sdk,
 					await sdk.zauction.getPaymentTokenForDomain(id),
 				),
 			),
