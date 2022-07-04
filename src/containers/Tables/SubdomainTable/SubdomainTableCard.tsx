@@ -47,7 +47,7 @@ const SubdomainTableCard = (props: any) => {
 	const { makeABid, updated } = useBid();
 
 	const domain = props.data;
-	const paymentTokenInfo: ConvertedTokenInfo = props.paymentTokenInfo;
+	const paymentTokenInfo: ConvertedTokenInfo = props.data.paymentTokenInfo;
 	const tradeData: DomainMetrics = domain?.metrics;
 	const domainMetadata = useDomainMetadata(domain?.metadata);
 	const isRootDomain = domain.name.split('.').length <= 2;

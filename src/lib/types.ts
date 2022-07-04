@@ -1,7 +1,7 @@
 // Types
 
 //- Library Imports
-import { StakingRequests } from '@zero-tech/zns-sdk';
+import { ConvertedTokenInfo, StakingRequests } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
@@ -26,6 +26,7 @@ export interface Domain {
 	contract?: string; // TODO: Making it optional so that tests and other scenarios work
 	isLocked: boolean;
 	lockedBy: Account;
+	paymentTokenInfo?: ConvertedTokenInfo;
 }
 
 // We have two different types of Metadata

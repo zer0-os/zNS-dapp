@@ -188,8 +188,8 @@ const SetBuyNowContainer = ({
 					});
 				}
 				setIsLoadingDomainData(false);
-			} catch {
-				console.error('<SetBuyNow> Failed to load domain ID', domainId);
+			} catch (error) {
+				console.error('<SetBuyNow> Failed to load domain ID', domainId, error);
 				setIsLoadingDomainData(false);
 			}
 		})();

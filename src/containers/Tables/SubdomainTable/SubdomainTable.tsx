@@ -4,7 +4,7 @@
  */
 
 // React Imports
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useLocation } from 'react-router-dom';
 
@@ -31,11 +31,7 @@ type SubdomainTableProps = {
 
 const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	// Domain hook data
-	const {
-		domain,
-		loading: isDomainLoading,
-		paymentTokenInfo,
-	} = useCurrentDomain();
+	const { domain, loading: isDomainLoading } = useCurrentDomain();
 
 	// Get metadata and custom header
 	const domainMetadata = useDomainMetadata(domain?.metadata);
@@ -89,13 +85,13 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 
 	return (
 		<>
-			{biddingOn !== undefined && (
+			{biddingOn !== undefined && biddingOn?.paymentTokenInfo && (
 				<Overlay onClose={close} open={true}>
 					<MakeABid
 						domain={biddingOn!}
 						onBid={bidPlaced}
 						onClose={close}
-						paymentTokenInfo={paymentTokenInfo}
+						paymentTokenInfo={biddingOn?.paymentTokenInfo}
 					/>
 				</Overlay>
 			)}
@@ -104,12 +100,8 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 				data={data}
 				itemKey={'id'}
 				headers={headers}
-				rowComponent={(props: any) => (
-					<SubdomainTableRow {...props} paymentTokenInfo={paymentTokenInfo} />
-				)}
-				gridComponent={(props: any) => (
-					<SubdomainTableCard {...props} paymentTokenInfo={paymentTokenInfo} />
-				)}
+				rowComponent={(props: any) => <SubdomainTableRow {...props} />}
+				gridComponent={(props: any) => <SubdomainTableCard {...props} />}
 				infiniteScroll
 				isLoading={isLoading || isDomainLoading}
 				loadingText={'Loading Subdomains'}
