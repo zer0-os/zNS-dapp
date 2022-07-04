@@ -9,20 +9,14 @@ import { DomainEvents } from '../../NFTView.types';
 
 //- Style Imports
 import styles from '../../NFTView.module.scss';
-import { PaymentTokenInfo } from 'lib/types';
 
 //- Componennt level type definitions
 type HistoryProps = {
 	isLoading: boolean;
 	history: DomainEvents[];
-	paymentTokenInfo: PaymentTokenInfo;
 };
 
-export const History: React.FC<HistoryProps> = ({
-	isLoading,
-	history,
-	paymentTokenInfo,
-}) => {
+export const History: React.FC<HistoryProps> = ({ isLoading, history }) => {
 	return (
 		<section className={styles.History}>
 			<h4>History</h4>
@@ -37,7 +31,7 @@ export const History: React.FC<HistoryProps> = ({
 				<ul>
 					{history.map((item: DomainEvents, i: number) => (
 						<div key={i}>
-							<HistoryItem item={item} paymentTokenInfo={paymentTokenInfo} />
+							<HistoryItem item={item} />
 						</div>
 					))}
 				</ul>

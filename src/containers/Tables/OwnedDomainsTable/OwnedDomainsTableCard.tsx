@@ -9,7 +9,7 @@ import { Spinner } from 'components';
 //- Library Imports
 import { useHistory } from 'react-router-dom';
 import { BigNumber } from 'ethers';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
+import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk/lib/types';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
@@ -46,7 +46,7 @@ const SubdomainTableCard = ({
 
 	const highestBid = bidData?.highestBid;
 
-	const paymentTokenInfo = domainsPaymentTokenInfo.find(
+	const paymentTokenInfo: ConvertedTokenInfo = domainsPaymentTokenInfo.find(
 		(item) => item.id === domain.id,
 	); // Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
@@ -63,7 +63,7 @@ const SubdomainTableCard = ({
 		highestBid &&
 		`$${formatNumber(
 			Number(ethers.utils.formatEther(highestBid.amount)) *
-				paymentTokenInfo.price,
+				Number(paymentTokenInfo.priceInUsd),
 		)}`;
 
 	// Navigates to domain
@@ -91,7 +91,7 @@ const SubdomainTableCard = ({
 							<>
 								<label>{LABELS.TOP_BID}</label>
 								<span className={styles.Crypto}>{bidAmountWild}</span>
-								{paymentTokenInfo?.price > 0 && (
+								{Number(paymentTokenInfo?.priceInUsd) > 0 && (
 									<span className={styles.Fiat}>{bidAmountUsd}</span>
 								)}
 							</>

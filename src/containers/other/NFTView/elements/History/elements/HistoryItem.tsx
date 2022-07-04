@@ -6,20 +6,44 @@ import {
 	DomainBidEvent,
 	DomainSaleEvent,
 	DomainBuyNowSaleEvent,
-} from '@zero-tech/zns-sdk/lib/types';
+	ConvertedTokenInfo,
+} from '@zero-tech/zns-sdk';
 import { URLS } from 'constants/urls';
 import { ethers } from 'ethers';
 import { truncateWalletAddress } from 'lib/utils';
 import { DomainEvents } from '../../../NFTView.types';
 import styles from '../../../NFTView.module.scss';
-import { PaymentTokenInfo } from 'lib/types';
+import { Maybe } from 'lib/types';
+import useAsyncEffect from 'use-async-effect';
+import { useZnsSdk } from 'lib/hooks/sdk';
+import { useState } from 'react';
 
 type HistoryItemProps = {
 	item: DomainEvents;
-	paymentTokenInfo: PaymentTokenInfo;
 };
 
-const HistoryItem = ({ item, paymentTokenInfo }: HistoryItemProps) => {
+const HistoryItem = ({ item }: HistoryItemProps) => {
+	// const tokenInfo = await sdk.zauction.getPaymentTokenInfo(paymentToken);
+	const { instance: sdk } = useZnsSdk();
+	const [paymentTokenInfo, setPaymentTokenInfo] =
+		useState<Maybe<ConvertedTokenInfo>>();
+
+	useAsyncEffect(async () => {
+		const data = item as
+			| DomainBidEvent
+			| DomainSaleEvent
+			| DomainBuyNowSaleEvent;
+		if (
+			(item.type === DomainEventType.bid ||
+				item.type === DomainEventType.sale ||
+				item.type === DomainEventType.buyNow) &&
+			data.paymentToken
+		) {
+			const token = await sdk.zauction.getPaymentTokenInfo(data.paymentToken);
+			setPaymentTokenInfo(token);
+		}
+	}, [sdk]);
+
 	switch (item.type) {
 		case DomainEventType.bid:
 			item = item as DomainBidEvent;
@@ -40,7 +64,7 @@ const HistoryItem = ({ item, paymentTokenInfo }: HistoryItemProps) => {
 						made an offer of{' '}
 						<b>
 							{Number(ethers.utils.formatEther(item.amount!)).toLocaleString()}{' '}
-							{paymentTokenInfo.name}
+							{paymentTokenInfo?.name}
 						</b>
 					</div>
 					<div className={styles.From}>
@@ -141,7 +165,7 @@ const HistoryItem = ({ item, paymentTokenInfo }: HistoryItemProps) => {
 									{Number(
 										ethers.utils.formatEther(item.amount!),
 									).toLocaleString()}{' '}
-									{paymentTokenInfo.name}
+									{paymentTokenInfo?.name}
 								</b>
 							</>
 						)}
@@ -186,7 +210,7 @@ const HistoryItem = ({ item, paymentTokenInfo }: HistoryItemProps) => {
 									{Number(
 										ethers.utils.formatEther(item.amount!),
 									).toLocaleString()}{' '}
-									{paymentTokenInfo.name}
+									{paymentTokenInfo?.name}
 								</b>
 							</>
 						)}
