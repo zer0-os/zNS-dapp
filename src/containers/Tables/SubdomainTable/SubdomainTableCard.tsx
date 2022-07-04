@@ -5,7 +5,10 @@ import { useHistory } from 'react-router-dom';
 //-Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
+import {
+	ConvertedTokenInfo,
+	DomainMetrics,
+} from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
@@ -44,9 +47,8 @@ const SubdomainTableCard = (props: any) => {
 	const { makeABid, updated } = useBid();
 
 	const domain = props.data;
-	const paymentTokenInfo = props.paymentTokenInfo;
+	const paymentTokenInfo: ConvertedTokenInfo = props.paymentTokenInfo;
 	const tradeData: DomainMetrics = domain?.metrics;
-
 	const domainMetadata = useDomainMetadata(domain?.metadata);
 	const isRootDomain = domain.name.split('.').length <= 2;
 	const isBiddable =
@@ -136,16 +138,16 @@ const SubdomainTableCard = (props: any) => {
 							<label>{LABELS.TOP_BID}</label>
 							<span className={styles.Crypto}>
 								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}{' '}
-								{paymentTokenInfo.name}
+								{paymentTokenInfo.symbol}
 							</span>
-							{paymentTokenInfo.price > 0 && (
+							{Number(paymentTokenInfo.priceInUsd) > 0 && (
 								<span className={styles.Fiat}>
 									$
 									{tradeData.highestBid
 										? formatNumber(
 												Number(
 													ethers.utils.formatEther(tradeData?.highestBid),
-												) * paymentTokenInfo.price,
+												) * Number(paymentTokenInfo.priceInUsd),
 										  )
 										: 0}{' '}
 								</span>
