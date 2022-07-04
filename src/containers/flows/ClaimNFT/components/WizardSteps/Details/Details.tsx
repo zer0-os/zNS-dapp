@@ -42,6 +42,7 @@ import {
 	MESSAGES,
 	TOOLTIP,
 	BUTTONS,
+	EXTERNAL_URL,
 } from './Details.constants';
 import { ROUTES } from 'constants/routes';
 import { CLAIM_FLOW_NOTIFICATIONS } from 'constants/notifications';
@@ -287,7 +288,7 @@ const Details = ({
 											</div>
 											<ArrowLink
 												className={styles.ArrowLink}
-												href={'url to claim zine'}
+												href={EXTERNAL_URL.CLAIM_ZINE}
 												isLinkToExternalUrl
 											>
 												{MESSAGES.READ_MORE}

@@ -26,6 +26,9 @@ import { Web3Provider } from '@ethersproject/providers';
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 import useMint from 'lib/hooks/useMint';
 
+//- Constants Imports
+import { EXTERNAL_URL } from './components/WizardSteps/Details/Details.constants';
+
 //- Style Imports
 import styles from './ClaimNFTContainer.module.scss';
 
@@ -80,10 +83,7 @@ const ClaimNFTContainer = ({
 		}
 
 		if (dropStage === Stage.Whitelist && !countdownDate) {
-			window?.open(
-				'https://zine.wilderworld.com/moto-genesis-nft-rewards/',
-				'_blank',
-			);
+			window?.open(EXTERNAL_URL.CLAIM_ZINE, '_blank');
 		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
