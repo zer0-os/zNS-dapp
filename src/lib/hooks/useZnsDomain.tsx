@@ -88,7 +88,8 @@ export const useZnsDomain = (
 	};
 
 	const getSubdomains = async (id: string) => {
-		const subs = formatSubdomains(await sdk.getSubdomainsById(id));
+		// Disable DataStore
+		const subs = formatSubdomains(await sdk.getSubdomainsById(id, false));
 		return subs;
 	};
 

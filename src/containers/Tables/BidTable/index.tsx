@@ -66,7 +66,6 @@ const BidTableContainer = () => {
 			existingBids = data[0];
 			domainData = data[1];
 			paymentTokenData = data[2];
-			console.log(paymentTokenData, domainData, existingBids);
 		} catch (e) {
 			console.error(e);
 			throw new Error('Failed to retrieve bid data.');

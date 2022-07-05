@@ -85,7 +85,7 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 
 	return (
 		<>
-			{biddingOn !== undefined && biddingOn?.paymentTokenInfo && (
+			{biddingOn?.paymentTokenInfo && (
 				<Overlay onClose={close} open={true}>
 					<MakeABid
 						domain={biddingOn!}
