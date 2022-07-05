@@ -52,7 +52,6 @@ const ClaimNFT = ({
 	setEligibleDomains,
 	setIsClaimingInProgress,
 }: ClaimNFTProps) => {
-	const isMounted = useRef(false);
 	//////////////////
 	// State & Data //
 	//////////////////
