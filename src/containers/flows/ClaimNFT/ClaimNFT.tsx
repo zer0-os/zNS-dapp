@@ -138,13 +138,6 @@ const ClaimNFT = ({
 		}
 	}, [active, currentStep]);
 
-	useEffect(() => {
-		isMounted.current = true;
-		return () => {
-			isMounted.current = false;
-		};
-	}, []);
-
 	///////////////
 	// Fragments //
 	///////////////

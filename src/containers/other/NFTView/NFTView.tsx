@@ -252,24 +252,7 @@ const NFTView: React.FC<NFTViewProps> = ({
 	/////////////
 
 	useEffect(() => {
-		let isMounted = true;
-
-		if (!domainId) {
-			return;
-		}
-		if (domainId) {
-			try {
-				if (!isMounted) {
-					return;
-				}
-				setRequestCheck(true);
-			} catch (err) {
-				console.log(err);
-			}
-		}
-		return () => {
-			isMounted = false;
-		};
+		setRequestCheck(domainId !== undefined);
 	}, [domainId]);
 
 	////////////

@@ -129,7 +129,7 @@ const MakeABid = ({
 					setStepContent(StepContent.Details);
 				}
 			} catch (e) {
-				console.log(ERRORS.CONSOLE_TEXT, e);
+				console.error(ERRORS.CONSOLE_TEXT, e);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}

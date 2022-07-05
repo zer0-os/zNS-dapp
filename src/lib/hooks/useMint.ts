@@ -27,7 +27,7 @@ import {
 import { LABELS } from 'constants/labels';
 import { IMAGE_URI } from 'constants/uris';
 import { ERRORS } from 'constants/errors';
-import { STATUS } from 'constants/status';
+import { Status } from 'constants/status';
 import {
 	MINTING_FLOW_NOTIFICATIONS,
 	CLAIM_FLOW_NOTIFICATIONS,
@@ -130,7 +130,7 @@ export const useMint = (): UseMintReturn => {
 			//////////////////////////////////////
 
 			let tx: Maybe<ethers.ContractTransaction>;
-			setStatus(STATUS.CONFIRM_WALLET);
+			setStatus(Status.CONFIRM_WALLET);
 
 			try {
 				tx = await zSaleInstance.purchaseDomains(
@@ -147,7 +147,7 @@ export const useMint = (): UseMintReturn => {
 			// Send the transaction //
 			//////////////////////////
 
-			setStatus(STATUS.MINTING);
+			setStatus(Status.MINTING);
 
 			reduxActions.setMinting(wheel);
 
@@ -197,7 +197,7 @@ export const useMint = (): UseMintReturn => {
 					.splice(0, quantity)
 					.map((i) => i.id);
 
-				setStatus(STATUS.PLEASE_APPROVE);
+				setStatus(Status.PLEASE_APPROVE);
 				setIsClaimingInProgress(true);
 
 				tx = await claimInstance.claimDomains(
@@ -252,7 +252,7 @@ export const useMint = (): UseMintReturn => {
 
 			// get metadata uri
 			let metadata: Maybe<UploadedDomainMetadata>;
-			setStatus(STATUS.UPLOADING_METADATA);
+			setStatus(Status.UPLOADING_METADATA);
 
 			try {
 				metadata = await createDomainMetadata({
@@ -267,7 +267,7 @@ export const useMint = (): UseMintReturn => {
 				throw Error(ERRORS.FAILED_METADATA_UPLOAD);
 			}
 
-			setStatus(STATUS.PENDING_WALLET_APPROVAL);
+			setStatus(Status.PENDING_WALLET_APPROVAL);
 
 			tx = await basicController.registerSubdomain({
 				parentId: nft.parent,
