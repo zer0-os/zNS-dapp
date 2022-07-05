@@ -122,11 +122,11 @@ const MintPreview = (props: MintPreviewProps) => {
 
 							{nft.stakeAmount && (
 								<div>
-									{nft.stakeAmount && nft.stakeAmount.length > 0 ? (
+									{nft.stakeAmount.length > 0 && (
 										<p style={{ marginTop: '16px' }}>
 											Stake Amount: {nft.stakeAmount} LOOT
 										</p>
-									) : null}
+									)}
 									<div style={statusStyle}>{statusText}</div>
 								</div>
 							)}
