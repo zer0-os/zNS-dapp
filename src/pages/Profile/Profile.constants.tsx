@@ -24,12 +24,12 @@ type Tab = {
  */
 export const TABS: Tab[] = [
 	{
-		title: 'Owned Domains',
+		title: 'My Domains',
 		component: () => <OwnedDomainsTable />,
 		location: ROUTES.OWNED_DOMAINS,
 	},
 	{
-		title: 'Your Bids',
+		title: 'My Bids',
 		component: () => <BidTable />,
 		location: ROUTES.YOUR_BIDS,
 	},

@@ -16,7 +16,7 @@ export const HEADERS = [
 		className: 'domain',
 	},
 	{
-		label: 'Your Bid',
+		label: 'My Bid',
 		accessor: '',
 		className: '',
 	},
