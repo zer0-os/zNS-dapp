@@ -11,6 +11,7 @@ import { useTransfer } from 'lib/hooks/useTransfer';
 //- Constant Imports
 import { URLS } from 'constants/urls';
 import { ALT_TEXT, MESSAGES, TITLE } from './TransferPreview.constants';
+import { ROUTES } from 'constants/routes';
 
 //- Library Imports
 import { Maybe } from 'lib/types';
@@ -43,23 +44,22 @@ const TransferPreview = () => {
 	// Fragments //
 	///////////////
 	const previewCard = (nft: any, exists: boolean) => {
+		const parsedLink = ROUTES.MARKET + '/' + getNetworkZNA(nft.domainName);
+
 		return (
 			<>
 				<li key={JSON.stringify(nft)}>
 					<hr className={styles.Divider} />
 					<div>
 						<div className={`${styles.Image} border-rounded`}>
-							<Link to={`${getNetworkZNA(nft.domainName)}`}>
+							<Link to={parsedLink}>
 								<Image src={nft.image} />
 							</Link>
 						</div>
 						<div className={styles.Info}>
 							<h3>{nft.name}</h3>
 
-							<Link
-								className={styles.Link}
-								to={`${getNetworkZNA(nft.domainName)}`}
-							>
+							<Link className={styles.Link} to={parsedLink}>
 								0://
 								{truncateDomain(nft.domainName, MAX_CHARACTER_VALUE)}
 							</Link>

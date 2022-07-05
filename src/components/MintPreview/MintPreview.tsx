@@ -29,6 +29,8 @@ import {
 	BUTTON_TEXT,
 } from './MintPreview.constants';
 import { ZNA } from 'constants/zna';
+import { ROUTES } from 'constants/routes';
+import { IS_DEFAULT_NETWORK } from 'constants/domains';
 
 //- Assets Imports
 import questionMark from './assets/question-mark-icon.svg';
@@ -54,7 +56,9 @@ const MintPreview = (props: MintPreviewProps) => {
 		statusText?: string,
 	) => {
 		const link = zNAToLink(nft.zNA);
-		const parsedLink = getNetworkZNA(link);
+		const parsedLink = IS_DEFAULT_NETWORK
+			? getNetworkZNA(link)
+			: ROUTES.MARKET + '/' + getNetworkZNA(link);
 
 		// Check for Claim domain name
 		const claimDomainName = nft.zNA === ZNA.CLAIM_NFT_DOMAIN_ROOT;
@@ -87,11 +91,8 @@ const MintPreview = (props: MintPreviewProps) => {
 							<div className={styles.InfoSection}>
 								<h3>{nft.title}</h3>
 
-								<Link className={styles.Link} to={link}>
-									{/* // TODO: Need to check if this is working as expected - resolved as merge conflict */}
-									{/* 0://{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)} */}
+								<Link className={styles.Link} to={parsedLink}>
 									{truncateDomain(nft.zNA, MAX_CHARACTER_VALUE)}
-
 									{claimDomainName && '.?'}
 								</Link>
 							</div>
