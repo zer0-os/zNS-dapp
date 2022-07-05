@@ -35,7 +35,7 @@ const SubdomainTableRow = (props: any) => {
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
 
-	const paymentTokenInfo: ConvertedTokenInfo = props.paymentTokenInfo;
+	const paymentTokenInfo: ConvertedTokenInfo = props.data.paymentTokenInfo;
 
 	const domainMetadata = useDomainMetadata(domain?.metadata);
 

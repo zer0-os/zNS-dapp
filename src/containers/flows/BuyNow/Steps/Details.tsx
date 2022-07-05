@@ -90,7 +90,7 @@ const Details = ({
 							ethers.utils.formatEther(data.balanceWild),
 						).toLocaleString() +
 						' ' +
-						+paymentTokenInfo.name
+						paymentTokenInfo.name
 					}
 					subtext="Your Balance"
 					mainClassName={styles.Value}
