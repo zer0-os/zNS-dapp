@@ -55,18 +55,12 @@ const Claiming = ({
 	const totalEligibleDomains = eligibleDomains?.length ?? 0;
 	const exceedsQuantityMintLimit = totalEligibleDomains > maxQuantityLimit;
 	const hasValue = Boolean(quantity);
-	const placeholder = getPlaceholder(
-		totalEligibleDomains,
-		exceedsQuantityMintLimit,
-	);
+	const placeholder = getPlaceholder(displayTotal, exceedsQuantityMintLimit);
 
 	const validQuantity =
-		Number(quantity) <= totalEligibleDomains &&
+		Number.isInteger(Number(quantity)) &&
 		Number(quantity) > 0 &&
-		Number(quantity) <= maxQuantityLimit &&
-		quantity !== undefined &&
-		!isNaN(Number(quantity)) &&
-		Number(quantity) % 1 === 0;
+		Number(quantity) <= Math.min(totalEligibleDomains, maxQuantityLimit);
 
 	///////////////
 	// Functions //
