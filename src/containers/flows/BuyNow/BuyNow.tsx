@@ -79,8 +79,9 @@ const BuyNow = ({
 			<Wizard.Confirmation
 				error={error}
 				message={'Failed to check zAuction approval status'}
-				primaryButtonText={'Close'}
-				onClickPrimaryButton={onCancel}
+				primaryButtonText={'Retry'}
+				onClickPrimaryButton={onNext}
+				onClickSecondaryButton={onCancel}
 			/>,
 		);
 	}

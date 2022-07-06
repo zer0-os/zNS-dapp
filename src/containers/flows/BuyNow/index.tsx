@@ -61,6 +61,10 @@ const BuyNowContainer = ({
 			case Step.ApproveZAuction:
 				approveZAuction();
 				break;
+			case Step.FailedToCheckZAuction:
+				setCurrentStep(Step.ApproveZAuction);
+				setError('');
+				break;
 		}
 	};
 
@@ -94,7 +98,7 @@ const BuyNowContainer = ({
 			getData();
 		} catch (e: any) {
 			setError(e.message);
-			setCurrentStep(Step.ApproveZAuction);
+			setCurrentStep(Step.FailedToCheckZAuction);
 		}
 	};
 
