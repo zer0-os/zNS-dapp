@@ -61,7 +61,7 @@ export const zNAToLink = (domain: string): string => {
 		domain = domain.substr(1);
 	}
 
-	return '/market/' + domain;
+	return domain;
 };
 
 // Truncate wallet address

@@ -1,5 +1,5 @@
 //- React Imports
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
