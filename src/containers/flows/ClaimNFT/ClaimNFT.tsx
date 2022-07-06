@@ -88,16 +88,16 @@ const ClaimNFT = ({
 	const onClaim = (quantity: number) => {
 		setTransactionError('');
 
-		const statusCallback = (status: string) => {
+		const setStatus = (status: string) => {
 			setTransactionStatus(status);
 		};
 
-		const errorCallback = (error: string) => {
+		const onError = (error: string) => {
 			setTransactionError(error);
 		};
 
 		// Set Minting Step
-		const finishedCallback = () => {
+		const onFinish = () => {
 			setCurrentStep(Step.Minting);
 			setStepContent(StepContent.Minting);
 		};
@@ -107,9 +107,9 @@ const ClaimNFT = ({
 			eligibleDomains,
 			setEligibleDomains,
 			setIsClaimingInProgress,
-			statusCallback,
-			errorCallback,
-			finishedCallback,
+			setStatus,
+			onError,
+			onFinish,
 		};
 
 		onSubmit(data);

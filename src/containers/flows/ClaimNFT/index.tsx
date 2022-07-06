@@ -116,9 +116,9 @@ const ClaimNFTContainer = ({
 			eligibleDomains,
 			setEligibleDomains,
 			setIsClaimingInProgress,
-			statusCallback,
-			errorCallback,
-			finishedCallback,
+			setStatus,
+			onError,
+			onFinish,
 		} = data;
 		if (!isSaleHalted) {
 			claimNFT(
@@ -126,12 +126,12 @@ const ClaimNFTContainer = ({
 				eligibleDomains,
 				setEligibleDomains,
 				setIsClaimingInProgress,
-				statusCallback,
-				errorCallback,
-				finishedCallback,
+				setStatus,
+				onError,
+				onFinish,
 			);
 		} else {
-			errorCallback(MESSAGES.SALE_ENDED);
+			onError(MESSAGES.SALE_ENDED);
 		}
 	};
 

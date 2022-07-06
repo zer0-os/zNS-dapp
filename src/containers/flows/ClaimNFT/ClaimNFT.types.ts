@@ -17,7 +17,7 @@ export type ClaimData = {
 	eligibleDomains: ClaimableDomain[];
 	setEligibleDomains: React.Dispatch<React.SetStateAction<ClaimableDomain[]>>;
 	setIsClaimingInProgress: (state: boolean) => void;
-	statusCallback: (status: string) => void;
-	errorCallback: (error: string) => void;
-	finishedCallback: () => void;
+	setStatus: (status: string) => void;
+	onError: (error: string) => void;
+	onFinish: () => void;
 };
