@@ -131,7 +131,7 @@ const ClaimNFT = ({
 
 	// Set step if disconnected
 	useEffect(() => {
-		if (!active && currentStep !== Step.Details) {
+		if (!active) {
 			setCurrentStep(Step.Details);
 			setStepContent(StepContent.Details);
 		}
