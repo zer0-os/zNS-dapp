@@ -1,6 +1,5 @@
 //- Constants Imports
-import { ERRORS } from 'constants/errors';
-import { getUsdEstimation } from '../../MakeABid.constants';
+import { getUsdEstimation, MESSAGES } from '../../MakeABid.constants';
 
 //- Styles Imports
 import styles from './Details.module.scss';
@@ -23,6 +22,6 @@ export const getBidToHighWarning = (
 	wildBalance: number,
 ) => {
 	if (!isLoading && Number(bid) > wildBalance!) {
-		return <p className={styles.Error}>{ERRORS.INSUFFICIENT_FUNDS_BID}</p>;
+		return <p className={styles.Error}>{MESSAGES.INSUFFICIENT_FUNDS_BID}</p>;
 	}
 };

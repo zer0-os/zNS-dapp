@@ -44,6 +44,8 @@ export const MESSAGES = {
 	TEXT_LOADING: 'Loading Domain Data...',
 	ENTER_AMOUNT: 'Enter the amount you wish to bid:',
 	SUCCESSFUL_BID: `Your bid was successfully placed.`,
+	INSUFFICIENT_FUNDS_BID:
+		'You don’t have enough WILD to make that large of a bid.',
 };
 
 export const PLACE_BID_LABELS = {
