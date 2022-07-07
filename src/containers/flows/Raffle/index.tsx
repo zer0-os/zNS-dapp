@@ -20,6 +20,7 @@ import {
 	RAFFLE_START_TIME,
 	SALE_START_TIME,
 } from './Drop.constants';
+import { EXTERNAL_URL } from '../ClaimNFT/components/WizardSteps/Details/Details.constants';
 
 // Style Imports
 import styles from './Raffle.module.scss';
@@ -98,10 +99,7 @@ const RaffleContainer = ({ setClaimDropStage }: RaffleContainerProps) => {
 		if (!hasRaffleEnded) {
 			setIsModalOpen(true);
 		} else {
-			window.open(
-				'https://zine.wilderworld.com/moto-genesis-nft-rewards/',
-				'_blank',
-			);
+			window.open(EXTERNAL_URL.CLAIM_ZINE, '_blank');
 		}
 	};
 
