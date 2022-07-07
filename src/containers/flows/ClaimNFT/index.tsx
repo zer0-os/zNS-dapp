@@ -78,13 +78,6 @@ const ClaimNFTContainer = ({
 		if (event.target.nodeName.toLowerCase() === 'a') {
 			return;
 		}
-
-		if (dropStage === Stage.Whitelist && !countdownDate) {
-			window?.open(
-				'https://zine.wilderworld.com/moto-genesis-nft-rewards/',
-				'_blank',
-			);
-		}
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
@@ -156,7 +149,10 @@ const ClaimNFTContainer = ({
 			// but given time constraints we're just going to compare
 			// to PUBLIC_SALE_START_TIME
 
-			if (!claimInstance) {
+			if (!claimInstance || dropStage === Stage.Ended || hasCountdownFinished) {
+				if (dropStage === Stage.Ended) {
+					setClaimDropStage(Stage.Ended);
+				}
 				return;
 			}
 			try {
@@ -165,6 +161,7 @@ const ClaimNFTContainer = ({
 				if (!isActive()) {
 					return;
 				}
+
 				if (currentDropStage === Stage.Upcoming) {
 					setCountdownDate(undefined);
 					setTimeout(() => {
@@ -178,6 +175,7 @@ const ClaimNFTContainer = ({
 				if (refetch > 0) {
 					setCountdownDate(undefined);
 				}
+
 				setDropStage(currentDropStage);
 				setClaimDropStage(currentDropStage);
 				setAssetTotal(saleData.amountForSale);
@@ -214,7 +212,7 @@ const ClaimNFTContainer = ({
 					}
 					setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
 				} catch (err) {
-					console.log(err);
+					console.error(err);
 				}
 				setIsClaimDataLoading(false);
 			}
@@ -238,13 +236,14 @@ const ClaimNFTContainer = ({
 				if (!isActive()) {
 					return;
 				}
+
 				if (dropStage !== undefined) {
-					if (hasCountdownFinished && currentDropStage === dropStage) {
-						setTimeout(() => {
-							setRefetch(refetch + 1);
-						}, 7000);
+					if (hasCountdownFinished) {
+						setDropStage(Stage.Ended);
+						setClaimDropStage(Stage.Ended);
 						return;
 					}
+
 					if (currentDropStage === Stage.Upcoming) {
 						setCountdownDate(undefined);
 						setTimeout(() => {
@@ -255,9 +254,11 @@ const ClaimNFTContainer = ({
 					} else {
 						setCountdownDate(undefined);
 					}
+
 					if (refetch > 0) {
 						setCountdownDate(undefined);
 					}
+
 					setDropStage(currentDropStage);
 					setClaimDropStage(currentDropStage);
 					setAssetTotal(saleData.amountForSale);
@@ -322,7 +323,7 @@ const ClaimNFTContainer = ({
 	};
 
 	const buttonText = () => {
-		return failedToLoad || (dropStage === Stage.Whitelist && !countdownDate)
+		return failedToLoad && !countdownDate
 			? 'Learn More'
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
