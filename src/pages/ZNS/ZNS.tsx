@@ -20,7 +20,6 @@ import { NFTView, TransferOwnership } from 'containers';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
-import useCurrency from 'lib/hooks/useCurrency';
 import useMatchMedia from 'lib/hooks/useMatchMedia';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useNavbar } from 'lib/hooks/useNavbar';
@@ -47,7 +46,6 @@ const ZNS: React.FC<ZNSProps> = () => {
 	// Web3 Handling //
 	///////////////////
 	const sdk = useZnsSdk();
-	const { wildPriceUsd } = useCurrency();
 
 	//- Domain Data
 	const {
@@ -182,7 +180,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 					tradeData?.lowestSale ? formatEthers(tradeData?.lowestSale) : 0
 				} ${paymentToken?.name}`,
 				subTitle:
-					wildPriceUsd > 0
+					Number(paymentToken?.priceInUsd) > 0
 						? `$${
 								tradeData?.lowestSale
 									? formatNumber(
@@ -201,7 +199,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 					  }`
 					: '',
 				subTitle:
-					wildPriceUsd > 0
+					Number(paymentToken?.priceInUsd) > 0
 						? `$${
 								(tradeData?.volume as any)?.all
 									? formatNumber(

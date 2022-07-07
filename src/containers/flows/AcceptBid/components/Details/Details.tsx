@@ -20,6 +20,7 @@ import styles from './Details.module.scss';
 //-Library Imports
 import { toFiat } from 'lib/currency';
 import { formatBidAmount } from 'lib/utils';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 type DetailsProps = {
 	stepContent: StepContent;
@@ -28,10 +29,10 @@ type DetailsProps = {
 	domainName: string;
 	title: string;
 	bidAmount: string;
-	wildPriceUsd?: number;
 	walletAddress?: string;
 	highestBid?: string;
 	error?: string;
+	paymentTokenInfo: ConvertedTokenInfo;
 	onClose: () => void;
 	onNext?: () => void;
 };
@@ -43,24 +44,28 @@ const Details = ({
 	domainName,
 	title,
 	bidAmount,
-	wildPriceUsd,
 	walletAddress,
 	highestBid,
 	error,
 	onClose,
 	onNext,
+	paymentTokenInfo,
 }: DetailsProps) => {
 	// Price formatting
 	const bidAmountUSD =
 		bidAmount &&
-		wildPriceUsd &&
-		Number(ethers.utils.formatEther(bidAmount)) * wildPriceUsd;
+		paymentTokenInfo.priceInUsd &&
+		Number(ethers.utils.formatEther(bidAmount)) *
+			Number(paymentTokenInfo.priceInUsd);
 
 	///////////////
 	// Functions //
 	///////////////
-	const formattedHighestBidAmount = formatBidAmount(highestBid);
-	const formattedBidAmount = formatBidAmount(bidAmount);
+	const formattedHighestBidAmount = formatBidAmount(
+		highestBid,
+		paymentTokenInfo.name,
+	);
+	const formattedBidAmount = formatBidAmount(bidAmount, paymentTokenInfo.name);
 	const formattedBidAmountUSD = toFiat(Number(bidAmountUSD));
 	const onSubmit = stepContent === StepContent.Details ? onNext : onClose;
 	const onSubmitButtonText =

@@ -111,6 +111,7 @@ const BidList: React.FC<BidListProps> = ({
 					walletAddress={acceptingBid?.bidder ?? ''}
 					highestBid={highestBid ?? ''}
 					onClose={toggleAcceptBidModal}
+					paymentTokenInfo={paymentTokenInfo}
 				/>
 			) : (
 				<aside className={`${styles.Container} border-rounded border-primary`}>
