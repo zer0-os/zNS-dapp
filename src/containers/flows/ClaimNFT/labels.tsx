@@ -53,10 +53,6 @@ export const getBannerLabel = (
 		);
 	}
 
-	if (dropStage === undefined) {
-		return <></>;
-	}
-
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
 		return <>The Claim Period has Concluded</>;
 	}
