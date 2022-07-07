@@ -29,7 +29,7 @@ const GenericTable = (props: any) => {
 
 	const shouldShowViewToggle = props.rowComponent && props.gridComponent;
 	const shouldShowSearchBar = !props.notSearchable && props.data?.length > 0;
-	const isSmallScreen = useMatchMedia(`(max-width: ${GRID_BREAKPOINT}px)`);
+	const isSmallScreen = !useMatchMedia(`(min-width: ${GRID_BREAKPOINT}px)`);
 
 	const [isGridView, setIsGridView] = usePropsState<boolean>(
 		!isSmallScreen && isGridViewByDefault,
@@ -101,9 +101,9 @@ const GenericTable = (props: any) => {
 	);
 
 	// Toggles to grid view when viewport
-	// resizes to below 700px
+	// resizes to below 744px
 	const handleResize = useCallback(() => {
-		if (window.innerWidth <= 700) {
+		if (window.innerWidth < GRID_BREAKPOINT) {
 			changeView(true);
 		}
 	}, [changeView]);
@@ -162,7 +162,11 @@ const GenericTable = (props: any) => {
 	// Grid View container & cards
 	const renderGridView = useCallback(() => {
 		return (
-			<div className={styles.Grid}>
+			<div
+				className={`${styles.Grid} ${
+					props.isSingleGridColumn && styles.GridWithSingleColumn
+				}`}
+			>
 				{data.map((d: any, index: number) => (
 					<props.gridComponent
 						key={d[props.itemKey]}
@@ -188,15 +192,13 @@ const GenericTable = (props: any) => {
 	return (
 		<div className={styles.Container} style={props.style}>
 			<div className={styles.Content}>
-				{(shouldShowSearchBar || shouldShowViewToggle) && (
+				{shouldShowSearchBar && (
 					<div className={styles.Controls}>
-						{shouldShowSearchBar && (
-							<SearchBar
-								placeholder={'Search by ' + (props.searchBy ?? 'domain name')}
-								onChange={onSearchBarUpdate}
-								style={{ width: '100%' }}
-							/>
-						)}
+						<SearchBar
+							placeholder={'Search by ' + (props.searchBy ?? 'domain name')}
+							onChange={onSearchBarUpdate}
+							style={{ width: '100%' }}
+						/>
 						{shouldShowViewToggle && !isSmallScreen && (
 							<div className={styles.Buttons}>
 								<IconButton
@@ -215,6 +217,11 @@ const GenericTable = (props: any) => {
 						)}
 					</div>
 				)}
+
+				{props.isReloading && (
+					<LoadingIndicator className={styles.Reloading} text="" />
+				)}
+
 				{!props.isLoading &&
 					((rawData?.length ?? 0) === 0 ? (
 						<p className={classNames(styles.Loading, 'text-center')}>

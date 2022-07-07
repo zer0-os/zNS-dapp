@@ -11,7 +11,7 @@ import styles from './Tooltip.module.scss';
 
 type TooltipProps = {
 	children: React.ReactNode | string | number;
-	text: string;
+	text: React.ReactNode;
 	auto?: boolean;
 	placement?:
 		| 'top-start'

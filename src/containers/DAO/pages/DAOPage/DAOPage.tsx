@@ -12,12 +12,16 @@ import {
 // Components
 import Assets from './Assets/Assets';
 import Transactions from './Transactions/Transactions';
+import { Proposals, ProposalDetail } from './Proposals';
 import { LoadingIndicator, StatsWidget } from 'components';
 
 // Hooks
+import { useNavbar } from 'lib/hooks/useNavbar';
+import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useCurrentDao } from 'lib/dao/providers/CurrentDaoProvider';
 import useTransactions from './hooks/useTransactions';
 import useAssets from './hooks/useAssets';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 
 // Lib
 import { toFiat } from 'lib/currency';
@@ -32,8 +36,6 @@ import { ArrowLeft } from 'react-feather';
 import styles from './DAOPage.module.scss';
 import genericStyles from '../Container.module.scss';
 import classNames from 'classnames/bind';
-import { useNavbar } from 'lib/hooks/useNavbar';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 const cx = classNames.bind(genericStyles);
 
 const MILLIFY_THRESHOLD = 1000000;
@@ -51,16 +53,23 @@ const DAOPage: React.FC = () => {
 	const { transactions, isLoading: isLoadingTransactions } =
 		useTransactions(dao);
 	const { assets, totalUsd, isLoading: isLoadingAssets } = useAssets(dao);
+	const { fetch: fetchProposals } = useProposals();
 
 	const daoData = dao;
 
 	const to = toDaoPage(zna);
 
-	useUpdateEffect(() => {
+	React.useEffect(() => {
 		if (dao) {
 			setNavbarTitle('DAOs - ' + dao.title);
 		} else {
 			setNavbarTitle('DAOs');
+		}
+	}, [dao, setNavbarTitle]);
+
+	useUpdateEffect(() => {
+		if (dao) {
+			fetchProposals();
 		}
 	}, [dao]);
 
@@ -75,68 +84,24 @@ const DAOPage: React.FC = () => {
 		/>
 	);
 
-	const Page = () => (
-		<>
-			<nav className={genericStyles.Links}>
-				<Link
-					className={cx({
-						Active: pathname.includes(ROUTES.ZDAO_ASSETS),
-					})}
-					to={to(ROUTES.ZDAO_ASSETS)}
-				>
-					Assets
-				</Link>
-				<Link
-					className={cx({
-						Active: pathname.includes(ROUTES.ZDAO_TRANSACTIONS),
-					})}
-					to={to(ROUTES.ZDAO_TRANSACTIONS)}
-				>
-					Transactions
-				</Link>
-			</nav>
-			<Switch>
-				<Route
-					exact
-					path={to(ROUTES.ZDAO_ASSETS)}
-					component={() => (
-						<Assets assets={assets} isLoading={isLoadingAssets} />
-					)}
-				/>
-				<Route
-					exact
-					path={to(ROUTES.ZDAO_TRANSACTIONS)}
-					render={() => (
-						<Transactions
-							isLoading={isLoadingTransactions}
-							transactions={transactions}
-						/>
-					)}
-				/>
-				<Route exact path={path}>
-					<Redirect to={to(ROUTES.ZDAO_ASSETS)} />
-				</Route>
-			</Switch>
-		</>
-	);
-
 	return (
 		<div className={cx(genericStyles.Container, 'main', 'background-primary')}>
 			{isLoading ? (
 				<Loading />
 			) : dao ? (
 				<>
-					<Link className={styles.Back} to={ROUTES.ZDAO}>
-						<ArrowLeft /> All DAOs
-					</Link>
-					<ul className={genericStyles.Stats}>
-						<div className={styles.Header}>
-							<div className={styles.Icon}>
-								<img alt="dao logo" src={defaultDaoIcon} />
+					<div id="dao-page-nav-tabs">
+						<Link className={styles.Back} to={ROUTES.ZDAO}>
+							<ArrowLeft /> All DAOs
+						</Link>
+
+						<ul className={genericStyles.Stats}>
+							<div className={styles.Header}>
+								<div className={styles.Icon}>
+									<img alt="dao logo" src={defaultDaoIcon} />
+								</div>
+								<h1>{daoData?.title}</h1>
 							</div>
-							<h1>{daoData?.title}</h1>
-						</div>
-						<div className={styles.Stat}>
 							<StatsWidget
 								className="normalView"
 								fieldName="Total Value"
@@ -149,9 +114,71 @@ const DAOPage: React.FC = () => {
 										: toFiat(totalUsd ?? 0))
 								}
 							/>
-						</div>
-					</ul>
-					<Page />
+						</ul>
+
+						<nav className={genericStyles.Links}>
+							<Link
+								className={cx({
+									Active: pathname.includes(ROUTES.ZDAO_ASSETS),
+								})}
+								to={to(ROUTES.ZDAO_ASSETS)}
+							>
+								Assets
+							</Link>
+							<Link
+								className={cx({
+									Active: pathname.includes(ROUTES.ZDAO_TRANSACTIONS),
+								})}
+								to={to(ROUTES.ZDAO_TRANSACTIONS)}
+							>
+								Transactions
+							</Link>
+							{!!dao.ens && (
+								<Link
+									className={cx({
+										Active: pathname.includes(ROUTES.ZDAO_PROPOSALS),
+									})}
+									to={to(ROUTES.ZDAO_PROPOSALS)}
+								>
+									Proposals
+								</Link>
+							)}
+						</nav>
+					</div>
+
+					{/* Routes */}
+					<Switch>
+						<Route
+							exact
+							path={to(ROUTES.ZDAO_ASSETS)}
+							component={() => (
+								<Assets assets={assets} isLoading={isLoadingAssets} />
+							)}
+						/>
+						<Route
+							exact
+							path={to(ROUTES.ZDAO_TRANSACTIONS)}
+							render={() => (
+								<Transactions
+									isLoading={isLoadingTransactions}
+									transactions={transactions}
+								/>
+							)}
+						/>
+						<Route
+							exact
+							path={to(ROUTES.ZDAO_PROPOSALS)}
+							render={() => <Proposals />}
+						/>
+						<Route
+							exact
+							path={`${to(ROUTES.ZDAO_PROPOSALS)}/:proposalId`}
+							render={() => <ProposalDetail dao={dao} />}
+						/>
+						<Route exact path={path}>
+							<Redirect to={to(ROUTES.ZDAO_ASSETS)} />
+						</Route>
+					</Switch>
 				</>
 			) : (
 				<></>

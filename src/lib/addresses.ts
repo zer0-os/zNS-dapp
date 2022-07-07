@@ -19,7 +19,7 @@ const addresses: { [network in NETWORK_TYPES]: ContractAddresses } = {
 		// wheelSale: '0x7bA5faff747a3cA7E4ebe65F64e3EDFAEE136846', //  crafts
 
 		// Not yet deployed
-		zDao: '',
+		zDao: '0x7701913b65C9bCDa4d353F77EC12123d57D77f1e',
 	},
 	[NETWORK_TYPES.KOVAN]: {
 		registrar: '0xC613fCc3f81cC2888C5Cccc1620212420FFe4931',

@@ -4,13 +4,17 @@ import { ethers } from 'ethers';
  * Converts a number to fiat format - just a locale string
  * with 2 dp
  * @param n number to convert
+ * @param options Intl.NumberFormatOptions | undefined to convert
  * @returns number as locale string converted to 2dp
  */
-export const toFiat = (n: number) => {
-	return (n ?? 0).toLocaleString(undefined, {
+export const toFiat = (
+	n: number,
+	options = {
 		maximumFractionDigits: 2,
 		minimumFractionDigits: 2,
-	});
+	},
+) => {
+	return (n ?? 0).toLocaleString(undefined, options);
 };
 
 /**

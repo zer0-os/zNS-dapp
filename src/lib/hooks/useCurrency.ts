@@ -14,7 +14,7 @@ export type CurrencyHook = {
 	wildPercentageChange: number;
 };
 
-const useCurrency = (): CurrencyHook => {
+const useCurrency = (refresh = true): CurrencyHook => {
 	const currency = useSelector(getCurrency);
 
 	const dispatch = useDispatch();
@@ -32,9 +32,11 @@ const useCurrency = (): CurrencyHook => {
 	}, [dispatch]);
 
 	useDidMount(() => {
-		getWildPriceUsd();
-		getLootPriceUsd();
-		getWildPricePercentageChange();
+		if (refresh) {
+			getWildPriceUsd();
+			getLootPriceUsd();
+			getWildPricePercentageChange();
+		}
 	});
 
 	return useMemo(() => currency, [currency]);

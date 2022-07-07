@@ -103,7 +103,11 @@
 	}
 
 	.ButtonContainer {
-		margin-bottom: 40px;
+		margin-top: 24px;
+
+		a {
+			font-size: #{typography.$size-small};
+		}
 	}
 
 	.Success {

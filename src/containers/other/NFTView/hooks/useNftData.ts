@@ -11,19 +11,12 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 import { useCurrentDomain } from 'lib/providers/CurrentDomainProvider';
 import { DomainEventType, DomainBidEvent } from '@zero-tech/zns-sdk/lib/types';
 import { Bid } from '@zero-tech/zauction-sdk';
-import useNotification from 'lib/hooks/useNotification';
 
 //- Type Imports
 import { DomainEvents } from '../NFTView.types';
 
 //- Helper Imports
-import {
-	getDomainAsset,
-	downloadDomainAsset,
-	shareDomainAsset,
-	sortBidsByAmount,
-	sortEventsByTimestamp,
-} from '../NFTView.helpers';
+import { sortBidsByAmount, sortEventsByTimestamp } from '../NFTView.helpers';
 
 //- Constants Imports
 import { MESSAGES } from '../NFTView.constants';
@@ -39,8 +32,6 @@ interface UseNftDataReturn {
 	yourBid: Bid | undefined;
 	getHistory: () => Promise<void>;
 	getPriceData: () => Promise<void>;
-	downloadAsset: (assetUrl: string) => Promise<void>;
-	shareAsset: () => Promise<void>;
 	refetch: () => void;
 }
 
@@ -52,10 +43,7 @@ export const useNftData = (): UseNftDataReturn => {
 	const { instance: sdk } = useZnsSdk();
 
 	//- Current domain
-	const { domain: znsDomain, domainRaw: domain } = useCurrentDomain();
-
-	//- Notification
-	const { addNotification } = useNotification();
+	const { domain: znsDomain } = useCurrentDomain();
 
 	/**
 	 * State data
@@ -147,24 +135,6 @@ export const useNftData = (): UseNftDataReturn => {
 		}
 	}, [sdk, account, znsDomain]);
 
-	const downloadAsset = useCallback(
-		async (assetUrl: string) => {
-			const asset = await getDomainAsset(assetUrl);
-
-			if (asset) {
-				addNotification('Download starting');
-
-				await downloadDomainAsset(asset);
-			}
-		},
-		[addNotification],
-	);
-
-	const shareAsset = useCallback(async () => {
-		if (domain) {
-			shareDomainAsset(domain);
-		}
-	}, [domain]);
 	/**
 	 * Refreshes data for the current NFT
 	 */
@@ -195,8 +165,6 @@ export const useNftData = (): UseNftDataReturn => {
 		yourBid,
 		getHistory,
 		getPriceData,
-		downloadAsset,
-		shareAsset,
 		refetch,
 	};
 };
