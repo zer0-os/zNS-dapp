@@ -30,14 +30,34 @@ $gap: 40px;
 		.Back {
 			display: flex;
 			align-items: center;
-			background: none;
-			color: #{colors.$white};
-			font-size: #{typography.$size-large};
-			font-weight: #{typography.$font-weight-bold};
 
-			span {
-				display: block;
-				margin-left: 16px;
+			button {
+				background: none;
+			}
+
+			.BackText {
+				color: #{colors.$white};
+				font-size: #{typography.$size-large};
+				font-weight: #{typography.$font-weight-bold};
+				margin-left: 40px;
+			}
+
+			.BackArrowContainer {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				width: 48px;
+				height: 48px;
+				border-radius: 100%;
+
+				&:hover {
+					background-color: #{colors.$purple-10};
+				}
+
+				.BackArrow {
+					margin-left: auto;
+					margin-right: auto;
+				}
 			}
 		}
 

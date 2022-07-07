@@ -148,9 +148,16 @@ const Profile = () => {
 	return (
 		<main className={styles.Container}>
 			<div className={styles.Header}>
-				<button className={styles.Back} onClick={onBack}>
-					<ArrowLeft color="white" /> <span>My Profile</span>
-				</button>
+				<div className={styles.Back}>
+					<Tooltip placement="bottom-center" text="Back">
+						<button onClick={onBack}>
+							<div className={styles.BackArrowContainer}>
+								<ArrowLeft color="white" className={styles.BackArrow} />
+							</div>
+						</button>
+					</Tooltip>
+					<span className={styles.BackText}>Profile</span>
+				</div>
 				{account && chainId && (
 					<Tooltip placement="bottom-center" text={copyLabel}>
 						<button
