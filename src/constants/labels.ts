@@ -1,4 +1,4 @@
-export enum LABELS {
+export enum Labels {
 	// ----- NFT_DETAILS ----- //
 	CREATOR_LABEL = 'Creator',
 	HIGHEST_BID_LABEL = 'Highest Bid',
