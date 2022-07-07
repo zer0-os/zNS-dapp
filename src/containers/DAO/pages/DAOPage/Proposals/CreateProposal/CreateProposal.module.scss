@@ -110,17 +110,21 @@
 
 						.MarkdownEditor {
 							&__Container {
+								border: 1px solid #6A3991;
+								border-radius: 24px;
+								overflow: hidden;
+
 								:global(.w-md-editor-toolbar) {
-									height: 40px !important;
-									background: #1A1927;
+									height: 48px !important;
+									background: #1a1022;
 									border: unset;
 
 									>ul:first-child {
 										flex: 1;
 										display: flex;
 										align-items: center;
-										justify-content: center;
 										flex-wrap: wrap;
+										margin: auto 24px;
 
 										>li>button {
 											color: #fff;
@@ -164,11 +168,7 @@
 								}
 
 								:global(.w-md-editor-content) {
-									margin-top: 2px;
-									padding: 24px;
 									min-height: 240px;
-									border: 1px solid #6A3991;
-									border-radius: 24px;
 
 									textarea {
 										font-size: 16px;
@@ -177,6 +177,37 @@
 										&::placeholder {
 											color: #bfbfbf;
 										}
+									}
+								}
+
+								:global(.w-md-editor-text-pre) {
+									code {
+										font-size: 16px !important;
+										line-height: 24px !important;
+										color: #fff !important;
+
+										span {
+											color: #fff !important;
+										}
+									}
+								}
+
+								:global(.w-md-editor-bar) {
+									opacity: 0;
+								}
+
+								:global(.w-md-editor-input) {
+									padding: 24px 0 24px 24px;
+									overflow-y: auto;
+
+									&::-webkit-scrollbar {
+										width: 8px;
+										background-color: #120D16;
+									}
+
+									&::-webkit-scrollbar-thumb {
+										background-color: #381C4E;
+										border-radius: 8px;
 									}
 								}
 							}
@@ -231,13 +262,25 @@
 					background: unset !important;
 				}
 
-				:global(.input-error-message) {
-					color: #d379ff;
-				}
-			}
+				&.Error {
+					>span {
+						color: #f6677c;
+					}
 
-			.InputField {
-				&__Title {}
+					>input {
+						border-color: #f46B47;
+					}
+				}
+
+				:global(.input-error-message) {
+					margin-top: 2px;
+					margin-left: 24px;
+					font-size: 12px;
+					font-weight: 400;
+					line-height: 15px;
+					color: #f6677c;
+					text-align: left;
+				}
 			}
 
 			.DaoAddress {
@@ -287,6 +330,7 @@
 
 	h2 {
 		font-size: 24px;
+		text-shadow: unset;
 	}
 
 	.Publishing {
@@ -298,6 +342,11 @@
 			margin-top: 24px;
 			color: #f6677c;
 		}
+	}
+
+	.Success {
+		padding-bottom: 8px;
+		color: #58c573;
 	}
 }
 

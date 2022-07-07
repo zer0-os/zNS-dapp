@@ -1,12 +1,12 @@
 export const ProposalCreateSections = {
 	FUND_DETAILS: {
 		title: 'Fund Details',
-		tooltipContent: 'Proposals are currently limited to transferring tokens',
+		tooltipContent:
+			'Proposals are currently limited to transferring tokens from the DAO treasury to a recipient',
 	},
 	VOTE_DETAILS: {
 		title: 'Vote Details',
-		tooltipContent:
-			'These vote settings are defined at the root domain of this DAO',
+		tooltipContent: 'These settings are defined by the DAO',
 	},
 };
 
@@ -43,7 +43,7 @@ export const ProposalInputFields: Record<
 	[ProposalInputFieldKeys.SENDER]: {
 		title: 'From',
 		isDisabled: true,
-		comment: 'Funds will be transferred from the DAO treasury.',
+		comment: 'Funds will be transferred from the DAO treasury',
 	},
 	[ProposalInputFieldKeys.RECIPIENT]: {
 		title: 'Recipient (ERC20 Address)',
@@ -75,29 +75,24 @@ export const ProposalFormDefaultErrors: Record<
 
 export const ProposalFormConfirmModalText = {
 	Discard: {
-		title: 'Discard Proposal',
+		title: 'Discard Proposal?',
 		body: 'If you leave now you will lose your progress on this proposal',
 		cancel: 'Discard Proposal',
-		confirm: 'Return',
+		confirm: 'Keep Editing',
 	},
 	Publish: {
 		title: 'Publish Proposal?',
 		body: {
 			normal:
-				'Your proposal will be written to the blockchain and shared with the world. You will not be able to  make changes',
-			submitting: 'Approve transaction in your wallet to publish proposal...',
-			publishing: {
-				text: 'Publishing your proposal... ',
-				tooltipContent:
-					'This may take up to 20 minutes depending on the state of Ethereum blockchain',
-			},
+				'Once your proposal is published it will be visible to the world and you will not be able to make any changes.',
+			publishing: 'Please sign in your wallet to publish proposal...',
 		},
 		cancel: 'Return',
 		confirm: 'Publish',
 	},
 	Success: {
-		title: 'Success',
-		body: 'Your proposal is live',
+		title: 'Success!',
+		body: 'Your proposal is live.',
 		cancel: 'Tweet',
 		confirm: 'View Proposal',
 	},

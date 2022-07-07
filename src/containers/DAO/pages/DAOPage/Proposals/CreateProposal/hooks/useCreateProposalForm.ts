@@ -7,6 +7,7 @@ import type { Proposal, zDAO } from '@zero-tech/zdao-sdk';
 import type { Option } from 'components/Dropdowns/OptionDropdown';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { usePropsState } from 'lib/hooks/usePropsState';
+import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 import config from 'config';
 import {
 	ProposalInputFieldKeys,
@@ -16,7 +17,12 @@ import {
 	DEFAULT_VOTE_CHOICES,
 	NEW_PROPOSAL_TWEET_OPTION,
 } from '../CreateProposal.constants';
-import { getTokenOption, getVotingDetails } from '../CreateProposal.helpers';
+import {
+	getTokenOption,
+	getVotingDetails,
+	isValidERC20Address,
+	validateCreateProposalForm,
+} from '../CreateProposal.helpers';
 import { DAO_CREATE_PROPPAL } from '../../../Proposals/Proposals.constants';
 
 export const useCreateProposalForm = ({
@@ -28,7 +34,11 @@ export const useCreateProposalForm = ({
 	triggerCancel: boolean;
 	tokenDropdownOptions: Option[];
 }) => {
+	// Web3
 	const { active, account, library } = useWeb3React<Web3Provider>();
+
+	// Proposals
+	const { fetch: refetchProposals } = useProposals();
 
 	// Form Nav
 	const history = useHistory();
@@ -93,15 +103,19 @@ export const useCreateProposalForm = ({
 	// Handlers
 	const handleChange = useCallback(
 		(fieldKey: ProposalInputFieldKeys) => (value: string) => {
-			if (value === ProposalFormDefaultValues[fieldKey]) {
-				setFormErrors({
-					...formErrors,
-					[fieldKey]: 'This field is required',
-				});
-			} else {
+			if (value) {
 				setFormErrors({
 					...formErrors,
 					[fieldKey]: undefined,
+				});
+			}
+
+			if (fieldKey === ProposalInputFieldKeys.RECIPIENT && value) {
+				setFormErrors({
+					...formErrors,
+					[fieldKey]: !isValidERC20Address(value)
+						? 'Please enter a valid ethereum wallet address'
+						: undefined,
 				});
 			}
 
@@ -118,27 +132,14 @@ export const useCreateProposalForm = ({
 	const handleFormSubmit = useCallback(() => {
 		setFormErrors(ProposalFormDefaultErrors);
 
-		const errorKeys: ProposalInputFieldKeys[] = [];
+		const errors = validateCreateProposalForm(formValues);
 
-		for (const fieldKey in formValues) {
-			if (
-				formValues[fieldKey as ProposalInputFieldKeys] ===
-				ProposalFormDefaultValues[fieldKey as ProposalInputFieldKeys]
-			) {
-				errorKeys.push(fieldKey as ProposalInputFieldKeys);
-			}
-		}
-
-		if (errorKeys.length) {
-			const updatedFormErrors = cloneDeep(formErrors);
-			for (const errorKey of errorKeys) {
-				updatedFormErrors[errorKey] = 'This field is required';
-			}
-			setFormErrors(updatedFormErrors);
+		if (Object.values(errors).some(Boolean)) {
+			setFormErrors(errors);
 		} else {
 			setShowPublishConfirm(true);
 		}
-	}, [formValues, formErrors, setFormErrors]);
+	}, [formValues, setFormErrors]);
 
 	const handleGoToAllProposals = () => {
 		if (isFormChanged) {
@@ -162,22 +163,25 @@ export const useCreateProposalForm = ({
 		setFormSubmitErrorMessage(undefined);
 	};
 
-	const handlePublishConfirm = async () => {
+	const handlePublishConfirm = useCallback(async () => {
 		if (!dao || !active || !account || !library) {
 			return;
 		}
+
+		const snapshot = await library.getBlockNumber();
+
+		if (!snapshot) return;
 
 		setIsFormSubmitting(true);
 		setFormSubmitErrorMessage(undefined);
 
 		try {
-			// await new Promise((res) => setTimeout(res, 5000));
 			const newProposal = await dao.createProposal(library, account, {
 				title: formValues.title!,
 				body: formValues.body!,
 				choices: DEFAULT_VOTE_CHOICES,
 				duration: DEFAULT_VOTE_DURATION_SECONDS,
-				snapshot: library?.blockNumber,
+				snapshot,
 				transfer: {
 					abi: '',
 					sender: formValues.sender!,
@@ -188,12 +192,14 @@ export const useCreateProposalForm = ({
 				},
 			});
 
+			refetchProposals();
+
 			setCreatedProposal(newProposal);
 			setShowSuccessConfirm(true);
 			setShowPublishConfirm(false);
 		} catch (e) {
 			console.error(e);
-			//if user rejects transaction
+			// if user rejects transaction
 			if (e.code === 4001) {
 				setFormSubmitErrorMessage('Transaction denied by wallet');
 			} else {
@@ -202,7 +208,19 @@ export const useCreateProposalForm = ({
 		} finally {
 			setIsFormSubmitting(false);
 		}
-	};
+	}, [
+		dao,
+		active,
+		account,
+		library,
+		formValues,
+		refetchProposals,
+		setIsFormSubmitting,
+		setCreatedProposal,
+		setShowSuccessConfirm,
+		setShowPublishConfirm,
+		setFormSubmitErrorMessage,
+	]);
 
 	const handleTweet = () => {
 		if (createdProposal) {
@@ -249,6 +267,16 @@ export const useCreateProposalForm = ({
 			error: formSubmitErrorMessage,
 		},
 		formConfirm: {
+			Overlay: {
+				show: showDiscardConfirm || showPublishConfirm || showSuccessConfirm,
+				hasCloseButton: !(isFormSubmitting || showSuccessConfirm),
+				onClose: () => {
+					if (showDiscardConfirm) return handleDiscardConfirmCancel();
+					if (showPublishConfirm) return handlePublishConfirmCancel();
+
+					return null;
+				},
+			},
 			Discard: {
 				show: showDiscardConfirm,
 				onCancel: handleDiscardConfirmCancel,

@@ -2,7 +2,7 @@ import React from 'react';
 
 // - Library
 import type { zDAO } from '@zero-tech/zdao-sdk';
-import classNames from 'classnames';
+import classNames from 'classnames/bind';
 
 // - Hooks
 import { useCreateProposalForm } from './hooks';
@@ -48,6 +48,8 @@ type CreateProposalFormProps = {
 	tokenDropdownOptions: Option[];
 };
 
+const cx = classNames.bind(styles);
+
 export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 	dao,
 	triggerCancel,
@@ -70,10 +72,9 @@ export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 				<div className={styles.Section}>
 					<TextInputWithTopPlaceHolder
 						text={formValues.title}
-						className={classNames(
-							styles.TextInputWithTopPlaceHolder,
-							styles.InputField__Title,
-						)}
+						className={cx(styles.TextInputWithTopPlaceHolder, {
+							Error: !!formErrors.title,
+						})}
 						topPlaceholder={ProposalInputFields.title.title}
 						placeholder={
 							ProposalInputFields.title.placeholder ??
@@ -122,10 +123,9 @@ export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 										getTokenOption(tokenDropdownOptions, formValues.token)
 											?.title
 									}
-									className={classNames(
-										styles.TextInputWithTopPlaceHolder,
-										styles.InputField__Title,
-									)}
+									className={cx(styles.TextInputWithTopPlaceHolder, {
+										Error: !!formErrors.token,
+									})}
 									topPlaceholder={ProposalInputFields.token.title}
 									placeholder={
 										ProposalInputFields.token.placeholder ??
@@ -150,10 +150,9 @@ export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 							<TextInputWithTopPlaceHolder
 								numeric
 								text={formValues.amount}
-								className={classNames(
-									styles.TextInputWithTopPlaceHolder,
-									styles.InputField__Title,
-								)}
+								className={cx(styles.TextInputWithTopPlaceHolder, {
+									Error: !!formErrors.amount,
+								})}
 								topPlaceholder={ProposalInputFields.amount.title}
 								placeholder={
 									ProposalInputFields.amount.placeholder ??
@@ -191,10 +190,9 @@ export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 						<div className={styles.Section__Content_Col}>
 							<TextInputWithTopPlaceHolder
 								text={formValues.recipient}
-								className={classNames(
-									styles.TextInputWithTopPlaceHolder,
-									styles.InputField__Title,
-								)}
+								className={cx(styles.TextInputWithTopPlaceHolder, {
+									Error: !!formErrors.recipient,
+								})}
 								topPlaceholder={ProposalInputFields.recipient.title}
 								placeholder={
 									ProposalInputFields.recipient.placeholder ??
@@ -275,88 +273,85 @@ export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 			</div>
 
 			{/* Confirm Modals */}
-			{formConfirm.Discard.show && (
-				<Overlay centered open onClose={formConfirm.Discard.onConfirm}>
-					<Confirmation
-						title={ProposalFormConfirmModalText.Discard.title}
-						confirmText={ProposalFormConfirmModalText.Discard.confirm}
-						cancelText={ProposalFormConfirmModalText.Discard.cancel}
-						onCancel={formConfirm.Discard.onCancel}
-						onConfirm={formConfirm.Discard.onConfirm}
-						className={styles.Confirmation}
-					>
-						{ProposalFormConfirmModalText.Discard.body}
-					</Confirmation>
-				</Overlay>
-			)}
-
-			{formConfirm.Publish.show && (
+			{formConfirm.Overlay.show && (
 				<Overlay
 					centered
 					open
-					onClose={formConfirm.Publish.onCancel}
-					hasCloseButton={!formSubmition.isSubmitting}
-					nested={formSubmition.isSubmitting}
+					hasCloseButton={formConfirm.Overlay.hasCloseButton}
+					nested
+					onClose={formConfirm.Overlay.onClose}
 				>
-					<Confirmation
-						title={ProposalFormConfirmModalText.Publish.title}
-						confirmText={ProposalFormConfirmModalText.Publish.confirm}
-						cancelText={ProposalFormConfirmModalText.Publish.cancel}
-						onCancel={formConfirm.Publish.onCancel}
-						onConfirm={formConfirm.Publish.onConfirm}
-						hideButtons={formSubmition.isSubmitting}
-						className={styles.Confirmation}
-					>
-						{formSubmition.isSubmitting ? (
-							<>
-								<div className={styles.Publishing}>
-									{ProposalFormConfirmModalText.Publish.body.publishing.text}
-									<Tooltip
-										text={
-											<span className={styles.TooltipContent}>
-												{
-													ProposalFormConfirmModalText.Publish.body.publishing
-														.tooltipContent
-												}
-											</span>
-										}
-									>
-										<QuestionButton small />
-									</Tooltip>
+					{formConfirm.Discard.show && (
+						<Confirmation
+							title={ProposalFormConfirmModalText.Discard.title}
+							confirmText={ProposalFormConfirmModalText.Discard.confirm}
+							cancelText={ProposalFormConfirmModalText.Discard.cancel}
+							onCancel={formConfirm.Discard.onCancel}
+							onConfirm={formConfirm.Discard.onConfirm}
+							className={styles.Confirmation}
+						>
+							{ProposalFormConfirmModalText.Discard.body}
+						</Confirmation>
+					)}
+
+					{formConfirm.Publish.show && (
+						<Confirmation
+							title={ProposalFormConfirmModalText.Publish.title}
+							confirmText={ProposalFormConfirmModalText.Publish.confirm}
+							cancelText={ProposalFormConfirmModalText.Publish.cancel}
+							onCancel={formConfirm.Publish.onCancel}
+							onConfirm={formConfirm.Publish.onConfirm}
+							hideButtons={formSubmition.isSubmitting}
+							className={styles.Confirmation}
+							buttonAltProps={{
+								cancel: false,
+							}}
+							buttonSecondaryProps={{
+								cancel: true,
+							}}
+						>
+							{formSubmition.isSubmitting ? (
+								<>
+									<div className={styles.Publishing}>
+										{ProposalFormConfirmModalText.Publish.body.publishing}
+									</div>
+									<LoadingIndicator text="" />
+								</>
+							) : (
+								ProposalFormConfirmModalText.Publish.body.normal
+							)}
+
+							{formSubmition.error && (
+								<div className={styles.Publishing_Error}>
+									{formSubmition.error}
 								</div>
-								<LoadingIndicator text="" />
-							</>
-						) : (
-							ProposalFormConfirmModalText.Publish.body.normal
-						)}
+							)}
+						</Confirmation>
+					)}
 
-						{formSubmition.error && (
-							<div className={styles.Publishing_Error}>
-								{formSubmition.error}
+					{formConfirm.Success.show && (
+						<Confirmation
+							title={ProposalFormConfirmModalText.Success.title}
+							confirmText={ProposalFormConfirmModalText.Success.confirm}
+							cancelText={ProposalFormConfirmModalText.Success.cancel}
+							onCancel={formConfirm.Success.onCancel}
+							onConfirm={formConfirm.Success.onConfirm}
+							className={classNames(
+								styles.Confirmation,
+								styles.Confirmation_Success,
+							)}
+							buttonAltProps={{
+								cancel: false,
+							}}
+							buttonSecondaryProps={{
+								cancel: true,
+							}}
+						>
+							<div className={styles.Success}>
+								{ProposalFormConfirmModalText.Success.body}
 							</div>
-						)}
-					</Confirmation>
-				</Overlay>
-			)}
-
-			{formConfirm.Success.show && (
-				<Overlay centered open hasCloseButton={false} onClose={() => null}>
-					<Confirmation
-						title={ProposalFormConfirmModalText.Success.title}
-						confirmText={ProposalFormConfirmModalText.Success.confirm}
-						cancelText={ProposalFormConfirmModalText.Success.cancel}
-						onCancel={formConfirm.Success.onCancel}
-						onConfirm={formConfirm.Success.onConfirm}
-						className={classNames(
-							styles.Confirmation,
-							styles.Confirmation_Success,
-						)}
-						buttonAltProps={{
-							cancel: false,
-						}}
-					>
-						{ProposalFormConfirmModalText.Success.body}
-					</Confirmation>
+						</Confirmation>
+					)}
 				</Overlay>
 			)}
 		</>

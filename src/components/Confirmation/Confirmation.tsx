@@ -26,6 +26,10 @@ type ConfirmationProps = {
 		cancel?: boolean;
 		confirm?: boolean;
 	};
+	buttonSecondaryProps?: {
+		cancel?: boolean;
+		confirm?: boolean;
+	};
 };
 
 const Confirmation: React.FC<ConfirmationProps> = ({
@@ -44,6 +48,10 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 	className = '',
 	buttonAltProps = {
 		cancel: true,
+		confirm: false,
+	},
+	buttonSecondaryProps = {
+		cancel: false,
 		confirm: false,
 	},
 }) => {
@@ -83,11 +91,21 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 			{!hideButtons && !showLoading && (
 				<div className={styles.Buttons}>
 					{cancelText && onCancel && (
-						<FutureButton glow alt={buttonAltProps.cancel} onClick={onCancel}>
+						<FutureButton
+							glow
+							alt={buttonAltProps.cancel}
+							secondary={buttonSecondaryProps.cancel}
+							onClick={onCancel}
+						>
 							{cancelText ?? 'Cancel'}
 						</FutureButton>
 					)}
-					<FutureButton glow alt={buttonAltProps.confirm} onClick={onConfirm}>
+					<FutureButton
+						glow
+						alt={buttonAltProps.confirm}
+						secondary={buttonSecondaryProps.confirm}
+						onClick={onConfirm}
+					>
 						{confirmText ?? 'Continue'}
 					</FutureButton>
 				</div>

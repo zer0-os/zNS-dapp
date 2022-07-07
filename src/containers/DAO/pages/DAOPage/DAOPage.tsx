@@ -158,7 +158,7 @@ const DAOPage: React.FC = () => {
 							{/* New Proposal Button */}
 							{pathname === to(ROUTES.ZDAO_PROPOSALS) && (
 								<FutureButton glow onClick={handleNewProposalButtonClick}>
-									NEW PROPOSALS
+									NEW PROPOSAL
 								</FutureButton>
 							)}
 						</nav>

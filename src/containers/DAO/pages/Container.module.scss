@@ -48,6 +48,8 @@
 		}
 
 		.LinksWrapper {
+			padding: 0.5rem 0;
+
 			>a {
 				color: #{colors.$grey-lighter-2};
 				font-size: #{typography.$size-large};
