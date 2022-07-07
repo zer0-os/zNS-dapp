@@ -27,7 +27,6 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 	const { instance: sdk } = useZnsSdk();
 	const [paymentTokenInfo, setPaymentTokenInfo] =
 		useState<Maybe<ConvertedTokenInfo>>();
-
 	useAsyncEffect(async () => {
 		const data = item as
 			| DomainBidEvent

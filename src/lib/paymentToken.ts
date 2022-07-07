@@ -17,7 +17,7 @@ const getPaymentTokenInfo = async (
 	} else {
 		if (IS_TEST_MODE) {
 			if (tokenId === '0x3Ae5d499cfb8FB645708CC6DA599C90e64b33A79') {
-				return {
+				paymentTokenCache[tokenId] = {
 					id: tokenId,
 					name: 'WILD',
 					symbol: 'WILD',
@@ -25,7 +25,7 @@ const getPaymentTokenInfo = async (
 					decimals: '18',
 				};
 			} else if (tokenId === '0x5bAbCA2Af93A9887C86161083b8A90160DA068f2') {
-				return {
+				paymentTokenCache[tokenId] = {
 					id: tokenId,
 					name: 'ZERO',
 					symbol: 'ZERO',
@@ -33,9 +33,10 @@ const getPaymentTokenInfo = async (
 					decimals: '18',
 				};
 			}
+		} else {
+			const data = await sdk.zauction.getPaymentTokenInfo(tokenId);
+			paymentTokenCache[tokenId] = data;
 		}
-		const data = await sdk.zauction.getPaymentTokenInfo(tokenId);
-		paymentTokenCache[tokenId] = data;
 		return paymentTokenCache[tokenId];
 	}
 };

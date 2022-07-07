@@ -76,14 +76,15 @@ const SubdomainTableCard = (props: any) => {
 			if (isMounted.current === false) {
 				return;
 			}
-			const buyNowPrice = await sdk.zauction.getBuyNowPrice(domain.id);
-			if (buyNowPrice) {
-				setBuyNowPrice(Number(buyNowPrice));
-				setIsPriceDataLoading(false);
+			const buyNowListing = await sdk.zauction.getBuyNowListing(domain.id);
+			console.log(buyNowListing);
+			if (buyNowListing && buyNowListing.price) {
+				setBuyNowPrice(Number(ethers.utils.formatEther(buyNowListing.price)));
 			}
+			setIsPriceDataLoading(false);
 		} catch (err) {
 			setIsPriceDataLoading(false);
-			console.log(ERROR.FAIL_TO_RETRIEVE, err);
+			console.log(ERROR.FAIL_TO_RETRIEVE, domain.id, err);
 		}
 	};
 

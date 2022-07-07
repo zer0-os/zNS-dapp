@@ -59,6 +59,7 @@ const Details = ({
 	///////////////
 	// Functions //
 	///////////////
+	console.log(bidAmount, wildPriceUsd, highestBid);
 	const formattedHighestBidAmount = formatBidAmount(highestBid);
 	const formattedBidAmount = formatBidAmount(bidAmount);
 	const formattedBidAmountUSD = toFiat(Number(bidAmountUSD));

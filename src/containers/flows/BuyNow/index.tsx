@@ -11,7 +11,6 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 
 // Type Imports
 import { Data } from './BuyNow';
-import { ethers } from 'ethers';
 import useMetadata from 'lib/hooks/useMetadata';
 import { BuyNowParams } from '@zero-tech/zauction-sdk';
 import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
@@ -128,19 +127,21 @@ const BuyNowContainer = ({
 		}
 		try {
 			// Get buy now price
-			const price = await sdk.zauction.getBuyNowPrice(domainId);
-			buyNowPrice = ethers.utils.parseEther(price);
+			const buyNowListing = await sdk.zauction.getBuyNowListing(domainId);
+			buyNowPrice = buyNowListing?.price;
 
 			// Check zAuction approved amount is larger than buy now price
-			const needsApproval =
-				await sdk.zauction.needsToApproveZAuctionToSpendTokensByDomain(
-					domainId,
-					account,
-					buyNowPrice,
-				);
-			if (needsApproval) {
-				setCurrentStep(Step.ApproveZAuction);
-				return;
+			if (buyNowPrice) {
+				const needsApproval =
+					await sdk.zauction.needsToApproveZAuctionToSpendTokensByDomain(
+						domainId,
+						account,
+						buyNowPrice,
+					);
+				if (needsApproval) {
+					setCurrentStep(Step.ApproveZAuction);
+					return;
+				}
 			}
 		} catch (e) {
 			console.warn('<BuyNow> Failed to Get Data', e);

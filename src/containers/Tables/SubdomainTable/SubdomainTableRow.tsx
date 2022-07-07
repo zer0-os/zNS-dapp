@@ -75,9 +75,9 @@ const SubdomainTableRow = (props: any) => {
 			if (isMounted.current === false) {
 				return;
 			}
-			const buyNowPrice = await sdk.zauction.getBuyNowPrice(domain.id);
-			if (buyNowPrice) {
-				setBuyNowPrice(Number(buyNowPrice));
+			const buyNowListing = await sdk.zauction.getBuyNowListing(domain.id);
+			if (buyNowListing && buyNowListing.price) {
+				setBuyNowPrice(Number(ethers.utils.formatEther(buyNowListing.price)));
 			}
 		} catch (err) {
 			setIsPriceDataLoading(false);
