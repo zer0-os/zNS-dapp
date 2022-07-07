@@ -77,7 +77,6 @@ const SubdomainTableCard = (props: any) => {
 				return;
 			}
 			const buyNowListing = await sdk.zauction.getBuyNowListing(domain.id);
-			console.log(buyNowListing);
 			if (buyNowListing && buyNowListing.price) {
 				setBuyNowPrice(Number(ethers.utils.formatEther(buyNowListing.price)));
 			}
