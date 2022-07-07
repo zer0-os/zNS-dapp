@@ -1,4 +1,7 @@
+//- React Imports
 import React, { useState, useMemo } from 'react';
+
+//- Library Imports
 import { DomainSearch } from 'lib/useDomainSearch';
 
 type UseSearchDomainsDataProps = {

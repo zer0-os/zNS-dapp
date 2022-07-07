@@ -1,17 +1,28 @@
+//- React Imports
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
+
+//- Library Imports
 import { useDomainSearch } from 'lib/useDomainSearch';
+
+//- Constants Imports
 import {
 	SEARCH_NOT_FOUND,
 	IS_EXACT_MATCH_ENABLED,
 } from './SearchDomains.constants';
+
+//- Hooks Imports
 import {
 	useSearchDomainsData,
 	useSearchDomainsHandlers,
 	useSearchDomainsLifecycle,
 } from './hooks';
+
+//- Utils - Helpers Imports
 import { getLastDomainName } from './SearchDomains.helpers';
+
+//- Style Imports
 import './_search-domains.scss';
 
 type SearchDomainsProps = {

@@ -122,7 +122,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 					setStepContent(StepContent.ApproveZAuction);
 				}
 			} catch (e) {
-				console.log(ERRORS.CONSOLE_TEXT);
+				console.error(ERRORS.CONSOLE_TEXT, e);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}
