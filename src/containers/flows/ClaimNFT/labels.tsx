@@ -35,7 +35,11 @@ export const getBannerLabel = (
 	if (dropStage === Stage.Upcoming) {
 		return <>Wilder Moto Claim starting now - waiting for contract to begin</>;
 	}
-	if (dropStage === Stage.Whitelist || dropStage === Stage.Public) {
+
+	if (
+		(dropStage === Stage.Whitelist || dropStage === Stage.Public) &&
+		!isFinished
+	) {
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
@@ -47,6 +51,10 @@ export const getBannerLabel = (
 				</span>
 			</div>
 		);
+	}
+
+	if (dropStage === undefined) {
+		return <></>;
 	}
 
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
