@@ -40,6 +40,7 @@ export type ClaimNFTProps = {
 	isClaimDataLoading?: boolean;
 	setEligibleDomains: React.Dispatch<React.SetStateAction<ClaimableDomain[]>>;
 	setIsClaimingInProgress: (state: boolean) => void;
+	isSaleStatusLoading?: boolean;
 };
 
 const ClaimNFT = ({
@@ -51,6 +52,7 @@ const ClaimNFT = ({
 	isClaimDataLoading,
 	setEligibleDomains,
 	setIsClaimingInProgress,
+	isSaleStatusLoading,
 }: ClaimNFTProps) => {
 	//////////////////
 	// State & Data //
@@ -142,23 +144,24 @@ const ClaimNFT = ({
 	///////////////
 
 	const content = {
-		[StepContent.Details]: !isClaimDataLoading ? (
-			<Details
-				tokenID={tokenID}
-				isClaimDataLoading={isClaimDataLoading}
-				eligibleDomains={eligibleDomains}
-				isWalletConnected={active}
-				currentStep={currentStep}
-				connectToWallet={openConnect}
-				onStartClaim={onStartClaim}
-				onRedirect={onRedirect}
-				setTokenID={setTokenID}
-			/>
-		) : (
-			<div className={styles.LoadingContent}>
-				<Wizard.Loading message={LOADING_TEXT.LOADING_DETAILS} />
-			</div>
-		),
+		[StepContent.Details]:
+			!isClaimDataLoading && !isSaleStatusLoading ? (
+				<Details
+					tokenID={tokenID}
+					isClaimDataLoading={isClaimDataLoading}
+					eligibleDomains={eligibleDomains}
+					isWalletConnected={active}
+					currentStep={currentStep}
+					connectToWallet={openConnect}
+					onStartClaim={onStartClaim}
+					onRedirect={onRedirect}
+					setTokenID={setTokenID}
+				/>
+			) : (
+				<div className={styles.LoadingContent}>
+					<Wizard.Loading message={LOADING_TEXT.LOADING_DETAILS} />
+				</div>
+			),
 		[StepContent.Claim]: (
 			<Claiming
 				eligibleDomains={eligibleDomains}

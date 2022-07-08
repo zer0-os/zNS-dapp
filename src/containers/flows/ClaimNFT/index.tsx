@@ -58,6 +58,8 @@ const ClaimNFTContainer = ({
 		useState<boolean>(false);
 	const [isClaimingInProgress, setIsClaimingInProgress] =
 		useState<boolean>(false);
+	const [isSaleStatusLoading, setIsSaleStatusLoading] =
+		useState<boolean>(false);
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
 	const [assetTotal, setAssetTotal] = useState<number | undefined>();
 	const [assetsMinted, setAssetsMinted] = useState<number | undefined>();
@@ -155,7 +157,9 @@ const ClaimNFTContainer = ({
 				}
 				return;
 			}
+
 			try {
+				setIsSaleStatusLoading(true);
 				const saleData = await claimInstance.getSaleData();
 				const currentDropStage = await getDropStage(claimInstance);
 				if (!isActive()) {
@@ -186,6 +190,8 @@ const ClaimNFTContainer = ({
 				setRefetch(refetch + 1);
 				setFailedToLoad(true);
 			}
+			setIsSaleStatusLoading(false);
+
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		},
 		[library, claimInstance],
@@ -230,6 +236,8 @@ const ClaimNFTContainer = ({
 			}
 
 			try {
+				setIsSaleStatusLoading(true);
+
 				const saleData = await claimInstance.getSaleData();
 				const currentDropStage = await getDropStage(claimInstance);
 
@@ -273,6 +281,7 @@ const ClaimNFTContainer = ({
 				}
 				setFailedToLoad(true);
 			}
+			setIsSaleStatusLoading(false);
 
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		},
@@ -328,6 +337,8 @@ const ClaimNFTContainer = ({
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
 
+	console.log(isSaleStatusLoading, 'saleload');
+
 	////////////
 	// Render //
 	////////////
@@ -350,6 +361,7 @@ const ClaimNFTContainer = ({
 						isClaimDataLoading={isClaimDataLoading}
 						setEligibleDomains={setEligibleDomains}
 						setIsClaimingInProgress={setIsClaimingInProgress}
+						isSaleStatusLoading={isSaleStatusLoading}
 					/>
 				</Overlay>
 			)}
@@ -372,6 +384,7 @@ const ClaimNFTContainer = ({
 					isClaimDataLoading={isClaimDataLoading}
 					setEligibleDomains={setEligibleDomains}
 					setIsClaimingInProgress={setIsClaimingInProgress}
+					isSaleStatusLoading={isSaleStatusLoading}
 				/>
 			)}
 		</>
