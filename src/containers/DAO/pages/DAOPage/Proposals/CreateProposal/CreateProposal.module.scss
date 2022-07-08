@@ -126,6 +126,10 @@
 										flex-wrap: wrap;
 										margin: auto 24px;
 
+										@media only screen and (max-width: #{dimensions.$breakpoint-mobile-l}) {
+											margin: auto 12px;
+										}
+
 										>li>button {
 											color: #fff;
 											height: 24px;
