@@ -337,8 +337,6 @@ const ClaimNFTContainer = ({
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
 
-	console.log(isSaleStatusLoading, 'saleload');
-
 	////////////
 	// Render //
 	////////////
