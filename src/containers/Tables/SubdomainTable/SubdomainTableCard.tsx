@@ -138,16 +138,16 @@ const SubdomainTableCard = (props: any) => {
 							<label>{LABELS.TOP_BID}</label>
 							<span className={styles.Crypto}>
 								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}{' '}
-								{paymentTokenInfo.symbol}
+								{paymentTokenInfo?.name}
 							</span>
-							{Number(paymentTokenInfo.priceInUsd) > 0 && (
+							{Number(paymentTokenInfo?.priceInUsd) > 0 && (
 								<span className={styles.Fiat}>
 									$
 									{tradeData.highestBid
 										? formatNumber(
 												Number(
 													ethers.utils.formatEther(tradeData?.highestBid),
-												) * Number(paymentTokenInfo.priceInUsd),
+												) * Number(paymentTokenInfo?.priceInUsd),
 										  )
 										: 0}{' '}
 								</span>
