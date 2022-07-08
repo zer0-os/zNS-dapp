@@ -15,7 +15,7 @@ import {
 } from 'components';
 
 //- Constant Imports
-import { BOX_CONTENT, LINK_TEXT } from './TokenHashBoxes.constants';
+import { BOX_CONTENT, LABELS, LINK_TEXT } from './TokenHashBoxes.constants';
 
 //  Utils Imports
 import { getStatusText, getTooltipText } from './TokenHashBoxes.utils';
@@ -66,8 +66,7 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 	const statusText = getStatusText(isTokenClaimable);
 	const tooltipText = getTooltipText(isTokenClaimable);
 	const zna = zNAFromPathname(pathname);
-	// REPLACE URL WITH LABELS.WILDER_WHEELS_ZNA
-	const isWheelPath = zna.includes('candy.wolfsale');
+	const isWheelPath = zna.includes(LABELS.WILDER_WHEELS_ZNA);
 
 	// Check stage to enable claim status box
 	const saleStageActive =
