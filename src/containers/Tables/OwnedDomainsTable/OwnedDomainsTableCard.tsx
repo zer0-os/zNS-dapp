@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 //- React Imports
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 
 //- Components Imports
-import { Spinner } from 'components';
+import { Overlay, Spinner } from 'components';
 
 //- Library Imports
 import { useHistory } from 'react-router-dom';
@@ -20,12 +20,21 @@ import { formatNumber, getNetworkZNA } from 'lib/utils';
 import styles from './OwnedDomainsTableCard.module.scss';
 
 //- Constants Imports
-import { LABELS } from './OwnedDomainsTable.constants';
+import { ACTION_KEYS, LABELS } from './OwnedDomainsTable.constants';
 import { CURRENCY } from 'constants/currency';
 import { ROUTES } from 'constants/routes';
 
 //- Utils Imports
 import ImageCard from 'components/Cards/ImageCard/ImageCard';
+import BidList from 'containers/lists/BidList/BidList';
+import { DomainSettings } from 'containers/other/NFTView/elements';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
+import { getActions } from './OwnedDomainsTable.utils';
+
+enum Modal {
+	ViewBids,
+	EditMetadata,
+}
 
 type OwnedDomainsTableRowProps = {
 	refetch: () => void;
@@ -42,10 +51,15 @@ const SubdomainTableCard = ({
 }: OwnedDomainsTableRowProps) => {
 	const { push: goTo } = useHistory(); // for navigating on row click
 
+	// Decides which modal is being rendered
+	const [modal, setModal] = useState<Modal | undefined>();
+
 	// Split out all the relevant data from hook
 	const { bidData, isLoading: isLoadingBidData } = useBidData(domain.id);
-
+	const bids = bidData?.bids;
 	const highestBid = bidData?.highestBid;
+
+	const actions = getActions(bids?.length !== 0);
 
 	// Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
@@ -69,17 +83,72 @@ const SubdomainTableCard = ({
 		goTo(ROUTES.MARKET + '/' + getNetworkZNA(domain.name));
 	};
 
+	/**
+	 * Opens View Bids modal
+	 * @returns void
+	 */
+	const onViewBids = (): void => {
+		if (!bids || !bids.length) {
+			return;
+		}
+		setModal(Modal.ViewBids);
+	};
+
+	const onSelectOption = (option: Option) => {
+		// TODO: Add remaining actions.
+		if (option.title === ACTION_KEYS.VIEW_BIDS) {
+			onViewBids();
+		} else if (option.title === ACTION_KEYS.SETTINGS) {
+			setModal(Modal.EditMetadata);
+		}
+	};
+
+	// Defines the modal element to be rendered
+	const ModalElement = useMemo(() => {
+		// TODO: Add remaining actions.
+		if (modal === Modal.ViewBids && bids && domainMetadata) {
+			return (
+				<Overlay onClose={() => setModal(undefined)} centered open>
+					<BidList
+						bids={bids}
+						domain={domain}
+						domainMetadata={domainMetadata}
+						onAccept={refetch}
+						isLoading={isLoadingBidData}
+						highestBid={highestBid?.amount}
+						isAcceptBidEnabled
+					/>
+				</Overlay>
+			);
+		} else if (modal === Modal.EditMetadata) {
+			return (
+				<Overlay onClose={() => setModal(undefined)} open>
+					<DomainSettings
+						domainId={domain.id}
+						onClose={() => setModal(undefined)}
+					/>
+				</Overlay>
+			);
+		} else {
+			return null;
+		}
+	}, [modal]);
+
 	////////////
 	// Render //
 	////////////
 
 	return (
 		<>
+			{ModalElement}
+
 			<ImageCard
 				subHeader={`0://${domain.name}`}
 				imageUri={domainMetadata?.image_full ?? domainMetadata?.image}
 				header={domainMetadata?.title}
 				onClick={onClick}
+				onSelectOption={onSelectOption}
+				actions={actions}
 				shouldUseCloudinary={true}
 			>
 				<div className={styles.Container}>

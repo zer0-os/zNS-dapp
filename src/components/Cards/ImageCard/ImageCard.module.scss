@@ -15,7 +15,7 @@ $placeholder-background: #000;
 	border-radius: calc(#{borders.$radius-primary} / 2) !important;
 
 	cursor: pointer;
-	overflow: hidden;
+	overflow: visible;
 
 	.Body {
 		position: relative;
@@ -74,6 +74,17 @@ $placeholder-background: #000;
 	.Footer {
 		padding: 16px;
 
+		.HeaderContainer {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.VerticalContainer {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+
 		h5 {
 			color: #{colors.$text-primary};
 			font-size: #{typography.$size-small};
@@ -97,6 +108,35 @@ $placeholder-background: #000;
 
 			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
 				line-height: 14.5px;
+			}
+		}
+
+		.Button {
+			margin-left: auto;
+			background: none;
+			border-radius: 100%;
+			padding-top: 6px;
+			padding-bottom: 6px;
+
+			img {
+				width: 24px;
+				height: 24px;
+			}
+
+			&:hover {
+				background-color: #{colors.$purple-10};
+			}
+		}
+
+		.MoreDropdown {
+			:global(ul) {
+				li {
+					display: flex;
+
+					span {
+						margin-left: 10px;
+					}
+				}
 			}
 		}
 	}

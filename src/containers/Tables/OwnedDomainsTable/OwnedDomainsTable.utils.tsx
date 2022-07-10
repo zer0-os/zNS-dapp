@@ -1,22 +1,31 @@
 //- Library Imports
 import { Domain } from '@zero-tech/zns-sdk';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Assets Imports
-import { Box } from 'react-feather';
+import { Box, Send, Tag } from 'react-feather';
 import { DollarSign } from 'react-feather';
 
 //- Constants Imports
 import { ACTION_KEYS } from './OwnedDomainsTable.constants';
 
-export const getActions = (isViewBids: boolean) => {
+export const getActions = (isViewBids: boolean): Option[] => {
 	const ACTIONS = [
-		{
-			icon: <Box />,
-			title: ACTION_KEYS.SETTINGS,
-		},
 		{
 			icon: <DollarSign />,
 			title: ACTION_KEYS.VIEW_BIDS,
+		},
+		{
+			icon: <Tag />,
+			title: ACTION_KEYS.SET_BUY_NOW,
+		},
+		{
+			icon: <Send />,
+			title: ACTION_KEYS.TRANSFER_OWNERSHIP,
+		},
+		{
+			icon: <Box />,
+			title: ACTION_KEYS.SETTINGS,
 		},
 	];
 
@@ -30,12 +39,20 @@ export const getActions = (isViewBids: boolean) => {
 
 export const ACTIONS = [
 	{
-		icon: <Box />,
-		title: ACTION_KEYS.SETTINGS,
-	},
-	{
 		icon: <DollarSign />,
 		title: ACTION_KEYS.VIEW_BIDS,
+	},
+	{
+		icon: <Tag />,
+		title: ACTION_KEYS.SET_BUY_NOW,
+	},
+	{
+		icon: <Send />,
+		title: ACTION_KEYS.TRANSFER_OWNERSHIP,
+	},
+	{
+		icon: <Box />,
+		title: ACTION_KEYS.SETTINGS,
 	},
 ];
 

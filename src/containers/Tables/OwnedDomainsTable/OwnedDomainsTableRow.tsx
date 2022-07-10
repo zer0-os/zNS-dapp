@@ -8,7 +8,7 @@ import { Artwork, OptionDropdown, Overlay, Spinner } from 'components';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Containers Imports
-import { BidList } from 'containers';
+import { BidList, ViewBidsButton } from 'containers';
 import { DomainSettings } from 'containers/other/NFTView/elements';
 
 //- Library Imports
@@ -24,7 +24,7 @@ import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import styles from './OwnedDomainsTableRow.module.scss';
 
 //- Assets Imports
-import moreIcon from 'assets/more-vertical.svg';
+import moreIcon from 'assets/more-horizontal.svg';
 
 //- Constants Imports
 import { ACTION_KEYS } from './OwnedDomainsTable.constants';
@@ -71,9 +71,10 @@ const OwnedDomainsTableRow = ({
 	const actions = getActions(bids?.length !== 0);
 
 	const onSelectOption = (option: Option) => {
+		// TODO: Add remaining actions.
 		if (option.title === ACTION_KEYS.VIEW_BIDS) {
 			onViewBids();
-		} else {
+		} else if (option.title === ACTION_KEYS.SETTINGS) {
 			setModal(Modal.EditMetadata);
 		}
 	};
@@ -91,6 +92,7 @@ const OwnedDomainsTableRow = ({
 
 	// Defines the modal element to be rendered
 	const ModalElement = useMemo(() => {
+		// TODO: Add remaining actions.
 		if (modal === Modal.ViewBids && bids && domainMetadata) {
 			return (
 				<Overlay onClose={() => setModal(undefined)} centered open>
@@ -150,6 +152,16 @@ const OwnedDomainsTableRow = ({
 				</td>
 
 				{/* Actions */}
+
+				<td>
+					{highestBid && (
+						<ViewBidsButton
+							className={styles.ViewBidsButton}
+							onClick={onViewBids}
+						/>
+					)}
+				</td>
+
 				<td>
 					<OptionDropdown
 						onSelect={onSelectOption}

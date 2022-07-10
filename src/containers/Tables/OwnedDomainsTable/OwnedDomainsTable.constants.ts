@@ -21,8 +21,10 @@ export enum MESSAGES {
 }
 
 export const ACTION_KEYS = {
-	SETTINGS: 'My Domain Settings',
 	VIEW_BIDS: 'View Bids',
+	SET_BUY_NOW: 'Set Buy Now Price',
+	TRANSFER_OWNERSHIP: 'Transfer Ownership',
+	SETTINGS: 'My Domain Settings',
 };
 
 export const LABELS = {

@@ -1,7 +1,9 @@
 import styles from './ImageCard.module.scss';
-import { Image, NFTMedia, Spinner } from 'components';
+import { Image, NFTMedia, OptionDropdown, Spinner, Tooltip } from 'components';
 import classNames from 'classnames/bind';
 import { AspectRatio } from 'constants/aspectRatios';
+import moreIcon from 'assets/more-horizontal.svg';
+import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 const cx = classNames.bind(styles);
 
@@ -11,6 +13,8 @@ type ImageCardProps = {
 	imageUri?: string;
 	header?: string;
 	onClick?: (event?: any) => void;
+	onSelectOption?: (option: Option) => void;
+	actions?: Option[];
 	subHeader?: string;
 	className?: string;
 	shouldUseCloudinary?: boolean;
@@ -22,6 +26,8 @@ const ImageCard = ({
 	header,
 	imageUri,
 	onClick,
+	onSelectOption,
+	actions,
 	subHeader,
 	className,
 	shouldUseCloudinary,
@@ -34,7 +40,8 @@ const ImageCard = ({
 	return (
 		<div
 			className={cx(styles.Container, className, aspectRatioClass)}
-			onClick={onClick}
+			// TODO: Figure out how to allow both card and dropdown click.
+			// onClick={onClick}
 		>
 			<div className={styles.Body}>
 				<div className={styles.Placeholder}>
@@ -59,8 +66,29 @@ const ImageCard = ({
 				</div>
 			</div>
 			<div className={styles.Footer}>
-				<h5 className={styles.Header}>{header ?? ''}</h5>
-				<div className={styles.Subheader}>{subHeader ?? ''}</div>
+				<div className={styles.HeaderContainer}>
+					<div className={styles.VerticalContainer}>
+						<h5 className={styles.Header}>{header ?? ''}</h5>
+						<div className={styles.Subheader}>{subHeader ?? ''}</div>
+					</div>
+					{onSelectOption && actions && (
+						<div className={styles.VerticalContainer}>
+							<OptionDropdown
+								className={styles.MoreDropdown}
+								onSelect={onSelectOption}
+								options={actions}
+							>
+								<Tooltip placement="bottom-center" text="More options">
+									<button className={styles.Button}>
+										<div className={styles.VerticalContainer}>
+											<img alt="more actions" src={moreIcon} />
+										</div>
+									</button>
+								</Tooltip>
+							</OptionDropdown>
+						</div>
+					)}
+				</div>
 				{children}
 			</div>
 		</div>

@@ -39,10 +39,6 @@
 
 	.MoreDropdown {
 		:global(ul) {
-			left: unset;
-			right: 0;
-			transform: unset;
-
 			li {
 				display: flex;
 
@@ -51,5 +47,10 @@
 				}
 			}
 		}
+	}
+
+	.ViewBidsButton {
+		margin-left: auto;
+		margin-right: auto;
 	}
 }
