@@ -1,10 +1,10 @@
 //- Styles Imports
 import styles from './BidTable.module.scss';
-import moreIcon from 'assets/more-vertical.svg';
+import moreIcon from 'assets/more-horizontal.svg';
 import { DollarSign, X } from 'react-feather';
 
 //- Components Imports
-import { Artwork, OptionDropdown } from 'components';
+import { Artwork, FutureButton, OptionDropdown } from 'components';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Library Imports
@@ -12,7 +12,9 @@ import { ethers } from 'ethers';
 import { Domain } from 'lib/types';
 
 //- Constants Imports
-import { TOKEN } from './BidTableRow.constants';
+import { getNetworkZNA } from 'lib/utils';
+import { useHistory } from 'react-router-dom';
+import { ROUTES } from 'constants/routes';
 
 export const ACTION_KEYS = {
 	REBID: 'Rebid',
@@ -52,6 +54,8 @@ export const TEST_ID = {
 const BidTableRow = (props: any) => {
 	const bid: BidTableRowData = props.data;
 
+	const { push: goTo } = useHistory();
+
 	const onSelectOption = (option: Option) => {
 		switch (option.title) {
 			case ACTION_KEYS.REBID:
@@ -63,9 +67,23 @@ const BidTableRow = (props: any) => {
 		}
 	};
 
+	// Navigates to domain
+	const onRowClick = () => {
+		goTo(ROUTES.MARKET + '/' + getNetworkZNA(bid.domainName));
+	};
+
+	const getHighestBidSubtext = (): JSX.Element => {
+		// TODO: Add case for Lost (does bid.date refer to expiry date?).
+		if (bid.yourBid < bid.highestBid) {
+			return <p className={styles.Outbid}>Outbid</p>;
+		} else {
+			return <p className={styles.Leading}>Leading</p>;
+		}
+	};
+
 	return (
 		<tr className={styles.Container} data-testid={TEST_ID.CONTAINER}>
-			<td>
+			<td onClick={onRowClick}>
 				<Artwork
 					data-testid={TEST_ID.ARTWORK}
 					domain={bid.domainName}
@@ -75,12 +93,30 @@ const BidTableRow = (props: any) => {
 					style={{ maxWidth: 200 }}
 				/>
 			</td>
-			<td data-testid={TEST_ID.YOUR_BID}>
-				{ethers.utils.formatEther(bid.yourBid.toString())} {TOKEN}
+			<td data-testid={TEST_ID.YOUR_BID} onClick={onRowClick}>
+				<span>{ethers.utils.formatEther(bid.yourBid.toString())}</span>
 			</td>
-			<td data-testid={TEST_ID.HIGHEST_BID}>
-				{ethers.utils.formatEther(bid.highestBid)} {TOKEN}
+			<td
+				data-testid={TEST_ID.HIGHEST_BID}
+				onClick={onRowClick}
+				className={styles.HighestBid}
+			>
+				<p>{ethers.utils.formatEther(bid.highestBid)}</p>
+				{getHighestBidSubtext()}
 			</td>
+
+			<td>
+				{bid.highestBid > bid.yourBid && (
+					<FutureButton
+						className={styles.RebidButton}
+						glow
+						onClick={() => props.openMakeBid?.(bid)}
+					>
+						{'Rebid'}
+					</FutureButton>
+				)}
+			</td>
+
 			<td>
 				<OptionDropdown
 					className={styles.MoreDropdown}

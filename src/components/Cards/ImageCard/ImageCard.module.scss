@@ -115,8 +115,7 @@ $placeholder-background: #000;
 			margin-left: auto;
 			background: none;
 			border-radius: 100%;
-			padding-top: 6px;
-			padding-bottom: 6px;
+			padding: 0;
 
 			img {
 				width: 24px;
@@ -124,7 +123,11 @@ $placeholder-background: #000;
 			}
 
 			&:hover {
-				background-color: #{colors.$purple-10};
+				background: linear-gradient(
+					90deg,
+					rgba(82, 87, 255, 0.25) 0%,
+					rgba(82, 203, 255, 0.25) 100%
+				);
 			}
 		}
 

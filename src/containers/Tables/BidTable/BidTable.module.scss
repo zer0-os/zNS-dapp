@@ -1,6 +1,12 @@
 @use 'styles/variables/colors';
 
 .Container {
+	cursor: pointer;
+
+	&:hover {
+		background: #{colors.$purple-10};
+	}
+
 	td {
 		&:first-child {
 			padding-left: 11px !important;
@@ -32,6 +38,11 @@
 		background: none;
 	}
 
+	.RebidButton {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
 	td {
 		&:last-of-type {
 			width: 32px;
@@ -41,10 +52,6 @@
 
 	.MoreDropdown {
 		:global(ul) {
-			left: unset;
-			right: 0;
-			transform: unset;
-
 			li {
 				display: flex;
 
@@ -52,6 +59,22 @@
 					margin-left: 10px;
 				}
 			}
+		}
+	}
+
+	.HighestBid {
+		p {
+			padding-bottom: 0;
+		}
+
+		.Outbid {
+			color: #{colors.$red-300};
+			font-size: 12px;
+		}
+
+		.Leading {
+			color: #{colors.$success-green};
+			font-size: 12px;
 		}
 	}
 }

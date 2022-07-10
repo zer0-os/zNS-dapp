@@ -2,6 +2,7 @@ import BidTableRow, { BidTableRowData } from './BidTableRow';
 import { GenericTable, Overlay } from 'components';
 import { useMemo, useState } from 'react';
 import { CancelBid, MakeABid } from 'containers';
+import { TOKEN } from './BidTableRow.constants';
 
 type BidTableProps = {
 	bidData?: BidTableRowData[];
@@ -16,12 +17,12 @@ export const HEADERS = [
 		className: 'domain',
 	},
 	{
-		label: 'My Bid',
+		label: `My Bid (${TOKEN})`,
 		accessor: '',
 		className: '',
 	},
 	{
-		label: 'Top Bid',
+		label: `Top Bid (${TOKEN})`,
 		accessor: '',
 		className: '',
 	},
