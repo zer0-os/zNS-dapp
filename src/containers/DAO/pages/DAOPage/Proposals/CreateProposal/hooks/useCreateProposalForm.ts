@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
@@ -43,18 +43,7 @@ export const useCreateProposalForm = ({
 
 	// Form Nav
 	const history = useHistory();
-	const toAllProposals = useMemo(() => {
-		const pathname = history.location.pathname.replace(
-			`/${DAO_CREATE_PROPPAL}`,
-			'',
-		);
-		const state = cloneDeep(history.location.state);
-
-		return {
-			pathname,
-			state,
-		};
-	}, [history]);
+	const unblockHandle = useRef<any>();
 
 	// Form Changes
 	const [isFormChanged, setFormIsChanged] = useState<boolean>(false);
@@ -62,6 +51,10 @@ export const useCreateProposalForm = ({
 	const [showPublishConfirm, setShowPublishConfirm] = useState<boolean>(false);
 	const [showSuccessConfirm, setShowSuccessConfirm] = useState<boolean>(false);
 	const [createdProposal, setCreatedProposal] = useState<Proposal>();
+	const [savedPathname, setPathname] = useState<any>();
+	const location = useLocation();
+	const myState = location.state;
+	console.log('STATE', myState);
 
 	// Form Values
 	const [formValues, setFormValues] = usePropsState<
@@ -146,18 +139,11 @@ export const useCreateProposalForm = ({
 		}
 	}, [formValues, setFormErrors]);
 
-	// const handleGoToAllProposals = useCallback(() => {
-	// 	if (isFormChanged) {
-	// 		// setShowDiscardConfirm(true);
-	// 	} else {
-	// 		// history.replace(toAllProposals);
-	// 	}
-	// }, [isFormChanged]);
-
 	const handleDiscardConfirmCancel = () => {
-		// Should navigate
-		// history.push();
-
+		if (unblockHandle) {
+			unblockHandle.current();
+		}
+		history.push(savedPathname);
 		setShowDiscardConfirm(false);
 	};
 
@@ -260,27 +246,19 @@ export const useCreateProposalForm = ({
 	};
 
 	// Form Cancel
-	// useUpdateEffect(handleGoToAllProposals, [triggerCancel]);
 	useEffect(() => {
-		const unblock = history.block(({ pathname }) => {
-			// if is form not changed we can allow the navigation
-			if (!isFormChanged) {
-				// we can now unblock
-				unblock();
-				// proceed with the blocked navigation
-				history.push(pathname);
+		unblockHandle.current = history.block(({ pathname }) => {
+			if (isFormChanged) {
+				setPathname(pathname);
+				setShowDiscardConfirm(true);
+				return false;
 			}
-			// prevent navigation and somehow determine navigation when clicking discard
-			setShowDiscardConfirm(true);
-
-			return false;
 		});
-
-		// just in case theres an unmount we can unblock if it exists
-		return unblock;
+		return unblockHandle.current.current && unblockHandle.current.current();
 	}, [history, isFormChanged]);
 
 	return {
+		history,
 		formValues,
 		formErrors,
 		formData: {
