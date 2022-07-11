@@ -9,7 +9,7 @@ import { Modals } from '../Modals';
 import { StepContent } from '../../MakeABid.types';
 
 //- Constants
-import { LABELS } from 'constants/labels';
+import { Labels } from 'constants/labels';
 
 import {
 	MESSAGES,
@@ -113,7 +113,7 @@ const Details = ({
 					otherDetails={[
 						// Highest Bid
 						{
-							name: LABELS.HIGHEST_BID_LABEL,
+							name: Labels.HIGHEST_BID_LABEL,
 							value: formattedHighestBidAmount,
 						},
 						{

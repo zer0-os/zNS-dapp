@@ -1,8 +1,11 @@
+//- React Imports
+import { useRef, useState } from 'react';
+
+//- Library Imports
 import { Domain } from '@zero-tech/zns-sdk';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { useZnsSdk } from 'lib/hooks/sdk';
-import { useRef, useState } from 'react';
 
 type UseOwnedDomainsReturn = {
 	isLoading: boolean;

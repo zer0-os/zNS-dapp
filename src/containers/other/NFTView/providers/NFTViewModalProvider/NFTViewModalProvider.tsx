@@ -14,6 +14,7 @@ import {
 import { Overlay } from 'components';
 
 //- Containers Imports
+import ClaimNFT from 'containers/flows/ClaimNFT';
 import MakeABid from 'containers/flows/MakeABid/MakeABid';
 import SetBuyNow from 'containers/flows/SetBuyNow';
 import { BidList } from 'containers';
@@ -67,6 +68,13 @@ export const NFTViewModalProvider = ({
 						onAccept={modalContent.contentProps.onAccept}
 						highestBid={modalContent.contentProps.highestBid}
 						isLoading={modalContent.contentProps.isLoading}
+					/>
+				)}
+				{modalContent?.modalType === NFTViewModalType.CLAIM_NFT && (
+					<ClaimNFT
+						privateSaleEndTime={modalContent.contentProps.privateSaleEndTime}
+						onClose={closeModal}
+						setClaimDropStage={modalContent.contentProps.setClaimDropStage}
 					/>
 				)}
 			</Overlay>

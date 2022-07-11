@@ -20,6 +20,10 @@ $color: #{colors.$purple-10};
 
 	border-radius: calc(#{borders.$radius-primary} / 2);
 	z-index: 2;
+
+	&.Padded {
+		padding: 24px;
+	}
 }
 
 .Arrow path {

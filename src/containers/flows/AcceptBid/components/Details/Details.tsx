@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import { StepContent } from '../../AcceptBid.types';
 
 //- Constants
-import { LABELS } from 'constants/labels';
+import { Labels } from 'constants/labels';
 import {
 	MESSAGES,
 	BUTTONS,
@@ -81,15 +81,15 @@ const Details = ({
 					otherDetails={[
 						// Highest Bid
 						{
-							name: LABELS.HIGHEST_BID_LABEL,
+							name: Labels.HIGHEST_BID_LABEL,
 							value: formattedHighestBidAmount,
 						},
 						// Accepting Bid
 						{
 							name:
 								stepContent === StepContent.Details
-									? LABELS.SELECTED_BID_LABEL
-									: LABELS.ACCEPTED_BID_LABEL,
+									? Labels.SELECTED_BID_LABEL
+									: Labels.ACCEPTED_BID_LABEL,
 							value: formattedBidAmountWILD,
 						},
 					]}

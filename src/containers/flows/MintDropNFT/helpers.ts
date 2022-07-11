@@ -1,13 +1,21 @@
+//- Library Imports
 import { ethers } from 'ethers';
+import {
+	AirWildS2Instance,
+	AirWildS2SaleData,
+	ClaimWithChildInstance,
+	SaleStatus,
+} from '@zero-tech/zsale-sdk/';
+
+//- Types Improts
 import { Stage, DropData } from './types';
 import { WhitelistSimpleSale, ERC20 } from 'types';
-import { Instance, SaleData, SaleStatus } from '@zero-tech/zsale-sdk/lib/types';
 
 const TEST_MODE = false;
 const TEST_STATE: SaleStatus = SaleStatus.PrivateSale;
 const IS_ON_WHITELIST = true;
 
-const TEST: { [status in SaleStatus]: SaleData } = {
+const TEST: { [status in SaleStatus]: AirWildS2SaleData } = {
 	[SaleStatus.NotStarted]: {
 		amountSold: 0,
 		amountForSale: 50,
@@ -67,7 +75,7 @@ const TEST: { [status in SaleStatus]: SaleData } = {
 };
 
 export const getDropData = (
-	zSaleInstance: Instance,
+	zSaleInstance: AirWildS2Instance,
 ): Promise<DropData | undefined> => {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -98,8 +106,8 @@ export const getDropData = (
 	});
 };
 
-const getDropStage = async (
-	zSaleInstance: Instance,
+export const getDropStage = async (
+	zSaleInstance: AirWildS2Instance | ClaimWithChildInstance,
 ): Promise<Stage | undefined> => {
 	let status, data;
 
@@ -131,7 +139,7 @@ const getDropStage = async (
 };
 
 export const getNumberPurchasedByUser = async (
-	zSaleInstance: Instance,
+	zSaleInstance: AirWildS2Instance,
 	account: string,
 ) => {
 	const number = await zSaleInstance.getDomainsPurchasedByAccount(account);
@@ -139,7 +147,7 @@ export const getNumberPurchasedByUser = async (
 };
 
 export const getMaxPurchasesPerUser = async (
-	zSaleInstance: Instance,
+	zSaleInstance: AirWildS2Instance,
 	account: string,
 ) => {
 	const quantity = await zSaleInstance.numberPurchasableByAccount(account);
@@ -148,7 +156,7 @@ export const getMaxPurchasesPerUser = async (
 
 export const getUserEligibility = async (
 	account: string,
-	zSaleInstance: Instance,
+	zSaleInstance: AirWildS2Instance,
 ): Promise<boolean | undefined> => {
 	if (TEST_MODE) {
 		return IS_ON_WHITELIST;
@@ -159,8 +167,8 @@ export const getUserEligibility = async (
 };
 
 const getWheelQuantities = async (
-	zSaleInstance: Instance,
-): Promise<SaleData | undefined> => {
+	zSaleInstance: AirWildS2Instance,
+): Promise<AirWildS2SaleData | undefined> => {
 	if (TEST_MODE) {
 		await new Promise((r) => setTimeout(r, 2000));
 		return TEST[TEST_STATE];
