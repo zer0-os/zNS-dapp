@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
 import { useWeb3React } from '@web3-react/core';
@@ -6,7 +6,7 @@ import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import type { Proposal, zDAO } from '@zero-tech/zdao-sdk';
 import type { Option } from 'components/Dropdowns/OptionDropdown';
 import { parseUnits } from 'ethers/lib/utils';
-import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
+// import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 import config from 'config';
@@ -111,6 +111,10 @@ export const useCreateProposalForm = ({
 				});
 			}
 
+			if (value.length === 0) {
+				setFormIsChanged(false);
+			}
+
 			if (fieldKey === ProposalInputFieldKeys.RECIPIENT && value) {
 				setFormErrors({
 					...formErrors,
@@ -142,16 +146,18 @@ export const useCreateProposalForm = ({
 		}
 	}, [formValues, setFormErrors]);
 
-	const handleGoToAllProposals = () => {
-		if (isFormChanged) {
-			setShowDiscardConfirm(true);
-		} else {
-			history.replace(toAllProposals);
-		}
-	};
+	// const handleGoToAllProposals = useCallback(() => {
+	// 	if (isFormChanged) {
+	// 		// setShowDiscardConfirm(true);
+	// 	} else {
+	// 		// history.replace(toAllProposals);
+	// 	}
+	// }, [isFormChanged]);
 
 	const handleDiscardConfirmCancel = () => {
-		history.replace(toAllProposals);
+		// Should navigate
+		// history.push();
+
 		setShowDiscardConfirm(false);
 	};
 
@@ -198,7 +204,7 @@ export const useCreateProposalForm = ({
 			setCreatedProposal(newProposal);
 			setShowSuccessConfirm(true);
 			setShowPublishConfirm(false);
-		} catch (e) {
+		} catch (e: any) {
 			console.error(e);
 			// if user rejects transaction
 			if (e.code === 4001) {
@@ -254,7 +260,25 @@ export const useCreateProposalForm = ({
 	};
 
 	// Form Cancel
-	useUpdateEffect(handleGoToAllProposals, [triggerCancel]);
+	// useUpdateEffect(handleGoToAllProposals, [triggerCancel]);
+	useEffect(() => {
+		const unblock = history.block(({ pathname }) => {
+			// if is form not changed we can allow the navigation
+			if (!isFormChanged) {
+				// we can now unblock
+				unblock();
+				// proceed with the blocked navigation
+				history.push(pathname);
+			}
+			// prevent navigation and somehow determine navigation when clicking discard
+			setShowDiscardConfirm(true);
+
+			return false;
+		});
+
+		// just in case theres an unmount we can unblock if it exists
+		return unblock;
+	}, [history, isFormChanged]);
 
 	return {
 		formValues,
