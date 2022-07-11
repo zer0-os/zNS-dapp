@@ -16,7 +16,6 @@ import {
 
 //- Constants Imports
 import { MESSAGES } from '../ClaimNFT.constants';
-import { LABELS } from 'containers/other/NFTView/elements/TokenHashBoxes/TokenHashBoxes.constants';
 
 interface UseClaimCheckReturn {
 	isCheckDataLoading: boolean;
@@ -60,7 +59,8 @@ const useClaimCheck = (
 
 	useEffect(() => {
 		if (tokenID !== '' && requestCheck) {
-			if (domainName?.includes(LABELS.WILDER_WHEELS_ZNA)) {
+			// TODO :: Replace hard code with wheels path
+			if (domainName?.includes('wilder.candy.wolfsale')) {
 				setIsValidSubdomain(true);
 			}
 			checkDomain();

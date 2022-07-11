@@ -21,6 +21,7 @@ export const LABELS = {
 
 export const DOMAINS = {
 	ELIGIBLE_NFT_ROUTE: '/wheels.genesis',
+	// TODO :: ensure this is correct moto path for redirect to subdomain
 	CURRENT_CLAIM_ROUTE: '/moto.genesis',
 };
 
