@@ -1,6 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { cloneDeep } from 'lodash';
+import { isEqual } from 'lodash';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import type { Proposal, zDAO } from '@zero-tech/zdao-sdk';
@@ -8,6 +8,7 @@ import type { Option } from 'components/Dropdowns/OptionDropdown';
 import { parseUnits } from 'ethers/lib/utils';
 import { useUpdateEffect } from 'lib/hooks/useUpdateEffect';
 import { usePropsState } from 'lib/hooks/usePropsState';
+import { useValidateRouteChanges } from 'lib/hooks/useValidateRouteChanges';
 import { useProposals } from 'lib/dao/providers/ProposalsProvider';
 import config from 'config';
 import {
@@ -43,34 +44,32 @@ export const useCreateProposalForm = ({
 
 	// Form Nav
 	const history = useHistory();
-	const toAllProposals = useMemo(() => {
-		const pathname = history.location.pathname.replace(
-			`/${DAO_CREATE_PROPPAL}`,
-			'',
-		);
-		const state = cloneDeep(history.location.state);
-
-		return {
-			pathname,
-			state,
-		};
+	const toAllProposalsPath = useMemo(() => {
+		return history.location.pathname.replace(`/${DAO_CREATE_PROPPAL}`, '');
 	}, [history]);
 
 	// Form Changes
-	const [isFormChanged, setFormIsChanged] = useState<boolean>(false);
-	const [showDiscardConfirm, setShowDiscardConfirm] = useState<boolean>(false);
+	const defaultDiscardConfirm = {
+		show: false,
+		pathname: toAllProposalsPath,
+	};
+	const [discardConfirm, setDiscardConfirm] = useState<{
+		show: boolean;
+		pathname: string;
+	}>(defaultDiscardConfirm);
 	const [showPublishConfirm, setShowPublishConfirm] = useState<boolean>(false);
 	const [showSuccessConfirm, setShowSuccessConfirm] = useState<boolean>(false);
 	const [createdProposal, setCreatedProposal] = useState<Proposal>();
 
 	// Form Values
-	const [formValues, setFormValues] = usePropsState<
-		Record<ProposalInputFieldKeys, string | undefined>
-	>({
+	const defaultDaoProposalFormValues = {
 		...ProposalFormDefaultValues,
 		[ProposalInputFieldKeys.TOKEN]: tokenDropdownOptions[0].value,
 		[ProposalInputFieldKeys.SENDER]: dao?.safeAddress,
-	});
+	};
+	const [formValues, setFormValues] = usePropsState<
+		Record<ProposalInputFieldKeys, string | undefined>
+	>(defaultDaoProposalFormValues);
 
 	// Form Errors
 	const [formErrors, setFormErrors] = useState<
@@ -120,14 +119,12 @@ export const useCreateProposalForm = ({
 				});
 			}
 
-			if (!isFormChanged) setFormIsChanged(true);
-
 			setFormValues({
 				...formValues,
 				[fieldKey]: value,
 			});
 		},
-		[formValues, formErrors, isFormChanged, setFormValues, setFormErrors],
+		[formValues, formErrors, setFormValues, setFormErrors],
 	);
 
 	const handleFormSubmit = useCallback(() => {
@@ -142,21 +139,26 @@ export const useCreateProposalForm = ({
 		}
 	}, [formValues, setFormErrors]);
 
-	const handleGoToAllProposals = () => {
-		if (isFormChanged) {
-			setShowDiscardConfirm(true);
+	const handleLeaveCreateProposalForm = (
+		pathname: string = toAllProposalsPath,
+	) => {
+		if (!isEqual(formValues, defaultDaoProposalFormValues)) {
+			setDiscardConfirm({
+				show: true,
+				pathname,
+			});
 		} else {
-			history.replace(toAllProposals);
+			history.push(pathname);
 		}
 	};
 
 	const handleDiscardConfirmCancel = () => {
-		history.replace(toAllProposals);
-		setShowDiscardConfirm(false);
+		history.push(discardConfirm.pathname);
+		setDiscardConfirm(defaultDiscardConfirm);
 	};
 
 	const handleDiscardConfirm = () => {
-		setShowDiscardConfirm(false);
+		setDiscardConfirm(defaultDiscardConfirm);
 	};
 
 	const handlePublishConfirmCancel = () => {
@@ -254,7 +256,23 @@ export const useCreateProposalForm = ({
 	};
 
 	// Form Cancel
-	useUpdateEffect(handleGoToAllProposals, [triggerCancel]);
+	useUpdateEffect(handleLeaveCreateProposalForm, [triggerCancel]);
+
+	// Block other page clickings
+	useValidateRouteChanges({
+		unblockCheckCallback: (pathname: string): boolean => {
+			return (
+				isEqual(formValues, defaultDaoProposalFormValues) ||
+				pathname === discardConfirm.pathname
+			);
+		},
+		blockCallback: (pathname: string) => {
+			setDiscardConfirm({
+				show: true,
+				pathname,
+			});
+		},
+	});
 
 	return {
 		formValues,
@@ -269,17 +287,17 @@ export const useCreateProposalForm = ({
 		},
 		formConfirm: {
 			Overlay: {
-				show: showDiscardConfirm || showPublishConfirm || showSuccessConfirm,
+				show: discardConfirm.show || showPublishConfirm || showSuccessConfirm,
 				hasCloseButton: !(isFormSubmitting || showSuccessConfirm),
 				onClose: () => {
-					if (showDiscardConfirm) return handleDiscardConfirmCancel();
+					if (discardConfirm.show) return handleDiscardConfirm();
 					if (showPublishConfirm) return handlePublishConfirmCancel();
 
 					return null;
 				},
 			},
 			Discard: {
-				show: showDiscardConfirm,
+				show: discardConfirm.show,
 				onCancel: handleDiscardConfirmCancel,
 				onConfirm: handleDiscardConfirm,
 			},
