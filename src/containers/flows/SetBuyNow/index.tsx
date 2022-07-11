@@ -104,8 +104,7 @@ const SetBuyNowContainer = ({
 				setCurrentStep(Step.SetBuyNow);
 			} catch (e: any) {
 				setCurrentStep(Step.ApproveZAuction);
-				const errorText = getDisplayErrorMessage(e.message);
-				setError(errorText);
+				setError(getDisplayErrorMessage(e.message));
 				console.error(e);
 			}
 		})();
@@ -145,7 +144,7 @@ const SetBuyNowContainer = ({
 					}
 				} catch (e) {
 					setCurrentStep(Step.SetBuyNow);
-					setError(ERRORS.TRANSACTION);
+					throw Error(ERRORS.TRANSACTION);
 				}
 
 				setDomainData({
@@ -169,8 +168,7 @@ const SetBuyNowContainer = ({
 			} catch (e: any) {
 				setCurrentStep(Step.SetBuyNow);
 				console.error(e);
-				const errorText = getDisplayErrorMessage(e.message);
-				setError(errorText);
+				setError(getDisplayErrorMessage(e.message));
 			}
 		})();
 	};

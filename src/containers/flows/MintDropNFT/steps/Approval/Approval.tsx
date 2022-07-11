@@ -70,8 +70,7 @@ const Approval: React.FC<ApprovalProps> = ({
 				}
 			})
 			.catch((e) => {
-				const errorText = getDisplayErrorMessage(e.message);
-				setError(errorText);
+				setError(getDisplayErrorMessage(e.message));
 				setIsWaitingForConfirmation(false);
 				setIsApprovalInProgress(false);
 			});
@@ -89,8 +88,7 @@ const Approval: React.FC<ApprovalProps> = ({
 				}
 			})
 			.catch((e) => {
-				const errorText = getDisplayErrorMessage(e.message);
-				onError(errorText);
+				onError(getDisplayErrorMessage(e.message));
 			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

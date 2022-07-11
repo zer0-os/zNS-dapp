@@ -203,17 +203,14 @@ export const useBidProvider = (): UseBidProviderReturn => {
 	const placeBid = useCallback(
 		async (domain: Domain, bid: number, onStep: (status: string) => void) => {
 			if (sdk?.zauction === undefined) {
-				console.warn(ERRORS.FAILED_TO_CHECK_ZAUCTION);
-				return;
+				throw Error(ERRORS.FAILED_TO_CHECK_ZAUCTION);
 			}
 			if (!library) {
-				console.error(ERRORS.LIBRARY_NOT_FOUND);
-				return;
+				throw Error(ERRORS.LIBRARY_NOT_FOUND);
 			}
 
 			if (!domain.id) {
-				console.error(ERRORS.FAILED_TO_LOAD_DOMAIN_ID);
-				return;
+				throw Error(ERRORS.FAILED_TO_LOAD_DOMAIN_ID);
 			}
 
 			try {

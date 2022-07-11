@@ -160,8 +160,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				setStepContent(StepContent.Details);
 			} catch (e: any) {
 				setStepContent(StepContent.ApproveZAuction);
-				const errorText = getDisplayErrorMessage(e.message);
-				setError(errorText);
+				setError(getDisplayErrorMessage(e.message));
 			}
 		})();
 	};
@@ -197,8 +196,8 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				return;
 			}
 			setCurrentStep(Step.ConfirmDetails);
-			const errorText = getDisplayErrorMessage(e.message);
-			setError(errorText);
+			console.error(e);
+			setError(getDisplayErrorMessage(e.message));
 			setStepContent(StepContent.Details);
 		}
 	};

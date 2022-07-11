@@ -41,7 +41,6 @@ export const CancelBid = ({
 
 	const onFinish = () => {
 		onClose();
-		onSuccess();
 	};
 
 	const onCancelBid = async () => {
@@ -53,6 +52,7 @@ export const CancelBid = ({
 			setError(e.message);
 			setCurrentStep(Step.Confirmation);
 		}
+		onSuccess();
 	};
 
 	const onBack = () => {

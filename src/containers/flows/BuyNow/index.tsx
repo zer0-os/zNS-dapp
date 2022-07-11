@@ -84,8 +84,7 @@ const BuyNowContainer = ({
 				);
 				setCurrentStep(Step.ApproveZAuctionProcessing);
 			} catch (e: any) {
-				const errorText = getDisplayErrorMessage(e.message);
-				throw Error(errorText);
+				throw Error(getDisplayErrorMessage(e.message));
 			}
 
 			try {
@@ -118,7 +117,7 @@ const BuyNowContainer = ({
 				await tx.wait();
 			} catch (e) {
 				setCurrentStep(Step.Details);
-				setError(ERRORS.TRANSACTION);
+				throw Error(ERRORS.TRANSACTION);
 			}
 			addNotification(`${NOTIFICATIONS.BUY_NOW_SUCCESSFUL} ${data?.title}`);
 			setCurrentStep(Step.Success);
@@ -126,9 +125,8 @@ const BuyNowContainer = ({
 				onSuccess();
 			}
 		} catch (e: any) {
-			console.log(e);
-			const errorText = getDisplayErrorMessage(e.message);
-			setError(errorText);
+			console.error(e);
+			setError(getDisplayErrorMessage(e.message));
 			setCurrentStep(Step.Details);
 		}
 	};

@@ -58,8 +58,7 @@ const useCancelBid = (): UseCancelBidReturn => {
 				);
 			} catch (e: any) {
 				console.error(e);
-				const errorText = getDisplayErrorMessage(e.message);
-				throw new Error(errorText);
+				throw new Error(getDisplayErrorMessage(e.message));
 			}
 
 			// Transaction request

@@ -43,8 +43,7 @@ const useAcceptBid = (): UseAcceptBidReturn => {
 				tx = await sdk.zauction.acceptBid(bid, library.getSigner());
 			} catch (err: any) {
 				console.error(err);
-				const errorText = getDisplayErrorMessage(err.message);
-				throw new Error(errorText);
+				throw new Error(getDisplayErrorMessage(err.message));
 			}
 
 			// Transaction request
