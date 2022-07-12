@@ -41,8 +41,9 @@ export function useZSaleSdk() {
 					}),
 					claimInstance: zsale.createClaimWithChildInstance({
 						web3Provider,
-						contractAddress: '0x66cA971F1fE3d3d526cAbb0314633F6a7Ef3F887',
-						claimingRegistrarAddress: '',
+						contractAddress: '0xF1c77209aEb972383b03Da16DAb7957AcE183CF5',
+						claimingRegistrarAddress:
+							'0xc2e9678A71e50E5AEd036e00e9c5caeb1aC5987D',
 					}),
 				};
 			}
