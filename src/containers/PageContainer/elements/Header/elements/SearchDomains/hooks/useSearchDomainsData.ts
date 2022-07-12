@@ -1,5 +1,8 @@
+//- React Imports
 import React, { useState, useMemo } from 'react';
-import { DomainSearch } from 'lib/useDomainSearch';
+
+//- Library Imports
+import { DomainSearch } from 'lib/hooks/useDomainSearch';
 
 type UseSearchDomainsDataProps = {
 	props: {
