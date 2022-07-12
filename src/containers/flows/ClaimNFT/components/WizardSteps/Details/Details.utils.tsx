@@ -1,11 +1,18 @@
 //- Constants Imports
 import { MESSAGES, LABELS } from 'containers/flows/ClaimNFT/ClaimNFT.constants';
 import { BUTTONS, TOOLTIP, TEXT_INPUT } from './Details.constants';
+import { BigNumber } from 'ethers';
 
 // Validation
-export const isValidTokenId = (text: string) =>
-	// good enough tokenID validation ?
-	/^0x[a-fA-F0-9]{64}$/.test(String(text).toLowerCase());
+export const isValidTokenId = (text: string) => {
+	try {
+		const hexString = BigNumber.from(text).toHexString();
+		console.log('is valid?', /^0x[a-fA-F0-9]{64}$/.test(hexString));
+		return /^0x[a-fA-F0-9]{64}$/.test(hexString);
+	} catch (e) {
+		return false;
+	}
+};
 
 export const isValid = (tokenID: string) => isValidTokenId(tokenID);
 
