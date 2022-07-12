@@ -49,7 +49,7 @@ const SideBar = () => {
 		IS_DEFAULT_NETWORK && (app !== ROUTES.MARKET || zna.length === 0);
 
 	const networkLogo = getNetworkLogo(zna, app);
-	const priceWidget = getPriceWidget(zna, app);
+	const priceWidget = getPriceWidget(zna);
 
 	return (
 		<div className={styles.BorderContainer}>
@@ -97,7 +97,7 @@ const SideBar = () => {
 				</div>
 
 				<div className={styles.Footer}>
-					<PriceWidget isRoot={priceWidget} />
+					<PriceWidget isNetworkSet={priceWidget} />
 					<div
 						className={cx(styles.ZeroIconContainer, {
 							Hidden: isDefaultNetworkRootPath,
