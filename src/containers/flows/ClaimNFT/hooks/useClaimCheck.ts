@@ -60,7 +60,7 @@ const useClaimCheck = (
 	useEffect(() => {
 		if (tokenID !== '' && requestCheck) {
 			// TODO :: Replace hard code with wheels path
-			if (domainName?.includes('wilder.wheels.genesis')) {
+			if (domainName?.includes('wilder.candy.wolfsale')) {
 				setIsValidSubdomain(true);
 			}
 			checkDomain();
