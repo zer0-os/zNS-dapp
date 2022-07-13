@@ -40,8 +40,7 @@ const ImageCard = ({
 	return (
 		<div
 			className={cx(styles.Container, className, aspectRatioClass)}
-			// TODO: Figure out how to allow both card and dropdown click.
-			// onClick={onClick}
+			onClick={onClick}
 		>
 			<div className={styles.Body}>
 				<div className={styles.Placeholder}>
@@ -72,7 +71,13 @@ const ImageCard = ({
 						<div className={styles.Subheader}>{subHeader ?? ''}</div>
 					</div>
 					{onSelectOption && actions && (
-						<div className={styles.VerticalContainer}>
+						<div
+							className={styles.VerticalContainer}
+							onClick={(e) => {
+								e.stopPropagation();
+								e.preventDefault();
+							}}
+						>
 							<OptionDropdown
 								className={styles.MoreDropdown}
 								onSelect={onSelectOption}

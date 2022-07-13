@@ -36,17 +36,17 @@
 	.Button {
 		margin-left: auto;
 		background: none;
-	}
+		border-radius: 100%;
+		padding: 0;
+		width: 24px;
+		height: 24px;
 
-	.RebidButton {
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	td {
-		&:last-of-type {
-			width: 32px;
-			padding-left: 32px !important;
+		&:hover {
+			background: linear-gradient(
+				90deg,
+				rgba(82, 87, 255, 0.25) 0%,
+				rgba(82, 203, 255, 0.25) 100%
+			);
 		}
 	}
 
@@ -59,6 +59,18 @@
 					margin-left: 10px;
 				}
 			}
+		}
+	}
+
+	.RebidButton {
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	td {
+		&:last-of-type {
+			width: 32px;
+			padding-left: 32px !important;
 		}
 	}
 

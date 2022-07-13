@@ -28,9 +28,70 @@
 }
 
 .Domain {
+	position: relative;
 	display: block;
 	font-size: #{typography.$size-small};
 	color: #{colors.$grey-lighter-2};
+
+	&:hover .ArrowContainer {
+		margin-left: 3px;
+	}
+
+	&:hover .ArrowContainer::after {
+		box-shadow: 0px 0px 10px 3px #{colors.$blue};
+	}
+
+	.ArrowContainer {
+		position: absolute;
+		left: calc(100% + 5px);
+		top: 0;
+		height: 100%;
+		width: 12px;
+		transition: margin-left #{animations.$time-medium} ease-in-out;
+	}
+
+	.ArrowContainer::after {
+		content: ' ';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		height: 0px;
+		width: 0px;
+		background: #{colors.$black};
+		transform: translate(-60%, -50%);
+		transition: box-shadow #{animations.$time-short} ease-in-out;
+	}
+
+	.Arrow {
+		height: 1px;
+		width: 8px;
+		position: absolute;
+		left: 0;
+		top: 50%;
+		background: #{colors.$grey-lighter-2};
+	}
+
+	.Arrow:hover {
+		background: #{colors.$blue};
+	}
+
+	.Arrow::after,
+	.Arrow::before {
+		content: ' ';
+		position: absolute;
+		right: -1px;
+		height: 1px;
+		width: 6px;
+		background: inherit;
+	}
+
+	.Arrow::after {
+		transform: translateY(-200%) rotate(45deg);
+	}
+
+	.Arrow::before {
+		transform: translateY(200%) rotate(-45deg);
+	}
 }
 
 .Image:hover {
@@ -68,12 +129,6 @@
 .Title {
 	display: block;
 	cursor: pointer;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.Domain {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;

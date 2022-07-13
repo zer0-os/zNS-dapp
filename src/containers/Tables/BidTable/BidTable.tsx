@@ -98,7 +98,7 @@ const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 				infiniteScroll
 				isLoading={isLoading}
 				itemKey={'id'}
-				loadingText={'Loading Your Bids'}
+				loadingText={'Loading My Bids'}
 				notSearchable
 				rowComponent={(props: any) => (
 					<BidTableRow

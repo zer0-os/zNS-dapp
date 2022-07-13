@@ -30,10 +30,14 @@ import BidList from 'containers/lists/BidList/BidList';
 import { DomainSettings } from 'containers/other/NFTView/elements';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 import { getActions } from './OwnedDomainsTable.utils';
+import SetBuyNow from 'containers/flows/SetBuyNow';
+import TransferOwnership from 'containers/flows/TransferOwnership';
 
 enum Modal {
 	ViewBids,
 	EditMetadata,
+	TransferOwnership,
+	SetBuyNow,
 }
 
 type OwnedDomainsTableRowProps = {
@@ -95,17 +99,19 @@ const SubdomainTableCard = ({
 	};
 
 	const onSelectOption = (option: Option) => {
-		// TODO: Add remaining actions.
 		if (option.title === ACTION_KEYS.VIEW_BIDS) {
 			onViewBids();
 		} else if (option.title === ACTION_KEYS.SETTINGS) {
 			setModal(Modal.EditMetadata);
+		} else if (option.title === ACTION_KEYS.TRANSFER_OWNERSHIP) {
+			setModal(Modal.TransferOwnership);
+		} else if (option.title === ACTION_KEYS.SET_BUY_NOW) {
+			setModal(Modal.SetBuyNow);
 		}
 	};
 
 	// Defines the modal element to be rendered
 	const ModalElement = useMemo(() => {
-		// TODO: Add remaining actions.
 		if (modal === Modal.ViewBids && bids && domainMetadata) {
 			return (
 				<Overlay onClose={() => setModal(undefined)} centered open>
@@ -129,8 +135,25 @@ const SubdomainTableCard = ({
 					/>
 				</Overlay>
 			);
-		} else {
-			return null;
+		} else if (modal === Modal.TransferOwnership) {
+			return (
+				<TransferOwnership
+					metadataUrl={domain.metadataUri}
+					domainName={domain.name}
+					domainId={domain.id}
+					onTransfer={() => setModal(undefined)}
+					creatorId={domain.minter}
+					ownerId={domain.owner}
+				/>
+			);
+		} else if (modal === Modal.SetBuyNow) {
+			return (
+				<SetBuyNow
+					domainId={domain.id}
+					onCancel={() => setModal(undefined)}
+					onSuccess={() => setModal(undefined)}
+				/>
+			);
 		}
 	}, [modal]);
 

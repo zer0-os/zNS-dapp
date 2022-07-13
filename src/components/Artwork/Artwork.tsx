@@ -164,7 +164,10 @@ const Artwork: React.FC<ArtworkProps> = ({
 									target="_blank"
 									rel="noreferrer"
 								>
-									{truncateDomain(domain, DOMAIN_MAX_LENGTH)}
+									{truncateDomain(domain, DOMAIN_MAX_LENGTH)}{' '}
+									<div className={styles.ArrowContainer}>
+										<div className={styles.Arrow}></div>
+									</div>
 								</Link>
 							)}
 						</>

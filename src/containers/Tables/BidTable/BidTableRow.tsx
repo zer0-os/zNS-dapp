@@ -4,7 +4,7 @@ import moreIcon from 'assets/more-horizontal.svg';
 import { DollarSign, X } from 'react-feather';
 
 //- Components Imports
-import { Artwork, FutureButton, OptionDropdown } from 'components';
+import { Artwork, FutureButton, OptionDropdown, Tooltip } from 'components';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Library Imports
@@ -73,7 +73,6 @@ const BidTableRow = (props: any) => {
 	};
 
 	const getHighestBidSubtext = (): JSX.Element => {
-		// TODO: Add case for Lost (does bid.date refer to expiry date?).
 		if (bid.yourBid < bid.highestBid) {
 			return <p className={styles.Outbid}>Outbid</p>;
 		} else {
@@ -86,8 +85,8 @@ const BidTableRow = (props: any) => {
 			<td onClick={onRowClick}>
 				<Artwork
 					data-testid={TEST_ID.ARTWORK}
+					name={bid.domainName}
 					domain={bid.domainName}
-					disableInteraction
 					metadataUrl={bid.domainMetadataUrl}
 					id={bid.domainId}
 					style={{ maxWidth: 200 }}
@@ -124,9 +123,11 @@ const BidTableRow = (props: any) => {
 					options={ACTIONS}
 					data-testid="bid-table-options"
 				>
-					<button className={styles.Button}>
-						<img alt="more actions" src={moreIcon} />
-					</button>
+					<Tooltip placement="bottom-center" text="More options">
+						<button className={styles.Button}>
+							<img alt="more actions" src={moreIcon} />
+						</button>
+					</Tooltip>
 				</OptionDropdown>
 			</td>
 		</tr>

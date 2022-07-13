@@ -143,7 +143,7 @@ const Actions = ({
 		},
 		[ACTION_TYPES.YourBid]: {
 			amount: yourBid ? Number(formatEther(yourBid.amount)) : '-',
-			label: `${LABELS.YOUR_BID} (${CURRENCY.WILD})`,
+			label: `${LABELS.MY_BID} (${CURRENCY.WILD})`,
 			amountUsd: yourBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<CancelBidButton

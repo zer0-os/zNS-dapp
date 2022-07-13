@@ -4,11 +4,16 @@
 import React, { useMemo, useState } from 'react';
 
 //- Components Imports
-import { Artwork, OptionDropdown, Overlay, Spinner } from 'components';
+import { Artwork, OptionDropdown, Overlay, Spinner, Tooltip } from 'components';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Containers Imports
-import { BidList, ViewBidsButton } from 'containers';
+import {
+	BidList,
+	SetBuyNow,
+	TransferOwnership,
+	ViewBidsButton,
+} from 'containers';
 import { DomainSettings } from 'containers/other/NFTView/elements';
 
 //- Library Imports
@@ -37,6 +42,8 @@ import { getNetworkZNA } from 'lib/utils';
 enum Modal {
 	ViewBids,
 	EditMetadata,
+	TransferOwnership,
+	SetBuyNow,
 }
 
 type OwnedDomainsTableRowProps = {
@@ -71,18 +78,17 @@ const OwnedDomainsTableRow = ({
 	const actions = getActions(bids?.length !== 0);
 
 	const onSelectOption = (option: Option) => {
-		// TODO: Add remaining actions.
 		if (option.title === ACTION_KEYS.VIEW_BIDS) {
 			onViewBids();
 		} else if (option.title === ACTION_KEYS.SETTINGS) {
 			setModal(Modal.EditMetadata);
+		} else if (option.title === ACTION_KEYS.TRANSFER_OWNERSHIP) {
+			setModal(Modal.TransferOwnership);
+		} else if (option.title === ACTION_KEYS.SET_BUY_NOW) {
+			setModal(Modal.SetBuyNow);
 		}
 	};
 
-	/**
-	 * Opens View Bids modal
-	 * @returns void
-	 */
 	const onViewBids = (): void => {
 		if (!bids || !bids.length) {
 			return;
@@ -92,7 +98,6 @@ const OwnedDomainsTableRow = ({
 
 	// Defines the modal element to be rendered
 	const ModalElement = useMemo(() => {
-		// TODO: Add remaining actions.
 		if (modal === Modal.ViewBids && bids && domainMetadata) {
 			return (
 				<Overlay onClose={() => setModal(undefined)} centered open>
@@ -116,8 +121,25 @@ const OwnedDomainsTableRow = ({
 					/>
 				</Overlay>
 			);
-		} else {
-			return null;
+		} else if (modal === Modal.TransferOwnership) {
+			return (
+				<TransferOwnership
+					metadataUrl={domain.metadataUri}
+					domainName={domain.name}
+					domainId={domain.id}
+					onTransfer={() => setModal(undefined)}
+					creatorId={domain.minter}
+					ownerId={domain.owner}
+				/>
+			);
+		} else if (modal === Modal.SetBuyNow) {
+			return (
+				<SetBuyNow
+					domainId={domain.id}
+					onCancel={() => setModal(undefined)}
+					onSuccess={() => setModal(undefined)}
+				/>
+			);
 		}
 	}, [modal]);
 
@@ -168,9 +190,11 @@ const OwnedDomainsTableRow = ({
 						options={actions}
 						className={classNames(styles.MoreDropdown)}
 					>
-						<button className={styles.Button}>
-							<img alt="more actions" src={moreIcon} />
-						</button>
+						<Tooltip placement="bottom-center" text="More options">
+							<button className={styles.Button}>
+								<img alt="more actions" src={moreIcon} />
+							</button>
+						</Tooltip>
 					</OptionDropdown>
 				</td>
 			</tr>

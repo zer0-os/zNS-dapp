@@ -5,7 +5,7 @@ export enum LABELS {
 	SELECTED_BID_LABEL = 'Bid You’re Accepting',
 	ACCEPTED_BID_LABEL = 'Bid You’ve Accepted',
 	VIEW_ALL_BIDS = 'View All Bids',
-	YOUR_BID = 'Your Bid',
+	MY_BID = 'My Bid',
 	EDIT_BUY_NOW = 'Edit Buy Now',
 	SET_BUY_NOW = 'Set Buy Now',
 	BUY_NOW = 'Buy Now',

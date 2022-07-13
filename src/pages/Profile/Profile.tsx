@@ -75,7 +75,7 @@ const Profile = () => {
 	}, [isAccountHovered]);
 
 	useDidMount(() => {
-		setNavbarTitle('Your Profile');
+		setNavbarTitle('My Profile');
 		document.title = process.env.REACT_APP_TITLE + ' | Profile';
 	});
 

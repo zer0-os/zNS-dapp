@@ -17,7 +17,7 @@ export const HEADERS = [
 ];
 
 export enum MESSAGES {
-	LOADING = 'Loading Owned Domains',
+	LOADING = 'Loading My Domains',
 }
 
 export const ACTION_KEYS = {
