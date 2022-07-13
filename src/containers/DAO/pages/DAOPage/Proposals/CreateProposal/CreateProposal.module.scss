@@ -197,7 +197,14 @@
 								}
 
 								:global(.w-md-editor-bar) {
-									opacity: 0;
+									margin-top: -24px;
+									width: 24px;
+									height: 24px;
+									background: url('./assets/md-resize-bar.svg') no-repeat;
+
+									svg {
+										display: none;
+									}
 								}
 
 								:global(.w-md-editor-input) {

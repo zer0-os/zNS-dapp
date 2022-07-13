@@ -263,7 +263,8 @@ export const useCreateProposalForm = ({
 		unblockCheckCallback: (pathname: string): boolean => {
 			return (
 				isEqual(formValues, defaultDaoProposalFormValues) ||
-				pathname === discardConfirm.pathname
+				pathname === discardConfirm.pathname ||
+				Boolean(createdProposal)
 			);
 		},
 		blockCallback: (pathname: string) => {
