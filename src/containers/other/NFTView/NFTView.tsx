@@ -1,5 +1,5 @@
 //- React Imports
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 
 //- Web3 Imports
 import { useWeb3React } from '@web3-react/core'; // Wallet data
@@ -34,7 +34,6 @@ import {
 	useNFTViewModal,
 	useNftMediaAsset,
 } from './hooks';
-import useClaimCheck from 'containers/flows/ClaimNFT/hooks/useClaimCheck';
 
 //- Constants Imports
 import {
@@ -46,6 +45,9 @@ import { PRIVATE_SALE_END_TIME } from 'containers/flows/Raffle/Drop.constants';
 
 //- Style Imports
 import styles from './NFTView.module.scss';
+import useIsClaimable, {
+	Status,
+} from 'containers/flows/ClaimNFT/hooks/useIsClaimable';
 
 //- Componennt level type definitions
 type NFTViewProps = {
@@ -94,11 +96,11 @@ const NFTView: React.FC<NFTViewProps> = ({
 	const { openModal, closeModal } = useNFTViewModal();
 
 	//- Claim Check state and data
-	const [requestCheck, setRequestCheck] = useState<boolean>(false);
-	const { isTokenClaimable, isCheckDataLoading } = useClaimCheck(
-		domainId,
-		requestCheck,
-	);
+	const {
+		checkClaimable,
+		isTokenClaimable,
+		status: claimableCheckStatus,
+	} = useIsClaimable();
 
 	//- Memoized data
 	const {
@@ -249,7 +251,8 @@ const NFTView: React.FC<NFTViewProps> = ({
 	/////////////
 
 	useEffect(() => {
-		setRequestCheck(domainId !== undefined);
+		checkClaimable(domainId);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [domainId]);
 
 	////////////
@@ -300,7 +303,7 @@ const NFTView: React.FC<NFTViewProps> = ({
 				claimDropStage={claimDropStage}
 				znsDomain={znsDomain}
 				isTokenClaimable={isTokenClaimable}
-				isCheckDataLoading={isCheckDataLoading}
+				isCheckDataLoading={claimableCheckStatus === Status.LOADING}
 				onClaim={openClaim}
 			/>
 
