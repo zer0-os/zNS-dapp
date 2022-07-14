@@ -17,27 +17,27 @@ export type UseZnsDomainReturn = {
 	paymentTokenInfo: ConvertedTokenInfo;
 };
 
+type FormatSubdomainType = {
+	owner: { id: string };
+	metadata: string;
+	minter: { id: string };
+	name: string;
+	id: string;
+};
+
 /**
  * Changes an SDK subdomain type to dApp subdomain type
  * This won't be needed when we properly integrate SDK types
  * @param subdomains -
  * @returns
  */
-const formatSubdomains = (
-	subdomains: Domain[],
-): {
-	owner: { id: string };
-	metadata: string;
-	minter: { id: string };
-	name: string;
-	id: string;
-}[] => {
+const formatSubdomains = (subdomains: Domain[]): FormatSubdomainType[] => {
 	return subdomains.map((sub) => ({
-		id: sub.id,
-		metadata: sub.metadataUri,
-		minter: { id: sub.minter },
-		name: sub.name,
-		owner: { id: sub.owner },
+		id: sub.id ?? '',
+		metadata: sub.metadataUri ?? '',
+		minter: { id: sub.minter ?? '' },
+		name: sub.name ?? '',
+		owner: { id: sub.owner ?? '' },
 	}));
 };
 
@@ -73,7 +73,6 @@ export const useZnsDomain = (
 	const [loading, setLoading] = useState(true);
 	const [domain, setDomain] = useState<DisplayParentDomain | undefined>();
 	const [domainMetadata, setDomainMetadata] = useState<Maybe<Metadata>>();
-
 	const [paymentToken, setPaymentToken] = useState<Maybe<string>>();
 	const [paymentTokenInfo, setPaymentTokenInfo] = useState<ConvertedTokenInfo>(
 		{} as ConvertedTokenInfo,
@@ -110,6 +109,7 @@ export const useZnsDomain = (
 	/**
 	 * This method gets all of the data relevant to a domain
 	 */
+
 	const refetch = useCallback(async () => {
 		try {
 			loadingDomainId.current = domainId;
@@ -127,15 +127,25 @@ export const useZnsDomain = (
 			}
 			setDomainMetadata(d.metadata);
 
-			const s = await getSubdomains(domainId);
+			let subdomains;
+
+			try {
+				subdomains = await getSubdomains(domainId);
+			} catch (e: any) {
+				console.error('Subdomains do not exist on domain', e);
+			}
+
 			if (loadingDomainId.current !== domainId) {
 				setLoading(false);
 				return;
 			}
+
+			const setSubdomains = subdomains === undefined ? [] : subdomains;
+
 			setDomain({
 				...d.domain,
 				...d.metadata,
-				subdomains: s,
+				subdomains: setSubdomains,
 			} as DisplayParentDomain);
 
 			const token = isRootDomain(d.domain.id)
