@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames/bind';
+import classnames from 'classnames/bind';
 import MDEditor, { ICommand } from '@uiw/react-md-editor';
 import {
 	MARKDOWN_EDITOR_MODES,
@@ -10,17 +10,20 @@ import styles from './MarkDown.module.scss';
 type MarkDownEditorProps = {
 	text?: string;
 	placeholder?: string;
-	containerClassName?: string;
 	onChange?: (value?: string) => void;
 	errorText?: string;
+	classNames: {
+		container?: string;
+		error?: string;
+	};
 };
 
 export const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
 	text = '',
 	placeholder,
-	containerClassName = '',
 	onChange,
 	errorText = '',
+	classNames,
 }) => {
 	const onCommandsFilter = (command: ICommand<string>) => {
 		switch (command.name) {
@@ -58,7 +61,10 @@ export const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
 
 	return (
 		<div
-			className={classNames(styles.MarkDownEditorContainer, containerClassName)}
+			className={classnames(
+				styles.MarkDownEditorContainer,
+				classNames.container,
+			)}
 		>
 			<MDEditor
 				value={text}
@@ -70,7 +76,9 @@ export const MarkDownEditor: React.FC<MarkDownEditorProps> = ({
 				}}
 			/>
 			{errorText && (
-				<span className={classNames(styles.ErrorMessage)}>{errorText}</span>
+				<span className={classnames(styles.ErrorMessage, classNames.error)}>
+					{errorText}
+				</span>
 			)}
 		</div>
 	);

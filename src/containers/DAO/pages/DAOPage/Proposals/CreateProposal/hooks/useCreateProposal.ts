@@ -1,12 +1,10 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
 import type { zDAO } from '@zero-tech/zdao-sdk';
-import { useDidMount } from 'lib/hooks/useDidMount';
-import { useWillUnmount } from 'lib/hooks/useWillUnmount';
 import { getTokenOptionsFromAssets } from '../CreateProposal.helpers';
-import { DAO_CREATE_PROPPAL } from '../../../Proposals/Proposals.constants';
+import { DAO_CREATE_PROPOSAL } from '../../../Proposals/Proposals.constants';
 import useAssets from '../../../hooks/useAssets';
 
 export const useCreateProposal = (dao?: zDAO) => {
@@ -15,19 +13,15 @@ export const useCreateProposal = (dao?: zDAO) => {
 		useState<boolean>(false);
 
 	// - Life Cycle
-	useDidMount(() => {
+	useEffect(() => {
 		const nav = document.getElementById('dao-page-nav-tabs');
-		if (nav) {
-			nav.style.display = 'none';
-		}
-	});
 
-	useWillUnmount(() => {
-		const nav = document.getElementById('dao-page-nav-tabs');
-		if (nav) {
-			nav.style.display = 'block';
-		}
-	});
+		nav?.setAttribute('style', 'display:none');
+
+		return () => {
+			nav?.setAttribute('style', 'display:block');
+		};
+	}, []);
 
 	// - Hooks
 	const history = useHistory();
@@ -49,7 +43,7 @@ export const useCreateProposal = (dao?: zDAO) => {
 
 	const handleGoToDao = useCallback(() => {
 		const pathname = history.location.pathname.replace(
-			`/${DAO_CREATE_PROPPAL}`,
+			`/${DAO_CREATE_PROPOSAL}`,
 			'',
 		);
 		history.replace(pathname);

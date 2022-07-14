@@ -9,4 +9,4 @@ export enum PROPOSAL_TABLE_LOCATION_STATE {
 	CARD = 'card',
 }
 
-export const DAO_CREATE_PROPPAL = 'create';
+export const DAO_CREATE_PROPOSAL = 'create';

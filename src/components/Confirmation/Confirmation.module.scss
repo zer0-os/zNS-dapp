@@ -164,11 +164,6 @@ $gutter: 16px;
 .Confirmation .Buttons {
 	display: flex;
 	justify-content: center;
-	gap: $gutter;
-
-	>button {
-		text-transform: uppercase;
-	}
 }
 
 @media only screen and (max-width: 1200px) {

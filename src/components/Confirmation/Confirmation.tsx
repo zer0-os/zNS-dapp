@@ -21,15 +21,6 @@ type ConfirmationProps = {
 	onClose?: () => void;
 	title?: string;
 	hasCloseButton?: boolean;
-	className?: string;
-	buttonAltProps?: {
-		cancel?: boolean;
-		confirm?: boolean;
-	};
-	buttonSecondaryProps?: {
-		cancel?: boolean;
-		confirm?: boolean;
-	};
 };
 
 const Confirmation: React.FC<ConfirmationProps> = ({
@@ -45,15 +36,6 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 	title,
 	errorText,
 	hasCloseButton,
-	className = '',
-	buttonAltProps = {
-		cancel: true,
-		confirm: false,
-	},
-	buttonSecondaryProps = {
-		cancel: false,
-		confirm: false,
-	},
 }) => {
 	if (showLoading === undefined) showLoading = false; //if undefined its false
 
@@ -75,7 +57,7 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 
 	return (
 		<div
-			className={`${styles.Confirmation} border-primary border-rounded background-primary ${className}`}
+			className={`${styles.Confirmation} border-primary border-rounded background-primary `}
 		>
 			<h2 className="glow-text-white">{title ?? 'Are you sure?'}</h2>
 			{hasCloseButton && (
@@ -90,20 +72,9 @@ const Confirmation: React.FC<ConfirmationProps> = ({
 			{children}
 			{!hideButtons && !showLoading && (
 				<div className={styles.Buttons}>
-					{cancelText && onCancel && (
-						<FutureButton
-							glow
-							alt={buttonAltProps.cancel}
-							secondary={buttonSecondaryProps.cancel}
-							onClick={onCancel}
-						>
-							{cancelText ?? 'Cancel'}
-						</FutureButton>
-					)}
 					<FutureButton
+						style={{ textTransform: 'uppercase' }}
 						glow
-						alt={buttonAltProps.confirm}
-						secondary={buttonSecondaryProps.confirm}
 						onClick={onConfirm}
 					>
 						{confirmText ?? 'Continue'}

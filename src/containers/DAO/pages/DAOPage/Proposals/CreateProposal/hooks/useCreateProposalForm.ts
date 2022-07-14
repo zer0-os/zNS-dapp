@@ -25,7 +25,7 @@ import {
 	isValidERC20Address,
 	validateCreateProposalForm,
 } from '../CreateProposal.helpers';
-import { DAO_CREATE_PROPPAL } from '../../../Proposals/Proposals.constants';
+import { DAO_CREATE_PROPOSAL } from '../../../Proposals/Proposals.constants';
 
 export const useCreateProposalForm = ({
 	dao,
@@ -45,7 +45,7 @@ export const useCreateProposalForm = ({
 	// Form Nav
 	const history = useHistory();
 	const toAllProposalsPath = useMemo(() => {
-		return history.location.pathname.replace(`/${DAO_CREATE_PROPPAL}`, '');
+		return history.location.pathname.replace(`/${DAO_CREATE_PROPOSAL}`, '');
 	}, [history]);
 
 	// Form Changes
@@ -204,7 +204,7 @@ export const useCreateProposalForm = ({
 			console.error(e);
 			// if user rejects transaction
 			if (e.code === 4001) {
-				setFormSubmitErrorMessage('Transaction denied by wallet');
+				setFormSubmitErrorMessage('Signature denied by wallet');
 			} else {
 				setFormSubmitErrorMessage('Failed to create a proposal, try again');
 			}
@@ -228,7 +228,7 @@ export const useCreateProposalForm = ({
 	const handleTweet = () => {
 		if (createdProposal) {
 			const pathname = history.location.pathname.replace(
-				`/${DAO_CREATE_PROPPAL}`,
+				`/${DAO_CREATE_PROPOSAL}`,
 				`/${createdProposal.id}`,
 			);
 			const newProposalUrl = encodeURIComponent(`${config.baseURL}${pathname}`);
@@ -247,7 +247,7 @@ export const useCreateProposalForm = ({
 	const handleViewCreatedProposal = () => {
 		if (createdProposal) {
 			const pathname = history.location.pathname.replace(
-				`/${DAO_CREATE_PROPPAL}`,
+				`/${DAO_CREATE_PROPOSAL}`,
 				`/${createdProposal.id}`,
 			);
 

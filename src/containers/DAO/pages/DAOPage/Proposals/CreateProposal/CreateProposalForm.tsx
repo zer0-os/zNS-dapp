@@ -17,8 +17,7 @@ import {
 	EtherscanLink,
 	FutureButton,
 	Overlay,
-	Confirmation,
-	LoadingIndicator,
+	Wizard,
 } from 'components';
 
 // - Types
@@ -213,7 +212,12 @@ export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 							)}
 						>
 							<MarkDownEditor
-								containerClassName={styles.MarkdownEditor__Container}
+								classNames={{
+									container: cx(styles.MarkdownEditor__Container, {
+										Error: !!formErrors.body,
+									}),
+									error: styles.MarkdownEditor__Error,
+								}}
 								text={formValues.body}
 								placeholder={
 									ProposalInputFields.body.placeholder ??
@@ -250,14 +254,15 @@ export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 							styles.VotingDetail__Section__Content,
 						)}
 					>
-						{formData.votingDetails.map(
-							(votingDetail: VotingDetailItem, index: number) => (
-								<div className={styles.VotingDetailCol} key={index}>
-									<span>{votingDetail.label}</span>
-									<span>{votingDetail.value} </span>
-								</div>
-							),
-						)}
+						{formData.votingDetails.map((votingDetail: VotingDetailItem) => (
+							<div
+								className={styles.VotingDetailCol}
+								key={JSON.stringify(votingDetail)}
+							>
+								<span>{votingDetail.label}</span>
+								<span>{votingDetail.value} </span>
+							</div>
+						))}
 					</div>
 				</div>
 
@@ -282,75 +287,76 @@ export const CreateProposalForm: React.FC<CreateProposalFormProps> = ({
 					onClose={formConfirm.Overlay.onClose}
 				>
 					{formConfirm.Discard.show && (
-						<Confirmation
-							title={ProposalFormConfirmModalText.Discard.title}
-							confirmText={ProposalFormConfirmModalText.Discard.confirm}
-							cancelText={ProposalFormConfirmModalText.Discard.cancel}
-							onCancel={formConfirm.Discard.onCancel}
-							onConfirm={formConfirm.Discard.onConfirm}
+						<Wizard
+							header={ProposalFormConfirmModalText.Discard.title}
 							className={styles.Confirmation}
 						>
-							{ProposalFormConfirmModalText.Discard.body}
-						</Confirmation>
+							<p>{ProposalFormConfirmModalText.Discard.body}</p>
+
+							<Wizard.Buttons
+								primaryButtonText={ProposalFormConfirmModalText.Discard.confirm}
+								secondaryButtonText={
+									ProposalFormConfirmModalText.Discard.cancel
+								}
+								onClickPrimaryButton={formConfirm.Discard.onConfirm}
+								onClickSecondaryButton={formConfirm.Discard.onCancel}
+							/>
+						</Wizard>
 					)}
 
 					{formConfirm.Publish.show && (
-						<Confirmation
-							title={ProposalFormConfirmModalText.Publish.title}
-							confirmText={ProposalFormConfirmModalText.Publish.confirm}
-							cancelText={ProposalFormConfirmModalText.Publish.cancel}
-							onCancel={formConfirm.Publish.onCancel}
-							onConfirm={formConfirm.Publish.onConfirm}
-							hideButtons={formSubmition.isSubmitting}
+						<Wizard
+							header={ProposalFormConfirmModalText.Publish.title}
 							className={styles.Confirmation}
-							buttonAltProps={{
-								cancel: false,
-							}}
-							buttonSecondaryProps={{
-								cancel: true,
-							}}
 						>
 							{formSubmition.isSubmitting ? (
-								<>
-									<div className={styles.Publishing}>
-										{ProposalFormConfirmModalText.Publish.body.publishing}
-									</div>
-									<LoadingIndicator text="" />
-								</>
+								<Wizard.Loading
+									message={ProposalFormConfirmModalText.Publish.body.publishing}
+								/>
 							) : (
 								ProposalFormConfirmModalText.Publish.body.normal
 							)}
 
 							{formSubmition.error && (
-								<div className={styles.Publishing_Error}>
+								<p className={classNames(styles.Error, styles.Publish_Error)}>
 									{formSubmition.error}
-								</div>
+								</p>
 							)}
-						</Confirmation>
+
+							{!formSubmition.isSubmitting && (
+								<Wizard.Buttons
+									primaryButtonText={
+										ProposalFormConfirmModalText.Publish.confirm
+									}
+									secondaryButtonText={
+										ProposalFormConfirmModalText.Publish.cancel
+									}
+									onClickPrimaryButton={formConfirm.Publish.onConfirm}
+									onClickSecondaryButton={formConfirm.Publish.onCancel}
+									secondaryButtonVariant="secondary"
+								/>
+							)}
+						</Wizard>
 					)}
 
 					{formConfirm.Success.show && (
-						<Confirmation
-							title={ProposalFormConfirmModalText.Success.title}
-							confirmText={ProposalFormConfirmModalText.Success.confirm}
-							cancelText={ProposalFormConfirmModalText.Success.cancel}
-							onCancel={formConfirm.Success.onCancel}
-							onConfirm={formConfirm.Success.onConfirm}
-							className={classNames(
-								styles.Confirmation,
-								styles.Confirmation_Success,
-							)}
-							buttonAltProps={{
-								cancel: false,
-							}}
-							buttonSecondaryProps={{
-								cancel: true,
-							}}
+						<Wizard
+							header={ProposalFormConfirmModalText.Success.title}
+							className={styles.Confirmation}
 						>
-							<div className={styles.Success}>
+							<p className={styles.Success}>
 								{ProposalFormConfirmModalText.Success.body}
-							</div>
-						</Confirmation>
+							</p>
+							<Wizard.Buttons
+								primaryButtonText={ProposalFormConfirmModalText.Success.confirm}
+								secondaryButtonText={
+									ProposalFormConfirmModalText.Success.cancel
+								}
+								onClickPrimaryButton={formConfirm.Success.onConfirm}
+								onClickSecondaryButton={formConfirm.Success.onCancel}
+								secondaryButtonVariant="secondary"
+							/>
+						</Wizard>
 					)}
 				</Overlay>
 			)}

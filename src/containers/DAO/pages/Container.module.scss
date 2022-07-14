@@ -38,31 +38,46 @@
 
 	.Links {
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
 		align-items: center;
-		padding: 8px 16px;
+		padding: 8px 0;
 		margin-top: 16px;
 
-		@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
+		@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+			flex-direction: row;
+			justify-content: space-between;
 			margin-top: 0;
 		}
 
 		.LinksWrapper {
+			display: flex;
+			justify-content: space-around;
+			width: 100%;
 			padding: 0.5rem 0;
+
+			@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+				display: block;
+				width: auto;
+			}
 
 			>a {
 				color: #{colors.$grey-lighter-2};
-				font-size: #{typography.$size-large};
 				font-weight: #{typography.$font-weight-bold};
 
+				@media only screen and (min-width: #{dimensions.$breakpoint-mobile-l}) {
+					font-size: #{typography.$size-medium};
+				}
+
 				@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-					font-size: 24px;
+					font-size: #{typography.$size-large};
 				}
 
 				transition: color #{animations.$time-short} ease-in-out;
 
 				&:not(:first-of-type) {
-					margin-left: 40px;
+					@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+						margin-left: 2rem;
+					}
 				}
 
 				&.Active {
@@ -74,6 +89,10 @@
 					text-shadow: none;
 				}
 			}
+		}
+
+		>button {
+			margin-left: auto;
 		}
 	}
 

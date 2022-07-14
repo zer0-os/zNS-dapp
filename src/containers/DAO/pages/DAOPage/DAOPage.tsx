@@ -39,7 +39,7 @@ import genericStyles from '../Container.module.scss';
 import classNames from 'classnames/bind';
 
 // Constants
-import { DAO_CREATE_PROPPAL } from './Proposals/Proposals.constants';
+import { DAO_CREATE_PROPOSAL } from './Proposals/Proposals.constants';
 const cx = classNames.bind(genericStyles);
 
 const MILLIFY_THRESHOLD = 1000000;
@@ -90,7 +90,7 @@ const DAOPage: React.FC = () => {
 	);
 
 	const handleNewProposalButtonClick = useCallback(() => {
-		history.push(`${to(ROUTES.ZDAO_PROPOSALS)}/${DAO_CREATE_PROPPAL}`);
+		history.push(`${to(ROUTES.ZDAO_PROPOSALS)}/${DAO_CREATE_PROPOSAL}`);
 	}, [history, to]);
 
 	return (
@@ -158,7 +158,7 @@ const DAOPage: React.FC = () => {
 							{/* New Proposal Button */}
 							{pathname === to(ROUTES.ZDAO_PROPOSALS) && (
 								<FutureButton glow onClick={handleNewProposalButtonClick}>
-									NEW PROPOSAL
+									New Proposal
 								</FutureButton>
 							)}
 						</nav>
@@ -190,7 +190,7 @@ const DAOPage: React.FC = () => {
 						/>
 						<Route
 							exact
-							path={`${to(ROUTES.ZDAO_PROPOSALS)}/${DAO_CREATE_PROPPAL}`}
+							path={`${to(ROUTES.ZDAO_PROPOSALS)}/${DAO_CREATE_PROPOSAL}`}
 							render={() => <CreateProposal dao={dao} />}
 						/>
 						<Route
