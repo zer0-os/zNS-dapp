@@ -190,7 +190,7 @@ const MakeABid = ({
 			}
 			addNotification(
 				getSuccessNotification(
-					getBidAmountText(bid, paymentTokenInfo.name),
+					getBidAmountText(bid, paymentTokenInfo.symbol),
 					formattedDomain,
 				),
 			);

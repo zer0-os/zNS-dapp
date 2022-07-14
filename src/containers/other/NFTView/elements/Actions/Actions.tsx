@@ -85,7 +85,7 @@ const Actions = ({
 	const actions: { [action in ACTION_TYPES]: ActionBlock } = {
 		[ACTION_TYPES.BuyNow]: {
 			amount: buyNowPrice,
-			label: `${Labels.BUY_NOW} (${paymentTokenInfo.name})`,
+			label: `${Labels.BUY_NOW} (${paymentTokenInfo.symbol})`,
 			amountUsd: buyNowPriceValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<BuyNowButton
@@ -102,7 +102,7 @@ const Actions = ({
 		},
 		[ACTION_TYPES.SetBuyNow]: {
 			amount: buyNowPrice ? buyNowPrice : '-',
-			label: `${Labels.BUY_NOW} (${paymentTokenInfo.name})`,
+			label: `${Labels.BUY_NOW} (${paymentTokenInfo.symbol})`,
 			amountUsd: buyNowPriceValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<SetBuyNowButton
@@ -119,7 +119,7 @@ const Actions = ({
 		},
 		[ACTION_TYPES.Bid]: {
 			amount: highestBid ?? '-',
-			label: `${Labels.HIGHEST_BID_LABEL} (${paymentTokenInfo.name})`,
+			label: `${Labels.HIGHEST_BID_LABEL} (${paymentTokenInfo.symbol})`,
 			amountUsd: highestBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => {
 				if (isOwnedByUser && !isViewBids) return <></>;
@@ -146,7 +146,7 @@ const Actions = ({
 		},
 		[ACTION_TYPES.YourBid]: {
 			amount: yourBid ? Number(formatEther(yourBid.amount)) : '-',
-			label: `${Labels.YOUR_BID} (${paymentTokenInfo.name})`,
+			label: `${Labels.YOUR_BID} (${paymentTokenInfo.symbol})`,
 			amountUsd: yourBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<CancelBidButton

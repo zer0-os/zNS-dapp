@@ -135,7 +135,7 @@ const SetBuyNowContainer = ({
 				});
 				if (amount) {
 					addNotification(
-						`You have successfully set a Buy Now price of ${amount} ${paymentTokenInfo.name}`,
+						`You have successfully set a Buy Now price of ${amount} ${paymentTokenInfo.symbol}`,
 					);
 				} else {
 					addNotification(`You have successfully removed the Buy Now price`);

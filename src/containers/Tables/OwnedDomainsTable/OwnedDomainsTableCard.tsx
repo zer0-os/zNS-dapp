@@ -55,7 +55,7 @@ const SubdomainTableCard = ({
 	const bidAmountWild = highestBid
 		? `${Number(
 				formatEther(BigNumber.from(highestBid.amount)),
-		  ).toLocaleString()} ${paymentTokenInfo.name}`
+		  ).toLocaleString()} ${paymentTokenInfo.symbol}`
 		: '-';
 
 	// Bid amount usd

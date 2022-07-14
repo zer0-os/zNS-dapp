@@ -99,7 +99,7 @@ export const Stats: React.FC<StatsProps> = ({
 							ethers.utils.formatEther(domainMetrics!.lastSale),
 					  ).toLocaleString() +
 					  ' ' +
-					  paymentTokenInfo.name
+					  paymentTokenInfo.symbol
 					: 'No sales',
 			subTitle:
 				(domainMetrics?.lastSale ?? 0) > 0 &&
@@ -117,7 +117,7 @@ export const Stats: React.FC<StatsProps> = ({
 				(domainMetrics?.volume as any)?.all > 0
 					? `${Number(
 							ethers.utils.formatEther((domainMetrics?.volume as any)?.all),
-					  ).toLocaleString()} ${paymentTokenInfo.name}`
+					  ).toLocaleString()} ${paymentTokenInfo.symbol}`
 					: '0',
 			subTitle:
 				(domainMetrics?.volume as any)?.all > 0 &&

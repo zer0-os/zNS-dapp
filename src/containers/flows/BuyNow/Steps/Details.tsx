@@ -53,7 +53,7 @@ const Details = ({
 		} else {
 			return (
 				<p className="error-text text-center">
-					You have insufficient {paymentTokenInfo?.name} to make this purchase
+					You have insufficient {paymentTokenInfo?.symbol} to make this purchase
 				</p>
 			);
 		}
@@ -76,7 +76,7 @@ const Details = ({
 											ethers.utils.formatEther(data.buyNowPrice),
 										).toLocaleString() +
 										' ' +
-										paymentTokenInfo.name,
+										paymentTokenInfo.symbol,
 								},
 						  ]
 						: undefined
@@ -90,7 +90,7 @@ const Details = ({
 							ethers.utils.formatEther(data.balanceWild),
 						).toLocaleString() +
 						' ' +
-						paymentTokenInfo.name
+						paymentTokenInfo.symbol
 					}
 					subtext="Your Balance"
 					mainClassName={styles.Value}
