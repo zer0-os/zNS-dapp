@@ -66,8 +66,8 @@ export const TokenHashBoxes: React.FC<TokenHashBoxesProps> = ({
 	const statusText = getStatusText(isTokenClaimable);
 	const tooltipText = getTooltipText(isTokenClaimable);
 	const zna = zNAFromPathname(pathname);
-	// REPLACE URL WITH LABELS.WILDER_WHEELS_ZNA
-	const isWheelPath = zna.includes('candy.wolfsale');
+	// TODO :: Replace hard code with wheels path
+	const isWheelPath = zna.includes('wheels.genesis');
 
 	// Check stage to enable claim status box
 	const saleStageActive =

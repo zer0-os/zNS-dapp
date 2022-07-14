@@ -35,16 +35,11 @@ export const getBannerLabel = (
 	if (dropStage === Stage.Upcoming) {
 		return <>Wilder Moto Claim starting now - waiting for contract to begin</>;
 	}
-	if (dropStage === Stage.Whitelist) {
-		if (countdownDate && isFinished) {
-			return (
-				<div style={{ display: 'flex', flexDirection: 'column' }}>
-					<span>
-						Wilder Moto Claim starting now - waiting for contract to begin
-					</span>
-				</div>
-			);
-		}
+
+	if (
+		(dropStage === Stage.Whitelist || dropStage === Stage.Public) &&
+		!isFinished
+	) {
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column' }}>
 				<span>
@@ -57,14 +52,6 @@ export const getBannerLabel = (
 			</div>
 		);
 	}
-	// if (dropStage === Stage.Public) {
-	// 	return (
-	// 		<>
-	// 			AIR WILD Season Two Community Minting is now Open!{' '}
-	// 			{totalLabel(wheelsMinted!, wheelsTotal!)}
-	// 		</>
-	// 	);
-	// }
 
 	if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
 		return <>The Claim Period has Concluded</>;

@@ -1,5 +1,5 @@
 //- React Imports
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 //- Web3 Imports
@@ -40,6 +40,7 @@ export type ClaimNFTProps = {
 	isClaimDataLoading?: boolean;
 	setEligibleDomains: React.Dispatch<React.SetStateAction<ClaimableDomain[]>>;
 	setIsClaimingInProgress: (state: boolean) => void;
+	isSaleStatusLoading?: boolean;
 };
 
 const ClaimNFT = ({
@@ -51,8 +52,8 @@ const ClaimNFT = ({
 	isClaimDataLoading,
 	setEligibleDomains,
 	setIsClaimingInProgress,
+	isSaleStatusLoading,
 }: ClaimNFTProps) => {
-	const isMounted = useRef(false);
 	//////////////////
 	// State & Data //
 	//////////////////
@@ -89,16 +90,16 @@ const ClaimNFT = ({
 	const onClaim = (quantity: number) => {
 		setTransactionError('');
 
-		const statusCallback = (status: string) => {
+		const setStatus = (status: string) => {
 			setTransactionStatus(status);
 		};
 
-		const errorCallback = (error: string) => {
+		const onError = (error: string) => {
 			setTransactionError(error);
 		};
 
 		// Set Minting Step
-		const finishedCallback = () => {
+		const onFinish = () => {
 			setCurrentStep(Step.Minting);
 			setStepContent(StepContent.Minting);
 		};
@@ -108,9 +109,9 @@ const ClaimNFT = ({
 			eligibleDomains,
 			setEligibleDomains,
 			setIsClaimingInProgress,
-			statusCallback,
-			errorCallback,
-			finishedCallback,
+			setStatus,
+			onError,
+			onFinish,
 		};
 
 		onSubmit(data);
@@ -132,41 +133,35 @@ const ClaimNFT = ({
 
 	// Set step if disconnected
 	useEffect(() => {
-		if (!active && currentStep !== Step.Details) {
+		if (!active) {
 			setCurrentStep(Step.Details);
 			setStepContent(StepContent.Details);
 		}
 	}, [active, currentStep]);
-
-	useEffect(() => {
-		isMounted.current = true;
-		return () => {
-			isMounted.current = false;
-		};
-	}, []);
 
 	///////////////
 	// Fragments //
 	///////////////
 
 	const content = {
-		[StepContent.Details]: !isClaimDataLoading ? (
-			<Details
-				tokenID={tokenID}
-				isClaimDataLoading={isClaimDataLoading}
-				eligibleDomains={eligibleDomains}
-				isWalletConnected={active}
-				currentStep={currentStep}
-				connectToWallet={openConnect}
-				onStartClaim={onStartClaim}
-				onRedirect={onRedirect}
-				setTokenID={setTokenID}
-			/>
-		) : (
-			<div className={styles.LoadingContent}>
-				<Wizard.Loading message={LOADING_TEXT.LOADING_DETAILS} />
-			</div>
-		),
+		[StepContent.Details]:
+			!isClaimDataLoading && !isSaleStatusLoading ? (
+				<Details
+					tokenID={tokenID}
+					isClaimDataLoading={isClaimDataLoading}
+					eligibleDomains={eligibleDomains}
+					isWalletConnected={active}
+					currentStep={currentStep}
+					connectToWallet={openConnect}
+					onStartClaim={onStartClaim}
+					onRedirect={onRedirect}
+					setTokenID={setTokenID}
+				/>
+			) : (
+				<div className={styles.LoadingContent}>
+					<Wizard.Loading message={LOADING_TEXT.LOADING_DETAILS} />
+				</div>
+			),
 		[StepContent.Claim]: (
 			<Claiming
 				eligibleDomains={eligibleDomains}

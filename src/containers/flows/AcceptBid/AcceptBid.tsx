@@ -114,7 +114,7 @@ const AcceptBid = ({
 					setStepContent(StepContent.Details);
 				}
 			} catch (e) {
-				console.log(ERRORS.CONSOLE_TEXT, e);
+				console.error(ERRORS.CONSOLE_TEXT);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}
@@ -164,7 +164,7 @@ const AcceptBid = ({
 			);
 			setIsTransactionComplete(true);
 			setStepContent(StepContent.Success);
-		} catch (e) {
+		} catch (e: any) {
 			setCurrentStep(Step.ConfirmDetails);
 			setError(e.message);
 			setStepContent(StepContent.Details);

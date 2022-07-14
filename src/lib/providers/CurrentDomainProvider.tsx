@@ -10,11 +10,11 @@ import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { defaultNetworkId } from 'lib/network';
 import { getDomainId, zNAFromPathname } from 'lib/utils';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 // Constants Imports
 import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from '../../constants/domains';
 import { ROUTES } from 'constants/routes';
-import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 export const CurrentDomainContext = React.createContext({
 	domain: undefined as Maybe<DisplayParentDomain>,

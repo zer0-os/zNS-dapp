@@ -1,7 +1,12 @@
+//- React Imports
 import React, { useCallback, useMemo } from 'react';
 import { History } from 'history';
+
+//- Library Imports
 import { DomainSearch } from 'lib/useDomainSearch';
 import { getRelativeDomainPath } from 'lib/utils/domains';
+
+//- Constants Imports
 import { ROUTES } from 'constants/routes';
 import {
 	MIN_SEARCH_QUERY_LENGTH,

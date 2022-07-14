@@ -28,7 +28,7 @@ import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { truncateDomain } from 'lib/utils';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useZnsContracts } from 'lib/contracts';
 
@@ -112,8 +112,6 @@ const MakeABid = ({
 		setStepContent(StepContent.CheckingZAuctionApproval);
 		(async () => {
 			try {
-				console.log(paymentTokenInfo.id, account, bid, bidData);
-
 				const needsApproval =
 					await sdk.zauction.needsToApproveZAuctionToSpendTokensByPaymentToken(
 						account,
@@ -129,7 +127,7 @@ const MakeABid = ({
 					setStepContent(StepContent.Details);
 				}
 			} catch (e) {
-				console.log(ERRORS.CONSOLE_TEXT, e);
+				console.error(ERRORS.CONSOLE_TEXT, e);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}

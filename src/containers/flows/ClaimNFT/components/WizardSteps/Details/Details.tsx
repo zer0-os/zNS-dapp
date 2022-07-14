@@ -1,5 +1,5 @@
 // React Imports
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 // Library Imports
@@ -7,16 +7,11 @@ import classNames from 'classnames/bind';
 import { ClaimableDomain } from '@zero-tech/zsale-sdk';
 import useNotification from 'lib/hooks/useNotification';
 
-//- Hook Imports
-import useClaimCheck from '../../../hooks/useClaimCheck';
-
 //- Types Imports
 import { Step } from 'containers/flows/ClaimNFT/ClaimNFT.types';
 
 // Component Imports
 import {
-	TextInput,
-	FutureButton,
 	Wizard,
 	QuestionButton,
 	Tooltip,
@@ -27,10 +22,8 @@ import {
 // Utils Imports
 import {
 	getButtonText,
-	isValidTokenId,
 	getQuantityText,
 	getQuantityTooltip,
-	NotificationType,
 } from './Details.utils';
 
 // Constants Imports
@@ -38,16 +31,17 @@ import {
 	VIDEO_FORMAT_SRC,
 	VIDEO_FORMAT_TYPE,
 	VIDEO_SETTINGS,
-	TEXT_INPUT,
 	MESSAGES,
 	TOOLTIP,
 	BUTTONS,
+	EXTERNAL_URL,
 } from './Details.constants';
 import { ROUTES } from 'constants/routes';
 import { CLAIM_FLOW_NOTIFICATIONS } from 'constants/notifications';
 
 // Style Imports
 import styles from './Details.module.scss';
+import CheckTokenInput from './CheckTokenInput';
 
 type DetailsProps = {
 	tokenID?: string;
@@ -86,29 +80,11 @@ const Details = ({
 	const history = useHistory();
 	const location = useLocation();
 	const { addNotification } = useNotification();
-	const [notificationType, setNotificationType] = useState<NotificationType>();
-	const [inputNotification, setInputNotification] = useState<
-		string | undefined
-	>();
-	const [requestCheck, setRequestCheck] = useState<boolean>(false);
-
-	const { isCheckDataLoading, isValidSubdomain, setIsValidSubdomain } =
-		useClaimCheck(
-			tokenID ?? '',
-			requestCheck,
-			setInputNotification,
-			setNotificationType,
-		);
-
-	const validTokenId = isValidTokenId(tokenID ?? '');
-	const hasValue = Boolean(tokenID?.length);
 	const isDetailsStep = currentStep === Step.Details;
 	const totalEligibleDomains = eligibleDomains?.length ?? 0;
 	const hasEligibleDomains = totalEligibleDomains > 0;
 	const quantityText = getQuantityText(totalEligibleDomains);
 	const quantityTooltip = getQuantityTooltip(hasEligibleDomains);
-	const hasError = error || notificationType === NotificationType.ERROR;
-	const hasSuccess = notificationType === NotificationType.SUCCESS;
 
 	const headerPrompt = isDetailsStep
 		? MESSAGES.SEARCH_PROMPT
@@ -153,18 +129,6 @@ const Details = ({
 				? onFinish && onFinish()
 				: handleOnOpenProfile();
 		}
-	};
-
-	const handleChange = (id: string) => {
-		setInputNotification('');
-		setNotificationType(undefined);
-		setIsValidSubdomain(undefined);
-		setTokenID && setTokenID(id);
-		setRequestCheck(false);
-	};
-
-	const onCheck = () => {
-		setRequestCheck(true);
 	};
 
 	return (
@@ -215,58 +179,7 @@ const Details = ({
 							</Tooltip>
 						)}
 					</div>
-					{isDetailsStep && (
-						<>
-							<div
-								className={cx(styles.InputContainer, {
-									hasValue: hasValue,
-									hasNotification: hasError || hasSuccess,
-								})}
-							>
-								{tokenID && (
-									<span
-										className={cx(styles.SecondaryPlaceholder, {
-											hasError: hasError,
-											hasSuccess: hasSuccess,
-										})}
-									>
-										{TEXT_INPUT.PLACEHOLDER}
-									</span>
-								)}
-								<TextInput
-									className={cx(styles.Input, {
-										hasValue: hasValue,
-										hasError: hasError,
-									})}
-									onChange={handleChange}
-									placeholder={TEXT_INPUT.PLACEHOLDER}
-									text={tokenID}
-									type={TEXT_INPUT.TYPE}
-								/>
-
-								<div className={styles.ButtonContainer}>
-									<FutureButton
-										glow={validTokenId}
-										disabled={!validTokenId}
-										onClick={onCheck}
-										loading={isCheckDataLoading && isValidSubdomain}
-									>
-										{TEXT_INPUT.BUTTON}
-									</FutureButton>
-								</div>
-							</div>
-							{inputNotification && (
-								<div
-									className={cx(styles.InputNotification, {
-										hasError: hasError,
-										hasSuccess: hasSuccess,
-									})}
-								>
-									{inputNotification}
-								</div>
-							)}
-						</>
-					)}
+					{isDetailsStep && <CheckTokenInput />}
 					{!isClaimDataLoading ? (
 						<>
 							{!isWalletConnected ? (
@@ -287,7 +200,7 @@ const Details = ({
 											</div>
 											<ArrowLink
 												className={styles.ArrowLink}
-												href={'url to claim zine'}
+												href={EXTERNAL_URL.CLAIM_ZINE}
 												isLinkToExternalUrl
 											>
 												{MESSAGES.READ_MORE}

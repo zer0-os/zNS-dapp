@@ -16,7 +16,7 @@ import { Bid } from '@zero-tech/zns-sdk/lib/zAuction';
 import { ActionBlock, ACTION_TYPES } from './Actions.types';
 
 //- Constants Imports
-import { LABELS } from 'constants/labels';
+import { Labels } from 'constants/labels';
 import { TEST_ID, wrapFiat } from './Actions.constants';
 
 // Styles
@@ -65,7 +65,7 @@ const Actions = ({
 	const highestBidTextValue =
 		Boolean(highestBid) && Boolean(tokenPriceUsd)
 			? wrapFiat(highestBid! * tokenPriceUsd!)
-			: LABELS.NO_BIDS_PLACED;
+			: Labels.NO_BIDS_PLACED;
 
 	const yourBidTextValue =
 		yourBid && tokenPriceUsd
@@ -74,23 +74,23 @@ const Actions = ({
 
 	const placeBidButtonTextValue =
 		!yourBid || (yourBid && Number(formatEther(yourBid.amount)) === highestBid)!
-			? LABELS.PLACE_A_BID
-			: LABELS.REBID;
+			? Labels.PLACE_A_BID
+			: Labels.REBID;
 
 	const buyNowPriceValue =
 		buyNowPrice && tokenPriceUsd
 			? wrapFiat(buyNowPrice * tokenPriceUsd)
-			: LABELS.NO_BUY_NOW;
+			: Labels.NO_BUY_NOW;
 
 	const actions: { [action in ACTION_TYPES]: ActionBlock } = {
 		[ACTION_TYPES.BuyNow]: {
 			amount: buyNowPrice,
-			label: `${LABELS.BUY_NOW} (${paymentTokenInfo.name})`,
+			label: `${Labels.BUY_NOW} (${paymentTokenInfo.name})`,
 			amountUsd: buyNowPriceValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<BuyNowButton
 					onSuccess={refetch}
-					buttonText={LABELS.BUY_NOW}
+					buttonText={Labels.BUY_NOW}
 					domainId={domainId ?? ''}
 					paymentTokenInfo={paymentTokenInfo}
 					isTextButton={isTextButton}
@@ -102,12 +102,12 @@ const Actions = ({
 		},
 		[ACTION_TYPES.SetBuyNow]: {
 			amount: buyNowPrice ? buyNowPrice : '-',
-			label: `${LABELS.BUY_NOW} (${paymentTokenInfo.name})`,
+			label: `${Labels.BUY_NOW} (${paymentTokenInfo.name})`,
 			amountUsd: buyNowPriceValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<SetBuyNowButton
 					onSuccess={refetch}
-					buttonText={buyNowPrice ? LABELS.EDIT_BUY_NOW : LABELS.SET_BUY_NOW}
+					buttonText={buyNowPrice ? Labels.EDIT_BUY_NOW : Labels.SET_BUY_NOW}
 					domainId={domainId ?? ''}
 					isTextButton={isTextButton}
 					className={cx({ TextButton: isTextButton })}
@@ -119,7 +119,7 @@ const Actions = ({
 		},
 		[ACTION_TYPES.Bid]: {
 			amount: highestBid ?? '-',
-			label: `${LABELS.HIGHEST_BID_LABEL} (${paymentTokenInfo.name})`,
+			label: `${Labels.HIGHEST_BID_LABEL} (${paymentTokenInfo.name})`,
 			amountUsd: highestBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => {
 				if (isOwnedByUser && !isViewBids) return <></>;
@@ -146,7 +146,7 @@ const Actions = ({
 		},
 		[ACTION_TYPES.YourBid]: {
 			amount: yourBid ? Number(formatEther(yourBid.amount)) : '-',
-			label: `${LABELS.YOUR_BID} (${paymentTokenInfo.name})`,
+			label: `${Labels.YOUR_BID} (${paymentTokenInfo.name})`,
 			amountUsd: yourBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<CancelBidButton
