@@ -49,6 +49,10 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 		history,
 	});
 
+	const filteredMatches = domainSearch?.matches?.filter(
+		(d) => d.name.length > 1,
+	);
+
 	useSearchDomainsLifecycle({
 		props: { searchQuery },
 		handlers,
@@ -76,17 +80,15 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 									<span>{domainSearch.exactMatch.name}</span>
 								</li>
 							)}
-							{domainSearch?.matches
-								?.filter((d) => d.name.length > 1)
-								.map((s, i) => (
-									<li
-										onMouseDown={handlers.handleDomainClick(s.name)}
-										key={i + s.name}
-									>
-										{getLastDomainName(s.name)}
-										<span>{s.name}</span>
-									</li>
-								))}
+							{filteredMatches?.map((s, i) => (
+								<li
+									onMouseDown={handlers.handleDomainClick(s.name)}
+									key={i + s.name}
+								>
+									{getLastDomainName(s.name)}
+									<span>{s.name}</span>
+								</li>
+							))}
 
 							{formattedData.isNotFound && (
 								<li key={SEARCH_NOT_FOUND}>{SEARCH_NOT_FOUND}</li>
