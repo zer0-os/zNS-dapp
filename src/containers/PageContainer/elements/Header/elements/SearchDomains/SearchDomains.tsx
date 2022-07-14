@@ -50,7 +50,7 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 	});
 
 	const filteredMatches = domainSearch?.matches?.filter(
-		(d) => d.name.length > 1,
+		(d) => d.name?.length > 1,
 	);
 
 	useSearchDomainsLifecycle({
