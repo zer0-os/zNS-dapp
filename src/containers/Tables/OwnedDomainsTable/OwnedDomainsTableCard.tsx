@@ -46,16 +46,20 @@ const SubdomainTableCard = ({
 
 	const highestBid = bidData?.highestBid;
 
-	const paymentTokenInfo: ConvertedTokenInfo = domainsPaymentTokenInfo.find(
+	const paymentTokenInfo = domainsPaymentTokenInfo.find(
 		(item) => item.id === domain.id,
-	); // Retrieve Metadata
+	);
+
+	const tokenInfo = { paymentTokenInfo }.paymentTokenInfo.paymentTokenInfo;
+
+	// Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
 
 	// Bid amount wild
 	const bidAmountWild = highestBid
 		? `${Number(
 				formatEther(BigNumber.from(highestBid.amount)),
-		  ).toLocaleString()} ${paymentTokenInfo.name}`
+		  ).toLocaleString()} ${tokenInfo.name}`
 		: '-';
 
 	// Bid amount usd
@@ -63,7 +67,7 @@ const SubdomainTableCard = ({
 		highestBid &&
 		`$${formatNumber(
 			Number(ethers.utils.formatEther(highestBid.amount)) *
-				Number(paymentTokenInfo.priceInUsd),
+				Number(tokenInfo.priceInUsd),
 		)}`;
 
 	// Navigates to domain
@@ -91,7 +95,7 @@ const SubdomainTableCard = ({
 							<>
 								<label>{LABELS.TOP_BID}</label>
 								<span className={styles.Crypto}>{bidAmountWild}</span>
-								{Number(paymentTokenInfo?.priceInUsd) > 0 && (
+								{Number(tokenInfo?.priceInUsd) > 0 && (
 									<span className={styles.Fiat}>{bidAmountUsd}</span>
 								)}
 							</>
