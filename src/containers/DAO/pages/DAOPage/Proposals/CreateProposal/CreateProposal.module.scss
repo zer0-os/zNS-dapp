@@ -69,6 +69,10 @@
 
 						>div {
 							width: 100%;
+
+							input {
+								pointer-events: none;
+							}
 						}
 
 						>ul {
