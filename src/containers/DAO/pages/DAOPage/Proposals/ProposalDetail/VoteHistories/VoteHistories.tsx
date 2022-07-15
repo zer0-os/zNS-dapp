@@ -25,6 +25,10 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 	votes = [],
 }) => {
 	const isSnapshotProposal = !proposal?.metadata;
+	const isERC721 = dao?.votingToken.decimals === 0;
+	const vpLabel = isERC721
+		? 'Voting Power (NFTs)'
+		: `Amount (${dao?.votingToken.symbol})`;
 
 	const histories = useMemo(() => {
 		if (!proposal || votes.length === 0) {
@@ -36,7 +40,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 				id: index,
 				address: vote.voter,
 				direction: vote.choice,
-				power: formatVotingPowerAmount(vote.power, dao?.votingToken.symbol),
+				power: formatVotingPowerAmount(vote.power, dao?.votingToken),
 			};
 		});
 	}, [dao, proposal, votes]);
@@ -58,7 +62,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 								<div className={styles.HistoryHeader}>
 									<span className={styles.Address}>Address</span>
 									<span className={styles.Direction}>Vote Direction</span>
-									<span className={styles.Power}>Voting Power</span>
+									<span className={styles.Power}>{vpLabel}</span>
 								</div>
 								<div className={styles.Histories}>
 									{histories.map((history, i: number) => (
@@ -91,7 +95,7 @@ export const VoteHistories: React.FC<VoteHistoriesProps> = ({
 
 											{/* Voting Power */}
 											<span className={styles.Power}>
-												<strong>Voting Power</strong>
+												<strong>{vpLabel}</strong>
 												{history.power}
 											</span>
 										</div>

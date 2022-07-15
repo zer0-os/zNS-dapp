@@ -49,5 +49,15 @@ export const DAOS: { [network in NETWORK_TYPES]: CreateZDAOParams[] } = {
 			safeAddress: '0x7a935d07d097146f143A45aA79FD8624353abD5D',
 			votingToken: '0xD53C3bddf27b32ad204e859EB677f709c80E6840',
 		},
+		{
+			id: 'dappchain.eth',
+			ens: 'dappchain.eth',
+			zNA: 'wilder.kicks',
+			title: 'Wilder Kicks',
+			creator: '0x22C38E74B8C0D1AAB147550BcFfcC8AC544E0D8C',
+			network: 4, // for Rinkeby
+			safeAddress: '0x7a935d07d097146f143A45aA79FD8624353abD5D',
+			votingToken: '0x676cEf263a2954DB6829383aa9d683c9cBc6B67c',
+		},
 	],
 } as any;

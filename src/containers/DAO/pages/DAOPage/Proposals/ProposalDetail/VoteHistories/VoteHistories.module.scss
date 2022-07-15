@@ -32,7 +32,7 @@
 			gap: 24px;
 			padding: 16px 0;
 
-			> span {
+			>span {
 				min-width: 150px;
 				flex: 0;
 				font-size: 12px;
@@ -61,7 +61,7 @@
 				gap: 24px;
 				padding: 12px 0;
 
-				> span {
+				>span {
 					display: flex;
 					justify-content: flex-end;
 					min-width: 150px;
@@ -71,7 +71,7 @@
 					line-height: 17px;
 					text-align: right;
 
-					> strong {
+					>strong {
 						display: none;
 					}
 
@@ -89,11 +89,11 @@
 					border: 1px solid #3b3b3b;
 					border-radius: 16px;
 
-					> span {
+					>span {
 						width: 100%;
 						justify-content: space-between !important;
 
-						> strong {
+						>strong {
 							display: block;
 						}
 					}
