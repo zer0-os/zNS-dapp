@@ -62,3 +62,7 @@ export const BUTTONS = {
 	FINISH: 'Finish',
 	VIEW_IN_PROFILE: 'View in profile',
 };
+
+export const EXTERNAL_URL = {
+	CLAIM_ZINE: 'https://zine.wilderworld.com/moto-drop-details/',
+};

@@ -50,7 +50,7 @@
 			font-weight: #{typography.$font-weight-bold};
 
 			@media only screen and (min-width: #{dimensions.$breakpoint-tablet-s}) {
-				font-size: 24px;
+				font-size: #{typography.$size-medium};
 			}
 
 			transition: color #{animations.$time-short} ease-in-out;

@@ -58,6 +58,8 @@ const ClaimNFTContainer = ({
 		useState<boolean>(false);
 	const [isClaimingInProgress, setIsClaimingInProgress] =
 		useState<boolean>(false);
+	const [isSaleStatusLoading, setIsSaleStatusLoading] =
+		useState<boolean>(false);
 	const [dropStage, setDropStage] = useState<Stage | undefined>();
 	const [assetTotal, setAssetTotal] = useState<number | undefined>();
 	const [assetsMinted, setAssetsMinted] = useState<number | undefined>();
@@ -79,12 +81,12 @@ const ClaimNFTContainer = ({
 			return;
 		}
 
-		if (dropStage === Stage.Whitelist && !countdownDate) {
-			window?.open(
-				'https://zine.wilderworld.com/moto-genesis-nft-rewards/',
-				'_blank',
-			);
-		}
+		// if (dropStage === Stage.Whitelist && !countdownDate) {
+		// 	window?.open(
+		// 		'https://zine.wilderworld.com/moto-genesis-nft-rewards/',
+		// 		'_blank',
+		// 	);
+		// }
 		if (dropStage === Stage.Upcoming || !canOpenWizard || failedToLoad) {
 			window?.open('https://discord.gg/mb9fcFey8a', '_blank')?.focus();
 		} else if (dropStage === Stage.Sold || dropStage === Stage.Ended) {
@@ -116,9 +118,9 @@ const ClaimNFTContainer = ({
 			eligibleDomains,
 			setEligibleDomains,
 			setIsClaimingInProgress,
-			statusCallback,
-			errorCallback,
-			finishedCallback,
+			setStatus,
+			onError,
+			onFinish,
 		} = data;
 		if (!isSaleHalted) {
 			claimNFT(
@@ -126,12 +128,12 @@ const ClaimNFTContainer = ({
 				eligibleDomains,
 				setEligibleDomains,
 				setIsClaimingInProgress,
-				statusCallback,
-				errorCallback,
-				finishedCallback,
+				setStatus,
+				onError,
+				onFinish,
 			);
 		} else {
-			errorCallback(MESSAGES.SALE_ENDED);
+			onError(MESSAGES.SALE_ENDED);
 		}
 	};
 
@@ -156,10 +158,15 @@ const ClaimNFTContainer = ({
 			// but given time constraints we're just going to compare
 			// to PUBLIC_SALE_START_TIME
 
-			if (!claimInstance) {
+			if (!claimInstance || dropStage === Stage.Ended || hasCountdownFinished) {
+				if (dropStage === Stage.Ended) {
+					setClaimDropStage(Stage.Ended);
+				}
 				return;
 			}
+
 			try {
+				setIsSaleStatusLoading(true);
 				const saleData = await claimInstance.getSaleData();
 				const currentDropStage = await getDropStage(claimInstance);
 				if (!isActive()) {
@@ -188,6 +195,8 @@ const ClaimNFTContainer = ({
 				setRefetch(refetch + 1);
 				setFailedToLoad(true);
 			}
+			setIsSaleStatusLoading(false);
+
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		},
 		[library, claimInstance],
@@ -214,7 +223,7 @@ const ClaimNFTContainer = ({
 					}
 					setEligibleDomains(claimingIDs.filter((i) => i.canBeClaimed));
 				} catch (err) {
-					console.log(err);
+					console.error(err);
 				}
 				setIsClaimDataLoading(false);
 			}
@@ -232,19 +241,22 @@ const ClaimNFTContainer = ({
 			}
 
 			try {
+				setIsSaleStatusLoading(true);
+
 				const saleData = await claimInstance.getSaleData();
 				const currentDropStage = await getDropStage(claimInstance);
 
 				if (!isActive()) {
 					return;
 				}
+
 				if (dropStage !== undefined) {
-					if (hasCountdownFinished && currentDropStage === dropStage) {
-						setTimeout(() => {
-							setRefetch(refetch + 1);
-						}, 7000);
+					if (hasCountdownFinished) {
+						setDropStage(Stage.Ended);
+						setClaimDropStage(Stage.Ended);
 						return;
 					}
+
 					if (currentDropStage === Stage.Upcoming) {
 						setCountdownDate(undefined);
 						setTimeout(() => {
@@ -255,9 +267,11 @@ const ClaimNFTContainer = ({
 					} else {
 						setCountdownDate(undefined);
 					}
+
 					if (refetch > 0) {
 						setCountdownDate(undefined);
 					}
+
 					setDropStage(currentDropStage);
 					setClaimDropStage(currentDropStage);
 					setAssetTotal(saleData.amountForSale);
@@ -272,6 +286,7 @@ const ClaimNFTContainer = ({
 				}
 				setFailedToLoad(true);
 			}
+			setIsSaleStatusLoading(false);
 
 			// eslint-disable-next-line react-hooks/exhaustive-deps
 		},
@@ -322,7 +337,7 @@ const ClaimNFTContainer = ({
 	};
 
 	const buttonText = () => {
-		return failedToLoad || (dropStage === Stage.Whitelist && !countdownDate)
+		return failedToLoad && !countdownDate
 			? 'Learn More'
 			: getBannerButtonText(dropStage, canOpenWizard);
 	};
@@ -349,6 +364,7 @@ const ClaimNFTContainer = ({
 						isClaimDataLoading={isClaimDataLoading}
 						setEligibleDomains={setEligibleDomains}
 						setIsClaimingInProgress={setIsClaimingInProgress}
+						isSaleStatusLoading={isSaleStatusLoading}
 					/>
 				</Overlay>
 			)}
@@ -371,6 +387,7 @@ const ClaimNFTContainer = ({
 					isClaimDataLoading={isClaimDataLoading}
 					setEligibleDomains={setEligibleDomains}
 					setIsClaimingInProgress={setIsClaimingInProgress}
+					isSaleStatusLoading={isSaleStatusLoading}
 				/>
 			)}
 		</>
