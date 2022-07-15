@@ -161,8 +161,6 @@ const Artwork: React.FC<ArtworkProps> = ({
 								<Link
 									className={styles.Domain}
 									to={domain.split(ROOT_DOMAIN)[1]}
-									target="_blank"
-									rel="noreferrer"
 								>
 									{truncateDomain(domain, DOMAIN_MAX_LENGTH)}{' '}
 									<div className={styles.ArrowContainer}>

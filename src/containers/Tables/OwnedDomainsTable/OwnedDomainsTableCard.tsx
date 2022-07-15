@@ -148,11 +148,13 @@ const SubdomainTableCard = ({
 			);
 		} else if (modal === Modal.SetBuyNow) {
 			return (
-				<SetBuyNow
-					domainId={domain.id}
-					onCancel={() => setModal(undefined)}
-					onSuccess={() => setModal(undefined)}
-				/>
+				<Overlay onClose={() => setModal(undefined)} open>
+					<SetBuyNow
+						domainId={domain.id}
+						onCancel={() => setModal(undefined)}
+						onSuccess={refetch}
+					/>
+				</Overlay>
 			);
 		}
 	}, [modal]);

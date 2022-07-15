@@ -134,11 +134,13 @@ const OwnedDomainsTableRow = ({
 			);
 		} else if (modal === Modal.SetBuyNow) {
 			return (
-				<SetBuyNow
-					domainId={domain.id}
-					onCancel={() => setModal(undefined)}
-					onSuccess={() => setModal(undefined)}
-				/>
+				<Overlay onClose={() => setModal(undefined)} open>
+					<SetBuyNow
+						domainId={domain.id}
+						onCancel={() => setModal(undefined)}
+						onSuccess={refetch}
+					/>
+				</Overlay>
 			);
 		}
 	}, [modal]);
@@ -153,7 +155,7 @@ const OwnedDomainsTableRow = ({
 				<td className={styles.Left} onClick={onRowClick}>
 					<Artwork
 						domain={'0://' + domain.name}
-						disableInteraction
+						name={domain.name}
 						metadataUrl={domain.metadataUri}
 						id={domain.id}
 						style={{ maxWidth: 200 }}

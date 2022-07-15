@@ -39,8 +39,8 @@ const GenericTable = (props: any) => {
 	const chunkSize = isGridView ? 6 : 12;
 
 	//////////////
-	// Ddata    //
-	/////////////
+	// Data    //
+	////////////
 	// This will need to be expanded to be generic
 	const matchesSearch = useCallback(
 		(d: any): boolean => {
