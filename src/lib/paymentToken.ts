@@ -37,8 +37,14 @@ const getPaymentTokenInfo = async (
 				decimals: '18',
 			};
 		} else {
-			const data = await sdk.zauction.getPaymentTokenInfo(tokenId);
-			paymentTokenCache[tokenId] = data;
+			try {
+				const data = await sdk.zauction.getPaymentTokenInfo(tokenId);
+				if (data) {
+					paymentTokenCache[tokenId] = data;
+				}
+			} catch (e) {
+				console.error('Unable to get payment token info', tokenId, e);
+			}
 		}
 		return paymentTokenCache[tokenId];
 	}

@@ -10,9 +10,8 @@ import getPaymentTokenInfo from 'lib/paymentToken';
 
 type UseOwnedDomainsReturn = {
 	isLoading: boolean;
-	ownedDomains?: Domain[];
+	ownedDomains?: (Domain & { paymentTokenInfo: ConvertedTokenInfo })[];
 	refetch: () => void;
-	domainsPaymentTokenInfo?: any[];
 };
 
 const useOwnedDomains = (
@@ -22,9 +21,8 @@ const useOwnedDomains = (
 	const { instance: sdk } = useZnsSdk();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [ownedDomains, setOwnedDomains] = useState<Domain[] | undefined>();
-	const [domainsPaymentTokenInfo, setDomainsPaymentTokenInfo] = useState<
-		any[] | undefined
+	const [ownedDomains, setOwnedDomains] = useState<
+		(Domain & { paymentTokenInfo: ConvertedTokenInfo })[] | undefined
 	>();
 
 	const getOwnedDomains = async () => {
@@ -35,19 +33,27 @@ const useOwnedDomains = (
 		}
 		setIsLoading(true);
 		try {
-			const owned = await sdk.getDomainsByOwner(account);
+			const owned = (await sdk.getDomainsByOwner(account)) as (Domain & {
+				paymentTokenInfo: ConvertedTokenInfo;
+			})[];
 			// TODO: Optimize this
 			const domainsPaymentTokenData = owned.map(async ({ id }) => {
 				const paymentToken = await sdk.zauction.getPaymentTokenForDomain(id);
-				const paymentTokenInfo: ConvertedTokenInfo = await getPaymentTokenInfo(
-					sdk,
-					paymentToken,
-				);
+				const paymentTokenInfo: ConvertedTokenInfo =
+					(await getPaymentTokenInfo(sdk, paymentToken)) || {};
 				return { id, paymentTokenInfo };
 			});
-			setDomainsPaymentTokenInfo(await Promise.all(domainsPaymentTokenData));
+			const domainsPaymentTokenInfo = await Promise.all(
+				domainsPaymentTokenData,
+			);
+			const transformedDomainData = owned.map((item) => ({
+				...item,
+				paymentTokenInfo:
+					domainsPaymentTokenInfo?.find(({ id }) => id === item.id)
+						?.paymentTokenInfo || ({} as ConvertedTokenInfo),
+			}));
 			if (isMounted.current) {
-				setOwnedDomains(owned);
+				setOwnedDomains(transformedDomainData);
 				setIsLoading(false);
 			}
 		} catch (e) {
@@ -72,7 +78,6 @@ const useOwnedDomains = (
 		isLoading,
 		ownedDomains,
 		refetch: getOwnedDomains,
-		domainsPaymentTokenInfo,
 	};
 };
 

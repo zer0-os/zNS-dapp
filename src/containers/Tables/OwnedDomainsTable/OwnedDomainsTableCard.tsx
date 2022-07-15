@@ -9,7 +9,7 @@ import { Spinner } from 'components';
 //- Library Imports
 import { useHistory } from 'react-router-dom';
 import { BigNumber } from 'ethers';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
+import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 import useBidData from 'lib/hooks/useBidData';
 import { formatEther } from '@ethersproject/units';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
@@ -28,7 +28,7 @@ import ImageCard from 'components/Cards/ImageCard/ImageCard';
 
 type OwnedDomainsTableRowProps = {
 	refetch: () => void;
-	data: Domain;
+	data: Domain & { paymentTokenInfo: ConvertedTokenInfo };
 	// this should be refactored when GenericTable has better typing
 	[x: string]: any;
 	domainsPaymentTokenInfo: any[];
@@ -37,7 +37,6 @@ type OwnedDomainsTableRowProps = {
 const SubdomainTableCard = ({
 	refetch,
 	data: domain,
-	domainsPaymentTokenInfo,
 }: OwnedDomainsTableRowProps) => {
 	const { push: goTo } = useHistory(); // for navigating on row click
 
@@ -46,11 +45,7 @@ const SubdomainTableCard = ({
 
 	const highestBid = bidData?.highestBid;
 
-	const paymentTokenInfo = domainsPaymentTokenInfo.find(
-		(item) => item.id === domain.id,
-	);
-
-	const tokenInfo = { paymentTokenInfo }.paymentTokenInfo.paymentTokenInfo;
+	const paymentTokenInfo = domain.paymentTokenInfo || {};
 
 	// Retrieve Metadata
 	const domainMetadata = useDomainMetadata(domain.metadataUri);
@@ -59,7 +54,7 @@ const SubdomainTableCard = ({
 	const bidAmountWild = highestBid
 		? `${Number(
 				formatEther(BigNumber.from(highestBid.amount)),
-		  ).toLocaleString()} ${paymentTokenInfo.symbol}`
+		  ).toLocaleString()} ${paymentTokenInfo?.symbol}`
 		: '-';
 
 	// Bid amount usd
@@ -67,7 +62,7 @@ const SubdomainTableCard = ({
 		highestBid &&
 		`$${formatNumber(
 			Number(ethers.utils.formatEther(highestBid.amount)) *
-				Number(tokenInfo.priceInUsd),
+				Number(paymentTokenInfo.priceInUsd),
 		)}`;
 
 	// Navigates to domain
@@ -95,7 +90,7 @@ const SubdomainTableCard = ({
 							<>
 								<label>{LABELS.TOP_BID}</label>
 								<span className={styles.Crypto}>{bidAmountWild}</span>
-								{Number(tokenInfo?.priceInUsd) > 0 && (
+								{Number(paymentTokenInfo?.priceInUsd) > 0 && (
 									<span className={styles.Fiat}>{bidAmountUsd}</span>
 								)}
 							</>
