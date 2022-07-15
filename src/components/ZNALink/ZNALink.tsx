@@ -24,7 +24,7 @@ const ZNALink: React.FC<ZNAProps> = ({ className, style }) => {
 	const zna = zNAFromPathname(pathname);
 	const app = appFromPathname(pathname) + '/';
 	const isRootDomain = zna.length === 0;
-	const isRootWithSubDomain = zna.split('.').length > 2;
+	const isRootWithSubDomain = zna.split('.').length >= 2;
 
 	const adjustedZna = isRootDomain
 		? ROOT_DOMAIN

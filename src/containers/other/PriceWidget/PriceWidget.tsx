@@ -28,10 +28,10 @@ import { HoverDropdown } from 'components';
 import * as selectors from './selectors';
 
 type PriceWidgetProps = {
-	isRoot: boolean;
+	isNetworkSet: boolean;
 };
 
-const PriceWidget: React.FC<PriceWidgetProps> = ({ isRoot }) => {
+const PriceWidget: React.FC<PriceWidgetProps> = ({ isNetworkSet }) => {
 	//- Wallet Data
 	const {
 		wildPriceUsd,
@@ -46,7 +46,7 @@ const PriceWidget: React.FC<PriceWidgetProps> = ({ isRoot }) => {
 	const [data, setData] = useState<TokenType>();
 
 	const getTokenData = useCallback(() => {
-		if (isRoot) {
+		if (!isNetworkSet) {
 			setData({
 				tokenPrice: zeroPriceUsd,
 				percentageChange: zeroPercentageChange,
@@ -56,7 +56,7 @@ const PriceWidget: React.FC<PriceWidgetProps> = ({ isRoot }) => {
 				dividerCopy: LABELS.DIVIDER_COPY_ZERO,
 			});
 		}
-		if (!isRoot) {
+		if (isNetworkSet) {
 			setData({
 				tokenPrice: wildPriceUsd,
 				percentageChange: wildPercentageChange,
@@ -67,7 +67,7 @@ const PriceWidget: React.FC<PriceWidgetProps> = ({ isRoot }) => {
 			});
 		}
 	}, [
-		isRoot,
+		isNetworkSet,
 		wildPercentageChange,
 		wildPriceUsd,
 		zeroPercentageChange,

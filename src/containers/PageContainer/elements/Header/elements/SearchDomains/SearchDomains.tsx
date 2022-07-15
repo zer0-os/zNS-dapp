@@ -1,17 +1,28 @@
+//- React Imports
 import React, { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Spring, animated } from 'react-spring';
-import { useDomainSearch } from 'lib/useDomainSearch';
+
+//- Library Imports
+import { useDomainSearch } from 'lib/hooks/useDomainSearch';
+
+//- Constants Imports
 import {
 	SEARCH_NOT_FOUND,
 	IS_EXACT_MATCH_ENABLED,
 } from './SearchDomains.constants';
+
+//- Hooks Imports
 import {
 	useSearchDomainsData,
 	useSearchDomainsHandlers,
 	useSearchDomainsLifecycle,
 } from './hooks';
+
+//- Utils - Helpers Imports
 import { getLastDomainName } from './SearchDomains.helpers';
+
+//- Style Imports
 import './_search-domains.scss';
 
 type SearchDomainsProps = {
@@ -37,6 +48,10 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 		listRef,
 		history,
 	});
+
+	const filteredMatches = domainSearch?.matches?.filter(
+		(d) => d.name?.length > 1,
+	);
 
 	useSearchDomainsLifecycle({
 		props: { searchQuery },
@@ -65,17 +80,15 @@ export const SearchDomains: React.FC<SearchDomainsProps> = ({
 									<span>{domainSearch.exactMatch.name}</span>
 								</li>
 							)}
-							{domainSearch?.matches
-								?.filter((d) => d.name.length > 1)
-								.map((s, i) => (
-									<li
-										onMouseDown={handlers.handleDomainClick(s.name)}
-										key={i + s.name}
-									>
-										{getLastDomainName(s.name)}
-										<span>{s.name}</span>
-									</li>
-								))}
+							{filteredMatches?.map((s, i) => (
+								<li
+									onMouseDown={handlers.handleDomainClick(s.name)}
+									key={i + s.name}
+								>
+									{getLastDomainName(s.name)}
+									<span>{s.name}</span>
+								</li>
+							))}
 
 							{formattedData.isNotFound && (
 								<li key={SEARCH_NOT_FOUND}>{SEARCH_NOT_FOUND}</li>
