@@ -51,7 +51,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		znsDomain.domainMetadata,
 	);
 	const appPathname = appFromPathname(pathname);
-	const setAppPathname =
+	const app =
 		appPathname === ROUTES.STAKING
 			? ROUTES.STAKING + ROUTES.STAKING_POOLS
 			: appPathname;
@@ -72,7 +72,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		domainId,
 		domainRaw: domain,
 		domainMetadata,
-		app: setAppPathname,
+		app: app,
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,
 		setDomainMetadata,
