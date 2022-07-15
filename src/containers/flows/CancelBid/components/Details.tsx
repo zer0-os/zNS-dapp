@@ -28,14 +28,14 @@ const Details = ({
 					value:
 						ethers.utils.formatEther(bidData.highestBid).toString() +
 						' ' +
-						paymentTokenInfo.name,
+						paymentTokenInfo.symbol,
 				},
 				{
 					name: 'Your Bid',
 					value:
 						ethers.utils.formatEther(bidData.yourBid).toString() +
 						' ' +
-						paymentTokenInfo.name,
+						paymentTokenInfo.symbol,
 				},
 			]}
 		/>

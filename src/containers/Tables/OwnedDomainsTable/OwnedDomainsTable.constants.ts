@@ -5,7 +5,7 @@ export const HEADERS = [
 		className: 'domain',
 	},
 	{
-		label: 'Top Bid (WILD)',
+		label: 'Top Bid',
 		accessor: '',
 		className: '',
 	},

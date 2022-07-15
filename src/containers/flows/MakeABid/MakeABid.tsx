@@ -28,7 +28,7 @@ import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useNotification from 'lib/hooks/useNotification';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { truncateDomain } from 'lib/utils';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useZnsContracts } from 'lib/contracts';
 
@@ -190,7 +190,7 @@ const MakeABid = ({
 			}
 			addNotification(
 				getSuccessNotification(
-					getBidAmountText(bid, paymentTokenInfo.name),
+					getBidAmountText(bid, paymentTokenInfo.symbol),
 					formattedDomain,
 				),
 			);

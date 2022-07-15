@@ -49,7 +49,7 @@ const DomainStep = ({
 		details = [
 			{
 				name: 'Buy Now Price',
-				value: currentBuyNow.toLocaleString() + ' ' + paymentTokenInfo.name,
+				value: currentBuyNow.toLocaleString() + ' ' + paymentTokenInfo.symbol,
 			},
 		];
 	}
@@ -97,7 +97,7 @@ const DomainStep = ({
 				'Buy now price is already ' +
 					currentBuyNow.toLocaleString() +
 					' ' +
-					paymentTokenInfo.name,
+					paymentTokenInfo.symbol,
 			);
 		}
 
@@ -121,7 +121,7 @@ const DomainStep = ({
 				<>
 					Are you sure you want to set a buy now price of{' '}
 					<b>
-						{Number(amount).toLocaleString()} {paymentTokenInfo.name}
+						{Number(amount).toLocaleString()} {paymentTokenInfo.symbol}
 					</b>{' '}
 					for <b>{domain.title}</b>?
 				</>
@@ -129,7 +129,7 @@ const DomainStep = ({
 				<>
 					Are you sure you want to remove the buy now price of{' '}
 					<b>
-						{currentBuyNow} {paymentTokenInfo.name}
+						{currentBuyNow} {paymentTokenInfo.symbol}
 					</b>{' '}
 					for <b>{domain.title}</b>?
 				</>
@@ -145,7 +145,7 @@ const DomainStep = ({
 					<p>
 						This NFT has an existing buy now price of{' '}
 						<b>
-							{currentBuyNow!.toLocaleString()} {paymentTokenInfo.name}{' '}
+							{currentBuyNow!.toLocaleString()} {paymentTokenInfo.symbol}{' '}
 						</b>
 					</p>
 					<ToggleButton
@@ -160,7 +160,7 @@ const DomainStep = ({
 					<TextInput
 						className={styles.Input}
 						onChange={(text: string) => setAmount(text)}
-						placeholder={`New Buy Now Price (${paymentTokenInfo.name})`}
+						placeholder={`New Buy Now Price (${paymentTokenInfo.symbol})`}
 						numeric
 						text={amount}
 						error={true}

@@ -63,9 +63,12 @@ const Details = ({
 	///////////////
 	const formattedHighestBidAmount = formatBidAmount(
 		highestBid,
-		paymentTokenInfo.name,
+		paymentTokenInfo.symbol,
 	);
-	const formattedBidAmount = formatBidAmount(bidAmount, paymentTokenInfo.name);
+	const formattedBidAmount = formatBidAmount(
+		bidAmount,
+		paymentTokenInfo.symbol,
+	);
 	const formattedBidAmountUSD = toFiat(Number(bidAmountUSD));
 	const onSubmit = stepContent === StepContent.Details ? onNext : onClose;
 	const onSubmitButtonText =

@@ -76,10 +76,10 @@ const BidTableRow = (props: any) => {
 			</td>
 			<td data-testid={TEST_ID.YOUR_BID}>
 				{ethers.utils.formatEther(bid.yourBid.toString())}{' '}
-				{bid.paymentTokenInfo.name}
+				{bid.paymentTokenInfo.symbol}
 			</td>
 			<td data-testid={TEST_ID.HIGHEST_BID}>
-				{ethers.utils.formatEther(bid.highestBid)} {bid.paymentTokenInfo.name}
+				{ethers.utils.formatEther(bid.highestBid)} {bid.paymentTokenInfo.symbol}
 			</td>
 			<td>
 				<OptionDropdown
