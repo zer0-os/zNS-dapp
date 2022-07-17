@@ -131,7 +131,7 @@ const BidList: React.FC<BidListProps> = ({
 										{Number(
 											ethers.utils.formatEther(bid.amount),
 										).toLocaleString()}{' '}
-										{paymentTokenInfo.name}
+										{paymentTokenInfo.symbol}
 										{paymentTokenInfo.priceInUsd !== undefined &&
 											Number(paymentTokenInfo.priceInUsd) > 0 && (
 												<>

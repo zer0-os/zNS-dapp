@@ -104,15 +104,15 @@ const SubdomainTableRow = (props: any) => {
 				<>
 					<span className={styles.Bid}>
 						{tradeData.volume.all ? formatEthers(tradeData.volume.all) : 0}{' '}
-						{paymentTokenInfo.name}
+						{paymentTokenInfo?.symbol}
 					</span>
-					{Number(paymentTokenInfo.priceInUsd) > 0 && (
+					{Number(paymentTokenInfo?.priceInUsd) > 0 && (
 						<span className={styles.Bid}>
 							$
 							{tradeData.volume.all
 								? formatNumber(
 										Number(ethers.utils.formatEther(tradeData.volume.all)) *
-											Number(paymentTokenInfo.priceInUsd),
+											Number(paymentTokenInfo?.priceInUsd),
 								  )
 								: 0}{' '}
 						</span>
@@ -139,11 +139,11 @@ const SubdomainTableRow = (props: any) => {
 							: '-'}
 					</span>
 				)}
-				{Number(paymentTokenInfo.priceInUsd) > 0 && Number(value) > 0 && (
+				{Number(paymentTokenInfo?.priceInUsd) > 0 && Number(value) > 0 && (
 					<span className={styles.Bid}>
 						{'$' +
 							formatNumber(
-								Number(paymentTokenInfo.priceInUsd) *
+								Number(paymentTokenInfo?.priceInUsd) *
 									Number(ethers.utils.formatEther(value)),
 							)}
 					</span>

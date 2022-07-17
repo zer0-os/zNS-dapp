@@ -18,8 +18,7 @@ const OwnedDomainsTable = () => {
 	//  Data //
 	///////////
 	const { account } = useWeb3React();
-	const { isLoading, ownedDomains, refetch, domainsPaymentTokenInfo } =
-		useOwnedDomains(account);
+	const { isLoading, ownedDomains, refetch } = useOwnedDomains(account);
 
 	// filter owned domains by network
 	const onNetworkOwnedDomains = filterOwnedDomainsByNetwork(ownedDomains);
@@ -31,18 +30,10 @@ const OwnedDomainsTable = () => {
 			itemKey={'id'}
 			headers={HEADERS}
 			rowComponent={(props: any) => (
-				<OwnedDomainsTableRow
-					{...props}
-					refetch={refetch}
-					domainsPaymentTokenInfo={domainsPaymentTokenInfo}
-				/>
+				<OwnedDomainsTableRow {...props} refetch={refetch} />
 			)}
 			gridComponent={(props: any) => (
-				<OwnedDomainsTableCard
-					{...props}
-					refetch={refetch}
-					domainsPaymentTokenInfo={domainsPaymentTokenInfo}
-				/>
+				<OwnedDomainsTableCard {...props} refetch={refetch} />
 			)}
 			infiniteScroll
 			isLoading={isLoading}

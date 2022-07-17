@@ -53,7 +53,7 @@ const BidTableCard = (props: any) => {
 							<div className={styles.Title}>{Labels.YOUR_BID}</div>
 							<div className={styles.Bid} data-testid={TestId.YOUR_BID}>
 								{ethers.utils.formatEther(bid.yourBid.toString())}{' '}
-								{bid.paymentTokenInfo.name}
+								{bid.paymentTokenInfo.symbol}
 							</div>
 						</div>
 
@@ -61,7 +61,7 @@ const BidTableCard = (props: any) => {
 							<div className={styles.Title}>{Labels.TOP_BID}</div>
 							<div className={styles.Bid} data-testid={TestId.HIGHEST_BID}>
 								{ethers.utils.formatEther(bid.highestBid)}{' '}
-								{bid.paymentTokenInfo.name}
+								{bid.paymentTokenInfo.symbol}
 							</div>
 						</div>
 					</div>

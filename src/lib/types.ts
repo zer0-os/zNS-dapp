@@ -26,6 +26,7 @@ export interface Domain {
 	contract?: string; // TODO: Making it optional so that tests and other scenarios work
 	isLocked: boolean;
 	lockedBy: Account;
+	isRoot?: boolean;
 	paymentTokenInfo?: ConvertedTokenInfo;
 }
 

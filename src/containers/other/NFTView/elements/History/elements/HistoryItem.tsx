@@ -63,7 +63,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 						made an offer of{' '}
 						<b>
 							{Number(ethers.utils.formatEther(item.amount!)).toLocaleString()}{' '}
-							{paymentTokenInfo?.name}
+							{paymentTokenInfo?.symbol}
 						</b>
 					</div>
 					<div className={styles.From}>
@@ -164,7 +164,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 									{Number(
 										ethers.utils.formatEther(item.amount!),
 									).toLocaleString()}{' '}
-									{paymentTokenInfo?.name}
+									{paymentTokenInfo?.symbol}
 								</b>
 							</>
 						)}
@@ -209,7 +209,7 @@ const HistoryItem = ({ item }: HistoryItemProps) => {
 									{Number(
 										ethers.utils.formatEther(item.amount!),
 									).toLocaleString()}{' '}
-									{paymentTokenInfo?.name}
+									{paymentTokenInfo?.symbol}
 								</b>
 							</>
 						)}

@@ -73,9 +73,9 @@ const Details = ({
 	// Format numbers
 	const formattedHighestBidAmount = formatBidAmount(
 		highestBid,
-		paymentTokenInfo.name,
+		paymentTokenInfo.symbol,
 	);
-	const formattedBidAmount = getBidAmountText(bid, paymentTokenInfo.name);
+	const formattedBidAmount = getBidAmountText(bid, paymentTokenInfo.symbol);
 	// Balance loading
 	const loadingTokenBalance = tokenBalance === undefined;
 	// Step content
@@ -134,7 +134,7 @@ const Details = ({
 
 			{stepContent === StepContent.Details && tokenBalance === 0 && (
 				<div className={styles.Error}>
-					You do not have enough {paymentTokenInfo.name} tokens to place a bid
+					You do not have enough {paymentTokenInfo.symbol} tokens to place a bid
 					on this domain.
 				</div>
 			)}
@@ -144,7 +144,7 @@ const Details = ({
 				<div className={styles.PlaceBidContainer}>
 					<div className={styles.TextContainer}>{MESSAGES.ENTER_AMOUNT}</div>
 					<span className={styles.Estimate}>
-						{getBalanceString(tokenBalance, paymentTokenInfo.name)}
+						{getBalanceString(tokenBalance, paymentTokenInfo.symbol)}
 					</span>
 					<form onSubmit={onConfirm}>
 						<TextInput
@@ -155,7 +155,7 @@ const Details = ({
 							onChange={(text: string) => setBid && setBid(text)}
 							placeholder={replaceWildWithProperToken(
 								PLACE_BID_LABELS.INPUT_PLACEHOLDER,
-								paymentTokenInfo.name,
+								paymentTokenInfo.symbol,
 							)}
 						/>
 					</form>
@@ -164,7 +164,7 @@ const Details = ({
 						loadingTokenBalance,
 						bid,
 						tokenBalance,
-						paymentTokenInfo.name,
+						paymentTokenInfo.symbol,
 					)}
 				</div>
 			)}
