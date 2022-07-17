@@ -86,6 +86,7 @@ const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 				loadingText={Messages.LOADING}
 				emptyText={Messages.EMPTY}
 				isSingleGridColumn
+				notSearchable
 				rowComponent={(props: any) => (
 					<BidTableRow
 						{...props}
