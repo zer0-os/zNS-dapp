@@ -1,41 +1,25 @@
-import BidTableRow, { BidTableRowData } from './BidTableRow';
-import { GenericTable, Overlay } from 'components';
+//- React Imports
 import { useMemo, useState } from 'react';
+
+//- Component Imports
+import BidTableRow from './BidTableRow/BidTableRow';
+import { GenericTable, Overlay } from 'components';
+import BidTableCard from './BidTableCard/BidTableCard';
+
+//- Container Imports
 import { CancelBid, MakeABid } from 'containers';
 
+//- Types Imports
+import { BidTableData } from './BidTable.types';
+
+//- Constants Imports
+import { Messages, Modal, Headers } from './BidTable.constants';
+
 type BidTableProps = {
-	bidData?: BidTableRowData[];
+	bidData?: BidTableData[];
 	isLoading: boolean;
 	refetch: () => void;
 };
-
-export const HEADERS = [
-	{
-		label: 'Domain',
-		accessor: '',
-		className: 'domain',
-	},
-	{
-		label: 'Your Bid',
-		accessor: '',
-		className: '',
-	},
-	{
-		label: 'Top Bid',
-		accessor: '',
-		className: '',
-	},
-	{
-		label: '',
-		accessor: '',
-		className: '',
-	},
-];
-
-export enum Modal {
-	Bid,
-	Cancel,
-}
 
 const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 	/**
@@ -43,14 +27,14 @@ const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 	 * in the row, but refetch was killing any modal.
 	 */
 	const [modal, setModal] = useState<Modal | undefined>();
-	const [selectedBid, setSelectedBid] = useState<BidTableRowData | undefined>();
+	const [selectedBid, setSelectedBid] = useState<BidTableData | undefined>();
 
-	const openMakeBid = (bid: BidTableRowData) => {
+	const openMakeBid = (bid: BidTableData) => {
 		setSelectedBid(bid);
 		setModal(Modal.Bid);
 	};
 
-	const openCancelBid = (bid: BidTableRowData) => {
+	const openCancelBid = (bid: BidTableData) => {
 		setSelectedBid(bid);
 		setModal(Modal.Cancel);
 	};
@@ -95,12 +79,13 @@ const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 			<GenericTable
 				alignments={[0, 1, 1, 1, 1, 0, 0]}
 				data={bidData}
-				headers={HEADERS}
+				headers={Headers}
 				infiniteScroll
 				isLoading={isLoading}
-				itemKey={'id'}
-				loadingText={'Loading Your Bids'}
-				notSearchable
+				itemKey="id"
+				loadingText={Messages.LOADING}
+				emptyText={Messages.EMPTY}
+				isSingleGridColumn
 				rowComponent={(props: any) => (
 					<BidTableRow
 						{...props}
@@ -109,7 +94,14 @@ const BidTable = ({ bidData, isLoading, refetch }: BidTableProps) => {
 						openCancelBid={openCancelBid}
 					/>
 				)}
-				emptyText={'You have not placed any bids.'}
+				gridComponent={(props: any) => (
+					<BidTableCard
+						{...props}
+						onRefetch={refetch}
+						openMakeBid={openMakeBid}
+						openCancelBid={openCancelBid}
+					/>
+				)}
 			/>
 		</>
 	);

@@ -1,14 +1,22 @@
-import { useWeb3React } from '@web3-react/core';
-import { ethers } from 'ethers';
-import { useBidProvider } from 'lib/hooks/useBidProvider';
-import { useZnsSdk } from 'lib/hooks/sdk';
+//- React Imports
 import { useEffect, useRef, useState } from 'react';
-import { BigNumber } from 'ethers';
 
-import { BidTableRowData } from './BidTableRow';
-import { Bid } from '@zero-tech/zauction-sdk';
+//- Components Imports
 import BidTable from './BidTable';
+
+//- Library Imports
+import { useWeb3React } from '@web3-react/core';
+import { BigNumber, ethers } from 'ethers';
+import { Bid } from '@zero-tech/zauction-sdk';
+import { useZnsSdk } from 'lib/hooks/sdk';
 import getPaymentTokenInfo from 'lib/paymentToken';
+import { useBidProvider } from 'lib/hooks/useBidProvider';
+
+//- Types Imports
+import { BidTableData } from './BidTable.types';
+
+//- Constants Imports
+import { Errors } from './BidTable.constants';
 
 const BidTableContainer = () => {
 	const isMounted = useRef<boolean>();
@@ -17,7 +25,7 @@ const BidTableContainer = () => {
 	const { account } = useWeb3React();
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [bidData, setBidData] = useState<BidTableRowData[] | undefined>();
+	const [bidData, setBidData] = useState<BidTableData[] | undefined>();
 
 	const getData = async () => {
 		if (!account) {
@@ -31,7 +39,7 @@ const BidTableContainer = () => {
 			bids = await getBidsForAccount(account);
 		} catch (e) {
 			console.error(e);
-			throw new Error('Failed to retrieve bids for account.');
+			throw new Error(Errors.FAILED_TO_RETRIEVE_BIDS);
 		}
 
 		// Create array of unique domain IDs
@@ -71,7 +79,7 @@ const BidTableContainer = () => {
 			throw new Error('Failed to retrieve bid data.');
 		}
 
-		let highestBids: any[], tableData: BidTableRowData[];
+		let highestBids: any[], tableData: BidTableData[];
 		try {
 			// Convert existing bids into "highest bid"
 			highestBids = existingBids.map((domain, index) => {
@@ -108,7 +116,7 @@ const BidTableContainer = () => {
 				.sort((a, b) => b.date.getTime() - a.date.getTime());
 		} catch (e) {
 			console.error(e);
-			throw new Error('Failed to parse bid data.');
+			throw new Error(Errors.FAILED_TO_PARSE_BID_DATA);
 		}
 
 		if (isMounted.current) {

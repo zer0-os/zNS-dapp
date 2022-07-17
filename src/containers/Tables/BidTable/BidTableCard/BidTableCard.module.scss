@@ -1,0 +1,71 @@
+@use 'styles/variables/colors';
+@use 'styles/variables/borders';
+@use 'styles/variables/typography';
+
+.CardContainer {
+	position: relative !important;
+	border: 1px solid #{colors.$mine-shaft};
+	padding: 18.5px 15px;
+	border-radius: #{borders.$radius-primary};
+
+	.Content {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: flex-start;
+
+		.DomainInfoContainer {
+			width: 100%;
+		}
+
+		.BidContainer {
+			display: grid;
+			grid-template-columns: 50% 50%;
+			max-width: 264px;
+			margin-top: 16px;
+
+			.TextContainer {
+				display: flex;
+				flex-direction: column;
+
+				.Title {
+					font-size: #{typography.$size-tiny};
+					line-height: 15px;
+					color: #{colors.$grey-lighter-2};
+				}
+
+				.Bid {
+					font-size: #{typography.$size-small};
+					line-height: 17px;
+					margin-top: 4px;
+				}
+			}
+		}
+
+		.OptionsContainer {
+			margin-top: 6px;
+			.MoreDropdown {
+				justify-content: flex-end;
+
+				.Button {
+					background: none;
+				}
+
+				:global(ul) {
+					left: unset;
+					right: 30px;
+					top: 18px;
+					transform: unset;
+
+					li {
+						display: flex;
+
+						span {
+							margin-left: 10px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
