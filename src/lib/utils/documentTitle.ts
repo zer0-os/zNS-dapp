@@ -1,7 +1,7 @@
-//= Constants Imports
+//- Constants Imports
 import { ROUTES } from 'constants/routes';
 
-export const getDocumentTitle = (
+export const useDocumentTitle = (
 	zna: string,
 	app: string,
 	domainMetadataTitle?: string,
@@ -9,7 +9,7 @@ export const getDocumentTitle = (
 	const isRootZNA = zna.split('.').length === 1;
 	const isMarketTitle = isRootZNA && app === ROUTES.MARKET;
 	const isZDAOTitle = isRootZNA && app === ROUTES.ZDAO;
-	const isStakingTitle = app.includes(ROUTES.STAKING_POOLS);
+	const isStakingTitle = app.includes(ROUTES.STAKING);
 	const isProfileTitle = app.includes(ROUTES.PROFILE);
 
 	if (
