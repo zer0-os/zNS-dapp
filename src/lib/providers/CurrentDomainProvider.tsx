@@ -3,14 +3,17 @@ import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // Web3 Imports
+import { useWeb3React } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
+
+//- Library Imports
+import { getDocumentTitle } from 'lib/utils/documentTitle';
+import { defaultNetworkId } from 'lib/network';
+import { appFromPathname, getDomainId, zNAFromPathname } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
 import { usePropsState } from 'lib/hooks/usePropsState';
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
-import { useWeb3React } from '@web3-react/core';
-import { Web3Provider } from '@ethersproject/providers';
-import { defaultNetworkId } from 'lib/network';
-import { appFromPathname, getDomainId, zNAFromPathname } from 'lib/utils';
-import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 // Constants Imports
 import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from '../../constants/domains';
@@ -56,16 +59,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 			? ROUTES.STAKING + ROUTES.STAKING_POOLS
 			: appPathname;
 
-	// Change document title based on current network
-	if (
-		zna.length > 0 &&
-		zna !== process.env.REACT_APP_NETWORK &&
-		domainMetadata?.title
-	) {
-		document.title = process.env.REACT_APP_TITLE + ' | ' + domainMetadata.title;
-	} else {
-		document.title = process.env.REACT_APP_TITLE + ' | NFTs';
-	}
+	getDocumentTitle(zna, app, domainMetadata?.title);
 
 	const contextValue = {
 		domain: znsDomain.domain,
