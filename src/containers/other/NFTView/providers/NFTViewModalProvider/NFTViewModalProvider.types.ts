@@ -1,4 +1,6 @@
 //- Container Props Imports
+import { ConnectToWalletProps } from 'components/ConnectToWallet/ConnectToWallet';
+import { ClaimNFTContainerProps } from 'containers/flows/ClaimNFT';
 import { MakeABidProps } from 'containers/flows/MakeABid/MakeABid';
 import { SetBuyNowContainerProps } from 'containers/flows/SetBuyNow';
 import { TransferOwnershipProps } from 'containers/flows/TransferOwnership/TransferOwnership';
@@ -12,6 +14,8 @@ export enum NFTViewModalType {
 	TRANSFER_OWNERSHIP,
 	SET_BUY_NOW,
 	BID_LIST,
+	CLAIM_NFT,
+	CONNECT_WALLET,
 }
 
 export type MakeABidContentProps = Omit<MakeABidProps, 'closeModal'>;
@@ -29,6 +33,13 @@ export type TransferOwnershipContentProps = Omit<
 export type SetBuyNowContentProps = Omit<SetBuyNowContainerProps, 'closeModal'>;
 
 export type BidListContentProps = Omit<BidListProps, 'closeModal'>;
+
+export type ClaimNFTContentProps = Omit<ClaimNFTContainerProps, 'closeModal'>;
+
+export type ConnectToWalletContentProps = Omit<
+	ConnectToWalletProps,
+	'closeModal'
+>;
 
 interface NullContent {
 	modalType: NFTViewModalType.NULL_MODAL_TYPE;
@@ -59,13 +70,25 @@ interface BidListContent {
 	contentProps: BidListContentProps;
 }
 
+interface ClaimNFTContent {
+	modalType: NFTViewModalType.CLAIM_NFT;
+	contentProps: ClaimNFTContentProps;
+}
+
+interface ConnectToWalletContent {
+	modalType: NFTViewModalType.CONNECT_WALLET;
+	contentProps: ConnectToWalletContentProps;
+}
+
 export type NFTViewModalContent =
 	| NullContent
 	| MakeABidContent
 	| DomainSettingsContent
 	| TransferOwnershipContent
 	| SetBuyNowContent
-	| BidListContent;
+	| BidListContent
+	| ClaimNFTContent
+	| ConnectToWalletContent;
 
 export interface NFTViewModalContextProps {
 	openModal: (content: NFTViewModalContent) => void;

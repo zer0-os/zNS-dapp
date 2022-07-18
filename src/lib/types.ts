@@ -1,6 +1,7 @@
 // Types
 
 //- Library Imports
+import { ConvertedTokenInfo, StakingRequests } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 
 export type Maybe<T> = T | undefined | null;
@@ -25,6 +26,8 @@ export interface Domain {
 	contract?: string; // TODO: Making it optional so that tests and other scenarios work
 	isLocked: boolean;
 	lockedBy: Account;
+	isRoot?: boolean;
+	paymentTokenInfo?: ConvertedTokenInfo;
 }
 
 // We have two different types of Metadata
@@ -34,7 +37,7 @@ interface Meta {
 	[key: string]: any | undefined;
 	image: string; // One of: Image, Video, 3d Model
 	animation_url?: string;
-	stakingRequests?: 'disabled' | 'enabled';
+	stakingRequests?: StakingRequests;
 	isBiddable?: boolean;
 	gridViewByDefault?: boolean;
 	customDomainHeader?: boolean;
@@ -247,4 +250,8 @@ export interface StakingRequest {
 	stakeAmount: string;
 	stakeCurrency: string;
 	nft: NftParams;
+}
+
+export interface PaymentToken {
+	id: string;
 }

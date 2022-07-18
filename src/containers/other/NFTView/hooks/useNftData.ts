@@ -109,7 +109,7 @@ export const useNftData = (): UseNftDataReturn => {
 
 			// Get buy now and all bids
 			const [buyNow, bids] = await Promise.all([
-				sdk.zauction.getBuyNowPrice(id),
+				sdk.zauction.getBuyNowListing(id),
 				sdk.zauction.listBids(id),
 			]);
 
@@ -127,7 +127,9 @@ export const useNftData = (): UseNftDataReturn => {
 			}
 
 			setHighestBid(highestBid);
-			setBuyNowPrice(Number(buyNow) > 0 ? Number(buyNow) : undefined);
+			buyNow &&
+				buyNow?.price?.gt(0) &&
+				setBuyNowPrice(Number(ethers.utils.formatEther(buyNow?.price)));
 		} catch (e) {
 			console.error(MESSAGES.CONSOLE_ERROR, e);
 		} finally {

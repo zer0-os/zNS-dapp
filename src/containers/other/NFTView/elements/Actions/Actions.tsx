@@ -16,13 +16,13 @@ import { Bid } from '@zero-tech/zns-sdk/lib/zAuction';
 import { ActionBlock, ACTION_TYPES } from './Actions.types';
 
 //- Constants Imports
-import { LABELS } from 'constants/labels';
-import { CURRENCY } from 'constants/currency';
+import { Labels } from 'constants/labels';
 import { TEST_ID, wrapFiat } from './Actions.constants';
 
 // Styles
 import styles from './Actions.module.scss';
 import classNames from 'classnames/bind';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 const cx = classNames.bind(styles);
 
@@ -35,9 +35,9 @@ type ActionsProps = {
 	yourBid?: Bid;
 	isBiddable?: boolean;
 	isOwnedByUser?: boolean;
-	wildPriceUsd?: number;
 	refetch: () => void;
 	bidData?: Bid[];
+	paymentTokenInfo: ConvertedTokenInfo;
 };
 
 const Actions = ({
@@ -49,9 +49,9 @@ const Actions = ({
 	yourBid,
 	isBiddable,
 	isOwnedByUser,
-	wildPriceUsd,
 	refetch,
 	bidData,
+	paymentTokenInfo,
 }: ActionsProps) => {
 	//- Condition helpers
 	const isBidData = bidData && bidData?.length > 0;
@@ -60,37 +60,39 @@ const Actions = ({
 	const isBuyNow = Boolean(buyNowPrice) && !isOwnedByUser && Boolean(domainId);
 	const isViewBids =
 		isOwnedByUser !== undefined && isBiddable === true && Boolean(isBidData);
+	const tokenPriceUsd = Number(paymentTokenInfo.priceInUsd);
 
 	const highestBidTextValue =
-		Boolean(highestBid) && Boolean(wildPriceUsd)
-			? wrapFiat(highestBid! * wildPriceUsd!)
-			: LABELS.NO_BIDS_PLACED;
+		Boolean(highestBid) && Boolean(tokenPriceUsd)
+			? wrapFiat(highestBid! * tokenPriceUsd!)
+			: Labels.NO_BIDS_PLACED;
 
 	const yourBidTextValue =
-		yourBid && wildPriceUsd
-			? wrapFiat(Number(formatEther(yourBid.amount)) * wildPriceUsd)
+		yourBid && tokenPriceUsd
+			? wrapFiat(Number(formatEther(yourBid.amount)) * tokenPriceUsd)
 			: '';
 
 	const placeBidButtonTextValue =
 		!yourBid || (yourBid && Number(formatEther(yourBid.amount)) === highestBid)!
-			? LABELS.PLACE_A_BID
-			: LABELS.REBID;
+			? Labels.PLACE_A_BID
+			: Labels.REBID;
 
 	const buyNowPriceValue =
-		buyNowPrice && wildPriceUsd
-			? wrapFiat(buyNowPrice * wildPriceUsd)
-			: LABELS.NO_BUY_NOW;
+		buyNowPrice && tokenPriceUsd
+			? wrapFiat(buyNowPrice * tokenPriceUsd)
+			: Labels.NO_BUY_NOW;
 
 	const actions: { [action in ACTION_TYPES]: ActionBlock } = {
 		[ACTION_TYPES.BuyNow]: {
 			amount: buyNowPrice,
-			label: `${LABELS.BUY_NOW} (${CURRENCY.WILD})`,
+			label: `${Labels.BUY_NOW} (${paymentTokenInfo.symbol})`,
 			amountUsd: buyNowPriceValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<BuyNowButton
 					onSuccess={refetch}
-					buttonText={LABELS.BUY_NOW}
+					buttonText={Labels.BUY_NOW}
 					domainId={domainId ?? ''}
+					paymentTokenInfo={paymentTokenInfo}
 					isTextButton={isTextButton}
 					className={cx({ TextButton: isTextButton })}
 				/>
@@ -100,15 +102,16 @@ const Actions = ({
 		},
 		[ACTION_TYPES.SetBuyNow]: {
 			amount: buyNowPrice ? buyNowPrice : '-',
-			label: `${LABELS.BUY_NOW} (${CURRENCY.WILD})`,
+			label: `${Labels.BUY_NOW} (${paymentTokenInfo.symbol})`,
 			amountUsd: buyNowPriceValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<SetBuyNowButton
 					onSuccess={refetch}
-					buttonText={buyNowPrice ? LABELS.EDIT_BUY_NOW : LABELS.SET_BUY_NOW}
+					buttonText={buyNowPrice ? Labels.EDIT_BUY_NOW : Labels.SET_BUY_NOW}
 					domainId={domainId ?? ''}
 					isTextButton={isTextButton}
 					className={cx({ TextButton: isTextButton })}
+					paymentTokenInfo={paymentTokenInfo}
 				/>
 			),
 			isVisible: isSetBuyNow,
@@ -116,7 +119,7 @@ const Actions = ({
 		},
 		[ACTION_TYPES.Bid]: {
 			amount: highestBid ?? '-',
-			label: `${LABELS.HIGHEST_BID_LABEL} (${CURRENCY.WILD})`,
+			label: `${Labels.HIGHEST_BID_LABEL} (${paymentTokenInfo.symbol})`,
 			amountUsd: highestBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => {
 				if (isOwnedByUser && !isViewBids) return <></>;
@@ -143,12 +146,13 @@ const Actions = ({
 		},
 		[ACTION_TYPES.YourBid]: {
 			amount: yourBid ? Number(formatEther(yourBid.amount)) : '-',
-			label: `${LABELS.YOUR_BID} (${CURRENCY.WILD})`,
+			label: `${Labels.YOUR_BID} (${paymentTokenInfo.symbol})`,
 			amountUsd: yourBidTextValue,
 			buttonComponent: (isTextButton?: boolean) => (
 				<CancelBidButton
 					isTextButton
 					bidNonce={yourBid?.bidNonce ?? ''}
+					paymentTokenInfo={paymentTokenInfo}
 					domainId={domainId!}
 					onSuccess={refetch}
 					className={cx({ TextButton: isTextButton })}

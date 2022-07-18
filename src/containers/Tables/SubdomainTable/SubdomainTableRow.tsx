@@ -9,12 +9,11 @@ import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { BidButton, BuyNowButton } from 'containers';
 
 import { useBidProvider } from 'lib/hooks/useBidProvider';
-import useCurrency from 'lib/hooks/useCurrency';
 import { Bid } from 'lib/types';
 import { useHistory } from 'react-router-dom';
 import { useBid } from './BidProvider';
 import { ethers } from 'ethers';
-import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
+import { ConvertedTokenInfo, DomainMetrics } from '@zero-tech/zns-sdk';
 import { formatNumber, formatEthers, getNetworkZNA } from 'lib/utils';
 import { useZnsSdk } from 'lib/hooks/sdk';
 
@@ -33,10 +32,10 @@ const SubdomainTableRow = (props: any) => {
 	const { getBidsForDomain } = useBidProvider();
 	const { instance: sdk } = useZnsSdk();
 
-	const { wildPriceUsd } = useCurrency();
-
 	const domain = props.data;
 	const tradeData: DomainMetrics = domain?.metrics;
+
+	const paymentTokenInfo: ConvertedTokenInfo = props.data.paymentTokenInfo;
 
 	const domainMetadata = useDomainMetadata(domain?.metadata);
 
@@ -76,9 +75,9 @@ const SubdomainTableRow = (props: any) => {
 			if (isMounted.current === false) {
 				return;
 			}
-			const buyNowPrice = await sdk.zauction.getBuyNowPrice(domain.id);
-			if (buyNowPrice) {
-				setBuyNowPrice(Number(buyNowPrice));
+			const buyNowListing = await sdk.zauction.getBuyNowListing(domain.id);
+			if (buyNowListing && buyNowListing.price) {
+				setBuyNowPrice(Number(ethers.utils.formatEther(buyNowListing.price)));
 			}
 		} catch (err) {
 			setIsPriceDataLoading(false);
@@ -104,15 +103,16 @@ const SubdomainTableRow = (props: any) => {
 			return (
 				<>
 					<span className={styles.Bid}>
-						{tradeData.volume.all ? formatEthers(tradeData.volume.all) : 0} WILD
+						{tradeData.volume.all ? formatEthers(tradeData.volume.all) : 0}{' '}
+						{paymentTokenInfo?.symbol}
 					</span>
-					{wildPriceUsd > 0 && (
+					{Number(paymentTokenInfo?.priceInUsd) > 0 && (
 						<span className={styles.Bid}>
 							$
 							{tradeData.volume.all
 								? formatNumber(
 										Number(ethers.utils.formatEther(tradeData.volume.all)) *
-											wildPriceUsd,
+											Number(paymentTokenInfo?.priceInUsd),
 								  )
 								: 0}{' '}
 						</span>
@@ -139,11 +139,12 @@ const SubdomainTableRow = (props: any) => {
 							: '-'}
 					</span>
 				)}
-				{wildPriceUsd > 0 && Number(value) > 0 && (
+				{Number(paymentTokenInfo?.priceInUsd) > 0 && Number(value) > 0 && (
 					<span className={styles.Bid}>
 						{'$' +
 							formatNumber(
-								wildPriceUsd * Number(ethers.utils.formatEther(value)),
+								Number(paymentTokenInfo?.priceInUsd) *
+									Number(ethers.utils.formatEther(value)),
 							)}
 					</span>
 				)}
@@ -203,6 +204,7 @@ const SubdomainTableRow = (props: any) => {
 						domainId={domain.id}
 						disabled={isOwnedByUser || !account}
 						style={{ marginLeft: 'auto' }}
+						paymentTokenInfo={paymentTokenInfo}
 					/>
 				) : (
 					<BidButton

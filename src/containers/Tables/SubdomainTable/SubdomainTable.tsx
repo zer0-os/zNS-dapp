@@ -85,9 +85,14 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 
 	return (
 		<>
-			{biddingOn !== undefined && (
+			{biddingOn?.paymentTokenInfo && (
 				<Overlay onClose={close} open={true}>
-					<MakeABid domain={biddingOn!} onBid={bidPlaced} onClose={close} />
+					<MakeABid
+						domain={biddingOn!}
+						onBid={bidPlaced}
+						onClose={close}
+						paymentTokenInfo={biddingOn?.paymentTokenInfo}
+					/>
 				</Overlay>
 			)}
 			<GenericTable
@@ -95,8 +100,8 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 				data={data}
 				itemKey={'id'}
 				headers={headers}
-				rowComponent={SubdomainTableRow}
-				gridComponent={SubdomainTableCard}
+				rowComponent={(props: any) => <SubdomainTableRow {...props} />}
+				gridComponent={(props: any) => <SubdomainTableCard {...props} />}
 				infiniteScroll
 				isLoading={isLoading || isDomainLoading}
 				loadingText={'Loading Subdomains'}

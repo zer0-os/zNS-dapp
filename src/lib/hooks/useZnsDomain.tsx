@@ -1,15 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { getMetadata } from 'lib/metadata';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
+import { Domain, ConvertedTokenInfo } from '@zero-tech/zns-sdk';
+import useAsyncEffect from 'use-async-effect';
+import { isRootDomain } from 'lib/utils';
+import getPaymentTokenInfo from 'lib/paymentToken';
 
 export type UseZnsDomainReturn = {
 	loading: boolean;
 	domain?: DisplayParentDomain;
 	refetch: (variables?: any) => any;
 	domainMetadata: Maybe<Metadata>;
+	paymentToken: Maybe<string>;
+	paymentTokenInfo: ConvertedTokenInfo;
+};
+
+type FormatSubdomainType = {
+	owner: { id: string };
+	metadata: string;
+	minter: { id: string };
+	name: string;
+	id: string;
 };
 
 /**
@@ -18,21 +31,13 @@ export type UseZnsDomainReturn = {
  * @param subdomains -
  * @returns
  */
-const formatSubdomains = (
-	subdomains: Domain[],
-): {
-	owner: { id: string };
-	metadata: string;
-	minter: { id: string };
-	name: string;
-	id: string;
-}[] => {
+const formatSubdomains = (subdomains: Domain[]): FormatSubdomainType[] => {
 	return subdomains.map((sub) => ({
-		id: sub.id,
-		metadata: sub.metadataUri,
-		minter: { id: sub.minter },
-		name: sub.name,
-		owner: { id: sub.owner },
+		id: sub.id ?? '',
+		metadata: sub.metadataUri ?? '',
+		minter: { id: sub.minter ?? '' },
+		name: sub.name ?? '',
+		owner: { id: sub.owner ?? '' },
 	}));
 };
 
@@ -68,21 +73,43 @@ export const useZnsDomain = (
 	const [loading, setLoading] = useState(true);
 	const [domain, setDomain] = useState<DisplayParentDomain | undefined>();
 	const [domainMetadata, setDomainMetadata] = useState<Maybe<Metadata>>();
+	const [paymentToken, setPaymentToken] = useState<Maybe<string>>();
+	const [paymentTokenInfo, setPaymentTokenInfo] = useState<ConvertedTokenInfo>(
+		{} as ConvertedTokenInfo,
+	);
 
 	const getDomain = async (id: string) => {
 		const domain = formatDomain(await sdk.getDomainById(id));
-		const metadata = await getMetadata(domain.metadata);
+		const metadata = isRootDomain(domain.id)
+			? undefined
+			: await getMetadata(domain.metadata);
 		return { domain, metadata };
 	};
 
 	const getSubdomains = async (id: string) => {
-		const subs = formatSubdomains(await sdk.getSubdomainsById(id));
+		// Disable DataStore
+		const subs = formatSubdomains(await sdk.getSubdomainsById(id, false));
 		return subs;
 	};
+
+	const getTokenInfo = useMemo(async () => {
+		if (!paymentToken) return {};
+		const token = await getPaymentTokenInfo(sdk, paymentToken);
+		return token;
+	}, [paymentToken]);
+
+	useAsyncEffect(async () => {
+		if (!paymentToken) return {};
+		setPaymentTokenInfo({
+			...((await getTokenInfo) as ConvertedTokenInfo),
+			...{ id: paymentToken },
+		});
+	}, [paymentToken]);
 
 	/**
 	 * This method gets all of the data relevant to a domain
 	 */
+
 	const refetch = useCallback(async () => {
 		try {
 			loadingDomainId.current = domainId;
@@ -93,21 +120,38 @@ export const useZnsDomain = (
 			setLoading(true);
 
 			const d = await getDomain(domainId);
+
 			if (loadingDomainId.current !== domainId) {
 				setLoading(false);
 				return;
 			}
 			setDomainMetadata(d.metadata);
-			const s = await getSubdomains(domainId);
+
+			let subdomains;
+
+			try {
+				subdomains = await getSubdomains(domainId);
+			} catch (e: any) {
+				console.error('Subdomains do not exist on domain', e);
+			}
+
 			if (loadingDomainId.current !== domainId) {
 				setLoading(false);
 				return;
 			}
+
+			const setSubdomains = subdomains === undefined ? [] : subdomains;
+
 			setDomain({
 				...d.domain,
 				...d.metadata,
-				subdomains: s,
+				subdomains: setSubdomains,
 			} as DisplayParentDomain);
+
+			const token = isRootDomain(d.domain.id)
+				? undefined
+				: await sdk.zauction.getPaymentTokenForDomain(domainId);
+			setPaymentToken(token);
 
 			setLoading(false);
 		} catch (e) {}
@@ -126,5 +170,12 @@ export const useZnsDomain = (
 		};
 	}, [domainId, sdk]);
 
-	return { loading, domain, refetch, domainMetadata };
+	return {
+		loading,
+		domain,
+		refetch,
+		domainMetadata,
+		paymentToken,
+		paymentTokenInfo,
+	};
 };

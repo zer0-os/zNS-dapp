@@ -5,8 +5,10 @@ import { useHistory } from 'react-router-dom';
 //-Library Imports
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers/lib/web3-provider';
-import useCurrency from 'lib/hooks/useCurrency';
-import { DomainMetrics } from '@zero-tech/zns-sdk/lib/types';
+import {
+	ConvertedTokenInfo,
+	DomainMetrics,
+} from '@zero-tech/zns-sdk/lib/types';
 import { ethers } from 'ethers';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
@@ -30,7 +32,6 @@ import { useBid } from './BidProvider';
 //-Constants Imports
 import { LABELS, ERROR } from './SubdomainTableCard.constants';
 import { ROUTES } from 'constants/routes';
-import { CURRENCY } from 'constants/currency';
 
 //-Styles Imports
 import styles from './SubdomainTableCard.module.scss';
@@ -45,11 +46,9 @@ const SubdomainTableCard = (props: any) => {
 	const { push: goTo } = useHistory();
 	const { makeABid, updated } = useBid();
 
-	const { wildPriceUsd } = useCurrency();
-
 	const domain = props.data;
+	const paymentTokenInfo: ConvertedTokenInfo = props.data.paymentTokenInfo;
 	const tradeData: DomainMetrics = domain?.metrics;
-
 	const domainMetadata = useDomainMetadata(domain?.metadata);
 	const isRootDomain = domain.name.split('.').length <= 2;
 	const isBiddable =
@@ -77,14 +76,14 @@ const SubdomainTableCard = (props: any) => {
 			if (isMounted.current === false) {
 				return;
 			}
-			const buyNowPrice = await sdk.zauction.getBuyNowPrice(domain.id);
-			if (buyNowPrice) {
-				setBuyNowPrice(Number(buyNowPrice));
-				setIsPriceDataLoading(false);
+			const buyNowListing = await sdk.zauction.getBuyNowListing(domain.id);
+			if (buyNowListing && buyNowListing.price) {
+				setBuyNowPrice(Number(ethers.utils.formatEther(buyNowListing.price)));
 			}
+			setIsPriceDataLoading(false);
 		} catch (err) {
 			setIsPriceDataLoading(false);
-			console.log(ERROR.FAIL_TO_RETRIEVE, err);
+			console.log(ERROR.FAIL_TO_RETRIEVE, domain.id, err);
 		}
 	};
 
@@ -139,16 +138,16 @@ const SubdomainTableCard = (props: any) => {
 							<label>{LABELS.TOP_BID}</label>
 							<span className={styles.Crypto}>
 								{tradeData.highestBid ? formatEthers(tradeData.highestBid) : 0}{' '}
-								{CURRENCY.WILD}
+								{paymentTokenInfo?.symbol}
 							</span>
-							{wildPriceUsd > 0 && (
+							{Number(paymentTokenInfo?.priceInUsd) > 0 && (
 								<span className={styles.Fiat}>
 									$
 									{tradeData.highestBid
 										? formatNumber(
 												Number(
 													ethers.utils.formatEther(tradeData?.highestBid),
-												) * wildPriceUsd,
+												) * Number(paymentTokenInfo?.priceInUsd),
 										  )
 										: 0}{' '}
 								</span>
@@ -165,6 +164,7 @@ const SubdomainTableCard = (props: any) => {
 							disabled={isOwnedByUser || !account}
 							isLoading={isPriceDataLoading}
 							className={styles.Button}
+							paymentTokenInfo={paymentTokenInfo}
 						/>
 					) : (
 						<BidButton

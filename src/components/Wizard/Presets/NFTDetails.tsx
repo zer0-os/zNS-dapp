@@ -7,7 +7,7 @@ import { truncateDomain } from 'lib/utils';
 import { DomainBidData } from 'lib/utils/bids';
 
 //- Constants Imports
-import { LABELS } from 'constants/labels';
+import { Labels } from 'constants/labels';
 
 //- Component Imports
 import {
@@ -101,7 +101,7 @@ const NFTDetails = ({
 						}}
 						onClick={showAllBidsModal}
 					>
-						{LABELS.VIEW_ALL_BIDS}
+						{Labels.VIEW_ALL_BIDS}
 					</TextButton>
 				)}
 			</div>

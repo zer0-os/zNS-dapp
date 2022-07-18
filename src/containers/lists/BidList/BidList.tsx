@@ -14,7 +14,7 @@ import { AcceptBid } from 'containers';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { Bid } from '@zero-tech/zauction-sdk';
-import { Domain } from '@zero-tech/zns-sdk/lib/types';
+import { ConvertedTokenInfo, Domain } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 
 //- Constants Imports
@@ -31,11 +31,11 @@ export type BidListProps = {
 	domain?: Domain;
 	domainMetadata?: Metadata;
 	onAccept?: () => void;
-	wildPriceUsd?: number;
 	isAccepting?: boolean;
 	isLoading?: boolean;
 	highestBid?: string;
 	isAcceptBidEnabled?: boolean;
+	paymentTokenInfo: ConvertedTokenInfo;
 };
 
 const BidList: React.FC<BidListProps> = ({
@@ -43,11 +43,11 @@ const BidList: React.FC<BidListProps> = ({
 	domain,
 	domainMetadata,
 	onAccept,
-	wildPriceUsd,
 	isAccepting,
 	isLoading,
 	highestBid,
 	isAcceptBidEnabled = false,
+	paymentTokenInfo,
 }) => {
 	//////////////////
 	// Data & State //
@@ -111,6 +111,7 @@ const BidList: React.FC<BidListProps> = ({
 					walletAddress={acceptingBid?.bidder ?? ''}
 					highestBid={highestBid ?? ''}
 					onClose={toggleAcceptBidModal}
+					paymentTokenInfo={paymentTokenInfo}
 				/>
 			) : (
 				<aside className={`${styles.Container} border-rounded border-primary`}>
@@ -130,19 +131,20 @@ const BidList: React.FC<BidListProps> = ({
 										{Number(
 											ethers.utils.formatEther(bid.amount),
 										).toLocaleString()}{' '}
-										WILD{' '}
-										{wildPriceUsd !== undefined && wildPriceUsd > 0 && (
-											<>
-												($
-												{(
-													Number(ethers.utils.formatEther(bid.amount)) *
-													wildPriceUsd
-												)
-													.toFixed(2)
-													.toLocaleString()}{' '}
-												USD)
-											</>
-										)}
+										{paymentTokenInfo.symbol}
+										{paymentTokenInfo.priceInUsd !== undefined &&
+											Number(paymentTokenInfo.priceInUsd) > 0 && (
+												<>
+													($
+													{(
+														Number(ethers.utils.formatEther(bid.amount)) *
+														Number(paymentTokenInfo.priceInUsd)
+													)
+														.toFixed(2)
+														.toLocaleString()}{' '}
+													USD)
+												</>
+											)}
 									</span>
 									<span>
 										by{' '}

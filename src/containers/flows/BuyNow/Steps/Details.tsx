@@ -4,6 +4,7 @@
  */
 
 // Component Imports
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import { Detail, FutureButton, Wizard } from 'components';
 
 // Library Imports
@@ -18,7 +19,7 @@ type DetailsProps = {
 	error?: string;
 	onCancel: () => void;
 	onNext: () => void;
-	wildPriceUsd: number;
+	paymentTokenInfo: ConvertedTokenInfo;
 	isWaitingForWalletConfirmation?: boolean;
 	didSucceed?: boolean;
 };
@@ -28,7 +29,7 @@ const Details = ({
 	error,
 	onCancel,
 	onNext,
-	wildPriceUsd,
+	paymentTokenInfo,
 	isWaitingForWalletConfirmation,
 	didSucceed,
 }: DetailsProps) => {
@@ -52,7 +53,7 @@ const Details = ({
 		} else {
 			return (
 				<p className="error-text text-center">
-					You have insufficient WILD to make this purchase
+					You have insufficient {paymentTokenInfo?.symbol} to make this purchase
 				</p>
 			);
 		}
@@ -73,7 +74,9 @@ const Details = ({
 									value:
 										Number(
 											ethers.utils.formatEther(data.buyNowPrice),
-										).toLocaleString() + ' WILD',
+										).toLocaleString() +
+										' ' +
+										paymentTokenInfo.symbol,
 								},
 						  ]
 						: undefined
@@ -85,7 +88,9 @@ const Details = ({
 					text={
 						Number(
 							ethers.utils.formatEther(data.balanceWild),
-						).toLocaleString() + ' WILD'
+						).toLocaleString() +
+						' ' +
+						paymentTokenInfo.symbol
 					}
 					subtext="Your Balance"
 					mainClassName={styles.Value}

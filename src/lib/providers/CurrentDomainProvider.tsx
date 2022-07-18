@@ -9,7 +9,8 @@ import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
 import { useWeb3React } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import { defaultNetworkId } from 'lib/network';
-import { getDomainId, zNAFromPathname } from 'lib/utils';
+import { appFromPathname, getDomainId, zNAFromPathname } from 'lib/utils';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 // Constants Imports
 import { IS_DEFAULT_NETWORK, ROOT_DOMAIN } from '../../constants/domains';
@@ -24,6 +25,8 @@ export const CurrentDomainContext = React.createContext({
 	loading: true,
 	refetch: () => {}, // @todo update this
 	setDomainMetadata: (v: Maybe<Metadata>) => {},
+	paymentToken: undefined as Maybe<string>,
+	paymentTokenInfo: {} as ConvertedTokenInfo,
 });
 
 const CurrentDomainProvider: React.FC = ({ children }) => {
@@ -47,6 +50,11 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 	const [domainMetadata, setDomainMetadata] = usePropsState(
 		znsDomain.domainMetadata,
 	);
+	const appPathname = appFromPathname(pathname);
+	const app =
+		appPathname === ROUTES.STAKING
+			? ROUTES.STAKING + ROUTES.STAKING_POOLS
+			: appPathname;
 
 	// Change document title based on current network
 	if (
@@ -56,7 +64,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 	) {
 		document.title = process.env.REACT_APP_TITLE + ' | ' + domainMetadata.title;
 	} else {
-		document.title = process.env.REACT_APP_TITLE + ' | Market';
+		document.title = process.env.REACT_APP_TITLE + ' | NFTs';
 	}
 
 	const contextValue = {
@@ -64,13 +72,15 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 		domainId,
 		domainRaw: domain,
 		domainMetadata,
-		app:
-			pathname.indexOf(ROUTES.MARKET) > -1
-				? ROUTES.MARKET
-				: ROUTES.STAKING + ROUTES.STAKING_POOLS,
+		app: app,
 		loading: znsDomain.loading,
 		refetch: znsDomain.refetch,
 		setDomainMetadata,
+		paymentToken: znsDomain.paymentToken,
+		paymentTokenInfo: {
+			...znsDomain.paymentTokenInfo,
+			id: znsDomain.paymentToken || '',
+		},
 	};
 
 	return (

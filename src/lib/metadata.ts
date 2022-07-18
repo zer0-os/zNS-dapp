@@ -20,6 +20,7 @@ export async function getMetadata(
 
 		let requestUrl = metadataUrl;
 		const hash = getHashFromIPFSUrl(metadataUrl);
+
 		requestUrl = DEFAULT_IPFS_GATEWAY + hash;
 
 		const response = await fetch(requestUrl);

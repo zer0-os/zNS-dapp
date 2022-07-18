@@ -44,11 +44,13 @@ const useCurrency = (refresh = true): CurrencyHook => {
 	}, [dispatch]);
 
 	useDidMount(() => {
-		getWildPriceUsd();
-		getLootPriceUsd();
-		getZeroPriceUsd();
-		getWildPricePercentageChange();
-		getZeroPricePercentageChange();
+		if (refresh) {
+			getWildPriceUsd();
+			getLootPriceUsd();
+			getZeroPriceUsd();
+			getWildPricePercentageChange();
+			getZeroPricePercentageChange();
+		}
 	});
 
 	return useMemo(() => currency, [currency]);

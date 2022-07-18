@@ -1,11 +1,11 @@
 export const MESSAGES = {
 	MINTING_IN_PROGRESS: 'Minting...',
-	MINTING_COMPLETED: 'Minting Successful',
+	MINTING_COMPLETED: 'Minted',
 	MINTING_TIME: 'This may take up to 20 minutes',
 };
 
 export const TITLE = {
-	MINT_NFT: 'Mint New NFT',
+	MINT_NFT: 'Mint Preview',
 };
 
 export const ALT_TEXT = {
@@ -14,5 +14,5 @@ export const ALT_TEXT = {
 };
 
 export const BUTTON_TEXT = {
-	ETHERSCAN: 'View on Etherscan',
+	VIEW_PROFILE: 'View In Profile',
 };

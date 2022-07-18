@@ -27,6 +27,7 @@ export { default as ConnectWalletPrompt } from './prompts/ConnectWalletPrompt/Co
 export { default as AcceptBid } from './flows/AcceptBid/AcceptBid';
 export { default as BuyNow } from './flows/BuyNow';
 export { default as CancelBid } from './flows/CancelBid/CancelBid';
+export { default as ClaimNFTContainer } from './flows/ClaimNFT';
 export { default as MakeABid } from './flows/MakeABid/MakeABid';
 export { default as MintNewNFT } from './flows/MintNewNFT/MintNewNFT';
 export { default as MintDropNFT } from './flows/MintDropNFT';

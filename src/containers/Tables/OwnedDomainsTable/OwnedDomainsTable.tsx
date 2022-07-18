@@ -1,7 +1,6 @@
 // Library Imports
 import { useWeb3React } from '@web3-react/core';
-import useOwnedDomains from './hooks/useOwnedDomains';
-import useCurrency from 'lib/hooks/useCurrency';
+import useOwnedDomains from 'lib/hooks/useOwnedDomains';
 
 // Component Imports
 import OwnedDomainsTableRow from './OwnedDomainsTableRow';
@@ -20,7 +19,6 @@ const OwnedDomainsTable = () => {
 	///////////
 	const { account } = useWeb3React();
 	const { isLoading, ownedDomains, refetch } = useOwnedDomains(account);
-	const { wildPriceUsd } = useCurrency();
 
 	// filter owned domains by network
 	const onNetworkOwnedDomains = filterOwnedDomainsByNetwork(ownedDomains);
@@ -35,11 +33,7 @@ const OwnedDomainsTable = () => {
 				<OwnedDomainsTableRow {...props} refetch={refetch} />
 			)}
 			gridComponent={(props: any) => (
-				<OwnedDomainsTableCard
-					{...props}
-					refetch={refetch}
-					wildPriceUsd={wildPriceUsd}
-				/>
+				<OwnedDomainsTableCard {...props} refetch={refetch} />
 			)}
 			infiniteScroll
 			isLoading={isLoading}

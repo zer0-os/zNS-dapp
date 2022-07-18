@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 //- Style Imports
 import styles from './MintDropNFTBanner.module.scss';
 import arrow from './assets/bidarrow.svg';
-import banner from './assets/kicks-s2-banner.gif';
+import banner from './assets/motos-banner.gif';
 
 type MintDropNFTBannerProps = {
 	title: string;
@@ -51,7 +51,7 @@ const MintDropNFTBanner: React.FC<MintDropNFTBannerProps> = ({
 			<div className={`${styles.Content}`}>
 				<div className={`${styles.TextContainer}`}>
 					<h2 className={`${styles.Title}`}>{title}</h2>
-					<p className={`${styles.Label}`}>{label}</p>
+					<div className={`${styles.Label}`}>{label}</div>
 				</div>
 
 				<p className={`${styles.Button}`}>

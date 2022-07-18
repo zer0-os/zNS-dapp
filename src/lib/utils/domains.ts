@@ -23,6 +23,9 @@ const getSubnodeHash = (parentHash: string, labelHash: string): string => {
 	return calculatedHash;
 };
 
+export const isRootDomain = (domainId: string | undefined): boolean =>
+	domainId === rootDomainId;
+
 export const getDomainId = (name: string): string => {
 	let hashReturn = rootDomainId;
 
@@ -147,3 +150,9 @@ export const truncateDomain = (
 	}
 	return domainName;
 };
+
+// Used to replace hardcoded WILD Token name in the constants string with the required domain token
+export const replaceWildWithProperToken = (
+	sourceString: string,
+	paymentTokenName: string,
+) => sourceString.replaceAll('WILD', paymentTokenName);

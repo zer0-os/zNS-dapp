@@ -1,0 +1,14 @@
+@use 'styles/variables/dimensions';
+
+.StepBarContainer {
+	display: none;
+	margin: -14px 6px 0 6px;
+
+	@media only screen and (min-width: #{dimensions.$breakpoint-mobile-xl}) {
+		display: flex;
+	}
+}
+
+.LoadingContent {
+	margin-top: 40px;
+}

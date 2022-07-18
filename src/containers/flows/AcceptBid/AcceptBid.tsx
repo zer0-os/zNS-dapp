@@ -13,7 +13,6 @@ import useAcceptBid from './hooks/useAcceptBid';
 import { Metadata } from 'lib/types';
 import { formatBidAmount } from 'lib/utils';
 import useNotification from 'lib/hooks/useNotification';
-import useCurrency from 'lib/hooks/useCurrency';
 import { useWeb3React } from '@web3-react/core';
 import { Bid } from '@zero-tech/zauction-sdk';
 import { useZnsSdk } from 'lib/hooks/sdk';
@@ -34,6 +33,7 @@ import {
 
 //- Styles Imports
 import styles from './AcceptBid.module.scss';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 type AcceptBidProps = {
 	acceptingBid: Bid | undefined;
@@ -48,6 +48,7 @@ type AcceptBidProps = {
 	walletAddress: string;
 	highestBid?: string;
 	onClose: () => void;
+	paymentTokenInfo: ConvertedTokenInfo;
 };
 
 const AcceptBid = ({
@@ -62,6 +63,7 @@ const AcceptBid = ({
 	walletAddress,
 	highestBid,
 	onClose,
+	paymentTokenInfo,
 }: AcceptBidProps) => {
 	//////////////////
 	// State & Data //
@@ -71,7 +73,6 @@ const AcceptBid = ({
 	const { accept, status } = useAcceptBid();
 	const { instance: sdk } = useZnsSdk();
 	const { account, library } = useWeb3React();
-	const { wildPriceUsd } = useCurrency();
 
 	//- Notification State
 	const { addNotification } = useNotification();
@@ -99,22 +100,21 @@ const AcceptBid = ({
 		setError(undefined);
 		(async () => {
 			try {
-				const isApproved =
+				const needsApproval =
 					await sdk.zauction.needsToApproveZAuctionToTransferNftsByBid(
-						domainId,
 						account,
 						acceptingBid,
 					);
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
-				if (isApproved) {
+				if (needsApproval) {
+					setStepContent(StepContent.ApproveZAuction);
+				} else {
 					setCurrentStep(Step.ConfirmDetails);
 					setStepContent(StepContent.Details);
-				} else {
-					setStepContent(StepContent.ApproveZAuction);
 				}
 			} catch (e) {
-				console.log(ERRORS.CONSOLE_TEXT);
+				console.error(ERRORS.CONSOLE_TEXT);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}
@@ -131,7 +131,6 @@ const AcceptBid = ({
 		(async () => {
 			try {
 				const tx = await sdk.zauction.approveZAuctionToTransferNftsByBid(
-					domainId,
 					acceptingBid,
 					library.getSigner(),
 				);
@@ -165,7 +164,7 @@ const AcceptBid = ({
 			);
 			setIsTransactionComplete(true);
 			setStepContent(StepContent.Success);
-		} catch (e) {
+		} catch (e: any) {
 			setCurrentStep(Step.ConfirmDetails);
 			setError(e.message);
 			setStepContent(StepContent.Details);
@@ -255,7 +254,7 @@ const AcceptBid = ({
 					walletAddress={walletAddress}
 					bidAmount={acceptingBid.amount}
 					highestBid={highestBid}
-					wildPriceUsd={wildPriceUsd}
+					paymentTokenInfo={paymentTokenInfo}
 					onClose={onClose}
 					onNext={onConfirm}
 				/>
@@ -275,6 +274,7 @@ const AcceptBid = ({
 				title={domainTitle}
 				highestBid={highestBid}
 				bidAmount={acceptingBid?.amount ?? ''}
+				paymentTokenInfo={paymentTokenInfo}
 				onClose={onFinish}
 			/>
 		),

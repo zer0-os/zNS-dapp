@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 //- React Imports
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 //- Global Component Imports
 import { Overlay, StepBar, Wizard } from 'components';
@@ -26,10 +26,9 @@ import { useZnsSdk } from 'lib/hooks/sdk';
 import { Domain } from 'lib/types';
 import { useBidProvider } from 'lib/hooks/useBidProvider';
 import useNotification from 'lib/hooks/useNotification';
-import useCurrency from 'lib/hooks/useCurrency';
 import { useDomainMetadata } from 'lib/hooks/useDomainMetadata';
 import { truncateDomain } from 'lib/utils';
-import { BigNumber, ethers } from 'ethers';
+import { ethers } from 'ethers';
 import { useDidMount } from 'lib/hooks/useDidMount';
 import { useZnsContracts } from 'lib/contracts';
 
@@ -42,15 +41,23 @@ import styles from './MakeABid.module.scss';
 //- Types Imports
 import { Step, StepContent } from './MakeABid.types';
 import { ERC20 } from 'types';
+import useAsyncEffect from 'use-async-effect';
+import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 const maxCharacterLength = 28;
 export type MakeABidProps = {
 	domain: Domain;
 	onBid: () => void;
 	onClose: () => void;
+	paymentTokenInfo: ConvertedTokenInfo;
 };
 
-const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
+const MakeABid = ({
+	domain,
+	onBid,
+	onClose,
+	paymentTokenInfo,
+}: MakeABidProps) => {
 	//////////
 	// Data //
 	//////////
@@ -64,14 +71,13 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	const { account, library } = useWeb3React();
 	const { placeBid } = useBidProvider();
 	const { bidData, isLoading } = useBidData(domain.id);
-	const { wildPriceUsd } = useCurrency();
 	const { addNotification } = useNotification();
 
 	// Refs
 	const isMounted = useRef(false);
 
 	// State
-	const [wildBalance, setWildBalance] = useState<number | undefined>();
+	const [tokenBalance, setTokenBalance] = useState<number | undefined>();
 	const [currentStep, setCurrentStep] = useState<Step>(Step.zAuction);
 	const [bid, setBid] = useState<string>('');
 	const [isBidPlaced, setIsBidPlaced] = useState<boolean>(false);
@@ -107,21 +113,21 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		(async () => {
 			try {
 				const needsApproval =
-					await sdk.zauction.needsToApproveZAuctionToSpendTokens(
-						domain.id,
+					await sdk.zauction.needsToApproveZAuctionToSpendTokensByPaymentToken(
 						account,
-						BigNumber.from('1000000000'),
+						paymentTokenInfo.id,
+						'1000000000',
 					);
 				// Timeout to prevent jolt
 				await new Promise((r) => setTimeout(r, 1500));
 				if (needsApproval) {
+					setStepContent(StepContent.ApproveZAuction);
+				} else {
 					setCurrentStep(Step.ConfirmDetails);
 					setStepContent(StepContent.Details);
-				} else {
-					setStepContent(StepContent.ApproveZAuction);
 				}
 			} catch (e) {
-				console.log(ERRORS.CONSOLE_TEXT);
+				console.error(ERRORS.CONSOLE_TEXT, e);
 				setCurrentStep(Step.zAuction);
 				setStepContent(StepContent.FailedToCheckZAuction);
 			}
@@ -141,8 +147,8 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		setStepContent(StepContent.WaitingForWallet);
 		(async () => {
 			try {
-				const tx = await sdk.zauction.approveZAuctionToSpendTokens(
-					domain.id,
+				const tx = await sdk.zauction.approveZAuctionToSpendPaymentToken(
+					paymentTokenInfo.id,
 					library.getSigner(),
 				);
 				try {
@@ -183,7 +189,10 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				return;
 			}
 			addNotification(
-				getSuccessNotification(getBidAmountText(bid), formattedDomain),
+				getSuccessNotification(
+					getBidAmountText(bid, paymentTokenInfo.symbol),
+					formattedDomain,
+				),
 			);
 			setIsBidPlaced(true);
 			setStepContent(StepContent.Success);
@@ -225,26 +234,28 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 	}, [domainMetadata]);
 
 	/**
-	 * Triggers calls to get zAuction approval status and WILD balance
+	 * Triggers calls to get zAuction approval status and Token balance
 	 * for the connect account/wallet.
 	 * Saves these variables to state, rather than returns them.
 	 * @returns void
 	 */
-	const getAccountData = () => {
+	const getAccountData = async () => {
 		if (!account) {
 			return;
 		}
 		checkZAuctionApproval();
-		wildContract.balanceOf(account).then((balance) => {
-			setWildBalance(parseInt(ethers.utils.formatEther(balance), 10));
-		});
+		const balance = await sdk.zauction.getUserBalanceForPaymentToken(
+			account,
+			paymentTokenInfo.id,
+		);
+		setTokenBalance(parseInt(ethers.utils.formatEther(balance), 10));
 	};
 
 	/////////////
 	// Effects //
 	/////////////
 
-	useEffect(getAccountData, [wildContract, account]);
+	useAsyncEffect(getAccountData, [wildContract, account]);
 	useDidMount(() => {
 		isMounted.current = true;
 		getAccountData();
@@ -291,7 +302,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		),
 		// NFT details confirmation
 		[StepContent.Details]:
-			wildBalance !== undefined && !isLoading ? (
+			tokenBalance !== undefined && !isLoading ? (
 				<Details
 					stepContent={stepContent}
 					bidData={bidData}
@@ -299,8 +310,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 					creator={domain?.minter?.id || ''}
 					domainName={formattedDomain}
 					title={domainMetadata?.title ?? ''}
-					wildBalance={wildBalance}
-					wildPriceUsd={wildPriceUsd}
+					tokenBalance={tokenBalance}
 					highestBid={bidData?.highestBid?.amount}
 					error={error}
 					bid={bid}
@@ -308,6 +318,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 					setBid={setBid}
 					onClose={onClose}
 					onConfirm={onConfirm}
+					paymentTokenInfo={paymentTokenInfo}
 				/>
 			) : (
 				<Wizard.Loading message={MESSAGES.TEXT_LOADING} />
@@ -316,7 +327,7 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 		// Placing Bid
 		[StepContent.PlacingBid]: <Wizard.Loading message={statusText} />,
 		// Bid Placed
-		[StepContent.Success]: wildBalance && (
+		[StepContent.Success]: tokenBalance && (
 			<Details
 				stepContent={stepContent}
 				bidData={bidData}
@@ -324,10 +335,11 @@ const MakeABid = ({ domain, onBid, onClose }: MakeABidProps) => {
 				creator={domain?.minter?.id || ''}
 				domainName={formattedDomain}
 				title={domainMetadata?.title ?? ''}
-				wildBalance={wildBalance}
+				tokenBalance={tokenBalance}
 				highestBid={bidData?.highestBid?.amount}
 				bid={bid}
 				onClose={onBid}
+				paymentTokenInfo={paymentTokenInfo}
 			/>
 		),
 	};
