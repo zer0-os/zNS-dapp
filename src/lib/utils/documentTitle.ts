@@ -12,6 +12,7 @@ export const useDocumentTitle = (
 	const isStakingTitle = app.includes(ROUTES.STAKING);
 	const isProfileTitle = app.includes(ROUTES.PROFILE);
 
+	// set title
 	if (
 		zna.length > 0 &&
 		zna !== process.env.REACT_APP_NETWORK &&
