@@ -103,7 +103,7 @@ const GenericTable = (props: any) => {
 	// Toggles to grid view when viewport
 	// resizes to below 744px
 	const handleResize = useCallback(() => {
-		if (window.innerWidth < GRID_BREAKPOINT) {
+		if (window.innerWidth < GRID_BREAKPOINT && props.gridComponent) {
 			changeView(true);
 		}
 	}, [changeView]);
