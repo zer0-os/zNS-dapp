@@ -59,7 +59,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const isMobile = useMatchMedia('phone');
 	const isMobilePortrait = useMatchMedia('(max-width: 569px)');
 
-	const enableBanner = true;
+	const enableBanner = false;
 
 	const location = useLocation();
 	const nftView = useMemo(
