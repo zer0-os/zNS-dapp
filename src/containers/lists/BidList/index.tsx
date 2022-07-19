@@ -18,7 +18,7 @@ export type BidListContainerProps = {
 	bids: Bid[];
 	domain?: Domain;
 	domainMetadata?: Metadata;
-	onAccept?: () => void;
+	onAcceptSuccess?: () => void;
 	isLoading?: boolean;
 	highestBid?: string;
 	paymentTokenInfo: ConvertedTokenInfo;
@@ -28,7 +28,7 @@ const BidListContainer: React.FC<BidListContainerProps> = ({
 	bids,
 	domain,
 	domainMetadata,
-	onAccept,
+	onAcceptSuccess,
 	isLoading,
 	highestBid,
 	paymentTokenInfo,
@@ -50,7 +50,7 @@ const BidListContainer: React.FC<BidListContainerProps> = ({
 	}, [isAcceptBidModalOpen]);
 
 	const handleAcceptBid = (bid: Bid) => {
-		if (onAccept && !isAcceptBidProcessing) {
+		if (onAcceptSuccess && !isAcceptBidProcessing) {
 			setAcceptingBid(bid);
 			toggleAcceptBidModal();
 		}
@@ -61,12 +61,12 @@ const BidListContainer: React.FC<BidListContainerProps> = ({
 	////////////
 	return (
 		<>
-			{isAcceptBidModalOpen && onAccept ? (
+			{isAcceptBidModalOpen && onAcceptSuccess ? (
 				// tidy up props
 				<AcceptBid
 					acceptingBid={acceptingBid}
 					domainMetadata={domainMetadata}
-					refetch={onAccept}
+					refetch={onAcceptSuccess}
 					isLoading={isLoading}
 					assetUrl={domainMetadata?.image ?? ''}
 					creatorId={domain?.minter ?? ''}

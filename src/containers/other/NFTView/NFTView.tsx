@@ -153,11 +153,6 @@ const NFTView: React.FC<NFTViewProps> = ({
 	// Functions //
 	///////////////
 
-	const handleOnAccept = () => {
-		refetch();
-		closeModal();
-	};
-
 	const onBid = useCallback(async () => {
 		getPriceData();
 		getHistory();
@@ -165,6 +160,11 @@ const NFTView: React.FC<NFTViewProps> = ({
 
 	const handleOnBid = () => {
 		onBid();
+		closeModal();
+	};
+
+	const handleOnAccept = () => {
+		refetch();
 		closeModal();
 	};
 
@@ -213,7 +213,7 @@ const NFTView: React.FC<NFTViewProps> = ({
 				bids: allBids ?? [],
 				domain: viewBidsDomainData,
 				domainMetadata: domainMetadata ?? undefined,
-				onAccept: handleOnAccept,
+				onAcceptSuccess: handleOnAccept,
 				isLoading: isBidDataLoading,
 				highestBid: String(highestBidAsWei),
 				paymentTokenInfo: paymentTokenInfo,
