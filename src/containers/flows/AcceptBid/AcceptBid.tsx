@@ -43,12 +43,12 @@ type AcceptBidProps = {
 	assetUrl: string;
 	creatorId: string;
 	domainTitle: string;
-	domainId: string;
 	domainName: string;
 	walletAddress: string;
 	highestBid?: string;
 	onClose: () => void;
 	paymentTokenInfo: ConvertedTokenInfo;
+	setIsAcceptBidProcessing: (state: boolean) => void;
 };
 
 const AcceptBid = ({
@@ -58,12 +58,12 @@ const AcceptBid = ({
 	assetUrl,
 	creatorId,
 	domainTitle,
-	domainId,
 	domainName,
 	walletAddress,
 	highestBid,
 	onClose,
 	paymentTokenInfo,
+	setIsAcceptBidProcessing,
 }: AcceptBidProps) => {
 	//////////////////
 	// State & Data //
@@ -74,19 +74,18 @@ const AcceptBid = ({
 	const { instance: sdk } = useZnsSdk();
 	const { account, library } = useWeb3React();
 
+	// Prevent state update to unmounted component
+	const isMounted = useRef(false);
+
 	//- Notification State
 	const { addNotification } = useNotification();
-
+	const [error, setError] = useState<string | undefined>();
+	const [currentStep, setCurrentStep] = useState<Step>(Step.zAuction);
 	const [stepContent, setStepContent] = useState<StepContent>(
 		StepContent.CheckingZAuctionApproval,
 	);
-	const [currentStep, setCurrentStep] = useState<Step>(Step.zAuction);
 	const [isTransactionComplete, setIsTransactionComplete] =
 		useState<boolean>(false);
-	const [error, setError] = useState<string | undefined>();
-
-	// Prevent state update to unmounted component
-	const isMounted = useRef(false);
 
 	///////////////
 	// Functions //
@@ -154,6 +153,7 @@ const AcceptBid = ({
 		setError('');
 		setCurrentStep(Step.AcceptBid);
 		setStepContent(StepContent.Accepting);
+		setIsAcceptBidProcessing(true);
 		try {
 			await accept(acceptingBid!);
 			addNotification(
@@ -169,6 +169,7 @@ const AcceptBid = ({
 			setError(e.message);
 			setStepContent(StepContent.Details);
 		}
+		setIsAcceptBidProcessing(false);
 		if (!isMounted.current) return;
 	};
 

@@ -8,7 +8,7 @@ import { Artwork, OptionDropdown, Overlay, Spinner } from 'components';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Containers Imports
-import { BidList } from 'containers';
+import BidList from 'containers/lists/BidList';
 import { DomainSettings } from 'containers/other/NFTView/elements';
 
 //- Library Imports
@@ -102,7 +102,6 @@ const OwnedDomainsTableRow = ({
 						onAccept={refetch}
 						isLoading={isLoadingBidData}
 						highestBid={highestBid?.amount}
-						isAcceptBidEnabled
 						paymentTokenInfo={paymentTokenInfo}
 					/>
 				</Overlay>

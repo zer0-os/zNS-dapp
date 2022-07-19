@@ -41,7 +41,7 @@ export { default as OwnedDomainsTable } from './Tables/OwnedDomainsTable/OwnedDo
 export { default as SubdomainTable } from './Tables/SubdomainTable/SubdomainTable';
 
 // Lists
-export { default as BidList } from './lists/BidList/BidList';
+export { default as BidList } from './lists/BidList';
 
 // Other
 export { default as BannerContainer } from './other/BannerContainer/BannerContainer';

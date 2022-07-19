@@ -4,7 +4,7 @@ import { ClaimNFTContainerProps } from 'containers/flows/ClaimNFT';
 import { MakeABidProps } from 'containers/flows/MakeABid/MakeABid';
 import { SetBuyNowContainerProps } from 'containers/flows/SetBuyNow';
 import { TransferOwnershipProps } from 'containers/flows/TransferOwnership/TransferOwnership';
-import { BidListProps } from 'containers/lists/BidList/BidList';
+import { BidListContainerProps } from 'containers/lists/BidList';
 import { DomainSettingsProps } from 'containers/other/NFTView/elements/DomainSettings/DomainSettings';
 
 export enum NFTViewModalType {
@@ -32,7 +32,7 @@ export type TransferOwnershipContentProps = Omit<
 
 export type SetBuyNowContentProps = Omit<SetBuyNowContainerProps, 'closeModal'>;
 
-export type BidListContentProps = Omit<BidListProps, 'closeModal'>;
+export type BidListContentProps = Omit<BidListContainerProps, 'closeModal'>;
 
 export type ClaimNFTContentProps = Omit<ClaimNFTContainerProps, 'closeModal'>;
 
