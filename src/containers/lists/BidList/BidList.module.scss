@@ -30,10 +30,12 @@ $gutter: 16px;
 }
 
 .Accepting {
-	opacity: 0.5;
+	&.isProcessing {
+		opacity: 0.5;
 
-	* {
-		pointer-events: none;
+		* {
+			pointer-events: none;
+		}
 	}
 }
 

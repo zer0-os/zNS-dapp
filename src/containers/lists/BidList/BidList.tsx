@@ -13,12 +13,14 @@ import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 import { ethers } from 'ethers';
 
 //- Constants Imports
-import { MESSAGES } from './BidList.constants';
+import { Labels } from './BidList.constants';
 
 // Style Imports
 import styles from './BidList.module.scss';
+import classNames from 'classnames/bind';
 
 const moment = require('moment');
+const cx = classNames.bind(styles);
 
 export type BidListProps = {
 	bids: Bid[];
@@ -55,15 +57,21 @@ const BidList: React.FC<BidListProps> = ({
 	// Render //
 	////////////
 	return (
-		<aside className={`${styles.Container} border-rounded border-primary`}>
+		<aside
+			className={classNames(styles.Container, 'border-rounded border-primary')}
+		>
 			<div className={styles.Header}>
-				<h4>All bids</h4>
+				<h4>{Labels.ALL_BIDS}</h4>
 				<hr className="glow" />
 			</div>
 			{isAcceptBidProcessing && (
-				<p className={styles.Pending}>Accept bid transaction pending.</p>
+				<p className={styles.Pending}>{Labels.TRANSACTION_PENDING}</p>
 			)}
-			<ul className={isAcceptBidProcessing ? styles.Accepting : ''}>
+			<ul
+				className={cx(styles.Accepting, {
+					isProcessing: isAcceptBidProcessing,
+				})}
+			>
 				{bidsToShow.map((bid: Bid, i: number) => (
 					<li key={bid.bidNonce} className={styles.Bid}>
 						<div>
@@ -96,7 +104,7 @@ const BidList: React.FC<BidListProps> = ({
 									{bid.bidder.substring(0, 4)}...
 									{bid.bidder.substring(bid.bidder.length - 4)}
 								</a>
-								{account === bid.bidder && MESSAGES.YOUR_WALLET}
+								{account === bid.bidder && Labels.YOUR_WALLET}
 							</span>
 						</div>
 						{
@@ -106,7 +114,7 @@ const BidList: React.FC<BidListProps> = ({
 										glow={!isAcceptBidProcessing}
 										onClick={() => openAcceptBid(bid)}
 									>
-										Accept
+										{Labels.BUTTON}
 									</FutureButton>
 								)}
 							</>
