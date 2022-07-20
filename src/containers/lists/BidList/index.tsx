@@ -59,36 +59,36 @@ const BidListContainer: React.FC<BidListContainerProps> = ({
 	////////////
 	// Render //
 	////////////
-	return (
-		<>
-			{isAcceptBidModalOpen && onAcceptSuccess ? (
-				// tidy up props
-				<AcceptBid
-					acceptingBid={acceptingBid}
-					domainMetadata={domainMetadata}
-					refetch={onAcceptSuccess}
-					isLoading={isLoading}
-					assetUrl={domainMetadata?.image ?? ''}
-					creatorId={domain?.minter ?? ''}
-					domainTitle={domainMetadata?.title ?? ''}
-					domainName={domain?.name ?? ''}
-					walletAddress={acceptingBid?.bidder ?? ''}
-					highestBid={highestBid ?? ''}
-					onClose={toggleAcceptBidModal}
-					paymentTokenInfo={paymentTokenInfo}
-					setIsAcceptBidProcessing={setIsAcceptBidProcessing}
-				/>
-			) : (
-				<BidList
-					bids={bids}
-					paymentTokenInfo={paymentTokenInfo}
-					isAcceptBidEnabled
-					isAcceptBidProcessing={isAcceptBidProcessing}
-					openAcceptBid={handleAcceptBid}
-				/>
-			)}
-		</>
-	);
+
+	if (isAcceptBidModalOpen && onAcceptSuccess) {
+		return (
+			<AcceptBid
+				acceptingBid={acceptingBid}
+				domainMetadata={domainMetadata}
+				refetch={onAcceptSuccess}
+				isLoading={isLoading}
+				assetUrl={domainMetadata?.image ?? ''}
+				creatorId={domain?.minter ?? ''}
+				domainTitle={domainMetadata?.title ?? ''}
+				domainName={domain?.name ?? ''}
+				walletAddress={acceptingBid?.bidder ?? ''}
+				highestBid={highestBid ?? ''}
+				onClose={toggleAcceptBidModal}
+				paymentTokenInfo={paymentTokenInfo}
+				setIsAcceptBidProcessing={setIsAcceptBidProcessing}
+			/>
+		);
+	} else {
+		return (
+			<BidList
+				bids={bids}
+				paymentTokenInfo={paymentTokenInfo}
+				isAcceptBidEnabled
+				isAcceptBidProcessing={isAcceptBidProcessing}
+				openAcceptBid={handleAcceptBid}
+			/>
+		);
+	}
 };
 
 export default BidListContainer;
