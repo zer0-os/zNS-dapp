@@ -196,6 +196,8 @@ const MakeABid = ({
 			);
 			setIsBidPlaced(true);
 			setStepContent(StepContent.Success);
+			// refetch bid data once bid successful
+			onBid();
 		} catch (e) {
 			if (!isMounted.current) {
 				return;
@@ -338,7 +340,7 @@ const MakeABid = ({
 				tokenBalance={tokenBalance}
 				highestBid={bidData?.highestBid?.amount}
 				bid={bid}
-				onClose={onBid}
+				onClose={onClose}
 				paymentTokenInfo={paymentTokenInfo}
 			/>
 		),
