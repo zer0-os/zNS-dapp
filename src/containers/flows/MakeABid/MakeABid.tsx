@@ -221,6 +221,14 @@ const MakeABid = ({
 		setStepContent(i);
 	};
 
+	/*
+	 * Handles close modal events on successful bid placed
+	 */
+	const handleCloseModal = () => {
+		onBid();
+		onClose();
+	};
+
 	/**
 	 * URL to the image for the NFT being bidded on
 	 */
@@ -338,7 +346,7 @@ const MakeABid = ({
 				tokenBalance={tokenBalance}
 				highestBid={bidData?.highestBid?.amount}
 				bid={bid}
-				onClose={onBid}
+				onClose={handleCloseModal}
 				paymentTokenInfo={paymentTokenInfo}
 			/>
 		),
