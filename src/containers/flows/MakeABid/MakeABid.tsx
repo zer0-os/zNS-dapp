@@ -196,6 +196,8 @@ const MakeABid = ({
 			);
 			setIsBidPlaced(true);
 			setStepContent(StepContent.Success);
+			// refetch bid data once bid successful
+			onBid();
 		} catch (e) {
 			if (!isMounted.current) {
 				return;
@@ -219,14 +221,6 @@ const MakeABid = ({
 	const onStepNavigation = (i: number) => {
 		setCurrentStep(i);
 		setStepContent(i);
-	};
-
-	/*
-	 * Handles close modal events on successful bid placed
-	 */
-	const handleCloseModal = () => {
-		onBid();
-		onClose();
 	};
 
 	/**
@@ -346,7 +340,7 @@ const MakeABid = ({
 				tokenBalance={tokenBalance}
 				highestBid={bidData?.highestBid?.amount}
 				bid={bid}
-				onClose={handleCloseModal}
+				onClose={onClose}
 				paymentTokenInfo={paymentTokenInfo}
 			/>
 		),
