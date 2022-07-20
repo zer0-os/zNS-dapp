@@ -1,10 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { DisplayParentDomain, Maybe, Metadata } from 'lib/types';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useZnsSdk } from 'lib/hooks/sdk';
 import { getMetadata } from 'lib/metadata';
 import { Domain, ConvertedTokenInfo } from '@zero-tech/zns-sdk';
-import useAsyncEffect from 'use-async-effect';
 import { isRootDomain } from 'lib/utils';
 import getPaymentTokenInfo from 'lib/paymentToken';
 
@@ -61,6 +60,12 @@ const formatDomain = (domain: Domain): DisplayParentDomain => {
 	return formattedDomain;
 };
 
+interface DomainData {
+	domain: DisplayParentDomain | undefined;
+	metadata: Metadata | undefined;
+	paymentTokenInfo: ConvertedTokenInfo;
+}
+
 export const useZnsDomain = (
 	domainId: string,
 	chainId: number,
@@ -71,12 +76,7 @@ export const useZnsDomain = (
 	const loadingDomainId = useRef<string | undefined>();
 
 	const [loading, setLoading] = useState(true);
-	const [domain, setDomain] = useState<DisplayParentDomain | undefined>();
-	const [domainMetadata, setDomainMetadata] = useState<Maybe<Metadata>>();
-	const [paymentToken, setPaymentToken] = useState<Maybe<string>>();
-	const [paymentTokenInfo, setPaymentTokenInfo] = useState<ConvertedTokenInfo>(
-		{} as ConvertedTokenInfo,
-	);
+	const [domainData, setDomainData] = useState<DomainData | undefined>();
 
 	const getDomain = async (id: string) => {
 		const domain = formatDomain(await sdk.getDomainById(id));
@@ -88,35 +88,18 @@ export const useZnsDomain = (
 
 	const getSubdomains = async (id: string) => {
 		// Disable DataStore
-		const subs = formatSubdomains(await sdk.getSubdomainsById(id, false));
-		return subs;
+		return formatSubdomains(await sdk.getSubdomainsById(id, false));
 	};
-
-	const getTokenInfo = useMemo(async () => {
-		if (!paymentToken) return {};
-		const token = await getPaymentTokenInfo(sdk, paymentToken);
-		return token;
-	}, [paymentToken]);
-
-	useAsyncEffect(async () => {
-		if (!paymentToken) return {};
-		setPaymentTokenInfo({
-			...((await getTokenInfo) as ConvertedTokenInfo),
-			...{ id: paymentToken },
-		});
-	}, [paymentToken]);
 
 	/**
 	 * This method gets all of the data relevant to a domain
 	 */
-
 	const refetch = useCallback(async () => {
 		try {
 			loadingDomainId.current = domainId;
 
 			// Reset state objects
-			setDomainMetadata(undefined);
-			setDomain(undefined);
+			setDomainData(undefined);
 			setLoading(true);
 
 			const d = await getDomain(domainId);
@@ -125,7 +108,6 @@ export const useZnsDomain = (
 				setLoading(false);
 				return;
 			}
-			setDomainMetadata(d.metadata);
 
 			let subdomains;
 
@@ -135,36 +117,42 @@ export const useZnsDomain = (
 				console.error('Subdomains do not exist on domain', e);
 			}
 
-			if (loadingDomainId.current !== domainId) {
+			if (loadingDomainId.current !== domainId || isMounted.current === false) {
 				setLoading(false);
 				return;
 			}
 
-			const setSubdomains = subdomains === undefined ? [] : subdomains;
-
-			setDomain({
-				...d.domain,
-				...d.metadata,
-				subdomains: setSubdomains,
-			} as DisplayParentDomain);
-
-			const token = isRootDomain(d.domain.id)
+			let paymentToken;
+			const tokenId = isRootDomain(d.domain.id)
 				? undefined
 				: await sdk.zauction.getPaymentTokenForDomain(domainId);
-			setPaymentToken(token);
+			if (tokenId) {
+				paymentToken = await getPaymentTokenInfo(sdk, tokenId);
+			}
 
-			setLoading(false);
+			if (isMounted.current) {
+				setDomainData({
+					domain: {
+						...d.domain,
+						...d.metadata,
+						subdomains: subdomains ?? [],
+					} as DisplayParentDomain,
+					metadata: d.metadata,
+					paymentTokenInfo: paymentToken
+						? { ...paymentToken, id: tokenId! }
+						: ({} as ConvertedTokenInfo),
+				});
+				setLoading(false);
+			}
 		} catch (e) {}
-	}, [domainId, chainId]);
+	}, [domainId]);
 
 	useEffect(() => {
 		isMounted.current = true;
 		if (!domainId || !sdk) {
 			return;
 		}
-
 		refetch();
-
 		return () => {
 			isMounted.current = false;
 		};
@@ -172,10 +160,11 @@ export const useZnsDomain = (
 
 	return {
 		loading,
-		domain,
+		domain: domainData?.domain,
 		refetch,
-		domainMetadata,
-		paymentToken,
-		paymentTokenInfo,
+		domainMetadata: domainData?.metadata,
+		paymentToken: domainData?.paymentTokenInfo.id,
+		paymentTokenInfo:
+			domainData?.paymentTokenInfo ?? ({} as ConvertedTokenInfo),
 	};
 };
