@@ -99,7 +99,7 @@ const useSubdomainTableData = (
 								id: string;
 								paymentTokenInfo: ConvertedTokenInfo;
 							}[]
-					  ).find((i) => i.id)?.paymentTokenInfo
+					  ).find((i) => i.id === item.id)?.paymentTokenInfo
 					: paymentTokenData,
 			}));
 			setData(subDomainsData);
