@@ -8,7 +8,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { ConvertedTokenInfo } from '@zero-tech/zns-sdk';
 
 //- Library Imports
-import { useDocumentTitle } from 'lib/utils/documentTitle';
+import { updateDocumentTitle } from 'lib/utils/documentTitle';
 import { defaultNetworkId } from 'lib/network';
 import { appFromPathname, getDomainId, zNAFromPathname } from 'lib/utils';
 import { useZnsDomain } from 'lib/hooks/useZnsDomain';
@@ -58,7 +58,7 @@ const CurrentDomainProvider: React.FC = ({ children }) => {
 			: appPathname;
 
 	// Change document title based on current network
-	useDocumentTitle(zna, app, domainMetadata?.title);
+	updateDocumentTitle(zna, app, domainMetadata?.title);
 
 	const contextValue = {
 		domain: znsDomain.domain,

@@ -1,7 +1,7 @@
 //- Constants Imports
 import { ROUTES } from 'constants/routes';
 
-export const useDocumentTitle = (
+export const updateDocumentTitle = (
 	zna: string,
 	app: string,
 	domainMetadataTitle?: string,
