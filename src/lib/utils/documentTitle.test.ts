@@ -2,13 +2,13 @@
 import { ROUTES } from 'constants/routes';
 
 //- Constants Imports
-import { useDocumentTitle } from './documentTitle';
+import { updateDocumentTitle } from './documentTitle';
 
 //////////////////////////
 // f:: getDocumentTitle //
 //////////////////////////
 
-describe('getDocumentTitle', () => {
+describe('updateDocumentTitle', () => {
 	describe('Default Network (no network set)', () => {
 		const env = process.env;
 
@@ -32,7 +32,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.MARKET;
 				const domainMetadataTitle = undefined;
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe('Zero | NFTs');
 			});
@@ -42,7 +42,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.MARKET;
 				const domainMetadataTitle = 'Wilder World';
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe(`Zero | ${domainMetadataTitle}`);
 			});
@@ -52,7 +52,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.MARKET;
 				const domainMetadataTitle = 'On the water';
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe(`Zero | ${domainMetadataTitle}`);
 			});
@@ -64,7 +64,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.ZDAO;
 				const domainMetadataTitle = undefined;
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe('Zero | DAOs');
 			});
@@ -74,7 +74,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.ZDAO;
 				const domainMetadataTitle = 'Test DAO One';
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe(`Zero | ${domainMetadataTitle}`);
 			});
@@ -86,7 +86,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.STAKING;
 				const domainMetadataTitle = undefined;
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe('Zero | Staking');
 			});
@@ -98,7 +98,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.PROFILE;
 				const domainMetadataTitle = undefined;
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe('Zero | Profile');
 			});
@@ -127,7 +127,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.MARKET;
 				const domainMetadataTitle = undefined;
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe('Wilder World | NFTs');
 			});
@@ -137,7 +137,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.MARKET;
 				const domainMetadataTitle = 'Test Subdomain';
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe(`Wilder World | ${domainMetadataTitle}`);
 			});
@@ -147,7 +147,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.MARKET;
 				const domainMetadataTitle = 'On the water';
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe(`Wilder World | ${domainMetadataTitle}`);
 			});
@@ -159,7 +159,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.ZDAO;
 				const domainMetadataTitle = undefined;
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe('Wilder World | DAOs');
 			});
@@ -169,7 +169,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.ZDAO;
 				const domainMetadataTitle = 'Test DAO One';
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe(`Wilder World | ${domainMetadataTitle}`);
 			});
@@ -181,7 +181,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.STAKING;
 				const domainMetadataTitle = undefined;
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe('Wilder World | Staking');
 			});
@@ -193,7 +193,7 @@ describe('getDocumentTitle', () => {
 				const app = ROUTES.PROFILE;
 				const domainMetadataTitle = undefined;
 
-				useDocumentTitle(zna, app, domainMetadataTitle);
+				updateDocumentTitle(zna, app, domainMetadataTitle);
 
 				expect(document.title).toBe('Wilder World | Profile');
 			});
