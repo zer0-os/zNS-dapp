@@ -1,12 +1,10 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
 import { HEADERS } from './BidTable';
 import BidTableRow, { ACTIONS, TEST_ID } from './BidTableRow';
 import { ethers } from 'ethers';
-
-import { TOKEN } from './BidTableRow.constants';
+import { renderWithRedux } from 'lib/testUtils';
 
 const mockDate = new Date(16461998260001);
 
@@ -32,7 +30,7 @@ jest.mock(
 );
 
 const renderComponent = ({ data = mockData } = {}) => {
-	return render(
+	return renderWithRedux(
 		<table>
 			<tbody>
 				<BidTableRow data={data} />
@@ -58,8 +56,8 @@ describe('BidTableRow component', () => {
 		const { getByTestId } = renderComponent();
 		const yourBid = getByTestId(TEST_ID.YOUR_BID);
 		const highsetBid = getByTestId(TEST_ID.HIGHEST_BID);
-		expect(yourBid).toHaveTextContent('500.0 ' + TOKEN);
-		expect(highsetBid.textContent).toBe('1000.0 ' + TOKEN);
+		expect(yourBid).toHaveTextContent('500.0');
+		expect(highsetBid.textContent).toBe('1000.0Leading');
 	});
 
 	it('should render options menu correctly', () => {

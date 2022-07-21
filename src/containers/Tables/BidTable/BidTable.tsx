@@ -31,6 +31,11 @@ export const HEADERS = [
 		accessor: '',
 		className: '',
 	},
+	{
+		label: '',
+		accessor: '',
+		className: '',
+	},
 ];
 
 export enum Modal {
