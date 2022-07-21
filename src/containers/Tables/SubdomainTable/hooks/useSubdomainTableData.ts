@@ -115,6 +115,7 @@ const useSubdomainTableData = (
 			setIsLoading(false);
 			setData(undefined);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [parentDomainId, subdomains]);
 
 	/*

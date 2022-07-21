@@ -4,7 +4,7 @@
  */
 
 // React Imports
-import React from 'react';
+import React, { memo } from 'react';
 
 import { useLocation } from 'react-router-dom';
 
@@ -89,4 +89,4 @@ const SubdomainTable = ({ style }: SubdomainTableProps) => {
 	);
 };
 
-export default SubdomainTable;
+export default memo(SubdomainTable);

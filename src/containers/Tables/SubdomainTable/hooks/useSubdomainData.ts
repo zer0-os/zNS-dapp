@@ -22,13 +22,15 @@ const useSubdomainData = (domainId: string) => {
 		const get = async () => {
 			try {
 				const buyNow = await sdk.zauction.getBuyNowListing(domainId);
-				if (buyNow?.price) {
+				if (buyNow?.price && isMounted.current) {
 					setBuyNowPrice(Number(formatEther(buyNow?.price)));
 				}
 			} catch (e) {
 				console.error('Failed to retrieve Buy Now for domain', domainId, e);
 			} finally {
-				setIsLoading(false);
+				if (isMounted.current) {
+					setIsLoading(false);
+				}
 			}
 		};
 		get();

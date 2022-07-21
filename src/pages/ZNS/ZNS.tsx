@@ -61,7 +61,7 @@ const ZNS: React.FC<ZNSProps> = () => {
 	const isMobile = useMatchMedia('phone');
 	const isMobilePortrait = useMatchMedia('(max-width: 569px)');
 
-	const enableBanner = true;
+	const enableBanner = false;
 
 	const location = useLocation();
 	const nftView = useMemo(
@@ -271,12 +271,8 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}
-					{!(
-						isMobile ||
-						isMobilePortrait ||
-						isRootDomain(znsDomain?.id) ||
-						true
-					) && nftStats()}
+					{!(isMobile || isMobilePortrait || isRootDomain(znsDomain?.id)) &&
+						nftStats()}
 					{showDomainTable && (
 						<div className={styles.TableContainer}>
 							<SubdomainTable />
