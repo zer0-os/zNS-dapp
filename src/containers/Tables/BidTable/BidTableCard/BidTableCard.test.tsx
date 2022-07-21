@@ -12,6 +12,9 @@ import { mockData, mockOptionDropdown } from '../mocks';
 import { ethers } from 'ethers';
 
 //- Types Imports
+import { bidTableActions } from '../BidTable.types';
+
+//- Utils Imports
 import { getTableActions } from '../BidTable.utils';
 
 //- Constants Imports
@@ -48,14 +51,37 @@ describe('BidTableCard component', () => {
 		);
 	});
 
-	it('should render menu dropdown options', () => {
+	it('should render options menu correctly', () => {
 		const accountId = '0x000';
-		const ownerId = { id: '0x000' };
+		const ownerId = mockData.domain.owner;
 		const options = getTableActions(accountId, ownerId);
 		renderComponent();
 
 		expect(mockOptionDropdown).toBeCalledWith(
 			expect.objectContaining({ options: options }),
 		);
+	});
+
+	it('should render both Rebid and Cancel Bid options when owner ID is not equal to account ID', () => {
+		const accountId = '0x000';
+		const ownerId = mockData.domain.owner;
+		const options = getTableActions(accountId, ownerId);
+
+		renderComponent();
+
+		expect(options.length).toEqual(2);
+		expect(options).toEqual(bidTableActions);
+	});
+
+	it('should only render Cancel Bid option when owner ID is equal to account ID', () => {
+		const accountId = mockData.domain.owner;
+		const ownerId = mockData.domain.owner;
+		const options = getTableActions(String(accountId), ownerId);
+
+		renderComponent();
+
+		expect(options.length).toEqual(1);
+		expect(options).toContain(bidTableActions[1]);
+		expect(options).not.toContain(bidTableActions[0]);
 	});
 });
