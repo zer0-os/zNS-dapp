@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import styles from './GenericTable.module.scss';
 import { LoadingIndicator, IconButton, SearchBar } from 'components';
 import { usePropsState } from 'lib/hooks/usePropsState';
@@ -247,4 +247,4 @@ const GenericTable = (props: any) => {
 	);
 };
 
-export default GenericTable;
+export default memo(GenericTable);

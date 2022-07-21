@@ -271,12 +271,8 @@ const ZNS: React.FC<ZNSProps> = () => {
 			{!isNftView && (
 				<div className="main">
 					{previewCard()}
-					{!(
-						isMobile ||
-						isMobilePortrait ||
-						isRootDomain(znsDomain?.id) ||
-						true
-					) && nftStats()}
+					{!(isMobile || isMobilePortrait || isRootDomain(znsDomain?.id)) &&
+						nftStats()}
 					{showDomainTable && (
 						<div className={styles.TableContainer}>
 							<SubdomainTable />

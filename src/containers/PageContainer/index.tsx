@@ -35,13 +35,14 @@ const PageContainer: React.FC = ({ children }) => {
 	const history = useHistory();
 	const { account, active } = useWeb3React<Web3Provider>();
 	const triedEagerConnect = useEagerConnect();
-	const globalDomain = useCurrentDomain();
 	const {
 		domain: znsDomain,
 		domainMetadata,
 		loading,
+		app,
 		refetch,
 	} = useCurrentDomain();
+
 	const { minted } = useMint();
 	const { fulfilled: stakingFulFilled } = useStaking();
 	const { addNotification } = useNotification();
@@ -58,11 +59,15 @@ const PageContainer: React.FC = ({ children }) => {
 
 	const handleForceBackHome = useCallback(() => {
 		if (!loading && !znsDomain) {
-			history.push(globalDomain.app);
+			history.push(app);
 		}
-	}, [loading, znsDomain, globalDomain, history]);
+	}, [loading, app, history, znsDomain]);
 
-	const handleWalletChanges = useCallback(() => {
+	/**
+	 * Life Cycles
+	 */
+	useUpdateEffect(handleForceBackHome, [znsDomain, loading, app]);
+	useUpdateEffect(() => {
 		if (
 			Object.values(WALLETS).includes(
 				localStorage.getItem(LOCAL_STORAGE_KEYS.CHOOSEN_WALLET) as WALLETS,
@@ -84,13 +89,7 @@ const PageContainer: React.FC = ({ children }) => {
 		if (modal === Modal.Transfer || modal === Modal.Mint) {
 			closeModal();
 		}
-	}, [active, modal, triedEagerConnect, addNotification, closeModal]);
-
-	/**
-	 * Life Cycles
-	 */
-	useUpdateEffect(handleForceBackHome, [znsDomain, loading, globalDomain.app]);
-	useUpdateEffect(handleWalletChanges, [active]);
+	}, [active]);
 	useUpdateEffect(refetch, [minted, stakingFulFilled]);
 
 	return (
