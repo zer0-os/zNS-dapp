@@ -1,69 +1,111 @@
 //- React Imports
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
 //- Types Imports
 import { Actions, ActionKeys, BidTableData } from '../BidTable.types';
 
 //- Components Imports
-import { Artwork, OptionDropdown } from 'components';
+import { Artwork, OptionDropdown, Overlay } from 'components';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
+
+//- Container Imports
+import { CancelBid, MakeABid } from 'containers';
 
 //- Library Imports
 import { ethers } from 'ethers';
 
 //- Constants Imports
-import { AltText, TestId } from '../BidTable.constants';
+import { AltText, Modal, TestId } from '../BidTable.constants';
 
 //- Styles Imports
 import styles from '../BidTable.module.scss';
 import moreIcon from 'assets/more-vertical.svg';
 
 const BidTableRow = (props: any) => {
+	const [modal, setModal] = useState<Modal | undefined>();
+	const [selectedBid, setSelectedBid] = useState<BidTableData>();
 	const bid: BidTableData = props.data;
+
+	const openMakeBid = (bid: BidTableData) => {
+		setSelectedBid(bid);
+		setModal(Modal.MAKE_A_BID);
+	};
+
+	const openCancelBid = (bid: BidTableData) => {
+		setSelectedBid(bid);
+		setModal(Modal.CANCEL);
+	};
+
+	const closeModal = () => {
+		setModal(undefined);
+		setSelectedBid(undefined);
+	};
 
 	const onSelectOption = (option: Option) => {
 		switch (option.title) {
 			case ActionKeys.REBID:
-				props.openMakeBid?.(bid);
+				openMakeBid?.(bid);
 				return;
 			case ActionKeys.CANCEL_BID:
-				props.openCancelBid?.(bid);
+				openCancelBid?.(bid);
 				return;
 		}
 	};
 
 	return (
-		<tr className={styles.Container} data-testid={TestId.ROW_CONTAINER}>
-			<td>
-				<Artwork
-					data-testid={TestId.ARTWORK}
-					domain={'0://' + bid.domainName}
-					disableInteraction
-					metadataUrl={bid.domainMetadataUrl}
-					id={bid.domainId}
-					style={{ maxWidth: 200 }}
+		<>
+			{modal === Modal.MAKE_A_BID && selectedBid && (
+				<MakeABid
+					domain={selectedBid.domain}
+					onBid={props.refetch}
+					onClose={() => setModal(undefined)}
+					paymentTokenInfo={selectedBid.paymentTokenInfo}
 				/>
-			</td>
-			<td data-testid={TestId.YOUR_BID}>
-				{ethers.utils.formatEther(bid.yourBid.toString())}{' '}
-				{bid.paymentTokenInfo.symbol}
-			</td>
-			<td data-testid={TestId.HIGHEST_BID}>
-				{ethers.utils.formatEther(bid.highestBid)} {bid.paymentTokenInfo.symbol}
-			</td>
-			<td>
-				<OptionDropdown
-					className={styles.MoreDropdown}
-					onSelect={onSelectOption}
-					options={Actions}
-					data-testid={TestId.OPTIONS}
-				>
-					<button className={styles.Button}>
-						<img alt={AltText.MORE_OPTIONS} src={moreIcon} />
-					</button>
-				</OptionDropdown>
-			</td>
-		</tr>
+			)}
+			{modal === Modal.CANCEL && selectedBid && (
+				<Overlay onClose={() => setModal(undefined)} open>
+					<CancelBid
+						bidNonce={selectedBid.bidNonce}
+						domainId={selectedBid.domainId}
+						onSuccess={props.refetch}
+						onClose={closeModal}
+						paymentTokenInfo={selectedBid.paymentTokenInfo}
+					/>
+				</Overlay>
+			)}
+			<tr className={styles.Container} data-testid={TestId.ROW_CONTAINER}>
+				<td>
+					<Artwork
+						data-testid={TestId.ARTWORK}
+						domain={'0://' + bid.domainName}
+						disableInteraction
+						metadataUrl={bid.domainMetadataUrl}
+						id={bid.domainId}
+						style={{ maxWidth: 200 }}
+					/>
+				</td>
+				<td data-testid={TestId.YOUR_BID}>
+					{ethers.utils.formatEther(bid.yourBid.toString())}{' '}
+					{bid.paymentTokenInfo.symbol}
+				</td>
+				<td data-testid={TestId.HIGHEST_BID}>
+					{ethers.utils.formatEther(bid.highestBid)}{' '}
+					{bid.paymentTokenInfo.symbol}
+				</td>
+				<td>
+					<OptionDropdown
+						className={styles.MoreDropdown}
+						onSelect={onSelectOption}
+						options={Actions}
+						data-testid={TestId.OPTIONS}
+					>
+						<button className={styles.Button}>
+							<img alt={AltText.MORE_OPTIONS} src={moreIcon} />
+						</button>
+					</OptionDropdown>
+				</td>
+			</tr>
+		</>
 	);
 };
 

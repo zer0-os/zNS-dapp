@@ -33,7 +33,7 @@ const useBidTableData = (): UseBidTableDataReturn => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [bidData, setBidData] = useState<BidTableData[] | undefined>([]);
 
-	const getData = useCallback(async () => {
+	const getData = async () => {
 		if (!account) {
 			return;
 		}
@@ -129,7 +129,7 @@ const useBidTableData = (): UseBidTableDataReturn => {
 			setBidData(tableData);
 			setIsLoading(false);
 		}
-	}, [account, getBidsForAccount, sdk]);
+	};
 
 	const refetch = () => {
 		setBidData(undefined);
