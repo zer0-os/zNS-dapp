@@ -2,7 +2,7 @@
 import { memo, useState } from 'react';
 
 //- Types Imports
-import { Actions, ActionKeys, BidTableData } from '../BidTable.types';
+import { ActionKeys, BidTableData, getTableActions } from '../BidTable.types';
 
 //- Components Imports
 import { Artwork, OptionDropdown, Overlay } from 'components';
@@ -13,6 +13,7 @@ import { CancelBid, MakeABid } from 'containers';
 
 //- Library Imports
 import { ethers } from 'ethers';
+import { useWeb3React } from '@web3-react/core';
 
 //- Constants Imports
 import { AltText, Modal, TestId } from '../BidTable.constants';
@@ -24,7 +25,11 @@ import moreIcon from 'assets/more-vertical.svg';
 const BidTableRow = (props: any) => {
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [selectedBid, setSelectedBid] = useState<BidTableData>();
+	const { account } = useWeb3React();
+
 	const bid: BidTableData = props.data;
+
+	const options = getTableActions(account?.toLowerCase(), bid.domain.owner);
 
 	const openMakeBid = (bid: BidTableData) => {
 		setSelectedBid(bid);
@@ -96,7 +101,7 @@ const BidTableRow = (props: any) => {
 					<OptionDropdown
 						className={styles.MoreDropdown}
 						onSelect={onSelectOption}
-						options={Actions}
+						options={options}
 						data-testid={TestId.OPTIONS}
 					>
 						<button className={styles.Button}>

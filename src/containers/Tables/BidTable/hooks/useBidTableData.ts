@@ -1,5 +1,5 @@
 //- React Imports
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 //- Library Imports
 import { useZnsSdk } from 'lib/hooks/sdk';

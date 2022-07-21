@@ -7,6 +7,7 @@ import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
 
 //- Library Imports
 import { ethers } from 'ethers';
+import { useWeb3React } from '@web3-react/core';
 
 //- Constants Imports
 import { AltText, Labels, Modal, TestId } from '../BidTable.constants';
@@ -15,7 +16,7 @@ import { AltText, Labels, Modal, TestId } from '../BidTable.constants';
 import { CancelBid, MakeABid } from 'containers';
 
 //- Types Imports
-import { Actions, ActionKeys, BidTableData } from '../BidTable.types';
+import { ActionKeys, BidTableData, getTableActions } from '../BidTable.types';
 
 //- Library Imports
 import usePageWidth from 'lib/hooks/usePageWidth';
@@ -31,7 +32,11 @@ const BidTableCard = (props: any) => {
 	const dimensions = usePageWidth();
 	const [modal, setModal] = useState<Modal | undefined>();
 	const [selectedBid, setSelectedBid] = useState<BidTableData>();
+	const { account } = useWeb3React();
+
 	const bid: BidTableData = props.data;
+
+	const options = getTableActions(account?.toLowerCase(), bid.domain.owner);
 
 	const openMakeBid = (bid: BidTableData) => {
 		setSelectedBid(bid);
@@ -113,7 +118,7 @@ const BidTableCard = (props: any) => {
 						<OptionDropdown
 							className={styles.MoreDropdown}
 							onSelect={onSelectOption}
-							options={Actions}
+							options={options}
 							data-testid={TestId.OPTIONS}
 						>
 							<button className={styles.Button}>
