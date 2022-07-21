@@ -36,7 +36,7 @@ export { default as TransferOwnership } from './flows/TransferOwnership';
 export { default as Raffle } from './flows/Raffle';
 
 // Tables
-export { default as BidTable } from './Tables/BidTable';
+export { default as BidTable } from './Tables/BidTable/BidTable';
 export { default as OwnedDomainsTable } from './Tables/OwnedDomainsTable/OwnedDomainsTable';
 export { default as SubdomainTable } from './Tables/SubdomainTable/SubdomainTable';
 

@@ -1,3 +1,6 @@
+//- React Imports
+import { memo } from 'react';
+
 //- Components Imports
 import { Artwork, OptionDropdown } from 'components';
 import { Option } from 'components/Dropdowns/OptionDropdown/OptionDropdown';
@@ -83,4 +86,4 @@ const BidTableCard = (props: any) => {
 	);
 };
 
-export default BidTableCard;
+export default memo(BidTableCard);

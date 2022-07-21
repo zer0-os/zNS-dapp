@@ -32,8 +32,8 @@ export const OptionTitle = {
 };
 
 export enum Modal {
-	Bid,
-	Cancel,
+	MAKE_A_BID,
+	CANCEL,
 }
 
 export const Headers = [

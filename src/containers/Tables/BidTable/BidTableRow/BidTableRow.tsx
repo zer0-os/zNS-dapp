@@ -1,3 +1,6 @@
+//- React Imports
+import { memo } from 'react';
+
 //- Types Imports
 import { Actions, ActionKeys, BidTableData } from '../BidTable.types';
 
@@ -34,7 +37,7 @@ const BidTableRow = (props: any) => {
 			<td>
 				<Artwork
 					data-testid={TestId.ARTWORK}
-					domain={bid.domainName}
+					domain={'0://' + bid.domainName}
 					disableInteraction
 					metadataUrl={bid.domainMetadataUrl}
 					id={bid.domainId}
@@ -64,4 +67,4 @@ const BidTableRow = (props: any) => {
 	);
 };
 
-export default BidTableRow;
+export default memo(BidTableRow);
