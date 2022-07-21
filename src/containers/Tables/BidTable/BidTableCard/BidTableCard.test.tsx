@@ -12,7 +12,7 @@ import { mockData, mockOptionDropdown } from '../mocks';
 import { ethers } from 'ethers';
 
 //- Types Imports
-import { Actions } from '../BidTable.types';
+import { getTableActions } from '../BidTable.utils';
 
 //- Constants Imports
 import { Currency } from 'constants/currency';
@@ -49,10 +49,13 @@ describe('BidTableCard component', () => {
 	});
 
 	it('should render menu dropdown options', () => {
+		const accountId = '0x000';
+		const ownerId = { id: '0x000' };
+		const options = getTableActions(accountId, ownerId);
 		renderComponent();
 
 		expect(mockOptionDropdown).toBeCalledWith(
-			expect.objectContaining({ options: Actions }),
+			expect.objectContaining({ options: options }),
 		);
 	});
 });

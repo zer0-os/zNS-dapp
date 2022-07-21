@@ -2,7 +2,10 @@
 import { memo, useState } from 'react';
 
 //- Types Imports
-import { ActionKeys, BidTableData, getTableActions } from '../BidTable.types';
+import { ActionKeys, BidTableData } from '../BidTable.types';
+
+//- Utils Imports
+import { getTableActions } from '../BidTable.utils';
 
 //- Components Imports
 import { Artwork, OptionDropdown, Overlay } from 'components';

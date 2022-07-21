@@ -16,13 +16,13 @@ import { AltText, Labels, Modal, TestId } from '../BidTable.constants';
 import { CancelBid, MakeABid } from 'containers';
 
 //- Types Imports
-import { ActionKeys, BidTableData, getTableActions } from '../BidTable.types';
+import { ActionKeys, BidTableData } from '../BidTable.types';
 
 //- Library Imports
 import usePageWidth from 'lib/hooks/usePageWidth';
 
 //- Utils Imports
-import { handleDomainNameWidth } from '../BidTable.utils';
+import { handleDomainNameWidth, getTableActions } from '../BidTable.utils';
 
 //- Styles Imports
 import styles from './BidTableCard.module.scss';

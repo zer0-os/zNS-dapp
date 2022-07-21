@@ -6,7 +6,7 @@ import '@testing-library/jest-dom/extend-expect';
 import BidTableRow from './BidTableRow';
 
 //- Types Imports
-import { Actions } from '../BidTable.types';
+import { getTableActions } from '../BidTable.utils';
 
 //- Library Imports
 import { ethers } from 'ethers';
@@ -37,6 +37,10 @@ const renderComponent = ({ data = mockData } = {}) => {
 };
 
 describe('BidTableRow component', () => {
+	const accountId = '0x000';
+	const ownerId = { id: '0x000' };
+	const options = getTableActions(accountId, ownerId);
+
 	it('should render', () => {
 		const { getByTestId } = renderComponent();
 
@@ -66,7 +70,7 @@ describe('BidTableRow component', () => {
 		renderComponent();
 
 		expect(mockOptionDropdown).toBeCalledWith(
-			expect.objectContaining({ options: Actions }),
+			expect.objectContaining({ options: options }),
 		);
 	});
 });
